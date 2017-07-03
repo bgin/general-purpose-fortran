@@ -13,6 +13,8 @@ Code additions are strongly encouraged (if this remains a personal
 collection the purpose of the repository is essentially negated).
 
 An index into the documentation is contained in the [[overview]](download/tmp/html/download.html)
+An index into the documentation is contained in the [[overview]](http://htmlpreview.github.com/?download/tmp/html/download.html)
+An index into the documentation is contained in the [[overview]](http://htmlpreview.github.com/?github.com/urbanjost/general-purpose-fortran/download/tmp/html/download.html)
 
 This (mostly) Fortran repository contains modules and procedures primarily
 useful for creating a command line interface (CLI) for a Fortran program. A
@@ -276,3 +278,8 @@ if/else/elseif/endif directives can be found in
 
 * * *
 
+Most of the documentation is in HTML, not markdown
+
+The most comfortable way to preview HTML files on GitHub is to go to http://htmlpreview.github.com/ 
+or just prepend it to the original URL, i.e.: 
+      http://htmlpreview.github.com/?https://github.com/bartaz/impress.js/blob/master/index.html
