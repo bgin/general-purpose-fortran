@@ -1,0 +1,390 @@
+<html>
+<head>
+<title> FORTRAN and C library : Command Line Procedures</title>
+
+<link title="Stylesheet" href="html/CLI.css" type="text/css" rel="stylesheet">
+
+<meta http-equiv="Content-type" content="text/html; charset=us-ascii">
+
+<meta name="description" content="Tools for building General Purpose Fortran modules and libraries"/>
+<meta name="author"      content="John S. Urban" />
+<meta name="date"        content="2009-01-09" />
+<meta name="copyright"   content="© 2009,2015 John S. Urban" />
+<meta name="keywords"    content="Fortran, Fortran code, source code repository, Fortran library, , Fortran archive, source code" />
+<meta name="generator" content="vi/vim" />
+
+</head>
+<body>
+<div class="centre">
+
+<h1>General-Purpose Fortran</h1>
+
+<p class="note">
+   The majority of the code described in these pages is in one tar(1) archive. 
+   To download it see the
+   <a href="download/tmp/html/download.html">[DOWNLOAD PAGE]</a>
+</p>
+<!-- ======================================================================= -->
+<h1 class="title">Building a Fortran CLI (Command Line Interface)</h1>
+<!-- ======================================================================= -->
+
+<p>
+   This (mostly) Fortran repository contains modules and procedures
+   primarily useful for creating a command line interface (CLI) for a Fortran program.
+   A modern Fortran compiler is assumed.
+   This code has been tested using GNU Fortran (GCC) 5.4.0.
+</p>
+
+<p>
+   A <a href="download/tmp/html/man_1k.html">collection of programs</a> that use the CLI library are included. 
+   These range from useful utilities (a pre-processor, an SCCS-style
+   meta-data reader, regression testing utilities, ...)  to simple example
+   programs that exercise the modules.
+</p>
+
+
+<p>
+   Again, this collection is <em>not</em> a repository of routines  solving  complex analytical  problems.
+   This is a collection of those "other" Fortran procedures that solve the day-to-day non-numeric(mostly) issues in programming.
+   Large  repositories of  numeric algorithms written in Fortran exist at such sites as the  
+   <a  target="_blank" href="http://www.netlib.org"> netlib </a> repository. 
+   The  Fortran  Wiki <a href="http://fortranwiki.org"> fortranwiki.org </a> contains information on many Fortran resources 
+   (If you do not see a link there to your favorites please add them.)
+</p>
+
+
+
+<!-- =================================================================== -->
+<table width="100%" summary="primary library description">
+<TABLE>
+<caption> Command Line Interface Code</caption>
+      <colgroup>
+        <col width="15%">
+        <col width="85%">
+      </colgroup>
+      <tbody>
+
+<!-- =========================================================================================================================== -->
+<TR>
+   <TH class="header" colspan=1 > Routine Categories </TH>
+   <TH class="header" colspan=1 > Descriptions       </TH>
+</TR>
+<!-- =========================================================================================================================== -->
+<TR><TH colspan="2"><h3><a name="CLI">command line arguments</a></h3></TH></TR>
+<!-- =========================================================================================================================== -->
+<TR>
+   <TD style="background:yellow;">
+      <a href="download/tmp/html/BOOK_M_kracken.html" target="_top">M_KRACKEN(3fm)</a>: command line arguments
+   </TD>
+   <TD>
+      The M_KRACKEN(3f) module makes cracking Unix-like arguments off the command line easy.
+      This version is expanded to allow use in configuration files and interactive input as well, and
+      incorporates additional modules. It requires many other components from the CLI collection, but
+      is used to generate programs that use shell-like input as well as crack command lines. 
+   </TD>
+</TR>
+<!-- =========================================================================================================================== -->
+<TR>
+   <TD style="background:yellow;">
+      <a href="download/tmp/html/M_getopt.3.html" target="_top">M_GETOPT(3fm)</a>: command line arguments
+   </TD>
+   <TD>
+      The M_GETOPT(3fm) module by Mark Gates supports cracking Unix-like
+      arguments off the command line in much the same way as the C
+      getopt(3c) procedure.
+   </TD>
+</TR>
+<!-- =========================================================================================================================== -->
+<TR>
+   <TD style="background:yellow;">
+      <a href="download/tmp/html/M_getopt_long.3.html" target="_top">M_GETOPT_LONG(3fm)</a>: command line arguments
+   </TD>
+   <TD>
+      The M_GETOPT_LONG(3fm) module by Joe Krahn supports cracking
+      Unix-like arguments off the command line in much the same way as
+      the SunOS getopt_long(3c) procedure.
+   </TD>
+</TR>
+<!-- =========================================================================================================================== -->
+<TR><TH colspan="2"><h3><a name="STRINGS">strings</a></h3></TH></TR>
+<!-- =========================================================================================================================== -->
+<TR>
+   <TD style="background:yellow;"><a href="download/tmp/html/BOOK_M_strings.html" target="_top">M_STRINGS(3fm)</a></TD>
+   <TD>
+      convert case, change numbers to strings, strings to numbers,
+      parse on delimiters,edit strings, ... .
+   </TD>
+</TR>
+<!-- =========================================================================================================================== -->
+<TR><TH colspan="2"><h3><a name="TIME">date and time</a></h3></TH></TR>
+<!-- =========================================================================================================================== -->
+<TR>
+   <TD style="background:yellow;"><a href="download/tmp/html/BOOK_M_time.html" target="_top">M_TIME(3fm)</a></TD>
+   <TD>
+      Calculate and display date and time values
+   </TD>
+</TR>
+<!-- =========================================================================================================================== -->
+<TR><TH colspan="2"><h3><a name="EXPRESSIONS">expression parsers</a></h3></TH></TR>
+<!-- =========================================================================================================================== -->
+<TR>
+   <TD style="background:yellow;"> <a href="download/tmp/html/M_calculator.3.html" target="_top">M_CALCULATOR(3fm)</a>,
+        <a href="download/tmp/html/M_calculator_plus.3.html" target="_top">M_CALCULATOR_PLUS(3fm)</a></TD>
+   <TD>
+
+       M_calculator(3fm) is a module for evaluating expressions. The primary routine
+       is JUCALC(3f).
+       JUCALC(3f)  evaluates  simple  numeric and string expressions.  This allows
+       your input to use expressions and variable names instead of simple  values.
+       You  will  have  to  comment  out  or  supply some of the functions called,
+       depending on how f2003-compliant your compiler is.
+   <br/>
+   <br/>
+       M_calculator_plus(3fm) is a supplemental module containing convenience routines for
+       using M_calculator(3fm).
+
+   </TD>
+</TR>
+<!-- =========================================================================================================================== -->
+<TR><TH colspan="2"><h3><a name="RECALL">command line recall and editing</a></h3></TH></TR>
+<!-- =========================================================================================================================== -->
+<TR>
+   <TD style="background:yellow;"> <a href="download/tmp/html/redo.3.html">M_HISTORY(3fm)</a>: An interactive input editor module</TD>
+
+   <TD>
+      Acting much like a line-mode editor, the REDO(3f) procedure lets
+      you list, edit, save, and modify your interactively entered program
+      input. Built-in help and no dependence on terminal control sequences
+      makes this a simple-to-master and  portable input history editor.
+   </TD>
+</TR>
+<!-- =========================================================================================================================== -->
+<TR>
+   <TD style="background:yellow;"> <a href="download/tmp/html/M_readline.3.html" > M_READLINE(3fm)</a>: calling readline(3c) from Fortran <TD>
+
+      The readline(3c) routine lets you edit and then execute previously
+      entered commands.  An interface using a small C routine and the
+      standard ISO_C_BINDING module lets the commonly available C routine
+      be called from Fortran. The readline(3c) library is required.
+   </TD>
+</TR>
+<!-- =========================================================================================================================== -->
+<TR><TH colspan="2"><h3><a name="MESSAGES">messages</a></h3></TH></TR>
+<!-- =========================================================================================================================== -->
+<TR>
+   <TD style="background:yellow;"> <a href="download/tmp/html/M_journal.3.html" target="_top">M_JOURNAL(3fm)</a>,
+                                   <a href="download/tmp/html/M_messages.3.html" target="_top">M_MESSAGES(3fm)</a>
+   </TD>
+   <TD>
+      journaling, logging, and general messaging routines that let you
+      have a single routine filter output to journal files; display
+      attention-grabbing messages or reformat messages.
+   </TD>
+</TR>
+<!-- =========================================================================================================================== -->
+<TR><TH colspan="2"><h3><a name="REGRESSION">unit testing and debugging</a></h3></TH></TR>
+<!-- =========================================================================================================================== -->
+<TR>
+   <TD style="background:yellow;"> <a href="download/tmp/html/BOOK_M_debug.html" target="_top">M_DEBUG(3fm)</a></TD>
+   <TD>
+      These routines are useful for constructing unit tests for code and for
+      adding debug modes to routines and applications.
+   </TD>
+</TR>
+<!-- =========================================================================================================================== -->
+<TR>
+   <TD style="background:yellow"><a href="download/tmp/html/paranoid.1.html">Paranoid Compiler Test</a></TD>
+   <TD>
+      The PARANOID program converted into subroutines that can be called
+      from your programs to verify compiler behavior.
+   </TD>
+</TR>
+<!-- =========================================================================================================================== -->
+<TR><TH colspan="2"><h3><a name="FLOW">flow control</a></h3></TH></TR>
+<!-- =========================================================================================================================== -->
+<TR>
+   <TD style="background:yellow"> <a href="download/tmp/html/M_logic.3.html" target="_top">M_LOGIC(3fm)</a>: conditionally select input</TD>
+   <TD>
+      The M_LOGIC(3f) module allows you to use if/else/elseif/endif directives in your
+      input; allowing conditional selection of input lines. Requires an expression
+      parser. It uses JUCALC(3f) by default.
+   </TD>
+</TR>
+<!-- =========================================================================================================================== -->
+<TR><TH colspan="2"><h3><a name="IO">I/O</a></h3></TH></TR>
+<!-- =========================================================================================================================== -->
+<TR>
+    <TD style="background:yellow;"> <a href="download/tmp/html/M_io.3.html"> M_IO(3fm)</a> </TD>
+    <TD>
+       Input/Output
+    </TD>
+</TR>
+<!-- =========================================================================================================================== -->
+<TR><TH colspan="2"><h3><a name="RAW">hot keys</a></h3></TH></TR>
+<!-- =========================================================================================================================== -->
+<TR>
+   <TD style="background:yellow;"> <a href="download/tmp/html/getkey.3.html">GETKEY(3f)</a>: read a character from the keyboard in "immediate mode"</TD>
+   <TD>
+      A simple C routine for most Unix and GNU/Linux systems that
+      immediately reads a single character keystroke from the keyboard
+      without waiting for a carriage return.  An interface using the
+      ISO_C_BINDING interface allows the routine to be called from
+      Fortran.
+   </TD>
+</TR>
+<!-- =========================================================================================================================== -->
+<TR><TH colspan="2"><h3><a name="C">Fortran/C calls</a></h3></TH></TR>
+<!-- =========================================================================================================================== -->
+<TR>
+   <TD style="background:yellow;"> <a href="download/tmp/html/M_process.3.html" target="_top">M_PROCESS(3fm)</a></TD>
+   <TD>
+      Read and write from a process using popen(3c)
+   </TD>
+</TR>
+<!-- =========================================================================================================================== -->
+<TR>
+   <TD style="background:yellow;"> <a href="download/tmp/html/BOOK_M_system.html" target="_top">M_SYSTEM(3fm)</a>
+   <ul>
+   <li>Environment</li>
+   <li>Directories</li>
+   <li>Error code</li>
+   <li>Process management</li>
+   </ul>
+   </TD>
+   <TD>
+      Some simple but commonly called C routines interfaced to
+      Fortran. Makes heavy use of the ISO_C_BINDING module introduced
+      as part of Fortran 2003.
+   </TD>
+</TR>
+<!-- =========================================================================================================================== -->
+<TR>
+   <TD style="background:yellow;"> <a href="download/tmp/html/M_ncurses.html" target="_top">M_NCURSES(3fm)</a>,
+                                   <a href="download/tmp/PROGRAMS/fixeform.3.html" target="_top">M_FIXEDFORM(3fm)</a>
+   <TD>
+    <h2>Fortran(2003) interface to the ncurses(3c) library </h2>
+      <br/> <br/>
+         A Fortran module and a few related files create an interface
+         from Fortran to the C ncurses(3c) library; allowing Fortran
+         programs to read function keys and characters one at a time
+         and to control the characters on the screen on a character-cell
+         by character-cell basis.
+   </TD>
+</TR>
+<!-- =========================================================================================================================== -->
+<TR> <TD> </TD> <TD> File characteristics           </TD> </TR>
+<TR> <TD> </TD> <TD> Input/Output                   </TD> </TR>
+<TR> <TD> </TD> <TD> Regular expressions            </TD> </TR>
+<TR> <TD> </TD> <TD> Signal management              </TD> </TR>
+<TR> <TD> </TD> <TD> Sockets                        </TD> </TR>
+<TR> <TD> </TD> <TD> database                       </TD> </TR>
+<TR> <TD> </TD> <TD> encryption                     </TD> </TR>
+<TR> <TD> </TD> <TD> internet                       </TD> </TR>
+<TR> <TD> </TD> <TD> runtime                        </TD> </TR>
+<TR> <TD> </TD> <TD> opengl                         </TD> </TR>
+<TR> <TD> </TD> <TD> parallel                       </TD> </TR>
+<TR> <TD> </TD> <TD> overloading                    </TD> </TR>
+<TR> <TD> </TD> <TD> structures                     </TD> </TR>
+<!-- =========================================================================================================================== -->
+</tbody>
+</TABLE>
+
+<TABLE>
+<!-- =========================================================================================================================== -->
+<caption> Additional Utilities </caption>
+<!-- =========================================================================================================================== -->
+<TR>
+   <TH colspan=1 > Routine Categories </TH>
+   <TH colspan=1 > Descriptions       </TH>
+</TR>
+<!-- =========================================================================================================================== -->
+<TR><TH colspan="2"><h3><a name="COMPARE">numeric utilities that are aware of their accuracy</a></h3></TH></TR>
+<!-- =========================================================================================================================== -->
+<TR>
+   <TD><a href="math/Compare_Float_Numbers/M_Compare_Float_Numbers.HTML">M_COMPARE_FLOAT_NUMBERS(3fm)</a></TD>
+   <TD>
+      A Fortran module containing routines to perform equality and relational comparisons on floating point numbers.
+      That is, you can more safetly compare real numeric values.
+   </TD>
+</TR>
+<!-- =========================================================================================================================== -->
+<TR>
+   <TD><a href="types/Type_Kinds.HTML">Types and Kinds</a></TD>
+   <TD>
+      Fortran KIND definitions used by other parts of the basic utilities
+   </TD>
+</TR>
+<!-- =========================================================================================================================== -->
+<TR>
+   <TD><a href="download/tmp/html/accdig.3.html">ACCDIG(3f)</a></TD>
+   <TD>
+     compare two real numbers only up to a specified number of digits
+   </TD>
+</TR>
+<!-- =========================================================================================================================== -->
+<TR><TH colspan="2"><h3><a name="GRAPHICS">Graphics</a></h3></TH></TR>
+<!-- =========================================================================================================================== -->
+<TR>
+   <TD style="background:yellow;"> <a href="download/tmp/html/BOOK_M_pixel.html">M_PIXEL(3fm)</a></TD>
+   <TD>
+      The M_pixel module is a <em>PRELIMINARY</em> collection of routines that use 2D-vector 
+      routines to create or modify a pixel array, which can then be written as a GIF file.
+   </TD>
+</TR>
+<!-- =========================================================================================================================== -->
+<TR><TH colspan="2"><h3><a name="COLOR">Color</a></h3></TH></TR>
+<!-- =========================================================================================================================== -->
+<TR>
+   <TD style="background:yellow;"> <a href="download/tmp/html/M_color.3.html">M_COLOR(3fm)</a></TD>
+   <TD>
+      The M_color module is a collection of color-related procedures.
+      Routines to convert between different color models, return RGB
+      values given common X11 color names, and other simple color-related
+      operations.
+   </TD>
+</TR>
+<!-- =========================================================================================================================== -->
+<TR><TH colspan="2"><h3><a name="SORT">Sort</a></h3></TH></TR>
+<!-- =========================================================================================================================== -->
+<TR> <TD style="background:yellow;"> <a href="download/tmp/html/M_sort.3.html"> M_SORT(3fm)</a></TD> <TD>  sorting routines encapsulated in a module</TD> </TR>
+<!-- =========================================================================================================================== -->
+<TR> <TD style="background:yellow;"> <a href="download/tmp/html/sort_shell.3.html"> sort_shell(3f)</a></TD> <TD>  simple generic sort procedure</TD> </TR>
+<!-- =========================================================================================================================== -->
+<TR> <TD style="background:yellow;"> <a href="download/tmp/html/swap.3.html"> M_SWAP(3fm)</a></TD> <TD>  swap two variables </TD> </TR>
+<!-- =================================================================== -->
+<TR><TH colspan="2"><h3><a name="MATH">General Mathematics</a></h3></TH></TR>
+<!-- =========================================================================================================================== -->
+<TR>
+   <TD style="background:yellow;"> <a href="download/tmp/html/BOOK_M_math.3.html"> M_MATH(3fm)</a></TD>
+   <TD>
+      A collection of routines for basic geometry, curve fitting and interpolation,
+      basic statistics, ...
+   </TD>
+</TR>
+<TR><TH colspan="2"><h3><a name="UNIT">Unit Conversions</a></h3></TH></TR>
+<!-- =========================================================================================================================== -->
+<TR>
+   <TD style="background:yellow;"> <a href="download/tmp/html/BOOK_M_units.3.html"> M_UNITS(3fm)</a></TD>
+   <TD>
+      A collection of unit conversions and constants.
+      Allow degrees instead of radians in trig functions;
+      convert between Celcius and Fahrenheit, ...
+   </TD>
+</TR>
+<!-- =========================================================================================================================== -->
+</TABLE>
+<!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+
+<p>
+   An example program that combines many of the components into a simple
+   calculator-like utility that parses command line arguments, evaluates
+   Fortran-like expressions, draws in pixel arrays, allows calls to 
+   ncurses, has interactive command history recall and
+   editing, and supports if/else/elseif/endif directives can be found in
+   <a href="EXE/SHELL/shell.ff">shell.ff</a>.
+</p>
+<hr><!-- =================================================================== -->
+</div>
+</div>
+</body>
+</html>
