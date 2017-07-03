@@ -207,8 +207,7 @@ Routine Categories  Descriptions
 
 ### numeric utilities that are aware of their accuracy
 
-[M_COMPARE_FLOAT_NUMBERS(3fm)](math/Compare_Float_Numbers/M_Compare_Float_Numb
-ers.HTML)
+[M_COMPARE_FLOAT_NUMBERS(3fm)](math/Compare_Float_Numbers/M_Compare_Float_Numbers.HTML)
 
 A Fortran module containing routines to perform equality and relational
 comparisons on floating point numbers. That is, you can more safetly compare
@@ -254,14 +253,14 @@ swap two variables
 
 ### General Mathematics
 
-[ M_MATH(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libjust4/download/tmp/html/BOOK_M_math.3.html)
+[ M_MATH(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libjust4/download/tmp/html/BOOK_M_math.html)
 
 A collection of routines for basic geometry, curve fitting and interpolation,
 basic statistics, ...
 
 ### Unit Conversions
 
-[ M_UNITS(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libjust4/download/tmp/html/BOOK_M_units.3.html)
+[ M_UNITS(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libjust4/download/tmp/html/BOOK_M_units.html)
 
 A collection of unit conversions and constants. Allow degrees instead of
 radians in trig functions; convert between Celcius and Fahrenheit, ...
