@@ -12,16 +12,22 @@ to the repository.
 Code additions are strongly encouraged (if this remains a personal
 collection the purpose of the repository is essentially negated).
 
-An index into the documentation is contained in the [[overview]](download/tmp/md/download.md)
-An index into the documentation is contained in the [[overview]](http://htmlpreview.github.com/?download/tmp/md/download.md)
-An index into the documentation is contained in the [[overview]](http://htmlpreview.github.com/?github.com/urbanjost/general-purpose-fortran/download/tmp/md/download.md)
+An index into the documentation is contained in the [[overview]](download/tmp/md/download.html)
+An index into the documentation is contained in the [[overview]](http://htmlpreview.github.io/?download/tmp/md/download.html)
+An index into the documentation is contained in the [[overview]](http://htmlpreview.github.io/?github.com/urbanjost/general-purpose-fortran/download/tmp/md/download.html)
+An index into the documentation is contained in the [[overview]](http://htmlpreview.github.io/?https://github.com/urbanjost/general-purpose-fortran/download/tmp/md/download.html)
+An index into the documentation is contained in the [[overview]](http://htmlpreview.github.io/?https://github.com/urbanjost/general-purpose-fortran/blob/download/tmp/md/download.html)
+An index into the documentation is contained in the [[overview]](http://htmlpreview.github.com/?download/tmp/md/download.html)
+An index into the documentation is contained in the [[overview]](http://htmlpreview.github.com/?github.com/urbanjost/general-purpose-fortran/download/tmp/md/download.html)
+An index into the documentation is contained in the [[overview]](http://htmlpreview.github.com/?https://github.com/urbanjost/general-purpose-fortran/download/tmp/md/download.html)
+An index into the documentation is contained in the [[overview]](http://htmlpreview.github.com/?https://github.com/urbanjost/general-purpose-fortran/blob/download/tmp/md/download.html)
 
 This (mostly) Fortran repository contains modules and procedures primarily
 useful for creating a command line interface (CLI) for a Fortran program. A
 modern Fortran compiler is assumed. This code has been tested using GNU
 Fortran (GCC) 5.4.0.
 
-A [collection of programs](download/tmp/md/man_1k.md) that use the CLI
+A [collection of programs](download/tmp/md/man_1k.html) that use the CLI
 library are included. These range from useful utilities (a pre-processor, an
 SCCS-style meta-data reader, regression testing utilities, ...) to simple
 example programs that exercise the modules.
@@ -40,7 +46,7 @@ Routine Categories  Descriptions
 
 ### command line arguments
 
-[M_KRACKEN(3fm)](download/tmp/md/BOOK_M_kracken.md): command line
+[M_KRACKEN(3fm)](download/tmp/md/BOOK_M_kracken.html): command line
 arguments
 
 The M_KRACKEN(3f) module makes cracking Unix-like arguments off the command
@@ -49,12 +55,12 @@ interactive input as well, and incorporates additional modules. It requires
 many other components from the CLI collection, but is used to generate
 programs that use shell-like input as well as crack command lines.
 
-[M_GETOPT(3fm)](download/tmp/md/M_getopt.3.md): command line arguments
+[M_GETOPT(3fm)](download/tmp/md/M_getopt.3.html): command line arguments
 
 The M_GETOPT(3fm) module by Mark Gates supports cracking Unix-like arguments
 off the command line in much the same way as the C getopt(3c) procedure.
 
-[M_GETOPT_LONG(3fm)](download/tmp/md/M_getopt_long.3.md): command line
+[M_GETOPT_LONG(3fm)](download/tmp/md/M_getopt_long.3.html): command line
 arguments
 
 The M_GETOPT_LONG(3fm) module by Joe Krahn supports cracking Unix-like
@@ -63,21 +69,21 @@ getopt_long(3c) procedure.
 
 ### strings
 
-[M_STRINGS(3fm)](download/tmp/md/BOOK_M_strings.md)
+[M_STRINGS(3fm)](download/tmp/md/BOOK_M_strings.html)
 
 convert case, change numbers to strings, strings to numbers, parse on
 delimiters,edit strings, ... .
 
 ### date and time
 
-[M_TIME(3fm)](download/tmp/md/BOOK_M_time.md)
+[M_TIME(3fm)](download/tmp/md/BOOK_M_time.html)
 
 Calculate and display date and time values
 
 ### expression parsers
 
-[M_CALCULATOR(3fm)](download/tmp/md/M_calculator.3.md),
-[M_CALCULATOR_PLUS(3fm)](download/tmp/md/M_calculator_plus.3.md)
+[M_CALCULATOR(3fm)](download/tmp/md/M_calculator.3.html),
+[M_CALCULATOR_PLUS(3fm)](download/tmp/md/M_calculator_plus.3.html)
 
 M_calculator(3fm) is a module for evaluating expressions. The primary routine
 is JUCALC(3f). JUCALC(3f) evaluates simple numeric and string expressions.
@@ -90,7 +96,7 @@ routines for using M_calculator(3fm).
 
 ### command line recall and editing
 
-[M_HISTORY(3fm)](download/tmp/md/redo.3.md): An interactive input editor
+[M_HISTORY(3fm)](download/tmp/md/redo.3.html): An interactive input editor
 module
 
 Acting much like a line-mode editor, the REDO(3f) procedure lets you list,
@@ -98,7 +104,7 @@ edit, save, and modify your interactively entered program input. Built-in help
 and no dependence on terminal control sequences makes this a simple-to-master
 and portable input history editor.
 
-[ M_READLINE(3fm)](download/tmp/md/M_readline.3.md): calling readline(3c)
+[ M_READLINE(3fm)](download/tmp/md/M_readline.3.html): calling readline(3c)
 from Fortran
 
 The readline(3c) routine lets you edit and then execute previously entered
@@ -108,8 +114,8 @@ readline(3c) library is required.
 
 ### messages
 
-[M_JOURNAL(3fm)](download/tmp/md/M_journal.3.md),
-[M_MESSAGES(3fm)](download/tmp/md/M_messages.3.md)
+[M_JOURNAL(3fm)](download/tmp/md/M_journal.3.html),
+[M_MESSAGES(3fm)](download/tmp/md/M_messages.3.html)
 
 journaling, logging, and general messaging routines that let you have a single
 routine filter output to journal files; display attention-grabbing messages or
@@ -117,19 +123,19 @@ reformat messages.
 
 ### unit testing and debugging
 
-[M_DEBUG(3fm)](download/tmp/md/BOOK_M_debug.md)
+[M_DEBUG(3fm)](download/tmp/md/BOOK_M_debug.html)
 
 These routines are useful for constructing unit tests for code and for adding
 debug modes to routines and applications.
 
-[Paranoid Compiler Test](download/tmp/md/paranoid.1.md)
+[Paranoid Compiler Test](download/tmp/md/paranoid.1.html)
 
 The PARANOID program converted into subroutines that can be called from your
 programs to verify compiler behavior.
 
 ### flow control
 
-[M_LOGIC(3fm)](download/tmp/md/M_logic.3.md): conditionally select input
+[M_LOGIC(3fm)](download/tmp/md/M_logic.3.html): conditionally select input
 
 The M_LOGIC(3f) module allows you to use if/else/elseif/endif directives in
 your input; allowing conditional selection of input lines. Requires an
@@ -137,13 +143,13 @@ expression parser. It uses JUCALC(3f) by default.
 
 ### I/O
 
-[ M_IO(3fm)](download/tmp/md/M_io.3.md)
+[ M_IO(3fm)](download/tmp/md/M_io.3.html)
 
 Input/Output
 
 ### hot keys
 
-[GETKEY(3f)](download/tmp/md/getkey.3.md): read a character from the
+[GETKEY(3f)](download/tmp/md/getkey.3.html): read a character from the
 keyboard in "immediate mode"
 
 A simple C routine for most Unix and GNU/Linux systems that immediately reads
@@ -153,11 +159,11 @@ be called from Fortran.
 
 ### Fortran/C calls
 
-[M_PROCESS(3fm)](download/tmp/md/M_process.3.md)
+[M_PROCESS(3fm)](download/tmp/md/M_process.3.html)
 
 Read and write from a process using popen(3c)
 
-[M_SYSTEM(3fm)](download/tmp/md/BOOK_M_system.md)
+[M_SYSTEM(3fm)](download/tmp/md/BOOK_M_system.html)
 
   * Environment
   * Directories
@@ -166,7 +172,7 @@ Read and write from a process using popen(3c)
 Some simple but commonly called C routines interfaced to Fortran. Makes heavy
 use of the ISO_C_BINDING module introduced as part of Fortran 2003.
 
-[M_NCURSES(3fm)](download/tmp/md/M_ncurses.md),
+[M_NCURSES(3fm)](download/tmp/md/M_ncurses.html),
 [M_FIXEDFORM(3fm)](download/tmp/PROGRAMS/fixeform.3.html)
 
 ## Fortran(2003) interface to the ncurses(3c) library
@@ -221,13 +227,13 @@ real numeric values.
 
 Fortran KIND definitions used by other parts of the basic utilities
 
-[ACCDIG(3f)](download/tmp/md/accdig.3.md)
+[ACCDIG(3f)](download/tmp/md/accdig.3.html)
 
 compare two real numbers only up to a specified number of digits
 
 ### Graphics
 
-[M_PIXEL(3fm)](download/tmp/md/BOOK_M_pixel.md)
+[M_PIXEL(3fm)](download/tmp/md/BOOK_M_pixel.html)
 
 The M_pixel module is a _PRELIMINARY_ collection of routines that use 2D-
 vector routines to create or modify a pixel array, which can then be written
@@ -235,7 +241,7 @@ as a GIF file.
 
 ### Color
 
-[M_COLOR(3fm)](download/tmp/md/M_color.3.md)
+[M_COLOR(3fm)](download/tmp/md/M_color.3.html)
 
 The M_color module is a collection of color-related procedures. Routines to
 convert between different color models, return RGB values given common X11
@@ -243,28 +249,28 @@ color names, and other simple color-related operations.
 
 ### Sort
 
-[ M_SORT(3fm)](download/tmp/md/M_sort.3.md)
+[ M_SORT(3fm)](download/tmp/md/M_sort.3.html)
 
 sorting routines encapsulated in a module
 
-[ sort_shell(3f)](download/tmp/md/sort_shell.3.md)
+[ sort_shell(3f)](download/tmp/md/sort_shell.3.html)
 
 simple generic sort procedure
 
-[ M_SWAP(3fm)](download/tmp/md/swap.3.md)
+[ M_SWAP(3fm)](download/tmp/md/swap.3.html)
 
 swap two variables
 
 ### General Mathematics
 
-[ M_MATH(3fm)](download/tmp/md/BOOK_M_math.3.md)
+[ M_MATH(3fm)](download/tmp/md/BOOK_M_math.3.html)
 
 A collection of routines for basic geometry, curve fitting and interpolation,
 basic statistics, ...
 
 ### Unit Conversions
 
-[ M_UNITS(3fm)](download/tmp/md/BOOK_M_units.3.md)
+[ M_UNITS(3fm)](download/tmp/md/BOOK_M_units.3.html)
 
 A collection of unit conversions and constants. Allow degrees instead of
 radians in trig functions; convert between Celcius and Fahrenheit, ...
