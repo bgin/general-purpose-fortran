@@ -1,37 +1,47 @@
-# General-Purpose Fortran Cooperative
+General-Purpose Fortran Repository
 
 This is a cooperatively developed repository of general purpose Fortran
 modules and libraries.
 
-This initial release is a collection of files output by personal build
-utilities used to maintain the seed set of files.
+This initial release is a collection of Fortran modules (and in some cases
+their associated C support routines) providing 
+  * basic string operations
+  * simple expression parsing
+  * command line parsing 
+  * command line history editing
+  * a date and time module
+  * an interface to the ncurses(3c) library
+  * the beginnings of a pixel graphics module similiar to the VOGLE graphics library interface
+  * libraries for message handling, unit testing, and debugging
+  * a module for reading and writing lines to a process (a popen(3c) interface
+  * a growing number of Fortran interfaces to common C routines, including many POSIX routines
 
-Depending on interest the full set of files and utilities will be ported
-to the repository.
+The majority of thse routines come with a man(1) page in *roff and HTML format.
+An index into the documentation is contained in the 
+[[overview]](http://www.urbanjost.altervista.org/LIBRARY/libjust4/download/tmp/html/download.html)
+
+A [collection of programs](http://www.urbanjost.altervista.org/LIBRARY/libjust4/download/tmp/html/man_1k.html) that use the 
+repository code are included. These range from useful utilities (a pre-processor, an
+SCCS-style meta-data reader, regression testing utilities, ...) to simple
+example programs that exercise the modules.
 
 Code additions are strongly encouraged (if this remains a personal
 collection the purpose of the repository is essentially negated).
-
-An index into the documentation is contained in the [[overview]](http://www.urbanjost.altervista.org/LIBRARY/libjust4/download/tmp/html/download.html)
 
 This (mostly) Fortran repository contains modules and procedures primarily
 useful for creating a command line interface (CLI) for a Fortran program. A
 modern Fortran compiler is assumed. This code has been tested using GNU
 Fortran (GCC) 5.4.0.
 
-A [collection of programs](http://www.urbanjost.altervista.org/LIBRARY/libjust4/download/tmp/html/man_1k.html) that use the CLI
-library are included. These range from useful utilities (a pre-processor, an
-SCCS-style meta-data reader, regression testing utilities, ...) to simple
-example programs that exercise the modules.
+A modern Fortran compiler is assumed. This code has been tested using
+GNU Fortran (GCC) 5.4.0.
 
-Again, this collection is _not_ a repository of routines solving complex
-analytical problems. This is a collection of those "other" Fortran procedures
+This repository concentrates on those "other" Fortran procedures
 that solve the day-to-day non-numeric(mostly) issues in programming. Large
 repositories of numeric algorithms written in Fortran exist at such sites as
 the [ netlib ](http://www.netlib.org) repository. The Fortran Wiki [
 fortranwiki.org ](http://fortranwiki.org) contains information on many Fortran
 resources (If you do not see a link there to your favorites please add them.)
-
 
 ## Routine Categories and Descriptions
 
