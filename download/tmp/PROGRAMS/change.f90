@@ -19,17 +19,21 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   the original string with the new string.                                     ',&
 '                                                                                ',&
 'OPTIONS                                                                         ',&
-'   c/old/new/    change occurrences of old string to new string in filenames    ',&
+'   c/old/new/    change occurrences of old string to new string in filenames.   ',&
+'                 The first character after the c is the delimiter for the strings.',&
+'                 Spaces are not allowed in the expression.                      ',&
 '   FILENAMES     names of files to rename                                       ',&
 '   -dryrun       write the commands to stdout instead of executing them         ',&
+'   -verbose      echo the commands to be executed                               ',&
 '   -cmd COMMAND  change command from "mv" to specified command name             ',&
 '   --help        display this help and exit                                     ',&
 '   --version     output version information and exit                            ',&
 '                                                                                ',&
 'EXAMPLE                                                                         ',&
-'   # change all files with .f90 in their name to .F90                           ',&
+'   # change all files with .f90 in their name to *.F90                          ',&
 '   change c/.f90/.F90/  *.f90                                                   ',&
-'   change c@/usr/bin/@/bin/@  /usr/bin/*                                        ',&
+'   # copy all files with .f90 in their name to *.F90                            ',&
+'   change c@.f90@.F90@  *.f90 -cmd cp                                           ',&
 '                                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
@@ -50,18 +54,22 @@ end subroutine help_usage
 !!    the original string with the new string.
 !!
 !!##OPTIONS
-!!    c/old/new/    change occurrences of old string to new string in filenames
+!!    c/old/new/    change occurrences of old string to new string in filenames.
+!!                  The first character after the c is the delimiter for the strings.
+!!                  Spaces are not allowed in the expression.
 !!    FILENAMES     names of files to rename
 !!    -dryrun       write the commands to stdout instead of executing them
+!!    -verbose      echo the commands to be executed
 !!    -cmd COMMAND  change command from "mv" to specified command name
 !!    --help        display this help and exit
 !!    --version     output version information and exit
 !!
 !!##EXAMPLE
 !!
-!!    # change all files with .f90 in their name to .F90
+!!    # change all files with .f90 in their name to *.F90
 !!    change c/.f90/.F90/  *.f90
-!!    change c@/usr/bin/@/bin/@  /usr/bin/*
+!!    # copy all files with .f90 in their name to *.F90
+!!    change c@.f90@.F90@  *.f90 -cmd cp
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -78,7 +86,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    rename files by changing old fixed string to new string>',&
 '@(#)VERSION:        1.0, 2017-06-29>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Thu, Jun 29th, 2017 2:09:27 PM>',&
+'@(#)COMPILED:       Wed, Jul 12th, 2017 10:59:54 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -91,6 +99,7 @@ use M_strings, only : change
 implicit none
 character(len=*),parameter :: ident="@(#) given string of form days-hh:mm:ss convert to seconds'"
 character(len=IPvalue),allocatable :: names(:)
+character(len=:),allocatable       :: directive
 character(len=IPvalue)             :: newname
 character(len=:),allocatable       :: cmd
 character(len=:),allocatable       :: action
@@ -103,7 +112,7 @@ logical                            :: dryrun, verbose
    call help_version(lget('change_version'))                                ! display version information and stop if true
    dryrun=lget('change_dryrun')
    verbose=lget('change_verbose')
-   cmd=sget('change_cmd')
+   cmd=trim(sget('change_cmd'))
 
    names=sgets('change_oo')
    select case(size(names))
@@ -111,11 +120,16 @@ logical                            :: dryrun, verbose
    case(2:)
       do i=2,size(names,dim=1)
          newname=names(i)
-         call change(newname,names(1),ierr)                                 ! if ierr>0 it is the number of changes made to string
+         if(names(1)(1:1).eq.'/')then
+            directive='c'//names(1)
+         else
+            directive=names(1)
+         endif
+         call change(newname,directive,ierr)                                 ! if ierr>0 it is the number of changes made to string
          if(ierr.gt.0)then
             action=cmd//' '//trim(names(i))//' '//newname
             if(dryrun.or.verbose)then
-               write(*,*) trim(action)
+               write(*,'(a)') trim(action)
             endif
             if(.not.dryrun)then
                call execute_command_line(action)
