@@ -22,7 +22,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 'SYNOPSIS                                                                        ',&
 ' numdiff                                                                        ',&
 '    -old FILENAME -new FILENAME                                                 ',&
-'    [-percent REAL_VALUE|-digits N]                                             ',&
+'    [-percent REAL_VALUE|-digits N|-margin XXX.XX]                              ',&
 '    [-verbose]                                                                  ',&
 '    [-h|-help|--help]                                                           ',&
 '    [-v|-version|--version]                                                     ',&
@@ -54,6 +54,9 @@ help_text=[ CHARACTER(LEN=128) :: &
 '    -digits N                                                                   ',&
 '            set threshold at which to report values as a number of digits       ',&
 '            if -digits is specified -percent is ignored.                        ',&
+'                                                                                ',&
+'    -margin XXX.XX                                                              ',&
+'            set threshold to a relative margin of the magnitude of the values   ',&
 '                                                                                ',&
 '    -verbose                                                                    ',&
 '       shows the lines that pass the criteria from OLDFILE as well.             ',&
@@ -218,7 +221,7 @@ end subroutine help_usage
 !!
 !!  numdiff
 !!     -old FILENAME -new FILENAME
-!!     [-percent REAL_VALUE|-digits N]
+!!     [-percent REAL_VALUE|-digits N|-margin XXX.XX]
 !!     [-verbose]
 !!     [-h|-help|--help]
 !!     [-v|-version|--version]
@@ -250,6 +253,9 @@ end subroutine help_usage
 !!     -digits N
 !!             set threshold at which to report values as a number of digits
 !!             if -digits is specified -percent is ignored.
+!!
+!!     -margin XXX.XX
+!!             set threshold to a relative margin of the magnitude of the values
 !!
 !!     -verbose
 !!        shows the lines that pass the criteria from OLDFILE as well.
@@ -421,7 +427,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)COPYRIGHT:      1985, 1986, 1989, 1990, 20090501, 20131129 John. S. Urban>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Wed, Jun 14th, 2017 10:04:33 AM>',&
+'@(#)COMPILED:       Sun, Jul 23rd, 2017 3:54:04 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -433,7 +439,7 @@ end subroutine help_version
 !===================================================================================================================================
 program numdiff
 ! These routines are available for general use. If you change this code, please acknowledge the original author
-      use m_kracken, only : kracken,retrev,dget,lget,iget,sget,IPvalue         ! module for cracking command line parameters
+      use m_kracken, only : kracken,retrev,dget,lget,iget,sget,rget,IPvalue    ! module for cracking command line parameters
       implicit none
       character(len=IPvalue) :: filein_old                                     ! name of template file
       character(len=IPvalue) :: filein_new                                     ! name of new file to test against template
@@ -444,11 +450,13 @@ program numdiff
       integer                :: significant_digits                             ! number of significant digits in a dble
       character(len=132)     :: warning                                        ! string used for writing error messages
       integer                :: GLOBAL_COUNT=0
+      real                   :: margin
 !-----------------------------------------------------------------------------------------------------------------------------------
 !     define the command options and default values and apply arguments from user command line
       call kracken("numdiff","   &
       & -percent 0.0001d0        &
       & -digits 0                &
+      & -margin 0                &
       & -old                     &
       & -new                     &
       & -version .F.             &
@@ -456,11 +464,16 @@ program numdiff
       & -verbose .F.")
       call help_usage(lget('numdiff_help'))                                    ! see if -help flag was set
       call help_version(lget('numdiff_version'))                               ! see if -version flag was specified
+
       filein_old=sget("numdiff_old")                                           ! get -old filein_old
       filein_new=sget("numdiff_new")                                           ! get -new filein_new
+
+      verbose=lget("numdiff_verbose")                                          ! get -verbose
+
       tolerance=dget("numdiff_percent")                                        ! get -percent TOLERANCE
       idigits=iget("numdiff_digits")                                           ! get -digits NNN
-      verbose=lget("numdiff_verbose")                                          ! get -verbose
+      margin=rget("numdiff_margin")                                            ! get -margin XXX.XX
+
 !-----------------------------------------------------------------------------------------------------------------------------------
       if(filein_old.eq.' '.or.filein_new.eq.' ')then                           ! if filenames are not specified stop
          print *, "*numdiff* error: old and new filenames are required."       ! report missing filename
@@ -487,22 +500,24 @@ program numdiff
       print *, "       | new file=",trim(filein_new)
       if(idigits.ne.0)then
          write(*,'(a,i0)')"        | digits of precision=",idigits
+      elseif(margin.ne.0)then
+         write(*,'(a,g0)')"        | relative margin =",margin
       else
-         write(*,*)"       | percent threshold =",tolerance,"(%)"
+         write(*,*)"               | percent threshold =",tolerance,"(%)"
       endif
       write(*,'(132("-"))')
-      call num_diff(filein_old,filein_new,tolerance,idigits)                   ! compare the files
+      call num_diff(filein_old,filein_new,tolerance,idigits,margin)            ! compare the files
       write(*,'(132("-"))')
       write(*,*)'Numerical Differences=',GLOBAL_COUNT
       write(*,'(132("-"))')
-      if(GLOBAL_COUNT.ne.0)then  ! return command exit value to system where supported
+      if(GLOBAL_COUNT.ne.0)then    ! return command exit value to system where supported
          STOP 1
       endif
 contains
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()(
 !===================================================================================================================================
-subroutine num_diff(file_old,file_new,percent_tolerance,idigits)
+subroutine num_diff(file_old,file_new,percent_tolerance,idigits,margin)
 !     num_diff: compare numbers in otherwise identical files
 !
 !     Author: John S. Urban
@@ -527,9 +542,11 @@ character(len=*),parameter::ident="@(#)num_diff(3f): compare numbers in otherwis
       character(len=*),intent(in)    :: file_new
       doubleprecision,intent(in)     :: percent_tolerance         ! percent threshold
       integer,intent(in)             :: idigits                   ! number of digits  to match
+      real,intent(in)                :: margin                    ! relative margin
 !-----------------------------------------------------------------------------------------------------------------------------------
       doubleprecision                :: per
       doubleprecision                :: digirank
+      doubleprecision                :: marginrank
       character(len=264)             :: lline
       character(len=264)             :: rline
       character(len=264)             :: dline
@@ -542,6 +559,7 @@ character(len=*),parameter::ident="@(#)num_diff(3f): compare numbers in otherwis
       integer                        :: ind
       doubleprecision                :: permax
       doubleprecision                :: digirankmax
+      doubleprecision                :: marginrankmax
 !-----------------------------------------------------------------------------------------------------------------------------------
       open(unit=21,file=file_old(:len_trim(file_old)),status="old",iostat=ios)            ! open template file
       if(ios.ne.0)then
@@ -590,7 +608,33 @@ character(len=*),parameter::ident="@(#)num_diff(3f): compare numbers in otherwis
          !--------------------------------------------------------------------------------------------------------------------------
          lcount=lcount+1                                                  ! count of lines of input successfully read
          if(lline.ne.rline)then                                           ! if lines are not equal parse them and check differences
-            if(idigits.eq.0)then
+            if(idigits.ne.0)then
+               call digits_diff(lline,rline,dline,digirank,idigits,ier,ilen,ilen2,ind)
+               if(ind.ne.0)then
+                  digirankmax=min(digirankmax,digirank)
+                  write(*,'("--------|",a)')repeat('-',132-9)
+                  write(*,"('old     |',a)")lline(:ilen)
+                  write(*,"(i8,     '|',a)")lcount,dline(:max(ilen,ilen2))
+                  write(*,"('new     |',a)")rline(:ilen2)
+                  write(*,"('>>>>>>>>|minimum match =',g0,'(digits)')")digirank
+                  write(*,'("--------|",a)')repeat('-',132-9)
+               elseif(verbose)then
+                  write(*,"(i8,     '|',a)")lcount,lline(:ilen)
+               endif
+            elseif(margin.ne.0)then
+               call margin_diff(lline,rline,dline,marginrank,margin,ier,ilen,ilen2,ind)
+               if(ind.ne.0)then
+                  marginrankmax=min(marginrankmax,marginrank)
+                  write(*,'("--------|",a)')repeat('-',132-9)
+                  write(*,"('old     |',a)")lline(:ilen)
+                  write(*,"(i8,     '|',a)")lcount,dline(:max(ilen,ilen2))
+                  write(*,"('new     |',a)")rline(:ilen2)
+                  write(*,"('>>>>>>>>|minimum match =',g0,'(digits)')")marginrank
+                  write(*,'("--------|",a)')repeat('-',132-9)
+               elseif(verbose)then
+                  write(*,"(i8,     '|',a)")lcount,lline(:ilen)
+               endif
+            else
                ! note that PERCENT_DIFF(3f) errors come out before printout of line
                call percent_diff(lline,rline,dline,per,percent_tolerance,ier,ilen,ilen2)
                permax=max(permax,per)                                     ! if a new maximum percent difference was found record it
@@ -604,19 +648,6 @@ character(len=*),parameter::ident="@(#)num_diff(3f): compare numbers in otherwis
                elseif(verbose)then
                   write(*,"(i8,     '|',a)")lcount,lline(:ilen)
                endif
-            else
-               call digits_diff(lline,rline,dline,digirank,idigits,ier,ilen,ilen2,ind)
-               if(ind.ne.0)then
-                  digirankmax=min(digirankmax,digirank)
-                  write(*,'("--------|",a)')repeat('-',132-9)
-                  write(*,"('old     |',a)")lline(:ilen)
-                  write(*,"(i8,     '|',a)")lcount,dline(:max(ilen,ilen2))
-                  write(*,"('new     |',a)")rline(:ilen2)
-                  write(*,"('>>>>>>>>|minimum match =',g0,'(digits)')")digirank
-                  write(*,'("--------|",a)')repeat('-',132-9)
-               elseif(verbose)then
-                  write(*,"(i8,     '|',a)")lcount,lline(:ilen)
-               endif
             endif
          elseif(verbose)then
             write(*,"(i8,     '=',a)")lcount,trim(lline)
@@ -624,6 +655,88 @@ character(len=*),parameter::ident="@(#)num_diff(3f): compare numbers in otherwis
       enddo INFINITE
 !-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine num_diff
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()(
+!===================================================================================================================================
+subroutine margin_diff(line,line2,dline,per,margin,ier,ilen,ilen2,ind_line)
+!     Author: John S. Urban
+!     Date:   1989,1990, 2013
+!  assuming same number of strings on two lines to be compared, find strings that do not match, then if both strings are numbers
+!  find if they are equal within a specified relative margin.  makes assumption that only difference in lines is values of numbers
+!  that string word differences can be ignored, and same number of words on each line
+!-----------------------------------------------------------------------------------------------------------------------------------
+use :: M_math, only : in_margin
+implicit none
+!-----------------------------------------------------------------------------------------------------------------------------------
+   character(len=*),intent(in)    :: line                 ! line from file 1
+   character(len=*),intent(in)    :: line2                ! line from file 2
+   character(len=*),intent(out)   :: dline                ! line showing difference
+   doubleprecision, intent(out)   :: per                  ! maximum difference
+   real, intent(in)               :: margin               ! relative margin
+   integer,intent(out)            :: ier                  ! returned error code; 0 is no error
+   integer,intent(out)            :: ilen                 ! length of line trimmed
+   integer,intent(out)            :: ilen2                ! length of line2 trimmed
+   integer,intent(out)            :: ind_line
+!-----------------------------------------------------------------------------------------------------------------------------------
+   integer                        :: ind
+   integer                        :: i
+   integer                        :: ic
+   integer                        :: ic2
+   doubleprecision                :: acurcy
+   doubleprecision                :: value
+   doubleprecision                :: value2
+   doubleprecision                :: diff
+   integer,parameter              :: ip=264/2
+   integer                        :: iflag
+   integer                        :: iflag2
+   integer                        :: ii
+   integer is(ip),ie(ip),is2(ip),ie2(ip)
+!-----------------------------------------------------------------------------------------------------------------------------------
+   dline=' '                                               ! line filled with # where differences occur
+   per=0.0d0                                               !
+   ier=0                                                   ! error flag: 0 ok, -1 error
+   acurcy=0.0d0
+   call parse(line ,ic ,is ,ie ,ilen )                     ! fill array with tokens from line 1
+   call parse(line2,ic2,is2,ie2,ilen2)                     ! fill array with tokens from line 2
+   ind_line=0
+   if(ic.ne.0)then                                         ! ic=number of strings found
+     do i=1,ic
+        ind=0
+        call getnum(line(is(i):ie(i)),value,iflag)         ! try to convert substring line(is(i):ie(i) to number
+        if(iflag.eq.0)then                                 ! value = real value of string
+           if(i.gt.ic2)then
+              ier=-1
+              write(*,*)"[error]"," no words left to compare"
+              exit
+           else
+              call getnum(line2(is2(i):ie2(i)),value2,iflag2) ! try to convert substing from line2 to number
+           endif
+           if(iflag2.ne.0)then                             ! line1 was number but line2 was not
+              ier=-1
+
+              write(*,*)"[error]",line2(is2(i):ie2(i))," non-numeric"
+           else
+              if(value.eq.value2)then
+                 diff=0.0d0
+              else
+                 if(in_margin(value,value2,margin))then ! compare two double numbers
+                 else
+                    ind_line=max(ind,ind_line)
+                    ! if found a difference over limit, fill dline with # characters
+                    GLOBAL_COUNT=GLOBAL_COUNT+1
+                    do ii=is(i),ie(i)
+                       dline(ii:ii)='#'
+                    enddo
+                 endif
+              endif
+           endif
+        elseif(line(is(i):ie(i)).ne.line2(is2(i):ie2(i)))then  ! non-numeric stings
+           ! first string was not numeric, but strings are not supposed to differ
+           write(*,*)"[error]",line(is(i):ie(i)),"><",line2(is2(i):ie2(i))
+        endif
+     enddo
+   endif
+end subroutine margin_diff
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()(
 !===================================================================================================================================

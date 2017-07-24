@@ -69,11 +69,18 @@ FILES: do i=1,size(filename)                       ! step thru filenames to scan
       endif
       !--------
       open(unit=fd,file=trim(filename(i)),access='stream',status='old',iostat=ios,action='read',form='unformatted',iomsg=message)
+      if(debug)then
+         write(*,*)'*what* open unit=',fd,'i= ',i,' file=',trim(filename(i)),'iostat=',ios
+      endif
       if(ios.ne.0)then
          if(.not.quiet)then
             call stderr('error: could not open '//trim(filename(i)))
             call stderr('error: '//trim(message))
          endif
+         if(debug)then
+            write(*,*)'*what* close on bad open unit=',fd,'iostat=',ios
+         endif
+         flush(unit=fd,iostat=ios)
          close(unit=fd,iostat=ios)
          cycle FILES
       endif
@@ -89,6 +96,10 @@ FILES: do i=1,size(filename)                       ! step thru filenames to scan
       endif
    endif
    found = found + process_file()
+   if(debug)then
+      write(*,*)'*what* close unit=',fd,'iostat=',ios
+   endif
+   flush(unit=fd,iostat=ios)
    close(unit=fd,iostat=ios)
 enddo FILES
 if(html)then
@@ -269,7 +280,7 @@ function process_file() RESULT (ifound_total_back)
    integer            :: status                  ! use to determine if found SCCS ID string
    integer            :: ios                     ! hold I/O error flag
    integer            :: icount                  ! number of characters read from file
-   integer            :: ifound_in_this_file                  ! number of SCCS ID strings found in current file
+   integer            :: ifound_in_this_file     ! number of SCCS ID strings found in current file
    logical            :: reset
 
    status = got_nothing                          ! what part of @(#) found so far
@@ -403,7 +414,13 @@ ios=0
 
 if(reset)then
    filepoint=1
+   point=0
    reset=.false.
+   buff=' '
+   sz=bufsize
+   if(debug)then
+           write(*,*)'*getnextchar* reset'
+   endif
 endif
 
 100 continue
@@ -445,164 +462,3 @@ subroutine sccs_id(string) ! keep optimization from removing otherwise-unused va
    write(*,'(a)')trim(string(5:ii-1))
 end subroutine sccs_id
 !-----------------------------------------------------------------------------------------------------------------------------------
-!>
-!! <h3>Footnotes</h3>
-!!
-!! <p>
-!!    Pure metadata is information not used by the system to use the file.
-!!    Metadata (metacontent) is typically defined as the data providing information
-!!    about one or more aspects of the data, such as:
-!! </p>
-!!
-!! <ul>
-!!    <li> Means of creation of the data                             </li>
-!!    <li> Purpose of the data                                       </li>
-!!    <li> Time and date of creation                                 </li>
-!!    <li> Creator or author of the data                             </li>
-!!    <li> Location on a computer network where the data was created </li>
-!! </ul>
-!!
-!! <h3> Embedding metadata into executables at compile time </h3>
-!!
-!! <p>
-!!   It is typically easy to embed SCCS ID strings into text files, often as comments
-!!   in interpreted files. Compiled programs can be more difficult, as unused strings
-!!   are often eliminated by compilers during optimization. The help text for the
-!!   what(1) command gives some tips on working with compiled files.
-!! </p>
-!!
-!!
-!! <p>
-!!   It is not too difficult to locate and change the metadata string without
-!!   otherwise changing the file (this will typically work even with binary
-!!   files). But some files contain checksums or for other reasons cannot
-!!   easily be changed once created. So if you want to track and update
-!!   file data that is subject to frequent change consider including a
-!!   "signature" in the sense of a UUID (Universally Unique ID); and keeping
-!!   the metadata that has changed in a repository such as an SQLite file.
-!!   This is particularly useful if ownership or contact information,
-!!   or production status changes frequently, for example.
-!! </p>
-!!
-!!
-!! <h3>See Also</h3>
-!!
-!! <p>
-!!    The original Dublin Core Metadata Element Set consists of 15 metadata
-!!    elements:
-!! </p>
-!!
-!! <ol>
-!!    <li>  Title        </li>
-!!    <li>  Creator      </li>
-!!    <li>  Subject      </li>
-!!    <li>  Description  </li>
-!!    <li>  Publisher    </li>
-!!    <li>  Contributor  </li>
-!!    <li>  Date         </li>
-!!    <li>  Type         </li>
-!!    <li>  Format       </li>
-!!    <li>  Identifier   </li>
-!!    <li>  Source       </li>
-!!    <li>  Language     </li>
-!!    <li>  Relation     </li>
-!!    <li>  Coverage     </li>
-!!    <li>  Rights       </li>
-!! </ol>
-!!
-!! <p>
-!!    Wikipedia contains links to more information on the intended meanings of the
-!!    keywords.
-!! </p>
-!!
-!! <p>
-!!    MSWindows executable metadata includes the names:
-!! </p>
-!!
-!! <ol>
-!!    <li> CompanyName </li>
-!!    <li> FileDescription </li>
-!!    <li> FileVersion </li>
-!!    <li> InternalName </li>
-!!    <li> LegalCopyright </li>
-!!    <li> OriginalFileName </li>
-!!    <li> ProductName </li>
-!!    <li> ProductVersion </li>
-!! </ol>
-!!
-!! <p>
-!!    Other common metadata formats include EXIF, GPS, and IPTC.
-!! </p>
-!!
-!! <p>
-!!   Embedding metadata into executable and relocatable files is currently very dependent
-!!   on the programming environment. When investigating how best to include metadata into
-!!   such files note that ELF-format files have a metadata section, and many compiled file
-!!   formats contain a fixed-string section which is often where metadata is stored.
-!! </p>
-!! <h3>Using cpp(1) to build an SCCS ID </h3>
-!!
-!! <p>
-!!    Most Fortran programming environments will process source files through the
-!!    cpp(1) program or very similar pre-processors if the source files end in
-!!    ".F90". You may have a Fortran-friendly pre-processor where you do
-!!    not have to be as careful with quotes and double-slashes ("//"); but
-!!    even using cpp(1) (which was designed for C and/or C++) you can use
-!!    the pre-defined __FILE__, __DATE__, __TIME__ macros and the -D switch
-!!    on cpp(1) to "automatically" generate an up-to-date SCCS ID string.
-!!    For example:
-!! </p>
-!!
-!! <PRE>
-!! !===================================================================================================================================
-!! program testit
-!! implicit none
-!! ! INFO string might be optimized away if not &quot;used&quot;
-!! ! uses (predefined) cpp(1) preprocessor macros;
-!! ! assumes used -DVERSION='&quot;VALUE&quot;' preprocessor switch
-!! character(len=:),parameter ::info='&lt;@(#)'/&amp;
-!!    &amp;/__FILE__/&amp;
-!!    &amp;/'::'/&amp;
-!!    &amp;/__DATE__/&amp;
-!!    &amp;/' '/&amp;
-!!    &amp;/__TIME__/&amp;
-!!    &amp;/'::V'/&amp;
-!!    &amp;/VERSION/&amp;
-!!    &amp;/'&gt;'
-!! write(*,*)'Hello World!'
-!! write(*,*)info
-!! end program testit
-!! !===============================================================================
-!! ! $ gfortran -DVERSION='&quot;1.2.3&quot;' cpp.F90 -o a.out # note quoting for VERSION
-!! ! $ ./a.out                                       # execute program
-!! !  Hello World!
-!! !  &lt;@(#)cpp.F90::Feb  1 2016 20:00:04::V1.2.3&gt;
-!! ! $ what a.out                                    # Run what(1) command on executable
-!! ! a.out:
-!! !         cpp.F90::Feb  1 2016 20:00:04::V1.2.3
-!! !===================================================================================================================================
-!! </PRE>
-!!
-!! <h3>Mixing what(1) and ar(1) output when looking at lib*.a files</h3>
-!!
-!! <p>
-!!    The ar(1) command lets you see what files are in an archive file, which is typically
-!!    the format static libraries take. A simple script lets you combine the output from ar(1)
-!!    and what(1):
-!! </p>
-!!
-!! <PRE>
-!! #!/bin/sh
-!! #@(#)arwhat.sh:run what(1) on each record in an archive file individually
-!! for NAME in $*
-!! do
-!!    ar t $NAME|while read FILE
-!!    do
-!!       echo \
-!!       ==========================================================================================
-!!       echo $(ar tv $NAME $FILE)
-!!       ar  p $NAME $FILE|what
-!!    done
-!! done
-!! exit
-!===================================================================================================================================

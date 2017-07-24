@@ -259,7 +259,7 @@ end function lcm
 !-----------------------------------------------------------------------------------------------------------------------------------
 integer function lcm_vector(m)
 implicit none
-character(len=*),parameter :: ident="@(#)M_factor::lcm_vector(3fp): least common multiple of integer array m(:)"
+character(len=*),parameter::ident="@(#)M_factor::lcm_vector(3fp): least common multiple of integer array m(:)"
    integer,intent(in)  :: m(:)
    integer             :: i
    integer             :: vsize
@@ -293,7 +293,7 @@ end function lcm_vector
 !-----------------------------------------------------------------------------------------------------------------------------------
 integer function lcm_matrix(m)
 implicit none
-character(len=*),parameter :: ident="@(#)M_factor::lcm_matrix(3fp):least common multiple of integer matrix m(:,:)"
+character(len=*),parameter::ident="@(#)M_factor::lcm_matrix(3fp):least common multiple of integer matrix m(:,:)"
 integer,intent(in) :: m(:,:)
    lcm_matrix=lcm_vector(reshape(m,[size(m)]))
 end function lcm_matrix
@@ -314,7 +314,7 @@ end function lcm_matrix
 !-----------------------------------------------------------------------------------------------------------------------------------
 integer function lcm_cuboid(m)
 implicit none
-character(len=*),parameter :: ident="@(#)M_factor::lcm_cuboid(3fp):least common multiple of integer cuboid m(:,:,:)"
+character(len=*),parameter::ident="@(#)M_factor::lcm_cuboid(3fp):least common multiple of integer cuboid m(:,:,:)"
 integer,intent(in) :: m(:,:,:)
    lcm_cuboid=lcm_vector(reshape(m,[size(m)]))
 end function lcm_cuboid
@@ -464,7 +464,7 @@ end function lcm_cuboid
 !-----------------------------------------------------------------------------------------------------------------------------------
 function gcd(m,n) result(answer)
 implicit none
-character(len=*),parameter :: ident="@(#)M_factor::gcd(3fp): compute greatest common divisor of two integers"
+character(len=*),parameter::ident="@(#)M_factor::gcd(3fp): compute greatest common divisor of two integers"
 integer,intent(in)  :: m, n
 integer             :: answer
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -508,7 +508,7 @@ end function gcd_2
 !-----------------------------------------------------------------------------------------------------------------------------------
 integer function gcd_vector(m)
 implicit none
-character(len=*),parameter :: ident="@(#)M_factor::gcd_vector(3fp):greatest common divisor of integer vector m(:)"
+character(len=*),parameter::ident="@(#)M_factor::gcd_vector(3fp):greatest common divisor of integer vector m(:)"
 integer,intent(in) :: m(:)
 integer            :: vsize
 integer            :: i
@@ -528,7 +528,7 @@ end function gcd_vector
 !-----------------------------------------------------------------------------------------------------------------------------------
 integer function gcd_matrix(m)
 implicit none
-character(len=*),parameter :: ident="@(#)M_factor::gcd_matrix(3fp):greatest common divisor of integer matrix array m(:,:)"
+character(len=*),parameter::ident="@(#)M_factor::gcd_matrix(3fp):greatest common divisor of integer matrix array m(:,:)"
 integer,intent(in) :: m(:,:)
 integer :: i,j
    if(size(m).gt.0)then
@@ -548,7 +548,7 @@ end function gcd_matrix
 !-----------------------------------------------------------------------------------------------------------------------------------
 integer function gcd_cuboid(m)
 implicit none
-character(len=*),parameter :: ident="@(#)M_factor::gcd_cuboid(3fp):greatest common divisor of integer cuboid m(:,:,:)"
+character(len=*),parameter::ident="@(#)M_factor::gcd_cuboid(3fp):greatest common divisor of integer cuboid m(:,:,:)"
 integer,intent(in) :: m(:,:,:)
    gcd_cuboid=gcd_vector(reshape(m,[size(m)]))
 end function gcd_cuboid
@@ -628,7 +628,7 @@ end function gcd_cuboid
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine prime_factors (number, nprm, iprm, iexp, verbose)
 implicit none
-character(len=*),parameter :: ident="@(#)M_factor::prime_factors(3f):decompose a number into its prime factors"
+character(len=*),parameter::ident="@(#)M_factor::prime_factors(3f):decompose a number into its prime factors"
 integer, intent(in)   :: number  ! number to factor
 integer, intent(out)  :: nprm    ! number of distinct prime factors
 integer, intent(out)  :: iprm(:) ! distinct prime factors found, assumed dimensioned to at least 9
@@ -779,7 +779,7 @@ end subroutine prime_factors
 !===================================================================================================================================
 function i_is_prime ( n )
 implicit none
-character(len=*),parameter :: ident="@(#)M_factor::i_is_prime(3f): reports whether an integer is prime"
+character(len=*),parameter::ident="@(#)M_factor::i_is_prime(3f): reports whether an integer is prime"
   integer,intent(in) :: n
   integer            :: i
   logical            :: i_is_prime

@@ -13,6 +13,7 @@
 !!    use M_strings, only : switch,s2c,c2s
 !!    use M_strings, only : noesc,notabs,expand
 !!    use M_strings, only : string_to_value,string_to_values,s2v,s2vs,value_to_string,v2s
+!!    use M_strings, only : listout
 !!    use M_strings, only : matchw
 !!    use M_strings, only : isalnum, isalpha, iscntrl, isdigit, isgraph, islower,
 !!                          isprint, ispunct, isspace, isupper, isascii, isblank, isxdigit
@@ -73,6 +74,8 @@
 !!    s2vs              function returns a DOUBLEPRECISION array of numbers from a string
 !!    value_to_string   generic subroutine returns string given numeric value (REAL, DOUBLEPRECISION, INTEGER )
 !!    v2s               generic function returns string from numeric value (REAL, DOUBLEPRECISION, INTEGER )
+!!    trimzeros         delete trailing zeros from numeric decimal string
+!!    listout           copy ICURVE() to ICURVE_EXPANDED() expanding negative curve numbers to ranges (1 -10 means 1 thru 10)
 !!
 !!    LOGICAL TESTS
 !!
@@ -404,19 +407,20 @@ PUBLIC notabs          !  convert tabs to spaces in output while maintaining col
 PUBLIC expand          !  expand escape sequences in a string
 !----------------------# NUMERIC STRINGS
 PUBLIC string_to_value !  generic subroutine returns REAL|DOUBLEPRECISION|INTEGER value from string (a2d,a2r,a2i)
-PRIVATE a2d            !  subroutine returns double value from string
-PRIVATE a2r            !  subroutine returns real value from string
-PRIVATE a2i            !  subroutine returns integer value from string
+ PRIVATE a2d           !  subroutine returns double value from string
+ PRIVATE a2r           !  subroutine returns real value from string
+ PRIVATE a2i           !  subroutine returns integer value from string
 PUBLIC string_to_values!  subroutine returns values from a string
 PUBLIC s2v             !  function returns doubleprecision value from string
 PUBLIC s2vs            !  function returns a doubleprecision array of numbers from a string
 PUBLIC value_to_string !  generic subroutine returns string given numeric REAL|DOUBLEPRECISION|INTEGER value
 PUBLIC v2s             !  generic function returns string given numeric REAL|DOUBLEPRECISION|INTEGER value
-PRIVATE d2s            !  function returns strings from doubleprecision value
-PRIVATE r2s            !  function returns strings from real value
-PRIVATE i2s            !  function returns strings from integer value
+ PRIVATE d2s           !  function returns strings from doubleprecision value
+ PRIVATE r2s           !  function returns strings from real value
+ PRIVATE i2s           !  function returns strings from integer value
 PUBLIC v2s_bug         !  generic function returns string given numeric REAL|DOUBLEPRECISION|INTEGER value
-PRIVATE trimzeros      !  Delete trailing zeros from numeric decimal string
+ PRIVATE trimzeros     !  Delete trailing zeros from numeric decimal string
+PUBLIC listout         !  copy ICURVE() to ICURVE_EXPANDED() expanding negative curve numbers to ranges (1 -10 means 1 thru 10)
 !----------------------# LOGICAL TESTS
 PUBLIC isalnum         !  elemental function returns .true. if CHR is a letter or digit
 PUBLIC isalpha         !  elemental function returns .true. if CHR is a letter and .false. otherwise
@@ -3765,6 +3769,100 @@ end subroutine trimzeros
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
+!>
+!!##NAME
+!! listout(3f) - [M_strings] copy ICURVE() to ICURVE_EXPANDED() expanding negative curve numbers to ranges (1 -10 means 1 thru 10)
+!!
+!!##SYNOPSIS
+!!
+!!   subroutine listout(icurve_lists,icurve_expanded,isize,inums)
+!!
+!!    integer,intent(in)    :: isize
+!!    real,intent(in)       :: icurve_lists(isize)
+!!    real,intent(out)      :: icurve_expanded(isize)
+!!    integer,intent(inout) :: inums
+!!
+!!##DESCRIPTION
+!!
+!!##OPTIONS
+!!    icurve_lists(isize)  icurve_lists is input array
+!!    icurve_expanded(isize)   icurve_expanded is output array
+!!
+!!##RETURNS
+!!    isize          isize is maximum numbers to put into icurve_expanded
+!!    inums          inums is number of icurve_lists values on input, number of icurve_expanded numbers on output
+!!
+!!##EXAMPLE
+!!
+!!   Sample program:
+!!
+!!     program demo_listout
+!!     use M_strings, only : listout, s2vs
+!!     implicit none
+!!     integer,allocatable           :: icurve_lists(:)
+!!     integer                       :: icurve_expanded(1000)
+!!     character(len=:), allocatable :: string
+!!     string='1 20 -30 101 100 99 100 -120 222 --200'
+!!     icurve_lists=''
+!!     end program demo_listout
+!===================================================================================================================================
+subroutine listout(icurve_lists,icurve_expanded,inums_max,inums_out)
+!@(#) M_strings::listout(3f): copy icurve_lists to icurve_expanded expanding negative curve numbers to ranges (1 -10 means 1 thru 10)
+!   Created: 19971231
+use M_journal, only : journal
+implicit none
+integer,intent(in)    :: icurve_lists(:)             ! input array
+integer,intent(out)   :: icurve_expanded(inums_max)  ! output array
+integer,intent(in)    :: inums_max                   ! maximum number of values to put into icurve_expanded
+integer,intent(out)   :: inums_out                   ! number of icurve_expanded numbers on output
+
+character(len=80)     :: temp1
+integer               :: i80, i90
+integer               :: imin, imax
+integer               :: idirection, icount
+integer               :: iin
+
+   icurve_expanded=0
+   inums_out=0
+   iin=size(icurve_lists)
+   if(iin.gt.0)then
+      icurve_expanded(1)=icurve_lists(1)
+   endif
+   icount=2
+      do i90=2,iin
+         if(icurve_lists(i90).lt.0)then
+            imax=abs(icurve_lists(i90))
+            imin=abs(icurve_lists(i90-1))
+            if(imin.gt.imax)then
+               idirection=-1
+               imin=imin-1
+            elseif(imax.gt.imin)then
+               idirection=1
+               imin=imin+1
+            else
+               idirection=1
+            endif
+            do i80=imin,imax,idirection
+               if(icount.gt.inums_max) then
+                  write(temp1,'(a,i5,a)')'*listout* only ',inums_max,' values allowed'
+                  call journal(temp1)
+                  inums_out=icount-1
+                  exit
+               endif
+               icurve_expanded(icount)=i80
+               icount=icount+1
+            enddo
+         else
+            icurve_expanded(icount)=icurve_lists(i90)
+            icount=icount+1
+         endif
+      enddo
+   inums_out=icount-1
+
+end subroutine listout
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
 !>
 !!##NAME
 !!    describe(3f) - [M_strings]returns a string describing the name of a single character

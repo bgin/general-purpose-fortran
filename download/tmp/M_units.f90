@@ -33,6 +33,8 @@
 !!    the anyscalar_to_real(3f) function (real,integer,doubleprecision) within
 !!    the range allowed by the function.
 !!
+!!    Tables:
+!!
 !!##DESCRIPTION
 !!
 !!    M_units(3fm) is a Fortran module that collects together basic
@@ -145,6 +147,9 @@ use M_anyscalar,only : anyscalar_to_real
       public spherical_to_cartesian
       public cartesian_to_polar
       public polar_to_cartesian
+!  tables
+      public symbol2atomnum ! return atomic number given element symbol name
+      public atomnum2symbol ! return element symbol given atomic number
 !  constants
       doubleprecision,parameter,public :: pi_d       =  3.141592653589793238462643383279500d0
       doubleprecision,parameter,public :: e_d        =  2.718281828459045235360d0
@@ -180,13 +185,13 @@ contains
 !!
 !!   Sample program
 !!
-!!    program c2f_demo
+!!    program demo_c2f
 !!    use M_units, only : c2f
 !!    implicit none
 !!       write(*,*)'With REAL array input    ', c2f([ -40.0, 0.0, 100.0 ])
 !!       write(*,*)'With INTEGER array input ', c2f([ -40,   0,   100   ])
 !!       write(*,*)'With DOUBLEPRECISION     ', c2f(-40.0d0),c2f(0.0d0),c2f(100.0d0)
-!!    end program c2f_demo
+!!    end program demo_c2f
 !!
 !!   Results
 !!
@@ -221,13 +226,13 @@ end function c2f
 !!
 !!   Sample program
 !!
-!!    program f2c_demo
+!!    program demo_f2c
 !!    use M_units, only :  f2c
 !!    implicit none
 !!       write(*,*)'With REAL array input    ', f2c([ -40.0,32.0, 212.0 ])
 !!       write(*,*)'With INTEGER array input ', f2c([ -40,  32,   212   ])
 !!       write(*,*)'With DOUBLEPRECISION     ', f2c(-40.0d0),f2c(32.0d0),f2c(212.0d0)
-!!    end program f2c_demo
+!!    end program demo_f2c
 !!
 !!   Results
 !!
@@ -264,14 +269,14 @@ end function f2c
 !!
 !!   Sample program
 !!
-!!    program r2d_demo
+!!    program demo_r2d
 !!    use M_units, only :  r2d
 !!    use M_units, only : pi=>pi
 !!    implicit none
 !!       write(*,*)'With REAL array input    ', r2d([ 0.0, PI/4.0, PI/2.0, 3.0*PI/2.0, PI ])
 !!       write(*,*)'With INTEGER array input ', r2d([0,1,2,3,4])
 !!       write(*,*)'With DOUBLEPRECISION     ', r2d(0.0d0),r2d(PI/4.0d0),r2d(PI/2.0d0),r2d(3.0d0*PI/2.0d0),r2d(PI)
-!!    end program r2d_demo
+!!    end program demo_r2d
 !!
 !!   Results
 !!
@@ -307,14 +312,14 @@ end function r2d
 !!
 !!   Sample program
 !!
-!!    program d2r_demo
+!!    program demo_d2r
 !!    use M_units, only :  d2r
 !!    implicit none
 !!       write(*,*)'With REAL array input    ', d2r([0.0,45.0,90.0,135.0,180.0])
 !!       write(*,*)'With INTEGER array input ', d2r([0,  45,  90,  135,  180  ])
 !!       write(*,*)'With DOUBLEPRECISION     ', &
 !!       & d2r(0.0d0),d2r(45.0d0),d2r(90.0d0),d2r(135.0d0),d2r(180.0d0)
-!!    end program d2r_demo
+!!    end program demo_d2r
 !!
 !!   Results
 !!
@@ -350,14 +355,14 @@ end function d2r
 !!
 !!   Sample program
 !!
-!!    program sind_demo
+!!    program demo_sind
 !!    use M_units, only :  sind
 !!    implicit none
 !!       write(*,*)'With REAL array input    ', sind([ 0.0, 15.0, 30.0, 45.0, 60.0, 75.0, 90.0, 180.0, 270.0 ])
 !!       write(*,*)'With INTEGER array input ', sind([0,15,30,45,60,75,90,180,270])
 !!       write(*,*)'With DOUBLEPRECISION     ', sind(0.0d0),sind(15.0d0),sind(90.0/3.0d0),sind(90.0/2.0d0),sind(60.0d0),sind(75.0d0),&
 !!       & sind(90.0d0),sind(180.0d0),sind(270.0d0)
-!!    end program sind_demo
+!!    end program demo_sind
 !!
 !!   Results
 !!
@@ -397,7 +402,7 @@ end function sind
 !!
 !!   Sample program
 !!
-!!    program cosd_demo
+!!    program demo_cosd
 !!    use M_units, only :  cosd
 !!    implicit none
 !!       write(*,*)'With REAL array input    ', &
@@ -408,7 +413,7 @@ end function sind
 !!       & cosd(0.0d0),cosd(15.0d0),cosd(90.0/3.0d0),  &
 !!       & cosd(90.0/2.0d0),cosd(60.0d0),cosd(75.0d0), &
 !!       & cosd(90.0d0),cosd(180.0d0),cosd(270.0d0)
-!!    end program cosd_demo
+!!    end program demo_cosd
 !!
 !!   Results
 !!
@@ -448,14 +453,14 @@ end function cosd
 !!
 !!   Sample program
 !!
-!!    program tand_demo
+!!    program demo_tand
 !!    use M_units, only :  tand
 !!    implicit none
 !!       write(*,*)'With REAL array input    ', tand([ 0.0, 15.0, 30.0, 45.0, 60.0, 75.0, 90.0, 180.0, 270.0 ])
 !!       write(*,*)'With INTEGER array input ', tand([0,15,30,45,60,75,90,180,270])
 !!       write(*,*)'With DOUBLEPRECISION     ', tand(0.0d0),tand(15.0d0),tand(90.0/3.0d0),tand(90.0/2.0d0),tand(60.0d0),tand(75.0d0),&
 !!       & tand(90.0d0),tand(180.0d0),tand(270.0d0)
-!!    end program tand_demo
+!!    end program demo_tand
 !!
 !!   Results
 !===================================================================================================================================
@@ -524,13 +529,13 @@ end function atan2d
 !!
 !!   Sample program
 !!
-!!    program feet_to_meters_demo
+!!    program demo_feet_to_meters
 !!    use M_units, only : feet_to_meters
 !!    implicit none
 !!       write(*,*)'With REAL array input    ', feet_to_meters([ -1.0, 0.0, 1.0 ,1.0/12.0])
 !!       write(*,*)'With INTEGER array input ', feet_to_meters([ -1,   0,   1   ])
 !!       write(*,*)'With DOUBLEPRECISION     ', feet_to_meters(-1.0d0),feet_to_meters(0.0d0),feet_to_meters(1.0d0)
-!!    end program feet_to_meters_demo
+!!    end program demo_feet_to_meters
 !!
 !!   Results
 !!
@@ -568,13 +573,13 @@ end function feet_to_meters
 !!
 !!   Sample program
 !!
-!!    program meters_to_feet_demo
+!!    program demo_meters_to_feet
 !!    use M_units, only : meters_to_feet
 !!    implicit none
 !!       write(*,*)'With REAL array input    ', meters_to_feet([ -1.0, 0.0, 1.0 ])
 !!       write(*,*)'With INTEGER array input ', meters_to_feet([ -1,   0,   1   ])
 !!       write(*,*)'With DOUBLEPRECISION     ', meters_to_feet(-1.0d0),meters_to_feet(0.0d0),meters_to_feet(1.0d0)
-!!    end program meters_to_feet_demo
+!!    end program demo_meters_to_feet
 !!
 !!   Results
 !!
@@ -854,6 +859,258 @@ real,intent(out)  :: x,y
       y=radius*sin(inclination)
    endif
 end subroutine polar_to_cartesian
+!***********************************************************************************************************************************
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!***********************************************************************************************************************************
+!>
+!!##NAME
+!!    atomnum2symbol - [M_units]return element symbol given atomic number
+!!##SYNOPSIS
+!!
+!!   subroutine atomnum2symbol(atomnum,symbol)
+!!
+!!    integer,intent(in)           :: atomnum
+!!    character(len=2),intent(out) :: symbol
+!!
+!!##DESCRIPTION
+!!    Given an atomic number in the range of 1 to 109 return the corresponding element symbol name
+!!
+!!##OPTIONS
+!!    atomnum    an atomic number from 1 to 109
+!!
+!!##RETURNS
+!!    symbol     two-character symbol name corresponding to atomic number ATOMNUM
+!!
+!!##EXAMPLE
+!!
+!!   Sample program
+!!
+!!    program demo_atomnum2symbol
+!!    use M_units, only :  atomnum2symbol
+!!    implicit none
+!!    character(len=2)  :: name
+!!    integer           :: i
+!!    do i=1,109
+!!       call atomnum2symbol(i,name)
+!!       write(*,*)i,name
+!!    enddo
+!!    end program demo_atomnum2symbol
+!!
+!!   Results:
+!!
+!!            1 H
+!!            2 He
+!!            3 Li
+!!            4 Be
+!!            5 B
+!!            6 C
+!!            7 N
+!!            8 O
+!!            9 F
+!!           10 Ne
+!!           11 Na
+!!           12 Mg
+!!           13 Al
+!!           14 Si
+!!           15 P
+!!           16 S
+!!           17 Cl
+!!           18 Ar
+!!           19 K
+!!           20 Ca
+!!           21 Sc
+!!           22 Ti
+!!           23 V
+!!           24 Cr
+!!           25 Mn
+!!           26 Fe
+!!           27 Co
+!!           28 Ni
+!!           29 Cu
+!!           30 Zn
+!!           31 Ga
+!!           32 Ge
+!!           33 As
+!!           34 Se
+!!           35 Br
+!!           36 Kr
+!!           37 Rb
+!!           38 Sr
+!!           39 Y
+!!           40 Zr
+!!           41 Nb
+!!           42 Mo
+!!           43 Tc
+!!           44 Ru
+!!           45 Rh
+!!           46 Pd
+!!           47 Ag
+!!           48 Cd
+!!           49 In
+!!           50 Sn
+!!           51 Sb
+!!           52 Te
+!!           53 I
+!!           54 Xe
+!!           55 Cs
+!!           56 Ba
+!!           57 La
+!!           58 Ce
+!!           59 Pr
+!!           60 Nd
+!!           61 Pm
+!!           62 Sm
+!!           63 Eu
+!!           64 Gd
+!!           65 Tb
+!!           66 Dy
+!!           67 Ho
+!!           68 Er
+!!           69 Tm
+!!           70 Yb
+!!           71 Lu
+!!           72 Hf
+!!           73 Ta
+!!           74 W
+!!           75 Re
+!!           76 Os
+!!           77 Ir
+!!           78 Pt
+!!           79 Au
+!!           80 Hg
+!!           81 Tl
+!!           82 Pb
+!!           83 Bi
+!!           84 Po
+!!           85 At
+!!           86 Rn
+!!           87 Fr
+!!           88 Ra
+!!           89 Ac
+!!           90 Th
+!!           91 Pa
+!!           92 U
+!!           93 Np
+!!           94 Pu
+!!           95 Am
+!!           96 Cm
+!!           97 Bk
+!!           98 Cf
+!!           99 Es
+!!          100 Fm
+!!          101 Md
+!!          102 No
+!!          103 Lr
+!!          104 Rf
+!!          105 Db
+!!          106 Sg
+!!          107 Bh
+!!          108 Hs
+!!          109 Mt
+!===================================================================================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
+subroutine atomnum2symbol(atomnum,symbol)
+implicit none
+character(len=*),parameter::ident="@(#)M_units::atomnum2symbol(3f): return element symbol given atomic number"
+integer,intent(in)           :: atomnum
+character(len=2),intent(out) :: symbol
+integer,parameter            :: nelements=109
+character(len=2),save        :: symbols(nelements)
+
+data symbols/                                                 &
+& 'H ', 'He', 'Li', 'Be', 'B ', 'C ', 'N ', 'O ', 'F ', 'Ne', &
+& 'Na', 'Mg', 'Al', 'Si', 'P ', 'S ', 'Cl', 'Ar', 'K ', 'Ca', &
+& 'Sc', 'Ti', 'V ', 'Cr', 'Mn', 'Fe', 'Co', 'Ni', 'Cu', 'Zn', &
+& 'Ga', 'Ge', 'As', 'Se', 'Br', 'Kr', 'Rb', 'Sr', 'Y ', 'Zr', &
+& 'Nb', 'Mo', 'Tc', 'Ru', 'Rh', 'Pd', 'Ag', 'Cd', 'In', 'Sn', &
+& 'Sb', 'Te', 'I ', 'Xe', 'Cs', 'Ba', 'La', 'Ce', 'Pr', 'Nd', &
+& 'Pm', 'Sm', 'Eu', 'Gd', 'Tb', 'Dy', 'Ho', 'Er', 'Tm', 'Yb', &
+& 'Lu', 'Hf', 'Ta', 'W ', 'Re', 'Os', 'Ir', 'Pt', 'Au', 'Hg', &
+& 'Tl', 'Pb', 'Bi', 'Po', 'At', 'Rn', 'Fr', 'Ra', 'Ac', 'Th', &
+& 'Pa', 'U ', 'Np', 'Pu', 'Am', 'Cm', 'Bk', 'Cf', 'Es', 'Fm', &
+& 'Md', 'No', 'Lr', 'Rf', 'Db', 'Sg', 'Bh', 'Hs', 'Mt'/
+
+   if(atomnum.lt.1.or.atomnum.gt.nelements)then
+      write(*,*)'*atomnum2symbol* atomic number out of range (1 to 109) ',atomnum
+      symbol='  '
+   else
+      symbol=symbols(atomnum)
+   endif
+end subroutine atomnum2symbol
+!***********************************************************************************************************************************
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!***********************************************************************************************************************************
+!>
+!!##NAME
+!!    symbol2atomnum - [M_units]return atomic number given element symbol name
+!!##SYNOPSIS
+!!
+!!   subroutine symbol2atomnum(symbol,atomnum)
+!!
+!!    character(len=2),intent(in) :: symbol
+!!    integer,intent(out)         :: atomnum
+!!
+!!##DESCRIPTION
+!!    Given a two-character element symbol name return the corresponding atomic number
+!!
+!!##OPTIONS
+!!    symbol     two-character symbol name corresponding to atomic number ATOMNUM
+!!
+!!##RETURNS
+!!    atomnum    an atomic number from 1 to 109
+!!
+!!##EXAMPLE
+!!
+!!   Sample program
+!!
+!!    program demo_symbol2atomnum
+!!    use M_units, only :  symbol2atomnum
+!!    implicit none
+!!    integer           :: atomnum
+!!    character(len=2)  :: name
+!!    name='Ne'
+!!    call symbol2atomnum(name,atomnum)
+!!    write(*,*)atomnum,name
+!!    end program demo_symbol2atomnum
+!!
+!!   Results:
+!!
+!!    10 Ne
+!===================================================================================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
+subroutine symbol2atomnum(symbol,atomnum)
+implicit none
+character(len=*),parameter::ident="@(#)M_units::symbol2atomnum(3f): return atomic number given element symbol name"
+character(len=2),intent(in) :: symbol
+integer,intent(out)         :: atomnum
+integer,parameter           :: nelements=109
+integer                     :: i
+character(len=2),save       :: symbols(nelements)
+
+data symbols/                                                 &
+& 'H ', 'He', 'Li', 'Be', 'B ', 'C ', 'N ', 'O ', 'F ', 'Ne', &
+& 'Na', 'Mg', 'Al', 'Si', 'P ', 'S ', 'Cl', 'Ar', 'K ', 'Ca', &
+& 'Sc', 'Ti', 'V ', 'Cr', 'Mn', 'Fe', 'Co', 'Ni', 'Cu', 'Zn', &
+& 'Ga', 'Ge', 'As', 'Se', 'Br', 'Kr', 'Rb', 'Sr', 'Y ', 'Zr', &
+& 'Nb', 'Mo', 'Tc', 'Ru', 'Rh', 'Pd', 'Ag', 'Cd', 'In', 'Sn', &
+& 'Sb', 'Te', 'I ', 'Xe', 'Cs', 'Ba', 'La', 'Ce', 'Pr', 'Nd', &
+& 'Pm', 'Sm', 'Eu', 'Gd', 'Tb', 'Dy', 'Ho', 'Er', 'Tm', 'Yb', &
+& 'Lu', 'Hf', 'Ta', 'W ', 'Re', 'Os', 'Ir', 'Pt', 'Au', 'Hg', &
+& 'Tl', 'Pb', 'Bi', 'Po', 'At', 'Rn', 'Fr', 'Ra', 'Ac', 'Th', &
+& 'Pa', 'U ', 'Np', 'Pu', 'Am', 'Cm', 'Bk', 'Cf', 'Es', 'Fm', &
+& 'Md', 'No', 'Lr', 'Rf', 'Db', 'Sg', 'Bh', 'Hs', 'Mt'/
+
+FINDIT: block
+   do i = 1,nelements
+      if ( (symbol(1:1) .eq. symbols(i)(1:1)) .and. (symbol(2:2) .eq. symbols(i)(2:2)) )then
+         atomnum=i
+         exit FINDIT
+      endif
+   enddo
+   write(*,*)'*symbol2atomnum* error: symbol not found :',symbol
+   atomnum=0
+endblock FINDIT
+end subroutine symbol2atomnum
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================

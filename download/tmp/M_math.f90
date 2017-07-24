@@ -25,6 +25,7 @@ private
   public accdig         ! compare two real numbers only up to a specified number of digits
   public almost         ! function compares two real numbers only up to a specified number of digits
   public dp_accdig      ! compare two double numbers only up to a specified number of digits
+  public in_margin      ! check if two reals are approximately equal using a relative margin
   public round          ! round val to specified number of significant digits
   public scale1         ! given xmin,xmax,n, find new range xminp xmaxp divisible into approximately n linear intervals of size dist
   public scale3         ! find nice log range, typically for an axis
@@ -32,6 +33,8 @@ private
   public invert_2x2     ! directly invert 2x2 matrix
   public invert_3x3     ! directly invert 3x3 matrix
   public invert_4x4     ! directly invert 4x4 matrix
+  ! POLYNOMIAL
+  public quadratic      ! return roots of quadratic equation even if complex
 
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -209,7 +212,7 @@ contains
 !===================================================================================================================================
 subroutine julfit(x,y,ixn,itype,a,b,r2)
 use M_journal, only : journal
-character(len=*),parameter :: ident="@(#)M_math::julfit(3f): linear least squares curve fits, destroys input arrays"
+character(len=*),parameter::ident="@(#)M_math::julfit(3f): linear least squares curve fits, destroys input arrays"
 integer,intent(in) :: ixn
 real               :: x(ixn)
 real               :: y(ixn)
@@ -390,7 +393,7 @@ end subroutine julfit
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine julfit1(x,y,ixn,a,b,r2)
 implicit none
-character(len=*),parameter :: ident="@(#)M_math::julfit1(3f): linear least square fit of (y=a*x+b), changes the y array"
+character(len=*),parameter::ident="@(#)M_math::julfit1(3f): linear least square fit of (y=a*x+b), changes the y array"
 !implicit double precision(a-h,o-z)
 !-----------------------------------------------------------------------------------------------------------------------------------
 integer,intent(in) :: ixn
@@ -722,7 +725,7 @@ end subroutine julfit1
 !===================================================================================================================================
 subroutine lowess(x, y, n, f, nsteps, delta, ys, rw, res)
 use M_sort, only : sort_shell
-character(len=*),parameter :: ident='@(#)M_math::lowess(3f): data smoothing using locally weighted regression'
+character(len=*),parameter::ident="@(#)M_math::lowess(3f): data smoothing using locally weighted regression"
 integer n
 integer nsteps
 real x(n), y(n), f, delta, ys(n), rw(n)
@@ -982,16 +985,16 @@ end subroutine lowest
 !===================================================================================================================================
 SUBROUTINE SPLIFT(X,Y,YP,YPP,N,ierr,a1,b1,an,bn)
 !-----------------------------------------------------------------------------------------------------------------------------------
-   use M_journal, only : journal
-   character(len=*),parameter :: ident='@(#)M_math::splift(3f): fits a spline to the n data points given in x and y'
-   integer,intent(in)         :: N
-   real,intent(in)            :: X(N),Y(N)
-   real,intent(out)           :: YP(N),YPP(N)
-   integer,intent(out)        :: ierr           ! error status.
-   real,intent(in)            :: a1
-   real,intent(in)            :: b1
-   real,intent(in)            :: an
-   real,intent(in)            :: bn
+use M_journal, only : journal
+character(len=*),parameter::ident="@(#)M_math::splift(3f): fits a spline to the n data points given in x and y"
+integer,intent(in)            :: N
+real,intent(in)               :: X(N),Y(N)
+real,intent(out)              :: YP(N),YPP(N)
+integer,intent(out)           :: ierr           ! error status.
+real,intent(in)               :: a1
+real,intent(in)               :: b1
+real,intent(in)               :: an
+real,intent(in)               :: bn
 
    character(len=255)         :: ctemp
    real                       :: w(n,3)         ! w is a work array that must be able to hold at least N*3 numbers
@@ -1144,7 +1147,7 @@ end subroutine splift
 !! REPORTING BUGS: http://www.urbanjost.altervista.org/
 !===================================================================================================================================
 subroutine splint (x,y,ypp,n,xi,yi,ypi,yppi,ni,kerr)
-character(len=*),parameter :: ident='@(#)M_math::splint(3f): interpolates and twice differentiates a cubic spline'
+character(len=*),parameter::ident="@(#)M_math::splint(3f): interpolates and twice differentiates a cubic spline"
 integer,intent(in)  :: n
 integer,intent(in)  :: ni
 real,intent(in)     :: x(n),y(n),ypp(n),xi(ni)
@@ -1265,7 +1268,7 @@ END SUBROUTINE SPLINT
 !===================================================================================================================================
 SUBROUTINE linearint(X,Y,N,XI,YI,NI,KERR)
 implicit none
-character(len=*),parameter ::lident="@(#)M_math::linearint(3f):linear interpolation of curve X(i),Y(i) at given XI(j) values"
+character(len=*),parameter::ident="@(#)M_math::linearint(3f):linear interpolation of curve X(i),Y(i) at given XI(j) values"
 !
    INTEGER,intent(in)  :: N, NI
    REAL,intent(in)     :: X(N),Y(N),XI(NI)
@@ -1402,8 +1405,8 @@ END SUBROUTINE linearint
 !-----------------------------------------------------------------------------------------------------------------------------------
 SUBROUTINE CITER(A,R,H,S,C,DADH)
 use M_journal, only : journal
-character(len=*),parameter :: &
-ident="@(#)M_math::citer(3f): determine various geometric properties of circle segment given radius and area of the segment."
+character(len=*),parameter::ident="&
+&@(#)M_math::citer(3f): determine various geometric properties of circle segment given radius and area of the segment."
 !
 ! COPYRIGHT (C) John S. Urban, 08/31/1995
 !
@@ -1572,8 +1575,8 @@ END SUBROUTINE CITER
 !===================================================================================================================================
 SUBROUTINE envelope(x, y, n, vertex, nvert) !-- saved from url=(0048)http://users.bigpond.net.au/amiller/envelope.f90
 IMPLICIT NONE
-character(len=*),parameter :: &
-ident="@(#)M_math::envelope(3f):Find the vertices (in clockwise order) of a polygon enclosing the points (x(i), y(i), i=1, ..., n."
+character(len=*),parameter::ident="&
+&@(#)M_math::envelope(3f):Find the vertices (in clockwise order) of a polygon enclosing the points (x(i), y(i), i=1, ..., n."
 INTEGER,INTENT(IN) :: n
 REAL,INTENT(IN)    :: x(n), y(n)
 INTEGER :: vertex(n), nvert
@@ -1803,8 +1806,8 @@ END SUBROUTINE envelope
 !!    lies inside the polygon, otherwise it returns .false.
 !===================================================================================================================================
 LOGICAL FUNCTION INPOLYGON(XIN, YIN, XCONV, YCONV, NCONV)
-character(len=*),parameter :: &
-ident="@(#)M_math::inpolygon(3f):Subroutine to determine whether or not an integer point is in a polygon of integer points"
+character(len=*),parameter::ident="&
+&@(#)M_math::inpolygon(3f):Subroutine to determine whether or not an integer point is in a polygon of integer points"
    integer,intent(in)  :: xin,yin                       ! coordinates of the point to be checked
    integer,intent(in)  :: nconv                         !
    INTEGER             :: XCONV(NCONV), YCONV(NCONV)
@@ -1890,7 +1893,7 @@ ident="@(#)M_math::inpolygon(3f):Subroutine to determine whether or not an integ
 !-----------------------------------------------------------------------------------------------------------------------------------
 SUBROUTINE locpt (x0, y0, x, y, n, l, m)
 IMPLICIT NONE
-character(len=*),parameter :: ident="@(#)M_math::locpt(3f): find if a point is inside a polygonal path"
+character(len=*),parameter::ident="@(#)M_math::locpt(3f): find if a point is inside a polygonal path"
 !-----------------------------------------------------------------------------------------------------------------------------------
    REAL, INTENT(IN)     :: x0, y0, x(:), y(:)
    INTEGER, INTENT(IN)  :: n
@@ -2271,7 +2274,7 @@ END SUBROUTINE Poly_Intercept
 !===================================================================================================================================
 function polyarea(x, y) result(fn_val)
 implicit none
-character(len=*),parameter :: ident="@(#)M_math::polyarea(3f): compute the area bounded by a closed polygonal curve "
+character(len=*),parameter::ident="@(#)M_math::polyarea(3f): compute the area bounded by a closed polygonal curve"
 
 real, intent(in)     :: x(:)
 real, intent(in)     :: y(:)
@@ -2344,7 +2347,7 @@ end function polyarea
 !===================================================================================================================================
 subroutine extremum(array,small,big)
 implicit none
-character(len=:),parameter :: ident='@(#)M_math::extremum(3f):Find the minimum and maximum value in a REAL array'
+character(len=*),parameter::ident="@(#)M_math::extremum(3f):Find the minimum and maximum value in a REAL array"
 
 real,intent(in)            :: array(:)
 real,intent(out),optional  :: small
@@ -2791,7 +2794,7 @@ END SUBROUTINE SKEKURX
 !===================================================================================================================================
 function stddev(vector,n,avg)
 implicit none
-character(len=*),parameter :: ident="@(#)M_math::stddev(3f): find standard deviation of a real array"
+character(len=*),parameter::ident="@(#)M_math::stddev(3f): find standard deviation of a real array"
 integer,intent(in) :: n            ! number of elements in input array (vector)
 real,intent(in)    :: vector(n)    ! input vector
 real,intent(in)    :: avg          ! average of array
@@ -3216,9 +3219,68 @@ character(len=*),parameter::ident="@(#)M_math::dp_accdig(3f): compare two double
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!-----------------------------------------------------------------------------------------------------------------------------------
+!>
+!!##NAME
+!!   in_margin(3f) - [M_math] check if two reals are approximately equal using a relative margin
+!!
+!!##SYNOPSIS
+!!
+!!     elemental pure function in_margin( expected_value, measured_value, allowed_margin )
+!!
+!!      real, intent(in)    :: expected_value
+!!      real, intent(in)    :: measured_value
+!!      real, intent(in)    :: allowed_margin
+!!      class(*),intent(in) :: invalue
+!!
+!!##DESCRIPTION
+!!   Compare two values to see if they are relatively equal using the
+!!   specified allowed margin.  That is, see if  VALUE_MEASURED is in
+!!   the range VALUE_EXPECTED +- ALLOWED_ERROR where the allowed error
+!!   varies with the magnitude of the values, such that the allowed error
+!!   is margin * average magnitude of measured and expected).
+!!
+!!   So the allowed error is smaller when the magnitudes are smaller.
+!!
+!!##OPTIONS
+!!   expected_value  First value
+!!   measured_value  Second value
+!!   allowed_margin  Allowed relative margin
+!!
+!!##EXAMPLE
+!!
+!!   Sample program:
+!!
+!!    program demo_in_margin
+!!    use :: M_math, only : in_margin
+!!    implicit none
+!!    end program demo_in_margin
+!===================================================================================================================================
+!===================================================================================================================================
+elemental pure function in_margin(expected_value, measured_value, allowed_margin)
+use :: M_anyscalar, only : anyscalar_to_double
+implicit none
+character(len=*),parameter::ident="@(#)M_math::in_margin(3f): check if two reals are approximately equal using a relative margin"
+class(*),intent(in) :: expected_value, measured_value, allowed_margin
+doubleprecision     :: expected, measured, margin
+
+   logical          :: in_margin
+
+   expected=anyscalar_to_double(expected_value)
+   measured=anyscalar_to_double(measured_value)
+   margin=anyscalar_to_double(allowed_margin)
+
+   if ( abs(expected-measured) > 0.50d0 * margin * (abs(expected)+abs(measured)) ) then
+      in_margin=.false.  ! values not comparable
+   else
+      in_margin=.true.   ! values comparable
+   endif
+end function in_margin
 function round(val,idigits0)
 implicit none
-character(len=*),parameter :: ident="@(#)M_math::round(3f):round val to specified number of significant digits"
+character(len=*),parameter :: ident="@(#) M_math::round(3f): round val to specified number of significant digits"
 integer,parameter          :: dp=kind(0.0d0)
 real(kind=dp),intent(in)   :: val
 integer,intent(in)         :: idigits0
@@ -3528,6 +3590,79 @@ end subroutine scale3
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
+
+!>
+!!##NAME
+!!    quadratic(3f) - [M_math]calculate the roots of a quadratic formula even if they are complex
+!!
+!!##SYNOPSIS
+!!
+!!   subroutine quadratic(a,b,c,z1,z2,discriminant)
+!!
+!!    real,intent(in) :: a, b, c
+!!    complex,intent(out) :: z1, z2
+!!    real,intent(out) :: discriminant
+!!
+!!##DESCRIPTION
+!!    Given the equation
+!!
+!!       a*x**2+b*x+c=0
+!!
+!!    Use the quadratic formula to determine the root values and the discriminant of the equation.
+!!
+!!##OPTIONS
+!!    a,b,c  coefficients
+!!
+!!##RETURNS
+!!    z1,z2  roots
+!!
+!!##EXAMPLE
+!!
+!!   Sample program:
+!!
+!!    program demo_quadratic
+!!    use M_math, only : quadratic
+!!    implicit none
+!!    ! Calculate and print the roots of a quadratic formula
+!!    ! even if they are complex
+!!    real    :: a, b, c ! coefficients
+!!    complex :: z1, z2  ! roots
+!!    real    :: discriminant
+!!
+!!       a = 4.0
+!!       b = 8.0
+!!       c = 21.0
+!!       call quadratic(a,b,c,z1,z2,discriminant) !  Calculate the roots
+!!
+!!       if (abs(discriminant) < 0) then
+!!          write(*,*) "the roots are real and equal:"
+!!       else if (discriminant > 0) then
+!!          write(*,*) "the roots are real:"
+!!       else
+!!          write(*,*) "the roots are complex:"
+!!       end if
+!!    !  Print the roots
+!!       print *, "The roots are:"
+!!       print *, "z1 =", z1
+!!       print *, "z2 =", z2
+!!
+!!    end program demo_quadratic
+!===================================================================================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
+subroutine quadratic(a,b,c,z1,z2,discriminant)
+implicit none
+character(len=*),parameter::ident="@(#)M_math::quadratic(3f): calculate the roots of a quadratic formula even if they are complex"
+real,intent(in)     :: a, b, c         ! coefficients
+complex,intent(out) :: z1, z2          ! roots
+real,intent(out)    :: discriminant
+
+!  Calculate the roots
+   z1 = (-b + sqrt (cmplx (b**2 - 4*a*c))) / (2*a)
+   z2 = (-b - sqrt (cmplx (b**2 - 4*a*c))) / (2*a)
+
+   discriminant = b*b - 4.0*a*c
+
+end subroutine quadratic
 
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!

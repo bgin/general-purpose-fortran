@@ -19,10 +19,97 @@ integer,public,parameter :: int128=k(38)
 integer,parameter        :: r(34)=[(selected_int_kind(i),i=1,34)]
 integer,public,parameter :: real256=r(34)
 
-public anyinteger_to_128bit
-public anyscalar_to_real
+public anyinteger_to_128bit ! convert integer parameter of any kind to 128-bit integer
+public anyscalar_to_real    ! convert integer or real parameter of any kind to real
+public anyscalar_to_double  ! convert integer or real parameter of any kind to doubleprecision
 
 contains
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+!>
+!!##NAME
+!!    anyscalar_to_double(3f) - [M_anyscalar]convert integer or real parameter of any kind to doubleprecision
+!!
+!!##SYNOPSIS
+!!
+!!    pure function anyscalar_to_double(valuein) result(d_out)
+!!
+!!     class(*),intent(in)  :: valuein
+!!     doubleprecision      :: d_out
+!!
+!!##DESCRIPTION
+!!
+!!    This function uses polymorphism to allow arguments of different types
+!!    generically. It is used to create other procedures that can take
+!!    many scalar arguments as input options.
+!!
+!!##OPTIONS
+!!
+!!    VALUEIN  input argument of a procedure to convert to type DOUBLEPRECISION.
+!!             May be of KIND kind=int8, kind=int16, kind=int32, kind=int64,
+!!             kind=int128, kind=real32, kind=real64, kind=real128,
+!!             or kind=real256
+!!##RESULTS
+!!             The returned value is of kind DOUBLEPRECISION and is the value of VALUIN
+!!             converted to doubleprecision (assuming it is actually in the range of
+!!             type DOUBLEPRECISION).
+!!
+!!##EXAMPLE
+!!
+!!   Sample program
+!!
+!!     program scalars
+!!     use M_anyscalar,     only : int128, real256
+!!     use iso_fortran_env, only : int8, int16, int32, int64
+!!     use iso_fortran_env, only : real32, real64, real128
+!!     implicit none
+!!        ! call same function with many scalar input types
+!!        write(*,*)squarei(2_int8)
+!!        write(*,*)squarei(2_int16)
+!!        write(*,*)squarei(2_int32)
+!!        write(*,*)squarei(2_int64)
+!!        write(*,*)squarei(2_int128)
+!!        write(*,*)squarei(2_real32)
+!!        write(*,*)squarei(2_real64)
+!!        write(*,*)squarei(2_real128)
+!!        write(*,*)squarei(2_real256)
+!!     contains
+!!
+!!     function squarei(invalue) result (dvalue)
+!!     use M_anyscalar, only : anyscalar_to_double
+!!     implicit none
+!!     class(*),intent(in)  :: invalue
+!!     doubleprecision      :: invalue_local
+!!     doubleprecision      :: dvalue
+!!        invalue_local=anyscalar_to_double(invalue)
+!!        dvalue=invalue_local*invalue_local
+!!     end function squarei
+!!
+!!     end program scalars
+!! !===================================================================================================================================
+!===================================================================================================================================
+pure function anyscalar_to_double(valuein) result(d_out)
+use iso_fortran_env, only : error_unit !! ,input_unit,output_unit
+implicit none
+character(len=*),parameter::ident="&
+&@(#)M_anyscalar::anyscalar_to_double(3f): convert integer or real parameter of any kind to doubleprecision"
+class(*),intent(in)     :: valuein
+doubleprecision      :: d_out
+   select type(valuein)
+   type is (integer(kind=int8));   d_out=real(valuein)
+   type is (integer(kind=int16));  d_out=real(valuein)
+   type is (integer(kind=int32));  d_out=real(valuein)
+   type is (integer(kind=int64));  d_out=real(valuein)
+   type is (integer(kind=int128)); d_out=real(valuein)
+   type is (real(kind=real32));    d_out=real(valuein)
+   type is (real(kind=real64));    d_out=real(valuein)
+   type is (real(kind=real128));   d_out=real(valuein)
+   type is (real(kind=real256));   d_out=real(valuein)
+   end select
+end function anyscalar_to_double
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
 !!##NAME
@@ -89,7 +176,7 @@ contains
 pure function anyscalar_to_real(valuein) result(r_out)
 use iso_fortran_env, only : error_unit !! ,input_unit,output_unit
 implicit none
-character(len=*),parameter :: ident= '@(#)M_anyscalar::anyscalar_to_real(3f): convert integer or real parameter of any kind to real'
+character(len=*),parameter::ident="@(#)M_anyscalar::anyscalar_to_real(3f): convert integer or real parameter of any kind to real"
 class(*),intent(in)     :: valuein
    real              :: r_out
    select type(valuein)
@@ -104,6 +191,8 @@ class(*),intent(in)     :: valuein
    type is (real(kind=real256));   r_out=real(valuein)
    end select
 end function anyscalar_to_real
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
 !!##NAME
@@ -167,7 +256,7 @@ end function anyscalar_to_real
 function anyinteger_to_128bit(intin) result(ii38)
 use iso_fortran_env, only : error_unit !! ,input_unit,output_unit
 implicit none
-character(len=*),parameter :: ident= '@(#)M_anyscalar::anyinteger_to_128: convert integer parameter of any kind to 128-bit integer'
+character(len=*),parameter::ident="@(#)M_anyscalar::anyinteger_to_128: convert integer parameter of any kind to 128-bit integer"
 class(*),intent(in)     :: intin
    integer(kind=int128) :: ii38
    select type(intin)
