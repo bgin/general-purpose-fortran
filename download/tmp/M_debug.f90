@@ -11,7 +11,7 @@
 !!    pdec(3f)              write ASCII Decimal Equivalent (ADE) numbers vertically beneath string
 !!    stderr(3f)            Write message on stderr
 !!
-!!    unit_check_start(3f)  call command "goodbad NAME start"
+!!    unit_check_start(3f)  call command "goodbad NAME start ..."
 !!    unit_check(3f)        if expression is .F. call command "goodbad NAME bad" and stop program
 !!    unit_check_good(3f)   call command "goodbad NAME good"
 !!    unit_check_bad(3f)    call command "goodbad NAME bad" and  stop program
@@ -290,7 +290,9 @@ end subroutine fstop
 !!##DESCRIPTION
 !!
 !!    unit_check(3f) tests the expression and if it is false, calls the shell command
+!!
 !!         goodbad NAME bad
+!!
 !!    and stops the program.
 !!##OPTIONS
 !!     NAME         the unit test name passed onto the goodbad(1) command
@@ -341,11 +343,13 @@ character(len=*),intent(in),optional :: message
          call stderr('unit_check: '//trim(name)//'        PASSED:'//trim(message))  ! write message to standard error
       endif
    endif
+!-----------------------------------------------------------------------------------------------------------------------------------
    if(.not.logical_expression)then
-      call stderr('unit_check:        STOPPING PROGRAM ON TEST OF '//trim(name))    ! write announcement to standard error
+      call stderr('unit_check:        STOPPING PROGRAM ON TEST OF '//trim(name))    ! write to standard error
       call execute_command_line('goodbad '//trim(name)//' bad')
       stop 1
    endif
+!-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine unit_check
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -353,19 +357,20 @@ end subroutine unit_check
 !>
 !!
 !!##NAME
-!!    unit_check_start - [M_debug]call command "goodstart NAME start"
+!!    unit_check_start - [M_debug]call command "goodbad NAME start"
 !!
 !!##SYNOPSIS
 !!
 !!    subroutine unit_check_start(name,string)
 !!
 !!     character(len=*),intent(in) :: name
-!!     character(len=*),intent(in) :: string
+!!     character(len=*),intent(in),optional :: string
 !!
 !!##DESCRIPTION
 !!
 !!    unit_check_start(3f) calls the shell command
-!!         goodstart NAME start [string]
+!!
+!!       goodbad NAME start [string]
 !!
 !!##EXAMPLES
 !!
@@ -391,7 +396,7 @@ end subroutine unit_check
 !!
 !===================================================================================================================================
 subroutine unit_check_start(name,string)
-character(len=*),parameter::ident="@(#)M_debug::unit_check_start(3f): call 'goodstart NAME start'"
+character(len=*),parameter::ident="@(#)M_debug::unit_check_start(3f): call 'goodbad NAME start'"
 character(len=*),intent(in)          :: name
 character(len=*),intent(in),optional :: string
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -419,7 +424,9 @@ end subroutine unit_check_start
 !!##DESCRIPTION
 !!
 !!    unit_check_bad(3f) calls the shell command
+!!
 !!         goodbad NAME bad [string]
+!!
 !!    and stops the program.
 !!
 !!##EXAMPLES
