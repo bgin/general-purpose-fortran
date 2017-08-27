@@ -34,7 +34,7 @@ DESCRIPTION
       + ISO-8601 week numbers
       + month and weekday names
 
-    Julian and Unix Epoch Dates are particulary useful for manipulating dates in simple numeric expressions.
+    Julian and Unix Epoch Dates are particularly useful for manipulating dates in simple numeric expressions.
 
     The extensive formatting options include showing SYSTEM_CLOCK(3f) and CPU_USAGE(3f) information along with Gregorian date
     information, allowing for the easy incorporation of timing information into program messages. In addition to conventional
@@ -139,6 +139,7 @@ FORMATTING OPTIONS IN FMTDATE
              %d -- day of month, with suffix (1st, 2nd,...)  27th
          (4) %Z -- minutes from UTC                          -0240
              %z -- -+hh:mm from UTC                          -04:00
+             %T -- -+hhmm  from UTC                          -0400
          (5) %h -- hours, 00 to 23                           21
              %H -- hour (1 to 12, or twelve-hour clock)      09
              %N -- midnight< AM <=noon; noon<= PM <midnight  PM
@@ -151,6 +152,7 @@ FORMATTING OPTIONS IN FMTDATE
              %J -- Julian  date                              2457597.559
              %j -- integer value of Julian Date(Julian Day)  2457597
              %O -- Ordinal day (day of year)                 209
+             %o -- whole days since Unix Epoch date          17009
              %U -- day of week, 1..7 Sunday=1                4
              %u -- day of week, 1..7 Monday=1                3
              %i -- ISO week of year 1..53                    30
@@ -166,6 +168,7 @@ FORMATTING OPTIONS IN FMTDATE
              %% -- a literal %                               %
              %t -- tab character
              %b -- blank character
+             %B -- exclamation(bang) character
              %n -- new line (system dependent)
              %q -- single quote (apostrophe)
              %Q -- double quote
@@ -182,17 +185,25 @@ FORMATTING OPTIONS IN FMTDATE
        keywords the following substitution occurs:
 
          "iso-8601",
-         "iso"        ==> %Y-%M-%DT%h:%m:%s%Z
+         "iso"        ==> %Y-%M-%DT%h:%m:%s%z  ! Example: 2017-08-26T18:56:33,510912700-04:00
+
          "iso-8601W",
          "isoweek"    ==> %I
          "sql"        ==> "%Y-%M-%D %h:%m:%s.%x"
          "sqlday"     ==> "%Y-%M-%D"
          "sqltime"    ==> "%h:%m:%s.%x"
-         "rfc-2822"   ==> %w, %D %l %Y %h:%m:%s %Z
-         "rfc-3339"   ==> %Y-%M-%DT%h:%m:%s%Z
+         "rfc-2822"   ==> %w, %D %l %Y %h:%m:%s %T  !  Example: Mon, 14 Aug 2006 02:34:56 -0600
+
+         "rfc-3339"   ==> %Y-%M-%DT%h:%m:%s%z  !  Example: 2006-08-14 02:34:56-06:00
          "date"       ==> %w %l %D %h:%m:%s UTC%z %Y
          "short"      ==> %w, %l %d, %Y %H:%m:%s %N UTC%z
          "long"," "   ==> %W, %L %d, %Y %H:%m:%s %N UTC%z
+         "suffix"     ==> %Y%D%M%h%m%s
+         "formal"     ==> The %d of %L %Y
+         "lord"       ==> the %d day of %L in the year of our Lord %Y
+         "easter"     ==> FOR THE YEAR OF THE CURRENT DATE:
+                             Easter day: the %d day of %L in the year of our Lord %Y
+         "all"        ==> A SAMPLE OF DATE FORMATS
        otherwise the following words are replaced with the most
        common macros:
 
@@ -235,7 +246,7 @@ EXAMPLES
     use M_time, only:  j2d, d2j, u2d, d2u, fmtdate, realtime
     integer                      :: dat(8)
     real(kind=realtime)          :: julian, unixtime
-    character(len=*),parameter   :: iso_fmt='%Y-%M-%DT%h:%m:%s.%x%Z'
+    character(len=*),parameter   :: iso_fmt='%Y-%M-%DT%h:%m:%s.%x%z'
     character(len=:),allocatable :: friendly
 
        friendly='%W, %L %d, %Y %H:%m:%s %N' ! a nice friendly format
@@ -283,7 +294,7 @@ EXAMPLES
     TYPE(date_time) :: otherdate
     TYPE(date_time) :: answer
 
-    character(len=*),parameter   :: iso_fmt='%Y-%M-%DT%h:%m:%s.%x%Z'
+    character(len=*),parameter   :: iso_fmt='%Y-%M-%DT%h:%m:%s.%x%z'
        ! DIFFERENT INITIALIZATION STYLES (Still debating on how best to do this)
        write(*,*)
        write(*,*)'Various initialization styes'

@@ -104,34 +104,34 @@ The FORMAT string is expanded using the following macros:
 <P>
       Base time array:
        (1) %Y -- year, yyyy                                2017
-       (2) %M -- month of year, 01 to 12                   06
-       (3) %D -- day of month, 01 to 31                    30
-           %d -- day of month, with suffix (1st, 2nd,&#46;&#46;&#46;)  30th
+       (2) %M -- month of year, 01 to 12                   08
+       (3) %D -- day of month, 01 to 31                    24
+           %d -- day of month, with suffix (1st, 2nd,&#46;&#46;&#46;)  24th
        (4) %Z -- minutes from UTC                          -0240
            %z -- -+hh:mm from UTC                          -04:00
-       (5) %h -- hours, 00 to 23                           06
-           %H -- hour (1 to 12, or twelve-hour clock)      6
+       (5) %h -- hours, 00 to 23                           05
+           %H -- hour (1 to 12, or twelve-hour clock)      5
            %N -- midnight&lt; AM &lt;=noon; noon&lt;= PM &lt;midnight  AM
-       (6) %m -- minutes, 00 to 59                         32
-       (7) %s -- sec, 00 to 59                             23
-       (8) %x -- milliseconds 000 to 999                   064
+       (6) %m -- minutes, 00 to 59                         45
+       (7) %s -- sec, 00 to 59                             56
+       (8) %x -- milliseconds 000 to 999                   287
       Conversions:
-           %E -- Unix Epoch time                           1498818743.0650055
-           %e -- integer value of Unix Epoch time          1498818743
-           %J -- Julian  date                              2457934.9391558566
-           %j -- integer value of Julian Date(Julian Day)  2457934
-           %O -- Ordinal day (day of year)                 181
+           %E -- Unix Epoch time                           1503567956.2870011
+           %e -- integer value of Unix Epoch time          1503567956
+           %J -- Julian  date                              2457989.9069014816
+           %j -- integer value of Julian Date(Julian Day)  2457989
+           %O -- Ordinal day (day of year)                 236
            %U -- day of week, 1..7 Sunday=1                5
-           %u -- day of week, 1..7 Monday=1                5
-           %i -- ISO week of year 1..53                    26
-           %I -- iso-8601 week-numbering date(yyyy-Www-d)  2017-W26-5
+           %u -- day of week, 1..7 Monday=1                4
+           %i -- ISO week of year 1..53                    34
+           %I -- iso-8601 week-numbering date(yyyy-Www-d)  2017-W34-4
        Names:
-           %l -- abbreviated month name                    Jun
-           %L -- full month name                           June
-           %w -- first three characters of weekday         Fri
-           %W -- weekday name                              Friday
-           %p -- phase of moon                             First quarter
-           %P -- percent of way from new to full moon      41%
+           %l -- abbreviated month name                    Aug
+           %L -- full month name                           August
+           %w -- first three characters of weekday         Thu
+           %W -- weekday name                              Thursday
+           %p -- phase of moon                             Waxing cresent
+           %P -- percent of way from new to full moon      13%
        Literals:
            %% -- a literal %                               %
            %t -- tab character                                 
@@ -144,7 +144,7 @@ The FORMAT string is expanded using the following macros:
            %c -- CPU_TIME(3f) output                       .10937500000000000
            %C -- number of times this routine is used      1
            %S -- seconds since last use of this format     .0000000000000000
-           %k -- time in seconds from SYSTEM_CLOCK(3f)     1340080.62
+           %k -- time in seconds from SYSTEM_CLOCK(3f)     1136031.38
 <P>
       If no percent (%) is found in the format one of several
       alternate substitutions occurs.
@@ -152,39 +152,39 @@ The FORMAT string is expanded using the following macros:
       If the format is composed entirely of one of the following
       keywords the following substitutions occur:
         "iso-8601",
-        "iso"        ==&gt; %Y-%M-%DT%h:%m:%s%Z             2017-06-30T06:32:23-0240
+        "iso"        ==&gt; %Y-%M-%DT%h:%m:%s%Z             2017-08-24T05:45:56-0240
         "iso-8601W",
-        "isoweek"    ==&gt; %I                              2017-W26-5
-        "sql"        ==&gt; "%Y-%M-%D %h:%m:%s.%x"          "2017-06-30 06:32:23.162"
-        "sqlday"     ==&gt; "%Y-%M-%D"                      "2017-06-30"
-        "sqltime"    ==&gt; "%h:%m:%s.%x"                   "06:32:23.164"
+        "isoweek"    ==&gt; %I                              2017-W34-4
+        "sql"        ==&gt; "%Y-%M-%D %h:%m:%s.%x"          "2017-08-24 05:45:56.300"
+        "sqlday"     ==&gt; "%Y-%M-%D"                      "2017-08-24"
+        "sqltime"    ==&gt; "%h:%m:%s.%x"                   "05:45:56.301"
         "rfc-2822"   ==&gt; %w, %D %l %Y %h:%m:%s %Z
-                         Fri, 30 Jun 2017 06:32:23 -0240
-        "rfc-3339"   ==&gt; %Y-%M-%DT%h:%m:%s%Z             2017-06-30T06:32:23-0240
+                         Thu, 24 Aug 2017 05:45:56 -0240
+        "rfc-3339"   ==&gt; %Y-%M-%DT%h:%m:%s%Z             2017-08-24T05:45:56-0240
         "date"       ==&gt; %w %l %D %h:%m:%s UTC%z %Y
-                         Fri Jun 30 06:32:23 UTC-04:00 2017
+                         Thu Aug 24 05:45:56 UTC-04:00 2017
         "short"      ==&gt; %w, %l %d, %Y %H:%m:%s %N UTC%z
-                         Fri, Jun 30th, 2017 6:32:23 AM UTC-04:00
+                         Thu, Aug 24th, 2017 5:45:56 AM UTC-04:00
         "long"," "   ==&gt; %W, %L %d, %Y %H:%m:%s %N UTC%z
-                         Friday, June 30th, 2017 6:32:23 AM UTC-04:00
+                         Thursday, August 24th, 2017 5:45:56 AM UTC-04:00
       otherwise the following words are replaced with the most
       common macros:
          year          %Y  2017
-         month         %M  06
-         day           %D  30
-         hour          %h  06
-         minute        %m  32
-         millisecond   %x  172
+         month         %M  08
+         day           %D  24
+         hour          %h  05
+         minute        %m  45
+         millisecond   %x  305
          timezone      %z  -04:00
-         second        %s  23
-         epoch         %e  1498818743
-         julian        %j  2457934
-         ordinal       %O  181
-         weekday       %u  5
+         second        %s  56
+         epoch         %e  1503567956
+         julian        %j  2457989
+         ordinal       %O  236
+         weekday       %u  4
       if none of these keywords are found then every letter that
       is a macro is assumed to have an implied percent in front
       of it. For example:
-         YMDhms ==&gt; %Y%M%D%h%m%s ==&gt; 20170630063223
+         YMDhms ==&gt; %Y%M%D%h%m%s ==&gt; 20170824054556
 <P>
 <P>
 </PRE>
@@ -272,7 +272,7 @@ Sample commands:
   now HOUR=%h MINUTES=%m SECONDS=%s MILLISECONDS=%x
     HOUR=01 MINUTES=18 SECONDS=44 MILLISECONDS=946
 <P>
-  # double-quotes are trickly (double them) to put in literally in this program:
+  # double-quotes are tricky (double them) to put in literally in this program:
   now &#146;""year-month-day"",""hour-minute-second""&#146;
      "2017-04-23","14-41-09"
 <P>
@@ -299,10 +299,10 @@ assumed, and Leap Seconds are not specifically accounted for.
 
 </A>
 <BLOCKQUOTE>
-<B>calen</B>(1), <B>sec2days</B>(1), <B>days2sec</B>(1)
+<B>month</B>(1), <B>sec2days</B>(1), <B>days2sec</B>(1), <B>easter</B>(1), <B>paws</B>(1), <B>today</B>(1), <B>ttee</B>(1)
 </BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>now (1)</TD> <TD align=right width=33%><I>July 02, 2017</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 8d11f054-a7d3-4384-9dbe-0d36f341bf6a using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>now (1)</TD> <TD align=right width=33%><I>August 26, 2017</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 6c42229c-88b3-4c9d-b717-2d85f214d2a7 using man macros.</FONT>
 </div>
 </div>
 <center><img src="images/now.1.gif"></center> 

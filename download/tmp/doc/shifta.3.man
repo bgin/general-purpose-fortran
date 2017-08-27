@@ -1,5 +1,5 @@
 NAME
-    shifta(3f) - [INTRINSIC:BIT MANIPULATION] shift bits right
+    shifta(3f) - [INTRINSIC:BIT MANIPULATION] shift bits right with fill
 
 SYNTAX
    result = SHIFTA(I, SHIFT)

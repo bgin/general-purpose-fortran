@@ -36,7 +36,7 @@ argument does not have to be defined.
    * [[epsilon]]--Epsilon function
    * [[extends_type_of]]--Type extension inquiry
    * [[huge]]--Largest number of a kind
-   * [[is_contiguous]]--True if and only if an object is contigous
+   * [[is_contiguous]]--True if and only if an object is contiguous
    * [[kind]]--Kind of an entity
    * [[lbound]]--Lower dimension bounds of an array
    * [[len]]--Length of a character entity

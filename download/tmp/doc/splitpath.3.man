@@ -12,14 +12,14 @@ SYNOPSIS
    character(len=maxlen),intent(out) :: ext
 
 DESCRIPTION
-   splitpath(3f) splits given pathname assuming a forward slash seperates
+   splitpath(3f) splits given pathname assuming a forward slash separates
    filename components and that the right-most period in the last leaf
    of the pathname is considered the beginning of an extension. If
    an extension is found it is left present in NAME but removed from
    BASENAME.
 
    This routine does not check the system for the existence or type of the
-   filename componenents; it merely parses a string.
+   filename components; it merely parses a string.
 
 
 OPTIONS

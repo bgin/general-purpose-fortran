@@ -263,12 +263,13 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 
 <p>
    Everything before any switch is always referred to as 'VERB_oo'
-   in RETREV(3f).  This same value can also be set later in the command
-   line by using the reserved keyword -oo.  Often, you can ignore it
-   exists, but the -oo option is always there.  Unlike other parameters
-   a default value is ignored unless no parameters are specified on the
-   command line. That is, in general do not set a default value for the
-   -oo parameter. It should almost always be initially a blank string.
+   in RETREV(3f).  This same value can also be set later in the
+   command line by using the reserved keyword -oo (or the alias --).
+   Often, you can ignore it exists, but the -oo option is always there.
+   Unlike other parameters a default value is ignored unless no parameters
+   are specified on the command line. That is, in general do not set
+   a default value for the -oo parameter. It should almost always be
+   initially a blank string.
 </p>
 
 <p>
@@ -327,7 +328,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 
 <pre>
 SYNTAX:
-verb[-oo] value for kw_oo  [-kw1 value_for_kw1] [-kw2 value_for_kw2] [-kw3 value_for_kw3] ...
+verb[-oo|--] value for kw_oo  [-kw1 value_for_kw1] [-kw2 value_for_kw2] [-kw3 value_for_kw3] ...
 where
   "kw" stands for a keyword name
 </pre>
@@ -360,7 +361,7 @@ where
         cmd * -value 10.3e2
       </pre>
       Many (but not all) Unix commands have such values allowed
-      whereever another value is not allowed (Surprised? "ls -r *
+      wherever another value is not allowed (Surprised? "ls -r *
       -l" works as well as "ls -r -l *" .).  This is why quoting and
       specification of which keywords require values  and which
       do not is usually required on Unix commands. Alternatively, just

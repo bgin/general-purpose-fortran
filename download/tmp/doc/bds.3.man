@@ -9,7 +9,7 @@ SYNOPSIS
     real,intent(out)   :: STAT(13)
 DESCRIPTION
 
-    Given a vector of real values calculate common basic statistical meansures for
+    Given a vector of real values calculate common basic statistical measures for
     the array.
 
 OPTIONS

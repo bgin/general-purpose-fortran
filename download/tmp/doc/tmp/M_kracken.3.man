@@ -149,9 +149,9 @@ Usage Notes
 the reserved -oo keyword
 
 Everything before any switch is always referred to as 'VERB_oo' in RETREV(3f). This same value can also be set later in the command
-line by using the reserved keyword -oo. Often, you can ignore it exists, but the -oo option is always there. Unlike other
-parameters a default value is ignored unless no parameters are specified on the command line. That is, in general do not set a
-default value for the -oo parameter. It should almost always be initially a blank string.
+line by using the reserved keyword -oo (or the alias --). Often, you can ignore it exists, but the -oo option is always there.
+Unlike other parameters a default value is ignored unless no parameters are specified on the command line. That is, in general do
+not set a default value for the -oo parameter. It should almost always be initially a blank string.
 
 Note that you can just put the calls to RETREV() or the convenience routines where you need the information in your program instead
 of parsing everything in a single routine. But parsing them and storing them into a COMMON or MODULE is more efficient if the
@@ -201,7 +201,7 @@ routine doing the parsing is called many times.
 You may note that the parsing rules are not identical to Unix, although very similar.
 
 SYNTAX:
-verb[-oo] value for kw_oo  [-kw1 value_for_kw1] [-kw2 value_for_kw2] [-kw3 value_for_kw3] ...
+verb[-oo|--] value for kw_oo  [-kw1 value_for_kw1] [-kw2 value_for_kw2] [-kw3 value_for_kw3] ...
 where
   "kw" stands for a keyword name
 
@@ -226,7 +226,7 @@ where
             cmd * -value 10.3e2
 
 
-    Many (but not all) Unix commands have such values allowed whereever another value is not allowed (Surprised? "ls -r * -l" works
+    Many (but not all) Unix commands have such values allowed wherever another value is not allowed (Surprised? "ls -r * -l" works
     as well as "ls -r -l *" .). This is why quoting and specification of which keywords require values and which do not is usually
     required on Unix commands. Alternatively, just ignore the -oo field and always require keywords for all values.
   * You cannot combine keywords (-ir is not equivalent to -i -r, which is sometimes allowed on Unix commands).

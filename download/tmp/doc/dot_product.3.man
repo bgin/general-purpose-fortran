@@ -24,7 +24,7 @@ ARGUMENTS
 
 RETURN VALUE
 
-   If the arguments are numeric, the return value is a scaler of numeric type,
+   If the arguments are numeric, the return value is a scalar of numeric type,
    INTEGER, REAL, or COMPLEX. If the arguments are
    LOGICAL, the return value is .true. or .false..
 

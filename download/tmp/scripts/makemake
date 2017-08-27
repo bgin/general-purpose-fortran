@@ -10,6 +10,7 @@
 #
 # Written by Michael Wester <wester@math.unm.edu> February 16, 1995
 # Cotopaxi (Consulting), Albuquerque, New Mexico
+# Modified JSU
 #
 open(MAKEFILE, "> Makefile");
 #
@@ -99,7 +100,7 @@ print MAKEFILE "\t\$(F90) \$(F90FLAGS) -c \$<\n\n";
 # Dependency listings
 #
 &MakeDependsf90($ARGV[1]);
-&MakeDepends("*.f *.F", '^\s*include\s+["\']([^"\']+)["\']');
+&MakeDepends("*.f *.F *.f90 *.F90", '^\s*include\s+["\']([^"\']+)["\']');
 &MakeDepends("*.c",     '^\s*#\s*include\s+["\']([^"\']+)["\']');
 
 #
@@ -154,7 +155,7 @@ sub LanguageCompiler {
       }
    else {
       CASE: {
-         grep(/\.f90$/, @srcs)   && do { $compiler = "F90"; last CASE; };
+         grep(/\.[fF]90$/, @srcs)&& do { $compiler = "F90"; last CASE; };
          grep(/\.(f|F)$/, @srcs) && do { $compiler = "FC";  last CASE; };
          grep(/\.c$/, @srcs)     && do { $compiler = "CC";  last CASE; };
          $compiler = "???";
@@ -222,25 +223,26 @@ sub MakeDependsf90 {
    #
    # Associate each module with the name of the file that contains it
    #
-   foreach $file (<*.f90>) {
+   foreach $file (<*.[fF]90>) {
       open(FILE, $file) || warn "Cannot open $file: $!\n";
       while (<FILE>) {
          /^\s*module\s+([^\s!]+)/i &&
-            ($filename{&toLower($1)} = $file) =~ s/\.f90$/.o/;
+            ($filename{&toLower($1)} = $file) =~ s/\.[fF]90$/.o/;
          }
       }
    #
    # Print the dependencies of each file that has one or more include's or
    # references one or more modules
    #
-   foreach $file (<*.f90>) {
+   foreach $file (<*.[fF]90>) {
       open(FILE, $file);
       while (<FILE>) {
          /^\s*include\s+["\']([^"\']+)["\']/i && push(@incs, $1);
-         /^\s*use\s+([^\s,!]+)/i && push(@modules, &toLower($1));
+         /^\s*use\s*::\s*+([^\s,!]+)/i           && push(@modules, &toLower($1));
+         /^\s*use\s+([^\s,!]+)/i              && push(@modules, &toLower($1));
          }
       if (defined($incs[0])  || defined($modules[0])  ) {
-         ($objfile = $file) =~ s/\.f90$/.o/;
+         ($objfile = $file) =~ s/\.[fF]90$/.o/;
          print MAKEFILE "$objfile: ";
          undef @dependencies;
          foreach $module (@modules) {

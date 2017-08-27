@@ -67,9 +67,9 @@
 !===================================================================================================================================
 program test_paranoia
 use iso_fortran_env
-use M_strings, only : substitute
-use M_time, only : now
-use M_system, only: system_uname
+use M_strings, only  : substitute
+use M_time, only     : now
+use M_system, only   : system_uname
 use M_messages, only : signs
 implicit none
 character(len=*),parameter   :: ident="@(#)paranoia(1f): call doubleprecision and real versions of paranoia"

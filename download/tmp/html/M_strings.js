@@ -25,6 +25,7 @@ append("isupper.3.html");
 append("isxdigit.3.html");
 append("len_white.3.html");
 append("lenset.3.html");
+append("listout.3.html");
 append("lower.3.html");
 append("matchw.3.html");
 append("merge_str.3.html");

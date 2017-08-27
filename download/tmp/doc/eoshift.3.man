@@ -10,7 +10,7 @@ DESCRIPTION
 
    eoshift(array, shift[, boundary, dim]) performs an end-off shift on
    elements of ARRAY along the dimension of DIM. If DIM is
-   omitted it is taken to be 1. DIM is a scaler of type
+   omitted it is taken to be 1. DIM is a scalar of type
    INTEGER in the range of 1 <= DIM <= n where "n" is the
    rank of ARRAY. If the rank of ARRAY is one, then all elements of
    ARRAY are shifted by SHIFT places. If rank is greater than one,
@@ -28,7 +28,7 @@ DESCRIPTION
 
 ARGUMENTS
 
-   ARRAY  - May be any type, not scaler.
+   ARRAY  - May be any type, not scalar.
    SHIFT  - The type shall be INTEGER.
    BOUNDARY  - Same type as ARRAY.
    DIM  - The type shall be INTEGER.

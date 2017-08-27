@@ -210,8 +210,10 @@ EXAMPLE
    !***************************************************************************
 
 AUTHOR
-   o Copyright (c) 2014-2015, Jacob Williams
-
+   o Version 1.01, August 1999, Written by Jos Bergervoet
+   o 2008 Jan 28: Modified by Clive Page to use stream I/O, array as colourmap.
+   * Jacob Williams, 7/27/2014. Refactored, updated, added ability to export animated gifs.
+   o Minor modifications to make more easily used with M_PIXEL(3f) module, 2017-July-06, John Urban
 LICENSE
   Copyright (c) 2014-2015, Jacob Williams.
   All rights reserved.

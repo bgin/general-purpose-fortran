@@ -44,7 +44,7 @@ EXAMPLE
    !! render pixel array to a file
    call writegif('rect.3.gif',P_pixel,P_colormap)
 
-   !! display graphic assuming display(1) is availble
+   !! display graphic assuming display(1) is available
    call execute_command_line('display rect.3.gif')
 
    !! wrap up graphics

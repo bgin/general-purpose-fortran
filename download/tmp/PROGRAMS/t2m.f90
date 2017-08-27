@@ -32,7 +32,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                  Special Files       4  Special files (usually found in /dev)  ',&
 '                  File Formats        5  File formats and conventions (eg. /etc/passwd)',&
 '                  Games               6  Games                                  ',&
-'                  Miscellanous        7  Miscellaneous (including macro packages and conventions), e.g. man(7), groff(7)',&
+'                  Miscellaneous       7  Miscellaneous (including macro packages and conventions), e.g. man(7), groff(7)',&
 '                  System Admin.       8  System administration commands (usually only for root)',&
 '                  Kernel Extensions   9  Kernel routines [Non standard]         ',&
 '                                                                                ',&
@@ -74,7 +74,7 @@ end subroutine help_usage
 !!                   Special Files       4  Special files (usually found in /dev)
 !!                   File Formats        5  File formats and conventions (eg. /etc/passwd)
 !!                   Games               6  Games
-!!                   Miscellanous        7  Miscellaneous (including macro packages and conventions), e.g. man(7), groff(7)
+!!                   Miscellaneous       7  Miscellaneous (including macro packages and conventions), e.g. man(7), groff(7)
 !!                   System Admin.       8  System administration commands (usually only for root)
 !!                   Kernel Extensions   9  Kernel routines [Non standard]
 !!
@@ -101,7 +101,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 2016-05-14>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
-'@(#)COMPILED:       Wed, Jun 14th, 2017 9:59:09 AM>',&
+'@(#)COMPILED:       Tue, Aug 22nd, 2017 4:21:24 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -189,7 +189,7 @@ integer                     :: isection
    &'Special Files       ',& !       4   Special files (usually found in /dev)
    &'File Formats        ',& !       5   File formats and conventions (eg. /etc/passwd)
    &'Games               ',& !       6   Games
-   &'Miscellanous        ',& !       7   Miscellaneous (including macro packages and conventions), e.g. man(7), groff(7)
+   &'Miscellaneous       ',& !       7   Miscellaneous (including macro packages and conventions), e.g. man(7), groff(7)
    &'System Admin.       ',& !       8   System administration commands (usually only for root)
    &'Kernel Extensions   ',& !       9   Kernel routines [Non standard]
    &'                    ']

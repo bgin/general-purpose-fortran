@@ -1,5 +1,6 @@
 NAME
     cond(3f) - [M_logic]process input files with embedded if/else/elseif/endif commands
+
 SYNOPSIS
 
     subroutine cond(verb,line,ierr)
@@ -117,4 +118,3 @@ EXAMPLES
    >  CORRECT BRANCH WRITE THIS
    >      CORRECT AGAIN
    >GOT TO END
-

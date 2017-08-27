@@ -12,7 +12,7 @@ OPTIONS
 EXAMPLE
   Sample program
 
-   program cosd_demo
+   program demo_cosd
    use M_units, only :  cosd
    implicit none
       write(*,*)'With REAL array input    ', &
@@ -23,7 +23,7 @@ EXAMPLE
       & cosd(0.0d0),cosd(15.0d0),cosd(90.0/3.0d0),  &
       & cosd(90.0/2.0d0),cosd(60.0d0),cosd(75.0d0), &
       & cosd(90.0d0),cosd(180.0d0),cosd(270.0d0)
-   end program cosd_demo
+   end program demo_cosd
 
   Results
 

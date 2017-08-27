@@ -154,7 +154,7 @@ text=[ character(len=len(text(1))) ::                                           
 &'  now HOUR=%h MINUTES=%m SECONDS=%s MILLISECONDS=%x                             ',&
 &'    HOUR=01 MINUTES=18 SECONDS=44 MILLISECONDS=946                              ',&
 &'                                                                                ',&
-&'  # double-quotes are trickly (double them) to put in literally in this program:',&
+&'  # double-quotes are tricky (double them) to put in literally in this program: ',&
 &'  now ''""year-month-day"",""hour-minute-second""''                               ',&
 &'     "2017-04-23","14-41-09"                                                    ',&
 &'                                                                                ',&
@@ -168,7 +168,7 @@ text=[ character(len=len(text(1))) ::                                           
 &'  See the M_time module description. Basically, A Gregorian Calendar is         ',&
 &'  assumed, and Leap Seconds are not specifically accounted for.                 ',&
 &'SEE ALSO                                                                        ',&
-&'   calen(1), sec2days(1), days2sec(1)                                           ',&
+&'   month(1), sec2days(1), days2sec(1), easter(1), paws(1), today(1), ttee(1)    ',&
 &'                                                                                ']
 
 do i=1,size(text)
@@ -202,7 +202,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)COPYRIGHT:      Copyright (C) 2009 John S. Urban>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Wed, Jun 14th, 2017 10:04:09 AM>',&
+'@(#)COMPILED:       Sat, Aug 26th, 2017 7:22:29 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

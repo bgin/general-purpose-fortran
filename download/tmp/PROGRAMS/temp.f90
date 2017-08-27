@@ -113,7 +113,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sat, Jul 22nd, 2017 4:31:24 PM>',&
+'@(#)COMPILED:       Tue, Aug 22nd, 2017 4:22:57 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -126,15 +126,15 @@ implicit none
 character(len=*),parameter::ident="@(#)temp(1f): convert multiple values between Celsius and Fahrenheit"
 real,allocatable                :: val(:)
 integer                         :: i, isum=0
-  call kracken('temp','-F -C -help .F. -version .F.' )
+  call kracken('temp','-F -C -K -help .F. -version .F.' )
   if(sget('cf_oo').ne.'')then
      write(*,*)'*temp* syntax error: -F or -C parameter is required'
      call help_usage(.true.)                                          ! display help information and stop
   endif
-  call help_usage(lget('cf_help'))                                    ! display help information and stop  if true
-  call help_version(lget('cf_version'))                               ! display version information and stop if true
+  call help_usage(lget('temp_help'))                                  ! display help information and stop  if true
+  call help_version(lget('temp_version'))                             ! display version information and stop if true
   isum=0                                                              ! number of values found on -C and -F options
-  val=rgets('cf_C')                                                   ! get any values specified on -C option
+  val=rgets('temp_C')                                                 ! get any values specified on -C option
 
   if(size(val).gt.0)then                                              ! have something to print in C ==> F table
      isum=isum+size(val)
@@ -142,7 +142,7 @@ integer                         :: i, isum=0
      write(*,'(f8.2,"C",t14,f8.2,"F")')( val(i),(val(i)+40.0)*9.0/5.0 - 40.0,i=1,size(val))    ! print the requested values
   endif
 
-  val=rgets('cf_F')                                                   ! check for values on -F
+  val=rgets('temp_F')                                                 ! check for values on -F
 
   if(size(val).gt.0)then
      isum=isum+size(val)

@@ -16,8 +16,8 @@ SYNOPSIS
   R813      end-select-stmt              is   END SELECT [ case-construct-name ]
 
   C809      (R810) If the select-case-stmt of a case-construct specifies
-            a case-construct-name, the corresponding end-
-            select-stmt shall specify the same case-construct-name. If
+            a case-construct-name, the corresponding end-select-stmt
+            shall specify the same case-construct-name. If
             the select-case-stmt of a case-construct does not specify a
             case-construct-name, the corresponding end-select-stmt shall
             not specify a case-construct- name. If a case-stmt specifies

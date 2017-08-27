@@ -12,7 +12,9 @@ SYNOPSIS
 DESCRIPTION
 
    unit_check(3f) tests the expression and if it is false, calls the shell command
+
         goodbad NAME bad
+
    and stops the program.
 OPTIONS
     NAME         the unit test name passed onto the goodbad(1) command

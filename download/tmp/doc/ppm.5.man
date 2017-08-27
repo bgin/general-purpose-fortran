@@ -58,7 +58,7 @@ DESCRIPTION
        ASCII decimal.
 
      - Whitespace is not allowed in the pixels area, and  only  a
-       single  character  of  whitespace (typicall y a newline) is
+       single  character  of  whitespace (typically a newline) is
        allowed after the maxval.
 
      - The files are smaller and many times faster  to  read  and
@@ -66,7 +66,7 @@ DESCRIPTION
 
      Note that this raw format can only be used for maxvals  less
      than or equal to 255.  If you use the ppm library and try to
-     write a file with a larger  maxval,  it  will  automaticall y
+     write a file with a larger  maxval,  it  will  automatically
      fall back on the slower but more general plain format.
 
 AUTHOR

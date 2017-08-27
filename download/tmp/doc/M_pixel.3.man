@@ -70,7 +70,7 @@ EXAMPLE
       call clear(0)           ! clear to color 0
 
       ! put some colored boxes into pixmap by address
-      ! so show how the pixel map can be editted easily with
+      ! so show how the pixel map can be edited easily with
       ! other routines that can manipulate a pixel array.
       ! The P_pixel array was created when vinit(3f) was called
       icolor=1

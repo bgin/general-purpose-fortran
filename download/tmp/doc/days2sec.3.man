@@ -14,7 +14,7 @@ DESCRIPTION
      If "dd-" is present, units for the numbers are assumed to
      proceed from day to hour to minute to second. But if no
      day is present, the units are assumed to proceed from second
-     to minutes to hour from left to ring. That is ...
+     to minutes to hour from left to right. That is ...
 
         [-]dd-hh:mm:ss
         [-]dd-hh:mm
@@ -24,8 +24,13 @@ DESCRIPTION
         mm:ss
         ss
 
-         Where dd is days, hh hours, mm minutes and ss seconds.
-         A decimal fraction is supported on the seconds.
+         Where dd is days, hh hours, mm minutes and ss seconds.  A decimal
+         fraction is supported on the seconds.
+
+         An optional suffix of s,m,h, or d may be supplied to indicate
+         seconds, minutes, hours, or days when a simple numeric value
+         is supplied.
+
 
 OPTIONS
       str   string of the general form dd-hh:mm:ss.nn

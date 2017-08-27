@@ -11,7 +11,9 @@ SYNOPSIS
 DESCRIPTION
 
    unit_check_bad(3f) calls the shell command
+
         goodbad NAME bad [string]
+
    and stops the program.
 
 EXAMPLES

@@ -13,7 +13,7 @@ DESCRIPTION
    Set the maximum size of a character in the current font. Width and height
    are values in world units. This only applies to software text. This must
    be done after the font being scaled is loaded. To keep text of different
-   sizes aligned along the same baseline note that you typicall y need to
+   sizes aligned along the same baseline note that you typically need to
    subtrace the decender height from the Y position.
 
 EXAMPLE

@@ -6,20 +6,30 @@ implicit none
 character(len=*),parameter       :: ident="@(#)splitname(1f):strip last component from file name(s)" ! metadata for what(1)
 logical                          :: zero=.false.
 character(len=4096),allocatable  :: array(:)
-character(len=4096)              :: dir,name,basename,ext
-integer                          :: i
+character(len=4096)              :: dir,name,basename,ext,input_name
+integer                          :: i, ios
+logical                          :: stdin=.false.
 !-----------------------------------------------------------------------------------------------------------------------------------
 !  define command arguments, default values and crack command line
-   call kracken('splitname','-help .false. -version .false. -zero .false.')
+   call kracken('splitname','-help .false. -version .false. -zero .false. -stdin .false.')
    call help_usage(lget('splitname_help'))        ! process -help switch
    call help_version(lget('splitname_version'))   ! process -version switch
    zero=lget('splitname_zero')                    ! get -zero option
    array=sgets('splitname_oo')                    ! get -oo STRING, split on space character into array
+   stdin=lget('splitname_stdin')                  ! read names from stdin
 !----------------------------------------------------------------------------------------------------------------------------------
    do i=1,size(array)                           ! loop thru file-or-directory names
       call splitpath(array(i),dir,name,basename,ext)
       write(*,'(4(''"'',a,''" ''))')trim(dir),trim(name),trim(basename),trim(ext)
    enddo
+   if(stdin)then
+      INFINITE: do
+         read(*,'(a)',iostat=ios)input_name
+         if(ios.ne.0)exit INFINITE
+         call splitpath(input_name,dir,name,basename,ext)
+         write(*,'(4(''"'',a,''" ''))')trim(dir),trim(name),trim(basename),trim(ext)
+      enddo INFINITE
+   endif
 !----------------------------------------------------------------------------------------------------------------------------------
 contains
 subroutine help_usage(l_help)
@@ -105,7 +115,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DATE:           2017-04-18>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Mon, Jun 19th, 2017 7:32:37 PM>',&
+'@(#)COMPILED:       Tue, Aug 22nd, 2017 4:33:57 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

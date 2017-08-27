@@ -184,7 +184,7 @@
 !!       END section is that the -file switch lets this section get written to a
 !!       file optionally when the $UFPP_DOCUMENT_DIR variable is set. This text
 !!       could be markdown text, HTML, RTF, LaTex or some other format to be
-!!       post-procssed independently.
+!!       post-processed independently.
 !!
 !!       The following $DOCUMENT HELP section directives is converted into the
 !!       HELP_USAGE() subroutine by ufpp. Optionally if the environment variable
@@ -2642,7 +2642,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '               { sequence of source statements}]                                ',&
 '     $ENDIF                                               [! comment ]          ',&
 '     $IDENT    metadata                                   [! comment ]          ',&
-'     $@(#)     metadata                                  [! comment ]           ',&
+'     $@(#)     metadata                                   [! comment ]          ',&
 '     $INCLUDE  filename                                   [! comment ]          ',&
 '     $OUTPUT   filename  [-append]                        [! comment ]          ',&
 '     $DOCUMENT [comment|write|help|version] [-file NAME]                        ',&
@@ -3129,7 +3129,7 @@ end subroutine help_usage
 !!                { sequence of source statements}]
 !!      $ENDIF                                               [! comment ]
 !!      $IDENT    metadata                                   [! comment ]
-!!      $@(#)     metadata                                  [! comment ]
+!!      $@(#)     metadata                                   [! comment ]
 !!      $INCLUDE  filename                                   [! comment ]
 !!      $OUTPUT   filename  [-append]                        [! comment ]
 !!      $DOCUMENT [comment|write|help|version] [-file NAME]
@@ -3524,7 +3524,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        4.0: 20170502>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
-'@(#)COMPILED:       Wed, Jun 14th, 2017 10:07:04 AM>',&
+'@(#)COMPILED:       Tue, Aug 22nd, 2017 4:30:25 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

@@ -20,26 +20,31 @@
 !!         mkdir `today YMDhms`
 !!         today -  # show formatting options
 !===================================================================================================================================
-
 program today
 use M_time, only : now, fmtdate_usage
 implicit none
 character(len=:),allocatable :: arguments
+character(len=:),allocatable :: options
 integer                      :: arguments_length
 integer                      :: i
-call get_command(length=arguments_length)              ! get command line length
-allocate(character(len=arguments_length) :: arguments) ! allocate string big enough to hold command line
-   call get_command(command=arguments)                 ! get command line as a string
-   arguments=adjustl(arguments)                        ! JIC:: trim leading spaces just in case
-   i=index(arguments,' ')                              ! assuming program name has no space in it
-   if(i.ne.0)then                                      ! if there were arguments on the command use them
-      if(trim(arguments(i+1:)).eq.'-')then
-         call fmtdate_usage()                          ! see all formatting options
-      else
-         write(*,'(a)')now(arguments(i+1:))            ! display current date using format from command line
-      endif
+   call get_command(length=arguments_length)              ! get command line length
+   allocate(character(len=arguments_length) :: arguments) ! allocate string big enough to hold command line
+   call get_command(command=arguments)                    ! get command line as a string
+   arguments=adjustl(arguments)                           ! JIC:: trim leading spaces just in case
+
+   i=index(arguments,' ')                                 ! remove command verb from command line assuming verb name exists
+   if(i.eq.0)then                                         ! if options are blank set a default
+      options='YMD'
    else
-      write(*,'(a)')now('YMD')                         ! display current date using a default format
+      options=arguments(i+1:)
    endif
-   deallocate(arguments)                               ! JIC:: releasing string
+
+   if(options.eq.'-')then                                 ! special option to list date format documentation
+      call fmtdate_usage()                                ! see all formatting options
+   else
+      write(*,'(a)')now(options)                          ! display current date using format from command line
+   endif
+
+   deallocate(arguments)                                  ! JIC:: releasing string
+
 end program today

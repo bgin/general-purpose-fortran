@@ -19,14 +19,14 @@ DESCRIPTION
    longer be accessible. If one or more processes have the file open when
    the last link is removed, the link shall be removed before unlink()
    returns, but the removal of the file contents shall be postponed until
-   all refer- ences to the file are closed.
+   all references to the file are closed.
 
    The path argument shall not name a directory unless the process has
-   appropriate privileges and the implementation sup- ports using unlink()
+   appropriate privileges and the implementation supports using unlink()
    on directories.
 
    Upon successful completion, unlink() shall mark for update the last
-   data modification and last file status change time- stamps of the parent
+   data modification and last file status change timestamps of the parent
    directory. Also, if the file's link count is not 0, the last file status
    change timestamp of the file shall be marked for update.
 

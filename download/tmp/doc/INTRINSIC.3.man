@@ -7,10 +7,11 @@ DESCRIPTION
    and the Fortran intrinsics, ultimately with a working example program
    for each intrinsic.
 
-   The source is maintained as a single file (intrinsics.ff) which is
-   run thru ufpp(1) and txt2man(1) to create the program intrinsics(1f)
-   that will generate all the text as plain text as well as the man(1)
-   pages. The program is very useful for scanning for keywords.
+   The manpage source is maintained as a single flat-text file (intrinsics.ff) which is
+   run thru ufpp(1) and txt2man(1) to create the program intrinsics(1f).
+   That program generates all the text as plain text as well as being used
+   as the source for the man(1) pages. The program intrinsics(1f) is
+   very useful for scanning for keywords.
 
    Note that the vim(1) editor will call up a man(1) page for a word if
    the letter "K" is pressed over the word.

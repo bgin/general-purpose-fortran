@@ -13,7 +13,7 @@ EXAMPLE
    lines of input read with readline(3c). You can edit the line being
    read with readline(3c) per it's documentation. At a minimum, you can
    probably move around the line with the left and right arrow keys, and
-   insert characters by typing them whereever you moved the cursor to,
+   insert characters by typing them wherever you moved the cursor to,
    and use the DEL/ RUBOUT key to delete characters and such. If you use
    a GNU/Linux shell with command line editing, you are probably familiar
    with readline(3c)'s function.
@@ -29,11 +29,11 @@ EXAMPLE
       character(len=256):: line
 
       write(*,*)' ____________________________________________________________'
-      write(*,*)'  Your input lines are now edittable using the GNU'
+      write(*,*)'  Your input lines are now editable using the GNU'
       write(*,*)'  readline(3C) procedure.  By default, up-arrow and'
       write(*,*)'  down-arrow go thru the history lines; left and right arrow'
       write(*,*)'  keys and delete and just typing characters let you do'
-      write(*,*)'  simple editting. Far more input control is available.'
+      write(*,*)'  simple editing. Far more input control is available.'
       write(*,*)'  See the browser pages and man(1) pages for readline(3c).'
       write(*,*)' ____________________________________________________________'
       write(*,*)' Enter text and then edit it. "q" quits; "h" display history:'

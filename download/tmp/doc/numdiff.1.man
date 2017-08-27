@@ -4,10 +4,9 @@ NAME
 SYNOPSIS
  numdiff
     -old FILENAME -new FILENAME
-    [-percent REAL_VALUE|-digits N]
-    [-verbose]
-    [-h|-help|--help]
-    [-v|-version|--version]
+    [-percent REAL_VALUE|-digits N|-margin XXX.XX]
+    [-verbose]|
+    [--help|--version]
 
 DESCRIPTION
  NUMDIFF assumes two files are basically identical except for numeric
@@ -36,6 +35,9 @@ OPTIONS
     -digits N
             set threshold at which to report values as a number of digits
             if -digits is specified -percent is ignored.
+
+    -margin XXX.XX
+            set threshold to a relative margin of the magnitude of the values
 
     -verbose
        shows the lines that pass the criteria from OLDFILE as well.

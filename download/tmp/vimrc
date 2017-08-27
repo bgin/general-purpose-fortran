@@ -87,3 +87,9 @@ if has("mouse")
 else
    echo "no mouse support"
 endif
+" when the K command is used use manvi(1) instead of man(1)
+autocmd FileType fortran set keywordprg=$THOME/scripts_vi/manvi
+" add filetypes by file suffix
+autocmd  BufRead,BufNewFile *.ff		set filetype=fortran
+autocmd  BufRead,BufNewFile *.FF		set filetype=fortran
+

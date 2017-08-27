@@ -11,6 +11,7 @@ SYNOPSIS
    use M_strings, only : switch,s2c,c2s
    use M_strings, only : noesc,notabs,expand
    use M_strings, only : string_to_value,string_to_values,s2v,s2vs,value_to_string,v2s
+   use M_strings, only : listout
    use M_strings, only : matchw
    use M_strings, only : isalnum, isalpha, iscntrl, isdigit, isgraph, islower,
                          isprint, ispunct, isspace, isupper, isascii, isblank, isxdigit
@@ -71,6 +72,8 @@ SYNOPSIS
    s2vs              function returns a DOUBLEPRECISION array of numbers from a string
    value_to_string   generic subroutine returns string given numeric value (REAL, DOUBLEPRECISION, INTEGER )
    v2s               generic function returns string from numeric value (REAL, DOUBLEPRECISION, INTEGER )
+   trimzeros         delete trailing zeros from numeric decimal string
+   listout           copy ICURVE() to ICURVE_EXPANDED() expanding negative numbers to ranges (1 -10 means 1 thru 10)
 
    LOGICAL TESTS
 

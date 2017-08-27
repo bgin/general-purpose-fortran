@@ -1,17 +1,18 @@
 
 NAME
-   unit_check_start - [M_debug]call command "goodstart NAME start"
+   unit_check_start - [M_debug]call command "goodbad NAME start"
 
 SYNOPSIS
    subroutine unit_check_start(name,string)
 
     character(len=*),intent(in) :: name
-    character(len=*),intent(in) :: string
+    character(len=*),intent(in),optional :: string
 
 DESCRIPTION
 
    unit_check_start(3f) calls the shell command
-        goodstart NAME start [string]
+
+      goodbad NAME start [string]
 
 EXAMPLES
   Sample program:

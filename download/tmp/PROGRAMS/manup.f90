@@ -27,7 +27,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                  Special Files       4  Special files (usually found in /dev)  ',&
 '                  File Formats        5  File formats and conventions (eg. /etc/passwd)',&
 '                  Games               6  Games                                  ',&
-'                  Miscellanous        7  Miscellaneous (including macro packages and conventions), e.g. man(7), groff(7)',&
+'                  Miscellaneous       7  Miscellaneous (including macro packages and conventions), e.g. man(7), groff(7)',&
 '                  System Admin.       8  System administration commands (usually only for root)',&
 '                  Kernel Extensions   9  Kernel routines [Non standard]         ',&
 '                                                                                ',&
@@ -65,7 +65,7 @@ end subroutine help_usage
 !!                   Special Files       4  Special files (usually found in /dev)
 !!                   File Formats        5  File formats and conventions (eg. /etc/passwd)
 !!                   Games               6  Games
-!!                   Miscellanous        7  Miscellaneous (including macro packages and conventions), e.g. man(7), groff(7)
+!!                   Miscellaneous       7  Miscellaneous (including macro packages and conventions), e.g. man(7), groff(7)
 !!                   System Admin.       8  System administration commands (usually only for root)
 !!                   Kernel Extensions   9  Kernel routines [Non standard]
 !!
@@ -95,7 +95,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Wed, Jun 14th, 2017 9:58:52 AM>',&
+'@(#)COMPILED:       Tue, Aug 22nd, 2017 4:21:04 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -126,7 +126,7 @@ subroutine manup(table,title,section,product)
 ! o Line starting with . is assumed to be a raw *roff directive and is passed on as-is
 !
 ! First line not starting in column 1 and less than column 5 establishes default paragraph indent
-! if indented .ge. 5 some other amount left as-is unless in a list
+! if indented .ge. 5 left as-is unless in a list
 !-----------------------------------------------------------------------------------------------------------------------------------
 !SECTION
 !    This is regular text in a regular paragraph that will be auto-wrapped
@@ -175,7 +175,7 @@ character(len=*),parameter  :: sections(10)= [&
 &'Special Files       ',& !       4   Special files (usually found in /dev)
 &'File Formats        ',& !       5   File formats and conventions (eg. /etc/passwd)
 &'Games               ',& !       6   Games
-&'Miscellanous        ',& !       7   Miscellaneous (including macro packages and conventions), e.g. man(7), groff(7)
+&'Miscellaneous       ',& !       7   Miscellaneous (including macro packages and conventions), e.g. man(7), groff(7)
 &'System Admin.       ',& !       8   System administration commands (usually only for root)
 &'Kernel Extensions   ',& !       9   Kernel routines [Non standard]
 &'                    ']
@@ -381,7 +381,7 @@ program test_manup
 use M_kracken, only: kracken, sget, sgets, iget, IPvalue, lget
 use M_manup, only: manup
 implicit none
-   character(len=1024)      :: alllines(10000)
+   character(len=1024)      :: ALLLINES(10000)
    character(len=IPvalue)   :: cmd
    integer                  :: section
    character(len=IPvalue)   :: product
@@ -401,7 +401,7 @@ implicit none
    i=1
 
    filenames=sgets('manup_oo')
-   FILES: do j=1,size(filenames)
+   FILES: do j=1,size(filenames)   ! read a file into array and call manup(3f)
 
       filename=filenames(j)
       if(filename.eq.''.or.filename.eq.'@'.or.filename.eq.'-')then
@@ -411,15 +411,15 @@ implicit none
          open(unit=inunit,file=trim(filename))
       endif
 
-      INFINITE: do i=1,size(alllines)
-         read(inunit,'(a)',iostat=ios)alllines(i)
+      INFINITE: do i=1,size(ALLLINES)
+         read(inunit,'(a)',iostat=ios)ALLLINES(i)
          if(ios.ne.0)then
             exit INFINITE
          endif
       enddo INFINITE
 
-      alllines(i)='END_OF_MAN_PAGE'  ! assumes file did not fill array
-      call manup(alllines(:i),cmd,section,product)
+      ALLLINES(i)='END_OF_MAN_PAGE'  ! assumes file did not fill array
+      call manup(ALLLINES(:i),cmd,section,product)
 
       if(inunit.eq.10)then
          close(unit=inunit,iostat=ios)
@@ -428,6 +428,9 @@ implicit none
    enddo FILES
 
 end program test_manup
+!-----------------------------------------------------------------------------------------------------------------------------------
+!----------------------------------------------------------------------------------------------------------------------------------!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
 !----------------------------------------------------------------------------------------------------------------------------------!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!

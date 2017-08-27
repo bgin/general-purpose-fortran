@@ -23,9 +23,8 @@ help_text=[ CHARACTER(LEN=128) :: &
 ' numdiff                                                                        ',&
 '    -old FILENAME -new FILENAME                                                 ',&
 '    [-percent REAL_VALUE|-digits N|-margin XXX.XX]                              ',&
-'    [-verbose]                                                                  ',&
-'    [-h|-help|--help]                                                           ',&
-'    [-v|-version|--version]                                                     ',&
+'    [-verbose]|                                                                 ',&
+'    [--help|--version]                                                          ',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
 ' NUMDIFF assumes two files are basically identical except for numeric           ',&
@@ -222,9 +221,8 @@ end subroutine help_usage
 !!  numdiff
 !!     -old FILENAME -new FILENAME
 !!     [-percent REAL_VALUE|-digits N|-margin XXX.XX]
-!!     [-verbose]
-!!     [-h|-help|--help]
-!!     [-v|-version|--version]
+!!     [-verbose]|
+!!     [--help|--version]
 !!
 !!##DESCRIPTION
 !!  NUMDIFF assumes two files are basically identical except for numeric
@@ -427,7 +425,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)COPYRIGHT:      1985, 1986, 1989, 1990, 20090501, 20131129 John. S. Urban>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sun, Jul 23rd, 2017 3:54:04 PM>',&
+'@(#)COMPILED:       Tue, Aug 22nd, 2017 4:27:29 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

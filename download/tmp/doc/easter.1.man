@@ -8,7 +8,7 @@ DESCRIPTION
    Prints day Easter falls on
 
 OPTIONS
-   year       year for which to calculate Easter day. Defaults to currrent year
+   year       year for which to calculate Easter day. Defaults to current year
    --help     display this help and exit
    --version  output version information and exit
 

@@ -42,13 +42,34 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <tr><td><a href="source.html">source.html</a></td>
 <td>
 </td>
-<tr><td><a href="M_Compare_Float_Numbers.f90">M_Compare_Float_Numbers.f90</a></td>
+<tr><td><a href="c.f90">c.f90</a></td>
 <td>
+</td>
+<tr><td><a href="calc_NC.f90">calc_NC.f90</a></td>
+<td>
+	 user-added calculator call function for ncurses routines<br/>
+</td>
+<tr><td><a href="dparanoia.f90">dparanoia.f90</a></td>
+<td>
+	dparanoia(3f): test doubleprecisions operations in programming environment<br/>
+</td>
+<tr><td><a href="init_random_seed.f90">init_random_seed.f90</a></td>
+<td>
+</td>
+<tr><td><a href="juown1.f90">juown1.f90</a></td>
+<td>
+	juown1(3f): extend functions available to the calculator routine <br/>
+</td>
+<tr><td><a href="kiss64.f90">kiss64.f90</a></td>
+<td>
+	 A 64-bit KISS random number generator by George Margaglia.<br/>
+	kiss64(3f):64-bit KISS random number generator by George Margaglia.<br/>
 </td>
 <tr><td><a href="M_anyscalar.f90">M_anyscalar.f90</a></td>
 <td>
-	M_anyscalar::anyscalar_to_real(3f): convert integer or real parameter of any kind to real'<br/>
-	M_anyscalar::anyinteger_to_128: convert integer parameter of any kind to 128-bit integer'<br/>
+	M_anyscalar::anyscalar_to_double(3f): convert integer or real parameter of any kind to doubleprecision<br/>
+	M_anyscalar::anyscalar_to_real(3f): convert integer or real parameter of any kind to real<br/>
+	M_anyscalar::anyinteger_to_128: convert integer parameter of any kind to 128-bit integer<br/>
 </td>
 <tr><td><a href="M_calculator.f90">M_calculator.f90</a></td>
 <td>
@@ -102,6 +123,9 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_color::showcolors(1f): list colors known to colorname2rgb(3f) & corresponding RGB values<br/>
 	M_color::color_name2rgb(3f): given a color name, return rgb color values in range 0 to 100<br/>
 </td>
+<tr><td><a href="M_Compare_Float_Numbers.f90">M_Compare_Float_Numbers.f90</a></td>
+<td>
+</td>
 <tr><td><a href="M_constants.f90">M_constants.f90</a></td>
 <td>
 	M_constants(3fm): A collection of commonly used constants (pi, e, gamma, ...)'<br/>
@@ -111,7 +135,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_debug::stderr(3f): writes a message to standard error using a standard f2003 method<br/>
 	M_debug::fstop(3f): calls 'STOP VALUE' passing in a value (1-32), with optional message<br/>
 	M_debug::unit_check(3f):if .not.expression call 'goodbad NAME bad' & stop program<br/>
-	M_debug::unit_check_start(3f): call 'goodstart NAME start'<br/>
+	M_debug::unit_check_start(3f): call 'goodbad NAME start'<br/>
 	M_debug::unit_check_bad(3f): call 'goodbad NAME bad'<br/>
 	M_debug::unit_check_good(3f): call 'goodbad NAME good'<br/>
 	M_debug::pdec(3f): write ASCII Decimal Equivalent (ADE) numbers vertically beneath string<br/>
@@ -226,17 +250,17 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <td>
 	M_math::julfit(3f): linear least squares curve fits, destroys input arrays<br/>
 	M_math::julfit1(3f): linear least square fit of (y=a*x+b), changes the y array<br/>
-	M_math::lowess(3f): data smoothing using locally weighted regression'<br/>
-	M_math::splift(3f): fits a spline to the n data points given in x and y'<br/>
-	M_math::splint(3f): interpolates and twice differentiates a cubic spline'<br/>
+	M_math::lowess(3f): data smoothing using locally weighted regression<br/>
+	M_math::splift(3f): fits a spline to the n data points given in x and y<br/>
+	M_math::splint(3f): interpolates and twice differentiates a cubic spline<br/>
 	M_math::linearint(3f):linear interpolation of curve X(i),Y(i) at given XI(j) values<br/>
 	M_math::citer(3f): determine various geometric properties of circle segment given radius and area of the segment.<br/>
 	M_math::envelope(3f):Find the vertices (in clockwise order) of a polygon enclosing the points (x(i), y(i), i=1, ..., n.<br/>
 	M_math::inpolygon(3f):Subroutine to determine whether or not an integer point is in a polygon of integer points<br/>
 	M_math::locpt(3f): find if a point is inside a polygonal path<br/>
 	M_math::poly_intercept(3f): Calculates the points at which a line <A,B<br/>
-	M_math::polyarea(3f): compute the area bounded by a closed polygonal curve <br/>
-	M_math::extremum(3f):Find the minimum and maximum value in a REAL array'<br/>
+	M_math::polyarea(3f): compute the area bounded by a closed polygonal curve<br/>
+	M_math::extremum(3f):Find the minimum and maximum value in a REAL array<br/>
 	M_math::bds(3f): Basic Descriptive Statistics (based on a routine from the IBM collection)<br/>
 	M_math::skekur1(3f): variant on calculating skewness and kurtosis of an arrray<br/>
 	M_math::skekurx(3f): COMPUTE UNBIASED ESTIMATOR OF THE POPULATION SKEWNESS AND KURTOSIS<br/>
@@ -244,9 +268,11 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_math::almost(3f): function to compare two real numbers only up to a specified number of digits by calling ACCDIG(3f)<br/>
 	M_math::accdig(3f): compare two real numbers only up to a specified number of digits<br/>
 	M_math::dp_accdig(3f): compare two double values only up to a specified number of digits<br/>
-	M_math::round(3f):round val to specified number of significant digits<br/>
+	M_math::in_margin(3f): check if two reals are approximately equal using a relative margin<br/>
+	 M_math::round(3f): round val to specified number of significant digits<br/>
 	M_math::scale1(3f):given xmin,xmax,n, find new range xminp xmaxp divisible into approximately n linear intervals of size dist<br/>
 	M_math::scale3(3f):find nice log range.<br/>
+	M_math::quadratic(3f): calculate the roots of a quadratic formula even if they are complex<br/>
 	M_math::invert_2x2(3f): performs a direct calculation of the inverse of a 2x2 matrix<br/>
 	M_math::invert_3x3(3f): performs a direct calculation of the inverse of a 3x3 matrix<br/>
 	M_math::invert_4x4(3f): performs a direct calculation of the inverse of a 4x4 matrix<br/>
@@ -417,6 +443,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_strings::r2s(3fp): private function returns string given real value<br/>
 	M_strings::i2s(3fp): private function returns string given integer value<br/>
 	M_strings::trimzeros(3fp): Delete trailing zeros from numeric decimal string<br/>
+	M_strings::listout(3f): copy icurve_lists to icurve_expanded expanding negative numbers to ranges (1 -10 means 1 thru 10)<br/>
 	M_strings::describe(3f): return string describing long name of a single character<br/>
 	M_strings::string_to_values(3f): reads an array of numbers from a numeric string<br/>
 	M_strings::s2vs(3f): function returns array of values from a string<br/>
@@ -535,8 +562,8 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_time::j2d(3f): Given Julian Date returns DAT date-time array<br/>
 	M_time::d2u(3f): Given DAT date-time array returns Unix Epoch time<br/>
 	M_time::u2d(3f): Given Unix Epoch Time returns DAT date-time array<br/>
-	M_time::sec2days(3f): converts seconds to string showing days of form D-HH:MM:SS<br/>
-	M_time::days2sec(3f): convert string [[-]dd-]hh:mm:ss.nn to seconds<br/>
+	M_time::sec2days(3f): converts seconds or string of form IId JJh KKm LLs to string showing days of form D-HH:MM:SS<br/>
+	M_time::days2sec(3f): convert string [[-]dd-]hh:mm:ss.nn to seconds or string IId JJh KKm LLs to seconds<br/>
 	M_time::call_sleep(3fp): call sleep(3c)<br/>
 	M_time::call_usleep(3fp): call usleep(3c)<br/>
 	M_time::now_ex(3f): use of now(3f) outside of a module<br/>
@@ -579,38 +606,14 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_units::spherical_to_cartesian(3f): convert spherical coordinates to cartesian coordinates<br/>
 	M_units::cartesian_to_polar(3f): convert Cartesian coordinates to polar coordinates<br/>
 	M_units::polar_to_cartesian(3f): convert polar coordinates to cartesian coordinates<br/>
+	M_units::atomnum2symbol(3f): return element symbol given atomic number<br/>
+	M_units::symbol2atomnum(3f): return atomic number given element symbol name<br/>
 </td>
 <tr><td><a href="M_writegif.f90">M_writegif.f90</a></td>
 <td>
 </td>
 <tr><td><a href="M_writegif_animated.f90">M_writegif_animated.f90</a></td>
 <td>
-</td>
-<tr><td><a href="Type_Kinds.f90">Type_Kinds.f90</a></td>
-<td>
-</td>
-<tr><td><a href="c.f90">c.f90</a></td>
-<td>
-</td>
-<tr><td><a href="calc_NC.f90">calc_NC.f90</a></td>
-<td>
-	 user-added calculator call function for ncurses routines<br/>
-</td>
-<tr><td><a href="dparanoia.f90">dparanoia.f90</a></td>
-<td>
-	dparanoia(3f): test doubleprecisions operations in programming environment<br/>
-</td>
-<tr><td><a href="init_random_seed.f90">init_random_seed.f90</a></td>
-<td>
-</td>
-<tr><td><a href="juown1.f90">juown1.f90</a></td>
-<td>
-	juown1(3f): extend functions available to the calculator routine <br/>
-</td>
-<tr><td><a href="kiss64.f90">kiss64.f90</a></td>
-<td>
-	 A 64-bit KISS random number generator by George Margaglia.<br/>
-	kiss64(3f):64-bit KISS random number generator by George Margaglia.<br/>
 </td>
 <tr><td><a href="nc_errmessage.f90">nc_errmessage.f90</a></td>
 <td>
@@ -662,6 +665,24 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	strgar3(3f):read a string into an array USING CALCULATOR passing double-quoted strings<br/>
 	errc(3f): function for specifying error curve numbers<br/>
 </td>
+<tr><td><a href="C-gauss.c">C-gauss.c</a></td>
+<td>
+</td>
+<tr><td><a href="C-hlsrgb.c">C-hlsrgb.c</a></td>
+<td>
+</td>
+<tr><td><a href="C-hvsrgb.c">C-hvsrgb.c</a></td>
+<td>
+</td>
+<tr><td><a href="C-jubiglet.c">C-jubiglet.c</a></td>
+<td>
+	jubiglet(3c): Make big block letters<br/>
+	 jubiglet_(char *s, int len) // Fortran 77 callable (sometimes) version of jubiglet */<br/>
+</td>
+<tr><td><a href="C-jucolor.c">C-jucolor.c</a></td>
+<td>
+	jucolor(3c):this procedure converts a color's components from one color model to another<br/>
+</td>
 <tr><td><a href="C-M_getkey.c">C-M_getkey.c</a></td>
 <td>
 	 Driver for reading a character from keyboard in raw I/O mode */<br/>
@@ -686,28 +707,6 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	d2r(3c): Convert degrees to radians<br/>
 	r2d(3c): Convert radians to degrees<br/>
 </td>
-<tr><td><a href="C-gauss.c">C-gauss.c</a></td>
-<td>
-</td>
-<tr><td><a href="C-getkey.c">C-getkey.c</a></td>
-<td>
-	 Driver for reading a character from keyboard in raw I/O mode<br/>
-</td>
-<tr><td><a href="C-hlsrgb.c">C-hlsrgb.c</a></td>
-<td>
-</td>
-<tr><td><a href="C-hvsrgb.c">C-hvsrgb.c</a></td>
-<td>
-</td>
-<tr><td><a href="C-jubiglet.c">C-jubiglet.c</a></td>
-<td>
-	jubiglet(3c): Make big block letters<br/>
-	 jubiglet_(char *s, int len) // Fortran 77 callable (sometimes) version of jubiglet */<br/>
-</td>
-<tr><td><a href="C-jucolor.c">C-jucolor.c</a></td>
-<td>
-	jucolor(3c):this procedure converts a color's components from one color model to another<br/>
-</td>
 <tr><td><a href="C-macros.c">C-macros.c</a></td>
 <td>
 </td>
@@ -729,15 +728,15 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <td>
 	 Ensure a color value is in the appropriate range and quadrant<br/>
 </td>
+<tr><td><a href="exrc">exrc</a></td>
+<td>
+	 advanced vi(1) configuration file <br/>
+</td>
 <tr><td><a href="Makefile">Makefile</a></td>
 <td>
 </td>
 <tr><td><a href="Makefile_picky">Makefile_picky</a></td>
 <td>
-</td>
-<tr><td><a href="exrc">exrc</a></td>
-<td>
-	 advanced vi(1) configuration file <br/>
 </td>
 <tr><td><a href="vimrc">vimrc</a></td>
 <td>
