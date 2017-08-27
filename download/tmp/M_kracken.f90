@@ -4,7 +4,7 @@
 module M_kracken
 use M_debug,   only: debug, io_debug
 use M_journal, only: journal
-use M_strings, only: upper, string_to_value, split
+use M_strings, only: upper, string_to_value, split, s2v
 implicit none
 character(len=*),parameter :: ident="@(#)M_kracken(3fm):parse command line options of Fortran programs using Unix-like syntax"
 !===================================================================================================================================
@@ -1374,6 +1374,13 @@ integer,intent(out)                   :: ier         ! flag if error occurs in a
    name=" "
    allow=" "
    name=name1                                        ! store into a standard size variable for this type
+
+   ii=index(name,"_")                                ! -- is an alias for -oo
+   ii=min(ii,IPverb-2)
+   if(name(ii+1:).eq.' ')then
+      name(ii+1:)='oo'
+   endif
+
    value=value1                                      ! store into a standard size variable for this type
    allow=allow1                                      ! store into a standard size variable for this type
    nlen=len(name1)
@@ -1824,7 +1831,11 @@ character(len=*),intent(in)  :: verb
 !-----------------------------------------------------------------------------------------------------------------------------------
       write(*,'(a)',advance='no')'Enter parameter number to change("RETURN" to finish):'
       read(*,'(a)',iostat=ios)reply
-      reply=adjustl(reply)
+      if(ios.ne.0)then
+         reply=' '
+      else
+         reply=adjustl(reply)
+      endif
       ivalu=-1
 !-----------------------------------------------------------------------------------------------------------------------------------
       select case(REPLY(1:1))
@@ -1888,7 +1899,7 @@ character(len=*),intent(in)  :: verb
          cycle INFINITE
 !-----------------------------------------------------------------------------------------------------------------------------------
       case('1','2','3','4','5','6','7','8','9')
-         ivalu=iget(reply)
+         ivalu=nint(s2v(reply))
          ivalu=ivalu+istart-1
 !-----------------------------------------------------------------------------------------------------------------------------------
       case('c')                                            ! change current menu item
