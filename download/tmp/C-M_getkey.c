@@ -112,7 +112,7 @@ char Fgetkey (void){
    return (c);
 }
 #endif
-#ifdef TESTPRG
+#ifdef TESTPRGC
 #include <stdlib.h>
 #include <stdio.h>
 /* read keys in hot (raw I/O) mode until letter q is hit */

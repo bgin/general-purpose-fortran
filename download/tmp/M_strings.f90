@@ -75,7 +75,7 @@
 !!    value_to_string   generic subroutine returns string given numeric value (REAL, DOUBLEPRECISION, INTEGER )
 !!    v2s               generic function returns string from numeric value (REAL, DOUBLEPRECISION, INTEGER )
 !!    trimzeros         delete trailing zeros from numeric decimal string
-!!    listout           copy ICURVE() to ICURVE_EXPANDED() expanding negative curve numbers to ranges (1 -10 means 1 thru 10)
+!!    listout           copy ICURVE() to ICURVE_EXPANDED() expanding negative numbers to ranges (1 -10 means 1 thru 10)
 !!
 !!    LOGICAL TESTS
 !!
@@ -420,7 +420,7 @@ PUBLIC v2s             !  generic function returns string given numeric REAL|DOU
  PRIVATE i2s           !  function returns strings from integer value
 PUBLIC v2s_bug         !  generic function returns string given numeric REAL|DOUBLEPRECISION|INTEGER value
  PRIVATE trimzeros     !  Delete trailing zeros from numeric decimal string
-PUBLIC listout         !  copy ICURVE() to ICURVE_EXPANDED() expanding negative curve numbers to ranges (1 -10 means 1 thru 10)
+PUBLIC listout         !  copy ICURVE() to ICURVE_EXPANDED() expanding negative numbers to ranges (1 -10 means 1 thru 10)
 !----------------------# LOGICAL TESTS
 PUBLIC isalnum         !  elemental function returns .true. if CHR is a letter or digit
 PUBLIC isalpha         !  elemental function returns .true. if CHR is a letter and .false. otherwise
@@ -3082,7 +3082,7 @@ end function merge_str
 !!            it will be used to replace the whitespace. If a null character is
 !!            supplied for CHAR whitespace is removed.
 !!##RETURNS
-!!    OUTSTR  string of same length as input string but with all contigious whitespace
+!!    OUTSTR  string of same length as input string but with all contiguous whitespace
 !!            reduced to a single space and leading whitespace removed
 !!
 !!##EXAMPLES
@@ -3771,63 +3771,83 @@ end subroutine trimzeros
 !===================================================================================================================================
 !>
 !!##NAME
-!! listout(3f) - [M_strings] copy ICURVE() to ICURVE_EXPANDED() expanding negative curve numbers to ranges (1 -10 means 1 thru 10)
+!! listout(3f) - [M_strings] copy ICURVE() to ICURVE_EXPANDED() expanding negative numbers to ranges (1 -10 means 1 thru 10)
 !!
 !!##SYNOPSIS
 !!
-!!   subroutine listout(icurve_lists,icurve_expanded,isize,inums)
+!!   subroutine listout(icurve_lists,icurve_expanded,inums,ierr)
 !!
-!!    integer,intent(in)    :: isize
-!!    real,intent(in)       :: icurve_lists(isize)
-!!    real,intent(out)      :: icurve_expanded(isize)
-!!    integer,intent(inout) :: inums
+!!    real,intent(in)       :: icurve_lists(:)
+!!    real,intent(out)      :: icurve_expanded(:)
+!!    integer,intent(out)   :: inums
+!!    integer,intent(out)   :: ierr
 !!
 !!##DESCRIPTION
 !!
 !!##OPTIONS
-!!    icurve_lists(isize)  icurve_lists is input array
-!!    icurve_expanded(isize)   icurve_expanded is output array
+!!    icurve_lists(:)      input array
 !!
 !!##RETURNS
-!!    isize          isize is maximum numbers to put into icurve_expanded
-!!    inums          inums is number of icurve_lists values on input, number of icurve_expanded numbers on output
+!!    icurve_expanded(:)   output array; assumed large enough to hold returned list
+!!    inums                number of icurve_expanded numbers on output
+!!    ierr                 zero if no error occurred
 !!
 !!##EXAMPLE
 !!
 !!   Sample program:
 !!
 !!     program demo_listout
-!!     use M_strings, only : listout, s2vs
+!!     use M_strings, only : listout
 !!     implicit none
-!!     integer,allocatable           :: icurve_lists(:)
-!!     integer                       :: icurve_expanded(1000)
-!!     character(len=:), allocatable :: string
-!!     string='1 20 -30 101 100 99 100 -120 222 --200'
-!!     icurve_lists=''
+!!     integer,allocatable :: icurve_lists(:)        ! icurve_lists is input array
+!!     integer :: icurve_expanded(1000)  ! icurve_expanded is output array
+!!     integer :: inums                  ! number of icurve_lists values on input, number of icurve_expanded numbers on output
+!!     integer :: i
+!!     integer :: ierr
+!!        icurve_lists=[1, 20, -30, 101, 100, 99, 100, -120, 222, -200]
+!!        inums=size(icurve_lists)
+!!        call listout(icurve_lists,icurve_expanded,inums,ierr)
+!!        if(ierr.eq.0)then
+!!           write(*,'(i0)')(icurve_expanded(i),i=1,inums)
+!!        else
+!!           write(*,'(a,i0)')'error occurred in *listout* ',ierr
+!!           write(*,'(i0)')(icurve_expanded(i),i=1,inums)
+!!        endif
 !!     end program demo_listout
 !===================================================================================================================================
-subroutine listout(icurve_lists,icurve_expanded,inums_max,inums_out)
-!@(#) M_strings::listout(3f): copy icurve_lists to icurve_expanded expanding negative curve numbers to ranges (1 -10 means 1 thru 10)
-!   Created: 19971231
+subroutine listout(icurve_lists,icurve_expanded,inums_out,ierr)
 use M_journal, only : journal
 implicit none
+character(len=*),parameter::ident="&
+&@(#)M_strings::listout(3f): copy icurve_lists to icurve_expanded expanding negative numbers to ranges (1 -10 means 1 thru 10)"
+!   Created: 19971231
 integer,intent(in)    :: icurve_lists(:)             ! input array
-integer,intent(out)   :: icurve_expanded(inums_max)  ! output array
-integer,intent(in)    :: inums_max                   ! maximum number of values to put into icurve_expanded
+integer,intent(out)   :: icurve_expanded(:)          ! output array
 integer,intent(out)   :: inums_out                   ! number of icurve_expanded numbers on output
+integer,intent(out)   :: ierr                        ! status variable
 
 character(len=80)     :: temp1
 integer               :: i80, i90
 integer               :: imin, imax
 integer               :: idirection, icount
 integer               :: iin
+integer               :: inums_max
 
-   icurve_expanded=0
-   inums_out=0
+   ierr=0
+   icurve_expanded=0                          ! initialize output array
+   inums_out=0                                ! initialize number of significant values in output array
+
+   inums_max=size(icurve_expanded)
+   if(inums_max.eq.0)then
+      ierr=-2
+      return
+   endif
+
    iin=size(icurve_lists)
    if(iin.gt.0)then
       icurve_expanded(1)=icurve_lists(1)
    endif
+
    icount=2
       do i90=2,iin
          if(icurve_lists(i90).lt.0)then
@@ -3845,6 +3865,7 @@ integer               :: iin
             do i80=imin,imax,idirection
                if(icount.gt.inums_max) then
                   write(temp1,'(a,i5,a)')'*listout* only ',inums_max,' values allowed'
+                  ierr=-1
                   call journal(temp1)
                   inums_out=icount-1
                   exit
