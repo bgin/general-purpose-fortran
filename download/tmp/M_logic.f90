@@ -1,6 +1,7 @@
 !>
 !!##NAME
 !!     cond(3f) - [M_logic]process input files with embedded if/else/elseif/endif commands
+!!
 !!##SYNOPSIS
 !!
 !!

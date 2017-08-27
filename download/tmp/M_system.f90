@@ -952,14 +952,14 @@ end function system_link
 !!    longer be accessible. If one or more processes have the file open when
 !!    the last link is removed, the link shall be removed before unlink()
 !!    returns, but the removal of the file contents shall be postponed until
-!!    all refer- ences to the file are closed.
+!!    all references to the file are closed.
 !!
 !!    The path argument shall not name a directory unless the process has
-!!    appropriate privileges and the implementation sup- ports using unlink()
+!!    appropriate privileges and the implementation supports using unlink()
 !!    on directories.
 !!
 !!    Upon successful completion, unlink() shall mark for update the last
-!!    data modification and last file status change time- stamps of the parent
+!!    data modification and last file status change timestamps of the parent
 !!    directory. Also, if the file's link count is not 0, the last file status
 !!    change timestamp of the file shall be marked for update.
 !!
@@ -1020,7 +1020,7 @@ end function system_unlink
 !!        The  umask()  function sets the file mode creation mask of the
 !!        process to cmask and return the previous value of the mask. Only
 !!        the file permission bits of cmask (see <sys/stat.h>) are used;
-!!        the meaning of the other  bits  is  implementa- tion-defined.
+!!        the meaning of the other  bits  is  implementation-defined.
 !!
 !!        The file mode creation mask of the process is used to turn off
 !!        permission bits in the mode argument supplied during calls to
@@ -1446,7 +1446,7 @@ end function system_rename
 !!
 !!##DESCRIPTION
 !!        The  chmod() function shall change UID, _ISGID, S_ISVTX, and the
-!!        file permission bits of the file named by the path- name pointed
+!!        file permission bits of the file named by the pathname pointed
 !!        to by the path argument to the corresponding bits in the mode
 !!        argument. The application  shall  ensure  that the  effective user
 !!        ID of the process matches the owner of the file or the process

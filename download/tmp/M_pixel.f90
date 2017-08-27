@@ -73,7 +73,7 @@
 !!       call clear(0)           ! clear to color 0
 !!
 !!       ! put some colored boxes into pixmap by address
-!!       ! so show how the pixel map can be editted easily with
+!!       ! so show how the pixel map can be edited easily with
 !!       ! other routines that can manipulate a pixel array.
 !!       ! The P_pixel array was created when vinit(3f) was called
 !!       icolor=1
@@ -1412,7 +1412,7 @@ contains
 !!    !! render pixel array to a file
 !!    call writegif('rect.3.gif',P_pixel,P_colormap)
 !!
-!!    !! display graphic assuming display(1) is availble
+!!    !! display graphic assuming display(1) is available
 !!    call execute_command_line('display rect.3.gif')
 !!
 !!    !! wrap up graphics
@@ -3798,7 +3798,7 @@ end subroutine ortho2
 !!
 !!##DESCRIPTION
 !!    Defines the section of the virtual world coordinates to map to the
-!!    viewport. Automaticall y use the largest viewport that provides one-to-one correspondence between
+!!    viewport. Automatically use the largest viewport that provides one-to-one correspondence between
 !!    the window and the viewport.
 !!
 !!##EXAMPLE
@@ -4793,7 +4793,7 @@ end subroutine print_ascii
 !!        ASCII decimal.
 !!
 !!      - Whitespace is not allowed in the pixels area, and  only  a
-!!        single  character  of  whitespace (typicall y a newline) is
+!!        single  character  of  whitespace (typically a newline) is
 !!        allowed after the maxval.
 !!
 !!      - The files are smaller and many times faster  to  read  and
@@ -4801,7 +4801,7 @@ end subroutine print_ascii
 !!
 !!      Note that this raw format can only be used for maxvals  less
 !!      than or equal to 255.  If you use the ppm library and try to
-!!      write a file with a larger  maxval,  it  will  automaticall y
+!!      write a file with a larger  maxval,  it  will  automatically
 !!      fall back on the slower but more general plain format.
 !!
 !!##AUTHOR
@@ -4829,7 +4829,7 @@ end subroutine print_ascii
 !!    Set the maximum size of a character in the current font. Width and height
 !!    are values in world units. This only applies to software text. This must
 !!    be done after the font being scaled is loaded. To keep text of different
-!!    sizes aligned along the same baseline note that you typicall y need to
+!!    sizes aligned along the same baseline note that you typically need to
 !!    subtrace the decender height from the Y position.
 !!
 !!##EXAMPLE

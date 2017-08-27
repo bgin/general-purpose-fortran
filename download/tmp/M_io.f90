@@ -619,7 +619,7 @@ end function notopen
 !!    Output FILENAME with its last non-slash component and trailing slashes removed.
 !!    if FILENAME contains no /'s, output '.' (meaning the current directory).
 !!
-!!    Assumes leaf seperator is a slash ('/') and that filename does not contain
+!!    Assumes leaf separator is a slash ('/') and that filename does not contain
 !!    trailing spaces.
 !!
 !!##OPTIONS
@@ -718,14 +718,14 @@ end function dirname
 !!    character(len=maxlen),intent(out) :: ext
 !!
 !!##DESCRIPTION
-!!    splitpath(3f) splits given pathname assuming a forward slash seperates
+!!    splitpath(3f) splits given pathname assuming a forward slash separates
 !!    filename components and that the right-most period in the last leaf
 !!    of the pathname is considered the beginning of an extension. If
 !!    an extension is found it is left present in NAME but removed from
 !!    BASENAME.
 !!
 !!    This routine does not check the system for the existence or type of the
-!!    filename componenents; it merely parses a string.
+!!    filename components; it merely parses a string.
 !!
 !!
 !!##OPTIONS

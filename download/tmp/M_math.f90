@@ -902,7 +902,7 @@ end subroutine lowest
 !>
 !!##NAME
 !!    splift(3f) - [M_math:fit]fits a spline to the n data points given in x and y
-!!                 and also returns first and second derivitives
+!!                 and also returns first and second derivatives
 !!##SYNOPSIS
 !!
 !!   subroutine splift(x,y,yp,ypp,n,ierr,a1,b1,an,bn)
@@ -2400,7 +2400,7 @@ end subroutine extremum
 !!     real,intent(out)   :: STAT(13)
 !!##DESCRIPTION
 !!
-!!     Given a vector of real values calculate common basic statistical meansures for
+!!     Given a vector of real values calculate common basic statistical measures for
 !!     the array.
 !!
 !!##OPTIONS
@@ -2886,7 +2886,7 @@ end function almost
 !!    If X and Y are considered equal within DIGI0 relative tolerance,
 !!
 !!        IND    = 0, if tolerance is     satisfied.
-!!               = 1, if tolerance is not satisified.
+!!               = 1, if tolerance is not satisfied.
 !!
 !!    The result ACURCY gives a measure of the number of leading digits in X
 !!    which are the same as the number of leading digits in Y.
@@ -3006,7 +3006,7 @@ character(len=*),parameter::ident="@(#)M_math::accdig(3f): compare two real numb
       real,intent(in) :: digi0       ! Number of digits to be satisfied in relative tolerance.
 !     OUTPUT ...
       integer,intent(out) :: ind     ! = 0, If tolerance is     satisfied.
-                                     ! = 1, If tolerance is not satisified.
+                                     ! = 1, If tolerance is not satisfied.
       real,intent(out) :: acurcy     ! = - LOG10 (ABS((X-Y)/Y)))
 
       real     ::  diff
@@ -3067,7 +3067,7 @@ END SUBROUTINE accdig
 !!    If X and Y are considered equal within DIGI0 relative tolerance,
 !!
 !!        IND    = 0, if tolerance is     satisfied.
-!!               = 1, if tolerance is not satisified.
+!!               = 1, if tolerance is not satisfied.
 !!
 !!    The result ACURCY gives a measure of the number of leading digits in X
 !!    which are the same as the number of leading digits in Y.
@@ -3187,7 +3187,7 @@ character(len=*),parameter::ident="@(#)M_math::dp_accdig(3f): compare two double
       doubleprecision,intent(in)  :: digi0       ! NUMBER OF DIGITS TO BE SATISFIED IN RELATIVE TOLERANCE.
 !     OUTPUT ...
       integer,intent(out)         :: ind         ! = 0, IF TOLERANCE IS     SATISFIED.
-                                                 ! = 1, IF TOLERANCE IS NOT SATISIFIED.
+                                                 ! = 1, IF TOLERANCE IS NOT SATISFIED.
       doubleprecision,intent(out) :: acurcy      ! = - LOG10 (ABS((X-Y)/Y)))
       doubleprecision             ::  diff
       doubleprecision             ::  digi

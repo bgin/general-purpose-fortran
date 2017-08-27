@@ -52,7 +52,8 @@
 !!
 !!##AUTHOR
 !!    o Version 1.01, 1999 August: Written by Jos Bergervoet
-!!    o Version 2,   2008 Jan 28:  Modified by Clive Page to use stream I/O, array as colourmap.
+!!    o Version 2, 2008 Jan 28: Modified by Clive Page to use stream I/O, array as colourmap.
+!!    o Version 3, 2017 July 6: Modified by John Urban to make it easier to use with M_PIXEL(3f) module.
 !!##LICENSE
 !!    Licence: public domain.
 !===================================================================================================================================
