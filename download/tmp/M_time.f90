@@ -2,8 +2,8 @@
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 module m_time
-use M_debug,   only : stderr
 use M_strings, only : upper, substitute
+use M_debug, only : stderr
 implicit none
 private
 private stderr
@@ -689,12 +689,12 @@ end subroutine ordinal_to_date
 !!
 !!    results:
 !!
-!!     100th day of 2004 is Friday, April 9th, 2004 00:00:00 PM UTC-0240
-!!     100th day of 2005 is Sunday, April 10th, 2005 00:00:00 PM UTC-0240
-!!     100th day of 2006 is Monday, April 10th, 2006 00:00:00 PM UTC-0240
-!!     100th day of 2007 is Tuesday, April 10th, 2007 00:00:00 PM UTC-0240
-!!     100th day of 2008 is Wednesday, April 9th, 2008 00:00:00 PM UTC-0240
-!!     100th day of this year is Saturday, April 9th, 2016 00:00:00 PM UTC-0240
+!!     100th day of 2004 is Friday, April 9th, 2004 00:00:00 PM UTC-02:40
+!!     100th day of 2005 is Sunday, April 10th, 2005 00:00:00 PM UTC-02:40
+!!     100th day of 2006 is Monday, April 10th, 2006 00:00:00 PM UTC-02:40
+!!     100th day of 2007 is Tuesday, April 10th, 2007 00:00:00 PM UTC-02:40
+!!     100th day of 2008 is Wednesday, April 9th, 2008 00:00:00 PM UTC-02:40
+!!     100th day of this year is Saturday, April 9th, 2016 00:00:00 PM UTC-02:40
 !===================================================================================================================================
 function o2d(ordinal,year) result (dat)
 character(len=*),parameter::ident="@(#)M_time::o2d(3f): Converts ordinal day to DAT date-time array"
@@ -1051,6 +1051,7 @@ integer,dimension(8),intent(in)      :: values    ! numeric time values as DATE_
 character(len=*),intent(in),optional :: format    ! input format string
 character(len=:),allocatable         :: timestr
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   integer,dimension(8)              :: valloc    ! numeric time values as DATE_AND_TIME(3f) intrinsic returns
    integer,parameter                 :: longest=4096
    character(len=1)                  :: chara     ! character being looked at in format string
    character(len=10)                 :: iso_name
@@ -1073,6 +1074,7 @@ character(len=:),allocatable         :: timestr
    real(kind=realtime)               :: unixtime
    real(kind=realtime),save          :: unixtime_last
 
+   valloc=values
    if(present(format))then
       local_format=format
    else
@@ -1081,22 +1083,27 @@ character(len=:),allocatable         :: timestr
 
    select case(local_format)
    case('iso-8601W','isoweek') ; local_format='%I'                    ! 2016-W24-5 (yyyy-Www-d)
-   case('iso-8601','iso')      ; local_format='%Y-%M-%DT%h:%m:%s%Z'   ! 2006-08-14T02:34:56-0600
+   case('iso-8601','iso')      ; local_format='%Y-%M-%DT%h:%m:%s%z'   ! 2006-08-14T02:34:56-0600
    case('sql')       ; local_format='"%Y-%M-%D %h:%m:%s.%x"'          !
    case('sqlday')    ; local_format='"%Y-%M-%D"'                      !
    case('sqltime')   ; local_format='"%h:%m:%s.%x"'                   !
-   case('rfc-2822')  ; local_format='%w, %D %l %Y %h:%m:%s %Z'        ! Mon, 14 Aug 2006 02:34:56 -0600
-   case('rfc-3339')  ; local_format='%Y-%M-%DT%h:%m:%s%Z'             ! 2006-08-14 02:34:56-06:00
+   case('rfc-2822')  ; local_format='%w, %D %l %Y %h:%m:%s %T'        ! Mon, 14 Aug 2006 02:34:56 -0600
+   case('rfc-3339')  ; local_format='%Y-%M-%DT%h:%m:%s%z'             ! 2006-08-14 02:34:56-06:00
    case('suffix')    ; local_format='%Y%D%M%h%m%s'                    ! 20170122210327
    case('date')      ; local_format='%w %l %D %h:%m:%s UTC%z %Y'      ! Mon Jul 25 03:19:21 UTC-4:00 2016
    case('short')     ; local_format='%w, %l %d, %Y %H:%m:%s %N UTC%z' ! Fri, Jun 17th, 2016 06:31:00 PM UTC-04:00
    case('long')      ; local_format='%W, %L %d, %Y %H:%m:%s %N UTC%z' ! Friday, June 17th, 2016 06:31:00 PM UTC-04:00
-   case(' ')         ; local_format='%W, %L %d, %Y %H:%m:%s %N UTC%Z' ! Friday, June 17th, 2016 06:31:00 PM UTC-240
+   case(' ')         ; local_format='%W, %L %d, %Y %H:%m:%s %N UTC%z' ! Friday, June 17th, 2016 06:31:00 PM UTC-04:00
    case('formal')    ; local_format='The %d of %L %Y'                 ! The 9th of November 2014
    case('lord')  ; local_format='the %d day of %L in the year of our Lord %Y' ! the 9th day of November in the year of our Lord 2014
+   case('easter')
+      call easter(values(1), valloc(2), valloc(3))                    ! given year get month and day Easter falls on
+      ! fill out a date_and_time array with information for Easter so can print the date using fmtdate(3f)
+      valloc(5:8)=[12,0,0,0]                                          ! year,month,day,tz, hour,minute,second,millisecond
+      local_format="Easter day: the %d day of %L in the year of our Lord %Y"
    case('all')
      local_format='&
-     & Civil Date:%t%t%Y-%M-%D %h:%m:%s %Z%n&
+     & Civil Date:%t%t%Y-%M-%D %h:%m:%s %z%n&
      & Julian Date:%t%t%J%n&
      & Unix Epoch Time:%t%E%n&
      & Civil Calendar:%t%W %L %d%n&
@@ -1114,7 +1121,7 @@ character(len=:),allocatable         :: timestr
 
          call substitute(xxxx,'hour','%h')
          call substitute(xxxx,'minute','%m')
-         call substitute(xxxx,'timezone','%Z')
+         call substitute(xxxx,'timezone','%z')
 
          call substitute(xxxx,'millisecond','%x')
          call substitute(xxxx,'second','%s')
@@ -1126,7 +1133,7 @@ character(len=:),allocatable         :: timestr
          if(index(xxxx,'%').eq.0)then            ! if no % characters change every char to %char if a format macro letter
             do i=65,122
              select case(char(i))
-              case('C':'E','H':'J','L','M':'O','P','S','U','W','Y','Z','b':'e','h':'m','p','s':'u','w','x','z','n','q','Q')
+             case('B':'E','H':'J','L':'Q','S','T','U','W','Y','Z','b':'e','h':'m','n','o':'q','s':'u','w','x','z')
                  call substitute(xxxx,char(i),'%'//char(i))
              end select
             enddo
@@ -1164,56 +1171,56 @@ character(len=:),allocatable         :: timestr
          !=====================================================================================
          case('d');                                                       ! the day of the month 1st..31st
                     dayend='  '
-                    select case(values(3))
+                    select case(valloc(3))
                     case(1,21,31); dayend='st'
                     case(2,22); dayend='nd'
                     case(3,23); dayend='rd'
                     case(4:20,24:30); dayend='th'
                     case default
                     end select
-                    write(text(iout:),'(I0,a)')values(3),dayend
+                    write(text(iout:),'(I0,a)')valloc(3),dayend
          !=====================================================================================
-         case('D'); write(text(iout:),'(I2.2)')values(3)                  ! the day of the month 1..31
+         case('D'); write(text(iout:),'(I2.2)')valloc(3)                  ! the day of the month 1..31
          !=====================================================================================
-         case('e'); call date_to_unix(values,unixtime,ierr)               ! integer Unix Epoch time in seconds
+         case('e'); call date_to_unix(valloc,unixtime,ierr)               ! integer Unix Epoch time in seconds
                     write(text(iout:),'(G0)')nint(unixtime)
          !=====================================================================================
-         case('E'); call date_to_unix(values,unixtime,ierr)               ! Unix Epoch time in seconds
+         case('E'); call date_to_unix(valloc,unixtime,ierr)               ! Unix Epoch time in seconds
                     write(text(iout:),'(G0)')unixtime
          !=====================================================================================
-         case('h'); write(text(iout:),'(I2.2)')values(5)                  ! the hour of the day, in the range of 0 to 23
+         case('h'); write(text(iout:),'(I2.2)')valloc(5)                  ! the hour of the day, in the range of 0 to 23
          !=====================================================================================
-         case('H'); ii=mod(values(5),12)                                  ! hour of day in range 1..12
+         case('H'); ii=mod(valloc(5),12)                                  ! hour of day in range 1..12
                     if(ii.eq.0)then
                        ii=12
                     endif
                     write(text(iout:),'(I0)')ii
          !=====================================================================================
-         case('i'); call d2w(values,iso_year,iso_week,iso_weekday,iso_name) ! ISO week of year
+         case('i'); call d2w(valloc,iso_year,iso_week,iso_weekday,iso_name) ! ISO week of year
                     write(text(iout:),'(I0)')iso_week
          !=====================================================================================
-         case('I'); call d2w(values,iso_year,iso_week,iso_weekday,iso_name) ! iso-8601 Week-numbering year date
+         case('I'); call d2w(valloc,iso_year,iso_week,iso_weekday,iso_name) ! iso-8601 Week-numbering year date
                     write(text(iout:),'(a)')iso_name
          !=====================================================================================
-         case('j'); call date_to_julian(values,julian,ierr)               ! integer Julian Day (truncated to integer)
+         case('j'); call date_to_julian(valloc,julian,ierr)               ! integer Julian Day (truncated to integer)
                     write(text(iout:),'(I0)')int(julian)
          !=====================================================================================
-         case('J'); call date_to_julian(values,julian,ierr)               ! Julian Date out to milliseconds
+         case('J'); call date_to_julian(valloc,julian,ierr)               ! Julian Date out to milliseconds
                     !write(text(iout:),'(I0,".",i3.3)')int(julian),nint((julian-int(julian))*1000.0)
                     write(text(iout:),'(g0)')julian
          !=====================================================================================
          case('k'); call system_clock(count=systemclock,count_rate=countrate)  ! systemclock/countrate
                     write(text(iout:),'(G0)')real(systemclock)/countrate
          !=====================================================================================
-         case('l'); write(text(iout:),'(A3)')v2mo(values(2))              ! three characters of the name of the month of the year
+         case('l'); write(text(iout:),'(A3)')v2mo(valloc(2))              ! three characters of the name of the month of the year
          !=====================================================================================
-         case('L'); write(text(iout:),'(A)')v2mo(values(2))               ! name of the month of the year
+         case('L'); write(text(iout:),'(A)')v2mo(valloc(2))               ! name of the month of the year
          !=====================================================================================
-         case('m'); write(text(iout:),'(I2.2)')values(6)                  ! the minutes of the hour, in the range 0 to 59
+         case('m'); write(text(iout:),'(I2.2)')valloc(6)                  ! the minutes of the hour, in the range 0 to 59
          !=====================================================================================
-         case('M'); write(text(iout:),'(I2.2)')values(2)                  ! month of year (1..12)
+         case('M'); write(text(iout:),'(I2.2)')valloc(2)                  ! month of year (1..12)
          !=====================================================================================
-         case('N'); if( values(5).ge.12)then                              ! AM||PM
+         case('N'); if( valloc(5).ge.12)then                              ! AM||PM
                        write(text(iout:),'("PM")')
                     else
                        write(text(iout:),'("AM")')
@@ -1222,47 +1229,53 @@ character(len=:),allocatable         :: timestr
          case('n');
                     write(text(iout:),'(a)')new_line("A")
          !=====================================================================================
-         case('O'); write(text(iout:),'(I3.3)')d2o(values)                ! Ordinal day of year
+         case('O'); write(text(iout:),'(I3.3)')d2o(valloc)                ! Ordinal day of year
          !=====================================================================================
-         case('p'); write(text(iout:),'(A)')phase_of_moon(values)         ! phase of moon
+         case('o'); call date_to_unix(valloc,unixtime,ierr)               ! integer Unix Epoch time in seconds
+                    write(text(iout:),'(G0)')floor(unixtime/86400)        ! number of whole days since Epoch time
          !=====================================================================================
-         case('P'); write(text(iout:),'(i0,"%")')moon_fullness(values)    ! percent of fullness
+         !=====================================================================================
+         case('p'); write(text(iout:),'(A)')phase_of_moon(valloc)         ! phase of moon
+         !=====================================================================================
+         case('P'); write(text(iout:),'(i0,"%")')moon_fullness(valloc)    ! percent of fullness
          !=====================================================================================
          case('q'); write(text(iout:),'("''")')                           ! single quote (apostrophe)
          !=====================================================================================
          case('Q'); write(text(iout:),'(''"'')')                          ! double quote
          !=====================================================================================
-         case('s'); write(text(iout:),'(I2.2)')values(7)                  ! the seconds of the minute, in the range 0 to 59
+         case('s'); write(text(iout:),'(I2.2)')valloc(7)                  ! the seconds of the minute, in the range 0 to 59
          !=====================================================================================
          case('S'); if(.not.since)then                                    ! seconds since last called
                        since=.TRUE.
-                       call date_to_unix(values,unixtime_last,ierr)
+                       call date_to_unix(valloc,unixtime_last,ierr)
                     endif
-                    call date_to_unix(values,unixtime,ierr)
+                    call date_to_unix(valloc,unixtime,ierr)
                     write(text(iout:),'(G0)')unixtime-unixtime_last
                     unixtime_last=unixtime
          !=====================================================================================
          case('t'); write(text(iout:),'(A1)')CHAR(9)                      ! tab character
          !=====================================================================================
-         case('U'); call dow(values,weekday,day,ierr)
-                    write(text(iout:),'(I1)')mod(weekday+6,7)+1           ! Return the day of the week, 1..7 Sunday=1
+         case('T'); write(text(iout:),'(SP,I3.2,SS,I2.2)')int(valloc(4)/60),abs(mod(valloc(4),60)) ! time from UTC as +-hhmm
          !=====================================================================================
-         case('u'); call dow(values,weekday,day,ierr)                     ! Return the day of the week, 1..7 Monday=1
+         case('U'); call dow(valloc,weekday,day,ierr)
+                    write(text(iout:),'(I1)')mod(weekday+7,7)+1           ! Return the day of the week, 1..7 Sunday=1
+         !=====================================================================================
+         case('u'); call dow(valloc,weekday,day,ierr)                     ! Return the day of the week, 1..7 Monday=1
                     write(text(iout:),'(I1)')weekday
          !=====================================================================================
-         case('W'); call dow(values,weekday,day,ierr)                     ! Return the name of the day of the week
+         case('W'); call dow(valloc,weekday,day,ierr)                     ! Return the name of the day of the week
                     write(text(iout:),'(a)')day
          !=====================================================================================
-         case('w'); call dow(values,weekday,day,ierr)                     ! Return the first three characters of the day of the week
+         case('w'); call dow(valloc,weekday,day,ierr)                     ! Return the first three characters of the day of the week
                     write(text(iout:),'(A3)')day(1:3)
          !=====================================================================================
-         case('x'); write(text(iout:),'(I3.3)')values(8)                  ! the milliseconds of the second, in the range 0 to 999
+         case('x'); write(text(iout:),'(I3.3)')valloc(8)                  ! the milliseconds of the second, in the range 0 to 999
          !=====================================================================================
-         case('Y'); write(text(iout:),'(I0.4)')values(1)                  ! the year, including the century (for example, 1990)
+         case('Y'); write(text(iout:),'(I0.4)')valloc(1)                  ! the year, including the century (for example, 1990)
          !=====================================================================================
-         case('Z'); write(text(iout:),'(SP,I5.4)')values(4)               ! time difference with respect to UTC in minutes
+         case('Z'); write(text(iout:),'(SP,I5.4)')valloc(4)               ! time difference with respect to UTC in minutes
          !=====================================================================================
-         case('z'); write(text(iout:),'(SP,I3.2,":",SS,I2.2)')int(values(4)/60),abs(mod(values(4),60)) ! time from UTC as +-hh:mm
+         case('z'); write(text(iout:),'(SP,I3.2,":",SS,I2.2)')int(valloc(4)/60),abs(mod(valloc(4),60)) ! time from UTC as +-hh:mm
          !=====================================================================================
          case default
             write(text(iout:),'(A1)')chara
@@ -1326,6 +1339,7 @@ end function fmtdate
 !!         %d -- day of month, with suffix (1st, 2nd,...)  29th
 !!     (4) %Z -- minutes from UTC                          -0240
 !!         %z -- -+hh:mm from UTC                          -04:00
+!!         %T -- -+hhmm  from UTC                          -0400
 !!     (5) %h -- hours, 00 to 23                           10
 !!         %H -- hour (1 to 12, or twelve-hour clock)      10
 !!         %N -- midnight< AM <=noon; noon<= PM <midnight  AM
@@ -1338,6 +1352,7 @@ end function fmtdate
 !!         %J -- Julian  date                              2457599.121
 !!         %j -- integer value of Julian Date(Julian Day)  2457599
 !!         %O -- Ordinal day (day of year)                 211
+!!         %o -- Whole days since Unix Epoch date          17011
 !!         %U -- day of week, 1..7 Sunday=1                6
 !!         %u -- day of week, 1..7 Monday=1                5
 !!         %i -- ISO week of year 1..53                    30
@@ -1353,6 +1368,7 @@ end function fmtdate
 !!         %% -- a literal %                               %
 !!         %t -- tab character
 !!         %b -- blank character
+!!         %B -- exclamation(bang) character
 !!         %n -- new line (system dependent)
 !!         %q -- single quote (apostrophe)
 !!         %Q -- double quote
@@ -1369,17 +1385,23 @@ end function fmtdate
 !!    keywords the following substitutions occur:
 !!
 !!      "iso-8601",
-!!      "iso"        ==> %Y-%M-%DT%h:%m:%s%Z
+!!      "iso"        ==> %Y-%M-%DT%h:%m:%s%z
 !!      "iso-8601W",
 !!      "isoweek"    ==> %I 2016-W30-5
 !!      "sql"        ==> "%Y-%M-%D %h:%m:%s.%x"
 !!      "sqlday"     ==> "%Y-%M-%D"
 !!      "sqltime"    ==> "%h:%m:%s.%x"
-!!      "rfc-2822"   ==> %w, %D %l %Y %h:%m:%s %Z
-!!      "rfc-3339"   ==> %Y-%M-%DT%h:%m:%s%Z
+!!      "rfc-2822"   ==> %w, %D %l %Y %h:%m:%s %T
+!!      "rfc-3339"   ==> %Y-%M-%DT%h:%m:%s%z
 !!      "date"       ==> %w %l %D %h:%m:%s UTC%z %Y
 !!      "short"      ==> %w, %l %d, %Y %H:%m:%s %N UTC%z
 !!      "long"," "   ==> %W, %L %d, %Y %H:%m:%s %N UTC%z
+!!      "suffix"     ==> %Y%D%M%h%m%s
+!!      "formal"     ==> The %d of %L %Y
+!!      "lord"       ==> the %d day of %L in the year of our Lord %Y
+!!      "easter"     ==> FOR THE YEAR OF THE CURRENT DATE:
+!!                       Easter day: the %d day of %L in the year of our Lord %Y
+!!      "all"        ==> A SAMPLE OF DATE FORMATS
 !!
 !!    otherwise the following words are replaced with the most
 !!    common macros:
@@ -1425,6 +1447,7 @@ usage=[ CHARACTER(LEN=128) :: &
 &'     %%d -- day of month, with suffix (1st, 2nd,...)  %d     ',&
 &' (4) %%Z -- minutes from UTC                          %Z     ',&
 &'     %%z -- -+hh:mm from UTC                          %z     ',&
+&'     %%T -- -+hhmm  from UTC                          %T     ',&
 &' (5) %%h -- hours, 00 to 23                           %h     ',&
 &'     %%H -- hour (1 to 12, or twelve-hour clock)      %H     ',&
 &'     %%N -- midnight< AM <=noon; noon<= PM <midnight  %N     ',&
@@ -1437,6 +1460,7 @@ usage=[ CHARACTER(LEN=128) :: &
 &'     %%J -- Julian  date                              %J     ',&
 &'     %%j -- integer value of Julian Date(Julian Day)  %j     ',&
 &'     %%O -- Ordinal day (day of year)                 %O     ',&
+&'     %%o -- Whole days since Unix Epoch date          %o     ',&
 &'     %%U -- day of week, 1..7 Sunday=1                %U     ',&
 &'     %%u -- day of week, 1..7 Monday=1                %u     ',&
 &'     %%i -- ISO week of year 1..53                    %i     ',&
@@ -1452,6 +1476,7 @@ usage=[ CHARACTER(LEN=128) :: &
 &'     %%%% -- a literal %%                               %%   ',&
 &'     %%t -- tab character                             %t     ',&
 &'     %%b -- blank character                           %b     ',&
+&'     %%B -- exclamation(bang) character               %B     ',&
 &'     %%n -- new line (system dependent)               %n     ',&
 &'     %%q -- single quote (apostrophe)                 %q     ',&
 &'     %%Q -- double quote                              %Q     ',&
@@ -1467,21 +1492,30 @@ usage=[ CHARACTER(LEN=128) :: &
 &'%bIf the format is composed entirely of one of the following ',&
 &'%bkeywords the following substitutions occur:                ',&
 &'%b  "iso-8601",                                              ',&
-&'%b  "iso"        ==> %%Y-%%M-%%DT%%h:%%m:%%s%%Z             %Y-%M-%DT%h:%m:%s%Z     ',&
+&'%b  "iso"        ==> %%Y-%%M-%%DT%%h:%%m:%%s%%z             %Y-%M-%DT%h:%m:%s%z     ',&
 &'%b  "iso-8601W",                                                                    ',&
 &'%b  "isoweek"    ==> %%I                              %I                            ',&
 &'%b  "sql"        ==> "%%Y-%%M-%%D %%h:%%m:%%s.%%x"          "%Y-%M-%D %h:%m:%s.%x"  ',&
 &'%b  "sqlday"     ==> "%%Y-%%M-%%D"                      "%Y-%M-%D"                  ',&
 &'%b  "sqltime"    ==> "%%h:%%m:%%s.%%x"                   "%h:%m:%s.%x"              ',&
-&'%b  "rfc-2822"   ==> %%w, %%D %%l %%Y %%h:%%m:%%s %%Z        ',&
-&'%b                   %w, %D %l %Y %h:%m:%s %Z                ',&
-&'%b  "rfc-3339"   ==> %%Y-%%M-%%DT%%h:%%m:%%s%%Z             %Y-%M-%DT%h:%m:%s%Z     ',&
+&'%b  "rfc-2822"   ==> %%w, %%D %%l %%Y %%h:%%m:%%s %%T        ',&
+&'%b                   %w, %D %l %Y %h:%m:%s %T                ',&
+&'%b  "rfc-3339"   ==> %%Y-%%M-%%DT%%h:%%m:%%s%%z             %Y-%M-%DT%h:%m:%s%z     ',&
 &'%b  "date"       ==> %%w %%l %%D %%h:%%m:%%s UTC%%z %%Y      ',&
 &'%b                   %w %l %D %h:%m:%s UTC%z %Y              ',&
 &'%b  "short"      ==> %%w, %%l %%d, %%Y %%H:%%m:%%s %%N UTC%%z',&
 &'%b                   %w, %l %d, %Y %H:%m:%s %N UTC%z         ',&
 &'%b  "long"," "   ==> %%W, %%L %%d, %%Y %%H:%%m:%%s %%N UTC%%z',&
 &'%b                   %W, %L %d, %Y %H:%m:%s %N UTC%z         ',&
+&'%b  "suffix"     ==> %%Y%%D%%M%%h%%m%%s                      ',&
+&'%b                   %Y%D%M%h%m%s                            ',&
+&'%b  "formal"     ==> The %%d of %%L %%Y                      ',&
+&'%b                   The %d of %L %Y                         ',&
+&'%b  "lord"       ==> the %%d day of %%L in the year of our Lord %%Y                 ',&
+&'%b                   the %d day of %L in the year of our Lord %Y                    ',&
+&'%b  "easter"     ==> FOR THE YEAR OF THE CURRENT DATE:       ',&
+&'%b                     Easter day: the %%d day of %%L in the year of our Lord %%Y   ',&
+&'%b  "all"        ==> A SAMPLE OF DATE FORMATS                ',&
 &'%botherwise the following words are replaced with the most   ',&
 &'%bcommon macros:                                             ',&
 &'%b   year          %%Y  %Y                                   ',&
@@ -1612,7 +1646,7 @@ character(len=*),parameter::ident="@(#)M_time::guessdate(3f): Guess format of a 
 
 
 ! NOTE : Main constraint is that day is input BEFORE year unless use YYYY-MM-DD and a : implies HH:MM:SS, no timezone names
-!        Not rigorous. Gets most common formats but can easily make errors in all but simple unambigous common date formats
+!        Not rigorous. Gets most common formats but can easily make errors in all but simple unambigious common date formats
 character(len=*),intent(in)       :: datestring ! Date in string format
 character(len=:),allocatable      :: datestring_local ! Date in string format
 character(len=:),allocatable      :: temp
@@ -1682,7 +1716,7 @@ integer,optional                  :: ier
    datestring_local=datestring_local//'                 '  ! pad string so substitute will fit if old string shorter than new string
    !make sure spaces are around month names
    call substitute(datestring_local,'JANUARY',' JAN ')
-   call substitute(datestring_local,'FEBUARY',' FEB ')
+   call substitute(datestring_local,'FEBRUARY',' FEB ')
    call substitute(datestring_local,'MARCH',' MAR ')
    call substitute(datestring_local,'APRIL',' APR ')
    call substitute(datestring_local,'MAY',' MAY ')
@@ -1837,9 +1871,9 @@ integer,optional                  :: ier
          read(buff,*,iostat=ios) idy,mon,iye
          if(ios.ne.0)cycle INFINITE
       endif
-      if(iye.le.99)then
-         iye=iye+2000                                       ! Cope with two digit year (assume 21st century.)
-      endif
+      !!if(iye.le.99)then
+      !!   iye=iye+2000                                       ! Cope with two digit year (assume 21st century.)
+      !!endif
       if(mon.lt.1.or.mon.gt.12) cycle INFINITE              ! Check range of months
       if(mon.eq.2) then                                     ! Special check for Feb.
          if((iye/4)*4.eq.iye) then                          ! Leap year
@@ -2664,24 +2698,42 @@ end function get_timezone
 !!    function sec2days(seconds,crop) result(dhms)
 !!
 !!     real(kind=realtime),intent(in) :: seconds
+!!       or
+!!     integer,intent(in)             :: seconds
+!!       or
+!!     real,intent(in)                :: seconds
+!!       or
+!!     character(len=*)               :: seconds
+!!
 !!     logical,intent(in),optional    :: crop
 !!     character(len=:),allocatable   :: dhms
 !!
 !!##DESCRIPTION
-!!       Given an integer number of seconds convert it to a string
-!!       of the form
+!!    Given a number of seconds convert it to a string of the form
 !!
-!!          dd-hh:mm:ss
+!!       dd-hh:mm:ss
 !!
-!!       Where dd is days, hh hours, mm minutes and ss seconds.
+!!    where dd is days, hh hours, mm minutes and ss seconds.
 !!
 !!##OPTIONS
 !!    seconds    number of seconds to convert to string of form dd-hh:mm:ss. May
-!!               be of type INTEGER, REAL, or REAL(KIND=REALTIME).
+!!               be of type INTEGER, REAL, REAL(KIND=REALTIME), or CHARACTER.
+!!
+!!               CHARACTER strings may be of the form
+!!               NNdNNhNNmNNs. Case,spaces and underscores are
+!!               ignored. Allowed aliases for d,h,m, and s units are
+!!
+!!                   d -  days,day
+!!                   m -  minutes,minute,min
+!!                   h -  hours,hour,hrs,hr
+!!                   s -  seconds,second,sec
+!!
+!!               The numeric values may represent floating point numbers.
+!!
 !!    crop       if .true., remove leading zero day values or day and hour values.
 !!               Optional, defaults to .false. .
 !!##RETURNS
-!!    dmhs       the returned string
+!!    dmhs       the returned string of form [d:h:]m:s
 !!
 !!##EXAMPLE
 !!
@@ -2692,7 +2744,8 @@ end function get_timezone
 !!     implicit none
 !!        write(*,*)sec2days(129860)
 !!        write(*,*)sec2days(80000.0d0)
-!!        write(*,*)sec2days(80000,crop=.true.)
+!!        write(*,*)sec2days(80000.0,crop=.true.)
+!!        write(*,*)sec2days('1 day 2.0hr 100 min 300.0seconds')
 !!     end program demo_sec2days
 !!
 !!    results:
@@ -2700,20 +2753,36 @@ end function get_timezone
 !!     1-12:04:20
 !!     0-22:13:20
 !!     22:13:20
+!!     1-03:45:00
 !===================================================================================================================================
 function sec2days(seconds,crop) result(dhms)
-character(len=*),parameter::ident="@(#)M_time::sec2days(3f): converts seconds to string showing days of form D-HH:MM:SS"
-class(*),intent(in)           :: seconds
-logical,intent(in),optional   :: crop
-character(len=:),allocatable  :: dhms
-   character(len=40)          :: scratch
-   integer                    :: days, hours, minutes, secsleft
-   integer,parameter          :: one_day=86400
-   integer,parameter          :: one_hour=3600
-   integer,parameter          :: one_minute=60
-   logical                    :: crop_local
-   integer                    :: iprint
-   logical                    :: negative
+use M_strings, only: split, compact, s2v, substitute, lower, transliterate
+
+!use iso_fortran_env, only : int64
+! on this platform, (select_int_kind(i),i=1,100) returns
+! 1:2=1 ,3:4=2 ,5:9=4 ,10:18= 8 ,19:38=16 ,39:=-1
+integer                  :: i
+integer,parameter        :: k(38)=[(selected_int_kind(i),i=1,38)]
+integer,parameter        :: int128=k(38)
+
+character(len=*),parameter::ident="&
+&@(#)M_time::sec2days(3f): converts seconds or string of form IId JJh KKm LLs to string showing days of form D-HH:MM:SS"
+class(*),intent(in)               :: seconds
+logical,intent(in),optional       :: crop
+character(len=:),allocatable      :: dhms
+   real(kind=realtime), parameter :: units_hl(4)=[ 86400.0d0, 3600.0d0, 60.0d0, 1.0d0 ]
+   character(len=40)              :: scratch
+   integer(kind=int128)           :: days, hours, minutes, secsleft
+   integer,parameter              :: one_day=86400
+   integer,parameter              :: one_hour=3600
+   integer,parameter              :: one_minute=60
+   logical                        :: crop_local
+   integer                        :: iprint
+   logical                        :: negative
+   integer                        :: ilast
+   character(len=:),allocatable   :: strlocal
+   character(len=80),allocatable  :: array(:)
+   doubleprecision                :: dtime
 
    !  Convert input value to nearest integer
    !  Notice that the value SECONDS can be any of several types ( INTEGER,REAL,REAL(KIND=REALTIME))
@@ -2721,9 +2790,54 @@ character(len=:),allocatable  :: dhms
    type is (integer);               secsleft=seconds
    type is (real);                  secsleft=nint(seconds)
    type is (real(kind=realtime));   secsleft=nint(seconds)
+   type is (character(len=*))
+
+      ! note _ is removed from input strings to allow use of _ every three digits in a number as sometimes seen in Java, perl, ...
+      strlocal=compact(lower(transliterate(seconds,"_'",'')),'')//'                '   ! add whitespace to make room for spaces
+
+      call substitute(strlocal,'days','d')                      ! from long names to short names substitute common aliases for units
+      call substitute(strlocal,'day','d')
+      call substitute(strlocal,'hours','h')
+      call substitute(strlocal,'hour','h')
+      call substitute(strlocal,'hrs','h')
+      call substitute(strlocal,'hr','h')
+      call substitute(strlocal,'minutes','m')
+      call substitute(strlocal,'minute','m')
+      call substitute(strlocal,'min','m')
+      call substitute(strlocal,'seconds','s')
+      call substitute(strlocal,'second','s')
+      call substitute(strlocal,'secs','s')
+      call substitute(strlocal,'sec','s')
+      call substitute(strlocal,'weeks','w')
+      call substitute(strlocal,'week','w')
+      call substitute(strlocal,'wks','w')
+      call substitute(strlocal,'wk','w')
+
+      call substitute(strlocal,'s','s ')          ! assuming only one suffix character and not too many to exceed length of strlocal
+      call substitute(strlocal,'m','m ')
+      call substitute(strlocal,'h','h ')
+      call substitute(strlocal,'d','d ')
+      call substitute(strlocal,'w','w ')
+
+      dtime=0.0d0
+      call split(strlocal,array,' ')
+
+      do i=1,size(array)
+         ilast=len_trim(array(i))
+         select case(array(i)(ilast:ilast))
+         case('w'); dtime=dtime+s2v(array(i)(:ilast-1))*units_hl(1)*7
+         case('d'); dtime=dtime+s2v(array(i)(:ilast-1))*units_hl(1)
+         case('h'); dtime=dtime+s2v(array(i)(:ilast-1))*units_hl(2)
+         case('m'); dtime=dtime+s2v(array(i)(:ilast-1))*units_hl(3)
+         case('s'); dtime=dtime+s2v(array(i)(:ilast-1))*units_hl(4)
+         case default
+            dtime=dtime+s2v(array(i))
+         end select
+      enddo
+      secsleft=int(dtime,kind=k(38))
    end select
 
-   if(present(crop))then    ! whether to trim casees where(days=0) and (hours=0 when days=0) from output or always show dd-hh:mm:ss
+   if(present(crop))then    ! whether to trim cases where(days=0) and (hours=0 when days=0) from output or always show dd-hh:mm:ss
       crop_local=crop
    else
       crop_local=.false.
@@ -2790,7 +2904,7 @@ end function sec2days
 !!      If "dd-" is present, units for the numbers are assumed to
 !!      proceed from day to hour to minute to second. But if no
 !!      day is present, the units are assumed to proceed from second
-!!      to minutes to hour from left to ring. That is ...
+!!      to minutes to hour from left to right. That is ...
 !!
 !!         [-]dd-hh:mm:ss
 !!         [-]dd-hh:mm
@@ -2800,8 +2914,13 @@ end function sec2days
 !!         mm:ss
 !!         ss
 !!
-!!          Where dd is days, hh hours, mm minutes and ss seconds.
-!!          A decimal fraction is supported on the seconds.
+!!          Where dd is days, hh hours, mm minutes and ss seconds.  A decimal
+!!          fraction is supported on the seconds.
+!!
+!!          An optional suffix of s,m,h, or d may be supplied to indicate
+!!          seconds, minutes, hours, or days when a simple numeric value
+!!          is supplied.
+!!
 !!
 !!##OPTIONS
 !!       str   string of the general form dd-hh:mm:ss.nn
@@ -2831,11 +2950,12 @@ end function sec2days
 !!     one day    86400.000000000000
 !===================================================================================================================================
 function days2sec(str) result(time)
-use M_strings, only: split, compact, s2v
+use M_strings, only: split, compact, s2v, substitute, lower, transliterate
 implicit none
-character(len=*),parameter::ident="@(#)M_time::days2sec(3f): convert string [[-]dd-]hh:mm:ss.nn to seconds"
+character(len=*),parameter::ident="&
+&@(#)M_time::days2sec(3f): convert string [[-]dd-]hh:mm:ss.nn to seconds or string IId JJh KKm LLs to seconds"
 character(len=*),intent(in)       :: str
-real(kind=realtime)                     :: time
+real(kind=realtime)               :: time
 ! Supported input syntax:
 !    [-]dd-hh:mm:ss
 !          hh:mm:ss
@@ -2846,37 +2966,89 @@ real(kind=realtime)                     :: time
    character(len=128),allocatable :: array(:)
    real(kind=realtime), parameter :: units_lh(4)=[ 1.0d0, 60.0d0, 3600.0d0, 86400.0d0 ]
    real(kind=realtime), parameter :: units_hl(4)=[ 86400.0d0, 3600.0d0, 60.0d0, 1.0d0 ]
-   integer                        :: i, icount, iwords
+   integer                        :: i, icount, iwords, ilast
    logical                        :: negative
 
    time=0.0d0
-   strlocal=compact(str) ! remove leading and trailing spaces
+   strlocal=compact(str,'')                       ! remove whitespace
+   strlocal=transliterate(strlocal,"_'",'')       ! remove single quotes,underscores sometimes used in numbers
+   strlocal=lower(strlocal)//'                '   ! change to lowercase and add whitespace to make room for spaces
+
    if(len(strlocal).eq.0)then
-      return
-   endif
-   if(strlocal(1:1).eq.'-')then ! allow negative prefix as first character but remove it and change sign of value at end
-      negative=.true.
-      strlocal(1:1)=' '
-   else
-      negative=.false.
-   endif
-   call split(strlocal,array,'-')
-   if(index(strlocal,'-').gt.0)then                    ! found a dash, assume first word is in days DD-
-      call split(strlocal,array,' -:')
-      iwords=size(array)
-      do i=1,min(4,iwords)
-         time=time+s2v(array(i))*units_hl(i)
-      enddo
-   else                                                ! no dash, assume no days, assume max of 3 values HH:MM:SS
-      call split(strlocal,array,' :')
+      time=0.0d0
+   elseif(scan(strlocal,'smhdw').ne.0)then        ! unit code values not DD-HH:MM:SS either plain number or unit numbers
+      call substitute(strlocal,'days','d')        ! from long names to short names substitute common aliases for units
+      call substitute(strlocal,'day','d')
+      call substitute(strlocal,'hours','h')
+      call substitute(strlocal,'hour','h')
+      call substitute(strlocal,'hrs','h')
+      call substitute(strlocal,'hr','h')
+      call substitute(strlocal,'minutes','m')
+      call substitute(strlocal,'minute','m')
+      call substitute(strlocal,'min','m')
+      call substitute(strlocal,'seconds','s')
+      call substitute(strlocal,'second','s')
+      call substitute(strlocal,'secs','s')
+      call substitute(strlocal,'sec','s')
+      call substitute(strlocal,'weeks','w')
+      call substitute(strlocal,'week','w')
+      call substitute(strlocal,'wks','w')
+      call substitute(strlocal,'wk','w')
+
+      call substitute(strlocal,'s','s ')          ! assuming only one suffix character and not too many to exceed length of strlocal
+      call substitute(strlocal,'m','m ')
+      call substitute(strlocal,'h','h ')
+      call substitute(strlocal,'d','d ')
+      call substitute(strlocal,'w','w ')
+      call split(strlocal,array,' ')
       iwords=size(array)
       icount=0
-      do i=min(iwords,4),1,-1
+      do i=iwords,1,-1
          icount=icount+1
-         time=time+s2v(array(i))*units_lh(icount)
+         ilast=len_trim(array(i))
+         select case(array(i)(ilast:ilast))
+         case('w'); time=time+s2v(array(i)(:ilast-1))*units_hl(1)*7
+         case('d'); time=time+s2v(array(i)(:ilast-1))*units_hl(1)
+         case('h'); time=time+s2v(array(i)(:ilast-1))*units_hl(2)
+         case('m'); time=time+s2v(array(i)(:ilast-1))*units_hl(3)
+         case('s'); time=time+s2v(array(i)(:ilast-1))*units_hl(4)
+         case default
+                    time=time+s2v(array(i))
+         end select
       enddo
+   else
+
+      if(strlocal(1:1).eq.'-')then          ! allow negative prefix as first character but remove it and change sign of value at end
+         negative=.true.
+         strlocal(1:1)=' '
+      else
+         negative=.false.
+      endif
+
+      call split(trim(strlocal),array,' -:')
+      iwords=size(array)
+
+      if(iwords.gt.4)then
+         write(*,*)'*days2sec* error: too many values in '//trim(strlocal)
+         iwords=4
+      endif
+
+      if(index(strlocal,'-').gt.0)then                ! found a dash, assume has days and form DD-HH:MM:SS, DD-, DD-HH, DD-HH:MM
+         do i=1,iwords
+            time=time+s2v(array(i))*units_hl(i)
+         enddo
+      else                                            ! no dash, assume no days, either HH:MM:SS or MM:SS, SS
+         icount=0
+         do i=iwords,1,-1
+            icount=icount+1
+            ilast=len_trim(array(i))
+            time=time+s2v(array(i))*units_lh(icount)
+         enddo
+      endif
+
+      if(negative)time=-time
+
    endif
-   if(negative)time=-time
 
 end function days2sec
 !===================================================================================================================================
@@ -3419,10 +3591,10 @@ class(date_time),intent(in)           :: self
 character(len=*),intent(in),optional  :: fmt
    character(len=:),allocatable          :: fmtlocal
    character(len=:),allocatable          :: string
-   character(len=*),parameter            :: iso_fmt='%Y-%M-%DT%h:%m:%s.%x%Z'
+   character(len=*),parameter            :: iso_fmt='%Y-%M-%DT%h:%m:%s.%x%z'
    character(len=*),parameter            :: usa_fmt='%W, %L %d, %Y %H:%m:%s %N'
-   character(len=*),parameter            :: ymd_fmt='%Y-%M-%D %h:%m:%s.%x%Z'
-   character(len=*),parameter            :: mdy_fmt='%M/%D/%Y %h:%m:%s.%x%Z'
+   character(len=*),parameter            :: ymd_fmt='%Y-%M-%D %h:%m:%s.%x%z'
+   character(len=*),parameter            :: mdy_fmt='%M/%D/%Y %h:%m:%s.%x%z'
    if(present(fmt))then
       fmtlocal=fmt
    else
@@ -3639,3 +3811,6 @@ end module M_time_oop
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
+!   call unit_check_start('julian_to_date')
+!   call unit_check_good('d2u')
+!   call unit_check_good('julian_to_date')
