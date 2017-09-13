@@ -33,6 +33,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                 s  seconds,second and sec                                      ',&
 '                                                                                ',&
 '   -crop       trim leading zero values from output                             ',&
+'   -radix      character used as decimal separator                              ',&
 '   --help      display this help and exit                                       ',&
 '   --version   output version information and exit                              ',&
 '                                                                                ',&
@@ -81,6 +82,7 @@ end subroutine help_usage
 !!                  s  seconds,second and sec
 !!
 !!    -crop       trim leading zero values from output
+!!    -radix      character used as decimal separator
 !!    --help      display this help and exit
 !!    --version   output version information and exit
 !!
@@ -116,7 +118,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sat, Aug 26th, 2017 2:11:09 PM>',&
+'@(#)COMPILED:       Mon, Sep 11th, 2017 6:52:00 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -124,15 +126,24 @@ endif
 end subroutine help_version
 !-----------------------------------------------------------------------------------------------------------------------------------
 program demo_sec2days
-use M_kracken, only: kracken, lget, sget
+use M_kracken, only: kracken, lget, sget, IPvalue
 use M_time, only :   sec2days, realtime
+use M_strings, only :   substitute
 implicit none
 character(len=*),parameter :: ident="@(#) given string of form days-hh:mm:ss or IId JJh KKm LLs convert to seconds'"
 real(kind=realtime), parameter :: units_hl(4)=[ 86400.0d0, 3600.0d0, 60.0d0, 1.0d0 ]
 character(len=:),allocatable   :: strlocal
-   call kracken('sec2days',' -oo -crop .F -help .F. -version .F.')    ! parse command line
-   call help_usage(lget('sec2days_help'))                             ! display help information and stop if true
-   call help_version(lget('sec2days_version'))                        ! display version information and stop if true
-   strlocal=sec2days(trim(sget('sec2days_oo')),lget('sec2days_crop')) ! get command line option and convert to dd-hh:mm:ss string
+character(len=:),allocatable   :: radix
+character(len=IPvalue)         :: line
+   call kracken('sec2days',' -oo -crop .F -radix . -help .F. -version .F.') ! parse command line
+   call help_usage(lget('sec2days_help'))                                   ! display help information and stop if true
+   call help_version(lget('sec2days_version'))                              ! display version information and stop if true
+   radix=trim(sget('sec2days_radix'))
+   line=sget('sec2days_oo')
+   if(radix.ne.'.')then
+      call substitute(line,'.',' ')
+      call substitute(line,radix,'.')
+   endif
+   strlocal=sec2days(trim(line),lget('sec2days_crop')) ! get command line option and convert to dd-hh:mm:ss string
    write(*,'(a)')strlocal
 end program demo_sec2days

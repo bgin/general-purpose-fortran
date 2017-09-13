@@ -17,13 +17,29 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
 '       Exit with a status code indicating failure.                              ',&
-'                                                                                ',&
+'OPTIONS                                                                         ',&
 '       --help     display this help and exit                                    ',&
 '       --version  output version information and exit                           ',&
 '       --verbose  display ASCII graphic of cockroach                            ',&
 '                                                                                ',&
 'EXAMPLE                                                                         ',&
-'       _false && echo UNSUCCESSFUL && echo DID NOT WORK                         ',&
+'      Bash example:                                                             ',&
+'                                                                                ',&
+'         _false || echo SHOULD PRINT THIS                                       ',&
+'                                                                                ',&
+'         if _false                                                              ',&
+'         then                                                                   ',&
+'            echo command got zero exit $?                                       ',&
+'         else                                                                   ',&
+'            echo command got non-zero exit $?                                   ',&
+'         fi                                                                     ',&
+'                                                                                ',&
+'      Expected output::                                                         ',&
+'         ERROR STOP                                                             ',&
+'         SHOULD PRINT THIS                                                      ',&
+'         ERROR STOP                                                             ',&
+'         command got non-zero exit 1                                            ',&
+'                                                                                ',&
 'SEE ALSO                                                                        ',&
 '       _true(1f)                                                                ',&
 '']
@@ -43,14 +59,30 @@ end subroutine help_usage
 !!
 !!##DESCRIPTION
 !!        Exit with a status code indicating failure.
-!!
+!!##OPTIONS
 !!        --help     display this help and exit
 !!        --version  output version information and exit
 !!        --verbose  display ASCII graphic of cockroach
 !!
 !!##EXAMPLE
 !!
-!!        _false && echo UNSUCCESSFUL && echo DID NOT WORK
+!!       Bash example:
+!!
+!!          _false || echo SHOULD PRINT THIS
+!!
+!!          if _false
+!!          then
+!!             echo command got zero exit $?
+!!          else
+!!             echo command got non-zero exit $?
+!!          fi
+!!
+!!       Expected output::
+!!          ERROR STOP
+!!          SHOULD PRINT THIS
+!!          ERROR STOP
+!!          command got non-zero exit 1
+!!
 !!##SEE ALSO
 !!        _true(1f)
 !===================================================================================================================================
@@ -69,7 +101,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    do nothing, unsuccessfully>',&
 '@(#)VERSION:        1.0, 20170125>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Tue, Aug 22nd, 2017 4:40:06 AM>',&
+'@(#)COMPILED:       Mon, Sep 11th, 2017 7:10:16 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

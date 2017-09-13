@@ -39,6 +39,12 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <div id="Container">
 <div id="Content">
 <html><head><title></title></head><body><table border="1">
+<tr><td><a href="mainpage.txt">mainpage.txt</a></td>
+<td>
+</td>
+<tr><td><a href="dox.in">dox.in</a></td>
+<td>
+</td>
 <tr><td><a href="source.html">source.html</a></td>
 <td>
 </td>
@@ -262,7 +268,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_math::polyarea(3f): compute the area bounded by a closed polygonal curve<br/>
 	M_math::extremum(3f):Find the minimum and maximum value in a REAL array<br/>
 	M_math::bds(3f): Basic Descriptive Statistics (based on a routine from the IBM collection)<br/>
-	M_math::skekur1(3f): variant on calculating skewness and kurtosis of an arrray<br/>
+	M_math::skekur1(3f): variant on calculating skewness and kurtosis of an array<br/>
 	M_math::skekurx(3f): COMPUTE UNBIASED ESTIMATOR OF THE POPULATION SKEWNESS AND KURTOSIS<br/>
 	M_math::stddev(3f): find standard deviation of a real array<br/>
 	M_math::almost(3f): function to compare two real numbers only up to a specified number of digits by calling ACCDIG(3f)<br/>
@@ -445,6 +451,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_strings::trimzeros(3fp): Delete trailing zeros from numeric decimal string<br/>
 	M_strings::listout(3f): copy icurve_lists to icurve_expanded expanding negative numbers to ranges (1 -10 means 1 thru 10)<br/>
 	M_strings::describe(3f): return string describing long name of a single character<br/>
+	getvals: read arbitrary number of values from a character variable up to size of values'<br/>
 	M_strings::string_to_values(3f): reads an array of numbers from a numeric string<br/>
 	M_strings::s2vs(3f): function returns array of values from a string<br/>
 	M_strings::isprint(3f): indicates if input character is a printable ASCII character<br/>
@@ -546,6 +553,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_time::date_to_unix(3f): Convert DAT date-time array to Unix Epoch Time<br/>
 	M_time::unix_to_date(3f): Converts Unix Time to DAT date-time array<br/>
 	M_time::d2o(3f): Converts DAT date-time array to Ordinal day<br/>
+	M_time::ordinal_to_date(3f): when given a valid year and day of the year returns the DAT array for the date<br/>
 	M_time::o2d(3f): Converts ordinal day to DAT date-time array<br/>
 	M_time::v2mo(3f): returns the month name of a Common month number<br/>
 	M_time::mo2d(3f): month name to DAT date-time array for 1st of that month in current year<br/>
@@ -564,6 +572,11 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_time::u2d(3f): Given Unix Epoch Time returns DAT date-time array<br/>
 	M_time::sec2days(3f): converts seconds or string of form IId JJh KKm LLs to string showing days of form D-HH:MM:SS<br/>
 	M_time::days2sec(3f): convert string [[-]dd-]hh:mm:ss.nn to seconds or string IId JJh KKm LLs to seconds<br/>
+	M_time::phase_of_moon(3f): return name for phase of moon for given date<br/>
+	M_time::moon_fullness(3f): return percentage of moon phase from new to full<br/>
+	M_time::easter(3f): calculate date for Easter given a year<br/>
+	M_time::ephemeris(3f): ephemeris position of planets for adjusting an equitorial telescope<br/>
+	M_time::system_sleep(3f): call sleep(3c) or usleep(3c)<br/>
 	M_time::call_sleep(3fp): call sleep(3c)<br/>
 	M_time::call_usleep(3fp): call usleep(3c)<br/>
 	M_time::now_ex(3f): use of now(3f) outside of a module<br/>
@@ -664,6 +677,9 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <td>
 	strgar3(3f):read a string into an array USING CALCULATOR passing double-quoted strings<br/>
 	errc(3f): function for specifying error curve numbers<br/>
+</td>
+<tr><td><a href="doxygen.exe.stackdump">doxygen.exe.stackdump</a></td>
+<td>
 </td>
 <tr><td><a href="C-gauss.c">C-gauss.c</a></td>
 <td>

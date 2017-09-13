@@ -245,6 +245,11 @@ supplemental_source.sh  # create user-supplied procedures "c" and "juown1" requi
 getprograms.sh          # get some programs to add to the procedures
 makemakefile.sh         # create makefile
 ####################################################################################################################################
+echo 'create documents in tmp/doc, tmp/man, and tmp/html'
+(MAKEMANDIR)
+build.apropos
+mank.sh           # make html index pages of the man pages
+####################################################################################################################################
 echo 'copy permanent document repository to tmp area to create tar file from'
 cp -r -p doc tmp/
 ####################################################################################################################################
@@ -261,14 +266,10 @@ for NAME in \
 do
    cp `which $NAME`  tmp/scripts/
 done
+
 cp -r $(dirname $(which manserver) )/manserver_dir/ tmp/scripts/
 cp /home/urbanjs/.twm/scripts_vi/vimrc tmp/
 cp /home/urbanjs/.twm/scripts_vi/exrc tmp/
-####################################################################################################################################
-echo 'create documents in tmp/doc, tmp/man, and tmp/html'
-(MAKEMANDIR)
-build.apropos
-mank.sh           # make html index pages of the man pages
 ####################################################################################################################################
 # extract test programs for M_pixel module and run them to test man(1) pages
 # and generate GIF images for HTML versions of the man page, which man2html(1)
@@ -331,7 +332,7 @@ s/$/<\/td>/
 echo 'create tar file for downloading'
 (cd tmp;tar cvfz ../just4.tgz *)
 #----------------------------------------------------------------------------------------------------------------------------------#
-doxygen.sh
+(doxygen.sh)
 #----------------------------------------------------------------------------------------------------------------------------------#
 date
 )|tee LOG.setup_download.txt

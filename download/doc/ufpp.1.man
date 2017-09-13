@@ -100,7 +100,7 @@ DEFINITION
                { sequence of source statements}]
      $ENDIF                                               [! comment ]
      $IDENT    metadata                                   [! comment ]
-     $@(#)     metadata                                  [! comment ]
+     $@(#)     metadata                                   [! comment ]
      $INCLUDE  filename                                   [! comment ]
      $OUTPUT   filename  [-append]                        [! comment ]
      $DOCUMENT [comment|write|help|version] [-file NAME]

@@ -1,6 +1,6 @@
 NAME
 
-     scale(3f) - [INTRINSIC] Scale a real value
+     scale(3f) - [INTRINSIC:MODEL_COMPONENTS] Scale a real value
 
 SYNTAX
 
@@ -29,6 +29,9 @@ EXAMPLE
       integer :: i = 5
       print *, scale(x,i), x*radix(x)**i
     end program test_scale
+  Results:
+
+    0.570043862      0.570043862
 
 STANDARD
 

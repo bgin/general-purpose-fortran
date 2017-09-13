@@ -11,13 +11,12 @@ DESCRIPTION
 
    Read in strings and except for looking for month names remove
    non-numeric characters and try to convert a string assumed to represent
-   a date convert it to a date-time array.
+   a date to a date-time array.
 
-   Years should always be expressed as four-digit numbers, and except
-   for the special format yyyy-mm-dd the day should come after the
-   year. Named months are preferred. If ambiguous the order is assumed
-   to be day - month - year. Named months are preferred. Times are
-   assumed to be of the form HH:MM:SS
+   Years should always be expressed as four-digit numbers, and except for
+   the special format yyyy-mm-dd the day should come after the year. Named
+   months are preferred. If ambiguous the order is assumed to be day -
+   month - year. Times are assumed to be of the form HH:MM:SS
 
    It is planned that this routine will be superseded. As an alternative,
    a C routine exists in the standard C libraries that allows for

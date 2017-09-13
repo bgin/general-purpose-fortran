@@ -295,7 +295,7 @@ end subroutine fstop
 !!
 !!    and stops the program.
 !!##OPTIONS
-!!     NAME         the unit test name passed onto the goodbad(1) command
+!!     NAME         the unit test name passed on to the goodbad(1) command
 !!     EXPRESSION   the logical expression to evaluate
 !!     MESSAGE      optional message to display when performing test
 !!
@@ -347,6 +347,7 @@ character(len=*),intent(in),optional :: message
    if(.not.logical_expression)then
       call stderr('unit_check:        STOPPING PROGRAM ON TEST OF '//trim(name))    ! write to standard error
       call execute_command_line('goodbad '//trim(name)//' bad')
+      call execute_command_line('goodbad '//trim(name)//' --show')
       stop 1
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -386,11 +387,20 @@ end subroutine unit_check
 !!     x=10
 !!     call unit_check_start('myroutine')
 !!
-!!     call unit_check('myroutine', x.gt.3 ,'test if big enough')
-!!     call unit_check('myroutine', x.lt.100 ,'test if small enough')
+!!     call unit_check_start('myroutine_long',' &
+!!       & -section        3                    &
+!!       & -library        libjust4             &
+!!       & -filename       `pwd`/M_debug.FF     &
+!!       & -documentation  y                    &
+!!       & -ufpp           y                    &
+!!       & -ccall          n                    &
+!!       & -archive        JUST4.a              &
+!!       & ')
 !!
-!!     write(*,*)'checks on "myroutine" passed'
-!!     call unit_check_good('myroutine')
+!!     call unit_check('myroutine', x.gt.3 ,   'test if big enough')
+!!     call unit_check('myroutine', x.lt.100 , 'test if small enough')
+!!
+!!     call unit_check_good('myroutine','store that checks passed')
 !!
 !!     end program demo_unit_check_start
 !!

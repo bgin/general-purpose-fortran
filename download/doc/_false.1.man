@@ -7,12 +7,28 @@ SYNOPSIS
 
 DESCRIPTION
        Exit with a status code indicating failure.
-
+OPTIONS
        --help     display this help and exit
        --version  output version information and exit
        --verbose  display ASCII graphic of cockroach
 
 EXAMPLE
-       _false && echo UNSUCCESSFUL && echo DID NOT WORK
+      Bash example:
+
+         _false || echo SHOULD PRINT THIS
+
+         if _false
+         then
+            echo command got zero exit $?
+         else
+            echo command got non-zero exit $?
+         fi
+
+      Expected output::
+         ERROR STOP
+         SHOULD PRINT THIS
+         ERROR STOP
+         command got non-zero exit 1
+
 SEE ALSO
        _true(1f)

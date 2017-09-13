@@ -1,6 +1,6 @@
 NAME
 
-     rank(3f) - [INTRINSIC] Rank of a data object
+     rank(3f) - [INTRINSIC:ARRAY INQUIRY] Rank of a data object
 
 SYNTAX
 

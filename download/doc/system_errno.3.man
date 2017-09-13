@@ -1,9 +1,13 @@
 NAME
-   system_errno(3f) - [M_system] XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+   system_errno(3f) - [M_system] C error return value
 SYNOPSIS
    integer(kind=c_int) function system_errno()
 
 DESCRIPTION
+   Many C routines return an error code which can be queried by errno.
+   The M_system(3fm) is primarily composed of Fortran routines that call
+   C routines. In the cases where an error code is returned vi system_errno(3f)
+   these routines will indicate it.
 
 EXAMPLE
   Sample program:

@@ -17,7 +17,7 @@ DESCRIPTION
                   Special Files       4  Special files (usually found in /dev)
                   File Formats        5  File formats and conventions (eg. /etc/passwd)
                   Games               6  Games
-                  Miscellanous        7  Miscellaneous (including macro packages and conventions), e.g. man(7), groff(7)
+                  Miscellaneous       7  Miscellaneous (including macro packages and conventions), e.g. man(7), groff(7)
                   System Admin.       8  System administration commands (usually only for root)
                   Kernel Extensions   9  Kernel routines [Non standard]
 

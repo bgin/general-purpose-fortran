@@ -1,6 +1,6 @@
 NAME
 
-     fraction(3f) - [INTRINSIC] Fractional part of the model representation
+     fraction(3f) - [INTRINSIC:MODEL_COMPONENTS] Fractional part of the model representation
 
 DESCRIPTION
 

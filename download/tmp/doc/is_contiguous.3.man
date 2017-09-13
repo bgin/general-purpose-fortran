@@ -1,5 +1,5 @@
 NAME
-     is_contiguous(3f) - [INTRINSIC:INQUIRY] test if object is contiguous
+     is_contiguous(3f) - [INTRINSIC:ARRAY INQUIRY] test if object is contiguous
 
 SYNTAX
 

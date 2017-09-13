@@ -27,11 +27,20 @@ EXAMPLES
     x=10
     call unit_check_start('myroutine')
 
-    call unit_check('myroutine', x.gt.3 ,'test if big enough')
-    call unit_check('myroutine', x.lt.100 ,'test if small enough')
+    call unit_check_start('myroutine_long',' &
+      & -section        3                    &
+      & -library        libjust4             &
+      & -filename       `pwd`/M_debug.FF     &
+      & -documentation  y                    &
+      & -ufpp           y                    &
+      & -ccall          n                    &
+      & -archive        JUST4.a              &
+      & ')
 
-    write(*,*)'checks on "myroutine" passed'
-    call unit_check_good('myroutine')
+    call unit_check('myroutine', x.gt.3 ,   'test if big enough')
+    call unit_check('myroutine', x.lt.100 , 'test if small enough')
+
+    call unit_check_good('myroutine','store that checks passed')
 
     end program demo_unit_check_start
 

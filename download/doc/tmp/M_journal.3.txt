@@ -1,18 +1,23 @@
 NAME
-    M_journal(3fm) - [M_journal]write program messages to stdout and/or a log file
+    M_journal(3fm) - [M_journal]write program messages to stdout and/or a log
+    file
 SYNOPSIS
     use, M_journal , only : journal
 DESCRIPTION
 
-    For interactive programs in particular it is useful if all messages go thru the JOURNAL(3f) routine. This makes it easy to
-    write messages to a log file as well as standard output; to toggle time prefixes on and off; to turn on and off debug-mode
-    messages; control output paging and create replayable input journals.
+    For interactive programs in particular it is useful if all messages go thru
+    the JOURNAL(3f) routine. This makes it easy to write messages to a log file
+    as well as standard output; to toggle time prefixes on and off; to turn on
+    and off debug-mode messages; control output paging and create replayable
+    input journals.
 
-    The primary use of JOURNAL(3f) is to create journal files for interactive programs that can be replayed and/or be used to
-    verify program executions. Typically, you would echo what the user typed to the trail file as-is, and write output you write to
-    stdout as comments to the trail file so that the trail file can easily be read back in (by ignoring comments). So usually
-    things that are read from user input are using output with WHERE='T' and output that usually goes to stdout is written with
-    WHERE='SC'.
+    The primary use of JOURNAL(3f) is to create journal files for interactive
+    programs that can be replayed and/or be used to verify program executions.
+    Typically, you would echo what the user typed to the trail file as-is, and
+    write output you write to stdout as comments to the trail file so that the
+    trail file can easily be read back in (by ignoring comments). So usually
+    things that are read from user input are using output with WHERE='T' and
+    output that usually goes to stdout is written with WHERE='SC'.
 
          >      :
          >      :
@@ -31,8 +36,9 @@ DESCRIPTION
          >    call journal('SC',output)
          > enddo
 
-    In this example an output line was built with an internal write; but calls to journal(3f) with numeric values with and without
-    advancing I/O turned on are often used for simpler output:
+    In this example an output line was built with an internal write; but calls
+    to journal(3f) with numeric values with and without advancing I/O turned on
+    are often used for simpler output:
 
              I=10
              R=20.3
@@ -45,8 +51,9 @@ DESCRIPTION
       CALL JOURNAL('O',filename)
 
 
-    So that routines that do their output via JOURNAL(3f) can be used with and without programs generating trail files. That is,
-    destinations 'T' and 'C' are ignored unless a trail file has been requested.
+    So that routines that do their output via JOURNAL(3f) can be used with and
+    without programs generating trail files. That is, destinations 'T' and 'C'
+    are ignored unless a trail file has been requested.
 
 EXAMPLES
 

@@ -1,6 +1,6 @@
 NAME
 
-     spacing(3f) - [INTRINSIC] Smallest distance between two numbers of a given type
+     spacing(3f) - [INTRINSIC:MODEL_COMPONENTS] Smallest distance between two numbers of a given type
 
 SYNTAX
 

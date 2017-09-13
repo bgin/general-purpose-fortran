@@ -148,15 +148,13 @@ text=[ character(len=len(text(1))) ::                                           
 &'  now -uet  1469250060                 # alternate Unix Epoch date              ',&
 &'  now -date January 4th, 1999 10:20:30 # try to determine date from description.',&
 &'                                                                                ',&
-&'  now YEAR=%Y MONTH=%M DAY=%D                                                   ',&
-&'    YEAR=2009 MONTH=08 DAY=10                                                   ',&
+&'  now YEAR=%Y MONTH=%M DAY=%D          # YEAR=2009 MONTH=08 DAY=10              ',&
 &'                                                                                ',&
 &'  now HOUR=%h MINUTES=%m SECONDS=%s MILLISECONDS=%x                             ',&
-&'    HOUR=01 MINUTES=18 SECONDS=44 MILLISECONDS=946                              ',&
+&'      HOUR=01 MINUTES=18 SECONDS=44 MILLISECONDS=946                            ',&
 &'                                                                                ',&
 &'  # double-quotes are tricky (double them) to put in literally in this program: ',&
-&'  now ''""year-month-day"",""hour-minute-second""''                               ',&
-&'     "2017-04-23","14-41-09"                                                    ',&
+&'  now ''""year-month-day"",""hour-minute-second""'' #  "2017-04-23","14-41-09"  ',&
 &'                                                                                ',&
 &'  # quotes are easier to control using the single-letter macros(use %q and %Q): ',&
 &'  now QY-M-DQ,Qh:m:sQ                                                           ',&
@@ -202,7 +200,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)COPYRIGHT:      Copyright (C) 2009 John S. Urban>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sat, Aug 26th, 2017 7:22:29 PM>',&
+'@(#)COMPILED:       Mon, Sep 11th, 2017 6:48:36 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

@@ -1,5 +1,5 @@
 NAME
-    phase_of_moon(3fp) - [M_time] return name for phase of moon for given date
+    phase_of_moon(3f) - [M_time] return name for phase of moon for given date
 SYNOPSIS
   function phase_of_moon(datin)
 

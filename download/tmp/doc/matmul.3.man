@@ -1,5 +1,5 @@
 NAME
-     matmul(3f) - [INTRINSIC] matrix multiplication
+     matmul(3f) - [INTRINSIC:MATRIX] matrix multiplication
 
 SYNTAX
 

@@ -41,6 +41,7 @@ EXAMPLE
         %d -- day of month, with suffix (1st, 2nd,...)  29th
     (4) %Z -- minutes from UTC                          -0240
         %z -- -+hh:mm from UTC                          -04:00
+        %T -- -+hhmm  from UTC                          -0400
     (5) %h -- hours, 00 to 23                           10
         %H -- hour (1 to 12, or twelve-hour clock)      10
         %N -- midnight< AM <=noon; noon<= PM <midnight  AM
@@ -53,6 +54,7 @@ EXAMPLE
         %J -- Julian  date                              2457599.121
         %j -- integer value of Julian Date(Julian Day)  2457599
         %O -- Ordinal day (day of year)                 211
+        %o -- Whole days since Unix Epoch date          17011
         %U -- day of week, 1..7 Sunday=1                6
         %u -- day of week, 1..7 Monday=1                5
         %i -- ISO week of year 1..53                    30
@@ -68,6 +70,7 @@ EXAMPLE
         %% -- a literal %                               %
         %t -- tab character
         %b -- blank character
+        %B -- exclamation(bang) character
         %n -- new line (system dependent)
         %q -- single quote (apostrophe)
         %Q -- double quote
@@ -84,17 +87,23 @@ EXAMPLE
    keywords the following substitutions occur:
 
      "iso-8601",
-     "iso"        ==> %Y-%M-%DT%h:%m:%s%Z
+     "iso"        ==> %Y-%M-%DT%h:%m:%s%z
      "iso-8601W",
      "isoweek"    ==> %I 2016-W30-5
      "sql"        ==> "%Y-%M-%D %h:%m:%s.%x"
      "sqlday"     ==> "%Y-%M-%D"
      "sqltime"    ==> "%h:%m:%s.%x"
-     "rfc-2822"   ==> %w, %D %l %Y %h:%m:%s %Z
-     "rfc-3339"   ==> %Y-%M-%DT%h:%m:%s%Z
+     "rfc-2822"   ==> %w, %D %l %Y %h:%m:%s %T
+     "rfc-3339"   ==> %Y-%M-%DT%h:%m:%s%z
      "date"       ==> %w %l %D %h:%m:%s UTC%z %Y
      "short"      ==> %w, %l %d, %Y %H:%m:%s %N UTC%z
      "long"," "   ==> %W, %L %d, %Y %H:%m:%s %N UTC%z
+     "suffix"     ==> %Y%D%M%h%m%s
+     "formal"     ==> The %d of %L %Y
+     "lord"       ==> the %d day of %L in the year of our Lord %Y
+     "easter"     ==> FOR THE YEAR OF THE CURRENT DATE:
+                      Easter day: the %d day of %L in the year of our Lord %Y
+     "all"        ==> A SAMPLE OF DATE FORMATS
 
    otherwise the following words are replaced with the most
    common macros:

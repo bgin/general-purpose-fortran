@@ -383,12 +383,16 @@ end interface
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_errno(3f) - [M_system] XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+!!    system_errno(3f) - [M_system] C error return value
 !!##SYNOPSIS
 !!
 !!    integer(kind=c_int) function system_errno()
 !!
 !!##DESCRIPTION
+!!    Many C routines return an error code which can be queried by errno.
+!!    The M_system(3fm) is primarily composed of Fortran routines that call
+!!    C routines. In the cases where an error code is returned vi system_errno(3f)
+!!    these routines will indicate it.
 !!
 !!##EXAMPLE
 !!
@@ -659,20 +663,48 @@ end interface
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_umask(3fp) - [M_system] XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+!!    system_umask(3fp) - [M_system] set and get the file mode creation mask
 !!##SYNOPSIS
 !!
 !!    integer(kind=c_int) function system_umask(umask_value)
 !!
 !!##DESCRIPTION
+!!        The umask() function shall set the file mode creation mask of the
+!!        process to cmask and return the previous value of the mask. Only
+!!        the file permission bits of cmask (see <sys/stat.h>) are used;
+!!        the meaning of the other bits is implementation-defined.
+!!
+!!        The file mode creation mask of the process is used to turn off
+!!        permission bits in the mode argument supplied during calls to
+!!        the following functions:
+!!
+!!         *  open(), openat(), creat(), mkdir(), mkdirat(), mkfifo(), and mkfifoat()
+!!         *  mknod(), mknodat()
+!!         *  mq_open()
+!!         *  sem_open()
+!!
+!!        Bit positions that are set in cmask are cleared in the mode of the created file.
+!!
+!!##RETURN VALUE
+!!        The file permission bits in the value returned by umask() shall be
+!!        the previous value of the file mode creation mask. The state of any
+!!        other bits in that value is unspecified, except that a subsequent
+!!        call to umask() with the returned value as cmask shall leave the
+!!        state of the mask the same as its state before the first call,
+!!        including any unspecified use of those bits.
 !!
 !!##EXAMPLE
 !!
 !!   Sample program:
 !!
 !!    program demo_system_umask
-!!    use M_system, only: system_umask
+!!    use M_system, only: system_getumask, system_setumask
 !!    implicit none
+!!    integer value
+!!    value=system_getumask(002)
+!!    write(*,*)'VALUE=',value
+!!    value=system_setumask(value)
+!!    write(*,*)'VALUE=',value
 !!    end program demo_system_umask
 !===================================================================================================================================
 character(len=*),parameter :: ident_umask="@(#)M_system::system_umask(3f): call umask(3c)"

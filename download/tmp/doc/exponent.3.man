@@ -1,6 +1,6 @@
 NAME
 
-     exponent(3f) - [INTRINSIC] Exponent function
+     exponent(3f) - [INTRINSIC:MODEL_COMPONENTS] Exponent function
 
 SYNTAX
 

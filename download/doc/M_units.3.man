@@ -31,6 +31,8 @@ SYNOPSIS
    the anyscalar_to_real(3f) function (real,integer,doubleprecision) within
    the range allowed by the function.
 
+   Tables:
+
 DESCRIPTION
 
    M_units(3fm) is a Fortran module that collects together basic

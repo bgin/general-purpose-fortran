@@ -23,12 +23,20 @@ then
 ================================================================================
 EOF
       man -k .|
-      env LC_ALL=C /usr/bin/sort|uniq|cat -n >> $TFILE
+         expand |
+	 env LC_ALL=C sort --ignore-leading-blanks --dictionary-order --ignore-case --ignore-nonprinting -k 2,2 -k 4,4 |
+         uniq|
+	 cat -n >> $TFILE
       EDIT=${FCEDIT:-${EDITOR:-${VISUAL:-vim}}}
       $EDIT $TFILE
       rm $TFILE
    else
-      man -k .|env LC_ALL=C /usr/bin/sort|uniq|cat -n|more
+      man -k . |
+         expand |
+	 env LC_ALL=C sort --ignore-leading-blanks --dictionary-order --ignore-case --ignore-nonprinting -k 2,2 -k 4,4 |
+	 uniq |
+	 cat -n |
+	 more
    fi
 else
    man $*

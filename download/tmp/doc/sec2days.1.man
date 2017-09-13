@@ -23,6 +23,7 @@ OPTIONS
                  s  seconds,second and sec
 
    -crop       trim leading zero values from output
+   -radix      character used as decimal separator
    --help      display this help and exit
    --version   output version information and exit
 

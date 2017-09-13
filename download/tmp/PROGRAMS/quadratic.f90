@@ -110,7 +110,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    Calculate and print the roots of a quadratic formula even if they are complex>',&
 '@(#)VERSION:        1.0, 20170717>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Tue, Aug 22nd, 2017 4:41:54 AM>',&
+'@(#)COMPILED:       Mon, Sep 11th, 2017 7:13:19 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -122,7 +122,7 @@ use M_kracken, only : kracken, rgets, lget
 use M_math,    only : quadratic
 use M_strings, only : v2s
 implicit none
-character(len=*),parameter::ident="@(#)quadratic(1f)"
+character(len=*),parameter::ident="@(#)quadratic(1f) Calculate and print the roots of a quadratic formula even if they are complex"
 integer,parameter :: a=1, b=2, c=3 ! coefficients
 real              :: coeff(3)=0.0
 complex           :: z1, z2  ! roots

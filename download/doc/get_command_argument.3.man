@@ -13,7 +13,7 @@ DESCRIPTION
 
    There is not anything specifically stated about what an argument is but
    in practice the arguments are split on whitespace unless the arguments
-   are quoted and IFS values (Internal Field Seperators) used by common
+   are quoted and IFS values (Internal Field Separators) used by common
    shells are ignored.
 
 ARGUMENTS

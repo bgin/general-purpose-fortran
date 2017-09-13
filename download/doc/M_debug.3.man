@@ -9,7 +9,7 @@ DESCRIPTION
    pdec(3f)              write ASCII Decimal Equivalent (ADE) numbers vertically beneath string
    stderr(3f)            Write message on stderr
 
-   unit_check_start(3f)  call command "goodbad NAME start"
+   unit_check_start(3f)  call command "goodbad NAME start ..."
    unit_check(3f)        if expression is .F. call command "goodbad NAME bad" and stop program
    unit_check_good(3f)   call command "goodbad NAME good"
    unit_check_bad(3f)    call command "goodbad NAME bad" and  stop program

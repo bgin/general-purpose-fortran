@@ -27,47 +27,50 @@ DESCRIPTION
           
           Base time array:
            (1) %Y -- year, yyyy                                2017
-           (2) %M -- month of year, 01 to 12                   08
-           (3) %D -- day of month, 01 to 31                    24
-               %d -- day of month, with suffix (1st, 2nd,...)  24th
+           (2) %M -- month of year, 01 to 12                   09
+           (3) %D -- day of month, 01 to 31                    11
+               %d -- day of month, with suffix (1st, 2nd,...)  11th
            (4) %Z -- minutes from UTC                          -0240
                %z -- -+hh:mm from UTC                          -04:00
-           (5) %h -- hours, 00 to 23                           05
-               %H -- hour (1 to 12, or twelve-hour clock)      5
+               %T -- -+hhmm  from UTC                          -0400
+           (5) %h -- hours, 00 to 23                           08
+               %H -- hour (1 to 12, or twelve-hour clock)      8
                %N -- midnight< AM <=noon; noon<= PM <midnight  AM
-           (6) %m -- minutes, 00 to 59                         47
-           (7) %s -- sec, 00 to 59                             54
-           (8) %x -- milliseconds 000 to 999                   237
+           (6) %m -- minutes, 00 to 59                         07
+           (7) %s -- sec, 00 to 59                             52
+           (8) %x -- milliseconds 000 to 999                   444
           Conversions:
-               %E -- Unix Epoch time                           1503568074.2380009
-               %e -- integer value of Unix Epoch time          1503568074
-               %J -- Julian  date                              2457989.9082666552
-               %j -- integer value of Julian Date(Julian Day)  2457989
-               %O -- Ordinal day (day of year)                 236
-               %U -- day of week, 1..7 Sunday=1                5
-               %u -- day of week, 1..7 Monday=1                4
-               %i -- ISO week of year 1..53                    34
-               %I -- iso-8601 week-numbering date(yyyy-Www-d)  2017-W34-4
+               %E -- Unix Epoch time                           1505131672.4450336
+               %e -- integer value of Unix Epoch time          1505131672
+               %J -- Julian  date                              2458008.0054681255
+               %j -- integer value of Julian Date(Julian Day)  2458008
+               %O -- Ordinal day (day of year)                 254
+               %o -- Whole days since Unix Epoch date          17420
+               %U -- day of week, 1..7 Sunday=1                2
+               %u -- day of week, 1..7 Monday=1                1
+               %i -- ISO week of year 1..53                    37
+               %I -- iso-8601 week-numbering date(yyyy-Www-d)  2017-W37-1
            Names:
-               %l -- abbreviated month name                    Aug
-               %L -- full month name                           August
-               %w -- first three characters of weekday         Thu
-               %W -- weekday name                              Thursday
-               %p -- phase of moon                             Waxing cresent
-               %P -- percent of way from new to full moon      13%
+               %l -- abbreviated month name                    Sep
+               %L -- full month name                           September
+               %w -- first three characters of weekday         Mon
+               %W -- weekday name                              Monday
+               %p -- phase of moon                             Waning gibbous
+               %P -- percent of way from new to full moon      -65%
            Literals:
                %% -- a literal %                               %
                %t -- tab character                             	
                %b -- blank character
+               %B -- exclamation(bang) character               !
                %n -- new line (system dependent)               
 
                %q -- single quote (apostrophe)                 '
                %Q -- double quote                              "
            Program timing:
-               %c -- CPU_TIME(3f) output                       .17187500000000000
+               %c -- CPU_TIME(3f) output                       0.15625000000000000
                %C -- number of times this routine is used      1
-               %S -- seconds since last use of this format     .0000000000000000
-               %k -- time in seconds from SYSTEM_CLOCK(3f)     1136149.38
+               %S -- seconds since last use of this format     0.0000000000000000
+               %k -- time in seconds from SYSTEM_CLOCK(3f)     15638.3281
           
           If no percent (%) is found in the format one of several
           alternate substitutions occurs.
@@ -75,39 +78,46 @@ DESCRIPTION
           If the format is composed entirely of one of the following
           keywords the following substitutions occur:
             "iso-8601",
-            "iso"        ==> %Y-%M-%DT%h:%m:%s%Z             2017-08-24T05:47:54-0240
+            "iso"        ==> %Y-%M-%DT%h:%m:%s%z             2017-09-11T08:07:52-04:00
             "iso-8601W",
-            "isoweek"    ==> %I                              2017-W34-4
-            "sql"        ==> "%Y-%M-%D %h:%m:%s.%x"          "2017-08-24 05:47:54.251"
-            "sqlday"     ==> "%Y-%M-%D"                      "2017-08-24"
-            "sqltime"    ==> "%h:%m:%s.%x"                   "05:47:54.252"
-            "rfc-2822"   ==> %w, %D %l %Y %h:%m:%s %Z
-                             Thu, 24 Aug 2017 05:47:54 -0240
-            "rfc-3339"   ==> %Y-%M-%DT%h:%m:%s%Z             2017-08-24T05:47:54-0240
+            "isoweek"    ==> %I                              2017-W37-1
+            "sql"        ==> "%Y-%M-%D %h:%m:%s.%x"          "2017-09-11 08:07:52.469"
+            "sqlday"     ==> "%Y-%M-%D"                      "2017-09-11"
+            "sqltime"    ==> "%h:%m:%s.%x"                   "08:07:52.470"
+            "rfc-2822"   ==> %w, %D %l %Y %h:%m:%s %T
+                             Mon, 11 Sep 2017 08:07:52 -0400
+            "rfc-3339"   ==> %Y-%M-%DT%h:%m:%s%z             2017-09-11T08:07:52-04:00
             "date"       ==> %w %l %D %h:%m:%s UTC%z %Y
-                             Thu Aug 24 05:47:54 UTC-04:00 2017
+                             Mon Sep 11 08:07:52 UTC-04:00 2017
             "short"      ==> %w, %l %d, %Y %H:%m:%s %N UTC%z
-                             Thu, Aug 24th, 2017 5:47:54 AM UTC-04:00
+                             Mon, Sep 11th, 2017 8:07:52 AM UTC-04:00
             "long"," "   ==> %W, %L %d, %Y %H:%m:%s %N UTC%z
-                             Thursday, August 24th, 2017 5:47:54 AM UTC-04:00
+                             Monday, September 11th, 2017 8:07:52 AM UTC-04:00
+            "suffix"     ==> %Y%D%M%h%m%s                    20171109080752
+            "formal"     ==> The %d of %L %Y                 The 11th of September 2017
+            "lord"       ==> the %d day of %L in the year of our Lord %Y
+                             the 11th day of September in the year of our Lord 2017
+            "easter"     ==> FOR THE YEAR OF THE CURRENT DATE:
+                               Easter day: the %d day of %L in the year of our Lord %Y
+            "all"        ==> A SAMPLE OF DATE FORMATS
           otherwise the following words are replaced with the most
           common macros:
              year          %Y  2017
-             month         %M  08
-             day           %D  24
-             hour          %h  05
-             minute        %m  47
-             millisecond   %x  257
+             month         %M  09
+             day           %D  11
              timezone      %z  -04:00
-             second        %s  54
-             epoch         %e  1503568074
-             julian        %j  2457989
-             ordinal       %O  236
-             weekday       %u  4
+             hour          %h  08
+             minute        %m  07
+             second        %s  52
+             millisecond   %x  489
+             epoch         %e  1505131672
+             julian        %j  2458008
+             ordinal       %O  254
+             weekday       %u  1
           if none of these keywords are found then every letter that
           is a macro is assumed to have an implied percent in front
           of it. For example:
-             YMDhms ==> %Y%M%D%h%m%s ==> 20170824054754
+             YMDhms ==> %Y%M%D%h%m%s ==> 20170911080752
           
    --help     display this help and exit
    --version  output version information and exit

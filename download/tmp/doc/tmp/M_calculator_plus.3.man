@@ -1,5 +1,6 @@
 NAME
-    M_calculator_plus(3fm) - [M_calculator_plus] convenience routines for calling the M_calculator(3fm) module
+    M_calculator_plus(3fm) - [M_calculator_plus] convenience routines for
+    calling the M_calculator(3fm) module
 SYNOPSIS
     Public entities:
 
@@ -7,8 +8,8 @@ SYNOPSIS
 
     DESCRIPTION
 
-    The M_calculator_plus(3f) module is a collection of convenience routines that simplify calling the expression parser module
-    M_calculator.
+    The M_calculator_plus(3f) module is a collection of convenience routines
+    that simplify calling the expression parser module M_calculator.
 
        inum0     resolve a calculator string into a whole integer number
        rnum0     resolve a calculator string into a real number

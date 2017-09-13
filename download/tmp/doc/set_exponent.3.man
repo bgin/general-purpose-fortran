@@ -1,6 +1,6 @@
 NAME
 
-     set_exponent(3f) - [INTRINSIC] Set the exponent of the model
+     set_exponent(3f) - [INTRINSIC:MODEL_COMPONENTS] Set the exponent of the model
 
 SYNTAX
 
@@ -9,7 +9,7 @@ SYNTAX
 DESCRIPTION
 
    set_exponent(x, i) returns the real number whose fractional part
-   is that that of X and whose exponent part is I.
+   is that of X and whose exponent part is I.
 
 ARGUMENTS
 

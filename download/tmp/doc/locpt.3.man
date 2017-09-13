@@ -1,6 +1,6 @@
 NAME
   locpt - [M_math:geometry]find if a point is inside a polygonal path
-SYNOPIS
+SYNOPSIS
   Usage:
 
    subroutine locpt (x0,y0,x,y,n,l,m)

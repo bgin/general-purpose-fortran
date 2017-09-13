@@ -7,7 +7,7 @@
 !-----------------------------------------------------------------------
    MYLOOP: do I_MYLOOP=1,10  ! DO loop
       cycle MYLOOP           ! start next pass of loop
-      exit  MYLOOP           ! go to next statment after corresponding ENDDO
+      exit  MYLOOP           ! go to next statement after corresponding ENDDO
    enddo MYLOOP
 !-----------------------------------------------------------------------
    READ (IUN, '(1X, G14.7)', IOSTAT = IOS) X
@@ -187,8 +187,8 @@
                 of type integer with the same kind type parameter
                 as the do-variable. Their values are established by
                 evaluating scalar-int-expr 1 , scalar-int-expr 2 , and
-                scalar-int-expr 3 , respectively, including, if nec-
-                essary, conversion to the kind type parameter of the
+                scalar-int-expr 3 , respectively, including, if necessary,
+                conversion to the kind type parameter of the
                 do-variable according to the rules for numeric conversion
                 (Table 7.11). If scalar-int-expr 3 does not appear,
                 m3 has the value 1. The value of m3
@@ -268,8 +268,8 @@
   R839     cycle-stmt                         is   CYCLE [ do-construct-name ]
 
   C824     (R839) If a do-construct-name appears, the CYCLE statement
-           shall be within the range of that do-
-           construct; otherwise, it shall be within the range of at
+           shall be within the range of that do-construct;
+           otherwise, it shall be within the range of at
            least one do-construct.
 
   C825     (R839) A cycle-stmt shall not appear within the range of a
@@ -334,9 +334,8 @@
 
   C828      A reference to a nonpure procedure shall not appear within a DO CONCURRENT construct.
 
-  C829      A reference to the procedure IEEE GET FLAG, IEEE SET HALTING MODE, or IEEE GET HALT-
-            ING MODE from the intrinsic module IEEE EXCEPTIONS, shall not appear within a DO CONCUR-
-            RENT construct.
+  C829      A reference to the procedure IEEE GET FLAG, IEEE SET HALTING MODE, or IEEE GET HALT
+            ING MODE from the intrinsic module IEEE EXCEPTIONS, shall not appear within a DO CONCURRENT construct.
 
 1 The following additional restrictions apply to DO CONCURRENT constructs.
 

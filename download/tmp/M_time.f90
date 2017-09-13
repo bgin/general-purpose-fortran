@@ -2,7 +2,7 @@
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 module m_time
-use M_strings, only : upper, substitute
+use M_strings, only : upper, lower,  substitute
 use M_debug, only : stderr
 implicit none
 private
@@ -40,8 +40,11 @@ private upper
    public mo2v           !(month_name) result (MONTH_NUMBER)  ! given month name return month number
    public v2mo           !(month_number) result (MONTH_NAME)  ! given month number return month name
    public mo2d           !(month_name) result (DAT)           ! return date array for first day of given month name in current year
-!EASTER
+!ASTROLOGICAL
    public easter         !(year,month,day)                    ! calculate month and day Easter falls on for given year
+   public moon_fullness  !(datin) result(FULLNESS)            ! percentage of moon phase from new to full
+   public phase_of_moon  !(datin) result(PHASE)               ! return name for phase of moon for given date
+   public ephemeris      !(dat,planet,DD,DM,DC,AH,AM)         ! ephemeris position of planets for adjusting an equitorial telescope
 !READING DATES
    public guessdate      !(anot,dat)                          ! Converts a date string to a date array, in various formats
 !C INTERFACE
@@ -131,7 +134,9 @@ subroutine date_to_julian(dat,julian,ierr)
 ! * Julian Date must be non-negative
 ! * Julian Date starts at noon; while Civil Calendar date starts at midnight
 !-----------------------------------------------------------------------------------------------------------------------------------
+
 character(len=*),parameter::ident="@(#)M_time::date_to_julian(3f): Converts proleptic Gregorian DAT date-time array to Julian Date"
+
 integer,intent(in)               :: dat(8)   ! array like returned by DATE_AND_TIME(3f)
 real(kind=realtime),intent(out)  :: julian   ! Julian Date (non-negative, but may be non-integer)
 integer,intent(out)              :: ierr     ! Error return: 0 =successful execution,-1=invalid year,-2=invalid month,-3=invalid day
@@ -234,7 +239,9 @@ end subroutine date_to_julian
 !!     Day After  =Wednesday, July 20th, 2016 02:00:00 PM
 !===================================================================================================================================
 subroutine julian_to_date(julian,dat,ierr)
+
 character(len=*),parameter::ident="@(#)M_time::julian_to_date(3f): Converts Julian Date to DAT date-time array"
+
 real(kind=realtime),intent(in)   :: julian            ! Julian Date (non-negative)
 integer,intent(out)              :: dat(8)
 integer,intent(out)              :: ierr              ! 0 for successful execution, otherwise 1
@@ -358,7 +365,9 @@ end subroutine julian_to_date
 !!     ierr is            0
 !===================================================================================================================================
 subroutine date_to_unix(dat,unixtime,ierr)
+
 character(len=*),parameter::ident="@(#)M_time::date_to_unix(3f): Convert DAT date-time array to Unix Epoch Time"
+
 integer,intent(in)              :: dat(8)       ! date time array similar to that returned by DATE_AND_TIME
 real(kind=realtime),intent(out) :: unixtime     ! Unix time (seconds)
 integer,intent(out)             :: ierr         ! return 0 on success, otherwise 1
@@ -436,7 +445,9 @@ end subroutine date_to_unix
 ! REF:JSU:2015-12-12
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine unix_to_date(unixtime,dat,ierr)
+
 character(len=*),parameter::ident="@(#)M_time::unix_to_date(3f): Converts Unix Time to DAT date-time array"
+
 !------------
 !class(*),intent(in)             :: unixtime                            ! Unix time (seconds)
 real(kind=realtime),intent(in)   :: unixtime                            ! Unix time (seconds)
@@ -534,7 +545,9 @@ end subroutine unix_to_date
 !!            2024  Days in year is:         366
 !===================================================================================================================================
 function d2o(dat) result (ordinal)
+
 character(len=*),parameter::ident="@(#)M_time::d2o(3f): Converts DAT date-time array to Ordinal day"
+
 ! JSU 2015-12-13
 integer,intent(in)         :: dat(8)                  ! date time array similar to that returned by DATE_AND_TIME
 integer                    :: ordinal                 ! the returned number of days
@@ -599,6 +612,10 @@ end function d2o
 !===================================================================================================================================
 subroutine ordinal_to_date(yyyy, ddd, dat)
 implicit none
+
+character(len=*),parameter::ident="&
+&@(#)M_time::ordinal_to_date(3f): when given a valid year and day of the year returns the DAT array for the date"
+
 integer, intent(in)   :: yyyy
 integer, intent(in)   :: ddd
 integer,intent(out)   :: dat(8)
@@ -697,7 +714,9 @@ end subroutine ordinal_to_date
 !!     100th day of this year is Saturday, April 9th, 2016 00:00:00 PM UTC-02:40
 !===================================================================================================================================
 function o2d(ordinal,year) result (dat)
+
 character(len=*),parameter::ident="@(#)M_time::o2d(3f): Converts ordinal day to DAT date-time array"
+
 integer                    :: dat(8)                  ! date time array similar to that returned by DATE_AND_TIME
 integer,intent(in)         :: ordinal                 ! the returned number of days
 integer,optional           :: year
@@ -771,7 +790,9 @@ end function o2d
 !!     UNKNOWN.
 !===================================================================================================================================
 function v2mo(imonth) result(month_name)
+
 character(len=*),parameter::ident="@(#)M_time::v2mo(3f): returns the month name of a Common month number"
+
 ! JSU 2015-12-13
 character(len=:),allocatable :: month_name                                        ! string containing month name or abbreviation.
 integer,intent(in)           :: imonth                                            ! the number of the month(1-12)
@@ -824,7 +845,9 @@ end function v2mo
 !!       2016:3:1:-240:0:0:0:0
 !===================================================================================================================================
 function mo2d(month_name) result (dat)
+
 character(len=*),parameter::ident="@(#)M_time::mo2d(3f): month name to DAT date-time array for 1st of that month in current year"
+
 integer                     :: dat(8)
 character(len=*),intent(in) :: month_name
    call date_and_time(values=dat)
@@ -889,7 +912,9 @@ end function mo2d
 !!       > -1
 !===================================================================================================================================
 function mo2v(month_name) result(imonth)
+
 character(len=*),parameter::ident="@(#)M_time::mo2v(3f): given month name return month number (1-12) of that month"
+
 ! JSU 2015-12-13
 character(len=*),intent(in):: month_name   ! string containing month name or abbreviation.
 integer                    :: imonth       ! the number of the month(1-12), or -1 if the name could not be recognized.
@@ -969,7 +994,9 @@ end function mo2v
 !!        ::
 !===================================================================================================================================
 function now(format)
+
 character(len=*),parameter::ident="@(#)M_time::now(3f): return string representing current time given format"
+
 ! JSU 2015-10-24
 character(len=*),intent(in),optional :: format
 character(len=:),allocatable         :: now
@@ -1045,7 +1072,9 @@ end function now
 !!    John S. Urban, 2015-12-19
 !===================================================================================================================================
 function fmtdate(values,format) RESULT (timestr)
+
 character(len=*),parameter::ident="@(#)M_time::fmtdate(3f): given DAT date-time array return date as string using format"
+
 ! JSU 2015-10-24
 integer,dimension(8),intent(in)      :: values    ! numeric time values as DATE_AND_TIME(3f) intrinsic returns
 character(len=*),intent(in),optional :: format    ! input format string
@@ -1424,7 +1453,9 @@ end function fmtdate
 !!       YMDhms ==> %Y%M%D%h%m%s ==> 20160729105408
 !===================================================================================================================================
 subroutine fmtdate_usage(indent)
+
 character(len=*),parameter::ident="@(#)M_time::fmtdate_usage(3f): display macros recognized by fmtdate(3f)"
+
 ! JSU 2015-10-24
 integer,intent(in),optional       :: indent
    character(len=128),allocatable :: usage(:)
@@ -1507,10 +1538,8 @@ usage=[ CHARACTER(LEN=128) :: &
 &'%b                   %w, %l %d, %Y %H:%m:%s %N UTC%z         ',&
 &'%b  "long"," "   ==> %%W, %%L %%d, %%Y %%H:%%m:%%s %%N UTC%%z',&
 &'%b                   %W, %L %d, %Y %H:%m:%s %N UTC%z         ',&
-&'%b  "suffix"     ==> %%Y%%D%%M%%h%%m%%s                      ',&
-&'%b                   %Y%D%M%h%m%s                            ',&
-&'%b  "formal"     ==> The %%d of %%L %%Y                      ',&
-&'%b                   The %d of %L %Y                         ',&
+&'%b  "suffix"     ==> %%Y%%D%%M%%h%%m%%s                    %Y%D%M%h%m%s             ',&
+&'%b  "formal"     ==> The %%d of %%L %%Y                 The %d of %L %Y             ',&
 &'%b  "lord"       ==> the %%d day of %%L in the year of our Lord %%Y                 ',&
 &'%b                   the %d day of %L in the year of our Lord %Y                    ',&
 &'%b  "easter"     ==> FOR THE YEAR OF THE CURRENT DATE:       ',&
@@ -1521,11 +1550,11 @@ usage=[ CHARACTER(LEN=128) :: &
 &'%b   year          %%Y  %Y                                   ',&
 &'%b   month         %%M  %M                                   ',&
 &'%b   day           %%D  %D                                   ',&
+&'%b   timezone      %%z  %z                                   ',&
 &'%b   hour          %%h  %h                                   ',&
 &'%b   minute        %%m  %m                                   ',&
-&'%b   millisecond   %%x  %x                                   ',&
-&'%b   timezone      %%z  %z                                   ',&
 &'%b   second        %%s  %s                                   ',&
+&'%b   millisecond   %%x  %x                                   ',&
 &'%b   epoch         %%e  %e                                   ',&
 &'%b   julian        %%j  %j                                   ',&
 &'%b   ordinal       %%O  %O                                   ',&
@@ -1563,13 +1592,12 @@ end subroutine fmtdate_usage
 !!
 !!    Read in strings and except for looking for month names remove
 !!    non-numeric characters and try to convert a string assumed to represent
-!!    a date convert it to a date-time array.
+!!    a date to a date-time array.
 !!
-!!    Years should always be expressed as four-digit numbers, and except
-!!    for the special format yyyy-mm-dd the day should come after the
-!!    year. Named months are preferred. If ambiguous the order is assumed
-!!    to be day - month - year. Named months are preferred. Times are
-!!    assumed to be of the form HH:MM:SS
+!!    Years should always be expressed as four-digit numbers, and except for
+!!    the special format yyyy-mm-dd the day should come after the year. Named
+!!    months are preferred. If ambiguous the order is assumed to be day -
+!!    month - year. Times are assumed to be of the form HH:MM:SS
 !!
 !!    It is planned that this routine will be superseded. As an alternative,
 !!    a C routine exists in the standard C libraries that allows for
@@ -1635,7 +1663,9 @@ end subroutine fmtdate_usage
 !===================================================================================================================================
 subroutine guessdate(datestring,dat,ier)
 use M_strings, only: string_to_values, s2v, split, v2s
+
 character(len=*),parameter::ident="@(#)M_time::guessdate(3f): Guess format of a date string to create a DAT date-time array"
+
 ! based on - JRH 1991-03-19
 ! modified - JSU, 20160729
 !
@@ -1966,7 +1996,9 @@ end subroutine guessdate
 !!     ierr=0
 !===================================================================================================================================
 subroutine dow(values, weekday, day, ierr)
+
 character(len=*),parameter::ident="@(#)M_time::dow(3f): Given DAT date-time array return the day of the week"
+
 integer,intent(in)                    :: values(8) ! date and time array used to get time zone
 integer,intent(out),optional          :: weekday   ! The day of the week, 1 = Monday, 7 = Sunday
 character(len=*),intent(out),optional :: day       ! The name of the day of the week, e.g. 'Sunday'. Minimum length = 9
@@ -2123,7 +2155,9 @@ end subroutine dow
 !!    John S. Urban, 2015-12-19
 !===================================================================================================================================
 subroutine d2w(dat,iso_year,iso_week,iso_weekday,iso_name)
+
 character(len=*),parameter::ident="@(#)M_time::d2w(3f): DAT date-time array to iso-8601 Week-numbering year date yyyy-Www-d"
+
 integer,intent(in)              :: dat(8)     ! input date array
 integer,intent(out)             :: iso_year, iso_week, iso_weekday
 character(len=10),intent(out)   :: iso_name
@@ -2330,9 +2364,9 @@ end subroutine d2w
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine w2d(iso_year,iso_week,iso_weekday,dat)
-!
-!
+
 character(len=*),parameter::ident="@(#)M_time::w2d(3f): convert iso-8601 Week-numbering year date yyyy-Www-d to DAT date-time array"
+
 integer,intent(in)              :: iso_year, iso_week, iso_weekday
 integer,intent(out)             :: dat(8)     ! output date array
    integer                      :: jan4weekday
@@ -2399,8 +2433,10 @@ end subroutine w2d
 !===================================================================================================================================
 subroutine box_month(dat,calen)
 use M_strings, only : adjustc, v2s
-integer,parameter                :: wklen=3*7
+
 character(len=*),parameter::ident="@(#)M_time::box_month(3f): generate month specified by DAT date-time array in character array"
+
+integer,parameter                :: wklen=3*7
 !-----------------------------------------------------------------------------------------------------------------------------------
 ! uses year and month from date array DAT to populate a small character array with a calendar representing the month
 integer,intent(in)               :: dat(8)
@@ -2477,7 +2513,9 @@ end subroutine box_month
 !!     Julian Date is    2457588.7582278359
 !===================================================================================================================================
 function d2j(dat) result (julian)
+
 character(len=*),parameter::ident="@(#)M_time::d2j(3f): Given DAT date-time array returns Julian Date"
+
 integer,intent(in),optional :: dat(8)
 real(kind=realtime)         :: julian
    integer                  :: ierr
@@ -2544,7 +2582,9 @@ end function d2j
 !!     Tomorrow=Wednesday, July 20th, 2016 08:48:20 AM
 !===================================================================================================================================
 function j2d(julian) result (dat)
+
 character(len=*),parameter::ident="@(#)M_time::j2d(3f): Given Julian Date returns DAT date-time array"
+
 real(kind=realtime),intent(in)   :: julian
 integer                          :: dat(8)
    integer                       :: ierr
@@ -2600,7 +2640,9 @@ end function j2d
 !!     Unix Epoch time is    1468908048.5610321
 !===================================================================================================================================
 function d2u(dat) result (unixtime)
+
 character(len=*),parameter::ident="@(#)M_time::d2u(3f): Given DAT date-time array returns Unix Epoch time"
+
 real(kind=realtime)           :: unixtime
 integer,intent(in),optional   :: dat(8)
    integer                    :: datlocal(8)
@@ -2661,7 +2703,9 @@ end function d2u
 !!     Tomorrow=Wednesday, July 20th, 2016 11:10:08 AM
 !===================================================================================================================================
 function u2d(unixtime) result (dat)
+
 character(len=*),parameter::ident="@(#)M_time::u2d(3f): Given Unix Epoch Time returns DAT date-time array"
+
 real(kind=realtime),intent(in),optional :: unixtime
 integer                           :: dat(8)
    real(kind=realtime)            :: local_unixtime
@@ -2756,7 +2800,10 @@ end function get_timezone
 !!     1-03:45:00
 !===================================================================================================================================
 function sec2days(seconds,crop) result(dhms)
-use M_strings, only: split, compact, s2v, substitute, lower, transliterate
+use M_strings, only: split, compact, s2v, transliterate
+
+character(len=*),parameter::ident="&
+&@(#)M_time::sec2days(3f): converts seconds or string of form IId JJh KKm LLs to string showing days of form D-HH:MM:SS"
 
 !use iso_fortran_env, only : int64
 ! on this platform, (select_int_kind(i),i=1,100) returns
@@ -2764,9 +2811,6 @@ use M_strings, only: split, compact, s2v, substitute, lower, transliterate
 integer                  :: i
 integer,parameter        :: k(38)=[(selected_int_kind(i),i=1,38)]
 integer,parameter        :: int128=k(38)
-
-character(len=*),parameter::ident="&
-&@(#)M_time::sec2days(3f): converts seconds or string of form IId JJh KKm LLs to string showing days of form D-HH:MM:SS"
 class(*),intent(in)               :: seconds
 logical,intent(in),optional       :: crop
 character(len=:),allocatable      :: dhms
@@ -2793,7 +2837,7 @@ character(len=:),allocatable      :: dhms
    type is (character(len=*))
 
       ! note _ is removed from input strings to allow use of _ every three digits in a number as sometimes seen in Java, perl, ...
-      strlocal=compact(lower(transliterate(seconds,"_'",'')),'')//'                '   ! add whitespace to make room for spaces
+      strlocal=compact(lower(transliterate(seconds," _',",'')),'')//'                '   ! add whitespace to make room for spaces
 
       call substitute(strlocal,'days','d')                      ! from long names to short names substitute common aliases for units
       call substitute(strlocal,'day','d')
@@ -2950,10 +2994,12 @@ end function sec2days
 !!     one day    86400.000000000000
 !===================================================================================================================================
 function days2sec(str) result(time)
-use M_strings, only: split, compact, s2v, substitute, lower, transliterate
+use M_strings, only: split, compact, s2v, transliterate
 implicit none
+
 character(len=*),parameter::ident="&
 &@(#)M_time::days2sec(3f): convert string [[-]dd-]hh:mm:ss.nn to seconds or string IId JJh KKm LLs to seconds"
+
 character(len=*),intent(in)       :: str
 real(kind=realtime)               :: time
 ! Supported input syntax:
@@ -3056,7 +3102,7 @@ end function days2sec
 !===================================================================================================================================
 !>
 !!##NAME
-!!     phase_of_moon(3fp) - [M_time] return name for phase of moon for given date
+!!     phase_of_moon(3f) - [M_time] return name for phase of moon for given date
 !!##SYNOPSIS
 !!
 !!   function phase_of_moon(datin)
@@ -3094,15 +3140,19 @@ end function days2sec
 !!  only new for an instant.
 !===================================================================================================================================
 function phase_of_moon(datin)
+implicit none
+
+character(len=*),parameter::ident="@(#)M_time::phase_of_moon(3f): return name for phase of moon for given date"
+
 integer,intent(in)            :: datin(8)
 character(len=:),allocatable  :: phase_of_moon
 
 real(kind=realtime),parameter :: syndonic_month=29.530588853_realtime ! average period of a lunar cycle, or days per lunation
 integer,parameter             :: reference(*)= [2000,1,6,0,18,14,0,0] ! new moon of January 2000 was January 6, 18:14 UTC.
-character(len=20),parameter   :: phase_names(*)=[ "New           ", "Waxing cresent", &
-                                                  "First quarter ", "Waxing gibbous", &
-                                                  "Full          ", "Waning gibbous", &
-                                                  "Last quarter  ", "Waning cresent"  ]
+character(len=20),parameter   :: phase_names(*)=[ "New            ", "Waxing crescent", &
+                                                  "First quarter  ", "Waxing gibbous ", &
+                                                  "Full           ", "Waning gibbous ", &
+                                                  "Last quarter   ", "Waning crescent"  ]
 real(kind=realtime),parameter :: phase_length=syndonic_month/8_realtime  ! days per phase
 integer                       :: phase
 real(kind=realtime)           :: days
@@ -3119,7 +3169,7 @@ end function phase_of_moon
 !===================================================================================================================================
 !>
 !!##NAME
-!!     moon_fullness(3fp) - [M_time] return percentage of moon phase from new to full
+!!     moon_fullness(3f) - [M_time] return percentage of moon phase from new to full
 !!##SYNOPSIS
 !!
 !!   function moon_fullness(datin)
@@ -3147,6 +3197,10 @@ end function phase_of_moon
 !!             and - for waning.
 !===================================================================================================================================
 function moon_fullness(datin)
+implicit none
+
+character(len=*),parameter::ident="@(#)M_time::moon_fullness(3f): return percentage of moon phase from new to full"
+
 integer,intent(in)            :: datin(8)
 integer                       :: moon_fullness
 
@@ -3244,8 +3298,10 @@ end function moon_fullness
 !!   Latest revision 8 April 2002
 !===================================================================================================================================
 SUBROUTINE Easter(year, month, day)
-
 implicit none
+
+character(len=*),parameter::ident="@(#)M_time::easter(3f): calculate date for Easter given a year"
+
 integer, intent(in)   :: year
 integer, intent(out)  :: day, month
 
@@ -3264,6 +3320,259 @@ integer, intent(out)  :: day, month
    day = l + 28 - 31 * ( month / 4 )
 
 end subroutine Easter
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+!>
+!!##NAME
+!!
+!!    ephemeris(3f) - [M_time] ephemeris position of planets for adjusting an equitorial telescope
+!!
+!!##SYNOPSIS
+!!
+!!
+!!    subroutine ephemeris(itime,planet,declination_,declination_m,declination_compass,ascent_hours,ascent_minutes)
+!!
+!!     integer,parameter            :: dp=kind(0.0d0)
+!!     integer,intent(in)           :: itime(8)
+!!     class(*),intent(in)          :: planet
+!!      !!integer                   :: planet
+!!      !!character(len=*)          :: planet
+!!
+!!     integer,intent(out)          :: declination_d, declination_m
+!!     character(len=1),intent(out) :: declination_compass
+!!     integer,intent(out)          :: ascent_hours,ascent_minutes
+!!
+!!##DESCRIPTION
+!!
+!!    ephemeris(3f) calculates the ephemeris of a planet in our solar system
+!!    in order to adjust an equatorial telescope.
+!!
+!!     Ref.: "Mathematiques par l'informatique individuelle
+!!           - Programmes en BASIC, MASSON,
+!!           Paris, 1982, p 100 - 105" [BIBLI 06].
+!!
+!!##OPTIONS
+!!
+!!      itime   provide the date and time using the same eight values used
+!!              by the DATE_AND_TIME(3f) intrinsic.
+!!
+!!              1. The year
+!!              2. The month
+!!              3. The day of the month
+!!              4. Time difference with UTC in minutes
+!!              5. The hour of the day
+!!              6. The minutes of the hour
+!!              7. The seconds of the minute
+!!              8. The milliseconds of the second
+!!
+!!      planet  Planet number  1 to 8  or planet name (Mercury:1 Venus:2
+!!              Mars:4 Jupiter:5 Saturn:6 Uranus:7 Neptune:8)
+!!
+!!##RESULTS
+!!
+!!    declination_d,        :
+!!    declination_m,        :
+!!    declination_compass   Declination in degrees and minutes (-90 to 90 North or South)
+!!    ascent_hours,         :
+!!    ascent_minutes        Ascent in hours (0 to 24) and minutes
+!!
+!!##EXAMPLE
+!!
+!!    Find ascent and declination of planet Mars on March 10th, 1982 at 6h UT
+!!
+!!      program demo_ephemeris
+!!      use M_time, only : ephemeris, fmtdate
+!!      integer,parameter   :: dp=kind(0.0d0)
+!!
+!!      integer             :: itime(8)
+!!      class(*),intent(in) :: planet
+!!
+!!      integer            :: declination_d, declination_m
+!!      character(len=1)   :: declination_compass
+!!      integer            :: ascent_hours, ascent_minutes
+!!
+!!      planet=4
+!!      itime=[1982,3,10,0,6,0,0,0]
+!!      call ephemeris(itime, planet,                    &
+!!      declination_d,declination_m,declination_compass, &
+!!      ascent_hours,ascent_minutes)
+!!
+!!      write(*, '(" For: ",a)')fmtdate(itime)
+!!      write(*, "(' Planet: ',I1,1X)",advance='no')                       &
+!!              planet
+!!      write(*, "(' Ascent: ',I2,' H ',I2,' MN',1X)",advance='no')        &
+!!              ascent_hours, ascent_minutes
+!!      write(*, "(' Declination: ',I2,' D ',I2,' MN ',A1)",advance='yes') &
+!!              declination_d, declination_m, declination_compass
+!!
+!!      end program demo_ephemeris
+!!
+!!    Expected output:
+!!
+!!      For: Wednesday, March 10th, 1982 6:00:00 AM UTC+00:00
+!!      Planet: 4  Ascent: 13 H  8 MN  Declination:  3 D 45 MN S
+!!
+!!##AUTHOR
+!!
+!!    o F90 Version By J-P Moreau, Paris. (www.jpmoreau.fr)
+!!    o Revised By John S. Urban, 20170910
+!===================================================================================================================================
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
+subroutine ephemeris(itime,planet,declination_d,declination_m,declination_compass,ascent_hours,ascent_minutes)
+implicit none
+
+character(len=*),parameter::ident="@(#)M_time::ephemeris(3f): ephemeris position of planets for adjusting an equitorial telescope"
+
+integer,parameter            :: dp=kind(0.0d0)
+integer,intent(in)           :: itime(8)
+class(*),intent(in)          :: planet
+
+integer,intent(out)          :: declination_d, declination_m
+character(len=1),intent(out) :: declination_compass
+integer,intent(out)          :: ascent_hours,ascent_minutes
+
+! initialize calendar constants
+real(kind=dp),parameter  :: B(12)=[0.0d0, 31.0d0, 59.0d0, 25.0d0, 90.0d0, 25.0d0, 120.0d0, 25.0d0, 151.0d0, 25.0d0, 181.0d0, 25.0d0]
+real(kind=dp)            :: declination,PI,t,x,y,z
+real(kind=dp)            :: ascent,gg
+real(kind=dp)            :: ascent_hours8
+integer                  :: year, month, day
+real(kind=dp)            :: hours
+integer                  :: planet_number
+!-----------------------------------------------------------------------------------------------------------------------------------
+   select type(planet)
+   type is (integer)
+      planet_number=planet
+   type is (character(len=*))
+      select case(lower(planet))
+      case('mercury');       planet_number=1
+      case('venus');         planet_number=2
+      case('earth','terra'); planet_number=3
+      case('mars');          planet_number=4
+      case('jupiter');       planet_number=5
+      case('saturn');        planet_number=6
+      case('uranus');        planet_number=7
+      case('neptune');       planet_number=8
+      case default;          planet_number=0
+         write(*,*)'*ephemeris* ERROR: unknown planet name '//trim(planet)
+      end select
+   end select
+   if(planet_number.lt.1.or.planet_number.gt.8)then
+      write(*,*)'*ephemeris* ERROR: unknown planet number ',planet_number
+      planet_number=3
+   endif
+!-----------------------------------------------------------------------------------------------------------------------------------
+! calculate time t
+year=itime(1)
+month=itime(2)
+day=itime(3)
+hours=itime(5)-itime(4)/60.0+itime(6)/60.0+itime(7)/3600.0
+t=365.25*(year-1901)+B(month)+day
+t=INT(t) + hours/24.d0
+!-----------------------------------------------------------------------------------------------------------------------------------
+                                      ! calculate earth coordinates
+call planet_coordinates(3,t,x,y,z)    ! planet #3 coordinates
+gg=x
+ascent_hours8=y                       ! save earth coordinates
+
+call planet_coordinates(planet_number,t,x,y,z)    ! calculate coordinates of planet #n
+!-----------------------------------------------------------------------------------------------------------------------------------
+                                      ! calculate geocentric equatorial coordinates
+x=x-gg
+y=y-ascent_hours8
+t=y*.917484d0-z*.397772d0
+z=y*.397772d0+z*.917484d0
+y=t
+!-----------------------------------------------------------------------------------------------------------------------------------
+! calculate ascent and declination
+ascent=DATAN2(y,x)
+declination=DATAN2(z,DSQRT(x*x+y*y))
+!-----------------------------------------------------------------------------------------------------------------------------------
+! conversion
+PI=4.d0*DATAN(1.d0)
+ascent=ascent*12.d0/PI
+if (ascent<0.d0) then
+   ascent=24.d0+ascent
+endif
+ascent_hours=INT(ascent)
+ascent_minutes=INT(60*(ascent-ascent_hours))
+!-----------------------------------------------------------------------------------------------------------------------------------
+! conversion
+declination=declination*180.d0/PI
+if (declination<0.d0) then
+   declination_compass='S'
+else
+   declination_compass='N'
+endif
+declination=ABS(declination)
+declination_d=INT(declination)
+declination_m=INT(60*(declination-declination_d))
+!-----------------------------------------------------------------------------------------------------------------------------------
+contains
+!-----------------------------------------------------------------------------------------------------------------------------------
+subroutine planet_coordinates(planet_number,t,x,y,z)
+implicit none
+!import   none
+integer,parameter         :: dp=kind(0.0d0)
+integer,intent(in)        :: planet_number
+real(kind=dp),intent(in)  :: t
+real(kind=dp),intent(out) :: x,y,z
+   real(kind=dp),save     :: A(9,8)
+   real(kind=dp)          :: xl,xm,o,p,q,e,xi,xa,xj,r,u,v
+   integer                :: i
+!initialize planetary constants (fill table A by columns)
+data (a(i,1),i=1,9)/&
+     4.01166d0, 0.071425454d0,  1.32493d0,  0.000000742289d0, 0.823045d0, 0.000000566185d0, 0.205615d0, 0.122225d0,   0.387099d0 /
+data (a(i,2),i=1,9)/&
+     3.60861d0, 0.027963119d0,  2.271616d0, 0.00000065572d0,  1.32291d0,  0.000000436681d0, 0.006816d0, 0.0592301d0,  0.723332d0 /
+data (a(i,3),i=1,9)/&
+     1.72727d0, 0.0172028d0,    1.76688d0,  0.000000818559d0, 0.0d0,      0.0d0,            0.016751d0, 0.0d0,        1.0d0      /
+data (a(i,4),i=1,9)/&
+     2.17756d0, 0.0091467658d0, 5.83378d0,  0.000000879297d0, 0.851616d0, 0.000000371232d0, 0.093309d0, 0.0322939d0,  1.5236d0   /
+data (a(i,5),i=1,9)/&
+     4.68279d0, 0.00145099d0,   0.2289d0,   0.000000857d0,    1.73578d0,  0.000000482933d0, 0.048376d0, 0.0228418d0,  5.202799d0 /
+data (a(i,6),i=1,9)/&
+     4.8567d0,  0.00058484d0,   1.5974d0,   0.000000412d0,    1.96856d0,  0.000000417308d0, 0.054311d0, 0.0435026d0,  9.552098d0 /
+data (a(i,7),i=1,9)/&
+     4.3224d0,  0.000205424d0,  2.9523d0,   0.000000762d0,    1.2825d0,   0.000000238237d0, 0.047319d0, 0.013482d0,  19.21694d0  /
+data (a(i,8),i=1,9)/&
+     1.5223d0,  0.000105061d0,  0.7637d0,   0.000000393d0,    2.28102d0,  0.00000052517d0,  0.008262d0, 0.0310536d0, 30.12912d0  /
+
+!calculate planetary constants
+   XL=A(1,planet_number)+A(2,planet_number)*t
+   O=A(3,planet_number)+A(4,planet_number)*t
+   P=A(5,planet_number)+A(6,planet_number)*t
+   E=A(7,planet_number)
+   XI=A(8,planet_number)
+   XA=A(9,planet_number)
+!solve Kepler's equation
+   xm=XL-O
+   u=xm
+
+   do i=1, 10
+     u=xm+E*dsin(u)
+   end do
+
+!formula (3) of reference book
+   r=XA*(cos(u)-E)
+   v=XA*DSQRT(1.d0-E*E)*dsin(u)
+   O=O-P
+   xm=dsin(O)
+   O=dcos(O)
+   q=dsin(P)
+   P=dcos(P)
+   xj=dsin(XI)
+   XI=dcos(XI)
+   x=(P*O-XI*q*xm)*r+(-P*xm-XI*q*O)*v
+   y=(q*O+XI*P*xm)*r+(-q*xm+XI*P*O)*v
+   z=xj*xm*r+xj*O*v
+
+end subroutine planet_coordinates
+!-----------------------------------------------------------------------------------------------------------------------------------
+END subroutine ephemeris
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -3339,6 +3648,9 @@ end subroutine Easter
 !===================================================================================================================================
 subroutine system_sleep(seconds)
 use,intrinsic                 :: iso_c_binding, only: c_int
+
+character(len=*),parameter::ident="@(#)M_time::system_sleep(3f): call sleep(3c) or usleep(3c)"
+
 class(*),intent(in)           :: seconds
 integer(kind=c_int)           :: cint
    select type(seconds)
@@ -3358,7 +3670,9 @@ end subroutine system_sleep
 !===================================================================================================================================
 subroutine call_sleep(wait_seconds)
 use,intrinsic                   :: iso_c_binding, only: c_int
+
 character(len=*),parameter::ident="@(#)M_time::call_sleep(3fp): call sleep(3c)"
+
 integer(kind=c_int),intent(in)  :: wait_seconds
 integer(kind=c_int)             :: how_long
 interface

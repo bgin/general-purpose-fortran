@@ -14,10 +14,6 @@ LANGUAGE
 CALLING SEQUENCE
       USE M_Compare_Float_Numbers
 
-MODULES
-      Type_Kinds:         Module containing definitions for kinds
-                          of variable types.
-
 CONTAINS
       .EqualTo.           Relational operator to test the equality of
                           floating point numbers.

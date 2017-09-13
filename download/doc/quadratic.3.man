@@ -1,0 +1,53 @@
+NAME
+   quadratic(3f) - [M_math]calculate the roots of a quadratic formula even if they are complex
+
+SYNOPSIS
+  subroutine quadratic(a,b,c,z1,z2,discriminant)
+
+   real,intent(in) :: a, b, c
+   complex,intent(out) :: z1, z2
+   real,intent(out) :: discriminant
+
+DESCRIPTION
+   Given the equation
+
+      a*x**2+b*x+c=0
+
+   Use the quadratic formula to determine the root values and the discriminant of the equation.
+
+OPTIONS
+   a,b,c  coefficients
+
+RETURNS
+   z1,z2  roots
+
+EXAMPLE
+  Sample program:
+
+   program demo_quadratic
+   use M_math, only : quadratic
+   implicit none
+   ! Calculate and print the roots of a quadratic formula
+   ! even if they are complex
+   real    :: a, b, c ! coefficients
+   complex :: z1, z2  ! roots
+   real    :: discriminant
+
+      a = 4.0
+      b = 8.0
+      c = 21.0
+      call quadratic(a,b,c,z1,z2,discriminant) !  Calculate the roots
+
+      if (abs(discriminant) < 0) then
+         write(*,*) "the roots are real and equal:"
+      else if (discriminant > 0) then
+         write(*,*) "the roots are real:"
+      else
+         write(*,*) "the roots are complex:"
+      end if
+   !  Print the roots
+      print *, "The roots are:"
+      print *, "z1 =", z1
+      print *, "z2 =", z2
+
+   end program demo_quadratic

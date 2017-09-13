@@ -1,5 +1,5 @@
 NAME
-   skekur1(3f) - [M_math:statistics] variant on calculating skewness and kurtosis of an arrray
+   skekur1(3f) - [M_math:statistics] variant on calculating skewness and kurtosis of an array
 
 SYNOPSIS
    SUBROUTINE SKEKUR1(Y,NHI,YSKEW,YKURT,IOPT)

@@ -9,7 +9,7 @@ SYNOPSIS
 
 DESCRIPTION
    Defines the section of the virtual world coordinates to map to the
-   viewport. Automaticall y use the largest viewport that provides one-to-one correspondence between
+   viewport. Automatically use the largest viewport that provides one-to-one correspondence between
    the window and the viewport.
 
 EXAMPLE

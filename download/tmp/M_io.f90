@@ -1,5 +1,5 @@
 !===================================================================================================================================
-MODULE M_IO
+MODULE M_io
 private
 public uniq
 public print_inquire
@@ -970,7 +970,7 @@ end function isdir
 !===================================================================================================================================
 !>
 !!##NAME
-!!     readline(3f)  - [M_IO] read a line from specified LUN into allocatable string
+!!     readline(3f)  - [M_io] read a line from specified LUN into allocatable string up to line length limit
 !!
 !!##SYNTAX
 !!   readline(lun,line,ier)

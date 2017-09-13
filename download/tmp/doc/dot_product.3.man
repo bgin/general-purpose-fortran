@@ -1,6 +1,6 @@
 NAME
 
-     dot_product(3f) - [INTRINSIC] Dot product function
+     dot_product(3f) - [INTRINSIC:MATRIX] Dot product function
 
 SYNTAX
 

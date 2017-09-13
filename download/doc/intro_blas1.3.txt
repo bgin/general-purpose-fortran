@@ -1,6 +1,6 @@
 ."
 ." An introductory man page for the BLAS1 subroutines.  Contains a
-brief discription of
+brief description of
 ." each subroutine and many examples of how to correctly call the
 subroutines.
 ." This was written as a quick reference to determine the available
@@ -215,7 +215,7 @@ example:SAXPY         DAXPY        CAXPY         ZAXPY
 .fi
 .SS FORTRAN type declaration for functions
 Always declare the data type of external functions.  Declaring the
-data type of the complex Level 1 BLAS functions is particularily
+data type of the complex Level 1 BLAS functions is particularly
 important because, based on the first letter of their names and the
 Fortran data typing rules, the default implied data type would be
 REAL.

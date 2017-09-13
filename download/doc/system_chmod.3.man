@@ -9,7 +9,7 @@ SYNOPSIS
 
 DESCRIPTION
        The  chmod() function shall change UID, _ISGID, S_ISVTX, and the
-       file permission bits of the file named by the path- name pointed
+       file permission bits of the file named by the pathname pointed
        to by the path argument to the corresponding bits in the mode
        argument. The application  shall  ensure  that the  effective user
        ID of the process matches the owner of the file or the process

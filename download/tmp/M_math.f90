@@ -1355,7 +1355,8 @@ END SUBROUTINE linearint
 !!##NAME
 !!    citer(3f) - [M_math:geometry]determine various geometric properties of circle segment
 !!            given radius and area of the segment.
-!!##SYNOPIS
+!!##SYNOPSIS
+!!
 !!    Usage:
 !!
 !!       SUBROUTINE CITER(A,R,H,S,C,DADH)
@@ -1862,7 +1863,8 @@ character(len=*),parameter::ident="&
 !>
 !!##NAME
 !!   locpt - [M_math:geometry]find if a point is inside a polygonal path
-!!##SYNOPIS
+!!##SYNOPSIS
+!!
 !!   Usage:
 !!
 !!    subroutine locpt (x0,y0,x,y,n,l,m)
@@ -2418,10 +2420,10 @@ end subroutine extremum
 !!          7.  skewness
 !!          8.  kurtosis
 !!          9.  sum
-!!          10. largest value
-!!          11. smallest value
-!!          12. location of largest value
-!!          13. location of smallest value
+!!         10.  largest value
+!!         11.  smallest value
+!!         12.  location of largest value
+!!         13.  location of smallest value
 !!
 !!##DEFINITIONS
 !!      MEAN
@@ -2605,7 +2607,7 @@ END SUBROUTINE BDS
 !===================================================================================================================================
 !>
 !!##NAME
-!!    skekur1(3f) - [M_math:statistics] variant on calculating skewness and kurtosis of an arrray
+!!    skekur1(3f) - [M_math:statistics] variant on calculating skewness and kurtosis of an array
 !!
 !!##SYNOPSIS
 !!
@@ -2635,7 +2637,7 @@ END SUBROUTINE BDS
 !!    Written by Charles P. Reeve
 !===================================================================================================================================
 SUBROUTINE SKEKUR1(Y,NHI,YSKEW,YKURT,IOPT)
-character(len=*),parameter::ident="@(#)M_math::skekur1(3f): variant on calculating skewness and kurtosis of an arrray"
+character(len=*),parameter::ident="@(#)M_math::skekur1(3f): variant on calculating skewness and kurtosis of an array"
 REAL,INTENT(IN)    ::  Y(*)
 INTEGER,INTENT(IN) :: NHI
 REAL,INTENT(OUT)   :: YSKEW

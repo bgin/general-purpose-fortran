@@ -21,7 +21,7 @@ DESCRIPTION
    If X and Y are considered equal within DIGI0 relative tolerance,
 
        IND    = 0, if tolerance is     satisfied.
-              = 1, if tolerance is not satisified.
+              = 1, if tolerance is not satisfied.
 
    The result ACURCY gives a measure of the number of leading digits in X
    which are the same as the number of leading digits in Y.

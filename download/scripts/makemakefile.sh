@@ -10,14 +10,14 @@ cd tmp
     SANI='fsanitize=address,null,undefined'
     SANI=
 env MAKEMAKE_LDFLAGS="-fno-range-check -Wall -fbounds-check -g -I. -J. $SANI" \
-    MAKEMAKE_F90FLAGS="-Wall -Wuninitialized -fbounds-check -fno-range-check -g -I. -J. $SANI" \
-    MAKEMAKE_F90='gfortran' \
-    MAKEMAKE_LIBS='-lncurses -lreadline' \
-    makemake "`find PROGRAMS -type f|xargs`"
+     MAKEMAKE_F90FLAGS="-Wall -Wuninitialized -fbounds-check -fno-range-check -g -I. -J. $SANI" \
+     MAKEMAKE_F90='gfortran' \
+     MAKEMAKE_LIBS='-lncurses -lreadline' \
+     makemake "`find PROGRAMS -type f|xargs`"
 mv Makefile Makefile_picky
 env MAKEMAKE_F90='gfortran' \
-    MAKEMAKE_LIBS='-lncurses -lreadline' \
-    makemake "`find PROGRAMS -type f|xargs`"
+     MAKEMAKE_LIBS='-lncurses -lreadline' \
+     makemake "`find PROGRAMS -type f|xargs`"
 )
 }
 MAKEMAKEFILE

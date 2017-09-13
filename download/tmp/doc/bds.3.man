@@ -27,10 +27,10 @@ RETURNS
          7.  skewness
          8.  kurtosis
          9.  sum
-         10. largest value
-         11. smallest value
-         12. location of largest value
-         13. location of smallest value
+        10.  largest value
+        11.  smallest value
+        12.  location of largest value
+        13.  location of smallest value
 
 DEFINITIONS
      MEAN

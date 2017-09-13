@@ -1,5 +1,6 @@
 NAME
-    HUE(3f) - [M_color]converts a color's components from one color model to another.
+    HUE(3f) - [M_color]converts a color's components from one color model to
+    another.
 SYNOPSIS
 
        subroutine hue(modei,clr1i,clr2i,clr3i,modeo,clr1o,clr2o,clr3o,status)
@@ -15,27 +16,29 @@ DESCRIPTION
     Basic color models ...
 
 
-          valid values for modei and modeo as well as the corresponding
-                    meanings for clr1*, clr2*, and clr3* are:
-        +------------------------------------------------------------------------+
-        |model|      clr1      |         clr2          |          clr3           |
-        |-----+----------------+-----------------------+-------------------------|
-        |hls  |hue             |lightness              |saturation               |
-        |-----+----------------+-----------------------+-------------------------|
-        |hsl  |hue             |saturation             |lightness                |
-        |-----+----------------+-----------------------+-------------------------|
-        |hvs  |hue             |value                  |saturation               |
-        |-----+----------------+-----------------------+-------------------------|
-        |hsv  |hue             |saturation             |value                    |
-        |-----+----------------+-----------------------+-------------------------|
-        |rgb  |red             |green                  |blue                     |
-        |-----+----------------+-----------------------+-------------------------|
-        |cmy  |cyan            |magenta                |yellow                   |
-        |-----+----------------+-----------------------+-------------------------|
-        |yiq  |luma(gray scale)|orange-blue chrominance|purple-green chrominance |
-        +------------------------------------------------------------------------+
+         valid values for modei and modeo as well as the corresponding
+                   meanings for clr1*, clr2*, and clr3* are:
+        +---------------------------------------------------------------------+
+        |model|      clr1      |         clr2         |         clr3          |
+        |-----+----------------+----------------------+-----------------------|
+        |hls  |hue             |lightness             |saturation             |
+        |-----+----------------+----------------------+-----------------------|
+        |hsl  |hue             |saturation            |lightness              |
+        |-----+----------------+----------------------+-----------------------|
+        |hvs  |hue             |value                 |saturation             |
+        |-----+----------------+----------------------+-----------------------|
+        |hsv  |hue             |saturation            |value                  |
+        |-----+----------------+----------------------+-----------------------|
+        |rgb  |red             |green                 |blue                   |
+        |-----+----------------+----------------------+-----------------------|
+        |cmy  |cyan            |magenta               |yellow                 |
+        |-----+----------------+----------------------+-----------------------|
+        |yiq  |luma(gray scale)|orange-blue           |purple-green           |
+        |     |                |chrominance           |chrominance            |
+        +---------------------------------------------------------------------+
 
-      + lightness, value, saturation, red, green, blue, cyan, magenta, and yellow range from 0 to 100,
+      + lightness, value, saturation, red, green, blue, cyan, magenta, and
+        yellow range from 0 to 100,
       + hue ranges from 0 to 360 degrees,
       + y ranges from 0 to 100,
       + i ranges from -60 to 60,

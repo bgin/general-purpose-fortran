@@ -26,8 +26,8 @@ RETURN VALUE
    The result has the same type as MOLD, with the bit level
    representation of SOURCE. If SIZE is present, the result is
    a one-dimensional array of length SIZE. If SIZE is absent
-   but MOLD is an array (of any size or shape), the result is a one-
-   dimensional array of the minimum length needed to contain the entirety
+   but MOLD is an array (of any size or shape), the result is a one-dimensional
+   array of the minimum length needed to contain the entirety
    of the bitwise representation of SOURCE. If SIZE is absent
    and MOLD is a scalar, the result is a scalar.
 

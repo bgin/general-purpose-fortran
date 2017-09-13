@@ -105,7 +105,7 @@ doubleprecision      :: d_out
    type is (real(kind=real32));    d_out=real(valuein)
    type is (real(kind=real64));    d_out=real(valuein)
    type is (real(kind=real128));   d_out=real(valuein)
-   type is (real(kind=real256));   d_out=real(valuein)
+!   type is (real(kind=real256));   d_out=real(valuein)
    end select
 end function anyscalar_to_double
 !===================================================================================================================================
@@ -188,7 +188,7 @@ class(*),intent(in)     :: valuein
    type is (real(kind=real32));    r_out=real(valuein)
    type is (real(kind=real64));    r_out=real(valuein)
    type is (real(kind=real128));   r_out=real(valuein)
-   type is (real(kind=real256));   r_out=real(valuein)
+!   type is (real(kind=real256));   r_out=real(valuein)
    end select
 end function anyscalar_to_real
 !===================================================================================================================================

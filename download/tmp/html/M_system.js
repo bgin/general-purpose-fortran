@@ -35,7 +35,6 @@ append("system_rewinddir.3.html");
 append("system_rmdir.3.html");
 append("system_setumask.3.html");
 append("system_srand.3.html");
-append("system_umask.3.html");
 append("system_uname.3.html");
 append("system_unlink.3.html");
 append("system_unsetenv.3.html");

@@ -1,5 +1,5 @@
 NAME
-    moon_fullness(3fp) - [M_time] return percentage of moon phase from new to full
+    moon_fullness(3f) - [M_time] return percentage of moon phase from new to full
 SYNOPSIS
   function moon_fullness(datin)
 

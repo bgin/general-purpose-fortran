@@ -1,6 +1,6 @@
 NAME
    splift(3f) - [M_math:fit]fits a spline to the n data points given in x and y
-                and also returns first and second derivitives
+                and also returns first and second derivatives
 SYNOPSIS
   subroutine splift(x,y,yp,ypp,n,ierr,a1,b1,an,bn)
 

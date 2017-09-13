@@ -6,17 +6,17 @@ modules and libraries.
 This initial release is a collection of Fortran modules (and in some cases
 their associated C support routines) providing 
   * basic string operations
-  * simple expression parsing
+  * simple numeric expression parsing
   * command line parsing 
   * command line history editing
   * a date and time module
   * an interface to the ncurses(3c) library
-  * the beginnings of a pixel graphics module similiar to the VOGLE graphics library interface
+  * the beginnings of a pixel graphics module similar to the VOGLE graphics library interface
   * libraries for message handling, unit testing, and debugging
-  * a module for reading and writing lines to a process (a popen(3c) interface
+  * a module for reading and writing lines to a process (a popen(3c) interface).
   * a growing number of Fortran interfaces to common C routines, including many POSIX routines
 
-The majority of thse routines come with a man(1) page in *roff and HTML format.
+The majority of these routines come with a man(1) page in *roff and HTML format.
 An index into the documentation is contained in the 
 [[overview]](http://www.urbanjost.altervista.org/LIBRARY/libjust4/download/tmp/html/download.html)
 
@@ -174,7 +174,7 @@ Some simple but commonly called C routines interfaced to Fortran. Makes heavy
 use of the ISO_C_BINDING module introduced as part of Fortran 2003.
 
 [M_NCURSES(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libjust4/download/tmp/html/M_ncurses.html),
-[M_FIXEDFORM(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libjust4/download/tmp/html/PROGRAMS/fixeform.3.html)
+[M_FIXEDFORM(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libjust4/download/tmp/html/PROGRAMS/fixedform.3.html)
 
 ## Fortran(2003) interface to the ncurses(3c) library
 
@@ -220,7 +220,7 @@ Routine Categories  Descriptions
 [M_COMPARE_FLOAT_NUMBERS(3fm)](math/Compare_Float_Numbers/M_Compare_Float_Numbers.HTML)
 
 A Fortran module containing routines to perform equality and relational
-comparisons on floating point numbers. That is, you can more safetly compare
+comparisons on floating point numbers. That is, you can more safely compare
 real numeric values.
 
 [Types and Kinds](types/Type_Kinds.HTML)

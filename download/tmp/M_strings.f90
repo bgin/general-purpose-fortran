@@ -13,7 +13,7 @@
 !!    use M_strings, only : switch,s2c,c2s
 !!    use M_strings, only : noesc,notabs,expand
 !!    use M_strings, only : string_to_value,string_to_values,s2v,s2vs,value_to_string,v2s
-!!    use M_strings, only : listout
+!!    use M_strings, only : listout,getvals
 !!    use M_strings, only : matchw
 !!    use M_strings, only : isalnum, isalpha, iscntrl, isdigit, isgraph, islower,
 !!                          isprint, ispunct, isspace, isupper, isascii, isblank, isxdigit
@@ -70,6 +70,7 @@
 !!
 !!    string_to_value   generic subroutine returns numeric value (REAL, DOUBLEPRECISION, INTEGER)  from string
 !!    string_to_values  subroutine reads an array of numbers from a string
+!!    getvals           subroutine reads a relatively arbitrary number of values from a string using list-directed read
 !!    s2v               function returns DOUBLEPRECISION numeric value from string
 !!    s2vs              function returns a DOUBLEPRECISION array of numbers from a string
 !!    value_to_string   generic subroutine returns string given numeric value (REAL, DOUBLEPRECISION, INTEGER )
@@ -363,7 +364,8 @@
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 MODULE M_strings !
-use M_journal, only : journal
+use iso_fortran_env, only : ERROR_UNIT        ! access computing environment
+use M_journal,       only : journal
 implicit none    ! change default for every procedure contained in the module
 character(len=*),parameter::ident="@(#)M_strings(3f): Fortran module containing routines that deal with character strings"
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -411,6 +413,7 @@ PUBLIC string_to_value !  generic subroutine returns REAL|DOUBLEPRECISION|INTEGE
  PRIVATE a2r           !  subroutine returns real value from string
  PRIVATE a2i           !  subroutine returns integer value from string
 PUBLIC string_to_values!  subroutine returns values from a string
+PUBLIC getvals         !  subroutine returns values from a string
 PUBLIC s2v             !  function returns doubleprecision value from string
 PUBLIC s2vs            !  function returns a doubleprecision array of numbers from a string
 PUBLIC value_to_string !  generic subroutine returns string given numeric REAL|DOUBLEPRECISION|INTEGER value
@@ -4181,6 +4184,157 @@ character(len=:),allocatable  :: string
          STRING='UNKNOWN'//v2s(ICHAR(ch))
    end select
 end function describe
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+!>
+!!##NAME
+!!    getvals(3f) - [M_strings] read arbitrary number of REAL values from a character variable up to size of VALUES() array
+!!
+!!##SYNOPSIS
+!!
+!!    subroutine getvals(line,values,icount,ierr)
+!!
+!!     character(len=*),intent(in)  :: line
+!!     class(*),intent(in)          :: values(:)
+!!     integer,intent(out)          :: icount
+!!     integer,intent(out),optional :: ierr
+!!
+!!##DESCRIPTION
+!!
+!!   GETVALS(3f) reads a relatively arbitrary number of numeric values from
+!!   a character variable into a REAL array using list-directed input.
+!!
+!!   NOTE: In this version null values are skipped instead of meaning to leave
+!!         that value unchanged
+!!
+!!        1,,,,,,,2 / reads VALUES=[1.0,2.0]
+!!
+!!   Per list-directed rules when reading values, allowed delimiters are
+!!   comma, semi-colon and space.
+!!
+!!   the slash seperator can be used to add inline comments.
+!!
+!!        10.1, 20.43e-1 ; 11 / THIS IS TREATED AS A COMMENT
+!!
+!!   Repeat syntax can be used up to the size of the output array. These are
+!!   equivalent input lines:
+!!
+!!        4*10.0
+!!        10.0, 10.0, 10.0, 10.0
+!!
+!!##OPTIONS
+!!
+!!   LINE      A character variable containing the characters represent a list
+!!             of numbers
+!!
+!!##RETURNS
+!!
+!!   VALUES()  array holding numbers read from string. May be of type
+!!             INTEGER, REAL, DOUBLEPRECISION, or CHARACTER
+!!   ICOUNT    number of defined numbers in VALUES()
+!!   IERR      zero if no error occurred in reading numbers. Optional.
+!!             If not present and an error occurs the program is terminated.
+!!
+!!##EXAMPLES
+!!
+!!
+!!   Sample program:
+!!
+!!       program tryit
+!!       use M_strings, only: getvals
+!!       implicit none
+!!       character(len=256) :: line
+!!       real               :: values(256/2+1)
+!!       integer            :: ios,icount,ierr
+!!       INFINITE: do
+!!          read(*,'(a)',iostat=ios) line
+!!          if(ios.ne.0)exit INFINITE
+!!          call getvals(line,values,icount,ierr)
+!!          write(*,*)'VALUES=',values(:icount)
+!!       enddo INFINITE
+!!       end program tryit
+!!
+!!   Sample input lines
+!!
+!!        10,20 30.4
+!!        1 2 3
+!!        1
+!!
+!!        3 4*2.5 8
+!!        32.3333 / comment 1
+!!        30e3;300,    30.0, 3
+!!        even 1 like this! 10
+!!        11,,,,22,,,,33
+!!
+!!   Expected output:
+!!
+!!       VALUES=   10.0000000       20.0000000       30.3999996
+!!       VALUES=   1.00000000       2.00000000       3.00000000
+!!       VALUES=   1.00000000
+!!       VALUES=
+!!       VALUES=   3.00000000       2.50000000       2.50000000       2.50000000       2.50000000       8.00000000
+!!       VALUES=   32.3333015
+!!       VALUES=   30000.0000       300.000000       30.0000000       3.00000000
+!!       *getvals* WARNING:[even] is not a number
+!!       *getvals* WARNING:[like] is not a number
+!!       *getvals* WARNING:[this!] is not a number
+!!       VALUES=   1.00000000       10.0000000
+!!       VALUES=   11.0000000       22.0000000       33.0000000
+!===================================================================================================================================
+subroutine getvals(line,values,icount,ierr)
+implicit none
+character(len=*),parameter  :: ident='@(#)getvals: read arbitrary number of values from a character variable up to size of values'
+! JSU 20170831
+
+character(len=*),intent(in)  :: line
+class(*),intent(in)          :: values(:)
+integer,intent(out)          :: icount
+integer,intent(out),optional :: ierr
+
+   character(len=:),allocatable :: buffer
+   character(len=len(line))     :: words(size(values))
+   integer                      :: ios, i, ierr_local,isize
+
+   select type(values)
+   type is (integer);          isize=size(values)
+   type is (real);             isize=size(values)
+   type is (doubleprecision);  isize=size(values)
+   type is (character(len=*)); isize=size(values)
+   end select
+
+   ierr_local=0
+
+   words=' '                            ! make sure words() is initialized to null+blanks
+   buffer=trim(line)//"/"               ! add a slash to the end so how the read behaves with missing values is clearly defined
+   read(buffer,*,iostat=ios) words      ! undelimited strings are read into an array
+   icount=0
+   do i=1,isize                         ! loop thru array and convert non-blank words to numbers
+      if(words(i).eq.' ')cycle
+
+      select type(values)
+      type is (integer);          read(words(i),*,iostat=ios)values(icount+1)
+      type is (real);             read(words(i),*,iostat=ios)values(icount+1)
+      type is (doubleprecision);  read(words(i),*,iostat=ios)values(icount+1)
+      type is (character(len=*)); values(icount+1)=words(i)
+      end select
+
+      if(ios.eq.0)then
+         icount=icount+1
+      else
+         ierr_local=ios
+         write(ERROR_UNIT,*)'*getvals* WARNING:['//trim(words(i))//'] is not a number of specified type'
+      endif
+   enddo
+
+   if(present(ierr))then
+      ierr=ierr_local
+   elseif(ierr_local.ne.0)then        ! error occurred and not returning error to main program to print message and stop program
+      write(ERROR_UNIT,*)'*getval* error reading line ['//trim(line)//']'
+      stop 2
+   endif
+
+end subroutine getvals
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================

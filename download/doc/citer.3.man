@@ -1,7 +1,7 @@
 NAME
    citer(3f) - [M_math:geometry]determine various geometric properties of circle segment
            given radius and area of the segment.
-SYNOPIS
+SYNOPSIS
    Usage:
 
       SUBROUTINE CITER(A,R,H,S,C,DADH)

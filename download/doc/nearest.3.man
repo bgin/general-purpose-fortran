@@ -1,5 +1,5 @@
 NAME
-     nearest(3f) - [INTRINSIC] Nearest representable number
+     nearest(3f) - [INTRINSIC:MODEL_COMPONENTS] Nearest representable number
 
 SYNTAX
 
