@@ -1784,6 +1784,8 @@ character(len=*),intent(in)  :: verb
    integer                   :: imenu
    character(len=80),allocatable :: help_text(:)
    integer                       :: i
+   integer                       :: cstat
+   character(len=256)            :: sstat
 !-----------------------------------------------------------------------------------------------------------------------------------
    stop_command=.false.
    ii=len_trim(verb)
@@ -1863,7 +1865,7 @@ character(len=*),intent(in)  :: verb
          exit INFINITE
 !-----------------------------------------------------------------------------------------------------------------------------------
       case('!')                                                                      ! call system
-         call execute_command_line(trim(reply(2:)), exitstat=icmd)                   ! execute system command
+         call execute_command_line(trim(reply(2:)), exitstat=icmd,cmdstat=cstat,cmdmsg=sstat)   ! execute system command
          if(icmd.ne.0)then                                                           ! if system command failed exit program
             call journal('sc','*m_kracken:menu* ERROR - SYSTEM COMMAND FAILED:',icmd)
          endif

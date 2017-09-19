@@ -145,7 +145,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Mon, Sep 11th, 2017 6:49:50 AM>',&
+'@(#)COMPILED:       Mon, Sep 18th, 2017 1:33:40 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -169,6 +169,8 @@ character(len=:),allocatable :: time_format
 character(len=:),allocatable :: msg
 character(len=:),allocatable :: cmd
 character(len=1)             :: cpaws
+integer                      :: cstat
+character(len=256)           :: sstat
 
                                                              ! parse command line
    call kracken('paws',' -oo -debug .f. -cmd -msg -uet -jed -dat -date -until -repeat 0 -fmt -help .F. -version .F.')
@@ -259,7 +261,7 @@ character(len=1)             :: cpaws
       endif
 
       if(cmd.ne.' ')then
-         call execute_command_line(cmd)
+         call execute_command_line(cmd,cmdstat=cstat,cmdmsg=sstat)
       endif
 
       if(.not.until.and.delay_value.le.0)then      ! no pause time specified. Prompt and read from stdin

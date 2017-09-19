@@ -53,12 +53,15 @@ character(len=*),parameter::ident="&
    character(len=4096)           :: message
    real                          :: values(number_of_args)
    integer                       :: numbers(number_of_args)
-   character(len=IPvalue)        :: strings(number_of_args)
    integer                       :: igot
    real                          :: x,y
    character(len=IPvalue),allocatable :: stringsa(:)
    character(len=IPvalue),allocatable :: oldread
    integer                       :: ifound
+   integer                       :: command_exit
+   integer                       :: command_status
+   character(len=256)            :: command_message
+!-----------------------------------------------------------------------------------------------------------------------------------
    oldread=''
 !-----------------------------------------------------------------------------------------------------------------------------------
    call expression('ownmode(1)')      ! activate user-defined function interface in calculator
@@ -203,7 +206,20 @@ character(len=*),parameter::ident="&
              endif
 !-----------------------------------------------------------------------------------------------------------------------------------
          case default
-            call execute_command_line(linet(:len_trim(linet)))   ! see if shell will execute it
+            !=============
+            ! GNU Fortran (GCC) 6.4.0 -- fails on bad command if do not return CMDMSG
+            ! call execute_command_line(linet(:len_trim(linet)))   ! see if shell will execute it
+            !=============
+            command_message=''
+            call execute_command_line(linet(:len_trim(linet)),exitstat=command_exit,cmdstat=command_status,cmdmsg=command_message)
+            if(command_exit.ne.0)then
+                    write(*,'(a)')trim(command_message)
+            endif
+            ! COMMAND - Shall be a default CHARACTER scalar.
+            ! WAIT   - (Optional) Shall be a default LOGICAL scalar.
+            ! EXITSTAT - (Optional) Shall be an INTEGER of the default kind.
+            ! CMDSTAT - (Optional) Shall be an INTEGER of  default kind.
+            ! CMDMSG - (Optional) Shall be an CHARACTER scalar of the default kind.
          end select
       end select
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -220,7 +236,7 @@ contains
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
 subroutine pixel(ifound)
-use :: M_pixel, only : P_pixel, P_ColorMap
+ use :: M_pixel, only : P_pixel, P_ColorMap
  use :: M_pixel, only : circle          ! [M_pixel] draw a circle using current line width and color
  use :: M_pixel, only : clear           ! [M_pixel] clear background to current color or specified color index
  use :: M_pixel, only : color           ! [M_pixel] set current color index
@@ -716,7 +732,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Mon, Sep 11th, 2017 7:11:42 AM>',&
+'@(#)COMPILED:       Sun, Sep 17th, 2017 1:38:50 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

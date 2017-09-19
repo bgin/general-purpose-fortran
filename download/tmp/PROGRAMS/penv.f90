@@ -133,7 +133,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)COPYRIGHT:      Copyright (C) 2016 John S. Urban>',&
-'@(#)COMPILED:       Mon, Sep 11th, 2017 6:50:21 AM>',&
+'@(#)COMPILED:       Mon, Sep 18th, 2017 1:34:02 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -151,6 +151,8 @@ integer                            :: i, ii, ilength, istatus, ierr
 character(len=IPvalue),allocatable :: prefixes(:) ! assuming prefixes not greater than this length
 character(len=IPvalue),allocatable :: names(:)    ! assuming names not greater than this length
 character(len=:),allocatable       :: avalue
+integer                            :: cstat
+character(len=256)                 :: sstat
 !-----------------------------------------------------------------------------------------------------------------------------------
    call kracken('penv',' -p -v .F. -C .F. -B .F. -help .F. -version .F. &
    & -unset -clear .F. -cmd                                            ')    ! crack command line arguments
@@ -229,7 +231,7 @@ character(len=:),allocatable       :: avalue
 !-----------------------------------------------------------------------------------------------------------------------------------
   string=sget('penv_cmd')
   if(string.ne.'')then
-     call execute_command_line(trim(string))
+     call execute_command_line(trim(string),cmdstat=cstat,cmdmsg=sstat)
   endif
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(missing)then                                                           ! a specifically named variable was not found

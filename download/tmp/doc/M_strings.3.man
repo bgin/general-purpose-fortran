@@ -13,6 +13,7 @@ SYNOPSIS
    use M_strings, only : string_to_value,string_to_values,s2v,s2vs,value_to_string,v2s
    use M_strings, only : listout,getvals
    use M_strings, only : matchw
+   use M_strings, only : base, decodebase, codebase
    use M_strings, only : isalnum, isalpha, iscntrl, isdigit, isgraph, islower,
                          isprint, ispunct, isspace, isupper, isascii, isblank, isxdigit
 
@@ -95,6 +96,11 @@ SYNOPSIS
    o isascii   returns .true. if the character is in the range char(0) to char(127)
    o isblank   returns .true. if character is a blank character (space or horizontal tab.
    o isxdigit  returns .true. if character is a hexadecimal digit (0-9, a-f, or A-F).
+
+   BASE CONVERSION
+   o base       convert whole number string in base [2-36] to string in alternate base [2-36]
+   o codebase   convert whole number string in base [2-36] to base 10 number
+   o decodebase convert whole number in base 10 to string in base [2-36]
 
 DESCRIPTION
 

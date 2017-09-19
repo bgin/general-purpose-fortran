@@ -86,7 +86,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    rename files by changing old fixed string to new string>',&
 '@(#)VERSION:        1.0, 2017-06-29>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Mon, Sep 11th, 2017 6:54:36 AM>',&
+'@(#)COMPILED:       Mon, Sep 18th, 2017 1:32:28 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -105,6 +105,8 @@ character(len=:),allocatable       :: cmd
 character(len=:),allocatable       :: action
 integer                            :: i, ierr
 logical                            :: dryrun, verbose
+integer                            :: cstat
+character(len=256)                 :: sstat
 
    call kracken('change', &
    & ' -oo -help .F. -version .F. -dryrun .F. -cmd mv -verbose .F.') ! parse command line
@@ -132,7 +134,7 @@ logical                            :: dryrun, verbose
                write(*,'(a)') trim(action)
             endif
             if(.not.dryrun)then
-               call execute_command_line(action)
+               call execute_command_line(action,cmdstat=cstat,cmdmsg=sstat)
             endif
          endif
       enddo

@@ -50,7 +50,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Mon, Sep 11th, 2017 6:41:18 AM>',&
+'@(#)COMPILED:       Mon, Sep 18th, 2017 1:32:57 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -4144,29 +4144,59 @@ write(io,'(a)')'     call execute_command_line(command [, wait, exitstat, cmdsta
 write(io,'(a)')''
 write(io,'(a)')'DESCRIPTION'
 write(io,'(a)')''
-write(io,'(a)')'   The COMMAND argument is passed to the shell and executed, using the'
-write(io,'(a)')'   C library''s SYSTEM call. (The shell is SH on Unix systems, and'
-write(io,'(a)')'   cmd.exe on Windows.) If WAIT is present and has the value false,'
-write(io,'(a)')'   the execution of the command is asynchronous if the system supports'
-write(io,'(a)')'   it; otherwise, the command is executed synchronously.'
+write(io,'(a)')'   The COMMAND argument is passed to the shell and executed.  (The shell'
+write(io,'(a)')'   is generally sh(1) on Unix systems, and cmd.exe on Windows.) If WAIT'
+write(io,'(a)')'   is present and has the value false, the execution of the command is'
+write(io,'(a)')'   asynchronous if the system supports it; otherwise, the command is'
+write(io,'(a)')'   executed synchronously.'
 write(io,'(a)')''
 write(io,'(a)')'   The three last arguments allow the user to get status information.'
 write(io,'(a)')'   After synchronous execution, EXITSTAT contains the integer exit code'
-write(io,'(a)')'   of the command, as returned by SYSTEM. CMDSTAT is set to zero if'
-write(io,'(a)')'   the command line was executed (whatever its exit status was).'
-write(io,'(a)')'   CMDMSG is assigned an error message if an error has occurred.'
+write(io,'(a)')'   of the command, as returned by SYSTEM. CMDSTAT is set to zero if the'
+write(io,'(a)')'   command line was executed (whatever its exit status was).  CMDMSG is'
+write(io,'(a)')'   assigned an error message if an error has occurred.'
 write(io,'(a)')''
-write(io,'(a)')'   Note that the SYSTEM function need not be thread-safe. It is the'
-write(io,'(a)')'   responsibility of the user to ensure that SYSTEM is not called'
-write(io,'(a)')'   concurrently.'
+write(io,'(a)')''
+write(io,'(a)')'   Note that the system call need not be thread-safe. It is the'
+write(io,'(a)')'   responsibility of the user to ensure that the system is not called'
+write(io,'(a)')'   concurrently if required.'
+write(io,'(a)')''
+write(io,'(a)')'   When the command is executed synchronously, EXECUTE_COMMAND_LINE'
+write(io,'(a)')'   returns after the command line has completed execution. Otherwise,'
+write(io,'(a)')'   EXECUTE_COMMAND_LINE returns without waiting.'
 write(io,'(a)')''
 write(io,'(a)')'ARGUMENTS'
 write(io,'(a)')''
-write(io,'(a)')'   COMMAND   - Shall be a default CHARACTER scalar.'
-write(io,'(a)')'   WAIT      - (Optional) Shall be a default LOGICAL scalar.'
-write(io,'(a)')'   EXITSTAT  - (Optional) Shall be an INTEGER of the default kind.'
-write(io,'(a)')'   CMDSTAT   - (Optional) Shall be an INTEGER of  default kind.'
-write(io,'(a)')'   CMDMSG    - (Optional) Shall be an CHARACTER scalar of the default kind.'
+write(io,'(a)')'   COMMAND   - a default CHARACTER scalar conntaining the command line to be'
+write(io,'(a)')'               executed. The interpretation is programming-environment dependent.'
+write(io,'(a)')''
+write(io,'(a)')'   WAIT      - (Optional) a default LOGICAL scalar.'
+write(io,'(a)')'               If WAIT is present with the value .false., and the'
+write(io,'(a)')'               processor supports asynchronous execution of the command,'
+write(io,'(a)')'               the command is executed asynchronously; otherwise it is'
+write(io,'(a)')'               executed synchronously.'
+write(io,'(a)')''
+write(io,'(a)')'   EXITSTAT  - (Optional) an INTEGER of the default kind with intent(INOUT).'
+write(io,'(a)')'               If the command is executed synchronously, it is'
+write(io,'(a)')'               assigned the value of the processor-dependent exit'
+write(io,'(a)')'               status. Otherwise, the value of EXITSTAT is unchanged.'
+write(io,'(a)')''
+write(io,'(a)')'   CMDSTAT   - (Optional) an INTEGER of  default kind with intent(INOUT).'
+write(io,'(a)')'               If an error condition occurs and CMDSTAT is not present, error'
+write(io,'(a)')'               termination of execution of the image is initiated.'
+write(io,'(a)')''
+write(io,'(a)')'               It is assigned the value -1 if the processor does not'
+write(io,'(a)')'               support command line execution, a processor-dependent'
+write(io,'(a)')'               positive value if an error condition occurs, or the'
+write(io,'(a)')'               value -2 if no error condition occurs but WAIT is present'
+write(io,'(a)')'               with the value false and the processor does not support'
+write(io,'(a)')'               asynchronous execution. Otherwise it is assigned the'
+write(io,'(a)')'               value 0.'
+write(io,'(a)')''
+write(io,'(a)')'   CMDMSG    - (Optional) a CHARACTER scalar of the default kind.'
+write(io,'(a)')'               It is an INTENT (INOUT) argument. If an error condition'
+write(io,'(a)')'               occurs, it is assigned a processor-dependent explanatory'
+write(io,'(a)')'               message. Otherwise, it is unchanged.'
 write(io,'(a)')''
 write(io,'(a)')'EXAMPLE'
 write(io,'(a)')''
@@ -4184,12 +4214,12 @@ write(io,'(a)')'   end program test_exec'
 write(io,'(a)')''
 write(io,'(a)')'NOTE'
 write(io,'(a)')''
-write(io,'(a)')'   Because this intrinsic is implemented in terms of the SYSTEM'
-write(io,'(a)')'   function call, its behavior with respect to signaling is processor'
+write(io,'(a)')'   Because this intrinsic is making a system call, it is very system'
+write(io,'(a)')'   dependent. Its behavior with respect to signaling is processor'
 write(io,'(a)')'   dependent. In particular, on POSIX-compliant systems, the SIGINT and'
 write(io,'(a)')'   SIGQUIT signals will be ignored, and the SIGCHLD will be blocked. As'
-write(io,'(a)')'   such, if the parent process is terminated, the child process might not'
-write(io,'(a)')'   be terminated alongside.'
+write(io,'(a)')'   such, if the parent process is terminated, the child process might'
+write(io,'(a)')'   not be terminated alongside.'
 write(io,'(a)')''
 write(io,'(a)')'STANDARD'
 write(io,'(a)')''
@@ -10937,6 +10967,165 @@ write(io,'(a)')'    Never found a zero, tried 7 times'
 write(io,'(a)')'    found a zero I= -100'
 write(io,'(a)')''
 write(io,'(a)')'.fi'
+!>
+!!##NAME
+!!    flush(7f) - [FORTRAN:IO] flush I/O buffers of specified files
+!!
+!!##SYNOPSIS
+!!
+!!    flush file-unit-number
+!!
+!!     or
+!!
+!!    flush([UNIT=]file_unit_number,[iostat=i],[iomsg=string],[err=label_number])
+!!
+!!##DESCRIPTION
+!!
+!!   Because the Fortran standard does not specify the mechanism of file
+!!   storage, the exact meaning of the flush operation is not precisely
+!!   defined. The intention is that the flush operation should make all data
+!!   written to an external file available to other processes or devices,
+!!   or causes data placed in an external file by means other than the
+!!   current Fortran process to be available to a subsequent READ statement.
+!!   This is commonly called "flushing I/O buffers".
+!!   These actions are processor dependent.
+!!
+!!   Execution of a FLUSH statement performs a wait operation for all
+!!   pending asynchronous data transfer operations for the specified unit.
+!!
+!!   Execution of a FLUSH statement for a file that is connected but does
+!!   not exist is permitted and has no effect on any file. A FLUSH statement
+!!   has no effect on file position.
+!!
+!!   No specifier shall appear more than once in a given flush-spec-list.
+!!
+!!##OPTIONS
+!!
+!!
+!!    [UNIT=]file-unit-number  Required. If the optional characters
+!!                             UNIT= are omitted from the unit specifier,
+!!                             the file-unit-number must be the first item.
+!!
+!!    ERR=label                The label must branch to a target statement
+!!                             in the same scoping unit as the FLUSH
+!!                             statement.
+!!##RETURNS
+!!
+!!    IOSTAT=scalar-int-variable  variable is set to a processor-dependent
+!!                                positive value if an error occurs, to zero
+!!                                if the flush operation was successful, or
+!!                                to a processor-dependent negative value
+!!                                if the flush operation is not supported
+!!                                for the unit specified.
+!!    IOMSG=iomsg-variable    message describing any error that occurred
+!!
+!!##EXAMPLE
+!!
+!!
+!!         flush (10, iostat = n)
+!===================================================================================================================================
+!>
+!!##NAME
+!!      if(7f) - [FORTRAN:EXECUTION CONTROL] selects a block based on a sequence of logical expressions.
+!!
+!!##SYNOPSIS
+!!
+!!
+!!      [if_construct_name:] IF (scalar-logical-expr) THEN
+!!         block
+!!      ELSEIF (scalar-logical-expr) THEN [if_construct_name]
+!!         block
+!!      ELSE [if_construct_name]
+!!         block
+!!      ENDIF [if_construct_name]
+!!
+!!         or
+!!
+!!      IF (scalar-logical-expression) action-statement
+!!
+!!##DESCRIPTION
+!!
+!!    The IF construct selects for execution at most one of its constituent
+!!    blocks. The selection is based on a sequence of logical expressions.
+!!
+!!    If an if-construct-name is specified, both the IF and ENDIF must use
+!!    that same name. If an ELSE or ELSEIF uses an if-construct-name it must
+!!    be the same as the one specified on the corresponding IF/ENDIF.
+!!
+!!    Execution of an IF construct
+!!
+!!    At most one of the blocks in the IF construct is executed. If there
+!!    is an ELSE statement in the construct, exactly one of the blocks
+!!    in the construct is executed. The scalar logical expressions are
+!!    evaluated in the order of their appearance in the construct until
+!!    a true value is found or an ELSE statement or ENDIF statement is
+!!    encountered. If a true value or an ELSE statement is found, the block
+!!    immediately following is executed and this completes the execution
+!!    of the construct. The scalar logical expressions in any remaining
+!!    ELSEIF statements of the IF construct are not evaluated. If none
+!!    of the evaluated expressions is true and there is no ELSE statement,
+!!    the execution of the construct is completed without the execution of
+!!    any block within the construct.
+!!
+!!    It is permissible to branch to an ENDIF statement only from within
+!!    its IF construct. Execution of an ENDIF statement has no effect.
+!!
+!!    Execution of an IF statement
+!!
+!!    The IF statement controls the execution of a single action statement
+!!    based on a single logical expression.
+!!
+!!    The action-stmt in the if-stmt shall not be an end-function-stmt,
+!!    end-mp-subprogram-stmt, end-program-stmt, end-subroutine-stmt,
+!!    or if-stmt.
+!!
+!!    Execution of an IF statement causes evaluation of the scalar logical
+!!    expression. If the value of the expression is true, the action statement
+!!    is executed. If the value is false, the action statement is not executed
+!!    and execution continues.
+!!
+!!    The execution of a function reference in the scalar logical expression
+!!    may affect entities in the action statement.
+!!
+!!    An example of an IF statement is:
+!!
+!!        IF (A > 0.0) A = LOG (A)
+!!
+!!##EXAMPLES
+!!
+!!
+!!   Sample IF constructs:
+!!
+!!      if (cvar == 'RESET') then
+!!         i = 0; j = 0; k = 0
+!!
+!! endif
+!!
+!!      OUTER: if (case.eq.0)then
+!!         PROOF_DONE: if (PROP) then
+!!            write (3, '(''QED'')')
+!!            exit OUTER
+!!         else
+!!            PROP = nextprop
+!!         endif PROOF_DONE
+!!         write(*,*)'END OF PROOF_DONE'
+!!      else OUTER
+!!              write(*,*)'else outer'
+!!      endif OUTER
+!!
+!!      if (a > 0) then
+!!         b = c/a
+!!         if (b > 0) then
+!!            d = 1.0
+!!         end if
+!!      elseif (c > 0) then
+!!         b = a/c
+!!         d = -1.0
+!!      else
+!!         b = abs (max (a, c))
+!!         d = 0
+!!      endif
+!===================================================================================================================================
 write(io,'(a)')'.\" Specification of Fortran'
 write(io,'(a)')'.TH CONTINUE "7" "January 2017" "Fortran" "Language Specification"'
 write(io,'(a)')'.SH NAME'

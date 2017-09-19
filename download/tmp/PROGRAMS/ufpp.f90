@@ -873,22 +873,24 @@ end subroutine cond
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-subroutine exe()                                       ! @(#)exe(3f): Execute the command line specified by the string COMMAND.
-   character(len=G_line_length)        :: command      ! directive line with leading prefix and directive name removed
-   character(len=G_line_length)        :: defineme     ! scratch string for writing a DEFINE directive in to return command status
-   integer                             :: icmd=0
+subroutine exe()                                 ! @(#)exe(3f): Execute the command line specified by the string COMMAND.
+   character(len=G_line_length)  :: command      ! directive line with leading prefix and directive name removed
+   character(len=G_line_length)  :: defineme     ! scratch string for writing a DEFINE directive in to return command status
+   integer                       :: icmd=0
+   integer                       :: cstat
+   character(len=256)            :: sstat
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(G_system_on)then
-      command=adjustl(G_source(2:))                                                ! remove $ from directive
-      command=command(7:)                                                          ! trim SYSTEM from directive
+      command=adjustl(G_source(2:))                                                 ! remove $ from directive
+      command=command(7:)                                                           ! trim SYSTEM from directive
       if(G_write_what)then
          call stderr('+'//command)
       endif
       !--------
       ! not returning command status on all platforms
-      call execute_command_line (command, exitstat=icmd)                           ! execute system command
+      call execute_command_line (command, exitstat=icmd,cmdstat=cstat,cmdmsg=sstat) ! execute system command
       !--------
-      if(icmd.ne.0)then                                                            ! if system command failed exit program
+      if(icmd.ne.0)then                                                             ! if system command failed exit program
          call stop_ufpp('*ufpp:exe* ERROR(c) - SYSTEM COMMAND FAILED:'//v2s(icmd))
       endif
    else
@@ -3524,7 +3526,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        4.0: 20170502>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
-'@(#)COMPILED:       Mon, Sep 11th, 2017 6:54:04 AM>',&
+'@(#)COMPILED:       Mon, Sep 18th, 2017 1:34:36 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

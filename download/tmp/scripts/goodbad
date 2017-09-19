@@ -228,6 +228,7 @@ EOF
 ####################################################################################################################################
 SHOW(){
 echo "SHOW $*"
+set -x
 for NAMES_TO_SHOW in $*
 do
    sqlite3 goodbad.db <<EOF
@@ -255,7 +256,7 @@ SYNOPSIS
                [-edit]
                [-html]
                [-delete]
-               [-show]
+               [-show LIST]
                [-help]
                [-version]
 
@@ -271,7 +272,7 @@ DESCRIPTION
 
        -edit        if specified edit file as simple text file
        -delete      if specified remove entryname
-       -show
+       -show        list of entries to show in format NAME.SECTION
 
        Descriptions:
 
@@ -580,7 +581,7 @@ exit
    fi
 ;;
 #------------------------------------------------------------------------------#
-*\ good|*\ bad)
+*\ good|*\ bad|*\ start|*\ good[0-9]*|*\ bad[0-9])
 ;;
 *)
    echo "[$STATUS $ALL]data for $ENTRYNAME is"

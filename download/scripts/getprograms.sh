@@ -4,7 +4,7 @@ banner.sh getprograms.sh
 GETPROGRAMS(){
 #@(#) get some programs to add to the procedures
 #
-lastprogram sec2days.f90 days2sec.f90 now.f90 ttee.f90 calen.f90 paws.f90 today.f90
+lastprogram sec2days.f90 days2sec.f90 now.f90 ttee.f90 month.f90 paws.f90 today.f90
 
 lastprogram factors.f90 lcm.f90 gcd.f90 quadratic.f90
 
@@ -12,7 +12,7 @@ lastprogram numdiff.f90 what.f90
 lastprogram ufpp.f90
 lastprogram manup.f90
 lastprogram t2m.f90
-lastprogram temp.f90 alphabet.f90
+lastprogram temp.f90 alphabet.f90 base.f90
 lastprogram notabs.f90 dtu.f90
 lastprogram colors.f90 compute.f90
 lastprogram huegif.f90 huegif.f90

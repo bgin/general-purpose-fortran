@@ -30,6 +30,8 @@
 !!       use m_readline
 !!       implicit none
 !!       character(len=256):: line
+!!       integer                       :: cstat
+!!       character(len=256)            :: sstat
 !!
 !!       write(*,*)' ____________________________________________________________'
 !!       write(*,*)'  Your input lines are now editable using the GNU'
@@ -44,8 +46,8 @@
 !!       do
 !!          call system_readline(line,'readline>') ! read editable input line
 !!          if(line.eq.'q') stop
-!!          !call system(line(:len_trim(line))) ! common extension
-!!          !call execute_command_line(line(:len_trim(line))) ! f08 equivalent
+!!          !call system(line(:len_trim(line)))    ! common extension
+!!          call execute_command_line(trim(line),cmdstat=cstat,cmdmsg=sstat) ! f08 equivalent
 !!       enddo
 !!    end program testit
 !===================================================================================================================================
@@ -108,7 +110,9 @@ contains
 !!    program demo_system_readline
 !!       use m_readline, only : system_readline
 !!       implicit none
-!!       character(len=256):: line
+!!       character(len=256) :: line
+!!       integer            :: cstat
+!!       character(len=256) :: sstat
 !!
 !!       write(*,*)' ____________________________________________________________'
 !!       write(*,*)'  Your input lines are now editable using the GNU'
@@ -123,7 +127,7 @@ contains
 !!       do
 !!          call system_readline(line,'readline>') ! read editable input line
 !!          if(line.eq.'q') stop
-!!          call execute_command_line(line(:len_trim(line)))
+!!          call execute_command_line(trim(line),cmdstat=cstat,cmdmsg=sstat)
 !!       enddo
 !!    end program demo_system_readline
 !===================================================================================================================================

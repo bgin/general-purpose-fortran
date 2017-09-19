@@ -131,7 +131,9 @@
 !!    use M_history, only : redo
 !!    implicit none
 !!    character(len=1024) ::  line
-!!    integer :: ios
+!!    integer             :: ios
+!!    integer             :: cstat
+!!    character(len=256)  :: sstat
 !!    write(*,'(a)') &
 !!    & 'REDO(3f) COMMAND INPUT EDITOR',
 !!    & 'enter "r" or "r r_command" on the input line to go',
@@ -146,7 +148,7 @@
 !!       if(line.eq.'quit')stop ! exit program if user enters "quit"
 !!       ! now call user code to process new line of data
 !!       ! As an example, call the system shell using a common f77 extension:
-!!       call execute_command_line(trim(line)) ! f08 equivalent
+!!       call execute_command_line(trim(line),cmdstat=cstat,cmdmsg=sstat) ! f08 equivalent
 !!    enddo
 !!    end program redoit
 !!
@@ -283,13 +285,15 @@ subroutine redol(redoline,iobuf,iredo,ibuf0,init)
 !  maybe make .NAME stick into variable $NAME in the calculator
 !  allow changing the edit characters in a modify
 
-character(len=*),parameter     :: ident="@(#)M_history::redoline(3fp): redo a previous input line"
-character(len=*),intent(out)   :: redoline    ! edited command line to be returned
+character(len=*),parameter        :: ident="@(#)M_history::redoline(3fp): redo a previous input line"
+character(len=*),intent(out)      :: redoline    ! edited command line to be returned
    integer,intent(in)             :: iobuf       ! history file unit to read old commands from
    integer                        :: iredo       !iredo ......  (i) number of lines in history file
    character(len=*),intent(in)    :: init        ! initial command string
    integer,intent(in)             :: ibuf0       ! the width of the history file in characters; <= len(redoline)
 
+   integer                        :: cstat
+   character(len=256)             :: sstat
    character                      :: cmd
    character(len=len(redoline)+1) :: cin, cinbuf ! 1 greater than length of redoline
    character(len=1024),save       :: numbers
@@ -515,17 +519,17 @@ character(len=*),intent(out)   :: redoline    ! edited command line to be return
     enddo
     goto 1
 !-----------------------------------------------------------------------------------------------------------------------------------
-   case('!')                                                       ! external command
+   case('!')                                                              ! external command
      if(ilast.lt.2)then
         cycle
      endif
-     call execute_command_line(trim(cin(2:)))                      ! Execute the command line specified by the string.
-     !call system(trim(cin(2:)))                                    ! Execute the command line specified by the string.
+     call execute_command_line(trim(cin(2:)),cmdstat=cstat,cmdmsg=sstat)  ! Execute the command line specified by the string.
+     !call system(trim(cin(2:)))                                          ! Execute the command line specified by the string.
 !-----------------------------------------------------------------------------------------------------------------------------------
-   case('.','q')                                                   ! blank out command and quit
+   case('.','q')                                                          ! blank out command and quit
       exit
 !-----------------------------------------------------------------------------------------------------------------------------------
-   case default                                                    ! assume anything else is a number
+   case default                                                           ! assume anything else is a number
       iread=int( s2v(cin,ierr ))
       if(iread.gt.0.and.iread.le.iredo)then
           read(iobuf,rec=iread,err=999,iostat=ios)redoline(1:ibuf)

@@ -15,6 +15,7 @@
 !!    use M_strings, only : string_to_value,string_to_values,s2v,s2vs,value_to_string,v2s
 !!    use M_strings, only : listout,getvals
 !!    use M_strings, only : matchw
+!!    use M_strings, only : base, decodebase, codebase
 !!    use M_strings, only : isalnum, isalpha, iscntrl, isdigit, isgraph, islower,
 !!                          isprint, ispunct, isspace, isupper, isascii, isblank, isxdigit
 !!
@@ -97,6 +98,11 @@
 !!    o isascii   returns .true. if the character is in the range char(0) to char(127)
 !!    o isblank   returns .true. if character is a blank character (space or horizontal tab.
 !!    o isxdigit  returns .true. if character is a hexadecimal digit (0-9, a-f, or A-F).
+!!
+!!    BASE CONVERSION
+!!    o base       convert whole number string in base [2-36] to string in alternate base [2-36]
+!!    o codebase   convert whole number string in base [2-36] to base 10 number
+!!    o decodebase convert whole number in base 10 to string in base [2-36]
 !!
 !!##DESCRIPTION
 !!
@@ -424,6 +430,10 @@ PUBLIC v2s             !  generic function returns string given numeric REAL|DOU
 PUBLIC v2s_bug         !  generic function returns string given numeric REAL|DOUBLEPRECISION|INTEGER value
  PRIVATE trimzeros     !  Delete trailing zeros from numeric decimal string
 PUBLIC listout         !  copy ICURVE() to ICURVE_EXPANDED() expanding negative numbers to ranges (1 -10 means 1 thru 10)
+!----------------------# BASE CONVERSION
+PUBLIC base            !  convert whole number string in base [2-36] to string in alternate base [2-36]
+PUBLIC codebase        !  convert whole number string in base [2-36] to base 10 number
+PUBLIC decodebase      !  convert whole number in base 10 to string in base [2-36]
 !----------------------# LOGICAL TESTS
 PUBLIC isalnum         !  elemental function returns .true. if CHR is a letter or digit
 PUBLIC isalpha         !  elemental function returns .true. if CHR is a letter and .false. otherwise
@@ -3291,7 +3301,8 @@ end function noesc
 !!       exponential.  If the input string begins with "B", "Z", or "O"
 !!       and otherwise represents a positive whole number it is assumed to
 !!       be a binary, hexadecimal, or octal value. If the string contains
-!!       commas they are removed.
+!!       commas they are removed. If string is of the form NN:MMM... or
+!!       NN#MMM NN is assumed to be the base of the whole number.
 !!
 !!       if an error occurs in the READ, IOSTAT is returned in IERR and
 !!       value is set to zero.  if no error occurs, IERR=0.
@@ -3353,33 +3364,50 @@ character(len=*),parameter::ident="@(#)M_strings::a2d(3fp): subroutine returns d
    character(len=15)            :: frmt                         ! holds format built to read input string
    character(len=256)           :: msg                          ! hold message from I/O errors
    integer                      :: intg
+   integer                      :: pnd
+   integer                      :: basevalue, ivalu
 !----------------------------------------------------------------------------------------------------------------------------------
    ierr=0                                                       ! initialize error flag to zero
    local_chars=chars
+   msg=''
    if(len(local_chars).eq.0)local_chars=' '
    call substitute(local_chars,',','')                          ! remove any comma characters
-   select case(local_chars(1:1))
-   case('z','Z','h','H')                                        ! assume hexadecimal
-      frmt='(Z'//v2s(len(local_chars))//')'
-      read(local_chars(2:),frmt,iostat=ierr,iomsg=msg)intg
-      valu=dble(intg)
-   case('b','B')                                                ! assume binary (base 2)
-      frmt='(B'//v2s(len(local_chars))//')'
-      read(local_chars(2:),frmt,iostat=ierr,iomsg=msg)intg
-      valu=dble(intg)
-   case('O','o')                                                ! assume octal
-      frmt='(O'//v2s(len(local_chars))//')'
-      read(local_chars(2:),frmt,iostat=ierr,iomsg=msg)intg
-      valu=dble(intg)
-   case default
-      write(frmt,fmt)len(local_chars)                           ! build format of form '(BN,Gn.0)'
-      read(local_chars,fmt=frmt,iostat=ierr,iomsg=msg)valu      ! try to read value from string
-   end select
+   pnd=scan(local_chars,'#:')
+   if(pnd.ne.0)then
+      write(frmt,fmt)pnd-1                                      ! build format of form '(BN,Gn.0)'
+      read(local_chars(:pnd-1),fmt=frmt,iostat=ierr,iomsg=msg)basevalue   ! try to read value from string
+      if(decodebase(local_chars(pnd+1:),basevalue,ivalu))then
+         valu=ivalu
+      else
+         valu=0.0
+         ierr=-1
+      endif
+   else
+      select case(local_chars(1:1))
+      case('z','Z','h','H')                                     ! assume hexadecimal
+         frmt='(Z'//v2s(len(local_chars))//')'
+         read(local_chars(2:),frmt,iostat=ierr,iomsg=msg)intg
+         valu=dble(intg)
+      case('b','B')                                             ! assume binary (base 2)
+         frmt='(B'//v2s(len(local_chars))//')'
+         read(local_chars(2:),frmt,iostat=ierr,iomsg=msg)intg
+         valu=dble(intg)
+      case('O','o')                                             ! assume octal
+         frmt='(O'//v2s(len(local_chars))//')'
+         read(local_chars(2:),frmt,iostat=ierr,iomsg=msg)intg
+         valu=dble(intg)
+      case default
+         write(frmt,fmt)len(local_chars)                        ! build format of form '(BN,Gn.0)'
+         read(local_chars,fmt=frmt,iostat=ierr,iomsg=msg)valu   ! try to read value from string
+      end select
+   endif
    if(ierr.ne.0)then                                            ! if an error occurred ierr will be non-zero.
       valu=0.0                                                  ! set returned value to zero on error
-         if(local_chars.ne.'eod')then                                 ! print warning message
+         if(local_chars.ne.'eod')then                           ! print warning message
             call journal('sc','*a2d* - cannot produce number from string ['//trim(chars)//']')
-            call journal('sc','*a2d* - ['//trim(msg)//']')
+            if(msg.ne.'')then
+               call journal('sc','*a2d* - ['//trim(msg)//']')
+            endif
          endif
       endif
 end subroutine a2d
@@ -4835,7 +4863,281 @@ end function isalnum
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-END MODULE M_strings
+!>
+!!##NAME
+!!
+!!    base(3f) - [M_strings] convert whole number string in base [2-36] to string in alternate base [2-36]
+!!
+!!##SYNOPSIS
+!!
+!!
+!!   logical function base(x,b,y,a)
+!!
+!!    character(len=*),intent(in)  :: x
+!!    character(len=*),intent(out) :: y
+!!    integer,intent(in)           :: b,a
+!!
+!!##DESCRIPTION
+!!
+!!    Convert a numeric string from base b1 to base b2. The function returns
+!!    FALSE if b not in [2..36] or if string x contains invalid
+!!    characters in base b or if result y is too big
+!!
+!!    The letters A,B,...,Z represent 10,11,...,36 in the base > 10.
+!!
+!!##EXAMPLE
+!!
+!!   Sample program:
+!!
+!!    program demo_base
+!!    use M_strings, only : base
+!!    implicit none
+!!    integer           :: ba,bd
+!!    character(len=40) :: x,y
+!!    integer           :: r
+!!
+!!    print *,' BASE CONVERSION'
+!!    write(*,'("Start   Base (2 to 36): ")',advance='no'); read *, bd
+!!    write(*,'("Arrival Base (2 to 36): ")',advance='no'); read *, ba
+!!    INFINITE: do
+!!       write(*,'("Enter number in start base: ")',advance='no'); read *, x
+!!       if(x.eq.'0') exit INFINITE
+!!       if(base(x,bd,y,ba)then
+!!            write(*,'("In base ",I2,": ",A20)')  ba, y
+!!        else
+!!          print *,'Error in decoding/encoding number.'
+!!        endif
+!!     enddo INFINITE
+!!
+!!     end program demo_base
+!===================================================================================================================================
+logical function base(x,b,y,a)
+implicit none
+character(len=*),intent(in)  :: x
+character(len=*),intent(out) :: y
+integer,intent(in)           :: b,a
+integer                      :: temp
+
+character(len=*),parameter::ident="&
+&@(#)M_strings::base(3f): convert whole number string in base [2-36] to string in alternate base [2-36]"
+
+base=.true.
+if(decodebase(x,b,temp)) then
+   if(codebase(temp,a,y)) then
+   else
+      print *,'Error in coding number.'
+      base=.false.
+   endif
+else
+   print *,'Error in decoding number.'
+   base=.false.
+endif
+
+end function base
+!>
+!!##NAME
+!!
+!!    decodebase(3f) - [M_strings] convert whole number string in base [2-36] to base 10 number
+!!
+!!##SYNOPSIS
+!!
+!!
+!!   logical function decodebase(x,b,y)
+!!
+!!    character(len=*),intent(in)  :: x
+!!    integer,intent(in)           :: b
+!!    integer,intent(out)          :: y
+!!
+!!##DESCRIPTION
+!!
+!!    Convert a numeric string from base b to base 10. The function returns
+!!    FALSE if b not in [2..36] or if string x contains invalid
+!!    characters in base b or if result y is too big
+!!
+!!    The letters A,B,...,Z represent 10,11,...,36 in the base > 10.
+!!
+!!       Ref.: "Math matiques en Turbo-Pascal by
+!!              M. Ducamp and A. Reverchon (2),
+!!              Eyrolles, Paris, 1988".
+!!
+!!    based on a F90 Version By J-P Moreau (www.jpmoreau.fr)
+!!
+!!##EXAMPLE
+!!
+!!   Sample program:
+!!
+!!    program demo_decodebase
+!!    use m_strings, only : codebase, decodebase
+!!    implicit none
+!!    integer           :: ba,bd
+!!    character(len=40) :: x,y
+!!    integer           :: r
+!!
+!!    print *,' BASE CONVERSION'
+!!    write(*,'("Start   Base (2 to 36): ")',advance='no'); read *, bd
+!!    write(*,'("Arrival Base (2 to 36): ")',advance='no'); read *, ba
+!!    INFINITE: do
+!!       print *,''
+!!       write(*,'("Enter number in start base: ")',advance='no'); read *, x
+!!       if(x.eq.'0') exit INFINITE
+!!       if(decodebase(x,bd,r)) then
+!!          if(codebase(r,ba,y)) then
+!!            write(*,'("In base ",I2,": ",A20)')  ba, y
+!!          else
+!!            print *,'Error in coding number.'
+!!          endif
+!!       else
+!!          print *,'Error in decoding number.'
+!!       endif
+!!    enddo INFINITE
+!!
+!!    end program demo_decodebase
+!===================================================================================================================================
+logical function decodebase(string,basein,out10)
+implicit none
+
+character(len=*),parameter::ident="@(#)M_strings::decodebase(3f): convert whole number string in base [2-36] to base 10 number"
+
+character(len=*),intent(in)  :: string
+integer,intent(in)           :: basein
+integer,intent(out)          :: out10
+
+character(len=len(string))   :: string_local
+integer           :: long, i, j, k
+real              :: y
+real              :: mult
+character(len=1)  :: ch
+real,parameter    :: XMAXREAL=real(huge(1))
+integer           :: out_sign
+integer           :: basein_local
+
+  string_local=trim(adjustl(string))
+  decodebase=.false.
+  out_sign=1
+  out10=0;y=0.0
+  basein_local=abs(basein)
+  ALL: if(basein_local<2.or.basein_local>36) then
+    print *,'(*decodebase* ERROR: Base must be between 2 and 36. base=',basein_local
+  else ALL
+     out10=0;y=0.0; mult=1.0
+     long=LEN_TRIM(string_local)
+     do i=1, long
+        k=long+1-i
+        ch=string_local(k:k)
+        if(ch.eq.'-'.and.k.eq.1)then
+           out_sign=-1
+           cycle
+        endif
+        if(ch<'0'.or.ch>'Z'.or.(ch>'9'.and.ch<'A'))then
+           write(*,*)'*decodebase* ERROR: invalid character ',ch
+           exit ALL
+        endif
+        if(ch<='9') then
+              j=IACHAR(ch)-IACHAR('0')
+        else
+              j=IACHAR(ch)-IACHAR('A')+10
+        endif
+        if(j>=basein_local)then
+           exit ALL
+        endif
+        y=y+mult*j
+        if(mult>XMAXREAL/basein_local)then
+           exit ALL
+        endif
+        mult=mult*basein_local
+     enddo
+     decodebase=.true.
+     out10=nint(out_sign*y)*sign(1,basein)
+  endif ALL
+end function decodebase
+!>
+!!##NAME
+!!
+!!    codebase(3f) - [M_strings] convert whole number in base 10 to string in base [2-36]
+!!
+!!##SYNOPSIS
+!!
+!!
+!!   logical function codebase(in_base10,out_base,answer)
+!!
+!!    integer,intent(in)           :: in_base10
+!!    integer,intent(in)           :: out_base
+!!    character(len=*),intent(out) :: answer
+!!
+!!##DESCRIPTION
+!!
+!!    Convert a number from base 10 to base OUT_BASE. The function returns
+!!    .FALSE. if OUT_BASE is not in [2..36] or if number IN_BASE10 is
+!!    too big.
+!!
+!!    The letters A,B,...,Z represent 10,11,...,36 in the base > 10.
+!!
+!!       Ref.: "Math matiques en Turbo-Pascal by
+!!              M. Ducamp and A. Reverchon (2),
+!!              Eyrolles, Paris, 1988".
+!!
+!!    based on a F90 Version By J-P Moreau (www.jpmoreau.fr)
+!!
+!!##EXAMPLE
+!!
+!!
+!!   Sample program:
+!!
+!!    program demo_codebase
+!!    use M_strings, only : codebase
+!!    implicit none
+!!    character(len=20) :: answer
+!!    integer           :: i
+!!    logical           :: ierr
+!!    do j=1,100
+!!       do i=2,36
+!!          ierr=codebase(j,i,answer)
+!!       enddo
+!!    enddo
+!!    end program demo_codebase
+!===================================================================================================================================
+logical function codebase(inval10,outbase,answer)
+implicit none
+
+character(len=*),parameter::ident="@(#)M_strings::codebase(3f): convert whole number in base 10 to string in base [2-36]"
+
+integer,intent(in)           :: inval10
+integer,intent(in)           :: outbase
+character(len=*),intent(out) :: answer
+integer                      :: n
+real                         :: inval10_local
+integer                      :: outbase_local
+integer                      :: in_sign
+  answer=''
+  in_sign=sign(1,inval10)*sign(1,outbase)
+  inval10_local=abs(inval10)
+  outbase_local=abs(outbase)
+  if(outbase_local<2.or.outbase_local>36) then
+    print *,'*codebase* ERROR: base must be between 2 and 36. base was',outbase_local
+    codebase=.false.
+  else
+     do while(inval10_local>0.0 )
+        n=INT(inval10_local-outbase_local*INT(inval10_local/outbase_local))
+        if(n<10) then
+           answer=ACHAR(IACHAR('0')+n)//answer
+        else
+           answer=ACHAR(IACHAR('A')+n-10)//answer
+        endif
+        inval10_local=INT(inval10_local/outbase_local)
+     enddo
+     codebase=.true.
+  endif
+  if(in_sign.eq.-1)then
+     answer='-'//trim(answer)
+  endif
+  if(answer.eq.'')then
+     answer='0'
+  endif
+end function codebase
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+end module M_strings
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================

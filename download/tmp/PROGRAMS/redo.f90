@@ -2,7 +2,9 @@ program redoit
 use M_history, only : redo
 implicit none
 character(len=1024) ::  line
-   integer :: ios
+integer             :: ios
+integer             :: cstat
+character(len=256)  :: sstat
 
    call instructions()
    do
@@ -16,7 +18,7 @@ character(len=1024) ::  line
 
       ! now call user code to process new line of data
       ! As an example, call the system shell 
-      call execute_command_line(trim(line)) 
+      call execute_command_line(trim(line),cmdstat=cstat,cmdmsg=sstat) 
    enddo
    contains
       subroutine instructions
