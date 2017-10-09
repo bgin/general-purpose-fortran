@@ -300,6 +300,7 @@ cp -r -p ../html/StyleSheets tmp/html/
 # combine man pages into books
 book.sh M_kracken M_strings M_time M_system M_color M_pixel M_calculator M_units M_math M_process M_logic 
 book.sh M_Compare_Float_Numbers M_debug M_factor M_io M_journal M_messages M_sort INTRINSIC
+book.sh M_stopwatch
 book.sh INDEX
 #----------------------------------------------------------------------------------------------------------------------------------#
 echo 'now that all procedure descriptions are in place make main index page download.html'

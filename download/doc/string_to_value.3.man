@@ -1,5 +1,5 @@
 NAME
-     string_to_value - [M_strings]subroutine returns real value from string
+     string_to_value - [M_strings] subroutine returns real value from string
 
 SYNOPSIS
    subroutine string_to_value(chars,valu,ierr)

@@ -1,5 +1,5 @@
 NAME
-     string_to_values - [M_strings]read a string representing numbers into a numeric array
+     string_to_values - [M_strings] read a string representing numbers into a numeric array
 
 SYNOPSIS
       subroutine string_to_values(line,iread,values,inums,delims,ierr)

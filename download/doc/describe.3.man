@@ -1,5 +1,5 @@
 NAME
-   describe(3f) - [M_strings]returns a string describing the name of a single character
+   describe(3f) - [M_strings] returns a string describing the name of a single character
 
 SYNOPSIS
    function describe(ch) result (string)

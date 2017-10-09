@@ -1,5 +1,5 @@
 NAME
-   chomp - [M_strings]Tokenize a string, consuming it one token per call
+   chomp - [M_strings] Tokenize a string, consuming it one token per call
 
 SYNOPSIS
    function chomp(source_string,token[,delimiters])

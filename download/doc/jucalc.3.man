@@ -1,5 +1,5 @@
 NAME
-  jucalc - [M_calculator]parse calculator expression and return numeric or string value
+  jucalc - [M_calculator] parse calculator expression and return numeric or string value
 SYNOPSIS
   subroutine jucalc(inline,outlin,mssg,slast,ierr)
 

@@ -1,5 +1,5 @@
 NAME
-   M_system(3fm) - [M_system]Fortran interface to C system interface
+   M_system(3fm) - [M_system] Fortran interface to C system interface
 SYNOPSIS
   Public objects:
 
@@ -10,8 +10,11 @@ SYNOPSIS
 
    use M_system, only : system_getcwd, system_link,       &
    system_mkfifo, system_remove, system_rename,           &
-   system_umask, system_unlink, fileglob                  &
-   system_rmdir, system_chdir, system_mkdir, system_isdir
+   system_umask, system_unlink, fileglob,                 &
+   system_rmdir, system_chdir, system_mkdir,              &
+   system_stat, system_isdir, system_islnk, system_isreg, &
+   system_isblk, system_ischr, system_isfifo,             &
+   system_issock, system_perm
 
    use M_system, only :system_errno, system_perror
 
@@ -22,6 +25,8 @@ SYNOPSIS
    use M_system, only : system_kill
 
    use M_system, only : system_rand, system_srand
+
+   use M_system, only : system_cpu_time
 
 DESCRIPTION
    M_system(3fm) is a collection of Fortran procedures that mostly call C
@@ -47,37 +52,53 @@ ENVIRONMENT ACCESS
        o  system_clearenv(3f):  emulate clearenv(3c) to clear environment
 FILE SYSTEM
        o  system_chdir(3f):     call chdir(3c) to change current directory of a process
-       o  system_isdir(3f):     call fstat(3c) to determine if a filename is a directory
-       o  system_islink(3f):    call lstat(3c) to determine if a filename is a link
-       o  system_chmod(3f):     call chmod(3c) to set file permission mode
        o  system_getcwd(3f):    call getcwd(3c) to get pathname of current working directory
+
+       o  system_stat(3f):      determine system information of file by name
+       o  system_perm(3f):      create string representing file permission and type
+       o  system_isdir(3f):     determine if filename is a directory
+       o  system_islnk(3f):     determine if filename is a link
+       o  system_isreg(3f):     determine if filename is a regular file
+       o  system_isblk(3f):     determine if filename is a block device
+       o  system_ischr(3f):     determine if filename is a character device
+       o  system_isfifo(3f):    determine if filename is a fifo - named pipe
+       o  system_issock(3f):    determine if filename is a socket
+
+       o  system_chmod(3f):     call chmod(3c) to set file permission mode
        o  system_getumask(3f):  call umask(3c) to get process permission mask
+       o  system_setumask(3f):  call umask(3c) to set process permission mask
+
        o  system_mkdir(3f):     call mkdir(3c) to create empty directory
        o  system_mkfifo(3f):    call mkfifo(3c) to create a special FIFO file
-       o  system_remove(3f):    call remove(3c) to remove file
-       o  system_rename(3f):    call rename(3c) to change filename
-       o  system_rmdir(3f):     call rmdir(3c) to remove empty directory
-       o  system_setumask(3f):  call umask(3c) to set process permission mask
        o  system_link(3f):      call link(3c) to remove a filename link
+
+       o  system_rename(3f):    call rename(3c) to change filename
+
+       o  system_remove(3f):    call remove(3c) to remove file
+       o  system_rmdir(3f):     call rmdir(3c) to remove empty directory
        o  system_unlink(3f):    call unlink(3c) to create a link to a file
+
        o  fileglob(3f): Returns list of files using a file globbing pattern
 
 RANDOM NUMBERS
-        o  system_srand(3f): call srand(3c)
-        o  system_rand(3f): call rand(3c)
+       o  system_srand(3f): call srand(3c)
+       o  system_rand(3f): call rand(3c)
 C ERROR INFORMATION
-        o  system_errno(3f): return errno(3c)
-        o  system_perror(3f): call perror(3c) to display error message
+       o  system_errno(3f): return errno(3c)
+       o  system_perror(3f): call perror(3c) to display last C error message
 QUERIES
-        o  system_geteuid(3f): call geteuid(3c)
-        o  system_getuid(3f): call getuid(3c)
-        o  system_getegid(3f): call getegid(3c)
-        o  system_getgid(3f): call getgid(3c)
-        o  system_getpid(3f): call getpid(3c)
-        o  system_getppid(3f): call getppid(3c)
-        o  system_gethostname(3f): get name of current host
-        o  system_uname(3f): call my_uname(3c) which calls uname(3c)
-        o  system_getlogin(3f): get login name
+       o  system_geteuid(3f): call geteuid(3c)
+       o  system_getuid(3f): call getuid(3c)
+       o  system_getegid(3f): call getegid(3c)
+       o  system_getgid(3f): call getgid(3c)
+       o  system_getpid(3f): call getpid(3c)
+       o  system_getppid(3f): call getppid(3c)
+       o  system_gethostname(3f): get name of current host
+       o  system_uname(3f): call my_uname(3c) which calls uname(3c)
+       o  system_getlogin(3f): get login name
+       o  system_getpwuid(3f): get login name associated with given UID
+       o  system_getgrgid(3f): get group name associated with given GID
+       o  system_cpu_time(3f) : get processor time in seconds using times(3c)
 
 FUTURE DIRECTIONS
    A good idea of what system routines are commonly required is to refer
@@ -87,13 +108,16 @@ FUTURE DIRECTIONS
    locations with appropriate subscriptions to the IEEE server (e.g.,
    many university networks). For those who do have such access, the link
    is: POSIX Fortran 77 Language Interfaces (IEEE Std 1003.9-1992) (pdf)
+
 SEE ALSO
    Some vendors provide their own way to access POSIX functions and make
    those available as modules; for instance ...
+
       o the IFPORT module of Intel
       o or the f90_* modules of NAG.
       o There also some compiler-independent efforts to make them
         accessible, e.g.
+
          o Posix90 (doc),
          o flibs' platform/files and directories,
          o fortranposix.

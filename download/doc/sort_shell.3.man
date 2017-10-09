@@ -1,5 +1,5 @@
 NAME
-   sort_shell(3f) - [M_sort]Generic subroutine sorts the array X using Shell's method
+   sort_shell(3f) - [M_sort] Generic subroutine sorts the array X using Shell's method
 SYNOPSIS
    Usage:
 

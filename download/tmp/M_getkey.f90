@@ -129,7 +129,7 @@
 !!
 !!   * Look at the curses(3c) or ncurses(3c) libraries or similar libraries
 !!   * Look for extensions in your Fortran compiler documentation (Pass
-!!     examples back -- I'd be glad to see them).
+!!     examples back -- I would be glad to see them).
 !!   * In Unix and GNU/Linux look at the system commands
 !!
 !!        stty -cread

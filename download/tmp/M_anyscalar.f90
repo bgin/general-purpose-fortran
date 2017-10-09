@@ -29,7 +29,7 @@ contains
 !===================================================================================================================================
 !>
 !!##NAME
-!!    anyscalar_to_double(3f) - [M_anyscalar]convert integer or real parameter of any kind to doubleprecision
+!!    anyscalar_to_double(3f) - [M_anyscalar] convert integer or real parameter of any kind to doubleprecision
 !!
 !!##SYNOPSIS
 !!
@@ -113,7 +113,7 @@ end function anyscalar_to_double
 !===================================================================================================================================
 !>
 !!##NAME
-!!    anyscalar_to_real(3f) - [M_anyscalar]convert integer or real parameter of any kind to real
+!!    anyscalar_to_real(3f) - [M_anyscalar] convert integer or real parameter of any kind to real
 !!
 !!##SYNOPSIS
 !!
@@ -197,7 +197,7 @@ end function anyscalar_to_real
 !>
 !!##NAME
 !!
-!!    anyinteger_to_128bit(3f) - [M_anyscalar]convert integer any kind to integer(kind=128)
+!!    anyinteger_to_128bit(3f) - [M_anyscalar] convert integer any kind to integer(kind=128)
 !!
 !!##SYNOPSIS
 !!

@@ -448,24 +448,19 @@ subroutine unix_to_date(unixtime,dat,ierr)
 
 character(len=*),parameter::ident="@(#)M_time::unix_to_date(3f): Converts Unix Time to DAT date-time array"
 
-!------------
-!class(*),intent(in)             :: unixtime                            ! Unix time (seconds)
-real(kind=realtime),intent(in)   :: unixtime                            ! Unix time (seconds)
-!------------
+class(*),intent(in)              :: unixtime                            ! Unix time (seconds)
 integer,intent(out)              :: dat(8)                              ! date and time array
 integer,intent(out)              :: ierr                                ! 0 for successful execution, otherwise 1
    real(kind=realtime)           :: julian                              ! Unix time converted to a Julian Date
    real(kind=realtime)           :: local_unixtime
    real(kind=realtime),save      :: Unix_Origin_as_Julian               ! start of Unix Time as Julian Date
    logical,save            :: first=.TRUE.
-!-----------------------------------------------------------------------------------------------------------------------------------
-!   !  Notice that the value UNIXTIME can be any of several types ( INTEGER,REAL,REAL(KIND=REALTIME))
-!   select type(unixtime)
-!   type is (integer);          local_unixtime=dble(unixtime)
-!   type is (real);             local_unixtime=dble(unixtime)  ! typically not precise enough for UET values.
-!   type is (real(kind=realtime));    local_unixtime=unixtime
-!   end select
-   local_unixtime=unixtime
+   !  Notice that the value UNIXTIME can be any of several types ( INTEGER,REAL,REAL(KIND=REALTIME))
+   select type(unixtime)
+   type is (integer);             local_unixtime=dble(unixtime)
+   type is (real);                local_unixtime=dble(unixtime)  ! typically not precise enough for UET values.
+   type is (real(kind=realtime)); local_unixtime=unixtime
+   end select
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(first)then                                                             ! Initialize calculated constants on first call
       call date_to_julian([1970,1,1,0,0,0,0,0],Unix_Origin_as_Julian,ierr)   ! Compute start of Unix Time as a Julian Date
@@ -2665,8 +2660,12 @@ end function d2u
 !!
 !!    function u2d(unixtime) result (dat)
 !!
-!!     real(kind=realtime),intent(in),optional :: unixtime
-!!     integer                                 :: dat(8)
+!!     class(*),intent(in),optional      :: unixtime
+!!     ! integer
+!!     ! real
+!!     ! real(kind=realtime)
+!!
+!!     integer                           :: dat(8)
 !!
 !!##DESCRIPTION
 !!
@@ -2706,13 +2705,18 @@ function u2d(unixtime) result (dat)
 
 character(len=*),parameter::ident="@(#)M_time::u2d(3f): Given Unix Epoch Time returns DAT date-time array"
 
-real(kind=realtime),intent(in),optional :: unixtime
+class(*),intent(in),optional      :: unixtime
 integer                           :: dat(8)
    real(kind=realtime)            :: local_unixtime
    integer                        :: ierr
 
    if(present(unixtime))then
-      local_unixtime=unixtime
+      select type(unixtime)
+      type is (integer);             local_unixtime=unixtime
+      type is (integer(kind=8));     local_unixtime=unixtime
+      type is (real);                local_unixtime=unixtime
+      type is (real(kind=realtime)); local_unixtime=unixtime
+      end select
    else
       local_unixtime=d2u()
    endif
@@ -2720,6 +2724,7 @@ integer                           :: dat(8)
    call unix_to_date(local_unixtime,dat,ierr)
 
 end function u2d
+
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -3654,15 +3659,9 @@ character(len=*),parameter::ident="@(#)M_time::system_sleep(3f): call sleep(3c) 
 class(*),intent(in)           :: seconds
 integer(kind=c_int)           :: cint
    select type(seconds)
-   type is (integer)
-      cint=seconds
-      call call_sleep(cint)
-   type is (real)
-      cint=nint(seconds*1000000.0)
-      call call_usleep(cint)
-   type is (real(kind=realtime))
-      cint=nint(seconds*1000000.0)
-      call call_usleep(cint)
+   type is (integer);             cint=seconds                  ; call call_sleep(cint)
+   type is (real);                cint=nint(seconds*1000000.0)  ; call call_usleep(cint)
+   type is (real(kind=realtime)); cint=nint(seconds*1000000.0)  ; call call_usleep(cint)
    end select
 end subroutine system_sleep
 !===================================================================================================================================

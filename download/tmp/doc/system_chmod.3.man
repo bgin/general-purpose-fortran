@@ -1,5 +1,5 @@
 NAME
-      system_chmod(3f) - [M_system]call chmod(3c) to change permission mode of a file relative to directory file descriptor
+      system_chmod(3f) - [M_system] call chmod(3c) to change permission mode of a file relative to directory file descriptor
 SYNOPSIS
    function system_chmod(filename,mode) result(ierr)
 
@@ -80,8 +80,8 @@ EXAMPLES
    ! The following example sets the file permission bits for a file named /home/cnd/mod1, then calls the  stat()  function  to
    ! verify the permissions.
 
-   ierr=system_chmod("home/cnd/mod1", IANY([R_WXU,R_WXG,R_OTH,W_OTH]));
-   status = stat("home/cnd/mod1", buffer;);
+   ierr=system_chmod("home/cnd/mod1", IANY([R_WXU,R_WXG,R_OTH,W_OTH]))
+   status = system_stat("home/cnd/mod1", buffer)
 
    ! In  order  to  ensure  that the S_ISUID and S_ISGID bits are set, an application requiring this should use stat() after a
    ! successful chmod() to verify this.

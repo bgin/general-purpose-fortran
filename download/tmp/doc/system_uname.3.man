@@ -1,5 +1,5 @@
 NAME
-  system_uname(3f) - [M_system]call a C wrapper that calls uname(3c) to get current system information from Fortran
+  system_uname(3f) - [M_system] call a C wrapper that calls uname(3c) to get current system information from Fortran
 SYNOPSIS
    subroutine system_uname(WHICH,NAMEOUT)
 

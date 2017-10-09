@@ -50,7 +50,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 
 </A>
 <BLOCKQUOTE>
-<B>M_system(3fm) </B>- [M_system]Fortran interface to C system interface
+<B>M_system(3fm) </B>- [M_system] Fortran interface to C system interface
 </BLOCKQUOTE>
 <A name=contents></A><H3>CONTENTS</H3></A>
 <BLOCKQUOTE>
@@ -80,8 +80,11 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <P>
    use M_system, only : system_getcwd, system_link,       &
    system_mkfifo, system_remove, system_rename,           &
-   system_umask, system_unlink, fileglob                  &
-   system_rmdir, system_chdir, system_mkdir, system_isdir
+   system_umask, system_unlink, fileglob,                 &
+   system_rmdir, system_chdir, system_mkdir,              &
+   system_stat, system_isdir, system_islnk, system_isreg, &
+   system_isblk, system_ischr, system_isfifo,             &
+   system_issock, system_perm
 <P>
    use M_system, only :system_errno, system_perror
 <P>
@@ -92,6 +95,8 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
    use M_system, only : system_kill
 <P>
    use M_system, only : system_rand, system_srand
+<P>
+   use M_system, only : system_cpu_time
 <P>
 </PRE>
 </BLOCKQUOTE>
@@ -168,12 +173,52 @@ o
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 o
-<B>system_isdir</B>(3f):     call <B>fstat</B>(3c) to determine if a filename is a directory
+<B>system_getcwd</B>(3f):    call <B>getcwd</B>(3c) to get pathname of current working directory
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 o
-<B>system_islink</B>(3f):    call <B>lstat</B>(3c) to determine if a filename is a link
+<B>system_stat</B>(3f):      determine system information of file by name
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+o
+<B>system_perm</B>(3f):      create string representing file permission and type
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+o
+<B>system_isdir</B>(3f):     determine if filename is a directory
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+o
+<B>system_islnk</B>(3f):     determine if filename is a link
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+o
+<B>system_isreg</B>(3f):     determine if filename is a regular file
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+o
+<B>system_isblk</B>(3f):     determine if filename is a block device
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+o
+<B>system_ischr</B>(3f):     determine if filename is a character device
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+o
+<B>system_isfifo</B>(3f):    determine if filename is a fifo - named pipe
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+o
+<B>system_issock</B>(3f):    determine if filename is a socket
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
@@ -183,12 +228,12 @@ o
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 o
-<B>system_getcwd</B>(3f):    call <B>getcwd</B>(3c) to get pathname of current working directory
+<B>system_getumask</B>(3f):  call <B>umask</B>(3c) to get process permission mask
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 o
-<B>system_getumask</B>(3f):  call <B>umask</B>(3c) to get process permission mask
+<B>system_setumask</B>(3f):  call <B>umask</B>(3c) to set process permission mask
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
@@ -203,7 +248,7 @@ o
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 o
-<B>system_remove</B>(3f):    call <B>remove</B>(3c) to remove file
+<B>system_link</B>(3f):      call <B>link</B>(3c) to remove a filename link
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
@@ -213,17 +258,12 @@ o
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 o
+<B>system_remove</B>(3f):    call <B>remove</B>(3c) to remove file
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+o
 <B>system_rmdir</B>(3f):     call <B>rmdir</B>(3c) to remove empty directory
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-o
-<B>system_setumask</B>(3f):  call <B>umask</B>(3c) to set process permission mask
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-o
-<B>system_link</B>(3f):      call <B>link</B>(3c) to remove a filename link
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
@@ -269,7 +309,7 @@ o
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 o
-<B>system_perror</B>(3f): call <B>perror</B>(3c) to display error message
+<B>system_perror</B>(3f): call <B>perror</B>(3c) to display last C error message
 </TD></TR>
 <TR></TR></TABLE></BLOCKQUOTE>
 <A name=7>
@@ -323,6 +363,21 @@ o
 <B></B> </TD><TD valign=bottom>
 o
 <B>system_getlogin</B>(3f): get login name
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+o
+<B>system_getpwuid</B>(3f): get login name associated with given UID
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+o
+<B>system_getgrgid</B>(3f): get group name associated with given GID
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+o
+<B>system_cpu_time</B>(3f) : get processor time in seconds using <B>times</B>(3c)
 </TD></TR>
 <TR></TR></TABLE></BLOCKQUOTE>
 <A name=8>
@@ -388,7 +443,7 @@ fortranposix.
 <TR></TR></TABLE></BLOCKQUOTE>
 </BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>M_system (3)</TD> <TD align=right width=33%><I>September 18, 2017</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 5566e045-fc30-4a0a-8dca-1b28bf082067 using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>M_system (3)</TD> <TD align=right width=33%><I>October 08, 2017</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 8228eacb-f131-425c-bf08-3f9ea7dabe66 using man macros.</FONT>
 </div>
 </div>
 <center><img src="images/M_system.3.gif"></center> 

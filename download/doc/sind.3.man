@@ -1,5 +1,5 @@
 NAME
-   sind - [M_units]calculate sine of value in degrees
+   sind - [M_units] calculate sine of value in degrees
 SYNOPSIS
    elemental real function sind(degrees)
 

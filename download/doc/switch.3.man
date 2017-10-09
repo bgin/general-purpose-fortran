@@ -1,6 +1,6 @@
 NAME
 
-   switch - [M_strings]generic composition of a2s() and s2a() converts between CHARACTER scalar and array of single characters
+   switch - [M_strings] generic composition of a2s() and s2a() converts between CHARACTER scalar and array of single characters
 
 SYNOPSIS
    pure function switch(array) result (string)

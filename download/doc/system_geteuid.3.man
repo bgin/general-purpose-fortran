@@ -1,5 +1,5 @@
 NAME
-   system_geteuid(3f) - [M_system]get effective UID of current process from Fortran by calling geteuid(3c)
+   system_geteuid(3f) - [M_system] get effective UID of current process from Fortran by calling geteuid(3c)
 SYNOPSIS
    integer(kind=c_int) function system_geteuid()
 

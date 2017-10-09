@@ -1,6 +1,6 @@
 !>
 !!##NAME
-!!    M_units(3fm) - [M_units]convert between various physical units
+!!    M_units(3fm) - [M_units] convert between various physical units
 !!
 !!##SYNOPSIS
 !!
@@ -169,7 +169,7 @@ contains
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!    c2f - [M_units]convert Celsius to Fahrenheit
+!!    c2f - [M_units] convert Celsius to Fahrenheit
 !!##SYNOPSIS
 !!
 !!    elemental real function c2f(celsius)
@@ -210,7 +210,7 @@ end function c2f
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!    f2c - [M_units]convert Fahrenheit to Celsius
+!!    f2c - [M_units] convert Fahrenheit to Celsius
 !!##SYNOPSIS
 !!
 !!    elemental real function f2c(fahrenheit)
@@ -253,7 +253,7 @@ end function f2c
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!    r2d - [M_units]convert radians to degrees
+!!    r2d - [M_units] convert radians to degrees
 !!##SYNOPSIS
 !!
 !!    elemental real function r2d(radians)
@@ -295,7 +295,7 @@ end function r2d
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!    d2r - [M_units]convert degrees to radians
+!!    d2r - [M_units] convert degrees to radians
 !!##SYNOPSIS
 !!
 !!    elemental real function d2r(degrees)
@@ -340,7 +340,7 @@ end function d2r
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!    sind - [M_units]calculate sine of value in degrees
+!!    sind - [M_units] calculate sine of value in degrees
 !!##SYNOPSIS
 !!
 !!    elemental real function sind(degrees)
@@ -387,7 +387,7 @@ end function sind
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!    cosd - [M_units]calculate sine of value in degrees
+!!    cosd - [M_units] calculate sine of value in degrees
 !!##SYNOPSIS
 !!
 !!    elemental real function cosd(degrees)
@@ -438,7 +438,7 @@ end function cosd
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!    tand - [M_units]calculate tangent of value in degrees
+!!    tand - [M_units] calculate tangent of value in degrees
 !!##SYNOPSIS
 !!
 !!    elemental real function tand(degrees)
@@ -512,7 +512,7 @@ end function atan2d
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!    feet_to_meters - [M_units]converts a measurement in feet to meters
+!!    feet_to_meters - [M_units] converts a measurement in feet to meters
 !!##SYNOPSIS
 !!
 !!    elemental real function feet_to_meters(feet)
@@ -556,7 +556,7 @@ end function feet_to_meters
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!    meters_to_feet - [M_units]converts a measurement in meters to feet
+!!    meters_to_feet - [M_units] converts a measurement in meters to feet
 !!##SYNOPSIS
 !!
 !!    elemental real function meters_to_feet(meters)
@@ -864,7 +864,7 @@ end subroutine polar_to_cartesian
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!    atomnum2symbol - [M_units]return element symbol given atomic number
+!!    atomnum2symbol - [M_units] return element symbol given atomic number
 !!##SYNOPSIS
 !!
 !!   subroutine atomnum2symbol(atomnum,symbol)
@@ -1042,7 +1042,7 @@ end subroutine atomnum2symbol
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!    symbol2atomnum - [M_units]return atomic number given element symbol name
+!!    symbol2atomnum - [M_units] return atomic number given element symbol name
 !!##SYNOPSIS
 !!
 !!   subroutine symbol2atomnum(symbol,atomnum)

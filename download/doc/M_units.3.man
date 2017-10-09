@@ -1,5 +1,5 @@
 NAME
-   M_units(3fm) - [M_units]convert between various physical units
+   M_units(3fm) - [M_units] convert between various physical units
 
 SYNOPSIS
 

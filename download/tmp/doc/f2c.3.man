@@ -1,5 +1,5 @@
 NAME
-   f2c - [M_units]convert Fahrenheit to Celsius
+   f2c - [M_units] convert Fahrenheit to Celsius
 SYNOPSIS
    elemental real function f2c(fahrenheit)
 

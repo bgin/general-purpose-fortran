@@ -1,5 +1,5 @@
 NAME
-   d2r - [M_units]convert degrees to radians
+   d2r - [M_units] convert degrees to radians
 SYNOPSIS
    elemental real function d2r(degrees)
 

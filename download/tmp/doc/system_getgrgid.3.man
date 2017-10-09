@@ -1,0 +1,36 @@
+NAME
+   system_getgrgid(3f) - [M_system] get groupd name associated with a GID
+SYNOPSIS
+  function system_getgrgid(gid) result (gname)
+
+   integer,intent(in)           :: gid
+   character(len=:),allocatable :: gname
+
+DESCRIPTION
+
+   The system_getlogin() function returns a string containing the group
+   name associated with the given GID. If no match is found
+   it returns a null string and sets errno to indicate the error.
+
+OPTION
+   gid    GID to try to look up associated group for
+
+RETURN VALUE
+   gname  returns the group name. Blank if an error occurs
+
+EXAMPLE
+  Sample program:
+
+   program demo_system_getgrgid
+   use M_system, only : system_getgrgid
+   use M_system, only: system_getgid
+   implicit none
+   character(len=:),allocatable :: name
+   name=system_getgrgid( system_getgid() )
+   write(*,'("group[",a,"] for ",i0)')name,system_getgid()
+   end program demo_system_getgrgid
+
+  Results:
+
+   group[default] for 197121
+

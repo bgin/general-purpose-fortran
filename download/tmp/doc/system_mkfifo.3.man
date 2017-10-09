@@ -1,5 +1,5 @@
 NAME
-       system_mkfifo(3f)  - [M_system]make a FIFO special file relative to directory file descriptor
+       system_mkfifo(3f)  - [M_system] make a FIFO special file relative to directory file descriptor
 SYNOPSIS
 DESCRIPTION
    The mkfifo() function creates a new FIFO special file named by the pathname pointed to by path.
@@ -69,6 +69,6 @@ EXAMPLES
 
 EXAMPLE
    integer :: ierr
-   ierr=system_mkfifo('_scratch',IANY(R_USR,W_USER,X_USER))
+   ierr=system_mkfifo('_scratch',IANY(R_USR,W_USER,X_USR))
    end program demo_system_mkfifo
 

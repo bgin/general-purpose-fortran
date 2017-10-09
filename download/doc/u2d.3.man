@@ -4,8 +4,12 @@ NAME
 SYNOPSIS
    function u2d(unixtime) result (dat)
 
-    real(kind=realtime),intent(in),optional :: unixtime
-    integer                                 :: dat(8)
+    class(*),intent(in),optional      :: unixtime
+    ! integer
+    ! real
+    ! real(kind=realtime)
+
+    integer                           :: dat(8)
 
 DESCRIPTION
 

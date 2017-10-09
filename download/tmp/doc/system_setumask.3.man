@@ -1,5 +1,5 @@
 NAME
-   system_setumask(3f) - [M_system]set the file mode creation umask
+   system_setumask(3f) - [M_system] set the file mode creation umask
 SYNOPSIS
    integer function system_setumask(new_umask) result (old_umask)
 
@@ -38,7 +38,7 @@ ERRORS
 EXAMPLE
   Sample program
 
-   program demo_umask
+   program demo_setumask
    use M_system, only : system_getumask, system_setumask
    integer :: newmask
    write(*,101)(system_getumask(),i=1,4)
@@ -47,7 +47,7 @@ EXAMPLE
    old_umask=system_setumask(newmask)
    write(*,*)'NEW'
    write(*,101)(system_getumask(),i=1,4)
-   end program demo_umask
+   end program demo_setumask
 
   Expected output
 

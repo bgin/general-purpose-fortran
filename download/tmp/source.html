@@ -400,6 +400,10 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_sort::sort_shell_reals_hl(3fp):sort double complex array using Shell sort (high to low)<br/>
 	M_sort::sort_shell_reals_lh(3fp):sort double complex array using Shell sort (low to high)<br/>
 </td>
+<tr><td><a href="M_stopwatch.f90">M_stopwatch.f90</a></td>
+<td>
+	M_stopwatch::M_stopwatch(3f): package for measuring cpu and wall clock<br/>
+</td>
 <tr><td><a href="M_strings.f90">M_strings.f90</a></td>
 <td>
 	M_strings(3f): Fortran module containing routines that deal with character strings<br/>
@@ -510,7 +514,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <tr><td><a href="M_system.f90">M_system.f90</a></td>
 <td>
 	M_system::system_srand(3f): call srand(3c)<br/>
-	M_system::system_kill(3f):call kill(3c) to send a signal to a process<br/>
+	M_system::system_kill(3f): call kill(3c) to send a signal to a process<br/>
 	M_system::system_errno(3f): return errno(3c)<br/>
 	M_system::system_geteuid(3f): call geteuid(3c)<br/>
 	M_system::system_getuid(3f): call getuid(3c)<br/>
@@ -522,6 +526,15 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_system::system_umask(3f): call umask(3c)<br/>
 	M_system::system_rand(3f): call rand(3c)<br/>
 	M_system::system_initenv(3f): initialize environment table for reading<br/>
+	M_system::system_issock(3f): determine if pathname is a socket<br/>
+	M_system::system_isfifo(3f): determine if pathname is a fifo(named pipe)<br/>
+	M_system::system_ischr(3f): determine if pathname is a link<br/>
+	M_system::system_isreg(3f): determine if pathname is a regular file<br/>
+	M_system::system_islnk(3f): determine if pathname is a link<br/>
+	M_system::system_isblk(3f): determine if pathname is a block device<br/>
+	M_system::system_isdir(3f): determine if DIRNAME is a directory name<br/>
+	M_system::system_cpu_time(3f): get processor time using times(3c)<br/>
+	M_system::system_cpu_time(3f): get processor time using times(3c)<br/>
 	M_system::system_link(3f): call link(3c) to create a file link<br/>
 	M_system::system_unlink(3f): call unlink(3c) to rm file link<br/>
 	M_system::system_perror(3f): call perror(3c) to display error message<br/>
@@ -542,6 +555,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_system::system_gethostname(3f): get name of current host by calling gethostname(3c)<br/>
 	M_system::arr2str(3fp): function copies null-terminated char array to string<br/>
 	M_system::str2arr(3fp): function copies string to null terminated char array<br/>
+	M_system::system_stat(3f): call stat(3c) to get pathname information<br/>
 </td>
 <tr><td><a href="M_time.f90">M_time.f90</a></td>
 <td>

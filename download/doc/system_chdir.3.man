@@ -1,5 +1,5 @@
 NAME
-   system_chdir(3f) - [M_system]call chdir(3c) from Fortran to change working directory
+   system_chdir(3f) - [M_system] call chdir(3c) from Fortran to change working directory
 SYNOPSIS
    subroutine system_chdir(path, err)
 

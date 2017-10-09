@@ -1,5 +1,5 @@
 NAME
-   system_readenv(3f) - [M_system]step thru and read environment table
+   system_readenv(3f) - [M_system] step thru and read environment table
 SYNOPSIS
       function system_readenv() result(string)
 

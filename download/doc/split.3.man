@@ -1,5 +1,5 @@
 NAME
-   split - [M_strings]parse string into an array using specified delimiters
+   split - [M_strings] parse string into an array using specified delimiters
 
 SYNOPSIS
    subroutine split(input_line,array,delimiters,order,nulls)

@@ -1,9 +1,11 @@
 NAME
-   system_getlogin(3f) - [M_system]get login name
+   system_getlogin(3f) - [M_system] get login name
+
 SYNOPSIS
   function system_getlogin() result (fname)
 
    character(len=:),allocatable :: FNAME
+
 DESCRIPTION
 
    The system_getlogin() function returns a string containing the user
@@ -18,6 +20,7 @@ DESCRIPTION
 
 RETURN VALUE
    fname  returns the login name.
+
 EXAMPLE
   Sample program:
 
@@ -28,3 +31,8 @@ EXAMPLE
    name=system_getlogin()
    write(*,'("login[",a,"]")')name
    end program demo_system_getlogin
+
+  Results:
+
+   login[JSU]
+

@@ -1,5 +1,5 @@
 NAME
-   system_srand(3f) - [M_system]set seed for pseudo-random number generator system_rand(3f)
+   system_srand(3f) - [M_system] set seed for pseudo-random number generator system_rand(3f)
 
 SYNOPSIS
    subroutine system_srand()

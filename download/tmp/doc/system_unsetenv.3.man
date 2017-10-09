@@ -1,5 +1,5 @@
 NAME
-   system_unsetenv(3f) - [M_system]change or add an environment variable by calling unsetenv(3c)
+   system_unsetenv(3f) - [M_system] change or add an environment variable by calling unsetenv(3c)
 SYNOPSIS
   subroutine system_unsetenv(name,ierr)
 
@@ -29,7 +29,7 @@ EXAMPLE
      call system_putenv('GRU=this is the value')
      write(*,'(a)')'The variable GRU should be set'
      call execute_command_line('env|grep GRU')
-     call unsetenv('GRU')
+     call system_unsetenv('GRU')
      write(*,'(a)')'The variable GRU should not be set'
      call execute_command_line('env|grep GRU')
      end program demo_system_unsetenv

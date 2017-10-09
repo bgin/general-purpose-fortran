@@ -1,5 +1,5 @@
 NAME
-   nospace - [M_strings]remove all whitespace from input string
+   nospace - [M_strings] remove all whitespace from input string
 
 SYNOPSIS
    function nospace(str) - remove all whitespace from input string

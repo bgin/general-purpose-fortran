@@ -1,5 +1,5 @@
 NAME
-     upper - [M_strings]changes a string to uppercase
+     upper - [M_strings] changes a string to uppercase
 
 SYNOPSIS
    elemental pure function upper(str,begin,end) result (string)

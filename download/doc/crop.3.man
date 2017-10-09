@@ -1,5 +1,5 @@
 NAME
-   crop - [M_strings]trim leading blanks and trailing blanks from a string
+   crop - [M_strings] trim leading blanks and trailing blanks from a string
 
 SYNOPSIS
    function crop(strin) result (strout)

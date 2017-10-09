@@ -1,5 +1,5 @@
 NAME
-   system_rand(3f) - [M_system]call pseudo-random number generator rand(3c)
+   system_rand(3f) - [M_system] call pseudo-random number generator rand(3c)
 SYNOPSIS
    integer(kind=c_int) :: function system_rand()
 DESCRIPTION

@@ -1,5 +1,5 @@
 NAME
-   system_opendir(3f) - [M_system]open directory stream by calling opendir(3c)
+   system_opendir(3f) - [M_system] open directory stream by calling opendir(3c)
 SYNOPSIS
   subroutine system_opendir(dirname,dir,ierr)
 

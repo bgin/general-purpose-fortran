@@ -1,5 +1,5 @@
 NAME
-   system_readdir(3f) - [M_system]read a directory using readdir(3c)
+   system_readdir(3f) - [M_system] read a directory using readdir(3c)
 SYNOPSIS
 subroutine system_readdir(dir,filename,ierr)
 

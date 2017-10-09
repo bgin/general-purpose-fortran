@@ -1,5 +1,5 @@
 NAME
-     system_rename(3f) - [M_system]call rename(3c) to rename a system file
+     system_rename(3f) - [M_system] call rename(3c) to rename a system file
 SYNOPSIS
   function system_rename(input,output) result(ierr)
 

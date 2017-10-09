@@ -1,5 +1,5 @@
 NAME
-    M_time - [M_time]Fortran module for manipulating and presenting time and
+    M_time - [M_time] Fortran module for manipulating and presenting time and
     date values
 DESCRIPTION
 

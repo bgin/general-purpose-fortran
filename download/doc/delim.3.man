@@ -1,5 +1,5 @@
 NAME
-     delim - [M_strings]parse a string and store tokens into an array
+     delim - [M_strings] parse a string and store tokens into an array
 SYNOPSIS
    subroutine delim(line,array,n,icount,ibegin,iterm,ilen,dlim)
 

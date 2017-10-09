@@ -1,5 +1,5 @@
 NAME
-   system_getpid(3f) - [M_system]get PID (process ID) of current process from Fortran by calling getpid(3c)
+   system_getpid(3f) - [M_system] get PID (process ID) of current process from Fortran by calling getpid(3c)
 SYNOPSIS
    integer function system_getpid()
 DESCRIPTION

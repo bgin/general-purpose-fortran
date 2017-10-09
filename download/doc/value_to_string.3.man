@@ -1,5 +1,5 @@
 NAME
-     value_to_string - [M_strings]return numeric string from a numeric value
+     value_to_string - [M_strings] return numeric string from a numeric value
 
 SYNOPSIS
 

@@ -1,5 +1,5 @@
 NAME
-      system_getcwd(3f) - [M_system]call getcwd(3c) to get the pathname of the current working directory
+      system_getcwd(3f) - [M_system] call getcwd(3c) to get the pathname of the current working directory
 SYNOPSIS
       subroutine system_getcwd(output,ierr)
 

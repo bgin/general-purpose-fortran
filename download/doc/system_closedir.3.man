@@ -1,5 +1,5 @@
 NAME
-       system_closedir(3f) - [M_system]close a directory stream by calling closedir(3c)
+       system_closedir(3f) - [M_system] close a directory stream by calling closedir(3c)
 SYNOPSIS
        subroutine system_closedir(dir,ierr)
 
@@ -22,7 +22,7 @@ EXAMPLE
 
    program demo_system_closedir
    use M_system, only : system_opendir,system_readdir
-   use M_system, only : system_closedir
+   use M_system, only : system_closedir, system_rewinddir
    use iso_c_binding, only : c_ptr
    implicit none
    type(c_ptr)                  :: dir

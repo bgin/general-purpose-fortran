@@ -1,5 +1,5 @@
 NAME
-     v2s - [M_strings]return numeric string from a numeric value
+     v2s - [M_strings] return numeric string from a numeric value
 SYNOPSIS
       function v2s(value) result(outstr)
 

@@ -1,5 +1,5 @@
 NAME
-     system_remove(3f) - [M_system]call remove(3c) to remove file
+     system_remove(3f) - [M_system] call remove(3c) to remove file
 SYNOPSIS
   function system_remove(path) result(err)
 

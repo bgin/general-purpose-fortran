@@ -46,6 +46,7 @@ lastprogram _kill.f90
 lastprogram _ln.f90
 lastprogram _logname.f90
 lastprogram _ls.f90
+lastprogram _stat.f90
 lastprogram _mkdir.f90
 lastprogram _mkfifo.f90
 lastprogram _mv.f90

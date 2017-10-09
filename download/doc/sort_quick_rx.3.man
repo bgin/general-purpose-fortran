@@ -1,5 +1,5 @@
 NAME
-     sort_quick_rx(3f) - [M_sort]indexed hybrid quicksort of a real array
+     sort_quick_rx(3f) - [M_sort] indexed hybrid quicksort of a real array
 SYNOPSIS
      subroutine sort_quick_rx(data,index)
 

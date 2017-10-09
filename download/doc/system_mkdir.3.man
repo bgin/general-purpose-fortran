@@ -1,5 +1,5 @@
 NAME
-       system_mkdir(3f) - [M_system]call mkdir(3c) to create a new directory
+       system_mkdir(3f) - [M_system] call mkdir(3c) to create a new directory
 SYNOPSIS
 DESCRIPTION
 
@@ -42,6 +42,6 @@ EXAMPLE
    use M_system, only : DEFFILEMODE, ACCESSPERMS
    implicit none
    integer :: ierr
-   ierr=system_mkdir('_scratch',IANY(R_USR,W_USER,X_USER))
+   ierr=system_mkdir('_scratch',IANY(R_USR,W_USER,X_USR))
    end program demo_system_mkdir
 

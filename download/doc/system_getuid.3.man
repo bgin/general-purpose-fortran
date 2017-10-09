@@ -1,5 +1,5 @@
 NAME
-   system_getuid(3f) - [M_system]get real UID of current process from Fortran by calling getuid(3c)
+   system_getuid(3f) - [M_system] get real UID of current process from Fortran by calling getuid(3c)
 SYNOPSIS
    integer(kind=c_int) function system_getuid()
 
@@ -15,4 +15,8 @@ EXAMPLE
    implicit none
       write(*,*)'UID=',system_getuid()
    end program demo_system_getuid
+
+  Results:
+
+   UID=      197609
 

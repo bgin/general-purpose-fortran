@@ -1,5 +1,5 @@
 NAME
-   substitute - [M_strings]Globally substitute one substring for another in string
+   substitute - [M_strings] Globally substitute one substring for another in string
 
 SYNOPSIS
    subroutine substitute(targetline,old,new,ierr,start,end)

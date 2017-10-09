@@ -1,5 +1,5 @@
 NAME
-       system_gethostname(3f) - [M_system]get name of current host
+       system_gethostname(3f) - [M_system] get name of current host
 SYNOPSIS
       subroutine system_gethostname(string,ierr)
 

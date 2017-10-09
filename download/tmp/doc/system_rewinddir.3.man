@@ -1,5 +1,5 @@
 NAME
-      system_rewinddir(3f) - [M_system]call rewinddir(3c) to rewind directory stream
+      system_rewinddir(3f) - [M_system] call rewinddir(3c) to rewind directory stream
 SYNOPSIS
    subroutine system_rewinddir(dir)
 

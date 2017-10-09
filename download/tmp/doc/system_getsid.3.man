@@ -1,5 +1,5 @@
 NAME
-       system_getsid(3f) - [M_system]get the process group ID of a session leader
+       system_getsid(3f) - [M_system] get the process group ID of a session leader
 SYNOPSIS
        integer(kind=c_int) function system_getsid(pid)
        integer(kind=c_int) :: pid
@@ -15,7 +15,8 @@ EXAMPLE
   Get SID from Fortran
 
    program demo_system_getsid
-   use M_system, only: system_getsid
+   use M_system,      only : system_getsid
+   use ISO_C_BINDING, only : c_int
    implicit none
       write(*,*)'SID=',system_getsid(0_c_int)
    end program demo_system_getsid
