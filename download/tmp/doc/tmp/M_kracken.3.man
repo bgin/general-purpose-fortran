@@ -18,7 +18,7 @@ example programs that call KRACKEN(3f).
 
 NAME
 
-M_kracken(3fm) - [ARGUMENTS:M_kracken]parse command line options of Fortran
+M_kracken(3fm) - [ARGUMENTS:M_kracken] parse command line options of Fortran
 programs using Unix-like syntax
 
 ABSTRACT

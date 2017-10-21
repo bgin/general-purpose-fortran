@@ -1,5 +1,5 @@
 NAME
-   anyscalar_to_double(3f) - [M_anyscalar]convert integer or real parameter of any kind to doubleprecision
+   anyscalar_to_double(3f) - [M_anyscalar] convert integer or real parameter of any kind to doubleprecision
 
 SYNOPSIS
    pure function anyscalar_to_double(valuein) result(d_out)
@@ -55,4 +55,3 @@ EXAMPLE
     end function squarei
 
     end program scalars
-!===================================================================================================================================

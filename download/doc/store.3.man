@@ -1,5 +1,5 @@
 NAME
-         store(3fp) - [ARGUMENTS:M_kracken]add or replace dict. name's value (if allow='add' add name if necessary)
+         store(3fp) - [ARGUMENTS:M_kracken] add or replace dict. name's value (if allow='add' add name if necessary)
 SYNOPSIS
   subroutine store(name1,value1,allow1,ier)
 

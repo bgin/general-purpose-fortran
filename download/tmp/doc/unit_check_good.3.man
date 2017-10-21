@@ -1,6 +1,6 @@
 
 NAME
-   unit_check_good - [M_debug]call command "goodbad NAME good"
+   unit_check_good - [M_debug] call command "goodbad NAME good"
 
 SYNOPSIS
    subroutine unit_check_good(name,string)

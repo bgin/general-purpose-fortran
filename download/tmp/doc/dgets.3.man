@@ -1,5 +1,5 @@
 NAME
-         dgets - [ARGUMENTS:M_kracken]given keyword fetch doubleprecision array from command arguments
+         dgets - [ARGUMENTS:M_kracken] given keyword fetch doubleprecision array from command arguments
 SYNOPSIS
    function dgets(keyword) result(darray)
 

@@ -1,5 +1,5 @@
 NAME
-       lcm(1f) - [NUMBERS]display least common multiple of a list of whole numbers
+       lcm(1f) - [NUMBERS] display least common multiple of a list of whole numbers
 
 SYNOPSIS
        lcm [NUMBERS]...

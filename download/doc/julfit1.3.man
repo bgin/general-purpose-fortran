@@ -1,5 +1,5 @@
 NAME
-     julfit1(3f) - [M_math:fit]internal routine for linear least square fit(y=a*x+b), changes the y array
+     julfit1(3f) - [M_math:fit] internal routine for linear least square fit(y=a*x+b), changes the y array
 SYNOPSIS
 
    subroutine julfit1(x,y,ixn,a,b,r2)

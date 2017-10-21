@@ -1,5 +1,5 @@
 NAME
-   stuff(3f) - [M_calculator]directly store value into calculator directory for efficiency
+   stuff(3f) - [M_calculator] directly store value into calculator directory for efficiency
 
 SYNOPSIS
   subroutine stuff(varnam0,value,ioflag)

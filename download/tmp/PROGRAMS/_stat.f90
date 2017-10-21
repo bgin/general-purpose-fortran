@@ -9,20 +9,32 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'       _stat(1f) - [FUNIX]list file properties                                  ',&
+'       _stat(1f) - [FUNIX] list file properties                                 ',&
 'SYNOPSIS                                                                        ',&
-'       _stat pathname|--version|--help                                          ',&
+'       _stat pathnames|--version|--help                                         ',&
 'DESCRIPTION                                                                     ',&
-'       Given a pathname list properties                                         ',&
+'       Given pathnames list properties                                          ',&
 'OPTIONS                                                                         ',&
-'       directory   name of pathname to display properties of.                   ',&
-'       --help      display command help and exit                                ',&
-'                                                                                ',&
-'       --version   output version information and exit                          ',&
+'   pathnames   pathnames to display properties of.                              ',&
+'   --help      display command help and exit                                    ',&
+'   --version   output version information and exit                              ',&
 'EXAMPLES                                                                        ',&
-' Sample command lines ...                                                       ',&
+'  Sample command lines ...                                                      ',&
 '                                                                                ',&
-'        _stat /tmp                                                              ',&
+'   _stat _stat.ff                                                               ',&
+'                                                                                ',&
+'  Results                                                                       ',&
+'                                                                                ',&
+'   Pathname:                    _stat.ff                                        ',&
+'   Residence:                   Inode:18295873486224096  Device ID(hex/decimal):3E6BE045h/1047257157d  Device where located:0',&
+'   Size:                        File size(bytes):4267  No. of blocks allocated:8  Preferred block size(bytes):65536',&
+'   File mode octal/decimal/str: 100744o/33252d/-rwxr--r-- ---                   ',&
+'   Number of links:             1                                               ',&
+'   Owner''s uid/username:        197609/JSU                                     ',&
+'   Owner''s gid/group:           197121/None                                    ',&
+'   Last access time:            1507483493 2017-10-08 13:24:53                  ',&
+'   Last modification time:      1507483493 2017-10-08 13:24:53                  ',&
+'   Last status change time:     1507483494 2017-10-08 13:24:54                  ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -31,22 +43,34 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!        _stat(1f) - [FUNIX]list file properties
+!!        _stat(1f) - [FUNIX] list file properties
 !!##SYNOPSIS
 !!
-!!        _stat pathname|--version|--help
+!!        _stat pathnames|--version|--help
 !!##DESCRIPTION
-!!        Given a pathname list properties
+!!        Given pathnames list properties
 !!##OPTIONS
-!!        directory   name of pathname to display properties of.
-!!        --help      display command help and exit
-!!
-!!        --version   output version information and exit
+!!    pathnames   pathnames to display properties of.
+!!    --help      display command help and exit
+!!    --version   output version information and exit
 !!##EXAMPLES
 !!
-!!  Sample command lines ...
+!!   Sample command lines ...
 !!
-!!         _stat /tmp
+!!    _stat _stat.ff
+!!
+!!   Results
+!!
+!!    Pathname:                    _stat.ff
+!!    Residence:                   Inode:18295873486224096  Device ID(hex/decimal):3E6BE045h/1047257157d  Device where located:0
+!!    Size:                        File size(bytes):4267  No. of blocks allocated:8  Preferred block size(bytes):65536
+!!    File mode octal/decimal/str: 100744o/33252d/-rwxr--r-- ---
+!!    Number of links:             1
+!!    Owner's uid/username:        197609/JSU
+!!    Owner's gid/group:           197121/None
+!!    Last access time:            1507483493 2017-10-08 13:24:53
+!!    Last modification time:      1507483493 2017-10-08 13:24:53
+!!    Last status change time:     1507483494 2017-10-08 13:24:54
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -63,7 +87,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    list pathname properties>',&
 '@(#)VERSION:        1.0, 2017-10-00>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sun, Oct 8th, 2017 1:25:25 PM>',&
+'@(#)COMPILED:       Sat, Oct 21st, 2017 8:52:10 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -103,16 +127,16 @@ use M_time, only :   fmtdate, u2d
 implicit none
    character(len=*),parameter   :: fmt_date='year-month-day hour:minute:second'
 
-   write(*, FMT="('Residence:',                   T30)",advance='no')
-   write(*, FMT="('Inode:',                       I0)",advance='no') values8(2)
-   write(*, FMT="('  Device ID(hex/decimal):',    Z0,'h/',I0,'d')",advance='no') values8(1),values8(1)
-   write(*, FMT="('  Device where located:',      I0)",advance='no') values8(7)
+   write(*, FMT="('Residence:',                   T30)",advance='no'   )
+   write(*, FMT="('Inode:',                       I0)"                 ) values8(2)
+   write(*, FMT="(T30,'Device ID(hex/decimal):',      Z0,'h/',I0,'d')" ) values8(1),values8(1)
+   write(*, FMT="(T30,'Device where located:',        I0)"             ) values8(7)
    write(*,*)
 
    write(*, FMT="('Size:',                        T30)",advance='no')
-   write(*, FMT="('File size(bytes):',            I0)",advance='no') values8(8)
-   write(*, FMT="('  No. of blocks allocated:',   I0)",advance='no') values8(13)
-   write(*, FMT="('  Preferred block size(bytes):', I0)",advance='no') values8(12)
+   write(*, FMT="('File size(bytes):',            I0)"              ) values8(8)
+   write(*, FMT="(T30,'No. of blocks allocated:',     I0)"          ) values8(13)
+   write(*, FMT="(T30,'Preferred block size(bytes):', I0)"          ) values8(12)
    write(*,*)
 
    write(*, FMT="('File mode octal/decimal/str:',  T30, o0,'o')",advance='no') values8(3)
@@ -124,7 +148,7 @@ implicit none
    write(*, FMT="('Owner''s gid/group:',          T30, I0,'/', A)") values8(6), system_getgrgid(values8(6))
 
    write(*, FMT="('Last access time:',            T30, I0,1x, A)") values8(9), fmtdate(u2d(int(values8(9))),fmt_date)
-   write(*, FMT="('Last modification time',       T30, I0,1x, A)") values8(10),fmtdate(u2d(int(values8(10))),fmt_date)
+   write(*, FMT="('Last modification time:',      T30, I0,1x, A)") values8(10),fmtdate(u2d(int(values8(10))),fmt_date)
    write(*, FMT="('Last status change time:',     T30, I0,1x, A)") values8(11),fmtdate(u2d(int(values8(11))),fmt_date)
 
 end subroutine printit

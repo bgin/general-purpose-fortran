@@ -1,5 +1,5 @@
 NAME
-     lower - [M_strings]changes a string to lowercase over specified range
+     lower - [M_strings] changes a string to lowercase over specified range
 
 SYNOPSIS
 

@@ -1,5 +1,5 @@
 NAME
-    julfit(3f) - [M_math:fit]linear least squares curve fits , destroys input arrays
+    julfit(3f) - [M_math:fit] linear least squares curve fits , destroys input arrays
 
 SYNPOSIS
   subroutine julfit(x,y,ixn,itype,a,b,r2)

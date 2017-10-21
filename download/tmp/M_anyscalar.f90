@@ -87,7 +87,6 @@ contains
 !!     end function squarei
 !!
 !!     end program scalars
-!! !===================================================================================================================================
 !===================================================================================================================================
 pure function anyscalar_to_double(valuein) result(d_out)
 use iso_fortran_env, only : error_unit !! ,input_unit,output_unit
@@ -171,7 +170,6 @@ end function anyscalar_to_double
 !!     end function squarei
 !!
 !!     end program scalars
-!! !===================================================================================================================================
 !===================================================================================================================================
 pure function anyscalar_to_real(valuein) result(r_out)
 use iso_fortran_env, only : error_unit !! ,input_unit,output_unit
@@ -251,7 +249,6 @@ end function anyscalar_to_real
 !!     end function squarei
 !!
 !!     end program scalars
-!! !===================================================================================================================================
 !===================================================================================================================================
 function anyinteger_to_128bit(intin) result(ii38)
 use iso_fortran_env, only : error_unit !! ,input_unit,output_unit

@@ -1,5 +1,5 @@
 NAME
-     inum0(3f) - [M_calculator_plus]return integer value from calculator expression
+     inum0(3f) - [M_calculator_plus] return integer value from calculator expression
 SYNOPSIS
   integer function inum0(inline,ierr)
 

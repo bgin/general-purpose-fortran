@@ -1,14 +1,13 @@
 NAME
-       _stat(1f) - [FUNIX]list file properties
+       _stat(1f) - [FUNIX] list file properties
 SYNOPSIS
-       _stat pathname|--version|--help
+       _stat pathnames|--version|--help
 DESCRIPTION
-       Given a pathname list properties
+       Given pathnames list properties
 OPTIONS
-       directory   name of pathname to display properties of.
-       --help      display command help and exit
-
-       --version   output version information and exit
+   pathnames   pathnames to display properties of.
+   --help      display command help and exit
+   --version   output version information and exit
 EXAMPLES
   Sample command lines ...
 

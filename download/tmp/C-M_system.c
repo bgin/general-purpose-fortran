@@ -55,6 +55,13 @@ extern long int longest_env_variable;
        long int longest_env_variable=0L;
 /*--------------------------------------------------------------------------------------------------------------------------------*/
 /*
+   wrapper around chown(3c) for a call from Fortran
+*/
+int my_chown(char *filename, long long int uid, long long int gid){
+   return chown(filename, (uid_t)uid, (gid_t)gid);
+}
+/*--------------------------------------------------------------------------------------------------------------------------------*/
+/*
    wrapper around readdir(3c) for a call from Fortran
 */
 void my_readdir(DIR *dirp, char *filename, int *err){
@@ -132,7 +139,7 @@ size_t length_copy;
    }
 }
 /*--------------------------------------------------------------------------------------------------------------------------------*/
-int my_getgrgid(int id, char *groupname){
+int my_getgrgid(long long int id, char *groupname){
 struct group *grp;
 
    errno = 0;
@@ -146,7 +153,7 @@ struct group *grp;
    return errno;
 }
 /*--------------------------------------------------------------------------------------------------------------------------------*/
-int my_getpwuid(int id, char *username){
+int my_getpwuid(long long int id, char *username){
 struct passwd *pwd;
 
    errno = 0;

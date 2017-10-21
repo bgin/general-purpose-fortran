@@ -1,5 +1,5 @@
 NAME
-   blocks(1f) - [M_messages]write out 132-character string in large block letters
+   blocks(1f) - [M_messages] write out 132-character string in large block letters
 
 SYNOPSIS
    subroutine blocks(string,iounit)

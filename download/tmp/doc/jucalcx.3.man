@@ -1,5 +1,5 @@
 NAME
-    jucalcx(3f) - [M_calculator_plus]return value from a string expression processing messages to simplify call to JUCALC(3f)
+    jucalcx(3f) - [M_calculator_plus] return value from a string expression processing messages to simplify call to JUCALC(3f)
 SYNOPSIS
    subroutine jucalcx(inlin0,outval,outlin0,ierr,ilen)
 

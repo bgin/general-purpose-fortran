@@ -1,5 +1,5 @@
 NAME
-      _logname(1f) - [FUNIX]display login name
+      _logname(1f) - [FUNIX] display login name
 SYNOPSIS
       _logname [-help|-version]
 DESCRIPTION

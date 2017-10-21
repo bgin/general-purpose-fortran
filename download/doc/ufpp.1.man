@@ -1,5 +1,5 @@
 NAME
-   ufpp(1) - [DEVELOPER]pre-process FORTRAN source files
+   ufpp(1) - [DEVELOPER] pre-process FORTRAN source files
 
 SYNOPSIS
    ufpp  [[-D] define_list]

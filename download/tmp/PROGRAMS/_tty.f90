@@ -9,7 +9,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'       _tty - [FUNIX]print information about the file/terminal connected to standard input',&
+'       _tty - [FUNIX] print information about the file/terminal connected to standard input',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '       _tty [OPTION]...                                                         ',&
@@ -72,7 +72,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!        _tty - [FUNIX]print information about the file/terminal connected to standard input
+!!        _tty - [FUNIX] print information about the file/terminal connected to standard input
 !!
 !!##SYNOPSIS
 !!
@@ -141,11 +141,11 @@ if(l_version)then
 help_text=[ CHARACTER(LEN=128) :: &
 '@(#)PRODUCT:        CLI library utilities and examples>',&
 '@(#)PROGRAM:        _tty(1)>',&
-'@(#)DESCRIPTION:    output a string repeatedly until killed or limit is reached>',&
+'@(#)DESCRIPTION:    print information about the file/terminal connected to standard input>',&
 '@(#)VERSION:        1.0, 20170202>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
-'@(#)COMPILED:       Mon, Sep 11th, 2017 7:09:13 AM>',&
+'@(#)COMPILED:       Sat, Oct 21st, 2017 8:56:14 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -166,7 +166,6 @@ use ISO_FORTRAN_ENV, only : INPUT_UNIT
 use M_io, only : print_inquire
 use M_kracken,only : kracken,lget                ! add command-line parser module
 implicit none
-character(len=*),parameter  :: ident="@(#)_tty(1f): print information about the file/terminal connected to standard input"
 !-----------------------------------------------------------------------------------------------------------------------------------
 !  define command arguments, default values and crack command line
    call kracken('tty','-help .false. -version .false.')

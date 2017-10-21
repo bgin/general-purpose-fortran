@@ -1,6 +1,6 @@
 !>
 !!##NAME
-!!   jucalc - [M_calculator]parse calculator expression and return numeric or string value
+!!   jucalc - [M_calculator] parse calculator expression and return numeric or string value
 !!##SYNOPSIS
 !!
 !!   subroutine jucalc(inline,outlin,mssg,slast,ierr)
@@ -172,7 +172,7 @@ module m_calculator
 
 !>
 !!##NAME
-!!    stuff(3f) - [M_calculator]directly store value into calculator directory for efficiency
+!!    stuff(3f) - [M_calculator] directly store value into calculator directory for efficiency
 !!
 !!##SYNOPSIS
 !!
@@ -2207,7 +2207,7 @@ end subroutine jufacs
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!     juator(3f) - [M_calculator]returns a double precision value from a numeric character string specifically for M_calculator(3fm)
+!!     juator(3f) - [M_calculator] returns a double precision value from a numeric character string specifically for M_calculator(3fm)
 !!##SYNOPSIS
 !!
 !!   subroutine juator(chars,rval,ierr)
@@ -2412,7 +2412,7 @@ end subroutine jurtoa
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    jusqes - [M_calculator]change +-[] to #=(),replace strings with placeholders,delete comments
+!!    jusqes - [M_calculator] change +-[] to #=(),replace strings with placeholders,delete comments
 !!
 !!##DESCRIPTION
 !!    remove all blanks from input string and return position of last non-blank character in nchars using imax as the highest
@@ -2460,8 +2460,10 @@ end subroutine jurtoa
 !===================================================================================================================================
 subroutine jusqes(string,imax,nchars,varnam,nchar2,ier)
 implicit doubleprecision (a-h,o-z)
+
 character(len=*),parameter :: ident=&
-&"@(#)M_calculator::jusqes(3fp):change +-[] to #=(),replace strings with placeholders,delete comments."
+&"@(#)M_calculator::jusqes(3fp):change +-[] to #=(),replace strings with placeholders,delete comments"
+
    integer, parameter          :: ilen=(icbuf_calc)+2
 
    character(len=*)            :: string
@@ -2850,7 +2852,7 @@ end subroutine juadds
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!       [M_calculator]given_name_get_stringvalue(3fp) - return associated value for variable name"
+!!       [M_calculator] given_name_get_stringvalue(3fp) - return associated value for variable name"
 !!##SYNOPSIS
 !!
 !!   subroutine given_name_get_stringvalue(chars,ierr)
@@ -2900,7 +2902,8 @@ end subroutine given_name_get_stringvalue
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    getvalue(3f) - [M_calculator]given numeric variable name return doubleprecision value directly from calculator dictionary for efficiency
+!!    getvalue(3f) - [M_calculator] given numeric variable name return doubleprecision value directly from calculator
+!!                   dictionary for efficiency
 !!##SYNOPSIS
 !!
 !!    doubleprecision function getvalue(varnam)
@@ -2952,7 +2955,8 @@ end function getvalue
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    igetvalue(3f) - [M_calculator]given numeric variable name return integer value directly from calculator dictionary for efficiency
+!!    igetvalue(3f) - [M_calculator] given numeric variable name return integer value directly from calculator
+!!                    dictionary for efficiency
 !!##SYNOPSIS
 !!
 !!    integer function igetvalue(varnam)
@@ -2993,7 +2997,7 @@ end function igetvalue
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    rgetvalue(3f) - [M_calculator]given numeric variable name return real value directly from calculator dictionary for efficiency
+!!    rgetvalue(3f) - [M_calculator] given numeric variable name return real value directly from calculator dictionary for efficiency
 !!##SYNOPSIS
 !!
 !!    real function rgetvalue(varnam)
@@ -3148,7 +3152,7 @@ end subroutine double_stuff
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!     stuffa(3f) - [M_calculator]stuffa(3f): directly store a string into calculator variable name table"
+!!     stuffa(3f) - [M_calculator] stuffa(3f): directly store a string into calculator variable name table
 !!##SYNOPSIS
 !!
 !!   subroutine stuffa(varnam0,string,index,ioflag)

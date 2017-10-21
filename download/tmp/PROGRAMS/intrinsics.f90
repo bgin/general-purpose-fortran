@@ -50,7 +50,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Mon, Sep 18th, 2017 1:32:57 AM>',&
+'@(#)COMPILED:       Sat, Oct 21st, 2017 8:33:47 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -68,7 +68,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'    intrinsics(1f) - [FUNIX]output text versions of Fortran intrinsic man(1) pages',&
+'    intrinsics(1f) - [FUNIX] output text versions of Fortran intrinsic man(1) pages',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '    intrinsics [--help|--version]                                               ',&
@@ -93,7 +93,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!     intrinsics(1f) - [FUNIX]output text versions of Fortran intrinsic man(1) pages
+!!     intrinsics(1f) - [FUNIX] output text versions of Fortran intrinsic man(1) pages
 !!
 !!##SYNOPSIS
 !!
@@ -3460,7 +3460,7 @@ write(io,'(a)')''
 write(io,'(a)')'   Transformational function'
 write(io,'(a)')''
 write(io,'(a)')'NAME'
-write(io,'(a)')'     cpu_time(3f) - [INTRINSIC:SYSTEM ENVIRONMENT] CPU elapsed time in seconds'
+write(io,'(a)')'     cpu_time(3f) - [INTRINSIC:SYSTEM ENVIRONMENT] return CPU processor time in seconds'
 write(io,'(a)')''
 write(io,'(a)')'SYNTAX'
 write(io,'(a)')''
@@ -3474,29 +3474,43 @@ write(io,'(a)')'   Returns a REAL value representing the elapsed CPU time in'
 write(io,'(a)')'   seconds. This is useful for testing segments of code to determine'
 write(io,'(a)')'   execution time.'
 write(io,'(a)')''
-write(io,'(a)')'   If a time source is available, time will be reported with microsecond'
-write(io,'(a)')'   resolution. If no time source is available, TIME is set to'
-write(io,'(a)')'   -1.0.'
+write(io,'(a)')'   The exact definition of time is left imprecise because of the'
+write(io,'(a)')'   variability in what different processors are able to provide.'
 write(io,'(a)')''
-write(io,'(a)')'   Note that TIME may contain a, system dependent, arbitrary offset'
-write(io,'(a)')'   and may not start with 0.0. For cpu_time, the absolute'
-write(io,'(a)')'   value is meaningless, only differences between subsequent calls to'
-write(io,'(a)')'   this subroutine, as shown in the example below, should be used.'
+write(io,'(a)')'   for gfortran(1) If a time source is available, time will be reported'
+write(io,'(a)')'   with microsecond resolution. If no time source is available, TIME is'
+write(io,'(a)')'   set to -1.0.'
+write(io,'(a)')''
+write(io,'(a)')'   Note that TIME may contain a system dependent, arbitrary offset'
+write(io,'(a)')'   and may not start with 0.0. For cpu_time the absolute'
+write(io,'(a)')'   value is meaningless. Only differences between subsequent calls,'
+write(io,'(a)')'   as shown in the example below, should be used.'
+write(io,'(a)')''
+write(io,'(a)')'   A processor for which a single result is inadequate (for example,'
+write(io,'(a)')'   a parallel processor) might choose to provide an additional version'
+write(io,'(a)')'   for which time is an array.'
 write(io,'(a)')''
 write(io,'(a)')'RETURN VALUE'
 write(io,'(a)')''
 write(io,'(a)')'   TIME  - The type shall be REAL with intent(out).'
+write(io,'(a)')'           It is assigned a processor-dependent approximation to the'
+write(io,'(a)')'           processor time in seconds. If the processor cannot return'
+write(io,'(a)')'           a meaningful time, a processor-dependent negative value is returned.'
+write(io,'(a)')'           The start time is left imprecise because the purpose is to'
+write(io,'(a)')'           time sections of code, as in the example.'
+write(io,'(a)')'           This might or might not include system overhead time.'
 write(io,'(a)')''
 write(io,'(a)')'EXAMPLE'
 write(io,'(a)')''
 write(io,'(a)')'  Sample program:'
 write(io,'(a)')''
 write(io,'(a)')'    program test_cpu_time'
-write(io,'(a)')'        real :: start, finish'
-write(io,'(a)')'        call cpu_time(start)'
-write(io,'(a)')'            ! put code to test here'
-write(io,'(a)')'        call cpu_time(finish)'
-write(io,'(a)')'        print ''("Time = ",f6.3," seconds.")'',finish-start'
+write(io,'(a)')'       real :: start, finish'
+write(io,'(a)')'       call cpu_time(start)'
+write(io,'(a)')'       ! put code to test here'
+write(io,'(a)')'       call cpu_time(finish)'
+write(io,'(a)')'       ! writes processor time taken by the piece of code.'
+write(io,'(a)')'       print ''("Processor Time = ",f6.3," seconds.")'',finish-start'
 write(io,'(a)')'    end program test_cpu_time'
 write(io,'(a)')''
 write(io,'(a)')'STANDARD'
@@ -9598,7 +9612,7 @@ write(io,'(a)')'  X    X  X   X   X   X   X   X   X        X   X  X    X X     X
 write(io,'(a)')' XXXXXXX XXX XXX XXX XXX XXX XXX XXXX    XXXXXXX XXXXXXX  XXXXX'
 write(io,'(a)')''
 write(io,'(a)')'NAME'
-write(io,'(a)')'   data(7f) - [FORTRAN]DATA statement'
+write(io,'(a)')'   data(7f) - [FORTRAN] DATA statement'
 write(io,'(a)')''
 write(io,'(a)')'SYNOPSIS'
 write(io,'(a)')'   data-stmt is   DATA data-stmt-set [ [ , ] data-stmt-set ] ...'

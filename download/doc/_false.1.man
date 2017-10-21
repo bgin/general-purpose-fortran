@@ -1,13 +1,15 @@
 NAME
-       _false(1f) - [FUNIX]do nothing, unsuccessfully
+       _false(1f) - [FUNIX] do nothing, unsuccessfully
 
 SYNOPSIS
-       _false [ignored command line arguments]
-       _false OPTION
+       _false value [--help|--version--verbose]
 
 DESCRIPTION
        Exit with a status code indicating failure.
 OPTIONS
+       number     optional number of 1 to 32, which
+                  will be used to generate the exit
+                  status code if supported.
        --help     display this help and exit
        --version  output version information and exit
        --verbose  display ASCII graphic of cockroach

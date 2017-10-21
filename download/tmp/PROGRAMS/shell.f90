@@ -599,6 +599,93 @@ help_text=[ CHARACTER(LEN=128) :: &
 ' It can be confusing if you make variables that are command names.              ',&
 ' An expression on the command line is evaluated and then the program exits.     ',&
 '                                                                                ',&
+'EXAMPLE                                                                         ',&
+'                                                                                ',&
+'Sample input file                                                               ',&
+'                                                                                ',&
+'   today year-month-day hour:minute:second                                      ',&
+'   today                                                                        ',&
+'   set A=10                                                                     ',&
+'   set b=20                                                                     ',&
+'   if lt(A,b)                                                                   ',&
+'     echo A is less than B                                                      ',&
+'     set C=sin(sqrt(2))                                                         ',&
+'   elseif eq(b,10)                                                              ',&
+'     echo did not expect to get here                                            ',&
+'   else                                                                         ',&
+'     echo did not expect to get here either                                     ',&
+'   endif                                                                        ',&
+'                                                                                ',&
+'   #################### calculator mode                                         ',&
+'   set                                                                          ',&
+'   x=A+b+C                                                                      ',&
+'   y=cos(A)/sin(b)+C                                                            ',&
+'   z=max(A,b,C)                                                                 ',&
+'   $A="This is a string"                                                        ',&
+'   .                                                                            ',&
+'   ####################                                                         ',&
+'                                                                                ',&
+'   set dump # display available functions                                       ',&
+'   set funcs                                                                    ',&
+'                                                                                ',&
+'   set $str($A," function call")                                                ',&
+'   ######################## set up PIXEL display                                ',&
+'   prefsize 500 500                                                             ',&
+'   vinit                                                                        ',&
+'   ortho2 -100 100 -100 100                                                     ',&
+'   ######################## draw some shapes                                    ',&
+'   color 6                                                                      ',&
+'   makepoly                                                                     ',&
+'   rect -100 -100 0 0                                                           ',&
+'   closepoly                                                                    ',&
+'                                                                                ',&
+'   color 3                                                                      ',&
+'   makepoly                                                                     ',&
+'   rect -100  100 0 0                                                           ',&
+'   closepoly                                                                    ',&
+'                                                                                ',&
+'   makepoly                                                                     ',&
+'   color 4                                                                      ',&
+'   rect 0 0 100 100                                                             ',&
+'   closepoly                                                                    ',&
+'                                                                                ',&
+'   makepoly                                                                     ',&
+'   color 5                                                                      ',&
+'   rect 0 0 100 -100                                                            ',&
+'   closepoly                                                                    ',&
+'                                                                                ',&
+'   color 2                                                                      ',&
+'   linewidth 400                                                                ',&
+'   circleprecision 128                                                          ',&
+'   circle 0 0 100                                                               ',&
+'   circle 0 0 50                                                                ',&
+'   ######################## Draw X                                              ',&
+'   color 1                                                                      ',&
+'   linewidth 500                                                                ',&
+'   set x=100                                                                    ',&
+'   move2 0-x 0-x                                                                ',&
+'   draw2   x   x                                                                ',&
+'   move2 0-x   x                                                                ',&
+'   draw2   x 0-x                                                                ',&
+'   ######################## draw some text                                      ',&
+'   linewidth 90                                                                 ',&
+'   color 7                                                                      ',&
+'   textsize 10 10                                                               ',&
+'   centertext .T.                                                               ',&
+'   move2 0 0                                                                    ',&
+'   textang 45                                                                   ',&
+'   drawstr Hello World!                                                         ',&
+'   centertext .F.                                                               ',&
+'   ########################                                                     ',&
+'   print_ppm sample.ppm                                                         ',&
+'   clear                                                                        ',&
+'   vexit                                                                        ',&
+'   ########################                                                     ',&
+'   # assuming you have imagemagick installed                                    ',&
+'   display sample.ppm                                                           ',&
+'   ########################                                                     ',&
+'   quit                                                                         ',&
+'                                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -712,6 +799,94 @@ end subroutine help_usage
 !!
 !!  It can be confusing if you make variables that are command names.
 !!  An expression on the command line is evaluated and then the program exits.
+!!
+!!##EXAMPLE
+!!
+!!
+!! Sample input file
+!!
+!!    today year-month-day hour:minute:second
+!!    today
+!!    set A=10
+!!    set b=20
+!!    if lt(A,b)
+!!      echo A is less than B
+!!      set C=sin(sqrt(2))
+!!    elseif eq(b,10)
+!!      echo did not expect to get here
+!!    else
+!!      echo did not expect to get here either
+!!    endif
+!!
+!!    #################### calculator mode
+!!    set
+!!    x=A+b+C
+!!    y=cos(A)/sin(b)+C
+!!    z=max(A,b,C)
+!!    $A="This is a string"
+!!    .
+!!    ####################
+!!
+!!    set dump # display available functions
+!!    set funcs
+!!
+!!    set $str($A," function call")
+!!    ######################## set up PIXEL display
+!!    prefsize 500 500
+!!    vinit
+!!    ortho2 -100 100 -100 100
+!!    ######################## draw some shapes
+!!    color 6
+!!    makepoly
+!!    rect -100 -100 0 0
+!!    closepoly
+!!
+!!    color 3
+!!    makepoly
+!!    rect -100  100 0 0
+!!    closepoly
+!!
+!!    makepoly
+!!    color 4
+!!    rect 0 0 100 100
+!!    closepoly
+!!
+!!    makepoly
+!!    color 5
+!!    rect 0 0 100 -100
+!!    closepoly
+!!
+!!    color 2
+!!    linewidth 400
+!!    circleprecision 128
+!!    circle 0 0 100
+!!    circle 0 0 50
+!!    ######################## Draw X
+!!    color 1
+!!    linewidth 500
+!!    set x=100
+!!    move2 0-x 0-x
+!!    draw2   x   x
+!!    move2 0-x   x
+!!    draw2   x 0-x
+!!    ######################## draw some text
+!!    linewidth 90
+!!    color 7
+!!    textsize 10 10
+!!    centertext .T.
+!!    move2 0 0
+!!    textang 45
+!!    drawstr Hello World!
+!!    centertext .F.
+!!    ########################
+!!    print_ppm sample.ppm
+!!    clear
+!!    vexit
+!!    ########################
+!!    # assuming you have imagemagick installed
+!!    display sample.ppm
+!!    ########################
+!!    quit
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -732,7 +907,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sun, Sep 17th, 2017 1:38:50 PM>',&
+'@(#)COMPILED:       Sat, Oct 21st, 2017 9:00:30 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

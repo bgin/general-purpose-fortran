@@ -1,5 +1,5 @@
 NAME
-    snum0(3f) - [M_calculator_plus]resolve a calculator expression into a string(return blank on errors)
+    snum0(3f) - [M_calculator_plus] resolve a calculator expression into a string(return blank on errors)
 
 SYNOPSIS
   function snum0(inline0,ierr)

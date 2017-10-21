@@ -1,5 +1,5 @@
 NAME
-   modif - [M_strings]emulate the MODIFY command from the line editor XEDIT
+   modif - [M_strings] emulate the MODIFY command from the line editor XEDIT
 
 SYNOPSIS
 

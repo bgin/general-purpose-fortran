@@ -1,5 +1,5 @@
 NAME
-     tabgraph(3f) - [M_messages]write out a row of numbers and a text-based scaled graph
+     tabgraph(3f) - [M_messages] write out a row of numbers and a text-based scaled graph
 
 SYNOPSIS
       SUBROUTINE tabgraph(ctmp,array,ivals,rmin,rmax,cfill,ilen)

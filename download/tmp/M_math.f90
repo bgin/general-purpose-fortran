@@ -147,7 +147,7 @@ contains
 
 !>
 !!##NAME
-!!     julfit(3f) - [M_math:fit]linear least squares curve fits , destroys input arrays
+!!     julfit(3f) - [M_math:fit] linear least squares curve fits , destroys input arrays
 !!
 !!##SYNPOSIS
 !!   subroutine julfit(x,y,ixn,itype,a,b,r2)
@@ -304,7 +304,7 @@ end subroutine julfit
 !===================================================================================================================================
 !>
 !!##NAME
-!!      julfit1(3f) - [M_math:fit]internal routine for linear least square fit(y=a*x+b), changes the y array
+!!      julfit1(3f) - [M_math:fit] internal routine for linear least square fit(y=a*x+b), changes the y array
 !!##SYNOPSIS
 !!
 !!
@@ -445,7 +445,7 @@ end subroutine julfit1
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!     lowess(3f) - [M_math:fit]procedures for locally weighted regression
+!!     lowess(3f) - [M_math:fit] procedures for locally weighted regression
 !!
 !!##SYNOPSIS
 !!
@@ -901,7 +901,7 @@ real h1, sqrt, h9, amax1, range
 end subroutine lowest
 !>
 !!##NAME
-!!    splift(3f) - [M_math:fit]fits a spline to the n data points given in x and y
+!!    splift(3f) - [M_math:fit] fits a spline to the n data points given in x and y
 !!                 and also returns first and second derivatives
 !!##SYNOPSIS
 !!
@@ -1085,7 +1085,7 @@ end subroutine splift
 !===================================================================================================================================
 !>
 !!##NAME
-!!    splint(3f) - [M_math:fit]interpolates and twice differentiates a cubic spline
+!!    splint(3f) - [M_math:fit] interpolates and twice differentiates a cubic spline
 !!##SYNOPSIS
 !!
 !!   subroutine splint (x,y,ypp,n,xi,yi,ypi,yppi,ni,kerr)
@@ -1353,7 +1353,7 @@ END SUBROUTINE linearint
 
 !>
 !!##NAME
-!!    citer(3f) - [M_math:geometry]determine various geometric properties of circle segment
+!!    citer(3f) - [M_math:geometry] determine various geometric properties of circle segment
 !!            given radius and area of the segment.
 !!##SYNOPSIS
 !!
@@ -1546,7 +1546,7 @@ character(len=*),parameter::ident="&
 END SUBROUTINE CITER
 !>
 !!##NAME
-!!   envelope(3f) - [M_math:geometry]Find the vertices (in clockwise order) of a polygon enclosing the points (x(i), y(i), i=1, ..., n.
+!!   envelope(3f) - [M_math:geometry] Find vertices (in clockwise order) of a polygon enclosing the points (x(i), y(i), i=1, ..., n.
 !!##SYNOPSIS
 !!
 !!    subroutine envelope(x, y, n, vertex, nvert)
@@ -1781,7 +1781,7 @@ GO TO 40
 END SUBROUTINE envelope
 !>
 !!##NAME
-!!    inpolygon(3f) - [M_math:geometry]determine whether or not an integer point is in an integer polygon
+!!    inpolygon(3f) - [M_math:geometry] determine whether or not an integer point is in an integer polygon
 !!
 !!##SYNOPSIS
 !!
@@ -1862,7 +1862,7 @@ character(len=*),parameter::ident="&
       END FUNCTION INPOLYGON
 !>
 !!##NAME
-!!   locpt - [M_math:geometry]find if a point is inside a polygonal path
+!!   locpt - [M_math:geometry] find if a point is inside a polygonal path
 !!##SYNOPSIS
 !!
 !!   Usage:
@@ -1976,7 +1976,7 @@ END SUBROUTINE locpt
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!      poly_intercept(3f) - [M_math:geometry]intersection of a straight line and polygonal path
+!!      poly_intercept(3f) - [M_math:geometry] intersection of a straight line and polygonal path
 !!##SYNOPSIS
 !!
 !!
@@ -2209,7 +2209,7 @@ RETURN
 END SUBROUTINE Poly_Intercept
 !>
 !!##NAME
-!!        polyarea(3f) - [M_math:geometry]compute the area bounded by a closed polygonal curve
+!!        polyarea(3f) - [M_math:geometry] compute the area bounded by a closed polygonal curve
 !!
 !!##SYNOPSIS
 !!
@@ -2309,7 +2309,7 @@ end function polyarea
 
 !>
 !!##NAME
-!!      extremum(3f) - [M_math:statistics]Finds the minimum and maximum value in a REAL array.
+!!      extremum(3f) - [M_math:statistics] Finds the minimum and maximum value in a REAL array.
 !!##SYNOPSIS
 !!
 !!   subroutine extremum(array,small,big)
@@ -2756,7 +2756,7 @@ END SUBROUTINE SKEKURX
 !===================================================================================================================================
 !>
 !!##NAME
-!!    stddev(3f) - [M_math:statistics]given a real vector and the vector average calculate the standard deviation
+!!    stddev(3f) - [M_math:statistics] given a real vector and the vector average calculate the standard deviation
 !!##SYNTAX
 !!    function stddev(vector,n,avg)
 !!
@@ -3595,7 +3595,7 @@ end subroutine scale3
 
 !>
 !!##NAME
-!!    quadratic(3f) - [M_math]calculate the roots of a quadratic formula even if they are complex
+!!    quadratic(3f) - [M_math] calculate the roots of a quadratic formula even if they are complex
 !!
 !!##SYNOPSIS
 !!

@@ -1,5 +1,5 @@
 NAME
-         rget - [ARGUMENTS:M_kracken]given keyword fetch real value from command argument
+         rget - [ARGUMENTS:M_kracken] given keyword fetch real value from command argument
 SYNOPSIS
    function rget(keyword) result(value)
 

@@ -21,7 +21,7 @@ contains
 !===================================================================================================================================
 !>
 !!##NAME
-!!    M_sort(3fm) - [M_sort]Fortran module containing sorting algorithms for arrays of standard scalar types
+!!    M_sort(3fm) - [M_sort] Fortran module containing sorting algorithms for arrays of standard scalar types
 !!
 !!##SYNOPSIS
 !!
@@ -75,7 +75,7 @@ contains
 !===================================================================================================================================
 !>
 !!##NAME
-!!    sort_shell(3f) - [M_sort]Generic subroutine sorts the array X using Shell's method
+!!    sort_shell(3f) - [M_sort] Generic subroutine sorts the array X using Shell's method
 !!##SYNOPSIS
 !!
 !!    Usage:
@@ -763,7 +763,7 @@ end subroutine sort_shell_complex_double
 !===================================================================================================================================
 !>
 !!##NAME
-!!      sort_quick_rx(3f) - [M_sort]indexed hybrid quicksort of a real array
+!!      sort_quick_rx(3f) - [M_sort] indexed hybrid quicksort of a real array
 !!##SYNOPSIS
 !!
 !!      subroutine sort_quick_rx(data,index)

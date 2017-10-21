@@ -1,5 +1,5 @@
 NAME
-   i_is_prime(3f) - [M_factor]Determine if a number is prime using Sieve of Erasthosthenes
+   i_is_prime(3f) - [M_factor] Determine if a number is prime using Sieve of Erasthosthenes
 SYNOPSIS
    function i_is_prime ( n )
 

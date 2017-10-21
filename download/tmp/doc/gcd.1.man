@@ -1,5 +1,5 @@
 NAME
-       gcd(1f) - [NUMBERS]display greatest common divisor of a list of whole numbers
+       gcd(1f) - [NUMBERS] display greatest common divisor of a list of whole numbers
 
 SYNOPSIS
        gcd [NUMBERS]...

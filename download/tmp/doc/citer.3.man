@@ -1,5 +1,5 @@
 NAME
-   citer(3f) - [M_math:geometry]determine various geometric properties of circle segment
+   citer(3f) - [M_math:geometry] determine various geometric properties of circle segment
            given radius and area of the segment.
 SYNOPSIS
    Usage:

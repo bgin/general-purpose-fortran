@@ -1,5 +1,5 @@
 NAME
-     junbad(3f) - [M_messages]print an eye-catching image of a skull.
+     junbad(3f) - [M_messages] print an eye-catching image of a skull.
 
 SYNOPSIS
    SUBROUTINE junbad(where)

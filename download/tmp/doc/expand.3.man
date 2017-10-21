@@ -1,5 +1,5 @@
 NAME
-   expand - [M_strings]expand escape sequences
+   expand - [M_strings] expand escape sequences
 
 SYNOPSIS
    function expand(line,escape) result(lineout)

@@ -1,5 +1,5 @@
 NAME
-   inpolygon(3f) - [M_math:geometry]determine whether or not an integer point is in an integer polygon
+   inpolygon(3f) - [M_math:geometry] determine whether or not an integer point is in an integer polygon
 
 SYNOPSIS
     logical function inpolygon(xin, yin, xconv, yconv, nconv)

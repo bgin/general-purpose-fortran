@@ -1,5 +1,5 @@
 NAME
-    HUE(3f) - [M_color]converts a color's components from one color model to
+    HUE(3f) - [M_color] converts a color's components from one color model to
     another.
 SYNOPSIS
 

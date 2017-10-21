@@ -43,6 +43,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '         _echo Echo this text to stderr -E                                      ',&
 '         _echo y -r 0  # repeat "y" until interrupted                           ',&
 '         _echo ''''"#"'''' -r 80 -n # create 80-character break line            ',&
+'         _echo %e[2J  # clear screen on vt102-compatible terminal or emulator   ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -87,6 +88,7 @@ end subroutine help_usage
 !!          _echo Echo this text to stderr -E
 !!          _echo y -r 0  # repeat "y" until interrupted
 !!          _echo ''"#"'' -r 80 -n # create 80-character break line
+!!          _echo %e[2J  # clear screen on vt102-compatible terminal or emulator
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -107,7 +109,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Mon, Sep 11th, 2017 7:00:41 AM>',&
+'@(#)COMPILED:       Sat, Oct 21st, 2017 8:48:56 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

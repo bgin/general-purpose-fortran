@@ -84,7 +84,8 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
    system_rmdir, system_chdir, system_mkdir,              &
    system_stat, system_isdir, system_islnk, system_isreg, &
    system_isblk, system_ischr, system_isfifo,             &
-   system_issock, system_perm
+   system_access,                                         &
+   system_issock, system_perm, system_stat_print
 <P>
    use M_system, only :system_errno, system_perror
 <P>
@@ -130,12 +131,12 @@ call -- Always check the return value.
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 o
-<B>system_putenv</B>(3f):    call <B>putenv</B>(3c)
+<B>system_putenv</B>(3f):     call <B>putenv</B>(3c)
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 o
-<B>system_unsetenv</B>(3f):  call <B>unsetenv</B>(3c) to remove variable from environment
+<B>system_unsetenv</B>(3f):   call <B>unsetenv</B>(3c) to remove variable from environment
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
@@ -145,17 +146,17 @@ o
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 o
-<B>system_initenv</B>(3f):   initialize environment table for reading
+<B>system_initenv</B>(3f):    initialize environment table for reading
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 o
-<B>system_readenv</B>(3f):   read next entry from environment table
+<B>system_readenv</B>(3f):    read next entry from environment table
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 o
-<B>system_clearenv</B>(3f):  emulate <B>clearenv</B>(3c) to clear environment
+<B>system_clearenv</B>(3f):   emulate <B>clearenv</B>(3c) to clear environment
 </TD></TR>
 <TR></TR></TABLE></BLOCKQUOTE>
 <A name=4>
@@ -168,107 +169,122 @@ o
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 o
-<B>system_chdir</B>(3f):     call <B>chdir</B>(3c) to change current directory of a process
+<B>system_chdir</B>(3f):      call <B>chdir</B>(3c) to change current directory of a process
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 o
-<B>system_getcwd</B>(3f):    call <B>getcwd</B>(3c) to get pathname of current working directory
+<B>system_getcwd</B>(3f):     call <B>getcwd</B>(3c) to get pathname of current working directory
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 o
-<B>system_stat</B>(3f):      determine system information of file by name
+<B>system_stat</B>(3f):       determine system information of file by name
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 o
-<B>system_perm</B>(3f):      create string representing file permission and type
+<B>system_stat_print</B>(3f): determine system information of file by name
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 o
-<B>system_isdir</B>(3f):     determine if filename is a directory
+<B>system_perm</B>(3f):       create string representing file permission and type
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 o
-<B>system_islnk</B>(3f):     determine if filename is a link
+<B>system_access</B>(3f):     determine filename access or existence
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 o
-<B>system_isreg</B>(3f):     determine if filename is a regular file
+<B>system_isdir</B>(3f):      determine if filename is a directory
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 o
-<B>system_isblk</B>(3f):     determine if filename is a block device
+<B>system_islnk</B>(3f):      determine if filename is a link
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 o
-<B>system_ischr</B>(3f):     determine if filename is a character device
+<B>system_isreg</B>(3f):      determine if filename is a regular file
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 o
-<B>system_isfifo</B>(3f):    determine if filename is a fifo - named pipe
+<B>system_isblk</B>(3f):      determine if filename is a block device
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 o
-<B>system_issock</B>(3f):    determine if filename is a socket
+<B>system_ischr</B>(3f):      determine if filename is a character device
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 o
-<B>system_chmod</B>(3f):     call <B>chmod</B>(3c) to set file permission mode
+<B>system_isfifo</B>(3f):     determine if filename is a fifo - named pipe
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 o
-<B>system_getumask</B>(3f):  call <B>umask</B>(3c) to get process permission mask
+<B>system_issock</B>(3f):     determine if filename is a socket
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 o
-<B>system_setumask</B>(3f):  call <B>umask</B>(3c) to set process permission mask
+<B>system_chmod</B>(3f):      call <B>chmod</B>(3c) to set file permission mode
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 o
-<B>system_mkdir</B>(3f):     call <B>mkdir</B>(3c) to create empty directory
+<B>system_chown</B>(3f):      call <B>chown</B>(3c) to set file owner
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 o
-<B>system_mkfifo</B>(3f):    call <B>mkfifo</B>(3c) to create a special FIFO file
+<B>system_getumask</B>(3f):   call <B>umask</B>(3c) to get process permission mask
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 o
-<B>system_link</B>(3f):      call <B>link</B>(3c) to remove a filename link
+<B>system_setumask</B>(3f):   call <B>umask</B>(3c) to set process permission mask
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 o
-<B>system_rename</B>(3f):    call <B>rename</B>(3c) to change filename
+<B>system_mkdir</B>(3f):      call <B>mkdir</B>(3c) to create empty directory
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 o
-<B>system_remove</B>(3f):    call <B>remove</B>(3c) to remove file
+<B>system_mkfifo</B>(3f):     call <B>mkfifo</B>(3c) to create a special FIFO file
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 o
-<B>system_rmdir</B>(3f):     call <B>rmdir</B>(3c) to remove empty directory
+<B>system_link</B>(3f):       call <B>link</B>(3c) to create a filename link
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 o
-<B>system_unlink</B>(3f):    call <B>unlink</B>(3c) to create a link to a file
+<B>system_rename</B>(3f):     call <B>rename</B>(3c) to change filename
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+o
+<B>system_remove</B>(3f):     call <B>remove</B>(3c) to remove file
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+o
+<B>system_rmdir</B>(3f):      call <B>rmdir</B>(3c) to remove empty directory
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+o
+<B>system_unlink</B>(3f):     call <B>unlink</B>(3c) to remove a link to a file
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
@@ -432,7 +448,7 @@ Posix90 (doc),
 <TR valign=top><TD width=3%>
 o
 </TD><TD>
-flibs&#146; platform/files and directories,
+flib.a platform/files and directories,
 </TD></TR>
 <TR valign=top><TD width=3%>
 o
@@ -443,7 +459,7 @@ fortranposix.
 <TR></TR></TABLE></BLOCKQUOTE>
 </BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>M_system (3)</TD> <TD align=right width=33%><I>October 08, 2017</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 8228eacb-f131-425c-bf08-3f9ea7dabe66 using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>M_system (3)</TD> <TD align=right width=33%><I>October 21, 2017</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from c083c922-728b-4199-939f-907e9fe66673 using man macros.</FONT>
 </div>
 </div>
 <center><img src="images/M_system.3.gif"></center> 

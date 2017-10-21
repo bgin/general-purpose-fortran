@@ -13,7 +13,7 @@
 !! <dl>
 !! <!-- ======================================================================= -->
 !! <dt> <a name="M_COLOR">NAME</a></dt> <dd>
-!!     <em>M_COLOR(3f)</em> - [M_color]a Fortran module that lets you convert between common color models
+!!     <em>M_COLOR(3f)</em> - [M_color] a Fortran module that lets you convert between common color models
 !! </dd>
 !! <!-- ======================================================================= -->
 !! <dt> SYNOPSIS </dt><dd>
@@ -184,7 +184,7 @@ contains
 !>
 !! <dl>
 !! <dt> <a name="HUE">NAME</a> </dt><dd>
-!!    HUE(3f) - [M_color]converts a color's components from one color model to another.
+!!    HUE(3f) - [M_color] converts a color's components from one color model to another.
 !! </dd>
 !!
 !! <dt> SYNOPSIS </dt><dd>
@@ -367,7 +367,7 @@ end subroutine hue
 !! <dl>
 !! <!-- ======================================================================= -->
 !! <dt> <a name="RGBHLS">NAME</a> </dt><dd>
-!!     RGBHLS(3fp) - [M_color]Given red, green, and blue color components
+!!     RGBHLS(3fp) - [M_color] Given red, green, and blue color components
 !!     calculates the hue, lightness, and saturation for a color
 !! </dd>
 !! <!-- ======================================================================= -->
@@ -471,7 +471,7 @@ end subroutine rgbhls
 !! <dl>
 !! <!-- ======================================================================= -->
 !! <dt> <a name="RGBHVS">NAME</a> </dt><dd>
-!!     RGBHVS(3fp) - [M_color]calculates the hue, value, &amp; saturation
+!!     RGBHVS(3fp) - [M_color] calculates the hue, value, &amp; saturation
 !!     for a color given in red, green, &amp; blue components values.
 !! </dd>
 !! <!-- ======================================================================= -->
@@ -584,7 +584,7 @@ end subroutine rgbhvs
 !! <dl>
 !! <!-- ======================================================================= -->
 !! <dt> <a name="CMYRGB">NAME</a> </dt><dd>
-!!     cmyrgb(3fp) - [M_color]calculates the cyan, magenta, and yellow components
+!!     cmyrgb(3fp) - [M_color] calculates the cyan, magenta, and yellow components
 !!     given the  red, green, and blue component values.
 !! </dd>
 !! <!-- ======================================================================= -->
@@ -630,7 +630,7 @@ end subroutine cmyrgb
 !! <dl>
 !! <!-- ======================================================================= -->
 !! <dt> <a name="RGBCMY">NAME</a> </dt><dd>
-!!     rgbcmy(3fp) - [M_color]calculates the cyan, magenta, and yellow components
+!!     rgbcmy(3fp) - [M_color] calculates the cyan, magenta, and yellow components
 !!     given the  red, green, and blue component values.
 !! </dd>
 !! <!-- ======================================================================= -->
@@ -691,7 +691,7 @@ end subroutine rgbcmy
 !! <dl>
 !! <!-- ======================================================================= -->
 !! <dt> <a name="RGBMONO">NAME</a> </dt><dd>
-!!    RGBMONO(3f) - [M_color]converts RGB colors to a reasonable grayscale intensity.
+!!    RGBMONO(3f) - [M_color] converts RGB colors to a reasonable grayscale intensity.
 !! </dd>
 !! <!-- ======================================================================= -->
 !! <dt> SYNOPSIS  </dt><dd>
@@ -740,7 +740,7 @@ end subroutine rgbmono
 !! <dl>
 !! <!-- ======================================================================= -->
 !! <dt> <a name="RGBVAL">NAME</a> </dt><dd>
-!!    RGBVAL(3fp) - [M_color]is an internal private function used by hlsrgb(3fp).
+!!    RGBVAL(3fp) - [M_color] is an internal private function used by hlsrgb(3fp).
 !! </dd>
 !! <!-- ======================================================================= -->
 !! <dt> SYNOPSIS</dt><dd>
@@ -801,7 +801,7 @@ end function rgbval
 !! <dl>
 !! <!-- ======================================================================= -->
 !! <dt> <a name="HLSRGB">NAME</a> </dt><dd>
-!!     HLSRGB(3fp) - [M_color]calculates the red, green, &amp; blue components for a
+!!     HLSRGB(3fp) - [M_color] calculates the red, green, &amp; blue components for a
 !!     color given in hue, lightness, &amp; saturation values.
 !! </dd>
 !! <!-- ======================================================================= -->
@@ -867,7 +867,7 @@ end subroutine hlsrgb
 !! <dl>
 !! <!-- ======================================================================= -->
 !! <dt> <a name="HVSRGB">NAME</a> </dt><dd>
-!!     HVSRGB(3fp) - [M_color]calculates the red, green, &amp; blue components for a
+!!     HVSRGB(3fp) - [M_color] calculates the red, green, &amp; blue components for a
 !!      color given in hue, value, &amp; saturation values.
 !! </dd>
 !! <!-- ======================================================================= -->
@@ -948,7 +948,7 @@ end subroutine hvsrgb
 !! <dl>
 !! <!-- ======================================================================= -->
 !! <dt> <a name="YIQRGB">NAME</a> </dt><dd>
-!!    YIQRGB(3fp) - [M_color]Convert luma, orange-blue chrominance, and  purple-green chrominance
+!!    YIQRGB(3fp) - [M_color] Convert luma, orange-blue chrominance, and  purple-green chrominance
 !!    to RGB values.
 !! </dd>
 !! <!-- ======================================================================= -->
@@ -1009,7 +1009,7 @@ end subroutine yiqrgb
 !! <dl>
 !! <!-- ======================================================================= -->
 !! <dt> <a name="RGBYIQ">NAME</a> </dt><dd>
-!!    RGBYIQ(3fp) - [M_color]Convert RGB values to luma, orange-blue chrominance, and  purple-green chrominance.
+!!    RGBYIQ(3fp) - [M_color] Convert RGB values to luma, orange-blue chrominance, and  purple-green chrominance.
 !! </dd>
 !! <!-- ======================================================================= -->
 !! <dt> SYNOPSIS  </dt><dd>
@@ -1054,7 +1054,7 @@ end subroutine rgbyiq
 !! <dl>
 !! <!-- ======================================================================= -->
 !! <dt> <a name="CLOSEST_COLOR_NAME">NAME</a> </dt><dd>
-!!     closest_color_name(3f) - [M_color]returns the closest name for the given RGB values.
+!!     closest_color_name(3f) - [M_color] returns the closest name for the given RGB values.
 !! </dd>
 !! <!-- ======================================================================= -->
 !! <dt> SYNOPSIS  </dt><dd>
@@ -1147,7 +1147,7 @@ end SUBROUTINE closest_color_name
 !! <dl>
 !! <!-- ======================================================================= -->
 !! <dt> <a name="COLOR_NAME2RGB">NAME</a> </dt><dd>
-!!     COLOR_NAME2RGB(3f) - [M_color]returns the RGB values in the range 0 to 100 for a given known color name.
+!!     COLOR_NAME2RGB(3f) - [M_color] returns the RGB values in the range 0 to 100 for a given known color name.
 !! </dd>
 !! <!-- ======================================================================= -->
 !! <dt> SYNOPSIS  </dt><dd>

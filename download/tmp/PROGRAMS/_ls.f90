@@ -9,7 +9,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'       _ls(1f) - [FUNIX]list files in a directory                               ',&
+'       _ls(1f) - [FUNIX] list files in a directory                              ',&
 'SYNOPSIS                                                                        ',&
 '       _ls [directory|--version|--help] [-a] [-l|-csv]                          ',&
 'DESCRIPTION                                                                     ',&
@@ -19,15 +19,57 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                   Defaults to current directory.                               ',&
 '       -a          show hidden files (files beginning with ".").                ',&
 '       -l          long listing                                                 ',&
-'       -csv        generate output as a CSV file                                ',&
+'       -csv        generate output as a CSV file. Filenames should not have     ',&
+'                   ,"'' characters in them. Very useful for use with sqlite3(1) ',&
+'                   and making a file that can be read into most spreadsheets,   ',&
 '       --help      display command help and exit                                ',&
-'                                                                                ',&
 '       --version   output version information and exit                          ',&
 'EXAMPLES                                                                        ',&
 ' Sample command lines ...                                                       ',&
 '                                                                                ',&
 '        _ls                                                                     ',&
-'        _ls /tmp -l                                                             ',&
+'        _ls . /tmp -l                                                           ',&
+'                                                                                ',&
+'EXTENDED SQLITE EXAMPLE                                                         ',&
+'                                                                                ',&
+'  The CSV output can often just be read by spreadsheets. Typically the file     ',&
+'  suffix ".csv" is required. Assuming you have bash(1), sqlite3(1) and column(1)',&
+'  on your platform this is an example script that shows how SQL statements can be',&
+'  used to generate many kinds of file reports (number of bytes owned by users,  ',&
+'  number of files, sorting, ... It assumes you or somone who will assist you is ',&
+'  familiar with SQL and sqlite3(1):                                             ',&
+'                                                                                ',&
+'   #!/bin/bash                                                                  ',&
+'   #@(#) list files accessed today in current directory                         ',&
+'   export SCRATCH=/tmp/$(uuidgen).csv          # create scratch file name       ',&
+'   trap "/bin/rm -f $SCRATCH" EXIT             # ensure scratch file is removed ',&
+'   _ls -csv -- . |tail -n +2>$SCRATCH          # generate CSV file              ',&
+'   (                                                                            ',&
+'   # read CSV file into an SQLite file and generate a report as HTML table      ',&
+'   sqlite3 \                                                                    ',&
+'    -cmd ''CREATE TABLE directory("Inode_number" INT,                           ',&
+'      "Number_of_blocks_allocated" INT,                                         ',&
+'      "File_mode" TEXT,                                                         ',&
+'      "Number_of_links" INT,                                                    ',&
+'      "Owner" TEXT,                                                             ',&
+'      "Groupname" TEXT,                                                         ',&
+'      "File_size" INT,                                                          ',&
+'      "Last_access" DATE,                                                       ',&
+'      "Last_modification" DATE,                                                 ',&
+'      "Last_status_change" DATE,                                                ',&
+'      "Pathname" TEXT );'' \                                                    ',&
+'      -cmd ''.mode csv'' \                                                      ',&
+'      -cmd ".import $SCRATCH directory" <<\EOF                                  ',&
+'   -- .schema                                                                   ',&
+'   .mode column                                                                 ',&
+'   .header on                                                                   ',&
+'   SELECT Pathname, File_mode, Owner, Groupname, File_size, strftime(''%Y-%m-%d %H:%M:%S'', Last_access) as "Last_Access"',&
+'      FROM directory                                                            ',&
+'      WHERE DATE(''now'', ''start of day'') < Last_access                       ',&
+'      ORDER BY Pathname ASC;                                                    ',&
+'   EOF                                                                          ',&
+'   )| column -t -s ''|''                                                        ',&
+'   exit                                                                         ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -36,7 +78,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!        _ls(1f) - [FUNIX]list files in a directory
+!!        _ls(1f) - [FUNIX] list files in a directory
 !!##SYNOPSIS
 !!
 !!        _ls [directory|--version|--help] [-a] [-l|-csv]
@@ -47,16 +89,58 @@ end subroutine help_usage
 !!                    Defaults to current directory.
 !!        -a          show hidden files (files beginning with ".").
 !!        -l          long listing
-!!        -csv        generate output as a CSV file
+!!        -csv        generate output as a CSV file. Filenames should not have
+!!                    ,"' characters in them. Very useful for use with sqlite3(1)
+!!                    and making a file that can be read into most spreadsheets,
 !!        --help      display command help and exit
-!!
 !!        --version   output version information and exit
 !!##EXAMPLES
 !!
 !!  Sample command lines ...
 !!
 !!         _ls
-!!         _ls /tmp -l
+!!         _ls . /tmp -l
+!!
+!!##EXTENDED SQLITE EXAMPLE
+!!
+!!   The CSV output can often just be read by spreadsheets. Typically the file
+!!   suffix ".csv" is required. Assuming you have bash(1), sqlite3(1) and column(1)
+!!   on your platform this is an example script that shows how SQL statements can be
+!!   used to generate many kinds of file reports (number of bytes owned by users,
+!!   number of files, sorting, ... It assumes you or somone who will assist you is
+!!   familiar with SQL and sqlite3(1):
+!!
+!!    #!/bin/bash
+!!    #@(#) list files accessed today in current directory
+!!    export SCRATCH=/tmp/$(uuidgen).csv          # create scratch file name
+!!    trap "/bin/rm -f $SCRATCH" EXIT             # ensure scratch file is removed
+!!    _ls -csv -- . |tail -n +2>$SCRATCH          # generate CSV file
+!!    (
+!!    # read CSV file into an SQLite file and generate a report as HTML table
+!!    sqlite3 \
+!!     -cmd 'CREATE TABLE directory("Inode_number" INT,
+!!       "Number_of_blocks_allocated" INT,
+!!       "File_mode" TEXT,
+!!       "Number_of_links" INT,
+!!       "Owner" TEXT,
+!!       "Groupname" TEXT,
+!!       "File_size" INT,
+!!       "Last_access" DATE,
+!!       "Last_modification" DATE,
+!!       "Last_status_change" DATE,
+!!       "Pathname" TEXT );' \
+!!       -cmd '.mode csv' \
+!!       -cmd ".import $SCRATCH directory" <<\EOF
+!!    -- .schema
+!!    .mode column
+!!    .header on
+!!    SELECT Pathname, File_mode, Owner, Groupname, File_size, strftime('%Y-%m-%d %H:%M:%S', Last_access) as "Last_Access"
+!!       FROM directory
+!!       WHERE DATE('now', 'start of day') < Last_access
+!!       ORDER BY Pathname ASC;
+!!    EOF
+!!    )| column -t -s '|'
+!!    exit
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -73,7 +157,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    list files in a directory>',&
 '@(#)VERSION:        1.0, 2016-11-20>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sun, Oct 8th, 2017 7:58:34 PM>',&
+'@(#)COMPILED:       Sat, Oct 21st, 2017 1:33:21 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -105,6 +189,10 @@ character(len=*),parameter   :: dfmt='year-month-dayThour:minute:second'
    listall=lget('ls_a')
 
    directories=sgets('ls_oo')
+   if(size(directories).eq.0)then
+      directories=['.']
+   endif
+
    do i=1,size(directories)
       if(system_isdir(trim(directories(i))))then
          directory=directories(i)
@@ -117,23 +205,24 @@ character(len=*),parameter   :: dfmt='year-month-dayThour:minute:second'
             call system_readdir(dir,filename,ierr)
             if(filename.eq.' ')exit
             if(filename(1:1).eq.'.'.and..not.listall)cycle   ! do not list files starting with "." unless -a switch is present
-            filename=trim(directory)//'/'//trim(filename)
-            if(ls_l)then
+            if(ls_l)then                                     ! if long listing requested write file details
+               filename=trim(directory)//'/'//trim(filename)
                call printit()
-            elseif(ls_csv)then
+            elseif(ls_csv)then                               ! if -csv option print file details as CSV
+               filename=trim(directory)//'/'//trim(filename)
                call print_csv()
-            else
+            else                                             ! just print filenames
                write(*,'(a)')filename
             endif
          enddo
          call system_closedir(dir,ierr)                      ! close directory stream
          if(ierr.ne.0)stop 3
-      else                                                   ! not a directory
+      else                                                   ! pathname not a directory just a file
          filename=trim(directories(i))
          if(filename.eq.'')filename='.'
-         if(ls_l)then
+         if(ls_l)then                                        ! if -l parameter present
             call printit()
-         elseif(ls_csv)then
+         elseif(ls_csv)then                                  ! if -csv switch present
             call print_csv()
          else
             write(*,'(a)')filename
@@ -218,15 +307,14 @@ EQUIVALENCE                                      &
          '"Number_of_blocks_allocated",', &
          '"File_mode",',                  &
          '"Number_of_links",',            &
-         '"Owner_uid",',                  &
-         '"Owner_gid",',                  &
+         '"Owner",',                      &
+         '"Groupname",',                  &
          '"File_size",',                  &
          '"Last_access",',                &
          '"Last_modification",',          &
          '"Last_status_change",',         &
          '"Pathname"'
       endif
-      write(*,*)'FORMAT=',dfmt
 
       write(*,FMT=101) Inode_number, Number_of_blocks_allocated, system_perm(File_mode), Number_of_links,                 &
               system_getpwuid(Owner_uid),system_getpwuid(Owner_gid), File_size,                                           &

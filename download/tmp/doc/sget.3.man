@@ -1,5 +1,5 @@
 NAME
-         sget - [ARGUMENTS:M_kracken]given keyword fetch string value and length from command arguments
+         sget - [ARGUMENTS:M_kracken] given keyword fetch string value and length from command arguments
 SYNOPSIS
   function sget(name,ilen) result(string)
 

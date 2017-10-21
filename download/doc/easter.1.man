@@ -1,5 +1,5 @@
 NAME
-   easter(1f) - [FUNIX]print day and month Easter falls on for given year
+   easter(1f) - [FUNIX] print day and month Easter falls on for given year
 
 SYNOPSIS
    easter [year]|[--help|--version]

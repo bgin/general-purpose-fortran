@@ -1,5 +1,5 @@
 NAME
-   quadratic(3f) - [M_math]calculate the roots of a quadratic formula even if they are complex
+   quadratic(3f) - [M_math] calculate the roots of a quadratic formula even if they are complex
 
 SYNOPSIS
   subroutine quadratic(a,b,c,z1,z2,discriminant)

@@ -1,5 +1,5 @@
 NAME
-    paranoid(1f) - [DEVELOPER] call doublprecision and real versions of paranoia
+    paranoid(1f) - [DEVELOPER] call doublprecision and real versions of paranoia(3f)
 SYNOPSIS
     paranoid
 DESCRIPTION
@@ -55,7 +55,7 @@ EXAMPLE
         -frecord-marker=4
         -J /home/urbanjs/V600/lib/CYGWIN64_GFORTRAN
    ================================================================================
-   *paranoia" double precision test
+   *paranoid*" double precision test(3f)
     Is this a program restart after failure (1)
     or a start from scratch (0) ?
 

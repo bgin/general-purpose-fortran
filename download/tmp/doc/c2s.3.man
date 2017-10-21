@@ -1,5 +1,5 @@
 NAME
-     c2s - [M_strings]convert C string pointer to Fortran character string
+     c2s - [M_strings] convert C string pointer to Fortran character string
 
 SYNOPSIS
    function c2s(c_string_pointer) result(f_string)

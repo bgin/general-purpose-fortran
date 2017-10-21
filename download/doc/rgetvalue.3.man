@@ -1,5 +1,5 @@
 NAME
-   rgetvalue(3f) - [M_calculator]given numeric variable name return real value directly from calculator dictionary for efficiency
+   rgetvalue(3f) - [M_calculator] given numeric variable name return real value directly from calculator dictionary for efficiency
 SYNOPSIS
    real function rgetvalue(varnam)
 

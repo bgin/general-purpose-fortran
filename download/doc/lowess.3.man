@@ -1,5 +1,5 @@
 NAME
-    lowess(3f) - [M_math:fit]procedures for locally weighted regression
+    lowess(3f) - [M_math:fit] procedures for locally weighted regression
 
 SYNOPSIS
    Calling Sequence:

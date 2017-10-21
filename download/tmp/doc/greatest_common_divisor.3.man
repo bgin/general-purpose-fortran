@@ -1,5 +1,5 @@
 NAME
-   greatest_common_divisor(3f) - [M_factor]calculate greatest common divisor of
+   greatest_common_divisor(3f) - [M_factor] calculate greatest common divisor of
                                  two integers or vector m(:),
                                  matrix m(:,:) or cuboid m(:,:,:)
 

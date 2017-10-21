@@ -1,5 +1,5 @@
 NAME
-     indent - [M_strings]count number of leading spaces in a string
+     indent - [M_strings] count number of leading spaces in a string
 
 SYNOPSIS
    function indent(line)

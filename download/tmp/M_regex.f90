@@ -55,7 +55,7 @@ contains
 !===================================================================================================================================
 !>
 !!##NAME
-!!    regcomp(3f) - [M_regex]Compile a regex into a regex object
+!!    regcomp(3f) - [M_regex] Compile a regex into a regex object
 !!##SYNOPSIS
 !!
 !!    subroutine regcomp(this,pattern,flags,status)

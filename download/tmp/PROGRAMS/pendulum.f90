@@ -9,7 +9,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'   pendulum(1f) - [NUMBERS]calculate pendulum period                            ',&
+'   pendulum(1f) - [NUMBERS] calculate pendulum period                           ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   pendulum [-length Length_In_Feet ][-verbose]|[--help]|[--version]            ',&
@@ -78,7 +78,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    pendulum(1f) - [NUMBERS]calculate pendulum period
+!!    pendulum(1f) - [NUMBERS] calculate pendulum period
 !!
 !!##SYNOPSIS
 !!
@@ -160,7 +160,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Mon, Sep 11th, 2017 6:51:29 AM>',&
+'@(#)COMPILED:       Sat, Oct 21st, 2017 8:43:32 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

@@ -10,7 +10,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 '                                                                                ',&
 'NAME                                                                            ',&
-'      _rmdir(1f) - [FUNIX]remove empty directories                              ',&
+'      _rmdir(1f) - [FUNIX] remove empty directories                             ',&
 'SYNOPSIS                                                                        ',&
 '       _rmdir DIRECTORY... [OPTION]...                                          ',&
 'DESCRIPTION                                                                     ',&
@@ -32,7 +32,7 @@ end subroutine help_usage
 !>
 !!
 !!##NAME
-!!       _rmdir(1f) - [FUNIX]remove empty directories
+!!       _rmdir(1f) - [FUNIX] remove empty directories
 !!##SYNOPSIS
 !!
 !!        _rmdir DIRECTORY... [OPTION]...
@@ -60,14 +60,14 @@ if(l_version)then
 help_text=[ CHARACTER(LEN=128) :: &
 '@(#)PRODUCT:        CLI library utilities and examples>',&
 '@(#)PROGRAM:        _rmdir(1f)>',&
-'@(#)DESCRIPTION:    remove empty directories>',&
+'@(#)DESCRIPTION:    remove empty directories by calling rmdir(3c)>',&
 '@(#)VERSION:        1.0, 2016-11-21>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Mon, Sep 11th, 2017 7:06:46 AM>',&
+'@(#)COMPILED:       Sat, Oct 21st, 2017 8:54:38 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -79,7 +79,6 @@ use M_kracken, only  : kracken, lget, sgets, IPvalue
 use M_system, only   : system_rmdir, system_perror
 use M_strings, only  : v2s
 implicit none
-character(len=*),parameter :: ident='@(#)_rmdir(1f): remove empty directories via rmdir(3c)'
 character(len=IPvalue),allocatable :: directories(:) ! hold directory names, assuming length large enough
 integer                            :: ierr,ierr_abs,i
 

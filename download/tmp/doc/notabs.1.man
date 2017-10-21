@@ -1,5 +1,5 @@
 NAME
-       notabs(1) - [FILE FILTER]convert tabs to spaces
+       notabs(1) - [FILE FILTER] convert tabs to spaces
 
 SYNOPSIS
        notabs FILENAME(S)| --help| --version

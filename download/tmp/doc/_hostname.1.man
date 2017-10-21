@@ -1,5 +1,5 @@
 NAME
-    _hostname(1f) - [FUNIX]display hostname
+    _hostname(1f) - [FUNIX] display hostname
 SYNTAX
     hostname [-help|-version]
 DESCRIPTION

@@ -1,5 +1,5 @@
 NAME
-   stderr - [M_debug]write message to stderr
+   stderr - [M_debug] write message to stderr
 SYNOPSIS
    subroutine stderr(message)
 

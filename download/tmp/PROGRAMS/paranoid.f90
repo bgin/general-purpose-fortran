@@ -1,6 +1,6 @@
 !>
 !!##NAME
-!!     paranoid(1f) - [DEVELOPER] call doublprecision and real versions of paranoia
+!!     paranoid(1f) - [DEVELOPER] call doublprecision and real versions of paranoia(3f)
 !!##SYNOPSIS
 !!
 !!     paranoid
@@ -58,7 +58,7 @@
 !!         -frecord-marker=4
 !!         -J /home/urbanjs/V600/lib/CYGWIN64_GFORTRAN
 !!    ================================================================================
-!!    *paranoia" double precision test
+!!    *paranoid*" double precision test(3f)
 !!     Is this a program restart after failure (1)
 !!     or a start from scratch (0) ?
 !===================================================================================================================================
@@ -72,7 +72,9 @@ use M_time, only     : now
 use M_system, only   : system_uname
 use M_messages, only : signs
 implicit none
-character(len=*),parameter   :: ident="@(#)paranoia(1f): call doubleprecision and real versions of paranoia"
+
+character(len=*),parameter   :: ident="@(#)paranoid(1f): call doubleprecision and real versions of paranoia(3f)"
+
 character(len=:),allocatable :: options
 integer,parameter            :: is=100
 character(len=is)            :: string=' '

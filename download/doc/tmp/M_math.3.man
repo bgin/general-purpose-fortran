@@ -1,7 +1,7 @@
 NAME
 
-M_math(3fp) - [M_math]module collecting various general math-related procedures
-together
+M_math(3fp) - [M_math] module collecting various general math-related
+procedures together
 
 DESCRIPTION
 

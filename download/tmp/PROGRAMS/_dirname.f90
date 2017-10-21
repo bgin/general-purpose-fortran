@@ -4,7 +4,6 @@ use M_kracken, only : kracken, sgets, lget                  ! add command-line p
 use M_strings, only : split
 use M_io,      only : dirname
 implicit none
-character(len=*),parameter       :: ident="@(#)dirname(1f):strip last component from file name(s)" ! metadata for what(1)
 logical                          :: zero=.false.
 character(len=4096),allocatable  :: array(:)
 integer                          :: i
@@ -37,7 +36,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'   _dirname(1f) - [FUNIX]strip last component from file name                    ',&
+'   _dirname(1f) - [FUNIX] strip last component from file name                   ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   _dirname NAME... [-zero]|-help|-version]                                     ',&
@@ -68,7 +67,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    _dirname(1f) - [FUNIX]strip last component from file name
+!!    _dirname(1f) - [FUNIX] strip last component from file name
 !!
 !!##SYNOPSIS
 !!
@@ -114,7 +113,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Mon, Sep 11th, 2017 6:59:32 AM>',&
+'@(#)COMPILED:       Sat, Oct 21st, 2017 8:48:32 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

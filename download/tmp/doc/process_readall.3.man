@@ -1,5 +1,5 @@
 NAME
-      process_readall(3f) - [M_process]read all lines from process into single string
+      process_readall(3f) - [M_process] read all lines from process into single string
 SYNOPSIS
       syntax:
 

@@ -1,5 +1,5 @@
 NAME
-    closest_color_name(3f) - [M_color]returns the closest name for the given
+    closest_color_name(3f) - [M_color] returns the closest name for the given
     RGB values.
 SYNOPSIS
 

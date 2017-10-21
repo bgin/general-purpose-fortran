@@ -1,5 +1,5 @@
 NAME
-         lget - [ARGUMENTS:M_kracken]given keyword fetch logical value from command arguments
+         lget - [ARGUMENTS:M_kracken] given keyword fetch logical value from command arguments
 SYNOPSIS
    function lget(keyword) result(lval)
 

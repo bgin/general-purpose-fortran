@@ -1,5 +1,5 @@
 NAME
-    RGBMONO(3f) - [M_color]converts RGB colors to a reasonable grayscale
+    RGBMONO(3f) - [M_color] converts RGB colors to a reasonable grayscale
     intensity.
 SYNOPSIS
 

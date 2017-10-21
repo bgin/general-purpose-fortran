@@ -1,5 +1,5 @@
 NAME
-     dnum0(3f) - [M_calculator_plus]return double precision value from string expression using JUCALC
+     dnum0(3f) - [M_calculator_plus] return double precision value from string expression using JUCALC
 SYNOPSIS
   doubleprecision function dnum0(inline,ierr)
 

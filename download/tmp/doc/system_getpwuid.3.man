@@ -1,9 +1,9 @@
 NAME
    system_getpwuid(3f) - [M_system] get login name associated with a UID
 SYNOPSIS
-  function system_getpwuid(id) result (uname)
+  function system_getpwuid(uid) result (uname)
 
-   integer,intent(in)           :: id
+   class(*),intent(in)          :: id    ! any INTEGER type
    character(len=:),allocatable :: uname
 
 DESCRIPTION
@@ -13,7 +13,8 @@ DESCRIPTION
    it returns a null string and sets errno to indicate the error.
 
 OPTION
-   uid    UID to try to look up associated username for
+   uid    UID to try to look up associated username for. Can be of any
+          INTEGER type.
 
 RETURN VALUE
    uname  returns the login name.

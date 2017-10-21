@@ -9,7 +9,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'  _showumask(1f) - show umask in decimal, octal, hex, and binary                ',&
+'  _showumask(1f) - [FUNIX] show umask in decimal, octal, hex, and binary        ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '  _showumask [ -help|-version]                                                  ',&
@@ -49,7 +49,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Mon, Sep 11th, 2017 7:07:15 AM>',&
+'@(#)COMPILED:       Sat, Oct 21st, 2017 8:55:03 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

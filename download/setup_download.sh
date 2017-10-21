@@ -68,7 +68,6 @@ SECTION=$1
 
 # convert *.man file to roff and then to html
 
-
 # convert to roff and install and convert to html and install
 
 echo "MAN2MAN: $NAME.$SECTION.man ==> $PUTMAN/man$SECTION_NUMBER/$NAME.$SECTION_NUMBER.gz"

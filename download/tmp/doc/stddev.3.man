@@ -1,5 +1,5 @@
 NAME
-   stddev(3f) - [M_math:statistics]given a real vector and the vector average calculate the standard deviation
+   stddev(3f) - [M_math:statistics] given a real vector and the vector average calculate the standard deviation
 SYNTAX
    function stddev(vector,n,avg)
 

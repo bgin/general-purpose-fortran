@@ -1,6 +1,6 @@
 !>
 !!##NAME
-!!      M_factor - [M_factor]module for least common multiple, greatest common divisor, and prime factors
+!!      M_factor - [M_factor] module for least common multiple, greatest common divisor, and prime factors
 !!##SYNOPSIS
 !!
 !!
@@ -98,7 +98,7 @@ contains
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    least_common_multiple(3f) - [M_factor]Least common multiple of two integers
+!!    least_common_multiple(3f) - [M_factor] Least common multiple of two integers
 !!                                or vector m(:), matrix m(:,:) or cuboid m(:,:,:)
 !!##SYNOPSIS
 !!
@@ -323,7 +323,7 @@ end function lcm_cuboid
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    greatest_common_divisor(3f) - [M_factor]calculate greatest common divisor of
+!!    greatest_common_divisor(3f) - [M_factor] calculate greatest common divisor of
 !!                                  two integers or vector m(:),
 !!                                  matrix m(:,:) or cuboid m(:,:,:)
 !!
@@ -557,7 +557,7 @@ end function gcd_cuboid
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    prime_factors - [M_factor]decompose a number into its prime factors
+!!    prime_factors - [M_factor] decompose a number into its prime factors
 !!##SYNOPSIS
 !!
 !!    call prime_factors(number,nprm,iprm,iexp[,verbose])
@@ -727,7 +727,7 @@ end subroutine prime_factors
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    i_is_prime(3f) - [M_factor]Determine if a number is prime using Sieve of Erasthosthenes
+!!    i_is_prime(3f) - [M_factor] Determine if a number is prime using Sieve of Erasthosthenes
 !!##SYNOPSIS
 !!
 !!    function i_is_prime ( n )

@@ -1,5 +1,5 @@
 NAME
-     _mv(1f) - [FUNIX]rename file
+     _mv(1f) - [FUNIX] rename file
 SYNOPSIS
      _mv SOURCE DEST
 DESCRIPTION

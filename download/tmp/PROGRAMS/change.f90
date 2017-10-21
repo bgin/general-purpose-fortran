@@ -30,6 +30,8 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   --version     output version information and exit                            ',&
 '                                                                                ',&
 'EXAMPLE                                                                         ',&
+'  Sample commands:                                                              ',&
+'                                                                                ',&
 '   # change all files with .f90 in their name to *.F90                          ',&
 '   change c/.f90/.F90/  *.f90                                                   ',&
 '   # copy all files with .f90 in their name to *.F90                            ',&
@@ -66,6 +68,8 @@ end subroutine help_usage
 !!
 !!##EXAMPLE
 !!
+!!   Sample commands:
+!!
 !!    # change all files with .f90 in their name to *.F90
 !!    change c/.f90/.F90/  *.f90
 !!    # copy all files with .f90 in their name to *.F90
@@ -86,7 +90,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    rename files by changing old fixed string to new string>',&
 '@(#)VERSION:        1.0, 2017-06-29>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Mon, Sep 18th, 2017 1:32:28 AM>',&
+'@(#)COMPILED:       Sat, Oct 21st, 2017 11:15:11 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

@@ -49,7 +49,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    output the month and day Easter falls on for a particular year>',&
 '@(#)VERSION:        1.0, 20170223>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Mon, Sep 11th, 2017 7:13:56 AM>',&
+'@(#)COMPILED:       Sat, Oct 21st, 2017 8:58:45 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -67,7 +67,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'   easter(1f) - [FUNIX]print day and month Easter falls on for given year       ',&
+'   easter(1f) - [FUNIX] print day and month Easter falls on for given year      ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   easter [year]|[--help|--version]                                             ',&
@@ -94,7 +94,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    easter(1f) - [FUNIX]print day and month Easter falls on for given year
+!!    easter(1f) - [FUNIX] print day and month Easter falls on for given year
 !!
 !!##SYNOPSIS
 !!

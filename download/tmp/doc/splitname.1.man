@@ -1,5 +1,5 @@
 NAME
-   splitname(1f) - [FUNIX]strip pathname into components {dir,name,basename,extension}
+   splitname(1f) - [FUNIX] strip pathname into components {dir,name,basename,extension}
 
 SYNOPSIS
    splitname [NAME1 NAME2 ... |-help|-version]

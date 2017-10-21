@@ -94,7 +94,7 @@ contains
 !===================================================================================================================================
 !>
 !!##NAME
-!!    stderr - [M_debug]write message to stderr
+!!    stderr - [M_debug] write message to stderr
 !!##SYNOPSIS
 !!
 !!    subroutine stderr(message)
@@ -161,16 +161,57 @@ end subroutine stderr
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
+!>
+!!##NAME
+!!    fstop - [M_debug] call stop with both a number and a message
+!!##SYNOPSIS
+!!
+!!    subroutine fstop(ierr,stdout,stderr)
+!!
+!!     integer,intent(in)                   :: ierr
+!!     character(len=*),intent(in),optional :: stdout
+!!     character(len=*),intent(in),optional :: stderr
+!!##DESCRIPTION
+!!
+!!    FSTOP(3f) call STOP(3f).  What a call to STOP does is very system
+!!    dependent, so using an abstraction layer is useful, as it allows just
+!!    the fstop() routine to be changed; and STOP does not allow a variable
+!!    to be used on the numeric access status (this has changed at f2015).
+!!
+!!##OPTIONS
+!!    ierr    - value in range 0 to 32
+!!    stdout  - description to be printed to standard output
+!!    stderr  - description to be printed to standard error
+!!##EXAMPLES
+!!
+!!   Sample program:
+!!
+!!    program demo_fstop
+!!    use M_debug, only: fstop
+!!    implicit none
+!!    integer :: int
+!!    write(*,*)'Enter stop value'
+!!    read(*,*) int
+!!    select case(int)
+!!    case(10) ; call fstop(int)
+!!    case(20) ; call fstop(int,stderr='error: program will now stop')
+!!    case(25) ; call fstop(int,stdout='stdout message',stderr='stderr message')
+!!    case(30) ; call fstop(int,stdout='error: program will now stop')
+!!    case default
+!!               call fstop(int)
+!!    endselect
+!!
+!!    end program demo_fstop
+!!
+!!   Results:
+!!
+!===================================================================================================================================
 subroutine fstop(ierr,stdout,stderr)
 character(len=*),parameter::ident="@(#)M_debug::fstop(3f): calls 'STOP VALUE' passing in a value (1-32), with optional message"
 integer,intent(in)                   :: ierr
 character(len=*),optional,intent(in) :: stdout
 character(len=*),optional,intent(in) :: stderr
    character(len=132)                :: message
-!
-! What a call to STOP does is very system dependent, so using an abstraction layer is useful, as it allows
-! just the fstop() routine to be changed.
-!
 ! The standard states:
 !   If the stop-code is an integer, it is recommended that the value also be used as the process exit status, if the
 !   processor supports that concept. If the integer stop-code is used as the process exit status, the processor
@@ -183,7 +224,7 @@ character(len=*),optional,intent(in) :: stderr
 !   A STOP statement or ALL STOP statement shall not be executed during execution of an input/output statement.
 !
 ! Conforming varients I have encountered include
-!    o printing a message such as 'STOP nnn' when the an integer value is called
+!    o printing a message such as 'STOP nnn' when the integer value is called
 !    o having a limit on the length of the message string passed
 !    o prefixing the message with the string 'STOP '
 !    o different ranges on allowed integer values, and/or not having a one-to-one correspondence between the argument
@@ -203,7 +244,7 @@ character(len=*),optional,intent(in) :: stderr
 !
 !  In practice the C exit(int signal) routine seems to work successfully when called from Fortran but I consider it risky
 !  as it seems reasonable to assume Fortran cleanup operations such as removing scratch files and closing and flushing Fortran
-!  files may not be properly performed. So it is tempting to call the C function, especially on systesm where C returns a
+!  files may not be properly performed. So it is tempting to call the C function, especially on systems where C returns a
 !  value to the system and Fortran does not, but I do not recommend it.
 !
 !  Note that the C function "exit(int signal)" not only works more consistently but that the global values EXIT_SUCCESS and
@@ -277,7 +318,7 @@ end subroutine fstop
 !>
 !!
 !!##NAME
-!!    unit_check - [M_debug]if logical expression is false, call command "goodbad NAME bad" and stop program
+!!    unit_check - [M_debug] if logical expression is false, call command "goodbad NAME bad" and stop program
 !!
 !!##SYNOPSIS
 !!
@@ -358,7 +399,7 @@ end subroutine unit_check
 !>
 !!
 !!##NAME
-!!    unit_check_start - [M_debug]call command "goodbad NAME start"
+!!    unit_check_start - [M_debug] call command "goodbad NAME start"
 !!
 !!##SYNOPSIS
 !!
@@ -422,7 +463,7 @@ end subroutine unit_check_start
 !>
 !!
 !!##NAME
-!!    unit_check_bad - [M_debug]call command "goodbad NAME bad" and stop program
+!!    unit_check_bad - [M_debug] call command "goodbad NAME bad" and stop program
 !!
 !!##SYNOPSIS
 !!
@@ -484,7 +525,7 @@ end subroutine unit_check_bad
 !>
 !!
 !!##NAME
-!!    unit_check_good - [M_debug]call command "goodbad NAME good"
+!!    unit_check_good - [M_debug] call command "goodbad NAME good"
 !!
 !!##SYNOPSIS
 !!
@@ -538,7 +579,7 @@ end subroutine unit_check_good
 !===================================================================================================================================
 !>
 !!##NAME
-!!      pdec - [M_debug]write out string with ASCII decimal equivalent vertically under it
+!!      pdec - [M_debug] write out string with ASCII decimal equivalent vertically under it
 !!
 !!##SYNOPSIS
 !!

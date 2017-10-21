@@ -1,5 +1,5 @@
 NAME
-         lget - [ARGUMENTS:M_kracken]given keyword fetch logical array from command argument
+         lget - [ARGUMENTS:M_kracken] given keyword fetch logical array from command argument
 SYNOPSIS
    function lgets(keyword) result(lvals)
 

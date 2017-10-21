@@ -1,5 +1,5 @@
 NAME
-         igets - [ARGUMENTS:M_kracken]given keyword fetch integer array from command arguments
+         igets - [ARGUMENTS:M_kracken] given keyword fetch integer array from command arguments
 SYNOPSIS
    function igets(keyword) result(iarray)
 

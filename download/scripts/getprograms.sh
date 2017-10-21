@@ -37,6 +37,7 @@ lastprogram redo.f90
 lastprogram rever.f90
 lastprogram easter.f90
 lastprogram planets.f90
+lastprogram lsup.f90
 lastprogram splitname.f90
 lastprogram _dirname.f90
 lastprogram _echo.f90
@@ -59,6 +60,7 @@ lastprogram _true.f90
 lastprogram _tty.f90
 lastprogram _uname.f90
 lastprogram _unlink.f90
+lastprogram _which.f90
 lastprogram _yes.f90
 }
 GETPROGRAMS

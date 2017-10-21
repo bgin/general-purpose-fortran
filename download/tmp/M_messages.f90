@@ -22,7 +22,7 @@ contains
 
 !>
 !!##NAME
-!!      junbad(3f) - [M_messages]print an eye-catching image of a skull.
+!!      junbad(3f) - [M_messages] print an eye-catching image of a skull.
 !!
 !!##SYNOPSIS
 !!
@@ -115,7 +115,7 @@ end subroutine junbad
 !===================================================================================================================================
 !>
 !!##NAME
-!!      junbat(3f) - [M_messages]print an eye-catching image of a bat.
+!!      junbat(3f) - [M_messages] print an eye-catching image of a bat.
 !!
 !!##SYNOPSIS
 !!
@@ -180,7 +180,7 @@ end subroutine junbat
 !===================================================================================================================================
 !>
 !!##NAME
-!!      junbuster(3f) - [M_messages]call journal(3f) to print eye-catching ASCII graphic (ghostbuster)
+!!      junbuster(3f) - [M_messages] call journal(3f) to print eye-catching ASCII graphic (ghostbuster)
 !!
 !!##SYNOPSIS
 !!
@@ -268,7 +268,7 @@ end subroutine junbuster
 !===================================================================================================================================
 !>
 !!##NAME
-!!      jundragon - [M_messages]fill in a character array with a message
+!!      jundragon - [M_messages] fill in a character array with a message
 !!
 !!##SYNOPSIS
 !!
@@ -348,7 +348,7 @@ end subroutine jundragon
 !===================================================================================================================================
 !>
 !!##NAME
-!!      junroach(3f) - [M_messages]print an eye-catching image of a roach.
+!!      junroach(3f) - [M_messages] print an eye-catching image of a roach.
 !!
 !!##SYNOPSIS
 !!
@@ -431,7 +431,7 @@ end subroutine junroach
 !===================================================================================================================================
 !>
 !!##NAME
-!!      junsun(3f) - [M_messages]print an eye-catching image of a smiling sun.
+!!      junsun(3f) - [M_messages] print an eye-catching image of a smiling sun.
 !!
 !!##SYNOPSIS
 !!
@@ -519,7 +519,7 @@ end subroutine junsun
 !===================================================================================================================================
 !>
 !!##NAME
-!!      juntrolls(3f) - [M_messages]print an eye-catching bulletin
+!!      juntrolls(3f) - [M_messages] print an eye-catching bulletin
 !!
 !!##SYNOPSIS/USAGE
 !!
@@ -612,7 +612,7 @@ end subroutine juntrolls
 
 !>
 !!##NAME
-!!      tabgraph(3f) - [M_messages]write out a row of numbers and a text-based scaled graph
+!!      tabgraph(3f) - [M_messages] write out a row of numbers and a text-based scaled graph
 !!
 !!##SYNOPSIS
 !!
@@ -889,7 +889,7 @@ end subroutine tabgraph
 
 !>
 !!##NAME
-!!    blocks(1f) - [M_messages]write out 132-character string in large block letters
+!!    blocks(1f) - [M_messages] write out 132-character string in large block letters
 !!
 !!##SYNOPSIS
 !!
@@ -1216,7 +1216,7 @@ end subroutine blocks
 !===================================================================================================================================
 !>
 !!##NAME
-!!     signs - [M_messages]write out 132-character string in large block letters
+!!     signs - [M_messages] write out 132-character string in large block letters
 !!
 !!##SYNOPSIS
 !!

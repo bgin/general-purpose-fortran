@@ -20,7 +20,7 @@ end interface
 !===================================================================================================================================
 !>
 !!##NAME
-!!      swap(3f) - [M_swap]elemental subroutine swaps two standard type variables of like type
+!!      swap(3f) - [M_swap] elemental subroutine swaps two standard type variables of like type
 !!##SYNOPSIS
 !!
 !!      subroutine swap(X,Y)

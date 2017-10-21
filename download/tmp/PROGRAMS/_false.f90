@@ -9,15 +9,17 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'       _false(1f) - [FUNIX]do nothing, unsuccessfully                           ',&
+'       _false(1f) - [FUNIX] do nothing, unsuccessfully                          ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
-'       _false [ignored command line arguments]                                  ',&
-'       _false OPTION                                                            ',&
+'       _false value [--help|--version--verbose]                                 ',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
 '       Exit with a status code indicating failure.                              ',&
 'OPTIONS                                                                         ',&
+'       number     optional number of 1 to 32, which                             ',&
+'                  will be used to generate the exit                             ',&
+'                  status code if supported.                                     ',&
 '       --help     display this help and exit                                    ',&
 '       --version  output version information and exit                           ',&
 '       --verbose  display ASCII graphic of cockroach                            ',&
@@ -50,16 +52,18 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!        _false(1f) - [FUNIX]do nothing, unsuccessfully
+!!        _false(1f) - [FUNIX] do nothing, unsuccessfully
 !!
 !!##SYNOPSIS
 !!
-!!        _false [ignored command line arguments]
-!!        _false OPTION
+!!        _false value [--help|--version--verbose]
 !!
 !!##DESCRIPTION
 !!        Exit with a status code indicating failure.
 !!##OPTIONS
+!!        number     optional number of 1 to 32, which
+!!                   will be used to generate the exit
+!!                   status code if supported.
 !!        --help     display this help and exit
 !!        --version  output version information and exit
 !!        --verbose  display ASCII graphic of cockroach
@@ -97,11 +101,11 @@ stopit=.false.
 if(l_version)then
 help_text=[ CHARACTER(LEN=128) :: &
 '@(#)PRODUCT:        CLI library utilities and examples>',&
-'@(#)PROGRAM         _false(1f)>',&
+'@(#)PROGRAM:        _false(1f)>',&
 '@(#)DESCRIPTION:    do nothing, unsuccessfully>',&
 '@(#)VERSION:        1.0, 20170125>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Mon, Sep 11th, 2017 7:10:16 AM>',&
+'@(#)COMPILED:       Sat, Oct 21st, 2017 8:49:20 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -109,18 +113,30 @@ endif
 end subroutine help_version
 !-----------------------------------------------------------------------------------------------------------------------------------
 program false
-use M_kracken, only : kracken, lget
-use M_messages, only : junroach
+use M_kracken,       only : kracken, lget, iget
+use M_messages,      only : junroach
+use M_debug,         only : fstop
+use iso_fortran_env, only : ERROR_UNIT        ! access computing environment
 implicit none
-character(len=*),parameter::ident="@(#)_false(1f): do nothing, unsuccessfully"
+integer :: ios, istop
 
-call kracken('false','-help .F. -version .F. -verbose .F.')
+call kracken('false',' -help .F. -version .F. -verbose .F.')
 call help_usage(lget('false_help'))      ! if -help option is present, display help text and exit
 call help_version(lget('false_version')) ! if -version option is present, display version text and exit
 if(lget('false_verbose'))then
    call junroach('s')
 endif
 
-error stop ''                            ! get error returned to system and produce no message (hopefully -- compiler dependent)
+istop=iget('false_oo')
+
+select case(istop)
+case(1:32)
+   call fstop(istop)
+case default
+   !!error stop ''              ! get error returned to system and produce no message (hopefully -- compiler dependent)
+   !!error stop                 ! get error returned to system and produce no message (hopefully -- compiler dependent)
+   close(ERROR_UNIT,iostat=ios) ! try to stop default message
+   stop 1
+end select
 
 end program false

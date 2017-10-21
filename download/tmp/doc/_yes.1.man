@@ -1,6 +1,6 @@
 NAME
 
-    _yes(1f) - [FUNIX]output a string repeatedly until killed or limit is reached
+    _yes(1f) - [FUNIX] output a string repeatedly until killed or limit is reached
 
 SYNOPSIS
     _yes [STRING] -help -version [-repeat N]

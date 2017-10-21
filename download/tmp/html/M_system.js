@@ -2,8 +2,10 @@ function loadthem(){
 append("M_system.3.html");
 append("fileglob.3.html");
 append("set_environment_variable.3.html");
+append("system_access.3.html");
 append("system_chdir.3.html");
 append("system_chmod.3.html");
+append("system_chown.3.html");
 append("system_clearenv.3.html");
 append("system_closedir.3.html");
 append("system_cpu_time.3.html");

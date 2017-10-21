@@ -1,6 +1,6 @@
 NAME
 
-M_messages(3fp) - [M_messages]module collecting various general routines for
+M_messages(3fp) - [M_messages] module collecting various general routines for
 displaying messages
 
 DESCRIPTION

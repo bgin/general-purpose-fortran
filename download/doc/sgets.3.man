@@ -1,5 +1,5 @@
 NAME
-         sgets - [ARGUMENTS:M_kracken]given keyword fetch string value parsed on whitespace into an array
+         sgets - [ARGUMENTS:M_kracken] given keyword fetch string value parsed on whitespace into an array
 SYNOPSIS
   function sgets(name,delim) result(strings)
 

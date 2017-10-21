@@ -12,7 +12,7 @@ public :: strgar2 ! read a string into an array USING CALCULATOR
 contains
 !>
 !!##NAME
-!!      inum0(3f) - [M_calculator_plus]return integer value from calculator expression
+!!      inum0(3f) - [M_calculator_plus] return integer value from calculator expression
 !!##SYNOPSIS
 !!
 !!   integer function inum0(inline,ierr)
@@ -125,7 +125,7 @@ end function inum0
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!       rnum0(3f) - [M_calculator_plus]returns real number from string expression using JUCALC(3f)
+!!       rnum0(3f) - [M_calculator_plus] returns real number from string expression using JUCALC(3f)
 !!##SYNOPSIS
 !!
 !! real function rnum0(inline)
@@ -204,7 +204,7 @@ integer                      :: iend
 end function rnum0
 !>
 !!##NAME
-!!      dnum0(3f) - [M_calculator_plus]return double precision value from string expression using JUCALC
+!!      dnum0(3f) - [M_calculator_plus] return double precision value from string expression using JUCALC
 !!##SYNOPSIS
 !!
 !!   doubleprecision function dnum0(inline,ierr)
@@ -282,7 +282,7 @@ integer                     :: ilen
 end function dnum0
 !>
 !!##NAME
-!!     snum0(3f) - [M_calculator_plus]resolve a calculator expression into a string(return blank on errors)
+!!     snum0(3f) - [M_calculator_plus] resolve a calculator expression into a string(return blank on errors)
 !!
 !!##SYNOPSIS
 !!
@@ -390,7 +390,7 @@ end function snum0
 !===================================================================================================================================
 !>
 !!##NAME
-!!     jucalcx(3f) - [M_calculator_plus]return value from a string expression processing messages to simplify call to JUCALC(3f)
+!!     jucalcx(3f) - [M_calculator_plus] return value from a string expression processing messages to simplify call to JUCALC(3f)
 !!##SYNOPSIS
 !!
 !!    subroutine jucalcx(inlin0,outval,outlin0,ierr,ilen)
@@ -533,7 +533,7 @@ end subroutine jucalcx
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!       strgarr(3f) - [M_calculator_plus]read a string into an array using jucalc(3f) calculator
+!!       strgarr(3f) - [M_calculator_plus] read a string into an array using jucalc(3f) calculator
 !!##SYNOPSIS
 !!
 !!   subroutine strgarr(line,ivals,vals,ifound,delims,ierr)
@@ -768,7 +768,7 @@ CHARACTER(LEN=*),PARAMETER :: ident="@(#)M_calculator_plus::strgarr(3f):read num
 END SUBROUTINE strgarr
 !>
 !!##NAME
-!!       strgar2(3f) - [M_calculator_plus]read a string into a real array USING CALCULATOR, allowing quoted strings in arguments,
+!!       strgar2(3f) - [M_calculator_plus] read a string into a real array USING CALCULATOR, allowing quoted strings in arguments,
 !!
 !!##SYNOPSIS
 !!

@@ -1,6 +1,6 @@
 !>
 !!##NAME
-!!    M_getopt_long(3fm) - [ARGUMENTS:M_getopt_long]parse command line options like Sun getopt_long, including the Sun CLIP specification
+!!    M_getopt_long(3fm) - [ARGUMENTS:M_getopt_long] parse command line options like Sun getopt_long, including the Sun CLIP specification
 !!##SYNTAX
 !!    use M_getopt_long, only : getopt_new, getopt
 !!    use M_getopt_long, only : getopt_type, getopt_option_type

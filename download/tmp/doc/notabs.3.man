@@ -1,5 +1,5 @@
 NAME
-   notabs - [M_strings]expand tab characters
+   notabs - [M_strings] expand tab characters
 SYNOPSIS
    subroutine notabs(INSTR,OUTSTR,ILEN)
 

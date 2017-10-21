@@ -1,5 +1,5 @@
 NAME
-     poly_intercept(3f) - [M_math:geometry]intersection of a straight line and polygonal path
+     poly_intercept(3f) - [M_math:geometry] intersection of a straight line and polygonal path
 SYNOPSIS
 
   SUBROUTINE Poly_Intercept(a,b,x,y,n,u,v,m,num,ierr)

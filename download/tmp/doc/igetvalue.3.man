@@ -1,5 +1,6 @@
 NAME
-   igetvalue(3f) - [M_calculator]given numeric variable name return integer value directly from calculator dictionary for efficiency
+   igetvalue(3f) - [M_calculator] given numeric variable name return integer value directly from calculator
+                   dictionary for efficiency
 SYNOPSIS
    integer function igetvalue(varnam)
 

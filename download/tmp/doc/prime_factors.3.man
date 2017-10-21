@@ -1,5 +1,5 @@
 NAME
-   prime_factors - [M_factor]decompose a number into its prime factors
+   prime_factors - [M_factor] decompose a number into its prime factors
 SYNOPSIS
    call prime_factors(number,nprm,iprm,iexp[,verbose])
 

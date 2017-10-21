@@ -9,11 +9,10 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'       _true(1f) - [FUNIX]do nothing, successfully                              ',&
+'       _true(1f) - [FUNIX] do nothing, successfully                             ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
-'       _true [ignored command line arguments]                                   ',&
-'       _true OPTION                                                             ',&
+'       _true [--verbose|--help|--version]                                       ',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
 '       Exit with a status code indicating failure.                              ',&
@@ -34,12 +33,11 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!        _true(1f) - [FUNIX]do nothing, successfully
+!!        _true(1f) - [FUNIX] do nothing, successfully
 !!
 !!##SYNOPSIS
 !!
-!!        _true [ignored command line arguments]
-!!        _true OPTION
+!!        _true [--verbose|--help|--version]
 !!
 !!##DESCRIPTION
 !!        Exit with a status code indicating failure.
@@ -65,11 +63,11 @@ stopit=.false.
 if(l_version)then
 help_text=[ CHARACTER(LEN=128) :: &
 '@(#)PRODUCT:        CLI library utilities and examples>',&
-'@(#)PROGRAM         _true(1f)>',&
+'@(#)PROGRAM:        _true(1f)>',&
 '@(#)DESCRIPTION:    do nothing, successfully>',&
 '@(#)VERSION:        1.0, 20170125>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Mon, Sep 11th, 2017 7:09:44 AM>',&
+'@(#)COMPILED:       Sat, Oct 21st, 2017 8:55:51 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -80,7 +78,6 @@ program true
 use M_kracken, only : kracken, lget
 use M_messages, only : junsun
 implicit none
-character(len=*),parameter::ident="@(#)_true(1f): do nothing, successfully"
 call kracken('true','-help .F. -version .F. -verbose .F.')
 call help_usage(lget('true_help'))      ! if -help option is present, display help text and exit
 call help_version(lget('true_version')) ! if -version option is present, display version text and exit

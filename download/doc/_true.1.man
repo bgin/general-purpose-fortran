@@ -1,9 +1,8 @@
 NAME
-       _true(1f) - [FUNIX]do nothing, successfully
+       _true(1f) - [FUNIX] do nothing, successfully
 
 SYNOPSIS
-       _true [ignored command line arguments]
-       _true OPTION
+       _true [--verbose|--help|--version]
 
 DESCRIPTION
        Exit with a status code indicating failure.

@@ -1,10 +1,13 @@
 program redoit
 use M_history, only : redo
 implicit none
-character(len=1024) ::  line
-integer             :: ios
-integer             :: cstat
-character(len=256)  :: sstat
+
+character(len=*),parameter :: ident="@(#) redo(1f): simple history shell allows using redo(3f) for command history"
+
+character(len=1024)        :: line
+integer                    :: ios
+integer                    :: cstat
+character(len=256)         :: sstat
 
    call instructions()
    do

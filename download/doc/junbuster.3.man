@@ -1,5 +1,5 @@
 NAME
-     junbuster(3f) - [M_messages]call journal(3f) to print eye-catching ASCII graphic (ghostbuster)
+     junbuster(3f) - [M_messages] call journal(3f) to print eye-catching ASCII graphic (ghostbuster)
 
 SYNOPSIS
 

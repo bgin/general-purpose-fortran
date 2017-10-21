@@ -1,6 +1,6 @@
 NAME
 
-   anyinteger_to_128bit(3f) - [M_anyscalar]convert integer any kind to integer(kind=128)
+   anyinteger_to_128bit(3f) - [M_anyscalar] convert integer any kind to integer(kind=128)
 
 SYNOPSIS
 
@@ -52,4 +52,3 @@ EXAMPLE
     end function squarei
 
     end program scalars
-!===================================================================================================================================

@@ -1,5 +1,5 @@
 NAME
-      strgar2(3f) - [M_calculator_plus]read a string into a real array USING CALCULATOR, allowing quoted strings in arguments,
+      strgar2(3f) - [M_calculator_plus] read a string into a real array USING CALCULATOR, allowing quoted strings in arguments,
 
 SYNOPSIS
   subroutine strgar2(line,ivals,vals,ifound,delims,ierr)

@@ -1,5 +1,5 @@
 NAME
-       polyarea(3f) - [M_math:geometry]compute the area bounded by a closed polygonal curve
+       polyarea(3f) - [M_math:geometry] compute the area bounded by a closed polygonal curve
 
 SYNOPSIS
    FUNCTION polyarea(x, y) RESULT(fn_val)

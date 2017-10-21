@@ -3,7 +3,7 @@ NAME
 SYNOPSIS
   function system_getgrgid(gid) result (gname)
 
-   integer,intent(in)           :: gid
+   class(*),intent(in)          :: gid   ! any INTEGER type
    character(len=:),allocatable :: gname
 
 DESCRIPTION
@@ -13,7 +13,8 @@ DESCRIPTION
    it returns a null string and sets errno to indicate the error.
 
 OPTION
-   gid    GID to try to look up associated group for
+   gid    GID to try to look up associated group for. Can be of any
+          INTEGER type.
 
 RETURN VALUE
    gname  returns the group name. Blank if an error occurs

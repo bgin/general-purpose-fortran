@@ -13,6 +13,6 @@ EXAMPLE
        Sample commands:
 
         cp myfile myfile.`today`
-        find . -ls >MANIFEST.`today epoch`
+        find . -ls > MANIFEST.`today epoch`
         mkdir `today YMDhms`
-        today -  # show formatting options
+        today -                              # show formatting options

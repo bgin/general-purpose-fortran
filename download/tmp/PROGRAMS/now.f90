@@ -122,13 +122,13 @@ text=[ character(len=len(text(1))) ::                                           
 &' Sample commands:                                                               ',&
 &'                                                                                ',&
 &'  now                                                                           ',&
-&'    Friday, June 17th, 2016 03:22:53 PM UTC-0240                                ',&
+&'    Friday, June 17th, 2016 03:22:53 PM UTC-4:00                                ',&
 &'                                                                                ',&
 &'  now -delta  1-0:0:0  # Tomorrow                                               ',&
-&'    Sunday, June 19th, 2016 11:32:26 AM UTC-0240                                ',&
+&'    Sunday, June 19th, 2016 11:32:26 AM UTC-4:00                                ',&
 &'                                                                                ',&
 &'  now -delta -1-0:0:0  # Yesterday                                              ',&
-&'    Friday, June 17th, 2016 11:32:43 AM UTC-0240                                ',&
+&'    Friday, June 17th, 2016 11:32:43 AM UTC-4:00                                ',&
 &'                                                                                ',&
 &'  now long -delta  7-0:0:0  # Next week                                         ',&
 &'    Saturday, June 25th, 2016 11:32:57 AM UTC-04:00                             ',&
@@ -143,7 +143,7 @@ text=[ character(len=len(text(1))) ::                                           
 &'  2016-07-29                                                                    ',&
 &'                                                                                ',&
 &'  now -dat 2016 07 23 -240 1 01 00 00  # alternate date                         ',&
-&'  Saturday, July 23rd, 2016 1:01:00 AM UTC-0240                                 ',&
+&'  Saturday, July 23rd, 2016 1:01:00 AM UTC-4:00                                 ',&
 &'                                                                                ',&
 &'  now -uet  1469250060                 # alternate Unix Epoch date              ',&
 &'  now -date January 4th, 1999 10:20:30 # try to determine date from description.',&
@@ -200,7 +200,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)COPYRIGHT:      Copyright (C) 2009 John S. Urban>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Mon, Sep 11th, 2017 6:48:36 AM>',&
+'@(#)COMPILED:       Sat, Oct 21st, 2017 8:42:13 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

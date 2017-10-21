@@ -1,5 +1,5 @@
 NAME
-       _uname(1f) - [FUNIX]print system information
+       _uname(1f) - [FUNIX] print system information
 
 SYNOPSIS
        _uname [OPTION]...

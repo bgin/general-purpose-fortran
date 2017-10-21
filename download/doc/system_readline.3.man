@@ -1,5 +1,5 @@
 NAME
-     system_readline(3f) - [M_readline]Call readline(3c) from Fortran
+     system_readline(3f) - [M_readline] Call readline(3c) from Fortran
 SYNOPSIS
     character(kind=c_char,len=*),intent(in)  :: prompt
     character(kind=c_char,len=*),intent(out) :: line

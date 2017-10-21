@@ -1,5 +1,5 @@
 NAME
-     junsun(3f) - [M_messages]print an eye-catching image of a smiling sun.
+     junsun(3f) - [M_messages] print an eye-catching image of a smiling sun.
 
 SYNOPSIS
 

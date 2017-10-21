@@ -1,6 +1,6 @@
 !>
 !!##NAME
-!!    M_process - [M_process]Fortran Module for calling process-related C functions from Fortran
+!!    M_process - [M_process] Fortran Module for calling process-related C functions from Fortran
 !!
 !!##SYNOPSIS
 !!
@@ -506,7 +506,7 @@ end subroutine process_readline
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!       process_readall(3f) - [M_process]read all lines from process into single string
+!!       process_readall(3f) - [M_process] read all lines from process into single string
 !!##SYNOPSIS
 !!
 !!       syntax:

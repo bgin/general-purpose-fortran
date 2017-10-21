@@ -1,5 +1,5 @@
 NAME
-  envelope(3f) - [M_math:geometry]Find the vertices (in clockwise order) of a polygon enclosing the points (x(i), y(i), i=1, ..., n.
+  envelope(3f) - [M_math:geometry] Find vertices (in clockwise order) of a polygon enclosing the points (x(i), y(i), i=1, ..., n.
 SYNOPSIS
    subroutine envelope(x, y, n, vertex, nvert)
 

@@ -1,5 +1,5 @@
 NAME
-     M_readline(3fm) - [M_readline]Calling readline(3c) from Fortran
+     M_readline(3fm) - [M_readline] Calling readline(3c) from Fortran
 SYNOPSIS
      Use M_readline, only : system_readline
 DESCRIPTION

@@ -1,5 +1,5 @@
 NAME
-     M_factor - [M_factor]module for least common multiple, greatest common divisor, and prime factors
+     M_factor - [M_factor] module for least common multiple, greatest common divisor, and prime factors
 SYNOPSIS
 
    least_common_multiple     least common multiple of two integers (i,j) or

@@ -1,5 +1,5 @@
 NAME
-         setprompts(3f) - [ARGUMENTS:M_kracken]set explicit prompts for keywords in interactive mode
+         setprompts(3f) - [ARGUMENTS:M_kracken] set explicit prompts for keywords in interactive mode
 SYNOPSIS
   subroutine setprompts(verb,init)
 

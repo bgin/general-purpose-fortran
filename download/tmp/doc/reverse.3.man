@@ -1,5 +1,5 @@
 NAME
-     reverse - [M_strings]Return a string reversed
+     reverse - [M_strings] Return a string reversed
 
 SYNOPSIS
 

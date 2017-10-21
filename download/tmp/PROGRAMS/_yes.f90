@@ -53,7 +53,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Mon, Sep 11th, 2017 7:08:46 AM>',&
+'@(#)COMPILED:       Sat, Oct 21st, 2017 8:57:28 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -71,7 +71,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'    _yes(1f) - [FUNIX]output a string repeatedly until killed or limit is reached',&
+'    _yes(1f) - [FUNIX] output a string repeatedly until killed or limit is reached',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '    _yes [STRING[-repeat N]]|[--help|--version]                                 ',&
@@ -106,7 +106,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!     _yes(1f) - [FUNIX]output a string repeatedly until killed or limit is reached
+!!     _yes(1f) - [FUNIX] output a string repeatedly until killed or limit is reached
 !!
 !!##SYNOPSIS
 !!

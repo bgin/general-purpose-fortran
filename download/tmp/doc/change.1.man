@@ -20,6 +20,8 @@ OPTIONS
    --version     output version information and exit
 
 EXAMPLE
+  Sample commands:
+
    # change all files with .f90 in their name to *.F90
    change c/.f90/.F90/  *.f90
    # copy all files with .f90 in their name to *.F90

@@ -1,5 +1,5 @@
 NAME
-   merge_str - [M_strings]pads strings to same length and then calls MERGE(3f)
+   merge_str - [M_strings] pads strings to same length and then calls MERGE(3f)
 
 SYNOPSIS
    function merge_str(str1,str2,expr) result(strout)

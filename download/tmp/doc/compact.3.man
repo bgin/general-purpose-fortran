@@ -1,5 +1,5 @@
 NAME
-   compact - [M_strings]converts contiguous whitespace to a single character (or nothing)
+   compact - [M_strings] converts contiguous whitespace to a single character (or nothing)
 
 SYNOPSIS
    function compact(STR,CHAR) result (OUTSTR)

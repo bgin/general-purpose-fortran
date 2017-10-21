@@ -6,7 +6,7 @@ The download file includes an example utility program colors.f90 with a man(1)
 page colors.1 that exercises the module.
 
 NAME
-    M_COLOR(3f) - [M_color]a Fortran module that lets you convert between
+    M_COLOR(3f) - [M_color] a Fortran module that lets you convert between
     common color models
 SYNOPSIS
 
@@ -95,7 +95,7 @@ AUTHOR
 Details on the internal procedures ...
 
 NAME
-    RGBHLS(3fp) - [M_color]Given red, green, and blue color components
+    RGBHLS(3fp) - [M_color] Given red, green, and blue color components
     calculates the hue, lightness, and saturation for a color
 SYNOPSIS
 
@@ -140,7 +140,7 @@ DESCRIPTION
         +--------------------------------------------------+
 
 NAME
-    RGBHVS(3fp) - [M_color]calculates the hue, value, & saturation for a color
+    RGBHVS(3fp) - [M_color] calculates the hue, value, & saturation for a color
     given in red, green, & blue components values.
 SYNOPSIS
 
@@ -205,7 +205,7 @@ SYNOPSIS
         +-----------------------------------------------------+
 
 NAME
-    cmyrgb(3fp) - [M_color]calculates the cyan, magenta, and yellow components
+    cmyrgb(3fp) - [M_color] calculates the cyan, magenta, and yellow components
     given the red, green, and blue component values.
 SYNOPSIS
 
@@ -225,7 +225,7 @@ DESCRIPTION
     green, and blue component values.
 
 NAME
-    rgbcmy(3fp) - [M_color]calculates the cyan, magenta, and yellow components
+    rgbcmy(3fp) - [M_color] calculates the cyan, magenta, and yellow components
     given the red, green, and blue component values.
 SYNOPSIS
 
@@ -267,7 +267,8 @@ DESCRIPTION
         +-------------------------------------------------+
 
 NAME
-    RGBVAL(3fp) - [M_color]is an internal private function used by hlsrgb(3fp).
+    RGBVAL(3fp) - [M_color] is an internal private function used by hlsrgb
+    (3fp).
 SYNOPSIS
 
        subroutine rgbval(clr1,clr2,h)
@@ -281,7 +282,7 @@ DESCRIPTION
     Function RGBVAL(3f) is an internal private function used by hlsrgb().
 
 NAME
-    HLSRGB(3fp) - [M_color]calculates the red, green, & blue components for a
+    HLSRGB(3fp) - [M_color] calculates the red, green, & blue components for a
     color given in hue, lightness, & saturation values.
 SYNOPSIS
 
@@ -301,7 +302,7 @@ DESCRIPTION
     hue, lightness, & saturation values.
 
 NAME
-    HVSRGB(3fp) - [M_color]calculates the red, green, & blue components for a
+    HVSRGB(3fp) - [M_color] calculates the red, green, & blue components for a
     color given in hue, value, & saturation values.
 SYNOPSIS
 
@@ -321,7 +322,7 @@ DESCRIPTION
     hue, value, & saturation values.
 
 NAME
-    YIQRGB(3fp) - [M_color]Convert luma, orange-blue chrominance, and
+    YIQRGB(3fp) - [M_color] Convert luma, orange-blue chrominance, and
     purple-green chrominance to RGB values.
 SYNOPSIS
 
@@ -337,8 +338,8 @@ DESCRIPTION
     values.
 
 NAME
-    RGBYIQ(3fp) - [M_color]Convert RGB values to luma, orange-blue chrominance,
-    and purple-green chrominance.
+    RGBYIQ(3fp) - [M_color] Convert RGB values to luma, orange-blue
+    chrominance, and purple-green chrominance.
 SYNOPSIS
 
        subroutine rgbyiq(r,g,b,y,i,q,status)

@@ -1,6 +1,7 @@
 function loadthem(){
 append("M_strings.3.html");
 append("adjustc.3.html");
+append("base.3.html");
 append("c2s.3.html");
 append("change.3.html");
 append("chomp.3.html");

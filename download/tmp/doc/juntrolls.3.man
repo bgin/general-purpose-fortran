@@ -1,5 +1,5 @@
 NAME
-     juntrolls(3f) - [M_messages]print an eye-catching bulletin
+     juntrolls(3f) - [M_messages] print an eye-catching bulletin
 
 SYNOPSIS/USAGE
 

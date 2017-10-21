@@ -1,5 +1,5 @@
 NAME
-   data(7f) - [FORTRAN]DATA statement
+   data(7f) - [FORTRAN] DATA statement
 
 SYNOPSIS
    data-stmt is   DATA data-stmt-set [ [ , ] data-stmt-set ] ...

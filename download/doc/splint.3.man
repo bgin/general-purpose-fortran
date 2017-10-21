@@ -1,5 +1,5 @@
 NAME
-   splint(3f) - [M_math:fit]interpolates and twice differentiates a cubic spline
+   splint(3f) - [M_math:fit] interpolates and twice differentiates a cubic spline
 SYNOPSIS
   subroutine splint (x,y,ypp,n,xi,yi,ypi,yppi,ni,kerr)
 

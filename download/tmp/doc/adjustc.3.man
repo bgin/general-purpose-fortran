@@ -1,5 +1,5 @@
 NAME
-      adjustc(3f) - [M_strings]center text
+      adjustc(3f) - [M_strings] center text
 
 SYNOPSIS
   pure function adjustc(string[,length])

@@ -1,5 +1,5 @@
 NAME
-         dissect(3f) - [ARGUMENTS:M_kracken]convenient call to parse() -- define defaults, then process
+         dissect(3f) - [ARGUMENTS:M_kracken] convenient call to parse() -- define defaults, then process
 
 SYNOPSIS
   subroutine dissect(verb,init,pars,error_return)

@@ -1,5 +1,5 @@
 NAME
-         parse(3f) - [ARGUMENTS:M_kracken]parse user command and store tokens into Language Dictionary
+         parse(3f) - [ARGUMENTS:M_kracken] parse user command and store tokens into Language Dictionary
 
 SYNOPSIS
 subroutine parse(verb,string,allow,error_return)

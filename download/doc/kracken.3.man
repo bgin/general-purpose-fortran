@@ -1,5 +1,5 @@
 NAME
-         kracken(3f) - [ARGUMENTS:M_kracken]crack command line options on Fortran programs, using "-KEYWORD VALUE" syntax
+         kracken(3f) - [ARGUMENTS:M_kracken] crack command line options on Fortran programs, using "-KEYWORD VALUE" syntax
 SYNOPSIS
     subroutine kracken(verb, string[,ierror])
 

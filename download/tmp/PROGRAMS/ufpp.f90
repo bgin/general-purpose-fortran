@@ -2110,10 +2110,12 @@ end subroutine stop
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 subroutine print_comment_block() !@(#)print_comment_block(3f): format comment block to file in document directory and output
+   use m_system, only: system_islnk, system_stat
    character(len=:),allocatable :: filename
    character(len=1024)          :: varvalue
    character(len=*),parameter   :: varname='UFPP_DOCUMENT_DIR'
-   integer  :: ios,iend,istatus,ilength
+   integer                      :: ios,iend,istatus,ilength,ierr
+   integer(kind=8)              :: stat_values(13)
 
    if(.not.allocated(G_MAN))then
       return
@@ -2129,6 +2131,16 @@ subroutine print_comment_block() !@(#)print_comment_block(3f): format comment bl
    end select
 
    if(ilength.ne.0.and.G_MAN.ne.''.and.G_MAN_FILE.ne.' ')then ! if $DOCUMENT ... -file FILE present generate file in directory/doc
+      filename=trim(varvalue)//'/doc/'
+
+      if(system_islnk(filename))then
+         call stop_ufpp('*ufpp: ERROR - '//trim(filename)//' most not be a softlink')
+      endif
+
+      call system_stat(filename,stat_values,ierr)
+      if(stat_values(4).gt.1)then
+         call stop_ufpp('*ufpp: ERROR - '//trim(filename)//' most not have multiple links')
+      endif
 
       iend=len_trim(varvalue)
 
@@ -2543,7 +2555,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'   ufpp(1) - [DEVELOPER]pre-process FORTRAN source files                        ',&
+'   ufpp(1) - [DEVELOPER] pre-process FORTRAN source files                       ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   ufpp  [[-D] define_list]                                                     ',&
@@ -3029,7 +3041,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    ufpp(1) - [DEVELOPER]pre-process FORTRAN source files
+!!    ufpp(1) - [DEVELOPER] pre-process FORTRAN source files
 !!
 !!##SYNOPSIS
 !!
@@ -3526,7 +3538,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        4.0: 20170502>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
-'@(#)COMPILED:       Mon, Sep 18th, 2017 1:34:36 AM>',&
+'@(#)COMPILED:       Sat, Oct 21st, 2017 8:46:55 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

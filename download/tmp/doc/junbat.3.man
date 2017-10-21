@@ -1,5 +1,5 @@
 NAME
-     junbat(3f) - [M_messages]print an eye-catching image of a bat.
+     junbat(3f) - [M_messages] print an eye-catching image of a bat.
 
 SYNOPSIS
   SUBROUTINE junbat(where)

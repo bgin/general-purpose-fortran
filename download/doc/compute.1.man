@@ -1,5 +1,5 @@
 NAME
-       compute(1f) - [NUMBERS]evaluate a calculator expression
+       compute(1f) - [NUMBERS] evaluate a calculator expression
 SYNOPSIS
        compute [STRING] [-verbose]| [-help| -version]
 DESCRIPTION

@@ -1,5 +1,5 @@
 NAME
-     len_white - [M_strings]get length of string trimmed of whitespace.
+     len_white - [M_strings] get length of string trimmed of whitespace.
 
 SYNOPSIS
    integer function len_white(string)

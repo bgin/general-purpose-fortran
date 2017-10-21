@@ -106,11 +106,11 @@ if(l_version)then
 help_text=[ CHARACTER(LEN=128) :: &
 '@(#)PRODUCT:        CLI library utilities and examples>',&
 '@(#)PROGRAM:        _sleep(1f)>',&
-'@(#)DESCRIPTION:    pause for specified time>',&
+'@(#)DESCRIPTION:    given string of form days-hh:mm:ss pause for specified amount of time>',&
 '@(#)VERSION:        1.0, 20170822>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
-'@(#)COMPILED:       Mon, Sep 18th, 2017 10:46:49 PM>',&
+'@(#)COMPILED:       Sat, Oct 21st, 2017 8:55:27 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -122,7 +122,6 @@ use M_kracken, only: kracken, sgets, lget
 use M_time, only :   days2sec, realtime, system_sleep
 use M_strings, only: substitute
 implicit none
-character(len=*),parameter :: ident="@(#) given string of form days-hh:mm:ss pause for specified amount of time'"
 real(kind=realtime)           :: delay_value
 character(len=80),allocatable :: delays(:)
 integer                       :: i

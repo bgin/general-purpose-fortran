@@ -58,7 +58,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'       gcd(1f) - [NUMBERS]display greatest common divisor of a list of whole numbers',&
+'       gcd(1f) - [NUMBERS] display greatest common divisor of a list of whole numbers',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '       gcd [NUMBERS]...                                                         ',&
@@ -97,7 +97,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!        gcd(1f) - [NUMBERS]display greatest common divisor of a list of whole numbers
+!!        gcd(1f) - [NUMBERS] display greatest common divisor of a list of whole numbers
 !!
 !!##SYNOPSIS
 !!
@@ -148,7 +148,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)UUID:           8f39b1e5-592f-4a22-946f-b8da2aa49633>',&
-'@(#)COMPILED:       Mon, Sep 11th, 2017 6:46:48 AM>',&
+'@(#)COMPILED:       Sat, Oct 21st, 2017 8:39:22 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

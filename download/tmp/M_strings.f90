@@ -1,6 +1,6 @@
 !>
 !!##NAME
-!!    M_strings - [M_strings]Fortran string module
+!!    M_strings - [M_strings] Fortran string module
 !!##SYNOPSIS
 !!
 !!  public entities:
@@ -487,7 +487,7 @@ character, public, parameter :: ascii_esc = char(27)  ! escape
 CONTAINS
 !>
 !!##NAME
-!!    matchw - [M_strings]compare given string for match to pattern which may contain wildcard characters
+!!    matchw - [M_strings] compare given string for match to pattern which may contain wildcard characters
 !!
 !!##SYNOPSIS
 !!
@@ -662,7 +662,7 @@ end function matchw
 !===================================================================================================================================
 !>
 !!##NAME
-!!    split - [M_strings]parse string into an array using specified delimiters
+!!    split - [M_strings] parse string into an array using specified delimiters
 !!
 !!##SYNOPSIS
 !!
@@ -922,7 +922,7 @@ character(len=*),parameter::ident="@(#)M_strings::split(3f): parse string on del
 !===================================================================================================================================
 !>
 !!##NAME
-!!    chomp - [M_strings]Tokenize a string, consuming it one token per call
+!!    chomp - [M_strings] Tokenize a string, consuming it one token per call
 !!
 !!##SYNOPSIS
 !!
@@ -1047,7 +1047,7 @@ end function chomp
 !===================================================================================================================================
 !>
 !!##NAME
-!!      delim - [M_strings]parse a string and store tokens into an array
+!!      delim - [M_strings] parse a string and store tokens into an array
 !!##SYNOPSIS
 !!
 !!    subroutine delim(line,array,n,icount,ibegin,iterm,ilen,dlim)
@@ -1280,7 +1280,7 @@ end subroutine delim
 !===================================================================================================================================
 !>
 !!##NAME
-!!    substitute - [M_strings]Globally substitute one substring for another in string
+!!    substitute - [M_strings] Globally substitute one substring for another in string
 !!
 !!##SYNOPSIS
 !!
@@ -1465,7 +1465,7 @@ end subroutine substitute
 !===================================================================================================================================
 !>
 !!##NAME
-!!    change - [M_strings]change old string to new string with a directive like a line editor
+!!    change - [M_strings] change old string to new string with a directive like a line editor
 !!
 !!##SYNOPSIS
 !!
@@ -1698,7 +1698,7 @@ end function strtok
 !===================================================================================================================================
 !>
 !!##NAME
-!!    modif - [M_strings]emulate the MODIFY command from the line editor XEDIT
+!!    modif - [M_strings] emulate the MODIFY command from the line editor XEDIT
 !!
 !!##SYNOPSIS
 !!
@@ -1853,7 +1853,7 @@ END SUBROUTINE MODIF                        !RETURN
 !===================================================================================================================================
 !>
 !!##NAME
-!!      len_white - [M_strings]get length of string trimmed of whitespace.
+!!      len_white - [M_strings] get length of string trimmed of whitespace.
 !!
 !!##SYNOPSIS
 !!
@@ -1953,7 +1953,7 @@ end function len_white
 !===================================================================================================================================
 !>
 !!##NAME
-!!    crop - [M_strings]trim leading blanks and trailing blanks from a string
+!!    crop - [M_strings] trim leading blanks and trailing blanks from a string
 !!
 !!##SYNOPSIS
 !!
@@ -1996,7 +1996,7 @@ end function crop
 !===================================================================================================================================
 !>
 !!##NAME
-!!    transliterate - [M_strings]replace characters from old set with new set
+!!    transliterate - [M_strings] replace characters from old set with new set
 !!
 !!##SYNOPSIS
 !!
@@ -2086,7 +2086,7 @@ END FUNCTION transliterate
 !===================================================================================================================================
 !>
 !!##NAME
-!!      reverse - [M_strings]Return a string reversed
+!!      reverse - [M_strings] Return a string reversed
 !!
 !!##SYNOPSIS
 !!
@@ -2135,7 +2135,7 @@ end function reverse
 !===================================================================================================================================
 !>
 !!##NAME
-!!      upper - [M_strings]changes a string to uppercase
+!!      upper - [M_strings] changes a string to uppercase
 !!
 !!##SYNOPSIS
 !!
@@ -2227,7 +2227,7 @@ end function upper
 !===================================================================================================================================
 !>
 !!##NAME
-!!      lower - [M_strings]changes a string to lowercase over specified range
+!!      lower - [M_strings] changes a string to lowercase over specified range
 !!
 !!##SYNOPSIS
 !!
@@ -2306,7 +2306,7 @@ end function lower
 !>
 !!##NAME
 !!
-!!    switch - [M_strings]generic composition of a2s() and s2a() converts between CHARACTER scalar and array of single characters
+!!    switch - [M_strings] generic composition of a2s() and s2a() converts between CHARACTER scalar and array of single characters
 !!
 !!##SYNOPSIS
 !!
@@ -2416,7 +2416,7 @@ end function s2a
 !===================================================================================================================================
 !>
 !!##NAME
-!!      s2c - [M_strings]convert character variable to array of characters with last element set to null
+!!      s2c - [M_strings] convert character variable to array of characters with last element set to null
 !!
 !!##SYNOPSIS
 !!
@@ -2475,7 +2475,7 @@ end function s2c
 !===================================================================================================================================
 !>
 !!##NAME
-!!      c2s - [M_strings]convert C string pointer to Fortran character string
+!!      c2s - [M_strings] convert C string pointer to Fortran character string
 !!
 !!##SYNOPSIS
 !!
@@ -2532,7 +2532,7 @@ end function c2s
 !===================================================================================================================================
 !>
 !!##NAME
-!!      indent - [M_strings]count number of leading spaces in a string
+!!      indent - [M_strings] count number of leading spaces in a string
 !!
 !!##SYNOPSIS
 !!
@@ -2584,7 +2584,7 @@ end function indent
 !===================================================================================================================================
 !>
 !!##NAME
-!!    expand - [M_strings]expand escape sequences
+!!    expand - [M_strings] expand escape sequences
 !!
 !!##SYNOPSIS
 !!
@@ -2636,6 +2636,7 @@ end function indent
 !!     end program demo_expand
 !===================================================================================================================================
 function expand(line,escape) result(lineout)
+USE ISO_C_BINDING ,ONLY: c_horizontal_tab
 implicit none
 character(len=*),parameter::ident="@(#)M_strings::expand(3f): return string with escape sequences expanded"
 character(len=*)                      :: line
@@ -2686,13 +2687,15 @@ character(len=1),intent(in),optional  :: escape ! escape character. Default is b
             case('e','E');lineout=lineout//char( 27)         ! %e     escape
             case('f','F');lineout=lineout//char( 12)         ! %f     form feed
             case('n','N');lineout=lineout//char( 10)         ! %n     new line
-            case('O','o')
+          !!case('n','N');lineout=lineout//new_line()        ! %n     new line
+            case('o','O')
                       thr=line(i+1:)
                    read(thr,'(o3)',iostat=ios)xxx
                       lineout=lineout//char(xxx)
                    i=i+3
             case('r','R');lineout=lineout//char( 13)         ! %r     carriage return
             case('t','T');lineout=lineout//char(  9)         ! %t     horizontal tab
+          !!case('t','T');lineout=lineout//c_horizontal_tab  ! %t     horizontal tab
             case('v','V');lineout=lineout//char( 11)         ! %v     vertical tab
             case('x','X','h','H')                            ! %x     xHH  byte with hexadecimal value HH (1 to 2 digits)
                       thr=line(i+1:)
@@ -2715,7 +2718,7 @@ end function expand
 !===================================================================================================================================
 !>
 !!##NAME
-!!    notabs - [M_strings]expand tab characters
+!!    notabs - [M_strings] expand tab characters
 !!##SYNOPSIS
 !!
 !!    subroutine notabs(INSTR,OUTSTR,ILEN)
@@ -2825,7 +2828,7 @@ END SUBROUTINE notabs
 !===================================================================================================================================
 !>
 !!##NAME
-!!       adjustc(3f) - [M_strings]center text
+!!       adjustc(3f) - [M_strings] center text
 !!
 !!##SYNOPSIS
 !!
@@ -2911,7 +2914,7 @@ end function adjustc
 !===================================================================================================================================
 !>
 !!##NAME
-!!    nospace - [M_strings]remove all whitespace from input string
+!!    nospace - [M_strings] remove all whitespace from input string
 !!
 !!##SYNOPSIS
 !!
@@ -2972,7 +2975,7 @@ end function nospace
 !===================================================================================================================================
 !>
 !!##NAME
-!!    lenset - [M_strings]return string trimmed or padded to specified length
+!!    lenset - [M_strings] return string trimmed or padded to specified length
 !!
 !!##SYNOPSIS
 !!
@@ -3019,7 +3022,7 @@ end function lenset
 !===================================================================================================================================
 !>
 !!##NAME
-!!    merge_str - [M_strings]pads strings to same length and then calls MERGE(3f)
+!!    merge_str - [M_strings] pads strings to same length and then calls MERGE(3f)
 !!
 !!##SYNOPSIS
 !!
@@ -3073,7 +3076,7 @@ end function merge_str
 !===================================================================================================================================
 !>
 !!##NAME
-!!    compact - [M_strings]converts contiguous whitespace to a single character (or nothing)
+!!    compact - [M_strings] converts contiguous whitespace to a single character (or nothing)
 !!
 !!##SYNOPSIS
 !!
@@ -3179,7 +3182,7 @@ end function compact
 !===================================================================================================================================
 !>
 !!##NAME
-!!     noesc - [M_strings]convert non-printable characters to a space.
+!!     noesc - [M_strings] convert non-printable characters to a space.
 !!
 !!##SYNOPSIS
 !!
@@ -3284,7 +3287,7 @@ end function noesc
 !===================================================================================================================================
 !>
 !!##NAME
-!!      string_to_value - [M_strings]subroutine returns real value from string
+!!      string_to_value - [M_strings] subroutine returns real value from string
 !!
 !!##SYNOPSIS
 !!
@@ -3392,7 +3395,7 @@ character(len=*),parameter::ident="@(#)M_strings::a2d(3fp): subroutine returns d
          frmt='(B'//v2s(len(local_chars))//')'
          read(local_chars(2:),frmt,iostat=ierr,iomsg=msg)intg
          valu=dble(intg)
-      case('O','o')                                             ! assume octal
+      case('o','O')                                             ! assume octal
          frmt='(O'//v2s(len(local_chars))//')'
          read(local_chars(2:),frmt,iostat=ierr,iomsg=msg)intg
          valu=dble(intg)
@@ -3416,7 +3419,7 @@ end subroutine a2d
 !===================================================================================================================================
 !>
 !!##NAME
-!!      s2v - [M_strings]function returns doubleprecision numeric value from a string
+!!      s2v - [M_strings] function returns doubleprecision numeric value from a string
 !!
 !!##SYNOPSIS
 !!
@@ -3520,7 +3523,7 @@ end function s2v
 !===================================================================================================================================
 !>
 !!##NAME
-!!      value_to_string - [M_strings]return numeric string from a numeric value
+!!      value_to_string - [M_strings] return numeric string from a numeric value
 !!
 !!##SYNOPSIS
 !!
@@ -3644,7 +3647,7 @@ end subroutine value_to_string
 !===================================================================================================================================
 !>
 !!##NAME
-!!      v2s - [M_strings]return numeric string from a numeric value
+!!      v2s - [M_strings] return numeric string from a numeric value
 !!##SYNOPSIS
 !!
 !!       function v2s(value) result(outstr)
@@ -3734,7 +3737,7 @@ end function i2s
 !===================================================================================================================================
 !>
 !!##NAME
-!!    trimzeros(3fp) - [M_strings]Delete trailing zeros from numeric decimal string
+!!    trimzeros(3fp) - [M_strings] Delete trailing zeros from numeric decimal string
 !!##SYNOPSIS
 !!
 !!    subroutine trimzeros(str)
@@ -3917,7 +3920,7 @@ end subroutine listout
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    describe(3f) - [M_strings]returns a string describing the name of a single character
+!!    describe(3f) - [M_strings] returns a string describing the name of a single character
 !!
 !!##SYNOPSIS
 !!
@@ -4368,7 +4371,7 @@ end subroutine getvals
 !===================================================================================================================================
 !>
 !!##NAME
-!!      string_to_values - [M_strings]read a string representing numbers into a numeric array
+!!      string_to_values - [M_strings] read a string representing numbers into a numeric array
 !!
 !!##SYNOPSIS
 !!
@@ -4529,7 +4532,7 @@ end subroutine string_to_values
 !===================================================================================================================================
 !>
 !!##NAME
-!!      s2vs - [M_strings]given a string representing numbers return a numeric array
+!!      s2vs - [M_strings] given a string representing numbers return a numeric array
 !!
 !!##SYNOPSIS
 !!
@@ -4791,7 +4794,7 @@ end function islower
 !>
 !!##NAME
 !!    isalnum,isalpha,iscntrl,isdigit,isgraph,islower,
-!!    isprint,ispunct,isspace,isupper,isascii,isblank,isxdigit - [M_strings]test membership in subsets of ASCII character set
+!!    isprint,ispunct,isspace,isupper,isascii,isblank,isxdigit - [M_strings] test membership in subsets of ASCII character set
 !!
 !!##SYNOPSIS
 !!

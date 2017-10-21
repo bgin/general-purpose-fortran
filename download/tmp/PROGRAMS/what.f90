@@ -4,6 +4,9 @@ use M_kracken, only: kracken,lget,sget         ! command argument parser
 use M_strings, only: split, substitute
 use M_debug,   only: stderr, debug
 implicit none
+
+character(len=*),parameter :: ident="@(#) what(1f): extract SCCS-style identification strings from a file"
+
 character(len=409600),allocatable :: filename(:) ! array of filenames to read
 character(len=256)              :: message     ! message field for returned messages
 logical             :: stop_on_first = .FALSE. ! switch to show only first string found or all

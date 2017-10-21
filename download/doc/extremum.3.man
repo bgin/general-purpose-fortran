@@ -1,5 +1,5 @@
 NAME
-     extremum(3f) - [M_math:statistics]Finds the minimum and maximum value in a REAL array.
+     extremum(3f) - [M_math:statistics] Finds the minimum and maximum value in a REAL array.
 SYNOPSIS
   subroutine extremum(array,small,big)
 

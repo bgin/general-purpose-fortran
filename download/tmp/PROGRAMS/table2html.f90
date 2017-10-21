@@ -9,7 +9,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'   table2html(1f) - [FILE FILTER]filter to format simple columns into an HTML table form',&
+'   table2html(1f) - [FILE FILTER] filter to format simple columns into an HTML table form',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   table2html [[-classes classnames] [-caption caption line] [-delimiters delim]',&
@@ -55,7 +55,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    table2html(1f) - [FILE FILTER]filter to format simple columns into an HTML table form
+!!    table2html(1f) - [FILE FILTER] filter to format simple columns into an HTML table form
 !!
 !!##SYNOPSIS
 !!
@@ -115,7 +115,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Mon, Sep 11th, 2017 6:52:33 AM>',&
+'@(#)COMPILED:       Sat, Oct 21st, 2017 8:45:01 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

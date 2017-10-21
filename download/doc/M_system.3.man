@@ -14,7 +14,8 @@ SYNOPSIS
    system_rmdir, system_chdir, system_mkdir,              &
    system_stat, system_isdir, system_islnk, system_isreg, &
    system_isblk, system_ischr, system_isfifo,             &
-   system_issock, system_perm
+   system_access,                                         &
+   system_issock, system_perm, system_stat_print
 
    use M_system, only :system_errno, system_perror
 
@@ -43,40 +44,43 @@ DESCRIPTION
    One rule-of-thumb that should always be followed when calling a system
    call -- Always check the return value.
 ENVIRONMENT ACCESS
-       o  system_putenv(3f):    call putenv(3c)
-       o  system_unsetenv(3f):  call unsetenv(3c) to remove variable from environment
+       o  system_putenv(3f):     call putenv(3c)
+       o  system_unsetenv(3f):   call unsetenv(3c) to remove variable from environment
        o  set_environment_variable(3f): set environment variable by calling setenv(3c)
 
-       o  system_initenv(3f):   initialize environment table for reading
-       o  system_readenv(3f):   read next entry from environment table
-       o  system_clearenv(3f):  emulate clearenv(3c) to clear environment
+       o  system_initenv(3f):    initialize environment table for reading
+       o  system_readenv(3f):    read next entry from environment table
+       o  system_clearenv(3f):   emulate clearenv(3c) to clear environment
 FILE SYSTEM
-       o  system_chdir(3f):     call chdir(3c) to change current directory of a process
-       o  system_getcwd(3f):    call getcwd(3c) to get pathname of current working directory
+       o  system_chdir(3f):      call chdir(3c) to change current directory of a process
+       o  system_getcwd(3f):     call getcwd(3c) to get pathname of current working directory
 
-       o  system_stat(3f):      determine system information of file by name
-       o  system_perm(3f):      create string representing file permission and type
-       o  system_isdir(3f):     determine if filename is a directory
-       o  system_islnk(3f):     determine if filename is a link
-       o  system_isreg(3f):     determine if filename is a regular file
-       o  system_isblk(3f):     determine if filename is a block device
-       o  system_ischr(3f):     determine if filename is a character device
-       o  system_isfifo(3f):    determine if filename is a fifo - named pipe
-       o  system_issock(3f):    determine if filename is a socket
+       o  system_stat(3f):       determine system information of file by name
+       o  system_stat_print(3f): determine system information of file by name
+       o  system_perm(3f):       create string representing file permission and type
+       o  system_access(3f):     determine filename access or existence
+       o  system_isdir(3f):      determine if filename is a directory
+       o  system_islnk(3f):      determine if filename is a link
+       o  system_isreg(3f):      determine if filename is a regular file
+       o  system_isblk(3f):      determine if filename is a block device
+       o  system_ischr(3f):      determine if filename is a character device
+       o  system_isfifo(3f):     determine if filename is a fifo - named pipe
+       o  system_issock(3f):     determine if filename is a socket
 
-       o  system_chmod(3f):     call chmod(3c) to set file permission mode
-       o  system_getumask(3f):  call umask(3c) to get process permission mask
-       o  system_setumask(3f):  call umask(3c) to set process permission mask
+       o  system_chmod(3f):      call chmod(3c) to set file permission mode
+       o  system_chown(3f):      call chown(3c) to set file owner
+       o  system_getumask(3f):   call umask(3c) to get process permission mask
+       o  system_setumask(3f):   call umask(3c) to set process permission mask
 
-       o  system_mkdir(3f):     call mkdir(3c) to create empty directory
-       o  system_mkfifo(3f):    call mkfifo(3c) to create a special FIFO file
-       o  system_link(3f):      call link(3c) to remove a filename link
+       o  system_mkdir(3f):      call mkdir(3c) to create empty directory
+       o  system_mkfifo(3f):     call mkfifo(3c) to create a special FIFO file
+       o  system_link(3f):       call link(3c) to create a filename link
 
-       o  system_rename(3f):    call rename(3c) to change filename
+       o  system_rename(3f):     call rename(3c) to change filename
 
-       o  system_remove(3f):    call remove(3c) to remove file
-       o  system_rmdir(3f):     call rmdir(3c) to remove empty directory
-       o  system_unlink(3f):    call unlink(3c) to create a link to a file
+       o  system_remove(3f):     call remove(3c) to remove file
+       o  system_rmdir(3f):      call rmdir(3c) to remove empty directory
+       o  system_unlink(3f):     call unlink(3c) to remove a link to a file
 
        o  fileglob(3f): Returns list of files using a file globbing pattern
 
@@ -119,5 +123,5 @@ SEE ALSO
         accessible, e.g.
 
          o Posix90 (doc),
-         o flibs' platform/files and directories,
+         o flib.a platform/files and directories,
          o fortranposix.

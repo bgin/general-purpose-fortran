@@ -1,5 +1,5 @@
 NAME
-    M_calculator(3fm) - [M_calculator]module of routines for parsing
+    M_calculator(3fm) - [M_calculator] module of routines for parsing
     expressions and returning values
 SYNOPSIS
 

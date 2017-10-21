@@ -1,5 +1,5 @@
 NAME
-   least_common_multiple(3f) - [M_factor]Least common multiple of two integers
+   least_common_multiple(3f) - [M_factor] Least common multiple of two integers
                                or vector m(:), matrix m(:,:) or cuboid m(:,:,:)
 SYNOPSIS
    integer function least_common_multiple(i,j)

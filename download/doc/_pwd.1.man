@@ -1,5 +1,5 @@
 NAME
-       _pwd(1f) - [FUNIX]list full pathname of current directory
+       _pwd(1f) - [FUNIX] list full pathname of current directory
 SYNOPSIS
        _pwd [--version|--help]
 DESCRIPTION

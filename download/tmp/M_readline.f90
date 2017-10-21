@@ -1,6 +1,6 @@
 !>
 !!##NAME
-!!      M_readline(3fm) - [M_readline]Calling readline(3c) from Fortran
+!!      M_readline(3fm) - [M_readline] Calling readline(3c) from Fortran
 !!##SYNOPSIS
 !!
 !!      Use M_readline, only : system_readline
@@ -76,7 +76,7 @@ contains
 ! the routine that calls the C routine
 !>
 !!##NAME
-!!      system_readline(3f) - [M_readline]Call readline(3c) from Fortran
+!!      system_readline(3f) - [M_readline] Call readline(3c) from Fortran
 !!##SYNOPSIS
 !!
 !!     character(kind=c_char,len=*),intent(in)  :: prompt

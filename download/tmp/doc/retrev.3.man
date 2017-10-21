@@ -1,5 +1,5 @@
 NAME
-   RETREV(3f) - [ARGUMENTS:M_kracken]get keyword value as a string from a command's argument list processed by kracken(3f)
+   RETREV(3f) - [ARGUMENTS:M_kracken] get keyword value as a string from a command's argument list processed by kracken(3f)
 
 SYNOPSIS
   SUBROUTINE retrev(name, string, len, ier)

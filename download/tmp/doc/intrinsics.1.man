@@ -1,5 +1,5 @@
 NAME
-    intrinsics(1f) - [FUNIX]output text versions of Fortran intrinsic man(1) pages
+    intrinsics(1f) - [FUNIX] output text versions of Fortran intrinsic man(1) pages
 
 SYNOPSIS
     intrinsics [--help|--version]

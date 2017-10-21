@@ -1,5 +1,5 @@
 NAME
-    stuffa(3f) - [M_calculator]stuffa(3f): directly store a string into calculator variable name table"
+    stuffa(3f) - [M_calculator] stuffa(3f): directly store a string into calculator variable name table
 SYNOPSIS
   subroutine stuffa(varnam0,string,index,ioflag)
 

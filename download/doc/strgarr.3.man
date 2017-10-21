@@ -1,5 +1,5 @@
 NAME
-      strgarr(3f) - [M_calculator_plus]read a string into an array using jucalc(3f) calculator
+      strgarr(3f) - [M_calculator_plus] read a string into an array using jucalc(3f) calculator
 SYNOPSIS
   subroutine strgarr(line,ivals,vals,ifound,delims,ierr)
 
