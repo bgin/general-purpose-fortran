@@ -1,5 +1,5 @@
 NAME
-     parity(3f) - [INTRINSIC] Reduction with exclusive or
+     parity(3f) - [INTRINSIC:TRANSFORMATIONAL FUNCTION] Reduction with exclusive OR()
 
 SYNTAX
 
@@ -40,5 +40,5 @@ STANDARD
 
 CLASS
 
-   [[Transformational function]]
+   Transformational function
 

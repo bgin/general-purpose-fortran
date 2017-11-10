@@ -2,30 +2,51 @@ NAME
        system_mkfifo(3f)  - [M_system] make a FIFO special file relative to directory file descriptor
 SYNOPSIS
 DESCRIPTION
-   The mkfifo() function creates a new FIFO special file named by the pathname pointed to by path.
+   The mkfifo() function creates a new FIFO special file named by the
+   pathname pointed to by path.
+
    The file permission bits of the new FIFO are initialized from mode.
-   The file permission bits of the mode argument are modified by the process' file creation mask.
 
-   When bits in mode other than the file permission bits are set, the effect is implementation-defined.
+   The file permission bits of the mode argument are modified by the
+   process' file creation mask.
 
-   If path names a symbolic link, mkfifo() shall fail and set errno to [EEXIST].
+   When bits in mode other than the file permission bits are set, the
+   effect is implementation-defined.
+
+   If path names a symbolic link, mkfifo() shall fail and set errno to
+   [EEXIST].
 
    The  FIFO's user ID will be set to the process' effective user ID.
-   The FIFO's group ID shall be set to the group ID of the parent directory or to the effective group ID of the process.
-   Implementations shall provide a way to initialize the FIFO's group ID to the group ID of the parent directory.
-   Implementations may, but need not, provide an implementation-defined way to initialize  the FIFO's group ID to the effective group ID of the calling process.
 
-   Upon  successful  completion, mkfifo() shall mark for update the last data access, last data modification, and last file status change timestamps of the file.
-   Also, the last data modification and last file status change timestamps of the directory that contains the new entry shall be marked for update.
+   The FIFO's group ID shall be set to the group ID of the parent
+   directory or to the effective group ID of the process.
+
+   Implementations shall provide a way to initialize the FIFO's group
+   ID to the group ID of the parent directory.
+
+   Implementations may, but need not, provide an implementation-defined
+   way to initialize  the FIFO's group ID to the effective group ID of
+   the calling process.
+
+   Upon  successful  completion, mkfifo() shall mark for update the
+   last data access, last data modification, and last file status change
+   timestamps of the file.
+
+   Also, the last data modification and last file status change
+   timestamps of the directory that contains the new entry shall be
+   marked for update.
 
    Predefined variables are typically used to set permission modes.
-   You can bytewise-OR together these variables to to create the most common permissions mode:
+
+   You can bytewise-OR together these variables to to create the most
+   common permissions mode:
 
     User:    R_USR  (read),  W_USR  (write),  X_USR(execute)
     Group:   R_GRP  (read),  W_GRP  (write),  X_GRP(execute)
     Others:  R_OTH  (read),  W_OTH  (write),  X_OTH(execute)
 
-   Additionally, some shortcuts are provided (basically a bitwise-OR combination of the above):
+   Additionally, some shortcuts are provided (basically a bitwise-OR
+   combination of the above):
 
      Read + Write + Execute: R_WXU (User), R_WXG (Group), R_WXO (Others)
      DEFFILEMODE: Equivalent of 0666 =rw-rw-rw-

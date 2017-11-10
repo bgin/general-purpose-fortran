@@ -10,7 +10,7 @@ RANDOMCOLOR(){
 printf -v KOLOR '#%2.2x%2.2x%2.2x' $((RANDOM % 64+3*64)) $((RANDOM % 64+3*64)) $((RANDOM % 64+3*64))
 }
 ####################################################################################################################################
-MANK(){
+MAKE_MANK(){
 SECTION=${1:-3}
 #----------------------------------------------------------------------------------------------------------------------------------#
 header.sh # create header for document including CSS style
@@ -35,11 +35,15 @@ RANDOMCOLOR
 #    _pwd (1)        - list full pathname of current directory
 #
 DELIMITER=$(printf '\t')
+
+# make sure sort(1) does not sort case-insensitive
+export LC_ALL=C 
+
 mank -S $SECTION -k . |
    eval $FILTER |
    sed -e "s/\[/$DELIMITER[/" |
    sed -e "s/]/]$DELIMITER/" |
-   sort -s -t "$DELIMITER" -k 2,2 -k 1,1 |
+   env LC_ALL=C sort -s -t "$DELIMITER" -k 2,2 -k 1,1 |
    tr -d "$DELIMITER" |
 while read NAME SECT DASH OTHER
 do
@@ -73,16 +77,16 @@ PATH=$PATH:$(pwd)/scripts
 export FILTER="fgrep -v '[INTRINSIC'"
 for SUBDIR in 1 2 3 4 5 6 7 8
 do
-   echo "making HTML index for section $SUBDIR in tmp/html/man${SUBDIR}.html"
-   DOCUMENT_HEADER="libjust4 man(${SUBDIR}) pages"
-   MANK "${SUBDIR}" > tmp/html/man${SUBDIR}.html &
+   echo "making HTML index for section $SUBDIR in tmp/html/man${SUBDIR}.html" # 1>&2
+   DOCUMENT_HEADER="libGPF man(${SUBDIR}) pages"
+   MAKE_MANK "${SUBDIR}" > tmp/html/man${SUBDIR}.html
 done
 export FILTER="fgrep '[INTRINSIC'"
 for SUBDIR in 3 
 do
-   echo "making HTML index for section $SUBDIR in tmp/html/man${SUBDIR}i.html"
-   DOCUMENT_HEADER="libjust4 man(${SUBDIR}) pages"
-   MANK "${SUBDIR}" > tmp/html/man${SUBDIR}i.html &
+   echo "making HTML index for section $SUBDIR in tmp/html/man${SUBDIR}i.html" # 1>&2
+   DOCUMENT_HEADER="libGPF man(${SUBDIR}) pages"
+   MAKE_MANK "${SUBDIR}" > tmp/html/man${SUBDIR}i.html
 done
 wait
 ####################################################################################################################################

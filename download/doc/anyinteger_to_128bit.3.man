@@ -4,7 +4,7 @@ NAME
 
 SYNOPSIS
 
-   function anyinteger_to_128bit(intin) result(ii38)
+   elemental function anyinteger_to_128bit(intin) result(ii38)
 
     integer(kind=int128) function anyinteger_to_128bit(value)
     class(*),intent(in)     :: intin

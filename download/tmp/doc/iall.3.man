@@ -8,7 +8,7 @@ SYNTAX
 
 DESCRIPTION
 
-   Reduces with bitwise and the elements of ARRAY along dimension DIM
+   Reduces with bitwise AND the elements of ARRAY along dimension DIM
    if the corresponding element in MASK is TRUE.
 
 ARGUMENTS

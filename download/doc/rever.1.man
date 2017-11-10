@@ -1,5 +1,5 @@
 NAME
-       rever(1f) - [FUNIX] print file in reverse
+       rever(1f) - [FILE FILTER] print file in reverse
 
 SYNOPSIS
        rever INPUT_FILE [OUTPUT_FILE] [-help][-version]

@@ -9,7 +9,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'       _tty - [FUNIX] print information about the file/terminal connected to standard input',&
+'       _tty - [FUNIX:FILESYSTEM] print information about the file/terminal connected to standard input',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '       _tty [OPTION]...                                                         ',&
@@ -72,7 +72,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!        _tty - [FUNIX] print information about the file/terminal connected to standard input
+!!        _tty - [FUNIX:FILESYSTEM] print information about the file/terminal connected to standard input
 !!
 !!##SYNOPSIS
 !!
@@ -145,7 +145,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20170202>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
-'@(#)COMPILED:       Sat, Oct 21st, 2017 8:56:14 AM>',&
+'@(#)COMPILED:       Sun, Oct 22nd, 2017 4:39:33 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

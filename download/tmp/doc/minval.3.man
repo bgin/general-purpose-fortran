@@ -1,5 +1,5 @@
 NAME
-     minval(3f) - [INTRINSIC] Minimum value of an array
+     minval(3f) - [INTRINSIC:TRANSFORMATIONAL FUNCTION] Minimum value of an array
 
 SYNTAX
 

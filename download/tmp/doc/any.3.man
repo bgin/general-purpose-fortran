@@ -1,5 +1,5 @@
 NAME
-     any(3f) - [INTRINSIC] determines if any of the values in the logical array are true.
+     any(3f) - [INTRINSIC:TRANSFORMATIONAL FUNCTION] determines if any of the values in the logical array are true.
 
 SYNTAX
 

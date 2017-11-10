@@ -1,5 +1,5 @@
 NAME
-     maxloc(3f) - [INTRINSIC] Location of the maximum value within an array
+     maxloc(3f) - [INTRINSIC:TRANSFORMATIONAL FUNCTION] Location of the maximum value within an array
 
 SYNTAX
 

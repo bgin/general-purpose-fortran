@@ -150,7 +150,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '    SHADING                                                                     ',&
 '        -g 0.800781      gray-scale value for shaded bars ( 0 < g 1 )           ',&
 '                         0 is black, 1 is white.                                ',&
-'        -i 2             repeat shade pattern every N lines                     ',&
+'        -b 2             repeat shade pattern every N lines                     ',&
 '        -d '' ''           dashcode pattern                                     ',&
 '                         The pattern is a series of integers defining an        ',&
 '                         on-off sequence in user units used to create a         ',&
@@ -205,7 +205,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 ' Sample commands:                                                               ',&
 '                                                                                ',&
 '     # use non-ASA file to generate portrait mode with a dashed line under every line',&
-'     asa2pdf -S 1 -W 8.5 -H 11 -i 1 -d ''2 4 1'' -T 1 -B .75 -o paper.pdf < INFILE',&
+'     asa2pdf -S 1 -W 8.5 -H 11 -b 1 -d ''2 4 1'' -T 1 -B .75 -o paper.pdf < INFILE',&
 '                                                                                ',&
 '     # banner on top                                                            ',&
 '     env IMPACT_GRAY=1 IMPACT_TOP=CONFIDENTIAL asa2pdf -o paper.pdf < test.txt  ',&
@@ -218,15 +218,15 @@ help_text=[ CHARACTER(LEN=128) :: &
 '      -N -T .9 -o paper.pdf <asa2pdf.c                                          ',&
 '                                                                                ',&
 '     # portrait 80-column non-ASA file with dashed lines                        ',&
-'      asa2pdf -s PORTRAIT -S 1 -W 8.5 -H 11 -i 1 -d ''2 4 1'' \                 ',&
+'      asa2pdf -s PORTRAIT -S 1 -W 8.5 -H 11 -b 1 -d ''2 4 1'' \                 ',&
 '      -T 1 -B .75 -o paper.pdf < asa2pdf.c                                      ',&
 '                                                                                ',&
 '     # portrait 80-column with line numbers , non-ASA                           ',&
 '      asa2pdf -s ''PORTRAIT LINE NUMBERS'' -l 66 -S 1 -W 8.5 -H 11 \            ',&
-'      -i 1 -T 1 -B .75 -N -o paper.pdf < asa2pdf.c                              ',&
+'      -b 1 -T 1 -B .75 -N -o paper.pdf < asa2pdf.c                              ',&
 '                                                                                ',&
 '     # titling                                                                  ',&
-'      asa2pdf -d ''1 0 1'' -t "$USER" -i 1 -P -N -T 1 \                         ',&
+'      asa2pdf -d ''1 0 1'' -t "$USER" -b 1 -P -N -T 1 \                         ',&
 '      -s "asa2pdf.c" -o paper.pdf <asa2pdf.c                                    ',&
 '                                                                                ',&
 'SEE ALSO                                                                        ',&
@@ -428,7 +428,7 @@ end subroutine help_usage
 !!     SHADING
 !!         -g 0.800781      gray-scale value for shaded bars ( 0 < g 1 )
 !!                          0 is black, 1 is white.
-!!         -i 2             repeat shade pattern every N lines
+!!         -b 2             repeat shade pattern every N lines
 !!         -d ' '           dashcode pattern
 !!                          The pattern is a series of integers defining an
 !!                          on-off sequence in user units used to create a
@@ -484,7 +484,7 @@ end subroutine help_usage
 !!  Sample commands:
 !!
 !!      # use non-ASA file to generate portrait mode with a dashed line under every line
-!!      asa2pdf -S 1 -W 8.5 -H 11 -i 1 -d '2 4 1' -T 1 -B .75 -o paper.pdf < INFILE
+!!      asa2pdf -S 1 -W 8.5 -H 11 -b 1 -d '2 4 1' -T 1 -B .75 -o paper.pdf < INFILE
 !!
 !!      # banner on top
 !!      env IMPACT_GRAY=1 IMPACT_TOP=CONFIDENTIAL asa2pdf -o paper.pdf < test.txt
@@ -497,15 +497,15 @@ end subroutine help_usage
 !!       -N -T .9 -o paper.pdf <asa2pdf.c
 !!
 !!      # portrait 80-column non-ASA file with dashed lines
-!!       asa2pdf -s PORTRAIT -S 1 -W 8.5 -H 11 -i 1 -d '2 4 1' \
+!!       asa2pdf -s PORTRAIT -S 1 -W 8.5 -H 11 -b 1 -d '2 4 1' \
 !!       -T 1 -B .75 -o paper.pdf < asa2pdf.c
 !!
 !!      # portrait 80-column with line numbers , non-ASA
 !!       asa2pdf -s 'PORTRAIT LINE NUMBERS' -l 66 -S 1 -W 8.5 -H 11 \
-!!       -i 1 -T 1 -B .75 -N -o paper.pdf < asa2pdf.c
+!!       -b 1 -T 1 -B .75 -N -o paper.pdf < asa2pdf.c
 !!
 !!      # titling
-!!       asa2pdf -d '1 0 1' -t "$USER" -i 1 -P -N -T 1 \
+!!       asa2pdf -d '1 0 1' -t "$USER" -b 1 -P -N -T 1 \
 !!       -s "asa2pdf.c" -o paper.pdf <asa2pdf.c
 !!
 !!##SEE ALSO
@@ -574,7 +574,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    convert text files with ASA carriage return to Adobe PDF files>',&
 '@(#)VERSION:        2.0, 20170210>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sat, Oct 21st, 2017 8:47:44 AM>',&
+'@(#)COMPILED:       Wed, Oct 25th, 2017 2:30:02 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -639,12 +639,13 @@ implicit none
    if(GLOBAL_GRAY_SCALE.lt.0) GLOBAL_GRAY_SCALE=0.800781
 
    call kracken('asa2pdf',' &
+   & -i &
    & -o asa.pdf &
    ! SHADING
    ! gray-scale value  for shaded bars ( 0 < g < 1 ); 0 is black, 1 is white
    & -g 0.800781 &
    ! repeat shade pattern every N lines
-   & -i 2 &
+   & -b 2 &
    ! dashcode pattern (seems buggy)
    & -d &
    ! MARGIN LABELS
@@ -698,9 +699,15 @@ implicit none
    endif
 
    if(sget('asa2pdf_i').ne.'')then
-      OPEN(UNIT=GLOBAL_INFILE, FILE=trim(sget('asa2pdf_i')), iostat=ios,form='formatted')
+      OPEN(UNIT=GLOBAL_INFILE, FILE=trim(sget('asa2pdf_i')), iostat=ios,form='formatted',status='old')
       if(ios.ne.0)then
          call stderr("E-R-R-O-R: asa2pdf(1) cannot open input file "//trim(sget('asa2pdf_i')))
+         stop 2
+      endif
+   elseif(sget('asa2pdf_oo').ne.'')then
+      OPEN(UNIT=GLOBAL_INFILE, FILE=trim(sget('asa2pdf_oo')), iostat=ios,form='formatted',status='old')
+      if(ios.ne.0)then
+         call stderr("E-R-R-O-R: asa2pdf(1) cannot open input file "//trim(sget('asa2pdf_oo')))
          stop 2
       endif
    else
@@ -730,7 +737,7 @@ implicit none
    GLOBAL_PAGES= lget('asa2pdf_P')                                         ! number pages
 
    if(GLOBAL_SHADE_STEP < 1 )then
-      call stderr("W-A-R-N-I-N-G: asa2pdf(1) resetting -i "//v2s(GLOBAL_SHADE_STEP))
+      call stderr("W-A-R-N-I-N-G: asa2pdf(1) resetting -b "//v2s(GLOBAL_SHADE_STEP))
       GLOBAL_SHADE_STEP=1;
    endif
 
@@ -772,7 +779,7 @@ subroutine showhelp()
    write(*,'("-H ",g0," # page Height")')              GLOBAL_PAGE_DEPTH/GLOBAL_UNIT_MULTIPLIER
 
    write(*,'("-g ",g0,    " # shading gray scale value ([black]0 <= g <= 1[white]")') GLOBAL_GRAY_SCALE
-   write(*,'("-i ",i0,t14," # shading line increment")')    GLOBAL_SHADE_STEP
+   write(*,'("-b ",i0,t14," # shading line increment")')    GLOBAL_SHADE_STEP
    write(*,'("-d ",a,     " # shading line dashcode")')     trim(GLOBAL_DASHCODE)
 
    write(*,'("-l ",g0,t14," # lines per page")')            GLOBAL_LINES_PER_PAGE

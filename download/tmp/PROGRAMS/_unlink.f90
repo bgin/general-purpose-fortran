@@ -9,7 +9,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'     _unlink(1f) - [FUNIX] remove file                                          ',&
+'     _unlink(1f) - [FUNIX:FILESYSTEM] remove file                               ',&
 'SYNOPSIS                                                                        ',&
 '     _unlink file(s)                                                            ',&
 'DESCRIPTION                                                                     ',&
@@ -22,7 +22,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!      _unlink(1f) - [FUNIX] remove file
+!!      _unlink(1f) - [FUNIX:FILESYSTEM] remove file
 !!##SYNOPSIS
 !!
 !!      _unlink file(s)
@@ -49,7 +49,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sat, Oct 21st, 2017 8:57:04 AM>',&
+'@(#)COMPILED:       Sun, Oct 22nd, 2017 4:39:57 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

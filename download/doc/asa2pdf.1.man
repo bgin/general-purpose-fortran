@@ -138,7 +138,7 @@ OPTIONS
     SHADING
         -g 0.800781      gray-scale value for shaded bars ( 0 < g 1 )
                          0 is black, 1 is white.
-        -i 2             repeat shade pattern every N lines
+        -b 2             repeat shade pattern every N lines
         -d ' '           dashcode pattern
                          The pattern is a series of integers defining an
                          on-off sequence in user units used to create a
@@ -193,7 +193,7 @@ EXAMPLES
  Sample commands:
 
      # use non-ASA file to generate portrait mode with a dashed line under every line
-     asa2pdf -S 1 -W 8.5 -H 11 -i 1 -d '2 4 1' -T 1 -B .75 -o paper.pdf < INFILE
+     asa2pdf -S 1 -W 8.5 -H 11 -b 1 -d '2 4 1' -T 1 -B .75 -o paper.pdf < INFILE
 
      # banner on top
      env IMPACT_GRAY=1 IMPACT_TOP=CONFIDENTIAL asa2pdf -o paper.pdf < test.txt
@@ -206,15 +206,15 @@ EXAMPLES
       -N -T .9 -o paper.pdf <asa2pdf.c
 
      # portrait 80-column non-ASA file with dashed lines
-      asa2pdf -s PORTRAIT -S 1 -W 8.5 -H 11 -i 1 -d '2 4 1' \
+      asa2pdf -s PORTRAIT -S 1 -W 8.5 -H 11 -b 1 -d '2 4 1' \
       -T 1 -B .75 -o paper.pdf < asa2pdf.c
 
      # portrait 80-column with line numbers , non-ASA
       asa2pdf -s 'PORTRAIT LINE NUMBERS' -l 66 -S 1 -W 8.5 -H 11 \
-      -i 1 -T 1 -B .75 -N -o paper.pdf < asa2pdf.c
+      -b 1 -T 1 -B .75 -N -o paper.pdf < asa2pdf.c
 
      # titling
-      asa2pdf -d '1 0 1' -t "$USER" -i 1 -P -N -T 1 \
+      asa2pdf -d '1 0 1' -t "$USER" -b 1 -P -N -T 1 \
       -s "asa2pdf.c" -o paper.pdf <asa2pdf.c
 
 SEE ALSO

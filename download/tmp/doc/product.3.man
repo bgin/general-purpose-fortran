@@ -1,5 +1,5 @@
 NAME
-        product(3f) - [INTRINSIC] Product of array elements
+        product(3f) - [INTRINSIC:TRANSFORMATIONAL FUNCTION] Product of array elements
 SYNTAX
 
    * result = product(array[, mask])

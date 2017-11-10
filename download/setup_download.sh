@@ -23,7 +23,7 @@ source $DIRNAME/scripts/functions.sh
 #   Assuming most users would simply like the .f90 files, and not have
 #   to install ufpp, what, goodbad, ccall, html2f90, html2man, and the
 #   other components of the programming environment take the source archive
-#   created by make.shell for the libjust4.a library and add a test program
+#   created by make.shell for the libGPF.a library and add a test program
 #   and the "c" and "juown1" procedures required by the calculator module
 #   and place them in a scratch directory and use makemake(1) to make a
 #   simple make(1) file. Then put all that back into an archive file and
@@ -299,7 +299,7 @@ cp -r -p ../html/StyleSheets tmp/html/
 # combine man pages into books
 book.sh M_kracken M_strings M_time M_system M_color M_pixel M_calculator M_units M_math M_process M_logic 
 book.sh M_Compare_Float_Numbers M_debug M_factor M_io M_journal M_messages M_sort INTRINSIC
-book.sh M_stopwatch
+book.sh M_stopwatch M_display
 book.sh INDEX
 #----------------------------------------------------------------------------------------------------------------------------------#
 echo 'now that all procedure descriptions are in place make main index page download.html'
@@ -309,7 +309,8 @@ echo 'build index of source file metadata using what(1) command'
 (
    cd tmp
    header.sh
-   what $(find . -path './*/*' -prune -o -type f -printf '%P '|xargs -n 1|sort -t . -k 2r,2r -k 1,1|xargs) -html
+   # set LC_ALL=C to make sure sort(1) does not sort case-insensitive without it being specified
+   what $(find . -path './*/*' -prune -o -type f -printf '%P '|xargs -n 1|env LC_ALL=C sort --ignore-case -t . -k 2r,2r -k 1,1|xargs) -html
    footer.sh
 ) >tmp/source.html
 #----------------------------------------------------------------------------------------------------------------------------------#

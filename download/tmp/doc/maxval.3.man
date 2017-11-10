@@ -1,5 +1,5 @@
 NAME
-     maxval(3f) - [INTRINSIC] determines the maximum value in an array or row
+     maxval(3f) - [INTRINSIC:TRANSFORMATIONAL FUNCTION] determines the maximum value in an array or row
 
 SYNTAX
 

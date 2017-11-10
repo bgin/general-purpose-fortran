@@ -2,7 +2,7 @@
 #@(#) run makemake(1) to make Makefile for this collection
 banner makemakefile.sh
 MAKEMAKEFILE(){
-#  create basic makefile for plain .f90 files that compose libjust4.a
+#  create basic makefile for plain .f90 files that compose libGPF.a
 #  and create a compressed archive file for simple downloads on the
 #  Internet
 (

@@ -1,5 +1,5 @@
 NAME
-   _dirname(1f) - [FUNIX] strip last component from file name
+   _dirname(1f) - [FUNIX:FILESYSTEM] strip last component from file name
 
 SYNOPSIS
    _dirname NAME... [-zero]|-help|-version]

@@ -9,7 +9,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'     _mv(1f) - [FUNIX] rename file                                              ',&
+'     _mv(1f) - [FUNIX:FILESYSTEM] rename file                                   ',&
 'SYNOPSIS                                                                        ',&
 '     _mv SOURCE DEST                                                            ',&
 'DESCRIPTION                                                                     ',&
@@ -25,7 +25,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!      _mv(1f) - [FUNIX] rename file
+!!      _mv(1f) - [FUNIX:FILESYSTEM] rename file
 !!##SYNOPSIS
 !!
 !!      _mv SOURCE DEST
@@ -56,7 +56,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
 '@(#)COMPILED:       Sun, Nov 27th, 2016 10:47:13 PM>',&
-'@(#)COMPILED:       Sat, Oct 21st, 2017 8:53:25 AM>',&
+'@(#)COMPILED:       Sun, Oct 22nd, 2017 4:37:27 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

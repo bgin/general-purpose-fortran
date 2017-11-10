@@ -1333,9 +1333,7 @@ end function system_isreg
 !!
 !!##EXAMPLE
 !!
-!!   check if filename is a directory
 !!
-!!    end program demo_system_islnk
 !!        Sample program:
 !!
 !!           program demo_system_islnk
@@ -2552,30 +2550,51 @@ end function system_rmdir
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
-!!    The mkfifo() function creates a new FIFO special file named by the pathname pointed to by path.
+!!    The mkfifo() function creates a new FIFO special file named by the
+!!    pathname pointed to by path.
+!!
 !!    The file permission bits of the new FIFO are initialized from mode.
-!!    The file permission bits of the mode argument are modified by the process' file creation mask.
 !!
-!!    When bits in mode other than the file permission bits are set, the effect is implementation-defined.
+!!    The file permission bits of the mode argument are modified by the
+!!    process' file creation mask.
 !!
-!!    If path names a symbolic link, mkfifo() shall fail and set errno to [EEXIST].
+!!    When bits in mode other than the file permission bits are set, the
+!!    effect is implementation-defined.
+!!
+!!    If path names a symbolic link, mkfifo() shall fail and set errno to
+!!    [EEXIST].
 !!
 !!    The  FIFO's user ID will be set to the process' effective user ID.
-!!    The FIFO's group ID shall be set to the group ID of the parent directory or to the effective group ID of the process.
-!!    Implementations shall provide a way to initialize the FIFO's group ID to the group ID of the parent directory.
-!!    Implementations may, but need not, provide an implementation-defined way to initialize  the FIFO's group ID to the effective group ID of the calling process.
 !!
-!!    Upon  successful  completion, mkfifo() shall mark for update the last data access, last data modification, and last file status change timestamps of the file.
-!!    Also, the last data modification and last file status change timestamps of the directory that contains the new entry shall be marked for update.
+!!    The FIFO's group ID shall be set to the group ID of the parent
+!!    directory or to the effective group ID of the process.
+!!
+!!    Implementations shall provide a way to initialize the FIFO's group
+!!    ID to the group ID of the parent directory.
+!!
+!!    Implementations may, but need not, provide an implementation-defined
+!!    way to initialize  the FIFO's group ID to the effective group ID of
+!!    the calling process.
+!!
+!!    Upon  successful  completion, mkfifo() shall mark for update the
+!!    last data access, last data modification, and last file status change
+!!    timestamps of the file.
+!!
+!!    Also, the last data modification and last file status change
+!!    timestamps of the directory that contains the new entry shall be
+!!    marked for update.
 !!
 !!    Predefined variables are typically used to set permission modes.
-!!    You can bytewise-OR together these variables to to create the most common permissions mode:
+!!
+!!    You can bytewise-OR together these variables to to create the most
+!!    common permissions mode:
 !!
 !!     User:    R_USR  (read),  W_USR  (write),  X_USR(execute)
 !!     Group:   R_GRP  (read),  W_GRP  (write),  X_GRP(execute)
 !!     Others:  R_OTH  (read),  W_OTH  (write),  X_OTH(execute)
 !!
-!!    Additionally, some shortcuts are provided (basically a bitwise-OR combination of the above):
+!!    Additionally, some shortcuts are provided (basically a bitwise-OR
+!!    combination of the above):
 !!
 !!      Read + Write + Execute: R_WXU (User), R_WXG (Group), R_WXO (Others)
 !!      DEFFILEMODE: Equivalent of 0666 =rw-rw-rw-
@@ -3447,12 +3466,15 @@ end function system_readenv
 !!
 !!   subroutine fileglob(glob, list)
 !!
-!!    character(len=*),intent(in)   :: glob                   ! Pattern for the filenames (like: *.txt)
-!!    character(len=*),pointer      :: list(:)                ! Allocated list of filenames (returned), the caller must deallocate it.
+!!    character(len=*),intent(in)   :: glob
+!!    character(len=*),pointer      :: list(:)
 !!
 !!##DESCRIPTION
 !!    Non-portable procedure uses the shell and the ls(1) command to expand a filename
 !!    and returns a pointer to a list of expanded filenames.
+!!##OPTIONS
+!!    glob   Pattern for the filenames (like: *.txt)
+!!    list   Allocated list of filenames (returned), the caller must deallocate it.
 !!
 !!##EXAMPLE
 !!
@@ -4023,9 +4045,9 @@ end function C2F_string
 !!       VALUES(6) Owner's gid
 !!       VALUES(7) ID of device containing directory entry for file (0 if not available)
 !!       VALUES(8) File size (bytes)
-!!       VALUES(9) Last access time
-!!       VALUES(10) Last modification time
-!!       VALUES(11) Last file status change time
+!!       VALUES(9) Last access time as a Unix Epoch time rounded to seconds
+!!       VALUES(10) Last modification time as a Unix Epoch time rounded to seconds
+!!       VALUES(11) Last file status change time as a Unix Epoch time rounded to seconds
 !!       VALUES(12) Preferred I/O block size (-1 if not available)
 !!       VALUES(13) Number of blocks allocated (-1 if not available)
 !!
@@ -4128,7 +4150,7 @@ end subroutine system_stat
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_stat_print(3f) - print the principal info obtained for a pathname from system_stat(3f)
+!!    system_stat_print(3f) - [M_system] print the principal info obtained for a pathname from system_stat(3f)
 !!##SYNOPSIS
 !!
 !!   subroutine system_stat_print(filename)

@@ -1,4 +1,4 @@
-libjust4 Home Page
+libGPF Home Page
 
 NAME
 

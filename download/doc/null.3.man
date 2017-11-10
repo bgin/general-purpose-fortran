@@ -1,5 +1,5 @@
 NAME
-     null(3f) - [INTRINSIC] Function that returns an disassociated pointer
+     null(3f) - [INTRINSIC:TRANSFORMATIONAL FUNCTION] Function that returns an disassociated pointer
 
 SYNTAX
 

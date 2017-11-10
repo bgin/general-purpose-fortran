@@ -1,5 +1,5 @@
 NAME
-     minloc(3f) - [INTRINSIC] Location of the minimum value within an array
+     minloc(3f) - [INTRINSIC:TRANSFORMATIONAL FUNCTION] Location of the minimum value within an array
 
 SYNTAX
 

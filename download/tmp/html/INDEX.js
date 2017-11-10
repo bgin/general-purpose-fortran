@@ -5,6 +5,7 @@ append("./BOOK_M_Compare_Float_Numbers.html");
 append("./BOOK_M_calculator.html");
 append("./BOOK_M_color.html");
 append("./BOOK_M_debug.html");
+append("./BOOK_M_display.html");
 append("./BOOK_M_factor.html");
 append("./BOOK_M_io.html");
 append("./BOOK_M_journal.html");

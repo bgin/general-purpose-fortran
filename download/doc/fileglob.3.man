@@ -3,12 +3,15 @@ NAME
 SYNOPSIS
   subroutine fileglob(glob, list)
 
-   character(len=*),intent(in)   :: glob                   ! Pattern for the filenames (like: *.txt)
-   character(len=*),pointer      :: list(:)                ! Allocated list of filenames (returned), the caller must deallocate it.
+   character(len=*),intent(in)   :: glob
+   character(len=*),pointer      :: list(:)
 
 DESCRIPTION
    Non-portable procedure uses the shell and the ls(1) command to expand a filename
    and returns a pointer to a list of expanded filenames.
+OPTIONS
+   glob   Pattern for the filenames (like: *.txt)
+   list   Allocated list of filenames (returned), the caller must deallocate it.
 
 EXAMPLE
   Read output of an ls(1) command from Fortran

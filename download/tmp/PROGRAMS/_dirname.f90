@@ -36,7 +36,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'   _dirname(1f) - [FUNIX] strip last component from file name                   ',&
+'   _dirname(1f) - [FUNIX:FILESYSTEM] strip last component from file name        ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   _dirname NAME... [-zero]|-help|-version]                                     ',&
@@ -67,7 +67,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    _dirname(1f) - [FUNIX] strip last component from file name
+!!    _dirname(1f) - [FUNIX:FILESYSTEM] strip last component from file name
 !!
 !!##SYNOPSIS
 !!
@@ -113,7 +113,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sat, Oct 21st, 2017 8:48:32 AM>',&
+'@(#)COMPILED:       Sun, Oct 22nd, 2017 4:35:05 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

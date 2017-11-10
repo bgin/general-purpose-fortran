@@ -9,7 +9,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'     _mkfifo(1f) - [FUNIX] make a FIFO pipe by calling mkfifo(3c)               ',&
+'     _mkfifo(1f) - [FUNIX:FILESYSTEM] make a FIFO pipe by calling mkfifo(3c)    ',&
 'SYNOPSIS                                                                        ',&
 '     _mkfifo file(s)                                                            ',&
 'DESCRIPTION                                                                     ',&
@@ -22,7 +22,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!      _mkfifo(1f) - [FUNIX] make a FIFO pipe by calling mkfifo(3c)
+!!      _mkfifo(1f) - [FUNIX:FILESYSTEM] make a FIFO pipe by calling mkfifo(3c)
 !!##SYNOPSIS
 !!
 !!      _mkfifo file(s)
@@ -47,7 +47,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Sat, Oct 21st, 2017 8:52:59 AM>',&
+'@(#)COMPILED:       Sun, Oct 22nd, 2017 4:37:02 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

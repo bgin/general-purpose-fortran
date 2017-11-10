@@ -1,5 +1,5 @@
 NAME
-       shell(1f) - shell for demonstrating major modules in libjust4.a
+       shell(1f) - shell for demonstrating major modules in libGPF.a
 
 SYNOPSIS
        shell expression|-help|-version|[-replay][-read FILENAME]

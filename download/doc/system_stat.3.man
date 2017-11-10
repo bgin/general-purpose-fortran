@@ -24,9 +24,9 @@ DESCRIPTION
       VALUES(6) Owner's gid
       VALUES(7) ID of device containing directory entry for file (0 if not available)
       VALUES(8) File size (bytes)
-      VALUES(9) Last access time
-      VALUES(10) Last modification time
-      VALUES(11) Last file status change time
+      VALUES(9) Last access time as a Unix Epoch time rounded to seconds
+      VALUES(10) Last modification time as a Unix Epoch time rounded to seconds
+      VALUES(11) Last file status change time as a Unix Epoch time rounded to seconds
       VALUES(12) Preferred I/O block size (-1 if not available)
       VALUES(13) Number of blocks allocated (-1 if not available)
 

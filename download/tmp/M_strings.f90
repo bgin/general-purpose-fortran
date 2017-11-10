@@ -819,7 +819,7 @@ character(len=*),parameter::ident="@(#)M_strings::split(3f): parse string on del
    integer,allocatable           :: iterm(:)               ! positions in input string where tokens end
    character(len=:),allocatable  :: dlim                   ! string containing delimiter characters
    character(len=:),allocatable  :: ordr                   ! string containing order keyword
-   character(len=:),allocatable  :: nlls                   ! string containing order keyword
+   character(len=:),allocatable  :: nlls                   ! string containing nulls keyword
    integer                       :: ii,iiii                ! loop parameters used to control print order
    integer                       :: icount                 ! number of tokens found
    integer                       :: ilen                   ! length of input string with trailing spaces trimmed
@@ -881,7 +881,7 @@ character(len=*),parameter::ident="@(#)M_strings::split(3f): parse string on del
          endif
          imax=max(imax,iterm(i30)-ibegin(i30)+1)
          icount=i30                                               ! increment count of number of tokens found
-         if(icol.gt.ilen)then                                     ! text left
+         if(icol.gt.ilen)then                                     ! no text left
             exit INFINITE
          endif
       enddo INFINITE

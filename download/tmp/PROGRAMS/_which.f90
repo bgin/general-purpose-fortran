@@ -9,7 +9,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'       _which(1f) - [FUNIX] shows the full path of (shell) commands.            ',&
+'       _which(1f) - [FUNIX:FILESYSTEM] shows the full path of (shell) commands. ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '       _which program_leafname [-all]|[--help|--version]                        ',&
@@ -41,7 +41,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!        _which(1f) - [FUNIX] shows the full path of (shell) commands.
+!!        _which(1f) - [FUNIX:FILESYSTEM] shows the full path of (shell) commands.
 !!
 !!##SYNOPSIS
 !!
@@ -83,7 +83,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    list pathnames of leaf names that are executable and can be found using the $PATH variable>',&
 '@(#)VERSION:        1.0, 2017-10-15>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sat, Oct 21st, 2017 8:51:46 AM>',&
+'@(#)COMPILED:       Sun, Oct 22nd, 2017 4:40:45 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

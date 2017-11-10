@@ -9,7 +9,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'     _mkdir(1f) - [FUNIX] call mkdir(3c) to make a directory                    ',&
+'     _mkdir(1f) - [FUNIX:FILESYSTEM] call mkdir(3c) to make a directory         ',&
 'SYNOPSIS                                                                        ',&
 '     _mkdir directory(s)                                                        ',&
 'DESCRIPTION                                                                     ',&
@@ -22,7 +22,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!      _mkdir(1f) - [FUNIX] call mkdir(3c) to make a directory
+!!      _mkdir(1f) - [FUNIX:FILESYSTEM] call mkdir(3c) to make a directory
 !!##SYNOPSIS
 !!
 !!      _mkdir directory(s)
@@ -47,7 +47,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Sat, Oct 21st, 2017 8:52:34 AM>',&
+'@(#)COMPILED:       Sun, Oct 22nd, 2017 4:36:31 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

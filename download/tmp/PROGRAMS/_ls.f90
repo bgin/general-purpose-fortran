@@ -9,7 +9,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'       _ls(1f) - [FUNIX] list files in a directory                              ',&
+'       _ls(1f) - [FUNIX:FILESYSTEM] list files in a directory                   ',&
 'SYNOPSIS                                                                        ',&
 '       _ls [directory|--version|--help] [-a] [-l|-csv]                          ',&
 'DESCRIPTION                                                                     ',&
@@ -78,7 +78,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!        _ls(1f) - [FUNIX] list files in a directory
+!!        _ls(1f) - [FUNIX:FILESYSTEM] list files in a directory
 !!##SYNOPSIS
 !!
 !!        _ls [directory|--version|--help] [-a] [-l|-csv]
@@ -157,7 +157,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    list files in a directory>',&
 '@(#)VERSION:        1.0, 2016-11-20>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sat, Oct 21st, 2017 1:33:21 PM>',&
+'@(#)COMPILED:       Sun, Oct 22nd, 2017 4:36:03 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

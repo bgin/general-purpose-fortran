@@ -9,7 +9,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'       _stat(1f) - [FUNIX] list file properties                                 ',&
+'       _stat(1f) - [FUNIX:FILESYSTEM] list file properties                      ',&
 'SYNOPSIS                                                                        ',&
 '       _stat pathnames|--version|--help                                         ',&
 'DESCRIPTION                                                                     ',&
@@ -43,7 +43,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!        _stat(1f) - [FUNIX] list file properties
+!!        _stat(1f) - [FUNIX:FILESYSTEM] list file properties
 !!##SYNOPSIS
 !!
 !!        _stat pathnames|--version|--help
@@ -87,7 +87,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    list pathname properties>',&
 '@(#)VERSION:        1.0, 2017-10-00>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sat, Oct 21st, 2017 8:52:10 AM>',&
+'@(#)COMPILED:       Sat, Oct 28th, 2017 8:47:53 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -125,7 +125,7 @@ subroutine printit
 use M_system, only : system_getpwuid, system_getgrgid, system_perm
 use M_time, only :   fmtdate, u2d
 implicit none
-   character(len=*),parameter   :: fmt_date='year-month-day hour:minute:second'
+   character(len=*),parameter   :: fmt_date='year-month-day hour:minute:second.millisecond timezone'
 
    write(*, FMT="('Residence:',                   T30)",advance='no'   )
    write(*, FMT="('Inode:',                       I0)"                 ) values8(2)
@@ -147,11 +147,12 @@ implicit none
    write(*, FMT="('Owner''s uid/username:',       T30, I0,'/', A)") values8(5), system_getpwuid(values8(5))
    write(*, FMT="('Owner''s gid/group:',          T30, I0,'/', A)") values8(6), system_getgrgid(values8(6))
 
-   write(*, FMT="('Last access time:',            T30, I0,1x, A)") values8(9), fmtdate(u2d(int(values8(9))),fmt_date)
-   write(*, FMT="('Last modification time:',      T30, I0,1x, A)") values8(10),fmtdate(u2d(int(values8(10))),fmt_date)
-   write(*, FMT="('Last status change time:',     T30, I0,1x, A)") values8(11),fmtdate(u2d(int(values8(11))),fmt_date)
+   write(*, FMT="('Last access time:',            T30, I0,1x, A)") values8(9), fmtdate(u2d(values8(9)),fmt_date)
+   write(*, FMT="('Last modification time:',      T30, I0,1x, A)") values8(10),fmtdate(u2d(values8(10)),fmt_date)
+   write(*, FMT="('Last status change time:',     T30, I0,1x, A)") values8(11),fmtdate(u2d(values8(11)),fmt_date)
 
 end subroutine printit
 !----------------------------------------------------------------------------------------------------------------------------------
 end program demo_system_stat
 !----------------------------------------------------------------------------------------------------------------------------------
+

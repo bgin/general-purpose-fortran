@@ -1,5 +1,5 @@
 NAME
-   temp - Convert between Fahrenheit and Celsius temperature values
+   temp - [CONVERT] Convert between Fahrenheit and Celsius temperature values
 
 SYNOPSIS
    temp [-C values] [-F values] [--help] [--version]

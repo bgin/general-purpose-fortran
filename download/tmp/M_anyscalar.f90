@@ -200,7 +200,7 @@ end function anyscalar_to_real
 !!##SYNOPSIS
 !!
 !!
-!!    function anyinteger_to_128bit(intin) result(ii38)
+!!    elemental function anyinteger_to_128bit(intin) result(ii38)
 !!
 !!     integer(kind=int128) function anyinteger_to_128bit(value)
 !!     class(*),intent(in)     :: intin
@@ -250,7 +250,7 @@ end function anyscalar_to_real
 !!
 !!     end program scalars
 !===================================================================================================================================
-function anyinteger_to_128bit(intin) result(ii38)
+elemental function anyinteger_to_128bit(intin) result(ii38)
 use iso_fortran_env, only : error_unit !! ,input_unit,output_unit
 implicit none
 character(len=*),parameter::ident="@(#)M_anyscalar::anyinteger_to_128: convert integer parameter of any kind to 128-bit integer"
@@ -262,9 +262,9 @@ class(*),intent(in)     :: intin
    type is (integer(kind=int32));  ii38=intin
    type is (integer(kind=int64));  ii38=intin
    type is (integer(kind=int128)); ii38=intin
-   class default
-      write(error_unit,*)'ERROR: unknown integer type'
-      stop
+   !class default
+      !write(error_unit,*)'ERROR: unknown integer type'
+      !stop 'ERROR: *anyinteger_to_128* unknown integer type'
    end select
 end function anyinteger_to_128bit
 !===================================================================================================================================

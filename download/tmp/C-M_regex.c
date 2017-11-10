@@ -42,11 +42,12 @@ void C_regexec(const regex_t *preg, const char *string, int nmatch,
     }
   }
 /* ------------------------------------------------------------------------------------------------------------------------------ */
-   // Added by Trurl The Constructor
-   // Elkin Arroyo
+   /*
+      Added by Trurl The Constructor
+      Elkin Arroyo
+   */
    pmatch = malloc(sizeof(regmatch_t)*nmatch);
    while(1 && j<=nmatch) {
-      int no_match;
       *status_return = regexec(preg,p,nmatch,pmatch,eflags);
       if (status_return[0]) {
           break;

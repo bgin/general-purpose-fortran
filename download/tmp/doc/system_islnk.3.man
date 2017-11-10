@@ -21,9 +21,7 @@ SEE ALSO
    system_isreg(3f), system_stat(3f), system_isdir(3f), system_perm(3f)
 
 EXAMPLE
-  check if filename is a directory
 
-   end program demo_system_islnk
        Sample program:
 
           program demo_system_islnk

@@ -2248,7 +2248,8 @@ subroutine juator(chars,rval8,ierr)
 implicit doubleprecision (a-h,o-z)
 character(len=*),parameter  :: ident=&
 &"@(#)M_calculator::juator(3f):returns a real value rval8 from a numeric character string chars."
-character(len=*),intent(in) :: chars ! CAREFUL: LAST is in GLOBAL, but can be read from when passed to this routine as CHARS. DO NOT CHANGE CHARS.
+! CAREFUL: LAST is in GLOBAL, but can be read from when passed to this routine as CHARS. DO NOT CHANGE CHARS.
+character(len=*),intent(in) :: chars
 doubleprecision,intent(out) :: rval8
 integer,intent(out)         :: ierr
 !-----------------------------------------------------------------------------------------------------------------------------------

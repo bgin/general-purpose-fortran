@@ -22,6 +22,7 @@ lastprogram change.f90
 
 lastprogram shell.f90
 lastprogram penv.f90
+lastprogram findll.f90
 lastprogram fixedform.f90
 lastprogram table2html.f90
 lastprogram tabulate.f90

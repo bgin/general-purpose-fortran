@@ -1,5 +1,5 @@
 NAME
-     cshift(3f) - [INTRINSIC:ARRAY MANIPULATION] Circular shift elements of an array
+     cshift(3f) - [INTRINSIC:TRANSFORMATIONAL FUNCTION] Circular shift elements of an array
 
 SYNTAX
 

@@ -353,9 +353,9 @@ int i;
    values[5]=buf->st_gid ;                     /* st_gid    The Group ID for the file. */
    values[6]=buf->st_rdev;                     /* st_rdev   ID of device containing directory entry for file (0 if not available) */
    values[7]=buf->st_size;                     /* st_size   file size in bytes */
-   values[8]=buf->st_atime;                    /* st_atime  most recent time file was accessed. */
-   values[9]=buf->st_mtime;                    /* st_mtime  most recent time file contents modified. */
-   values[10]=buf->st_ctime;                   /* st_ctime  most recent time file permissions changed. */
+   values[8]=buf->st_atime+0.5;                /* st_atime  most recent time file was accessed. */
+   values[9]=buf->st_mtime+0.5;                /* st_mtime  most recent time file contents modified. */
+   values[10]=buf->st_ctime+0.5;               /* st_ctime  most recent time file permissions changed. */
    values[11]=buf->st_blksize;                 /*           Preferred I/O block size (-1 if not available) */
    values[12]=buf->st_blocks;                  /*           Number of blocks allocated (-1 if not available) */
 

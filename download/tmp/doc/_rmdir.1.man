@@ -1,6 +1,6 @@
 
 NAME
-      _rmdir(1f) - [FUNIX] remove empty directories
+      _rmdir(1f) - [FUNIX:FILESYSTEM] remove empty directories
 SYNOPSIS
        _rmdir DIRECTORY... [OPTION]...
 DESCRIPTION

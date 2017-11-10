@@ -1,11 +1,11 @@
-PROGFILES =	PROGRAMS/alphabet.f90 PROGRAMS/asa2pdf.f90 PROGRAMS/base.f90 PROGRAMS/change.f90 PROGRAMS/colors.f90 PROGRAMS/compute.f90 PROGRAMS/cprint.f90 PROGRAMS/days2sec.f90 PROGRAMS/dtu.f90 PROGRAMS/easter.f90 PROGRAMS/exchange.f90 PROGRAMS/factors.f90 PROGRAMS/fixedform.f90 PROGRAMS/fseq.f90 PROGRAMS/gcd.f90 PROGRAMS/huegif.f90 PROGRAMS/intrinsics.f90 PROGRAMS/lcm.f90 PROGRAMS/lsup.f90 PROGRAMS/manup.f90 PROGRAMS/month.f90 PROGRAMS/notabs.f90 PROGRAMS/note.f90 PROGRAMS/now.f90 PROGRAMS/numdiff.f90 PROGRAMS/paranoid.f90 PROGRAMS/paws.f90 PROGRAMS/pendulum.f90 PROGRAMS/penv.f90 PROGRAMS/planets.f90 PROGRAMS/quadratic.f90 PROGRAMS/redo.f90 PROGRAMS/rever.f90 PROGRAMS/sec2days.f90 PROGRAMS/shell.f90 PROGRAMS/splitname.f90 PROGRAMS/t2m.f90 PROGRAMS/table2html.f90 PROGRAMS/tabulate.f90 PROGRAMS/temp.f90 PROGRAMS/today.f90 PROGRAMS/ttee.f90 PROGRAMS/ufpp.f90 PROGRAMS/what.f90 PROGRAMS/_dirname.f90 PROGRAMS/_echo.f90 PROGRAMS/_false.f90 PROGRAMS/_hostname.f90 PROGRAMS/_kill.f90 PROGRAMS/_ln.f90 PROGRAMS/_logname.f90 PROGRAMS/_ls.f90 PROGRAMS/_mkdir.f90 PROGRAMS/_mkfifo.f90 PROGRAMS/_mv.f90 PROGRAMS/_pwd.f90 PROGRAMS/_rm.f90 PROGRAMS/_rmdir.f90 PROGRAMS/_showumask.f90 PROGRAMS/_sleep.f90 PROGRAMS/_stat.f90 PROGRAMS/_true.f90 PROGRAMS/_tty.f90 PROGRAMS/_uname.f90 PROGRAMS/_unlink.f90 PROGRAMS/_which.f90 PROGRAMS/_yes.f90
+PROGFILES =	PROGRAMS/alphabet.f90 PROGRAMS/asa2pdf.f90 PROGRAMS/base.f90 PROGRAMS/change.f90 PROGRAMS/colors.f90 PROGRAMS/compute.f90 PROGRAMS/cprint.f90 PROGRAMS/days2sec.f90 PROGRAMS/dtu.f90 PROGRAMS/easter.f90 PROGRAMS/exchange.f90 PROGRAMS/factors.f90 PROGRAMS/findll.f90 PROGRAMS/fixedform.f90 PROGRAMS/fseq.f90 PROGRAMS/gcd.f90 PROGRAMS/huegif.f90 PROGRAMS/intrinsics.f90 PROGRAMS/lcm.f90 PROGRAMS/lsup.f90 PROGRAMS/manup.f90 PROGRAMS/month.f90 PROGRAMS/notabs.f90 PROGRAMS/note.f90 PROGRAMS/now.f90 PROGRAMS/numdiff.f90 PROGRAMS/paranoid.f90 PROGRAMS/paws.f90 PROGRAMS/pendulum.f90 PROGRAMS/penv.f90 PROGRAMS/planets.f90 PROGRAMS/quadratic.f90 PROGRAMS/redo.f90 PROGRAMS/rever.f90 PROGRAMS/sec2days.f90 PROGRAMS/shell.f90 PROGRAMS/splitname.f90 PROGRAMS/t2m.f90 PROGRAMS/table2html.f90 PROGRAMS/tabulate.f90 PROGRAMS/temp.f90 PROGRAMS/today.f90 PROGRAMS/ttee.f90 PROGRAMS/ufpp.f90 PROGRAMS/what.f90 PROGRAMS/_dirname.f90 PROGRAMS/_echo.f90 PROGRAMS/_false.f90 PROGRAMS/_hostname.f90 PROGRAMS/_kill.f90 PROGRAMS/_ln.f90 PROGRAMS/_logname.f90 PROGRAMS/_ls.f90 PROGRAMS/_mkdir.f90 PROGRAMS/_mkfifo.f90 PROGRAMS/_mv.f90 PROGRAMS/_pwd.f90 PROGRAMS/_rm.f90 PROGRAMS/_rmdir.f90 PROGRAMS/_showumask.f90 PROGRAMS/_sleep.f90 PROGRAMS/_stat.f90 PROGRAMS/_true.f90 PROGRAMS/_tty.f90 PROGRAMS/_uname.f90 PROGRAMS/_unlink.f90 PROGRAMS/_which.f90 PROGRAMS/_yes.f90
 
 PROG = ${PROGFILES:.f90=}
 
 SRCS =	c.f90 calc_NC.f90 dparanoia.f90 init_random_seed.f90 juown1.f90 \
 	kiss64.f90 M_anyscalar.f90 M_calculator.f90 M_calculator_plus.f90 \
 	M_color.f90 M_Compare_Float_Numbers.f90 M_constants.f90 M_debug.f90 \
-	M_factor.f90 M_fixedform.f90 M_getkey.f90 M_getopt.f90 \
+	M_display.f90 M_factor.f90 M_fixedform.f90 M_getkey.f90 M_getopt.f90 \
 	M_getopt_long.f90 M_history.f90 M_html.f90 M_io.f90 M_journal.f90 \
 	M_kracken.f90 M_logic.f90 M_math.f90 M_messages.f90 M_ncurses.f90 \
 	M_pixel.f90 M_pixel_slices.f90 M_process.f90 M_readgif.f90 \
@@ -21,18 +21,18 @@ SRCS =	c.f90 calc_NC.f90 dparanoia.f90 init_random_seed.f90 juown1.f90 \
 
 OBJS =	c.o calc_NC.o dparanoia.o init_random_seed.o juown1.o kiss64.o \
 	M_anyscalar.o M_calculator.o M_calculator_plus.o M_color.o \
-	M_Compare_Float_Numbers.o M_constants.o M_debug.o M_factor.o \
-	M_fixedform.o M_getkey.o M_getopt.o M_getopt_long.o M_history.o \
-	M_html.o M_io.o M_journal.o M_kracken.o M_logic.o M_math.o \
-	M_messages.o M_ncurses.o M_pixel.o M_pixel_slices.o M_process.o \
-	M_readgif.o M_readline.o M_regex.o M_sort.o M_stopwatch.o M_strings.o \
-	M_swap.o M_system.o M_time.o M_treesort.o M_units.o M_writegif.o \
-	M_writegif_animated.o nc_errmessage.o nc_notabs.o nc_printescape.o \
-	nc_printhtml.o nc_printplain.o nc_printunicode.o nc_uniqname.o \
-	paranoia.o pixel_slice.o ran_mod.o sparanoia.o strgar3.o C-gauss.o \
-	C-hlsrgb.o C-hvsrgb.o C-jubiglet.o C-jucolor.o C-M_getkey.o \
-	C-M_readline.o C-M_regex.o C-M_system.o C-M_units.o C-macros.o \
-	C-read_line.o C-rgbhls.o C-rgbhvs.o C-rgbmono.o C-rgbval.o
+	M_Compare_Float_Numbers.o M_constants.o M_debug.o M_display.o \
+	M_factor.o M_fixedform.o M_getkey.o M_getopt.o M_getopt_long.o \
+	M_history.o M_html.o M_io.o M_journal.o M_kracken.o M_logic.o \
+	M_math.o M_messages.o M_ncurses.o M_pixel.o M_pixel_slices.o \
+	M_process.o M_readgif.o M_readline.o M_regex.o M_sort.o M_stopwatch.o \
+	M_strings.o M_swap.o M_system.o M_time.o M_treesort.o M_units.o \
+	M_writegif.o M_writegif_animated.o nc_errmessage.o nc_notabs.o \
+	nc_printescape.o nc_printhtml.o nc_printplain.o nc_printunicode.o \
+	nc_uniqname.o paranoia.o pixel_slice.o ran_mod.o sparanoia.o \
+	strgar3.o C-gauss.o C-hlsrgb.o C-hvsrgb.o C-jubiglet.o C-jucolor.o \
+	C-M_getkey.o C-M_readline.o C-M_regex.o C-M_system.o C-M_units.o \
+	C-macros.o C-read_line.o C-rgbhls.o C-rgbhvs.o C-rgbmono.o C-rgbval.o
 
 LIBS =-lncurses -lreadline
 CC = cc
@@ -66,6 +66,7 @@ M_calculator.o: M_calculator.o M_io.o M_journal.o M_math.o M_strings.o \
 M_calculator_plus.o: M_calculator.o M_journal.o
 M_color.o: M_strings.o
 M_debug.o: 
+M_display.o: M_display.o
 M_factor.o: M_anyscalar.o
 M_fixedform.o: M_ncurses.o
 M_getkey.o: 

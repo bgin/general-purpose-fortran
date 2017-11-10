@@ -358,10 +358,13 @@ end function d2r
 !!    program demo_sind
 !!    use M_units, only :  sind
 !!    implicit none
-!!       write(*,*)'With REAL array input    ', sind([ 0.0, 15.0, 30.0, 45.0, 60.0, 75.0, 90.0, 180.0, 270.0 ])
+!!       write(*,*)'With REAL array input    ', sind([ 0.0, 15.0, 30.0, 45.0, &
+!!                                            & 60.0, 75.0, 90.0, 180.0, 270.0 ])
 !!       write(*,*)'With INTEGER array input ', sind([0,15,30,45,60,75,90,180,270])
-!!       write(*,*)'With DOUBLEPRECISION     ', sind(0.0d0),sind(15.0d0),sind(90.0/3.0d0),sind(90.0/2.0d0),sind(60.0d0),sind(75.0d0),&
-!!       & sind(90.0d0),sind(180.0d0),sind(270.0d0)
+!!       write(*,*)'With DOUBLEPRECISION     ',           &
+!!          & sind(0.0d0),sind(15.0d0),sind(90.0/3.0d0),  &
+!!          & sind(90.0/2.0d0),sind(60.0d0),sind(75.0d0), &
+!!          & sind(90.0d0),sind(180.0d0),sind(270.0d0)
 !!    end program demo_sind
 !!
 !!   Results
@@ -456,9 +459,13 @@ end function cosd
 !!    program demo_tand
 !!    use M_units, only :  tand
 !!    implicit none
-!!       write(*,*)'With REAL array input    ', tand([ 0.0, 15.0, 30.0, 45.0, 60.0, 75.0, 90.0, 180.0, 270.0 ])
-!!       write(*,*)'With INTEGER array input ', tand([0,15,30,45,60,75,90,180,270])
-!!       write(*,*)'With DOUBLEPRECISION     ', tand(0.0d0),tand(15.0d0),tand(90.0/3.0d0),tand(90.0/2.0d0),tand(60.0d0),tand(75.0d0),&
+!!       write(*,*)'With REAL array input    ', &
+!!         &tand([ 0.0, 15.0, 30.0, 45.0, 60.0, 75.0, 90.0, 180.0, 270.0 ])
+!!       write(*,*)'With INTEGER array input ', &
+!!         &tand([0,15,30,45,60,75,90,180,270])
+!!       write(*,*)'With DOUBLEPRECISION     ', &
+!!         &tand(0.0d0),tand(15.0d0),tand(90.0/3.0d0),tand(90.0/2.0d0),&
+!!       & tand(60.0d0),tand(75.0d0),&
 !!       & tand(90.0d0),tand(180.0d0),tand(270.0d0)
 !!    end program demo_tand
 !!
@@ -532,9 +539,14 @@ end function atan2d
 !!    program demo_feet_to_meters
 !!    use M_units, only : feet_to_meters
 !!    implicit none
-!!       write(*,*)'With REAL array input    ', feet_to_meters([ -1.0, 0.0, 1.0 ,1.0/12.0])
-!!       write(*,*)'With INTEGER array input ', feet_to_meters([ -1,   0,   1   ])
-!!       write(*,*)'With DOUBLEPRECISION     ', feet_to_meters(-1.0d0),feet_to_meters(0.0d0),feet_to_meters(1.0d0)
+!!       write(*,*)'With REAL array input    ', &
+!!               & feet_to_meters([ -1.0, 0.0, 1.0 ,1.0/12.0])
+!!       write(*,*)'With INTEGER array input ', &
+!!               & feet_to_meters([ -1,   0,   1   ])
+!!       write(*,*)'With DOUBLEPRECISION     ', &
+!!               & feet_to_meters(-1.0d0), &
+!!               & feet_to_meters(0.0d0), &
+!!               & feet_to_meters(1.0d0)
 !!    end program demo_feet_to_meters
 !!
 !!   Results

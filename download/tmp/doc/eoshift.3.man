@@ -1,6 +1,6 @@
 NAME
 
-     eoshift(3f) - [INTRINSIC:ARRAY MANIPULATION] End-off shift elements of an array
+     eoshift(3f) - [INTRINSIC:TRANSFORMATIONAL FUNCTION] End-off shift elements of an array
 
 SYNTAX
 

@@ -50,7 +50,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sat, Oct 21st, 2017 8:33:47 AM>',&
+'@(#)COMPILED:       Sun, Nov 5th, 2017 10:10:10 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -929,7 +929,7 @@ write(io,'(a)')''
 write(io,'(a)')'   [[Elemental procedure|Elemental function]]'
 write(io,'(a)')''
 write(io,'(a)')'NAME'
-write(io,'(a)')'     any(3f) - [INTRINSIC] determines if any of the values in the logical array are true.'
+write(io,'(a)')'     any(3f) - [INTRINSIC:TRANSFORMATIONAL FUNCTION] determines if any of the values in the logical array are true.'
 write(io,'(a)')''
 write(io,'(a)')'SYNTAX'
 write(io,'(a)')''
@@ -3396,7 +3396,7 @@ write(io,'(a)')''
 write(io,'(a)')'   Inverse function: [[acosh]]'
 write(io,'(a)')''
 write(io,'(a)')'NAME'
-write(io,'(a)')'   count(3f) - [INTRINSIC] Count function'
+write(io,'(a)')'   count(3f) - [INTRINSIC:TRANSFORMATIONAL FUNCTION] Count function'
 write(io,'(a)')''
 write(io,'(a)')'SYNTAX'
 write(io,'(a)')''
@@ -3526,7 +3526,7 @@ write(io,'(a)')''
 write(io,'(a)')'   [[system_clock]], [[date_and_time]]'
 write(io,'(a)')''
 write(io,'(a)')'NAME'
-write(io,'(a)')'     cshift(3f) - [INTRINSIC:ARRAY MANIPULATION] Circular shift elements of an array'
+write(io,'(a)')'     cshift(3f) - [INTRINSIC:TRANSFORMATIONAL FUNCTION] Circular shift elements of an array'
 write(io,'(a)')''
 write(io,'(a)')'SYNTAX'
 write(io,'(a)')''
@@ -3780,7 +3780,7 @@ write(io,'(a)')'   [[Elemental procedure|Elemental function]]'
 write(io,'(a)')''
 write(io,'(a)')'NAME'
 write(io,'(a)')''
-write(io,'(a)')'     dot_product(3f) - [INTRINSIC:MATRIX] Dot product function'
+write(io,'(a)')'     dot_product(3f) - [INTRINSIC:TRANSFORMATIONAL FUNCTION] Dot product function'
 write(io,'(a)')''
 write(io,'(a)')'SYNTAX'
 write(io,'(a)')''
@@ -3874,7 +3874,7 @@ write(io,'(a)')'   [[Elemental procedure|Elemental function]]'
 write(io,'(a)')''
 write(io,'(a)')'NAME'
 write(io,'(a)')''
-write(io,'(a)')'     eoshift(3f) - [INTRINSIC:ARRAY MANIPULATION] End-off shift elements of an array'
+write(io,'(a)')'     eoshift(3f) - [INTRINSIC:TRANSFORMATIONAL FUNCTION] End-off shift elements of an array'
 write(io,'(a)')''
 write(io,'(a)')'SYNTAX'
 write(io,'(a)')''
@@ -4872,7 +4872,7 @@ write(io,'(a)')'* result = iall(array, dim[, mask])'
 write(io,'(a)')''
 write(io,'(a)')'DESCRIPTION'
 write(io,'(a)')''
-write(io,'(a)')'   Reduces with bitwise and the elements of ARRAY along dimension DIM'
+write(io,'(a)')'   Reduces with bitwise AND the elements of ARRAY along dimension DIM'
 write(io,'(a)')'   if the corresponding element in MASK is TRUE.'
 write(io,'(a)')''
 write(io,'(a)')'ARGUMENTS'
@@ -6289,7 +6289,7 @@ write(io,'(a)')''
 write(io,'(a)')'   [[maskl]]'
 write(io,'(a)')''
 write(io,'(a)')'NAME'
-write(io,'(a)')'     matmul(3f) - [INTRINSIC:MATRIX] matrix multiplication'
+write(io,'(a)')'     matmul(3f) - [INTRINSIC:TRANSFORMATIONAL FUNCTION] matrix multiplication'
 write(io,'(a)')''
 write(io,'(a)')'SYNTAX'
 write(io,'(a)')''
@@ -6401,7 +6401,7 @@ write(io,'(a)')''
 write(io,'(a)')'   [[Inquiry function]]'
 write(io,'(a)')''
 write(io,'(a)')'NAME'
-write(io,'(a)')'     maxloc(3f) - [INTRINSIC] Location of the maximum value within an array'
+write(io,'(a)')'     maxloc(3f) - [INTRINSIC:TRANSFORMATIONAL FUNCTION] Location of the maximum value within an array'
 write(io,'(a)')''
 write(io,'(a)')'SYNTAX'
 write(io,'(a)')''
@@ -6453,7 +6453,7 @@ write(io,'(a)')''
 write(io,'(a)')'   [[max]], [[maxval]]'
 write(io,'(a)')''
 write(io,'(a)')'NAME'
-write(io,'(a)')'     maxval(3f) - [INTRINSIC] determines the maximum value in an array or row'
+write(io,'(a)')'     maxval(3f) - [INTRINSIC:TRANSFORMATIONAL FUNCTION] determines the maximum value in an array or row'
 write(io,'(a)')''
 write(io,'(a)')'SYNTAX'
 write(io,'(a)')''
@@ -6508,34 +6508,50 @@ write(io,'(a)')'NAME'
 write(io,'(a)')'     merge(3f) - [INTRINSIC:ARRAY CONSTRUCTION] Merge variables'
 write(io,'(a)')''
 write(io,'(a)')'SYNTAX'
-write(io,'(a)')''
-write(io,'(a)')'   result = merge(tsource, fsource, mask)'
+write(io,'(a)')'     result = merge(tsource, fsource, mask)'
 write(io,'(a)')''
 write(io,'(a)')'DESCRIPTION'
-write(io,'(a)')''
 write(io,'(a)')'   Select values from two arrays according to a logical mask. The result'
 write(io,'(a)')'   is equal to TSOURCE if MASK is .true., or equal to'
 write(io,'(a)')'   FSOURCE if it is .false..'
 write(io,'(a)')''
 write(io,'(a)')'ARGUMENTS'
-write(io,'(a)')''
 write(io,'(a)')'   TSOURCE  - May be of any type.'
 write(io,'(a)')'   FSOURCE  - Shall be of the same type and type parameters'
 write(io,'(a)')'              as TSOURCE.'
 write(io,'(a)')'   MASK  - Shall be of type LOGICAL.'
 write(io,'(a)')''
 write(io,'(a)')'RETURN VALUE'
-write(io,'(a)')''
 write(io,'(a)')'   The result is of the same type and type parameters as TSOURCE.'
+write(io,'(a)')'   For any element the result is TSOURCE if MASK is true and FSOURCE otherwise.'
+write(io,'(a)')''
+write(io,'(a)')'EXAMPLES'
+write(io,'(a)')'  The value of'
+write(io,'(a)')''
+write(io,'(a)')'   MERGE (1.0, 0.0, K > 0)'
+write(io,'(a)')''
+write(io,'(a)')'  is 1.0 for K = 5 and 0.0 for K = ­2.'
+write(io,'(a)')''
+write(io,'(a)')'   program demo_merge'
+write(io,'(a)')'   integer :: TSRC(2,3), FSRC(2,3), ANSWER(2,3)'
+write(io,'(a)')'   logical :: MASK(2,3)'
+write(io,'(a)')''
+write(io,'(a)')'   TSRC(1,:)=[ 1,6,5 ]; FSRC(1,:)=[ 0,3,2 ]; MASK(1,:)=[.TRUE., .FALSE.,.TRUE.]'
+write(io,'(a)')'   TSRC(2,:)=[ 2,4,6 ]; FSRC(2,:)=[ 7,4,8 ]; MASK(2,:)=[.FALSE.,.FALSE.,.TRUE.]'
+write(io,'(a)')''
+write(io,'(a)')'   ANSWER=MERGE(TSRC,FSRC,MASK)'
+write(io,'(a)')'   write(*,''(3i2)'')(answer(i,:),i=1,size(answer,dim=1))'
+write(io,'(a)')'   end program demo_merge'
+write(io,'(a)')''
+write(io,'(a)')'  Expected result'
+write(io,'(a)')''
+write(io,'(a)')'    1 3 5'
+write(io,'(a)')'    7 4 6'
 write(io,'(a)')''
 write(io,'(a)')'STANDARD'
-write(io,'(a)')''
 write(io,'(a)')'   [[Fortran 95]] and later'
-write(io,'(a)')''
 write(io,'(a)')'CLASS'
-write(io,'(a)')''
 write(io,'(a)')'   [[Elemental procedure|Elemental function]]'
-write(io,'(a)')''
 write(io,'(a)')'NAME'
 write(io,'(a)')'     merge_bits(3f) - [INTRINSIC:BIT MANIPULATION] Merge of bits under mask'
 write(io,'(a)')''
@@ -6637,7 +6653,7 @@ write(io,'(a)')''
 write(io,'(a)')'   [[Inquiry function]]'
 write(io,'(a)')''
 write(io,'(a)')'NAME'
-write(io,'(a)')'     minloc(3f) - [INTRINSIC] Location of the minimum value within an array'
+write(io,'(a)')'     minloc(3f) - [INTRINSIC:TRANSFORMATIONAL FUNCTION] Location of the minimum value within an array'
 write(io,'(a)')''
 write(io,'(a)')'SYNTAX'
 write(io,'(a)')''
@@ -6690,7 +6706,7 @@ write(io,'(a)')''
 write(io,'(a)')'   [[min]], [[minval]]'
 write(io,'(a)')''
 write(io,'(a)')'NAME'
-write(io,'(a)')'     minval(3f) - [INTRINSIC] Minimum value of an array'
+write(io,'(a)')'     minval(3f) - [INTRINSIC:TRANSFORMATIONAL FUNCTION] Minimum value of an array'
 write(io,'(a)')''
 write(io,'(a)')'SYNTAX'
 write(io,'(a)')''
@@ -7138,7 +7154,7 @@ write(io,'(a)')'   [[iand]], [[ior]], [[ieor]], [[ibits]],'
 write(io,'(a)')'   [[ibset]], [[ibclr]]'
 write(io,'(a)')''
 write(io,'(a)')'NAME'
-write(io,'(a)')'     null(3f) - [INTRINSIC] Function that returns an disassociated pointer'
+write(io,'(a)')'     null(3f) - [INTRINSIC:TRANSFORMATIONAL FUNCTION] Function that returns an disassociated pointer'
 write(io,'(a)')''
 write(io,'(a)')'SYNTAX'
 write(io,'(a)')''
@@ -7300,7 +7316,7 @@ write(io,'(a)')''
 write(io,'(a)')'   [[unpack]]'
 write(io,'(a)')''
 write(io,'(a)')'NAME'
-write(io,'(a)')'     parity(3f) - [INTRINSIC] Reduction with exclusive or'
+write(io,'(a)')'     parity(3f) - [INTRINSIC:TRANSFORMATIONAL FUNCTION] Reduction with exclusive OR()'
 write(io,'(a)')''
 write(io,'(a)')'SYNTAX'
 write(io,'(a)')''
@@ -7341,7 +7357,7 @@ write(io,'(a)')'   [[Fortran 2008]] and later'
 write(io,'(a)')''
 write(io,'(a)')'CLASS'
 write(io,'(a)')''
-write(io,'(a)')'   [[Transformational function]]'
+write(io,'(a)')'   Transformational function'
 write(io,'(a)')''
 write(io,'(a)')'NAME'
 write(io,'(a)')'     popcnt(3f) - [INTRINSIC:BIT INQUIRY] Number of bits set'
@@ -7521,7 +7537,7 @@ write(io,'(a)')''
 write(io,'(a)')'      [[Inquiry function]]'
 write(io,'(a)')''
 write(io,'(a)')'NAME'
-write(io,'(a)')'        product(3f) - [INTRINSIC] Product of array elements'
+write(io,'(a)')'        product(3f) - [INTRINSIC:TRANSFORMATIONAL FUNCTION] Product of array elements'
 write(io,'(a)')'SYNTAX'
 write(io,'(a)')''
 write(io,'(a)')'   * result = product(array[, mask])'
@@ -9611,6 +9627,248 @@ write(io,'(a)')'  X        X X    XXXXX   X   X   X        X      X            X
 write(io,'(a)')'  X    X  X   X   X   X   X   X   X        X   X  X    X X     X'
 write(io,'(a)')' XXXXXXX XXX XXX XXX XXX XXX XXX XXXX    XXXXXXX XXXXXXX  XXXXX'
 write(io,'(a)')''
+!>
+!!##NAME
+!! Array Constructors - [FORTRAN] An array constructor can be used to create and assign values to rank-one arrays (and array constants)
+!!##SYNTAX
+!! An array constructor takes the following form:
+!!
+!!    (/ac-value-list/)
+!!    [ac-value-list]
+!!
+!!##DESCRIPTION
+!!
+!!
+!!##OPTIONS
+!!
+!! ac-value-list  Is a list of one or more expressions or implied-DO loops. Each ac-value
+!!                must have the same type and kind parameters, and be separated by commas.
+!!
+!! implied-do     An implied-DO loop in an array constructor takes the following form:
+!!
+!!                 (ac-value-list, do-variable = expr1, expr2 [,expr3])
+!!
+!! do-variable    Is the name of a scalar integer variable. Its scope is that of the implied-DO loop.
+!!
+!!
+!! expr           Is a scalar integer expression. The expr1 and expr2 specify a range of
+!!                values for the loop; expr3 specifies the stride. The expr3 must be a
+!!                nonzero value; if it is omitted, it is assumed to be 1.
+!!
+!!
+!! Description
+!!
+!! The array constructed has the same type as the ac-value-list expressions.
+!!
+!! If the sequence of values specified by the array constructor is empty
+!! (an empty array expression or the implied-DO loop produces no values),
+!! the rank-one array has a size of zero.
+!!
+!! An ac-value is interpreted as follows:
+!!
+!!
+!! Form of ac-value     Result
+!!
+!! A scalar expression  Its value is an element of the new array.
+!! An array expression  The values of the elements in the expression (in
+!!                      array element order) are the corresponding sequence of elements in the
+!!                      new array.
+!! An implied-DO loop   It is expanded to form a list of array elements
+!!                      under control of the DO variable (like a DO construct).
+!!
+!! The following shows the three forms of an ac-value:
+!!
+!!   C1 = (/4,8,7,6/)                  ! A scalar expression
+!!   C2 = (/B(I, 1:5), B(I:J, 7:9)/)   ! An array expression
+!!   C3 = (/(I, I=1, 4)/)              ! An implied-DO loop
+!!
+!! You can also mix these forms, for example:
+!!
+!!   C4 = (/4, A(1:5), (I, I=1, 4), 7/)
+!!
+!! If every expression in an array constructor is a constant expression,
+!! the array constructor is a constant expression.
+!!
+!! If the expressions are of type character, Fortran 95/90 requires each
+!! expression to have the same character length.
+!!
+!! However, Intel Fortran allows the character expressions to be of different
+!! character lengths. The length of the resultant character array is the
+!! maximum of the lengths of the individual character expressions. For
+!! example:
+!!
+!!    print *,len ( (/'a','ab','abc','d'/) )
+!!    print *,'++'//(/'a','ab','abc','d'/)//'--'
+!!
+!! This causes the following to be displayed:
+!!
+!!            3
+!!  ++a  --++ab --++abc--++d  --
+!!
+!!
+!! If an implied-DO loop is contained within another implied-DO loop
+!! (nested), they cannot have the same DO variable (do-variable).
+!!
+!! To define arrays of more than one dimension, use the RESHAPE intrinsic
+!! function.
+!!
+!! The following are alternative forms for array constructors:
+!!
+!! Square brackets (instead of parentheses and slashes) to enclose
+!! array constructors; for example, the following two array constructors
+!! are equivalent:
+!!
+!!   INTEGER C(4)
+!!   C = (/4,8,7,6/)
+!!   C = [4,8,7,6]
+!!
+!!##EXAMPLES
+!!
+!!
+!! The following example shows an array constructor using an implied-DO loop:
+!!
+!!   INTEGER ARRAY_C(10)
+!!   ARRAY_C = (/(I, I=30, 48, 2)/)
+!!
+!! The values of ARRAY_C are the even numbers 30 through 48.
+!!
+!! Implied-DO expressions and values can be mixed in the value list of an
+!! array constructor. For example:
+!!
+!!  INTEGER A(10)
+!!  A = (/1, 0, (I, I = -1, -6, -1), -7, -8 /)
+!!  !Mixed values and implied-DO in value list.
+!!
+!! This example sets the elements of A to the values, in order,
+!!
+!!    1, 0, -1, -2, -3, -4, -5, -6, -7, -8.
+!!
+!! The following example shows an array constructor of derived type that
+!! uses a structure constructor:
+!!
+!!    TYPE EMPLOYEE
+!!      INTEGER ID
+!!      CHARACTER(LEN=30) NAME
+!!    END TYPE EMPLOYEE
+!!
+!!    TYPE(EMPLOYEE) CC_4T(4)
+!!    CC_4T = (/EMPLOYEE(2732,"JONES"), EMPLOYEE(0217,"LEE"),     &
+!!              EMPLOYEE(1889,"RYAN"), EMPLOYEE(4339,"EMERSON")/)
+!!
+!! The following example shows how the RESHAPE intrinsic function can be
+!! used to create a multidimensional array:
+!!
+!!   E = (/2.3, 4.7, 6.6/)
+!!   D = RESHAPE(SOURCE = (/3.5, (/2.0, 1.0/), E/), SHAPE = (/2,3/))
+!!
+!! D is a rank-two array with shape (2,3) containing the following elements:
+!!
+!!    3.5    1.0    4.7
+!!    2.0    2.3    6.6
+!!
+!! The following shows another example:
+!!
+!!  INTEGER B(2,3), C(8)
+!!  ! Assign values to a (2,3) array.
+!!  B = RESHAPE((/1, 2, 3, 4, 5, 6/),(/2,3/))
+!!  ! Convert B to a vector before assigning values to
+!!  ! vector C.
+!!  C = (/ 0, RESHAPE(B,(/6/)), 7 /)
+!!
+!!
+!! Example using general purpose fortran routines
+!!
+!!    program f12 ! initializing small arrays
+!!    use M_display, only : disp, disp_set
+!!    implicit none
+!!    integer :: i
+!!    integer, parameter :: yy(*) = [  10,20,30  ,  40,50,60  ] ! make some data in a vector, could type this where yy appears below
+!!    ! xx is same thing as yy, just using syntax for filling it that makes it clearer what I want to do with the data
+!!    integer, parameter :: xx(*) = [ [10,20,30] , [40,50,60] ] ! make some data in a vector, could type this where xx appears below
+!!
+!!    integer, dimension(2,3)::aa = reshape(xx,shape(aa),order=[2,1])      ! 2d by rows using reshaped scalar expression
+!!    integer, dimension(2,3)::bb = reshape(xx,shape(bb)             )     ! 2d by columns
+!!    integer, dimension(2,3)::cc = reshape(xx,shape(cc),order=[1,2])      ! 2d by columns
+!!    integer, dimension(2,3)::dd = reshape([(i*10,i=1,size(dd))],shape(dd)) ! an implied do by columns
+!!
+!!    integer, dimension(2,3):: ff, gg, hh
+!!    ! CANNOT DO
+!!    !integer, dimension(2,3)::ff = [10,20,30,40,50,60 ]                                     ! 2d by columns
+!!    ! BUT CAN DO
+!!    data ff/10,20,30,40,50,60/  ! fill 2D with simple data statement
+!!    ! AND CAN DO
+!!    ! multi-dimensional by equivalence
+!!    integer                :: ee(2,3)
+!!    integer                :: e(size(ee))=xx
+!!    equivalence               (e(1),ee(1,1))
+!!    ! CANNOT DO
+!!    !integer, dimension(2,3)::gg = [10,20,30] , [40,50,60]
+!!    !integer, dimension(2,3)::gg = [[10,20,30] , [40,50,60]]
+!!    ! BUT CAN DO
+!!    data gg(1,:)/ 10, 20, 30 /     ! fill rows with data statements
+!!    data gg(2,:)/ 40, 50, 60 /
+!!
+!!    data hh(:,1)/ 10, 40 /         ! fill columns with data statements
+!!    data hh(:,2)/ 20, 50 /
+!!    data hh(:,3)/ 30, 60 /
+!!       call disp_set(style='left & number')
+!!
+!!       write(*,*)'SIZE(aa)=',size(aa)
+!!       write(*,*)'SHAPE(aa)=',shape(aa)
+!!       write(*,*)'xx=',xx
+!!       write(*,*)'yy=',yy
+!!
+!!       call disp('aa=',aa)
+!!       call disp('bb=',bb)
+!!       call disp('cc=',cc)
+!!       call disp('dd=',dd)
+!!
+!!       call disp('ee=',ee)
+!!
+!!       call disp('ff=',ff)
+!!       call disp('gg=',gg)
+!!       call disp('hh=',hh)
+!!
+!!       write(*,*)repeat('=',80)
+!!       write(*,*)hh
+!!       write(*,*)repeat('=',80)
+!!       call print_buildfmt(hh)
+!!       write(*,*)repeat('=',80)
+!!       call print_fixedfmt(hh)
+!!
+!!    contains
+!!
+!!    subroutine print_buildfmt(arr)
+!!    use M_strings, only : v2s
+!!    implicit none
+!!    integer,intent(in) :: arr(:,:)
+!!    integer :: i
+!!    character(len=:),allocatable :: fmt
+!!       fmt='("> [",'//v2s(size(arr,dim=2))//'(i0:,","),"]")'
+!!       write(*,*)'FMT=',fmt
+!!       write(*,fmt)(arr(i,:),i=1,size(arr,dim=1))
+!!    end subroutine print_buildfmt
+!!
+!!    subroutine print_fixedfmt(arr)
+!!    implicit none
+!!    integer,intent(in) :: arr(:,:)
+!!    integer :: i
+!!       do i=1,size(arr,dim=1)
+!!          write(*, '("> [",*(i0:,","))' ,advance='no')arr(i,:)
+!!          write(*,'("]")')
+!!       enddo
+!!    end subroutine print_fixedfmt
+!!
+!!    end program f12
+!!
+!!##SEE ALSO
+!! â o DO construct
+!! â o Derived types
+!! â o Structure constructors
+!! â o Array Elements for details on array element order
+!! â o Array Assignment Statements for details on another way to assign values to arrays
+!! â o Declaration Statements for Arrays for details on array specifications
+!===================================================================================================================================
 write(io,'(a)')'NAME'
 write(io,'(a)')'   data(7f) - [FORTRAN] DATA statement'
 write(io,'(a)')''

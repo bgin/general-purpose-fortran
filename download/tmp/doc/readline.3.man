@@ -2,10 +2,10 @@ NAME
     readline(3f)  - [M_io] read a line from specified LUN into allocatable string up to line length limit
 
 SYNTAX
-  readline(lun,line,ier)
+  function readline(line,lun) result(ier)
 
-   integer,intent(in) :: lun
    character(len=:),allocatable,intent(out) :: line
+   integer,intent(in) :: lun
    integer,intent(out) :: ier
 
 DESCRIPTION
@@ -26,7 +26,6 @@ DESCRIPTION
    time could (depending on the programming environment used) be
    inefficient, as it could reallocate and allocate memory used for
    the output string with each buffer read.
-
 
 EXAMPLE
   Sample program:

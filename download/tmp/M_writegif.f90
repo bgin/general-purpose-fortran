@@ -57,17 +57,24 @@
 !!##LICENSE
 !!    Licence: public domain.
 !===================================================================================================================================
+!>
+!! PRODUCT:        CLI library utilities and examples
+!! PROGRAM:        M_writegif(3f)
+!! DESCRIPTION:    This module can write a GIF file in GIF89 format from raster data
+!!##VERSION:        1.01, 19990808
+!! AUTHOR:         Jos Bergervoet
+!!##VERSION:        2.00, 20080128
+!! AUTHOR:         version by [[Clive Page]] makes use of Fortran stream I/O, array as colourmap
+!!##VERSION:        3.00, 20170706
+!! AUTHOR:         Modified by John Urban to make it easier to use with M_PIXEL(3f) module.
+!! LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.
+!!                 There is NO WARRANTY, to the extent permitted by law.
+!===================================================================================================================================
 module M_writegif
-!  This module can write a GIF file in GIF89 format.
-!  Originally written by Jos Bergervoet, this version by [[Clive Page]] makes use of Fortran [[Stream Input Output|stream I/O]].
-!  Licence: public domain.
-!  Conversion of raster data to GIF format.
-!
-!  Version 1.01, August 1999
-!  Written by Jos Bergervoet
-! 2008 Jan 28: Modified by Clive Page to use stream I/O, array as colourmap.
-!
 implicit none         !  Check all declarations
+
+character(len=*),parameter::ident="@(#)This module can write a GIF file in GIF89 format from raster data"
+
 private               !  bin_io is used private, no transfer to main program
 public  :: writegif   !  Writes GIF89 image, given pixel array and color map
 private :: giflzw, slicewrite, InitTable, flushbuffer
@@ -307,5 +314,4 @@ integer, intent(in), optional           :: Transparent ! Optional
   close(unit=F_unit)
   return
 end subroutine writegif
-!-----------------------------------------------------------------------------
 end module M_writegif

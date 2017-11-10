@@ -12,7 +12,7 @@ cat <<\EOF
 <h2>(for Fortran Command Line Interface Collection)</h2>
 
 <p>
-   There is one file to download for the libjust4 library -
+   There is one file to download for the libGPF library -
    <a href="../../just4.tgz" style="background-color: yellow"
       title="
       It is easiest to pull all the CLI (Command Line Interface) sources
@@ -66,7 +66,7 @@ cat <<\EOF
    For other programming environments you will need to change the lines
    in the Makefile that define the compiler command. Many Fortran 2003
    features are required. Recently, I have only tested with GNU Fortran
-   (GCC) 5.4.0 .
+   (GCC) 6.4.0 .
 </p>
 
 <hr>
@@ -126,7 +126,7 @@ EOF
 echo '<h3> Alphabetical listing of HTML documents: </h3>'
 (
 cd tmp/html
-find . -type f -name '*.html'|sort|
+find . -type f -name '*.html'|sort --ignore-case|
 while read NAME
 do
    SHORTNAME=$(BASENAME $NAME .html)

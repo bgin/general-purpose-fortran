@@ -53,7 +53,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'   lsup(1f) - [FUNIX] list permissions of pathname and directories in pathname  ',&
+'   lsup(1f) - [FUNIX:FILESYSTEM] list permissions of pathname and directories in pathname',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   lsup NAME... |-help|-version]                                                ',&
@@ -97,7 +97,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    lsup(1f) - [FUNIX] list permissions of pathname and directories in pathname
+!!    lsup(1f) - [FUNIX:FILESYSTEM] list permissions of pathname and directories in pathname
 !!
 !!##SYNOPSIS
 !!
@@ -152,7 +152,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0.0>',&
 '@(#)DATE:           2017-10-12>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sat, Oct 21st, 2017 1:25:35 PM>',&
+'@(#)COMPILED:       Sun, Oct 22nd, 2017 4:40:21 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

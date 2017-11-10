@@ -2948,7 +2948,8 @@ end function sec2days
 !!
 !!##DESCRIPTION
 !!      Given a string representing a duration of the form
-!!      "[-][[[dd-]hh:]mm:]ss" return a value representing seconds
+!!      "[-][[[dd-]hh:]mm:]ss"  or NNdNNhNNmNNsNNw
+!!      return a value representing seconds
 !!
 !!      If "dd-" is present, units for the numbers are assumed to
 !!      proceed from day to hour to minute to second. But if no
@@ -2966,10 +2967,22 @@ end function sec2days
 !!          Where dd is days, hh hours, mm minutes and ss seconds.  A decimal
 !!          fraction is supported on the seconds.
 !!
-!!          An optional suffix of s,m,h, or d may be supplied to indicate
-!!          seconds, minutes, hours, or days when a simple numeric value
-!!          is supplied.
+!!          The numeric values may represent floating point numbers.  Spaces are ignored.
 !!
+!!        NNdNNhNNmNNs
+!!          Simple numeric values may also be used with unit suffixes; where
+!!          s,m,h, or d represents seconds, minutes, hours or days and w
+!!          represents a week. Allowed aliases for w,d,h,m, and s units are
+!!
+!!                           d -  days,day
+!!                           m -  minutes,minute,min
+!!                           h -  hours,hour,hrs,hr
+!!                           s -  seconds,second,sec
+!!                           w -  week, weeks
+!!
+!!          The numeric values may represent floating point numbers.
+!!
+!!          Spaces, commas and case are ignored.
 !!
 !!##OPTIONS
 !!       str   string of the general form dd-hh:mm:ss.nn
@@ -2988,6 +3001,15 @@ end function sec2days
 !!        write(*,*)'one minute ',days2sec('1:00')
 !!        write(*,*)'one hour ',days2sec('1:00:00')
 !!        write(*,*)'one day ',days2sec('1-00:00:00')
+!!        write(*,*)nint(days2sec(' 1-12:04:20              ')) .eq. 129860
+!!        write(*,*)nint(days2sec(' 1.5 days                ')) .eq. 129600
+!!        write(*,*)nint(days2sec(' 1.5 days 4hrs 30minutes ')) .eq. 145800
+!!        write(*,*)nint(days2sec(' 1.5d                    ')) .eq. 129600
+!!        write(*,*)nint(days2sec(' 1d2h3m4s                ')) .eq. 93784
+!!        ! duplicates
+!!        write(*,*)nint(days2sec(' 1d1d1d                  ')) .eq. 259200
+!!        ! negative values
+!!        write(*,*)nint(days2sec(' 4d-12h                  ')) .eq. 302400
 !!     end program demo_days2sec
 !!
 !!    Results:
@@ -2997,6 +3019,13 @@ end function sec2days
 !!     one minute    60.000000000000000
 !!     one hour    3600.0000000000000
 !!     one day    86400.000000000000
+!!     T
+!!     T
+!!     T
+!!     T
+!!     T
+!!     T
+!!     T
 !===================================================================================================================================
 function days2sec(str) result(time)
 use M_strings, only: split, compact, s2v, transliterate

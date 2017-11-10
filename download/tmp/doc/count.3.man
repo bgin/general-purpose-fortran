@@ -1,5 +1,5 @@
 NAME
-   count(3f) - [INTRINSIC] Count function
+   count(3f) - [INTRINSIC:TRANSFORMATIONAL FUNCTION] Count function
 
 SYNTAX
 

@@ -1,5 +1,5 @@
 NAME
-       _ls(1f) - [FUNIX] list files in a directory
+       _ls(1f) - [FUNIX:FILESYSTEM] list files in a directory
 SYNOPSIS
        _ls [directory|--version|--help] [-a] [-l|-csv]
 DESCRIPTION
