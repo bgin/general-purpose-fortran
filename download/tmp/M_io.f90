@@ -970,7 +970,7 @@ end function isdir
 !===================================================================================================================================
 !>
 !!##NAME
-!!     readline(3f)  - [M_io] read a line from specified LUN into allocatable string up to line length limit
+!!     readline(3f) - [M_io] read a line from specified LUN into allocatable string up to line length limit
 !!
 !!##SYNTAX
 !!   function readline(line,lun) result(ier)

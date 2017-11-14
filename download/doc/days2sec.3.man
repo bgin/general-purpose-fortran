@@ -36,10 +36,10 @@ DESCRIPTION
          represents a week. Allowed aliases for w,d,h,m, and s units are
 
                           d -  days,day
-                          m -  minutes,minute,min
-                          h -  hours,hour,hrs,hr
-                          s -  seconds,second,sec
-                          w -  week, weeks
+                          m -  minutes,minute,min,mins
+                          h -  hours,hour,hr,hrs
+                          s -  seconds,second,sec,secs
+                          w -  week, weeks, wk, wks
 
          The numeric values may represent floating point numbers.
 

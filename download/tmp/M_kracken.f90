@@ -1053,6 +1053,10 @@ integer,intent(out),optional :: error_return
 !-----------------------------------------------------------------------------------------------------------------------------------
       integer                :: ier
 !-----------------------------------------------------------------------------------------------------------------------------------
+      if(debug)then
+         write(*,*)'DISSECT ',trim(verb)//'::'//trim(init)//'::'//trim(pars)
+      endif
+!-----------------------------------------------------------------------------------------------------------------------------------
       call store(trim(verb)//'_?','.false.',"add",ier)   ! all commands have the option -? to invoke prompt mode
       call parse(trim(verb),init,"add")                  ! initialize command
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -1152,6 +1156,10 @@ integer                              ::  itype
 integer                              ::  ifwd
 integer                              ::  ibegin
 integer                              ::  iend
+!-----------------------------------------------------------------------------------------------------------------------------------
+   if(debug)then
+      write(*,*)'PARSE ',trim(verb)//'::'//trim(string)//'::'//trim(allow)
+   endif
 !-----------------------------------------------------------------------------------------------------------------------------------
    leftover=" "
    current_command_length=0
@@ -1370,6 +1378,10 @@ integer,intent(out)                   :: ier         ! flag if error occurs in a
    integer                            :: ii
    integer                            :: i10
 !-----------------------------------------------------------------------------------------------------------------------------------
+   if(debug)then
+      write(*,*)'STORE ',trim(name1)//'::'//trim(value1)//'::'//trim(allow1)
+   endif
+!-----------------------------------------------------------------------------------------------------------------------------------
    value=" "
    name=" "
    allow=" "
@@ -1513,6 +1525,10 @@ character(len=*),intent(out)               :: mssge
    integer                                 :: imax
    integer                                 :: i10
 !-----------------------------------------------------------------------------------------------------------------------------------
+   if(debug)then
+      write(*,*)'BOUNCE A:',trim(varnam)
+   endif
+!-----------------------------------------------------------------------------------------------------------------------------------
    maxtry=int(log(float(IPic))/log(2.0)+1.0)              ! calculate max number of tries required to find a conforming name
    index=(IPic+1)/2
    imin=1
@@ -1520,6 +1536,9 @@ character(len=*),intent(out)               :: mssge
 !-----------------------------------------------------------------------------------------------------------------------------------
    do i10=1,maxtry
       if(varnam  ==  dictionary(index))then
+         if(debug)then
+            write(*,*)'BOUNCE F:FOUND:',trim(varnam)//'::'//trim(dictionary(index))//'::',index
+         endif
          return
       else if(varnam > dictionary(index))then
          imax=index-1
@@ -1531,7 +1550,13 @@ character(len=*),intent(out)               :: mssge
          if(iabs(index) > IPic)then
             mssge="error 03 in bounce"
             ier=-1
+            if(debug)then
+               write(*,*)'BOUNCE B:ERROR:',trim(varnam)//'::'//trim(mssge)
+            endif
             return
+         endif
+         if(debug)then
+            write(*,*)'BOUNCE C:NOT FOUND:',trim(varnam)//'::',index
          endif
          return
       endif
@@ -1539,11 +1564,17 @@ character(len=*),intent(out)               :: mssge
       if(index > IPic.or.index <= 0)then
          mssge="error 01 in bounce"
          ier=-1
+         if(debug)then
+            write(*,*)'BOUNCE D:ERROR:',trim(varnam)//'::'//trim(mssge)
+         endif
          return
       endif
    enddo
 !-----------------------------------------------------------------------------------------------------------------------------------
    mssge="error 02 in bounce"
+   if(debug)then
+      write(*,*)'BOUNCE E:ERROR:',trim(varnam)//'::'//trim(mssge)
+   endif
 !-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine bounce
 !===================================================================================================================================

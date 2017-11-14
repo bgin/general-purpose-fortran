@@ -1,0 +1,19 @@
+NAME
+       rep(1) - [FILE FILTER] replace fixed strings in files
+
+SYNOPSIS
+       rep filenames -c /from/to/
+
+DESCRIPTION
+       The rep(1) utility changes strings in-place in files.
+
+       files named on the command are modified in-place, so you may want
+       to make a copy of the original before converting it.  rep(1) prints
+       a message indicating which of the input files it actually modifies.
+
+OPTIONS
+       -c /from/to/  "from" represents a string to look for and "to" represents
+                     its replacement.
+       -verbose      Print information about what the program does.
+       --help        Display a help message and exit.
+       --version     Display version information and exit.

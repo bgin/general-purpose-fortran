@@ -41,7 +41,7 @@ h1 { font-size:150%; page-break-before:auto;background-color: #aaaaff}\
 h2 { font-size:143%;color:teal; }\
 h3 { font-size:134%;color:blue; }\
 h4 { font-size:120%;color:gray; }\
-p{ padding: 0;margin: 0]\
+p{ padding: 0;margin:0; }\
 p{ padding-right:1.4em; }\
 p{ whitespace: pre-wrap; }\
 h5,h6 { font-size:100% }\

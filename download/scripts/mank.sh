@@ -56,7 +56,13 @@ do
    
    # will truncate description if description has ] not as I expect
    case "$OTHER" in
-   *\]*) OTHER=${OTHER/*\]/} ;;
+   *\]*) 
+      IFS=']'
+      set $OTHER
+      shift
+      OTHER=${*/*\]/}
+   unset IFS
+   ;;
    *) GROUP='&nbsp;' ;;
    esac
 

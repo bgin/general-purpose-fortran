@@ -2975,10 +2975,10 @@ end function sec2days
 !!          represents a week. Allowed aliases for w,d,h,m, and s units are
 !!
 !!                           d -  days,day
-!!                           m -  minutes,minute,min
-!!                           h -  hours,hour,hrs,hr
-!!                           s -  seconds,second,sec
-!!                           w -  week, weeks
+!!                           m -  minutes,minute,min,mins
+!!                           h -  hours,hour,hr,hrs
+!!                           s -  seconds,second,sec,secs
+!!                           w -  week, weeks, wk, wks
 !!
 !!          The numeric values may represent floating point numbers.
 !!
@@ -3065,6 +3065,7 @@ real(kind=realtime)               :: time
       call substitute(strlocal,'hr','h')
       call substitute(strlocal,'minutes','m')
       call substitute(strlocal,'minute','m')
+      call substitute(strlocal,'mins','m')
       call substitute(strlocal,'min','m')
       call substitute(strlocal,'seconds','s')
       call substitute(strlocal,'second','s')

@@ -214,8 +214,8 @@ end type
 type, bind(C) :: dirent_CYGWIN
   integer(c_int)       :: d_version
   integer(c_long)      :: d_ino
-  character(c_char)    :: d_type
-  character(c_char)    :: d_unused1(3)
+  character(kind=c_char)    :: d_type
+  character(kind=c_char)    :: d_unused1(3)
   integer(c_int)       :: d_internal1
   character(len=1,kind=c_char) ::  d_name(256)
 end type

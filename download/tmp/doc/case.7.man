@@ -1,1 +1,1 @@
-.so man7/select.7
+.so select.7

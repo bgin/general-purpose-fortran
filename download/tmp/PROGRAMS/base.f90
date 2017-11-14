@@ -10,7 +10,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '                                                                                ',&
-'   base(1f) - convert numbers between bases                                     ',&
+'   base(1f) - [CONVERT] convert numbers between bases                           ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   base values [-ibase NN][-obase MM][-brief] |[[--help]|[--version]]           ',&
@@ -20,12 +20,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   This program converts a whole number in base IBASE into a number in base OBASE',&
 '   (IBASE and OBASE must be between 2 and 36).                                  ',&
 '                                                                                ',&
-'   The letters A,B,...,Z  represent 10,11,...,36 in a base > 10.                ',&
+'   The letters A,B,...,Z represent 10,11,...,36 in a base > 10.                 ',&
 '                                                                                ',&
 '   The number is first converted from base IBASE to base 10 by DecodeBase(3f),  ',&
-'   then  converted from base 10 to base OBASE by CodeBase(3f).                  ',&
-'                                                                                ',&
-'   Note: Enter -- to exit.                                                      ',&
+'   then converted from base 10 to base OBASE by CodeBase(3f).                   ',&
 '                                                                                ',&
 'OPTIONS                                                                         ',&
 '                                                                                ',&
@@ -40,6 +38,12 @@ help_text=[ CHARACTER(LEN=128) :: &
 '    --brief    just show output value with no base designation                  ',&
 '    --help     display this help and exit                                       ',&
 '    --version  output version information and exit                              ',&
+'                                                                                ',&
+'    Having a pound character (#) in an input line is problematic,               ',&
+'    as both most shell programs and the M_kracken(3f) command line              ',&
+'    parser independently treat the character as beginning an in-line            ',&
+'    comment. Avoid using pound characters and use the colon instead when        ',&
+'    using explicit base numbers in values.                                      ',&
 '                                                                                ',&
 'EXAMPLE                                                                         ',&
 '                                                                                ',&
@@ -82,7 +86,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '      4:123123=10#1755                                                          ',&
 '                                                                                ',&
 '    # convert values of various explicit bases to base10                        ',&
-'    base ''2#11 3#1212 4#123123''                                               ',&
+'    # note the use of both single and double quotes to avoid                    ',&
+'    # problems with a pound character being treated as the start                ',&
+'    # of an in-line comment                                                     ',&
+'    base ''"2#11 3#1212 4#123123"''                                             ',&
 '      2#11=10#3                                                                 ',&
 '      3#1212=10#50                                                              ',&
 '      4#123123=10#1755                                                          ',&
@@ -100,7 +107,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!
-!!    base(1f) - convert numbers between bases
+!!    base(1f) - [CONVERT] convert numbers between bases
 !!
 !!##SYNOPSIS
 !!
@@ -111,12 +118,10 @@ end subroutine help_usage
 !!    This program converts a whole number in base IBASE into a number in base OBASE
 !!    (IBASE and OBASE must be between 2 and 36).
 !!
-!!    The letters A,B,...,Z  represent 10,11,...,36 in a base > 10.
+!!    The letters A,B,...,Z represent 10,11,...,36 in a base > 10.
 !!
 !!    The number is first converted from base IBASE to base 10 by DecodeBase(3f),
-!!    then  converted from base 10 to base OBASE by CodeBase(3f).
-!!
-!!    Note: Enter -- to exit.
+!!    then converted from base 10 to base OBASE by CodeBase(3f).
 !!
 !!##OPTIONS
 !!
@@ -131,6 +136,12 @@ end subroutine help_usage
 !!     --brief    just show output value with no base designation
 !!     --help     display this help and exit
 !!     --version  output version information and exit
+!!
+!!     Having a pound character (#) in an input line is problematic,
+!!     as both most shell programs and the M_kracken(3f) command line
+!!     parser independently treat the character as beginning an in-line
+!!     comment. Avoid using pound characters and use the colon instead when
+!!     using explicit base numbers in values.
 !!
 !!##EXAMPLE
 !!
@@ -174,7 +185,10 @@ end subroutine help_usage
 !!       4:123123=10#1755
 !!
 !!     # convert values of various explicit bases to base10
-!!     base '2#11 3#1212 4#123123'
+!!     # note the use of both single and double quotes to avoid
+!!     # problems with a pound character being treated as the start
+!!     # of an in-line comment
+!!     base '"2#11 3#1212 4#123123"'
 !!       2#11=10#3
 !!       3#1212=10#50
 !!       4#123123=10#1755
@@ -199,7 +213,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20170916>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
-'@(#)COMPILED:       Sat, Oct 21st, 2017 9:02:07 AM>',&
+'@(#)COMPILED:       Sat, Nov 11th, 2017 8:56:37 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -212,6 +226,7 @@ end subroutine help_version
 program demo_base
 use M_strings, only : codebase, decodebase, lower, string_to_value
 use M_kracken, only : kracken, sgets, lget, sget, iget                  ! add command-line parser module
+use M_debug,   only : debug
 implicit none
 character(len=80)             :: endstring
 integer                       :: value_in_base10
@@ -220,7 +235,7 @@ character(len=80),allocatable :: values(:)
 logical                       :: brief
 !-----------------------------------------------------------------------------------------------------------------------------------
    ! define command arguments,default values and crack command line
-   call kracken('base','-help .false. -version .false. -ibase 10 -obase 10 -brief .f. ')
+   call kracken('base','-help .f. -version .f. -ibase 10 -obase 10 -brief .f. -debug .f. ')
 !-----------------------------------------------------------------------------------------------------------------------------------
    call help_usage(lget('base_help'))                                ! if -help option is present, display help text and exit
    call help_version(lget('base_version'))                           ! if -version option is present, display version text and exit
@@ -228,8 +243,11 @@ logical                       :: brief
    ibase=iget('base_ibase')
    obase=iget('base_obase')
    brief=lget('base_brief')
+   debug=lget('base_debug')
    values=sgets('base_oo')
+   write(*,*)'==>debug MODE',debug
    do i=1,size(values)
+      if(debug)write(*,*)i,'==>',lower(values(i))
       if(scan(lower(values(i)),'#:').eq.0)then ! REGULAR NUMBER
          if(decodebase(values(i),ibase,value_in_base10)) then
             if(CodeBase(value_in_base10,obase,endstring)) then
@@ -246,6 +264,7 @@ logical                       :: brief
          endif
       else ! EXPLICIT BASE SPECIFIED (NN#MMMMM)
          call string_to_value(values(i),value_in_base10,ierr)
+         if(debug)write(*,*)i,'==>',lower(values(i)),'==>',value_in_base10
          if(ierr.eq.0) then
             if(CodeBase(value_in_base10,obase,endstring)) then
                if(brief)then

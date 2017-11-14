@@ -67,7 +67,7 @@ END MODULE PUTSTRMODULE
 !   interface
 !     subroutine mexprintf(s) bind(C, name = 'mexPrintf')
 !       import c_char
-!       character(c_char) s(*)
+!       character(kind=c_char) s(*)
 !     end subroutine mexprintf
 !   end interface
 ! CONTAINS

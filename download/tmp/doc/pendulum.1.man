@@ -1,5 +1,5 @@
 NAME
-   pendulum(1f) - [NUMBERS] calculate pendulum period
+   pendulum(1f) - [PHYSICS] calculate pendulum period
 
 SYNOPSIS
    pendulum [-length Length_In_Feet ][-verbose]|[--help]|[--version]

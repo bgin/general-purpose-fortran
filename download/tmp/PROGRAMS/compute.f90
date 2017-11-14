@@ -9,7 +9,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'       compute(1f) - [NUMBERS] evaluate a calculator expression                 ',&
+'       compute(1f) - [MATH] evaluate a calculator expression                    ',&
 'SYNOPSIS                                                                        ',&
 '       compute [STRING] [-verbose]| [-help| -version]                           ',&
 'DESCRIPTION                                                                     ',&
@@ -41,7 +41,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!        compute(1f) - [NUMBERS] evaluate a calculator expression
+!!        compute(1f) - [MATH] evaluate a calculator expression
 !!##SYNOPSIS
 !!
 !!        compute [STRING] [-verbose]| [-help| -version]
@@ -87,7 +87,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sat, Oct 21st, 2017 8:36:50 AM>',&
+'@(#)COMPILED:       Sat, Nov 11th, 2017 9:00:38 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -105,7 +105,6 @@ character(len=iclen_calc) :: outlin
 character(len=iclen_calc) :: event
 character(len=:),allocatable :: readin
 doubleprecision           :: rvalue
-integer                   :: ios
 integer                   :: ierr=0
 logical                   :: verbose
    call jucalc('ownmode(1)',outlin,event,rvalue,ierr)  ! specify user-supplied juown1 routine contains user routines for calculator

@@ -472,7 +472,7 @@ function getwin(filename) result (getwin__OUT) bind(C, name='macro_getwin')
    use ncurses_types
    implicit none
    type(C_PTR) :: getwin__OUT          ! WINDOW *getwin
-   character(C_CHAR) ,intent(in):: filename             ! const char *filename
+   character(kind=c_char) ,intent(in):: filename             ! const char *filename
 end function getwin
 !-------------------------------------------------------------------------------
 !  original:: int putwin(WINDOW *win, FILE *filep); !  change from file pointer to filename and wrap
@@ -482,7 +482,7 @@ function putwin(win,filename) result (putwin__OUT) bind(C, name='macro_putwin')
    implicit none
    INTEGER(C_INT) :: putwin__OUT      ! int putwin
    type(C_PTR),value :: win           ! WINDOW *win
-   character(C_CHAR) ,intent(in):: filename             ! const char *filename
+   character(kind=c_char) ,intent(in):: filename             ! const char *filename
 end function putwin
 !-------------------------------------------------------------------------------
 !MANPAGE ERROR? int COLOR_PAIR(int ipair);
@@ -560,7 +560,7 @@ end function ptr_longname
         integer(C_INT)        :: MyResult
         integer(C_INT), VALUE :: Y,X
         integer(C_INT), VALUE :: I
-        CHARACTER (C_CHAR), INTENT(IN) :: FMT
+        character(kind=c_char), INTENT(IN) :: FMT
      END FUNCTION I_MVPRINTW
 !-------------------------------------------------------------------------------
      FUNCTION I2_MVPRINTW (Y, X, FMT, I) RESULT(MyResult) BIND(C,NAME='i2_mvprintw')
@@ -568,7 +568,7 @@ end function ptr_longname
         integer(C_INT)                 :: MyResult
         integer(C_INT),          VALUE :: Y,X
         integer(C_SHORT),        VALUE :: I
-        CHARACTER (C_CHAR), INTENT(IN) :: FMT
+        character(kind=c_char), INTENT(IN) :: FMT
      END FUNCTION I2_MVPRINTW
 !-------------------------------------------------------------------------------
      FUNCTION L_MVPRINTW (Y, X, FMT, I) RESULT(MyResult) BIND(C,NAME='l_mvprintw')
@@ -576,7 +576,7 @@ end function ptr_longname
         integer(C_INT)                 :: MyResult
         integer(C_INT),          VALUE :: Y,X
         integer(C_LONG),         VALUE :: I
-        CHARACTER (C_CHAR), INTENT(IN) :: FMT
+        character(kind=c_char), INTENT(IN) :: FMT
      END FUNCTION L_MVPRINTW
 !-------------------------------------------------------------------------------
      FUNCTION II_MVPRINTW (Y, X, FMT, I, J) RESULT(MyResult) BIND(C,NAME='ii_mvprintw')
@@ -585,7 +585,7 @@ end function ptr_longname
         integer(C_INT), VALUE          :: Y,X
         integer(C_INT), VALUE          :: I
         integer(C_INT), VALUE          :: J
-        CHARACTER (C_CHAR), INTENT(IN) :: FMT
+        character(kind=c_char), INTENT(IN) :: FMT
      END FUNCTION II_MVPRINTW
 !-------------------------------------------------------------------------------
      FUNCTION R_MVPRINTW (Y, X, FMT, R) RESULT(MyResult) BIND(C,NAME='r_mvprintw')
@@ -593,15 +593,15 @@ end function ptr_longname
         integer(C_INT)                :: MyResult
         integer(C_INT), VALUE         :: Y,X
         REAL (C_FLOAT), VALUE         :: R
-        CHARACTER (C_CHAR),INTENT(IN) :: FMT
+        character(kind=c_char),INTENT(IN) :: FMT
      END FUNCTION R_MVPRINTW
 !-------------------------------------------------------------------------------
      FUNCTION S_MVPRINTW (Y, X, FMT, STRING) RESULT(MyResult) BIND(C,NAME='s_mvprintw')
         USE ISO_C_BINDING
         integer(C_INT)                :: MyResult
         integer(C_INT), VALUE         :: Y,X
-        CHARACTER (C_CHAR),INTENT(IN) :: FMT
-        CHARACTER (C_CHAR),INTENT(IN) :: STRING
+        character(kind=c_char),INTENT(IN) :: FMT
+        character(kind=c_char),INTENT(IN) :: STRING
      END FUNCTION S_MVPRINTW
 !-------------------------------------------------------------------------------
      FUNCTION N_MVPRINTW (Y, X, FMT) RESULT(MyResult) BIND(C,NAME='n_mvprintw')
@@ -621,21 +621,21 @@ end function ptr_longname
         USE ISO_C_BINDING
         integer(C_INT)                 :: MyResult
         integer(C_INT), VALUE          :: I
-        CHARACTER (C_CHAR), INTENT(IN) :: FMT
+        character(kind=c_char), INTENT(IN) :: FMT
      END FUNCTION I_PRINTW
 !-------------------------------------------------------------------------------
      FUNCTION I2_PRINTW (FMT, I) RESULT(MyResult) BIND(C,NAME='i2_printw')
         USE ISO_C_BINDING
         integer(C_INT)                 :: MyResult
         integer(C_SHORT), VALUE        :: I
-        CHARACTER (C_CHAR), INTENT(IN) :: FMT
+        character(kind=c_char), INTENT(IN) :: FMT
      END FUNCTION I2_PRINTW
 !-------------------------------------------------------------------------------
      FUNCTION L_PRINTW (FMT, I) RESULT(MyResult) BIND(C,NAME='l_printw')
         USE ISO_C_BINDING
         integer(C_INT)                 :: MyResult
         integer(C_LONG), VALUE         :: I
-        CHARACTER (C_CHAR), INTENT(IN) :: FMT
+        character(kind=c_char), INTENT(IN) :: FMT
      END FUNCTION L_PRINTW
 !-------------------------------------------------------------------------------
      FUNCTION II_PRINTW (FMT, I, J) RESULT(MyResult) BIND(C,NAME='ii_printw')
@@ -643,21 +643,21 @@ end function ptr_longname
         integer(C_INT)                 :: MyResult
         integer(C_INT), VALUE          :: I
         integer(C_INT), VALUE          :: J
-        CHARACTER (C_CHAR), INTENT(IN) :: FMT
+        character(kind=c_char), INTENT(IN) :: FMT
      END FUNCTION II_PRINTW
 !-------------------------------------------------------------------------------
      FUNCTION R_PRINTW (FMT, R) RESULT(MyResult) BIND(C,NAME='r_printw')
         USE ISO_C_BINDING
         integer(C_INT)                 :: MyResult
         REAL (C_FLOAT),VALUE           :: R
-        CHARACTER (C_CHAR),INTENT(IN)  :: FMT
+        character(kind=c_char),INTENT(IN)  :: FMT
      END FUNCTION R_PRINTW
 !-------------------------------------------------------------------------------
      FUNCTION S_PRINTW (FMT, STRING) RESULT(MyResult) BIND(C,NAME='s_printw')
         USE ISO_C_BINDING
         integer(C_INT)                 :: MyResult
-        CHARACTER (C_CHAR),INTENT(IN)  :: FMT
-        CHARACTER (C_CHAR),INTENT(IN)  :: STRING
+        character(kind=c_char),INTENT(IN)  :: FMT
+        character(kind=c_char),INTENT(IN)  :: STRING
      END FUNCTION S_PRINTW
 !-------------------------------------------------------------------------------
      FUNCTION N_PRINTW (FMT) RESULT(MyResult) BIND(C,NAME='n_printw')
@@ -677,7 +677,7 @@ end function ptr_longname
         integer(C_INT)        :: MyResult
         integer(C_INT), VALUE :: Y,X
         integer(C_INT), VALUE :: I
-        CHARACTER (C_CHAR), INTENT(IN) :: FMT
+        character(kind=c_char), INTENT(IN) :: FMT
      END FUNCTION I_mvwprintw
 !-------------------------------------------------------------------------------
      FUNCTION I2_mvwprintw (WIN, Y, X, FMT, I) RESULT(MyResult) BIND(C,NAME='i2_mvwprintw')
@@ -686,7 +686,7 @@ end function ptr_longname
         integer(C_INT)                 :: MyResult
         integer(C_INT),          VALUE :: Y,X
         integer(C_SHORT),        VALUE :: I
-        CHARACTER (C_CHAR), INTENT(IN) :: FMT
+        character(kind=c_char), INTENT(IN) :: FMT
      END FUNCTION I2_mvwprintw
 !-------------------------------------------------------------------------------
      FUNCTION L_mvwprintw (WIN, Y, X, FMT, I) RESULT(MyResult) BIND(C,NAME='l_mvwprintw')
@@ -695,7 +695,7 @@ end function ptr_longname
         integer(C_INT)                 :: MyResult
         integer(C_INT),          VALUE :: Y,X
         integer(C_LONG),         VALUE :: I
-        CHARACTER (C_CHAR), INTENT(IN) :: FMT
+        character(kind=c_char), INTENT(IN) :: FMT
      END FUNCTION L_mvwprintw
 !-------------------------------------------------------------------------------
      FUNCTION II_mvwprintw (WIN, Y, X, FMT, I, J) RESULT(MyResult) BIND(C,NAME='ii_mvwprintw')
@@ -705,7 +705,7 @@ end function ptr_longname
         integer(C_INT), VALUE          :: Y,X
         integer(C_INT), VALUE          :: I
         integer(C_INT), VALUE          :: J
-        CHARACTER (C_CHAR), INTENT(IN) :: FMT
+        character(kind=c_char), INTENT(IN) :: FMT
      END FUNCTION II_mvwprintw
 !-------------------------------------------------------------------------------
      FUNCTION R_mvwprintw (WIN, Y, X, FMT, R) RESULT(MyResult) BIND(C,NAME='r_mvwprintw')
@@ -714,7 +714,7 @@ end function ptr_longname
         integer(C_INT)                :: MyResult
         integer(C_INT), VALUE         :: Y,X
         REAL (C_FLOAT), VALUE         :: R
-        CHARACTER (C_CHAR),INTENT(IN) :: FMT
+        character(kind=c_char),INTENT(IN) :: FMT
      END FUNCTION R_mvwprintw
 !-------------------------------------------------------------------------------
      FUNCTION S_mvwprintw (WIN, Y, X, FMT, STRING) RESULT(MyResult) BIND(C,NAME='s_mvwprintw')
@@ -722,8 +722,8 @@ end function ptr_longname
         type(C_PTR) ,value:: win                  ! const WINDOW *win
         integer(C_INT)                :: MyResult
         integer(C_INT), VALUE         :: Y,X
-        CHARACTER (C_CHAR),INTENT(IN) :: FMT
-        CHARACTER (C_CHAR),INTENT(IN) :: STRING
+        character(kind=c_char),INTENT(IN) :: FMT
+        character(kind=c_char),INTENT(IN) :: STRING
      END FUNCTION S_mvwprintw
 !-------------------------------------------------------------------------------
      FUNCTION N_mvwprintw (WIN, Y, X, FMT) RESULT(MyResult) BIND(C,NAME='n_mvwprintw')
@@ -744,7 +744,7 @@ end function ptr_longname
         type(C_PTR) ,value:: win                  ! const WINDOW *win
         integer(C_INT)        :: MyResult
         integer(C_INT), VALUE :: I
-        CHARACTER (C_CHAR), INTENT(IN) :: FMT
+        character(kind=c_char), INTENT(IN) :: FMT
      END FUNCTION I_wprintw
 !-------------------------------------------------------------------------------
      FUNCTION I2_wprintw (WIN, FMT, I) RESULT(MyResult) BIND(C,NAME='i2_wprintw')
@@ -752,7 +752,7 @@ end function ptr_longname
         type(C_PTR) ,value:: win                  ! const WINDOW *win
         integer(C_INT)                 :: MyResult
         integer(C_SHORT),        VALUE :: I
-        CHARACTER (C_CHAR), INTENT(IN) :: FMT
+        character(kind=c_char), INTENT(IN) :: FMT
      END FUNCTION I2_wprintw
 !-------------------------------------------------------------------------------
      FUNCTION L_wprintw (WIN, FMT, I) RESULT(MyResult) BIND(C,NAME='l_wprintw')
@@ -760,7 +760,7 @@ end function ptr_longname
         type(C_PTR) ,value:: win                  ! const WINDOW *win
         integer(C_INT)                 :: MyResult
         integer(C_LONG),         VALUE :: I
-        CHARACTER (C_CHAR), INTENT(IN) :: FMT
+        character(kind=c_char), INTENT(IN) :: FMT
      END FUNCTION L_wprintw
 !-------------------------------------------------------------------------------
      FUNCTION II_wprintw (WIN, FMT, I, J) RESULT(MyResult) BIND(C,NAME='ii_wprintw')
@@ -769,7 +769,7 @@ end function ptr_longname
         integer(C_INT)                 :: MyResult
         integer(C_INT), VALUE          :: I
         integer(C_INT), VALUE          :: J
-        CHARACTER (C_CHAR), INTENT(IN) :: FMT
+        character(kind=c_char), INTENT(IN) :: FMT
      END FUNCTION II_wprintw
 !-------------------------------------------------------------------------------
      FUNCTION R_wprintw (WIN, FMT, R) RESULT(MyResult) BIND(C,NAME='r_wprintw')
@@ -777,15 +777,15 @@ end function ptr_longname
         type(C_PTR) ,value:: win                  ! const WINDOW *win
         integer(C_INT)                :: MyResult
         REAL (C_FLOAT), VALUE         :: R
-        CHARACTER (C_CHAR),INTENT(IN) :: FMT
+        character(kind=c_char),INTENT(IN) :: FMT
      END FUNCTION R_wprintw
 !-------------------------------------------------------------------------------
      FUNCTION S_wprintw (WIN, FMT, STRING) RESULT(MyResult) BIND(C,NAME='s_wprintw')
         USE ISO_C_BINDING
         type(C_PTR) ,value:: win                  ! const WINDOW *win
         integer(C_INT)                :: MyResult
-        CHARACTER (C_CHAR),INTENT(IN) :: FMT
-        CHARACTER (C_CHAR),INTENT(IN) :: STRING
+        character(kind=c_char),INTENT(IN) :: FMT
+        character(kind=c_char),INTENT(IN) :: STRING
      END FUNCTION S_wprintw
 !-------------------------------------------------------------------------------
      FUNCTION N_wprintw (WIN, FMT) RESULT(MyResult) BIND(C,NAME='n_wprintw')
@@ -806,21 +806,21 @@ end function ptr_longname
         USE ISO_C_BINDING
         integer(C_INT)                 :: MyResult
         integer(C_INT)                 :: I
-        CHARACTER (C_CHAR), INTENT(IN) :: FMT
+        character(kind=c_char), INTENT(IN) :: FMT
      END FUNCTION I_SCANW
 !-------------------------------------------------------------------------------
      FUNCTION I2_SCANW (FMT, I) RESULT(MyResult) BIND(C,NAME='i2_scanw')
         USE ISO_C_BINDING
         integer(C_INT)                 :: MyResult
         integer(C_SHORT)               :: I
-        CHARACTER (C_CHAR), INTENT(IN) :: FMT
+        character(kind=c_char), INTENT(IN) :: FMT
      END FUNCTION I2_SCANW
 !-------------------------------------------------------------------------------
      FUNCTION L_SCANW (FMT, I) RESULT(MyResult) BIND(C,NAME='l_scanw')
         USE ISO_C_BINDING
         integer(C_INT)                 :: MyResult
         integer(C_LONG)                :: I
-        CHARACTER (C_CHAR), INTENT(IN) :: FMT
+        character(kind=c_char), INTENT(IN) :: FMT
      END FUNCTION L_SCANW
 !-------------------------------------------------------------------------------
      FUNCTION II_SCANW (FMT, I, J) RESULT(MyResult) BIND(C,NAME='ii_scanw')
@@ -828,21 +828,21 @@ end function ptr_longname
         integer(C_INT)                 :: MyResult
         integer(C_INT)                 :: I
         integer(C_INT)                 :: J
-        CHARACTER (C_CHAR), INTENT(IN) :: FMT
+        character(kind=c_char), INTENT(IN) :: FMT
      END FUNCTION II_SCANW
 !-------------------------------------------------------------------------------
      FUNCTION R_SCANW (FMT, R) RESULT(MyResult) BIND(C,NAME='r_scanw')
         USE ISO_C_BINDING
         integer(C_INT)                 :: MyResult
         REAL (C_FLOAT)                 :: R
-        CHARACTER (C_CHAR),INTENT(IN)  :: FMT
+        character(kind=c_char),INTENT(IN)  :: FMT
      END FUNCTION R_SCANW
 !-------------------------------------------------------------------------------
      FUNCTION S_SCANW (FMT, STRING) RESULT(MyResult) BIND(C,NAME='s_scanw')
         USE ISO_C_BINDING
         integer(C_INT)                 :: MyResult
-        CHARACTER (C_CHAR),INTENT(IN)  :: FMT
-        CHARACTER (C_CHAR),INTENT(IN)  :: STRING
+        character(kind=c_char),INTENT(IN)  :: FMT
+        character(kind=c_char),INTENT(IN)  :: STRING
      END FUNCTION S_SCANW
 !-------------------------------------------------------------------------------
   END INTERFACE SCANW
@@ -854,7 +854,7 @@ end function ptr_longname
         integer(C_INT)                 :: MyResult
         integer(C_INT)                 :: I
         integer(C_INT), VALUE          :: Y,X
-        CHARACTER (C_CHAR), INTENT(IN) :: FMT
+        character(kind=c_char), INTENT(IN) :: FMT
      END FUNCTION I_mvscanw
 !-------------------------------------------------------------------------------
      FUNCTION I2_mvscanw (Y,X,FMT, I) RESULT(MyResult) BIND(C,NAME='i2_mvscanw')
@@ -862,7 +862,7 @@ end function ptr_longname
         integer(C_INT)                 :: MyResult
         integer(C_SHORT)               :: I
         integer(C_INT), VALUE          :: Y,X
-        CHARACTER (C_CHAR), INTENT(IN) :: FMT
+        character(kind=c_char), INTENT(IN) :: FMT
      END FUNCTION I2_mvscanw
 !-------------------------------------------------------------------------------
      FUNCTION L_mvscanw (Y,X,FMT, I) RESULT(MyResult) BIND(C,NAME='l_mvscanw')
@@ -870,7 +870,7 @@ end function ptr_longname
         integer(C_INT)                 :: MyResult
         integer(C_LONG)                :: I
         integer(C_INT), VALUE          :: Y,X
-        CHARACTER (C_CHAR), INTENT(IN) :: FMT
+        character(kind=c_char), INTENT(IN) :: FMT
      END FUNCTION L_mvscanw
 !-------------------------------------------------------------------------------
      FUNCTION II_mvscanw (Y,X,FMT, I, J) RESULT(MyResult) BIND(C,NAME='ii_mvscanw')
@@ -879,7 +879,7 @@ end function ptr_longname
         integer(C_INT)                 :: I
         integer(C_INT)                 :: J
         integer(C_INT), VALUE          :: Y,X
-        CHARACTER (C_CHAR), INTENT(IN) :: FMT
+        character(kind=c_char), INTENT(IN) :: FMT
      END FUNCTION II_mvscanw
 !-------------------------------------------------------------------------------
      FUNCTION R_mvscanw (Y,X,FMT, R) RESULT(MyResult) BIND(C,NAME='r_mvscanw')
@@ -887,15 +887,15 @@ end function ptr_longname
         integer(C_INT)                 :: MyResult
         REAL (C_FLOAT)                 :: R
         integer(C_INT), VALUE          :: Y,X
-        CHARACTER (C_CHAR),INTENT(IN)  :: FMT
+        character(kind=c_char),INTENT(IN)  :: FMT
      END FUNCTION R_mvscanw
 !-------------------------------------------------------------------------------
      FUNCTION S_mvscanw (Y,X,FMT, STRING) RESULT(MyResult) BIND(C,NAME='s_mvscanw')
         USE ISO_C_BINDING
         integer(C_INT)                 :: MyResult
         integer(C_INT), VALUE          :: Y,X
-        CHARACTER (C_CHAR),INTENT(IN)  :: FMT
-        CHARACTER (C_CHAR),INTENT(IN)  :: STRING
+        character(kind=c_char),INTENT(IN)  :: FMT
+        character(kind=c_char),INTENT(IN)  :: STRING
      END FUNCTION S_mvscanw
 !-------------------------------------------------------------------------------
   END INTERFACE mvscanw
@@ -908,7 +908,7 @@ end function ptr_longname
         integer(C_INT)                 :: MyResult
         integer(C_INT)                 :: I
         integer(C_INT), VALUE          :: Y,X
-        CHARACTER (C_CHAR), INTENT(IN) :: FMT
+        character(kind=c_char), INTENT(IN) :: FMT
      END FUNCTION I_mvwscanw
 !-------------------------------------------------------------------------------
      FUNCTION I2_mvwscanw (WIN,Y,X,FMT, I) RESULT(MyResult) BIND(C,NAME='i2_mvwscanw')
@@ -917,7 +917,7 @@ end function ptr_longname
         integer(C_INT)                 :: MyResult
         integer(C_SHORT)               :: I
         integer(C_INT), VALUE          :: Y,X
-        CHARACTER (C_CHAR), INTENT(IN) :: FMT
+        character(kind=c_char), INTENT(IN) :: FMT
      END FUNCTION I2_mvwscanw
 !-------------------------------------------------------------------------------
      FUNCTION L_mvwscanw (WIN,Y,X,FMT, I) RESULT(MyResult) BIND(C,NAME='l_mvwscanw')
@@ -926,7 +926,7 @@ end function ptr_longname
         integer(C_INT)                 :: MyResult
         integer(C_LONG)                :: I
         integer(C_INT), VALUE          :: Y,X
-        CHARACTER (C_CHAR), INTENT(IN) :: FMT
+        character(kind=c_char), INTENT(IN) :: FMT
      END FUNCTION L_mvwscanw
 !-------------------------------------------------------------------------------
      FUNCTION II_mvwscanw (WIN,Y,X,FMT, I, J) RESULT(MyResult) BIND(C,NAME='ii_mvwscanw')
@@ -936,7 +936,7 @@ end function ptr_longname
         integer(C_INT)                 :: I
         integer(C_INT)                 :: J
         integer(C_INT), VALUE          :: Y,X
-        CHARACTER (C_CHAR), INTENT(IN) :: FMT
+        character(kind=c_char), INTENT(IN) :: FMT
      END FUNCTION II_mvwscanw
 !-------------------------------------------------------------------------------
      FUNCTION R_mvwscanw (WIN,Y,X,FMT, R) RESULT(MyResult) BIND(C,NAME='r_mvwscanw')
@@ -945,7 +945,7 @@ end function ptr_longname
         integer(C_INT)                 :: MyResult
         REAL (C_FLOAT)                 :: R
         integer(C_INT), VALUE          :: Y,X
-        CHARACTER (C_CHAR),INTENT(IN)  :: FMT
+        character(kind=c_char),INTENT(IN)  :: FMT
      END FUNCTION R_mvwscanw
 !-------------------------------------------------------------------------------
      FUNCTION S_mvwscanw (WIN,Y,X,FMT, STRING) RESULT(MyResult) BIND(C,NAME='s_mvwscanw')
@@ -953,8 +953,8 @@ end function ptr_longname
         type(C_PTR) ,value:: win                  ! const WINDOW *win
         integer(C_INT)                 :: MyResult
         integer(C_INT), VALUE          :: Y,X
-        CHARACTER (C_CHAR),INTENT(IN)  :: FMT
-        CHARACTER (C_CHAR),INTENT(IN)  :: STRING
+        character(kind=c_char),INTENT(IN)  :: FMT
+        character(kind=c_char),INTENT(IN)  :: STRING
      END FUNCTION S_mvwscanw
 !-------------------------------------------------------------------------------
   END INTERFACE MVWSCANW
@@ -966,7 +966,7 @@ end function ptr_longname
         type(C_PTR) ,value:: win                  ! const WINDOW *win
         integer(C_INT)                 :: MyResult
         integer(C_INT)                 :: I
-        CHARACTER (C_CHAR), INTENT(IN) :: FMT
+        character(kind=c_char), INTENT(IN) :: FMT
      END FUNCTION I_wscanw
 !-------------------------------------------------------------------------------
      FUNCTION I2_wscanw (WIN,FMT, I) RESULT(MyResult) BIND(C,NAME='i2_wscanw')
@@ -974,7 +974,7 @@ end function ptr_longname
         type(C_PTR) ,value:: win                  ! const WINDOW *win
         integer(C_INT)                 :: MyResult
         integer(C_SHORT)               :: I
-        CHARACTER (C_CHAR), INTENT(IN) :: FMT
+        character(kind=c_char), INTENT(IN) :: FMT
      END FUNCTION I2_wscanw
 !-------------------------------------------------------------------------------
      FUNCTION L_wscanw (WIN,FMT, I) RESULT(MyResult) BIND(C,NAME='l_wscanw')
@@ -982,7 +982,7 @@ end function ptr_longname
         type(C_PTR) ,value:: win                  ! const WINDOW *win
         integer(C_INT)                 :: MyResult
         integer(C_LONG)                :: I
-        CHARACTER (C_CHAR), INTENT(IN) :: FMT
+        character(kind=c_char), INTENT(IN) :: FMT
      END FUNCTION L_wscanw
 !-------------------------------------------------------------------------------
      FUNCTION II_wscanw (WIN,FMT, I, J) RESULT(MyResult) BIND(C,NAME='ii_wscanw')
@@ -991,7 +991,7 @@ end function ptr_longname
         integer(C_INT)                 :: MyResult
         integer(C_INT)                 :: I
         integer(C_INT)                 :: J
-        CHARACTER (C_CHAR), INTENT(IN) :: FMT
+        character(kind=c_char), INTENT(IN) :: FMT
      END FUNCTION II_wscanw
 !-------------------------------------------------------------------------------
      FUNCTION R_wscanw (WIN,FMT, R) RESULT(MyResult) BIND(C,NAME='r_wscanw')
@@ -999,15 +999,15 @@ end function ptr_longname
         type(C_PTR) ,value:: win                  ! const WINDOW *win
         integer(C_INT)                 :: MyResult
         REAL (C_FLOAT)                 :: R
-        CHARACTER (C_CHAR),INTENT(IN)  :: FMT
+        character(kind=c_char),INTENT(IN)  :: FMT
      END FUNCTION R_wscanw
 !-------------------------------------------------------------------------------
      FUNCTION S_wscanw (WIN,FMT, STRING) RESULT(MyResult) BIND(C,NAME='s_wscanw')
         USE ISO_C_BINDING
         type(C_PTR) ,value:: win                  ! const WINDOW *win
         integer(C_INT)                 :: MyResult
-        CHARACTER (C_CHAR),INTENT(IN)  :: FMT
-        CHARACTER (C_CHAR),INTENT(IN)  :: STRING
+        character(kind=c_char),INTENT(IN)  :: FMT
+        character(kind=c_char),INTENT(IN)  :: STRING
      END FUNCTION S_wscanw
 !-------------------------------------------------------------------------------
   END INTERFACE wscanw
@@ -1062,7 +1062,7 @@ function unctrl(c) result (unctrl__OUT) bind(C, name='unctrl')
    use,intrinsic ::  iso_c_binding
    use ncurses_types
    implicit none
-   character(C_CHAR):: unctrl__OUT          ! char *unctrl
+   character(kind=c_char):: unctrl__OUT          ! char *unctrl
    integer(kind=chtype) ,value:: c                    ! chtype c
 end function unctrl
 !-------------------------------------------------------------------------------
@@ -1356,7 +1356,7 @@ function mvaddstr(y,x,str) result (mvaddstr__OUT) bind(C, name='mvaddstr')
    INTEGER(C_INT) :: mvaddstr__OUT        ! int mvaddstr
    INTEGER(C_INT) ,value:: y                    ! int y
    INTEGER(C_INT) ,value:: x                    ! int x
-   character(C_CHAR) ,intent(in):: str                  ! const char *str
+   character(kind=c_char) ,intent(in):: str                  ! const char *str
 end function mvaddstr
 !-------------------------------------------------------------------------------
 ! CDEF: attr_t slk_attr ( void );
@@ -1558,7 +1558,7 @@ function scr_dump(filename) result (scr_dump__OUT) bind(C, name='scr_dump')
    use ncurses_types
    implicit none
    INTEGER(C_INT) :: scr_dump__OUT        ! int scr_dump
-   character(C_CHAR) ,intent(in):: filename             ! const char *filename
+   character(kind=c_char) ,intent(in):: filename             ! const char *filename
 end function scr_dump
 !-------------------------------------------------------------------------------
 ! CDEF: int scr_init ( const char *filename );
@@ -1567,7 +1567,7 @@ function scr_init(filename) result (scr_init__OUT) bind(C, name='scr_init')
    use ncurses_types
    implicit none
    INTEGER(C_INT) :: scr_init__OUT        ! int scr_init
-   character(C_CHAR) ,intent(in):: filename             ! const char *filename
+   character(kind=c_char) ,intent(in):: filename             ! const char *filename
 end function scr_init
 !-------------------------------------------------------------------------------
 ! CDEF: int scr_restore ( const char *filename );
@@ -1576,7 +1576,7 @@ function scr_restore(filename) result (scr_restore__OUT) bind(C, name='scr_resto
    use ncurses_types
    implicit none
    INTEGER(C_INT) :: scr_restore__OUT     ! int scr_restore
-   character(C_CHAR) ,intent(in):: filename             ! const char *filename
+   character(kind=c_char) ,intent(in):: filename             ! const char *filename
 end function scr_restore
 !-------------------------------------------------------------------------------
 ! CDEF: int scr_set ( const char *filename );
@@ -1585,7 +1585,7 @@ function scr_set(filename) result (scr_set__OUT) bind(C, name='scr_set')
    use ncurses_types
    implicit none
    INTEGER(C_INT) :: scr_set__OUT         ! int scr_set
-   character(C_CHAR) ,intent(in):: filename             ! const char *filename
+   character(kind=c_char) ,intent(in):: filename             ! const char *filename
 end function scr_set
 !-------------------------------------------------------------------------------
 ! COMMENT: #######################################################
@@ -1777,7 +1777,7 @@ function keybound(keycode,count) result (keybound__OUT) bind(C, name='keybound')
    use,intrinsic ::  iso_c_binding
    use ncurses_types
    implicit none
-   character(C_CHAR):: keybound__OUT        ! char *keybound
+   character(kind=c_char):: keybound__OUT        ! char *keybound
    INTEGER(C_INT) ,value:: keycode              ! int keycode
    INTEGER(C_INT) ,value:: count                ! int count
 end function keybound
@@ -1787,7 +1787,7 @@ function slk_label(labnum) result (slk_label__OUT) bind(C, name='slk_label')
    use,intrinsic ::  iso_c_binding
    use ncurses_types
    implicit none
-   character(C_CHAR):: slk_label__OUT       ! char *slk_label
+   character(kind=c_char):: slk_label__OUT       ! char *slk_label
    INTEGER(C_INT) ,value:: labnum               ! int labnum
 end function slk_label
 !-------------------------------------------------------------------------------
@@ -1796,7 +1796,7 @@ function erasechar() result (erasechar__OUT) bind(C, name='erasechar')
    use,intrinsic ::  iso_c_binding
    use ncurses_types
    implicit none
-   CHARACTER(C_CHAR) :: erasechar__OUT       ! char erasechar
+   character(kind=c_char) :: erasechar__OUT       ! char erasechar
    !!!!!!!!!!!!!!!!!!!!!:: void                 ! void
 end function erasechar
 !-------------------------------------------------------------------------------
@@ -1805,7 +1805,7 @@ function killchar() result (killchar__OUT) bind(C, name='killchar')
    use,intrinsic ::  iso_c_binding
    use ncurses_types
    implicit none
-   CHARACTER(C_CHAR) :: killchar__OUT        ! char killchar
+   character(kind=c_char) :: killchar__OUT        ! char killchar
    !!!!!!!!!!!!!!!!!!!!!:: void                 ! void
 end function killchar
 !-------------------------------------------------------------------------------
@@ -1920,7 +1920,7 @@ function addstr(str) result (addstr__OUT) bind(C, name='addstr')
    use ncurses_types
    implicit none
    INTEGER(C_INT) :: addstr__OUT             ! int addstr
-   character(C_CHAR) ,intent(in):: str       ! const char *str
+   character(kind=c_char) ,intent(in):: str       ! const char *str
 end function addstr
 !-------------------------------------------------------------------------------
 ! CDEF: int addnstr ( const char *str, int n );
@@ -1929,7 +1929,7 @@ function addnstr(str,n) result (addnstr__OUT) bind(C, name='addnstr')
    use ncurses_types
    implicit none
    INTEGER(C_INT) :: addnstr__OUT            ! int addnstr
-   character(C_CHAR) ,intent(in):: str       ! const char *str
+   character(kind=c_char) ,intent(in):: str       ! const char *str
    INTEGER(C_INT) ,value:: n                 ! int n
 end function addnstr
 !-------------------------------------------------------------------------------
@@ -2238,7 +2238,7 @@ function define_key(definition,keycode) result (define_key__OUT) bind(C, name='d
    use ncurses_types
    implicit none
    INTEGER(C_INT) :: define_key__OUT            ! int define_key
-   character(C_CHAR) ,intent(in):: definition   ! const char *definition
+   character(kind=c_char) ,intent(in):: definition   ! const char *definition
    INTEGER(C_INT) ,value:: keycode              ! int keycode
 end function define_key
 !-------------------------------------------------------------------------------
@@ -2438,7 +2438,7 @@ function getnstr(str,n) result (getnstr__OUT) bind(C, name='getnstr')
    use ncurses_types
    implicit none
    INTEGER(C_INT) :: getnstr__OUT         ! int getnstr
-   character(C_CHAR):: str                  ! char *str
+   character(kind=c_char):: str                  ! char *str
    INTEGER(C_INT) ,value:: n                    ! int n
 end function getnstr
 !-------------------------------------------------------------------------------
@@ -2466,7 +2466,7 @@ function getstr(str) result (getstr__OUT) bind(C, name='getstr')
    use ncurses_types
    implicit none
    INTEGER(C_INT) :: getstr__OUT          ! int getstr
-   character(C_CHAR):: str                  ! char *str
+   character(kind=c_char):: str                  ! char *str
 end function getstr
 !-------------------------------------------------------------------------------
 ! CDEF: int halfdelay ( int tenths );
@@ -2593,7 +2593,7 @@ function innstr(str,n) result (innstr__OUT) bind(C, name='innstr')
    use ncurses_types
    implicit none
    INTEGER(C_INT) :: innstr__OUT          ! int innstr
-   character(C_CHAR):: str                  ! char *str
+   character(kind=c_char):: str                  ! char *str
    INTEGER(C_INT) ,value:: n                    ! int n
 end function innstr
 !-------------------------------------------------------------------------------
@@ -2639,7 +2639,7 @@ function insnstr(str,n) result (insnstr__OUT) bind(C, name='insnstr')
    use ncurses_types
    implicit none
    INTEGER(C_INT) :: insnstr__OUT         ! int insnstr
-   character(C_CHAR) ,intent(in):: str                  ! const char *str
+   character(kind=c_char) ,intent(in):: str                  ! const char *str
    INTEGER(C_INT) ,value:: n                    ! int n
 end function insnstr
 !-------------------------------------------------------------------------------
@@ -2649,7 +2649,7 @@ function insstr(str) result (insstr__OUT) bind(C, name='insstr')
    use ncurses_types
    implicit none
    INTEGER(C_INT) :: insstr__OUT          ! int insstr
-   character(C_CHAR) ,intent(in):: str                  ! const char *str
+   character(kind=c_char) ,intent(in):: str                  ! const char *str
 end function insstr
 !-------------------------------------------------------------------------------
 ! CDEF: int instr ( char *str );
@@ -2658,7 +2658,7 @@ function instr(str) result (instr__OUT) bind(C, name='instr')
    use ncurses_types
    implicit none
    INTEGER(C_INT) :: instr__OUT           ! int instr
-   character(C_CHAR):: str                  ! char *str
+   character(kind=c_char):: str                  ! char *str
 end function instr
 !-------------------------------------------------------------------------------
 ! CDEF: int intrflush ( const WINDOW *win, bool bf );
@@ -2677,7 +2677,7 @@ function key_defined(definition) result (key_defined__OUT) bind(C, name='key_def
    use ncurses_types
    implicit none
    INTEGER(C_INT) :: key_defined__OUT     ! int key_defined
-   character(C_CHAR) ,intent(in):: definition           ! const char *definition
+   character(kind=c_char) ,intent(in):: definition           ! const char *definition
 end function key_defined
 !-------------------------------------------------------------------------------
 ! CDEF: int keyok ( int keycode, bool enable );
@@ -2706,7 +2706,7 @@ function mcprint(data,len) result (mcprint__OUT) bind(C, name='mcprint')
    use ncurses_types
    implicit none
    INTEGER(C_INT) :: mcprint__OUT         ! int mcprint
-   character(C_CHAR):: data                 ! char *data
+   character(kind=c_char):: data                 ! char *data
    INTEGER(C_INT) ,value:: len                  ! int len
 end function mcprint
 !-------------------------------------------------------------------------------
@@ -2806,7 +2806,7 @@ function mvaddnstr(y,x,str,n) result (mvaddnstr__OUT) bind(C, name='mvaddnstr')
    INTEGER(C_INT) :: mvaddnstr__OUT       ! int mvaddnstr
    INTEGER(C_INT) ,value:: y                    ! int y
    INTEGER(C_INT) ,value:: x                    ! int x
-   character(C_CHAR) ,intent(in):: str                  ! const char *str
+   character(kind=c_char) ,intent(in):: str                  ! const char *str
    INTEGER(C_INT) ,value:: n                    ! int n
 end function mvaddnstr
 !-------------------------------------------------------------------------------
@@ -2883,7 +2883,7 @@ function mvgetnstr(y,x,str,n) result (mvgetnstr__OUT) bind(C, name='mvgetnstr')
    INTEGER(C_INT) :: mvgetnstr__OUT       ! int mvgetnstr
    INTEGER(C_INT) ,value:: y                    ! int y
    INTEGER(C_INT) ,value:: x                    ! int x
-   character(C_CHAR):: str                  ! char *str
+   character(kind=c_char):: str                  ! char *str
    INTEGER(C_INT) ,value:: n                    ! int n
 end function mvgetnstr
 !-------------------------------------------------------------------------------
@@ -2895,7 +2895,7 @@ function mvgetstr(y,x,str) result (mvgetstr__OUT) bind(C, name='mvgetstr')
    INTEGER(C_INT) :: mvgetstr__OUT        ! int mvgetstr
    INTEGER(C_INT) ,value:: y                    ! int y
    INTEGER(C_INT) ,value:: x                    ! int x
-   character(C_CHAR):: str                  ! char *str
+   character(kind=c_char):: str                  ! char *str
 end function mvgetstr
 !-------------------------------------------------------------------------------
 ! CDEF: int mvhline ( int y, int x, chtype ch, int n );
@@ -2987,7 +2987,7 @@ function mvinnstr(y,x,str,n) result (mvinnstr__OUT) bind(C, name='mvinnstr')
    INTEGER(C_INT) :: mvinnstr__OUT        ! int mvinnstr
    INTEGER(C_INT) ,value:: y                    ! int y
    INTEGER(C_INT) ,value:: x                    ! int x
-   character(C_CHAR):: str                  ! char *str
+   character(kind=c_char):: str                  ! char *str
    INTEGER(C_INT) ,value:: n                    ! int n
 end function mvinnstr
 !-------------------------------------------------------------------------------
@@ -3021,7 +3021,7 @@ function mvinsnstr(y,x,str,n) result (mvinsnstr__OUT) bind(C, name='mvinsnstr')
    INTEGER(C_INT) :: mvinsnstr__OUT       ! int mvinsnstr
    INTEGER(C_INT) ,value:: y                    ! int y
    INTEGER(C_INT) ,value:: x                    ! int x
-   character(C_CHAR) ,intent(in):: str                  ! const char *str
+   character(kind=c_char) ,intent(in):: str                  ! const char *str
    INTEGER(C_INT) ,value:: n                    ! int n
 end function mvinsnstr
 !-------------------------------------------------------------------------------
@@ -3033,7 +3033,7 @@ function mvinsstr(y,x,str) result (mvinsstr__OUT) bind(C, name='mvinsstr')
    INTEGER(C_INT) :: mvinsstr__OUT        ! int mvinsstr
    INTEGER(C_INT) ,value:: y                    ! int y
    INTEGER(C_INT) ,value:: x                    ! int x
-   character(C_CHAR) ,intent(in):: str                  ! const char *str
+   character(kind=c_char) ,intent(in):: str                  ! const char *str
 end function mvinsstr
 !-------------------------------------------------------------------------------
 ! CDEF: int mvinstr ( int y, int x, char *str );
@@ -3044,7 +3044,7 @@ function mvinstr(y,x,str) result (mvinstr__OUT) bind(C, name='mvinstr')
    INTEGER(C_INT) :: mvinstr__OUT         ! int mvinstr
    INTEGER(C_INT) ,value:: y                    ! int y
    INTEGER(C_INT) ,value:: x                    ! int x
-   character(C_CHAR):: str                  ! char *str
+   character(kind=c_char):: str                  ! char *str
 end function mvinstr
 !-------------------------------------------------------------------------------
 ! CDEF: int mvvline ( int y, int x, chtype ch, int n );
@@ -3154,7 +3154,7 @@ function mvwaddnstr(win,y,x,str,n) result (mvwaddnstr__OUT) bind(C, name='mvwadd
    type(C_PTR) ,value:: win                  ! const WINDOW *win
    INTEGER(C_INT) ,value:: y                    ! int y
    INTEGER(C_INT) ,value:: x                    ! int x
-   character(C_CHAR) ,intent(in):: str                  ! const char *str
+   character(kind=c_char) ,intent(in):: str                  ! const char *str
    INTEGER(C_INT) ,value:: n                    ! int n
 end function mvwaddnstr
 !-------------------------------------------------------------------------------
@@ -3167,7 +3167,7 @@ function mvwaddstr(win,y,x,str) result (mvwaddstr__OUT) bind(C, name='mvwaddstr'
    type(C_PTR) ,value:: win                  ! const WINDOW *win
    INTEGER(C_INT) ,value:: y                    ! int y
    INTEGER(C_INT) ,value:: x                    ! int x
-   character(C_CHAR) ,intent(in):: str                  ! const char *str
+   character(kind=c_char) ,intent(in):: str                  ! const char *str
 end function mvwaddstr
 !-------------------------------------------------------------------------------
 ! CDEF: int mvwdelch ( const WINDOW *win, int y, int x );
@@ -3238,7 +3238,7 @@ function mvwgetnstr(win,y,x,str,n) result (mvwgetnstr__OUT) bind(C, name='mvwget
    type(C_PTR) ,value:: win                  ! const WINDOW *win
    INTEGER(C_INT) ,value:: y                    ! int y
    INTEGER(C_INT) ,value:: x                    ! int x
-   character(C_CHAR):: str                  ! char *str
+   character(kind=c_char):: str                  ! char *str
    INTEGER(C_INT) ,value:: n                    ! int n
 end function mvwgetnstr
 !-------------------------------------------------------------------------------
@@ -3251,7 +3251,7 @@ function mvwgetstr(win,y,x,str) result (mvwgetstr__OUT) bind(C, name='mvwgetstr'
    type(C_PTR) ,value:: win                  ! const WINDOW *win
    INTEGER(C_INT) ,value:: y                    ! int y
    INTEGER(C_INT) ,value:: x                    ! int x
-   character(C_CHAR):: str                  ! char *str
+   character(kind=c_char):: str                  ! char *str
 end function mvwgetstr
 !-------------------------------------------------------------------------------
 ! CDEF: int mvwhline ( const WINDOW *win, int y, int x, chtype ch, int n );
@@ -3362,7 +3362,7 @@ function mvwinnstr(win,y,x,str,n) result (mvwinnstr__OUT) bind(C, name='mvwinnst
    type(C_PTR) ,value:: win                  ! const WINDOW *win
    INTEGER(C_INT) ,value:: y                    ! int y
    INTEGER(C_INT) ,value:: x                    ! int x
-   character(C_CHAR):: str                  ! char *str
+   character(kind=c_char):: str                  ! char *str
    INTEGER(C_INT) ,value:: n                    ! int n
 end function mvwinnstr
 !-------------------------------------------------------------------------------
@@ -3399,7 +3399,7 @@ function mvwinsnstr(win,y,x,str,n) result (mvwinsnstr__OUT) bind(C, name='mvwins
    type(C_PTR) ,value:: win                  ! const WINDOW *win
    INTEGER(C_INT) ,value:: y                    ! int y
    INTEGER(C_INT) ,value:: x                    ! int x
-   character(C_CHAR) ,intent(in):: str                  ! const char *str
+   character(kind=c_char) ,intent(in):: str                  ! const char *str
    INTEGER(C_INT) ,value:: n                    ! int n
 end function mvwinsnstr
 !-------------------------------------------------------------------------------
@@ -3412,7 +3412,7 @@ function mvwinsstr(win,y,x,str) result (mvwinsstr__OUT) bind(C, name='mvwinsstr'
    type(C_PTR) ,value:: win                  ! const WINDOW *win
    INTEGER(C_INT) ,value:: y                    ! int y
    INTEGER(C_INT) ,value:: x                    ! int x
-   character(C_CHAR) ,intent(in):: str                  ! const char *str
+   character(kind=c_char) ,intent(in):: str                  ! const char *str
 end function mvwinsstr
 !-------------------------------------------------------------------------------
 ! CDEF: int mvwinstr ( const WINDOW *win, int y, int x, char *str );
@@ -3424,7 +3424,7 @@ function mvwinstr(win,y,x,str) result (mvwinstr__OUT) bind(C, name='mvwinstr')
    type(C_PTR) ,value:: win                  ! const WINDOW *win
    INTEGER(C_INT) ,value:: y                    ! int y
    INTEGER(C_INT) ,value:: x                    ! int x
-   character(C_CHAR):: str                  ! char *str
+   character(kind=c_char):: str                  ! char *str
 end function mvwinstr
 !-------------------------------------------------------------------------------
 ! CDEF: int mvwvline ( const WINDOW *win, int y, int x, chtype ch, int n );
@@ -3798,7 +3798,7 @@ function slk_set(labnum,label,fmt) result (slk_set__OUT) bind(C, name='slk_set')
    implicit none
    INTEGER(C_INT) :: slk_set__OUT         ! int slk_set
    INTEGER(C_INT) ,value:: labnum               ! int labnum
-   character(C_CHAR) ,intent(in):: label                ! const char *label
+   character(kind=c_char) ,intent(in):: label                ! const char *label
    INTEGER(C_INT) ,value:: fmt                  ! int fmt
 end function slk_set
 !-------------------------------------------------------------------------------
@@ -4011,7 +4011,7 @@ function waddnstr(win,str,n) result (waddnstr__OUT) bind(C, name='waddnstr')
    implicit none
    INTEGER(C_INT) :: waddnstr__OUT        ! int waddnstr
    type(C_PTR) ,value:: win                  ! const WINDOW *win
-   character(C_CHAR) ,intent(in):: str                  ! const char *str
+   character(kind=c_char) ,intent(in):: str                  ! const char *str
    INTEGER(C_INT) ,value:: n                    ! int n
 end function waddnstr
 !-------------------------------------------------------------------------------
@@ -4022,7 +4022,7 @@ function waddstr(win,str) result (waddstr__OUT) bind(C, name='waddstr')
    implicit none
    INTEGER(C_INT) :: waddstr__OUT         ! int waddstr
    type(C_PTR) ,value:: win                  ! const WINDOW *win
-   character(C_CHAR) ,intent(in):: str                  ! const char *str
+   character(kind=c_char) ,intent(in):: str                  ! const char *str
 end function waddstr
 !-------------------------------------------------------------------------------
 ! CDEF: int wbkgd ( const WINDOW *win, chtype ch );
@@ -4220,7 +4220,7 @@ function wgetnstr(win,str,n) result (wgetnstr__OUT) bind(C, name='wgetnstr')
    implicit none
    INTEGER(C_INT) :: wgetnstr__OUT        ! int wgetnstr
    type(C_PTR) ,value:: win                  ! const WINDOW *win
-   character(C_CHAR):: str                  ! char *str
+   character(kind=c_char):: str                  ! char *str
    INTEGER(C_INT) ,value:: n                    ! int n
 end function wgetnstr
 !-------------------------------------------------------------------------------
@@ -4242,7 +4242,7 @@ function wgetstr(win,str) result (wgetstr__OUT) bind(C, name='wgetstr')
    implicit none
    INTEGER(C_INT) :: wgetstr__OUT         ! int wgetstr
    type(C_PTR) ,value:: win                  ! const WINDOW *win
-   character(C_CHAR):: str                  ! char *str
+   character(kind=c_char):: str                  ! char *str
 end function wgetstr
 !-------------------------------------------------------------------------------
 ! CDEF: int whline ( const WINDOW *win, chtype ch, int n );
@@ -4326,7 +4326,7 @@ function winnstr(win,str,n) result (winnstr__OUT) bind(C, name='winnstr')
    implicit none
    INTEGER(C_INT) :: winnstr__OUT         ! int winnstr
    type(C_PTR) ,value:: win                  ! const WINDOW *win
-   character(C_CHAR):: str                  ! char *str
+   character(kind=c_char):: str                  ! char *str
    INTEGER(C_INT) ,value:: n                    ! int n
 end function winnstr
 !-------------------------------------------------------------------------------
@@ -4376,7 +4376,7 @@ function winsnstr(win,str,n) result (winsnstr__OUT) bind(C, name='winsnstr')
    implicit none
    INTEGER(C_INT) :: winsnstr__OUT        ! int winsnstr
    type(C_PTR) ,value:: win                  ! const WINDOW *win
-   character(C_CHAR) ,intent(in):: str                  ! const char *str
+   character(kind=c_char) ,intent(in):: str                  ! const char *str
    INTEGER(C_INT) ,value:: n                    ! int n
 end function winsnstr
 !-------------------------------------------------------------------------------
@@ -4387,7 +4387,7 @@ function winsstr(win,str) result (winsstr__OUT) bind(C, name='winsstr')
    implicit none
    INTEGER(C_INT) :: winsstr__OUT         ! int winsstr
    type(C_PTR) ,value:: win                  ! const WINDOW *win
-   character(C_CHAR) ,intent(in):: str                  ! const char *str
+   character(kind=c_char) ,intent(in):: str                  ! const char *str
 end function winsstr
 !-------------------------------------------------------------------------------
 ! CDEF: int winstr ( const WINDOW *win, char *str );
@@ -4397,7 +4397,7 @@ function winstr(win,str) result (winstr__OUT) bind(C, name='winstr')
    implicit none
    INTEGER(C_INT) :: winstr__OUT          ! int winstr
    type(C_PTR) ,value:: win                  ! const WINDOW *win
-   character(C_CHAR):: str                  ! char *str
+   character(kind=c_char):: str                  ! char *str
 end function winstr
 !-------------------------------------------------------------------------------
 ! CDEF: int wmove ( const WINDOW *win, int y, int x );
@@ -4521,7 +4521,7 @@ function newterm(type,outfd,infd) result (newterm__OUT) bind(C, name='newterm')
    use ncurses_types
    implicit none
    type(C_PTR):: newterm__OUT         ! SCREEN *newterm
-   character(C_CHAR):: type                 ! char *type
+   character(kind=c_char):: type                 ! char *type
    type(C_PTR):: outfd                ! FILE *outfd
    type(C_PTR):: infd                 ! FILE *infd
 end function newterm

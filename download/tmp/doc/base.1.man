@@ -10,12 +10,10 @@ DESCRIPTION
    This program converts a whole number in base IBASE into a number in base OBASE
    (IBASE and OBASE must be between 2 and 36).
 
-   The letters A,B,...,Z  represent 10,11,...,36 in a base > 10.
+   The letters A,B,...,Z represent 10,11,...,36 in a base > 10.
 
    The number is first converted from base IBASE to base 10 by DecodeBase(3f),
-   then  converted from base 10 to base OBASE by CodeBase(3f).
-
-   Note: Enter -- to exit.
+   then converted from base 10 to base OBASE by CodeBase(3f).
 
 OPTIONS
 
@@ -30,6 +28,12 @@ OPTIONS
     --brief    just show output value with no base designation
     --help     display this help and exit
     --version  output version information and exit
+
+    Having a pound character (#) in an input line is problematic,
+    as both most shell programs and the M_kracken(3f) command line
+    parser independently treat the character as beginning an in-line
+    comment. Avoid using pound characters and use the colon instead when
+    using explicit base numbers in values.
 
 EXAMPLE
 
@@ -72,7 +76,10 @@ EXAMPLE
       4:123123=10#1755
 
     # convert values of various explicit bases to base10
-    base '2#11 3#1212 4#123123'
+    # note the use of both single and double quotes to avoid
+    # problems with a pound character being treated as the start
+    # of an in-line comment
+    base '"2#11 3#1212 4#123123"'
       2#11=10#3
       3#1212=10#50
       4#123123=10#1755
