@@ -1,7 +1,6 @@
 # General-Purpose Fortran Repository
 
-This is a cooperatively developed repository of general purpose Fortran
-modules and libraries.
+This is a repository of general purpose Fortran modules and libraries.
 
 This initial release is a collection of Fortran modules (and in some cases
 their associated C support routines) providing 
@@ -32,9 +31,6 @@ This (mostly) Fortran repository contains modules and procedures primarily
 useful for creating a command line interface (CLI) for a Fortran program. A
 modern Fortran compiler is assumed. This code has been tested using GNU
 Fortran (GCC) 5.4.0.
-
-A modern Fortran compiler is assumed. This code has been tested using
-GNU Fortran (GCC) 5.4.0.
 
 This repository concentrates on those "other" Fortran procedures
 that solve the day-to-day non-numeric(mostly) issues in programming. Large
