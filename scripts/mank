@@ -1,6 +1,6 @@
 #!/bin/bash
 #@(#)mank(1sh): list the manual page names and descriptions found in this distribution
-MANPATH=$(dirname $0)/../man:$HOME/LIBRARY/libjust4/download/tmp/man
+MANPATH=$(dirname $0)/../man:$HOME/LIBRARY/libGPF/download/tmp/man
 
 export LESS_TERMCAP_mb=$(printf '\e[01;31m') # enter blinking mode - red
 export LESS_TERMCAP_md=$(printf '\e[01;35m') # enter double-bright mode - bold, magenta
