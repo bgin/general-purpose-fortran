@@ -1,0 +1,148 @@
+\hypertarget{interfacem__journal_1_1journal}{}\section{m\+\_\+journal\+:\+:journal Interface Reference}
+\label{interfacem__journal_1_1journal}\index{m\+\_\+journal\+::journal@{m\+\_\+journal\+::journal}}
+
+
+\subsubsection*{N\+A\+ME}
+
+journal(3f) -\/ \mbox{[}M\+\_\+journal\mbox{]} provides public message routine, no paging or graphic mode change" \subsubsection*{S\+Y\+N\+O\+P\+S\+IS} 
+
+
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{interfacem__journal_1_1journal_aa275808b96de510b44676e53faba3566}{write\+\_\+msg} (where, msg)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{interfacem__journal_1_1journal_a1d3160c8b7e0f8273fde1ac71b6b4dc7}{wm\+\_\+i} (where, \hyperlink{M__stopwatch_83_8txt_aa4313e9a55405841f95e6550cd87fc3b}{message}, ival)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{interfacem__journal_1_1journal_a09564db3ada040acc04f1fd79a9eb731}{wm\+\_\+r} (where, \hyperlink{M__stopwatch_83_8txt_aa4313e9a55405841f95e6550cd87fc3b}{message}, value)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{interfacem__journal_1_1journal_a88c7dc90a1611f8ff74dcc76a7596d0f}{wm\+\_\+l} (where, \hyperlink{M__stopwatch_83_8txt_aa4313e9a55405841f95e6550cd87fc3b}{message}, truefalse)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{interfacem__journal_1_1journal_a9a977858d9fde59867ceae2beecd6957}{wm\+\_\+d} (where, \hyperlink{M__stopwatch_83_8txt_aa4313e9a55405841f95e6550cd87fc3b}{message}, dvalue)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{interfacem__journal_1_1journal_ae9fcc7d13b5f423e200acaf60ab50975}{wm} (\hyperlink{M__stopwatch_83_8txt_aa4313e9a55405841f95e6550cd87fc3b}{message})
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{interfacem__journal_1_1journal_ab65b84f73ebce1cbac5bbcb047693b87}{set\+\_\+stdout} (iounit)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{interfacem__journal_1_1journal_a653c8f2c31a3cc3bd8b95e3d2e4c290f}{change\+\_\+model} (value, mode)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{N\+A\+ME}
+
+journal(3f) -\/ \mbox{[}M\+\_\+journal\mbox{]} provides public message routine, no paging or graphic mode change" \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+subroutine journal(\mbox{[}where,\mbox{]}message,\mbox{[}\+V\+A\+L\+U\+E\mbox{]}) character(len=$\ast$),intent(in) \+:\+: where character(len=$\ast$),intent(in) \+:\+: msg
+
+write messages
+
+call journal(where,message,\mbox{[}\+V\+A\+L\+U\+E\mbox{]}) call journal(message) ! shortcut for \char`\"{}call journal(\textquotesingle{}sc\textquotesingle{},message)\char`\"{}
+
+open or close trail file
+
+call journal(\textquotesingle{}O\textquotesingle{},\mbox{[}trailfile\+\_\+name$\vert$\textquotesingle{}\textquotesingle{}\mbox{]}) ! open a trail file, or close trail if filename is blank
+
+set output time prefix
+
+call journal(\textquotesingle{}\textquotesingle{},time\+\_\+stamp\+\_\+prefix\+\_\+specification) ! see the N\+O\+W(3f) function
+
+modes
+
+call journal(\mbox{[}.true.$\vert$.false.\mbox{]},\textquotesingle{}debug\textquotesingle{}) ! Turn on/off writing D\+E\+B\+UG messages to trail file
+
+assign stdout to an alternate file
+
+call journal(iunit,filename) ! change stdout to iunit and open filename; or close unit and go back to stdout if filename=\textquotesingle{}\textquotesingle{} call journal(iunit) ! change stdout to iunit to use a file already open
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+W\+H\+E\+RE indicates where messages are written. A combination of the following characters can be used
+
+Usually one of these to write to the standard output file ...
+
+S write to stdout or iounit set with journal(unit) or journal(unit,filename) E write to stderr
+
+And one of these to write to trail file (ignore if no trail file defined) ...
+
+C write to trail file as a comment (if file is open) Writing output \char`\"{}as a comment\char`\"{} means it is preceded by a pound(\#) character. T write to trail file (if file is open)
+
+Usually used by itself
+
+D write to trail file as a comment with D\+E\+B\+UG\+: prefix in front of message (if file is open) if debug mode is on
+
+Modifier for S\+E\+C\+TD
+
+
+\begin{DoxyItemize}
+\item subsequent writes for this call are written with advance=\textquotesingle{}no\textquotesingle{}
+\end{DoxyItemize}
+
+Mode changing options used by themselves\+:
+
+$>$ turn off debug messages $<$ turn on debug messages O open trail file \char`\"{}msg\char`\"{} or close trail file if blank filename \% set prefix to run thru now(3f) to generate time prefix strings
+
+M\+E\+S\+S\+A\+GE message to write to stdout, stderr, and the trail file when writing message. F\+I\+L\+E\+N\+A\+ME when W\+H\+E\+RE=\char`\"{}\+O\char`\"{} to turn the trail file on or off, the message is the filename of a trail to open. T\+F\+O\+R\+M\+AT when W\+H\+E\+RE=\char`\"{}\%\char`\"{} the message is treated as a time format specification as described under now(3f).
+
+V\+A\+L\+UE a numeric value to optionally be appended to the message
+
+\subsubsection*{R\+E\+T\+U\+R\+NS}
+
+\subsubsection*{E\+X\+A\+M\+P\+LE}
+
+\subsection{Member Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{interfacem__journal_1_1journal_a653c8f2c31a3cc3bd8b95e3d2e4c290f}\label{interfacem__journal_1_1journal_a653c8f2c31a3cc3bd8b95e3d2e4c290f}} 
+\index{m\+\_\+journal\+::journal@{m\+\_\+journal\+::journal}!change\+\_\+model@{change\+\_\+model}}
+\index{change\+\_\+model@{change\+\_\+model}!m\+\_\+journal\+::journal@{m\+\_\+journal\+::journal}}
+\subsubsection{\texorpdfstring{change\+\_\+model()}{change\_model()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} m\+\_\+journal\+::journal\+::change\+\_\+model (\begin{DoxyParamCaption}\item[{logical, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{value,  }\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{mode }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{interfacem__journal_1_1journal_ab65b84f73ebce1cbac5bbcb047693b87}\label{interfacem__journal_1_1journal_ab65b84f73ebce1cbac5bbcb047693b87}} 
+\index{m\+\_\+journal\+::journal@{m\+\_\+journal\+::journal}!set\+\_\+stdout@{set\+\_\+stdout}}
+\index{set\+\_\+stdout@{set\+\_\+stdout}!m\+\_\+journal\+::journal@{m\+\_\+journal\+::journal}}
+\subsubsection{\texorpdfstring{set\+\_\+stdout()}{set\_stdout()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} m\+\_\+journal\+::journal\+::set\+\_\+stdout (\begin{DoxyParamCaption}\item[{integer, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{iounit }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{interfacem__journal_1_1journal_ae9fcc7d13b5f423e200acaf60ab50975}\label{interfacem__journal_1_1journal_ae9fcc7d13b5f423e200acaf60ab50975}} 
+\index{m\+\_\+journal\+::journal@{m\+\_\+journal\+::journal}!wm@{wm}}
+\index{wm@{wm}!m\+\_\+journal\+::journal@{m\+\_\+journal\+::journal}}
+\subsubsection{\texorpdfstring{wm()}{wm()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} m\+\_\+journal\+::journal\+::wm (\begin{DoxyParamCaption}\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{message }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{interfacem__journal_1_1journal_a9a977858d9fde59867ceae2beecd6957}\label{interfacem__journal_1_1journal_a9a977858d9fde59867ceae2beecd6957}} 
+\index{m\+\_\+journal\+::journal@{m\+\_\+journal\+::journal}!wm\+\_\+d@{wm\+\_\+d}}
+\index{wm\+\_\+d@{wm\+\_\+d}!m\+\_\+journal\+::journal@{m\+\_\+journal\+::journal}}
+\subsubsection{\texorpdfstring{wm\+\_\+d()}{wm\_d()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} m\+\_\+journal\+::journal\+::wm\+\_\+d (\begin{DoxyParamCaption}\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{where,  }\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{message,  }\item[{doubleprecision, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{dvalue }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{interfacem__journal_1_1journal_a1d3160c8b7e0f8273fde1ac71b6b4dc7}\label{interfacem__journal_1_1journal_a1d3160c8b7e0f8273fde1ac71b6b4dc7}} 
+\index{m\+\_\+journal\+::journal@{m\+\_\+journal\+::journal}!wm\+\_\+i@{wm\+\_\+i}}
+\index{wm\+\_\+i@{wm\+\_\+i}!m\+\_\+journal\+::journal@{m\+\_\+journal\+::journal}}
+\subsubsection{\texorpdfstring{wm\+\_\+i()}{wm\_i()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} m\+\_\+journal\+::journal\+::wm\+\_\+i (\begin{DoxyParamCaption}\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{where,  }\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{message,  }\item[{integer, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{ival }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{interfacem__journal_1_1journal_a88c7dc90a1611f8ff74dcc76a7596d0f}\label{interfacem__journal_1_1journal_a88c7dc90a1611f8ff74dcc76a7596d0f}} 
+\index{m\+\_\+journal\+::journal@{m\+\_\+journal\+::journal}!wm\+\_\+l@{wm\+\_\+l}}
+\index{wm\+\_\+l@{wm\+\_\+l}!m\+\_\+journal\+::journal@{m\+\_\+journal\+::journal}}
+\subsubsection{\texorpdfstring{wm\+\_\+l()}{wm\_l()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} m\+\_\+journal\+::journal\+::wm\+\_\+l (\begin{DoxyParamCaption}\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{where,  }\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{message,  }\item[{logical, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{truefalse }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{interfacem__journal_1_1journal_a09564db3ada040acc04f1fd79a9eb731}\label{interfacem__journal_1_1journal_a09564db3ada040acc04f1fd79a9eb731}} 
+\index{m\+\_\+journal\+::journal@{m\+\_\+journal\+::journal}!wm\+\_\+r@{wm\+\_\+r}}
+\index{wm\+\_\+r@{wm\+\_\+r}!m\+\_\+journal\+::journal@{m\+\_\+journal\+::journal}}
+\subsubsection{\texorpdfstring{wm\+\_\+r()}{wm\_r()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} m\+\_\+journal\+::journal\+::wm\+\_\+r (\begin{DoxyParamCaption}\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{where,  }\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{message,  }\item[{\hyperlink{read__watch_83_8txt_abdb62bde002f38ef75f810d3a905a823}{real}, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{interfacem__journal_1_1journal_aa275808b96de510b44676e53faba3566}\label{interfacem__journal_1_1journal_aa275808b96de510b44676e53faba3566}} 
+\index{m\+\_\+journal\+::journal@{m\+\_\+journal\+::journal}!write\+\_\+msg@{write\+\_\+msg}}
+\index{write\+\_\+msg@{write\+\_\+msg}!m\+\_\+journal\+::journal@{m\+\_\+journal\+::journal}}
+\subsubsection{\texorpdfstring{write\+\_\+msg()}{write\_msg()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} m\+\_\+journal\+::journal\+::write\+\_\+msg (\begin{DoxyParamCaption}\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{where,  }\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{msg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this interface was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\hyperlink{M__journal_8f90}{M\+\_\+journal.\+f90}\end{DoxyCompactItemize}

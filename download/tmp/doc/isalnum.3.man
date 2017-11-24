@@ -31,7 +31,7 @@ EXAMPLES
 
   program demo_isdigit
 
-   use m_strings, only : isdigit, isspace, switch
+   use M_strings, only : isdigit, isspace, switch
    implicit none
    character(len=10),allocatable :: string(:)
    integer                       :: i

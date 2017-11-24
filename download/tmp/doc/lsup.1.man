@@ -18,8 +18,8 @@ EXAMPLES
   Sample program executions:
 
    lsup
-    40755 drwxr-xr-x --- 1  JSU      Users    0        2017-10-12T21:46:51 /home/urbanjs/V600/LIBRARY/libjust4/EXE
-    40755 drwxr-xr-x --- 1  JSU      None     0        2017-10-08T14:50:41 /home/urbanjs/V600/LIBRARY/libjust4
+    40755 drwxr-xr-x --- 1  JSU      Users    0        2017-10-12T21:46:51 /home/urbanjs/V600/LIBRARY/libGPF/EXE
+    40755 drwxr-xr-x --- 1  JSU      None     0        2017-10-08T14:50:41 /home/urbanjs/V600/LIBRARY/libGPF
     40700 drwx------ --- 1  JSU      Users    0        2017-10-12T22:38:14 /home/urbanjs/V600/LIBRARY
     40700 drwx------ --- 1  JSU      None     0        2017-10-12T22:35:00 /home/urbanjs/V600
     40700 drwx------ --- 1  JSU      None     0        2017-09-19T21:53:23 /home/urbanjs

@@ -38,7 +38,7 @@ EXAMPLE
    Sample program
 
      program demo_value_to_string
-     use m_strings, only: value_to_string
+     use M_strings, only: value_to_string
      implicit none
      character(len=80) :: string
      integer           :: ilen

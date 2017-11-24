@@ -1,6 +1,6 @@
 [swirl] Fortran color module M_color
 
-DOWNLOAD:just4.tgz
+DOWNLOAD:GPF.tgz
 
 The download file includes an example utility program colors.f90 with a man(1)
 page colors.1 that exercises the module.

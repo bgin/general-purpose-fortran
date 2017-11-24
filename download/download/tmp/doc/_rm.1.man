@@ -1,8 +1,0 @@
-NAME
-     _rm(1f) - [FUNIX:FILESYSTEM] remove file
-SYNOPSIS
-     _rm file(s)
-DESCRIPTION
-     Remove file(s).
-EXAMPLE
-     _rm *.o

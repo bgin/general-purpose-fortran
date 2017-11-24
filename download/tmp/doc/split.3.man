@@ -48,7 +48,7 @@ EXAMPLES
 
    program demo_split
 
-    use m_strings, only: split
+    use M_strings, only: split
     character(len=*),parameter     :: &
     & line='  aBcdef   ghijklmnop qrstuvwxyz  1:|:2     333|333 a B cc    '
     character(len=256),allocatable :: array(:) ! output array of tokens

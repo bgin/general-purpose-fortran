@@ -3,8 +3,8 @@ NAME
 SYNOPSIS
  public entities:
 
-   use m_strings, only : split,delim,chomp
-   use m_strings, only : substitute,change,modif,transliterate,reverse
+   use M_strings, only : split,delim,chomp
+   use M_strings, only : substitute,change,modif,transliterate,reverse,replace
    use M_strings, only : upper,lower
    use M_strings, only : adjustc,compact,nospace,indent,crop
    use M_strings, only : len_white,lenset,merge_str
@@ -27,6 +27,9 @@ SYNOPSIS
 
    substitute     subroutine non-recursively globally replaces old substring
                   with new substring
+   replace        function non-recursively globally replaces old substring
+                  with new substring using allocatable string (version of
+                  substitute(3f) without limitation on length of output string)
    change         subroutine non-recursively globally replaces old substring
                   with new substring with a directive like line editor
    modif          subroutine modifies a string with a directive like the XEDIT

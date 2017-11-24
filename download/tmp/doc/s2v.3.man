@@ -19,7 +19,7 @@ EXAMPLE
 
    program demo_s2v
 
-    use m_strings, only: s2v
+    use M_strings, only: s2v
     implicit none
     character(len=8)              :: s=' 10.345 '
     integer                       :: i

@@ -28,7 +28,7 @@ EXAMPLE
   Sample program:
 
    program demo_decodebase
-   use m_strings, only : codebase, decodebase
+   use M_strings, only : codebase, decodebase
    implicit none
    integer           :: ba,bd
    character(len=40) :: x,y

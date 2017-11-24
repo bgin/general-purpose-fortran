@@ -1,4 +1,4 @@
-libjust4 Home Page
+libGPF Home Page
 
 Extracting File Identification Data (metadata) from files with what(1)
 

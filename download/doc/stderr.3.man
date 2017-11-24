@@ -9,7 +9,9 @@ DESCRIPTION
    STDERR(3f) writes a message to standard error using a standard f2003 method.
 OPTIONS
    message  - description to be printed
-   generic  - optional value to print the value of after the message
+   generic  - optional value to print the value of after the message. May
+              be of type INTEGER, LOGICAL, REAL, DOUBLEPRECISION, COMPLEX,
+              or CHARACTER.
 EXAMPLES
   Sample program:
 

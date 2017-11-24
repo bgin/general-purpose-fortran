@@ -28,7 +28,7 @@ EXAMPLES
 
    program test_chomp
 
-      use m_strings, only : chomp
+      use M_strings, only : chomp
       implicit none
       character(len=100)            :: inline
       character(len=:),allocatable  :: token

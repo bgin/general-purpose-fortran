@@ -43,7 +43,7 @@ EXAMPLES
 
  program demo_delim
 
-    use m_strings, only: delim
+    use M_strings, only: delim
     character(len=80) :: line
     character(len=80) :: dlm
     integer,parameter :: n=10

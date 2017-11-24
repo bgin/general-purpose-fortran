@@ -28,6 +28,7 @@ lastprogram table2html.f90
 lastprogram tabulate.f90
 lastprogram asa2pdf.f90
 lastprogram cprint.f90
+lastprogram rep.f90
 #
 lastprogram intrinsics.f90
 # Example programs

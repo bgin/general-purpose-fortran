@@ -1,0 +1,5 @@
+var searchData=
+[
+  ['object_5foriented',['OBJECT_ORIENTED',['../M__time_83_8txt.html#a82d408d5c398e54b1461070b826ef70e',1,'M_time.3.txt']]],
+  ['option_5fstopwatch',['option_stopwatch',['../destroy__watchgroup_83_8txt.html#a083526e71023b802d246e6df238714b4',1,'option_stopwatch(3):&#160;destroy_watchgroup.3.txt'],['../M__stopwatch_83_8txt.html#a8c546e3bdd94d897483abc33440597db',1,'option_stopwatch(3)&quot; and .BR &quot;inquiry_stopwatch&quot; &quot;(3)&quot; for a description of the options and system dependent values that can be set and read. .SH DIAGNOSTICS All M_StopWatch subroutines take an optional intent OUT integer argument .I err which:&#160;M_stopwatch.3.txt'],['../option__stopwatch_83_8txt.html#a072343f3f6ffc9c62d2c380e17f7de21',1,'option_stopwatch(3f) - [M_stopwatch] sets M_StopWatch options .SH SYNOPSIS subroutine .BI &quot;option_stopwatch&quot; &quot;(default_clock:&#160;option_stopwatch.3.txt'],['../option__stopwatch_83_8txt.html#a5b85472cb5c942e4ce20291bed20dea9',1,'option_stopwatch(default_clock=&apos;cpu&apos;, abort_error=.true.) .br call option_stopwatch(io_unit_print:&#160;option_stopwatch.3.txt']]]
+];

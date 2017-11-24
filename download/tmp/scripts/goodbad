@@ -509,9 +509,7 @@ fi
 if [ "$GOODBAD_edit" != 'NO' ]
 then
    #sqlite3 -header goodbad.db |column --output-separator '|' --separator separators '|' --table > $TMPFILE <<\EOF
-   sqlite3 -header goodbad.db  > $TMPFILE <<\EOF
-   SELECT * FROM tests ORDER BY entryname;
-EOF
+   sqlite3 -header goodbad.db  'SELECT * FROM tests ORDER BY entryname;' > $TMPFILE 
    vi $TMPFILE && (
    mv goodbad.db goodbad.db.OLD
    CREATE

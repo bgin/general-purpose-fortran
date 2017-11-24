@@ -1,0 +1,223 @@
+\hypertarget{namespacem__anyscalar}{}\section{m\+\_\+anyscalar Module Reference}
+\label{namespacem__anyscalar}\index{m\+\_\+anyscalar@{m\+\_\+anyscalar}}
+\subsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+pure doubleprecision function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__anyscalar_a6173dbc57e7c5a96f5961d9e83e6e15e}{anyscalar\+\_\+to\+\_\+double} (valuein)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+anyscalar\+\_\+to\+\_\+double(3f) -\/ \mbox{[}M\+\_\+anyscalar\mbox{]} convert integer or real parameter of any kind to doubleprecision \end{DoxyCompactList}\item 
+pure \hyperlink{read__watch_83_8txt_abdb62bde002f38ef75f810d3a905a823}{real} function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__anyscalar_a39cd9a778fff85974fa1a822b92555fd}{anyscalar\+\_\+to\+\_\+real} (valuein)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+anyscalar\+\_\+to\+\_\+real(3f) -\/ \mbox{[}M\+\_\+anyscalar\mbox{]} convert integer or real parameter of any kind to real \end{DoxyCompactList}\item 
+elemental integer(kind=\hyperlink{namespacem__anyscalar_a53057899b7d17505b79d9b8f5e6092a2}{int128}) function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__anyscalar_a513beeccb5c821157cbd2eea8a1d9842}{anyinteger\+\_\+to\+\_\+128bit} (intin)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+integer, dimension(38), parameter \hyperlink{namespacem__anyscalar_a099da1dd8639cdce3d0f5bb3cb8fbd03}{k} =\mbox{[}(selected\+\_\+int\+\_\+kind(\hyperlink{intro__blas1_83_8txt_a8ba82a50c0c2c12d5f6a77f7e4651c0b}{i}),\hyperlink{intro__blas1_83_8txt_a8ba82a50c0c2c12d5f6a77f7e4651c0b}{i}=1,38)\mbox{]}
+\item 
+integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__anyscalar_a53057899b7d17505b79d9b8f5e6092a2}{int128} =\hyperlink{namespacem__anyscalar_a099da1dd8639cdce3d0f5bb3cb8fbd03}{k}(38)
+\item 
+integer, dimension(34), parameter \hyperlink{namespacem__anyscalar_af515907c09cc2ac286a4523cc73f5f52}{r} =\mbox{[}(selected\+\_\+int\+\_\+kind(\hyperlink{intro__blas1_83_8txt_a8ba82a50c0c2c12d5f6a77f7e4651c0b}{i}),\hyperlink{intro__blas1_83_8txt_a8ba82a50c0c2c12d5f6a77f7e4651c0b}{i}=1,34)\mbox{]}
+\item 
+integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__anyscalar_a6d3ef2bc1698c91d737dbd8824a9eb0b}{real256} =\hyperlink{namespacem__anyscalar_af515907c09cc2ac286a4523cc73f5f52}{r}(34)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{namespacem__anyscalar_a513beeccb5c821157cbd2eea8a1d9842}\label{namespacem__anyscalar_a513beeccb5c821157cbd2eea8a1d9842}} 
+\index{m\+\_\+anyscalar@{m\+\_\+anyscalar}!anyinteger\+\_\+to\+\_\+128bit@{anyinteger\+\_\+to\+\_\+128bit}}
+\index{anyinteger\+\_\+to\+\_\+128bit@{anyinteger\+\_\+to\+\_\+128bit}!m\+\_\+anyscalar@{m\+\_\+anyscalar}}
+\subsubsection{\texorpdfstring{anyinteger\+\_\+to\+\_\+128bit()}{anyinteger\_to\_128bit()}}
+{\footnotesize\ttfamily elemental integer(kind=\hyperlink{namespacem__anyscalar_a53057899b7d17505b79d9b8f5e6092a2}{int128}) function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+anyscalar\+::anyinteger\+\_\+to\+\_\+128bit (\begin{DoxyParamCaption}\item[{class($\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{intin }\end{DoxyParamCaption})}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+anyinteger\+\_\+to\+\_\+128bit(3f) -\/ \mbox{[}M\+\_\+anyscalar\mbox{]} convert integer any kind to integer(kind=128)
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\begin{DoxyVerb}elemental function anyinteger_to_128bit(intin) result(ii38)
+
+ integer(kind=int128) function anyinteger_to_128bit(value)
+ class(*),intent(in)     :: intin
+ integer(kind=int8|int16|int32|int64|int128) :: value
+\end{DoxyVerb}
+
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+\begin{DoxyVerb}This function uses polymorphism to allow arguments of different types
+generically. It is used to create other procedures that can take
+many scalar arguments as input options, equivalent to  passing the
+parameter VALUE as int(VALUE,0_int128).
+\end{DoxyVerb}
+
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+\begin{DoxyVerb}VALUEIN  input argument of a procedure to convert to type REAL(KIND=128).
+         May be of KIND kind=int8, kind=int16, kind=int32, kind=int64,
+         kind=int128, kind=real32, kind=real64, kind=real128,
+         or kind=real256
+\end{DoxyVerb}
+ \subsubsection*{R\+E\+S\+U\+L\+TS}
+
+The returned value is of kind R\+E\+AL(K\+I\+ND=R\+E\+A\+L128) and is the value of V\+A\+L\+U\+IN converted to real(K\+I\+ND=R\+E\+A\+L128). \subsubsection*{E\+X\+A\+M\+P\+LE}
+
+\begin{DoxyVerb}Sample program
+
+ program scalars
+ use M_anyscalar,     only : int128
+ use iso_fortran_env, only : int8, int16, int32, int64
+ implicit none
+    ! call same function with many scalar input types
+    write(*,*)squarei(2_int8)
+    write(*,*)squarei(2_int16)
+    write(*,*)squarei(2_int32)
+    write(*,*)squarei(2_int64)
+    write(*,*)squarei(2_int128)
+ contains
+
+ function squarei(invalue)
+ use M_anyscalar, only : anyinteger_to_128bit, int128
+ implicit none
+ class(*),intent(in)  :: invalue
+ real                 :: invalue_local
+ integer(kind=int128) :: squarei
+    invalue_local=anyinteger_to_128bit(invalue)
+    dvalue=invalue_local*invalue_local
+ end function squarei
+
+ end program scalars \end{DoxyVerb}
+ 
+
+References int128.
+
+\mbox{\Hypertarget{namespacem__anyscalar_a6173dbc57e7c5a96f5961d9e83e6e15e}\label{namespacem__anyscalar_a6173dbc57e7c5a96f5961d9e83e6e15e}} 
+\index{m\+\_\+anyscalar@{m\+\_\+anyscalar}!anyscalar\+\_\+to\+\_\+double@{anyscalar\+\_\+to\+\_\+double}}
+\index{anyscalar\+\_\+to\+\_\+double@{anyscalar\+\_\+to\+\_\+double}!m\+\_\+anyscalar@{m\+\_\+anyscalar}}
+\subsubsection{\texorpdfstring{anyscalar\+\_\+to\+\_\+double()}{anyscalar\_to\_double()}}
+{\footnotesize\ttfamily pure doubleprecision function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+anyscalar\+::anyscalar\+\_\+to\+\_\+double (\begin{DoxyParamCaption}\item[{class($\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{valuein }\end{DoxyParamCaption})}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+anyscalar\+\_\+to\+\_\+double(3f) -\/ \mbox{[}M\+\_\+anyscalar\mbox{]} convert integer or real parameter of any kind to doubleprecision 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\begin{DoxyVerb}pure function anyscalar_to_double(valuein) result(d_out)
+
+ class(*),intent(in)  :: valuein
+ doubleprecision      :: d_out
+\end{DoxyVerb}
+
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+\begin{DoxyVerb}This function uses polymorphism to allow arguments of different types
+generically. It is used to create other procedures that can take
+many scalar arguments as input options.
+\end{DoxyVerb}
+
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+\begin{DoxyVerb}VALUEIN  input argument of a procedure to convert to type DOUBLEPRECISION.
+         May be of KIND kind=int8, kind=int16, kind=int32, kind=int64,
+         kind=int128, kind=real32, kind=real64, kind=real128,
+         or kind=real256
+\end{DoxyVerb}
+ \subsubsection*{R\+E\+S\+U\+L\+TS}
+
+The returned value is of kind D\+O\+U\+B\+L\+E\+P\+R\+E\+C\+I\+S\+I\+ON and is the value of V\+A\+L\+U\+IN converted to doubleprecision (assuming it is actually in the range of type D\+O\+U\+B\+L\+E\+P\+R\+E\+C\+I\+S\+I\+ON).
+
+\subsubsection*{E\+X\+A\+M\+P\+LE}
+
+Sample program
+
+program scalars use M\+\_\+anyscalar, only \+: int128, real256 use iso\+\_\+fortran\+\_\+env, only \+: int8, int16, int32, int64 use iso\+\_\+fortran\+\_\+env, only \+: real32, real64, real128 implicit none ! call same function with many scalar input types write($\ast$,$\ast$)squarei(2\+\_\+int8) write($\ast$,$\ast$)squarei(2\+\_\+int16) write($\ast$,$\ast$)squarei(2\+\_\+int32) write($\ast$,$\ast$)squarei(2\+\_\+int64) write($\ast$,$\ast$)squarei(2\+\_\+int128) write($\ast$,$\ast$)squarei(2\+\_\+real32) write($\ast$,$\ast$)squarei(2\+\_\+real64) write($\ast$,$\ast$)squarei(2\+\_\+real128) write($\ast$,$\ast$)squarei(2\+\_\+real256) contains
+
+function squarei(invalue) result (dvalue) use M\+\_\+anyscalar, only \+: anyscalar\+\_\+to\+\_\+double implicit none class($\ast$),intent(in) \+:\+: invalue doubleprecision \+:\+: invalue\+\_\+local doubleprecision \+:\+: dvalue invalue\+\_\+local=anyscalar\+\_\+to\+\_\+double(invalue) dvalue=invalue\+\_\+local$\ast$invalue\+\_\+local end function squarei
+
+end program scalars \mbox{\Hypertarget{namespacem__anyscalar_a39cd9a778fff85974fa1a822b92555fd}\label{namespacem__anyscalar_a39cd9a778fff85974fa1a822b92555fd}} 
+\index{m\+\_\+anyscalar@{m\+\_\+anyscalar}!anyscalar\+\_\+to\+\_\+real@{anyscalar\+\_\+to\+\_\+real}}
+\index{anyscalar\+\_\+to\+\_\+real@{anyscalar\+\_\+to\+\_\+real}!m\+\_\+anyscalar@{m\+\_\+anyscalar}}
+\subsubsection{\texorpdfstring{anyscalar\+\_\+to\+\_\+real()}{anyscalar\_to\_real()}}
+{\footnotesize\ttfamily pure \hyperlink{read__watch_83_8txt_abdb62bde002f38ef75f810d3a905a823}{real} function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+anyscalar\+::anyscalar\+\_\+to\+\_\+real (\begin{DoxyParamCaption}\item[{class($\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{valuein }\end{DoxyParamCaption})}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+anyscalar\+\_\+to\+\_\+real(3f) -\/ \mbox{[}M\+\_\+anyscalar\mbox{]} convert integer or real parameter of any kind to real 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\begin{DoxyVerb}pure function anyscalar_to_real(valuein) result(r_out)
+
+ class(*),intent(in)  :: valuein
+ real                 :: r_out
+\end{DoxyVerb}
+
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+\begin{DoxyVerb}This function uses polymorphism to allow arguments of different types
+generically. It is used to create other procedures that can take
+many scalar arguments as input options.
+\end{DoxyVerb}
+
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+\begin{DoxyVerb}VALUEIN  input argument of a procedure to convert to type REAL.
+         May be of KIND kind=int8, kind=int16, kind=int32, kind=int64,
+         kind=int128, kind=real32, kind=real64, kind=real128,
+         or kind=real256
+\end{DoxyVerb}
+ \subsubsection*{R\+E\+S\+U\+L\+TS}
+
+The returned value is of kind R\+E\+AL and is the value of V\+A\+L\+U\+IN converted to real (assuming it is actually in the range of type R\+E\+AL).
+
+\subsubsection*{E\+X\+A\+M\+P\+LE}
+
+Sample program
+
+program scalars use M\+\_\+anyscalar, only \+: int128, real256 use iso\+\_\+fortran\+\_\+env, only \+: int8, int16, int32, int64 use iso\+\_\+fortran\+\_\+env, only \+: real32, real64, real128 implicit none ! call same function with many scalar input types write($\ast$,$\ast$)squarei(2\+\_\+int8) write($\ast$,$\ast$)squarei(2\+\_\+int16) write($\ast$,$\ast$)squarei(2\+\_\+int32) write($\ast$,$\ast$)squarei(2\+\_\+int64) write($\ast$,$\ast$)squarei(2\+\_\+int128) write($\ast$,$\ast$)squarei(2\+\_\+real32) write($\ast$,$\ast$)squarei(2\+\_\+real64) !!write($\ast$,$\ast$)squarei(2\+\_\+real128) write($\ast$,$\ast$)squarei(2\+\_\+real256) contains
+
+function squarei(invalue) result (dvalue) use M\+\_\+anyscalar, only \+: anyscalar\+\_\+to\+\_\+real implicit none class($\ast$),intent(in) \+:\+: invalue real \+:\+: invalue\+\_\+local real \+:\+: dvalue invalue\+\_\+local=anyscalar\+\_\+to\+\_\+real(invalue) dvalue=invalue\+\_\+local$\ast$invalue\+\_\+local end function squarei
+
+end program scalars 
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{namespacem__anyscalar_a53057899b7d17505b79d9b8f5e6092a2}\label{namespacem__anyscalar_a53057899b7d17505b79d9b8f5e6092a2}} 
+\index{m\+\_\+anyscalar@{m\+\_\+anyscalar}!int128@{int128}}
+\index{int128@{int128}!m\+\_\+anyscalar@{m\+\_\+anyscalar}}
+\subsubsection{\texorpdfstring{int128}{int128}}
+{\footnotesize\ttfamily integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+anyscalar\+::int128 =\hyperlink{namespacem__anyscalar_a099da1dd8639cdce3d0f5bb3cb8fbd03}{k}(38)}
+
+\mbox{\Hypertarget{namespacem__anyscalar_a099da1dd8639cdce3d0f5bb3cb8fbd03}\label{namespacem__anyscalar_a099da1dd8639cdce3d0f5bb3cb8fbd03}} 
+\index{m\+\_\+anyscalar@{m\+\_\+anyscalar}!k@{k}}
+\index{k@{k}!m\+\_\+anyscalar@{m\+\_\+anyscalar}}
+\subsubsection{\texorpdfstring{k}{k}}
+{\footnotesize\ttfamily integer, dimension(38), parameter m\+\_\+anyscalar\+::k =\mbox{[}(selected\+\_\+int\+\_\+kind(\hyperlink{intro__blas1_83_8txt_a8ba82a50c0c2c12d5f6a77f7e4651c0b}{i}),\hyperlink{intro__blas1_83_8txt_a8ba82a50c0c2c12d5f6a77f7e4651c0b}{i}=1,38)\mbox{]}\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__anyscalar_af515907c09cc2ac286a4523cc73f5f52}\label{namespacem__anyscalar_af515907c09cc2ac286a4523cc73f5f52}} 
+\index{m\+\_\+anyscalar@{m\+\_\+anyscalar}!r@{r}}
+\index{r@{r}!m\+\_\+anyscalar@{m\+\_\+anyscalar}}
+\subsubsection{\texorpdfstring{r}{r}}
+{\footnotesize\ttfamily integer, dimension(34), parameter m\+\_\+anyscalar\+::r =\mbox{[}(selected\+\_\+int\+\_\+kind(\hyperlink{intro__blas1_83_8txt_a8ba82a50c0c2c12d5f6a77f7e4651c0b}{i}),\hyperlink{intro__blas1_83_8txt_a8ba82a50c0c2c12d5f6a77f7e4651c0b}{i}=1,34)\mbox{]}\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__anyscalar_a6d3ef2bc1698c91d737dbd8824a9eb0b}\label{namespacem__anyscalar_a6d3ef2bc1698c91d737dbd8824a9eb0b}} 
+\index{m\+\_\+anyscalar@{m\+\_\+anyscalar}!real256@{real256}}
+\index{real256@{real256}!m\+\_\+anyscalar@{m\+\_\+anyscalar}}
+\subsubsection{\texorpdfstring{real256}{real256}}
+{\footnotesize\ttfamily integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+anyscalar\+::real256 =\hyperlink{namespacem__anyscalar_af515907c09cc2ac286a4523cc73f5f52}{r}(34)}
+

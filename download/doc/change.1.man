@@ -1,5 +1,5 @@
 NAME
-   change(1f) - replace old fixed string with new fixed string in filenames
+   change(1f) - [FILE EDIT] replace old fixed string with new fixed string in filenames
 
 SYNOPSIS
    change c/old/new/ FILENAMES [-dryrun][-cmd COMMAND]| --version| --help

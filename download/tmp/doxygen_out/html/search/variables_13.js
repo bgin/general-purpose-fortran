@@ -1,0 +1,27 @@
+var searchData=
+[
+  ['said',['said',['../ufpp__overview_81_8txt.html#a7f6c233b45fc747402eec6ec7e1e89fc',1,'ufpp_overview.1.txt']]],
+  ['samples',['Samples',['../exit_87_8txt.html#a0dfc2b110cab492bbab54cd41bed6f3c',1,'exit.7.txt']]],
+  ['scalar',['scalar',['../M__stopwatch_83_8txt.html#a8188ec8361fb1eb49fad7b4759c811ec',1,'M_stopwatch.3.txt']]],
+  ['scasum',['SCASUM',['../intro__blas1_83_8txt.html#a9494e1771926e1c8625d5c532be22d78',1,'intro_blas1.3.txt']]],
+  ['scnrm2',['SCNRM2',['../intro__blas1_83_8txt.html#a3094fb36fb42780823f8a9d711719e94',1,'intro_blas1.3.txt']]],
+  ['scripts',['scripts',['../ufpp__overview_81_8txt.html#adb8870130f8d1e42bd6bfc128a290250',1,'ufpp_overview.1.txt']]],
+  ['sdot',['SDOT',['../intro__blas1_83_8txt.html#a706668cafe28672f2c0373a4dc9ce3ff',1,'intro_blas1.3.txt']]],
+  ['sections',['sections',['../intro__blas1_83_8txt.html#aa06cca0b542e18027a508f939187fc96',1,'intro_blas1.3.txt']]],
+  ['segment',['segment',['../intro__blas1_83_8txt.html#abdad3eec76f28711cb620996abca59d4',1,'intro_blas1.3.txt']]],
+  ['september',['September',['../create__watch_83_8txt.html#a3f52c4f0a971d6aad8d5872fab85fac6',1,'September():&#160;create_watch.3.txt'],['../create__watchgroup_83_8txt.html#a2fe56ee2e395403bb06376136f40e45c',1,'September():&#160;create_watchgroup.3.txt'],['../destroy__watch_83_8txt.html#acabdf4ce798cad6afe1d3f1796bf4814',1,'September():&#160;destroy_watch.3.txt'],['../destroy__watchgroup_83_8txt.html#a9282988e24ecf276c933cacbd14ff53b',1,'September():&#160;destroy_watchgroup.3.txt'],['../end__pause__watch_83_8txt.html#abe419b6cfb3e18ea312428eb58b25a14',1,'September():&#160;end_pause_watch.3.txt'],['../inquiry__stopwatch_83_8txt.html#a5343cd7a514240c99a373cb1e09e1d08',1,'September():&#160;inquiry_stopwatch.3.txt'],['../join__watchgroup_83_8txt.html#ab585e085cf3d3bd96c1d9e01f9a0839b',1,'September():&#160;join_watchgroup.3.txt'],['../leave__watchgroup_83_8txt.html#a8e1188b87805533bd2487a085d0d7b3d',1,'September():&#160;leave_watchgroup.3.txt'],['../M__stopwatch_83_8txt.html#abd992cf91d5d3714df868812011ee855',1,'September():&#160;M_stopwatch.3.txt'],['../option__stopwatch_83_8txt.html#acc3d7c797b4f4947458d4eda2991d70a',1,'September():&#160;option_stopwatch.3.txt'],['../pause__watch_83_8txt.html#a9c7b5c1b7a2e7848e0da5b3d021ecba9',1,'September():&#160;pause_watch.3.txt'],['../print__watch_83_8txt.html#a979898727a2377f66aeb90c0f2b7fb1f',1,'September():&#160;print_watch.3.txt'],['../read__watch_83_8txt.html#a01edc0babc2c7bff9f6dea0d461744bc',1,'September():&#160;read_watch.3.txt'],['../reset__watch_83_8txt.html#a75ad10929d982abab45eddd5a9ee9490',1,'September():&#160;reset_watch.3.txt'],['../start__watch_83_8txt.html#aa28beaa3f308bdbe703fa8484f87082d',1,'September():&#160;start_watch.3.txt'],['../stop__watch_83_8txt.html#a1d05d9f5f870208fd0790859b520508a',1,'September():&#160;stop_watch.3.txt']]],
+  ['snrm2',['SNRM2',['../intro__blas1_83_8txt.html#aa52862728b961208533225c282723095',1,'intro_blas1.3.txt']]],
+  ['source',['source',['../ufpp__overview_81_8txt.html#a4d6669ece605d05985c83a04dd38e0ad',1,'ufpp_overview.1.txt']]],
+  ['sql',['sql',['../M__time_83_8txt.html#ac90896dc71ffe59ceae3525102069847',1,'M_time.3.txt']]],
+  ['start_5fwatch',['start_watch',['../M__stopwatch_83_8txt.html#a228e9c7b912a8b2fea9786349fab1352',1,'M_stopwatch.3.txt']]],
+  ['statement',['statement',['../continue_87_8txt.html#ab499dad98bb4e44fe84dabd1bf0fa987',1,'statement():&#160;continue.7.txt'],['../M__stopwatch_83_8txt.html#a43758526aa61bbaa49faf1e287658350',1,'statement():&#160;M_stopwatch.3.txt']]],
+  ['stdout',['stdout',['../namespacem__journal.html#a664cf3fd85385b776d30ea589606ad1c',1,'m_journal']]],
+  ['stop_5fwatch',['stop_watch',['../M__stopwatch_83_8txt.html#aadf633f1cbd164cefd1c364e8c9b9984',1,'M_stopwatch.3.txt']]],
+  ['stride',['stride',['../intro__blas1_83_8txt.html#a2febff0a9da16d3c97c0b589777862dd',1,'intro_blas1.3.txt']]],
+  ['string',['string',['../M__stopwatch_83_8txt.html#a5269177b53699786531fe116f96e8ffc',1,'string():&#160;M_stopwatch.3.txt'],['../option__stopwatch_83_8txt.html#a5a7e53f25ef30b3d9745794dcfc9eeef',1,'string():&#160;option_stopwatch.3.txt'],['../what__overview_81_8txt.html#a7d189cc480786c3c65688ced463aedcb',1,'string():&#160;what_overview.1.txt']]],
+  ['subjects',['subjects',['../intro__blas1_83_8txt.html#a1b8d6389d9376a5ab7cd2b73bd3845d8',1,'intro_blas1.3.txt']]],
+  ['subroutine',['subroutine',['../M__stopwatch_83_8txt.html#acfbcff50169d691ff02d4a123ed70482',1,'M_stopwatch.3.txt']]],
+  ['swapping',['swapping',['../intro__blas1_83_8txt.html#a029008ce1a51978a141d688c29c39cbd',1,'intro_blas1.3.txt']]],
+  ['sys',['sys',['../M__stopwatch_83_8txt.html#ab81bdc04fd0c834a4c1375ec622e2a10',1,'M_stopwatch.3.txt']]],
+  ['sys_5favail',['sys_avail',['../inquiry__stopwatch_83_8txt.html#a1f4290ad6f2e60e1f902db8a5e86ba7b',1,'inquiry_stopwatch.3.txt']]]
+];

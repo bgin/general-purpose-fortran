@@ -13,14 +13,14 @@ cat <<\EOF
 
 <p>
    There is one file to download for the libGPF library -
-   <a href="../../just4.tgz" style="background-color: yellow"
+   <a href="../../GPF.tgz" style="background-color: yellow"
       title="
       It is easiest to pull all the CLI (Command Line Interface) sources
       code at one time in an archive file  because many of the modules use
       other CLI modules; and many included programs use multiple modules
       and routines.
       "
-   > just4.tgz </a>.
+   > GPF.tgz </a>.
    This includes
 <ul>
 
@@ -54,7 +54,7 @@ cat <<\EOF
 </p>
 
 <pre>
-   tar xvfz just4.tgz
+   tar xvfz GPF.tgz
    make
 </pre>
 
@@ -222,7 +222,7 @@ cat <<\EOF
 </p>
 
 <p>
-   <div class='property'> LINK: <a class='category_link' href='../../../just4.html'>JUST4 home</a></div>
+   <div class='property'> LINK: <a class='category_link' href='../../../GPF.html'>GPF home</a></div>
 </p>
 
 <div class="byline">
