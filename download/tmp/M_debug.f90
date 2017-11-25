@@ -105,7 +105,9 @@ contains
 !!    STDERR(3f) writes a message to standard error using a standard f2003 method.
 !!##OPTIONS
 !!    message  - description to be printed
-!!    generic  - optional value to print the value of after the message
+!!    generic  - optional value to print the value of after the message. May
+!!               be of type INTEGER, LOGICAL, REAL, DOUBLEPRECISION, COMPLEX,
+!!               or CHARACTER.
 !!##EXAMPLES
 !!
 !!   Sample program:
@@ -139,20 +141,21 @@ class(*),intent(in),optional :: generic
    if(present(generic))then
       write(error_unit,'(a,1x)',advance='no')trim(message)    ! write message to standard error
       select type(generic)
-!      type is (integer(kind=int8));    write(error_unit,*) generic
-!      type is (integer(kind=int16));   write(error_unit,*) generic
-!      type is (integer(kind=int32));   write(error_unit,*) generic
-!      type is (integer(kind=int64));   write(error_unit,*) generic
-!      type is (integer(kind=int128));  write(error_unit,*) generic
+!      type is (integer(kind=int8));    write(error_unit,'(i0)) generic
+!      type is (integer(kind=int16));   write(error_unit,'(i0)) generic
+!      type is (integer(kind=int32));   write(error_unit,'(i0)) generic
+!      type is (integer(kind=int64));   write(error_unit,'(i0)) generic
+!      type is (integer(kind=int128));  write(error_unit,'(i0)) generic
 !      type is (real(kind=real32));     write(error_unit,*) generic
 !      type is (real(kind=real64));     write(error_unit,*) generic
 !      type is (real(kind=real128));    write(error_unit,*) generic
 !      type is (real(kind=real256));    write(error_unit,*) generic
-      type is (integer);                write(error_unit,*) generic
+      type is (integer);                write(error_unit,'(i0)') generic
       type is (real);                   write(error_unit,*) generic
       type is (doubleprecision);        write(error_unit,*) generic
       type is (logical);                write(error_unit,*) generic
       type is (character(len=*));       write(error_unit,*) trim(generic)
+      type is (complex);                write(error_unit,*) generic
       end select
    else
       write(error_unit,'(a)')trim(message)    ! write message to standard error
@@ -430,12 +433,12 @@ end subroutine unit_check
 !!
 !!     call unit_check_start('myroutine_long',' &
 !!       & -section        3                    &
-!!       & -library        libjust4             &
+!!       & -library        libGPF             &
 !!       & -filename       `pwd`/M_debug.FF     &
 !!       & -documentation  y                    &
 !!       & -ufpp           y                    &
 !!       & -ccall          n                    &
-!!       & -archive        JUST4.a              &
+!!       & -archive        GPF.a              &
 !!       & ')
 !!
 !!     call unit_check('myroutine', x.gt.3 ,   'test if big enough')
@@ -444,7 +447,6 @@ end subroutine unit_check
 !!     call unit_check_good('myroutine','store that checks passed')
 !!
 !!     end program demo_unit_check_start
-!!
 !===================================================================================================================================
 subroutine unit_check_start(name,string)
 character(len=*),parameter::ident="@(#)M_debug::unit_check_start(3f): call 'goodbad NAME start'"

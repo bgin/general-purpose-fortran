@@ -1057,7 +1057,6 @@ integer                                  :: ier
    allocate(character(len=biggest) :: line)
    call notabs(line_local,line,last)                        ! expand tabs, trim carriage returns, remove unprintable characters
    line=trim(line(:last))                                   ! trim line
-
 end function readline
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!

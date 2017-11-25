@@ -24,18 +24,21 @@ OPTIONS
                 convert it to seconds.
 
                 The numeric values may represent floating point numbers.
+
                 Spaces are ignored.
 
     NNdNNhNNmNNs  Simple numeric values may also be used with unit suffixes;
                   where s,m,h, or d represents seconds, minutes, hours
-                  or days. Allowed aliases for d,h,m, and s units are
+                  or days and w represents weeks. Allowed aliases for w,d,h,m, and s units are
 
+                   w -  weeks,week,wk,wks
                    d -  days,day
                    m -  minutes,minute,min
                    h -  hours,hour,hrs,hr
-                   s -  seconds,second,sec
+                   s -  seconds,second,sec,secs
 
                   The numeric values may represent floating point numbers.
+
                   Spaces, commas  and case are ignored.
 
    --help       display this help and exit
@@ -50,5 +53,9 @@ EXAMPLE
     129600
     days2sec 1.5 days 4hrs 30minutes
     145800
+    days2sec 10s 10S 10s # DUPLICATES WITH UNITS ARE ALLOWED
+    30
+    days2sec 1 1 1  # SPACES ARE IGNORED
+    111
 SEE ALSO
     sec2days(1)

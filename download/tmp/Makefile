@@ -2,15 +2,37 @@ PROGFILES =	PROGRAMS/alphabet.f90 PROGRAMS/asa2pdf.f90 PROGRAMS/base.f90 PROGRAM
 
 PROG = ${PROGFILES:.f90=}
 
-SRCS =	c.f90 juown1.f90 M_anyscalar.f90 M_journal.f90 C-gauss.c C-hlsrgb.c \
-	C-hvsrgb.c C-jubiglet.c C-jucolor.c C-M_getkey.c C-M_readline.c \
-	C-M_regex.c C-M_system.c C-M_units.c C-macros.c C-read_line.c \
-	C-rgbhls.c C-rgbhvs.c C-rgbmono.c C-rgbval.c
+SRCS =	c.f90 calc_NC.f90 dparanoia.f90 init_random_seed.f90 juown1.f90 \
+	kiss64.f90 M_anyscalar.f90 M_calculator.f90 M_calculator_plus.f90 \
+	M_color.f90 M_Compare_Float_Numbers.f90 M_constants.f90 M_debug.f90 \
+	M_display.f90 M_factor.f90 M_fixedform.f90 M_getkey.f90 M_getopt.f90 \
+	M_getopt_long.f90 M_history.f90 M_html.f90 M_io.f90 M_journal.f90 \
+	M_kracken.f90 M_logic.f90 M_math.f90 M_messages.f90 M_ncurses.f90 \
+	M_pixel.f90 M_pixel_slices.f90 M_process.f90 M_readgif.f90 \
+	M_readline.f90 M_regex.f90 M_sort.f90 M_stopwatch.f90 M_strings.f90 \
+	M_swap.f90 M_system.f90 M_time.f90 M_treesort.f90 M_units.f90 \
+	M_writegif.f90 M_writegif_animated.f90 nc_errmessage.f90 \
+	nc_notabs.f90 nc_printescape.f90 nc_printhtml.f90 nc_printplain.f90 \
+	nc_printunicode.f90 nc_uniqname.f90 paranoia.f90 pixel_slice.f90 \
+	ran_mod.f90 sparanoia.f90 strgar3.f90 C-gauss.c C-hlsrgb.c C-hvsrgb.c \
+	C-jubiglet.c C-jucolor.c C-M_getkey.c C-M_readline.c C-M_regex.c \
+	C-M_system.c C-M_units.c C-macros.c C-read_line.c C-rgbhls.c \
+	C-rgbhvs.c C-rgbmono.c C-rgbval.c
 
-OBJS =	c.o juown1.o M_anyscalar.o M_journal.o C-gauss.o C-hlsrgb.o \
-	C-hvsrgb.o C-jubiglet.o C-jucolor.o C-M_getkey.o C-M_readline.o \
-	C-M_regex.o C-M_system.o C-M_units.o C-macros.o C-read_line.o \
-	C-rgbhls.o C-rgbhvs.o C-rgbmono.o C-rgbval.o
+OBJS =	c.o calc_NC.o dparanoia.o init_random_seed.o juown1.o kiss64.o \
+	M_anyscalar.o M_calculator.o M_calculator_plus.o M_color.o \
+	M_Compare_Float_Numbers.o M_constants.o M_debug.o M_display.o \
+	M_factor.o M_fixedform.o M_getkey.o M_getopt.o M_getopt_long.o \
+	M_history.o M_html.o M_io.o M_journal.o M_kracken.o M_logic.o \
+	M_math.o M_messages.o M_ncurses.o M_pixel.o M_pixel_slices.o \
+	M_process.o M_readgif.o M_readline.o M_regex.o M_sort.o M_stopwatch.o \
+	M_strings.o M_swap.o M_system.o M_time.o M_treesort.o M_units.o \
+	M_writegif.o M_writegif_animated.o nc_errmessage.o nc_notabs.o \
+	nc_printescape.o nc_printhtml.o nc_printplain.o nc_printunicode.o \
+	nc_uniqname.o paranoia.o pixel_slice.o ran_mod.o sparanoia.o \
+	strgar3.o C-gauss.o C-hlsrgb.o C-hvsrgb.o C-jubiglet.o C-jucolor.o \
+	C-M_getkey.o C-M_readline.o C-M_regex.o C-M_system.o C-M_units.o \
+	C-macros.o C-read_line.o C-rgbhls.o C-rgbhvs.o C-rgbmono.o C-rgbval.o
 
 LIBS =-lncurses -lreadline
 CC = cc
@@ -36,6 +58,43 @@ clean:
 .F90.o:
 	$(F90) $(F90FLAGS) -c $<
 
-juown1.o: M_journal.o
+calc_NC.o: M_calculator.o M_journal.o M_ncurses.o
+juown1.o: M_calculator.o M_journal.o M_process.o M_strings.o
 M_anyscalar.o: 
+M_calculator.o: M_calculator.o M_io.o M_journal.o M_math.o M_strings.o \
+	M_time.o
+M_calculator_plus.o: M_calculator.o M_journal.o
+M_color.o: M_strings.o
+M_debug.o: 
+M_display.o: M_display.o
+M_factor.o: M_anyscalar.o
+M_fixedform.o: M_ncurses.o
+M_getkey.o: 
+M_history.o: M_journal.o M_strings.o
+M_html.o: M_journal.o
+M_io.o: M_journal.o M_strings.o
 M_journal.o: 
+M_kracken.o: M_debug.o M_journal.o M_strings.o
+M_logic.o: M_calculator_plus.o M_journal.o
+M_math.o: M_anyscalar.o M_journal.o M_sort.o
+M_messages.o: M_anyscalar.o M_journal.o
+M_ncurses.o: M_ncurses.o
+M_pixel.o: M_journal.o M_math.o M_sort.o M_units.o
+M_pixel_slices.o: M_pixel.o
+M_readline.o: 
+M_regex.o: M_strings.o
+M_sort.o: M_swap.o
+M_stopwatch.o: M_system.o
+M_strings.o: M_journal.o M_strings.o
+M_system.o: M_anyscalar.o M_io.o M_time.o
+M_time.o: M_debug.o M_strings.o M_time.o
+M_units.o: M_anyscalar.o
+nc_errmessage.o: M_ncurses.o
+nc_notabs.o: M_journal.o
+nc_printescape.o: M_ncurses.o
+nc_printhtml.o: M_ncurses.o
+nc_printplain.o: M_ncurses.o
+nc_printunicode.o: M_ncurses.o
+paranoia.o: M_journal.o
+pixel_slice.o: M_pixel.o M_pixel_slices.o
+strgar3.o: M_calculator.o M_calculator_plus.o M_journal.o

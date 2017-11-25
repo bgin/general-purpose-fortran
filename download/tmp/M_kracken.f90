@@ -472,7 +472,7 @@ integer,intent(out),optional  :: ilen        ! length of returned output string
    if(isub > 0)then                          ! if index is valid return string
       string=dict_vals(isub)
    else                                      ! if index is not valid return blank string
-      string(:)=" "
+      string=" "
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(present(ilen))then                     ! if ILEN is present on call, return the value

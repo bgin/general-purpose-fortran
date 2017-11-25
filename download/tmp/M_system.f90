@@ -871,7 +871,7 @@ end interface
 !!    USERDOMAIN_ROAMINGPROFILE=buzz
 !!    HOMEPATH=\Users\JSU
 !!    APPDATA=C:\Users\JSU\AppData\Roaming
-!!    MANPATH=/home/urbanjs/V600/LIBRARY/libjust4/download/tmp/man:/home/urbanjs/V600/doc/man:::
+!!    MANPATH=/home/urbanjs/V600/LIBRARY/libGPF/download/tmp/man:/home/urbanjs/V600/doc/man:::
 !!    DISPLAYNUM=0
 !!    ProgramW6432=C:\Program Files
 !!    HOSTNAME=buzz
@@ -3427,7 +3427,7 @@ end subroutine system_unsetenv
 !!    USERDOMAIN_ROAMINGPROFILE=buzz
 !!    HOMEPATH=\Users\JSU
 !!    APPDATA=C:\Users\JSU\AppData\Roaming
-!!    MANPATH=/home/urbanjs/V600/LIBRARY/libjust4/download/tmp/man:/home/urbanjs/V600/doc/man:::
+!!    MANPATH=/home/urbanjs/V600/LIBRARY/libGPF/download/tmp/man:/home/urbanjs/V600/doc/man:::
 !!    DISPLAYNUM=0
 !!    ProgramW6432=C:\Program Files
 !!    HOSTNAME=buzz

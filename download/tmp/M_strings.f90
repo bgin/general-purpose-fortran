@@ -5,8 +5,8 @@
 !!
 !!  public entities:
 !!
-!!    use m_strings, only : split,delim,chomp
-!!    use m_strings, only : substitute,change,modif,transliterate,reverse
+!!    use M_strings, only : split,delim,chomp
+!!    use M_strings, only : substitute,change,modif,transliterate,reverse,replace
 !!    use M_strings, only : upper,lower
 !!    use M_strings, only : adjustc,compact,nospace,indent,crop
 !!    use M_strings, only : len_white,lenset,merge_str
@@ -29,6 +29,9 @@
 !!
 !!    substitute     subroutine non-recursively globally replaces old substring
 !!                   with new substring
+!!    replace        function non-recursively globally replaces old substring
+!!                   with new substring using allocatable string (version of
+!!                   substitute(3f) without limitation on length of output string)
 !!    change         subroutine non-recursively globally replaces old substring
 !!                   with new substring with a directive like line editor
 !!    modif          subroutine modifies a string with a directive like the XEDIT
@@ -383,6 +386,7 @@ PUBLIC chomp           !  function consumes input line as it returns next token 
 PUBLIC delim           !  subroutine parses a string using specified delimiter characters and store tokens into an array
 !----------------------# EDITING
 PUBLIC substitute      !  subroutine non-recursively globally replaces old substring with new substring in string
+PUBLIC replace         !  function non-recursively globally replaces old substring with new substring in string
 PUBLIC change          !  replaces old substring with new substring in string with a directive like a line editor
 PRIVATE strtok         !  gets next token. Used by change(3f)
 PUBLIC modif           !  change string using a directive using rules similar to XEDIT line editor MODIFY command
@@ -713,7 +717,7 @@ end function matchw
 !!
 !!    program demo_split
 !!
-!!     use m_strings, only: split
+!!     use M_strings, only: split
 !!     character(len=*),parameter     :: &
 !!     & line='  aBcdef   ghijklmnop qrstuvwxyz  1:|:2     333|333 a B cc    '
 !!     character(len=256),allocatable :: array(:) ! output array of tokens
@@ -953,7 +957,7 @@ character(len=*),parameter::ident="@(#)M_strings::split(3f): parse string on del
 !!
 !!    program test_chomp
 !!
-!!       use m_strings, only : chomp
+!!       use M_strings, only : chomp
 !!       implicit none
 !!       character(len=100)            :: inline
 !!       character(len=:),allocatable  :: token
@@ -1093,7 +1097,7 @@ end function chomp
 !!
 !!  program demo_delim
 !!
-!!     use m_strings, only: delim
+!!     use M_strings, only: delim
 !!     character(len=80) :: line
 !!     character(len=80) :: dlm
 !!     integer,parameter :: n=10
@@ -1275,6 +1279,229 @@ character(len=*),parameter::ident="@(#)M_strings::delim(3f): parse a string and 
       enddo
       icount=n  ! more than n elements
 end subroutine delim
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+!>
+!!##NAME
+!!    replace - [M_strings] Globally replace one substring for another in string
+!!
+!!##SYNOPSIS
+!!
+!!    function replace(targetline,old,new,ierr) result (newline)
+!!
+!!     character(len=*)                       :: targetline
+!!     character(len=*),intent(in),optional   :: old
+!!     character(len=*),intent(in),optional   :: new
+!!     integer,intent(out),optional           :: ierr
+!!     character(len=*),intent(in),optional   :: cmd
+!!     character(len=:),allocatable  :: newline
+!!
+!!##DESCRIPTION
+!!    Globally replace one substring for another in string.
+!!    Either CMD or OLD and NEW must be specified.
+!!
+!!##OPTIONS
+!!     targetline  input line to be changed
+!!     old         old substring to replace
+!!     new         new substring
+!!     cmd         alternate way to specify old and new string, in
+!!                 the form c/old/new/; where "/" can be any character
+!!                 not in "old" or "new"
+!!     ierr        error code. iF ier = -1 bad directive, &gt;= 0 then
+!!                 count of changes made
+!!##RETURNS
+!!     newline     allocatable string returned
+!!
+!!##EXAMPLES
+!!
+!!   Sample Program:
+!!
+!!    program test_replace
+!!    use M_strings, only : replace
+!!    implicit none
+!!    character(len=:),allocatable :: targetline
+!!
+!!    targetline='this is the input string'
+!!
+!!    call testit('th','TH','THis is THe input string')
+!!
+!!    ! a null old substring means "at beginning of line"
+!!    call testit('','BEFORE:', 'BEFORE:THis is THe input string')
+!!
+!!    ! a null new string deletes occurrences of the old substring
+!!    call testit('i','', 'BEFORE:THs s THe nput strng')
+!!    contains
+!!    subroutine testit(old,new,expected)
+!!    character(len=*),intent(in) :: old,new,expected
+!!    write(*,*)repeat('=',79)
+!!    write(*,*)'STARTED ['//targetline//']'
+!!    write(*,*)'OLD['//old//']', ' NEW['//new//']'
+!!    targetline=replace(targetline,old,new)
+!!    write(*,*)'GOT     ['//targetline//']'
+!!    write(*,*)'EXPECTED['//expected//']'
+!!    write(*,*)'TEST    [',targetline.eq.expected,']'
+!!    end subroutine testit
+!!
+!!    end program test_replace
+!!
+!!   Expected output
+!!
+!!     ===============================================================================
+!!     STARTED [this is the input string]
+!!     OLD[th] NEW[TH]
+!!     GOT     [THis is THe input string]
+!!     EXPECTED[THis is THe input string]
+!!     TEST    [ T ]
+!!     ===============================================================================
+!!     STARTED [THis is THe input string]
+!!     OLD[] NEW[BEFORE:]
+!!     GOT     [BEFORE:THis is THe input string]
+!!     EXPECTED[BEFORE:THis is THe input string]
+!!     TEST    [ T ]
+!!     ===============================================================================
+!!     STARTED [BEFORE:THis is THe input string]
+!!     OLD[i] NEW[]
+!!     GOT     [BEFORE:THs s THe nput strng]
+!!     EXPECTED[BEFORE:THs s THe nput strng]
+!!     TEST    [ T ]
+!===================================================================================================================================
+subroutine crack_cmd(cmd,old,new,ierr)
+!-----------------------------------------------------------------------------------------------------------------------------------
+   character(len=*),intent(in)              :: cmd
+   character(len=:),allocatable,intent(out) :: old,new                ! scratch string buffers
+   integer                                  :: ierr
+!-----------------------------------------------------------------------------------------------------------------------------------
+   character(len=1)                         :: delimiters
+   integer                                  :: itoken
+   integer,parameter                        :: id=2                   ! expected location of delimiter
+   logical                                  :: ifok
+   integer                                  :: lmax                   ! length of target string
+   integer                                  :: start_token,end_token
+!-----------------------------------------------------------------------------------------------------------------------------------
+   ierr=0
+   old=''
+   new=''
+   lmax=len_trim(cmd)                     ! significant length of change directive
+
+   if(lmax.ge.4)then                      ! strtok ignores blank tokens so look for special case where first token is really null
+      delimiters=cmd(id:id)               ! find delimiter in expected location
+      itoken=0                            ! initialize strtok(3f) procedure
+
+      if(strtok(cmd(id:),itoken,start_token,end_token,delimiters)) then        ! find OLD string
+         old=cmd(start_token+id-1:end_token+id-1)
+      else
+         old=''
+      endif
+
+      if(cmd(id:id).eq.cmd(id+1:id+1))then
+         new=old
+         old=''
+      else                                                                     ! normal case
+         ifok=strtok(cmd(id:),itoken,start_token,end_token,delimiters)         ! find NEW string
+         if(end_token .eq. (len(cmd)-id+1) )end_token=len_trim(cmd(id:))       ! if missing ending delimiter
+         new=cmd(start_token+id-1:min(end_token+id-1,lmax))
+      endif
+   else                                                                        ! command was two or less characters
+      ierr=-1
+      call journal('sc','*crack_cmd* incorrect change directive -too short')
+   endif
+
+end subroutine crack_cmd
+!-----------------------------------------------------------------------------------------------------------------------------------
+function replace(targetline,old,new,ierr,cmd) result (newline)
+character(len=*),parameter::ident="@(#)M_strings::replace(3f): Globally replace one substring for another in string"
+!-----------------------------------------------------------------------------------------------------------------------------------
+! parameters
+   character(len=*),intent(in)            :: targetline   ! input line to be changed
+   character(len=*),intent(in),optional   :: old          ! old substring to replace
+   character(len=*),intent(in),optional   :: new          ! new substring
+   integer,intent(out),optional           :: ierr         ! error code. if ierr = -1 bad directive, >=0 then ierr changes made
+   character(len=*),intent(in),optional   :: cmd          ! contains the instructions changing the string
+!-----------------------------------------------------------------------------------------------------------------------------------
+! returns
+   character(len=:),allocatable  :: newline      ! scratch string buffer
+!-----------------------------------------------------------------------------------------------------------------------------------
+! local
+   character(len=:),allocatable  :: new_local, old_local
+   integer                       :: ml
+   integer                       :: ier1
+   integer                       :: original_input_length
+   integer                       :: len_old, len_new
+   integer                       :: ladd
+   integer                       :: ir
+   integer                       :: ind
+   integer                       :: ic
+   integer                       :: ichar
+!-----------------------------------------------------------------------------------------------------------------------------------
+!  get old_local and new_local from cmd or old and new
+   ierr=0
+   if(present(cmd))then
+      call crack_cmd(cmd,old_local,new_local,ierr)
+      if(ierr.ne.0)then
+         newline=targetline  ! if no changes are made return original string on error
+         return
+      endif
+   elseif(present(old).and.present(new))then
+      old_local=old
+      new_local=new
+   else
+      newline=targetline  ! if no changes are made return original string on error
+      call journal('sc','*replace* must specify OLD and NEW or CMD')
+      return
+   endif
+!-----------------------------------------------------------------------------------------------------------------------------------
+   ier1=0                                              ! initialize error flag/change count
+   original_input_length=len_trim(targetline)          ! get non-blank length of input line
+   len_old=len(old_local)                              ! length of old substring to be replaced
+   len_new=len(new_local)                              ! length of new substring to replace old substring
+   ml=1                                                ! ml is left margin of window to change
+   ir=len(targetline)                                  ! ir is right margin  of window to change
+   newline=''                                          ! begin with a blank line as output string
+!-----------------------------------------------------------------------------------------------------------------------------------
+   if(len_old.eq.0)then                                ! c//new/ means insert new at beginning of line (or left margin)
+      ichar=len_new + original_input_length
+      if(len_new.gt.0)then
+         newline=new_local(:len_new)//targetline(ml:original_input_length)
+      else
+         newline=targetline(ml:original_input_length)
+      endif
+      ier1=1                                           ! made one change. actually, c/// should maybe return 0
+      if(present(ierr))ierr=ier1
+      return
+   endif
+!-----------------------------------------------------------------------------------------------------------------------------------
+   ichar=ml                                            ! place to put characters into output string
+   ic=ml                                               ! place looking at in input string
+   loop: do
+      ind=index(targetline(ic:),old_local(:len_old))+ic-1 ! try finding start of OLD in remaining part of input in change window
+      if(ind.eq.ic-1.or.ind.gt.ir)then                 ! did not find old string or found old string past edit window
+         exit loop                                     ! no more changes left to make
+      endif
+      ier1=ier1+1                                      ! found an old string to change, so increment count of changes
+      if(ind.gt.ic)then                                ! if found old string past at current position in input string copy unchanged
+         ladd=ind-ic                                   ! find length of character range to copy as-is from input to output
+         newline=newline(:ichar-1)//targetline(ic:ind-1)
+         ichar=ichar+ladd
+      endif
+      if(len_new.ne.0)then
+         newline=newline(:ichar-1)//new_local(:len_new)
+         ichar=ichar+len_new
+      endif
+      ic=ind+len_old
+   enddo loop
+!-----------------------------------------------------------------------------------------------------------------------------------
+   select case (ier1)
+   case (0)                                            ! there were no changes made to the window
+      newline=targetline                               ! if no changes made output should be input
+   case default
+      if(ic.lt.len(targetline))then                    ! if there is more after last change on original line add it
+         newline=newline(:ichar-1)//targetline(ic:max(ic,original_input_length))
+      endif
+   end select
+   if(present(ierr))ierr=ier1
+!-----------------------------------------------------------------------------------------------------------------------------------
+end function replace
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -1605,7 +1832,7 @@ end subroutine change
 !!
 !!     !===============================================================================
 !!     program test_strtok
-!!     use m_strings, only : strtok
+!!     use M_strings, only : strtok
 !!     character(len=264)          :: inline
 !!     character(len=*),parameter  :: delimiters=' ;,'
 !!     integer                     :: ios
@@ -1971,7 +2198,7 @@ end function len_white
 !!
 !!    program demo_crop
 !!
-!!     use m_strings, only: crop
+!!     use M_strings, only: crop
 !!     implicit none
 !!     character(len=20) ::  untrimmed = '   ABCDEFG abcdefg  '
 !!        write(*,*) 'untrimmed string=[',untrimmed,']'
@@ -3319,7 +3546,7 @@ end function noesc
 !!
 !!    program demo_string_to_value
 !!
-!!     use m_strings, only: string_to_value
+!!     use M_strings, only: string_to_value
 !!     character(len=80) :: string
 !!        string=' -40.5e-2 '
 !!        call string_to_value(string,value,ierr)
@@ -3441,7 +3668,7 @@ end subroutine a2d
 !!
 !!    program demo_s2v
 !!
-!!     use m_strings, only: s2v
+!!     use M_strings, only: s2v
 !!     implicit none
 !!     character(len=8)              :: s=' 10.345 '
 !!     integer                       :: i
@@ -3564,7 +3791,7 @@ end function s2v
 !!    Sample program
 !!
 !!      program demo_value_to_string
-!!      use m_strings, only: value_to_string
+!!      use M_strings, only: value_to_string
 !!      implicit none
 !!      character(len=80) :: string
 !!      integer           :: ilen
@@ -3669,7 +3896,7 @@ end subroutine value_to_string
 !!   Sample call
 !!
 !!    program demo_v2s
-!!    use m_strings, only: v2s
+!!    use M_strings, only: v2s
 !!    write(*,*) 'The value of 3.0/4.0 is ['//v2s(3.0/4.0)//']'
 !!    write(*,*) 'The value of 1234    is ['//v2s(1234)//']'
 !!    write(*,*) 'The value of 0d0     is ['//v2s(0d0)//']'
@@ -4827,7 +5054,7 @@ end function islower
 !!
 !!   program demo_isdigit
 !!
-!!    use m_strings, only : isdigit, isspace, switch
+!!    use M_strings, only : isdigit, isspace, switch
 !!    implicit none
 !!    character(len=10),allocatable :: string(:)
 !!    integer                       :: i
@@ -4970,7 +5197,7 @@ end function base
 !!   Sample program:
 !!
 !!    program demo_decodebase
-!!    use m_strings, only : codebase, decodebase
+!!    use M_strings, only : codebase, decodebase
 !!    implicit none
 !!    integer           :: ba,bd
 !!    character(len=40) :: x,y

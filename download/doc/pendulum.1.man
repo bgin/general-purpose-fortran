@@ -16,18 +16,19 @@ DESCRIPTION
    the pendulum, as well as the length of the string can be calculated.
 
    The period of the motion for a pendulum is how long it takes to swing
-   back-and-forth, measured in seconds.  The period equation is:
+   back-and-forth, measured in seconds. The period equation is:
 
       T = 2*PI*sqrt(L/g)
 
    The frequency of a pendulum is how many back-and-forth swings there
-   are in a second, measured in hertz.  Frequency f is the reciprocal
+   are in a second, measured in hertz. Frequency f is the reciprocal
    of the period T:
 
       f = 1/T
+
    Therefore in terms of the length the frequency is
 
-      f = [√sqrt(g/L)]/2π
+      f = [�sqrt(g/L)]/2
 
    The length equations are:
 

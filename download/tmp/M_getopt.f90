@@ -105,36 +105,25 @@
 !!   Slightly modified from original -JSU
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
-module getopt_m
+module M_getopt
+    use,intrinsic :: iso_fortran_env, only : stdin=>input_unit, stdout=>output_unit, stderr=>error_unit
     implicit none
 
-    private
-    ! procedures
-    public getopt
-    ! types
-    public option_s
-    ! values
-    public optopt
-    public optarg
-    public optind
-    public opterr
-
-    character(len=4096) :: optarg
-    character :: optopt
-    integer :: optind = 1
-    logical :: opterr = .true.
+    character(len=80)     :: optarg        ! Option's value
+    character             :: optopt        ! Option's character
+    integer               :: optind=1      ! Index of the next argument to process
+    logical               :: opterr=.true. ! Errors are printed by default. Set opterr=.false. to suppress them
 
     type option_s
-        character(len=4096) :: name
-        logical :: has_arg
-        character :: val
-    end type
+        character(len=80) :: name          ! Name of the option
+        logical           :: has_arg       ! Option has an argument (.true./.false.)
+        character         :: short         ! Option's short character equal to optopt
+    end type option_s
 
-    ! grpind is index of next option within group; always >= 2
-    integer, private :: grpind = 2
+    integer, private:: grpind=2            ! grpind is index of next option within group; always >= 2
 
 contains
-! ----------------------------------------------------------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 character function substr( str, i, j )
 ! Return str(i:j) if 1 <= i <= j <= len(str), else return empty string.
 ! This is needed because Fortran standard allows but doesn't *require* short-circuited
@@ -142,116 +131,140 @@ character function substr( str, i, j )
 !     if ( i < len(str) .and. str(i+1:i+1) == ':' ) then
 ! but this works:
 !     if ( substr(str, i+1, i+1) == ':' ) then
+character(len=*), intent(in):: str
+integer, intent(in):: i, j
 
-        ! arguments
-        character(len=*), intent(in) :: str
-        integer, intent(in) :: i, j
-
-        if ( 1 <= i .and. i <= j .and. j <= len(str)) then
-            substr = str(i:j)
-        else
-            substr = ''
-        end if
+   if ( 1 <= i .and. i <= j .and. j <= len(str)) then
+       substr = str(i:j)
+   else
+       substr = ''
+   endif
 end function substr
 !-----------------------------------------------------------------------------------------------------------------------------------
 character function getopt( optstring, longopts )
-! arguments
-character(len=*), intent(in) :: optstring
-type(option_s), intent(in), optional :: longopts(:)
+character(len=*), intent(in)           :: optstring
+type(option_s),   intent(in), optional :: longopts(:)
+character(len=80)                      :: arg
 
-        ! local variables
-        character(len=4096) :: arg
+   optarg = ''
+   if ( optind > command_argument_count()) then
+       getopt = char(0)
+   endif
 
-        optarg = ''
-        getopt = ''
-        if ( optind > iargc()) then
-            getopt = char(0)
-        end if
+   call get_command_argument( optind, arg )
 
-        call getarg( optind, arg )
-        if ( present( longopts ) .and. arg(1:2) == '--' ) then
-            getopt = process_long( longopts, arg )
-        else if ( arg(1:1) == '-' ) then
-            getopt = process_short( optstring, arg )
-        else
-            getopt = char(0)
-        end if
+   if ( present( longopts ) .and. arg(1:2) == '--' ) then
+       getopt = process_long( longopts, arg )
+   elseif ( arg(1:1) == '-' ) then
+       getopt = process_short( optstring, arg )
+   else
+       getopt = char(0)
+   endif
+
 end function getopt
 !-----------------------------------------------------------------------------------------------------------------------------------
 character function process_long( longopts, arg )
-! arguments
-type(option_s), intent(in) :: longopts(:)
+type(option_s), intent(in)   :: longopts(:)
 character(len=*), intent(in) :: arg
+integer                      :: i = 0
+integer                      :: j = 0
+integer                      :: len_arg = 0             ! length of arg
+logical                      :: has_equalsign = .false. ! arg contains equal sign?
 
-        ! local variables
-        integer :: i
+  len_arg = len_trim(arg)
 
-        ! search for matching long option
-        optind = optind + 1
-        do i = 1, size(longopts)
-            if ( arg(3:) == longopts(i)%name ) then
-                optopt = longopts(i)%val
-                process_long = optopt
-                if ( longopts(i)%has_arg ) then
-                    if ( optind <= iargc()) then
-                        call getarg( optind, optarg )
-                        optind = optind + 1
-                    else if ( opterr ) then
-                        print '(a,a,a)', "Error: option '", trim(arg), "' requires an argument"
-                    end if
-                end if
-                return
-            end if
-        end do
-        ! else not found
-        process_long = '?'
-        if ( opterr ) then
-            print '(a,a,a)', "Error: unrecognized option '", trim(arg), "'"
-        end if
-    end function process_long
+  ! search for equal sign in arg and set flag "has_equalsign" and
+  ! length of arg (till equal sign)
+  do j=1, len_arg
+      if (arg(j:j) == "=") then
+          has_equalsign = .true.
+          len_arg = j-1
+          exit
+      endif
+  enddo
+
+  ! search for matching long option
+
+  if (.not. has_equalsign) then
+      optind = optind + 1
+  endif
+
+  do i = 1, size(longopts)
+      if ( arg(3:len_arg) == longopts(i)%name ) then
+          optopt = longopts(i)%short
+          process_long = optopt
+          if ( longopts(i)%has_arg ) then
+              if (has_equalsign) then ! long option has equal sign between value and option
+                  if (arg(len_arg+2:) == '') then ! no value (len_arg+2 value after "="
+                      write(stderr, '(a,a,a)') "ERROR: Option '", trim(arg), "' requires a value"
+                      process_long=char(0) ! Option not valid
+                  else
+                      call get_command_argument(optind, optarg)
+                      optarg = optarg(len_arg+2:)
+                      optind = optind + 1
+                  endif
+              else ! long option has no equal sign between value and option
+                  if ( optind <= command_argument_count()) then
+                      call get_command_argument( optind, optarg )
+                      optind = optind + 1
+                  elseif ( opterr ) then
+                      write(stderr, '(a,a,a)') "ERROR: Option '", trim(arg), "' requires a value"
+                      process_long=char(0) ! Option not valid
+                  endif
+              endif
+          endif
+          return
+      endif
+  enddo
+  ! else not found
+  process_long = char(0)
+  optopt='?'
+  if ( opterr ) then
+      write(stderr, '(a,a,a)') "ERROR: Unrecognized option '", arg(1:len_arg), "'"
+  endif
+end function process_long
 !-----------------------------------------------------------------------------------------------------------------------------------
 character function process_short( optstring, arg )
-! arguments
 character(len=*), intent(in) :: optstring, arg
+integer                      :: i, arglen
+   arglen = len( trim( arg ))
+   optopt = arg(grpind:grpind)
+   process_short = optopt
 
-        ! local variables
-        integer :: i, arglen
+   i = index( optstring, optopt )
+   if ( i == 0 ) then
+       ! unrecognized option
+       process_short = '?'
+       if ( opterr ) then
+           write(stderr, '(a,a,a)') "ERROR: Unrecognized option '-", optopt, "'"
+       endif
+   endif
 
-        arglen = len( trim( arg ))
-        optopt = arg(grpind:grpind)
-        process_short = optopt
+   if ( i > 0 .and. substr( optstring, i+1, i+1 ) == ':' ) then
+       ! required argument
+       optind = optind + 1
+       if ( arglen > grpind ) then
+           ! -xarg, return remainder of arg
+           optarg = arg(grpind+1:arglen)
+       elseif ( optind <= command_argument_count()) then
+           ! -x arg, return next arg
+           call get_command_argument( optind, optarg )
+           optind = optind + 1
+       elseif ( opterr ) then
+           write(stderr, '(a,a,a)') "ERROR: Option '-", optopt, "' requires a value"
+           process_short = char(0) ! Option not valid
+       endif
+       grpind = 2
+   elseif ( arglen > grpind ) then
+       ! no argument (or unrecognized), go to next option in argument (-xyz)
+       grpind = grpind + 1
+   else
+       ! no argument (or unrecognized), go to next argument
+       grpind = 2
+       optind = optind + 1
+   endif
 
-        i = index( optstring, optopt )
-        if ( i == 0 ) then
-            ! unrecognized option
-            process_short = '?'
-            if ( opterr ) then
-                print '(a,a,a)', "Error: unrecognized option '-", optopt, "'"
-            end if
-        end if
-        if ( i > 0 .and. substr( optstring, i+1, i+1 ) == ':' ) then
-            ! required argument
-            optind = optind + 1
-            if ( arglen > grpind ) then
-                ! -xarg, return remainder of arg
-                optarg = arg(grpind+1:arglen)
-            else if ( optind <= iargc()) then
-                ! -x arg, return next arg
-                call getarg( optind, optarg )
-                optind = optind + 1
-            else if ( opterr ) then
-                print '(a,a,a)', "Error: option '-", optopt, "' requires an argument"
-            end if
-            grpind = 2
-        else if ( arglen > grpind ) then
-            ! no argument (or unrecognized), go to next option in argument (-xyz)
-            grpind = grpind + 1
-        else
-            ! no argument (or unrecognized), go to next argument
-            grpind = 2
-            optind = optind + 1
-        end if
 end function process_short
 !-----------------------------------------------------------------------------------------------------------------------------------
-end module getopt_m
+end module M_getopt
 !-----------------------------------------------------------------------------------------------------------------------------------

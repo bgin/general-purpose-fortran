@@ -2989,7 +2989,7 @@ end function almost
 !!         o M_journal(),log10(), abs(1)
 !!
 !!##FILES
-!!      o libjust4.a
+!!      o libGPF.a
 !!##LEGAL RESTRICTIONS
 !!      none
 !!##QA
@@ -3170,7 +3170,7 @@ END SUBROUTINE accdig
 !!         o M_journal(),log10(), abs(1)
 !!
 !!##FILES
-!!      o libjust4.a
+!!      o libGPF.a
 !!##LEGAL RESTRICTIONS
 !!      none
 !!##QA
