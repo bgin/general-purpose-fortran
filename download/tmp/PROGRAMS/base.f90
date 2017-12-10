@@ -213,7 +213,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20170916>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
-'@(#)COMPILED:       Fri, Nov 24th, 2017 8:30:24 PM>',&
+'@(#)COMPILED:       Sat, Nov 25th, 2017 9:20:17 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -247,7 +247,6 @@ logical                       :: brief
    brief=lget('base_brief')
    debug=lget('base_debug')
    values=sgets('base_oo')
-   write(*,*)'==>debug MODE',debug
    do i=1,size(values)
       if(debug)write(*,*)i,'==>',lower(values(i))
       if(scan(lower(values(i)),'#:').eq.0)then ! REGULAR NUMBER

@@ -1,6 +1,6 @@
 !>
 !!##NAME
-!!    M_process - [M_process] Fortran Module for calling process-related C functions from Fortran
+!!    M_process(3fm) - [M_process] Fortran Module for calling process-related C functions from Fortran
 !!
 !!##SYNOPSIS
 !!
@@ -271,7 +271,7 @@ end interface
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!        fputs - write a character string in a file or stream
+!!        fputs(3fp) - write a character string in a file or stream
 !!##SYNOPSIS
 !!
 !!        #include <stdio.h>

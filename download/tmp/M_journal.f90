@@ -172,12 +172,12 @@ character(len=*),intent(in)  :: msg
       case('N')                                                   ! new name for stdout
          if(msg.ne.' '.and.msg.ne.'#N#'.and.msg.ne.'"#N#"')then   ! if filename not special or blank open new file
             close(unit=last_int,iostat=ios)
-            open(unit=last_int,file=msg(:len_trim(msg)),iostat=ios)
+            open(unit=last_int,file=trim(msg),iostat=ios)
             if(ios.eq.0)then
                stdout=last_int
             else
                write(*,*)'*journal* error opening redirected output file, ioerr=',ios
-               write(*,*)'*journal* msg='//msg(:len_trim(msg))
+               write(*,*)'*journal* msg='//trim(msg)
             endif
          elseif(msg.eq.' ')then
             close(unit=last_int,iostat=ios)

@@ -188,7 +188,7 @@ call ln('<pre>')
             span=.true.
          endif
 !-----------------------------------------------------------------------------------------------------------------------------------
-         write(iout)lets(:max(1,len_trim(lets)))
+         write(iout)lets(:max(1,len_trim(lets))) ! print a space even if string is blank
          lastclass=class
       enddo
       write(iout)NEW_LINE('a')

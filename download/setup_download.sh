@@ -260,6 +260,7 @@ for NAME in \
    goodbad    \
    mank       \
    makemake   \
+   inpath     \
    manvi      \
    $NULL
 do

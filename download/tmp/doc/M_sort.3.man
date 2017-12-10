@@ -2,7 +2,7 @@ NAME
    M_sort(3fm) - [M_sort] Fortran module containing sorting algorithms for arrays of standard scalar types
 
 SYNOPSIS
-   use M_sort, only :: sort_shell, sort_quick_rx
+   use M_sort, only :: sort_shell, sort_quick_rx, unique
 
 DESCRIPTION
    Under development. Currently only provides a few common routines, but it is intended that

@@ -46,7 +46,7 @@
 !!       do
 !!          call system_readline(line,'readline>') ! read editable input line
 !!          if(line.eq.'q') stop
-!!          !call system(line(:len_trim(line)))    ! common extension
+!!          !call system(trim(line))    ! common extension
 !!          call execute_command_line(trim(line),cmdstat=cstat,cmdmsg=sstat) ! f08 equivalent
 !!       enddo
 !!    end program testit
@@ -138,7 +138,7 @@ SUBROUTINE system_readline(line,prompt)
    CHARACTER(KIND=C_CHAR,LEN=*),INTENT(IN)  :: prompt
 
    ! trim to last non-blank character and append null for C
-   CALL Freadline(INT(LEN(line),KIND=C_INT),line,prompt(:LEN_TRIM(prompt))//ACHAR(0))
+   CALL Freadline(INT(LEN(line),KIND=C_INT),line,trim(prompt)//ACHAR(0))
 
  END SUBROUTINE system_readline
 !-------------------------------------------------------------------------------

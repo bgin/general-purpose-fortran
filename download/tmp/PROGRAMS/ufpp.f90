@@ -1994,6 +1994,8 @@ character(len=*),intent(in) :: opts
       write(G_iout,'(a)')"endif"
       write(G_iout,'(a)')"end subroutine help_usage"
       write(G_iout,'("!",a)')repeat('-',131)
+   elseif(G_outtype.eq.'variable')then     ! if in 'variable' mode wrap up the variable
+      write(G_iout,'(a)')"'']"
    elseif(G_outtype.eq.'version')then  ! if in 'version' mode wrap up the routine
       write(G_iout,'("''@(#)COMPILED:       ",a,"'',&")') trim(now('%w, %l %d, %Y %H:%m:%s %N'))//'>'
       write(G_iout,'(a)')"'']"
@@ -2006,11 +2008,12 @@ character(len=*),intent(in) :: opts
       write(G_iout,'("!",a)')repeat('-',131)
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
-   call dissect('document','-oo -file -append .false.',opts) ! parse options and inline comment on input line
+   call dissect('document','-oo -file -varname textblock -append .false.',opts) ! parse options and inline comment on input line
 
    ! if a previous command has opened a -file FILENAME flush it, because a new one is being opened or this is an END command
    ! and if a -file FILENAME has been selected open it
    call print_comment_block()
+!-----------------------------------------------------------------------------------------------------------------------------------
    ! now can start new section
    G_MAN=''
    if(sget('document_file').ne.'')then
@@ -2020,12 +2023,14 @@ character(len=*),intent(in) :: opts
       G_MAN_FILE=''
       G_MAN_COLLECT=.false.
    endif
+!-----------------------------------------------------------------------------------------------------------------------------------
    G_MAN_PRINT=.false.
    if(lget('document_append'))then
       G_MAN_FILE_POSITION='APPEND'
    else
       G_MAN_FILE_POSITION='ASIS'
    endif
+!-----------------------------------------------------------------------------------------------------------------------------------
    select case(upper(sget('document_oo')))
 !-----------------------------------------------------------------------------------------------------------------------------------
    case('COMMENT')
@@ -2035,6 +2040,13 @@ character(len=*),intent(in) :: opts
 !-----------------------------------------------------------------------------------------------------------------------------------
    case('NULL')
       G_outtype='null'
+!-----------------------------------------------------------------------------------------------------------------------------------
+   case('VARIABLE')
+      G_outtype='variable'
+      !!write(G_iout,'(a)')'character(len=:),allocatable :: '//trim(sget('document_varname'))//'(:)'
+! NOTE: Without the type specification this constructor would have to specify all of the constants with the same character length.
+      write(G_iout,'(a)')trim(sget('document_varname'))//'=[ CHARACTER(LEN=128) :: &'
+      G_MAN_PRINT=.true.
 !-----------------------------------------------------------------------------------------------------------------------------------
    case('HELP')
       G_outtype='help'
@@ -2051,11 +2063,11 @@ character(len=*),intent(in) :: opts
 ! NOTE: Without the type specification this constructor would have to specify all of the constants with the same character length.
       write(G_iout,'(a)')'help_text=[ CHARACTER(LEN=128) :: &'
 
-      select case(G_comment_style)  ! duplicate help text as a comment for some code documentation utilities
-      case('doxygen')               ! convert plain text to doxygen comment blocks with some automatic markdown highlights
-         G_MAN_PRINT=.true.
-      case default
-      end select
+         select case(G_comment_style)  ! duplicate help text as a comment for some code documentation utilities
+         case('doxygen')               ! convert plain text to doxygen comment blocks with some automatic markdown highlights
+            G_MAN_PRINT=.true.
+         case default
+         end select
 !-----------------------------------------------------------------------------------------------------------------------------------
    case('VERSION')
       G_outtype='version'
@@ -3538,7 +3550,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        4.0: 20170502>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
-'@(#)COMPILED:       Fri, Nov 24th, 2017 8:26:45 PM>',&
+'@(#)COMPILED:       Sat, Nov 25th, 2017 5:11:16 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -3601,6 +3613,12 @@ integer                        :: ilen
 !----------------------------------------------------------------------------------------------------------------------------------=
    case('null')                                ! do not write
 !----------------------------------------------------------------------------------------------------------------------------------=
+   case('variable')
+      buff=trim(line)                          ! do not make a line over 132 characters. Trim input line if needed
+      buff=buff//repeat(' ',max(80,len(buff))) ! ensure space in buffer for substitute
+      call substitute(buff,"'","''")           ! change single quotes in input to two adjacent single quotes
+      ilen=max(len_trim(buff),80)              ! make all lines have at least 80 characters in the string for a more legible output
+      write(G_iout,'("''",a,"'',&")') buff(:ilen)
    case('help')
       buff=trim(line)                          ! do not make a line over 132 characters. Trim input line if needed
       buff=buff//repeat(' ',max(80,len(buff))) ! ensure space in buffer for substitute

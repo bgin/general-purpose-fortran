@@ -383,10 +383,10 @@ character(len=1),allocatable,intent(out) :: text(:)     ! array to hold file
       return
    endif
    ! open named file in stream mode positioned to append
-   open (unit=igetunit,                  &
-   & file=filename(:len_trim(filename)), &
-   & access='stream',                    &
-   & status='old',                       &
+   open (unit=igetunit,            &
+   & file=trim(filename),          &
+   & access='stream',              &
+   & status='old',                 &
    & position='append',iostat=ios)
    if(ios.eq.0)then  ! if file was successfully opened
       !
@@ -396,7 +396,7 @@ character(len=1),allocatable,intent(out) :: text(:)     ! array to hold file
       rewind(igetunit)                    ! get back to beginning of file
       nchars=nchars-1 ! opened for append, so subtract one to get current length
       if(nchars.le.0)then
-         call stderr('*slurp* empty file '//filename(:len_trim(filename)))
+         call stderr( '*slurp* empty file '//trim(filename) )
          return
       endif
       !
@@ -406,7 +406,7 @@ character(len=1),allocatable,intent(out) :: text(:)     ! array to hold file
       allocate ( text(nchars) )           ! make enough storage to hold file
       read(igetunit,iostat=ios) text      ! load input file -> text array
       if(ios.ne.0)then
-         call stderr('*slurp* bad read of '//filename(:len_trim(filename)))
+         call stderr( '*slurp* bad read of '//trim(filename) )
       endif
    endif
    close(iostat=ios,unit=igetunit)     ! close if opened successfully or not

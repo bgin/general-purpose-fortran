@@ -5,6 +5,7 @@ integer,parameter :: cd=kind(0.0d0)
 private
 public sort_shell
 public sort_quick_rx
+public unique
 character(len=*),parameter :: ident1="@(#)M_sort::sort_shell(3f): Generic subroutine sorts the array X using a shell sort"
 !===================================================================================================================================
 ! SORT_SHELL is a Generic Interface in a module with PRIVATE specific procedures. This means the individual subroutines
@@ -17,6 +18,11 @@ interface sort_shell
    module procedure sort_shell_complex, sort_shell_doubles, sort_shell_complex_double
 end interface
 !===================================================================================================================================
+interface unique
+   module procedure unique_integers, unique_reals, unique_strings
+   module procedure unique_complex, unique_doubles, unique_complex_double
+end interface
+!===================================================================================================================================
 contains
 !===================================================================================================================================
 !>
@@ -25,7 +31,7 @@ contains
 !!
 !!##SYNOPSIS
 !!
-!!    use M_sort, only :: sort_shell, sort_quick_rx
+!!    use M_sort, only :: sort_shell, sort_quick_rx, unique
 !!
 !!##DESCRIPTION
 !!    Under development. Currently only provides a few common routines, but it is intended that
@@ -1006,5 +1012,197 @@ end subroutine sort_quick_rx
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
+!>
+!!##NAME
+!!    unique(3f) - [M_sort] assuming an array isorted, return array with duplicate values removed
+!!##SYNOPSIS
+!!
+!!    subroutine unique(array,ivals)
+!!
+!!     class(*),intent(inout)  :: array(:)
+!!     integer,intent(out)     :: ivals
+!!
+!!##DESCRIPTION
+!!     Assuming an array is sorted, return the array with duplicate values removed.
+!!
+!!##OPTIONS
+!!    array      may be of type INTEGER, REAL, CHARACTER, COMPLEX, DOUBLEPRECISION,
+!!               or complex doubleprecision (that is, complex(kind=kind(0.0d0)) ).
+!!    ivals      number of unique values packed into beginning of array
+!!##EXAMPLE
+!!
+!!    Sample program
+!!
+!!     program testit
+!!     use M_sort, only : unique
+!!     implicit none
+!!     character(len=:),allocatable :: strings(:)
+!!     integer                      :: icount
+!!
+!!     strings=[character(len=2) :: '1','1','2','3','4','4','10','20','20','30']
+!!     write(*,'(a,*(a3,1x))')'ORIGINAL:',strings
+!!     write(*,'("SIZE=",i0)')size(strings)
+!!
+!!     call unique(strings,icount)
+!!
+!!     write(*,*)
+!!     write(*,'(a,*(a3,1x))')'AFTER   :',strings(1:icount)(:2)
+!!     write(*,'("SIZE=",i0)')size(strings)
+!!     write(*,'("ICOUNT=",i0)')icount
+!!
+!!     end program testit
+!!
+!!    Expected output
+!!
+!!     ORIGINAL: 1   1   2   3   4   4   10  20  20  30
+!!     SIZE=10
+!!
+!!     AFTER   : 1   2   3   4   10  20  30
+!!     SIZE=10
+!!     ICOUNT=7
+!===================================================================================================================================
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine unique_integers(array,ivals)
+integer,intent(inout)  :: array(:)
+integer,intent(out)    :: ivals
+   integer             :: i,isize
+   isize=size(array)
+   if(isize.ge.2)then
+      ivals=1
+      do i=2,isize
+         if(array(i).ne.array(i-1))then
+            ivals=ivals+1
+            array(ivals)=array(i)
+         endif
+      enddo
+   else
+      ivals=isize
+   endif
+end subroutine unique_integers
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine unique_reals(array,ivals)
+real,intent(inout)  :: array(:)
+integer,intent(out) :: ivals
+   integer          :: i,isize
+   isize=size(array)
+   if(isize.ge.2)then
+      ivals=1
+      do i=2,isize
+        if(array(i).ne.array(i-1))then
+           ivals=ivals+1
+           array(ivals)=array(i)
+        endif
+      enddo
+   else
+      ivals=isize
+   endif
+end subroutine unique_reals
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine unique_strings(array,ivals)
+character(len=*),intent(inout),allocatable  :: array(:)
+integer,intent(out)                         :: ivals
+   integer                                  :: i,isize
+   isize=size(array)
+   if(isize.ge.2)then
+      ivals=1
+      do i=2,isize
+        if(array(i).ne.array(i-1))then
+           ivals=ivals+1
+           array(ivals)=array(i)
+        endif
+      enddo
+   else
+      ivals=isize
+   endif
+end subroutine unique_strings
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine unique_allocatable_strings(array,ivals)
+character(len=:),intent(inout),allocatable  :: array(:)
+integer,intent(out)                         :: ivals
+   integer                                  :: i,isize
+   isize=size(array)
+   if(isize.ge.2)then
+      ivals=1
+      do i=2,isize
+        if(array(i).ne.array(i-1))then
+           ivals=ivals+1
+           array(ivals)=array(i)
+        endif
+      enddo
+   else
+      ivals=isize
+   endif
+end subroutine unique_allocatable_strings
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine unique_complex(array,ivals)
+complex,intent(inout)  :: array(:)
+integer,intent(out)    :: ivals
+   integer             :: i,isize
+   isize=size(array)
+   if(isize.ge.2)then
+      ivals=1
+      do i=2,isize
+        if(array(i).ne.array(i-1))then
+           ivals=ivals+1
+           array(ivals)=array(i)
+        endif
+      enddo
+   else
+      ivals=isize
+   endif
+end subroutine unique_complex
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine unique_doubles(array,ivals)
+doubleprecision,intent(inout)  :: array(:)
+integer,intent(out)            :: ivals
+   integer                     :: i,isize
+   isize=size(array)
+   if(isize.ge.2)then
+      ivals=1
+      do i=2,isize
+        if(array(i).ne.array(i-1))then
+           ivals=ivals+1
+           array(ivals)=array(i)
+        endif
+      enddo
+   else
+      ivals=isize
+   endif
+end subroutine unique_doubles
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine unique_complex_double(array,ivals)
+complex(kind=cd),intent(inout) :: array(:)   ! array  input/output array
+integer,intent(out)            :: ivals
+   integer                     :: i,isize
+   isize=size(array)
+   if(isize.ge.2)then
+      ivals=1
+      do i=2,isize
+        if(array(i).ne.array(i-1))then
+           ivals=ivals+1
+           array(ivals)=array(i)
+        endif
+      enddo
+   else
+      ivals=isize
+   endif
+end subroutine unique_complex_double
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 end module M_sort
 !===================================================================================================================================

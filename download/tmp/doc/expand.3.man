@@ -1,5 +1,5 @@
 NAME
-   expand - [M_strings] expand escape sequences
+   expand(3f) - [M_strings] expand C-like escape sequences
 
 SYNOPSIS
    function expand(line,escape) result(lineout)
@@ -10,10 +10,10 @@ SYNOPSIS
 DESCRIPTION
 
     EXPAND() expands sequences used to represent commonly used escape sequences
-    or control characters.
+    or control characters. By default ...
 
     Escape sequences
-      \\     escape character
+      \\     backslash
       \a     alert (BEL) -- g is an alias for a
       \b     backspace
       \c     suppress further output
@@ -47,3 +47,11 @@ EXAMPLES
           enddo
        endblock READFILE
     end program demo_expand
+
+   Sample input:
+
+     \e[2J
+     \tABC\tabc
+     \tA\a
+     \nONE\nTWO\nTHREE
+

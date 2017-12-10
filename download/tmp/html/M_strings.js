@@ -51,4 +51,5 @@ append("transliterate.3.html");
 append("upper.3.html");
 append("v2s.3.html");
 append("value_to_string.3.html");
+append("visible.3.html");
 }

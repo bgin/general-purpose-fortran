@@ -958,12 +958,12 @@ subroutine my_exit()                           ! temporarily exit to standard mo
          !!write(ERROR_UNIT,*)"COMPILER VERSION=",COMPILER_VERSION()
          !!write(ERROR_UNIT,*)"COMPILER OPTIONS=",COMPILER_OPTIONS()
          call get_command_argument(0,command,i,ierr)
-         write(ERROR_UNIT,*)"get_command_argument(0) is "//command(:len_trim(command))
+         write(ERROR_UNIT,*)"get_command_argument(0) is "//trim(command)
          call get_command(command,i,ierr)
-         write(ERROR_UNIT,*)"get_command is " //command(:len_trim(command))
+         write(ERROR_UNIT,*)"get_command is " //trim(command)
          do i=1,command_argument_count()
             call get_command_argument(i,command)
-            write(ERROR_UNIT,*)i,"th argument="//command(:len_trim(command))
+            write(ERROR_UNIT,*)i,"th argument="//trim(command)
          enddo
       case('s','S')
          write(*,*)'You have now started a system shell.'

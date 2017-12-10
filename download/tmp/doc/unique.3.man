@@ -1,0 +1,46 @@
+NAME
+   unique(3f) - [M_sort] assuming an array isorted, return array with duplicate values removed
+SYNOPSIS
+   subroutine unique(array,ivals)
+
+    class(*),intent(inout)  :: array(:)
+    integer,intent(out)     :: ivals
+
+DESCRIPTION
+    Assuming an array is sorted, return the array with duplicate values removed.
+
+OPTIONS
+   array      may be of type INTEGER, REAL, CHARACTER, COMPLEX, DOUBLEPRECISION,
+              or complex doubleprecision (that is, complex(kind=kind(0.0d0)) ).
+   ivals      number of unique values packed into beginning of array
+EXAMPLE
+   Sample program
+
+    program testit
+    use M_sort, only : unique
+    implicit none
+    character(len=:),allocatable :: strings(:)
+    integer                      :: icount
+
+    strings=[character(len=2) :: '1','1','2','3','4','4','10','20','20','30']
+    write(*,'(a,*(a3,1x))')'ORIGINAL:',strings
+    write(*,'("SIZE=",i0)')size(strings)
+
+    call unique(strings,icount)
+
+    write(*,*)
+    write(*,'(a,*(a3,1x))')'AFTER   :',strings(1:icount)(:2)
+    write(*,'("SIZE=",i0)')size(strings)
+    write(*,'("ICOUNT=",i0)')icount
+
+    end program testit
+
+   Expected output
+
+    ORIGINAL: 1   1   2   3   4   4   10  20  20  30
+    SIZE=10
+
+    AFTER   : 1   2   3   4   10  20  30
+    SIZE=10
+    ICOUNT=7
+

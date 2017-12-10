@@ -9,7 +9,7 @@ SYNOPSIS
    use M_strings, only : adjustc,compact,nospace,indent,crop
    use M_strings, only : len_white,lenset,merge_str
    use M_strings, only : switch,s2c,c2s
-   use M_strings, only : noesc,notabs,expand
+   use M_strings, only : noesc,notabs,expand,visible
    use M_strings, only : string_to_value,string_to_values,s2v,s2vs,value_to_string,v2s
    use M_strings, only : listout,getvals
    use M_strings, only : matchw
@@ -64,9 +64,10 @@ SYNOPSIS
 
    NONALPHA
 
-   noesc   convert non-printable ASCII8 characters to a space
-   notabs  convert tabs to spaces while maintaining columns, assuming tabs are set every 8 characters
-   expand  expand escape sequences in a string
+   noesc    convert non-printable ASCII8 characters to a space
+   notabs   convert tabs to spaces while maintaining columns, assuming tabs are set every 8 characters
+   expand   expand escape sequences in a string
+   visible  expand escape sequences in a string to control and meta-control representations
 
    NUMERIC STRINGS
 

@@ -11,7 +11,7 @@
 !!    use M_strings, only : adjustc,compact,nospace,indent,crop
 !!    use M_strings, only : len_white,lenset,merge_str
 !!    use M_strings, only : switch,s2c,c2s
-!!    use M_strings, only : noesc,notabs,expand
+!!    use M_strings, only : noesc,notabs,expand,visible
 !!    use M_strings, only : string_to_value,string_to_values,s2v,s2vs,value_to_string,v2s
 !!    use M_strings, only : listout,getvals
 !!    use M_strings, only : matchw
@@ -66,9 +66,10 @@
 !!
 !!    NONALPHA
 !!
-!!    noesc   convert non-printable ASCII8 characters to a space
-!!    notabs  convert tabs to spaces while maintaining columns, assuming tabs are set every 8 characters
-!!    expand  expand escape sequences in a string
+!!    noesc    convert non-printable ASCII8 characters to a space
+!!    notabs   convert tabs to spaces while maintaining columns, assuming tabs are set every 8 characters
+!!    expand   expand escape sequences in a string
+!!    visible  expand escape sequences in a string to control and meta-control representations
 !!
 !!    NUMERIC STRINGS
 !!
@@ -417,6 +418,7 @@ PUBLIC matchw          !  compares given string for match to pattern which may c
 PUBLIC noesc           !  elemental function converts non-printable ASCII8 characters to a space
 PUBLIC notabs          !  convert tabs to spaces in output while maintaining columns, assuming a tab is set every 8 characters
 PUBLIC expand          !  expand escape sequences in a string
+PUBLIC visible         !  expand escape sequences in a string to control and meta-control representations
 !----------------------# NUMERIC STRINGS
 PUBLIC string_to_value !  generic subroutine returns REAL|DOUBLEPRECISION|INTEGER value from string (a2d,a2r,a2i)
  PRIVATE a2d           !  subroutine returns double value from string
@@ -673,7 +675,7 @@ end function matchw
 !!    subroutine split(input_line,array,delimiters,order,nulls)
 !!
 !!     character(len=*),intent(in)              :: input_line
-!!     character(len=:),allocatable,intent(out) :: array(:)
+!!     character(len=*),allocatable,intent(out) :: array(:)
 !!     character(len=*),optional,intent(in)     :: delimiters
 !!     character(len=*),optional,intent(in)     :: order
 !!     character(len=*),optional,intent(in)     :: nulls
@@ -815,7 +817,6 @@ character(len=*),parameter::ident="@(#)M_strings::split(3f): parse string on del
    character(len=*),optional,intent(in)     :: delimiters  ! list of delimiter characters
    character(len=*),optional,intent(in)     :: order       ! order of output array sequential|[reverse|right]
    character(len=*),optional,intent(in)     :: nulls       ! return strings composed of delimiters or not ignore|return|ignoreend
-   !x!character(len=:),allocatable,intent(out) :: array(:)    ! output array of tokens
    character(len=*),allocatable,intent(out) :: array(:)    ! output array of tokens
 !-----------------------------------------------------------------------------------------------------------------------------------
    integer                       :: n                      ! max number of strings INPUT_LINE could split into if all delimiter
@@ -2811,7 +2812,89 @@ end function indent
 !===================================================================================================================================
 !>
 !!##NAME
-!!    expand - [M_strings] expand escape sequences
+!!    visible(3f) - [M_strings] expand a string to control and meta-control representations
+!!
+!!##SYNOPSIS
+!!
+!!    function visible(input) result(output)
+!!
+!!     character(len=*),intent(in)           :: input
+!!     character(len=:),allocatable          :: output
+!!##DESCRIPTION
+!!
+!!     visible(3f) expands characters to commonly used sequences used to represent the characters
+!!     as control sequences or meta-control sequences.
+!!
+!!##EXAMPLES
+!!
+!!
+!!    Sample Program:
+!!
+!!     program demo_visible
+!!     use M_strings, only : visible
+!!     integer :: i
+!!        READFILE: block
+!!           do i=0,255
+!!              write(*,'(a)')visible(char(i))
+!!           enddo
+!!     end program demo_visible
+!!##BUGS
+!!     The expansion is not reversible, as input sequences such as "M-" or "^a"
+!!     will look like expanded sequences.
+!===================================================================================================================================
+function visible(input) result(output)
+character(len=*),intent(in)  :: input
+character(len=:),allocatable :: output
+
+character(len=*),parameter::ident="&
+&@(#)M_strings::visible(3f) expand escape sequences in a string to control and meta-control representations"
+
+integer                      :: i
+character(len=1)             :: c
+
+character(len=*),parameter :: chars(0:255)= [ &
+'^@  ', '^A  ', '^B  ', '^C  ', '^D  ', '^E  ', '^F  ', '^G  ', '^H  ', '^I  ', &
+'^J  ', '^K  ', '^L  ', '^M  ', '^N  ', '^O  ', '^P  ', '^Q  ', '^R  ', '^S  ', &
+'^T  ', '^U  ', '^V  ', '^W  ', '^X  ', '^Y  ', '^Z  ', '^[  ', '^\  ', '^]  ', &
+'^^  ', '^_  ', '    ', '!   ', '"   ', '#   ', '$   ', '%   ', '&   ', '''   ', &
+'(   ', ')   ', '*   ', '+   ', ',   ', '-   ', '.   ', '/   ', '0   ', '1   ', &
+'2   ', '3   ', '4   ', '5   ', '6   ', '7   ', '8   ', '9   ', ':   ', ';   ', &
+'<   ', '=   ', '>   ', '?   ', '@   ', 'A   ', 'B   ', 'C   ', 'D   ', 'E   ', &
+'F   ', 'G   ', 'H   ', 'I   ', 'J   ', 'K   ', 'L   ', 'M   ', 'N   ', 'O   ', &
+'P   ', 'Q   ', 'R   ', 'S   ', 'T   ', 'U   ', 'V   ', 'W   ', 'X   ', 'Y   ', &
+'Z   ', '[   ', '\   ', ']   ', '^   ', '_   ', '`   ', 'a   ', 'b   ', 'c   ', &
+'d   ', 'e   ', 'f   ', 'g   ', 'h   ', 'i   ', 'j   ', 'k   ', 'l   ', 'm   ', &
+'n   ', 'o   ', 'p   ', 'q   ', 'r   ', 's   ', 't   ', 'u   ', 'v   ', 'w   ', &
+'x   ', 'y   ', 'z   ', '{   ', '|   ', '}   ', '~   ', '^?  ', 'M-^@', 'M-^A', &
+'M-^B', 'M-^C', 'M-^D', 'M-^E', 'M-^F', 'M-^G', 'M-^H', 'M-^I', 'M-^J', 'M-^K', &
+'M-^L', 'M-^M', 'M-^N', 'M-^O', 'M-^P', 'M-^Q', 'M-^R', 'M-^S', 'M-^T', 'M-^U', &
+'M-^V', 'M-^W', 'M-^X', 'M-^Y', 'M-^Z', 'M-^[', 'M-^\', 'M-^]', 'M-^^', 'M-^_', &
+'M-  ', 'M-! ', 'M-" ', 'M-# ', 'M-$ ', 'M-% ', 'M-& ', 'M-'' ', 'M-( ', 'M-) ', &
+'M-* ', 'M-+ ', 'M-, ', 'M-- ', 'M-. ', 'M-/ ', 'M-0 ', 'M-1 ', 'M-2 ', 'M-3 ', &
+'M-4 ', 'M-5 ', 'M-6 ', 'M-7 ', 'M-8 ', 'M-9 ', 'M-: ', 'M-; ', 'M-< ', 'M-= ', &
+'M-> ', 'M-? ', 'M-@ ', 'M-A ', 'M-B ', 'M-C ', 'M-D ', 'M-E ', 'M-F ', 'M-G ', &
+'M-H ', 'M-I ', 'M-J ', 'M-K ', 'M-L ', 'M-M ', 'M-N ', 'M-O ', 'M-P ', 'M-Q ', &
+'M-R ', 'M-S ', 'M-T ', 'M-U ', 'M-V ', 'M-W ', 'M-X ', 'M-Y ', 'M-Z ', 'M-[ ', &
+'M-\ ', 'M-] ', 'M-^ ', 'M-_ ', 'M-` ', 'M-a ', 'M-b ', 'M-c ', 'M-d ', 'M-e ', &
+'M-f ', 'M-g ', 'M-h ', 'M-i ', 'M-j ', 'M-k ', 'M-l ', 'M-m ', 'M-n ', 'M-o ', &
+'M-p ', 'M-q ', 'M-r ', 'M-s ', 'M-t ', 'M-u ', 'M-v ', 'M-w ', 'M-x ', 'M-y ', &
+'M-z ', 'M-{ ', 'M-| ', 'M-} ', 'M-~ ', 'M-^?']
+output=''
+do i=1,len(input)
+   c=input(i:i)
+   if(c.eq.' ')then
+      output=output//' '
+   else
+      output=output//trim(chars(ichar(c)))
+   endif
+enddo
+end function visible
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+!>
+!!##NAME
+!!    expand(3f) - [M_strings] expand C-like escape sequences
 !!
 !!##SYNOPSIS
 !!
@@ -2823,10 +2906,10 @@ end function indent
 !!##DESCRIPTION
 !!
 !!     EXPAND() expands sequences used to represent commonly used escape sequences
-!!     or control characters.
+!!     or control characters. By default ...
 !!
 !!     Escape sequences
-!!       \\     escape character
+!!       \\     backslash
 !!       \a     alert (BEL) -- g is an alias for a
 !!       \b     backspace
 !!       \c     suppress further output
@@ -2861,6 +2944,13 @@ end function indent
 !!           enddo
 !!        endblock READFILE
 !!     end program demo_expand
+!!
+!!    Sample input:
+!!
+!!      \e[2J
+!!      \tABC\tabc
+!!      \tA\a
+!!      \nONE\nTWO\nTHREE
 !===================================================================================================================================
 function expand(line,escape) result(lineout)
 USE ISO_C_BINDING ,ONLY: c_horizontal_tab
@@ -2889,13 +2979,18 @@ character(len=1),intent(in),optional  :: escape ! escape character. Default is b
    integer                      :: ios
    j=0 ! pointer into output
    i=0 ! pointer into input
+
    ilen=len_trim(line)
    lineout=''
+
+   if(ilen.eq.0)return
+
    if (present(escape))then
       esc=escape
    else
       esc=char(92)
    endif
+
    EXP: do
       i=i+1
       if(line(i:i).eq.esc)then
@@ -2939,6 +3034,7 @@ character(len=1),intent(in),optional  :: escape ! escape character. Default is b
       endif
       if(i.ge.ilen)exit EXP
    enddo EXP
+
 end function expand
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!

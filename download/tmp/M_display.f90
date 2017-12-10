@@ -692,7 +692,8 @@ CONTAINS
       case('ROW');  row = .true.
       case('COL');  row = .false.
       case default;
-        call disp_errmsg('DISP: error, wrong value of orient: '//orient(1:len_trim(orient))//', using "COL"')
+        ! do not use trim(3f), as using trim as an argument name
+        call disp_errmsg('DISP: error, wrong value of orient: '//orient(:len_trim(orient))//', using "COL"')
         row = .false.
       end select
     elseif (vec) then

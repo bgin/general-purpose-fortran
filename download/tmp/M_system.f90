@@ -32,9 +32,9 @@
 !!    use M_system, only : system_cpu_time
 !!
 !!##DESCRIPTION
-!!    M_system(3fm) is a collection of Fortran procedures that mostly call C
+!!    M_system(3fm) is a collection of Fortran procedures that call C
 !!    or a C wrapper using the ISO_C_BINDING interface to access system calls.
-!!    System calls are special set of functions used by programs to communicate
+!!    System calls are a special set of functions used by programs to communicate
 !!    directly with an operating system.
 !!
 !!    Generally, system calls are slower than normal function calls because

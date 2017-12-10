@@ -387,10 +387,10 @@ character(len=*),intent(in)  :: keyword            ! the dictionary keyword (in 
          case('T')      ; lget=.true.              ! assume this is .t. or .true.
          case('F')      ; lget=.false.             ! assume this is .f. or .false.
          case default
-            call journal("*lget* bad logical expression for "//keyword(:len_trim(keyword))//'='//value)
+            call journal("*lget* bad logical expression for "//trim(keyword)//'='//value)
          end select
       case default
-            call journal("*lget* bad logical expression for "//keyword(:len_trim(keyword))//'='//value)
+            call journal("*lget* bad logical expression for "//trim(keyword)//'='//value)
       end select
    else                                            ! special value "#N#" is assumed FALSE
       lget=.false.

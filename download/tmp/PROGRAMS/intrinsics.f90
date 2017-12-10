@@ -50,7 +50,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Fri, Nov 24th, 2017 8:18:00 PM>',&
+'@(#)COMPILED:       Sat, Dec 9th, 2017 2:45:51 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -111,6 +111,64 @@ end subroutine help_usage
 !!     Sample commands
 !!
 !!        intrinsics >x;vi x
+!===================================================================================================================================
+!>
+!!##NAME
+!!     include(7f) - [FORTRAN] including source text
+!!##SYNOPSIS
+!!
+!!     INCLUDE char-literal-constant
+!!##DESCRIPTION
+!!   Additional text may be incorporated into the source text of a program
+!!   unit during processing. This is accomplished with the INCLUDE line,
+!!   which has the form
+!!
+!!          INCLUDE char-literal-constant
+!!
+!!   An INCLUDE line is not a Fortran statement.
+!!
+!!   The char-literal-constant shall not have a kind type parameter value
+!!   that is a named-constant.
+!!   The interpretation of char-literal-constant is processor dependent. An
+!!   example of a possible valid interpretation is that char-literal-constant
+!!   is the name of a file that contains the source text to be included.
+!!
+!!   An INCLUDE line shall appear on a single source line where a statement
+!!   may appear; it shall be the only nonblank text on this line other than
+!!   an optional trailing comment. Thus, a statement label is not allowed.
+!!
+!!   The effect of the INCLUDE line is as if the referenced source text
+!!   physically replaced the INCLUDE line prior to program
+!!   processing. Included text may contain any source text, including
+!!   additional INCLUDE lines; such nested INCLUDE lines are similarly
+!!   replaced with the specified source text. The maximum depth of nesting
+!!   of any nested INCLUDE lines is processor dependent. Inclusion of the
+!!   source text referenced by an INCLUDE line shall not, at any level of
+!!   nesting, result in inclusion of the same source text.
+!!
+!!   When an INCLUDE line is resolved, the first included statement line
+!!   shall not be a continuation line and the last included statement line
+!!   shall not be continued.
+!!
+!!
+!!   NOTE
+!!
+!!           In some circumstances, for example where source code is
+!!           maintained in an INCLUDE file for use in programs whose source
+!!           form might be either fixed or free, observing the following
+!!           rules allows the code to be used with either source form.
+!!
+!!           *   Confine statement labels to character positions 1 to
+!!               5 and statements to character positions 7 to 72.
+!!           *   Treat blanks as being significant.
+!!           *   Use only the exclamation mark (!) to indicate
+!!               a comment, but do not start the comment in character
+!!               position 6.
+!!           *   For continued statements, place an ampersand (&) in
+!!               both character position 73 of a continued line and character
+!!               position 6 of a continuation line.
+!!##EXAMPLE
+!!
 !===================================================================================================================================
 !>
 !!##NAME
@@ -10210,6 +10268,230 @@ write(io,'(a)')'   declared using the derived type PERSON from Note 4.17. The po
 write(io,'(a)')'   the derived type NODE from Note 4.37; it is initially disassociated. MYNAME is initialized by a structure'
 write(io,'(a)')'   constructor. YOURNAME is initialized by supplying a separate value for each component.'
 write(io,'(a)')''
+write(io,'(a)')'NAME'
+write(io,'(a)')'   OPEN(3f) -- [FORTRAN:I/O] Initiates or modifies a connection between an external file and a specified unit.'
+write(io,'(a)')'SYNOPSIS'
+write(io,'(a)')''
+write(io,'(a)')'  OPEN (connect-spec-list)'
+write(io,'(a)')''
+write(io,'(a)')'  connect-spec  is   [ UNIT = ] file-unit-number'
+write(io,'(a)')'                or   ACCESS = scalar-default-char-expr'
+write(io,'(a)')'                or   ACTION = scalar-default-char-expr'
+write(io,'(a)')'                or   ASYNCHRONOUS = scalar-default-char-expr'
+write(io,'(a)')'                or   BLANK = scalar-default-char-expr'
+write(io,'(a)')'                or   DECIMAL = scalar-default-char-expr'
+write(io,'(a)')'                or   DELIM = scalar-default-char-expr'
+write(io,'(a)')'                or   ENCODING = scalar-default-char-expr'
+write(io,'(a)')'                or   ERR = label'
+write(io,'(a)')'                or   FILE = file-name-expr'
+write(io,'(a)')'                            file-name-expr is scalar-default-char-expr'
+write(io,'(a)')'                or   FORM = scalar-default-char-expr'
+write(io,'(a)')'                or   IOMSG = iomsg-variable'
+write(io,'(a)')'                             iomsg-variable is scalar-default-char-variable'
+write(io,'(a)')'                or   IOSTAT = scalar-int-variable'
+write(io,'(a)')'                or   NEWUNIT = scalar-int-variable'
+write(io,'(a)')'                or   PAD = scalar-default-char-expr'
+write(io,'(a)')'                or   POSITION = scalar-default-char-expr'
+write(io,'(a)')'                or   RECL = scalar-int-expr'
+write(io,'(a)')'                or   ROUND = scalar-default-char-expr'
+write(io,'(a)')'                or   SIGN = scalar-default-char-expr'
+write(io,'(a)')'                or   STATUS = scalar-default-char-expr'
+write(io,'(a)')''
+write(io,'(a)')'DESCRIPTION'
+write(io,'(a)')''
+write(io,'(a)')'   An OPEN statement initiates or modifies the connection between an external file and a specified unit. The'
+write(io,'(a)')'   OPEN statement may be used to connect an existing file to a unit, create a file that is preconnected, create a f'
+write(io,'(a)')'   and connect it to a unit, or change certain modes of a connection between a file and a unit.'
+write(io,'(a)')''
+write(io,'(a)')'   An external unit may be connected by an OPEN statement in the main program or any subprogram and, once'
+write(io,'(a)')'   connected, a reference to it may appear in any program unit of the program.'
+write(io,'(a)')''
+write(io,'(a)')'   If the file to be connected to the unit does not exist but is the same as the file to which the unit is preconne'
+write(io,'(a)')'   the modes specified by an OPEN statement become a part of the connection.'
+write(io,'(a)')''
+write(io,'(a)')'   If the file to be connected to the unit is not the same as the file to which the unit is connected, the effect i'
+write(io,'(a)')'   if a CLOSE statement without a STATUS= specifier had been executed for the unit immediately prior to the'
+write(io,'(a)')'   execution of an OPEN statement.'
+write(io,'(a)')''
+write(io,'(a)')'   If a unit is connected to a file that exists, execution of an OPEN statement for that unit is permitted. If the'
+write(io,'(a)')'   FILE= specifier is not included in such an OPEN statement, the file to be connected to the unit is the same as'
+write(io,'(a)')'   the file to which the unit is already connected.'
+write(io,'(a)')''
+write(io,'(a)')'   If the file to be connected to the unit is the same as the file to which the unit is connected, only the specifi'
+write(io,'(a)')'   changeable modes (9.5.2) may have values different from those currently in effect. If the POSITION= specifier'
+write(io,'(a)')'   appears in such an OPEN statement, the value specified shall not disagree with the current position of the file.'
+write(io,'(a)')'   If the STATUS= specifier is included in such an OPEN statement, it shall be specified with the value OLD.'
+write(io,'(a)')'   Execution of such an OPEN statement causes any new values of the specifiers for changeable modes to be in'
+write(io,'(a)')'   effect, but does not cause any change in any of the unspecified specifiers and the position of the file is unaff'
+write(io,'(a)')'   The ERR=, IOSTAT=, and IOMSG= specifiers from any previously executed OPEN statement have no effect'
+write(io,'(a)')'   on any currently executed OPEN statement.'
+write(io,'(a)')''
+write(io,'(a)')'   A STATUS= specifier with a value of OLD is always allowed when the file to be connected to the unit is the same'
+write(io,'(a)')'   as the file to which the unit is connected. In this case, if the status of the file was SCRATCH before execution'
+write(io,'(a)')'   the OPEN statement, the file will still be deleted when the unit is closed, and the file is still considered to'
+write(io,'(a)')'   a status of SCRATCH.'
+write(io,'(a)')''
+write(io,'(a)')'   If a file is already connected to a unit, an OPEN statement on that file with a different unit shall not be exec'
+write(io,'(a)')''
+write(io,'(a)')'OPTIONS'
+write(io,'(a)')''
+write(io,'(a)')'A specifier that requires a scalar-default-char-expr may have a'
+write(io,'(a)')'limited list of character values. These values are listed for each'
+write(io,'(a)')'such specifier. Any trailing blanks are ignored. The value specified'
+write(io,'(a)')'is without regard to case. Some specifiers have a default value if the'
+write(io,'(a)')'specifier is omitted.  No specifier shall appear more than once in a'
+write(io,'(a)')'given connect-spec-list.'
+write(io,'(a)')''
+write(io,'(a)')'If the NEWUNIT= specifier does not appear, a file-unit-number shall'
+write(io,'(a)')'be specified; if the optional characters UNIT= are omitted, the'
+write(io,'(a)')'file-unit-number shall be the first item in the connect-spec-list.'
+write(io,'(a)')''
+write(io,'(a)')'The label used in the ERR= specifier shall be the statement label of'
+write(io,'(a)')'a branch target statement that appears in the same scoping unit as the'
+write(io,'(a)')'OPEN statement.'
+write(io,'(a)')''
+write(io,'(a)')'If a NEWUNIT= specifier appears, a file-unit-number shall not appear.'
+write(io,'(a)')''
+write(io,'(a)')'STATUS   If the STATUS= specifier has the value NEW or REPLACE, the FILE= specifier shall appear. If the STATUS='
+write(io,'(a)')'         specifier has the value SCRATCH, the FILE= specifier shall not appear. If the STATUS= specifier has the va'
+write(io,'(a)')'         OLD, the FILE= specifier shall appear unless the unit is connected and the file connected to the unit exis'
+write(io,'(a)')''
+write(io,'(a)')'NEWUNIT  If the NEWUNIT= specifier appears in an OPEN statement, either the FILE= specifier shall appear, or the'
+write(io,'(a)')'         STATUS= specifier shall appear with a value of SCRATCH. The unit identified by a NEWUNIT value shall not'
+write(io,'(a)')'         be preconnected.'
+write(io,'(a)')''
+write(io,'(a)')'IOSTAT=, ERR=, and IOMSG=   specifiers are described in 9.11.'
+write(io,'(a)')''
+write(io,'(a)')'ACCESS   The scalar-default-char-expr shall evaluate to SEQUENTIAL, DIRECT, or STREAM. The ACCESS= specifier'
+write(io,'(a)')'         specifies the access method for the connection of the file as being sequential, direct, or stream. If this'
+write(io,'(a)')'         omitted, the default value is SEQUENTIAL. For an existing file, the specified access method shall be inclu'
+write(io,'(a)')'         the set of allowed access methods for the file. For a new file, the processor creates the file with a set'
+write(io,'(a)')'         access methods that includes the specified method.'
+write(io,'(a)')''
+write(io,'(a)')'ACTION   The scalar-default-char-expr shall evaluate to READ, WRITE, or READWRITE. READ specifies that the'
+write(io,'(a)')'         WRITE, PRINT, and ENDFILE statements shall not refer to this connection. WRITE specifies that READ'
+write(io,'(a)')'         statements shall not refer to this connection. READWRITE permits any input/output statements to refer to t'
+write(io,'(a)')'         connection. If this specifier is omitted, the default value is processor dependent. If READWRITE is includ'
+write(io,'(a)')'         the set of allowable actions for a file, both READ and WRITE also shall be included in the set of allowed'
+write(io,'(a)')'         for that file. For an existing file, the specified action shall be included in the set of allowed actions'
+write(io,'(a)')'         For a new file, the processor creates the file with a set of allowed actions that includes the specified a'
+write(io,'(a)')''
+write(io,'(a)')'ASYNCHRONOUS   The scalar-default-char-expr shall evaluate to YES or NO. If YES is specified, asynchronous input/ou'
+write(io,'(a)')'               the unit is allowed. If NO is specified, asynchronous input/output on the unit is not allowed. If th'
+write(io,'(a)')'               omitted, the default value is NO.'
+write(io,'(a)')''
+write(io,'(a)')'BLANK   The scalar-default-char-expr shall evaluate to NULL or ZERO. The BLANK= specifier is permitted only for a'
+write(io,'(a)')'        connection for formatted input/output. It specifies the current value of the blank interpretation mode'
+write(io,'(a)')'        (10.8.6, 9.6.2.6) for input for this connection. This mode has no effect on output. It is a changeable mode'
+write(io,'(a)')'        If this specifier is omitted in an OPEN statement that initiates a connection, the default value is NULL.'
+write(io,'(a)')''
+write(io,'(a)')'DECIMAL   The scalar-default-char-expr shall evaluate to COMMA or POINT. The DECIMAL= specifier is permitted only'
+write(io,'(a)')'          for a connection for formatted input/output. It specifies the current value of the decimal edit mode'
+write(io,'(a)')'          (10.6, 10.8.8, 9.6.2.7)'
+write(io,'(a)')'          for this connection. This is a changeable mode (9.5.2). If this specifier is omitted in an OPEN statement'
+write(io,'(a)')'          that initiates a connection, the default value is POINT.'
+write(io,'(a)')''
+write(io,'(a)')'DELIM   The scalar-default-char-expr shall evaluate to APOSTROPHE, QUOTE, or NONE. The DELIM= specifier is'
+write(io,'(a)')'        permitted only for a connection for formatted input/output. It specifies the current value of the delimiter'
+write(io,'(a)')'        (9.6.2.8) for list-directed (10.10.4) and namelist (10.11.4.2) output for the connection. This mode has no'
+write(io,'(a)')'        on input. It is a changeable mode (9.5.2). If this specifier is omitted in an OPEN statement that initiates'
+write(io,'(a)')'        connection, the default value is NONE.'
+write(io,'(a)')''
+write(io,'(a)')'ENCODING   The scalar-default-char-expr shall evaluate to UTF-8 or DEFAULT. The ENCODING= specifier is permitted'
+write(io,'(a)')'           only for a connection for formatted input/output. The value UTF-8 specifies that the encoding form of th'
+write(io,'(a)')'           UTF-8 as specified by ISO/IEC 10646-1:2000. Such a file is called a Unicode file, and all characters the'
+write(io,'(a)')'           of ISO 10646 character type. The value UTF-8 shall not be specified if the processor does not support th'
+write(io,'(a)')'           10646 character type. The value DEFAULT specifies that the encoding form of the file is processor-depend'
+write(io,'(a)')'           If this specifier is omitted in an OPEN statement that initiates a connection, the default value is DEFA'
+write(io,'(a)')''
+write(io,'(a)')'FILE   The value of the FILE= specifier is the name of the file to be connected to the specified unit. Any trailing'
+write(io,'(a)')'       are ignored. The file-name-expr shall be a name that is allowed by the processor. If this specifier is omitt'
+write(io,'(a)')'       the unit is not connected to a file, the STATUS= specifier shall be specified with a value of SCRATCH; in th'
+write(io,'(a)')'       case, the connection is made to a processor-dependent file. The interpretation of case is processor dependen'
+write(io,'(a)')''
+write(io,'(a)')'FORM   The scalar-default-char-expr shall evaluate to FORMATTED or UNFORMATTED. The FORM= specifier determines'
+write(io,'(a)')'       whether the file is being connected for formatted or unformatted input/output. If this specifier is omitted,'
+write(io,'(a)')'       the default value is UNFORMATTED if the file is being connected for direct access or stream access, and the'
+write(io,'(a)')'       default value is FORMATTED if the file is being connected for sequential access. For an existing file, the s'
+write(io,'(a)')'       form shall be included in the set of allowed forms for the file. For a new file, the processor creates the f'
+write(io,'(a)')'       set of allowed forms that includes the specified form.'
+write(io,'(a)')''
+write(io,'(a)')'NEWUNIT   The variable is defined with a processor determined NEWUNIT value if no error occurs during the execution'
+write(io,'(a)')'          the OPEN statement. If an error occurs, the processor shall not change the value of the variable.'
+write(io,'(a)')''
+write(io,'(a)')'          A NEWUNIT value is a negative number, and shall not be equal to -1, any of the named constants ERROR_UNIT'
+write(io,'(a)')'          INPUT_UNIT, or OUTPUT_UNIT from the intrinsic module ISO_FORTRAN_ENV (13.8.2), any value'
+write(io,'(a)')'          used by the processor for the unit argument to a defined input/output procedure, nor any previous NEWUNIT'
+write(io,'(a)')'          value that identifies a file that is currently connected.'
+write(io,'(a)')''
+write(io,'(a)')'PAD    The scalar-default-char-expr shall evaluate to YES or NO. The PAD= specifier is permitted only for a connect'
+write(io,'(a)')'       for formatted input/output. It specifies the current value of the pad mode (9.6.4.4.3, 9.6.2.10) for input f'
+write(io,'(a)')'       connection. This mode has no effect on output. It is a changeable mode (9.5.2). If this specifier is omitted'
+write(io,'(a)')'       OPEN statement that initiates a connection, the default value is YES.'
+write(io,'(a)')''
+write(io,'(a)')'POSITION   The scalar-default-char-expr shall evaluate to ASIS, REWIND, or APPEND. The connection shall be for sequ'
+write(io,'(a)')'           or stream access. A new file is positioned at its initial point. REWIND positions an existing file at it'
+write(io,'(a)')'           point. APPEND positions an existing file such that the endfile record is the next record, if it has one.'
+write(io,'(a)')'           existing file does not have an endfile record, APPEND positions the file at its terminal point. ASIS lea'
+write(io,'(a)')'           position unchanged if the file exists and already is connected. ASIS leaves the position unspecified if'
+write(io,'(a)')'           but is not connected. If this specifier is omitted, the default value is ASIS.'
+write(io,'(a)')''
+write(io,'(a)')'RECL       The value of the RECL= specifier shall be positive. It specifies the length of each record in a file bei'
+write(io,'(a)')'           for direct access, or specifies the maximum length of a record in a file being connected for sequential'
+write(io,'(a)')'           specifier shall not appear when a file is being connected for stream access. This specifier shall appear'
+write(io,'(a)')'           file is being connected for direct access. If this specifier is omitted when a file is being connected f'
+write(io,'(a)')'           access, the default value is processor dependent. If the file is being connected for formatted input/out'
+write(io,'(a)')'           length is the number of characters for all records that contain only characters of default kind. When a'
+write(io,'(a)')'           contains any nondefault characters, the effect of the RECL= specifier is processor dependent. If the fil'
+write(io,'(a)')'           connected for unformatted input/output, the length is measured in file storage units. For an existing fi'
+write(io,'(a)')'           value of the RECL= specifier shall be included in the set of allowed record lengths for the file. For a'
+write(io,'(a)')'           processor creates the file with a set of allowed record lengths that includes the specified value.'
+write(io,'(a)')''
+write(io,'(a)')'ROUND      The scalar-default-char-expr shall evaluate to one of UP, DOWN, ZERO, NEAREST, COMPATIBLE, or PROCESSOR'
+write(io,'(a)')'           The ROUND= specifier is permitted only for a connection for formatted input/output. It'
+write(io,'(a)')'           specifies the current value of the I/O rounding mode (10.7.2.3.7, 9.6.2.13) for this connection. This is'
+write(io,'(a)')'           mode (9.5.2). If this specifier is omitted in an OPEN statement that initiates a connection, the I/O rou'
+write(io,'(a)')'           mode is processor dependent; it shall be one of the above modes.'
+write(io,'(a)')''
+write(io,'(a)')'           A processor is free to select any I/O rounding mode for the default mode. The mode might correspond'
+write(io,'(a)')'           to UP, DOWN, ZERO, NEAREST, or COMPATIBLE; or it might be a completely different I/O rounding mode.'
+write(io,'(a)')''
+write(io,'(a)')'SIGN       The scalar-default-char-expr shall evaluate to one of PLUS, SUPPRESS, or PROCESSOR DEFINED. The'
+write(io,'(a)')'          SIGN= specifier is permitted only for a connection for formatted input/output. It specifies the current v'
+write(io,'(a)')'          the sign mode (10.8.4, 9.6.2.14) for this connection. This is a changeable mode (9.5.2). If this specifie'
+write(io,'(a)')'          in an OPEN statement that initiates a connection, the default value is PROCESSOR DEFINED.'
+write(io,'(a)')''
+write(io,'(a)')'STATUS    The scalar-default-char-expr shall evaluate to OLD, NEW, SCRATCH, REPLACE, or UNKNOWN. If OLD is'
+write(io,'(a)')'          specified, the file shall exist. If NEW is specified, the file shall not exist.'
+write(io,'(a)')''
+write(io,'(a)')'          Successful execution of an OPEN statement with NEW specified creates the file and changes the status to O'
+write(io,'(a)')'          If REPLACE is specified and the file does not already exist, the file is created and the status is change'
+write(io,'(a)')'          If REPLACE is specified and the file does exist, the file is deleted, a new file is created with the same'
+write(io,'(a)')'          the status is changed to OLD. If SCRATCH is specified, the file is created and connected to the specified'
+write(io,'(a)')'          for use by the program but is deleted at the execution of a CLOSE statement referring to the same unit or'
+write(io,'(a)')'          the normal termination of the program.'
+write(io,'(a)')''
+write(io,'(a)')'          SCRATCH shall not be specified with a named file.'
+write(io,'(a)')''
+write(io,'(a)')'          If UNKNOWN is specified, the status is processor dependent. If this specifier is omitted, the default val'
+write(io,'(a)')'          UNKNOWN.'
+write(io,'(a)')''
+write(io,'(a)')'EXAMPLES'
+write(io,'(a)')''
+write(io,'(a)')'An example of an OPEN statement is:'
+write(io,'(a)')''
+write(io,'(a)')'   integer :: IOS'
+write(io,'(a)')'   character(len=256) :: MESSAGE'
+write(io,'(a)')'   OPEN (10, FILE=''employee.names'', ACTION=''READ'', IOSTAT=IOS,IOMSG=MESSAGE)'
+write(io,'(a)')'   IF (IOS < 0) THEN'
+write(io,'(a)')'           ! Perform end-of-file processing on the file connected to unit 3.'
+write(io,'(a)')'           CALL END_PROCESSING()'
+write(io,'(a)')'   ELSE IF (IOS > 0) THEN'
+write(io,'(a)')'           ! Perform error processing'
+write(io,'(a)')'           write(*,''(a)'')trim(message)'
+write(io,'(a)')'           CALL ERROR_PROCESSING()'
+write(io,'(a)')'           stop'
+write(io,'(a)')'   END IF'
 write(io,'(a)')'NAME'
 write(io,'(a)')'     use(7f) - [FORTRAN] uives a program unit accessibility to public entities in a module.'
 write(io,'(a)')'SYNOPSIS'

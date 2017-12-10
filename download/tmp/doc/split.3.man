@@ -5,7 +5,7 @@ SYNOPSIS
    subroutine split(input_line,array,delimiters,order,nulls)
 
     character(len=*),intent(in)              :: input_line
-    character(len=:),allocatable,intent(out) :: array(:)
+    character(len=*),allocatable,intent(out) :: array(:)
     character(len=*),optional,intent(in)     :: delimiters
     character(len=*),optional,intent(in)     :: order
     character(len=*),optional,intent(in)     :: nulls
