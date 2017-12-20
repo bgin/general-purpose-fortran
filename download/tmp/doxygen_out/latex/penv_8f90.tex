@@ -1,2 +1,110 @@
 \hypertarget{penv_8f90}{}\section{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/penv.f90 File Reference}
 \label{penv_8f90}\index{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/penv.\+f90@{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/penv.\+f90}}
+\subsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{penv_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}{help\+\_\+usage} (l\+\_\+help)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{penv_8f90_a39c21619b08a3c22f19e2306efd7f766}{help\+\_\+version} (l\+\_\+version)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+penv(1f) -\/ print all or part of environment in formats readable by various shells \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+program \hyperlink{penv_8f90_a01dea0dd27ab167506a724b2d0aeb2b5}{penv}
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{penv_8f90_a53f464ba778289ef53d33f9c0e2130c0}{printformatted} ()
+\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=\+:) function, allocatable \hyperlink{penv_8f90_a446969c8690f5c32006cd0ae899ce932}{printquoted\+\_\+sh} (\hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string})
+\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=\+:) function, allocatable \hyperlink{penv_8f90_a8352a8cad3a618a85c981f11beb23715}{printquoted\+\_\+csh} (\hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string})
+\end{DoxyCompactItemize}
+
+
+\subsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{penv_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}\label{penv_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}} 
+\index{penv.\+f90@{penv.\+f90}!help\+\_\+usage@{help\+\_\+usage}}
+\index{help\+\_\+usage@{help\+\_\+usage}!penv.\+f90@{penv.\+f90}}
+\subsubsection{\texorpdfstring{help\+\_\+usage()}{help\_usage()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} help\+\_\+usage (\begin{DoxyParamCaption}\item[{logical, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{l\+\_\+help }\end{DoxyParamCaption})}
+
+
+
+References false().
+
+\mbox{\Hypertarget{penv_8f90_a39c21619b08a3c22f19e2306efd7f766}\label{penv_8f90_a39c21619b08a3c22f19e2306efd7f766}} 
+\index{penv.\+f90@{penv.\+f90}!help\+\_\+version@{help\+\_\+version}}
+\index{help\+\_\+version@{help\+\_\+version}!penv.\+f90@{penv.\+f90}}
+\subsubsection{\texorpdfstring{help\+\_\+version()}{help\_version()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} help\+\_\+version (\begin{DoxyParamCaption}\item[{logical, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{l\+\_\+version }\end{DoxyParamCaption})}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+penv(1f) -\/ print all or part of environment in formats readable by various shells \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+penv \mbox{[}variable...\mbox{]} \mbox{[}-\/\+C$\vert$-\/B\mbox{]} \mbox{[}-\/p P\+R\+E\+F\+IX\mbox{]} \mbox{[}-\/v\mbox{]} penv \mbox{[}--help$\vert$--version\mbox{]} \subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+If no arguments are given, penv(1f) prints the entire environment. If one or more variable names are given, it prints the value of each one that is set, and nothing for each one that is not set.
+
+If the -\/p switch is used variables beginning with that prefix will be displayed. \subsubsection*{O\+P\+T\+I\+O\+NS}
+
+-\/C print output in a form that can be sourced into a C shell (eg. as a setenv(1) command). -\/B print output in a form that can be sourced into a Bourne shell. -\/p print only variables with the given prefix -\/v values only. Do not print variable names variable(s) if variable names are given, print the value for each one that is set. --help display this help and exit --version output version information and exit
+
+\subsubsection*{U\+S\+A\+GE}
+
+Example commands\+:
+
+penv \# print entire environment penv -\/p P\+R\+E\+F\+IX \# print environment variables beginning with P\+R\+E\+F\+IX penv H\+O\+ME T\+MP L\+O\+G\+N\+A\+ME U\+S\+ER \# print selected variables
+
+\subsection*{csh(1)/tcsh(1) example\+:}
+
+\% penv -\/C $>$ readme.\+csh \% source readme.\+csh \subsection*{sh(1)/bash(1)/zsh(1) ... example\+:}
+
+\$ penv -\/B $>$ readme.\+sh \$ . readme.\+sh \subsection*{print specified variable names}
+
+\% penv T\+MP T\+E\+M\+P\+D\+IR T\+M\+P\+D\+IR T\+E\+MP \subsection*{print variables starting with A or H}
+
+\% penv -\/p A H
+
+\subsubsection*{E\+X\+IT S\+T\+A\+T\+US}
+
+The exit status is\+:
+
+0 if all variables specified were found 1 otherwise \subsubsection*{S\+EE A\+L\+SO}
+
+env(1), printenv(1) 
+
+References false().
+
+\mbox{\Hypertarget{penv_8f90_a01dea0dd27ab167506a724b2d0aeb2b5}\label{penv_8f90_a01dea0dd27ab167506a724b2d0aeb2b5}} 
+\index{penv.\+f90@{penv.\+f90}!penv@{penv}}
+\index{penv@{penv}!penv.\+f90@{penv.\+f90}}
+\subsubsection{\texorpdfstring{penv()}{penv()}}
+{\footnotesize\ttfamily program penv (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+References false(), help\+\_\+usage(), help\+\_\+version(), m\+\_\+kracken\+::ipvalue, m\+\_\+kracken\+::kracken(), m\+\_\+kracken\+::lget(), printformatted(), m\+\_\+kracken\+::sget(), m\+\_\+kracken\+::sgets(), m\+\_\+system\+::system\+\_\+clearenv(), m\+\_\+system\+::system\+\_\+putenv(), m\+\_\+system\+::system\+\_\+readenv(), m\+\_\+system\+::system\+\_\+unsetenv(), and true().
+
+\mbox{\Hypertarget{penv_8f90_a53f464ba778289ef53d33f9c0e2130c0}\label{penv_8f90_a53f464ba778289ef53d33f9c0e2130c0}} 
+\index{penv.\+f90@{penv.\+f90}!printformatted@{printformatted}}
+\index{printformatted@{printformatted}!penv.\+f90@{penv.\+f90}}
+\subsubsection{\texorpdfstring{printformatted()}{printformatted()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} penv\+::printformatted (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+References printquoted\+\_\+csh(), and printquoted\+\_\+sh().
+
+\mbox{\Hypertarget{penv_8f90_a8352a8cad3a618a85c981f11beb23715}\label{penv_8f90_a8352a8cad3a618a85c981f11beb23715}} 
+\index{penv.\+f90@{penv.\+f90}!printquoted\+\_\+csh@{printquoted\+\_\+csh}}
+\index{printquoted\+\_\+csh@{printquoted\+\_\+csh}!penv.\+f90@{penv.\+f90}}
+\subsubsection{\texorpdfstring{printquoted\+\_\+csh()}{printquoted\_csh()}}
+{\footnotesize\ttfamily \hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=\+:) function, allocatable penv\+::printquoted\+\_\+csh (\begin{DoxyParamCaption}\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{string }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{penv_8f90_a446969c8690f5c32006cd0ae899ce932}\label{penv_8f90_a446969c8690f5c32006cd0ae899ce932}} 
+\index{penv.\+f90@{penv.\+f90}!printquoted\+\_\+sh@{printquoted\+\_\+sh}}
+\index{printquoted\+\_\+sh@{printquoted\+\_\+sh}!penv.\+f90@{penv.\+f90}}
+\subsubsection{\texorpdfstring{printquoted\+\_\+sh()}{printquoted\_sh()}}
+{\footnotesize\ttfamily \hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=\+:) function, allocatable penv\+::printquoted\+\_\+sh (\begin{DoxyParamCaption}\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{string }\end{DoxyParamCaption})}
+

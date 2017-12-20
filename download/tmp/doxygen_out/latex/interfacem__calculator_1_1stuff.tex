@@ -1,0 +1,121 @@
+\hypertarget{interfacem__calculator_1_1stuff}{}\section{m\+\_\+calculator\+:\+:stuff Interface Reference}
+\label{interfacem__calculator_1_1stuff}\index{m\+\_\+calculator\+::stuff@{m\+\_\+calculator\+::stuff}}
+
+
+\subsubsection*{N\+A\+ME}
+
+stuff(3f) -\/ \mbox{[}M\+\_\+calculator\mbox{]} directly store value into calculator directory for efficiency  
+
+
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{interfacem__calculator_1_1stuff_a5fe04fa7587b89cb2980bb8391d071ce}{integer\+\_\+stuff} (varnam0, int4, ioflag)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{interfacem__calculator_1_1stuff_a7d6dbcffdf1001e3104f2947699aca22}{real\+\_\+stuff} (varnam0, val4, ioflag)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{interfacem__calculator_1_1stuff_a493c946ddd5ffdf8d0d7f006b93f7d83}{double\+\_\+stuff} (varnam0, val8, ioflag)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{N\+A\+ME}
+
+stuff(3f) -\/ \mbox{[}M\+\_\+calculator\mbox{]} directly store value into calculator directory for efficiency 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+subroutine stuff(varnam0,value,ioflag)
+
+character(len=$\ast$),intent(in) \+:\+: varnam0 integer$\vert$real$\vert$doubleprecision,intent(in) \+:\+: value character(len=$\ast$),intent(in),optional \+:\+: ioflag
+
+\subsubsection*{D\+E\+F\+I\+N\+I\+T\+I\+ON}
+
+\begin{DoxyVerb}Normally values are stored or defined in the calculator module
+M_calculator(3fm) using the jucalc(3f) routine or the convenience
+routines in the module M_calculator_plus(3fm).  For efficiency when
+large numbers of values require being stored the stuff(3f) procedure
+can be used to store numeric values by name in the calculator
+dictionary.
+
+breaking the rule of only accessing the calculator thru jucalc:
+
+stuff(3f) is assumed to only be used when needed for efficiency and to
+avoid problems with recursion if a routine called by the calculator
+in JUOWN1(3f) wants to store something back into the calculator
+variable table.
+\end{DoxyVerb}
+
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+varnam0 name of calculator variable to define or replace value numeric value to associate with the name varnam0. May be integer, real, or doubleprecison. ioflag optional flag to use journal logging. This string is passed directly to M\+\_\+journal\+::journal(3f) as the first parameter. The default is to not log the definitions to the journal(3f) command.
+
+\subsubsection*{E\+X\+A\+M\+P\+LE}
+
+\subsection{Member Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{interfacem__calculator_1_1stuff_a493c946ddd5ffdf8d0d7f006b93f7d83}\label{interfacem__calculator_1_1stuff_a493c946ddd5ffdf8d0d7f006b93f7d83}} 
+\index{m\+\_\+calculator\+::stuff@{m\+\_\+calculator\+::stuff}!double\+\_\+stuff@{double\+\_\+stuff}}
+\index{double\+\_\+stuff@{double\+\_\+stuff}!m\+\_\+calculator\+::stuff@{m\+\_\+calculator\+::stuff}}
+\subsubsection{\texorpdfstring{double\+\_\+stuff()}{double\_stuff()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} m\+\_\+calculator\+::stuff\+::double\+\_\+stuff (\begin{DoxyParamCaption}\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{varnam0,  }\item[{\hyperlink{read__watch_83_8txt_abdb62bde002f38ef75f810d3a905a823}{real}(kind=\hyperlink{namespacem__calculator_aefb5a6c3001bb0f09ed82decb6def950}{dp}), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{val8,  }\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in}), \hyperlink{option__stopwatch_83_8txt_aa4ece75e7acf58a4843f70fe18c3ade5}{optional}}]{ioflag }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+\subsubsection*{R\+E\+T\+U\+R\+NS}
+
+\subsubsection*{E\+X\+A\+M\+P\+LE}\mbox{\Hypertarget{interfacem__calculator_1_1stuff_a5fe04fa7587b89cb2980bb8391d071ce}\label{interfacem__calculator_1_1stuff_a5fe04fa7587b89cb2980bb8391d071ce}} 
+\index{m\+\_\+calculator\+::stuff@{m\+\_\+calculator\+::stuff}!integer\+\_\+stuff@{integer\+\_\+stuff}}
+\index{integer\+\_\+stuff@{integer\+\_\+stuff}!m\+\_\+calculator\+::stuff@{m\+\_\+calculator\+::stuff}}
+\subsubsection{\texorpdfstring{integer\+\_\+stuff()}{integer\_stuff()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} m\+\_\+calculator\+::stuff\+::integer\+\_\+stuff (\begin{DoxyParamCaption}\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{varnam0,  }\item[{integer, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{int4,  }\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in}), \hyperlink{option__stopwatch_83_8txt_aa4ece75e7acf58a4843f70fe18c3ade5}{optional}}]{ioflag }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+\subsubsection*{R\+E\+T\+U\+R\+NS}
+
+\subsubsection*{E\+X\+A\+M\+P\+LE}\mbox{\Hypertarget{interfacem__calculator_1_1stuff_a7d6dbcffdf1001e3104f2947699aca22}\label{interfacem__calculator_1_1stuff_a7d6dbcffdf1001e3104f2947699aca22}} 
+\index{m\+\_\+calculator\+::stuff@{m\+\_\+calculator\+::stuff}!real\+\_\+stuff@{real\+\_\+stuff}}
+\index{real\+\_\+stuff@{real\+\_\+stuff}!m\+\_\+calculator\+::stuff@{m\+\_\+calculator\+::stuff}}
+\subsubsection{\texorpdfstring{real\+\_\+stuff()}{real\_stuff()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} m\+\_\+calculator\+::stuff\+::real\+\_\+stuff (\begin{DoxyParamCaption}\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{varnam0,  }\item[{\hyperlink{read__watch_83_8txt_abdb62bde002f38ef75f810d3a905a823}{real}, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{val4,  }\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in}), \hyperlink{option__stopwatch_83_8txt_aa4ece75e7acf58a4843f70fe18c3ade5}{optional}}]{ioflag }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+\subsubsection*{R\+E\+T\+U\+R\+NS}
+
+\subsubsection*{E\+X\+A\+M\+P\+LE}
+
+The documentation for this interface was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\hyperlink{M__calculator_8f90}{M\+\_\+calculator.\+f90}\end{DoxyCompactItemize}

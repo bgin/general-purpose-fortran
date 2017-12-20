@@ -127,8 +127,8 @@ when done close the process much like closing a file.
     ! read all of process output into a string string
     function process_readall(cmd,ierr) result (string)
 <P>
-    ! write line to process
-    subroutine process_writeline(string,fp,ierr)
+    ! write lines to process
+    subroutine process_writeline(string|string_array,fp,ierr[,trm=.t.|.f.])
 <P>
     ! close process
     subroutine process_close(fp,ierr)
@@ -223,81 +223,270 @@ do this) &#46;&#46;&#46;
 end program read_ex
 </BLOCKQUOTE>
 <P>
-An example program that calls the M_process module to start a plotting
-program called <B>gnuplot</B>(1) and give it enough commands to generate
-a plot. It then lets you interactively interact with the program or
-continue on in the program.
+When calling a line-mode program from another program the most natural
+way is to open a process and write to it.
+<P>
+Following is an example program that calls the M_process module to
+start a plotting program called <B>gnuplot</B>(1) and give it enough commands
+to generate a plot. It then lets you interactively interact with the
+<B>gnuplot</B>(1) program or continue on in the program.
 <P>
 <PRE>
-       program gnuExample
-       ! @(#)  Example of Fortran writing GNUPLOT command and data file.
-       use M_process ,only: process_open_write, process_writeline
-       use M_process ,only: streampointer, process_close
-       implicit none
-       !*! line of data to write (assumed long enough to hold any command line)
-       character(len=4096) :: line
-       !*! C file pointer returned by process_open()
-       type(streampointer) :: fp
-       !*! check status of calls to process module routines
-       integer :: ierr
-       !*! DO loop counter
-       integer :: i
+    program gnuplotExample
+    ! @(#)  Example of Fortran writing GNUPLOT command and data file.
+    use M_process ,only: process_open_write, process_writeline
+    use M_process ,only: streampointer, process_close
+    implicit none
+    character(len=4096) :: line                             !*! line of data to write (assumed long enough to hold any command line)
+    type(streampointer) :: fp                               !*! C file pointer returned by process_open()
+    integer :: ierr                                         !*! check status of calls to process module routines
+    integer :: i                                            !*! DO loop counter
+    integer,parameter   :: n=50                             !*! number of points to put into curve to be plotted
+    real                :: x(n),y(n)                        !*! arrays to fill with curve data to be plotted
+    integer             :: ios
 <P>
-       !*! data file to create and put X,Y values into
-       character(len=60)   :: fidmap=&#146;SAMPLE.MAP&#146;
-       !*! number of points to put into curve to be plotted
-       integer,parameter   :: n=50
-       !*! arrays to fill with curve data to be plotted
-       real                :: x(n),y(n)
-       integer             :: ios
-<P>
-       !*! open data file to hold X,Y values to be plotted
-       open(70,file=fidmap)
-       !*! Define sample X,Y array.
-       do i=1,n
-       !*! set X() values as whole numbers 1 to N
-          x(i)=i
+    !*! Define sample X,Y array.
+    do i=1,n                                                !*! set X() values as whole numbers 1 to N
+       x(i)=i
        !*!
-          y(i)=(x(i)+0.5)**2
-       enddo
+       y(i)=(x(i)+0.5)**2
+    enddo
+                                                            !*! Write the GnuPlot commands
+    call process_open_write(&#146;gnuplot&#146;,fp,ierr)              !*! open process to write to (ie. start gnuplot(1) program)
+    call process_writeline(&#146;$SET1 &lt;&lt;EOD&#146;,fp,ierr)           !*! create in-line dataset $SET1
+    do i=1,n
+       write(line,&#146;(2(f10.3,1x))&#146;)x(i),y(i)                 !*! Write the X,Y array as coordinates to be plotted.
+       call process_writeline(line,fp,ierr)
+    enddo
 <P>
-       !*! Write the X,Y array as coordinates to be plotted.
-       write(70,&#146;(2f10.3)&#146;)(x(i),y(i),i=1,n)
-       !*! if not closed or flushed, subprocess may not be able to read
-       flush(70, iostat = ios)
+    call process_writeline([character(len=128) ::                        &
+    &&#146;EOD                                                             &#146;, &
+    &&#146;set title " Example of GNUPlot data and command file generation"&#146;, &
+    &&#146;set nokey&#146;                                                       , &
+    &&#146;plot $SET1 with lines&#146;                                           , &
+    &&#146;&#146;],fp,ierr)
 <P>
-       !*! Write the GnuPlot commands
-       !*! open process to write to (ie. start gnuplot(1) program)
-       call process_open_write(&#146;gnuplot&#146;,fp,ierr)
-       call process_writeline &
-       & (&#146;set title " Example of GNUPlot data and command file generation"&#146;,fp,ierr)
-       !*! write a command to the process
-       call process_writeline(&#146;set nokey&#146;,fp,ierr)
-<P>
-       !*! build a command with a formatted write
-       write(line,101) trim(fidmap)
-       101 format(&#146;plot "&#146;,A,&#146;" with lines&#146;)
-       !*! write a command to the process
+    write(*,&#146;(a)&#146;)&#146;enter gnuplot commands or "." to exit&#146;   !*! Additional gnuplot commands; in this case interactively entered
+    do
+       write(*,&#146;(a)&#146;,advance=&#146;no&#146;)&#146;gnu&gt;&gt;&#146;
+       read(*,&#146;(a)&#146;,iostat=ios)line
+       if(line.eq.&#146;.&#146;)exit
        call process_writeline(trim(line),fp,ierr)
-<P>
-<P>
-       !*! Additional gnuplot commands; in this case interactively entered
-       write(*,&#146;(a)&#146;)&#146;enter gnuplot commands or "." to exit&#146;
-       do
-          write(*,&#146;(a)&#146;,advance=&#146;no&#146;)&#146;gnu&gt;&gt;&#146;
-          read(*,&#146;(a)&#146;,iostat=ios)line
-          if(line.eq.&#146;.&#146;)exit
-          call process_writeline(trim(line),fp,ierr)
-       enddo
-<P>
-       !*! Wrap up
-       call process_close(fp,ierr)
-       write(*,*)&#146;CLOSED THE PROCESS. RETURNING TO PROGRAM&#146;
-       !*! delete the data file
-       close(70,status=&#146;delete&#146;,iostat=ios)
-       end program gnuExample
+    enddo
+                                                            !*! Wrap up
+    call process_close(fp,ierr)
+    write(*,*)&#146;CLOSED THE PROCESS. RETURNING TO PROGRAM&#146;
+    end program gnuplotExample
 <P>
 </PRE>
+</BLOCKQUOTE>
+This program starts a bash shell that, among other things, calls sqlite3 and gnuplot.
+In this case the text is fixed to keep the example simple. More typically the text
+would be conditionally selected or generated by the program.
+<P>
+<PRE>
+    program demo_bash
+    use M_process ,only : process_open_write, process_writeline
+    use M_process ,only : streampointer, process_close
+    implicit none
+    type(streampointer) :: fp                     ! C file pointer returned by process_open()
+    integer :: ierr                               ! check status of calls to process module routines
+    character(len=:),allocatable :: text(:)
+<P>
+     !!call process_open_write(&#146;cat&#146;,fp,ierr)       ! open process to write to (ie. start gnuplot(1) program)
+       call process_open_write(&#146;bash&#146;,fp,ierr)       ! open process to write to (ie. start gnuplot(1) program)
+<P>
+       text=[character(len=128) :: &
+</PRE>
+"rm <B>-f</B> sqlite1.db", &
+"sqlite3 sqlite1.db &lt;&lt;\EOF", &
+"-- *****************************************************************************", &
+"CREATE TABLE IF NOT EXISTS <B>animals</B>(", &
+<BLOCKQUOTE>
+<TABLE cellpadding=3><!-- tsb:        text=[character(len=128) :: &
+ -->
+<TR></TR><TR></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+"
+name        TEXT           NOT NULL   PRIMARY KEY ,", &
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+"
+hair        INT            NOT NULL   ,", &
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+"
+mobility    INT            NOT NULL   ,", &
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+"
+vision      INT            NOT NULL   );", &
+"-- *****************************************************************************", &
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+"INSERT INTO animals ( name, hair, mobility, vision ) VALUES ( &#146;kittens&#146;
+, 4, 5, 1 ) ;", &
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+"INSERT INTO animals ( name, hair, mobility, vision ) VALUES ( &#146;mice&#146;
+, 6, 7, 2 ) ;", &
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+"INSERT INTO animals ( name, hair, mobility, vision ) VALUES ( &#146;rats&#146;
+, 2, 3, 3 ) ;", &
+"-- *****************************************************************************", &
+".quit", &
+"EOF", &
+"################################################################################", &
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+"sqlite3 <B>-header</B> <B>-column</B> sqlite1.db
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+"sqlite3 sqlite1.db
+"################################################################################", &
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+"gnuplot <B>--persist</B> &lt;&lt;\EOF
+", &
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+"########################################
+", &
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+"#set terminal gif
+", &
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+"#set output &#146;M_process.3.gif&#146;
+", &
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+"########################################
+", &
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+"#set terminal png
+", &
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+"#set output &#146;bar.png&#146;
+", &
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+"########################################
+", &
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+"#set terminal pdf enhanced
+", &
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+"#set output &#146;bar.pdf&#146;
+", &
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+"########################################
+", &
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+"#set style data lines
+", &
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+"########################################
+", &
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+"set datafile separator ""|""
+", &
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+"set style data histogram
+", &
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+"set style histogram cluster gap 1
+", &
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+"set style fill solid border rgb ""black""
+", &
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+"set auto x
+", &
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+"set yrange [0:*]
+", &
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+"plot ""&lt; sqlite3 sqlite1.db
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+"
+using <B>2:xtic</B>(1) title ""hair"",  \                                              ", &
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+"
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+"
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+"quit
+", &
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+"EOF
+", &
+""]
+</TD></TR>
+<TR></TR></TABLE><!-- .nf -->
+<PRE>
+       !!write(*,&#146;(a)&#146;)text
+       call process_writeline(text,fp,ierr)
+       call process_close(fp,ierr)
+       write(*,&#146;(a)&#146;)&#146;CLOSED THE PROCESS. RETURNING TO PROGRAM&#146;
+<P>
+</PRE>
+end program demo_bash
 </BLOCKQUOTE>
 <A name=5>
 
@@ -329,7 +518,7 @@ OTHER: <B>fflush</B>(3c)
 </TD></TR>
 <TR></TR></TABLE></BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>M_process (3)</TD> <TD align=right width=33%><I>December 10, 2017</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 06a32185-540c-4da9-a9f7-587c98659d1f using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>M_process (3)</TD> <TD align=right width=33%><I>December 19, 2017</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 57ba0b74-c37d-4f72-abce-0923eb1e1fe1 using man macros.</FONT>
 </div>
 </div>
 <center><img src="images/M_process.3.gif"></center> 

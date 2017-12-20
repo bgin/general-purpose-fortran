@@ -1,0 +1,28 @@
+NAME
+SYNOPSIS
+    function get_tmp() result(tname)
+
+     character(len=:),allocatable :: tname
+DESCRIPTION
+
+   Return the name of the scratch directory set by the most common environment variables used to designate a scratch directory.
+   $TMPDIR is the canonical environment variable in Unix and POSIX[1] to use to specify a temporary directory for scratch space.
+   If $TMPDIR is not set, $TEMP, $TEMPDIR, and $TMP are examined in that order. If nothing is set "/tmp/" is returned. The
+   returned value always ends in "/". No test is made that the directory exists or is writable.
+
+EXAMPLE
+
+  Sample:
+
+    program testit
+    use M_io, only : get_tmp
+    implicit none
+    character(len=:),allocatable :: answer
+       answer=get_tmp()
+       write(*,*)'result is ',answer
+    end program testit
+
+  Sample Results:
+
+    result is /cygdrive/c/Users/JSU/AppData/Local/Temp/
+

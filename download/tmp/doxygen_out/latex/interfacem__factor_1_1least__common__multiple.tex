@@ -1,0 +1,126 @@
+\hypertarget{interfacem__factor_1_1least__common__multiple}{}\section{m\+\_\+factor\+:\+:least\+\_\+common\+\_\+multiple Interface Reference}
+\label{interfacem__factor_1_1least__common__multiple}\index{m\+\_\+factor\+::least\+\_\+common\+\_\+multiple@{m\+\_\+factor\+::least\+\_\+common\+\_\+multiple}}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+integer function \hyperlink{interfacem__factor_1_1least__common__multiple_aca2f4d6fbd586ba4c773be0526f926a9}{lcm} (\hyperlink{intro__blas1_83_8txt_a8ba82a50c0c2c12d5f6a77f7e4651c0b}{i}, \hyperlink{exit_87_8txt_a8921ef29c441e427867c54bd3b2462ba}{j})
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+least\+\_\+common\+\_\+multiple(3f) -\/ \mbox{[}M\+\_\+factor\mbox{]} Least common multiple of two integers or vector m(\+:), matrix m(\+:,\+:) or cuboid m(\+:,\+:,\+:) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+integer function \hyperlink{interfacem__factor_1_1least__common__multiple_ac98c390a19d96491af8805d01d92fdd6}{lcm\+\_\+vector} (m)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+lcm\+\_\+vector(3fp) -\/ least common multiple of integer vector m(\+:) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+integer function \hyperlink{interfacem__factor_1_1least__common__multiple_a0fba2999ed8a72d4e645db349dd6930a}{lcm\+\_\+matrix} (m)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+lcm\+\_\+matrix(3fp) -\/ least common multiple of integer array m(\+:,\+:) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+integer function \hyperlink{interfacem__factor_1_1least__common__multiple_abfaed588cda0f7adc9a13933c05d4653}{lcm\+\_\+cuboid} (m)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+lcm\+\_\+cuboid(3fp) -\/ least common multiple of integer cuboid m(\+:,\+:,\+:) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Member Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{interfacem__factor_1_1least__common__multiple_aca2f4d6fbd586ba4c773be0526f926a9}\label{interfacem__factor_1_1least__common__multiple_aca2f4d6fbd586ba4c773be0526f926a9}} 
+\index{m\+\_\+factor\+::least\+\_\+common\+\_\+multiple@{m\+\_\+factor\+::least\+\_\+common\+\_\+multiple}!lcm@{lcm}}
+\index{lcm@{lcm}!m\+\_\+factor\+::least\+\_\+common\+\_\+multiple@{m\+\_\+factor\+::least\+\_\+common\+\_\+multiple}}
+\subsubsection{\texorpdfstring{lcm()}{lcm()}}
+{\footnotesize\ttfamily integer function m\+\_\+factor\+::least\+\_\+common\+\_\+multiple\+::lcm (\begin{DoxyParamCaption}\item[{integer, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{i,  }\item[{integer, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{j }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+least\+\_\+common\+\_\+multiple(3f) -\/ \mbox{[}M\+\_\+factor\mbox{]} Least common multiple of two integers or vector m(\+:), matrix m(\+:,\+:) or cuboid m(\+:,\+:,\+:) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+integer function least\+\_\+common\+\_\+multiple(i,j) integer,intent(in)\+:\+: i,j or integer function least\+\_\+common\+\_\+multiple(m) integer,intent(in)\+:\+: m(\+:) or integer,intent(in)\+:\+: m(\+:,\+:) or integer,intent(in)\+:\+: m(\+:,\+:,\+:)
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+From Wikipedia, the free encyclopedia\+:
+
+In arithmetic and number theory, the least common multiple (also called the lowest common multiple or smallest common multiple) of two integers a and b, usually denoted by L\+C\+M(a, b), is the smallest positive integer that is divisible by both a and b. Since division of integers by zero is undefined, this definition has meaning only if a and b are both different from zero. However, some authors define lcm(a,0) as 0 for all a, which is the result of taking the L\+CM to be the least upper bound in the lattice of divisibility.
+
+The L\+CM is familiar from grade-\/school arithmetic as the \char`\"{}lowest common
+    denominator\char`\"{} (L\+CD) that must be determined before fractions can be added, subtracted or compared. The L\+CM of more than two integers is also well-\/defined\+: it is the smallest positive integer that is divisible by each of them.
+
+\subsubsection*{E\+X\+A\+M\+P\+LE}
+
+Sample Program\+:
+
+program demo\+\_\+lcm use M\+\_\+factor, only \+: lcm=$>$\hyperlink{interfacem__factor_1_1least__common__multiple}{least\+\_\+common\+\_\+multiple} implicit none write($\ast$,$\ast$)\textquotesingle{}S\+C\+A\+L\+AR\+:\textquotesingle{} call writeit(10,24,120) call writeit(15,30,30) call writeit(-\/15,-\/30,30) call writeit(15,-\/30,30) call writeit(-\/15,30,30)
+
+write($\ast$,$\ast$)\textquotesingle{}V\+E\+C\+T\+OR\+:\textquotesingle{} call writeit\+\_\+v(\mbox{[}10,24\mbox{]},120) call writeit\+\_\+v(\mbox{[}15,30\mbox{]},30) call writeit\+\_\+v(\mbox{[}-\/15,-\/30\mbox{]},30) call writeit\+\_\+v(\mbox{[}5,-\/15,-\/40\mbox{]},120) call writeit\+\_\+v(\mbox{[}2,3,4,5\mbox{]},60) write($\ast$,$\ast$)\textquotesingle{}Special cases\+:\textquotesingle{} call writeit\+\_\+v(\mbox{[}15,0\mbox{]},0) call writeit\+\_\+v(\mbox{[}-\/15,0\mbox{]},0) call writeit\+\_\+v(\mbox{[}0\mbox{]},0) call writeit\+\_\+v(\mbox{[}-\/10\mbox{]},10) call writeit\+\_\+v(\mbox{[}22\mbox{]},22) call writeit\+\_\+v(\mbox{[}0,0\mbox{]},0) call writeit\+\_\+v(\mbox{[}0,0,0,0,0\mbox{]},0) call writeit\+\_\+v(\mbox{[}0,0,0,-\/1,0\mbox{]},0) call writeit\+\_\+v(\mbox{[}0,0,0,33,0,3,11\mbox{]},0) contains
+
+subroutine writeit(ii,jj,answer) integer,intent(in) \+:\+: ii,jj integer,intent(in) \+:\+: answer write($\ast$,\textquotesingle{}(\char`\"{}  For lcm(\char`\"{},I0,\char`\"{},\char`\"{},I0,\char`\"{}) the value is \char`\"{},I0,\char`\"{} which is \char`\"{},L1)\textquotesingle{})\& \& ii,jj,lcm(ii,jj),lcm(ii,jj).eq.\+answer end subroutine writeit
+
+subroutine writeit\+\_\+v(array,answer) integer,intent(in) \+:\+: array(\+:) integer,intent(in) \+:\+: answer write($\ast$,\textquotesingle{}(\char`\"{}  For lcm(\mbox{[}\char`\"{},$\ast$(i0\+:,1x))\textquotesingle{},advance=\textquotesingle{}no\textquotesingle{})array write($\ast$,\textquotesingle{}(\char`\"{}\mbox{]}) the value is \char`\"{},i0,\char`\"{} which is \char`\"{},L1)\textquotesingle{}) \& \& lcm(array),lcm(array).eq.\+answer end subroutine writeit\+\_\+v
+
+end program demo\+\_\+lcm
+
+Expected results\+:
+
+$>$ S\+C\+A\+L\+AR\+: $>$ For lcm(10,24) the value is 120 which is T $>$ For lcm(15,30) the value is 30 which is T $>$ For lcm(-\/15,-\/30) the value is 30 which is T $>$ For lcm(15,-\/30) the value is 30 which is T $>$ For lcm(-\/15,30) the value is 30 which is T $>$ V\+E\+C\+T\+OR\+: $>$ For lcm(\mbox{[}10 24\mbox{]}) the value is 120 which is T $>$ For lcm(\mbox{[}15 30\mbox{]}) the value is 30 which is T $>$ For lcm(\mbox{[}-\/15 -\/30\mbox{]}) the value is 30 which is T $>$ For lcm(\mbox{[}5 -\/15 -\/40\mbox{]}) the value is 120 which is T $>$ For lcm(\mbox{[}2 3 4 5\mbox{]}) the value is 60 which is T $>$ Special cases\+: $>$ For lcm(\mbox{[}15 0\mbox{]}) the value is 0 which is T $>$ For lcm(\mbox{[}-\/15 0\mbox{]}) the value is 0 which is T $>$ For lcm(\mbox{[}0\mbox{]}) the value is 0 which is T $>$ For lcm(\mbox{[}-\/10\mbox{]}) the value is 10 which is T $>$ For lcm(\mbox{[}22\mbox{]}) the value is 22 which is T $>$ For lcm(\mbox{[}0 0\mbox{]}) the value is 0 which is T $>$ For lcm(\mbox{[}0 0 0 0 0\mbox{]}) the value is 0 which is T $>$ For lcm(\mbox{[}0 0 0 -\/1 0\mbox{]}) the value is 0 which is T $>$ For lcm(\mbox{[}0 0 0 33 0 3 11\mbox{]}) the value is 0 which is T
+
+\subsubsection*{M\+E\+T\+H\+OD}
+
+Reduction by the greatest common divisor
+
+The following formula reduces the problem of computing the least common multiple to the problem of computing the greatest common divisor (G\+CD), also known as the greatest common factor\+:
+
+lcm(a,b) = $\vert$a$\ast$b$\vert$ / gcd(a,b)
+
+This formula is also valid when exactly one of a and b is 0, since gcd(a, 0) = $\vert$a$\vert$. (However, if both a and b are 0, this formula would cause division by zero; lcm(0, 0) = 0 is a special case. \mbox{\Hypertarget{interfacem__factor_1_1least__common__multiple_abfaed588cda0f7adc9a13933c05d4653}\label{interfacem__factor_1_1least__common__multiple_abfaed588cda0f7adc9a13933c05d4653}} 
+\index{m\+\_\+factor\+::least\+\_\+common\+\_\+multiple@{m\+\_\+factor\+::least\+\_\+common\+\_\+multiple}!lcm\+\_\+cuboid@{lcm\+\_\+cuboid}}
+\index{lcm\+\_\+cuboid@{lcm\+\_\+cuboid}!m\+\_\+factor\+::least\+\_\+common\+\_\+multiple@{m\+\_\+factor\+::least\+\_\+common\+\_\+multiple}}
+\subsubsection{\texorpdfstring{lcm\+\_\+cuboid()}{lcm\_cuboid()}}
+{\footnotesize\ttfamily integer function m\+\_\+factor\+::least\+\_\+common\+\_\+multiple\+::lcm\+\_\+cuboid (\begin{DoxyParamCaption}\item[{integer, dimension(\+:,\+:,\+:), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{m }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+lcm\+\_\+cuboid(3fp) -\/ least common multiple of integer cuboid m(\+:,\+:,\+:) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+integer function lcm\+\_\+cuboid(m)
+
+integer,intent(in) \+:\+: m(\+:,\+:,\+:) \subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+Find the Least Common Denominator of an I\+N\+T\+E\+G\+ER cuboid M(\+:,\+:,\+:). \mbox{\Hypertarget{interfacem__factor_1_1least__common__multiple_a0fba2999ed8a72d4e645db349dd6930a}\label{interfacem__factor_1_1least__common__multiple_a0fba2999ed8a72d4e645db349dd6930a}} 
+\index{m\+\_\+factor\+::least\+\_\+common\+\_\+multiple@{m\+\_\+factor\+::least\+\_\+common\+\_\+multiple}!lcm\+\_\+matrix@{lcm\+\_\+matrix}}
+\index{lcm\+\_\+matrix@{lcm\+\_\+matrix}!m\+\_\+factor\+::least\+\_\+common\+\_\+multiple@{m\+\_\+factor\+::least\+\_\+common\+\_\+multiple}}
+\subsubsection{\texorpdfstring{lcm\+\_\+matrix()}{lcm\_matrix()}}
+{\footnotesize\ttfamily integer function m\+\_\+factor\+::least\+\_\+common\+\_\+multiple\+::lcm\+\_\+matrix (\begin{DoxyParamCaption}\item[{integer, dimension(\+:,\+:), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{m }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+lcm\+\_\+matrix(3fp) -\/ least common multiple of integer array m(\+:,\+:) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+integer function lcm\+\_\+matrix(m)
+
+integer,intent(in) \+:\+: m(\+:,\+:) \subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+Find the Least Common Denominator of an I\+N\+T\+E\+G\+ER matrix M(\+:,\+:). \mbox{\Hypertarget{interfacem__factor_1_1least__common__multiple_ac98c390a19d96491af8805d01d92fdd6}\label{interfacem__factor_1_1least__common__multiple_ac98c390a19d96491af8805d01d92fdd6}} 
+\index{m\+\_\+factor\+::least\+\_\+common\+\_\+multiple@{m\+\_\+factor\+::least\+\_\+common\+\_\+multiple}!lcm\+\_\+vector@{lcm\+\_\+vector}}
+\index{lcm\+\_\+vector@{lcm\+\_\+vector}!m\+\_\+factor\+::least\+\_\+common\+\_\+multiple@{m\+\_\+factor\+::least\+\_\+common\+\_\+multiple}}
+\subsubsection{\texorpdfstring{lcm\+\_\+vector()}{lcm\_vector()}}
+{\footnotesize\ttfamily integer function m\+\_\+factor\+::least\+\_\+common\+\_\+multiple\+::lcm\+\_\+vector (\begin{DoxyParamCaption}\item[{integer, dimension(\+:), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{m }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+lcm\+\_\+vector(3fp) -\/ least common multiple of integer vector m(\+:) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+integer function lcm\+\_\+vector(m)
+
+integer,intent(in) \+:\+: m(\+:) \subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+Find the Least Common Denominator of an I\+N\+T\+E\+G\+ER vector M(\+:). 
+
+The documentation for this interface was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\hyperlink{M__factor_8f90}{M\+\_\+factor.\+f90}\end{DoxyCompactItemize}

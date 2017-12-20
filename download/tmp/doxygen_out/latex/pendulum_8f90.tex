@@ -1,2 +1,105 @@
 \hypertarget{pendulum_8f90}{}\section{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/pendulum.f90 File Reference}
 \label{pendulum_8f90}\index{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/pendulum.\+f90@{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/pendulum.\+f90}}
+\subsection*{Modules}
+\begin{DoxyCompactItemize}
+\item 
+module \hyperlink{namespacem__geometry}{m\+\_\+geometry}
+\end{DoxyCompactItemize}
+\subsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{pendulum_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}{help\+\_\+usage} (l\+\_\+help)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{pendulum_8f90_a39c21619b08a3c22f19e2306efd7f766}{help\+\_\+version} (l\+\_\+version)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+pendulum(1f) -\/ \mbox{[}P\+H\+Y\+S\+I\+CS\mbox{]} calculate pendulum period \end{DoxyCompactList}\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__geometry_a9a2c835814bcdf733a2bfc1d84f4f6a7}{m\+\_\+geometry\+::pendulum\+\_\+period} (L, f, T, V\+E\+R\+B\+O\+SE)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__geometry_aa15fe1bd2e07252679a3516d936b290f}{m\+\_\+geometry\+::pendulum\+\_\+time} (L, f, T, V\+E\+R\+B\+O\+SE)
+\item 
+program \hyperlink{pendulum_8f90_a3f3e0254fee4c2221edf984577d57e88}{pendulum\+\_\+test}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{pendulum_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}\label{pendulum_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}} 
+\index{pendulum.\+f90@{pendulum.\+f90}!help\+\_\+usage@{help\+\_\+usage}}
+\index{help\+\_\+usage@{help\+\_\+usage}!pendulum.\+f90@{pendulum.\+f90}}
+\subsubsection{\texorpdfstring{help\+\_\+usage()}{help\_usage()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} help\+\_\+usage (\begin{DoxyParamCaption}\item[{logical, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{l\+\_\+help }\end{DoxyParamCaption})}
+
+
+
+References false().
+
+\mbox{\Hypertarget{pendulum_8f90_a39c21619b08a3c22f19e2306efd7f766}\label{pendulum_8f90_a39c21619b08a3c22f19e2306efd7f766}} 
+\index{pendulum.\+f90@{pendulum.\+f90}!help\+\_\+version@{help\+\_\+version}}
+\index{help\+\_\+version@{help\+\_\+version}!pendulum.\+f90@{pendulum.\+f90}}
+\subsubsection{\texorpdfstring{help\+\_\+version()}{help\_version()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} help\+\_\+version (\begin{DoxyParamCaption}\item[{logical, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{l\+\_\+version }\end{DoxyParamCaption})}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+pendulum(1f) -\/ \mbox{[}P\+H\+Y\+S\+I\+CS\mbox{]} calculate pendulum period 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\begin{DoxyVerb}pendulum [-length Length_In_Feet ][-verbose]|[--help]|[--version]
+\end{DoxyVerb}
+
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+Given the length to the center of gravity from the fulcrum (pivot point) of a pendulum in feet calculate the pendulum frequency in swings/sec, and how long the swing takes (the period of the pendulum).
+
+If the pendulum weight or bob of a simple pendulum is pulled to a relatively small angle and let go, it will swing back and forth at a regular frequency. If damping effects from air resistance and friction are negligible, equations concerning the frequency and period of the the pendulum, as well as the length of the string can be calculated.
+
+The period of the motion for a pendulum is how long it takes to swing back-\/and-\/forth, measured in seconds. The period equation is\+:
+
+T = 2$\ast$\+P\+I$\ast$sqrt(L/g)
+
+The frequency of a pendulum is how many back-\/and-\/forth swings there are in a second, measured in hertz. Frequency f is the reciprocal of the period T\+:
+
+f = 1/T
+
+Therefore in terms of the length the frequency is
+
+f = \mbox{[}âsqrt(g/L)\mbox{]}/2
+
+The length equations are\+:
+
+L = g/(4$\ast$\+P\+I$\ast$$\ast$2$\ast$f$\ast$$\ast$2) and
+
+L = (g$\ast$\+T$\ast$$\ast$2)/(4$\ast$\+P\+I$\ast$$\ast$2)
+
+The generally accepted length of a seconds pendulum at sea level, lat. 45 degrees, is 99.\+356 cm or 39.\+116 in. = 3.\+25966 feet.
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+-\/length Length\+\_\+\+In\+\_\+\+Feet distance from pivot point to center of gravity of pendulum. -\/verbose \mbox{[}T$\vert$F\mbox{]} verbose mode, default is .true. . --help display this help and exit --version output version information and exit
+
+\subsubsection*{E\+X\+A\+M\+P\+L\+ES}
+
+Sample command lines ...
+
+\subsection*{A 1/4 of a meter pendulum has a period of about 1 second.}
+
+pendulum -\/length 0.\+820209980 For a pendulum with length 0.\+820209980 feet The frequency of the pendulum is 0.\+996806502 swings/sec. Each swing takes 1.\+00320375 sec.
+
+pendulum -\/length 3.\+00 For a pendulum with length 3.\+00000000 feet The frequency of the pendulum is 0.\+287753224 swings/sec. Each swing takes 3.\+47519994 sec. 
+
+References false().
+
+\mbox{\Hypertarget{pendulum_8f90_a3f3e0254fee4c2221edf984577d57e88}\label{pendulum_8f90_a3f3e0254fee4c2221edf984577d57e88}} 
+\index{pendulum.\+f90@{pendulum.\+f90}!pendulum\+\_\+test@{pendulum\+\_\+test}}
+\index{pendulum\+\_\+test@{pendulum\+\_\+test}!pendulum.\+f90@{pendulum.\+f90}}
+\subsubsection{\texorpdfstring{pendulum\+\_\+test()}{pendulum\_test()}}
+{\footnotesize\ttfamily program pendulum\+\_\+test (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+References help\+\_\+usage(), help\+\_\+version(), m\+\_\+kracken\+::kracken(), m\+\_\+kracken\+::lget(), m\+\_\+geometry\+::pendulum\+\_\+period(), m\+\_\+kracken\+::rget(), m\+\_\+kracken\+::sget(), and true().
+

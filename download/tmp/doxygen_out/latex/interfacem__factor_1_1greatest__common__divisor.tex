@@ -1,0 +1,88 @@
+\hypertarget{interfacem__factor_1_1greatest__common__divisor}{}\section{m\+\_\+factor\+:\+:greatest\+\_\+common\+\_\+divisor Interface Reference}
+\label{interfacem__factor_1_1greatest__common__divisor}\index{m\+\_\+factor\+::greatest\+\_\+common\+\_\+divisor@{m\+\_\+factor\+::greatest\+\_\+common\+\_\+divisor}}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+integer function \hyperlink{interfacem__factor_1_1greatest__common__divisor_ab9a93ff79f9c16b485d0632eeed385b6}{gcd} (m, n)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+greatest\+\_\+common\+\_\+divisor(3f) -\/ \mbox{[}M\+\_\+factor\mbox{]} calculate greatest common divisor of two integers or vector m(\+:), matrix m(\+:,\+:) or cuboid m(\+:,\+:,\+:) \end{DoxyCompactList}\item 
+integer function \hyperlink{interfacem__factor_1_1greatest__common__divisor_a19a227039630336f719838eb941fa28f}{gcd\+\_\+vector} (m)
+\item 
+integer function \hyperlink{interfacem__factor_1_1greatest__common__divisor_a4222039246a4ae0dd1b1dbc8acd15e43}{gcd\+\_\+matrix} (m)
+\item 
+integer function \hyperlink{interfacem__factor_1_1greatest__common__divisor_a97be1fa43fb41e5e96ee3bbe2f9e6dd5}{gcd\+\_\+cuboid} (m)
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{interfacem__factor_1_1greatest__common__divisor_ab9a93ff79f9c16b485d0632eeed385b6}\label{interfacem__factor_1_1greatest__common__divisor_ab9a93ff79f9c16b485d0632eeed385b6}} 
+\index{m\+\_\+factor\+::greatest\+\_\+common\+\_\+divisor@{m\+\_\+factor\+::greatest\+\_\+common\+\_\+divisor}!gcd@{gcd}}
+\index{gcd@{gcd}!m\+\_\+factor\+::greatest\+\_\+common\+\_\+divisor@{m\+\_\+factor\+::greatest\+\_\+common\+\_\+divisor}}
+\subsubsection{\texorpdfstring{gcd()}{gcd()}}
+{\footnotesize\ttfamily integer function m\+\_\+factor\+::greatest\+\_\+common\+\_\+divisor\+::gcd (\begin{DoxyParamCaption}\item[{integer, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{m,  }\item[{integer, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+greatest\+\_\+common\+\_\+divisor(3f) -\/ \mbox{[}M\+\_\+factor\mbox{]} calculate greatest common divisor of two integers or vector m(\+:), matrix m(\+:,\+:) or cuboid m(\+:,\+:,\+:) 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+The function is generic and may take either two integers or an integer vector, matrix, or cuboid.
+
+integer function greatest\+\_\+common\+\_\+divisor(i,j) integer,intent(in)\+:\+: i,j or integer function greatest\+\_\+common\+\_\+divisor(m) integer,intent(in)\+:\+: m(\+:) or integer,intent(in)\+:\+: m(\+:,\+:) or integer,intent(in)\+:\+: m(\+:,\+:,\+:)
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+The method used is the Euler algorithm; that for two integers ...
+
+
+\begin{DoxyEnumerate}
+\item Subtract the 2nd number (N) as many times as possible from the 1st one (M) and save remainder using F\+O\+R\+T\+R\+AN function M\+OD.
+\item Test if remainder is equal to zero, if so G\+CD = N. If not replace M with N and N with remainder and proceed with step 1.
+\item Repeat both steps until remainder becomes zero.
+\end{DoxyEnumerate}
+
+\subsubsection*{E\+X\+A\+M\+P\+LE}
+
+Sample program\+:
+
+program demo\+\_\+greatest\+\_\+common\+\_\+divisor use M\+\_\+factor, only \+: gcd=$>$\hyperlink{interfacem__factor_1_1greatest__common__divisor}{greatest\+\_\+common\+\_\+divisor} implicit none integer, allocatable \+:\+: matrix(\+:,\+:) write($\ast$,$\ast$)\textquotesingle{}S\+C\+A\+L\+AR\+:\textquotesingle{} call writeit(26,130,26) call writeit(91,390,13) call writeit(-\/91,390,13) call writeit(91,-\/390,13) call writeit(-\/41,-\/43,1) call writeit(-\/20,-\/10,10) call writeit(20,10,10) write($\ast$,$\ast$)\textquotesingle{}V\+E\+C\+T\+OR\+:\textquotesingle{} call writeit\+\_\+v(\mbox{[}26,130,91,390\mbox{]},13) call writeit\+\_\+v(\mbox{[}5,7,11,13,17,19,23,29,31,37,41,43,47\mbox{]},1) call writeit\+\_\+v(\mbox{[}-\/20,-\/10,0\mbox{]},10) call writeit\+\_\+v(\mbox{[}20,10,0\mbox{]},10) call writeit\+\_\+v(\mbox{[}26,130\mbox{]},26) call writeit\+\_\+v(\mbox{[}91,390\mbox{]},13) call writeit\+\_\+v(\mbox{[}-\/91,390\mbox{]},13) call writeit\+\_\+v(\mbox{[}91,-\/390\mbox{]},13) call writeit\+\_\+v(\mbox{[}-\/41,-\/43\mbox{]},1) call writeit\+\_\+v(\mbox{[}-\/20,-\/10\mbox{]},10) call writeit\+\_\+v(\mbox{[}20,10\mbox{]},10) write($\ast$,$\ast$)\textquotesingle{}M\+A\+T\+R\+IX\+:\textquotesingle{} matrix=reshape(\mbox{[} 11,22,33,44,55,66\mbox{]},\mbox{[}2,3\mbox{]}) call write\+\_\+matrix(matrix,11) matrix=reshape(\mbox{[}5,7,11,13,17,19,23,29,31,37,41,43,47\mbox{]},\mbox{[}13,1\mbox{]}) call write\+\_\+matrix(matrix,1) matrix=reshape(\mbox{[}40,80,120,160\mbox{]},\mbox{[}2,2\mbox{]}) call write\+\_\+matrix(matrix,40)
+
+contains
+
+subroutine writeit(ii,jj,answer) integer,intent(in) \+:\+: ii,jj integer,intent(in) \+:\+: answer write($\ast$,\textquotesingle{}(\char`\"{}gcd(\mbox{[}\char`\"{},i0,\char`\"{},\char`\"{},i0,\char`\"{}\mbox{]}) produces \char`\"{},i0,\char`\"{} which is \char`\"{},l1)\textquotesingle{}) \& \& ii,jj,gcd(ii,jj),gcd(ii,jj).eq.\+answer end subroutine writeit
+
+subroutine writeit\+\_\+v(vector,answer) integer,intent(in) \+:\+: vector(\+:) integer,intent(in) \+:\+: answer write($\ast$,\textquotesingle{}(\char`\"{}gcd(\mbox{[}\char`\"{},$\ast$(i0\+:,\char`\"{},\char`\"{}))\textquotesingle{},advance=\textquotesingle{}no\textquotesingle{})vector write($\ast$,\textquotesingle{}(\char`\"{}\mbox{]}) produces \char`\"{},i0,\char`\"{} which is \char`\"{},l1)\textquotesingle{}) \& \& gcd(vector),gcd(vector).eq.\+answer end subroutine writeit\+\_\+v
+
+subroutine write\+\_\+matrix(matrix,answer) integer,intent(in) \+:\+: matrix(\+:,\+:) integer,intent(in) \+:\+: answer write($\ast$,$\ast$)\textquotesingle{}M\+A\+T\+R\+IX S\+H\+A\+PE\+:\textquotesingle{},size(matrix,dim=1),size(matrix,dim=2) write($\ast$,\textquotesingle{}(\char`\"{}gcd(\mbox{[}\char`\"{},$\ast$(i0\+:,\char`\"{},\char`\"{}))\textquotesingle{},advance=\textquotesingle{}no\textquotesingle{})matrix write($\ast$,\textquotesingle{}(\char`\"{}\mbox{]}) produces \char`\"{},i0,\char`\"{} which is \char`\"{},l1)\textquotesingle{}) \& \& gcd(matrix),gcd(matrix).eq.\+answer end subroutine write\+\_\+matrix
+
+end program demo\+\_\+greatest\+\_\+common\+\_\+divisor Expected Output\+:
+
+$>$ S\+C\+A\+L\+AR\+: $>$ gcd(\mbox{[}26,130\mbox{]}) produces 26 which is T $>$ gcd(\mbox{[}91,390\mbox{]}) produces 13 which is T $>$ gcd(\mbox{[}-\/91,390\mbox{]}) produces 13 which is T $>$ gcd(\mbox{[}91,-\/390\mbox{]}) produces 13 which is T $>$ gcd(\mbox{[}-\/41,-\/43\mbox{]}) produces 1 which is T $>$ gcd(\mbox{[}-\/20,-\/10\mbox{]}) produces 10 which is T $>$ gcd(\mbox{[}20,10\mbox{]}) produces 10 which is T $>$ V\+E\+C\+T\+OR\+: $>$ gcd(\mbox{[}26,130,91,390\mbox{]}) produces 13 which is T $>$ gcd(\mbox{[}5,7,11,13,17,19,23,29,31,37,41,43,47\mbox{]}) produces 1 which is T $>$ gcd(\mbox{[}-\/20,-\/10,0\mbox{]}) produces 10 which is T $>$ gcd(\mbox{[}20,10,0\mbox{]}) produces 10 which is T $>$ gcd(\mbox{[}26,130\mbox{]}) produces 26 which is T $>$ gcd(\mbox{[}91,390\mbox{]}) produces 13 which is T $>$ gcd(\mbox{[}-\/91,390\mbox{]}) produces 13 which is T $>$ gcd(\mbox{[}91,-\/390\mbox{]}) produces 13 which is T $>$ gcd(\mbox{[}-\/41,-\/43\mbox{]}) produces 1 which is T $>$ gcd(\mbox{[}-\/20,-\/10\mbox{]}) produces 10 which is T $>$ gcd(\mbox{[}20,10\mbox{]}) produces 10 which is T $>$ M\+A\+T\+R\+IX\+: $>$ M\+A\+T\+R\+IX S\+H\+A\+PE\+: 2 3 $>$ gcd(\mbox{[}11,22,33,44,55,66\mbox{]}) produces 11 which is T $>$ M\+A\+T\+R\+IX S\+H\+A\+PE\+: 13 1 $>$ gcd(\mbox{[}5,7,11,13,17,19,23,29,31,37,41,43,47\mbox{]}) produces 1 which is T $>$ M\+A\+T\+R\+IX S\+H\+A\+PE\+: 2 2 $>$ gcd(\mbox{[}40,80,120,160\mbox{]}) produces 40 which is T F\+U\+N\+C\+T\+I\+ON\+: gcd(\+M,\+N) D\+A\+TE\+: 30-\/\+Aug-\/2015 \subsubsection*{V\+E\+R\+S\+I\+ON\+: V1.\+0.\+0}
+
+M\+O\+D\+I\+F\+I\+ED BY\+: John S. Urban P\+U\+R\+P\+O\+SE\+: Computes the Greatest Common Divisor of two integers. If M=N=0 then the G\+CD is defined to be zero. IE. G\+CD is a factor of M and N and G\+CD is the largest such factor. R\+E\+F\+E\+R\+E\+N\+C\+ES\+: Euler algorithm (slow) U\+U\+ID\+: U\+U\+ID=de642070-\/4ecd-\/414b-\/895c-\/578ea7547948 \mbox{\Hypertarget{interfacem__factor_1_1greatest__common__divisor_a97be1fa43fb41e5e96ee3bbe2f9e6dd5}\label{interfacem__factor_1_1greatest__common__divisor_a97be1fa43fb41e5e96ee3bbe2f9e6dd5}} 
+\index{m\+\_\+factor\+::greatest\+\_\+common\+\_\+divisor@{m\+\_\+factor\+::greatest\+\_\+common\+\_\+divisor}!gcd\+\_\+cuboid@{gcd\+\_\+cuboid}}
+\index{gcd\+\_\+cuboid@{gcd\+\_\+cuboid}!m\+\_\+factor\+::greatest\+\_\+common\+\_\+divisor@{m\+\_\+factor\+::greatest\+\_\+common\+\_\+divisor}}
+\subsubsection{\texorpdfstring{gcd\+\_\+cuboid()}{gcd\_cuboid()}}
+{\footnotesize\ttfamily integer function m\+\_\+factor\+::greatest\+\_\+common\+\_\+divisor\+::gcd\+\_\+cuboid (\begin{DoxyParamCaption}\item[{integer, dimension(\+:,\+:,\+:), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{m }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{interfacem__factor_1_1greatest__common__divisor_a4222039246a4ae0dd1b1dbc8acd15e43}\label{interfacem__factor_1_1greatest__common__divisor_a4222039246a4ae0dd1b1dbc8acd15e43}} 
+\index{m\+\_\+factor\+::greatest\+\_\+common\+\_\+divisor@{m\+\_\+factor\+::greatest\+\_\+common\+\_\+divisor}!gcd\+\_\+matrix@{gcd\+\_\+matrix}}
+\index{gcd\+\_\+matrix@{gcd\+\_\+matrix}!m\+\_\+factor\+::greatest\+\_\+common\+\_\+divisor@{m\+\_\+factor\+::greatest\+\_\+common\+\_\+divisor}}
+\subsubsection{\texorpdfstring{gcd\+\_\+matrix()}{gcd\_matrix()}}
+{\footnotesize\ttfamily integer function m\+\_\+factor\+::greatest\+\_\+common\+\_\+divisor\+::gcd\+\_\+matrix (\begin{DoxyParamCaption}\item[{integer, dimension(\+:,\+:), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{m }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{interfacem__factor_1_1greatest__common__divisor_a19a227039630336f719838eb941fa28f}\label{interfacem__factor_1_1greatest__common__divisor_a19a227039630336f719838eb941fa28f}} 
+\index{m\+\_\+factor\+::greatest\+\_\+common\+\_\+divisor@{m\+\_\+factor\+::greatest\+\_\+common\+\_\+divisor}!gcd\+\_\+vector@{gcd\+\_\+vector}}
+\index{gcd\+\_\+vector@{gcd\+\_\+vector}!m\+\_\+factor\+::greatest\+\_\+common\+\_\+divisor@{m\+\_\+factor\+::greatest\+\_\+common\+\_\+divisor}}
+\subsubsection{\texorpdfstring{gcd\+\_\+vector()}{gcd\_vector()}}
+{\footnotesize\ttfamily integer function m\+\_\+factor\+::greatest\+\_\+common\+\_\+divisor\+::gcd\+\_\+vector (\begin{DoxyParamCaption}\item[{integer, dimension(\+:), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{m }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this interface was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\hyperlink{M__factor_8f90}{M\+\_\+factor.\+f90}\end{DoxyCompactItemize}

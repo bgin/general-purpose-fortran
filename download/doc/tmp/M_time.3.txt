@@ -181,7 +181,7 @@ SYNOPSIS
     |                                                |          |position of   |
     |ephemeris                                       |          |planets for   |
     |(dat,planet,DEC_D,DEC,M,DEC_C,ASCENT_H,ASCENT_M)|          |adjusting an  |
-    |                                                |          |equitorial    |
+    |                                                |          |equatorial    |
     |                                                |          |telescope     |
     |------------------------------------------------+----------+--------------|
     |                                                |          |percentage of |

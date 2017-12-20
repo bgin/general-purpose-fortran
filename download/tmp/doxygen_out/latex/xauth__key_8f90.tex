@@ -1,0 +1,63 @@
+\hypertarget{xauth__key_8f90}{}\section{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/xauth\+\_\+key.f90 File Reference}
+\label{xauth__key_8f90}\index{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/xauth\+\_\+key.\+f90@{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/xauth\+\_\+key.\+f90}}
+\subsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{xauth__key_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}{help\+\_\+usage} (l\+\_\+help)
+\item 
+program \hyperlink{xauth__key_8f90_a0f9a35aa83e47ebe911d6c02ac4f5798}{xauth\+\_\+key}
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+xauth\+\_\+key -\/ generate magic cookies for xauth \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{xauth__key_8f90_ad2aaabc58e93e13e8a0d5acf843eb5d0}{help\+\_\+version} (l\+\_\+version)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{xauth__key_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}\label{xauth__key_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}} 
+\index{xauth\+\_\+key.\+f90@{xauth\+\_\+key.\+f90}!help\+\_\+usage@{help\+\_\+usage}}
+\index{help\+\_\+usage@{help\+\_\+usage}!xauth\+\_\+key.\+f90@{xauth\+\_\+key.\+f90}}
+\subsubsection{\texorpdfstring{help\+\_\+usage()}{help\_usage()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} help\+\_\+usage (\begin{DoxyParamCaption}\item[{logical, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{l\+\_\+help }\end{DoxyParamCaption})}
+
+
+
+References false().
+
+\mbox{\Hypertarget{xauth__key_8f90_ad2aaabc58e93e13e8a0d5acf843eb5d0}\label{xauth__key_8f90_ad2aaabc58e93e13e8a0d5acf843eb5d0}} 
+\index{xauth\+\_\+key.\+f90@{xauth\+\_\+key.\+f90}!help\+\_\+version@{help\+\_\+version}}
+\index{help\+\_\+version@{help\+\_\+version}!xauth\+\_\+key.\+f90@{xauth\+\_\+key.\+f90}}
+\subsubsection{\texorpdfstring{help\+\_\+version()}{help\_version()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} xauth\+\_\+key\+::help\+\_\+version (\begin{DoxyParamCaption}\item[{logical, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{l\+\_\+version }\end{DoxyParamCaption})}
+
+
+
+References false().
+
+\mbox{\Hypertarget{xauth__key_8f90_a0f9a35aa83e47ebe911d6c02ac4f5798}\label{xauth__key_8f90_a0f9a35aa83e47ebe911d6c02ac4f5798}} 
+\index{xauth\+\_\+key.\+f90@{xauth\+\_\+key.\+f90}!xauth\+\_\+key@{xauth\+\_\+key}}
+\index{xauth\+\_\+key@{xauth\+\_\+key}!xauth\+\_\+key.\+f90@{xauth\+\_\+key.\+f90}}
+\subsubsection{\texorpdfstring{xauth\+\_\+key()}{xauth\_key()}}
+{\footnotesize\ttfamily program xauth\+\_\+key (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+xauth\+\_\+key -\/ generate magic cookies for xauth \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+xauth\+\_\+key \mbox{[}characters\mbox{]} \mbox{[}-\/n number\+\_\+of\+\_\+characters\mbox{]} \subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+xauth\+\_\+key generates a random hexadecimal number
+
+characters Set of letters to compose string from. Defaults to \textquotesingle{}0123456789abcdef\textquotesingle{}. -\/n Number of digits. Defaults to 128 --version Display version information and exit. --help Display help text and exit. \subsubsection*{E\+X\+A\+M\+P\+LE}
+
+\begin{DoxyVerb}# generate a value for use with the X authority system.
+xauth add :0 . `xauth_key`
+\end{DoxyVerb}
+ \subsubsection*{S\+EE A\+L\+SO}
+
+\hyperlink{intro__blas1_83_8txt_a7af7e1e13fc78374475d1be13503ee6e}{X(1)}, xauth(1) 
+
+References help\+\_\+usage(), help\+\_\+version(), m\+\_\+kracken\+::iget(), m\+\_\+random\+::init\+\_\+random\+\_\+seed\+\_\+by\+\_\+dat(), m\+\_\+kracken\+::kracken(), m\+\_\+kracken\+::lget(), m\+\_\+random\+::random\+\_\+hex(), m\+\_\+random\+::random\+\_\+string(), and m\+\_\+kracken\+::sget().
+

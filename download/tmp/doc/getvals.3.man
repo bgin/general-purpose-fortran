@@ -22,7 +22,7 @@ DESCRIPTION
   Per list-directed rules when reading values, allowed delimiters are
   comma, semi-colon and space.
 
-  the slash seperator can be used to add inline comments.
+  the slash separator can be used to add inline comments.
 
        10.1, 20.43e-1 ; 11 / THIS IS TREATED AS A COMMENT
 

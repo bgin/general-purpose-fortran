@@ -9,6 +9,7 @@ public dirname
 public splitpath
 public isdir
 public readline
+public get_tmp
 CONTAINS
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -20,26 +21,29 @@ CONTAINS
 !!
 !!      Usage
 !!
-!!       character(len=255) function uniq(name,istart)
+!!       character(len=:),allocatable function uniq(name,istart,verbose)
 !!       character(len=*),intent(in) :: name
 !!       integer,intent(in),optional :: istart
+!!       logical,intent(in),optional :: verbose
 !!
 !!##DESCRIPTION
 !!    Given a filename test if it is in use or exists. If it is, or if it
 !!    ends in a period add a four-digit number to the end of the name and
-!!    test if the new name is in use. If necessary, increment the number
-!!    and try again up to the value 9999.
+!!    test if the new name exists. If necessary, increment the number
+!!    and try again up to the value 9999. An empty file is created if
+!!    successful.
 !!
 !!    o relatively non-generic;
 !!    o does not try to detect io errors
 !!
-!!    could make this use $TMPDIR and $$ to suffix and prefix file with to come up with a unique filename
 !!##OPTIONS
-!!       name    base input name used to create output filename
-!!       istart  number to start with as a suffix
+!!       name     base input name used to create output filename
+!!                If name ends in "." a numeric suffix is always added.
+!!       istart   number to start with as a suffix. Default is 1.
+!!       verbose  writes extra messages to stdout. Defaults to .false.
 !!##RETURNS
-!!       uniq  A unique filename that is the same as the NAME input parameter
-!!             except with a number appended at the end if needed.
+!!       uniq     A unique filename that is the same as the NAME input parameter
+!!                except with a number appended at the end if needed.
 !!##EXAMPLE
 !!
 !!    Sample program
@@ -47,7 +51,7 @@ CONTAINS
 !!       program demo_uniq
 !!       use M_io, only : uniq
 !!       implicit none
-!!       character(len=255) :: myname
+!!       character(len=4096) :: myname
 !!       integer            :: i
 !!          myname=uniq('does_not_exist')
 !!          open(unit=10,file='does_exist')
@@ -64,8 +68,7 @@ CONTAINS
 !!    Expected output
 !!
 !!     name stays the same does_not_exist
-!!     name has suffix added does_exist0000
-!!     FILENAME:does_exist0001
+!!     name has suffix added does_exist0001
 !!     FILENAME:does_exist0002
 !!     FILENAME:does_exist0003
 !!     FILENAME:does_exist0004
@@ -75,40 +78,51 @@ CONTAINS
 !!     FILENAME:does_exist0008
 !!     FILENAME:does_exist0009
 !!     FILENAME:does_exist0010
+!!     FILENAME:does_exist0011
 !!
 !!##AUTHOR
 !!    John S. Urban, 1993
 !===================================================================================================================================
-function uniq(name,istart)
 !-----------------------------------------------------------------------------------------------------------------------------------
+function uniq(name,istart,verbose)
 use M_journal, only : journal
 implicit none
 character(len=*),parameter::ident="@(#)M_io::uniq(3f):append a number to the end of filename to make a unique name if name exists"
 !-----------------------------------------------------------------------------------------------------------------------------------
 character(len=*),intent(in) :: name
-character(len=255)          :: uniq
+character(len=4096)         :: uniq
 integer,intent(in),optional :: istart
+logical,intent(in),optional :: verbose
 !-----------------------------------------------------------------------------------------------------------------------------------
    integer                     :: istart_local
    logical                     :: around
-   integer,save                :: icount=0           ! counter to generate suffix from
-   character(len=255),save     :: lastname=' '       ! name called with last time the routine was called
+   integer,save                :: icount=1           ! counter to generate suffix from
+   character(len=4096),save    :: lastname=' '       ! name called with last time the routine was called
    integer                     :: ilen
    integer                     :: itimes
+   integer                     :: iscr
+   integer                     :: ios
+   logical                     :: verbose_local
 !-----------------------------------------------------------------------------------------------------------------------------------
    uniq=name                                         ! the input name will be returned if it passes all the tests
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(lastname.ne.name)then                          ! if a different input name than last time called reset icount
       lastname=name                                  ! a new name to keep for subsequent calls
-      icount=0                                       ! icount is used to make a suffix to add to make the file unique
+      icount=1                                       ! icount is used to make a suffix to add to make the file unique
+   endif
+!-----------------------------------------------------------------------------------------------------------------------------------
+   if(present(verbose))then
+      verbose_local=verbose
+   else
+      verbose_local=.false.
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(present(istart))then
       istart_local=istart
    else
-      istart_local=0
+      istart_local=1
    endif
-   if(istart_local.ne.0) icount=istart_local         ! icount is used to make a suffix to add to make the file unique
+   if(istart_local.ne.1) icount=istart_local         ! icount is used to make a suffix to add to make the file unique
 !-----------------------------------------------------------------------------------------------------------------------------------
    ilen=len_trim(name)                               ! find last non-blank character in file name
    if(ilen.ne.0)then                                 ! a blank input name so name will just be a suffix
@@ -117,12 +131,14 @@ integer,intent(in),optional :: istart
          inquire(file=name(:ilen),exist=around)      ! check filename as-is
          if(.not.around)then                         ! file name does not exist, can use it as-is
             uniq=name
+            open(newunit=iscr,file=uniq,iostat=ios,status='new')
+            close(unit=iscr,iostat=ios)
             return
          endif
       endif
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
-   if(ilen.gt.(255-4))then                            ! input filename is too long to add suffix to
+   if(ilen.gt.(4096-4))then                           ! input filename is too long to add suffix to
       call journal('sc','*uniq* ERROR: unable to append number to filename. Filename is too long')
       return
    endif
@@ -133,12 +149,17 @@ integer,intent(in),optional :: istart
          call journal('sc','*uniq* unable to find a unique filename. Too many tries')
          return
       endif
-      if(icount.gt.9999) icount=0                     ! reset ICOUNT when it hits arbitrary maximum value
+      if(icount.gt.9999) icount=1                     ! reset ICOUNT when it hits arbitrary maximum value
       write(uniq(ilen+1:),'(i4.4)')icount             ! create name by adding a numeric string to end
       icount=icount+1                                 ! increment counter used to come up with suffix
       inquire(file=uniq(:ilen+4),exist=around)        ! see if this filename already exists
       if(.not.around)then                             ! found an unused name
-         call journal('c',trim('*uniq* name='//uniq)) ! write out message reporting name used
+         if(verbose_local)then
+            call journal('c',trim('*uniq* name='//uniq)) ! write out message reporting name used
+         endif
+         open(newunit=iscr,file=uniq,iostat=ios,status='new')
+         close(unit=iscr,iostat=ios)
+
          return                                       ! return successfully
       endif
       itimes=itimes+1                                 ! haven't found a unique name, try again
@@ -1058,6 +1079,62 @@ integer                                  :: ier
    call notabs(line_local,line,last)                        ! expand tabs, trim carriage returns, remove unprintable characters
    line=trim(line(:last))                                   ! trim line
 end function readline
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+!>
+!!##NAME
+!!##SYNOPSIS
+!!
+!!     function get_tmp() result(tname)
+!!
+!!      character(len=:),allocatable :: tname
+!!##DESCRIPTION
+!!
+!!    Return the name of the scratch directory set by the most common environment variables used to designate a scratch directory.
+!!    $TMPDIR is the canonical environment variable in Unix and POSIX[1] to use to specify a temporary directory for scratch space.
+!!    If $TMPDIR is not set, $TEMP, $TEMPDIR, and $TMP are examined in that order. If nothing is set "/tmp/" is returned. The
+!!    returned value always ends in "/". No test is made that the directory exists or is writable.
+!!
+!!##EXAMPLE
+!!
+!!
+!!   Sample:
+!!
+!!     program testit
+!!     use M_io, only : get_tmp
+!!     implicit none
+!!     character(len=:),allocatable :: answer
+!!        answer=get_tmp()
+!!        write(*,*)'result is ',answer
+!!     end program testit
+!!
+!!   Sample Results:
+!!
+!!     result is /cygdrive/c/Users/JSU/AppData/Local/Temp/
+!===================================================================================================================================
+function get_tmp() result(tname)
+character(len=:),allocatable :: tname
+   integer :: lngth
+   character(len=10),parameter :: names(4)=["TMPDIR    ","TEMP      ","TEMPDIR   ","TMP       "]
+   tname=''
+   do i=1,size(names)
+      call get_environment_variable(name=names(i), length=lngth)
+      if(lngth.ne.0)then
+         deallocate(tname)
+         allocate(character(len=lngth) :: tname)
+         call get_environment_variable(name=names(i), value=tname)
+         exit
+      endif
+   enddo
+   if(lngth.eq.0)then
+      tname='/tmp'
+      lngth=len_trim(tname)
+   endif
+   if(scan(tname(lngth:lngth),'/\').eq.0)then
+      tname=tname//'/'
+   endif
+end function get_tmp
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================

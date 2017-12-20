@@ -63,10 +63,75 @@ $(function() {
 </div>
 </div><!-- top -->
 <div class="header">
+  <div class="summary">
+<a href="#func-members">Functions/Subroutines</a>  </div>
   <div class="headertitle">
 <div class="title">today.f90 File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions/Subroutines</h2></td></tr>
+<tr class="memitem:a39c21619b08a3c22f19e2306efd7f766"><td class="memItemLeft" align="right" valign="top"><a class="el" href="M__stopwatch_83_8txt.html#acfbcff50169d691ff02d4a123ed70482">subroutine</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="today_8f90.html#a39c21619b08a3c22f19e2306efd7f766">help_version</a> (l_version)</td></tr>
+<tr class="memdesc:a39c21619b08a3c22f19e2306efd7f766"><td class="mdescLeft">&#160;</td><td class="mdescRight"><h2>NAME</h2>
+today(1f) - [TIME] output current time for uses such as file suffixes. </p><h2>SYNOPSIS</h2>
+ <a href="#a39c21619b08a3c22f19e2306efd7f766">More...</a><br /></td></tr>
+<tr class="separator:a39c21619b08a3c22f19e2306efd7f766"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85de40d003821f9db87243b8b25b8d40"><td class="memItemLeft" align="right" valign="top">program&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="today_8f90.html#a85de40d003821f9db87243b8b25b8d40">today</a></td></tr>
+<tr class="separator:a85de40d003821f9db87243b8b25b8d40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Function/Subroutine Documentation</h2>
+<a id="a39c21619b08a3c22f19e2306efd7f766"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39c21619b08a3c22f19e2306efd7f766">&#9670;&nbsp;</a></span>help_version()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="M__stopwatch_83_8txt.html#acfbcff50169d691ff02d4a123ed70482">subroutine</a> help_version </td>
+          <td>(</td>
+          <td class="paramtype">logical, intent(<a class="el" href="M__journal_83_8txt.html#afce72651d1eed785a2132bee863b2f38">in</a>)&#160;</td>
+          <td class="paramname"><em>l_version</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><h2>NAME</h2>
+today(1f) - [TIME] output current time for uses such as file suffixes. </p><h2>SYNOPSIS</h2>
+</p>
+<p>today [format] </p><h2>DESCRIPTION</h2>
+<p>Outputs the current date using the specified format. Typically used to generate a string to be used in building filenames containing date information. </p><h2>OPTIONS</h2>
+<p>format any allowable format for the fmtdate(3) routine. Enter "-" to get a list on stdout. defaults to "YMD". </p><h2>EXAMPLE</h2>
+<pre class="fragment">    Sample commands:
+
+     cp myfile myfile.`today`
+     find . -ls &gt; MANIFEST.`today epoch`
+     mkdir `today YMDhms`
+     today -                              # show formatting options </pre> 
+<p class="reference">References <a class="el" href="__false_8f90.html#ac39cd9fe2012c31749944aa6b20b6c05">false()</a>.</p>
+
+</div>
+</div>
+<a id="a85de40d003821f9db87243b8b25b8d40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a85de40d003821f9db87243b8b25b8d40">&#9670;&nbsp;</a></span>today()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">program today </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="reference">References <a class="el" href="namespacem__time.html#a914927f70fb9495af1be2e484b967111">m_time::fmtdate_usage()</a>, and <a class="el" href="namespacem__time.html#a6b5e87be0e510ff268c1ecfbf67a3bdb">m_time::now()</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

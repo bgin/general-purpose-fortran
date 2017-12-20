@@ -63,10 +63,120 @@ $(function() {
 </div>
 </div><!-- top -->
 <div class="header">
+  <div class="summary">
+<a href="#func-members">Functions/Subroutines</a>  </div>
   <div class="headertitle">
 <div class="title">table2html.f90 File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions/Subroutines</h2></td></tr>
+<tr class="memitem:a3e09a3b52ee8fb04eeb93fe5761626a8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="M__stopwatch_83_8txt.html#acfbcff50169d691ff02d4a123ed70482">subroutine</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="table2html_8f90.html#a3e09a3b52ee8fb04eeb93fe5761626a8">help_usage</a> (l_help)</td></tr>
+<tr class="separator:a3e09a3b52ee8fb04eeb93fe5761626a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39c21619b08a3c22f19e2306efd7f766"><td class="memItemLeft" align="right" valign="top"><a class="el" href="M__stopwatch_83_8txt.html#acfbcff50169d691ff02d4a123ed70482">subroutine</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="table2html_8f90.html#a39c21619b08a3c22f19e2306efd7f766">help_version</a> (l_version)</td></tr>
+<tr class="memdesc:a39c21619b08a3c22f19e2306efd7f766"><td class="mdescLeft">&#160;</td><td class="mdescRight"><h2>NAME</h2>
+table2html(1f) - [FILE FILTER] filter to format simple columns into an HTML table form  <a href="#a39c21619b08a3c22f19e2306efd7f766">More...</a><br /></td></tr>
+<tr class="separator:a39c21619b08a3c22f19e2306efd7f766"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9fa6313f884ee5cf8caf9b9bfb9f3cd"><td class="memItemLeft" align="right" valign="top">program&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="table2html_8f90.html#ac9fa6313f884ee5cf8caf9b9bfb9f3cd">table2html</a></td></tr>
+<tr class="separator:ac9fa6313f884ee5cf8caf9b9bfb9f3cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8fd5b1ad7c5297852591499ca1e2db09"><td class="memItemLeft" align="right" valign="top"><a class="el" href="M__stopwatch_83_8txt.html#acfbcff50169d691ff02d4a123ed70482">subroutine</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="table2html_8f90.html#a8fd5b1ad7c5297852591499ca1e2db09">writeline</a> ()</td></tr>
+<tr class="separator:a8fd5b1ad7c5297852591499ca1e2db09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Function/Subroutine Documentation</h2>
+<a id="a3e09a3b52ee8fb04eeb93fe5761626a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e09a3b52ee8fb04eeb93fe5761626a8">&#9670;&nbsp;</a></span>help_usage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="M__stopwatch_83_8txt.html#acfbcff50169d691ff02d4a123ed70482">subroutine</a> help_usage </td>
+          <td>(</td>
+          <td class="paramtype">logical, intent(<a class="el" href="M__journal_83_8txt.html#afce72651d1eed785a2132bee863b2f38">in</a>)&#160;</td>
+          <td class="paramname"><em>l_help</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="reference">References <a class="el" href="__false_8f90.html#ac39cd9fe2012c31749944aa6b20b6c05">false()</a>.</p>
+
+</div>
+</div>
+<a id="a39c21619b08a3c22f19e2306efd7f766"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39c21619b08a3c22f19e2306efd7f766">&#9670;&nbsp;</a></span>help_version()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="M__stopwatch_83_8txt.html#acfbcff50169d691ff02d4a123ed70482">subroutine</a> help_version </td>
+          <td>(</td>
+          <td class="paramtype">logical, intent(<a class="el" href="M__journal_83_8txt.html#afce72651d1eed785a2132bee863b2f38">in</a>)&#160;</td>
+          <td class="paramname"><em>l_version</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><h2>NAME</h2>
+table2html(1f) - [FILE FILTER] filter to format simple columns into an HTML table form </p>
+<h2>SYNOPSIS</h2>
+<pre class="fragment">table2html [[-classes classnames] [-caption caption line] [-delimiters delim]
+           [-asis] [-header] [-tabletags tags] ] |-help|-version
+</pre><h2>DESCRIPTION</h2>
+<p>table2html is a filter that converts tabular text input to an HTML table. The program can create an HTML table displaying alternating hues per row.</p>
+<p>The "-classes" option generates code using cascading style sheet (CSS) class names for alternating rows; default names are "even" and "odd". The following style definition in a page's &lt;head&gt; section will assign different background hues to be used:</p>
+<p>&lt;style type="text/css"&gt; .even { background-color: #FFFFFF; } .odd { background-color: #F0F0F0; } &lt;/style&gt;</p>
+<h2>OPTIONS</h2>
+<p>-caption a caption line for the table -classes use CSS class names for different rows (empty argument: odd even) -delimiters input column delimiter (default: whitespace). If a list contains space the space must not be last in the list. -header the first row is assumed to be a header line (default: no header lines) -tabletags specify own HTML table tags instead of the default: border="1" -document write complete HTML document instead of just table -asis by default the characters &gt;&lt;&amp; are converted to their HTML equivalents. This option turns that conversion off. -help display command help and exit -version display command metadata and exit </p><h2>EXAMPLES</h2>
+<p>Sample usage:</p>
+<h1>list month as a table</h1>
+<p>cal|tail -n +2|table2html -caption $(cal|head -n 1) -document |w3m -dump -T text/html|more </p>
+
+<p class="reference">References <a class="el" href="__false_8f90.html#ac39cd9fe2012c31749944aa6b20b6c05">false()</a>.</p>
+
+</div>
+</div>
+<a id="ac9fa6313f884ee5cf8caf9b9bfb9f3cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac9fa6313f884ee5cf8caf9b9bfb9f3cd">&#9670;&nbsp;</a></span>table2html()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">program table2html </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="reference">References <a class="el" href="__cmp_8f90.html#a3e09a3b52ee8fb04eeb93fe5761626a8">help_usage()</a>, <a class="el" href="__cmp_8f90.html#a39c21619b08a3c22f19e2306efd7f766">help_version()</a>, <a class="el" href="namespacem__kracken.html#a420718890eac378e5cd047dd0b477424">m_kracken::iget()</a>, <a class="el" href="namespacem__kracken.html#a9e71724677cede703e1fb186e446349f">m_kracken::ipvalue</a>, <a class="el" href="namespacem__kracken.html#a850dce381e1cfe18a4ebcaa214995e39">m_kracken::kracken()</a>, <a class="el" href="namespacem__kracken.html#a7141acd7a00c1a5aa5f90612a0414b63">m_kracken::lget()</a>, <a class="el" href="namespacem__kracken.html#a9a64192326816b0b9badcc11506628ee">m_kracken::sget()</a>, <a class="el" href="namespacem__kracken.html#a8ae60c1a9c903c8ad06ef1f95975d457">m_kracken::sgets()</a>, <a class="el" href="namespacem__strings.html#a3f0119fab962146c7656cad592dd9acd">m_strings::split()</a>, <a class="el" href="namespacem__strings.html#ab84a4b7c2be211433c2d1b435a87fa32">m_strings::substitute()</a>, and <a class="el" href="table2html_8f90.html#a8fd5b1ad7c5297852591499ca1e2db09">writeline()</a>.</p>
+
+</div>
+</div>
+<a id="a8fd5b1ad7c5297852591499ca1e2db09"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8fd5b1ad7c5297852591499ca1e2db09">&#9670;&nbsp;</a></span>writeline()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="M__stopwatch_83_8txt.html#acfbcff50169d691ff02d4a123ed70482">subroutine</a> table2html::writeline </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="reference">References <a class="el" href="namespacem__strings.html#a3f0119fab962146c7656cad592dd9acd">m_strings::split()</a>, and <a class="el" href="namespacem__strings.html#ab84a4b7c2be211433c2d1b435a87fa32">m_strings::substitute()</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

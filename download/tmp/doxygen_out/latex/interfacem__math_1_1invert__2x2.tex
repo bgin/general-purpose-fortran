@@ -1,0 +1,80 @@
+\hypertarget{interfacem__math_1_1invert__2x2}{}\section{m\+\_\+math\+:\+:invert\+\_\+2x2 Interface Reference}
+\label{interfacem__math_1_1invert__2x2}\index{m\+\_\+math\+::invert\+\_\+2x2@{m\+\_\+math\+::invert\+\_\+2x2}}
+
+
+\subsubsection*{N\+A\+ME}
+
+invert\+\_\+2x2(3f) -\/ \mbox{[}M\+\_\+math\mbox{]} directly invert 2x2 matrix  
+
+
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+pure \hyperlink{read__watch_83_8txt_abdb62bde002f38ef75f810d3a905a823}{real}(kind=wp) function, dimension(2, 2) \hyperlink{interfacem__math_1_1invert__2x2_a2c3a267ed54a4db4e9393b03e74618fc}{real\+\_\+invert\+\_\+2x2} (\hyperlink{ufpp__overview_81_8txt_a8341271e5f4e3003f6eb1c9547fc9d1a}{A})
+\item 
+pure integer(kind=wp) function, dimension(2, 2) \hyperlink{interfacem__math_1_1invert__2x2_ae78383e51ec51bc8d12123e197804c3c}{integer\+\_\+invert\+\_\+2x2} (\hyperlink{ufpp__overview_81_8txt_a8341271e5f4e3003f6eb1c9547fc9d1a}{A})
+\item 
+pure complex(kind=wp) function, dimension(2, 2) \hyperlink{interfacem__math_1_1invert__2x2_ab4c707576dd541a8fe6252364b4de2aa}{complex\+\_\+invert\+\_\+2x2} (\hyperlink{ufpp__overview_81_8txt_a8341271e5f4e3003f6eb1c9547fc9d1a}{A})
+\item 
+pure \hyperlink{read__watch_83_8txt_abdb62bde002f38ef75f810d3a905a823}{real}(kind=wp) function, dimension(2, 2) \hyperlink{interfacem__math_1_1invert__2x2_ac3a74a1e772db1ab6d55d7f950d9cd63}{double\+\_\+invert\+\_\+2x2} (\hyperlink{ufpp__overview_81_8txt_a8341271e5f4e3003f6eb1c9547fc9d1a}{A})
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{N\+A\+ME}
+
+invert\+\_\+2x2(3f) -\/ \mbox{[}M\+\_\+math\mbox{]} directly invert 2x2 matrix 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+pure function invert\+\_\+2x2(\+A) result(\+B)
+
+! integer,real,double,complex
+
+integer,parameter \+:\+: wp=kind(0$\vert$0.0$\vert$0.0d$\vert$(0.\+0,0.\+0)) N\+N\+N\+N\+NN(kind=wp), intent(in) \+:\+: A(2,2) !! Matrix N\+N\+N\+N\+NN(kind=wp) \+:\+: B(2,2) !! Inverse matrix where N\+N\+N\+N\+NN may be I\+N\+T\+E\+G\+ER,R\+E\+AL,D\+O\+U\+B\+L\+E\+P\+R\+E\+C\+I\+S\+I\+ON,C\+O\+M\+P\+L\+EX
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+\begin{DoxyVerb}Directly invert 2x2 matrix for speed (versus using, e.g. LAPACK)
+\end{DoxyVerb}
+
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+\begin{DoxyVerb}A  original 2x2 matrix, may be INTEGER, REAL, DOUBLE, or COMPLEX
+B  inverted 2x2 matrix, of same type as input matrix A
+\end{DoxyVerb}
+
+
+\subsubsection*{E\+X\+A\+M\+P\+LE}
+
+\subsection{Member Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{interfacem__math_1_1invert__2x2_ab4c707576dd541a8fe6252364b4de2aa}\label{interfacem__math_1_1invert__2x2_ab4c707576dd541a8fe6252364b4de2aa}} 
+\index{m\+\_\+math\+::invert\+\_\+2x2@{m\+\_\+math\+::invert\+\_\+2x2}!complex\+\_\+invert\+\_\+2x2@{complex\+\_\+invert\+\_\+2x2}}
+\index{complex\+\_\+invert\+\_\+2x2@{complex\+\_\+invert\+\_\+2x2}!m\+\_\+math\+::invert\+\_\+2x2@{m\+\_\+math\+::invert\+\_\+2x2}}
+\subsubsection{\texorpdfstring{complex\+\_\+invert\+\_\+2x2()}{complex\_invert\_2x2()}}
+{\footnotesize\ttfamily pure complex(kind=wp) function, dimension(2,2) m\+\_\+math\+::invert\+\_\+2x2\+::complex\+\_\+invert\+\_\+2x2 (\begin{DoxyParamCaption}\item[{complex(kind=wp), dimension(2,2), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{A }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{interfacem__math_1_1invert__2x2_ac3a74a1e772db1ab6d55d7f950d9cd63}\label{interfacem__math_1_1invert__2x2_ac3a74a1e772db1ab6d55d7f950d9cd63}} 
+\index{m\+\_\+math\+::invert\+\_\+2x2@{m\+\_\+math\+::invert\+\_\+2x2}!double\+\_\+invert\+\_\+2x2@{double\+\_\+invert\+\_\+2x2}}
+\index{double\+\_\+invert\+\_\+2x2@{double\+\_\+invert\+\_\+2x2}!m\+\_\+math\+::invert\+\_\+2x2@{m\+\_\+math\+::invert\+\_\+2x2}}
+\subsubsection{\texorpdfstring{double\+\_\+invert\+\_\+2x2()}{double\_invert\_2x2()}}
+{\footnotesize\ttfamily pure \hyperlink{read__watch_83_8txt_abdb62bde002f38ef75f810d3a905a823}{real}(kind=wp) function, dimension(2,2) m\+\_\+math\+::invert\+\_\+2x2\+::double\+\_\+invert\+\_\+2x2 (\begin{DoxyParamCaption}\item[{\hyperlink{read__watch_83_8txt_abdb62bde002f38ef75f810d3a905a823}{real}(kind=wp), dimension(2,2), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{A }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{interfacem__math_1_1invert__2x2_ae78383e51ec51bc8d12123e197804c3c}\label{interfacem__math_1_1invert__2x2_ae78383e51ec51bc8d12123e197804c3c}} 
+\index{m\+\_\+math\+::invert\+\_\+2x2@{m\+\_\+math\+::invert\+\_\+2x2}!integer\+\_\+invert\+\_\+2x2@{integer\+\_\+invert\+\_\+2x2}}
+\index{integer\+\_\+invert\+\_\+2x2@{integer\+\_\+invert\+\_\+2x2}!m\+\_\+math\+::invert\+\_\+2x2@{m\+\_\+math\+::invert\+\_\+2x2}}
+\subsubsection{\texorpdfstring{integer\+\_\+invert\+\_\+2x2()}{integer\_invert\_2x2()}}
+{\footnotesize\ttfamily pure integer(kind=wp) function, dimension(2,2) m\+\_\+math\+::invert\+\_\+2x2\+::integer\+\_\+invert\+\_\+2x2 (\begin{DoxyParamCaption}\item[{integer(kind=wp), dimension(2,2), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{A }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{interfacem__math_1_1invert__2x2_a2c3a267ed54a4db4e9393b03e74618fc}\label{interfacem__math_1_1invert__2x2_a2c3a267ed54a4db4e9393b03e74618fc}} 
+\index{m\+\_\+math\+::invert\+\_\+2x2@{m\+\_\+math\+::invert\+\_\+2x2}!real\+\_\+invert\+\_\+2x2@{real\+\_\+invert\+\_\+2x2}}
+\index{real\+\_\+invert\+\_\+2x2@{real\+\_\+invert\+\_\+2x2}!m\+\_\+math\+::invert\+\_\+2x2@{m\+\_\+math\+::invert\+\_\+2x2}}
+\subsubsection{\texorpdfstring{real\+\_\+invert\+\_\+2x2()}{real\_invert\_2x2()}}
+{\footnotesize\ttfamily pure \hyperlink{read__watch_83_8txt_abdb62bde002f38ef75f810d3a905a823}{real}(kind=wp) function, dimension(2,2) m\+\_\+math\+::invert\+\_\+2x2\+::real\+\_\+invert\+\_\+2x2 (\begin{DoxyParamCaption}\item[{\hyperlink{read__watch_83_8txt_abdb62bde002f38ef75f810d3a905a823}{real}(kind=wp), dimension(2,2), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{A }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this interface was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\hyperlink{M__math_8f90}{M\+\_\+math.\+f90}\end{DoxyCompactItemize}

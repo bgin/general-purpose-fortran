@@ -1,8 +1,9 @@
 var searchData=
 [
-  [' dasum',[' DASUM',['../intro__blas1_83_8txt.html#ad9139e9359ef26d105e3d436b20a2f27',1,'intro_blas1.3.txt']]],
-  [' finally',[' Finally',['../intro__blas1_83_8txt.html#ad47bacaf9a350c25f6b078a728c81dfa',1,'intro_blas1.3.txt']]],
-  [' hence',[' Hence',['../intro__blas1_83_8txt.html#ae99c9598617a302649dc606d9cfdafc8',1,'intro_blas1.3.txt']]],
-  [' instead',[' Instead',['../intro__blas1_83_8txt.html#ab978131dc1a1f6ded814d1df0d24eaa8',1,'intro_blas1.3.txt']]],
-  [' zdotc',[' ZDOTC',['../intro__blas1_83_8txt.html#afccdd36c01f65bc9616f5fdf8dc5fcaf',1,'intro_blas1.3.txt']]]
+  ['zas',['zas',['../structm__display__util_1_1settings.html#a2f91c5dcdbb75a1c307fff085d516abc',1,'m_display_util::settings']]],
+  ['zaslen',['zaslen',['../structm__display__util_1_1disp__settings.html#ae7f063147eddbe3cf5cd95549f23bca4',1,'m_display_util::disp_settings']]],
+  ['zdotu',['ZDOTU',['../intro__blas1_83_8txt.html#ab41589c9f39652036026cda905e904e1',1,'intro_blas1.3.txt']]],
+  ['zero_5fdata_5fblock',['zero_data_block',['../namespacem__readgif.html#a3d4f20ed4d02e7e260b5e0bcae642ddd',1,'m_readgif']]],
+  ['zeroas',['zeroas',['../structm__display__util_1_1disp__settings.html#aaa58e0709e4c91aefef6739c7a500079',1,'m_display_util::disp_settings']]],
+  ['zscaleq',['zscaleq',['../namespacem__pixel__slices.html#af1ea5e682e81c2984c650485935a93e8',1,'m_pixel_slices']]]
 ];

@@ -1,6 +1,6 @@
 #!/bin/bash
 ################################################################################
-#@(#) goodbad: track which library routines have been built successfully in SQLite database
+#@(#)track which library routines have been built successfully in SQLite database
 ################################################################################
 #echo "GOODBAD: $*"
 cd $HOME/LIBRARY || exit

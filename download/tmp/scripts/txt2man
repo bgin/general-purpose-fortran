@@ -120,7 +120,7 @@ EXAMPLE
 
       $ txt2man -h 2>&1 | txt2man -T
 HINTS
-  To obtain an overall good formating of output document, keep paragraphs
+  To obtain an overall good formatting of output document, keep paragraphs
   indented correctly. If you have unwanted bold sections, search for
   multiple spaces between words, which are used to identify a tag list
   (term followed by a description). Choose also carefully the name of

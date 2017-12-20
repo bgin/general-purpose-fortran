@@ -1,0 +1,62 @@
+\hypertarget{M__factor_8f90}{}\section{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+M\+\_\+factor.f90 File Reference}
+\label{M__factor_8f90}\index{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+M\+\_\+factor.\+f90@{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+M\+\_\+factor.\+f90}}
+\subsection*{Data Types}
+\begin{DoxyCompactItemize}
+\item 
+interface \hyperlink{interfacem__factor_1_1least__common__multiple}{m\+\_\+factor\+::least\+\_\+common\+\_\+multiple}
+\item 
+interface \hyperlink{interfacem__factor_1_1greatest__common__divisor}{m\+\_\+factor\+::greatest\+\_\+common\+\_\+divisor}
+\end{DoxyCompactItemize}
+\subsection*{Modules}
+\begin{DoxyCompactItemize}
+\item 
+module \hyperlink{namespacem__factor}{m\+\_\+factor}
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+M\+\_\+factor -\/ \mbox{[}M\+\_\+factor\mbox{]} module for least common multiple, greatest common divisor, and prime factors \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+integer function, private \hyperlink{namespacem__factor_a363e0b451d99647a6230a308ffccc73c}{m\+\_\+factor\+::lcm} (\hyperlink{intro__blas1_83_8txt_a8ba82a50c0c2c12d5f6a77f7e4651c0b}{i}, \hyperlink{exit_87_8txt_a8921ef29c441e427867c54bd3b2462ba}{j})
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+least\+\_\+common\+\_\+multiple(3f) -\/ \mbox{[}M\+\_\+factor\mbox{]} Least common multiple of two integers or vector m(\+:), matrix m(\+:,\+:) or cuboid m(\+:,\+:,\+:) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+integer function, private \hyperlink{namespacem__factor_a3802e87d5a394888aefc2d6cf496509f}{m\+\_\+factor\+::lcm\+\_\+vector} (m)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+lcm\+\_\+vector(3fp) -\/ least common multiple of integer vector m(\+:) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+integer function, private \hyperlink{namespacem__factor_af2cc63a43164bf57aedac557fafe907f}{m\+\_\+factor\+::lcm\+\_\+matrix} (m)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+lcm\+\_\+matrix(3fp) -\/ least common multiple of integer array m(\+:,\+:) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+integer function, private \hyperlink{namespacem__factor_ae9aed0802e2c5a923b255f143ddf6e15}{m\+\_\+factor\+::lcm\+\_\+cuboid} (m)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+lcm\+\_\+cuboid(3fp) -\/ least common multiple of integer cuboid m(\+:,\+:,\+:) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+integer function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__factor_a69e8c33eff58fc447cfb8d4f3d4fae77}{m\+\_\+factor\+::gcd} (m, n)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+greatest\+\_\+common\+\_\+divisor(3f) -\/ \mbox{[}M\+\_\+factor\mbox{]} calculate greatest common divisor of two integers or vector m(\+:), matrix m(\+:,\+:) or cuboid m(\+:,\+:,\+:) \end{DoxyCompactList}\item 
+integer function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__factor_aed74f995a7c71e8cec13964b82457403}{m\+\_\+factor\+::gcd\+\_\+2} (m, n)
+\item 
+integer function, private \hyperlink{namespacem__factor_a60713d4c44895b4c18d4d6d9449ceaf7}{m\+\_\+factor\+::gcd\+\_\+vector} (m)
+\item 
+integer function, private \hyperlink{namespacem__factor_a6edfef428cb51a2cbe97cfb0ad25da8b}{m\+\_\+factor\+::gcd\+\_\+matrix} (m)
+\item 
+integer function, private \hyperlink{namespacem__factor_aff0e6f81edd8efc0fe41822916fb4efa}{m\+\_\+factor\+::gcd\+\_\+cuboid} (m)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__factor_a6440013d17b820fa65096b34f21d367d}{m\+\_\+factor\+::prime\+\_\+factors} (\hyperlink{what__overview_81_8txt_a5168680dcac08de182f59de9a12c38ae}{number}, nprm, iprm, iexp, verbose)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+prime\+\_\+factors -\/ \mbox{[}M\+\_\+factor\mbox{]} decompose a number into its prime factors \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+logical function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__factor_afcca43d3d524f6d11d54bbfd475e60d5}{m\+\_\+factor\+::i\+\_\+is\+\_\+prime} (n)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+i\+\_\+is\+\_\+prime(3f) -\/ \mbox{[}M\+\_\+factor\mbox{]} Determine if a number is prime using Sieve of Erasthosthenes \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len= $\ast$), parameter \hyperlink{namespacem__factor_a7ae228777d43741d83e3a4df917f39df}{m\+\_\+factor\+::ident1} =\textquotesingle{}@(\#)M\+\_\+factor\+::least\+\_\+common\+\_\+multiple(3f)\+: function finds L\+C\+M for (i,j)$\vert$m(\+:)$\vert$m(\+:,\+:)$\vert$m(\+:,\+:,\+:)\textquotesingle{}
+\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len= $\ast$), parameter \hyperlink{namespacem__factor_ab34da44c20883bea1b31a67a3d6359e5}{m\+\_\+factor\+::ident2} =\textquotesingle{}@(\#)M\+\_\+factor\+::greatest\+\_\+common\+\_\+divisor(3f)\+: function finds G\+C\+D for (i,j)$\vert$m(\+:)$\vert$m(\+:,\+:)$\vert$m(\+:,\+:,\+:)\char`\"{}\textquotesingle{}
+\end{DoxyCompactItemize}

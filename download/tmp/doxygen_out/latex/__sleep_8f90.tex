@@ -1,2 +1,68 @@
 \hypertarget{__sleep_8f90}{}\section{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/\+\_\+sleep.f90 File Reference}
 \label{__sleep_8f90}\index{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/\+\_\+sleep.\+f90@{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/\+\_\+sleep.\+f90}}
+\subsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{__sleep_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}{help\+\_\+usage} (l\+\_\+help)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{__sleep_8f90_a39c21619b08a3c22f19e2306efd7f766}{help\+\_\+version} (l\+\_\+version)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+\+\_\+sleep -\/ \mbox{[}T\+I\+ME\mbox{]} pause for specified duration \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+program \hyperlink{__sleep_8f90_adea2b9826964203f987d029f48afa37a}{demo\+\_\+system\+\_\+sleep}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{__sleep_8f90_adea2b9826964203f987d029f48afa37a}\label{__sleep_8f90_adea2b9826964203f987d029f48afa37a}} 
+\index{\+\_\+sleep.\+f90@{\+\_\+sleep.\+f90}!demo\+\_\+system\+\_\+sleep@{demo\+\_\+system\+\_\+sleep}}
+\index{demo\+\_\+system\+\_\+sleep@{demo\+\_\+system\+\_\+sleep}!\+\_\+sleep.\+f90@{\+\_\+sleep.\+f90}}
+\subsubsection{\texorpdfstring{demo\+\_\+system\+\_\+sleep()}{demo\_system\_sleep()}}
+{\footnotesize\ttfamily program demo\+\_\+system\+\_\+sleep (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+References m\+\_\+time\+::days2sec(), help\+\_\+usage(), help\+\_\+version(), m\+\_\+kracken\+::kracken(), m\+\_\+kracken\+::lget(), m\+\_\+time\+::realtime, m\+\_\+kracken\+::sgets(), size(), m\+\_\+strings\+::substitute(), and m\+\_\+time\+::system\+\_\+sleep().
+
+\mbox{\Hypertarget{__sleep_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}\label{__sleep_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}} 
+\index{\+\_\+sleep.\+f90@{\+\_\+sleep.\+f90}!help\+\_\+usage@{help\+\_\+usage}}
+\index{help\+\_\+usage@{help\+\_\+usage}!\+\_\+sleep.\+f90@{\+\_\+sleep.\+f90}}
+\subsubsection{\texorpdfstring{help\+\_\+usage()}{help\_usage()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} help\+\_\+usage (\begin{DoxyParamCaption}\item[{logical, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{l\+\_\+help }\end{DoxyParamCaption})}
+
+
+
+References false().
+
+\mbox{\Hypertarget{__sleep_8f90_a39c21619b08a3c22f19e2306efd7f766}\label{__sleep_8f90_a39c21619b08a3c22f19e2306efd7f766}} 
+\index{\+\_\+sleep.\+f90@{\+\_\+sleep.\+f90}!help\+\_\+version@{help\+\_\+version}}
+\index{help\+\_\+version@{help\+\_\+version}!\+\_\+sleep.\+f90@{\+\_\+sleep.\+f90}}
+\subsubsection{\texorpdfstring{help\+\_\+version()}{help\_version()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} help\+\_\+version (\begin{DoxyParamCaption}\item[{logical, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{l\+\_\+version }\end{DoxyParamCaption})}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+\+\_\+sleep -\/ \mbox{[}T\+I\+ME\mbox{]} pause for specified duration \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\+\_\+sleep \mbox{[}dd-\/hh\+:mm\+:ss\mbox{[}.xxx\mbox{]}$\vert$xxx.yyy\mbox{[}s$\vert$m$\vert$h$\vert$d\mbox{]}\mbox{]} --version$\vert$--help \subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+Given a duration in the form dd-\/hh\+:mm\+:ss.\+xxx where dd is days, hh hours, mm minutes and ss.\+xxx seconds pause for the specified amount of time.
+
+Alternatively, the time may be specified by a number of seconds immediately followed by a unit letter, where s is seconds, m is minutes, h is hours and d is days.
+
+If the suffix r is used, a random time between zero and the specified number of seconds is used. This is useful for spreading out cron(1) tasks in a H\+PC cluster.
+
+Given multiple arguments, pause for the time specified by the sum of the values. \subsubsection*{O\+P\+T\+I\+O\+NS}
+
+dd-\/hh\+:mm\+:ss Given a string representing a duration of time in the following forms\+:
+
+dd-\/hh\+:mm\+:ss\mbox{[}.xx\mbox{]} hh\+:mm\+:ss\mbox{[}.xx\mbox{]} mm\+:ss\mbox{[}.xx\mbox{]} ss\mbox{[}.xx\mbox{]} or xx\mbox{[}.yy\mbox{]}S\+U\+F\+F\+IX where Suffix may be s for seconds, m for minutes, h for hours, or d for days. --help display this help and exit --version output version information and exit \subsubsection*{E\+X\+A\+M\+P\+LE}
+
+usage\+:
+
+\+\_\+sleep 0.\+10 \# pause one tenth of a second \+\_\+sleep 3m 10s \# pause three minutes and 10 seconds \+\_\+sleep 1\+:00\+:00 \# pause for one hour 
+
+References false().
+

@@ -3,7 +3,7 @@
    <dd> M_io(3f) - [M_io] Fortran I/O module</dd>
    <dt> SYNOPSIS </dt><dd>
       use M_io, only : slurp, notopen, print_inquire, uniq
-      use M_io, only : dirname
+      use M_io, only : dirname, splitpath, isdir, readline, get_tmp
    </dd>
    <dt> DESCRIPTION    </dt><dd>
       The M_io module is a collection of routines related to basic I/O
@@ -17,6 +17,7 @@
          <li><a href="splitpath.3.html">     SPLITPATH </a> - split Unix pathname into directory, name, basename and extension</li>
          <li><a href="isdir.3.html">         ISDIR </a> - tell if a path is an existing directory on Unix-compatible systems</li>
          <li><a href="readline.3.html">      READLINE </a> - read line as long as programming environment line length limit</li>
+         <li><a href="get_tmp.3.html">       GET_TMP </a> - get name for system scratch directory from environment variables</li>
       </ul>
    </dd>
 </dl>

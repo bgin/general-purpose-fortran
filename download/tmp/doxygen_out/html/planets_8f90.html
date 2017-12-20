@@ -63,10 +63,131 @@ $(function() {
 </div>
 </div><!-- top -->
 <div class="header">
+  <div class="summary">
+<a href="#func-members">Functions/Subroutines</a>  </div>
   <div class="headertitle">
 <div class="title">planets.f90 File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions/Subroutines</h2></td></tr>
+<tr class="memitem:a3e09a3b52ee8fb04eeb93fe5761626a8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="M__stopwatch_83_8txt.html#acfbcff50169d691ff02d4a123ed70482">subroutine</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="planets_8f90.html#a3e09a3b52ee8fb04eeb93fe5761626a8">help_usage</a> (l_help)</td></tr>
+<tr class="separator:a3e09a3b52ee8fb04eeb93fe5761626a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39c21619b08a3c22f19e2306efd7f766"><td class="memItemLeft" align="right" valign="top"><a class="el" href="M__stopwatch_83_8txt.html#acfbcff50169d691ff02d4a123ed70482">subroutine</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="planets_8f90.html#a39c21619b08a3c22f19e2306efd7f766">help_version</a> (l_version)</td></tr>
+<tr class="memdesc:a39c21619b08a3c22f19e2306efd7f766"><td class="mdescLeft">&#160;</td><td class="mdescRight"><h2>NAME</h2>
+ <a href="#a39c21619b08a3c22f19e2306efd7f766">More...</a><br /></td></tr>
+<tr class="separator:a39c21619b08a3c22f19e2306efd7f766"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9694fb47f36780e83c2f3b77472b4af1"><td class="memItemLeft" align="right" valign="top">program&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="planets_8f90.html#a9694fb47f36780e83c2f3b77472b4af1">planets</a></td></tr>
+<tr class="separator:a9694fb47f36780e83c2f3b77472b4af1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Function/Subroutine Documentation</h2>
+<a id="a3e09a3b52ee8fb04eeb93fe5761626a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e09a3b52ee8fb04eeb93fe5761626a8">&#9670;&nbsp;</a></span>help_usage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="M__stopwatch_83_8txt.html#acfbcff50169d691ff02d4a123ed70482">subroutine</a> help_usage </td>
+          <td>(</td>
+          <td class="paramtype">logical, intent(<a class="el" href="M__journal_83_8txt.html#afce72651d1eed785a2132bee863b2f38">in</a>)&#160;</td>
+          <td class="paramname"><em>l_help</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="reference">References <a class="el" href="__false_8f90.html#ac39cd9fe2012c31749944aa6b20b6c05">false()</a>.</p>
+
+</div>
+</div>
+<a id="a39c21619b08a3c22f19e2306efd7f766"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39c21619b08a3c22f19e2306efd7f766">&#9670;&nbsp;</a></span>help_version()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="M__stopwatch_83_8txt.html#acfbcff50169d691ff02d4a123ed70482">subroutine</a> help_version </td>
+          <td>(</td>
+          <td class="paramtype">logical, intent(<a class="el" href="M__journal_83_8txt.html#afce72651d1eed785a2132bee863b2f38">in</a>)&#160;</td>
+          <td class="paramname"><em>l_version</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><h2>NAME</h2>
+</p>
+<p>planets(1f) - [FUNIX] ephemeris position of planets for adjusting an equitorial telescope</p>
+<h2>SYNOPSIS</h2>
+<pre class="fragment">planets yyyy mm dd utc hh mm ss [-planet [N|name] ]
+</pre><h2>DESCRIPTION</h2>
+<pre class="fragment">planets(1) calculates the ephemeris of a planet in our solar system
+in order to  adjust an equatorial telescope. See ephemeris(3f) for
+more details. The outputs are
+
+  o Ascent in hours (0 to 24) and minutes (0 to 60)
+  o Declination in degrees and minutes (-90 to 90 North or South)
+</pre><h2>OPTIONS</h2>
+<pre class="fragment">  date    provide the same eight values used by the DATE_AND_TIME(3f) intrinsic.
+
+    ·     value(1)  The year
+       ·  value(2)  The month
+       ·  value(3)  The day of the month
+       ·  value(4)  Time difference with UTC in minutes
+       ·  value(5)  The hour of the day
+       ·  value(6)  The minutes of the hour
+       ·  value(7)  The seconds of the minute
+       ·  value(8)  The milliseconds of the second
+
+  N|Name  Planet numbers in range 1 to 8 (Mercury:1 Venus:2 Mars:4
+          Jupiter:5 Saturn:6 Uranus:7 Neptune:8). If not specified
+          the default is "1 2 4 5 6 7 8".
+</pre><h2>EXAMPLE</h2>
+<pre class="fragment">(Find ascent and declination of planet Mars on March 10th, 1982 at 6h UT)
+
+ planets 1982 03 10 00 06 00 00 00  -planet  4
+
+  Wednesday, March 10th, 1982 6:00:00 AM UTC+00:00
+  Planet: 4  Ascent: 13 H  8 MN  Declination:  3 D 45 MN S
+
+ no planet number(s) specified:
+
+ planets 1982 03 10 00 06 00 00 00
+
+  Wednesday, March 10th, 1982 6:00:00 AM UTC+00:00
+  Planet: 1  Ascent: 21 H 51 MN  Declination: 14 D 45 MN S
+  Planet: 2  Ascent: 20 H 26 MN  Declination: 14 D 57 MN S
+  Planet: 4  Ascent: 13 H  8 MN  Declination:  3 D 45 MN S
+  Planet: 5  Ascent: 14 H 32 MN  Declination: 13 D 30 MN S
+  Planet: 6  Ascent: 13 H 22 MN  Declination:  5 D 42 MN S
+  Planet: 7  Ascent: 16 H 11 MN  Declination: 20 D 54 MN S
+  Planet: 8  Ascent: 17 H 46 MN  Declination: 22 D  7 MN S </pre> 
+<p class="reference">References <a class="el" href="__false_8f90.html#ac39cd9fe2012c31749944aa6b20b6c05">false()</a>.</p>
+
+</div>
+</div>
+<a id="a9694fb47f36780e83c2f3b77472b4af1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9694fb47f36780e83c2f3b77472b4af1">&#9670;&nbsp;</a></span>planets()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">program planets </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="reference">References <a class="el" href="namespacem__time.html#a915b29d3b8abeeb7455eb5d6eed28790">m_time::ephemeris()</a>, <a class="el" href="M__time_83_8txt.html#ad50a7c3c69e1d5931a0518d62cff1ee8">fmtdate</a>, <a class="el" href="namespacem__time.html#aa5198c7aa4f3d8411c8ce93046ce3794">m_time::guessdate()</a>, <a class="el" href="__cmp_8f90.html#a3e09a3b52ee8fb04eeb93fe5761626a8">help_usage()</a>, <a class="el" href="__cmp_8f90.html#a39c21619b08a3c22f19e2306efd7f766">help_version()</a>, <a class="el" href="namespacem__kracken.html#a420718890eac378e5cd047dd0b477424">m_kracken::iget()</a>, <a class="el" href="namespacem__kracken.html#ac118bb44d855d68bfce6caa80d60e5e0">m_kracken::igets()</a>, <a class="el" href="namespacem__kracken.html#a850dce381e1cfe18a4ebcaa214995e39">m_kracken::kracken()</a>, <a class="el" href="namespacem__kracken.html#a7141acd7a00c1a5aa5f90612a0414b63">m_kracken::lget()</a>, and <a class="el" href="namespacem__kracken.html#a9a64192326816b0b9badcc11506628ee">m_kracken::sget()</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

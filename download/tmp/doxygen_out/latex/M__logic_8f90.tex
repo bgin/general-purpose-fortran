@@ -1,0 +1,41 @@
+\hypertarget{M__logic_8f90}{}\section{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+M\+\_\+logic.f90 File Reference}
+\label{M__logic_8f90}\index{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+M\+\_\+logic.\+f90@{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+M\+\_\+logic.\+f90}}
+\subsection*{Modules}
+\begin{DoxyCompactItemize}
+\item 
+module \hyperlink{namespacem__logic}{m\+\_\+logic}
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+cond(3f) -\/ \mbox{[}M\+\_\+logic\mbox{]}process input files with embedded if/else/elseif/endif commands \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__logic_a169fe24f769ed7cd5336409c0722900e}{m\+\_\+logic\+::cond} (verb, line, ierr)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, private \hyperlink{namespacem__logic_a2229d0129ded7d8a34fce60334bc5938}{m\+\_\+logic\+::if} (line, noelse, eb)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, private \hyperlink{namespacem__logic_aa03730fb0581290fa8c776b633430584}{m\+\_\+logic\+::evalit} (line)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, private \hyperlink{namespacem__logic_ac51075acbd12f22ae97edd87352cba67}{m\+\_\+logic\+::else} (noelse, eb)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, private \hyperlink{namespacem__logic_abb56458f58725800b593e986b23ec2d3}{m\+\_\+logic\+::elseif} (line, noelse, eb)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, private \hyperlink{namespacem__logic_a60ae51929ab2f5d32f2a8f7e07e6debc}{m\+\_\+logic\+::endif} (noelse, eb)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len= $\ast$), parameter \hyperlink{namespacem__logic_aa4a758529f4ba04d66cddf4cd51e0bc1}{m\+\_\+logic\+::ident} =\char`\"{}@(\#)M\+\_\+logic(3fm)\+: Allows if/else/elseif/endif logic to be applied to input files\char`\"{}
+\item 
+integer, parameter \hyperlink{namespacem__logic_a22ef0b94ebd8b7f3b35a33c8d9250759}{m\+\_\+logic\+::max\+\_\+nest\+\_\+level} =20
+\item 
+logical, dimension(0\+:max\+\_\+nest\+\_\+level), save \hyperlink{namespacem__logic_ad7573389be889c19d1496dc2e9dff9a1}{m\+\_\+logic\+::condop}
+\item 
+integer \hyperlink{namespacem__logic_a047a31b5831fda2a9421240f1edce712}{m\+\_\+logic\+::ierr\+\_\+logic} =0
+\item 
+logical \hyperlink{namespacem__logic_ac3811d1cc267a1241feb5f77905110a2}{m\+\_\+logic\+::dc}
+\item 
+integer, save, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public}, protected \hyperlink{namespacem__logic_aba076b8206140be84ad573bc89c82b14}{m\+\_\+logic\+::nest\+\_\+level} =0
+\item 
+logical, save, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public}, protected \hyperlink{namespacem__logic_a487df89eac953b22a40b143aaf8ff1ea}{m\+\_\+logic\+::write} =.true.
+\end{DoxyCompactItemize}

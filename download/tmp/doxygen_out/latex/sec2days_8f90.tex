@@ -1,2 +1,76 @@
 \hypertarget{sec2days_8f90}{}\section{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/sec2days.f90 File Reference}
 \label{sec2days_8f90}\index{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/sec2days.\+f90@{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/sec2days.\+f90}}
+\subsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{sec2days_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}{help\+\_\+usage} (l\+\_\+help)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{sec2days_8f90_a39c21619b08a3c22f19e2306efd7f766}{help\+\_\+version} (l\+\_\+version)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+sec2days -\/ \mbox{[}T\+I\+ME\mbox{]} Convert seconds to string of form dd-\/hh\+:mm\+:ss \end{DoxyCompactList}\item 
+program \hyperlink{sec2days_8f90_a85f052202d8a5417c74334a5fd499e2d}{demo\+\_\+sec2days}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{sec2days_8f90_a85f052202d8a5417c74334a5fd499e2d}\label{sec2days_8f90_a85f052202d8a5417c74334a5fd499e2d}} 
+\index{sec2days.\+f90@{sec2days.\+f90}!demo\+\_\+sec2days@{demo\+\_\+sec2days}}
+\index{demo\+\_\+sec2days@{demo\+\_\+sec2days}!sec2days.\+f90@{sec2days.\+f90}}
+\subsubsection{\texorpdfstring{demo\+\_\+sec2days()}{demo\_sec2days()}}
+{\footnotesize\ttfamily program demo\+\_\+sec2days (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+References help\+\_\+usage(), help\+\_\+version(), m\+\_\+kracken\+::ipvalue, m\+\_\+kracken\+::kracken(), m\+\_\+kracken\+::lget(), m\+\_\+time\+::realtime, m\+\_\+time\+::sec2days(), m\+\_\+kracken\+::sget(), and m\+\_\+strings\+::substitute().
+
+\mbox{\Hypertarget{sec2days_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}\label{sec2days_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}} 
+\index{sec2days.\+f90@{sec2days.\+f90}!help\+\_\+usage@{help\+\_\+usage}}
+\index{help\+\_\+usage@{help\+\_\+usage}!sec2days.\+f90@{sec2days.\+f90}}
+\subsubsection{\texorpdfstring{help\+\_\+usage()}{help\_usage()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} help\+\_\+usage (\begin{DoxyParamCaption}\item[{logical, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{l\+\_\+help }\end{DoxyParamCaption})}
+
+
+
+References false().
+
+\mbox{\Hypertarget{sec2days_8f90_a39c21619b08a3c22f19e2306efd7f766}\label{sec2days_8f90_a39c21619b08a3c22f19e2306efd7f766}} 
+\index{sec2days.\+f90@{sec2days.\+f90}!help\+\_\+version@{help\+\_\+version}}
+\index{help\+\_\+version@{help\+\_\+version}!sec2days.\+f90@{sec2days.\+f90}}
+\subsubsection{\texorpdfstring{help\+\_\+version()}{help\_version()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} help\+\_\+version (\begin{DoxyParamCaption}\item[{logical, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{l\+\_\+version }\end{DoxyParamCaption})}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+sec2days -\/ \mbox{[}T\+I\+ME\mbox{]} Convert seconds to string of form dd-\/hh\+:mm\+:ss 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\begin{DoxyVerb}sec2days nnnn[.xxx] [-crop]| --version| --help
+\end{DoxyVerb}
+
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+Given a numeric string representing seconds convert it to a string of the form
+
+dd-\/hh\+:mm\+:ss
+
+where dd is days, hh hours, mm minutes and ss seconds.
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+nnnn\mbox{[}.xxx\mbox{]} number of seconds to convert to string of form dd-\/hh\+:mm\+:ss. nnnn may be interspersed with unit codes d,h,m,s. Spaces, commas and case are ignored. Allowed aliases for the unit codes are d days and day h hours,hour,hrs, and hr m minutes,minute and min s seconds,second and sec
+
+-\/crop trim leading zero values from output -\/radix character used as decimal separator --help display this help and exit --version output version information and exit
+
+\subsubsection*{E\+X\+A\+M\+P\+LE}
+
+usage
+
+sec2days 129860 1-\/12\+:04\+:20 sec2days 1d2h3m4s 1-\/02\+:03\+:04 sec2days 1.\+0 days 2 hours 3 minutes 4 seconds 1-\/02\+:03\+:04 sec2days 1.\+5d 1-\/12\+:00\+:00 
+
+References false().
+

@@ -3,8 +3,7 @@ libGPF Home Page
 Extracting File Identification Data (metadata) from files with what(1)
 
 If you need the what(1) command but it is not available on your platforms, this
-download contains an enhanced PD(Public Domain) Fortran-based version in source
-form.
+download contains a Fortran-based version in source form.
 
 What is what(1)?
 

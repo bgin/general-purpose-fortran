@@ -1,0 +1,328 @@
+\hypertarget{M__strings_8f90}{}\section{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+M\+\_\+strings.f90 File Reference}
+\label{M__strings_8f90}\index{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+M\+\_\+strings.\+f90@{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+M\+\_\+strings.\+f90}}
+\subsection*{Data Types}
+\begin{DoxyCompactItemize}
+\item 
+interface \hyperlink{interfacem__strings_1_1switch}{m\+\_\+strings\+::switch}
+\item 
+interface \hyperlink{interfacem__strings_1_1string__to__value}{m\+\_\+strings\+::string\+\_\+to\+\_\+value}
+\item 
+interface \hyperlink{interfacem__strings_1_1v2s}{m\+\_\+strings\+::v2s}
+\item 
+interface \hyperlink{structm__strings__oop_1_1string}{m\+\_\+strings\+\_\+oop\+::string}
+\item 
+interface \hyperlink{structm__strings__oop_1_1string}{m\+\_\+strings\+\_\+oop\+::string}
+\end{DoxyCompactItemize}
+\subsection*{Modules}
+\begin{DoxyCompactItemize}
+\item 
+module \hyperlink{namespacem__strings}{m\+\_\+strings}
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+M\+\_\+strings -\/ \mbox{[}M\+\_\+strings\mbox{]} Fortran string module \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+module \hyperlink{namespacem__strings__oop}{m\+\_\+strings\+\_\+oop}
+\end{DoxyCompactItemize}
+\subsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+logical function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a1f9a363d0432f7373ef6a388f5893b0e}{m\+\_\+strings\+::matchw} (\hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string}, pattern)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+matchw -\/ \mbox{[}M\+\_\+strings\mbox{]} compare given string for match to pattern which may contain wildcard characters \end{DoxyCompactList}\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a3f0119fab962146c7656cad592dd9acd}{m\+\_\+strings\+::split} (input\+\_\+line, \hyperlink{intro__blas1_83_8txt_a89db1945e1a335ab0184c6a097821e32}{array}, delimiters, order, nulls)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+split -\/ \mbox{[}M\+\_\+strings\mbox{]} parse string into an array using specified delimiters \end{DoxyCompactList}\item 
+integer function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_aa3fc15a665eeff512b7f5269029f558d}{m\+\_\+strings\+::chomp} (source\+\_\+string, token, delimiters)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+chomp -\/ \mbox{[}M\+\_\+strings\mbox{]} Tokenize a string, consuming it one token per call \end{DoxyCompactList}\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a9890da826d63d6f04367887007611cb5}{m\+\_\+strings\+::delim} (line, \hyperlink{intro__blas1_83_8txt_a89db1945e1a335ab0184c6a097821e32}{array}, n, icount, ibegin, iterm, ilen, dlim)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+delim -\/ \mbox{[}M\+\_\+strings\mbox{]} parse a string and store tokens into an array \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{namespacem__strings_a818d715927dd61c1be6df5d2cdec4e4c}{m\+\_\+strings\+::crack\+\_\+cmd} (cmd, old, new, ierr)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+replace -\/ \mbox{[}M\+\_\+strings\mbox{]} Globally replace one substring for another in string \end{DoxyCompactList}\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=\+:) function, allocatable, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a02d97675e95b9bd0ef3fd2abb9f2f435}{m\+\_\+strings\+::replace} (targetline, old, new, ierr, cmd)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_ab84a4b7c2be211433c2d1b435a87fa32}{m\+\_\+strings\+::substitute} (targetline, old, new, ierr, start, end)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+substitute -\/ \mbox{[}M\+\_\+strings\mbox{]} Globally substitute one substring for another in string \end{DoxyCompactList}\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a1222f3b718f7637105bde330367925e1}{m\+\_\+strings\+::change} (target\+\_\+string, cmd, ierr)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+change -\/ \mbox{[}M\+\_\+strings\mbox{]} change old string to new string with a directive like a line editor \end{DoxyCompactList}\item 
+logical function, private \hyperlink{namespacem__strings_a9a923829f31ea70ecada6d214536a704}{m\+\_\+strings\+::strtok} (source\+\_\+string, itoken, token\+\_\+start, token\+\_\+end, delimiters)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+strtok -\/ Tokenize a string \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_aec887410b018916a683fbb2ae529f8c5}{m\+\_\+strings\+::modif} (C\+L\+I\+NE, M\+OD)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+modif -\/ \mbox{[}M\+\_\+strings\mbox{]} emulate the M\+O\+D\+I\+FY command from the line editor X\+E\+D\+IT \end{DoxyCompactList}\item 
+elemental integer function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_aa1427d5dd673ff986236ba1732e693c1}{m\+\_\+strings\+::len\+\_\+white} (\hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string})
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+len\+\_\+white -\/ \mbox{[}M\+\_\+strings\mbox{]} get length of string trimmed of whitespace. \end{DoxyCompactList}\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=\+:) function, allocatable, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a7030d33ae9e65d8cf2e2cb9332ffdac0}{m\+\_\+strings\+::crop} (strin)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+crop -\/ \mbox{[}M\+\_\+strings\mbox{]} trim leading blanks and trailing blanks from a string \end{DoxyCompactList}\item 
+pure \hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=len(instr)) function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_aaee428861205782e002f5e7e8fb002f0}{m\+\_\+strings\+::transliterate} (instr, old\+\_\+set, new\+\_\+set)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+transliterate -\/ \mbox{[}M\+\_\+strings\mbox{]} replace characters from old set with new set \end{DoxyCompactList}\item 
+elemental \hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=len(\hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string})) function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_ab3e5e7af9e9594fdb544f82736a26f17}{m\+\_\+strings\+::reverse} (\hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string})
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+reverse -\/ \mbox{[}M\+\_\+strings\mbox{]} Return a string reversed \end{DoxyCompactList}\item 
+elemental pure \hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len(str)) function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a0953ac5c4d31339fdd8ec3acc9c3c915}{m\+\_\+strings\+::upper} (str, begin, end)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+upper -\/ \mbox{[}M\+\_\+strings\mbox{]} changes a string to uppercase \end{DoxyCompactList}\item 
+elemental pure \hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len(str)) function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a3c7d4be9051206e4b2f72112f9fdc3b4}{m\+\_\+strings\+::lower} (str, begin, end)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+lower -\/ \mbox{[}M\+\_\+strings\mbox{]} changes a string to lowercase over specified range \end{DoxyCompactList}\item 
+pure \hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=\hyperlink{what__overview_81_8txt_ab5692ed87074f1d5ec850a9ffa8b5af9}{size}(\hyperlink{intro__blas1_83_8txt_a89db1945e1a335ab0184c6a097821e32}{array})) function, private \hyperlink{namespacem__strings_a9365ae5277199446d93fc5208be2e9a5}{m\+\_\+strings\+::a2s} (\hyperlink{intro__blas1_83_8txt_a89db1945e1a335ab0184c6a097821e32}{array})
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}\end{DoxyCompactList}\item 
+pure \hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=1) function, dimension(len(\hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string})), private \hyperlink{namespacem__strings_a5b05f337c8851871a4fb0b3cf56663cd}{m\+\_\+strings\+::s2a} (\hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string})
+\item 
+pure \hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(kind=c\+\_\+char, len=1) function, dimension(len\+\_\+trim(\hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string})+1), \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a9a3d38d8e7c4212d63487b9b46bec3b7}{m\+\_\+strings\+::s2c} (\hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string})
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+s2c -\/ \mbox{[}M\+\_\+strings\mbox{]} convert character variable to array of characters with last element set to null \end{DoxyCompactList}\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=\+:) function, allocatable, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a0a8c0c16a34208351523068686cb743b}{m\+\_\+strings\+::c2s} (c\+\_\+string\+\_\+pointer)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+c2s -\/ \mbox{[}M\+\_\+strings\mbox{]} convert C string pointer to Fortran character string \end{DoxyCompactList}\item 
+integer function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a020dcca7f01d33eedf28b17518a22b69}{m\+\_\+strings\+::indent} (line)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+indent -\/ \mbox{[}M\+\_\+strings\mbox{]} count number of leading spaces in a string \end{DoxyCompactList}\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=\+:) function, allocatable, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a791e24ceb690010fd42a6c1f48311b55}{m\+\_\+strings\+::visible} (input)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+visible(3f) -\/ \mbox{[}M\+\_\+strings\mbox{]} expand a string to control and meta-\/control representations \end{DoxyCompactList}\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=\+:) function, allocatable, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a33b248107c1521272b55cda5c4077378}{m\+\_\+strings\+::expand} (line, escape)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+expand(3f) -\/ \mbox{[}M\+\_\+strings\mbox{]} expand C-\/like escape sequences \end{DoxyCompactList}\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a3bf44ac06a670f55830e17a6f1108b9c}{m\+\_\+strings\+::notabs} (I\+N\+S\+TR, O\+U\+T\+S\+TR, I\+L\+EN)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+notabs -\/ \mbox{[}M\+\_\+strings\mbox{]} expand tab characters \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+pure \hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=\+:) function, allocatable, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a1cacb2e45c7e3d7ed4cc1b183c35f323}{m\+\_\+strings\+::adjustc} (\hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string}, \hyperlink{M__stopwatch_83_8txt_a04ed5ef37abacfa36a856b5f30376485}{length})
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+adjustc(3f) -\/ \mbox{[}M\+\_\+strings\mbox{]} center text \end{DoxyCompactList}\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=\+:) function, allocatable, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_ad007f050abe3d142f4a7badbc4408685}{m\+\_\+strings\+::nospace} (line)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+nospace -\/ \mbox{[}M\+\_\+strings\mbox{]} remove all whitespace from input string \end{DoxyCompactList}\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=\hyperlink{M__stopwatch_83_8txt_a04ed5ef37abacfa36a856b5f30376485}{length}) function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a378563bb49f128bf0cf9c9d2b1f34498}{m\+\_\+strings\+::lenset} (line, \hyperlink{M__stopwatch_83_8txt_a04ed5ef37abacfa36a856b5f30376485}{length})
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+lenset -\/ \mbox{[}M\+\_\+strings\mbox{]} return string trimmed or padded to specified length \end{DoxyCompactList}\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=\+:) function, allocatable, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_aba5a8d7fc092b38d1939f37a13247c1e}{m\+\_\+strings\+::merge\+\_\+str} (str1, str2, \hyperlink{do_87_8txt_a74df008f496b23fc41b7a113e6fc2270}{expr})
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+merge\+\_\+str -\/ \mbox{[}M\+\_\+strings\mbox{]} pads strings to same length and then calls M\+E\+R\+G\+E(3f) \end{DoxyCompactList}\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=len(str)) function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a929c032267cb990ad4991fab4aed1d57}{m\+\_\+strings\+::compact} (str, char)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+compact -\/ \mbox{[}M\+\_\+strings\mbox{]} converts contiguous whitespace to a single character (or nothing) \end{DoxyCompactList}\item 
+elemental \hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=len(instr)) function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a5d72fde097444c689f1822c5ad95e03d}{m\+\_\+strings\+::noesc} (I\+N\+S\+TR)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+noesc -\/ \mbox{[}M\+\_\+strings\mbox{]} convert non-\/printable characters to a space. \end{DoxyCompactList}\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, private \hyperlink{namespacem__strings_a6b4babf586dc3586426b13e4bb0fb979}{m\+\_\+strings\+::a2r} (chars, valu, ierr)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+\hyperlink{interfacem__strings_1_1string__to__value}{string\+\_\+to\+\_\+value} -\/ \mbox{[}M\+\_\+strings\mbox{]} subroutine returns real value from string \end{DoxyCompactList}\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, private \hyperlink{namespacem__strings_aca902af295ede82fb0c45174bbfe6eef}{m\+\_\+strings\+::a2i} (chars, valu, ierr)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, private \hyperlink{namespacem__strings_a751d3101d8404ea10db4d8ba59a75d6b}{m\+\_\+strings\+::a2d} (chars, valu, ierr)
+\item 
+doubleprecision function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a7b153720f1f9b93c49094dcb1272995b}{m\+\_\+strings\+::s2v} (chars, ierr)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+s2v -\/ \mbox{[}M\+\_\+strings\mbox{]} function returns doubleprecision numeric value from a string \end{DoxyCompactList}\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a58d30b135c367184a666f8b4baaa64b5}{m\+\_\+strings\+::value\+\_\+to\+\_\+string} (gval, chars, \hyperlink{M__stopwatch_83_8txt_a04ed5ef37abacfa36a856b5f30376485}{length}, err, fmt)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+value\+\_\+to\+\_\+string -\/ \mbox{[}M\+\_\+strings\mbox{]} return numeric string from a numeric value \end{DoxyCompactList}\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=\+:) function, allocatable, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a76a00e3ca7fb7c9b9cadcd484c6e3946}{m\+\_\+strings\+::v2s\+\_\+bug} (gval)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+\hyperlink{interfacem__strings_1_1v2s}{v2s} -\/ \mbox{[}M\+\_\+strings\mbox{]} return numeric string from a numeric value \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=\+:) function, allocatable, private \hyperlink{namespacem__strings_ae4fac72ec3065d73aa06a107e41004b7}{m\+\_\+strings\+::d2s} (dvalue)
+\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=\+:) function, allocatable, private \hyperlink{namespacem__strings_a5adef1b5667afe21e0ee21cfdba13b45}{m\+\_\+strings\+::r2s} (rvalue)
+\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=\+:) function, allocatable, private \hyperlink{namespacem__strings_a83cecfcd4582760bf2b1e12364c29443}{m\+\_\+strings\+::i2s} (ivalue)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, private \hyperlink{namespacem__strings_a956638e87e83520f170ccefefac6722b}{m\+\_\+strings\+::trimzeros} (\hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string})
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+trimzeros(3fp) -\/ \mbox{[}M\+\_\+strings\mbox{]} Delete trailing zeros from numeric decimal string \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a81b4b7f4f301b9e17604adbcace58d0c}{m\+\_\+strings\+::listout} (icurve\+\_\+lists, icurve\+\_\+expanded, inums\+\_\+out, ierr)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+listout(3f) -\/ \mbox{[}M\+\_\+strings\mbox{]} copy I\+C\+U\+R\+V\+E() to I\+C\+U\+R\+V\+E\+\_\+\+E\+X\+P\+A\+N\+D\+E\+D() expanding negative numbers to ranges (1 -\/10 means 1 thru 10) \end{DoxyCompactList}\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=\+:) function, allocatable, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a8d7007f0c34d7db4c004dac56e609b3f}{m\+\_\+strings\+::describe} (ch)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+describe(3f) -\/ \mbox{[}M\+\_\+strings\mbox{]} returns a string describing the name of a single character \end{DoxyCompactList}\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_abf6c760f5d15a306bd252337d0a5ba4d}{m\+\_\+strings\+::getvals} (line, values, icount, ierr)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+getvals(3f) -\/ \mbox{[}M\+\_\+strings\mbox{]} read arbitrary number of R\+E\+AL values from a character variable up to size of V\+A\+L\+U\+E\+S() array \end{DoxyCompactList}\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_af3767887ce5c2373a6d9061ea6664bfc}{m\+\_\+strings\+::string\+\_\+to\+\_\+values} (line, iread, values, inums, delims, ierr)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+string\+\_\+to\+\_\+values -\/ \mbox{[}M\+\_\+strings\mbox{]} read a string representing numbers into a numeric array \end{DoxyCompactList}\item 
+doubleprecision function, dimension(\+:), allocatable, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_ad7fffe79559a666aa28e1ed598b8670f}{m\+\_\+strings\+::s2vs} (\hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string}, delim)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+s2vs -\/ \mbox{[}M\+\_\+strings\mbox{]} given a string representing numbers return a numeric array \end{DoxyCompactList}\item 
+elemental logical function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a267f2fde729a75496c82a64754a91e54}{m\+\_\+strings\+::isprint} (onechar)
+\item 
+elemental logical function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a84c80fdeeba0679488ed8ad8d37e53c5}{m\+\_\+strings\+::isgraph} (onechar)
+\item 
+elemental logical function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a5cf6d7fbd1b3ea17e37c6213c6ba0fdb}{m\+\_\+strings\+::isalpha} (ch)
+\item 
+elemental logical function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a9953d1e400bedceab6a06910c6cdf208}{m\+\_\+strings\+::isxdigit} (ch)
+\item 
+elemental logical function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a9f5f98a6c93e21618a16d98a5de2debc}{m\+\_\+strings\+::isdigit} (ch)
+\item 
+elemental logical function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_aebb074d3971c0b93e39d1cfaa45658d8}{m\+\_\+strings\+::isblank} (ch)
+\item 
+elemental logical function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_afb63e9fefbc04e4e9a2ec4df4334078c}{m\+\_\+strings\+::isascii} (ch)
+\item 
+elemental logical function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_ab32380c29451e56395153155c1632d74}{m\+\_\+strings\+::isspace} (ch)
+\item 
+elemental logical function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a4821cb5a5c4024c9dc6dd159300034ca}{m\+\_\+strings\+::iscntrl} (ch)
+\item 
+elemental logical function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a8712164e1f5fd717bdea854a3f067619}{m\+\_\+strings\+::ispunct} (ch)
+\item 
+pure elemental logical function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_ac98536a1b69026cd5373dfff489f7733}{m\+\_\+strings\+::isupper} (ch)
+\item 
+elemental logical function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a9de5290748f02f575f3b7b859ff074ed}{m\+\_\+strings\+::islower} (ch)
+\item 
+elemental logical function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_ad8fd9bbf618bdba2c3ac9fb3c8174362}{m\+\_\+strings\+::isalnum} (ch)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+isalnum,isalpha,iscntrl,isdigit,isgraph,islower, isprint,ispunct,isspace,isupper,isascii,isblank,isxdigit -\/ \mbox{[}M\+\_\+strings\mbox{]} test membership in subsets of A\+S\+C\+II character set \end{DoxyCompactList}\item 
+logical function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a635ef6f1dd73400e7b339392886d6357}{m\+\_\+strings\+::base} (x, b, y, a)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}\end{DoxyCompactList}\item 
+logical function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a90f3bdfa02c8ddff42cb15e66b124fe8}{m\+\_\+strings\+::decodebase} (\hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string}, basein, out10)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}\end{DoxyCompactList}\item 
+logical function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a3a022b64dc902dc6043e3f265ee78e38}{m\+\_\+strings\+::codebase} (inval10, outbase, answer)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}\end{DoxyCompactList}\item 
+\hyperlink{stop__watch_83_8txt_a70f0ead91c32e25323c03265aa302c1c}{type}(\hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string}) function \hyperlink{namespacem__strings__oop_a411874cce2f16fee4d05d7528b510703}{m\+\_\+strings\+\_\+oop\+::construct\+\_\+from\+\_\+fill} (chars, len)
+\item 
+integer function \hyperlink{namespacem__strings__oop_a768ea13372aadbeae760c72d0b2a1939}{m\+\_\+strings\+\_\+oop\+::oop\+\_\+len} (self)
+\item 
+integer function \hyperlink{namespacem__strings__oop_a1b9bf3c6aac71ce1782fb3116ffb63f8}{m\+\_\+strings\+\_\+oop\+::oop\+\_\+len\+\_\+trim} (self)
+\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=1) function, dimension(len(self\%str)) \hyperlink{namespacem__strings__oop_a31be80e67fa4829b5ac48c530bd58b7b}{m\+\_\+strings\+\_\+oop\+::oop\+\_\+switch} (self)
+\item 
+integer function \hyperlink{namespacem__strings__oop_aafe02b26ccba21eb8a35e9fa99d6c790}{m\+\_\+strings\+\_\+oop\+::oop\+\_\+index} (self, substring, back)
+\item 
+\hyperlink{stop__watch_83_8txt_a70f0ead91c32e25323c03265aa302c1c}{type}(\hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string}) function \hyperlink{namespacem__strings__oop_a9f4030a1ab2c7e2aa71b9d1f2754e67e}{m\+\_\+strings\+\_\+oop\+::oop\+\_\+upper} (self)
+\item 
+\hyperlink{stop__watch_83_8txt_a70f0ead91c32e25323c03265aa302c1c}{type}(\hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string}) function \hyperlink{namespacem__strings__oop_ad49fed83544ede7b94948dee326ca3d7}{m\+\_\+strings\+\_\+oop\+::oop\+\_\+lower} (self)
+\item 
+\hyperlink{stop__watch_83_8txt_a70f0ead91c32e25323c03265aa302c1c}{type}(\hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string}) function \hyperlink{namespacem__strings__oop_a5b96d2a6f242a096cd5788cf0802e825}{m\+\_\+strings\+\_\+oop\+::oop\+\_\+expand} (self, escape\+\_\+char)
+\item 
+\hyperlink{stop__watch_83_8txt_a70f0ead91c32e25323c03265aa302c1c}{type}(\hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string}) function \hyperlink{namespacem__strings__oop_ab9238801d6c3af2fe7ee81c8d2c514ff}{m\+\_\+strings\+\_\+oop\+::oop\+\_\+trim} (self)
+\item 
+\hyperlink{stop__watch_83_8txt_a70f0ead91c32e25323c03265aa302c1c}{type}(\hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string}) function \hyperlink{namespacem__strings__oop_aa1a395d359592720a842054fd0aaff0a}{m\+\_\+strings\+\_\+oop\+::oop\+\_\+crop} (self)
+\item 
+\hyperlink{stop__watch_83_8txt_a70f0ead91c32e25323c03265aa302c1c}{type}(\hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string}) function \hyperlink{namespacem__strings__oop_ac3ab62e14d0b8445f51e084b810e2f76}{m\+\_\+strings\+\_\+oop\+::oop\+\_\+reverse} (self)
+\item 
+\hyperlink{stop__watch_83_8txt_a70f0ead91c32e25323c03265aa302c1c}{type}(\hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string}) function \hyperlink{namespacem__strings__oop_a8e2457b4a1c4489e9600e340fa9ce533}{m\+\_\+strings\+\_\+oop\+::oop\+\_\+adjustl} (self)
+\item 
+\hyperlink{stop__watch_83_8txt_a70f0ead91c32e25323c03265aa302c1c}{type}(\hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string}) function \hyperlink{namespacem__strings__oop_abb0dfa5646259e4fc768700eada111ac}{m\+\_\+strings\+\_\+oop\+::oop\+\_\+adjustr} (self)
+\item 
+\hyperlink{stop__watch_83_8txt_a70f0ead91c32e25323c03265aa302c1c}{type}(\hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string}) function \hyperlink{namespacem__strings__oop_a9fa932c23648e737230553a8e7bfb15b}{m\+\_\+strings\+\_\+oop\+::oop\+\_\+adjustc} (self, \hyperlink{M__stopwatch_83_8txt_a04ed5ef37abacfa36a856b5f30376485}{length})
+\item 
+integer function \hyperlink{namespacem__strings__oop_a2092266bec4014f74b8d436c5a8e319f}{m\+\_\+strings\+\_\+oop\+::oop\+\_\+int} (self)
+\item 
+\hyperlink{read__watch_83_8txt_abdb62bde002f38ef75f810d3a905a823}{real} function \hyperlink{namespacem__strings__oop_a9709a714bc825704651b00c7384a7547}{m\+\_\+strings\+\_\+oop\+::oop\+\_\+real} (self)
+\item 
+doubleprecision function \hyperlink{namespacem__strings__oop_aa6eaf2b8a12a905d0ebaa21a84871dec}{m\+\_\+strings\+\_\+oop\+::oop\+\_\+dble} (self)
+\item 
+\hyperlink{stop__watch_83_8txt_a70f0ead91c32e25323c03265aa302c1c}{type}(\hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string}) function \hyperlink{namespacem__strings__oop_ac02aecbaebcf57833b544de4f50c89a6}{m\+\_\+strings\+\_\+oop\+::oop\+\_\+compact} (self, char)
+\item 
+\hyperlink{stop__watch_83_8txt_a70f0ead91c32e25323c03265aa302c1c}{type}(\hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string}) function \hyperlink{namespacem__strings__oop_af653c84bbd0165d1d4a3b61efe0472e8}{m\+\_\+strings\+\_\+oop\+::oop\+\_\+substitute} (self, old, new)
+\item 
+\hyperlink{stop__watch_83_8txt_a70f0ead91c32e25323c03265aa302c1c}{type}(\hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string}) function \hyperlink{namespacem__strings__oop_ac88f27671dd1129023494bf2500ca7fd}{m\+\_\+strings\+\_\+oop\+::oop\+\_\+transliterate} (self, old, new)
+\item 
+\hyperlink{stop__watch_83_8txt_a70f0ead91c32e25323c03265aa302c1c}{type}(\hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string}) function \hyperlink{namespacem__strings__oop_ac8ca18186659b8759b08e5167a3effb5}{m\+\_\+strings\+\_\+oop\+::oop\+\_\+lenset} (self, \hyperlink{M__stopwatch_83_8txt_a04ed5ef37abacfa36a856b5f30376485}{length})
+\item 
+logical function \hyperlink{namespacem__strings__oop_ab88f5f814c08f1c93c95fcd0ba2a6779}{m\+\_\+strings\+\_\+oop\+::oop\+\_\+matchw} (self, pattern)
+\item 
+\hyperlink{stop__watch_83_8txt_a70f0ead91c32e25323c03265aa302c1c}{type}(\hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string}) function \hyperlink{namespacem__strings__oop_a5959b2f967a6466c198b39a089ef8a68}{m\+\_\+strings\+\_\+oop\+::oop\+\_\+notabs} (self)
+\item 
+\hyperlink{stop__watch_83_8txt_a70f0ead91c32e25323c03265aa302c1c}{type}(\hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string}) function \hyperlink{namespacem__strings__oop_ae1ed148f1ae0694ac093d3e11f9b702b}{m\+\_\+strings\+\_\+oop\+::oop\+\_\+noesc} (self)
+\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=len(self\%str)) function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings__oop_a456e651940e317c7bc885d95458c7fcb}{m\+\_\+strings\+\_\+oop\+::p} (self)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{namespacem__strings__oop_a1510c1de10cb182598ce6a399a734be0}{m\+\_\+strings\+\_\+oop\+::init\+\_\+string} (self)
+\item 
+\hyperlink{stop__watch_83_8txt_a70f0ead91c32e25323c03265aa302c1c}{type}(\hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string}) function \hyperlink{namespacem__strings__oop_abf27744e539317dac81d6ed1fb736059}{m\+\_\+strings\+\_\+oop\+::string\+\_\+plus\+\_\+value} (self, value)
+\item 
+\hyperlink{stop__watch_83_8txt_a70f0ead91c32e25323c03265aa302c1c}{type}(\hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string}) function \hyperlink{namespacem__strings__oop_a0ec84db43ac789bfc02f46f933a3fc9f}{m\+\_\+strings\+\_\+oop\+::string\+\_\+minus\+\_\+value} (self, value)
+\item 
+\hyperlink{stop__watch_83_8txt_a70f0ead91c32e25323c03265aa302c1c}{type}(\hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string}) function \hyperlink{namespacem__strings__oop_a64192a93804fcb61ca59725245ee85c2}{m\+\_\+strings\+\_\+oop\+::string\+\_\+append\+\_\+value} (self, value)
+\item 
+\hyperlink{stop__watch_83_8txt_a70f0ead91c32e25323c03265aa302c1c}{type}(\hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string}) function \hyperlink{namespacem__strings__oop_a9624f1e09be383f993e7c0e94b230deb}{m\+\_\+strings\+\_\+oop\+::string\+\_\+multiply\+\_\+value} (self, value)
+\item 
+logical function \hyperlink{namespacem__strings__oop_a2e5c8d9117609e553db07a1eba18b1fa}{m\+\_\+strings\+\_\+oop\+::eq} (self, other)
+\item 
+logical function \hyperlink{namespacem__strings__oop_a332288f9bebc563e12671b514512eb30}{m\+\_\+strings\+\_\+oop\+::lt} (self, other)
+\item 
+logical function \hyperlink{namespacem__strings__oop_a25beb184587d7c9fc0a3fd846d4ce187}{m\+\_\+strings\+\_\+oop\+::gt} (self, other)
+\item 
+logical function \hyperlink{namespacem__strings__oop_a103e7c1fab92a1c4cbfff87ec8cd1e23}{m\+\_\+strings\+\_\+oop\+::le} (self, other)
+\item 
+logical function \hyperlink{namespacem__strings__oop_a2d31ec44898046ba97aebc0de32de19a}{m\+\_\+strings\+\_\+oop\+::ge} (self, other)
+\item 
+logical function \hyperlink{namespacem__strings__oop_aa424e1eccc45bb143172d6e212f8e408}{m\+\_\+strings\+\_\+oop\+::ne} (self, other)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len= $\ast$), parameter \hyperlink{namespacem__strings_a1a9ef3b9018fa526c23873b95f53768f}{m\+\_\+strings\+::ident} =\char`\"{}@(\#)M\+\_\+strings(3f)\+: Fortran module containing routines that deal with character strings\char`\"{}
+\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len= $\ast$), parameter \hyperlink{namespacem__strings_a13ee1b22ec4a8cb9c2137864495421d3}{m\+\_\+strings\+::ident1} =\char`\"{}@(\#)M\+\_\+strings\+::switch(3f)\+: toggle between string and array of characters; generic\{a2s,s2a\}\char`\"{}
+\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len= $\ast$), parameter \hyperlink{namespacem__strings_ab6570916910af932896de93e4792cf46}{m\+\_\+strings\+::ident2} =\char`\"{}@(\#)M\+\_\+strings\+::string\+\_\+to\+\_\+value(3f)\+: Generic subroutine converts numeric string to a number (a2d,a2r,a2i)\char`\"{}
+\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len= $\ast$), parameter \hyperlink{namespacem__strings_a19b07bcbc88c40854caf542d11f72cd0}{m\+\_\+strings\+::ident4} =\char`\"{}@(\#)M\+\_\+strings\+::v2s(3f)\+: Generic function returns string given R\+E\+A\+L$\vert$\+I\+N\+T\+E\+G\+E\+R$\vert$\+D\+O\+U\+B\+L\+E\+P\+R\+E\+C\+I\+S\+I\+O\+N value(d2s,r2s,i2s)\char`\"{}
+\item 
+integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a40ffeae8c41d579efd77648ffc3d9a19}{m\+\_\+strings\+::ipcmd} =32768
+\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a9de5098e31c6411a43323b1d7f19a886}{m\+\_\+strings\+::ascii\+\_\+nul} = char(0)
+\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_ae939ea755cfa377c5ed5f09ba8b0e923}{m\+\_\+strings\+::ascii\+\_\+bel} = char(7)
+\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a6d4b461b6fba6d81e0cee7b6e579c77b}{m\+\_\+strings\+::ascii\+\_\+bs} = char(8)
+\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a3fef6116790e59c99f48ea31a7b00133}{m\+\_\+strings\+::ascii\+\_\+ht} = char(9)
+\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a4d65d248433f7c6ea3188c558f795c23}{m\+\_\+strings\+::ascii\+\_\+lf} = char(10)
+\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a52761941cc3dba4a2ed922d1b7841c90}{m\+\_\+strings\+::ascii\+\_\+ff} = char(12)
+\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a1f58b48efb41665079ced6de505a3b65}{m\+\_\+strings\+::ascii\+\_\+cr} = char(13)
+\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__strings_a6e9a1f921d2bb4a14a9b50a3b8f96288}{m\+\_\+strings\+::ascii\+\_\+esc} = char(27)
+\item 
+integer, parameter, private \hyperlink{namespacem__strings__oop_aff89e0d0502f39fedc4f8a9cf793fdba}{m\+\_\+strings\+\_\+oop\+::dp} =kind(0.\+0d0)
+\end{DoxyCompactItemize}

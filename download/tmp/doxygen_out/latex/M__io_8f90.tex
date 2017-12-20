@@ -1,0 +1,67 @@
+\hypertarget{M__io_8f90}{}\section{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+M\+\_\+io.f90 File Reference}
+\label{M__io_8f90}\index{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+M\+\_\+io.\+f90@{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+M\+\_\+io.\+f90}}
+\subsection*{Modules}
+\begin{DoxyCompactItemize}
+\item 
+module \hyperlink{namespacem__io}{m\+\_\+io}
+\end{DoxyCompactItemize}
+\subsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=4096) function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__io_a13a76a3cca012978c1d9c5c0c8b4a7ef}{m\+\_\+io\+::uniq} (\hyperlink{M__stopwatch_83_8txt_a3f508a893ae4c3b397b4383e33b9bcae}{name}, istart, verbose)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+uniq(3f) -\/ \mbox{[}M\+\_\+io\mbox{]} append a number to the end of filename to make a unique name if name exists \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__io_aa6ee277b2e0f1c263488624b34371fcf}{m\+\_\+io\+::print\+\_\+inquire} (iunit, \hyperlink{M__stopwatch_83_8txt_a3f508a893ae4c3b397b4383e33b9bcae}{name})
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+print\+\_\+inquire(3f) -\/ \mbox{[}M\+\_\+io\mbox{]} Do I\+N\+Q\+U\+I\+RE on file by name/number and print results \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__io_ad25822cde8058cd6861e2d9a5d729ccc}{m\+\_\+io\+::slurp} (filename, \hyperlink{notes_8txt_ad997a48ee1fbabed5333859846b5d9a3}{text})
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+S\+L\+U\+R\+P(3f) -\/ \mbox{[}M\+\_\+io\mbox{]} read a file into a character array \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{M__io_8f90_a448cccd08d4d6bce645ffbbf14cdfa7e}{stderr} (\hyperlink{M__stopwatch_83_8txt_aa4313e9a55405841f95e6550cd87fc3b}{message})
+\item 
+integer function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__io_a673f7f7e137424eed9c6a736901a5cbc}{m\+\_\+io\+::notopen} (start, end, err)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+notopen(3f) -\/ \mbox{[}M\+\_\+io\mbox{]} Find a F\+U\+N/\+L\+UN (Fortran-\/unit-\/number) that is not in use \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=\+:) function, allocatable, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__io_a85eb6aa886ca8e591fdc837919f81708}{m\+\_\+io\+::dirname} (filename)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+dirname(3f) -\/ \mbox{[}M\+\_\+io\mbox{]} strip last component from filename \end{DoxyCompactList}\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{M__io_8f90_af19c15eaa4f2a0ca08d241277ce7c256}{removetail} ()
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__io_a7d1857c5c839bf3e096ce68fa1447d44}{m\+\_\+io\+::splitpath} (path, dir, \hyperlink{M__stopwatch_83_8txt_a3f508a893ae4c3b397b4383e33b9bcae}{name}, basename, ext)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+splitpath(3f) -\/ \mbox{[}M\+\_\+io\mbox{]} split a Unix pathname into components \end{DoxyCompactList}\item 
+logical function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__io_a6793f5adc45177098781af4be39911ff}{m\+\_\+io\+::isdir} (dirname)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+isdir(3f) -\/ \mbox{[}M\+\_\+io\mbox{]} checks if argument is a directory path \subsubsection*{S\+Y\+N\+T\+AX}
+
+logical function isdir(path) \subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+isdir(3f) checks if path is a path to a directory. \subsubsection*{O\+P\+T\+I\+O\+NS}
+
+path a character string representing a directory pathname. Trailing spaces are ignored. \subsubsection*{E\+X\+A\+M\+P\+L\+ES}\end{DoxyCompactList}\item 
+integer function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__io_a8d9ee59e21830662fa59c300ca23e04b}{m\+\_\+io\+::readline} (line, lun)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+readline(3f) -\/ \mbox{[}M\+\_\+io\mbox{]} read a line from specified L\+UN into allocatable string up to line length limit \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{M__io_8f90_af19c15eaa4f2a0ca08d241277ce7c256}\label{M__io_8f90_af19c15eaa4f2a0ca08d241277ce7c256}} 
+\index{M\+\_\+io.\+f90@{M\+\_\+io.\+f90}!removetail@{removetail}}
+\index{removetail@{removetail}!M\+\_\+io.\+f90@{M\+\_\+io.\+f90}}
+\subsubsection{\texorpdfstring{removetail()}{removetail()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} dirname\+::removetail (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{M__io_8f90_a448cccd08d4d6bce645ffbbf14cdfa7e}\label{M__io_8f90_a448cccd08d4d6bce645ffbbf14cdfa7e}} 
+\index{M\+\_\+io.\+f90@{M\+\_\+io.\+f90}!stderr@{stderr}}
+\index{stderr@{stderr}!M\+\_\+io.\+f90@{M\+\_\+io.\+f90}}
+\subsubsection{\texorpdfstring{stderr()}{stderr()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} slurp\+::stderr (\begin{DoxyParamCaption}\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$)}]{message }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+

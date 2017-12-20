@@ -63,10 +63,115 @@ $(function() {
 </div>
 </div><!-- top -->
 <div class="header">
+  <div class="summary">
+<a href="#func-members">Functions/Subroutines</a>  </div>
   <div class="headertitle">
 <div class="title">exchange.f90 File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions/Subroutines</h2></td></tr>
+<tr class="memitem:a3e09a3b52ee8fb04eeb93fe5761626a8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="M__stopwatch_83_8txt.html#acfbcff50169d691ff02d4a123ed70482">subroutine</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="exchange_8f90.html#a3e09a3b52ee8fb04eeb93fe5761626a8">help_usage</a> (l_help)</td></tr>
+<tr class="separator:a3e09a3b52ee8fb04eeb93fe5761626a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39c21619b08a3c22f19e2306efd7f766"><td class="memItemLeft" align="right" valign="top"><a class="el" href="M__stopwatch_83_8txt.html#acfbcff50169d691ff02d4a123ed70482">subroutine</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="exchange_8f90.html#a39c21619b08a3c22f19e2306efd7f766">help_version</a> (l_version)</td></tr>
+<tr class="memdesc:a39c21619b08a3c22f19e2306efd7f766"><td class="mdescLeft">&#160;</td><td class="mdescRight"><h2>NAME</h2>
+exchange - [CONVERT] test of basic unit conversion functions  <a href="#a39c21619b08a3c22f19e2306efd7f766">More...</a><br /></td></tr>
+<tr class="separator:a39c21619b08a3c22f19e2306efd7f766"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a483d2219923eccf493a883fceee5a424"><td class="memItemLeft" align="right" valign="top">program&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="exchange_8f90.html#a483d2219923eccf493a883fceee5a424">testit</a></td></tr>
+<tr class="separator:a483d2219923eccf493a883fceee5a424"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Function/Subroutine Documentation</h2>
+<a id="a3e09a3b52ee8fb04eeb93fe5761626a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e09a3b52ee8fb04eeb93fe5761626a8">&#9670;&nbsp;</a></span>help_usage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="M__stopwatch_83_8txt.html#acfbcff50169d691ff02d4a123ed70482">subroutine</a> help_usage </td>
+          <td>(</td>
+          <td class="paramtype">logical, intent(<a class="el" href="M__journal_83_8txt.html#afce72651d1eed785a2132bee863b2f38">in</a>)&#160;</td>
+          <td class="paramname"><em>l_help</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="reference">References <a class="el" href="__false_8f90.html#ac39cd9fe2012c31749944aa6b20b6c05">false()</a>.</p>
+
+</div>
+</div>
+<a id="a39c21619b08a3c22f19e2306efd7f766"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39c21619b08a3c22f19e2306efd7f766">&#9670;&nbsp;</a></span>help_version()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="M__stopwatch_83_8txt.html#acfbcff50169d691ff02d4a123ed70482">subroutine</a> help_version </td>
+          <td>(</td>
+          <td class="paramtype">logical, intent(<a class="el" href="M__journal_83_8txt.html#afce72651d1eed785a2132bee863b2f38">in</a>)&#160;</td>
+          <td class="paramname"><em>l_version</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><h2>NAME</h2>
+exchange - [CONVERT] test of basic unit conversion functions </p>
+<h2>SYNOPSIS</h2>
+<pre class="fragment"> exchange [-feet VALUES] [-meters VALUES]
+          [-celsius VALUES] [-fahrenheit VALUES]
+          [-degrees VALUES] [-radians VALUES]
+          [--help] -[-version]
+</pre><h2>DESCRIPTION</h2>
+<p>Makes common unit conversions such as between feet and meters, celsius and fahrenheit, and degrees and radians.</p>
+<h2>OPTIONS</h2>
+<p>-feet VALUES convert feet to meters -meters VALUES convert meters to feet -fahrenheit VALUES convert fahrenheit to celsius -celsius VALUES convert celsius to fahrenheit -radians VALUES convert radians to degrees -degrees VALUES convert degrees to radians &ndash;help display this help and exit &ndash;version output version information and exit</p>
+<h2>EXAMPLES</h2>
+<pre class="fragment"> Sample commands:
+
+  exchange -degrees 0 90 180 360
+
+  &gt; 0.00000000      degrees is    0.00000000      radians
+  &gt; 90.0000000      degrees is    1.57079637      radians
+  &gt; 180.000000      degrees is    3.14159274      radians
+  &gt; 360.000000      degrees is    6.28318548      radians
+
+  exchange -fahrenheit -40 32 98.6 212 -celsius -40 0 37 100
+
+  &gt; -40.0000000      celsius is   -40.0000000      fahrenheit
+  &gt;  0.00000000      celsius is    32.0000000      fahrenheit
+  &gt;  37.0000000      celsius is    98.6000061      fahrenheit
+  &gt;  100.000000      celsius is    212.000000      fahrenheit
+  &gt; -40.0000000      fahrenheit is   -40.0000000      celsius
+  &gt;  32.0000000      fahrenheit is    0.00000000      celsius
+  &gt;  98.5999985      fahrenheit is    37.0000000      celsius
+  &gt;  212.000000      fahrenheit is    100.000000      celsius </pre> 
+<p class="reference">References <a class="el" href="__false_8f90.html#ac39cd9fe2012c31749944aa6b20b6c05">false()</a>.</p>
+
+</div>
+</div>
+<a id="a483d2219923eccf493a883fceee5a424"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a483d2219923eccf493a883fceee5a424">&#9670;&nbsp;</a></span>testit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">program testit </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="reference">References <a class="el" href="namespacem__units.html#a652a2565824ce7cbc692b563054ffa3e">m_units::c2f()</a>, <a class="el" href="C-M__units_8c.html#a4f769afe985b27d98f3114c2cb458221">d2r()</a>, <a class="el" href="namespacem__units.html#a8f71442bfefc89e6e4636f3a4677b796">m_units::f2c()</a>, <a class="el" href="namespacem__units.html#a6b2e3302766d3ee6edbb2d6d3c284e96">m_units::feet_to_meters()</a>, <a class="el" href="__cmp_8f90.html#a3e09a3b52ee8fb04eeb93fe5761626a8">help_usage()</a>, <a class="el" href="__cmp_8f90.html#a39c21619b08a3c22f19e2306efd7f766">help_version()</a>, <a class="el" href="namespacem__kracken.html#a850dce381e1cfe18a4ebcaa214995e39">m_kracken::kracken()</a>, <a class="el" href="namespacem__kracken.html#a7141acd7a00c1a5aa5f90612a0414b63">m_kracken::lget()</a>, <a class="el" href="namespacem__units.html#a0ac5ab49814761420953eb6b859c80fd">m_units::meters_to_feet()</a>, <a class="el" href="C-M__units_8c.html#ac021a3c865860684d655b69f1a1735e8">r2d()</a>, and <a class="el" href="namespacem__kracken.html#aa1a29fad1518c15d8710d273755a17cc">m_kracken::rgets()</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

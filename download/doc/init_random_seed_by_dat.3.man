@@ -1,0 +1,36 @@
+NAME
+   init_random_seed_by_dat(3f) - [M_random] seed random_number(3f) with values from date_and_time(3f)
+SYNOPSIS
+   subroutine init_random_seed_by_dat()
+DESCRIPTION
+   A simple wrapper around random_seed(3f) that uses the date_and_time(3f)
+   intrinsic to initialize the seed so you can easily call
+   random_number(3f) with varying pseudo-random real number sequences
+EXAMPLE
+   Sample program:
+
+    program demo_init_random_seed_by_dat
+    use M_random, only : init_random_seed_by_dat
+    integer :: i
+    real    :: x
+       call init_random_seed_by_dat()
+       do i=1,10
+          ! generate real pseudo-random numbers from 0 to <1.0
+          call random_number(x)
+          write(*,*)i,x
+       enddo
+    end program demo_init_random_seed_by_dat
+
+   Results
+
+     >     1  0.644704163
+     >     2  0.244343698
+     >     3  0.516471267
+     >     4  0.296542704
+     >     5  0.681771278
+     >     6  0.449223280
+     >     7  0.915870190
+     >     8  0.466257989
+     >     9  0.912388682
+     >    10  0.597788215
+

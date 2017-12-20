@@ -16,13 +16,13 @@ env MAKEMAKE_LDFLAGS="-fno-range-check -Wall -fbounds-check -g -I. -J. $SANI" \
     MAKEMAKE_F90='gfortran' \
     MAKEMAKE_LIBS='-lncurses -lreadline' \
 
-    makemake "`find PROGRAMS -type f|xargs`"
+    makemake "`find PROGRAMS -type f -name '*.[fF] -name '[fF]90'|xargs`"
 
 mv Makefile Makefile_picky
 env MAKEMAKE_F90='gfortran' \
     MAKEMAKE_LIBS='-lncurses -lreadline' \
 
-    makemake "`find PROGRAMS -type f|xargs`"
+    makemake "`find PROGRAMS -type f -name '*.[fF] -name '*.[fF]90'|xargs`"
 )
 }
 ################################################################################

@@ -63,10 +63,131 @@ $(function() {
 </div>
 </div><!-- top -->
 <div class="header">
+  <div class="summary">
+<a href="#func-members">Functions/Subroutines</a>  </div>
   <div class="headertitle">
 <div class="title">_tty.f90 File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions/Subroutines</h2></td></tr>
+<tr class="memitem:a3e09a3b52ee8fb04eeb93fe5761626a8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="M__stopwatch_83_8txt.html#acfbcff50169d691ff02d4a123ed70482">subroutine</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="__tty_8f90.html#a3e09a3b52ee8fb04eeb93fe5761626a8">help_usage</a> (l_help)</td></tr>
+<tr class="separator:a3e09a3b52ee8fb04eeb93fe5761626a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39c21619b08a3c22f19e2306efd7f766"><td class="memItemLeft" align="right" valign="top"><a class="el" href="M__stopwatch_83_8txt.html#acfbcff50169d691ff02d4a123ed70482">subroutine</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="__tty_8f90.html#a39c21619b08a3c22f19e2306efd7f766">help_version</a> (l_version)</td></tr>
+<tr class="memdesc:a39c21619b08a3c22f19e2306efd7f766"><td class="mdescLeft">&#160;</td><td class="mdescRight"><h2>NAME</h2>
+_tty - [FUNIX:FILESYSTEM] print information about the file/terminal connected to standard input  <a href="#a39c21619b08a3c22f19e2306efd7f766">More...</a><br /></td></tr>
+<tr class="separator:a39c21619b08a3c22f19e2306efd7f766"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a860b0e8d8a94aa5cc835f634fdff3bd8"><td class="memItemLeft" align="right" valign="top">program&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="__tty_8f90.html#a860b0e8d8a94aa5cc835f634fdff3bd8">tty</a></td></tr>
+<tr class="separator:a860b0e8d8a94aa5cc835f634fdff3bd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Function/Subroutine Documentation</h2>
+<a id="a3e09a3b52ee8fb04eeb93fe5761626a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e09a3b52ee8fb04eeb93fe5761626a8">&#9670;&nbsp;</a></span>help_usage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="M__stopwatch_83_8txt.html#acfbcff50169d691ff02d4a123ed70482">subroutine</a> help_usage </td>
+          <td>(</td>
+          <td class="paramtype">logical, intent(<a class="el" href="M__journal_83_8txt.html#afce72651d1eed785a2132bee863b2f38">in</a>)&#160;</td>
+          <td class="paramname"><em>l_help</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="reference">References <a class="el" href="__false_8f90.html#ac39cd9fe2012c31749944aa6b20b6c05">false()</a>.</p>
+
+</div>
+</div>
+<a id="a39c21619b08a3c22f19e2306efd7f766"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39c21619b08a3c22f19e2306efd7f766">&#9670;&nbsp;</a></span>help_version()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="M__stopwatch_83_8txt.html#acfbcff50169d691ff02d4a123ed70482">subroutine</a> help_version </td>
+          <td>(</td>
+          <td class="paramtype">logical, intent(<a class="el" href="M__journal_83_8txt.html#afce72651d1eed785a2132bee863b2f38">in</a>)&#160;</td>
+          <td class="paramname"><em>l_version</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><h2>NAME</h2>
+_tty - [FUNIX:FILESYSTEM] print information about the file/terminal connected to standard input </p>
+<h2>SYNOPSIS</h2>
+<pre class="fragment">    _tty [OPTION]...
+</pre> <h2>DESCRIPTION</h2>
+<p>Call INQUIRE(3f) and print information about the file name of the terminal connected to standard input. The results are dependent on the programming environment used, as some of the behavior is system dependent. </p><h2>OPTIONS</h2>
+<p>&ndash;help display this help and exit &ndash;version output version information and exit</p>
+<h2>EXAMPLE</h2>
+<pre class="fragment">   The standard leaves quite a bit as system dependent. It is always
+   interesting. For example, on CygWin using gfortran V5.4
+
+   If I just type in the command at a prompt the INPUT_UNIT
+   of 5 is returned as unit 0. But if I call the _tty from
+   within vim(1) it is returned as 5.
+
+     _tty
+     &gt; for INPUT_UNIT=5
+     &gt;====================================================
+     &gt;*print_inquire* checking file:/dev/pty10
+     &gt;*print_inquire* file exists
+     &gt;*print_inquire* using unit number  0
+     &gt;*print_inquire* access type SEQUENTIAL,FORMATTED
+
+   Even though the file is not a terminal but exists
+   I get a name of "stdin". Other compilers return a
+   null filename, others return the name of the redirected
+   file. What if there was actually a file called "stdin"?
+
+     _tty &lt;/dev/null
+     &gt; for INPUT_UNIT=5
+     &gt;====================================================
+     &gt;*print_inquire* checking file:stdin
+     &gt;*print_inquire* file does not exist
+
+   Try these:
+
+     _tty # a simple call from the keyboard
+     _tty &lt;/tmp/notthere # a file assumed to not exist
+     _tty &lt;/dev/null   # a special file that exists
+     _tty &lt;/etc/passwd # some non-terminal file that exists
+     _tty &lt; `tty`      # reading the pathname of your terminal
+     _tty &lt; /dev/pty08 # some TTY not assigned to your ID
+</pre><h2>REPORTING BUGS</h2>
+<p>Report _yes bugs to <a href="http://www.urbanjost.altervista.org/index.html">http://www.urbanjost.altervista.org/index.html</a></p>
+<h2>SEE ALSO</h2>
+<p>isatty(3c),tty(1), ttyname(3) </p>
+
+<p class="reference">References <a class="el" href="__false_8f90.html#ac39cd9fe2012c31749944aa6b20b6c05">false()</a>.</p>
+
+</div>
+</div>
+<a id="a860b0e8d8a94aa5cc835f634fdff3bd8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a860b0e8d8a94aa5cc835f634fdff3bd8">&#9670;&nbsp;</a></span>tty()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">program tty </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="reference">References <a class="el" href="__cmp_8f90.html#a3e09a3b52ee8fb04eeb93fe5761626a8">help_usage()</a>, <a class="el" href="__cmp_8f90.html#a39c21619b08a3c22f19e2306efd7f766">help_version()</a>, <a class="el" href="namespacem__kracken.html#a850dce381e1cfe18a4ebcaa214995e39">m_kracken::kracken()</a>, <a class="el" href="namespacem__kracken.html#a7141acd7a00c1a5aa5f90612a0414b63">m_kracken::lget()</a>, and <a class="el" href="namespacem__io.html#aa6ee277b2e0f1c263488624b34371fcf">m_io::print_inquire()</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

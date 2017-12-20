@@ -109,7 +109,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Fri, Nov 24th, 2017 2:35:27 PM>',&
+'@(#)COMPILED:       Fri, Dec 15th, 2017 4:26:34 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -121,7 +121,7 @@ use m_kracken, only       : kracken, sget, IPvalue, lget, iget
 use m_strings, only       : expand
 use iso_fortran_env, only : ERROR_UNIT,OUTPUT_UNIT        ! access computing environment
 implicit none
-character(len=IPvalue)       :: line
+character(len=:),allocatable :: line
 character(len=:),allocatable :: adv
 integer                      :: ios
 integer                      :: iout

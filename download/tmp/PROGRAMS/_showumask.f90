@@ -21,7 +21,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                                                                                ',&
 '   _showumask                                                                   ',&
 '                                                                                ',&
-'    18 O''0022'' Z"12'' B''000000010010''                                       ',&
+'    18 O''0022'' Z''12'' B''000000010010''                                      ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -49,7 +49,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Fri, Nov 24th, 2017 2:39:05 PM>',&
+'@(#)COMPILED:       Tue, Dec 19th, 2017 9:31:46 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -67,5 +67,5 @@ use M_system, only : system_getumask, system_setumask
    call help_version(lget('umask_version'))
 
    write(*,101)(system_getumask(),i=1,4)
-   101 format(1x,i0,1x,"O'",o4.4,"'",1x,'Z"',z0,"'",1x,"B'",b12.12,"'")
+   101 format(1x,i0,1x,"O'",o4.4,"'",1x,"Z'",z0,"'",1x,"B'",b12.12,"'")
 end program demo_umask

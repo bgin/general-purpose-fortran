@@ -1,0 +1,440 @@
+\hypertarget{namespacem__debug}{}\section{m\+\_\+debug Module Reference}
+\label{namespacem__debug}\index{m\+\_\+debug@{m\+\_\+debug}}
+
+
+\subsubsection*{N\+A\+ME}
+
+M\+\_\+debug(3fm) -\/ \mbox{[}M\+\_\+debug\mbox{]} a collection of Fortran routines for supporting the development of unit tests, and providing error processing and debugging procedures. \subsubsection*{S\+Y\+N\+O\+P\+S\+IS} 
+
+
+\subsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__debug_ad59ade4de861dcf4e007521b2cf2f304}{stderr} (\hyperlink{M__stopwatch_83_8txt_aa4313e9a55405841f95e6550cd87fc3b}{message}, generic)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+stderr -\/ \mbox{[}M\+\_\+debug\mbox{]} write message to stderr \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__debug_a66fa03a6a97837acc4c1265be1294295}{fstop} (ierr, stdout, \hyperlink{namespacem__debug_ad59ade4de861dcf4e007521b2cf2f304}{stderr})
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+fstop -\/ \mbox{[}M\+\_\+debug\mbox{]} call stop with both a number and a message \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__debug_a0ae797092ab85a8ba9258dc9f8949189}{unit\+\_\+check} (\hyperlink{M__stopwatch_83_8txt_a3f508a893ae4c3b397b4383e33b9bcae}{name}, logical\+\_\+expression, \hyperlink{M__stopwatch_83_8txt_aa4313e9a55405841f95e6550cd87fc3b}{message})
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+unit\+\_\+check -\/ \mbox{[}M\+\_\+debug\mbox{]} if logical expression is false, call command \char`\"{}goodbad N\+A\+M\+E bad\char`\"{} and stop program \end{DoxyCompactList}\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__debug_a6f1166b1f25f39931359c1aa1b2219e5}{unit\+\_\+check\+\_\+start} (\hyperlink{M__stopwatch_83_8txt_a3f508a893ae4c3b397b4383e33b9bcae}{name}, \hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string})
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+unit\+\_\+check\+\_\+start -\/ \mbox{[}M\+\_\+debug\mbox{]} call command \char`\"{}goodbad N\+A\+M\+E start\char`\"{} \end{DoxyCompactList}\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__debug_a668813eec59e4c16d3bbc2d317e8cdee}{unit\+\_\+check\+\_\+bad} (\hyperlink{M__stopwatch_83_8txt_a3f508a893ae4c3b397b4383e33b9bcae}{name}, \hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string})
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+unit\+\_\+check\+\_\+bad -\/ \mbox{[}M\+\_\+debug\mbox{]} call command \char`\"{}goodbad N\+A\+M\+E bad\char`\"{} and stop program \end{DoxyCompactList}\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__debug_acd67428a8900ec4c36bd3a7b28d56987}{unit\+\_\+check\+\_\+good} (\hyperlink{M__stopwatch_83_8txt_a3f508a893ae4c3b397b4383e33b9bcae}{name}, \hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string})
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+unit\+\_\+check\+\_\+good -\/ \mbox{[}M\+\_\+debug\mbox{]} call command \char`\"{}goodbad N\+A\+M\+E good\char`\"{} \end{DoxyCompactList}\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__debug_a9b456606b4c555ed2e1e453aa9c872cb}{pdec} (\hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string})
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+pdec -\/ \mbox{[}M\+\_\+debug\mbox{]} write out string with A\+S\+C\+II decimal equivalent vertically under it \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+integer, save, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__debug_ab9d95afd83b30688892f4c818ee8c312}{io\+\_\+debug} =E\+R\+R\+O\+R\+\_\+\+U\+N\+IT
+\item 
+logical, save, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__debug_aa13827e130b8e8bde8a8597e3d3faa0c}{debug} =.false.
+\item 
+integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__debug_a9f9aab455ab97238c80d66dd9ed65a7d}{exit\+\_\+success} =0
+\item 
+integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__debug_a884bfce2d57734eb9f07e8a99d4ffaeb}{exit\+\_\+failure} =1
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{N\+A\+ME}
+
+M\+\_\+debug(3fm) -\/ \mbox{[}M\+\_\+debug\mbox{]} a collection of Fortran routines for supporting the development of unit tests, and providing error processing and debugging procedures. \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+The M\+\_\+debug(3fm) Fortran module provides procedures and data useful in providing error processing and debugging capabilities. \subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+\begin{DoxyVerb}fstop(3f)             calls 'STOP VALUE' passing in a value (1-32), with optional message
+pdec(3f)              write ASCII Decimal Equivalent (ADE) numbers vertically beneath string
+stderr(3f)            Write message on stderr
+
+unit_check_start(3f)  call command "goodbad NAME start ..."
+unit_check(3f)        if expression is .F. call command "goodbad NAME bad" and stop program
+unit_check_good(3f)   call command "goodbad NAME good"
+unit_check_bad(3f)    call command "goodbad NAME bad" and  stop program
+
+The existence of a command called "goodbad" is assumed. This is generally a script that makes entries for each unit in an
+SQLite data file which is then used to create CSV and HTML reports on the status of each unit. A sample goodbad(1) command
+written in the bash(1) shell and using the sqlite3(1) command should be included in this distribution.
+\end{DoxyVerb}
+
+
+\subsubsection*{E\+X\+A\+M\+P\+LE}
+
+Sample program\+:
+
+program demo\+\_\+unit\+\_\+tests use M\+\_\+debug, only\+: unit\+\_\+check\+\_\+start, unit\+\_\+check use M\+\_\+debug, only\+: unit\+\_\+check\+\_\+good, unit\+\_\+check\+\_\+bad implicit none integer \+:\+: i, j, k integer,allocatable \+:\+: array(\+:) i=1 j=2 k=3 array=\mbox{[}10,20,30,40,50,60,70\mbox{]}
+
+! register an entry for specified name in database with status of zero (0) call unit\+\_\+check\+\_\+start(\textquotesingle{}myroutine\textquotesingle{})
+
+! if mask test fails, change database status for specified entry to -\/1 and stop program, else continue call unit\+\_\+check(\textquotesingle{}myroutine\textquotesingle{},i.\+gt.\+0)
+
+! use of all(3f), any(3f), merge(3f) can be useful ! if you know what these would produce ! write($\ast$,$\ast$)\mbox{[}\textquotesingle{}A\textquotesingle{},\textquotesingle{}X\textquotesingle{},\textquotesingle{}X\textquotesingle{},\textquotesingle{}X\textquotesingle{},\textquotesingle{}X\textquotesingle{},\textquotesingle{}B\textquotesingle{}\mbox{]}.eq.\textquotesingle{}B\textquotesingle{} ! this would return an array, the last element having the value T, else F ! write($\ast$,$\ast$)all(\mbox{[}\textquotesingle{}A\textquotesingle{},\textquotesingle{}X\textquotesingle{},\textquotesingle{}X\textquotesingle{},\textquotesingle{}X\textquotesingle{},\textquotesingle{}X\textquotesingle{},\textquotesingle{}X\textquotesingle{}\mbox{]}.eq.\textquotesingle{}X\textquotesingle{}) ! this would return F ! write($\ast$,$\ast$)any(\mbox{[}\textquotesingle{}A\textquotesingle{},\textquotesingle{}X\textquotesingle{},\textquotesingle{}X\textquotesingle{},\textquotesingle{}X\textquotesingle{},\textquotesingle{}X\textquotesingle{},\textquotesingle{}X\textquotesingle{}\mbox{]}.eq.\textquotesingle{}B\textquotesingle{}) ! this would return F ! write($\ast$,$\ast$)any(\mbox{[}\textquotesingle{}A\textquotesingle{},\textquotesingle{}X\textquotesingle{},\textquotesingle{}X\textquotesingle{},\textquotesingle{}X\textquotesingle{},\textquotesingle{}X\textquotesingle{},\textquotesingle{}B\textquotesingle{}\mbox{]}.eq.\textquotesingle{}B\textquotesingle{}) ! this would return T ! write($\ast$,$\ast$).not.\+all(array.\+lt.\+100) ! write($\ast$,$\ast$)all(array.\+lt.\+100) ! this will make sense ...
+
+call unit\+\_\+check(\textquotesingle{}myroutine\textquotesingle{},all(\mbox{[}i,j,k\mbox{]}.gt.\+0), \textquotesingle{}testing if everyone greater than zero\textquotesingle{}) call unit\+\_\+check(\textquotesingle{}myroutine\textquotesingle{},all(.not.\mbox{[}i,j,k\mbox{]}.eq.\+4), \textquotesingle{}testing if no one is equal to four\textquotesingle{})
+
+! for tests that are hard to reduce to a logical test just call unit\+\_\+check\+\_\+bad(3f) if fail if(i+j+k.lt.\+1)then call unit\+\_\+check\+\_\+bad(\textquotesingle{}myroutine\textquotesingle{}) endif
+
+! it is assumed if you got here you should set status in the database to one, meaning tests were conducted and passed write($\ast$,$\ast$)\textquotesingle{}check on \char`\"{}myroutine\char`\"{} passed\textquotesingle{} call unit\+\_\+check\+\_\+good(\textquotesingle{}myroutine\textquotesingle{})
+
+end program demo\+\_\+unit\+\_\+tests
+
+T\+E\+S\+T-\/\+D\+R\+I\+V\+EN D\+E\+V\+E\+L\+O\+P\+M\+E\+NT
+
+set-\/up perform initialization operations common to all tests within a module tear-\/down perform finalization operations common to all tests within a module 
+
+\subsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{namespacem__debug_a66fa03a6a97837acc4c1265be1294295}\label{namespacem__debug_a66fa03a6a97837acc4c1265be1294295}} 
+\index{m\+\_\+debug@{m\+\_\+debug}!fstop@{fstop}}
+\index{fstop@{fstop}!m\+\_\+debug@{m\+\_\+debug}}
+\subsubsection{\texorpdfstring{fstop()}{fstop()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+debug\+::fstop (\begin{DoxyParamCaption}\item[{integer, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{ierr,  }\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in}), \hyperlink{option__stopwatch_83_8txt_aa4ece75e7acf58a4843f70fe18c3ade5}{optional}}]{stdout,  }\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in}), \hyperlink{option__stopwatch_83_8txt_aa4ece75e7acf58a4843f70fe18c3ade5}{optional}}]{stderr }\end{DoxyParamCaption})}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+fstop -\/ \mbox{[}M\+\_\+debug\mbox{]} call stop with both a number and a message \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+subroutine fstop(ierr,stdout,stderr)
+
+integer,intent(in) \+:\+: ierr character(len=$\ast$),intent(in),optional \+:\+: stdout character(len=$\ast$),intent(in),optional \+:\+: stderr \subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+\begin{DoxyVerb}FSTOP(3f) call STOP(3f).  What a call to STOP does is very system
+dependent, so using an abstraction layer is useful, as it allows just
+the fstop() routine to be changed; and STOP does not allow a variable
+to be used on the numeric access status (this has changed at f2015).
+\end{DoxyVerb}
+
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+ierr -\/ value in range 0 to 32 stdout -\/ description to be printed to standard output stderr -\/ description to be printed to standard error \subsubsection*{E\+X\+A\+M\+P\+L\+ES}
+
+Sample program\+:
+
+program demo\+\_\+fstop use M\+\_\+debug, only\+: fstop implicit none integer \+:\+: int write($\ast$,$\ast$)\textquotesingle{}Enter stop value\textquotesingle{} read($\ast$,$\ast$) int select case(int) case(10) ; call fstop(int) case(20) ; call fstop(int,stderr=\textquotesingle{}error\+: program will now stop\textquotesingle{}) case(25) ; call fstop(int,stdout=\textquotesingle{}stdout message\textquotesingle{},stderr=\textquotesingle{}stderr message\textquotesingle{}) case(30) ; call fstop(int,stdout=\textquotesingle{}error\+: program will now stop\textquotesingle{}) case default call fstop(int) endselect
+
+end program demo\+\_\+fstop
+
+Results\+: \mbox{\Hypertarget{namespacem__debug_a9b456606b4c555ed2e1e453aa9c872cb}\label{namespacem__debug_a9b456606b4c555ed2e1e453aa9c872cb}} 
+\index{m\+\_\+debug@{m\+\_\+debug}!pdec@{pdec}}
+\index{pdec@{pdec}!m\+\_\+debug@{m\+\_\+debug}}
+\subsubsection{\texorpdfstring{pdec()}{pdec()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+debug\+::pdec (\begin{DoxyParamCaption}\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{string }\end{DoxyParamCaption})}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+pdec -\/ \mbox{[}M\+\_\+debug\mbox{]} write out string with A\+S\+C\+II decimal equivalent vertically under it 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\begin{DoxyVerb}Usage:
+
+ subroutine pdec(string)
+ character(len=*),intent(in) :: string
+\end{DoxyVerb}
+
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+\begin{DoxyVerb}  Given a string to print, PDEC() writes out the ASCII Decimal equivalent of
+  the string directly underneath it. This can help you to locate
+  unprintable characters or non-standard white-space such as a
+  backspace character or tab character in input strings that your
+  program could not interpret. On output, non-printable characters
+  are replaced with a space, and trailing spaces are ignored.
+
+  You read the numbers vertically.
+
+  1. ignore trailing spaces
+  2. print the character if it has an ADE of 32 on up
+  3. print a space if it has an ADE of less than 32
+  4. underneath each character print the ADE value vertically
+  5. strings are assumed under 32767 characters in length.
+     Format integer constants > 32767 are not supported on HP-UX
+     when newer compilers are available use unlimited
+\end{DoxyVerb}
+
+
+\subsubsection*{E\+X\+A\+M\+P\+LE}
+
+\begin{DoxyVerb}Sample program:
+
+   program demo
+   call pdec(' ABCDEFG abcdefg ')
+   end program demo
+
+would produce (notice trailing space is trimmed):
+
+  > ABCDEFG abcdefg
+  >0000000000001111
+  >3666667739990000
+  >2567890127890123
+\end{DoxyVerb}
+
+
+\subsubsection*{A\+U\+T\+H\+OR}
+
+John S. Urban \mbox{\Hypertarget{namespacem__debug_ad59ade4de861dcf4e007521b2cf2f304}\label{namespacem__debug_ad59ade4de861dcf4e007521b2cf2f304}} 
+\index{m\+\_\+debug@{m\+\_\+debug}!stderr@{stderr}}
+\index{stderr@{stderr}!m\+\_\+debug@{m\+\_\+debug}}
+\subsubsection{\texorpdfstring{stderr()}{stderr()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+debug\+::stderr (\begin{DoxyParamCaption}\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{message,  }\item[{class($\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in}), \hyperlink{option__stopwatch_83_8txt_aa4ece75e7acf58a4843f70fe18c3ade5}{optional}}]{generic }\end{DoxyParamCaption})}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+stderr -\/ \mbox{[}M\+\_\+debug\mbox{]} write message to stderr \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+subroutine stderr(message)
+
+character(len=$\ast$),intent(in) \+:\+: message class($\ast$),intent(in),optional \+:\+: generic \subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+S\+T\+D\+E\+R\+R(3f) writes a message to standard error using a standard f2003 method. \subsubsection*{O\+P\+T\+I\+O\+NS}
+
+message -\/ description to be printed generic -\/ optional value to print the value of after the message. May be of type I\+N\+T\+E\+G\+ER, L\+O\+G\+I\+C\+AL, R\+E\+AL, D\+O\+U\+B\+L\+E\+P\+R\+E\+C\+I\+S\+I\+ON, C\+O\+M\+P\+L\+EX, or C\+H\+A\+R\+A\+C\+T\+ER. \subsubsection*{E\+X\+A\+M\+P\+L\+ES}
+
+Sample program\+:
+
+program demo\+\_\+stderr use M\+\_\+debug, only\+: stderr implicit none
+
+call stderr(\textquotesingle{}error\+: R\+V\+A\+L\+UE=\textquotesingle{},3.\+0/4.0) call stderr(\textquotesingle{}error\+: I\+V\+A\+L\+UE=\textquotesingle{},123456789) call stderr(\textquotesingle{}error\+: L\+V\+A\+L\+UE=\textquotesingle{},.true.)
+
+call stderr(\textquotesingle{}error\+: program will now stop\textquotesingle{}) stop 1
+
+end program demo\+\_\+stderr
+
+Results\+:
+
+error\+: R\+V\+A\+L\+UE= 0.\+750000000 error\+: I\+V\+A\+L\+UE= 123456789 error\+: L\+V\+A\+L\+UE= T error\+: program will now stop S\+T\+OP 1 
+
+References real.
+
+\mbox{\Hypertarget{namespacem__debug_a0ae797092ab85a8ba9258dc9f8949189}\label{namespacem__debug_a0ae797092ab85a8ba9258dc9f8949189}} 
+\index{m\+\_\+debug@{m\+\_\+debug}!unit\+\_\+check@{unit\+\_\+check}}
+\index{unit\+\_\+check@{unit\+\_\+check}!m\+\_\+debug@{m\+\_\+debug}}
+\subsubsection{\texorpdfstring{unit\+\_\+check()}{unit\_check()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+debug\+::unit\+\_\+check (\begin{DoxyParamCaption}\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{name,  }\item[{logical, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{logical\+\_\+expression,  }\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in}), \hyperlink{option__stopwatch_83_8txt_aa4ece75e7acf58a4843f70fe18c3ade5}{optional}}]{message }\end{DoxyParamCaption})}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+unit\+\_\+check -\/ \mbox{[}M\+\_\+debug\mbox{]} if logical expression is false, call command \char`\"{}goodbad N\+A\+M\+E bad\char`\"{} and stop program 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\begin{DoxyVerb}subroutine unit_check(name,expression,message)
+
+ character(len=*),intent(in) :: name
+ logical,intent(in) :: expression
+ character(len=*),intent(in),optional :: message
+\end{DoxyVerb}
+
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+\begin{DoxyVerb}unit_check(3f) tests the expression and if it is false, calls the shell command
+
+     goodbad NAME bad
+
+and stops the program.
+\end{DoxyVerb}
+ \subsubsection*{O\+P\+T\+I\+O\+NS}
+
+N\+A\+ME the unit test name passed on to the goodbad(1) command E\+X\+P\+R\+E\+S\+S\+I\+ON the logical expression to evaluate M\+E\+S\+S\+A\+GE optional message to display when performing test
+
+\subsubsection*{E\+X\+A\+M\+P\+L\+ES}
+
+Sample program\+:
+
+program demo\+\_\+unit\+\_\+check use M\+\_\+debug, only\+: unit\+\_\+check use M\+\_\+debug, only\+: unit\+\_\+check\+\_\+start, unit\+\_\+check\+\_\+good implicit none integer \+:\+: x x=10 call unit\+\_\+check\+\_\+start(\textquotesingle{}myroutine\textquotesingle{})
+
+call unit\+\_\+check(\textquotesingle{}myroutine\textquotesingle{}, x.\+gt.\+3 ,\textquotesingle{}test if big enough\textquotesingle{}) call unit\+\_\+check(\textquotesingle{}myroutine\textquotesingle{}, x.\+lt.\+100 ,\textquotesingle{}test if small enough\textquotesingle{})
+
+write($\ast$,$\ast$)\textquotesingle{}checks on \char`\"{}myroutine\char`\"{} passed\textquotesingle{} call unit\+\_\+check\+\_\+good(\textquotesingle{}myroutine\textquotesingle{})
+
+end program demo\+\_\+unit\+\_\+check
+
+Sample output (varies with what goodbad(1) command is used)\+:
+
+unit\+\_\+check\+\_\+start\+: myroutine.\+3 status initialized in database unit\+\_\+check\+: myroutine P\+A\+S\+S\+ED\+:test if big enough unit\+\_\+check\+: myroutine P\+A\+S\+S\+ED\+:test if small enough checks on \char`\"{}myroutine\char`\"{} passed data for myroutine.\+3 is entryname description documentation filename library ufpp ccall archive date status 
+
+ myroutine.\+3 2017/02/03 07\+:23\+:40 1 
+
+References stderr().
+
+\mbox{\Hypertarget{namespacem__debug_a668813eec59e4c16d3bbc2d317e8cdee}\label{namespacem__debug_a668813eec59e4c16d3bbc2d317e8cdee}} 
+\index{m\+\_\+debug@{m\+\_\+debug}!unit\+\_\+check\+\_\+bad@{unit\+\_\+check\+\_\+bad}}
+\index{unit\+\_\+check\+\_\+bad@{unit\+\_\+check\+\_\+bad}!m\+\_\+debug@{m\+\_\+debug}}
+\subsubsection{\texorpdfstring{unit\+\_\+check\+\_\+bad()}{unit\_check\_bad()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+debug\+::unit\+\_\+check\+\_\+bad (\begin{DoxyParamCaption}\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{name,  }\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in}), \hyperlink{option__stopwatch_83_8txt_aa4ece75e7acf58a4843f70fe18c3ade5}{optional}}]{string }\end{DoxyParamCaption})}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+unit\+\_\+check\+\_\+bad -\/ \mbox{[}M\+\_\+debug\mbox{]} call command \char`\"{}goodbad N\+A\+M\+E bad\char`\"{} and stop program 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\begin{DoxyVerb}subroutine unit_check_bad(name,string)
+
+ character(len=*),intent(in) :: name
+ character(len=*),intent(in) :: string
+\end{DoxyVerb}
+
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+\begin{DoxyVerb}unit_check_bad(3f) calls the shell command
+
+     goodbad NAME bad [string]
+
+and stops the program.
+\end{DoxyVerb}
+
+
+\subsubsection*{E\+X\+A\+M\+P\+L\+ES}
+
+Sample program\+:
+
+program demo\+\_\+unit\+\_\+check\+\_\+bad use M\+\_\+debug, only\+: unit\+\_\+check\+\_\+start use M\+\_\+debug, only\+: unit\+\_\+check use M\+\_\+debug, only\+: unit\+\_\+check\+\_\+good, unit\+\_\+check\+\_\+bad
+
+implicit none integer \+:\+: x x=10 call unit\+\_\+check\+\_\+start(\textquotesingle{}myroutine\textquotesingle{})
+
+call unit\+\_\+check(\textquotesingle{}myroutine\textquotesingle{}, x.\+gt.\+3 ,\textquotesingle{}test if big enough\textquotesingle{}) call unit\+\_\+check(\textquotesingle{}myroutine\textquotesingle{}, x.\+lt.\+100 ,\textquotesingle{}test if small enough\textquotesingle{})
+
+!write($\ast$,$\ast$)\textquotesingle{}checks on \char`\"{}myroutine\char`\"{} passed\textquotesingle{} !call unit\+\_\+check\+\_\+good(\textquotesingle{}myroutine\textquotesingle{})
+
+write($\ast$,$\ast$)\textquotesingle{}checks on \char`\"{}myroutine\char`\"{} failed\textquotesingle{} call unit\+\_\+check\+\_\+bad (\textquotesingle{}myroutine\textquotesingle{}) ! program execution stopped
+
+end program demo\+\_\+unit\+\_\+check\+\_\+bad \mbox{\Hypertarget{namespacem__debug_acd67428a8900ec4c36bd3a7b28d56987}\label{namespacem__debug_acd67428a8900ec4c36bd3a7b28d56987}} 
+\index{m\+\_\+debug@{m\+\_\+debug}!unit\+\_\+check\+\_\+good@{unit\+\_\+check\+\_\+good}}
+\index{unit\+\_\+check\+\_\+good@{unit\+\_\+check\+\_\+good}!m\+\_\+debug@{m\+\_\+debug}}
+\subsubsection{\texorpdfstring{unit\+\_\+check\+\_\+good()}{unit\_check\_good()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+debug\+::unit\+\_\+check\+\_\+good (\begin{DoxyParamCaption}\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{name,  }\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in}), \hyperlink{option__stopwatch_83_8txt_aa4ece75e7acf58a4843f70fe18c3ade5}{optional}}]{string }\end{DoxyParamCaption})}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+unit\+\_\+check\+\_\+good -\/ \mbox{[}M\+\_\+debug\mbox{]} call command \char`\"{}goodbad N\+A\+M\+E good\char`\"{} 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\begin{DoxyVerb}subroutine unit_check_good(name,string)
+
+ character(len=*),intent(in) :: name
+ character(len=*),intent(in) :: string
+\end{DoxyVerb}
+
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+\begin{DoxyVerb}unit_check_good(3f) calls the shell command
+
+     goodbad NAME good [string]
+\end{DoxyVerb}
+
+
+\subsubsection*{E\+X\+A\+M\+P\+L\+ES}
+
+Sample program\+:
+
+program demo\+\_\+unit\+\_\+check\+\_\+good use M\+\_\+debug, only\+: unit\+\_\+check\+\_\+start use M\+\_\+debug, only\+: unit\+\_\+check use M\+\_\+debug, only\+: unit\+\_\+check\+\_\+good, unit\+\_\+check\+\_\+bad
+
+implicit none integer \+:\+: x x=10 call unit\+\_\+check\+\_\+start(\textquotesingle{}myroutine\textquotesingle{})
+
+call unit\+\_\+check(\textquotesingle{}myroutine\textquotesingle{}, x.\+gt.\+3 ,\textquotesingle{}test if big enough\textquotesingle{}) call unit\+\_\+check(\textquotesingle{}myroutine\textquotesingle{}, x.\+lt.\+100 ,\textquotesingle{}test if small enough\textquotesingle{})
+
+write($\ast$,$\ast$)\textquotesingle{}checks on \char`\"{}myroutine\char`\"{} passed\textquotesingle{} call unit\+\_\+check\+\_\+good(\textquotesingle{}myroutine\textquotesingle{})
+
+end program demo\+\_\+unit\+\_\+check\+\_\+good \mbox{\Hypertarget{namespacem__debug_a6f1166b1f25f39931359c1aa1b2219e5}\label{namespacem__debug_a6f1166b1f25f39931359c1aa1b2219e5}} 
+\index{m\+\_\+debug@{m\+\_\+debug}!unit\+\_\+check\+\_\+start@{unit\+\_\+check\+\_\+start}}
+\index{unit\+\_\+check\+\_\+start@{unit\+\_\+check\+\_\+start}!m\+\_\+debug@{m\+\_\+debug}}
+\subsubsection{\texorpdfstring{unit\+\_\+check\+\_\+start()}{unit\_check\_start()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+debug\+::unit\+\_\+check\+\_\+start (\begin{DoxyParamCaption}\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{name,  }\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in}), \hyperlink{option__stopwatch_83_8txt_aa4ece75e7acf58a4843f70fe18c3ade5}{optional}}]{string }\end{DoxyParamCaption})}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+unit\+\_\+check\+\_\+start -\/ \mbox{[}M\+\_\+debug\mbox{]} call command \char`\"{}goodbad N\+A\+M\+E start\char`\"{} 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\begin{DoxyVerb}subroutine unit_check_start(name,string)
+
+ character(len=*),intent(in) :: name
+ character(len=*),intent(in),optional :: string
+\end{DoxyVerb}
+
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+\begin{DoxyVerb}unit_check_start(3f) calls the shell command
+
+   goodbad NAME start [string]
+\end{DoxyVerb}
+
+
+\subsubsection*{E\+X\+A\+M\+P\+L\+ES}
+
+Sample program\+:
+
+program demo\+\_\+unit\+\_\+check\+\_\+start use M\+\_\+debug, only\+: unit\+\_\+check\+\_\+start use M\+\_\+debug, only\+: unit\+\_\+check use M\+\_\+debug, only\+: unit\+\_\+check\+\_\+good, unit\+\_\+check\+\_\+bad
+
+implicit none integer \+:\+: x x=10 call unit\+\_\+check\+\_\+start(\textquotesingle{}myroutine\textquotesingle{})
+
+call unit\+\_\+check\+\_\+start(\textquotesingle{}myroutine\+\_\+long\textquotesingle{},\textquotesingle{} \& \& -\/section 3 \& \& -\/library lib\+G\+PF \& \& -\/filename {\ttfamily pwd}/\+M\+\_\+debug.FF \& \& -\/documentation y \& \& -\/ufpp y \& \& -\/ccall n \& \& -\/archive G\+P\+F.\+a \& \& \textquotesingle{})
+
+call unit\+\_\+check(\textquotesingle{}myroutine\textquotesingle{}, x.\+gt.\+3 , \textquotesingle{}test if big enough\textquotesingle{}) call unit\+\_\+check(\textquotesingle{}myroutine\textquotesingle{}, x.\+lt.\+100 , \textquotesingle{}test if small enough\textquotesingle{})
+
+call unit\+\_\+check\+\_\+good(\textquotesingle{}myroutine\textquotesingle{},\textquotesingle{}store that checks passed\textquotesingle{})
+
+end program demo\+\_\+unit\+\_\+check\+\_\+start 
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{namespacem__debug_aa13827e130b8e8bde8a8597e3d3faa0c}\label{namespacem__debug_aa13827e130b8e8bde8a8597e3d3faa0c}} 
+\index{m\+\_\+debug@{m\+\_\+debug}!debug@{debug}}
+\index{debug@{debug}!m\+\_\+debug@{m\+\_\+debug}}
+\subsubsection{\texorpdfstring{debug}{debug}}
+{\footnotesize\ttfamily logical, save, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+debug\+::debug =.false.}
+
+\mbox{\Hypertarget{namespacem__debug_a884bfce2d57734eb9f07e8a99d4ffaeb}\label{namespacem__debug_a884bfce2d57734eb9f07e8a99d4ffaeb}} 
+\index{m\+\_\+debug@{m\+\_\+debug}!exit\+\_\+failure@{exit\+\_\+failure}}
+\index{exit\+\_\+failure@{exit\+\_\+failure}!m\+\_\+debug@{m\+\_\+debug}}
+\subsubsection{\texorpdfstring{exit\+\_\+failure}{exit\_failure}}
+{\footnotesize\ttfamily integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+debug\+::exit\+\_\+failure =1}
+
+\mbox{\Hypertarget{namespacem__debug_a9f9aab455ab97238c80d66dd9ed65a7d}\label{namespacem__debug_a9f9aab455ab97238c80d66dd9ed65a7d}} 
+\index{m\+\_\+debug@{m\+\_\+debug}!exit\+\_\+success@{exit\+\_\+success}}
+\index{exit\+\_\+success@{exit\+\_\+success}!m\+\_\+debug@{m\+\_\+debug}}
+\subsubsection{\texorpdfstring{exit\+\_\+success}{exit\_success}}
+{\footnotesize\ttfamily integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+debug\+::exit\+\_\+success =0}
+
+\mbox{\Hypertarget{namespacem__debug_ab9d95afd83b30688892f4c818ee8c312}\label{namespacem__debug_ab9d95afd83b30688892f4c818ee8c312}} 
+\index{m\+\_\+debug@{m\+\_\+debug}!io\+\_\+debug@{io\+\_\+debug}}
+\index{io\+\_\+debug@{io\+\_\+debug}!m\+\_\+debug@{m\+\_\+debug}}
+\subsubsection{\texorpdfstring{io\+\_\+debug}{io\_debug}}
+{\footnotesize\ttfamily integer, save, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+debug\+::io\+\_\+debug =E\+R\+R\+O\+R\+\_\+\+U\+N\+IT}
+

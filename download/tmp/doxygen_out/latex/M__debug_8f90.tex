@@ -1,0 +1,51 @@
+\hypertarget{M__debug_8f90}{}\section{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+M\+\_\+debug.f90 File Reference}
+\label{M__debug_8f90}\index{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+M\+\_\+debug.\+f90@{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+M\+\_\+debug.\+f90}}
+\subsection*{Modules}
+\begin{DoxyCompactItemize}
+\item 
+module \hyperlink{namespacem__debug}{m\+\_\+debug}
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+M\+\_\+debug(3fm) -\/ \mbox{[}M\+\_\+debug\mbox{]} a collection of Fortran routines for supporting the development of unit tests, and providing error processing and debugging procedures. \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__debug_ad59ade4de861dcf4e007521b2cf2f304}{m\+\_\+debug\+::stderr} (\hyperlink{M__stopwatch_83_8txt_aa4313e9a55405841f95e6550cd87fc3b}{message}, generic)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+stderr -\/ \mbox{[}M\+\_\+debug\mbox{]} write message to stderr \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__debug_a66fa03a6a97837acc4c1265be1294295}{m\+\_\+debug\+::fstop} (ierr, stdout, \hyperlink{M__io_8f90_a448cccd08d4d6bce645ffbbf14cdfa7e}{stderr})
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+fstop -\/ \mbox{[}M\+\_\+debug\mbox{]} call stop with both a number and a message \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__debug_a0ae797092ab85a8ba9258dc9f8949189}{m\+\_\+debug\+::unit\+\_\+check} (\hyperlink{M__stopwatch_83_8txt_a3f508a893ae4c3b397b4383e33b9bcae}{name}, logical\+\_\+expression, \hyperlink{M__stopwatch_83_8txt_aa4313e9a55405841f95e6550cd87fc3b}{message})
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+unit\+\_\+check -\/ \mbox{[}M\+\_\+debug\mbox{]} if logical expression is false, call command \char`\"{}goodbad N\+A\+M\+E bad\char`\"{} and stop program \end{DoxyCompactList}\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__debug_a6f1166b1f25f39931359c1aa1b2219e5}{m\+\_\+debug\+::unit\+\_\+check\+\_\+start} (\hyperlink{M__stopwatch_83_8txt_a3f508a893ae4c3b397b4383e33b9bcae}{name}, \hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string})
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+unit\+\_\+check\+\_\+start -\/ \mbox{[}M\+\_\+debug\mbox{]} call command \char`\"{}goodbad N\+A\+M\+E start\char`\"{} \end{DoxyCompactList}\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__debug_a668813eec59e4c16d3bbc2d317e8cdee}{m\+\_\+debug\+::unit\+\_\+check\+\_\+bad} (\hyperlink{M__stopwatch_83_8txt_a3f508a893ae4c3b397b4383e33b9bcae}{name}, \hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string})
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+unit\+\_\+check\+\_\+bad -\/ \mbox{[}M\+\_\+debug\mbox{]} call command \char`\"{}goodbad N\+A\+M\+E bad\char`\"{} and stop program \end{DoxyCompactList}\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__debug_acd67428a8900ec4c36bd3a7b28d56987}{m\+\_\+debug\+::unit\+\_\+check\+\_\+good} (\hyperlink{M__stopwatch_83_8txt_a3f508a893ae4c3b397b4383e33b9bcae}{name}, \hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string})
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+unit\+\_\+check\+\_\+good -\/ \mbox{[}M\+\_\+debug\mbox{]} call command \char`\"{}goodbad N\+A\+M\+E good\char`\"{} \end{DoxyCompactList}\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__debug_a9b456606b4c555ed2e1e453aa9c872cb}{m\+\_\+debug\+::pdec} (\hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string})
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+pdec -\/ \mbox{[}M\+\_\+debug\mbox{]} write out string with A\+S\+C\+II decimal equivalent vertically under it \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+integer, save, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__debug_ab9d95afd83b30688892f4c818ee8c312}{m\+\_\+debug\+::io\+\_\+debug} =E\+R\+R\+O\+R\+\_\+\+U\+N\+IT
+\item 
+logical, save, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__debug_aa13827e130b8e8bde8a8597e3d3faa0c}{m\+\_\+debug\+::debug} =.false.
+\item 
+integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__debug_a9f9aab455ab97238c80d66dd9ed65a7d}{m\+\_\+debug\+::exit\+\_\+success} =0
+\item 
+integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__debug_a884bfce2d57734eb9f07e8a99d4ffaeb}{m\+\_\+debug\+::exit\+\_\+failure} =1
+\end{DoxyCompactItemize}

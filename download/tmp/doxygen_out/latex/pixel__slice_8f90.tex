@@ -1,0 +1,42 @@
+\hypertarget{pixel__slice_8f90}{}\section{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/pixel\+\_\+slice.f90 File Reference}
+\label{pixel__slice_8f90}\index{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/pixel\+\_\+slice.\+f90@{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/pixel\+\_\+slice.\+f90}}
+\subsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{pixel__slice_8f90_a8113cc3f9dd0449a8e74ef4ae1dfe829}{pixel\+\_\+slice} (surfdat, kix, kiz, nx, nz, a0, b0)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+pixel\+\_\+slice(3f) -\/ \mbox{[}M\+\_\+pixel\mbox{]} simplified call of D\+L\+\_\+\+S\+L\+I\+C\+E\+S(3f) to make a plot of a 3-\/d surface \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{pixel__slice_8f90_a8113cc3f9dd0449a8e74ef4ae1dfe829}\label{pixel__slice_8f90_a8113cc3f9dd0449a8e74ef4ae1dfe829}} 
+\index{pixel\+\_\+slice.\+f90@{pixel\+\_\+slice.\+f90}!pixel\+\_\+slice@{pixel\+\_\+slice}}
+\index{pixel\+\_\+slice@{pixel\+\_\+slice}!pixel\+\_\+slice.\+f90@{pixel\+\_\+slice.\+f90}}
+\subsubsection{\texorpdfstring{pixel\+\_\+slice()}{pixel\_slice()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} pixel\+\_\+slice (\begin{DoxyParamCaption}\item[{\hyperlink{read__watch_83_8txt_abdb62bde002f38ef75f810d3a905a823}{real}, dimension(kix,kiz), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{surfdat,  }\item[{integer, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{kix,  }\item[{integer, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{kiz,  }\item[{integer, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{nx,  }\item[{integer, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{nz,  }\item[{\hyperlink{read__watch_83_8txt_abdb62bde002f38ef75f810d3a905a823}{real}, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{a0,  }\item[{\hyperlink{read__watch_83_8txt_abdb62bde002f38ef75f810d3a905a823}{real}, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{b0 }\end{DoxyParamCaption})}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+pixel\+\_\+slice(3f) -\/ \mbox{[}M\+\_\+pixel\mbox{]} simplified call of D\+L\+\_\+\+S\+L\+I\+C\+E\+S(3f) to make a plot of a 3-\/d surface 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+subroutine pixel\+\_\+\+S\+L\+I\+C\+E(surfdat,kix,kiz,nx,nz,a0,b0)
+
+real,intent(in) \+:\+: S\+U\+R\+F\+D\+A\+T(kix,kiz) integer,intent(in) \+:\+: kix integer,intent(in) \+:\+: kiz integer,intent(in) \+:\+: nx integer,intent(in) \+:\+: nz real,intent(in) \+:\+: a0 real,intent(in) \+:\+: b0
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+Simplified call to D\+L\+\_\+\+S\+L\+I\+C\+E\+S(3f) to make a plot of a 3-\/d surface
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+S\+U\+R\+F\+D\+A\+T(kix,kiz) array of y values K\+IX,K\+IZ dimension of surfdat array NX,NZ size of surface to plot A0 initial angle of x axis from horizontal 0-\/80 degrees B0 initial angle of z axis from horizontal 5-\/80 degrees
+
+\subsubsection*{E\+X\+A\+M\+P\+LE}
+
+References m\+\_\+pixel\+::clear(), m\+\_\+pixel\+::color(), m\+\_\+pixel\+\_\+slices\+::dl\+\_\+init(), m\+\_\+pixel\+\_\+slices\+::dl\+\_\+slices(), m\+\_\+pixel\+\_\+slices\+::dl\+\_\+symbol(), and m\+\_\+pixel\+::linewidth().
+

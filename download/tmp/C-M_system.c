@@ -512,3 +512,19 @@ mode_t mode;
    return perms_buff;
 }
 /* ===============================================================================================================================*/
+/*
+   To get stream I/O out of stdin and stdout, make a getc and putc callable from Fortran
+*/
+char getkeyC (void) {
+   /* @(#) Driver for reading a character from stdin */
+   char c;
+   read (0, &c, 1);
+   return (c);
+}
+
+int putkeyC (char c) {
+   /* @(#) Driver for writing a character to stdout */
+   write (1, &c, 1);
+   return (c);
+}
+/* ===============================================================================================================================*/

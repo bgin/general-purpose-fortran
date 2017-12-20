@@ -1,0 +1,118 @@
+\hypertarget{namespacem__getkey}{}\section{m\+\_\+getkey Module Reference}
+\label{namespacem__getkey}\index{m\+\_\+getkey@{m\+\_\+getkey}}
+
+
+\subsubsection*{N\+A\+ME}
+
+system\+\_\+getkey(3f) -\/ read single character from keyboard in hot (raw I/O) mode \subsubsection*{S\+Y\+N\+T\+AX} 
+
+
+\subsection*{Data Types}
+\begin{DoxyCompactItemize}
+\item 
+interface \hyperlink{interfacem__getkey_1_1system__getkey}{system\+\_\+getkey}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{N\+A\+ME}
+
+system\+\_\+getkey(3f) -\/ read single character from keyboard in hot (raw I/O) mode \subsubsection*{S\+Y\+N\+T\+AX}
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+S\+Y\+S\+T\+E\+M\+\_\+\+G\+E\+T\+K\+E\+Y(3\+F) is a C/\+Fortran combination that (hopefully) lets Fortran read one character at a time in raw I/O mode on most platforms.
+
+Unfortunately (as of this writing), there is no universal standard method using the programming languages Fortran or C for reading hot (raw I/O) keystrokes. In this document \char`\"{}\+Hot\char`\"{} or \char`\"{}\+Raw\char`\"{} mode, also sometimes called \char`\"{}immediate mode\char`\"{} means each keystroke is detected immediately, without requiring a carriage return.
+
+The best way to know if this will work on your platform is to try it.
+
+\subsubsection*{E\+X\+A\+M\+P\+LE}
+
+Sample program
+
+program test\+\_\+system\+\_\+getkey use M\+\_\+getkey, only \+: \hyperlink{interfacem__getkey_1_1system__getkey}{system\+\_\+getkey} character \+:\+: A integer \+:\+: icount character(len=1),parameter \+:\+: null=char(0) icount=0 call \hyperlink{namespacem__pixel_af3b81a21a0b2f6b5eddd09c031bd6173}{clear()} write($\ast$,$\ast$)\textquotesingle{}begin striking keys to demonstrate interactive raw I/O mode\textquotesingle{} call \hyperlink{namespacem__kracken_ad0cfac1dcc02e0a67841f546cb57f823}{menu()} do A=system\+\_\+getkey() icount=icount+1 select case(\+A) case(\textquotesingle{}a\textquotesingle{}\+:\textquotesingle{}e\textquotesingle{}) write($\ast$,$\ast$)\textquotesingle{}You entered a valid menu item \textquotesingle{},A,\textquotesingle{}=$>$\textquotesingle{},ichar(\+A),icount case(null) if(icount.\+gt.\+40000000)then write($\ast$,$\ast$)\textquotesingle{}limit of 40 000 000, calls reached\textquotesingle{} stop endif case(\textquotesingle{}q\textquotesingle{}) stop case default call \hyperlink{namespacem__pixel_af3b81a21a0b2f6b5eddd09c031bd6173}{clear()} write($\ast$,$\ast$)\textquotesingle{}unknown menu option\textquotesingle{} write($\ast$,$\ast$)\textquotesingle{}you entered key=\textquotesingle{},A,\textquotesingle{}-\/$>$\textquotesingle{},ichar(\+A),icount call \hyperlink{namespacem__kracken_ad0cfac1dcc02e0a67841f546cb57f823}{menu()} end select enddo contains
+
+subroutine \hyperlink{namespacem__pixel_af3b81a21a0b2f6b5eddd09c031bd6173}{clear()} ! A\+N\+SI V\+T102 screen clear sequence. ! May not work in all terminal emulators write($\ast$,\textquotesingle{}(a,\char`\"{}\mbox{[}2\+J\char`\"{})\textquotesingle{},advance=\textquotesingle{}no\textquotesingle{})char(27) flush(6) write($\ast$,$\ast$) end subroutine clear
+
+subroutine \hyperlink{namespacem__kracken_ad0cfac1dcc02e0a67841f546cb57f823}{menu()} write($\ast$,\char`\"{}(3x,\textquotesingle{}a)  first choice   \textquotesingle{})\char`\"{}) write($\ast$,\char`\"{}(3x,\textquotesingle{}b)  second choice  \textquotesingle{})\char`\"{}) write($\ast$,\char`\"{}(3x,\textquotesingle{}c)  third choice   \textquotesingle{})\char`\"{}) write($\ast$,\char`\"{}(3x,\textquotesingle{}d)  fourth choice  \textquotesingle{})\char`\"{}) write($\ast$,\char`\"{}(3x,\textquotesingle{}e)  fifth choice   \textquotesingle{})\char`\"{}) write($\ast$,\char`\"{}(\textquotesingle{}enter choice (q to quit)\+:\textquotesingle{})\char`\"{}) end subroutine menu
+
+end program test\+\_\+system\+\_\+getkey
+
+\subsubsection*{H\+OW IT W\+O\+R\+KS}
+
+\begin{DoxyVerb}The getkey(3c) C routine uses commonly available routines to set to
+raw mode, read a keystroke, and reset to normal mode. Once this is
+working, it is typically easy to make a Fortran routine that calls
+the C routine. How to make Fortran/C interfaces still varies if you
+do not have a Fortran 2003 compiler.
+
+getkey.c is the core C routine that you must get working.
+
+The steps to test the SYSTEM_GETKEY(3F) procedure are relatively simple.
+\end{DoxyVerb}
+
+
+Test C program
+
+First you need to make sure the C routine will work by itself ...
+
+\subparagraph*{}
+
+cc -\/\+D\+T\+E\+S\+T\+P\+RG -\/\+D\+L\+I\+N\+UX getkey.\+c -\/o testit or cc -\/\+D\+T\+E\+S\+T\+P\+RG -\/\+V13 getkey.\+c -\/o testit or cc -\/\+D\+T\+E\+S\+T\+P\+RG -\/\+V13B getkey.\+c -\/o testit or cc -\/\+D\+T\+E\+S\+T\+P\+RG -\/\+D\+B\+SD getkey.\+c -\/o testit then ./testit \subparagraph*{}
+
+Test common Fortran/C interface style
+
+Once the C program works; just make an object file and then load it with one of the Fortran programs, depending on which compilers you have
+
+Test using Fortran 2003 I\+S\+O\+\_\+\+C\+\_\+\+B\+I\+N\+D\+I\+NG
+
+If you have a Fortran 2003 compiler, there is a standard-\/based method for the Fortran-\/to-\/C interface that is preferable that uses the I\+S\+O\+\_\+\+C\+\_\+\+B\+I\+N\+D\+I\+N\+GS modules. Note that most f90+ compilers now support this 2003 feature as an extension ...
+
+\subparagraph*{}
+
+cc -\/\+D\+Linux getkey.\+c -\/o g95 M\+\_\+getkey.\+F90 getkey.\+o -\/o testit ./testit \subparagraph*{}
+
+Running the Test Program
+
+The sample program reads one character at a time until the letter \char`\"{}q\char`\"{} is entered. If the C program works in stand-\/alone mode but none of the Fortran examples work you will have to find out how your programming environment allows Fortran to call C routines. For this intentionally simple routine you usually just need to add an underscore to the C name (ie \char`\"{}\+\_\+getkey\char`\"{} or \char`\"{}getkey\+\_\+\char`\"{} or make it uppercase \char`\"{}\+G\+E\+T\+K\+E\+Y\char`\"{}) to make Fgetkey(3c) a Fortran-\/callable procedure.
+
+\subsubsection*{A\+L\+T\+E\+R\+N\+A\+T\+I\+V\+ES}
+
+
+\begin{DoxyItemize}
+\item Look at the curses(3c) or ncurses(3c) libraries or similar libraries
+\item Look for extensions in your Fortran compiler documentation (Pass examples back -- I would be glad to see them).
+\item In Unix and G\+N\+U/\+Linux look at the system commands
+
+stty -\/cread or stty raw -\/echo min 0 time 5
+\end{DoxyItemize}
+
+\begin{DoxyVerb} Sometimes you can use a call to SYSTEM() to set and unset raw I/O
+ mode and then use standard I/O routines; This is a simple method;
+ but it is highly OS(Operating System) and compiler dependent and
+ has very high overhead.
+\end{DoxyVerb}
+
+\begin{DoxyItemize}
+\item Routines that allow input-\/line editing may provide source that has to read in raw mode.
+\end{DoxyItemize}
+
+\subsubsection*{O\+R\+I\+G\+I\+NS}
+
+\begin{DoxyVerb}This routine has been on a lot of systems over the years; it dates back
+to a program that was used to read keypresses from a Tektronix 4010 and
+4014 raster storage graphics terminal (an xterm(1) still can emulate a
+Tektronix 4010!).
+\end{DoxyVerb}
+
+
+\subsubsection*{T\+E\+S\+T\+ED}
+
+\begin{DoxyVerb}Recently tested with the Intel compilers on Linux, on a MSWindows
+machine in the CygWin application, on HP-UX and Solaris. Some version
+of it was used on UniCOS, Tru64, AIX, NextStep, ...
+
+caveat: communication-related characters such as ctrl-S and ctrl-Q
+are often still intercepted by the system or by terminal emulators. \end{DoxyVerb}
+ 

@@ -1,2 +1,91 @@
 \hypertarget{factors_8f90}{}\section{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/factors.f90 File Reference}
 \label{factors_8f90}\index{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/factors.\+f90@{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/factors.\+f90}}
+\subsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+program \hyperlink{factors_8f90_a01d59471a125202c8c43d68f82dd84f9}{find\+\_\+prime\+\_\+factors}
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{factors_8f90_a96d1688b4d46c7b9dfe3e34cf97426a6}{printme} (ii, jj)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{factors_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}{help\+\_\+usage} (l\+\_\+help)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{factors_8f90_a39c21619b08a3c22f19e2306efd7f766}{help\+\_\+version} (l\+\_\+version)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+factors(1f) -\/ \mbox{[}N\+U\+M\+B\+E\+RS\mbox{]}display prime factors of numbers \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{factors_8f90_a01d59471a125202c8c43d68f82dd84f9}\label{factors_8f90_a01d59471a125202c8c43d68f82dd84f9}} 
+\index{factors.\+f90@{factors.\+f90}!find\+\_\+prime\+\_\+factors@{find\+\_\+prime\+\_\+factors}}
+\index{find\+\_\+prime\+\_\+factors@{find\+\_\+prime\+\_\+factors}!factors.\+f90@{factors.\+f90}}
+\subsubsection{\texorpdfstring{find\+\_\+prime\+\_\+factors()}{find\_prime\_factors()}}
+{\footnotesize\ttfamily program find\+\_\+prime\+\_\+factors (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+References help\+\_\+usage(), help\+\_\+version(), m\+\_\+kracken\+::iget(), m\+\_\+kracken\+::igets(), m\+\_\+kracken\+::kracken(), m\+\_\+kracken\+::lget(), m\+\_\+factor\+::prime\+\_\+factors(), and printme().
+
+\mbox{\Hypertarget{factors_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}\label{factors_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}} 
+\index{factors.\+f90@{factors.\+f90}!help\+\_\+usage@{help\+\_\+usage}}
+\index{help\+\_\+usage@{help\+\_\+usage}!factors.\+f90@{factors.\+f90}}
+\subsubsection{\texorpdfstring{help\+\_\+usage()}{help\_usage()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} help\+\_\+usage (\begin{DoxyParamCaption}\item[{logical, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{l\+\_\+help }\end{DoxyParamCaption})}
+
+
+
+References false().
+
+\mbox{\Hypertarget{factors_8f90_a39c21619b08a3c22f19e2306efd7f766}\label{factors_8f90_a39c21619b08a3c22f19e2306efd7f766}} 
+\index{factors.\+f90@{factors.\+f90}!help\+\_\+version@{help\+\_\+version}}
+\index{help\+\_\+version@{help\+\_\+version}!factors.\+f90@{factors.\+f90}}
+\subsubsection{\texorpdfstring{help\+\_\+version()}{help\_version()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} help\+\_\+version (\begin{DoxyParamCaption}\item[{logical, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{l\+\_\+version }\end{DoxyParamCaption})}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+factors(1f) -\/ \mbox{[}N\+U\+M\+B\+E\+RS\mbox{]}display prime factors of numbers 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\begin{DoxyVerb}    factors [NUMBER]...
+    factors -start N -end M
+\end{DoxyVerb}
+
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+Print the prime factors of each specified integer N\+U\+M\+B\+ER. If none are specified on the command line, read them from standard input.
+
+Typically, the numbers must be positive integers where
+
+2 $<$= N\+U\+M\+B\+ER $<$= (2$\ast$$\ast$31)-\/1 or 2147483647.
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+-\/start N if specified factor a range of numbers starting with this value. If -\/end is specified defaults to 2. -\/end M if specified factor a range of numbers ending with this value. If -\/start is specified defaults to huge(0). --help display this help and exit --version output version information and exit --verbose verbose output \subsubsection*{E\+X\+A\+M\+P\+LE}
+
+Sample Usage\+:
+
+factors 512 512\+: 2 2 2 2 2 2 2 2 2
+
+factors 512 -\/verbose 512 factors as (2$\ast$$\ast$9)
+
+factors 202023 2147483647 -\/verbose 202023 factors as (3$\ast$$\ast$2)$\ast$22447 2147483647 IS A P\+R\+I\+ME N\+U\+M\+B\+ER
+
+factors -\/start 2 -\/end 12 -\/verbose 2 IS A P\+R\+I\+ME N\+U\+M\+B\+ER 3 IS A P\+R\+I\+ME N\+U\+M\+B\+ER 4 factors as (2$\ast$$\ast$2) 5 IS A P\+R\+I\+ME N\+U\+M\+B\+ER 6 factors as 2$\ast$3 7 IS A P\+R\+I\+ME N\+U\+M\+B\+ER 8 factors as (2$\ast$$\ast$3) 9 factors as (3$\ast$$\ast$2) 10 factors as 2$\ast$5 11 IS A P\+R\+I\+ME N\+U\+M\+B\+ER 12 factors as (2$\ast$$\ast$2)$\ast$3 
+
+References false().
+
+\mbox{\Hypertarget{factors_8f90_a96d1688b4d46c7b9dfe3e34cf97426a6}\label{factors_8f90_a96d1688b4d46c7b9dfe3e34cf97426a6}} 
+\index{factors.\+f90@{factors.\+f90}!printme@{printme}}
+\index{printme@{printme}!factors.\+f90@{factors.\+f90}}
+\subsubsection{\texorpdfstring{printme()}{printme()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} find\+\_\+prime\+\_\+factors\+::printme (\begin{DoxyParamCaption}\item[{integer, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{ii,  }\item[{integer, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{jj }\end{DoxyParamCaption})}
+
+
+
+References m\+\_\+factor\+::prime\+\_\+factors().
+

@@ -1014,7 +1014,7 @@ end subroutine sort_quick_rx
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    unique(3f) - [M_sort] assuming an array isorted, return array with duplicate values removed
+!!    unique(3f) - [M_sort] assuming an array is sorted, return array with duplicate values removed
 !!##SYNOPSIS
 !!
 !!    subroutine unique(array,ivals)

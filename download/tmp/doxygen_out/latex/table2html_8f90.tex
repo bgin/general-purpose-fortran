@@ -1,2 +1,87 @@
 \hypertarget{table2html_8f90}{}\section{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/table2html.f90 File Reference}
 \label{table2html_8f90}\index{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/table2html.\+f90@{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/table2html.\+f90}}
+\subsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{table2html_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}{help\+\_\+usage} (l\+\_\+help)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{table2html_8f90_a39c21619b08a3c22f19e2306efd7f766}{help\+\_\+version} (l\+\_\+version)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+table2html(1f) -\/ \mbox{[}F\+I\+LE F\+I\+L\+T\+ER\mbox{]} filter to format simple columns into an H\+T\+ML table form \end{DoxyCompactList}\item 
+program \hyperlink{table2html_8f90_ac9fa6313f884ee5cf8caf9b9bfb9f3cd}{table2html}
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{table2html_8f90_a8fd5b1ad7c5297852591499ca1e2db09}{writeline} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{table2html_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}\label{table2html_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}} 
+\index{table2html.\+f90@{table2html.\+f90}!help\+\_\+usage@{help\+\_\+usage}}
+\index{help\+\_\+usage@{help\+\_\+usage}!table2html.\+f90@{table2html.\+f90}}
+\subsubsection{\texorpdfstring{help\+\_\+usage()}{help\_usage()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} help\+\_\+usage (\begin{DoxyParamCaption}\item[{logical, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{l\+\_\+help }\end{DoxyParamCaption})}
+
+
+
+References false().
+
+\mbox{\Hypertarget{table2html_8f90_a39c21619b08a3c22f19e2306efd7f766}\label{table2html_8f90_a39c21619b08a3c22f19e2306efd7f766}} 
+\index{table2html.\+f90@{table2html.\+f90}!help\+\_\+version@{help\+\_\+version}}
+\index{help\+\_\+version@{help\+\_\+version}!table2html.\+f90@{table2html.\+f90}}
+\subsubsection{\texorpdfstring{help\+\_\+version()}{help\_version()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} help\+\_\+version (\begin{DoxyParamCaption}\item[{logical, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{l\+\_\+version }\end{DoxyParamCaption})}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+table2html(1f) -\/ \mbox{[}F\+I\+LE F\+I\+L\+T\+ER\mbox{]} filter to format simple columns into an H\+T\+ML table form 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\begin{DoxyVerb}table2html [[-classes classnames] [-caption caption line] [-delimiters delim]
+           [-asis] [-header] [-tabletags tags] ] |-help|-version
+\end{DoxyVerb}
+
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+table2html is a filter that converts tabular text input to an H\+T\+ML table. The program can create an H\+T\+ML table displaying alternating hues per row.
+
+The \char`\"{}-\/classes\char`\"{} option generates code using cascading style sheet (C\+SS) class names for alternating rows; default names are \char`\"{}even\char`\"{} and \char`\"{}odd\char`\"{}. The following style definition in a page\textquotesingle{}s $<$head$>$ section will assign different background hues to be used\+:
+
+$<$style type=\char`\"{}text/css\char`\"{}$>$ .even \{ background-\/color\+: \#\+F\+F\+F\+F\+FF; \} .odd \{ background-\/color\+: \#\+F0\+F0\+F0; \} $<$/style$>$
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+-\/caption a caption line for the table -\/classes use C\+SS class names for different rows (empty argument\+: odd even) -\/delimiters input column delimiter (default\+: whitespace). If a list contains space the space must not be last in the list. -\/header the first row is assumed to be a header line (default\+: no header lines) -\/tabletags specify own H\+T\+ML table tags instead of the default\+: border=\char`\"{}1\char`\"{} -\/document write complete H\+T\+ML document instead of just table -\/asis by default the characters $>$$<$\& are converted to their H\+T\+ML equivalents. This option turns that conversion off. -\/help display command help and exit -\/version display command metadata and exit \subsubsection*{E\+X\+A\+M\+P\+L\+ES}
+
+Sample usage\+:
+
+\subsection*{list month as a table}
+
+cal$\vert$tail -\/n +2$\vert$table2html -\/caption \$(cal$\vert$head -\/n 1) -\/document $\vert$w3m -\/dump -\/T text/html$\vert$more 
+
+References false().
+
+\mbox{\Hypertarget{table2html_8f90_ac9fa6313f884ee5cf8caf9b9bfb9f3cd}\label{table2html_8f90_ac9fa6313f884ee5cf8caf9b9bfb9f3cd}} 
+\index{table2html.\+f90@{table2html.\+f90}!table2html@{table2html}}
+\index{table2html@{table2html}!table2html.\+f90@{table2html.\+f90}}
+\subsubsection{\texorpdfstring{table2html()}{table2html()}}
+{\footnotesize\ttfamily program table2html (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+References help\+\_\+usage(), help\+\_\+version(), m\+\_\+kracken\+::iget(), m\+\_\+kracken\+::ipvalue, m\+\_\+kracken\+::kracken(), m\+\_\+kracken\+::lget(), m\+\_\+kracken\+::sget(), m\+\_\+kracken\+::sgets(), m\+\_\+strings\+::split(), m\+\_\+strings\+::substitute(), and writeline().
+
+\mbox{\Hypertarget{table2html_8f90_a8fd5b1ad7c5297852591499ca1e2db09}\label{table2html_8f90_a8fd5b1ad7c5297852591499ca1e2db09}} 
+\index{table2html.\+f90@{table2html.\+f90}!writeline@{writeline}}
+\index{writeline@{writeline}!table2html.\+f90@{table2html.\+f90}}
+\subsubsection{\texorpdfstring{writeline()}{writeline()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} table2html\+::writeline (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+References m\+\_\+strings\+::split(), and m\+\_\+strings\+::substitute().
+

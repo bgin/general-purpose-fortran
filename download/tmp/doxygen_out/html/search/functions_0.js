@@ -1,7 +1,25 @@
 var searchData=
 [
   ['a',['A',['../intro__blas1_83_8txt.html#a551f50f49d7c6e28f69f5ad5289291b0',1,'A(1, 3):&#160;intro_blas1.3.txt'],['../intro__blas1_83_8txt.html#ac091a23e61396cb1fe90ba2dfe401478',1,'A(2, 3):&#160;intro_blas1.3.txt'],['../intro__blas1_83_8txt.html#a8d57094ff91525f72550f8b60cca002f',1,'A(I, 1):&#160;intro_blas1.3.txt']]],
+  ['a2d',['a2d',['../interfacem__strings_1_1string__to__value.html#a7e6fa828946adab0e79403dbf03a24d1',1,'m_strings::string_to_value::a2d()'],['../namespacem__strings.html#a751d3101d8404ea10db4d8ba59a75d6b',1,'m_strings::a2d()']]],
+  ['a2i',['a2i',['../interfacem__strings_1_1string__to__value.html#a2089572a0b06d524be83d9089589c959',1,'m_strings::string_to_value::a2i()'],['../namespacem__strings.html#aca902af295ede82fb0c45174bbfe6eef',1,'m_strings::a2i()']]],
+  ['a2r',['a2r',['../interfacem__strings_1_1string__to__value.html#aec779c978fa7bcc812c6cb029321b5f0',1,'m_strings::string_to_value::a2r()'],['../namespacem__strings.html#a6b4babf586dc3586426b13e4bb0fb979',1,'m_strings::a2r()']]],
+  ['a2s',['a2s',['../interfacem__strings_1_1switch.html#a9e8d2a8effdbed2a822cfe14bbb9983c',1,'m_strings::switch::a2s()'],['../namespacem__strings.html#a9365ae5277199446d93fc5208be2e9a5',1,'m_strings::a2s()']]],
+  ['accdig',['accdig',['../namespacem__math.html#a29d92d203eee5fb3ccf5fee7abce7450',1,'m_math']]],
+  ['acosd',['acosd',['../namespacem__units.html#af4446b30251a8832b90b9c6c596104d6',1,'m_units']]],
+  ['add_5fstring',['add_string',['../namespacem__kracken.html#a21998bf9ab683f8fb661f4f4b916c21f',1,'m_kracken']]],
+  ['adjustc',['adjustc',['../structm__strings__oop_1_1string.html#a00b51e0438ecd366e3a42e28e7b2996b',1,'m_strings_oop::string::adjustc()'],['../namespacem__strings.html#a1cacb2e45c7e3d7ed4cc1b183c35f323',1,'m_strings::adjustc()']]],
+  ['adjustl',['adjustl',['../structm__strings__oop_1_1string.html#a1f88b4f2a38506e18657f3f1a62e98f9',1,'m_strings_oop::string']]],
+  ['adjustr',['adjustr',['../structm__strings__oop_1_1string.html#a07c71514613acbde4215d06e493b807b',1,'m_strings_oop::string']]],
+  ['almost',['almost',['../namespacem__math.html#a5c6526b86e62cffde2dc20e53fd3be22',1,'m_math']]],
   ['anyinteger_5fto_5f128bit',['anyinteger_to_128bit',['../namespacem__anyscalar.html#a513beeccb5c821157cbd2eea8a1d9842',1,'m_anyscalar']]],
   ['anyscalar_5fto_5fdouble',['anyscalar_to_double',['../namespacem__anyscalar.html#a6173dbc57e7c5a96f5961d9e83e6e15e',1,'m_anyscalar']]],
-  ['anyscalar_5fto_5freal',['anyscalar_to_real',['../namespacem__anyscalar.html#a39cd9a778fff85974fa1a822b92555fd',1,'m_anyscalar']]]
+  ['anyscalar_5fto_5freal',['anyscalar_to_real',['../namespacem__anyscalar.html#a39cd9a778fff85974fa1a822b92555fd',1,'m_anyscalar']]],
+  ['arc',['arc',['../namespacem__pixel.html#ab881b9c2adff081a086cd83a1f1341fb',1,'m_pixel']]],
+  ['arr2str',['arr2str',['../namespacem__system.html#aeb3d7d4cb39d59917910a3ae2532206d',1,'m_system']]],
+  ['asind',['asind',['../namespacem__units.html#ad2b3de1ae68e3090d6c5793fc50dce77',1,'m_units']]],
+  ['atan2d',['atan2d',['../namespacem__units.html#a09403aaa43be5c74f7b9a3c2df2d1460',1,'m_units']]],
+  ['atand',['atand',['../namespacem__units.html#ac54e5d4cedc06c56d0de8e0138781be9',1,'m_units']]],
+  ['atomnum2symbol',['atomnum2symbol',['../namespacem__units.html#a09d8d6552dedf64faf635ea0ea6606ab',1,'m_units']]],
+  ['avoid_5fcompiler_5fwarnings',['avoid_compiler_warnings',['../namespacem__display.html#a6200cf732096469f40c38ec2baa6d811',1,'m_display']]]
 ];

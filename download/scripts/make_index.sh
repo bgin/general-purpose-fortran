@@ -36,13 +36,14 @@ cat <<\EOF
    <li>  <a href="man3.html"> manpages for the <em>procedures</em> </a> as *roff and HTML </li>
 
    <li>  selected <a href="programs.html"> example programs</a>
-         <br/> Some of most useful programs for developers are
+         <br/> Some of the most useful programs for developers are
        <ul>
        <li><a href="what_overview.1.html">An overview of what(1)</a>, 
            and <a href="what.1.html">what</a> -- extract SCCS-style metadata from a file </li>
        <li><a href="ufpp_overview.1.html">An overview of ufpp(1)</a>,
            and <a href="ufpp.1.html">ufpp</a> -- a source code preprocessor</li>
        <li><a href="numdiff.1.html"> numdiff</a> -- Compare numeric differences in a file </li>
+       <li><a href="makeout.1.html"> makeout</a> -- Generate initial make(1) files for a directory</li>
        </ul>
    </li>
    <li>  <a href="man1.html"> manpages for the <em>example programs</em> </a> as *roff and HTML </li>
@@ -191,7 +192,7 @@ cat <<\EOF
 
 <p>
    To simplify building the resulting collection of code a make(1)
-   file has been automatically generated using makeMake(1) to compile
+   file has been automatically generated using makeout(1) to compile
    the sources.
 </p>
 

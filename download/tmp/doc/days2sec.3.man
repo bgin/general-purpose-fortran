@@ -25,10 +25,11 @@ DESCRIPTION
         mm:ss
         ss
 
-         Where dd is days, hh hours, mm minutes and ss seconds.  A decimal
-         fraction is supported on the seconds.
+         Where dd is days, hh hours, mm minutes and ss seconds.
 
-         The numeric values may represent floating point numbers.  Spaces are ignored.
+         A decimal fraction is supported on the seconds (Actually,
+         any of the numeric values may represent positive floating
+         point numbers).  Spaces are ignored.
 
        NNdNNhNNmNNs
          Simple numeric values may also be used with unit suffixes; where

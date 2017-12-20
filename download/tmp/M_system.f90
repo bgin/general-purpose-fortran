@@ -17,11 +17,13 @@
 !!    system_stat, system_isdir, system_islnk, system_isreg, &
 !!    system_isblk, system_ischr, system_isfifo,             &
 !!    system_access,                                         &
+!!    system_access,                                         &
 !!    system_issock, system_perm, system_stat_print
 !!
-!!    use M_system, only :system_errno, system_perror
+!!    !!use M_system, only : system_getc, system_putc
+!!    use M_system, only : system_errno, system_perror
 !!
-!!    use M_system, only :system_getegid, system_geteuid, system_getgid, &
+!!    use M_system, only : system_getegid, system_geteuid, system_getgid, &
 !!    system_gethostname, system_getpid, system_getppid, system_getsid, &
 !!    system_getuid, system_uname
 !!
@@ -86,6 +88,9 @@
 !!
 !!        o  fileglob(3f): Returns list of files using a file globbing pattern
 !!
+!!##STREAM I/O
+!!        o  system_getc(3f): get a character from stdin
+!!        o  system_putc(3f): put a character on stdout
 !!##RANDOM NUMBERS
 !!        o  system_srand(3f): call srand(3c)
 !!        o  system_rand(3f): call rand(3c)
@@ -137,6 +142,9 @@ private
 
 public :: system_rand
 public :: system_srand
+
+!!public :: system_getc
+!!public :: system_putc
 
 public :: system_getpid                  ! return process ID
 public :: system_getppid                 ! return parent process ID

@@ -1,0 +1,39 @@
+NAME
+   random_string(3f) - [M_random] create random string composed of provided characters of specified length
+
+SYNOPSIS
+   function random_string(chars,length) result(out)
+
+    character(len=*),intent(in)     :: chars
+    integer,intent(in)              :: length
+    character(len=:),allocatable    :: out
+
+DESCRIPTION
+   Given a set of characters and a length, generate a random string of
+   the specified length composed of the given set of characters.
+
+OPTIONS
+   chars   list of characters to generate random string with
+   length  number of characters to place in output string
+
+RESULT
+   out     string of LENGTH characters randomly filled with characters from CHARS
+
+EXAMPLE
+   Sample program:
+
+    program demo_random_string
+    use M_random, only : random_string, init_random_seed_by_dat
+       character(len=64) :: hexstring
+       ! use date and time to create a seed for calling random_seed(3f)
+       call init_random_seed_by_dat()
+       hexstring=random_string('0123456789abcdef',len(hexstring))
+       ! write random hexadecimal value for use
+       ! as something like an X11 authorization key
+       write(*,'(a)')hexstring
+    end program demo_random_string
+
+   Results
+
+    2363a3589736e23be0137ec7ebc9d74297a963f27958a176daea3dd850ed8487
+

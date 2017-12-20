@@ -45,7 +45,7 @@ int \hyperlink{C-M__system_8c_ad9bbaffdef223d18bb59a22c3c599201}{my\+\_\+errno} 
 \item 
 void \hyperlink{C-M__system_8c_ab955d6c562df08b9e465fe3cea24d83d}{system\+\_\+unbuffer} ()
 \item 
-void \hyperlink{C-M__system_8c_ab341d42a9117c4bd188dcdcbff69fe9a}{my\+\_\+uname} (char $\ast$which, char $\ast$\hyperlink{what__overview_81_8txt_a7d189cc480786c3c65688ced463aedcb}{string}, int $\ast$stringlen)
+void \hyperlink{C-M__system_8c_ab341d42a9117c4bd188dcdcbff69fe9a}{my\+\_\+uname} (char $\ast$which, char $\ast$\hyperlink{what__overview_81_8txt_a74cb7e955273b9f9157b4f0c18a38849}{string}, int $\ast$stringlen)
 \item 
 void \hyperlink{C-M__system_8c_aae18c27a21f7c4aed7328460a7edb34c}{my\+\_\+cpu\+\_\+time} (float $\ast$\hyperlink{c_8f90_aeb1f4e639be0213b4cbd07f2583a5b1f}{c}, float $\ast$u, float $\ast$s)
 \item 
@@ -68,6 +68,10 @@ int \hyperlink{C-M__system_8c_afc05a3ec2be734d741c384e752f96b90}{my\+\_\+file\+\
 void \hyperlink{C-M__system_8c_a93aa717690d60568cf019988f6434ba5}{my\+\_\+stat} (char $\ast$\hyperlink{what__overview_81_8txt_a447b56c526e8da30e0dc94673727ee25}{file}, long int $\ast$values, int $\ast$ierr, int debug)
 \item 
 const char $\ast$ \hyperlink{C-M__system_8c_a1ef2ab1c7375f6b130cee762e770a29a}{my\+\_\+get\+\_\+perm} (long int imode)
+\item 
+char \hyperlink{C-M__system_8c_a00682f21b3d8ff5bbe69bf47e00f60ab}{getkeyC} (void)
+\item 
+int \hyperlink{C-M__system_8c_a834a89f46bdca2fc961db64cf3112cdf}{putkeyC} (char \hyperlink{c_8f90_aeb1f4e639be0213b4cbd07f2583a5b1f}{c})
 \end{DoxyCompactItemize}
 \subsection*{Variables}
 \begin{DoxyCompactItemize}
@@ -120,6 +124,16 @@ long int \hyperlink{C-M__system_8c_ad45ba6068349b626136d161ff72dea21}{longest\+\
 
 
 \subsection{Function Documentation}
+\mbox{\Hypertarget{C-M__system_8c_a00682f21b3d8ff5bbe69bf47e00f60ab}\label{C-M__system_8c_a00682f21b3d8ff5bbe69bf47e00f60ab}} 
+\index{C-\/\+M\+\_\+system.\+c@{C-\/\+M\+\_\+system.\+c}!getkeyC@{getkeyC}}
+\index{getkeyC@{getkeyC}!C-\/\+M\+\_\+system.\+c@{C-\/\+M\+\_\+system.\+c}}
+\subsubsection{\texorpdfstring{getkey\+C()}{getkeyC()}}
+{\footnotesize\ttfamily char getkeyC (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+References c().
+
 \mbox{\Hypertarget{C-M__system_8c_acfa12de4342c03519fc35d7892db94b2}\label{C-M__system_8c_acfa12de4342c03519fc35d7892db94b2}} 
 \index{C-\/\+M\+\_\+system.\+c@{C-\/\+M\+\_\+system.\+c}!my\+\_\+chown@{my\+\_\+chown}}
 \index{my\+\_\+chown@{my\+\_\+chown}!C-\/\+M\+\_\+system.\+c@{C-\/\+M\+\_\+system.\+c}}
@@ -159,6 +173,10 @@ References m\+\_\+journal\+::stdout.
 \index{my\+\_\+get\+\_\+perm@{my\+\_\+get\+\_\+perm}!C-\/\+M\+\_\+system.\+c@{C-\/\+M\+\_\+system.\+c}}
 \subsubsection{\texorpdfstring{my\+\_\+get\+\_\+perm()}{my\_get\_perm()}}
 {\footnotesize\ttfamily const char$\ast$ my\+\_\+get\+\_\+perm (\begin{DoxyParamCaption}\item[{long int}]{imode }\end{DoxyParamCaption})}
+
+
+
+References m\+\_\+system\+::mode\+\_\+t.
 
 \mbox{\Hypertarget{C-M__system_8c_a13b282e9de0dc0bb29bec1d76aaf6cf0}\label{C-M__system_8c_a13b282e9de0dc0bb29bec1d76aaf6cf0}} 
 \index{C-\/\+M\+\_\+system.\+c@{C-\/\+M\+\_\+system.\+c}!my\+\_\+getgrgid@{my\+\_\+getgrgid}}
@@ -236,7 +254,7 @@ References environ, ep, and longest\+\_\+env\+\_\+variable.
 
 
 
-References length().
+References m\+\_\+calculator\+::dp, and length().
 
 \mbox{\Hypertarget{C-M__system_8c_a0114eece06797ba0c5e6f5948841501a}\label{C-M__system_8c_a0114eece06797ba0c5e6f5948841501a}} 
 \index{C-\/\+M\+\_\+system.\+c@{C-\/\+M\+\_\+system.\+c}!my\+\_\+readenv@{my\+\_\+readenv}}
@@ -256,7 +274,7 @@ References ep, M\+IN, and my\+\_\+initenv().
 
 
 
-References group(), and size().
+References m\+\_\+writegif\+::buf, group(), and size().
 
 \mbox{\Hypertarget{C-M__system_8c_ab341d42a9117c4bd188dcdcbff69fe9a}\label{C-M__system_8c_ab341d42a9117c4bd188dcdcbff69fe9a}} 
 \index{C-\/\+M\+\_\+system.\+c@{C-\/\+M\+\_\+system.\+c}!my\+\_\+uname@{my\+\_\+uname}}
@@ -266,7 +284,17 @@ References group(), and size().
 
 
 
-References j.
+References j, and stderr().
+
+\mbox{\Hypertarget{C-M__system_8c_a834a89f46bdca2fc961db64cf3112cdf}\label{C-M__system_8c_a834a89f46bdca2fc961db64cf3112cdf}} 
+\index{C-\/\+M\+\_\+system.\+c@{C-\/\+M\+\_\+system.\+c}!putkeyC@{putkeyC}}
+\index{putkeyC@{putkeyC}!C-\/\+M\+\_\+system.\+c@{C-\/\+M\+\_\+system.\+c}}
+\subsubsection{\texorpdfstring{putkey\+C()}{putkeyC()}}
+{\footnotesize\ttfamily int putkeyC (\begin{DoxyParamCaption}\item[{char}]{c }\end{DoxyParamCaption})}
+
+
+
+References m\+\_\+logic\+::write.
 
 \mbox{\Hypertarget{C-M__system_8c_ab955d6c562df08b9e465fe3cea24d83d}\label{C-M__system_8c_ab955d6c562df08b9e465fe3cea24d83d}} 
 \index{C-\/\+M\+\_\+system.\+c@{C-\/\+M\+\_\+system.\+c}!system\+\_\+unbuffer@{system\+\_\+unbuffer}}
@@ -276,7 +304,7 @@ References j.
 
 
 
-References m\+\_\+journal\+::ident, and m\+\_\+journal\+::stdout.
+References m\+\_\+journal\+::ident, stderr(), and m\+\_\+journal\+::stdout.
 
 
 

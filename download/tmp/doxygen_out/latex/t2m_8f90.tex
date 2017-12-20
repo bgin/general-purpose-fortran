@@ -1,2 +1,84 @@
 \hypertarget{t2m_8f90}{}\section{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/t2m.f90 File Reference}
 \label{t2m_8f90}\index{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/t2m.\+f90@{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/t2m.\+f90}}
+\subsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{t2m_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}{help\+\_\+usage} (l\+\_\+help)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{t2m_8f90_a39c21619b08a3c22f19e2306efd7f766}{help\+\_\+version} (l\+\_\+version)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+t2m -\/ \mbox{[}D\+E\+V\+E\+L\+O\+P\+ER\mbox{]} basic markup of text to a man(1) page \end{DoxyCompactList}\item 
+program \hyperlink{t2m_8f90_a1d0ef3619e5da531507fb99db2ebb4fe}{test\+\_\+t2m}
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{t2m_8f90_ab191ed2a41113781c7994c9642cfbbab}{t2m} (table, \hyperlink{print__watch_83_8txt_a15b5bd21156bb9fca6a755ab8c029a9c}{title}, section, product)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{t2m_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}\label{t2m_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}} 
+\index{t2m.\+f90@{t2m.\+f90}!help\+\_\+usage@{help\+\_\+usage}}
+\index{help\+\_\+usage@{help\+\_\+usage}!t2m.\+f90@{t2m.\+f90}}
+\subsubsection{\texorpdfstring{help\+\_\+usage()}{help\_usage()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} help\+\_\+usage (\begin{DoxyParamCaption}\item[{logical, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{l\+\_\+help }\end{DoxyParamCaption})}
+
+
+
+References false().
+
+\mbox{\Hypertarget{t2m_8f90_a39c21619b08a3c22f19e2306efd7f766}\label{t2m_8f90_a39c21619b08a3c22f19e2306efd7f766}} 
+\index{t2m.\+f90@{t2m.\+f90}!help\+\_\+version@{help\+\_\+version}}
+\index{help\+\_\+version@{help\+\_\+version}!t2m.\+f90@{t2m.\+f90}}
+\subsubsection{\texorpdfstring{help\+\_\+version()}{help\_version()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} help\+\_\+version (\begin{DoxyParamCaption}\item[{logical, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{l\+\_\+version }\end{DoxyParamCaption})}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+t2m -\/ \mbox{[}D\+E\+V\+E\+L\+O\+P\+ER\mbox{]} basic markup of text to a man(1) page 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\begin{DoxyVerb}t2m FILE -cmd -section 1 -product "" -help .F. -version .F.
+\end{DoxyVerb}
+
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+Minimalist conversion of a text file to a man page. Lines that are all upper-\/case starting in column 1 start a section. Otherwise the sections are printed essentially as-\/is.
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+F\+I\+LE The input filename
+
+-\/section N N is the man(1) section number. Typically the following categories are used\+:
+
+User Commands 1 Executable programs or shell commands System Calls 2 System calls (functions provided by the kernel) Library Calls 3 Library calls (functions within program libraries) Special Files 4 Special files (usually found in /dev) File Formats 5 File formats and conventions (eg. /etc/passwd) Games 6 Games Miscellaneous 7 Miscellaneous (including macro packages and conventions), e.\+g. man(7), groff(7) System Admin. 8 System administration commands (usually only for root) Kernel Extensions 9 Kernel routines \mbox{[}Non standard\mbox{]}
+
+See the man(1) page for man(1) for further details.
+
+-\/cmd -\/product -\/help display help and exit -\/version display version information and exit 
+
+References false().
+
+\mbox{\Hypertarget{t2m_8f90_ab191ed2a41113781c7994c9642cfbbab}\label{t2m_8f90_ab191ed2a41113781c7994c9642cfbbab}} 
+\index{t2m.\+f90@{t2m.\+f90}!t2m@{t2m}}
+\index{t2m@{t2m}!t2m.\+f90@{t2m.\+f90}}
+\subsubsection{\texorpdfstring{t2m()}{t2m()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} test\+\_\+t2m\+::t2m (\begin{DoxyParamCaption}\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), dimension(\+:), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{table,  }\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{title,  }\item[{integer, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{section,  }\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{product }\end{DoxyParamCaption})}
+
+
+
+References m\+\_\+strings\+::indent(), m\+\_\+strings\+::notabs(), m\+\_\+time\+::now(), m\+\_\+strings\+::s2v(), m\+\_\+strings\+::substitute(), and m\+\_\+strings\+::upper().
+
+\mbox{\Hypertarget{t2m_8f90_a1d0ef3619e5da531507fb99db2ebb4fe}\label{t2m_8f90_a1d0ef3619e5da531507fb99db2ebb4fe}} 
+\index{t2m.\+f90@{t2m.\+f90}!test\+\_\+t2m@{test\+\_\+t2m}}
+\index{test\+\_\+t2m@{test\+\_\+t2m}!t2m.\+f90@{t2m.\+f90}}
+\subsubsection{\texorpdfstring{test\+\_\+t2m()}{test\_t2m()}}
+{\footnotesize\ttfamily program test\+\_\+t2m (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+References file(), help\+\_\+usage(), help\+\_\+version(), m\+\_\+kracken\+::iget(), m\+\_\+kracken\+::ipvalue, m\+\_\+kracken\+::kracken(), m\+\_\+kracken\+::lget(), m\+\_\+kracken\+::sget(), m\+\_\+kracken\+::sgets(), t2m(), and unit().
+

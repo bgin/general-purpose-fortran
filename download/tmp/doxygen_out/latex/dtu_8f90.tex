@@ -1,2 +1,134 @@
 \hypertarget{dtu_8f90}{}\section{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/dtu.f90 File Reference}
 \label{dtu_8f90}\index{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/dtu.\+f90@{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/dtu.\+f90}}
+\subsection*{Modules}
+\begin{DoxyCompactItemize}
+\item 
+module \hyperlink{namespaceglobal}{global}
+\end{DoxyCompactItemize}
+\subsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{dtu_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}{help\+\_\+usage} (l\+\_\+help)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{dtu_8f90_a39c21619b08a3c22f19e2306efd7f766}{help\+\_\+version} (l\+\_\+version)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+dtu(1) -\/ \mbox{[}F\+I\+LE F\+I\+L\+T\+ER\mbox{]} convert files between Unix and D\+OS line terminator conventions \end{DoxyCompactList}\item 
+integer function \hyperlink{namespaceglobal_ac0b651e598e238c7eacf10df65cd92b2}{global\+::readchar} (char1)
+\item 
+integer function \hyperlink{namespaceglobal_aa4c95f5c7250975b756bcd2131c3b88c}{global\+::writechar} (char1)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{dtu_8f90_a2106e8eae75b8f66312eadae9a00d01f}{dos\+\_\+to\+\_\+unix} ()
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{dtu_8f90_aaa5cd93a63e974bc45e4a6e2d6537ded}{unix\+\_\+to\+\_\+dos} ()
+\item 
+program \hyperlink{dtu_8f90_abff0f15f5d5e680978944e8d3530395a}{dtu\+\_\+exe}
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{dtu_8f90_a6431a93cf13a3651f17078298d2d2ef9}{writefile} ()
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=1), parameter \hyperlink{namespaceglobal_ae55226f82ca7ee1f12eeb19f4619f98c}{global\+::cz} =char(26)
+\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=1), parameter \hyperlink{namespaceglobal_a972f6c4dda60a65f2529b3fa30f61ad5}{global\+::nl} =char(10)
+\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=1), parameter \hyperlink{namespaceglobal_a66654a3eb0e9c862da1f7ca5388b2e83}{global\+::cr} =char(13)
+\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=1), parameter \hyperlink{namespaceglobal_a65a09148e3924472bdd8a5735476c7ed}{global\+::lf} =char(10)
+\item 
+integer \hyperlink{namespaceglobal_ad88d280367759e82acb4de429dce1caa}{global\+::iunit} =15
+\item 
+integer \hyperlink{namespaceglobal_a243230c67d07fa783b97362c247e777c}{global\+::ounit} =16
+\item 
+logical \hyperlink{namespaceglobal_ab06e1a0896cfbbc3a6516eedaba862e0}{global\+::process\+\_\+ctrl\+\_\+z} = .false.
+\item 
+logical \hyperlink{namespaceglobal_af2859727a2cdfcff37dacc9cadc1c046}{global\+::noisy} = .false.
+\item 
+integer \hyperlink{namespaceglobal_a2d038312d6b015cabfbb5716cb61baac}{global\+::chars\+\_\+read} = 0
+\item 
+integer \hyperlink{namespaceglobal_a22f0db93abbbbd8c37f50b829daa00ad}{global\+::chars\+\_\+written} = 0
+\item 
+integer \hyperlink{namespaceglobal_a85ce1360a8a9498bab52f97d527bee12}{global\+::lines\+\_\+written} = 0
+\end{DoxyCompactItemize}
+
+
+\subsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{dtu_8f90_a2106e8eae75b8f66312eadae9a00d01f}\label{dtu_8f90_a2106e8eae75b8f66312eadae9a00d01f}} 
+\index{dtu.\+f90@{dtu.\+f90}!dos\+\_\+to\+\_\+unix@{dos\+\_\+to\+\_\+unix}}
+\index{dos\+\_\+to\+\_\+unix@{dos\+\_\+to\+\_\+unix}!dtu.\+f90@{dtu.\+f90}}
+\subsubsection{\texorpdfstring{dos\+\_\+to\+\_\+unix()}{dos\_to\_unix()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} dos\+\_\+to\+\_\+unix (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+References global\+::cr, global\+::cz, global\+::lf, global\+::lines\+\_\+written, global\+::nl, global\+::noisy, global\+::process\+\_\+ctrl\+\_\+z, global\+::readchar(), and global\+::writechar().
+
+\mbox{\Hypertarget{dtu_8f90_abff0f15f5d5e680978944e8d3530395a}\label{dtu_8f90_abff0f15f5d5e680978944e8d3530395a}} 
+\index{dtu.\+f90@{dtu.\+f90}!dtu\+\_\+exe@{dtu\+\_\+exe}}
+\index{dtu\+\_\+exe@{dtu\+\_\+exe}!dtu.\+f90@{dtu.\+f90}}
+\subsubsection{\texorpdfstring{dtu\+\_\+exe()}{dtu\_exe()}}
+{\footnotesize\ttfamily program dtu\+\_\+exe (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+References false(), help\+\_\+usage(), help\+\_\+version(), m\+\_\+kracken\+::ipvalue, m\+\_\+kracken\+::kracken(), m\+\_\+kracken\+::lget(), global\+::noisy, global\+::process\+\_\+ctrl\+\_\+z, true(), and writefile().
+
+\mbox{\Hypertarget{dtu_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}\label{dtu_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}} 
+\index{dtu.\+f90@{dtu.\+f90}!help\+\_\+usage@{help\+\_\+usage}}
+\index{help\+\_\+usage@{help\+\_\+usage}!dtu.\+f90@{dtu.\+f90}}
+\subsubsection{\texorpdfstring{help\+\_\+usage()}{help\_usage()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} help\+\_\+usage (\begin{DoxyParamCaption}\item[{logical, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{l\+\_\+help }\end{DoxyParamCaption})}
+
+
+
+References false().
+
+\mbox{\Hypertarget{dtu_8f90_a39c21619b08a3c22f19e2306efd7f766}\label{dtu_8f90_a39c21619b08a3c22f19e2306efd7f766}} 
+\index{dtu.\+f90@{dtu.\+f90}!help\+\_\+version@{help\+\_\+version}}
+\index{help\+\_\+version@{help\+\_\+version}!dtu.\+f90@{dtu.\+f90}}
+\subsubsection{\texorpdfstring{help\+\_\+version()}{help\_version()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} help\+\_\+version (\begin{DoxyParamCaption}\item[{logical, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{l\+\_\+version }\end{DoxyParamCaption})}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+dtu(1) -\/ \mbox{[}F\+I\+LE F\+I\+L\+T\+ER\mbox{]} convert files between Unix and D\+OS line terminator conventions 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\begin{DoxyVerb}    dtu [[-make dos|unix] [-z] [-n] -i input -o output ]|--help|--version
+\end{DoxyVerb}
+
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+Convert D\+OS end-\/of-\/line (C\+R-\/\+LF or $<$carriage-\/return$>$$<$line-\/feed$>$) to a Unix end-\/of-\/line (LF or $<$line-\/feed$>$, often called \char`\"{}newline\char`\"{}); or vice-\/versa.
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+-\/make unix (default) convert D\+OS file to Unix ( C\+R-\/\+LF to newline ) -\/make dos convert Unix file to D\+OS ( newline to C\+R-\/\+LF ) -\/z guarantee last character of D\+OS file is $^\wedge$Z, guarantee last character of Unix file is not $^\wedge$Z otherwise, $^\wedge$Z in input is copied or not as-\/is -\/n noisy mode reports character and line counts on stderr -\/i input\+\_\+file required -\/o output\+\_\+file required --help display this help and exit --version output version information and exit 
+
+References false().
+
+\mbox{\Hypertarget{dtu_8f90_aaa5cd93a63e974bc45e4a6e2d6537ded}\label{dtu_8f90_aaa5cd93a63e974bc45e4a6e2d6537ded}} 
+\index{dtu.\+f90@{dtu.\+f90}!unix\+\_\+to\+\_\+dos@{unix\+\_\+to\+\_\+dos}}
+\index{unix\+\_\+to\+\_\+dos@{unix\+\_\+to\+\_\+dos}!dtu.\+f90@{dtu.\+f90}}
+\subsubsection{\texorpdfstring{unix\+\_\+to\+\_\+dos()}{unix\_to\_dos()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} unix\+\_\+to\+\_\+dos (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+References global\+::chars\+\_\+read, global\+::cr, global\+::cz, global\+::lf, global\+::lines\+\_\+written, global\+::nl, global\+::noisy, global\+::process\+\_\+ctrl\+\_\+z, global\+::readchar(), and global\+::writechar().
+
+\mbox{\Hypertarget{dtu_8f90_a6431a93cf13a3651f17078298d2d2ef9}\label{dtu_8f90_a6431a93cf13a3651f17078298d2d2ef9}} 
+\index{dtu.\+f90@{dtu.\+f90}!writefile@{writefile}}
+\index{writefile@{writefile}!dtu.\+f90@{dtu.\+f90}}
+\subsubsection{\texorpdfstring{writefile()}{writefile()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} writefile (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+References global\+::chars\+\_\+read, global\+::chars\+\_\+written, dos\+\_\+to\+\_\+unix(), file(), m\+\_\+kracken\+::ipvalue, global\+::iunit, global\+::lines\+\_\+written, global\+::noisy, global\+::ounit, m\+\_\+kracken\+::sget(), unit(), and unix\+\_\+to\+\_\+dos().
+

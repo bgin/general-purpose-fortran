@@ -1,9 +1,24 @@
 var searchData=
 [
+  ['last',['last',['../namespacem__calculator.html#a5d0147576a419edafaabfc5d7f1317fc',1,'m_calculator']]],
   ['last_5fint',['last_int',['../namespacem__journal.html#a47e8e34dc4072b04101027394d688519',1,'m_journal']]],
+  ['last_5fread',['last_read',['../structm__stopwatch_1_1watch__actual.html#ae1d38c1b64f646e6342283c24ad3eaad',1,'m_stopwatch::watch_actual']]],
+  ['lastbox',['lastbox',['../structm__display__util_1_1boxlist.html#ada85bf1694f8522fa4f401c7e7dd34d3',1,'m_display_util::boxlist']]],
+  ['left',['left',['../structm__treesort_1_1node.html#a2fb0da65659716ef6eff88ab8753f247',1,'m_treesort::node']]],
+  ['leftover',['leftover',['../namespacem__kracken.html#a012a1a99d749bbdcc4b9af483d09fec1',1,'m_kracken']]],
+  ['lf',['lf',['../namespaceglobal.html#a65a09148e3924472bdd8a5735476c7ed',1,'global']]],
   ['limit',['limit',['../M__stopwatch_83_8txt.html#a1226f20a50110326189d44a7294700d4',1,'M_stopwatch.3.txt']]],
+  ['line_5fnumber',['line_number',['../structm__fpp_1_1file__stack.html#af76b002b417450266cb8ec6e18a540c2',1,'m_fpp::file_stack']]],
   ['lines',['lines',['../ufpp__overview_81_8txt.html#a38547e77f801e6266edc9bcd56b63a00',1,'ufpp_overview.1.txt']]],
-  ['longest_5fenv_5fvariable',['longest_env_variable',['../C-M__system_8c.html#ad45ba6068349b626136d161ff72dea21',1,'C-M_system.c']]],
+  ['lines_5fwritten',['lines_written',['../namespaceglobal.html#a85ce1360a8a9498bab52f97d527bee12',1,'global']]],
+  ['llong',['llong',['../namespacem__compare__float__numbers.html#a9c3da9dd020c03b19ee8acf1dafdce20',1,'m_compare_float_numbers']]],
+  ['llong_5ft',['llong_t',['../namespacem__compare__float__numbers.html#a7c4a2b4cc39888d092d7a754897be9e5',1,'m_compare_float_numbers']]],
+  ['long',['long',['../namespacem__compare__float__numbers.html#a1a70f80b01ccf5c63ed3eb70fabdaf2d',1,'m_compare_float_numbers']]],
+  ['long_5fopts',['long_opts',['../structm__getopt__long_1_1getopt__type.html#a8de5191497ca7e50e4fbd7a28a306b10',1,'m_getopt_long::getopt_type']]],
+  ['longest_5fenv_5fvariable',['longest_env_variable',['../C-M__system_8c.html#ad45ba6068349b626136d161ff72dea21',1,'longest_env_variable():&#160;C-M_system.c'],['../namespacem__system.html#ac066b6866f8ef4b8c358ec8daca7566c',1,'m_system::longest_env_variable()']]],
   ['loop',['loop',['../continue_87_8txt.html#a5094e6a64d1227c84a0bf4db8f6c3788',1,'continue.7.txt']]],
-  ['lt',['lt',['../ufpp__overview_81_8txt.html#a1bf2b9c519ae0b6e5f5b9f0a3866a054',1,'ufpp_overview.1.txt']]]
+  ['lsep',['lsep',['../structm__display__util_1_1settings.html#a114dc5a94988d6078b5ee8d4fa8b6a56',1,'m_display_util::settings']]],
+  ['lt',['lt',['../ufpp__overview_81_8txt.html#a1bf2b9c519ae0b6e5f5b9f0a3866a054',1,'ufpp_overview.1.txt']]],
+  ['lun',['lun',['../structm__display__util_1_1settings.html#af9e99479fa3069b7f5b9a49fad1338ca',1,'m_display_util::settings::lun()'],['../namespacem__readgif.html#ae5e05cba63ef3a16c27f9935d6c2a24d',1,'m_readgif::lun()']]],
+  ['lzas',['lzas',['../structm__display__util_1_1settings.html#a8f7f9f26ee7420cae7fde083a9748265',1,'m_display_util::settings']]]
 ];

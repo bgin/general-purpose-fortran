@@ -63,10 +63,100 @@ $(function() {
 </div>
 </div><!-- top -->
 <div class="header">
+  <div class="summary">
+<a href="#func-members">Functions/Subroutines</a>  </div>
   <div class="headertitle">
 <div class="title">lsup.f90 File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions/Subroutines</h2></td></tr>
+<tr class="memitem:a3c3d8a93f4c35d7c95cd6db2e692b561"><td class="memItemLeft" align="right" valign="top">program&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lsup_8f90.html#a3c3d8a93f4c35d7c95cd6db2e692b561">lsup</a></td></tr>
+<tr class="separator:a3c3d8a93f4c35d7c95cd6db2e692b561"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace9719243d0fef42bc7f2aa8094892ee"><td class="memItemLeft" align="right" valign="top"><a class="el" href="M__stopwatch_83_8txt.html#acfbcff50169d691ff02d4a123ed70482">subroutine</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lsup_8f90.html#ace9719243d0fef42bc7f2aa8094892ee">help_usage</a> (l_help)</td></tr>
+<tr class="separator:ace9719243d0fef42bc7f2aa8094892ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7566fe8ce05250d40d981110b710d428"><td class="memItemLeft" align="right" valign="top"><a class="el" href="M__stopwatch_83_8txt.html#acfbcff50169d691ff02d4a123ed70482">subroutine</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lsup_8f90.html#a7566fe8ce05250d40d981110b710d428">help_version</a> (l_version)</td></tr>
+<tr class="memdesc:a7566fe8ce05250d40d981110b710d428"><td class="mdescLeft">&#160;</td><td class="mdescRight"><h2>NAME</h2>
+lsup(1f) - [FUNIX:FILESYSTEM] list permissions of pathname and directories in pathname  <a href="#a7566fe8ce05250d40d981110b710d428">More...</a><br /></td></tr>
+<tr class="separator:a7566fe8ce05250d40d981110b710d428"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Function/Subroutine Documentation</h2>
+<a id="ace9719243d0fef42bc7f2aa8094892ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace9719243d0fef42bc7f2aa8094892ee">&#9670;&nbsp;</a></span>help_usage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="M__stopwatch_83_8txt.html#acfbcff50169d691ff02d4a123ed70482">subroutine</a> lsup::help_usage </td>
+          <td>(</td>
+          <td class="paramtype">logical, intent(<a class="el" href="M__journal_83_8txt.html#afce72651d1eed785a2132bee863b2f38">in</a>)&#160;</td>
+          <td class="paramname"><em>l_help</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="reference">References <a class="el" href="__false_8f90.html#ac39cd9fe2012c31749944aa6b20b6c05">false()</a>.</p>
+
+</div>
+</div>
+<a id="a7566fe8ce05250d40d981110b710d428"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7566fe8ce05250d40d981110b710d428">&#9670;&nbsp;</a></span>help_version()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="M__stopwatch_83_8txt.html#acfbcff50169d691ff02d4a123ed70482">subroutine</a> lsup::help_version </td>
+          <td>(</td>
+          <td class="paramtype">logical, intent(<a class="el" href="M__journal_83_8txt.html#afce72651d1eed785a2132bee863b2f38">in</a>)&#160;</td>
+          <td class="paramname"><em>l_version</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><h2>NAME</h2>
+lsup(1f) - [FUNIX:FILESYSTEM] list permissions of pathname and directories in pathname </p>
+<h2>SYNOPSIS</h2>
+<pre class="fragment">lsup NAME... |-help|-version]
+</pre><h2>DESCRIPTION</h2>
+<p>Output the permissions of the specified pathnames. Then recursively output each NAME with its last non-slash component and trailing slashes removed. if NAME contains no /'s, output '.' (meaning the current directory).</p>
+<h2>OPTIONS</h2>
+<p>NAME pathname. Defaults to current directory -help display this help and exit -version output version information and exit</p>
+<h2>EXAMPLES</h2>
+<p>Sample program executions:</p>
+<p>lsup 40755 drwxr-xr-x &mdash; 1 JSU Users 0 2017-10-12T21:46:51 /home/urbanjs/V600/LIBRARY/libGPF/EXE 40755 drwxr-xr-x &mdash; 1 JSU None 0 2017-10-08T14:50:41 /home/urbanjs/V600/LIBRARY/libGPF 40700 drwx---&mdash; &mdash; 1 JSU Users 0 2017-10-12T22:38:14 /home/urbanjs/V600/LIBRARY 40700 drwx---&mdash; &mdash; 1 JSU None 0 2017-10-12T22:35:00 /home/urbanjs/V600 40700 drwx---&mdash; &mdash; 1 JSU None 0 2017-09-19T21:53:23 /home/urbanjs 41777 drwxrwxrwx &ndash;S 1 JSU None 0 2017-03-16T08:23:34 /home</p>
+<p>lsup /etc/hosts /usr/share/man 100750 -rwxr-x&mdash; &mdash; 1 SYSTEM SYSTEM 824 2017-07-14T03:58:59 /etc/hosts 40755 drwxr-xr-x &mdash; 1 JSU None 0 2017-09-11T03:29:02 /etc</p>
+<p>40755 drwxr-xr-x &mdash; 1 JSU None 0 2017-09-04T19:40:32 /usr/share/man 40755 drwxr-xr-x &mdash; 1 JSU None 0 2017-09-11T03:19:16 /usr/share 40755 drwxr-xr-x &mdash; 1 JSU None 0 2017-09-11T03:05:57 /usr</p>
+<h2>SEE ALSO</h2>
+<p>dirname(1), realpath(1) </p>
+
+<p class="reference">References <a class="el" href="__false_8f90.html#ac39cd9fe2012c31749944aa6b20b6c05">false()</a>.</p>
+
+</div>
+</div>
+<a id="a3c3d8a93f4c35d7c95cd6db2e692b561"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c3d8a93f4c35d7c95cd6db2e692b561">&#9670;&nbsp;</a></span>lsup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">program lsup </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="reference">References <a class="el" href="__cmp_8f90.html#a3e09a3b52ee8fb04eeb93fe5761626a8">help_usage()</a>, <a class="el" href="__cmp_8f90.html#a39c21619b08a3c22f19e2306efd7f766">help_version()</a>, <a class="el" href="namespacem__kracken.html#a850dce381e1cfe18a4ebcaa214995e39">m_kracken::kracken()</a>, <a class="el" href="namespacem__kracken.html#a7141acd7a00c1a5aa5f90612a0414b63">m_kracken::lget()</a>, <a class="el" href="namespacem__kracken.html#a8ae60c1a9c903c8ad06ef1f95975d457">m_kracken::sgets()</a>, <a class="el" href="namespacem__system.html#a5a32db818a9ffb0a4ea724e95356c560">m_system::system_getcwd()</a>, and <a class="el" href="namespacem__system.html#aa26c234da8b559f549db4dbe446b8acc">m_system::system_stat_print()</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

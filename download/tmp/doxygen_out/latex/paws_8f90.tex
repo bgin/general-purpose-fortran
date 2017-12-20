@@ -1,2 +1,78 @@
 \hypertarget{paws_8f90}{}\section{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/paws.f90 File Reference}
 \label{paws_8f90}\index{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/paws.\+f90@{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/paws.\+f90}}
+\subsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{paws_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}{help\+\_\+usage} (l\+\_\+help)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{paws_8f90_a39c21619b08a3c22f19e2306efd7f766}{help\+\_\+version} (l\+\_\+version)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+paws -\/ \mbox{[}T\+I\+ME\mbox{]} pause until specified time or for specified duration \end{DoxyCompactList}\item 
+program \hyperlink{paws_8f90_adea2b9826964203f987d029f48afa37a}{demo\+\_\+system\+\_\+sleep}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{paws_8f90_adea2b9826964203f987d029f48afa37a}\label{paws_8f90_adea2b9826964203f987d029f48afa37a}} 
+\index{paws.\+f90@{paws.\+f90}!demo\+\_\+system\+\_\+sleep@{demo\+\_\+system\+\_\+sleep}}
+\index{demo\+\_\+system\+\_\+sleep@{demo\+\_\+system\+\_\+sleep}!paws.\+f90@{paws.\+f90}}
+\subsubsection{\texorpdfstring{demo\+\_\+system\+\_\+sleep()}{demo\_system\_sleep()}}
+{\footnotesize\ttfamily program demo\+\_\+system\+\_\+sleep (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+References d2u, m\+\_\+time\+::days2sec(), m\+\_\+kracken\+::dget(), false(), fmtdate, m\+\_\+time\+::guessdate(), help\+\_\+usage(), help\+\_\+version(), m\+\_\+kracken\+::iget(), m\+\_\+kracken\+::igets(), m\+\_\+time\+::j2d(), m\+\_\+kracken\+::kracken(), m\+\_\+kracken\+::lget(), m\+\_\+time\+::now(), m\+\_\+time\+::realtime, m\+\_\+kracken\+::sget(), m\+\_\+time\+::system\+\_\+sleep(), true(), and u2d.
+
+\mbox{\Hypertarget{paws_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}\label{paws_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}} 
+\index{paws.\+f90@{paws.\+f90}!help\+\_\+usage@{help\+\_\+usage}}
+\index{help\+\_\+usage@{help\+\_\+usage}!paws.\+f90@{paws.\+f90}}
+\subsubsection{\texorpdfstring{help\+\_\+usage()}{help\_usage()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} help\+\_\+usage (\begin{DoxyParamCaption}\item[{logical, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{l\+\_\+help }\end{DoxyParamCaption})}
+
+
+
+References false().
+
+\mbox{\Hypertarget{paws_8f90_a39c21619b08a3c22f19e2306efd7f766}\label{paws_8f90_a39c21619b08a3c22f19e2306efd7f766}} 
+\index{paws.\+f90@{paws.\+f90}!help\+\_\+version@{help\+\_\+version}}
+\index{help\+\_\+version@{help\+\_\+version}!paws.\+f90@{paws.\+f90}}
+\subsubsection{\texorpdfstring{help\+\_\+version()}{help\_version()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} help\+\_\+version (\begin{DoxyParamCaption}\item[{logical, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{l\+\_\+version }\end{DoxyParamCaption})}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+paws -\/ \mbox{[}T\+I\+ME\mbox{]} pause until specified time or for specified duration 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\begin{DoxyVerb}paws [dd-hh:mm:ss[.xxx]|xxx.yyy[s|m|h|d]][-msg message][-cmd command][-repeat TIMES[-fmt ]]|...
+[-uet|-jed|-dat|[-date|-until]]
+paws --version|--help
+\end{DoxyVerb}
+
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+Given a duration in the form dd-\/hh\+:mm\+:ss.\+xxx where dd is days, hh hours, mm minutes and ss.\+xxx seconds convert it to seconds. Then, pause for that many seconds. Alternatively, pause until specified date has passed. If no duration is specified wait until a carriage return is entered.
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+dd-\/hh\+:mm\+:ss Given a string representing a duration of time in the following forms\+:
+
+dd-\/hh\+:mm\+:ss\mbox{[}.xx\mbox{]} hh\+:mm\+:ss\mbox{[}.xx\mbox{]} mm\+:ss\mbox{[}.xx\mbox{]} ss\mbox{[}.xx\mbox{]} or xx\mbox{[}.yy\mbox{]}S\+U\+F\+F\+IX
+
+convert it to seconds and pause for that amount of time. Suffix may be s for seconds, m for minutes, h for hours, or d for days. -\/date$\vert$-\/until wait until the specified date has passed (before starting optional pause). See guessdate(3f) for syntax allowed for the date. -\/uet wait until the specified Unix Epoch Time has passed -\/jed wait until the specified Julian Ephemeris Date has passed -\/dat wait until the specified date vector has passed (year month day timezone hour minutes seconds milliseconds) -\/repeat N\+NN The duration is repeated N\+NN times with the date displayed at the end of each pause. --msg message to display before pausing --cmd command to execute after a pause --fmt date format (see fmtdate(3f) for details) --help display this help and exit --version output version information and exit
+
+For more information on the format of the dates, see the now(1) command.
+
+\subsubsection*{E\+X\+A\+M\+P\+LE}
+
+Typical usage\+:
+
+paws 2\+:00\+:00 \# pause for two hours paws 3600 \# pause one hour paws 0.\+10 \# pause one tenth of a second paws 1 -\/repeat 60 \# pause sixty seconds, display the date each second paws -\/until 23\+:59\+:59 \# pause until midnight paws 15\+:00 -\/date 23\+:59\+:59 \# pause till midnight then an additional 15 minutes 
+
+References false().
+

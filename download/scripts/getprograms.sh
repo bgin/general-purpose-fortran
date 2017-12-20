@@ -20,6 +20,7 @@ lastprogram huegif.f90
 lastprogram note.f90
 lastprogram exchange.f90
 lastprogram change.f90
+lastprogram xauth_key.f90
 
 lastprogram shell.f90
 lastprogram penv.f90

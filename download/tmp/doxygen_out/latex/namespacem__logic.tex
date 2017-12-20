@@ -1,0 +1,208 @@
+\hypertarget{namespacem__logic}{}\section{m\+\_\+logic Module Reference}
+\label{namespacem__logic}\index{m\+\_\+logic@{m\+\_\+logic}}
+
+
+\subsubsection*{N\+A\+ME}
+
+cond(3f) -\/ \mbox{[}M\+\_\+logic\mbox{]}process input files with embedded if/else/elseif/endif commands  
+
+
+\subsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__logic_a169fe24f769ed7cd5336409c0722900e}{cond} (verb, line, ierr)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, private \hyperlink{namespacem__logic_a2229d0129ded7d8a34fce60334bc5938}{if} (line, noelse, eb)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, private \hyperlink{namespacem__logic_aa03730fb0581290fa8c776b633430584}{evalit} (line)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, private \hyperlink{namespacem__logic_ac51075acbd12f22ae97edd87352cba67}{else} (noelse, eb)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, private \hyperlink{namespacem__logic_abb56458f58725800b593e986b23ec2d3}{elseif} (line, noelse, eb)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, private \hyperlink{namespacem__logic_a60ae51929ab2f5d32f2a8f7e07e6debc}{endif} (noelse, eb)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len= $\ast$), parameter \hyperlink{namespacem__logic_aa4a758529f4ba04d66cddf4cd51e0bc1}{ident} =\char`\"{}@(\#)M\+\_\+logic(3fm)\+: Allows if/else/elseif/endif logic to be applied to input files\char`\"{}
+\item 
+integer, parameter \hyperlink{namespacem__logic_a22ef0b94ebd8b7f3b35a33c8d9250759}{max\+\_\+nest\+\_\+level} =20
+\item 
+logical, dimension(0\+:\hyperlink{namespacem__logic_a22ef0b94ebd8b7f3b35a33c8d9250759}{max\+\_\+nest\+\_\+level}), save \hyperlink{namespacem__logic_ad7573389be889c19d1496dc2e9dff9a1}{condop}
+\item 
+integer \hyperlink{namespacem__logic_a047a31b5831fda2a9421240f1edce712}{ierr\+\_\+logic} =0
+\item 
+logical \hyperlink{namespacem__logic_ac3811d1cc267a1241feb5f77905110a2}{dc}
+\item 
+integer, save, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public}, protected \hyperlink{namespacem__logic_aba076b8206140be84ad573bc89c82b14}{nest\+\_\+level} =0
+\item 
+logical, save, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public}, protected \hyperlink{namespacem__logic_a487df89eac953b22a40b143aaf8ff1ea}{write} =.true.
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{N\+A\+ME}
+
+cond(3f) -\/ \mbox{[}M\+\_\+logic\mbox{]}process input files with embedded if/else/elseif/endif commands 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\begin{DoxyVerb} subroutine cond(verb,line,ierr)
+
+  character(len=*),intent(in) :: verb
+  character(len=*),intent(in) :: line
+  integer,intent(out)         :: ierr
+
+ Public module variables include
+
+  WRITE -- flag whether next input line should be read
+\end{DoxyVerb}
+
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+\begin{DoxyVerb}  verb      must be 'if','elseif','else','endif'
+  line      calculator expression to reduce to an integer.
+  ierr      indicate if an error occurred
+\end{DoxyVerb}
+
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+\begin{DoxyVerb} Many programs read input files where input lines are conditionally skipped over. It may make sense that the data file itself
+ contains the conditionals (think of pre-processors like cpp(1), shell programs (ie. interpreted languages), and configuration
+ files that are read from multiple programs and from different environments). Instead of having many code-specific ways of
+ specifying which lines will be processed, this module allows you to embed if/else/elseif/endif directives in the input files.
+
+ If you pass the conditional lines to cond(3f) it sets the logical variable "WRITE" to indicate when non-conditional lines
+ (blocks of lines between those logical conditions) should be skipped.
+
+ if ierr=0, no obvious error occurred. if ierr not equal=0, suggest stopping the calling program from processing input
+
+ The variable NEST_LEVEL should be zero at the end, or a nesting error occurred.
+\end{DoxyVerb}
+
+
+\subsubsection*{E\+X\+A\+M\+P\+L\+ES}
+
+The example program uses cond(3f) and the calculator module to let you have input files that the program or the input file (via the \#define command) can set values for. Note that expressions on the \hyperlink{namespacem__logic_a2229d0129ded7d8a34fce60334bc5938}{if} and \hyperlink{namespacem__logic_abb56458f58725800b593e986b23ec2d3}{elseif} input lines are truncated to whole numbers. You need to see the calculator documentation to see all the expressions available (date and time functions, most F\+O\+R\+T\+R\+AN 77 intrinsic functions, ...)
+
+Here is an example program that will read in a file and write just lines from the file to output that are in true blocks...
+
+program logic use M\+\_\+journal, only \+: journal ! for logging messages use M\+\_\+strings, only \+: lower, delim,v2s ! convert character case; split string use M\+\_\+logic, only \+: cond use M\+\_\+logic, only \+: write ! flag whether current data lines should be written use M\+\_\+logic, only \+: nest\+\_\+level ! nesting level for \#\+IF/\#\+E\+L\+S\+E\+IF/\#\+E\+L\+SE/\#\+E\+N\+D\+IF use M\+\_\+calculator\+\_\+plus, only \+: rnum0 character(len=1) \+:\+: prefix ! directive prefix character character(len=1024) \+:\+: line ! input line integer,parameter \+:\+: max\+\_\+words=2 ! maximum number of words allowed on line character(len=1024) \+:\+: array(max\+\_\+words) ! working copy of input line ! location where words start and end integer \+:\+: ibegin(max\+\_\+words), iterm(max\+\_\+words) !-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/--- P\+R\+E\+F\+IX=\textquotesingle{}\#\textquotesingle{} ! for the example, assume direct lines use a \# prefix !-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/--- R\+E\+A\+D\+L\+I\+NE\+: do ! read loop to read input file read($\ast$,\textquotesingle{}(a)\textquotesingle{},iostat=ios) line if(ios.\+ne.\+0)then if (nest\+\_\+level.\+ne.\+0) then ! check to make sure all if blocks are closed call journal(\textquotesingle{}sc\textquotesingle{},\& \&\textquotesingle{}{\itshape logic} error -\/ \#\+IF B\+L\+O\+CK N\+OT C\+L\+O\+S\+ED W\+H\+EN R\+E\+A\+Di\+NG F\+I\+LE F\+I\+N\+I\+S\+H\+ED.\textquotesingle{}) endif stop endif ! although delim(3f) can do more ! just parsing the first word out and finding where second word starts ! make sure array is initialized for when ! icount(number of words on line) is zero array=\textquotesingle{} \textquotesingle{} call delim(lower(line),array,max\+\_\+words,icount,ibegin,iterm,ilen,\textquotesingle{} \textquotesingle{}) select case(array(1)) ! find conditional lines case(\textquotesingle{}\hyperlink{namespacem__logic_a2229d0129ded7d8a34fce60334bc5938}{if}\textquotesingle{},\textquotesingle{}\hyperlink{namespacem__logic_ac51075acbd12f22ae97edd87352cba67}{else}\textquotesingle{},\textquotesingle{}\hyperlink{namespacem__logic_abb56458f58725800b593e986b23ec2d3}{elseif}\textquotesingle{},\textquotesingle{}\hyperlink{namespacem__logic_a60ae51929ab2f5d32f2a8f7e07e6debc}{endif}\textquotesingle{}) ! process conditional directive call cond(trim(array(1)(2\+:)),line(iterm(1)+1\+:),ierr\+\_\+logic) case(\textquotesingle{}\#define\textquotesingle{}) ! evaluate expression value=rnum0(line(iterm(1)+1\+:)) case default ! find input lines you want to use, skip others if (write) then ! for example, if last conditional was true then write line write($\ast$,\textquotesingle{}(a)\textquotesingle{}) trim(line) ! write data line endif end select enddo R\+E\+A\+D\+L\+I\+NE end program logic
+
+Here is an input file for the test program
+
+$>$\#define A=10 $>$\#define B=1234.\+0 $>$\#define C=sin(30) $>$D\+E\+F\+I\+N\+ED S\+O\+ME V\+A\+L\+U\+ES A\+ND R\+E\+A\+DY TO S\+T\+A\+RT $>$\hyperlink{namespacem__logic_a2229d0129ded7d8a34fce60334bc5938}{if} eq(\+A,20) $>$ S\+H\+O\+U\+LD N\+OT BE O\+U\+T\+P\+UT $>$\hyperlink{namespacem__logic_abb56458f58725800b593e986b23ec2d3}{elseif} eq(\+A,10) $>$ C\+O\+R\+R\+E\+CT B\+R\+A\+N\+CH W\+R\+I\+TE T\+H\+IS $>$ \hyperlink{namespacem__logic_a2229d0129ded7d8a34fce60334bc5938}{if} gt(\+B,\+A) $>$ C\+O\+R\+R\+E\+CT A\+G\+A\+IN $>$ \hyperlink{namespacem__logic_ac51075acbd12f22ae97edd87352cba67}{else} $>$ S\+H\+O\+U\+LD N\+OT BE IN O\+U\+T\+P\+UT E\+I\+T\+H\+ER $>$ \hyperlink{namespacem__logic_a60ae51929ab2f5d32f2a8f7e07e6debc}{endif} $>$\hyperlink{namespacem__logic_ac51075acbd12f22ae97edd87352cba67}{else} $>$ S\+H\+O\+U\+LD N\+OT BE O\+U\+T\+P\+UT O\+N\+CE A\+G\+A\+IN $>$\hyperlink{namespacem__logic_a60ae51929ab2f5d32f2a8f7e07e6debc}{endif} $>$G\+OT TO E\+ND
+
+The output should be
+
+$>$D\+E\+F\+I\+N\+ED S\+O\+ME V\+A\+L\+U\+ES A\+ND R\+E\+A\+DY TO S\+T\+A\+RT $>$ C\+O\+R\+R\+E\+CT B\+R\+A\+N\+CH W\+R\+I\+TE T\+H\+IS $>$ C\+O\+R\+R\+E\+CT A\+G\+A\+IN $>$G\+OT TO E\+ND 
+
+\subsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{namespacem__logic_a169fe24f769ed7cd5336409c0722900e}\label{namespacem__logic_a169fe24f769ed7cd5336409c0722900e}} 
+\index{m\+\_\+logic@{m\+\_\+logic}!cond@{cond}}
+\index{cond@{cond}!m\+\_\+logic@{m\+\_\+logic}}
+\subsubsection{\texorpdfstring{cond()}{cond()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+logic\+::cond (\begin{DoxyParamCaption}\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{verb,  }\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{line,  }\item[{integer, intent(out)}]{ierr }\end{DoxyParamCaption})}
+
+
+
+References else(), elseif(), endif(), ierr\+\_\+logic, and if().
+
+\mbox{\Hypertarget{namespacem__logic_ac51075acbd12f22ae97edd87352cba67}\label{namespacem__logic_ac51075acbd12f22ae97edd87352cba67}} 
+\index{m\+\_\+logic@{m\+\_\+logic}!else@{else}}
+\index{else@{else}!m\+\_\+logic@{m\+\_\+logic}}
+\subsubsection{\texorpdfstring{else()}{else()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, private m\+\_\+logic\+::else (\begin{DoxyParamCaption}\item[{integer}]{noelse,  }\item[{logical}]{eb }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+References condop, false(), ierr\+\_\+logic, nest\+\_\+level, true(), and write.
+
+\mbox{\Hypertarget{namespacem__logic_abb56458f58725800b593e986b23ec2d3}\label{namespacem__logic_abb56458f58725800b593e986b23ec2d3}} 
+\index{m\+\_\+logic@{m\+\_\+logic}!elseif@{elseif}}
+\index{elseif@{elseif}!m\+\_\+logic@{m\+\_\+logic}}
+\subsubsection{\texorpdfstring{elseif()}{elseif()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, private m\+\_\+logic\+::elseif (\begin{DoxyParamCaption}\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$)}]{line,  }\item[{integer}]{noelse,  }\item[{logical}]{eb }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+References condop, false(), ierr\+\_\+logic, if(), nest\+\_\+level, true(), and write.
+
+\mbox{\Hypertarget{namespacem__logic_a60ae51929ab2f5d32f2a8f7e07e6debc}\label{namespacem__logic_a60ae51929ab2f5d32f2a8f7e07e6debc}} 
+\index{m\+\_\+logic@{m\+\_\+logic}!endif@{endif}}
+\index{endif@{endif}!m\+\_\+logic@{m\+\_\+logic}}
+\subsubsection{\texorpdfstring{endif()}{endif()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, private m\+\_\+logic\+::endif (\begin{DoxyParamCaption}\item[{integer}]{noelse,  }\item[{logical}]{eb }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+References condop, else(), false(), ierr\+\_\+logic, nest\+\_\+level, true(), and write.
+
+\mbox{\Hypertarget{namespacem__logic_aa03730fb0581290fa8c776b633430584}\label{namespacem__logic_aa03730fb0581290fa8c776b633430584}} 
+\index{m\+\_\+logic@{m\+\_\+logic}!evalit@{evalit}}
+\index{evalit@{evalit}!m\+\_\+logic@{m\+\_\+logic}}
+\subsubsection{\texorpdfstring{evalit()}{evalit()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, private m\+\_\+logic\+::evalit (\begin{DoxyParamCaption}\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{line }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+References dc, false(), m\+\_\+calculator\+\_\+plus\+::inum0(), and true().
+
+\mbox{\Hypertarget{namespacem__logic_a2229d0129ded7d8a34fce60334bc5938}\label{namespacem__logic_a2229d0129ded7d8a34fce60334bc5938}} 
+\index{m\+\_\+logic@{m\+\_\+logic}!if@{if}}
+\index{if@{if}!m\+\_\+logic@{m\+\_\+logic}}
+\subsubsection{\texorpdfstring{if()}{if()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, private m\+\_\+logic\+::if (\begin{DoxyParamCaption}\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$)}]{line,  }\item[{integer}]{noelse,  }\item[{logical}]{eb }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+References condop, dc, evalit(), false(), ierr\+\_\+logic, max\+\_\+nest\+\_\+level, nest\+\_\+level, true(), and write.
+
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{namespacem__logic_ad7573389be889c19d1496dc2e9dff9a1}\label{namespacem__logic_ad7573389be889c19d1496dc2e9dff9a1}} 
+\index{m\+\_\+logic@{m\+\_\+logic}!condop@{condop}}
+\index{condop@{condop}!m\+\_\+logic@{m\+\_\+logic}}
+\subsubsection{\texorpdfstring{condop}{condop}}
+{\footnotesize\ttfamily logical, dimension(0\+:\hyperlink{namespacem__logic_a22ef0b94ebd8b7f3b35a33c8d9250759}{max\+\_\+nest\+\_\+level}), save m\+\_\+logic\+::condop\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__logic_ac3811d1cc267a1241feb5f77905110a2}\label{namespacem__logic_ac3811d1cc267a1241feb5f77905110a2}} 
+\index{m\+\_\+logic@{m\+\_\+logic}!dc@{dc}}
+\index{dc@{dc}!m\+\_\+logic@{m\+\_\+logic}}
+\subsubsection{\texorpdfstring{dc}{dc}}
+{\footnotesize\ttfamily logical m\+\_\+logic\+::dc\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__logic_aa4a758529f4ba04d66cddf4cd51e0bc1}\label{namespacem__logic_aa4a758529f4ba04d66cddf4cd51e0bc1}} 
+\index{m\+\_\+logic@{m\+\_\+logic}!ident@{ident}}
+\index{ident@{ident}!m\+\_\+logic@{m\+\_\+logic}}
+\subsubsection{\texorpdfstring{ident}{ident}}
+{\footnotesize\ttfamily \hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), parameter m\+\_\+logic\+::ident =\char`\"{}@(\#)M\+\_\+logic(3fm)\+: Allows if/else/elseif/endif logic to be applied to input files\char`\"{}\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__logic_a047a31b5831fda2a9421240f1edce712}\label{namespacem__logic_a047a31b5831fda2a9421240f1edce712}} 
+\index{m\+\_\+logic@{m\+\_\+logic}!ierr\+\_\+logic@{ierr\+\_\+logic}}
+\index{ierr\+\_\+logic@{ierr\+\_\+logic}!m\+\_\+logic@{m\+\_\+logic}}
+\subsubsection{\texorpdfstring{ierr\+\_\+logic}{ierr\_logic}}
+{\footnotesize\ttfamily integer m\+\_\+logic\+::ierr\+\_\+logic =0\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__logic_a22ef0b94ebd8b7f3b35a33c8d9250759}\label{namespacem__logic_a22ef0b94ebd8b7f3b35a33c8d9250759}} 
+\index{m\+\_\+logic@{m\+\_\+logic}!max\+\_\+nest\+\_\+level@{max\+\_\+nest\+\_\+level}}
+\index{max\+\_\+nest\+\_\+level@{max\+\_\+nest\+\_\+level}!m\+\_\+logic@{m\+\_\+logic}}
+\subsubsection{\texorpdfstring{max\+\_\+nest\+\_\+level}{max\_nest\_level}}
+{\footnotesize\ttfamily integer, parameter m\+\_\+logic\+::max\+\_\+nest\+\_\+level =20\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__logic_aba076b8206140be84ad573bc89c82b14}\label{namespacem__logic_aba076b8206140be84ad573bc89c82b14}} 
+\index{m\+\_\+logic@{m\+\_\+logic}!nest\+\_\+level@{nest\+\_\+level}}
+\index{nest\+\_\+level@{nest\+\_\+level}!m\+\_\+logic@{m\+\_\+logic}}
+\subsubsection{\texorpdfstring{nest\+\_\+level}{nest\_level}}
+{\footnotesize\ttfamily integer, save, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public}, protected m\+\_\+logic\+::nest\+\_\+level =0}
+
+\mbox{\Hypertarget{namespacem__logic_a487df89eac953b22a40b143aaf8ff1ea}\label{namespacem__logic_a487df89eac953b22a40b143aaf8ff1ea}} 
+\index{m\+\_\+logic@{m\+\_\+logic}!write@{write}}
+\index{write@{write}!m\+\_\+logic@{m\+\_\+logic}}
+\subsubsection{\texorpdfstring{write}{write}}
+{\footnotesize\ttfamily logical, save, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public}, protected m\+\_\+logic\+::write =.true.}
+

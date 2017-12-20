@@ -653,6 +653,7 @@ use M_time,    only : date_to_unix , unix_to_date, fmtdate, now, fmtdate_usage, 
 use M_STRINGS, only : matchw, change, modif, delim
 use M_TIME,    only : date_to_julian,day_of_week=>dow, d2o, now
 use M_math,    only : round, dp_accdig
+use M_random,  only : init_random_seed
 implicit doubleprecision (a-h,o-z)
 character(len=*),parameter :: ident=&
 &"@(#)M_calculator::jufuns(3fp):reduce name(p1,p2,...) (p(i) are non-parenthesized expressions)"

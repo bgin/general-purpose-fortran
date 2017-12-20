@@ -1,6 +1,6 @@
 NAME
 
-   ephemeris(3f) - [M_time] ephemeris position of planets for adjusting an equitorial telescope
+   ephemeris(3f) - [M_time] ephemeris position of planets for adjusting an equatorial telescope
 
 SYNOPSIS
 

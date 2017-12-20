@@ -1,15 +1,31 @@
 var searchData=
 [
   ['r',['r',['../namespacem__anyscalar.html#af515907c09cc2ac286a4523cc73f5f52',1,'m_anyscalar']]],
+  ['r_5fgrp',['r_grp',['../namespacem__system.html#adb853ed1f9d39c45e0b512ab39c66605',1,'m_system']]],
+  ['r_5fok',['r_ok',['../namespacem__system.html#a801e3ccad38d0814e4f1e62e939e9649',1,'m_system']]],
+  ['r_5foth',['r_oth',['../namespacem__system.html#a74de84d2cb6b74e9d0d4c5aa5f1ba953',1,'m_system']]],
+  ['r_5fusr',['r_usr',['../namespacem__system.html#ace7825dd19ed7191b37d3a7a27c75431',1,'m_system']]],
+  ['r_5fwxg',['r_wxg',['../namespacem__system.html#a23aade9d4537c4260c2e44ef6a619db6',1,'m_system']]],
+  ['r_5fwxo',['r_wxo',['../namespacem__system.html#a9467bf0bb7ae96061314b865bde14f57',1,'m_system']]],
+  ['r_5fwxu',['r_wxu',['../namespacem__system.html#a10b9cc52ae68d1b64dd9f8ea4cfcd3be',1,'m_system']]],
+  ['rad_5fper_5fdeg',['rad_per_deg',['../namespacem__constants.html#a365f3d8b9c36ceb901d7bc9631a7be0c',1,'m_constants']]],
+  ['radian',['radian',['../namespacem__units.html#ae9442f0901c0238170aff7cf946fb0c1',1,'m_units']]],
+  ['radian_5fd',['radian_d',['../namespacem__units.html#ae88c8fb74ff03da879e668cfe0635550',1,'m_units']]],
   ['read_5fwatch',['read_watch',['../M__stopwatch_83_8txt.html#af9a9b96281b3329c28ed56f1a1a95976',1,'M_stopwatch.3.txt']]],
+  ['readlen',['readlen',['../namespacem__history.html#aca543c267d8b80d0690c33e4a684143b',1,'m_history']]],
   ['real',['real',['../read__watch_83_8txt.html#abdb62bde002f38ef75f810d3a905a823',1,'read_watch.3.txt']]],
   ['real256',['real256',['../namespacem__anyscalar.html#a6d3ef2bc1698c91d737dbd8824a9eb0b',1,'m_anyscalar']]],
   ['reals',['reals',['../intro__blas1_83_8txt.html#a6c5b4cd729a39b803dad4ac04e9bbd8e',1,'intro_blas1.3.txt']]],
+  ['realtime',['realtime',['../namespacem__time.html#ac10ea9e8d59ec74eaa7d89f2517d7422',1,'m_time']]],
   ['requested',['requested',['../M__stopwatch_83_8txt.html#a7361d7787748f5d0de0632604f9725c7',1,'M_stopwatch.3.txt']]],
   ['reset_5fwatch',['reset_watch',['../M__stopwatch_83_8txt.html#a873240c37994334a4823c6bb365f20f7',1,'M_stopwatch.3.txt']]],
   ['respectively',['respectively',['../do_87_8txt.html#a78ef31578e44c23323f868806ea6adfe',1,'do.7.txt']]],
   ['returns',['returns',['../M__stopwatch_83_8txt.html#aee54cdd5349bf498aa96e7f9426a0717',1,'M_stopwatch.3.txt']]],
+  ['rfmt',['rfmt',['../structm__display__util_1_1tostring__settings.html#a125b4161ce448ed7ee2223d368fba9a8',1,'m_display_util::tostring_settings']]],
+  ['right',['right',['../structm__treesort_1_1node.html#adfd2c4a14b54fe93048b2d54ed9ed7b6',1,'m_treesort::node']]],
   ['routines',['routines',['../intro__blas1_83_8txt.html#a8b1c4881a5e8817563c90b375b187ae1',1,'intro_blas1.3.txt']]],
+  ['row',['row',['../structm__display__util_1_1settings.html#ac5f1655b41bc8d746a001b768e8e8621',1,'m_display_util::settings']]],
+  ['rtf',['RTF',['../notes_8txt.html#ab51dea70e82b4a0780dc27c04b4c7ddb',1,'notes.txt']]],
   ['rules',['rules',['../intro__blas1_83_8txt.html#a75eea5bd68c3b2764ce235200eed1716',1,'intro_blas1.3.txt']]],
-  ['running',['running',['../M__stopwatch_83_8txt.html#abf8188867add2ff03645714d7dfd5aa8',1,'M_stopwatch.3.txt']]]
+  ['running',['running',['../M__stopwatch_83_8txt.html#abf8188867add2ff03645714d7dfd5aa8',1,'running():&#160;M_stopwatch.3.txt'],['../namespacem__stopwatch.html#ae9aaee11cd20802153cf7e880f9d3c3e',1,'m_stopwatch::running()']]]
 ];

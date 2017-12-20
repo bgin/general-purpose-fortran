@@ -180,7 +180,7 @@ END MODULE PUTSTRMODULE
 !! the remaining sections in this user manual contain detailed information on using the module.
 !! section 2 discusses the basics of using the module, including use statements, compiling and
 !! linking, and add-on modules supporting non-default kinds of data. section 3 gives a detailed
-!! discription of the generic subroutine disp. all the possible arguments are listed and the purpose
+!! description of the generic subroutine disp. all the possible arguments are listed and the purpose
 !! of each one described. section 4 describes how to change various settings that control how items
 !! are displayed with disp. section 5 describes the function tostring which may be used to change
 !! numbers to strings. finally testing of the module is discussed in section 6.

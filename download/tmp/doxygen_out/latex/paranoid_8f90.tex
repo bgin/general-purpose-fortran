@@ -1,2 +1,70 @@
 \hypertarget{paranoid_8f90}{}\section{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/paranoid.f90 File Reference}
 \label{paranoid_8f90}\index{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/paranoid.\+f90@{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/paranoid.\+f90}}
+\subsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{paranoid_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}{help\+\_\+usage} (l\+\_\+help)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{paranoid_8f90_a39c21619b08a3c22f19e2306efd7f766}{help\+\_\+version} (l\+\_\+version)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+paranoid(1f) -\/ \mbox{[}D\+E\+V\+E\+L\+O\+P\+ER\mbox{]} call doublprecision and real versions of paranoia(3f) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+program \hyperlink{paranoid_8f90_a5ee1dc76ca482e8a4a44cbd213cce4c1}{test\+\_\+paranoia}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{paranoid_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}\label{paranoid_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}} 
+\index{paranoid.\+f90@{paranoid.\+f90}!help\+\_\+usage@{help\+\_\+usage}}
+\index{help\+\_\+usage@{help\+\_\+usage}!paranoid.\+f90@{paranoid.\+f90}}
+\subsubsection{\texorpdfstring{help\+\_\+usage()}{help\_usage()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} help\+\_\+usage (\begin{DoxyParamCaption}\item[{logical, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{l\+\_\+help }\end{DoxyParamCaption})}
+
+
+
+References false().
+
+\mbox{\Hypertarget{paranoid_8f90_a39c21619b08a3c22f19e2306efd7f766}\label{paranoid_8f90_a39c21619b08a3c22f19e2306efd7f766}} 
+\index{paranoid.\+f90@{paranoid.\+f90}!help\+\_\+version@{help\+\_\+version}}
+\index{help\+\_\+version@{help\+\_\+version}!paranoid.\+f90@{paranoid.\+f90}}
+\subsubsection{\texorpdfstring{help\+\_\+version()}{help\_version()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} help\+\_\+version (\begin{DoxyParamCaption}\item[{logical, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{l\+\_\+version }\end{DoxyParamCaption})}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+paranoid(1f) -\/ \mbox{[}D\+E\+V\+E\+L\+O\+P\+ER\mbox{]} call doublprecision and real versions of paranoia(3f) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+paranoid \subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+This program and the routines it calls can be used to test various Fortran compiler options.
+
+The paranoid(1f) command is strictly for use by developers. This program and the sparanoi(3f) and dparanoi(3f) procedures all need recompiled with the compiler options being tested. Then the program is run and the resulting tests and their output are examined.
+
+The results require interpretation and an understanding of program internals.
+
+Because programs are often built with a variety of compilers and compiler options on a number of different platforms it is prudent to select options that choose operations that meet the double precision specification defined in the I\+E\+EE 754-\/1985 standard when available; but \char`\"{}failure\char`\"{} of the strict testing performed does not imply a flaw in the program.
+
+This permits developers to verify that the compiler and loader options selected while building a program and the system hardware currently being used reasonably perform floating point operations.
+
+\subsubsection*{E\+X\+A\+M\+P\+LE}
+
+Sample beginning of dialog ... 
+
+ Tuesday, February 7th, 2017 4\+:35\+:06 AM U\+T\+C-\/0300 sysname\+: C\+Y\+G\+W\+I\+N\+\_\+\+N\+T-\/10.\+0 release\+: 2.\+6.\+0(0.\+304/5/3) version\+: 2016-\/08-\/31 14\+:32 nodename\+: buzz machine\+: x86\+\_\+64 This file was compiled by G\+CC version 5.\+4.\+0 using the options -\/I /usr/include/w32api -\/I /home/urbanjs/\+V600/lib/\+C\+Y\+G\+W\+I\+N64\+\_\+\+G\+F\+O\+R\+T\+R\+AN -\/mtune=generic -\/march=x86-\/64 -\/g -\/\+Wunused -\/\+Wuninitialized -\/\+Wall -\/std=f2008 -\/fbounds-\/check -\/fbacktrace -\/finit-\/real=nan -\/fno-\/range-\/check -\/frecord-\/marker=4 \subsection*{-\/J /home/urbanjs/\+V600/lib/\+C\+Y\+G\+W\+I\+N64\+\_\+\+G\+F\+O\+R\+T\+R\+AN }
+
+{\itshape paranoid}" double precision test(3f) Is this a program restart after failure (1) or a start from scratch (0) ? 
+
+References false().
+
+\mbox{\Hypertarget{paranoid_8f90_a5ee1dc76ca482e8a4a44cbd213cce4c1}\label{paranoid_8f90_a5ee1dc76ca482e8a4a44cbd213cce4c1}} 
+\index{paranoid.\+f90@{paranoid.\+f90}!test\+\_\+paranoia@{test\+\_\+paranoia}}
+\index{test\+\_\+paranoia@{test\+\_\+paranoia}!paranoid.\+f90@{paranoid.\+f90}}
+\subsubsection{\texorpdfstring{test\+\_\+paranoia()}{test\_paranoia()}}
+{\footnotesize\ttfamily program test\+\_\+paranoia (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+References help\+\_\+usage(), help\+\_\+version(), m\+\_\+kracken\+::kracken(), m\+\_\+kracken\+::lget(), m\+\_\+time\+::now(), paranoia(), m\+\_\+messages\+::signs(), m\+\_\+strings\+::substitute(), and m\+\_\+system\+::system\+\_\+uname().
+

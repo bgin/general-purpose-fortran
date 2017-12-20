@@ -1,2 +1,107 @@
 \hypertarget{planets_8f90}{}\section{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/planets.f90 File Reference}
 \label{planets_8f90}\index{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/planets.\+f90@{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/planets.\+f90}}
+\subsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{planets_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}{help\+\_\+usage} (l\+\_\+help)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{planets_8f90_a39c21619b08a3c22f19e2306efd7f766}{help\+\_\+version} (l\+\_\+version)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}\end{DoxyCompactList}\item 
+program \hyperlink{planets_8f90_a9694fb47f36780e83c2f3b77472b4af1}{planets}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{planets_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}\label{planets_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}} 
+\index{planets.\+f90@{planets.\+f90}!help\+\_\+usage@{help\+\_\+usage}}
+\index{help\+\_\+usage@{help\+\_\+usage}!planets.\+f90@{planets.\+f90}}
+\subsubsection{\texorpdfstring{help\+\_\+usage()}{help\_usage()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} help\+\_\+usage (\begin{DoxyParamCaption}\item[{logical, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{l\+\_\+help }\end{DoxyParamCaption})}
+
+
+
+References false().
+
+\mbox{\Hypertarget{planets_8f90_a39c21619b08a3c22f19e2306efd7f766}\label{planets_8f90_a39c21619b08a3c22f19e2306efd7f766}} 
+\index{planets.\+f90@{planets.\+f90}!help\+\_\+version@{help\+\_\+version}}
+\index{help\+\_\+version@{help\+\_\+version}!planets.\+f90@{planets.\+f90}}
+\subsubsection{\texorpdfstring{help\+\_\+version()}{help\_version()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} help\+\_\+version (\begin{DoxyParamCaption}\item[{logical, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{l\+\_\+version }\end{DoxyParamCaption})}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+planets(1f) -\/ \mbox{[}F\+U\+N\+IX\mbox{]} ephemeris position of planets for adjusting an equitorial telescope
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\begin{DoxyVerb}planets yyyy mm dd utc hh mm ss [-planet [N|name] ]
+\end{DoxyVerb}
+
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+\begin{DoxyVerb}planets(1) calculates the ephemeris of a planet in our solar system
+in order to  adjust an equatorial telescope. See ephemeris(3f) for
+more details. The outputs are
+
+  o Ascent in hours (0 to 24) and minutes (0 to 60)
+  o Declination in degrees and minutes (-90 to 90 North or South)
+\end{DoxyVerb}
+
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+\begin{DoxyVerb}  date    provide the same eight values used by the DATE_AND_TIME(3f) intrinsic.
+
+    ·     value(1)  The year
+       ·  value(2)  The month
+       ·  value(3)  The day of the month
+       ·  value(4)  Time difference with UTC in minutes
+       ·  value(5)  The hour of the day
+       ·  value(6)  The minutes of the hour
+       ·  value(7)  The seconds of the minute
+       ·  value(8)  The milliseconds of the second
+
+  N|Name  Planet numbers in range 1 to 8 (Mercury:1 Venus:2 Mars:4
+          Jupiter:5 Saturn:6 Uranus:7 Neptune:8). If not specified
+          the default is "1 2 4 5 6 7 8".
+\end{DoxyVerb}
+
+
+\subsubsection*{E\+X\+A\+M\+P\+LE}
+
+\begin{DoxyVerb}(Find ascent and declination of planet Mars on March 10th, 1982 at 6h UT)
+
+ planets 1982 03 10 00 06 00 00 00  -planet  4
+
+  Wednesday, March 10th, 1982 6:00:00 AM UTC+00:00
+  Planet: 4  Ascent: 13 H  8 MN  Declination:  3 D 45 MN S
+
+ no planet number(s) specified:
+
+ planets 1982 03 10 00 06 00 00 00
+
+  Wednesday, March 10th, 1982 6:00:00 AM UTC+00:00
+  Planet: 1  Ascent: 21 H 51 MN  Declination: 14 D 45 MN S
+  Planet: 2  Ascent: 20 H 26 MN  Declination: 14 D 57 MN S
+  Planet: 4  Ascent: 13 H  8 MN  Declination:  3 D 45 MN S
+  Planet: 5  Ascent: 14 H 32 MN  Declination: 13 D 30 MN S
+  Planet: 6  Ascent: 13 H 22 MN  Declination:  5 D 42 MN S
+  Planet: 7  Ascent: 16 H 11 MN  Declination: 20 D 54 MN S
+  Planet: 8  Ascent: 17 H 46 MN  Declination: 22 D  7 MN S \end{DoxyVerb}
+ 
+
+References false().
+
+\mbox{\Hypertarget{planets_8f90_a9694fb47f36780e83c2f3b77472b4af1}\label{planets_8f90_a9694fb47f36780e83c2f3b77472b4af1}} 
+\index{planets.\+f90@{planets.\+f90}!planets@{planets}}
+\index{planets@{planets}!planets.\+f90@{planets.\+f90}}
+\subsubsection{\texorpdfstring{planets()}{planets()}}
+{\footnotesize\ttfamily program planets (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+References m\+\_\+time\+::ephemeris(), fmtdate, m\+\_\+time\+::guessdate(), help\+\_\+usage(), help\+\_\+version(), m\+\_\+kracken\+::iget(), m\+\_\+kracken\+::igets(), m\+\_\+kracken\+::kracken(), m\+\_\+kracken\+::lget(), and m\+\_\+kracken\+::sget().
+

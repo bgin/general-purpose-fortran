@@ -39,8 +39,8 @@
 !!     ! read all of process output into a string string
 !!     function process_readall(cmd,ierr) result (string)
 !!
-!!     ! write line to process
-!!     subroutine process_writeline(string,fp,ierr)
+!!     ! write lines to process
+!!     subroutine process_writeline(string|string_array,fp,ierr[,trm=.t.|.f.])
 !!
 !!     ! close process
 !!     subroutine process_close(fp,ierr)
@@ -102,78 +102,128 @@
 !!
 !!       end program read_ex
 !!
-!!    An example program that calls the M_process module to start a plotting
-!!    program called gnuplot(1) and give it enough commands to generate
-!!    a plot. It then lets you interactively interact with the program or
-!!    continue on in the program.
+!!    When calling a line-mode program from another program the most natural
+!!    way is to open a process and write to it.
 !!
-!!        program gnuExample
-!!        ! @(#)  Example of Fortran writing GNUPLOT command and data file.
-!!        use M_process ,only: process_open_write, process_writeline
-!!        use M_process ,only: streampointer, process_close
-!!        implicit none
-!!        !*! line of data to write (assumed long enough to hold any command line)
-!!        character(len=4096) :: line
-!!        !*! C file pointer returned by process_open()
-!!        type(streampointer) :: fp
-!!        !*! check status of calls to process module routines
-!!        integer :: ierr
-!!        !*! DO loop counter
-!!        integer :: i
+!!    Following is an example program that calls the M_process module to
+!!    start a plotting program called gnuplot(1) and give it enough commands
+!!    to generate a plot. It then lets you interactively interact with the
+!!    gnuplot(1) program or continue on in the program.
 !!
-!!        !*! data file to create and put X,Y values into
-!!        character(len=60)   :: fidmap='SAMPLE.MAP'
-!!        !*! number of points to put into curve to be plotted
-!!        integer,parameter   :: n=50
-!!        !*! arrays to fill with curve data to be plotted
-!!        real                :: x(n),y(n)
-!!        integer             :: ios
+!!     program gnuplotExample
+!!     ! @(#)  Example of Fortran writing GNUPLOT command and data file.
+!!     use M_process ,only: process_open_write, process_writeline
+!!     use M_process ,only: streampointer, process_close
+!!     implicit none
+!!     character(len=4096) :: line                             !*! line of data to write (assumed long enough to hold any command line)
+!!     type(streampointer) :: fp                               !*! C file pointer returned by process_open()
+!!     integer :: ierr                                         !*! check status of calls to process module routines
+!!     integer :: i                                            !*! DO loop counter
+!!     integer,parameter   :: n=50                             !*! number of points to put into curve to be plotted
+!!     real                :: x(n),y(n)                        !*! arrays to fill with curve data to be plotted
+!!     integer             :: ios
 !!
-!!        !*! open data file to hold X,Y values to be plotted
-!!        open(70,file=fidmap)
-!!        !*! Define sample X,Y array.
-!!        do i=1,n
-!!        !*! set X() values as whole numbers 1 to N
-!!           x(i)=i
+!!     !*! Define sample X,Y array.
+!!     do i=1,n                                                !*! set X() values as whole numbers 1 to N
+!!        x(i)=i
 !!        !*!
-!!           y(i)=(x(i)+0.5)**2
-!!        enddo
+!!        y(i)=(x(i)+0.5)**2
+!!     enddo
+!!                                                             !*! Write the GnuPlot commands
+!!     call process_open_write('gnuplot',fp,ierr)              !*! open process to write to (ie. start gnuplot(1) program)
+!!     call process_writeline('$SET1 <<EOD',fp,ierr)           !*! create in-line dataset $SET1
+!!     do i=1,n
+!!        write(line,'(2(f10.3,1x))')x(i),y(i)                 !*! Write the X,Y array as coordinates to be plotted.
+!!        call process_writeline(line,fp,ierr)
+!!     enddo
 !!
-!!        !*! Write the X,Y array as coordinates to be plotted.
-!!        write(70,'(2f10.3)')(x(i),y(i),i=1,n)
-!!        !*! if not closed or flushed, subprocess may not be able to read
-!!        flush(70, iostat = ios)
+!!     call process_writeline([character(len=128) ::                        &
+!!     &'EOD                                                             ', &
+!!     &'set title " Example of GNUPlot data and command file generation"', &
+!!     &'set nokey'                                                       , &
+!!     &'plot $SET1 with lines'                                           , &
+!!     &''],fp,ierr)
 !!
-!!        !*! Write the GnuPlot commands
-!!        !*! open process to write to (ie. start gnuplot(1) program)
-!!        call process_open_write('gnuplot',fp,ierr)
-!!        call process_writeline &
-!!        & ('set title " Example of GNUPlot data and command file generation"',fp,ierr)
-!!        !*! write a command to the process
-!!        call process_writeline('set nokey',fp,ierr)
-!!
-!!        !*! build a command with a formatted write
-!!        write(line,101) trim(fidmap)
-!!        101 format('plot "',A,'" with lines')
-!!        !*! write a command to the process
+!!     write(*,'(a)')'enter gnuplot commands or "." to exit'   !*! Additional gnuplot commands; in this case interactively entered
+!!     do
+!!        write(*,'(a)',advance='no')'gnu>>'
+!!        read(*,'(a)',iostat=ios)line
+!!        if(line.eq.'.')exit
 !!        call process_writeline(trim(line),fp,ierr)
+!!     enddo
+!!                                                             !*! Wrap up
+!!     call process_close(fp,ierr)
+!!     write(*,*)'CLOSED THE PROCESS. RETURNING TO PROGRAM'
+!!     end program gnuplotExample
 !!
+!! This program starts a bash shell that, among other things, calls sqlite3 and gnuplot.
+!! In this case the text is fixed to keep the example simple. More typically the text
+!! would be conditionally selected or generated by the program.
 !!
-!!        !*! Additional gnuplot commands; in this case interactively entered
-!!        write(*,'(a)')'enter gnuplot commands or "." to exit'
-!!        do
-!!           write(*,'(a)',advance='no')'gnu>>'
-!!           read(*,'(a)',iostat=ios)line
-!!           if(line.eq.'.')exit
-!!           call process_writeline(trim(line),fp,ierr)
-!!        enddo
+!!     program demo_bash
+!!     use M_process ,only : process_open_write, process_writeline
+!!     use M_process ,only : streampointer, process_close
+!!     implicit none
+!!     type(streampointer) :: fp                     ! C file pointer returned by process_open()
+!!     integer :: ierr                               ! check status of calls to process module routines
+!!     character(len=:),allocatable :: text(:)
 !!
-!!        !*! Wrap up
+!!      !!call process_open_write('cat',fp,ierr)       ! open process to write to (ie. start gnuplot(1) program)
+!!        call process_open_write('bash',fp,ierr)       ! open process to write to (ie. start gnuplot(1) program)
+!!
+!!        text=[character(len=128) :: &
+!!     "rm -f sqlite1.db", &
+!!     "sqlite3 sqlite1.db <<\EOF", &
+!!     "-- *****************************************************************************", &
+!!     "CREATE TABLE IF NOT EXISTS animals(", &
+!!     "   name        TEXT           NOT NULL   PRIMARY KEY ,", &
+!!     "   hair        INT            NOT NULL   ,", &
+!!     "   mobility    INT            NOT NULL   ,", &
+!!     "   vision      INT            NOT NULL   );", &
+!!     "-- *****************************************************************************", &
+!!     "INSERT INTO animals ( name, hair, mobility, vision ) VALUES ( 'kittens'  , 4, 5, 1 ) ;", &
+!!     "INSERT INTO animals ( name, hair, mobility, vision ) VALUES ( 'mice'     , 6, 7, 2 ) ;", &
+!!     "INSERT INTO animals ( name, hair, mobility, vision ) VALUES ( 'rats'     , 2, 3, 3 ) ;", &
+!!     "-- *****************************************************************************", &
+!!     ".quit", &
+!!     "EOF", &
+!!     "################################################################################", &
+!!     "sqlite3 -header -column sqlite1.db  'select * from animals'", &
+!!     "sqlite3 sqlite1.db  'select name, hair, mobility, vision from animals'", &
+!!     "################################################################################", &
+!!     "gnuplot --persist <<\EOF                                                              ", &
+!!     "########################################                                              ", &
+!!     "#set terminal gif                                                                     ", &
+!!     "#set output 'M_process.3.gif'                                                         ", &
+!!     "########################################                                              ", &
+!!     "#set terminal png                                                                     ", &
+!!     "#set output 'bar.png'                                                                 ", &
+!!     "########################################                                              ", &
+!!     "#set terminal pdf enhanced                                                            ", &
+!!     "#set output 'bar.pdf'                                                                 ", &
+!!     "########################################                                              ", &
+!!     "#set style data lines                                                                 ", &
+!!     "########################################                                              ", &
+!!     "set datafile separator ""|""                                                          ", &
+!!     "set style data histogram                                                              ", &
+!!     "set style histogram cluster gap 1                                                     ", &
+!!     "set style fill solid border rgb ""black""                                             ", &
+!!     "set auto x                                                                            ", &
+!!     "set yrange [0:*]                                                                      ", &
+!!     "plot ""< sqlite3 sqlite1.db  'select name, hair, mobility, vision  from animals'"" \  ", &
+!!     "      using 2:xtic(1) title ""hair"",  \                                              ", &
+!!     "   '' using 4:xtic(1) title ""vision"", \                                             ", &
+!!     "   '' using 3:xtic(1) title ""mobility""                                              ", &
+!!     "quit                                                                                  ", &
+!!     "EOF                                                                                   ", &
+!!     ""]
+!!
+!!        !!write(*,'(a)')text
+!!        call process_writeline(text,fp,ierr)
 !!        call process_close(fp,ierr)
-!!        write(*,*)'CLOSED THE PROCESS. RETURNING TO PROGRAM'
-!!        !*! delete the data file
-!!        close(70,status='delete',iostat=ios)
-!!        end program gnuExample
+!!        write(*,'(a)')'CLOSED THE PROCESS. RETURNING TO PROGRAM'
+!!
+!!     end program demo_bash
 !!
 !!##SEE ALSO
 !!
@@ -212,6 +262,12 @@ logical, PUBLIC ::  process_debug=.false.
 type, public       :: streampointer
    type (c_ptr)    :: handle = c_null_ptr
 end type streampointer
+
+
+interface process_writeline
+   module procedure process_writeline_scalar, process_writeline_array
+end interface
+
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()-
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -635,19 +691,30 @@ end function process_readall
 !!##EXAMPLE
 !!
 !===================================================================================================================================
-subroutine process_writeline(writefrom,fp,ierr)
-character(len=*),parameter :: ident="@(#)M_process::process_writeline(3f):write line to process"
-   character(len=*),intent(in)    :: writefrom
-   type(streampointer),intent(in) :: fp
-   integer,intent(out)            :: ierr
-
-   integer :: ios
+subroutine process_writeline_scalar(writefrom,fp,ierr,trm)
+character(len=*),parameter :: ident="@(#)M_process::process_writeline_scalar(3fp):write line to process"
+character(len=*),intent(in)    :: writefrom
+type(streampointer),intent(in) :: fp
+integer,intent(out)            :: ierr
+logical,intent(in),optional    :: trm
+   integer                     :: ios
+   logical                     :: trm_local
 !-----------------------------------------------------------------------------------------------------------------------------------
-   ierr=system_fputs(trim(writefrom)//C_NEW_LINE//C_NULL_CHAR,fp%handle)
+   if(present(trm))then
+      trm_local=trm
+   else
+      trm_local=.true.
+   endif
+!-----------------------------------------------------------------------------------------------------------------------------------
+   if(trm_local)then
+      ierr=system_fputs(trim(writefrom)//C_NEW_LINE//C_NULL_CHAR,fp%handle)
+   else
+      ierr=system_fputs(writefrom//C_NEW_LINE//C_NULL_CHAR,fp%handle)
+   endif
    if(ierr.ne.0)then
       ios = system_pclose(fp%handle)
       if(process_debug)then
-         write(*,*) '*process_writeline* Closed pipe with status ',ios
+         write(*,*) '*process_writeline_scalar* Closed pipe with status ',ios
       endif
       ierr=min(-1,ios)
    endif
@@ -655,7 +722,22 @@ character(len=*),parameter :: ident="@(#)M_process::process_writeline(3f):write 
       ierr=fflush(fp%handle)
    endif
 
-end subroutine process_writeline
+end subroutine process_writeline_scalar
+subroutine process_writeline_array(writefrom,fp,ierr)
+character(len=*),parameter :: ident="@(#)M_process::process_writeline_array(3fp):write lines to process"
+character(len=*),intent(in)    :: writefrom(:)
+type(streampointer),intent(in) :: fp
+integer,intent(out)            :: ierr
+   integer                     :: i
+!-----------------------------------------------------------------------------------------------------------------------------------
+
+   ierr=0
+   do i=1,size(writefrom,dim=1)
+      call process_writeline_scalar(writefrom(i),fp,ierr)
+      if(ierr.ne.0)exit
+   enddo
+
+end subroutine process_writeline_array
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()-
 !-----------------------------------------------------------------------------------------------------------------------------------

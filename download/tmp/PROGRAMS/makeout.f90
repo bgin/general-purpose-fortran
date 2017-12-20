@@ -40,6 +40,14 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                      used.                                                     ',&
 '       -v             verbose mode. Shows lines in input files that             ',&
 '                      were used to create the dependencies.                     ',&
+'       -mode          profile|production|debug                                  ',&
+'                      If the default gfortran options are being used            ',&
+'                      (ie. environment variables overide defaults)              ',&
+'                      different compile and loader options are selected.        ',&
+'                        profile     adds -pg option for gprof(1)                ',&
+'                        production  good options for optimized performance      ',&
+'                        debug       typical debug options                       ',&
+'                                                                                ',&
 '       --help         display command help and exit                             ',&
 '       --version      output version information and exit EXAMPLES              ',&
 '                                                                                ',&
@@ -58,7 +66,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 'EXAMPLES                                                                        ',&
 '    Common usage                                                                ',&
 '                                                                                ',&
-'        makeout PROGRAMS/testit.f90 -v;make                                     ',&
+'        env F90=f90 makeout PROGRAMS/testit.f90 -o;make                         ',&
 '                                                                                ',&
 'SEE ALSO                                                                        ',&
 '  If your project needs exceeds the capabilities of makeout(1), see             ',&
@@ -106,6 +114,14 @@ end subroutine help_usage
 !!                       used.
 !!        -v             verbose mode. Shows lines in input files that
 !!                       were used to create the dependencies.
+!!        -mode          profile|production|debug
+!!                       If the default gfortran options are being used
+!!                       (ie. environment variables overide defaults)
+!!                       different compile and loader options are selected.
+!!                         profile     adds -pg option for gprof(1)
+!!                         production  good options for optimized performance
+!!                         debug       typical debug options
+!!
 !!        --help         display command help and exit
 !!        --version      output version information and exit EXAMPLES
 !!
@@ -125,7 +141,7 @@ end subroutine help_usage
 !!
 !!     Common usage
 !!
-!!         makeout PROGRAMS/testit.f90 -v;make
+!!         env F90=f90 makeout PROGRAMS/testit.f90 -o;make
 !!
 !!##SEE ALSO
 !!   If your project needs exceeds the capabilities of makeout(1), see
@@ -148,7 +164,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    create Makefile for current directory>',&
 '@(#)VERSION:        1.0, 2017-12-09>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sun, Dec 10th, 2017 3:30:50 PM>',&
+'@(#)COMPILED:       Tue, Dec 19th, 2017 9:22:59 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -180,6 +196,7 @@ character(len=:),allocatable    :: bases
 type(c_ptr)                     :: dir
 character(len=:),allocatable    :: filename
 character(len=:),allocatable    :: outfile
+character(len=:),allocatable    :: makeout_mode
 logical                         :: makeout_v
 integer                         :: i, io, ios
 integer                         :: ierr
@@ -195,10 +212,11 @@ character(len=maxlen)           :: ext
    objects=''                                                     ! list of target objects starts with empty array
    bases=''                                                       ! list of target names
 !----------------------------------------------------------------------------------------------------------------------------------
-   call kracken('makeout',' -help F -version F -v .F. -o "#N#"') ! define and crack command line
+   call kracken('makeout',' -help F -version F -v .F. -o "#N#" -mode ') ! define and crack command line
    call help_usage(lget('makeout_help'))
    call help_version(lget('makeout_version'))
    makeout_v=lget('makeout_v')
+   makeout_mode=sget('makeout_mode')
 
    outfile=sget('makeout_o')                                      ! open output file if specified
    if(outfile.eq.'#N#')then
@@ -234,7 +252,7 @@ character(len=maxlen)           :: ext
       if(system_isdir(filename))cycle                             ! skip directories
       call splitpath(filename, dirname, name, basename, ext)      ! split pathname into components
       PREFIXES: select case(ext)                                  ! look for desired file suffixes
-      case('.f','.f90','.F','.F90','.c','.for','.f95','.f03')
+      case('.f','.f90','.F','.F90','.c','.for','.f95','.f03','.ff','.FF','.shf')
          sources=sources//trim(name)//' '                         ! append source file names together into string
          objects=objects//trim(basename)//'.o '                   ! append source file basenames//'.o' together into string
          bases=bases//lower(trim(basename))//' '                  ! append source file basenames//'.o' together into string
@@ -253,14 +271,80 @@ character(len=maxlen)           :: ext
    write(io,'(a)')repeat('# ',40)
    write(io,'(a)')'# platform-specific values you will probably change'
    write(io,'(a)')'# '
-   call printmakevar('LIBS','-lncurses -lreadline')
-   call printmakevar('CC','cc')
-   call printmakevar('CFLAGS','-O')
-   call printmakevar('FC','f90')
-   call printmakevar('FFLAGS','-O')
-   call printmakevar('F90','gfortran')
-   call printmakevar('F90FLAGS','-O')
-   call printmakevar('LDFLAGS','-s')
+   select case(makeout_mode)
+   case('debug')
+      call printmakevar('LIBS','-lncurses -lreadline')
+      call printmakevar('CC','cc')
+      call printmakevar('CFLAGS',' &
+      & -Og &
+      & -Wall &
+      & -pedantic &
+      & -Wformat &
+      & -Wunused &
+      & -Wuninitialized &
+      &')
+      call printmakevar('FC','f90')
+      call printmakevar('FFLAGS',' &
+      & -std=f2008 &
+      & -Og &
+      & -fbounds-check &
+      & -fbacktrace &
+      & -finit-real=nan &
+      & -fno-range-check &
+      & -frecord-marker=4 &
+      & -Wunreachable-code &
+      & -Wunused &
+      & -Wuninitialized &
+      & -Wall &
+      & -Wextra &
+      & -fcheck=all &
+      &')
+      call printmakevar('F90','gfortran')
+      call printmakevar('F90FLAGS',' &
+      & -std=f2008 &
+      & -Og &
+      & -fbounds-check &
+      & -fbacktrace &
+      & -finit-real=nan &
+      & -fno-range-check &
+      & -frecord-marker=4 &
+      & -Wunreachable-code &
+      & -Wunused &
+      & -Wuninitialized &
+      & -Wall &
+      & -Wextra &
+      & -fcheck=all &
+      &')
+      call printmakevar('LDFLAGS',' -Wall ')
+   case('profile')
+      call printmakevar('LIBS','-lncurses -lreadline')
+      call printmakevar('CC','cc')
+      call printmakevar('CFLAGS','-pg')
+      call printmakevar('FC','f90')
+      call printmakevar('FFLAGS','-pg')
+      call printmakevar('F90','gfortran')
+      call printmakevar('F90FLAGS','-pg')
+      call printmakevar('LDFLAGS','-pg')
+   case('production')
+      call printmakevar('LIBS','-lncurses -lreadline')
+      call printmakevar('CC','cc')
+      call printmakevar('CFLAGS','-O')
+      call printmakevar('FC','f90')
+      call printmakevar('FFLAGS','-O3  -march=native -Wall -fwhole-file -std=f2008')
+      call printmakevar('F90','gfortran')
+      call printmakevar('F90FLAGS','-O3  -march=native -Wall -fwhole-file -std=f2008')
+      call printmakevar('F90','gfortran')
+      call printmakevar('LDFLAGS','')
+   case default
+      call printmakevar('LIBS','-lncurses -lreadline')
+      call printmakevar('CC','cc')
+      call printmakevar('CFLAGS','-O')
+      call printmakevar('FC','f90')
+      call printmakevar('FFLAGS','-O')
+      call printmakevar('F90','gfortran')
+      call printmakevar('F90FLAGS','-O')
+      call printmakevar('LDFLAGS','')
+   endselect
    write(io,'(a)')repeat('# ',40)
 !----------------------------------------------------------------------------------------------------------------------------------
    if(size(programs).eq.0)then
@@ -279,7 +363,10 @@ character(len=maxlen)           :: ext
       &'clean:                                             ',&
       &'\trm -f $(PROG) $(OBJS) *.mod                      ',&
       &'                                                   ',&
-      &'.SUFFIXES: $(SUFFIXES) .f90 .F90                   ',&
+      &'.SUFFIXES: $(SUFFIXES) .f90 .F90 .ff .FF .shf      ',&
+      &'# .shf -- assumed to write Fortran code to stdout when executed  ',&
+      &'# .FF -- run thru ufpp(1) with    $system directives allowed     ',&
+      &'# .ff -- run thru ufpp(1) without $system directives allowed     ',&
       &'                                                   ',&
       &'.f90.o:                                            ',&
       &'\t$(F90) $(F90FLAGS) -c $<                         ',&
@@ -298,6 +385,31 @@ character(len=maxlen)           :: ext
       &'                                                   ',&
       &'.F03.o:                                            ',&
       &'\t$(F90) $(F90FLAGS) -c $<                         ',&
+      &'#=================================================================================',&
+      &'# Fortran free format file known to have ufpp(1) preprocessor directives          ',&
+      &'# run thru ufpp(1) preprocessor with system commands allowed, variable F90 defined',&
+      &'# Assumes .F90 file does not exist previously, as it will overwrite it.           ',&
+      &'.FF.o:                                                                            ',&
+      &'\t@# run thru ufpp(1) preprocessor with system commands allowed                   ',&
+      &'\t@[ -x $(*F).F90 ] || echo "error: $(*F).F90 exists"                             ',&
+      &'\tufpp -D F90 OS=`uname -o` -verbose -system .true. -i $(<) -o $(*F).F90          ',&
+      &'\t@[ -s $(*F).F90 ] || echo "error: $(*F).F90 is empty"                           ',&
+      &'\t$(F90) $(F90FLAGS) -c $(*F).F90                                                 ',&
+      &'# clean up scratch files                                                          ',&
+      &'\t@rm -f $(*F).F90 # ${?F:.FF=.o}                                                 ',&
+      &'#=================================================================================',&
+      &'# Fortran free format file known to have ufpp(1) preprocessor directives          ',&
+      &'# run thru ufpp(1) preprocessor with no system commands allowed, variable F90     ',&
+      &'# defined. Assumes .F90 file does not exist previously, as it will overwrite it.  ',&
+      &'.ff.o:                                                                            ',&
+      &'\t@# run thru ufpp(1) preprocessor with system commands allowed                   ',&
+      &'\t@[ -x $(*F).F90 ] || echo "error: $(*F).F90 exists"                             ',&
+      &'\tufpp -D F90 OS=`uname -o` -verbose -i $(<) -o $(*F).F90                         ',&
+      &'\t@[ -s $(*F).F90 ] || echo "error: $(*F).F90 is empty"                           ',&
+      &'\t$(F90) $(F90FLAGS) -c $(*F).F90                                                 ',&
+      &'# clean up scratch files                                                          ',&
+      &'\t@rm -f $(*F).F90 # ${?F:.ff=.o}                                                 ',&
+      &'#=================================================================================',&
       &'']
    do i=1,size(fixed)
       write(io,'(a)')expand(trim(fixed(i)))
@@ -358,7 +470,7 @@ implicit none
 
          call splitpath(token, dirname, name, basename, ext)      ! split pathname into components
          PREFIXES: select case(ext)                               ! look for desired file suffixes
-         case('.f','.f90','.F','.F90','.c','.for','.f95','.f03')
+         case('.f','.f90','.F','.F90','.c','.for','.f95','.f03','.ff','.FF','.shf')
             token=trim(basename)//'.o '                           ! change source file names to object file names
          case('.h','.inc')
          case default
@@ -407,6 +519,7 @@ character(len=*),intent(in) :: filename
       if(size(array).lt.2)cycle INFINITE
       select case(lower(array(1))) ! if first word is USE, or INCLUDE/#INCLUDE or MODULE
       case('include')
+      case('$include')
       case('#include')
          if(array(2)(1:1).eq.'<')then     ! do not bother with system C files
             cycle INFINITE
@@ -472,20 +585,23 @@ implicit none
 character(len=*),intent(in)     :: varname
 character(len=*),intent(in)     :: default
    integer                      :: ilen
+   integer                      :: istatus
    character(len=:),allocatable :: thevalue
    ilen=0
-   call get_environment_variable (name=trim(varname),length=ilen)
-   if(ilen.gt.0)then
-      allocate(character(len=ilen) :: thevalue)
-      thevalue(:)=' '
-      call get_environment_variable (name=trim(varname),value=thevalue)
+   call get_environment_variable (name=trim(varname),length=ilen,status=istatus)
+   if(ilen.gt.0)then                                                                  ! variable is defined with a value
+      allocate(character(len=ilen) :: thevalue)                                       ! make it as long as the value
+      thevalue(:)=' '                                                                 ! keep current size but make it blank
+      call get_environment_variable (name=trim(varname),value=thevalue)               ! get the variable value
       if(thevalue.ne.'')then
          write(io,'(a," = ",a)')trim(varname),trim(thevalue)
       else
          write(io,'(a," = ",a)')trim(varname),trim(default)
       endif
-   else
+   elseif(istatus.eq.1)then                                                           ! variable does not exist so use default
       write(io,'(a," = ",a)')trim(varname),trim(default)
+   else                                                                               ! variable is defined as blank
+      write(io,'(a," = ")')trim(varname)
    endif
 end subroutine printmakevar
 end program makeout

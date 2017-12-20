@@ -30,6 +30,14 @@ OPTIONS
                       used.
        -v             verbose mode. Shows lines in input files that
                       were used to create the dependencies.
+       -mode          profile|production|debug
+                      If the default gfortran options are being used
+                      (ie. environment variables overide defaults)
+                      different compile and loader options are selected.
+                        profile     adds -pg option for gprof(1)
+                        production  good options for optimized performance
+                        debug       typical debug options
+
        --help         display command help and exit
        --version      output version information and exit EXAMPLES
 
@@ -48,7 +56,7 @@ ENVIRONMENT
 EXAMPLES
     Common usage
 
-        makeout PROGRAMS/testit.f90 -v;make
+        env F90=f90 makeout PROGRAMS/testit.f90 -o;make
 
 SEE ALSO
   If your project needs exceeds the capabilities of makeout(1), see

@@ -2977,7 +2977,6 @@ character(len=1),intent(in),optional  :: escape ! escape character. Default is b
    character(len=3)             :: thr
    integer                      :: xxx
    integer                      :: ios
-   j=0 ! pointer into output
    i=0 ! pointer into input
 
    ilen=len_trim(line)
@@ -2993,9 +2992,10 @@ character(len=1),intent(in),optional  :: escape ! escape character. Default is b
 
    EXP: do
       i=i+1
+      if(i.gt.ilen)exit
       if(line(i:i).eq.esc)then
          i=i+1
-         j=j+1
+         if(i.gt.ilen)exit
          if(line(i:i).ne.esc)then
             BACKSLASH: select case(line(i:i))
             case('a','A','g','G');lineout=lineout//char(  7) ! %a     alert (BEL)
@@ -3029,7 +3029,6 @@ character(len=1),intent(in),optional  :: escape ! escape character. Default is b
             lineout=lineout//esc                             ! escape character, defaults to backslash
          endif
       else
-         j=j+1
          lineout=lineout//line(i:i)
       endif
       if(i.ge.ilen)exit EXP
@@ -4567,7 +4566,7 @@ end function describe
 !!   Per list-directed rules when reading values, allowed delimiters are
 !!   comma, semi-colon and space.
 !!
-!!   the slash seperator can be used to add inline comments.
+!!   the slash separator can be used to add inline comments.
 !!
 !!        10.1, 20.43e-1 ; 11 / THIS IS TREATED AS A COMMENT
 !!

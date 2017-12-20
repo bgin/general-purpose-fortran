@@ -1,0 +1,71 @@
+\hypertarget{interfacem__math_1_1invert__3x3}{}\section{m\+\_\+math\+:\+:invert\+\_\+3x3 Interface Reference}
+\label{interfacem__math_1_1invert__3x3}\index{m\+\_\+math\+::invert\+\_\+3x3@{m\+\_\+math\+::invert\+\_\+3x3}}
+
+
+\subsubsection*{N\+A\+ME} 
+
+
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+pure \hyperlink{read__watch_83_8txt_abdb62bde002f38ef75f810d3a905a823}{real}(kind=wp) function, dimension(3, 3) \hyperlink{interfacem__math_1_1invert__3x3_a3f0b88d637ca42187292f116d935d1a4}{real\+\_\+invert\+\_\+3x3} (\hyperlink{ufpp__overview_81_8txt_a8341271e5f4e3003f6eb1c9547fc9d1a}{A})
+\item 
+pure integer(kind=wp) function, dimension(3, 3) \hyperlink{interfacem__math_1_1invert__3x3_aba3ace6a8e80ba9a8fe9f723d661477a}{integer\+\_\+invert\+\_\+3x3} (\hyperlink{ufpp__overview_81_8txt_a8341271e5f4e3003f6eb1c9547fc9d1a}{A})
+\item 
+pure complex(kind=wp) function, dimension(3, 3) \hyperlink{interfacem__math_1_1invert__3x3_a9db8803bfff866c4c74994c82585adbb}{complex\+\_\+invert\+\_\+3x3} (\hyperlink{ufpp__overview_81_8txt_a8341271e5f4e3003f6eb1c9547fc9d1a}{A})
+\item 
+pure \hyperlink{read__watch_83_8txt_abdb62bde002f38ef75f810d3a905a823}{real}(kind=wp) function, dimension(3, 3) \hyperlink{interfacem__math_1_1invert__3x3_a1164ade48ad211190ce02a3baf375113}{double\+\_\+invert\+\_\+3x3} (\hyperlink{ufpp__overview_81_8txt_a8341271e5f4e3003f6eb1c9547fc9d1a}{A})
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{N\+A\+ME}
+
+invert\+\_\+3x3(3f) -\/ \mbox{[}M\+\_\+math\mbox{]} directly invert 3x3 matrix
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+pure function invert\+\_\+3x3(\+A) result(\+B)
+
+! integer,real,double,complex integer,parameter \+:\+: wp=kind(0$\vert$0.0$\vert$0.0d$\vert$(0.\+0,0.\+0)) N\+N\+N\+N\+NN(kind=wp), intent(in) \+:\+: A(2,2) !! Matrix N\+N\+N\+N\+NN(kind=wp) \+:\+: B(2,2) !! Inverse matrix where N\+N\+N\+N\+NN may be I\+N\+T\+E\+G\+ER,R\+E\+AL,D\+O\+U\+B\+L\+E\+P\+R\+E\+C\+I\+S\+I\+ON,C\+O\+M\+P\+L\+EX
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+Directly invert 3x3 matrix for speed (versus using, e.\+g. L\+A\+P\+A\+CK)
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+A original 3x3 matrix, may be I\+N\+T\+E\+G\+ER, R\+E\+AL, D\+O\+U\+B\+LE, or C\+O\+M\+P\+L\+EX B inverted 3x3 matrix, of same type as input matrix A
+
+\subsubsection*{E\+X\+A\+M\+P\+LE}
+
+\subsection{Member Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{interfacem__math_1_1invert__3x3_a9db8803bfff866c4c74994c82585adbb}\label{interfacem__math_1_1invert__3x3_a9db8803bfff866c4c74994c82585adbb}} 
+\index{m\+\_\+math\+::invert\+\_\+3x3@{m\+\_\+math\+::invert\+\_\+3x3}!complex\+\_\+invert\+\_\+3x3@{complex\+\_\+invert\+\_\+3x3}}
+\index{complex\+\_\+invert\+\_\+3x3@{complex\+\_\+invert\+\_\+3x3}!m\+\_\+math\+::invert\+\_\+3x3@{m\+\_\+math\+::invert\+\_\+3x3}}
+\subsubsection{\texorpdfstring{complex\+\_\+invert\+\_\+3x3()}{complex\_invert\_3x3()}}
+{\footnotesize\ttfamily pure complex(kind=wp) function, dimension(3,3) m\+\_\+math\+::invert\+\_\+3x3\+::complex\+\_\+invert\+\_\+3x3 (\begin{DoxyParamCaption}\item[{complex(kind=wp), dimension(3,3), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{A }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{interfacem__math_1_1invert__3x3_a1164ade48ad211190ce02a3baf375113}\label{interfacem__math_1_1invert__3x3_a1164ade48ad211190ce02a3baf375113}} 
+\index{m\+\_\+math\+::invert\+\_\+3x3@{m\+\_\+math\+::invert\+\_\+3x3}!double\+\_\+invert\+\_\+3x3@{double\+\_\+invert\+\_\+3x3}}
+\index{double\+\_\+invert\+\_\+3x3@{double\+\_\+invert\+\_\+3x3}!m\+\_\+math\+::invert\+\_\+3x3@{m\+\_\+math\+::invert\+\_\+3x3}}
+\subsubsection{\texorpdfstring{double\+\_\+invert\+\_\+3x3()}{double\_invert\_3x3()}}
+{\footnotesize\ttfamily pure \hyperlink{read__watch_83_8txt_abdb62bde002f38ef75f810d3a905a823}{real}(kind=wp) function, dimension(3,3) m\+\_\+math\+::invert\+\_\+3x3\+::double\+\_\+invert\+\_\+3x3 (\begin{DoxyParamCaption}\item[{\hyperlink{read__watch_83_8txt_abdb62bde002f38ef75f810d3a905a823}{real}(kind=wp), dimension(3,3), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{A }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{interfacem__math_1_1invert__3x3_aba3ace6a8e80ba9a8fe9f723d661477a}\label{interfacem__math_1_1invert__3x3_aba3ace6a8e80ba9a8fe9f723d661477a}} 
+\index{m\+\_\+math\+::invert\+\_\+3x3@{m\+\_\+math\+::invert\+\_\+3x3}!integer\+\_\+invert\+\_\+3x3@{integer\+\_\+invert\+\_\+3x3}}
+\index{integer\+\_\+invert\+\_\+3x3@{integer\+\_\+invert\+\_\+3x3}!m\+\_\+math\+::invert\+\_\+3x3@{m\+\_\+math\+::invert\+\_\+3x3}}
+\subsubsection{\texorpdfstring{integer\+\_\+invert\+\_\+3x3()}{integer\_invert\_3x3()}}
+{\footnotesize\ttfamily pure integer(kind=wp) function, dimension(3,3) m\+\_\+math\+::invert\+\_\+3x3\+::integer\+\_\+invert\+\_\+3x3 (\begin{DoxyParamCaption}\item[{integer(kind=wp), dimension(3,3), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{A }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{interfacem__math_1_1invert__3x3_a3f0b88d637ca42187292f116d935d1a4}\label{interfacem__math_1_1invert__3x3_a3f0b88d637ca42187292f116d935d1a4}} 
+\index{m\+\_\+math\+::invert\+\_\+3x3@{m\+\_\+math\+::invert\+\_\+3x3}!real\+\_\+invert\+\_\+3x3@{real\+\_\+invert\+\_\+3x3}}
+\index{real\+\_\+invert\+\_\+3x3@{real\+\_\+invert\+\_\+3x3}!m\+\_\+math\+::invert\+\_\+3x3@{m\+\_\+math\+::invert\+\_\+3x3}}
+\subsubsection{\texorpdfstring{real\+\_\+invert\+\_\+3x3()}{real\_invert\_3x3()}}
+{\footnotesize\ttfamily pure \hyperlink{read__watch_83_8txt_abdb62bde002f38ef75f810d3a905a823}{real}(kind=wp) function, dimension(3,3) m\+\_\+math\+::invert\+\_\+3x3\+::real\+\_\+invert\+\_\+3x3 (\begin{DoxyParamCaption}\item[{\hyperlink{read__watch_83_8txt_abdb62bde002f38ef75f810d3a905a823}{real}(kind=wp), dimension(3,3), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{A }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this interface was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\hyperlink{M__math_8f90}{M\+\_\+math.\+f90}\end{DoxyCompactItemize}

@@ -17,6 +17,7 @@ var searchData=
   ['c_2drgbmono_2ec',['C-rgbmono.c',['../C-rgbmono_8c.html',1,'']]],
   ['c_2drgbval_2ec',['C-rgbval.c',['../C-rgbval_8c.html',1,'']]],
   ['c_2ef90',['c.f90',['../c_8f90.html',1,'']]],
+  ['calc_5fnc_2ef90',['calc_NC.f90',['../calc__NC_8f90.html',1,'']]],
   ['change_2ef90',['change.f90',['../change_8f90.html',1,'']]],
   ['colors_2ef90',['colors.f90',['../colors_8f90.html',1,'']]],
   ['compute_2ef90',['compute.f90',['../compute_8f90.html',1,'']]],

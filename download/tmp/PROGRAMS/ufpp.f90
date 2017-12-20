@@ -110,7 +110,7 @@
 !! <p>
 !!    Assuming you are familiar with the basic behavior of preprocessors
 !!    such as cpp(1), fpp(1), coco(1), or more powerful macro processors
-!!    such as m4(1) let's start with a basic input file example:
+!!    such as m4(1) let us start with a basic input file example:
 !! </p>
 !! <blockquote>
 !! <pre>
@@ -167,18 +167,20 @@
 !! <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 !! <p>
 !!    The next example shows how regions of flat text can be processed by ufpp(1):
-!!       o The $DOCUMENT HELP directive can be used to produce a routine to display help text
+!!       o The $FILTER HELP directive can be used to produce a routine to display help text
 !!         and the help text can also be written to a file to produce further document
 !!         formats.
-!!       o The $DOCUMENT VERSION directive can be used a to produce a routine that
+!!       o The $FILTER VERSION directive can be used a to produce a routine that
 !!         displays a version in a way that is compatible with the metadata display program what(1).
-!!       o The $DOCUMENT NULL directive can be used for text that is otherwise ignored.
-!!       Note that text can optionally be written to an alternate file using $OUTPUT directives.
-!!
+!!       o The $FILTER NULL directive can be used for text that is otherwise ignored.
+!!       o The $FILTER NULL directive can be used for text that is otherwise ignored.
+!!         Note that text can optionally be written to an alternate file using $OUTPUT directives.
+!!       o The $FILTER SHELL directive can be used for text that is the output of a shell.
+!!         This can be very system-dependent but allows code to be built dynamically.
 !!    <blockquote>
 !!    <xmp>
-!!    $DOCUMENT NULL -file notes.txt !@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-!!       This section uses $DOCUMENT NULL to let a block of text be included
+!!    $FILTER NULL -file notes.txt !@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+!!       This section uses $FILTER NULL to let a block of text be included
 !!       in the source that is essentially ignored. The difference between
 !!       this and a $IFDEF .FALSE. ... $ENDIF or $OUTPUT /dev/null .. $OUTPUT
 !!       END section is that the -file switch lets this section get written to a
@@ -186,7 +188,7 @@
 !!       could be markdown text, HTML, RTF, LaTex or some other format to be
 !!       post-processed independently.
 !!
-!!       The following $DOCUMENT HELP section directives is converted into the
+!!       The following $FILTER HELP section directives is converted into the
 !!       HELP_USAGE() subroutine by ufpp. Optionally if the environment variable
 !!       $UFPP_DOCUMENT_DIR is set the text is additionally written as-is into
 !!
@@ -196,9 +198,9 @@
 !!
 !!       This additional file would then typically be run thru txt2man(1) to
 !!       create a man(1) page.
-!!    $DOCUMENT END !@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+!!    $FILTER END !@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 !!    $IFDEF F90
-!!    $DOCUMENT HELP -file cf.1.man
+!!    $FILTER HELP -file cf.1.man
 !!    NAME
 !!       cf - Convert between Fahrenheit and Celsius temperature values
 !!
@@ -223,11 +225,11 @@
 !!     stop moving. As such, nothing can be colder than absolute zero on the
 !!     Kelvin scale.
 !!
-!!    $DOCUMENT END
+!!    $FILTER END
 !!    $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 !!    $! this text is converted into the help_version subroutine by ufpp ...
 !!    $! in a format that works with what(1), do not use ",>,\ characters in the labels
-!!    $DOCUMENT VERSION
+!!    $FILTER VERSION
 !!    PRODUCT:        CLI library utilities and examples
 !!    PROGRAM:        cf(1f)
 !!    DESCRIPTION:    convert multiple values between Celsius and Fahrenheit
@@ -238,14 +240,23 @@
 !!    LICENSE:        Public Domain. This is free software: you are free
 !!                    to change and redistribute it.  There is NO WARRANTY,
 !!                    to the extent permitted by law.
-!!                    $DOCUMENT END
+!!    $FILTER END
 !!    $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-!!    $DOCUMENT COMMENT
-!!       This block of text becomes Fortran comment lines by having two exclamations
+!!    $! use output of a bash(1) shell here document to build some comments
+!!    $FILTER SHELL
+!!    cat <<EOF
+!!    !! date ....... $(date)
+!!    !! userid ..... $(logname)
+!!    !! hostname ... $(hostname)
+!!    EOF
+!!    $FILTER END
+!!    $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+!!    $FILTER COMMENT
+!!       This block of text becomes Fortran comment lines by having exclamations
 !!       placed in front of each line, but is otherwise left as-is.
 !!
 !!       The next section is just as-is Fortran
-!!    $DOCUMENT END
+!!    $FILTER END
 !!    $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 !!    program cf
 !!    use M_kracken, only: kracken, rgets, lget
@@ -304,21 +315,19 @@
 !!    $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 !!    </xmp>
 !!    </blockquote>
-!!    The output from ufpp(1) is:
+!!    The output from "ufpp F90 -i FILE -system" is:
 !! <blockquote>
-!!    <xmp>
+!! <xmp>
 !!    subroutine help_usage(l_help)
 !!    implicit none
 !!    character(len=*),parameter     :: ident="@(#)help_usage(3f): prints help information"
 !!    logical,intent(in)             :: l_help
-!!    character(len=128),allocatable :: help_text(:)
+!!    character(len=:),allocatable :: help_text(:)
 !!    integer                        :: i
 !!    logical                        :: stopit=.false.
 !!    stopit=.false.
 !!    if(l_help)then
 !!    help_text=[ CHARACTER(LEN=128) :: &
-!!    'CF(1)                          User Commands                               CF(1)',&
-!!    '                                                                                ',&
 !!    'NAME                                                                            ',&
 !!    '   cf - Convert between Fahrenheit and Celsius temperature values               ',&
 !!    '                                                                                ',&
@@ -343,7 +352,6 @@
 !!    ' stop moving. As such, nothing can be colder than absolute zero on the          ',&
 !!    ' Kelvin scale.                                                                  ',&
 !!    '                                                                                ',&
-!!    ' That''s all folks!                                                             ',&
 !!    '']
 !!       WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
 !!       stop ! if -help was specified, stop
@@ -354,42 +362,57 @@
 !!    implicit none
 !!    character(len=*),parameter     :: ident="@(#)help_version(3f): prints version information"
 !!    logical,intent(in)             :: l_version
-!!    character(len=128),allocatable :: help_text(:)
+!!    character(len=:),allocatable   :: help_text(:)
 !!    integer                        :: i
 !!    logical                        :: stopit=.false.
 !!    stopit=.false.
 !!    if(l_version)then
 !!    help_text=[ CHARACTER(LEN=128) :: &
-!!    '@(#)Program:     cf(1f)>',&
-!!    '@(#)Description: convert multiple values between Celsius and Fahrenheit>',&
-!!    '@(#)Version:     1.0>',&
-!!    '@(#)Date:        2016-04-09>',&
-!!    '@(#)Author:      John S. Urban>',&
+!!    '@(#)PRODUCT:        CLI library utilities and examples>',&
+!!    '@(#)PROGRAM:        cf(1f)>',&
+!!    '@(#)DESCRIPTION:    convert multiple values between Celsius and Fahrenheit>',&
+!!    '@(#)VERSION:        1.0, 2016-04-09>',&
+!!    '@(#)AUTHOR:         John S. Urban>',&
+!!    '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
+!!    '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
+!!    '@(#)LICENSE:        Public Domain. This is free software: you are free>',&
+!!    '@(#)                to change and redistribute it.  There is NO WARRANTY,>',&
+!!    '@(#)                to the extent permitted by law.>',&
+!!    '@(#)COMPILED:       Mon, Dec 18th, 2017 2:55:24 AM>',&
 !!    '']
 !!       WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
 !!       stop ! if -version was specified, stop
 !!    endif
 !!    end subroutine help_version
 !!    !-----------------------------------------------------------------------------------------------------------------------------------
+!!    !! date ....... Mon, Dec 18, 2017  2:55:25 AM
+!!    !! userid ..... JSU
+!!    !! hostname ... buzz
+!!    !    This block of text becomes Fortran comment lines by having exclamations
+!!    !    placed in front of each line, but is otherwise left as-is.
+!!    !
+!!    !    The next section is just as-is Fortran
+!!    !===================================================================================================================================
 !!    program cf
 !!    use M_kracken, only: kracken, rgets, lget
 !!    implicit none
-!!    character(len=*),parameter :: ident="@(#)cf(1f): convert multiple values between Celsius and Fahrenheit"
+!!    character(len=*),parameter::ident="@(#)cf(1f): convert multiple values between Celsius and Fahrenheit"
 !!    real,allocatable                :: val(:)
 !!    integer                         :: i, isum=0
-!!      call kracken('cf','-F -C -help .F. -version .F.' )                  ! define and crack command line arguments
-!!      call help_usage(lget('cf_help'))                                    ! display help information and stop if true
-!!      call help_version(lget('cf_version'))                               ! display version information and stop if true
-!!      isum=0                                                              ! running tally of values found on -C and -F options
-!!      val=rgets('cf_C')                                                   ! get any values specified on -C option
+!!      call kracken('cf','-F -C -help .F. -version .F.' ) ! define and crack command line arguments
+!!      call help_usage(lget('cf_help'))                   ! display help information and stop if true
+!!      call help_version(lget('cf_version'))         ! display version information and stop if true
+!!      isum=0                                        ! running tally of values found on -C and -F options
+!!      val=rgets('cf_C')                             ! get any values specified on -C option
 !!
-!!      if(size(val).gt.0)then                                              ! have something to print in C ==> F table
+!!      if(size(val).gt.0)then                        ! have something to print in C ==> F table
 !!         isum=isum+size(val)
 !!         write(*,'(a,t14,a)')'Celsius','Fahrenheit'
-!!         write(*,'(f8.2,"C",t14,f8.2,"F")')( val(i),(val(i)+40.0)*9.0/5.0 - 40.0,i=1,size(val))    ! print the requested values
+!!         write(*,'(f8.2,"C",t14,f8.2,"F")')&
+!!         & ( val(i),(val(i)+40.0)*9.0/5.0 - 40.0,i=1,size(val))    ! print the requested values
 !!      endif
 !!
-!!      val=rgets('cf_F')                                                   ! check for values on -F
+!!      val=rgets('cf_F')       ! check for values on -F
 !!
 !!      if(size(val).gt.0)then
 !!         isum=isum+size(val)
@@ -397,7 +420,7 @@
 !!         write(*,'(f8.2,"F",t14,f8.2,"C")')(val(i),(val(i)+40.0)*5.0/9.0 - 40.0,i=1,size(val))
 !!      endif
 !!
-!!      if(isum.eq.0)then                                                 ! if no values given on -C and -F switches show default table
+!!      if(isum.eq.0)then       ! if no values given on -C and -F switches show default table
 !!        val=[ &
 !!           &-459.67,                               &
 !!           & -20.0,  -15.0,  -10.0,   -5.0,   0.0, &
@@ -411,7 +434,6 @@
 !!      endif
 !!
 !!    end program cf
-!! !-----------------------------------------------------------------------------------------------------------------------------------
 !! </xmp>
 !! </blockquote>
 !!
@@ -539,14 +561,14 @@
 !! </p>
 !!
 !! <p>
-!!    If I  try to avoid the need for traditional pre-processing of Fortran
-!!    source code whenever possible  why not just use cpp(1) instead of
-!!    making ufpp(1)?  Even if traditional pre-processing is not required
-!!    I find ufpp(1)'s filtering capabilities useful as  a  way  to keep
-!!    related text files (documentation, test files, test programs, test
-!!    scripts, ...)  together  in  an  easily maintained form.
-!!
+!!    If I try to avoid the need for traditional pre-processing of Fortran
+!!    source code whenever possible why not just use cpp(1) instead of making
+!!    ufpp(1)? Even if traditional pre-processing is not required I find
+!!    the ufpp(1) filtering capabilities useful as a way to keep related
+!!    text files (documentation, test files, test programs, test scripts,
+!!    ...) together in an easily maintained form.
 !! </p>
+!!
 !! <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 !! <h3>Notes on alternatives to ufpp(1)</h3>
 !!
@@ -731,11 +753,16 @@
 !     o Allow sections to be input to a system process so other tools are integrated? Makes input very system-dependent
 !     o cpp-compatible or fpp-compatible for simple directives, excluding macro expansion.
 !===================================================================================================================================
-   module M_fpp                                                      !@(#)M_fpp(3f): module used by UFPP(1) program
-   USE ISO_FORTRAN_ENV, ONLY : ERROR_UNIT, OUTPUT_UNIT ! access computing environment ; Standard: Fortran 2003
-   use M_kracken, only: sget, dissect, lget                               ! load command argument parsing module
-   use M_strings, only : nospace, v2s, substitute, upper, lower, isalpha
-   use M_debug, only   : fstop, stderr, debug_flag=>debug
+module M_fpp                                                      !@(#)M_fpp(3f): module used by UFPP(1) program
+USE ISO_FORTRAN_ENV, ONLY : ERROR_UNIT, OUTPUT_UNIT ! access computing environment ; Standard: Fortran 2003
+use M_debug, only   : fstop, stderr, debug_flag=>debug
+use M_io, only      : slurp, get_tmp, uniq, dirname
+use M_kracken, only : sget, dissect, lget                              ! load command argument parsing module
+use M_process, only : process_open_read, process_open_write, process_close, process_readline, process_readall, process_writeline
+use M_process, only : streampointer, process_debug
+use M_strings, only : nospace, v2s, substitute, upper, lower, isalpha, split, delim
+use M_system, only  : system_islnk, system_stat, system_remove
+use M_time, only    : now
    implicit none
 
    integer,parameter                    :: num=2048                       ! number of named values allowed
@@ -756,6 +783,9 @@
       character(len=G_line_length),public  ::  filename
    end type
    type(file_stack)   ::  G_file_dictionary(50)
+
+   type(streampointer)                  :: G_fp                    ! C file pointer returned by process_open()
+   character(len=:),allocatable         :: G_scratch_filename
 
    integer,public                       :: G_iocount=0
    integer,public                       :: G_io_total_lines=0
@@ -840,6 +870,7 @@ subroutine cond()       !@(#)cond(3f): process conditional directive assumed to 
       case('INCLUDE');          call include(options,50+G_iocount)    ! Filenames can be case sensitive
       case('PRINTENV');         call printenv(upopts)
       case('DOCUMENT');         call document(options)
+      case('FILTER');           call document(options)
       case('IDENT','@(#)');     call ident(options)
       case('SHOW') ;            call debug(options)
       case('STOP');             call stop(upopts)
@@ -856,9 +887,9 @@ subroutine cond()       !@(#)cond(3f): process conditional directive assumed to 
    endif
    select case(VERB)                                                  ! process logical flow control even if G_write is false
 
-   case('DEFINE','INCLUDE','PRINTENV','DOCUMENT','SHOW','STOP')
+  case('DEFINE','INCLUDE','PRINTENV','DOCUMENT','SHOW','STOP')
    case('SYSTEM','UNDEF','UNDEFINE','MESSAGE','WARNING')
-   case('HELP','OUTPUT','ERROR','IDENT','@(#)')
+   case('HELP','OUTPUT','ERROR','IDENT','@(#)','FILTER')
    case(' ')
 
    case('ELSE','ELSEIF');  call else(verb,upopts,noelse,eb)
@@ -1122,13 +1153,13 @@ end subroutine name
 !===================================================================================================================================
 subroutine getval(line,ipos1,ipos2,value)     !@(#)getval(3f): get value from dictionary for given variable name or return input
 character(len=G_line_length),intent(in)   :: line                           ! current(maybe partial) directive line
-integer,intent(in)                      :: ipos1                            ! beginning position of variable name in LINE
-integer,intent(in)                      :: ipos2                            ! ending position of variable name in LINE
+integer,intent(in)                        :: ipos1                          ! beginning position of variable name in LINE
+integer,intent(in)                        :: ipos2                          ! ending position of variable name in LINE
 character(len=G_var_len),intent(out)      :: value                          ! returned variable value
 
-   character(len=G_line_length)              :: temp                        ! copy of substring being examined
-   integer                                 :: i
-   integer                                 :: ivalue
+   character(len=G_line_length)           :: temp                           ! copy of substring being examined
+   integer                                :: i
+   integer                                :: ivalue
 !-----------------------------------------------------------------------------------------------------------------------------------
    temp=line(ipos1:ipos2)                                                   ! place variable name/value substring into TEMP
 
@@ -1983,8 +2014,10 @@ end subroutine rewrit
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 subroutine document(opts)                    ! @(#)document(3f): process DOCUMENT command to start or stop special processing
-use M_time, only: now
 character(len=*),intent(in) :: opts
+   integer                     :: ierr
+   integer                     :: ios
+character(len=1),allocatable   :: text(:) ! array to hold file in memory
 !-----------------------------------------------------------------------------------------------------------------------------------
 ! CHECK COMMAND SYNTAX
    if(G_outtype.eq.'help')then  ! if in 'help' mode wrap up the routine
@@ -1996,6 +2029,16 @@ character(len=*),intent(in) :: opts
       write(G_iout,'("!",a)')repeat('-',131)
    elseif(G_outtype.eq.'variable')then     ! if in 'variable' mode wrap up the variable
       write(G_iout,'(a)')"'']"
+   elseif(G_outtype.eq.'shell')then
+      call process_close(G_fp,ierr)                                                                  ! Wrap up
+      call slurp(trim(G_scratch_filename),text) ! allocate character array and copy file into it
+      if(.not.allocated(text))then
+         call stop_ufpp('*ufpp:www* ERROR - failed to load file '//trim(G_scratch_filename))
+      else
+         write(G_iout,'(*(a:))',advance='no')text !(1:size(text):1)
+         deallocate(text)  ! release memory
+      endif
+      ierr=system_remove(G_scratch_filename)
    elseif(G_outtype.eq.'version')then  ! if in 'version' mode wrap up the routine
       write(G_iout,'("''@(#)COMPILED:       ",a,"'',&")') trim(now('%w, %l %d, %Y %H:%m:%s %N'))//'>'
       write(G_iout,'(a)')"'']"
@@ -2008,7 +2051,7 @@ character(len=*),intent(in) :: opts
       write(G_iout,'("!",a)')repeat('-',131)
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
-   call dissect('document','-oo -file -varname textblock -append .false.',opts) ! parse options and inline comment on input line
+   call dissect('filter','-oo -file -varname textblock -cmd bash -append .false.',opts) ! parse options and inline comment on input line
 
    ! if a previous command has opened a -file FILENAME flush it, because a new one is being opened or this is an END command
    ! and if a -file FILENAME has been selected open it
@@ -2016,8 +2059,8 @@ character(len=*),intent(in) :: opts
 !-----------------------------------------------------------------------------------------------------------------------------------
    ! now can start new section
    G_MAN=''
-   if(sget('document_file').ne.'')then
-      G_MAN_FILE=sget('document_file')
+   if(sget('filter_file').ne.'')then
+      G_MAN_FILE=sget('filter_file')
       G_MAN_COLLECT=.true.
    else
       G_MAN_FILE=''
@@ -2025,13 +2068,13 @@ character(len=*),intent(in) :: opts
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
    G_MAN_PRINT=.false.
-   if(lget('document_append'))then
+   if(lget('filter_append'))then
       G_MAN_FILE_POSITION='APPEND'
    else
       G_MAN_FILE_POSITION='ASIS'
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
-   select case(upper(sget('document_oo')))
+   select case(upper(sget('filter_oo')))
 !-----------------------------------------------------------------------------------------------------------------------------------
    case('COMMENT')
       G_outtype='comment'
@@ -2041,11 +2084,23 @@ character(len=*),intent(in) :: opts
    case('NULL')
       G_outtype='null'
 !-----------------------------------------------------------------------------------------------------------------------------------
+   case('SHELL')
+      G_outtype='shell'
+      G_MAN_PRINT=.false.
+      G_MAN_COLLECT=.false.
+      if(G_system_on)then                                                          ! if allowing commands to be executed
+         flush(unit=G_iout,iostat=ios)
+         G_scratch_filename=trim(uniq(get_tmp()//'_scratch.'))  !! THIS HAS TO BE A UNIQUE NAME -- IMPROVE THIS
+         call process_open_write(trim(sget('filter_cmd'))//'>'//trim(G_scratch_filename),G_fp,ierr)  ! open process to read from
+      else
+         call stop_ufpp('*ufpp:filter* ERROR - FILTER COMMAND BLOCK ENCOUNTERED BUT SYSTEM COMMANDS NOT ENABLED:'//trim(G_SOURCE))
+      endif
+!-----------------------------------------------------------------------------------------------------------------------------------
    case('VARIABLE')
       G_outtype='variable'
-      !!write(G_iout,'(a)')'character(len=:),allocatable :: '//trim(sget('document_varname'))//'(:)'
+      !!write(G_iout,'(a)')'character(len=:),allocatable :: '//trim(sget('filter_varname'))//'(:)'
 ! NOTE: Without the type specification this constructor would have to specify all of the constants with the same character length.
-      write(G_iout,'(a)')trim(sget('document_varname'))//'=[ CHARACTER(LEN=128) :: &'
+      write(G_iout,'(a)')trim(sget('filter_varname'))//'=[ CHARACTER(LEN=128) :: &'
       G_MAN_PRINT=.true.
 !-----------------------------------------------------------------------------------------------------------------------------------
    case('HELP')
@@ -2092,9 +2147,9 @@ character(len=*),intent(in) :: opts
    case('ASIS')
       G_outtype='asis'
    case default
-      write(*,*)'*ufpp:stop* ERROR(ai 1) - UNEXPECTED "DOCUMENT" OPTION. FOUND:'//trim(G_source)
-      write(*,*)'*ufpp:stop* ERROR(ai 2) - UNEXPECTED "DOCUMENT" OPTION. FOUND:'//trim(sget('document_oo'))
-      call stop_ufpp('*ufpp:stop* ERROR(ai 3) - UNEXPECTED "DOCUMENT" OPTION. FOUND:'//sget('document_man'))
+      write(*,*)'*ufpp:stop* ERROR(ai 1) - UNEXPECTED "FILTER" OPTION. FOUND:'//trim(G_source)
+      write(*,*)'*ufpp:stop* ERROR(ai 2) - UNEXPECTED "FILTER" OPTION. FOUND:'//trim(sget('filter_oo'))
+      call stop_ufpp('*ufpp:stop* ERROR(ai 3) - UNEXPECTED "FILTER" OPTION. FOUND:'//sget('filter_man'))
    end select
 !-----------------------------------------------------------------------------------------------------------------------------------
    G_comment_count=0
@@ -2122,7 +2177,6 @@ end subroutine stop
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 subroutine print_comment_block() !@(#)print_comment_block(3f): format comment block to file in document directory and output
-   use m_system, only: system_islnk, system_stat
    character(len=:),allocatable :: filename
    character(len=1024)          :: varvalue
    character(len=*),parameter   :: varname='UFPP_DOCUMENT_DIR'
@@ -2142,7 +2196,7 @@ subroutine print_comment_block() !@(#)print_comment_block(3f): format comment bl
    case default; call stop_ufpp('ERROR(ufpp:print_comment_block) - UNEXPECTED STATUS VALUE '//v2s(istatus)//':'//trim(varname))
    end select
 
-   if(ilength.ne.0.and.G_MAN.ne.''.and.G_MAN_FILE.ne.' ')then ! if $DOCUMENT ... -file FILE present generate file in directory/doc
+   if(ilength.ne.0.and.G_MAN.ne.''.and.G_MAN_FILE.ne.' ')then ! if $FILTER ... -file FILE is present generate file in directory/doc
       filename=trim(varvalue)//'/doc/'
 
       if(system_islnk(filename))then
@@ -2184,7 +2238,7 @@ subroutine print_comment_block() !@(#)print_comment_block(3f): format comment bl
 
    endif
 
-   ! now if $DOCUMENT COMMENT print comment block
+   ! now if $FILTER COMMENT print comment block
    if(G_MAN_PRINT)then
       call format_G_MAN()
    endif
@@ -2194,7 +2248,6 @@ end subroutine print_comment_block
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 subroutine format_g_man()
-use m_strings, only: split
    character(len=256),allocatable :: array(:) ! output array of tokens
    integer                        :: ios
    integer                        :: i
@@ -2339,18 +2392,11 @@ end subroutine write_arguments
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 subroutine include(line,iunit)  ! @(#)include(3f): add file to input file list
-use M_process, only : process_open_read, process_open_write, process_close, process_readline, process_readall, process_writeline
-use M_process, only : streampointer, process_debug
 implicit none
-type(streampointer)                      :: fp         ! C file pointer returned by process_open()
 character(len=G_line_length),intent(in)  :: line
 integer,intent(in)                       :: iunit
    integer                               :: ios
    character(len=4096)                   :: message
-   integer                               :: ierr       ! check status of calls to process module routines
-   character(len=4096)                   :: rline      ! hold command output
-   logical                               :: lnamed
-   character(len=4096),save              :: filename=''             ! output unit filename
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(iunit.eq.5.or.line.eq.'@')then                   ! assume this is stdin
       G_iocount=G_iocount+1
@@ -2359,38 +2405,21 @@ integer,intent(in)                       :: iunit
       return
    endif
 
-!<============  EXPERIMENTAL PROCESSING OF DATA VIA A PROCESS -- NOT WORKING
-   inquire(unit=G_iout,named=lnamed,name=filename)
-   if(line.eq.'')then
-      if(G_system_on)then                                                          ! if allowing commands to be executed
-         flush(unit=G_iout,iostat=ios)
-         call process_open_write('bash -s>>'//trim(filename),fp,ierr)              ! open process to read from
-         INFINITE: do                                                              ! read output of process till end
-            call process_writeline(rline,fp,ierr)
-            if(ierr.ne.0)exit
-         enddo INFINITE
-         call process_close(fp,ierr)                                               ! Wrap up
-      else
-         call stop_ufpp('*ufpp:include* ERROR - INCLUDE COMMAND BLOCK ENCOUNTERED BUT NOT ENABLED:'//trim(G_SOURCE))
-      endif
-   else
-!============>  EXPERIMENTAL
-      call findit(line)
+   call findit(line)
 
-      open(unit=iunit,file=trim(line),iostat=ios,status='old',action='read',iomsg=message)
-      if(ios.ne.0)then
-         call debug('OPEN IN INCLUDE')
-         call stderr(message)
-         call stop_ufpp("*ufpp* ERROR(ae) - FAILED OPEN OF INPUT FILE("//v2s(iunit)//"):"//trim(line))
-      else
-         G_iocount=G_iocount+1
-         if(G_iocount.gt.size(G_file_dictionary))then
-            call stop_ufpp('*ufpp* ERROR(ad) - INPUT FILE NESTING TOO DEEP:'//trim(G_source))
-         endif
-         G_file_dictionary(G_iocount)%unit_number=iunit
-         G_file_dictionary(G_iocount)%filename=line
-         G_file_dictionary(G_iocount)%line_number=0
+   open(unit=iunit,file=trim(line),iostat=ios,status='old',action='read',iomsg=message)
+   if(ios.ne.0)then
+      call debug('OPEN IN INCLUDE')
+      call stderr(message)
+      call stop_ufpp("*ufpp* ERROR(ae) - FAILED OPEN OF INPUT FILE("//v2s(iunit)//"):"//trim(line))
+   else
+      G_iocount=G_iocount+1
+      if(G_iocount.gt.size(G_file_dictionary))then
+         call stop_ufpp('*ufpp* ERROR(ad) - INPUT FILE NESTING TOO DEEP:'//trim(G_source))
       endif
+      G_file_dictionary(G_iocount)%unit_number=iunit
+      G_file_dictionary(G_iocount)%filename=line
+      G_file_dictionary(G_iocount)%line_number=0
    endif
 
 end subroutine include
@@ -2434,8 +2463,6 @@ end subroutine findit
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 subroutine opens()                   !@(#)opens(3f): use expression on command line to  open input files
-   use M_strings, only: delim
-   use M_io,      only: dirname
 
    integer,parameter                     :: n=50                    ! maximum number of tokens to look for
    character(len=G_line_length)          :: array(n)                ! the array to fill with tokens
@@ -2489,7 +2516,6 @@ end subroutine opens
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 subroutine includes()         !@(#)includes(3f): use expression on command line to  get include directories
-   use M_strings, only: delim
 
    integer,parameter                     :: n=50                    ! maximum number of tokens to look for
    character(len=1)                      :: dlim=' '                ! string of single characters to use as delimiters
@@ -2507,7 +2533,6 @@ end subroutine includes
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 subroutine defines()       !@(#)defines(3f): use expressions on command line to define variables
-   use M_strings, only: delim
    integer,parameter                     :: n=300                   ! maximum number of tokens to look for
    character(len=G_line_length)          :: array(n)                ! the array to fill with tokens
    character(len=1)                      :: dlim=' '                ! string of single characters to use as delimiters
@@ -2628,7 +2653,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                    trailing carriage-return characters are removed.            ',&
 '                    Use this flag to prevent this processing from               ',&
 '                    occurring.                                                  ',&
-'   -cstyle          try to style comments generated in $COMMENT blocks          ',&
+'   -cstyle          try to style comments generated in $FILTER blocks           ',&
 '                    for other utilities such as doxygen. Default is to          ',&
 '                    prefix lines with ''!!''. Allowed keywords are              ',&
 '                    currently "default", "doxygen".                             ',&
@@ -2671,8 +2696,9 @@ help_text=[ CHARACTER(LEN=128) :: &
 '     $@(#)     metadata                                   [! comment ]          ',&
 '     $INCLUDE  filename                                   [! comment ]          ',&
 '     $OUTPUT   filename  [-append]                        [! comment ]          ',&
-'     $DOCUMENT [comment|write|help|version] [-file NAME]                        ',&
-'               [-append]                                  [! comment ]          ',&
+'     $FILTER   [comment|write|help|version|shell [-cmd NAME]]                   ',&
+'               [-append] [-file NAME]                     [! comment ]          ',&
+'     $DOCUMENT is a synonym for $FILTER                                         ',&
 '     $PRINTENV predefined_name|environment_variable_name  [! comment ]          ',&
 '     $SHOW                                                [! comment ]          ',&
 '     $STOP {stop_value}                                   [! comment ]          ',&
@@ -2688,7 +2714,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   that is terminated by an end-of-line.                                        ',&
 '                                                                                ',&
 '   Any LOGICAL expression composed of integer constants, parameters             ',&
-'   and operators, is valid. Logical operators are                               ',&
+'   and operators, is valid. Operators are                                       ',&
 '                                                                                ',&
 '     .NOT.  .AND.  .OR.  .EQV.  .NEQV.  .EQ.  .NE.  .GE.                        ',&
 '     .GT.   .LE.   .LT.  +      -       *     /     (                           ',&
@@ -2806,7 +2832,22 @@ help_text=[ CHARACTER(LEN=128) :: &
 '     UFPP_LINE  ......  UFPP_LINE=    nnnnnn                                    ',&
 '     Where code is assumed to have defined UFPP_LINE as INTEGER                 ',&
 '                                                                                ',&
-'   $DOCUMENT [comment|write|help|version] [-file NAME][! comment]               ',&
+'   This example shows one way how an environment variable can be turned         ',&
+'   into a write statement                                                       ',&
+'                                                                                ',&
+'     $document write                                                            ',&
+'     $ifdef HOME                                                                ',&
+'     $printenv HOME                                                             ',&
+'     $else                                                                      ',&
+'        HOME not defined                                                        ',&
+'     $endif                                                                     ',&
+'     $document end                                                              ',&
+'                                                                                ',&
+'   Sample output                                                                ',&
+'                                                                                ',&
+'     write(io,''(a)'')''/home/urbanjs/V600''                                    ',&
+'                                                                                ',&
+'   $FILTER [comment|write|help|version|shell[ -cmd COMMAND]] [-file NAME][! comment]',&
 '                                                                                ',&
 '      COMMENT:  write text prefixed by two exclamations and a space             ',&
 '      WRITE:    write text as Fortran WRITE(3f) statements                      ',&
@@ -2814,6 +2855,9 @@ help_text=[ CHARACTER(LEN=128) :: &
 '      VERSION:  write text as a subroutine called HELP_VERSION                  ',&
 '                prefixing lines with @(#) for use with the what(1) command.     ',&
 '      NULL:     Do not write to output file                                     ',&
+'      SHELL:    run text in block as a shell and replace with the stdout        ',&
+'                generated by the shell. The shell may be specified by the -cmd  ',&
+'                option. The default shell is bash(1).                           ',&
 '      END:      End block of documentation                                      ',&
 '                                                                                ',&
 '   Causes documentation to be altered in output so it is easily maintained as   ',&
@@ -2828,6 +2872,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   or txt2man(1) to produce man(1) pages and HTML documents the file can be     ',&
 '   written as-is to $UFPP_DOCUMENT_DIR/doc/NAME with the -file parameter. If the',&
 '   environment variable $UFPP_DOCUMENT_DIR is not set the option is ignored.    ',&
+'                                                                                ',&
 '                                                                                ',&
 '   $SHOW                                                                        ',&
 '                                                                                ',&
@@ -2931,6 +2976,13 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   $IF constructs can be nested up to 20 levels deep. Note that using           ',&
 '   more than two levels typically makes input files less readable.              ',&
 '                                                                                ',&
+'   $FILTER END is required after a $FILTER or -file FILENAME is not written     ',&
+'   and output of a shell is not read.                                           ',&
+'                                                                                ',&
+'   Nesting of $FILTER sections not allowed.                                     ',&
+'                                                                                ',&
+'   Messages for $MESSAGE, $WARNING, $ERROR cannot contain an exclamation        ',&
+'                                                                                ',&
 '  Input files                                                                   ',&
 '                                                                                ',&
 '   o lines are limited to 1024 columns. Text past column 1024 is ignored.       ',&
@@ -3002,9 +3054,9 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   >   use M_kracken, only : kracken, lget                                      ',&
 '   >   ! use M_kracken module to crack command line arguments                   ',&
 '   >   call kracken("cmd","-help .false. -version .false.")                     ',&
-'   >   ! call routine generated by $DOCUMENT HELP                               ',&
+'   >   ! call routine generated by $FILTER HELP                                 ',&
 '   >   call help_usage(lget("cmd_help"))                                        ',&
-'   >   ! call routine generated by $DOCUMENT VERSION                            ',&
+'   >   ! call routine generated by $FILTER VERSION                              ',&
 '   >   call help_version(lget("cmd_version"))                                   ',&
 '   >   call sub1()                                                              ',&
 '   >end program conditional_compile                                             ',&
@@ -3024,7 +3076,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   >$ENDIF                                                                      ',&
 '   >$! generate help_usage() procedure (and file to run thru txt2man(1) or other',&
 '   >$! filters to make man(1) page if $UFPP_DOCUMENT_DIR is set).               ',&
-'   >$DOCUMENT HELP -file conditional_compile.man                                ',&
+'   >$FILTER HELP -file conditional_compile.man                                  ',&
 '   >NAME                                                                        ',&
 '   >    conditional_compile - basic example for ufpp(1) pre-processor.          ',&
 '   >SYNOPSIS                                                                    ',&
@@ -3037,14 +3089,14 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   >              display this help and exit                                    ',&
 '   >       --version                                                            ',&
 '   >              output version information and exit                           ',&
-'   >$DOCUMENT END                                                               ',&
+'   >$FILTER END                                                                 ',&
 '   >$! generate help_version() procedure                                        ',&
-'   >$DOCUMENT VERSION                                                           ',&
+'   >$FILTER VERSION                                                             ',&
 '   >DESCRIPTION: example program showing conditional compilation with ufpp(1)   ',&
 '   >PROGRAM:     conditional_compile                                            ',&
 '   >VERSION:     1.0, 20160703                                                  ',&
 '   >AUTHOR:      John S. Urban                                                  ',&
-'   >$DOCUMENT END                                                               ',&
+'   >$FILTER END                                                                 ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -3115,7 +3167,7 @@ end subroutine help_usage
 !!                     trailing carriage-return characters are removed.
 !!                     Use this flag to prevent this processing from
 !!                     occurring.
-!!    -cstyle          try to style comments generated in $COMMENT blocks
+!!    -cstyle          try to style comments generated in $FILTER blocks
 !!                     for other utilities such as doxygen. Default is to
 !!                     prefix lines with '!!'. Allowed keywords are
 !!                     currently "default", "doxygen".
@@ -3158,8 +3210,9 @@ end subroutine help_usage
 !!      $@(#)     metadata                                   [! comment ]
 !!      $INCLUDE  filename                                   [! comment ]
 !!      $OUTPUT   filename  [-append]                        [! comment ]
-!!      $DOCUMENT [comment|write|help|version] [-file NAME]
-!!                [-append]                                  [! comment ]
+!!      $FILTER   [comment|write|help|version|shell [-cmd NAME]]
+!!                [-append] [-file NAME]                     [! comment ]
+!!      $DOCUMENT is a synonym for $FILTER
 !!      $PRINTENV predefined_name|environment_variable_name  [! comment ]
 !!      $SHOW                                                [! comment ]
 !!      $STOP {stop_value}                                   [! comment ]
@@ -3175,7 +3228,7 @@ end subroutine help_usage
 !!    that is terminated by an end-of-line.
 !!
 !!    Any LOGICAL expression composed of integer constants, parameters
-!!    and operators, is valid. Logical operators are
+!!    and operators, is valid. Operators are
 !!
 !!      .NOT.  .AND.  .OR.  .EQV.  .NEQV.  .EQ.  .NE.  .GE.
 !!      .GT.   .LE.   .LT.  +      -       *     /     (
@@ -3293,7 +3346,22 @@ end subroutine help_usage
 !!      UFPP_LINE  ......  UFPP_LINE=    nnnnnn
 !!      Where code is assumed to have defined UFPP_LINE as INTEGER
 !!
-!!    $DOCUMENT [comment|write|help|version] [-file NAME][! comment]
+!!    This example shows one way how an environment variable can be turned
+!!    into a write statement
+!!
+!!      $document write
+!!      $ifdef HOME
+!!      $printenv HOME
+!!      $else
+!!         HOME not defined
+!!      $endif
+!!      $document end
+!!
+!!    Sample output
+!!
+!!      write(io,'(a)')'/home/urbanjs/V600'
+!!
+!!    $FILTER [comment|write|help|version|shell[ -cmd COMMAND]] [-file NAME][! comment]
 !!
 !!       COMMENT:  write text prefixed by two exclamations and a space
 !!       WRITE:    write text as Fortran WRITE(3f) statements
@@ -3301,6 +3369,9 @@ end subroutine help_usage
 !!       VERSION:  write text as a subroutine called HELP_VERSION
 !!                 prefixing lines with @(#) for use with the what(1) command.
 !!       NULL:     Do not write to output file
+!!       SHELL:    run text in block as a shell and replace with the stdout
+!!                 generated by the shell. The shell may be specified by the -cmd
+!!                 option. The default shell is bash(1).
 !!       END:      End block of documentation
 !!
 !!    Causes documentation to be altered in output so it is easily maintained as
@@ -3315,6 +3386,7 @@ end subroutine help_usage
 !!    or txt2man(1) to produce man(1) pages and HTML documents the file can be
 !!    written as-is to $UFPP_DOCUMENT_DIR/doc/NAME with the -file parameter. If the
 !!    environment variable $UFPP_DOCUMENT_DIR is not set the option is ignored.
+!!
 !!
 !!    $SHOW
 !!
@@ -3418,6 +3490,13 @@ end subroutine help_usage
 !!    $IF constructs can be nested up to 20 levels deep. Note that using
 !!    more than two levels typically makes input files less readable.
 !!
+!!    $FILTER END is required after a $FILTER or -file FILENAME is not written
+!!    and output of a shell is not read.
+!!
+!!    Nesting of $FILTER sections not allowed.
+!!
+!!    Messages for $MESSAGE, $WARNING, $ERROR cannot contain an exclamation
+!!
 !!   Input files
 !!
 !!    o lines are limited to 1024 columns. Text past column 1024 is ignored.
@@ -3490,9 +3569,9 @@ end subroutine help_usage
 !!    >   use M_kracken, only : kracken, lget
 !!    >   ! use M_kracken module to crack command line arguments
 !!    >   call kracken("cmd","-help .false. -version .false.")
-!!    >   ! call routine generated by $DOCUMENT HELP
+!!    >   ! call routine generated by $FILTER HELP
 !!    >   call help_usage(lget("cmd_help"))
-!!    >   ! call routine generated by $DOCUMENT VERSION
+!!    >   ! call routine generated by $FILTER VERSION
 !!    >   call help_version(lget("cmd_version"))
 !!    >   call sub1()
 !!    >end program conditional_compile
@@ -3512,7 +3591,7 @@ end subroutine help_usage
 !!    >$ENDIF
 !!    >$! generate help_usage() procedure (and file to run thru txt2man(1) or other
 !!    >$! filters to make man(1) page if $UFPP_DOCUMENT_DIR is set).
-!!    >$DOCUMENT HELP -file conditional_compile.man
+!!    >$FILTER HELP -file conditional_compile.man
 !!    >NAME
 !!    >    conditional_compile - basic example for ufpp(1) pre-processor.
 !!    >SYNOPSIS
@@ -3525,14 +3604,14 @@ end subroutine help_usage
 !!    >              display this help and exit
 !!    >       --version
 !!    >              output version information and exit
-!!    >$DOCUMENT END
+!!    >$FILTER END
 !!    >$! generate help_version() procedure
-!!    >$DOCUMENT VERSION
+!!    >$FILTER VERSION
 !!    >DESCRIPTION: example program showing conditional compilation with ufpp(1)
 !!    >PROGRAM:     conditional_compile
 !!    >VERSION:     1.0, 20160703
 !!    >AUTHOR:      John S. Urban
-!!    >$DOCUMENT END
+!!    >$FILTER END
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -3550,7 +3629,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        4.0: 20170502>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
-'@(#)COMPILED:       Sat, Nov 25th, 2017 5:11:16 PM>',&
+'@(#)COMPILED:       Tue, Dec 19th, 2017 3:05:13 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -3605,6 +3684,7 @@ character(len=*),intent(in)    :: line
 character(len=:),allocatable   :: buff
 character(len=115)             :: chunk
 integer                        :: ilen
+integer                        :: ierr
 !===================================================================================================================================
    select case(trim(G_outtype))
 !----------------------------------------------------------------------------------------------------------------------------------=
@@ -3612,6 +3692,9 @@ integer                        :: ilen
                                                ! will be written later at end of DOCUMENT section
 !----------------------------------------------------------------------------------------------------------------------------------=
    case('null')                                ! do not write
+!----------------------------------------------------------------------------------------------------------------------------------=
+   case('shell')                                ! do not write
+      call process_writeline(trim(line),G_fp,ierr)
 !----------------------------------------------------------------------------------------------------------------------------------=
    case('variable')
       buff=trim(line)                          ! do not make a line over 132 characters. Trim input line if needed
@@ -3643,8 +3726,8 @@ integer                        :: ilen
       write(G_iout,'(a)')trim(line(:min(len(line),G_iwidth)))
 !----------------------------------------------------------------------------------------------------------------------------------=
    case default
-      call stop_ufpp('*ufpp:stop* ERROR(bh) - UNEXPECTED "DOCUMENT" VALUE. FOUND:'//trim(G_source))
-      call stop_ufpp('*ufpp:stop* ERROR(bh) - UNEXPECTED "DOCUMENT" VALUE. FOUND:'//trim(G_outtype))
+      call stop_ufpp('*ufpp:stop* ERROR(bh) - UNEXPECTED "FILTER" VALUE. FOUND:'//trim(G_source))
+      call stop_ufpp('*ufpp:stop* ERROR(bh) - UNEXPECTED "FILTER" VALUE. FOUND:'//trim(G_outtype))
 !----------------------------------------------------------------------------------------------------------------------------------=
    end select
 !===================================================================================================================================
@@ -3663,23 +3746,22 @@ end module M_fpp
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 program ufpp                                            !@(#)ufpp(1f): preprocessor for Fortran/FORTRAN source code
-   !implicit none
-   !--------------------------------------------------------
-   use M_strings, only : notabs, isdigit, switch
-   use M_kracken, only: kracken_comment
-   use M_fpp
-   !use M_fpp,only : G_line_length,source,write,G_nestl,G_file_dictionary,G_iocount,G_io_total_lines,G_html_switch,G_system_on
-   ! G_line_length   allowed length of input lines
-   ! SOURCE        current input line
-   ! WRITE         flag whether current data lines should be written
-   ! G_nestl         nesting level for $IF/$ELSEIF/$ELSE/$ENDIF
-   ! G_file_dictionary()%unit_number
-   ! G_IOCOUNT
-   ! G_html_switch    write help with HTML directives or not or flag reading an HTML file
-   ! G_line_length
-   !--------------------------------------------------------
-   use M_kracken, only: kracken, lget, rget, iget, sget, retrev, sget
-   implicit none
+use M_kracken, only: kracken, lget, rget, iget, sget, retrev, sget
+!--------------------------------------------------------
+use M_strings, only : notabs, isdigit, switch
+use M_kracken, only: kracken_comment
+use M_fpp
+!use M_fpp,only : G_line_length,source,write,G_nestl,G_file_dictionary,G_iocount,G_io_total_lines,G_html_switch,G_system_on
+! G_line_length   allowed length of input lines
+! SOURCE        current input line
+! WRITE         flag whether current data lines should be written
+! G_nestl         nesting level for $IF/$ELSEIF/$ELSE/$ENDIF
+! G_file_dictionary()%unit_number
+! G_IOCOUNT
+! G_html_switch    write help with HTML directives or not or flag reading an HTML file
+! G_line_length
+!--------------------------------------------------------
+implicit none
    character(len=G_line_length) :: out_filename=''           ! output filename, default is stdout
    character(len=1)             :: prefix                    ! directive prefix character
    character(len=1)             :: letterd                   !

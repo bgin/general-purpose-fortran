@@ -1,2 +1,80 @@
 \hypertarget{__uname_8f90}{}\section{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/\+\_\+uname.f90 File Reference}
 \label{__uname_8f90}\index{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/\+\_\+uname.\+f90@{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/\+\_\+uname.\+f90}}
+\subsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{__uname_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}{help\+\_\+usage} (l\+\_\+help)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{__uname_8f90_a39c21619b08a3c22f19e2306efd7f766}{help\+\_\+version} (l\+\_\+version)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+\+\_\+uname(1f) -\/ \mbox{[}F\+U\+N\+IX\mbox{]} print system information \end{DoxyCompactList}\item 
+program \hyperlink{__uname_8f90_a483d2219923eccf493a883fceee5a424}{testit}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{__uname_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}\label{__uname_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}} 
+\index{\+\_\+uname.\+f90@{\+\_\+uname.\+f90}!help\+\_\+usage@{help\+\_\+usage}}
+\index{help\+\_\+usage@{help\+\_\+usage}!\+\_\+uname.\+f90@{\+\_\+uname.\+f90}}
+\subsubsection{\texorpdfstring{help\+\_\+usage()}{help\_usage()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} help\+\_\+usage (\begin{DoxyParamCaption}\item[{logical, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{l\+\_\+help }\end{DoxyParamCaption})}
+
+
+
+References false().
+
+\mbox{\Hypertarget{__uname_8f90_a39c21619b08a3c22f19e2306efd7f766}\label{__uname_8f90_a39c21619b08a3c22f19e2306efd7f766}} 
+\index{\+\_\+uname.\+f90@{\+\_\+uname.\+f90}!help\+\_\+version@{help\+\_\+version}}
+\index{help\+\_\+version@{help\+\_\+version}!\+\_\+uname.\+f90@{\+\_\+uname.\+f90}}
+\subsubsection{\texorpdfstring{help\+\_\+version()}{help\_version()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} help\+\_\+version (\begin{DoxyParamCaption}\item[{logical, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{l\+\_\+version }\end{DoxyParamCaption})}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+\+\_\+uname(1f) -\/ \mbox{[}F\+U\+N\+IX\mbox{]} print system information 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\begin{DoxyVerb}    _uname [OPTION]...
+\end{DoxyVerb}
+
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+Print certain system information. With no O\+P\+T\+I\+ON, print all information, one value per line.
+
+-\/a, --all print all information, in the following order\+:
+
+-\/s, --kernel-\/name print the kernel name -\/n, --nodename print the network node hostname -\/r, --kernel-\/release print the kernel release -\/v, --kernel-\/version print the kernel version -\/m, --machine print the machine hardware name
+
+--help display this help and exit --version output version information and exit \subsubsection*{E\+X\+A\+M\+P\+LE}
+
+Sample usage\+: \begin{DoxyVerb}>_uname
+>kernel-name    : CYGWIN_NT-10.0
+>nodename       : buzz
+>kernel-release : 2.6.0(0.304/5/3)
+>kernel-version : 2016-08-31 14:32
+>machine        : x86_64
+
+>_uname -all
+>CYGWIN_NT-10.0 buzz 2.6.0(0.304/5/3) 2016-08-31 14:32 x86_64
+
+>_uname -machine
+>x86_64 \end{DoxyVerb}
+ 
+
+References false().
+
+\mbox{\Hypertarget{__uname_8f90_a483d2219923eccf493a883fceee5a424}\label{__uname_8f90_a483d2219923eccf493a883fceee5a424}} 
+\index{\+\_\+uname.\+f90@{\+\_\+uname.\+f90}!testit@{testit}}
+\index{testit@{testit}!\+\_\+uname.\+f90@{\+\_\+uname.\+f90}}
+\subsubsection{\texorpdfstring{testit()}{testit()}}
+{\footnotesize\ttfamily program testit (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+References false(), help\+\_\+usage(), help\+\_\+version(), m\+\_\+kracken\+::kracken(), m\+\_\+kracken\+::lget(), m\+\_\+system\+::system\+\_\+uname(), and true().
+

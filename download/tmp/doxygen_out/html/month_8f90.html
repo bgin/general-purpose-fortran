@@ -63,10 +63,106 @@ $(function() {
 </div>
 </div><!-- top -->
 <div class="header">
+  <div class="summary">
+<a href="#func-members">Functions/Subroutines</a>  </div>
   <div class="headertitle">
 <div class="title">month.f90 File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions/Subroutines</h2></td></tr>
+<tr class="memitem:a25f7e0d0c91977505b956237e747f2bb"><td class="memItemLeft" align="right" valign="top">program&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="month_8f90.html#a25f7e0d0c91977505b956237e747f2bb">month_exe</a></td></tr>
+<tr class="separator:a25f7e0d0c91977505b956237e747f2bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59e45312af3c1c4bda229af348aaac1b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="M__stopwatch_83_8txt.html#acfbcff50169d691ff02d4a123ed70482">subroutine</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="month_8f90.html#a59e45312af3c1c4bda229af348aaac1b">help_usage</a> (l_help)</td></tr>
+<tr class="separator:a59e45312af3c1c4bda229af348aaac1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae30c982fccb720f9edefdd837baed72a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="M__stopwatch_83_8txt.html#acfbcff50169d691ff02d4a123ed70482">subroutine</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="month_8f90.html#ae30c982fccb720f9edefdd837baed72a">help_version</a> (l_version)</td></tr>
+<tr class="memdesc:ae30c982fccb720f9edefdd837baed72a"><td class="mdescLeft">&#160;</td><td class="mdescRight"><h2>NAME</h2>
+month - [TIME] display a calendar  <a href="#ae30c982fccb720f9edefdd837baed72a">More...</a><br /></td></tr>
+<tr class="separator:ae30c982fccb720f9edefdd837baed72a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Function/Subroutine Documentation</h2>
+<a id="a59e45312af3c1c4bda229af348aaac1b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59e45312af3c1c4bda229af348aaac1b">&#9670;&nbsp;</a></span>help_usage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="M__stopwatch_83_8txt.html#acfbcff50169d691ff02d4a123ed70482">subroutine</a> month_exe::help_usage </td>
+          <td>(</td>
+          <td class="paramtype">logical, intent(<a class="el" href="M__journal_83_8txt.html#afce72651d1eed785a2132bee863b2f38">in</a>)&#160;</td>
+          <td class="paramname"><em>l_help</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="reference">References <a class="el" href="__false_8f90.html#ac39cd9fe2012c31749944aa6b20b6c05">false()</a>.</p>
+
+</div>
+</div>
+<a id="ae30c982fccb720f9edefdd837baed72a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae30c982fccb720f9edefdd837baed72a">&#9670;&nbsp;</a></span>help_version()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="M__stopwatch_83_8txt.html#acfbcff50169d691ff02d4a123ed70482">subroutine</a> month_exe::help_version </td>
+          <td>(</td>
+          <td class="paramtype">logical, intent(<a class="el" href="M__journal_83_8txt.html#afce72651d1eed785a2132bee863b2f38">in</a>)&#160;</td>
+          <td class="paramname"><em>l_version</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><h2>NAME</h2>
+month - [TIME] display a calendar </p>
+<h2>SYNOPSIS</h2>
+<pre class="fragment">month [[-year] NNNN] [-month NN|month_name]
+</pre><h2>DESCRIPTION</h2>
+<p>month(1) displays a simple calendar. If no arguments are specified, the current year is displayed.</p>
+<h2>OPTIONS</h2>
+<p>-month Display single month output. The month is numeric (1-12) or a month name or blank. If blank the current month is assumed.</p>
+<p>-year NNNN Display a calendar for the whole year NNNN. A year starts on Jan 1st.</p>
+<p>-help Display help text and exit. -version Display version information and exit.</p>
+<h2>EXAMPLES</h2>
+<pre class="fragment">   month -month 12
+
+    &gt;    December 2015
+    &gt;Mo Tu We Th Fr Sa Su
+    &gt;    1  2  3  4  5  6
+    &gt; 7  8  9 10 11 12 13
+    &gt;14 15 16 17 18 19 20
+    &gt;21 22 23 24 25 26 27
+    &gt;28 29 30 31
+
+   month -month April # month names may be given instead of numbers </pre> 
+<p class="reference">References <a class="el" href="__false_8f90.html#ac39cd9fe2012c31749944aa6b20b6c05">false()</a>.</p>
+
+</div>
+</div>
+<a id="a25f7e0d0c91977505b956237e747f2bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a25f7e0d0c91977505b956237e747f2bb">&#9670;&nbsp;</a></span>month_exe()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">program month_exe </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="reference">References <a class="el" href="namespacem__time.html#a0fe7540912df30d3578f3c469413aea8">m_time::box_month()</a>, <a class="el" href="__cmp_8f90.html#a3e09a3b52ee8fb04eeb93fe5761626a8">help_usage()</a>, <a class="el" href="__cmp_8f90.html#a39c21619b08a3c22f19e2306efd7f766">help_version()</a>, <a class="el" href="namespacem__kracken.html#a420718890eac378e5cd047dd0b477424">m_kracken::iget()</a>, <a class="el" href="namespacem__kracken.html#a850dce381e1cfe18a4ebcaa214995e39">m_kracken::kracken()</a>, <a class="el" href="namespacem__kracken.html#a7141acd7a00c1a5aa5f90612a0414b63">m_kracken::lget()</a>, <a class="el" href="namespacem__time.html#ad7bf0886754757e8961e562f06cf3bb7">m_time::mo2v()</a>, and <a class="el" href="namespacem__kracken.html#a9a64192326816b0b9badcc11506628ee">m_kracken::sget()</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

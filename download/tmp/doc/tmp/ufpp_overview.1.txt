@@ -68,7 +68,7 @@ EXAMPLES
 a basic input file ...
 
 Assuming you are familiar with the basic behavior of preprocessors such as cpp
-(1), fpp(1), coco(1), or more powerful macro processors such as m4(1) let's
+(1), fpp(1), coco(1), or more powerful macro processors such as m4(1) let us
 start with a basic input file example:
 
      $! Compile this program and one of the following versions of subroutine SUB1 depending on the value of A
@@ -110,16 +110,19 @@ would be
        end subroutine sub1
 
 The next example shows how regions of flat text can be processed by ufpp(1): o
-The $DOCUMENT HELP directive can be used to produce a routine to display help
+The $FILTER HELP directive can be used to produce a routine to display help
 text and the help text can also be written to a file to produce further
-document formats. o The $DOCUMENT VERSION directive can be used a to produce a
+document formats. o The $FILTER VERSION directive can be used a to produce a
 routine that displays a version in a way that is compatible with the metadata
-display program what(1). o The $DOCUMENT NULL directive can be used for text
-that is otherwise ignored. Note that text can optionally be written to an
-alternate file using $OUTPUT directives.
+display program what(1). o The $FILTER NULL directive can be used for text that
+is otherwise ignored. o The $FILTER NULL directive can be used for text that is
+otherwise ignored. Note that text can optionally be written to an alternate
+file using $OUTPUT directives. o The $FILTER SHELL directive can be used for
+text that is the output of a shell. This can be very system-dependent but
+allows code to be built dynamically.
 
-       $DOCUMENT NULL -file notes.txt !@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-          This section uses $DOCUMENT NULL to let a block of text be included
+       $FILTER NULL -file notes.txt !@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+          This section uses $FILTER NULL to let a block of text be included
           in the source that is essentially ignored. The difference between
           this and a $IFDEF .FALSE. ... $ENDIF or $OUTPUT /dev/null .. $OUTPUT
           END section is that the -file switch lets this section get written to a
@@ -127,7 +130,7 @@ alternate file using $OUTPUT directives.
           could be markdown text, HTML, RTF, LaTex or some other format to be
           post-processed independently.
 
-          The following $DOCUMENT HELP section directives is converted into the
+          The following $FILTER HELP section directives is converted into the
           HELP_USAGE() subroutine by ufpp. Optionally if the environment variable
           $UFPP_DOCUMENT_DIR is set the text is additionally written as-is into
 
@@ -137,9 +140,9 @@ alternate file using $OUTPUT directives.
 
           This additional file would then typically be run thru txt2man(1) to
           create a man(1) page.
-       $DOCUMENT END !@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+       $FILTER END !@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
        $IFDEF F90
-       $DOCUMENT HELP -file cf.1.man
+       $FILTER HELP -file cf.1.man
        NAME
           cf - Convert between Fahrenheit and Celsius temperature values
 
@@ -164,11 +167,11 @@ alternate file using $OUTPUT directives.
         stop moving. As such, nothing can be colder than absolute zero on the
         Kelvin scale.
 
-       $DOCUMENT END
+       $FILTER END
        $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
        $! this text is converted into the help_version subroutine by ufpp ...
        $! in a format that works with what(1), do not use ",>,\ characters in the labels
-       $DOCUMENT VERSION
+       $FILTER VERSION
        PRODUCT:        CLI library utilities and examples
        PROGRAM:        cf(1f)
        DESCRIPTION:    convert multiple values between Celsius and Fahrenheit
@@ -179,14 +182,23 @@ alternate file using $OUTPUT directives.
        LICENSE:        Public Domain. This is free software: you are free
                        to change and redistribute it.  There is NO WARRANTY,
                        to the extent permitted by law.
-                       $DOCUMENT END
+       $FILTER END
        $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-       $DOCUMENT COMMENT
-          This block of text becomes Fortran comment lines by having two exclamations
+       $! use output of a bash(1) shell here document to build some comments
+       $FILTER SHELL
+       cat <<EOF
+       !! date ....... $(date)
+       !! userid ..... $(logname)
+       !! hostname ... $(hostname)
+       EOF
+       $FILTER END
+       $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+       $FILTER COMMENT
+          This block of text becomes Fortran comment lines by having exclamations
           placed in front of each line, but is otherwise left as-is.
 
           The next section is just as-is Fortran
-       $DOCUMENT END
+       $FILTER END
        $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
        program cf
        use M_kracken, only: kracken, rgets, lget
@@ -246,20 +258,18 @@ alternate file using $OUTPUT directives.
 
 
 
-The output from ufpp(1) is:
+The output from "ufpp F90 -i FILE -system" is:
 
        subroutine help_usage(l_help)
        implicit none
        character(len=*),parameter     :: ident="@(#)help_usage(3f): prints help information"
        logical,intent(in)             :: l_help
-       character(len=128),allocatable :: help_text(:)
+       character(len=:),allocatable :: help_text(:)
        integer                        :: i
        logical                        :: stopit=.false.
        stopit=.false.
        if(l_help)then
        help_text=[ CHARACTER(LEN=128) :: &
-       'CF(1)                          User Commands                               CF(1)',&
-       '                                                                                ',&
        'NAME                                                                            ',&
        '   cf - Convert between Fahrenheit and Celsius temperature values               ',&
        '                                                                                ',&
@@ -284,7 +294,6 @@ The output from ufpp(1) is:
        ' stop moving. As such, nothing can be colder than absolute zero on the          ',&
        ' Kelvin scale.                                                                  ',&
        '                                                                                ',&
-       ' That''s all folks!                                                             ',&
        '']
           WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
           stop ! if -help was specified, stop
@@ -295,42 +304,57 @@ The output from ufpp(1) is:
        implicit none
        character(len=*),parameter     :: ident="@(#)help_version(3f): prints version information"
        logical,intent(in)             :: l_version
-       character(len=128),allocatable :: help_text(:)
+       character(len=:),allocatable   :: help_text(:)
        integer                        :: i
        logical                        :: stopit=.false.
        stopit=.false.
        if(l_version)then
        help_text=[ CHARACTER(LEN=128) :: &
-       '@(#)Program:     cf(1f)>',&
-       '@(#)Description: convert multiple values between Celsius and Fahrenheit>',&
-       '@(#)Version:     1.0>',&
-       '@(#)Date:        2016-04-09>',&
-       '@(#)Author:      John S. Urban>',&
+       '@(#)PRODUCT:        CLI library utilities and examples>',&
+       '@(#)PROGRAM:        cf(1f)>',&
+       '@(#)DESCRIPTION:    convert multiple values between Celsius and Fahrenheit>',&
+       '@(#)VERSION:        1.0, 2016-04-09>',&
+       '@(#)AUTHOR:         John S. Urban>',&
+       '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
+       '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
+       '@(#)LICENSE:        Public Domain. This is free software: you are free>',&
+       '@(#)                to change and redistribute it.  There is NO WARRANTY,>',&
+       '@(#)                to the extent permitted by law.>',&
+       '@(#)COMPILED:       Mon, Dec 18th, 2017 2:55:24 AM>',&
        '']
           WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
           stop ! if -version was specified, stop
        endif
        end subroutine help_version
        !-----------------------------------------------------------------------------------------------------------------------------------
+       !! date ....... Mon, Dec 18, 2017  2:55:25 AM
+       !! userid ..... JSU
+       !! hostname ... buzz
+       !    This block of text becomes Fortran comment lines by having exclamations
+       !    placed in front of each line, but is otherwise left as-is.
+       !
+       !    The next section is just as-is Fortran
+       !===================================================================================================================================
        program cf
        use M_kracken, only: kracken, rgets, lget
        implicit none
-       character(len=*),parameter :: ident="@(#)cf(1f): convert multiple values between Celsius and Fahrenheit"
+       character(len=*),parameter::ident="@(#)cf(1f): convert multiple values between Celsius and Fahrenheit"
        real,allocatable                :: val(:)
        integer                         :: i, isum=0
-         call kracken('cf','-F -C -help .F. -version .F.' )                  ! define and crack command line arguments
-         call help_usage(lget('cf_help'))                                    ! display help information and stop if true
-         call help_version(lget('cf_version'))                               ! display version information and stop if true
-         isum=0                                                              ! running tally of values found on -C and -F options
-         val=rgets('cf_C')                                                   ! get any values specified on -C option
+         call kracken('cf','-F -C -help .F. -version .F.' ) ! define and crack command line arguments
+         call help_usage(lget('cf_help'))                   ! display help information and stop if true
+         call help_version(lget('cf_version'))         ! display version information and stop if true
+         isum=0                                        ! running tally of values found on -C and -F options
+         val=rgets('cf_C')                             ! get any values specified on -C option
 
-         if(size(val).gt.0)then                                              ! have something to print in C ==> F table
+         if(size(val).gt.0)then                        ! have something to print in C ==> F table
             isum=isum+size(val)
             write(*,'(a,t14,a)')'Celsius','Fahrenheit'
-            write(*,'(f8.2,"C",t14,f8.2,"F")')( val(i),(val(i)+40.0)*9.0/5.0 - 40.0,i=1,size(val))    ! print the requested values
+            write(*,'(f8.2,"C",t14,f8.2,"F")')&
+            & ( val(i),(val(i)+40.0)*9.0/5.0 - 40.0,i=1,size(val))    ! print the requested values
          endif
 
-         val=rgets('cf_F')                                                   ! check for values on -F
+         val=rgets('cf_F')       ! check for values on -F
 
          if(size(val).gt.0)then
             isum=isum+size(val)
@@ -338,7 +362,7 @@ The output from ufpp(1) is:
             write(*,'(f8.2,"F",t14,f8.2,"C")')(val(i),(val(i)+40.0)*5.0/9.0 - 40.0,i=1,size(val))
          endif
 
-         if(isum.eq.0)then                                                 ! if no values given on -C and -F switches show default table
+         if(isum.eq.0)then       ! if no values given on -C and -F switches show default table
            val=[ &
               &-459.67,                               &
               & -20.0,  -15.0,  -10.0,   -5.0,   0.0, &
@@ -352,7 +376,6 @@ The output from ufpp(1) is:
          endif
 
        end program cf
-    !-----------------------------------------------------------------------------------------------------------------------------------
 
 
 This small example shows an easy way to maintain help and version options
@@ -461,7 +484,7 @@ operations, and keep this in the smallest number of files possible.
 
 If I try to avoid the need for traditional pre-processing of Fortran source
 code whenever possible why not just use cpp(1) instead of making ufpp(1)? Even
-if traditional pre-processing is not required I find ufpp(1)'s filtering
+if traditional pre-processing is not required I find the ufpp(1) filtering
 capabilities useful as a way to keep related text files (documentation, test
 files, test programs, test scripts, ...) together in an easily maintained form.
 

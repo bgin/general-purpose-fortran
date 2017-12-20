@@ -1,5 +1,5 @@
 #!/bin/bash
-#@(#)mank(1sh): list the manual page names and descriptions found in this distribution
+#@(#)list the manual page names and descriptions found in this distribution
 export MANPATH=$(dirname $0)/../man:$HOME/LIBRARY/libGPF/download/tmp/man
 
 export LESS_TERMCAP_mb=$(printf '\e[01;31m') # enter blinking mode - red

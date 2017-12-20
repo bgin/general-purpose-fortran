@@ -372,7 +372,16 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_process::process_close(3f):close process<br/>
 	M_process::process_readline(3f):read line from process<br/>
 	M_process::process_readall(3f):read all lines from process<br/>
-	M_process::process_writeline(3f):write line to process<br/>
+	M_process::process_writeline_scalar(3fp):write line to process<br/>
+	M_process::process_writeline_array(3fp):write lines to process<br/>
+</td>
+<tr><td><a href="M_random.f90">M_random.f90</a></td>
+<td>
+	M_random::random_string(3f): create random string composed of provided characters of specified length<br/>
+	A 64-bit KISS random number generator by George Margaglia.<br/>
+	M_random::init_random_seed_by_system_clock(3f): initialize random_number(3f) to return a single value with system clock<br/>
+	M_random::init_random_seed_by_dat(3f): initialize random_number(3f) to return a single value using date_and_time(3f)<br/>
+	M_random::init_random_seed(3f): initialize random_number(3f) to return a single value with single integer seed like srand(3c)<br/>
 </td>
 <tr><td><a href="M_readgif.f90">M_readgif.f90</a></td>
 <td>
@@ -596,7 +605,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_time::phase_of_moon(3f): return name for phase of moon for given date<br/>
 	M_time::moon_fullness(3f): return percentage of moon phase from new to full<br/>
 	M_time::easter(3f): calculate date for Easter given a year<br/>
-	M_time::ephemeris(3f): ephemeris position of planets for adjusting an equitorial telescope<br/>
+	M_time::ephemeris(3f): ephemeris position of planets for adjusting an equatorial telescope<br/>
 	M_time::system_sleep(3f): call sleep(3c) or usleep(3c)<br/>
 	M_time::call_sleep(3fp): call sleep(3c)<br/>
 	M_time::call_usleep(3fp): call usleep(3c)<br/>
@@ -739,6 +748,8 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <tr><td><a href="C-M_system.c">C-M_system.c</a></td>
 <td>
 	system_unbuffer(3c): FORTRAN-callable call to turn off buffering of stdin<br/>
+	 Driver for reading a character from stdin */<br/>
+	 Driver for writing a character to stdout */<br/>
 </td>
 <tr><td><a href="C-M_units.c">C-M_units.c</a></td>
 <td>
@@ -769,11 +780,11 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 </td>
 <tr><td><a href="Makefile">Makefile</a></td>
 <td>
-	 Makefile started by makeout(1) 2017-12-10 16:35:10<br/>
+	 Makefile started by makeout(1) 2017-12-19 23:10:30<br/>
 </td>
 <tr><td><a href="Makefile_picky">Makefile_picky</a></td>
 <td>
-	 Makefile started by makeout(1) 2017-12-10 16:35:07<br/>
+	 Makefile started by makeout(1) 2017-12-19 23:10:28<br/>
 </td>
 <tr><td><a href="vimrc">vimrc</a></td>
 <td>

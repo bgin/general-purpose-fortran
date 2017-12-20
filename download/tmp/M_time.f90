@@ -44,7 +44,7 @@ private upper
    public easter         !(year,month,day)                    ! calculate month and day Easter falls on for given year
    public moon_fullness  !(datin) result(FULLNESS)            ! percentage of moon phase from new to full
    public phase_of_moon  !(datin) result(PHASE)               ! return name for phase of moon for given date
-   public ephemeris      !(dat,planet,DD,DM,DC,AH,AM)         ! ephemeris position of planets for adjusting an equitorial telescope
+   public ephemeris      !(dat,planet,DD,DM,DC,AH,AM)         ! ephemeris position of planets for adjusting an equatorial telescope
 !READING DATES
    public guessdate      !(anot,dat)                          ! Converts a date string to a date array, in various formats
 !C INTERFACE
@@ -2964,10 +2964,11 @@ end function sec2days
 !!         mm:ss
 !!         ss
 !!
-!!          Where dd is days, hh hours, mm minutes and ss seconds.  A decimal
-!!          fraction is supported on the seconds.
+!!          Where dd is days, hh hours, mm minutes and ss seconds.
 !!
-!!          The numeric values may represent floating point numbers.  Spaces are ignored.
+!!          A decimal fraction is supported on the seconds (Actually,
+!!          any of the numeric values may represent positive floating
+!!          point numbers).  Spaces are ignored.
 !!
 !!        NNdNNhNNmNNs
 !!          Simple numeric values may also be used with unit suffixes; where
@@ -3050,14 +3051,14 @@ real(kind=realtime)               :: time
    logical                        :: negative
 
    time=0.0d0
-   strlocal=compact(str,'')                       ! remove whitespace
-   strlocal=transliterate(strlocal,"_'",'')       ! remove single quotes,underscores sometimes used in numbers
-   strlocal=lower(strlocal)//'                '   ! change to lowercase and add whitespace to make room for spaces
+   strlocal=compact(str,'')                              ! remove whitespace
+   strlocal=transliterate(strlocal,"_',",'')             ! remove single quotes,underscores sometimes used in numbers
+   strlocal=lower(strlocal)//repeat(' ',len(strlocal))   ! change to lowercase and add whitespace to make room for spaces
 
    if(len(strlocal).eq.0)then
       time=0.0d0
-   elseif(scan(strlocal,'smhdw').ne.0)then        ! unit code values not DD-HH:MM:SS either plain number or unit numbers
-      call substitute(strlocal,'days','d')        ! from long names to short names substitute common aliases for units
+   elseif(scan(strlocal,'smhdw').ne.0)then               ! unit code values not DD-HH:MM:SS either plain number or unit numbers
+      call substitute(strlocal,'days','d')               ! from long names to short names substitute common aliases for units
       call substitute(strlocal,'day','d')
       call substitute(strlocal,'hours','h')
       call substitute(strlocal,'hour','h')
@@ -3094,7 +3095,7 @@ real(kind=realtime)               :: time
          case('m'); time=time+s2v(array(i)(:ilast-1))*units_hl(3)
          case('s'); time=time+s2v(array(i)(:ilast-1))*units_hl(4)
          case default
-                    time=time+s2v(array(i))
+            time=time+s2v(array(i))
          end select
       enddo
    else
@@ -3246,10 +3247,10 @@ real(kind=realtime)           :: days_into_cycle
 days_into_cycle = mod(d2j(datin)-d2j(reference) , syndonic_month)      ! number of days into lunar cycle
 if(days_into_cycle.lt.0)days_into_cycle=days_into_cycle+syndonic_month ! correct for input date being before reference date
 
-if(days_into_cycle.le.syndonic_month/2.0)then                          ! if waxing from new to full report as 0% to 100%
-   moon_fullness=int((days_into_cycle/syndonic_month)*200.0+0.5)
+if(days_into_cycle.le.syndonic_month/2.0_realtime)then                 ! if waxing from new to full report as 0% to 100%
+   moon_fullness=int((days_into_cycle/syndonic_month)*200.0_realtime+0.5_realtime)
 else                                                                   ! if waning from full to new report as -99% to -1%
-   moon_fullness=-(200-int((days_into_cycle/syndonic_month)*200.0))
+   moon_fullness=-(200-int((days_into_cycle/syndonic_month)*200.0_realtime))
 endif
 
 end function moon_fullness
@@ -3361,7 +3362,7 @@ end subroutine Easter
 !>
 !!##NAME
 !!
-!!    ephemeris(3f) - [M_time] ephemeris position of planets for adjusting an equitorial telescope
+!!    ephemeris(3f) - [M_time] ephemeris position of planets for adjusting an equatorial telescope
 !!
 !!##SYNOPSIS
 !!
@@ -3459,7 +3460,7 @@ end subroutine Easter
 subroutine ephemeris(itime,planet,declination_d,declination_m,declination_compass,ascent_hours,ascent_minutes)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_time::ephemeris(3f): ephemeris position of planets for adjusting an equitorial telescope"
+character(len=*),parameter::ident="@(#)M_time::ephemeris(3f): ephemeris position of planets for adjusting an equatorial telescope"
 
 integer,parameter            :: dp=kind(0.0d0)
 integer,intent(in)           :: itime(8)
@@ -3477,6 +3478,7 @@ real(kind=dp)            :: ascent_hours8
 integer                  :: year, month, day
 real(kind=dp)            :: hours
 integer                  :: planet_number
+real(kind=dp)            :: dtime(8)
 !-----------------------------------------------------------------------------------------------------------------------------------
    select type(planet)
    type is (integer)
@@ -3504,9 +3506,10 @@ integer                  :: planet_number
 year=itime(1)
 month=itime(2)
 day=itime(3)
-hours=itime(5)-itime(4)/60.0+itime(6)/60.0+itime(7)/3600.0
-t=365.25*(year-1901)+B(month)+day
-t=INT(t) + hours/24.d0
+dtime=real(itime,kind=dp)
+hours=dtime(5)-dtime(4)/60.0_dp+dtime(6)/60.0_dp+dtime(7)/3600.0_dp
+t=365.25_dp*(year-1901)+B(month)+day
+t=INT(t) + hours/24.0_dp
 !-----------------------------------------------------------------------------------------------------------------------------------
                                       ! calculate earth coordinates
 call planet_coordinates(3,t,x,y,z)    ! planet #3 coordinates
@@ -3518,8 +3521,8 @@ call planet_coordinates(planet_number,t,x,y,z)    ! calculate coordinates of pla
                                       ! calculate geocentric equatorial coordinates
 x=x-gg
 y=y-ascent_hours8
-t=y*.917484d0-z*.397772d0
-z=y*.397772d0+z*.917484d0
+t=y*.917484_dp-z*.397772_dp
+z=y*.397772_dp+z*.917484_dp
 y=t
 !-----------------------------------------------------------------------------------------------------------------------------------
 ! calculate ascent and declination
@@ -3528,7 +3531,7 @@ declination=DATAN2(z,DSQRT(x*x+y*y))
 !-----------------------------------------------------------------------------------------------------------------------------------
 ! conversion
 PI=4.d0*DATAN(1.d0)
-ascent=ascent*12.d0/PI
+ascent=ascent*12.0_dp/PI
 if (ascent<0.d0) then
    ascent=24.d0+ascent
 endif

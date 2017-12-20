@@ -1,0 +1,69 @@
+\hypertarget{M__writegif__animated_8f90}{}\section{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+M\+\_\+writegif\+\_\+animated.f90 File Reference}
+\label{M__writegif__animated_8f90}\index{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+M\+\_\+writegif\+\_\+animated.\+f90@{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+M\+\_\+writegif\+\_\+animated.\+f90}}
+\subsection*{Modules}
+\begin{DoxyCompactItemize}
+\item 
+module \hyperlink{namespacem__writegif__animated}{m\+\_\+writegif\+\_\+animated}
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+write\+\_\+animated\+\_\+gif(3f) -\/ \mbox{[}M\+\_\+writegif\+\_\+animated\mbox{]} Codes pixel-\/maps with palette into animated G\+IF format. Optional transparent color \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__writegif__animated_a3da6a5c71a9d9e1f49aa075adc6629bd}{m\+\_\+writegif\+\_\+animated\+::write\+\_\+animated\+\_\+gif} (filename, \hyperlink{shell_8f90_a5c599e945a5e0c9c8954969ea48587cf}{pixel}, colormap, transparent, delay)
+\begin{DoxyCompactList}\small\item\em author\+: Jacob Williams \end{DoxyCompactList}\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=2) function \hyperlink{M__writegif__animated_8f90_a795066c06f318c8d4ba41430b6826567}{char2} (ival)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{M__writegif__animated_8f90_a83cb0569b0e010d8ad27afd1b4cd945e}{flushbuffer} (iunit)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{M__writegif__animated_8f90_aa30b256c6cb90f13a18e32768d35696b}{giflzw} (iunit, \hyperlink{shell_8f90_a5c599e945a5e0c9c8954969ea48587cf}{pixel})
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{M__writegif__animated_8f90_acd7274fbac8690a12be91b542378a4eb}{inittable} ()
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{M__writegif__animated_8f90_ac5c0245eea61f109cbf3ce5bbf38981b}{slicewrite} (iunit, \hyperlink{ufpp__overview_81_8txt_a74a0615f2d9c4a398d9126096f8092f8}{code})
+\end{DoxyCompactItemize}
+
+
+\subsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{M__writegif__animated_8f90_a795066c06f318c8d4ba41430b6826567}\label{M__writegif__animated_8f90_a795066c06f318c8d4ba41430b6826567}} 
+\index{M\+\_\+writegif\+\_\+animated.\+f90@{M\+\_\+writegif\+\_\+animated.\+f90}!char2@{char2}}
+\index{char2@{char2}!M\+\_\+writegif\+\_\+animated.\+f90@{M\+\_\+writegif\+\_\+animated.\+f90}}
+\subsubsection{\texorpdfstring{char2()}{char2()}}
+{\footnotesize\ttfamily \hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=2) function write\+\_\+animated\+\_\+gif\+::char2 (\begin{DoxyParamCaption}\item[{integer, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{ival }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{M__writegif__animated_8f90_a83cb0569b0e010d8ad27afd1b4cd945e}\label{M__writegif__animated_8f90_a83cb0569b0e010d8ad27afd1b4cd945e}} 
+\index{M\+\_\+writegif\+\_\+animated.\+f90@{M\+\_\+writegif\+\_\+animated.\+f90}!flushbuffer@{flushbuffer}}
+\index{flushbuffer@{flushbuffer}!M\+\_\+writegif\+\_\+animated.\+f90@{M\+\_\+writegif\+\_\+animated.\+f90}}
+\subsubsection{\texorpdfstring{flushbuffer()}{flushbuffer()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} write\+\_\+animated\+\_\+gif\+::flushbuffer (\begin{DoxyParamCaption}\item[{integer, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{iunit }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{M__writegif__animated_8f90_aa30b256c6cb90f13a18e32768d35696b}\label{M__writegif__animated_8f90_aa30b256c6cb90f13a18e32768d35696b}} 
+\index{M\+\_\+writegif\+\_\+animated.\+f90@{M\+\_\+writegif\+\_\+animated.\+f90}!giflzw@{giflzw}}
+\index{giflzw@{giflzw}!M\+\_\+writegif\+\_\+animated.\+f90@{M\+\_\+writegif\+\_\+animated.\+f90}}
+\subsubsection{\texorpdfstring{giflzw()}{giflzw()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} write\+\_\+animated\+\_\+gif\+::giflzw (\begin{DoxyParamCaption}\item[{integer, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{iunit,  }\item[{integer, dimension(\+:,\+:), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{pixel }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+References flushbuffer(), inittable(), and slicewrite().
+
+\mbox{\Hypertarget{M__writegif__animated_8f90_acd7274fbac8690a12be91b542378a4eb}\label{M__writegif__animated_8f90_acd7274fbac8690a12be91b542378a4eb}} 
+\index{M\+\_\+writegif\+\_\+animated.\+f90@{M\+\_\+writegif\+\_\+animated.\+f90}!inittable@{inittable}}
+\index{inittable@{inittable}!M\+\_\+writegif\+\_\+animated.\+f90@{M\+\_\+writegif\+\_\+animated.\+f90}}
+\subsubsection{\texorpdfstring{inittable()}{inittable()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} write\+\_\+animated\+\_\+gif\+::inittable (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+References follow.
+
+\mbox{\Hypertarget{M__writegif__animated_8f90_ac5c0245eea61f109cbf3ce5bbf38981b}\label{M__writegif__animated_8f90_ac5c0245eea61f109cbf3ce5bbf38981b}} 
+\index{M\+\_\+writegif\+\_\+animated.\+f90@{M\+\_\+writegif\+\_\+animated.\+f90}!slicewrite@{slicewrite}}
+\index{slicewrite@{slicewrite}!M\+\_\+writegif\+\_\+animated.\+f90@{M\+\_\+writegif\+\_\+animated.\+f90}}
+\subsubsection{\texorpdfstring{slicewrite()}{slicewrite()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} write\+\_\+animated\+\_\+gif\+::slicewrite (\begin{DoxyParamCaption}\item[{integer, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{iunit,  }\item[{integer, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{code }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+References flushbuffer().
+

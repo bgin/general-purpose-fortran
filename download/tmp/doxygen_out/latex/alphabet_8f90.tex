@@ -1,2 +1,86 @@
 \hypertarget{alphabet_8f90}{}\section{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/alphabet.f90 File Reference}
 \label{alphabet_8f90}\index{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/alphabet.\+f90@{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/alphabet.\+f90}}
+\subsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{alphabet_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}{help\+\_\+usage} (l\+\_\+help)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{alphabet_8f90_a39c21619b08a3c22f19e2306efd7f766}{help\+\_\+version} (l\+\_\+version)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+alphabet -\/ \mbox{[}C\+O\+N\+V\+E\+RT\mbox{]} print numeric values or a string as decimal, hexadecimal, octal and binary values \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+program \hyperlink{alphabet_8f90_aa1b7d174dbbe1ca1d92bf00b80724012}{hexd}
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{alphabet_8f90_a697200725bfc294a3efd62fcb58b7255}{process\+\_\+option} (option, fmt)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{alphabet_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}\label{alphabet_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}} 
+\index{alphabet.\+f90@{alphabet.\+f90}!help\+\_\+usage@{help\+\_\+usage}}
+\index{help\+\_\+usage@{help\+\_\+usage}!alphabet.\+f90@{alphabet.\+f90}}
+\subsubsection{\texorpdfstring{help\+\_\+usage()}{help\_usage()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} help\+\_\+usage (\begin{DoxyParamCaption}\item[{logical, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{l\+\_\+help }\end{DoxyParamCaption})}
+
+
+
+References false().
+
+\mbox{\Hypertarget{alphabet_8f90_a39c21619b08a3c22f19e2306efd7f766}\label{alphabet_8f90_a39c21619b08a3c22f19e2306efd7f766}} 
+\index{alphabet.\+f90@{alphabet.\+f90}!help\+\_\+version@{help\+\_\+version}}
+\index{help\+\_\+version@{help\+\_\+version}!alphabet.\+f90@{alphabet.\+f90}}
+\subsubsection{\texorpdfstring{help\+\_\+version()}{help\_version()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} help\+\_\+version (\begin{DoxyParamCaption}\item[{logical, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{l\+\_\+version }\end{DoxyParamCaption})}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+alphabet -\/ \mbox{[}C\+O\+N\+V\+E\+RT\mbox{]} print numeric values or a string as decimal, hexadecimal, octal and binary values \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+alphabet \mbox{[}values\mbox{]} \mbox{[}-\/h values\mbox{]}\mbox{[}-\/z values\mbox{]}\mbox{[}-\/o values\mbox{]}\mbox{[} -\/t text\mbox{]} \subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+Write positive whole number 32-\/bit values (0 to 2147483647) in base 10(decimal), base 16(hexadecimal), base 2(binary) and base 8(octal) Allowable range of values is from 0 to 2147483647 decimal.
+
+Alternatively, given a text string show the A\+S\+C\+II values for each character in the string. \subsubsection*{O\+P\+T\+I\+O\+NS}
+
+value(s) Values are treated as octal if they start with \char`\"{}o\char`\"{}, binary if they start with \char`\"{}b\char`\"{}, and hexadecimal if they start with \char`\"{}z\char`\"{} or \char`\"{}h\char`\"{}. Otherwise, the values are assumed to be decimal.
+
+-\/b values(s) Values {\bfseries without} a \char`\"{}b\char`\"{} prefix are assumed to be binary values. -\/d values(s) Values are assumed to be decimal values. -\/o values(s) Values {\bfseries without} an \char`\"{}o\char`\"{} prefix are assumed to be octal values. -\/z$\vert$-\/h values(s) Values {\bfseries without} a \char`\"{}z\char`\"{} prefix are assumed to be hexadecimal values. -\/t literal\+\_\+text --help display this help and exit --version output version information and exit \subsubsection*{E\+X\+A\+M\+P\+LE}
+
+Sample commands\+:
+
+alphabet 2147483647 0 \# decimal values $>$Decimal Hex Octal Binary $>$2147483647 Z\char`\"{}7\+F\+F\+F\+F\+F\+F\+F\char`\"{} O\char`\"{}17777777777\char`\"{} B\char`\"{}1111111111111111111111111111111\char`\"{} $>$0 Z\char`\"{}0\char`\"{} O\char`\"{}0\char`\"{} B\char`\"{}0\char`\"{}
+
+alphabet o144 z64 100 b1100100 \# values with a prefix $>$Decimal Hex Octal Binary $>$100 Z\char`\"{}64\char`\"{} O\char`\"{}144\char`\"{} B\char`\"{}1100100\char`\"{} $>$100 Z\char`\"{}64\char`\"{} O\char`\"{}144\char`\"{} B\char`\"{}1100100\char`\"{} $>$100 Z\char`\"{}64\char`\"{} O\char`\"{}144\char`\"{} B\char`\"{}1100100\char`\"{} $>$100 Z\char`\"{}64\char`\"{} O\char`\"{}144\char`\"{} B\char`\"{}1100100\char`\"{}
+
+alphabet -\/o 144 -\/h 64 -\/d 100 -\/b 1100100 \# values with a keyword $>$Decimal Hex Octal Binary $>$100 Z\char`\"{}64\char`\"{} O\char`\"{}144\char`\"{} B\char`\"{}1100100\char`\"{} $>$100 Z\char`\"{}64\char`\"{} O\char`\"{}144\char`\"{} B\char`\"{}1100100\char`\"{} $>$100 Z\char`\"{}64\char`\"{} O\char`\"{}144\char`\"{} B\char`\"{}1100100\char`\"{} $>$100 Z\char`\"{}64\char`\"{} O\char`\"{}144\char`\"{} B\char`\"{}1100100\char`\"{}
+
+alphabet -\/t Hello \# a string $>$Decimal Hex Octal Binary Description $>$72 Z\char`\"{}48\char`\"{} O\char`\"{}110\char`\"{} B\char`\"{}1001000\char`\"{} majuscule H $>$101 Z\char`\"{}65\char`\"{} O\char`\"{}145\char`\"{} B\char`\"{}1100101\char`\"{} miniscule e $>$108 Z\char`\"{}6\+C\char`\"{} O\char`\"{}154\char`\"{} B\char`\"{}1101100\char`\"{} miniscule l $>$108 Z\char`\"{}6\+C\char`\"{} O\char`\"{}154\char`\"{} B\char`\"{}1101100\char`\"{} miniscule l $>$111 Z\char`\"{}6\+F\char`\"{} O\char`\"{}157\char`\"{} B\char`\"{}1101111\char`\"{} miniscule o
+
+\subsubsection*{S\+EE A\+L\+SO}
+
+ascii(1),iprint(1) 
+
+References false().
+
+\mbox{\Hypertarget{alphabet_8f90_aa1b7d174dbbe1ca1d92bf00b80724012}\label{alphabet_8f90_aa1b7d174dbbe1ca1d92bf00b80724012}} 
+\index{alphabet.\+f90@{alphabet.\+f90}!hexd@{hexd}}
+\index{hexd@{hexd}!alphabet.\+f90@{alphabet.\+f90}}
+\subsubsection{\texorpdfstring{hexd()}{hexd()}}
+{\footnotesize\ttfamily program hexd (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+References m\+\_\+strings\+::describe(), help\+\_\+usage(), help\+\_\+version(), m\+\_\+kracken\+::ipvalue, m\+\_\+kracken\+::kracken(), m\+\_\+kracken\+::lget(), process\+\_\+option(), m\+\_\+kracken\+::sget(), m\+\_\+kracken\+::sgets(), and true().
+
+\mbox{\Hypertarget{alphabet_8f90_a697200725bfc294a3efd62fcb58b7255}\label{alphabet_8f90_a697200725bfc294a3efd62fcb58b7255}} 
+\index{alphabet.\+f90@{alphabet.\+f90}!process\+\_\+option@{process\+\_\+option}}
+\index{process\+\_\+option@{process\+\_\+option}!alphabet.\+f90@{alphabet.\+f90}}
+\subsubsection{\texorpdfstring{process\+\_\+option()}{process\_option()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} hexd\+::process\+\_\+option (\begin{DoxyParamCaption}\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$)}]{option,  }\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$)}]{fmt }\end{DoxyParamCaption})}
+
+
+
+References m\+\_\+kracken\+::sgets().
+

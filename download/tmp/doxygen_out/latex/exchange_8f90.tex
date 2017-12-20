@@ -1,2 +1,90 @@
 \hypertarget{exchange_8f90}{}\section{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/exchange.f90 File Reference}
 \label{exchange_8f90}\index{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/exchange.\+f90@{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/exchange.\+f90}}
+\subsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{exchange_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}{help\+\_\+usage} (l\+\_\+help)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{exchange_8f90_a39c21619b08a3c22f19e2306efd7f766}{help\+\_\+version} (l\+\_\+version)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+exchange -\/ \mbox{[}C\+O\+N\+V\+E\+RT\mbox{]} test of basic unit conversion functions \end{DoxyCompactList}\item 
+program \hyperlink{exchange_8f90_a483d2219923eccf493a883fceee5a424}{testit}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{exchange_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}\label{exchange_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}} 
+\index{exchange.\+f90@{exchange.\+f90}!help\+\_\+usage@{help\+\_\+usage}}
+\index{help\+\_\+usage@{help\+\_\+usage}!exchange.\+f90@{exchange.\+f90}}
+\subsubsection{\texorpdfstring{help\+\_\+usage()}{help\_usage()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} help\+\_\+usage (\begin{DoxyParamCaption}\item[{logical, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{l\+\_\+help }\end{DoxyParamCaption})}
+
+
+
+References false().
+
+\mbox{\Hypertarget{exchange_8f90_a39c21619b08a3c22f19e2306efd7f766}\label{exchange_8f90_a39c21619b08a3c22f19e2306efd7f766}} 
+\index{exchange.\+f90@{exchange.\+f90}!help\+\_\+version@{help\+\_\+version}}
+\index{help\+\_\+version@{help\+\_\+version}!exchange.\+f90@{exchange.\+f90}}
+\subsubsection{\texorpdfstring{help\+\_\+version()}{help\_version()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} help\+\_\+version (\begin{DoxyParamCaption}\item[{logical, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{l\+\_\+version }\end{DoxyParamCaption})}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+exchange -\/ \mbox{[}C\+O\+N\+V\+E\+RT\mbox{]} test of basic unit conversion functions 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\begin{DoxyVerb} exchange [-feet VALUES] [-meters VALUES]
+          [-celsius VALUES] [-fahrenheit VALUES]
+          [-degrees VALUES] [-radians VALUES]
+          [--help] -[-version]
+\end{DoxyVerb}
+
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+Makes common unit conversions such as between feet and meters, celsius and fahrenheit, and degrees and radians.
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+-\/feet V\+A\+L\+U\+ES convert feet to meters -\/meters V\+A\+L\+U\+ES convert meters to feet -\/fahrenheit V\+A\+L\+U\+ES convert fahrenheit to celsius -\/celsius V\+A\+L\+U\+ES convert celsius to fahrenheit -\/radians V\+A\+L\+U\+ES convert radians to degrees -\/degrees V\+A\+L\+U\+ES convert degrees to radians --help display this help and exit --version output version information and exit
+
+\subsubsection*{E\+X\+A\+M\+P\+L\+ES}
+
+\begin{DoxyVerb} Sample commands:
+
+  exchange -degrees 0 90 180 360
+
+  > 0.00000000      degrees is    0.00000000      radians
+  > 90.0000000      degrees is    1.57079637      radians
+  > 180.000000      degrees is    3.14159274      radians
+  > 360.000000      degrees is    6.28318548      radians
+
+  exchange -fahrenheit -40 32 98.6 212 -celsius -40 0 37 100
+
+  > -40.0000000      celsius is   -40.0000000      fahrenheit
+  >  0.00000000      celsius is    32.0000000      fahrenheit
+  >  37.0000000      celsius is    98.6000061      fahrenheit
+  >  100.000000      celsius is    212.000000      fahrenheit
+  > -40.0000000      fahrenheit is   -40.0000000      celsius
+  >  32.0000000      fahrenheit is    0.00000000      celsius
+  >  98.5999985      fahrenheit is    37.0000000      celsius
+  >  212.000000      fahrenheit is    100.000000      celsius \end{DoxyVerb}
+ 
+
+References false().
+
+\mbox{\Hypertarget{exchange_8f90_a483d2219923eccf493a883fceee5a424}\label{exchange_8f90_a483d2219923eccf493a883fceee5a424}} 
+\index{exchange.\+f90@{exchange.\+f90}!testit@{testit}}
+\index{testit@{testit}!exchange.\+f90@{exchange.\+f90}}
+\subsubsection{\texorpdfstring{testit()}{testit()}}
+{\footnotesize\ttfamily program testit (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+References m\+\_\+units\+::c2f(), d2r(), m\+\_\+units\+::f2c(), m\+\_\+units\+::feet\+\_\+to\+\_\+meters(), help\+\_\+usage(), help\+\_\+version(), m\+\_\+kracken\+::kracken(), m\+\_\+kracken\+::lget(), m\+\_\+units\+::meters\+\_\+to\+\_\+feet(), r2d(), and m\+\_\+kracken\+::rgets().
+

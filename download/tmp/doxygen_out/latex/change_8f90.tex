@@ -1,2 +1,74 @@
 \hypertarget{change_8f90}{}\section{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/change.f90 File Reference}
 \label{change_8f90}\index{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/change.\+f90@{L\+I\+B\+R\+A\+R\+Y/lib\+G\+P\+F/download/tmp/\+P\+R\+O\+G\+R\+A\+M\+S/change.\+f90}}
+\subsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{change_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}{help\+\_\+usage} (l\+\_\+help)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} \hyperlink{change_8f90_a39c21619b08a3c22f19e2306efd7f766}{help\+\_\+version} (l\+\_\+version)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+change(1f) -\/ \mbox{[}F\+I\+LE E\+D\+IT\mbox{]} replace old fixed string with new fixed string in filenames \end{DoxyCompactList}\item 
+program \hyperlink{change_8f90_a5fa62001f03b62e71cd6fa2a04f697b0}{demo\+\_\+change}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{change_8f90_a5fa62001f03b62e71cd6fa2a04f697b0}\label{change_8f90_a5fa62001f03b62e71cd6fa2a04f697b0}} 
+\index{change.\+f90@{change.\+f90}!demo\+\_\+change@{demo\+\_\+change}}
+\index{demo\+\_\+change@{demo\+\_\+change}!change.\+f90@{change.\+f90}}
+\subsubsection{\texorpdfstring{demo\+\_\+change()}{demo\_change()}}
+{\footnotesize\ttfamily program demo\+\_\+change (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+References m\+\_\+strings\+::change(), help\+\_\+usage(), help\+\_\+version(), m\+\_\+kracken\+::ipvalue, m\+\_\+kracken\+::kracken(), m\+\_\+kracken\+::lget(), m\+\_\+kracken\+::sget(), and m\+\_\+kracken\+::sgets().
+
+\mbox{\Hypertarget{change_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}\label{change_8f90_a3e09a3b52ee8fb04eeb93fe5761626a8}} 
+\index{change.\+f90@{change.\+f90}!help\+\_\+usage@{help\+\_\+usage}}
+\index{help\+\_\+usage@{help\+\_\+usage}!change.\+f90@{change.\+f90}}
+\subsubsection{\texorpdfstring{help\+\_\+usage()}{help\_usage()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} help\+\_\+usage (\begin{DoxyParamCaption}\item[{logical, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{l\+\_\+help }\end{DoxyParamCaption})}
+
+
+
+References false().
+
+\mbox{\Hypertarget{change_8f90_a39c21619b08a3c22f19e2306efd7f766}\label{change_8f90_a39c21619b08a3c22f19e2306efd7f766}} 
+\index{change.\+f90@{change.\+f90}!help\+\_\+version@{help\+\_\+version}}
+\index{help\+\_\+version@{help\+\_\+version}!change.\+f90@{change.\+f90}}
+\subsubsection{\texorpdfstring{help\+\_\+version()}{help\_version()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine} help\+\_\+version (\begin{DoxyParamCaption}\item[{logical, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{l\+\_\+version }\end{DoxyParamCaption})}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+change(1f) -\/ \mbox{[}F\+I\+LE E\+D\+IT\mbox{]} replace old fixed string with new fixed string in filenames 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\begin{DoxyVerb}change c/old/new/ FILENAMES [-dryrun][-cmd COMMAND]| --version| --help
+\end{DoxyVerb}
+
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+Given a change directive and a list of filenames replace all occurrences of the original string with the new string.
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+c/old/new/ change occurrences of old string to new string in filenames. The first character after the c is the delimiter for the strings. Spaces are not allowed in the expression. F\+I\+L\+E\+N\+A\+M\+ES names of files to rename -\/dryrun write the commands to stdout instead of executing them -\/verbose echo the commands to be executed -\/cmd C\+O\+M\+M\+A\+ND change command from \char`\"{}mv\char`\"{} to specified command name --help display this help and exit --version output version information and exit
+
+\subsubsection*{E\+X\+A\+M\+P\+LE}
+
+Sample commands\+:
+
+\subsection*{change all files with .f90 in their name to $\ast$.F90}
+
+change c/.f90/.F90/ $\ast$.f90 \subsection*{copy all files with .f90 in their name to $\ast$.F90}
+
+change c.f90.F90@ $\ast$.f90 -\/cmd cp 
+
+References false().
+

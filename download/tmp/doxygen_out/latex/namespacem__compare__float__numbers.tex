@@ -1,0 +1,399 @@
+\hypertarget{namespacem__compare__float__numbers}{}\section{m\+\_\+compare\+\_\+float\+\_\+numbers Module Reference}
+\label{namespacem__compare__float__numbers}\index{m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}}
+
+
+\subsubsection*{N\+A\+ME}
+
+M\+\_\+\+Compare\+\_\+\+Float\+\_\+\+Numbers -\/ \mbox{[}M\+\_\+\+Compare\+\_\+\+Float\+\_\+\+Numbers\mbox{]} perform relational comparisons on real numbers  
+
+
+\subsection*{Data Types}
+\begin{DoxyCompactItemize}
+\item 
+interface \hyperlink{interfacem__compare__float__numbers_1_1compare__float}{compare\+\_\+float}
+\item 
+interface \hyperlink{interfacem__compare__float__numbers_1_1operator_07_8equalto_8_08}{operator(.\+equalto.)}
+\item 
+interface \hyperlink{interfacem__compare__float__numbers_1_1operator_07_8greaterthan_8_08}{operator(.\+greaterthan.)}
+\item 
+interface \hyperlink{interfacem__compare__float__numbers_1_1operator_07_8lessthan_8_08}{operator(.\+lessthan.)}
+\end{DoxyCompactItemize}
+\subsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+elemental logical function \hyperlink{namespacem__compare__float__numbers_a77dbaa3c42872d0366a3c5c2d99664d2}{is\+\_\+equal\+\_\+to\+\_\+single} (x, y)
+\item 
+elemental logical function \hyperlink{namespacem__compare__float__numbers_a086e7c43d2dca1f8238afd6548e2704e}{is\+\_\+equal\+\_\+to\+\_\+double} (x, y)
+\item 
+elemental logical function \hyperlink{namespacem__compare__float__numbers_ab525ef9c044e5187643e04c64d470186}{is\+\_\+greater\+\_\+than\+\_\+single} (x, y)
+\item 
+elemental logical function \hyperlink{namespacem__compare__float__numbers_ac0b7c9aeec5a785ebff7a6e59ba5fb26}{is\+\_\+greater\+\_\+than\+\_\+double} (x, y)
+\item 
+elemental logical function \hyperlink{namespacem__compare__float__numbers_a82b07d4a5f9076d2dc0655c8733549b5}{is\+\_\+less\+\_\+than\+\_\+single} (x, y)
+\item 
+elemental logical function \hyperlink{namespacem__compare__float__numbers_a36578a1fa0cf4ee3d29ded529dbd156c}{is\+\_\+less\+\_\+than\+\_\+double} (x, y)
+\item 
+elemental logical function \hyperlink{namespacem__compare__float__numbers_a5f413c6822015914ba48d10503f2bb0f}{compare\+\_\+float\+\_\+single} (x, y, ulp)
+\item 
+elemental logical function \hyperlink{namespacem__compare__float__numbers_a041bd26aef7f9bbc8eb88b2f39e7755a}{compare\+\_\+float\+\_\+double} (x, y, ulp)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+integer, parameter, private \hyperlink{namespacem__compare__float__numbers_abdbebb777d8ce2fa018e86724bfdfb9e}{ifp} = 2
+\item 
+integer, parameter, private \hyperlink{namespacem__compare__float__numbers_a6fab297801aadc3067acefdd136384ad}{iip} = 3
+\item 
+integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__compare__float__numbers_ae232d1653572b564934db62fc9caaa93}{byte} = S\+E\+L\+E\+C\+T\+E\+D\+\_\+\+I\+N\+T\+\_\+\+K\+I\+ND(1)
+\item 
+integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__compare__float__numbers_a8afcd039ad8a1e52969e5a5165163b68}{short} = S\+E\+L\+E\+C\+T\+E\+D\+\_\+\+I\+N\+T\+\_\+\+K\+I\+ND(4)
+\item 
+integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__compare__float__numbers_a1a70f80b01ccf5c63ed3eb70fabdaf2d}{long} = S\+E\+L\+E\+C\+T\+E\+D\+\_\+\+I\+N\+T\+\_\+\+K\+I\+ND(8)
+\item 
+integer, parameter, private \hyperlink{namespacem__compare__float__numbers_a7c4a2b4cc39888d092d7a754897be9e5}{llong\+\_\+t} = S\+E\+L\+E\+C\+T\+E\+D\+\_\+\+I\+N\+T\+\_\+\+K\+I\+ND(16)
+\item 
+integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__compare__float__numbers_a9c3da9dd020c03b19ee8acf1dafdce20}{llong} = ( ( ( 1 + S\+I\+GN( 1, L\+Long\+\_\+t ) ) / 2 ) $\ast$ L\+Long\+\_\+t ) + ( ( ( 1 -\/ S\+I\+GN( 1, L\+Long\+\_\+t ) ) / 2 ) $\ast$ Long )
+\item 
+integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__compare__float__numbers_a5faf0176b9b713e8d12ede8294da171d}{n\+\_\+bytes\+\_\+byte} = 1
+\item 
+integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__compare__float__numbers_acff1ac867eea95e76e28f083be5bddcc}{n\+\_\+bytes\+\_\+short} = 2
+\item 
+integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__compare__float__numbers_a6295d4185db12b4e3d14c67de6164dd4}{n\+\_\+bytes\+\_\+long} = 4
+\item 
+integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__compare__float__numbers_a2c4b39b521fa4fe5ea36044ddbbbb2ba}{n\+\_\+bytes\+\_\+llong} = 8
+\item 
+integer, parameter, private \hyperlink{namespacem__compare__float__numbers_a6cbe22bf2f7aa1ada923de776f8258bf}{n\+\_\+ip\+\_\+kinds} = 4
+\item 
+integer, dimension(\hyperlink{namespacem__compare__float__numbers_a6cbe22bf2f7aa1ada923de776f8258bf}{n\+\_\+ip\+\_\+kinds}), parameter, private \hyperlink{namespacem__compare__float__numbers_a18a2ec0b5b6a904a6ccd63fad576f759}{ip\+\_\+kind\+\_\+types} = (/ Byte, Short, Long, L\+Long /)
+\item 
+integer, dimension(\hyperlink{namespacem__compare__float__numbers_a6cbe22bf2f7aa1ada923de776f8258bf}{n\+\_\+ip\+\_\+kinds}), parameter, private \hyperlink{namespacem__compare__float__numbers_aee1b5dea82ea1e760308976a08df6356}{ip\+\_\+byte\+\_\+sizes} = (/ n\+\_\+\+Bytes\+\_\+\+Byte, n\+\_\+\+Bytes\+\_\+\+Short, n\+\_\+\+Bytes\+\_\+\+Long, n\+\_\+\+Bytes\+\_\+\+L\+Long /)
+\item 
+integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__compare__float__numbers_a932ca5131dba16f9e2d30e75cf79b574}{ip\+\_\+kind} = I\+P\+\_\+\+K\+I\+N\+D\+\_\+\+T\+Y\+P\+ES( I\+IP )
+\item 
+integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__compare__float__numbers_a868bf02722b9070cff22ba7803aeffed}{n\+\_\+bytes\+\_\+ip\+\_\+kind} = I\+P\+\_\+\+B\+Y\+T\+E\+\_\+\+S\+I\+Z\+ES( I\+IP )
+\item 
+integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__compare__float__numbers_a5f122d46d6ad7d1cf0b899d9c855c498}{single} = S\+E\+L\+E\+C\+T\+E\+D\+\_\+\+R\+E\+A\+L\+\_\+\+K\+I\+ND(6)
+\item 
+integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__compare__float__numbers_af4b789cd6e1a2abcd412eaf29e91ea0c}{double} = S\+E\+L\+E\+C\+T\+E\+D\+\_\+\+R\+E\+A\+L\+\_\+\+K\+I\+ND(15)
+\item 
+integer, parameter, private \hyperlink{namespacem__compare__float__numbers_a3cb67561a1bb5038eddb1aafcce81199}{quad\+\_\+t} = S\+E\+L\+E\+C\+T\+E\+D\+\_\+\+R\+E\+A\+L\+\_\+\+K\+I\+ND(20)
+\item 
+integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__compare__float__numbers_af11cd62e9032de86b00de623b4eb5c2c}{quad} = ( ( ( 1 + S\+I\+GN( 1, Quad\+\_\+t ) ) / 2 ) $\ast$ Quad\+\_\+t ) + ( ( ( 1 -\/ S\+I\+GN( 1, Quad\+\_\+t ) ) / 2 ) $\ast$ Double )
+\item 
+integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__compare__float__numbers_a8d387475f5c4f6cc89da998183cf9077}{n\+\_\+bytes\+\_\+single} = 4
+\item 
+integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__compare__float__numbers_a801fa0d9fea2f2c025618157c128bfe2}{n\+\_\+bytes\+\_\+double} = 8
+\item 
+integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__compare__float__numbers_abbe80858664126778bff36ea408c71dc}{n\+\_\+bytes\+\_\+quad} = 16
+\item 
+integer, parameter, private \hyperlink{namespacem__compare__float__numbers_ae5e226645a7448efabc625aa89e78a20}{n\+\_\+fp\+\_\+kinds} = 3
+\item 
+integer, dimension(\hyperlink{namespacem__compare__float__numbers_ae5e226645a7448efabc625aa89e78a20}{n\+\_\+fp\+\_\+kinds}), parameter, private \hyperlink{namespacem__compare__float__numbers_aa90581babf075fb76565a7ac27674522}{fp\+\_\+kind\+\_\+types} = (/ Single, Double, Quad /)
+\item 
+integer, dimension(\hyperlink{namespacem__compare__float__numbers_ae5e226645a7448efabc625aa89e78a20}{n\+\_\+fp\+\_\+kinds}), parameter, private \hyperlink{namespacem__compare__float__numbers_a24daff6e230d11a5d81a10bf1c055841}{fp\+\_\+byte\+\_\+sizes} = (/ n\+\_\+\+Bytes\+\_\+\+Single, n\+\_\+\+Bytes\+\_\+\+Double, n\+\_\+\+Bytes\+\_\+\+Quad /)
+\item 
+integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__compare__float__numbers_a51e33070a2e2a875e279521aaceaeae4}{fp\+\_\+kind} = F\+P\+\_\+\+K\+I\+N\+D\+\_\+\+T\+Y\+P\+ES( I\+FP )
+\item 
+integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__compare__float__numbers_a48468c49657b53321fe55ac0795ba258}{n\+\_\+bytes\+\_\+fp\+\_\+kind} = F\+P\+\_\+\+B\+Y\+T\+E\+\_\+\+S\+I\+Z\+ES( I\+FP )
+\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len= $\ast$), parameter, private \hyperlink{namespacem__compare__float__numbers_ae0ee7ae6cb351f1a6cf7301460d0d592}{module\+\_\+rcs\+\_\+id} = \textquotesingle{}\$Id\+: M\+\_\+\+Compare\+\_\+\+Float\+\_\+\+Numbers.\+f90,v 2.\+3 2004/10/06 19\+:00\+:23 paulv Exp \$\textquotesingle{}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{N\+A\+ME}
+
+M\+\_\+\+Compare\+\_\+\+Float\+\_\+\+Numbers -\/ \mbox{[}M\+\_\+\+Compare\+\_\+\+Float\+\_\+\+Numbers\mbox{]} perform relational comparisons on real numbers 
+
+\subsubsection*{P\+U\+R\+P\+O\+SE}
+
+Module containing routines to perform equality and relational comparisons on floating point numbers.
+
+\subsubsection*{C\+A\+T\+E\+G\+O\+RY}
+
+Utility
+
+\subsubsection*{L\+A\+N\+G\+U\+A\+GE}
+
+Fortran-\/95
+
+\subsubsection*{C\+A\+L\+L\+I\+NG S\+E\+Q\+U\+E\+N\+CE}
+
+U\+SE M\+\_\+\+Compare\+\_\+\+Float\+\_\+\+Numbers
+
+\subsubsection*{C\+O\+N\+T\+A\+I\+NS}
+
+.Equal\+To. Relational operator to test the equality of floating point numbers.
+
+.Greater\+Than. Relational operator to test if one operand is greater than another.
+
+.Less\+Than. Relational operator to test if one operand is less than another.
+
+Compare\+\_\+\+Float\+: Function to compare floating point scalars and arrays with adjustable precision tolerance.
+
+\subsubsection*{I\+N\+C\+L\+U\+DE F\+I\+L\+ES}
+
+None.
+
+\subsubsection*{E\+X\+T\+E\+R\+N\+A\+LS}
+
+None.
+
+\subsubsection*{C\+O\+M\+M\+ON B\+L\+O\+C\+KS}
+
+None.
+
+\subsubsection*{C\+R\+E\+A\+T\+I\+ON H\+I\+S\+T\+O\+RY}
+
+Written by\+: Paul van Delst, C\+I\+M\+S\+S/\+S\+S\+EC 01-\/\+Apr-\/2003 \href{mailto:paul.vandelst@ssec.wisc.edu}{\tt paul.\+vandelst@ssec.\+wisc.\+edu}
+
+Copyright\+: (C) 2003 Paul van Delst
+
+This program is free software; you can redistribute it and/or modify it under the terms of the G\+NU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but W\+I\+T\+H\+O\+UT A\+NY W\+A\+R\+R\+A\+N\+TY; without even the implied warranty of M\+E\+R\+C\+H\+A\+N\+T\+A\+B\+I\+L\+I\+TY or F\+I\+T\+N\+E\+SS F\+OR A P\+A\+R\+T\+I\+C\+U\+L\+AR P\+U\+R\+P\+O\+SE. See the G\+NU General Public License for more details.
+
+You should have received a copy of the G\+NU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place -\/ Suite 330, Boston, MA 02111-\/1307, U\+SA. 
+
+\subsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{namespacem__compare__float__numbers_a041bd26aef7f9bbc8eb88b2f39e7755a}\label{namespacem__compare__float__numbers_a041bd26aef7f9bbc8eb88b2f39e7755a}} 
+\index{m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}!compare\+\_\+float\+\_\+double@{compare\+\_\+float\+\_\+double}}
+\index{compare\+\_\+float\+\_\+double@{compare\+\_\+float\+\_\+double}!m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}}
+\subsubsection{\texorpdfstring{compare\+\_\+float\+\_\+double()}{compare\_float\_double()}}
+{\footnotesize\ttfamily elemental logical function m\+\_\+compare\+\_\+float\+\_\+numbers\+::compare\+\_\+float\+\_\+double (\begin{DoxyParamCaption}\item[{\hyperlink{read__watch_83_8txt_abdb62bde002f38ef75f810d3a905a823}{real}( \hyperlink{namespacem__compare__float__numbers_af4b789cd6e1a2abcd412eaf29e91ea0c}{double} ), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{x,  }\item[{\hyperlink{read__watch_83_8txt_abdb62bde002f38ef75f810d3a905a823}{real}( \hyperlink{namespacem__compare__float__numbers_af4b789cd6e1a2abcd412eaf29e91ea0c}{double} ), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{y,  }\item[{integer, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in}), \hyperlink{option__stopwatch_83_8txt_aa4ece75e7acf58a4843f70fe18c3ade5}{optional}}]{ulp }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__compare__float__numbers_a5f413c6822015914ba48d10503f2bb0f}\label{namespacem__compare__float__numbers_a5f413c6822015914ba48d10503f2bb0f}} 
+\index{m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}!compare\+\_\+float\+\_\+single@{compare\+\_\+float\+\_\+single}}
+\index{compare\+\_\+float\+\_\+single@{compare\+\_\+float\+\_\+single}!m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}}
+\subsubsection{\texorpdfstring{compare\+\_\+float\+\_\+single()}{compare\_float\_single()}}
+{\footnotesize\ttfamily elemental logical function m\+\_\+compare\+\_\+float\+\_\+numbers\+::compare\+\_\+float\+\_\+single (\begin{DoxyParamCaption}\item[{\hyperlink{read__watch_83_8txt_abdb62bde002f38ef75f810d3a905a823}{real}( \hyperlink{namespacem__compare__float__numbers_a5f122d46d6ad7d1cf0b899d9c855c498}{single} ), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{x,  }\item[{\hyperlink{read__watch_83_8txt_abdb62bde002f38ef75f810d3a905a823}{real}( \hyperlink{namespacem__compare__float__numbers_a5f122d46d6ad7d1cf0b899d9c855c498}{single} ), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{y,  }\item[{integer, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in}), \hyperlink{option__stopwatch_83_8txt_aa4ece75e7acf58a4843f70fe18c3ade5}{optional}}]{ulp }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__compare__float__numbers_a086e7c43d2dca1f8238afd6548e2704e}\label{namespacem__compare__float__numbers_a086e7c43d2dca1f8238afd6548e2704e}} 
+\index{m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}!is\+\_\+equal\+\_\+to\+\_\+double@{is\+\_\+equal\+\_\+to\+\_\+double}}
+\index{is\+\_\+equal\+\_\+to\+\_\+double@{is\+\_\+equal\+\_\+to\+\_\+double}!m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}}
+\subsubsection{\texorpdfstring{is\+\_\+equal\+\_\+to\+\_\+double()}{is\_equal\_to\_double()}}
+{\footnotesize\ttfamily elemental logical function m\+\_\+compare\+\_\+float\+\_\+numbers\+::is\+\_\+equal\+\_\+to\+\_\+double (\begin{DoxyParamCaption}\item[{\hyperlink{read__watch_83_8txt_abdb62bde002f38ef75f810d3a905a823}{real}( \hyperlink{namespacem__compare__float__numbers_af4b789cd6e1a2abcd412eaf29e91ea0c}{double} ), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{x,  }\item[{\hyperlink{read__watch_83_8txt_abdb62bde002f38ef75f810d3a905a823}{real}( \hyperlink{namespacem__compare__float__numbers_af4b789cd6e1a2abcd412eaf29e91ea0c}{double} ), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{y }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__compare__float__numbers_a77dbaa3c42872d0366a3c5c2d99664d2}\label{namespacem__compare__float__numbers_a77dbaa3c42872d0366a3c5c2d99664d2}} 
+\index{m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}!is\+\_\+equal\+\_\+to\+\_\+single@{is\+\_\+equal\+\_\+to\+\_\+single}}
+\index{is\+\_\+equal\+\_\+to\+\_\+single@{is\+\_\+equal\+\_\+to\+\_\+single}!m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}}
+\subsubsection{\texorpdfstring{is\+\_\+equal\+\_\+to\+\_\+single()}{is\_equal\_to\_single()}}
+{\footnotesize\ttfamily elemental logical function m\+\_\+compare\+\_\+float\+\_\+numbers\+::is\+\_\+equal\+\_\+to\+\_\+single (\begin{DoxyParamCaption}\item[{\hyperlink{read__watch_83_8txt_abdb62bde002f38ef75f810d3a905a823}{real}( \hyperlink{namespacem__compare__float__numbers_a5f122d46d6ad7d1cf0b899d9c855c498}{single} ), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{x,  }\item[{\hyperlink{read__watch_83_8txt_abdb62bde002f38ef75f810d3a905a823}{real}( \hyperlink{namespacem__compare__float__numbers_a5f122d46d6ad7d1cf0b899d9c855c498}{single} ), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{y }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__compare__float__numbers_ac0b7c9aeec5a785ebff7a6e59ba5fb26}\label{namespacem__compare__float__numbers_ac0b7c9aeec5a785ebff7a6e59ba5fb26}} 
+\index{m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}!is\+\_\+greater\+\_\+than\+\_\+double@{is\+\_\+greater\+\_\+than\+\_\+double}}
+\index{is\+\_\+greater\+\_\+than\+\_\+double@{is\+\_\+greater\+\_\+than\+\_\+double}!m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}}
+\subsubsection{\texorpdfstring{is\+\_\+greater\+\_\+than\+\_\+double()}{is\_greater\_than\_double()}}
+{\footnotesize\ttfamily elemental logical function m\+\_\+compare\+\_\+float\+\_\+numbers\+::is\+\_\+greater\+\_\+than\+\_\+double (\begin{DoxyParamCaption}\item[{\hyperlink{read__watch_83_8txt_abdb62bde002f38ef75f810d3a905a823}{real}( \hyperlink{namespacem__compare__float__numbers_af4b789cd6e1a2abcd412eaf29e91ea0c}{double} ), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{x,  }\item[{\hyperlink{read__watch_83_8txt_abdb62bde002f38ef75f810d3a905a823}{real}( \hyperlink{namespacem__compare__float__numbers_af4b789cd6e1a2abcd412eaf29e91ea0c}{double} ), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{y }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+References false(), and true().
+
+\mbox{\Hypertarget{namespacem__compare__float__numbers_ab525ef9c044e5187643e04c64d470186}\label{namespacem__compare__float__numbers_ab525ef9c044e5187643e04c64d470186}} 
+\index{m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}!is\+\_\+greater\+\_\+than\+\_\+single@{is\+\_\+greater\+\_\+than\+\_\+single}}
+\index{is\+\_\+greater\+\_\+than\+\_\+single@{is\+\_\+greater\+\_\+than\+\_\+single}!m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}}
+\subsubsection{\texorpdfstring{is\+\_\+greater\+\_\+than\+\_\+single()}{is\_greater\_than\_single()}}
+{\footnotesize\ttfamily elemental logical function m\+\_\+compare\+\_\+float\+\_\+numbers\+::is\+\_\+greater\+\_\+than\+\_\+single (\begin{DoxyParamCaption}\item[{\hyperlink{read__watch_83_8txt_abdb62bde002f38ef75f810d3a905a823}{real}( \hyperlink{namespacem__compare__float__numbers_a5f122d46d6ad7d1cf0b899d9c855c498}{single} ), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{x,  }\item[{\hyperlink{read__watch_83_8txt_abdb62bde002f38ef75f810d3a905a823}{real}( \hyperlink{namespacem__compare__float__numbers_a5f122d46d6ad7d1cf0b899d9c855c498}{single} ), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{y }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+References false(), and true().
+
+\mbox{\Hypertarget{namespacem__compare__float__numbers_a36578a1fa0cf4ee3d29ded529dbd156c}\label{namespacem__compare__float__numbers_a36578a1fa0cf4ee3d29ded529dbd156c}} 
+\index{m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}!is\+\_\+less\+\_\+than\+\_\+double@{is\+\_\+less\+\_\+than\+\_\+double}}
+\index{is\+\_\+less\+\_\+than\+\_\+double@{is\+\_\+less\+\_\+than\+\_\+double}!m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}}
+\subsubsection{\texorpdfstring{is\+\_\+less\+\_\+than\+\_\+double()}{is\_less\_than\_double()}}
+{\footnotesize\ttfamily elemental logical function m\+\_\+compare\+\_\+float\+\_\+numbers\+::is\+\_\+less\+\_\+than\+\_\+double (\begin{DoxyParamCaption}\item[{\hyperlink{read__watch_83_8txt_abdb62bde002f38ef75f810d3a905a823}{real}( \hyperlink{namespacem__compare__float__numbers_af4b789cd6e1a2abcd412eaf29e91ea0c}{double} ), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{x,  }\item[{\hyperlink{read__watch_83_8txt_abdb62bde002f38ef75f810d3a905a823}{real}( \hyperlink{namespacem__compare__float__numbers_af4b789cd6e1a2abcd412eaf29e91ea0c}{double} ), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{y }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+References false(), and true().
+
+\mbox{\Hypertarget{namespacem__compare__float__numbers_a82b07d4a5f9076d2dc0655c8733549b5}\label{namespacem__compare__float__numbers_a82b07d4a5f9076d2dc0655c8733549b5}} 
+\index{m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}!is\+\_\+less\+\_\+than\+\_\+single@{is\+\_\+less\+\_\+than\+\_\+single}}
+\index{is\+\_\+less\+\_\+than\+\_\+single@{is\+\_\+less\+\_\+than\+\_\+single}!m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}}
+\subsubsection{\texorpdfstring{is\+\_\+less\+\_\+than\+\_\+single()}{is\_less\_than\_single()}}
+{\footnotesize\ttfamily elemental logical function m\+\_\+compare\+\_\+float\+\_\+numbers\+::is\+\_\+less\+\_\+than\+\_\+single (\begin{DoxyParamCaption}\item[{\hyperlink{read__watch_83_8txt_abdb62bde002f38ef75f810d3a905a823}{real}( \hyperlink{namespacem__compare__float__numbers_a5f122d46d6ad7d1cf0b899d9c855c498}{single} ), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{x,  }\item[{\hyperlink{read__watch_83_8txt_abdb62bde002f38ef75f810d3a905a823}{real}( \hyperlink{namespacem__compare__float__numbers_a5f122d46d6ad7d1cf0b899d9c855c498}{single} ), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{y }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+References false(), and true().
+
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{namespacem__compare__float__numbers_ae232d1653572b564934db62fc9caaa93}\label{namespacem__compare__float__numbers_ae232d1653572b564934db62fc9caaa93}} 
+\index{m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}!byte@{byte}}
+\index{byte@{byte}!m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}}
+\subsubsection{\texorpdfstring{byte}{byte}}
+{\footnotesize\ttfamily integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+compare\+\_\+float\+\_\+numbers\+::byte = S\+E\+L\+E\+C\+T\+E\+D\+\_\+\+I\+N\+T\+\_\+\+K\+I\+ND(1)}
+
+\mbox{\Hypertarget{namespacem__compare__float__numbers_af4b789cd6e1a2abcd412eaf29e91ea0c}\label{namespacem__compare__float__numbers_af4b789cd6e1a2abcd412eaf29e91ea0c}} 
+\index{m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}!double@{double}}
+\index{double@{double}!m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}}
+\subsubsection{\texorpdfstring{double}{double}}
+{\footnotesize\ttfamily integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+compare\+\_\+float\+\_\+numbers\+::double = S\+E\+L\+E\+C\+T\+E\+D\+\_\+\+R\+E\+A\+L\+\_\+\+K\+I\+ND(15)}
+
+\mbox{\Hypertarget{namespacem__compare__float__numbers_a24daff6e230d11a5d81a10bf1c055841}\label{namespacem__compare__float__numbers_a24daff6e230d11a5d81a10bf1c055841}} 
+\index{m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}!fp\+\_\+byte\+\_\+sizes@{fp\+\_\+byte\+\_\+sizes}}
+\index{fp\+\_\+byte\+\_\+sizes@{fp\+\_\+byte\+\_\+sizes}!m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}}
+\subsubsection{\texorpdfstring{fp\+\_\+byte\+\_\+sizes}{fp\_byte\_sizes}}
+{\footnotesize\ttfamily integer, dimension( \hyperlink{namespacem__compare__float__numbers_ae5e226645a7448efabc625aa89e78a20}{n\+\_\+fp\+\_\+kinds} ), parameter, private m\+\_\+compare\+\_\+float\+\_\+numbers\+::fp\+\_\+byte\+\_\+sizes = (/ n\+\_\+\+Bytes\+\_\+\+Single, n\+\_\+\+Bytes\+\_\+\+Double, n\+\_\+\+Bytes\+\_\+\+Quad /)\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__compare__float__numbers_a51e33070a2e2a875e279521aaceaeae4}\label{namespacem__compare__float__numbers_a51e33070a2e2a875e279521aaceaeae4}} 
+\index{m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}!fp\+\_\+kind@{fp\+\_\+kind}}
+\index{fp\+\_\+kind@{fp\+\_\+kind}!m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}}
+\subsubsection{\texorpdfstring{fp\+\_\+kind}{fp\_kind}}
+{\footnotesize\ttfamily integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+compare\+\_\+float\+\_\+numbers\+::fp\+\_\+kind = F\+P\+\_\+\+K\+I\+N\+D\+\_\+\+T\+Y\+P\+ES( I\+FP )}
+
+\mbox{\Hypertarget{namespacem__compare__float__numbers_aa90581babf075fb76565a7ac27674522}\label{namespacem__compare__float__numbers_aa90581babf075fb76565a7ac27674522}} 
+\index{m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}!fp\+\_\+kind\+\_\+types@{fp\+\_\+kind\+\_\+types}}
+\index{fp\+\_\+kind\+\_\+types@{fp\+\_\+kind\+\_\+types}!m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}}
+\subsubsection{\texorpdfstring{fp\+\_\+kind\+\_\+types}{fp\_kind\_types}}
+{\footnotesize\ttfamily integer, dimension( \hyperlink{namespacem__compare__float__numbers_ae5e226645a7448efabc625aa89e78a20}{n\+\_\+fp\+\_\+kinds} ), parameter, private m\+\_\+compare\+\_\+float\+\_\+numbers\+::fp\+\_\+kind\+\_\+types = (/ Single, Double, Quad /)\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__compare__float__numbers_abdbebb777d8ce2fa018e86724bfdfb9e}\label{namespacem__compare__float__numbers_abdbebb777d8ce2fa018e86724bfdfb9e}} 
+\index{m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}!ifp@{ifp}}
+\index{ifp@{ifp}!m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}}
+\subsubsection{\texorpdfstring{ifp}{ifp}}
+{\footnotesize\ttfamily integer, parameter, private m\+\_\+compare\+\_\+float\+\_\+numbers\+::ifp = 2\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__compare__float__numbers_a6fab297801aadc3067acefdd136384ad}\label{namespacem__compare__float__numbers_a6fab297801aadc3067acefdd136384ad}} 
+\index{m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}!iip@{iip}}
+\index{iip@{iip}!m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}}
+\subsubsection{\texorpdfstring{iip}{iip}}
+{\footnotesize\ttfamily integer, parameter, private m\+\_\+compare\+\_\+float\+\_\+numbers\+::iip = 3\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__compare__float__numbers_aee1b5dea82ea1e760308976a08df6356}\label{namespacem__compare__float__numbers_aee1b5dea82ea1e760308976a08df6356}} 
+\index{m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}!ip\+\_\+byte\+\_\+sizes@{ip\+\_\+byte\+\_\+sizes}}
+\index{ip\+\_\+byte\+\_\+sizes@{ip\+\_\+byte\+\_\+sizes}!m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}}
+\subsubsection{\texorpdfstring{ip\+\_\+byte\+\_\+sizes}{ip\_byte\_sizes}}
+{\footnotesize\ttfamily integer, dimension( \hyperlink{namespacem__compare__float__numbers_a6cbe22bf2f7aa1ada923de776f8258bf}{n\+\_\+ip\+\_\+kinds} ), parameter, private m\+\_\+compare\+\_\+float\+\_\+numbers\+::ip\+\_\+byte\+\_\+sizes = (/ n\+\_\+\+Bytes\+\_\+\+Byte, n\+\_\+\+Bytes\+\_\+\+Short, n\+\_\+\+Bytes\+\_\+\+Long, n\+\_\+\+Bytes\+\_\+\+L\+Long /)\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__compare__float__numbers_a932ca5131dba16f9e2d30e75cf79b574}\label{namespacem__compare__float__numbers_a932ca5131dba16f9e2d30e75cf79b574}} 
+\index{m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}!ip\+\_\+kind@{ip\+\_\+kind}}
+\index{ip\+\_\+kind@{ip\+\_\+kind}!m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}}
+\subsubsection{\texorpdfstring{ip\+\_\+kind}{ip\_kind}}
+{\footnotesize\ttfamily integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+compare\+\_\+float\+\_\+numbers\+::ip\+\_\+kind = I\+P\+\_\+\+K\+I\+N\+D\+\_\+\+T\+Y\+P\+ES( I\+IP )}
+
+\mbox{\Hypertarget{namespacem__compare__float__numbers_a18a2ec0b5b6a904a6ccd63fad576f759}\label{namespacem__compare__float__numbers_a18a2ec0b5b6a904a6ccd63fad576f759}} 
+\index{m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}!ip\+\_\+kind\+\_\+types@{ip\+\_\+kind\+\_\+types}}
+\index{ip\+\_\+kind\+\_\+types@{ip\+\_\+kind\+\_\+types}!m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}}
+\subsubsection{\texorpdfstring{ip\+\_\+kind\+\_\+types}{ip\_kind\_types}}
+{\footnotesize\ttfamily integer, dimension( \hyperlink{namespacem__compare__float__numbers_a6cbe22bf2f7aa1ada923de776f8258bf}{n\+\_\+ip\+\_\+kinds} ), parameter, private m\+\_\+compare\+\_\+float\+\_\+numbers\+::ip\+\_\+kind\+\_\+types = (/ Byte, Short, Long, L\+Long /)\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__compare__float__numbers_a9c3da9dd020c03b19ee8acf1dafdce20}\label{namespacem__compare__float__numbers_a9c3da9dd020c03b19ee8acf1dafdce20}} 
+\index{m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}!llong@{llong}}
+\index{llong@{llong}!m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}}
+\subsubsection{\texorpdfstring{llong}{llong}}
+{\footnotesize\ttfamily integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+compare\+\_\+float\+\_\+numbers\+::llong = ( ( ( 1 + S\+I\+GN( 1, L\+Long\+\_\+t ) ) / 2 ) $\ast$ L\+Long\+\_\+t ) + ( ( ( 1 -\/ S\+I\+GN( 1, L\+Long\+\_\+t ) ) / 2 ) $\ast$ Long )}
+
+\mbox{\Hypertarget{namespacem__compare__float__numbers_a7c4a2b4cc39888d092d7a754897be9e5}\label{namespacem__compare__float__numbers_a7c4a2b4cc39888d092d7a754897be9e5}} 
+\index{m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}!llong\+\_\+t@{llong\+\_\+t}}
+\index{llong\+\_\+t@{llong\+\_\+t}!m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}}
+\subsubsection{\texorpdfstring{llong\+\_\+t}{llong\_t}}
+{\footnotesize\ttfamily integer, parameter, private m\+\_\+compare\+\_\+float\+\_\+numbers\+::llong\+\_\+t = S\+E\+L\+E\+C\+T\+E\+D\+\_\+\+I\+N\+T\+\_\+\+K\+I\+ND(16)\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__compare__float__numbers_a1a70f80b01ccf5c63ed3eb70fabdaf2d}\label{namespacem__compare__float__numbers_a1a70f80b01ccf5c63ed3eb70fabdaf2d}} 
+\index{m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}!long@{long}}
+\index{long@{long}!m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}}
+\subsubsection{\texorpdfstring{long}{long}}
+{\footnotesize\ttfamily integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+compare\+\_\+float\+\_\+numbers\+::long = S\+E\+L\+E\+C\+T\+E\+D\+\_\+\+I\+N\+T\+\_\+\+K\+I\+ND(8)}
+
+\mbox{\Hypertarget{namespacem__compare__float__numbers_ae0ee7ae6cb351f1a6cf7301460d0d592}\label{namespacem__compare__float__numbers_ae0ee7ae6cb351f1a6cf7301460d0d592}} 
+\index{m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}!module\+\_\+rcs\+\_\+id@{module\+\_\+rcs\+\_\+id}}
+\index{module\+\_\+rcs\+\_\+id@{module\+\_\+rcs\+\_\+id}!m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}}
+\subsubsection{\texorpdfstring{module\+\_\+rcs\+\_\+id}{module\_rcs\_id}}
+{\footnotesize\ttfamily \hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), parameter, private m\+\_\+compare\+\_\+float\+\_\+numbers\+::module\+\_\+rcs\+\_\+id = \textquotesingle{}\$Id\+: M\+\_\+\+Compare\+\_\+\+Float\+\_\+\+Numbers.\+f90,v 2.\+3 2004/10/06 19\+:00\+:23 paulv Exp \$\textquotesingle{}\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__compare__float__numbers_a5faf0176b9b713e8d12ede8294da171d}\label{namespacem__compare__float__numbers_a5faf0176b9b713e8d12ede8294da171d}} 
+\index{m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}!n\+\_\+bytes\+\_\+byte@{n\+\_\+bytes\+\_\+byte}}
+\index{n\+\_\+bytes\+\_\+byte@{n\+\_\+bytes\+\_\+byte}!m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}}
+\subsubsection{\texorpdfstring{n\+\_\+bytes\+\_\+byte}{n\_bytes\_byte}}
+{\footnotesize\ttfamily integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+compare\+\_\+float\+\_\+numbers\+::n\+\_\+bytes\+\_\+byte = 1}
+
+\mbox{\Hypertarget{namespacem__compare__float__numbers_a801fa0d9fea2f2c025618157c128bfe2}\label{namespacem__compare__float__numbers_a801fa0d9fea2f2c025618157c128bfe2}} 
+\index{m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}!n\+\_\+bytes\+\_\+double@{n\+\_\+bytes\+\_\+double}}
+\index{n\+\_\+bytes\+\_\+double@{n\+\_\+bytes\+\_\+double}!m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}}
+\subsubsection{\texorpdfstring{n\+\_\+bytes\+\_\+double}{n\_bytes\_double}}
+{\footnotesize\ttfamily integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+compare\+\_\+float\+\_\+numbers\+::n\+\_\+bytes\+\_\+double = 8}
+
+\mbox{\Hypertarget{namespacem__compare__float__numbers_a48468c49657b53321fe55ac0795ba258}\label{namespacem__compare__float__numbers_a48468c49657b53321fe55ac0795ba258}} 
+\index{m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}!n\+\_\+bytes\+\_\+fp\+\_\+kind@{n\+\_\+bytes\+\_\+fp\+\_\+kind}}
+\index{n\+\_\+bytes\+\_\+fp\+\_\+kind@{n\+\_\+bytes\+\_\+fp\+\_\+kind}!m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}}
+\subsubsection{\texorpdfstring{n\+\_\+bytes\+\_\+fp\+\_\+kind}{n\_bytes\_fp\_kind}}
+{\footnotesize\ttfamily integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+compare\+\_\+float\+\_\+numbers\+::n\+\_\+bytes\+\_\+fp\+\_\+kind = F\+P\+\_\+\+B\+Y\+T\+E\+\_\+\+S\+I\+Z\+ES( I\+FP )}
+
+\mbox{\Hypertarget{namespacem__compare__float__numbers_a868bf02722b9070cff22ba7803aeffed}\label{namespacem__compare__float__numbers_a868bf02722b9070cff22ba7803aeffed}} 
+\index{m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}!n\+\_\+bytes\+\_\+ip\+\_\+kind@{n\+\_\+bytes\+\_\+ip\+\_\+kind}}
+\index{n\+\_\+bytes\+\_\+ip\+\_\+kind@{n\+\_\+bytes\+\_\+ip\+\_\+kind}!m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}}
+\subsubsection{\texorpdfstring{n\+\_\+bytes\+\_\+ip\+\_\+kind}{n\_bytes\_ip\_kind}}
+{\footnotesize\ttfamily integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+compare\+\_\+float\+\_\+numbers\+::n\+\_\+bytes\+\_\+ip\+\_\+kind = I\+P\+\_\+\+B\+Y\+T\+E\+\_\+\+S\+I\+Z\+ES( I\+IP )}
+
+\mbox{\Hypertarget{namespacem__compare__float__numbers_a2c4b39b521fa4fe5ea36044ddbbbb2ba}\label{namespacem__compare__float__numbers_a2c4b39b521fa4fe5ea36044ddbbbb2ba}} 
+\index{m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}!n\+\_\+bytes\+\_\+llong@{n\+\_\+bytes\+\_\+llong}}
+\index{n\+\_\+bytes\+\_\+llong@{n\+\_\+bytes\+\_\+llong}!m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}}
+\subsubsection{\texorpdfstring{n\+\_\+bytes\+\_\+llong}{n\_bytes\_llong}}
+{\footnotesize\ttfamily integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+compare\+\_\+float\+\_\+numbers\+::n\+\_\+bytes\+\_\+llong = 8}
+
+\mbox{\Hypertarget{namespacem__compare__float__numbers_a6295d4185db12b4e3d14c67de6164dd4}\label{namespacem__compare__float__numbers_a6295d4185db12b4e3d14c67de6164dd4}} 
+\index{m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}!n\+\_\+bytes\+\_\+long@{n\+\_\+bytes\+\_\+long}}
+\index{n\+\_\+bytes\+\_\+long@{n\+\_\+bytes\+\_\+long}!m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}}
+\subsubsection{\texorpdfstring{n\+\_\+bytes\+\_\+long}{n\_bytes\_long}}
+{\footnotesize\ttfamily integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+compare\+\_\+float\+\_\+numbers\+::n\+\_\+bytes\+\_\+long = 4}
+
+\mbox{\Hypertarget{namespacem__compare__float__numbers_abbe80858664126778bff36ea408c71dc}\label{namespacem__compare__float__numbers_abbe80858664126778bff36ea408c71dc}} 
+\index{m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}!n\+\_\+bytes\+\_\+quad@{n\+\_\+bytes\+\_\+quad}}
+\index{n\+\_\+bytes\+\_\+quad@{n\+\_\+bytes\+\_\+quad}!m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}}
+\subsubsection{\texorpdfstring{n\+\_\+bytes\+\_\+quad}{n\_bytes\_quad}}
+{\footnotesize\ttfamily integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+compare\+\_\+float\+\_\+numbers\+::n\+\_\+bytes\+\_\+quad = 16}
+
+\mbox{\Hypertarget{namespacem__compare__float__numbers_acff1ac867eea95e76e28f083be5bddcc}\label{namespacem__compare__float__numbers_acff1ac867eea95e76e28f083be5bddcc}} 
+\index{m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}!n\+\_\+bytes\+\_\+short@{n\+\_\+bytes\+\_\+short}}
+\index{n\+\_\+bytes\+\_\+short@{n\+\_\+bytes\+\_\+short}!m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}}
+\subsubsection{\texorpdfstring{n\+\_\+bytes\+\_\+short}{n\_bytes\_short}}
+{\footnotesize\ttfamily integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+compare\+\_\+float\+\_\+numbers\+::n\+\_\+bytes\+\_\+short = 2}
+
+\mbox{\Hypertarget{namespacem__compare__float__numbers_a8d387475f5c4f6cc89da998183cf9077}\label{namespacem__compare__float__numbers_a8d387475f5c4f6cc89da998183cf9077}} 
+\index{m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}!n\+\_\+bytes\+\_\+single@{n\+\_\+bytes\+\_\+single}}
+\index{n\+\_\+bytes\+\_\+single@{n\+\_\+bytes\+\_\+single}!m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}}
+\subsubsection{\texorpdfstring{n\+\_\+bytes\+\_\+single}{n\_bytes\_single}}
+{\footnotesize\ttfamily integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+compare\+\_\+float\+\_\+numbers\+::n\+\_\+bytes\+\_\+single = 4}
+
+\mbox{\Hypertarget{namespacem__compare__float__numbers_ae5e226645a7448efabc625aa89e78a20}\label{namespacem__compare__float__numbers_ae5e226645a7448efabc625aa89e78a20}} 
+\index{m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}!n\+\_\+fp\+\_\+kinds@{n\+\_\+fp\+\_\+kinds}}
+\index{n\+\_\+fp\+\_\+kinds@{n\+\_\+fp\+\_\+kinds}!m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}}
+\subsubsection{\texorpdfstring{n\+\_\+fp\+\_\+kinds}{n\_fp\_kinds}}
+{\footnotesize\ttfamily integer, parameter, private m\+\_\+compare\+\_\+float\+\_\+numbers\+::n\+\_\+fp\+\_\+kinds = 3\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__compare__float__numbers_a6cbe22bf2f7aa1ada923de776f8258bf}\label{namespacem__compare__float__numbers_a6cbe22bf2f7aa1ada923de776f8258bf}} 
+\index{m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}!n\+\_\+ip\+\_\+kinds@{n\+\_\+ip\+\_\+kinds}}
+\index{n\+\_\+ip\+\_\+kinds@{n\+\_\+ip\+\_\+kinds}!m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}}
+\subsubsection{\texorpdfstring{n\+\_\+ip\+\_\+kinds}{n\_ip\_kinds}}
+{\footnotesize\ttfamily integer, parameter, private m\+\_\+compare\+\_\+float\+\_\+numbers\+::n\+\_\+ip\+\_\+kinds = 4\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__compare__float__numbers_af11cd62e9032de86b00de623b4eb5c2c}\label{namespacem__compare__float__numbers_af11cd62e9032de86b00de623b4eb5c2c}} 
+\index{m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}!quad@{quad}}
+\index{quad@{quad}!m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}}
+\subsubsection{\texorpdfstring{quad}{quad}}
+{\footnotesize\ttfamily integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+compare\+\_\+float\+\_\+numbers\+::quad = ( ( ( 1 + S\+I\+GN( 1, Quad\+\_\+t ) ) / 2 ) $\ast$ Quad\+\_\+t ) + ( ( ( 1 -\/ S\+I\+GN( 1, Quad\+\_\+t ) ) / 2 ) $\ast$ Double )}
+
+\mbox{\Hypertarget{namespacem__compare__float__numbers_a3cb67561a1bb5038eddb1aafcce81199}\label{namespacem__compare__float__numbers_a3cb67561a1bb5038eddb1aafcce81199}} 
+\index{m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}!quad\+\_\+t@{quad\+\_\+t}}
+\index{quad\+\_\+t@{quad\+\_\+t}!m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}}
+\subsubsection{\texorpdfstring{quad\+\_\+t}{quad\_t}}
+{\footnotesize\ttfamily integer, parameter, private m\+\_\+compare\+\_\+float\+\_\+numbers\+::quad\+\_\+t = S\+E\+L\+E\+C\+T\+E\+D\+\_\+\+R\+E\+A\+L\+\_\+\+K\+I\+ND(20)\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__compare__float__numbers_a8afcd039ad8a1e52969e5a5165163b68}\label{namespacem__compare__float__numbers_a8afcd039ad8a1e52969e5a5165163b68}} 
+\index{m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}!short@{short}}
+\index{short@{short}!m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}}
+\subsubsection{\texorpdfstring{short}{short}}
+{\footnotesize\ttfamily integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+compare\+\_\+float\+\_\+numbers\+::short = S\+E\+L\+E\+C\+T\+E\+D\+\_\+\+I\+N\+T\+\_\+\+K\+I\+ND(4)}
+
+\mbox{\Hypertarget{namespacem__compare__float__numbers_a5f122d46d6ad7d1cf0b899d9c855c498}\label{namespacem__compare__float__numbers_a5f122d46d6ad7d1cf0b899d9c855c498}} 
+\index{m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}!single@{single}}
+\index{single@{single}!m\+\_\+compare\+\_\+float\+\_\+numbers@{m\+\_\+compare\+\_\+float\+\_\+numbers}}
+\subsubsection{\texorpdfstring{single}{single}}
+{\footnotesize\ttfamily integer, parameter, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+compare\+\_\+float\+\_\+numbers\+::single = S\+E\+L\+E\+C\+T\+E\+D\+\_\+\+R\+E\+A\+L\+\_\+\+K\+I\+ND(6)}
+

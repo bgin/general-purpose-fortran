@@ -1,0 +1,424 @@
+\hypertarget{namespacem__factor}{}\section{m\+\_\+factor Module Reference}
+\label{namespacem__factor}\index{m\+\_\+factor@{m\+\_\+factor}}
+
+
+\subsubsection*{N\+A\+ME}
+
+M\+\_\+factor -\/ \mbox{[}M\+\_\+factor\mbox{]} module for least common multiple, greatest common divisor, and prime factors \subsubsection*{S\+Y\+N\+O\+P\+S\+IS} 
+
+
+\subsection*{Data Types}
+\begin{DoxyCompactItemize}
+\item 
+interface \hyperlink{interfacem__factor_1_1greatest__common__divisor}{greatest\+\_\+common\+\_\+divisor}
+\item 
+interface \hyperlink{interfacem__factor_1_1least__common__multiple}{least\+\_\+common\+\_\+multiple}
+\end{DoxyCompactItemize}
+\subsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+integer function, private \hyperlink{namespacem__factor_a363e0b451d99647a6230a308ffccc73c}{lcm} (\hyperlink{intro__blas1_83_8txt_a8ba82a50c0c2c12d5f6a77f7e4651c0b}{i}, \hyperlink{exit_87_8txt_a8921ef29c441e427867c54bd3b2462ba}{j})
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+least\+\_\+common\+\_\+multiple(3f) -\/ \mbox{[}M\+\_\+factor\mbox{]} Least common multiple of two integers or vector m(\+:), matrix m(\+:,\+:) or cuboid m(\+:,\+:,\+:) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+integer function, private \hyperlink{namespacem__factor_a3802e87d5a394888aefc2d6cf496509f}{lcm\+\_\+vector} (m)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+lcm\+\_\+vector(3fp) -\/ least common multiple of integer vector m(\+:) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+integer function, private \hyperlink{namespacem__factor_af2cc63a43164bf57aedac557fafe907f}{lcm\+\_\+matrix} (m)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+lcm\+\_\+matrix(3fp) -\/ least common multiple of integer array m(\+:,\+:) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+integer function, private \hyperlink{namespacem__factor_ae9aed0802e2c5a923b255f143ddf6e15}{lcm\+\_\+cuboid} (m)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+lcm\+\_\+cuboid(3fp) -\/ least common multiple of integer cuboid m(\+:,\+:,\+:) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+integer function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__factor_a69e8c33eff58fc447cfb8d4f3d4fae77}{gcd} (m, n)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+greatest\+\_\+common\+\_\+divisor(3f) -\/ \mbox{[}M\+\_\+factor\mbox{]} calculate greatest common divisor of two integers or vector m(\+:), matrix m(\+:,\+:) or cuboid m(\+:,\+:,\+:) \end{DoxyCompactList}\item 
+integer function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__factor_aed74f995a7c71e8cec13964b82457403}{gcd\+\_\+2} (m, n)
+\item 
+integer function, private \hyperlink{namespacem__factor_a60713d4c44895b4c18d4d6d9449ceaf7}{gcd\+\_\+vector} (m)
+\item 
+integer function, private \hyperlink{namespacem__factor_a6edfef428cb51a2cbe97cfb0ad25da8b}{gcd\+\_\+matrix} (m)
+\item 
+integer function, private \hyperlink{namespacem__factor_aff0e6f81edd8efc0fe41822916fb4efa}{gcd\+\_\+cuboid} (m)
+\item 
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__factor_a6440013d17b820fa65096b34f21d367d}{prime\+\_\+factors} (\hyperlink{what__overview_81_8txt_a5168680dcac08de182f59de9a12c38ae}{number}, nprm, iprm, iexp, verbose)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+prime\+\_\+factors -\/ \mbox{[}M\+\_\+factor\mbox{]} decompose a number into its prime factors \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+logical function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__factor_afcca43d3d524f6d11d54bbfd475e60d5}{i\+\_\+is\+\_\+prime} (n)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+i\+\_\+is\+\_\+prime(3f) -\/ \mbox{[}M\+\_\+factor\mbox{]} Determine if a number is prime using Sieve of Erasthosthenes \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len= $\ast$), parameter \hyperlink{namespacem__factor_a7ae228777d43741d83e3a4df917f39df}{ident1} =\textquotesingle{}@(\#)M\+\_\+factor\+::least\+\_\+common\+\_\+multiple(3f)\+: function finds L\+C\+M for (i,j)$\vert$m(\+:)$\vert$m(\+:,\+:)$\vert$m(\+:,\+:,\+:)\textquotesingle{}
+\item 
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len= $\ast$), parameter \hyperlink{namespacem__factor_ab34da44c20883bea1b31a67a3d6359e5}{ident2} =\textquotesingle{}@(\#)M\+\_\+factor\+::greatest\+\_\+common\+\_\+divisor(3f)\+: function finds G\+C\+D for (i,j)$\vert$m(\+:)$\vert$m(\+:,\+:)$\vert$m(\+:,\+:,\+:)\char`\"{}\textquotesingle{}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{N\+A\+ME}
+
+M\+\_\+factor -\/ \mbox{[}M\+\_\+factor\mbox{]} module for least common multiple, greatest common divisor, and prime factors \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\hyperlink{interfacem__factor_1_1least__common__multiple}{least\+\_\+common\+\_\+multiple} least common multiple of two integers (i,j) or integer array m(\+:$\vert$\+:,\+:$\vert$\+:,\+:,\+:) \hyperlink{interfacem__factor_1_1greatest__common__divisor}{greatest\+\_\+common\+\_\+divisor} greatest common divisor of two integers (i,j) or integer array m(\+:$\vert$\+:,\+:$\vert$\+:,\+:,\+:) prime\+\_\+factors prime factors of a number i\+\_\+is\+\_\+prime determine if an integer is a prime
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+This module is a collection of procedures that perform common functions found in arithmetic and number theory such as Least Common Multiples, Greatest Common Divisors, and Prime Factors of I\+N\+T\+E\+G\+ER variables. The I\+N\+T\+E\+G\+ER values are typically limited to values up to the magnitude (2$\ast$$\ast$31)-\/1= 2147483647.
+
+\subsubsection*{P\+R\+I\+M\+ES}
+
+Date 10/06/97 at 12\+:47\+:29 From Doctor Rob Subject Re\+: The number 1 and zero
+
+One is neither a prime nor a composite number. A prime number is one with exactly two positive divisors, itself and one. One has only one positive divisor. It cannot be written as a product of two factors, neither of which is itself, so one is also not composite. It falls in a class of numbers called units. These are the numbers whose reciprocals are also whole numbers.
+
+Zero is not a prime or a composite number either. Zero has an infinite number of divisors (any nonzero whole number divides zero). It cannot be written as a product of two factors, neither of which is itself, so zero is also not composite. It falls in a class of numbers called zero-\/divisors. These are numbers such that, when multiplied by some nonzero number, the product is zero.
+
+The most important fact of multiplication of integers is called the Fundamental Theorem of Arithmetic. It says that every whole number greater than one can be written {\itshape uniquely} (except for their order) as the product of prime numbers. This is so important that we tailor our idea of what a prime number is to make it true. If 1 were a prime number, this would be false, since, for example,
+
+7 = 1$\ast$7 = 1$\ast$1$\ast$7 = 1$\ast$1$\ast$1$\ast$7 = ...,
+
+and the uniqueness would fail.
+
+\subsubsection*{E\+X\+A\+M\+P\+L\+ES}
+
+\begin{DoxyVerb} The individual man(1) pages for each procedure contain examples and
+ a full description of the procedure parameters. \end{DoxyVerb}
+ 
+
+\subsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{namespacem__factor_a69e8c33eff58fc447cfb8d4f3d4fae77}\label{namespacem__factor_a69e8c33eff58fc447cfb8d4f3d4fae77}} 
+\index{m\+\_\+factor@{m\+\_\+factor}!gcd@{gcd}}
+\index{gcd@{gcd}!m\+\_\+factor@{m\+\_\+factor}}
+\subsubsection{\texorpdfstring{gcd()}{gcd()}}
+{\footnotesize\ttfamily integer function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+factor\+::gcd (\begin{DoxyParamCaption}\item[{integer, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{m,  }\item[{integer, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{n }\end{DoxyParamCaption})}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+greatest\+\_\+common\+\_\+divisor(3f) -\/ \mbox{[}M\+\_\+factor\mbox{]} calculate greatest common divisor of two integers or vector m(\+:), matrix m(\+:,\+:) or cuboid m(\+:,\+:,\+:) 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+The function is generic and may take either two integers or an integer vector, matrix, or cuboid.
+
+integer function greatest\+\_\+common\+\_\+divisor(i,j) integer,intent(in)\+:\+: i,j or integer function greatest\+\_\+common\+\_\+divisor(m) integer,intent(in)\+:\+: m(\+:) or integer,intent(in)\+:\+: m(\+:,\+:) or integer,intent(in)\+:\+: m(\+:,\+:,\+:)
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+The method used is the Euler algorithm; that for two integers ...
+
+
+\begin{DoxyEnumerate}
+\item Subtract the 2nd number (N) as many times as possible from the 1st one (M) and save remainder using F\+O\+R\+T\+R\+AN function M\+OD.
+\item Test if remainder is equal to zero, if so G\+CD = N. If not replace M with N and N with remainder and proceed with step 1.
+\item Repeat both steps until remainder becomes zero.
+\end{DoxyEnumerate}
+
+\subsubsection*{E\+X\+A\+M\+P\+LE}
+
+Sample program\+:
+
+program demo\+\_\+greatest\+\_\+common\+\_\+divisor use M\+\_\+factor, only \+: gcd=$>$\hyperlink{interfacem__factor_1_1greatest__common__divisor}{greatest\+\_\+common\+\_\+divisor} implicit none integer, allocatable \+:\+: matrix(\+:,\+:) write($\ast$,$\ast$)\textquotesingle{}S\+C\+A\+L\+AR\+:\textquotesingle{} call writeit(26,130,26) call writeit(91,390,13) call writeit(-\/91,390,13) call writeit(91,-\/390,13) call writeit(-\/41,-\/43,1) call writeit(-\/20,-\/10,10) call writeit(20,10,10) write($\ast$,$\ast$)\textquotesingle{}V\+E\+C\+T\+OR\+:\textquotesingle{} call writeit\+\_\+v(\mbox{[}26,130,91,390\mbox{]},13) call writeit\+\_\+v(\mbox{[}5,7,11,13,17,19,23,29,31,37,41,43,47\mbox{]},1) call writeit\+\_\+v(\mbox{[}-\/20,-\/10,0\mbox{]},10) call writeit\+\_\+v(\mbox{[}20,10,0\mbox{]},10) call writeit\+\_\+v(\mbox{[}26,130\mbox{]},26) call writeit\+\_\+v(\mbox{[}91,390\mbox{]},13) call writeit\+\_\+v(\mbox{[}-\/91,390\mbox{]},13) call writeit\+\_\+v(\mbox{[}91,-\/390\mbox{]},13) call writeit\+\_\+v(\mbox{[}-\/41,-\/43\mbox{]},1) call writeit\+\_\+v(\mbox{[}-\/20,-\/10\mbox{]},10) call writeit\+\_\+v(\mbox{[}20,10\mbox{]},10) write($\ast$,$\ast$)\textquotesingle{}M\+A\+T\+R\+IX\+:\textquotesingle{} matrix=reshape(\mbox{[} 11,22,33,44,55,66\mbox{]},\mbox{[}2,3\mbox{]}) call write\+\_\+matrix(matrix,11) matrix=reshape(\mbox{[}5,7,11,13,17,19,23,29,31,37,41,43,47\mbox{]},\mbox{[}13,1\mbox{]}) call write\+\_\+matrix(matrix,1) matrix=reshape(\mbox{[}40,80,120,160\mbox{]},\mbox{[}2,2\mbox{]}) call write\+\_\+matrix(matrix,40)
+
+contains
+
+subroutine writeit(ii,jj,answer) integer,intent(in) \+:\+: ii,jj integer,intent(in) \+:\+: answer write($\ast$,\textquotesingle{}(\char`\"{}gcd(\mbox{[}\char`\"{},i0,\char`\"{},\char`\"{},i0,\char`\"{}\mbox{]}) produces \char`\"{},i0,\char`\"{} which is \char`\"{},l1)\textquotesingle{}) \& \& ii,jj,gcd(ii,jj),gcd(ii,jj).eq.\+answer end subroutine writeit
+
+subroutine writeit\+\_\+v(vector,answer) integer,intent(in) \+:\+: vector(\+:) integer,intent(in) \+:\+: answer write($\ast$,\textquotesingle{}(\char`\"{}gcd(\mbox{[}\char`\"{},$\ast$(i0\+:,\char`\"{},\char`\"{}))\textquotesingle{},advance=\textquotesingle{}no\textquotesingle{})vector write($\ast$,\textquotesingle{}(\char`\"{}\mbox{]}) produces \char`\"{},i0,\char`\"{} which is \char`\"{},l1)\textquotesingle{}) \& \& gcd(vector),gcd(vector).eq.\+answer end subroutine writeit\+\_\+v
+
+subroutine write\+\_\+matrix(matrix,answer) integer,intent(in) \+:\+: matrix(\+:,\+:) integer,intent(in) \+:\+: answer write($\ast$,$\ast$)\textquotesingle{}M\+A\+T\+R\+IX S\+H\+A\+PE\+:\textquotesingle{},size(matrix,dim=1),size(matrix,dim=2) write($\ast$,\textquotesingle{}(\char`\"{}gcd(\mbox{[}\char`\"{},$\ast$(i0\+:,\char`\"{},\char`\"{}))\textquotesingle{},advance=\textquotesingle{}no\textquotesingle{})matrix write($\ast$,\textquotesingle{}(\char`\"{}\mbox{]}) produces \char`\"{},i0,\char`\"{} which is \char`\"{},l1)\textquotesingle{}) \& \& gcd(matrix),gcd(matrix).eq.\+answer end subroutine write\+\_\+matrix
+
+end program demo\+\_\+greatest\+\_\+common\+\_\+divisor Expected Output\+:
+
+$>$ S\+C\+A\+L\+AR\+: $>$ gcd(\mbox{[}26,130\mbox{]}) produces 26 which is T $>$ gcd(\mbox{[}91,390\mbox{]}) produces 13 which is T $>$ gcd(\mbox{[}-\/91,390\mbox{]}) produces 13 which is T $>$ gcd(\mbox{[}91,-\/390\mbox{]}) produces 13 which is T $>$ gcd(\mbox{[}-\/41,-\/43\mbox{]}) produces 1 which is T $>$ gcd(\mbox{[}-\/20,-\/10\mbox{]}) produces 10 which is T $>$ gcd(\mbox{[}20,10\mbox{]}) produces 10 which is T $>$ V\+E\+C\+T\+OR\+: $>$ gcd(\mbox{[}26,130,91,390\mbox{]}) produces 13 which is T $>$ gcd(\mbox{[}5,7,11,13,17,19,23,29,31,37,41,43,47\mbox{]}) produces 1 which is T $>$ gcd(\mbox{[}-\/20,-\/10,0\mbox{]}) produces 10 which is T $>$ gcd(\mbox{[}20,10,0\mbox{]}) produces 10 which is T $>$ gcd(\mbox{[}26,130\mbox{]}) produces 26 which is T $>$ gcd(\mbox{[}91,390\mbox{]}) produces 13 which is T $>$ gcd(\mbox{[}-\/91,390\mbox{]}) produces 13 which is T $>$ gcd(\mbox{[}91,-\/390\mbox{]}) produces 13 which is T $>$ gcd(\mbox{[}-\/41,-\/43\mbox{]}) produces 1 which is T $>$ gcd(\mbox{[}-\/20,-\/10\mbox{]}) produces 10 which is T $>$ gcd(\mbox{[}20,10\mbox{]}) produces 10 which is T $>$ M\+A\+T\+R\+IX\+: $>$ M\+A\+T\+R\+IX S\+H\+A\+PE\+: 2 3 $>$ gcd(\mbox{[}11,22,33,44,55,66\mbox{]}) produces 11 which is T $>$ M\+A\+T\+R\+IX S\+H\+A\+PE\+: 13 1 $>$ gcd(\mbox{[}5,7,11,13,17,19,23,29,31,37,41,43,47\mbox{]}) produces 1 which is T $>$ M\+A\+T\+R\+IX S\+H\+A\+PE\+: 2 2 $>$ gcd(\mbox{[}40,80,120,160\mbox{]}) produces 40 which is T F\+U\+N\+C\+T\+I\+ON\+: gcd(\+M,\+N) D\+A\+TE\+: 30-\/\+Aug-\/2015 \subsubsection*{V\+E\+R\+S\+I\+ON\+: V1.\+0.\+0}
+
+M\+O\+D\+I\+F\+I\+ED BY\+: John S. Urban P\+U\+R\+P\+O\+SE\+: Computes the Greatest Common Divisor of two integers. If M=N=0 then the G\+CD is defined to be zero. IE. G\+CD is a factor of M and N and G\+CD is the largest such factor. R\+E\+F\+E\+R\+E\+N\+C\+ES\+: Euler algorithm (slow) U\+U\+ID\+: U\+U\+ID=de642070-\/4ecd-\/414b-\/895c-\/578ea7547948 \mbox{\Hypertarget{namespacem__factor_aed74f995a7c71e8cec13964b82457403}\label{namespacem__factor_aed74f995a7c71e8cec13964b82457403}} 
+\index{m\+\_\+factor@{m\+\_\+factor}!gcd\+\_\+2@{gcd\+\_\+2}}
+\index{gcd\+\_\+2@{gcd\+\_\+2}!m\+\_\+factor@{m\+\_\+factor}}
+\subsubsection{\texorpdfstring{gcd\+\_\+2()}{gcd\_2()}}
+{\footnotesize\ttfamily integer function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+factor\+::gcd\+\_\+2 (\begin{DoxyParamCaption}\item[{integer, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{m,  }\item[{integer, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{n }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacem__factor_aff0e6f81edd8efc0fe41822916fb4efa}\label{namespacem__factor_aff0e6f81edd8efc0fe41822916fb4efa}} 
+\index{m\+\_\+factor@{m\+\_\+factor}!gcd\+\_\+cuboid@{gcd\+\_\+cuboid}}
+\index{gcd\+\_\+cuboid@{gcd\+\_\+cuboid}!m\+\_\+factor@{m\+\_\+factor}}
+\subsubsection{\texorpdfstring{gcd\+\_\+cuboid()}{gcd\_cuboid()}}
+{\footnotesize\ttfamily integer function, private m\+\_\+factor\+::gcd\+\_\+cuboid (\begin{DoxyParamCaption}\item[{integer, dimension(\+:,\+:,\+:), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{m }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+References gcd\+\_\+vector().
+
+\mbox{\Hypertarget{namespacem__factor_a6edfef428cb51a2cbe97cfb0ad25da8b}\label{namespacem__factor_a6edfef428cb51a2cbe97cfb0ad25da8b}} 
+\index{m\+\_\+factor@{m\+\_\+factor}!gcd\+\_\+matrix@{gcd\+\_\+matrix}}
+\index{gcd\+\_\+matrix@{gcd\+\_\+matrix}!m\+\_\+factor@{m\+\_\+factor}}
+\subsubsection{\texorpdfstring{gcd\+\_\+matrix()}{gcd\_matrix()}}
+{\footnotesize\ttfamily integer function, private m\+\_\+factor\+::gcd\+\_\+matrix (\begin{DoxyParamCaption}\item[{integer, dimension(\+:,\+:), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{m }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+References gcd().
+
+\mbox{\Hypertarget{namespacem__factor_a60713d4c44895b4c18d4d6d9449ceaf7}\label{namespacem__factor_a60713d4c44895b4c18d4d6d9449ceaf7}} 
+\index{m\+\_\+factor@{m\+\_\+factor}!gcd\+\_\+vector@{gcd\+\_\+vector}}
+\index{gcd\+\_\+vector@{gcd\+\_\+vector}!m\+\_\+factor@{m\+\_\+factor}}
+\subsubsection{\texorpdfstring{gcd\+\_\+vector()}{gcd\_vector()}}
+{\footnotesize\ttfamily integer function, private m\+\_\+factor\+::gcd\+\_\+vector (\begin{DoxyParamCaption}\item[{integer, dimension(\+:), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{m }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+References gcd().
+
+\mbox{\Hypertarget{namespacem__factor_afcca43d3d524f6d11d54bbfd475e60d5}\label{namespacem__factor_afcca43d3d524f6d11d54bbfd475e60d5}} 
+\index{m\+\_\+factor@{m\+\_\+factor}!i\+\_\+is\+\_\+prime@{i\+\_\+is\+\_\+prime}}
+\index{i\+\_\+is\+\_\+prime@{i\+\_\+is\+\_\+prime}!m\+\_\+factor@{m\+\_\+factor}}
+\subsubsection{\texorpdfstring{i\+\_\+is\+\_\+prime()}{i\_is\_prime()}}
+{\footnotesize\ttfamily logical function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+factor\+::i\+\_\+is\+\_\+prime (\begin{DoxyParamCaption}\item[{integer, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{n }\end{DoxyParamCaption})}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+i\+\_\+is\+\_\+prime(3f) -\/ \mbox{[}M\+\_\+factor\mbox{]} Determine if a number is prime using Sieve of Erasthosthenes \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+function i\+\_\+is\+\_\+prime ( n )
+
+integer,intent(in) \+:\+: n
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+A simple, unoptimized sieve of Erasthosthenes is used to check whether N can be divided by any integer between 2 and S\+Q\+R\+T(\+N).
+
+\subsubsection*{V\+E\+R\+S\+I\+ON}
+
+29 November 1998
+
+\subsubsection*{A\+U\+T\+H\+OR}
+
+John Burkardt
+
+\subsubsection*{P\+A\+R\+A\+M\+E\+T\+E\+RS}
+
+n Input, integer N, the integer to be tested. \subsubsection*{R\+E\+T\+U\+R\+NS}
+
+Output logical I\+\_\+\+I\+S\+\_\+\+P\+R\+I\+M\+E(3f) is T\+R\+UE if N is prime, and F\+A\+L\+SE otherwise. Note that negative numbers and 0 are not considered prime. \subsubsection*{E\+X\+A\+M\+P\+LE}
+
+\begin{DoxyVerb}sample program
+
+ program testit
+ use m_factor, only: i_is_prime
+ implicit none
+ integer  :: i
+ integer  :: icount=0
+ integer  :: isum=0
+ integer,parameter :: n= 10000
+
+ do i=2, n
+    if(i_is_prime(i))then
+       icount=icount+1
+       isum=isum+i
+       write(*,*)icount,i
+    endif
+ enddo
+
+ write(*,*)'number of primes between 2 and ',n,' is ',icount
+ write(*,*)'sum of primes between 2 and ',n,' is ',isum
+
+ end program testit
+\end{DoxyVerb}
+ ! 
+
+References false(), and true().
+
+\mbox{\Hypertarget{namespacem__factor_a363e0b451d99647a6230a308ffccc73c}\label{namespacem__factor_a363e0b451d99647a6230a308ffccc73c}} 
+\index{m\+\_\+factor@{m\+\_\+factor}!lcm@{lcm}}
+\index{lcm@{lcm}!m\+\_\+factor@{m\+\_\+factor}}
+\subsubsection{\texorpdfstring{lcm()}{lcm()}}
+{\footnotesize\ttfamily integer function, private m\+\_\+factor\+::lcm (\begin{DoxyParamCaption}\item[{integer, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{i,  }\item[{integer, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{j }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+least\+\_\+common\+\_\+multiple(3f) -\/ \mbox{[}M\+\_\+factor\mbox{]} Least common multiple of two integers or vector m(\+:), matrix m(\+:,\+:) or cuboid m(\+:,\+:,\+:) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+integer function least\+\_\+common\+\_\+multiple(i,j) integer,intent(in)\+:\+: i,j or integer function least\+\_\+common\+\_\+multiple(m) integer,intent(in)\+:\+: m(\+:) or integer,intent(in)\+:\+: m(\+:,\+:) or integer,intent(in)\+:\+: m(\+:,\+:,\+:)
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+From Wikipedia, the free encyclopedia\+:
+
+In arithmetic and number theory, the least common multiple (also called the lowest common multiple or smallest common multiple) of two integers a and b, usually denoted by L\+C\+M(a, b), is the smallest positive integer that is divisible by both a and b. Since division of integers by zero is undefined, this definition has meaning only if a and b are both different from zero. However, some authors define lcm(a,0) as 0 for all a, which is the result of taking the L\+CM to be the least upper bound in the lattice of divisibility.
+
+The L\+CM is familiar from grade-\/school arithmetic as the \char`\"{}lowest common
+    denominator\char`\"{} (L\+CD) that must be determined before fractions can be added, subtracted or compared. The L\+CM of more than two integers is also well-\/defined\+: it is the smallest positive integer that is divisible by each of them.
+
+\subsubsection*{E\+X\+A\+M\+P\+LE}
+
+Sample Program\+:
+
+program demo\+\_\+lcm use M\+\_\+factor, only \+: lcm=$>$\hyperlink{interfacem__factor_1_1least__common__multiple}{least\+\_\+common\+\_\+multiple} implicit none write($\ast$,$\ast$)\textquotesingle{}S\+C\+A\+L\+AR\+:\textquotesingle{} call writeit(10,24,120) call writeit(15,30,30) call writeit(-\/15,-\/30,30) call writeit(15,-\/30,30) call writeit(-\/15,30,30)
+
+write($\ast$,$\ast$)\textquotesingle{}V\+E\+C\+T\+OR\+:\textquotesingle{} call writeit\+\_\+v(\mbox{[}10,24\mbox{]},120) call writeit\+\_\+v(\mbox{[}15,30\mbox{]},30) call writeit\+\_\+v(\mbox{[}-\/15,-\/30\mbox{]},30) call writeit\+\_\+v(\mbox{[}5,-\/15,-\/40\mbox{]},120) call writeit\+\_\+v(\mbox{[}2,3,4,5\mbox{]},60) write($\ast$,$\ast$)\textquotesingle{}Special cases\+:\textquotesingle{} call writeit\+\_\+v(\mbox{[}15,0\mbox{]},0) call writeit\+\_\+v(\mbox{[}-\/15,0\mbox{]},0) call writeit\+\_\+v(\mbox{[}0\mbox{]},0) call writeit\+\_\+v(\mbox{[}-\/10\mbox{]},10) call writeit\+\_\+v(\mbox{[}22\mbox{]},22) call writeit\+\_\+v(\mbox{[}0,0\mbox{]},0) call writeit\+\_\+v(\mbox{[}0,0,0,0,0\mbox{]},0) call writeit\+\_\+v(\mbox{[}0,0,0,-\/1,0\mbox{]},0) call writeit\+\_\+v(\mbox{[}0,0,0,33,0,3,11\mbox{]},0) contains
+
+subroutine writeit(ii,jj,answer) integer,intent(in) \+:\+: ii,jj integer,intent(in) \+:\+: answer write($\ast$,\textquotesingle{}(\char`\"{}  For lcm(\char`\"{},I0,\char`\"{},\char`\"{},I0,\char`\"{}) the value is \char`\"{},I0,\char`\"{} which is \char`\"{},L1)\textquotesingle{})\& \& ii,jj,lcm(ii,jj),lcm(ii,jj).eq.\+answer end subroutine writeit
+
+subroutine writeit\+\_\+v(array,answer) integer,intent(in) \+:\+: array(\+:) integer,intent(in) \+:\+: answer write($\ast$,\textquotesingle{}(\char`\"{}  For lcm(\mbox{[}\char`\"{},$\ast$(i0\+:,1x))\textquotesingle{},advance=\textquotesingle{}no\textquotesingle{})array write($\ast$,\textquotesingle{}(\char`\"{}\mbox{]}) the value is \char`\"{},i0,\char`\"{} which is \char`\"{},L1)\textquotesingle{}) \& \& lcm(array),lcm(array).eq.\+answer end subroutine writeit\+\_\+v
+
+end program demo\+\_\+lcm
+
+Expected results\+:
+
+$>$ S\+C\+A\+L\+AR\+: $>$ For lcm(10,24) the value is 120 which is T $>$ For lcm(15,30) the value is 30 which is T $>$ For lcm(-\/15,-\/30) the value is 30 which is T $>$ For lcm(15,-\/30) the value is 30 which is T $>$ For lcm(-\/15,30) the value is 30 which is T $>$ V\+E\+C\+T\+OR\+: $>$ For lcm(\mbox{[}10 24\mbox{]}) the value is 120 which is T $>$ For lcm(\mbox{[}15 30\mbox{]}) the value is 30 which is T $>$ For lcm(\mbox{[}-\/15 -\/30\mbox{]}) the value is 30 which is T $>$ For lcm(\mbox{[}5 -\/15 -\/40\mbox{]}) the value is 120 which is T $>$ For lcm(\mbox{[}2 3 4 5\mbox{]}) the value is 60 which is T $>$ Special cases\+: $>$ For lcm(\mbox{[}15 0\mbox{]}) the value is 0 which is T $>$ For lcm(\mbox{[}-\/15 0\mbox{]}) the value is 0 which is T $>$ For lcm(\mbox{[}0\mbox{]}) the value is 0 which is T $>$ For lcm(\mbox{[}-\/10\mbox{]}) the value is 10 which is T $>$ For lcm(\mbox{[}22\mbox{]}) the value is 22 which is T $>$ For lcm(\mbox{[}0 0\mbox{]}) the value is 0 which is T $>$ For lcm(\mbox{[}0 0 0 0 0\mbox{]}) the value is 0 which is T $>$ For lcm(\mbox{[}0 0 0 -\/1 0\mbox{]}) the value is 0 which is T $>$ For lcm(\mbox{[}0 0 0 33 0 3 11\mbox{]}) the value is 0 which is T
+
+\subsubsection*{M\+E\+T\+H\+OD}
+
+Reduction by the greatest common divisor
+
+The following formula reduces the problem of computing the least common multiple to the problem of computing the greatest common divisor (G\+CD), also known as the greatest common factor\+:
+
+lcm(a,b) = $\vert$a$\ast$b$\vert$ / gcd(a,b)
+
+This formula is also valid when exactly one of a and b is 0, since gcd(a, 0) = $\vert$a$\vert$. (However, if both a and b are 0, this formula would cause division by zero; lcm(0, 0) = 0 is a special case. 
+
+References gcd(), and m\+\_\+anyscalar\+::int128.
+
+\mbox{\Hypertarget{namespacem__factor_ae9aed0802e2c5a923b255f143ddf6e15}\label{namespacem__factor_ae9aed0802e2c5a923b255f143ddf6e15}} 
+\index{m\+\_\+factor@{m\+\_\+factor}!lcm\+\_\+cuboid@{lcm\+\_\+cuboid}}
+\index{lcm\+\_\+cuboid@{lcm\+\_\+cuboid}!m\+\_\+factor@{m\+\_\+factor}}
+\subsubsection{\texorpdfstring{lcm\+\_\+cuboid()}{lcm\_cuboid()}}
+{\footnotesize\ttfamily integer function, private m\+\_\+factor\+::lcm\+\_\+cuboid (\begin{DoxyParamCaption}\item[{integer, dimension(\+:,\+:,\+:), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{m }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+lcm\+\_\+cuboid(3fp) -\/ least common multiple of integer cuboid m(\+:,\+:,\+:) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+integer function lcm\+\_\+cuboid(m)
+
+integer,intent(in) \+:\+: m(\+:,\+:,\+:) \subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+Find the Least Common Denominator of an I\+N\+T\+E\+G\+ER cuboid M(\+:,\+:,\+:). 
+
+References lcm\+\_\+vector().
+
+\mbox{\Hypertarget{namespacem__factor_af2cc63a43164bf57aedac557fafe907f}\label{namespacem__factor_af2cc63a43164bf57aedac557fafe907f}} 
+\index{m\+\_\+factor@{m\+\_\+factor}!lcm\+\_\+matrix@{lcm\+\_\+matrix}}
+\index{lcm\+\_\+matrix@{lcm\+\_\+matrix}!m\+\_\+factor@{m\+\_\+factor}}
+\subsubsection{\texorpdfstring{lcm\+\_\+matrix()}{lcm\_matrix()}}
+{\footnotesize\ttfamily integer function, private m\+\_\+factor\+::lcm\+\_\+matrix (\begin{DoxyParamCaption}\item[{integer, dimension(\+:,\+:), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{m }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+lcm\+\_\+matrix(3fp) -\/ least common multiple of integer array m(\+:,\+:) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+integer function lcm\+\_\+matrix(m)
+
+integer,intent(in) \+:\+: m(\+:,\+:) \subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+Find the Least Common Denominator of an I\+N\+T\+E\+G\+ER matrix M(\+:,\+:). 
+
+References lcm\+\_\+vector().
+
+\mbox{\Hypertarget{namespacem__factor_a3802e87d5a394888aefc2d6cf496509f}\label{namespacem__factor_a3802e87d5a394888aefc2d6cf496509f}} 
+\index{m\+\_\+factor@{m\+\_\+factor}!lcm\+\_\+vector@{lcm\+\_\+vector}}
+\index{lcm\+\_\+vector@{lcm\+\_\+vector}!m\+\_\+factor@{m\+\_\+factor}}
+\subsubsection{\texorpdfstring{lcm\+\_\+vector()}{lcm\_vector()}}
+{\footnotesize\ttfamily integer function, private m\+\_\+factor\+::lcm\+\_\+vector (\begin{DoxyParamCaption}\item[{integer, dimension(\+:), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{m }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+lcm\+\_\+vector(3fp) -\/ least common multiple of integer vector m(\+:) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+integer function lcm\+\_\+vector(m)
+
+integer,intent(in) \+:\+: m(\+:) \subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+Find the Least Common Denominator of an I\+N\+T\+E\+G\+ER vector M(\+:). 
+
+References lcm().
+
+\mbox{\Hypertarget{namespacem__factor_a6440013d17b820fa65096b34f21d367d}\label{namespacem__factor_a6440013d17b820fa65096b34f21d367d}} 
+\index{m\+\_\+factor@{m\+\_\+factor}!prime\+\_\+factors@{prime\+\_\+factors}}
+\index{prime\+\_\+factors@{prime\+\_\+factors}!m\+\_\+factor@{m\+\_\+factor}}
+\subsubsection{\texorpdfstring{prime\+\_\+factors()}{prime\_factors()}}
+{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+factor\+::prime\+\_\+factors (\begin{DoxyParamCaption}\item[{integer, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{number,  }\item[{integer, intent(out)}]{nprm,  }\item[{integer, dimension(\+:), intent(out)}]{iprm,  }\item[{integer, dimension(\+:), intent(out)}]{iexp,  }\item[{logical, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in}), \hyperlink{option__stopwatch_83_8txt_aa4ece75e7acf58a4843f70fe18c3ade5}{optional}}]{verbose }\end{DoxyParamCaption})}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+prime\+\_\+factors -\/ \mbox{[}M\+\_\+factor\mbox{]} decompose a number into its prime factors \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+call prime\+\_\+factors(number,nprm,iprm,iexp\mbox{[},verbose\mbox{]})
+
+integer, intent(in) \+:\+: number integer, intent(out) \+:\+: nprm integer, intent(out) \+:\+: iprm(\+:) integer, intent(out) \+:\+: iexp(\+:) logical, intent(in),optional \+:\+: verbose \subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+\begin{DoxyVerb}1. Upon return from PRIME_FACTORS,
+
+        NUMBER = IPRM(1)**IEXP(1) * IPRM(2)**IEXP(2) * ...
+                 *IPRM(NPRM)**IEXP(NPRM)
+
+2. A number represented by a (single-precision) INTEGER
+   value on the VMS VAX cluster can have at most 9 distinct
+   prime factors. On machines where the maximum integer is
+   larger than 2**31 - 1, IPRM and IEXP would, in general,
+   have to be dimensioned larger since larger numbers may
+   have more than 9 distinct prime factors.
+\end{DoxyVerb}
+ \subsubsection*{O\+P\+T\+I\+O\+NS}
+
+\begin{DoxyVerb}NUMBER   INTEGER constant or variable, number to be decomposed into
+         prime factors. NUMBER .ge. 2.
+         For 32-bit integers NUMBER <= 2147483647
+NPRM     INTEGER variable, will contain the number of distinct prime
+         factors of the number.
+IPRM     INTEGER array of size at least 9, will contain the prime
+         factors of the number.
+IEXP     INTEGER array of size at least 9, will contain the
+         exponents of the corresponding prime factors.
+verbose  optional LOGICAL constant or variable, controls printing
+         of results.
+          o .false. - Results are not printed.
+          o .true. - Results are printed.
+\end{DoxyVerb}
+ \subsubsection*{E\+X\+A\+M\+P\+LE}
+
+Sample program\+:
+
+program find\+\_\+prime\+\_\+factors use M\+\_\+factor, only \+: prime\+\_\+factors implicit none integer \+:\+: number integer \+:\+: iexp(10), iprm(10), nprm logical \+:\+: verbose=.true. integer \+:\+: ios do write($\ast$,\textquotesingle{}(a)\textquotesingle{}, advance=\textquotesingle{}no\textquotesingle{}) \textquotesingle{} Enter number to be factored\+: \textquotesingle{} read($\ast$,$\ast$,iostat=ios,end=999) number if(ios.\+eq.\+0)then call prime\+\_\+factors(number, nprm, iprm, iexp, verbose) endif enddo 999 continue end program find\+\_\+prime\+\_\+factors
+
+\subsubsection*{P\+E\+D\+I\+G\+R\+EE}
+
+o Coded at Madison Academic Computing Center, University of Wisconsin, Madison o F\+O\+R\+T\+R\+AN 77 Version 1988.\+09 o Code converted using T\+O\+\_\+\+F90 by Alan Miller, 2000-\/07-\/14\+T11\+:42\+:45 o Fortran 2003 version 20160918 by John S. Urban 
+
+References false().
+
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{namespacem__factor_a7ae228777d43741d83e3a4df917f39df}\label{namespacem__factor_a7ae228777d43741d83e3a4df917f39df}} 
+\index{m\+\_\+factor@{m\+\_\+factor}!ident1@{ident1}}
+\index{ident1@{ident1}!m\+\_\+factor@{m\+\_\+factor}}
+\subsubsection{\texorpdfstring{ident1}{ident1}}
+{\footnotesize\ttfamily \hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), parameter m\+\_\+factor\+::ident1 =\textquotesingle{}@(\#)M\+\_\+factor\+::least\+\_\+common\+\_\+multiple(3f)\+: function finds L\+C\+M for (i,j)$\vert$m(\+:)$\vert$m(\+:,\+:)$\vert$m(\+:,\+:,\+:)\textquotesingle{}\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__factor_ab34da44c20883bea1b31a67a3d6359e5}\label{namespacem__factor_ab34da44c20883bea1b31a67a3d6359e5}} 
+\index{m\+\_\+factor@{m\+\_\+factor}!ident2@{ident2}}
+\index{ident2@{ident2}!m\+\_\+factor@{m\+\_\+factor}}
+\subsubsection{\texorpdfstring{ident2}{ident2}}
+{\footnotesize\ttfamily \hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), parameter m\+\_\+factor\+::ident2 =\textquotesingle{}@(\#)M\+\_\+factor\+::greatest\+\_\+common\+\_\+divisor(3f)\+: function finds G\+C\+D for (i,j)$\vert$m(\+:)$\vert$m(\+:,\+:)$\vert$m(\+:,\+:,\+:)\char`\"{}\textquotesingle{}\hspace{0.3cm}{\ttfamily [private]}}
+
