@@ -19,7 +19,7 @@ dnum0(3f) -\/ \mbox{[}M\+\_\+calculator\+\_\+plus\mbox{]} return double precisio
 \begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
 
 snum0(3f) -\/ \mbox{[}M\+\_\+calculator\+\_\+plus\mbox{]} resolve a calculator expression into a string(return blank on errors) \end{DoxyCompactList}\item 
-\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__calculator__plus_a558a3fed7079c10085ce2f71da532d08}{jucalcx} (inlin0, outval, outlin0, ierr, ilen)
+recursive \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__calculator__plus_ac6f5a1bd3d8be798af932c006a72b123}{jucalcx} (inlin0, outval, outlin0, ierr, ilen)
 \begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
 
 jucalcx(3f) -\/ \mbox{[}M\+\_\+calculator\+\_\+plus\mbox{]} return value from a string expression processing messages to simplify call to J\+U\+C\+A\+L\+C(3f) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
@@ -77,6 +77,22 @@ o N\+O\+NE. A\+U\+T\+H\+OR + John S. Urban \subsubsection*{V\+E\+R\+S\+I\+ON 1.\
 
 References jucalcx().
 
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__calculator__plus_add45c0bb36bc796ee8a0354665f9397e_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=260pt]{namespacem__calculator__plus_add45c0bb36bc796ee8a0354665f9397e_icgraph}
+\end{center}
+\end{figure}
 \mbox{\Hypertarget{namespacem__calculator__plus_a3edbf94f311a3fad4a83fd8dfe26a61a}\label{namespacem__calculator__plus_a3edbf94f311a3fad4a83fd8dfe26a61a}} 
 \index{m\+\_\+calculator\+\_\+plus@{m\+\_\+calculator\+\_\+plus}!inum0@{inum0}}
 \index{inum0@{inum0}!m\+\_\+calculator\+\_\+plus@{m\+\_\+calculator\+\_\+plus}}
@@ -144,11 +160,27 @@ A\+U\+T\+H\+OR\+: John S. Urban \subsubsection*{V\+E\+R\+S\+I\+ON\+: 19971123}
 
 References jucalcx().
 
-\mbox{\Hypertarget{namespacem__calculator__plus_a558a3fed7079c10085ce2f71da532d08}\label{namespacem__calculator__plus_a558a3fed7079c10085ce2f71da532d08}} 
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__calculator__plus_a3edbf94f311a3fad4a83fd8dfe26a61a_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__calculator__plus_a3edbf94f311a3fad4a83fd8dfe26a61a_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__calculator__plus_ac6f5a1bd3d8be798af932c006a72b123}\label{namespacem__calculator__plus_ac6f5a1bd3d8be798af932c006a72b123}} 
 \index{m\+\_\+calculator\+\_\+plus@{m\+\_\+calculator\+\_\+plus}!jucalcx@{jucalcx}}
 \index{jucalcx@{jucalcx}!m\+\_\+calculator\+\_\+plus@{m\+\_\+calculator\+\_\+plus}}
 \subsubsection{\texorpdfstring{jucalcx()}{jucalcx()}}
-{\footnotesize\ttfamily \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+calculator\+\_\+plus\+::jucalcx (\begin{DoxyParamCaption}\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{inlin0,  }\item[{doubleprecision}]{outval,  }\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$)}]{outlin0,  }\item[{integer, intent(out)}]{ierr,  }\item[{integer, intent(out)}]{ilen }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily recursive \hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+calculator\+\_\+plus\+::jucalcx (\begin{DoxyParamCaption}\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{inlin0,  }\item[{doubleprecision}]{outval,  }\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$)}]{outlin0,  }\item[{integer, intent(out)}]{ierr,  }\item[{integer, intent(out)}]{ilen }\end{DoxyParamCaption})}
 
 
 
@@ -208,6 +240,22 @@ N\+O\+NE. A\+U\+T\+H\+OR John S. Urban \subsubsection*{V\+E\+R\+S\+I\+ON V1.\+0,
 
 References m\+\_\+calculator\+::jucalc().
 
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__calculator__plus_ac6f5a1bd3d8be798af932c006a72b123_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__calculator__plus_ac6f5a1bd3d8be798af932c006a72b123_icgraph}
+\end{center}
+\end{figure}
 \mbox{\Hypertarget{namespacem__calculator__plus_a448c42e7171e27c1f4a8e339687b0e3f}\label{namespacem__calculator__plus_a448c42e7171e27c1f4a8e339687b0e3f}} 
 \index{m\+\_\+calculator\+\_\+plus@{m\+\_\+calculator\+\_\+plus}!rnum0@{rnum0}}
 \index{rnum0@{rnum0}!m\+\_\+calculator\+\_\+plus@{m\+\_\+calculator\+\_\+plus}}
@@ -250,6 +298,14 @@ o N\+O\+NE. A\+U\+T\+H\+OR John S. Urban \subsubsection*{V\+E\+R\+S\+I\+ON 1.\+0
 
 References jucalcx().
 
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__calculator__plus_a448c42e7171e27c1f4a8e339687b0e3f_cgraph}
+\end{center}
+\end{figure}
 \mbox{\Hypertarget{namespacem__calculator__plus_a2538e7f9f0b810f7f8dbdd80fa2444b3}\label{namespacem__calculator__plus_a2538e7f9f0b810f7f8dbdd80fa2444b3}} 
 \index{m\+\_\+calculator\+\_\+plus@{m\+\_\+calculator\+\_\+plus}!snum0@{snum0}}
 \index{snum0@{snum0}!m\+\_\+calculator\+\_\+plus@{m\+\_\+calculator\+\_\+plus}}
@@ -306,6 +362,14 @@ o N\+O\+NE. A\+U\+T\+H\+OR John S. Urban \subsubsection*{V\+E\+R\+S\+I\+ON 1.\+0
 
 References m\+\_\+calculator\+::iclen\+\_\+calc, and jucalcx().
 
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__calculator__plus_a2538e7f9f0b810f7f8dbdd80fa2444b3_cgraph}
+\end{center}
+\end{figure}
 \mbox{\Hypertarget{namespacem__calculator__plus_a59710eb6babeed1f4b8d439f97d5d90a}\label{namespacem__calculator__plus_a59710eb6babeed1f4b8d439f97d5d90a}} 
 \index{m\+\_\+calculator\+\_\+plus@{m\+\_\+calculator\+\_\+plus}!strgar2@{strgar2}}
 \index{strgar2@{strgar2}!m\+\_\+calculator\+\_\+plus@{m\+\_\+calculator\+\_\+plus}}
@@ -378,6 +442,22 @@ N\+O\+NE. A\+U\+T\+H\+OR John S. Urban \subsubsection*{V\+E\+R\+S\+I\+ON 1.\+0 1
 
 References false(), m\+\_\+calculator\+::iclen\+\_\+calc, jucalcx(), and true().
 
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__calculator__plus_a59710eb6babeed1f4b8d439f97d5d90a_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=260pt]{namespacem__calculator__plus_a59710eb6babeed1f4b8d439f97d5d90a_icgraph}
+\end{center}
+\end{figure}
 \mbox{\Hypertarget{namespacem__calculator__plus_a4d3424e0cb74d4af53e7f59c07d31f1b}\label{namespacem__calculator__plus_a4d3424e0cb74d4af53e7f59c07d31f1b}} 
 \index{m\+\_\+calculator\+\_\+plus@{m\+\_\+calculator\+\_\+plus}!strgarr@{strgarr}}
 \index{strgarr@{strgarr}!m\+\_\+calculator\+\_\+plus@{m\+\_\+calculator\+\_\+plus}}
@@ -499,3 +579,11 @@ none. A\+U\+T\+H\+OR John S. Urban \subsubsection*{V\+E\+R\+S\+I\+ON 1.\+0, 1997
 
 References jucalcx().
 
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__calculator__plus_a4d3424e0cb74d4af53e7f59c07d31f1b_cgraph}
+\end{center}
+\end{figure}

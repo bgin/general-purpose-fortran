@@ -19,7 +19,7 @@ var searchData=
   ['test_5ft2m',['test_t2m',['../t2m_8f90.html#a1d0ef3619e5da531507fb99db2ebb4fe',1,'t2m.f90']]],
   ['testcli',['testcli',['../shell_8f90.html#a19f7365559e8816247241c4721e8eccb',1,'shell.f90']]],
   ['testit',['testit',['../__uname_8f90.html#a483d2219923eccf493a883fceee5a424',1,'testit:&#160;_uname.f90'],['../exchange_8f90.html#a483d2219923eccf493a883fceee5a424',1,'testit:&#160;exchange.f90']]],
-  ['text',['text',['../notes_8txt.html#ad997a48ee1fbabed5333859846b5d9a3',1,'notes.txt']]],
+  ['text',['text',['../README_8txt.html#afda9e6898bd09238e9e9be4c62ce246b',1,'README.txt']]],
   ['textang',['textang',['../namespacem__pixel.html#a5e213461e9894b99c9e8f278d5c4a858',1,'m_pixel']]],
   ['textsize',['textsize',['../namespacem__pixel.html#a070e9fff1f2cd0c89d40c5d3c72b7f2c',1,'m_pixel']]],
   ['th',['th',['../manup_8f90.html#ad056917b9c1db52352c327beadced6d0',1,'manup.f90']]],

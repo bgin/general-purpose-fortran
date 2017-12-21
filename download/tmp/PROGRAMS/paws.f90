@@ -23,33 +23,33 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   If no duration is specified wait until a carriage return is entered.         ',&
 '                                                                                ',&
 'OPTIONS                                                                         ',&
-'   dd-hh:mm:ss  Given a string representing a duration of time in the           ',&
-'                following forms:                                                ',&
+'   dd-hh:mm:ss   Given a string representing a duration of time in the          ',&
+'                 following forms:                                               ',&
 '                                                                                ',&
-'                  dd-hh:mm:ss[.xx]                                              ',&
-'                     hh:mm:ss[.xx]                                              ',&
-'                        mm:ss[.xx]                                              ',&
-'                           ss[.xx]                                              ',&
-'                     or                                                         ',&
-'                  xx[.yy]SUFFIX                                                 ',&
+'                   dd-hh:mm:ss[.xx]                                             ',&
+'                      hh:mm:ss[.xx]                                             ',&
+'                         mm:ss[.xx]                                             ',&
+'                            ss[.xx]                                             ',&
+'                      or                                                        ',&
+'                   xx[.yy]SUFFIX                                                ',&
 '                                                                                ',&
-'                convert it to seconds and pause for that amount of time.        ',&
-'                Suffix may be s for seconds, m for minutes, h for hours,        ',&
-'                or d for days.                                                  ',&
-'   -date|-until wait until the specified date has passed (before starting       ',&
-'                optional pause). See guessdate(3f) for syntax allowed for       ',&
-'                the date.                                                       ',&
-'   -uet         wait until the specified Unix Epoch Time has passed             ',&
-'   -jed         wait until the specified Julian Ephemeris Date has passed       ',&
-'   -dat         wait until the specified date vector has passed                 ',&
-'                (year month day timezone hour minutes seconds milliseconds)     ',&
-'   -repeat NNN  The duration is repeated NNN times with the date displayed      ',&
-'                at the end of each pause.                                       ',&
-'   --msg        message to display before pausing                               ',&
-'   --cmd        command to execute after a pause                                ',&
-'   --fmt        date format (see fmtdate(3f) for details)                       ',&
-'   --help       display this help and exit                                      ',&
-'   --version    output version information and exit                             ',&
+'                 convert it to seconds and pause for that amount of time.       ',&
+'                 Suffix may be s for seconds, m for minutes, h for hours,       ',&
+'                 or d for days.                                                 ',&
+'   -date|-until  wait until the specified date has passed (before starting      ',&
+'                 optional pause). See guessdate(3f) for syntax allowed for      ',&
+'                 the date.                                                      ',&
+'   -uet          wait until the specified Unix Epoch Time has passed            ',&
+'   -jed          wait until the specified Julian Ephemeris Date has passed      ',&
+'   -dat          wait until the specified date vector has passed                ',&
+'                 (year month day timezone hour minutes seconds milliseconds)    ',&
+'   -repeat NNN   The duration is repeated NNN times with the date displayed     ',&
+'                 at the end of each pause.                                      ',&
+'   --msg         message to display before pausing                              ',&
+'   --cmd         command to execute after a pause                               ',&
+'   --fmt         date format (see fmtdate(3f) for details)                      ',&
+'   --help        display this help and exit                                     ',&
+'   --version     output version information and exit                            ',&
 '                                                                                ',&
 '   For more information on the format of the dates, see the now(1) command.     ',&
 '                                                                                ',&
@@ -85,33 +85,33 @@ end subroutine help_usage
 !!    If no duration is specified wait until a carriage return is entered.
 !!
 !!##OPTIONS
-!!    dd-hh:mm:ss  Given a string representing a duration of time in the
-!!                 following forms:
+!!    dd-hh:mm:ss   Given a string representing a duration of time in the
+!!                  following forms:
 !!
-!!                   dd-hh:mm:ss[.xx]
-!!                      hh:mm:ss[.xx]
-!!                         mm:ss[.xx]
-!!                            ss[.xx]
-!!                      or
-!!                   xx[.yy]SUFFIX
+!!                    dd-hh:mm:ss[.xx]
+!!                       hh:mm:ss[.xx]
+!!                          mm:ss[.xx]
+!!                             ss[.xx]
+!!                       or
+!!                    xx[.yy]SUFFIX
 !!
-!!                 convert it to seconds and pause for that amount of time.
-!!                 Suffix may be s for seconds, m for minutes, h for hours,
-!!                 or d for days.
-!!    -date|-until wait until the specified date has passed (before starting
-!!                 optional pause). See guessdate(3f) for syntax allowed for
-!!                 the date.
-!!    -uet         wait until the specified Unix Epoch Time has passed
-!!    -jed         wait until the specified Julian Ephemeris Date has passed
-!!    -dat         wait until the specified date vector has passed
-!!                 (year month day timezone hour minutes seconds milliseconds)
-!!    -repeat NNN  The duration is repeated NNN times with the date displayed
-!!                 at the end of each pause.
-!!    --msg        message to display before pausing
-!!    --cmd        command to execute after a pause
-!!    --fmt        date format (see fmtdate(3f) for details)
-!!    --help       display this help and exit
-!!    --version    output version information and exit
+!!                  convert it to seconds and pause for that amount of time.
+!!                  Suffix may be s for seconds, m for minutes, h for hours,
+!!                  or d for days.
+!!    -date|-until  wait until the specified date has passed (before starting
+!!                  optional pause). See guessdate(3f) for syntax allowed for
+!!                  the date.
+!!    -uet          wait until the specified Unix Epoch Time has passed
+!!    -jed          wait until the specified Julian Ephemeris Date has passed
+!!    -dat          wait until the specified date vector has passed
+!!                  (year month day timezone hour minutes seconds milliseconds)
+!!    -repeat NNN   The duration is repeated NNN times with the date displayed
+!!                  at the end of each pause.
+!!    --msg         message to display before pausing
+!!    --cmd         command to execute after a pause
+!!    --fmt         date format (see fmtdate(3f) for details)
+!!    --help        display this help and exit
+!!    --version     output version information and exit
 !!
 !!    For more information on the format of the dates, see the now(1) command.
 !!
@@ -145,7 +145,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Fri, Nov 24th, 2017 8:24:36 PM>',&
+'@(#)COMPILED:       Thu, Dec 21st, 2017 12:02:35 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

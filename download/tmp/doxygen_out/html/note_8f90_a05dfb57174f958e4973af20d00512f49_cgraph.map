@@ -1,0 +1,7 @@
+<map id="callfont" name="callfont">
+<area shape="rect" id="node2" href="$do_87_8txt.html#addf9a264ccc8c65a4995cf34906eff5c" title="blocks" alt="" coords="155,5,215,32"/>
+<area shape="rect" id="node3" href="$namespacem__kracken.html#a9a64192326816b0b9badcc11506628ee" title="NAMEsget &#45; [ARGUMENTS:M_kracken] given keyword fetch string value and length from command arguments S..." alt="" coords="126,56,245,83"/>
+<area shape="rect" id="node6" href="$namespacem__messages.html#a239cb1269cc27d45176b9a278276d399" title="NAMEsigns &#45; [M_messages] write out 132&#45;character string in large block letters " alt="" coords="116,107,255,133"/>
+<area shape="rect" id="node4" href="$namespacem__kracken.html#a9e2129d174220802486cc2dc7e0cc443" title="NAMEsubscript(3fp) &#45; [ARGUMENTS:M_kracken] return the subscript value of a string when given it&#39;s nam..." alt="" coords="303,56,449,83"/>
+<area shape="rect" id="node5" href="$namespacem__kracken.html#af9225957a50e8e0559605911c4c5ee02" title="NAMEbounce(3fp) &#45; [ARGUMENTS:M_kracken] find index in Language Dictionary where VARNAM can be found S..." alt="" coords="497,56,633,83"/>
+</map>

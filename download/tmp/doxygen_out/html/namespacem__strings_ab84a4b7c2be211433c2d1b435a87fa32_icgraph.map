@@ -1,0 +1,51 @@
+<map id="m_strings::substitute" name="m_strings::substitute">
+<area shape="rect" id="node2" href="$namespacem__strings.html#a1222f3b718f7637105bde330367925e1" title="NAMEchange &#45; [M_strings] change old string to new string with a directive like a line editor ..." alt="" coords="370,104,499,131"/>
+<area shape="rect" id="node11" href="$namespacem__strings.html#a751d3101d8404ea10db4d8ba59a75d6b" title="m_strings::a2d" alt="" coords="201,436,309,463"/>
+<area shape="rect" id="node26" href="$sec2days_8f90.html#a85f052202d8a5417c74334a5fd499e2d" title="demo_sec2days" alt="" coords="755,563,873,589"/>
+<area shape="rect" id="node28" href="$__sleep_8f90.html#adea2b9826964203f987d029f48afa37a" title="demo_system_sleep" alt="" coords="743,512,885,539"/>
+<area shape="rect" id="node32" href="$namespacem__manup.html#a2d0a043fa0f6b2ca01e2eb4747ef4bbd" title="m_manup::manup" alt="" coords="562,765,689,792"/>
+<area shape="rect" id="node34" href="$t2m_8f90.html#ab191ed2a41113781c7994c9642cfbbab" title="t2m" alt="" coords="603,563,647,589"/>
+<area shape="rect" id="node36" href="$namespacem__time.html#a2cb84c9b8af4f395b76aed76e1431328" title="NAMEfmtdate &#45; [M_time] given DAT date&#45;time array return date as string using specified format ..." alt="" coords="197,715,313,741"/>
+<area shape="rect" id="node37" href="$__cmp_8f90.html#a099b4c5d750b7bb116895dc4fca1bf38" title="same" alt="" coords="228,765,283,792"/>
+<area shape="rect" id="node38" href="$makeout_8f90.html#affb61c1ee20c534b741b72ed67c9c778" title="makeout" alt="" coords="219,816,291,843"/>
+<area shape="rect" id="node39" href="$manup_8f90.html#a12de453acb5b104d198da168695af410" title="printname" alt="" coords="395,715,474,741"/>
+<area shape="rect" id="node40" href="$manup_8f90.html#aabf73d1c2ef02028690008788b8a1f9d" title="printsynopsis" alt="" coords="206,917,305,944"/>
+<area shape="rect" id="node41" href="$paranoid_8f90.html#a5ee1dc76ca482e8a4a44cbd213cce4c1" title="test_paranoia" alt="" coords="205,968,305,995"/>
+<area shape="rect" id="node42" href="$table2html_8f90.html#ac9fa6313f884ee5cf8caf9b9bfb9f3cd" title="table2html" alt="" coords="393,1044,476,1071"/>
+<area shape="rect" id="node43" href="$table2html_8f90.html#a8fd5b1ad7c5297852591499ca1e2db09" title="writeline" alt="" coords="221,1069,290,1096"/>
+<area shape="rect" id="node44" href="$namespacem__fpp.html#acf16ae34a4c7e769114656c3dbbe0640" title="m_fpp::domath" alt="" coords="201,1171,309,1197"/>
+<area shape="rect" id="node49" href="$namespacem__fpp.html#ae366d933366dea7f28b44653b5ef04d6" title="m_fpp::format_g_man" alt="" coords="361,1107,508,1133"/>
+<area shape="rect" id="node3" href="$namespacem__calculator.html#ab9afbbbd87dd1434f72853350afec2a6" title="NAMESYNOPSIS" alt="" coords="556,16,695,43"/>
+<area shape="rect" id="node7" href="$namespacem__history.html#a155404b1f975ae6fe778f836c043eeb2" title="m_history::redol" alt="" coords="568,129,683,156"/>
+<area shape="rect" id="node10" href="$change_8f90.html#a5fa62001f03b62e71cd6fa2a04f697b0" title="demo_change" alt="" coords="574,79,677,105"/>
+<area shape="rect" id="node4" href="$namespacem__calculator.html#a183990dad923a0e1338b0df538c3fec8" title="NAMESYNOPSIS" alt="" coords="745,12,883,39"/>
+<area shape="rect" id="node5" href="$namespacem__calculator.html#a2a06dd612d1c0e059f6fb2a267325201" title="m_calculator::jucalc" alt="" coords="939,5,1078,32"/>
+<area shape="rect" id="node6" href="$shell_8f90.html#a19f7365559e8816247241c4721e8eccb" title="testcli" alt="" coords="1165,132,1222,159"/>
+<area shape="rect" id="node8" href="$namespacem__history.html#a1abbc2c426b89526939d4389c9d3e391" title="m_history::redo" alt="" coords="758,107,870,133"/>
+<area shape="rect" id="node9" href="$redo_8f90.html#a4f300f7db1b9163c705b941bcd47d4f9" title="redoit" alt="" coords="981,56,1036,83"/>
+<area shape="rect" id="node12" href="$namespacem__strings.html#a6b4babf586dc3586426b13e4bb0fb979" title="NAMEstring_to_value &#45; [M_strings] subroutine returns real value from string " alt="" coords="382,461,487,488"/>
+<area shape="rect" id="node13" href="$namespacem__strings.html#aca902af295ede82fb0c45174bbfe6eef" title="m_strings::a2i" alt="" coords="383,360,487,387"/>
+<area shape="rect" id="node14" href="$namespacem__strings.html#a7b153720f1f9b93c49094dcb1272995b" title="NAMEs2v &#45; [M_strings] function returns doubleprecision numeric value from a string ..." alt="" coords="381,411,488,437"/>
+<area shape="rect" id="node15" href="$namespacem__kracken.html#ad0cfac1dcc02e0a67841f546cb57f823" title="NAMEmenu(3fp) &#45; [ARGUMENTS:M_kracken] prompt for values using a menu interface SYNOPSIS" alt="" coords="562,205,689,232"/>
+<area shape="rect" id="node21" href="$namespacem__time.html#aa5198c7aa4f3d8411c8ce93046ce3794" title="NAMEguessdate &#45; [M_time] reads in a date, in various formats " alt="" coords="559,360,692,387"/>
+<area shape="rect" id="node25" href="$namespacem__time.html#a7788285d79b8d58323b05e9a30a2d992" title="NAMEsec2days &#45; [M_time] convert seconds to string of form dd&#45;hh:mm:ss " alt="" coords="561,461,690,488"/>
+<area shape="rect" id="node27" href="$namespacem__time.html#a99393c7906f1989f90ece03969224938" title="NAMEdays2sec &#45; [M_time] convert string of form [[&#45;]dd&#45;]hh:mm:ss.nn to seconds " alt="" coords="561,411,690,437"/>
+<area shape="rect" id="node30" href="$colors_8f90.html#a147ff2bc384cd71c5234499e7a85bada" title="colors" alt="" coords="597,284,654,311"/>
+<area shape="rect" id="node16" href="$namespacem__kracken.html#a2cb376f8a8e26e489a45cafcda66ea3e" title="NAMEdissect(3f) &#45; [ARGUMENTS:M_kracken] convenient call to parse() – define defaults, then process " alt="" coords="941,208,1077,235"/>
+<area shape="rect" id="node20" href="$namespacem__kracken.html#a495ed7db5c2d301c4d5e623b62a9c295" title="NAMEparse(3f) &#45; [ARGUMENTS:M_kracken] parse user command and store tokens into Language Dictionary ..." alt="" coords="751,157,877,184"/>
+<area shape="rect" id="node17" href="$namespacem__fpp.html#a36ad74639f1f01dd0ac08e59e6943778" title="m_fpp::document" alt="" coords="1132,1023,1255,1049"/>
+<area shape="rect" id="node18" href="$namespacem__fpp.html#a3aa7c291b265d02ad91b3bb29e797156" title="m_fpp::cond" alt="" coords="1303,1023,1396,1049"/>
+<area shape="rect" id="node19" href="$ufpp_8f90.html#ae38e75311f766ddb27e1389ad1e8f7cc" title="ufpp" alt="" coords="1444,1048,1491,1075"/>
+<area shape="rect" id="node22" href="$now_8f90.html#a0a9caf8a3d791fca5628f441ed1b18ef" title="display_date" alt="" coords="767,411,861,437"/>
+<area shape="rect" id="node23" href="$paws_8f90.html#adea2b9826964203f987d029f48afa37a" title="demo_system_sleep" alt="" coords="743,360,885,387"/>
+<area shape="rect" id="node24" href="$planets_8f90.html#a9694fb47f36780e83c2f3b77472b4af1" title="planets" alt="" coords="782,309,846,336"/>
+<area shape="rect" id="node29" href="$days2sec_8f90.html#ae9a288b1c1af3c0a7a6a4434e2d163c8" title="demo_days2sec" alt="" coords="755,461,873,488"/>
+<area shape="rect" id="node31" href="$nc__printhtml_8f90.html#a32e95e7d4144cd8b7fb58ff6974441a8" title="nc_printhtml" alt="" coords="767,259,861,285"/>
+<area shape="rect" id="node33" href="$manup_8f90.html#a5941828c1341a0298a7b0c0c5789ff35" title="test_manup" alt="" coords="769,765,859,792"/>
+<area shape="rect" id="node35" href="$t2m_8f90.html#a1d0ef3619e5da531507fb99db2ebb4fe" title="test_t2m" alt="" coords="777,613,851,640"/>
+<area shape="rect" id="node45" href="$namespacem__fpp.html#a7fe1c908c17895ebaa5afc2dc4cd1f1f" title="m_fpp::math" alt="" coords="387,1171,482,1197"/>
+<area shape="rect" id="node46" href="$namespacem__fpp.html#a43f195db2d7dcdbaf89cb2e45ca60421" title="m_fpp::define" alt="" coords="765,1171,863,1197"/>
+<area shape="rect" id="node47" href="$namespacem__fpp.html#a4b9be76f637b58b358ee2a9ec95db933" title="m_fpp::parens" alt="" coords="573,1171,677,1197"/>
+<area shape="rect" id="node48" href="$namespacem__fpp.html#a7f223128c476778fa0334675c1431371" title="m_fpp::eval" alt="" coords="771,1120,857,1147"/>
+<area shape="rect" id="node50" href="$namespacem__fpp.html#a27e4c26021feb655e915c1835e40e8f4" title="m_fpp::print_comment\l_block" alt="" coords="933,1062,1084,1103"/>
+</map>

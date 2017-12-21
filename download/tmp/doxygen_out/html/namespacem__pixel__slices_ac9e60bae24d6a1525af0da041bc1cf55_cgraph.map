@@ -1,0 +1,51 @@
+<map id="m_pixel_slices::dl_slices" name="m_pixel_slices::dl_slices">
+<area shape="rect" id="node2" href="$namespacem__pixel__slices.html#afcc122fe448b5f806c0a372a203cd9ea" title="m_pixel_slices::dl\l_axisa" alt="" coords="180,385,307,426"/>
+<area shape="rect" id="node3" href="$namespacem__pixel__slices.html#a8e362bf8eea80faddc97f7d137c95f9c" title="m_pixel_slices::dl\l_color" alt="" coords="355,195,481,237"/>
+<area shape="rect" id="node5" href="$namespacem__pixel__slices.html#acafdf0174290a0e231ca120f6305b5d0" title="m_pixel_slices::dl_draw" alt="" coords="705,261,865,288"/>
+<area shape="rect" id="node6" href="$namespacem__pixel__slices.html#aa70737b5f5945b2f513163ee5c40942d" title="m_pixel_slices::dl_plot" alt="" coords="915,200,1069,227"/>
+<area shape="rect" id="node20" href="$namespacem__pixel__slices.html#ab9e9530d7fb4fbea1bc5d52744498731" title="m_pixel_slices::dl_move" alt="" coords="704,200,867,227"/>
+<area shape="rect" id="node23" href="$__true_8f90.html#a7ed1d79677aed1b23489a4fe0bd16daa" title="true" alt="" coords="763,556,807,583"/>
+<area shape="rect" id="node25" href="$__false_8f90.html#ac39cd9fe2012c31749944aa6b20b6c05" title="false" alt="" coords="1167,632,1216,659"/>
+<area shape="rect" id="node46" href="$namespacem__pixel__slices.html#ab70907b4409a4346c450488b5bcb34a8" title="m_pixel_slices::dl\l_axisb" alt="" coords="180,574,307,615"/>
+<area shape="rect" id="node47" href="$namespacem__pixel__slices.html#a1508683ec3b2444091bb34d40b5d8b93" title="m_pixel_slices::dl\l_intersect" alt="" coords="529,785,656,826"/>
+<area shape="rect" id="node48" href="$namespacem__pixel__slices.html#a47408b6c6411a3c3cb3419b319e57978" title="m_pixel_slices::dl\l_range" alt="" coords="180,937,307,978"/>
+<area shape="rect" id="node49" href="$namespacem__pixel__slices.html#a61f419d67b700758eceed72e406a37f0" title="m_pixel_slices::dl\l_vxpt3d" alt="" coords="180,1002,307,1043"/>
+<area shape="rect" id="node50" href="$intro__blas1_83_8txt.html#a113d08052d0d63bec82e36de68d76cdc" title="then" alt="" coords="220,1068,267,1095"/>
+<area shape="rect" id="node21" href="$namespacem__pixel__slices.html#a7d9372496e88c384aea5ad1b26750d1b" title="m_pixel_slices::dl\l_number" alt="" coords="355,414,481,455"/>
+<area shape="rect" id="node22" href="$namespacem__pixel__slices.html#a2a40fc08575b18772b520c7b5b81a91e" title="m_pixel_slices::dl\l_symbol" alt="" coords="529,414,656,455"/>
+<area shape="rect" id="node4" href="$namespacem__pixel.html#a334bde41bc7b2db19b950b1271ba7463" title="NAMEcolor(3f) &#45; [M_pixel] set current color index " alt="" coords="541,203,644,229"/>
+<area shape="rect" id="node7" href="$namespacem__pixel__slices.html#af0a3aeaa17e192568cb6a69a3b3eeab6" title="m_pixel_slices::dl\l_clipit" alt="" coords="1128,114,1255,155"/>
+<area shape="rect" id="node8" href="$namespacem__pixel__slices.html#aa0de53a25754eab8fff1732aa2f93eba" title="m_pixel_slices::dl\l_inbox" alt="" coords="1329,85,1455,126"/>
+<area shape="rect" id="node9" href="$namespacem__pixel__slices.html#a141b4da9ce5a0d633cc488f656c0320d" title="m_pixel_slices::dl_trs" alt="" coords="1117,180,1265,207"/>
+<area shape="rect" id="node10" href="$namespacem__pixel.html#a12012e819bb14b27d2b49732aa2e4e55" title="NAMEdraw2(3f) &#45; [M_pixel] draw from current position to given point " alt="" coords="1137,231,1246,257"/>
+<area shape="rect" id="node19" href="$namespacem__pixel.html#ab5d4dc474ff84dc0f3f35f4a395979e0" title="NAMEmove2(3f) &#45; [M_pixel] change current position " alt="" coords="1135,281,1247,308"/>
+<area shape="rect" id="node11" href="$namespacem__pixel.html#a491951b89e60d0d40d67f22d987da894" title="NAMEline(3f) &#45; [M_pixel] draw line between two points " alt="" coords="1345,197,1439,224"/>
+<area shape="rect" id="node12" href="$namespacem__pixel.html#a42791c7e58158616dae7c36ec5806717" title="NAMEdraw_line_single(3fp) &#45; [M_pixel] Bresenham&#39;s line algorithm " alt="" coords="1552,179,1681,221"/>
+<area shape="rect" id="node15" href="$namespacem__pixel.html#a1629b7134d0ea4b0f301ca23df764b8e" title="m_pixel::ppm_draw_thick_line" alt="" coords="1519,245,1715,272"/>
+<area shape="rect" id="node18" href="$namespacem__pixel.html#a9d4aea8ae2eb15317b83fa03a11371b2" title="m_pixel::world2viewport" alt="" coords="1537,128,1696,155"/>
+<area shape="rect" id="node13" href="$namespacem__pixel.html#a6c23c2779e54da4ac7505cfb816cc2b1" title="m_pixel::if_init" alt="" coords="1785,136,1890,163"/>
+<area shape="rect" id="node14" href="$namespacem__pixel.html#a063f74c3dd2f7f086dc47ec68abc22c9" title="m_pixel::swapcoord" alt="" coords="1769,187,1906,213"/>
+<area shape="rect" id="node16" href="$namespacem__pixel.html#aede24c612504a3e416840e6242c2d8fb" title="m_pixel::ppm_endcap\l_circle" alt="" coords="1763,289,1912,330"/>
+<area shape="rect" id="node17" href="$namespacem__pixel.html#aedaf33a27e9899da22c2497aff2af903" title="m_pixel::ppm_solid_fill" alt="" coords="1960,267,2113,293"/>
+<area shape="rect" id="node24" href="$__cmp_8f90.html#a3e09a3b52ee8fb04eeb93fe5761626a8" title="help_usage" alt="" coords="948,632,1036,659"/>
+<area shape="rect" id="node27" href="$__cmp_8f90.html#a39c21619b08a3c22f19e2306efd7f766" title="NAMEcmp(1f) &#45; [FUNIX] compare two files byte by byte SYNOPSIS" alt="" coords="1345,507,1439,533"/>
+<area shape="rect" id="node34" href="$namespacem__kracken.html#a850dce381e1cfe18a4ebcaa214995e39" title="NAMEkracken(3f) &#45; [ARGUMENTS:M_kracken] crack command line options on Fortran programs, using &quot;&#45;KEYWORD VALUE&quot; syntax SYNOPSIS" alt="" coords="1322,456,1462,483"/>
+<area shape="rect" id="node36" href="$namespacem__kracken.html#a7141acd7a00c1a5aa5f90612a0414b63" title="NAMElget &#45; [ARGUMENTS:M_kracken] given keyword fetch logical value from command arguments SYNOPSIS..." alt="" coords="2165,569,2280,596"/>
+<area shape="rect" id="node45" href="$namespacem__messages.html#a93650d7a0b4288d714aa9eb575366137" title="NAMEjunsun(3f) &#45; [M_messages] print an eye&#45;catching image of a smiling sun. " alt="" coords="919,581,1065,608"/>
+<area shape="rect" id="node26" href="$namespacem__debug.html#a66fa03a6a97837acc4c1265be1294295" title="NAMEfstop &#45; [M_debug] call stop with both a number and a message SYNOPSIS" alt="" coords="1337,733,1447,760"/>
+<area shape="rect" id="node28" href="$namespacem__kracken.html#a420718890eac378e5cd047dd0b477424" title="NAMEiget &#45; [ARGUMENTS:M_kracken] given keyword fetch integer value from command argument ..." alt="" coords="1335,632,1449,659"/>
+<area shape="rect" id="node33" href="$namespacem__messages.html#a986ae6ab4c767cfedb3e8eb2894224db" title="NAMEjunroach(3f) &#45; [M_messages] print an eye&#45;catching image of a roach. " alt="" coords="1313,683,1471,709"/>
+<area shape="rect" id="node29" href="$namespacem__kracken.html#ae7b6ad046d637f03148efb56336a7ff4" title="NAMEdget &#45; [ARGUMENTS:M_kracken] given keyword fetch doubleprecision value from command argument SYNO..." alt="" coords="2163,683,2282,709"/>
+<area shape="rect" id="node30" href="$namespacem__kracken.html#a9a64192326816b0b9badcc11506628ee" title="NAMEsget &#45; [ARGUMENTS:M_kracken] given keyword fetch string value and length from command arguments S..." alt="" coords="2350,683,2469,709"/>
+<area shape="rect" id="node31" href="$namespacem__kracken.html#a9e2129d174220802486cc2dc7e0cc443" title="NAMEsubscript(3fp) &#45; [ARGUMENTS:M_kracken] return the subscript value of a string when given it&#39;s nam..." alt="" coords="2535,733,2681,760"/>
+<area shape="rect" id="node32" href="$namespacem__kracken.html#af9225957a50e8e0559605911c4c5ee02" title="NAMEbounce(3fp) &#45; [ARGUMENTS:M_kracken] find index in Language Dictionary where VARNAM can be found S..." alt="" coords="2729,784,2865,811"/>
+<area shape="rect" id="node35" href="$namespacem__kracken.html#a2cb376f8a8e26e489a45cafcda66ea3e" title="NAMEdissect(3f) &#45; [ARGUMENTS:M_kracken] convenient call to parse() – define defaults, then process " alt="" coords="1549,733,1685,760"/>
+<area shape="rect" id="node43" href="$namespacem__kracken.html#a4c509f8594be3b73928c43c961c1caf4" title="NAMEget_command_arguments(3fp) &#45; [ARGUMENTS:M_kracken] return all command arguments as an allocated s..." alt="" coords="1529,449,1705,490"/>
+<area shape="rect" id="node38" href="$namespacem__kracken.html#ad0cfac1dcc02e0a67841f546cb57f823" title="NAMEmenu(3fp) &#45; [ARGUMENTS:M_kracken] prompt for values using a menu interface SYNOPSIS" alt="" coords="1774,835,1901,861"/>
+<area shape="rect" id="node39" href="$namespacem__kracken.html#a495ed7db5c2d301c4d5e623b62a9c295" title="NAMEparse(3f) &#45; [ARGUMENTS:M_kracken] parse user command and store tokens into Language Dictionary ..." alt="" coords="1973,733,2100,760"/>
+<area shape="rect" id="node40" href="$namespacem__kracken.html#a6eb597e3ca7d161933f595788d511fd7" title="NAMEstore(3fp) &#45; [ARGUMENTS:M_kracken] add or replace dict. name&#39;s value (if allow=&#39;add&#39; add name if ..." alt="" coords="2161,784,2284,811"/>
+<area shape="rect" id="node37" href="$namespacem__strings.html#a0953ac5c4d31339fdd8ec3acc9c3c915" title="NAMEupper &#45; [M_strings] changes a string to uppercase " alt="" coords="2350,569,2469,596"/>
+<area shape="rect" id="node42" href="$namespacem__strings.html#a7b153720f1f9b93c49094dcb1272995b" title="NAMEs2v &#45; [M_strings] function returns doubleprecision numeric value from a string ..." alt="" coords="1983,835,2090,861"/>
+<area shape="rect" id="node41" href="$namespacem__kracken.html#a21998bf9ab683f8fb661f4f4b916c21f" title="NAMEadd_string(3fp) &#45; [ARGUMENTS:M_kracken] Add new string name to Language Library dictionary ..." alt="" coords="2332,835,2487,861"/>
+<area shape="rect" id="node44" href="$M__stopwatch_83_8txt.html#a04ed5ef37abacfa36a856b5f30376485" title="length" alt="" coords="1809,456,1866,483"/>
+</map>

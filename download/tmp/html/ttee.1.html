@@ -100,35 +100,35 @@ Change format for timestamp prefix using a call to <B>now</B>(3f).
           Base time array:
            (1) %Y -- year, yyyy                                2017
            (2) %M -- month of year, 01 to 12                   12
-           (3) %D -- day of month, 01 to 31                    19
-               %d -- day of month, with suffix (1st, 2nd,&#46;&#46;&#46;)  19th
+           (3) %D -- day of month, 01 to 31                    21
+               %d -- day of month, with suffix (1st, 2nd,&#46;&#46;&#46;)  21st
            (4) %Z -- minutes from UTC                          -0300
                %z -- -+hh:mm from UTC                          -05:00
                %T -- -+hhmm  from UTC                          -0500
-           (5) %h -- hours, 00 to 23                           11
-               %H -- hour (1 to 12, or twelve-hour clock)      11
+           (5) %h -- hours, 00 to 23                           00
+               %H -- hour (1 to 12, or twelve-hour clock)      12
                %N -- midnight&lt; AM &lt;=noon; noon&lt;= PM &lt;midnight  AM
-           (6) %m -- minutes, 00 to 59                         16
-           (7) %s -- sec, 00 to 59                             50
-           (8) %x -- milliseconds 000 to 999                   640
+           (6) %m -- minutes, 00 to 59                         28
+           (7) %s -- sec, 00 to 59                             53
+           (8) %x -- milliseconds 000 to 999                   533
           Conversions:
-               %E -- Unix Epoch time                           1513700210.6400087
-               %e -- integer value of Unix Epoch time          1513700211
-               %J -- Julian  date                              2458107.1783639006
-               %j -- integer value of Julian Date(Julian Day)  2458107
-               %O -- Ordinal day (day of year)                 353
-               %o -- Whole days since Unix Epoch date          17519
-               %U -- day of week, 1..7 Sunday=1                3
-               %u -- day of week, 1..7 Monday=1                2
+               %E -- Unix Epoch time                           1513834133.5339620
+               %e -- integer value of Unix Epoch time          1513834134
+               %J -- Julian  date                              2458108.7283973955
+               %j -- integer value of Julian Date(Julian Day)  2458108
+               %O -- Ordinal day (day of year)                 355
+               %o -- Whole days since Unix Epoch date          17521
+               %U -- day of week, 1..7 Sunday=1                5
+               %u -- day of week, 1..7 Monday=1                4
                %i -- ISO week of year 1..53                    51
-               %I -- iso-8601 week-numbering date(yyyy-Www-d)  2017-W51-2
+               %I -- iso-8601 week-numbering date(yyyy-Www-d)  2017-W51-4
            Names:
                %l -- abbreviated month name                    Dec
                %L -- full month name                           December
-               %w -- first three characters of weekday         Tue
-               %W -- weekday name                              Tuesday
-               %p -- phase of moon                             New
-               %P -- percent of way from new to full moon      8%
+               %w -- first three characters of weekday         Thu
+               %W -- weekday name                              Thursday
+               %p -- phase of moon                             Waxing crescent
+               %P -- percent of way from new to full moon      18%
            Literals:
                %% -- a literal %                               %
                %t -- tab character                             
@@ -139,10 +139,10 @@ Change format for timestamp prefix using a call to <B>now</B>(3f).
                %q -- single quote (apostrophe)                 &#146;
                %Q -- double quote                              "
            Program timing:
-               %c -- CPU_TIME(3f) output                       0.10937500000000000
+               %c -- CPU_TIME(3f) output                       0.18750000000000000
                %C -- number of times this routine is used      1
                %S -- seconds since last use of this format     0.0000000000000000
-               %k -- time in seconds from SYSTEM_CLOCK(3f)     494883.719
+               %k -- time in seconds from SYSTEM_CLOCK(3f)     628803.312
 <P>
           If no percent (%) is found in the format one of several
           alternate substitutions occurs.
@@ -150,25 +150,25 @@ Change format for timestamp prefix using a call to <B>now</B>(3f).
           If the format is composed entirely of one of the following
           keywords the following substitutions occur:
             "iso-8601",
-            "iso"        ==&gt; %Y-%M-%DT%h:%m:%s%z             2017-12-19T11:16:50-05:00
+            "iso"        ==&gt; %Y-%M-%DT%h:%m:%s%z             2017-12-21T00:28:53-05:00
             "iso-8601W",
-            "isoweek"    ==&gt; %I                              2017-W51-2
-            "sql"        ==&gt; "%Y-%M-%D %h:%m:%s.%x"          "2017-12-19 11:16:50.652"
-            "sqlday"     ==&gt; "%Y-%M-%D"                      "2017-12-19"
-            "sqltime"    ==&gt; "%h:%m:%s.%x"                   "11:16:50.653"
+            "isoweek"    ==&gt; %I                              2017-W51-4
+            "sql"        ==&gt; "%Y-%M-%D %h:%m:%s.%x"          "2017-12-21 00:28:53.554"
+            "sqlday"     ==&gt; "%Y-%M-%D"                      "2017-12-21"
+            "sqltime"    ==&gt; "%h:%m:%s.%x"                   "00:28:53.555"
             "rfc-2822"   ==&gt; %w, %D %l %Y %h:%m:%s %T
-                             Tue, 19 Dec 2017 11:16:50 -0500
-            "rfc-3339"   ==&gt; %Y-%M-%DT%h:%m:%s%z             2017-12-19T11:16:50-05:00
+                             Thu, 21 Dec 2017 00:28:53 -0500
+            "rfc-3339"   ==&gt; %Y-%M-%DT%h:%m:%s%z             2017-12-21T00:28:53-05:00
             "date"       ==&gt; %w %l %D %h:%m:%s UTC%z %Y
-                             Tue Dec 19 11:16:50 UTC-05:00 2017
+                             Thu Dec 21 00:28:53 UTC-05:00 2017
             "short"      ==&gt; %w, %l %d, %Y %H:%m:%s %N UTC%z
-                             Tue, Dec 19th, 2017 11:16:50 AM UTC-05:00
+                             Thu, Dec 21st, 2017 12:28:53 AM UTC-05:00
             "long"," "   ==&gt; %W, %L %d, %Y %H:%m:%s %N UTC%z
-                             Tuesday, December 19th, 2017 11:16:50 AM UTC-05:00
-            "suffix"     ==&gt; %Y%D%M%h%m%s                    20171912111650
-            "formal"     ==&gt; The %d of %L %Y                 The 19th of December 2017
+                             Thursday, December 21st, 2017 12:28:53 AM UTC-05:00
+            "suffix"     ==&gt; %Y%D%M%h%m%s                    20172112002853
+            "formal"     ==&gt; The %d of %L %Y                 The 21st of December 2017
             "lord"       ==&gt; the %d day of %L in the year of our Lord %Y
-                             the 19th day of December in the year of our Lord 2017
+                             the 21st day of December in the year of our Lord 2017
             "easter"     ==&gt; FOR THE YEAR OF THE CURRENT DATE:
                                Easter day: the %d day of %L in the year of our Lord %Y
             "all"        ==&gt; A SAMPLE OF DATE FORMATS
@@ -176,20 +176,20 @@ Change format for timestamp prefix using a call to <B>now</B>(3f).
           common macros:
              year          %Y  2017
              month         %M  12
-             day           %D  19
+             day           %D  21
              timezone      %z  -05:00
-             hour          %h  11
-             minute        %m  16
-             second        %s  50
-             millisecond   %x  660
-             epoch         %e  1513700211
-             julian        %j  2458107
-             ordinal       %O  353
-             weekday       %u  2
+             hour          %h  00
+             minute        %m  28
+             second        %s  53
+             millisecond   %x  564
+             epoch         %e  1513834134
+             julian        %j  2458108
+             ordinal       %O  355
+             weekday       %u  4
           if none of these keywords are found then every letter that
           is a macro is assumed to have an implied percent in front
           of it. For example:
-             YMDhms ==&gt; %Y%M%D%h%m%s ==&gt; 20171219111650
+             YMDhms ==&gt; %Y%M%D%h%m%s ==&gt; 20171221002853
 <P>
 </PRE>
 <TABLE cellpadding=3>
@@ -252,7 +252,7 @@ Basic command usage:
 </PRE>
 </BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>ttee (1)</TD> <TD align=right width=33%><I>December 19, 2017</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from eba7b103-06b3-4840-b4f4-c768ffe97c2e using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>ttee (1)</TD> <TD align=right width=33%><I>December 21, 2017</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 39c21cd6-6a0c-4460-a486-dd35958775a8 using man macros.</FONT>
 </div>
 </div>
 <center><img src="images/ttee.1.gif"></center> 

@@ -1,0 +1,19 @@
+<map id="m_system::arr2str" name="m_system::arr2str">
+<area shape="rect" id="node2" href="$namespacem__system.html#a5a32db818a9ffb0a4ea724e95356c560" title="NAMEsystem_getcwd(3f) &#45; [M_system] call getcwd(3c) to get the pathname of the current working directo..." alt="" coords="198,56,381,83"/>
+<area shape="rect" id="node5" href="$namespacem__system.html#a983df5b2d7cb5842d69c4a31829403e0" title="NAMEsystem_readdir(3f) &#45; [M_system] read a directory using readdir(3c) SYNOPSIS" alt="" coords="199,275,379,301"/>
+<area shape="rect" id="node8" href="$namespacem__system.html#ae0e43010a82a6a25402568ccb326322d" title="NAMEsystem_readenv(3f) &#45; [M_system] step thru and read environment table SYNOPSIS" alt="" coords="197,376,382,403"/>
+<area shape="rect" id="node11" href="$namespacem__system.html#a96fab225737afb77ff1cbba9866f0d05" title="NAMEsystem_gethostname(3f) &#45; [M_system] get name of current host SYNOPSIS" alt="" coords="181,452,397,479"/>
+<area shape="rect" id="node13" href="$namespacem__system.html#aec137429fbb8c848db4ecd914466d7e8" title="NAMEsystem_getgrgid(3f) &#45; [M_system] get groupd name associated with a GID SYNOPSIS" alt="" coords="196,173,383,200"/>
+<area shape="rect" id="node18" href="$namespacem__system.html#a59cd13de95dc9a65b444f02614ea39ce" title="NAMEsystem_getpwuid(3f) &#45; [M_system] get login name associated with a UID SYNOPSIS" alt="" coords="193,224,385,251"/>
+<area shape="rect" id="node3" href="$__pwd_8f90.html#a64555eabda1ed68b752904f9cbc26868" title="demo_system_getcwd" alt="" coords="463,5,615,32"/>
+<area shape="rect" id="node4" href="$lsup_8f90.html#a3c3d8a93f4c35d7c95cd6db2e692b561" title="lsup" alt="" coords="733,85,780,112"/>
+<area shape="rect" id="node6" href="$__ls_8f90.html#a88c164012f5d1153e039f2dcaa76e971" title="demo_system_readdir" alt="" coords="681,224,832,251"/>
+<area shape="rect" id="node7" href="$makeout_8f90.html#affb61c1ee20c534b741b72ed67c9c778" title="makeout" alt="" coords="503,325,575,352"/>
+<area shape="rect" id="node9" href="$namespacem__system.html#a9c34787b170ab8d41000d7c3acb60736" title="NAMEsystem_clearenv(3f) &#45; [M_system] clear environment by calling clearenv(3c) " alt="" coords="445,427,633,453"/>
+<area shape="rect" id="node10" href="$penv_8f90.html#a01dea0dd27ab167506a724b2d0aeb2b5" title="penv" alt="" coords="733,401,781,428"/>
+<area shape="rect" id="node12" href="$__hostname_8f90.html#a8cf8b2c2d1597761d376d337686d3667" title="demo_system_gethostname" alt="" coords="446,477,633,504"/>
+<area shape="rect" id="node14" href="$namespacem__system.html#aa26c234da8b559f549db4dbe446b8acc" title="NAMEsystem_stat_print(3f) &#45; [M_system] print the principal info obtained for a pathname from system_s..." alt="" coords="458,107,621,149"/>
+<area shape="rect" id="node15" href="$__ls_8f90.html#a776aaa5526c5060cfed769a9836bd8da" title="printit" alt="" coords="512,173,567,200"/>
+<area shape="rect" id="node17" href="$__ls_8f90.html#a4299f4bb3561e562301b7fed91e7c673" title="print_csv" alt="" coords="503,224,576,251"/>
+<area shape="rect" id="node16" href="$__stat_8f90.html#adf8b7aa887ea1a5d211153cc019facf4" title="demo_system_stat" alt="" coords="690,173,823,200"/>
+</map>

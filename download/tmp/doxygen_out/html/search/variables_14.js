@@ -2,7 +2,7 @@ var searchData=
 [
   ['tch',['tch',['../structm__display__util_1_1settings.html#ab1c6c7523b3660ecda155d49db2b35d3',1,'m_display_util::settings']]],
   ['terms',['terms',['../M__stopwatch_83_8txt.html#a3387c149d76f7868b666adddab1176db',1,'M_stopwatch.3.txt']]],
-  ['text',['text',['../notes_8txt.html#ad997a48ee1fbabed5333859846b5d9a3',1,'notes.txt']]],
+  ['text',['text',['../README_8txt.html#afda9e6898bd09238e9e9be4c62ce246b',1,'README.txt']]],
   ['them',['them',['../inquiry__stopwatch_83_8txt.html#aba56042309c21e69313821cb6c092c35',1,'them():&#160;inquiry_stopwatch.3.txt'],['../M__stopwatch_83_8txt.html#a6adffb046b2f6ccccc6b40a509392721',1,'them():&#160;M_stopwatch.3.txt']]],
   ['this',['this',['../M__stopwatch_83_8txt.html#ad62a52042bb610eee5b36b5516caec22',1,'M_stopwatch.3.txt']]],
   ['this_5fwatch',['this_watch',['../structm__stopwatch_1_1watch__list.html#ac8234d58cf4e9e41c2debff4c807f461',1,'m_stopwatch::watch_list']]],

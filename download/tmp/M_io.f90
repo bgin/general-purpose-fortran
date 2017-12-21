@@ -21,29 +21,36 @@ CONTAINS
 !!
 !!      Usage
 !!
-!!       character(len=:),allocatable function uniq(name,istart,verbose)
+!!       character(len=:),allocatable function uniq(name,istart,verbose,create)
 !!       character(len=*),intent(in) :: name
 !!       integer,intent(in),optional :: istart
 !!       logical,intent(in),optional :: verbose
+!!       logical,intent(in),optional :: create
 !!
 !!##DESCRIPTION
 !!    Given a filename test if it is in use or exists. If it is, or if it
 !!    ends in a period add a four-digit number to the end of the name and
-!!    test if the new name exists. If necessary, increment the number
-!!    and try again up to the value 9999. An empty file is created if
-!!    successful.
+!!    test if the new name exists. If necessary, increment the number and
+!!    try again up to the value 9999999. By default an empty file is created
+!!    if an unused name is found.
 !!
 !!    o relatively non-generic;
 !!    o does not try to detect io errors
 !!
 !!##OPTIONS
-!!       name     base input name used to create output filename
-!!                If name ends in "." a numeric suffix is always added.
-!!       istart   number to start with as a suffix. Default is 1.
-!!       verbose  writes extra messages to stdout. Defaults to .false.
+!!    name     base input name used to create output filename
+!!             If name ends in "." a numeric suffix is always added.
+!!    istart   number to start with as a suffix. Default is 1. Must be a
+!!             positive integer less than 9999999.
+!!    verbose  writes extra messages to stdout. Defaults to .false.
+!!    create   create file if new name is successfully found. Defaults
+!!             to .true. .
+!!
 !!##RETURNS
-!!       uniq     A unique filename that is the same as the NAME input parameter
-!!                except with a number appended at the end if needed.
+!!    uniq     A unique filename that is the same as the NAME input parameter
+!!             except with a number appended at the end if needed. If could
+!!             not find a unique name a blank is returned.
+!!
 !!##EXAMPLE
 !!
 !!    Sample program
@@ -52,7 +59,7 @@ CONTAINS
 !!       use M_io, only : uniq
 !!       implicit none
 !!       character(len=4096) :: myname
-!!       integer            :: i
+!!       integer             :: i
 !!          myname=uniq('does_not_exist')
 !!          open(unit=10,file='does_exist')
 !!          write(*,*)'name stays the same ',trim(myname)
@@ -84,15 +91,16 @@ CONTAINS
 !!    John S. Urban, 1993
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
-function uniq(name,istart,verbose)
+function uniq(name,istart,verbose,create)
 use M_journal, only : journal
 implicit none
 character(len=*),parameter::ident="@(#)M_io::uniq(3f):append a number to the end of filename to make a unique name if name exists"
 !-----------------------------------------------------------------------------------------------------------------------------------
-character(len=*),intent(in) :: name
-character(len=4096)         :: uniq
-integer,intent(in),optional :: istart
-logical,intent(in),optional :: verbose
+character(len=*),intent(in)  :: name
+character(len=:),allocatable :: uniq
+integer,intent(in),optional  :: istart
+logical,intent(in),optional  :: verbose
+logical,intent(in),optional  :: create
 !-----------------------------------------------------------------------------------------------------------------------------------
    integer                     :: istart_local
    logical                     :: around
@@ -103,8 +111,9 @@ logical,intent(in),optional :: verbose
    integer                     :: iscr
    integer                     :: ios
    logical                     :: verbose_local
+   logical                     :: create_local
 !-----------------------------------------------------------------------------------------------------------------------------------
-   uniq=name                                         ! the input name will be returned if it passes all the tests
+   uniq=trim(name)                                   ! the input name will be returned if it passes all the tests
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(lastname.ne.name)then                          ! if a different input name than last time called reset icount
       lastname=name                                  ! a new name to keep for subsequent calls
@@ -117,49 +126,59 @@ logical,intent(in),optional :: verbose
       verbose_local=.false.
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
-   if(present(istart))then
-      istart_local=istart
+   if(present(create))then
+      create_local=create
    else
-      istart_local=1
+      create_local=.true.
    endif
-   if(istart_local.ne.1) icount=istart_local         ! icount is used to make a suffix to add to make the file unique
+!-----------------------------------------------------------------------------------------------------------------------------------
+   if(present(istart))then
+      icount=istart                                  ! icount is used to make a suffix to add to make the file unique
+   endif
 !-----------------------------------------------------------------------------------------------------------------------------------
    ilen=len_trim(name)                               ! find last non-blank character in file name
-   if(ilen.ne.0)then                                 ! a blank input name so name will just be a suffix
 !-----------------------------------------------------------------------------------------------------------------------------------
+   if(ilen.ne.0)then                                 ! a blank input name so name will just be a suffix
       if(name(ilen:ilen).ne.'.')then                 ! always append a number to a file ending in .
          inquire(file=name(:ilen),exist=around)      ! check filename as-is
          if(.not.around)then                         ! file name does not exist, can use it as-is
-            uniq=name
-            open(newunit=iscr,file=uniq,iostat=ios,status='new')
-            close(unit=iscr,iostat=ios)
+            uniq=trim(name)
+            if(create_local)then
+               open(newunit=iscr,file=uniq,iostat=ios,status='new')
+               close(unit=iscr,iostat=ios)
+            endif
             return
          endif
       endif
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
-   if(ilen.gt.(4096-4))then                           ! input filename is too long to add suffix to
-      call journal('sc','*uniq* ERROR: unable to append number to filename. Filename is too long')
-      return
-   endif
-!-----------------------------------------------------------------------------------------------------------------------------------
    itimes=0                                           ! count number of times tried to get a uniq name
+   deallocate(uniq)
+   allocate(character(len=ilen+8) :: uniq)            ! make it useable with an internal WRITE(3f) with room for a numeric suffix
+   uniq(:)=name
    INFINITE: do                                       ! top of loop trying for a unique name
-      if(itimes.ge.9999)then                          ! if too many tries to be reasonable give up
+      if(itimes.ge.9999999)then                       ! if too many tries to be reasonable give up
          call journal('sc','*uniq* unable to find a unique filename. Too many tries')
+         uniq=''
          return
       endif
-      if(icount.gt.9999) icount=1                     ! reset ICOUNT when it hits arbitrary maximum value
-      write(uniq(ilen+1:),'(i4.4)')icount             ! create name by adding a numeric string to end
+      if(icount.gt.9999999) icount=1                  ! reset ICOUNT when it hits arbitrary maximum value
+      if(icount.le.9999)then
+         write(uniq(ilen+1:),'(i4.4)')icount          ! create name by adding a numeric string to end
+      else
+         write(uniq(ilen+1:),'(i7.7)')icount          ! create name by adding a numeric string to end
+      endif
       icount=icount+1                                 ! increment counter used to come up with suffix
-      inquire(file=uniq(:ilen+4),exist=around)        ! see if this filename already exists
+      inquire(file=uniq,exist=around)                 ! see if this filename already exists
       if(.not.around)then                             ! found an unused name
          if(verbose_local)then
-            call journal('c',trim('*uniq* name='//uniq)) ! write out message reporting name used
+            call journal('c',trim('*uniq* name='//trim(uniq))) ! write out message reporting name used
          endif
-         open(newunit=iscr,file=uniq,iostat=ios,status='new')
-         close(unit=iscr,iostat=ios)
-
+         if(create_local)then
+            open(newunit=iscr,file=uniq,iostat=ios,status='new')
+            close(unit=iscr,iostat=ios)
+         endif
+         uniq=trim(uniq)
          return                                       ! return successfully
       endif
       itimes=itimes+1                                 ! haven't found a unique name, try again
@@ -1102,13 +1121,16 @@ end function readline
 !!   Sample:
 !!
 !!     program testit
-!!     use M_io, only : get_tmp
+!!     use M_io, only : get_tmp, uniq
 !!     implicit none
 !!     character(len=:),allocatable :: answer
 !!        answer=get_tmp()
 !!        write(*,*)'result is ',answer
-!!     end program testit
+!!        answer=get_tmp()//uniq('_scratch',create=.false.)
+!!        write(*,*)'the file ',answer,' was a good scratch file name, at least a moment ago'
 !!
+!!     end program testit
+!! <h3>Results:</h3>
 !!   Sample Results:
 !!
 !!     result is /cygdrive/c/Users/JSU/AppData/Local/Temp/

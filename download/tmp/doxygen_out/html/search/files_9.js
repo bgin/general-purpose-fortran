@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['init_5frandom_5fseed_2ef90',['init_random_seed.f90',['../init__random__seed_8f90.html',1,'']]],
   ['inquiry_5fstopwatch_2e3_2etxt',['inquiry_stopwatch.3.txt',['../inquiry__stopwatch_83_8txt.html',1,'']]],
   ['intrinsics_2ef90',['intrinsics.f90',['../intrinsics_8f90.html',1,'']]],
   ['intro_5fblas1_2e3_2etxt',['intro_blas1.3.txt',['../intro__blas1_83_8txt.html',1,'']]],

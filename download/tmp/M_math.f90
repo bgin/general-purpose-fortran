@@ -2506,7 +2506,7 @@ end subroutine extremum
 !!           is merely a convention, not a right or wrong answer. When using a
 !!           particular program, you just need to be aware of which convention
 !!
-!!           Again, another freqent difference is whether they use N in
+!!           Again, another frequent difference is whether they use N in
 !!           the denominator or the bias corrected N-1.
 !!
 !!           The formulas for skewness and kurtosis are treated in

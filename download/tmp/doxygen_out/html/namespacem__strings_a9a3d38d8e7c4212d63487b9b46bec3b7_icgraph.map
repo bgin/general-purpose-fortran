@@ -1,0 +1,6 @@
+<map id="m_strings::s2c" name="m_strings::s2c">
+<area shape="rect" id="node2" href="$namespacem__regex.html#ac4e468cb031565f4f4744d8f4c9eee91" title="NAMEregcomp(3f) &#45; [M_regex] Compile a regex into a regex object SYNOPSIS" alt="" coords="161,5,292,32"/>
+<area shape="rect" id="node4" href="$namespacem__regex.html#a44394d605b1a98fb246bc4622a08f878" title="NAMEregexec(3f) &#45; [M_regex] Execute a compiled regex against a string SYNOPSIS" alt="" coords="163,56,290,83"/>
+<area shape="rect" id="node3" href="$C-M__regex_8c.html#a3fcdbec663d5285a401e73c4cdca37be" title="C_regcomp" alt="" coords="340,5,428,32"/>
+<area shape="rect" id="node5" href="$C-M__regex_8c.html#ad4d383ae55d866605fb7ff11e8cf99d8" title="C_regexec" alt="" coords="342,56,426,83"/>
+</map>

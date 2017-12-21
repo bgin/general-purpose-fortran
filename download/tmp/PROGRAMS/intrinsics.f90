@@ -50,7 +50,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sat, Dec 9th, 2017 2:45:51 PM>',&
+'@(#)COMPILED:       Wed, Dec 20th, 2017 6:54:19 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -4432,7 +4432,7 @@ write(io,'(a)')'   EXECUTE_COMMAND_LINE returns without waiting.'
 write(io,'(a)')''
 write(io,'(a)')'ARGUMENTS'
 write(io,'(a)')''
-write(io,'(a)')'   COMMAND   - a default CHARACTER scalar conntaining the command line to be'
+write(io,'(a)')'   COMMAND   - a default CHARACTER scalar containing the command line to be'
 write(io,'(a)')'               executed. The interpretation is programming-environment dependent.'
 write(io,'(a)')''
 write(io,'(a)')'   WAIT      - (Optional) a default LOGICAL scalar.'
@@ -10992,12 +10992,12 @@ write(io,'(a)')'   Examples of a masked array assignment are:'
 write(io,'(a)')''
 write(io,'(a)')'            WHERE (TEMP > 100.0) TEMP = TEMP - REDUCE_TEMP'
 write(io,'(a)')''
-write(io,'(a)')'            WHERE (PRESSURE <= 1.0)'
+write(io,'(a)')'            where (PRESSURE <= 1.0)'
 write(io,'(a)')'               PRESSURE = PRESSURE + INC_PRESSURE'
 write(io,'(a)')'               TEMP = TEMP - 5.0'
-write(io,'(a)')'            ELSEWHERE'
+write(io,'(a)')'            elsewhere'
 write(io,'(a)')'               RAINING = .TRUE.'
-write(io,'(a)')'            ENDWHERE'
+write(io,'(a)')'            endwhere'
 write(io,'(a)')''
 write(io,'(a)')'   Interpretation of masked array assignments'
 write(io,'(a)')''

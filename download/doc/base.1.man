@@ -21,7 +21,7 @@ OPTIONS
     -ibase NN  default base for input values
                If the input values are whole numbers that are of the
                form NN:MMMM or NN#MMMM where NN is the base and MMMM the
-               value the numbers are intrepreted in the explicit base
+               value the numbers are interpreted in the explicit base
                the numbers represent. Otherwise, they are interpreted
                as in base NN. NN defaults to 10
     -obase MM  base for output values. The Default is 10.

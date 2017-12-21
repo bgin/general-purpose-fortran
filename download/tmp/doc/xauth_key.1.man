@@ -4,7 +4,7 @@ SYNOPSIS
    xauth_key [characters] [-n number_of_characters]
 DESCRIPTION
    xauth_key generates a random hexadecimal number
-
+OPTIONS
    characters  Set of letters to compose string from.
                Defaults to '0123456789abcdef'.
    -n          Number of digits. Defaults to 128

@@ -215,7 +215,7 @@ contains
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
-subroutine jucalc(inline,outlin,mssg,slast,ierr)
+recursive subroutine jucalc(inline,outlin,mssg,slast,ierr)
 !
 !     The goal is to create a procedure easily utilized from other
 !     programs that takes a standard Fortran value statement and reduces
@@ -528,7 +528,7 @@ end subroutine help_funcs
 !!##EXAMPLE
 !!
 !===================================================================================================================================
-subroutine jupars(string,nchar,ier)
+recursive subroutine jupars(string,nchar,ier)
 !  sets and returns ier
 !   0=good numeric return
 !   2=good alphameric return

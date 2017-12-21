@@ -107,3 +107,4 @@ EXAMPLES
    use example, mytype => type1
 
 SEE ALSO
+

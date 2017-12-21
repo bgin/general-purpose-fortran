@@ -1,0 +1,8 @@
+<map id="pwrcmp" name="pwrcmp">
+<area shape="rect" id="node2" href="$dparanoia_8f90.html#a908ef801c2dc7c4b54f1a43f007a4dc5" title="power" alt="" coords="120,31,176,57"/>
+<area shape="rect" id="node3" href="$dparanoia_8f90.html#a210778c94f0b539462736c5c6867e960" title="runtests" alt="" coords="224,31,293,57"/>
+<area shape="rect" id="node4" href="$dparanoia_8f90.html#aea61249b658024bcb8b5812d70a64b93" title="dparanoia" alt="" coords="341,5,420,32"/>
+<area shape="rect" id="node7" href="$sparanoia_8f90.html#a3924a135a277ffc4f0b2271ccde40373" title="sparanoia" alt="" coords="341,56,420,83"/>
+<area shape="rect" id="node5" href="$paranoia_8f90.html#a244e132f423de162d796b1bea4903638" title="paranoia" alt="" coords="468,31,539,57"/>
+<area shape="rect" id="node6" href="$paranoid_8f90.html#a5ee1dc76ca482e8a4a44cbd213cce4c1" title="test_paranoia" alt="" coords="587,31,687,57"/>
+</map>

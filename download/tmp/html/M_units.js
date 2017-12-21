@@ -10,6 +10,7 @@ append("f2c.3.html");
 append("feet_to_meters.3.html");
 append("meters_to_feet.3.html");
 append("polar_to_cartesian.3.html");
+append("pounds_to_kilograms.3.html");
 append("r2d.3.html");
 append("sind.3.html");
 append("spherical_to_cartesian.3.html");

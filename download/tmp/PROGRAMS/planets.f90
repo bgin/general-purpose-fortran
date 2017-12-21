@@ -10,7 +10,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '                                                                                ',&
-'   planets(1f) - [FUNIX] ephemeris position of planets for adjusting an equitorial telescope',&
+'   planets(1f) - [FUNIX] ephemeris position of planets for adjusting an equatorial telescope',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '                                                                                ',&
@@ -72,7 +72,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!
-!!    planets(1f) - [FUNIX] ephemeris position of planets for adjusting an equitorial telescope
+!!    planets(1f) - [FUNIX] ephemeris position of planets for adjusting an equatorial telescope
 !!
 !!##SYNOPSIS
 !!
@@ -142,7 +142,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    ephemeris position of planets for adjusting an equitorial telescope>',&
 '@(#)VERSION:        1.0, 20170910>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Fri, Nov 24th, 2017 2:42:27 PM>',&
+'@(#)COMPILED:       Thu, Dec 21st, 2017 12:14:35 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

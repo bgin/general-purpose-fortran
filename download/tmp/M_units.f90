@@ -122,7 +122,7 @@
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 module m_units
-use M_anyscalar,only : anyscalar_to_real
+use M_anyscalar,only : anyscalar_to_real, anyscalar_to_double
    implicit none                        ! require all variables to be declared
    private
 !  common trigonometric functions using degrees instead of radians for units
@@ -139,6 +139,8 @@ use M_anyscalar,only : anyscalar_to_real
 !  distance
       public feet_to_meters
       public meters_to_feet
+!  weight
+      public pounds_to_kilograms
 !  convert between Celsius and Fahrenheit
       public f2c
       public c2f
@@ -1123,6 +1125,66 @@ FINDIT: block
    atomnum=0
 endblock FINDIT
 end subroutine symbol2atomnum
+!***********************************************************************************************************************************
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!***********************************************************************************************************************************
+!>
+!!##NAME
+!!    pounds_to_kilograms(3f) - [M_units] - converts a measurement in pounds-mass to kilograms.
+!!
+!!##SYNOPSIS
+!!
+!!    elemental function pounds_to_kilograms ( pounds )
+!!
+!!     class(*),intent(in) ::  pounds
+!!     doubleprecision     :: pounds_to_kilograms
+!!
+!!##DESCRIPTION
+!!    Converts pounds-mass to kilgrams using the formula:
+!!
+!!       kilograms = 0.45359237 * pounds
+!!
+!!    The pound (or more properly pound-mass) is a unit of mass used in the
+!!    Imperial, United States Customary, and other systems of measurement. A
+!!    number of different definitions have been used; the most common today
+!!    is the international avoirdupois pound, which is legally defined as
+!!    exactly 0.45359237 kilograms. The international standard symbol for
+!!    the avoirdupois pound is lb (from the Roman "libra"); an alternative
+!!    symbol is lbm).
+!!
+!!##OPTIONS
+!!    POUNDS  The weight in pounds.
+!!            POUNDS may be any standard scalar value supported by anyscalar_to_double(3f).
+!!            This at least includes REAL, INTEGER, and DOUBLEPRECISION.
+!!##RETURN
+!!    POUNDS_TO_KILOGRAMS   the corresponding weight in kilograms.
+!!##EXAMPLE
+!!
+!!   Sample program
+!!
+!!    program demo_pounds_to_kilograms
+!!    use M_units, only : pounds_to_kilograms
+!!    implicit none
+!!       write(*,*)'REAL            ', pounds_to_kilograms(1.0)
+!!       write(*,*)'INTEGER array   ', pounds_to_kilograms([ 0.0, 1.0, 100.0, 200.0 ])
+!!       write(*,*)'DOUBLEPRECISION ', pounds_to_kilograms(1.0d0)
+!!    end program demo_pounds_to_kilograms
+!!
+!!   Typical Results
+!!
+!!     REAL              0.45359237000000002
+!!     INTEGER array     0.0000000000000000    0.45359237000000002
+!!                      45.359237000000000    90.718474000000001
+!!     DOUBLEPRECISION   0.45359237000000002
+!===================================================================================================================================
+elemental function pounds_to_kilograms ( pounds )
+character(len=*),parameter::ident="@(#)M_units::pounds_to_kilograms(3f): converts a measurement in pounds to kilograms."
+class(*),intent(in) :: pounds
+   doubleprecision  :: pounds_to_kilograms
+   doubleprecision  :: pounds_local
+   pounds_local=anyscalar_to_double(pounds)
+   pounds_to_kilograms = 0.45359237d0 * pounds_local
+end function pounds_to_kilograms
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================

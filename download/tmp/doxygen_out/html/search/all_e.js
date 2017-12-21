@@ -59,7 +59,6 @@ var searchData=
   ['notabs',['notabs',['../structm__strings__oop_1_1string.html#a16374ece1a4f562fb91b72d59ed9c20a',1,'m_strings_oop::string::notabs()'],['../namespacem__strings.html#a3bf44ac06a670f55830e17a6f1108b9c',1,'m_strings::notabs()']]],
   ['notabs_2ef90',['notabs.f90',['../notabs_8f90.html',1,'']]],
   ['note_2ef90',['note.f90',['../note_8f90.html',1,'']]],
-  ['notes_2etxt',['notes.txt',['../notes_8txt.html',1,'']]],
   ['notopen',['notopen',['../namespacem__io.html#a673f7f7e137424eed9c6a736901a5cbc',1,'m_io']]],
   ['nout',['nout',['../namespacem__writegif.html#a91b7b1d0dd2ced615d855f3440716415',1,'m_writegif']]],
   ['now',['now',['../namespacem__time.html#a6b5e87be0e510ff268c1ecfbf67a3bdb',1,'m_time']]],

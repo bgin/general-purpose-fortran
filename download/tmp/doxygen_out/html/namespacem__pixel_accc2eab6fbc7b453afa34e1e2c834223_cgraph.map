@@ -1,0 +1,6 @@
+<map id="m_pixel::biggest_ortho2" name="m_pixel::biggest_ortho2">
+<area shape="rect" id="node2" href="$namespacem__pixel.html#acacbc4462423b9aa0f591cbe7aba4ec6" title="NAMEgetdisplaysize(3f) &#45; [M_pixel] Returns the width and height of the device in pixels ..." alt="" coords="213,5,372,32"/>
+<area shape="rect" id="node3" href="$namespacem__pixel.html#a80dece6adac704024a5a76efee697770" title="NAMEortho2(3f) &#45; [M_pixel] define the area of the virtual world coordinates to map to the viewport ..." alt="" coords="237,56,348,83"/>
+<area shape="rect" id="node5" href="$namespacem__pixel.html#a43247343cd316e3aa075b44b5166e2e9" title="NAMEviewport(3f) &#45; [M_pixel] Specify which part of the screen to draw in. " alt="" coords="232,107,353,133"/>
+<area shape="rect" id="node4" href="$namespacem__pixel.html#a84c841de62fc0addddeff305c4ede9d4" title="NAME" alt="" coords="420,81,544,108"/>
+</map>

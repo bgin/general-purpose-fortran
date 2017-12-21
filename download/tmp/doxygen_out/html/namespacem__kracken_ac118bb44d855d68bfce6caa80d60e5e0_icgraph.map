@@ -1,0 +1,10 @@
+<map id="m_kracken::igets" name="m_kracken::igets">
+<area shape="rect" id="node2" href="$__kill_8f90.html#ad2550a0eb8119ef21d3febfe883f2051" title="demo_system_kill" alt="" coords="184,5,311,32"/>
+<area shape="rect" id="node3" href="$cprint_8f90.html#a24a9ebfa3b749c4ea01811ae635d6067" title="cprint" alt="" coords="220,56,275,83"/>
+<area shape="rect" id="node4" href="$factors_8f90.html#a01d59471a125202c8c43d68f82dd84f9" title="find_prime_factors" alt="" coords="184,107,311,133"/>
+<area shape="rect" id="node5" href="$gcd_8f90.html#a38924afeefabd20962a8d2f87c2949d7" title="find_gcd" alt="" coords="212,157,283,184"/>
+<area shape="rect" id="node6" href="$lcm_8f90.html#a8e76ffedb6cca7be6b5cb9a55b5c5a46" title="find_lcm" alt="" coords="212,208,283,235"/>
+<area shape="rect" id="node7" href="$paws_8f90.html#adea2b9826964203f987d029f48afa37a" title="demo_system_sleep" alt="" coords="176,259,319,285"/>
+<area shape="rect" id="node8" href="$planets_8f90.html#a9694fb47f36780e83c2f3b77472b4af1" title="planets" alt="" coords="215,309,279,336"/>
+<area shape="rect" id="node9" href="$shell_8f90.html#a19f7365559e8816247241c4721e8eccb" title="testcli" alt="" coords="219,360,276,387"/>
+</map>

@@ -22,35 +22,35 @@ OPTIONS
       Base time array:
        (1) %Y -- year, yyyy                                2017
        (2) %M -- month of year, 01 to 12                   12
-       (3) %D -- day of month, 01 to 31                    19
-           %d -- day of month, with suffix (1st, 2nd,...)  19th
+       (3) %D -- day of month, 01 to 31                    21
+           %d -- day of month, with suffix (1st, 2nd,...)  21st
        (4) %Z -- minutes from UTC                          -0300
            %z -- -+hh:mm from UTC                          -05:00
            %T -- -+hhmm  from UTC                          -0500
-       (5) %h -- hours, 00 to 23                           11
-           %H -- hour (1 to 12, or twelve-hour clock)      11
+       (5) %h -- hours, 00 to 23                           00
+           %H -- hour (1 to 12, or twelve-hour clock)      12
            %N -- midnight< AM <=noon; noon<= PM <midnight  AM
-       (6) %m -- minutes, 00 to 59                         14
-       (7) %s -- sec, 00 to 59                             59
-       (8) %x -- milliseconds 000 to 999                   558
+       (6) %m -- minutes, 00 to 59                         26
+       (7) %s -- sec, 00 to 59                             53
+       (8) %x -- milliseconds 000 to 999                   016
       Conversions:
-           %E -- Unix Epoch time                           1513700099.5590181
-           %e -- integer value of Unix Epoch time          1513700100
-           %J -- Julian  date                              2458107.1770782294
-           %j -- integer value of Julian Date(Julian Day)  2458107
-           %O -- Ordinal day (day of year)                 353
-           %o -- Whole days since Unix Epoch date          17519
-           %U -- day of week, 1..7 Sunday=1                3
-           %u -- day of week, 1..7 Monday=1                2
+           %E -- Unix Epoch time                           1513834013.0159676
+           %e -- integer value of Unix Epoch time          1513834013
+           %J -- Julian  date                              2458108.7270025113
+           %j -- integer value of Julian Date(Julian Day)  2458108
+           %O -- Ordinal day (day of year)                 355
+           %o -- Whole days since Unix Epoch date          17521
+           %U -- day of week, 1..7 Sunday=1                5
+           %u -- day of week, 1..7 Monday=1                4
            %i -- ISO week of year 1..53                    51
-           %I -- iso-8601 week-numbering date(yyyy-Www-d)  2017-W51-2
+           %I -- iso-8601 week-numbering date(yyyy-Www-d)  2017-W51-4
        Names:
            %l -- abbreviated month name                    Dec
            %L -- full month name                           December
-           %w -- first three characters of weekday         Tue
-           %W -- weekday name                              Tuesday
-           %p -- phase of moon                             New
-           %P -- percent of way from new to full moon      8%
+           %w -- first three characters of weekday         Thu
+           %W -- weekday name                              Thursday
+           %p -- phase of moon                             Waxing crescent
+           %P -- percent of way from new to full moon      18%
        Literals:
            %% -- a literal %                               %
            %t -- tab character                             	
@@ -61,10 +61,10 @@ OPTIONS
            %q -- single quote (apostrophe)                 '
            %Q -- double quote                              "
        Program timing:
-           %c -- CPU_TIME(3f) output                       0.93750000000000000E-001
+           %c -- CPU_TIME(3f) output                       0.10937500000000000
            %C -- number of times this routine is used      1
            %S -- seconds since last use of this format     0.0000000000000000
-           %k -- time in seconds from SYSTEM_CLOCK(3f)     494772.594
+           %k -- time in seconds from SYSTEM_CLOCK(3f)     628682.875
       
       If no percent (%) is found in the format one of several
       alternate substitutions occurs.
@@ -72,25 +72,25 @@ OPTIONS
       If the format is composed entirely of one of the following
       keywords the following substitutions occur:
         "iso-8601",
-        "iso"        ==> %Y-%M-%DT%h:%m:%s%z             2017-12-19T11:14:59-05:00
+        "iso"        ==> %Y-%M-%DT%h:%m:%s%z             2017-12-21T00:26:53-05:00
         "iso-8601W",
-        "isoweek"    ==> %I                              2017-W51-2
-        "sql"        ==> "%Y-%M-%D %h:%m:%s.%x"          "2017-12-19 11:14:59.571"
-        "sqlday"     ==> "%Y-%M-%D"                      "2017-12-19"
-        "sqltime"    ==> "%h:%m:%s.%x"                   "11:14:59.572"
+        "isoweek"    ==> %I                              2017-W51-4
+        "sql"        ==> "%Y-%M-%D %h:%m:%s.%x"          "2017-12-21 00:26:53.065"
+        "sqlday"     ==> "%Y-%M-%D"                      "2017-12-21"
+        "sqltime"    ==> "%h:%m:%s.%x"                   "00:26:53.065"
         "rfc-2822"   ==> %w, %D %l %Y %h:%m:%s %T
-                         Tue, 19 Dec 2017 11:14:59 -0500
-        "rfc-3339"   ==> %Y-%M-%DT%h:%m:%s%z             2017-12-19T11:14:59-05:00
+                         Thu, 21 Dec 2017 00:26:53 -0500
+        "rfc-3339"   ==> %Y-%M-%DT%h:%m:%s%z             2017-12-21T00:26:53-05:00
         "date"       ==> %w %l %D %h:%m:%s UTC%z %Y
-                         Tue Dec 19 11:14:59 UTC-05:00 2017
+                         Thu Dec 21 00:26:53 UTC-05:00 2017
         "short"      ==> %w, %l %d, %Y %H:%m:%s %N UTC%z
-                         Tue, Dec 19th, 2017 11:14:59 AM UTC-05:00
+                         Thu, Dec 21st, 2017 12:26:53 AM UTC-05:00
         "long"," "   ==> %W, %L %d, %Y %H:%m:%s %N UTC%z
-                         Tuesday, December 19th, 2017 11:14:59 AM UTC-05:00
-        "suffix"     ==> %Y%D%M%h%m%s                    20171912111459
-        "formal"     ==> The %d of %L %Y                 The 19th of December 2017
+                         Thursday, December 21st, 2017 12:26:53 AM UTC-05:00
+        "suffix"     ==> %Y%D%M%h%m%s                    20172112002653
+        "formal"     ==> The %d of %L %Y                 The 21st of December 2017
         "lord"       ==> the %d day of %L in the year of our Lord %Y
-                         the 19th day of December in the year of our Lord 2017
+                         the 21st day of December in the year of our Lord 2017
         "easter"     ==> FOR THE YEAR OF THE CURRENT DATE:
                            Easter day: the %d day of %L in the year of our Lord %Y
         "all"        ==> A SAMPLE OF DATE FORMATS
@@ -98,20 +98,20 @@ OPTIONS
       common macros:
          year          %Y  2017
          month         %M  12
-         day           %D  19
+         day           %D  21
          timezone      %z  -05:00
-         hour          %h  11
-         minute        %m  14
-         second        %s  59
-         millisecond   %x  579
-         epoch         %e  1513700100
-         julian        %j  2458107
-         ordinal       %O  353
-         weekday       %u  2
+         hour          %h  00
+         minute        %m  26
+         second        %s  53
+         millisecond   %x  073
+         epoch         %e  1513834013
+         julian        %j  2458108
+         ordinal       %O  355
+         weekday       %u  4
       if none of these keywords are found then every letter that
       is a macro is assumed to have an implied percent in front
       of it. For example:
-         YMDhms ==> %Y%M%D%h%m%s ==> 20171219111459
+         YMDhms ==> %Y%M%D%h%m%s ==> 20171221002653
       
 
    -dat date_vector  :

@@ -90,7 +90,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    rename files by changing old fixed string to new string>',&
 '@(#)VERSION:        1.0, 2017-06-29>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Fri, Nov 24th, 2017 8:19:21 PM>',&
+'@(#)COMPILED:       Wed, Dec 20th, 2017 11:56:26 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

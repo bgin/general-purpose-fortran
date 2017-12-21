@@ -1,0 +1,51 @@
+<map id="m_kracken::sget" name="m_kracken::sget">
+<area shape="rect" id="node2" href="$namespacem__kracken.html#ae7b6ad046d637f03148efb56336a7ff4" title="NAMEdget &#45; [ARGUMENTS:M_kracken] given keyword fetch doubleprecision value from command argument SYNO..." alt="" coords="176,2020,295,2047"/>
+<area shape="rect" id="node4" href="$__echo_8f90.html#a7b58d66872f4cd7b2249cc9d9996f08a" title="echo" alt="" coords="865,804,916,831"/>
+<area shape="rect" id="node6" href="$namespacem__kracken.html#a7141acd7a00c1a5aa5f90612a0414b63" title="NAMElget &#45; [ARGUMENTS:M_kracken] given keyword fetch logical value from command arguments SYNOPSIS..." alt="" coords="621,1412,735,1439"/>
+<area shape="rect" id="node8" href="$shell_8f90.html#a19f7365559e8816247241c4721e8eccb" title="testcli" alt="" coords="1255,1438,1313,1464"/>
+<area shape="rect" id="node9" href="$namespacem__fpp.html#afe91155aa0c891fc35f3927e777440ea" title="m_fpp::ident" alt="" coords="1237,576,1331,603"/>
+<area shape="rect" id="node10" href="$namespacem__fpp.html#aeab3b5145d977b953ea972b2882e442a" title="m_fpp::output_case" alt="" coords="1216,1210,1352,1236"/>
+<area shape="rect" id="node11" href="$namespacem__fpp.html#a36ad74639f1f01dd0ac08e59e6943778" title="m_fpp::document" alt="" coords="1223,1640,1345,1667"/>
+<area shape="rect" id="node13" href="$__cmp_8f90.html#a099b4c5d750b7bb116895dc4fca1bf38" title="same" alt="" coords="863,196,918,223"/>
+<area shape="rect" id="node16" href="$__yes_8f90.html#a5366917561a9747837d99d886f06cbd7" title="yes" alt="" coords="1079,830,1121,856"/>
+<area shape="rect" id="node17" href="$alphabet_8f90.html#aa1b7d174dbbe1ca1d92bf00b80724012" title="hexd" alt="" coords="865,247,916,274"/>
+<area shape="rect" id="node18" href="$base_8f90.html#aeacab8d1e6bcb1553d1ff3d04b88f44c" title="demo_base" alt="" coords="846,703,935,730"/>
+<area shape="rect" id="node19" href="$change_8f90.html#a5fa62001f03b62e71cd6fa2a04f697b0" title="demo_change" alt="" coords="839,298,942,324"/>
+<area shape="rect" id="node20" href="$colors_8f90.html#a147ff2bc384cd71c5234499e7a85bada" title="colors" alt="" coords="862,348,919,375"/>
+<area shape="rect" id="node21" href="$compute_8f90.html#ad31daef7ea6df41611fcaae1171ce54a" title="compute" alt="" coords="855,399,927,426"/>
+<area shape="rect" id="node22" href="$cprint_8f90.html#a24a9ebfa3b749c4ea01811ae635d6067" title="cprint" alt="" coords="863,475,918,502"/>
+<area shape="rect" id="node23" href="$days2sec_8f90.html#ae9a288b1c1af3c0a7a6a4434e2d163c8" title="demo_days2sec" alt="" coords="832,551,949,578"/>
+<area shape="rect" id="node24" href="$fixedform_8f90.html#a5351077e5e35d56c018014459fac67b2" title="fifo" alt="" coords="871,855,910,882"/>
+<area shape="rect" id="node25" href="$fseq_8f90.html#af3934bd2dae2aeb0d214ae4aa8aeecb7" title="fseq" alt="" coords="867,1818,914,1844"/>
+<area shape="rect" id="node26" href="$huegif_8f90.html#a4cb33e3f49cb1fde8386c9e2b79874fe" title="demo_mapcolor" alt="" coords="833,1919,948,1946"/>
+<area shape="rect" id="node27" href="$makeout_8f90.html#affb61c1ee20c534b741b72ed67c9c778" title="makeout" alt="" coords="855,1970,927,1996"/>
+<area shape="rect" id="node28" href="$manup_8f90.html#a5941828c1341a0298a7b0c0c5789ff35" title="test_manup" alt="" coords="845,1716,936,1743"/>
+<area shape="rect" id="node29" href="$month_8f90.html#a25f7e0d0c91977505b956237e747f2bb" title="month_exe" alt="" coords="847,2071,934,2098"/>
+<area shape="rect" id="node30" href="$notabs_8f90.html#acb31f04c67c279d1a77f3346ad0cf516" title="test_notabs" alt="" coords="845,2426,936,2452"/>
+<area shape="rect" id="node31" href="$note_8f90.html#a783e8e0dd3deddd7a125ab0a6f20341c" title="block_letters" alt="" coords="843,3034,939,3060"/>
+<area shape="rect" id="node32" href="$now_8f90.html#a0a9caf8a3d791fca5628f441ed1b18ef" title="display_date" alt="" coords="843,2780,938,2807"/>
+<area shape="rect" id="node33" href="$numdiff_8f90.html#a5af23474c4d2e32d7426907cf2536366" title="numdiff" alt="" coords="859,1868,922,1895"/>
+<area shape="rect" id="node34" href="$pendulum_8f90.html#a3f3e0254fee4c2221edf984577d57e88" title="pendulum_test" alt="" coords="837,2020,944,2047"/>
+<area shape="rect" id="node35" href="$penv_8f90.html#a01dea0dd27ab167506a724b2d0aeb2b5" title="penv" alt="" coords="867,1058,915,1084"/>
+<area shape="rect" id="node36" href="$planets_8f90.html#a9694fb47f36780e83c2f3b77472b4af1" title="planets" alt="" coords="859,2730,923,2756"/>
+<area shape="rect" id="node37" href="$rep_8f90.html#a6e3f64c6bb01cd2bdc33472e0505a863" title="rep" alt="" coords="871,652,911,679"/>
+<area shape="rect" id="node38" href="$sec2days_8f90.html#a85f052202d8a5417c74334a5fd499e2d" title="demo_sec2days" alt="" coords="832,2476,949,2503"/>
+<area shape="rect" id="node39" href="$t2m_8f90.html#a1d0ef3619e5da531507fb99db2ebb4fe" title="test_t2m" alt="" coords="854,906,927,932"/>
+<area shape="rect" id="node40" href="$table2html_8f90.html#ac9fa6313f884ee5cf8caf9b9bfb9f3cd" title="table2html" alt="" coords="849,956,932,983"/>
+<area shape="rect" id="node41" href="$tabulate_8f90.html#a013be6cecb71296773686ddf56ac1a34" title="tabulate" alt="" coords="857,1666,925,1692"/>
+<area shape="rect" id="node42" href="$temp_8f90.html#ae3dd9015488975da65db0e05e1d019c3" title="temp" alt="" coords="865,2527,916,2554"/>
+<area shape="rect" id="node43" href="$ttee_8f90.html#aee7d8fff0d52c9b2adc07bda770aa84c" title="ttee" alt="" coords="869,1108,913,1135"/>
+<area shape="rect" id="node44" href="$ufpp_8f90.html#ae38e75311f766ddb27e1389ad1e8f7cc" title="ufpp" alt="" coords="867,2122,914,2148"/>
+<area shape="rect" id="node45" href="$xauth__key_8f90.html#a0f9a35aa83e47ebe911d6c02ac4f5798" title="NAMExauth_key &#45; generate magic cookies for xauth SYNOPSIS" alt="" coords="849,2578,932,2604"/>
+<area shape="rect" id="node46" href="$namespacem__kracken.html#afb3f3b45b78625758818ea9bef463fd9" title="NAMElget &#45; [ARGUMENTS:M_kracken] given keyword fetch logical array from command argument SYNOPSIS..." alt="" coords="617,1210,739,1236"/>
+<area shape="rect" id="node47" href="$paws_8f90.html#adea2b9826964203f987d029f48afa37a" title="demo_system_sleep" alt="" coords="607,2071,749,2098"/>
+<area shape="rect" id="node48" href="$namespacem__kracken.html#a76e99048e7fb6010dcb7173ef958c932" title="NAMEdgets &#45; [ARGUMENTS:M_kracken] given keyword fetch doubleprecision array from command arguments SY..." alt="" coords="172,3135,299,3162"/>
+<area shape="rect" id="node49" href="$dtu_8f90.html#a6431a93cf13a3651f17078298d2d2ef9" title="writefile" alt="" coords="203,3186,268,3212"/>
+<area shape="rect" id="node50" href="$note_8f90.html#a05dfb57174f958e4973af20d00512f49" title="callfont" alt="" coords="373,3084,435,3111"/>
+<area shape="rect" id="node3" href="$namespacem__kracken.html#a420718890eac378e5cd047dd0b477424" title="NAMEiget &#45; [ARGUMENTS:M_kracken] given keyword fetch integer value from command argument ..." alt="" coords="347,1640,461,1667"/>
+<area shape="rect" id="node5" href="$__false_8f90.html#ac39cd9fe2012c31749944aa6b20b6c05" title="false" alt="" coords="509,1412,559,1439"/>
+<area shape="rect" id="node7" href="$namespacem__kracken.html#a2cb376f8a8e26e489a45cafcda66ea3e" title="NAMEdissect(3f) &#45; [ARGUMENTS:M_kracken] convenient call to parse() – define defaults, then process " alt="" coords="1032,1336,1168,1363"/>
+<area shape="rect" id="node12" href="$namespacem__kracken.html#a495ed7db5c2d301c4d5e623b62a9c295" title="NAMEparse(3f) &#45; [ARGUMENTS:M_kracken] parse user command and store tokens into Language Dictionary ..." alt="" coords="827,1412,954,1439"/>
+<area shape="rect" id="node14" href="$__dirname_8f90.html#ad38fdec955ba9814439d9492698fd8c4" title="demo_dirname" alt="" coords="837,1260,944,1287"/>
+<area shape="rect" id="node15" href="$__hostname_8f90.html#a8cf8b2c2d1597761d376d337686d3667" title="demo_system_gethostname" alt="" coords="797,1362,984,1388"/>
+</map>

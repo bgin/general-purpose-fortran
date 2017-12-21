@@ -1,4 +1,5 @@
 NAME
+     get_tmp(3f) - [M_io] Return the name of the scratch directory
 SYNOPSIS
     function get_tmp() result(tname)
 
@@ -15,13 +16,16 @@ EXAMPLE
   Sample:
 
     program testit
-    use M_io, only : get_tmp
+    use M_io, only : get_tmp, uniq
     implicit none
     character(len=:),allocatable :: answer
        answer=get_tmp()
        write(*,*)'result is ',answer
-    end program testit
+       answer=get_tmp()//uniq('_scratch',create=.false.)
+       write(*,*)'the file ',answer,' was a good scratch file name, at least a moment ago'
 
+    end program testit
+<h3>Results:</h3>
   Sample Results:
 
     result is /cygdrive/c/Users/JSU/AppData/Local/Temp/

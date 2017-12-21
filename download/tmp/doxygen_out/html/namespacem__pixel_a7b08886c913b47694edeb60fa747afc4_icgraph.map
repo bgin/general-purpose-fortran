@@ -1,0 +1,10 @@
+<map id="m_pixel::justfy" name="m_pixel::justfy">
+<area shape="rect" id="node2" href="$namespacem__pixel.html#a0468f8d9308bade7f8f2a68a133271d2" title="NAMEstrlength(3f) &#45; [M_pixel] return length of string " alt="" coords="160,56,285,83"/>
+<area shape="rect" id="node3" href="$namespacem__pixel.html#a6fa0c2d531d1ac74840aa2f0e2b050e0" title="NAMEdrawstr(3f) &#45; [M_pixel] Draw the text string at the current position " alt="" coords="333,81,451,108"/>
+<area shape="rect" id="node8" href="$shell_8f90.html#a5c599e945a5e0c9c8954969ea48587cf" title="pixel" alt="" coords="537,157,587,184"/>
+<area shape="rect" id="node4" href="$namespacem__pixel.html#a58406ffd6c2a9fdf2ea7772198b54255" title="NAMEdrawchar(3f) &#45; [M_pixel] Draw a character at the current position " alt="" coords="499,5,625,32"/>
+<area shape="rect" id="node5" href="$huegif_8f90.html#afc37db6c42d2e7bb12cb85b98d9eba9b" title="wheel" alt="" coords="675,81,729,108"/>
+<area shape="rect" id="node7" href="$huegif_8f90.html#a303c71c69a7b51abd347bd12cea7014f" title="slice" alt="" coords="537,107,587,133"/>
+<area shape="rect" id="node6" href="$huegif_8f90.html#a4cb33e3f49cb1fde8386c9e2b79874fe" title="demo_mapcolor" alt="" coords="779,81,893,108"/>
+<area shape="rect" id="node9" href="$shell_8f90.html#a19f7365559e8816247241c4721e8eccb" title="testcli" alt="" coords="673,157,731,184"/>
+</map>

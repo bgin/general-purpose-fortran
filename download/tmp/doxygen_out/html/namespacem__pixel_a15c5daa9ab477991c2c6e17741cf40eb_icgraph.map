@@ -1,0 +1,10 @@
+<map id="m_pixel::hstylus" name="m_pixel::hstylus">
+<area shape="rect" id="node2" href="$namespacem__pixel.html#a80dc3cb149287470a9837de8dd3f05bc" title="NAMEhershey(3f) &#45; [M_pixel] draw text string as Hershey software vector fonts " alt="" coords="171,132,292,159"/>
+<area shape="rect" id="node3" href="$namespacem__pixel.html#a6fa0c2d531d1ac74840aa2f0e2b050e0" title="NAMEdrawstr(3f) &#45; [M_pixel] Draw the text string at the current position " alt="" coords="340,107,457,133"/>
+<area shape="rect" id="node8" href="$shell_8f90.html#a5c599e945a5e0c9c8954969ea48587cf" title="pixel" alt="" coords="544,157,593,184"/>
+<area shape="rect" id="node4" href="$namespacem__pixel.html#a58406ffd6c2a9fdf2ea7772198b54255" title="NAMEdrawchar(3f) &#45; [M_pixel] Draw a character at the current position " alt="" coords="505,5,632,32"/>
+<area shape="rect" id="node5" href="$huegif_8f90.html#afc37db6c42d2e7bb12cb85b98d9eba9b" title="wheel" alt="" coords="681,81,736,108"/>
+<area shape="rect" id="node7" href="$huegif_8f90.html#a303c71c69a7b51abd347bd12cea7014f" title="slice" alt="" coords="544,107,593,133"/>
+<area shape="rect" id="node6" href="$huegif_8f90.html#a4cb33e3f49cb1fde8386c9e2b79874fe" title="demo_mapcolor" alt="" coords="785,81,900,108"/>
+<area shape="rect" id="node9" href="$shell_8f90.html#a19f7365559e8816247241c4721e8eccb" title="testcli" alt="" coords="680,157,737,184"/>
+</map>

@@ -1,0 +1,12 @@
+<map id="m_units::sind" name="m_units::sind">
+<area shape="rect" id="node2" href="$namespacem__pixel.html#a80dc3cb149287470a9837de8dd3f05bc" title="NAMEhershey(3f) &#45; [M_pixel] draw text string as Hershey software vector fonts " alt="" coords="153,144,275,171"/>
+<area shape="rect" id="node3" href="$namespacem__pixel.html#a6fa0c2d531d1ac74840aa2f0e2b050e0" title="NAMEdrawstr(3f) &#45; [M_pixel] Draw the text string at the current position " alt="" coords="323,93,440,120"/>
+<area shape="rect" id="node6" href="$huegif_8f90.html#a4cb33e3f49cb1fde8386c9e2b79874fe" title="demo_mapcolor" alt="" coords="768,17,883,44"/>
+<area shape="rect" id="node7" href="$huegif_8f90.html#a303c71c69a7b51abd347bd12cea7014f" title="slice" alt="" coords="527,43,576,69"/>
+<area shape="rect" id="node10" href="$namespacem__pixel.html#ab881b9c2adff081a086cd83a1f1341fb" title="NAMEarc(3f) &#45; [M_pixel] draw an arc using current line width and color " alt="" coords="335,245,428,272"/>
+<area shape="rect" id="node11" href="$namespacem__pixel.html#ab3b12cc498ed490014aa5fcc0bb278d2" title="NAMEcircle(3f) &#45; [M_pixel] draw a circle using current line width and color " alt="" coords="161,195,267,221"/>
+<area shape="rect" id="node8" href="$shell_8f90.html#a5c599e945a5e0c9c8954969ea48587cf" title="pixel" alt="" coords="527,195,576,221"/>
+<area shape="rect" id="node4" href="$namespacem__pixel.html#a58406ffd6c2a9fdf2ea7772198b54255" title="NAMEdrawchar(3f) &#45; [M_pixel] Draw a character at the current position " alt="" coords="488,93,615,120"/>
+<area shape="rect" id="node5" href="$huegif_8f90.html#afc37db6c42d2e7bb12cb85b98d9eba9b" title="wheel" alt="" coords="664,43,719,69"/>
+<area shape="rect" id="node9" href="$shell_8f90.html#a19f7365559e8816247241c4721e8eccb" title="testcli" alt="" coords="663,195,720,221"/>
+</map>

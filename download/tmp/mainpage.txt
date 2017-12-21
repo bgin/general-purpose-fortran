@@ -6,5 +6,5 @@ mainpage.txt
       This is a collection of Fortran modules and procedures used to 
       maintain and produce code with command line interfaces.
 
-     @image html tmp/doc/images/swirl.gif
+     @image html html/images/swirl.gif
 */

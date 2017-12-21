@@ -153,7 +153,7 @@ subroutine what__print_version()  ! automatically generated QA routine; may be r
    call sccs_id('@(#)format           :: Fortran program>')
 
    ! stat(3c) / stat(1)        :file(1):ls(1) info. at time of compilation, useful even if INCLUDE/MODULE/PREPROCESSOR used
-   call sccs_id('@(#)source           :: LIBRARY/libGPF/EXE/WHAT/what.html>') ! typically cpp(1) macro __FILE__
+   call sccs_id('@(#)source           :: LIBRARY/libGPF/EXE/WHAT/what.FF>') ! typically cpp(1) macro __FILE__
    call sccs_id('@(#)language         :: english>')
    call sccs_id('@(#)relation         :: ISO/IEC DIS 9945-2:1992, Information technology - POSIX-Part 2: Shell and Utilities>')
    call sccs_id('@(#)coverage         :: ORIGIN=Pennsylvania,USA ORIGIN_TGN=7007710>')

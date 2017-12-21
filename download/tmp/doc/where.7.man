@@ -45,12 +45,12 @@ DESCRIPTION
 
             WHERE (TEMP > 100.0) TEMP = TEMP - REDUCE_TEMP
 
-            WHERE (PRESSURE <= 1.0)
+            where (PRESSURE <= 1.0)
                PRESSURE = PRESSURE + INC_PRESSURE
                TEMP = TEMP - 5.0
-            ELSEWHERE
+            elsewhere
                RAINING = .TRUE.
-            ENDWHERE
+            endwhere
 
    Interpretation of masked array assignments
 

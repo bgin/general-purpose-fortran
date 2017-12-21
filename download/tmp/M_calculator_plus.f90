@@ -473,7 +473,7 @@ end function snum0
 !! AUTHOR   John S. Urban
 !!##VERSION  V1.0, 19971123
 !===================================================================================================================================
-subroutine jucalcx(inlin0,outval,outlin0,ierr,ilen)
+recursive subroutine jucalcx(inlin0,outval,outlin0,ierr,ilen)
 use M_journal, only : journal
 character(len=*),parameter :: ident="@(#)M_calculator_plus::jucalcx(3f):call jucalc() calculator and display messages"
 !

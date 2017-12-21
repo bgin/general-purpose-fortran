@@ -3,29 +3,36 @@ NAME
 SYNOPSIS
      Usage
 
-      character(len=:),allocatable function uniq(name,istart,verbose)
+      character(len=:),allocatable function uniq(name,istart,verbose,create)
       character(len=*),intent(in) :: name
       integer,intent(in),optional :: istart
       logical,intent(in),optional :: verbose
+      logical,intent(in),optional :: create
 
 DESCRIPTION
    Given a filename test if it is in use or exists. If it is, or if it
    ends in a period add a four-digit number to the end of the name and
-   test if the new name exists. If necessary, increment the number
-   and try again up to the value 9999. An empty file is created if
-   successful.
+   test if the new name exists. If necessary, increment the number and
+   try again up to the value 9999999. By default an empty file is created
+   if an unused name is found.
 
    o relatively non-generic;
    o does not try to detect io errors
 
 OPTIONS
-      name     base input name used to create output filename
-               If name ends in "." a numeric suffix is always added.
-      istart   number to start with as a suffix. Default is 1.
-      verbose  writes extra messages to stdout. Defaults to .false.
+   name     base input name used to create output filename
+            If name ends in "." a numeric suffix is always added.
+   istart   number to start with as a suffix. Default is 1. Must be a
+            positive integer less than 9999999.
+   verbose  writes extra messages to stdout. Defaults to .false.
+   create   create file if new name is successfully found. Defaults
+            to .true. .
+
 RETURNS
-      uniq     A unique filename that is the same as the NAME input parameter
-               except with a number appended at the end if needed.
+   uniq     A unique filename that is the same as the NAME input parameter
+            except with a number appended at the end if needed. If could
+            not find a unique name a blank is returned.
+
 EXAMPLE
    Sample program
 
@@ -33,7 +40,7 @@ EXAMPLE
       use M_io, only : uniq
       implicit none
       character(len=4096) :: myname
-      integer            :: i
+      integer             :: i
          myname=uniq('does_not_exist')
          open(unit=10,file='does_exist')
          write(*,*)'name stays the same ',trim(myname)

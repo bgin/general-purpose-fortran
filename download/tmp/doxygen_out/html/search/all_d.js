@@ -65,7 +65,7 @@ var searchData=
   ['m_5fregex_2ef90',['M_regex.f90',['../M__regex_8f90.html',1,'']]],
   ['m_5fsort',['m_sort',['../namespacem__sort.html',1,'']]],
   ['m_5fsort_2ef90',['M_sort.f90',['../M__sort_8f90.html',1,'']]],
-  ['m_5fstopwatch',['m_stopwatch',['../namespacem__stopwatch.html',1,'m_stopwatch'],['../option__stopwatch_83_8txt.html#aa2011fc45a5e502e87ee50996a8a9305',1,'M_StopWatch():&#160;option_stopwatch.3.txt'],['../destroy__watchgroup_83_8txt.html#a266504af17a0eae1212628c6baa82518',1,'M_stopwatch(3):&#160;destroy_watchgroup.3.txt'],['../M__stopwatch_83_8txt.html#a9d2e6fdaecf32c996d43107ae9fb2c83',1,'M_stopwatch(3f)(3f) - [M_stopwatch] package for measuring cpu and wall clock execution time .SH SYNOPSIS M_StopWatch is a Fortran 90 module for measuring execution time of program segments. M_StopWatch is designed to be a portable:&#160;M_stopwatch.3.txt']]],
+  ['m_5fstopwatch',['m_stopwatch',['../namespacem__stopwatch.html',1,'m_stopwatch'],['../destroy__watchgroup_83_8txt.html#a266504af17a0eae1212628c6baa82518',1,'M_stopwatch(3):&#160;destroy_watchgroup.3.txt'],['../M__stopwatch_83_8txt.html#a9d2e6fdaecf32c996d43107ae9fb2c83',1,'M_stopwatch(3f)(3f) - [M_stopwatch] package for measuring cpu and wall clock execution time .SH SYNOPSIS M_StopWatch is a Fortran 90 module for measuring execution time of program segments. M_StopWatch is designed to be a portable:&#160;M_stopwatch.3.txt'],['../option__stopwatch_83_8txt.html#aa2011fc45a5e502e87ee50996a8a9305',1,'M_StopWatch():&#160;option_stopwatch.3.txt']]],
   ['m_5fstopwatch_2e3_2etxt',['M_stopwatch.3.txt',['../M__stopwatch_83_8txt.html',1,'']]],
   ['m_5fstopwatch_2ef90',['M_stopwatch.f90',['../M__stopwatch_8f90.html',1,'']]],
   ['m_5fstrings',['m_strings',['../namespacem__strings.html',1,'']]],

@@ -1,6 +1,6 @@
 NAME
 
-   planets(1f) - [FUNIX] ephemeris position of planets for adjusting an equitorial telescope
+   planets(1f) - [FUNIX] ephemeris position of planets for adjusting an equatorial telescope
 
 SYNOPSIS
 

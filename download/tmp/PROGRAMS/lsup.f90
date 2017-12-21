@@ -152,7 +152,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0.0>',&
 '@(#)DATE:           2017-10-12>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Fri, Nov 24th, 2017 2:42:10 PM>',&
+'@(#)COMPILED:       Thu, Dec 21st, 2017 12:14:00 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

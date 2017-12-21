@@ -1,0 +1,11 @@
+<map id="m_kracken::dgets" name="m_kracken::dgets">
+<area shape="rect" id="node2" href="$namespacem__kracken.html#ac118bb44d855d68bfce6caa80d60e5e0" title="NAMEigets &#45; [ARGUMENTS:M_kracken] given keyword fetch integer array from command arguments SYNOPSIS..." alt="" coords="180,183,303,209"/>
+<area shape="rect" id="node3" href="$__kill_8f90.html#ad2550a0eb8119ef21d3febfe883f2051" title="demo_system_kill" alt="" coords="359,5,485,32"/>
+<area shape="rect" id="node4" href="$cprint_8f90.html#a24a9ebfa3b749c4ea01811ae635d6067" title="cprint" alt="" coords="395,56,449,83"/>
+<area shape="rect" id="node5" href="$factors_8f90.html#a01d59471a125202c8c43d68f82dd84f9" title="find_prime_factors" alt="" coords="359,107,485,133"/>
+<area shape="rect" id="node6" href="$gcd_8f90.html#a38924afeefabd20962a8d2f87c2949d7" title="find_gcd" alt="" coords="387,157,457,184"/>
+<area shape="rect" id="node7" href="$lcm_8f90.html#a8e76ffedb6cca7be6b5cb9a55b5c5a46" title="find_lcm" alt="" coords="387,208,457,235"/>
+<area shape="rect" id="node8" href="$paws_8f90.html#adea2b9826964203f987d029f48afa37a" title="demo_system_sleep" alt="" coords="351,259,493,285"/>
+<area shape="rect" id="node9" href="$planets_8f90.html#a9694fb47f36780e83c2f3b77472b4af1" title="planets" alt="" coords="390,309,454,336"/>
+<area shape="rect" id="node10" href="$shell_8f90.html#a19f7365559e8816247241c4721e8eccb" title="testcli" alt="" coords="393,360,451,387"/>
+</map>

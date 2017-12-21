@@ -1,5 +1,6 @@
 NAME
    print_inquire(3f) - [M_io] Do INQUIRE on file by name/number and print results
+
 SYNOPSIS
   Definition:
 

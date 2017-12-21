@@ -3,7 +3,7 @@
 \subsection*{Functions/\+Subroutines}
 \begin{DoxyCompactItemize}
 \item 
-\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=4096) function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__io_a13a76a3cca012978c1d9c5c0c8b4a7ef}{uniq} (\hyperlink{M__stopwatch_83_8txt_a3f508a893ae4c3b397b4383e33b9bcae}{name}, istart, verbose)
+\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=\+:) function, allocatable, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__io_adf7b5088ef3b4daa6c064d3e264ae821}{uniq} (\hyperlink{M__stopwatch_83_8txt_a3f508a893ae4c3b397b4383e33b9bcae}{name}, istart, verbose, create)
 \begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
 
 uniq(3f) -\/ \mbox{[}M\+\_\+io\mbox{]} append a number to the end of filename to make a unique name if name exists \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
@@ -11,7 +11,7 @@ uniq(3f) -\/ \mbox{[}M\+\_\+io\mbox{]} append a number to the end of filename to
 \begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
 
 print\+\_\+inquire(3f) -\/ \mbox{[}M\+\_\+io\mbox{]} Do I\+N\+Q\+U\+I\+RE on file by name/number and print results \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
-\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__io_ad25822cde8058cd6861e2d9a5d729ccc}{slurp} (filename, \hyperlink{notes_8txt_ad997a48ee1fbabed5333859846b5d9a3}{text})
+\hyperlink{M__stopwatch_83_8txt_acfbcff50169d691ff02d4a123ed70482}{subroutine}, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} \hyperlink{namespacem__io_ad25822cde8058cd6861e2d9a5d729ccc}{slurp} (filename, \hyperlink{README_8txt_afda9e6898bd09238e9e9be4c62ce246b}{text})
 \begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
 
 S\+L\+U\+R\+P(3f) -\/ \mbox{[}M\+\_\+io\mbox{]} read a file into a character array \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
@@ -99,6 +99,14 @@ A\+U\+T\+H\+OR\+: John S. Urban R\+E\+P\+O\+R\+T\+I\+NG B\+U\+GS\+: \href{http:/
 
 References removetail(), and true().
 
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__io_a85eb6aa886ca8e591fdc837919f81708_cgraph}
+\end{center}
+\end{figure}
 \mbox{\Hypertarget{namespacem__io_a6793f5adc45177098781af4be39911ff}\label{namespacem__io_a6793f5adc45177098781af4be39911ff}} 
 \index{m\+\_\+io@{m\+\_\+io}!isdir@{isdir}}
 \index{isdir@{isdir}!m\+\_\+io@{m\+\_\+io}}
@@ -127,6 +135,14 @@ is /tmp a directory? T is /tmp/\+N\+O\+T\+T\+H\+E\+RE a directory? F is /usr/loc
 
 References false(), and file().
 
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__io_a6793f5adc45177098781af4be39911ff_cgraph}
+\end{center}
+\end{figure}
 \mbox{\Hypertarget{namespacem__io_a673f7f7e137424eed9c6a736901a5cbc}\label{namespacem__io_a673f7f7e137424eed9c6a736901a5cbc}} 
 \index{m\+\_\+io@{m\+\_\+io}!notopen@{notopen}}
 \index{notopen@{notopen}!m\+\_\+io@{m\+\_\+io}}
@@ -253,6 +269,22 @@ John S. Urban
 
 References then(), and unit().
 
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=229pt]{namespacem__io_a673f7f7e137424eed9c6a736901a5cbc_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__io_a673f7f7e137424eed9c6a736901a5cbc_icgraph}
+\end{center}
+\end{figure}
 \mbox{\Hypertarget{namespacem__io_aa6ee277b2e0f1c263488624b34371fcf}\label{namespacem__io_aa6ee277b2e0f1c263488624b34371fcf}} 
 \index{m\+\_\+io@{m\+\_\+io}!print\+\_\+inquire@{print\+\_\+inquire}}
 \index{print\+\_\+inquire@{print\+\_\+inquire}!m\+\_\+io@{m\+\_\+io}}
@@ -314,6 +346,22 @@ Expected output\+:
 
 References file(), form, number, and unit().
 
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=244pt]{namespacem__io_aa6ee277b2e0f1c263488624b34371fcf_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__io_aa6ee277b2e0f1c263488624b34371fcf_icgraph}
+\end{center}
+\end{figure}
 \mbox{\Hypertarget{namespacem__io_a8d9ee59e21830662fa59c300ca23e04b}\label{namespacem__io_a8d9ee59e21830662fa59c300ca23e04b}} 
 \index{m\+\_\+io@{m\+\_\+io}!readline@{readline}}
 \index{readline@{readline}!m\+\_\+io@{m\+\_\+io}}
@@ -359,8 +407,24 @@ Sample program\+:
 
 program demo\+\_\+readline use M\+\_\+io, only \+: readline implicit none character(len=\+:),allocatable \+:\+: line I\+N\+F\+I\+N\+I\+TE\+: do while (readline(line)==0) write($\ast$,\textquotesingle{}(a)\textquotesingle{})\textquotesingle{}\mbox{[}\textquotesingle{}//line//\textquotesingle{}\mbox{]}\textquotesingle{} enddo I\+N\+F\+I\+N\+I\+TE end program demo\+\_\+readline 
 
-References is, m\+\_\+strings\+::notabs(), and size().
+References file(), is, name, m\+\_\+strings\+::notabs(), size(), and the().
 
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=288pt]{namespacem__io_a8d9ee59e21830662fa59c300ca23e04b_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__io_a8d9ee59e21830662fa59c300ca23e04b_icgraph}
+\end{center}
+\end{figure}
 \mbox{\Hypertarget{namespacem__io_ad25822cde8058cd6861e2d9a5d729ccc}\label{namespacem__io_ad25822cde8058cd6861e2d9a5d729ccc}} 
 \index{m\+\_\+io@{m\+\_\+io}!slurp@{slurp}}
 \index{slurp@{slurp}!m\+\_\+io@{m\+\_\+io}}
@@ -417,6 +481,22 @@ Expected output:
 
 References file(), notopen(), stderr(), and unit().
 
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=330pt]{namespacem__io_ad25822cde8058cd6861e2d9a5d729ccc_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__io_ad25822cde8058cd6861e2d9a5d729ccc_icgraph}
+\end{center}
+\end{figure}
 \mbox{\Hypertarget{namespacem__io_a7d1857c5c839bf3e096ce68fa1447d44}\label{namespacem__io_a7d1857c5c839bf3e096ce68fa1447d44}} 
 \index{m\+\_\+io@{m\+\_\+io}!splitpath@{splitpath}}
 \index{splitpath@{splitpath}!m\+\_\+io@{m\+\_\+io}}
@@ -477,11 +557,27 @@ $\vert$ dirs/name.\+ext $\vert$ dirs $\vert$ name.\+ext $\vert$ name $\vert$ .ex
 
 References m\+\_\+strings\+::split(), and true().
 
-\mbox{\Hypertarget{namespacem__io_a13a76a3cca012978c1d9c5c0c8b4a7ef}\label{namespacem__io_a13a76a3cca012978c1d9c5c0c8b4a7ef}} 
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__io_a7d1857c5c839bf3e096ce68fa1447d44_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__io_a7d1857c5c839bf3e096ce68fa1447d44_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__io_adf7b5088ef3b4daa6c064d3e264ae821}\label{namespacem__io_adf7b5088ef3b4daa6c064d3e264ae821}} 
 \index{m\+\_\+io@{m\+\_\+io}!uniq@{uniq}}
 \index{uniq@{uniq}!m\+\_\+io@{m\+\_\+io}}
 \subsubsection{\texorpdfstring{uniq()}{uniq()}}
-{\footnotesize\ttfamily \hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=4096) function, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+io\+::uniq (\begin{DoxyParamCaption}\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{name,  }\item[{integer, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in}), \hyperlink{option__stopwatch_83_8txt_aa4ece75e7acf58a4843f70fe18c3ade5}{optional}}]{istart,  }\item[{logical, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in}), \hyperlink{option__stopwatch_83_8txt_aa4ece75e7acf58a4843f70fe18c3ade5}{optional}}]{verbose }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily \hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=\+:) function, allocatable, \hyperlink{M__stopwatch_83_8txt_a2f74811300c361e53b430611a7d1769f}{public} m\+\_\+io\+::uniq (\begin{DoxyParamCaption}\item[{\hyperlink{option__stopwatch_83_8txt_abd4b21fbbd175834027b5224bfe97e66}{character}(len=$\ast$), intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in})}]{name,  }\item[{integer, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in}), \hyperlink{option__stopwatch_83_8txt_aa4ece75e7acf58a4843f70fe18c3ade5}{optional}}]{istart,  }\item[{logical, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in}), \hyperlink{option__stopwatch_83_8txt_aa4ece75e7acf58a4843f70fe18c3ade5}{optional}}]{verbose,  }\item[{logical, intent(\hyperlink{M__journal_83_8txt_afce72651d1eed785a2132bee863b2f38}{in}), \hyperlink{option__stopwatch_83_8txt_aa4ece75e7acf58a4843f70fe18c3ade5}{optional}}]{create }\end{DoxyParamCaption})}
 
 
 
@@ -491,19 +587,23 @@ uniq(3f) -\/ \mbox{[}M\+\_\+io\mbox{]} append a number to the end of filename to
 
 Usage
 
-character(len=\+:),allocatable function uniq(name,istart,verbose) character(len=$\ast$),intent(in) \+:\+: name integer,intent(in),optional \+:\+: istart logical,intent(in),optional \+:\+: verbose
+character(len=\+:),allocatable function uniq(name,istart,verbose,create) character(len=$\ast$),intent(in) \+:\+: name integer,intent(in),optional \+:\+: istart logical,intent(in),optional \+:\+: verbose logical,intent(in),optional \+:\+: create
 
 \subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
 
-Given a filename test if it is in use or exists. If it is, or if it ends in a period add a four-\/digit number to the end of the name and test if the new name exists. If necessary, increment the number and try again up to the value 9999. An empty file is created if successful.
+Given a filename test if it is in use or exists. If it is, or if it ends in a period add a four-\/digit number to the end of the name and test if the new name exists. If necessary, increment the number and try again up to the value 9999999. By default an empty file is created if an unused name is found.
 
 o relatively non-\/generic; o does not try to detect io errors
 
 \subsubsection*{O\+P\+T\+I\+O\+NS}
 
-name base input name used to create output filename If name ends in \char`\"{}.\char`\"{} a numeric suffix is always added. istart number to start with as a suffix. Default is 1. verbose writes extra messages to stdout. Defaults to .false. \subsubsection*{R\+E\+T\+U\+R\+NS}
+name base input name used to create output filename If name ends in \char`\"{}.\char`\"{} a numeric suffix is always added. istart number to start with as a suffix. Default is 1. Must be a positive integer less than 9999999. verbose writes extra messages to stdout. Defaults to .false. create create file if new name is successfully found. Defaults to .true. .
 
-uniq A unique filename that is the same as the N\+A\+ME input parameter except with a number appended at the end if needed. \subsubsection*{E\+X\+A\+M\+P\+LE}
+\subsubsection*{R\+E\+T\+U\+R\+NS}
+
+uniq A unique filename that is the same as the N\+A\+ME input parameter except with a number appended at the end if needed. If could not find a unique name a blank is returned.
+
+\subsubsection*{E\+X\+A\+M\+P\+LE}
 
 \begin{DoxyVerb}Sample program
 
@@ -511,7 +611,7 @@ uniq A unique filename that is the same as the N\+A\+ME input parameter except w
    use M_io, only : uniq
    implicit none
    character(len=4096) :: myname
-   integer            :: i
+   integer             :: i
       myname=uniq('does_not_exist')
       open(unit=10,file='does_exist')
       write(*,*)'name stays the same ',trim(myname)
@@ -545,5 +645,21 @@ Expected output
 
 John S. Urban, 1993 
 
-References false(), file(), and unit().
+References false(), file(), true(), and unit().
 
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__io_adf7b5088ef3b4daa6c064d3e264ae821_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__io_adf7b5088ef3b4daa6c064d3e264ae821_icgraph}
+\end{center}
+\end{figure}

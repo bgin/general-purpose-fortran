@@ -1,0 +1,40 @@
+<map id="m_pixel::mapping" name="m_pixel::mapping">
+<area shape="rect" id="node2" href="$namespacem__pixel.html#a43247343cd316e3aa075b44b5166e2e9" title="NAMEviewport(3f) &#45; [M_pixel] Specify which part of the screen to draw in. " alt="" coords="1004,68,1125,95"/>
+<area shape="rect" id="node9" href="$namespacem__pixel.html#a80dece6adac704024a5a76efee697770" title="NAMEortho2(3f) &#45; [M_pixel] define the area of the virtual world coordinates to map to the viewport ..." alt="" coords="1009,119,1120,145"/>
+<area shape="rect" id="node10" href="$namespacem__pixel.html#ac03ca8f23fdadb60599b6ea4dc87a6d9" title="NAMEvinit(3f) &#45; [M_pixel] initialize pixel graphics module " alt="" coords="177,220,275,247"/>
+<area shape="rect" id="node3" href="$namespacem__pixel.html#accc2eab6fbc7b453afa34e1e2c834223" title="NAMEbiggest_ortho2(3f) &#45; [M_pixel] define the area of the virtual world coordinates to map to the vie..." alt="" coords="1173,93,1333,120"/>
+<area shape="rect" id="node7" href="$shell_8f90.html#a5c599e945a5e0c9c8954969ea48587cf" title="pixel" alt="" coords="1438,549,1487,576"/>
+<area shape="rect" id="node4" href="$namespacem__pixel__slices.html#a4ac8bc6e1f869e60a675611420fee0f7" title="m_pixel_slices::dl_init" alt="" coords="1387,93,1538,120"/>
+<area shape="rect" id="node6" href="$huegif_8f90.html#a4cb33e3f49cb1fde8386c9e2b79874fe" title="demo_mapcolor" alt="" coords="1773,169,1887,196"/>
+<area shape="rect" id="node5" href="$pixel__slice_8f90.html#a8113cc3f9dd0449a8e74ef4ae1dfe829" title="NAMEpixel_slice(3f) &#45; [M_pixel] simplified call of DL_SLICES(3f) to make a plot of a 3&#45;d surface ..." alt="" coords="2291,632,2373,659"/>
+<area shape="rect" id="node8" href="$shell_8f90.html#a19f7365559e8816247241c4721e8eccb" title="testcli" alt="" coords="1627,549,1684,576"/>
+<area shape="rect" id="node11" href="$namespacem__pixel.html#a6c23c2779e54da4ac7505cfb816cc2b1" title="m_pixel::if_init" alt="" coords="323,397,428,424"/>
+<area shape="rect" id="node12" href="$namespacem__pixel.html#a42791c7e58158616dae7c36ec5806717" title="NAMEdraw_line_single(3fp) &#45; [M_pixel] Bresenham&#39;s line algorithm " alt="" coords="479,571,608,613"/>
+<area shape="rect" id="node37" href="$namespacem__pixel.html#af3b81a21a0b2f6b5eddd09c031bd6173" title="NAMEclear(3f) &#45; [M_pixel] clear background to current color or specified color index ..." alt="" coords="1202,195,1305,221"/>
+<area shape="rect" id="node38" href="$namespacem__pixel.html#a01797b04ce7c693c3fd6a841e8d1de48" title="NAMEprint_ppm(3f) &#45; [M_pixel] print pixel array as a ppm p3 file " alt="" coords="659,448,791,475"/>
+<area shape="rect" id="node39" href="$namespacem__pixel.html#ab2bb47aea567667b1b92c8265bcb36fb" title="NAMEprint_ascii(3f) &#45; [M_pixel] print small pixel array as ASCII text " alt="" coords="476,397,611,424"/>
+<area shape="rect" id="node13" href="$namespacem__pixel.html#a491951b89e60d0d40d67f22d987da894" title="NAMEline(3f) &#45; [M_pixel] draw line between two points " alt="" coords="677,651,772,677"/>
+<area shape="rect" id="node14" href="$C-M__readline_8c.html#a146edc06a54e833494378446131c6bcd" title="FCreadline" alt="" coords="855,651,939,677"/>
+<area shape="rect" id="node15" href="$namespacem__pixel.html#a15c5daa9ab477991c2c6e17741cf40eb" title="m_pixel::hstylus" alt="" coords="839,549,956,576"/>
+<area shape="rect" id="node21" href="$namespacem__pixel.html#a067e896f50047694a52c30cffa6f502f" title="NAMEpolyline(3f) &#45; [M_pixel] connect points with lines " alt="" coords="1005,499,1124,525"/>
+<area shape="rect" id="node22" href="$namespacem__pixel.html#ab3b12cc498ed490014aa5fcc0bb278d2" title="NAMEcircle(3f) &#45; [M_pixel] draw a circle using current line width and color " alt="" coords="844,701,951,728"/>
+<area shape="rect" id="node23" href="$namespacem__pixel.html#a664375b036092dbebe1bccdc67254e1d" title="NAMErdraw2(3f) &#45; [M_pixel] draw from current position to given point " alt="" coords="841,752,954,779"/>
+<area shape="rect" id="node24" href="$namespacem__pixel.html#a12012e819bb14b27d2b49732aa2e4e55" title="NAMEdraw2(3f) &#45; [M_pixel] draw from current position to given point " alt="" coords="1010,879,1119,905"/>
+<area shape="rect" id="node36" href="$namespacem__pixel.html#a11234e0b33104eb0afb24f928b072053" title="NAMEpoint2(3f) &#45; [M_pixel] Draw a point at x, y " alt="" coords="842,803,953,829"/>
+<area shape="rect" id="node16" href="$namespacem__pixel.html#a80dc3cb149287470a9837de8dd3f05bc" title="NAMEhershey(3f) &#45; [M_pixel] draw text string as Hershey software vector fonts " alt="" coords="1004,549,1125,576"/>
+<area shape="rect" id="node17" href="$namespacem__pixel.html#a6fa0c2d531d1ac74840aa2f0e2b050e0" title="NAMEdrawstr(3f) &#45; [M_pixel] Draw the text string at the current position " alt="" coords="1195,955,1312,981"/>
+<area shape="rect" id="node18" href="$namespacem__pixel.html#a58406ffd6c2a9fdf2ea7772198b54255" title="NAMEdrawchar(3f) &#45; [M_pixel] Draw a character at the current position " alt="" coords="1399,884,1526,911"/>
+<area shape="rect" id="node19" href="$huegif_8f90.html#afc37db6c42d2e7bb12cb85b98d9eba9b" title="wheel" alt="" coords="1628,833,1683,860"/>
+<area shape="rect" id="node20" href="$huegif_8f90.html#a303c71c69a7b51abd347bd12cea7014f" title="slice" alt="" coords="1438,935,1487,961"/>
+<area shape="rect" id="node25" href="$namespacem__pixel.html#a5435aa0d9d6048a62c09d7d90665b958" title="NAMErect(3f) &#45; [M_pixel] draw rectangle given two corners " alt="" coords="1205,904,1302,931"/>
+<area shape="rect" id="node26" href="$namespacem__pixel.html#ab881b9c2adff081a086cd83a1f1341fb" title="NAMEarc(3f) &#45; [M_pixel] draw an arc using current line width and color " alt="" coords="1207,803,1300,829"/>
+<area shape="rect" id="node27" href="$namespacem__pixel__slices.html#aa70737b5f5945b2f513163ee5c40942d" title="m_pixel_slices::dl_plot" alt="" coords="1176,1093,1331,1120"/>
+<area shape="rect" id="node28" href="$namespacem__pixel__slices.html#ac9e60bae24d6a1525af0da041bc1cf55" title="m_pixel_slices::dl\l_slices" alt="" coords="2116,1173,2243,1214"/>
+<area shape="rect" id="node29" href="$namespacem__pixel__slices.html#acafdf0174290a0e231ca120f6305b5d0" title="m_pixel_slices::dl_draw" alt="" coords="1383,1261,1543,1288"/>
+<area shape="rect" id="node32" href="$namespacem__pixel__slices.html#a2a40fc08575b18772b520c7b5b81a91e" title="m_pixel_slices::dl\l_symbol" alt="" coords="1592,1145,1719,1186"/>
+<area shape="rect" id="node34" href="$namespacem__pixel__slices.html#ab9e9530d7fb4fbea1bc5d52744498731" title="m_pixel_slices::dl_move" alt="" coords="1381,1181,1544,1208"/>
+<area shape="rect" id="node35" href="$namespacem__pixel__slices.html#ad35fa14bd29e8e895f22de6500b6b5ff" title="m_pixel_slices::dl\l_translate" alt="" coords="1399,1115,1526,1157"/>
+<area shape="rect" id="node30" href="$namespacem__pixel__slices.html#ab70907b4409a4346c450488b5bcb34a8" title="m_pixel_slices::dl\l_axisb" alt="" coords="1941,1141,2068,1182"/>
+<area shape="rect" id="node31" href="$namespacem__pixel__slices.html#afcc122fe448b5f806c0a372a203cd9ea" title="m_pixel_slices::dl\l_axisa" alt="" coords="1941,1206,2068,1247"/>
+<area shape="rect" id="node33" href="$namespacem__pixel__slices.html#a7d9372496e88c384aea5ad1b26750d1b" title="m_pixel_slices::dl\l_number" alt="" coords="1767,1145,1893,1186"/>
+</map>

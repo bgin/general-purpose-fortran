@@ -48,6 +48,7 @@ var searchData=
   ['readgif',['readgif',['../namespacem__readgif.html#a775e2da2a9f54ec308e87a339a393ed6',1,'m_readgif']]],
   ['readlen',['readlen',['../namespacem__history.html#aca543c267d8b80d0690c33e4a684143b',1,'m_history']]],
   ['readline',['readline',['../namespacem__io.html#a8d9ee59e21830662fa59c300ca23e04b',1,'m_io']]],
+  ['readme_2etxt',['README.txt',['../README_8txt.html',1,'']]],
   ['real',['real',['../structm__strings__oop_1_1string.html#ad1eb39ed0e02c1180c933b506d7eaa6a',1,'m_strings_oop::string::real()'],['../read__watch_83_8txt.html#abdb62bde002f38ef75f810d3a905a823',1,'real():&#160;read_watch.3.txt']]],
   ['real256',['real256',['../namespacem__anyscalar.html#a6d3ef2bc1698c91d737dbd8824a9eb0b',1,'m_anyscalar']]],
   ['real_5finvert_5f2x2',['real_invert_2x2',['../interfacem__math_1_1invert__2x2.html#a2c3a267ed54a4db4e9393b03e74618fc',1,'m_math::invert_2x2::real_invert_2x2()'],['../namespacem__math.html#aa8b68ce8fb1a10c992e769f2e042979e',1,'m_math::real_invert_2x2()']]],
@@ -110,7 +111,7 @@ var searchData=
   ['round',['round',['../dparanoia_8f90.html#ac9fa3597b76a0e3e3622dee7db0246cd',1,'round():&#160;dparanoia.f90'],['../namespacem__math.html#a11ed560b0452d8338ff4958a88cab4de',1,'m_math::round()'],['../sparanoia_8f90.html#ada89e3fa6290059b6cb40cf8c8df33b7',1,'round():&#160;sparanoia.f90']]],
   ['routines',['routines',['../intro__blas1_83_8txt.html#a8b1c4881a5e8817563c90b375b187ae1',1,'intro_blas1.3.txt']]],
   ['row',['row',['../structm__display__util_1_1settings.html#ac5f1655b41bc8d746a001b768e8e8621',1,'m_display_util::settings::row()'],['../C-jubiglet_8c.html#ac6f18a9e1d00b4637522b1b469a92021',1,'ROW():&#160;C-jubiglet.c']]],
-  ['rtf',['RTF',['../notes_8txt.html#ab51dea70e82b4a0780dc27c04b4c7ddb',1,'notes.txt']]],
+  ['rtf',['RTF',['../README_8txt.html#a208a91738b4665d19e2170343b16e486',1,'README.txt']]],
   ['rules',['rules',['../intro__blas1_83_8txt.html#a75eea5bd68c3b2764ce235200eed1716',1,'intro_blas1.3.txt']]],
   ['running',['running',['../M__stopwatch_83_8txt.html#abf8188867add2ff03645714d7dfd5aa8',1,'running():&#160;M_stopwatch.3.txt'],['../namespacem__stopwatch.html#ae9aaee11cd20802153cf7e880f9d3c3e',1,'m_stopwatch::running()']]],
   ['runtests',['runtests',['../dparanoia_8f90.html#a210778c94f0b539462736c5c6867e960',1,'runtests():&#160;dparanoia.f90'],['../sparanoia_8f90.html#aff4ac3ebb7f899cf5e1730cd89c06ad1',1,'runtests():&#160;sparanoia.f90']]]

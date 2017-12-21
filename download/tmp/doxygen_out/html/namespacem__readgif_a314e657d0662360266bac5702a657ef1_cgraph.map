@@ -1,0 +1,33 @@
+<map id="m_readgif::lzw_read_byte" name="m_readgif::lzw_read_byte">
+<area shape="rect" id="node2" href="$__false_8f90.html#ac39cd9fe2012c31749944aa6b20b6c05" title="false" alt="" coords="453,597,502,623"/>
+<area shape="rect" id="node15" href="$__true_8f90.html#a7ed1d79677aed1b23489a4fe0bd16daa" title="true" alt="" coords="1799,571,1843,598"/>
+<area shape="rect" id="node28" href="$namespacem__readgif.html#a027fedbf7ba68763483988c1aa6d2cea" title="m_readgif::get_code" alt="" coords="223,785,361,811"/>
+<area shape="rect" id="node29" href="$namespacem__readgif.html#ace6e51d0293107696bd1482348414a43" title="m_readgif::get_data\l_block" alt="" coords="409,924,545,965"/>
+<area shape="rect" id="node32" href="$M__stopwatch_83_8txt.html#a5cbef30eb7c0d734bd82f5a7ebea9aa7" title="unit" alt="" coords="865,999,908,1026"/>
+<area shape="rect" id="node3" href="$namespacem__debug.html#a66fa03a6a97837acc4c1265be1294295" title="NAMEfstop &#45; [M_debug] call stop with both a number and a message SYNOPSIS" alt="" coords="617,571,727,598"/>
+<area shape="rect" id="node4" href="$__cmp_8f90.html#a3e09a3b52ee8fb04eeb93fe5761626a8" title="help_usage" alt="" coords="1972,735,2060,762"/>
+<area shape="rect" id="node5" href="$__cmp_8f90.html#a39c21619b08a3c22f19e2306efd7f766" title="NAMEcmp(1f) &#45; [FUNIX] compare two files byte by byte SYNOPSIS" alt="" coords="1969,810,2063,837"/>
+<area shape="rect" id="node6" href="$namespacem__kracken.html#a420718890eac378e5cd047dd0b477424" title="NAMEiget &#45; [ARGUMENTS:M_kracken] given keyword fetch integer value from command argument ..." alt="" coords="829,10,944,37"/>
+<area shape="rect" id="node11" href="$namespacem__messages.html#a986ae6ab4c767cfedb3e8eb2894224db" title="NAMEjunroach(3f) &#45; [M_messages] print an eye&#45;catching image of a roach. " alt="" coords="593,622,751,649"/>
+<area shape="rect" id="node12" href="$namespacem__kracken.html#a850dce381e1cfe18a4ebcaa214995e39" title="NAMEkracken(3f) &#45; [ARGUMENTS:M_kracken] crack command line options on Fortran programs, using &quot;&#45;KEYWORD VALUE&quot; syntax SYNOPSIS" alt="" coords="602,353,742,379"/>
+<area shape="rect" id="node14" href="$namespacem__kracken.html#a7141acd7a00c1a5aa5f90612a0414b63" title="NAMElget &#45; [ARGUMENTS:M_kracken] given keyword fetch logical value from command arguments SYNOPSIS..." alt="" coords="1376,91,1491,118"/>
+<area shape="rect" id="node7" href="$namespacem__kracken.html#ae7b6ad046d637f03148efb56336a7ff4" title="NAMEdget &#45; [ARGUMENTS:M_kracken] given keyword fetch doubleprecision value from command argument SYNO..." alt="" coords="1027,10,1145,37"/>
+<area shape="rect" id="node8" href="$namespacem__kracken.html#a9a64192326816b0b9badcc11506628ee" title="NAMEsget &#45; [ARGUMENTS:M_kracken] given keyword fetch string value and length from command arguments S..." alt="" coords="1562,41,1681,67"/>
+<area shape="rect" id="node9" href="$namespacem__kracken.html#a9e2129d174220802486cc2dc7e0cc443" title="NAMEsubscript(3fp) &#45; [ARGUMENTS:M_kracken] return the subscript value of a string when given it&#39;s nam..." alt="" coords="1748,142,1895,169"/>
+<area shape="rect" id="node10" href="$namespacem__kracken.html#af9225957a50e8e0559605911c4c5ee02" title="NAMEbounce(3fp) &#45; [ARGUMENTS:M_kracken] find index in Language Dictionary where VARNAM can be found S..." alt="" coords="1948,193,2084,219"/>
+<area shape="rect" id="node13" href="$namespacem__kracken.html#a2cb376f8a8e26e489a45cafcda66ea3e" title="NAMEdissect(3f) &#45; [ARGUMENTS:M_kracken] convenient call to parse() – define defaults, then process " alt="" coords="819,287,955,314"/>
+<area shape="rect" id="node26" href="$namespacem__kracken.html#a4c509f8594be3b73928c43c961c1caf4" title="NAMEget_command_arguments(3fp) &#45; [ARGUMENTS:M_kracken] return all command arguments as an allocated s..." alt="" coords="799,179,975,220"/>
+<area shape="rect" id="node18" href="$namespacem__kracken.html#ad0cfac1dcc02e0a67841f546cb57f823" title="NAMEmenu(3fp) &#45; [ARGUMENTS:M_kracken] prompt for values using a menu interface SYNOPSIS" alt="" coords="1023,363,1149,390"/>
+<area shape="rect" id="node19" href="$namespacem__kracken.html#a495ed7db5c2d301c4d5e623b62a9c295" title="NAMEparse(3f) &#45; [ARGUMENTS:M_kracken] parse user command and store tokens into Language Dictionary ..." alt="" coords="1197,217,1324,243"/>
+<area shape="rect" id="node20" href="$namespacem__kracken.html#a6eb597e3ca7d161933f595788d511fd7" title="NAMEstore(3fp) &#45; [ARGUMENTS:M_kracken] add or replace dict. name&#39;s value (if allow=&#39;add&#39; add name if ..." alt="" coords="1372,267,1495,294"/>
+<area shape="rect" id="node17" href="$namespacem__strings.html#a0953ac5c4d31339fdd8ec3acc9c3c915" title="NAMEupper &#45; [M_strings] changes a string to uppercase " alt="" coords="1562,91,1681,118"/>
+<area shape="rect" id="node16" href="$namespacem__messages.html#a93650d7a0b4288d714aa9eb575366137" title="NAMEjunsun(3f) &#45; [M_messages] print an eye&#45;catching image of a smiling sun. " alt="" coords="1943,571,2089,598"/>
+<area shape="rect" id="node22" href="$namespacem__strings.html#a7b153720f1f9b93c49094dcb1272995b" title="NAMEs2v &#45; [M_strings] function returns doubleprecision numeric value from a string ..." alt="" coords="1207,470,1314,497"/>
+<area shape="rect" id="node21" href="$namespacem__kracken.html#a21998bf9ab683f8fb661f4f4b916c21f" title="NAMEadd_string(3fp) &#45; [ARGUMENTS:M_kracken] Add new string name to Language Library dictionary ..." alt="" coords="1544,318,1699,345"/>
+<area shape="rect" id="node23" href="$namespacem__strings.html#a751d3101d8404ea10db4d8ba59a75d6b" title="m_strings::a2d" alt="" coords="1379,470,1487,497"/>
+<area shape="rect" id="node24" href="$namespacem__strings.html#ab84a4b7c2be211433c2d1b435a87fa32" title="NAMEsubstitute &#45; [M_strings] Globally substitute one substring for another in string ..." alt="" coords="1549,470,1693,497"/>
+<area shape="rect" id="node25" href="$namespacem__strings.html#a90f3bdfa02c8ddff42cb15e66b124fe8" title="NAME" alt="" coords="1543,521,1700,547"/>
+<area shape="rect" id="node27" href="$M__stopwatch_83_8txt.html#a04ed5ef37abacfa36a856b5f30376485" title="length" alt="" coords="1057,135,1115,162"/>
+<area shape="rect" id="node30" href="$namespacem__readgif.html#ae01d3edbe9e15bf4dd33070581e26fee" title="m_readgif::io_error" alt="" coords="607,923,737,950"/>
+<area shape="rect" id="node31" href="$namespacem__readgif.html#a272a4dbcc1419d3d103db4c50b757805" title="m_readgif::read_buf" alt="" coords="605,974,739,1001"/>
+</map>

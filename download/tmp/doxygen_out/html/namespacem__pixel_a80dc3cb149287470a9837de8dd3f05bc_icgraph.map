@@ -1,0 +1,9 @@
+<map id="m_pixel::hershey" name="m_pixel::hershey">
+<area shape="rect" id="node2" href="$namespacem__pixel.html#a6fa0c2d531d1ac74840aa2f0e2b050e0" title="NAMEdrawstr(3f) &#45; [M_pixel] Draw the text string at the current position " alt="" coords="175,107,292,133"/>
+<area shape="rect" id="node7" href="$shell_8f90.html#a5c599e945a5e0c9c8954969ea48587cf" title="pixel" alt="" coords="379,157,428,184"/>
+<area shape="rect" id="node3" href="$namespacem__pixel.html#a58406ffd6c2a9fdf2ea7772198b54255" title="NAMEdrawchar(3f) &#45; [M_pixel] Draw a character at the current position " alt="" coords="340,5,467,32"/>
+<area shape="rect" id="node4" href="$huegif_8f90.html#afc37db6c42d2e7bb12cb85b98d9eba9b" title="wheel" alt="" coords="516,81,571,108"/>
+<area shape="rect" id="node6" href="$huegif_8f90.html#a303c71c69a7b51abd347bd12cea7014f" title="slice" alt="" coords="379,107,428,133"/>
+<area shape="rect" id="node5" href="$huegif_8f90.html#a4cb33e3f49cb1fde8386c9e2b79874fe" title="demo_mapcolor" alt="" coords="620,81,735,108"/>
+<area shape="rect" id="node8" href="$shell_8f90.html#a19f7365559e8816247241c4721e8eccb" title="testcli" alt="" coords="515,157,572,184"/>
+</map>

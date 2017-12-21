@@ -30,7 +30,7 @@ DESCRIPTION
 
 ARGUMENTS
 
-   COMMAND   - a default CHARACTER scalar conntaining the command line to be
+   COMMAND   - a default CHARACTER scalar containing the command line to be
                executed. The interpretation is programming-environment dependent.
 
    WAIT      - (Optional) a default LOGICAL scalar.

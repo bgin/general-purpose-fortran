@@ -31,7 +31,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '    -ibase NN  default base for input values                                    ',&
 '               If the input values are whole numbers that are of the            ',&
 '               form NN:MMMM or NN#MMMM where NN is the base and MMMM the        ',&
-'               value the numbers are intrepreted in the explicit base           ',&
+'               value the numbers are interpreted in the explicit base           ',&
 '               the numbers represent. Otherwise, they are interpreted           ',&
 '               as in base NN. NN defaults to 10                                 ',&
 '    -obase MM  base for output values. The Default is 10.                       ',&
@@ -129,7 +129,7 @@ end subroutine help_usage
 !!     -ibase NN  default base for input values
 !!                If the input values are whole numbers that are of the
 !!                form NN:MMMM or NN#MMMM where NN is the base and MMMM the
-!!                value the numbers are intrepreted in the explicit base
+!!                value the numbers are interpreted in the explicit base
 !!                the numbers represent. Otherwise, they are interpreted
 !!                as in base NN. NN defaults to 10
 !!     -obase MM  base for output values. The Default is 10.
@@ -213,7 +213,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20170916>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
-'@(#)COMPILED:       Sat, Nov 25th, 2017 9:20:17 PM>',&
+'@(#)COMPILED:       Thu, Dec 21st, 2017 12:17:36 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

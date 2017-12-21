@@ -25,7 +25,7 @@ var searchData=
   ['right',['right',['../structm__treesort_1_1node.html#adfd2c4a14b54fe93048b2d54ed9ed7b6',1,'m_treesort::node']]],
   ['routines',['routines',['../intro__blas1_83_8txt.html#a8b1c4881a5e8817563c90b375b187ae1',1,'intro_blas1.3.txt']]],
   ['row',['row',['../structm__display__util_1_1settings.html#ac5f1655b41bc8d746a001b768e8e8621',1,'m_display_util::settings']]],
-  ['rtf',['RTF',['../notes_8txt.html#ab51dea70e82b4a0780dc27c04b4c7ddb',1,'notes.txt']]],
+  ['rtf',['RTF',['../README_8txt.html#a208a91738b4665d19e2170343b16e486',1,'README.txt']]],
   ['rules',['rules',['../intro__blas1_83_8txt.html#a75eea5bd68c3b2764ce235200eed1716',1,'intro_blas1.3.txt']]],
   ['running',['running',['../M__stopwatch_83_8txt.html#abf8188867add2ff03645714d7dfd5aa8',1,'running():&#160;M_stopwatch.3.txt'],['../namespacem__stopwatch.html#ae9aaee11cd20802153cf7e880f9d3c3e',1,'m_stopwatch::running()']]]
 ];

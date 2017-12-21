@@ -2972,7 +2972,6 @@ character(len=1),intent(in),optional  :: escape ! escape character. Default is b
    character(len=1)             :: esc    ! escape character. Default is %
    character(len=:),allocatable :: lineout
    integer                      :: i
-   integer                      :: j
    integer                      :: ilen
    character(len=3)             :: thr
    integer                      :: xxx
