@@ -1,5 +1,5 @@
 NAME
-   pounds_to_kilograms(3f) - [M_units] - converts a measurement in pounds-mass to kilograms.
+   pounds_to_kilograms(3f) - [M_units:MASS] - converts a measurement in pounds-mass to kilograms.
 
 SYNOPSIS
    elemental function pounds_to_kilograms ( pounds )

@@ -1,5 +1,5 @@
 NAME
-   intrinsics(7f) - intrinsic man(1) pages
+   intrinsics(7f) - [FORTRAN]intrinsic man(1) pages
 
 DESCRIPTION
 
@@ -167,7 +167,7 @@ Math functions
    * [[is_iostat_eor]]--Test for end-of-record value
    * [[ishft]]--Shift bits
    * [[ishftc]]--Shift bits circularly
-   * [[lcobound]]--Lower codimension bounds of an array
+   * [[co_lbound]]--Lower codimension bounds of an array
    * [[leadz]]--Number of leading zero bits of an integer
    * [[len_trim]]--Length of a character entity without trailing blank characters
    * [[lge]]--Lexical greater than or equal
@@ -229,7 +229,7 @@ Math functions
    * [[transfer]]--Transfer bit patterns
    * [[transpose]]--Transpose an array of rank two
    * [[trim]]--Remove trailing blank characters of a string
-   * [[ucobound]]--Upper codimension bounds of an array
+   * [[co_ubound]]--Upper codimension bounds of an array
    * [[unpack]]--Store the elements of a vector in an array of higher rank
    * [[verify]]--Scan a string for the absence of a set of characters
 

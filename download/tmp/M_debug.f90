@@ -97,7 +97,7 @@ contains
 !!    stderr - [M_debug] write message to stderr
 !!##SYNOPSIS
 !!
-!!    subroutine stderr(message)
+!!    subroutine stderr(message,[generic])
 !!
 !!     character(len=*),intent(in)  :: message
 !!     class(*),intent(in),optional :: generic

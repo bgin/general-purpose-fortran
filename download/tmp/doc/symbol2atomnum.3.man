@@ -1,5 +1,5 @@
 NAME
-   symbol2atomnum - [M_units] return atomic number given element symbol name
+   symbol2atomnum - [M_units:SYMBOLS] return atomic number given element symbol name
 SYNOPSIS
   subroutine symbol2atomnum(symbol,atomnum)
 

@@ -1,5 +1,5 @@
 NAME
-   feet_to_meters - [M_units] converts a measurement in feet to meters
+   feet_to_meters - [M_units:LENGTH] converts a measurement in feet to meters
 SYNOPSIS
    elemental real function feet_to_meters(feet)
 

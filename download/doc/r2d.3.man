@@ -1,5 +1,5 @@
 NAME
-   r2d - [M_units] convert radians to degrees
+   r2d - [M_units:TRIGONOMETRY] convert radians to degrees
 SYNOPSIS
    elemental real function r2d(radians)
 

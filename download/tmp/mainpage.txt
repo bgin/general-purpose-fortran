@@ -1,6 +1,6 @@
 mainpage.txt
 /**
-     @mainpage CLI Fortran Library
+     @mainpage GPF Fortran Library
 
      @section Introduction
       This is a collection of Fortran modules and procedures used to 

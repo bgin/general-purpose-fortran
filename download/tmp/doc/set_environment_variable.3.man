@@ -1,5 +1,5 @@
 NAME
-   set_environment_variable(3f) - [M_system] call setenv(3c) to set environment variable
+   set_environment_variable(3f) - [M_system:ENVIRONMENT] call setenv(3c) to set environment variable
 SYNOPSIS
   subroutine set_environment_variable(NAME, VALUE, STATUS)
 

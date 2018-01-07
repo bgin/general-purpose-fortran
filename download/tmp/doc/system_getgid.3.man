@@ -1,5 +1,5 @@
 NAME
-   system_getgid(3f) - [M_system] get the real group ID (GID) of current process from Fortran by calling getgid(3c)
+   system_getgid(3f) - [M_system:QUERY] get the real group ID (GID) of current process from Fortran by calling getgid(3c)
 SYNOPSIS
    integer(kind=c_int) function system_getgid()
 DESCRIPTION

@@ -1,5 +1,5 @@
 NAME
-   system_unsetenv(3f) - [M_system] change or add an environment variable by calling unsetenv(3c)
+   system_unsetenv(3f) - [M_system:ENVIRONMENT] change or add an environment variable by calling unsetenv(3c)
 SYNOPSIS
   subroutine system_unsetenv(name,ierr)
 

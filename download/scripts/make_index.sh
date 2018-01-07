@@ -9,15 +9,15 @@ DOWNLOADHTML(){
 header.sh
 cat <<\EOF
 <h1>Download Page</h1>
-<h2>(for Fortran Command Line Interface Collection)</h2>
+<h2>(for Fortran General Purpose Fortran Collection)</h2>
 
 <p>
    There is one file to download for the libGPF library -
    <a href="../../GPF.tgz" style="background-color: yellow"
       title="
-      It is easiest to pull all the CLI (Command Line Interface) sources
+      It is easiest to pull all the GPF (General Purpose Fortran) sources
       code at one time in an archive file  because many of the modules use
-      other CLI modules; and many included programs use multiple modules
+      other GPF modules; and many included programs use multiple modules
       and routines.
       "
    > GPF.tgz </a>.
@@ -30,7 +30,7 @@ cat <<\EOF
       command used is a customized version (included in this collection)
       that can generate simple HTML documents.
       "
-      >the CLI (Command Line Interface) sources</a>
+      >the GPF(General Purpose Fortran) sources</a>
    </li>
 
    <li>  <a href="man3.html"> manpages for the <em>procedures</em> </a> as *roff and HTML </li>
@@ -55,6 +55,11 @@ cat <<\EOF
    <li> additional HTML documentation </li>
 
 </ul>
+
+<p>
+   My own <a href="../../../FAQ/html/faq.html">FAQ on</a> Fortran is also available, with links to other Fortran resources.
+</p>
+
 </p>
 
 </p>
@@ -68,7 +73,7 @@ cat <<\EOF
 </pre>
 
 <p>
-   This will compile the CLI procedures and sample utility programs.
+   This will compile the GPF procedures and sample utility programs.
 </p>
 
 <p>
@@ -91,9 +96,9 @@ cat <<\EOF
    MANPATH environment variable to include the full pathname to the man/
    directory first. Something like
    <pre>
-      export MANPATH=/home/$USER/CLI/man:$MANPATH::
+      export MANPATH=/home/$USER/GPF/man:$MANPATH::
    </pre>
-   (assuming you installed the source in /home/$USER/CLI)
+   (assuming you installed the source in /home/$USER/GPF)
    will work, depending on what shell you are using.
 </p>
 

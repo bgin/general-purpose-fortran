@@ -37,7 +37,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 </style>
 </head>
 <body>
-<a href="http://www.urbanjost.altervista.org/LIBRARY/libGPF/GPF.html">[CLI Home Page]</a>
+<a href="http://www.urbanjost.altervista.org/LIBRARY/libGPF/GPF.html">[GPF Home Page]</a>
 <div id="Container">
 <div id="Content">
 <html><head><title></title></head><body><table border="1">
@@ -124,6 +124,10 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <td>
 	M_constants(3fm): A collection of commonly used constants (pi, e, gamma, ...)'<br/>
 </td>
+<tr><td><a href="M_csv.f90">M_csv.f90</a></td>
+<td>
+	M_csv::csv_write(3f): write scalar intrinsic type using current CSV style<br/>
+</td>
 <tr><td><a href="M_debug.f90">M_debug.f90</a></td>
 <td>
 	M_debug::stderr(3f): writes a message to standard error using a standard f2003 method<br/>
@@ -164,6 +168,9 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	 from current cursor position jump to next input field in pad<br/>
 	 from current cursor position jump to previous input field in pad jsu<br/>
 </td>
+<tr><td><a href="M_geography.f90">M_geography.f90</a></td>
+<td>
+</td>
 <tr><td><a href="M_getkey.f90">M_getkey.f90</a></td>
 <td>
 </td>
@@ -195,6 +202,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_io::dirname(3f):strip last component from filename<br/>
 	M_io::splitpath(3f):split Unix pathname into components (dir,name,basename,extension)<br/>
 	M_io::isdir(3f): determine if DIRNAME is a directory name ON UNIX-COMPATIBLE file systems<br/>
+	M_io::get_tmp(3f): Return the name of the scratch directory<br/>
 </td>
 <tr><td><a href="M_journal.f90">M_journal.f90</a></td>
 <td>
@@ -429,6 +437,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_strings::len_white(3f): return position of last non-blank/non-null character in string<br/>
 	M_strings::crop(3f): trim leading and trailings blanks from string<br/>
 	M_strings::transliterate(3f): replace characters from old set with new set<br/>
+	M_strings::join(3f): append an array of character variables with specified separator into a single CHARACTER variable<br/>
 	M_strings::reverse(3f): Return a string reversed<br/>
 	M_strings::upper(3f): Changes a string to uppercase<br/>
 	M_strings::lower(3f): Changes a string to lowercase over specified range<br/>
@@ -458,7 +467,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_strings::trimzeros(3fp): Delete trailing zeros from numeric decimal string<br/>
 	M_strings::listout(3f): copy icurve_lists to icurve_expanded expanding negative numbers to ranges (1 -10 means 1 thru 10)<br/>
 	M_strings::describe(3f): return string describing long name of a single character<br/>
-	getvals: read arbitrary number of values from a character variable up to size of values'<br/>
+	M_strings::getvals: read arbitrary number of values from a character variable up to size of values<br/>
 	M_strings::string_to_values(3f): reads an array of numbers from a numeric string<br/>
 	M_strings::s2vs(3f): function returns array of values from a string<br/>
 	M_strings::isprint(3f): indicates if input character is a printable ASCII character<br/>
@@ -773,11 +782,11 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 </td>
 <tr><td><a href="Makefile">Makefile</a></td>
 <td>
-	 Makefile started by makeout(1) 2017-12-21 01:20:59<br/>
+	 Makefile started by makeout(1) 2018-01-06 18:55:52<br/>
 </td>
 <tr><td><a href="Makefile_picky">Makefile_picky</a></td>
 <td>
-	 Makefile started by makeout(1) 2017-12-21 01:20:52<br/>
+	 Makefile started by makeout(1) 2018-01-06 18:55:49<br/>
 </td>
 <tr><td><a href="vimrc">vimrc</a></td>
 <td>

@@ -4,12 +4,19 @@ EXAMPLE
   Sample
 
      program fortran_syntax
+     implicit none
+     integer :: bb
+        call sub1(10,bb)
+        write(*,*)'BB=',bb
      contains
-        subroutine sub1(a,b,c)
-        integer,intent(in)                     :: a
-        integer,intent(out)                    :: b
-        character(len=:),intent(out),optional  :: c
+     subroutine sub1(a,b,c)
+     integer,intent(in)                     :: a
+     integer,intent(out)                    :: b
+     character(len=:),intent(out),optional  :: c
         b=2*a
-        end subroutine sub1
+        if(present(c))then
+           c='Hello World'
+        endif
+     end subroutine sub1
      end program fortran_syntax
 

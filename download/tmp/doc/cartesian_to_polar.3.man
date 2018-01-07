@@ -1,5 +1,5 @@
 NAME
-    cartesian_to_polar(3f) - [M_units] convert Cartesian coordinates to polar coordinates
+    cartesian_to_polar(3f) - [M_units:TRIGONOMETRY] convert Cartesian coordinates to polar coordinates
 SYNOPSIS
    subroutine cartesian_to_polar(x,y,radius,inclination)
 

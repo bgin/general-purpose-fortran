@@ -1,5 +1,5 @@
 NAME
-   system_initenv(3f) - [M_system] initialize environment table pointer and size so table can be read by readenv(3f)
+   system_initenv(3f) - [M_system:ENVIRONMENT] initialize environment table pointer and size so table can be read by readenv(3f)
 SYNOPSIS
       subroutine system_initenv()
 DESCRIPTION

@@ -9,7 +9,7 @@ SYNOPSIS
                                                         block ] ...
                                                    end-select-stmt
 
-  R811      select-case-stmt             is   [ case-construct-name : ] SELECT CASE ( case-expr )
+  R811      select-case-stmt             is   [ case-construct-name : ] SELECT CASE  case-expr)
 
   R812      case-stmt                    is   CASE case-selector [case-construct-name]
 
@@ -28,7 +28,7 @@ SYNOPSIS
                                          or scalar-char-expr
                                          or scalar-logical-expr
 
-  R815      case-selector                is ( case-value-range-list )
+  R815      case-selector                is (case-value-range-list)
                                          or DEFAULT
 
   C810      (R810) No more than one of the selectors of one of the CASE statements shall be DEFAULT.

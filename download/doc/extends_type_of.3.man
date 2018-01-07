@@ -1,0 +1,30 @@
+NAME
+  EXTENDS_TYPE_OF(3f) - [FORTRAN:INTRINSIC] True if and only if the dynamic type of A is an extension of the dynamic type of MOLD.
+
+SYNOPSIS
+  EXTENDS_TYPE_OF (A, MOLD)
+
+DESCRIPTION
+
+1 Description. True if and only if the dynamic type of A is an extension of the dynamic type of MOLD.
+
+2 Class. Inquiry function.
+
+OPTIONS
+  A             shall be an object of extensible type. If it is a pointer, it shall not have an undefined association
+                status.
+  MOLD          shall be an object of extensible type. If it is a pointer, it shall not have an undefined association
+                status.
+
+RESULTS
+
+4 Result Characteristics. Default logical scalar.
+
+5 Result Value. If MOLD is unlimited polymorphic and is either a disassociated pointer or unallocated allocatable
+  variable, the result is true; otherwise if A is unlimited polymorphic and is either a disassociated pointer or
+  unallocated allocatable variable, the result is false; otherwise the result is true if and only if the dynamic type of
+  A is an extension type of the dynamic type of MOLD.
+
+  The dynamic type of a disassociated pointer or unallocated allocatable variable is its declared type.
+
+EXAMPLE

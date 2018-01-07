@@ -1,5 +1,5 @@
 NAME
-   system_clearenv(3f) - [M_system] clear environment by calling clearenv(3c)
+   system_clearenv(3f) - [M_system:ENVIRONMENT] clear environment by calling clearenv(3c)
 
 
 SYNOPSIS

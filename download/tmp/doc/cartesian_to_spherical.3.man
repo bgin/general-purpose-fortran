@@ -1,5 +1,5 @@
 NAME
-    cartesian_to_spherical(3f) - [M_units] convert Cartesian coordinates to ISO polar coordinates
+    cartesian_to_spherical(3f) - [M_units:TRIGONOMETRY] convert Cartesian coordinates to ISO polar coordinates
 SYNOPSIS
    subroutine cartesian_to_spherical(x,y,z,radius,inclination,azimuth)
 

@@ -1,5 +1,5 @@
 NAME
-       system_getsid(3f) - [M_system] get the process group ID of a session leader
+       system_getsid(3f) - [M_system:QUERY] get the process group ID of a session leader
 SYNOPSIS
        integer(kind=c_int) function system_getsid(pid)
        integer(kind=c_int) :: pid

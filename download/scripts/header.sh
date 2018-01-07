@@ -45,7 +45,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 </style>
 </head>
 <body>
-<a href="http://www.urbanjost.altervista.org/LIBRARY/libGPF/GPF.html">[CLI Home Page]</a>
+<a href="http://www.urbanjost.altervista.org/LIBRARY/libGPF/GPF.html">[GPF Home Page]</a>
 <div id="Container">
 <div id="Content">
 EOF

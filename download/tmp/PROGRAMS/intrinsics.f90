@@ -1,36 +1,3 @@
-!>
-!!##NAME
-!!    INTRINSIC(3f) - intrinsic man(1) pages
-!!
-!!##DESCRIPTION
-!!
-!!    This is a project to provide a standard set of man(1) pages for Fortran
-!!    and the Fortran intrinsics, ultimately with a working example program
-!!    for each intrinsic.
-!!
-!!    The manpage source is maintained as a single flat-text file (intrinsics.ff) which is
-!!    run thru ufpp(1) and txt2man(1) to create the program intrinsics(1f).
-!!    That program generates all the text as plain text as well as being used
-!!    as the source for the man(1) pages. The program intrinsics(1f) is
-!!    very useful for scanning for keywords.
-!!
-!!    Note that the vim(1) editor will call up a man(1) page for a word if
-!!    the letter "K" is pressed over the word.
-!!
-!!    Integration with the editor is a powerful tool when inspecting code
-!!    that uses unfamiliar procedures and to verify correct usage when
-!!    creating code.
-!!
-!!    *Note*: In many cases the descriptions of these intrinsics were
-!!    originally taken from the [[GFortran|GNU Fortran]] manual to make
-!!    descriptions on the Fortran Wiki by Jason Blevins (which were then
-!!    used to start this collection). Like the Fortran Wiki itself, the
-!!    [[GFortran|GNU Fortran]] manual is licensed under the [[GNU Free
-!!    Documentation License]].
-!!
-!!    These documents are at the state of "good enough considering the
-!!    alternative is nothing", but are still actively being completed.
-!===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
 character(len=*),parameter     :: ident="@(#)help_version(3f): prints version information"
@@ -50,7 +17,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Wed, Dec 20th, 2017 6:54:19 PM>',&
+'@(#)COMPILED:       Sat, Dec 23rd, 2017 1:42:18 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -112,257 +79,6 @@ end subroutine help_usage
 !!
 !!        intrinsics >x;vi x
 !===================================================================================================================================
-!>
-!!##NAME
-!!     include(7f) - [FORTRAN] including source text
-!!##SYNOPSIS
-!!
-!!     INCLUDE char-literal-constant
-!!##DESCRIPTION
-!!   Additional text may be incorporated into the source text of a program
-!!   unit during processing. This is accomplished with the INCLUDE line,
-!!   which has the form
-!!
-!!          INCLUDE char-literal-constant
-!!
-!!   An INCLUDE line is not a Fortran statement.
-!!
-!!   The char-literal-constant shall not have a kind type parameter value
-!!   that is a named-constant.
-!!   The interpretation of char-literal-constant is processor dependent. An
-!!   example of a possible valid interpretation is that char-literal-constant
-!!   is the name of a file that contains the source text to be included.
-!!
-!!   An INCLUDE line shall appear on a single source line where a statement
-!!   may appear; it shall be the only nonblank text on this line other than
-!!   an optional trailing comment. Thus, a statement label is not allowed.
-!!
-!!   The effect of the INCLUDE line is as if the referenced source text
-!!   physically replaced the INCLUDE line prior to program
-!!   processing. Included text may contain any source text, including
-!!   additional INCLUDE lines; such nested INCLUDE lines are similarly
-!!   replaced with the specified source text. The maximum depth of nesting
-!!   of any nested INCLUDE lines is processor dependent. Inclusion of the
-!!   source text referenced by an INCLUDE line shall not, at any level of
-!!   nesting, result in inclusion of the same source text.
-!!
-!!   When an INCLUDE line is resolved, the first included statement line
-!!   shall not be a continuation line and the last included statement line
-!!   shall not be continued.
-!!
-!!
-!!   NOTE
-!!
-!!           In some circumstances, for example where source code is
-!!           maintained in an INCLUDE file for use in programs whose source
-!!           form might be either fixed or free, observing the following
-!!           rules allows the code to be used with either source form.
-!!
-!!           *   Confine statement labels to character positions 1 to
-!!               5 and statements to character positions 7 to 72.
-!!           *   Treat blanks as being significant.
-!!           *   Use only the exclamation mark (!) to indicate
-!!               a comment, but do not start the comment in character
-!!               position 6.
-!!           *   For continued statements, place an ampersand (&) in
-!!               both character position 73 of a continued line and character
-!!               position 6 of a continuation line.
-!!##EXAMPLE
-!!
-!===================================================================================================================================
-!>
-!!##NAME
-!!     scratch(7f) - [FORTRAN:OPEN] where scratch files are typically written by OPEN(3f)
-!!##SYNOPSIS
-!!
-!!     open( .... status='scratch')
-!!##DESCRIPTION
-!!     Where files opened with status='scratch' are written is implementation-dependent.
-!!     Often the file is unlinked so that it goes away unconditionally when the program
-!!     starts, so in many *nix environments you cannot see the scratch file that is often
-!!     used. So the compiler documentation should be referred to, but typically
-!!     a scratch file is opened with a unique filename in one of the following directories:
-!!
-!!       o in the directory pointed to by the environment variable $TMPDIR, if defined.
-!!       o next directories pointed to by $TMP and $TEMP are used if the variables are
-!!         defined.
-!!       o if none of the variables are defined, then the /tmp directory is typically used
-!!         on *nix systems, and the current directory is often used on other systems.
-!!
-!!     This can be important if you are generating large scratch files, as you may want
-!!     to specify they are created in a secure directory or on a high-speed server such
-!!     as a Lustre file server or memory-resident file system. Consider
-!!
-!!       o Scratch files are often opened using the current permission mask
-!!         (umask) combined with possible operating-system or kernel defaults
-!!         and file-system-dependent attributes, so make sure scratch files are
-!!         properly secure
-!!       o files are written in an area that you can write to and have sufficient
-!!         space in
-!!       o that the scratch space provides optimal performance
-!!       o make sure the system cleans up properly
-!!         when programs are aborted.
-!!
-!!     The behavior is very system-dependent.
-!!
-!!##EXAMPLE:
-!!    System-dependent example:
-!!
-!!     open(newunit=lun,status='scratch')
-!!     inquire(unit=lun,file=filename)
-!!     write(*,*)'filename=',filename)
-!!     end
-!===================================================================================================================================
-!>
-!!##NAME
-!! initialize_arrays(7f) - [FORTRAN:FAQ] Initializing small 2D numeric arrays with array constructors
-!!##DESCRIPTION
-!!
-!! Intuitively, one might assume that if one wants to initialize a
-!! small array by rows that something like the following will work:
-!!
-!!    ! DOES NOT WORK
-!!    integer :: xx(3,5)= [ 1, 2, 3, 4, 5], &
-!!                        [10,20,30,40,50], &
-!!                        [11,22,33,44,55]
-!!
-!! or perhaps
-!!
-!!    ! DOES NOT WORK
-!!    integer :: xx(3,5)= [ [ 1, 2, 3, 4, 5], &
-!!                          [10,20,30,40,50], &
-!!                          [11,22,33,44,55]  ]
-!!
-!! Someday something simpler might work, but currently the following syntax
-!! is required to specify the values in an intuitive row-column sequence
-!! using an array constructor:
-!!
-!!    integer,save :: xx(3,5)= reshape([&
-!!
-!!        1, 2, 3, 4, 5, &
-!!       10,20,30,40,50, &
-!!       11,22,33,44,55  &
-!!
-!!       ],shape(xx),order[2,1])
-!!
-!! This is because an array constructor can be used to create and assign
-!! values only to rank-one arrays.  To define arrays of more than one
-!! dimension with an array constructor, you must use the RESHAPE(3f) intrinsic
-!! function.
-!!
-!! Note that the ORDER= option on RESHAPE(3f) is used to allow the values
-!! to be specified in row-column order instead of the default behavior,
-!! which fills columns first.
-!!
-!! Also note that if the expressions are of type character, Fortran 95/90
-!! requires each expression to have the same character length (there is a
-!! common compiler extension that extends all strings to the length of the
-!! longest value specified, but depending on it reduces portability).
-!!
-!! ## Printing small arrays in row-column format
-!!
-!! When working with small arrays the issue that there is no default Fortran
-!! routine for printing an array in row-column order becomes apparent. So
-!! lets create a simple solution for integer arrays (PRINT_MATRIX_INT(3f)):
-!!
-!!    program demo_array_constructor ! initializing small arrays
-!!    implicit none
-!!    integer,save :: xx(3,5)= reshape([&
-!!
-!!        1, 2, 3, 4, 5, &
-!!       10,20,30,40,50, &
-!!       11,22,33,44,-1055  &
-!!
-!!     ],shape(xx),order=[2,1])
-!!
-!!    call print_matrix_int('xx array:',xx)
-!!
-!!    contains
-!!
-!!    subroutine print_matrix_int(title,arr)
-!!    implicit none
-!!
-!!    character(len=*),parameter::ident= "@(#)print_matrix_int(3f) - print small 2d integer arrays in row-column format"
-!!
-!!    character(len=*),intent(in)  :: title
-!!    integer,intent(in)           :: arr(:,:)
-!!    integer                      :: i
-!!    character(len=:),allocatable :: biggest
-!!
-!!       write(*,*)trim(title)                                                 ! print title
-!!       biggest='           '                                                 ! make buffer to write integer into
-!!       write(biggest,'(i0)')ceiling(log10(real(maxval(abs(arr)))))+1         ! find how many characters to use for integers
-!!       biggest='(" > [",*(i'//trim(biggest)//':,","))'                       ! use this format to write a row
-!!       do i=1,size(arr,dim=1)                                                ! print one row of array at a time
-!!          write(*,fmt=biggest,advance='no')arr(i,:)
-!!          write(*,'(" ]")')
-!!       enddo
-!!
-!!    end subroutine print_matrix_int
-!!
-!!    end program demo_array_constructor
-!!
-!! Results:
-!!
-!!    xx array:
-!!    > [  1,  2,  3,  4,  5 ]
-!!    > [ 10, 20, 30, 40, 50 ]
-!!    > [ 11, 22, 33, 44, 55 ]
-!!
-!! We could do a more robust version that handles REAL and COMPLEX values
-!! as well as NaN values, but it has already been done.  If you need to
-!! print a variety of small matrices see:
-!!
-!!   dispmodule(3f), "A Fortran 95 module for pretty-printing matrices".
-!!   Kristjan Jonasson, Department of Computer Science,
-!!   School of Science and Engineering, University of Iceland,
-!!   Hjardarhaga 4, 107 Reykjavik, Iceland (jonasson@hi.is).
-!!
-!! #Initializing a 2D array using DATA statements
-!!
-!! Note that DATA statements are very flexible, and allow for perhaps the
-!! most intelligible way of specifying small arrays row by row. For example:
-!!
-!!    ! fill rows using DATA statements
-!!    integer,save,dimension(3,5) :: gg
-!!    data gg(1,:)/  1,  2,  3,  4,  5 /
-!!    data gg(2,:)/ 10, 20, 30, 40, 50 /
-!!    data gg(3,:)/ 11, 22, 33, 44, 55 /
-!!
-!! There are other ways to use a DATA statement to fill in row-column order,
-!! including use of the SIZE(3f) function and an implied-DO:
-!!
-!!    ! use implied-DO so data can be declared in row-column order
-!!    integer, dimension(3,5) :: ff
-!!    DATA (( ff(J,I), I=1,size(ff,dim=2)), J=1,size(ff,dim=1)) / &
-!!       01,02,03,04,05, &
-!!       10,20,30,40,50, &
-!!       11,22,33,44,55  /
-!!
-!! ##Initializing a 2D array from a vector using EQUIVALENCE
-!!
-!! Sometimes instead of using RESHAPE(3f) you will see someone initialize a
-!! vector and then equivalence it to a multi-dimensional array; especially
-!! if the code has a reason to access the data as both a vector and a matrix:
-!!
-!!    ! multi-dimensional row1, row2, .... by equivalence
-!!    integer,parameter :: d1=3,d2=5
-!!    integer           :: ee(d1,d2)
-!!    ! note that the DATA statements could be used to initialize the array instead
-!!    integer           :: e(d1*d2) =[1,10,11, 2,20,22, 3,30,33, 4,40,44, 5,50,55]
-!!    equivalence       (e(1),ee(1,1))
-!!
-!! ##Notes
-!!
-!! Remember that for simple initializations vector statements can be used
-!!
-!!    real :: arr(10,20)=0.0
-!!    ! array constructors can be used to define constants, not just vectors
-!!    integer,parameter :: ii(10,10)=[(i,i=1,size(ii))] ! odd numbers using implied-DO
-!!
-!! and that if things are too complicated you can just set the values in the executable
-!! body of the code.
-!===================================================================================================================================
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -376,7 +92,7 @@ implicit none
    call help_version(lget('intrinsics_version'))               ! if -version option is present, display version text and exit
 !-----------------------------------------------------------------------------------------------------------------------------------
 write(io,'(a)')'NAME'
-write(io,'(a)')'   intrinsics(7f) - intrinsic man(1) pages'
+write(io,'(a)')'   intrinsics(7f) - [FORTRAN]intrinsic man(1) pages'
 write(io,'(a)')''
 write(io,'(a)')'DESCRIPTION'
 write(io,'(a)')''
@@ -544,7 +260,7 @@ write(io,'(a)')'   * [[is_iostat_end]]--Test for end-of-file value'
 write(io,'(a)')'   * [[is_iostat_eor]]--Test for end-of-record value'
 write(io,'(a)')'   * [[ishft]]--Shift bits'
 write(io,'(a)')'   * [[ishftc]]--Shift bits circularly'
-write(io,'(a)')'   * [[lcobound]]--Lower codimension bounds of an array'
+write(io,'(a)')'   * [[co_lbound]]--Lower codimension bounds of an array'
 write(io,'(a)')'   * [[leadz]]--Number of leading zero bits of an integer'
 write(io,'(a)')'   * [[len_trim]]--Length of a character entity without trailing blank characters'
 write(io,'(a)')'   * [[lge]]--Lexical greater than or equal'
@@ -606,9 +322,42 @@ write(io,'(a)')'   * [[trailz]]--Number of trailing zero bits of an integer'
 write(io,'(a)')'   * [[transfer]]--Transfer bit patterns'
 write(io,'(a)')'   * [[transpose]]--Transpose an array of rank two'
 write(io,'(a)')'   * [[trim]]--Remove trailing blank characters of a string'
-write(io,'(a)')'   * [[ucobound]]--Upper codimension bounds of an array'
+write(io,'(a)')'   * [[co_ubound]]--Upper codimension bounds of an array'
 write(io,'(a)')'   * [[unpack]]--Store the elements of a vector in an array of higher rank'
 write(io,'(a)')'   * [[verify]]--Scan a string for the absence of a set of characters'
+write(io,'(a)')''
+write(io,'(a)')'NAME'
+write(io,'(a)')'   INTRINSICS_PROJECT(7f) - [FORTRAN] intrinsic man(1) pages'
+write(io,'(a)')''
+write(io,'(a)')'DESCRIPTION'
+write(io,'(a)')''
+write(io,'(a)')'   This is a project to provide a standard set of man(1) pages for Fortran'
+write(io,'(a)')'   and the Fortran intrinsics, ultimately with a working example program'
+write(io,'(a)')'   for each intrinsic.'
+write(io,'(a)')''
+write(io,'(a)')'   The manpage source is maintained as a single flat-text file'
+write(io,'(a)')'   (intrinsics.ff) which is run thru ufpp(1) and filters like txt2man(1)'
+write(io,'(a)')'   to create the program intrinsics(1f).  That program generates all'
+write(io,'(a)')'   the text as plain text as well as being used as the source for the'
+write(io,'(a)')'   man(1) pages. The program intrinsics(1f) is very useful for scanning'
+write(io,'(a)')'   for keywords.'
+write(io,'(a)')''
+write(io,'(a)')'   Note that the vim(1) editor will call up a man(1) page for a word if'
+write(io,'(a)')'   the letter "K" is pressed over the word.'
+write(io,'(a)')''
+write(io,'(a)')'   Integration with the editor is a powerful tool when inspecting code'
+write(io,'(a)')'   that uses unfamiliar procedures and to verify correct usage when'
+write(io,'(a)')'   creating code.'
+write(io,'(a)')''
+write(io,'(a)')'   *Note*: In many cases the descriptions of these intrinsics were'
+write(io,'(a)')'   originally taken from the [[GFortran|GNU Fortran]] manual to make'
+write(io,'(a)')'   descriptions on the Fortran Wiki by Jason Blevins (which were then'
+write(io,'(a)')'   used to start this collection). Like the Fortran Wiki itself, the'
+write(io,'(a)')'   [[GFortran|GNU Fortran]] manual is licensed under the [[GNU Free'
+write(io,'(a)')'   Documentation License]].'
+write(io,'(a)')''
+write(io,'(a)')'   These documents are at the state of "good enough considering the'
+write(io,'(a)')'   alternative is nothing", but are still actively being completed.'
 write(io,'(a)')''
 write(io,'(a)')'INTRINSICS SECTION'
 write(io,'(a)')''
@@ -2429,12 +2178,14 @@ write(io,'(a)')'   Determines whether an integer is bitwise greater than another
 write(io,'(a)')''
 write(io,'(a)')'ARGUMENTS'
 write(io,'(a)')''
-write(io,'(a)')'  I  - Shall be of INTEGER type.'
-write(io,'(a)')'  J  - Shall be of INTEGER type, and of the same kind as I.'
+write(io,'(a)')'  I  - Shall be of INTEGER type or a BOZ literal constant.'
+write(io,'(a)')'  J  - Shall be of INTEGER type, and of the same kind as I; or a BOZ literal constant.'
 write(io,'(a)')''
 write(io,'(a)')'RETURN VALUE'
 write(io,'(a)')''
-write(io,'(a)')'   The return value is of type LOGICAL and of the default kind.'
+write(io,'(a)')'  The return value is of type LOGICAL and of the default kind.'
+write(io,'(a)')'  The result is true if the sequence of bits represented by I is greater than the sequence of bits'
+write(io,'(a)')'  represented by J, otherwise the result is false.'
 write(io,'(a)')''
 write(io,'(a)')'STANDARD'
 write(io,'(a)')''
@@ -4573,6 +4324,36 @@ write(io,'(a)')''
 write(io,'(a)')'   [[Elemental procedure|Elemental function]]'
 write(io,'(a)')''
 write(io,'(a)')'NAME'
+write(io,'(a)')'  EXTENDS_TYPE_OF(3f) - [FORTRAN:INTRINSIC] True if and only if the dynamic type of A is an extension of the dynami'
+write(io,'(a)')''
+write(io,'(a)')'SYNOPSIS'
+write(io,'(a)')'  EXTENDS_TYPE_OF (A, MOLD)'
+write(io,'(a)')''
+write(io,'(a)')'DESCRIPTION'
+write(io,'(a)')''
+write(io,'(a)')'1 Description. True if and only if the dynamic type of A is an extension of the dynamic type of MOLD.'
+write(io,'(a)')''
+write(io,'(a)')'2 Class. Inquiry function.'
+write(io,'(a)')''
+write(io,'(a)')'OPTIONS'
+write(io,'(a)')'  A             shall be an object of extensible type. If it is a pointer, it shall not have an undefined associati'
+write(io,'(a)')'                status.'
+write(io,'(a)')'  MOLD          shall be an object of extensible type. If it is a pointer, it shall not have an undefined associati'
+write(io,'(a)')'                status.'
+write(io,'(a)')''
+write(io,'(a)')'RESULTS'
+write(io,'(a)')''
+write(io,'(a)')'4 Result Characteristics. Default logical scalar.'
+write(io,'(a)')''
+write(io,'(a)')'5 Result Value. If MOLD is unlimited polymorphic and is either a disassociated pointer or unallocated allocatable'
+write(io,'(a)')'  variable, the result is true; otherwise if A is unlimited polymorphic and is either a disassociated pointer or'
+write(io,'(a)')'  unallocated allocatable variable, the result is false; otherwise the result is true if and only if the dynamic ty'
+write(io,'(a)')'  A is an extension type of the dynamic type of MOLD.'
+write(io,'(a)')''
+write(io,'(a)')'  The dynamic type of a disassociated pointer or unallocated allocatable variable is its declared type.'
+write(io,'(a)')''
+write(io,'(a)')'EXAMPLE'
+write(io,'(a)')'NAME'
 write(io,'(a)')''
 write(io,'(a)')'     float(3f) - [INTRINSIC] Convert integer to default real'
 write(io,'(a)')''
@@ -5708,6 +5489,81 @@ write(io,'(a)')''
 write(io,'(a)')'   [[iany]], [[iall]], [[ieor]], [[parity]]'
 write(io,'(a)')''
 write(io,'(a)')'NAME'
+write(io,'(a)')'   FINDLOC(3f) - [FORTRAN:INTRINSIC] Location of the first element of ARRAY identified by MASK along dimension DIM'
+write(io,'(a)')'SYNOPSIS'
+write(io,'(a)')'  FINDLOC (ARRAY, VALUE, DIM [, MASK, KIND, BACK])'
+write(io,'(a)')''
+write(io,'(a)')'  or'
+write(io,'(a)')''
+write(io,'(a)')'  FINDLOC (ARRAY, VALUE [, MASK, KIND, BACK])'
+write(io,'(a)')''
+write(io,'(a)')'DESCRIPTION'
+write(io,'(a)')'  Location of the first element of ARRAY identified by MASK along dimension DIM having a value'
+write(io,'(a)')'  equal to VALUE.'
+write(io,'(a)')''
+write(io,'(a)')'  Class. Transformational function.'
+write(io,'(a)')''
+write(io,'(a)')'  If both ARRAY and VALUE are of type logical, the comparison is performed with the .EQV. operator; otherwise,'
+write(io,'(a)')'  the comparison is performed with the == operator. If the value of the comparison is true, that element of ARRAY'
+write(io,'(a)')'  matches VALUE.'
+write(io,'(a)')''
+write(io,'(a)')'  If only one element matches VALUE, that element''s subscripts are returned. Otherwise, if more than one element'
+write(io,'(a)')'  matches VALUE and BACK is absent or present with the value false, the element whose subscripts are returned'
+write(io,'(a)')'  is the first such element, taken in array element order. If BACK is present with the value true, the element whos'
+write(io,'(a)')'  subscripts are returned is the last such element, taken in array element order.'
+write(io,'(a)')''
+write(io,'(a)')'OPTIONS'
+write(io,'(a)')''
+write(io,'(a)')'  ARRAY       shall be an array of intrinsic type.'
+write(io,'(a)')'  VALUE       shall be scalar and in type conformance with ARRAY, as specified in Table 7.3 for relational intrinsi'
+write(io,'(a)')'              operations 7.1.5.5.2).'
+write(io,'(a)')'  DIM         shall be an integer scalar with a value in the range 1  DIM  n, where n is the rank of ARRAY.'
+write(io,'(a)')'              The corresponding actual argument shall not be an optional dummy argument.'
+write(io,'(a)')'  MASK        (optional) shall be of type logical and shall be conformable with ARRAY.'
+write(io,'(a)')'  KIND        (optional) shall be a scalar integer initialization expression.'
+write(io,'(a)')'  BACK        (optional) shall be a logical scalar.'
+write(io,'(a)')''
+write(io,'(a)')'RESULT'
+write(io,'(a)')''
+write(io,'(a)')'4 Result Characteristics. Integer. If KIND is present, the kind type parameter is that specified by the value of'
+write(io,'(a)')'  KIND; otherwise the kind type parameter is that of default integer type. If DIM does not appear, the result is'
+write(io,'(a)')'  an array of rank one and of size equal to the rank of ARRAY; otherwise, the result is of rank n - 1 and shape'
+write(io,'(a)')'  [d1 , d2 , . . . , dDIM-1 , dDIM+1 , . . . , dn ], where [d1 , d2 , . . . , dn ] is the shape of ARRAY.'
+write(io,'(a)')''
+write(io,'(a)')'5 Result Value.'
+write(io,'(a)')'  Case (i):     The result of FINDLOC (ARRAY, VALUE) is a rank-one array whose element values are the values'
+write(io,'(a)')'                of the subscripts of an element of ARRAY whose value matches VALUE. If there is such a value,'
+write(io,'(a)')'                the ith subscript returned lies in the range 1 to ei , where ei is the extent of the ith dimension'
+write(io,'(a)')'                ARRAY. If no elements match VALUE or ARRAY has size zero, all elements of the result are zero.'
+write(io,'(a)')'  Case (ii):    The result of FINDLOC (ARRAY, VALUE, MASK = MASK) is a rank-one array whose element'
+write(io,'(a)')'                values are the values of the subscripts of an element of ARRAY, corresponding to a true element of'
+write(io,'(a)')'                MASK, whose value matches VALUE. If there is such a value, the ith subscript returned lies in the'
+write(io,'(a)')'                range 1 to ei , where ei is the extent of the ith dimension of ARRAY. If no elements match VALUE,'
+write(io,'(a)')'                ARRAY has size zero, or every element of MASK has the value false, all elements of the result are'
+write(io,'(a)')'                zero.'
+write(io,'(a)')'  Case (iii):   If ARRAY has rank one, the result of'
+write(io,'(a)')'                FINDLOC (ARRAY, VALUE, DIM=DIM [, MASK = MASK]) is a scalar whose value is equal to'
+write(io,'(a)')'                that of the first element of FINDLOC (ARRAY, VALUE [, MASK = MASK]). Otherwise, the value'
+write(io,'(a)')'                of element (s1 , s2 , . . . , sDIM-1 , sDIM+1 , . . . , sn ) of the result is equal to FINDLOC (ARR'
+write(io,'(a)')'                s2 , . . . , sDIM-1 , :, sDIM+1 , . . . , sn ), VALUE, DIM=1 [, MASK = MASK (s1 , s2 , . . . , sDIM'
+write(io,'(a)')'                sDIM+1 , . . . , sn )]).'
+write(io,'(a)')''
+write(io,'(a)')'EXAMPLE'
+write(io,'(a)')'  Case (i):     The value of FINDLOC ([2, 6, 4, 6,], VALUE = 6) is [2], and the value of FINDLOC ([2, 6, 4, 6],'
+write(io,'(a)')'                VALUE = 6, BACK = .TRUE.) is [4].'
+write(io,'(a)')''
+write(io,'(a)')'                                       0 -5 7 7                                  T T F T'
+write(io,'(a)')'  Case (ii):    If A has the value  3 4 -1 2 , and M has the value  T T F T , FINDLOC (A, 7,'
+write(io,'(a)')'                                       1 5     6 7                               T T F T'
+write(io,'(a)')'                MASK = M) has the value [1, 4] and FINDLOC (A, 7, MASK = M, BACK = .TRUE.) has the'
+write(io,'(a)')'                value [3, 4]. This is independent of the declared lower bounds for A.'
+write(io,'(a)')'  Case (iii):   The value of FINDLOC ([2, 6, 4], VALUE = 6, DIM = 1) is 2. If B has the value'
+write(io,'(a)')'                  1 2 -9'
+write(io,'(a)')'                              , FINDLOC (B, VALUE = 2, DIM = 1) has the value [2, 1, 0] and FINDLOC (B,'
+write(io,'(a)')'                  2 2 6'
+write(io,'(a)')'                VALUE = 2, DIM = 2) has the value [2, 1]. This is independent of the declared lower bounds for B.'
+write(io,'(a)')''
+write(io,'(a)')'NAME'
 write(io,'(a)')'     is_contiguous(3f) - [INTRINSIC:ARRAY INQUIRY] test if object is contiguous'
 write(io,'(a)')''
 write(io,'(a)')'SYNTAX'
@@ -5945,51 +5801,45 @@ write(io,'(a)')'SEE ALSO'
 write(io,'(a)')''
 write(io,'(a)')'   [[ishft]]'
 write(io,'(a)')''
-!>
-!!##NAME
-!!    IS_IOSTAT_END(3f) - [INTRINSIC] True if and only if a value indicates an end-of-file condition.
-!!##SYNOPSIS
-!!
-!!     logical IS_IOSTAT_END (I)
-!!     integer,intent(in) :: I
-!!
-!!##DESCRIPTION
-!!    True if and only if a value indicates an end-of-file condition
-!!
-!!##ARGUMENT
-!!    I     integer status value obtained from READ(3f)
-!!
-!!##RESULT
-!!    A default logical value is returned.
-!!    The result has the value true if and only if I is a value for the
-!!    scalar-int-variable in an IOSTAT= specifier that would
-!!    indicate an end-of-file condition.
-!!
-!!##CLASS
-!!    Elemental function.
-!===================================================================================================================================
-!>
-!!##NAME
-!!    IS_IOSTAT_EOR(3f) - [INTRINSIC] True if and only if a value indicates an end-of-record condition.
-!!##SYNOPSIS
-!!
-!!    logical IS_IOSTAT_EOR (I)
-!!
-!!     integer,intent(in) :: I
-!!##DESCRIPTION
-!!    True if and only if a value indicates an end-of-record condition.
-!!
-!!##ARGUMENT
-!!    I    shall be of type integer.
-!!
-!!##RESULT
-!!    Default logical.  The result has the value true if and only if I is
-!!    a value for the scalar-int-variable in an IOSTAT= specifier
-!!    that would indicate an end-of-record condition.
-!!
-!!##CLASS
-!!    Elemental function.
-!===================================================================================================================================
+write(io,'(a)')'NAME'
+write(io,'(a)')'   IS_IOSTAT_END(3f) - [INTRINSIC] True if and only if a value indicates an end-of-file condition.'
+write(io,'(a)')'SYNOPSIS'
+write(io,'(a)')'    logical IS_IOSTAT_END (I)'
+write(io,'(a)')'    integer,intent(in) :: I'
+write(io,'(a)')''
+write(io,'(a)')'DESCRIPTION'
+write(io,'(a)')'   True if and only if a value indicates an end-of-file condition'
+write(io,'(a)')''
+write(io,'(a)')'ARGUMENT'
+write(io,'(a)')'   I     integer status value obtained from READ(3f)'
+write(io,'(a)')''
+write(io,'(a)')'RESULT'
+write(io,'(a)')'   A default logical value is returned.'
+write(io,'(a)')'   The result has the value true if and only if I is a value for the'
+write(io,'(a)')'   scalar-int-variable in an IOSTAT= specifier that would'
+write(io,'(a)')'   indicate an end-of-file condition.'
+write(io,'(a)')''
+write(io,'(a)')'CLASS'
+write(io,'(a)')'   Elemental function.'
+write(io,'(a)')'NAME'
+write(io,'(a)')'   IS_IOSTAT_EOR(3f) - [INTRINSIC] True if and only if a value indicates an end-of-record condition.'
+write(io,'(a)')'SYNOPSIS'
+write(io,'(a)')'   logical IS_IOSTAT_EOR (I)'
+write(io,'(a)')''
+write(io,'(a)')'    integer,intent(in) :: I'
+write(io,'(a)')'DESCRIPTION'
+write(io,'(a)')'   True if and only if a value indicates an end-of-record condition.'
+write(io,'(a)')''
+write(io,'(a)')'ARGUMENT'
+write(io,'(a)')'   I    shall be of type integer.'
+write(io,'(a)')''
+write(io,'(a)')'RESULT'
+write(io,'(a)')'   Default logical.  The result has the value true if and only if I is'
+write(io,'(a)')'   a value for the scalar-int-variable in an IOSTAT= specifier'
+write(io,'(a)')'   that would indicate an end-of-record condition.'
+write(io,'(a)')''
+write(io,'(a)')'CLASS'
+write(io,'(a)')'   Elemental function.'
 write(io,'(a)')'NAME'
 write(io,'(a)')'     kind(3f) - [INTRINSIC] Kind of an entity'
 write(io,'(a)')''
@@ -6059,12 +5909,12 @@ write(io,'(a)')'CLASS'
 write(io,'(a)')'   [[Inquiry function]]'
 write(io,'(a)')''
 write(io,'(a)')'SEE ALSO'
-write(io,'(a)')'   [[ubound]], [[lcobound]]'
+write(io,'(a)')'   [[ubound]], [[co_lbound]]'
 write(io,'(a)')'NAME'
-write(io,'(a)')'     lcobound(3f) - [INTRINSIC] Lower codimension bounds of an array'
+write(io,'(a)')'     CO_LBOUND(3f) - [INTRINSIC] Lower codimension bounds of an array'
 write(io,'(a)')''
 write(io,'(a)')'SYNTAX'
-write(io,'(a)')'   result = lcobound(coarray [, dim [, kind]])'
+write(io,'(a)')'   result = CO_LBOUND(coarray [, dim [, kind]])'
 write(io,'(a)')''
 write(io,'(a)')'DESCRIPTION'
 write(io,'(a)')'   Returns the lower bounds of a coarray, or a single lower cobound'
@@ -6090,7 +5940,7 @@ write(io,'(a)')'CLASS'
 write(io,'(a)')'   Inquiry function'
 write(io,'(a)')''
 write(io,'(a)')'SEE ALSO'
-write(io,'(a)')'   [[ucobound]], [[lbound]]'
+write(io,'(a)')'   [[co_ubound]], [[lbound]]'
 write(io,'(a)')''
 write(io,'(a)')'NAME'
 write(io,'(a)')'     leadz(3f) - [INTRINSIC:BIT INQUIRY] Number of leading zero bits of an integer'
@@ -9107,6 +8957,23 @@ write(io,'(a)')'     call system_clock(count, count_rate, count_max)'
 write(io,'(a)')'     write(*,*) count, count_rate, count_max'
 write(io,'(a)')'   end program'
 write(io,'(a)')''
+write(io,'(a)')'  Demonstrate Fortran 90 SUM function with MASK option'
+write(io,'(a)')''
+write(io,'(a)')'      ! John Mahaffy  2/16/96'
+write(io,'(a)')'      implicit none'
+write(io,'(a)')'      integer nd,ndh,nduh, j'
+write(io,'(a)')'      parameter (nd=10,ndh=nd/2,nduh=nd-ndh)'
+write(io,'(a)')'      real csum,cpsum,cbpsum'
+write(io,'(a)')'      real, dimension(nd):: c=(/(j,j=-1,nd-2)/), b'
+write(io,'(a)')'      data b/ndh*-1.0,nduh*2.0/'
+write(io,'(a)')'      csum= sum(c(1:nd))'
+write(io,'(a)')'      cpsum= sum (c(1:nd),mask=c.gt.0)'
+write(io,'(a)')'      cbpsum= sum(c(1:nd),mask=b.gt.0.0)'
+write(io,'(a)')'      print *, ''Sum of all elements in c = '' , csum'
+write(io,'(a)')'      print *, ''Sum of Positive elements in c = '', cpsum'
+write(io,'(a)')'      print *, ''Sum of elements in c when corresponding elements in b>0'' ,'' ='',cbpsum'
+write(io,'(a)')'      end'
+write(io,'(a)')''
 write(io,'(a)')'STANDARD'
 write(io,'(a)')''
 write(io,'(a)')'   [[Fortran 95]] and later'
@@ -9548,15 +9415,15 @@ write(io,'(a)')'   [[Inquiry function]]'
 write(io,'(a)')''
 write(io,'(a)')'SEE ALSO'
 write(io,'(a)')''
-write(io,'(a)')'   [[lbound]], [[lcobound]], [[ucobound]]'
+write(io,'(a)')'   [[lbound]], [[co_ubound]], [[co_lbound]]'
 write(io,'(a)')''
 write(io,'(a)')'NAME'
 write(io,'(a)')''
-write(io,'(a)')'     ucobound(3f) - [INTRINSIC] Upper codimension bounds of an array'
+write(io,'(a)')'     CO_UBOUND(3f) - [INTRINSIC] Upper codimension bounds of an array'
 write(io,'(a)')''
 write(io,'(a)')'SYNTAX'
 write(io,'(a)')''
-write(io,'(a)')'   result = ucobound(coarray [, dim [, kind]])'
+write(io,'(a)')'   result = CO_UBOUND(coarray [, dim [, kind]])'
 write(io,'(a)')''
 write(io,'(a)')'DESCRIPTION'
 write(io,'(a)')''
@@ -9588,7 +9455,7 @@ write(io,'(a)')'   Inquiry function'
 write(io,'(a)')''
 write(io,'(a)')'SEE ALSO'
 write(io,'(a)')''
-write(io,'(a)')'   [[lcobound]], [[lbound]], [[ubound]]'
+write(io,'(a)')'   [[co_lbound]], [[lbound]], [[ubound]]'
 write(io,'(a)')''
 write(io,'(a)')'NAME'
 write(io,'(a)')''
@@ -9878,248 +9745,925 @@ write(io,'(a)')'  X        X X    XXXXX   X   X   X        X      X            X
 write(io,'(a)')'  X    X  X   X   X   X   X   X   X        X   X  X    X X     X'
 write(io,'(a)')' XXXXXXX XXX XXX XXX XXX XXX XXX XXXX    XXXXXXX XXXXXXX  XXXXX'
 write(io,'(a)')''
-!>
-!!##NAME
-!! Array_Constructors - [FORTRAN] An array constructor can be used to create and assign values to rank-one arrays (and array constants)
-!!##SYNTAX
-!! An array constructor takes the following form:
-!!
-!!    (/ac-value-list/)
-!!    [ac-value-list]
-!!
-!!##DESCRIPTION
-!!
-!!
-!!##OPTIONS
-!!
-!! ac-value-list  Is a list of one or more expressions or implied-DO loops. Each ac-value
-!!                must have the same type and kind parameters, and be separated by commas.
-!!
-!! implied-do     An implied-DO loop in an array constructor takes the following form:
-!!
-!!                 (ac-value-list, do-variable = expr1, expr2 [,expr3])
-!!
-!! do-variable    Is the name of a scalar integer variable. Its scope is that of the implied-DO loop.
-!!
-!!
-!! expr           Is a scalar integer expression. The expr1 and expr2 specify a range of
-!!                values for the loop; expr3 specifies the stride. The expr3 must be a
-!!                nonzero value; if it is omitted, it is assumed to be 1.
-!!
-!!
-!! Description
-!!
-!! The array constructed has the same type as the ac-value-list expressions.
-!!
-!! If the sequence of values specified by the array constructor is empty
-!! (an empty array expression or the implied-DO loop produces no values),
-!! the rank-one array has a size of zero.
-!!
-!! An ac-value is interpreted as follows:
-!!
-!!
-!! Form of ac-value     Result
-!!
-!! A scalar expression  Its value is an element of the new array.
-!! An array expression  The values of the elements in the expression (in
-!!                      array element order) are the corresponding sequence of elements in the
-!!                      new array.
-!! An implied-DO loop   It is expanded to form a list of array elements
-!!                      under control of the DO variable (like a DO construct).
-!!
-!! The following shows the three forms of an ac-value:
-!!
-!!   C1 = (/4,8,7,6/)                  ! A scalar expression
-!!   C2 = (/B(I, 1:5), B(I:J, 7:9)/)   ! An array expression
-!!   C3 = (/(I, I=1, 4)/)              ! An implied-DO loop
-!!
-!! You can also mix these forms, for example:
-!!
-!!   C4 = (/4, A(1:5), (I, I=1, 4), 7/)
-!!
-!! If every expression in an array constructor is a constant expression,
-!! the array constructor is a constant expression.
-!!
-!! If the expressions are of type character, Fortran 95/90 requires each
-!! expression to have the same character length.
-!!
-!! However, Intel Fortran allows the character expressions to be of different
-!! character lengths. The length of the resultant character array is the
-!! maximum of the lengths of the individual character expressions. For
-!! example:
-!!
-!!    print *,len ( (/'a','ab','abc','d'/) )
-!!    print *,'++'//(/'a','ab','abc','d'/)//'--'
-!!
-!! This causes the following to be displayed:
-!!
-!!            3
-!!  ++a  --++ab --++abc--++d  --
-!!
-!!
-!! If an implied-DO loop is contained within another implied-DO loop
-!! (nested), they cannot have the same DO variable (do-variable).
-!!
-!! To define arrays of more than one dimension, use the RESHAPE intrinsic
-!! function.
-!!
-!! The following are alternative forms for array constructors:
-!!
-!! Square brackets (instead of parentheses and slashes) to enclose
-!! array constructors; for example, the following two array constructors
-!! are equivalent:
-!!
-!!   INTEGER C(4)
-!!   C = (/4,8,7,6/)
-!!   C = [4,8,7,6]
-!!
-!!##EXAMPLES
-!!
-!!
-!! The following example shows an array constructor using an implied-DO loop:
-!!
-!!   INTEGER ARRAY_C(10)
-!!   ARRAY_C = (/(I, I=30, 48, 2)/)
-!!
-!! The values of ARRAY_C are the even numbers 30 through 48.
-!!
-!! Implied-DO expressions and values can be mixed in the value list of an
-!! array constructor. For example:
-!!
-!!  INTEGER A(10)
-!!  A = (/1, 0, (I, I = -1, -6, -1), -7, -8 /)
-!!  !Mixed values and implied-DO in value list.
-!!
-!! This example sets the elements of A to the values, in order,
-!!
-!!    1, 0, -1, -2, -3, -4, -5, -6, -7, -8.
-!!
-!! The following example shows an array constructor of derived type that
-!! uses a structure constructor:
-!!
-!!    TYPE EMPLOYEE
-!!      INTEGER ID
-!!      CHARACTER(LEN=30) NAME
-!!    END TYPE EMPLOYEE
-!!
-!!    TYPE(EMPLOYEE) CC_4T(4)
-!!    CC_4T = (/EMPLOYEE(2732,"JONES"), EMPLOYEE(0217,"LEE"),     &
-!!              EMPLOYEE(1889,"RYAN"), EMPLOYEE(4339,"EMERSON")/)
-!!
-!! The following example shows how the RESHAPE intrinsic function can be
-!! used to create a multidimensional array:
-!!
-!!   E = (/2.3, 4.7, 6.6/)
-!!   D = RESHAPE(SOURCE = (/3.5, (/2.0, 1.0/), E/), SHAPE = (/2,3/))
-!!
-!! D is a rank-two array with shape (2,3) containing the following elements:
-!!
-!!    3.5    1.0    4.7
-!!    2.0    2.3    6.6
-!!
-!! The following shows another example:
-!!
-!!  INTEGER B(2,3), C(8)
-!!  ! Assign values to a (2,3) array.
-!!  B = RESHAPE((/1, 2, 3, 4, 5, 6/),(/2,3/))
-!!  ! Convert B to a vector before assigning values to
-!!  ! vector C.
-!!  C = (/ 0, RESHAPE(B,(/6/)), 7 /)
-!!
-!!
-!! Example using general purpose fortran routines
-!!
-!!    program f12 ! initializing small arrays
-!!    use M_display, only : disp, disp_set
-!!    implicit none
-!!    integer :: i
-!!    integer, parameter :: yy(*) = [  10,20,30  ,  40,50,60  ] ! make some data in a vector, could type this where yy appears below
-!!    ! xx is same thing as yy, just using syntax for filling it that makes it clearer what I want to do with the data
-!!    integer, parameter :: xx(*) = [ [10,20,30] , [40,50,60] ] ! make some data in a vector, could type this where xx appears below
-!!
-!!    integer, dimension(2,3)::aa = reshape(xx,shape(aa),order=[2,1])      ! 2d by rows using reshaped scalar expression
-!!    integer, dimension(2,3)::bb = reshape(xx,shape(bb)             )     ! 2d by columns
-!!    integer, dimension(2,3)::cc = reshape(xx,shape(cc),order=[1,2])      ! 2d by columns
-!!    integer, dimension(2,3)::dd = reshape([(i*10,i=1,size(dd))],shape(dd)) ! an implied do by columns
-!!
-!!    integer, dimension(2,3):: ff, gg, hh
-!!    ! CANNOT DO
-!!    !integer, dimension(2,3)::ff = [10,20,30,40,50,60 ]                                     ! 2d by columns
-!!    ! BUT CAN DO
-!!    data ff/10,20,30,40,50,60/  ! fill 2D with simple data statement
-!!    ! AND CAN DO
-!!    ! multi-dimensional by equivalence
-!!    integer                :: ee(2,3)
-!!    integer                :: e(size(ee))=xx
-!!    equivalence               (e(1),ee(1,1))
-!!    ! CANNOT DO
-!!    !integer, dimension(2,3)::gg = [10,20,30] , [40,50,60]
-!!    !integer, dimension(2,3)::gg = [[10,20,30] , [40,50,60]]
-!!    ! BUT CAN DO
-!!    data gg(1,:)/ 10, 20, 30 /     ! fill rows with data statements
-!!    data gg(2,:)/ 40, 50, 60 /
-!!
-!!    data hh(:,1)/ 10, 40 /         ! fill columns with data statements
-!!    data hh(:,2)/ 20, 50 /
-!!    data hh(:,3)/ 30, 60 /
-!!       call disp_set(style='left & number')
-!!
-!!       write(*,*)'SIZE(aa)=',size(aa)
-!!       write(*,*)'SHAPE(aa)=',shape(aa)
-!!       write(*,*)'xx=',xx
-!!       write(*,*)'yy=',yy
-!!
-!!       call disp('aa=',aa)
-!!       call disp('bb=',bb)
-!!       call disp('cc=',cc)
-!!       call disp('dd=',dd)
-!!
-!!       call disp('ee=',ee)
-!!
-!!       call disp('ff=',ff)
-!!       call disp('gg=',gg)
-!!       call disp('hh=',hh)
-!!
-!!       write(*,*)repeat('=',80)
-!!       write(*,*)hh
-!!       write(*,*)repeat('=',80)
-!!       call print_buildfmt(hh)
-!!       write(*,*)repeat('=',80)
-!!       call print_fixedfmt(hh)
-!!
-!!    contains
-!!
-!!    subroutine print_buildfmt(arr)
-!!    use M_strings, only : v2s
-!!    implicit none
-!!    integer,intent(in) :: arr(:,:)
-!!    integer :: i
-!!    character(len=:),allocatable :: fmt
-!!       fmt='("> [",'//v2s(size(arr,dim=2))//'(i0:,","),"]")'
-!!       write(*,*)'FMT=',fmt
-!!       write(*,fmt)(arr(i,:),i=1,size(arr,dim=1))
-!!    end subroutine print_buildfmt
-!!
-!!    subroutine print_fixedfmt(arr)
-!!    implicit none
-!!    integer,intent(in) :: arr(:,:)
-!!    integer :: i
-!!       do i=1,size(arr,dim=1)
-!!          write(*, '("> [",*(i0:,","))' ,advance='no')arr(i,:)
-!!          write(*,'("]")')
-!!       enddo
-!!    end subroutine print_fixedfmt
-!!
-!!    end program f12
-!!
-!!##SEE ALSO
-!! â o DO construct
-!! â o Derived types
-!! â o Structure constructors
-!! â o Array Elements for details on array element order
-!! â o Array Assignment Statements for details on another way to assign values to arrays
-!! â o Declaration Statements for Arrays for details on array specifications
-!===================================================================================================================================
+write(io,'(a)')'NAME'
+write(io,'(a)')'Array_Constructors - [FORTRAN] An array constructor can be used to create and assign values to rank-one arrays (and'
+write(io,'(a)')'SYNTAX'
+write(io,'(a)')'An array constructor takes the following form:'
+write(io,'(a)')''
+write(io,'(a)')'   (/ac-value-list/)'
+write(io,'(a)')'   [ac-value-list]'
+write(io,'(a)')''
+write(io,'(a)')'DESCRIPTION'
+write(io,'(a)')''
+write(io,'(a)')''
+write(io,'(a)')'OPTIONS'
+write(io,'(a)')''
+write(io,'(a)')'ac-value-list  Is a list of one or more expressions or implied-DO loops. Each ac-value'
+write(io,'(a)')'               must have the same type and kind parameters, and be separated by commas.'
+write(io,'(a)')''
+write(io,'(a)')'implied-do     An implied-DO loop in an array constructor takes the following form:'
+write(io,'(a)')''
+write(io,'(a)')'                (ac-value-list, do-variable = expr1, expr2 [,expr3])'
+write(io,'(a)')''
+write(io,'(a)')'do-variable    Is the name of a scalar integer variable. Its scope is that of the implied-DO loop.'
+write(io,'(a)')''
+write(io,'(a)')''
+write(io,'(a)')'expr           Is a scalar integer expression. The expr1 and expr2 specify a range of'
+write(io,'(a)')'               values for the loop; expr3 specifies the stride. The expr3 must be a'
+write(io,'(a)')'               nonzero value; if it is omitted, it is assumed to be 1.'
+write(io,'(a)')''
+write(io,'(a)')''
+write(io,'(a)')'Description'
+write(io,'(a)')''
+write(io,'(a)')'The array constructed has the same type as the ac-value-list expressions.'
+write(io,'(a)')''
+write(io,'(a)')'If the sequence of values specified by the array constructor is empty'
+write(io,'(a)')'(an empty array expression or the implied-DO loop produces no values),'
+write(io,'(a)')'the rank-one array has a size of zero.'
+write(io,'(a)')''
+write(io,'(a)')'An ac-value is interpreted as follows:'
+write(io,'(a)')''
+write(io,'(a)')''
+write(io,'(a)')'Form of ac-value     Result'
+write(io,'(a)')''
+write(io,'(a)')'A scalar expression  Its value is an element of the new array.'
+write(io,'(a)')'An array expression  The values of the elements in the expression (in'
+write(io,'(a)')'                     array element order) are the corresponding sequence of elements in the'
+write(io,'(a)')'                     new array.'
+write(io,'(a)')'An implied-DO loop   It is expanded to form a list of array elements'
+write(io,'(a)')'                     under control of the DO variable (like a DO construct).'
+write(io,'(a)')''
+write(io,'(a)')'The following shows the three forms of an ac-value:'
+write(io,'(a)')''
+write(io,'(a)')'  C1 = (/4,8,7,6/)                  ! A scalar expression'
+write(io,'(a)')'  C2 = (/B(I, 1:5), B(I:J, 7:9)/)   ! An array expression'
+write(io,'(a)')'  C3 = (/(I, I=1, 4)/)              ! An implied-DO loop'
+write(io,'(a)')''
+write(io,'(a)')'You can also mix these forms, for example:'
+write(io,'(a)')''
+write(io,'(a)')'  C4 = (/4, A(1:5), (I, I=1, 4), 7/)'
+write(io,'(a)')''
+write(io,'(a)')'If every expression in an array constructor is a constant expression,'
+write(io,'(a)')'the array constructor is a constant expression.'
+write(io,'(a)')''
+write(io,'(a)')'If the expressions are of type character, Fortran 95/90 requires each'
+write(io,'(a)')'expression to have the same character length.'
+write(io,'(a)')''
+write(io,'(a)')'However, Intel Fortran allows the character expressions to be of different'
+write(io,'(a)')'character lengths. The length of the resultant character array is the'
+write(io,'(a)')'maximum of the lengths of the individual character expressions. For'
+write(io,'(a)')'example:'
+write(io,'(a)')''
+write(io,'(a)')'   print *,len ( (/''a'',''ab'',''abc'',''d''/) )'
+write(io,'(a)')'   print *,''++''//(/''a'',''ab'',''abc'',''d''/)//''--'''
+write(io,'(a)')''
+write(io,'(a)')'This causes the following to be displayed:'
+write(io,'(a)')''
+write(io,'(a)')'           3'
+write(io,'(a)')' ++a  --++ab --++abc--++d  --'
+write(io,'(a)')''
+write(io,'(a)')''
+write(io,'(a)')'If an implied-DO loop is contained within another implied-DO loop'
+write(io,'(a)')'(nested), they cannot have the same DO variable (do-variable).'
+write(io,'(a)')''
+write(io,'(a)')'To define arrays of more than one dimension, use the RESHAPE intrinsic'
+write(io,'(a)')'function.'
+write(io,'(a)')''
+write(io,'(a)')'The following are alternative forms for array constructors:'
+write(io,'(a)')''
+write(io,'(a)')'Square brackets (instead of parentheses and slashes) to enclose'
+write(io,'(a)')'array constructors; for example, the following two array constructors'
+write(io,'(a)')'are equivalent:'
+write(io,'(a)')''
+write(io,'(a)')'  INTEGER C(4)'
+write(io,'(a)')'  C = (/4,8,7,6/)'
+write(io,'(a)')'  C = [4,8,7,6]'
+write(io,'(a)')''
+write(io,'(a)')'EXAMPLES'
+write(io,'(a)')''
+write(io,'(a)')'The following example shows an array constructor using an implied-DO loop:'
+write(io,'(a)')''
+write(io,'(a)')'  INTEGER ARRAY_C(10)'
+write(io,'(a)')'  ARRAY_C = (/(I, I=30, 48, 2)/)'
+write(io,'(a)')''
+write(io,'(a)')'The values of ARRAY_C are the even numbers 30 through 48.'
+write(io,'(a)')''
+write(io,'(a)')'Implied-DO expressions and values can be mixed in the value list of an'
+write(io,'(a)')'array constructor. For example:'
+write(io,'(a)')''
+write(io,'(a)')' INTEGER A(10)'
+write(io,'(a)')' A = (/1, 0, (I, I = -1, -6, -1), -7, -8 /)'
+write(io,'(a)')' !Mixed values and implied-DO in value list.'
+write(io,'(a)')''
+write(io,'(a)')'This example sets the elements of A to the values, in order,'
+write(io,'(a)')''
+write(io,'(a)')'   1, 0, -1, -2, -3, -4, -5, -6, -7, -8.'
+write(io,'(a)')''
+write(io,'(a)')'The following example shows an array constructor of derived type that'
+write(io,'(a)')'uses a structure constructor:'
+write(io,'(a)')''
+write(io,'(a)')'   TYPE EMPLOYEE'
+write(io,'(a)')'     INTEGER ID'
+write(io,'(a)')'     CHARACTER(LEN=30) NAME'
+write(io,'(a)')'   END TYPE EMPLOYEE'
+write(io,'(a)')''
+write(io,'(a)')'   TYPE(EMPLOYEE) CC_4T(4)'
+write(io,'(a)')'   CC_4T = (/EMPLOYEE(2732,"JONES"), EMPLOYEE(0217,"LEE"),     &'
+write(io,'(a)')'             EMPLOYEE(1889,"RYAN"), EMPLOYEE(4339,"EMERSON")/)'
+write(io,'(a)')''
+write(io,'(a)')'The following example shows how the RESHAPE intrinsic function can be'
+write(io,'(a)')'used to create a multidimensional array:'
+write(io,'(a)')''
+write(io,'(a)')'  E = (/2.3, 4.7, 6.6/)'
+write(io,'(a)')'  D = RESHAPE(SOURCE = (/3.5, (/2.0, 1.0/), E/), SHAPE = (/2,3/))'
+write(io,'(a)')''
+write(io,'(a)')'D is a rank-two array with shape (2,3) containing the following elements:'
+write(io,'(a)')''
+write(io,'(a)')'   3.5    1.0    4.7'
+write(io,'(a)')'   2.0    2.3    6.6'
+write(io,'(a)')''
+write(io,'(a)')'The following shows another example:'
+write(io,'(a)')''
+write(io,'(a)')' INTEGER B(2,3), C(8)'
+write(io,'(a)')' ! Assign values to a (2,3) array.'
+write(io,'(a)')' B = RESHAPE((/1, 2, 3, 4, 5, 6/),(/2,3/))'
+write(io,'(a)')' ! Convert B to a vector before assigning values to'
+write(io,'(a)')' ! vector C.'
+write(io,'(a)')' C = (/ 0, RESHAPE(B,(/6/)), 7 /)'
+write(io,'(a)')''
+write(io,'(a)')''
+write(io,'(a)')'Example using general purpose fortran routines'
+write(io,'(a)')''
+write(io,'(a)')'   program f12 ! initializing small arrays'
+write(io,'(a)')'   use M_display, only : disp, disp_set'
+write(io,'(a)')'   implicit none'
+write(io,'(a)')'   integer :: i'
+write(io,'(a)')'   integer, parameter :: yy(*) = [  10,20,30  ,  40,50,60  ] ! make some data in a vector, could type this where yy'
+write(io,'(a)')'   ! xx is same thing as yy, just using syntax for filling it that makes it clearer what I want to do with the data'
+write(io,'(a)')'   integer, parameter :: xx(*) = [ [10,20,30] , [40,50,60] ] ! make some data in a vector, could type this where xx'
+write(io,'(a)')''
+write(io,'(a)')'   integer, dimension(2,3)::aa = reshape(xx,shape(aa),order=[2,1])      ! 2d by rows using reshaped scalar expressi'
+write(io,'(a)')'   integer, dimension(2,3)::bb = reshape(xx,shape(bb)             )     ! 2d by columns'
+write(io,'(a)')'   integer, dimension(2,3)::cc = reshape(xx,shape(cc),order=[1,2])      ! 2d by columns'
+write(io,'(a)')'   integer, dimension(2,3)::dd = reshape([(i*10,i=1,size(dd))],shape(dd)) ! an implied do by columns'
+write(io,'(a)')''
+write(io,'(a)')'   integer, dimension(2,3):: ff, gg, hh'
+write(io,'(a)')'   ! CANNOT DO'
+write(io,'(a)')'   !integer, dimension(2,3)::ff = [10,20,30,40,50,60 ]                                     ! 2d by columns'
+write(io,'(a)')'   ! BUT CAN DO'
+write(io,'(a)')'   data ff/10,20,30,40,50,60/  ! fill 2D with simple data statement'
+write(io,'(a)')'   ! AND CAN DO'
+write(io,'(a)')'   ! multi-dimensional by equivalence'
+write(io,'(a)')'   integer                :: ee(2,3)'
+write(io,'(a)')'   integer                :: e(size(ee))=xx'
+write(io,'(a)')'   equivalence               (e(1),ee(1,1))'
+write(io,'(a)')'   ! CANNOT DO'
+write(io,'(a)')'   !integer, dimension(2,3)::gg = [10,20,30] , [40,50,60]'
+write(io,'(a)')'   !integer, dimension(2,3)::gg = [[10,20,30] , [40,50,60]]'
+write(io,'(a)')'   ! BUT CAN DO'
+write(io,'(a)')'   data gg(1,:)/ 10, 20, 30 /     ! fill rows with data statements'
+write(io,'(a)')'   data gg(2,:)/ 40, 50, 60 /'
+write(io,'(a)')''
+write(io,'(a)')'   data hh(:,1)/ 10, 40 /         ! fill columns with data statements'
+write(io,'(a)')'   data hh(:,2)/ 20, 50 /'
+write(io,'(a)')'   data hh(:,3)/ 30, 60 /'
+write(io,'(a)')'      call disp_set(style=''left & number'')'
+write(io,'(a)')''
+write(io,'(a)')'      write(*,*)''SIZE(aa)='',size(aa)'
+write(io,'(a)')'      write(*,*)''SHAPE(aa)='',shape(aa)'
+write(io,'(a)')'      write(*,*)''xx='',xx'
+write(io,'(a)')'      write(*,*)''yy='',yy'
+write(io,'(a)')''
+write(io,'(a)')'      call disp(''aa='',aa)'
+write(io,'(a)')'      call disp(''bb='',bb)'
+write(io,'(a)')'      call disp(''cc='',cc)'
+write(io,'(a)')'      call disp(''dd='',dd)'
+write(io,'(a)')''
+write(io,'(a)')'      call disp(''ee='',ee)'
+write(io,'(a)')''
+write(io,'(a)')'      call disp(''ff='',ff)'
+write(io,'(a)')'      call disp(''gg='',gg)'
+write(io,'(a)')'      call disp(''hh='',hh)'
+write(io,'(a)')''
+write(io,'(a)')'      write(*,*)repeat(''='',80)'
+write(io,'(a)')'      write(*,*)hh'
+write(io,'(a)')'      write(*,*)repeat(''='',80)'
+write(io,'(a)')'      call print_buildfmt(hh)'
+write(io,'(a)')'      write(*,*)repeat(''='',80)'
+write(io,'(a)')'      call print_fixedfmt(hh)'
+write(io,'(a)')''
+write(io,'(a)')'   contains'
+write(io,'(a)')''
+write(io,'(a)')'   subroutine print_buildfmt(arr)'
+write(io,'(a)')'   use M_strings, only : v2s'
+write(io,'(a)')'   implicit none'
+write(io,'(a)')'   integer,intent(in) :: arr(:,:)'
+write(io,'(a)')'   integer :: i'
+write(io,'(a)')'   character(len=:),allocatable :: fmt'
+write(io,'(a)')'      fmt=''("> [",''//v2s(size(arr,dim=2))//''(i0:,","),"]")'''
+write(io,'(a)')'      write(*,*)''FMT='',fmt'
+write(io,'(a)')'      write(*,fmt)(arr(i,:),i=1,size(arr,dim=1))'
+write(io,'(a)')'   end subroutine print_buildfmt'
+write(io,'(a)')''
+write(io,'(a)')'   subroutine print_fixedfmt(arr)'
+write(io,'(a)')'   implicit none'
+write(io,'(a)')'   integer,intent(in) :: arr(:,:)'
+write(io,'(a)')'   integer :: i'
+write(io,'(a)')'      do i=1,size(arr,dim=1)'
+write(io,'(a)')'         write(*, ''("> [",*(i0:,","))'' ,advance=''no'')arr(i,:)'
+write(io,'(a)')'         write(*,''("]")'')'
+write(io,'(a)')'      enddo'
+write(io,'(a)')'   end subroutine print_fixedfmt'
+write(io,'(a)')''
+write(io,'(a)')'   end program f12'
+write(io,'(a)')''
+write(io,'(a)')'SEE ALSO'
+write(io,'(a)')'â o DO construct'
+write(io,'(a)')'â o Derived types'
+write(io,'(a)')'â o Structure constructors'
+write(io,'(a)')'â o Array Elements for details on array element order'
+write(io,'(a)')'â o Array Assignment Statements for details on another way to assign values to arrays'
+write(io,'(a)')'â o Declaration Statements for Arrays for details on array specifications'
+write(io,'(a)')''
+write(io,'(a)')'NAME'
+write(io,'(a)')'    NAMELIST(7f) - [FORTRAN:STATEMENT]'
+write(io,'(a)')'SYNOPSIS'
+write(io,'(a)')'   NAMELIST / namelist-group-name / namelist-group-object-list [ [ , ] / namelist-group-name /'
+write(io,'(a)')'            namelist-group-object-list ] . . .'
+write(io,'(a)')''
+write(io,'(a)')'            namelist-group-object        is   variable-name'
+write(io,'(a)')'DESCRIPTION'
+write(io,'(a)')'   A NAMELIST statement specifies a group of named data objects, which'
+write(io,'(a)')'   may be referred to by a single name for the purpose of data transfer.'
+write(io,'(a)')''
+write(io,'(a)')'   The order in which the variables are specified in the NAMELIST'
+write(io,'(a)')'   statement determines the order in which the values appear on output.'
+write(io,'(a)')''
+write(io,'(a)')'   The namelist-group-name shall not be a name accessed by use association.'
+write(io,'(a)')'   A namelist-group-object shall not be an assumed-size array.'
+write(io,'(a)')'   A namelist-group-object shall not have the PRIVATE attribute if the namelist-group-name has the PUBLIC attribute'
+write(io,'(a)')''
+write(io,'(a)')' 3 Any namelist-group-name may occur more than once in the NAMELIST statements in a scoping unit. The'
+write(io,'(a)')'   namelist-group-object-list following each successive appearance of the same namelist-group-name in a scoping'
+write(io,'(a)')'   unit is treated as a continuation of the list for that namelist-group-name.'
+write(io,'(a)')''
+write(io,'(a)')' 4 A namelist group object may be a member of more than one namelist group.'
+write(io,'(a)')''
+write(io,'(a)')' 5 A namelist group object shall either be accessed by use or host association or shall have its type, type paramet'
+write(io,'(a)')'   and shape specified by previous specification statements or the procedure heading in the same scoping unit or'
+write(io,'(a)')'   by the implicit typing rules in effect for the scoping unit. If a namelist group object is typed by the implicit'
+write(io,'(a)')'   typing rules, its appearance in any subsequent type declaration statement shall confirm the implied type and'
+write(io,'(a)')'   type parameters.'
+write(io,'(a)')''
+write(io,'(a)')'OPTIONS'
+write(io,'(a)')'RESULTS'
+write(io,'(a)')'EXAMPLE'
+write(io,'(a)')'   An example of a NAMELIST statement is:'
+write(io,'(a)')''
+write(io,'(a)')'     NAMELIST /NLIST/ A, B, C'
+write(io,'(a)')''
+write(io,'(a)')'   or a group may be defined by multiple statements using the same group name in a scoping unit:'
+write(io,'(a)')''
+write(io,'(a)')'     NAMELIST /NLIST/ A, B'
+write(io,'(a)')'     NAMELIST /NLIST/ C'
+write(io,'(a)')''
+write(io,'(a)')'     ! READ/WRITE EXAMPLES: [ NML = ] namelist-group-name'
+write(io,'(a)')'     READ(*,NML=NLIST)'
+write(io,'(a)')'     WRITE(*,NLIST)'
+write(io,'(a)')'     WRITE(*,NML=NLIST)'
+write(io,'(a)')''
+write(io,'(a)')'      program demo_namelist'
+write(io,'(a)')'      implicit none'
+write(io,'(a)')'      logical           :: l=.true.'
+write(io,'(a)')'      character(len=10) :: c=''XXXXXXXXXX'''
+write(io,'(a)')'      real              :: r=12.3456'
+write(io,'(a)')'      integer           :: i=789'
+write(io,'(a)')'      complex           :: x=(12345.6789,9876.54321)'
+write(io,'(a)')'      doubleprecision   :: d= 123456789.123456789d0'
+write(io,'(a)')'      namelist /nlist/ l,c,r,i,x,d'
+write(io,'(a)')'         write(*,nlist)'
+write(io,'(a)')'      end program demo_namelist'
+write(io,'(a)')''
+write(io,'(a)')'   Results:'
+write(io,'(a)')''
+write(io,'(a)')'      &NLIST'
+write(io,'(a)')'       L=T,'
+write(io,'(a)')'       C="XXXXXXXXXX",'
+write(io,'(a)')'       R=  12.3456001    ,'
+write(io,'(a)')'       I=        789,'
+write(io,'(a)')'       X=(  12345.6787    ,  9876.54297    ),'
+write(io,'(a)')'       D=  123456789.12345679     ,'
+write(io,'(a)')'       /'
+write(io,'(a)')''
+write(io,'(a)')'   o Scanning on input till group name is found'
+write(io,'(a)')'   o reading partial lists'
+write(io,'(a)')'   o string quoting'
+write(io,'(a)')'   o NAMELIST in internal read and write. See'
+write(io,'(a)')''
+write(io,'(a)')'    ./arguments/namelist'
+write(io,'(a)')''
+write(io,'(a)')'Why is NAMELIST not allowed in a BLOCK unit?'
+write(io,'(a)')'Would be handy for quick writes, like list-directed output'
+write(io,'(a)')''
+write(io,'(a)')'    block'
+write(io,'(a)')'       namelist /nlist/ a,b,c,d'
+write(io,'(a)')'       write(nlist)'
+write(io,'(a)')'    endblock'
+write(io,'(a)')''
+write(io,'(a)')'OTHER'
+write(io,'(a)')''
+write(io,'(a)')'  C915    (R913) A namelist-group-name shall be the name of a namelist group.'
+write(io,'(a)')''
+write(io,'(a)')'  C916    (R913) A namelist-group-name shall not appear if a REC= specifier, format, input-item-list, or an'
+write(io,'(a)')'          output-item-list appears in the data transfer statement.'
+write(io,'(a)')'  C917    (R913) An io-control-spec-list shall not contain both a format and a namelist-group-name.'
+write(io,'(a)')'  C919    (R913) If namelist-group-name appears without a preceding NML=, it shall be the second item in the'
+write(io,'(a)')'          io-control-spec-list and the first item shall be io-unit.'
+write(io,'(a)')'  C928    (R913) If a DECIMAL=, BLANK=, PAD=, SIGN=, or ROUND= specifier appears, a format or'
+write(io,'(a)')'          namelist-group-name shall also appear.'
+write(io,'(a)')'  C929    (R913) If a DELIM= specifier appears, either format shall be an asterisk or namelist-group-name shall'
+write(io,'(a)')'          appear.'
+write(io,'(a)')'3 If the data transfer statement contains a format or namelist-group-name, the statement is a formatted in-'
+write(io,'(a)')'  put/output statement; otherwise, it is an unformatted input/output statement.'
+write(io,'(a)')'1 The NML= specifier supplies the namelist-group-name (5.6). This name identifies a particular collection of data'
+write(io,'(a)')'   objects on which transfer is to be performed.'
+write(io,'(a)')''
+write(io,'(a)')'2 If a namelist-group-name appears, the statement is a namelist input/output statement.'
+write(io,'(a)')'4 All values following the name= part of the namelist entity (10.11) within the input records are transmitted to'
+write(io,'(a)')'   the matching entity specified in the namelist-group-object-list prior to processing any succeeding entity within'
+write(io,'(a)')'   the input record for namelist input statements. If an entity is specified more than once within the input record'
+write(io,'(a)')'   during a namelist formatted data transfer input statement, the last occurrence of the entity specifies the value'
+write(io,'(a)')'   values to be used for that entity.'
+write(io,'(a)')''
+write(io,'(a)')'    9.6.4.6     Namelist formatting'
+write(io,'(a)')''
+write(io,'(a)')' 1 If namelist formatting has been established, editing is performed as described in 10.11.'
+write(io,'(a)')''
+write(io,'(a)')' 2 Every allocatable namelist-group-object in the namelist group shall be allocated and every namelist-group-object'
+write(io,'(a)')'    that is a pointer shall be associated with a target. If a namelist-group-object is polymorphic or has an ultima'
+write(io,'(a)')'    component that is allocatable or a pointer, that object shall be processed by a defined input/output procedure'
+write(io,'(a)')'    (9.6.4.7).'
+write(io,'(a)')'   9.6.5       Termination of data transfer statements'
+write(io,'(a)')'1 Termination of an input/output data transfer statement occurs when'
+write(io,'(a)')''
+write(io,'(a)')'      · format processing encounters a colon or data edit descriptor and there are no remaining elements in the'
+write(io,'(a)')'        input-item-list or output-item-list,'
+write(io,'(a)')'      · unformatted or list-directed data transfer exhausts the input-item-list or output-item-list,'
+write(io,'(a)')'      · namelist output exhausts the namelist-group-object-list,'
+write(io,'(a)')'      · an error condition occurs,'
+write(io,'(a)')'      · an end-of-file condition occurs,'
+write(io,'(a)')''
+write(io,'(a)')'      · a slash (/) is encountered as a value separator (10.10, 10.11) in the record being read during list-directe'
+write(io,'(a)')'        or namelist input, or'
+write(io,'(a)')'      · an end-of-record condition occurs during execution of a nonadvancing input statement (9.11).'
+write(io,'(a)')'2 If an error condition occurs during execution of an input/output statement that contains neither an ERR= nor'
+write(io,'(a)')'  IOSTAT= specifier, error termination of the program is initiated. If an error condition occurs during execution'
+write(io,'(a)')'  of an input/output statement that contains either an ERR= specifier or an IOSTAT= specifier then:'
+write(io,'(a)')'        (1)    processing of the input/output list, if any, terminates;'
+write(io,'(a)')''
+write(io,'(a)')'        (2)    if the statement is a data transfer statement or the error occurs during a wait operation, all do-'
+write(io,'(a)')'               variables in the statement that initiated the transfer become undefined;'
+write(io,'(a)')'        (3)    if an IOSTAT= specifier appears, the scalar-int-variable in the IOSTAT= specifier becomes defined'
+write(io,'(a)')'               as specified in 9.11.5;'
+write(io,'(a)')'        (4)    if an IOMSG= specifier appears, the iomsg-variable becomes defined as specified in 9.11.6;'
+write(io,'(a)')'        (5)    if the statement is a READ statement and it contains a SIZE= specifier, the scalar-int-variable in'
+write(io,'(a)')'               the SIZE= specifier becomes defined as specified in 9.6.2.15;'
+write(io,'(a)')'        (6)    if the statement is a READ statement or the error condition occurs in a wait operation for a transfe'
+write(io,'(a)')'               initiated by a READ statement, all input items or namelist group objects in the statement that'
+write(io,'(a)')'               initiated the transfer become undefined;'
+write(io,'(a)')'        (7)    if an ERR= specifier appears, a branch to the statement labeled by the label in the ERR= specifier'
+write(io,'(a)')'               occurs.'
+write(io,'(a)')' 8 In a data transfer statement, the variable specified in an IOSTAT=, IOMSG=, or SIZE= specifier, if any, shall'
+write(io,'(a)')'   not be associated with any entity in the data transfer input/output list (9.6.3) or namelist-group-object-list,'
+write(io,'(a)')'   with a do-variable of an io-implied-do in the data transfer input/output list.'
+write(io,'(a)')'    10.11        Namelist formatting'
+write(io,'(a)')'    10.11.1      General'
+write(io,'(a)')' 1 Namelist input/output allows data editing with NAME=value subsequences. This facilitates documentation of'
+write(io,'(a)')'    input and output files and more flexibility on input.'
+write(io,'(a)')''
+write(io,'(a)')'    10.11.2      Name-value subsequences'
+write(io,'(a)')' 1 The characters in one or more namelist records constitute a sequence of name-value subsequences, each of'
+write(io,'(a)')'    which consists of an object designator followed by an equals and followed by one or more values and value'
+write(io,'(a)')'    separators. The equals may optionally be preceded or followed by one or more contiguous blanks. The end of a'
+write(io,'(a)')'    record has the same effect as a blank character, unless it is within a character constant. Any sequence of two'
+write(io,'(a)')'    more consecutive blanks is treated as a single blank, unless it is within a character constant.'
+write(io,'(a)')''
+write(io,'(a)')' 2 The name may be any name in the namelist-group-object-list (5.6).'
+write(io,'(a)')''
+write(io,'(a)')' 3 A value separator for namelist formatting is the same as for list-directed formatting (10.10).'
+write(io,'(a)')''
+write(io,'(a)')'    10.11.3      Namelist input'
+write(io,'(a)')'    10.11.3.1    Overall syntax'
+write(io,'(a)')''
+write(io,'(a)')' 1 Input for a namelist input statement consists of'
+write(io,'(a)')''
+write(io,'(a)')'           (1)   optional blanks and namelist comments,'
+write(io,'(a)')'           (2)   the character & followed immediately by the namelist-group-name as specified in the NAMELIST'
+write(io,'(a)')'                 statement,'
+write(io,'(a)')'           (3)   one or more blanks,'
+write(io,'(a)')'           (4)   a sequence of zero or more name-value subsequences separated by value separators, and'
+write(io,'(a)')'           (5)   a slash to terminate the namelist input.'
+write(io,'(a)')''
+write(io,'(a)')'          NOTE 10.34'
+write(io,'(a)')'          A slash encountered in a namelist input record causes the input statement to terminate. A slash cannot be'
+write(io,'(a)')'          used to separate two values in a namelist input statement.'
+write(io,'(a)')''
+write(io,'(a)')' 2 In each name-value subsequence, the name shall be the name of a namelist group object list item with an optional'
+write(io,'(a)')'    qualification and the name with the optional qualification shall not be a zero-sized array, a zero-sized array'
+write(io,'(a)')'    or a zero-length character string. The optional qualification, if any, shall not contain a vector subscript.'
+write(io,'(a)')''
+write(io,'(a)')' 3 A group name or object name is without regard to case.'
+write(io,'(a)')''
+write(io,'(a)')'   10.11.3.2    Namelist group object names'
+write(io,'(a)')''
+write(io,'(a)')'1 Within the input data, each name shall correspond to a particular namelist group object name. Subscripts,'
+write(io,'(a)')'   strides, and substring range expressions used to qualify group object names shall be optionally signed integer'
+write(io,'(a)')'   literal constants with no kind type parameters specified. If a namelist group object is an array, the input reco'
+write(io,'(a)')'   corresponding to it may contain either the array name or the designator of a subobject of that array, using the'
+write(io,'(a)')'   syntax of object designators (R601). If the namelist group object name is the name of a variable of derived type'
+write(io,'(a)')'   the name in the input record may be either the name of the variable or the designator of one of its components,'
+write(io,'(a)')'   indicated by qualifying the variable name with the appropriate component name. Successive qualifications may'
+write(io,'(a)')'   be applied as appropriate to the shape and type of the variable represented.'
+write(io,'(a)')''
+write(io,'(a)')'2 The order of names in the input records need not match the order of the namelist group object items. The input'
+write(io,'(a)')'   records need not contain all the names of the namelist group object items. The definition status of any names'
+write(io,'(a)')'   from the namelist-group-object-list that do not occur in the input record remains unchanged. In the input record'
+write(io,'(a)')'   each object name or subobject designator may be preceded and followed by one or more optional blanks but shall'
+write(io,'(a)')'   not contain embedded blanks.'
+write(io,'(a)')''
+write(io,'(a)')'   10.11.3.3    Namelist group object list items'
+write(io,'(a)')''
+write(io,'(a)')'1 The name-value subsequences are evaluated serially, in left-to-right order. A namelist group object designator'
+write(io,'(a)')'   may appear in more than one name-value sequence.'
+write(io,'(a)')''
+write(io,'(a)')'2 When the name in the input record represents an array variable or a variable of derived type, the effect is as'
+write(io,'(a)')'   if the variable represented were expanded into a sequence of scalar list items, in the same way that formatted'
+write(io,'(a)')'   input/output list items are expanded (9.6.3). Each input value following the equals shall then be acceptable to'
+write(io,'(a)')'   format specifications for the type of the list item in the corresponding position in the expanded sequence, exce'
+write(io,'(a)')'   as noted in this subclause. The number of values following the equals shall not exceed the number of list items'
+write(io,'(a)')'   in the expanded sequence, but may be less; in the latter case, the effect is as if sufficient null values had be'
+write(io,'(a)')'   appended to match any remaining list items in the expanded sequence.'
+write(io,'(a)')''
+write(io,'(a)')'        NOTE 10.35'
+write(io,'(a)')'        For example, if the name in the input record is the name of an integer array of size 100, at most 100 value'
+write(io,'(a)')'        each of which is either a digit string or a null value, may follow the equals; these values would then be'
+write(io,'(a)')'        assigned to the elements of the array in array element order.'
+write(io,'(a)')''
+write(io,'(a)')'3 A slash encountered as a value separator during the execution of a namelist input statement causes termination'
+write(io,'(a)')'   of execution of that input statement after transference of the previous value. If there are additional items in'
+write(io,'(a)')'   namelist group object being transferred, the effect is as if null values had been supplied for them.'
+write(io,'(a)')''
+write(io,'(a)')'4 A namelist comment may appear after any value separator except a slash. A namelist comment is also permitted'
+write(io,'(a)')'   to start in the first nonblank position of an input record except within a character literal constant.'
+write(io,'(a)')''
+write(io,'(a)')'5 Successive namelist records are read by namelist input until a slash is encountered; the remainder of the record'
+write(io,'(a)')'   is ignored and need not follow the rules for namelist input values.'
+write(io,'(a)')''
+write(io,'(a)')'   10.11.3.4    Namelist input values'
+write(io,'(a)')''
+write(io,'(a)')'1 Each value is either a null value (10.11.3.5), c, r *c, or r *, where c is a literal constant, optionally signed'
+write(io,'(a)')'   or real, and r is an unsigned, nonzero, integer literal constant. A kind type parameter shall not be specified f'
+write(io,'(a)')'   or r. The constant c is interpreted as though it had the same kind type parameter as the corresponding effective'
+write(io,'(a)')'   item. The r *c form is equivalent to r successive appearances of the constant c, and the r * form is equivalent'
+write(io,'(a)')'   r successive null values. Neither of these forms may contain embedded blanks, except where permitted within'
+write(io,'(a)')'   the constant c.'
+write(io,'(a)')''
+write(io,'(a)')'2 The datum c (10.11) is any input value acceptable to format specifications for a given type, except for a restric'
+write(io,'(a)')'   on the form of input values corresponding to list items of types logical, integer, and character as specified in'
+write(io,'(a)')'   subclause. The form of a real or complex value is dependent on the decimal edit mode in effect (10.6). The form'
+write(io,'(a)')''
+write(io,'(a)')'  of an input value shall be acceptable for the type of the namelist group object list item. The number and forms'
+write(io,'(a)')'  of the input values that may follow the equals in a name-value subsequence depend on the shape and type of'
+write(io,'(a)')'  the object represented by the name in the input record. When the name in the input record is that of a scalar'
+write(io,'(a)')'  variable of an intrinsic type, the equals shall not be followed by more than one value. Blanks are never used'
+write(io,'(a)')'  as zeros, and embedded blanks are not permitted in constants except within character constants and complex'
+write(io,'(a)')'  constants as specified in this subclause.'
+write(io,'(a)')''
+write(io,'(a)')'3 When the next effective item is of type real, the input form of the input value is that of a numeric input field.'
+write(io,'(a)')'  numeric input field is a field suitable for F editing (10.7.2.3.2) that is assumed to have no fractional digits u'
+write(io,'(a)')'  a decimal symbol appears within the field.'
+write(io,'(a)')''
+write(io,'(a)')'4 When the next effective item is of type complex, the input form of the input value consists of a left parenthesis'
+write(io,'(a)')'  followed by an ordered pair of numeric input fields separated by a comma (if the decimal edit mode is POINT) or'
+write(io,'(a)')'  a semicolon (if the decimal edit mode is COMMA), and followed by a right parenthesis. The first numeric input'
+write(io,'(a)')'  field is the real part of the complex constant and the second part is the imaginary part. Each of the numeric'
+write(io,'(a)')'  input fields may be preceded or followed by any number of blanks and ends of records. The end of a record may'
+write(io,'(a)')'  occur between the real part and the comma or semicolon, or between the comma or semicolon and the imaginary'
+write(io,'(a)')'  part.'
+write(io,'(a)')''
+write(io,'(a)')'5 When the next effective item is of type logical, the input form of the input value shall not include equals or va'
+write(io,'(a)')'  separators among the optional characters permitted for L editing (10.7.3).'
+write(io,'(a)')''
+write(io,'(a)')'6 When the next effective item is of type integer, the value in the input record is interpreted as if an Iw edit'
+write(io,'(a)')'  descriptor with a suitable value of w were used.'
+write(io,'(a)')''
+write(io,'(a)')'7 When the next effective item is of type character, the input form consists of a delimited sequence of zero or mor'
+write(io,'(a)')'  rep-char s whose kind type parameter is implied by the kind of the corresponding list item. Such a sequence'
+write(io,'(a)')'  may be continued from the end of one record to the beginning of the next record, but the end of record shall'
+write(io,'(a)')'  not occur between a doubled apostrophe in an apostrophe-delimited sequence, nor between a doubled quote in a'
+write(io,'(a)')'  quote-delimited sequence. The end of the record does not cause a blank or any other character to become part'
+write(io,'(a)')'  of the sequence. The sequence may be continued on as many records as needed. The characters blank, comma,'
+write(io,'(a)')'  semicolon, and slash may appear in such character sequences.'
+write(io,'(a)')''
+write(io,'(a)')'          NOTE 10.36'
+write(io,'(a)')'          A character sequence corresponding to a namelist input item of character type shall be delimited either w'
+write(io,'(a)')'          apostrophes or with quotes. The delimiter is required to avoid ambiguity between undelimited character'
+write(io,'(a)')'          sequences and object names. The value of the DELIM= specifier, if any, in the OPEN statement for an'
+write(io,'(a)')'          external file is ignored during namelist input (9.5.6.8).'
+write(io,'(a)')''
+write(io,'(a)')'8 Let len be the length of the next effective item, and let w be the length of the character sequence. If len is le'
+write(io,'(a)')'  than or equal to w, the leftmost len characters of the sequence are transmitted to the next effective item. If le'
+write(io,'(a)')'  is greater than w, the constant is transmitted to the leftmost w characters of the next effective item and the'
+write(io,'(a)')'  remaining len-w characters of the next effective item are filled with blanks. The effect is as though the sequenc'
+write(io,'(a)')'  were assigned to the next effective item in an intrinsic assignment statement (7.2.1.3).'
+write(io,'(a)')''
+write(io,'(a)')'  10.11.3.5      Null values'
+write(io,'(a)')''
+write(io,'(a)')'1 A null value is specified by'
+write(io,'(a)')''
+write(io,'(a)')'      ·   the r * form,'
+write(io,'(a)')'      ·   blanks between two consecutive nonblank value separators following an equals,'
+write(io,'(a)')'      ·   zero or more blanks preceding the first value separator and following an equals, or'
+write(io,'(a)')'      ·   two consecutive nonblank value separators.'
+write(io,'(a)')''
+write(io,'(a)')'2 A null value has no effect on the definition status of the corresponding input list item. If the namelist group'
+write(io,'(a)')'  object list item is defined, it retains its previous value; if it is undefined, it remains undefined. A null valu'
+write(io,'(a)')''
+write(io,'(a)')'  not be used as either the real or imaginary part of a complex constant, but a single null value may represent an'
+write(io,'(a)')'  entire complex constant.'
+write(io,'(a)')''
+write(io,'(a)')'        NOTE 10.37'
+write(io,'(a)')'        The end of a record following a value separator, with or without intervening blanks, does not specify a nul'
+write(io,'(a)')'        value in namelist input.'
+write(io,'(a)')''
+write(io,'(a)')'  10.11.3.6    Blanks'
+write(io,'(a)')''
+write(io,'(a)')'1 All blanks in a namelist input record are considered to be part of some value separator except for'
+write(io,'(a)')''
+write(io,'(a)')'      · blanks embedded in a character constant,'
+write(io,'(a)')'      · embedded blanks surrounding the real or imaginary part of a complex constant,'
+write(io,'(a)')'      · leading blanks following the equals unless followed immediately by a slash or comma, or a semicolon if the'
+write(io,'(a)')'        decimal edit mode is comma, and'
+write(io,'(a)')'      · blanks between a name and the following equals.'
+write(io,'(a)')''
+write(io,'(a)')'  10.11.3.7    Namelist Comments'
+write(io,'(a)')''
+write(io,'(a)')'1 Except within a character literal constant, a "!" character after a value separator or in the first nonblank posi'
+write(io,'(a)')'  of a namelist input record initiates a comment. The comment extends to the end of the current input record and'
+write(io,'(a)')'  may contain any graphic character in the processor-dependent character set. The comment is ignored. A slash'
+write(io,'(a)')'  within the namelist comment does not terminate execution of the namelist input statement. Namelist comments'
+write(io,'(a)')'  are not allowed in stream input because comments depend on record structure.'
+write(io,'(a)')''
+write(io,'(a)')'        NOTE 10.38'
+write(io,'(a)')'        Namelist input example:'
+write(io,'(a)')''
+write(io,'(a)')'        INTEGER I; REAL X (8); CHARACTER (11) P; COMPLEX Z;'
+write(io,'(a)')'        LOGICAL G'
+write(io,'(a)')'        NAMELIST / TODAY / G, I, P, Z, X'
+write(io,'(a)')'        READ (*, NML = TODAY)'
+write(io,'(a)')''
+write(io,'(a)')'        The input data records are:'
+write(io,'(a)')''
+write(io,'(a)')'        &TODAY I = 12345, X(1) = 12345, X(3:4) = 2*1.5, I=6, ! This is a comment.'
+write(io,'(a)')'        P = ''''ISN''T_BOB''S'''', Z = (123,0)/'
+write(io,'(a)')''
+write(io,'(a)')'        The results stored are:'
+write(io,'(a)')'                Variable                         Value'
+write(io,'(a)')'                I                                6'
+write(io,'(a)')'                X (1)                            12345.0'
+write(io,'(a)')'                X (2)                            unchanged'
+write(io,'(a)')'                X (3)                            1.5'
+write(io,'(a)')'                X (4)                            1.5'
+write(io,'(a)')'                X (5) ­ X (8)                    unchanged'
+write(io,'(a)')'                P                                ISN''T BOB''S'
+write(io,'(a)')'                Z                                (123.0,0.0)'
+write(io,'(a)')'                G                                unchanged'
+write(io,'(a)')''
+write(io,'(a)')'  10.11.4      Namelist output'
+write(io,'(a)')'  10.11.4.1    Form of namelist output'
+write(io,'(a)')''
+write(io,'(a)')'1 The form of the output produced is the same as that required for input, except for the forms of real, character,'
+write(io,'(a)')'  and logical values. The name in the output is in upper case. With the exception of adjacent undelimited character'
+write(io,'(a)')'  values, the values are separated by one or more blanks or by a comma, or a semicolon if the decimal edit mode'
+write(io,'(a)')'  is COMMA, optionally preceded by one or more blanks and optionally followed by one or more blanks.'
+write(io,'(a)')''
+write(io,'(a)')'2 Namelist output shall not include namelist comments.'
+write(io,'(a)')''
+write(io,'(a)')'3 The processor may begin new records as necessary. However, except for complex constants and character values,'
+write(io,'(a)')'  the end of a record shall not occur within a constant, character value, or name, and blanks shall not appear'
+write(io,'(a)')'  within a constant, character value, or name.'
+write(io,'(a)')''
+write(io,'(a)')'        NOTE 10.39'
+write(io,'(a)')'        The length of the output records is not specified exactly and may be processor dependent.'
+write(io,'(a)')''
+write(io,'(a)')'  10.11.4.2    Namelist output editing'
+write(io,'(a)')''
+write(io,'(a)')'1 Values in namelist output records are edited as for list-directed output (10.10.4).'
+write(io,'(a)')''
+write(io,'(a)')'        NOTE 10.40'
+write(io,'(a)')'        Namelist output records produced with a DELIM= specifier with a value of NONE and which contain a'
+write(io,'(a)')'        character sequence might not be acceptable as namelist input records.'
+write(io,'(a)')''
+write(io,'(a)')'  10.11.4.3    Namelist output records'
+write(io,'(a)')''
+write(io,'(a)')'1 If two or more successive values for the same namelist group item in an output record produced have identical'
+write(io,'(a)')'  values, the processor has the option of producing a repeated constant of the form r *c instead of the sequence of'
+write(io,'(a)')'  identical values.'
+write(io,'(a)')''
+write(io,'(a)')'2 The name of each namelist group object list item is placed in the output record followed by an equals and a list'
+write(io,'(a)')'  of values of the namelist group object list item.'
+write(io,'(a)')''
+write(io,'(a)')'3 An ampersand character followed immediately by a namelist-group-name will be produced by namelist formatting'
+write(io,'(a)')'  at the start of the first output record to indicate which particular group of data objects is being output. A sla'
+write(io,'(a)')'  is produced by namelist formatting to indicate the end of the namelist formatting.'
+write(io,'(a)')''
+write(io,'(a)')'4 A null value is not produced by namelist formatting.'
+write(io,'(a)')''
+write(io,'(a)')'5 Except for new records created by explicit formatting within a defined output procedure or by continuation of'
+write(io,'(a)')'  delimited character sequences, each output record begins with a blank character.'
+write(io,'(a)')''
+write(io,'(a)')'C806   (R807) The specification-part of a BLOCK construct shall not contain a COMMON, EQUIVALENCE,'
+write(io,'(a)')'       IMPLICIT, INTENT, NAMELIST, or OPTIONAL statement.'
+write(io,'(a)')''
+write(io,'(a)')'NAME'
+write(io,'(a)')'  STOP(7f),ALLSTOP(7f)  - [FORTRAN:STATEMENT] initiates termination of execution'
+write(io,'(a)')''
+write(io,'(a)')'SYNOPSIS'
+write(io,'(a)')'  STOP [ stop-code ]'
+write(io,'(a)')'  ALL STOP [ stop-code ]'
+write(io,'(a)')''
+write(io,'(a)')'  stop-code                     is   scalar-char-initialization-expr'
+write(io,'(a)')'                                           or   scalar-int-initialization-expr'
+write(io,'(a)')''
+write(io,'(a)')'  The scalar-char-initialization-expr shall be of default kind.'
+write(io,'(a)')''
+write(io,'(a)')'  The scalar-int-initialization-expr shall be of default kind.'
+write(io,'(a)')''
+write(io,'(a)')'DESCRIPTION'
+write(io,'(a)')''
+write(io,'(a)')'1 Execution of a STOP statement initiates normal termination of execution. Execution of an ALL STOP'
+write(io,'(a)')'  statement initiates error termination of execution.'
+write(io,'(a)')''
+write(io,'(a)')'2 When an image is terminated by a STOP or ALL STOP statement, its stop code, if any, is made available in a'
+write(io,'(a)')'  processor-dependent manner. If any exception is signaling on that image, the processor shall issue a warning'
+write(io,'(a)')'  indicating which exceptions are signaling; this warning shall be on the unit identified by the named constant'
+write(io,'(a)')'  ERROR_UNIT. It is recommended that the stop code is made available by formatted output to the same unit.'
+write(io,'(a)')''
+write(io,'(a)')'  When normal termination occurs on more than one image, it is expected that a processor-dependent summary'
+write(io,'(a)')'  of any stop codes and signaling exceptions will be made available.'
+write(io,'(a)')''
+write(io,'(a)')'  If the stop-code is an integer, it is recommended that the value also be used as the process exit status, if the'
+write(io,'(a)')'  processor supports that concept. If the integer stop-code is used as the process exit status, the processor'
+write(io,'(a)')'  might be able to interpret only values within a limited range, or only a limited portion of the integer value'
+write(io,'(a)')'  (for example, only the least-significant 8 bits).'
+write(io,'(a)')''
+write(io,'(a)')'  If the stop-code is of type character or does not appear, or if an END PROGRAM statement is executed,'
+write(io,'(a)')'  it is recommended that the value zero be supplied as the process exit status, if the processor supports that'
+write(io,'(a)')'  concept.'
+write(io,'(a)')'NAME'
+write(io,'(a)')'    include(7f) - [FORTRAN] including source text'
+write(io,'(a)')'SYNOPSIS'
+write(io,'(a)')'    INCLUDE char-literal-constant'
+write(io,'(a)')'DESCRIPTION'
+write(io,'(a)')'  Additional text may be incorporated into the source text of a program'
+write(io,'(a)')'  unit during processing. This is accomplished with the INCLUDE line,'
+write(io,'(a)')'  which has the form'
+write(io,'(a)')''
+write(io,'(a)')'         INCLUDE char-literal-constant'
+write(io,'(a)')''
+write(io,'(a)')'  An INCLUDE line is not a Fortran statement.'
+write(io,'(a)')''
+write(io,'(a)')'  The char-literal-constant shall not have a kind type parameter value'
+write(io,'(a)')'  that is a named-constant.'
+write(io,'(a)')'  The interpretation of char-literal-constant is processor dependent. An'
+write(io,'(a)')'  example of a possible valid interpretation is that char-literal-constant'
+write(io,'(a)')'  is the name of a file that contains the source text to be included.'
+write(io,'(a)')''
+write(io,'(a)')'  An INCLUDE line shall appear on a single source line where a statement'
+write(io,'(a)')'  may appear; it shall be the only nonblank text on this line other than'
+write(io,'(a)')'  an optional trailing comment. Thus, a statement label is not allowed.'
+write(io,'(a)')''
+write(io,'(a)')'  The effect of the INCLUDE line is as if the referenced source text'
+write(io,'(a)')'  physically replaced the INCLUDE line prior to program'
+write(io,'(a)')'  processing. Included text may contain any source text, including'
+write(io,'(a)')'  additional INCLUDE lines; such nested INCLUDE lines are similarly'
+write(io,'(a)')'  replaced with the specified source text. The maximum depth of nesting'
+write(io,'(a)')'  of any nested INCLUDE lines is processor dependent. Inclusion of the'
+write(io,'(a)')'  source text referenced by an INCLUDE line shall not, at any level of'
+write(io,'(a)')'  nesting, result in inclusion of the same source text.'
+write(io,'(a)')''
+write(io,'(a)')'  When an INCLUDE line is resolved, the first included statement line'
+write(io,'(a)')'  shall not be a continuation line and the last included statement line'
+write(io,'(a)')'  shall not be continued.'
+write(io,'(a)')''
+write(io,'(a)')''
+write(io,'(a)')'  NOTE'
+write(io,'(a)')''
+write(io,'(a)')'          In some circumstances, for example where source code is'
+write(io,'(a)')'          maintained in an INCLUDE file for use in programs whose source'
+write(io,'(a)')'          form might be either fixed or free, observing the following'
+write(io,'(a)')'          rules allows the code to be used with either source form.'
+write(io,'(a)')''
+write(io,'(a)')'          *   Confine statement labels to character positions 1 to'
+write(io,'(a)')'              5 and statements to character positions 7 to 72.'
+write(io,'(a)')'          *   Treat blanks as being significant.'
+write(io,'(a)')'          *   Use only the exclamation mark (!) to indicate'
+write(io,'(a)')'              a comment, but do not start the comment in character'
+write(io,'(a)')'              position 6.'
+write(io,'(a)')'          *   For continued statements, place an ampersand (&) in'
+write(io,'(a)')'              both character position 73 of a continued line and character'
+write(io,'(a)')'              position 6 of a continuation line.'
+write(io,'(a)')'EXAMPLE'
+write(io,'(a)')'NAME'
+write(io,'(a)')'    scratch(7f) - [FORTRAN:OPEN] where scratch files are typically written by OPEN(3f)'
+write(io,'(a)')'SYNOPSIS'
+write(io,'(a)')'    open( .... status=''scratch'')'
+write(io,'(a)')'DESCRIPTION'
+write(io,'(a)')'    Where files opened with status=''scratch'' are written is implementation-dependent.'
+write(io,'(a)')'    Often the file is unlinked so that it goes away unconditionally when the program'
+write(io,'(a)')'    starts, so in many *nix environments you cannot see the scratch file that is often'
+write(io,'(a)')'    used. So the compiler documentation should be referred to, but typically'
+write(io,'(a)')'    a scratch file is opened with a unique filename in one of the following directories:'
+write(io,'(a)')''
+write(io,'(a)')'      o in the directory pointed to by the environment variable $TMPDIR, if defined.'
+write(io,'(a)')'      o next directories pointed to by $TMP and $TEMP are used if the variables are'
+write(io,'(a)')'        defined.'
+write(io,'(a)')'      o if none of the variables are defined, then the /tmp directory is typically used'
+write(io,'(a)')'        on *nix systems, and the current directory is often used on other systems.'
+write(io,'(a)')''
+write(io,'(a)')'    This can be important if you are generating large scratch files, as you may want'
+write(io,'(a)')'    to specify they are created in a secure directory or on a high-speed server such'
+write(io,'(a)')'    as a Lustre file server or memory-resident file system. Consider'
+write(io,'(a)')''
+write(io,'(a)')'      o Scratch files are often opened using the current permission mask'
+write(io,'(a)')'        (umask) combined with possible operating-system or kernel defaults'
+write(io,'(a)')'        and file-system-dependent attributes, so make sure scratch files are'
+write(io,'(a)')'        properly secure'
+write(io,'(a)')'      o files are written in an area that you can write to and have sufficient'
+write(io,'(a)')'        space in'
+write(io,'(a)')'      o that the scratch space provides optimal performance'
+write(io,'(a)')'      o make sure the system cleans up properly'
+write(io,'(a)')'        when programs are aborted.'
+write(io,'(a)')''
+write(io,'(a)')'    The behavior is very system-dependent.'
+write(io,'(a)')''
+write(io,'(a)')'EXAMPLE:'
+write(io,'(a)')'   System-dependent example:'
+write(io,'(a)')''
+write(io,'(a)')'    open(newunit=lun,status=''scratch'')'
+write(io,'(a)')'    inquire(unit=lun,file=filename)'
+write(io,'(a)')'    write(*,*)''filename='',filename)'
+write(io,'(a)')'    end'
+write(io,'(a)')''
+write(io,'(a)')'NAME'
+write(io,'(a)')'initialize_arrays(7f) - [FORTRAN:FAQ] Initializing small 2D numeric arrays with array constructors'
+write(io,'(a)')'DESCRIPTION'
+write(io,'(a)')''
+write(io,'(a)')'Intuitively, one might assume that if one wants to initialize a'
+write(io,'(a)')'small array by rows that something like the following will work:'
+write(io,'(a)')''
+write(io,'(a)')'   ! DOES NOT WORK'
+write(io,'(a)')'   integer :: xx(3,5)= [ 1, 2, 3, 4, 5], &'
+write(io,'(a)')'                       [10,20,30,40,50], &'
+write(io,'(a)')'                       [11,22,33,44,55]'
+write(io,'(a)')''
+write(io,'(a)')'or perhaps'
+write(io,'(a)')''
+write(io,'(a)')'   ! DOES NOT WORK'
+write(io,'(a)')'   integer :: xx(3,5)= [ [ 1, 2, 3, 4, 5], &'
+write(io,'(a)')'                         [10,20,30,40,50], &'
+write(io,'(a)')'                         [11,22,33,44,55]  ]'
+write(io,'(a)')''
+write(io,'(a)')'Someday something simpler might work, but currently the following syntax'
+write(io,'(a)')'is required to specify the values in an intuitive row-column sequence'
+write(io,'(a)')'using an array constructor:'
+write(io,'(a)')''
+write(io,'(a)')'   integer,save :: xx(3,5)= reshape([&'
+write(io,'(a)')''
+write(io,'(a)')'       1, 2, 3, 4, 5, &'
+write(io,'(a)')'      10,20,30,40,50, &'
+write(io,'(a)')'      11,22,33,44,55  &'
+write(io,'(a)')''
+write(io,'(a)')'      ],shape(xx),order[2,1])'
+write(io,'(a)')''
+write(io,'(a)')'This is because an array constructor can be used to create and assign'
+write(io,'(a)')'values only to rank-one arrays.  To define arrays of more than one'
+write(io,'(a)')'dimension with an array constructor, you must use the RESHAPE(3f) intrinsic'
+write(io,'(a)')'function.'
+write(io,'(a)')''
+write(io,'(a)')'Note that the ORDER= option on RESHAPE(3f) is used to allow the values'
+write(io,'(a)')'to be specified in row-column order instead of the default behavior,'
+write(io,'(a)')'which fills columns first.'
+write(io,'(a)')''
+write(io,'(a)')'Also note that if the expressions are of type character, Fortran 95/90'
+write(io,'(a)')'requires each expression to have the same character length (there is a'
+write(io,'(a)')'common compiler extension that extends all strings to the length of the'
+write(io,'(a)')'longest value specified, but depending on it reduces portability).'
+write(io,'(a)')''
+write(io,'(a)')'## Printing small arrays in row-column format'
+write(io,'(a)')''
+write(io,'(a)')'When working with small arrays the issue that there is no default Fortran'
+write(io,'(a)')'routine for printing an array in row-column order becomes apparent. So'
+write(io,'(a)')'lets create a simple solution for integer arrays (PRINT_MATRIX_INT(3f)):'
+write(io,'(a)')''
+write(io,'(a)')'   program demo_array_constructor ! initializing small arrays'
+write(io,'(a)')'   implicit none'
+write(io,'(a)')'   integer,save :: xx(3,5)= reshape([&'
+write(io,'(a)')''
+write(io,'(a)')'       1, 2, 3, 4, 5, &'
+write(io,'(a)')'      10,20,30,40,50, &'
+write(io,'(a)')'      11,22,33,44,-1055  &'
+write(io,'(a)')''
+write(io,'(a)')'    ],shape(xx),order=[2,1])'
+write(io,'(a)')''
+write(io,'(a)')'   call print_matrix_int(''xx array:'',xx)'
+write(io,'(a)')''
+write(io,'(a)')'   contains'
+write(io,'(a)')''
+write(io,'(a)')'   subroutine print_matrix_int(title,arr)'
+write(io,'(a)')'   implicit none'
+write(io,'(a)')''
+write(io,'(a)')'   character(len=*),parameter::ident= "@(#)print_matrix_int(3f) - print small 2d integer arrays in row-column forma'
+write(io,'(a)')''
+write(io,'(a)')'   character(len=*),intent(in)  :: title'
+write(io,'(a)')'   integer,intent(in)           :: arr(:,:)'
+write(io,'(a)')'   integer                      :: i'
+write(io,'(a)')'   character(len=:),allocatable :: biggest'
+write(io,'(a)')''
+write(io,'(a)')'      write(*,*)trim(title)                                                 ! print title'
+write(io,'(a)')'      biggest=''           ''                                                 ! make buffer to write integer into'
+write(io,'(a)')'      write(biggest,''(i0)'')ceiling(log10(real(maxval(abs(arr)))))+1         ! find how many characters to use for'
+write(io,'(a)')'      biggest=''(" > [",*(i''//trim(biggest)//'':,","))''                       ! use this format to write a row'
+write(io,'(a)')'      do i=1,size(arr,dim=1)                                                ! print one row of array at a time'
+write(io,'(a)')'         write(*,fmt=biggest,advance=''no'')arr(i,:)'
+write(io,'(a)')'         write(*,''(" ]")'')'
+write(io,'(a)')'      enddo'
+write(io,'(a)')''
+write(io,'(a)')'   end subroutine print_matrix_int'
+write(io,'(a)')''
+write(io,'(a)')'   end program demo_array_constructor'
+write(io,'(a)')''
+write(io,'(a)')'Results:'
+write(io,'(a)')''
+write(io,'(a)')'   xx array:'
+write(io,'(a)')'   > [  1,  2,  3,  4,  5 ]'
+write(io,'(a)')'   > [ 10, 20, 30, 40, 50 ]'
+write(io,'(a)')'   > [ 11, 22, 33, 44, 55 ]'
+write(io,'(a)')''
+write(io,'(a)')'We could do a more robust version that handles REAL and COMPLEX values'
+write(io,'(a)')'as well as NaN values, but it has already been done.  If you need to'
+write(io,'(a)')'print a variety of small matrices see:'
+write(io,'(a)')''
+write(io,'(a)')'  dispmodule(3f), "A Fortran 95 module for pretty-printing matrices".'
+write(io,'(a)')'  Kristjan Jonasson, Department of Computer Science,'
+write(io,'(a)')'  School of Science and Engineering, University of Iceland,'
+write(io,'(a)')'  Hjardarhaga 4, 107 Reykjavik, Iceland (jonasson@hi.is).'
+write(io,'(a)')''
+write(io,'(a)')'#Initializing a 2D array using DATA statements'
+write(io,'(a)')''
+write(io,'(a)')'Note that DATA statements are very flexible, and allow for perhaps the'
+write(io,'(a)')'most intelligible way of specifying small arrays row by row. For example:'
+write(io,'(a)')''
+write(io,'(a)')'   ! fill rows using DATA statements'
+write(io,'(a)')'   integer,save,dimension(3,5) :: gg'
+write(io,'(a)')'   data gg(1,:)/  1,  2,  3,  4,  5 /'
+write(io,'(a)')'   data gg(2,:)/ 10, 20, 30, 40, 50 /'
+write(io,'(a)')'   data gg(3,:)/ 11, 22, 33, 44, 55 /'
+write(io,'(a)')''
+write(io,'(a)')'There are other ways to use a DATA statement to fill in row-column order,'
+write(io,'(a)')'including use of the SIZE(3f) function and an implied-DO:'
+write(io,'(a)')''
+write(io,'(a)')'   ! use implied-DO so data can be declared in row-column order'
+write(io,'(a)')'   integer, dimension(3,5) :: ff'
+write(io,'(a)')'   DATA (( ff(J,I), I=1,size(ff,dim=2)), J=1,size(ff,dim=1)) / &'
+write(io,'(a)')'      01,02,03,04,05, &'
+write(io,'(a)')'      10,20,30,40,50, &'
+write(io,'(a)')'      11,22,33,44,55  /'
+write(io,'(a)')''
+write(io,'(a)')'##Initializing a 2D array from a vector using EQUIVALENCE'
+write(io,'(a)')''
+write(io,'(a)')'Sometimes instead of using RESHAPE(3f) you will see someone initialize a'
+write(io,'(a)')'vector and then equivalence it to a multi-dimensional array; especially'
+write(io,'(a)')'if the code has a reason to access the data as both a vector and a matrix:'
+write(io,'(a)')''
+write(io,'(a)')'   ! multi-dimensional row1, row2, .... by equivalence'
+write(io,'(a)')'   integer,parameter :: d1=3,d2=5'
+write(io,'(a)')'   integer           :: ee(d1,d2)'
+write(io,'(a)')'   ! note that the DATA statements could be used to initialize the array instead'
+write(io,'(a)')'   integer           :: e(d1*d2) =[1,10,11, 2,20,22, 3,30,33, 4,40,44, 5,50,55]'
+write(io,'(a)')'   equivalence       (e(1),ee(1,1))'
+write(io,'(a)')''
+write(io,'(a)')'##Notes'
+write(io,'(a)')''
+write(io,'(a)')'Remember that for simple initializations vector statements can be used'
+write(io,'(a)')''
+write(io,'(a)')'   real :: arr(10,20)=0.0'
+write(io,'(a)')'   ! array constructors can be used to define constants, not just vectors'
+write(io,'(a)')'   integer,parameter :: ii(10,10)=[(i,i=1,size(ii))] ! odd numbers using implied-DO'
+write(io,'(a)')''
+write(io,'(a)')'and that if things are too complicated you can just set the values in the executable'
+write(io,'(a)')'body of the code.'
+write(io,'(a)')''
 write(io,'(a)')'NAME'
 write(io,'(a)')'   data(7f) - [FORTRAN] DATA statement'
 write(io,'(a)')''
@@ -10647,13 +11191,20 @@ write(io,'(a)')'EXAMPLE'
 write(io,'(a)')'  Sample'
 write(io,'(a)')''
 write(io,'(a)')'     program fortran_syntax'
+write(io,'(a)')'     implicit none'
+write(io,'(a)')'     integer :: bb'
+write(io,'(a)')'        call sub1(10,bb)'
+write(io,'(a)')'        write(*,*)''BB='',bb'
 write(io,'(a)')'     contains'
-write(io,'(a)')'        subroutine sub1(a,b,c)'
-write(io,'(a)')'        integer,intent(in)                     :: a'
-write(io,'(a)')'        integer,intent(out)                    :: b'
-write(io,'(a)')'        character(len=:),intent(out),optional  :: c'
+write(io,'(a)')'     subroutine sub1(a,b,c)'
+write(io,'(a)')'     integer,intent(in)                     :: a'
+write(io,'(a)')'     integer,intent(out)                    :: b'
+write(io,'(a)')'     character(len=:),intent(out),optional  :: c'
 write(io,'(a)')'        b=2*a'
-write(io,'(a)')'        end subroutine sub1'
+write(io,'(a)')'        if(present(c))then'
+write(io,'(a)')'           c=''Hello World'''
+write(io,'(a)')'        endif'
+write(io,'(a)')'     end subroutine sub1'
 write(io,'(a)')'     end program fortran_syntax'
 write(io,'(a)')''
 write(io,'(a)')'NAME'
@@ -10800,7 +11351,7 @@ write(io,'(a)')'                                                   [ case-stmt'
 write(io,'(a)')'                                                        block ] ...'
 write(io,'(a)')'                                                   end-select-stmt'
 write(io,'(a)')''
-write(io,'(a)')'  R811      select-case-stmt             is   [ case-construct-name : ] SELECT CASE ( case-expr )'
+write(io,'(a)')'  R811      select-case-stmt             is   [ case-construct-name : ] SELECT CASE  case-expr)'
 write(io,'(a)')''
 write(io,'(a)')'  R812      case-stmt                    is   CASE case-selector [case-construct-name]'
 write(io,'(a)')''
@@ -10819,7 +11370,7 @@ write(io,'(a)')'  R814      case-expr                    is scalar-int-expr'
 write(io,'(a)')'                                         or scalar-char-expr'
 write(io,'(a)')'                                         or scalar-logical-expr'
 write(io,'(a)')''
-write(io,'(a)')'  R815      case-selector                is ( case-value-range-list )'
+write(io,'(a)')'  R815      case-selector                is (case-value-range-list)'
 write(io,'(a)')'                                         or DEFAULT'
 write(io,'(a)')''
 write(io,'(a)')'  C810      (R810) No more than one of the selectors of one of the CASE statements shall be DEFAULT.'
@@ -11140,6 +11691,35 @@ write(io,'(a)')'    1000 format (''iflag= '',/,(10i7))'
 write(io,'(a)')'   end program demo_where'
 write(io,'(a)')''
 write(io,'(a)')'.so do.7'
+write(io,'(a)')'NAME'
+write(io,'(a)')'   sign=(7f) [FORTRAN:IO] option to force optional plus sign on output values'
+write(io,'(a)')''
+write(io,'(a)')'SYNOPSIS'
+write(io,'(a)')'DESCRIPTION'
+write(io,'(a)')'EXAMPLE'
+write(io,'(a)')'   Program showing control of plus sign on positive numeric output'
+write(io,'(a)')'      implicit none'
+write(io,'(a)')'      complex :: x=(123.456,987.654)'
+write(io,'(a)')'      integer :: i=789'
+write(io,'(a)')'      real    :: a=12.3456'
+write(io,'(a)')'      integer :: j'
+write(io,'(a)')'      namelist /nlist/ i,a,x'
+write(io,'(a)')'      open(unit=6,sign=''plus'')'
+write(io,'(a)')'      write(*,*)''PASS WHERE FILE HAS SIGN="PLUS"'''
+write(io,'(a)')'      do j=1,2'
+write(io,'(a)')'      write(*,*) ''LIST DIRECTED '',a,i,x'
+write(io,'(a)')'      write(*,''(*(g0:,1x))'') ''GENERAL FORMATTED'',a,i,x'
+write(io,'(a)')'      write(*,''(*(ss,g0:,1x))'') ''GENERAL FORMATTED EXPLICIT SUPPRESS'',a,i,x'
+write(io,'(a)')'      write(*,''(*(sp,g0:,1x))'') ''GENERAL FORMATTED EXPLICIT PLUS'',a,i,x'
+write(io,'(a)')'      write(*,''(a,1x,f8.4,1x,i4,1x,f9.4,1x,f9.4)'') ''FORMATTED'',a,i,x'
+write(io,'(a)')'      write(*,''(a,1x,f8.4,1x,i4,1x,f9.4,1x,f9.4)'') ''FORMATTED'',a,i,x'
+write(io,'(a)')'      write(*,nlist)'
+write(io,'(a)')'      if(j.eq.2)exit'
+write(io,'(a)')'      write(*,*)'
+write(io,'(a)')'      open(unit=6,sign=''suppress'')'
+write(io,'(a)')'      write(*,*)''PASS WHERE FILE HAS SIGN="SUPPRESS"'''
+write(io,'(a)')'      enddo'
+write(io,'(a)')'      end'
 write(io,'(a)')'.\" Specification of Fortran'
 write(io,'(a)')'.TH DO "7" "January 2017" "Fortran" "Language Specification"'
 write(io,'(a)')'.SH NAME'
@@ -11714,165 +12294,433 @@ write(io,'(a)')'    Never found a zero, tried 7 times'
 write(io,'(a)')'    found a zero I= -100'
 write(io,'(a)')''
 write(io,'(a)')'.fi'
-!>
-!!##NAME
-!!    flush(7f) - [FORTRAN:IO] flush I/O buffers of specified files
-!!
-!!##SYNOPSIS
-!!
-!!    flush file-unit-number
-!!
-!!     or
-!!
-!!    flush([UNIT=]file_unit_number,[iostat=i],[iomsg=string],[err=label_number])
-!!
-!!##DESCRIPTION
-!!
-!!   Because the Fortran standard does not specify the mechanism of file
-!!   storage, the exact meaning of the flush operation is not precisely
-!!   defined. The intention is that the flush operation should make all data
-!!   written to an external file available to other processes or devices,
-!!   or causes data placed in an external file by means other than the
-!!   current Fortran process to be available to a subsequent READ statement.
-!!   This is commonly called "flushing I/O buffers".
-!!   These actions are processor dependent.
-!!
-!!   Execution of a FLUSH statement performs a wait operation for all
-!!   pending asynchronous data transfer operations for the specified unit.
-!!
-!!   Execution of a FLUSH statement for a file that is connected but does
-!!   not exist is permitted and has no effect on any file. A FLUSH statement
-!!   has no effect on file position.
-!!
-!!   No specifier shall appear more than once in a given flush-spec-list.
-!!
-!!##OPTIONS
-!!
-!!
-!!    [UNIT=]file-unit-number  Required. If the optional characters
-!!                             UNIT= are omitted from the unit specifier,
-!!                             the file-unit-number must be the first item.
-!!
-!!    ERR=label                The label must branch to a target statement
-!!                             in the same scoping unit as the FLUSH
-!!                             statement.
-!!##RETURNS
-!!
-!!    IOSTAT=scalar-int-variable  variable is set to a processor-dependent
-!!                                positive value if an error occurs, to zero
-!!                                if the flush operation was successful, or
-!!                                to a processor-dependent negative value
-!!                                if the flush operation is not supported
-!!                                for the unit specified.
-!!    IOMSG=iomsg-variable    message describing any error that occurred
-!!
-!!##EXAMPLE
-!!
-!!
-!!         flush (10, iostat = n)
-!===================================================================================================================================
-!>
-!!##NAME
-!!      if(7f) - [FORTRAN:EXECUTION CONTROL] selects a block based on a sequence of logical expressions.
-!!
-!!##SYNOPSIS
-!!
-!!
-!!      [if_construct_name:] IF (scalar-logical-expr) THEN
-!!         block
-!!      ELSEIF (scalar-logical-expr) THEN [if_construct_name]
-!!         block
-!!      ELSE [if_construct_name]
-!!         block
-!!      ENDIF [if_construct_name]
-!!
-!!         or
-!!
-!!      IF (scalar-logical-expression) action-statement
-!!
-!!##DESCRIPTION
-!!
-!!    The IF construct selects for execution at most one of its constituent
-!!    blocks. The selection is based on a sequence of logical expressions.
-!!
-!!    If an if-construct-name is specified, both the IF and ENDIF must use
-!!    that same name. If an ELSE or ELSEIF uses an if-construct-name it must
-!!    be the same as the one specified on the corresponding IF/ENDIF.
-!!
-!!    Execution of an IF construct
-!!
-!!    At most one of the blocks in the IF construct is executed. If there
-!!    is an ELSE statement in the construct, exactly one of the blocks
-!!    in the construct is executed. The scalar logical expressions are
-!!    evaluated in the order of their appearance in the construct until
-!!    a true value is found or an ELSE statement or ENDIF statement is
-!!    encountered. If a true value or an ELSE statement is found, the block
-!!    immediately following is executed and this completes the execution
-!!    of the construct. The scalar logical expressions in any remaining
-!!    ELSEIF statements of the IF construct are not evaluated. If none
-!!    of the evaluated expressions is true and there is no ELSE statement,
-!!    the execution of the construct is completed without the execution of
-!!    any block within the construct.
-!!
-!!    It is permissible to branch to an ENDIF statement only from within
-!!    its IF construct. Execution of an ENDIF statement has no effect.
-!!
-!!    Execution of an IF statement
-!!
-!!    The IF statement controls the execution of a single action statement
-!!    based on a single logical expression.
-!!
-!!    The action-stmt in the if-stmt shall not be an end-function-stmt,
-!!    end-mp-subprogram-stmt, end-program-stmt, end-subroutine-stmt,
-!!    or if-stmt.
-!!
-!!    Execution of an IF statement causes evaluation of the scalar logical
-!!    expression. If the value of the expression is true, the action statement
-!!    is executed. If the value is false, the action statement is not executed
-!!    and execution continues.
-!!
-!!    The execution of a function reference in the scalar logical expression
-!!    may affect entities in the action statement.
-!!
-!!    An example of an IF statement is:
-!!
-!!        IF (A > 0.0) A = LOG (A)
-!!
-!!##EXAMPLES
-!!
-!!
-!!   Sample IF constructs:
-!!
-!!      if (cvar == 'RESET') then
-!!         i = 0; j = 0; k = 0
-!!
-!! endif
-!!
-!!      OUTER: if (case.eq.0)then
-!!         PROOF_DONE: if (PROP) then
-!!            write (3, '(''QED'')')
-!!            exit OUTER
-!!         else
-!!            PROP = nextprop
-!!         endif PROOF_DONE
-!!         write(*,*)'END OF PROOF_DONE'
-!!      else OUTER
-!!              write(*,*)'else outer'
-!!      endif OUTER
-!!
-!!      if (a > 0) then
-!!         b = c/a
-!!         if (b > 0) then
-!!            d = 1.0
-!!         end if
-!!      elseif (c > 0) then
-!!         b = a/c
-!!         d = -1.0
-!!      else
-!!         b = abs (max (a, c))
-!!         d = 0
-!!      endif
-!===================================================================================================================================
+write(io,'(a)')'NAME'
+write(io,'(a)')'   flush(7f) - [FORTRAN:IO] flush I/O buffers of specified files'
+write(io,'(a)')''
+write(io,'(a)')'SYNOPSIS'
+write(io,'(a)')'   flush file-unit-number'
+write(io,'(a)')''
+write(io,'(a)')'    or'
+write(io,'(a)')''
+write(io,'(a)')'   flush([UNIT=]file_unit_number,[iostat=i],[iomsg=string],[err=label_number])'
+write(io,'(a)')''
+write(io,'(a)')'DESCRIPTION'
+write(io,'(a)')''
+write(io,'(a)')'  Because the Fortran standard does not specify the mechanism of file'
+write(io,'(a)')'  storage, the exact meaning of the flush operation is not precisely'
+write(io,'(a)')'  defined. The intention is that the flush operation should make all data'
+write(io,'(a)')'  written to an external file available to other processes or devices,'
+write(io,'(a)')'  or causes data placed in an external file by means other than the'
+write(io,'(a)')'  current Fortran process to be available to a subsequent READ statement.'
+write(io,'(a)')'  This is commonly called "flushing I/O buffers".'
+write(io,'(a)')'  These actions are processor dependent.'
+write(io,'(a)')''
+write(io,'(a)')'  Execution of a FLUSH statement performs a wait operation for all'
+write(io,'(a)')'  pending asynchronous data transfer operations for the specified unit.'
+write(io,'(a)')''
+write(io,'(a)')'  Execution of a FLUSH statement for a file that is connected but does'
+write(io,'(a)')'  not exist is permitted and has no effect on any file. A FLUSH statement'
+write(io,'(a)')'  has no effect on file position.'
+write(io,'(a)')''
+write(io,'(a)')'  No specifier shall appear more than once in a given flush-spec-list.'
+write(io,'(a)')''
+write(io,'(a)')'OPTIONS'
+write(io,'(a)')''
+write(io,'(a)')''
+write(io,'(a)')'   [UNIT=]file-unit-number  Required. If the optional characters'
+write(io,'(a)')'                            UNIT= are omitted from the unit specifier,'
+write(io,'(a)')'                            the file-unit-number must be the first item.'
+write(io,'(a)')''
+write(io,'(a)')'   ERR=label                The label must branch to a target statement'
+write(io,'(a)')'                            in the same scoping unit as the FLUSH'
+write(io,'(a)')'                            statement.'
+write(io,'(a)')'RETURNS'
+write(io,'(a)')''
+write(io,'(a)')'   IOSTAT=scalar-int-variable  variable is set to a processor-dependent'
+write(io,'(a)')'                               positive value if an error occurs, to zero'
+write(io,'(a)')'                               if the flush operation was successful, or'
+write(io,'(a)')'                               to a processor-dependent negative value'
+write(io,'(a)')'                               if the flush operation is not supported'
+write(io,'(a)')'                               for the unit specified.'
+write(io,'(a)')'   IOMSG=iomsg-variable    message describing any error that occurred'
+write(io,'(a)')''
+write(io,'(a)')'EXAMPLE'
+write(io,'(a)')''
+write(io,'(a)')'        flush (10, iostat = n)'
+write(io,'(a)')'NAME'
+write(io,'(a)')'     if(7f) - [FORTRAN:EXECUTION CONTROL] selects a block based on a sequence of logical expressions.'
+write(io,'(a)')''
+write(io,'(a)')'SYNOPSIS'
+write(io,'(a)')''
+write(io,'(a)')'     [if_construct_name:] IF (scalar-logical-expr) THEN'
+write(io,'(a)')'        block'
+write(io,'(a)')'     ELSEIF (scalar-logical-expr) THEN [if_construct_name]'
+write(io,'(a)')'        block'
+write(io,'(a)')'     ELSE [if_construct_name]'
+write(io,'(a)')'        block'
+write(io,'(a)')'     ENDIF [if_construct_name]'
+write(io,'(a)')''
+write(io,'(a)')'        or'
+write(io,'(a)')''
+write(io,'(a)')'     IF (scalar-logical-expression) action-statement'
+write(io,'(a)')''
+write(io,'(a)')'DESCRIPTION'
+write(io,'(a)')''
+write(io,'(a)')'   The IF construct selects for execution at most one of its constituent'
+write(io,'(a)')'   blocks. The selection is based on a sequence of logical expressions.'
+write(io,'(a)')''
+write(io,'(a)')'   If an if-construct-name is specified, both the IF and ENDIF must use'
+write(io,'(a)')'   that same name. If an ELSE or ELSEIF uses an if-construct-name it must'
+write(io,'(a)')'   be the same as the one specified on the corresponding IF/ENDIF.'
+write(io,'(a)')''
+write(io,'(a)')'   Execution of an IF construct'
+write(io,'(a)')''
+write(io,'(a)')'   At most one of the blocks in the IF construct is executed. If there'
+write(io,'(a)')'   is an ELSE statement in the construct, exactly one of the blocks'
+write(io,'(a)')'   in the construct is executed. The scalar logical expressions are'
+write(io,'(a)')'   evaluated in the order of their appearance in the construct until'
+write(io,'(a)')'   a true value is found or an ELSE statement or ENDIF statement is'
+write(io,'(a)')'   encountered. If a true value or an ELSE statement is found, the block'
+write(io,'(a)')'   immediately following is executed and this completes the execution'
+write(io,'(a)')'   of the construct. The scalar logical expressions in any remaining'
+write(io,'(a)')'   ELSEIF statements of the IF construct are not evaluated. If none'
+write(io,'(a)')'   of the evaluated expressions is true and there is no ELSE statement,'
+write(io,'(a)')'   the execution of the construct is completed without the execution of'
+write(io,'(a)')'   any block within the construct.'
+write(io,'(a)')''
+write(io,'(a)')'   It is permissible to branch to an ENDIF statement only from within'
+write(io,'(a)')'   its IF construct. Execution of an ENDIF statement has no effect.'
+write(io,'(a)')''
+write(io,'(a)')'   Execution of an IF statement'
+write(io,'(a)')''
+write(io,'(a)')'   The IF statement controls the execution of a single action statement'
+write(io,'(a)')'   based on a single logical expression.'
+write(io,'(a)')''
+write(io,'(a)')'   The action-stmt in the if-stmt shall not be an end-function-stmt,'
+write(io,'(a)')'   end-mp-subprogram-stmt, end-program-stmt, end-subroutine-stmt,'
+write(io,'(a)')'   or if-stmt.'
+write(io,'(a)')''
+write(io,'(a)')'   Execution of an IF statement causes evaluation of the scalar logical'
+write(io,'(a)')'   expression. If the value of the expression is true, the action statement'
+write(io,'(a)')'   is executed. If the value is false, the action statement is not executed'
+write(io,'(a)')'   and execution continues.'
+write(io,'(a)')''
+write(io,'(a)')'   The execution of a function reference in the scalar logical expression'
+write(io,'(a)')'   may affect entities in the action statement.'
+write(io,'(a)')''
+write(io,'(a)')'   An example of an IF statement is:'
+write(io,'(a)')''
+write(io,'(a)')'       IF (A > 0.0) A = LOG (A)'
+write(io,'(a)')''
+write(io,'(a)')'EXAMPLES'
+write(io,'(a)')''
+write(io,'(a)')'  Sample IF constructs:'
+write(io,'(a)')''
+write(io,'(a)')'     if (cvar == ''RESET'') then'
+write(io,'(a)')'        i = 0; j = 0; k = 0'
+write(io,'(a)')''
+write(io,'(a)')'endif'
+write(io,'(a)')''
+write(io,'(a)')'     OUTER: if (case.eq.0)then'
+write(io,'(a)')'        PROOF_DONE: if (PROP) then'
+write(io,'(a)')'           write (3, ''(''''QED'''')'')'
+write(io,'(a)')'           exit OUTER'
+write(io,'(a)')'        else'
+write(io,'(a)')'           PROP = nextprop'
+write(io,'(a)')'        endif PROOF_DONE'
+write(io,'(a)')'        write(*,*)''END OF PROOF_DONE'''
+write(io,'(a)')'     else OUTER'
+write(io,'(a)')'             write(*,*)''else outer'''
+write(io,'(a)')'     endif OUTER'
+write(io,'(a)')''
+write(io,'(a)')'     if (a > 0) then'
+write(io,'(a)')'        b = c/a'
+write(io,'(a)')'        if (b > 0) then'
+write(io,'(a)')'           d = 1.0'
+write(io,'(a)')'        end if'
+write(io,'(a)')'     elseif (c > 0) then'
+write(io,'(a)')'        b = a/c'
+write(io,'(a)')'        d = -1.0'
+write(io,'(a)')'     else'
+write(io,'(a)')'        b = abs (max (a, c))'
+write(io,'(a)')'        d = 0'
+write(io,'(a)')'     endif'
+write(io,'(a)')''
+write(io,'(a)')'NAME'
+write(io,'(a)')'   SAVE(7f) - [FORTRAN:STATEMENT:ATTRIBUTE] specifies that a local variable retains its status and value after a RE'
+write(io,'(a)')''
+write(io,'(a)')'SYNOPSIS'
+write(io,'(a)')'   SAVE [ [ :: ] saved-entity-list ]'
+write(io,'(a)')''
+write(io,'(a)')'      saved-entity                 is object-name'
+write(io,'(a)')'                                   or proc-pointer-name'
+write(io,'(a)')'                                   or / common-block-name /'
+write(io,'(a)')''
+write(io,'(a)')'      proc-pointer-name            is   name'
+write(io,'(a)')''
+write(io,'(a)')'   or as an attribute of a data entity declaration. For example,'
+write(io,'(a)')''
+write(io,'(a)')'      INTEGER,SAVE :: II'
+write(io,'(a)')''
+write(io,'(a)')'DESCRIPTION'
+write(io,'(a)')''
+write(io,'(a)')'1 The SAVE attribute specifies that a local variable of a program unit or subprogram retains its association status'
+write(io,'(a)')'  allocation status, definition status, and value after execution of a RETURN or END statement unless it is a'
+write(io,'(a)')'  pointer and its target becomes undefined. If it is a local variable of a subprogram it is shared by all'
+write(io,'(a)')'  instances of the subprogram.'
+write(io,'(a)')''
+write(io,'(a)')'  An entity with the SAVE attribute shall be a common block, variable, or procedure pointer.'
+write(io,'(a)')''
+write(io,'(a)')'  The SAVE attribute shall not be specified for a dummy argument, a function result, an automatic data'
+write(io,'(a)')'  object, or an object that is in a common block.'
+write(io,'(a)')''
+write(io,'(a)')'  If a SAVE statement with an omitted saved entity list appears in a scoping unit, no other'
+write(io,'(a)')'  appearance of the SAVE attr-spec or SAVE statement is permitted in that scoping unit.'
+write(io,'(a)')''
+write(io,'(a)')'  A local variable of a pure subprogram, or of a BLOCK construct within'
+write(io,'(a)')'  a pure subprogram, shall not have the SAVE attribute.  Variable'
+write(io,'(a)')'  initialization in a type-declaration-stmt or a data-stmt implies the'
+write(io,'(a)')'  SAVE attribute; therefore, such initialization is also disallowed in'
+write(io,'(a)')'  a pure subprogram.'
+write(io,'(a)')''
+write(io,'(a)')'2 The SAVE attribute specifies that a local variable of a BLOCK construct retains its association status, allocatio'
+write(io,'(a)')'  status, definition status, and value after termination of the construct unless it is a pointer and its target bec'
+write(io,'(a)')'  undefined (16.5.2.5(6)). If the BLOCK construct is within a subprogram the variable is shared by all instances'
+write(io,'(a)')'  (12.6.2.4) of the subprogram.'
+write(io,'(a)')''
+write(io,'(a)')'3 Giving a common block the SAVE attribute confers the attribute on all entities in the common block.'
+write(io,'(a)')''
+write(io,'(a)')'4 A variable, common block, or procedure pointer declared in the scoping unit of a main program, module, or'
+write(io,'(a)')'  submodule implicitly has the SAVE attribute, which may be confirmed by explicit specification. If a common'
+write(io,'(a)')'  block has the SAVE attribute in any other kind of scoping unit, it shall have the SAVE attribute in every scoping'
+write(io,'(a)')'  unit that is not a main program, module, or submodule.'
+write(io,'(a)')''
+write(io,'(a)')'SAVE ATTRIBUTE'
+write(io,'(a)')''
+write(io,'(a)')'1 A blank common block has the same properties as a named common block, except for the following.'
+write(io,'(a)')''
+write(io,'(a)')'      Execution of a RETURN or END statement might cause data objects'
+write(io,'(a)')'      in a named common block to become'
+write(io,'(a)')'      undefined unless the common block has the SAVE attribute, but'
+write(io,'(a)')'      never causes data objects in blank common to become undefined.'
+write(io,'(a)')''
+write(io,'(a)')' 2 When the execution of a procedure is terminated by execution of a RETURN or END statement, an unsaved'
+write(io,'(a)')'   allocatable local variable of the procedure retains its allocation and definition status if it is a function res'
+write(io,'(a)')'   variable or a subobject thereof; otherwise, it is deallocated.'
+write(io,'(a)')''
+write(io,'(a)')' 3 When a BLOCK construct terminates, an unsaved allocatable local variable of the construct is deallocated.'
+write(io,'(a)')''
+write(io,'(a)')'1 A SAVE statement with a saved entity list specifies the SAVE attribute (5.3.16) for a list of entities. A SAVE'
+write(io,'(a)')'  statement without a saved entity list is treated as though it contained the names of all allowed items in the sam'
+write(io,'(a)')'  scoping unit.'
+write(io,'(a)')''
+write(io,'(a)')'3 Explicit initialization of a variable that is not in a common block implies the SAVE attribute, which may be'
+write(io,'(a)')'   confirmed by explicit specification.'
+write(io,'(a)')'3 The BIND attribute for a variable or common block implies the SAVE attribute, which may be confirmed by'
+write(io,'(a)')'  explicit specification.'
+write(io,'(a)')''
+write(io,'(a)')'EXAMPLE'
+write(io,'(a)')'   To assign the SAVE attribute to all local variables in a subprogram'
+write(io,'(a)')''
+write(io,'(a)')'    SAVE'
+write(io,'(a)')''
+write(io,'(a)')'   An example of a typical SAVE statement is:'
+write(io,'(a)')''
+write(io,'(a)')'    SAVE A, B, C, / BLOCKA /, D'
+write(io,'(a)')''
+write(io,'(a)')'   Example with an allocatable variable'
+write(io,'(a)')''
+write(io,'(a)')'    subroutine process'
+write(io,'(a)')'      real, allocatable :: temp(:)'
+write(io,'(a)')'      real, allocatable, save :: x(:)'
+write(io,'(a)')'      ...'
+write(io,'(a)')'    end subroutine process'
+write(io,'(a)')''
+write(io,'(a)')'   on return from subroutine PROCESS, the allocation status of X is'
+write(io,'(a)')'   preserved because X has the SAVE attribute. TEMP does not have the'
+write(io,'(a)')'   SAVE attribute, so it will be deallocated if it was allocated. On'
+write(io,'(a)')'   the next invocation of PROCESS, TEMP will have an allocation status'
+write(io,'(a)')'   of unallocated.'
+write(io,'(a)')''
+write(io,'(a)')'NAME'
+write(io,'(a)')'   NULLIFY(7) - [FORTRAN:STATEMENT] causes pointers to be disassociated'
+write(io,'(a)')'SYNOPSIS'
+write(io,'(a)')'  NULLIFY ( pointer-object-list )'
+write(io,'(a)')''
+write(io,'(a)')'   pointer-object               is variable-name'
+write(io,'(a)')'                                or structure-component'
+write(io,'(a)')'                                or proc-pointer-name'
+write(io,'(a)')''
+write(io,'(a)')'   Each pointer-object shall have the POINTER attribute.'
+write(io,'(a)')''
+write(io,'(a)')'DESCRIPTION'
+write(io,'(a)')''
+write(io,'(a)')'  A pointer-object shall not depend on the value, bounds, or association status of another pointer-object in the'
+write(io,'(a)')'  same NULLIFY statement.'
+write(io,'(a)')''
+write(io,'(a)')'  When a NULLIFY statement is applied to a polymorphic pointer, its dynamic type becomes the declared type.'
+write(io,'(a)')''
+write(io,'(a)')'EXAMPLE'
+write(io,'(a)')'NAME'
+write(io,'(a)')'   IMPLICIT(7f) - [FORTRAN:STATEMENT]  specify default type (if any) associated to a starting letter'
+write(io,'(a)')'SYNOPSIS'
+write(io,'(a)')'    IMPLICIT [NONE]|[declaration-type-spec (letter-spec-list)]'
+write(io,'(a)')'    determine default mapping between between the first letter of a data entity and a type.'
+write(io,'(a)')'DESCRIPTION'
+write(io,'(a)')''
+write(io,'(a)')'   Every data entity has a type. If a type is not explicitly assigned to'
+write(io,'(a)')'   a variable or function it will (by default) be assigned one according'
+write(io,'(a)')'   to the following rule -- the type is INTEGER if the name starts with'
+write(io,'(a)')'   the letters from I to N (the first two letters of the word "integer");'
+write(io,'(a)')'   otherwise it defaults to REAL.'
+write(io,'(a)')''
+write(io,'(a)')'   The IMPLICIT statement allows the default rule to be changed or set'
+write(io,'(a)')'   to null. To turn off implicit typing enter one and only one IMPLICIT'
+write(io,'(a)')'   statement in the scoping unit'
+write(io,'(a)')''
+write(io,'(a)')'      implicit none ! Disable all implicit typing'
+write(io,'(a)')''
+write(io,'(a)')'   Each data entity will now require explicitly having a type declared'
+write(io,'(a)')'   (INTEGER, REAL, DOUBLE, COMPLEX, ...).'
+write(io,'(a)')''
+write(io,'(a)')'   This must appear after any USE statements and before any type'
+write(io,'(a)')'   declarations, including PARAMETER statements (which must know the'
+write(io,'(a)')'   rules to determine what type names are that have not been explicitly'
+write(io,'(a)')'   declared).'
+write(io,'(a)')''
+write(io,'(a)')'   In most new code implicit typing is turned off either with an "IMPLICIT'
+write(io,'(a)')'   NONE" or sometimes by a compiler switch. On the other hand, the majority'
+write(io,'(a)')'   of pre-fortran90 code depends on implicit defaults.'
+write(io,'(a)')''
+write(io,'(a)')'   Each prefix letter may have the type assigned to it declared only'
+write(io,'(a)')'   once in a unit.'
+write(io,'(a)')''
+write(io,'(a)')'   The default rule, expressed as an IMPLICIT statement is'
+write(io,'(a)')''
+write(io,'(a)')'      implicit real(a-h,o-z),integer(i-k)'
+write(io,'(a)')''
+write(io,'(a)')'   To make the default for all names be a DOUBLEPRECISION type one could enter'
+write(io,'(a)')''
+write(io,'(a)')'      implicit doubleprecision (a-h,o-z)'
+write(io,'(a)')''
+write(io,'(a)')'   In another unit one might specify (multiple statements and compound'
+write(io,'(a)')'   statements are allowed, as illustrated):'
+write(io,'(a)')''
+write(io,'(a)')'      implicit complex (c), doubleprecision (d)'
+write(io,'(a)')'      implicit integer (i)'
+write(io,'(a)')'      implicit logical (l)'
+write(io,'(a)')'      implicit real (r)'
+write(io,'(a)')'      implicit character(len=8) (a,b,e-h,j,k,m-q,s-z)'
+write(io,'(a)')''
+write(io,'(a)')'   There is no way to make some letters default to no type and others'
+write(io,'(a)')'   have a default. Either nothing has a default type or everything does:'
+write(io,'(a)')''
+write(io,'(a)')'      implicit (a-h)  ! NOT ALLOWED. A TYPE MUST BE SPECIFIED'
+write(io,'(a)')''
+write(io,'(a)')'  The default for an internal or module procedure is the mapping in the'
+write(io,'(a)')'  host scoping unit.'
+write(io,'(a)')''
+write(io,'(a)')'  Any data entity that is not explicitly declared by a type declaration'
+write(io,'(a)')'  statement, is not an intrinsic function, and is not accessed by use or'
+write(io,'(a)')'  host association is declared implicitly to be of the type (and type'
+write(io,'(a)')'  parameters) mapped from the first letter of its name, provided the'
+write(io,'(a)')'  mapping is not null.'
+write(io,'(a)')''
+write(io,'(a)')'  The mapping may be to a derived type that is inaccessible in the local'
+write(io,'(a)')'  scope if the derived type is accessible in the host scoping unit. The'
+write(io,'(a)')'  data entity is treated as if it were declared in an explicit type'
+write(io,'(a)')'  declaration in the outermost scoping unit in which it appears. An'
+write(io,'(a)')'  explicit type specification in a FUNCTION statement overrides'
+write(io,'(a)')'  an IMPLICIT statement for the name of the result variable of that'
+write(io,'(a)')'  function subprogram.'
+write(io,'(a)')''
+write(io,'(a)')'OPTIONS'
+write(io,'(a)')'    NONE            If IMPLICIT NONE is specified in a scoping unit, it shall precede any PARAMETER statements'
+write(io,'(a)')'                    that appear in the scoping unit and there shall be no other IMPLICIT statements in the scoping'
+write(io,'(a)')'      or'
+write(io,'(a)')'    declaration-type-spec'
+write(io,'(a)')''
+write(io,'(a)')'    letter-spec      is (letter-or-range[,letter-or-range] [,letter-or-range] )'
+write(io,'(a)')'                     If the minus and second letter appear, the second'
+write(io,'(a)')'                     letter shall follow the first letter alphabetically.'
+write(io,'(a)')'                     A letter-spec consisting of two letter s separated by'
+write(io,'(a)')'                     a minus is equivalent to writing a list containing'
+write(io,'(a)')'                     all of the letters in alphabetical order in the'
+write(io,'(a)')'                     alphabetic sequence from the first letter through'
+write(io,'(a)')'                     the second letter. For example, A-C is equivalent'
+write(io,'(a)')'                     to A, B, C. The same letter shall not appear as a'
+write(io,'(a)')'                     single letter, or be included in a range of letters,'
+write(io,'(a)')'                     more than once in all of the IMPLICIT statements'
+write(io,'(a)')'                     in a scoping unit.'
+write(io,'(a)')''
+write(io,'(a)')'EXAMPLE'
+write(io,'(a)')''
+write(io,'(a)')'  The following are examples of the use of IMPLICIT statements:'
+write(io,'(a)')''
+write(io,'(a)')'        module example_module'
+write(io,'(a)')'           implicit none'
+write(io,'(a)')'           ...'
+write(io,'(a)')'           interface'
+write(io,'(a)')'              function fun (i)    ! not all data entities need to'
+write(io,'(a)')'                 integer fun      ! be declared explicitly'
+write(io,'(a)')'              end function fun'
+write(io,'(a)')'           end interface'
+write(io,'(a)')'        contains'
+write(io,'(a)')'           function jfun (j)      ! all data entities need to'
+write(io,'(a)')'              integer jfun, j     ! be declared explicitly.'
+write(io,'(a)')'              ...'
+write(io,'(a)')'           end function jfun'
+write(io,'(a)')'        end module example_module'
+write(io,'(a)')''
+write(io,'(a)')'        subroutine sub'
+write(io,'(a)')'           implicit complex (c)'
+write(io,'(a)')'           CM = (3.0, 2.0)      ! CM is implicitly declared COMPLEX'
+write(io,'(a)')'           ...'
+write(io,'(a)')'        contains'
+write(io,'(a)')'           subroutine sub1'
+write(io,'(a)')'              IMPLICIT INTEGER (A, C)'
+write(io,'(a)')'              C = (0.0, 0.0) ! C is host associated and of'
+write(io,'(a)')'                             ! type complex'
+write(io,'(a)')'              Z = 1.0        ! Z is implicitly declared REAL'
+write(io,'(a)')'              A = 2          ! A is implicitly declared INTEGER'
+write(io,'(a)')'              CC = 1         ! CC is implicitly declared INTEGER'
+write(io,'(a)')'              ...'
+write(io,'(a)')'           end subroutine sub1'
+write(io,'(a)')'           subroutine sub2'
+write(io,'(a)')'              Z = 2.0         ! Z is implicitly declared REAL and'
+write(io,'(a)')'                              ! is different from the variable of'
+write(io,'(a)')'                              ! the same name in SUB1'
+write(io,'(a)')'              ...'
+write(io,'(a)')'           end subroutine sub2'
+write(io,'(a)')'           subroutine sub3'
+write(io,'(a)')'              USE EXAMPLE_MODULE ! Accesses integer function FUN'
+write(io,'(a)')'                                  ! by use association'
+write(io,'(a)')'              Q = FUN (K)         ! Q is implicitly declared REAL and'
+write(io,'(a)')'              ...                 ! K is implicitly declared INTEGER'
+write(io,'(a)')'           end subroutine sub3'
+write(io,'(a)')'        end subroutine sub'
+write(io,'(a)')''
+write(io,'(a)')'        The following is an example of a mapping to a derived type that is inaccessible in the local scope:'
+write(io,'(a)')''
+write(io,'(a)')'              program main'
+write(io,'(a)')'                implicit type(blob) (a)'
+write(io,'(a)')'                type blob'
+write(io,'(a)')'                  integer :: i'
+write(io,'(a)')'                end type blob'
+write(io,'(a)')'                type(blob) :: b'
+write(io,'(a)')'                call steve'
+write(io,'(a)')'              contains'
+write(io,'(a)')'                subroutine steve'
+write(io,'(a)')'                  integer :: blob'
+write(io,'(a)')'                  ..'
+write(io,'(a)')'                  aa = b'
+write(io,'(a)')'                  ..'
+write(io,'(a)')'                end subroutine steve'
+write(io,'(a)')'              end program main'
+write(io,'(a)')''
+write(io,'(a)')'        In the subroutine STEVE, it is not possible to explicitly declare a variable to be of type BLOB because'
+write(io,'(a)')'        BLOB has been given a different meaning, but implicit mapping for the letter A still maps to type BLOB,'
+write(io,'(a)')'        so AA is of type BLOB.'
 write(io,'(a)')'.\" Specification of Fortran'
 write(io,'(a)')'.TH CONTINUE "7" "January 2017" "Fortran" "Language Specification"'
 write(io,'(a)')'.SH NAME'

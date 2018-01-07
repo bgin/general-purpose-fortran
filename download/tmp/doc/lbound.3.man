@@ -31,4 +31,4 @@ CLASS
    [[Inquiry function]]
 
 SEE ALSO
-   [[ubound]], [[lcobound]]
+   [[ubound]], [[co_lbound]]

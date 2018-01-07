@@ -6,9 +6,9 @@
 !!  public entities:
 !!
 !!    use M_strings, only : split,delim,chomp
-!!    use M_strings, only : substitute,change,modif,transliterate,reverse,replace
+!!    use M_strings, only : substitute,change,modif,transliterate,reverse,replace,join
 !!    use M_strings, only : upper,lower
-!!    use M_strings, only : adjustc,compact,nospace,indent,crop
+!!    use M_strings, only : adjustc,compact,nospace,indent,crop,unquote
 !!    use M_strings, only : len_white,lenset,merge_str
 !!    use M_strings, only : switch,s2c,c2s
 !!    use M_strings, only : noesc,notabs,expand,visible
@@ -38,6 +38,7 @@
 !!                   line editor MODIFY command
 !!    transliterate  replace characters found in set one with characters from set two
 !!    reverse        reverse character order in a string
+!!    join           join an array of CHARACTER variables with specified separator
 !!
 !!    CASE
 !!
@@ -51,6 +52,10 @@
 !!    nospace  function replaces whitespace with nothing
 !!    indent   find number of leading spaces
 !!    crop     function trims leading and trailing spaces
+!!
+!!    QUOTES
+!!
+!!    unquote  remove quotes from string as if read with list-directed input
 !!
 !!    STRING LENGTH
 !!
@@ -377,7 +382,9 @@ MODULE M_strings !
 use iso_fortran_env, only : ERROR_UNIT        ! access computing environment
 use M_journal,       only : journal
 implicit none    ! change default for every procedure contained in the module
+
 character(len=*),parameter::ident="@(#)M_strings(3f): Fortran module containing routines that deal with character strings"
+
 !-----------------------------------------------------------------------------------------------------------------------------------
 PRIVATE
 
@@ -393,6 +400,7 @@ PRIVATE strtok         !  gets next token. Used by change(3f)
 PUBLIC modif           !  change string using a directive using rules similar to XEDIT line editor MODIFY command
 PUBLIC transliterate   !  when characters in set one are found replace them with characters from set two
 PUBLIC reverse         !  elemental function reverses character order in a string
+PUBLIC join            !  append an array of character variables with specified separator into a single CHARACTER variable
 !----------------------# CHARACTER ARRAY VERSUS STRING
 PUBLIC switch          !  generic switch between a string and an array of single characters (a2s,s2a)
 PRIVATE a2s            !  function to copy char array to string
@@ -408,6 +416,8 @@ PUBLIC compact         !  left justify string and replace duplicate whitespace w
 PUBLIC nospace         !  function replaces whitespace with nothing
 PUBLIC indent          !  count number of leading spaces
 PUBLIC crop            !  function trims leading and trailing spaces
+!----------------------# QUOTES
+PUBLIC unquote         !  remove quotes from string as if read with list-directed input
 !----------------------# STRING LENGTH
 PUBLIC lenset          !  return a string as specified length
 PUBLIC merge_str       !  make strings of equal length and then call MERGE(3f) intrinsic
@@ -491,6 +501,9 @@ character, public, parameter :: ascii_esc = char(27)  ! escape
 !-----------------------------------------------------------------------------------------------------------------------------------
 
 CONTAINS
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
 !>
 !!##NAME
 !!    matchw - [M_strings] compare given string for match to pattern which may contain wildcard characters
@@ -608,7 +621,9 @@ logical function matchw(string,pattern)
 ! Changed so does not report a match if pattern is matched but string is not "used up"
 ! Still has problems with adjacent wild-character characters
 !
+
 character(len=*),parameter::ident="@(#)M_strings::matchw(3f): compare string to pattern which may contain wildcard characters"
+
 character(len=*),intent(in) :: pattern                            ! input: pattern may contain * and ?
 character(len=*),intent(in) :: string                             ! input: string to be compared
    integer :: lenp
@@ -627,28 +642,28 @@ character(len=*),intent(in) :: string                             ! input: strin
       if(pattern(p:p) .eq. '?') then                              ! accept any char in string
          p = p + 1
          s = s + 1
-      else if(pattern(p:p) .eq. '*') then
+      elseif(pattern(p:p) .eq. '*') then
          p = p + 1
          if(p .gt. lenp) then                                     ! anything goes in rest of string
             matchw = .true.
             goto 999
-         else if(p .eq. lenp) then                                ! just check last char of string
+         elseif(p .eq. lenp) then                                 ! just check last char of string
             matchw = pattern(p:p) .eq. string(lens:lens)
             goto 999
          else                                                     ! search string for char at p
             n = index(string(s:), pattern(p:p))
             if(n .eq. 0) goto 999                                 ! no such char, exit false
             s = n + s - 1
-         end if
-      else if(pattern(p:p) .eq. string(s:s)) then                 ! single char match
+         endif
+      elseif(pattern(p:p) .eq. string(s:s)) then                  ! single char match
          p = p + 1
          s = s + 1
       else                                                        ! non-match
          exit
-      end if
+      endif
       if(p .gt. lenp .or. s .gt. lens ) then                      ! end of pattern/string, exit .true. (usually)
          exit
-      end if
+      endif
    enddo
    if(p .gt. lenp ) then                                          ! end of pattern/string, exit .true.
       if(s.gt.lens)then
@@ -660,7 +675,7 @@ character(len=*),intent(in) :: string                             ! input: strin
       endif
    elseif(s .gt. lens) then                                       ! end of pattern/string, exit .true.
          matchw = .false.
-   end if
+   endif
 999   continue
 end function matchw
 !===================================================================================================================================
@@ -805,7 +820,9 @@ end function matchw
 !===================================================================================================================================
    subroutine split(input_line,array,delimiters,order,nulls)
 !-----------------------------------------------------------------------------------------------------------------------------------
+
 character(len=*),parameter::ident="@(#)M_strings::split(3f): parse string on delimiter characters and store tokens into an array"
+
 !  John S. Urban
 !-----------------------------------------------------------------------------------------------------------------------------------
    intrinsic index, min, present, len
@@ -999,7 +1016,9 @@ character(len=*),parameter::ident="@(#)M_strings::split(3f): parse string on del
 !!               9 TOKEN=[C]
 !===================================================================================================================================
 FUNCTION chomp(source_string,token,delimiters)
+
 character(len=*),parameter::ident="@(#)M_strings::chomp(3f): Tokenize a string : JSU- 20151030"
+
 character(len=*)                         :: source_string    ! string to tokenize
 character(len=:),allocatable,intent(out) :: token            ! returned token
 character(len=*),intent(in),optional     :: delimiters       ! list of separator characters
@@ -1173,7 +1192,9 @@ end function chomp
 !!    [AAA][BBBBBBbIIIII][J][K][L]
 !===================================================================================================================================
 subroutine delim(line,array,n,icount,ibegin,iterm,ilen,dlim)
+
 character(len=*),parameter::ident="@(#)M_strings::delim(3f): parse a string and store tokens into an array"
+
 !
 !     given a line of structure " par1 par2 par3 ... parn "
 !     store each par(n) into a separate variable in array.
@@ -1409,9 +1430,13 @@ subroutine crack_cmd(cmd,old,new,ierr)
    endif
 
 end subroutine crack_cmd
-!-----------------------------------------------------------------------------------------------------------------------------------
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
 function replace(targetline,old,new,ierr,cmd) result (newline)
+
 character(len=*),parameter::ident="@(#)M_strings::replace(3f): Globally replace one substring for another in string"
+
 !-----------------------------------------------------------------------------------------------------------------------------------
 ! parameters
    character(len=*),intent(in)            :: targetline   ! input line to be changed
@@ -1570,7 +1595,9 @@ end function replace
 !!     i => ""     : BEFORE:THs s THe nput strng
 !===================================================================================================================================
 subroutine substitute(targetline,old,new,ierr,start,end)
+
 character(len=*),parameter::ident="@(#)M_strings::substitute(3f): Globally substitute one substring for another in string"
+
 !-----------------------------------------------------------------------------------------------------------------------------------
    character(len=*)              :: targetline         ! input line to be changed
    character(len=*),intent(in)   :: old                ! old substring to replace
@@ -1765,7 +1792,9 @@ subroutine change(target_string,cmd,ierr)
 ! where / may be any character which is not included in old_string or new_string.
 ! a null old_string implies "beginning of string"
 !===================================================================================================================================
+
 character(len=*),parameter::ident="@(#)M_strings::change(3f): change a character string like a line editor"
+
 character(len=*),intent(inout)   :: target_string          ! line to be changed
 character(len=*),intent(in)      :: cmd                    ! contains the instructions changing the string
 character(len=1)                 :: delimiters
@@ -1872,7 +1901,9 @@ FUNCTION strtok(source_string,itoken,token_start,token_end,delimiters) result(st
 !      The first time that STRTOK(3f) is called, ITOKEN should  be  specified as zero.
 !      Subsequent calls, wishing  to  obtain further tokens from the same string, should pass back in TOKEN_START
 !      until the function result returns .false.
+
 character(len=*),parameter::ident="@(#)M_strings::strtok(3fp): Tokenize a string : JSU- 20151030"
+
 character(len=*),intent(in)  :: source_string    ! Source string to tokenize.
 character(len=*),intent(in)  :: delimiters       ! list of separator characters. May change between calls
 integer,intent(inout)        :: itoken           ! token count since started
@@ -1979,7 +2010,9 @@ end function strtok
 !!    ALTERED INPUT LINE.... 10 THIS IS THE STRING  TO BE MODIFIED
 !===================================================================================================================================
 SUBROUTINE MODIF(CLINE,MOD)
+
 character(len=*),parameter::ident="@(#)M_strings::modif(3f): Emulate the MODIFY command from the line editor XEDIT"
+
 !
 ! MODIF
 ! =====
@@ -2160,7 +2193,9 @@ elemental integer function len_white(string)
 !                update syntax with INTENT(), ENDDO, no RETURN
 !                still need instead of LEN_TRIM() because some systems stil pad CHARACTER with NULL
 !-----------------------------------------------------------------------------------------------------------------------------------
+
 character(len=*),parameter::ident="@(#)M_strings::len_white(3f): return position of last non-blank/non-null character in string"
+
 character(len=*),intent(in):: string ! input string to determine length of
 integer                    :: i10
 intrinsic len
@@ -2214,7 +2249,9 @@ end function len_white
 !===================================================================================================================================
 function crop(strin) result (strout)
 use M_journal, only : journal
+
 character(len=*),parameter::ident="@(#)M_strings::crop(3f): trim leading and trailings blanks from string"
+
 character(len=*),intent(in)  :: strin
 character(len=:),allocatable :: strout
    strout=trim(adjustl(strin))
@@ -2274,7 +2311,9 @@ end function crop
 !!     > ABCDEFGHIJKLMNOPQRSTUVWXYZ
 !===================================================================================================================================
 PURE FUNCTION transliterate(instr,old_set,new_set) RESULT(outstr)
+
 character(len=*),parameter::ident="@(#)M_strings::transliterate(3f): replace characters from old set with new set"
+
 !-----------------------------------------------------------------------------------------------------------------------------------
 CHARACTER(LEN=*),INTENT(IN)  :: instr                             ! input string to change
 CHARACTER(LEN=*),intent(in)  :: old_set
@@ -2314,6 +2353,105 @@ END FUNCTION transliterate
 !===================================================================================================================================
 !>
 !!##NAME
+!!      join(3f) - [M_strings] append an array of character variables with specified separator into a single CHARACTER variable
+!!
+!!##SYNOPSIS
+!!
+!!
+!!    pure function join(str,sep,trm,left,right) result (string)
+!!
+!!     character(len=*),intent(in)          :: str(:)
+!!     character(len=*),intent(in),optional :: sep
+!!     logical,intent(in),optional          :: trm
+!!     character(len=*),intent(in),optional :: right
+!!     character(len=*),intent(in),optional :: left
+!!     character(len=:),allocatable         :: string
+!!
+!!##DESCRIPTION
+!!      JOIN(3f) appends the elements of a CHARACTER array into a single CHARACTER variable,
+!!      with elements 1 to N joined from left to right.
+!!      By default each element is trimmed of trailing spaces and the default separator is
+!!      a null string.
+!!##OPTIONS
+!!      STR(:)  array of CHARACTER variables to be joined
+!!      SEP     separator string to place between each variable. defaults to a null string.
+!!      LEFT    string to place at left of each element
+!!      RIGHT   string to place at right of each element
+!!      TRM     option to trim each element of STR of trailing spaces. Defaults to .TRUE.
+!!##RESULT
+!!      STRING  CHARACTER variable composed of all of the elements of STR() appended together
+!!              with the optional seperator SEP placed between the elements.
+!!
+!!##EXAMPLE
+!!
+!!
+!!    Sample call
+!!
+!!       program demo_join
+!!       use M_strings, only: join
+!!       implicit none
+!!       character(len=:),allocatable  :: s(:)
+!!       character(len=:),allocatable  :: out
+!!       integer                       :: i
+!!          s=[character(len=10) :: 'United',' we',' stand,',' divided',' we fall.']
+!!          out=join(s)
+!!          write(*,'(a)') out
+!!          write(*,'(a)') join(s,trm=.false.)
+!!          write(*,'(a)') (join(s,trm=.false.,sep='|'),i=1,3)
+!!          write(*,'(a)') join(s,sep='<>')
+!!          write(*,'(a)') join(s,sep=';',left='[',right=']')
+!!          write(*,'(a)') join(s,left='[',right=']')
+!!          write(*,'(a)') join(s,left='>>')
+!!       end program demo_join
+!!
+!!    Expected output
+!!
+!!       United we stand, divided we fall.
+!!       United     we        stand,    divided   we fall.
+!!       United    | we       | stand,   | divided  | we fall. |
+!!       United    | we       | stand,   | divided  | we fall. |
+!!       United    | we       | stand,   | divided  | we fall. |
+!!       United<> we<> stand,<> divided<> we fall.<>
+!!       [United];[ we];[ stand,];[ divided];[ we fall.];
+!!       [United][ we][ stand,][ divided][ we fall.]
+!!       >>United>> we>> stand,>> divided>> we fall.
+!===================================================================================================================================
+pure function join(str,sep,trm,left,right) result (string)
+
+character(len=*),parameter::ident="&
+&@(#)M_strings::join(3f): append an array of character variables with specified separator into a single CHARACTER variable"
+
+character(len=*),intent(in)          :: str(:)
+character(len=*),intent(in),optional :: sep
+character(len=*),intent(in),optional :: right
+character(len=*),intent(in),optional :: left
+logical,intent(in),optional          :: trm
+   character(len=:),allocatable      :: string
+   integer                           :: i
+   logical                           :: trm_local
+   character(len=:),allocatable      :: sep_local
+   character(len=:),allocatable      :: left_local
+   character(len=:),allocatable      :: right_local
+
+   if(present(sep))then    ;  sep_local=sep      ;  else  ;  sep_local=''      ;  endif
+   if(present(trm))then    ;  trm_local=trm      ;  else  ;  trm_local=.true.  ;  endif
+   if(present(left))then   ;  left_local=left    ;  else  ;  left_local=''     ;  endif
+   if(present(right))then  ;  right_local=right  ;  else  ;  right_local=''    ;  endif
+
+   string=''
+   do i = 1,size(str)
+      if(trm_local)then
+         string=string//left//trim(str(i))//right//sep
+      else
+         string=string//left//str(i)//right//sep
+      endif
+   enddo
+end function join
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+!>
+!!##NAME
 !!      reverse - [M_strings] Return a string reversed
 !!
 !!##SYNOPSIS
@@ -2348,7 +2486,9 @@ END FUNCTION transliterate
 !!      reversed output string is ...zyxwvutsrqponmlkjihgfedcba
 !===================================================================================================================================
 elemental function reverse(string ) result (rev)
+
 character(len=*),parameter::ident="@(#)M_strings::reverse(3f): Return a string reversed"
+
 character(len=*),intent(in)    :: string   ! string to reverse
 character(len=len(string))     :: rev      ! return value (reversed string)
    integer                     :: length
@@ -2424,7 +2564,9 @@ end function reverse
 ! upper2: 105.04user 10.69system 2:04.17elapsed 93%CPU
 ! upper3: 267.21user 11.69system 4:49.21elapsed 96%CPU
 elemental pure function upper(str,begin,end) result (string)
+
 character(len=*),parameter::ident="@(#)M_strings::upper(3f): Changes a string to uppercase"
+
 character(*), intent(In)      :: str                 ! inpout string to convert to all uppercase
 integer, intent(in), optional :: begin,end
    character(len(str))        :: string              ! output string that contains no miniscule letters
@@ -2501,7 +2643,9 @@ end function upper
 !!       lower-case output string is ... abcdefg abcdefg
 !===================================================================================================================================
 elemental pure function lower(str,begin,end) result (string)
+
 character(len=*),parameter::ident="@(#)M_strings::lower(3f): Changes a string to lowercase over specified range"
+
 character(*), intent(In)     :: str
 character(len(str))          :: string
 integer,intent(in),optional  :: begin, end
@@ -2619,7 +2763,9 @@ end function lower
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 pure function a2s(array)  result (string)
+
 character(len=*),parameter::ident="@(#)M_strings::a2s(3fp): function to copy char array to string"
+
 character(len=1),intent(in) :: array(:)
 character(len=SIZE(array))  :: string
 integer                     :: i
@@ -2631,7 +2777,9 @@ end function a2s
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 pure function s2a(string)  RESULT (array)
+
 character(len=*),parameter::ident="@(#)M_strings::s2a(3fp): function to copy string(1:Clen(string)) to char array"
+
    character(len=*),intent(in) :: string
    character(len=1)            :: array(len(string))
    integer                     :: i
@@ -2686,7 +2834,9 @@ end function s2a
 !===================================================================================================================================
 pure function s2c(string)  RESULT (array)
 use,intrinsic :: ISO_C_BINDING, only : C_CHAR
+
 character(len=*),parameter::ident="@(#)M_strings::s2c(3f): copy string(1:Clen(string)) to char array with null terminator"
+
 character(len=*),intent(in)     :: string
 
 ! This is changing, but currently the most portable way to pass a CHARACTER variable to C is to convert it to an array of
@@ -2721,8 +2871,10 @@ function c2s(c_string_pointer) result(f_string)
 ! gets a C string (pointer), and returns the corresponding Fortran string;
 ! If the C string is null, it returns "NULL", similar to C's "(null)" printed in similar cases:
 use, intrinsic :: iso_c_binding, only: c_ptr,c_f_pointer,c_char,c_null_char
+
 character(len=*),parameter::ident="&
 &@(#)M_strings::c2s(3f): copy pointer to C char array till a null is encountered to a Fortran string up to 4096 characters"
+
    integer,parameter                             :: max_length=4096
    type(c_ptr), intent(in)                       :: c_string_pointer
    character(len=:), allocatable                 :: f_string
@@ -2792,7 +2944,9 @@ end function c2s
 !===================================================================================================================================
 function indent(line)
 implicit none
+
 character(len=*),parameter::ident="@(#)M_strings::indent(3f): find number of leading spaces in a string"
+
 integer                        :: indent
 character(len=*),intent(in)    :: line
    integer                     :: i
@@ -2955,7 +3109,9 @@ end function visible
 function expand(line,escape) result(lineout)
 USE ISO_C_BINDING ,ONLY: c_horizontal_tab
 implicit none
+
 character(len=*),parameter::ident="@(#)M_strings::expand(3f): return string with escape sequences expanded"
+
 character(len=*)                      :: line
 character(len=1),intent(in),optional  :: escape ! escape character. Default is backslash
 ! expand escape sequences found in input string
@@ -3086,7 +3242,9 @@ end function expand
 !!   end program demo_notabs
 !===================================================================================================================================
 subroutine notabs(INSTR,OUTSTR,ILEN)
+
 character(len=*),parameter::ident="@(#)M_strings::notabs(3f): convert tabs to spaces while maintaining columns, remove CRLF chars"
+
 !  o given input string INSTR return output string OUTSTR with tabs expanded
 !  o assuming tabs are set every 8 characters
 !  o carriage return and line feed characters are replaced with a space
@@ -3198,7 +3356,9 @@ END SUBROUTINE notabs
 !!    ==================================================
 !===================================================================================================================================
 pure function adjustc(string,length)
+
 character(len=*),parameter::ident="@(#)M_strings::adjustc(3f): center text"
+
 !>
 !! PROCEDURE   adjustc(3f)
 !! DESCRIPTION center text using implicit or explicit length
@@ -3275,7 +3435,9 @@ end function adjustc
 !!     nospace test passed
 !===================================================================================================================================
 function nospace(line)
+
 character(len=*),parameter::ident="@(#)M_strings::nospace(3f): remove all whitespace from input string"
+
 character(len=*),intent(in)    ::  line             ! remove whitespace from this string and return it
 character(len=:),allocatable   ::  nospace          ! returned string
    integer                     ::  ipos             ! position to place next output character at
@@ -3332,7 +3494,9 @@ end function nospace
 !!     [abcdefghij          ]
 !===================================================================================================================================
 function lenset(line,length) result(strout)
+
 character(len=*),parameter::ident="@(#)M_strings::lenset(3f): return string trimmed or padded to specified length"
+
 character(len=*),intent(in)  ::  line
 integer,intent(in)           ::  length
 character(len=length)        ::  strout
@@ -3383,7 +3547,9 @@ end function lenset
 function merge_str(str1,str2,expr) result(strout)
 ! for some reason the MERGE(3f) intrinsic requires the strings it compares to be of equal length
 ! make an alias for MERGE(3f) that makes the lengths the same before doing the comparison by padding the shorter one with spaces
+
 character(len=*),parameter::ident="@(#)M_strings::merge_str(3f): pads first and second arguments to MERGE(3f) to same length"
+
 character(len=*),intent(in)     :: str1
 character(len=*),intent(in)     :: str2
 logical,intent(in)              :: expr
@@ -3452,7 +3618,9 @@ end function merge_str
 !===================================================================================================================================
 !elemental pure function compact(str,char) result (outstr)
 function compact(str,char) result (outstr)
+
 character(len=*),parameter::ident="@(#)M_strings::compact(3f): Converts white-space to single spaces"
+
 character(len=*),intent(in)          :: str
 character(len=*),intent(in),optional :: char
 character(len=len(str))              :: outstr
@@ -3588,7 +3756,9 @@ end function compact
 !!    >                                  !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~
 !===================================================================================================================================
 elemental function noesc(INSTR)
+
 character(len=*),parameter::ident="@(#)M_strings::noesc(3f): convert non-printable characters to a space"
+
    character(len=*),intent(in) :: INSTR   ! string that might contain nonprintable characters
    character(len=len(instr))   :: noesc
    integer                     :: ic,i10
@@ -3649,7 +3819,9 @@ end function noesc
 !!    end program demo_string_to_value
 !===================================================================================================================================
 subroutine a2r(chars,valu,ierr)
+
 character(len=*),parameter::ident="@(#)M_strings::a2r(3fp): subroutine returns real value from string"
+
    character(len=*),intent(in) :: chars                      ! input string
    real,intent(out)            :: valu                       ! value read from input string
    integer,intent(out)         :: ierr                       ! error flag (0 == no error)
@@ -3660,7 +3832,9 @@ character(len=*),parameter::ident="@(#)M_strings::a2r(3fp): subroutine returns r
 end subroutine a2r
 !----------------------------------------------------------------------------------------------------------------------------------
 subroutine a2i(chars,valu,ierr)
+
 character(len=*),parameter::ident="@(#)M_strings::a2i(3fp): subroutine returns integer value from string"
+
    character(len=*),intent(in) :: chars                      ! input string
    integer,intent(out)         :: valu                       ! value read from input string
    integer,intent(out)         :: ierr                       ! error flag (0 == no error)
@@ -3671,7 +3845,9 @@ character(len=*),parameter::ident="@(#)M_strings::a2i(3fp): subroutine returns i
 end subroutine a2i
 !----------------------------------------------------------------------------------------------------------------------------------
 subroutine a2d(chars,valu,ierr)
+
 character(len=*),parameter::ident="@(#)M_strings::a2d(3fp): subroutine returns double value from string"
+
 !     1989,2016 John S. Urban.
 !
 !  o  works with any g-format input, including integer, real, and exponential.
@@ -3816,13 +3992,15 @@ end subroutine a2d
 !===================================================================================================================================
 !>
 !!##PROCEDURE:
-!! DESCRIPTION: s2v(3f): function returns doubleprecision number from string;zero if error occurs"
+!! DESCRIPTION: s2v(3f): function returns doubleprecision number from string;zero if error occurs
 !!##VERSION:     2.0, 20160704
 !! AUTHOR:      John S. Urban
 !===================================================================================================================================
 doubleprecision function s2v(chars,ierr)
 !  1989 John S. Urban
+
 character(len=*),parameter::ident="@(#)M_strings::s2v(3f): returns doubleprecision number from string"
+
 
 character(len=*),intent(in) :: chars
 integer,optional            :: ierr
@@ -3915,7 +4093,9 @@ end function s2v
 !!     The value is [0.33333333333333331]
 !===================================================================================================================================
 subroutine value_to_string(gval,chars,length,err,fmt)
+
 character(len=*),parameter::ident="@(#)M_strings::value_to_string(3fp): subroutine returns a string from a value"
+
 class(*),intent(in)                      :: gval
 character(len=*),intent(out)             :: chars
 integer,intent(out),optional             :: length
@@ -4012,7 +4192,9 @@ end subroutine value_to_string
 !===================================================================================================================================
 ! very odd compiler problems in many (but not all) programs using this routine; GNU Fortran (GCC) 5.4.0; 20161030
 function v2s_bug(gval) result(outstr)
+
 character(len=*),parameter::ident="@(#)M_strings::v2s_bug(3f): function returns string given numeric value"
+
 class(*),intent(in)          :: gval                         ! input value to convert to a string
 character(len=:),allocatable :: outstr                       ! output string to generate
 character(len=80)            :: string
@@ -4028,7 +4210,9 @@ character(len=80)            :: string
 end function v2s_bug
 !===================================================================================================================================
 function d2s(dvalue) result(outstr)
+
 character(len=*),parameter::ident="@(#)M_strings::d2s(3fp): private function returns string given doubleprecision value"
+
 doubleprecision,intent(in)   :: dvalue                         ! input value to convert to a string
 character(len=:),allocatable :: outstr                         ! output string to generate
 character(len=80)            :: string
@@ -4037,7 +4221,9 @@ character(len=80)            :: string
 end function d2s
 !===================================================================================================================================
 function r2s(rvalue) result(outstr)
+
 character(len=*),parameter::ident="@(#)M_strings::r2s(3fp): private function returns string given real value"
+
 real,intent(in )             :: rvalue                         ! input value to convert to a string
 character(len=:),allocatable :: outstr                         ! output string to generate
 character(len=80)            :: string
@@ -4046,7 +4232,9 @@ character(len=80)            :: string
 end function r2s
 !===================================================================================================================================
 function i2s(ivalue) result(outstr)
+
 character(len=*),parameter::ident="@(#)M_strings::i2s(3fp): private function returns string given integer value"
+
 integer,intent(in )          :: ivalue                         ! input value to convert to a string
 character(len=:),allocatable :: outstr                         ! output string to generate
 character(len=80)            :: string
@@ -4082,7 +4270,9 @@ end function i2s
 !!       end program demo_trimzeros
 !===================================================================================================================================
 subroutine trimzeros(string)
+
 character(len=*),parameter::ident="@(#)M_strings::trimzeros(3fp): Delete trailing zeros from numeric decimal string"
+
 ! if zero needs added at end assumes input string has room
 character(len=*)             :: string
 character(len=len(string)+2) :: str
@@ -4173,8 +4363,10 @@ end subroutine trimzeros
 subroutine listout(icurve_lists,icurve_expanded,inums_out,ierr)
 use M_journal, only : journal
 implicit none
+
 character(len=*),parameter::ident="&
 &@(#)M_strings::listout(3f): copy icurve_lists to icurve_expanded expanding negative numbers to ranges (1 -10 means 1 thru 10)"
+
 !   Created: 19971231
 integer,intent(in)    :: icurve_lists(:)             ! input array
 integer,intent(out)   :: icurve_expanded(:)          ! output array
@@ -4236,6 +4428,120 @@ integer               :: inums_max
    inums_out=icount-1
 
 end subroutine listout
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!     unquote(3f) - [M_strings] remove quotes from string as if read with list-directed input
+!!##SYNOPSIS
+!!
+!!   function unquote(quoted_str,esc) result (unquoted_str)
+!!
+!!    character(len=*),intent(in)          :: quoted_str
+!!    character(len=1),optional,intent(in) :: esc
+!!    character(len=:),allocatable         :: unquoted_str
+!!##DESCRIPTION
+!!    Remove quotes from a CHARACTER variable as if it was read using list-directed input.
+!!    This is particularly useful for processing tokens read from input such as CSV files.
+!!
+!!    Fortran can now read using list-directed input from an internal file, which should
+!!    handle quoted strings, but list-directed input does not support escape characters,
+!!    which UNQUOTE(3f) does.
+!!##OPTIONS
+!!    quoted_str  input string to remove quotes from using the rules of list-directed
+!!                input (two adjacent quotes inside a quoted region are replaced by a
+!!                single quote, a single quote or double quote is selected as the delimiter
+!!                based on which is encountered first going from left to right, ...)
+!!    esc         optional character used to protect the next quote character from
+!!                being processed as a quote, but simply as a plain character.
+!!##RESULT
+!!    unquoted_str  The output string, which is based on removing quotes from quoted_str.
+!!##EXAMPLE
+!!
+!!   Sample program:
+!!
+!!    program demo_unquote
+!!       use M_csv, only : unquote
+!!       implicit none
+!!       character(len=128)           :: quoted_str
+!!       character(len=:),allocatable :: unquoted_str
+!!       character(len=1),parameter   :: esc='\'
+!!       integer                      :: ios
+!!       do
+!!          read(*,'(a)',iostat=ios)quoted_str
+!!          if(ios.ne.0)exit
+!!          write(*,'(a)')'QUOTED       ['//trim(quoted_str)//']'
+!!          unquoted_str=unquote(trim(quoted_str),esc)
+!!          write(*,'(a)')'UNQUOTED     ['//unquoted_str//']'
+!!       enddo
+!!    end program demo_unquote
+!===================================================================================================================================
+function unquote(quoted_str,esc) result (unquoted_str)
+character(len=*),intent(in)          :: quoted_str              ! the string to be unquoted
+character(len=1),optional,intent(in) :: esc                     ! escape character
+character(len=:),allocatable         :: unquoted_str
+   integer                           :: inlen
+   character(len=1),parameter        :: single_quote = "'"
+   character(len=1),parameter        :: double_quote = '"'
+   integer                           :: quote                   ! whichever quote is to be used
+   integer                           :: before
+   integer                           :: current
+   integer                           :: iesc
+   integer                           :: iput
+   integer                           :: i
+   logical                           :: inside
+!-----------------------------------------------------------------------------------------------------------------------------------
+   if(present(esc))then                           ! select escape character as specified character or special value meaning not set
+      iesc=ichar(esc)                             ! allow for an escape character
+   else
+      iesc=-1                                     ! set to value that matches no character
+   endif
+!-----------------------------------------------------------------------------------------------------------------------------------
+   inlen=len(quoted_str)                          ! find length of input string
+   allocate(character(len=inlen) :: unquoted_str) ! initially make output string length of input string
+!-----------------------------------------------------------------------------------------------------------------------------------
+   if(inlen.ge.1)then                             ! double_quote is the default quote unless the first character is single_quote
+      if(quoted_str(1:1).eq.single_quote)then
+         quote=ichar(single_quote)
+      else
+         quote=ichar(double_quote)
+      endif
+   else
+      quote=ichar(double_quote)
+   endif
+!-----------------------------------------------------------------------------------------------------------------------------------
+   before=-2                                      ! initially set previous character to impossible value
+   unquoted_str(:)=''                             ! initialize output string to null string
+   iput=1
+   inside=.false.
+   STEPTHROUGH: do i=1,inlen
+      current=ichar(quoted_str(i:i))
+      if(before.eq.iesc)then                      ! if previous character was escape use current character unconditionally
+           iput=iput-1                            ! backup
+           unquoted_str(iput:iput)=char(current)
+           iput=iput+1
+           before=-2                              ! this could be second esc or quote
+      elseif(current.eq.quote)then                ! if current is a quote it depends on whether previous character was a quote
+         if(before.eq.quote)then
+           unquoted_str(iput:iput)=char(quote)    ! this is second quote so retain it
+           iput=iput+1
+           before=-2
+         elseif(.not.inside.and.before.ne.iesc)then
+            inside=.true.
+         else                                     ! this is first quote so ignore it except remember it in case next is a quote
+            before=current
+         endif
+      else
+         unquoted_str(iput:iput)=char(current)
+         iput=iput+1
+         before=current
+      endif
+   enddo STEPTHROUGH
+!-----------------------------------------------------------------------------------------------------------------------------------
+   unquoted_str=unquoted_str(:iput-1)
+!-----------------------------------------------------------------------------------------------------------------------------------
+end function unquote
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
@@ -4398,7 +4704,9 @@ end subroutine listout
 !!     ctrl-? (DEL) delete
 !===================================================================================================================================
 function describe(ch) result (string)
+
 character(len=*),parameter::ident="@(#)M_strings::describe(3f): return string describing long name of a single character"
+
 character(len=1),intent(in)   :: ch
 character(len=:),allocatable  :: string
 ! LATER: add hex, octal, decimal, key-press description, alternate names
@@ -4636,7 +4944,10 @@ end function describe
 !===================================================================================================================================
 subroutine getvals(line,values,icount,ierr)
 implicit none
-character(len=*),parameter  :: ident='@(#)getvals: read arbitrary number of values from a character variable up to size of values'
+
+character(len=*),parameter::ident="&
+&@(#)M_strings::getvals: read arbitrary number of values from a character variable up to size of values"
+
 ! JSU 20170831
 
 character(len=*),intent(in)  :: line
@@ -4773,7 +5084,9 @@ implicit none
 !   There is no direct checking for more values than can fit in VALUES.
 !   Quits if encounters any errors in read.
 !----------------------------------------------------------------------------------------------------------------------------------
+
 character(len=*),parameter::ident="@(#)M_strings::string_to_values(3f): reads an array of numbers from a numeric string"
+
 character(len=*),intent(in)  :: line          ! input string
 integer,intent(in)           :: iread         ! maximum number of values to try to read into values
 real,intent(inout)           :: values(iread) ! real array to be filled with values
@@ -4912,7 +5225,9 @@ end subroutine string_to_values
 !!     ivalues.................. 10  20000  3  -4 1234 5678
 !===================================================================================================================================
 function s2vs(string,delim) result(darray)
+
 character(len=*),parameter::ident="@(#)M_strings::s2vs(3f): function returns array of values from a string"
+
 character(len=*),intent(in)        :: string                       ! keyword to retrieve value for from dictionary
 character(len=*),optional          :: delim                        ! delimiter characters
 character(len=:),allocatable       :: delim_local
@@ -4939,7 +5254,9 @@ end function s2vs
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 elemental function isprint(onechar)
+
 character(len=*),parameter::ident="@(#)M_strings::isprint(3f): indicates if input character is a printable ASCII character"
+
 character,intent(in) :: onechar
 logical              :: isprint
    select case (onechar)
@@ -4951,7 +5268,9 @@ end function isprint
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 elemental function isgraph(onechar)
+
 character(len=*),parameter::ident="@(#)M_strings::isgraph(3f) :indicates if character is printable ASCII character excluding space"
+
 character,intent(in) :: onechar
 logical              :: isgraph
    select case (iachar(onechar))
@@ -4965,7 +5284,9 @@ end function isgraph
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 elemental function isalpha(ch) result(res)
+
 character(len=*),parameter::ident="@(#)M_strings::isalpha(3f): Return .true. if character is a letter and .false. otherwise"
+
 character,intent(in) :: ch
 logical              :: res
    select case(ch)
@@ -4979,7 +5300,9 @@ end function isalpha
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 elemental function isxdigit(ch) result(res)
+
 character(len=*),parameter::ident="@(#)M_strings::isxdigit(3f): returns .true. if c is a hexadecimal digit (0-9,a-f, or A-F)"
+
 character,intent(in) :: ch
 logical              :: res
    select case(ch)
@@ -4993,7 +5316,9 @@ end function isxdigit
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 elemental function isdigit(ch) result(res)
+
 character(len=*),parameter::ident="@(#)M_strings::isdigit(3f): Returns .true. if ch is a digit (0-9) and .false. otherwise"
+
 character,intent(in) :: ch
 logical              :: res
    select case(ch)
@@ -5007,7 +5332,9 @@ end function isdigit
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 elemental function isblank(ch) result(res)
+
 character(len=*),parameter::ident="@(#)M_strings::isblank(3f): returns .true. if character is a blank (space or horizontal tab)"
+
 character,intent(in) :: ch
 logical              :: res
    select case(ch)
@@ -5021,7 +5348,9 @@ end function isblank
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 elemental function isascii(ch) result(res)
+
 character(len=*),parameter::ident="@(#)M_strings::isascii(3f): returns .true. if character is in the range char(0) to char(127)"
+
 character,intent(in) :: ch
 logical              :: res
    select case(ichar(ch))
@@ -5035,7 +5364,9 @@ end function isascii
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 elemental function isspace(ch) result(res)
+
 character(len=*),parameter::ident="@(#)M_strings::isspace(3f): true if null,space,tab,return,new line,vertical tab, or formfeed"
+
 character,intent(in) :: ch
 logical              :: res
    select case(ch)
@@ -5053,7 +5384,9 @@ end function isspace
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 elemental function iscntrl(ch) result(res)
+
 character(len=*),parameter::ident="@(#)M_strings::iscntrl(3f): true if a delete or ordinary control character(0x7F or 0x00-0x1F)"
+
 character,intent(in) :: ch
 logical              :: res
    select case(ch)
@@ -5067,7 +5400,9 @@ end function iscntrl
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 elemental function ispunct(ch) result(res)
+
 character(len=*),parameter::ident="@(#)M_strings::ispunct(3f): true if a printable punctuation character (isgraph(c)&&"
+
 character,intent(in) :: ch
 logical              :: res
    select case(ch)
@@ -5085,7 +5420,9 @@ end function ispunct
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 pure elemental function isupper(ch) result(res)
+
 character(len=*),parameter::ident="@(#)M_strings::isupper(3f): returns true if character is an uppercase letter (A-Z)"
+
 character,intent(in) :: ch
 logical              :: res
    select case(ch)
@@ -5099,7 +5436,9 @@ end function isupper
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 elemental function islower(ch) result(res)
+
 character(len=*),parameter::ident="@(#)M_strings::islower(3f): returns true if character is a miniscule letter (a-z)"
+
 character,intent(in) :: ch
 logical              :: res
    select case(ch)
@@ -5174,7 +5513,9 @@ end function islower
 !!    For string[both 8787 ] F
 !===================================================================================================================================
 elemental function isalnum(ch) result(res)
+
 character(len=*),parameter::ident="@(#)M_strings::isalnum(3f): returns true if character is a letter (a-z,A-Z) or digit(0-9)"
+
 character,intent(in)       :: ch
 logical                    :: res
    select case(ch)
@@ -5459,7 +5800,7 @@ integer                      :: in_sign
   endif
 end function codebase
 !===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 end module M_strings
 !===================================================================================================================================
@@ -5488,8 +5829,8 @@ module M_strings_oop
 ! this to be a definition of a derived type ( TYPE(STRING) ) and the
 ! methods it supports and overloading of operators to support the new data type.
 !
-use M_strings, only : upper, lower                            ! case
-use M_strings, only : lenset, adjustc, compact, crop  ! whitespace
+use M_strings, only : upper, lower                       ! case
+use M_strings, only : lenset, adjustc, compact, crop     ! whitespace
 use M_strings, only : reverse
 use M_strings, only : notabs, noesc, expand
 use M_strings, only : substitute, transliterate
@@ -5576,9 +5917,9 @@ contains
 ! this function is used internally in the module, but is also declared to be a constructor for creating TYPE(DATE_TYPE) structures
 !
 function construct_from_fill(chars,len)
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 character(len=*),parameter::ident="@(#)M_strings::construct_from_fill(3f): construct TYPE(STRING)"
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 character(len=*),intent(in),optional :: chars
 integer,intent(in),optional          :: len
 type(string)                         :: construct_from_fill
@@ -5600,9 +5941,9 @@ end function construct_from_fill
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 function oop_len(self) result (length)
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 character(len=*),parameter::ident="@(#)M_strings::oop_len(3f): length of string"
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 class(string),intent(in)    :: self
 integer                     :: length
    length=len(self%str)
@@ -5611,9 +5952,9 @@ end function oop_len
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 function oop_len_trim(self) result (length)
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 character(len=*),parameter::ident="@(#)M_strings::oop_len_trim(3f): trimmed length of string"
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 class(string),intent(in)    :: self
 integer                     :: length
    length=len_trim(self%str)
@@ -5622,9 +5963,9 @@ end function oop_len_trim
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 function oop_switch(self) result (array)
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 character(len=*),parameter::ident="@(#)M_strings::oop_switch(3f): convert string to array of single characters"
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 class(string),intent(in)    :: self
 character(len=1)            :: array(len(self%str))
    array=switch(self%str)
@@ -5633,9 +5974,9 @@ end function oop_switch
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 function oop_index(self,substring,back) result (location)
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 character(len=*),parameter::ident="@(#)M_strings::oop_index(3f): find starting position of a substring in a string"
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 class(string),intent(in)    :: self
 character(len=*),intent(in) :: substring
 integer                     :: location
@@ -5650,9 +5991,9 @@ end function oop_index
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 function oop_upper(self) result (string_out)
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 character(len=*),parameter::ident="@(#)M_strings::oop_upper(3f): convert string to uppercase"
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 class(string),intent(in)     :: self
 type(string)                 :: string_out
    string_out%str=upper(self%str)
@@ -5661,9 +6002,9 @@ end function oop_upper
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 function oop_lower(self) result (string_out)
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 character(len=*),parameter::ident="@(#)M_strings::oop_lower(3f): convert string to miniscule"
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 class(string),intent(in)     :: self
 type(string)                 :: string_out
    string_out%str=lower(self%str)
@@ -5672,9 +6013,9 @@ end function oop_lower
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 function oop_expand(self,escape_char) result (string_out)
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 character(len=*),parameter::ident="@(#)M_strings::oop_expand(3f): expand common escape sequences by calling expand(3f)"
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 class(string),intent(in)      :: self
 character,intent(in),optional :: escape_char
 type(string)                  :: string_out
@@ -5688,9 +6029,9 @@ end function oop_expand
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 function oop_trim(self) result (string_out)
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 character(len=*),parameter::ident="@(#)M_strings::oop_trim(3f): trim trailing spaces"
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 class(string),intent(in)     :: self
 type(string)                 :: string_out
    string_out%str=trim(self%str)
@@ -5699,9 +6040,9 @@ end function oop_trim
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 function oop_crop(self) result (string_out)
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 character(len=*),parameter::ident="@(#)M_strings::oop_crop(3f): crop leading and trailing spaces"
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 class(string),intent(in)     :: self
 type(string)                 :: string_out
    string_out%str=crop(self%str)
@@ -5710,9 +6051,9 @@ end function oop_crop
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 function oop_reverse(self) result (string_out)
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 character(len=*),parameter::ident="@(#)M_strings::oop_reverse(3f): reverse string"
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 class(string),intent(in)     :: self
 type(string)                 :: string_out
    string_out%str=reverse(self%str)
@@ -5721,9 +6062,9 @@ end function oop_reverse
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 function oop_adjustl(self) result (string_out)
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 character(len=*),parameter::ident="@(#)M_strings::oop_adjustl(3f): adjust string to left"
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 class(string),intent(in)     :: self
 type(string)                 :: string_out
    string_out%str=adjustl(self%str)
@@ -5732,9 +6073,9 @@ end function oop_adjustl
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 function oop_adjustr(self) result (string_out)
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 character(len=*),parameter::ident="@(#)M_strings::oop_adjustr(3f): adjust string to right"
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 class(string),intent(in)     :: self
 type(string)                 :: string_out
    string_out%str=adjustr(self%str)
@@ -5743,9 +6084,9 @@ end function oop_adjustr
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 function oop_adjustc(self,length) result (string_out)
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 character(len=*),parameter::ident="@(#)M_strings::oop_adjustc(3f): adjust string to center"
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 class(string),intent(in)     :: self
 type(string)                 :: string_out
 integer,intent(in),optional  :: length
@@ -5759,9 +6100,9 @@ end function oop_adjustc
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 function oop_int(self) result (value)
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 character(len=*),parameter::ident="@(#)M_strings::oop_int(3f): string to integer"
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 class(string),intent(in)     :: self
 integer                      :: value
 integer                      :: ierr
@@ -5771,9 +6112,9 @@ end function oop_int
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 function oop_real(self) result (value)
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 character(len=*),parameter::ident="@(#)M_strings::oop_real(3f): string to real"
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 class(string),intent(in)     :: self
 real                         :: value
 integer                      :: ierr
@@ -5783,9 +6124,9 @@ end function oop_real
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 function oop_dble(self) result (value)
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 character(len=*),parameter::ident="@(#)M_strings::oop_dble(3f): string to double"
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 class(string),intent(in)     :: self
 doubleprecision              :: value
 integer                      :: ierr
@@ -5795,9 +6136,9 @@ end function oop_dble
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 function oop_compact(self,char) result (string_out)
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 character(len=*),parameter::ident="@(#)M_strings::oop_compact(3f): adjust string to center"
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 class(string),intent(in)     :: self
 type(string)                 :: string_out
 character(len=*),optional    :: char
@@ -5812,10 +6153,10 @@ end function oop_compact
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 function oop_substitute(self,old,new) result (string_out)
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 character(len=*),parameter::ident="&
 &@(#)M_strings::oop_substitute(3f): change all occurrences of oldstring to newstring non-recursively"
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 class(string),intent(in)     :: self
 type(string)                 :: string_out
 character(len=*),intent(in)  :: old
@@ -5827,10 +6168,10 @@ end function oop_substitute
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 function oop_transliterate(self,old,new) result (string_out)
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 character(len=*),parameter::ident="&
 &@(#)M_strings::oop_transliterate(3f): change all occurrences of oldstring to newstring non-recursively"
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 class(string),intent(in)     :: self
 type(string)                 :: string_out
 character(len=*),intent(in)  :: old
@@ -5841,9 +6182,9 @@ end function oop_transliterate
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 function oop_lenset(self,length) result (string_out)
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 character(len=*),parameter::ident="@(#)M_strings::oop_lenset(3f): set string to specific length"
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 class(string),intent(in)     :: self
 type(string)                 :: string_out
 integer,intent(in)           :: length
@@ -5853,9 +6194,9 @@ end function oop_lenset
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 function oop_matchw(self,pattern) result (answer)
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 character(len=*),parameter::ident="@(#)M_strings::oop_matchw(3f): test if wildcard pattern matches string"
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 class(string),intent(in)     :: self
 character(len=*),intent(in)  :: pattern
 logical                      :: answer
@@ -5865,10 +6206,10 @@ end function oop_matchw
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 function oop_notabs(self) result (string_out)
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 character(len=*),parameter::ident="&
 &@(#)M_strings::oop_notabs(3f): expand tab characters assuming tab stops every eight(8) characters"
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 class(string),intent(in)     :: self
 type(string)                 :: string_out
    integer                   :: length
@@ -5880,9 +6221,9 @@ end function oop_notabs
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 function oop_noesc(self) result (string_out)
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 character(len=*),parameter::ident="@(#)M_strings::oop_noesc(3f): replace non-printable characters with spaces"
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 class(string),intent(in)     :: self
 type(string)                 :: string_out
    string_out%str=noesc(self%str)
@@ -5891,9 +6232,9 @@ end function oop_noesc
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 function p(self) result (string_out)
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 character(len=*),parameter::ident="@(#)M_strings::oop_p(3f): return CHARACTER string from TYPE(STRING)"
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 class(string),intent(in)     :: self
 character(len=len(self%str)) :: string_out
    string_out=self%str
@@ -5905,9 +6246,9 @@ subroutine init_string(self)
 !
 ! allow for TYPE(STRING) object to be initialized.
 !
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 character(len=*),parameter::ident="@(#)M_strings::init_dt(3f): initialize TYPE(STRING)"
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 class(string)                        :: self
    self%str=''
 end subroutine init_string
@@ -5917,7 +6258,9 @@ end subroutine init_string
 ! FUNCTIONS FOR DEFINING OVERLOADED OPERATORS
 !===================================================================================================================================
 function string_plus_value(self,value) result (other)
+
 character(len=*),parameter::ident="@(#)M_strings::string_plus_value(3f): add value to TYPE(STRING)"
+
 class(string),intent(in)      :: self
 type(string)                  :: other
 class(*),intent(in)           :: value
@@ -5933,7 +6276,9 @@ class(*),intent(in)           :: value
 end function string_plus_value
 !===================================================================================================================================
 function string_minus_value(self,value) result (other)
+
 character(len=*),parameter::ident="@(#)M_strings::string_minus_value(3f): subtract value from TYPE(STRING)"
+
 class(string),intent(in)      :: self
 type(string)                  :: other
 class(*),intent(in)           :: value
@@ -5953,7 +6298,9 @@ class(*),intent(in)           :: value
 end function string_minus_value
 !===================================================================================================================================
 function string_append_value(self,value) result (other)
+
 character(len=*),parameter::ident="@(#)M_strings::string_append_value(3f): append value to TYPE(STRING)"
+
 class(string),intent(in)      :: self
 type(string)                  :: other
 class(*),intent(in)           :: value
@@ -5969,7 +6316,9 @@ class(*),intent(in)           :: value
 end function string_append_value
 !===================================================================================================================================
 function string_multiply_value(self,value) result (other)
+
 character(len=*),parameter::ident="@(#)M_strings::string_multiply_value(3f): multiply TYPE(STRING) value times"
+
 class(string),intent(in)      :: self
 type(string)                  :: other
 class(*),intent(in)           :: value
@@ -5983,7 +6332,9 @@ class(*),intent(in)           :: value
 end function string_multiply_value
 !===================================================================================================================================
 logical function eq(self,other)
+
 character(len=*),parameter::ident="@(#)M_strings::eq(3f): compare derived type string objects (eq,lt,gt,le,ge,ne)"
+
    class(string),intent(in) :: self
    type(string),intent(in)  :: other
    eq= self%str .eq.  other%str
@@ -6022,10 +6373,8 @@ end module M_strings_oop
 !===================================================================================================================================
 !! FODDER
 !!
-!! join(seq) Merges (concatenates) the string representations of elements in sequence seq into a string, with separator string.
-
 !!    REPEAT        (STRING, NCOPIES)              T    Concatenation of several copies of a string.
-
+!!
 !!   * TOKENS
 !!       + split subroutine parses string using specified delimiter characters and stores tokens into an array
 !!   * EDITING

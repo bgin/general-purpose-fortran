@@ -1,5 +1,5 @@
 NAME
-   cosd - [M_units] calculate sine of value in degrees
+   cosd - [M_units:TRIGONOMETRY] calculate sine of value in degrees
 SYNOPSIS
    elemental real function cosd(degrees)
 

@@ -1,5 +1,5 @@
 NAME
-   system_getlogin(3f) - [M_system] get login name
+   system_getlogin(3f) - [M_system:QUERY] get login name
 
 SYNOPSIS
   function system_getlogin() result (fname)

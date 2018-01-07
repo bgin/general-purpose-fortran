@@ -4,9 +4,9 @@ SYNOPSIS
  public entities:
 
    use M_strings, only : split,delim,chomp
-   use M_strings, only : substitute,change,modif,transliterate,reverse,replace
+   use M_strings, only : substitute,change,modif,transliterate,reverse,replace,join
    use M_strings, only : upper,lower
-   use M_strings, only : adjustc,compact,nospace,indent,crop
+   use M_strings, only : adjustc,compact,nospace,indent,crop,unquote
    use M_strings, only : len_white,lenset,merge_str
    use M_strings, only : switch,s2c,c2s
    use M_strings, only : noesc,notabs,expand,visible
@@ -36,6 +36,7 @@ SYNOPSIS
                   line editor MODIFY command
    transliterate  replace characters found in set one with characters from set two
    reverse        reverse character order in a string
+   join           join an array of CHARACTER variables with specified separator
 
    CASE
 
@@ -49,6 +50,10 @@ SYNOPSIS
    nospace  function replaces whitespace with nothing
    indent   find number of leading spaces
    crop     function trims leading and trailing spaces
+
+   QUOTES
+
+   unquote  remove quotes from string as if read with list-directed input
 
    STRING LENGTH
 

@@ -1,0 +1,11 @@
+NAME
+  csv_write_table(3f) - [M_csv]Write a two-dimensional array of items to the CSV-file
+SYNOPSIS
+OPTIONS
+      array      Array to write
+      lun        LU-number of the CSV-file
+
+RESULT
+      The array is written to the current CSV-file. One row
+      generates one line of the file.
+

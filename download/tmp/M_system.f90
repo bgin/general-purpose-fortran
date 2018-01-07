@@ -471,7 +471,7 @@ end interface
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_geteuid(3f) - [M_system] get effective UID of current process from Fortran by calling geteuid(3c)
+!!    system_geteuid(3f) - [M_system:QUERY] get effective UID of current process from Fortran by calling geteuid(3c)
 !!##SYNOPSIS
 !!
 !!    integer(kind=c_int) function system_geteuid()
@@ -500,7 +500,7 @@ end interface
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_getuid(3f) - [M_system] get real UID of current process from Fortran by calling getuid(3c)
+!!    system_getuid(3f) - [M_system:QUERY] get real UID of current process from Fortran by calling getuid(3c)
 !!##SYNOPSIS
 !!
 !!    integer(kind=c_int) function system_getuid()
@@ -534,7 +534,7 @@ end interface
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_getegid(3f) - [M_system] get the effective group ID (GID) of current process from Fortran by calling getegid(3c)
+!!    system_getegid(3f) - [M_system:QUERY] get the effective group ID (GID) of current process from Fortran by calling getegid(3c)
 !!##SYNOPSIS
 !!
 !!    integer(kind=c_int) function system_getegid()
@@ -574,7 +574,7 @@ end interface
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_getgid(3f) - [M_system] get the real group ID (GID) of current process from Fortran by calling getgid(3c)
+!!    system_getgid(3f) - [M_system:QUERY] get the real group ID (GID) of current process from Fortran by calling getgid(3c)
 !!##SYNOPSIS
 !!
 !!    integer(kind=c_int) function system_getgid()
@@ -613,7 +613,7 @@ end interface
 !===================================================================================================================================
 !>
 !!##NAME
-!!        system_getsid(3f) - [M_system] get the process group ID of a session leader
+!!        system_getsid(3f) - [M_system:QUERY] get the process group ID of a session leader
 !!##SYNOPSIS
 !!
 !!        integer(kind=c_int) function system_getsid(pid)
@@ -649,7 +649,7 @@ end interface
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_getpid(3f) - [M_system] get PID (process ID) of current process from Fortran by calling getpid(3c)
+!!    system_getpid(3f) - [M_system:QUERY] get PID (process ID) of current process from Fortran by calling getpid(3c)
 !!##SYNOPSIS
 !!
 !!    integer function system_getpid()
@@ -682,7 +682,7 @@ end interface
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_getppid(3f) - [M_system] get parent process ID (PPID) of current process from Fortran by calling getppid(3c)
+!!    system_getppid(3f) - [M_system:QUERY] get parent process ID (PPID) of current process from Fortran by calling getppid(3c)
 !!##SYNOPSIS
 !!
 !!    integer(kind=c_int) function system_getppid()
@@ -845,7 +845,7 @@ end interface
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_initenv(3f) - [M_system] initialize environment table pointer and size so table can be read by readenv(3f)
+!!    system_initenv(3f) - [M_system:ENVIRONMENT] initialize environment table pointer and size so table can be read by readenv(3f)
 !!##SYNOPSIS
 !!
 !!       subroutine system_initenv()
@@ -3076,7 +3076,7 @@ end subroutine system_closedir
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_putenv(3f) - [M_system] set environment variable from Fortran by calling putenv(3c)
+!!    system_putenv(3f) - [M_system:ENVIRONMENT] set environment variable from Fortran by calling putenv(3c)
 !!
 !!##SYNOPSIS
 !!
@@ -3172,7 +3172,7 @@ end subroutine system_putenv
 !===================================================================================================================================
 !>
 !!##NAME
-!!    set_environment_variable(3f) - [M_system] call setenv(3c) to set environment variable
+!!    set_environment_variable(3f) - [M_system:ENVIRONMENT] call setenv(3c) to set environment variable
 !!##SYNOPSIS
 !!
 !!   subroutine set_environment_variable(NAME, VALUE, STATUS)
@@ -3245,7 +3245,7 @@ end subroutine set_environment_variable
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_clearenv(3f) - [M_system] clear environment by calling clearenv(3c)
+!!    system_clearenv(3f) - [M_system:ENVIRONMENT] clear environment by calling clearenv(3c)
 !!
 !!
 !!##SYNOPSIS
@@ -3332,7 +3332,7 @@ end subroutine system_clearenv
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_unsetenv(3f) - [M_system] change or add an environment variable by calling unsetenv(3c)
+!!    system_unsetenv(3f) - [M_system:ENVIRONMENT] change or add an environment variable by calling unsetenv(3c)
 !!##SYNOPSIS
 !!
 !!   subroutine system_unsetenv(name,ierr)
@@ -3398,7 +3398,7 @@ end subroutine system_unsetenv
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_readenv(3f) - [M_system] step thru and read environment table
+!!    system_readenv(3f) - [M_system:ENVIRONMENT] step thru and read environment table
 !!##SYNOPSIS
 !!
 !!       function system_readenv() result(string)
@@ -3608,7 +3608,7 @@ end subroutine system_uname
 !===================================================================================================================================
 !>
 !!##NAME
-!!        system_gethostname(3f) - [M_system] get name of current host
+!!        system_gethostname(3f) - [M_system:QUERY] get name of current host
 !!##SYNOPSIS
 !!
 !!       subroutine system_gethostname(string,ierr)
@@ -3672,7 +3672,7 @@ end subroutine system_gethostname
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_getlogin(3f) - [M_system] get login name
+!!    system_getlogin(3f) - [M_system:QUERY] get login name
 !!
 !!##SYNOPSIS
 !!
@@ -3823,7 +3823,7 @@ end function system_perm
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_getgrgid(3f) - [M_system] get groupd name associated with a GID
+!!    system_getgrgid(3f) - [M_system:QUERY] get groupd name associated with a GID
 !!##SYNOPSIS
 !!
 !!   function system_getgrgid(gid) result (gname)
@@ -3892,7 +3892,7 @@ end function system_getgrgid
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_getpwuid(3f) - [M_system] get login name associated with a UID
+!!    system_getpwuid(3f) - [M_system:QUERY] get login name associated with a UID
 !!##SYNOPSIS
 !!
 !!   function system_getpwuid(uid) result (uname)

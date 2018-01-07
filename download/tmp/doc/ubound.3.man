@@ -40,5 +40,5 @@ CLASS
 
 SEE ALSO
 
-   [[lbound]], [[lcobound]], [[ucobound]]
+   [[lbound]], [[co_ubound]], [[co_lbound]]
 

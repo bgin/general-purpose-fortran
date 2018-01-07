@@ -1,5 +1,5 @@
 NAME
-   system_getpwuid(3f) - [M_system] get login name associated with a UID
+   system_getpwuid(3f) - [M_system:QUERY] get login name associated with a UID
 SYNOPSIS
   function system_getpwuid(uid) result (uname)
 

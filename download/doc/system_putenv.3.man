@@ -1,5 +1,5 @@
 NAME
-   system_putenv(3f) - [M_system] set environment variable from Fortran by calling putenv(3c)
+   system_putenv(3f) - [M_system:ENVIRONMENT] set environment variable from Fortran by calling putenv(3c)
 
 SYNOPSIS
    subroutine system_putenv(string, err)

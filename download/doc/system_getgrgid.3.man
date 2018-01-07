@@ -1,5 +1,5 @@
 NAME
-   system_getgrgid(3f) - [M_system] get groupd name associated with a GID
+   system_getgrgid(3f) - [M_system:QUERY] get groupd name associated with a GID
 SYNOPSIS
   function system_getgrgid(gid) result (gname)
 

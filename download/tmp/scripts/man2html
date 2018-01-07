@@ -43,6 +43,8 @@ h3 { font-size:134%;color:blue; }\
 h4 { font-size:120%;color:gray; }\
 p{ padding: 0;margin:0; }\
 p{ padding-right:1.4em; }\
+p{ padding-bottom:1em; }\
+p{ padding-top:1em; }\
 p{ whitespace: pre-wrap; }\
 h5,h6 { font-size:100% }\
 a.nav,a:link.nav, a:visited.nav { background-color:#FFF; color:#000; }\

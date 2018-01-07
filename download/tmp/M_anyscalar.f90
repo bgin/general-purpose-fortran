@@ -33,7 +33,7 @@ contains
 !!
 !!##SYNOPSIS
 !!
-!!    pure function anyscalar_to_double(valuein) result(d_out)
+!!    pure elemental function anyscalar_to_double(valuein) result(d_out)
 !!
 !!     class(*),intent(in)  :: valuein
 !!     doubleprecision      :: d_out
@@ -88,7 +88,7 @@ contains
 !!
 !!     end program scalars
 !===================================================================================================================================
-pure function anyscalar_to_double(valuein) result(d_out)
+pure elemental function anyscalar_to_double(valuein) result(d_out)
 use iso_fortran_env, only : error_unit !! ,input_unit,output_unit
 implicit none
 character(len=*),parameter::ident="&
@@ -116,7 +116,7 @@ end function anyscalar_to_double
 !!
 !!##SYNOPSIS
 !!
-!!    pure function anyscalar_to_real(valuein) result(r_out)
+!!    pure elemental function anyscalar_to_real(valuein) result(r_out)
 !!
 !!     class(*),intent(in)  :: valuein
 !!     real                 :: r_out
@@ -171,7 +171,7 @@ end function anyscalar_to_double
 !!
 !!     end program scalars
 !===================================================================================================================================
-pure function anyscalar_to_real(valuein) result(r_out)
+pure elemental function anyscalar_to_real(valuein) result(r_out)
 use iso_fortran_env, only : error_unit !! ,input_unit,output_unit
 implicit none
 character(len=*),parameter::ident="@(#)M_anyscalar::anyscalar_to_real(3f): convert integer or real parameter of any kind to real"
@@ -200,7 +200,7 @@ end function anyscalar_to_real
 !!##SYNOPSIS
 !!
 !!
-!!    elemental function anyinteger_to_128bit(intin) result(ii38)
+!!    pure elemental function anyinteger_to_128bit(intin) result(ii38)
 !!
 !!     integer(kind=int128) function anyinteger_to_128bit(value)
 !!     class(*),intent(in)     :: intin
@@ -250,7 +250,7 @@ end function anyscalar_to_real
 !!
 !!     end program scalars
 !===================================================================================================================================
-elemental function anyinteger_to_128bit(intin) result(ii38)
+pure elemental function anyinteger_to_128bit(intin) result(ii38)
 use iso_fortran_env, only : error_unit !! ,input_unit,output_unit
 implicit none
 character(len=*),parameter::ident="@(#)M_anyscalar::anyinteger_to_128: convert integer parameter of any kind to 128-bit integer"

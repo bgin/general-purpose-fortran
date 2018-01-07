@@ -14,6 +14,8 @@ h3 { font-size:134%;color:blue; }
 h4 { font-size:120%;color:gray; }
 p{ padding: 0;margin:0; }
 p{ padding-right:1.4em; }
+p{ padding-bottom:1em; }
+p{ padding-top:1em; }
 p{ whitespace: pre-wrap; }
 h5,h6 { font-size:100% }
 a.nav,a:link.nav, a:visited.nav { background-color:#FFF; color:#000; }
@@ -55,8 +57,9 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <A name=contents></A><H3>CONTENTS</H3></A>
 <BLOCKQUOTE>
 <A HREF=#1>Synopsis</A><BR>
+<A HREF=#2>Description</A><BR>
 </BLOCKQUOTE>
-<A name=2>
+<A name=3>
 
      <H3>SYNOPSIS</H3>
 
@@ -78,10 +81,345 @@ case-<I>construct</I>               <I>is</I>   <I>select-case-stmt</I>
 <B>block</B> ] &#46;&#46;&#46;
 <B>end-select-stmt</B>
 </TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+<B>R811</B>
+select-<I>case-stmt</I>             <I>is</I>   [ <I>case-</I><I>construct</I>-name : ] <I>SELECT</I> <I>CASE</I>  case-expr)
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+<B>R812</B>
+<I>case-stmt</I>                    <I>is</I>   <I>CASE</I> <I>case-selector</I> [<I>case-</I><I>construct</I>-name]
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+<B>R813</B>
+<I>end-select-stmt</I>              <I>is</I>   <I>END</I> <I>SELECT</I> [ case-<I>construct</I>-name ]
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+<B>C809</B>
+(<I>(</I><B>R810</B>)) <I>If</I> <I>the</I> select-<I>case-stmt</I> <I>of</I> <I>a</I> case-<I>construct</I> <I>specifies</I>
+<B>a</B> case-<I>construct</I>-name, <I>the</I> <I>corresponding</I> <I>end-select-stmt</I>
+<B>shall</B> <I>specify</I> <I>the</I> <I>same</I> case-<I>construct</I>-name. <I>If</I>
+<B>the</B> select-<I>case-stmt</I> <I>of</I> <I>a</I> case-<I>construct</I> <I>does</I> <I>not</I> <I>specify</I> <I>a</I>
+case-<I>construct</I>-name, <I>the</I> <I>corresponding</I> <I>end-select-stmt</I> <I>shall</I>
+<B>not</B> <I>specify</I> <I>a</I> case-<I>construct</I>- name. <I>If</I> <I>a</I> <I>case-stmt</I> <I>specifies</I>
+<B>a</B> case-<I>construct</I>-name, <I>the</I> <I>corresponding</I> select-<I>case-stmt</I>
+<B>shall</B> <I>specify</I> <I>the</I> <I>same</I> case-<I>construct</I>-name.
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+<B>R814</B>
+<I>case-expr</I>                    <I>is</I> <I>scalar-int-expr</I>
+<B>or</B> <I>scalar-char-expr</I>
+<B>or</B> <I>scalar-logical-expr</I>
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+<B>R815</B>
+<I>case-selector</I>                <I>is</I> (<I>(case-</I><B>value</B>-range-list))
+<B>or</B> <I>DEFAULT</I>
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+<B>C810</B>
+(<I>(</I><B>R810</B>)) <I>No</I> <I>more</I> <I>than</I> <I>one</I> <I>of</I> <I>the</I> <I>selectors</I> <I>of</I> <I>one</I> <I>of</I> <I>the</I> <I>CASE</I> <I>statements</I> <I>shall</I> <I>be</I> <I>DEFAULT</I>.
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+<B>R816</B>
+case-<B>value</B>-range             <I>is</I>   case-<B>value</B>
+<TABLE width=100% cellpadding=3><!-- tsb: <B>R816</B>
+ -->
+<TR></TR><TR></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+<B>or</B>
+case-<B>value</B> :
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+<B>or</B>
+: case-<B>value</B>
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+<B>or</B>
+case-<B>value</B> : case-<B>value</B>
+</TD></TR>
+<TR></TR></TABLE><!-- .TP -->
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+<B>R817</B>
+case-<B>value</B>                   <I>is</I> <I>scalar-int-initialization-expr</I>
+<B>or</B> <I>scalar-char-initialization-expr</I>
+<B>or</B> <I>scalar-logical-initialization-expr</I>
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+<B>C811</B>
+(<I>(</I><B>R810</B>)) <I>For</I> <I>a</I> <I>given</I> case-<I>construct</I>, <I>each</I> case-<B>value</B> <I>shall</I> <I>be</I>
+<B>of</B> <I>the</I> <I>same</I> <I>type</I> <I>as</I> <I>case-expr</I> . <I>For</I> <I>character</I>
+<I>type</I>, <I>the</I> <I>kind</I> <I>type</I> <I>parameters</I> <I>shall</I> <I>be</I> <I>the</I> <I>same</I>; <I>character</I>
+<B>length</B> <I>differences</I> <I>are</I> allowed.
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+<B>C812</B>
+(<I>(</I><B>R810</B>)) <I>.</I> case-<B>value</B>-range <I>using</I> <I>.</I> <I>colon</I> <I>shall</I> <I>not</I> <I>be</I> <I>used</I>
+<B>if</B> <I>case-expr</I> <I>is</I> <I>of</I> <I>type</I> logical.
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+<B>C813</B>
+(<I>(</I><B>R810</B>)) <I>For</I> <I>.</I> <I>given</I> case-<I>construct</I>, <I>there</I> <I>shall</I> <I>be</I> <I>no</I> <I>possible</I>
+<B>value</B> <I>of</I> <I>the</I> <I>case-expr</I> <I>that</I> <I>matches</I> <I>more</I>
+<B>than</B> <I>one</I> case-<B>value</B>-range.
+</TD></TR>
 <TR></TR></TABLE></BLOCKQUOTE>
 </BLOCKQUOTE>
+<A name=2>
+
+     <H3>DESCRIPTION</H3>
+
+</A>
+<BLOCKQUOTE>
+<TABLE cellpadding=3>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+8.1.5
+<I>CASE</I> <I>construct</I>
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+8.1.5.1
+Purpose and form <I>of</I> <I>the</I> <I>CASE</I> <I>construct</I>
+</TD></TR>
+<TR></TR></TABLE></BLOCKQUOTE>
+<P>
+<P>
+<BLOCKQUOTE>
+<TABLE cellpadding=3>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+8.1.5.2
+Execution <I>of</I> <I>.</I> <I>CASE</I> <I>construct</I>
+</TD></TR>
+<TR><TD colspan=2>
+<PRE>
+   The execution of the SELECT CASE statement causes the case expression
+   to be evaluated. The resulting value is called the case index. For a
+   case value range list, a match occurs if the case index matches any
+   of the case value ranges in the list. For a case index with a value
+   of c, a match is determined as follows.
+<P>
+        1. If the case value range contains a single value v without a colon, a match occurs for type logical if
+           the expression c .EQV. v is true, and a match occurs for type integer or character if the expression
+           c == v is true.
+        2. If the case value range is of the form low : high, a match occurs if the expression low &lt;= c .AND.
+           c &lt;= high is true.
+        3. If the case value range is of the form low :, a match occurs if the expression low &lt;= c is true.
+        4. If the case value range is of the form : high, a match occurs if the expression c &lt;= high is true.
+        5. If no other selector matches and a DEFAULT selector appears, it matches the case index.
+        6. If no other selector matches and the DEFAULT selector does not appear, there is no match.
+<P>
+   The block following the CASE statement containing the matching
+   selector, if any, is executed. This completes execution of the
+   construct.
+<P>
+   It is permissible to branch to an end-select-stmt only from within
+   its CASE construct.
+<P>
+</PRE>
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+8.1.5.3
+Examples <I>of</I> <I>CASE</I> constructs
+</TD></TR>
+<TR></TR></TABLE><!-- .nf -->
+<PRE>
+       NOTE 8.5
+       An integer signum function:
+<P>
+       INTEGER FUNCTION SIGNUM (N)
+       SELECT CASE (N)
+       CASE (:-1)
+          SIGNUM = -1
+       CASE (0)
+          SIGNUM = 0
+       CASE (1:)
+          SIGNUM = 1
+</PRE>
+</BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; END SELECT</H4>
+</A>
+<BLOCKQUOTE>
+</BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; END</H4>
+</A>
+<BLOCKQUOTE>
+<P>
+NOTE 8.6
+<I>.</I> code fragment to check <I>for</I> balanced parentheses:
+<P>
+CHARACTER (80) :: LINE
+&#46;&#46;&#46;
+LEVEL = <I>.</I>
+SCAN_LINE: DO <I>.</I> = <I>.</I>, 80
+CHECK_PARENS: <I>SELECT</I> <I>CASE</I> (LINE (<I>.</I>:<I>.</I>))
+<I>CASE</I> (&#146;(&#146;)
+LEVEL = LEVEL + <I>.</I>
+<I>CASE</I> (&#146;)&#146;)
+LEVEL = LEVEL - <I>.</I>
+IF (LEVEL &lt; <I>.</I>) THEN
+PRINT *, &#146;UNEXPECTED RIGHT PARENTHESIS&#146;
+EXIT SCAN_LINE
+</BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; END IF</H4>
+</A>
+<BLOCKQUOTE>
+</BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; CASE DEFAULT</H4>
+</A>
+<BLOCKQUOTE>
+! Ignore all other characters
+<I>END</I> <I>SELECT</I> CHECK_PARENS
+<I>END</I> DO SCAN_LINE
+IF (LEVEL &gt; <I>.</I>) THEN
+PRINT *, &#146;MISSING RIGHT PARENTHESIS&#146;
+</BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; END IF</H4>
+</A>
+<BLOCKQUOTE>
+<P>
+NOTE 8.7
+<I>The</I> following three fragments <I>are</I> equivalent:
+<P>
+IF (SILLY == <I>.</I>) THEN
+</BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; CALL THIS</H4>
+</A>
+<BLOCKQUOTE>
+</BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; ELSE</H4>
+</A>
+<BLOCKQUOTE>
+</BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; CALL THAT</H4>
+</A>
+<BLOCKQUOTE>
+</BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; END IF</H4>
+</A>
+<BLOCKQUOTE>
+<I>SELECT</I> <I>CASE</I> (SILLY == <I>.</I>)
+<I>CASE</I> (.TRUE.)
+</BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; CALL THIS</H4>
+</A>
+<BLOCKQUOTE>
+<I>CASE</I> (.FALSE.)
+</BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; CALL THAT</H4>
+</A>
+<BLOCKQUOTE>
+</BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; END SELECT</H4>
+</A>
+<BLOCKQUOTE>
+<I>SELECT</I> <I>CASE</I> (SILLY)
+</BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; CASE DEFAULT</H4>
+</A>
+<BLOCKQUOTE>
+</BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; CALL THAT</H4>
+</A>
+<BLOCKQUOTE>
+<I>CASE</I> (<I>.</I>)
+</BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; CALL THIS</H4>
+</A>
+<BLOCKQUOTE>
+</BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; END SELECT</H4>
+</A>
+<BLOCKQUOTE>
+<P>
+NOTE 8.8
+<I>.</I> code fragment showing several selections <I>of</I> <I>one</I> <B>block</B>:
+<P>
+<I>SELECT</I> <I>CASE</I> (<I>.</I>)
+<TABLE cellpadding=3><!-- tsb: <I>SELECT</I> <I>CASE</I> (<I>.</I>)
+ -->
+<TR></TR><TR></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+<I>CASE</I> (<I>.</I>, <I>.</I>:<I>.</I>, <I>.</I>)
+! Selects <I>.</I>, <I>.</I>, <I>.</I>, <I>.</I>, <I>.</I>
+</TD></TR>
+<TR></TR></TABLE></BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; CALL SUB</H4>
+</A>
+<BLOCKQUOTE>
+</BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; CASE DEFAULT</H4>
+</A>
+<BLOCKQUOTE>
+</BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; CALL OTHER</H4>
+</A>
+<BLOCKQUOTE>
+</BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; END SELECT</H4>
+</A>
+<BLOCKQUOTE>
+</BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>select (7)</TD> <TD align=right width=33%><I>December 21, 2017</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 162b3c19-c429-425b-b189-0dbecded151d using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>select (7)</TD> <TD align=right width=33%><I>January 06, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from c7e7f94c-2cd1-4619-9801-d5da73fe8f92 using man macros.</FONT>
 </div>
 </div>
 <center><img src="images/select.7.gif"></center> 

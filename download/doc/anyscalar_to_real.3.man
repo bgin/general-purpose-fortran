@@ -2,7 +2,7 @@ NAME
    anyscalar_to_real(3f) - [M_anyscalar] convert integer or real parameter of any kind to real
 
 SYNOPSIS
-   pure function anyscalar_to_real(valuein) result(r_out)
+   pure elemental function anyscalar_to_real(valuein) result(r_out)
 
     class(*),intent(in)  :: valuein
     real                 :: r_out

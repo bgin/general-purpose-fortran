@@ -102,7 +102,6 @@ integer,intent(in),optional  :: istart
 logical,intent(in),optional  :: verbose
 logical,intent(in),optional  :: create
 !-----------------------------------------------------------------------------------------------------------------------------------
-   integer                     :: istart_local
    logical                     :: around
    integer,save                :: icount=1           ! counter to generate suffix from
    character(len=4096),save    :: lastname=' '       ! name called with last time the routine was called
@@ -191,6 +190,7 @@ end function uniq
 !>
 !!##NAME
 !!    print_inquire(3f) - [M_io] Do INQUIRE on file by name/number and print results
+!!
 !!##SYNOPSIS
 !!
 !!   Definition:
@@ -419,7 +419,7 @@ character(len=1),allocatable,intent(out) :: text(:)     ! array to hold file
 !-----------------------------------------------------------------------------------------------------------------------------------
    igetunit=notopen(10,99)         ! find unused file unit number (hopefully)
    if(igetunit.lt.0)then
-      call stderr('*slurp* could not find unused file unit number')
+      call stderr_local('*slurp* could not find unused file unit number')
       return
    endif
    ! open named file in stream mode positioned to append
@@ -436,7 +436,7 @@ character(len=1),allocatable,intent(out) :: text(:)     ! array to hold file
       rewind(igetunit)                    ! get back to beginning of file
       nchars=nchars-1 ! opened for append, so subtract one to get current length
       if(nchars.le.0)then
-         call stderr( '*slurp* empty file '//trim(filename) )
+         call stderr_local( '*slurp* empty file '//trim(filename) )
          return
       endif
       !
@@ -446,18 +446,18 @@ character(len=1),allocatable,intent(out) :: text(:)     ! array to hold file
       allocate ( text(nchars) )           ! make enough storage to hold file
       read(igetunit,iostat=ios) text      ! load input file -> text array
       if(ios.ne.0)then
-         call stderr( '*slurp* bad read of '//trim(filename) )
+         call stderr_local( '*slurp* bad read of '//trim(filename) )
       endif
    endif
    close(iostat=ios,unit=igetunit)     ! close if opened successfully or not
 !-----------------------------------------------------------------------------------------------------------------------------------
 contains
 !-----------------------------------------------------------------------------------------------------------------------------------
-subroutine stderr(message)
+subroutine stderr_local(message)
 use iso_fortran_env, only : error_unit
 character(len=*) :: message
    write(error_unit,'(a)')trim(message)    ! write message to standard error
-end subroutine stderr
+end subroutine stderr_local
 !-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine slurp
 !===================================================================================================================================
@@ -1103,6 +1103,7 @@ end function readline
 !===================================================================================================================================
 !>
 !!##NAME
+!!      get_tmp(3f) - [M_io] Return the name of the scratch directory
 !!##SYNOPSIS
 !!
 !!     function get_tmp() result(tname)
@@ -1136,6 +1137,9 @@ end function readline
 !!     result is /cygdrive/c/Users/JSU/AppData/Local/Temp/
 !===================================================================================================================================
 function get_tmp() result(tname)
+
+character(len=*),parameter::ident="@(#)M_io::get_tmp(3f): Return the name of the scratch directory"
+
 character(len=:),allocatable :: tname
    integer :: lngth
    character(len=10),parameter :: names(4)=["TMPDIR    ","TEMP      ","TEMPDIR   ","TMP       "]

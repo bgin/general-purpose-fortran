@@ -25,15 +25,15 @@ DESCRIPTION
 
    replace it with something similar to
 
-    USE M_HISTORY,ONLY : REDO
-    CHARACTER(LEN=255) :: LINE ! make variable big enough to read a line
-          :
-          :
-    READ(*,'(A)') LINE   ! read line into character variable
-    CALL REDO(LINE)      ! pass line to REDO(3f). This is a no-op except
-                         ! for storing the line into the input history
-                         ! unless the input line is the "r" command
-    READ(LINE,101)A,I,K  ! read from variable like you did from file
+     USE M_HISTORY,ONLY : REDO
+     CHARACTER(LEN=255) :: LINE ! make variable big enough to read a line
+           :
+           :
+     READ(*,'(A)') LINE   ! read line into character variable
+     CALL REDO(LINE)      ! pass line to REDO(3f). This is a no-op except
+                          ! for storing the line into the input history
+                          ! unless the input line is the "r" command
+     READ(LINE,101)A,I,K  ! read from variable like you did from file
 
 USAGE
    When prompted for an input line by your program you may at any
@@ -125,30 +125,30 @@ USAGE
 EXAMPLE PROGRAM
   Sample program
 
-   program redoit
-   use M_history, only : redo
-   implicit none
-   character(len=1024) ::  line
-   integer             :: ios
-   integer             :: cstat
-   character(len=256)  :: sstat
-   write(*,'(a)') &
-   & 'REDO(3f) COMMAND INPUT EDITOR',
-   & 'enter "r" or "r r_command" on the input line to go',
-   & 'into history edit mode. Once in history edit mode you',
-   & 'may enter "?" to get some help. Enter "quit" to exit',
-   & 'the program.'
-   do
-      write(*,'(a)',advance='no')'>->'    ! write prompt
-      read(*,'(a)',iostat=ios) line       ! read new input line
-      ! if "r", edit and return a line from the history editor
-      call redo(line) ! store into history if not "r".
-      if(line.eq.'quit')stop ! exit program if user enters "quit"
-      ! now call user code to process new line of data
-      ! As an example, call the system shell using a common f77 extension:
-      call execute_command_line(trim(line),cmdstat=cstat,cmdmsg=sstat) ! f08 equivalent
-   enddo
-   end program redoit
+      program redoit
+      use M_history, only : redo
+      implicit none
+      character(len=1024) ::  line
+      integer             :: ios
+      integer             :: cstat
+      character(len=256)  :: sstat
+      write(*,'(a)') &
+      & 'REDO(3f) COMMAND INPUT EDITOR',
+      & 'enter "r" or "r r_command" on the input line to go',
+      & 'into history edit mode. Once in history edit mode you',
+      & 'may enter "?" to get some help. Enter "quit" to exit',
+      & 'the program.'
+      do
+         write(*,'(a)',advance='no')'>->'    ! write prompt
+         read(*,'(a)',iostat=ios) line       ! read new input line
+         ! if "r", edit and return a line from the history editor
+         call redo(line) ! store into history if not "r".
+         if(line.eq.'quit')stop ! exit program if user enters "quit"
+         ! now call user code to process new line of data
+         ! As an example, call the system shell using a common f77 extension:
+         call execute_command_line(trim(line),cmdstat=cstat,cmdmsg=sstat) ! f08 equivalent
+      enddo
+      end program redoit
 
 SAMPLE USAGE
 

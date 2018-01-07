@@ -171,7 +171,7 @@ contains
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!    c2f - [M_units] convert Celsius to Fahrenheit
+!!    c2f - [M_units:TEMPERATURE] convert Celsius to Fahrenheit
 !!##SYNOPSIS
 !!
 !!    elemental real function c2f(celsius)
@@ -212,7 +212,7 @@ end function c2f
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!    f2c - [M_units] convert Fahrenheit to Celsius
+!!    f2c - [M_units:TEMPERATURE] convert Fahrenheit to Celsius
 !!##SYNOPSIS
 !!
 !!    elemental real function f2c(fahrenheit)
@@ -255,7 +255,7 @@ end function f2c
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!    r2d - [M_units] convert radians to degrees
+!!    r2d - [M_units:TRIGONOMETRY] convert radians to degrees
 !!##SYNOPSIS
 !!
 !!    elemental real function r2d(radians)
@@ -297,7 +297,7 @@ end function r2d
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!    d2r - [M_units] convert degrees to radians
+!!    d2r - [M_units:TRIGONOMETRY] convert degrees to radians
 !!##SYNOPSIS
 !!
 !!    elemental real function d2r(degrees)
@@ -342,7 +342,7 @@ end function d2r
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!    sind - [M_units] calculate sine of value in degrees
+!!    sind - [M_units:TRIGONOMETRY] calculate sine of value in degrees
 !!##SYNOPSIS
 !!
 !!    elemental real function sind(degrees)
@@ -392,7 +392,7 @@ end function sind
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!    cosd - [M_units] calculate sine of value in degrees
+!!    cosd - [M_units:TRIGONOMETRY] calculate sine of value in degrees
 !!##SYNOPSIS
 !!
 !!    elemental real function cosd(degrees)
@@ -443,7 +443,7 @@ end function cosd
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!    tand - [M_units] calculate tangent of value in degrees
+!!    tand - [M_units:TRIGONOMETRY] calculate tangent of value in degrees
 !!##SYNOPSIS
 !!
 !!    elemental real function tand(degrees)
@@ -521,7 +521,7 @@ end function atan2d
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!    feet_to_meters - [M_units] converts a measurement in feet to meters
+!!    feet_to_meters - [M_units:LENGTH] converts a measurement in feet to meters
 !!##SYNOPSIS
 !!
 !!    elemental real function feet_to_meters(feet)
@@ -570,7 +570,7 @@ end function feet_to_meters
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!    meters_to_feet - [M_units] converts a measurement in meters to feet
+!!    meters_to_feet - [M_units:LENGTH] converts a measurement in meters to feet
 !!##SYNOPSIS
 !!
 !!    elemental real function meters_to_feet(meters)
@@ -614,7 +614,7 @@ end function meters_to_feet
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!     cartesian_to_spherical(3f) - [M_units] convert Cartesian coordinates to ISO polar coordinates
+!!     cartesian_to_spherical(3f) - [M_units:TRIGONOMETRY] convert Cartesian coordinates to ISO polar coordinates
 !!##SYNOPSIS
 !!
 !!    subroutine cartesian_to_spherical(x,y,z,radius,inclination,azimuth)
@@ -682,7 +682,7 @@ end subroutine cartesian_to_spherical
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!     spherical_to_cartesian(3f) - [M_units] convert ISO polar coordinates to Cartesian coordinates
+!!     spherical_to_cartesian(3f) - [M_units:TRIGONOMETRY] convert ISO polar coordinates to Cartesian coordinates
 !!##SYNOPSIS
 !!
 !!    subroutine spherical_to_cartesian(radius,inclination,azimuth,x,y,z)
@@ -752,7 +752,7 @@ end subroutine spherical_to_cartesian
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!     cartesian_to_polar(3f) - [M_units] convert Cartesian coordinates to polar coordinates
+!!     cartesian_to_polar(3f) - [M_units:TRIGONOMETRY] convert Cartesian coordinates to polar coordinates
 !!##SYNOPSIS
 !!
 !!    subroutine cartesian_to_polar(x,y,radius,inclination)
@@ -814,7 +814,7 @@ end subroutine cartesian_to_polar
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!     polar_to_cartesian(3f) - [M_units] convert polar coordinates to Cartesian coordinates
+!!     polar_to_cartesian(3f) - [M_units:TRIGONOMETRY] convert polar coordinates to Cartesian coordinates
 !!##SYNOPSIS
 !!
 !!    subroutine polar_to_cartesian(radius,inclination,x,y)
@@ -878,7 +878,7 @@ end subroutine polar_to_cartesian
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!    atomnum2symbol - [M_units] return element symbol given atomic number
+!!    atomnum2symbol - [M_units:SYMBOLS] return element symbol given atomic number
 !!##SYNOPSIS
 !!
 !!   subroutine atomnum2symbol(atomnum,symbol)
@@ -1056,7 +1056,7 @@ end subroutine atomnum2symbol
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!    symbol2atomnum - [M_units] return atomic number given element symbol name
+!!    symbol2atomnum - [M_units:SYMBOLS] return atomic number given element symbol name
 !!##SYNOPSIS
 !!
 !!   subroutine symbol2atomnum(symbol,atomnum)
@@ -1130,7 +1130,7 @@ end subroutine symbol2atomnum
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!    pounds_to_kilograms(3f) - [M_units] - converts a measurement in pounds-mass to kilograms.
+!!    pounds_to_kilograms(3f) - [M_units:MASS] - converts a measurement in pounds-mass to kilograms.
 !!
 !!##SYNOPSIS
 !!
