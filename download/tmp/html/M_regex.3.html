@@ -1,0 +1,169 @@
+<html> 
+<head> 
+<title> </title>
+<style> 
+p {font-family: "Lucida Console", Monaco, monospace}
+body {xfont-style: italic}
+body {
+color:#333; font-family:Verdana, Arial, Helvetica, sans-serif; font-size:1em; line-height:1.3em; }
+a:visited { color:#666; }
+h1,h2,h3,h4,h5,h6 { color:#333; font-family:georgia, verdana, sans-serif; }
+h1 { font-size:150%; page-break-before:auto;background-color: #aaaaff}
+h2 { font-size:143%;color:teal; }
+h3 { font-size:134%;color:blue; }
+h4 { font-size:120%;color:gray; }
+p{ padding: 0;margin:0; }
+p{ padding-right:1.4em; }
+p{ padding-bottom:1em; }
+p{ padding-top:1em; }
+p{ whitespace: pre-wrap; }
+h5,h6 { font-size:100% }
+a.nav,a:link.nav, a:visited.nav { background-color:#FFF; color:#000; }
+XXtable { border:double #000; border-collapse:collapse; }
+XXtable { border-collapse:collapse; }
+XXtd { border:thin solid #888; }
+XXtd { border:none; }
+li { margin-bottom:0.5em; }
+blockquote { display:block; font-size:90%; font-style:italic; line-height:1.1em; margin:0 0 1.5em; padding:0 2.5em; }
+pre { background-color:#DDD; font-size:99%; overflow:auto; padding:1em; }
+a,li span { color:#000; }
+a:hover, a.nav:hover, a:hover math { background-color:#000; color:#FFF; }
+#Container { margin:0 10px; text-align:center; background-color: #BBB}
+#Content { border-top:none; margin:auto; padding:0.3em; text-align:left; width:100%; max-width:55em; background:#FFF}
+span.webName { font-size:.5em; }
+textarea#content { font-size: 1em; line-height: 1.125; }
+h1#pageName { line-height:1em; margin:0.2em 0 0.2em 0; padding:0; }
+.property { color:#666; font-size:80%; }
+a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
+.byline { color:#666; font-size:.8em; font-style:italic; margin-bottom:1em; padding-top:1px; } 
+</style> 
+</head>
+<BODY bgcolor=#F0F0F0 text=#000000 link=#0000ff vlink=#C000C0 alink=#ff0000><A NAME=top></A>
+<h5><a href="download.html">[UP]</a></h5> 
+<div id="Container">
+<div id="Content">
+<CENTER>
+<H1><HR><I>Manual Reference Pages &nbsp;-&nbsp;</I><NOBR>M_regex (3)</NOBR><HR></H1>
+</CENTER>
+<P>
+<A name=0>
+
+     <H3>NAME</H3>
+
+</A>
+<BLOCKQUOTE>
+<B>M_regex(3fm) </B>- [M_regex] Fortran interface to POSIX 1003.2 regular expression library using ISO_C_BINDING.
+</BLOCKQUOTE>
+<A name=contents></A><H3>CONTENTS</H3></A>
+<BLOCKQUOTE>
+<A HREF=#1>Synopsis</A><BR>
+<A HREF=#2>Description</A><BR>
+<A HREF=#3>Description</A><BR>
+</BLOCKQUOTE>
+<A name=4>
+
+     <H3>SYNOPSIS</H3>
+
+</A>
+<BLOCKQUOTE>
+<PRE>
+<B>regcomp</B>(<I>3f</I>), <B>regexec</B>(<I>3f</I>), <B>regerror</B>(<I>3f</I>), <B>regfree</B>(<I>3f</I>)
+<B>regmatch</B>(<I>3f</I>), <B>regsub</B>(<I>3f</I>)
+</PRE>
+</BLOCKQUOTE>
+<A name=3>
+
+     <H3>DESCRIPTION</H3>
+
+</A>
+<BLOCKQUOTE>
+<P>
+These routines implement IEEE Std 1003.2 ( POSIX.2 ) RE (Regular
+Expressions). The <B>regcomp</B>(3c) function compiles an RE written as a
+string into an internal form, <B>regexec</B>(3c) matches that internal form
+against a string and reports results, <B>regerror</B>(3c) transforms error
+codes from either into human-readable messages, and <B>regfree</B>(3c) frees
+any dynamically-allocated storage used by the internal form of an RE.
+<P>
+The Fortran interface is composed of wrapper routines that call the
+C library, plus some extensions (ie. <B>regmatch</B>(<I>3f</I>), <B>regsub</B>(<I>3f</I>)).
+<P>
+The following constructs are recognized in a ERE:
+<P>
+<PRE>
+       .     Matches any character except newline.
+       *     (postfix) Matches the preceding expression zero, one or several times
+       +     (postfix) Matches the preceding expression one or several times
+       ?     (postfix) Matches the preceding expression once or not at all
+       [..]  Character set. Ranges are denoted with - , as in [a-z] .
+             An initial ^ , as in [^0-9] , complements the set. To
+             include a ] character in a set, make it the first character
+             of the set. To include a - character in a set, make it
+             the first or the last character of the set.
+<P>
+       ^        Matches at beginning of line: either at the beginning
+                of the matched string, or just after a &#146;\n&#146; character.
+       $        Matches at end of line: either at the end of the matched
+                string, or just before a &#146;\n&#146; character.
+       |        (infix) Alternative between two expressions.
+       (..)     Grouping and naming of the enclosed expression.
+       \1       The text matched by the first \(&#46;&#46;&#46;\) expression (
+                \2 for the second expression, and so on up to \9 ).
+       \b       Matches word boundaries.
+       \        Quotes special characters. The special characters are $^\.*+?[] .
+<P>
+</PRE>
+</BLOCKQUOTE>
+<A name=3>
+
+     <H3>DESCRIPTION</H3>
+
+</A>
+<BLOCKQUOTE>
+<P>
+Regular expressions ( REs ), as defined in IEEE Std 1003.2
+( POSIX.2 ), come in two forms: modern REs (roughly those of
+<B>egrep</B>(1); 1003.2 calls these extended REs or ERE) and obsolete REs
+(roughly those of <B>ed</B>(1); 1003.2 basic REs or BRE). BRE mostly
+exist for backward compatibility in some old programs; they will be
+discussed at the end. IEEE Std 1003.2 ( POSIX.2 ) leaves some
+aspects of RE syntax and semantics open; &#145; &#146; marks decisions on
+these aspects that may not be fully portable to other IEEE Std 1003.2
+( POSIX.2 ) implementations.
+<P>
+A (modern) RE is one or more non-empty branches, separated by |.
+It matches anything that matches one of the branches.
+<P>
+A branch is one or more pieces, concatenated. It matches a match
+for the first, followed by a match for the second, etc.
+<P>
+A piece is an atom possibly followed by a single * , + , ? ,
+or bound. An atom followed by * matches a sequence
+of 0 or more matches of the atom. An atom followed by + matches
+a sequence of 1 or more matches of the atom. An atom followed by ?
+matches a sequence of 0 or 1 matches of the atom.
+<P>
+A bound is { followed by an unsigned decimal integer, possibly
+followed by , possibly followed by another unsigned decimal
+integer, always followed by } . The integers must lie between
+0 and RE_DUP_MAX (255 ) inclusive, and if there are two of them,
+the first may not exceed the second. An atom followed by a bound
+containing one integer i and no comma matches a sequence of exactly
+i matches of the atom. An atom followed by a bound containing one
+integer i and a comma matches a sequence of i or more matches of the
+atom. An atom followed by a bound containing two integers i and j
+matches a sequence of i through j (inclusive) matches of the atom.
+<P>
+An atom is a regular expression enclosed in () (matching a match
+for the regular expression), an empty set of () (matching the null
+string) , a bracket expression (see below), . (matching any
+single character), ^ (matching the null string at the beginning
+of a line), $ (matching the null string at the end of a line), a
+</BLOCKQUOTE>
+<P><HR>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>M_regex (3)</TD> <TD align=right width=33%><I>January 27, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 041867c7-7bc8-49e9-9424-eaa08e8aacc1 using man macros.</FONT>
+</div>
+</div>
+<center><img src="images/M_regex.3.gif"></center> 
+</body>
+</HTML>

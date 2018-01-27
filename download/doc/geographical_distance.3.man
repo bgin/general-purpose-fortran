@@ -1,5 +1,5 @@
 NAME
-   geographical_distance - [] Compute the distance between two points over the Earth's surface.
+   geographical_distance - [M_geography] Compute the distance between two points over the Earth's surface.
 
 SYNOPSIS
    doubleprecision function geographical_distance (ll1, bb1, ll2, bb2, miles)

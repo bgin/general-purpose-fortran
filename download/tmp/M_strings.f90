@@ -438,6 +438,7 @@ PUBLIC string_to_values!  subroutine returns values from a string
 PUBLIC getvals         !  subroutine returns values from a string
 PUBLIC s2v             !  function returns doubleprecision value from string
 PUBLIC s2vs            !  function returns a doubleprecision array of numbers from a string
+                       !------------------------------------------------------------------------------------------------------------
 PUBLIC value_to_string !  generic subroutine returns string given numeric REAL|DOUBLEPRECISION|INTEGER value
 PUBLIC v2s             !  generic function returns string given numeric REAL|DOUBLEPRECISION|INTEGER value
  PRIVATE d2s           !  function returns strings from doubleprecision value
@@ -446,6 +447,16 @@ PUBLIC v2s             !  generic function returns string given numeric REAL|DOU
 PUBLIC v2s_bug         !  generic function returns string given numeric REAL|DOUBLEPRECISION|INTEGER value
  PRIVATE trimzeros     !  Delete trailing zeros from numeric decimal string
 PUBLIC listout         !  copy ICURVE() to ICURVE_EXPANDED() expanding negative numbers to ranges (1 -10 means 1 thru 10)
+!-----------------------------------------------------------------------------------------------------------------------------------
+! extend intrinsics to accept CHARACTER values
+PUBLIC int, real, dble
+interface int;     module procedure int_s2v;           end interface
+interface real;    module procedure real_s2v;          end interface
+interface dble;    module procedure dble_s2v;          end interface
+interface int;     module procedure ints_s2v;          end interface
+interface real;    module procedure reals_s2v;         end interface
+interface dble;    module procedure dbles_s2v;         end interface
+!-----------------------------------------------------------------------------------------------------------------------------------
 !----------------------# BASE CONVERSION
 PUBLIC base            !  convert whole number string in base [2-36] to string in alternate base [2-36]
 PUBLIC codebase        !  convert whole number string in base [2-36] to base 10 number
@@ -1330,7 +1341,7 @@ end subroutine delim
 !!     cmd         alternate way to specify old and new string, in
 !!                 the form c/old/new/; where "/" can be any character
 !!                 not in "old" or "new"
-!!     ierr        error code. iF ier = -1 bad directive, &gt;= 0 then
+!!     ierr        error code. iF ier = -1 bad directive, >= 0 then
 !!                 count of changes made
 !!##RETURNS
 !!     newline     allocatable string returned
@@ -1550,13 +1561,16 @@ end function replace
 !!    Globally substitute one substring for another in string.
 !!
 !!##OPTIONS
-!!     targetline  input line to be changed
-!!     old         old substring to replace
-!!     new         new substring
-!!     ierr        error code. iF ier = -1 bad directive, &gt;= 0 then
-!!                 count of changes made
-!!     start       start sets the left  margin
-!!     end         end sets the right  margin
+!!     TARGETLINE  input line to be changed. Must be long enough to
+!!                 hold altered output.
+!!     OLD         substring to find and replace
+!!     NEW         replacement for OLD substring
+!!     IERR        error code. If IER = -1 bad directive, >= 0 then
+!!                 count of changes made.
+!!     START       sets the left margin to be scanned for OLD in
+!!                 TARGETLINE.
+!!     END         sets the right margin to be scanned for OLD in
+!!                 TARGETLINE.
 !!
 !!##EXAMPLES
 !!
@@ -1602,11 +1616,11 @@ character(len=*),parameter::ident="@(#)M_strings::substitute(3f): Globally subst
    character(len=*)              :: targetline         ! input line to be changed
    character(len=*),intent(in)   :: old                ! old substring to replace
    character(len=*),intent(in)   :: new                ! new substring
-   character(len=len(targetline)):: dum1               ! scratch string buffers
    integer,intent(out),optional  :: ierr               ! error code. if ierr = -1 bad directive, >=0 then ierr changes made
    integer,intent(in),optional   :: start              ! start sets the left  margin
    integer,intent(in),optional   :: end                ! end sets the right  margin
 !-----------------------------------------------------------------------------------------------------------------------------------
+   character(len=len(targetline)):: dum1               ! scratch string buffers
    integer                       :: ml, mr, ier1
    integer                       :: maxlengthout       ! MAXIMUM LENGTH ALLOWED FOR NEW STRING
    integer                       :: original_input_length
@@ -3933,12 +3947,15 @@ end subroutine a2d
 !!       If an error occurs the program is stopped if the optional parameter
 !!       IERR is not present. If IERR is non-zero an error occurred.
 !!
+!!       The intrinsics INT(3f), REAL(3f), and DBLE(3f) are also extended to take
+!!       CHARACTER variables. The KIND= keyword is not supported on the extensions.
+!!
 !!##EXAMPLE
 !!
 !!
 !!    program demo_s2v
 !!
-!!     use M_strings, only: s2v
+!!     use M_strings, only: s2v, int, real, dble
 !!     implicit none
 !!     character(len=8)              :: s=' 10.345 '
 !!     integer                       :: i
@@ -3968,6 +3985,11 @@ end subroutine a2d
 !!        dv=s2v(strings(i),errnum)
 !!        write(*,*) strings(i)//'=',dv,errnum
 !!     enddo
+!!     write(*,*)"Extended intrinsics"
+!!     write(*,*)'given inputs:',s,strings(:8)
+!!     write(*,*)'INT(3f):',int(s),int(strings(:8))
+!!     write(*,*)'REAL(3f):',real(s),real(strings(:8))
+!!     write(*,*)'DBLE(3f):',dble(s),dble(strings(:8))
 !!     write(*,*)"That's all folks!"
 !!
 !!     end program demo_s2v
@@ -3988,6 +4010,14 @@ end subroutine a2d
 !!     >*a2d* - cannot produce number from string [WHAT?]
 !!     >*a2d* - [Bad value during floating point read]
 !!     >WHAT?         =   0.0000000000000000             5010
+!!     >Extended intrinsics
+!!     >given inputs: 10.345 10.345 +10 -3 -4.94e-2 0.1 12345.678910d0 1 2 1 2 1 . 0
+!!     >INT(3f): 10 10 10 -3 0 0 12345 0 12121
+!!     >REAL(3f): 10.3450003 10.3450003 10.0000000 -3.00000000 -4.94000018E-02
+!!     >          0.100000001 12345.6787 0.00000000 12121.0000
+!!     >DBLE(3f): 10.345000000000001 10.345000000000001 10.000000000000000
+!!     >          -3.0000000000000000 -4.9399999999999999E-002 0.10000000000000001
+!!     >          12345.678910000001 0.0000000000000000 12121.000000000000
 !!     >That's all folks!
 !===================================================================================================================================
 !>
@@ -4017,6 +4047,56 @@ doubleprecision             :: valu
       stop 1
    endif
 end function s2v
+!===================================================================================================================================
+! calls to s2v(3f) for extending intrinsics int(3f), real(3f), dble(3f)
+!===================================================================================================================================
+doubleprecision function dble_s2v(chars)
+character(len=*),intent(in) :: chars
+   dble_s2v=s2v(chars)
+end function dble_s2v
+!===================================================================================================================================
+real function real_s2v(chars)
+character(len=*),intent(in) :: chars
+   real_s2v=real(s2v(chars))
+end function real_s2v
+!===================================================================================================================================
+integer function int_s2v(chars)
+character(len=*),intent(in) :: chars
+   int_s2v=int(s2v(chars))
+end function int_s2v
+!===================================================================================================================================
+function ints_s2v(chars)
+integer,allocatable         :: ints_s2v(:)
+character(len=*),intent(in) :: chars(:)
+   integer                  :: i,isize
+   isize=size(chars)
+   allocate(ints_s2v(isize))
+   do i=1,isize
+      ints_s2v(i)=int(s2v(chars(i)))
+   enddo
+end function ints_s2v
+!===================================================================================================================================
+function reals_s2v(chars)
+real,allocatable            :: reals_s2v(:)
+character(len=*),intent(in) :: chars(:)
+   integer                  :: i,isize
+   isize=size(chars)
+   allocate(reals_s2v(isize))
+   do i=1,isize
+      reals_s2v(i)=real(s2v(chars(i)))
+   enddo
+end function reals_s2v
+!===================================================================================================================================
+function dbles_s2v(chars)
+doubleprecision,allocatable :: dbles_s2v(:)
+character(len=*),intent(in) :: chars(:)
+   integer                  :: i,isize
+   isize=size(chars)
+   allocate(dbles_s2v(isize))
+   do i=1,isize
+      dbles_s2v(i)=s2v(chars(i))
+   enddo
+end function dbles_s2v
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================

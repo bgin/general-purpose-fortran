@@ -54,7 +54,7 @@ EXAMPLE
 
       write(*,'(a)')COMMAND_LINE
 
-   end program
+   end program test_get_command
 
   Sample execution:
      ./test_get_command  arguments    on the    command   line to   echo

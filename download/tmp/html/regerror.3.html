@@ -52,29 +52,27 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 
 </A>
 <BLOCKQUOTE>
-<B>regerror(3f) </B>- [M_regex] Get the string message for a status error value
+<B>regerror(3f) </B>- [M_regex] maps a non-zero errcode from either <B>regcomp</B>(3f) or <B>regexec</B>(3f) to a human-readable, printable message.
 </BLOCKQUOTE>
 <A name=contents></A><H3>CONTENTS</H3></A>
 <BLOCKQUOTE>
 <A HREF=#1>Synopsis</A><BR>
 <A HREF=#2>Description</A><BR>
 <A HREF=#3>Options</A><BR>
-<A HREF=#4>Returns</A><BR>
-<A HREF=#5>Example</A><BR>
+<A HREF=#4>Example</A><BR>
 </BLOCKQUOTE>
-<A name=6>
+<A name=5>
 
      <H3>SYNOPSIS</H3>
 
 </A>
 <BLOCKQUOTE>
 <PRE>
-subroutine <B>regerror</B>(this,errcode,errmsg,errmsg_len)
+function <B>regerror</B>(this,errcode) <B>result</B>(<I>errmsg</I>)
 <P>
      type(regex_type), intent(in) :: this
      integer, intent(in)          :: errcode
-     character, intent(out)       :: errmsg
-     integer, intent(out)         :: errmsg_len
+     character(len=:),allocatable :: errmsg
 <P>
 </PRE>
 </BLOCKQUOTE>
@@ -84,30 +82,204 @@ subroutine <B>regerror</B>(this,errcode,errmsg,errmsg_len)
 
 </A>
 <BLOCKQUOTE>
-</BLOCKQUOTE>
+The <B>REGCOMP</B>() function compiles an RE written as a string into
+an internal form, <B>REGEXEC</B>() matches that internal form against
+a string and reports results, <B>REGERROR</B>() transforms error codes
+from either into human-readable messages, and <B>REGFREE</B>() frees any
+dynamically-allocated storage used by the internal form of an RE.
+<TABLE cellpadding=3><!-- tsb: The <B>REGCOMP</B>() function compiles an RE written as a string into
+ -->
+<TR></TR><TR></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+These routines implement IEEE Std 1003.2 (
+POSIX.2   ) regular
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+expressions (
+RE   s); see <B>re_format</B>(7).
+</TD></TR>
+<TR><TD colspan=2>
+Specifically, The <B>REGERROR</B>(3f) function maps a non-zero errcode from either
+<B>REGCOMP</B>(3f) or <B>REGEXEC</B>(3f) to a human-readable, printable message.
+If THIS is non-NULL, the error code should have arisen from use of
+the regex_t pointed to by THIS, and if the error code came from
+<B>REGCOMP</B>(), it should have been the result from the most recent
+<B>REGCOMP</B>() using that regex_t.
+</TD></TR>
+<TR><TD colspan=2>
+Non-zero error codes from <B>regcomp</B>() and <B>regexec</B>() include the following:
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+REG_NOMATCH
+The <B>regexec</B>() function failed to match
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+REG_BADPAT
+invalid regular expression
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+REG_ECOLLATE
+invalid collating element
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+REG_ECTYPE
+invalid character class
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+REG_EESCAPE
+\    applied to unescapable character
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+REG_ESUBREG
+invalid backreference number
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+REG_EBRACK
+brackets    [ ]    not balanced
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+REG_EPAREN
+parentheses    ( )    not balanced
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+REG_EBRACE
+braces    { }    not balanced
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+REG_BADBR
+invalid repetition <B>count</B>(s) in    { }
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+REG_ERANGE
+invalid character range in    [ ]
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+REG_ESPACE
+ran out of memory
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+REG_BADRPT
+?   ,    *   , or    +    operand invalid
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+REG_EMPTY
+empty (sub)expression
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+REG_ASSERT
+cannot happen - you found a bug
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+REG_INVARG
+invalid argument, e.g. negative-length string
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+REG_ILLSEQ
+illegal byte sequence (bad multibyte character)
+</TD></TR>
+<TR></TR></TABLE></BLOCKQUOTE>
 <A name=3>
 
      <H3>OPTIONS</H3>
 
 </A>
 <BLOCKQUOTE>
-</BLOCKQUOTE>
+<TABLE cellpadding=3>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+this
+a compiled regular expression from <B>REGCOMP</B>(3f)
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+errcode
+the last error code generated by <B>REGCOMP</B>(3f) or <B>REGEXEC</B>(3f)
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+<I>errmsg</I>
+the error message
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+errmsg_len
+size required of ERRMSG to display the entire message
+</TD></TR>
+<TR></TR></TABLE></BLOCKQUOTE>
 <A name=4>
-
-     <H3>RETURNS</H3>
-
-</A>
-<BLOCKQUOTE>
-</BLOCKQUOTE>
-<A name=5>
 
      <H3>EXAMPLE</H3>
 
 </A>
 <BLOCKQUOTE>
+Sample program
+<P>
+<PRE>
+   program demo_regerror
+   use M_regex, only: regex_type, regcomp, regexec, regmatch, regfree, regerror
+   type(regex_type)             :: regex
+   integer,parameter            :: maxmatch=10
+   integer                      :: matches(2,maxmatch)
+<P>
+   character(len=:),allocatable :: input_line
+   character(len=:),allocatable :: expression
+   logical                      :: match
+<P>
+      expression= "([0-9\.\-\*\/]+)+"
+      expression= "([0-9\.\-\*\/+)+"  ! intentionally bas RE (Regular Expression)
+      input_line= "30*0 250*1 5 6 7"
+      call regcomp(regex,expression,&#146;x&#146;,status=istat)
+      if (istat/=0) then
+        write(*,&#146;("Regex runtime error in regcomp(3f):",a,", expression=",a)&#146;) regerror(regex,istat),expression
+        stop 1
+      endif
+      match=regexec(regex,input_line,matches,status=istat)
+      if (istat/=0) then
+        write(*,&#146;("Regex runtime error in regexec:(3f)",a)&#146;) regerror(regex,istat)
+        stop 2
+      endif
+      if(match)then
+         do i=1,maxmatch
+            if(matches(1,i).le.0)exit
+            write(*,*) &#146;match="&#146;,regmatch(i,input_line,matches),&#146;"&#146;
+         enddo
+      endif
+      call regfree(regex)
+<P>
+</PRE>
+<BLOCKQUOTE>
+end program demo_regerror
+</BLOCKQUOTE>
+<P>
+Expected output:
+<P>
+<PRE>
+   stop 1
+   Regex runtime error in regcomp(3f):brackets ([ ]) not balanced , expression=([0-9\.\-\*\/+)+
+<P>
+</PRE>
 </BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>regerror (3)</TD> <TD align=right width=33%><I>January 06, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from f02c79f5-d84f-4e02-ba5e-d2371c43204c using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>regerror (3)</TD> <TD align=right width=33%><I>January 27, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 5b5e7c0a-237e-47d8-9f52-0177989699dc using man macros.</FONT>
 </div>
 </div>
 <center><img src="images/regerror.3.gif"></center> 

@@ -14,9 +14,9 @@ DESCRIPTION
 ARGUMENTS
 
    ARRAY  - Shall be an array, of any type.
-   DIM  - (Optional) Shall be a scalar INTEGER.
-   KIND- (Optional) An INTEGER initialization expression
-         indicating the kind parameter of the result.
+   DIM    - (Optional) Shall be a scalar INTEGER.
+   KIND   - (Optional) An INTEGER initialization expression
+            indicating the kind parameter of the result.
 
 RETURN VALUE
 

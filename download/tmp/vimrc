@@ -93,3 +93,11 @@ autocmd FileType fortran set keywordprg=$THOME/scripts_vi/manvi
 autocmd  BufRead,BufNewFile *.ff		set filetype=fortran
 autocmd  BufRead,BufNewFile *.FF		set filetype=fortran
 
+" There is fortran folding implemented in the /usr/share/vim/syntax/fortran.vim syntax module.
+" Just look at :help fortran -> Syntax folding of fortran files
+" It requires that you explicitely enable fortran folding by
+let fortran_fold=1
+" Additionally you can force folding on conditionals and multiline comments trhough
+let fortran_fold_conditionals=1
+let fortran_fold_multilinecomments=1
+" Folding will then work with the usual foldmethod=syntax setting.

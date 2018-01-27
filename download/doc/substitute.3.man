@@ -15,13 +15,16 @@ DESCRIPTION
    Globally substitute one substring for another in string.
 
 OPTIONS
-    targetline  input line to be changed
-    old         old substring to replace
-    new         new substring
-    ierr        error code. iF ier = -1 bad directive, &gt;= 0 then
-                count of changes made
-    start       start sets the left  margin
-    end         end sets the right  margin
+    TARGETLINE  input line to be changed. Must be long enough to
+                hold altered output.
+    OLD         substring to find and replace
+    NEW         replacement for OLD substring
+    IERR        error code. If IER = -1 bad directive, >= 0 then
+                count of changes made.
+    START       sets the left margin to be scanned for OLD in
+                TARGETLINE.
+    END         sets the right margin to be scanned for OLD in
+                TARGETLINE.
 
 EXAMPLES
   Sample Program:

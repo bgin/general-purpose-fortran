@@ -4,7 +4,7 @@ public geographical_distance
 contains
 !>
 !!##NAME
-!!    geographical_distance - [] Compute the distance between two points over the Earth's surface.
+!!    geographical_distance - [M_geography] Compute the distance between two points over the Earth's surface.
 !!
 !!##SYNOPSIS
 !!

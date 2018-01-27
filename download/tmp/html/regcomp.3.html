@@ -52,15 +52,15 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 
 </A>
 <BLOCKQUOTE>
-<B>regcomp(3f) </B>- [M_regex] Compile a regex into a regex object
+<B>regcomp(3f) </B>- [M_regex] Compile a regular expression into a regex object
 </BLOCKQUOTE>
 <A name=contents></A><H3>CONTENTS</H3></A>
 <BLOCKQUOTE>
 <A HREF=#1>Synopsis</A><BR>
 <A HREF=#2>Description</A><BR>
 <A HREF=#3>Options</A><BR>
-<A HREF=#4>Returns</A><BR>
-<A HREF=#5>Example</A><BR>
+<A HREF=#4>Example</A><BR>
+<A HREF=#5>See Also</A><BR>
 </BLOCKQUOTE>
 <A name=6>
 
@@ -71,15 +71,11 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <PRE>
 subroutine <B>regcomp</B>(this,pattern,flags,status)
 <P>
-     type(regex_type), intent(out) :: this           ! new regex object
-     character(len=*), intent(in) :: pattern         ! regex pattern string
-     character(len=*), intent(in), &
-                          optional :: flags ! flag characters:
-                                            ! x = extended regex (REG_EXTENDED)
-                                            ! m = multi-line     (REG_NEWLINE)
-                                            ! i = case-insensitive (REG_ICASE)
-                                            ! n = no MATCH required (REG_NOSUB)
-     integer, intent(out), optional :: status ! If absent, errors are fatal
+     type(regex_type), intent(out)          :: this
+     character(len=*), intent(in)           :: pattern
+     character(len=*), intent(in), optional :: flags
+     integer, intent(out), optional         :: nmatch
+     integer, intent(out), optional         :: status
 </PRE>
 </BLOCKQUOTE>
 <A name=2>
@@ -88,6 +84,8 @@ subroutine <B>regcomp</B>(this,pattern,flags,status)
 
 </A>
 <BLOCKQUOTE>
+The <B>regcomp</B>() function compiles an RE written as a string into an
+internal form for use by <B>regexec</B>().
 </BLOCKQUOTE>
 <A name=3>
 
@@ -95,23 +93,124 @@ subroutine <B>regcomp</B>(this,pattern,flags,status)
 
 </A>
 <BLOCKQUOTE>
-</BLOCKQUOTE>
+<TABLE cellpadding=3>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+THIS
+new regex object
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+PATTERN
+regex pattern string
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+FLAGS
+flag characters:
+<TABLE width=100% cellpadding=3><!-- tsb: FLAGS
+ -->
+<TR></TR><TR></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+x=
+extended regex (REG_EXTENDED). Default is obsolete ("basic") REs.
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+m=
+multi-line (REG_NEWLINE).
+Compile for newline-sensitive matching. By default, newline is a completely ordinary character with no
+special meaning in either REs or strings. With this flag, &#146;[^&#146; bracket expressions and . never match newline,
+a &#146;^&#146; anchor matches the null string after any newline in the string in addition to its normal function, and
+the &#146;$&#146; anchor matches the null string before any newline in the string in addition to its normal function.
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+i=
+case-insensitive (REG_ICASE)
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+n=
+no MATCH required (REG_NOSUB)
+Compile for matching that need only report success or failure, not what was matched.
+</TD></TR>
+<TR></TR></TABLE><!-- .TP -->
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+NMATCH
+number of subexpressions in regular expression
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+STATUS
+If absent, errors are fatal
+</TD></TR>
+<TR></TR></TABLE></BLOCKQUOTE>
 <A name=4>
-
-     <H3>RETURNS</H3>
-
-</A>
-<BLOCKQUOTE>
-</BLOCKQUOTE>
-<A name=5>
 
      <H3>EXAMPLE</H3>
 
 </A>
 <BLOCKQUOTE>
+<P>
+Sample program
+<P>
+<PRE>
+   program demo_regcomp
+   use M_regex, only: regex_type, regcomp, regexec, regfree
+   use M_regex, only: regmatch, regsub
+   implicit none
+   type(regex_type)             :: regex
+   integer                      :: matches(2,1)
+   character(len=:),allocatable :: input_line
+   character(len=:),allocatable :: output_line
+   character(len=:),allocatable :: expression
+   logical                      :: match
+   integer                      :: ipass
+   integer                      :: istart
+      expression= "[-0-9.*/+]+"                              ! define extended regular expression
+      input_line= "30*0 250*1 5 AND 6 7:and some text8 999"  ! define an input line to search for the expression
+      call regcomp(regex,expression,&#146;x&#146;)                     ! compile the regex
+      ipass=1                                                ! initialize pass counter
+      INFINITE: do                     ! find match, then look again in remainder of line till all matches found
+         match=regexec(regex,input_line,matches)        ! look for a match in (remaining) string
+         if(.not.match)exit INFINITE                    ! if no match found exit
+         output_line=regmatch(1,input_line,matches)     ! use bounds in MATCHES to select the matching substring
+         write(*,&#146;(8x,*(a))&#146;) &#146;match="&#146;,output_line,&#146;"&#146; ! show match
+         istart=matches(2,1)+1                          ! find beginning of remainder of string
+         if(istart.gt.len(input_line))exit INFINITE     ! reached end of string
+         input_line=input_line(istart:)                 ! reduce string by any previous match
+         ipass=ipass+1                                  ! increment count of passes made
+      enddo INFINITE                                    ! free memory used for compiled regular expression
+      call regfree(regex)
+   end program demo_regcomp
+<P>
+</PRE>
+Expected output
+<P>
+<PRE>
+   match="30*0"
+   match="250*1"
+   match="5"
+   match="6"
+   match="7"
+   match="8"
+   match="999"
+</PRE>
+</BLOCKQUOTE>
+<A name=5>
+
+     <H3>SEE ALSO</H3>
+
+</A>
+<BLOCKQUOTE>
+This routine calls an implementation of IEEE Std 1003.2 ( POSIX.2 ) regular expressions ( RE&#146;s); see <B>re_format</B>(7).
 </BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>regcomp (3)</TD> <TD align=right width=33%><I>January 06, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from f1dc5edc-2465-4161-af8d-53611bbae34a using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>regcomp (3)</TD> <TD align=right width=33%><I>January 27, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 9b9ac51e-9e16-477e-af8d-2f543cc49be7 using man macros.</FONT>
 </div>
 </div>
 <center><img src="images/regcomp.3.gif"></center> 
