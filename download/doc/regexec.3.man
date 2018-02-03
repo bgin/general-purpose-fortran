@@ -55,7 +55,7 @@ EXAMPLE
 
   Sample Output
 
-     test_regexec '\<integer\>' < test_regexec.f90
+     demo_regexec '\<integer\>' < demo_regexec.f90
      integer                      :: command_argument_length
      integer                      :: ios
 

@@ -13,7 +13,7 @@ lastprogram ufpp.f90
 lastprogram makeout.f90
 lastprogram manup.f90
 lastprogram t2m.f90
-lastprogram temp.f90 alphabet.f90 base.f90
+lastprogram degrees.f90 alphabet.f90 base.f90
 lastprogram notabs.f90 dtu.f90
 lastprogram colors.f90 compute.f90
 lastprogram huegif.f90
@@ -47,6 +47,7 @@ lastprogram _cmp.f90
 lastprogram _dirname.f90
 lastprogram _echo.f90
 lastprogram _false.f90
+lastprogram _grep.f90
 lastprogram _hostname.f90
 lastprogram _kill.f90
 lastprogram _ln.f90

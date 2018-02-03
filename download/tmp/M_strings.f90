@@ -1457,26 +1457,25 @@ character(len=*),parameter::ident="@(#)M_strings::replace(3f): Globally replace 
    character(len=*),intent(in),optional   :: cmd          ! contains the instructions changing the string
 !-----------------------------------------------------------------------------------------------------------------------------------
 ! returns
-   character(len=:),allocatable  :: newline      ! scratch string buffer
+   character(len=:),allocatable  :: newline               ! output string buffer
 !-----------------------------------------------------------------------------------------------------------------------------------
 ! local
    character(len=:),allocatable  :: new_local, old_local
-   integer                       :: ml
-   integer                       :: ier1
+   integer                       :: ier1,ier2
    integer                       :: original_input_length
    integer                       :: len_old, len_new
    integer                       :: ladd
-   integer                       :: ir
+   integer                       :: left_margin, right_margin
    integer                       :: ind
    integer                       :: ic
    integer                       :: ichar
 !-----------------------------------------------------------------------------------------------------------------------------------
 !  get old_local and new_local from cmd or old and new
-   ierr=0
    if(present(cmd))then
-      call crack_cmd(cmd,old_local,new_local,ierr)
-      if(ierr.ne.0)then
+      call crack_cmd(cmd,old_local,new_local,ier2)
+      if(ier2.ne.0)then
          newline=targetline  ! if no changes are made return original string on error
+         if(present(ierr))ierr=ier2
          return
       endif
    elseif(present(old).and.present(new))then
@@ -1492,28 +1491,28 @@ character(len=*),parameter::ident="@(#)M_strings::replace(3f): Globally replace 
    original_input_length=len_trim(targetline)          ! get non-blank length of input line
    len_old=len(old_local)                              ! length of old substring to be replaced
    len_new=len(new_local)                              ! length of new substring to replace old substring
-   ml=1                                                ! ml is left margin of window to change
-   ir=len(targetline)                                  ! ir is right margin  of window to change
+   left_margin=1                                       ! left_margin is left margin of window to change
+   right_margin=len(targetline)                        ! right_margin is right margin  of window to change
    newline=''                                          ! begin with a blank line as output string
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(len_old.eq.0)then                                ! c//new/ means insert new at beginning of line (or left margin)
       ichar=len_new + original_input_length
       if(len_new.gt.0)then
-         newline=new_local(:len_new)//targetline(ml:original_input_length)
+         newline=new_local(:len_new)//targetline(left_margin:original_input_length)
       else
-         newline=targetline(ml:original_input_length)
+         newline=targetline(left_margin:original_input_length)
       endif
       ier1=1                                           ! made one change. actually, c/// should maybe return 0
       if(present(ierr))ierr=ier1
       return
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
-   ichar=ml                                            ! place to put characters into output string
-   ic=ml                                               ! place looking at in input string
+   ichar=left_margin                                   ! place to put characters into output string
+   ic=left_margin                                      ! place looking at in input string
    loop: do
       ind=index(targetline(ic:),old_local(:len_old))+ic-1 ! try finding start of OLD in remaining part of input in change window
-      if(ind.eq.ic-1.or.ind.gt.ir)then                 ! did not find old string or found old string past edit window
-         exit loop                                     ! no more changes left to make
+      if(ind.eq.ic-1.or.ind.gt.right_margin)then          ! did not find old string or found old string past edit window
+         exit loop                                        ! no more changes left to make
       endif
       ier1=ier1+1                                      ! found an old string to change, so increment count of changes
       if(ind.gt.ic)then                                ! if found old string past at current position in input string copy unchanged

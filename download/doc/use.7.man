@@ -1,5 +1,5 @@
 NAME
-     use(7f) - [FORTRAN] uives a program unit accessibility to public entities in a module.
+     use(7f) - [FORTRAN] gives a program unit accessibility to public entities in a module.
 SYNOPSIS
    USE [, mode-nature ::] namespace [, rename-list]
    USE [, mode-nature ::] namespace [,ONLY: only-list]

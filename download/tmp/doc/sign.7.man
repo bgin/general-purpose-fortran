@@ -5,6 +5,7 @@ SYNOPSIS
 DESCRIPTION
 EXAMPLE
    Program showing control of plus sign on positive numeric output
+
       implicit none
       complex :: x=(123.456,987.654)
       integer :: i=789
@@ -14,16 +15,17 @@ EXAMPLE
       open(unit=6,sign='plus')
       write(*,*)'PASS WHERE FILE HAS SIGN="PLUS"'
       do j=1,2
-      write(*,*) 'LIST DIRECTED ',a,i,x
-      write(*,'(*(g0:,1x))') 'GENERAL FORMATTED',a,i,x
-      write(*,'(*(ss,g0:,1x))') 'GENERAL FORMATTED EXPLICIT SUPPRESS',a,i,x
-      write(*,'(*(sp,g0:,1x))') 'GENERAL FORMATTED EXPLICIT PLUS',a,i,x
-      write(*,'(a,1x,f8.4,1x,i4,1x,f9.4,1x,f9.4)') 'FORMATTED',a,i,x
-      write(*,'(a,1x,f8.4,1x,i4,1x,f9.4,1x,f9.4)') 'FORMATTED',a,i,x
-      write(*,nlist)
-      if(j.eq.2)exit
-      write(*,*)
-      open(unit=6,sign='suppress')
-      write(*,*)'PASS WHERE FILE HAS SIGN="SUPPRESS"'
+         write(*,*) 'LIST DIRECTED ',a,i,x
+         write(*,'(*(g0:,1x))') 'GENERAL FORMATTED',a,i,x
+         write(*,'(*(ss,g0:,1x))') 'GENERAL FORMATTED EXPLICIT SUPPRESS',a,i,x
+         write(*,'(*(sp,g0:,1x))') 'GENERAL FORMATTED EXPLICIT PLUS',a,i,x
+         write(*,'(a,1x,f8.4,1x,i4,1x,f9.4,1x,f9.4)') 'FORMATTED',a,i,x
+         write(*,'(a,1x,f8.4,1x,i4,1x,f9.4,1x,f9.4)') 'FORMATTED',a,i,x
+         write(*,nlist)
+         if(j.eq.2)exit
+         write(*,*)
+         open(unit=6,sign='suppress')
+         write(*,*)'PASS WHERE FILE HAS SIGN="SUPPRESS"'
       enddo
       end
+

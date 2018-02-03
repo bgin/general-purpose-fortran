@@ -34,7 +34,7 @@ EXAMPLES
   and uses an RE (Regular Expression) to read fields from the line and then uses
   REGSUB(3f) to print strings using the matched strings
 
-   program test_program
+   program demo_regsub
    use M_regex, only: regex_type, regcomp, regexec, regerror, regmatch, regfree, regsub
    use M_strings, only : replace
    implicit none
@@ -114,7 +114,7 @@ EXAMPLES
 
       call regfree(regex)
 
-   end program test_program
+   end program demo_regsub
    --------------------------------------------------------------------------------
    doeqj:xxxxx:1001:200:John Q. Doe:/home/doeqj:/bin/tcsh: and more
    username="doeqj" password="xxxxx" UID="1001" GID="200" name="John Q. Doe" home="/home/doeqj" shell="/bin/tcsh"

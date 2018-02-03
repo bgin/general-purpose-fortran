@@ -11,17 +11,18 @@
 !!
 !!##DESCRIPTION
 !!
-!!    These routines implement IEEE Std 1003.2 ( POSIX.2 ) RE (Regular
-!!    Expressions). The regcomp(3c) function compiles an RE written as a
-!!    string into an internal form, regexec(3c) matches that internal form
-!!    against a string and reports results, regerror(3c) transforms error
-!!    codes from either into human-readable messages, and regfree(3c) frees
-!!    any dynamically-allocated storage used by the internal form of an RE.
+!!    These routines interface with the C implementation of  IEEE Std 1003.2 ( POSIX.2 ) RE (Regular
+!!    Expressions).
+!!
+!!    o The regcomp(3c) function compiles an RE written as a string into an internal form
+!!    o regexec(3c) matches that internal form against a string and reports results
+!!    o regerror(3c) transforms error codes from either into human-readable messages
+!!    o and regfree(3c) frees any dynamically-allocated storage used by the internal form of an RE.
 !!
 !!    The Fortran interface is composed of wrapper routines that call the
 !!    C library, plus some extensions (ie. regmatch(3f), regsub(3f)).
 !!
-!!    The following constructs are recognized in a ERE:
+!!    The following constructs are recognized in a ERE (Extended Regular Expression):
 !!
 !!        .     Matches any character except newline.
 !!        *     (postfix) Matches the preceding expression zero, one or several times
@@ -52,9 +53,9 @@
 !!    (roughly those of ed(1); 1003.2 basic REs or BRE). BRE mostly
 !!    exist for backward compatibility in some old programs; they will be
 !!    discussed at the end. IEEE Std 1003.2 ( POSIX.2 ) leaves some
-!!    aspects of RE syntax and semantics open; ` ' marks decisions on
-!!    these aspects that may not be fully portable to other IEEE Std 1003.2
-!!    ( POSIX.2 ) implementations.
+!!    aspects of RE syntax and semantics open; decisions on
+!!    these aspects mean that conforming implementations of IEEE Std 1003.2
+!!    ( POSIX.2 ) may not be completely compatible.
 !!
 !!    A (modern) RE is one or more non-empty branches, separated by |.
 !!    It matches anything that matches one of the branches.
@@ -84,7 +85,7 @@
 !!    string) , a bracket expression (see below), . (matching any
 !!    single character), ^ (matching the null string at the beginning
 !!    of a line), $ (matching the null string at the end of a line), a
-!!    \ followed by one of the characters ^.[$()|*+?{\ (matching
+!!    \\ followed by one of the characters ^.[$()|*+?{\ (matching
 !!    that character taken as an ordinary character), a \ followed
 !!    by any other character (matching that character taken as an ordinary
 !!    character, as if the \ had not been present ), or a single
@@ -153,7 +154,7 @@
 !!    There are two special cases of bracket expressions: the bracket
 !!    expressions [[:<:]] and [[:>:]] match the null string at the beginning
 !!    and end of a word respectively. A word is defined as a sequence of word
-!!    characters which is neither pre ceded nor followed by word characters. A
+!!    characters which is neither preceded nor followed by word characters. A
 !!    word character is an alnum character (as defined by ctype(3)) or an
 !!    underscore. This is an extension, compatible with but not specified
 !!    by IEEE Std 1003.2 ( POSIX.2 ), and should be used with caution in
@@ -171,7 +172,7 @@
 !!    Match lengths are measured in characters, not collating elements. A
 !!    null string is considered longer than no match at all. For example, bb*
 !!    matches the three middle characters of abbbc , (wee|week)(knights|nights)
-!!    matches all ten characters of weeknights , when (.*).* is matched against
+!!    matches all ten characters of weeknights, when (.*).* is matched against
 !!    abc the parenthesized subexpression matches all three characters, and
 !!    when (a*)* is matched against bc both the whole RE and the parenthesized
 !!    subexpression match the null string.
@@ -192,9 +193,9 @@
 !!    Obsolete ( basic ) regular expressions differ in several respects. | is
 !!    an ordinary character and there is no equivalent for its functionality. +
 !!    and ? are ordinary characters, and their functionality can be expressed
-!!    using bounds ( {1,} or {0,1} respectively). Also note that x+ in modern
+!!    using bounds ( {1,} or {0,1} respectively). Also note that x+ in modern,
 !!    REs is equivalent to xx* . The delimiters for bounds are \{ and \}
-!!    , with { and } by themselves ordinary characters. The parentheses for
+!!    with { and } by themselves ordinary characters. The parentheses for
 !!    nested subexpressions are \( and \) , with ( and ) by themselves ordinary
 !!    characters. ^ is an ordinary character except at the beginning of the
 !!    RE or the beginning of a parenthesized subexpression, $ is an ordinary
@@ -230,38 +231,6 @@
 !!
 !!##GENERAL
 !!
-!!    These routines implement IEEE Std 1003.2 (   POSIX.2   ) regular
-!!    expressions ( RE's ); see re_format(7). The regcomp() function
-!!    compiles an RE written as a string into an internal form, regexec()
-!!    matches that internal form against a string and reports results,
-!!    regerror() transforms error codes from either into human-readable
-!!    messages, and regfree() frees any dynamically-allocated storage used
-!!    by the internal form of an RE.
-!!
-!!    The header <regex.h> declares two structure types, regex_t and
-!!    regmatch_t, the former for compiled internal forms and the latter for
-!!    match reporting. It also declares the four functions, a type regoff_t,
-!!    and a number of constants with names starting with    REG_   .
-!!
-!!    The regcomp() function compiles the regular expression contained
-!!    in the pattern string, subject to the flags in cflags, and places
-!!    the results in the regex_t structure pointed to by preg. The cflags
-!!    argument is the bitwise OR of zero or more of the following flags:
-!!
-!!    When successful, regcomp() returns 0 and fills in the structure
-!!    pointed to by preg. One member of that structure (other than re_endp)
-!!    is publicized: re_nsub, of type size_t, contains the number of
-!!    parenthesized subexpressions within the RE (except that the value of
-!!    this member is undefined if the REG_NOSUB flag was used). If regcomp()
-!!    fails, it returns a non-zero error code; see DIAGNOSTICS.
-!!
-!!    The regexec() function matches the compiled RE pointed to by preg
-!!    against the string, subject to the flags in eflags, and reports results
-!!    using nmatch, pmatch, and the returned value. The RE must have been
-!!    compiled by a previous invocation of regcomp(). The compiled form is
-!!    not altered during execution of regexec(), so a single compiled RE
-!!    can be used simultaneously by multiple threads.
-!!
 !!    By default, the NUL-terminated string pointed to by string is
 !!    considered to be the text of an entire line, minus any terminating
 !!    newline. The eflags argument is the bitwise OR of zero or more of
@@ -287,14 +256,6 @@
 !!                  systems. Note that a non-zero rm_so does not imply
 !!                  REG_NOTBOL; REG_STARTEND affects only the location of
 !!                  the string, not how it is matched.
-!!
-!!    See re_format(7) for a discussion of what is matched in situations
-!!    where an RE or a portion thereof could match any of several substrings
-!!    of string.
-!!
-!!    Normally, regexec() returns 0 for success and the non-zero code
-!!    REG_NOMATCH for failure. Other non-zero error codes may be returned
-!!    in exceptional situations; see DIAGNOSTICS.
 !!
 !!    If REG_NOSUB was specified in the compilation of the RE, or if nmatch
 !!    is 0, regexec() ignores the pmatch argument (but see below for the
@@ -659,7 +620,7 @@ end subroutine regcomp
 !!
 !!   Sample Output
 !!
-!!      test_regexec '\<integer\>' < test_regexec.f90
+!!      demo_regexec '\<integer\>' < demo_regexec.f90
 !!      integer                      :: command_argument_length
 !!      integer                      :: ios
 !===================================================================================================================================
@@ -830,10 +791,10 @@ end function regmatch
 !!      REG_INVARG    invalid argument, e.g. negative-length string
 !!      REG_ILLSEQ    illegal byte sequence (bad multibyte character)
 !!##OPTIONS
-!!      this         a compiled regular expression from REGCOMP(3f)
-!!      errcode      the last error code generated by REGCOMP(3f) or REGEXEC(3f)
-!!      errmsg       the error message
-!!      errmsg_len   size required of ERRMSG to display the entire message
+!!      THIS         a compiled regular expression from REGCOMP(3f)
+!!      ERRCODE      the last error code generated by REGCOMP(3f) or REGEXEC(3f)
+!!      ERRMSG       the error message
+!!      ERRMSG_LEN   size required of ERRMSG to display the entire message
 !!##EXAMPLE
 !!
 !!   Sample program
@@ -849,7 +810,7 @@ end function regmatch
 !!    logical                      :: match
 !!
 !!       expression= "([0-9\.\-\*\/]+)+"
-!!       expression= "([0-9\.\-\*\/+)+"  ! intentionally bas RE (Regular Expression)
+!!       expression= "([0-9\.\-\*\/+)+"  ! intentionally bad RE (Regular Expression)
 !!       input_line= "30*0 250*1 5 6 7"
 !!       call regcomp(regex,expression,'x',status=istat)
 !!       if (istat/=0) then
@@ -873,8 +834,8 @@ end function regmatch
 !!
 !!   Expected output:
 !!
-!!    stop 1
 !!    Regex runtime error in regcomp(3f):brackets ([ ]) not balanced , expression=([0-9\.\-\*\/+)+
+!!    stop 1
 !===================================================================================================================================
 function regerror(this,errcode) result(errmsg)
 
@@ -1004,7 +965,7 @@ end subroutine regfree
 !!   and uses an RE (Regular Expression) to read fields from the line and then uses
 !!   REGSUB(3f) to print strings using the matched strings
 !!
-!!    program test_program
+!!    program demo_regsub
 !!    use M_regex, only: regex_type, regcomp, regexec, regerror, regmatch, regfree, regsub
 !!    use M_strings, only : replace
 !!    implicit none
@@ -1084,7 +1045,7 @@ end subroutine regfree
 !!
 !!       call regfree(regex)
 !!
-!!    end program test_program
+!!    end program demo_regsub
 !!    --------------------------------------------------------------------------------
 !!    doeqj:xxxxx:1001:200:John Q. Doe:/home/doeqj:/bin/tcsh: and more
 !!    username="doeqj" password="xxxxx" UID="1001" GID="200" name="John Q. Doe" home="/home/doeqj" shell="/bin/tcsh"

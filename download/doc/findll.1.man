@@ -24,4 +24,6 @@ EXAMPLES
 
         # show lines over 72 characters in length
         $ findll *.f *.F -l 72
+        # show length of all lines on stdin
+        $ findll -l -1
 
