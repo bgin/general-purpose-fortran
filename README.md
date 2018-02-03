@@ -169,10 +169,9 @@ Read and write from a process using popen(3c)
 Some simple but commonly called C routines interfaced to Fortran. Makes heavy
 use of the ISO_C_BINDING module introduced as part of Fortran 2003.
 
-###Regular Expressions
 
 [M_REGEX(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/M_regex.3.html)
-  
+
 Call the POSIX regular expression library.
 
 ### Fortran(2003) interface to the ncurses(3c) library
