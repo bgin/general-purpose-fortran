@@ -171,7 +171,7 @@ use of the ISO_C_BINDING module introduced as part of Fortran 2003.
 
 ###Regular Expressions
 
-[M_REGEX(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/htl/M_regex.3.html)
+[M_REGEX(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/M_regex.3.html)
   
 Call the POSIX regular expression library.
 
