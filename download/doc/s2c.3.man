@@ -1,5 +1,5 @@
 NAME
-     s2c - [M_strings] convert character variable to array of characters with last element set to null
+     s2c(3f) - [M_strings] convert character variable to array of characters with last element set to null
 
 SYNOPSIS
    function s2c(string)

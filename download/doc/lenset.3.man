@@ -1,5 +1,5 @@
 NAME
-   lenset - [M_strings] return string trimmed or padded to specified length
+   lenset(3f) - [M_strings] return string trimmed or padded to specified length
 
 SYNOPSIS
    function lenset(str,length) result(strout)

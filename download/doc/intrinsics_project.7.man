@@ -9,7 +9,7 @@ DESCRIPTION
 
    The manpage source is maintained as a single flat-text file
    (intrinsics.ff) which is run thru ufpp(1) and filters like txt2man(1)
-   to create the program intrinsics(1f).  That program generates all
+   to create the program intrinsics(1f). That program generates all
    the text as plain text as well as being used as the source for the
    man(1) pages. The program intrinsics(1f) is very useful for scanning
    for keywords.

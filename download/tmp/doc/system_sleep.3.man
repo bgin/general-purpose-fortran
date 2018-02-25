@@ -1,5 +1,5 @@
 NAME
-   system_sleep - [M_time] call C sleep(3c) or usleep(3c) procedure
+   system_sleep(3f) - [M_time] call C sleep(3c) or usleep(3c) procedure
 SYNOPSIS
    subroutine system_sleep(wait_seconds)
 

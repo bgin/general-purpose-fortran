@@ -106,6 +106,7 @@ char ident[] = "@(#)jucolor(3c):this procedure converts a color's components fro
    void hlsrgb( );
    void hvsrgb( );
    void rgbhls( );
+   void rgbhvs( );
 
    /* reset the status flag. */
    *status=0;

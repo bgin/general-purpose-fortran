@@ -1,5 +1,5 @@
 NAME
-   c2f - [M_units:TEMPERATURE] convert Celsius to Fahrenheit
+   c2f(3f) - [M_units:TEMPERATURE] convert Celsius to Fahrenheit
 SYNOPSIS
    elemental real function c2f(celsius)
 

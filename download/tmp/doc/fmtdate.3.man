@@ -1,5 +1,5 @@
 NAME
-   fmtdate - [M_time] given DAT date-time array return date as string using specified format
+   fmtdate(3f) - [M_time] given DAT date-time array return date as string using specified format
 
 SYNOPSIS
    function fmtdate(values,format) RESULT (timestr)

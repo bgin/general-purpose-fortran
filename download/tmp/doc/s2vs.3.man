@@ -1,5 +1,5 @@
 NAME
-     s2vs - [M_strings] given a string representing numbers return a numeric array
+     s2vs(3f) - [M_strings] given a string representing numbers return a numeric array
 
 SYNOPSIS
       function s2vs(line[,delim])

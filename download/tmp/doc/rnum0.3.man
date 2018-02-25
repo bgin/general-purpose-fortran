@@ -1,7 +1,8 @@
 NAME
       rnum0(3f) - [M_calculator_plus] returns real number from string expression using JUCALC(3f)
 SYNOPSIS
-real function rnum0(inline)
+   real function rnum0(inline)
+
     character(len=*), intent=(in) :: inline
     integer,intent(out),optional  :: ierr
 

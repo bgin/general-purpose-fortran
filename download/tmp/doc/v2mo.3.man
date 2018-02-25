@@ -1,5 +1,5 @@
 NAME
-   v2mo - [M_time] returns the month name of a Common month number
+   v2mo(3f) - [M_time] returns the month name of a Common month number
 
 SYNOPSIS
    function v2mo(imonth) result(month_name)

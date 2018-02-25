@@ -86,21 +86,21 @@ contains
 !!
 !!    Usage:
 !!
-!!     real, integer data:
-!!        sort_shell(X,ORDER='A|D')
+!!    for real, integer data:
+!!       call sort_shell(X,ORDER='A|D')
 !!
 !!     X          input/output numeric array
 !!     order      Ascending (a-z) or Descending (z-a) sort order
 !!
-!!     complex, complex(kind=kind(0.0d0)) data:
-!!        sort_shell(X,order='A|D',type='R|I|S')
+!!     for complex, complex(kind=kind(0.0d0)) data:
+!!        call sort_shell(X,order='A|D',type='R|I|S')
 !!
 !!     X          input/output complex array
 !!     order      Ascending (a-z) or Descending (z-a) sort order
 !!     type       Sort by Real component, Imaginary component, or Sqrt(R**2+I**2)
 !!
-!!     character data:
-!!        sort_shell(X,order='A|D',[startcol=NN,endcol=MM])
+!!     for character data:
+!!        call sort_shell(X,order='A|D',[startcol=NN,endcol=MM])
 !!
 !!     X          input/output character array
 !!     order      Ascending (a-z) or Descending (z-a) sort order

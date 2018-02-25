@@ -29,7 +29,7 @@ contains
 !!     o Remember that the calculator treats all values as DOUBLEPRECISION.
 !!
 !!    Values returned are assumed to be very close to being whole integer
-!!    values.  A small value (0.01) is added to the result before it is
+!!    values. A small value (0.01) is added to the result before it is
 !!    returned to reduce roundoff error problems. This could introduce
 !!    errors if INUM0 is misused and is not being used to calculate
 !!    essentially integer results.
@@ -128,7 +128,8 @@ end function inum0
 !!       rnum0(3f) - [M_calculator_plus] returns real number from string expression using JUCALC(3f)
 !!##SYNOPSIS
 !!
-!! real function rnum0(inline)
+!!    real function rnum0(inline)
+!!
 !!     character(len=*), intent=(in) :: inline
 !!     integer,intent(out),optional  :: ierr
 !!

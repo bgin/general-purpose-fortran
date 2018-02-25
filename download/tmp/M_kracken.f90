@@ -5,8 +5,11 @@ module M_kracken
 use M_debug,   only: debug, io_debug
 use M_journal, only: journal
 use M_strings, only: upper, string_to_value, split, s2v
+use M_list,    only: locate, insert
 implicit none
-character(len=*),parameter :: ident="@(#)M_kracken(3fm):parse command line options of Fortran programs using Unix-like syntax"
+
+character(len=*),parameter::ident="@(#)M_kracken(3fm): parse command line options of Fortran programs using Unix-like syntax"
+
 !===================================================================================================================================
    private
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -34,8 +37,6 @@ character(len=*),parameter :: ident="@(#)M_kracken(3fm):parse command line optio
    public :: store                  ! replace dictionary name's value (if allow=add add name if necessary)
    public :: show                   ! display dictionary contents for information
 !-----------------------------------------------------------------------------------------------------------------------------------
-   private :: bounce                ! find location (index) in Language Dictionary where VARNAM can be found
-   private :: add_string            ! Add new string name to Language Library dictionary
    private :: subscript             ! return the subscript value of a string when given it's name
    private :: menu                  ! generate an interactive menu when -? option is used
    private :: get_command_arguments ! get_command_arguments: return all command arguments as a string
@@ -43,7 +44,6 @@ character(len=*),parameter :: ident="@(#)M_kracken(3fm):parse command line optio
 ! length of verbs and entries in Language dictionary
 ! NOTE:   many parameters may be  reduced in size so as to just accommodate being used as a command line parser.
 !         In particular, some might want to change:
-   integer, parameter,public :: IPic=4000                          ! number of entries in language dictionary
    logical,public            :: stop_command=.false.               ! indication to return stop_command as false in interactive mode
    integer, parameter,public :: IPvalue=4096                       ! length of keyword value
    integer, parameter,public :: IPcmd=32768                        ! length of command
@@ -54,10 +54,10 @@ character(len=*),parameter :: ident="@(#)M_kracken(3fm):parse command line optio
    integer, parameter        :: k_dbl = SELECTED_REAL_KIND(15,300) ! real*8
 !-----------------------------------------------------------------------------------------------------------------------------------
    ! dictionary for Language routines
-   character(len=IPvalue),dimension(IPic)     :: dict_vals=" "     ! contains the values of string variables
-   character(len=IPverb),dimension(IPic)      :: dict_verbs=" "    ! string variable names
-   integer(kind=k_int),dimension(IPic)        :: dict_lens=0       ! significant lengths of string variable values
-   integer(kind=k_int),dimension(IPic)        :: dict_calls=0      ! number of times this keyword stored on a call to parse
+   character(len=IPvalue),allocatable         :: dict_vals(:)      ! contains the values of string variables
+   character(len=IPverb),allocatable          :: dict_verbs(:)     ! string variable names
+   integer(kind=k_int),allocatable            :: dict_lens(:)      ! significant lengths of string variable values
+   integer(kind=k_int),allocatable            :: dict_calls(:)     ! number of times this keyword stored on a call to parse
 !-----------------------------------------------------------------------------------------------------------------------------------
    character(len=1),save,public               :: kracken_comment='#'
    character(len=IPcmd),public                :: leftover=' '      ! remaining command(s) on line
@@ -117,7 +117,9 @@ contains
 !!     VALUE IS use this value instead
 !===================================================================================================================================
 subroutine retrev(name,val,len,ier)
-character(len=*),parameter :: ident="@(#)M_kracken::retrev(3f): retrieve token value from Language Dictionary when given NAME"
+
+character(len=*),parameter::ident="@(#)M_kracken::retrev(3f): retrieve token value from Language Dictionary when given NAME"
+
 !-----------------------------------------------------------------------------------------------------------------------------------
 character(len=*),intent(in)     :: name        ! name of variable to retrieve value for in form VERB_NAME
 character(len=*),intent(out)    :: val         ! value for requested variable
@@ -144,7 +146,7 @@ end subroutine retrev
 !===================================================================================================================================
 !>
 !!##NAME
-!!          dget - [ARGUMENTS:M_kracken] given keyword fetch doubleprecision value from command argument
+!!          dget(3f) - [ARGUMENTS:M_kracken] given keyword fetch doubleprecision value from command argument
 !!##SYNOPSIS
 !!
 !!    function dget(keyword) result(value)
@@ -187,7 +189,9 @@ end subroutine retrev
 !!       3.00000000
 !===================================================================================================================================
 function dget(keyword)
-character(len=*),parameter :: ident="@(#)M_kracken::dget(3f): given keyword fetch dble value from Language Dictionary (zero on err)"
+
+character(len=*),parameter::ident="@(#)M_kracken::dget(3f): given keyword fetch dble value from Language Dictionary (zero on err)"
+
 real(kind=dp)                :: dget              ! function type
 character(len=*),intent(in)  :: keyword           ! keyword to retrieve value for from dictionary
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -201,7 +205,7 @@ end function dget
 !===================================================================================================================================
 !>
 !!##NAME
-!!          rget - [ARGUMENTS:M_kracken] given keyword fetch real value from command argument
+!!          rget(3f) - [ARGUMENTS:M_kracken] given keyword fetch real value from command argument
 !!##SYNOPSIS
 !!
 !!    function rget(keyword) result(value)
@@ -244,7 +248,9 @@ end function dget
 !!       3.00000000
 !===================================================================================================================================
 function rget(keyword)
-character(len=*),parameter :: ident="@(#)M_kracken::rget(3f): given keyword fetch real value from language dictionary (zero on err)"
+
+character(len=*),parameter::ident="@(#)M_kracken::rget(3f): given keyword fetch real value from language dictionary (zero on err)"
+
 !-----------------------------------------------------------------------------------------------------------------------------------
    real                        :: rget             ! function type
    character(len=*),intent(in) :: keyword          ! keyword to retrieve value for from dictionary
@@ -257,7 +263,7 @@ end function rget
 !===================================================================================================================================
 !>
 !!##NAME
-!!          iget - [ARGUMENTS:M_kracken] given keyword fetch integer value from command argument
+!!          iget(3f) - [ARGUMENTS:M_kracken] given keyword fetch integer value from command argument
 !!
 !!##SYNOPSIS
 !!
@@ -305,7 +311,9 @@ end function rget
 !!       3
 !===================================================================================================================================
 function iget(keyword)
-character(len=*),parameter :: ident="@(#)M_kracken::iget(3f): given keyword fetch integer value from Language Dictionary (0 on err)"
+
+character(len=*),parameter::ident="@(#)M_kracken::iget(3f): given keyword fetch integer value from Language Dictionary (0 on err)"
+
 !-----------------------------------------------------------------------------------------------------------------------------------
    integer                      :: iget            ! function type
    character(len=*),intent(in)  :: keyword         ! keyword to retrieve value for from dictionary
@@ -319,7 +327,7 @@ end function iget
 !===================================================================================================================================
 !>
 !!##NAME
-!!          lget - [ARGUMENTS:M_kracken] given keyword fetch logical value from command arguments
+!!          lget(3f) - [ARGUMENTS:M_kracken] given keyword fetch logical value from command arguments
 !!##SYNOPSIS
 !!
 !!    function lget(keyword) result(lval)
@@ -368,7 +376,9 @@ end function iget
 !!      The truth is F
 !===================================================================================================================================
 function lget(keyword)
-character(len=*),parameter :: ident="@(#)M_kracken::lget(3f): given keyword fetch logical value from lang. dictionary (.f. on err)"
+
+character(len=*),parameter::ident="@(#)M_kracken::lget(3f): given keyword fetch logical value from lang. dictionary (.f. on err)"
+
 !-----------------------------------------------------------------------------------------------------------------------------------
 logical                      :: lget               ! procedure type
 character(len=*),intent(in)  :: keyword            ! the dictionary keyword (in form VERB_KEYWORD) to retrieve
@@ -402,7 +412,7 @@ end function lget
 !===================================================================================================================================
 !>
 !!##NAME
-!!          sget - [ARGUMENTS:M_kracken] given keyword fetch string value and length from command arguments
+!!          sget(3f) - [ARGUMENTS:M_kracken] given keyword fetch string value and length from command arguments
 !!##SYNOPSIS
 !!
 !!   function sget(name,ilen) result(string)
@@ -459,7 +469,9 @@ end function lget
 !!    b is BBBBBBB
 !===================================================================================================================================
 function sget(name,ilen) result(string)
-character(len=*),parameter :: ident="@(#)M_kracken::sget(3f): Fetch string value and length of specified NAME from lang. dictionary"
+
+character(len=*),parameter::ident="@(#)M_kracken::sget(3f): Fetch string value and length of specified NAME from lang. dictionary"
+
 !  This routine trusts that the desired name exists. A blank is returned if the name is not in the dictionary
 character(len=:),allocatable  :: string      ! returned value
 character(len=*),intent(in)   :: name        ! name to look up in dictionary
@@ -485,7 +497,7 @@ end function sget
 !===================================================================================================================================
 !>
 !!##NAME
-!!          dgets - [ARGUMENTS:M_kracken] given keyword fetch doubleprecision array from command arguments
+!!          dgets(3f) - [ARGUMENTS:M_kracken] given keyword fetch doubleprecision array from command arguments
 !!##SYNOPSIS
 !!
 !!    function dgets(keyword) result(darray)
@@ -509,7 +521,7 @@ end function sget
 !!
 !!   Sample program
 !!
-!!    program demo_dnums
+!!    program demo_dgets
 !!    use M_kracken, only: kracken, dgets
 !!    implicit none
 !!    doubleprecision,allocatable  :: vals(:)
@@ -518,20 +530,22 @@ end function sget
 !!    call kracken('demo','-nums 1 2 3 1000 100,000 11.11111 77.77777 -77.7777' )
 !!    vals=dgets('demo_nums') ! get any values specified for -nums
 !!    write(*,'(*(g0:,","))')( vals(i),i=1,size(vals)) ! print the values
-!!    end program demo_dnums
+!!    end program demo_dgets
 !!
 !!   Example program runs:
 !!
-!!    $ demo_dnums
+!!    $ demo_dgets
 !!     1.0000000000000000,2.0000000000000000,3.0000000000000000,
 !!     1000.0000000000000,100000.00000000000,11.111110000000000,
 !!     77.777770000000004,-77.777699999999996
 !!
-!!    $ demo_dnums -nums 89,123,456.789 10.9999999
+!!    $ demo_dgets -nums 89,123,456.789 10.9999999
 !!     89123456.789000005,10.999999900000001
 !===================================================================================================================================
 function dgets(keyword) result(darray)
-character(len=*),parameter  :: ident="@(#)M_kracken::dgets(3f): given keyword fetch dble value from Language Dictionary (0 on err)"
+
+character(len=*),parameter::ident="@(#)M_kracken::dgets(3f): given keyword fetch dble value from Language Dictionary (0 on err)"
+
 character(len=*),intent(in) :: keyword                      ! keyword to retrieve value for from dictionary
 real(kind=dp),allocatable   :: darray(:)                    ! function type
 
@@ -551,7 +565,7 @@ end function dgets
 !===================================================================================================================================
 !>
 !!##NAME
-!!          igets - [ARGUMENTS:M_kracken] given keyword fetch integer array from command arguments
+!!          igets(3f) - [ARGUMENTS:M_kracken] given keyword fetch integer array from command arguments
 !!##SYNOPSIS
 !!
 !!    function igets(keyword) result(iarray)
@@ -579,7 +593,7 @@ end function dgets
 !!
 !!   Sample program
 !!
-!!    program demo_inums
+!!    program demo_igets
 !!    use M_kracken, only: kracken, igets
 !!    implicit none
 !!    integer,allocatable  :: vals(:)
@@ -592,17 +606,19 @@ end function dgets
 !!         ! print the requested values
 !!         write(*,'(*(i0:,","))')( vals(i),i=1,size(vals))
 !!      endif
-!!    end program demo_inums
+!!    end program demo_igets
 !!
 !!   Example program runs:
 !!
-!!      $ demo_inums
+!!      $ demo_igets
 !!      1,2,3,100,1000,10000,100000,11,77,-77
-!!      $ demo_inums -val 89,123,456 10.9999999
+!!      $ demo_igets -val 89,123,456 10.9999999
 !!      89123456,10
 !===================================================================================================================================
 function igets(keyword) result(iarray)
-character(len=*),parameter :: ident="@(#)M_kracken::igets(3f):given keyword fetch integer array from string in dictionary(0 on err)"
+
+character(len=*),parameter::ident="@(#)M_kracken::igets(3f): given keyword fetch integer array from string in dictionary(0 on err)"
+
 character(len=*),intent(in) :: keyword             ! keyword to retrieve value for from dictionary
 integer,allocatable         :: iarray(:)           ! convert value to an array
    iarray=int(dgets(keyword))                      ! just call DGETS(3f) but change returned value to type INTEGER
@@ -612,7 +628,7 @@ end function igets
 !===================================================================================================================================
 !>
 !!##NAME
-!!          rgets - [ARGUMENTS:M_kracken] given keyword fetch real array from command arguments
+!!          rgets(3f) - [ARGUMENTS:M_kracken] given keyword fetch real array from command arguments
 !!##SYNOPSIS
 !!
 !!    function rgets(keyword) result(rarray)
@@ -683,7 +699,9 @@ end function igets
 !!       98.60        37.00
 !===================================================================================================================================
 function rgets(keyword) result(rarray)
-character(len=*),parameter  :: ident="@(#)M_kracken::rgets(3f): given keyword fetch real array from string in dictionary (0 on err)"
+
+character(len=*),parameter::ident="@(#)M_kracken::rgets(3f): given keyword fetch real array from string in dictionary (0 on err)"
+
 character(len=*),intent(in) :: keyword             ! keyword to retrieve value for from dictionary
 real,allocatable            :: rarray(:)           ! convert value to an array
    rarray=real(dgets(keyword))                     ! just call DGETS(3f) but change returned value to type REAL
@@ -693,7 +711,7 @@ end function rgets
 !===================================================================================================================================
 !>
 !!##NAME
-!!          lget - [ARGUMENTS:M_kracken] given keyword fetch logical array from command argument
+!!          lget(3f) - [ARGUMENTS:M_kracken] given keyword fetch logical array from command argument
 !!##SYNOPSIS
 !!
 !!    function lgets(keyword) result(lvals)
@@ -741,7 +759,9 @@ end function rgets
 !!     F F F F T T T T T T F
 !===================================================================================================================================
 function lgets(keyword) result(larray)
-character(len=*),parameter :: ident="@(#)M_kracken::lgets(3f):given keyword fetch logical array from string in dictionary(F on err)"
+
+character(len=*),parameter::ident="@(#)M_kracken::lgets(3f): given keyword fetch logical array from string in dictionary(F on err)"
+
 character(len=*),intent(in)  :: keyword                    ! the dictionary keyword (in form VERB_KEYWORD) to retrieve
 logical,allocatable          :: larray(:)                  ! convert value to an array
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -781,7 +801,7 @@ end function lgets
 !===================================================================================================================================
 !>
 !!##NAME
-!!          sgets - [ARGUMENTS:M_kracken] given keyword fetch string value parsed on whitespace into an array
+!!          sgets(3f) - [ARGUMENTS:M_kracken] given keyword fetch string value parsed on whitespace into an array
 !!##SYNOPSIS
 !!
 !!   function sgets(name,delim) result(strings)
@@ -826,7 +846,9 @@ end function lgets
 !!     string=[parse][this][into][words]
 !===================================================================================================================================
 function sgets(name,delim) result(strings)
-character(len=*),parameter :: ident="@(#)M_kracken::sgets(3f): Fetch strings value for specified NAME from the lang. dictionary"
+
+character(len=*),parameter::ident="@(#)M_kracken::sgets(3f): Fetch strings value for specified NAME from the lang. dictionary"
+
 ! This routine trusts that the desired name exists. A blank is returned if the name is not in the dictionary
 character(len=IPvalue),allocatable  :: strings(:)
 character(len=*),intent(in)         :: name                       ! name to look up in dictionary
@@ -952,35 +974,35 @@ end function sgets
 !!          values= 10000.0000  4.1122334455667700  1234
 !===================================================================================================================================
 subroutine kracken(verb,string,error_return)
-character(len=*),parameter :: ident="@(#)M_kracken::kracken(3f): define and parse command line options"
+
+character(len=*),parameter::ident="@(#)M_kracken::kracken(3f): define and parse command line options"
+
 !  get the entire command line argument list and pass it and the prototype to dissect()
 !-----------------------------------------------------------------------------------------------------------------------------------
-      character(len=*),intent(in)    :: string
-      character(len=*),intent(in)    :: verb
-      integer,intent(out),optional   :: error_return
+character(len=*),intent(in)    :: string
+character(len=*),intent(in)    :: verb
+integer,intent(out),optional   :: error_return
 !-----------------------------------------------------------------------------------------------------------------------------------
-      character(len=:),allocatable   :: command
-      integer                        :: ier
+   character(len=:),allocatable   :: command
+   integer                        :: ier
 !-----------------------------------------------------------------------------------------------------------------------------------
-      if(present(error_return))then
-         error_return=0
-      endif
+   if(present(error_return))then
+      error_return=0
+   endif
 !-----------------------------------------------------------------------------------------------------------------------------------
-      call get_command_arguments(command,ier)
-      if(debug)then
-         write(*,*)'KRACKEN ',trim(command)
+   call get_command_arguments(command,ier)
+   if(debug) write(*,*)'KRACKEN ',trim(command)
+   if(ier.ne.0)then
+      call journal("*kracken* could not get command line arguments")
+      if(present(error_return))error_return=ier
+   else
+      call dissect(verb,string,command,ier)
+      ! if calling procedure is not testing error flag stop program on error
+      if(.not.present(error_return).and.ier.ne.0)then
+         call journal("*kracken* (V 20151212) STOPPING: error parsing arguments")
+         stop
       endif
-      if(ier.ne.0)then
-         call journal("*kracken* could not get command line arguments")
-         if(present(error_return))error_return=ier
-      else
-         call dissect(verb,string,command,ier)
-         ! if calling procedure is not testing error flag stop program on error
-         if(.not.present(error_return).and.ier.ne.0)then
-            call journal("*kracken* (V 20151212) STOPPING: error parsing arguments")
-            stop
-         endif
-      endif
+   endif
 !-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine kracken
 !===================================================================================================================================
@@ -1011,7 +1033,9 @@ end subroutine kracken
 !!
 !===================================================================================================================================
 subroutine setprompts(verb,init)
-character(len=*),parameter :: ident="@(#)M_kracken::setprompts(3f): set explicit prompts for keywords in interactive mode"
+
+character(len=*),parameter::ident="@(#)M_kracken::setprompts(3f): set explicit prompts for keywords in interactive mode"
+
 character(len=*),intent(in):: verb   ! verb name to define prompts for
 character(len=*),intent(in):: init   ! string to define prompts instead of values
       call parse('?'//trim(verb),init,"add") ! initialize command, prefixing verb with question mark character to designate prompts
@@ -1045,26 +1069,28 @@ end subroutine setprompts
 !!
 !===================================================================================================================================
 subroutine dissect(verb,init,pars,error_return)
-character(len=*),parameter :: ident="@(#)M_kracken::dissect(3f): convenient call to parse() -- define defaults, then process"
+
+character(len=*),parameter::ident="@(#)M_kracken::dissect(3f): convenient call to parse() define defaults, then process"
+
 character(len=*),intent(in)  :: verb                     ! the name of the command to be reset/defined  and then set
 character(len=*),intent(in)  :: init                     ! used to define or reset command options; usually hard-set in the program.
 character(len=*),intent(in)  :: pars                     ! defines the command options to be set, usually from a user input file
 integer,intent(out),optional :: error_return
 !-----------------------------------------------------------------------------------------------------------------------------------
-      integer                :: ier
+   integer                :: ier
 !-----------------------------------------------------------------------------------------------------------------------------------
-      if(debug)then
-         write(*,*)'DISSECT ',trim(verb)//'::'//trim(init)//'::'//trim(pars)
-      endif
+   if(debug) write(*,*)'START DISSECT ',trim(verb)//'::'//trim(init)//'::'//trim(pars)
 !-----------------------------------------------------------------------------------------------------------------------------------
-      call store(trim(verb)//'_?','.false.',"add",ier)   ! all commands have the option -? to invoke prompt mode
-      call parse(trim(verb),init,"add")                  ! initialize command
+   call store(trim(verb)//'_?','.false.',"add",ier)   ! all commands have the option -? to invoke prompt mode
+   call parse(trim(verb),init,"add")                  ! initialize command
 !-----------------------------------------------------------------------------------------------------------------------------------
-      call parse(verb,pars,"no_add",ier)                 ! process user command options
-      if(lget(trim(verb)//'_?'))then                     ! if -? option was present prompt for values
-         call menu(verb)
-      endif
-      if(present(error_return))error_return=ier
+   call parse(verb,pars,"no_add",ier)                 ! process user command options
+   if(lget(trim(verb)//'_?'))then                     ! if -? option was present prompt for values
+      call menu(verb)
+   endif
+   if(present(error_return))error_return=ier
+!-----------------------------------------------------------------------------------------------------------------------------------
+   if(debug) write(*,*)'END DISSECT ',trim(verb)//'::'//trim(init)//'::'//trim(pars)
 !-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine dissect
 !===================================================================================================================================
@@ -1116,10 +1142,11 @@ end subroutine dissect
 !!
 !===================================================================================================================================
 subroutine parse(verb,string,allow,error_return)
-character(len=*),parameter :: ident="@(#)M_kracken::parse(3f):parse user command and store tokens into Language Dictionary"
+
+character(len=*),parameter::ident="@(#)M_kracken::parse(3f): parse user command and store tokens into Language Dictionary"
+
 !!!   set up odd for future expansion
 !!!   need to handle a minus followed by a blank character
-!-----------------------------------------------------------------------------------------------------------------------------------
 !-----------------------------------------------------------------------------------------------------------------------------------
 !     SPECIAL FORM:
 !        VERB="MODE"
@@ -1157,9 +1184,9 @@ integer                              ::  ifwd
 integer                              ::  ibegin
 integer                              ::  iend
 !-----------------------------------------------------------------------------------------------------------------------------------
-   if(debug)then
-      write(*,*)'PARSE ',trim(verb)//'::'//trim(string)//'::'//trim(allow)
-   endif
+   if(.not.allocated(dict_verbs)) call initd()
+!-----------------------------------------------------------------------------------------------------------------------------------
+   if(debug) write(*,*)'PARSE ',trim(verb)//'::'//trim(string)//'::'//trim(allow)
 !-----------------------------------------------------------------------------------------------------------------------------------
    leftover=" "
    current_command_length=0
@@ -1173,8 +1200,10 @@ integer                              ::  iend
    endif
    dummy=string
    ipln=len_trim(verb)             ! find number of characters in verb prefix string
-   dict_calls=0                    ! clear number of times this keyword stored on a call to parse
-                                      ! should more efficiently only do this for current VERB instead of entire array in dictionary
+   if(size(dict_verbs).ne.0)then
+      dict_calls=0                 ! clear number of times this keyword stored on a call to parse
+                                   ! should more efficiently only do this for current VERB instead of entire array in dictionary
+   endif
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
    if(subscript(trim(verb)//'_?') .le. 0 )then          ! assuming if adding this is initial call
       call store(trim(verb)//'_?','.false.',"add",ier)  ! all commands have the option -? to invoke prompt mode
@@ -1336,7 +1365,7 @@ end subroutine parse
 !===================================================================================================================================
 !>
 !!##NAME
-!!          store(3fp) - [ARGUMENTS:M_kracken] add or replace dict. name's value (if allow='add' add name if necessary)
+!!          store(3fp) - [ARGUMENTS:M_kracken] add or replace value for specified name in dictionary(if allow='add' add name if needed)
 !!##SYNOPSIS
 !!
 !!   subroutine store(name1,value1,allow1,ier)
@@ -1360,7 +1389,9 @@ end subroutine parse
 !!
 !===================================================================================================================================
 subroutine store(name1,value1,allow1,ier)
-character(len=*),parameter :: ident="@(#)M_kracken::store(3fp): replace dict. name's value (if allow='add' add name if necessary)"
+
+character(len=*),parameter::ident="@(#)M_kracken::store(3fp): replace dict. name's value (if allow='add' add name if necessary)"
+
 !-----------------------------------------------------------------------------------------------------------------------------------
 character(len=*),intent(in)           :: name1       ! name in dictionary of form VERB_KEYWORD
 character(len=*),intent(in)           :: value1      ! value to be associated to NAME1
@@ -1377,10 +1408,9 @@ integer,intent(out)                   :: ier         ! flag if error occurs in a
    integer                            :: new
    integer                            :: ii
    integer                            :: i10
+   integer                            :: inew
 !-----------------------------------------------------------------------------------------------------------------------------------
-   if(debug)then
-      write(*,*)'STORE ',trim(name1)//'::'//trim(value1)//'::'//trim(allow1)
-   endif
+   if(debug) write(*,*)'STORE ',trim(name1)//'::'//trim(value1)//'::'//trim(allow1)
 !-----------------------------------------------------------------------------------------------------------------------------------
    value=" "
    name=" "
@@ -1397,7 +1427,8 @@ integer,intent(out)                   :: ier         ! flag if error occurs in a
    allow=allow1                                      ! store into a standard size variable for this type
    nlen=len(name1)
 !-----------------------------------------------------------------------------------------------------------------------------------
-   call bounce(name,indx,dict_verbs,ier,mssge)       ! determine storage placement of the variable and whether it is new
+   if(.not.allocated(dict_verbs)) call initd()
+   call locate(name,dict_verbs,indx,ier,mssge)       ! determine storage placement of the variable and whether it is new
    if(ier  ==  -1)then                               ! an error occurred in determining the storage location
       call journal("error occurred in *store*")
       call journal(mssge)
@@ -1407,7 +1438,12 @@ integer,intent(out)                   :: ier         ! flag if error occurs in a
    if(indx > 0)then                                  ! found the variable name
       new=1
    elseif(indx <= 0.and.allow  ==  "add")then        ! check if the name needs added
-      call add_string(name,nlen,indx,ier)            ! adding the new variable name in the variable name array
+      inew=iabs(indx)                                ! adding the new variable name in the variable name array
+      call insert(name,dict_verbs,inew)              ! pull down the dictionary arrays to make room for new value
+      call insert(" ",dict_vals,inew)
+      call insert(0,dict_calls,inew)
+      call insert(0,dict_lens,inew)
+
       if(ier  ==  -1)then
          call journal("*store* could not add "//name(:nlen))
          call journal(mssge)
@@ -1421,7 +1457,7 @@ integer,intent(out)                   :: ier         ! flag if error occurs in a
       call journal("error: UNKNOWN OPTION -"//name(ii+1:))
       if(ii > 0)then
          call journal(name(:ii-1)//" parameters are")
-         do i10=1,IPic
+         do i10=1,size(dict_verbs)
             if(name(:ii)  ==  dict_verbs(i10)(:ii))then
                if(dict_verbs(i10)(ii:ii+1).eq.'__')then
                   call journal(" --"//dict_verbs(i10)(ii+2:len_trim(dict_verbs(i10)))//" "//dict_vals(i10)(:dict_lens(i10)))
@@ -1438,7 +1474,9 @@ integer,intent(out)                   :: ier         ! flag if error occurs in a
 !-----------------------------------------------------------------------------------------------------------------------------------
    ! ignore special value that means leave alone, used by 'set up' calls to leave a value alone
    ! note that this will prevent the keyword from being defined.
-   if(value(1:4)  ==  "@LV@")then
+   if(indx.eq.0)then
+      write(*,*)'*store* error occurred. INDEX=0'
+   else if(value(1:4)  ==  "@LV@")then
       ! a leave-alone flag (for use by a 'defining' call)
       if(new  ==  0) then
          value=value(5:)                                                              ! trim off the leading @LV@
@@ -1476,170 +1514,9 @@ integer,intent(out)                   :: ier         ! flag if error occurs in a
    !()()()()()()()()()()-                              !
    !---------------------------------------------------!
 !-----------------------------------------------------------------------------------------------------------------------------------
+   if(debug) write(*,*)'STORE END ',trim(name1)//'::'//trim(value1)//'::'//trim(allow1)
+!-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine store
-!===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!===================================================================================================================================
-!>
-!!##NAME
-!!          bounce(3fp) - [ARGUMENTS:M_kracken] find index in Language Dictionary where VARNAM can be found
-!!##SYNOPSIS
-!!
-!!   subroutine bounce(varnam,index,dictionary,ier,mssge)
-!!
-!!    character(len=*),intent(in)              :: varnam
-!!    integer,intent(out)                      :: index
-!!    character(len=*),dimension(:),intent(in) :: dictionary
-!!    integer,intent(out)                      :: ier
-!!    character(len=*),intent(out)             :: mssge
-!!
-!!##DESCRIPTION
-!!
-!!##OPTIONS
-!!    VARNAM      variable name to look up in dictionary
-!!    DICTIONARY  sorted dictionary array to find varnam in
-!!
-!!##RETURNS
-!!    INDEX       location where variable is or should be
-!!    IER         error code
-!!    MSSGE       message to describe error code
-!!
-!!##EXAMPLE
-!!
-!===================================================================================================================================
-subroutine bounce(varnam,index,dictionary,ier,mssge)
-character(len=*),parameter :: ident="@(#)M_kracken::bounce(3fp): find index in Language Dictionary where VARNAM can be found"
-!
-!  If VARNAM is not found report where it should be placed as a NEGATIVE index number.
-!  Assuming DICTIONARY is an alphabetized array
-!  Assuming all variable names are lexically greater than a blank string.
-!-----------------------------------------------------------------------------------------------------------------------------------
-character(len=*),intent(in)                :: varnam      ! variable name to look up in dictionary
-integer,intent(out)                        :: index       ! location where variable is or should be
-character(len=*),dimension(:),intent(in)   :: dictionary  ! sorted dictionary array to find varnam in
-integer,intent(out)                        :: ier
-character(len=*),intent(out)               :: mssge
-!-----------------------------------------------------------------------------------------------------------------------------------
-   integer                                 :: maxtry      ! maximum number of tries that should be required
-   integer                                 :: imin
-   integer                                 :: imax
-   integer                                 :: i10
-!-----------------------------------------------------------------------------------------------------------------------------------
-   if(debug)then
-      write(*,*)'BOUNCE A:',trim(varnam)
-   endif
-!-----------------------------------------------------------------------------------------------------------------------------------
-   maxtry=int(log(float(IPic))/log(2.0)+1.0)              ! calculate max number of tries required to find a conforming name
-   index=(IPic+1)/2
-   imin=1
-   imax=IPic
-!-----------------------------------------------------------------------------------------------------------------------------------
-   do i10=1,maxtry
-      if(varnam  ==  dictionary(index))then
-         if(debug)then
-            write(*,*)'BOUNCE F:FOUND:',trim(varnam)//'::'//trim(dictionary(index))//'::',index
-         endif
-         return
-      else if(varnam > dictionary(index))then
-         imax=index-1
-      else
-         imin=index+1
-      endif
-      if(imin > imax)then
-         index=-imin
-         if(iabs(index) > IPic)then
-            mssge="error 03 in bounce"
-            ier=-1
-            if(debug)then
-               write(*,*)'BOUNCE B:ERROR:',trim(varnam)//'::'//trim(mssge)
-            endif
-            return
-         endif
-         if(debug)then
-            write(*,*)'BOUNCE C:NOT FOUND:',trim(varnam)//'::',index
-         endif
-         return
-      endif
-      index=(imax+imin)/2
-      if(index > IPic.or.index <= 0)then
-         mssge="error 01 in bounce"
-         ier=-1
-         if(debug)then
-            write(*,*)'BOUNCE D:ERROR:',trim(varnam)//'::'//trim(mssge)
-         endif
-         return
-      endif
-   enddo
-!-----------------------------------------------------------------------------------------------------------------------------------
-   mssge="error 02 in bounce"
-   if(debug)then
-      write(*,*)'BOUNCE E:ERROR:',trim(varnam)//'::'//trim(mssge)
-   endif
-!-----------------------------------------------------------------------------------------------------------------------------------
-end subroutine bounce
-!===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!===================================================================================================================================
-!>
-!!##NAME
-!!          add_string(3fp) - [ARGUMENTS:M_kracken] Add new string name to Language Library dictionary
-!!
-!!##SYNOPSIS
-!!
-!!   subroutine add_string(newnam,nchars,index,ier)
-!!
-!!    character(len=*),intent(in) :: newnam
-!!    integer,intent(in)          :: nchars
-!!    integer,intent(in)          :: index
-!!    integer,intent(out)         :: ier
-!!##DESCRIPTION
-!!
-!!##OPTIONS
-!!    NEWNAM  new variable name to add to dictionary
-!!    NCHARS  number of characters in NEWNAM
-!!
-!!##RETURNS
-!!
-!!##EXAMPLE
-!!
-!===================================================================================================================================
-subroutine add_string(newnam,nchars,index,ier)
-character(len=*),parameter :: ident="@(#)M_kracken::add_string(3fp): Add new string name to Language Library dictionary"
-!=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-character(len=*),intent(in)       :: newnam     ! new variable name to add to dictionary
-integer,intent(in)                :: nchars     ! number of characters in NEWNAM
-integer,intent(in)                :: index
-integer,intent(out)               :: ier
-!=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-   integer                     :: istart
-   integer                     :: i10
-!=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-   istart=iabs(index)
-!=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-!  if last position in the name array has already been used, then report no room is left and set error flag and error message.
-   if(dict_verbs(IPic) /= " ")then                                                  ! check if dictionary full
-      call journal("*add_string* no room left to add more string variable names")
-      ier=-1
-!=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-   elseif(istart.gt.IPic)then
-      call journal("*add_string* dictionary size exceeded")
-      ier=-1
-!=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-   else                                                                             ! pull down the array to make room for new value
-      do i10=IPic-1,istart,-1
-         dict_vals(i10+1)=dict_vals(i10)
-         dict_lens(i10+1)=dict_lens(i10)
-         dict_verbs(i10+1)=dict_verbs(i10)
-         dict_calls(i10+1)=dict_calls(i10)
-      enddo
-      dict_vals(istart)=" "
-      dict_lens(istart)= 0
-      dict_calls(istart)= 0
-      dict_verbs(istart)=newnam(1:nchars)
-!=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-   endif
-!=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-end subroutine add_string
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -1658,7 +1535,9 @@ end subroutine add_string
 !!
 !===================================================================================================================================
 function subscript(chars0)
-character(len=*),parameter :: ident="@(#)M_kracken::subscript(3fp): return the subscript value of a string when given it's name"
+
+character(len=*),parameter::ident="@(#)M_kracken::subscript(3fp): return the subscript value of a string when given it's name"
+
 !  WARNING: only request value of names known to exist
 !-----------------------------------------------------------------------------------------------------------------------------------
    character(len=*),intent(in)        :: chars0
@@ -1666,19 +1545,19 @@ character(len=*),parameter :: ident="@(#)M_kracken::subscript(3fp): return the s
    character(len=IPverb)              :: chars
    character(len=IPvalue)             :: mssge
    integer                            :: ierr
-   integer                            :: index
+   integer                            :: indx
    integer                            :: subscript
 !-----------------------------------------------------------------------------------------------------------------------------------
    chars=chars0
-   index=0
+   indx=0
    ierr=0
-   call bounce(chars,index,dict_verbs,ierr,mssge)                        ! look up position
+   call locate(chars,dict_verbs,indx,ierr,mssge)                        ! look up position
 !-----------------------------------------------------------------------------------------------------------------------------------
-   if((ierr  ==  -1).or.(index <= 0))then
+   if((ierr  ==  -1).or.(indx <= 0))then
       !call journal("*subscript* variable "//trim(chars)//" undefined")
       subscript=-1                                                       ! very unfriendly subscript value
    else
-      subscript=index
+      subscript=indx
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
 end function subscript
@@ -1718,7 +1597,9 @@ end function subscript
 !!    end program testit
 !===================================================================================================================================
 subroutine get_command_arguments(string,istatus)
-character(len=*),parameter :: ident="@(#)M_kracken::get_command_arguments(3fp): return all command arguments as an allocated string"
+
+character(len=*),parameter::ident="@(#)M_kracken::get_command_arguments(3fp): return all command arguments as an allocated string"
+
 !  try to guess original quoting and reintroduce quotes
 !-----------------------------------------------------------------------------------------------------------------------------------
 character(len=:),allocatable,intent(out) :: string            ! string of all arguments to create
@@ -1737,6 +1618,7 @@ integer,intent(out)                      :: istatus           ! status (non-zero
    elseif (max_string_len == 0) then
      STOP "*get_command_arguments* error: could not determine command length"
    endif
+   max_string_len=max_string_len+2*command_argument_count()   ! leave room for adding double quotes to each argument
 !-----------------------------------------------------------------------------------------------------------------------------------
    allocate(character(len=max_string_len) :: value)           ! no single argument should be longer than entire command length
    istatus=0                                                  ! initialize returned error code
@@ -1789,7 +1671,9 @@ end subroutine get_command_arguments
 !!
 !===================================================================================================================================
 subroutine menu(verb)
-character(len=*),parameter   :: ident="@(#)M_kracken::menu(3fp):prompt for values using a menu interface"
+
+character(len=*),parameter::ident="@(#)M_kracken::menu(3fp): prompt for values using a menu interface"
+
 !-----------------------------------------------------------------------------------------------------------------------------------
 character(len=*),intent(in)  :: verb
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -1807,7 +1691,7 @@ character(len=*),intent(in)  :: verb
    integer                   :: ireply
    integer                   :: ivalu
    integer                   :: ierr
-   integer                   :: index
+   integer                   :: indx
    character(len=IPvalue)    :: mssge     ! the message/error/string  value returned by BOUNCE(3f)
    character(len=1)          :: prefix
    integer                   :: icurrent  ! current menu item
@@ -1824,9 +1708,10 @@ character(len=*),intent(in)  :: verb
    istart=1
    icurrent=1
 !-----------------------------------------------------------------------------------------------------------------------------------
+   if(.not.allocated(dict_verbs)) call initd()
    INFINITE: do
       icount=0                                                ! how many entries in the dictionary belong to this command
-      iend=IPic                                               ! last dictionary entry to search for current command
+      iend=size(dict_verbs)                                   ! last dictionary entry to search for current command
       iend_OK=istart
       MAKEMENU: do i10=istart,iend                            ! search dictionary for keywords for current command
          if(verb(:ii)//'_'  ==  dict_verbs(i10)(:ii+1))then   ! found part of the desired command
@@ -1838,9 +1723,9 @@ character(len=*),intent(in)  :: verb
             if(dict_verbs(i10).eq.verb(:ii)//'_?')then        ! do not show the keyword VERB_?
                cycle MAKEMENU
             endif
-            call bounce('?'//dict_verbs(i10),index,dict_verbs,ierr,mssge) ! if ?VERB is defined assume it is a prompt
-            if(index.gt.0)then
-               prompt=dict_vals(index)
+            call locate('?'//dict_verbs(i10),dict_verbs,indx,ierr,mssge) ! if ?VERB is defined assume it is a prompt
+            if(indx.gt.0)then
+               prompt=dict_vals(indx)
             else
                prompt=' '
             endif
@@ -1878,7 +1763,7 @@ character(len=*),intent(in)  :: verb
          cycle INFINITE
 !-----------------------------------------------------------------------------------------------------------------------------------
       case('@')                                        ! debug option to dump dictionary
-         do i20=1,IPic
+         do i20=1,size(dict_verbs)
             if(dict_verbs(i20).ne.' ')then
                  write(*,*)i20,trim(dict_verbs(i20)),trim(dict_vals(i20)(:dict_lens(i20)))
             endif
@@ -1985,9 +1870,9 @@ character(len=*),intent(in)  :: verb
          if(dict_verbs(ifound).eq.verb(:ii)//'_?')then                    ! replaced this with FINISHED so exit
             exit INFINITE
          endif
-         call bounce('?'//dict_verbs(ifound),index,dict_verbs,ierr,mssge) ! if ?VERB is defined assume it is a prompt
-         if(index.gt.0)then
-            prompt=dict_vals(index)
+         call locate('?'//dict_verbs(ifound),dict_verbs,indx,ierr,mssge) ! if ?VERB is defined assume it is a prompt
+         if(indx.gt.0)then
+            prompt=dict_vals(indx)
          else
             prompt=' '
          endif
@@ -2012,7 +1897,7 @@ end subroutine menu
 !===================================================================================================================================
 !>
 !!##NAME
-!!          show(3f) - [ARGUMENTS:M_kracken] dump dictionary entries
+!!    show(3f) - [ARGUMENTS:M_kracken] dump dictionary entries
 !!
 !!##SYNOPSIS
 !!
@@ -2034,7 +1919,9 @@ end subroutine menu
 !!
 !===================================================================================================================================
 subroutine show(VERB_NAME0,VERBS_ONLY,IWIDE0)
-character(len=*),parameter    :: ident="@(#)M_kracken::show(3f):dump dictionary entries"
+
+character(len=*),parameter::ident="@(#)M_kracken::show(3f): dump dictionary entries"
+
 character(len=*),intent(in)   :: VERB_NAME0     ! verb prefix to display. Default is all
 logical,intent(in)            :: VERBS_ONLY     ! flag to show verbs only
 integer,intent(in)            :: iwide0         ! if .ge. zero, how many columns wide to show just verbs
@@ -2051,6 +1938,8 @@ integer,intent(in)            :: iwide0         ! if .ge. zero, how many columns
    integer                    :: iwide
    integer                    :: verb_length
 !-----------------------------------------------------------------------------------------------------------------------------------
+   if(.not.allocated(dict_verbs)) call initd()
+!-----------------------------------------------------------------------------------------------------------------------------------
    keyword_length=len(dict_verbs(1))                       ! get the length of dictionary keyword names
    ii71b=len(message)-keyword_length-4                     ! assuming DICT_VERBS(ii) can fit into message
    iwide=iwide0
@@ -2060,7 +1949,7 @@ integer,intent(in)            :: iwide0         ! if .ge. zero, how many columns
    if(VERBS_ONLY)then                                      ! show all verbs
       message=' '
       istart=1
-      do i=IPic,1,-1                                       ! loop thru entire dictionary
+      do i=size(dict_verbs),1,-1                                       ! loop thru entire dictionary
          verb_length=len_trim(DICT_VERBS(i))
          if(verb_length.lt.3)cycle
          if(DICT_VERBS(i)(1:1).eq.'?')cycle                ! remove prompts
@@ -2079,7 +1968,7 @@ integer,intent(in)            :: iwide0         ! if .ge. zero, how many columns
       endif
 !-----------------------------------------------------------------------------------------------------------------------------------
    elseif(VERB_NAME.eq.' ')then                                   ! show all variables
-     do i=1,IPic
+     do i=1,size(dict_verbs)
         if(DICT_VERBS(i).ne.' ')then
            ii=max(1,dict_lens(i))                                 ! number of characters in corresponding dictionary VALUE
            if(ii.gt.ii71b)then                                    ! getting a little long, break it into two lines
@@ -2099,7 +1988,7 @@ integer,intent(in)            :: iwide0         ! if .ge. zero, how many columns
    else                                                        ! show only verb_ variables
       ich=index(VERB_NAME,' ')                                 ! VERB_NAME assumed longer than any verb name, so at least one space
       VERB_NAME(ich:ich)='_'
-      SCAN_DICTIONARY: do i=1,IPic
+      SCAN_DICTIONARY: do i=1,size(dict_verbs)
          if(DICT_VERBS(i).eq.' ')cycle SCAN_DICTIONARY
          if(VERB_NAME(:ich).eq.DICT_VERBS(i)(:ich))then
             ii=max(1,dict_lens(i))                          ! number of characters in corresponding dictionary VALUE
@@ -2120,6 +2009,15 @@ integer,intent(in)            :: iwide0         ! if .ge. zero, how many columns
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine show
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+subroutine initd()
+   dict_verbs=[character(len=IPverb) ::] ! string variable names
+   dict_vals=[character(len=IPvalue) ::] ! contains the values of string variables
+   dict_calls=[integer ::]               ! number of times this keyword stored on a call to parse
+   dict_lens=[integer ::]                ! significant lengths of string variable values
+end subroutine initd
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================

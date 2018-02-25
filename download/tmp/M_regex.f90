@@ -20,7 +20,8 @@
 !!    o and regfree(3c) frees any dynamically-allocated storage used by the internal form of an RE.
 !!
 !!    The Fortran interface is composed of wrapper routines that call the
-!!    C library, plus some extensions (ie. regmatch(3f), regsub(3f)).
+!!    C library, plus some extensions (ie. regmatch(3f), regsub(3f)). See the C documentation
+!!    for further details about implementation, performance, and limitations.
 !!
 !!    The following constructs are recognized in a ERE (Extended Regular Expression):
 !!
@@ -353,59 +354,6 @@
 !!     regexp (n)    - Match a regular expression against a string
 !!     regsub (n)    - Perform substitutions based on regular expression pattern matching
 !!
-!!##BUGS
-!!  Having two kinds of REs is a botch.
-!!
-!!  The current IEEE Std 1003.2 ( POSIX.2 ) spec says that ) is an ordinary
-!!  character in the absence of an unmatched ( ; this was an unintentional
-!!  result of a wording error, and change is likely. Avoid relying on it.
-!!
-!!  Back references are a dreadful botch, posing major problems for
-!!  efficient implementations. They are also somewhat vaguely defined
-!!  (does a\(\(b\)*\2\)*d match abbbd ?). Avoid using them.
-!!
-!!  IEEE Std 1003.2 ( POSIX.2 ) specification of case-independent matching
-!!  is vague. The one case implies all cases definition given above is
-!!  current consensus among implementors as to the right interpretation.
-!!
-!!  The syntax for word boundaries is incredibly ugly.
-!!
-!!  This is an alpha release with known defects. Please report problems.
-!!
-!!  The back-reference code is subtle and doubts linger about its correctness
-!!  in complex cases.
-!!
-!!  The regexec() function performance is poor. This will improve with
-!!  later releases. The nmatch argument exceeding 0 is expensive; nmatch
-!!  exceeding 1 is worse. The regexec() function is largely insensitive to
-!!  RE complexity except that back references are massively expensive. RE
-!!  length does matter; in particular, there is a strong speed bonus for
-!!  keeping RE length under about 30 characters, with most special characters
-!!  counting roughly double.
-!!
-!!  The regcomp() function implements bounded repetitions by
-!!  macro expansion, which is costly in time and space if counts
-!!  are large or bounded repetitions are nested. An RE like, say,
-!!  ((((a{1,100}){1,100}){1,100}){1,100}){1,100} will (eventually) run
-!!  almost any existing machine out of swap space.
-!!
-!!  There are suspected problems with response to obscure error
-!!  conditions. Notably, certain kinds of internal overflow, produced
-!!  only by truly enormous REs or by multiply nested bounded repetitions,
-!!  are probably not handled well.
-!!
-!!  Due to a mistake in IEEE Std 1003.2 ( POSIX.2 ), things like a)b are
-!!  legal REs because ) is a special character only in the presence of a
-!!  previous unmatched ( . This cannot be fixed until the spec is fixed.
-!!
-!!  The standard's definition of back references is vague. For example,
-!!  does a\(\(b\)*\2\)*d match abbbd ? Until the standard is clarified,
-!!  behavior in such cases should not be relied on.
-!!
-!!  The implementation of word-boundary matching is a bit of a kludge, and
-!!  bugs may lurk in combinations of word-boundary matching and anchoring.
-!!
-!!  Word-boundary matching does not work properly in multibyte locales.
 !===================================================================================================================================
 module M_regex
 use ISO_C_Binding, only: C_ptr, C_int, C_size_t, C_char, C_NULL_char, C_NULL_ptr
@@ -702,6 +650,9 @@ end function regexec
 !!    regmatch   the selected substring extracted from STRING.
 !!##EXAMPLE
 !!
+!!
+!!   Sample program:
+!!
 !!    program demo_regmatch
 !!    ! read regular expression from command line and look for it in lines read from stdin.
 !!    use M_regex, only: regex_type, regcomp, regexec, regmatch, regfree
@@ -714,19 +665,31 @@ end function regexec
 !!    integer,parameter            :: max_subexpressions=10
 !!    integer                      :: matches(2,max_subexpressions)
 !!    integer                      :: ios
+!!       !find length of command argument
 !!       call get_command_argument(number=1,length=command_argument_length)
+!!       ! allocate a string long enough to hold the argument
 !!       allocate(character(len=command_argument_length) :: command_argument)
+!!       ! get the command argument
 !!       call get_command_argument(1, command_argument)
-!!       call regcomp(regex,command_argument,'x') ! compile up regular expression
+!!
+!!       ! compile up regular expression
+!!       call regcomp(regex,command_argument,'x')
+!!
+!!       ! read lines and look for match to expression
 !!       INFINITE: do
 !!          read(*,'(a)',iostat=ios)input_line
 !!          if(ios.ne.0)exit INFINITE
-!!          match=regexec(regex,input_line,matches) ! look for a match in (remaining) string
-!!          if(.not.match)cycle INFINITE    ! if no match found go for next line
-!!          write(*,'(a)') trim(input_line) ! show line with match
-!!          jsu
+!!          ! look for a match in (remaining) string
+!!          match=regexec(regex,input_line,matches)
+!!          ! if no match found go for next line
+!!          if(.not.match)cycle INFINITE
+!!          ! show line with match
+!!          write(*,'(a)') trim(input_line)
 !!       enddo INFINITE
-!!       call regfree(regex)                ! free memory used for compiled regular expression
+!!
+!!       ! free memory used for compiled regular expression
+!!       call regfree(regex)
+!!
 !!    end program demo_regmatch
 !===================================================================================================================================
 function regmatch(match,string,matches)

@@ -1660,7 +1660,7 @@ subroutine find_next() ! @(#) from current cursor position jump to next input fi
          skip_underscore=.false.
          ONLINE: do ix=xstartline,xmax-1
             cell=mvwinch(big_pd,iy,ix)                       ! retrieve cell value
-            call get_cell_components(cell,attr,pair,ich,ch)  ! extract cell constituients (attributes, color pair, letter)
+            call get_cell_components(cell,attr,pair,ich,ch)  ! extract cell constituents (attributes, color pair, letter)
             if(iand(attr,A_UNDERLINE).eq. A_UNDERLINE)then   ! if an underscore character
                if(ix.eq.0)then                      ! cannot be second underscore
                   exit PASSES                                ! exit and move to this position
@@ -1694,7 +1694,7 @@ subroutine find_next() ! @(#) from current cursor position jump to next input fi
    ydelta=ystart-iy
    ierr=move(ys-ydelta,xs-xdelta)
    !------------
-   !! this is not quite it, espcially left-right
+   !! this is not quite it, especially left-right
    ! if field not visible move window forward. Try to put in a nice position (center if fits?)
    call getmaxyx(stdscr,LINES,COLS)                          ! window size as defined (all of it, not subsection being displayed)
    if(ys-ydelta.lt.0.or.ys-ydelta.gt.lines-button_lines)then ! find if off screen
@@ -1748,7 +1748,7 @@ subroutine find_previous() ! @(#) from current cursor position jump to previous 
       NEXTLINE: do iy=0,ymax-1                     ! starting at top left corner look for an input field till pass original position
          ONLINE: do ix=0,xmax-1
             cell=mvwinch(big_pd,iy,ix)                       ! retrieve cell value
-            call get_cell_components(cell,attr,pair,ich,ch)  ! extract cell constituients (attributes, color pair, letter)
+            call get_cell_components(cell,attr,pair,ich,ch)  ! extract cell constituents (attributes, color pair, letter)
             icount=iy*xmax+(ix+1)
             if(iand(attr,A_UNDERLINE).eq. A_UNDERLINE)then
                if(icount.ge.icount_current) exit NEXTLINE    ! up to or past initial position(which might not have been input field)
@@ -1769,14 +1769,14 @@ subroutine find_previous() ! @(#) from current cursor position jump to previous 
    ierr=move(ys-ydelta,xs-xdelta)
    !------------
    cell=mvwinch(big_pd,previous_y,previous_x)                ! retrieve cell value of new location (previous input field)
-   call get_cell_components(cell,attr,pair,ich,ch)           ! extract cell constituients (attributes, color pair, letter)
+   call get_cell_components(cell,attr,pair,ich,ch)           ! extract cell constituents (attributes, color pair, letter)
    if(iand(attr,A_UNDERLINE).eq. A_UNDERLINE)then            ! this jumps back to the beginning of the underlined section
       call underline_ends(start_of_underline,end_of_underline)
       xdelta=xdelta-(start_of_underline-previous_x)
       ierr=move(ys-ydelta,xs-xdelta)
    endif
    !------------
-   !! this is not quite it, espcially left-right
+   !! this is not quite it, especially left-right
    ! if field not visible move window forward. Try to put in a nice position (center if fits?)
    call getmaxyx(stdscr,LINES,COLS)        ! window size as defined (all of it, even if subsection being displayed)
    if(ys-ydelta.lt.0.or.ys-ydelta.gt.lines-button_lines)then !find if off screen

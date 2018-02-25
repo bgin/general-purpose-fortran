@@ -1,5 +1,5 @@
 NAME
-   dow - [M_time] given a date-time array DAT return the day of the week
+   dow(3f) - [M_time] given a date-time array DAT return the day of the week
 
 SYNOPSIS
    subroutine dow(values, weekday, day, ierr)

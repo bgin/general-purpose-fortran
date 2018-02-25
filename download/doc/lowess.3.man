@@ -34,7 +34,7 @@ DESCRIPTION
    the horizontal axis in X.
 
    For lowess smoothing, the analyst can vary the size of the smoothing
-   window.  This size is given as the fraction (0 to 1) of the data that
+   window. This size is given as the fraction (0 to 1) of the data that
    the window should cover. The default window size is .2 (which states
    that the smoothing window has a total width of 20% of the horizontal
    axis variable). The LOWESS fraction (F) controls the smoothness of the

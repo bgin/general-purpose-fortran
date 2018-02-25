@@ -1,5 +1,5 @@
 NAME
-   w2d - [M_time] calculate DAT date-time array from iso-8601 Week-numbering year date yyyy-Www-d
+   w2d(3f) - [M_time] calculate DAT date-time array from iso-8601 Week-numbering year date yyyy-Www-d
 
 SYNOPSIS
    subroutine w2d(iso_year,iso_week,iso_weekday,dat)

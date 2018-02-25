@@ -16,11 +16,11 @@
 !! </a>
 !! <!-- =========================================================================================================================== -->
 !! <!--
-!!        @(#)ufpp_overview(1f): use of ufpp(1), a Fortran source code pre-processor
+!!        @(#)ufpp_overview(7f): use of ufpp(1), a Fortran source code pre-processor
 !!   -->
 !! <!-- =========================================================================================================================== -->
 !! <h1>NAME</h1>
-!! <h2>ufpp(1) -  [DEVELOPER] a Fortran source code pre-processor</h2>
+!! <h2>ufpp(1f) -  [DEVELOPER] a Fortran source code pre-processor</h2>
 !! <!-- =========================================================================================================================== -->
 !! <h1>SYNOPSIS</h1>
 !! <pre>
@@ -173,10 +173,9 @@
 !!       o The $FILTER VERSION directive can be used a to produce a routine that
 !!         displays a version in a way that is compatible with the metadata display program what(1).
 !!       o The $FILTER NULL directive can be used for text that is otherwise ignored.
-!!       o The $FILTER NULL directive can be used for text that is otherwise ignored.
-!!         Note that text can optionally be written to an alternate file using $OUTPUT directives.
 !!       o The $FILTER SHELL directive can be used for text that is the output of a shell.
 !!         This can be very system-dependent but allows code to be built dynamically.
+!!       o The VARIABLE option is used to rewrite the text as a string declaration
 !!    <blockquote>
 !!    <xmp>
 !!    $FILTER NULL -file notes.txt !@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -2627,8 +2626,8 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   -html            Assumes the input file is HTML that follows the following   ',&
 '                    rules:                                                      ',&
 '                     1. Input lines are not output until a simple               ',&
-'                        < X''//''MP> directive is found.                        ',&
-'                     2. Output stops when a simple < /X''//''MP>                ',&
+'                        <XMP> directive is found.                               ',&
+'                     2. Output stops when a simple </XMP>                       ',&
 '                        directive is encountered.                               ',&
 '                    This allows code to be maintained as part of an HTML        ',&
 '                    document.                                                   ',&
@@ -2696,8 +2695,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '     $@(#)     metadata                                   [! comment ]          ',&
 '     $INCLUDE  filename                                   [! comment ]          ',&
 '     $OUTPUT   filename  [-append]                        [! comment ]          ',&
-'     $FILTER   [comment|write|help|version|shell [-cmd NAME]]                   ',&
-'               [-append] [-file NAME]                     [! comment ]          ',&
+'     $FILTER   [comment|write|help|version] |                                   ',&
+'               [shell [-cmd NAME]] |                                            ',&
+'               [variable [-varname NAME]]                                       ',&
+'               [-file NAME [-append]]                     [! comment ]          ',&
 '     $DOCUMENT is a synonym for $FILTER                                         ',&
 '     $PRINTENV predefined_name|environment_variable_name  [! comment ]          ',&
 '     $SHOW                                                [! comment ]          ',&
@@ -3013,23 +3014,6 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   Conditional Compilation, but it is (currently) not widely                    ',&
 '   supported (See coco(1)).                                                     ',&
 '                                                                                ',&
-'ENVIRONMENT                                                                     ',&
-'                                                                                ',&
-'   The environment variable $DEFAULT_ufpp can change command defaults.          ',&
-'   The values for -i, -I, and defined variables from $DEFAULT_ufpp will be      ',&
-'   prepended to the list defined on the command line. Other switches will be    ',&
-'   replaced by values on the command line. For example:                         ',&
-'                                                                                ',&
-'      env DEFAULT_ufpp="CRAY 64BIT -html -d -I CRAY_DIR" ufpp A=10 -i f90.html  ',&
-'                                                                                ',&
-'   would run the same as the command                                            ',&
-'                                                                                ',&
-'      ufpp CRAY 64BIT A=10 -html -d -I CRAY_DIR -i f90.html                     ',&
-'                                                                                ',&
-'   Overriding command defaults can be very useful when builds are done using    ',&
-'   make(1) files and/or scripts; as platform-specific and debug options can     ',&
-'   be evoked without changing the build-related files.                          ',&
-'                                                                                ',&
 'EXAMPLES                                                                        ',&
 '                                                                                ',&
 '   Define variables on command line:                                            ',&
@@ -3141,8 +3125,8 @@ end subroutine help_usage
 !!    -html            Assumes the input file is HTML that follows the following
 !!                     rules:
 !!                      1. Input lines are not output until a simple
-!!                         < X'//'MP> directive is found.
-!!                      2. Output stops when a simple < /X'//'MP>
+!!                         <XMP> directive is found.
+!!                      2. Output stops when a simple </XMP>
 !!                         directive is encountered.
 !!                     This allows code to be maintained as part of an HTML
 !!                     document.
@@ -3210,8 +3194,10 @@ end subroutine help_usage
 !!      $@(#)     metadata                                   [! comment ]
 !!      $INCLUDE  filename                                   [! comment ]
 !!      $OUTPUT   filename  [-append]                        [! comment ]
-!!      $FILTER   [comment|write|help|version|shell [-cmd NAME]]
-!!                [-append] [-file NAME]                     [! comment ]
+!!      $FILTER   [comment|write|help|version] |
+!!                [shell [-cmd NAME]] |
+!!                [variable [-varname NAME]]
+!!                [-file NAME [-append]]                     [! comment ]
 !!      $DOCUMENT is a synonym for $FILTER
 !!      $PRINTENV predefined_name|environment_variable_name  [! comment ]
 !!      $SHOW                                                [! comment ]
@@ -3527,23 +3513,6 @@ end subroutine help_usage
 !!    Conditional Compilation, but it is (currently) not widely
 !!    supported (See coco(1)).
 !!
-!!##ENVIRONMENT
-!!
-!!    The environment variable $DEFAULT_ufpp can change command defaults.
-!!    The values for -i, -I, and defined variables from $DEFAULT_ufpp will be
-!!    prepended to the list defined on the command line. Other switches will be
-!!    replaced by values on the command line. For example:
-!!
-!!       env DEFAULT_ufpp="CRAY 64BIT -html -d -I CRAY_DIR" ufpp A=10 -i f90.html
-!!
-!!    would run the same as the command
-!!
-!!       ufpp CRAY 64BIT A=10 -html -d -I CRAY_DIR -i f90.html
-!!
-!!    Overriding command defaults can be very useful when builds are done using
-!!    make(1) files and/or scripts; as platform-specific and debug options can
-!!    be evoked without changing the build-related files.
-!!
 !!##EXAMPLES
 !!
 !!
@@ -3629,7 +3598,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        4.0: 20170502>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
-'@(#)COMPILED:       Thu, Dec 21st, 2017 12:05:05 AM>',&
+'@(#)COMPILED:       Fri, Feb 23rd, 2018 9:04:22 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

@@ -1,5 +1,5 @@
 NAME
-   date_to_unix - [M_time] converts DAT date-time array to Unix Epoch Time
+   date_to_unix(3f) - [M_time] converts DAT date-time array to Unix Epoch Time
 
 SYNOPSIS
    subroutine date_to_unix(dat,unixtime,ierr)

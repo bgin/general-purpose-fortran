@@ -1,5 +1,5 @@
 NAME
-   d2u - [M_time] given DAT date-time array returns Unix Epoch Time (UET starts at 0000 on 1 Jan. 1970, UTC)
+   d2u(3f) - [M_time] given DAT date-time array returns Unix Epoch Time (UET starts at 0000 on 1 Jan. 1970, UTC)
 
 SYNOPSIS
    function d2u(dat) result (unixtime)

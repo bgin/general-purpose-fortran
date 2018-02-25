@@ -250,7 +250,7 @@
 !  Conversion of raster data to GIF89 format.
 !
 !# See also
-!   * The original code (Licence: public domain) was from
+!   * The original code (License: public domain) was from
 !     [here](http://fortranwiki.org/fortran/show/writegif)
 !
 !# History

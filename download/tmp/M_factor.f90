@@ -1,6 +1,6 @@
 !>
 !!##NAME
-!!      M_factor - [M_factor] module for least common multiple, greatest common divisor, and prime factors
+!!      M_factor(3fm) - [M_factor] module for least common multiple, greatest common divisor, and prime factors
 !!##SYNOPSIS
 !!
 !!
@@ -557,7 +557,7 @@ end function gcd_cuboid
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    prime_factors - [M_factor] decompose a number into its prime factors
+!!    prime_factors(3f) - [M_factor] decompose a number into its prime factors
 !!##SYNOPSIS
 !!
 !!    call prime_factors(number,nprm,iprm,iexp[,verbose])

@@ -232,6 +232,9 @@ integer,parameter,public :: mode_t=kind(c_int)
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
 !>
 !!##NAME
 !!    system_srand(3f) - [M_system] set seed for pseudo-random number generator system_rand(3f)
@@ -305,8 +308,7 @@ end interface
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_kill(3f) - [M_system] send a signal to a process or a group
-!!                      of processes
+!!    system_kill(3f) - [M_system] send a signal to a process or a group of processes
 !!
 !!##SYNOPSIS
 !!
@@ -1058,7 +1060,7 @@ end function system_access
 !!        Sample program:
 !!
 !!           program demo_system_issock
-!!           Use M_sytem, only : system_issock
+!!           Use M_system, only : system_issock
 !!           implicit none
 !!           integer                     :: i
 !!           character(len=80),parameter :: names(*)=[ &
@@ -1131,7 +1133,7 @@ end function system_issock
 !!        Sample program:
 !!
 !!           program demo_system_isfifo
-!!           Use M_sytem, only : system_isfifo
+!!           Use M_system, only : system_isfifo
 !!           implicit none
 !!           integer                     :: i
 !!           character(len=80),parameter :: names(*)=[ &
@@ -1204,7 +1206,7 @@ end function system_isfifo
 !!        Sample program:
 !!
 !!           program demo_system_ischr
-!!           Use M_sytem, only : system_ischr
+!!           Use M_system, only : system_ischr
 !!           implicit none
 !!           integer                     :: i
 !!           character(len=80),parameter :: names(*)=[ &
@@ -1277,7 +1279,7 @@ end function system_ischr
 !!        Sample program:
 !!
 !!           program demo_system_isreg
-!!           Use M_sytem, only : system_isreg
+!!           Use M_system, only : system_isreg
 !!           implicit none
 !!           integer                     :: i
 !!           character(len=80),parameter :: names(*)=[ &
@@ -1345,7 +1347,7 @@ end function system_isreg
 !!        Sample program:
 !!
 !!           program demo_system_islnk
-!!           Use M_sytem, only : system_islnk
+!!           Use M_system, only : system_islnk
 !!           implicit none
 !!           integer                     :: i
 !!           character(len=80),parameter :: names(*)=[ &
@@ -1418,7 +1420,7 @@ end function system_islnk
 !!        Sample program:
 !!
 !!           program demo_system_isblk
-!!           Use M_sytem, only : system_isblk
+!!           Use M_system, only : system_isblk
 !!           implicit none
 !!           integer                     :: i
 !!           character(len=80),parameter :: names(*)=[ &
@@ -1500,7 +1502,7 @@ end function system_isblk
 !!        Sample program:
 !!
 !!           program demo_system_chown
-!!           Use M_sytem, only : system_chown
+!!           Use M_system, only : system_chown
 !!           implicit none
 !!           integer                     :: i
 !!           character(len=80),parameter :: names(*)=[ 'myfile1','/usr/local']
@@ -1575,7 +1577,7 @@ end function system_chown
 !!        Sample program:
 !!
 !!           program demo_system_isdir
-!!           Use M_sytem, only : system_isdir
+!!           Use M_system, only : system_isdir
 !!           implicit none
 !!           integer                     :: i
 !!           character(len=80),parameter :: names(*)=[ &

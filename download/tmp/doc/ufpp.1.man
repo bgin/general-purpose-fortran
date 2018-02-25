@@ -34,8 +34,8 @@ OPTIONS
    -html            Assumes the input file is HTML that follows the following
                     rules:
                      1. Input lines are not output until a simple
-                        < X'//'MP> directive is found.
-                     2. Output stops when a simple < /X'//'MP>
+                        <XMP> directive is found.
+                     2. Output stops when a simple </XMP>
                         directive is encountered.
                     This allows code to be maintained as part of an HTML
                     document.
@@ -103,8 +103,10 @@ DEFINITION
      $@(#)     metadata                                   [! comment ]
      $INCLUDE  filename                                   [! comment ]
      $OUTPUT   filename  [-append]                        [! comment ]
-     $FILTER   [comment|write|help|version|shell [-cmd NAME]]
-               [-append] [-file NAME]                     [! comment ]
+     $FILTER   [comment|write|help|version] |
+               [shell [-cmd NAME]] |
+               [variable [-varname NAME]]
+               [-file NAME [-append]]                     [! comment ]
      $DOCUMENT is a synonym for $FILTER
      $PRINTENV predefined_name|environment_variable_name  [! comment ]
      $SHOW                                                [! comment ]
@@ -419,23 +421,6 @@ Major cpp(1) features not present in ufpp(1):
    Part 3 of the Fortran 95 standard (ISO/IEC 1539-3:1998) defines
    Conditional Compilation, but it is (currently) not widely
    supported (See coco(1)).
-
-ENVIRONMENT
-
-   The environment variable $DEFAULT_ufpp can change command defaults.
-   The values for -i, -I, and defined variables from $DEFAULT_ufpp will be
-   prepended to the list defined on the command line. Other switches will be
-   replaced by values on the command line. For example:
-
-      env DEFAULT_ufpp="CRAY 64BIT -html -d -I CRAY_DIR" ufpp A=10 -i f90.html
-
-   would run the same as the command
-
-      ufpp CRAY 64BIT A=10 -html -d -I CRAY_DIR -i f90.html
-
-   Overriding command defaults can be very useful when builds are done using
-   make(1) files and/or scripts; as platform-specific and debug options can
-   be evoked without changing the build-related files.
 
 EXAMPLES
 

@@ -1,5 +1,5 @@
 NAME
-         iget - [ARGUMENTS:M_kracken] given keyword fetch integer value from command argument
+         iget(3f) - [ARGUMENTS:M_kracken] given keyword fetch integer value from command argument
 
 SYNOPSIS
    function iget(keyword) result(value)

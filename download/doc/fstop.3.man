@@ -1,5 +1,5 @@
 NAME
-   fstop - [M_debug] call stop with both a number and a message
+   fstop(3f) - [M_debug] call stop with both a number and a message
 SYNOPSIS
    subroutine fstop(ierr,stdout,stderr)
 

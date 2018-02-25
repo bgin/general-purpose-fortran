@@ -2,7 +2,7 @@ libGPF Home Page
 
 NAME
 
-ufpp(1) - [DEVELOPER] a Fortran source code pre-processor
+ufpp(1f) - [DEVELOPER] a Fortran source code pre-processor
 
 SYNOPSIS
 
@@ -115,11 +115,10 @@ text and the help text can also be written to a file to produce further
 document formats. o The $FILTER VERSION directive can be used a to produce a
 routine that displays a version in a way that is compatible with the metadata
 display program what(1). o The $FILTER NULL directive can be used for text that
-is otherwise ignored. o The $FILTER NULL directive can be used for text that is
-otherwise ignored. Note that text can optionally be written to an alternate
-file using $OUTPUT directives. o The $FILTER SHELL directive can be used for
-text that is the output of a shell. This can be very system-dependent but
-allows code to be built dynamically.
+is otherwise ignored. o The $FILTER SHELL directive can be used for text that
+is the output of a shell. This can be very system-dependent but allows code to
+be built dynamically. o The VARIABLE option is used to rewrite the text as a
+string declaration
 
        $FILTER NULL -file notes.txt !@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
           This section uses $FILTER NULL to let a block of text be included

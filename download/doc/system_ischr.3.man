@@ -27,7 +27,7 @@ EXAMPLE
        Sample program:
 
           program demo_system_ischr
-          Use M_sytem, only : system_ischr
+          Use M_system, only : system_ischr
           implicit none
           integer                     :: i
           character(len=80),parameter :: names(*)=[ &

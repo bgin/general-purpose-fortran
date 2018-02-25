@@ -34,6 +34,8 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                                                                                ',&
 '        # show lines over 72 characters in length                               ',&
 '        $ findll *.f *.F -l 72                                                  ',&
+'        # show length of all lines on stdin                                     ',&
+'        $ findll -l -1                                                          ',&
 '                                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
@@ -70,6 +72,8 @@ end subroutine help_usage
 !!
 !!         # show lines over 72 characters in length
 !!         $ findll *.f *.F -l 72
+!!         # show length of all lines on stdin
+!!         $ findll -l -1
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -86,7 +90,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    find long lines>',&
 '@(#)VERSION:        23.1 20160618>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Thu, Dec 21st, 2017 12:15:41 AM>',&
+'@(#)COMPILED:       Sat, Feb 3rd, 2018 3:15:48 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

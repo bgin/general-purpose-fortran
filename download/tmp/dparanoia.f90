@@ -79,18 +79,18 @@ character(len=*),parameter :: ident="@(#)dparanoia(3f): test doubleprecisions op
 !        NUMTRY ... NUMBER OF TIMES TO TRY RANDOM TRIALS
 !        FROM   ... NUMBER OF MILESTONE TO RETURN TO ON RESTART
 !
-! DISABLE INTERUPTS FOR LAHEY F77L.
+! DISABLE INTERRUPTS FOR LAHEY F77L.
 !       LOGICAL FLAG
 !       CALL INVALOP(FLAG)
 !       CALL OVEFL(FLAG)
 !       CALL UNDFL(FLAG)
 !       CALL DVCHK(FLAG)
 !
-! DISABLE INTERUPTS FOR MICROSOFT FORTRAN  (MASK MUST BE INTERGER*2)
+! DISABLE INTERRUPTS FOR MICROSOFT FORTRAN  (MASK MUST BE INTEGER*2)
 !       INTEGER*2 MASK
 !       MASK=4927
 !       CALL LCWRQQ(MASK)
-! DISABLE INTERUPTS FOR WATFIV
+! DISABLE INTERRUPTS FOR WATFIV
 !       CALL TRAPS(100,100,100,100,100)
 ! NO SPECIAL CALL IS REQUIRED FOR FORTVS.
 !
@@ -452,7 +452,7 @@ character(len=*),parameter :: ident="@(#)dparanoia(3f): test doubleprecisions op
         WRITE(OUT, 1842) XX
         XX=Q/DLOG(FP8+FP2)
         WRITE(OUT, 1843) XX
-1841    FORMAT(' Some subexpressions appear to be calculated extra-precicely')
+1841    FORMAT(' Some subexpressions appear to be calculated extra-precisely')
 1842    FORMAT(' with about   ',E15.7,' extra base b digits, i.e.')
 1843    FORMAT(' roughly ',E15.7,' extra significant decimals.')
 1850    continue

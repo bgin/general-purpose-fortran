@@ -1,10 +1,10 @@
 KRACKEN(3F): The Fortran Command Line Argument Cracker
 (Extended Version)
 
-This is an experimental version dependent upon Fortran 2008 features. see
-Fortran 2003 and FORTRAN 77 versions if you are looking for older stable
-versions that do not require other modules from the CLI (Command Line
-Interface) collection.
+This version is dependent upon Fortran 2008 features and other GPF (General
+Purpose Fortran) modules. See the simpler Fortran 2003 and FORTRAN 77 versions
+if you are looking for older stable versions that do not require other CLI
+(Command Line Interface) modules from the GPF collection.
 
   * Abstract
   * Example of typical use
@@ -112,7 +112,6 @@ length of verbs and entries in Language dictionary
 NOTE: many parameters may be reduced in size so as to just accommodate being
 used as a command line parser. In particular, some might want to change:
 
-   integer, parameter,public :: IPic=4000            ! number of entries in language dictionary
    logical,public            :: stop_command=.false. ! indication to return stop_command as false in interactive mode
    integer, parameter,public :: IPvalue=4096         ! length of keyword value
    integer, parameter,public :: IPcmd=32768          ! length of command
@@ -132,7 +131,7 @@ parameters interactively.
 The default prompts are the keywords themselves and their current values. To
 set your own prompts call SETPROMPTS(3f):
 
-    call setprompts(verb_name,options_and_prompts)
+   call setprompts(verb_name,options_and_prompts)
 
 where the special prompt string "#N#" means to not allow prompting for this
 parameter. For example:
@@ -149,7 +148,7 @@ parameter. For example:
 
 Then the command
 
-       copy -?
+      copy -?
 
 
 would only prompt for the -i and -o parameters.
@@ -175,19 +174,21 @@ a single routine. But parsing them and storing them into a COMMON or MODULE is
 more efficient if the routine doing the parsing is called many times.
 
   Sample showing -oo parameter and retrieving data in subroutines
+
      program demo_placement
-     use M_calculator, only : kracken
+     use M_kracken, only : kracken
      ! define and crack command line arguments
-     call kracken('cmd',' default string -x 123 -y 456 ')
+     call kracken('cmd',' DEFAULT STRING -x 123 -y 456 ')
+     call showstring()
+     call showvalue()
      end program demo_placement
 
      subroutine showstring()
-     use M_kracken, only : sget, IPvalue
-     character(len=IPvalue) :: string
+     use M_kracken, only : sget
+     character(len=:),allocatable :: string
      ! get value of string before any switch
-     string=sget('cmd_oo')
-     write(*,*)'string is ',trim(string)
-     call showvalue()
+     string=trim(sget('cmd_oo'))
+     write(*,*)'string is ',string
      end subroutine showstring
 
      subroutine showvalue()
@@ -198,22 +199,21 @@ more efficient if the routine doing the parsing is called many times.
      write(*,*)' X and Y are ',x,y
      end subroutine showvalue
 
-     ./demo_placement
-     STRING is DEFAULT STRING
-      X and Y are    123.000000       456.000000
-      ./demo_placement -x 987.654
+      xxx
+       string is DEFAULT STRING
+        X and Y are    123.000000       456.000000
 
-     ./demo_placement -x 987.653992
-     STRING is
-      X and Y are    987.653992       456.000000
+      xxx -x 987.653992
+       string is
+        X and Y are    987.653992       456.000000
 
-     ./demo_placement -oo BBBB -oo CCCC
-     STRING is AAAA BBB
-      X and Y are    123.000000       456.000000
+      xxx -oo BBBB -oo CCCC
+       string is BBBB CCCC
+        X and Y are    123.000000       456.000000
 
-     ./demo_placement AAAA -oo BBBB -oo CCCC
-     STRING is AAAA BBBB CCCC
-      X and Y are    123.000000       456.000000
+      xxx AAAA BBBB -oo CCCC
+       string is AAAA BBBB CCCC
+        X and Y are    123.000000       456.000000
 
 You may note that the parsing rules are not identical to Unix, although very
 similar.

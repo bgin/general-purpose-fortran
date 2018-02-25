@@ -1,5 +1,5 @@
 NAME
-         show(3f) - [ARGUMENTS:M_kracken] dump dictionary entries
+   show(3f) - [ARGUMENTS:M_kracken] dump dictionary entries
 
 SYNOPSIS
   subroutine show(VERB_NAME0,VERBS_ONLY,IWIDE0)

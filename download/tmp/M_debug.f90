@@ -30,6 +30,8 @@
 !!     implicit none
 !!     integer :: i, j, k
 !!     integer,allocatable :: array(:)
+!!     integer :: arr(4)=[21,51,14,45]
+!!     integer :: a=21, b=51, c=14, d=45
 !!     i=1
 !!     j=2
 !!     k=3
@@ -49,6 +51,10 @@
 !!     ! write(*,*)any(['A','X','X','X','X','B'].eq.'B') ! this would return T
 !!     ! write(*,*).not.all(array.lt.100)
 !!     ! write(*,*)all(array.lt.100)
+!!     ! write(*,*)all([a,b,c,d].eq.[21,51,14,45]) ! compare a list. This would return T
+!!     ! write(*,*)all(arr.eq.[21,51,14,45])       ! compare an array. This would return T
+!! end
+!!
 !!     ! this will make sense ...
 !!
 !!     call unit_check('myroutine',all([i,j,k].gt.0),      'testing if everyone greater than zero')
@@ -94,7 +100,7 @@ contains
 !===================================================================================================================================
 !>
 !!##NAME
-!!    stderr - [M_debug] write message to stderr
+!!    stderr(3f) - [M_debug] write message to stderr
 !!##SYNOPSIS
 !!
 !!    subroutine stderr(message,[generic])
@@ -166,7 +172,7 @@ end subroutine stderr
 !===================================================================================================================================
 !>
 !!##NAME
-!!    fstop - [M_debug] call stop with both a number and a message
+!!    fstop(3f) - [M_debug] call stop with both a number and a message
 !!##SYNOPSIS
 !!
 !!    subroutine fstop(ierr,stdout,stderr)
@@ -321,7 +327,7 @@ end subroutine fstop
 !>
 !!
 !!##NAME
-!!    unit_check - [M_debug] if logical expression is false, call command "goodbad NAME bad" and stop program
+!!    unit_check(3f) - [M_debug] if logical expression is false, call command "goodbad NAME bad" and stop program
 !!
 !!##SYNOPSIS
 !!
@@ -402,7 +408,7 @@ end subroutine unit_check
 !>
 !!
 !!##NAME
-!!    unit_check_start - [M_debug] call command "goodbad NAME start"
+!!    unit_check_start(3f) - [M_debug] call command "goodbad NAME start"
 !!
 !!##SYNOPSIS
 !!
@@ -465,7 +471,7 @@ end subroutine unit_check_start
 !>
 !!
 !!##NAME
-!!    unit_check_bad - [M_debug] call command "goodbad NAME bad" and stop program
+!!    unit_check_bad(3f) - [M_debug] call command "goodbad NAME bad" and stop program
 !!
 !!##SYNOPSIS
 !!
@@ -527,7 +533,7 @@ end subroutine unit_check_bad
 !>
 !!
 !!##NAME
-!!    unit_check_good - [M_debug] call command "goodbad NAME good"
+!!    unit_check_good(3f) - [M_debug] call command "goodbad NAME good"
 !!
 !!##SYNOPSIS
 !!
@@ -581,7 +587,7 @@ end subroutine unit_check_good
 !===================================================================================================================================
 !>
 !!##NAME
-!!      pdec - [M_debug] write out string with ASCII decimal equivalent vertically under it
+!!      pdec(3f) - [M_debug] write out string with ASCII decimal equivalent vertically under it
 !!
 !!##SYNOPSIS
 !!

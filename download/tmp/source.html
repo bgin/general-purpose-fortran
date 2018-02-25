@@ -140,6 +140,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 </td>
 <tr><td><a href="M_display.f90">M_display.f90</a></td>
 <td>
+	M_display(3fm) [M_display] module for pretty-printing matrices<br/>
 	integer scalar without title  (call disp_title_scalar_int(3f) with title='')<br/>
 </td>
 <tr><td><a href="M_factor.f90">M_factor.f90</a></td>
@@ -168,7 +169,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	 from current cursor position jump to next input field in pad<br/>
 	 from current cursor position jump to previous input field in pad jsu<br/>
 </td>
-<tr><td><a href="M_geodesic.f90">M_geodesic.f90</a></td>
+<tr><td><a href="M_generic_list.f90">M_generic_list.f90</a></td>
 <td>
 </td>
 <tr><td><a href="M_geography.f90">M_geography.f90</a></td>
@@ -221,7 +222,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 </td>
 <tr><td><a href="M_kracken.f90">M_kracken.f90</a></td>
 <td>
-	M_kracken(3fm):parse command line options of Fortran programs using Unix-like syntax<br/>
+	M_kracken(3fm): parse command line options of Fortran programs using Unix-like syntax<br/>
 	M_kracken::retrev(3f): retrieve token value from Language Dictionary when given NAME<br/>
 	M_kracken::dget(3f): given keyword fetch dble value from Language Dictionary (zero on err)<br/>
 	M_kracken::rget(3f): given keyword fetch real value from language dictionary (zero on err)<br/>
@@ -229,21 +230,34 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_kracken::lget(3f): given keyword fetch logical value from lang. dictionary (.f. on err)<br/>
 	M_kracken::sget(3f): Fetch string value and length of specified NAME from lang. dictionary<br/>
 	M_kracken::dgets(3f): given keyword fetch dble value from Language Dictionary (0 on err)<br/>
-	M_kracken::igets(3f):given keyword fetch integer array from string in dictionary(0 on err)<br/>
+	M_kracken::igets(3f): given keyword fetch integer array from string in dictionary(0 on err)<br/>
 	M_kracken::rgets(3f): given keyword fetch real array from string in dictionary (0 on err)<br/>
-	M_kracken::lgets(3f):given keyword fetch logical array from string in dictionary(F on err)<br/>
+	M_kracken::lgets(3f): given keyword fetch logical array from string in dictionary(F on err)<br/>
 	M_kracken::sgets(3f): Fetch strings value for specified NAME from the lang. dictionary<br/>
 	M_kracken::kracken(3f): define and parse command line options<br/>
 	M_kracken::setprompts(3f): set explicit prompts for keywords in interactive mode<br/>
-	M_kracken::dissect(3f): convenient call to parse() -- define defaults, then process<br/>
-	M_kracken::parse(3f):parse user command and store tokens into Language Dictionary<br/>
+	M_kracken::dissect(3f): convenient call to parse() define defaults, then process<br/>
+	M_kracken::parse(3f): parse user command and store tokens into Language Dictionary<br/>
 	M_kracken::store(3fp): replace dict. name's value (if allow='add' add name if necessary)<br/>
-	M_kracken::bounce(3fp): find index in Language Dictionary where VARNAM can be found<br/>
-	M_kracken::add_string(3fp): Add new string name to Language Library dictionary<br/>
 	M_kracken::subscript(3fp): return the subscript value of a string when given it's name<br/>
 	M_kracken::get_command_arguments(3fp): return all command arguments as an allocated string<br/>
-	M_kracken::menu(3fp):prompt for values using a menu interface<br/>
-	M_kracken::show(3f):dump dictionary entries<br/>
+	M_kracken::menu(3fp): prompt for values using a menu interface<br/>
+	M_kracken::show(3f): dump dictionary entries<br/>
+</td>
+<tr><td><a href="M_list.f90">M_list.f90</a></td>
+<td>
+	M_list::insert(3f): Generic subroutine inserts element into allocatable array at specified position<br/>
+	M_list::insert(3f): Generic subroutine deletes element from allocatable array at specified position<br/>
+	M_list::binary_search(3f) binary search of a sorted array.<br/>
+	M_list::locate(3f) find PLACE in sorted character array where VARNAME can be found or should be placed<br/>
+	M_list::remove_c(3fp) remove string from allocatable string array at specified position<br/>
+	M_list::remove_r(3fp) remove value from allocatable array at specified position<br/>
+	M_list::remove_i(3fp) remove value from allocatable array at specified position<br/>
+	M_list::insert_c(3fp) place string into allocatable string array at specified position<br/>
+	M_list::insert_r(3fp) place value into allocatable array at specified position<br/>
+	M_list::insert_i(3fp) place value into allocatable array at specified position<br/>
+	M_list::delete(3f) remove string from sorted allocatable string array if present<br/>
+	M_list::add(3f) place string into sorted allocatable string array if not present<br/>
 </td>
 <tr><td><a href="M_logic.f90">M_logic.f90</a></td>
 <td>
@@ -791,11 +805,11 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 </td>
 <tr><td><a href="Makefile">Makefile</a></td>
 <td>
-	 Makefile started by makeout(1) 2018-02-03 15:06:13<br/>
+	 Makefile started by makeout(1) 2018-02-25 13:21:07<br/>
 </td>
 <tr><td><a href="Makefile_picky">Makefile_picky</a></td>
 <td>
-	 Makefile started by makeout(1) 2018-02-03 15:06:11<br/>
+	 Makefile started by makeout(1) 2018-02-25 13:21:04<br/>
 </td>
 <tr><td><a href="vimrc">vimrc</a></td>
 <td>

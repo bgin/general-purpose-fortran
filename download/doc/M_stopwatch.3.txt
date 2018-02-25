@@ -39,12 +39,10 @@ use M_stopwatch
 The derived types are:
 
 .IP o
-
 .I watchtype
 -- used for declaring a variable to be a watch
 
 .IP o
-
 .I watchgroup
 -- used for declaring a variable to be a handle for a
 group of watches
@@ -84,12 +82,10 @@ calling program.  Failure to destroy watches can lead
 to a memory leak.
 
 .IP o
-
 .B create_watch
 -- creates a watch
 
 .IP o
-
 .B destroy_watch
 -- destroys a watch
 
@@ -178,12 +174,10 @@ grouping of them.  Failure to destroy watch groups can
 lead to a memory leak.
 
 .IP o
-
 .B create_watchgroup
 -- creates a new watch group
 
 .IP o
-
 .B destroy_watchgroup
 -- destroys a watch group (but not the watches in the
 group)
@@ -256,19 +250,16 @@ stop watch.  The basic operation of a watch involves
 starting it, stopping it, and resetting it to 0.
 
 .IP o
-
 .B start_watch
 -- starts an idle watch, like the Start/Stop button on
 a stop watch
 
 .IP o
-
 .B stop_watch
 -- stops a running watch, like the Start/Stop button on
 a stop watch
 
 .IP o
-
 .B reset_watch
 -- sets the clocks on a watch to 0.0, like the Reset
 button on a stop watch
@@ -279,13 +270,11 @@ Of course, running a stop watch is of little use unless
 you can see what it says.
 
 .IP o
-
 .B read_watch
 -- returns the current clock value of a watch, like
 looking at the display of a stop watch
 
 .IP o
-
 .B print_watch
 -- prints the current clock value of a watch to an
 output device.  To push the analogy to the limit,
@@ -312,12 +301,10 @@ and start them up again after the I/O. For this,
 M_StopWatch provides the pause function.
 
 .IP o
-
 .B pause_watch
 -- temporarily suspend the running watches
 
 .IP o
-
 .B end_pause_watch
 -- resume suspended watches
 
@@ -332,12 +319,10 @@ there are two operations that can be performed on
 variables:
 
 .IP o
-
 .B join_watchgroup
 -- adds a watch to a watch group
 
 .IP o
-
 .B leave_watchgroup
 -- removes a watch from a watch group
 
@@ -349,12 +334,10 @@ options, and to determine system dependent values of
 the implementation.
 
 .IP o
-
 .B option_stopwatch
 -- sets options within M_StopWatch.
 
 .IP o
-
 .B inquiry_stopwatch
 -- returns values of options and system dependent
 values

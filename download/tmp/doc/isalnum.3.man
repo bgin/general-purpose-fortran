@@ -1,6 +1,6 @@
 NAME
    isalnum,isalpha,iscntrl,isdigit,isgraph,islower,
-   isprint,ispunct,isspace,isupper,isascii,isblank,isxdigit - [M_strings] test membership in subsets of ASCII character set
+   isprint,ispunct,isspace,isupper,isascii,isblank,isxdigit(3f) - [M_strings] test membership in subsets of ASCII character set
 
 SYNOPSIS
    Where "FUNCNAME" is one of the function names in the group, the functions are defined by

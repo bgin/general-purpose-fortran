@@ -43,6 +43,7 @@ lastprogram easter.f90
 lastprogram planets.f90
 lastprogram lsup.f90
 lastprogram splitname.f90
+lastprogram model.f90
 lastprogram _cmp.f90
 lastprogram _dirname.f90
 lastprogram _echo.f90
@@ -62,6 +63,7 @@ lastprogram _rm.f90
 lastprogram _rmdir.f90
 lastprogram _showumask.f90
 lastprogram _sleep.f90
+lastprogram _touch.f90
 lastprogram _true.f90
 lastprogram _tty.f90
 lastprogram _uname.f90

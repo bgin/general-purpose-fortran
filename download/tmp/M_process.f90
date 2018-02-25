@@ -168,10 +168,10 @@
 !!     integer :: ierr                               ! check status of calls to process module routines
 !!     character(len=:),allocatable :: text(:)
 !!
-!!      !!call process_open_write('cat',fp,ierr)       ! open process to write to (ie. start gnuplot(1) program)
-!!        call process_open_write('bash',fp,ierr)       ! open process to write to (ie. start gnuplot(1) program)
+!!     !!call process_open_write('cat',fp,ierr)       ! open process to write to (ie. start gnuplot(1) program)
+!!     call process_open_write('bash',fp,ierr)       ! open process to write to (ie. start gnuplot(1) program)
 !!
-!!        text=[character(len=128) :: &
+!!     text=[character(len=128) :: &
 !!     "rm -f sqlite1.db", &
 !!     "sqlite3 sqlite1.db <<\EOF", &
 !!     "-- *****************************************************************************", &

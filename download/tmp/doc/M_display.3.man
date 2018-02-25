@@ -99,7 +99,7 @@ and PUTNL, which do nothing, but must be incorporated to avoid an "undefined sym
 In addition it defines the named constant (parameter) DEFAULT_UNIT = -3, which makes the asterisk
 unit (usually the screen) the default to display on.
 
-Alternatively the user can write his own PUTSTRMODULE as described  below. An
+Alternatively the user can write his own PUTSTRMODULE as described below. An
 example is near the beginning of M_display.f90 (commented out) and also in the file
 putstrmodule_mex.f90, enclosed with the package. It may be used (commented in instead of the
 default one) to allow Matlab mex files to display in the Matlab command window.

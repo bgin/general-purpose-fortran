@@ -52,7 +52,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 
 </A>
 <BLOCKQUOTE>
-<B>NAMELIST(7f) </B>- [FORTRAN:STATEMENT]
+<B>NAMELIST(7f) </B>- [FORTRAN:STATEMENT] specify a group of data to be referred to by a single name in data input/output
 </BLOCKQUOTE>
 <A name=contents></A><H3>CONTENTS</H3></A>
 <BLOCKQUOTE>
@@ -95,20 +95,20 @@ may be referred to by <I>.</I> single name for the purpose of data transfer.
 <P>
 The order in which the variables are specified in the <B>NAMELIST</B>
 statement determines the order in which the values appear on output.
-<P>
-The <I>namelist-group-name</I> shall not be <I>.</I> name accessed by use association.
-<I>.</I> <B>namelist-group-object</B> shall not be an assumed-size array.
-<I>.</I> <B>namelist-group-object</B> shall not have the PRIVATE attribute if the <I>namelist-group-name</I> has the PUBLIC attribute.
-</BLOCKQUOTE>
-<P>
-<I>.</I> Any <I>namelist-group-name</I> may occur more than once in the <B>NAMELIST</B> statements in <I>.</I> scoping unit. The
-<B>namelist-group-object-list</B> following each successive appearance of the same <I>namelist-group-name</I> in <I>.</I> scoping
-unit <I>is</I> treated as <I>.</I> continuation of the list for that <I>namelist-group-name</I>.
 <BLOCKQUOTE>
 <P>
-<I>.</I> <I>.</I> namelist group object may be <I>.</I> member of more than one namelist group.
+<I>.</I> The <I>namelist-group-name</I> shall not be <I>.</I> name accessed by use association.
+<I>.</I> <I>.</I> <B>namelist-group-object</B> shall not be an assumed-size array.
+<I>.</I> <I>.</I> <B>namelist-group-object</B> shall not have the PRIVATE attribute if the <I>namelist-group-name</I> has the PUBLIC attribute.
+</BLOCKQUOTE>
 <P>
-<I>.</I> <I>.</I> namelist group object shall either be accessed by use or host association or shall have its type, type parameters,
+Any <I>namelist-group-name</I> may occur more than once in the <B>NAMELIST</B> statements in <I>.</I> scoping unit. The
+<B>namelist-group-object-list</B> following each successive appearance of the same <I>namelist-group-name</I> in <I>.</I> scoping
+unit <I>is</I> treated as <I>.</I> continuation of the list for that <I>namelist-group-name</I>.
+<P>
+<I>.</I> namelist group object may be <I>.</I> member of more than one namelist group.
+<P>
+<I>.</I> namelist group object shall either be accessed by use or host association or shall have its type, type parameters,
 and shape specified by previous specification statements or the procedure heading in the same scoping unit or
 by the implicit typing rules in effect for the scoping unit. If <I>.</I> namelist group object <I>is</I> typed by the implicit
 typing rules, its appearance in any subsequent type declaration statement shall confirm the implied type and
@@ -275,9 +275,16 @@ Termination of data transfer statements
 </TD></TR>
 <TR><TD colspan=2>
 <PRE>
+      · format processing encounters a colon or data edit descriptor and there are no remaining elements in the
         input-item-list or output-item-list,
+      · unformatted or list-directed data transfer exhausts the input-item-list or output-item-list,
+      · namelist output exhausts the namelist-group-object-list,
+      · an error condition occurs,
+      · an end-of-file condition occurs,
 <P>
+      · a slash (/) is encountered as a value separator (10.10, 10.11) in the record being read during list-directed
         or namelist input, or
+      · an end-of-record condition occurs during execution of a nonadvancing input statement (9.11).
 </PRE>
 <I>.</I> If an error condition occurs during execution of an input/output statement that contains neither an ERR= nor
 IOSTAT= specifier, error termination of the program <I>is</I> initiated. If an error condition occurs during execution
@@ -533,6 +540,10 @@ Null values
 <I>.</I> <I>.</I> null value <I>is</I> specified by
 <P>
 <PRE>
+      ·   the r * form,
+      ·   blanks between two consecutive nonblank value separators following an equals,
+      ·   zero or more blanks preceding the first value separator and following an equals, or
+      ·   two consecutive nonblank value separators.
 <P>
 </PRE>
 <I>.</I> <I>.</I> null value has no effect on the definition status of the corresponding input list item. If the namelist group
@@ -559,7 +570,11 @@ Blanks
 <I>.</I> All blanks in <I>.</I> namelist input record are considered to be part of some value separator except for
 <P>
 <PRE>
+      · blanks embedded in a character constant,
+      · embedded blanks surrounding the real or imaginary part of a complex constant,
+      · leading blanks following the equals unless followed immediately by a slash or comma, or a semicolon if the
         decimal edit mode is comma, and
+      · blanks between a name and the following equals.
 <P>
 </PRE>
 <BLOCKQUOTE>
@@ -634,6 +649,7 @@ unchanged
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
+<I>.</I> (<I>.</I>) ­ <I>.</I> (<I>.</I>)
 unchanged
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
@@ -743,10 +759,9 @@ IMPLICIT, INTENT, <B>NAMELIST</B>, or OPTIONAL statement.
 </TD></TR>
 <TR></TR></TABLE></TD></TR>
 <TR></TR></TABLE><P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>namelist (7)</TD> <TD align=right width=33%><I>February 03, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 2de44378-b977-4ed0-9e88-b22660d93f47 using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>namelist (7)</TD> <TD align=right width=33%><I>February 25, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from cbd31ab7-94ce-496e-ad18-1cb907b22a23 using man macros.</FONT>
 </div>
 </div>
 <center><img src="images/namelist.7.gif"></center> 
 </body>
 </HTML>
-Binary file (standard input) matches

@@ -5,7 +5,7 @@ extern double gauss(double min, double max, unsigned int tightness);
  ******************************************************************************
  * NAME: gauss  -  gaussian random value generator
  *
- * SYNPOSIS:
+ * SYNOPSIS:
  *
  *    double gauss
  *    (

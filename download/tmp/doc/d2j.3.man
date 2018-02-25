@@ -1,5 +1,5 @@
 NAME
-   d2j - [M_time] given DAT date-time array returns Julian Date
+   d2j(3f) - [M_time] given DAT date-time array returns Julian Date
 
 SYNOPSIS
    function d2j(dat) result (julian)

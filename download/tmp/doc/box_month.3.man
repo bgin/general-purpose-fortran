@@ -1,5 +1,5 @@
 NAME
-   box_month - [M_time] create specified month in a character array
+   box_month(3f) - [M_time] create specified month in a character array
 
 SYNOPSIS
    subroutine box_month(dat,calen)

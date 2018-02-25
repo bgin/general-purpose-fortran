@@ -38,12 +38,18 @@ EOF
 	 cat -n |
 	 more
    fi
-elif [ -t 1 ]
-then
-   export MANPATH_OVERRIDE="$MANPATH"
-   manvi $* 
 else
-   man $*
+   if [ "$*" = ALL ]
+   then
+      set . $( man -k .|cprint 1|xargs)
+   fi
+   if [ -t 1 ]
+   then
+      export MANPATH_OVERRIDE="$MANPATH"
+      manvi $* 
+   else
+      man $*
+   fi
 fi
 #SEE ALSO: apropos
 exit

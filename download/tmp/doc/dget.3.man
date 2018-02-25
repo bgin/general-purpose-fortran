@@ -1,5 +1,5 @@
 NAME
-         dget - [ARGUMENTS:M_kracken] given keyword fetch doubleprecision value from command argument
+         dget(3f) - [ARGUMENTS:M_kracken] given keyword fetch doubleprecision value from command argument
 SYNOPSIS
    function dget(keyword) result(value)
 

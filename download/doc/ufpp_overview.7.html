@@ -15,11 +15,11 @@
 </a>
 <!-- =========================================================================================================================== -->
 <!--
-       @(#)ufpp_overview(1f): use of ufpp(1), a Fortran source code pre-processor
+       @(#)ufpp_overview(7f): use of ufpp(1), a Fortran source code pre-processor
   -->
 <!-- =========================================================================================================================== -->
 <h1>NAME</h1>
-<h2>ufpp(1) -  [DEVELOPER] a Fortran source code pre-processor</h2>
+<h2>ufpp(1f) -  [DEVELOPER] a Fortran source code pre-processor</h2>
 <!-- =========================================================================================================================== -->
 <h1>SYNOPSIS</h1>
 <pre>
@@ -172,10 +172,9 @@
       o The $FILTER VERSION directive can be used a to produce a routine that
         displays a version in a way that is compatible with the metadata display program what(1).
       o The $FILTER NULL directive can be used for text that is otherwise ignored.
-      o The $FILTER NULL directive can be used for text that is otherwise ignored.
-        Note that text can optionally be written to an alternate file using $OUTPUT directives.
       o The $FILTER SHELL directive can be used for text that is the output of a shell.
         This can be very system-dependent but allows code to be built dynamically.
+      o The VARIABLE option is used to rewrite the text as a string declaration
    <blockquote>
    <xmp>
    $FILTER NULL -file notes.txt !@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

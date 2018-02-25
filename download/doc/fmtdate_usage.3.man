@@ -1,5 +1,5 @@
 NAME
-   fmtdate_usage - [M_time] display macros recognized by fmtdate(3f) and now(3f)
+   fmtdate_usage(3f) - [M_time] display macros recognized by fmtdate(3f) and now(3f)
 
 SYNOPSIS
    subroutine fmtdate_usage(indent)

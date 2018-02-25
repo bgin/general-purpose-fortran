@@ -1,5 +1,5 @@
 NAME
-   matchw - [M_strings] compare given string for match to pattern which may contain wildcard characters
+   matchw(3f) - [M_strings] compare given string for match to pattern which may contain wildcard characters
 
 SYNOPSIS
    logical function matchw(string, pattern )

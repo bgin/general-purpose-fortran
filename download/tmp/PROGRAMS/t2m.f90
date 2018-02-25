@@ -19,6 +19,9 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   starting in column 1 start a section. Otherwise the sections are printed essentially',&
 '   as-is.                                                                       ',&
 '                                                                                ',&
+'   Lines beginning in column 1 that are all uppercase letters become section headers, and',&
+'   a basic header and footer are added.                                         ',&
+'                                                                                ',&
 'OPTIONS                                                                         ',&
 '     FILE                                                                       ',&
 '        The input filename                                                      ',&
@@ -42,6 +45,28 @@ help_text=[ CHARACTER(LEN=128) :: &
 '     -product                                                                   ',&
 '     -help       display help and exit                                          ',&
 '     -version    display version information and exit                           ',&
+'                                                                                ',&
+'EXAMPLES                                                                        ',&
+'                                                                                ',&
+'    A short example                                                             ',&
+'                                                                                ',&
+'     # use help txt as input to t2m to make man(1) page                         ',&
+'     t2m --help|t2m >t2m.1                                                      ',&
+'     # check out new man(1) page                                                ',&
+'     nroff -man t2m.1|more                                                      ',&
+'     # install man page in a common location (location varies)                  ',&
+'        # man pages are commonly kept as compressed files                       ',&
+'        gzip t2m.1                                                              ',&
+'        # place file in a directory read by man(1) command.                     ',&
+'        # can be changed with environment variable MANPATH                      ',&
+'        # or by adding a directory to the default manpath.                      ',&
+'        # varies from system to system                                          ',&
+'        mv -i t2m.1.gz /usr/share/man/man1/                                     ',&
+'        # make sure file is readable by all users                               ',&
+'        chmod a=r,u+w /usr/share/man/man1/t2m.1.gz                              ',&
+'     # test man page                                                            ',&
+'     man t2m|more                                                               ',&
+'                                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -60,6 +85,9 @@ end subroutine help_usage
 !!    Minimalist conversion of a text file to a man page. Lines that are all upper-case
 !!    starting in column 1 start a section. Otherwise the sections are printed essentially
 !!    as-is.
+!!
+!!    Lines beginning in column 1 that are all uppercase letters become section headers, and
+!!    a basic header and footer are added.
 !!
 !!##OPTIONS
 !!      FILE
@@ -84,6 +112,28 @@ end subroutine help_usage
 !!      -product
 !!      -help       display help and exit
 !!      -version    display version information and exit
+!!
+!!##EXAMPLES
+!!
+!!
+!!     A short example
+!!
+!!      # use help txt as input to t2m to make man(1) page
+!!      t2m --help|t2m >t2m.1
+!!      # check out new man(1) page
+!!      nroff -man t2m.1|more
+!!      # install man page in a common location (location varies)
+!!         # man pages are commonly kept as compressed files
+!!         gzip t2m.1
+!!         # place file in a directory read by man(1) command.
+!!         # can be changed with environment variable MANPATH
+!!         # or by adding a directory to the default manpath.
+!!         # varies from system to system
+!!         mv -i t2m.1.gz /usr/share/man/man1/
+!!         # make sure file is readable by all users
+!!         chmod a=r,u+w /usr/share/man/man1/t2m.1.gz
+!!      # test man page
+!!      man t2m|more
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -101,7 +151,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 2016-05-14>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
-'@(#)COMPILED:       Wed, Dec 20th, 2017 11:55:39 PM>',&
+'@(#)COMPILED:       Sun, Feb 4th, 2018 3:58:22 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -221,6 +271,7 @@ integer                     :: isection
    INFINITE: do i=1,size(table)
       call notabs(table(i),line,ilen)                            ! remove tab characters, which can be problematic
       leading_spaces=indent(line)                                ! find amount of leading white space
+      call substitute(line,'\','\\')                             ! escape default escape character
       !-----------------------------------------------------------------------------------------------------------------------------
       iend=len_trim(line)
       if(line(1:1).eq.'.')then

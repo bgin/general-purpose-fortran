@@ -1,5 +1,5 @@
 NAME
-   guessdate - [M_time] reads in a date, in various formats
+   guessdate(3f) - [M_time] reads in a date, in various formats
 
 SYNOPSIS
    subroutine guessdate(anot,dat)

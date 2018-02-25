@@ -1,5 +1,5 @@
 NAME
-   M_strings - [M_strings] Fortran string module
+   M_strings(3f) - [M_strings] Fortran string module
 SYNOPSIS
  public entities:
 

@@ -1,5 +1,5 @@
 NAME
-   j2d - [M_time] given a JED (Julian Ephemeris Date) returns a date-time array DAT.
+   j2d(3f) - [M_time] given a JED (Julian Ephemeris Date) returns a date-time array DAT.
 
 SYNOPSIS
    function j2d(julian) result (dat)

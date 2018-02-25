@@ -1,5 +1,5 @@
 NAME
-   date_to_julian - [M_time] converts DAT date-time array to Julian Date
+   date_to_julian(3f) - [M_time] converts DAT date-time array to Julian Date
 
 SYNOPSIS
    subroutine date_to_julian(dat,juliandate,ierr)

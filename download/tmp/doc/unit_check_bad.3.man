@@ -1,6 +1,6 @@
 
 NAME
-   unit_check_bad - [M_debug] call command "goodbad NAME bad" and stop program
+   unit_check_bad(3f) - [M_debug] call command "goodbad NAME bad" and stop program
 
 SYNOPSIS
    subroutine unit_check_bad(name,string)

@@ -1,5 +1,5 @@
 NAME
-   tand - [M_units:TRIGONOMETRY] calculate tangent of value in degrees
+   tand(3f) - [M_units:TRIGONOMETRY] calculate tangent of value in degrees
 SYNOPSIS
    elemental real function tand(degrees)
 

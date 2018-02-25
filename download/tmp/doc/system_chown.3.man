@@ -36,7 +36,7 @@ EXAMPLE
        Sample program:
 
           program demo_system_chown
-          Use M_sytem, only : system_chown
+          Use M_system, only : system_chown
           implicit none
           integer                     :: i
           character(len=80),parameter :: names(*)=[ 'myfile1','/usr/local']

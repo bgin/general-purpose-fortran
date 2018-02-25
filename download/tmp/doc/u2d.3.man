@@ -1,5 +1,5 @@
 NAME
-   u2d - [M_time] given Unix Epoch Time returns DAT date-time array
+   u2d(3f) - [M_time] given Unix Epoch Time returns DAT date-time array
 
 SYNOPSIS
    function u2d(unixtime) result (dat)

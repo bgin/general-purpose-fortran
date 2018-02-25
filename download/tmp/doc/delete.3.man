@@ -1,0 +1,48 @@
+NAME
+   delete(3f) - [M_list] delete entry by name from an allocatable sorted string array if it is present
+
+SYNOPSIS
+  subroutine delete(varname,dictionary)
+
+   character(len=*),intent=(in) :: VARNAME
+   character(len=*),allocatable :: DICTIONARY(:)
+
+DESCRIPTION
+
+   Find if a string is in a sorted array, and delete the string
+   from the dictionary if it is present.
+
+OPTIONS
+
+   VARNAME       the string value to find and delete from the array.
+
+   DICTIONARY    is the dictionary array. It must be sorted in descending order.
+
+EXAMPLES
+
+   If string is found in a sorted array, delete the string
+
+    program demo_delete
+    use M_sort, only : sort_shell
+    use M_list, only : add
+    implicit none
+    character(len=20),allocatable :: arr(:)
+    integer                       :: i
+
+    arr=[character(len=20) :: 'ZZZ','aaa','b','b','c','xxx','ZZ','z' ]
+    ! make sure sorted in descending order
+    call sort_shell(arr,order='d')
+
+    write(*,101)(trim(arr(i)),i=1,size(arr)) ! show array
+    call  delete('c',    arr); write(*,101)(trim(arr(i)),i=1,size(arr)) ! show array
+    call  delete('^',    arr); write(*,101)(trim(arr(i)),i=1,size(arr)) ! show array
+    call  delete(' ',    arr); write(*,101)(trim(arr(i)),i=1,size(arr)) ! show array
+    call  delete('b',    arr); write(*,101)(trim(arr(i)),i=1,size(arr)) ! show array
+    call  delete('ZZ',   arr); write(*,101)(trim(arr(i)),i=1,size(arr)) ! show array
+    call  delete('ZZZZ', arr); write(*,101)(trim(arr(i)),i=1,size(arr)) ! show array
+    call  delete('z',    arr); write(*,101)(trim(arr(i)),i=1,size(arr)) ! show array
+    101 format (1x,*("[",a,"]",:,","))
+    end program demo_delete
+
+   Results:
+

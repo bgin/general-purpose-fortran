@@ -1,5 +1,5 @@
 NAME
-   d2o - [M_time] converts DAT date-time array to Ordinal day
+   d2o(3f) - [M_time] converts DAT date-time array to Ordinal day
 
 SYNOPSIS
    function d2o(dat) result (ordinal)

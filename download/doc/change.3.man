@@ -1,5 +1,5 @@
 NAME
-   change - [M_strings] change old string to new string with a directive like a line editor
+   change(3f) - [M_strings] change old string to new string with a directive like a line editor
 
 SYNOPSIS
    subroutine change(target_string,cmd,ierr)

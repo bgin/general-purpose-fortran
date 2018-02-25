@@ -1,5 +1,5 @@
 NAME
-   julian_to_date - [M_time] converts a JED(Julian Ephemeris Date) to a DAT date-time array.
+   julian_to_date(3f) - [M_time] converts a JED(Julian Ephemeris Date) to a DAT date-time array.
 
 SYNOPSIS
    subroutine julian_to_date(julian,dat,ierr)

@@ -21,14 +21,14 @@ RETURN VALUE
    These functions return a INTEGER variable or array under
    the following rules:
 
- 1. If A is of type INTEGER, int(a) = a
+    1. If A is of type INTEGER, int(a) = a
 
- 2. If A is of type REAL and |a| < 1, int(a) equals 0.
-    If |a| >= 1, then int(a) equals the largest integer that
-    does not exceed the range of A and whose sign is the same as the
-    sign of A.
+    2. If A is of type REAL and |a| < 1, int(a) equals 0.
+       If |a| >= 1, then int(a) equals the largest integer that
+       does not exceed the range of A and whose sign is the same as the
+       sign of A.
 
- 3. If A is of type COMPLEX, rule 2 is applied to the real part of A.
+    3. If A is of type COMPLEX, rule 2 is applied to the real part of A.
 
 EXAMPLE
 

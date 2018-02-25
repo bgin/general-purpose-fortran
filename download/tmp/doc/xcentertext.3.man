@@ -7,7 +7,7 @@ SYNOPSIS
    subroutine xcentertext()
 
 DESCRIPTION
-   Set text centering mode on in X direction.  Y justification is
+   Set text centering mode on in X direction. Y justification is
    turned off.
 
    Centers text in the X direction. The text string will begin at a

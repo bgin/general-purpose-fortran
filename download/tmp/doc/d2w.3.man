@@ -1,5 +1,5 @@
 NAME
-   d2w - [M_time] calculate iso-8601 Week-numbering year date yyyy-Www-d given DAT date-time array
+   d2w(3f) - [M_time] calculate iso-8601 Week-numbering year date yyyy-Www-d given DAT date-time array
 
 SYNOPSIS
    subroutine d2w(dat,iso_year,iso_week,iso_weekday,iso_name)

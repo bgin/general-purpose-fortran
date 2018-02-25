@@ -19,7 +19,7 @@
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 MODULE PUTSTRMODULE ! DUMMY VERSION
-  ! An auxilliary module that accompanies M_display. This module contains dummy versions of the
+  ! An auxiliary module that accompanies M_display. This module contains dummy versions of the
   ! subroutines putstr and putnl that do nothing. It is needed to avoid an "undefined symbol" link
   ! error for these. In addition it defines the named constant (or parameter) DEFAULT_UNIT = -3,
   ! which makes the asterisk unit (usually the screen) the default to display on.
@@ -193,7 +193,7 @@ END MODULE PUTSTRMODULE
 !! In addition it defines the named constant (parameter) DEFAULT_UNIT = -3, which makes the asterisk
 !! unit (usually the screen) the default to display on.
 !!
-!! Alternatively the user can write his own PUTSTRMODULE as described  below. An
+!! Alternatively the user can write his own PUTSTRMODULE as described below. An
 !! example is near the beginning of M_display.f90 (commented out) and also in the file
 !! putstrmodule_mex.f90, enclosed with the package. It may be used (commented in instead of the
 !! default one) to allow Matlab mex files to display in the Matlab command window.
@@ -282,6 +282,8 @@ MODULE M_display_UTIL
 
   use putstrmodule
   implicit none
+
+character(len=*),parameter::ident="@(#)M_display(3fm) [M_display] module for pretty-printing matrices"
 
   ! ***************** PUBLIC ENTITIES (ONLY PUBLIC TO M_display, NOT TO USER PROGRAMS) ***************
   private
@@ -667,7 +669,7 @@ CONTAINS
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 
-  subroutine get_SE(SE, title, shapex, fmt, advance, lbound, seperator, style, trim, unit, orient, zeroas, digmax)
+  subroutine get_SE(SE, title, shapex, fmt, advance, lbound, separator, style, trim, unit, orient, zeroas, digmax)
     ! Get the settings from the optional parameters fmt...zeroas in to the structure SE.
     ! Replace absent arguments with corresponding values from the structure DEFSET.
     type(settings), intent(out)          :: SE
@@ -675,7 +677,7 @@ CONTAINS
     integer,        intent(in)           :: shapex(:)
     character(*),   intent(in), optional :: fmt
     integer,        intent(in), optional :: unit, digmax, lbound(:)
-    character(*),   intent(in), optional :: advance, seperator, style, zeroas, trim, orient
+    character(*),   intent(in), optional :: advance, separator, style, zeroas, trim, orient
     logical ok
     !
     character(22) ed
@@ -748,9 +750,9 @@ CONTAINS
     else
       trm = DEFSET % trim == 'YES' .or. DEFSET % trim == 'AUTO' .and. .not.present(FMT)
     endif
-    if (present(seperator)) then
-      sep = seperator
-      lsep = len(seperator)
+    if (present(separator)) then
+      sep = separator
+      lsep = len(separator)
     else
       sep = DEFSET % sep
       lsep = DEFSET % seplen
@@ -1459,9 +1461,9 @@ MODULE M_display
 !! STYLE = style  There are five possible styles:
 !!
 !!           'left'       Title is immediately to the left of the first line of the displayed item.
-!!           'above'      Title is centred immediately above the item.
-!!           'pad'        Title is centred above the item, padded with hyphens (-).
-!!           'underline'  Title is centred above the item, underlined with hyphens.
+!!           'above'      Title is centered immediately above the item.
+!!           'pad'        Title is centered above the item, padded with hyphens (-).
+!!           'underline'  Title is centered above the item, underlined with hyphens.
 !!           'number'     Each matrix or vector row and / or column is numbered.
 !!
 !!       Any of the four title position styles can also be combined with the number style by
@@ -1530,7 +1532,7 @@ MODULE M_display
 !!                   0      0      0  1.000        .      .      .     1.000
 !!
 !!       Notice that when zerostring contains a decimal point it is lined up with other decimal
-!!       points in the column. If zerostring has length 0, the default behaviour of not treating zeros
+!!       points in the column. If zerostring has length 0, the default behavior of not treating zeros
 !!       specially is re-established, in case an earlier DISP_SET call has been used to set ZEROAS.
 !!
 !!
@@ -2072,7 +2074,7 @@ character(*), intent(in)           :: title      ! The title to use for the matr
 integer(dint),intent(in)           :: x(:,:)     ! The matrix to be written
 character(*), intent(in), optional :: fmt        ! Format edit descriptor to use for each matrix element (e.g.'I4')
 integer,      intent(in), optional :: unit       ! Unit to display on
-character(*), intent(in), optional :: advance    ! 'No' to print next matrix to right of current, otherewise 'Yes'
+character(*), intent(in), optional :: advance    ! 'No' to print next matrix to right of current, otherwise 'Yes'
 character(*), intent(in), optional :: sep        ! Separator between matrix columns (e.g. ", ")
 character(*), intent(in), optional :: zeroas     ! Zeros are replaced by this string
 character(*), intent(in), optional :: style      ! Style(s): See NOTE 1 below
@@ -2241,7 +2243,7 @@ end subroutine getwid_dint
 !! ", ". By (original) default G editing is used to convert real numbers, I editing integers, and
 !! blanks are trimmed from (each element of) X, both from the left and the right. In addition
 !! trailing zeroes are trimmed from the fractional part of real X-elements, as well as a trailing
-!! decimal point. The separating string, trimming behaviour, and default editing may be changed by
+!! decimal point. The separating string, trimming behavior, and default editing may be changed by
 !! calling TOSTRING_SET
 !!
 !! X     The item to be changed to a string. X may be a scalar or a vector (i.e. of rank 0 or 1) and
@@ -2399,7 +2401,7 @@ end subroutine getwid_dint
     character(*), intent(in), optional :: fmt        ! Editdit descriptor to use for each matrix element (e.g. 'F5.2')
     integer,      intent(in), optional :: unit       ! Unit to display on
     integer,      intent(in), optional :: digmax     ! Nbr of significant digits for largest abs value in x
-    character(*), intent(in), optional :: advance    ! 'No' to print next matrix to right of current, otherewise 'Yes'
+    character(*), intent(in), optional :: advance    ! 'No' to print next matrix to right of current, otherwise 'Yes'
     character(*), intent(in), optional :: sep        ! Separator between matrix columns (e.g. ", ")
     character(*), intent(in), optional :: zeroas     ! Zeros are replaced with this string if it is not empty
     character(*), intent(in), optional :: style      ! Style(s): See NOTE 1 below
@@ -2717,7 +2719,7 @@ end subroutine getwid_dint
     integer,      intent(in), optional :: unit       ! Unit to display on
     integer,      intent(in), optional :: digmax     ! Nbr of significant digits for largest abs value in real(x) &
     !                                                ! and aimag(x)
-    character(*), intent(in), optional :: advance    ! 'No' to print next matrix to right of current, otherewise 'Yes'
+    character(*), intent(in), optional :: advance    ! 'No' to print next matrix to right of current, otherwise 'Yes'
     character(*), intent(in), optional :: sep        ! Separator between matrix columns (e.g. ", ")
     character(*), intent(in), optional :: style      ! Style(s): See NOTE 1 below
     character(*), intent(in), optional :: trim       ! 'Auto' (the default) to trim if fmt absent, 'no' for no
@@ -2918,7 +2920,7 @@ end subroutine getwid_dint
     character(*), intent(in), optional :: fmt        ! Editdit descriptor to use for each matrix element (e.g. 'F5.2')
     integer,      intent(in), optional :: unit       ! Unit to display on
     integer,      intent(in), optional :: digmax     ! Nbr of significant digits for largest abs value in x
-    character(*), intent(in), optional :: advance    ! 'No' to print next matrix to right of current, otherewise 'Yes'
+    character(*), intent(in), optional :: advance    ! 'No' to print next matrix to right of current, otherwise 'Yes'
     character(*), intent(in), optional :: sep        ! Separator between matrix columns (e.g. ", ")
     character(*), intent(in), optional :: zeroas     ! Zeros are replaced with this string if it is not empty
     character(*), intent(in), optional :: style      ! Style(s): See NOTE 1 below
@@ -3239,7 +3241,7 @@ end subroutine getwid_dint
     integer,      intent(in), optional :: unit       ! Unit to display on
     integer,      intent(in), optional :: digmax     ! Nbr of significant digits for largest abs value in real(x) &
     !                                                ! and aimag(x)
-    character(*), intent(in), optional :: advance    ! 'No' to print next matrix to right of current, otherewise 'Yes'
+    character(*), intent(in), optional :: advance    ! 'No' to print next matrix to right of current, otherwise 'Yes'
     character(*), intent(in), optional :: sep        ! Separator between matrix columns (e.g. ", ")
     character(*), intent(in), optional :: style      ! Style(s): See NOTE 1 below
     character(*), intent(in), optional :: trim       ! 'Auto' (the default) to trim if fmt absent, 'no' for no
@@ -3438,7 +3440,7 @@ end subroutine getwid_dint
     logical(dlog),intent(in)           :: x(:,:)    ! The matrix to be written
     character(*), intent(in), optional :: fmt       ! Format edit descriptor to use for each matrix element (e.g. 'L1')
     integer,      intent(in), optional :: unit      ! Unit to display on
-    character(*), intent(in), optional :: advance   ! 'No' to print next matrix to right of current, otherewise 'Yes'
+    character(*), intent(in), optional :: advance   ! 'No' to print next matrix to right of current, otherwise 'Yes'
     character(*), intent(in), optional :: sep       ! Separator between matrix columns (e.g. ", ")
     character(*), intent(in), optional :: style     ! Style(s): See NOTE 1 below
     character(*), intent(in), optional :: trim      ! 'Auto' (the default) to trim if fmt absent, 'no' for no trimming,
@@ -3615,7 +3617,7 @@ end subroutine getwid_dint
     character(*), intent(in)           :: x(:,:)     ! The matrix to be written
     character(*), intent(in), optional :: fmt        ! Format edit descriptor to use for each matrix element (e.g.'A4')
     integer,      intent(in), optional :: unit       ! Unit to display on
-    character(*), intent(in), optional :: advance    ! 'No' to print next matrix to right of current, otherewise 'Yes'
+    character(*), intent(in), optional :: advance    ! 'No' to print next matrix to right of current, otherwise 'Yes'
     character(*), intent(in), optional :: sep        ! Separator between matrix columns (e.g. ", ")
     character(*), intent(in), optional :: style      ! Style(s): see NOTE 1 below
     character(*), intent(in), optional :: trim       ! 'Auto' (the default) to trim if fmt absent, 'no' for no

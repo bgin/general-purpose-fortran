@@ -73,7 +73,7 @@ real(kind=realtime),public,parameter :: dt_week=dt_day*7.0d0  ! one week in seco
 !===================================================================================================================================
 !>
 !!##NAME
-!!    date_to_julian - [M_time] converts DAT date-time array to Julian Date
+!!    date_to_julian(3f) - [M_time] converts DAT date-time array to Julian Date
 !!
 !!##SYNOPSIS
 !!
@@ -183,7 +183,7 @@ end subroutine date_to_julian
 !===================================================================================================================================
 !>
 !!##NAME
-!!    julian_to_date - [M_time] converts a JED(Julian Ephemeris Date) to a DAT date-time array.
+!!    julian_to_date(3f) - [M_time] converts a JED(Julian Ephemeris Date) to a DAT date-time array.
 !!
 !!##SYNOPSIS
 !!
@@ -317,7 +317,7 @@ end subroutine julian_to_date
 !===================================================================================================================================
 !>
 !!##NAME
-!!    date_to_unix - [M_time] converts DAT date-time array to Unix Epoch Time
+!!    date_to_unix(3f) - [M_time] converts DAT date-time array to Unix Epoch Time
 !!
 !!##SYNOPSIS
 !!
@@ -390,7 +390,7 @@ end subroutine date_to_unix
 !===================================================================================================================================
 !>
 !!##NAME
-!!    unix_to_date - [M_time] converts Unix Epoch Time to DAT date-time array
+!!    unix_to_date(3f) - [M_time] converts Unix Epoch Time to DAT date-time array
 !!
 !!##SYNOPSIS
 !!
@@ -477,7 +477,7 @@ end subroutine unix_to_date
 !===================================================================================================================================
 !>
 !!##NAME
-!!    d2o - [M_time] converts DAT date-time array to Ordinal day
+!!    d2o(3f) - [M_time] converts DAT date-time array to Ordinal day
 !!
 !!##SYNOPSIS
 !!
@@ -658,7 +658,7 @@ end subroutine ordinal_to_date
 !===================================================================================================================================
 !>
 !!##NAME
-!!    o2d - [M_time] converts Ordinal day to DAT date-time array
+!!    o2d(3f) - [M_time] converts Ordinal day to DAT date-time array
 !!
 !!##SYNOPSIS
 !!
@@ -736,7 +736,7 @@ end function o2d
 !===================================================================================================================================
 !>
 !!##NAME
-!!    v2mo - [M_time] returns the month name of a Common month number
+!!    v2mo(3f) - [M_time] returns the month name of a Common month number
 !!
 !!##SYNOPSIS
 !!
@@ -806,7 +806,7 @@ end function v2mo
 !===================================================================================================================================
 !>
 !!##NAME
-!!    mo2d - [M_time] given month name return DAT date-time array for beginning of that month in current year
+!!    mo2d(3f) - [M_time] given month name return DAT date-time array for beginning of that month in current year
 !!
 !!##SYNOPSIS
 !!
@@ -862,7 +862,7 @@ end function mo2d
 !===================================================================================================================================
 !>
 !!##NAME
-!!    mo2v - [M_time] given month name return month number (1-12) of that month
+!!    mo2v(3f) - [M_time] given month name return month number (1-12) of that month
 !!
 !!##SYNOPSIS
 !!
@@ -944,7 +944,7 @@ end function mo2v
 !===================================================================================================================================
 !>
 !!##NAME
-!!    now - [M_time] return string representing current time given format
+!!    now(3f) - [M_time] return string representing current time given format
 !!
 !!##SYNOPSIS
 !!
@@ -1009,7 +1009,7 @@ end function now
 !===================================================================================================================================
 !>
 !!##NAME
-!!    fmtdate - [M_time] given DAT date-time array return date as string using specified format
+!!    fmtdate(3f) - [M_time] given DAT date-time array return date as string using specified format
 !!
 !!##SYNOPSIS
 !!
@@ -1319,7 +1319,7 @@ end function fmtdate
 !===================================================================================================================================
 !>
 !!##NAME
-!!    fmtdate_usage - [M_time] display macros recognized by fmtdate(3f) and now(3f)
+!!    fmtdate_usage(3f) - [M_time] display macros recognized by fmtdate(3f) and now(3f)
 !!
 !!##SYNOPSIS
 !!
@@ -1574,7 +1574,7 @@ end subroutine fmtdate_usage
 !===================================================================================================================================
 !>
 !!##NAME
-!!    guessdate - [M_time] reads in a date, in various formats
+!!    guessdate(3f) - [M_time] reads in a date, in various formats
 !!
 !!##SYNOPSIS
 !!
@@ -1671,7 +1671,7 @@ character(len=*),parameter::ident="@(#)M_time::guessdate(3f): Guess format of a 
 
 
 ! NOTE : Main constraint is that day is input BEFORE year unless use YYYY-MM-DD and a : implies HH:MM:SS, no timezone names
-!        Not rigorous. Gets most common formats but can easily make errors in all but simple unambigious common date formats
+!        Not rigorous. Gets most common formats but can easily make errors in all but simple unambiguous common date formats
 character(len=*),intent(in)       :: datestring ! Date in string format
 character(len=:),allocatable      :: datestring_local ! Date in string format
 character(len=:),allocatable      :: temp
@@ -1930,7 +1930,7 @@ end subroutine guessdate
 !===================================================================================================================================
 !>
 !!##NAME
-!!    dow - [M_time] given a date-time array DAT return the day of the week
+!!    dow(3f) - [M_time] given a date-time array DAT return the day of the week
 !!
 !!##SYNOPSIS
 !!
@@ -2048,7 +2048,7 @@ end subroutine dow
 !===================================================================================================================================
 !>
 !!##NAME
-!!    d2w - [M_time] calculate iso-8601 Week-numbering year date yyyy-Www-d given DAT date-time array
+!!    d2w(3f) - [M_time] calculate iso-8601 Week-numbering year date yyyy-Www-d given DAT date-time array
 !!
 !!##SYNOPSIS
 !!
@@ -2197,7 +2197,7 @@ end subroutine d2w
 !===================================================================================================================================
 !>
 !!##NAME
-!!    w2d - [M_time] calculate DAT date-time array from iso-8601 Week-numbering year date yyyy-Www-d
+!!    w2d(3f) - [M_time] calculate DAT date-time array from iso-8601 Week-numbering year date yyyy-Www-d
 !!
 !!##SYNOPSIS
 !!
@@ -2378,7 +2378,7 @@ end subroutine w2d
 !===================================================================================================================================
 !>
 !!##NAME
-!!    box_month - [M_time] create specified month in a character array
+!!    box_month(3f) - [M_time] create specified month in a character array
 !!
 !!##SYNOPSIS
 !!
@@ -2469,7 +2469,7 @@ end subroutine box_month
 !===================================================================================================================================
 !>
 !!##NAME
-!!    d2j - [M_time] given DAT date-time array returns Julian Date
+!!    d2j(3f) - [M_time] given DAT date-time array returns Julian Date
 !!
 !!##SYNOPSIS
 !!
@@ -2529,7 +2529,7 @@ end function d2j
 !===================================================================================================================================
 !>
 !!##NAME
-!!    j2d - [M_time] given a JED (Julian Ephemeris Date) returns a date-time array DAT.
+!!    j2d(3f) - [M_time] given a JED (Julian Ephemeris Date) returns a date-time array DAT.
 !!
 !!##SYNOPSIS
 !!
@@ -2590,7 +2590,7 @@ end function j2d
 !===================================================================================================================================
 !>
 !!##NAME
-!!    d2u - [M_time] given DAT date-time array returns Unix Epoch Time (UET starts at 0000 on 1 Jan. 1970, UTC)
+!!    d2u(3f) - [M_time] given DAT date-time array returns Unix Epoch Time (UET starts at 0000 on 1 Jan. 1970, UTC)
 !!
 !!##SYNOPSIS
 !!
@@ -2654,7 +2654,7 @@ end function d2u
 !===================================================================================================================================
 !>
 !!##NAME
-!!    u2d - [M_time] given Unix Epoch Time returns DAT date-time array
+!!    u2d(3f) - [M_time] given Unix Epoch Time returns DAT date-time array
 !!
 !!##SYNOPSIS
 !!
@@ -2740,7 +2740,7 @@ end function get_timezone
 !===================================================================================================================================
 !>
 !!##NAME
-!!    sec2days - [M_time] convert seconds to string of form dd-hh:mm:ss
+!!    sec2days(3f) - [M_time] convert seconds to string of form dd-hh:mm:ss
 !!
 !!##SYNOPSIS
 !!
@@ -2937,7 +2937,7 @@ end function sec2days
 !===================================================================================================================================
 !>
 !!##NAME
-!!    days2sec - [M_time] convert string of form [[-]dd-]hh:mm:ss.nn to seconds
+!!    days2sec(3f) - [M_time] convert string of form [[-]dd-]hh:mm:ss.nn to seconds
 !!
 !!##SYNOPSIS
 !!
@@ -3630,7 +3630,7 @@ END subroutine ephemeris
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_sleep - [M_time] call C sleep(3c) or usleep(3c) procedure
+!!    system_sleep(3f) - [M_time] call C sleep(3c) or usleep(3c) procedure
 !!##SYNOPSIS
 !!
 !!    subroutine system_sleep(wait_seconds)

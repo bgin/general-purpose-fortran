@@ -138,7 +138,7 @@ do
    header.sh
    cat $NAME
    footer.sh
-   ) | html2txt $NAME tmp/$NEWNAME.man
+   ) | html2txt $NAME > tmp/$NEWNAME.man
 done
 #------------------------------------------------------------------------------#
 echo 'Convert *.man pages to *roff files and install as man pages'
@@ -300,8 +300,31 @@ cp -r -p ../html/StyleSheets tmp/html/
 # combine man pages into books
 book.sh M_kracken M_strings M_time M_system M_color M_pixel M_calculator M_units M_math M_process M_logic 
 book.sh M_Compare_Float_Numbers M_debug M_factor M_io M_journal M_messages M_sort INTRINSIC
-book.sh M_stopwatch M_display
+book.sh M_stopwatch M_display M_regex
 book.sh INDEX
+#tmp/M_anyscalar.f90
+#tmp/M_calculator_plus.f90
+#tmp/M_constants.f90
+#tmp/M_csv.f90
+#tmp/M_fixedform.f90
+#tmp/M_geodesic.f90
+#tmp/M_geography.f90
+#tmp/M_getkey.f90
+#tmp/M_getopt.f90
+#tmp/M_getopt_long.f90
+#tmp/M_history.f90
+#tmp/M_html.f90
+#tmp/M_kracken.f90
+#tmp/M_math.f90
+#tmp/M_ncurses.f90
+#tmp/M_pixel_slices.f90
+#tmp/M_random.f90
+#tmp/M_readgif.f90
+#tmp/M_readline.f90
+#tmp/M_swap.f90
+#tmp/M_treesort.f90
+#tmp/M_writegif.f90
+#tmp/M_writegif_animated.f90
 #----------------------------------------------------------------------------------------------------------------------------------#
 echo 'now that all procedure descriptions are in place make main index page download.html'
 make_index.sh

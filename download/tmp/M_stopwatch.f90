@@ -2566,7 +2566,7 @@ if (present(io_unit_print)) then
    end if
 end if
 
-! behaviour on errors
+! behavior on errors
 
 if (present(print_errors)) then
    errprint = print_errors
@@ -2677,7 +2677,7 @@ if (present(io_unit_print)) then
    io_unit_print = iounit
 end if
 
-! behaviour on errors
+! behavior on errors
 
 if (present(print_errors)) then
    print_errors = errprint

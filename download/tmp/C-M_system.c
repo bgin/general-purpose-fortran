@@ -101,7 +101,7 @@ void my_initenv(){
    big enough by scanning current table. There is probably a
    C variable that defines this length; but hopefully this
    entire method of reading the environment table will be
-   superceeded if I can figure out what is wrong with the
+   superseded if I can figure out what is wrong with the
    version that returns an arbitrary string length directly.
    See:
       xargs --show-limits

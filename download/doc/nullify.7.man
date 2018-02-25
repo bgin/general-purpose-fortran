@@ -1,5 +1,5 @@
 NAME
-   NULLIFY(7) - [FORTRAN:STATEMENT] causes pointers to be disassociated
+   NULLIFY(7f) - [FORTRAN:STATEMENT] causes pointers to be disassociated
 SYNOPSIS
   NULLIFY ( pointer-object-list )
 

@@ -1,5 +1,5 @@
 NAME
-   sind - [M_units:TRIGONOMETRY] calculate sine of value in degrees
+   sind(3f) - [M_units:TRIGONOMETRY] calculate sine of value in degrees
 SYNOPSIS
    elemental real function sind(degrees)
 

@@ -2,7 +2,7 @@
 !<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>-
 !-----------------------------------------------------------------------------------------------------------------------------------
 function nc_uniqname(name,ierr) !@(#) append a number to the end of the filename that makes it relatively unique
-   ! If neccessary, increment the number and try again up to the value 9999.
+   ! If necessary, increment the number and try again up to the value 9999.
    ! assumes returned value is 256 characters
 !-----------------------------------------------------------------------------------------------------------------------------------
    implicit none

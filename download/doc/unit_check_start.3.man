@@ -1,6 +1,6 @@
 
 NAME
-   unit_check_start - [M_debug] call command "goodbad NAME start"
+   unit_check_start(3f) - [M_debug] call command "goodbad NAME start"
 
 SYNOPSIS
    subroutine unit_check_start(name,string)

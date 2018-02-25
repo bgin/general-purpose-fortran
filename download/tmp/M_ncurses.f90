@@ -57,7 +57,7 @@ implicit none
 ! am working with.
 !
 ! Most additions use a C wrapper (see wrapper.c) because the reason they were
-! not supported by the Fortran/C interface defintion was because they could not be directly called via the
+! not supported by the Fortran/C interface definition was because they could not be directly called via the
 ! ISO_C_INTERFACE (varying argument lists, functions are actually macros created
 ! with cpp(1) directives, ...).
 !

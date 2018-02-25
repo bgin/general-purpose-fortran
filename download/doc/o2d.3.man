@@ -1,5 +1,5 @@
 NAME
-   o2d - [M_time] converts Ordinal day to DAT date-time array
+   o2d(3f) - [M_time] converts Ordinal day to DAT date-time array
 
 SYNOPSIS
    function o2d(ordinal,[year]) result (dat)

@@ -52,7 +52,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 
 </A>
 <BLOCKQUOTE>
-<B>select(7f) </B>- [FORTRAN:EXECUTION CONTROL] masked array assignment
+<B>select(7f) </B>- [FORTRAN:EXECUTION CONTROL] select a block based on the value of an expression (a case)
 </BLOCKQUOTE>
 <A name=contents></A><H3>CONTENTS</H3></A>
 <BLOCKQUOTE>
@@ -241,185 +241,74 @@ Examples <I>of</I> <I>CASE</I> constructs
 </TD></TR>
 <TR></TR></TABLE><!-- .nf -->
 <PRE>
-       NOTE 8.5
        An integer signum function:
 <P>
-       INTEGER FUNCTION SIGNUM (N)
-       SELECT CASE (N)
-       CASE (:-1)
-          SIGNUM = -1
-       CASE (0)
-          SIGNUM = 0
-       CASE (1:)
-          SIGNUM = 1
+       integer function signum (n)
+       select case (n)
+       case (:-1)
+          signum = -1
+       case (0)
+          signum = 0
+       case (1:)
+          signum = 1
+       end select
+       end
+<P>
+       A code fragment to check for balanced parentheses:
+<P>
+       character (80) :: line
+          &#46;&#46;&#46;
+       level = 0
+       scan_line: do i = 1, 80
+          check_parens: select case (line (i:i))
+          case (&#146;(&#146;)
+             level = level + 1
+          case (&#146;)&#146;)
+             level = level - 1
+             if (level &lt; 0) then
+                print *, &#146;unexpected right parenthesis&#146;
+                exit scan_line
+             end if
+          case default
+             ! ignore all other characters
+           end select check_parens
+        end do scan_line
+        if (level &gt; 0) then
+           print *, &#146;missing right parenthesis&#146;
+        end if
+<P>
+        the following three fragments are equivalent:
+<P>
+        if (silly == 1) then
+           call this
+        else
+           call that
+        end if
+        select case (silly == 1)
+        case (.true.)
+           call this
+        case (.false.)
+           call that
+        end select
+        select case (silly)
+        case default
+           call that
+        case (1)
+           call this
+        end select
+<P>
+        A code fragment showing several selections of one block:
+<P>
+        select case (n)
+        case (1, 3:5, 8)        ! selects 1, 3, 4, 5, 8
+           call sub
+        case default
+           call other
+        end select
 </PRE>
 </BLOCKQUOTE>
-<A name=>
-
-    <H4>&nbsp; &nbsp; END SELECT</H4>
-</A>
-<BLOCKQUOTE>
-</BLOCKQUOTE>
-<A name=>
-
-    <H4>&nbsp; &nbsp; END</H4>
-</A>
-<BLOCKQUOTE>
-<P>
-NOTE 8.6
-<I>.</I> code fragment to check <I>for</I> balanced parentheses:
-<P>
-CHARACTER (80) :: LINE
-&#46;&#46;&#46;
-LEVEL = <I>.</I>
-SCAN_LINE: DO <I>.</I> = <I>.</I>, 80
-CHECK_PARENS: <I>SELECT</I> <I>CASE</I> (LINE (<I>.</I>:<I>.</I>))
-<I>CASE</I> (&#146;(&#146;)
-LEVEL = LEVEL + <I>.</I>
-<I>CASE</I> (&#146;)&#146;)
-LEVEL = LEVEL - <I>.</I>
-IF (LEVEL &lt; <I>.</I>) THEN
-PRINT *, &#146;UNEXPECTED RIGHT PARENTHESIS&#146;
-EXIT SCAN_LINE
-</BLOCKQUOTE>
-<A name=>
-
-    <H4>&nbsp; &nbsp; END IF</H4>
-</A>
-<BLOCKQUOTE>
-</BLOCKQUOTE>
-<A name=>
-
-    <H4>&nbsp; &nbsp; CASE DEFAULT</H4>
-</A>
-<BLOCKQUOTE>
-! Ignore all other characters
-<I>END</I> <I>SELECT</I> CHECK_PARENS
-<I>END</I> DO SCAN_LINE
-IF (LEVEL &gt; <I>.</I>) THEN
-PRINT *, &#146;MISSING RIGHT PARENTHESIS&#146;
-</BLOCKQUOTE>
-<A name=>
-
-    <H4>&nbsp; &nbsp; END IF</H4>
-</A>
-<BLOCKQUOTE>
-<P>
-NOTE 8.7
-<I>The</I> following three fragments <I>are</I> equivalent:
-<P>
-IF (SILLY == <I>.</I>) THEN
-</BLOCKQUOTE>
-<A name=>
-
-    <H4>&nbsp; &nbsp; CALL THIS</H4>
-</A>
-<BLOCKQUOTE>
-</BLOCKQUOTE>
-<A name=>
-
-    <H4>&nbsp; &nbsp; ELSE</H4>
-</A>
-<BLOCKQUOTE>
-</BLOCKQUOTE>
-<A name=>
-
-    <H4>&nbsp; &nbsp; CALL THAT</H4>
-</A>
-<BLOCKQUOTE>
-</BLOCKQUOTE>
-<A name=>
-
-    <H4>&nbsp; &nbsp; END IF</H4>
-</A>
-<BLOCKQUOTE>
-<I>SELECT</I> <I>CASE</I> (SILLY == <I>.</I>)
-<I>CASE</I> (.TRUE.)
-</BLOCKQUOTE>
-<A name=>
-
-    <H4>&nbsp; &nbsp; CALL THIS</H4>
-</A>
-<BLOCKQUOTE>
-<I>CASE</I> (.FALSE.)
-</BLOCKQUOTE>
-<A name=>
-
-    <H4>&nbsp; &nbsp; CALL THAT</H4>
-</A>
-<BLOCKQUOTE>
-</BLOCKQUOTE>
-<A name=>
-
-    <H4>&nbsp; &nbsp; END SELECT</H4>
-</A>
-<BLOCKQUOTE>
-<I>SELECT</I> <I>CASE</I> (SILLY)
-</BLOCKQUOTE>
-<A name=>
-
-    <H4>&nbsp; &nbsp; CASE DEFAULT</H4>
-</A>
-<BLOCKQUOTE>
-</BLOCKQUOTE>
-<A name=>
-
-    <H4>&nbsp; &nbsp; CALL THAT</H4>
-</A>
-<BLOCKQUOTE>
-<I>CASE</I> (<I>.</I>)
-</BLOCKQUOTE>
-<A name=>
-
-    <H4>&nbsp; &nbsp; CALL THIS</H4>
-</A>
-<BLOCKQUOTE>
-</BLOCKQUOTE>
-<A name=>
-
-    <H4>&nbsp; &nbsp; END SELECT</H4>
-</A>
-<BLOCKQUOTE>
-<P>
-NOTE 8.8
-<I>.</I> code fragment showing several selections <I>of</I> <I>one</I> <B>block</B>:
-<P>
-<I>SELECT</I> <I>CASE</I> (<I>.</I>)
-<TABLE cellpadding=3><!-- tsb: <I>SELECT</I> <I>CASE</I> (<I>.</I>)
- -->
-<TR></TR><TR></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-<I>CASE</I> (<I>.</I>, <I>.</I>:<I>.</I>, <I>.</I>)
-! Selects <I>.</I>, <I>.</I>, <I>.</I>, <I>.</I>, <I>.</I>
-</TD></TR>
-<TR></TR></TABLE></BLOCKQUOTE>
-<A name=>
-
-    <H4>&nbsp; &nbsp; CALL SUB</H4>
-</A>
-<BLOCKQUOTE>
-</BLOCKQUOTE>
-<A name=>
-
-    <H4>&nbsp; &nbsp; CASE DEFAULT</H4>
-</A>
-<BLOCKQUOTE>
-</BLOCKQUOTE>
-<A name=>
-
-    <H4>&nbsp; &nbsp; CALL OTHER</H4>
-</A>
-<BLOCKQUOTE>
-</BLOCKQUOTE>
-<A name=>
-
-    <H4>&nbsp; &nbsp; END SELECT</H4>
-</A>
-<BLOCKQUOTE>
-</BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>select (7)</TD> <TD align=right width=33%><I>February 03, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 180fae13-0da1-4c5f-bfd4-17e60a725722 using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>select (7)</TD> <TD align=right width=33%><I>February 25, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from e2da488f-6af8-4b23-9209-0fa2ce5f9bea using man macros.</FONT>
 </div>
 </div>
 <center><img src="images/select.7.gif"></center> 

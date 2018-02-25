@@ -1,5 +1,5 @@
 NAME
-         rgets - [ARGUMENTS:M_kracken] given keyword fetch real array from command arguments
+         rgets(3f) - [ARGUMENTS:M_kracken] given keyword fetch real array from command arguments
 SYNOPSIS
    function rgets(keyword) result(rarray)
 

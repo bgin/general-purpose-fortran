@@ -1,5 +1,5 @@
 NAME
-   replace - [M_strings] Globally replace one substring for another in string
+   replace(3f) - [M_strings] Globally replace one substring for another in string
 
 SYNOPSIS
    function replace(targetline,old,new,ierr) result (newline)
@@ -9,7 +9,8 @@ SYNOPSIS
     character(len=*),intent(in),optional   :: new
     integer,intent(out),optional           :: ierr
     character(len=*),intent(in),optional   :: cmd
-    character(len=:),allocatable  :: newline
+    character(len=:),allocatable           :: newline
+    integer,intent(in),optional            :: range(2)
 
 DESCRIPTION
    Globally replace one substring for another in string.
@@ -24,6 +25,7 @@ OPTIONS
                 not in "old" or "new"
     ierr        error code. iF ier = -1 bad directive, >= 0 then
                 count of changes made
+    range       if present, only change range(1) to range(2) of occurrences of old string
 RETURNS
     newline     allocatable string returned
 
@@ -44,6 +46,21 @@ EXAMPLES
 
    ! a null new string deletes occurrences of the old substring
    call testit('i','', 'BEFORE:THs s THe nput strng')
+
+   write(*,*)'Examples of the use of RANGE='
+
+   targetline=replace('a b ab baaa aaaa','a','A')
+   write(*,*)'replace a with A ['//targetline//']'
+
+   targetline=replace('a b ab baaa aaaa','a','A',range=[3,5])
+   write(*,*)'replace a with A instances 3 to 5 ['//targetline//']'
+
+   targetline=replace('a b ab baaa aaaa','a','',range=[3,5])
+   write(*,*)'replace a with null instances 3 to 5 ['//targetline//']'
+
+   targetline=replace('a b ab baaa aaaa aa aa a a a aa aaaaaa','aa','CCCC',range=[3,5])
+   write(*,*)'replace aa with CCCC instances 3 to 5 ['//targetline//']'
+
    contains
    subroutine testit(old,new,expected)
    character(len=*),intent(in) :: old,new,expected
@@ -78,4 +95,9 @@ EXAMPLES
     GOT     [BEFORE:THs s THe nput strng]
     EXPECTED[BEFORE:THs s THe nput strng]
     TEST    [ T ]
+    Examples of the use of RANGE=
+    replace a with A [A b Ab bAAA AAAA]
+    replace a with A instances 3 to 5 [a b ab bAAA aaaa]
+    replace a with null instances 3 to 5 [a b ab b aaaa]
+    replace aa with CCCC instances 3 to 5 [a b ab baaa aaCCCC CCCC CCCC a a a aa aaaaaa]
 

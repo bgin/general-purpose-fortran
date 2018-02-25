@@ -1,6 +1,6 @@
 
 NAME
-   unit_check - [M_debug] if logical expression is false, call command "goodbad NAME bad" and stop program
+   unit_check(3f) - [M_debug] if logical expression is false, call command "goodbad NAME bad" and stop program
 
 SYNOPSIS
    subroutine unit_check(name,expression,message)

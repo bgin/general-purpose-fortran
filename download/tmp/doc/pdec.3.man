@@ -1,5 +1,5 @@
 NAME
-     pdec - [M_debug] write out string with ASCII decimal equivalent vertically under it
+     pdec(3f) - [M_debug] write out string with ASCII decimal equivalent vertically under it
 
 SYNOPSIS
    Usage:

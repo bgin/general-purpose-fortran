@@ -8,12 +8,12 @@
 !!
 !!##DESCRIPTION
 !!    This is based on SunOS getopt_long(3), and includes the Sun CLIP
-!!    specification, which requires matching short and long versions of all
-!!    options.
+!!    specification, which requires matching short and long versions of
+!!    all options.
 !!
-!!    Precise getopt functionality is not really desirable. The biggest drawback
-!!    of getopt is the use of globals. (It was designed a long time ago.) This
-!!    interface uses OOP with a derived-type data object,
+!!    Precise getopt functionality is not really desirable. The biggest
+!!    drawback of getopt is the use of globals. (It was designed a long
+!!    time ago.). This interface uses OOP with a derived-type data object,
 !!##EXAMPLE
 !!
 !!   Sample program:

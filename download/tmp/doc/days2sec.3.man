@@ -1,5 +1,5 @@
 NAME
-   days2sec - [M_time] convert string of form [[-]dd-]hh:mm:ss.nn to seconds
+   days2sec(3f) - [M_time] convert string of form [[-]dd-]hh:mm:ss.nn to seconds
 
 SYNOPSIS
    function days2sec(str) result(time)

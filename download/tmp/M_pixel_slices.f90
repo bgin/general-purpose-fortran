@@ -1770,8 +1770,7 @@ contains
 !                However, no plotting is done and the last position
 !                            variables are not changed.
 !           = -2 end coordinates of string are returned in x,y.
-!                Inital (x,y) to be lower left corner of plotted
-!                            string.  String is plotted.
+!                Initial (x,y) to be lower left corner of plotted string.  String is plotted.
 !           = -1 (x,y) to be lower left corner of plotted string
 !                            (x and y not altered)  String is plotted.
 !           = 0  (x,y) to be center of plotted string

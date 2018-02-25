@@ -1572,8 +1572,8 @@ end subroutine swapcoord
 !!##CONTENTS
 !!
 !!   * 1 The algorithm
-!!   * 2 Generalisation
-!!   * 3 Optimisation
+!!   * 2 Generalization
+!!   * 3 Optimization
 !!   * 4 Different approach to the algorithm
 !!       + 4.1 Generalized version for this approach
 !!   * 5 Circle Variant
@@ -1629,7 +1629,7 @@ end subroutine swapcoord
 !!              y := y + 1
 !!              error := error - 1.0
 !!
-!!##GENERALISATION
+!!##GENERALIZATION
 !!
 !! This first version only handles lines that descend to the right. We would of course like to be able to draw all lines. The first
 !! case is allowing us to draw lines that still slope downwards but head in the opposite direction. This is a simple matter of
@@ -1706,7 +1706,7 @@ end subroutine swapcoord
 !!             }
 !!         }
 !!
-!!##OPTIMISATION
+!!##OPTIMIZATION
 !!
 !! The problem with this approach is that computers operate relatively slowly on fractional numbers like error and deltaerr; moreover,
 !! errors can accumulate over many floating-point additions. Working with integers will be both faster and more accurate. The trick we
@@ -1805,7 +1805,7 @@ end subroutine swapcoord
 !! diagonal step. For these cases we can compute variable values during initialisation, in advance, which contain the step widths
 !! (including signs) in the coordinate directions and thus achieve the generalization for the eight octants. For example the step
 !! width in perpendicular direction to a parallel step is just zero. Secondly the error term is still computed like in the first
-!! octant by using the abolute values of the distances. In the innermost loop, no more the step in the fast direction is executed
+!! octant by using the absolute values of the distances. In the innermost loop, no more the step in the fast direction is executed
 !! first, but the error term is updated, and only after that the step widths are added to the current coordinate values, depending on
 !! whether a parallel or a diagonal step has to be done:
 !!
@@ -4921,7 +4921,7 @@ end subroutine ycentertext
 !!    subroutine xcentertext()
 !!
 !!##DESCRIPTION
-!!    Set text centering mode on in X direction.  Y justification is
+!!    Set text centering mode on in X direction. Y justification is
 !!    turned off.
 !!
 !!    Centers text in the X direction. The text string will begin at a

@@ -171,7 +171,7 @@ contains
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!    c2f - [M_units:TEMPERATURE] convert Celsius to Fahrenheit
+!!    c2f(3f) - [M_units:TEMPERATURE] convert Celsius to Fahrenheit
 !!##SYNOPSIS
 !!
 !!    elemental real function c2f(celsius)
@@ -212,7 +212,7 @@ end function c2f
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!    f2c - [M_units:TEMPERATURE] convert Fahrenheit to Celsius
+!!    f2c(3f) - [M_units:TEMPERATURE] convert Fahrenheit to Celsius
 !!##SYNOPSIS
 !!
 !!    elemental real function f2c(fahrenheit)
@@ -255,7 +255,7 @@ end function f2c
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!    r2d - [M_units:TRIGONOMETRY] convert radians to degrees
+!!    r2d(3f) - [M_units:TRIGONOMETRY] convert radians to degrees
 !!##SYNOPSIS
 !!
 !!    elemental real function r2d(radians)
@@ -297,7 +297,7 @@ end function r2d
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!    d2r - [M_units:TRIGONOMETRY] convert degrees to radians
+!!    d2r(3f) - [M_units:TRIGONOMETRY] convert degrees to radians
 !!##SYNOPSIS
 !!
 !!    elemental real function d2r(degrees)
@@ -342,7 +342,7 @@ end function d2r
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!    sind - [M_units:TRIGONOMETRY] calculate sine of value in degrees
+!!    sind(3f) - [M_units:TRIGONOMETRY] calculate sine of value in degrees
 !!##SYNOPSIS
 !!
 !!    elemental real function sind(degrees)
@@ -392,7 +392,7 @@ end function sind
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!    cosd - [M_units:TRIGONOMETRY] calculate sine of value in degrees
+!!    cosd(3f) - [M_units:TRIGONOMETRY] calculate sine of value in degrees
 !!##SYNOPSIS
 !!
 !!    elemental real function cosd(degrees)
@@ -443,7 +443,7 @@ end function cosd
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!    tand - [M_units:TRIGONOMETRY] calculate tangent of value in degrees
+!!    tand(3f) - [M_units:TRIGONOMETRY] calculate tangent of value in degrees
 !!##SYNOPSIS
 !!
 !!    elemental real function tand(degrees)
@@ -521,7 +521,7 @@ end function atan2d
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!    feet_to_meters - [M_units:LENGTH] converts a measurement in feet to meters
+!!    feet_to_meters(3f) - [M_units:LENGTH] converts a measurement in feet to meters
 !!##SYNOPSIS
 !!
 !!    elemental real function feet_to_meters(feet)
@@ -570,7 +570,7 @@ end function feet_to_meters
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!    meters_to_feet - [M_units:LENGTH] converts a measurement in meters to feet
+!!    meters_to_feet(3f) - [M_units:LENGTH] converts a measurement in meters to feet
 !!##SYNOPSIS
 !!
 !!    elemental real function meters_to_feet(meters)
@@ -878,7 +878,7 @@ end subroutine polar_to_cartesian
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!    atomnum2symbol - [M_units:SYMBOLS] return element symbol given atomic number
+!!    atomnum2symbol(3f) - [M_units:SYMBOLS] return element symbol given atomic number
 !!##SYNOPSIS
 !!
 !!   subroutine atomnum2symbol(atomnum,symbol)
@@ -912,115 +912,115 @@ end subroutine polar_to_cartesian
 !!
 !!   Results:
 !!
-!!            1 H
-!!            2 He
-!!            3 Li
-!!            4 Be
-!!            5 B
-!!            6 C
-!!            7 N
-!!            8 O
-!!            9 F
-!!           10 Ne
-!!           11 Na
-!!           12 Mg
-!!           13 Al
-!!           14 Si
-!!           15 P
-!!           16 S
-!!           17 Cl
-!!           18 Ar
-!!           19 K
-!!           20 Ca
-!!           21 Sc
-!!           22 Ti
-!!           23 V
-!!           24 Cr
-!!           25 Mn
-!!           26 Fe
-!!           27 Co
-!!           28 Ni
-!!           29 Cu
-!!           30 Zn
-!!           31 Ga
-!!           32 Ge
-!!           33 As
-!!           34 Se
-!!           35 Br
-!!           36 Kr
-!!           37 Rb
-!!           38 Sr
-!!           39 Y
-!!           40 Zr
-!!           41 Nb
-!!           42 Mo
-!!           43 Tc
-!!           44 Ru
-!!           45 Rh
-!!           46 Pd
-!!           47 Ag
-!!           48 Cd
-!!           49 In
-!!           50 Sn
-!!           51 Sb
-!!           52 Te
-!!           53 I
-!!           54 Xe
-!!           55 Cs
-!!           56 Ba
-!!           57 La
-!!           58 Ce
-!!           59 Pr
-!!           60 Nd
-!!           61 Pm
-!!           62 Sm
-!!           63 Eu
-!!           64 Gd
-!!           65 Tb
-!!           66 Dy
-!!           67 Ho
-!!           68 Er
-!!           69 Tm
-!!           70 Yb
-!!           71 Lu
-!!           72 Hf
-!!           73 Ta
-!!           74 W
-!!           75 Re
-!!           76 Os
-!!           77 Ir
-!!           78 Pt
-!!           79 Au
-!!           80 Hg
-!!           81 Tl
-!!           82 Pb
-!!           83 Bi
-!!           84 Po
-!!           85 At
-!!           86 Rn
-!!           87 Fr
-!!           88 Ra
-!!           89 Ac
-!!           90 Th
-!!           91 Pa
-!!           92 U
-!!           93 Np
-!!           94 Pu
-!!           95 Am
-!!           96 Cm
-!!           97 Bk
-!!           98 Cf
-!!           99 Es
-!!          100 Fm
-!!          101 Md
-!!          102 No
-!!          103 Lr
-!!          104 Rf
-!!          105 Db
-!!          106 Sg
-!!          107 Bh
-!!          108 Hs
-!!          109 Mt
+!!        >   1 H
+!!        >   2 He
+!!        >   3 Li
+!!        >   4 Be
+!!        >   5 B
+!!        >   6 C
+!!        >   7 N
+!!        >   8 O
+!!        >   9 F
+!!        >  10 Ne
+!!        >  11 Na
+!!        >  12 Mg
+!!        >  13 Al
+!!        >  14 Si
+!!        >  15 P
+!!        >  16 S
+!!        >  17 Cl
+!!        >  18 Ar
+!!        >  19 K
+!!        >  20 Ca
+!!        >  21 Sc
+!!        >  22 Ti
+!!        >  23 V
+!!        >  24 Cr
+!!        >  25 Mn
+!!        >  26 Fe
+!!        >  27 Co
+!!        >  28 Ni
+!!        >  29 Cu
+!!        >  30 Zn
+!!        >  31 Ga
+!!        >  32 Ge
+!!        >  33 As
+!!        >  34 Se
+!!        >  35 Br
+!!        >  36 Kr
+!!        >  37 Rb
+!!        >  38 Sr
+!!        >  39 Y
+!!        >  40 Zr
+!!        >  41 Nb
+!!        >  42 Mo
+!!        >  43 Tc
+!!        >  44 Ru
+!!        >  45 Rh
+!!        >  46 Pd
+!!        >  47 Ag
+!!        >  48 Cd
+!!        >  49 In
+!!        >  50 Sn
+!!        >  51 Sb
+!!        >  52 Te
+!!        >  53 I
+!!        >  54 Xe
+!!        >  55 Cs
+!!        >  56 Ba
+!!        >  57 La
+!!        >  58 Ce
+!!        >  59 Pr
+!!        >  60 Nd
+!!        >  61 Pm
+!!        >  62 Sm
+!!        >  63 Eu
+!!        >  64 Gd
+!!        >  65 Tb
+!!        >  66 Dy
+!!        >  67 Ho
+!!        >  68 Er
+!!        >  69 Tm
+!!        >  70 Yb
+!!        >  71 Lu
+!!        >  72 Hf
+!!        >  73 Ta
+!!        >  74 W
+!!        >  75 Re
+!!        >  76 Os
+!!        >  77 Ir
+!!        >  78 Pt
+!!        >  79 Au
+!!        >  80 Hg
+!!        >  81 Tl
+!!        >  82 Pb
+!!        >  83 Bi
+!!        >  84 Po
+!!        >  85 At
+!!        >  86 Rn
+!!        >  87 Fr
+!!        >  88 Ra
+!!        >  89 Ac
+!!        >  90 Th
+!!        >  91 Pa
+!!        >  92 U
+!!        >  93 Np
+!!        >  94 Pu
+!!        >  95 Am
+!!        >  96 Cm
+!!        >  97 Bk
+!!        >  98 Cf
+!!        >  99 Es
+!!        > 100 Fm
+!!        > 101 Md
+!!        > 102 No
+!!        > 103 Lr
+!!        > 104 Rf
+!!        > 105 Db
+!!        > 106 Sg
+!!        > 107 Bh
+!!        > 108 Hs
+!!        > 109 Mt
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine atomnum2symbol(atomnum,symbol)
@@ -1056,7 +1056,7 @@ end subroutine atomnum2symbol
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!    symbol2atomnum - [M_units:SYMBOLS] return atomic number given element symbol name
+!!    symbol2atomnum(3f) - [M_units:SYMBOLS] return atomic number given element symbol name
 !!##SYNOPSIS
 !!
 !!   subroutine symbol2atomnum(symbol,atomnum)

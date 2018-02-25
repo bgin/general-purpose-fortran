@@ -36,7 +36,7 @@ vector individual elements are separated by a string, with the original (or fact
 ", ". By (original) default G editing is used to convert real numbers, I editing integers, and
 blanks are trimmed from (each element of) X, both from the left and the right. In addition
 trailing zeroes are trimmed from the fractional part of real X-elements, as well as a trailing
-decimal point. The separating string, trimming behaviour, and default editing may be changed by
+decimal point. The separating string, trimming behavior, and default editing may be changed by
 calling TOSTRING_SET
 
 X     The item to be changed to a string. X may be a scalar or a vector (i.e. of rank 0 or 1) and

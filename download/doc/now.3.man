@@ -1,5 +1,5 @@
 NAME
-   now - [M_time] return string representing current time given format
+   now(3f) - [M_time] return string representing current time given format
 
 SYNOPSIS
    function now(format) RESULT (timestr)

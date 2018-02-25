@@ -1,6 +1,6 @@
 !>
 !!##NAME
-!!    M_strings - [M_strings] Fortran string module
+!!    M_strings(3f) - [M_strings] Fortran string module
 !!##SYNOPSIS
 !!
 !!  public entities:
@@ -517,7 +517,7 @@ CONTAINS
 !===================================================================================================================================
 !>
 !!##NAME
-!!    matchw - [M_strings] compare given string for match to pattern which may contain wildcard characters
+!!    matchw(3f) - [M_strings] compare given string for match to pattern which may contain wildcard characters
 !!
 !!##SYNOPSIS
 !!
@@ -694,7 +694,7 @@ end function matchw
 !===================================================================================================================================
 !>
 !!##NAME
-!!    split - [M_strings] parse string into an array using specified delimiters
+!!    split(3f) - [M_strings] parse string into an array using specified delimiters
 !!
 !!##SYNOPSIS
 !!
@@ -955,7 +955,7 @@ character(len=*),parameter::ident="@(#)M_strings::split(3f): parse string on del
 !===================================================================================================================================
 !>
 !!##NAME
-!!    chomp - [M_strings] Tokenize a string, consuming it one token per call
+!!    chomp(3f) - [M_strings] Tokenize a string, consuming it one token per call
 !!
 !!##SYNOPSIS
 !!
@@ -1082,7 +1082,7 @@ end function chomp
 !===================================================================================================================================
 !>
 !!##NAME
-!!      delim - [M_strings] parse a string and store tokens into an array
+!!      delim(3f) - [M_strings] parse a string and store tokens into an array
 !!##SYNOPSIS
 !!
 !!    subroutine delim(line,array,n,icount,ibegin,iterm,ilen,dlim)
@@ -1317,7 +1317,7 @@ end subroutine delim
 !===================================================================================================================================
 !>
 !!##NAME
-!!    replace - [M_strings] Globally replace one substring for another in string
+!!    replace(3f) - [M_strings] Globally replace one substring for another in string
 !!
 !!##SYNOPSIS
 !!
@@ -1328,7 +1328,8 @@ end subroutine delim
 !!     character(len=*),intent(in),optional   :: new
 !!     integer,intent(out),optional           :: ierr
 !!     character(len=*),intent(in),optional   :: cmd
-!!     character(len=:),allocatable  :: newline
+!!     character(len=:),allocatable           :: newline
+!!     integer,intent(in),optional            :: range(2)
 !!
 !!##DESCRIPTION
 !!    Globally replace one substring for another in string.
@@ -1343,6 +1344,7 @@ end subroutine delim
 !!                 not in "old" or "new"
 !!     ierr        error code. iF ier = -1 bad directive, >= 0 then
 !!                 count of changes made
+!!     range       if present, only change range(1) to range(2) of occurrences of old string
 !!##RETURNS
 !!     newline     allocatable string returned
 !!
@@ -1364,6 +1366,21 @@ end subroutine delim
 !!
 !!    ! a null new string deletes occurrences of the old substring
 !!    call testit('i','', 'BEFORE:THs s THe nput strng')
+!!
+!!    write(*,*)'Examples of the use of RANGE='
+!!
+!!    targetline=replace('a b ab baaa aaaa','a','A')
+!!    write(*,*)'replace a with A ['//targetline//']'
+!!
+!!    targetline=replace('a b ab baaa aaaa','a','A',range=[3,5])
+!!    write(*,*)'replace a with A instances 3 to 5 ['//targetline//']'
+!!
+!!    targetline=replace('a b ab baaa aaaa','a','',range=[3,5])
+!!    write(*,*)'replace a with null instances 3 to 5 ['//targetline//']'
+!!
+!!    targetline=replace('a b ab baaa aaaa aa aa a a a aa aaaaaa','aa','CCCC',range=[3,5])
+!!    write(*,*)'replace aa with CCCC instances 3 to 5 ['//targetline//']'
+!!
 !!    contains
 !!    subroutine testit(old,new,expected)
 !!    character(len=*),intent(in) :: old,new,expected
@@ -1398,6 +1415,11 @@ end subroutine delim
 !!     GOT     [BEFORE:THs s THe nput strng]
 !!     EXPECTED[BEFORE:THs s THe nput strng]
 !!     TEST    [ T ]
+!!     Examples of the use of RANGE=
+!!     replace a with A [A b Ab bAAA AAAA]
+!!     replace a with A instances 3 to 5 [a b ab bAAA aaaa]
+!!     replace a with null instances 3 to 5 [a b ab b aaaa]
+!!     replace aa with CCCC instances 3 to 5 [a b ab baaa aaCCCC CCCC CCCC a a a aa aaaaaa]
 !===================================================================================================================================
 subroutine crack_cmd(cmd,old,new,ierr)
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -1444,7 +1466,7 @@ end subroutine crack_cmd
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-function replace(targetline,old,new,ierr,cmd) result (newline)
+function replace(targetline,old,new,ierr,cmd,range) result (newline)
 
 character(len=*),parameter::ident="@(#)M_strings::replace(3f): Globally replace one substring for another in string"
 
@@ -1455,13 +1477,14 @@ character(len=*),parameter::ident="@(#)M_strings::replace(3f): Globally replace 
    character(len=*),intent(in),optional   :: new          ! new substring
    integer,intent(out),optional           :: ierr         ! error code. if ierr = -1 bad directive, >=0 then ierr changes made
    character(len=*),intent(in),optional   :: cmd          ! contains the instructions changing the string
+   integer,intent(in),optional            :: range(2)     ! start and end of which changes to make
 !-----------------------------------------------------------------------------------------------------------------------------------
 ! returns
    character(len=:),allocatable  :: newline               ! output string buffer
 !-----------------------------------------------------------------------------------------------------------------------------------
 ! local
    character(len=:),allocatable  :: new_local, old_local
-   integer                       :: ier1,ier2
+   integer                       :: icount,ichange,ier2
    integer                       :: original_input_length
    integer                       :: len_old, len_new
    integer                       :: ladd
@@ -1469,6 +1492,7 @@ character(len=*),parameter::ident="@(#)M_strings::replace(3f): Globally replace 
    integer                       :: ind
    integer                       :: ic
    integer                       :: ichar
+   integer                       :: range_local(2)
 !-----------------------------------------------------------------------------------------------------------------------------------
 !  get old_local and new_local from cmd or old and new
    if(present(cmd))then
@@ -1487,13 +1511,20 @@ character(len=*),parameter::ident="@(#)M_strings::replace(3f): Globally replace 
       return
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
-   ier1=0                                              ! initialize error flag/change count
+   icount=0                                            ! initialize error flag/change count
+   ichange=0                                           ! initialize error flag/change count
    original_input_length=len_trim(targetline)          ! get non-blank length of input line
    len_old=len(old_local)                              ! length of old substring to be replaced
    len_new=len(new_local)                              ! length of new substring to replace old substring
    left_margin=1                                       ! left_margin is left margin of window to change
    right_margin=len(targetline)                        ! right_margin is right margin  of window to change
    newline=''                                          ! begin with a blank line as output string
+!-----------------------------------------------------------------------------------------------------------------------------------
+   if(present(range))then
+      range_local=range
+   else
+      range_local=[1,original_input_length]
+   endif
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(len_old.eq.0)then                                ! c//new/ means insert new at beginning of line (or left margin)
       ichar=len_new + original_input_length
@@ -1502,8 +1533,8 @@ character(len=*),parameter::ident="@(#)M_strings::replace(3f): Globally replace 
       else
          newline=targetline(left_margin:original_input_length)
       endif
-      ier1=1                                           ! made one change. actually, c/// should maybe return 0
-      if(present(ierr))ierr=ier1
+      ichange=1                                        ! made one change. actually, c/// should maybe return 0
+      if(present(ierr))ierr=ichange
       return
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -1514,20 +1545,28 @@ character(len=*),parameter::ident="@(#)M_strings::replace(3f): Globally replace 
       if(ind.eq.ic-1.or.ind.gt.right_margin)then          ! did not find old string or found old string past edit window
          exit loop                                        ! no more changes left to make
       endif
-      ier1=ier1+1                                      ! found an old string to change, so increment count of changes
+      icount=icount+1                                  ! found an old string to change, so increment count of change candidates
       if(ind.gt.ic)then                                ! if found old string past at current position in input string copy unchanged
          ladd=ind-ic                                   ! find length of character range to copy as-is from input to output
          newline=newline(:ichar-1)//targetline(ic:ind-1)
          ichar=ichar+ladd
       endif
-      if(len_new.ne.0)then
-         newline=newline(:ichar-1)//new_local(:len_new)
-         ichar=ichar+len_new
+      if(icount.ge.range_local(1).and.icount.le.range_local(2))then    ! check if this is an instance to change or keep
+         ichange=ichange+1
+         if(len_new.ne.0)then                                          ! put in new string
+            newline=newline(:ichar-1)//new_local(:len_new)
+            ichar=ichar+len_new
+         endif
+      else
+         if(len_old.ne.0)then                                          ! put in copy of old string
+            newline=newline(:ichar-1)//old_local(:len_old)
+            ichar=ichar+len_old
+         endif
       endif
       ic=ind+len_old
    enddo loop
 !-----------------------------------------------------------------------------------------------------------------------------------
-   select case (ier1)
+   select case (ichange)
    case (0)                                            ! there were no changes made to the window
       newline=targetline                               ! if no changes made output should be input
    case default
@@ -1535,7 +1574,7 @@ character(len=*),parameter::ident="@(#)M_strings::replace(3f): Globally replace 
          newline=newline(:ichar-1)//targetline(ic:max(ic,original_input_length))
       endif
    end select
-   if(present(ierr))ierr=ier1
+   if(present(ierr))ierr=ichange
 !-----------------------------------------------------------------------------------------------------------------------------------
 end function replace
 !===================================================================================================================================
@@ -1543,7 +1582,7 @@ end function replace
 !===================================================================================================================================
 !>
 !!##NAME
-!!    substitute - [M_strings] Globally substitute one substring for another in string
+!!    substitute(3f) - [M_strings] Globally substitute one substring for another in string
 !!
 !!##SYNOPSIS
 !!
@@ -1733,7 +1772,7 @@ end subroutine substitute
 !===================================================================================================================================
 !>
 !!##NAME
-!!    change - [M_strings] change old string to new string with a directive like a line editor
+!!    change(3f) - [M_strings] change old string to new string with a directive like a line editor
 !!
 !!##SYNOPSIS
 !!
@@ -1848,7 +1887,7 @@ integer                          :: start_token,end_token
 end subroutine change
 !>
 !!##NAME
-!!     strtok - Tokenize a string
+!!     strtok(3f) - Tokenize a string
 !!##SYNOPSIS
 !!
 !!
@@ -1970,7 +2009,7 @@ end function strtok
 !===================================================================================================================================
 !>
 !!##NAME
-!!    modif - [M_strings] emulate the MODIFY command from the line editor XEDIT
+!!    modif(3f) - [M_strings] emulate the MODIFY command from the line editor XEDIT
 !!
 !!##SYNOPSIS
 !!
@@ -2127,7 +2166,7 @@ END SUBROUTINE MODIF                        !RETURN
 !===================================================================================================================================
 !>
 !!##NAME
-!!      len_white - [M_strings] get length of string trimmed of whitespace.
+!!      len_white(3f) - [M_strings] get length of string trimmed of whitespace.
 !!
 !!##SYNOPSIS
 !!
@@ -2229,7 +2268,7 @@ end function len_white
 !===================================================================================================================================
 !>
 !!##NAME
-!!    crop - [M_strings] trim leading blanks and trailing blanks from a string
+!!    crop(3f) - [M_strings] trim leading blanks and trailing blanks from a string
 !!
 !!##SYNOPSIS
 !!
@@ -2274,7 +2313,7 @@ end function crop
 !===================================================================================================================================
 !>
 !!##NAME
-!!    transliterate - [M_strings] replace characters from old set with new set
+!!    transliterate(3f) - [M_strings] replace characters from old set with new set
 !!
 !!##SYNOPSIS
 !!
@@ -2465,7 +2504,7 @@ end function join
 !===================================================================================================================================
 !>
 !!##NAME
-!!      reverse - [M_strings] Return a string reversed
+!!      reverse(3f) - [M_strings] Return a string reversed
 !!
 !!##SYNOPSIS
 !!
@@ -2516,7 +2555,7 @@ end function reverse
 !===================================================================================================================================
 !>
 !!##NAME
-!!      upper - [M_strings] changes a string to uppercase
+!!      upper(3f) - [M_strings] changes a string to uppercase
 !!
 !!##SYNOPSIS
 !!
@@ -2610,7 +2649,7 @@ end function upper
 !===================================================================================================================================
 !>
 !!##NAME
-!!      lower - [M_strings] changes a string to lowercase over specified range
+!!      lower(3f) - [M_strings] changes a string to lowercase over specified range
 !!
 !!##SYNOPSIS
 !!
@@ -2691,7 +2730,7 @@ end function lower
 !>
 !!##NAME
 !!
-!!    switch - [M_strings] generic composition of a2s() and s2a() converts between CHARACTER scalar and array of single characters
+!!    switch(3f) - [M_strings] generic composition of a2s() and s2a() converts between CHARACTER scalar and array of single characters
 !!
 !!##SYNOPSIS
 !!
@@ -2805,7 +2844,7 @@ end function s2a
 !===================================================================================================================================
 !>
 !!##NAME
-!!      s2c - [M_strings] convert character variable to array of characters with last element set to null
+!!      s2c(3f) - [M_strings] convert character variable to array of characters with last element set to null
 !!
 !!##SYNOPSIS
 !!
@@ -2866,7 +2905,7 @@ end function s2c
 !===================================================================================================================================
 !>
 !!##NAME
-!!      c2s - [M_strings] convert C string pointer to Fortran character string
+!!      c2s(3f) - [M_strings] convert C string pointer to Fortran character string
 !!
 !!##SYNOPSIS
 !!
@@ -2925,7 +2964,7 @@ end function c2s
 !===================================================================================================================================
 !>
 !!##NAME
-!!      indent - [M_strings] count number of leading spaces in a string
+!!      indent(3f) - [M_strings] count number of leading spaces in a string
 !!
 !!##SYNOPSIS
 !!
@@ -3208,7 +3247,7 @@ end function expand
 !===================================================================================================================================
 !>
 !!##NAME
-!!    notabs - [M_strings] expand tab characters
+!!    notabs(3f) - [M_strings] expand tab characters
 !!##SYNOPSIS
 !!
 !!    subroutine notabs(INSTR,OUTSTR,ILEN)
@@ -3408,7 +3447,7 @@ end function adjustc
 !===================================================================================================================================
 !>
 !!##NAME
-!!    nospace - [M_strings] remove all whitespace from input string
+!!    nospace(3f) - [M_strings] remove all whitespace from input string
 !!
 !!##SYNOPSIS
 !!
@@ -3471,7 +3510,7 @@ end function nospace
 !===================================================================================================================================
 !>
 !!##NAME
-!!    lenset - [M_strings] return string trimmed or padded to specified length
+!!    lenset(3f) - [M_strings] return string trimmed or padded to specified length
 !!
 !!##SYNOPSIS
 !!
@@ -3520,7 +3559,7 @@ end function lenset
 !===================================================================================================================================
 !>
 !!##NAME
-!!    merge_str - [M_strings] pads strings to same length and then calls MERGE(3f)
+!!    merge_str(3f) - [M_strings] pads strings to same length and then calls MERGE(3f)
 !!
 !!##SYNOPSIS
 !!
@@ -3576,7 +3615,7 @@ end function merge_str
 !===================================================================================================================================
 !>
 !!##NAME
-!!    compact - [M_strings] converts contiguous whitespace to a single character (or nothing)
+!!    compact(3f) - [M_strings] converts contiguous whitespace to a single character (or nothing)
 !!
 !!##SYNOPSIS
 !!
@@ -3684,7 +3723,7 @@ end function compact
 !===================================================================================================================================
 !>
 !!##NAME
-!!     noesc - [M_strings] convert non-printable characters to a space.
+!!     noesc(3f) - [M_strings] convert non-printable characters to a space.
 !!
 !!##SYNOPSIS
 !!
@@ -3791,7 +3830,7 @@ end function noesc
 !===================================================================================================================================
 !>
 !!##NAME
-!!      string_to_value - [M_strings] subroutine returns real value from string
+!!      string_to_value(3f) - [M_strings] subroutine returns real value from string
 !!
 !!##SYNOPSIS
 !!
@@ -3929,7 +3968,7 @@ end subroutine a2d
 !===================================================================================================================================
 !>
 !!##NAME
-!!      s2v - [M_strings] function returns doubleprecision numeric value from a string
+!!      s2v(3f) - [M_strings] function returns doubleprecision numeric value from a string
 !!
 !!##SYNOPSIS
 !!
@@ -4101,7 +4140,7 @@ end function dbles_s2v
 !===================================================================================================================================
 !>
 !!##NAME
-!!      value_to_string - [M_strings] return numeric string from a numeric value
+!!      value_to_string(3f) - [M_strings] return numeric string from a numeric value
 !!
 !!##SYNOPSIS
 !!
@@ -4227,7 +4266,7 @@ end subroutine value_to_string
 !===================================================================================================================================
 !>
 !!##NAME
-!!      v2s - [M_strings] return numeric string from a numeric value
+!!      v2s(3f) - [M_strings] return numeric string from a numeric value
 !!##SYNOPSIS
 !!
 !!       function v2s(value) result(outstr)
@@ -5082,7 +5121,7 @@ end subroutine getvals
 !===================================================================================================================================
 !>
 !!##NAME
-!!      string_to_values - [M_strings] read a string representing numbers into a numeric array
+!!      string_to_values(3f) - [M_strings] read a string representing numbers into a numeric array
 !!
 !!##SYNOPSIS
 !!
@@ -5245,7 +5284,7 @@ end subroutine string_to_values
 !===================================================================================================================================
 !>
 !!##NAME
-!!      s2vs - [M_strings] given a string representing numbers return a numeric array
+!!      s2vs(3f) - [M_strings] given a string representing numbers return a numeric array
 !!
 !!##SYNOPSIS
 !!
@@ -5533,7 +5572,7 @@ end function islower
 !>
 !!##NAME
 !!    isalnum,isalpha,iscntrl,isdigit,isgraph,islower,
-!!    isprint,ispunct,isspace,isupper,isascii,isblank,isxdigit - [M_strings] test membership in subsets of ASCII character set
+!!    isprint,ispunct,isspace,isupper,isascii,isblank,isxdigit(3f) - [M_strings] test membership in subsets of ASCII character set
 !!
 !!##SYNOPSIS
 !!

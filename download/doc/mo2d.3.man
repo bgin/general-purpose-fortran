@@ -1,5 +1,5 @@
 NAME
-   mo2d - [M_time] given month name return DAT date-time array for beginning of that month in current year
+   mo2d(3f) - [M_time] given month name return DAT date-time array for beginning of that month in current year
 
 SYNOPSIS
       function mo2d(month_name) result (dat)

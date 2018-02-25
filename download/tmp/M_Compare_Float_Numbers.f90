@@ -16,17 +16,17 @@
 !!       USE M_Compare_Float_Numbers
 !!
 !!##CONTAINS
-!!       .EqualTo.           Relational operator to test the equality of
-!!                           floating point numbers.
+!!       .EqualTo.       Relational operator to test the equality of
+!!                       floating point numbers.
 !!
-!!       .GreaterThan.       Relational operator to test if one operand
-!!                           is greater than another.
+!!       .GreaterThan.   Relational operator to test if one operand
+!!                       is greater than another.
 !!
-!!       .LessThan.          Relational operator to test if one operand
-!!                           is less than another.
+!!       .LessThan.      Relational operator to test if one operand
+!!                       is less than another.
 !!
-!!       Compare_Float:      Function to compare floating point scalars
-!!                           and arrays with adjustable precision tolerance.
+!!       Compare_Float:  Function to compare floating point scalars
+!!                       and arrays with adjustable precision tolerance.
 !!
 !!##INCLUDE FILES
 !!       None.
@@ -38,24 +38,24 @@
 !!       None.
 !!
 !!##CREATION HISTORY
-!!       Written by:     Paul van Delst, CIMSS/SSEC 01-Apr-2003
-!!                       paul.vandelst@ssec.wisc.edu
+!!    Written by:     Paul van Delst, CIMSS/SSEC 01-Apr-2003
+!!                    paul.vandelst@ssec.wisc.edu
 !!
-!!       Copyright:      (C) 2003 Paul van Delst
+!!    Copyright:      (C) 2003 Paul van Delst
 !!
-!!  This program is free software; you can redistribute it and/or modify it
-!!  under the terms of the GNU General Public License as published by the
-!!  Free Software Foundation; either version 2 of the License, or (at your
-!!  option) any later version.
+!!    This program is free software; you can redistribute it and/or modify it
+!!    under the terms of the GNU General Public License as published by the
+!!    Free Software Foundation; either version 2 of the License, or (at your
+!!    option) any later version.
 !!
-!!  This program is distributed in the hope that it will be useful,
-!!  but WITHOUT ANY WARRANTY; without even the implied warranty of
-!!  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
-!!  Public License for more details.
+!!    This program is distributed in the hope that it will be useful,
+!!    but WITHOUT ANY WARRANTY; without even the implied warranty of
+!!    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+!!    Public License for more details.
 !!
-!!  You should have received a copy of the GNU General Public License along
-!!  with this program; if not, write to the Free Software Foundation, Inc.,
-!!  59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+!!    You should have received a copy of the GNU General Public License along
+!!    with this program; if not, write to the Free Software Foundation, Inc.,
+!!    59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 !===================================================================================================================================
 !------------------------------------------------------------------------------
 MODULE M_Compare_Float_Numbers
@@ -609,7 +609,7 @@ CONTAINS
 !       Compare_Float
 !
 ! PURPOSE:
-!       Function to compare floating point scalars and arrays with adjustible
+!       Function to compare floating point scalars and arrays with adjustable
 !       precision tolerance.
 !
 ! CATEGORY:

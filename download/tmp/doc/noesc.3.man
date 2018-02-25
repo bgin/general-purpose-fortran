@@ -1,5 +1,5 @@
 NAME
-    noesc - [M_strings] convert non-printable characters to a space.
+    noesc(3f) - [M_strings] convert non-printable characters to a space.
 
 SYNOPSIS
    elemental function noesc(INSTR)

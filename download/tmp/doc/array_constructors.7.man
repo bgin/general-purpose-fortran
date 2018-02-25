@@ -231,10 +231,16 @@ Example using general purpose fortran routines
    end program f12
 
 SEE ALSO
-â o DO construct
-â o Derived types
-â o Structure constructors
-â o Array Elements for details on array element order
-â o Array Assignment Statements for details on another way to assign values to arrays
-â o Declaration Statements for Arrays for details on array specifications
+
+ â  o DO construct
+
+ â  o Derived types
+
+ â  o Structure constructors
+
+ â  o Array Elements for details on array element order
+
+ â  o Array Assignment Statements for details on another way to assign values to arrays
+
+ â  o Declaration Statements for Arrays for details on array specifications
 

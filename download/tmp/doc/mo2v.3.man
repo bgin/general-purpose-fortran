@@ -1,5 +1,5 @@
 NAME
-   mo2v - [M_time] given month name return month number (1-12) of that month
+   mo2v(3f) - [M_time] given month name return month number (1-12) of that month
 
 SYNOPSIS
    function mo2v(month_name) result(imonth)

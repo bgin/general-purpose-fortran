@@ -5,14 +5,18 @@
 !-----------------------------------------------------------------------------------------------------------------------------------
 program yes                                                         ! combine yes(1),repeat(1),watch(1),xargs(1). Start with yes(1)
    use M_kracken, only : kracken, lget, sget, iget                  ! add command-line parser module
+   !!use M_kracken, only : show
+   use M_debug,   only : debug
    implicit none
    character(len=1024) :: string
    integer             :: ios
    integer             :: repeat
    integer             :: i
 !-----------------------------------------------------------------------------------------------------------------------------------
+   !!debug=.true.
    call kracken('yes','-help .false. -version .false. -repeat -1 ') ! define command arguments,default values and crack command line
 !-----------------------------------------------------------------------------------------------------------------------------------
+   !!call show('',.false.,0)
    call help_usage(lget('yes_help'))                                ! if -help option is present, display help text and exit
    call help_version(lget('yes_version'))                           ! if -version option is present, display version text and exit
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -53,7 +57,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Thu, Dec 21st, 2017 12:13:25 AM>',&
+'@(#)COMPILED:       Sun, Feb 18th, 2018 11:01:20 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -79,7 +83,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 'DESCRIPTION                                                                     ',&
 '    _yes(1) prints the command line arguments, separated by spaces and followed ',&
 '    by a newline until the repeat count is reached or endlessly until it is     ',&
-'    killed. If no arguments are given, it prints ''''y'''' followed by a newline',&
+'    killed. If no arguments are given, it prints "y" followed by a newline      ',&
 '    endlessly until killed. Upon a write error, _yes(1) exits with status "1".  ',&
 '                                                                                ',&
 'OPTIONS                                                                         ',&
@@ -115,7 +119,7 @@ end subroutine help_usage
 !!##DESCRIPTION
 !!     _yes(1) prints the command line arguments, separated by spaces and followed
 !!     by a newline until the repeat count is reached or endlessly until it is
-!!     killed. If no arguments are given, it prints ''y'' followed by a newline
+!!     killed. If no arguments are given, it prints "y" followed by a newline
 !!     endlessly until killed. Upon a write error, _yes(1) exits with status "1".
 !!
 !!##OPTIONS

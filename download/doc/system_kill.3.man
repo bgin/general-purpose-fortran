@@ -1,6 +1,5 @@
 NAME
-   system_kill(3f) - [M_system] send a signal to a process or a group
-                     of processes
+   system_kill(3f) - [M_system] send a signal to a process or a group of processes
 
 SYNOPSIS
    integer(kind=c_int) function system_kill(pid,sig)

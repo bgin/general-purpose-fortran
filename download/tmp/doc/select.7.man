@@ -1,5 +1,5 @@
 NAME
-   select(7f) - [FORTRAN:EXECUTION CONTROL] masked array assignment
+   select(7f) - [FORTRAN:EXECUTION CONTROL] select a block based on the value of an expression (a case)
 SYNOPSIS
 1 The CASE construct selects for execution at most one of its constituent blocks. The selection is based on the
   value of an expression.
@@ -86,71 +86,67 @@ DESCRIPTION
 
   8.1.5.3     Examples of CASE constructs
 
-       NOTE 8.5
        An integer signum function:
 
-       INTEGER FUNCTION SIGNUM (N)
-       SELECT CASE (N)
-       CASE (:-1)
-          SIGNUM = -1
-       CASE (0)
-          SIGNUM = 0
-       CASE (1:)
-          SIGNUM = 1
-       END SELECT
-       END
+       integer function signum (n)
+       select case (n)
+       case (:-1)
+          signum = -1
+       case (0)
+          signum = 0
+       case (1:)
+          signum = 1
+       end select
+       end
 
-       NOTE 8.6
        A code fragment to check for balanced parentheses:
 
-       CHARACTER (80) :: LINE
+       character (80) :: line
           ...
-       LEVEL = 0
-       SCAN_LINE: DO I = 1, 80
-          CHECK_PARENS: SELECT CASE (LINE (I:I))
-          CASE ('(')
-             LEVEL = LEVEL + 1
-          CASE (')')
-             LEVEL = LEVEL - 1
-             IF (LEVEL < 0) THEN
-                PRINT *, 'UNEXPECTED RIGHT PARENTHESIS'
-                EXIT SCAN_LINE
-             END IF
-          CASE DEFAULT
-             ! Ignore all other characters
-           END SELECT CHECK_PARENS
-        END DO SCAN_LINE
-        IF (LEVEL > 0) THEN
-           PRINT *, 'MISSING RIGHT PARENTHESIS'
-        END IF
+       level = 0
+       scan_line: do i = 1, 80
+          check_parens: select case (line (i:i))
+          case ('(')
+             level = level + 1
+          case (')')
+             level = level - 1
+             if (level < 0) then
+                print *, 'unexpected right parenthesis'
+                exit scan_line
+             end if
+          case default
+             ! ignore all other characters
+           end select check_parens
+        end do scan_line
+        if (level > 0) then
+           print *, 'missing right parenthesis'
+        end if
 
-        NOTE 8.7
-        The following three fragments are equivalent:
+        the following three fragments are equivalent:
 
-        IF (SILLY == 1) THEN
-           CALL THIS
-        ELSE
-           CALL THAT
-        END IF
-        SELECT CASE (SILLY == 1)
-        CASE (.TRUE.)
-           CALL THIS
-        CASE (.FALSE.)
-           CALL THAT
-        END SELECT
-        SELECT CASE (SILLY)
-        CASE DEFAULT
-           CALL THAT
-        CASE (1)
-           CALL THIS
-        END SELECT
+        if (silly == 1) then
+           call this
+        else
+           call that
+        end if
+        select case (silly == 1)
+        case (.true.)
+           call this
+        case (.false.)
+           call that
+        end select
+        select case (silly)
+        case default
+           call that
+        case (1)
+           call this
+        end select
 
-        NOTE 8.8
         A code fragment showing several selections of one block:
 
-        SELECT CASE (N)
-        CASE (1, 3:5, 8)        ! Selects 1, 3, 4, 5, 8
-           CALL SUB
-        CASE DEFAULT
-           CALL OTHER
-        END SELECT
+        select case (n)
+        case (1, 3:5, 8)        ! selects 1, 3, 4, 5, 8
+           call sub
+        case default
+           call other
+        end select

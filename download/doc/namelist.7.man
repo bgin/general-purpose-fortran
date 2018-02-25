@@ -1,5 +1,5 @@
 NAME
-    NAMELIST(7f) - [FORTRAN:STATEMENT]
+    NAMELIST(7f) - [FORTRAN:STATEMENT] specify a group of data to be referred to by a single name in data input/output
 SYNOPSIS
    NAMELIST / namelist-group-name / namelist-group-object-list [ [ , ] / namelist-group-name /
             namelist-group-object-list ] . . .
@@ -12,17 +12,17 @@ DESCRIPTION
    The order in which the variables are specified in the NAMELIST
    statement determines the order in which the values appear on output.
 
-   The namelist-group-name shall not be a name accessed by use association.
-   A namelist-group-object shall not be an assumed-size array.
-   A namelist-group-object shall not have the PRIVATE attribute if the namelist-group-name has the PUBLIC attribute.
+    o The namelist-group-name shall not be a name accessed by use association.
+    o A namelist-group-object shall not be an assumed-size array.
+    o A namelist-group-object shall not have the PRIVATE attribute if the namelist-group-name has the PUBLIC attribute.
 
- 3 Any namelist-group-name may occur more than once in the NAMELIST statements in a scoping unit. The
+   Any namelist-group-name may occur more than once in the NAMELIST statements in a scoping unit. The
    namelist-group-object-list following each successive appearance of the same namelist-group-name in a scoping
    unit is treated as a continuation of the list for that namelist-group-name.
 
- 4 A namelist group object may be a member of more than one namelist group.
+   A namelist group object may be a member of more than one namelist group.
 
- 5 A namelist group object shall either be accessed by use or host association or shall have its type, type parameters,
+   A namelist group object shall either be accessed by use or host association or shall have its type, type parameters,
    and shape specified by previous specification statements or the procedure heading in the same scoping unit or
    by the implicit typing rules in effect for the scoping unit. If a namelist group object is typed by the implicit
    typing rules, its appearance in any subsequent type declaration statement shall confirm the implied type and

@@ -1,5 +1,5 @@
 NAME
-         igets - [ARGUMENTS:M_kracken] given keyword fetch integer array from command arguments
+         igets(3f) - [ARGUMENTS:M_kracken] given keyword fetch integer array from command arguments
 SYNOPSIS
    function igets(keyword) result(iarray)
 
@@ -25,7 +25,7 @@ RETURNS
 EXAMPLE
   Sample program
 
-   program demo_inums
+   program demo_igets
    use M_kracken, only: kracken, igets
    implicit none
    integer,allocatable  :: vals(:)
@@ -38,12 +38,12 @@ EXAMPLE
         ! print the requested values
         write(*,'(*(i0:,","))')( vals(i),i=1,size(vals))
      endif
-   end program demo_inums
+   end program demo_igets
 
   Example program runs:
 
-     $ demo_inums
+     $ demo_igets
      1,2,3,100,1000,10000,100000,11,77,-77
-     $ demo_inums -val 89,123,456 10.9999999
+     $ demo_igets -val 89,123,456 10.9999999
      89123456,10
 

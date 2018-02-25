@@ -7,7 +7,7 @@ set shell=/usr/bin/bash
  " vi rewards study. Although it may not seem very intuitive at first, it is
  " a flexible editor that can be used from virtually any keyboard. The regular
  " expressions it uses are also useful when using other utilities such as 
- " sed and awk. It is a particularily nice editor for touch-typists, as 
+ " sed and awk. It is a particularly nice editor for touch-typists, as 
  " fingers rarely if ever have to leave the "home" position. 
  "==============================================================================
 " This  .exrc prologue file for the vi editor makes many edit functions easier
@@ -324,7 +324,7 @@ map @NOIC@ :set noic:map #Zi @IC@::"--- case sensitive ---"
 map #Zi @NOIC@
 "==============================================================================
  "TAB t  lists toggles (capital letter is toggle name)
-map #Zt  :"MNEUMONICS: Autoindent; case Insensitive; Numbered editing"
+map #Zt  :"MNEMONICS: Autoindent; case Insensitive; Numbered editing"
 "==============================================================================
 " GRIPES
 " o editor macros should be able to take parameters, 
@@ -343,7 +343,7 @@ map #Zt  :"MNEUMONICS: Autoindent; case Insensitive; Numbered editing"
 " o a lot of things would be easier if had prompting and positional parameters
 "   for macros
 " o no equivalents to FSE split screen editing, set view offset, and alter
-"   commands, or to a visible (highlited in inverse) marked range.
+"   commands, or to a visible (highlighted in inverse) marked range.
 " o can't switch between terminal sizes (132 column, 44 lines) like FSE can
 "   (Footnote: on DEC workstation, vi adjusts dynamically to xterm window sizes)
 " o things like "locate all word upper" much harder with vi than FSE.

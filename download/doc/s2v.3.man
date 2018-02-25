@@ -1,5 +1,5 @@
 NAME
-     s2v - [M_strings] function returns doubleprecision numeric value from a string
+     s2v(3f) - [M_strings] function returns doubleprecision numeric value from a string
 
 SYNOPSIS
    function s2v(string,[ierr])

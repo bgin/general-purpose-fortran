@@ -139,9 +139,9 @@ SEP = sep  Specifies a string which is written out between columns of displayed 
 STYLE = style  There are five possible styles:
 
           'left'       Title is immediately to the left of the first line of the displayed item.
-          'above'      Title is centred immediately above the item.
-          'pad'        Title is centred above the item, padded with hyphens (-).
-          'underline'  Title is centred above the item, underlined with hyphens.
+          'above'      Title is centered immediately above the item.
+          'pad'        Title is centered above the item, padded with hyphens (-).
+          'underline'  Title is centered above the item, underlined with hyphens.
           'number'     Each matrix or vector row and / or column is numbered.
 
       Any of the four title position styles can also be combined with the number style by
@@ -210,7 +210,7 @@ ZEROAS = zerostring  Supported for integer and real X (not complex) Any element 
                   0      0      0  1.000        .      .      .     1.000
 
       Notice that when zerostring contains a decimal point it is lined up with other decimal
-      points in the column. If zerostring has length 0, the default behaviour of not treating zeros
+      points in the column. If zerostring has length 0, the default behavior of not treating zeros
       specially is re-established, in case an earlier DISP_SET call has been used to set ZEROAS.
 
 

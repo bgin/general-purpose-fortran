@@ -481,7 +481,7 @@ end subroutine julfit1
 !!    the horizontal axis in X.
 !!
 !!    For lowess smoothing, the analyst can vary the size of the smoothing
-!!    window.  This size is given as the fraction (0 to 1) of the data that
+!!    window. This size is given as the fraction (0 to 1) of the data that
 !!    the window should cover. The default window size is .2 (which states
 !!    that the smoothing window has a total width of 20% of the horizontal
 !!    axis variable). The LOWESS fraction (F) controls the smoothness of the
@@ -2411,15 +2411,15 @@ end subroutine extremum
 !!##RETURNS
 !!      stat   array of statistical measurements calculated
 !!
-!!          1.  mean
-!!          2.  second moment about the mean
-!!          3.  third moment about the mean
-!!          4.  fourth moment about the mean
-!!          5.  variance
-!!          6.  standard deviation
-!!          7.  skewness
-!!          8.  kurtosis
-!!          9.  sum
+!!         1.   mean
+!!         2.   second moment about the mean
+!!         3.   third moment about the mean
+!!         4.   fourth moment about the mean
+!!         5.   variance
+!!         6.   standard deviation
+!!         7.   skewness
+!!         8.   kurtosis
+!!         9.   sum
 !!         10.  largest value
 !!         11.  smallest value
 !!         12.  location of largest value
@@ -2428,75 +2428,75 @@ end subroutine extremum
 !!##DEFINITIONS
 !!      MEAN
 !!
-!!             A type of average, calculated by dividing the sum of
-!!             a set of values by the number of values.
+!!           A type of average, calculated by dividing the sum of
+!!           a set of values by the number of values.
 !!
-!!                mean = Sum(Xi)/N
+!!              mean = Sum(Xi)/N
 !!
 !!      MEDIAN
 !!
-!!             A type of average, found by arranging the values in
-!!             order and then selecting the one in the middle. If the
-!!             total number of values in the sample is even, then the
-!!             median is the mean of the two middle numbers.
+!!           A type of average, found by arranging the values in
+!!           order and then selecting the one in the middle. If the
+!!           total number of values in the sample is even, then the
+!!           median is the mean of the two middle numbers.
 !!
 !!      MODE
 !!
-!!             The most frequent value in a group of values.
+!!           The most frequent value in a group of values.
 !!
 !!      VARIANCE
 !!
-!!             The average of the square of the distance of each
-!!             data point from the mean
+!!           The average of the square of the distance of each
+!!           data point from the mean
 !!
-!!                variance = Sum((Xi-mean)^2))/N
+!!              variance = Sum((Xi-mean)^2))/N
 !!
-!!             for a population, or more commonly, for a sample the
-!!             unbiased value is
+!!           for a population, or more commonly, for a sample the
+!!           unbiased value is
 !!
-!!                variance = Sum((Xi-mean)^2))/(N-1)
+!!              variance = Sum((Xi-mean)^2))/(N-1)
 !!
 !!      STANDARD DEVIATION
 !!
-!!             The standard deviation is the square root of the
-!!             variance.
+!!           The standard deviation is the square root of the
+!!           variance.
 !!
-!!                sd = sqrt(variance)
+!!              sd = sqrt(variance)
 !!
-!!             It is the most commonly used measure of spread.
+!!           It is the most commonly used measure of spread.
 !!
 !!      SKEWNESS
 !!
-!!             Skewness is a measure of symmetry, or more
-!!             precisely, the lack of symmetry. A distribution, or
-!!             data set, is symmetric if it looks the same to the left
-!!             and right of the center point.
+!!           Skewness is a measure of symmetry, or more
+!!           precisely, the lack of symmetry. A distribution, or
+!!           data set, is symmetric if it looks the same to the left
+!!           and right of the center point.
 !!
-!!                skewness = Sum{(X(i)-mean)^3} /((N-1)*SD^3)
+!!              skewness = Sum{(X(i)-mean)^3} /((N-1)*SD^3)
 !!
-!!             Where SD is the standard deviation, and N is the number of
-!!             samples. Some sources will use N instead of N-1 or they might
-!!             present the formula in a slightly different mathematically
-!!             equivalent format.
+!!           Where SD is the standard deviation, and N is the number of
+!!           samples. Some sources will use N instead of N-1 or they might
+!!           present the formula in a slightly different mathematically
+!!           equivalent format.
 !!
-!!                The skewness of symmetric data is zero
+!!           The skewness of symmetric data is zero
 !!
 !!      KURTOSIS
 !!
-!!             Kurtosis is a measure of whether the data are peaked
-!!             or flat relative to a normal distribution. That is,
-!!             data sets with high kurtosis tend to have a distinct
-!!             peak near the mean, decline rather rapidly, and have
-!!             heavy tails. Data sets with low kurtosis tend to have a
-!!             flat top near the mean rather than a sharp peak. A
-!!             uniform distribution would be the extreme case.
+!!           Kurtosis is a measure of whether the data are peaked
+!!           or flat relative to a normal distribution. That is,
+!!           data sets with high kurtosis tend to have a distinct
+!!           peak near the mean, decline rather rapidly, and have
+!!           heavy tails. Data sets with low kurtosis tend to have a
+!!           flat top near the mean rather than a sharp peak. A
+!!           uniform distribution would be the extreme case.
 !!
-!!                kurtosis = ( SUM{(X(i)-mean)^4} ) / ((N-1)*SD^4) -3
+!!              kurtosis = ( SUM{(X(i)-mean)^4} ) / ((N-1)*SD^4) -3
 !!
-!!             The standard normal distribution has a kurtosis of
-!!             zero. Positive kurtosis indicates a "peaked"
-!!             distribution and negative kurtosis indicates a "flat"
-!!             distribution.
+!!           The standard normal distribution has a kurtosis of
+!!           zero. Positive kurtosis indicates a "peaked"
+!!           distribution and negative kurtosis indicates a "flat"
+!!           distribution.
 !!
 !!           Although often called kurtosis, historically the above expression is
 !!           for "excess kurtosis" because three is subtracted from the value.
@@ -2504,7 +2504,7 @@ end subroutine extremum
 !!           of 0. In recent times, the term "excess kurtosis" is often simply
 !!           called "kurtosis", so consider that whether to subtract 3 or not
 !!           is merely a convention, not a right or wrong answer. When using a
-!!           particular program, you just need to be aware of which convention
+!!           particular program, you just need to be aware of which convention.
 !!
 !!           Again, another frequent difference is whether they use N in
 !!           the denominator or the bias corrected N-1.
@@ -3464,8 +3464,8 @@ end subroutine scale1
 !!##DESCRIPTION
 !!
 !!    Find nice logarithmic range using "CACM Algorithm 463 scale3".
-!!    Typically used to find nice ranges for axis scales.  Given XMIN, XMAX
-!!    and N, where N is greater than 1, find new log range.  Finds a new
+!!    Typically used to find nice ranges for axis scales. Given XMIN, XMAX
+!!    and N, where N is greater than 1, find new log range. Finds a new
 !!    range XMINP and XMAXP divisible into exactly N LOGARITHMIC intervals,
 !!    where the ratio of adjacent uniformly spaced scale values
 !!    is DIST.

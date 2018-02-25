@@ -1,5 +1,5 @@
 NAME
-         dgets - [ARGUMENTS:M_kracken] given keyword fetch doubleprecision array from command arguments
+         dgets(3f) - [ARGUMENTS:M_kracken] given keyword fetch doubleprecision array from command arguments
 SYNOPSIS
    function dgets(keyword) result(darray)
 
@@ -21,7 +21,7 @@ RETURNS
 EXAMPLE
   Sample program
 
-   program demo_dnums
+   program demo_dgets
    use M_kracken, only: kracken, dgets
    implicit none
    doubleprecision,allocatable  :: vals(:)
@@ -30,15 +30,15 @@ EXAMPLE
    call kracken('demo','-nums 1 2 3 1000 100,000 11.11111 77.77777 -77.7777' )
    vals=dgets('demo_nums') ! get any values specified for -nums
    write(*,'(*(g0:,","))')( vals(i),i=1,size(vals)) ! print the values
-   end program demo_dnums
+   end program demo_dgets
 
   Example program runs:
 
-   $ demo_dnums
+   $ demo_dgets
     1.0000000000000000,2.0000000000000000,3.0000000000000000,
     1000.0000000000000,100000.00000000000,11.111110000000000,
     77.777770000000004,-77.777699999999996
 
-   $ demo_dnums -nums 89,123,456.789 10.9999999
+   $ demo_dgets -nums 89,123,456.789 10.9999999
     89123456.789000005,10.999999900000001
 
