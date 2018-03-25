@@ -149,15 +149,14 @@ contains
 !!##NAME
 !!     julfit(3f) - [M_math:fit] linear least squares curve fits , destroys input arrays
 !!
-!!##SYNPOSIS
+!!##SYNOPSIS
+!!
 !!   subroutine julfit(x,y,ixn,itype,a,b,r2)
 !!
 !!    integer,intent(in) :: ixn
 !!    real               :: x(ixn),y(ixn)
 !!    integer,intent(in) :: itype
 !!    real,intent(out)   :: a,b,r2
-!!
-!!##DESCRIPTION
 !!
 !!##DESCRIPTION
 !!     use method of least squares to find a fit to the data.
@@ -1444,13 +1443,11 @@ character(len=*),parameter::ident="&
 !
       AORS=A/R**2
 !
-!     The following IF-THEN-ELSEIF block insures the input area is
-!     reasonable.
+!     The following IF-THEN-ELSEIF block insures the input area is reasonable.
 !
       IF(AORS.LT.TOL) THEN
 !
-!       The input area is so low that the segment is virtually non-
-!       existant.
+!       The input area is so low that the segment is virtually non-existent.
 !
         THETA=0.d0
         H=0.D0
@@ -1460,8 +1457,7 @@ character(len=*),parameter::ident="&
         RETURN
       ELSEIF(AORS.GE.PI) THEN
 !
-!       The input area is so high that the segment is virtually the
-!       entire circle
+!       The input area is so high that the segment is virtually the entire circle
 !
         THETA=2.D0*PI
         H=2.D0*R
@@ -1862,7 +1858,7 @@ character(len=*),parameter::ident="&
       END FUNCTION INPOLYGON
 !>
 !!##NAME
-!!   locpt - [M_math:geometry] find if a point is inside a polygonal path
+!!   locpt(3f) - [M_math:geometry] find if a point is inside a polygonal path
 !!##SYNOPSIS
 !!
 !!   Usage:
@@ -2027,7 +2023,7 @@ END SUBROUTINE locpt
 !===================================================================================================================================
 !>
 !! PROCEDURE:    poly_intercept(3f)
-!! DESCRIPTION:  intesections of a straight line and polygonal path
+!! DESCRIPTION:  intersections of a straight line and polygonal path
 !! AUTHOR:       Code converted using TO_F90 by Alan Miller
 !! VERSION:      Date: 2000-07-04  Time: 12:24:01
 !===================================================================================================================================

@@ -1,15 +1,13 @@
 NAME
     julfit(3f) - [M_math:fit] linear least squares curve fits , destroys input arrays
 
-SYNPOSIS
+SYNOPSIS
   subroutine julfit(x,y,ixn,itype,a,b,r2)
 
    integer,intent(in) :: ixn
    real               :: x(ixn),y(ixn)
    integer,intent(in) :: itype
    real,intent(out)   :: a,b,r2
-
-DESCRIPTION
 
 DESCRIPTION
     use method of least squares to find a fit to the data.

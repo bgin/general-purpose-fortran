@@ -1,9 +1,0 @@
-<map id="m_display::tobox_cplx" name="m_display::tobox_cplx">
-<area shape="rect" id="node2" href="$namespacem__display.html#ae6588ffe4d1d6d1022c0b0017f4f70b7" title="m_display::disp_cplx" alt="" coords="205,31,349,57"/>
-<area shape="rect" id="node3" href="$namespacem__display.html#af30a3037ae6a55f77dbe10461a11ad6c" title="m_display::disp_tv_cplx" alt="" coords="401,5,561,32"/>
-<area shape="rect" id="node5" href="$namespacem__display.html#a1f26f388bc8d286db185f661f95fe233" title="m_display::disp_tm_cplx" alt="" coords="397,56,564,83"/>
-<area shape="rect" id="node4" href="$namespacem__display.html#a37cf49f7db41c24a8f363474283909d6" title="m_display::disp_v_cplx" alt="" coords="615,5,771,32"/>
-<area shape="rect" id="node6" href="$namespacem__display.html#a86ed603fd65468b46aad9ff127dc517c" title="m_display::disp_m_cplx" alt="" coords="612,56,775,83"/>
-<area shape="rect" id="node7" href="$namespacem__display.html#a008a43400dfc972afef14c2c6d1ddbf3" title="m_display::disp_ts_cplx" alt="" coords="612,107,775,133"/>
-<area shape="rect" id="node8" href="$namespacem__display.html#a2d8cd9c698ef035111fdc53524abe523" title="m_display::disp_s_cplx" alt="" coords="823,107,981,133"/>
-</map>

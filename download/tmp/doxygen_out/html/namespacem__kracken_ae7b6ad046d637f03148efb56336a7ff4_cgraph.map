@@ -1,5 +1,0 @@
-<map id="m_kracken::dget" name="m_kracken::dget">
-<area shape="rect" id="node2" href="$namespacem__kracken.html#a9a64192326816b0b9badcc11506628ee" title="NAMEsget &#45; [ARGUMENTS:M_kracken] given keyword fetch string value and length from command arguments S..." alt="" coords="172,5,291,32"/>
-<area shape="rect" id="node3" href="$namespacem__kracken.html#a9e2129d174220802486cc2dc7e0cc443" title="NAMEsubscript(3fp) &#45; [ARGUMENTS:M_kracken] return the subscript value of a string when given it&#39;s nam..." alt="" coords="339,5,485,32"/>
-<area shape="rect" id="node4" href="$namespacem__kracken.html#af9225957a50e8e0559605911c4c5ee02" title="NAMEbounce(3fp) &#45; [ARGUMENTS:M_kracken] find index in Language Dictionary where VARNAM can be found S..." alt="" coords="533,5,669,32"/>
-</map>

@@ -301,6 +301,7 @@ cp -r -p ../html/StyleSheets tmp/html/
 book.sh M_kracken M_strings M_time M_system M_color M_pixel M_calculator M_units M_math M_process M_logic 
 book.sh M_Compare_Float_Numbers M_debug M_factor M_io M_journal M_messages M_sort INTRINSIC
 book.sh M_stopwatch M_display M_regex
+book.sh M_sqlite
 book.sh INDEX
 #tmp/M_anyscalar.f90
 #tmp/M_calculator_plus.f90
@@ -325,6 +326,7 @@ book.sh INDEX
 #tmp/M_treesort.f90
 #tmp/M_writegif.f90
 #tmp/M_writegif_animated.f90
+#tmp/M_sqlite.f90
 #----------------------------------------------------------------------------------------------------------------------------------#
 echo 'now that all procedure descriptions are in place make main index page download.html'
 make_index.sh

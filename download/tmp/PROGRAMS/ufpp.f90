@@ -12,7 +12,7 @@
 !! <body>
 !! <!-- =========================================================================================================================== -->
 !! <a href="../../../GPF.html">
-!!    <img alt="libGPF Home Page" src="images/compass.png" xstyle="position:absolute;left:0;top:0" width="64" height="64" />
+!!    <img alt=" " src="images/compass.png" xstyle="position:absolute;left:0;top:0" width="64" height="64" />
 !! </a>
 !! <!-- =========================================================================================================================== -->
 !! <!--
@@ -1953,16 +1953,32 @@ end subroutine eval
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-function get_integer_from_string(line,ipos1,ipos2)    !@(#)get_integer_from_string(3f): read integer value from line(ipos1:ipos2)
-                                                      ! assume string is a variable name or an integer value
+function get_integer_from_string(line,start_col,end_col) !@(#)get_integer_from_string(3f): read integer value from line(ipos1:ipos2)
+                                                         ! assume string is a variable name or an integer value
    character(len=*),intent(in)  :: line                             ! string containing substring to read an integer value from
-   integer,intent(in)           :: ipos1                            ! lower bound of substring in input line to convert
-   integer,intent(in)           :: ipos2                            ! upper bound of substring in input line to convert
-   character(len=G_var_len)       :: value                          ! the substring
+   integer,intent(in),optional  :: start_col                        ! lower bound of substring in input line to convert
+   integer,intent(in),optional  :: end_col                          ! upper bound of substring in input line to convert
+
+   character(len=G_var_len)     :: value                            ! the substring
    integer                      :: i                                ! index of variable dictionary where variable name is stored
    integer                      :: ios                              ! I/O error value to check to see if internal reads succeeded
    integer                      :: get_integer_from_string          ! integer value to return if string is converted successfully
+   integer                      :: ipos1, ipos2
 !-----------------------------------------------------------------------------------------------------------------------------------
+   if(present(start_col))then
+      ipos1=start_col
+   else
+      ipos1=1
+   endif
+   ipos1=min(max(1,ipos1),len(line))
+
+   if(present(start_col))then
+      ipos2=start_col
+   else
+      ipos2=len(line)
+   endif
+   ipos2=min(max(1,ipos2),ipos2)
+
    if (line(ipos1:ipos1).ge.'A'.and.line(ipos1:ipos1).le.'Z') then  ! not a number, now assumed to  be a variable name
       value= line(ipos1:ipos2)                                      ! extract substring that is assumed to be a variable name
       i=-1                                                          ! this will be index where variable name is found in dictionary
@@ -2157,19 +2173,21 @@ end subroutine document
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 subroutine stop(opts)                    ! @(#)stop(3f): process stop directive
-character(len=*)  ::  opts
-   integer        ::  ivalue
+character(len=*),intent(in) :: opts
+integer                     :: ivalue
 !-----------------------------------------------------------------------------------------------------------------------------------
 ! CHECK COMMAND SYNTAX
    if(opts.ne.'')then
-      ivalue=get_integer_from_string(opts,1,len_trim(opts))
-      if(ivalue.ge.1.and.ivalue.le.20)then
+      ivalue=get_integer_from_string(opts)
+      if(ivalue.eq.0)then
+         stop
+      elseif(ivalue.ge.1.and.ivalue.le.20)then
          call fstop(ivalue)
       else
          call stop_ufpp('*ufpp:stop* ERROR(ag) - UNEXPECTED "STOP" VALUE='',i10,''. FOUND:'',a)'//trim(G_source))
       endif
    else
-      stop 2
+      stop 1
    endif
 end subroutine stop
 !===================================================================================================================================
@@ -2905,11 +2923,13 @@ help_text=[ CHARACTER(LEN=128) :: &
 '    ! *ufpp*    !    1 !    5 !           2 !                                   ',&
 '    !======================================================================     ',&
 '                                                                                ',&
-'   $STOP stop-value                                                             ',&
+'   $STOP stop_value                                                             ',&
 '                                                                                ',&
-'   Stops input file processing. An optional integer value of 1 to 20 will be    ',&
-'   returned as a status value to the system where supported. A value of zero    ',&
-'   is returned if no value is specified.                                        ',&
+'   Stops input file processing. An optional integer value of 0 to 20            ',&
+'   will be returned as a status value to the system where supported. A          ',&
+'   value of two ("2") is returned if no value is specified. Any value           ',&
+'   from one ("1") to twenty ("20") also causes an implicit execution of         ',&
+'   the "$SHOW" directive before the program is stopped.                         ',&
 '                                                                                ',&
 '   $SYSTEM system_command                                                       ',&
 '                                                                                ',&
@@ -3404,11 +3424,13 @@ end subroutine help_usage
 !!     ! *ufpp*    !    1 !    5 !           2 !
 !!     !======================================================================
 !!
-!!    $STOP stop-value
+!!    $STOP stop_value
 !!
-!!    Stops input file processing. An optional integer value of 1 to 20 will be
-!!    returned as a status value to the system where supported. A value of zero
-!!    is returned if no value is specified.
+!!    Stops input file processing. An optional integer value of 0 to 20
+!!    will be returned as a status value to the system where supported. A
+!!    value of two ("2") is returned if no value is specified. Any value
+!!    from one ("1") to twenty ("20") also causes an implicit execution of
+!!    the "$SHOW" directive before the program is stopped.
 !!
 !!    $SYSTEM system_command
 !!
@@ -3598,7 +3620,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        4.0: 20170502>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
-'@(#)COMPILED:       Fri, Feb 23rd, 2018 9:04:22 PM>',&
+'@(#)COMPILED:       Tue, Mar 13th, 2018 10:32:44 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

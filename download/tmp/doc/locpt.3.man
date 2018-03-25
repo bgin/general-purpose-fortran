@@ -1,5 +1,5 @@
 NAME
-  locpt - [M_math:geometry] find if a point is inside a polygonal path
+  locpt(3f) - [M_math:geometry] find if a point is inside a polygonal path
 SYNOPSIS
   Usage:
 

@@ -1,0 +1,32 @@
+NAME
+   sqlite3_column_query - [M_sqlite] Convenience routine to query a column or a function of that column
+
+SYNOPSIS
+     call sqlite3_column_query(column, name, type, length, function)
+
+       type(SQLITE_COLUMN) column
+       character(len=*) name
+       integer type
+       integer, optional length
+       character(len=*), optional function
+
+DESCRIPTION
+       Set the properties of a column when constructing a SELECT query. The
+       "function" argument, if present, is a string representing an SQL function
+       like count or max.
+
+       Side effects:
+
+          Fields in column filled
+
+OPTIONS
+       column    The variable that holds the information on the column
+
+       name      Name of the column in the table to which it belongs or will belong
+
+       type      Type of the column: one of SQLITE_INT, SQLITE_REAL, SQLITE_DOUBLE or
+                 SQLITE_CHAR
+
+       length    Length of a character-valued column (defaults to 20 characters)
+
+       function  Name of the SQL function to perform on the values (if any).

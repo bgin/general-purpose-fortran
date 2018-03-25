@@ -1,6 +1,0 @@
-<map id="global::readchar" name="global::readchar">
-<area shape="rect" id="node2" href="$dtu_8f90.html#a2106e8eae75b8f66312eadae9a00d01f" title="dos_to_unix" alt="" coords="168,5,260,32"/>
-<area shape="rect" id="node5" href="$dtu_8f90.html#aaa5cd93a63e974bc45e4a6e2d6537ded" title="unix_to_dos" alt="" coords="168,56,260,83"/>
-<area shape="rect" id="node3" href="$dtu_8f90.html#a6431a93cf13a3651f17078298d2d2ef9" title="writefile" alt="" coords="308,31,373,57"/>
-<area shape="rect" id="node4" href="$dtu_8f90.html#abff0f15f5d5e680978944e8d3530395a" title="dtu_exe" alt="" coords="421,31,489,57"/>
-</map>

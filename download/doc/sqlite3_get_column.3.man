@@ -1,0 +1,27 @@
+NAME
+   sqlite3_get_column(3f) - [M_sqlite] Convenience routine to get the value of a column
+
+SYNOPSIS
+   call sqlite3_get_column(column, value)
+
+    type(SQLITE_COLUMN) :: column
+    any type            :: value
+
+DESCRIPTION
+       Get the value of a column
+
+       Side effects:
+
+        Value argument will be set
+
+       Note:
+
+        No attempt is made to convert the value
+        to the requested value. You will have to
+        check this yourself
+
+OPTIONS
+       column  The structure that holds the information on the column
+
+       value   The value stored in the column. The type of the value that is passed
+               can be integer, real, double precision real or character string.

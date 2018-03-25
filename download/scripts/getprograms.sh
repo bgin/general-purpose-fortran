@@ -45,6 +45,7 @@ lastprogram lsup.f90
 lastprogram splitname.f90
 lastprogram model.f90
 lastprogram _cmp.f90
+lastprogram _colrm.f90
 lastprogram _dirname.f90
 lastprogram _echo.f90
 lastprogram _false.f90
@@ -70,6 +71,9 @@ lastprogram _uname.f90
 lastprogram _unlink.f90
 lastprogram _which.f90
 lastprogram _yes.f90
+
+lastprogram phone.f90
+lastprogram sqlite3_version.f90
 }
 GETPROGRAMS
 ####################################################################################################################################

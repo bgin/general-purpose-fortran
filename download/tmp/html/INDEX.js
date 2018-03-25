@@ -17,6 +17,7 @@ append("./BOOK_M_pixel.html");
 append("./BOOK_M_process.html");
 append("./BOOK_M_regex.html");
 append("./BOOK_M_sort.html");
+append("./BOOK_M_sqlite.html");
 append("./BOOK_M_stopwatch.html");
 append("./BOOK_M_strings.html");
 append("./BOOK_M_system.html");

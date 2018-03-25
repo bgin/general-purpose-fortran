@@ -1,8 +1,0 @@
-<map id="m_pixel::poly2" name="m_pixel::poly2">
-<area shape="rect" id="node2" href="$namespacem__pixel.html#ab3dc83b63d2ab1bf3f63932abca4245d" title="NAMEclosepoly(3f) &#45; [M_pixel] Terminates a polygon opened by makepoly(3f) " alt="" coords="160,31,291,57"/>
-<area shape="rect" id="node3" href="$huegif_8f90.html#a303c71c69a7b51abd347bd12cea7014f" title="slice" alt="" coords="339,5,388,32"/>
-<area shape="rect" id="node6" href="$shell_8f90.html#a5c599e945a5e0c9c8954969ea48587cf" title="pixel" alt="" coords="339,56,388,83"/>
-<area shape="rect" id="node4" href="$huegif_8f90.html#afc37db6c42d2e7bb12cb85b98d9eba9b" title="wheel" alt="" coords="437,5,492,32"/>
-<area shape="rect" id="node5" href="$huegif_8f90.html#a4cb33e3f49cb1fde8386c9e2b79874fe" title="demo_mapcolor" alt="" coords="541,5,656,32"/>
-<area shape="rect" id="node7" href="$shell_8f90.html#a19f7365559e8816247241c4721e8eccb" title="testcli" alt="" coords="436,56,493,83"/>
-</map>

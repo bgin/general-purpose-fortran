@@ -1,0 +1,28 @@
+NAME
+   sqlite3_set_column(3f)  - [M_sqlite] Convenience routines to set the value of a column
+
+SYNOPSIS
+   call sqlite3_set_column(column, value)
+
+       type(SQLITE_COLUMN) column
+       any type value
+
+DESCRIPTION
+    Set the value of a column
+
+    Side effects:
+
+       Appropriate value field in column set
+
+OPTIONS
+
+       column  The structure that holds the information on the column
+
+       value   The new value for the column. The type of the value that is passed can
+               be integer, real, double precision real or character string.
+
+               Note: currently there is no conversion from the type of value that is
+               stored to the type of the actual variable that is passed to the
+               routine. If you ask for an integer and the column holds a real, then
+               the result is undefined. Check the type with the value of the flag
+               "type_set". (This is one of the things that should be improved)

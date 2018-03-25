@@ -1,0 +1,28 @@
+NAME
+   sqlite3_prepare_select(3f) - [M_sqlite] Prepare a selection of data from the database
+
+SYNOPSIS
+   call sqlite3_prepare_select(db, tablename, columns, stmt, extra_clause)
+
+    type(SQLITE_DATABASE)     :: db
+    character(len=*)          :: tablename
+    type(SQLITE_COLUMN)       :: columns(:)
+    type(SQLITE_STATEMENT)    :: stmt
+    character(len=*),optional :: extra_clause
+
+DESCRIPTION
+   Prepare a SELECT query. Convenience routine that creates the SQL query and
+   "compiles" (prepares) it for later actual execution.
+
+   Side effects:
+
+    A new selection is prepared
+
+OPTIONS
+    db            Structure identifying the database connection
+    tablename     Name of the table to be queried
+    columns       An array of the properties of the columns to be returned
+    stmt          A derived type used as a handle to the prepared statement (returned)
+    extra_clause  Extra clause for SELECT statement (appended)
+                  such as "SORT BY" or "GROUP BY"
+

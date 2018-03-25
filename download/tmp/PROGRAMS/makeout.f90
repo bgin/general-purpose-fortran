@@ -62,7 +62,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   FFLAGS          defaults to "-O"                                             ',&
 '                                                                                ',&
 '   LDFLAGS         defaults to "-s"                                             ',&
-'   LIBS            defaults to "-lncurses -lreadline"                           ',&
+'   LIBS            defaults to "-lncurses -lsqlite3 -lreadline"                 ',&
 'EXAMPLES                                                                        ',&
 '    Common usage                                                                ',&
 '                                                                                ',&
@@ -136,7 +136,7 @@ end subroutine help_usage
 !!    FFLAGS          defaults to "-O"
 !!
 !!    LDFLAGS         defaults to "-s"
-!!    LIBS            defaults to "-lncurses -lreadline"
+!!    LIBS            defaults to "-lncurses -lsqlite3 -lreadline"
 !!##EXAMPLES
 !!
 !!     Common usage
@@ -164,7 +164,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    create Makefile for current directory>',&
 '@(#)VERSION:        1.0, 2017-12-09>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Thu, Dec 21st, 2017 12:05:26 AM>',&
+'@(#)COMPILED:       Sun, Mar 4th, 2018 6:47:37 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -273,7 +273,7 @@ character(len=maxlen)           :: ext
    write(io,'(a)')'# '
    select case(makeout_mode)
    case('debug')
-      call printmakevar('LIBS','-lncurses -lreadline')
+      call printmakevar('LIBS','-lncurses -lsqlite3 -lreadline')
       call printmakevar('CC','cc')
       call printmakevar('CFLAGS',' &
       & -Og &
@@ -317,7 +317,7 @@ character(len=maxlen)           :: ext
       &')
       call printmakevar('LDFLAGS',' -Wall ')
    case('profile')
-      call printmakevar('LIBS','-lncurses -lreadline')
+      call printmakevar('LIBS','-lncurses -lsqlite3 -lreadline')
       call printmakevar('CC','cc')
       call printmakevar('CFLAGS','-pg')
       call printmakevar('FC','f90')
@@ -326,7 +326,7 @@ character(len=maxlen)           :: ext
       call printmakevar('F90FLAGS','-pg')
       call printmakevar('LDFLAGS','-pg')
    case('production')
-      call printmakevar('LIBS','-lncurses -lreadline')
+      call printmakevar('LIBS','-lncurses -lsqlite3 -lreadline')
       call printmakevar('CC','cc')
       call printmakevar('CFLAGS','-O')
       call printmakevar('FC','f90')
@@ -336,7 +336,7 @@ character(len=maxlen)           :: ext
       call printmakevar('F90','gfortran')
       call printmakevar('LDFLAGS','')
    case default
-      call printmakevar('LIBS','-lncurses -lreadline')
+      call printmakevar('LIBS','-lncurses -lsqlite3 -lreadline')
       call printmakevar('CC','cc')
       call printmakevar('CFLAGS','-O')
       call printmakevar('FC','f90')
@@ -606,3 +606,47 @@ character(len=*),intent(in)     :: default
 end subroutine printmakevar
 end program makeout
 !----------------------------------------------------------------------------------------------------------------------------------
+!===============================================================================
+! message
+! *ufpp* CURRENT STATE
+! *ufpp*    TOTAL LINES READ ...........         955
+! *ufpp*    CONDITIONAL_NESTING_LEVEL...    0
+! *ufpp*    G_WRITE (general processing)    T
+! *ufpp*    G_LLWRITE (write input lines)   T
+! *ufpp*    DATE........................ 18:47  4 Mar 2018
+! *ufpp*    ARGUMENTS .................. TESTPRG90 -D CYGWIN -D CYGWIN64_GFORTRAN -D ENDCON=ENDCON -D LOADER_BUG=LOADER_BUG -I /tmp/CCALL_CYGWIN64_GFORTRAN_102676 -I /home/urbanjs/V600/LIBRARY/lib2zebra/inc -I /home/urbanjs/V600/LIBRARY/libDL/inc -I /home/urbanjs/V600/LIBRARY/libGCS/inc -I /home/urbanjs/V600/LIBRARY/libJSU/inc -I /home/urbanjs/V600/LIBRARY/libMULTI/inc -I /home/urbanjs/V600/LIBRARY/libObsolete/inc -I /home/urbanjs/V600/LIBRARY/libSTUG/inc -I /home/urbanjs/V600/LIBRARY/libUSH/inc -I /home/urbanjs/V600/LIBRARY/libcalcomp/inc -I /home/urbanjs/V600/LIBRARY/libgdi/inc -I /home/urbanjs/V600/LIBRARY/libgks2/inc -I /home/urbanjs/V600/LIBRARY/libmachine/inc -I /home/urbanjs/V600/LIBRARY/libncar/inc -I /home/urbanjs/V600/LIBRARY/libnogle/inc -I /home/urbanjs/V600/LIBRARY/libnswc/inc -I /home/urbanjs/V600/LIBRARY/librandlib/inc -I /home/urbanjs/V600/LIBRARY/libslatec/inc -I /home/urbanjs/V600/LIBRARY/libsteam67/inc -I /home/urbanjs/V600/LIBRARY/libtemplate/inc -I /home/urbanjs/V600/LIBRARY/libvg320/inc -I /home/urbanjs/V600/LIBRARY/libvogle/inc -I /home/urbanjs/V600/LIBRARY/libvopl/inc -I /home/urbanjs/V600/LIBRARY/libxyplot/inc -I ./LIBRARY/libGPF/EXE/MAKEOUT -verbose -system .true. -i ./LIBRARY/libGPF/EXE/MAKEOUT/makeout.ff -o /tmp/CCALL_CYGWIN64_GFORTRAN_102676/makeout.102676.f90 ! *ufpp* VARIABLES:
+! *ufpp*    ! TESTPRG90                       !           1                    
+! *ufpp*    ! CYGWIN                          !           1                    
+! *ufpp*    ! CYGWIN64_GFORTRAN               !           1                    
+! *ufpp*    ! ENDCON                          ! ENDCON                         
+! *ufpp*    ! LOADER_BUG                      ! LOADER_BUG                     
+! *ufpp* OPEN FILES:
+! *ufpp*    ! ---- ! UNIT ! LINE NUMBER ! FILENAME
+! *ufpp*    !    1 !   50 !         955 ! ./LIBRARY/libGPF/EXE/MAKEOUT/makeout.ff
+! *ufpp* INCLUDE DIRECTORIES:
+! /tmp/CCALL_CYGWIN64_GFORTRAN_102676
+! /home/urbanjs/V600/LIBRARY/lib2zebra/inc
+! /home/urbanjs/V600/LIBRARY/libDL/inc
+! /home/urbanjs/V600/LIBRARY/libGCS/inc
+! /home/urbanjs/V600/LIBRARY/libJSU/inc
+! /home/urbanjs/V600/LIBRARY/libMULTI/inc
+! /home/urbanjs/V600/LIBRARY/libObsolete/inc
+! /home/urbanjs/V600/LIBRARY/libSTUG/inc
+! /home/urbanjs/V600/LIBRARY/libUSH/inc
+! /home/urbanjs/V600/LIBRARY/libcalcomp/inc
+! /home/urbanjs/V600/LIBRARY/libgdi/inc
+! /home/urbanjs/V600/LIBRARY/libgks2/inc
+! /home/urbanjs/V600/LIBRARY/libmachine/inc
+! /home/urbanjs/V600/LIBRARY/libncar/inc
+! /home/urbanjs/V600/LIBRARY/libnogle/inc
+! /home/urbanjs/V600/LIBRARY/libnswc/inc
+! /home/urbanjs/V600/LIBRARY/librandlib/inc
+! /home/urbanjs/V600/LIBRARY/libslatec/inc
+! /home/urbanjs/V600/LIBRARY/libsteam67/inc
+! /home/urbanjs/V600/LIBRARY/libtemplate/inc
+! /home/urbanjs/V600/LIBRARY/libvg320/inc
+! /home/urbanjs/V600/LIBRARY/libvogle/inc
+! /home/urbanjs/V600/LIBRARY/libvopl/inc
+! /home/urbanjs/V600/LIBRARY/libxyplot/inc
+! ./LIBRARY/libGPF/EXE/MAKEOUT
+!===============================================================================

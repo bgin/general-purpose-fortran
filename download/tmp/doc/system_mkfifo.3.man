@@ -56,14 +56,14 @@ DESCRIPTION
    group members and others may not do anything, you can use any of the
    following mkfifo() calls equivalently:
 
-     ierr= mkfifo("myfile", IANY(R_USR, W_USR, X_USR));
+     ierr= mkfifo("myfile", IANY([R_USR, W_USR, X_USR]));
      ierr= mkfifo("myfile", R_WXU);
 
    In order to give anyone any rights (mode 0777 = rwxrwxrwx), you can
    use any of the following calls equivalently:
 
-     ierr= mkfifo("myfile",IANY(R_USR,W_USR,X_USR,R_GRP,W_GRP,X_GRP,R_OTH,W_OTH,X_OTH));
-     ierr= mkfifo("myfile",IANY(R_WXU,R_WXG,R_WXO));
+     ierr= mkfifo("myfile",IANY([R_USR,W_USR,X_USR,R_GRP,W_GRP,X_GRP,R_OTH,W_OTH,X_OTH]));
+     ierr= mkfifo("myfile",IANY([R_WXU,R_WXG,R_WXO]));
      ierr= mkfifo("myfile",ACCESSPERMS);
 RETURN VALUE
    Upon successful completion, these functions shall return 0.
@@ -90,6 +90,6 @@ EXAMPLES
 
 EXAMPLE
    integer :: ierr
-   ierr=system_mkfifo('_scratch',IANY(R_USR,W_USER,X_USR))
+   ierr=system_mkfifo('_scratch',IANY([R_USR,W_USR,X_USR]))
    end program demo_system_mkfifo
 

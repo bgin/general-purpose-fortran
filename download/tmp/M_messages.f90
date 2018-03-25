@@ -268,7 +268,7 @@ end subroutine junbuster
 !===================================================================================================================================
 !>
 !!##NAME
-!!      jundragon - [M_messages] fill in a character array with a message
+!!      jundragon(3f) - [M_messages] fill in a character array with a message
 !!
 !!##SYNOPSIS
 !!
@@ -1216,7 +1216,7 @@ end subroutine blocks
 !===================================================================================================================================
 !>
 !!##NAME
-!!     signs - [M_messages] write out 132-character string in large block letters
+!!     signs(3f) - [M_messages] write out 132-character string in large block letters
 !!
 !!##SYNOPSIS
 !!

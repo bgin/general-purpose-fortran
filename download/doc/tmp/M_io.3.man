@@ -2,7 +2,7 @@ NAME
     M_io(3f) - [M_io] Fortran I/O module
 SYNOPSIS
     use M_io, only : slurp, notopen, print_inquire, uniq use M_io, only :
-    dirname, splitpath, isdir, readline, get_tmp
+    dirname, splitpath, isdir, get_tmp use M_io, only : read_line, read_all
 DESCRIPTION
     The M_io module is a collection of routines related to basic I/O (input/
     output) operations.
@@ -17,7 +17,9 @@ DESCRIPTION
         extension
       + ISDIR - tell if a path is an existing directory on Unix-compatible
         systems
-      + READLINE - read line as long as programming environment line length
+      + READ_LINE - read line as long as programming environment line length
+        limit
+      + READ_ALL - read line as long as programming environment line length
         limit
       + GET_TMP - get name for system scratch directory from environment
         variables

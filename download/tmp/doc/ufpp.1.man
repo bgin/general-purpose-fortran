@@ -313,11 +313,13 @@ DEFINITION
     ! *ufpp*    !    1 !    5 !           2 !
     !======================================================================
 
-   $STOP stop-value
+   $STOP stop_value
 
-   Stops input file processing. An optional integer value of 1 to 20 will be
-   returned as a status value to the system where supported. A value of zero
-   is returned if no value is specified.
+   Stops input file processing. An optional integer value of 0 to 20
+   will be returned as a status value to the system where supported. A
+   value of two ("2") is returned if no value is specified. Any value
+   from one ("1") to twenty ("20") also causes an implicit execution of
+   the "$SHOW" directive before the program is stopped.
 
    $SYSTEM system_command
 

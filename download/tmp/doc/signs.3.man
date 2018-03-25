@@ -1,5 +1,5 @@
 NAME
-    signs - [M_messages] write out 132-character string in large block letters
+    signs(3f) - [M_messages] write out 132-character string in large block letters
 
 SYNOPSIS
     subroutine signs(string,iounit)

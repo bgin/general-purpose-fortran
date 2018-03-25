@@ -1,0 +1,39 @@
+NAME
+sqlite3_get_table(3f) - [M_sqlite] Call sqlite3_exec() and return the result in an array of strings
+
+SYNOPSIS
+   call sqlite3_get_table(db, commmand, result, errmsg)
+
+    type(SQLITE_DATABASE)    :: db
+    character(len=*)         :: command
+    character(len=*),pointer :: result(:)
+    character(len=*)         :: errmsg
+
+DESCRIPTION
+   Get the result of a query in a single two-dimensional array
+
+   Note:
+
+      The result array is _nullified_ first, then allocated
+      to hold the resulting table (within the limits of the
+      character strings). It is up to the user to deallocate
+      this array when done.
+
+   Further note:
+
+      Because we have to split the process into two parts,
+      to allocate an array that is large enough to hold all
+      strings, use is made of a static variable. As a consequence
+      this routine is _not_ thread-safe.
+
+OPTIONS
+    db        Variable identifying the database connection
+    command   The SQL command (query) to be executed
+    result    A two-dimensional array of strings that will be filled
+              with the results of the SQL command. When done, you will
+              have to deallocate it.
+    errmsg    Error message (if any). If there is an error, then "result"
+              will not be allocated, and "errmsg" will contain the
+              information about the error that occurred.
+
+

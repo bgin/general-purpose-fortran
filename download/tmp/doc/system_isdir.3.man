@@ -37,7 +37,7 @@ EXAMPLE
           '.               ', &
           'PROBABLY_NOT    ']
           do i=1,size(names)
-             write(*,*)' is ',trim(names(i)),' a directory? ', isdir(names(i))
+             write(*,*)' is ',trim(names(i)),' a directory? ', system_isdir(names(i))
           enddo
           end program demo_system_isdir
 

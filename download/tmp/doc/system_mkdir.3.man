@@ -21,14 +21,14 @@ DESCRIPTION
    group members and others may not do anything, you can use any of the
    following mkdir() calls equivalently:
 
-     ierr= mkdir("mydir", IANY(R_USR, W_USR, X_USR));
+     ierr= mkdir("mydir", IANY([R_USR, W_USR, X_USR]));
      ierr= mkdir("mydir", R_WXU);
 
    In order to give anyone any rights (mode 0777 = rwxrwxrwx), you can
    use any of the following calls equivalently:
 
-     ierr= mkdir("mydir",IANY(R_USR,W_USR,X_USR,R_GRP,W_GRP,X_GRP,R_OTH,W_OTH,X_OTH));
-     ierr= mkdir("mydir",IANY(R_WXU,R_WXG,R_WXO));
+     ierr= mkdir("mydir",IANY([R_USR,W_USR,X_USR,R_GRP,W_GRP,X_GRP,R_OTH,W_OTH,X_OTH]));
+     ierr= mkdir("mydir",IANY([R_WXU,R_WXG,R_WXO]));
      ierr= mkdir("mydir",ACCESSPERMS);
 
 EXAMPLE
@@ -42,6 +42,8 @@ EXAMPLE
    use M_system, only : DEFFILEMODE, ACCESSPERMS
    implicit none
    integer :: ierr
-   ierr=system_mkdir('_scratch',IANY(R_USR,W_USER,X_USR))
+   ierr=system_mkdir('_scratch',IANY([R_USR,W_USR,X_USR)])
    end program demo_system_mkdir
+
+  Expected results:
 

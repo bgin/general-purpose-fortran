@@ -1587,7 +1587,7 @@ end function system_chown
 !!           '.               ', &
 !!           'PROBABLY_NOT    ']
 !!           do i=1,size(names)
-!!              write(*,*)' is ',trim(names(i)),' a directory? ', isdir(names(i))
+!!              write(*,*)' is ',trim(names(i)),' a directory? ', system_isdir(names(i))
 !!           enddo
 !!           end program demo_system_isdir
 !!
@@ -2017,14 +2017,20 @@ end function system_getumask
 !!
 !!    program demo_system_perror
 !!    use M_system, only : system_perror,system_rmdir
+!!    implicit none
+!!    character(len=:),allocatable :: DIRNAME
+!!    DIRNAME='/NOT/THERE/OR/ANYWHERE'
 !!    ! generate an error with a routine that supports errno and perror(3c)
-!!    ierr=system_rmdir('/NOT/THERE/OR/ANYWHERE')
-!!    call system_perror('*demo_system_perror*')
+!!    if(system_rmdir(DIRNAME).ne.0)then
+!!       call system_perror('*demo_system_perror*:'//DIRNAME)
+!!    endif
+!!    write(*,'(a)')"That's all Folks!"
 !!    end program demo_system_perror
 !!
 !!   Expected results:
 !!
-!!    *demo_system_perror*: No such file or directory
+!!    *demo_system_perror*:/NOT/THERE/OR/ANYWHERE: No such file or directory
+!!    That's all Folks!
 !===================================================================================================================================
 subroutine system_perror(prefix)
 use iso_fortran_env, only : ERROR_UNIT, INPUT_UNIT, OUTPUT_UNIT     ! access computing environment
@@ -2614,14 +2620,14 @@ end function system_rmdir
 !!    group members and others may not do anything, you can use any of the
 !!    following mkfifo() calls equivalently:
 !!
-!!      ierr= mkfifo("myfile", IANY(R_USR, W_USR, X_USR));
+!!      ierr= mkfifo("myfile", IANY([R_USR, W_USR, X_USR]));
 !!      ierr= mkfifo("myfile", R_WXU);
 !!
 !!    In order to give anyone any rights (mode 0777 = rwxrwxrwx), you can
 !!    use any of the following calls equivalently:
 !!
-!!      ierr= mkfifo("myfile",IANY(R_USR,W_USR,X_USR,R_GRP,W_GRP,X_GRP,R_OTH,W_OTH,X_OTH));
-!!      ierr= mkfifo("myfile",IANY(R_WXU,R_WXG,R_WXO));
+!!      ierr= mkfifo("myfile",IANY([R_USR,W_USR,X_USR,R_GRP,W_GRP,X_GRP,R_OTH,W_OTH,X_OTH]));
+!!      ierr= mkfifo("myfile",IANY([R_WXU,R_WXG,R_WXO]));
 !!      ierr= mkfifo("myfile",ACCESSPERMS);
 !!##RETURN VALUE
 !!    Upon successful completion, these functions shall return 0.
@@ -2650,7 +2656,7 @@ end function system_rmdir
 !!##EXAMPLE
 !!
 !!    integer :: ierr
-!!    ierr=system_mkfifo('_scratch',IANY(R_USR,W_USER,X_USR))
+!!    ierr=system_mkfifo('_scratch',IANY([R_USR,W_USR,X_USR]))
 !!    end program demo_system_mkfifo
 !===================================================================================================================================
 function system_mkfifo(dirname,mode) result(err)
@@ -2700,14 +2706,14 @@ end function system_mkfifo
 !!    group members and others may not do anything, you can use any of the
 !!    following mkdir() calls equivalently:
 !!
-!!      ierr= mkdir("mydir", IANY(R_USR, W_USR, X_USR));
+!!      ierr= mkdir("mydir", IANY([R_USR, W_USR, X_USR]));
 !!      ierr= mkdir("mydir", R_WXU);
 !!
 !!    In order to give anyone any rights (mode 0777 = rwxrwxrwx), you can
 !!    use any of the following calls equivalently:
 !!
-!!      ierr= mkdir("mydir",IANY(R_USR,W_USR,X_USR,R_GRP,W_GRP,X_GRP,R_OTH,W_OTH,X_OTH));
-!!      ierr= mkdir("mydir",IANY(R_WXU,R_WXG,R_WXO));
+!!      ierr= mkdir("mydir",IANY([R_USR,W_USR,X_USR,R_GRP,W_GRP,X_GRP,R_OTH,W_OTH,X_OTH]));
+!!      ierr= mkdir("mydir",IANY([R_WXU,R_WXG,R_WXO]));
 !!      ierr= mkdir("mydir",ACCESSPERMS);
 !!
 !!##EXAMPLE
@@ -2722,8 +2728,10 @@ end function system_mkfifo
 !!    use M_system, only : DEFFILEMODE, ACCESSPERMS
 !!    implicit none
 !!    integer :: ierr
-!!    ierr=system_mkdir('_scratch',IANY(R_USR,W_USER,X_USR))
+!!    ierr=system_mkdir('_scratch',IANY([R_USR,W_USR,X_USR)])
 !!    end program demo_system_mkdir
+!!
+!!   Expected results:
 !===================================================================================================================================
 function system_mkdir(dirname,mode) result(err)
 character(len=*),parameter :: ident="@(#)M_system::system_mkdir(3f): call mkdir(3c) to create empty directory"

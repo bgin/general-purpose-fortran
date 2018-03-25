@@ -221,10 +221,10 @@ subroutine redo(inputline)
 !       r string
 !
 character(len=*),parameter     :: ident="@(#)M_history::redo(3f): open binary direct access file for keeping history"
-character(len=*),intent(inout) :: inputline             ! user string
+character(len=*),intent(inout) :: inputline                ! user string
    integer,save                :: iobuf=1071               ! unit number to use for redo history buffer
    integer,save                :: iredo                    ! number of lines read from standard input into redo file
-   logical,save                :: lcalled=.false.           ! flag whether first time this routine called or not
+   logical,save                :: lcalled=.false.          ! flag whether first time this routine called or not
    character(len=READLEN)      :: onerecord
 !-----------------------------------------------------------------------------------------------------------------------------------
 !  open history file and initialize
@@ -240,17 +240,17 @@ character(len=*),intent(inout) :: inputline             ! user string
 !-----------------------------------------------------------------------------------------------------------------------------------
    ilast=len_trim(inputline)
 
-   if(ilast.eq.1.and.inputline(1:1).eq.'r')then         ! redo command
+   if(ilast.eq.1.and.inputline(1:1).eq.'r')then                             ! redo command
       call redol(inputline,iobuf,iredo,READLEN,' ')
       ilast=len_trim(inputline)
-   elseif(inputline(1:2).eq.'r ')then                   ! redo command with a string following
+   elseif(inputline(1:min(2,len(inputline))).eq.'r ')then                   ! redo command with a string following
       call redol(inputline,iobuf,iredo,READLEN,inputline(3:max(3,ilast)))
       ilast=len_trim(inputline)
    endif
 
-   if(ilast.ne.0)then                                   ! put command into redo buffer
+   if(ilast.ne.0)then                                                       ! put command into redo buffer
       iredo=iredo+1
-      onerecord=inputline                  ! make string the correct length; ASSUMING inputline IS NOT LONGER THAN onerecord
+      onerecord=inputline                ! make string the correct length; ASSUMING inputline IS NOT LONGER THAN onerecord
       write(iobuf,rec=iredo)onerecord
    endif
 end subroutine redo
@@ -314,17 +314,17 @@ character(len=*),intent(out)      :: redoline    ! edited command line to be ret
   &78901234567890123456789012345678901234567890123456789012345678901234567890&
   &'/
 !-----------------------------------------------------------------------------------------------------------------------------------
-   ipoint=iredo               ! initial line in history file to start with
-   icall=0                    ! flag if have been thru loop or just got here
-   cin=init                   ! initialize the directive
+   ipoint=iredo                                          ! initial line in history file to start with
+   icall=0                                               ! flag if have been thru loop or just got here
+   cin=init                                              ! initialize the directive
    ibuf=min(ibuf0,len(redoline))
    if(ibuf.le.0)return
 !-----------------------------------------------------------------------------------------------------------------------------------
 1     continue
-   if(ipoint.le.0)then        ! if no lines in redo history file
-      redoline=' '            ! make command to 'redo' a blank line since no commands entered
+   if(ipoint.le.0)then                                   ! if no lines in redo history file
+      redoline=' '                                       ! make command to 'redo' a blank line since no commands entered
    else
-      read(iobuf,rec=ipoint,err=999)redoline(1:ibuf)  ! get last line in history file as line to redo
+      read(iobuf,rec=ipoint,err=999)redoline(1:ibuf)     ! get last line in history file as line to redo
       ! WARNING: OSF1 DIGITAL Fortran 77 Driver V5.2-10 DIGITAL Fortran 77 V5.2-171-428BH
       ! after this read the following storage was corrupted; switched declaration of
       ! init and redoline and problem cleared but it is probably corrupting cin and
@@ -487,7 +487,7 @@ character(len=*),intent(out)      :: redoline    ! edited command line to be ret
       close(idump,iostat=ios)
 !-----------------------------------------------------------------------------------------------------------------------------------
    case('P','L')                                                   ! display history buffer file without line numbers
-      if(cin(2:).eq.' ')then          ! default is to go back up to 20
+      if(cin(2:).eq.' ')then                                       ! default is to go back up to 20
          istart=iredo+1-20
       else
          istart=int( s2v(cin(2:),ierr ))
@@ -495,8 +495,8 @@ character(len=*),intent(out)      :: redoline    ! edited command line to be ret
             istart=iredo+1+istart
          endif
       endif
-      istart=min(max(1,istart),iredo) ! make istart a safe value
-      do i30=istart,iredo          ! easier to cut and paste if no numbers
+      istart=min(max(1,istart),iredo)                              ! make istart a safe value
+      do i30=istart,iredo                                          ! easier to cut and paste if no numbers
          read(iobuf,rec=i30,iostat=ios)redoline(1:ibuf)
          if(ios.ne.0)then
             goto 999

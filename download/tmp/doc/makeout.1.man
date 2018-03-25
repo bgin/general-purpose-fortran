@@ -52,7 +52,7 @@ ENVIRONMENT
    FFLAGS          defaults to "-O"
 
    LDFLAGS         defaults to "-s"
-   LIBS            defaults to "-lncurses -lreadline"
+   LIBS            defaults to "-lncurses -lsqlite3 -lreadline"
 EXAMPLES
     Common usage
 

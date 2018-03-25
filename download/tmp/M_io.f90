@@ -8,7 +8,8 @@ public slurp
 public dirname
 public splitpath
 public isdir
-public readline
+public read_line
+public read_all
 public get_tmp
 CONTAINS
 !===================================================================================================================================
@@ -1010,10 +1011,85 @@ end function isdir
 !===================================================================================================================================
 !>
 !!##NAME
-!!     readline(3f) - [M_io] read a line from specified LUN into allocatable string up to line length limit
+!!     read_all(3f) - [M_io] read a line from specified LUN into allocatable string up to line length limit
 !!
 !!##SYNTAX
-!!   function readline(line,lun) result(ier)
+!!   function read_all(line,lun) result(ier)
+!!
+!!    character(len=:),allocatable,intent(out) :: line
+!!    integer,intent(in) :: lun
+!!    integer,intent(out) :: ier
+!!
+!!##DESCRIPTION
+!!
+!!    Read a line of any length up to programming environment's maximum
+!!    line length. Requires Fortran 2003+.
+!!
+!!    It is primarily expected to be used when reading input which will
+!!    then be parsed.
+!!
+!!    The simple use of a loop that repeatedly re-allocates a character
+!!    variable in addition to reading the input file one buffer at a
+!!    time could (depending on the programming environment used) be
+!!    inefficient, as it could reallocate and allocate memory used for
+!!    the output string with each buffer read.
+!!
+!!##EXAMPLE
+!!
+!!   Sample program:
+!!
+!!    program demo_read_all
+!!    use M_io, only : read_all
+!!    implicit none
+!!    character(len=:),allocatable :: line
+!!       INFINITE: do while (read_all(line)==0)
+!!          write(*,'(a)')'['//line//']'
+!!       enddo INFINITE
+!!    end program demo_read_all
+!===================================================================================================================================
+function read_all(line,lun) result(ier)
+use iso_fortran_env, only : INPUT_UNIT
+implicit none
+character(len=:),allocatable,intent(out) :: line
+integer,intent(in),optional              :: lun
+integer                                  :: ier
+
+   integer,parameter                     :: buflen=1024
+   character(len=:),allocatable          :: line_local
+   character(len=buflen)                 :: buffer
+   integer                               :: isize
+   integer                               :: lun_local
+
+   line_local=''
+   ier=0
+   if(present(lun))then
+      lun_local=lun
+   else
+      lun_local=INPUT_UNIT
+   endif
+
+   INFINITE: do                                                           ! read characters from line and append to result
+      read(lun_local,iostat=ier,fmt='(a)',advance='no',size=isize) buffer ! read next buffer (might use stream I/O for files
+                                                                          ! other than stdin so system line limit is not limiting
+      if(isize.gt.0)line_local=line_local//buffer(:isize)            ! append what was read to result
+      if(is_iostat_eor(ier))then                                     ! if hit EOR reading is complete unless backslash ends the line
+         ier=0                                                       ! hitting end of record is not an error for this routine
+         exit INFINITE                                               ! end of reading line
+     elseif(ier.ne.0)then                                            ! end of file or error
+        exit INFINITE
+     endif
+   enddo INFINITE
+   line=line_local                                                   ! trim line
+end function read_all
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+!>
+!!##NAME
+!!     read_line(3f) - [M_io] read a line from specified LUN into allocatable string up to line length limit
+!!
+!!##SYNTAX
+!!   function read_line(line,lun) result(ier)
 !!
 !!    character(len=:),allocatable,intent(out) :: line
 !!    integer,intent(in) :: lun
@@ -1042,16 +1118,16 @@ end function isdir
 !!
 !!   Sample program:
 !!
-!!    program demo_readline
-!!    use M_io, only : readline
+!!    program demo_read_line
+!!    use M_io, only : read_line
 !!    implicit none
 !!    character(len=:),allocatable :: line
-!!       INFINITE: do while (readline(line)==0)
+!!       INFINITE: do while (read_line(line)==0)
 !!          write(*,'(a)')'['//line//']'
 !!       enddo INFINITE
-!!    end program demo_readline
+!!    end program demo_read_line
 !===================================================================================================================================
-function readline(line,lun) result(ier)
+function read_line(line,lun) result(ier)
 use iso_fortran_env, only : INPUT_UNIT
 use M_strings,only : notabs
 implicit none
@@ -1097,7 +1173,7 @@ integer                                  :: ier
    allocate(character(len=biggest) :: line)
    call notabs(line_local,line,last)                        ! expand tabs, trim carriage returns, remove unprintable characters
    line=trim(line(:last))                                   ! trim line
-end function readline
+end function read_line
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================

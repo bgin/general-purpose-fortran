@@ -3,23 +3,27 @@
 This is a repository of general purpose Fortran modules and libraries.
 
 This initial release is a collection of Fortran modules (and in some cases
-their associated C support routines) providing 
-  * basic string operations
-  * simple numeric expression parsing
-  * command line parsing 
-  * command line history editing
-  * a date and time module
-  * an interface to the ncurses(3c) library
-  * the beginnings of a pixel graphics module similar to the VOGLE graphics library interface
-  * libraries for message handling, unit testing, and debugging
-  * a module for reading and writing lines to a process (a popen(3c) interface).
-  * a growing number of Fortran interfaces to common C routines, including many POSIX routines
+their associated C support routines) providing
+
+*  __string operations__
+*  simple __numeric expression parsing__
+*  __command line parsing__
+*  __command line history__ editing
+*  a __date and time__ module
+*  the beginnings of a __pixel graphics module__ similar to the VOGLE graphics library interface
+*  libraries for message handling, unit testing, and debugging
+*  a growing number of Fortran interfaces to common C routines, including
+   +  many __POSIX system routines__
+   +  a module for reading and writing lines to a process (a __popen(3c)__ interface)
+   +  an interface to the __ncurses(3c)__ terminal screen handling library
+   +  an interface to the __sqlite3(3c)__ SQL file library
+   +  an interface to the __regex(3c)__ Regular Expression library
 
 The majority of these routines come with a man(1) page in *roff and HTML format.
-An index into the documentation is contained in the 
+An index into the documentation is contained in the
 [[overview]](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/download.html)
 
-A [collection of programs](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/man_1k.html) that use the 
+A [collection of programs](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/man_1k.html) that use the
 repository code are included. These range from useful utilities (a pre-processor, an
 SCCS-style meta-data reader, regression testing utilities, ...) to simple
 example programs that exercise the modules.
@@ -43,57 +47,57 @@ resources (If you do not see a link there to your favorites please add them.)
 
 ### command line arguments
 
-[M_KRACKEN(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/BOOK_M_kracken.html): command line
+[M\_KRACKEN(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/BOOK_M_kracken.html): command line
 arguments
 
-The M_KRACKEN(3f) module makes cracking Unix-like arguments off the command
+The M\_KRACKEN(3f) module makes cracking Unix-like arguments off the command
 line easy. This version is expanded to allow use in configuration files and
 interactive input as well, and incorporates additional modules. It requires
 many other components from the CLI collection, but is used to generate
 programs that use shell-like input as well as crack command lines.
 
-[M_GETOPT(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/M_getopt.3.html): command line arguments
+[M\_GETOPT(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/M_getopt.3.html): command line arguments
 
-The M_GETOPT(3fm) module by Mark Gates supports cracking Unix-like arguments
+The M\_GETOPT(3fm) module by Mark Gates supports cracking Unix-like arguments
 off the command line in much the same way as the C getopt(3c) procedure.
 
-[M_GETOPT_LONG(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/M_getopt_long.3.html): command line
+[M\_GETOPT\_LONG(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/M_getopt_long.3.html): command line
 arguments
 
-The M_GETOPT_LONG(3fm) module by Joe Krahn supports cracking Unix-like
+The M\_GETOPT\_LONG(3fm) module by Joe Krahn supports cracking Unix-like
 arguments off the command line in much the same way as the SunOS
 getopt_long(3c) procedure.
 
 ### strings
 
-[M_STRINGS(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/BOOK_M_strings.html)
+[M\_STRINGS(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/BOOK_M_strings.html)
 
 convert case, change numbers to strings, strings to numbers, parse on
 delimiters,edit strings, ... .
 
 ### date and time
 
-[M_TIME(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/BOOK_M_time.html)
+[M\_TIME(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/BOOK_M_time.html)
 
 Calculate and display date and time values
 
 ### expression parsers
 
-[M_CALCULATOR(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/M_calculator.3.html),
-[M_CALCULATOR_PLUS(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/M_calculator_plus.3.html)
+[M\_CALCULATOR(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/M_calculator.3.html),
+[M\_CALCULATOR_PLUS(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/M_calculator_plus.3.html)
 
-M_calculator(3fm) is a module for evaluating expressions. The primary routine
+M\_calculator(3fm) is a module for evaluating expressions. The primary routine
 is JUCALC(3f). JUCALC(3f) evaluates simple numeric and string expressions.
 This allows your input to use expressions and variable names instead of simple
 values. You will have to comment out or supply some of the functions called,
-depending on how f2003-compliant your compiler is.  
-  
-M_calculator_plus(3fm) is a supplemental module containing convenience
-routines for using M_calculator(3fm).
+depending on how f2003-compliant your compiler is.
+
+M\_calculator_plus(3fm) is a supplemental module containing convenience
+routines for using M\_calculator(3fm).
 
 ### command line recall and editing
 
-[M_HISTORY(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/redo.3.html): An interactive input editor
+[M\_HISTORY(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/redo.3.html): An interactive input editor
 module
 
 Acting much like a line-mode editor, the REDO(3f) procedure lets you list,
@@ -101,7 +105,7 @@ edit, save, and modify your interactively entered program input. Built-in help
 and no dependence on terminal control sequences makes this a simple-to-master
 and portable input history editor.
 
-[ M_READLINE(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/M_readline.3.html): calling readline(3c)
+[ M\_READLINE(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/M_readline.3.html): calling readline(3c)
 from Fortran
 
 The readline(3c) routine lets you edit and then execute previously entered
@@ -111,8 +115,8 @@ readline(3c) library is required.
 
 ### messages
 
-[M_JOURNAL(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/M_journal.3.html),
-[M_MESSAGES(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/M_messages.3.html)
+[M\_JOURNAL(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/M_journal.3.html),
+[M\_MESSAGES(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/M_messages.3.html)
 
 journaling, logging, and general messaging routines that let you have a single
 routine filter output to journal files; display attention-grabbing messages or
@@ -120,7 +124,7 @@ reformat messages.
 
 ### unit testing and debugging
 
-[M_DEBUG(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/BOOK_M_debug.html)
+[M\_DEBUG(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/BOOK_M_debug.html)
 
 These routines are useful for constructing unit tests for code and for adding
 debug modes to routines and applications.
@@ -132,15 +136,15 @@ programs to verify compiler behavior.
 
 ### flow control
 
-[M_LOGIC(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/M_logic.3.html): conditionally select input
+[M\_LOGIC(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/M_logic.3.html): conditionally select input
 
-The M_LOGIC(3f) module allows you to use if/else/elseif/endif directives in
+The M\_LOGIC(3f) module allows you to use if/else/elseif/endif directives in
 your input; allowing conditional selection of input lines. Requires an
 expression parser. It uses JUCALC(3f) by default.
 
 ### I/O
 
-[ M_IO(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/M_io.3.html)
+[ M\_IO(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/M_io.3.html)
 
 Input/Output
 
@@ -156,30 +160,44 @@ be called from Fortran.
 
 ### Fortran/C calls
 
-[M_PROCESS(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/M_process.3.html)
+##### Read or Write from a system process
+
+[M\_PROCESS(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/M_process.3.html)
 
 Read and write from a process using popen(3c)
 
-[M_SYSTEM(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/BOOK_M_system.html)
+##### Many POSIX interface routines
+
+[M\_SYSTEM(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/BOOK_M_system.html)
 
   * Environment
   * Directories
+  * File status and attributes
   * Error code
   * Process management
-Some simple but commonly called C routines interfaced to Fortran. Makes heavy
+
+And other commonly called C system routines interfaced to Fortran. Makes heavy
 use of the ISO_C_BINDING module introduced as part of Fortran 2003.
 
+##### Call the POSIX Regular Expression library
 
-[M_REGEX(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/M_regex.3.html)
+[M\_REGEX(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/M_regex.3.html)
 
 Call the POSIX regular expression library.
 
-### Fortran(2003) interface to the ncurses(3c) library
+#### Fortran(2008) interface to the SQLite3 library
 
-[M_NCURSES(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/M_ncurses.html),
-[M_FIXEDFORM(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/PROGRAMS/fixedform.3.html)
-  
-  
+[M\_SQLITE(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/M_sqlite.3.html)
+
+A basic interface to the SQLite3 library using the ISO_C_BINDING module and C/Fortran interoperability
+modeled iniitially on the FLIB interface.
+
+#### Fortran(2003) interface to the ncurses(3c) library
+
+[M\_NCURSES(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/M_ncurses.html),
+[M\_FIXEDFORM(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/PROGRAMS/fixedform.3.html)
+
+
 A Fortran module and a few related files create an interface from Fortran to
 the C ncurses(3c) library; allowing Fortran programs to read function keys and
 characters one at a time and to control the characters on the screen on a
@@ -216,7 +234,7 @@ Routine Categories  Descriptions
 
 ### numeric utilities that are aware of their accuracy
 
-[M_COMPARE_FLOAT_NUMBERS(3fm)](math/Compare_Float_Numbers/M_Compare_Float_Numbers.HTML)
+[M\_COMPARE_FLOAT\_NUMBERS(3fm)](math/Compare_Float_Numbers/M_Compare_Float_Numbers.HTML)
 
 A Fortran module containing routines to perform equality and relational
 comparisons on floating point numbers. That is, you can more safely compare
@@ -232,23 +250,23 @@ compare two real numbers only up to a specified number of digits
 
 ### Graphics
 
-[M_PIXEL(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/BOOK_M_pixel.html)
+[M\_PIXEL(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/BOOK_M_pixel.html)
 
-The M_pixel module is a _PRELIMINARY_ collection of routines that use 2D-
+The M\_pixel module is a _PRELIMINARY_ collection of routines that use 2D-
 vector routines to create or modify a pixel array, which can then be written
 as a GIF file.
 
 ### Color
 
-[M_COLOR(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/M_color.3.html)
+[M\_COLOR(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/M_color.3.html)
 
-The M_color module is a collection of color-related procedures. Routines to
+The M\_color module is a collection of color-related procedures. Routines to
 convert between different color models, return RGB values given common X11
 color names, and other simple color-related operations.
 
 ### Sort
 
-[ M_SORT(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/M_sort.3.html)
+[ M\_SORT(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/M_sort.3.html)
 
 sorting routines encapsulated in a module
 
@@ -256,20 +274,20 @@ sorting routines encapsulated in a module
 
 simple generic sort procedure
 
-[ M_SWAP(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/swap.3.html)
+[ M\_SWAP(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/swap.3.html)
 
 swap two variables
 
 ### General Mathematics
 
-[ M_MATH(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/BOOK_M_math.html)
+[ M\_MATH(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/BOOK_M_math.html)
 
 A collection of routines for basic geometry, curve fitting and interpolation,
 basic statistics, ...
 
 ### Unit Conversions
 
-[ M_UNITS(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/BOOK_M_units.html)
+[ M\_UNITS(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/BOOK_M_units.html)
 
 A collection of unit conversions and constants. Allow degrees instead of
 radians in trig functions; convert between Celcius and Fahrenheit, ...

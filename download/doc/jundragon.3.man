@@ -1,5 +1,5 @@
 NAME
-     jundragon - [M_messages] fill in a character array with a message
+     jundragon(3f) - [M_messages] fill in a character array with a message
 
 SYNOPSIS
 

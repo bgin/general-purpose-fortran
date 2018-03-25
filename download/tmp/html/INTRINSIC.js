@@ -115,6 +115,7 @@ append("is_iostat_end.3.html");
 append("is_iostat_eor.3.html");
 append("ishft.3.html");
 append("ishftc.3.html");
+append("iso_c_binding.3.html");
 append("kind.3.html");
 append("lbound.3.html");
 append("lcobound.3.html");

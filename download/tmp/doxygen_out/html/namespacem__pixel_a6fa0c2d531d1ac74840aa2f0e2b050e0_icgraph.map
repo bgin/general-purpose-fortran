@@ -1,8 +1,0 @@
-<map id="m_pixel::drawstr" name="m_pixel::drawstr">
-<area shape="rect" id="node2" href="$namespacem__pixel.html#a58406ffd6c2a9fdf2ea7772198b54255" title="NAMEdrawchar(3f) &#45; [M_pixel] Draw a character at the current position " alt="" coords="171,5,297,32"/>
-<area shape="rect" id="node3" href="$huegif_8f90.html#afc37db6c42d2e7bb12cb85b98d9eba9b" title="wheel" alt="" coords="347,81,401,108"/>
-<area shape="rect" id="node5" href="$huegif_8f90.html#a303c71c69a7b51abd347bd12cea7014f" title="slice" alt="" coords="209,107,259,133"/>
-<area shape="rect" id="node6" href="$shell_8f90.html#a5c599e945a5e0c9c8954969ea48587cf" title="pixel" alt="" coords="209,157,259,184"/>
-<area shape="rect" id="node4" href="$huegif_8f90.html#a4cb33e3f49cb1fde8386c9e2b79874fe" title="demo_mapcolor" alt="" coords="451,81,565,108"/>
-<area shape="rect" id="node7" href="$shell_8f90.html#a19f7365559e8816247241c4721e8eccb" title="testcli" alt="" coords="345,157,403,184"/>
-</map>

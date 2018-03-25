@@ -18,12 +18,18 @@ EXAMPLE
 
    program demo_system_perror
    use M_system, only : system_perror,system_rmdir
+   implicit none
+   character(len=:),allocatable :: DIRNAME
+   DIRNAME='/NOT/THERE/OR/ANYWHERE'
    ! generate an error with a routine that supports errno and perror(3c)
-   ierr=system_rmdir('/NOT/THERE/OR/ANYWHERE')
-   call system_perror('*demo_system_perror*')
+   if(system_rmdir(DIRNAME).ne.0)then
+      call system_perror('*demo_system_perror*:'//DIRNAME)
+   endif
+   write(*,'(a)')"That's all Folks!"
    end program demo_system_perror
 
   Expected results:
 
-   *demo_system_perror*: No such file or directory
+   *demo_system_perror*:/NOT/THERE/OR/ANYWHERE: No such file or directory
+   That's all Folks!
 

@@ -1,6 +1,8 @@
 NAME
-   subroutine other2(iin,iflag)
+  other2(3f) - [language] specialized routine for reading parcel files
 SYNOPSIS
+  subroutine other2(iin,iflag)
+
    integer, intent=(inout) :: iin
       This is the unit code the program should be reading from.
 

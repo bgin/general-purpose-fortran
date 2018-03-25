@@ -184,9 +184,9 @@ implicit none
 character(len=80),allocatable  :: usage(:)
 ! could add search for '$keyword: description$' as used by RCS too. See ident(command)
 ! '@'+'('+'#'+')' originated with SCCS (probably). See SCCS what(1) command
-usage=[&
+usage=[ character(len=80) :: &
 'NAME                                                                            ',&
-'     what - [DEVELOPER] extract SCCS-style metadata from a file                 ',&
+'     what(1f) - [DEVELOPER] extract SCCS-style metadata from a file             ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '     what [ filename(s) [-s] [-q] [-html|-table] ] | [ [-help] [-version] ]     ',&
