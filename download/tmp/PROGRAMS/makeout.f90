@@ -164,7 +164,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    create Makefile for current directory>',&
 '@(#)VERSION:        1.0, 2017-12-09>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sun, Mar 4th, 2018 6:47:37 PM>',&
+'@(#)COMPILED:       Thu, Mar 29th, 2018 6:45:36 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -173,7 +173,7 @@ end subroutine help_version
 !-----------------------------------------------------------------------------------------------------------------------------------
 !----------------------------------------------------------------------------------------------------------------------------------
 program makeout
-use M_io, only                         : splitpath, readline
+use M_io, only                         : splitpath, read_line
 use M_kracken, only                    : kracken, rget, lget, sgets, sget
 use M_sort, only                       : sort_shell, unique
 use M_strings, only                    : expand, split, lower, substitute, chomp
@@ -510,7 +510,7 @@ character(len=*),intent(in) :: filename
       return
    endif
 
-   INFINITE: do while (readline(line,lun)==0)
+   INFINITE: do while (read_line(line,lun)==0)
       ifound=index(line,'!')  ! remove Fortran comments
       if(ifound.ne.0)then
          line=line(:ifound-1)
@@ -613,8 +613,8 @@ end program makeout
 ! *ufpp*    CONDITIONAL_NESTING_LEVEL...    0
 ! *ufpp*    G_WRITE (general processing)    T
 ! *ufpp*    G_LLWRITE (write input lines)   T
-! *ufpp*    DATE........................ 18:47  4 Mar 2018
-! *ufpp*    ARGUMENTS .................. TESTPRG90 -D CYGWIN -D CYGWIN64_GFORTRAN -D ENDCON=ENDCON -D LOADER_BUG=LOADER_BUG -I /tmp/CCALL_CYGWIN64_GFORTRAN_102676 -I /home/urbanjs/V600/LIBRARY/lib2zebra/inc -I /home/urbanjs/V600/LIBRARY/libDL/inc -I /home/urbanjs/V600/LIBRARY/libGCS/inc -I /home/urbanjs/V600/LIBRARY/libJSU/inc -I /home/urbanjs/V600/LIBRARY/libMULTI/inc -I /home/urbanjs/V600/LIBRARY/libObsolete/inc -I /home/urbanjs/V600/LIBRARY/libSTUG/inc -I /home/urbanjs/V600/LIBRARY/libUSH/inc -I /home/urbanjs/V600/LIBRARY/libcalcomp/inc -I /home/urbanjs/V600/LIBRARY/libgdi/inc -I /home/urbanjs/V600/LIBRARY/libgks2/inc -I /home/urbanjs/V600/LIBRARY/libmachine/inc -I /home/urbanjs/V600/LIBRARY/libncar/inc -I /home/urbanjs/V600/LIBRARY/libnogle/inc -I /home/urbanjs/V600/LIBRARY/libnswc/inc -I /home/urbanjs/V600/LIBRARY/librandlib/inc -I /home/urbanjs/V600/LIBRARY/libslatec/inc -I /home/urbanjs/V600/LIBRARY/libsteam67/inc -I /home/urbanjs/V600/LIBRARY/libtemplate/inc -I /home/urbanjs/V600/LIBRARY/libvg320/inc -I /home/urbanjs/V600/LIBRARY/libvogle/inc -I /home/urbanjs/V600/LIBRARY/libvopl/inc -I /home/urbanjs/V600/LIBRARY/libxyplot/inc -I ./LIBRARY/libGPF/EXE/MAKEOUT -verbose -system .true. -i ./LIBRARY/libGPF/EXE/MAKEOUT/makeout.ff -o /tmp/CCALL_CYGWIN64_GFORTRAN_102676/makeout.102676.f90 ! *ufpp* VARIABLES:
+! *ufpp*    DATE........................ 18:45 29 Mar 2018
+! *ufpp*    ARGUMENTS .................. TESTPRG90 -D CYGWIN -D CYGWIN64_GFORTRAN -D ENDCON=ENDCON -D LOADER_BUG=LOADER_BUG -I /tmp/CCALL_CYGWIN64_GFORTRAN_74592 -I /home/urbanjs/V600/LIBRARY/lib2zebra/inc -I /home/urbanjs/V600/LIBRARY/libDL/inc -I /home/urbanjs/V600/LIBRARY/libGCS/inc -I /home/urbanjs/V600/LIBRARY/libJSU/inc -I /home/urbanjs/V600/LIBRARY/libMULTI/inc -I /home/urbanjs/V600/LIBRARY/libObsolete/inc -I /home/urbanjs/V600/LIBRARY/libSTUG/inc -I /home/urbanjs/V600/LIBRARY/libUSH/inc -I /home/urbanjs/V600/LIBRARY/libcalcomp/inc -I /home/urbanjs/V600/LIBRARY/libgdi/inc -I /home/urbanjs/V600/LIBRARY/libgks2/inc -I /home/urbanjs/V600/LIBRARY/libmachine/inc -I /home/urbanjs/V600/LIBRARY/libncar/inc -I /home/urbanjs/V600/LIBRARY/libnogle/inc -I /home/urbanjs/V600/LIBRARY/libnswc/inc -I /home/urbanjs/V600/LIBRARY/librandlib/inc -I /home/urbanjs/V600/LIBRARY/libslatec/inc -I /home/urbanjs/V600/LIBRARY/libsteam67/inc -I /home/urbanjs/V600/LIBRARY/libtemplate/inc -I /home/urbanjs/V600/LIBRARY/libvg320/inc -I /home/urbanjs/V600/LIBRARY/libvogle/inc -I /home/urbanjs/V600/LIBRARY/libvopl/inc -I /home/urbanjs/V600/LIBRARY/libxyplot/inc -I ./LIBRARY/libGPF/EXE/MAKEOUT -verbose -system .true. -i ./LIBRARY/libGPF/EXE/MAKEOUT/makeout.ff -o /tmp/CCALL_CYGWIN64_GFORTRAN_74592/makeout.74592.f90 ! *ufpp* VARIABLES:
 ! *ufpp*    ! TESTPRG90                       !           1                    
 ! *ufpp*    ! CYGWIN                          !           1                    
 ! *ufpp*    ! CYGWIN64_GFORTRAN               !           1                    
@@ -624,7 +624,7 @@ end program makeout
 ! *ufpp*    ! ---- ! UNIT ! LINE NUMBER ! FILENAME
 ! *ufpp*    !    1 !   50 !         955 ! ./LIBRARY/libGPF/EXE/MAKEOUT/makeout.ff
 ! *ufpp* INCLUDE DIRECTORIES:
-! /tmp/CCALL_CYGWIN64_GFORTRAN_102676
+! /tmp/CCALL_CYGWIN64_GFORTRAN_74592
 ! /home/urbanjs/V600/LIBRARY/lib2zebra/inc
 ! /home/urbanjs/V600/LIBRARY/libDL/inc
 ! /home/urbanjs/V600/LIBRARY/libGCS/inc

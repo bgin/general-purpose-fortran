@@ -87,7 +87,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Wed, Dec 20th, 2017 11:57:21 PM>',&
+'@(#)COMPILED:       Thu, Mar 29th, 2018 6:57:19 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -97,7 +97,7 @@ end subroutine help_version
 program compute
 use M_kracken, only : kracken, sget, lget
 use m_calculator, only : jucalc,iclen_calc
-use M_io, only :  readline
+use M_io, only :  read_line
 !use M_noown, only     : juown1, c
 implicit real(kind=selected_real_kind(15,300)) (a-h, o-z)
 character(len=iclen_calc) :: line
@@ -116,7 +116,7 @@ logical                   :: verbose
    if(line.ne.'')then                                  ! if expressions on command line evaluate them
       call processit()
    else
-      INFINITE: do while (readline(readin)==0)         ! no expressions on command line to read expressions from stdin
+      INFINITE: do while (read_line(readin)==0)        ! no expressions on command line to read expressions from stdin
          if(readin.eq.'.')exit INFINITE                ! quit if user enters command "."
          line=readin
          call processit()

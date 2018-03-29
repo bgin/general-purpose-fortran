@@ -1,5 +1,5 @@
 NAME
-       rep(1) - [FILE FILTER] replace fixed strings in files
+       rep(1f) - [FILE FILTER] replace fixed strings in files
 SYNOPSIS
        rep filenames -c /from/to/ [-verbose][-dryrun]|[-help|-version]
 

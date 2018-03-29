@@ -5,7 +5,7 @@
 */
 #include <string.h>
 #include <stdio.h>
-#include "sqlite3.h"
+#include <sqlite3.h>
 #include <stdlib.h>
 
 /* Result table for sqlite3_get_table */

@@ -392,6 +392,8 @@ use,intrinsic     :: iso_c_binding
 implicit none
 private
 
+logical :: M_sqlite3_debug=.false.
+
 integer,public,parameter         :: dp = kind(1.0d00)
 
 integer,public,parameter         :: SQLITE_INT    = 1
@@ -547,7 +549,7 @@ public sqlite3_libversion_number
 !!    SQLITE3 VERSION NUMBER=     3021000
 !===================================================================================================================================
 interface
-   ! SQLITE_API int sqlite3_libversion_number(void);
+   !! SQLITE_API int sqlite3_libversion_number(void);
    function sqlite3_libversion_number() result (iversion) bind(C, name='sqlite3_libversion_number')
       import c_int
       implicit none
@@ -556,31 +558,31 @@ interface
 end interface
 !===================================================================================================================================
 interface
-   ! SQLITE_API int sqlite3_threadsafe(void);
+   !! SQLITE_API int sqlite3_threadsafe(void);
    function sqlite3_threadsafe() result (ires) bind(C, name="sqlite3_threadsafe")
       import c_int
       implicit none
       integer(kind=c_int) :: ires
    end function sqlite3_threadsafe
-   ! SQLITE_API int sqlite3_initialize(void);
+   !! SQLITE_API int sqlite3_initialize(void);
    function sqlite3_initialize() result (ires) bind(C, name="sqlite3_initialize")
       import c_int
       implicit none
       integer(kind=c_int) :: ires
    end function sqlite3_initialize
-   ! SQLITE_API int sqlite3_shutdown(void);
+   !! SQLITE_API int sqlite3_shutdown(void);
    function sqlite3_shutdown() result (ires) bind(C, name="sqlite3_shutdown")
       import c_int
       implicit none
       integer(kind=c_int) :: ires
    end function sqlite3_shutdown
-   ! SQLITE_API int sqlite3_os_init(void);
+   !! SQLITE_API int sqlite3_os_init(void);
    function sqlite3_os_init() result (ires) bind(C, name="sqlite3_os_init")
       import c_int
       implicit none
       integer(kind=c_int) :: ires
    end function sqlite3_os_init
-   ! SQLITE_API int sqlite3_os_end(void);
+   !! SQLITE_API int sqlite3_os_end(void);
    function sqlite3_os_end() result (ires) bind(C, name="sqlite3_os_end")
       import c_int
       implicit none
@@ -1582,7 +1584,7 @@ logical,intent(out)               :: finished
       function sqlite3_column_double_f(handle, colidx) result( value) bind(C,name="sqlite3_column_double_c")
          import c_int, dp
          integer(kind=c_int)        :: handle(*)
-         integer(kind=c_int),value  :: colidx
+         integer,value              :: colidx
          real(kind=dp)              :: value
       end function sqlite3_column_double_f
    end interface
@@ -2055,7 +2057,7 @@ character(len=:), allocatable   :: f_string
    call EGRESS('Cp2Fs_v1','start')
    length=0
    if(.not. c_associated(cptr_str))then
-      write(6,*)'ERROR : *Cp2Fs_v1* : cptr_str not associated';flush(6)
+      !!write(6,*)'ERROR : *Cp2Fs_v1* : cptr_str not associated';flush(6)
       f_string=' '
       call EGRESS('Cp2Fs_v1','finish')
       return
@@ -2065,7 +2067,7 @@ character(len=:), allocatable   :: f_string
    call c_f_pointer(cptr_str,fchar_ptr, [clen])
 
    if(.not.associated(fchar_ptr))then
-     write(6,*)'ERROR : *Cp2Fs_v1* : fchar_ptr not associated';flush(6)
+     !!write(6,*)'ERROR : *Cp2Fs_v1* : fchar_ptr not associated';flush(6)
      f_string=c_null_char
      call EGRESS('Cp2Fs_v1','finish')
      return
@@ -2190,6 +2192,7 @@ end function Fs2Ca
 !!##DESCRIPTION
 !!     Internal routine for debugging and development. Called at beginning and
 !!     exit of each procedure to help identify where crashes occur.
+!!
 !!##OPTIONS
 !!     name    name of procedure being called from
 !!     status  'start' or 'finish'
@@ -2204,7 +2207,7 @@ character(len=*),intent(in) :: status
 
    integer,save                :: indent=0
 
-   return
+   if(.not.M_sqlite3_debug)return
 
    if(status.eq.'start')then
       indent=indent+1

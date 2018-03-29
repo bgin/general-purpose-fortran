@@ -115,7 +115,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20180120>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Sun, Jan 21st, 2018 9:21:45 AM>',&
+'@(#)COMPILED:       Thu, Mar 29th, 2018 6:57:03 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -128,7 +128,7 @@ end subroutine help_version
 program grep
 use M_kracken, only : kracken, lget, sget                             ! add command-line parser module
 use M_regex,   only : regex_type, regcomp, regexec, regmatch, regfree
-use M_io, only      : readline
+use M_io, only      : read_line
 implicit none
    character(len=:),allocatable :: pattern
    character(len=:),allocatable :: input_line
@@ -176,7 +176,7 @@ implicit none
       stop
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
-   INFINITE: do while (readline(input_line)==0)
+   INFINITE: do while (read_line(input_line)==0)
       match=regexec(regex,'('//input_line//')',matches)
       if(match)then
          write(*,'(a)')trim(input_line)

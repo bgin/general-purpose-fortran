@@ -9,7 +9,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'       rep(1) - [FILE FILTER] replace fixed strings in files                    ',&
+'       rep(1f) - [FILE FILTER] replace fixed strings in files                   ',&
 'SYNOPSIS                                                                        ',&
 '       rep filenames -c /from/to/ [-verbose][-dryrun]|[-help|-version]          ',&
 '                                                                                ',&
@@ -45,7 +45,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!        rep(1) - [FILE FILTER] replace fixed strings in files
+!!        rep(1f) - [FILE FILTER] replace fixed strings in files
 !!##SYNOPSIS
 !!
 !!        rep filenames -c /from/to/ [-verbose][-dryrun]|[-help|-version]
@@ -94,7 +94,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sat, Jan 27th, 2018 5:41:29 PM>',&
+'@(#)COMPILED:       Thu, Mar 29th, 2018 6:57:50 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -135,7 +135,7 @@ integer                 :: i
 contains
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine dofile()
-use M_io,    only  : readline
+use M_io,    only  : read_line
 use M_debug, only  : stderr
 use M_system, only : system_rename, system_remove, system_perror
 integer                      :: lun_in,lun_out
@@ -184,7 +184,7 @@ logical                      :: exists, open
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
    ilines=0
-   INFINITE: do while (readline(line,lun_in)==0)
+   INFINITE: do while (read_line(line,lun_in)==0)
       ilines=ilines+1
       line=replace(line,ierr=ierr,cmd='c'//chng)
       if(ierr.gt.0)then !

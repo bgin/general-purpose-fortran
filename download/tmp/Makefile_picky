@@ -1,4 +1,4 @@
-#@(#) Makefile started by makeout(1) 2018-03-25 13:54:27
+#@(#) Makefile started by makeout(1) 2018-03-29 19:23:23
 
 PROGFILES = PROGRAMS/alphabet.f90 PROGRAMS/asa2pdf.f90 PROGRAMS/base.f90 PROGRAMS/change.f90 PROGRAMS/colors.f90 \
         PROGRAMS/compute.f90 PROGRAMS/cprint.f90 PROGRAMS/days2sec.f90 PROGRAMS/degrees.f90 PROGRAMS/dtu.f90 \
@@ -49,7 +49,7 @@ OBJS =  C-gauss.o C-hlsrgb.o C-hvsrgb.o C-jubiglet.o C-jucolor.o  \
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 # platform-specific values you will probably change
 # 
-LIBS = -lncurses -lreadline
+LIBS = -lncurses -lsqlite3 -lreadline
 CC = cc
 CFLAGS = -O
 FC = f90
@@ -115,7 +115,6 @@ clean:
 	@rm -f $(*F).F90 # ${?F:.ff=.o}
 #=================================================================================
 
-C-M_sqlite.o: sqlite3.h 
 calc_NC.o: M_calculator.o M_journal.o M_ncurses.o 
 juown1.o: M_calculator.o M_journal.o M_process.o M_strings.o 
 M_calculator.o: M_io.o M_journal.o M_math.o M_random.o M_strings.o M_time.o                

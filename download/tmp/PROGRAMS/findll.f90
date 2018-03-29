@@ -90,7 +90,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    find long lines>',&
 '@(#)VERSION:        23.1 20160618>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sat, Feb 3rd, 2018 3:15:48 PM>',&
+'@(#)COMPILED:       Thu, Mar 29th, 2018 6:58:39 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -99,7 +99,7 @@ end subroutine help_version
 !-----------------------------------------------------------------------------------------------------------------------------------
 program findll
 use M_kracken, only : kracken, sgets, lget, iget
-use M_io, only      : readline
+use M_io, only      : read_line
 use M_strings, only : v2s, switch
 use ISO_FORTRAN_ENV, only: error_unit ! compiler_options,compiler_version,input_unit,output_unit
 implicit none
@@ -132,7 +132,7 @@ character(len=:),allocatable :: fmt
    SELECT_DATA: select case(isize)
    case(0)                                                        ! no filenames, read data from stdin
       ilines=0
-      STDIN: do while (readline(line)==0)                         ! read lines of arbitrary length
+      STDIN: do while (read_line(line)==0)                        ! read lines of arbitrary length
          ilines=ilines+1
          ilen=len_trim(line)
          if(wrap)then                                             ! if wrapping lines
@@ -156,7 +156,7 @@ character(len=:),allocatable :: fmt
             cycle FILES
          endif
 
-         FILE: do while (readline(line,lun=10)==0)
+         FILE: do while (read_line(line,lun=10)==0)
             ilines=ilines+1
             ilen=len_trim(line)
             if(wrap)then
