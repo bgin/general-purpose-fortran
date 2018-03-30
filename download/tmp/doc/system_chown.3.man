@@ -1,0 +1,50 @@
+NAME
+   system_chown(3f) - [M_system] change file owner and group
+
+SYNOPSIS
+  logical function system_chown(path,owner,group)
+
+   character(len=*),intent(in) :: path
+   integer,intent(in)          :: owner
+   integer,intent(in)          :: group
+
+DESCRIPTION
+       The chown(3f) function changes owner and group of a file
+
+       The  path  argument  points  to  a pathname naming a file. The
+       user ID and group ID of the named file shall be set to the numeric
+       values contained in owner and group, respectively.
+
+       Only processes with an effective user ID equal to the user ID of
+       the file or with appropriate privileges may  change  the ownership
+       of a file.
+
+OPTIONS
+       path   a character string representing a file pathname.
+              Trailing spaces are ignored.
+       owner  UID of owner that ownership is to be changed to
+       group  GID of group that ownership is to be changed to
+
+RETURN VALUE
+       The system_chown() function should return zero (0) if successful.
+       Otherwise, these functions shall return −1 and set errno  to
+       indicate the error. If −1 is returned, no changes are made in
+       the user ID and group ID of the file.
+
+EXAMPLE
+
+       Sample program:
+
+          program demo_system_chown
+          Use M_system, only : system_chown
+          implicit none
+          integer                     :: i
+          character(len=80),parameter :: names(*)=[ 'myfile1','/usr/local']
+          do i=1,size(names)
+             ierr=chown(names(i))
+             write(*,*)' for ',trim(names(i)),' ownership is ', chown(names(i))
+          enddo
+          end program demo_system_chown
+
+       Results:
+

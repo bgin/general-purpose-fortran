@@ -1,0 +1,49 @@
+NAME
+   geographical_distance - [M_geography] Compute the distance between two points over the Earth's surface.
+
+SYNOPSIS
+   doubleprecision function geographical_distance (ll1, bb1, ll2, bb2, miles)
+
+      doubleprecision,intent(in) :: ll1
+      doubleprecision,intent(in) :: bb1
+      doubleprecision,intent(in) :: ll2
+      doubleprecision,intent(in) :: bb2
+      logical,intent(in)      :: miles)
+
+DESCRIPTION
+
+   Compute the distance in miles or kilometers between two points on
+   the Earth's surface, given the latitude and longitude of the two
+   locations in degrees.
+
+PARAMETERS
+    ll1    Longitude of first location (degrees)
+    bb1    Latitude of first location (degrees)
+    ll2    Longitude of second location (degrees)
+    bb2    Latitude of second location (degrees)
+    miles  Return result in miles (T) or km (F)
+
+       Definition at line 41 of file earth.f90.
+
+       References SUFR_constants::d2r, SUFR_kinds::double, and SUFR_constants::earthr.
+
+AUTHOR
+   geographical_distance(3f) was originally written by AstroFloyd
+   (http://astrofloyd.org) (Sat Apr 1 2017)as part of the
+   libSUFR package, see: http://libsufr.sourceforge.net/
+
+   Copyright (c) 2002-2017  AstroFloyd - astrofloyd.org
+
+   This is free software: you can redistribute it and/or modify it
+   under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
+
+   This software is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this code.  If not, see <http://www.gnu.org/licenses/>.
+

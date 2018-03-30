@@ -1,0 +1,21 @@
+NAME
+ sqlite3_open(3f) - [M_sqlite] Open a database file
+
+SYNOPSIS
+   call sqlite3_open(filename, db)
+
+       character(len=*) filename
+       type(SQLITE_DATABASE) db
+
+DESCRIPTION
+       Open a database file and store the connection for later use.
+
+       Side effects:
+
+          The database file is opened and can be used via the db argument
+
+OPTIONS
+       filename  The name of the database file (it may also be ":mem" to get a
+                 memory-based database instead of a file on disk)
+
+       db        Structure variable to identify the database connection

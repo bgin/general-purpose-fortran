@@ -1,0 +1,143 @@
+NAME
+   ttee(1f) - [TIME] write input to stdout and a file with timing info.
+
+SYNOPSIS
+   ttee [[-o|--output] filename(s)] [-a|--append] [--timestamp FLAG]] ...
+        [-fmt FORMAT] [--help |--version]
+
+DESCRIPTION
+   Read from standard input and write to standard output and files
+   with an optional timestamp in front of each line.
+
+   -o|--output FILENAME(S)
+         specify name of output file(s). If the filenames are first the
+         keyword -o|--output is optional.
+
+   -a|--append
+         append to the given output file(s), do not overwrite
+
+   -t|--timestamp FLAG
+         which files to add the timestamp to. Default is "all"
+         Allowed values are stdout, output, all, none.
+
+   -fmt FORMAT
+         Change format for timestamp prefix using a call to now(3f).
+
+          Description                                        Example
+          
+          Base time array:
+           (1) %Y -- year, yyyy                                2018
+           (2) %M -- month of year, 01 to 12                   03
+           (3) %D -- day of month, 01 to 31                    24
+               %d -- day of month, with suffix (1st, 2nd,...)  24th
+           (4) %Z -- minutes from UTC                          -0240
+               %z -- -+hh:mm from UTC                          -04:00
+               %T -- -+hhmm  from UTC                          -0400
+           (5) %h -- hours, 00 to 23                           23
+               %H -- hour (1 to 12, or twelve-hour clock)      11
+               %N -- midnight< AM <=noon; noon<= PM <midnight  PM
+           (6) %m -- minutes, 00 to 59                         11
+           (7) %s -- sec, 00 to 59                             08
+           (8) %x -- milliseconds 000 to 999                   472
+          Conversions:
+               %E -- Unix Epoch time                           1521947468.4730186
+               %e -- integer value of Unix Epoch time          1521947468
+               %J -- Julian  date                              2458202.6327369907
+               %j -- integer value of Julian Date(Julian Day)  2458202
+               %O -- Ordinal day (day of year)                 083
+               %o -- Whole days since Unix Epoch date          17615
+               %U -- day of week, 1..7 Sunday=1                7
+               %u -- day of week, 1..7 Monday=1                6
+               %i -- ISO week of year 1..53                    12
+               %I -- iso-8601 week-numbering date(yyyy-Www-d)  2018-W12-6
+           Names:
+               %l -- abbreviated month name                    Mar
+               %L -- full month name                           March
+               %w -- first three characters of weekday         Sat
+               %W -- weekday name                              Saturday
+               %p -- phase of moon                             First quarter
+               %P -- percent of way from new to full moon      54%
+           Literals:
+               %% -- a literal %                               %
+               %t -- tab character                             	
+               %b -- blank character
+               %B -- exclamation(bang) character               !
+               %n -- new line (system dependent)               
+
+               %q -- single quote (apostrophe)                 '
+               %Q -- double quote                              "
+           Program timing:
+               %c -- CPU_TIME(3f) output                       0.14062500000000000
+               %C -- number of times this routine is used      1
+               %S -- seconds since last use of this format     0.0000000000000000
+               %k -- time in seconds from SYSTEM_CLOCK(3f)     883856.625
+          
+          If no percent (%) is found in the format one of several
+          alternate substitutions occurs.
+          
+          If the format is composed entirely of one of the following
+          keywords the following substitutions occur:
+            "iso-8601",
+            "iso"        ==> %Y-%M-%DT%h:%m:%s%z             2018-03-24T23:11:08-04:00
+            "iso-8601W",
+            "isoweek"    ==> %I                              2018-W12-6
+            "sql"        ==> "%Y-%M-%D %h:%m:%s.%x"          "2018-03-24 23:11:08.622"
+            "sqlday"     ==> "%Y-%M-%D"                      "2018-03-24"
+            "sqltime"    ==> "%h:%m:%s.%x"                   "23:11:08.624"
+            "rfc-2822"   ==> %w, %D %l %Y %h:%m:%s %T
+                             Sat, 24 Mar 2018 23:11:08 -0400
+            "rfc-3339"   ==> %Y-%M-%DT%h:%m:%s%z             2018-03-24T23:11:08-04:00
+            "date"       ==> %w %l %D %h:%m:%s UTC%z %Y
+                             Sat Mar 24 23:11:08 UTC-04:00 2018
+            "short"      ==> %w, %l %d, %Y %H:%m:%s %N UTC%z
+                             Sat, Mar 24th, 2018 11:11:08 PM UTC-04:00
+            "long"," "   ==> %W, %L %d, %Y %H:%m:%s %N UTC%z
+                             Saturday, March 24th, 2018 11:11:08 PM UTC-04:00
+            "suffix"     ==> %Y%D%M%h%m%s                    20182403231108
+            "formal"     ==> The %d of %L %Y                 The 24th of March 2018
+            "lord"       ==> the %d day of %L in the year of our Lord %Y
+                             the 24th day of March in the year of our Lord 2018
+            "easter"     ==> FOR THE YEAR OF THE CURRENT DATE:
+                               Easter day: the %d day of %L in the year of our Lord %Y
+            "all"        ==> A SAMPLE OF DATE FORMATS
+          otherwise the following words are replaced with the most
+          common macros:
+             year          %Y  2018
+             month         %M  03
+             day           %D  24
+             timezone      %z  -04:00
+             hour          %h  23
+             minute        %m  11
+             second        %s  08
+             millisecond   %x  642
+             epoch         %e  1521947469
+             julian        %j  2458202
+             ordinal       %O  083
+             weekday       %u  6
+          if none of these keywords are found then every letter that
+          is a macro is assumed to have an implied percent in front
+          of it. For example:
+             YMDhms ==> %Y%M%D%h%m%s ==> 20180324231108
+          
+   --help     display this help and exit
+   --version  output version information and exit
+LIMITS
+    Program limits:
+
+    o  Input line width maximum is 1024 characters.
+    o  Maximum length of output filenames is 4098, individual filename is 1024.
+    o  Minimum number of output files is probably at least 90; but is
+       system dependent.
+
+EXAMPLES
+   Basic command usage:
+
+    # write stdout of "program" to ttee.out with a timestamp and stdout
+    program|ttee --output ttee.out --timestamp output|grep -i iteration
+
+    # write stdout of "program" to log.txt and stdout with a Julian Day
+    program|ttee log.txt -fmt "%J :"
+    2457565.488 :Iteration 1 : Error: 1.20
+    2457565.558 :Iteration 2 : Error: 0.08
+    2467569.684 :Iteration 3 : Error: 1.2e-3
+

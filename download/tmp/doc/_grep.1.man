@@ -1,0 +1,41 @@
+NAME
+    _grep(1f) - [FUNIX] search a file for a pattern
+
+SYNOPSIS
+    _grep pattern [-i][-E|-G]|[--help|--version]
+
+DESCRIPTION
+
+    Find lines on stdin that contain the specified regular expression pattern.
+
+OPTIONS
+    pattern    regular expression
+    -i         Ignore case distinctions in both the PATTERN and the input files.
+
+   Matcher Selection
+
+    -E         Interpret PATTERN as an ERE(extended regular expression).
+    -G         Interpret PATTERN as a BRE(basic regular expression). This is the default.
+               If present, it takes precedence over -E.
+
+   Basic vs Extended Regular Expressions
+
+       In basic regular expressions the meta-characters ?, +, {, |,
+       (, and ) lose their special meaning; instead use the
+       backslashed versions \?, \+, \{, \|, \(, and \).
+
+   Informative
+
+    --help     display this help and exit
+    --version  output version information and exit
+
+EXAMPLES
+    Sample commands
+
+       _grep  '^T.*found it' <foundit
+
+REPORTING BUGS
+    Report _grep bugs to <http://www.urbanjost.altervista.org/index.html>
+
+SEE ALSO
+

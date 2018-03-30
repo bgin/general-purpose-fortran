@@ -1,0 +1,20 @@
+NAME
+   system_stat_print(3f) - [M_system] print the principal info obtained for a pathname from system_stat(3f)
+SYNOPSIS
+  subroutine system_stat_print(filename)
+
+   character(len=*),intent(in)  :: filename
+   integer,intent(in),optional :: lun
+DESCRIPTION
+     Call the system_stat(3f) routine and print the results
+OPTIONS
+   filename   pathname to print information for
+   lun        unit number to write to. Optional
+EXAMPLE
+  Sample program
+
+   program demo_system_stat_print
+   use M_system, only : system_stat_print
+   call system_stat_print(pathname)
+   end program demo_system_stat_print
+

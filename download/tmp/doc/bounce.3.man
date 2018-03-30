@@ -1,0 +1,42 @@
+NAME
+   bounce(3f) - [M_list] finds the index where a string is found or should be in a sorted array
+
+SYNOPSIS
+  subroutine bounce(dictionary,varname,place,ier,mssg)
+
+   character(len=*),intent=(in)          :: VARNAME
+   integer, intent(out)                  :: PLACE
+   character(len=*),intent(in)           :: DICTIONARY(:)
+   integer, intent(out),optional         :: IER
+   character(len=*),intent(out),optional :: ERRMSG
+
+DESCRIPTION
+
+   BOUNCE(3f) finds the index where the string VARNAME is found or should
+   be found in an array.  The string array must be sorted in descending
+   order (highest at top).  If VARNAME is not found it returns the index
+   where the name should be placed at with a negative sign.
+
+OPTIONS
+
+
+   varname        the entry name to locate in the dictionary.
+
+   PLACE    is the subscript that the entry was found at if it is
+                 greater than zero(0).
+
+                 If PLACE is negative, the absolute value of
+                 PLACE indicates the subscript value where the
+                 new entry should be placed in order to keep the
+                 dictionary alphabetized.
+
+   DICTIONARY    is the dictionary array.
+
+   IER           is zero(0) if no error occurs.
+                 If an error occurs and IER is not
+                 present, the program is stopped.
+
+   ERRMSG         description of any error
+
+AUTHOR
+   1989 John S. Urban
