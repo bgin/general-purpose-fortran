@@ -299,7 +299,7 @@ cp -r -p ../html/StyleSheets tmp/html/
 ####################################################################################################################################
 # combine man pages into books
 book.sh M_kracken M_strings M_time M_system M_color M_pixel M_calculator M_units M_math M_process M_logic 
-book.sh M_Compare_Float_Numbers M_debug M_factor M_io M_journal M_messages M_sort INTRINSIC
+book.sh M_Compare_Float_Numbers M_debug M_factor M_io M_journal M_messages M_sort M_xterm INTRINSIC
 book.sh M_stopwatch M_display M_regex
 book.sh M_sqlite
 book.sh INDEX
@@ -315,8 +315,6 @@ book.sh INDEX
 #tmp/M_getopt_long.f90
 #tmp/M_history.f90
 #tmp/M_html.f90
-#tmp/M_kracken.f90
-#tmp/M_math.f90
 #tmp/M_ncurses.f90
 #tmp/M_pixel_slices.f90
 #tmp/M_random.f90

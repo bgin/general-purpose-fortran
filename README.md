@@ -18,6 +18,8 @@ their associated C support routines) providing
    +  an interface to the __ncurses(3c)__ terminal screen handling library
    +  an interface to the __sqlite3(3c)__ SQL file library
    +  an interface to the __regex(3c)__ Regular Expression library
+   +  routines for controlling the X11 Windows attributes of an xterm(1) terminal emulator,
+      including the program setxt(1)
 
 The majority of these routines come with a man(1) page in *roff and HTML format.
 An index into the documentation is contained in the
@@ -263,6 +265,15 @@ as a GIF file.
 The M\_color module is a collection of color-related procedures. Routines to
 convert between different color models, return RGB values given common X11
 color names, and other simple color-related operations.
+
+### xterm(1) attributes
+
+[M\_XTERM(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/BOOK_M_xterm.3.html)
+
+The M\_xterm module is a collection of routines that use escape sequences to set and query
+xterm(1) X11 Windows attributes such as window size, background and foreground color, font,
+and cursor color. The program setxt(1), included in the GPF distribution, allows for easily
+using the module capabilities from the command line.
 
 ### Sort
 

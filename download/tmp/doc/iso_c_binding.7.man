@@ -1,6 +1,30 @@
 NAME
 iso_c_binding(7f) - [FORTRAN ]a standard intrinsic module which defines named constants, types, and procedures for C interoperability.
 
+SYNOPSIS
+
+   Interoperability with C
+      1 General
+      2 The ISO C BINDING intrinsic module
+         15.2.1 Summary of contents
+         15.2.2 Named constants and derived types in the module
+         15.2.3 Procedures in the module
+      3 Interoperability between Fortran and C entities
+         15.3.1 General
+         15.3.2 Interoperability of intrinsic types
+         15.3.3 Interoperability with C pointer types
+         15.3.4 Interoperability of derived types and C struct types
+         15.3.5 Interoperability of scalar variables
+         15.3.6 Interoperability of array variables
+         15.3.7 Interoperability of procedures and procedure interfaces
+      4 Interoperation with C global variables
+         15.4.1 General
+         15.4.2 Binding labels for common blocks and variables
+      5 Interoperation with C functions
+         15.5.1 Definition and reference of interoperable procedures
+         15.5.2 Binding labels for procedures
+         15.5.3 Exceptions and IEEE arithmetic procedures
+
 STANDARD
 
 [[Fortran 2003]] and later
@@ -8,8 +32,7 @@ STANDARD
 INTRINSIC PROCEDURES
 
    The following intrinsic procedures are provided by the module; their
-   definition can be found in the section Intrinsic Procedures of this
-   manual.
+   definition can be found in man(1) pages:
 
    * c_associated
    * c_f_pointer
@@ -65,6 +88,7 @@ type default integer, which can be used as `kind` type parameters.
 Additionally, the following parameters of type `character(kind=c_char)`
 are defined.
 
+   #---------------------#-----------------#--------#
    | Name                | C definition    | Value  |
    |---------------------|-----------------|--------|
    | `c_null_char`       | null character  | `'\0'` |
@@ -75,13 +99,16 @@ are defined.
    | `c_carriage_return` | carriage return | `'\r'` |
    | `c_horizontal_tab`  | horizontal tab  | `'\t'` |
    | `c_vertical_tab`    | vertical tab    | `'\v'` |
+   #---------------------#-----------------#--------#
 
 Moreover, the following two named constants are defined:
 
+   #---------------#----------#
    | Name          | Type     |
    |---------------|----------|
    | c_null_ptr    | c_ptr    |
    | c_null_funptr | c_funptr |
+   #---------------#----------#
 
 Both are equivalent to the value `NULL` in C.
 

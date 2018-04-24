@@ -23,4 +23,5 @@ append("./BOOK_M_strings.html");
 append("./BOOK_M_system.html");
 append("./BOOK_M_time.html");
 append("./BOOK_M_units.html");
+append("./BOOK_M_xterm.html");
 }

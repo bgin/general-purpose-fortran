@@ -1,0 +1,28 @@
+NAME
+   xterm_geometry(3f) - [M_xterm] set xterm(1) size using escape sequences
+SYNOPSIS
+   subroutine xterm_geometry(rows,cols)
+   integer,intent(in),optional :: rows
+   integer,intent(in),optional :: cols
+
+DESCRIPTION
+   Sets the size of an xterm(1) window.
+
+OPTIONS
+   rows  number of text rows
+   cols  number of text columns
+
+EXAMPLE
+  A sample program:
+
+   program demo_xterm_geometry
+   use M_xterm, only : xterm_geometry
+   implicit none
+   integer :: rows, cols
+   write(*,'(a)',advance='no')'Enter rows and columns: '
+   read(*,*,iostat=ios)rows,cols
+   if(ios.eq.0)then
+      call xterm_geometry(rows,cols)
+   endif
+   end program demo_xterm_geometry
+

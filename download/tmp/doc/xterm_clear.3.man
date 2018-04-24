@@ -1,0 +1,17 @@
+NAME
+   xterm_clear(3f) - [M_xterm] clear xterm(1) screen using escape sequences
+SYNOPSIS
+   subroutine xterm_clear()
+
+DESCRIPTION
+   clears the screen of an xterm(1) window using escape sequences
+
+EXAMPLE
+  A sample program:
+
+   program demo_xterm_clear
+   use M_xterm, only : xterm_clear
+   implicit none
+   call xterm_clear()
+   end program demo_xterm_clear
+

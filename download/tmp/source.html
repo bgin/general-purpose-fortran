@@ -168,6 +168,8 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	 if on a menu button clear any menu buttons connected to it and toggle it<br/>
 	 from current cursor position jump to next input field in pad<br/>
 	 from current cursor position jump to previous input field in pad jsu<br/>
+	 convert tabs in input to spaces in output while maintaining columns, assuming a tab is set every 8 characters<br/>
+	 append a number to the end of the filename that makes it relatively unique<br/>
 </td>
 <tr><td><a href="M_generic_list.f90">M_generic_list.f90</a></td>
 <td>
@@ -691,6 +693,26 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <tr><td><a href="M_writegif_animated.f90">M_writegif_animated.f90</a></td>
 <td>
 </td>
+<tr><td><a href="M_xterm.f90">M_xterm.f90</a></td>
+<td>
+	M_xterm(3fm): send xterm control sequences. John S. Urban, 19910719<br/>
+	M_xterm::xterm_occupancy(3f): move xterm(1) to specified virtual display, if supported<br/>
+	M_xterm::xterm_get_pencolor(3f): get description of color assigned to an xterm(1) color number<br/>
+	M_xterm::xterm_get_colors(3f): set various xterm(1) window colors using escape sequences<br/>
+	M_xterm::xterm_pencolor(3f): set xterm(1) color by number using escape sequences<br/>
+	M_xterm::xterm_colors(3f): set various xterm(1) window colors using escape sequences<br/>
+	M_xterm::xterm_font(3f): set a font by name in an xterm window<br/>
+	M_xterm::xterm_keywords(3f): send keywords to the X11 Window Manager to change xterm(1) window and select modes<br/>
+	M_xterm::xterm_position(3f): set xterm(1) window position using escape sequences<br/>
+	M_xterm::xterm_geometry(3f): set size of xterm(1) window using escape sequences<br/>
+	M_xterm::xterm_width(3f): set size of xterm(1) window to standard sizes using escape sequences<br/>
+	M_xterm::xterm_labels(3f): set various strings and labels associated with an xterm(1) such as title and icon name<br/>
+	M_xterm::xterm_clear(3f): clear the screen of an xterm(1) window using escape sequences<br/>
+	M_xterm::xterm_get_font(3f): Obtain current xterm(1) window font name using escape sequences<br/>
+	M_xterm::xterm_get_iconstate(3f): Obtain current xterm(1) window icon state using escape sequences<br/>
+	M_xterm::xterm_get_geometry(3f): Obtain current xterm(1) window size in character rows and columns<br/>
+	M_xterm::xterm_get_position(3f): Obtain current xterm(1) window position<br/>
+</td>
 <tr><td><a href="nc_errmessage.f90">nc_errmessage.f90</a></td>
 <td>
 </td>
@@ -815,11 +837,11 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 </td>
 <tr><td><a href="Makefile">Makefile</a></td>
 <td>
-	 Makefile started by makeout(1) 2018-03-29 19:23:25<br/>
+	 Makefile started by makeout(1) 2018-04-23 06:56:15<br/>
 </td>
 <tr><td><a href="Makefile_picky">Makefile_picky</a></td>
 <td>
-	 Makefile started by makeout(1) 2018-03-29 19:23:23<br/>
+	 Makefile started by makeout(1) 2018-04-23 06:56:13<br/>
 </td>
 <tr><td><a href="vimrc">vimrc</a></td>
 <td>

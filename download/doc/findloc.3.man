@@ -1,5 +1,5 @@
 NAME
-   FINDLOC(3f) - [FORTRAN:INTRINSIC] Location of the first element of ARRAY identified by MASK along dimension DIM having a value
+   FINDLOC(3f) - [INTRINSIC] Location of the first element of ARRAY identified by MASK along dimension DIM having a value
 SYNOPSIS
   FINDLOC (ARRAY, VALUE, DIM [, MASK, KIND, BACK])
 

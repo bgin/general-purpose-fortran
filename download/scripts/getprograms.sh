@@ -25,7 +25,6 @@ lastprogram xauth_key.f90
 lastprogram shell.f90
 lastprogram penv.f90
 lastprogram findll.f90
-lastprogram fixedform.f90
 lastprogram table2html.f90
 lastprogram tabulate.f90
 lastprogram asa2pdf.f90
@@ -74,6 +73,11 @@ lastprogram _yes.f90
 
 lastprogram phone.f90
 lastprogram sqlite3_version.f90
+
+lastprogram choose.f90
+lastprogram fixedform.f90
+lastprogram nc2html.f90
+lastprogram setxt.f90
 }
 GETPROGRAMS
 ####################################################################################################################################

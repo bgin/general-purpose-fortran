@@ -1,5 +1,5 @@
 NAME
-  EXTENDS_TYPE_OF(3f) - [FORTRAN:INTRINSIC] True if and only if the dynamic type of A is an extension of the dynamic type of MOLD.
+  EXTENDS_TYPE_OF(3f) - [INTRINSIC] True if and only if the dynamic type of A is an extension of the dynamic type of MOLD.
 
 SYNOPSIS
   EXTENDS_TYPE_OF (A, MOLD)

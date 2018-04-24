@@ -141,15 +141,9 @@ where-body-construct, the mask-expr of the statement is evaluated,
 and the control mask is established to be the value of mask-expr . The
 pending control mask is established to have the value .NOT. mask- expr
 upon execution of a WHERE construct statement that does not appear as
-<TABLE cellpadding=3><!-- tsb: When a WHERE statement or a where-construct-stmt is executed, a control
- -->
-<TR></TR><TR></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-part of a where-body-construct.
-The mask-expr is evaluated only once.
-</TD></TR>
-<TR></TR></TABLE>Each statement in a WHERE construct is executed in sequence.
+part of a where-body-construct. The mask-expr is evaluated only once.
+<P>
+Each statement in a WHERE construct is executed in sequence.
 <P>
 Upon execution of a masked-elsewhere-stmt, the following actions take place in sequence.
 <TABLE cellpadding=3><!-- tsb: Upon execution of a masked-elsewhere-stmt, the following actions take place in sequence.
@@ -187,20 +181,15 @@ The establishment of control masks and the pending control mask
 is illustrated with the following example:
 <P>
 <PRE>
-            WHERE(cond1)             ! Statement 1
+            where(cond1)             ! Statement 1
             . . .
-            ELSEWHERE(cond2)         ! Statement 2
+            elsewhere(cond2)         ! Statement 2
             . . .
-            ELSEWHERE                ! Statement 3
+            elsewhere                ! Statement 3
             . . .
-</PRE>
-</BLOCKQUOTE>
-<A name=>
-
-    <H4>&nbsp; &nbsp; END WHERE</H4>
-</A>
-<BLOCKQUOTE>
+            end where
 <P>
+</PRE>
 Following execution of statement 1, the control mask has the value
 cond1 and the pending control mask has the value .NOT. cond1.
 Following execution of statement 2, the control mask has the value
@@ -247,32 +236,21 @@ are assigned to the corresponding elements of the variable.
 The value of the control mask is established by the execution of a
 WHERE statement, a WHERE construct
 statement, an ELSEWHERE statement, a masked ELSEWHERE statement, or
-<TABLE cellpadding=3><!-- tsb: The value of the control mask is established by the execution of a
- -->
-<TR></TR><TR></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-an ENDWHERE statement.
-Subsequent changes to the value of entities
+an ENDWHERE statement. Subsequent changes to the value of entities
 in a mask-expr have no effect on the value of the control mask. The
 execution of a function reference in the mask expression of a WHERE
 statement is permitted to affect entities in the assignment statement.
-</TD></TR>
-<TR></TR></TABLE>Examples of function references in masked array assignments are:
+<P>
+Examples of function references in masked array assignments are:
 <P>
 <PRE>
-      WHERE (A &gt; 0.0)
+      where (A &gt; 0.0)
          A = LOG (A)           ! LOG is invoked only for positive elements.
          A = A / SUM (LOG (A)) ! LOG is invoked for all elements
                                ! because SUM is transformational.
-</PRE>
-</BLOCKQUOTE>
-<A name=>
-
-    <H4>&nbsp; &nbsp; END WHERE</H4>
-</A>
-<BLOCKQUOTE>
+      end where
 <P>
+</PRE>
 </BLOCKQUOTE>
 <A name=3>
 
@@ -293,53 +271,32 @@ Sample
    integer iflag(nd)
    data b/ndh*1,0.0,nduh*2./,c/nd*-77.77/
 <P>
-      where (b.ne.0) c=a/b
+   where (b.ne.0) c=a/b
+   write (*,2000) c(1:nd)
+   !
+   !  The above protects against divide by zero, but doesn&#146;t actually assign
+   !  values to elements in c when the corresponding element in b is zero
+   !  The following covers that, and sets a flag when a divide by zero is
+   !  present
+   !
+   where (b(1:nd).ne.0.0)
+      c=a/b
+      iflag=0
+   else where
+      c=0.0
+      iflag=1
+   end where
 <P>
-      write (*,2000) c(1:nd)
+   write (*,2000) c(1:nd)
+   write (*,1000) iflag(1:nd)
+   1000 format (&#146;iflag= &#146;,/,(10i7))
+   2000 format (&#146;a/b = &#146;,/,(10f7.2))
+   end program demo_where
+<P>
 </PRE>
-2000 format (&#146;a/b = &#146;,/,(10f7.2))
-!
-<BLOCKQUOTE>
-<TABLE cellpadding=3><!-- tsb:       write (*,2000) c(1:nd)
- -->
-<TR></TR><TR></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-!
-The above protects against divide by zero, but doesn&#146;t actually assign
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-!
-values to elements in c when the corresponding element in b is zero
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-!
-The following covers that, and sets a flag when a divide by zero is
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-!
-present
-!
-where (b(1:nd).ne.0.0)
-c=a/b
-iflag=0
-else where
-c=0.0
-iflag=1
-end where
-<P>
-write (*,2000) <B>c</B>(1:nd)
-write (*,1000) <B>iflag</B>(1:nd)
-1000 format (&#146;iflag= &#146;,/,(10i7))
-end program demo_where
-</TD></TR>
-<TR></TR></TABLE></BLOCKQUOTE>
 </BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>where (7)</TD> <TD align=right width=33%><I>March 29, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from c8db6740-2d94-4644-8d34-0c9dbf4ccd2f using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>where (7)</TD> <TD align=right width=33%><I>April 23, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from e014a5a4-93ee-47b4-a3ef-661815d53233 using man macros.</FONT>
 </div>
 </div>
 <center><img src="images/where.7.gif"></center> 

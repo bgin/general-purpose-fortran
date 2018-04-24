@@ -1,0 +1,25 @@
+NAME
+   xterm_labels(3f) - [M_xterm] set xterm(1) X11 WIndow labels using escape sequences
+SYNOPSIS
+   subroutine xterm_labels(string)
+   character(len=*),intent(in) :: string
+
+DESCRIPTION
+   Set icon and decoration title labels for xterm(1) windows.
+OPTIONS
+   type
+          title      set title bar label hint in X11 Windows decoration
+          name       set icon name hint for X11 Windows manager
+          nt         set title and icon name
+
+   label  string used to set label associated with TYPE.
+
+EXAMPLE
+  A sample program:
+
+   program demo_xterm_labels
+   use M_xterm, only : xterm_labels
+   implicit none
+   call xterm_labels('title','CLUSTER LOGIN')
+   end program demo_xterm_labels
+

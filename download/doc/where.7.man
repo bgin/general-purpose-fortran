@@ -62,7 +62,7 @@ DESCRIPTION
    and the control mask is established to be the value of mask-expr . The
    pending control mask is established to have the value .NOT. mask- expr
    upon execution of a WHERE construct statement that does not appear as
-   part of a where-body-construct.  The mask-expr is evaluated only once.
+   part of a where-body-construct. The mask-expr is evaluated only once.
 
    Each statement in a WHERE construct is executed in sequence.
 
@@ -88,13 +88,13 @@ DESCRIPTION
    The establishment of control masks and the pending control mask
    is illustrated with the following example:
 
-            WHERE(cond1)             ! Statement 1
+            where(cond1)             ! Statement 1
             . . .
-            ELSEWHERE(cond2)         ! Statement 2
+            elsewhere(cond2)         ! Statement 2
             . . .
-            ELSEWHERE                ! Statement 3
+            elsewhere                ! Statement 3
             . . .
-            END WHERE
+            end where
 
    Following execution of statement 1, the control mask has the value
    cond1 and the pending control mask has the value .NOT. cond1.
@@ -143,18 +143,18 @@ DESCRIPTION
    The value of the control mask is established by the execution of a
    WHERE statement, a WHERE construct
    statement, an ELSEWHERE statement, a masked ELSEWHERE statement, or
-   an ENDWHERE statement.  Subsequent changes to the value of entities
+   an ENDWHERE statement. Subsequent changes to the value of entities
    in a mask-expr have no effect on the value of the control mask. The
    execution of a function reference in the mask expression of a WHERE
    statement is permitted to affect entities in the assignment statement.
 
    Examples of function references in masked array assignments are:
 
-      WHERE (A > 0.0)
+      where (A > 0.0)
          A = LOG (A)           ! LOG is invoked only for positive elements.
          A = A / SUM (LOG (A)) ! LOG is invoked for all elements
                                ! because SUM is transformational.
-      END WHERE
+      end where
 
 EXAMPLE
 
@@ -169,26 +169,25 @@ EXAMPLE
    integer iflag(nd)
    data b/ndh*1,0.0,nduh*2./,c/nd*-77.77/
 
-      where (b.ne.0) c=a/b
-
-      write (*,2000) c(1:nd)
-   2000 format ('a/b = ',/,(10f7.2))
+   where (b.ne.0) c=a/b
+   write (*,2000) c(1:nd)
    !
    !  The above protects against divide by zero, but doesn't actually assign
    !  values to elements in c when the corresponding element in b is zero
    !  The following covers that, and sets a flag when a divide by zero is
    !  present
    !
-      where (b(1:nd).ne.0.0)
-         c=a/b
-         iflag=0
-      else where
-         c=0.0
-         iflag=1
-      end where
+   where (b(1:nd).ne.0.0)
+      c=a/b
+      iflag=0
+   else where
+      c=0.0
+      iflag=1
+   end where
 
-      write (*,2000) c(1:nd)
-      write (*,1000) iflag(1:nd)
-    1000 format ('iflag= ',/,(10i7))
+   write (*,2000) c(1:nd)
+   write (*,1000) iflag(1:nd)
+   1000 format ('iflag= ',/,(10i7))
+   2000 format ('a/b = ',/,(10f7.2))
    end program demo_where
 

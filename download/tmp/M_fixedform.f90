@@ -1,35 +1,102 @@
+!>
+!!##NAME
+!!     M_fixedform(3fm) - [NCURSES] convert a text block into a TUI (screen interface)
+!!##SYNOPSIS
+!!
+!!    use :: M_fixedform, only : icount_ptr,page_ptr,page_pd,icount_pd
+!!    use :: M_fixedform, only : fixedform ,loaddata
+!!##DESCRIPTION
+!!    M_fixedform(3fm) takes a text block as input, and converts it
+!!    to a form-like screen interface using the ncurses(3f) library. An
+!!    appropriate action is taken for each keypress.
+!!##EXAMPLE
+!!
+!! program fifo
+!! implicit none
+!! use M_fixedform, only : fixedform, loaddata, icount_ptr, page_ptr, page_pd, icount_pd
+!! implicit none
+!!    call make_data()
+!!    page_ptr=>page_pd
+!!    icount_ptr=>icount_pd
+!!    call loaddata('test.dat')      ! fill the page(*) with user data
+!!    call fixedform()
+!! end program fifo
+!! subroutine make_data()
+!! open(unit=10,file='test.dat')
+!! write(10,'(a)')[character(len=80) ::
+!! '',
+!! '',
+!! '',
+!! '',
+!! '',
+!! '',
+!! '',
+!! '',
+!! '',
+!! '',
+!! '',
+!! '',
+!! '',
+!! '',
+!! '',
+!! '',
+!! '',
+!! '',
+!! '',
+!! '',
+!! '',
+!! '',
+!! '',
+!! ''
+!! ]
+!! end subroutine make_data
+!===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 !<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>-
 !-----------------------------------------------------------------------------------------------------------------------------------
 module M_fixedform
 ! global data
-   use,intrinsic :: ISO_C_BINDING
+use,intrinsic :: ISO_C_BINDING
+private
    integer,parameter :: pg_lines=2000, pg_columns=256          ! upper limits for user input file data
    character(len=pg_columns)         :: msg                    ! message to appear in status bar
-   character(len=pg_columns),pointer :: page_ptr(:)            ! user data to convert from input to window
-   integer,pointer                   :: icount_ptr             ! pointer to line count of data to convert from input to window
    type(C_PTR)                       :: big_pd
    character(len=pg_columns),target  :: page_pd(pg_lines)=' '  ! array to hold user definition of form
 
    integer(C_INT)                    :: pad_corner_x=0, pad_corner_y=0   ! upper left-hand corner of rectangle displayed in pad
    integer                           :: displaywidth_pd=0      ! width of section of pad displayed on screen
 
-   integer,target                    :: icount_pd              ! number of last line of data used in page_pd(*)
-   integer                           :: longline_pd            ! number of longest line of data used in page_pd(*)
    integer,save                      :: button_lines=4         ! number of lines used for buttons and message field
    integer,save                      :: button_boxes(5,4)
+   logical                           :: G_submitted
+   character(len=:),allocatable      :: G_answers
+
+   character(len=pg_columns),pointer :: page_ptr(:)            ! user data to convert from input to window
+   integer,pointer                   :: icount_ptr             ! pointer to line count of data to convert from input to window
+   integer,target                    :: icount_pd              ! number of last line of data used in page_pd(*)
+   integer                           :: longline_pd            ! number of longest line of data used in page_pd(*)
+
+   public icount_ptr
+   public page_ptr
+   public page_pd
+   public icount_pd
+   public longline_pd
+   public fixedform
+   public loaddata
 !-----------------------------------------------------------------------------------------------------------------------------------
 !<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>-
 !-----------------------------------------------------------------------------------------------------------------------------------
 contains
-subroutine fixedform()
+subroutine fixedform(tabs)
    use M_ncurses, only : getch, newpad, endwin, move
    implicit none
+   character(len=:),allocatable,optional,intent(out) :: tabs
 !-----------------------------------------------------------------------------------------------------------------------------------
    integer(C_INT)     :: ierr
    integer(C_INT)     :: ic
    integer(C_INT)     :: previous
 !-----------------------------------------------------------------------------------------------------------------------------------
+   G_submitted=.false.                      ! flag to exit fixedform(3f)
    previous=0
    call start_screen()                      ! set up for using main window in ncurses(3c)
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -46,8 +113,12 @@ subroutine fixedform()
       ic=getch()
       call process_keypress(ic,previous)
       previous=ic
+      if(G_submitted)exit
    enddo READKEY
    ierr=endwin()
+   if(present(tabs))then
+      tabs=G_answers
+   endif
 end subroutine fixedform
 !-----------------------------------------------------------------------------------------------------------------------------------
 !<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>-
@@ -275,7 +346,7 @@ recursive subroutine process_keypress(ch,pch) ! @(#) take an appropriate action 
       case (key_create )        ; msg="create: create key"
       case (key_end )           ; msg="end: end key"
          call message(msg)                  ! draw message line
-         call extract_answers()
+         call extract_answers_tabs()
          ierr=flash()
          return
       case (key_exit )          ; msg="exit: exit key"
@@ -408,7 +479,7 @@ recursive subroutine process_keypress(ch,pch) ! @(#) take an appropriate action 
                call move_pd(0,-1,'L')
             CASE(13) ; msg="CR '\r' ctrl-M  CARRIAGE RETURN"
                call message(msg)                  ! draw message line
-               call extract_answers()
+               call extract_answers_tabs()
                ierr=flash()
                return
             CASE(14) ; msg="SO      ctrl-N  SHIFT OUT"
@@ -423,7 +494,7 @@ recursive subroutine process_keypress(ch,pch) ! @(#) take an appropriate action 
                call move_pd(0,1,'L')
             CASE(19) ; msg="DC3     ctrl-S  DEVICE CONTROL 3"
                call message(msg)                  ! draw message line
-               call extract_answers()
+               call extract_answers_tabs()
                ierr=flash()
                return
             CASE(20) ; msg="DC4     ctrl-T  DEVICE CONTROL 4"
@@ -522,7 +593,7 @@ type(MEVENT),optional     :: eek
    case(5) ! submit
       msg="SUBMIT"
       call message(msg)                  ! draw message line
-      call extract_answers()
+      call extract_answers_tabs()
       ierr=flash()
    end select
 end subroutine button_action
@@ -1422,7 +1493,51 @@ end subroutine printit
 !-----------------------------------------------------------------------------------------------------------------------------------
 !<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>-
 !-----------------------------------------------------------------------------------------------------------------------------------
-subroutine extract_answers()
+subroutine extract_answers_tabs()
+   use M_ncurses
+   implicit none
+   integer                   :: i,j,imax,jmax
+   logical                   :: inunderline
+!-----------------------------------------------------------------------------------------------------------------------------------
+   integer(C_LONG)           :: cell
+   integer(C_INT)            :: ich
+   character(len=1)          :: ch
+   integer(C_LONG)           :: attr
+   integer(C_SHORT)          :: pair
+!-----------------------------------------------------------------------------------------------------------------------------------
+   call getmaxyx(big_pd,imax,jmax)                     ! size window size as defined (all of it, even if subsection being displayed)
+   inunderline=.false.
+   G_answers=''
+   do i=0,imax-1                                                                ! print underlined regions and buttons
+      do j=0,jmax-1
+         cell=mvwinch(big_pd,i,j)
+         call get_cell_components(cell,attr,pair,ich,ch)
+         if(iand(attr,A_UNDERLINE).eq. A_UNDERLINE)then
+            if(.not.inunderline)then                                            ! this is the beginning of an underline entry
+            endif
+            G_answers=G_answers//ch
+            inunderline=.true.
+         else                                                                   ! found end of underlined region
+            if(inunderline.eqv..true.)then
+               G_answers=G_answers//char(9)
+            endif
+            inunderline=.false.
+         endif
+         if((iand(attr,A_ALTCHARSET).eq.A_ALTCHARSET).and.(ch.eq.'`'))then      ! found a button
+            if(iand(attr,A_STANDOUT).eq.A_STANDOUT)then                         ! this is a selected button
+               G_answers=G_answers//'T'//char(9)                                ! write value for selected menu diamond bullet
+            else
+               G_answers=G_answers//'F'//char(9)                                ! write value for unselected menu diamond bullet
+            endif
+         endif
+      enddo
+   enddo
+   G_submitted=.true.
+end subroutine extract_answers_tabs
+!-----------------------------------------------------------------------------------------------------------------------------------
+!<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>-
+!-----------------------------------------------------------------------------------------------------------------------------------
+subroutine extract_answers_namelist()
    use M_ncurses
    implicit none
    integer                   :: i,j,imax,jmax
@@ -1461,7 +1576,7 @@ subroutine extract_answers()
          endif
       enddo
    enddo
-end subroutine extract_answers
+end subroutine extract_answers_namelist
 !-----------------------------------------------------------------------------------------------------------------------------------
 !<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>-
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -1920,10 +2035,130 @@ end subroutine inbox
 !-----------------------------------------------------------------------------------------------------------------------------------
 !<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>-
 !-----------------------------------------------------------------------------------------------------------------------------------
-end module M_fixedform
+subroutine nc_notabs(INSTR,OUTSTR,ILEN)
+! @(#) convert tabs in input to spaces in output while maintaining columns, assuming a tab is set every 8 characters
+! given input string INSTR
+! return output string OUTSTR
+!  o with tabs expanded assuming tabs are set every 8 characters
+!  o carriage return and line feed characters are replaced with a space
+!  o ILEN holds the position of the last non-blank character in OUTSTR
+!
+! USES:
+!       It is often useful to expand tabs in input files to simplify further processing such as tokenizing an input line.
+!       Some FORTRAN compilers hate tabs in input files; some printers; some editors will have problems with tabs.
+! AUTHOR:
+!       John S. Urban
+!
+! SEE ALSO:
+!       GNU/Unix commands expand(1) and unexpand(1)
+!
+   use M_journal, only : journal
+   IMPLICIT NONE
+   CHARACTER(LEN=*),INTENT(IN)   :: instr     ! input line to scan for tab characters
+   CHARACTER(LEN=*),INTENT(OUT)  :: outstr    ! tab-expanded version of INSTR produced
+   INTEGER,INTENT(OUT)           :: ilen      ! column position of last character put into output string
+
+   INTEGER,PARAMETER             :: tabsize=8 ! assume a tab stop is set every 8th column
+   INTEGER                       :: ipos      ! position in OUTSTR to put next character of INSTR
+   INTEGER                       :: lenin     ! length of input string trimmed of trailing spaces
+   INTEGER                       :: lenout    ! number of characters output string can hold
+   INTEGER                       :: istep     ! counter that advances thru input string INSTR one character at a time
+   CHARACTER(LEN=1)              :: c         ! character in input line being processed
+   INTEGER                       :: iade      ! ADE (ASCII Decimal Equivalent) of character being tested
+!===================================================================================================================================
+   IPOS=1                                     ! where to put next character in output string OUTSTR
+   lenin=LEN(instr)                           ! length of character variable INSTR
+   lenin=LEN_TRIM(instr(1:lenin))             ! length of INSTR trimmed of trailing spaces
+   lenout=LEN(outstr)                         ! number of characters output string OUTSTR can hold
+   OUTSTR=" "                                 ! this SHOULD blank-fill string, a buggy machine required a loop to set all characters
+!===================================================================================================================================
+      SCAN_LINE: DO istep=1,lenin             ! look through input string one character at a time
+         c=instr(istep:istep)                 ! get next character
+         iade=ICHAR(c)                        ! get ADE of the character
+         expand_tabs : SELECT CASE (iade)     ! take different actions depending on which character was found
+         CASE(9)                              ! test if character is a tab and move pointer out to appropriate column
+            ipos = ipos + (tabsize - (MOD(ipos-1,tabsize)))
+         CASE(10,13)                          ! convert carriage-return and new-line to space ,typically to handle DOS-format files
+            ipos=ipos+1
+         CASE DEFAULT                         ! c is anything else other than a tab,newline,or return  insert it in output string
+            IF(ipos > lenout)THEN
+               CALL journal("*nc_notabs* output string overflow")
+               EXIT
+            ELSE
+               outstr(ipos:ipos)=c
+               ipos=ipos+1
+            ENDIF
+         END SELECT expand_tabs
+      enddo SCAN_LINE
+!===================================================================================================================================
+      ipos=MIN(ipos,lenout)                   ! tabs or newline or return characters or last character might have gone too far
+      ilen=LEN_TRIM(outstr(:ipos))            ! trim trailing spaces
+!===================================================================================================================================
+END SUBROUTINE nc_notabs
 !-----------------------------------------------------------------------------------------------------------------------------------
 !<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>-
 !-----------------------------------------------------------------------------------------------------------------------------------
+function nc_uniqname(name,ierr) !@(#) append a number to the end of the filename that makes it relatively unique
+   ! If necessary, increment the number and try again up to the value 9999.
+   ! assumes returned value is 256 characters
+!-----------------------------------------------------------------------------------------------------------------------------------
+   implicit none
+!-----------------------------------------------------------------------------------------------------------------------------------
+   character(len=*),intent(in) :: name
+   integer,intent(out)         :: ierr
+!-----------------------------------------------------------------------------------------------------------------------------------
+   character(len=256)          :: nc_uniqname
+   logical                     :: around
+   integer,save                :: icount=0      ! counter to generate suffix from
+   character(len=256),save     :: lastname=' '  ! name called with last time the routine was called
+   integer                     :: ilen
+   integer                     :: itimes
+   integer                     :: ii
+!-----------------------------------------------------------------------------------------------------------------------------------
+   ierr=0
+   itimes=0                                     ! count number of times tried to get a unique name
+   nc_uniqname='UNIQ_DID_NOT_WORK'
+!-----------------------------------------------------------------------------------------------------------------------------------
+   if(lastname.ne.name)then                     ! if a different input name than last time called reset icount
+      lastname=name                             ! a new name to keep for subsequent calls
+      icount=0                                  ! icount is used to make a suffix to add to make the file unique
+   endif
+!-----------------------------------------------------------------------------------------------------------------------------------
+   ilen=len_trim(name)                          ! find last non-blank character in file name
+   if(ilen.gt.(256-4))then                      ! input filename is too long to add suffix to
+      call nc_errmessage('*nc_uniqname* ERROR: unable to append number to filename. Filename is too long')
+      ierr=-1
+      return
+   endif
+!-----------------------------------------------------------------------------------------------------------------------------------
+   INFINITE: do                                 ! top of loop trying for a unique name
+      if(itimes.ge.9999)then                    ! if too many tries to be reasonable give up
+         call nc_errmessage('*nc_uniqname* unable to find a unique filename. Too many tries')
+         ierr=-2
+         return
+      endif
+      if(icount.gt.9999) icount=0               ! reset ICOUNT when it hits arbitrary maximum value
+      ii=index(name,'.')
+      if(ii.eq.0)then
+         nc_uniqname=name
+         write(nc_uniqname(ilen+1:),'(i4.4,a)')icount,'.out'      ! create name by adding a numeric string to end
+      else
+         nc_uniqname=name(:ii-1)
+         write(nc_uniqname(ii:),'(i4.4,a)')icount,trim(name(ii:)) ! create name by adding a numeric string before suffix
+      endif
+      icount=icount+1                           ! increment counter used to come up with suffix
+      inquire(file=trim(nc_uniqname),exist=around) ! see if this filename already exists
+      if(.not.around)then                       ! found an unused name
+         return                                 ! return successfully
+      endif
+      itimes=itimes+1                           ! haven't found a unique name, try again
+   enddo INFINITE
+!-----------------------------------------------------------------------------------------------------------------------------------
+end function nc_uniqname
+!-----------------------------------------------------------------------------------------------------------------------------------
+!<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>-
+!-----------------------------------------------------------------------------------------------------------------------------------
+end module M_fixedform
 !-----------------------------------------------------------------------------------------------------------------------------------
 !<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>-
 !-----------------------------------------------------------------------------------------------------------------------------------

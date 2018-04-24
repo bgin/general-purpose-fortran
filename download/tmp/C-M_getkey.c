@@ -112,3 +112,32 @@ char Fgetkey (void){
    return (c);
 }
 #endif
+#include <unistd.h>
+#include <stdio.h>
+#include <sys/ioctl.h>
+#include <termio.h>
+#include <termios.h>
+#include <sys/termio.h>
+/* Ftimeout_getkey return the next key typed with a timeout. */
+char Ftimeout_getkey (int delay) {
+   struct termio oldtty, newtty;
+   char c;
+   ioctl (0, TCGETA, &oldtty);
+   newtty = oldtty;
+   newtty.c_iflag = BRKINT | IXON | ISTRIP;
+   newtty.c_lflag = 0;
+   newtty.c_cc[VEOF] = 1;
+   newtty.c_cc[VMIN] = 0;
+   newtty.c_cc[VTIME] = delay; /* 10ths of second */
+   ioctl (0, TCSETA, &newtty);
+   read (0, &c, 1);
+   ioctl (0, TCSETA, &oldtty);
+   return (c);
+}
+/*
+main(){
+char c;
+c=Ftimeout_getkey(1);
+fprintf(stdout,"C=%c %d\n",c,c);
+}
+*/

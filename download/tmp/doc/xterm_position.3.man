@@ -1,0 +1,27 @@
+NAME
+   xterm_position(3f) - [M_xterm] set xterm(1) window position using escape sequences
+SYNOPSIS
+   subroutine xterm_position(right,down)
+   integer,intent(in),optional :: right
+   integer,intent(in),optional :: down
+
+DESCRIPTION
+   Sets the position of an xterm(1) window by specifying the
+   position of the upper left corner.
+
+OPTIONS
+   right  how far in pixels to place upper left corner of window from
+          left edge of display
+   down   how far down in pixels to place upper left corner of window
+          from upper edge of display
+
+EXAMPLE
+  A sample program:
+
+   program demo_xterm_position
+   use M_xterm, only : xterm_position
+   implicit none
+   integer :: right, down
+   call xterm_position(down=200,right=100)
+   end program demo_xterm_position
+

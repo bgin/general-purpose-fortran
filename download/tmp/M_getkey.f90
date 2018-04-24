@@ -169,7 +169,19 @@
 module M_getkey
    use iso_c_binding
    implicit none
-   public
+   private
+   public system_timeout_getkey
+   public system_getkey
+
+      interface
+         function system_timeout_getkey(delay) bind(c, name='Ftimeout_getkey')
+            use iso_c_binding
+            implicit none
+            integer(kind=c_int),intent(in),value :: delay
+            character(kind=c_char) :: system_timeout_getkey
+         end function system_timeout_getkey
+      end interface
+
       interface
          function system_getkey() bind(c, name='Fgetkey')
             use iso_c_binding
@@ -177,6 +189,7 @@ module M_getkey
             character(kind=c_char) :: system_getkey
          end function system_getkey
       end interface
+
 end module M_getkey
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=

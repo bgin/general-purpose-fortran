@@ -16,7 +16,7 @@ subroutine nc_printhtml(win,filename) ! @(#) print ncurses(3c) window as HTML
    integer(C_LONG)              :: attr         ! attributes of the cell
    integer                      :: ios          ! status from open(3f)
    character(len=256)           :: msg          ! message from open(3f)
-   integer,save                 :: iout=11      ! unit to open(3f) for writing
+   integer                      :: iout         ! unit to open(3f) for writing
    integer                      :: i,j          ! loop counters
    integer                      :: ierr
    integer(C_SHORT)             :: pair         ! color pair used by the cell
@@ -28,10 +28,15 @@ subroutine nc_printhtml(win,filename) ! @(#) print ncurses(3c) window as HTML
    character(len=100)           :: class
    character(len=100)           :: lastclass
 !-----------------------------------------------------------------------------------------------------------------------------------
-   OPEN(UNIT=iout,FILE=trim(filename),ACTION='write',ACCESS='stream',FORM='unformatted',IOSTAT=ios,IOMSG=msg,STATUS='unknown')
-   if(ios.ne.0)then
-      call nc_errmessage("failed to open print file "//trim(filename)//':'//trim(msg))
-      return
+   if(filename.ne.'')then
+      iout=11
+      OPEN(UNIT=iout,FILE=trim(filename),ACTION='write',ACCESS='stream',FORM='unformatted',IOSTAT=ios,IOMSG=msg,STATUS='unknown')
+      if(ios.ne.0)then
+         call nc_errmessage("failed to open print file "//trim(filename)//':'//trim(msg))
+         return
+      endif
+   else       !! Actually an error for now:: So far, no way to write a stream to stdout using Fortran
+      iout=6
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
 call ln('<html>')

@@ -1,5 +1,5 @@
 NAME
-     what - [DEVELOPER] extract SCCS-style metadata from a file
+     what(1f) - [DEVELOPER] extract SCCS-style metadata from a file
 
 SYNOPSIS
      what [ filename(s) [-s] [-q] [-html|-table] ] | [ [-help] [-version] ]

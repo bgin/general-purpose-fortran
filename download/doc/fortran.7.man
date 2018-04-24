@@ -115,8 +115,8 @@ SYNOPSIS
    execute_command_line (3)  [INTRINSIC:SYSTEM ENVIRONMENT] Execute a shell command
    exp (3)               [INTRINSIC:MATHEMATICS] Exponential function
    exponent (3)          [INTRINSIC:MODEL_COMPONENTS] Exponent function
-   extends_type_of (3)   [FORTRAN:INTRINSIC] True if and only if the dynamic type of A is an extension of the dynamic type of MOLD.
-   findloc (3)           [FORTRAN:INTRINSIC] Location of the first element of ARRAY identified by MASK along dimension DIM having a...
+   extends_type_of (3)   [INTRINSIC] True if and only if the dynamic type of A is an extension of the dynamic type of MOLD.
+   findloc (3)           [INTRINSIC] Location of the first element of ARRAY identified by MASK along dimension DIM having a...
    float (3)             [INTRINSIC] Convert integer to default real
    floor (3)             [INTRINSIC:NUMERIC] Integer floor function
    fraction (3)          [INTRINSIC:MODEL_COMPONENTS] Fractional part of the model representation

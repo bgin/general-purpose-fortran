@@ -106,36 +106,36 @@ The FORMAT string is expanded using the following macros:
 <P>
       Base time array:
        (1) %Y -- year, yyyy                                2018
-       (2) %M -- month of year, 01 to 12                   03
-       (3) %D -- day of month, 01 to 31                    24
-           %d -- day of month, with suffix (1st, 2nd,&#46;&#46;&#46;)  24th
+       (2) %M -- month of year, 01 to 12                   04
+       (3) %D -- day of month, 01 to 31                    02
+           %d -- day of month, with suffix (1st, 2nd,&#46;&#46;&#46;)  2nd
        (4) %Z -- minutes from UTC                          -0240
            %z -- -+hh:mm from UTC                          -04:00
            %T -- -+hhmm  from UTC                          -0400
-       (5) %h -- hours, 00 to 23                           23
-           %H -- hour (1 to 12, or twelve-hour clock)      11
-           %N -- midnight&lt; AM &lt;=noon; noon&lt;= PM &lt;midnight  PM
-       (6) %m -- minutes, 00 to 59                         08
-       (7) %s -- sec, 00 to 59                             41
-       (8) %x -- milliseconds 000 to 999                   625
+       (5) %h -- hours, 00 to 23                           08
+           %H -- hour (1 to 12, or twelve-hour clock)      8
+           %N -- midnight&lt; AM &lt;=noon; noon&lt;= PM &lt;midnight  AM
+       (6) %m -- minutes, 00 to 59                         38
+       (7) %s -- sec, 00 to 59                             56
+       (8) %x -- milliseconds 000 to 999                   315
       Conversions:
-           %E -- Unix Epoch time                           1521947321.6260180
-           %e -- integer value of Unix Epoch time          1521947322
-           %J -- Julian  date                              2458202.6310383221
-           %j -- integer value of Julian Date(Julian Day)  2458202
-           %O -- Ordinal day (day of year)                 083
-           %o -- Whole days since Unix Epoch date          17615
-           %U -- day of week, 1..7 Sunday=1                7
-           %u -- day of week, 1..7 Monday=1                6
-           %i -- ISO week of year 1..53                    12
-           %I -- iso-8601 week-numbering date(yyyy-Www-d)  2018-W12-6
+           %E -- Unix Epoch time                           1522672736.3149881
+           %e -- integer value of Unix Epoch time          1522672736
+           %J -- Julian  date                              2458211.0270406944
+           %j -- integer value of Julian Date(Julian Day)  2458211
+           %O -- Ordinal day (day of year)                 092
+           %o -- Whole days since Unix Epoch date          17623
+           %U -- day of week, 1..7 Sunday=1                2
+           %u -- day of week, 1..7 Monday=1                1
+           %i -- ISO week of year 1..53                    14
+           %I -- iso-8601 week-numbering date(yyyy-Www-d)  2018-W14-1
        Names:
-           %l -- abbreviated month name                    Mar
-           %L -- full month name                           March
-           %w -- first three characters of weekday         Sat
-           %W -- weekday name                              Saturday
-           %p -- phase of moon                             First quarter
-           %P -- percent of way from new to full moon      54%
+           %l -- abbreviated month name                    Apr
+           %L -- full month name                           April
+           %w -- first three characters of weekday         Mon
+           %W -- weekday name                              Monday
+           %p -- phase of moon                             Full
+           %P -- percent of way from new to full moon      -90%
        Literals:
            %% -- a literal %                               %
            %t -- tab character                                 
@@ -149,7 +149,7 @@ The FORMAT string is expanded using the following macros:
            %c -- CPU_TIME(3f) output                       0.12500000000000000
            %C -- number of times this routine is used      1
            %S -- seconds since last use of this format     0.0000000000000000
-           %k -- time in seconds from SYSTEM_CLOCK(3f)     883709.750
+           %k -- time in seconds from SYSTEM_CLOCK(3f)     545846.562
 <P>
       If no percent (%) is found in the format one of several
       alternate substitutions occurs.
@@ -157,46 +157,46 @@ The FORMAT string is expanded using the following macros:
       If the format is composed entirely of one of the following
       keywords the following substitutions occur:
         "iso-8601",
-        "iso"        ==&gt; %Y-%M-%DT%h:%m:%s%z             2018-03-24T23:08:41-04:00
+        "iso"        ==&gt; %Y-%M-%DT%h:%m:%s%z             2018-04-02T08:38:56-04:00
         "iso-8601W",
-        "isoweek"    ==&gt; %I                              2018-W12-6
-        "sql"        ==&gt; "%Y-%M-%D %h:%m:%s.%x"          "2018-03-24 23:08:41.776"
-        "sqlday"     ==&gt; "%Y-%M-%D"                      "2018-03-24"
-        "sqltime"    ==&gt; "%h:%m:%s.%x"                   "23:08:41.777"
+        "isoweek"    ==&gt; %I                              2018-W14-1
+        "sql"        ==&gt; "%Y-%M-%D %h:%m:%s.%x"          "2018-04-02 08:38:56.357"
+        "sqlday"     ==&gt; "%Y-%M-%D"                      "2018-04-02"
+        "sqltime"    ==&gt; "%h:%m:%s.%x"                   "08:38:56.358"
         "rfc-2822"   ==&gt; %w, %D %l %Y %h:%m:%s %T
-                         Sat, 24 Mar 2018 23:08:41 -0400
-        "rfc-3339"   ==&gt; %Y-%M-%DT%h:%m:%s%z             2018-03-24T23:08:41-04:00
+                         Mon, 02 Apr 2018 08:38:56 -0400
+        "rfc-3339"   ==&gt; %Y-%M-%DT%h:%m:%s%z             2018-04-02T08:38:56-04:00
         "date"       ==&gt; %w %l %D %h:%m:%s UTC%z %Y
-                         Sat Mar 24 23:08:41 UTC-04:00 2018
+                         Mon Apr 02 08:38:56 UTC-04:00 2018
         "short"      ==&gt; %w, %l %d, %Y %H:%m:%s %N UTC%z
-                         Sat, Mar 24th, 2018 11:08:41 PM UTC-04:00
+                         Mon, Apr 2nd, 2018 8:38:56 AM UTC-04:00
         "long"," "   ==&gt; %W, %L %d, %Y %H:%m:%s %N UTC%z
-                         Saturday, March 24th, 2018 11:08:41 PM UTC-04:00
-        "suffix"     ==&gt; %Y%D%M%h%m%s                    20182403230841
-        "formal"     ==&gt; The %d of %L %Y                 The 24th of March 2018
+                         Monday, April 2nd, 2018 8:38:56 AM UTC-04:00
+        "suffix"     ==&gt; %Y%D%M%h%m%s                    20180204083856
+        "formal"     ==&gt; The %d of %L %Y                 The 2nd of April 2018
         "lord"       ==&gt; the %d day of %L in the year of our Lord %Y
-                         the 24th day of March in the year of our Lord 2018
+                         the 2nd day of April in the year of our Lord 2018
         "easter"     ==&gt; FOR THE YEAR OF THE CURRENT DATE:
                            Easter day: the %d day of %L in the year of our Lord %Y
         "all"        ==&gt; A SAMPLE OF DATE FORMATS
       otherwise the following words are replaced with the most
       common macros:
          year          %Y  2018
-         month         %M  03
-         day           %D  24
+         month         %M  04
+         day           %D  02
          timezone      %z  -04:00
-         hour          %h  23
-         minute        %m  08
-         second        %s  41
-         millisecond   %x  787
-         epoch         %e  1521947322
-         julian        %j  2458202
-         ordinal       %O  083
-         weekday       %u  6
+         hour          %h  08
+         minute        %m  38
+         second        %s  56
+         millisecond   %x  368
+         epoch         %e  1522672736
+         julian        %j  2458211
+         ordinal       %O  092
+         weekday       %u  1
       if none of these keywords are found then every letter that
       is a macro is assumed to have an implied percent in front
       of it. For example:
-         YMDhms ==&gt; %Y%M%D%h%m%s ==&gt; 20180324230841
+         YMDhms ==&gt; %Y%M%D%h%m%s ==&gt; 20180402083856
 <P>
 <P>
 </PRE>
@@ -312,7 +312,7 @@ assumed, and Leap Seconds are not specifically accounted for.
 <B>month</B>(1), <B>sec2days</B>(1), <B>days2sec</B>(1), <B>easter</B>(1), <B>paws</B>(1), <B>today</B>(1), <B>ttee</B>(1)
 </BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>now (1)</TD> <TD align=right width=33%><I>March 29, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 19a7931f-b3fd-45f0-86c8-e7770861f6be using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>now (1)</TD> <TD align=right width=33%><I>April 23, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from fc310467-63ec-451c-a9f5-ccdf8c425c7b using man macros.</FONT>
 </div>
 </div>
 <center><img src="images/now.1.gif"></center> 

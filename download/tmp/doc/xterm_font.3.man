@@ -1,0 +1,66 @@
+NAME
+   xterm_font(3f) - [M_xterm] set xterm(1) font
+SYNOPSIS
+   subroutine xterm_font(fontname)
+   character(len=*),intent(in) :: fontname
+
+DESCRIPTION
+
+   Sets the font for an xterm(1) window.
+
+OPTIONS
+   fontname   X11 windows font name. Note you should always pick a
+              fixed-space font. Allowed formats are
+
+          fontname       a fixed-space font name. Wildcards
+                         are allowed (eg. "*-15-*-c-*" or
+                         "*-14-*-m-*"), as well as X11
+                         aliases (eg. "fixed","9x15","8x13").
+          mapped         Map the default names used in the
+                         font menu to numbers (0 to 8).
+                         The names are "default","unreadable",
+                         "tiny","small","medium","large",
+                         "huge","escape sequence","selection".
+          "+","up"       go up thru default font list.
+          "-","down"     go down thru default font list.
+          "0" thru "9"   pick a font by number from the
+                         font defaults (default, unreadable,
+                         tiny,small,medium,large,huge,
+                         escape sequence,selection).
+
+SEE ALSO
+
+   To list all the fixed-space fonts on your system, try
+
+    xlsfonts '*-*-c-*'
+    xlsfonts '*-*-m-*'
+
+
+EXAMPLE
+  A sample program:
+
+   program demo_xterm_font
+   use M_xterm, only : xterm_font
+   implicit none
+   character(len=256) :: string
+   character(len=1)   :: paws
+   integer            :: i,count,ios
+   ! get number of arguments on command line
+   count = command_argument_count()
+   ! if at least one name on command line select fonts,
+   ! pausing between names until last font name
+   !is reached
+   do i=1,count
+      call get_command_argument(number=i,value=string)
+      write(*,'(2a)',advance='no')font=',trim(string)
+      call xterm_font(string)
+      if(i.eq.count)exit
+      read(*,'(a)',iostat=ios)paws
+   enddo
+   end program demo_xterm_font
+
+   ./demo_xterm_font 0  # set to default font
+   ./demo_xterm_font '*--15-*-c-*'  # fixed a 15-point font
+   ./demo_xterm_font 0 1 2 3 4 5 6 7 8 # step thru defaults
+   ./demo_xterm_font fixed # common alias for a font
+
