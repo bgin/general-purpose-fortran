@@ -33,10 +33,10 @@ example programs that exercise the modules.
 Code additions are strongly encouraged (if this remains a personal
 collection the purpose of the repository is essentially negated).
 
-This (mostly) Fortran repository contains modules and procedures primarily
-useful for creating a command line interface (CLI) for a Fortran program. A
-modern Fortran compiler is assumed. This code has been tested using GNU
-Fortran (GCC) 5.4.0.
+This (mostly) Fortran repository contains modules and procedures
+primarily useful for creating a command line interface (CLI) for a
+Fortran program. A modern Fortran compiler is assumed. This code has
+been tested using gfortran (GNU Fortran (GCC) 6.4.0).
 
 This repository concentrates on those "other" Fortran procedures
 that solve the day-to-day non-numeric(mostly) issues in programming. Large
