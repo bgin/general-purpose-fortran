@@ -1,5 +1,5 @@
 NAME
-   huegif(1) - generate color wheels as GIF pixmap files
+   huegif(1f) - generate color wheels as GIF pixmap files
 
 SYNOPSIS
    huegif

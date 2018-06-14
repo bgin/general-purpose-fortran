@@ -1,0 +1,11 @@
+NAME
+   rmove(3f) - [M_DRAW:MOVE] Relative move
+
+SYNOPSIS
+         subroutine rmove(deltax, deltay, deltaz)
+         real deltax, deltay, deltaz
+
+DESCRIPTION
+
+   Relative move. deltax, deltay, and deltaz are offsets in world units.
+

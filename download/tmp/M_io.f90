@@ -515,7 +515,8 @@ end subroutine slurp
 !!    Note that an environment may impose a limit on the number of
 !!    simultaneously open files (which some compilers work around).
 !!
-!!    Beginning with f2008, you can probably use OPEN(NEWUNIT=...) instead.
+!!    Beginning with f2008, you can probably use OPEN(NEWUNIT=...) instead
+!!    of an open unit locator.
 !!
 !!##EXAMPLE
 !!

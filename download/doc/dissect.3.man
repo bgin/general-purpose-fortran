@@ -19,3 +19,9 @@ RETURNS
    ERROR_RETURN  error code. If zero no error occurred.
 
 EXAMPLE
+SEE ALSO
+   M_kracken, kracken
+
+   dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+
+   parse,dissect,store,setprompts,show

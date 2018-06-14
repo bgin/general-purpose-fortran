@@ -9,7 +9,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'   alphabet - [CONVERT] print numeric values or a string as decimal, hexadecimal, octal and binary values',&
+'   alphabet(1f) - [CONVERT] print numeric values or a string as decimal, hexadecimal, octal and binary values',&
 'SYNOPSIS                                                                        ',&
 '   alphabet [values] [-h values][-z values][-o values][ -t text]                ',&
 'DESCRIPTION                                                                     ',&
@@ -76,7 +76,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    alphabet - [CONVERT] print numeric values or a string as decimal, hexadecimal, octal and binary values
+!!    alphabet(1f) - [CONVERT] print numeric values or a string as decimal, hexadecimal, octal and binary values
 !!##SYNOPSIS
 !!
 !!    alphabet [values] [-h values][-z values][-o values][ -t text]
@@ -156,7 +156,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Wed, Dec 20th, 2017 11:56:07 PM>',&
+'@(#)COMPILED:       Mon, Jun 4th, 2018 8:50:44 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

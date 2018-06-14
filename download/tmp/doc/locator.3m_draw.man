@@ -1,0 +1,16 @@
+NAME
+   locator(3f) - [M_DRAW:INTERACTIVE] Find out where cursor is
+
+SYNOPSIS
+         integer function locator(xaddr, yaddr)
+         real xaddr, yaddr
+DESCRIPTION
+
+   Find out where the cursor is. xaddr and yaddr are set to the current
+   location in world coordinates. The function returns a bit pattern
+   which indicates which buttons are being held down eg. if mouse buttons
+   1 and 3 are down locator returns binary 101 (decimal 7). The function
+   returns -1 if the device has no locator capability. Note: if you have
+   been doing a lot of 3-D transformations xaddr and yaddr may not make a
+   lot of sense. In this case use slocator.
+

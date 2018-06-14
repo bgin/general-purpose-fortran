@@ -3,16 +3,16 @@ NAME
    unit_check_bad(3f) - [M_debug] call command "goodbad NAME bad" and stop program
 
 SYNOPSIS
-   subroutine unit_check_bad(name,string)
+   subroutine unit_check_bad(name,options)
 
     character(len=*),intent(in) :: name
-    character(len=*),intent(in) :: string
+    character(len=*),intent(in) :: options
 
 DESCRIPTION
 
    unit_check_bad(3f) calls the shell command
 
-        goodbad NAME bad [string]
+        goodbad NAME bad [options]
 
    and stops the program.
 

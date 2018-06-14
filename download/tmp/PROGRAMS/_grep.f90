@@ -19,22 +19,22 @@ help_text=[ CHARACTER(LEN=128) :: &
 '    Find lines on stdin that contain the specified regular expression pattern.  ',&
 '                                                                                ',&
 'OPTIONS                                                                         ',&
-'    pattern    regular expression                                               ',&
-'    -i         Ignore case distinctions in both the PATTERN and the input files.',&
+'    pattern  regular expression                                                 ',&
+'    -i       Ignore case distinctions in both the PATTERN and the input files.  ',&
 '                                                                                ',&
-'   Matcher Selection                                                            ',&
+'   MATCHER SELECTION                                                            ',&
 '                                                                                ',&
-'    -E         Interpret PATTERN as an ERE(extended regular expression).        ',&
-'    -G         Interpret PATTERN as a BRE(basic regular expression). This is the default.',&
-'               If present, it takes precedence over -E.                         ',&
+'    -E       Interpret PATTERN as an ERE(extended regular expression).          ',&
+'    -G       Interpret PATTERN as a BRE(basic regular expression). This is the default.',&
+'             If present, it takes precedence over -E.                           ',&
 '                                                                                ',&
-'   Basic vs Extended Regular Expressions                                        ',&
+'   BASIC VS EXTENDED REGULAR EXPRESSIONS                                        ',&
 '                                                                                ',&
-'       In basic regular expressions the meta-characters ?, +, {, |,             ',&
-'       (, and ) lose their special meaning; instead use the                     ',&
-'       backslashed versions \?, \+, \{, \|, \(, and \).                         ',&
+'   In basic regular expressions the meta-characters ?, +, {, |,                 ',&
+'   (, and ) lose their special meaning; instead use the                         ',&
+'   backslashed versions \?, \+, \{, \|, \(, and \).                             ',&
 '                                                                                ',&
-'   Informative                                                                  ',&
+'   INFORMATIVE                                                                  ',&
 '                                                                                ',&
 '    --help     display this help and exit                                       ',&
 '    --version  output version information and exit                              ',&
@@ -68,22 +68,22 @@ end subroutine help_usage
 !!     Find lines on stdin that contain the specified regular expression pattern.
 !!
 !!##OPTIONS
-!!     pattern    regular expression
-!!     -i         Ignore case distinctions in both the PATTERN and the input files.
+!!     pattern  regular expression
+!!     -i       Ignore case distinctions in both the PATTERN and the input files.
 !!
-!!    Matcher Selection
+!!    MATCHER SELECTION
 !!
-!!     -E         Interpret PATTERN as an ERE(extended regular expression).
-!!     -G         Interpret PATTERN as a BRE(basic regular expression). This is the default.
-!!                If present, it takes precedence over -E.
+!!     -E       Interpret PATTERN as an ERE(extended regular expression).
+!!     -G       Interpret PATTERN as a BRE(basic regular expression). This is the default.
+!!              If present, it takes precedence over -E.
 !!
-!!    Basic vs Extended Regular Expressions
+!!    BASIC VS EXTENDED REGULAR EXPRESSIONS
 !!
-!!        In basic regular expressions the meta-characters ?, +, {, |,
-!!        (, and ) lose their special meaning; instead use the
-!!        backslashed versions \?, \+, \{, \|, \(, and \).
+!!    In basic regular expressions the meta-characters ?, +, {, |,
+!!    (, and ) lose their special meaning; instead use the
+!!    backslashed versions \?, \+, \{, \|, \(, and \).
 !!
-!!    Informative
+!!    INFORMATIVE
 !!
 !!     --help     display this help and exit
 !!     --version  output version information and exit
@@ -115,7 +115,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20180120>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Thu, Mar 29th, 2018 6:57:03 PM>',&
+'@(#)COMPILED:       Mon, Jun 4th, 2018 8:56:47 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

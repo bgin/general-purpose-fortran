@@ -1,0 +1,10 @@
+NAME
+   rdraw(3f) - [M_DRAW:DRAW] Relative draw
+
+SYNOPSIS
+    subroutine rdraw(deltax, deltay, deltaz)
+    real deltax, deltay, deltaz
+
+DESCRIPTION
+   Relative draw. deltax, deltay, and deltaz are offsets in world units.
+

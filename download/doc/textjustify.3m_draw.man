@@ -1,0 +1,24 @@
+NAME
+   textjustify(3f) - [M_DRAW:TEXT] general text justification (C only)
+
+SYNOPSIS
+       subroutine textjustify(val)
+       character(kind=c_short) :: ival
+       character(kind=c_char)  :: val
+
+DESCRIPTION
+   General (direct) control of text justification. The value of val is made
+   up of the logical OR of the following predefined constants in draw.h
+   (FOR C and Fortran only). V_LEFT, V_RIGHT, V_XCENTERED, V_TOP, V_BOTTOM,
+   V_YCENTERED. Centering takes priority, as does RIGHT and TOP justification
+   (if you were silly enough to set it to V_LEFT|V_RIGHT for EXAMPLE that
+   is). A value of 0 (zero) (in all languages) resets the textjustification
+   to the default.
+
+       ! from Fortran, use IANY() to OR the array of options, and CHAR()
+       ! to convert the integer result to a C_CHAR type. KIND C_CHAR is
+       ! defined by loading a the intrinsic module for C bindings ("USE ISO_C_BINDING").
+       ival=iany([V_XCENTERED,V_YCENTERED])
+       val=char(ival)
+       call textjustify(val)
+

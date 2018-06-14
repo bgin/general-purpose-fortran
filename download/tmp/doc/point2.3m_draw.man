@@ -1,0 +1,30 @@
+NAME
+   point2(3f) - [M_DRAW:POINT] Draw a point at x, y.
+
+SYNOPSIS
+        subroutine point2(x, y)
+        real,intent(in) :: x, y
+
+DESCRIPTION
+   Draw a point at x, y. Points are device-dependent and may not appear
+   at all. Generally points are drawn with the current color as a circle
+   with a diameter equal to the current linewidth.
+
+EXAMPLE
+  Sample program:
+
+   program demo_point2
+   use :: M_DRAW
+   implicit none
+   integer :: i
+   integer :: ipaws
+   call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
+   call color(5)
+   do i=1,20
+      call linewidth(50*i)
+      call point2(real(i*25),real(i*25))
+   enddo
+   ipaws=getkey()
+   call vexit()
+   end program demo_point2
+

@@ -1,4 +1,4 @@
-#@(#) Makefile started by makeout(1) 2018-04-23 06:56:15
+#@(#) Makefile started by makeout(1) 2018-06-12 08:09:42
 
 PROGFILES = PROGRAMS/alphabet.f90 PROGRAMS/asa2pdf.f90 PROGRAMS/base.f90 PROGRAMS/change.f90 PROGRAMS/choose.f90 \
         PROGRAMS/colors.f90 PROGRAMS/compute.f90 PROGRAMS/cprint.f90 PROGRAMS/days2sec.f90 PROGRAMS/degrees.f90 \
@@ -10,49 +10,71 @@ PROGFILES = PROGRAMS/alphabet.f90 PROGRAMS/asa2pdf.f90 PROGRAMS/base.f90 PROGRAM
         PROGRAMS/phone.f90 PROGRAMS/planets.f90 PROGRAMS/quadratic.f90 PROGRAMS/redo.f90 PROGRAMS/rep.f90 \
         PROGRAMS/rever.f90 PROGRAMS/sec2days.f90 PROGRAMS/setxt.f90 PROGRAMS/shell.f90 PROGRAMS/splitname.f90 \
         PROGRAMS/sqlite3_version.f90 PROGRAMS/t2m.f90 PROGRAMS/table2html.f90 PROGRAMS/tabulate.f90 PROGRAMS/today.f90 \
-        PROGRAMS/ttee.f90 PROGRAMS/ufpp.f90 PROGRAMS/what.f90 PROGRAMS/xauth_key.f90 PROGRAMS/_cmp.f90 \
-        PROGRAMS/_colrm.f90 PROGRAMS/_dirname.f90 PROGRAMS/_echo.f90 PROGRAMS/_false.f90 PROGRAMS/_grep.f90 \
-        PROGRAMS/_hostname.f90 PROGRAMS/_kill.f90 PROGRAMS/_ln.f90 PROGRAMS/_logname.f90 PROGRAMS/_ls.f90 \
-        PROGRAMS/_mkdir.f90 PROGRAMS/_mkfifo.f90 PROGRAMS/_mv.f90 PROGRAMS/_pwd.f90 PROGRAMS/_rm.f90 \
-        PROGRAMS/_rmdir.f90 PROGRAMS/_showumask.f90 PROGRAMS/_sleep.f90 PROGRAMS/_stat.f90 PROGRAMS/_touch.f90 \
-        PROGRAMS/_true.f90 PROGRAMS/_tty.f90 PROGRAMS/_uname.f90 PROGRAMS/_unlink.f90 PROGRAMS/_which.f90 \
-        PROGRAMS/_yes.f90
+        PROGRAMS/ttee.f90 PROGRAMS/ufpp.f90 PROGRAMS/ufpp_template.f90 PROGRAMS/what.f90 PROGRAMS/xauth_key.f90 \
+        PROGRAMS/_cmp.f90 PROGRAMS/_colrm.f90 PROGRAMS/_dirname.f90 PROGRAMS/_echo.f90 PROGRAMS/_false.f90 \
+        PROGRAMS/_grep.f90 PROGRAMS/_hostname.f90 PROGRAMS/_kill.f90 PROGRAMS/_ln.f90 PROGRAMS/_logname.f90 \
+        PROGRAMS/_ls.f90 PROGRAMS/_mkdir.f90 PROGRAMS/_mkfifo.f90 PROGRAMS/_mv.f90 PROGRAMS/_printenv.f90 \
+        PROGRAMS/_pwd.f90 PROGRAMS/_rm.f90 PROGRAMS/_rmdir.f90 PROGRAMS/_showumask.f90 PROGRAMS/_sleep.f90 \
+        PROGRAMS/_stat.f90 PROGRAMS/_touch.f90 PROGRAMS/_true.f90 PROGRAMS/_tty.f90 PROGRAMS/_uname.f90 \
+        PROGRAMS/_unlink.f90 PROGRAMS/_uuidgen.f90 PROGRAMS/_which.f90 PROGRAMS/_yes.f90
+
+CPROGFILES = PROGRAMS/h2v.c
 
 PROG = ${PROGFILES:.f90=}
 
-SRCS =  C-gauss.c C-hlsrgb.c C-hvsrgb.c C-jubiglet.c C-jucolor.c  \
-     C-macros.c C-M_getkey.c C-M_readline.c C-M_regex.c C-M_sqlite.c C-M_system.c  \
-     C-M_units.c C-read_line.c C-rgbhls.c C-rgbhvs.c C-rgbmono.c C-rgbval.c  \
-     c.f90 calc_NC.f90 dparanoia.f90 juown1.f90 M_anyscalar.f90 M_calculator.f90  \
-     M_calculator_plus.f90 M_color.f90 M_Compare_Float_Numbers.f90 M_constants.f90 M_csv.f90 M_debug.f90  \
-     M_display.f90 M_factor.f90 M_fixedform.f90 M_generic_list.f90 M_geography.f90 M_getkey.f90  \
-     M_getopt.f90 M_getopt_long.f90 M_history.f90 M_html.f90 M_io.f90 M_journal.f90  \
-     M_kracken.f90 M_list.f90 M_logic.f90 M_math.f90 M_messages.f90 M_ncurses.f90  \
-     M_pixel.f90 M_pixel_slices.f90 M_process.f90 M_random.f90 M_readgif.f90 M_readline.f90  \
-     M_regex.f90 M_sort.f90 M_sqlite.f90 M_stopwatch.f90 M_strings.f90 M_swap.f90  \
-     M_system.f90 M_time.f90 M_treesort.f90 M_units.f90 M_writegif.f90 M_writegif_animated.f90  \
-     M_xterm.f90 nc_errmessage.f90 nc_notabs.f90 nc_printescape.f90 nc_printhtml.f90 nc_printplain.f90  \
-     nc_printunicode.f90 nc_uniqname.f90 paranoia.f90 pixel_slice.f90 ran_mod.f90 sparanoia.f90  \
-     strgar3.f90 
+CPROG = ${CPROGFILES:.c=}
 
-OBJS =  C-gauss.o C-hlsrgb.o C-hvsrgb.o C-jubiglet.o C-jucolor.o  \
-     C-macros.o C-M_getkey.o C-M_readline.o C-M_regex.o C-M_sqlite.o C-M_system.o  \
-     C-M_units.o C-read_line.o C-rgbhls.o C-rgbhvs.o C-rgbmono.o C-rgbval.o  \
-     c.o calc_NC.o dparanoia.o juown1.o M_anyscalar.o M_calculator.o  \
-     M_calculator_plus.o M_color.o M_Compare_Float_Numbers.o M_constants.o M_csv.o M_debug.o  \
-     M_display.o M_factor.o M_fixedform.o M_generic_list.o M_geography.o M_getkey.o  \
-     M_getopt.o M_getopt_long.o M_history.o M_html.o M_io.o M_journal.o  \
-     M_kracken.o M_list.o M_logic.o M_math.o M_messages.o M_ncurses.o  \
-     M_pixel.o M_pixel_slices.o M_process.o M_random.o M_readgif.o M_readline.o  \
-     M_regex.o M_sort.o M_sqlite.o M_stopwatch.o M_strings.o M_swap.o  \
-     M_system.o M_time.o M_treesort.o M_units.o M_writegif.o M_writegif_animated.o  \
-     M_xterm.o nc_errmessage.o nc_notabs.o nc_printescape.o nc_printhtml.o nc_printplain.o  \
-     nc_printunicode.o nc_uniqname.o paranoia.o pixel_slice.o ran_mod.o sparanoia.o  \
-     strgar3.o 
+SRCS =  C-arcs.c C-aspect.c C-attr.c C-buffer.c C-canvas.c  \
+     C-cgmt.c C-clip.c C-curves.c C-draw.c C-drivers.c C-fti.c  \
+     C-gauss.c C-getgp.c C-getstring.c C-gnu.c C-hlsrgb.c C-hpdxy.c  \
+     C-hpgt.c C-hvsrgb.c C-jubiglet.c C-jucolor.c C-macros.c C-mapping.c  \
+     C-matrix.c C-mif.c C-move.c C-M_draw.c C-M_drawplus.c C-M_getkey.c  \
+     C-M_readline.c C-M_regex.c C-M_sqlite.c C-M_system.c C-M_units.c C-newtokens.c  \
+     C-nil.c C-objects.c C-patches.c C-pbm.c C-pcl5.c C-pdf.c  \
+     C-points.c C-polygons.c C-ppm.c C-pref.c C-ps.c C-read_line.c  \
+     C-rect.c C-rgbhls.c C-rgbhvs.c C-rgbmono.c C-rgbval.c C-rtf.c  \
+     C-scale.c C-svg.c C-tek.c C-tensor.c C-text.c C-trans.c  \
+     C-unixplot.c C-usemap.c C-valloc.c C-verror.c C-viewing.c C-viewp.c  \
+     C-vml.c C-vog.c C-X11.c C-xfig.c C-yobbarays.c c.f90  \
+     calc_NC.f90 dparanoia.f90 juown1.f90 M_anyscalar.f90 M_calculator.f90 M_calculator_plus.f90  \
+     M_color.f90 M_Compare_Float_Numbers.f90 M_constants.f90 M_csv.f90 M_debug.f90 M_display.f90  \
+     M_draw.f90 M_drawplus.f90 M_factor.f90 M_fixedform.f90 M_generic_list.f90 M_geography.f90  \
+     M_getkey.f90 M_getopt.f90 M_getopt_long.f90 M_history.f90 M_html.f90 M_io.f90  \
+     M_journal.f90 M_kracken.f90 M_list.f90 M_logic.f90 M_math.f90 M_messages.f90  \
+     M_ncurses.f90 M_overload.f90 M_pixel.f90 M_pixel_slices.f90 M_process.f90 M_random.f90  \
+     M_readgif.f90 M_readline.f90 M_regex.f90 M_sort.f90 M_sqlite.f90 M_stopwatch.f90  \
+     M_strings.f90 M_swap.f90 M_system.f90 M_time.f90 M_treesort.f90 M_units.f90  \
+     M_uuid.f90 M_writegif.f90 M_writegif_animated.f90 M_xterm.f90 nc_errmessage.f90 nc_printescape.f90  \
+     nc_printhtml.f90 nc_printplain.f90 nc_printunicode.f90 paranoia.f90 pixel_slice.f90 ran_mod.f90  \
+     sparanoia.f90 strgar3.f90 
+
+OBJS =  C-arcs.o C-aspect.o C-attr.o C-buffer.o C-canvas.o  \
+     C-cgmt.o C-clip.o C-curves.o C-draw.o C-drivers.o C-fti.o  \
+     C-gauss.o C-getgp.o C-getstring.o C-gnu.o C-hlsrgb.o C-hpdxy.o  \
+     C-hpgt.o C-hvsrgb.o C-jubiglet.o C-jucolor.o C-macros.o C-mapping.o  \
+     C-matrix.o C-mif.o C-move.o C-M_draw.o C-M_drawplus.o C-M_getkey.o  \
+     C-M_readline.o C-M_regex.o C-M_sqlite.o C-M_system.o C-M_units.o C-newtokens.o  \
+     C-nil.o C-objects.o C-patches.o C-pbm.o C-pcl5.o C-pdf.o  \
+     C-points.o C-polygons.o C-ppm.o C-pref.o C-ps.o C-read_line.o  \
+     C-rect.o C-rgbhls.o C-rgbhvs.o C-rgbmono.o C-rgbval.o C-rtf.o  \
+     C-scale.o C-svg.o C-tek.o C-tensor.o C-text.o C-trans.o  \
+     C-unixplot.o C-usemap.o C-valloc.o C-verror.o C-viewing.o C-viewp.o  \
+     C-vml.o C-vog.o C-X11.o C-xfig.o C-yobbarays.o c.o  \
+     calc_NC.o dparanoia.o juown1.o M_anyscalar.o M_calculator.o M_calculator_plus.o  \
+     M_color.o M_Compare_Float_Numbers.o M_constants.o M_csv.o M_debug.o M_display.o  \
+     M_draw.o M_drawplus.o M_factor.o M_fixedform.o M_generic_list.o M_geography.o  \
+     M_getkey.o M_getopt.o M_getopt_long.o M_history.o M_html.o M_io.o  \
+     M_journal.o M_kracken.o M_list.o M_logic.o M_math.o M_messages.o  \
+     M_ncurses.o M_overload.o M_pixel.o M_pixel_slices.o M_process.o M_random.o  \
+     M_readgif.o M_readline.o M_regex.o M_sort.o M_sqlite.o M_stopwatch.o  \
+     M_strings.o M_swap.o M_system.o M_time.o M_treesort.o M_units.o  \
+     M_uuid.o M_writegif.o M_writegif_animated.o M_xterm.o nc_errmessage.o nc_printescape.o  \
+     nc_printhtml.o nc_printplain.o nc_printunicode.o paranoia.o pixel_slice.o ran_mod.o  \
+     sparanoia.o strgar3.o 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 # platform-specific values you will probably change
 # 
-LIBS = -lncurses -lsqlite3 -lreadline
+LIBS = -lncurses -lsqlite3 -lreadline -lX11
 CC = cc
 CFLAGS = -O
 FC = f90
@@ -61,7 +83,7 @@ F90 = gfortran
 F90FLAGS = -O
 LDFLAGS = 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
-all: $(PROG)
+all: $(PROG) $(CPROG)
 
 $(PROG): $(OBJS)
 
@@ -118,12 +140,64 @@ clean:
 	@rm -f $(*F).F90 # ${?F:.ff=.o}
 #=================================================================================
 
+C-arcs.o: draw.h 
+C-aspect.o: draw.h 
+C-attr.o: draw.h 
+C-buffer.o: draw.h 
+C-canvas.o: draw.h 
+C-cgmt.o: draw.h 
+C-clip.o: draw.h 
+C-curves.o: draw.h 
+C-draw.o: draw.h 
+C-drivers.o: draw.h 
+C-fti.o: draw.h 
+C-getgp.o: draw.h 
+C-getstring.o: draw.h 
+C-gnu.o: draw.h 
+C-hpdxy.o: draw.h 
+C-hpgt.o: draw.h 
+C-mapping.o: draw.h 
+C-matrix.o: draw.h 
+C-mif.o: draw.h 
+C-move.o: draw.h 
+C-M_drawplus.o: draw.h 
+C-newtokens.o: draw.h 
+C-nil.o: draw.h 
+C-objects.o: draw.h 
+C-patches.o: draw.h 
+C-pbm.o: draw.h 
+C-pcl5.o: draw.h 
+C-pdf.o: draw.h 
+C-points.o: draw.h 
+C-polygons.o: draw.h 
+C-ppm.o: draw.h 
+C-pref.o: draw.h 
+C-ps.o: draw.h 
+C-rect.o: draw.h 
+C-rtf.o: draw.h 
+C-scale.o: draw.h 
+C-svg.o: draw.h 
+C-tek.o: draw.h 
+C-tensor.o: draw.h 
+C-text.o: draw.h 
+C-trans.o: draw.h 
+C-unixplot.o: draw.h 
+C-usemap.o: draw.h 
+C-valloc.o: draw.h 
+C-verror.o: draw.h 
+C-viewing.o: draw.h 
+C-viewp.o: draw.h 
+C-vml.o: draw.h 
+C-vog.o: draw.h 
+C-X11.o: draw.h 
+C-xfig.o: draw.h 
 calc_NC.o: M_calculator.o M_journal.o M_ncurses.o 
 juown1.o: M_calculator.o M_journal.o M_process.o M_strings.o 
 M_calculator.o: M_io.o M_journal.o M_math.o M_random.o M_strings.o M_time.o                
 M_calculator_plus.o: M_calculator.o M_journal.o 
 M_color.o: M_strings.o 
 M_csv.o: M_anyscalar.o M_strings.o 
+M_drawplus.o: M_draw.o M_journal.o 
 M_factor.o: M_anyscalar.o 
 M_fixedform.o: M_journal.o M_ncurses.o 
 M_history.o: M_journal.o M_strings.o 
@@ -134,6 +208,7 @@ M_list.o: M_debug.o
 M_logic.o: M_calculator_plus.o M_journal.o 
 M_math.o: M_anyscalar.o M_journal.o M_sort.o 
 M_messages.o: M_anyscalar.o M_journal.o 
+M_overload.o: M_strings.o 
 M_pixel.o: M_journal.o M_math.o M_sort.o M_units.o 
 M_pixel_slices.o: M_pixel.o 
 M_regex.o: M_strings.o 
@@ -143,9 +218,9 @@ M_strings.o: M_journal.o
 M_system.o: M_anyscalar.o M_io.o M_time.o 
 M_time.o: M_debug.o M_strings.o          
 M_units.o: M_anyscalar.o 
+M_uuid.o: M_random.o M_time.o 
 M_xterm.o: M_getkey.o M_strings.o 
 nc_errmessage.o: M_ncurses.o 
-nc_notabs.o: M_journal.o 
 nc_printescape.o: M_ncurses.o 
 nc_printhtml.o: M_ncurses.o 
 nc_printplain.o: M_ncurses.o 

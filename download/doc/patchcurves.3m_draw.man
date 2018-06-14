@@ -1,0 +1,11 @@
+NAME
+   patchcurves(3f) - [M_DRAW:PATCH] Set the number of curves making up a patch.
+
+SYNOPSIS
+         subroutine patchcurves(nt, nu)
+         integer nt, nu
+
+DESCRIPTION
+
+   Set the number of curves making up a patch.
+

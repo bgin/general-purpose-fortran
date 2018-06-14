@@ -1,0 +1,57 @@
+NAME
+   M_DRAWPLUS(3f) - [M_DRAW] Additional routines using the M_DRAW graphics library
+SYNOPSIS
+
+DESCRIPTION
+
+   M_DRAWPLUS(3f) is a collection of higher level graphic routines that call the
+   base M_DRAW(3f) graphics routines.
+
+LIBRARY FUNCTION DESCRIPTIONS
+
+   DEVICE ROUTINES
+
+   ROUTINES FOR SETTING UP WINDOWS
+
+   CLIPPING ROUTINES
+
+   COLOR ROUTINES
+
+   INTERACTIVE ROUTINES
+
+   FLUSHING
+
+   PROJECTION AND VIEWPORT ROUTINES
+   subroutine biggest_ortho2 (left, right, bottom, top)
+
+   MATRIX STACK ROUTINES
+
+   VIEWPOINT ROUTINES
+
+   MOVE ROUTINES
+
+   LINESTYLE ROUTINES
+
+   DRAW ROUTINES
+
+   ARCS AND CIRCLES
+
+   CURVE ROUTINES
+
+   RECTANGLES AND GENERAL POLYGON ROUTINES
+
+   TEXT ROUTINES
+
+   TRANSFORMATIONS ROUTINES
+
+   PATCH ROUTINES
+
+   POINT ROUTINES
+
+   OBJECT ROUTINES
+   subroutine jucall(xt,yt,zt,xs,ys,zs,xr,yr,zr,iobject)
+
+   DOUBLE BUFFERING
+
+   POSITION ROUTINES
+

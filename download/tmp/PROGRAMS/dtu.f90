@@ -15,7 +15,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'       dtu(1) - [FILE FILTER] convert files between Unix and DOS line terminator conventions',&
+'       dtu(1f) - [FILE FILTER] convert files between Unix and DOS line terminator conventions',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '       dtu [[-make dos|unix] [-z] [-n] -i input -o output ]|--help|--version    ',&
@@ -44,7 +44,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!        dtu(1) - [FILE FILTER] convert files between Unix and DOS line terminator conventions
+!!        dtu(1f) - [FILE FILTER] convert files between Unix and DOS line terminator conventions
 !!
 !!##SYNOPSIS
 !!
@@ -93,7 +93,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Wed, Dec 20th, 2017 11:58:46 PM>',&
+'@(#)COMPILED:       Mon, Jun 4th, 2018 8:52:06 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

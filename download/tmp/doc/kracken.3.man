@@ -95,3 +95,9 @@ EXAMPLE
          filename=myfile
          values= 10000.0000  4.1122334455667700  1234
 
+SEE ALSO
+   M_kracken, kracken
+
+   dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+
+   parse,dissect,store,setprompts,show

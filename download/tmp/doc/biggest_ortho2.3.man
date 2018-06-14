@@ -1,16 +1,17 @@
 NAME
-   biggest_ortho2(3f) - [M_pixel] define the area of the virtual world coordinates to map to the viewport
+   biggest_ortho2(3f) - [M_DRAW] set window into largest viewport available assuming 1-to-1 correspondence of x and y coordinates
 
 SYNOPSIS
- definition:
-
-   subroutine biggest_ortho2(left, right, bottom, top)
-   real,intent(in) :: left, right, bottom, top
+      subroutine biggest_ortho2(xsmall,xlarge,ysmall,ylarge)
+      real, intent=(in) :: xsmall
+      real, intent=(in) :: xlarge
+      real, intent=(in) :: ysmall
+      real, intent=(in) :: ylarge
 
 DESCRIPTION
-   Defines the section of the virtual world coordinates to map to the
-   viewport. Automatically use the largest viewport that provides one-to-one correspondence between
-   the window and the viewport.
+   Given a window size, and assuming a one-to-one correspondence of window
+   units (ie. an "x-unit" is as long as a "y-unit"), find the largest area
+   on the display surface that has the same aspect ratio, and set the
+   viewport to it.
 
-EXAMPLE
-
+   assumes that the screen rasters are square.

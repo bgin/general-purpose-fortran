@@ -1,0 +1,15 @@
+NAME
+   fixedwidth(3f) - [M_DRAW:TEXT] Turns fixedwidth mode on or off for SOFTWARE fonts.
+SYNOPSIS
+        subroutine fixedwidth(onoff)
+        logical onoff
+DESCRIPTION
+
+   Turns fixedwidth text on or off. Non-zero (.true.) causes all text to
+   be printed with a fixed width for each character. Otherwise, the text
+   is spaced proportionally, where each character has a unique width less
+   than or equal to the current fixed font width. This routine only affects
+   software text.
+
+   The default at program initialization is fixedwidth(.false.)
+

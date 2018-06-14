@@ -1,0 +1,31 @@
+NAME
+   getviewport(3f) - [M_DRAW:VIEWPORT] Returns limits of current viewport in screen coordinates
+
+SYNOPSIS
+         subroutine getviewport(left, right, bottom, top)
+         real,intent(out)    :: left
+         real,intent(out)    :: right
+         real,intent(out)    :: bottom
+         real,intent(out)    :: top
+
+DESCRIPTION
+
+Returns the left, right, bottom and top limits of the current viewport
+in screen coordinates (-1.0 to 1.0).
+
+   If a device has been declared to be real :: array(600,400)
+
+        o-----> X                         (right=600,top=0)
+        | #------------------------------------#
+        | |                                    |
+        | |                                    |
+        V |                                    |
+        Y |                                    |
+          #------------------------------------#
+     (left=0,bottom=400)
+
+OPTIONS
+   LEFT     value for left side
+   RIGHT    value for right side
+   BOTTOM   value for bottom side
+   TOP      value for top side

@@ -17,3 +17,9 @@ OPTIONS
    IWIDE0       if .ge. zero, how many columns wide to show just verbs
 
 EXAMPLE
+SEE ALSO
+   M_kracken, kracken
+
+   dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+
+   parse,dissect,store,setprompts,show

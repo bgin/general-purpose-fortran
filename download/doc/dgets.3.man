@@ -42,3 +42,9 @@ EXAMPLE
    $ demo_dgets -nums 89,123,456.789 10.9999999
     89123456.789000005,10.999999900000001
 
+SEE ALSO
+   M_kracken, kracken
+
+   dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+
+   parse,dissect,store,setprompts,show

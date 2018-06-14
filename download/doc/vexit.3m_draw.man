@@ -1,0 +1,35 @@
+NAME
+   vexit(3f) - [M_DRAW:DEVICE] Reset window/terminal (must be last routine called) and exit graphics mode
+
+SYNOPSIS
+         subroutine vexit()
+
+DESCRIPTION
+
+   Reset the window/terminal (must be the last M_DRAW routine called)
+   and terminate graphics mode.  Required before calling vinit(3f)
+   again if vinit(3f) is called more than once.
+
+EXAMPLE
+  Sample program:
+
+     program demo_vexit
+     use M_DRAW, only: prefsize, vexit, ortho2, clear, getkey
+     use M_DRAW, only: move2, draw2, color, vinit
+     integer :: ipaws
+
+     call prefsize(60,40)
+     call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
+     call ortho2(-300.0,300.0,-200.0,200.0)
+     call color(0)
+     call clear()
+     call color(1)
+     call move2(-300.0,-200.0)
+     call draw2(300.0,200.0)
+     call move2(300.0,-200.0)
+     call draw2(-300.0,200.0)
+     ipaws=getkey()
+
+     call vexit()
+
+     end program demo_vexit

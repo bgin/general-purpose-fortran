@@ -1,0 +1,58 @@
+$ifdef TESTPRG90
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+$DOCUMENT HELP -file _true.1.man
+NAME
+       _true(1f) - [FUNIX] do nothing, successfully
+
+SYNOPSIS
+       _true [--verbose|--help|--version]
+
+DESCRIPTION
+       Exit with a status code indicating failure.
+
+       --verbose  display an ASCII graphic of a shining sun
+       --help     display this help and exit
+       --version  output version information and exit
+
+EXAMPLE
+       _true && echo SUCCESSFUL || echo DID NOT WORK
+SEE ALSO
+       _true(1f)
+$DOCUMENT END
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+$DOCUMENT VERSION
+PRODUCT:        CLI library utilities and examples
+PROGRAM:        _true(1f) 
+DESCRIPTION:    do nothing, successfully
+VERSION:        1.0, 20170125
+AUTHOR:         John S. Urban
+$DOCUMENT END
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+program true
+use M_kracken, only : kracken, lget
+use M_messages, only : junsun
+implicit none
+call kracken('true','-help .F. -version .F. -verbose .F.')
+call help_usage(lget('true_help'))      ! if -help option is present, display help text and exit
+call help_version(lget('true_version')) ! if -version option is present, display version text and exit
+if(lget('true_verbose'))then
+   call junsun('s')
+endif
+stop
+end program true
+$ENDIF
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+$IFDEF UFPP_TEST
+       This begins the section that will be processed by ufpp. Typically it is called by
+       ufpp -system -html -i FILENAME
+       if $SYSTEM commands are trusted
+
+   UNIT TEST OF _true
+
+        place unit test information in database
+$SYSTEM goodbad _true start -section 1
+
+        Execute program
+$SYSTEM _true && goodbad _true good -section 1 ||  goodbad _true bad -section 1
+$ENDIF
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

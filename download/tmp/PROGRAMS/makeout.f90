@@ -164,7 +164,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    create Makefile for current directory>',&
 '@(#)VERSION:        1.0, 2017-12-09>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Thu, Mar 29th, 2018 6:45:36 PM>',&
+'@(#)COMPILED:       Tue, Jun 12th, 2018 7:13:09 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -179,6 +179,7 @@ use M_sort, only                       : sort_shell, unique
 use M_strings, only                    : expand, split, lower, substitute, chomp
 use M_system, only                     : system_opendir,system_readdir, system_closedir, system_stat, system_isdir
 use M_time, only                       : now
+use M_strings, only                    : matchw
 use,intrinsic :: iso_c_binding, only   : c_ptr
 use,intrinsic :: iso_fortran_env, only : OUTPUT_UNIT, ERROR_UNIT ! , INPUT_UNIT    ! access computing environment
 implicit none
@@ -186,6 +187,8 @@ implicit none
 character(len=*),parameter::ident="@(#)makeout(1f): Generate a Makefile from the sources (C, Fortran) in the current directory."
 
 character(len=:),allocatable    :: programs(:)
+character(len=4096),allocatable :: c_programs(:)
+character(len=4096),allocatable :: f_programs(:)
 character(len=:),allocatable    :: fixed(:)
 character(len=:),allocatable    :: directory
 character(len=:),allocatable    :: sources
@@ -235,12 +238,45 @@ character(len=maxlen)           :: ext
    write(io,'(a)')now('#@(#) Makefile started by makeout(1) year-month-day hour:minute:second') ! date comment starts make(1) file
 !----------------------------------------------------------------------------------------------------------------------------------
    programs=sgets('makeout_oo')
+   allocate(f_programs(0))
+   allocate(c_programs(0))
+   do i=1,size(programs)
+      if(matchw(programs(i),'*.c'))then
+         !! bug in gfortran means have to test
+         if(size(c_programs).eq.0)then
+            c_programs=[programs(i)]
+         else
+            c_programs=[c_programs,programs(i)]
+         endif
+      elseif(any([                          &
+              matchw(programs(i),'*.f'),    &
+              matchw(programs(i),'*.F'),    &
+              matchw(programs(i),'*.f90'),  &
+              matchw(programs(i),'*.F90'),  &
+              matchw(programs(i),'*.ff'),   &
+              matchw(programs(i),'*.FF')]))then
+         !! bug in gfortran means have to test
+         if(size(f_programs).eq.0)then
+            f_programs=[programs(i)]
+         else
+            f_programs=[f_programs,programs(i)]
+         endif
+      else
+      endif
+   enddo
+
    if(size(programs).ne.0)then
-      write(io,'(/,"PROGFILES = ",*(5(a:,1x),"\",/,"        "))')(trim(programs(i)),i=1,size(programs))
+      write(io,'(/,"PROGFILES = ",*(5(a:,1x),"\",/,"        "))')(trim(f_programs(i)),i=1,size(f_programs))
    else
       write(io,'(/,"PROGFILES = ")')
    endif
+   if(size(c_programs).ne.0)then
+      write(io,'(/,"CPROGFILES = ",*(5(a:,1x),"\",/,"        "))')(trim(c_programs(i)),i=1,size(c_programs))
+   else
+      write(io,'(/,"CPROGFILES = ")')
+   endif
    write(io,'(/,a)')'PROG = ${PROGFILES:.f90=}'
+   write(io,'(/,a)')'CPROG = ${CPROGFILES:.c=}'
 !----------------------------------------------------------------------------------------------------------------------------------
    directory='.'                                                  ! pathname of current directory
    call system_opendir(directory,dir,ierr)                        ! open directory stream to read from
@@ -348,10 +384,10 @@ character(len=maxlen)           :: ext
    write(io,'(a)')repeat('# ',40)
 !----------------------------------------------------------------------------------------------------------------------------------
    if(size(programs).eq.0)then
-      write(io,'(a)')'#all: $(PROG)'
+      write(io,'(a)')'#all: $(PROG) $(CPROG)'
       write(io,'(a)')'all: $(OBJS)'
    else
-      write(io,'(a)')'all: $(PROG)'
+      write(io,'(a)')'all: $(PROG) $(CPROG)'
    endif
 !----------------------------------------------------------------------------------------------------------------------------------
    fixed=[character(len=132) :: &
@@ -606,47 +642,3 @@ character(len=*),intent(in)     :: default
 end subroutine printmakevar
 end program makeout
 !----------------------------------------------------------------------------------------------------------------------------------
-!===============================================================================
-! message
-! *ufpp* CURRENT STATE
-! *ufpp*    TOTAL LINES READ ...........         955
-! *ufpp*    CONDITIONAL_NESTING_LEVEL...    0
-! *ufpp*    G_WRITE (general processing)    T
-! *ufpp*    G_LLWRITE (write input lines)   T
-! *ufpp*    DATE........................ 18:45 29 Mar 2018
-! *ufpp*    ARGUMENTS .................. TESTPRG90 -D CYGWIN -D CYGWIN64_GFORTRAN -D ENDCON=ENDCON -D LOADER_BUG=LOADER_BUG -I /tmp/CCALL_CYGWIN64_GFORTRAN_74592 -I /home/urbanjs/V600/LIBRARY/lib2zebra/inc -I /home/urbanjs/V600/LIBRARY/libDL/inc -I /home/urbanjs/V600/LIBRARY/libGCS/inc -I /home/urbanjs/V600/LIBRARY/libJSU/inc -I /home/urbanjs/V600/LIBRARY/libMULTI/inc -I /home/urbanjs/V600/LIBRARY/libObsolete/inc -I /home/urbanjs/V600/LIBRARY/libSTUG/inc -I /home/urbanjs/V600/LIBRARY/libUSH/inc -I /home/urbanjs/V600/LIBRARY/libcalcomp/inc -I /home/urbanjs/V600/LIBRARY/libgdi/inc -I /home/urbanjs/V600/LIBRARY/libgks2/inc -I /home/urbanjs/V600/LIBRARY/libmachine/inc -I /home/urbanjs/V600/LIBRARY/libncar/inc -I /home/urbanjs/V600/LIBRARY/libnogle/inc -I /home/urbanjs/V600/LIBRARY/libnswc/inc -I /home/urbanjs/V600/LIBRARY/librandlib/inc -I /home/urbanjs/V600/LIBRARY/libslatec/inc -I /home/urbanjs/V600/LIBRARY/libsteam67/inc -I /home/urbanjs/V600/LIBRARY/libtemplate/inc -I /home/urbanjs/V600/LIBRARY/libvg320/inc -I /home/urbanjs/V600/LIBRARY/libvogle/inc -I /home/urbanjs/V600/LIBRARY/libvopl/inc -I /home/urbanjs/V600/LIBRARY/libxyplot/inc -I ./LIBRARY/libGPF/EXE/MAKEOUT -verbose -system .true. -i ./LIBRARY/libGPF/EXE/MAKEOUT/makeout.ff -o /tmp/CCALL_CYGWIN64_GFORTRAN_74592/makeout.74592.f90 ! *ufpp* VARIABLES:
-! *ufpp*    ! TESTPRG90                       !           1                    
-! *ufpp*    ! CYGWIN                          !           1                    
-! *ufpp*    ! CYGWIN64_GFORTRAN               !           1                    
-! *ufpp*    ! ENDCON                          ! ENDCON                         
-! *ufpp*    ! LOADER_BUG                      ! LOADER_BUG                     
-! *ufpp* OPEN FILES:
-! *ufpp*    ! ---- ! UNIT ! LINE NUMBER ! FILENAME
-! *ufpp*    !    1 !   50 !         955 ! ./LIBRARY/libGPF/EXE/MAKEOUT/makeout.ff
-! *ufpp* INCLUDE DIRECTORIES:
-! /tmp/CCALL_CYGWIN64_GFORTRAN_74592
-! /home/urbanjs/V600/LIBRARY/lib2zebra/inc
-! /home/urbanjs/V600/LIBRARY/libDL/inc
-! /home/urbanjs/V600/LIBRARY/libGCS/inc
-! /home/urbanjs/V600/LIBRARY/libJSU/inc
-! /home/urbanjs/V600/LIBRARY/libMULTI/inc
-! /home/urbanjs/V600/LIBRARY/libObsolete/inc
-! /home/urbanjs/V600/LIBRARY/libSTUG/inc
-! /home/urbanjs/V600/LIBRARY/libUSH/inc
-! /home/urbanjs/V600/LIBRARY/libcalcomp/inc
-! /home/urbanjs/V600/LIBRARY/libgdi/inc
-! /home/urbanjs/V600/LIBRARY/libgks2/inc
-! /home/urbanjs/V600/LIBRARY/libmachine/inc
-! /home/urbanjs/V600/LIBRARY/libncar/inc
-! /home/urbanjs/V600/LIBRARY/libnogle/inc
-! /home/urbanjs/V600/LIBRARY/libnswc/inc
-! /home/urbanjs/V600/LIBRARY/librandlib/inc
-! /home/urbanjs/V600/LIBRARY/libslatec/inc
-! /home/urbanjs/V600/LIBRARY/libsteam67/inc
-! /home/urbanjs/V600/LIBRARY/libtemplate/inc
-! /home/urbanjs/V600/LIBRARY/libvg320/inc
-! /home/urbanjs/V600/LIBRARY/libvogle/inc
-! /home/urbanjs/V600/LIBRARY/libvopl/inc
-! /home/urbanjs/V600/LIBRARY/libxyplot/inc
-! ./LIBRARY/libGPF/EXE/MAKEOUT
-!===============================================================================

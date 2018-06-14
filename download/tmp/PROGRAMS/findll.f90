@@ -20,7 +20,8 @@ help_text=[ CHARACTER(LEN=128) :: &
 '       tab character is treated as a single character).                         ',&
 'OPTIONS                                                                         ',&
 '       FILENAMES  the files to scan for long lines                              ',&
-'       -l NUMBER  maximum line length of lines to ignore                        ',&
+'       -l NUMBER  maximum line length of lines to ignore.                       ',&
+'                  The default is 132.                                           ',&
 '       --wrap     instead of locating and displaying long                       ',&
 '                  lines, fold the lines at the specified                        ',&
 '                  line length                                                   ',&
@@ -57,7 +58,8 @@ end subroutine help_usage
 !!        tab character is treated as a single character).
 !!##OPTIONS
 !!        FILENAMES  the files to scan for long lines
-!!        -l NUMBER  maximum line length of lines to ignore
+!!        -l NUMBER  maximum line length of lines to ignore.
+!!                   The default is 132.
 !!        --wrap     instead of locating and displaying long
 !!                   lines, fold the lines at the specified
 !!                   line length
@@ -90,7 +92,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    find long lines>',&
 '@(#)VERSION:        23.1 20160618>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Thu, Mar 29th, 2018 6:58:39 PM>',&
+'@(#)COMPILED:       Mon, Jun 4th, 2018 9:01:29 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

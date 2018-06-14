@@ -107,7 +107,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    print system information>',&
 '@(#)VERSION:        1.0, 20161107>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Thu, Dec 21st, 2017 12:12:52 AM>',&
+'@(#)COMPILED:       Mon, Jun 4th, 2018 8:59:48 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

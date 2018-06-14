@@ -1,0 +1,10 @@
+NAME
+   popmatrix(3f) - [M_DRAW:MATRIX_STACK] Reinstall the last matrix pushed
+
+SYNOPSIS
+         subroutine popmatrix
+
+DESCRIPTION
+
+   Retrieve the last matrix pushed and make it the current transformation matrix.
+

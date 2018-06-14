@@ -1,0 +1,9 @@
+NAME
+   popviewport(3f) - [M_DRAW:VIEWPORT] Retrieve last viewport
+
+SYNOPSIS
+         subroutine popviewport
+
+DESCRIPTION
+
+   Retrieve last viewport.

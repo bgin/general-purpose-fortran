@@ -1,0 +1,11 @@
+NAME
+   poly(3f) - [M_DRAW:POLYGONS] Construct a polygon from an array of points
+
+SYNOPSIS
+      subroutine poly(n, points)
+      integer,intent(in) :: n
+      real,intent(in)    :: points(3, n)
+DESCRIPTION
+
+   Construct a polygon from an array of points provided by the user.
+

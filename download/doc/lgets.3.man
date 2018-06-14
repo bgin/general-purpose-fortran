@@ -44,3 +44,9 @@ EXAMPLE
    $ demo_lgets -truths false F .f. no true .true. t T Yes No
     F F F F T T T T T T F
 
+SEE ALSO
+   M_kracken, kracken
+
+   dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+
+   parse,dissect,store,setprompts,show

@@ -1,0 +1,39 @@
+NAME
+   clear(3f) - [M_DRAW:COLOR] Clears screen to current color
+
+SYNOPSIS
+        subroutine clear()
+
+DESCRIPTION
+
+   Clears the screen to the current color.
+
+EXAMPLE
+     program demo_clear
+     use M_DRAW, only    : prefsize, vinit, ortho2, clear, getkey
+     use M_DRAW, only    : vexit, color, circle, polyfill
+     implicit none
+     integer :: ipaws
+
+     call prefsize(300,300)
+     call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
+     ipaws=getkey()
+     call ortho2(-100.0,100.0,-100.0,100.0)
+
+     call color(0)               ! set current  color
+     call clear()                ! clear background to current color
+     call color(1)               ! set color to draw with
+     call circle(0.0,0.0,50.0)
+     ipaws=getkey()
+
+     call color(2)               ! make a second page
+     call clear()
+     call polyfill(.true.)
+     call color(3)
+     call circle(0.0,0.0,50.0)
+     ipaws=getkey()
+
+     call vexit()
+
+     end program demo_clear
+

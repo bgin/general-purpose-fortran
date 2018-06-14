@@ -3042,11 +3042,11 @@ END SUBROUTINE accdig
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!      dp_addig(3f) - [M_math] compare two DOUBLEPRECISION numbers only up to a specified number of digits
+!!      dp_accdig(3f) - [M_math] compare two DOUBLEPRECISION numbers only up to a specified number of digits
 !!
 !!##SYNOPSIS
 !!
-!!       subroutine dp_addig(x,y,rdgits,acurcy,ind)
+!!       subroutine dp_accdig(x,y,rdgits,acurcy,ind)
 !!
 !!        doubleprecision,intent(in)     :: X
 !!        doubleprecision,intent(in)     :: Y
@@ -3058,7 +3058,7 @@ END SUBROUTINE accdig
 !!
 !!    This procedure is used to check how closely two numbers agree.
 !!
-!!       call dp_addig(X,Y,DIGI0,ACURCY,IND)
+!!       call dp_accdig(X,Y,DIGI0,ACURCY,IND)
 !!
 !!    the values X and Y are the numbers to compare, and DIGI0 is the
 !!    threshold number of digits to consider significant in returning IND.
@@ -3114,8 +3114,8 @@ END SUBROUTINE accdig
 !!
 !!   Example program:
 !!
-!!    program demo_dp_addig ! fortran 90 example
-!!    use M_math, only : dp_addig
+!!    program demo_dp_accdig ! fortran 90 example
+!!    use M_math, only : dp_accdig
 !!    integer digi
 !!    real vals(9)
 !!    data vals/ &
@@ -3126,7 +3126,7 @@ END SUBROUTINE accdig
 !!       do i10=0,16
 !!          a=1.0
 !!          b=a+1.0/(10**i10)
-!!          call dp_addig(a,b,8.0,acurcy,ind)
+!!          call dp_accdig(a,b,8.0,acurcy,ind)
 !!          write(*,*)i10,a,b,acurcy,ind
 !!       enddo
 !!       write(*,*)'========================='
@@ -3134,23 +3134,23 @@ END SUBROUTINE accdig
 !!       do i20=0,digi
 !!          a=1.0
 !!          b=a+1.0/(10**i20)
-!!          call dp_addig(a,b,dble(digi),acurcy,ind)
+!!          call dp_accdig(a,b,dble(digi),acurcy,ind)
 !!          write(*,*)i20,a,b,acurcy,ind
 !!       enddo
 !!       write(*,*)'========================='
 !!       do i30=1,9
-!!          call dp_addig(1.2345678,vals(i30),8.0,acurcy1,ind1)
-!!          call dp_addig(vals(i30),1.2345678,8.0,acurcy2,ind2)
+!!          call dp_accdig(1.2345678,vals(i30),8.0,acurcy1,ind1)
+!!          call dp_accdig(vals(i30),1.2345678,8.0,acurcy2,ind2)
 !!          write(*,*)i30,vals(i30),acurcy1,acurcy2,ind1,ind2
 !!       enddo
-!!    end program demo_dp_addig
+!!    end program demo_dp_accdig
 !!
 !!##NOTES
 !!##REFERENCES
 !!
 !!   based on ...
 !!
-!!    NBS OMNITAB 1980 VERSION 6.01  1/ 1/81. dp_addig V 7.00  2/14/90. **
+!!    NBS OMNITAB 1980 VERSION 6.01  1/ 1/81. dp_accdig V 7.00  2/14/90. **
 !!       David Hogben,
 !!       Statistical Engineering Division,
 !!       Center for Computing and Applied Mathematics,
@@ -3179,41 +3179,41 @@ SUBROUTINE dp_accdig (X,Y,digi0,ACURCY,IND)
 use M_journal, only : journal
 implicit none
 character(len=*),parameter::ident="@(#)M_math::dp_accdig(3f): compare two double values only up to a specified number of digits"
-!     INPUT ...
-      doubleprecision,intent(in)  :: x           ! FIRST  OF TWO DOUBLE NUMBERS TO BE COMPARED.
-      doubleprecision,intent(in)  :: y           ! SECOND OF TWO DOUBLE NUMBERS TO BE COMPARED.
-      doubleprecision,intent(in)  :: digi0       ! NUMBER OF DIGITS TO BE SATISFIED IN RELATIVE TOLERANCE.
-!     OUTPUT ...
-      integer,intent(out)         :: ind         ! = 0, IF TOLERANCE IS     SATISFIED.
-                                                 ! = 1, IF TOLERANCE IS NOT SATISFIED.
-      doubleprecision,intent(out) :: acurcy      ! = - LOG10 (ABS((X-Y)/Y)))
-      doubleprecision             ::  diff
-      doubleprecision             ::  digi
-      integer                     ::  idble_significant_digits
-!     ==================================================================
-      idble_significant_digits=int(log10(2.0**digits(0.0d0))) ! MAXIMUM NUMBER OF SIGNIFICANT DIGITS IN A DOUBLE NUMBER.
-      digi=digi0
-      if(digi.le.0)then
-         call journal('sc','*dp_accdig* bad number of significant digits=',dble(digi))
-         digi=idble_significant_digits
-      else if(digi .gt. idble_significant_digits)then
-         call journal('sc','*dp_accdig* significant digit request too high=',dble(digi))
-         digi=min(digi,dble(idble_significant_digits))
-      endif
-      diff = x - y
-      if (diff .eq. 0.0) then
-         acurcy = digi
-      else if (y .eq. 0.0) then
-         acurcy = - log10 (abs (x))
-      else
-         acurcy = - log10 ( abs(diff) ) + log10 ( abs(y) )
-      endif
-      if (acurcy .lt. digi ) then
-         ind = 1
-      else
-         ind = 0
-      endif
-      end subroutine dp_accdig
+!  INPUT ...
+   doubleprecision,intent(in)  :: x           ! FIRST  OF TWO DOUBLE NUMBERS TO BE COMPARED.
+   doubleprecision,intent(in)  :: y           ! SECOND OF TWO DOUBLE NUMBERS TO BE COMPARED.
+   doubleprecision,intent(in)  :: digi0       ! NUMBER OF DIGITS TO BE SATISFIED IN RELATIVE TOLERANCE.
+!  OUTPUT ...
+   integer,intent(out)         :: ind         ! = 0, IF TOLERANCE IS     SATISFIED.
+                                              ! = 1, IF TOLERANCE IS NOT SATISFIED.
+   doubleprecision,intent(out) :: acurcy      ! = - LOG10 (ABS((X-Y)/Y)))
+   doubleprecision             ::  diff
+   doubleprecision             ::  digi
+   integer                     ::  idble_significant_digits
+!  ==================================================================
+   idble_significant_digits=int(log10(2.0**digits(0.0d0))) ! MAXIMUM NUMBER OF SIGNIFICANT DIGITS IN A DOUBLE NUMBER.
+   digi=digi0
+   if(digi.le.0)then
+      call journal('sc','*dp_accdig* bad number of significant digits=',dble(digi))
+      digi=idble_significant_digits
+   else if(digi .gt. idble_significant_digits)then
+      call journal('sc','*dp_accdig* significant digit request too high=',dble(digi))
+      digi=min(digi,dble(idble_significant_digits))
+   endif
+   diff = x - y
+   if (diff .eq. 0.0) then
+      acurcy = digi
+   else if (y .eq. 0.0) then
+      acurcy = - log10 (abs (x))
+   else
+      acurcy = - log10 ( abs(diff) ) + log10 ( abs(y) )
+   endif
+   if (acurcy .lt. digi ) then
+      ind = 1
+   else
+      ind = 0
+   endif
+end subroutine dp_accdig
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------

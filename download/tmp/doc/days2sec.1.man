@@ -1,5 +1,5 @@
 NAME
-   days2sec - [TIME] Convert [[-]dd-][[hh:]mm:]ss to seconds
+   days2sec(1f) - [TIME] Convert [[-]dd-][[hh:]mm:]ss to seconds
 
 SYNOPSIS
    days2sec dd-hh:mm:ss | --version| --help

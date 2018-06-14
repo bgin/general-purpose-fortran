@@ -9,22 +9,22 @@ DESCRIPTION
     Find lines on stdin that contain the specified regular expression pattern.
 
 OPTIONS
-    pattern    regular expression
-    -i         Ignore case distinctions in both the PATTERN and the input files.
+    pattern  regular expression
+    -i       Ignore case distinctions in both the PATTERN and the input files.
 
-   Matcher Selection
+   MATCHER SELECTION
 
-    -E         Interpret PATTERN as an ERE(extended regular expression).
-    -G         Interpret PATTERN as a BRE(basic regular expression). This is the default.
-               If present, it takes precedence over -E.
+    -E       Interpret PATTERN as an ERE(extended regular expression).
+    -G       Interpret PATTERN as a BRE(basic regular expression). This is the default.
+             If present, it takes precedence over -E.
 
-   Basic vs Extended Regular Expressions
+   BASIC VS EXTENDED REGULAR EXPRESSIONS
 
-       In basic regular expressions the meta-characters ?, +, {, |,
-       (, and ) lose their special meaning; instead use the
-       backslashed versions \?, \+, \{, \|, \(, and \).
+   In basic regular expressions the meta-characters ?, +, {, |,
+   (, and ) lose their special meaning; instead use the
+   backslashed versions \?, \+, \{, \|, \(, and \).
 
-   Informative
+   INFORMATIVE
 
     --help     display this help and exit
     --version  output version information and exit

@@ -115,6 +115,13 @@ contains
 !!
 !!     $ ./demo_retrev -value use this value instead
 !!     VALUE IS use this value instead
+!!
+!!##SEE ALSO
+!!    M_kracken, kracken
+!!
+!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+!!
+!!    parse,dissect,store,setprompts,show
 !===================================================================================================================================
 subroutine retrev(name,val,len,ier)
 
@@ -187,6 +194,12 @@ end subroutine retrev
 !!
 !!    $ demo_dget -val 3.000
 !!       3.00000000
+!!##SEE ALSO
+!!    M_kracken, kracken
+!!
+!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+!!
+!!    parse,dissect,store,setprompts,show
 !===================================================================================================================================
 function dget(keyword)
 
@@ -246,6 +259,12 @@ end function dget
 !!
 !!    $ demo_rget -val 3.000
 !!       3.00000000
+!!##SEE ALSO
+!!    M_kracken, kracken
+!!
+!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+!!
+!!    parse,dissect,store,setprompts,show
 !===================================================================================================================================
 function rget(keyword)
 
@@ -309,6 +328,12 @@ end function rget
 !!
 !!    $ demo_iget -val 3.000
 !!       3
+!!##SEE ALSO
+!!    M_kracken, kracken
+!!
+!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+!!
+!!    parse,dissect,store,setprompts,show
 !===================================================================================================================================
 function iget(keyword)
 
@@ -374,6 +399,12 @@ end function iget
 !!      The truth is T
 !!      $ demo_lget -truth F    # N, no, F, false, .F., .FALSE. are all false
 !!      The truth is F
+!!##SEE ALSO
+!!    M_kracken, kracken
+!!
+!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+!!
+!!    parse,dissect,store,setprompts,show
 !===================================================================================================================================
 function lget(keyword)
 
@@ -467,6 +498,12 @@ end function lget
 !!    string is new value for string
 !!    a is A value for A
 !!    b is BBBBBBB
+!!##SEE ALSO
+!!    M_kracken, kracken
+!!
+!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+!!
+!!    parse,dissect,store,setprompts,show
 !===================================================================================================================================
 function sget(name,ilen) result(string)
 
@@ -541,6 +578,13 @@ end function sget
 !!
 !!    $ demo_dgets -nums 89,123,456.789 10.9999999
 !!     89123456.789000005,10.999999900000001
+!!
+!!##SEE ALSO
+!!    M_kracken, kracken
+!!
+!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+!!
+!!    parse,dissect,store,setprompts,show
 !===================================================================================================================================
 function dgets(keyword) result(darray)
 
@@ -614,6 +658,13 @@ end function dgets
 !!      1,2,3,100,1000,10000,100000,11,77,-77
 !!      $ demo_igets -val 89,123,456 10.9999999
 !!      89123456,10
+!!
+!!##SEE ALSO
+!!    M_kracken, kracken
+!!
+!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+!!
+!!    parse,dissect,store,setprompts,show
 !===================================================================================================================================
 function igets(keyword) result(iarray)
 
@@ -697,6 +748,12 @@ end function igets
 !!      212.00       100.00
 !!      -40.00       -40.00
 !!       98.60        37.00
+!!##SEE ALSO
+!!    M_kracken, kracken
+!!
+!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+!!
+!!    parse,dissect,store,setprompts,show
 !===================================================================================================================================
 function rgets(keyword) result(rarray)
 
@@ -757,6 +814,13 @@ end function rgets
 !!
 !!    $ demo_lgets -truths false F .f. no true .true. t T Yes No
 !!     F F F F T T T T T T F
+!!
+!!##SEE ALSO
+!!    M_kracken, kracken
+!!
+!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+!!
+!!    parse,dissect,store,setprompts,show
 !===================================================================================================================================
 function lgets(keyword) result(larray)
 
@@ -844,6 +908,13 @@ end function lgets
 !!
 !!    $ xxx -string parse this into words
 !!     string=[parse][this][into][words]
+!!
+!!##SEE ALSO
+!!    M_kracken, kracken
+!!
+!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+!!
+!!    parse,dissect,store,setprompts,show
 !===================================================================================================================================
 function sgets(name,delim) result(strings)
 
@@ -972,6 +1043,13 @@ end function sgets
 !!
 !!          filename=myfile
 !!          values= 10000.0000  4.1122334455667700  1234
+!!
+!!##SEE ALSO
+!!    M_kracken, kracken
+!!
+!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+!!
+!!    parse,dissect,store,setprompts,show
 !===================================================================================================================================
 subroutine kracken(verb,string,error_return)
 
@@ -1022,7 +1100,7 @@ end subroutine kracken
 !!
 !!    Optionally set prompts for interactive prompting mode.
 !!    The syntax of the call is the same as for KRACKEN(3f)/DISSECT(3f) except that prompt
-!!    strings are given instead of default values. It is called after a call to KRACKEN(3f)
+!!    strings are given instead of default values. It is called before a call to KRACKEN(3f)
 !!    or DISSECT(3f).
 !!
 !!##OPTIONS
@@ -1031,6 +1109,36 @@ end subroutine kracken
 !!##RETURNS
 !!##EXAMPLE
 !!
+!!   Sample program:
+!!
+!!     program demo_setprompts
+!!     use M_kracken, only : kracken,iget,rget,sget,setprompts
+!!     implicit none
+!!
+!!     call setprompts('demo', ' -int My INTEGER value  -float My REAL value  -str My CHARACTER value')
+!!     call kracken(   'demo', ' -int 100 -float 123.456 -str DEFAULT')
+!!     write(*,*)'GOT HERE A'
+!!     write(*,'(a,i0)')'INTEGER IS ',iget('demo_int')
+!!     write(*,'(a,g0)')'REAL IS ',rget('demo_float')
+!!     write(*,'(a,a)')'STRING IS '//trim(sget('demo_str'))
+!!
+!!     end program demo_setprompts
+!!
+!!   Example execution and output:
+!!
+!!        $ demo_setprompts -?
+!!        demo parameters are
+!!        >   1)My CHARACTER value:[DEFAULT]
+!!            3)My INTEGER value:[100]
+!!            4)My REAL value:[123.456]
+!!        Enter parameter number to change("RETURN" to finish):
+!!
+!!##SEE ALSO
+!!    M_kracken, kracken
+!!
+!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+!!
+!!    parse,dissect,store,setprompts,show
 !===================================================================================================================================
 subroutine setprompts(verb,init)
 
@@ -1067,6 +1175,12 @@ end subroutine setprompts
 !!
 !!##EXAMPLE
 !!
+!!##SEE ALSO
+!!    M_kracken, kracken
+!!
+!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+!!
+!!    parse,dissect,store,setprompts,show
 !===================================================================================================================================
 subroutine dissect(verb,init,pars,error_return)
 
@@ -1140,6 +1254,12 @@ end subroutine dissect
 !!
 !!##EXAMPLE
 !!
+!!##SEE ALSO
+!!    M_kracken, kracken
+!!
+!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+!!
+!!    parse,dissect,store,setprompts,show
 !===================================================================================================================================
 subroutine parse(verb,string,allow,error_return)
 
@@ -1387,6 +1507,12 @@ end subroutine parse
 !!
 !!##EXAMPLE
 !!
+!!##SEE ALSO
+!!    M_kracken, kracken
+!!
+!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+!!
+!!    parse,dissect,store,setprompts,show
 !===================================================================================================================================
 subroutine store(name1,value1,allow1,ier)
 
@@ -1533,6 +1659,12 @@ end subroutine store
 !!##RETURNS
 !!##EXAMPLE
 !!
+!!##SEE ALSO
+!!    M_kracken, kracken
+!!
+!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+!!
+!!    parse,dissect,store,setprompts,show
 !===================================================================================================================================
 function subscript(chars0)
 
@@ -1595,6 +1727,12 @@ end function subscript
 !!    write(*,*)'LEN(CMD)=',len(cmd)
 !!    write(*,*)'IER=',ier
 !!    end program testit
+!!##SEE ALSO
+!!    M_kracken, kracken
+!!
+!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+!!
+!!    parse,dissect,store,setprompts,show
 !===================================================================================================================================
 subroutine get_command_arguments(string,istatus)
 
@@ -1669,6 +1807,12 @@ end subroutine get_command_arguments
 !!##RETURNS
 !!##EXAMPLE
 !!
+!!##SEE ALSO
+!!    M_kracken, kracken
+!!
+!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+!!
+!!    parse,dissect,store,setprompts,show
 !===================================================================================================================================
 subroutine menu(verb)
 
@@ -1917,6 +2061,12 @@ end subroutine menu
 !!
 !!##EXAMPLE
 !!
+!!##SEE ALSO
+!!    M_kracken, kracken
+!!
+!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+!!
+!!    parse,dissect,store,setprompts,show
 !===================================================================================================================================
 subroutine show(VERB_NAME0,VERBS_ONLY,IWIDE0)
 

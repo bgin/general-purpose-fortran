@@ -3,16 +3,16 @@ NAME
    unit_check_start(3f) - [M_debug] call command "goodbad NAME start"
 
 SYNOPSIS
-   subroutine unit_check_start(name,string)
+   subroutine unit_check_start(name,options)
 
     character(len=*),intent(in) :: name
-    character(len=*),intent(in),optional :: string
+    character(len=*),intent(in),optional :: options
 
 DESCRIPTION
 
    unit_check_start(3f) calls the shell command
 
-      goodbad NAME start [string]
+      goodbad NAME start [options]
 
 EXAMPLES
   Sample program:

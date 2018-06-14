@@ -1,5 +1,5 @@
 NAME
-   paws - [TIME] pause until specified time or for specified duration
+   paws(1f) - [TIME] pause until specified time or for specified duration
 
 SYNOPSIS
    paws [dd-hh:mm:ss[.xxx]|xxx.yyy[s|m|h|d]][-msg message][-cmd command][-repeat TIMES[-fmt ]]|...

@@ -1,5 +1,5 @@
 NAME
-   colors - [CONVERT] list colors and their values using common color models
+   colors(1f) - [CONVERT] list colors and their values using common color models
 
 SYNOPSIS
    colors [color_name | R G B | model_name_A V1 V2 V3 model_name_B ]

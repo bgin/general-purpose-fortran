@@ -1,5 +1,5 @@
 NAME
-       _touch(1f) - change file access timestamps or create null file
+       _touch(1f) - [FUNIX] change file access timestamps or create null file
 
 SYNOPSIS
        touch FILE... [--help|--version|--verbose]

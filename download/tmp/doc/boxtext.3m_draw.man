@@ -1,0 +1,13 @@
+NAME
+   boxtext(3f) - [M_DRAW:TEXT] Draw the SOFTWARE string s so that it fits in the imaginary box
+
+SYNOPSIS
+        subroutine boxtext(x, y, l, h, s)
+        real x, y, l, h, s
+
+DESCRIPTION
+
+   Draw the string s so that it fits in the imaginary box defined with
+   bottom left hand corner at (x, y), length l, and height h. This only
+   applies to software text.
+

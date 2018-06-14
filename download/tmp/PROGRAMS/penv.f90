@@ -133,7 +133,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)COPYRIGHT:      Copyright (C) 2016 John S. Urban>',&
-'@(#)COMPILED:       Thu, Dec 21st, 2017 12:03:08 AM>',&
+'@(#)COMPILED:       Mon, Jun 4th, 2018 8:54:10 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

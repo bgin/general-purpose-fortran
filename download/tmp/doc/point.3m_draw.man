@@ -1,0 +1,8 @@
+NAME
+   point(3f) - [M_DRAW:POINT] Draw a point at x, y, z
+SYNOPSIS
+        subroutine point(x, y, z)
+        real,intent(in) ::  x, y, z
+DESCRIPTION
+   Draw a point at x, y, z
+

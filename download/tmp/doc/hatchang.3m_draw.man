@@ -1,0 +1,13 @@
+NAME
+   hatchang(3f) - [M_DRAW:POLYGONS] Set the angle of the hatch lines.
+SYNOPSIS
+      subroutine hatchang(angle)
+      real,intent(in) ::  angle
+
+DESCRIPTION
+
+   Set the angle of the hatch lines. The angle is in degrees. Zero degrees
+   is on the negative X axis. Positive values are counterclockwise. The
+   value is 0 at program initialization. The last value set is retained
+   even if hatching is not active or is turned on and off.
+

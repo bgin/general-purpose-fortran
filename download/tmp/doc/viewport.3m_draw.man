@@ -1,0 +1,21 @@
+NAME
+   viewport(3f) - [M_DRAW:VIEWPORT] Specify which part of screen to draw in
+
+SYNOPSIS
+         subroutine viewport(left, right, bottom, top)
+         real,intent(in) :: left, right, bottom, top
+DESCRIPTION
+   Specify which part of the screen to draw in. Left, right, bottom,
+   and top are real values in screen coordinates (0:n,0:m).
+
+   If a device has been declared to be 600 x 400
+
+        o-----> X                         (right=600,top=0)
+        | #------------------------------------#
+        | |                                    |
+        | |                                    |
+        V |                                    |
+        Y |                                    |
+          #------------------------------------#
+     (left=0,bottom=400)
+

@@ -1,0 +1,9 @@
+NAME
+   getopenobj(3f) - [M_DRAW:OBJECT] Return the number of the current object.
+
+SYNOPSIS
+        integer function getopenobj()
+
+DESCRIPTION
+   Return the number of the current object.
+

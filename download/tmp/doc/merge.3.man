@@ -24,7 +24,7 @@ EXAMPLES
 
    MERGE (1.0, 0.0, K > 0)
 
-  is 1.0 for K = 5 and 0.0 for K = ­2.
+  is 1.0 for K = 5 and 0.0 for K =  2.
 
    program demo_merge
    integer :: TSRC(2,3), FSRC(2,3), ANSWER(2,3)

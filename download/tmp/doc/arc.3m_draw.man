@@ -1,0 +1,46 @@
+NAME
+    arc(3f) - [M_DRAW:ARCS] Draw an arc in world units.
+SYNOPSIS
+        subroutine arc(x, y, radius, startang, endang)
+        real,intent(in) :: x
+        real,intent(in) :: y
+        real,intent(in) :: radius
+        real,intent(in) :: startang
+        real,intent(in) :: endang
+DESCRIPTION
+
+   Draw an arc. x, y, and radius are values in world units
+   using  current line width and color
+
+   Angles are in degrees, positive measured counterclockwise from the
+   +X axis. The current position after the arc is drawn is at the end
+   of the arc.
+
+OPTIONS
+   X,Y        Coordinates for the center of the circle
+   RADIUS     Radius of the circle
+   STARTANG   Start angle
+   ENDANG     End angle
+
+EXAMPLE
+  Sample program:
+
+   program demo_arc
+   use M_DRAW
+   integer  :: transparent=0
+   call prefsize(600,240)
+   call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
+   call ortho2(0.0,60.0,0.0,24.0)
+   call linewidth(400)
+   call color(1)
+   call arc(16.0,12.0,12.0,90.0,270.0)
+   call color(2)
+   call arc(44.0,12.0,12.0,-90.0,90.0)
+   ipaws=getkey()
+   call vexit()
+   end program demo_arc
+
+IMAGE
+   The arcs are drawn; followed by a draw to the arc center (using
+   "draw2(X,Y)").
+

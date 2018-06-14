@@ -9,6 +9,7 @@ cat <<EOF
 <title>$TITLE</title>
 <meta name="keywords" content="Fortran, Fortran code, Fortran source code repository, Fortran library, Fortran archive,         " />
 <meta name="keywords" content="General Purpose Fortran, Fortran modules, Fortran examples                                       " />
+<meta name="keywords" content="Fortran Repository" />
 EOF
 cat <<\EOF
 <style>

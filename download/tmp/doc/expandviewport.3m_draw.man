@@ -1,0 +1,15 @@
+NAME
+   expandviewport(3f) - [M_DRAW:VIEWPORT] use the entire device viewport
+
+SYNOPSIS
+        subroutine expandviewport
+
+DESCRIPTION
+
+   When M_DRAW does viewport calculations, it will normally begin by using
+   the largest square it can fit onto the actual display device. This
+   call says to use the whole device... however you must then take
+   into account any distortion that will occur due to the non-square
+   mapping. Thus, a viewport of (-1.0, 1.0, -1.0, 1.0) will map into
+   the whole display device.
+

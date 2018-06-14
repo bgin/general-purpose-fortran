@@ -1,0 +1,11 @@
+NAME
+   ycentertext(3f) - [M_DRAW:TEXT] center text in the Y direction
+
+SYNOPSIS
+       subroutine ycentertext()
+
+DESCRIPTION
+   Centers text in the Y direction. The text string will so that it's
+   center line is aligned with the current y position. Top justification
+   and Bottom justification are turned off.
+

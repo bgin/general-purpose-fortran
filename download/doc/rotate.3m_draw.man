@@ -1,0 +1,11 @@
+NAME
+   rotate(3f) - [M_DRAW:TRANSFORMATION] Set up a rotation in axis axis where axis is one of 'x','y', or 'z'.
+
+SYNOPSIS
+         subroutine rotate(angle, axis)
+         real angle
+         character axis
+DESCRIPTION
+
+   Set up a rotation in axis axis. Where axis is one of 'x', 'y', or 'z'.
+

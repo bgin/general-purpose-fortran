@@ -66,3 +66,9 @@ EXAMPLE
      212.00       100.00
      -40.00       -40.00
       98.60        37.00
+SEE ALSO
+   M_kracken, kracken
+
+   dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+
+   parse,dissect,store,setprompts,show

@@ -9,13 +9,13 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'       colrm - remove columns from a file                                       ',&
+'       _colrm(1f) - [FUNIX]remove columns from a file                           ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
-'       colrm [first [last]]                                                     ',&
+'       _colrm [first [last]]                                                    ',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
-'       colrm removes selected columns from a file.  Input is taken from         ',&
+'       _colrm removes selected columns from a file.  Input is taken from        ',&
 '       standard input.  Output is sent to standard output.                      ',&
 '                                                                                ',&
 '       If  called  with  one  parameter  the  columns of each line will         ',&
@@ -23,7 +23,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '       with two parameters the columns from the first column to the last        ',&
 '       column will be removed.                                                  ',&
 '                                                                                ',&
-'       Column numbering starts with column 1.                                   ',&
+'       Column numbering starts with column 1. Tabs are NOT expanded.            ',&
 '                                                                                ',&
 'OPTIONS                                                                         ',&
 '       first                                                                    ',&
@@ -32,7 +32,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '       --help     Display help text and exit.                                   ',&
 '                                                                                ',&
 'HISTORY                                                                         ',&
-'       The colrm command appeared in 3.0BSD.                                    ',&
+'       The colrm(1) command appeared in 3.0BSD.                                 ',&
 'EXAMPLE                                                                         ',&
 '       # trim file so no line is longer than 72 characters                      ',&
 '       cat FILENAME|_colrm 73                                                   ',&
@@ -46,14 +46,14 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!        colrm - remove columns from a file
+!!        _colrm(1f) - [FUNIX]remove columns from a file
 !!
 !!##SYNOPSIS
 !!
-!!        colrm [first [last]]
+!!        _colrm [first [last]]
 !!
 !!##DESCRIPTION
-!!        colrm removes selected columns from a file.  Input is taken from
+!!        _colrm removes selected columns from a file.  Input is taken from
 !!        standard input.  Output is sent to standard output.
 !!
 !!        If  called  with  one  parameter  the  columns of each line will
@@ -61,7 +61,7 @@ end subroutine help_usage
 !!        with two parameters the columns from the first column to the last
 !!        column will be removed.
 !!
-!!        Column numbering starts with column 1.
+!!        Column numbering starts with column 1. Tabs are NOT expanded.
 !!
 !!##OPTIONS
 !!        first
@@ -70,7 +70,7 @@ end subroutine help_usage
 !!        --help     Display help text and exit.
 !!
 !!##HISTORY
-!!        The colrm command appeared in 3.0BSD.
+!!        The colrm(1) command appeared in 3.0BSD.
 !!##EXAMPLE
 !!
 !!        # trim file so no line is longer than 72 characters
@@ -94,7 +94,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20180324>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Sat, Mar 24th, 2018 9:42:08 PM>',&
+'@(#)COMPILED:       Mon, Jun 4th, 2018 8:59:21 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

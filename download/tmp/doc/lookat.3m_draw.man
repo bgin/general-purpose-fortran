@@ -1,0 +1,12 @@
+NAME
+   lookat(3f) - [M_DRAW:VIEWPORT] Specify the viewer's position
+
+SYNOPSIS
+         subroutine lookat(vx, vy, vz, px, py, pz, twist)
+         real vx, vy, vz, px, py, pz, twist
+
+DESCRIPTION
+   Specify the viewer's position by giving a viewpoint and a reference
+   point in world coordinates. A twist about the line of sight may also
+   be given.
+

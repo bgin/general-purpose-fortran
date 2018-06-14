@@ -1,0 +1,11 @@
+NAME
+   topjustify(3f) - [M_DRAW:TEXT] top justify text
+
+SYNOPSIS
+        subroutine topjustify
+
+DESCRIPTION
+   Top justifies text. The text string will be drawn with its upper edge
+   aligned with the current Y position. Bottom justification and Y centering
+   are turned off.
+

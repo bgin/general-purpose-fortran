@@ -1,0 +1,10 @@
+NAME
+        model(1f) - fortran numeric model information
+
+SYNTAX
+        model
+
+DESCRIPTION
+       The following routines are called for various types:
+
+

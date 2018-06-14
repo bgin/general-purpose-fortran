@@ -16,7 +16,7 @@ HTML >tmp/html/BOOK_$TOPIC.html
    else
       # make sure sort(1) does not sort case-insensitive
       echo "$TOPIC.3.html"
-      mank -k "${TOPIC}"|env LC_ALL=C /usr/bin/sort|awk '{print $1}'|sed -e 's/$/.3.html/'
+      mank -k "\[${TOPIC}"|env LC_ALL=C /usr/bin/sort|tr -d '()'|awk '{printf "%s.%s.html\n",$1,$2}'
    fi| uniq|while read NAME
    do
       echo "append(\"$NAME\");"

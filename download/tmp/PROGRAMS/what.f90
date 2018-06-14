@@ -132,33 +132,33 @@ subroutine what__print_version()  ! automatically generated QA routine; may be r
 !-----------------------------------------------------------------------------------------------------------------------------------
 !  DEVELOPER-SUPPLIED INFORMATION (USUALLY)
    ! Dublin Core Metadata Element Set (supplemented)
-   call sccs_id('@(#)title            :: what(1f)>')
-   call sccs_id('@(#)description      :: extract SCCS-style metadata from files>')
+   call sccs_id('@(#)TITLE            :: what(1f)>')
+   call sccs_id('@(#)DESCRIPTION      :: extract SCCS-style metadata from files>')
    ! used to tie this code (and compilation) to a unique key that can be used in QA records, as a database key, ...
    ! FYI        : depending on what key type you use, it may be able to extract the time the key was generated from the key value
 
   !call sccs_id('@(#)identifier       :: VERSION=1.0.2 UUID=e5b12225-6b11-4425-917f-c027aefb25ae>')
-   call sccs_id('@(#)identifier       :: VERSION=2.0.0 UUID=cc787735-fed2-42d3-8cb2-515ea7599873>')
+   call sccs_id('@(#)IDENTIFIER       :: VERSION=2.0.0 UUID=cc787735-fed2-42d3-8cb2-515ea7599873>')
    ! Birth        : 2015-07-12 12:24:04 Change: 2015-07-19 23:33:46
-   call sccs_id('@(#)date             :: 2015/07/17  1:23:28 PM>')  ! creation, modification, registration
-   call sccs_id('@(#)status           :: PRODUCTION 20160202>') ! development, test, production
+   call sccs_id('@(#)DATE             :: 2015/07/17  1:23:28 PM>')  ! creation, modification, registration
+   call sccs_id('@(#)STATUS           :: PRODUCTION 20160202>') ! development, test, production
 
-   call sccs_id('@(#)rights           :: Public Domain>')
-   call sccs_id('@(#)creator          :: John S. Urban>')
-   call sccs_id('@(#)publisher        :: CONTACT=urbanjost@comcast.net>')
-   call sccs_id('@(#)contributor      :: >')
-   call sccs_id('@(#)subject          :: metadata,SCCS identification string>')
+   call sccs_id('@(#)RIGHTS           :: Public Domain>')
+   call sccs_id('@(#)CREATOR          :: John S. Urban>')
+   call sccs_id('@(#)PUBLISHER        :: CONTACT=urbanjost@comcast.net>')
+   call sccs_id('@(#)CONTRIBUTOR      :: >')
+   call sccs_id('@(#)SUBJECT          :: metadata,SCCS identification string>')
 
-   call sccs_id('@(#)type             :: executable command>')
-   call sccs_id('@(#)format           :: Fortran program>')
+   call sccs_id('@(#)TYPE             :: executable command>')
+   call sccs_id('@(#)FORMAT           :: Fortran program>')
 
    ! stat(3c) / stat(1)        :file(1):ls(1) info. at time of compilation, useful even if INCLUDE/MODULE/PREPROCESSOR used
-   call sccs_id('@(#)source           :: LIBRARY/libGPF/EXE/WHAT/what.FF>') ! typically cpp(1) macro __FILE__
-   call sccs_id('@(#)language         :: english>')
-   call sccs_id('@(#)relation         :: ISO/IEC DIS 9945-2:1992, Information technology - POSIX-Part 2: Shell and Utilities>')
-   call sccs_id('@(#)coverage         :: ORIGIN=Pennsylvania,USA ORIGIN_TGN=7007710>')
+   call sccs_id('@(#)SOURCE           :: LIBRARY/libGPF/EXE/WHAT/what.FF>') ! typically cpp(1) macro __FILE__
+   call sccs_id('@(#)LANGUAGE         :: english>')
+   call sccs_id('@(#)RELATION         :: ISO/IEC DIS 9945-2:1992, Information technology - POSIX-Part 2: Shell and Utilities>')
+   call sccs_id('@(#)COVERAGE         :: ORIGIN=Pennsylvania,USA ORIGIN_TGN=7007710>')
 !  COMPILATION HOST
-   call sccs_id('@(#)origin           :: CYGWIN_NT-6.3 buzz 2.0.3(0.287/5/3) 2015-06-03 13:57 x86_64 Cygwin>') !uname(3c)
+   call sccs_id('@(#)ORIGIN           :: CYGWIN_NT-6.3 buzz 2.0.3(0.287/5/3) 2015-06-03 13:57 x86_64 Cygwin>') !uname(3c)
 !-----------------------------------------------------------------------------------------------------------------------------------
    write(io,'("=================:: ")')
 !  COMPILER-RELATED COMPILATION INFORMATION

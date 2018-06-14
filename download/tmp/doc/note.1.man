@@ -1,5 +1,5 @@
 NAME
-    note - print large block letters
+    note(1f) - print large block letters
 
 SYNOPSIS
     note STRING(S) [-font FontName] |-test|-help|-version

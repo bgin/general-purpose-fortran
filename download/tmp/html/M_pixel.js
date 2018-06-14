@@ -1,7 +1,6 @@
 function loadthem(){
 append("M_pixel.3.html");
 append("arc.3.html");
-append("biggest_ortho2.3.html");
 append("centertext.3.html");
 append("circle.3.html");
 append("circleprecision.3.html");
@@ -28,7 +27,6 @@ append("pixel_slice.3.html");
 append("point2.3.html");
 append("poly2.3.html");
 append("polyline.3.html");
-append("prefsize.3.html");
 append("print_ascii.3.html");
 append("print_ppm.3.html");
 append("rdraw2.3.html");

@@ -1,0 +1,11 @@
+NAME
+   hatchpitch(3f) - [M_DRAW:POLYGONS] Set the distance between hatch lines.
+
+SYNOPSIS
+      subroutine hatchpitch(pitch)
+      real,intent(in) ::  pitch
+
+DESCRIPTION
+   Set the distance between hatch lines. The distance is measured in
+   window units (as opposed to viewport or device units).
+

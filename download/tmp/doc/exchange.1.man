@@ -1,5 +1,5 @@
 NAME
-    exchange - [CONVERT] test of basic unit conversion functions
+    exchange(1f) - [CONVERT] test of basic unit conversion functions
 
 SYNOPSIS
     exchange [-feet VALUES] [-meters VALUES]

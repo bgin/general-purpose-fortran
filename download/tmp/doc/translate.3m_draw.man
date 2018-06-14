@@ -1,0 +1,11 @@
+NAME
+   translate(3f) - [M_DRAW:TRANSFORMATION] Set up a translation.
+
+SYNOPSIS
+      subroutine translate(x, y, z)
+      real x, y, z
+
+DESCRIPTION
+
+   Set up a translation.
+

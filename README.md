@@ -10,7 +10,7 @@ their associated C support routines) providing
 *  __command line parsing__
 *  __command line history__ editing
 *  a __date and time__ module
-*  the beginnings of a __pixel graphics module__ similar to the VOGLE graphics library interface
+*  The VOGLE graphics library, and the beginnings of a __pixel graphics module__ similar to the VOGLE graphics library interface
 *  libraries for message handling, unit testing, and debugging
 *  a growing number of Fortran interfaces to common C routines, including
    +  many __POSIX system routines__
@@ -251,6 +251,10 @@ Fortran KIND definitions used by other parts of the basic utilities
 compare two real numbers only up to a specified number of digits
 
 ### Graphics
+[M\_DRAW(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/BOOK_M_draw.html)
+
+The M\_draw module is an interface to a C library based on the VOGLE graphics library. It is supplemented
+by higher level modules.
 
 [M\_PIXEL(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/BOOK_M_pixel.html)
 

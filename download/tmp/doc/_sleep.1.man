@@ -1,5 +1,5 @@
 NAME
-   _sleep - [TIME] pause for specified duration
+   _sleep(1f) - [TIME] pause for specified duration
 SYNOPSIS
    _sleep [dd-hh:mm:ss[.xxx]|xxx.yyy[s|m|h|d]] --version|--help
 DESCRIPTION

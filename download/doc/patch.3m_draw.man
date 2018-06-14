@@ -1,0 +1,12 @@
+NAME
+   patch(3f) - [M_DRAW:PATCH] Draws a patch in the current basis, according to the geometry matrices gx, gy, and gz.
+
+SYNOPSIS
+         subroutine patch(gx, gy, gz)
+         real  gx(4,4), gy(4,4), gz(4,4)
+DESCRIPTION
+
+   Draws a patch in the current basis, according to the geometry matrices
+   gx, gy, and gz.
+
+

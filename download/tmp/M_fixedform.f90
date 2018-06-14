@@ -1479,7 +1479,6 @@ subroutine printit() ! @(#) access program data here so nc_printplain(3f) is gen
    use M_ncurses
    implicit none
    character(len=256)           :: ufilename    ! filename to print to
-   character(len=256),external  :: nc_uniqname  !
    integer                      :: ierr
 !   ufilename=nc_uniqname("paper.txt",ierr)
 !   if(ierr.eq.0)then

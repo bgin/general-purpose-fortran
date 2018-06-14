@@ -1,0 +1,10 @@
+NAME
+   polyhatch(3f) - [M_DRAW:POLYGONS] Set the polygon hatch flag
+SYNOPSIS
+    subroutine polyhatch(onoff)
+    logical onoff
+DESCRIPTION
+
+   Set the polygon hatch flag. This will always turn off fill. A non-zero
+   integer or LOGICAL .true. turns polyhatch on. Note that hatched polygons
+   must initially be defined parallel to the X-Y plane.

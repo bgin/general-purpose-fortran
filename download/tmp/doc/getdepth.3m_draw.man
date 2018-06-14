@@ -1,0 +1,12 @@
+NAME
+   getdepth(3f) - [M_DRAW:DEVICE] Return number of bit planes (color planes)
+
+SYNOPSIS
+         integer function  getdepth()
+
+DESCRIPTION
+   Returns the number of bit planes (or color planes) for a particular
+   device. The number of colors displayable by the device is then
+   2**(nplanes); ie. if nplanes=1,then there are two colors (black and
+   white).
+

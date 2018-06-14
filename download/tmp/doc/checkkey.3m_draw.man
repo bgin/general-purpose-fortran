@@ -1,0 +1,11 @@
+NAME
+   checkkey(3f) - [M_DRAW:INTERACTIVE] Returns zero if no key is pressed or ASCII ordinal
+
+SYNOPSIS
+         integer function checkkey()
+
+DESCRIPTION
+
+   Returns zero if no key is pressed or the ASCII ordinal of the key
+   that was pressed.
+

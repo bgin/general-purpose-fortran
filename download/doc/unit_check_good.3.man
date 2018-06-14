@@ -3,16 +3,16 @@ NAME
    unit_check_good(3f) - [M_debug] call command "goodbad NAME good"
 
 SYNOPSIS
-   subroutine unit_check_good(name,string)
+   subroutine unit_check_good(name,options)
 
     character(len=*),intent(in) :: name
-    character(len=*),intent(in) :: string
+    character(len=*),intent(in) :: options
 
 DESCRIPTION
 
    unit_check_good(3f) calls the shell command
 
-        goodbad NAME good [string]
+        goodbad NAME good [options]
 
 EXAMPLES
   Sample program:

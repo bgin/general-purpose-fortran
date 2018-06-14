@@ -10,7 +10,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'    exchange - [CONVERT] test of basic unit conversion functions                ',&
+'    exchange(1f) - [CONVERT] test of basic unit conversion functions            ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '    exchange [-feet VALUES] [-meters VALUES]                                    ',&
@@ -61,7 +61,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!     exchange - [CONVERT] test of basic unit conversion functions
+!!     exchange(1f) - [CONVERT] test of basic unit conversion functions
 !!
 !!##SYNOPSIS
 !!
@@ -125,7 +125,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Wed, Dec 20th, 2017 11:59:06 PM>',&
+'@(#)COMPILED:       Mon, Jun 4th, 2018 8:52:15 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

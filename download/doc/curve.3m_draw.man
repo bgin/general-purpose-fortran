@@ -1,0 +1,10 @@
+NAME
+   curve(3f) - [M_DRAW:CURVE] Draw a curve.
+
+SYNOPSIS
+         subroutine curve(geom)
+         real geom(3,4)
+
+DESCRIPTION
+   Draw a curve.
+

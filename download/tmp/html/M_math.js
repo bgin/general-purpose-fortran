@@ -4,7 +4,7 @@ append("accdig.3.html");
 append("almost.3.html");
 append("bds.3.html");
 append("citer.3.html");
-append("dp_addig.3.html");
+append("dp_accdig.3.html");
 append("envelope.3.html");
 append("extremum.3.html");
 append("in_margin.3.html");

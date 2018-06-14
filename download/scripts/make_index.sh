@@ -69,7 +69,20 @@ cat <<\EOF
 
 <pre>
    tar xvfz GPF.tgz
+
+   # if you are not on a platform with X11, ncurses, readline, and
+   # sqlite you might have to remove some of the files from the 
+   # Makefile, and change the compiler and loader options if not
+   # using gfortran(1) and gcc(1). It is usually easiest to try
+   # it and then handle any failures individually ...
+
    make
+
+   # you might want to edit hershey.sh to select where hershey
+   # font files will be installed (default is /usr/share/hershey), 
+   # and then enter ...
+
+   bash hershey.sh
 </pre>
 
 <p>

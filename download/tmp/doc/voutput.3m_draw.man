@@ -1,0 +1,29 @@
+NAME
+   voutput(3f) - [M_DRAW:DEVICE] Redirect output from *next* vinit to file
+
+SYNOPSIS
+         subroutine voutput(path)
+         character*(*) path
+DESCRIPTION
+
+      Redirect output from *next* vinit() to file given by path. This routine
+      only applies to device drivers that write to stdout e.g. PostScript and
+      hpgl.
+
+      The special file names are
+
+        * - is standard output
+        * + is standard error
+        * |command will create a pipe to "command"
+
+      If the open of the file fails, an attempt is made to append to file
+      "VOUTPUT". If this fails, standard output is used.
+
+      When vinit() is called if voutput() has not been called then the
+      environment variable VOUTPUT is checked and if it is defined and not a
+      null string then voutput() is called with the VOUTPUT variable's value.
+
+      A common use of the |command option is to automatically call programs
+      that convert PPM files to other common pixmap formats or converts the GNU
+      metafile to other formats (typically via the GNU plotutils plot program).
+

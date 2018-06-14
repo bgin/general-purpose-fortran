@@ -1,0 +1,9 @@
+NAME
+   getgpt(3f) - [M_DRAW:POSITION] Gets the current transformed graphics position in world coords.
+
+SYNOPSIS
+         subroutine getgpt(x, y, z, w)
+         real x, y, z, w
+DESCRIPTION
+
+   Gets the current transformed graphics position in world coords.

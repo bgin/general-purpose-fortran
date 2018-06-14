@@ -1,0 +1,11 @@
+NAME
+   leftjustify(3f) - [M_DRAW:TEXT] left justify text
+
+SYNOPSIS
+        subroutine leftjustify()
+
+DESCRIPTION
+   Left justifies text. The text string will begin at the current position
+   and extend to the notional right. Right justification and X centering
+   are turned off.
+

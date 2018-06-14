@@ -1,0 +1,18 @@
+NAME
+   linestyle(3f) - [M_DRAW:LINESTYLE] set the line dash pattern
+
+SYNOPSIS
+        subroutine linestyle(style)
+        character *(*) style
+DESCRIPTION
+
+   Set the current linestyle to style. Linestyles are specified by giving a
+   nominal length of a single dash and a character string consisting of 1's
+   and 0's (zeros) that specify when to draw a dash and when not to draw
+   a dash. "1" is for a dash , "0" is for a gap. Linestyles will follow
+   curves and "go around" corners.
+
+   To reset to a solid line style, enter a linestyle of " ". If a linestyle
+   is set or reset, the accumulated information as to where on a curve
+   (or line) a dash is to be draw is also reset.
+

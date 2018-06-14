@@ -1,0 +1,13 @@
+NAME
+   boxfit(3f) - [M_DRAW:TEXT] resize the SOFTWARE text size so it fits in a box
+
+SYNOPSIS
+        subroutine boxfit(l, h, nchars)
+        real l, h
+        integer nchars
+
+DESCRIPTION
+   Set scale for text so that a string of the biggest characters in
+   the font will fit in a box l by h. l and h are real values in world
+   dimensions. This only applies to software text.
+

@@ -1,0 +1,11 @@
+NAME
+   getviewport(3f) - [M_DRAW:VIEWPORT] Returns limits of current viewport in screen coordinates
+
+SYNOPSIS
+         subroutine getviewport(left, right, bottom, top)
+         real left, right, bottom, top
+DESCRIPTION
+
+   Returns the left, right, bottom and top limits of the current viewport
+   in screen coordinates (-1.0 to 1.0).
+

@@ -1,10 +1,13 @@
 NAME
    init_random_seed_by_system_clock(3f) - [M_random] seed random_number(3f) with system clock value
+
 SYNOPSIS
    subroutine init_random_seed_by_system_clock()
+
 DESCRIPTION
    A simple wrapper around random_seed(3f) that uses the system clock to initialize the seed so you can
    easily call random_number(3f) with varying pseudo-random real number sequences
+
 EXAMPLE
    Sample program:
 

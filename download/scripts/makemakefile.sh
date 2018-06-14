@@ -14,13 +14,13 @@ cd tmp
 env MAKEMAKE_LDFLAGS="-fno-range-check -Wall -fbounds-check -g -I. -J. $SANI" \
     MAKEMAKE_F90FLAGS="-Wall -Wuninitialized -fbounds-check -fno-range-check -g -I. -J. $SANI" \
     MAKEMAKE_F90='gfortran' \
-    MAKEMAKE_LIBS='-lncurses -lsqlite3 -lreadline' \
+    MAKEMAKE_LIBS='-lncurses -lsqlite3 -lreadline -lX11' \
 
     makemake "`find PROGRAMS -type f -name '*.[fF] -name '[fF]90'|xargs`"
 
 mv Makefile Makefile_picky
 env MAKEMAKE_F90='gfortran' \
-    MAKEMAKE_LIBS='-lncurses -lsqlite3 -lreadline' \
+    MAKEMAKE_LIBS='-lncurses -lsqlite3 -lreadline -lX11' \
 
     makemake "`find PROGRAMS -type f -name '*.[fF] -name '*.[fF]90'|xargs`"
 )
@@ -34,12 +34,12 @@ cd tmp
 env LDFLAGS="-fno-range-check -Wall -fbounds-check -g -I. -J. $SANI" \
     F90FLAGS="-Wall -Wuninitialized -fbounds-check -fno-range-check -g -I. -J. $SANI" \
     F90='gfortran' \
-    LIBS='-lncurses -lsqlite3 -lreadline' \
+    LIBS='-lncurses -lsqlite3 -lreadline -lX11' \
     makeout "`find PROGRAMS -type f|xargs`" -o
 
 mv Makefile Makefile_picky
 env F90='gfortran' \
-    LIBS='-lncurses -lsqlite3 -lreadline' \
+    LIBS='-lncurses -lsqlite3 -lreadline -lX11' \
     makeout "`find PROGRAMS -type f|xargs`" -o
 )
 }

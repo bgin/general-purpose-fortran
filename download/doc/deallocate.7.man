@@ -126,11 +126,11 @@ DEALLOCATION OF POINTER TARGETS
    statement, the stat-variable becomes defined with a processor-dependent positive integer value different from
    STAT STOPPED IMAGE. In either case, each allocate-object has a processor-dependent status:
 
-       *·each allocate-object that was successfully allocated shall have an allocation status of allocated or a pointer
+       * each allocate-object that was successfully allocated shall have an allocation status of allocated or a pointer
          association status of associated;
-      ·* each allocate-object that was successfully deallocated shall have an allocation status of unallocated or a
+       * each allocate-object that was successfully deallocated shall have an allocation status of unallocated or a
          pointer association status of disassociated;
-      ·* each allocate-object that was not successfully allocated or deallocated shall retain its previous allocation
+       * each allocate-object that was not successfully allocated or deallocated shall retain its previous allocation
          status or pointer association status.
 
 

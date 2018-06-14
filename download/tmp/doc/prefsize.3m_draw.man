@@ -1,0 +1,10 @@
+NAME
+   prefsize(3f) - [M_DRAW:WINDOW_SETUP] Specify preferred width and height of window
+
+SYNOPSIS
+        subroutine prefsize(width, height)
+        integer width, height
+DESCRIPTION
+
+   Specify the preferred width and height of the window opened by the
+   *next* vinit.

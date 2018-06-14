@@ -1,0 +1,56 @@
+NAME
+   rdraw2(3f) - [M_DRAW:DRAW] Relative draw from current position to given point
+
+SYNOPSIS
+         subroutine rdraw2(deltax, deltay)
+         real,intent(in) :: deltax, deltay
+
+DESCRIPTION
+   Relative draw from current position to specified point using current
+   color and line width. Updates current position to new point.
+   (x, y) is a point in world coordinates.
+
+OPTIONS
+   deltax and deltay are offsets in world units.
+
+   X  new X position
+   Y  new Y position
+
+EXAMPLE
+  Sample program:
+
+     program demo_rdraw2
+     use M_DRAW, only: vinit, prefsize, ortho2,linewidth,getkey
+     use M_DRAW, only: clear, move2, rdraw2, vexit,color
+     integer :: ipaws
+
+     call prefsize(200,200)
+     call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
+     call ortho2(-55.0, 55.0, -55.0,  55.0)
+     call linewidth(400)
+     call color(7)
+     call clear()
+
+     call color(1)
+     call move2(-50.0,0.0)
+     call square(50.0)
+
+     call linewidth(200)
+     call color(2)
+     call move2(  0.0,-50.0)
+     call square(50.0)
+
+     ipaws=getkey()
+     call vexit()
+
+     contains
+
+     subroutine square(side)
+     call rdraw2( side,   0.0)
+     call rdraw2(  0.0,  side)
+     call rdraw2(-side,   0.0)
+     call rdraw2(  0.0, -side)
+     end subroutine square
+
+     end program demo_rdraw2
+

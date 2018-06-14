@@ -1,0 +1,70 @@
+!===================================================================================================================================
+program demo_dirname
+use M_kracken, only : kracken, sgets, lget                  ! add command-line parser module
+use M_strings, only : split
+use M_io,      only : dirname
+implicit none
+logical                          :: zero=.false.
+character(len=4096),allocatable  :: array(:)
+integer                          :: i
+!-----------------------------------------------------------------------------------------------------------------------------------
+!  define command arguments, default values and crack command line
+   call kracken('dirname','-help .false. -version .false. -zero .false.')
+   call help_usage(lget('dirname_help'))        ! process -help switch
+   call help_version(lget('dirname_version'))   ! process -version switch
+   zero=lget('dirname_zero')                    ! get -zero option
+   array=sgets('dirname_oo')                    ! get -oo STRING, split on space character into array
+!----------------------------------------------------------------------------------------------------------------------------------
+   do i=1,size(array)                           ! loop thru file-or-directory names
+      if(zero)then
+            write(*,'(a)',advance='no')dirname(array(i))//achar(0)
+      else
+            write(*,'(a)')dirname(array(i))
+      endif
+   enddo
+!----------------------------------------------------------------------------------------------------------------------------------
+contains
+!===================================================================================================================================
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+$DOCUMENT HELP -file _dirname.1.man
+NAME
+   _dirname(1f) - [FUNIX:FILESYSTEM] strip last component from file name
+
+SYNOPSIS
+   _dirname NAME... [-zero]|-help|-version]
+
+DESCRIPTION
+   Output each NAME with its last non-slash component and trailing slashes removed. 
+   if NAME contains no /'s, output '.' (meaning the current directory).
+
+OPTIONS
+   -zero     end each output line with NUL, not newline
+   -help     display this help and exit
+   -version  output version information and exit
+
+EXAMPLES
+   Sample program executions:
+
+     _dirname /usr/bin/          -> "/usr"
+     _dirname dir1/str dir2/str  -> "dir1" followed by "dir2"
+     _dirname stdio.h            -> "."
+
+SEE ALSO
+   dirname(1), basename(1), readlink(1), realpath(1)
+$DOCUMENT END
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+$DOCUMENT VERSION
+PRODUCT:        CLI library utilities and examples
+PROGRAM:        _dirname(1f)
+DESCRIPTION:    strip last component from file name
+VERSION:        1.0.0
+DATE:           2015-06-26
+AUTHOR:         John S. Urban
+REPORTING BUGS: http://www.urbanjost.altervista.org/
+HOME PAGE:      http://www.urbanjost.altervista.org/index.html
+LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.
+                There is NO WARRANTY, to the extent permitted by law.
+$DOCUMENT END
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+end program demo_dirname
+!===================================================================================================================================

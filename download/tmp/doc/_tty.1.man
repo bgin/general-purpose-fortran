@@ -1,5 +1,5 @@
 NAME
-       _tty - [FUNIX:FILESYSTEM] print information about the file/terminal connected to standard input
+       _tty(1f) - [FUNIX:FILESYSTEM] print information about the file/terminal connected to standard input
 
 SYNOPSIS
        _tty [OPTION]...

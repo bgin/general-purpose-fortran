@@ -1,0 +1,11 @@
+NAME
+   getkey(3f) - [M_DRAW:INTERACTIVE] Return ASCII ordinal of next key typed
+
+SYNOPSIS
+         integer function getkey
+
+DESCRIPTION
+
+   Return the ASCII ordinal of the next key typed at the keyboard. If the
+   device has no keyboard getkey returns -1.
+

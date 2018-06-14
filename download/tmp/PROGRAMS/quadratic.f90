@@ -28,24 +28,24 @@ help_text=[ CHARACTER(LEN=128) :: &
 '  Sample usage:                                                                 ',&
 '                                                                                ',&
 '   quadratic 1.0  5.0  2.0                                                      ',&
-'    for    1.00000000     *x**2+   5.00000000     *x+   2.00000000     =0       ',&
-'    the roots are real:                                                         ',&
-'    z1 = -0.438447237                                                           ',&
-'    z2 =  -4.56155300                                                           ',&
-'    discriminant =   17.0000000                                                 ',&
+'    for 1*x**2 + 5*x + 2 = 0                                                    ',&
+'    the roots (ie. "x intercepts") are real so the parabola crosses the x-axis at two points:',&
+'    z1 =-0.438447237                                                            ',&
+'    z2 =-4.561553                                                               ',&
+'    discriminant =17                                                            ',&
 '                                                                                ',&
 '   quadratic 1.0  2.0  5.0 # There are no real roots (Discriminant = -16)!      ',&
-'    for    1.00000000     *x**2+   2.00000000     *x+   5.00000000     =0       ',&
-'    the roots are complex:                                                      ',&
+'    for 1*x**2 + 2*x + 5 = 0                                                    ',&
+'    the roots(ie. "x intercepts")  are complex:                                 ',&
 '    z1 = ( -1.00000000    ,  2.00000000    )                                    ',&
 '    z2 = ( -1.00000000    , -2.00000000    )                                    ',&
-'    discriminant =  -16.0000000                                                 ',&
+'    discriminant =-16                                                           ',&
 '                                                                                ',&
 '   quadratic 9 12 4                                                             ',&
-'    for    9*x**2 + 12*x + 4 = 0                                                ',&
-'    the roots are real and equal:                                               ',&
-'    z1 = z2 = -0.666666687                                                      ',&
-'    discriminant =   0.00000000                                                 ',&
+'    for 9*x**2 + 12*x + 4 = 0                                                   ',&
+'    the roots (ie. "x intercepts") are repeated (real and equal) so the parabola just touches the x-axis at:',&
+'    z1 = z2 =-0.666666687                                                       ',&
+'    discriminant =0                                                             ',&
 '                                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
@@ -76,24 +76,24 @@ end subroutine help_usage
 !!   Sample usage:
 !!
 !!    quadratic 1.0  5.0  2.0
-!!     for    1.00000000     *x**2+   5.00000000     *x+   2.00000000     =0
-!!     the roots are real:
-!!     z1 = -0.438447237
-!!     z2 =  -4.56155300
-!!     discriminant =   17.0000000
+!!     for 1*x**2 + 5*x + 2 = 0
+!!     the roots (ie. "x intercepts") are real so the parabola crosses the x-axis at two points:
+!!     z1 =-0.438447237
+!!     z2 =-4.561553
+!!     discriminant =17
 !!
 !!    quadratic 1.0  2.0  5.0 # There are no real roots (Discriminant = -16)!
-!!     for    1.00000000     *x**2+   2.00000000     *x+   5.00000000     =0
-!!     the roots are complex:
+!!     for 1*x**2 + 2*x + 5 = 0
+!!     the roots(ie. "x intercepts")  are complex:
 !!     z1 = ( -1.00000000    ,  2.00000000    )
 !!     z2 = ( -1.00000000    , -2.00000000    )
-!!     discriminant =  -16.0000000
+!!     discriminant =-16
 !!
 !!    quadratic 9 12 4
-!!     for    9*x**2 + 12*x + 4 = 0
-!!     the roots are real and equal:
-!!     z1 = z2 = -0.666666687
-!!     discriminant =   0.00000000
+!!     for 9*x**2 + 12*x + 4 = 0
+!!     the roots (ie. "x intercepts") are repeated (real and equal) so the parabola just touches the x-axis at:
+!!     z1 = z2 =-0.666666687
+!!     discriminant =0
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -110,7 +110,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    Calculate and print the roots of a quadratic formula even if they are complex>',&
 '@(#)VERSION:        1.0, 20170717>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Thu, Dec 21st, 2017 12:17:19 AM>',&
+'@(#)COMPILED:       Mon, Jun 4th, 2018 9:02:32 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

@@ -1,0 +1,10 @@
+NAME
+   getgp(3f) - [M_DRAW:POSITION] Gets the current graphics position
+
+SYNOPSIS
+         subroutine getgp(x, y, z)
+         real x, y, z
+DESCRIPTION
+
+   Gets the current graphics position in world coords.
+

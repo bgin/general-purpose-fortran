@@ -1,0 +1,11 @@
+NAME
+   curven(3f) - [M_DRAW:CURVE] Draw n-3 overlapping curve segments. Note: n must be at least 4.
+
+SYNOPSIS
+         subroutine curven(n, geom)
+         integer n
+         real geom(3,n)
+
+DESCRIPTION
+   Draw n-3 overlapping curve segments. Note: n must be at least 4.
+

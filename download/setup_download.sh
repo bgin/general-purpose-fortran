@@ -70,16 +70,16 @@ SECTION=$1
 
 # convert to roff and install and convert to html and install
 
-echo "MAN2MAN: $NAME.$SECTION.man ==> $PUTMAN/man$SECTION_NUMBER/$NAME.$SECTION_NUMBER.gz"
+echo "MAN2MAN: $NAME.$SECTION.man ==> $PUTMAN/man$SECTION_NUMBER/$NAME.$SECTION.gz"
 echo "MAN2MAN: $NAME.$SECTION.man ==> $PUTHTML/$NAME.$SECTION.html"
 export AUX_FILENAME="$NAME.$SECTION"
 txt2man -s $SECTION_NAME -t "$NAME" $NAME.$SECTION.man|
-   tee $PUTMAN/man$SECTION_NUMBER/$NAME.$SECTION_NUMBER|
-   man2html >$PUTHTML/$NAME.$SECTION_NUMBER.html
+   tee $PUTMAN/man$SECTION_NUMBER/$NAME.$SECTION|
+   man2html >$PUTHTML/$NAME.$SECTION.html
 
-gzip --force $PUTMAN/man$SECTION_NUMBER/$NAME.$SECTION_NUMBER
+gzip --force $PUTMAN/man$SECTION_NUMBER/$NAME.$SECTION
 
-chmod a=r,u+w $PUTMAN/man$SECTION_NUMBER/$NAME.$SECTION_NUMBER.gz
+chmod a=r,u+w $PUTMAN/man$SECTION_NUMBER/$NAME.$SECTION.gz
 
 }
 ####################################################################################################################################
@@ -94,6 +94,7 @@ SUFFIX=$2
    SECTION_NUMBER=$(echo "$SECTION"|sed -e 's/[^0-9]*//g')
    SECTION_NUMBER=${SECTION_NUMBER:-'7'}
    SECTION_NAME=${SECTION_NUMBER}$(echo "$SECTION"|sed -e 's/^[0-9]*//')
+   echo "SECTION=$SECTION SECTION_NUMBER=$SECTION_NUMBER SECTION_NAME=$SECTION_NAME"
 }
 ####################################################################################################################################
 # convert *.man files to make man(1) pages in tmp/man and HTML versions of man(1) pages in tmp/html
@@ -270,6 +271,16 @@ done
 cp -r $(dirname $(which manserver) )/manserver_dir/ tmp/scripts/
 cp /home/urbanjs/.twm/scripts_vi/vimrc tmp/
 cp /home/urbanjs/.twm/scripts_vi/exrc tmp/
+
+cp /home/urbanjs/V600/LIBRARY/libGPF/draw/inc/draw.h tmp/
+
+mkdir tmp/data/ tmp/fonts/
+
+cp /home/urbanjs/V600/LIBRARY/libGPF/draw/hershey/data/hersh.oc tmp/data/
+cp /home/urbanjs/V600/LIBRARY/libGPF/draw/hershey/data/hersh.or tmp/data/
+cp -r -p /home/urbanjs/V600/LIBRARY/libGPF/draw/hershey/fonts/*.hmp tmp/fonts/
+
+cp /home/urbanjs/V600/LIBRARY/libGPF/draw/hershey/hershey.sh tmp/
 ####################################################################################################################################
 # extract test programs for M_pixel module and run them to test man(1) pages
 # and generate GIF images for HTML versions of the man page, which man2html(1)
@@ -281,6 +292,7 @@ cp /home/urbanjs/.twm/scripts_vi/exrc tmp/
    cd doc/images/
    banner 'test pixel'
    env DISPLAY= test_M_pixel_manpages.sh
+   env DISPLAY= test_M_draw_manpages.sh
 )
 #----------------------------------------------------------------------------------------------------------------------------------#
 :  copy pixmap files needed by documentation
@@ -302,6 +314,7 @@ book.sh M_kracken M_strings M_time M_system M_color M_pixel M_calculator M_units
 book.sh M_Compare_Float_Numbers M_debug M_factor M_io M_journal M_messages M_sort M_xterm INTRINSIC
 book.sh M_stopwatch M_display M_regex
 book.sh M_sqlite
+book.sh M_draw
 book.sh INDEX
 #tmp/M_anyscalar.f90
 #tmp/M_calculator_plus.f90
@@ -345,11 +358,11 @@ echo 'build index of program file metadata using what(1) command'
    what $(find . -path './*/*' -prune -o -type f -printf '../PROGRAMS/%P ') -html|
    sed -n -e '\%^ *<td>%,\%^ *</td>%{
 s/^/ZZZZ:/
-s/ZZZZ:.*DESCRIPTION://
+s/ZZZZ:.*DESCRIPTION *://
 /ZZZZ:/d
 s/^/<td>/
 s/$/<\/td>/
-#\%^ *DESCRIPTION:.*%{!d;p;n}
+#\%^ *DESCRIPTION *:.*%{!d;p;n}
 }' -e p
    footer.sh
 ) > tmp/html/programs.html

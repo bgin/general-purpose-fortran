@@ -1,0 +1,11 @@
+NAME
+   getfontsize(3f) - [M_DRAW:TEXT] Get maximum width and height of a character in a font.
+
+SYNOPSIS
+        subroutine getfontsize(width, height)
+        real width, height
+
+DESCRIPTION
+
+   Get the maximum width and height of a character in a font.
+

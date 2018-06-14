@@ -9,7 +9,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'   degrees - [CONVERT] Convert between Fahrenheit and Celsius temperature values',&
+'   degrees(1f) - [CONVERT] Convert between Fahrenheit and Celsius temperature values',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   degrees [value_unit ...] [-C values] [-F values] [--help] [--version]        ',&
@@ -55,7 +55,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    degrees - [CONVERT] Convert between Fahrenheit and Celsius temperature values
+!!    degrees(1f) - [CONVERT] Convert between Fahrenheit and Celsius temperature values
 !!
 !!##SYNOPSIS
 !!
@@ -115,7 +115,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sat, Feb 3rd, 2018 3:02:05 PM>',&
+'@(#)COMPILED:       Mon, Jun 4th, 2018 8:54:53 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

@@ -1,10 +1,15 @@
 NAME
 
-     system_clock(3f) - [INTRINSIC:SYSTEM ENVIRONMENT] Time function
+     system_clock(3f) - [INTRINSIC:SYSTEM ENVIRONMENT] Return numeric data from a real-time clock.
 
 SYNTAX
 
    call system_clock([count, count_rate, count_max])
+   integer,intent(out),optional  :: count
+   integer,intent(out),optional  :: count_rate
+      or
+   real,intent(out),optional     :: count_rate
+   integer,intent(out,optional   :: count_max
 
 DESCRIPTION
 
@@ -30,39 +35,43 @@ DESCRIPTION
 
 ARGUMENTS
 
-  COUNT       - (Optional) shall be a scalar of type INTEGER with
-                intent(out).
-  count_rate  - (Optional) shall be a scalar of type INTEGER or REAL
-                with intent(out).
-  count_max   - (Optional) shall be a scalar of type INTEGER with
-                intent(out).
+    COUNT        (optional) shall be an integer scalar.
+                 It is assigned a processor-dependent value based on the
+                 current value of the processor clock, or -HUGE (COUNT)
+                 if there is no clock. The processor-dependent value is
+                 incremented by one for each clock count until the value
+                 COUNT_MAX is reached and is reset to zero at the next
+                 count. It lies in the range 0 to COUNT_MAX if there is
+                 a clock.
+    COUNT_RATE   (optional) shall be an integer or real scalar.
+                 It is assigned a processor-dependent approximation
+                 to the number of processor clock counts per second,
+                 or zero if there is no clock.
+    COUNT_MAX    (optional) shall be an integer scalar. It is assigned the
+                 maximum value that COUNT can have, or zero if there is
+                 no clock.
 
 EXAMPLE
 
-  Sample program:
+   Sample program:
 
-   program test_system_clock
-     integer :: count, count_rate, count_max
-     call system_clock(count, count_rate, count_max)
-     write(*,*) count, count_rate, count_max
-   end program
+      program test_system_clock
+        integer :: count, count_rate, count_max
+        call system_clock(count, count_rate, count_max)
+        write(*,*) count, count_rate, count_max
+      end program
 
-  Demonstrate Fortran 90 SUM function with MASK option
 
-      ! John Mahaffy  2/16/96
-      implicit none
-      integer nd,ndh,nduh, j
-      parameter (nd=10,ndh=nd/2,nduh=nd-ndh)
-      real csum,cpsum,cbpsum
-      real, dimension(nd):: c=(/(j,j=-1,nd-2)/), b
-      data b/ndh*-1.0,nduh*2.0/
-      csum= sum(c(1:nd))
-      cpsum= sum (c(1:nd),mask=c.gt.0)
-      cbpsum= sum(c(1:nd),mask=b.gt.0.0)
-      print *, 'Sum of all elements in c = ' , csum
-      print *, 'Sum of Positive elements in c = ', cpsum
-      print *, 'Sum of elements in c when corresponding elements in b>0' ,' =',cbpsum
-      end
+   If the processor clock is a 24-hour clock that registers time at
+   approximately 18.20648193 ticks per second, at 11:30 A.M. the reference
+
+      CALL SYSTEM_CLOCK (COUNT = C, COUNT_RATE = R, COUNT_MAX = M)
+
+   defines
+
+      C = (11*3600+30*60)*18.20648193 = 753748,
+      R = 18.20648193, and
+      M = 24*3600*18.20648193-1 = 1573039.
 
 STANDARD
 

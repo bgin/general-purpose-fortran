@@ -228,7 +228,7 @@ EOF
 ####################################################################################################################################
 SHOW(){
 echo "SHOW $*"
-set -x
+#set -x
 for NAMES_TO_SHOW in $*
 do
    sqlite3 goodbad.db <<EOF
@@ -248,8 +248,8 @@ HELP(){
 cat <<EOF
 ================================================================================
 NAME
-      goodbad - maintains a simple sqlite3 database file that is used to record
-                the results of simple tests run on the routines
+      goodbad(1) - maintains a simple sqlite3 database file that is used to record
+                   the results of simple tests run on the routines
 
 SYNOPSIS
       goodbad  [entryname [status] ]
@@ -271,6 +271,7 @@ DESCRIPTION
         good[N]     means  a test has passed
 
        -edit        if specified edit file as simple text file
+       -line        dump in line mode
        -delete      if specified remove entryname
        -show        list of entries to show in format NAME.SECTION
 
@@ -384,6 +385,7 @@ export GOODBAD_ufpp
 export GOODBAD_ccall
 export GOODBAD_archive
 export GOODBAD_show
+export GOODBAD_line
 export DATE=$(date +%Y/%m/%d\ %H:%M:%S)
 ANSWER=$(PARSE GOODBAD \
 	-delete NO \
@@ -395,6 +397,7 @@ ANSWER=$(PARSE GOODBAD \
         -man NO \
         -browse NO \
         -show NO \
+        -line NO \
         -description \
         -documentation \
         -filename \
@@ -518,9 +521,18 @@ then
    exit
 fi
 ####################################################################################################################################
+# if -line switch specified print file as simple text file
+if [ "$GOODBAD_line" != 'NO' ]
+then
+   sqlite3 goodbad.db  <<EOF
+.mode line
+SELECT * FROM tests ORDER BY entryname;
+EOF
+   exit
+fi
+####################################################################################################################################
 # Database schema
 # entryname â|date  â|descriptionâ|documentationâ|filenameâ|libraryâ|ufppâ|ccallâ|archiveâ|status
-################################################################################
 ################################################################################
 # if -delete switch specified
 if [ "$GOODBAD_delete" != 'NO' ]

@@ -1,0 +1,11 @@
+NAME
+   drawstr(3f) - [M_DRAW:TEXT] Draw the text in string at the current position.
+
+SYNOPSIS
+        subroutine drawstr(str)
+        character(len=*),intent(in) :: str
+
+DESCRIPTION
+   Draw a text string at the current position. Uses current line color
+   and thickness and text centering mode.
+

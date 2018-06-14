@@ -9,7 +9,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'   manup - [DEVELOPER] Simple markup of text to a man(1) page                   ',&
+'   manup(1f) - [DEVELOPER] Simple markup of text to a man(1) page               ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   manup FILE -cmd -section 1 -product "CLI utilities" -help .F. -version .F.   ',&
@@ -21,19 +21,19 @@ help_text=[ CHARACTER(LEN=128) :: &
 '     -section N  N is the man(1) section number. Typically the following categories',&
 '                 are used:                                                      ',&
 '                                                                                ',&
-'                  User Commands       1  Executable programs or shell commands  ',&
-'                  System Calls        2  System calls (functions provided by the kernel)',&
-'                  Library Calls       3  Library calls (functions within program libraries)',&
-'                  Special Files       4  Special files (usually found in /dev)  ',&
-'                  File Formats        5  File formats and conventions (eg. /etc/passwd)',&
-'                  Games               6  Games                                  ',&
-'                  Miscellaneous       7  Miscellaneous (including macro packages and conventions), e.g. man(7), groff(7)',&
-'                  System Admin.       8  System administration commands (usually only for root)',&
-'                  Kernel Extensions   9  Kernel routines [Non standard]         ',&
+'                 User Commands(1)      Executable programs or shell commands    ',&
+'                 System Calls(2)       System calls (functions provided by the kernel)',&
+'                 Library Calls(3)      Library calls (functions within program libraries)',&
+'                 Special Files(4)      Special files (usually found in /dev)    ',&
+'                 File Formats(5)       File formats and conventions (eg. /etc/passwd)',&
+'                 Games(6)  Games                                                ',&
+'                 Miscellaneous(7)      Miscellaneous (including macro packages and conventions), e.g. man(7), groff(7)',&
+'                 System Admin.(8)      System administration commands (usually only for root)',&
+'                 Kernel Extensions(9)  Kernel routines [Non standard]           ',&
 '                                                                                ',&
 '                 See the man(1) page for man(1) for further details.            ',&
 '                                                                                ',&
-'     -product                                                                   ',&
+'     -product    description for manpage header                                 ',&
 '     -asis       no formatting except for header lines.                         ',&
 '                                                                                ',&
 '     -help       display help and exit                                          ',&
@@ -46,7 +46,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    manup - [DEVELOPER] Simple markup of text to a man(1) page
+!!    manup(1f) - [DEVELOPER] Simple markup of text to a man(1) page
 !!
 !!##SYNOPSIS
 !!
@@ -59,19 +59,19 @@ end subroutine help_usage
 !!      -section N  N is the man(1) section number. Typically the following categories
 !!                  are used:
 !!
-!!                   User Commands       1  Executable programs or shell commands
-!!                   System Calls        2  System calls (functions provided by the kernel)
-!!                   Library Calls       3  Library calls (functions within program libraries)
-!!                   Special Files       4  Special files (usually found in /dev)
-!!                   File Formats        5  File formats and conventions (eg. /etc/passwd)
-!!                   Games               6  Games
-!!                   Miscellaneous       7  Miscellaneous (including macro packages and conventions), e.g. man(7), groff(7)
-!!                   System Admin.       8  System administration commands (usually only for root)
-!!                   Kernel Extensions   9  Kernel routines [Non standard]
+!!                  User Commands(1)      Executable programs or shell commands
+!!                  System Calls(2)       System calls (functions provided by the kernel)
+!!                  Library Calls(3)      Library calls (functions within program libraries)
+!!                  Special Files(4)      Special files (usually found in /dev)
+!!                  File Formats(5)       File formats and conventions (eg. /etc/passwd)
+!!                  Games(6)  Games
+!!                  Miscellaneous(7)      Miscellaneous (including macro packages and conventions), e.g. man(7), groff(7)
+!!                  System Admin.(8)      System administration commands (usually only for root)
+!!                  Kernel Extensions(9)  Kernel routines [Non standard]
 !!
 !!                  See the man(1) page for man(1) for further details.
 !!
-!!      -product
+!!      -product    description for manpage header
 !!      -asis       no formatting except for header lines.
 !!
 !!      -help       display help and exit
@@ -95,7 +95,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Wed, Dec 20th, 2017 11:55:17 PM>',&
+'@(#)COMPILED:       Mon, Jun 4th, 2018 8:50:06 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -145,7 +145,7 @@ subroutine manup(table,title,section,product)
 !    o NAME    : all appended to one line, anything before ' - ' is emphasized.
 !    o SYNOPIS : everything here is left as-is
 !-----------------------------------------------------------------------------------------------------------------------------------
-use M_strings, only : substitute, indent, s2v, v2s, notabs, upper, switch
+use M_strings, only : substitute, indent, s2v, v2s, upper, switch
 use M_time,    only : now
 implicit none
 character(len=*),parameter  :: ident="@(#)manup(3f): given a character array markup a simple man(1) page"
@@ -158,9 +158,7 @@ integer                     :: isection
    integer                  :: ios
    integer                  :: leading_spaces
    integer                  :: i
-   integer                  :: ilen
    integer                  :: ileft
-   logical                  :: oldstyle=.false.
 !-----------------------------------------------------------------------------------------------------------------------------------
 character(len=:),allocatable :: global_section
 character(len=:),allocatable :: NAME
@@ -180,37 +178,24 @@ character(len=*),parameter  :: sections(10)= [&
 &'Kernel Extensions   ',& !       9   Kernel routines [Non standard]
 &'                    ']
 !-----------------------------------------------------------------------------------------------------------------------------------
-if(section.le.1.or.section.gt.9)then
-   isection=10
-else
-   isection=section
-endif
+   if(section.le.1.or.section.gt.9)then
+      isection=10
+   else
+      isection=section
+   endif
 !-----------------------------------------------------------------------------------------------------------------------------------
-if(oldstyle)then
-   write(*,'(a)')'." -----------------------------------------------------------------'
-   write(*,'(a)')'.ll 78n /" set line length (must be set before .TH.'
-   call TH(title,section,product)
-   write(*,'(a)')'." * set default formatting'
-   write(*,'(a)')'." disable hyphenation'
-   write(*,'(a)')'.nh'
-   write(*,'(a)')'." disable justification (adjust text to left margin only)'
-   write(*,'(a)')'.ad l'
-   write(*,'(a)')'." -----------------------------------------------------------------'
-else
-   call TH(title,section,product)
-   write(*,'(a)')'.nh /" Turn off automatic hyphenation mode.'
-endif
+   call TH(title,section,product)                                ! write title header
 !-----------------------------------------------------------------------------------------------------------------------------------
    global_section=''
    NAME=''
    SYNOPSIS=''
    ileft=0
    INFINITE: do i=1,size(table)
-      call notabs(table(i),line,ilen)                            ! remove tab characters, which can be problematic
+      line=table(i)
       leading_spaces=indent(line)                                ! find amount of leading white space
       !-----------------------------------------------------------------------------------------------------------------------------
       if(line(1:1).eq.'.')then
-         write(*,'(a)',iostat=ios)trim(table(i))                 ! assume embedded *roff commands. Write as-is
+         write(*,'(a)',iostat=ios)trim(line)                     ! assume embedded *roff commands. Write as-is
          cycle INFINITE
       endif
       !-----------------------------------------------------------------------------------------------------------------------------
@@ -283,15 +268,17 @@ subroutine printsynopsis(inline)  ! assuming all of SYNOPSIS section has been ap
 !   Exact rendering may vary depending on the output device.  For instance, man will usually not be able  to  render  italics
 !   when running in a terminal, and will typically use underlined or coloured text instead.
 !
-!   The command or function illustration is a pattern that should match all possible invocations.  In some cases it is advis‐
+!   The command or function illustration is a pattern that should match all possible invocations.  In some cases it is advis
 !   able to illustrate several exclusive invocations as is shown in the SYNOPSIS section of this manual page.
 !
 character(len=*),intent(in) :: inline
 character(len=:),allocatable :: linebuff
    linebuff=inline//repeat(' ',len_trim(inline))
    write(*,'(a)',iostat=ios)'.nf'
+   write(*,'(a)',iostat=ios)'.fam C'
    call substitute(linebuff,'-','\-')
    write(*,'(a)',iostat=ios)trim(linebuff)
+   write(*,'(a)',iostat=ios)'.fam T'
    write(*,'(a)',iostat=ios)'.fi'
 end subroutine printsynopsis
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -343,11 +330,13 @@ integer,intent(in)          :: section
 character(len=*),intent(in) :: product
 !-----------------------------------------------------------------------------------------------------------------------------------
 ! place a comment at the top of the file
-write(*,'(*(a))')'.\"manpage'
-write(*,'(a)')'.\" t'
-write(*,'(a)')'.\" ** The above line should force tbl to be a preprocessor **'
+   write(*,'(*(a))')'.\"manpage'
+   write(*,'(a)')'." -----------------------------------------------------------------'
+   write(*,'(a)')'.\" t'
+   write(*,'(a)')'.\" ** The above line should force tbl to be a preprocessor **'
+   write(*,'(a)')'." -----------------------------------------------------------------'
 !-----------------------------------------------------------------------------------------------------------------------------------
-write(*,'(*(a))')'.\"DO NOT MODIFY THIS FILE!  It was generated by manup 1.0 at '//now('%w, %l %D, %Y %h:%m:%s')
+   write(*,'(*(a))')'.\"DO NOT MODIFY THIS FILE!  It was generated by manup 1.0 at '//now('%w, %l %D, %Y %h:%m:%s')
 !-----------------------------------------------------------------------------------------------------------------------------------
 !  .TH title section [extra1] [extra2] [extra3]
 !     Set  the  title  of  the man page to title and the section to section, which must take on a value between 1 and 8.
@@ -362,7 +351,17 @@ write(*,'(*(a))')'.\"DO NOT MODIFY THIS FILE!  It was generated by manup 1.0 at 
 !     Additionally, this macro starts a new page; the new line number is 1 again (except if the `-rC1' option  is  given
 !     on  the command line) -- this feature is intended only for formatting multiple man pages; a single man page should
 !     contain exactly one TH macro at the beginning of the file.
-  write(*,'(*(a))')'.TH "',trim(title),'" "',v2s(section),'" "',now('%L %Y'),'" "',trim(product),'" "',trim(sections(section)),'"'
+
+   write(*,'(a)')'." -----------------------------------------------------------------'
+   write(*,'(a)')'.ll 78n /" set line length (must be set before .TH.'
+   write(*,'(*(a))')'.TH "',trim(title),'" "',v2s(section),'" "',now('%L %Y'),'" "',trim(product),'" "',trim(sections(section)),'"'
+   write(*,'(a)')'." * set default formatting'
+   write(*,'(a)')'." disable hyphenation'
+   write(*,'(a)')'.nh'
+   write(*,'(a)')'." disable justification (adjust text to left margin only)'
+   write(*,'(a)')'.ad l'
+   write(*,'(a)')'." -----------------------------------------------------------------'
+
 end subroutine TH
 !-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine manup
@@ -378,18 +377,20 @@ end module M_manup
 !----------------------------------------------------------------------------------------------------------------------------------!
 !-----------------------------------------------------------------------------------------------------------------------------------
 program test_manup
-use M_kracken, only: kracken, sget, sgets, iget, IPvalue, lget
-use M_manup, only: manup
+use M_kracken,  only : kracken, sget, sgets, iget, IPvalue, lget
+use M_manup,    only : manup
+use M_strings,  only : notabs
 implicit none
-   character(len=1024)      :: ALLLINES(10000)
-   character(len=IPvalue)   :: cmd
-   integer                  :: section
-   character(len=IPvalue)   :: product
-   character(len=IPvalue)   :: filename
+   character(len=1024)                :: ALLLINES(10000), ONELINE
+   character(len=IPvalue)             :: cmd
+   integer                            :: section
+   character(len=IPvalue)             :: product
+   character(len=IPvalue)             :: filename
    character(len=IPvalue),allocatable :: filenames(:)
    integer                            :: i,j
    integer                            :: inunit
    integer                            :: ios
+   integer                            :: ilen
 !-----------------------------------------------------------------------------------------------------------------------------------
 !  parse command line arguments
    call kracken('manup',' -cmd -section 1 -product "CLI utilities" -asis .F. -help .F. -version .F.' )
@@ -412,13 +413,14 @@ implicit none
       endif
 
       INFINITE: do i=1,size(ALLLINES)
-         read(inunit,'(a)',iostat=ios)ALLLINES(i)
+         read(inunit,'(a)',iostat=ios)ONELINE
          if(ios.ne.0)then
             exit INFINITE
          endif
+         call notabs(ONELINE,ALLLINES(i),ilen)       ! remove tab characters, which can be problematic
       enddo INFINITE
 
-      ALLLINES(i)='END_OF_MAN_PAGE'  ! assumes file did not fill array
+      ALLLINES(i)='END_OF_MAN_PAGE'                  ! assumes file did not fill array
       call manup(ALLLINES(:i),cmd,section,product)
 
       if(inunit.eq.10)then
@@ -466,7 +468,7 @@ end program test_manup
 !       or available locally via: info '(coreutils) yes invocation'
 !
 !       Packaged by Cygwin (8.24-3)
-!       Copyright © 2015 Free Software Foundation, Inc.
+!       Copyright    2015 Free Software Foundation, Inc.
 !       License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
 !       This is free software: you are free to change and redistribute it.
 !       There is NO WARRANTY, to the extent permitted by law.
@@ -2129,7 +2131,8 @@ end program test_manup
 !          -centered          Center lines between the current left and right margin.  Note that each single line is centered.
 !          -unfilled          Do not fill; display a block of text as typed, using line breaks as specified by the user.  This
 !                             can produce overlong lines without warning messages.
-!          -filled            Display a filled block.  The block of text is formatted (i.e., the text is justified on both the !                             left and right side).
+!          -filled            Display a filled block.  The block of text is formatted (i.e., the text is justified on both the
+!                             left and right side).
 !          -literal           Display block with literal font (usually fixed-width).  Useful for source code or simple tabbed or
 !                             spaced text.
 !          -file <file name>  The file whose name follows the -file flag is read and displayed before any data enclosed with

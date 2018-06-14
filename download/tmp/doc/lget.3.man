@@ -44,3 +44,9 @@ EXAMPLE
      The truth is T
      $ demo_lget -truth F    # N, no, F, false, .F., .FALSE. are all false
      The truth is F
+SEE ALSO
+   M_kracken, kracken
+
+   dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+
+   parse,dissect,store,setprompts,show

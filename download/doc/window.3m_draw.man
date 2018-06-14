@@ -1,0 +1,12 @@
+NAME
+   window(3f) - [M_DRAW:PROJECTION] Specify a perspective viewing pyramid
+
+SYNOPSIS
+         subroutine window(left, right, bot, top, near, far)
+         real left, right, bot, top, near, far
+DESCRIPTION
+
+   Specify a perspective viewing pyramid in world coordinates by giving
+   the rectangle closest to the eye (ie. at the near clipping plane)
+   and the distances to the near and far clipping planes.
+

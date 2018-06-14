@@ -1,0 +1,51 @@
+NAME
+   generate_uuid(3f) - [M_uuid] generate(approximately) a UUID (Universally Unique IDentifier) string per RFC 4122
+
+SYNOPSIS
+   function generate_uuid(version) result(uuid)
+   integer, intent(in), optional :: version
+   character(len=36) :: uuid
+
+DESCRIPTION
+   A universally unique identifier (UUID) is a 128-bit number used to
+   identify information in computer systems. When generated according
+   to standard methods UUIDs are for practical purposes unique.
+   generate_uuid(3f) converts the UUID to s standard string format
+   per RFC 4122.
+
+AUTHORS
+   based on previous work from Alberto Garcia & Jon Wakelin, 2003-2004.
+   RNG routines from Scott Ladd <scott.ladd@coyotegulch.com>, and
+   the libFoX library( Toby White <tow@uszla.me.uk>, Gen-Tao Chiang
+   <gtc25@cam.ac.uk>, Andrew Walker <a.walker@ucl.ac.uk>).
+
+OPTIONS
+   version  Indicates which standard method as described in RFC 4122
+            is used to generate the string. Versions 0,1, and 4 are supported.
+
+            0.  Nil UUID (ie. '00000000-0000-0000-0000-000000000000')
+            1.  time-based UUID
+            2.  Not implemented
+            3.  Not implemented
+            4.  pseudo-RNG(Random Number Generator) based
+            5.  Not implemented
+
+EXAMPLE
+  Sample usage:
+
+   program uuidgen
+   use M_uuid, only : generate_uuid
+   implicit none
+   character(len=36) :: uuid
+      uuid=generate_uuid(1)  ! version 1 (time-based UUID)
+      write(*,'(a36)')uuid
+      uuid=generate_uuid(4)  ! version 4 (pseudo-RNG-based), default
+      ! RFC 4122 defines a Uniform Resource Name (URN) namespace for UUIDs.
+      write(*,'("urn:uuid:",a36)')uuid
+   end program uuidgen
+
+  Typical output:
+
+    e769adf4-4af7-11e8-7421-3c9dfbfe9aab
+    urn:uuid:5b0946b8-0eb4-4966-619d-047b7f7e2056
+

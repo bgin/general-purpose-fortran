@@ -1,0 +1,10 @@
+NAME
+   loadobj(3f) - [M_DRAW:OBJECT] Load the object in the file filename as object number n.
+
+SYNOPSIS
+        subroutine loadobj(n, filename)
+        integer n
+        character*(*) filename
+DESCRIPTION
+   Load the object in the file "filename" as object number n.
+

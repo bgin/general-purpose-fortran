@@ -1,0 +1,49 @@
+NAME
+   drawchar(3f) - [M_DRAW:TEXT] Draw the character c and update current position.
+
+SYNOPSIS
+        subroutine drawchar(ch)
+        character(len=1),intent(in) :: ch
+
+DESCRIPTION
+
+   Draw the character c at the current position. The current graphics
+   position represents the bottom left hand corner of the character space.
+
+   Uses current line color and thickness and text justification mode.
+
+EXAMPLE
+  Sample program:
+
+   program demo_drawchar
+   use M_DRAW
+   integer,parameter :: isize=600
+   integer  :: ipaws
+   !! set up environment
+   call prefsize(isize,isize)
+   call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
+   call ortho2(-100.0,100.0,-100.0,100.0)
+   call textsize(150.0,150.0)
+   call centertext(.true.)
+
+   do i=33,124
+      !! draw reference circle and crosshairs
+      call linewidth(100)
+      call color(0)
+      call clear()
+      call color(4)
+      call circle(0.0,0.0,75.0)
+      call move2(-75.0,0.0)
+      call draw2(75.0,0.0)
+      call move2(0.0,-75.0)
+      call draw2(0.0,75.0)
+      call color(7)
+      call linewidth(200)
+      call textang(3.0*i)
+      call move2(0.0,0.0)
+      call drawchar(char(i))
+      ipaws=getkey()
+   enddo
+   call vexit()
+   end program demo_drawchar
+

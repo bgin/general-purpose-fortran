@@ -1,11 +1,11 @@
 NAME
-       colrm - remove columns from a file
+       _colrm(1f) - [FUNIX]remove columns from a file
 
 SYNOPSIS
-       colrm [first [last]]
+       _colrm [first [last]]
 
 DESCRIPTION
-       colrm removes selected columns from a file.  Input is taken from
+       _colrm removes selected columns from a file.  Input is taken from
        standard input.  Output is sent to standard output.
 
        If  called  with  one  parameter  the  columns of each line will
@@ -13,7 +13,7 @@ DESCRIPTION
        with two parameters the columns from the first column to the last
        column will be removed.
 
-       Column numbering starts with column 1.
+       Column numbering starts with column 1. Tabs are NOT expanded.
 
 OPTIONS
        first
@@ -22,7 +22,7 @@ OPTIONS
        --help     Display help text and exit.
 
 HISTORY
-       The colrm command appeared in 3.0BSD.
+       The colrm(1) command appeared in 3.0BSD.
 EXAMPLE
        # trim file so no line is longer than 72 characters
        cat FILENAME|_colrm 73

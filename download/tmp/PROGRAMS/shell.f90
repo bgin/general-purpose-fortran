@@ -907,7 +907,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Thu, Mar 29th, 2018 6:59:00 PM>',&
+'@(#)COMPILED:       Mon, Jun 4th, 2018 9:01:56 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

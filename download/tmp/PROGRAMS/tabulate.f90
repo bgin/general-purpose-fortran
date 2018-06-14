@@ -274,7 +274,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        Thu Nov 23,  2000>',&
 '@(#)AUTHORS:        John S. Urban>',&
 '@(#)LANGUAGE:       Fortran>',&
-'@(#)COMPILED:       Thu, Dec 21st, 2017 12:04:06 AM>',&
+'@(#)COMPILED:       Mon, Jun 4th, 2018 8:54:44 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

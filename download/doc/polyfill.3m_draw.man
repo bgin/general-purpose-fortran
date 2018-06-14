@@ -1,0 +1,11 @@
+NAME
+     polyfill(3f) - [M_DRAW:POLYGONS] Set the polygon fill flag
+
+SYNOPSIS
+      subroutine polyfill(onoff)
+      logical onoff
+
+DESCRIPTION
+   Set the polygon fill flag. This will always turn off hatching. A non-zero
+   integer or LOGICAL .true. turns polyfill on.
+

@@ -397,7 +397,6 @@ character(len=*),intent(in),optional :: message
    if(.not.logical_expression)then
       call stderr('unit_check:        STOPPING PROGRAM ON TEST OF '//trim(name))    ! write to standard error
       call execute_command_line('goodbad '//trim(name)//' bad')
-      call execute_command_line('goodbad '//trim(name)//' --show')
       stop 1
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -412,16 +411,16 @@ end subroutine unit_check
 !!
 !!##SYNOPSIS
 !!
-!!    subroutine unit_check_start(name,string)
+!!    subroutine unit_check_start(name,options)
 !!
 !!     character(len=*),intent(in) :: name
-!!     character(len=*),intent(in),optional :: string
+!!     character(len=*),intent(in),optional :: options
 !!
 !!##DESCRIPTION
 !!
 !!    unit_check_start(3f) calls the shell command
 !!
-!!       goodbad NAME start [string]
+!!       goodbad NAME start [options]
 !!
 !!##EXAMPLES
 !!
@@ -454,13 +453,13 @@ end subroutine unit_check
 !!
 !!     end program demo_unit_check_start
 !===================================================================================================================================
-subroutine unit_check_start(name,string)
+subroutine unit_check_start(name,options)
 character(len=*),parameter::ident="@(#)M_debug::unit_check_start(3f): call 'goodbad NAME start'"
 character(len=*),intent(in)          :: name
-character(len=*),intent(in),optional :: string
+character(len=*),intent(in),optional :: options
 !-----------------------------------------------------------------------------------------------------------------------------------
-   if(present(string))then
-      call execute_command_line('goodbad '//trim(name)//' start '//trim(string))
+   if(present(options))then
+      call execute_command_line('goodbad '//trim(name)//' start '//trim(options))
    else
       call execute_command_line('goodbad '//trim(name)//' start')
    endif
@@ -475,16 +474,16 @@ end subroutine unit_check_start
 !!
 !!##SYNOPSIS
 !!
-!!    subroutine unit_check_bad(name,string)
+!!    subroutine unit_check_bad(name,options)
 !!
 !!     character(len=*),intent(in) :: name
-!!     character(len=*),intent(in) :: string
+!!     character(len=*),intent(in) :: options
 !!
 !!##DESCRIPTION
 !!
 !!    unit_check_bad(3f) calls the shell command
 !!
-!!         goodbad NAME bad [string]
+!!         goodbad NAME bad [options]
 !!
 !!    and stops the program.
 !!
@@ -513,13 +512,13 @@ end subroutine unit_check_start
 !!
 !!     end program demo_unit_check_bad
 !===================================================================================================================================
-subroutine unit_check_bad(name,string)
+subroutine unit_check_bad(name,options)
 character(len=*),parameter::ident="@(#)M_debug::unit_check_bad(3f): call 'goodbad NAME bad'"
 character(len=*),intent(in)          :: name
-character(len=*),intent(in),optional :: string
+character(len=*),intent(in),optional :: options
 !-----------------------------------------------------------------------------------------------------------------------------------
-   if(present(string))then
-      call execute_command_line('goodbad '//trim(name)//' bad '//trim(string))
+   if(present(options))then
+      call execute_command_line('goodbad '//trim(name)//' bad '//trim(options))
    else
       call execute_command_line('goodbad '//trim(name)//' bad')
    endif
@@ -537,16 +536,16 @@ end subroutine unit_check_bad
 !!
 !!##SYNOPSIS
 !!
-!!    subroutine unit_check_good(name,string)
+!!    subroutine unit_check_good(name,options)
 !!
 !!     character(len=*),intent(in) :: name
-!!     character(len=*),intent(in) :: string
+!!     character(len=*),intent(in) :: options
 !!
 !!##DESCRIPTION
 !!
 !!    unit_check_good(3f) calls the shell command
 !!
-!!         goodbad NAME good [string]
+!!         goodbad NAME good [options]
 !!
 !!##EXAMPLES
 !!
@@ -570,13 +569,13 @@ end subroutine unit_check_bad
 !!
 !!     end program demo_unit_check_good
 !===================================================================================================================================
-subroutine unit_check_good(name,string)
+subroutine unit_check_good(name,options)
 character(len=*),parameter::ident="@(#)M_debug::unit_check_good(3f): call 'goodbad NAME good'"
 character(len=*),intent(in)          :: name
-character(len=*),intent(in),optional :: string
+character(len=*),intent(in),optional :: options
 !-----------------------------------------------------------------------------------------------------------------------------------
-   if(present(string))then
-      call execute_command_line('goodbad '//trim(name)//' good '//trim(string))
+   if(present(options))then
+      call execute_command_line('goodbad '//trim(name)//' good '//trim(options))
    else
       call execute_command_line('goodbad '//trim(name)//' good')
    endif

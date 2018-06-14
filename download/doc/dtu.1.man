@@ -1,5 +1,5 @@
 NAME
-       dtu(1) - [FILE FILTER] convert files between Unix and DOS line terminator conventions
+       dtu(1f) - [FILE FILTER] convert files between Unix and DOS line terminator conventions
 
 SYNOPSIS
        dtu [[-make dos|unix] [-z] [-n] -i input -o output ]|--help|--version

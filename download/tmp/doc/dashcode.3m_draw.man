@@ -1,0 +1,17 @@
+NAME
+   dashcode(3f) - [M_DRAW:LINESTYLE] set dash pattern length
+
+SYNOPSIS
+        subroutine dashcode(dashlen)
+        real dashlen
+
+DESCRIPTION
+
+   Set the current dash length (in world units) to be dashlen.
+
+IMAGE
+
+   The sample graphic shows a line segment being drawn using the same
+   linestyle except the dashcode is being changed. Note that the dashcode
+   is in world units,
+

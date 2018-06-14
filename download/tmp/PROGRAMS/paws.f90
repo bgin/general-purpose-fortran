@@ -9,7 +9,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'   paws - [TIME] pause until specified time or for specified duration           ',&
+'   paws(1f) - [TIME] pause until specified time or for specified duration       ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   paws [dd-hh:mm:ss[.xxx]|xxx.yyy[s|m|h|d]][-msg message][-cmd command][-repeat TIMES[-fmt ]]|...',&
@@ -70,7 +70,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    paws - [TIME] pause until specified time or for specified duration
+!!    paws(1f) - [TIME] pause until specified time or for specified duration
 !!
 !!##SYNOPSIS
 !!
@@ -145,7 +145,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Thu, Dec 21st, 2017 12:02:35 AM>',&
+'@(#)COMPILED:       Mon, Jun 4th, 2018 8:53:52 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -156,7 +156,7 @@ program demo_system_sleep
 use M_kracken, only: kracken, sget, lget, dget, igets, iget
 use M_time, only :   days2sec, realtime, u2d, d2u, j2d, system_sleep, guessdate, now, fmtdate
 implicit none
-character(len=*),parameter :: ident="@(#) given string of form days-hh:mm:ss convert to seconds'"
+character(len=*),parameter :: ident="@(#)paws(1):pause until specified time or for specified duration"
 real(kind=realtime)          :: until_value
 real(kind=realtime)          :: delay_value
 integer                      :: dat(8)

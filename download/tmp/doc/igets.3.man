@@ -47,3 +47,9 @@ EXAMPLE
      $ demo_igets -val 89,123,456 10.9999999
      89123456,10
 
+SEE ALSO
+   M_kracken, kracken
+
+   dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+
+   parse,dissect,store,setprompts,show

@@ -9,7 +9,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'   t2m - [DEVELOPER] basic markup of text to a man(1) page                      ',&
+'   t2m(1f) - [DEVELOPER] basic markup of text to a man(1) page                  ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   t2m FILE -cmd -section 1 -product "" -help .F. -version .F.                  ',&
@@ -75,7 +75,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    t2m - [DEVELOPER] basic markup of text to a man(1) page
+!!    t2m(1f) - [DEVELOPER] basic markup of text to a man(1) page
 !!
 !!##SYNOPSIS
 !!
@@ -151,7 +151,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 2016-05-14>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
-'@(#)COMPILED:       Sun, Feb 4th, 2018 3:58:22 PM>',&
+'@(#)COMPILED:       Mon, Jun 4th, 2018 8:50:16 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

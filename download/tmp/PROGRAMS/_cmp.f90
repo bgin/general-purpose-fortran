@@ -9,11 +9,11 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'     cmp(1f) - [FUNIX] compare two files byte by byte                           ',&
+'     _cmp(1f) - [FUNIX] compare two files byte by byte                          ',&
 'SYNOPSIS                                                                        ',&
-'     cmp file1 file2 [-quiet] [-show]| [ [-help] [-version] ]                   ',&
+'     _cmp file1 file2 [-quiet] [-show]| [ [-help] [-version] ]                  ',&
 'DESCRIPTION                                                                     ',&
-'     The cmp(1) utility compares two files byte by byte and returns             ',&
+'     The _cmp(1) utility compares two files byte by byte and returns            ',&
 '     true if no differences are found, or false otherwise                       ',&
 'OPTIONS                                                                         ',&
 '     The following options are supported:                                       ',&
@@ -30,14 +30,14 @@ help_text=[ CHARACTER(LEN=128) :: &
 ' Given files "x1" and "x2" are identical, and file "x3" is the same except one line',&
 ' is uppercase instead of lowercase ...                                          ',&
 '                                                                                ',&
-'   $ cmp x1 x2                                                                  ',&
+'   $ _cmp x1 x2                                                                 ',&
 '     x1 x2  are identical                                                       ',&
 '                                                                                ',&
-'   $ cmp x1 x3                                                                  ',&
+'   $ _cmp x1 x3                                                                 ',&
 '     x1 x3 differ: byte 03814,  line 00086, ADE= 99 c miniscule c ADE= 67 C majuscule C',&
 '     STOP 3                                                                     ',&
 '                                                                                ',&
-'   $ cmp x1 x3 -show                                                            ',&
+'   $ _cmp x1 x3 -show                                                           ',&
 '     byte 03814,  line 00086, ADE= 99 c miniscule c              ADE= 67 C majuscule C',&
 '     byte 03815,  line 00086, ADE=111 o miniscule o              ADE= 79 O majuscule O',&
 '     byte 03816,  line 00086, ADE=110 n miniscule n              ADE= 78 N majuscule N',&
@@ -48,7 +48,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '     byte 03821,  line 00086, ADE=115 s miniscule s              ADE= 83 S majuscule S',&
 '     x1 x3  are different by 8 bytes                                            ',&
 '                                                                                ',&
-'   $ cmp x1 x3 -show -quiet                                                     ',&
+'   $ _cmp x1 x3 -show -quiet                                                    ',&
 '     3814            99    c  67    C                                           ',&
 '     3815           111    o  79    O                                           ',&
 '     3816           110    n  78    N                                           ',&
@@ -58,11 +58,11 @@ help_text=[ CHARACTER(LEN=128) :: &
 '     3820           110    n  78    N                                           ',&
 '     3821           115    s  83    S                                           ',&
 '                                                                                ',&
-'   $ cmp x1 x2 -quiet                                                           ',&
+'   $ _cmp x1 x2 -quiet                                                          ',&
 '   $ echo $?                                                                    ',&
 '     0                                                                          ',&
 '                                                                                ',&
-'   $ cmp x1 x3 -quiet                                                           ',&
+'   $ _cmp x1 x3 -quiet                                                          ',&
 '     STOP 3                                                                     ',&
 '   $ echo $?                                                                    ',&
 '     3                                                                          ',&
@@ -80,12 +80,12 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!      cmp(1f) - [FUNIX] compare two files byte by byte
+!!      _cmp(1f) - [FUNIX] compare two files byte by byte
 !!##SYNOPSIS
 !!
-!!      cmp file1 file2 [-quiet] [-show]| [ [-help] [-version] ]
+!!      _cmp file1 file2 [-quiet] [-show]| [ [-help] [-version] ]
 !!##DESCRIPTION
-!!      The cmp(1) utility compares two files byte by byte and returns
+!!      The _cmp(1) utility compares two files byte by byte and returns
 !!      true if no differences are found, or false otherwise
 !!##OPTIONS
 !!      The following options are supported:
@@ -103,14 +103,14 @@ end subroutine help_usage
 !!  Given files "x1" and "x2" are identical, and file "x3" is the same except one line
 !!  is uppercase instead of lowercase ...
 !!
-!!    $ cmp x1 x2
+!!    $ _cmp x1 x2
 !!      x1 x2  are identical
 !!
-!!    $ cmp x1 x3
+!!    $ _cmp x1 x3
 !!      x1 x3 differ: byte 03814,  line 00086, ADE= 99 c miniscule c ADE= 67 C majuscule C
 !!      STOP 3
 !!
-!!    $ cmp x1 x3 -show
+!!    $ _cmp x1 x3 -show
 !!      byte 03814,  line 00086, ADE= 99 c miniscule c              ADE= 67 C majuscule C
 !!      byte 03815,  line 00086, ADE=111 o miniscule o              ADE= 79 O majuscule O
 !!      byte 03816,  line 00086, ADE=110 n miniscule n              ADE= 78 N majuscule N
@@ -121,7 +121,7 @@ end subroutine help_usage
 !!      byte 03821,  line 00086, ADE=115 s miniscule s              ADE= 83 S majuscule S
 !!      x1 x3  are different by 8 bytes
 !!
-!!    $ cmp x1 x3 -show -quiet
+!!    $ _cmp x1 x3 -show -quiet
 !!      3814            99    c  67    C
 !!      3815           111    o  79    O
 !!      3816           110    n  78    N
@@ -131,11 +131,11 @@ end subroutine help_usage
 !!      3820           110    n  78    N
 !!      3821           115    s  83    S
 !!
-!!    $ cmp x1 x2 -quiet
+!!    $ _cmp x1 x2 -quiet
 !!    $ echo $?
 !!      0
 !!
-!!    $ cmp x1 x3 -quiet
+!!    $ _cmp x1 x3 -quiet
 !!      STOP 3
 !!    $ echo $?
 !!      3
@@ -157,11 +157,11 @@ stopit=.false.
 if(l_version)then
 help_text=[ CHARACTER(LEN=128) :: &
 '@(#)PRODUCT:        GPF library utilities and examples>',&
-'@(#)PROGRAM:        cmp(1)>',&
+'@(#)PROGRAM:        _cmp(1)>',&
 '@(#)DESCRIPTION:    compare two files byte by byte>',&
 '@(#)VERSION:        1.0-20171126>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Thu, Dec 21st, 2017 12:15:08 AM>',&
+'@(#)COMPILED:       Mon, Jun 4th, 2018 9:01:02 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -176,7 +176,7 @@ use M_strings, only : split, substitute
 use M_strings, only : describe, visible
 use M_debug,   only : stderr
 implicit none
-character(len=*),parameter::ident="@(#)cmp(1f): compare two files byte by byte"
+character(len=*),parameter::ident="@(#)_cmp(1f): compare two files byte by byte"
 character(len=4096),allocatable :: filenames(:)      ! array of filenames to read
 character(len=256)              :: message           ! message field for returned messages
 logical                         :: quiet   = .FALSE. ! switch to describe difference found

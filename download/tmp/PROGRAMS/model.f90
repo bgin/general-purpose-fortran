@@ -9,197 +9,61 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'   model(1f) - [ARGUMENTS] write a template of a ufpp source file               ',&
-'SYNOPSIS                                                                        ',&
-'   model [--version|--help]                                                     ',&
+'        model(1f) - fortran numeric model information                           ',&
+'                                                                                ',&
+'SYNTAX                                                                          ',&
+'        model                                                                   ',&
+'                                                                                ',&
 'DESCRIPTION                                                                     ',&
-'   A simple program that writes an example input file for ufpp(1).              ',&
-'EXAMPLE                                                                         ',&
-'   model                                                                        ',&
+'       The following routines are called for various types:                     ',&
+'                                                                                ',&
+'                                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
 endif
 end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
+!>
+!!##NAME
+!!         model(1f) - fortran numeric model information
+!!
+!!##SYNTAX
+!!         model
+!!
+!!##DESCRIPTION
+!!        The following routines are called for various types:
+!!
 !===================================================================================================================================
-subroutine help_version(l_version)
-implicit none
-character(len=*),parameter     :: ident="@(#)help_version(3f): prints version information"
-logical,intent(in)             :: l_version
-character(len=:),allocatable   :: help_text(:)
-integer                        :: i
-logical                        :: stopit=.false.
-stopit=.false.
-if(l_version)then
-help_text=[ CHARACTER(LEN=128) :: &
-'@(#)PRODUCT:        CLI library utilities and examples>',&
-'@(#)PROGRAM:        _model(1)>',&
-'@(#)DESCRIPTION:    output a model of a ufpp(1) input file>',&
-'@(#)VERSION:        1.0, 20180223>',&
-'@(#)AUTHOR:         John S. Urban>',&
-'@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Fri, Feb 23rd, 2018 5:12:42 PM>',&
-'']
-   WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
-   stop ! if -version was specified, stop
-endif
-end subroutine help_version
-!-----------------------------------------------------------------------------------------------------------------------------------
 program model
-use M_kracken, only : kracken, lget
-implicit none
+!!use,intrinsic :: iso_fortran_env, only : stderr=>ERROR_UNIT, stdin=>INPUT_UNIT, stdout=>OUTPUT_UNIT
+use,intrinsic :: iso_fortran_env, only : ERROR_UNIT, INPUT_UNIT, OUTPUT_UNIT
+use,intrinsic :: iso_fortran_env, only : real32, real64, real128, int8, int16, int32, int64
+use,intrinsic :: iso_fortran_env, only : integer_kinds, real_kinds
 
-!@(#) M_module:procedure(3f) - description
+integer, parameter :: io=OUTPUT_UNIT
 
-integer :: i
-character(len=:),allocatable :: example_text(:) ! this variable will be defined by $DOCUMENT VARIABLE directive
-example_text=[ CHARACTER(LEN=128) :: &
-'@!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@',&
-'@IFDEF F90                                                                      ',&
-'module example                                                                  ',&
-'contains                                                                        ',&
-'end module example                                                              ',&
-'@ENDIF                                                                          ',&
-'@!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@',&
-'@IFDEF TESTPRG90                                                                ',&
-'program krackenbasic                                                            ',&
-'use M_kracken, only : kracken, retrev, lget, rget, iget, sget, sgets            ',&
-'use M_strings, only : describe                                                  ',&
-'use M_debug,   only : unit_check                                                ',&
-'use M_debug,   only : unit_check_start, unit_check_good                         ',&
-'implicit none                                                                   ',&
-'                                                                                ',&
-'@@(#) module::name(3f) description                                              ',&
-'                                                                                ',&
-'integer,parameter                 :: dp=kind(0.0d0)                             ',&
-'character(len=1)                  :: char                                       ',&
-'   character(len=255)             :: filename                                   ',&
-'   character(len=20)              :: device                                     ',&
-'   character(len=256),allocatable :: words(:)                                   ',&
-'   logical                        :: lval                                       ',&
-'   integer                        :: i_myloop                                   ',&
-'   integer                        :: ier                                        ',&
-'   integer                        :: iflen                                      ',&
-'   integer                        :: ival                                       ',&
-'   real                           :: rval                                       ',&
-'                                                                                ',&
-'!  define command arguments, default values and crack command line              ',&
-'   call kracken(''cmd'',''-i 10 -r 10e3 -l .false. -f input -d x11 -help .false. -version .false.'')',&
-'!  handle version and help requests                                             ',&
-'   call help_usage(lget("cmd_help"))                                            ',&
-'   call help_version(lget("cmd_version"))                                       ',&
-'                                                                                ',&
-'!  get values                                                                   ',&
-'   call retrev(''cmd_f'',filename,iflen,ier) ! get -f FILENAME                  ',&
-'   lval = lget(''cmd_l'')                    ! get -l present?                  ',&
-'   rval = rget(''cmd_r'')                    ! get -r RVAL                      ',&
-'   ival = iget(''cmd_i'')                    ! get -i IVAL                      ',&
-'   device = sget(''cmd_d'')                  ! get -d STRING                    ',&
-'   words = sgets(''cmd_d'')                  ! get -d STRING as an array of words',&
-'!!                                                                              ',&
-'!  all done parsing; do something with the values                               ',&
-'   print *, "filename=",filename(:iflen)                                        ',&
-'   print *, " i=",ival, " r=",rval, " l=",lval                                  ',&
-'   print *, " d="//device                                                       ',&
-'                                                                                ',&
-'   MYLOOP: do I_MYLOOP=1,10  ! DO loop                                          ',&
-'      cycle MYLOOP           ! start next pass of loop                          ',&
-'      exit  MYLOOP           ! go to next statment after corresponding ENDDO    ',&
-'   enddo MYLOOP                                                                 ',&
-'                                                                                ',&
-'   call execute_command_line(''goodbad xmple start'')                           ',&
-'   ! or                                                                         ',&
-'   call unit_check_start(''xmple'')                                             ',&
-'!!                                                                              ',&
-'   call unit_check(''xmple'',describe(char(126)).ne.''~ tilde'')                ',&
-'   ! or                                                                         ',&
-'   if (describe( char(126) ).ne. ''~ tilde'') then                              ',&
-'      write(*,*)''DESCRIBE OUTPUT=[''//describe(char(126))//'']''               ',&
-'      call execute_command_line(''goodbad xmple bad'')                          ',&
-'      stop 1                                                                    ',&
-'   endif                                                                        ',&
-'!!                                                                              ',&
-'   ! if got here without being stopped assume passed test                       ',&
-'   call execute_command_line(''goodbad xmple good'')                            ',&
-'   ! or                                                                         ',&
-'   call unit_check_good(''xmple'')                                              ',&
-'                                                                                ',&
-'contains                                                                        ',&
-'                                                                                ',&
-'end program krackenbasic                                                        ',&
-'@DOCUMENT END                                                                   ',&
-'@!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@',&
-'@DOCUMENT HELP                                                                  ',&
-'NAME                                                                            ',&
-'   name(3f) - [M_module] description                                            ',&
-'SYNOPSIS                                                                        ',&
-'                                                                                ',&
-'DESCRIPTION                                                                     ',&
-'EXAMPLE                                                                         ',&
-'@DOCUMENT END                                                                   ',&
-'@!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@',&
-'@DOCUMENT VERSION                                                               ',&
-'PRODUCT:        CLI library utilities and examples                              ',&
-'PROGRAM:        _model(1)                                                       ',&
-'DESCRIPTION:    output a model of a ufpp(1) input file                          ',&
-'VERSION:        1.0, 20180223                                                   ',&
-'AUTHOR:         John S. Urban                                                   ',&
-'HOME PAGE:      http://www.urbanjost.altervista.org/index.html                  ',&
-'@DOCUMENT END                                                                   ',&
-'@!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@',&
-'@ENDIF                                                                          ',&
-'@ifdef UFPP_TEST                                                                ',&
-'@!================================================================================================================',&
-'@!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()',&
-'@!================================================================================================================',&
-'   This begins the section usually used for unit testing . Typically it is called by',&
-'                                                                                ',&
-'      ufpp UFPP_TEST -system -i FILENAME                                        ',&
-'                                                                                ',&
-'   if $SYSTEM commands are trusted                                              ',&
-'                                                                                ',&
-' Description of tests to                                                        ',&
-' be performed                                                                   ',&
-'                                                                                ',&
-'@SYSTEM mkdir -p tmp/                                                           ',&
-'@SYSTEM goodbad xmple start -section 1                                          ',&
-'                                                                                ',&
-'        Make sure test executable does not exist.                               ',&
-'                                                                                ',&
-'        Test executable should start with underscore and be unique or you could remove a command',&
-'@SYSTEM rm -f `which __xmple 2>/dev/null||echo NOTTHERE`                        ',&
-'                                                                                ',&
-'        Build test program in standard location, assuming ccall(1) is available ',&
-'                                                                                ',&
-'@SYSTEM html2f90 < xmple.ff >tmp/__xmple.F90                                    ',&
-'@SYSTEM ccall tmp/__xmple.F90                                                   ',&
-'                                                                                ',&
-'        Execute test program and perform tests                                  ',&
-'        The goodbad(1) creates an SQLite file with the status of the tests for  ',&
-'        various programs and procedures.                                        ',&
-'                                                                                ',&
-'@SYSTEM [ `__xmple && goodbad xmple good -section 1|| goodbad xmple bad -section 1',&
-'                                                                                ',&
-'        Remove test source                                                      ',&
-'                                                                                ',&
-'@SYSTEM rm tmp/__xmple.F90                                                      ',&
-'                                                                                ',&
-'        Remove test executable                                                  ',&
-'                                                                                ',&
-'@SYSTEM rm -f `which __xmple 2>/dev/null|| echo NOTTHERE`                       ',&
-'@!==================================================================================================================',&
-'@!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()',&
-'@!==================================================================================================================',&
-'@ENDIF                                                                          ',&
-'']
-!===================================================================================================================================
-   ! the rest of the program
-   call kracken('model','-help .false. -version .f.') ! define command arguments, default values and crack command line
-   call help_usage(lget('model_help'))                ! show help
-   call help_version(lget('model_version'))           ! show version
-   do i=1,size(example_text)                          ! replace leading @ with leading $ and print text
-      if(example_text(i)(1:1).eq.'@') example_text(i)(1:1)='$'
-      write(*,'(a)')trim(example_text(i))
-   enddo
+   write(*,*)'ERROR_UNIT=',error_unit
+   write(*,*)'INPUT_UNIT=',input_unit
+   write(*,*)'OUTPUT_UNIT=',output_unit
+
+   write(*,*)'INTEGER_KINDS()=',INTEGER_KINDS
+   write(*,*)'REAL_KINDS()=',REAL_KINDS
+
+write(io,'(a)')'   huge(x)   returns the largest number that is not an infinity in the model of the type of X.'
+write(io,'(a)')'   tiny(x)'
+
+   print *, huge(0)
+   print *, huge(0.0),tiny(0.0)
+   print *, huge(0.0d0),tiny(0.0d0)
+
+   print *, huge(0_int8)
+   print *, huge(0_int16)
+   print *, huge(0_int32)
+   print *, huge(0_int64)
+
+   print *, huge(0.0_real32),tiny(0.0_real32)
+   print *, huge(0.0_real64),tiny(0.0_real64)
+   print *, huge(0.0_real128),tiny(0.0_real128)
+
 end program model

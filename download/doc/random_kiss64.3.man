@@ -1,7 +1,13 @@
 NAME
       random_kiss64 - [M_random] A 64-bit KISS random number generator by George Margaglia.
 SYNOPSIS
+   function random_kiss64()
+   integer, parameter         :: i8b = selected_int_kind(18)  ! eight-byte integer
+   integer(i8b)               :: random_kiss64
+
 DESCRIPTION
+   A simple random number generator that returns a random 64-bit INTEGER. The same
+   sequence is returned.
 EXAMPLE
 
    Sample usage:
@@ -13,9 +19,11 @@ EXAMPLE
       integer(i8b)          :: i, t
       integer(i8b),external :: random_kiss64
 
+      write(*,*)'HUGE=',huge(0_i8b)
+
       do i = 1, 100000000
          t = random_kiss64()
-         if(i.eq.100)write(*,*)'T=',T
+         if(i.eq.mod(i,100000+1)=100000)write(*,*)i,' T=',T
       end do
 
       if (t .eq. 1666297717051644203_i8b) then

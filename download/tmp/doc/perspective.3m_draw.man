@@ -1,0 +1,11 @@
+NAME
+   perspective(3f) - [M_DRAW:PROJECTION] Specify perspective viewing pyramid
+
+SYNOPSIS
+         subroutine perspective(fov, aspect, near, far)
+         real fov, aspect, near, far
+DESCRIPTION
+   Specify a perspective viewing pyramid in world coordinates by giving
+   a field of view, aspect ratio and the distance from the eye of the
+   near and far clipping plane.
+

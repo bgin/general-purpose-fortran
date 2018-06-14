@@ -1,0 +1,12 @@
+NAME
+   backface(3f) - [M_DRAW:POLYGONS] Turns on culling of backfacing polygons.
+
+SYNOPSIS
+      subroutine backface(onoff)
+      logical onoff
+
+DESCRIPTION
+   Turns on culling of backfacing polygons. A polygon is backfacing if
+   it's orientation in *screen* coords is clockwise, unless a call
+   to backfacedir is made.
+

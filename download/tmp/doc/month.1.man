@@ -1,5 +1,5 @@
 NAME
-   month - [TIME] display a calendar
+   month(1f) - [TIME] display a calendar
 
 SYNOPSIS
    month [[-year] NNNN] [-month NN|month_name]

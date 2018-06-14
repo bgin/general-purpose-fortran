@@ -1,0 +1,8 @@
+NAME
+   callobj(3f) - [M_DRAW:OBJECT] Draw object number n.
+
+SYNOPSIS
+        subroutine callobj(n)
+        integer n
+DESCRIPTION
+   Draw object number n.

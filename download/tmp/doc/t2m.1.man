@@ -1,5 +1,5 @@
 NAME
-   t2m - [DEVELOPER] basic markup of text to a man(1) page
+   t2m(1f) - [DEVELOPER] basic markup of text to a man(1) page
 
 SYNOPSIS
    t2m FILE -cmd -section 1 -product "" -help .F. -version .F.

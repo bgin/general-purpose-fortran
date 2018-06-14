@@ -52,3 +52,9 @@ EXAMPLE
    string is new value for string
    a is A value for A
    b is BBBBBBB
+SEE ALSO
+   M_kracken, kracken
+
+   dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+
+   parse,dissect,store,setprompts,show

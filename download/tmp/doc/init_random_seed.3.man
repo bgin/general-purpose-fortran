@@ -1,14 +1,17 @@
 NAME
    init_random_seed(3f) - [M_random] seed random_number(3f) with single value like srand(3c) usage
+
 SYNOPSIS
    subroutine init_random_seed(mine)
 
     integer,intent(in) :: mine
+
 DESCRIPTION
    A simple wrapper around random_seed(3f) that uses the single given
    integer to initialize the seed so you can easily call random_number(3f)
    with varying pseudo-random real number sequences simply, much like
    srand(3c) and rand(3c).
+
 EXAMPLE
    Sample program:
 

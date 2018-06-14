@@ -10,7 +10,8 @@ DESCRIPTION
        tab character is treated as a single character).
 OPTIONS
        FILENAMES  the files to scan for long lines
-       -l NUMBER  maximum line length of lines to ignore
+       -l NUMBER  maximum line length of lines to ignore.
+                  The default is 132.
        --wrap     instead of locating and displaying long
                   lines, fold the lines at the specified
                   line length

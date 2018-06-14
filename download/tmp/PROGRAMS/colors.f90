@@ -9,7 +9,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'   colors - [CONVERT] list colors and their values using common color models    ',&
+'   colors(1f) - [CONVERT] list colors and their values using common color models',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   colors [color_name | R G B | model_name_A V1 V2 V3 model_name_B ]            ',&
@@ -59,7 +59,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    colors - [CONVERT] list colors and their values using common color models
+!!    colors(1f) - [CONVERT] list colors and their values using common color models
 !!
 !!##SYNOPSIS
 !!
@@ -123,7 +123,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Wed, Dec 20th, 2017 11:56:45 PM>',&
+'@(#)COMPILED:       Mon, Jun 4th, 2018 8:51:02 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

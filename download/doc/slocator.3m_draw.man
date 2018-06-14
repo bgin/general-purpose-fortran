@@ -1,0 +1,13 @@
+NAME
+   slocator(3f) - [M_DRAW:INTERACTIVE] Find out where cursor is in screen coordinates
+
+SYNOPSIS
+         integer function slocator(xaddr, yaddr)
+         real xaddr, yaddr
+DESCRIPTION
+
+   Find out where the cursor is. xaddr and yaddr are set to the current
+   location in screen coordinates. The return value of the function is
+   set up in the same way as with locator. If the device has no locator
+   device slocator returns -1.
+

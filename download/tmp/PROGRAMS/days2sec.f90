@@ -9,7 +9,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'   days2sec - [TIME] Convert [[-]dd-][[hh:]mm:]ss to seconds                    ',&
+'   days2sec(1f) - [TIME] Convert [[-]dd-][[hh:]mm:]ss to seconds                ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   days2sec dd-hh:mm:ss | --version| --help                                     ',&
@@ -77,7 +77,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    days2sec - [TIME] Convert [[-]dd-][[hh:]mm:]ss to seconds
+!!    days2sec(1f) - [TIME] Convert [[-]dd-][[hh:]mm:]ss to seconds
 !!
 !!##SYNOPSIS
 !!
@@ -159,7 +159,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Wed, Dec 20th, 2017 11:58:26 PM>',&
+'@(#)COMPILED:       Mon, Jun 4th, 2018 8:51:57 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -171,7 +171,7 @@ use M_kracken, only: kracken, sget, lget
 use M_time,    only: days2sec
 use M_strings, only: v2s
 implicit none
-character(len=*),parameter   :: ident="@(#) given string of form days-hh:mm:ss convert to seconds'"
+character(len=*),parameter   :: ident="@(#)days2sec(1): given string of form dd-hh:mm:ss convert to seconds"
 character(len=:),allocatable :: printline
    call kracken('days2sec',' -oo -help .F. -version .F.')                    ! parse command line
    call help_usage(lget('days2sec_help'))                                    ! display help information and stop if true

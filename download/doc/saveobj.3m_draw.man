@@ -1,0 +1,11 @@
+NAME
+   saveobj(3f) - [M_DRAW:OBJECT] Save object number n into file filename. Does NOT save objects called inside object n.
+
+SYNOPSIS
+        saveobj(n, filename)
+        integer   n
+        character*(*) filename
+DESCRIPTION
+   Save the object number n into the file filename. This call does not save
+   objects called inside object n.
+

@@ -1,0 +1,9 @@
+NAME
+   isobj(3f) - [M_DRAW:OBJECT] Returns non-zero if there is an object of number n.
+
+SYNOPSIS
+        logical function isobj(n)
+        integer n
+DESCRIPTION
+
+   Returns non-zero if there is an object of number n.

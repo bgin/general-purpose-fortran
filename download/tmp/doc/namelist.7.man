@@ -1,11 +1,12 @@
 NAME
     NAMELIST(7f) - [FORTRAN:STATEMENT] specify a group of data to be referred to by a single name in data input/output
 SYNOPSIS
-   NAMELIST / namelist-group-name / namelist-group-object-list [ [ , ] / namelist-group-name /
-            namelist-group-object-list ] . . .
+   NAMELIST /namelist-group-name/ namelist-group-object-list [[,] /namelist-group-name/
+            namelist-group-object-list ] ...
 
-            namelist-group-object        is   variable-name
+            namelist-group-object is variable-name
 DESCRIPTION
+
    A NAMELIST statement specifies a group of named data objects, which
    may be referred to by a single name for the purpose of data transfer.
 
@@ -14,19 +15,50 @@ DESCRIPTION
 
     o The namelist-group-name shall not be a name accessed by use association.
     o A namelist-group-object shall not be an assumed-size array.
-    o A namelist-group-object shall not have the PRIVATE attribute if the namelist-group-name has the PUBLIC attribute.
+    o A namelist-group-object shall not have the PRIVATE attribute if
+      the namelist-group-name has the PUBLIC attribute.
 
-   Any namelist-group-name may occur more than once in the NAMELIST statements in a scoping unit. The
-   namelist-group-object-list following each successive appearance of the same namelist-group-name in a scoping
-   unit is treated as a continuation of the list for that namelist-group-name.
+   Any namelist-group-name may occur more than once in the NAMELIST
+   statements in a scoping unit. The namelist-group-object-list following
+   each successive appearance of the same namelist-group-name in a
+   scoping unit is treated as a continuation of the list for that
+   namelist-group-name.
 
-   A namelist group object may be a member of more than one namelist group.
+   A namelist group object may be a member of more than one namelist
+   group.
 
-   A namelist group object shall either be accessed by use or host association or shall have its type, type parameters,
-   and shape specified by previous specification statements or the procedure heading in the same scoping unit or
-   by the implicit typing rules in effect for the scoping unit. If a namelist group object is typed by the implicit
-   typing rules, its appearance in any subsequent type declaration statement shall confirm the implied type and
-   type parameters.
+   A namelist group object shall either be accessed by use or host
+   association or shall have its type, type parameters, and shape
+   specified by previous specification statements or the procedure heading
+   in the same scoping unit or by the implicit typing rules in effect for
+   the scoping unit. If a namelist group object is typed by the implicit
+   typing rules, its appearance in any subsequent type declaration
+   statement shall confirm the implied type and type parameters.
+
+   The specification-part of a BLOCK construct shall not contain a
+   NAMELIST statement.
+
+   Why is NAMELIST not allowed in a BLOCK unit?
+   Would be handy for quick writes, like list-directed output
+
+    block
+       namelist /nlist/ a,b,c,d
+       write(nlist)
+    endblock
+
+   Input for a namelist input statement consists of
+
+      1) optional blanks and namelist comments,
+      2) the character & followed immediately by the namelist-group-name as specified in the NAMELIST
+         statement,
+      3) one or more blanks,
+      4) a sequence of zero or more name-value subsequences separated by value separators, and
+      5) a slash to terminate the namelist input.
+
+         A slash encountered in a namelist input record causes the input statement to terminate. A slash cannot be
+         used to separate two values in a namelist input statement.
+
+   A group name or object name is without regard to case.
 
 OPTIONS
 RESULTS
@@ -75,13 +107,6 @@ EXAMPLE
 
     ./arguments/namelist
 
-Why is NAMELIST not allowed in a BLOCK unit?
-Would be handy for quick writes, like list-directed output
-
-    block
-       namelist /nlist/ a,b,c,d
-       write(nlist)
-    endblock
 
 OTHER
 
@@ -98,10 +123,12 @@ OTHER
           appear.
 3 If the data transfer statement contains a format or namelist-group-name, the statement is a formatted in-
   put/output statement; otherwise, it is an unformatted input/output statement.
+
 1 The NML= specifier supplies the namelist-group-name (5.6). This name identifies a particular collection of data
    objects on which transfer is to be performed.
 
 2 If a namelist-group-name appears, the statement is a namelist input/output statement.
+
 4 All values following the name= part of the namelist entity (10.11) within the input records are transmitted to
    the matching entity specified in the namelist-group-object-list prior to processing any succeeding entity within
    the input record for namelist input statements. If an entity is specified more than once within the input record
@@ -119,16 +146,16 @@ OTHER
    9.6.5       Termination of data transfer statements
 1 Termination of an input/output data transfer statement occurs when
 
-      · format processing encounters a colon or data edit descriptor and there are no remaining elements in the
+        format processing encounters a colon or data edit descriptor and there are no remaining elements in the
         input-item-list or output-item-list,
-      · unformatted or list-directed data transfer exhausts the input-item-list or output-item-list,
-      · namelist output exhausts the namelist-group-object-list,
-      · an error condition occurs,
-      · an end-of-file condition occurs,
+        unformatted or list-directed data transfer exhausts the input-item-list or output-item-list,
+        namelist output exhausts the namelist-group-object-list,
+        an error condition occurs,
+        an end-of-file condition occurs,
 
-      · a slash (/) is encountered as a value separator (10.10, 10.11) in the record being read during list-directed
+        a slash (/) is encountered as a value separator (10.10, 10.11) in the record being read during list-directed
         or namelist input, or
-      · an end-of-record condition occurs during execution of a nonadvancing input statement (9.11).
+        an end-of-record condition occurs during execution of a nonadvancing input statement (9.11).
 2 If an error condition occurs during execution of an input/output statement that contains neither an ERR= nor
   IOSTAT= specifier, error termination of the program is initiated. If an error condition occurs during execution
   of an input/output statement that contains either an ERR= specifier or an IOSTAT= specifier then:
@@ -168,24 +195,9 @@ OTHER
     10.11.3      Namelist input
     10.11.3.1    Overall syntax
 
- 1 Input for a namelist input statement consists of
-
-           (1)   optional blanks and namelist comments,
-           (2)   the character & followed immediately by the namelist-group-name as specified in the NAMELIST
-                 statement,
-           (3)   one or more blanks,
-           (4)   a sequence of zero or more name-value subsequences separated by value separators, and
-           (5)   a slash to terminate the namelist input.
-
-          NOTE 10.34
-          A slash encountered in a namelist input record causes the input statement to terminate. A slash cannot be
-          used to separate two values in a namelist input statement.
-
  2 In each name-value subsequence, the name shall be the name of a namelist group object list item with an optional
     qualification and the name with the optional qualification shall not be a zero-sized array, a zero-sized array section,
     or a zero-length character string. The optional qualification, if any, shall not contain a vector subscript.
-
- 3 A group name or object name is without regard to case.
 
    10.11.3.2    Namelist group object names
 
@@ -294,10 +306,10 @@ OTHER
 
 1 A null value is specified by
 
-      ·   the r * form,
-      ·   blanks between two consecutive nonblank value separators following an equals,
-      ·   zero or more blanks preceding the first value separator and following an equals, or
-      ·   two consecutive nonblank value separators.
+          the r * form,
+          blanks between two consecutive nonblank value separators following an equals,
+          zero or more blanks preceding the first value separator and following an equals, or
+          two consecutive nonblank value separators.
 
 2 A null value has no effect on the definition status of the corresponding input list item. If the namelist group
   object list item is defined, it retains its previous value; if it is undefined, it remains undefined. A null value shall
@@ -313,11 +325,11 @@ OTHER
 
 1 All blanks in a namelist input record are considered to be part of some value separator except for
 
-      · blanks embedded in a character constant,
-      · embedded blanks surrounding the real or imaginary part of a complex constant,
-      · leading blanks following the equals unless followed immediately by a slash or comma, or a semicolon if the
+        blanks embedded in a character constant,
+        embedded blanks surrounding the real or imaginary part of a complex constant,
+        leading blanks following the equals unless followed immediately by a slash or comma, or a semicolon if the
         decimal edit mode is comma, and
-      · blanks between a name and the following equals.
+        blanks between a name and the following equals.
 
   10.11.3.7    Namelist Comments
 
@@ -347,7 +359,7 @@ OTHER
                 X (2)                            unchanged
                 X (3)                            1.5
                 X (4)                            1.5
-                X (5) ­ X (8)                    unchanged
+                X (5)   X (8)                    unchanged
                 P                                ISN'T BOB'S
                 Z                                (123.0,0.0)
                 G                                unchanged
@@ -395,6 +407,4 @@ OTHER
 5 Except for new records created by explicit formatting within a defined output procedure or by continuation of
   delimited character sequences, each output record begins with a blank character.
 
-C806   (R807) The specification-part of a BLOCK construct shall not contain a COMMON, EQUIVALENCE,
-       IMPLICIT, INTENT, NAMELIST, or OPTIONAL statement.
 

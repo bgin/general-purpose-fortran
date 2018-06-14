@@ -24,6 +24,9 @@
 !!       elemental real function atand(x)
 !!       elemental real function atan2d(x,y)
 !!
+!!       elemental real|double function norm_angle_rad(radians)
+!!       elemental real|double function norm_angle_360(radians)
+!!
 !!       subroutine cartesian_to_spherical(x,y,z,radius,inclination,azimuth)
 !!       subroutine spherical_to_cartesian(radius,inclination,azimuth,x,y,z)
 !!       subroutine cartesian_to_polar(x,y,radius,inclination)
@@ -75,6 +78,11 @@
 !!     o elemental real function acosd(x)
 !!     o elemental real function atand(x)
 !!     o elemental real function atan2d(x,y)
+!!
+!!    Normalize angles into specific ranges
+!!
+!!     o elemental real|double function norm_angle_rad(angle_in_radians)
+!!     o elemental real|double function norm_angle_360(angle_in_degrees)
 !!
 !!    Coordinates
 !!
@@ -133,6 +141,9 @@ use M_anyscalar,only : anyscalar_to_real, anyscalar_to_double
       public acosd
       public atand
       public atan2d
+!  normalize angles
+      public norm_angle_rad
+      public norm_angle_360
 !  convert between degrees and radians
       public d2r
       public r2d
@@ -163,8 +174,30 @@ use M_anyscalar,only : anyscalar_to_real, anyscalar_to_double
       real,parameter,public :: radian     = 57.29577951310d0                       !degrees
       real,parameter,public :: degree     =  0.0174532925199430d0                  !radians
 
+
+
       doubleprecision,parameter        :: degrees_to_radians_D = PI_D / 180.0D+00
       real,parameter                   :: degrees_to_radians = real(PI / 180.0D+00)
+
+      doubleprecision, parameter, private :: eighth_circle_rad_d  = atan(1.0d0)            ! pi/4
+      doubleprecision, parameter, private :: quarter_circle_rad_d = 2*eighth_circle_rad_d  ! pi/2
+      doubleprecision, parameter, private :: half_circle_rad_d    = 4*eighth_circle_rad_d  ! pi
+      doubleprecision, parameter, private :: circle_rad_d         = 8*eighth_circle_rad_d  ! 2pi
+
+      real, parameter, private :: eighth_circle_rad_r  = atan(1.0)              ! pi/4
+      real, parameter, private :: quarter_circle_rad_r = 2*eighth_circle_rad_r  ! pi/2
+      real, parameter, private :: half_circle_rad_r    = 4*eighth_circle_rad_r  ! pi
+      real, parameter, private :: circle_rad_r         = 8*eighth_circle_rad_r  ! 2pi
+
+      interface norm_angle_rad                                  ! a Generic Interface in a module with PRIVATE specific procedures
+         module procedure norm_angle_rad_real, norm_angle_rad_double
+      end interface
+
+      interface norm_angle_360                                  ! a Generic Interface in a module with PRIVATE specific procedures
+         module procedure norm_angle_360_real, norm_angle_360_double
+         module procedure norm_angle_360_integer
+      end interface
+
 contains
 !***********************************************************************************************************************************
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -1185,6 +1218,163 @@ class(*),intent(in) :: pounds
    pounds_local=anyscalar_to_double(pounds)
    pounds_to_kilograms = 0.45359237d0 * pounds_local
 end function pounds_to_kilograms
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
+!>
+!!##NAME
+!!    norm_angle_rad(3f) - [M_units:TRIGONOMETRY] Return input angle given in radians as angle between 0 and 2pi
+!!##SYNOPSIS
+!!
+!!    elemental function norm_angle_rad(ang) result(rev)
+!!
+!!    doubleprecision, intent(in) :: ang
+!!    doubleprecision             :: rev
+!!       or
+!!    real, intent(in) :: ang
+!!    real             :: rev
+!!##DESCRIPTION
+!!    Given an input angle in radians, normalize the value to fall in the
+!!    range 0 to 2*pi radians.
+!!##OPTIONS
+!!    ang  Input angle (radians)
+!!##RESULTS
+!!    rev  Return input angle (radians) normalized to range 0>= REV <=2*pi radians
+!!##EXAMPLE
+!!
+!!   Sample program:
+!!
+!!    program demo_norm_angle_rad
+!!    use M_units, only : norm_angle_rad
+!!    implicit none
+!!    real,parameter :: PI=4*atan(1.0)
+!!    real           :: val
+!!    integer        :: i
+!!    do i=-2,2
+!!       val=i*2*pi;   write(*,*)val,norm_angle_rad(val)
+!!       val=i*pi;     write(*,*)val,norm_angle_rad(val)
+!!       write(*,*)
+!!    enddo
+!!    write(*,*)norm_angle_rad([-PI/8.0,-PI/4.0,-PI/2.0,-PI,-0.0,PI/8.0,PI/4.0,PI/2.0,PI,0.0])
+!!    end program demo_norm_angle_rad
+!!   Results:
+!===================================================================================================================================
+elemental function norm_angle_rad_double(ang)
+
+character(len=*),parameter::ident="&
+&@(#)M_units::norm_angle_rad_double(3fp): Return input angle given in radians as doubleprecision angle between 0 and 2pi"
+
+doubleprecision, intent(in) :: ang
+doubleprecision             :: norm_angle_rad_double
+   norm_angle_rad_double = ang - dble(floor(ang/circle_rad_d)) * circle_rad_d
+end function norm_angle_rad_double
+!===================================================================================================================================
+elemental function norm_angle_rad_real(ang)
+
+character(len=*),parameter::ident="&
+&@(#)M_units::norm_angle_rad_real(3fp): Return input angle given in radians as real angle between 0 and 2pi"
+
+real, intent(in) :: ang
+real             :: norm_angle_rad_real
+    norm_angle_rad_real = ang - real(floor(ang/circle_rad_r)) * circle_rad_r
+end function norm_angle_rad_real
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+!>
+!!##NAME
+!!    norm_angle_360(3f) - [M_units:TRIGONOMETRY] Return input angle given in degrees as angle between 0 and 360
+!!
+!!##SYNOPSIS
+!!
+!!    elemental function norm_angle_360(ang) result(rev)
+!!
+!!    doubleprecision, intent(in) :: ang
+!!    doubleprecision             :: rev
+!!       or
+!!    real, intent(in) :: ang
+!!    real             :: rev
+!!       or
+!!    integer, intent(in) :: ang
+!!    integer             :: rev
+!!
+!!##DESCRIPTION
+!!    Given an input angle in degrees, normalize the value to fall in the
+!!    range 0 to 360  degrees.
+!!
+!!##OPTIONS
+!!    ang  Input angle (degrees)
+!!
+!!##RESULTS
+!!    rev  Return input angle (degrees) normalized to range 0 to 360 degrees
+!!
+!!##EXAMPLE
+!!
+!!   Sample program:
+!!
+!!    program demo_norm_angle_360
+!!    use M_units, only : norm_angle_360
+!!    implicit none
+!!    real,parameter :: PI=360
+!!    real           :: val
+!!    integer        :: i
+!!    do i=-2,2
+!!       val=i*2*pi;   write(*,*)val,norm_angle_360(val)
+!!       val=i*pi;     write(*,*)val,norm_angle_360(val)
+!!       val=i*pi/2;   write(*,*)val,norm_angle_360(val)
+!!       write(*,*)
+!!    enddo
+!!    end program demo_norm_angle_360
+!!
+!!   Results:
+!!
+!!      -1440.00000       0.00000000
+!!      -720.000000       0.00000000
+!!      -360.000000       0.00000000
+!!
+!!      -720.000000       0.00000000
+!!      -360.000000       0.00000000
+!!      -180.000000       180.000000
+!!
+!!       0.00000000       0.00000000
+!!       0.00000000       0.00000000
+!!       0.00000000       0.00000000
+!!
+!!       720.000000       0.00000000
+!!       360.000000       0.00000000
+!!       180.000000       180.000000
+!!
+!!       1440.00000       0.00000000
+!!       720.000000       0.00000000
+!!       360.000000       0.00000000
+!! ================================================================================
+!===================================================================================================================================
+elemental function norm_angle_360_double(ang)
+
+character(len=*),parameter::ident="@(#)M_units:: norm_angle_360_double(3fp): Returns angle in degrees between 0 and 360"
+
+doubleprecision,intent(in) :: ang
+doubleprecision            :: norm_angle_360_double
+   norm_angle_360_double = ang - dble(floor(ang/360.d0)) * 360.d0
+end function norm_angle_360_double
+!===================================================================================================================================
+elemental function norm_angle_360_real(ang)
+
+character(len=*),parameter::ident="@(#)M_units:: norm_angle_360_real(3fp): Returns angle in degrees between 0 and 360"
+
+real,intent(in) :: ang
+real            :: norm_angle_360_real
+   norm_angle_360_real = ang - dble(floor(ang/360.d0)) * 360.d0
+end function norm_angle_360_real
+!===================================================================================================================================
+elemental function norm_angle_360_integer(ang)
+
+character(len=*),parameter::ident="@(#)M_units:: norm_angle_360_integer(3fp): Returns angle in degrees between 0 and 360"
+
+integer,intent(in) :: ang
+integer            :: norm_angle_360_integer
+   norm_angle_360_integer = ang - dble(floor(ang/360.d0)) * 360.d0
+end function norm_angle_360_integer
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================

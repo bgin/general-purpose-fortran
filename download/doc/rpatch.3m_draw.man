@@ -1,0 +1,11 @@
+NAME
+   rpatch(3f) - [M_DRAW:PATCH] Draws a rational patch in the current basis, according to the geometry matrices gx, gy, gz, and gw.
+
+SYNOPSIS
+         subroutine rpatch(gx, gy, gz, gw)
+         real  gx(4,4), gy(4,4), gz(4,4), gw(4,4)
+DESCRIPTION
+
+   Draws a rational patch in the current basis, according to the geometry
+   matrices gx, gy, gz, and gw.
+

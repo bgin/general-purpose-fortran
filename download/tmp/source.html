@@ -3,6 +3,7 @@
 <title></title>
 <meta name="keywords" content="Fortran, Fortran code, Fortran source code repository, Fortran library, Fortran archive,         " />
 <meta name="keywords" content="General Purpose Fortran, Fortran modules, Fortran examples                                       " />
+<meta name="keywords" content="Fortran Repository" />
 <style>
 body {xfont-style: italic}
 body { background-color:#FFF; color:#333; font-family:Verdana, Arial, Helvetica, sans-serif; font-size:1em; line-height:1.3em; }
@@ -41,7 +42,14 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <div id="Container">
 <div id="Content">
 <html><head><title></title></head><body><table border="1">
+<tr><td><a href="hershey.sh">hershey.sh</a></td>
+<td>
+	 Makes the binary Hershey font file for M_DRAW<br/>
+</td>
 <tr><td><a href="source.html">source.html</a></td>
+<td>
+</td>
+<tr><td><a href="draw.h">draw.h</a></td>
 <td>
 </td>
 <tr><td><a href="c.f90">c.f90</a></td>
@@ -142,6 +150,18 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <td>
 	M_display(3fm) [M_display] module for pretty-printing matrices<br/>
 	integer scalar without title  (call disp_title_scalar_int(3f) with title='')<br/>
+</td>
+<tr><td><a href="M_draw.f90">M_draw.f90</a></td>
+<td>
+	s2c(3f):copy string(1:Clen(string)) to char array with null terminator<br/>
+</td>
+<tr><td><a href="M_drawplus.f90">M_drawplus.f90</a></td>
+<td>
+	jucall(3f) invoke object with specified transformation<br/>
+	pop(3f): call popviewport(), popmatrix(), popattributes()<br/>
+	push(3f): call pushattributes(), pushmatrix(), pushviewport()<br/>
+	biggest_ortho2(3f) given a window size, find and set to largest accommodating viewport<br/>
+	 Fortran MODULE interface to M_DRAW C routines using Fortran ISO_C_BINDING interface<br/>
 </td>
 <tr><td><a href="M_factor.f90">M_factor.f90</a></td>
 <td>
@@ -321,6 +341,10 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	 Fortran interface to the ncurses(3c) library -John S.Urban 20141205<br/>
 	 wrapper around ICHAR(3f) that returns integer type C_LONG<br/>
 </td>
+<tr><td><a href="M_overload.f90">M_overload.f90</a></td>
+<td>
+	M_overload(3fm): overloads of standard operators and intrinsic procedures<br/>
+</td>
 <tr><td><a href="M_pixel.f90">M_pixel.f90</a></td>
 <td>
 	M_pixel::rect(3f): draw line rectangle given two opposite corners<br/>
@@ -397,10 +421,19 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <tr><td><a href="M_random.f90">M_random.f90</a></td>
 <td>
 	M_random::random_string(3f): create random string composed of provided characters of specified length<br/>
-	A 64-bit KISS random number generator by George Margaglia.<br/>
+	M_random::random_hex(3f): create random hexadecimal string of specified length<br/>
+	M_random::random_kiss64(3f): A 64-bit KISS random number generator by George Margaglia.<br/>
 	M_random::init_random_seed_by_system_clock(3f): initialize random_number(3f) to return a single value with system clock<br/>
 	M_random::init_random_seed_by_dat(3f): initialize random_number(3f) to return a single value using date_and_time(3f)<br/>
 	M_random::init_random_seed(3f): initialize random_number(3f) to return a single value with single integer seed like srand(3c)<br/>
+	M_random::mtprng_int(3f): Initializes the Mersenne Twister random number generator with seed<br/>
+	M_random::mtprng_int_by_array(3f): Initialize with an array of seeds<br/>
+	M_random::mtprng_rand64(3f): Obtain the next 64-bit integer in the pseudo-random sequence<br/>
+	M_random::mtprng_rand(3f): Obtain the next 32-bit integer in the pseudo-random sequence<br/>
+	M_random::mtprng_rand_range(3f): Obtain a pseudo-random integer in the range [lo,hi]<br/>
+	M_random::mtprng_rand_real1(3f): Obtain a pseudo-random real number .ge. 0 and .le.= 1.<br/>
+	M_random::mtprng_rand_real2(3f): Obtain a pseudo-random real number .ge. 0.0 and .lt. 1.0<br/>
+	M_random::mtprng_rand_real3(3f): Obtain a pseudo-random real number .gt. 0 and .lt. 1.<br/>
 </td>
 <tr><td><a href="M_readgif.f90">M_readgif.f90</a></td>
 <td>
@@ -685,6 +718,15 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_units::atomnum2symbol(3f): return element symbol given atomic number<br/>
 	M_units::symbol2atomnum(3f): return atomic number given element symbol name<br/>
 	M_units::pounds_to_kilograms(3f): converts a measurement in pounds to kilograms.<br/>
+	M_units::norm_angle_rad_double(3fp): Return input angle given in radians as doubleprecision angle between 0 and 2pi<br/>
+	M_units::norm_angle_rad_real(3fp): Return input angle given in radians as real angle between 0 and 2pi<br/>
+	M_units:: norm_angle_360_double(3fp): Returns angle in degrees between 0 and 360<br/>
+	M_units:: norm_angle_360_real(3fp): Returns angle in degrees between 0 and 360<br/>
+	M_units:: norm_angle_360_integer(3fp): Returns angle in degrees between 0 and 360<br/>
+</td>
+<tr><td><a href="M_uuid.f90">M_uuid.f90</a></td>
+<td>
+	returns the number of 100-ns intervals since 1582-10-15T00:00:00-0<br/>
 </td>
 <tr><td><a href="M_writegif.f90">M_writegif.f90</a></td>
 <td>
@@ -716,10 +758,6 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <tr><td><a href="nc_errmessage.f90">nc_errmessage.f90</a></td>
 <td>
 </td>
-<tr><td><a href="nc_notabs.f90">nc_notabs.f90</a></td>
-<td>
-	 convert tabs in input to spaces in output while maintaining columns, assuming a tab is set every 8 characters<br/>
-</td>
 <tr><td><a href="nc_printescape.f90">nc_printescape.f90</a></td>
 <td>
 	 plain text print reading window from ncurses<br/>
@@ -735,10 +773,6 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <tr><td><a href="nc_printunicode.f90">nc_printunicode.f90</a></td>
 <td>
 	 plain text print reading window from ncurses<br/>
-</td>
-<tr><td><a href="nc_uniqname.f90">nc_uniqname.f90</a></td>
-<td>
-	 append a number to the end of the filename that makes it relatively unique<br/>
 </td>
 <tr><td><a href="paranoia.f90">paranoia.f90</a></td>
 <td>
@@ -763,11 +797,125 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	strgar3(3f):read a string into an array USING CALCULATOR passing double-quoted strings<br/>
 	errc(3f): function for specifying error curve numbers<br/>
 </td>
+<tr><td><a href="C-arcs.c">C-arcs.c</a></td>
+<td>
+	M_DRAW:arcprecision - sets the number of segments in an arc or circle. - obsolete function.<br/>
+	M_DRAW:circleprecision - sets the number of segments in an arc or circle.<br/>
+	M_DRAW:arc - draw an arc at given location.<br/>
+	M_DRAW ... Precision of arc (# line segments) is calculated from the value given to circleprecision.<br/>
+	M_DRAW:sector - draw a sector at given location.<br/>
+	M_DRAW ... The number of line segments in the arc of the segment is the same as in arc.<br/>
+	M_DRAW:circle - * Draw a circle of given radius at given world coordinates.<br/>
+	M_DRAW ... The number of segments in the circle is the same as that of an arc.<br/>
+</td>
+<tr><td><a href="C-aspect.c">C-aspect.c</a></td>
+<td>
+	M_DRAW:getaspect - Gets the aspect ratio of the display/window.  IE. y / x<br/>
+	M_DRAW:getdisplaysize - Returns the raw size of the display window in pixel units as floating point values.<br/>
+	M_DRAW:getfactors - returns x,y scaling factors for use with the viewport call<br/>
+	M_DRAW ... so the viewport can be set to the whole display/window.<br/>
+	M_DRAW:expandviewport - set viewport to whole device<br/>
+	M_DRAW:unexpandviewport - opposite of the above (expandviewport)<br/>
+</td>
+<tr><td><a href="C-attr.c">C-attr.c</a></td>
+<td>
+	M_DRAW:copyattributes - copy everything except back pointer from attribute b to a<br/>
+	M_DRAW:printattribs - print attributes<br/>
+	M_DRAW:getattribs - make something to return attributes so can query them<br/>
+	M_DRAW:printlogicals - print logical device attributes<br/>
+	M_DRAW:printvdevice - print logical and other attributes<br/>
+	M_DRAW:pushattributes - save the current attributes on the matrix stack<br/>
+	M_DRAW:popattributes - pop the top entry on the attribute stack<br/>
+</td>
+<tr><td><a href="C-buffer.c">C-buffer.c</a></td>
+<td>
+	M_DRAW:backbuffer - swap drawing to backbuffer - returns -1 if no backbuffer is available.<br/>
+	M_DRAW:frontbuffer - start drawing in the front buffer again. This will always work!<br/>
+	M_DRAW:swapbuffers - swap the back and front buffers - returns -1 if no backbuffer is available.<br/>
+</td>
+<tr><td><a href="C-canvas.c">C-canvas.c</a></td>
+<td>
+	M_DRAW:driver/canvas.c - M_DRAW driver for HTML 5.0 canvas element<br/>
+	M_DRAW:author:John S. Urban<br/>
+	M_DRAW:version:1.0, Mar 2007<br/>
+</td>
+<tr><td><a href="C-cgmt.c">C-cgmt.c</a></td>
+<td>
+	M_DRAW:driver/cgmt.c - M_DRAW driver for CGM (Computer Graphics Metafile) clear text<br/>
+	M_DRAW:author : John S. Urban<br/>
+	M_DRAW:version : 1.3, Jan 1997<br/>
+</td>
+<tr><td><a href="C-clip.c">C-clip.c</a></td>
+<td>
+	M_DRAW:MakeEdgeCoords - calculates distance from point to each clipping plane in Homogeneous clipping coordinates.<br/>
+	M_DRAW ... Return code if on outside of any clipping plane is non-zero.<br/>
+	M_DRAW:clip - Clips a 3D line using Homogeneous clipping.  Reference: Newman and Sproull<br/>
+	M_DRAW:quickclip - A variation on the above that assumes p0 is a valid position in device coords<br/>
+	M_DRAW:clipping - Turns clipping on or off.<br/>
+</td>
+<tr><td><a href="C-curves.c">C-curves.c</a></td>
+<td>
+	M_DRAW:curvebasis - sets the basis type of curves.<br/>
+	M_DRAW:make_prec - Make the precision matrix for a single curve<br/>
+	M_DRAW:curveprecision - sets the number of line segments that make up a curve segment.<br/>
+	M_DRAW:rcurve - draws a rational curve<br/>
+	M_DRAW:curve - draws a curve<br/>
+	M_DRAW:drcurve - Iterate a forward difference matrix to draw a curve.<br/>
+	M_DRAW:curven - draws a series of curve segments.<br/>
+</td>
+<tr><td><a href="C-draw.c">C-draw.c</a></td>
+<td>
+	M_DRAW:dashcode - Set the current dash length<br/>
+	M_DRAW:linestyle - Set the current linestyle as a character string of 1's and 0's<br/>
+	M_DRAW:dashline - Draw dashed lines.Assumes p0 - p1 are valid (possibly clipped endpoints)<br/>
+	M_DRAW:draw - draw a line form the logical graphics position to the world coordinates x, y, z.<br/>
+	M_DRAW:draw2 - draw a line from the logical graphics position  to the world coordinates x, y.<br/>
+	M_DRAW:rdraw - 3D relative draw from the logical graphics position by dx, dy, dz.<br/>
+	M_DRAW:rdraw2 - 2D relative draw from the logical graphics position by dx, dy.<br/>
+	M_DRAW:sdraw2 - Draw directly in proportion to screen coordinates.<br/>
+	M_DRAW:rsdraw2 - Relative draw as a fraction of screen size.<br/>
+</td>
+<tr><td><a href="C-drivers.c">C-drivers.c</a></td>
+<td>
+</td>
+<tr><td><a href="C-fti.c">C-fti.c</a></td>
+<td>
+	M_DRAW:driver/fti.c - M_DRAW driver for Silicon Graphics icon geometries ((.fti files)<br/>
+	M_DRAW:author - John S. Urban<br/>
+	M_DRAW:version - 1.0, Aug 1997<br/>
+</td>
 <tr><td><a href="C-gauss.c">C-gauss.c</a></td>
 <td>
 </td>
+<tr><td><a href="C-getgp.c">C-getgp.c</a></td>
+<td>
+	M_DRAW:getgp - return the current (x, y, z) graphics position<br/>
+	M_DRAW:getgp2 - return the current (x, y) graphics position<br/>
+	M_DRAW:getgpt - return the current transformed graphics position.<br/>
+	M_DRAW:sgetgp2 - return the current (x, y) graphics position in screen coordinates<br/>
+</td>
+<tr><td><a href="C-getstring.c">C-getstring.c</a></td>
+<td>
+	M_DRAW:getstring - Get a character string from the keyboard in graphics mode.<br/>
+</td>
+<tr><td><a href="C-gnu.c">C-gnu.c</a></td>
+<td>
+	M_DRAW:driver/gnu.c - M_DRAW driver for GNU plotutil 'plot' format<br/>
+	M_DRAW:author : John S. Urban<br/>
+	M_DRAW:version : 1.0<br/>
+</td>
 <tr><td><a href="C-hlsrgb.c">C-hlsrgb.c</a></td>
 <td>
+</td>
+<tr><td><a href="C-hpdxy.c">C-hpdxy.c</a></td>
+<td>
+	M_DRAW:driver/hpdxy.c - M_DRAW driver for DXY and HPGL<br/>
+</td>
+<tr><td><a href="C-hpgt.c">C-hpgt.c</a></td>
+<td>
+	M_DRAW:driver/hpgt.c - M_DRAW driver for HP Graphics Terminals<br/>
+	M_DRAW:author - John S. Urban<br/>
+	M_DRAW:version - 1.0, Mar 1999<br/>
 </td>
 <tr><td><a href="C-hvsrgb.c">C-hvsrgb.c</a></td>
 <td>
@@ -783,6 +931,52 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 </td>
 <tr><td><a href="C-macros.c">C-macros.c</a></td>
 <td>
+</td>
+<tr><td><a href="C-mapping.c">C-mapping.c</a></td>
+<td>
+	M_DRAW:VtoWxy - Return the world x and y values corresponding to the input screen x and y values.<br/>
+	M_DRAW:calcW2Vcoeffs - Calculate the linear coeffs defining the mapping of world space to actual device space<br/>
+	M_DRAW:WtoVx - return the Screen X coordinate corresponding to world point 'p' (does the perspective division as well)<br/>
+	M_DRAW:WtoVy - return the Screen Y coordinate corresponding to world point 'p' (does the perspective division as well)<br/>
+</td>
+<tr><td><a href="C-matrix.c">C-matrix.c</a></td>
+<td>
+	M_DRAW:copyvector - Copy the 4 vector b to a.<br/>
+	M_DRAW:copymatrix - Copy the  4 x 4 matrix b to the 4 x 4 matrix a<br/>
+	M_DRAW:copytranspose - copy the transpose of the 4 x 4 matrix b to the 4 x 4 matrix a.<br/>
+	M_DRAW:getmatrix - Retrieve the top matrix on the stack and place it in m<br/>
+	M_DRAW:pushmatrix - Push the top matrix of the stack down, placing a copy of it on the top of the stack.<br/>
+	M_DRAW:popmatrix - Pop the top matrix from the stack.<br/>
+	M_DRAW:loadmatrix - load matrix<br/>
+	M_DRAW:mult4x4 - multiply 4 x 4 matrices b and c assigning them into a.<br/>
+	M_DRAW:multmatrix - Premultipy the top matrix on the stack by 'mat'<br/>
+	M_DRAW:identmatrix - Return a 4 x 4 identity matrix<br/>
+	M_DRAW:multvector - Multiply the vector a and the matrix b to form v. Need it to be snappy again.<br/>
+	M_DRAW:premultvector - PreMultiply the vector a and the matrix b to form v.  Need it to be snappy again.<br/>
+	M_DRAW:printmat - print s and then dump matrix m.<br/>
+	M_DRAW:printvect - print vector<br/>
+</td>
+<tr><td><a href="C-mif.c">C-mif.c</a></td>
+<td>
+	M_DRAW:driver/mif.c - M_DRAW driver for FrameMaker Maker Interchange files<br/>
+	M_DRAW:author - John S. Urban<br/>
+	M_DRAW:version - 1.0, Sep 1993<br/>
+</td>
+<tr><td><a href="C-move.c">C-move.c</a></td>
+<td>
+	M_DRAW:move - Move the logical graphics position to the world coordinates x, y, z.<br/>
+	M_DRAW:move2 - Move the logical graphics position to the world coords x, y, 0.0<br/>
+	M_DRAW:rmove - move the logical graphics position from the current world coordinates by dx, dy, dz<br/>
+	M_DRAW:rmove2 - Move Relative in 2D.<br/>
+	M_DRAW:smove2 - Move directly as a fraction of the screen size.<br/>
+	M_DRAW:rsmove2 - Relative move as a fraction of the screen size.<br/>
+</td>
+<tr><td><a href="C-M_draw.c">C-M_draw.c</a></td>
+<td>
+</td>
+<tr><td><a href="C-M_drawplus.c">C-M_drawplus.c</a></td>
+<td>
+	 39 bar code<br/>
 </td>
 <tr><td><a href="C-M_getkey.c">C-M_getkey.c</a></td>
 <td>
@@ -813,9 +1007,124 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	d2r(3c): Convert degrees to radians<br/>
 	r2d(3c): Convert radians to degrees<br/>
 </td>
+<tr><td><a href="C-newtokens.c">C-newtokens.c</a></td>
+<td>
+	M_DRAW:newtokens - returns the space for num tokens<br/>
+</td>
+<tr><td><a href="C-nil.c">C-nil.c</a></td>
+<td>
+	M_DRAW:driver/nil.c - M_DRAW driver for null output device<br/>
+	M_DRAW:author - John S. Urban<br/>
+	M_DRAW:version - 1.0, May 2011<br/>
+</td>
+<tr><td><a href="C-objects.c">C-objects.c</a></td>
+<td>
+	M_DRAW:makeobj - start a new object.<br/>
+	M_DRAW:closeobj - close an object<br/>
+	M_DRAW:delobj - deletes an object, freeing its memory<br/>
+	M_DRAW:genobj - generates a unique object identifier<br/>
+	M_DRAW:getopenobj - returns the object currently being edited, -1 if none.<br/>
+	M_DRAW:loadobj - reads in object file file and makes it the object referred to by n.<br/>
+	M_DRAW:saveobj - saves the object n into file file.<br/>
+	M_DRAW:doarc - draw an arc or circle.<br/>
+	M_DRAW:callobj - draws an object<br/>
+	M_DRAW:isobj - returns 1 if there is an object n, 0 otherwise.<br/>
+</td>
+<tr><td><a href="C-patches.c">C-patches.c</a></td>
+<td>
+	M_DRAW:patchbasis - Specify the two basis matrices for a patch<br/>
+	M_DRAW:patchprecision - Specify the lower limit on the number of line segments used to draw a curve as part of a patch.<br/>
+	M_DRAW:patchcurves - Specify the number of curves to be drawn in each direction on a patch.<br/>
+	M_DRAW:makeprec - Makes up the two precision matrices for a patch<br/>
+	M_DRAW:patch - Draws a bicubic patch. (ie. all the w coords a 1 and the basis matrices don't change that)<br/>
+	M_DRAW:rpatch - Draws rational bicubic patches.<br/>
+	M_DRAW:transformtensor - Transform the tensor S by the matrix m<br/>
+	M_DRAW:replace - Does the reverse of extract.<br/>
+	M_DRAW:drpatch - Actually does the work of drawing a patch.<br/>
+	M_DRAW:iterate - Iterates the forward difference tensor R<br/>
+	M_DRAW:extract - Extract the k'th column of the tensor a into the matrix b.<br/>
+	M_DRAW:addemup<br/>
+</td>
+<tr><td><a href="C-pbm.c">C-pbm.c</a></td>
+<td>
+	M_DRAW:driver/pbm.c - M_DRAW driver for PBM/X11 bitmaps<br/>
+	M_DRAW:author - John S. Urban<br/>
+	M_DRAW:version - 3.0, Mar 1995,2004<br/>
+</td>
+<tr><td><a href="C-pcl5.c">C-pcl5.c</a></td>
+<td>
+	M_DRAW:driver/pcl5.c - M_DRAW driver for PCL5 and HPGL2<br/>
+	M_DRAW:author - John S. Urban<br/>
+	M_DRAW:version - 1.0, Dec 1996<br/>
+</td>
+<tr><td><a href="C-pdf.c">C-pdf.c</a></td>
+<td>
+	M_DRAW:source - driver/pdf.c - M_DRAW driver for Adobe Illustrator PDF <br/>
+	M_DRAW:author - John S. Urban<br/>
+	M_DRAW:version - 1.5, Mar 2005<br/>
+</td>
+<tr><td><a href="C-points.c">C-points.c</a></td>
+<td>
+	M_DRAW:point - plot a point in x, y, z.<br/>
+	M_DRAW:point2 - plot a point in x, y.<br/>
+	M_DRAW:spoint - plot a point in screen coords.<br/>
+</td>
+<tr><td><a href="C-polygons.c">C-polygons.c</a></td>
+<td>
+	M_DRAW:polyfill - set the polygon fill flag. This will always turn off hatching.<br/>
+	M_DRAW:polyhatch - set the polygon hatch flag. This will always turn off fill.<br/>
+	M_DRAW:hatchang - set the hatch angle<br/>
+	M_DRAW:hatchpitch - set the hatch pitch<br/>
+	M_DRAW:hatch - hatch the polygon defined by the n points in the array p.<br/>
+	M_DRAW:backfacedir - Set which direction backfacing polygons are defined to be.<br/>
+	M_DRAW:... * 1 = clockwise (in screen coords) 0 = anticlockwise.<br/>
+	M_DRAW:backface - Turns on culling of backfacing polygons. A polygon is<br/>
+	M_DRAW:... backfacing if it's orientation in *screen* coords is clockwise.<br/>
+	M_DRAW:dopoly - do a transformed polygon with n edges using fill or hatch<br/>
+	M_DRAW:polyoutline - draws a polygon outline from already transformed points.<br/>
+	M_DRAW:polyobj - construct a polygon from a object token list<br/>
+	M_DRAW:poly2 - construct polygon from a (x, y) array of points provided by user<br/>
+	M_DRAW:poly - construct a polygon from an array of points provided by the user.<br/>
+	M_DRAW:pmove - set the start position of a polygon<br/>
+	M_DRAW:pdraw - add another vertex to the polygon array<br/>
+	M_DRAW:makepoly - set up a polygon which will be constructed by a series of move draws.<br/>
+	M_DRAW:closepoly - draw the polygon started by the above.<br/>
+	M_DRAW:checkbacki - Checks if a transformed polygon is backfacing or not.<br/>
+	M_DRAW:The following routines are an implementation of the Sutherland - Hodgman<br/>
+	M_DRAW:polygon clipper, as described in 'Reentrant Polygon Clipping'<br/>
+	M_DRAW:Communications of the ACM Jan 1974, Vol 17 No. 1.<br/>
+	M_DRAW:polyclip<br/>
+	M_DRAW:shclip<br/>
+	M_DRAW:shclose<br/>
+	M_DRAW:intersect<br/>
+	M_DRAW:visible<br/>
+</td>
+<tr><td><a href="C-ppm.c">C-ppm.c</a></td>
+<td>
+	M_DRAW:driver/ppm.c - M_DRAW driver for ppm (Poskanzer pixmap) files<br/>
+	M_DRAW:author - John S. Urban<br/>
+	M_DRAW:version - 2.0, Nov 2005<br/>
+	 Version 1.0, John S. Urban, Feb 1997<br/>
+	 Version 2.0, John S. Urban, Nov 2005<br/>
+</td>
+<tr><td><a href="C-pref.c">C-pref.c</a></td>
+<td>
+	M_DRAW:prefposition - Specify a preferred position for a window that is under control of a window manager.<br/>
+	M_DRAW:prefsize - Specify the preferred size for a window under control of a window manager.<br/>
+	M_DRAW:getprefposandsize - Returns the preferred position and size of a window under control of a window manager.<br/>
+</td>
+<tr><td><a href="C-ps.c">C-ps.c</a></td>
+<td>
+	M_DRAW:driver/ps.c - M_DRAW driver for PostScript files<br/>
+</td>
 <tr><td><a href="C-read_line.c">C-read_line.c</a></td>
 <td>
 	read_line(3c):Paranoid function to read a line of text from a text file or terminal<br/>
+</td>
+<tr><td><a href="C-rect.c">C-rect.c</a></td>
+<td>
+	M_DRAW:rect - draw a rectangle given two opposite corners<br/>
+	M_DRAW:srect - draw a rectangle given two opposite corners in screen coords.<br/>
 </td>
 <tr><td><a href="C-rgbhls.c">C-rgbhls.c</a></td>
 <td>
@@ -831,17 +1140,150 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <td>
 	 Ensure a color value is in the appropriate range and quadrant<br/>
 </td>
+<tr><td><a href="C-rtf.c">C-rtf.c</a></td>
+<td>
+	M_DRAW:driver/rtf.c - M_DRAW driver for RTF (Microsoft Rich Text Format) files<br/>
+	M_DRAW:author - John S. Urban<br/>
+	M_DRAW:version - 1.0, Mar 2008<br/>
+	M_DRAW RTF Driver Version 1.0.0, October  2007; John S. Urban}<br/>
+</td>
+<tr><td><a href="C-scale.c">C-scale.c</a></td>
+<td>
+	M_DRAW:scale - Set up a scale matrix and premultiply it and the top matrix on the stack.<br/>
+</td>
+<tr><td><a href="C-svg.c">C-svg.c</a></td>
+<td>
+	M_DRAW:source - driver/svg.c - M_DRAW driver SVG (Scalable Vector Graphics) files<br/>
+	M_DRAW:author - John S. Urban<br/>
+	M_DRAW:version - 1.0, Mar 2005<br/>
+</td>
+<tr><td><a href="C-tek.c">C-tek.c</a></td>
+<td>
+	M_DRAW:driver/tek.c - M_DRAW driver for Tektronix 401x or equivalent (like X11 xterm)<br/>
+</td>
+<tr><td><a href="C-tensor.c">C-tensor.c</a></td>
+<td>
+	M_DRAW:premulttensor - Premultiply the tensor b by the matrix a and place the result into the tensor c.<br/>
+	M_DRAW:multtensor - Multiply the tensor b by the matrix a and place the result into the tensor c.<br/>
+	M_DRAW:copytensor - Copy the tensor a into b.<br/>
+	M_DRAW:copytensortrans - Copy the tensor a into b 'transposed'.<br/>
+</td>
+<tr><td><a href="C-text.c">C-text.c</a></td>
+<td>
+	M_DRAW:font - loads in a font.<br/>
+	M_DRAW:numchars - return the number of characters in the currently loaded hershey font.<br/>
+	M_DRAW:hershfont - Load in a Hershey font<br/>
+	M_DRAW:getcharsize - get the width and height of a single character<br/>
+	M_DRAW:drawchar - Display a character from the currently loaded font.<br/>
+	M_DRAW:drawhardchar - Displays a hardware character.<br/>
+	M_DRAW:textsize - set software character scaling values<br/>
+	M_DRAW:getfontwidth - Return the maximum width of the current font.<br/>
+	M_DRAW:getfontheight - Return the maximum Height of the current font<br/>
+	M_DRAW:getfontdec - Return the maximum descender of the current font<br/>
+	M_DRAW:getfontasc - Return the maximum ascender of the current font<br/>
+	M_DRAW:getfontsize - get the current character size in user coords.<br/>
+	M_DRAW:drawhstr - Display the text string using the currently loaded Hershey font<br/>
+	M_DRAW:drawstr - Draw a string from the current pen position.<br/>
+	M_DRAW:istrlength - Find out the length of a string in raw 'Hershey coordinates'.<br/>
+	M_DRAW:strlength - Find out the length (in world coords) of a string.<br/>
+	M_DRAW:boxtext - Draw text so it fits in a 'box' - note only works with Hershey text<br/>
+	M_DRAW:boxfit - Set up the scales etc for text so that a string of 'nchars' characters of the maximum width in the font fits in a box.<br/>
+	M_DRAW:centertext - Turns centering of text on or off. Turns off all other justifying.<br/>
+	M_DRAW:textjustify - Directly turns on/off justification<br/>
+	M_DRAW:xcentertext - Directly turns on xcentering<br/>
+	M_DRAW:ycentertext - Directly turns on ycentering<br/>
+	M_DRAW:leftjustify - Turns on leftjustification<br/>
+	M_DRAW:rightjustify - Turns on rightjustification<br/>
+	M_DRAW:topjustify - Turns on topjustification<br/>
+	M_DRAW:bottomjustify - Turns on bottomjustification<br/>
+	M_DRAW:fixedwidth - Turns fixedwidth text on or off<br/>
+	M_DRAW:textang - set software character angle in degrees<br/>
+	M_DRAW:textslant - Defines the obliqueness of the fonts.<br/>
+	M_DRAW:textweight - Defines the weight of the fonts.<br/>
+	M_DRAW:actual_move - implements a move<br/>
+</td>
+<tr><td><a href="C-trans.c">C-trans.c</a></td>
+<td>
+	M_DRAW:translate - Set up a translation matrix and premultiply it and the top matrix on the stack.<br/>
+	M_DRAW:rotate - Set up a rotate matrix and premultiply it with the top matrix on the stack.<br/>
+</td>
+<tr><td><a href="C-unixplot.c">C-unixplot.c</a></td>
+<td>
+	M_DRAW:driver/unixplot.c - M_DRAW driver for UNIX 'plot' format files<br/>
+</td>
+<tr><td><a href="C-usemap.c">C-usemap.c</a></td>
+<td>
+	M_DRAW:source - driver/usemap.c - M_DRAW driver for helping to create HTML image maps<br/>
+	M_DRAW:author - John S. Urban<br/>
+	M_DRAW:version - 1.0, Jun 2010<br/>
+</td>
+<tr><td><a href="C-valloc.c">C-valloc.c</a></td>
+<td>
+	M_DRAW:vallocate - malloc with error checking<br/>
+	M_DRAW:realloc with error checking<br/>
+	M_DRAW:vfree - free with error checking<br/>
+</td>
+<tr><td><a href="C-verror.c">C-verror.c</a></td>
+<td>
+	M_DRAW:verror - print an error on the graphics device, and then exit.<br/>
+</td>
+<tr><td><a href="C-viewing.c">C-viewing.c</a></td>
+<td>
+	M_DRAW:polarview - Specify the viewer's position in polar coordinates<br/>
+	M_DRAW:up - set the up vector<br/>
+	M_DRAW:normallookat - do the standard lookat transformation.<br/>
+	M_DRAW:lookatwithup - do the standard lookat transformation using an up vector as well.<br/>
+	M_DRAW:lookat - Specify the viewer's position by giving a viewpoint and a reference point in world coordinates.<br/>
+	M_DRAW:perspective - Specify a perspective viewing pyramid in world coordinates<br/>
+	M_DRAW:window - Specify a perspective viewing pyramid in world coordinates<br/>
+	M_DRAW:ortho - Define a three dimensional viewing box<br/>
+	M_DRAW:ortho2 - Specify a two dimensional viewing rectangle. <br/>
+</td>
+<tr><td><a href="C-viewp.c">C-viewp.c</a></td>
+<td>
+	M_DRAW:pushviewport - pushes the current viewport on the viewport stack<br/>
+	M_DRAW:popviewport - pops the top viewport off the viewport stack.<br/>
+	M_DRAW:viewport - Define a Viewport in Normalized Device Coordinates<br/>
+	M_DRAW:getviewport - Returns the left, right, bottom and top limits of the current viewport.<br/>
+</td>
+<tr><td><a href="C-vml.c">C-vml.c</a></td>
+<td>
+	M_DRAW:driver/vml.c - M_DRAW driver for VML (Microsoft Vector Markup Language)<br/>
+	M_DRAW:author - John S. Urban<br/>
+	M_DRAW:version - 1.0, Mar 1999<br/>
+	M_DRAW VML Driver Version 1.0.1, March  1999<br/>
+</td>
+<tr><td><a href="C-vog.c">C-vog.c</a></td>
+<td>
+	M_DRAW:driver/vog.c - M_DRAW driver for writing M_DRAW calls as text commands for the ush(1) shell<br/>
+	M_DRAW:author - John S. Urban<br/>
+	M_DRAW:version - 1.0, Mar 2004<br/>
+</td>
+<tr><td><a href="C-X11.c">C-X11.c</a></td>
+<td>
+	M_DRAW:driver/X11.c - M_DRAW driver for X11 Windows<br/>
+</td>
+<tr><td><a href="C-xfig.c">C-xfig.c</a></td>
+<td>
+	M_DRAW:driver/xfig.c - M_DRAW driver for xfig(1) files<br/>
+	M_DRAW:author - John S. Urban<br/>
+	M_DRAW:version - 1.0<br/>
+</td>
+<tr><td><a href="C-yobbarays.c">C-yobbarays.c</a></td>
+<td>
+	M_DRAW:yobbarays - Turns on (or off) yobba rays, as described by Larry Dart's friend.<br/>
+</td>
 <tr><td><a href="exrc">exrc</a></td>
 <td>
 	 advanced vi(1) configuration file <br/>
 </td>
 <tr><td><a href="Makefile">Makefile</a></td>
 <td>
-	 Makefile started by makeout(1) 2018-04-23 06:56:15<br/>
+	 Makefile started by makeout(1) 2018-06-12 08:09:42<br/>
 </td>
 <tr><td><a href="Makefile_picky">Makefile_picky</a></td>
 <td>
-	 Makefile started by makeout(1) 2018-04-23 06:56:13<br/>
+	 Makefile started by makeout(1) 2018-06-12 08:09:39<br/>
 </td>
 <tr><td><a href="vimrc">vimrc</a></td>
 <td>

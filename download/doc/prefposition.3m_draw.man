@@ -1,0 +1,36 @@
+NAME
+   prefposition(3f) - [M_DRAW:WINDOW_SETUP] Specify preferred position of window
+
+SYNOPSIS
+   subroutine prefposition(x, y)
+   integer,intent(in) ::  x, y
+
+DESCRIPTION
+   Specify the preferred position of the window opened by the *next* vinit.
+
+EXAMPLE
+  Sample program:
+
+     program demo_prefsize
+     use M_DRAW, only    : prefsize, vinit, ortho2, clear, getkey, prefposition
+     use M_DRAW, only    : move2, draw2, vexit, color
+     implicit none
+     integer :: ipaws
+
+     call prefsize(60,40)
+     call prefposition(100,100)
+
+     call vinit(' ')         ! start graphics using device $M_DRAW_DEVICE
+     call ortho2(-300.0,300.0,-200.0,200.0)
+     call color(0)
+     call clear()
+     call color(1)
+     call move2(-300.0,-200.0)
+     call draw2(300.0,200.0)
+     call move2(300.0,-200.0)
+     call draw2(-300.0,200.0)
+     ipaws=getkey()
+     call vexit()
+
+     end program demo_prefsize
+

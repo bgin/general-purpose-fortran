@@ -1,0 +1,12 @@
+NAME
+   bottomjustify(3f) - [M_DRAW:TEXT] bottom justify text
+
+SYNOPSIS
+       subroutine bottomjustify
+
+DESCRIPTION
+
+   Bottom justifies text. The text string will be drawn with it's lower
+   edge aligned with the current Y position. Top justification and Y
+   centering are turned off.
+

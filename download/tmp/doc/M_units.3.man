@@ -22,6 +22,9 @@ SYNOPSIS
       elemental real function atand(x)
       elemental real function atan2d(x,y)
 
+      elemental real|double function norm_angle_rad(radians)
+      elemental real|double function norm_angle_360(radians)
+
       subroutine cartesian_to_spherical(x,y,z,radius,inclination,azimuth)
       subroutine spherical_to_cartesian(radius,inclination,azimuth,x,y,z)
       subroutine cartesian_to_polar(x,y,radius,inclination)
@@ -73,6 +76,11 @@ DESCRIPTION
     o elemental real function acosd(x)
     o elemental real function atand(x)
     o elemental real function atan2d(x,y)
+
+   Normalize angles into specific ranges
+
+    o elemental real|double function norm_angle_rad(angle_in_radians)
+    o elemental real|double function norm_angle_360(angle_in_degrees)
 
    Coordinates
 

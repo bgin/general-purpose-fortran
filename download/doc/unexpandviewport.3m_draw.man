@@ -1,0 +1,11 @@
+NAME
+   unexpandviewport(3f) - [M_DRAW:VIEWPORT] undo expandviewport(3f)
+
+SYNOPSIS
+        subroutine unexpandviewport
+
+DESCRIPTION
+
+   Does the reverse of expandviewport. Basically, it returns M_DRAW to
+   using the largest square of the device for it's viewport calculations.
+

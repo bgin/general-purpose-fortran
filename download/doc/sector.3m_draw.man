@@ -1,0 +1,13 @@
+NAME
+   sector(3f) - [M_DRAW:ARCS] Draw a sector. Note: sectors are polygons.
+
+SYNOPSIS
+        subroutine sector(x, y, radius, startang, endang)
+        REAL x, y, radius, startang, endang
+
+DESCRIPTION
+
+   Draw a sector. x, y, and radius are values in world units. Note: sectors
+   are regarded as polygons, so if polyfill or polyhatch has been called
+   with 1, the sectors will be filled or hatched accordingly.
+

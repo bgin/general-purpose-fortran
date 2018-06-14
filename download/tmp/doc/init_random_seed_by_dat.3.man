@@ -1,11 +1,14 @@
 NAME
    init_random_seed_by_dat(3f) - [M_random] seed random_number(3f) with values from date_and_time(3f)
+
 SYNOPSIS
    subroutine init_random_seed_by_dat()
+
 DESCRIPTION
    A simple wrapper around random_seed(3f) that uses the date_and_time(3f)
    intrinsic to initialize the seed so you can easily call
    random_number(3f) with varying pseudo-random real number sequences
+
 EXAMPLE
    Sample program:
 

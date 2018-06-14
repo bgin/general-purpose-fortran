@@ -1,0 +1,10 @@
+NAME
+   vnewdev(3f) - [M_DRAW:DEVICE] Reinitialize to use new device without changing
+SYNOPSIS
+         subroutine vnewdev(device)
+         character *(*) device
+DESCRIPTION
+
+   Reinitialize M_DRAW to use a new device without changing attributes,
+   viewport etc. (eg. window and viewport specifications)
+

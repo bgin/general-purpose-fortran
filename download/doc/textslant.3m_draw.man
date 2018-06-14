@@ -1,0 +1,19 @@
+NAME
+   textslant(3f) - [M_DRAW:TEXT] Defines the obliqueness of the fonts.
+
+SYNOPSIS
+       subroutine textslant(var)
+       real var
+
+DESCRIPTION
+
+   Defines the obliqueness of the fonts. This is a simplistic method that
+   allows you to generate italicized versions of the software fonts. The x-
+   values of the software font coordinates after the current textsize()
+   values are applied are multiplied by (1+val).
+
+   Note that this means the same value tilts the characters less the taller
+   the characters are relative to their width.
+
+   Generally, practical values are generally between -1 and 1 times the
+

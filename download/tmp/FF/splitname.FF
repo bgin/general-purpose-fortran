@@ -1,0 +1,72 @@
+program demosplitname
+use M_kracken, only : kracken, sgets, lget                  ! add command-line parser module
+use M_strings, only : split
+use M_io,      only : splitpath
+implicit none
+logical                          :: zero=.false.
+character(len=4096),allocatable  :: array(:)
+character(len=4096)              :: dir,name,basename,ext,input_name
+integer                          :: i, ios
+logical                          :: stdin=.false.
+!-----------------------------------------------------------------------------------------------------------------------------------
+!  define command arguments, default values and crack command line
+   call kracken('splitname','-help .false. -version .false. -zero .false. -stdin .false.')
+   call help_usage(lget('splitname_help'))        ! process -help switch
+   call help_version(lget('splitname_version'))   ! process -version switch
+   zero=lget('splitname_zero')                    ! get -zero option
+   array=sgets('splitname_oo')                    ! get -oo STRING, split on space character into array
+   stdin=lget('splitname_stdin')                  ! read names from stdin
+!----------------------------------------------------------------------------------------------------------------------------------
+   do i=1,size(array)                           ! loop thru file-or-directory names
+      call splitpath(array(i),dir,name,basename,ext)
+      write(*,'(4(''"'',a,''" ''))')trim(dir),trim(name),trim(basename),trim(ext)
+   enddo
+   if(stdin)then
+      INFINITE: do
+         read(*,'(a)',iostat=ios)input_name
+         if(ios.ne.0)exit INFINITE
+         call splitpath(input_name,dir,name,basename,ext)
+         write(*,'(4(''"'',a,''" ''))')trim(dir),trim(name),trim(basename),trim(ext)
+      enddo INFINITE
+   endif
+!----------------------------------------------------------------------------------------------------------------------------------
+contains
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+$DOCUMENT HELP -file splitname.1.man
+NAME
+   splitname(1f) - [FUNIX] strip pathname into components {dir,name,basename,extension}
+
+SYNOPSIS
+   splitname [NAME1 NAME2 ... |-help|-version]
+
+DESCRIPTION
+   Output each pathname broken into components dir, name, basename, extension
+
+OPTIONS
+   NAMES     pathnames to split
+   -help     display this help and exit
+   -version  output version information and exit
+
+EXAMPLES
+   Sample program executions:
+
+     splitname /usr/bin/          -> "/usr/bin" "" "" ""
+     splitname /usr/bin           -> "/usr" "bin" "" ""
+     splitname stdio.h            -> "" "studio.h" "studio" ".h"
+
+SEE ALSO
+   splitname(1), basename(1), readlink(1), realpath(1)
+$DOCUMENT END
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+$DOCUMENT VERSION
+PRODUCT:        CLI library utilities and examples
+PROGRAM:        splitname(1f)
+DESCRIPTION:    split file name into components (dir,name,basename,extension)
+VERSION:        1.0.0
+DATE:           2017-04-18
+AUTHOR:         John S. Urban
+HOME PAGE:      http://www.urbanjost.altervista.org/index.html
+$DOCUMENT END
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+end program demosplitname
+!===================================================================================================================================
