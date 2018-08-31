@@ -4,13 +4,13 @@ NAME
 SYNOPSIS
      _mv SOURCE DEST
 DESCRIPTION 
-       Rename SOURCE to DEST
+       Rename file SOURCE to DEST
 
 EXAMPLE
-     _mv file.text file.txt
+     _mv file.text /tmp/file.txt
 $DOCUMENT END
 $DOCUMENT VERSION
-PRODUCT:        CLI library utilities and examples
+PRODUCT:        GPF (General Purpose Fortran) utilities and examples
 PROGRAM:        _mv(1f)
 DESCRIPTION:    rename file
 VERSION:        1.0, 2016-12-03

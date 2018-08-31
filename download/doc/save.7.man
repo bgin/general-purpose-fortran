@@ -30,7 +30,7 @@ DESCRIPTION
   appearance of the SAVE attr-spec or SAVE statement is permitted in that scoping unit.
 
   A local variable of a pure subprogram, or of a BLOCK construct within
-  a pure subprogram, shall not have the SAVE attribute.  Variable
+  a pure subprogram, shall not have the SAVE attribute. Variable
   initialization in a type-declaration-stmt or a data-stmt implies the
   SAVE attribute; therefore, such initialization is also disallowed in
   a pure subprogram.

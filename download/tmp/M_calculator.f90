@@ -12,12 +12,13 @@
 !!    integer, intent=(out)                  :: ierr
 !!
 !!##DESCRIPTION
-!!    JUCALC() evaluates FORTRAN-like expressions. It can be used to  add
+!!    JUCALC() evaluates FORTRAN-like expressions. It can be used to add
 !!    calculator-like abilities to your program.
 !!
+!!##OPTIONS
 !!     inline  INLINE is a string expression up to (iclen_calc=512) characters long.
 !!             The syntax of an expression is described in
-!!             the main document of  the  Calculator  Library.
+!!             the main document of the Calculator Library.
 !!     outlin  Returned numeric value as a string when IERR=0.
 !!     mssg    MSSG is a string that can serve several purposes
 !!             o Returned string value when IERR=2
@@ -39,7 +40,7 @@
 !!        o modif
 !!        o rand
 !!        o len_trim
-!!        o  User-supplied routines: juown1, c
+!!        o User-supplied routines: juown1, c
 !!##EXAMPLES
 !!
 !!   Example calculator program
@@ -186,7 +187,7 @@ module m_calculator
 !!
 !!    Normally values are stored or defined in the calculator module
 !!    M_calculator(3fm) using the jucalc(3f) routine or the convenience
-!!    routines in the module M_calculator_plus(3fm).  For efficiency when
+!!    routines in the module M_calculator_plus(3fm). For efficiency when
 !!    large numbers of values require being stored the stuff(3f) procedure
 !!    can be used to store numeric values by name in the calculator
 !!    dictionary.
@@ -1112,7 +1113,7 @@ case("$fmtdate")  ! $fmtdate (utime,format) ==> fmtdate(dat,format) result (time
             call unix_to_date(uepoch,itime,ifail)
             ctmp=fmtdate(itime,values(int(args(2))))
          else
-            mssge='*$fmtdate* wrong type of parameters  fmtdate(Unix_Epoch_Time,time_format)'
+            mssge='*$fmtdate* wrong type of parameters fmtdate(Unix_Epoch_Time,time_format)'
             ier=-1
          endif
       case(3:9)  ! not very bullet-proof, assumes all numbers except last parameter=format, seeds with current time,
@@ -1833,7 +1834,7 @@ subroutine juargs(line,ilen,array,itype,iarray,ier,mx)
 !-----------------------------------------------------------------------------------------------------------------------------------
 implicit doubleprecision (a-h,o-z)
 character(len=*),parameter :: ident=&
-&"@(#)M_calculator::juargs(3fp):given 'par1,par2,...' store  non-parenthesized expression par(n) into a real or string array"
+&"@(#)M_calculator::juargs(3fp):given 'par1,par2,...' store non-parenthesized expression par(n) into a real or string array"
 !@ (#) record type of par(n) into itype()"
 !@ (#) Commas are only legal delimiters. extra or redundant delimiters are ignored.
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -2232,9 +2233,9 @@ end subroutine jufacs
 !!          error message and set rval to zero and return.
 !!       6. note that blanks are treated as null, not zero.
 !!##OPTIONS
-!!      chars is the input string
-!!      rval  is the doubleprecision output value
-!!      ierr  0 if no error occurs
+!!      chars  is the input string
+!!      rval   is the doubleprecision output value
+!!      ierr   0 if no error occurs
 !!
 !!##EXAMPLE
 !!
@@ -2478,7 +2479,7 @@ character(len=*),parameter :: ident=&
    character(len=iclen_calc)   :: ctoken
 
    character(len=10),parameter :: list  =' +-="#[]{}'  ! list of special characters
-   character(len=10),parameter :: list2 =' #=&  ()()'  ! list of what to convert special characters too when appropriate
+ !!character(len=10),parameter :: list2 =' #=&  ()()'  ! list of what to convert special characters too when appropriate
    character(len=5)            :: toknam
 !-----------------------------------------------------------------------------------------------------------------------------------
 !  keep track of previous 2 non-blank characters in dummy for when trying to distinguish between e-format numbers
@@ -2917,8 +2918,8 @@ end subroutine given_name_get_stringvalue
 !!       Note this is breaking the rule of only accessing the calculator thru jucalc(3f).
 !!       It should only be used from user JUOWN1(3f) routines to avoid recursion
 !!##OPTIONS
-!!    varnam  name of calculator variable to look up that is assumed to be a valid defined
-!!    name of a numeric variable. If it does not exist zero is returned.
+!!    varnam   name of calculator variable to look up that is assumed to be a valid defined
+!!             name of a numeric variable. If it does not exist zero is returned.
 !!##EXAMPLE
 !!
 !!   Program:
@@ -2969,10 +2970,11 @@ end function getvalue
 !!       Given numeric variable name return integer value.
 !!       Note this is breaking the rule of only accessing the calculator thru jucalc(3f).
 !!       It should only be used from user JUOWN1(3f) routines to avoid recursion
+!!
 !!##OPTIONS
-!!    varnam  name of calculator variable to look up that is assumed to be a valid defined
-!!    name of a numeric variable. If it does not exist zero is returned without an error being
-!!    reported.
+!!    varnam   name of calculator variable to look up that is assumed to
+!!             be a valid defined name of a numeric variable. If it does
+!!             not exist zero is returned without an error being reported.
 !!
 !!##EXAMPLE
 !!
@@ -3000,6 +3002,7 @@ end function igetvalue
 !>
 !!##NAME
 !!    rgetvalue(3f) - [M_calculator] given numeric variable name return real value directly from calculator dictionary for efficiency
+!!
 !!##SYNOPSIS
 !!
 !!    real function rgetvalue(varnam)
@@ -3010,10 +3013,11 @@ end function igetvalue
 !!       Given numeric variable name return real value.
 !!       Note this is breaking the rule of only accessing the calculator thru jucalc(3f).
 !!       It should only be used from user JUOWN1(3f) routines to avoid recursion
+!!
 !!##OPTIONS
-!!    varnam  name of calculator variable to look up that is assumed to be a valid defined
-!!    name of a numeric variable. If it does not exist zero is returned without an error being
-!!    reported.
+!!    varnam   name of calculator variable to look up that is assumed to
+!!             be a valid defined name of a numeric variable. If it does
+!!             not exist zero is returned without an error being reported.
 !!
 !!##EXAMPLE
 !!
@@ -3163,6 +3167,7 @@ end subroutine double_stuff
 !!    character(len=*),intent(in)  :: string
 !!    integer                      :: index
 !!    character(len=*),intent(in)  :: ioflag
+!!
 !!##DEFINITION
 !!    Breaking the rule of only accessing the calculator thru jucalc:
 !!
@@ -3171,6 +3176,7 @@ end subroutine double_stuff
 !!    problems with recursion if a routine called by the calculator
 !!    in JUOWN1(3f) wants to store something back into the calculator
 !!    variable table.
+!!
 !!##OPTIONS
 !!    varnam0   variable name to create or replace in calculator module
 !!    string    string to associate with the calculator variable name varnam0
@@ -3255,7 +3261,7 @@ subroutine juown1(func,iflen,args,iargstp,n,fval,ctmp,ier)
 !     ctmp=string to return when returning a string value
 !     ier=returned error flag value.
 !         set to -1 if an error occurs.
-!         set to  0 if a  number is returned
+!         set to  0 if a number is returned
 !         set to  2 if a string is returned
 !
       use m_calculator, only : x, y, values, valuer

@@ -70,7 +70,7 @@ ERRORS
    EPERM   The process does not have permission to send the signal to
            any receiving process.
    ESRCH   No process or process group can be found corresponding to
-           that specified by pid.  The following sections are informative.
+           that specified by pid. The following sections are informative.
 
 EXAMPLE
   Sample program:

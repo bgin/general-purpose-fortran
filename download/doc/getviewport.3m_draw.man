@@ -1,12 +1,12 @@
 NAME
-   getviewport(3f) - [M_DRAW:VIEWPORT] Returns limits of current viewport in screen coordinates
+   getviewport(3f) - [M_draw:VIEWPORT] Returns limits of current viewport in screen coordinates
 
 SYNOPSIS
          subroutine getviewport(left, right, bottom, top)
-         real,intent(out)    :: left
-         real,intent(out)    :: right
-         real,intent(out)    :: bottom
-         real,intent(out)    :: top
+         real,intent(out) :: left
+         real,intent(out) :: right
+         real,intent(out) :: bottom
+         real,intent(out) :: top
 
 DESCRIPTION
 

@@ -16,7 +16,7 @@
 !!     The handles to the database or prepared statements are stored in an array of two integers to take care of 64-bit platforms.
 !!
 !!     With the appropriate compilation options (if needed) the code should be thread-safe except for
-!!     sqlite3_get_table(1) , as no data are shared or saved in other routines.
+!!     sqlite3_get_table(1), as no data are shared or saved in other routines.
 !===================================================================================================================================
 !>
 !!##NAME
@@ -83,7 +83,7 @@
 !!
 !!    The interface has been implemented in such a way that you can use
 !!    a few high-level routines for common tasks, such as inserting data
-!!    into a database and querying the contents.  To this end the module
+!!    into a database and querying the contents. To this end the module
 !!    defines a set of routines and functions as well as several derived
 !!    types to hide the low-level details.
 !!
@@ -260,7 +260,7 @@
 !!    !
 !!    ! Note that a transaction (via calls to sqlite3_begin and
 !!    ! sqlite3_commit pair) is used, so that all the inserts can be
-!!    ! done in one go.  Inserting with autocommit is much slower,
+!!    ! done in one go. Inserting with autocommit is much slower,
 !!    ! as the database file needs to be flushed every time.
 !!    !
 !!       call sqlite3_begin(db)
@@ -644,7 +644,7 @@ end function column_func
 !!
 !!##SYNOPSIS
 !!
-!!    call sqlite3_column_props(column, name, type, length)
+!!    subroutine sqlite3_column_props(column, name, type, length)
 !!
 !!        type(SQLITE_COLUMN) :: column
 !!        character(len=*)    :: name
@@ -659,7 +659,7 @@ end function column_func
 !!           Fields in column filled
 !!
 !!##OPTIONS
-!!        column    The struncture that holds the information on the column
+!!        column    The structure that holds the information on the column
 !!
 !!        name      Name of the column in the table to which it belongs or will belong
 !!
@@ -713,7 +713,7 @@ end subroutine sqlite3_column_props
 !!
 !!##SYNOPSIS
 !!
-!!      call sqlite3_column_query(column, name, type, length, function)
+!!      subroutine sqlite3_column_query(column, name, type, length, function)
 !!
 !!        type(SQLITE_COLUMN) column
 !!        character(len=*) name
@@ -777,7 +777,7 @@ end subroutine sqlite3_column_query
 !!
 !!##SYNOPSIS
 !!
-!!    call sqlite3_set_column(column, value)
+!!    subroutine sqlite3_set_column(column, value)
 !!
 !!        type(SQLITE_COLUMN) column
 !!        any type value
@@ -868,7 +868,7 @@ end subroutine sqlite3_set_column_char
 !!
 !!##SYNOPSIS
 !!
-!!    call sqlite3_get_column(column, value)
+!!    subroutine sqlite3_get_column(column, value)
 !!
 !!     type(SQLITE_COLUMN) :: column
 !!     any type            :: value
@@ -1008,7 +1008,7 @@ end function sqlite3_errmsg
 !!
 !!##SYNOPSIS
 !!
-!!    call sqlite3_open(filename, db)
+!!    subroutine sqlite3_open(filename, db)
 !!
 !!        character(len=*) filename
 !!        type(SQLITE_DATABASE) db
@@ -1059,7 +1059,7 @@ end subroutine sqlite3_open
 !!
 !!##SYNOPSIS
 !!
-!!    call sqlite3_close(db)
+!!    subroutine sqlite3_close(db)
 !!
 !!        type(SQLITE_DATABASE) db
 !!
@@ -1101,7 +1101,7 @@ end subroutine sqlite3_close
 !!   sqlite3_do(3f) - [M_sqlite] Run a single SQL command
 !!##SYNOPSIS
 !!
-!!    call sqlite3_do(db, command)
+!!    subroutine sqlite3_do(db, command)
 !!
 !!        type(SQLITE_DATABASE) db
 !!        character(len=*) command
@@ -1194,7 +1194,7 @@ end subroutine sqlite3_begin
 !!   sqlite3_commit(3f) - [M_sqlite] Commits a transaction on the given database
 !!##SYNOPSIS
 !!
-!!    call sqlite3_commit(db)
+!!    subroutine sqlite3_commit(db)
 !!
 !!     type(SQLITE_DATABASE) db
 !!
@@ -1262,7 +1262,7 @@ end subroutine sqlite3_rollback
 !!
 !!##SYNOPSIS
 !!
-!!    call sqlite3_delete_table(db)
+!!    subroutine sqlite3_delete_table(db)
 !!
 !!     type(SQLITE_DATABASE) db
 !!     character(len=*) tablename
@@ -1301,7 +1301,7 @@ end subroutine sqlite3_delete_table
 !!
 !!##SYNOPSIS
 !!
-!!    call sqlite3_create_table(db)
+!!    subroutine sqlite3_create_table(db)
 !!
 !!     type(SQLITE_DATABASE)      :: db
 !!     character(len=*)           :: tablename
@@ -1369,7 +1369,7 @@ end subroutine sqlite3_create_table
 !!
 !!##SYNOPSIS
 !!
-!!    call sqlite3_prepare_select(db, tablename, columns, stmt, extra_clause)
+!!    subroutine sqlite3_prepare_select(db, tablename, columns, stmt, extra_clause)
 !!
 !!     type(SQLITE_DATABASE)     :: db
 !!     character(len=*)          :: tablename
@@ -1439,7 +1439,7 @@ end subroutine sqlite3_prepare_select
 !!
 !!##SYNOPSIS
 !!
-!!    call sqlite3_insert(db, tablename, columns)
+!!    subroutine sqlite3_insert(db, tablename, columns)
 !!
 !!     type(SQLITE_DATABASE) db
 !!     character(len=*) tablename
@@ -1547,7 +1547,7 @@ end subroutine sqlite3_insert
 !!
 !!##SYNOPSIS
 !!
-!!    call sqlite3_next_row(stmt, columns, finished)
+!!    subroutine sqlite3_next_row(stmt, columns, finished)
 !!
 !!     type(SQLITE_STATEMENT) :: stmt
 !!     type(SQLITE_COLUMN)    :: columns(:)
@@ -1635,7 +1635,7 @@ end subroutine sqlite3_next_row
 !!
 !!##SYNOPSIS
 !!
-!!    call sqlite3_query_table(db, tablename, columns)
+!!    subroutine sqlite3_query_table(db, tablename, columns)
 !!
 !!     type(SQLITE_DATABASE) db
 !!     character(len=*) tablename
@@ -1691,7 +1691,7 @@ end subroutine sqlite3_query_table
 !!
 !!##SYNOPSIS
 !!
-!!    call sqlite3_finalize(stmt)
+!!    subroutine sqlite3_finalize(stmt)
 !!
 !!     type(SQLITE_STATEMENT) stmt
 !!
@@ -1727,7 +1727,7 @@ end subroutine sqlite3_finalize
 !!
 !!##SYNOPSIS
 !!
-!!    call sqlite3_reset(stmt)
+!!    subroutine sqlite3_reset(stmt)
 !!
 !!     type(SQLITE_STATEMENT) stmt
 !!
@@ -1762,7 +1762,7 @@ end subroutine sqlite3_reset
 !!
 !!##SYNOPSIS
 !!
-!!    call sqlite3_step(stmt, completion)
+!!    subroutine sqlite3_step(stmt, completion)
 !!
 !!     type(SQLITE_STATEMENT) stmt
 !!     integer completion
@@ -1807,7 +1807,7 @@ end subroutine sqlite3_step
 !!
 !!##SYNOPSIS
 !!
-!!    call sqlite3_prepare(db, command, stmt, columns)
+!!    subroutine sqlite3_prepare(db, command, stmt, columns)
 !!
 !!     type(SQLITE_DATABASE)       :: db
 !!     character(len=*)            :: command
@@ -1919,7 +1919,7 @@ end subroutine sqlite3_prepare
 !!
 !!##SYNOPSIS
 !!
-!!    call sqlite3_get_table(db, commmand, result, errmsg)
+!!    subroutine sqlite3_get_table(db, commmand, result, errmsg)
 !!
 !!     type(SQLITE_DATABASE)    :: db
 !!     character(len=*)         :: command

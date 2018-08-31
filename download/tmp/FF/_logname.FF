@@ -15,7 +15,7 @@ EXAMPLE
         _logname
 $DOCUMENT END
 $DOCUMENT VERSION
-PRODUCT:        CLI library utilities and examples
+PRODUCT:        GPF (General Purpose Fortran) utilities and examples
 PROGRAM:        _logname(1f)
 DESCRIPTION:    print login name using system_getlogin(3f)/getlogin(3c)
 VERSION:        1.0, 2016-12-02

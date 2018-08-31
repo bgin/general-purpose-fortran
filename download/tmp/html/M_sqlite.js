@@ -1,7 +1,9 @@
 function loadthem(){
+append("M_sqlite.3{SECTION}.html");
 append("M_sqlite.3.html");
 append("sqlite3_begin.3.html");
 append("sqlite3_close.3.html");
+append("sqlite3_column_props.3.html");
 append("sqlite3_column_query.3.html");
 append("sqlite3_commit.3.html");
 append("sqlite3_create_table.3.html");

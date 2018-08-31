@@ -1,9 +1,9 @@
 NAME
-   backfacedir(3f) - [M_DRAW:POLYGONS] Sets backfacing direction to clockwise or anti-clockwise
+   backfacedir(3f) - [M_draw:POLYGONS] Sets backfacing direction to clockwise or anti-clockwise
 
 SYNOPSIS
       subroutine backfacedir(clockwise)
-      integer,intent(in) ::  clockwise
+      integer,intent(in) :: clockwise
 
 DESCRIPTION
    Sets the backfacing direction to clockwise or anti-clockwise depending

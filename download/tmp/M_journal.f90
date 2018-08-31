@@ -13,74 +13,126 @@ private
 !!
 !!
 !!    subroutine journal([where,]message,[VALUE])
-!!    character(len=*),intent(in)  :: where
-!!    character(len=*),intent(in)  :: msg
 !!
-!!   write messages
+!!     character(len=*),intent(in) :: where
+!!     character(len=*),intent(in) :: msg
 !!
-!!    call journal(where,message,[VALUE])
-!!    call journal(message) !  shortcut for "call journal('sc',message)"
+!!   WRITE MESSAGES
 !!
-!!   open or close trail file
+!!       call journal(where,message,[VALUE])
 !!
-!!    call journal('O',[trailfile_name|'']) ! open a trail file, or close trail if filename is blank
+!!    shortcut for "call journal('sc',message)"
 !!
-!!   set output time prefix
+!!       call journal(message)
 !!
-!!    call journal('%',time_stamp_prefix_specification) ! see the NOW(3f) function
+!!   OPEN OR CLOSE TRAIL FILE
 !!
-!!   modes
+!!    open a trail file, or close trail if filename is blank
 !!
-!!    call journal([.true.|.false.],'debug')   ! Turn on/off writing DEBUG messages to trail file
+!!       call journal('O',[trailfile_name|''])
 !!
-!!   assign stdout to an alternate file
+!!   SET OUTPUT TIME PREFIX
 !!
-!!    call journal(iunit,filename)  ! change stdout to iunit and open filename; or close unit and go back to stdout if filename=''
-!!    call journal(iunit)           ! change stdout to iunit to use a file already open
+!!    set the NOW(3f) function display format for timestamps
+!!
+!!       call journal('%',time_stamp_prefix_specification)
+!!
+!!   MODES
+!!
+!!    Turn on/off writing DEBUG messages to trail file
+!!
+!!       call journal([.true.|.false.],'debug')
+!!
+!!   ASSIGN STDOUT TO AN ALTERNATE FILE
+!!    change stdout to iunit and open filename; or close unit and go back to stdout if filename=''
+!!
+!!       call journal(iunit,filename)
+!!
+!!    change stdout to iunit to use a file already open
+!!
+!!       call journal(iunit)
 !!
 !!##DESCRIPTION
+!!
+!!    If a user procedure is used for outputting messages instead of calling
+!!    WRITE(3f) it is easy to provide control of when messages are printed
+!!    (ie. a "verbose" mode, or "quite" mode), creating files to replace
+!!    program execution, duplicating output, ...
+!!
 !!##OPTIONS
-!!   WHERE  indicates where messages are written. A combination of the following characters can be used
+!!   WHERE  indicates where messages are written. A combination of the
+!!          following characters can be used...
 !!
-!!      Usually one of these to write to the standard output file ...
+!!      Usually one of these to write to the standard output files ...
 !!
-!!      S   write to stdout or iounit set with journal(unit) or journal(unit,filename)
+!!      S   write to stdout or iounit set with journal(unit) or
+!!          journal(unit,filename).
 !!      E   write to stderr
 !!
-!!      And one of these to write to trail file (ignore if no trail file defined) ...
+!!      And one of these to write to trail file (ignore if no trail file
+!!      defined) ...
 !!
 !!      C   write to trail file as a comment (if file is open)
-!!          Writing output "as a comment" means it is preceded by a pound(#) character.
+!!          Writing output "as a comment" means it is preceded by a pound(#)
+!!          character.
 !!      T   write to trail file (if file is open)
 !!
 !!      Usually used by itself
 !!
-!!      D   write to trail file as a comment with DEBUG: prefix in front of message (if file is open) if debug mode is on
+!!      D   write to trail file as a comment with DEBUG: prefix in front
+!!          of message (if file is open) if debug mode is on
 !!
-!!      Modifier for SECTD
+!!      Modifier for S|E|C|T|D specifiers
 !!
-!!      +   subsequent writes for this call are written with advance='no'
+!!      +   subsequent files are written to with advance='no'. Position is
+!!          important. '+sc' does an advance='no' on both files, 's+c'
+!!          only does the advance='no' for the trail file.
 !!
 !!      Mode changing options used by themselves:
 !!
 !!      >   turn off debug messages
 !!      <   turn on debug messages
-!!      O   open trail file "msg" or close trail file if blank filename
+!!      O   open trail file using value of "message" parameter or close
+!!          trail file if no filename or a blank filename.
 !!      %   set prefix to run thru now(3f) to generate time prefix strings
 !!
-!!   MESSAGE   message to write to stdout, stderr, and the trail file when writing message.
-!!   FILENAME  when WHERE="O" to turn the trail file on or off, the message is the filename of a trail to open.
-!!   TFORMAT   when WHERE="%" the message is treated as a time format specification as described under now(3f).
+!!   MESSAGE   message to write to stdout, stderr, and the trail file when
+!!             writing message.
+!!   FILENAME  when WHERE="O" to turn the trail file on or off, the "message"
+!!             field becomes the trail filename to open. If blank, writing
+!!             to the trail file is turned off.
+!!   TFORMAT   when WHERE="%" the message is treated as a time format
+!!             specification as described under now(3f).
+!!   VALUE     a numeric value to optionally be appended to the message
 !!
-!!   VALUE  a numeric value to optionally be appended to the message
-!!
-!!##RETURNS
 !!##EXAMPLE
 !!
+!!   Sample program:
+!!
+!!    program demo_journal
+!!    use M_journal, only : journal
+!!
+!!    !! BASIC USAGE
+!!    call journal('write to standard output as-is, and trail file as a comment')
+!!
+!!    ! since we have not opened a trail file yet, only stdout will display output
+!!    call journal('sc','write to standard output as-is, and trail file as a comment')
+!!    call journal('c','ignored, as trail file is not open')
+!!
+!!    ! now open trail file "trail"
+!!    call journal('o','trail')
+!!    call journal('sc','same thing, with ')
+!!    ! only write to trail file if open
+!!    call journal('c','not ignored, as trail file is open. Written with # suffix')
+!!    call journal('t','not ignored, as trail file is open. Written as-is')
+!!    ! turn off trail file
+!!    call journal('o')
+!!
+!!    end program demo_journal
 !===================================================================================================================================
 public journal
 interface journal
-   module procedure write_msg, wm_i, wm_r, wm_l, wm_d, wm, set_stdout, change_model
+   module procedure write_msg, wm_i, wm_r, wm_c, wm_l, wm_d, wm, set_stdout, change_model
 end interface journal
 
 character(len=*),parameter :: ident="@(#)M_journal::journal(3fg): provides public message routine, no paging or graphic mode change"
@@ -151,13 +203,13 @@ character(len=*),intent(in)  :: msg
       select case(where(i:i))
       case('T','t')
          if(trailopen) then
-            write(itrail,'(a)',advance=adv)prefix//msg
+            write(itrail,'(a)',advance=adv)prefix//trim(msg)
          elseif(times.eq.0)then
-            write(stdout,'(a)',advance=adv)prefix//msg
+            write(stdout,'(a)',advance=adv)prefix//trim(msg)
             times=times+1
          endif
       case('S','s')
-         write(stdout,'(a)',advance=adv)prefix//msg
+         write(stdout,'(a)',advance=adv)prefix//trim(msg)
          times=times+1
       case('+'); adv='no'
       !-----------------------------------------------------------------------------------------------------------------------------
@@ -186,17 +238,17 @@ character(len=*),intent(in)  :: msg
       !-----------------------------------------------------------------------------------------------------------------------------
       case('C','c')
          if(trailopen)then
-            write(itrail,'(2a)',advance=adv)comment,prefix//msg
+            write(itrail,'(2a)',advance=adv)comment,prefix//trim(msg)
          elseif(times.eq.0)then
-            write(stdout,'(a)',advance=adv)prefix//msg
+            write(stdout,'(a)',advance=adv)prefix//trim(msg)
             times=times+1
          endif
       case('D','d')
          if(debug)then
             if(trailopen)then
-               write(itrail,'(3a)',advance=adv)comment,'DEBUG: ',prefix//msg
+               write(itrail,'(3a)',advance=adv)comment,'DEBUG: ',prefix//trim(msg)
             elseif(times.eq.0)then
-               write(stdout,'(2a)',advance=adv)'DEBUG:',prefix//msg
+               write(stdout,'(2a)',advance=adv)'DEBUG:',prefix//trim(msg)
                times=times+1
             endif
          endif
@@ -206,7 +258,7 @@ character(len=*),intent(in)  :: msg
             trailopen=.true.
          else
             if(trailopen)then
-               write(itrail,'(3a)',advance=adv)comment,'closing trail file:',prefix//msg
+               write(itrail,'(3a)',advance=adv)comment,'closing trail file:',prefix//trim(msg)
             endif
             close(unit=itrail,iostat=ios)
             trailopen=.false.
@@ -251,6 +303,17 @@ character(len=*),intent(in)          :: message
    call write_msg('sc',trim(message))
 !-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine wm
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+subroutine wm_c(where,message,value)
+character(len=*),parameter :: ident="@(#)M_journal::wm_c(3fp): append character variable  to message and pass to write_msg()"
+character(len=*),intent(in)          :: where
+character(len=*),intent(in)          :: message
+character(len=*),intent(in)          :: value
+   call write_msg(where,trim(value))
+!-----------------------------------------------------------------------------------------------------------------------------------
+end subroutine wm_c
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================

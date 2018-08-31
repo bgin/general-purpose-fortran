@@ -1,0 +1,60 @@
+NAME
+ush -x 0 -y 0 -t USH 6.0 -trail trail.USH -c -d --help --version
+SYNOPSIS
+
+DESCRIPTION
+   Explore data in the form of XY plots using a CLI-based
+   (Command Line Interface) program. Extensive help is
+   available via the help(1) command.
+
+OPTIONS
+  -c        optional initial command
+  -trail    name of session journal file. default is "trail.USH"
+            unless the environment variable $PLTTRAIL is set to
+            a non-blank value, in which case the variable value
+            defines the default.
+  -x        display size in x direction in driver units
+  -y        display size in y direction in driver units
+  -t        default title
+  -d        specify default output device
+ENVIRONMENT
+ Environment variables used by the program
+
+  PLTHCOPY = hcopy
+  USHINIT =  initial line of commands
+
+  M_DRAW_DEVICE = X11
+  M_DRAW_FONTLIB = /home/urbanjs/V600/lib/CYGWIN64_GFORTRAN/hershey
+
+  PLTDEVICE = x11
+  USHLARGE = 9x15
+  USHSMALL = fixed
+
+  USHTITLE =  default title
+  USHTITLE1 = default title
+
+  USHHELP =  /home/urbanjs/V600/doc/help.txt
+  PLTTRAIL = /home/urbanjs/V600/trail.USH
+  USHUNITS = /home/urbanjs/V600/LIBRARY/libUSH/doc/units.dat
+  USHZEBRA = /tmp/USH7000.
+
+  WHERE = /home/urbanjs/V600
+
+EXAMPLE
+  Sample invocations:
+
+   ush # start using X11 display
+
+   # use Adobe PDF output and read file "prologue"
+   ush -d pdf -c read prologue
+
+   # read in and execute commands and quit
+   ush -c 'read myfile;quit'
+
+   # use null default and output specific plots using hcopy(1)
+   ush -d null <<EOF
+   create 200;math c(1)*sin(c(1))
+   plot 2
+   hcopy pdf -f plot1.pdf
+   EOF
+

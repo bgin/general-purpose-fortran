@@ -1,5 +1,5 @@
 NAME
-   drawstr(3f) - [M_DRAW:TEXT] Draw the text in string at the current position.
+   drawstr(3f) - [M_draw:TEXT] Draw the text in string at the current position.
 
 SYNOPSIS
         subroutine drawstr(str)

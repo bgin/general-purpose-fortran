@@ -55,55 +55,55 @@ contains
 pure function binary_search(id,arr) result(jloc)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_list::binary_search(3f) binary search of a sorted array."
+character(len=*),parameter::ident="@(#)M_list::binary_search(3f): binary search of a sorted array."
 
 integer,intent(in)              :: id        !! key word to match in `arr`
 integer,dimension(:),intent(in) :: arr       !! array to search (it is assumed to be sorted)
-integer                         :: jloc     !! the first matched index in 'arr' (if not found, 0 is returned)
+integer                         :: jloc      !! the first matched index in 'arr' (if not found, 0 is returned)
 
-   integer           :: j,k,khi,klo,n
-   integer,parameter :: iswtch = 16
+integer           :: j,k,khi,klo,n
+integer,parameter :: iswtch = 16
 
    n = size(arr)
    jloc = 0
 
    if ( n<iswtch ) then                         ! sequential search more efficient
-           do j = 1 , n
-                   if ( arr(j)==id ) then
-                           jloc = j
-                           return
-                   elseif (arr(j)>id) then
-                           return ! error
-                   endif
-           enddo
-           return ! error
+      do j = 1 , n
+         if ( arr(j)==id ) then
+            jloc = j
+            return
+         elseif (arr(j)>id) then
+            return ! error
+         endif
+      enddo
+      return ! error
    else
-           klo = 1
-           khi = n
-           k = (klo+khi+1)/2
-           do
-                   j = k
-                   if ( id<arr(j) ) then
-                           khi = k
-                   elseif ( id==arr(j) ) then
-                           jloc = j
-                           return
-                   else
-                           klo = k
-                   endif
-                   if ( khi-klo<1 ) then
-                           return ! error
-                   elseif ( khi-klo==1 ) then
-                           if ( k==klo ) then
-                                   k = khi
-                           else
-                                   k = klo
-                           endif
-                           klo = khi
-                   else
-                           k = (klo+khi+1)/2
-                   endif
-           end do
+      klo = 1
+      khi = n
+      k = (klo+khi+1)/2
+      do
+         j = k
+         if ( id<arr(j) ) then
+            khi = k
+         elseif ( id==arr(j) ) then
+            jloc = j
+            return
+         else
+            klo = k
+         endif
+         if ( khi-klo<1 ) then
+            return ! error
+         elseif ( khi-klo==1 ) then
+            if ( k==klo ) then
+               k = khi
+            else
+               k = klo
+            endif
+            klo = khi
+         else
+            k = (klo+khi+1)/2
+         endif
+      enddo
    endif
 
 end function binary_search
@@ -214,7 +214,7 @@ end function binary_search
 subroutine locate(varname,dictionary,place,ier,errmsg)
 
 character(len=*),parameter::ident="&
-&@(#)M_list::locate(3f) find PLACE in sorted character array where VARNAME can be found or should be placed"
+&@(#)M_list::locate(3f): find PLACE in sorted character array where VARNAME can be found or should be placed"
 
 !     (Assuming an alphabetized array of character strings)
 !
@@ -321,12 +321,15 @@ end subroutine locate
 !!##EXAMPLES
 !!
 !!
+!!    Sample program
+!!
 !!     program demo_remove
 !!     use M_sort, only : sort_shell
 !!     use M_list, only : locate, remove
 !!     implicit none
 !!     character(len=20),allocatable :: arr(:)
 !!     integer                       :: i
+!!     integer                       :: end
 !!
 !!     arr=[character(len=20) :: '', 'ZZZ', 'Z', 'aaa', 'b', 'b', 'ab', 'bb', 'xxx' ]
 !!     ! make sure sorted in descending order
@@ -343,12 +346,18 @@ end subroutine locate
 !!
 !!     end program demo_remove
 !!
+!!    Expected output
+!!
+!!     SIZE=9 xxx,bb,b,b,ab,aaa,ZZZ,Z,,
+!!     SIZE=8 bb,b,b,ab,aaa,ZZZ,Z,,
+!!     SIZE=7 bb,b,b,aaa,ZZZ,Z,,
+!!
 !!##AUTHOR
 !!    1989,2017 John S. Urban
 !===================================================================================================================================
 subroutine remove_c(dictionary,place)
 
-character(len=*),parameter::ident="@(#)M_list::remove_c(3fp) remove string from allocatable string array at specified position"
+character(len=*),parameter::ident="@(#)M_list::remove_c(3fp): remove string from allocatable string array at specified position"
 
 character(len=*),allocatable :: dictionary(:)
 integer,intent(in)           :: place
@@ -369,7 +378,7 @@ integer                      :: ii, end
 end subroutine remove_c
 subroutine remove_r(dictionary,place)
 
-character(len=*),parameter::ident="@(#)M_list::remove_r(3fp) remove value from allocatable array at specified position"
+character(len=*),parameter::ident="@(#)M_list::remove_r(3fp): remove value from allocatable array at specified position"
 
 real,allocatable    :: dictionary(:)
 integer,intent(in)  :: place
@@ -390,7 +399,7 @@ integer             :: end
 end subroutine remove_r
 subroutine remove_i(dictionary,place)
 
-character(len=*),parameter::ident="@(#)M_list::remove_i(3fp) remove value from allocatable array at specified position"
+character(len=*),parameter::ident="@(#)M_list::remove_i(3fp): remove value from allocatable array at specified position"
 integer,allocatable    :: dictionary(:)
 integer,intent(in)     :: place
 integer                :: end
@@ -469,25 +478,66 @@ end subroutine remove_i
 !!     subroutine update(arr,string)
 !!     character(len=*),allocatable :: arr(:)
 !!     character(len=*)             :: string
-!!     integer                      :: place, plus, ii, end
+!!     integer                      :: place, end
+!!
+!!     end=size(arr)
+!!     write(*,'("ORIGINAL ARRAY WHERE SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
+!!
 !!     ! find where string is or should be
 !!     call locate(string,arr,place)
 !!     write(*,*)'for "'//string//'" index is ',place, size(arr)
 !!     ! if string was not found insert it
 !!     if(place.lt.1)then
+!!        write(*,*)'NOT FOUND SO INSERT'
 !!        call insert(string,arr,abs(place))
 !!     endif
+!!
 !!     ! show array
+!!     write(*,*)'ARRAY IS NOW'
+!!     end=size(arr)
 !!     write(*,'("SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
+!!
 !!     end subroutine update
 !!     end program demo_insert
+!!
+!!    Expected output
+!!
+!!      ORIGINAL ARRAY WHERE SIZE=5 xxx,b,aaa,ZZZ,,
+!!       for "b" index is            2           5
+!!       ARRAY IS NOW
+!!      SIZE=5 xxx,b,aaa,ZZZ,,
+!!      ORIGINAL ARRAY WHERE SIZE=5 xxx,b,aaa,ZZZ,,
+!!       for "[" index is           -4           5
+!!       NOT FOUND SO INSERT
+!!       ARRAY IS NOW
+!!      SIZE=6 xxx,b,aaa,[,ZZZ,,
+!!      ORIGINAL ARRAY WHERE SIZE=6 xxx,b,aaa,[,ZZZ,,
+!!       for "c" index is           -2           6
+!!       NOT FOUND SO INSERT
+!!       ARRAY IS NOW
+!!      SIZE=7 xxx,c,b,aaa,[,ZZZ,,
+!!      ORIGINAL ARRAY WHERE SIZE=7 xxx,c,b,aaa,[,ZZZ,,
+!!       for "ZZ" index is           -7           7
+!!       NOT FOUND SO INSERT
+!!       ARRAY IS NOW
+!!      SIZE=8 xxx,c,b,aaa,[,ZZZ,ZZ,,
+!!      ORIGINAL ARRAY WHERE SIZE=8 xxx,c,b,aaa,[,ZZZ,ZZ,,
+!!       for "ZZZZ" index is           -6           8
+!!       NOT FOUND SO INSERT
+!!       ARRAY IS NOW
+!!      SIZE=9 xxx,c,b,aaa,[,ZZZZ,ZZZ,ZZ,,
+!!      ORIGINAL ARRAY WHERE SIZE=9 xxx,c,b,aaa,[,ZZZZ,ZZZ,ZZ,,
+!!       for "z" index is           -1           9
+!!       NOT FOUND SO INSERT
+!!       ARRAY IS NOW
+!!      SIZE=10 z,xxx,c,b,aaa,[,ZZZZ,ZZZ,ZZ,,
 !!
 !!##AUTHOR
 !!    1989,2017 John S. Urban
 !===================================================================================================================================
 subroutine insert_c(varname,dictionary,place)
 
-character(len=*),parameter::ident="@(#)M_list::insert_c(3fp) place string into allocatable string array at specified position"
+character(len=*),parameter::ident="@(#)M_list::insert_c(3fp): place string into allocatable string array at specified position"
 
 character(len=*),intent(in)  :: varname
 character(len=*),allocatable :: dictionary(:)
@@ -512,7 +562,7 @@ integer                      :: ii, end
 end subroutine insert_c
 subroutine insert_r(varname,dictionary,place)
 
-character(len=*),parameter::ident="@(#)M_list::insert_r(3fp) place value into allocatable array at specified position"
+character(len=*),parameter::ident="@(#)M_list::insert_r(3fp): place value into allocatable array at specified position"
 
 real,intent(in)       :: varname
 real,allocatable      :: dictionary(:)
@@ -536,7 +586,7 @@ integer               :: end
 end subroutine insert_r
 subroutine insert_i(varname,dictionary,place)
 
-character(len=*),parameter::ident="@(#)M_list::insert_i(3fp) place value into allocatable array at specified position"
+character(len=*),parameter::ident="@(#)M_list::insert_i(3fp): place value into allocatable array at specified position"
 
 integer,intent(in)    :: varname
 integer,allocatable   :: dictionary(:)
@@ -611,7 +661,7 @@ end subroutine insert_i
 !===================================================================================================================================
 subroutine delete(varname,dictionary)
 
-character(len=*),parameter::ident="@(#)M_list::delete(3f) remove string from sorted allocatable string array if present"
+character(len=*),parameter::ident="@(#)M_list::delete(3f): remove string from sorted allocatable string array if present"
 
 character(len=*),intent(in)  :: varname
 character(len=*),allocatable :: dictionary(:)
@@ -687,7 +737,7 @@ end subroutine delete
 !===================================================================================================================================
 subroutine add(varname,dictionary)
 
-character(len=*),parameter::ident="@(#)M_list::add(3f) place string into sorted allocatable string array if not present"
+character(len=*),parameter::ident="@(#)M_list::add(3f): place string into sorted allocatable string array if not present"
 
 character(len=*),intent(in)  :: varname
 character(len=*),allocatable :: dictionary(:)
@@ -698,17 +748,3 @@ character(len=*),allocatable :: dictionary(:)
    endif
 end subroutine add
 end module M_list
-
-
-
-
-
-
-
-
-
-
-
-
-
-

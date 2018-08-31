@@ -90,8 +90,8 @@ X.lineWidth=8;
 #include <sys/types.h>
 #include "draw.h"
 
-extern FILE     *_voutfile();
-extern FILE     *fp;
+extern FILE     *_draw_outfile();
+extern FILE     *draw_fp;
 
 /* How to convert degrees to radians */
 #ifndef PI
@@ -121,7 +121,7 @@ extern FILE     *fp;
 static int      points=0;
 static int      canvas_first_time = 1, drawn = 0, LAST_X = -1, LAST_Y = -1;/* last (x, y) drawn */
 
-int CANVAS_MOVED=0;
+static int CANVAS_MOVED=0;
 
 #define CMAPSIZE 256
 struct rgb_color {
@@ -149,19 +149,19 @@ static void CANVAS_header() {
    struct passwd *pw;
 
    time(&tod);
-   fprintf(fp, "<!DOCTYPE html>\n");
-   fprintf(fp, "<html>\n");
-   fprintf(fp, "<head>\n");
-   fprintf(fp, "<title>\n");
+   fprintf(draw_fp, "<!DOCTYPE html>\n");
+   fprintf(draw_fp, "<html>\n");
+   fprintf(draw_fp, "<head>\n");
+   fprintf(draw_fp, "<title>\n");
    /*
-   fprintf(fp, "  Creator: M_DRAW HTML CANVAS driver 1.0 2007-12-25\n");
+   fprintf(draw_fp, "  Creator: M_DRAW HTML CANVAS driver 1.0 2007-12-25\n");
    */
-   fprintf(fp, "  Creator: M_DRAW HTML CANVAS driver 1.2 2008-01-28\n");
-   fprintf(fp, "  Author: John S. Urban\n");
-   fprintf(fp, "  CreationDate: %s\n",ctime(&tod));
-   fprintf(fp, "</title>\n");
+   fprintf(draw_fp, "  Creator: M_DRAW HTML CANVAS driver 1.2 2008-01-28\n");
+   fprintf(draw_fp, "  Author: John S. Urban\n");
+   fprintf(draw_fp, "  CreationDate: %s\n",ctime(&tod));
+   fprintf(draw_fp, "</title>\n");
 
-   fprintf(fp, "<!--\n");
+   fprintf(draw_fp, "<!--\n");
 
 #ifndef MINGW
    un = &unstr; /* initialize the pointer to an address with enough room to store the returned value in */
@@ -171,7 +171,7 @@ static void CANVAS_header() {
       pw = getpwuid(getuid());
       username = pw->pw_name;
    }
-   fprintf(fp, "  For: %s on OS=%.*s\n       NETWORK_NAME=%.*s\n       RELEASE=%.*s\n       VERSION=%.*s\n       MACHINE=%.*s\n",
+   fprintf(draw_fp, "  For: %s on OS=%.*s\n       NETWORK_NAME=%.*s\n       RELEASE=%.*s\n       VERSION=%.*s\n       MACHINE=%.*s\n",
        username,
        (int)sizeof(un->sysname),  un->sysname,
        (int)sizeof(un->nodename), un->nodename,
@@ -179,13 +179,13 @@ static void CANVAS_header() {
        (int)sizeof(un->version),  un->version,
        (int)sizeof(un->machine),  un->machine);
 
-   fprintf(fp, "-->\n");
+   fprintf(draw_fp, "-->\n");
 #endif
 
 }
 /******************************************************************************/
 /* change index i in the color map to the appropriate rgb value. */
-int CANVAS_mapcolor(int i, int r, int g, int b) {
+static int CANVAS_mapcolor(int i, int r, int g, int b) {
    if (i >= CMAPSIZE || i < 0 ){
       return(-1);
    }
@@ -200,7 +200,7 @@ static int CANVAS_init(void) {
    int prefx, prefy, prefxs, prefys;
    int i;
    void CANVAS_header();
-   fp = _voutfile();
+   draw_fp = _draw_outfile();
 
    if (!canvas_first_time) return(1);
 
@@ -220,99 +220,99 @@ static int CANVAS_init(void) {
 
 
 
-   fprintf(fp, "<!-- canvas \" width=\"%fpx\" height=\"%fpx\" viewBox=\"0 0 %d %d\"-->\n",
+   fprintf(draw_fp, "<!-- canvas \" width=\"%fpx\" height=\"%fpx\" viewBox=\"0 0 %d %d\"-->\n",
    (float)vdevice.sizeSx/CANVASTORAS,(float)vdevice.sizeSy/CANVASTORAS,
    vdevice.sizeSx,vdevice.sizeSy);
 
 
-   fprintf(fp, "<script type=\"application/x-javascript\">\n");
-   fprintf(fp, "//---------------------------------------------------------------------------------------------------------------\n");
-   fprintf(fp, "function d(X,A){ // draw polyline\n");
-   fprintf(fp, "X.beginPath();\n");
-   fprintf(fp, "   X.moveTo(A[0],A[1]);\n");
-   fprintf(fp, "   for(i=2; i<A.length;i=i+2){\n");
-   fprintf(fp, "      X.lineTo(A[i],A[i+1]);\n");
-   fprintf(fp, "   }\n");
-   fprintf(fp, "   X.stroke();\n");
-   fprintf(fp, "   // draw (most) points\n");
-   fprintf(fp, "   radius=Math.max(1,X.lineWidth/2);\n");
-   fprintf(fp, "   if(A.length == 4){\n");
-   fprintf(fp, "    if( A[0] == A[2] & A[1] == A[3]){\n");
-   fprintf(fp, "         X.beginPath(); // draw circles for dots with radius set to 1/2 line thickness\n");
-   fprintf(fp, "         X.arc(A[0],A[1],radius,0,Math.PI*2,true);\n");
-   fprintf(fp, "         X.fill();\n");
-   fprintf(fp, "         // X.beginPath(); // square dots, which are faster in some browsers\n");
-   fprintf(fp, "         // X.moveTo(A[0]-radius,A[1]);\n");
-   fprintf(fp, "         // X.lineTo(A[0]+radius,A[1]);\n");
-   fprintf(fp, "         // X.stroke();\n");
-   fprintf(fp, "      }\n");
-   fprintf(fp, "    }\n");
-   fprintf(fp, "}\n");
-   fprintf(fp, "//---------------------------------------------------------------------------------------------------------------\n");
-   fprintf(fp, "function f(X,A){ // fill polygon\n");
-   fprintf(fp, "X.beginPath();\n");
-   fprintf(fp, "   X.moveTo(A[0],A[1]);\n");
-   fprintf(fp, "   for(i=2; i<A.length;i=i+2){\n");
-   fprintf(fp, "      X.lineTo(A[i],A[i+1]);\n");
-   fprintf(fp, "   }\n");
-   fprintf(fp, "   X.fill();\n");
-   fprintf(fp, "}\n");
-   fprintf(fp, "//---------------------------------------------------------------------------------------------------------------\n");
-   fprintf(fp, "function resizecanvas(canvasname,factor){\n");
-   fprintf(fp, "   var canvas = document.getElementById(canvasname);\n");
-   fprintf(fp, "   if(canvas.getContext){\n");
-   fprintf(fp, "       if(factor < 0 ){\n");
-   fprintf(fp, "          // reset to original size\n");
-   fprintf(fp, "          resizecanvas(canvasname,-factor/canvas.width);\n");
-   fprintf(fp, "       }else{\n");
-   fprintf(fp, "          // alert(  \" canvasname=\" + canvasname  +\n");
-   fprintf(fp, "          //        \" canvas.width=\" + canvas.width  +\n");
-   fprintf(fp, "          //        \" canvas.height=\" + canvas.height +\n");
-   fprintf(fp, "          //        \" factor=\" + factor\n");
-   fprintf(fp, "          //      );\n");
-   fprintf(fp, "          xwidth=canvas.width*factor;\n");
-   fprintf(fp, "          yheight=canvas.height*factor;\n");
-   fprintf(fp, "          var X = canvas.getContext(\"2d\");\n");
-   fprintf(fp, "          // In opera(1) both setAttribute('width'... and canvas.width=... are needed for some reason\n");
-   fprintf(fp, "          // In firefox(1) more sensibly either one works\n");
-   fprintf(fp, "          canvas.setAttribute('width',   \"\" + xwidth); // clears and resize the canvas\n");
-   fprintf(fp, "          canvas.setAttribute('height', \"\" + yheight); // clears and resize the canvas\n");
-   fprintf(fp, "          canvas.width = xwidth;                       // clears and resize the canvas\n");
-   fprintf(fp, "          canvas.height = yheight;                     // clears and resize the canvas\n");
-   fprintf(fp, "       }\n");
-   fprintf(fp, "   }\n");
-   fprintf(fp, "}\n");
-   fprintf(fp, "//---------------------------------------------------------------------------------------------------------------\n");
-   fprintf(fp, "\n");
-   fprintf(fp, "</script>\n");
+   fprintf(draw_fp, "<script type=\"application/x-javascript\">\n");
+   fprintf(draw_fp, "//---------------------------------------------------------------------------------------------------------------\n");
+   fprintf(draw_fp, "function d(X,A){ // draw polyline\n");
+   fprintf(draw_fp, "X.beginPath();\n");
+   fprintf(draw_fp, "   X.moveTo(A[0],A[1]);\n");
+   fprintf(draw_fp, "   for(i=2; i<A.length;i=i+2){\n");
+   fprintf(draw_fp, "      X.lineTo(A[i],A[i+1]);\n");
+   fprintf(draw_fp, "   }\n");
+   fprintf(draw_fp, "   X.stroke();\n");
+   fprintf(draw_fp, "   // draw (most) points\n");
+   fprintf(draw_fp, "   radius=Math.max(1,X.lineWidth/2);\n");
+   fprintf(draw_fp, "   if(A.length == 4){\n");
+   fprintf(draw_fp, "    if( A[0] == A[2] & A[1] == A[3]){\n");
+   fprintf(draw_fp, "         X.beginPath(); // draw circles for dots with radius set to 1/2 line thickness\n");
+   fprintf(draw_fp, "         X.arc(A[0],A[1],radius,0,Math.PI*2,true);\n");
+   fprintf(draw_fp, "         X.fill();\n");
+   fprintf(draw_fp, "         // X.beginPath(); // square dots, which are faster in some browsers\n");
+   fprintf(draw_fp, "         // X.moveTo(A[0]-radius,A[1]);\n");
+   fprintf(draw_fp, "         // X.lineTo(A[0]+radius,A[1]);\n");
+   fprintf(draw_fp, "         // X.stroke();\n");
+   fprintf(draw_fp, "      }\n");
+   fprintf(draw_fp, "    }\n");
+   fprintf(draw_fp, "}\n");
+   fprintf(draw_fp, "//---------------------------------------------------------------------------------------------------------------\n");
+   fprintf(draw_fp, "function f(X,A){ // fill polygon\n");
+   fprintf(draw_fp, "X.beginPath();\n");
+   fprintf(draw_fp, "   X.moveTo(A[0],A[1]);\n");
+   fprintf(draw_fp, "   for(i=2; i<A.length;i=i+2){\n");
+   fprintf(draw_fp, "      X.lineTo(A[i],A[i+1]);\n");
+   fprintf(draw_fp, "   }\n");
+   fprintf(draw_fp, "   X.fill();\n");
+   fprintf(draw_fp, "}\n");
+   fprintf(draw_fp, "//---------------------------------------------------------------------------------------------------------------\n");
+   fprintf(draw_fp, "function resizecanvas(canvasname,factor){\n");
+   fprintf(draw_fp, "   var canvas = document.getElementById(canvasname);\n");
+   fprintf(draw_fp, "   if(canvas.getContext){\n");
+   fprintf(draw_fp, "       if(factor < 0 ){\n");
+   fprintf(draw_fp, "          // reset to original size\n");
+   fprintf(draw_fp, "          resizecanvas(canvasname,-factor/canvas.width);\n");
+   fprintf(draw_fp, "       }else{\n");
+   fprintf(draw_fp, "          // alert(  \" canvasname=\" + canvasname  +\n");
+   fprintf(draw_fp, "          //        \" canvas.width=\" + canvas.width  +\n");
+   fprintf(draw_fp, "          //        \" canvas.height=\" + canvas.height +\n");
+   fprintf(draw_fp, "          //        \" factor=\" + factor\n");
+   fprintf(draw_fp, "          //      );\n");
+   fprintf(draw_fp, "          xwidth=canvas.width*factor;\n");
+   fprintf(draw_fp, "          yheight=canvas.height*factor;\n");
+   fprintf(draw_fp, "          var X = canvas.getContext(\"2d\");\n");
+   fprintf(draw_fp, "          // In opera(1) both setAttribute('width'... and canvas.width=... are needed for some reason\n");
+   fprintf(draw_fp, "          // In firefox(1) more sensibly either one works\n");
+   fprintf(draw_fp, "          canvas.setAttribute('width',   \"\" + xwidth); // clears and resize the canvas\n");
+   fprintf(draw_fp, "          canvas.setAttribute('height', \"\" + yheight); // clears and resize the canvas\n");
+   fprintf(draw_fp, "          canvas.width = xwidth;                       // clears and resize the canvas\n");
+   fprintf(draw_fp, "          canvas.height = yheight;                     // clears and resize the canvas\n");
+   fprintf(draw_fp, "       }\n");
+   fprintf(draw_fp, "   }\n");
+   fprintf(draw_fp, "}\n");
+   fprintf(draw_fp, "//---------------------------------------------------------------------------------------------------------------\n");
+   fprintf(draw_fp, "\n");
+   fprintf(draw_fp, "</script>\n");
 
-   fprintf(fp, "<script language=\"JavaScript\" src=\"resizecanvas.js\" type=\"text/javascript\">");
-   fprintf(fp, "</script>\n");
+   fprintf(draw_fp, "<script language=\"JavaScript\" src=\"resizecanvas.js\" type=\"text/javascript\">");
+   fprintf(draw_fp, "</script>\n");
 
-   fprintf(fp, "<script type=\"application/x-javascript\">\n");
+   fprintf(draw_fp, "<script type=\"application/x-javascript\">\n");
 
-   fprintf(fp, "function drawCanvas%d(canvasname){\n",pgroup);
+   fprintf(draw_fp, "function drawCanvas%d(canvasname){\n",pgroup);
  
-   fprintf(fp, "var canvas = document.getElementById(canvasname); // page %d\n", pgroup);
-   fprintf(fp, "if(canvas.getContext){\n");
+   fprintf(draw_fp, "var canvas = document.getElementById(canvasname); // page %d\n", pgroup);
+   fprintf(draw_fp, "if(canvas.getContext){\n");
 
-   fprintf(fp, "var X = canvas.getContext(\"2d\");\n");
-   fprintf(fp, "//<!-- id=\"Page%d\" -->\n", pgroup);
-   fprintf(fp, "X.save();\n");
+   fprintf(draw_fp, "var X = canvas.getContext(\"2d\");\n");
+   fprintf(draw_fp, "//<!-- id=\"Page%d\" -->\n", pgroup);
+   fprintf(draw_fp, "X.save();\n");
 
    /*
-   fprintf(fp, "X.scale(%f,%f);\n", 1.0/CANVASTORAS, 1.0/CANVASTORAS );
+   fprintf(draw_fp, "X.scale(%f,%f);\n", 1.0/CANVASTORAS, 1.0/CANVASTORAS );
    The plot is being made to stretch to the canvas size so it is easy to change the plot size
    */
 
-   fprintf(fp, "X.scale(canvas.width/%d,canvas.height/%d);\n", vdevice.sizeSx, vdevice.sizeSy );
+   fprintf(draw_fp, "X.scale(canvas.width/%d,canvas.height/%d);\n", vdevice.sizeSx, vdevice.sizeSy );
 
    
-   fprintf(fp, "X.lineWidth=%d;\n",MAX(1,vdevice.sizeX*curwid/10000));
-   fprintf(fp, "X.fillStyle='black';\n");
-   fprintf(fp, "X.strokeStyle='black';\n");
-   fprintf(fp, "X.lineCap='round';\n");
-   fprintf(fp, "X.lineJoin='round';\n");
+   fprintf(draw_fp, "X.lineWidth=%d;\n",MAX(1,vdevice.sizeX*curwid/10000));
+   fprintf(draw_fp, "X.fillStyle='black';\n");
+   fprintf(draw_fp, "X.strokeStyle='black';\n");
+   fprintf(draw_fp, "X.lineCap='round';\n");
+   fprintf(draw_fp, "X.lineJoin='round';\n");
 
    vdevice.depth = 8;
    for (i = 0; i < CMAPSIZE; i++) /* set up the basic colors */
@@ -360,12 +360,12 @@ static int closeline(void){
       if(CANVAS_MOVED == 0 ){ /* ASSUME NULL LINES ARE DOTS OR POINTS */
         /* circle of radius = line width */
         /*
-          fprintf(fp, "\nX.arc(%d,%d,%d,0,Math.PI*2.0,true)\n", LAST_X, FLIPY(LAST_Y),
+          fprintf(draw_fp, "\nX.arc(%d,%d,%d,0,Math.PI*2.0,true)\n", LAST_X, FLIPY(LAST_Y),
              MAX(1,vdevice.sizeX*curwid/10000)); 
         */
-         fprintf(fp, "];d(X,A);\n"); /* end curve */
+         fprintf(draw_fp, "];d(X,A);\n"); /* end curve */
       }else{
-         fprintf(fp, "];d(X,A);\n"); /* end curve */
+         fprintf(draw_fp, "];d(X,A);\n"); /* end curve */
       }
       PolyLineOpen = FALSE; /* Polyline not open */
       points = 0;
@@ -375,7 +375,7 @@ static int closeline(void){
 /******************************************************************************/
 static int closeObject(void){
    if(ObjectOpen){
-      fprintf(fp, "// end object\n");
+      fprintf(draw_fp, "// end object\n");
       ObjectOpen = FALSE; /* flag object not open */
       points = 0;
    }
@@ -391,7 +391,7 @@ static int openline(void){
 /******************************************************************************/
 static int openObject(void){
    if(!ObjectOpen){
-      fprintf(fp, "// start object\n");
+      fprintf(draw_fp, "// start object\n");
       ObjectOpen = TRUE; /* Object open */
    }
    return (0);
@@ -406,75 +406,75 @@ static int CANVAS_exit(void) {
    closeline(); /* close Polyline line if it is open */
    closeObject(); /* close object if it is open */
 
-   fprintf(fp, "X.restore();\n");
-   fprintf(fp, "}else{\n"); /* */
-   fprintf(fp, "alert('Your browser needs HTML CANVAS support to view this page');\n}\n"); /* */
-   fprintf(fp, "} // end of page\n"); /* Page Clear, End of Page Group */
+   fprintf(draw_fp, "X.restore();\n");
+   fprintf(draw_fp, "}else{\n"); /* */
+   fprintf(draw_fp, "alert('Your browser needs HTML CANVAS support to view this page');\n}\n"); /* */
+   fprintf(draw_fp, "} // end of page\n"); /* Page Clear, End of Page Group */
 
-   fprintf(fp, "function drawCanvases(SCALE){\n"); /* */
+   fprintf(draw_fp, "function drawCanvases(SCALE){\n"); /* */
    for(ipages=0;ipages<pgroup;ipages++){
-      fprintf(fp, "resizecanvas(\"canvas_id%d\",SCALE);drawCanvas%d(\"canvas_id%d\");\n",ipages+1,ipages+1,ipages+1); /* */
+      fprintf(draw_fp, "resizecanvas(\"canvas_id%d\",SCALE);drawCanvas%d(\"canvas_id%d\");\n",ipages+1,ipages+1,ipages+1); /* */
    }
-   fprintf(fp, "}\n"); /* */
+   fprintf(draw_fp, "}\n"); /* */
 
-   fprintf(fp, "</script>\n"); /* */
-   fprintf(fp, "</head>\n"); /* */
-   fprintf(fp, "<body onload=\"drawCanvases(1.0);\">\n"); /* */
-   fprintf(fp, "\n"); /* */
+   fprintf(draw_fp, "</script>\n"); /* */
+   fprintf(draw_fp, "</head>\n"); /* */
+   fprintf(draw_fp, "<body onload=\"drawCanvases(1.0);\">\n"); /* */
+   fprintf(draw_fp, "\n"); /* */
 
-   fprintf(fp, "<!-- SIMPLE CANVAS CALLS\n"); /* */
+   fprintf(draw_fp, "<!-- SIMPLE CANVAS CALLS\n"); /* */
    for(ipages=0;ipages<pgroup;ipages++){
-      fprintf(fp, "  <canvas id=\"canvas_id%d\" width=\"%d\" height=\"%d\"></canvas>\n",
+      fprintf(draw_fp, "  <canvas id=\"canvas_id%d\" width=\"%d\" height=\"%d\"></canvas>\n",
          ipages+1, 
          (int)vdevice.sizeSx/CANVASTORAS,
          (int)vdevice.sizeSy/CANVASTORAS); /* */
    }
-   fprintf(fp, "-->\n"); /* */
+   fprintf(draw_fp, "-->\n"); /* */
 
-   fprintf(fp, "<!-- CANVAS CALLS TO resizecanvas()\n"); /* */
-   fprintf(fp, "-->\n"); /* */
+   fprintf(draw_fp, "<!-- CANVAS CALLS TO resizecanvas()\n"); /* */
+   fprintf(draw_fp, "-->\n"); /* */
 
-   fprintf(fp, " <form>\n");
+   fprintf(draw_fp, " <form>\n");
 
    ixtemp=(int)vdevice.sizeSx/CANVASTORAS;
    iytemp=(int)vdevice.sizeSy/CANVASTORAS;
 
-   fprintf(fp, "  <input type=\"button\" value=\"fit width\"  onclick=\"drawCanvases(-%d);drawCanvases(window.innerWidth/%d)\" />\n",ixtemp,ixtemp);
-   fprintf(fp, "  <input type=\"button\" value=\"fit height\" onclick=\"drawCanvases(-%d);drawCanvases(window.innerHeight/%d)\" />\n",ixtemp,iytemp);
-   fprintf(fp, "  <input type=\"button\" value=\"stamps\"     onclick=\"drawCanvases(-100)\" />\n");
-   fprintf(fp, "  <input type=\"button\" value=\"smaller\"    onclick=\"drawCanvases(0.80)\" />\n");
-   fprintf(fp, "  <input type=\"button\" value=\"bigger\"     onclick=\"drawCanvases(1.20)\" />\n");
-   fprintf(fp, " </form>\n");
+   fprintf(draw_fp, "  <input type=\"button\" value=\"fit width\"  onclick=\"drawCanvases(-%d);drawCanvases(window.innerWidth/%d)\" />\n",ixtemp,ixtemp);
+   fprintf(draw_fp, "  <input type=\"button\" value=\"fit height\" onclick=\"drawCanvases(-%d);drawCanvases(window.innerHeight/%d)\" />\n",ixtemp,iytemp);
+   fprintf(draw_fp, "  <input type=\"button\" value=\"stamps\"     onclick=\"drawCanvases(-100)\" />\n");
+   fprintf(draw_fp, "  <input type=\"button\" value=\"smaller\"    onclick=\"drawCanvases(0.80)\" />\n");
+   fprintf(draw_fp, "  <input type=\"button\" value=\"bigger\"     onclick=\"drawCanvases(1.20)\" />\n");
+   fprintf(draw_fp, " </form>\n");
 
    for(ipages=0;ipages<pgroup;ipages++){
-      fprintf(fp, "<canvas id=\"canvas_id%d\"\n",ipages+1);
-      fprintf(fp, "   onclick=\"resizecanvas(this.id,1.1);drawCanvas%d(this.id);\"\n",ipages+1);
-      fprintf(fp, "   onkeypress=\"resizecanvas(this.id,%d/this.width);drawCanvas%d(this.id);\"\n",
+      fprintf(draw_fp, "<canvas id=\"canvas_id%d\"\n",ipages+1);
+      fprintf(draw_fp, "   onclick=\"resizecanvas(this.id,1.1);drawCanvas%d(this.id);\"\n",ipages+1);
+      fprintf(draw_fp, "   onkeypress=\"resizecanvas(this.id,%d/this.width);drawCanvas%d(this.id);\"\n",
          (int)vdevice.sizeSx/CANVASTORAS,
          ipages+1
       );
-      fprintf(fp, "   ondblclick=\"resizecanvas(this.id,%d/this.width);drawCanvas%d(this.id);\"\n",
+      fprintf(draw_fp, "   ondblclick=\"resizecanvas(this.id,%d/this.width);drawCanvas%d(this.id);\"\n",
          (int)vdevice.sizeSx/CANVASTORAS,
          ipages+1
       );
-      fprintf(fp, "   width=\"%d\"\n",  (int)vdevice.sizeSx/CANVASTORAS);
-      fprintf(fp, "   height=\"%d\"\n", (int)vdevice.sizeSy/CANVASTORAS);
-      fprintf(fp, ">The CANVAS element is not displayed by this browser</canvas>\n"); /* */
+      fprintf(draw_fp, "   width=\"%d\"\n",  (int)vdevice.sizeSx/CANVASTORAS);
+      fprintf(draw_fp, "   height=\"%d\"\n", (int)vdevice.sizeSy/CANVASTORAS);
+      fprintf(draw_fp, ">The CANVAS element is not displayed by this browser</canvas>\n"); /* */
    }
 
-   fprintf(fp, "\n"); /* */
-   fprintf(fp, "</body>\n"); /* */
-   fprintf(fp, "</html>\n"); /* */
-   fprintf(fp, "<!--- End of Document  -->\n");
+   fprintf(draw_fp, "\n"); /* */
+   fprintf(draw_fp, "</body>\n"); /* */
+   fprintf(draw_fp, "</html>\n"); /* */
+   fprintf(draw_fp, "<!--- End of Document  -->\n");
    drawn = 0;
    points = 0;
 
-   if (fp != stdout && fp != stderr ){
-                fflush(fp);
+   if (draw_fp != stdout && draw_fp != stderr ){
+                fflush(draw_fp);
                 if(vdevice.writestoprocess == 2){
-                   pclose(fp);
+                   pclose(draw_fp);
                 }else{
-                   fclose(fp);
+                   fclose(draw_fp);
                 }
    }
    return (0);
@@ -489,7 +489,7 @@ static int CANVAS_draw(int x, int y) {
       closeline(); /* close line if required */
       openObject(); /* start Object if required */
       openline(); /* start line */
-      fprintf(fp, "A=[%d,%d", vdevice.cpVx, FLIPY(vdevice.cpVy));
+      fprintf(draw_fp, "A=[%d,%d", vdevice.cpVx, FLIPY(vdevice.cpVy));
       LAST_X=vdevice.cpVx;
       LAST_Y=vdevice.cpVy;
       CANVAS_MOVED=0;
@@ -498,13 +498,13 @@ static int CANVAS_draw(int x, int y) {
    openline(); /* start line if required */
 
    if(points == 0){
-      fprintf(fp, "A=[%d,%d", x ,FLIPY(y));
+      fprintf(draw_fp, "A=[%d,%d", x ,FLIPY(y));
 
       CANVAS_MOVED=0;
    }else{
       if(LAST_X!=x || LAST_Y!=y)CANVAS_MOVED=CANVAS_MOVED+1;
 
-      fprintf(fp, "%c,%d,%d", linefeed[(points % 8/7)], x ,FLIPY(y));
+      fprintf(draw_fp, "%c,%d,%d", linefeed[(points % 8/7)], x ,FLIPY(y));
    }
 
    points++;
@@ -520,33 +520,33 @@ static int CANVAS_clear(void) {
    closeObject(); /* close Object if required */
    if (drawn)
    {
-     fprintf(fp, "X.restore();\n");
-     fprintf(fp, "}else{\n"); /* */
-     fprintf(fp, "alert('Your browser needs HTML CANVAS support to view this page');\n}\n"); /* */
-     fprintf(fp, "}// <!-- End Page%d -->\n",pgroup); /* Page Clear, End of Page Group */
+     fprintf(draw_fp, "X.restore();\n");
+     fprintf(draw_fp, "}else{\n"); /* */
+     fprintf(draw_fp, "alert('Your browser needs HTML CANVAS support to view this page');\n}\n"); /* */
+     fprintf(draw_fp, "}// <!-- End Page%d -->\n",pgroup); /* Page Clear, End of Page Group */
      pgroup++; /* increment page id */
-     fprintf(fp, "function drawCanvas%d(canvasname){\n",pgroup);
+     fprintf(draw_fp, "function drawCanvas%d(canvasname){\n",pgroup);
 
-     fprintf(fp, "var canvas = document.getElementById(canvasname); // page %d\n", pgroup);
-     fprintf(fp, "if(canvas.getContext){\n");
+     fprintf(draw_fp, "var canvas = document.getElementById(canvasname); // page %d\n", pgroup);
+     fprintf(draw_fp, "if(canvas.getContext){\n");
 
-     fprintf(fp, "var X = canvas.getContext(\"2d\");\n");
-     fprintf(fp, "X.save();\n");
+     fprintf(draw_fp, "var X = canvas.getContext(\"2d\");\n");
+     fprintf(draw_fp, "X.save();\n");
 
      /*
-     fprintf(fp, "X.scale(%f,%f);\n", 1.0/CANVASTORAS, 1.0/CANVASTORAS );
+     fprintf(draw_fp, "X.scale(%f,%f);\n", 1.0/CANVASTORAS, 1.0/CANVASTORAS );
      The plot is being made to stretch to the canvas size so it is easy to change the plot size
      */
-     fprintf(fp, "X.scale(canvas.width/%d,canvas.height/%d);\n", vdevice.sizeSx, vdevice.sizeSy );
+     fprintf(draw_fp, "X.scale(canvas.width/%d,canvas.height/%d);\n", vdevice.sizeSx, vdevice.sizeSy );
 
-     fprintf(fp, "X.lineCap='round';\n");
-     fprintf(fp, "X.lineJoin='round';\n");
-     fprintf(fp, "X.lineWidth=%d;\n",MAX(1,vdevice.sizeX*curwid/10000));
-     fprintf(fp, "X.fillStyle=\"#%2.2x%2.2x%2.2x\";\n",
+     fprintf(draw_fp, "X.lineCap='round';\n");
+     fprintf(draw_fp, "X.lineJoin='round';\n");
+     fprintf(draw_fp, "X.lineWidth=%d;\n",MAX(1,vdevice.sizeX*curwid/10000));
+     fprintf(draw_fp, "X.fillStyle=\"#%2.2x%2.2x%2.2x\";\n",
         canvas_carr[curcol].red, 
         canvas_carr[curcol].green, 
         canvas_carr[curcol].blue);  /* fill color */
-     fprintf(fp, "X.strokeStyle=\"#%2.2x%2.2x%2.2x\";\n",
+     fprintf(draw_fp, "X.strokeStyle=\"#%2.2x%2.2x%2.2x\";\n",
         canvas_carr[curcol].red, 
         canvas_carr[curcol].green, 
         canvas_carr[curcol].blue);  /* fill color */
@@ -566,7 +566,7 @@ static int CANVAS_setlw(int width) {
    if ( width >= 0 ) {
       curwid = width;
    }
-   fprintf(fp, "X.lineWidth=%d;\n",MAX(1,vdevice.sizeX*curwid/10000));
+   fprintf(draw_fp, "X.lineWidth=%d;\n",MAX(1,vdevice.sizeX*curwid/10000));
    return(0);
 }
 /******************************************************************************/
@@ -585,11 +585,11 @@ static int CANVAS_color(int col) {
       curpat = col/CMAPSIZE;
       curcol = col % CMAPSIZE;
    }
-   fprintf(fp, "X.fillStyle=\"#%2.2x%2.2x%2.2x\";\n",
+   fprintf(draw_fp, "X.fillStyle=\"#%2.2x%2.2x%2.2x\";\n",
       canvas_carr[curcol].red, 
       canvas_carr[curcol].green, 
       canvas_carr[curcol].blue);  /* fill color */
-   fprintf(fp, "X.strokeStyle=\"#%2.2x%2.2x%2.2x\";\n",
+   fprintf(draw_fp, "X.strokeStyle=\"#%2.2x%2.2x%2.2x\";\n",
       canvas_carr[curcol].red, 
       canvas_carr[curcol].green, 
       canvas_carr[curcol].blue);  /* fill color */
@@ -607,7 +607,7 @@ static int CANVAS_string(char *s) {
    return(0);
 }
 /******************************************************************************/
-int CANVAS_char(char c){ /* CANVAS_char output a character */
+static int CANVAS_char(char c){ /* CANVAS_char output a character */
    char  s[2];
    s[0] = c;
    s[1]='\0';
@@ -621,28 +621,28 @@ static int CANVAS_fill(int n, int x[], int y[]) { /* fill a polygon */
    closeline(); /* close line if required */
    closeObject(); /* close line if required */
 
-   fprintf(fp, "// Polygon\n");
-   fprintf(fp, "X.fillStyle=\"#%2.2x%2.2x%2.2x\";\n",
+   fprintf(draw_fp, "// Polygon\n");
+   fprintf(draw_fp, "X.fillStyle=\"#%2.2x%2.2x%2.2x\";\n",
       canvas_carr[curcol].red, 
       canvas_carr[curcol].green, 
       canvas_carr[curcol].blue);  /* fill color */
-   fprintf(fp, "X.strokeStyle=\"#%2.2x%2.2x%2.2x\";\n",
+   fprintf(draw_fp, "X.strokeStyle=\"#%2.2x%2.2x%2.2x\";\n",
       canvas_carr[curcol].red, 
       canvas_carr[curcol].green, 
       canvas_carr[curcol].blue);  /* fill color */
 
-   fprintf(fp, "X.lineWidth=%d;\n", MAX(1,vdevice.sizeX*curwid/10000)); /* edge width */
+   fprintf(draw_fp, "X.lineWidth=%d;\n", MAX(1,vdevice.sizeX*curwid/10000)); /* edge width */
 
-   fprintf(fp, "A=[%d,%d ", x[0],FLIPY(y[0]));
+   fprintf(draw_fp, "A=[%d,%d ", x[0],FLIPY(y[0]));
 
    for (i = 1; i < n; i++)
    {
-      fprintf(fp, ",%d,%d%c", x[i], FLIPY(y[i]),linefeed[(i % 8/7)]);
+      fprintf(draw_fp, ",%d,%d%c", x[i], FLIPY(y[i]),linefeed[(i % 8/7)]);
    }
 
    /* close path */
-   fprintf(fp, " ,%d,%d", x[0], FLIPY(y[0]));
-   fprintf(fp, "];f(X,A)\n");
+   fprintf(draw_fp, " ,%d,%d", x[0], FLIPY(y[0]));
+   fprintf(draw_fp, "];f(X,A)\n");
 
 
 
@@ -683,8 +683,8 @@ static DevEntry canvasdev = {
    noop             /* Syncronize the display */
 };
 /******************************************************************************/
-/* _CANVAS_devcpy copy the canvas device into vdevice.dev.  */
-int _CANVAS_devcpy() {
+/* copy the canvas device into vdevice.dev.  */
+int _CANVAS_draw_devcpy(void) {
    vdevice.dev = canvasdev;
    return(0);
 }

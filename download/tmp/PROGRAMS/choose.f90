@@ -453,13 +453,13 @@ logical                        :: stopit=.false.
 stopit=.false.
 if(l_version)then
 help_text=[ CHARACTER(LEN=128) :: &
-'@(#)PRODUCT:        CLI library utilities and examples>',&
+'@(#)PRODUCT:        GPF (General Purpose Fortran) utilities and examples>',&
 '@(#)PROGRAM:        choose(1)>',&
 '@(#)DESCRIPTION:    select an item from a screen menu>',&
 '@(#)VERSION:        1.0, 20180331>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Mon, Jun 4th, 2018 9:02:50 AM>',&
+'@(#)COMPILED:       Thu, Aug 16th, 2018 12:12:21 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

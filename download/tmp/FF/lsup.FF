@@ -37,7 +37,7 @@ character(len=:),allocatable     :: currentdir
          if(filename.eq.'')exit
          if(filename.eq.'.')exit
       enddo
-      if(isize.eq.i)exit                        ! put a blank line out as a seperator between pathnames
+      if(isize.eq.i)exit                        ! put a blank line out as a separator between pathnames
       write(*,*)
    enddo
 contains
@@ -84,7 +84,7 @@ SEE ALSO
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION
-PRODUCT:        CLI library utilities and examples
+PRODUCT:        GPF (General Purpose Fortran) utilities and examples
 PROGRAM:        lsup(1f)
 DESCRIPTION:    show permits of a pathname and all directory components of the pathname
 VERSION:        1.0.0

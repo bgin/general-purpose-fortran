@@ -10,12 +10,13 @@ SYNOPSIS
    integer, intent=(out)                  :: ierr
 
 DESCRIPTION
-   JUCALC() evaluates FORTRAN-like expressions. It can be used to  add
+   JUCALC() evaluates FORTRAN-like expressions. It can be used to add
    calculator-like abilities to your program.
 
+OPTIONS
     inline  INLINE is a string expression up to (iclen_calc=512) characters long.
             The syntax of an expression is described in
-            the main document of  the  Calculator  Library.
+            the main document of the Calculator Library.
     outlin  Returned numeric value as a string when IERR=0.
     mssg    MSSG is a string that can serve several purposes
             o Returned string value when IERR=2
@@ -37,7 +38,7 @@ DEPENDENCIES
        o modif
        o rand
        o len_trim
-       o  User-supplied routines: juown1, c
+       o User-supplied routines: juown1, c
 EXAMPLES
   Example calculator program
 

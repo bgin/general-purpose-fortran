@@ -1,5 +1,5 @@
 NAME
-   getaspect(3f) - [M_DRAW:ASPECT] Returns the ratio height over width of the display device.
+   getaspect(3f) - [M_draw:ASPECT] Returns the ratio height over width of the display device.
 
 SYNOPSIS
          real function getaspect()

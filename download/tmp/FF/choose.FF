@@ -330,7 +330,7 @@ SEE ALSO
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION
-PRODUCT:        CLI library utilities and examples
+PRODUCT:        GPF (General Purpose Fortran) utilities and examples
 PROGRAM:        choose(1)
 DESCRIPTION:    select an item from a screen menu
 VERSION:        1.0, 20180331

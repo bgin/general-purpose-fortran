@@ -8,7 +8,7 @@ DESCRIPTION
        The ischr(3f) function checks if path is a path to a character device.
 
 OPTIONS
-       path   a character string representing a character device pathname.  Trailing spaces are ignored.
+       path   a character string representing a character device pathname. Trailing spaces are ignored.
 
 RETURN VALUE
        The system_ischr() function should always be successful and no

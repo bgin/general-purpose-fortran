@@ -131,7 +131,7 @@ a <page> element
 #include <sys/types.h>
 #include "draw.h"
 
-extern FILE     *_voutfile();
+extern FILE     *_draw_outfile();
 
 /* How to convert degrees to radians */
 #ifndef PI
@@ -163,9 +163,9 @@ static char hardfont[30]={'m','o','n','o','s','p','a','c','e','\0'};
 
 static int      points=0;
 static int      svg_first_time = 1, drawn = 0, LAST_X = -1, LAST_Y = -1;/* last (x, y) drawn */
-extern  FILE     *fp;
+extern  FILE     *draw_fp;
 
-int SVG_MOVED=0;
+static int SVG_MOVED=0;
 
 #define CMAPSIZE 256
 struct rgb_color {
@@ -193,14 +193,14 @@ static int SVG_header() {
    struct passwd *pw;
 
 
-   fprintf(fp,"<?xml version=\"1.0\" encoding=\"ISO-8859-1\" standalone=\"no\"?>\n");
-   fprintf(fp,"<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\"\n");
-   fprintf(fp,"\"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n");
-   fprintf(fp,"<!-- Creator: M_DRAW SVG driver 1.0 2005-03-25 -->\n");
+   fprintf(draw_fp,"<?xml version=\"1.0\" encoding=\"ISO-8859-1\" standalone=\"no\"?>\n");
+   fprintf(draw_fp,"<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\"\n");
+   fprintf(draw_fp,"\"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n");
+   fprintf(draw_fp,"<!-- Creator: M_DRAW SVG driver 1.0 2005-03-25 -->\n");
    time(&tod);
-   fprintf(fp,"<!-- CreationDate: %s -->\n",ctime(&tod));
+   fprintf(draw_fp,"<!-- CreationDate: %s -->\n",ctime(&tod));
 
-   fprintf(fp,"<!--\n");
+   fprintf(draw_fp,"<!--\n");
    time(&tod);
 
 #ifndef MINGW
@@ -211,7 +211,7 @@ static int SVG_header() {
       pw = getpwuid(getuid());
       username = pw->pw_name;
    }
-   fprintf(fp,"  For: %s on OS=%.*s\n       NETWORK_NAME=%.*s\n       RELEASE=%.*s\n       VERSION=%.*s\n       MACHINE=%.*s\n",
+   fprintf(draw_fp,"  For: %s on OS=%.*s\n       NETWORK_NAME=%.*s\n       RELEASE=%.*s\n       VERSION=%.*s\n       MACHINE=%.*s\n",
        username,
        (int)sizeof(un->sysname),  un->sysname,
        (int)sizeof(un->nodename), un->nodename,
@@ -219,7 +219,7 @@ static int SVG_header() {
        (int)sizeof(un->version),  un->version,
        (int)sizeof(un->machine),  un->machine);
 
-   fprintf(fp,"-->\n");
+   fprintf(draw_fp,"-->\n");
 #endif
 
 
@@ -227,7 +227,7 @@ static int SVG_header() {
 }
 /******************************************************************************/
 /* change index i in the color map to the appropriate rgb value. */
-int SVG_mapcolor(int i, int r, int g, int b) {
+static int SVG_mapcolor(int i, int r, int g, int b) {
    if (i >= CMAPSIZE || i < 0 ){
       return(-1);
    }
@@ -242,7 +242,7 @@ static int SVG_init(void) {
    int prefx, prefy, prefxs, prefys;
    int i;
    int SVG_header();
-   fp = _voutfile();
+   draw_fp = _draw_outfile();
 
    if (!svg_first_time) return(1);
 
@@ -260,38 +260,38 @@ static int SVG_init(void) {
       vdevice.sizeX = vdevice.sizeY = MIN(SVGXSIZE,SVGYSIZE); /* current viewport to use */
    }
 
-   fprintf(fp,"<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"%fin\" height=\"%fin\" viewBox=\"0 0 %d %d\">\n",
+   fprintf(draw_fp,"<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"%fin\" height=\"%fin\" viewBox=\"0 0 %d %d\">\n",
    (float)vdevice.sizeSx/SVGTORAS,(float)vdevice.sizeSy/SVGTORAS,
    vdevice.sizeSx,vdevice.sizeSy);
 
-   fprintf(fp,"<desc> M_DRAW SVG pages</desc>\n");
-   fprintf(fp,"<!--  LINECAP: butt round square  JOIN: round miter bevel inherit -->\n");
-   fprintf(fp,"<g style=\" stroke-width:%dpx;stroke:black;stroke-linecap:round;stroke-linejoin:round;fill:none;\n\
+   fprintf(draw_fp,"<desc> M_DRAW SVG pages</desc>\n");
+   fprintf(draw_fp,"<!--  LINECAP: butt round square  JOIN: round miter bevel inherit -->\n");
+   fprintf(draw_fp,"<g style=\" stroke-width:%dpx;stroke:black;stroke-linecap:round;stroke-linejoin:round;fill:none;\n\
      fill-rule:even-odd;fill-opacity:1;font-style:normal;font-variant:normal;\n\
      font-weight:normal;font-stretch:normal;font-size-adjust:none;letter-spacing:normal;\n\
      word-spacing:normal;text-anchor:start\" xml:space=\"preserve\">\n",
      MAX(1,vdevice.sizeX*curwid/10000));
-   fprintf(fp,"<defs>\n");
+   fprintf(draw_fp,"<defs>\n");
       /* Horizontal Line from left to right to transform as a text path */
-      fprintf(fp,"<path id=\"baseline\" d=\"M0,0L2000000,0\" style=\"fill:none\"/>\n");
-      fprintf(fp,"<marker id=\"Triangle\"\n");
-      fprintf(fp," viewBox=\"0 0 10 10\" refX=\"0\" refY=\"5\"\n");
-      fprintf(fp," markerUnits=\"strokeWidth\"\n");
-      fprintf(fp," markerWidth=\"4\" markerHeight=\"3\"\n");
-      fprintf(fp," orient=\"auto\">\n");
-      fprintf(fp," <path d=\"M 0 0 L 10 5 L 0 10 z\"/>\n");
-      fprintf(fp," </marker>\n");
-      fprintf(fp," <marker id=\"Dot\"\n");
-      fprintf(fp," viewBox=\"0 0 10 10\" refX=\"0\" refY=\"5\"\n");
-      fprintf(fp," markerUnits=\"strokeWidth\"\n");
-      fprintf(fp," markerWidth=\"4\" markerHeight=\"3\"\n");
-      fprintf(fp," orient=\"auto\">\n");
-      fprintf(fp," <path d=\"M 0 0 L 10 5 L 0 10 z\" />\n");
-      fprintf(fp,"</marker>\n");
+      fprintf(draw_fp,"<path id=\"baseline\" d=\"M0,0L2000000,0\" style=\"fill:none\"/>\n");
+      fprintf(draw_fp,"<marker id=\"Triangle\"\n");
+      fprintf(draw_fp," viewBox=\"0 0 10 10\" refX=\"0\" refY=\"5\"\n");
+      fprintf(draw_fp," markerUnits=\"strokeWidth\"\n");
+      fprintf(draw_fp," markerWidth=\"4\" markerHeight=\"3\"\n");
+      fprintf(draw_fp," orient=\"auto\">\n");
+      fprintf(draw_fp," <path d=\"M 0 0 L 10 5 L 0 10 z\"/>\n");
+      fprintf(draw_fp," </marker>\n");
+      fprintf(draw_fp," <marker id=\"Dot\"\n");
+      fprintf(draw_fp," viewBox=\"0 0 10 10\" refX=\"0\" refY=\"5\"\n");
+      fprintf(draw_fp," markerUnits=\"strokeWidth\"\n");
+      fprintf(draw_fp," markerWidth=\"4\" markerHeight=\"3\"\n");
+      fprintf(draw_fp," orient=\"auto\">\n");
+      fprintf(draw_fp," <path d=\"M 0 0 L 10 5 L 0 10 z\" />\n");
+      fprintf(draw_fp,"</marker>\n");
 
-   fprintf(fp,"</defs>\n");
+   fprintf(draw_fp,"</defs>\n");
 
-   fprintf(fp,"<!-- id=\"Page%d\" -->\n", pgroup);
+   fprintf(draw_fp,"<!-- id=\"Page%d\" -->\n", pgroup);
 
    vdevice.depth = 8;
    for (i = 0; i < CMAPSIZE; i++) /* set up the basic colors */
@@ -352,32 +352,32 @@ static int closeline(void){
    if(PolyLineOpen){
       if(SVG_MOVED == 0 ){ /* ASSUME NULL LINES ARE DOTS OR POINTS */
 
-          fprintf(fp,"\"/>\n<circle cx=\"%d\" cy=\"%d\" r=\"%d\" stroke=\"none\"/>\n",
+          fprintf(draw_fp,"\"/>\n<circle cx=\"%d\" cy=\"%d\" r=\"%d\" stroke=\"none\"/>\n",
              LAST_X,
              FLIPY(LAST_Y),
              MAX(1,vdevice.sizeX*curwid/10000/2));
 
 /*  1-unit line round terminator
-      fprintf(fp,"L%d,%d style=\" stroke-linecap:round; stroke-linejoin:round\"\>\n",LAST_X+1,FLIPY(LAST_Y+1));
+      fprintf(draw_fp,"L%d,%d style=\" stroke-linecap:round; stroke-linejoin:round\"\>\n",LAST_X+1,FLIPY(LAST_Y+1));
 */
 
 /*
  null line line round terminator
-      fprintf(fp,"L%d,%d style=\" stroke-linecap:round; stroke-linejoin:round\"\>\n",LAST_X+1,FLIPY(LAST_Y+1));
+      fprintf(draw_fp,"L%d,%d style=\" stroke-linecap:round; stroke-linejoin:round\"\>\n",LAST_X+1,FLIPY(LAST_Y+1));
 */
 
 /* Place marker at end of a path.
-      fprintf(fp,"\" stroke=\"black\" stroke-width=\"1%\" marker-end=\"url(#Dot)\"/>\n");
+      fprintf(draw_fp,"\" stroke=\"black\" stroke-width=\"1%\" marker-end=\"url(#Dot)\"/>\n");
 */
 
 /* draw small square to make a point
       half_box=MAX(1,vdevice.sizeX*curwid/10000);
-      fprintf(fp,"\"/><path d=\"m %d %d l %d %d %d %d %d %d %d %d\" />",
+      fprintf(draw_fp,"\"/><path d=\"m %d %d l %d %d %d %d %d %d %d %d\" />",
       -half_box/2,-half_box/2, 0,half_box, half_box,0, 0,-half_box, -half_box,0);
 */
 
       } else{
-         fprintf(fp, "\"/>\n"); /* end curve */
+         fprintf(draw_fp, "\"/>\n"); /* end curve */
       }
       PolyLineOpen = FALSE; /* Polyline not open */
       points = 0;
@@ -387,7 +387,7 @@ static int closeline(void){
 /******************************************************************************/
 static int closeObject(void){
    if(ObjectOpen){
-      fprintf(fp,"</g>\n");
+      fprintf(draw_fp,"</g>\n");
       ObjectOpen = FALSE; /* object not open */
       points = 0;
    }
@@ -396,7 +396,7 @@ static int closeObject(void){
 /******************************************************************************/
 static int openline(void){
    if(!PolyLineOpen){
-      fprintf(fp,"<path d=\"M");
+      fprintf(draw_fp,"<path d=\"M");
       PolyLineOpen = TRUE; /* Polyline open */
    }
    return (0);
@@ -404,7 +404,7 @@ static int openline(void){
 /******************************************************************************/
 static int openObject(void){
    if(!ObjectOpen){
-      fprintf(fp, "\n<g style=\"stroke-width:%dpx; stroke:#%2.2x%2.2x%2.2x; fill:none\">\n",
+      fprintf(draw_fp, "\n<g style=\"stroke-width:%dpx; stroke:#%2.2x%2.2x%2.2x; fill:none\">\n",
       MAX(1,vdevice.sizeX*curwid/10000), svg_carr[curcol].red, svg_carr[curcol].green, svg_carr[curcol].blue);
 
       ObjectOpen = TRUE; /* Object open */
@@ -416,18 +416,18 @@ static int openObject(void){
 static int SVG_exit(void) {
    closeline(); /* close Polyline line if it is open */
    closeObject(); /* close object if it is open */
-   fprintf(fp, "</g>\n"); /* Page Clear, End of Page Group */
-   fprintf(fp, "</svg>\n"); /* Page Clear, End of Page Group */
-   fprintf(fp,"<!--- End of Document  -->\n");
+   fprintf(draw_fp, "</g>\n"); /* Page Clear, End of Page Group */
+   fprintf(draw_fp, "</svg>\n"); /* Page Clear, End of Page Group */
+   fprintf(draw_fp,"<!--- End of Document  -->\n");
    drawn = 0;
    points = 0;
 
-   if (fp != stdout && fp != stderr ){
-                fflush(fp);
+   if (draw_fp != stdout && draw_fp != stderr ){
+                fflush(draw_fp);
                 if(vdevice.writestoprocess == 2){
-                   pclose(fp);
+                   pclose(draw_fp);
                 }else{
-                   fclose(fp);
+                   fclose(draw_fp);
                 }
    }
    return (0);
@@ -442,7 +442,7 @@ static int SVG_draw(int x, int y) {
       closeline(); /* close line if required */
       openObject(); /* start Object if required */
       openline(); /* start line */
-      fprintf(fp, "%d,%d", vdevice.cpVx, FLIPY(vdevice.cpVy));
+      fprintf(draw_fp, "%d,%d", vdevice.cpVx, FLIPY(vdevice.cpVy));
       LAST_X=vdevice.cpVx;
       LAST_Y=vdevice.cpVy;
       SVG_MOVED=0;
@@ -451,13 +451,13 @@ static int SVG_draw(int x, int y) {
    openline(); /* start line if required */
 
    if(points == 0){
-      fprintf(fp, "%d,%d", x ,FLIPY(y));
+      fprintf(draw_fp, "%d,%d", x ,FLIPY(y));
 
       SVG_MOVED=0;
    }else{
       if(LAST_X!=x || LAST_Y!=y)SVG_MOVED=SVG_MOVED+1;
 
-      fprintf(fp, "%cL%d,%d", linefeed[(points % 8/7)], x ,FLIPY(y));
+      fprintf(draw_fp, "%cL%d,%d", linefeed[(points % 8/7)], x ,FLIPY(y));
    }
 
    points++;
@@ -474,9 +474,9 @@ static int SVG_clear(void) {
    if (drawn)
    {
 
-     fprintf(fp,"</g><!-- End Page%d -->\n",pgroup); /* Page Clear, End of Page Group */
+     fprintf(draw_fp,"</g><!-- End Page%d -->\n",pgroup); /* Page Clear, End of Page Group */
      pgroup++; /* increment page id */
-     fprintf(fp,"<g id=\"Page%d\">\n", pgroup);
+     fprintf(draw_fp,"<g id=\"Page%d\">\n", pgroup);
    }
    drawn = 0;
    points = 0;
@@ -689,17 +689,17 @@ static int SVG_string(char *s) {
 
    rot=r2d(atan2((double)vdevice.attr->a.textsin,(double)vdevice.attr->a.textcos));
 
-   fprintf(fp, "<text stroke=\"none\" lengthAdjust=\"spacingAndGlyphs\"");
-   fprintf(fp," fill=\"#%2.2x%2.2x%2.2x\"\n",
+   fprintf(draw_fp, "<text stroke=\"none\" lengthAdjust=\"spacingAndGlyphs\"");
+   fprintf(draw_fp," fill=\"#%2.2x%2.2x%2.2x\"\n",
      svg_carr[curcol].red, svg_carr[curcol].green, svg_carr[curcol].blue); /* color */
 
    if(rot == 0){
-      fprintf(fp, " x=\"%d\" y=\"%d\"", (int)vdevice.cpVx, FLIPY(vdevice.cpVy));
-      fprintf(fp," font-family=\"%s\" font-size=\"%d\" ",hardfont,(int)vdevice.hheight);
+      fprintf(draw_fp, " x=\"%d\" y=\"%d\"", (int)vdevice.cpVx, FLIPY(vdevice.cpVy));
+      fprintf(draw_fp," font-family=\"%s\" font-size=\"%d\" ",hardfont,(int)vdevice.hheight);
    }else{
-      fprintf(fp," transform=\"translate(%d,%d) rotate(%f)\" x=\"0\" y=\"0\" ",
+      fprintf(draw_fp," transform=\"translate(%d,%d) rotate(%f)\" x=\"0\" y=\"0\" ",
       (int)vdevice.cpVx, FLIPY(vdevice.cpVy),-rot);
-      fprintf(fp," font-family=\"%s\" font-size=\"%d\" ",hardfont,(int)vdevice.hheight);
+      fprintf(draw_fp," font-family=\"%s\" font-size=\"%d\" ",hardfont,(int)vdevice.hheight);
    }
 
    for(i=0,slength=0.0; (c=s[i]) != '\0' ;i++) {
@@ -710,33 +710,33 @@ static int SVG_string(char *s) {
    slength=slength*vdevice.hwidth;
    /* fprintf(stderr,"slength 2=%f\n",slength); */
    if(slength<=0.0) slength=vdevice.hwidth*strlen(s);
-   fprintf(fp,"textLength=\"%d\">\n",(int)slength);
+   fprintf(draw_fp,"textLength=\"%d\">\n",(int)slength);
 
    for(i=0; (c=s[i]) != '\0' ;i++) {
       switch(c) {   /* Do I need to expand strings like </text> or ; to &amp; or something? */
-      case '&' : fprintf(fp, "&amp;");  break;
-      case '<' : fprintf(fp, "&lt;");   break;
-      case '>' : fprintf(fp, "&gt;");   break;
-      case '"' : fprintf(fp, "&quot;"); break;
-      case '\'': fprintf(fp, "&apos;"); break;
-      default  : fprintf(fp, "%c",c);
+      case '&' : fprintf(draw_fp, "&amp;");  break;
+      case '<' : fprintf(draw_fp, "&lt;");   break;
+      case '>' : fprintf(draw_fp, "&gt;");   break;
+      case '"' : fprintf(draw_fp, "&quot;"); break;
+      case '\'': fprintf(draw_fp, "&apos;"); break;
+      default  : fprintf(draw_fp, "%c",c);
       }
    }
-   fprintf(fp,"\n</text>\n");
+   fprintf(draw_fp,"\n</text>\n");
    drawn = 1;
    LAST_X=vdevice.cpVx+slength*vdevice.attr->a.textcos;
    LAST_Y=vdevice.cpVy+slength*vdevice.attr->a.textsin;
    /* debug: draw a line under text */
-   /*fprintf(fp,"<line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\"/>\n",vdevice.cpVx,FLIPY(vdevice.cpVy),LAST_X,FLIPY(LAST_Y));*/
+   /*fprintf(draw_fp,"<line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\"/>\n",vdevice.cpVx,FLIPY(vdevice.cpVy),LAST_X,FLIPY(LAST_Y));*/
    return(0);
 
 }
 /*
-   fprintf(fp, "<textPath xline:href=\"#baseline\">\n");
-   fprintf(fp,"'</textPath></text>\n");
+   fprintf(draw_fp, "<textPath xline:href=\"#baseline\">\n");
+   fprintf(draw_fp,"'</textPath></text>\n");
 */
 /******************************************************************************/
-int SVG_char(char c){ /* SVG_char output a character */
+static int SVG_char(char c){ /* SVG_char output a character */
    char  s[2];
    s[0] = c;
    s[1]='\0';
@@ -753,15 +753,15 @@ static int SVG_fill(int n, int x[], int y[]) { /* fill a polygon */
    closeline(); /* close line if required */
    closeObject(); /* close line if required */
 
-   fprintf(fp,"<!-- Polygon --><path d=\"M %d,%d L\n", x[0],FLIPY(y[0]));
+   fprintf(draw_fp,"<!-- Polygon --><path d=\"M %d,%d L\n", x[0],FLIPY(y[0]));
 
    for (i = 1; i < n; i++)
    {
-      fprintf(fp, "%d,%d%c", x[i], FLIPY(y[i]),linefeed[(i % 8/7)]);
+      fprintf(draw_fp, "%d,%d%c", x[i], FLIPY(y[i]),linefeed[(i % 8/7)]);
    }
 
    /* close path */
-   fprintf(fp," z\" style=\"stroke:#%2.2x%2.2x%2.2x;stroke-width:%dpx;fill:#%2.2x%2.2x%2.2x\"/>\n",
+   fprintf(draw_fp," z\" style=\"stroke:#%2.2x%2.2x%2.2x;stroke-width:%dpx;fill:#%2.2x%2.2x%2.2x\"/>\n",
      svg_carr[curcol].red, svg_carr[curcol].green, svg_carr[curcol].blue,  /* edge color */
      MAX(1,vdevice.sizeX*curwid/10000),                                            /* edge width */
      svg_carr[curcol].red, svg_carr[curcol].green, svg_carr[curcol].blue); /* fill color*/
@@ -803,8 +803,8 @@ static DevEntry svgdev = {
    noop          /* Syncronize the display */
 };
 /******************************************************************************/
-/* _SVG_devcpy copy the svg device into vdevice.dev.  */
-int _SVG_devcpy() {
+/* copy the svg device into vdevice.dev.  */
+int _SVG_draw_devcpy(void) {
    vdevice.dev = svgdev;
    return(0);
 }

@@ -35,7 +35,7 @@
 !!
 !!       write(*,*)' ____________________________________________________________'
 !!       write(*,*)'  Your input lines are now editable using the GNU'
-!!       write(*,*)'  readline(3C) procedure.  By default, up-arrow and'
+!!       write(*,*)'  readline(3C) procedure. By default, up-arrow and'
 !!       write(*,*)'  down-arrow go thru the history lines; left and right arrow'
 !!       write(*,*)'  keys and delete and just typing characters let you do'
 !!       write(*,*)'  simple editing. Far more input control is available.'
@@ -79,7 +79,7 @@ contains
 !!      system_readline(3f) - [M_readline] Call readline(3c) from Fortran
 !!##SYNOPSIS
 !!
-!!     character(kind=c_char,len=*),intent(in)  :: prompt
+!!     character(kind=c_char,len=*),intent(in) :: prompt
 !!     character(kind=c_char,len=*),intent(out) :: line
 !!
 !!##DESCRIPTION
@@ -116,7 +116,7 @@ contains
 !!
 !!       write(*,*)' ____________________________________________________________'
 !!       write(*,*)'  Your input lines are now editable using the GNU'
-!!       write(*,*)'  readline(3C) procedure.  By default, up-arrow and'
+!!       write(*,*)'  readline(3C) procedure. By default, up-arrow and'
 !!       write(*,*)'  down-arrow go thru the history lines; left and right arrow'
 !!       write(*,*)'  keys and delete and just typing characters let you do'
 !!       write(*,*)'  simple editing. Far more input control is available.'

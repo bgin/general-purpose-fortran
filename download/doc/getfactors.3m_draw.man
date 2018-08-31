@@ -1,5 +1,5 @@
 NAME
-   getfactors(3f) - [M_DRAW:ASPECT] Returns width over min(width of device, height of device) and height over min(width of device, height of device).
+   getfactors(3f) - [M_draw:ASPECT] Returns width over min(width of device, height of device) and height over min(width of device, height of device).
 
 SYNOPSIS
          subroutine getfactors(w, h)

@@ -2,7 +2,7 @@ NAME
 sqlite3_get_table(3f) - [M_sqlite] Call sqlite3_exec() and return the result in an array of strings
 
 SYNOPSIS
-   call sqlite3_get_table(db, commmand, result, errmsg)
+   subroutine sqlite3_get_table(db, commmand, result, errmsg)
 
     type(SQLITE_DATABASE)    :: db
     character(len=*)         :: command

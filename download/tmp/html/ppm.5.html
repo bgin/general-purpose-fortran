@@ -66,24 +66,17 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 
 </A>
 <BLOCKQUOTE>
-<TABLE cellpadding=3>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-The portable pixmap format is a
-lowest  common  denominator
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-color image file format.
-The definition is as follows:
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-- A "magic number" for identifying the
-file  type.   A  ppm
+The portable pixmap format is a lowest common denominator
+color image file format. The definition is as follows:
+<TABLE cellpadding=3><!-- tsb: The portable pixmap format is a lowest common denominator
+ -->
+<TR></TR><TR></TR>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+A "magic number" for identifying the file type. A ppm
 file&#146;s magic number is the two characters "P3".
 </TD></TR>
-<TR></TR></TABLE><TABLE cellpadding=3>
 <TR valign=top><TD width=3%>
 o
 </TD><TD>
@@ -119,37 +112,29 @@ o
 </TD><TD>
 Whitespace.
 </TD></TR>
-<TR valign=top><TD width=3% nowrap>
-<B></B> </TD><TD valign=bottom>
-- Width * height pixels, each
-three  ASCII  decimal  values
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+Width * height pixels, each three ASCII decimal values
 between 0 and the specified maximum value, starting at the
-<TABLE width=100% cellpadding=3><!-- tsb: - Width * height pixels, each
+<TABLE width=100% cellpadding=3><!-- tsb: Width * height pixels, each three ASCII decimal values
  -->
 <TR></TR><TR></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
-top-left
-corner  of  the  pixmap,  proceeding  in  normal
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-English
-reading  order.   The three values for each pixel
+top-left corner of the pixmap,
+proceeding in normal
+English reading order. The three values for each pixel
 represent red, green, and blue, respectively; a value of 0
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-means
-that color is off, and the maximum value means that
+means that color is off, and the maximum value means that
 color is maxxed out.
 </TD></TR>
-<TR></TR></TABLE><!-- .TP -->
+<TR></TR></TABLE><!-- .IP \(bu 3 -->
 </TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-- Characters from a "#" to the next end-of-line are
-ignored
+<TR valign=top><TD width=6%>
+o
+</TD><TD>
+Characters from a "#" to the next end-of-line are ignored
 (comments).
 </TD></TR>
 <TR valign=top><TD width=6%>
@@ -192,15 +177,9 @@ P3
 Programs that read this format should be as lenient as possible,
 accepting anything that looks remotely like a pixmap.
 </TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-There is also a variant on the format, available by
-setting
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-the
-RAWBITS  option  at  compile  time.   This  variant  is
+<TR><TD colspan=2>
+There is also a variant on the format, available by setting
+the RAWBITS option at compile time. This variant is
 different in the following ways:
 </TD></TR>
 <TR></TR></TABLE><TABLE cellpadding=3>
@@ -211,45 +190,32 @@ The "magic number" is "P6" instead of "P3".
 </TD></TR>
 <TR valign=top><TD width=3% nowrap>
 <B></B> </TD><TD valign=bottom>
-- The pixel values are stored as
-plain  bytes,  instead  of
+- The pixel values are stored as plain bytes,
+instead of
 ASCII decimal.
 </TD></TR>
-<TR valign=top><TD width=3% nowrap>
-<B></B> </TD><TD valign=bottom>
-- Whitespace is not allowed in the pixels area, and
-only  a
-<TABLE width=100% cellpadding=3><!-- tsb: - Whitespace is not allowed in the pixels area, and
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+Whitespace is not allowed in the pixels area, and only a
+single character of whitespace (typically a newline) is
+allowed after the maxval.
+</TD></TR>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+The files are smaller and many times faster to read and
+write.
+</TD></TR>
+<TR></TR></TABLE>Note that this raw format can only be used for maxvals less
+than or equal to 255. If you use the ppm library and try to
+<TABLE cellpadding=3><!-- tsb: Note that this raw format can only be used for maxvals less
  -->
 <TR></TR><TR></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
-single
-character  of  whitespace (typically a newline) is
-allowed after the maxval.
-</TD></TR>
-<TR></TR></TABLE><!-- .TP -->
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-- The files are smaller and many times faster
-to  read  and
-write.
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-Note that this raw format can only be used for maxvals
-less
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-than or equal to 255.
-If you use the ppm library and try to
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-write a file with a larger
-maxval,  it  will  automatically
+write a file with a larger maxval,
+it will automatically
 fall back on the slower but more general plain format.
 </TD></TR>
 <TR></TR></TABLE></BLOCKQUOTE>
@@ -266,9 +232,9 @@ Copyright (C) 1989, 1991 by Jef Poskanzer.
 </PRE>
 </BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>ppm (5)</TD> <TD align=right width=33%><I>June 12, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from afb1b002-f380-470a-9ae5-7ded3d831d05 using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>ppm (5)</TD> <TD align=right width=33%><I>August 26, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from d241b590-fa97-4e73-a104-28e0a748ec73 using man macros.</FONT>
 </div>
 </div>
-<center><img src="images/ppm.5.gif"></center> 
+<br><br><center><img src="images/ppm.5.gif"></center> 
 </body>
 </HTML>

@@ -232,7 +232,7 @@ OUTPUTS
    OPENED
 
    .true.   if the file specified is connected to a unit
-   .false.  otherwise
+   .false. otherwise
 
    PAD
 

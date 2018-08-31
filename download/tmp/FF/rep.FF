@@ -33,7 +33,7 @@ OPTIONS
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION
-PRODUCT:        CLI library utilities and examples
+PRODUCT:        GPF (General Purpose Fortran) utilities and examples
 PROGRAM:        rep(1)
 DESCRIPTION:    replace fixed strings in files
 VERSION:        1.0, 20171113

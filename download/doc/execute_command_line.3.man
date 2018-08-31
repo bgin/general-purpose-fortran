@@ -7,7 +7,7 @@ SYNTAX
 
 DESCRIPTION
 
-   The COMMAND argument is passed to the shell and executed.  (The shell
+   The COMMAND argument is passed to the shell and executed. (The shell
    is generally sh(1) on Unix systems, and cmd.exe on Windows.) If WAIT
    is present and has the value false, the execution of the command is
    asynchronous if the system supports it; otherwise, the command is
@@ -16,7 +16,7 @@ DESCRIPTION
    The three last arguments allow the user to get status information.
    After synchronous execution, EXITSTAT contains the integer exit code
    of the command, as returned by SYSTEM. CMDSTAT is set to zero if the
-   command line was executed (whatever its exit status was).  CMDMSG is
+   command line was executed (whatever its exit status was). CMDMSG is
    assigned an error message if an error has occurred.
 
 
@@ -44,7 +44,7 @@ ARGUMENTS
                assigned the value of the processor-dependent exit
                status. Otherwise, the value of EXITSTAT is unchanged.
 
-   CMDSTAT   - (Optional) an INTEGER of  default kind with intent(INOUT).
+   CMDSTAT   - (Optional) an INTEGER of default kind with intent(INOUT).
                If an error condition occurs and CMDSTAT is not present, error
                termination of execution of the image is initiated.
 
@@ -53,13 +53,13 @@ ARGUMENTS
                positive value if an error condition occurs, or the
                value -2 if no error condition occurs but WAIT is present
                with the value false and the processor does not support
-               asynchronous execution. Otherwise it is assigned the
+               asynchronous execution.Otherwise it is assigned the
                value 0.
 
    CMDMSG    - (Optional) a CHARACTER scalar of the default kind.
-               It is an INTENT (INOUT) argument. If an error condition
+               It is an INTENT (INOUT) argument.If an error condition
                occurs, it is assigned a processor-dependent explanatory
-               message. Otherwise, it is unchanged.
+               message.Otherwise, it is unchanged.
 
 EXAMPLE
 
@@ -78,9 +78,9 @@ EXAMPLE
 NOTE
 
    Because this intrinsic is making a system call, it is very system
-   dependent. Its behavior with respect to signaling is processor
-   dependent. In particular, on POSIX-compliant systems, the SIGINT and
-   SIGQUIT signals will be ignored, and the SIGCHLD will be blocked. As
+   dependent.Its behavior with respect to signaling is processor
+   dependent.In particular, on POSIX-compliant systems, the SIGINT and
+   SIGQUIT signals will be ignored, and the SIGCHLD will be blocked.As
    such, if the parent process is terminated, the child process might
    not be terminated alongside.
 

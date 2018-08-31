@@ -2300,17 +2300,17 @@ end subroutine d2w
 !!
 !!##DEFINITION
 !!    The ISO-8601 date and time standard was issued by the International
-!!    Organization for Standardization (ISO).  It is used (mainly) in
+!!    Organization for Standardization (ISO). It is used (mainly) in
 !!    government and business for fiscal years, as well as in timekeeping.
 !!    The system specifies a week year atop the Gregorian calendar by
 !!    defining a notation for ordinal weeks of the year.
 !!
 !!    An ISO week-numbering year (also called ISO year informally) has
-!!    52 or 53 full weeks.  That is 364 or 371 days instead of the usual
-!!    365 or 366 days.  The extra week is referred to here as a leap week,
-!!    although ISO-8601 does not use this term.  Weeks start with Monday.
+!!    52 or 53 full weeks. That is 364 or 371 days instead of the usual
+!!    365 or 366 days. The extra week is referred to here as a leap week,
+!!    although ISO-8601 does not use this term. Weeks start with Monday.
 !!    The first week of a year is the week that contains the first Thursday
-!!    of the year (and, hence, always contains 4 January).  ISO week year
+!!    of the year (and, hence, always contains 4 January). ISO week year
 !!    numbering therefore slightly deviates from the Gregorian for some
 !!    days close to January 1st.
 !!
@@ -2968,7 +2968,7 @@ end function sec2days
 !!
 !!          A decimal fraction is supported on the seconds (Actually,
 !!          any of the numeric values may represent positive floating
-!!          point numbers).  Spaces are ignored.
+!!          point numbers). Spaces are ignored.
 !!
 !!        NNdNNhNNmNNs
 !!          Simple numeric values may also be used with unit suffixes; where
@@ -3219,8 +3219,8 @@ end function phase_of_moon
 !!  fmtdate(3f) routine.
 !!
 !!  The moon circles the earth every 29.530588853 days on average, so pick
-!!  a starting point and count.  A new moon occurred at January 6, 2000,
-!!  18:14 UTC.  Then it is easy to count the number of days since the last
+!!  a starting point and count. A new moon occurred at January 6, 2000,
+!!  18:14 UTC. Then it is easy to count the number of days since the last
 !!  new moon. This is an approximate calculation.
 !!
 !!##OPTIONS
@@ -3230,7 +3230,7 @@ end function phase_of_moon
 !!##RESULTS
 !!
 !!  moon_fullness  0 is a new or dark moon, 100 is a full moon, + for waxing
-!!             and - for waning.
+!!                 and - for waning.
 !===================================================================================================================================
 function moon_fullness(datin)
 implicit none
@@ -4118,37 +4118,37 @@ logical function eq(self,other)
 character(len=*),parameter::ident="@(#)M_time::eq(3f): compare derived type date_time objects (eq,lt,gt,le,ge,ne)"
 class(date_time),intent(in)   :: self
 type(date_time),intent(in)    :: other
-   eq= int(d2u(dt2d(self))) .eq.  int(d2u(dt2d(other)))
+   eq= int(d2u(dt2d(self))) .eq. int(d2u(dt2d(other)))
 end function eq
 
 logical function lt(self,other)
 class(date_time),intent(in)   :: self
 type(date_time),intent(in)    :: other
-   lt= int(d2u(dt2d(self))) .lt.  int(d2u(dt2d(other)))
+   lt= int(d2u(dt2d(self))) .lt. int(d2u(dt2d(other)))
 end function lt
 
 logical function gt(self,other)
 class(date_time),intent(in)   :: self
 type(date_time),intent(in)    :: other
-   gt= int(d2u(dt2d(self))) .gt.  int(d2u(dt2d(other)))
+   gt= int(d2u(dt2d(self))) .gt. int(d2u(dt2d(other)))
 end function gt
 
 logical function le(self,other)
 class(date_time),intent(in)   :: self
 type(date_time),intent(in)    :: other
-   le= int(d2u(dt2d(self))) .le.  int(d2u(dt2d(other)))
+   le= int(d2u(dt2d(self))) .le. int(d2u(dt2d(other)))
 end function le
 
 logical function ge(self,other)
 class(date_time),intent(in)   :: self
 type(date_time),intent(in)    :: other
-   ge= int(d2u(dt2d(self))) .ge.  int(d2u(dt2d(other)))
+   ge= int(d2u(dt2d(self))) .ge. int(d2u(dt2d(other)))
 end function ge
 
 logical function ne(self,other)
 class(date_time),intent(in)   :: self
 type(date_time),intent(in)    :: other
-   ne= int(d2u(dt2d(self))) .ne.  int(d2u(dt2d(other)))
+   ne= int(d2u(dt2d(self))) .ne. int(d2u(dt2d(other)))
 end function ne
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!

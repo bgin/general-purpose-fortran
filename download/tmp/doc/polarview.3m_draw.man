@@ -1,5 +1,5 @@
 NAME
-   polarview(3f) - [M_DRAW:VIEWPORT] Specify the viewer's position in polar coordinates
+   polarview(3f) - [M_draw:VIEWPORT] Specify the viewer's position in polar coordinates
 
 SYNOPSIS
          subroutine polarview(dist, azim, inc, twist)

@@ -1,9 +1,9 @@
 NAME
-   poly2(3f) - [M_DRAW:POLYGONS] Construct an (x, y) polygon from an array of points
+   poly2(3f) - [M_draw:POLYGONS] Construct an (x, y) polygon from an array of points
 SYNOPSIS
       subroutine poly2(n, points)
       integer,intent(in) :: n
-      real,intent(in)    :: points(2, n)
+      real,intent(in) :: points(2, n)
 
 DESCRIPTION
    Construct an (x, y) polygon from an array of points provided by the user.
@@ -12,13 +12,14 @@ EXAMPLE
   Sample program:
 
    program demo_poly2
-   use M_DRAW
+   use M_draw
    integer :: i,j
    real    :: xx,yy
       call prefsize(512,512)
-      call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
+      call vinit(' ') ! start graphics using device $M_draw_DEVICE
       call ortho2(0.0,256.0,0.0,256.0)
       call linewidth(1)
+      call polyfill(.true.)
       ! step thru a series of rectangular cells
       icolor=0
       xx=0.0

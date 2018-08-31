@@ -15,6 +15,16 @@ private
   public splift         ! fits a spline to the n data points given in x and y
   public splint         ! interpolates and twice differentiates a cubic spline
   public linearint      ! linear interpolation
+  ! FITS
+  public ju_polfit
+  public ju_pvalue
+  public glstsq
+  private gcsgau1
+  private gcsgau2
+  ! INTEGRATE
+  public qhfg
+  public qhsg
+  public qtfg
   ! STATISTICS
   public extremum       ! find the minimum and maximum value in a real array
   public bds            ! basic descriptive statistics
@@ -177,27 +187,28 @@ contains
 !!
 !!
 !!##OPTIONS
-!!   x      = array of x values, input
-!!   y      = array of y values, input that are changed to hold the output
-!!   ixn    = number of points in arrays x and y to use
-!!   itype  = expression being solved
-!!           (1) Y=a*X+b
-!!           (2) Y=a*b**X
-!!           (3) Y=a*log10(X)+b
-!!           (4) Y=a*X**b
-!!           (5) Y=a*e*(-b**X)
+!!   x      array of x values, input
+!!   y      array of y values, input that are changed to hold the output
+!!   ixn    number of points in arrays x and y to use
+!!   itype  expression being solved
+!!          1. Y=a*X+b
+!!          2. Y=a*b**X
+!!          3. Y=a*log10(X)+b
+!!          4. Y=a*X**b
+!!          5. Y=a*e*(-b**X)
 !!
 !!
 !! NOTE: odd use of arrays specifically optimized for calling from USH
 !!
 !!##RETURNS
 !!
-!!   a      = slope of linearized line
-!!   b      = y intercept of linearized line
-!!   r2     = correlation coefficient (1=perfect)
-!!            In general, if the correlation coefficient is <0.5 the correlation
-!!            is regarded as insignificant. If it is >0.8 the derived linear fit
-!!            is considered highly significant.
+!!   a      slope of linearized line
+!!   b      y intercept of linearized line
+!!   r2     correlation coefficient (1=perfect)
+!!
+!!          In general, if the correlation coefficient is <0.5 the correlation
+!!          is regarded as insignificant. If it is >0.8 the derived linear fit
+!!          is considered highly significant.
 !===================================================================================================================================
 !>
 !! PRODUCT:        CLI library utilities and examples
@@ -1349,6 +1360,1366 @@ character(len=*),parameter::ident="@(#)M_math::linearint(3f):linear interpolatio
       endif
 !=======================================================================
 END SUBROUTINE linearint
+
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine gcsgau1(n,a,b)
+!********************************************************************
+!****                GRAPHICS COMPATIBILITY SYSTEM               ****
+!****                    3-D DEVICE-DEPENDENT                    ****
+!****                      SUBROUTINE GCSGAU1                    ****
+!****                           LEVEL 7                          ****
+!****               WRITTEN BY       FRED TAYLOR                 ****
+!********************************************************************
+!@(#) SOLVE A SYSTEM OF SIMULTANEOUS LINEAR EQUATIONS OF THE FORM
+!
+!     **                           **  **    **   **    **
+!     * A(1,1)  A(1,2)  ...  A(1,N) *  * X(1) *   * B(1) *
+!     *                             *  *      *   *      *
+!     * A(2,1)  A(2,2)  ...  A(2,N) *  * X(2) *   * B(2) *
+!     *                             *  *      *   *      *
+!     *    .       .            .   *  *   .  * = *   .  *
+!     *    .       .            .   *  *   .  *   *   .  *
+!     *    .       .            .   *  *   .  *   *   .  *
+!     *                             *  *      *   *      *
+!     * A(N,1)  A(N,2)  ...  A(N,N) *  * X(N) *   * B(N) *
+!     **                           **  **    **   **    **
+!
+!    WHERE MATRICES A AND B ARE KNOWN AND MATRIX X IS THE SET OF
+!    UNKNOWNS TO BE DETERMINED.  N IS THE NUMBER OF EQUATIONS.
+!
+!     F. T. TRACY, COMPUTER ANALYSIS BRANCH USAEWES, VICKSBURG, MS. 39180
+!-----------------------------------------------------------------------------------------------------------------------------------
+use M_journal, only : journal
+implicit none
+!!implicit real*8(a-h,o-z)
+integer,parameter  :: dp=kind(0.0d0)
+
+integer,intent(in) :: n
+real(kind=dp)      :: a(11,11)
+real(kind=dp)      :: b(*)
+
+real(kind=dp)      :: amx
+real(kind=dp)      :: d
+real(kind=dp)      :: eps
+real(kind=dp)      :: fa
+real(kind=dp)      :: fm
+real(kind=dp)      :: sum
+real(kind=dp)      :: x(11)
+integer            :: i, j, k
+integer            :: kpl1
+integer            :: m
+integer            :: mpl1
+integer            :: ncq
+integer            :: nm1
+!-----------------------------------------------------------------------------------------------------------------------------------
+   eps = 1.0d-30
+   ! Obtain upper triangular matrix and modified b matrix.
+   nm1=n-1
+   do 110 k=1,nm1
+      ! Perform K "th" step of Gauss Elimination.462C
+      kpl1=k+1
+      ! Perform partial pivoting.
+      ! Find maximum element in absolute value of the elements, A(K,K),
+      ! A(K+1,K), ... A(N,K).
+      amx=0.0d0
+      do 50 i=k,n
+         fa=abs(a(i,k))
+         if (fa-amx) 50,50,45
+45       amx=fa
+         ncq=i
+50    continue
+
+      ! Check for no solution.
+      if (amx-eps) 60,75,75
+
+      ! The Gauss Elimination process has broken down because no pivot
+      ! greater than the input tolerance could be found for !K! step
+
+60    continue
+      call journal('*gauss* elimination process has broken down')
+      return
+
+      ! Interchange rows K and NCQ.
+75    continue
+      do j=k,n
+         d=a(k,j)
+         a(k,j)=a(ncq,j)
+         a(ncq,j)=d
+      enddo
+      d=b(k)
+      b(k)=b(ncq)
+      b(ncq)=d
+
+      ! Perform elimination process.
+      do i=kpl1,n
+         ! Calculate multipliers.
+         fm=-a(i,k)/a(k,k)
+         do j=kpl1,n
+            a(i,j)=a(k,j)*fm+a(i,j)
+         enddo
+         b(i)=b(k)*fm+b(i)
+      enddo
+110 continue
+
+   ! Check for no solution.
+   if (abs(a(n,n))-eps) 112,115,115
+
+   ! A(N,N) is smaller than the allowable tolerance for a pivot
+
+112 continue
+   call journal('*gauss* elimination process has broken down')
+   return
+
+   ! Calculate matrix X.
+
+   ! Perform back substitution.
+115 continue
+   x(n)=b(n)/a(n,n)
+   do k=2,n
+      m=n-k+1
+      mpl1=m+1
+      sum=0.
+      do j=mpl1,n
+         sum=a(m,j)*x(j)+sum
+      enddo
+      x(m)=(b(m)-sum)/a(m,m)
+   enddo
+
+   do i=1,n
+      b(i)=x(i)
+   enddo
+
+end subroutine gcsgau1
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine glstsq(ideg,x,y,n0,d)
+!@(#) least squares fit to a polynomial expression
+!********************************************************************
+!****                graphics compatibility system               ****
+!****                            basic                           ****
+!****                      subroutine ulstsq                     ****
+!****                          level 13                          ****
+!****                  written by       Fred  Tracy              ****
+!****                  modified by      John S. Urban            ****
+!********************************************************************
+!********************************************************************
+!**** needs rewritten to normalize data
+!**** so large numbers causing overflow are not generated.
+!********************************************************************
+use M_journal, only : journal
+implicit real*8(a-h,o-z)
+integer             :: ideg       !* ideg is  desired degree of least square fit and test
+real                   x(*)
+real                   y(*)
+integer             :: n0         !* n0   is  number of points in curve arrays (x, y)
+real*8                 d(*)       !* d    is  returned coefficient array
+
+real*8                 a(11,11)
+integer             :: i, j, k
+integer             :: n
+integer             :: nppl1
+integer             :: nppl2
+integer             :: jm1
+integer             :: iz
+integer             :: iexp
+!-----------------------------------------------------------------------
+   n=n0
+!-----------------------------------------------------------------------
+   if((ideg.lt.1).or.(ideg.gt.10))then
+      call journal('*fit* invalid polynomial degree for polynomial fit')
+   elseif(n.le.ideg)then ! test if enough points to do desired fit
+      call journal('*fit* insufficient points for desired fit')
+   else
+!-----------------------------------------------------------------------
+      nppl1=ideg+1
+      nppl2=ideg+2
+      do j=1,nppl1
+!          calculate  (d)  matrix.
+         jm1=j-1
+!-----------------------------------------------------------------------
+         if (jm1 .le. 0)then
+            iz=1
+            add=0.0d0
+            do i=1,n
+               add=y(i)+add
+            enddo
+         else
+!-----------------------------------------------------------------------
+            add=0.0d0
+            do i=1,n
+               add=x(i)**jm1*y(i)+add
+            enddo
+         endif
+!-----------------------------------------------------------------------
+         d(j)=add
+!-----------------------------------------------------------------------
+!     calculate ((a)) matrix.
+         do k=j,nppl1
+            iexp=jm1+k-1
+!-----------------------------------------------------------------------
+            if(iz.ne.2)then
+               add=n
+               iz=2
+            else
+!-----------------------------------------------------------------------
+               add=0.
+               do i=1,n
+                  add=x(i)**iexp+add
+               enddo
+            endif
+!-----------------------------------------------------------------------
+            a(j,k)=add
+            a(k,j)=add
+         enddo
+      enddo
+!-----------------------------------------------------------------------
+!          solve system of equations
+!              ((a)) * (c) = (d)
+!          for (c).
+!      coefficients will be in array d
+      n = nppl1
+      call gcsgau1(n,a,d) ! note that d is real*8, a is real*8
+   endif
+end subroutine glstsq
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+SUBROUTINE GCSGAU2(N,A,B)
+!********************************************************************
+!********************************************************************
+!****                                                            ****
+!****                GRAPHICS COMPATIBILITY SYSTEM               ****
+!****                                                            ****
+!****                    3-D DEVICE-DEPENDENT                    ****
+!****                                                            ****
+!****                      SUBROUTINE GCSGAU2                    ****
+!****                                                            ****
+!****                           LEVEL 7                          ****
+!****                                                            ****
+!****               WRITTEN BY       FRED TAYLOR                 ****
+!****                                                            ****
+!********************************************************************
+!@(#) SOLVE A SYSTEM OF SIMULTANEOUS LINEAR EQUATIONS
+!     OF THE FORM
+!
+!     **                           **  **    **   **    **
+!     * A(1,1)  A(1,2)  ...  A(1,N) *  * X(1) *   * B(1) *
+!     *                             *  *      *   *      *
+!     * A(2,1)  A(2,2)  ...  A(2,N) *  * X(2) *   * B(2) *
+!     *                             *  *      *   *      *
+!     *    .       .            .   *  *   .  * = *   .  *
+!     *    .       .            .   *  *   .  *   *   .  *
+!     *    .       .            .   *  *   .  *   *   .  *
+!     *                             *  *      *   *      *
+!     * A(N,1)  A(N,2)  ...  A(N,N) *  * X(N) *   * B(N) *
+!     **                           **  **    **   **    **
+!
+!    WHERE MATRICES A AND B ARE KNOWN AND MATRIX X IS THE SET OF
+!    UNKNOWNS TO BE DETERMINED.  N IS THE NUMBER OF EQUATIONS.
+!
+!     F. T. TRACY, COMPUTER ANALYSIS BRANCH USAEWES, VICKSBURG, MS. 39180
+!-----------------------------------------------------------------------
+   use M_journal, only : journal
+   implicit real*8(a-h,o-z)
+   integer      :: i
+   integer      :: j
+   integer      :: k
+   integer      :: kpl1
+   integer      :: m
+   integer      :: mpl1
+   integer      :: n
+   integer      :: ncq
+   integer      :: nm1
+
+   real         :: a
+   real         :: amx
+   real         :: b
+   real         :: d
+   real         :: eps
+   real         :: fa
+   real         :: fm
+   real         :: sum
+   real         :: x
+   DIMENSION A(11,11),X(11),b(*)
+!-----------------------------------------------------------------------
+   EPS = 1.0d-30
+!     OBTAIN UPPER TRIANGULAR MATRIX AND MODIFIED B MATRIX.
+   NM1=N-1
+   DO 110 K=1,NM1
+!     PERFORM K "TH" STEP OF GAUSS ELIMINATION.462C
+      KPL1=K+1
+!     PERFORM PARTIAL PIVOTING.
+!     FIND MAXIMUM ELEMENT IN ABSOLUTE VALUE OF THE ELEMENTS, A(K,K),
+!     A(K+1,K), ... A(N,K).
+      AMX=0.0d0
+      DO 50 I=K,N
+         FA=ABS(A(I,K))
+         IF (FA-AMX) 50,50,45
+45       AMX=FA
+         NCQ=I
+50    CONTINUE
+!
+!     CHECK FOR NO SOLUTION.
+      IF (AMX-EPS) 60,75,75
+!
+!     THE GAUSS ELIMINATION PROCESS HAS BROKEN DOWN BECAUSE NO PIVOT
+!     GREATER THAN THE INPUT TOLERANCE COULD BE FOUND FOR !K! STEP
+!
+60    continue
+      call journal('*gauss* elimination process has broken down')
+      RETURN
+!
+!     INTERCHANGE ROWS K AND NCQ.
+75    continue
+      DO J=K,N
+         D=A(K,J)
+         A(K,J)=A(NCQ,J)
+         A(NCQ,J)=D
+      ENDDO
+      D=B(K)
+      B(K)=B(NCQ)
+      B(NCQ)=D
+!
+!     PERFORM ELIMINATION PROCESS.
+      DO I=KPL1,N
+!
+!     CALCULATE MULTIPLIERS.
+         FM=-A(I,K)/A(K,K)
+!
+         DO J=KPL1,N
+            A(I,J)=A(K,J)*FM+A(I,J)
+         ENDDO
+         B(I)=B(K)*FM+B(I)
+      ENDDO
+110 CONTINUE
+!
+!     CHECK FOR NO SOLUTION.
+   IF (ABS(A(N,N))-EPS) 112,115,115
+!
+!      A(N,N) IS SMALLER THAN THE ALLOWABLE
+!      TOLERANCE FOR A PIVOT
+!
+112 CONTINUE
+   call journal('*gauss* elimination process has broken down')
+   RETURN
+!
+!     CALCULATE MATRIX X.
+!
+!     PERFORM BACK SUBSTITUTION.
+115 CONTINUE
+   X(N)=B(N)/A(N,N)
+   DO K=2,N
+      M=N-K+1
+      MPL1=M+1
+      SUM=0.
+      DO J=MPL1,N
+         SUM=A(M,J)*X(J)+SUM
+      ENDDO
+      X(M)=(B(M)-SUM)/A(M,M)
+   ENDDO
+!
+   DO I=1,N
+      B(I)=X(I)
+   ENDDO
+!
+END SUBROUTINE GCSGAU2
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+   SUBROUTINE JU_POLFIT (N, X, Y, W, MAXDEG, NDEG, EPS, R, IERR, A)
+!***BEGIN PROLOGUE  JU_POLFIT
+!***PURPOSE   @(#) Fit discrete data in a least squares sense by polynomials in one variable.
+!***LIBRARY   SLATEC
+!***CATEGORY  K1A1A2
+!***TYPE      SINGLE PRECISION (JU_POLFIT-S, DPOLFT-D)
+!***KEYWORDS  CURVE FITTING, DATA FITTING, LEAST SQUARES, POLYNOMIAL FIT
+!***AUTHOR    Shampine, L. F., (SNLA)
+!             Davenport, S. M., (SNLA)
+!             Huddleston, R. E., (SNLL)
+!***DESCRIPTION
+!
+!     Abstract
+!
+!     Given a collection of points X(I) and a set of values Y(I) which
+!     correspond to some function or measurement at each of the X(I),
+!     subroutine  JU_POLFIT  computes the weighted least-squares polynomial
+!     fits of all degrees up to some degree either specified by the user
+!     or determined by the routine.  The fits thus obtained are in
+!     orthogonal polynomial form.  Subroutine  JU_PVALUE  may then be
+!     called to evaluate the fitted polynomials and any of their
+!     derivatives at any point.  The subroutine  PCOEF  may be used to
+!     express the polynomial fits as powers of (X-C) for any specified
+!     point C.
+!
+!     The parameters for  JU_POLFIT  are
+!
+!     Input --
+!         N -      the number of data points.  The arrays X, Y and W
+!                  must be dimensioned at least  N  (N .GE. 1).
+!         X -      array of values of the independent variable.  These
+!                  values may appear in any order and need not all be
+!                  distinct.
+!         Y -      array of corresponding function values.
+!         W -      array of positive values to be used as weights.  If
+!                  W(1) is negative,  JU_POLFIT  will set all the weights
+!                  to 1.0, which means unweighted least squares error
+!                  will be minimized.  To minimize relative error, the
+!                  user should set the weights to:  W(I) = 1.0/Y(I)**2,
+!                  I = 1,...,N .
+!         MAXDEG - maximum degree to be allowed for polynomial fit.
+!                  MAXDEG  may be any non-negative integer less than  N.
+!                  Note -- MAXDEG  cannot be equal to  N-1  when a
+!                  statistical test is to be used for degree selection,
+!                  i.e., when input value of  EPS  is negative.
+!         EPS -    specifies the criterion to be used in determining
+!                  the degree of fit to be computed.
+!                  (1)  If  EPS  is input negative,  JU_POLFIT  chooses the
+!                       degree based on a statistical F test of
+!                       significance.  One of three possible
+!                       significance levels will be used:  .01, .05 or
+!                       .10.  If  EPS=-1.0 , the routine will
+!                       automatically select one of these levels based
+!                       on the number of data points and the maximum
+!                       degree to be considered.  If  EPS  is input as
+!                       -.01, -.05, or -.10, a significance level of
+!                       .01, .05, or .10, respectively, will be used.
+!                  (2)  If  EPS  is set to 0.,  JU_POLFIT  computes the
+!                       polynomials of degrees 0 through  MAXDEG .
+!                  (3)  If  EPS  is input positive,  EPS  is the RMS
+!                       error tolerance which must be satisfied by the
+!                       fitted polynomial.  JU_POLFIT  will increase the
+!                       degree of fit until this criterion is met or
+!                       until the maximum degree is reached.
+!
+!     Output --
+!         NDEG -   degree of the highest degree fit computed.
+!         EPS -    RMS error of the polynomial of degree  NDEG .
+!         R -      vector of dimension at least NDEG containing values
+!                  of the fit of degree  NDEG  at each of the  X(I) .
+!                  Except when the statistical test is used, these
+!                  values are more accurate than results from subroutine
+!                  JU_PVALUE  normally are.
+!         IERR -   error flag with the following possible values.
+!             1 -- indicates normal execution, i.e., either
+!                  (1)  the input value of  EPS  was negative, and the
+!                       computed polynomial fit of degree  NDEG
+!                       satisfies the specified F test, or
+!                  (2)  the input value of  EPS  was 0., and the fits of
+!                       all degrees up to  MAXDEG  are complete, or
+!                  (3)  the input value of  EPS  was positive, and the
+!                       polynomial of degree  NDEG  satisfies the RMS
+!                       error requirement.
+!             2 -- invalid input parameter.  At least one of the input
+!                  parameters has an illegal value and must be corrected
+!                  before  JU_POLFIT  can proceed.  Valid input results
+!                  when the following restrictions are observed
+!                       N .GE. 1
+!                       0 .LE. MAXDEG .LE. N-1  for  EPS .GE. 0.
+!                       0 .LE. MAXDEG .LE. N-2  for  EPS .LT. 0.
+!                       W(1)=-1.0  or  W(I) .GT. 0., I=1,...,N .
+!             3 -- cannot satisfy the RMS error requirement with a
+!                  polynomial of degree no greater than  MAXDEG .  Best
+!                  fit found is of degree  MAXDEG .
+!             4 -- cannot satisfy the test for significance using
+!                  current value of  MAXDEG .  Statistically, the
+!                  best fit found is of order  NORD .  (In this case,
+!                  NDEG will have one of the values:  MAXDEG-2,
+!                  MAXDEG-1, or MAXDEG).  Using a higher value of
+!                  MAXDEG  may result in passing the test.
+!         A -      work and output array having at least 3N+3MAXDEG+3
+!                  locations
+!
+!     Note - JU_POLFIT  calculates all fits of degrees up to and including
+!            NDEG .  Any or all of these fits can be evaluated or
+!            expressed as powers of (X-C) using  JU_PVALUE  and  PCOEF
+!            after just one call to  JU_POLFIT .
+!
+!***REFERENCES  L. F. Shampine, S. M. Davenport and R. E. Huddleston,
+!                 Curve fitting by polynomials in one variable, Report
+!                 SLA-74-0270, Sandia Laboratories, June 1974.
+!***ROUTINES CALLED  JU_PVALUE, JU_XERMSG
+!***REVISION HISTORY  (YYMMDD)
+!   740601  DATE WRITTEN
+!   890531  Changed all specific intrinsics to generic.  (WRB)
+!   890531  REVISION DATE from Version 3.2
+!   891214  Prologue converted to Version 4.0 format.  (BAB)
+!   900315  CALLs to XERROR changed to CALLs to JU_XERMSG.  (THJ)
+!   920501  Reformatted the REFERENCES section.  (WRB)
+!   920527  Corrected erroneous statements in DESCRIPTION.  (WRB)
+!***END PROLOGUE  JU_POLFIT
+integer      :: i100
+integer      :: i20
+integer      :: i200
+integer      :: i30
+integer      :: i300
+integer      :: i40
+integer      :: i400
+integer      :: i50
+integer      :: i500
+integer      :: i60
+integer      :: i70
+integer      :: i80
+integer      :: i88
+integer      :: i90
+integer      :: idegf
+integer      :: ierr
+integer      :: iii
+integer      :: j
+integer      :: jp1
+integer      :: jpas
+integer      :: k1
+integer      :: k1pj
+integer      :: k2
+integer      :: k2pj
+integer      :: k3
+integer      :: k3pi
+integer      :: k4
+integer      :: k4pi
+integer      :: k5
+integer      :: k5pi
+integer      :: ksig
+integer      :: m
+integer      :: maxdeg
+integer      :: mop1
+integer      :: n
+integer      :: ndeg
+integer      :: nder
+integer      :: nfail
+real         :: a
+real         :: co
+real         :: degf
+real         :: den
+real         :: eps
+real         :: etst
+real         :: f
+real         :: fcrit
+real         :: r
+real         :: sig
+real         :: sigj
+real         :: sigjm1
+real         :: sigpas
+real         :: temp
+real         :: w
+real         :: w1
+real         :: w11
+real         :: x
+real         :: xm
+real         :: y
+real         :: yp(0)
+DOUBLE PRECISION TEMD1,TEMD2
+DIMENSION X(*), Y(*), W(*), R(*), A(*)
+DIMENSION CO(4,3)
+SAVE CO
+DATA  CO(1,1), CO(2,1), CO(3,1), CO(4,1), CO(1,2), CO(2,2),   &
+&      CO(3,2), CO(4,2), CO(1,3), CO(2,3), CO(3,3),           &
+&  CO(4,3)/-13.086850,-2.4648165,-3.3846535,-1.2973162,       &
+&          -3.3381146,-1.7812271,-3.2578406,-1.6589279,       &
+&          -1.6282703,-1.3152745,-3.2640179,-1.9829776/
+!***FIRST EXECUTABLE STATEMENT  JU_POLFIT
+      write(*,*)'JU_POLFIT N=',N
+
+      do i90=1,N
+         write(*,*)i90,x(i90),y(i90),w(i90),r(i90)
+      enddo
+
+      write(*,*)'MAXDEG=',MAXDEG
+      write(*,*)'eps=',EPS
+!***FIRST EXECUTABLE STATEMENT  JU_POLFIT
+      M = ABS(N)
+      IF (M .EQ. 0) GOTO 888
+      IF (MAXDEG .LT. 0) GOTO 888
+      A(1) = MAXDEG
+      MOP1 = MAXDEG + 1
+      IF (M .LT. MOP1) GOTO 888
+      IF (EPS .LT. 0.0  .AND.  M .EQ. MOP1) GOTO 888
+      XM = M
+      ETST = EPS*EPS*XM
+      IF (W(1) .GE. 0.0)then
+         DO I20 = 1,M
+            IF (W(I20) .LE. 0.0) GOTO 888
+         ENDDO
+      else
+         DO I30 = 1,M
+            W(I30) = 1.0
+         ENDDO
+      endif
+
+      IF (EPS .GE. 0.0) GOTO 8
+!
+! DETERMINE SIGNIFICANCE LEVEL INDEX TO BE USED IN STATISTICAL TEST FOR
+! CHOOSING DEGREE OF POLYNOMIAL FIT
+!
+      IF (EPS .GT. (-.55)) GOTO 5
+      IDEGF = M - MAXDEG - 1
+      KSIG = 1
+      IF (IDEGF .LT. 10) KSIG = 2
+      IF (IDEGF .LT. 5) KSIG = 3
+      GOTO 8
+5     CONTINUE
+      KSIG = 1
+      IF (EPS .LT. (-.03)) KSIG = 2
+      IF (EPS .LT. (-.07)) KSIG = 3
+!
+! INITIALIZE INDEXES AND COEFFICIENTS FOR FITTING
+!
+8     CONTINUE
+      K1 = MAXDEG + 1
+      K2 = K1 + MAXDEG
+      K3 = K2 + MAXDEG + 2
+      K4 = K3 + M
+      K5 = K4 + M
+
+      DO I40 = 2,K4
+         A(I40) = 0.0
+      ENDDO
+
+      W11 = 0.0
+      IF (N .LT. 0) GOTO 11
+!
+! UNCONSTRAINED CASE
+!
+      DO I50 = 1,M
+         K4PI = K4 + I50
+         A(K4PI) = 1.0
+         W11 = W11 + W(I50)
+      ENDDO
+
+      GOTO 13
+!
+! CONSTRAINED CASE
+!
+11    CONTINUE
+      DO I60 = 1,M
+         K4PI = K4 + I60
+         W11 = W11 + W(I60)*A(K4PI)**2
+      ENDDO
+!
+! COMPUTE FIT OF DEGREE ZERO
+!
+13    CONTINUE
+      TEMD1 = 0.0D0
+      DO I70 = 1,M
+         K4PI = K4 + I70
+         TEMD1 = TEMD1 + DBLE(W(I70))*DBLE(Y(I70))*DBLE(A(K4PI))
+      ENDDO
+      TEMD1 = TEMD1/DBLE(W11)
+      A(K2+1) = TEMD1
+      SIGJ = 0.0
+      DO I80 = 1,M
+         K4PI = K4 + I80
+         K5PI = K5 + I80
+         TEMD2 = TEMD1*DBLE(A(K4PI))
+         R(I80) = TEMD2
+         A(K5PI) = TEMD2 - DBLE(R(I80))
+         SIGJ = SIGJ + W(I80)*((Y(I80)-R(I80)) - A(K5PI))**2
+      ENDDO
+      J = 0
+!
+! SEE IF POLYNOMIAL OF DEGREE 0 SATISFIES THE DEGREE SELECTION CRITERION
+!
+      IF (EPS) 24,26,27
+!=======================================================================
+!
+! INCREMENT DEGREE
+!
+16    CONTINUE
+      J = J + 1
+      JP1 = J + 1
+      K1PJ = K1 + J
+      K2PJ = K2 + J
+      SIGJM1 = SIGJ
+!
+! COMPUTE NEW B COEFFICIENT EXCEPT WHEN J = 1
+!
+      IF (J .GT. 1) A(K1PJ) = W11/W1
+!
+! COMPUTE NEW A COEFFICIENT
+!
+      TEMD1 = 0.0D0
+      DO I100 = 1,M
+         K4PI = K4 + I100
+         TEMD2 = A(K4PI)
+         TEMD1 = TEMD1 + DBLE(X(I100))*DBLE(W(I100))*TEMD2*TEMD2
+      enddo
+      A(JP1) = TEMD1/DBLE(W11)
+!
+! EVALUATE ORTHOGONAL POLYNOMIAL AT DATA POINTS
+!
+      W1 = W11
+      W11 = 0.0
+      DO I200 = 1,M
+         K3PI = K3 + I200
+         K4PI = K4 + I200
+         TEMP = A(K3PI)
+         A(K3PI) = A(K4PI)
+         A(K4PI) = (X(I200)-A(JP1))*A(K3PI) - A(K1PJ)*TEMP
+         W11 = W11 + W(I200)*A(K4PI)**2
+      enddo
+!
+! GET NEW ORTHOGONAL POLYNOMIAL COEFFICIENT USING PARTIAL DOUBLE
+! PRECISION
+!
+      TEMD1 = 0.0D0
+      DO I300 = 1,M
+         K4PI = K4 + I300
+         K5PI = K5 + I300
+         TEMD2=DBLE(W(I300))*DBLE((Y(I300)-R(I300))-A(K5PI))*DBLE(A(K4PI))
+         TEMD1=TEMD1 + TEMD2
+      enddo
+      TEMD1 = TEMD1/DBLE(W11)
+      A(K2PJ+1) = TEMD1
+!
+! UPDATE POLYNOMIAL EVALUATIONS AT EACH OF THE DATA POINTS, AND
+! ACCUMULATE SUM OF SQUARES OF ERRORS.  THE POLYNOMIAL EVALUATIONS ARE
+! COMPUTED AND STORED IN EXTENDED PRECISION.  FOR THE I-TH DATA POINT,
+! THE MOST SIGNIFICANT BITS ARE STORED IN  R(I) , AND THE LEAST
+! SIGNIFICANT BITS ARE IN  A(K5PI) .
+!
+      SIGJ = 0.0
+      DO I400 = 1,M
+         K4PI = K4 + I400
+         K5PI = K5 + I400
+         TEMD2 = DBLE(R(I400)) + DBLE(A(K5PI)) + TEMD1*DBLE(A(K4PI))
+         R(I400) = TEMD2
+         A(K5PI) = TEMD2 - DBLE(R(I400))
+         SIGJ = SIGJ + W(I400)*((Y(I400)-R(I400)) - A(K5PI))**2
+      enddo
+!
+! SEE IF DEGREE SELECTION CRITERION HAS BEEN SATISFIED OR IF DEGREE
+! MAXDEG  HAS BEEN REACHED
+!
+!=======================================================================
+      IF (EPS) 23,26,27
+!
+! COMPUTE F STATISTICS  (INPUT EPS .LT. 0.)
+!
+23    CONTINUE
+      IF (SIGJ .EQ. 0.0) GOTO 29
+      DEGF = M - J - 1
+      DEN = (CO(4,KSIG)*DEGF + 1.0)*DEGF
+      FCRIT = (((CO(3,KSIG)*DEGF) + CO(2,KSIG))*DEGF + CO(1,KSIG))/DEN
+      FCRIT = FCRIT*FCRIT
+      F = (SIGJM1 - SIGJ)*DEGF/SIGJ
+      IF (F .LT. FCRIT) GOTO 25
+!
+! POLYNOMIAL OF DEGREE J SATISFIES F TEST
+!
+24    CONTINUE
+      SIGPAS = SIGJ
+      JPAS = J
+      NFAIL = 0
+      IF (MAXDEG .EQ. J) GOTO 32
+      iii=24
+      GOTO 16
+!=======================================================================
+!
+! POLYNOMIAL OF DEGREE J FAILS F TEST.  IF THERE HAVE BEEN THREE
+! SUCCESSIVE FAILURES, A STATISTICALLY BEST DEGREE HAS BEEN FOUND.
+!
+25    CONTINUE
+      NFAIL = NFAIL + 1
+      IF (NFAIL .GE. 3) GOTO 29
+      IF (MAXDEG .EQ. J) GOTO 32
+      iii=25
+      GOTO 16
+!=======================================================================
+!
+! RAISE THE DEGREE IF DEGREE  MAXDEG  HAS NOT YET BEEN REACHED  (INPUT
+! EPS = 0.)
+!
+26    CONTINUE
+      IF (MAXDEG .EQ. J) GOTO 28
+      iii=26
+      GOTO 16
+!=======================================================================
+!
+! SEE IF RMS ERROR CRITERION IS SATISFIED  (INPUT EPS .GT. 0.)
+!
+27    CONTINUE
+      IF (SIGJ .LE. ETST) GOTO 28
+      IF (MAXDEG .EQ. J) GOTO 31
+      iii=27
+      GOTO 16
+!=======================================================================
+! RETURNS
+28    CONTINUE
+      IERR = 1
+      NDEG = J
+      SIG = SIGJ
+      GOTO 777
+!=======================================================================
+29    CONTINUE
+      IERR = 1
+      NDEG = JPAS
+      SIG = SIGPAS
+      GOTO 777
+!=======================================================================
+888   CONTINUE
+      IERR = 2
+      CALL JU_XERMSG ('SLATEC', 'JU_POLFIT', 'INVALID INPUT PARAMETER.', &
+      &2, 1)
+      GOTO 999
+!=======================================================================
+31    CONTINUE
+      IERR = 3
+      NDEG = MAXDEG
+      SIG = SIGJ
+      GOTO 777
+!=======================================================================
+32    CONTINUE
+      IERR = 4
+      NDEG = JPAS
+      SIG = SIGPAS
+      GOTO 777
+!=======================================================================
+777   CONTINUE
+      A(K3) = NDEG
+!
+! WHEN STATISTICAL TEST HAS BEEN USED, EVALUATE THE BEST POLYNOMIAL AT
+! ALL THE DATA POINTS IF  R  DOES NOT ALREADY CONTAIN THESE VALUES
+!
+      IF(EPS .GE. 0.0  .OR.  NDEG .EQ. MAXDEG)then
+         EPS = SQRT(SIG/XM)
+         GOTO 999
+      endif
+      NDER = 0
+      DO I500 = 1,M
+         CALL JU_PVALUE (NDEG,NDER,X(I500),R(I500),YP,A)
+      ENDDO
+      EPS = SQRT(SIG/XM)
+!=======================================================================
+999   CONTINUE
+      !----------------------------------------------
+      write(*,*)'exiting ju_polfit'
+      write(*,*)'ndeg=',ndeg
+      write(*,*)'eps(RMS error)=',eps
+      do i88=1,ndeg
+         write(*,*)i88,r(i88)
+      enddo
+      write(*,*)'ierr=',ierr
+      !----------------------------------------------
+   END SUBROUTINE JU_POLFIT
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!*DECK XERMSG
+!
+!   XERMSG processes a diagnostic message in a manner determined by the
+!   value of LEVEL and the current value of the library error control
+!   flag, KONTRL.  See subroutine XSETF for details.
+!
+!    LIBRAR   A character constant (or character variable) with the name
+!             of the library.
+!
+!    SUBROU   A character constant (or character variable) with the name
+!             of the routine that detected the error.  Usually it is the
+!             name of the routine that is calling XERMSG.  There are
+!             some instances where a user callable library routine calls
+!             lower level subsidiary routines where the error is
+!             detected.  In such cases it may be more informative to
+!             supply the name of the routine the user called rather than
+!             the name of the subsidiary routine that detected the
+!             error.
+!
+!    MESSG    A character constant (or character variable) with the text
+!             of the error or warning message.  In the example below,
+!             the message is a character constant that contains a
+!             generic message.
+!
+!                   CALL JU_XERMSG ('SLATEC', 'MMPY',
+!                  *'THE ORDER OF THE MATRIX EXCEEDS THE ROW DIMENSION',
+!                  *3, 1)
+!
+!
+!    NERR     An integer value that is chosen by the library routine's
+!             author.  It must be in the range -99 to 999 (three
+!             printable digits).  Each distinct error should have its
+!             own error number.  These error numbers should be described
+!             in the machine readable documentation for the routine.
+!             The error numbers need be unique only within each routine,
+!             so it is reasonable for each routine to start enumerating
+!             errors from 1 and proceeding to the next integer.
+!
+!    LEVEL    An integer value in the range 0 to 2 that indicates the
+!             level (severity) of the error.  Their meanings are
+!
+!            -1  A warning message.  This is used if it is not clear
+!                that there really is an error, but the user's attention
+!                may be needed.  An attempt is made to only print this
+!                message once.
+!
+!             0  A warning message.  This is used if it is not clear
+!                that there really is an error, but the user's attention
+!                may be needed.
+!
+!             1  A recoverable error.  This is used even if the error is
+!                so serious that the routine cannot return any useful
+!                answer.  If the user has told the error package to
+!                return after recoverable errors, then XERMSG will
+!                return to the Library routine which can then return to
+!                the user's routine.  The user may also permit the error
+!                package to terminate the program upon encountering a
+!                recoverable error.
+!
+!             2  A fatal error.  XERMSG will not return to its caller
+!                after it receives a fatal error.  This level should
+!                hardly ever be used; it is much better to allow the
+!                user a chance to recover.  An example of one of the few
+!                cases in which it is permissible to declare a level 2
+!                error is a reverse communication Library routine that
+!                is likely to be called repeatedly until it integrates
+!                across some interval.  If there is a serious error in
+!                the input such that another step cannot be taken and
+!                the Library routine is called again without the input
+!                error having been corrected by the caller, the Library
+!                routine will probably be called forever with improper
+!                input.  In this case, it is reasonable to declare the
+!                error to be fatal.
+!
+SUBROUTINE JU_XERMSG (LIBRAR, SUBROU, MESSG, NERR, LEVEL)
+!***PURPOSE  Process error messages for SLATEC and other libraries.
+use M_journal, only : journal
+CHARACTER(len=*),intent(in)  :: LIBRAR
+CHARACTER(len=*),intent(in)  :: SUBROU
+CHARACTER(len=*),intent(in)  :: MESSG
+integer,intent(in)           :: nerr
+integer,intent(in)           :: level
+character(len=255)           :: line
+character(len=255)           :: lineold=''
+   write(line,101)librar,subrou,messg,nerr,level
+   101 format('*',a,'*::routine:',a,':',a,' errno:',i3,' level:',i1)
+   select case(level)
+   case(-1)
+      if(line.ne.lineold)then
+         call journal(line)
+         call journal('warning error')
+      endif
+   case(0)
+      call journal(line)
+      call journal('warning error')
+   case(1)
+      call journal(line)
+      call journal('potentially recoverable warning error')
+   case(2)
+      call journal(line)
+      call journal('fatal error')
+      !!call abort()
+      stop
+   case default
+      call journal(line)
+      call journal('sc','fatal error : unknown code =',level)
+      !!call abort()
+      stop
+   end select
+end SUBROUTINE JU_XERMSG
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!*DECK JU_PVALUE
+   SUBROUTINE JU_PVALUE (L, NDER, X, YFIT, YP, A)
+!***BEGIN PROLOGUE  JU_PVALUE
+!***PURPOSE  Use the coefficients generated by POLFIT to evaluate the
+!            polynomial fit of degree L, along with the first NDER of
+!            its derivatives, at a specified point.
+!***LIBRARY   SLATEC
+!***CATEGORY  K6
+!***TYPE      SINGLE PRECISION (JU_PVALUE-S, DP1VLU-D)
+!***KEYWORDS  CURVE FITTING, LEAST SQUARES, POLYNOMIAL APPROXIMATION
+!***AUTHOR  Shampine, L. F., (SNLA)
+!           Davenport, S. M., (SNLA)
+!***DESCRIPTION
+!
+!     Written by L. F. Shampine and S. M. Davenport.
+!
+!     Abstract
+!
+!     The subroutine  JU_PVALUE  uses the coefficients generated by  POLFIT
+!     to evaluate the polynomial fit of degree  L , along with the first
+!     NDER  of its derivatives, at a specified point.  Computationally
+!     stable recurrence relations are used to perform this task.
+!
+!     The parameters for  JU_PVALUE  are
+!
+!     Input --
+!         L -      the degree of polynomial to be evaluated.  L  may be
+!                  any non-negative integer which is less than or equal
+!                  to  NDEG , the highest degree polynomial provided
+!                  by  POLFIT .
+!         NDER -   the number of derivatives to be evaluated.  NDER
+!                  may be 0 or any positive value.  If NDER is less
+!                  than 0, it will be treated as 0.
+!         X -      the argument at which the polynomial and its
+!                  derivatives are to be evaluated.
+!         A -      work and output array containing values from last
+!                  call to  POLFIT .
+!
+!     Output --
+!         YFIT -   value of the fitting polynomial of degree  L  at  X
+!         YP -     array containing the first through  NDER  derivatives
+!                  of the polynomial of degree  L .  YP  must be
+!                  dimensioned at least  NDER  in the calling program.
+!
+!***REFERENCES  L. F. Shampine, S. M. Davenport and R. E. Huddleston,
+!                 Curve fitting by polynomials in one variable, Report
+!                 SLA-74-0270, Sandia Laboratories, June 1974.
+!***ROUTINES CALLED  XERMSG
+!***REVISION HISTORY  (YYMMDD)
+!   740601  DATE WRITTEN
+!   890531  Changed all specific intrinsics to generic.  (WRB)
+!   890531  REVISION DATE from Version 3.2
+!   891214  Prologue converted to Version 4.0 format.  (BAB)
+!   900315  CALLs to XERROR changed to CALLs to XERMSG.  (THJ)
+!   900510  Convert XERRWV calls to XERMSG calls.  (RWC)
+!   920501  Reformatted the REFERENCES section.  (WRB)
+!***END PROLOGUE  JU_PVALUE
+      DIMENSION YP(*),A(*)
+      CHARACTER*8 XERN1, XERN2
+integer      :: i10
+integer      :: i20
+integer      :: i30
+integer      :: i40
+integer      :: i50
+integer      :: ic
+integer      :: ilo
+integer      :: in
+integer      :: inp1
+integer      :: iup
+integer      :: k1
+integer      :: k1i
+integer      :: k2
+integer      :: k3
+integer      :: k3p1
+integer      :: k3pn
+integer      :: k4
+integer      :: k4p1
+integer      :: k4pn
+integer      :: kc
+integer      :: l
+integer      :: lm1
+integer      :: lp1
+integer      :: maxord
+integer      :: nder
+integer      :: ndo
+integer      :: ndp1
+integer      :: nord
+real         :: a
+real         :: cc
+real         :: dif
+real         :: val
+real         :: x
+real         :: yfit
+real         :: yp
+!***FIRST EXECUTABLE STATEMENT  JU_PVALUE
+      IF (L .LT. 0) GOTO 12
+      NDO = MAX(NDER,0)
+      NDO = MIN(NDO,L)
+      MAXORD = A(1) + 0.5
+      K1 = MAXORD + 1
+      K2 = K1 + MAXORD
+      K3 = K2 + MAXORD + 2
+      NORD = A(K3) + 0.5
+      IF (L .GT. NORD) GOTO 888
+      K4 = K3 + L + 1
+      IF (NDER .LT. 1) GOTO 2
+
+      DO I10= 1,NDER
+         YP(I10) = 0.0
+      ENDDO
+
+2     CONTINUE
+      IF (L .GE. 2) GOTO 4
+      IF (L .EQ. 1) GOTO 3
+!
+! L IS 0
+!
+      VAL = A(K2+1)
+      GOTO 999
+!
+! L IS 1
+!
+3     CONTINUE
+      CC = A(K2+2)
+      VAL = A(K2+1) + (X-A(2))*CC
+      IF (NDER .GE. 1) YP(1) = CC
+      GOTO 999
+!
+! L IS GREATER THAN 1
+!
+4     CONTINUE
+      NDP1 = NDO + 1
+      K3P1 = K3 + 1
+      K4P1 = K4 + 1
+      LP1 = L + 1
+      LM1 = L - 1
+      ILO = K3 + 3
+      IUP = K4 + NDP1
+
+      DO I20 = ILO,IUP
+         A(I20) = 0.0
+      ENDDO
+
+      DIF = X - A(LP1)
+      KC = K2 + LP1
+      A(K4P1) = A(KC)
+      A(K3P1) = A(KC-1) + DIF*A(K4P1)
+      A(K3+2) = A(K4P1)
+!
+! EVALUATE RECURRENCE RELATIONS FOR FUNCTION VALUE AND DERIVATIVES
+!
+      DO 30 I30 = 1,LM1
+         IN = L - I30
+         INP1 = IN + 1
+         K1I = K1 + INP1
+         IC = K2 + IN
+         DIF = X - A(INP1)
+         VAL = A(IC) + DIF*A(K3P1) - A(K1I)*A(K4P1)
+         IF (NDO .LE. 0) GOTO 8
+
+         DO I50 = 1,NDO
+            K3PN = K3P1 + I50
+            K4PN = K4P1 + I50
+            YP(I50) = DIF*A(K3PN) + I50*A(K3PN-1) - A(K1I)*A(K4PN)
+         ENDDO
+
+!
+! SAVE VALUES NEEDED FOR NEXT EVALUATION OF RECURRENCE RELATIONS
+!
+         DO I40 = 1,NDO
+            K3PN = K3P1 + I40
+            K4PN = K4P1 + I40
+            A(K4PN) = A(K3PN)
+            A(K3PN) = YP(I40)
+         ENDDO
+
+8        CONTINUE
+         A(K4P1) = A(K3P1)
+         A(K3P1) = VAL
+30    CONTINUE
+!=======================================================================
+!
+! NORMAL RETURN OR ABORT DUE TO ERROR
+!
+999   YFIT = VAL
+      RETURN
+!=======================================================================
+888   CONTINUE
+      WRITE (XERN1, '(I8)') L
+      WRITE (XERN2, '(I8)') NORD
+      CALL JU_XERMSG ('SLATEC', 'JU_PVALUE',                             &
+      &   'THE ORDER OF POLYNOMIAL EVALUATION, L = ' // XERN1 //          &
+      &   ' REQUESTED EXCEEDS THE HIGHEST ORDER FIT, NORD = ' // XERN2 // &
+      &   ', COMPUTED BY POLFIT -- EXECUTION TERMINATED.', 8, 2)
+      RETURN
+!=======================================================================
+!
+12    CALL JU_XERMSG ('SLATEC', 'JU_PVALUE',                             &
+      &   'INVALID INPUT PARAMETER.  ORDER OF POLYNOMIAL EVALUATION ' //  &
+      &   'REQUESTED IS NEGATIVE -- EXECUTION TERMINATED.', 2, 2)
+!=======================================================================
+   END SUBROUTINE JU_PVALUE
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+
+SUBROUTINE QHFG(X,Y,DERY,Z,NDIM)                                      ! QHFG.2
+!                                                                           ! QHFG.3
+!     ..................................................................    ! QHFG.4
+!                                                                           ! QHFG.5
+!        SUBROUTINE QHFG                                                    ! QHFG.6
+!                                                                           ! QHFG.7
+!        PURPOSE                                                            ! QHFG.8
+!@(#)       COMPUTE VECTOR OF INTEGRAL VALUES FOR GIVEN GENERAL TABLE
+!           OF ARGUMENT, FUNCTION, AND DERIVATIVE VALUES.
+!                                                                           ! QHFG.11
+!        USAGE                                                              ! QHFG.12
+!           CALL QHFG (X,Y,DERY,Z,NDIM)                                     ! QHFG.13
+!                                                                           ! QHFG.14
+!        DESCRIPTION OF PARAMETERS                                          ! QHFG.15
+!           X      - THE INPUT VECTOR OF ARGUMENT VALUES.                   ! QHFG.16
+!           Y      - THE INPUT VECTOR OF FUNCTION VALUES.                   ! QHFG.17
+!           DERY   - THE INPUT VECTOR OF DERIVATIVE VALUES.                 ! QHFG.18
+!           Z      - THE RESULTING VECTOR OF INTEGRAL VALUES. Z MAY BE      ! QHFG.19
+!                    IDENTICAL WITH X,Y OR DERY.                            ! QHFG.20
+!           NDIM   - THE DIMENSION OF VECTORS X,Y,DERY,Z.                   ! QHFG.21
+!                                                                           ! QHFG.22
+!        REMARKS                                                            ! QHFG.23
+!           NO ACTION IN CASE NDIM LESS THAN 1.                             ! QHFG.24
+!                                                                           ! QHFG.25
+!        SUBROUTINES AND FUNCTION SUBPROGRAMS REQUIRED                      ! QHFG.26
+!           NONE                                                            ! QHFG.27
+!                                                                           ! QHFG.28
+!        METHOD                                                             ! QHFG.29
+!           BEGINNING WITH Z(1)=0, EVALUATION OF VECTOR Z IS DONE BY        ! QHFG.30
+!           MEANS OF HERMITEAN FOURTH ORDER INTEGRATION FORMULA.            ! QHFG.31
+!           FOR REFERENCE, SEE                                              ! QHFG.32
+!           (1) F.B.HILDEBRAND, INTRODUCTION TO NUMERICAL ANALYSIS,         ! QHFG.33
+!               MCGRAW-HILL, NEW YORK/TORONTO/LONDON, 1956, PP.314-319.     ! QHFG.34
+!           (2) R.ZURMUEHL, PRAKTISCHE MATHEMATIK FUER INGENIEURE UND       ! QHFG.35
+!               PHYSIKER, SPRINGER, BERLIN/GOETTINGEN/HEIDELBERG, 1963,     ! QHFG.36
+!               PP.227-230.                                                 ! QHFG.37
+!                                                                           ! QHFG.38
+!     ..................................................................    ! QHFG.39
+!                                                                           ! QHFG.40
+!                                                                           ! QHFG.41
+!                                                                           ! QHFG.42
+integer       :: i
+integer       :: ndim
+real          :: dery(*)
+real          :: sum1
+real          :: sum2
+real          :: x(*)
+real          :: y(*)
+real          :: z(*)
+!                                                                           ! QHFG.44
+   SUM2=0.0                                                                 ! QHFG.45
+   if((ndim-1).eq.0)then
+      Z(NDIM)=SUM2
+   elseif((ndim-1).gt.0)then
+      ! INTEGRATION LOOP
+      DO I=2,NDIM
+         SUM1=SUM2                                                          ! QHFG.50
+         SUM2=0.5*(X(I)-X(I-1))                                             ! QHFG.51
+         SUM2=SUM1+SUM2*((Y(I)+Y(I-1))+0.3333333*SUM2*(DERY(I-1)-DERY(I)))  ! QHFG.52
+         Z(I-1)=SUM1
+      enddo
+   endif
+END SUBROUTINE QHFG
+SUBROUTINE QHSG(X,Y,FDY,SDY,Z,NDIM)                                     !   QHSG.2
+!                                                                       !   QHSG.3
+!     ..................................................................!   QHSG.4
+!                                                                       !   QHSG.5
+!        SUBROUTINE QHSG                                                !   QHSG.6
+!                                                                       !   QHSG.7
+!        PURPOSE                                                        !   QHSG.8
+!@(#)    COMPUTE VECTOR OF INTEGRAL VALUES FOR GIVEN GENERAL TABLE
+!           OF ARGUMENT, FUNCTION, FIRST DERIVATIVE,
+!           AND SECOND DERIVATIVE VALUES.                               !   QHSG.11
+!                                                                       !   QHSG.12
+!        USAGE                                                          !   QHSG.13
+!           CALL QHSG (X,Y,FDY,SDY,Z,NDIM)                              !   QHSG.14
+!                                                                       !   QHSG.15
+!        DESCRIPTION OF PARAMETERS                                      !   QHSG.16
+!           X      - THE INPUT VECTOR OF ARGUMENT VALUES.               !   QHSG.17
+!           Y      - THE INPUT VECTOR OF FUNCTION VALUES.               !   QHSG.18
+!           FDY    - THE INPUT VECTOR OF FIRST DERIVATIVE.              !   QHSG.19
+!           SDY    - THE INPUT VECTOR OF SECOND DERIVATIVE.             !   QHSG.20
+!           Z      - THE RESULTING VECTOR OF INTEGRAL VALUES. Z MAY BE  !   QHSG.21
+!                    IDENTICAL WITH X,Y,FDY OR SDY.                     !   QHSG.22
+!           NDIM   - THE DIMENSION OF VECTORS X,Y,FDY,SDY,Z.            !   QHSG.23
+!                                                                       !   QHSG.24
+!        REMARKS                                                        !   QHSG.25
+!           NO ACTION IN CASE NDIM LESS THAN 1.                         !   QHSG.26
+!                                                                       !   QHSG.27
+!        SUBROUTINES AND FUNCTION SUBPROGRAMS REQUIRED                  !   QHSG.28
+!           NONE                                                        !   QHSG.29
+!                                                                       !   QHSG.30
+!        METHOD                                                         !   QHSG.31
+!           BEGINNING WITH Z(1)=0, EVALUATION OF VECTOR Z IS DONE BY    !   QHSG.32
+!           MEANS OF HERMITEAN SIXTH ORDER INTEGRATION FORMULA.         !   QHSG.33
+!           FOR REFERENCE, SEE                                          !   QHSG.34
+!           R.ZURMUEHL, PRAKTISCHE MATHEMATIK FUER INGENIEURE UND       !   QHSG.35
+!           PHYSIKER, SPRINGER, BERLIN/GOETTINGEN/HEIDELBERG, 1963,     !   QHSG.36
+!           PP.227-230.                                                 !   QHSG.37
+!                                                                       !   QHSG.38
+!     ..................................................................!   QHSG.39
+!                                                                       !   QHSG.40
+!                                                                       !   QHSG.41
+!                                                                       !   QHSG.42
+      integer     :: i
+      integer     :: ndim
+      real        :: fdy(*)
+      real        :: sdy(*)
+      real        :: sum1
+      real        :: sum2
+      real        :: x(*)
+      real        :: y(*)
+      real        :: z(*)
+!                                                                       !   QHSG.44
+      SUM2=0.0                                                          !   QHSG.45
+      IF(NDIM-1)4,3,1                                                   !   QHSG.46
+!                                                                       !   QHSG.47
+!     INTEGRATION LOOP                                                  !   QHSG.48
+1     continue
+      DO I=2,NDIM                                                       !   QHSG.49
+         SUM1=SUM2                                                      !   QHSG.50
+         SUM2=.5*(X(I)-X(I-1))                                          !   QHSG.51
+         SUM2=SUM1+SUM2*((Y(I-1)+Y(I))+.4*SUM2*((FDY(I-1)-FDY(I))+    & !   QHSG.52
+         &        .1666667*SUM2*(SDY(I-1)+SDY(I))))                         !   QHSG.53
+         Z(I-1)=SUM1                                                    !   QHSG.54
+      ENDDO
+3     Z(NDIM)=SUM2                                                      !   QHSG.55
+4     continue
+END SUBROUTINE QHSG
+SUBROUTINE QTFG(X,Y,Z,NDIM)                                             !   QTFG.2
+!                                                                       !   QTFG.3
+!     ..................................................................!   QTFG.4
+!                                                                       !   QTFG.5
+!        SUBROUTINE QTFG                                                !   QTFG.6
+!                                                                       !   QTFG.7
+!        PURPOSE                                                        !   QTFG.8
+!@(#)       COMPUTE VECTOR OF INTEGRAL VALUES FOR GIVEN GENERAL TABLE
+!           OF ARGUMENT AND FUNCTION VALUES.
+!                                                                       !   QTFG.11
+!        USAGE                                                          !   QTFG.12
+!           CALL QTFG (X,Y,Z,NDIM)                                      !   QTFG.13
+!                                                                       !   QTFG.14
+!        DESCRIPTION OF PARAMETERS                                      !   QTFG.15
+!           X      - THE INPUT VECTOR OF ARGUMENT VALUES.               !   QTFG.16
+!           Y      - THE INPUT VECTOR OF FUNCTION VALUES.               !   QTFG.17
+!           Z      - THE RESULTING VECTOR OF INTEGRAL VALUES. Z MAY BE  !   QTFG.18
+!                    IDENTICAL WITH X OR Y.                             !   QTFG.19
+!           NDIM   - THE DIMENSION OF VECTORS X,Y,Z.                    !   QTFG.20
+!                                                                       !   QTFG.21
+!        REMARKS                                                        !   QTFG.22
+!           NO ACTION IN CASE NDIM LESS THAN 1.                         !   QTFG.23
+!                                                                       !   QTFG.24
+!        SUBROUTINES AND FUNCTION SUBPROGRAMS REQUIRED                  !   QTFG.25
+!           NONE                                                        !   QTFG.26
+!                                                                       !   QTFG.27
+!        METHOD                                                         !   QTFG.28
+!           BEGINNING WITH Z(1)=0, EVALUATION OF VECTOR Z IS DONE BY    !   QTFG.29
+!           MEANS OF TRAPEZOIDAL RULE (SECOND ORDER FORMULA).           !   QTFG.30
+!           FOR REFERENCE, SEE                                          !   QTFG.31
+!           F.B.HILDEBRAND, INTRODUCTION TO NUMERICAL ANALYSIS,         !   QTFG.32
+!           MCGRAW-HILL, NEW YORK/TORONTO/LONDON, 1956, PP.75.          !   QTFG.33
+!                                                                       !   QTFG.34
+!     ..................................................................!   QTFG.35
+!                                                                       !   QTFG.36
+!                                                                       !   QTFG.37
+!                                                                       !   QTFG.38
+   integer,intent(in)  :: ndim
+   real,intent(in)     :: x(ndim),y(ndim)
+   real,intent(out)    :: z(ndim)
+   integer             :: i
+   real                :: sum1, sum2
+
+   if(ndim.le.0)then
+      return
+   elseif(ndim.eq.1)then
+      z(1)=0.0
+   else
+      ! integration loop
+      sum2=0.0
+      do i=2,ndim
+         sum1=sum2
+         sum2=sum2+.5*(x(i)-x(i-1))*(y(i)+y(i-1))
+         z(i-1)=sum1
+      enddo
+      z(ndim)=sum2
+   endif
+end SUBROUTINE QTFG
 
 !>
 !!##NAME
@@ -2617,11 +3988,9 @@ END SUBROUTINE BDS
 !!
 !!##DESCRIPTION
 !!    FOR: Computing SKEWNESS and KURTOSIS for entries 1 through NHI
-!!         in vector Y.  The values may be centered about either the
-!!         MEAN (IOPT <> 0) or about ZERO (IOPT = 0).  The traditional
+!!         in vector Y. The values may be centered about either the
+!!         MEAN (IOPT <> 0) or about ZERO (IOPT = 0). The traditional
 !!         divisor of N (NOT N-1) is used when the MEAN is estimated.
-!!
-!!    SUBPROGRAMS CALLED: -NONE-
 !!
 !!    CURRENT VERSION COMPLETED FEBRUARY 28, 1986
 !!##OPTIONS
@@ -2693,9 +4062,9 @@ END SUBROUTINE SKEKUR1
 !!
 !!    where xbar and stddev are the sample mean and standard deviation
 !!
-!!    Note that this is apparently The skewness and kurtosis calculated by the
-!!    MicroSoft Excel product.  I checked the Excel help and Excel uses the
-!!    above formulas.  No references are given in the Excel documentation. Note
+!!    Note that this is apparently the skewness and kurtosis calculated by the
+!!    MicroSoft Excel product. I checked the Excel help and Excel uses the
+!!    above formulas. No references are given in the Excel documentation. Note
 !!    that this converges on the standard expression for excess kurtosis and
 !!    skewness as N becomes large.
 !!##OPTIONS
@@ -2753,6 +4122,7 @@ END SUBROUTINE SKEKURX
 !>
 !!##NAME
 !!    stddev(3f) - [M_math:statistics] given a real vector and the vector average calculate the standard deviation
+!!
 !!##SYNTAX
 !!    function stddev(vector,n,avg)
 !!
@@ -2760,6 +4130,7 @@ END SUBROUTINE SKEKURX
 !!    real,intent(in)    :: vector(n)
 !!    real,intent(in)    :: avg
 !!    real               :: stddev
+!!
 !!##DESCRIPTION
 !!    Clearly the average gives one number around which the n observations
 !!    tend to cluster. And the standard deviation gives a measure of how the
@@ -2772,10 +4143,11 @@ END SUBROUTINE SKEKURX
 !!    deviation can be used jointly to summarize where the observations are
 !!    concentrated. Tchebysheff's theorem states :
 !!
-!!       A fraction of at least 1 - (1/k**2) of the observations  lie within k
-!!       standard  deviations  of the average.  The theorem  guarantees  lower
-!!       bounds on the percentage of observations within k standard deviations
-!!       of the average.
+!!     A fraction of at least 1 - (1/k**2) of the observations lie
+!!     within k standard deviations of the average. The theorem
+!!     guarantees lower bounds on the percentage of observations
+!!     within k standard deviations of the average.
+!!
 !!##OPTIONS
 !!    n            the size of the input vector
 !!    vector(n)    the input vector
@@ -2783,12 +4155,15 @@ END SUBROUTINE SKEKURX
 !!
 !!##RETURNS
 !!    stddev       the standard deviation of the vector
+!!
 !!##EXAMPLE
+!!
 !!
 !!##AUTHOR
 !!    1994 John S. Urban
+!!
 !!##REFERENCE
-!!    From Mark's  Handbook,  page 17-19, 8th edition
+!!    From Mark's Handbook, page 17-19, 8th edition
 !===================================================================================================================================
 function stddev(vector,n,avg)
 implicit none
@@ -3235,7 +4610,7 @@ end subroutine dp_accdig
 !!
 !!##DESCRIPTION
 !!   Compare two values to see if they are relatively equal using the
-!!   specified allowed margin.  That is, see if  VALUE_MEASURED is in
+!!   specified allowed margin. That is, see if VALUE_MEASURED is in
 !!   the range VALUE_EXPECTED +- ALLOWED_ERROR where the allowed error
 !!   varies with the magnitude of the values, such that the allowed error
 !!   is margin * average magnitude of measured and expected).
@@ -3243,9 +4618,9 @@ end subroutine dp_accdig
 !!   So the allowed error is smaller when the magnitudes are smaller.
 !!
 !!##OPTIONS
-!!   expected_value  First value
-!!   measured_value  Second value
-!!   allowed_margin  Allowed relative margin
+!!   expected_value   First value
+!!   measured_value   Second value
+!!   allowed_margin   Allowed relative margin
 !!
 !!##EXAMPLE
 !!
@@ -3306,7 +4681,7 @@ integer,intent(in)         :: idigits0
 end function round
 !>
 !!##NAME
-!!     scale1(3f) - [M_math] find new range xminp xmaxp divisible into approximately n linear intervals of size dist
+!!     scale1(3f) - [M_math] find new range xMINP XMAXP divisible into approximately N linear intervals of size DIST
 !!
 !!##SYNOPSIS
 !!
@@ -3319,11 +4694,38 @@ end function round
 !!##DESCRIPTION
 !!
 !!    Find new range divisible into approximately n linear intervals using
-!!    "CACM Algorithm 463 scale1".  Typically used to find nice ranges for
+!!    "CACM Algorithm 463 scale1". Typically used to find nice ranges for
 !!    axis scales.
 !!
 !!##EXAMPLE
 !!
+!!    Sample program
+!!
+!!     program demo_scale1
+!!     use M_math, only : scale1
+!!     implicit none
+!!     real :: start, end
+!!     real :: xminp, xmaxp, dist
+!!     integer :: intervals
+!!     intervals=5
+!!     write(*,*)'Enter start and end values'
+!!     do
+!!       read(*,*,end=999)start,end
+!!       call scale1(start,end,intervals,xminp,xmaxp,dist)
+!!       write(*,'(a,g0,a,g0,a,i0,a,g0)') &
+!!               & 'nice range is ',xminp,' to ',xmaxp,' by ', &
+!!               & nint((xmaxp-xminp)/dist),' intervals of ',dist
+!!     enddo
+!!     999 continue
+!!     end program demo_scale1
+!!
+!!    Example output
+!!
+!!     printf '3 87 \n 0.1 2.3 \n -20 30|demo_scale1
+!!      Enter start and end values
+!!     nice range is 0.00000000 to 100.000000 by 5 intervals of 20.0000000
+!!     nice range is 0.00000000 to 2.50000000 by 5 intervals of 0.500000000
+!!     nice range is -20.0000000 to 30.0000000 by 5 intervals of 10.0000000
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -3468,6 +4870,30 @@ end subroutine scale1
 !!
 !!##EXAMPLE
 !!
+!!     program demo_scale3
+!!     use M_math, only : scale3
+!!     implicit none
+!!     real :: start, end
+!!     real :: xminp, xmaxp, dist
+!!     integer :: intervals
+!!     integer :: ios
+!!     ! real :: treme(2)
+!!     intervals=5
+!!     write(*,*)'Enter start and end values'
+!!     do
+!!       read(*,*,iostat=ios)start,end
+!!       if(ios.ne.0)exit
+!!       call scale3(start,end,intervals,xminp,xmaxp,dist)
+!!       ! treme(1)=log10(xminp)
+!!       ! treme(2)=log10(xmaxp)
+!!       ! treme(1)=floor(treme(1))
+!!       ! treme(2)=ceiling(treme(2))
+!!       ! if(treme(2).eq.treme(1))treme(2)=treme(2)+1
+!!       write(*,'(a,g0,a,g0,a,i0,a,g0)') &
+!!               & 'nice range is 10**',log10(xminp),' to 10**',log10(xmaxp),' by ', &
+!!               & nint((log10(xmaxp)-log10(xminp))/dist),' intervals of ',dist
+!!     enddo
+!!     end program demo_scale3
 !===================================================================================================================================
 !===================================================================================================================================
 subroutine scale3(xmin0, xmax0, n0 , xminp, xmaxp, dist)
@@ -3606,7 +5032,8 @@ end subroutine scale3
 !!
 !!       a*x**2+b*x+c=0
 !!
-!!    Use the quadratic formula to determine the root values and the discriminant of the equation.
+!!    Use the quadratic formula to determine the root values and the
+!!    discriminant of the equation.
 !!
 !!##OPTIONS
 !!    a,b,c  coefficients
@@ -3626,12 +5053,10 @@ end subroutine scale3
 !!    real    :: a, b, c ! coefficients
 !!    complex :: z1, z2  ! roots
 !!    real    :: discriminant
-!!
 !!       a = 4.0
 !!       b = 8.0
 !!       c = 21.0
 !!       call quadratic(a,b,c,z1,z2,discriminant) !  Calculate the roots
-!!
 !!       if (abs(discriminant) < 0) then
 !!          write(*,*) "the roots are real and equal:"
 !!       else if (discriminant > 0) then
@@ -3640,10 +5065,9 @@ end subroutine scale3
 !!          write(*,*) "the roots are complex:"
 !!       end if
 !!    !  Print the roots
-!!       print *, "The roots are:"
+!!       print *, "The roots(ie. x-intercepts)  are:"
 !!       print *, "z1 =", z1
 !!       print *, "z2 =", z2
-!!
 !!    end program demo_quadratic
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -3655,8 +5079,28 @@ complex,intent(out) :: z1, z2          ! roots
 real,intent(out)    :: discriminant
 
 !  Calculate the roots
+if(a.ne.0)then
    z1 = (-b + sqrt (cmplx (b**2 - 4*a*c))) / (2*a)
    z2 = (-b - sqrt (cmplx (b**2 - 4*a*c))) / (2*a)
+else
+   ! Y=Bx+C
+   ! 0=Bx+C
+   ! -C=Bx
+   ! -C/B
+   if(B.ne.0)then
+      write(*,*)'*quadratic* WARNING: If A=0 this is a linear, not quadratic, equation'
+      z1 = -C/B
+      z2 = -C/B
+   elseif(C.eq.0)then
+      write(*,*)'*quadratic* WARNING: If A,B,C are 0 this is a line on the x axis (with infinte roots), not a quadratic equation'
+      z1 = 0.0
+      z2 = 0.0
+   else
+      write(*,*)'*quadratic* WARNING: If A and B=0 this is a horizontal line not on the x axis (no roots), not a quadratic equation'
+      z1 = 0.0
+      z2 = 0.0
+   endif
+endif
 
    discriminant = b*b - 4.0*a*c
 

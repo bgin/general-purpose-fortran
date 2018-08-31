@@ -1,5 +1,5 @@
 NAME
-   getfontsize(3f) - [M_DRAW:TEXT] Get maximum width and height of a character in a font.
+   getfontsize(3f) - [M_draw:TEXT] Get maximum width and height of a character in a font.
 
 SYNOPSIS
         subroutine getfontsize(width, height)

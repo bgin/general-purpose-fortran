@@ -1,5 +1,5 @@
 #include <stdlib.h>
-extern double gauss(double min, double max, unsigned int tightness);
+extern double gauss (double min, double max, unsigned int tightness);
 #define MAX_RANDOM_NUM 0x7fffffff
 /*
  ******************************************************************************
@@ -24,22 +24,20 @@ extern double gauss(double min, double max, unsigned int tightness);
  * DESCRIPTION:
  *    Generates a random value between the given min and max.  The tightness
  * parameter specifies how focused the generated values are around the
- * middle of the specifed range [min..max].  For the tightness value of 1,
+ * middle of the specified range [min..max].  For the tightness value of 1,
  * the random values will be uniformly distributed (no focus).  For the
  * increasing values of tightness, the random values will increasingly crowd
  * around the middle of the range (min+max)/2.
  *
  ****************************************************************************** 
  */
-double gauss(double min, double max, unsigned int tightness)
-{
+double gauss (double min, double max, unsigned int tightness) {
    int i;
    double val = 0.0;
    double range = max - min;
 
-   for (i = 0; i < tightness; i++)
-   {
-      val += (random() * range) / MAX_RANDOM_NUM;
+   for (i = 0; i < tightness; i++) {
+      val += (random () * range) / MAX_RANDOM_NUM;
    }
 
    val /= tightness;

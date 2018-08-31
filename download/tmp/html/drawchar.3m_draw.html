@@ -52,7 +52,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 
 </A>
 <BLOCKQUOTE>
-<B>drawchar(3f) </B>- [M_DRAW:TEXT] Draw the character c and update current position.
+<B>drawchar(3f) </B>- [M_draw:TEXT] Draw the character c and update current position.
 <B>
 </B></BLOCKQUOTE>
 <A name=contents></A><H3>CONTENTS</H3></A>
@@ -94,43 +94,125 @@ Sample program:
 <P>
 <PRE>
    program demo_drawchar
-   use M_DRAW
-   integer,parameter :: isize=600
-   integer  :: ipaws
-   !! set up environment
-   call prefsize(isize,isize)
-   call vinit(&#146; &#146;) ! start graphics using device $M_DRAW_DEVICE
-   call ortho2(-100.0,100.0,-100.0,100.0)
-   call textsize(150.0,150.0)
-   call centertext(.true.)
+   !
+   !      display all the hershey fonts and demonstrate textang
+   !
 <P>
-   do i=33,124
-      !! draw reference circle and crosshairs
-      call linewidth(100)
-      call color(0)
+   use M_draw, only: vinit, vsetflush, color, clear, font, vexit, vflush
+   use M_draw, only: ortho2, textang, boxtext, rect, textsize, getkey
+   use M_draw,    only  : D_BLACK,   D_WHITE
+   use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
+   use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
+   use M_draw
+<P>
+   character(len=40)   :: str1, str2, str3, str4, fonts(22)
+   character(len=100)  :: buf
+   character(len=1)    :: c
+   integer             :: i
+   data fonts/ &#146;astrology&#146;, &#146;cursive&#146;,    &#146;futura.l&#146;,               &
+   &      &#146;futura.m&#146;,  &#146;gothic.eng&#146;, &#146;gothic.ger&#146;,             &
+   &      &#146;gothic.ita&#146;,&#146;greek&#146;,      &#146;japanese&#146;,    &#146;markers&#146;, &
+   &      &#146;math.low&#146;,  &#146;math.upp&#146;,   &#146;meteorology&#146;, &#146;music&#146;,   &
+   &      &#146;cyrillic&#146;,  &#146;script&#146;,     &#146;symbolic&#146;,    &#146;times.g&#146;, &
+   &      &#146;times.ib&#146;,  &#146;times.i&#146;,    &#146;times.r&#146;,     &#146;times.rb&#146; /
+<P>
+   data str1/ &#146;ABCDEFGHIJKLMNOPQRSTUVWXYZ&#146; /
+   data str2/ &#146;abcdefghijklmnopqrstuvwxyz&#146; /
+   data str3/ &#146;1234567890+-=!@#$%^&*(){}[]&#146; /
+   data str4/ &#146;&lt;&gt;,./?~&#145;\|_BONK,blark&#146; /
+   integer :: idum
+   print*,&#146;Enter output device:&#146;
+   read(*,&#146;(a)&#146;,iostat=ios)buf
+   if(ios.ne.0)buf=&#146; &#146;
+   call prefsize(1000,1000)
+   call vinit(buf)
+   call vsetflush(.false.)
+   call linewidth(20)
+   call clear()
+   ! define the world space
+   call ortho2(-14.0, 14.0, -14.0, 14.0)
+   do i = 1, 22
+      ! do the title
+      call textang(0.0)                 ! reset text angle so title is straight
+      call color(D_CYAN)
+      call font(&#146;futura.m&#146;)
+      write(buf, &#146;(&#146;&#146;This is Hershey font &#146;&#146;,a)&#146;) fonts(i)
+      !call printattribs(&#146;before&#146;)
+      call boxtext(-11.0, 12.0, 20.0, 1.0, buf)
+      !call printattribs(&#146;after&#146;)
+      call rect(-11.0, 12.0, 9.0, 13.0) ! draw a box around the title
+      call font(fonts(i))               ! grab a font from the table
+      call color(D_BLUE)
+      ! show the outer ring
+      call textsize(1.5, 1.5)
+      call ShowCircularText(11.0, str1)
+      ! show the second ring
+      call textsize(1.3, 1.3)
+      call ShowCircularText(8.5, str2)
+      ! show the third ring
+      call textsize(1.1, 1.1)
+      call ShowCircularText(7.0, str3)
+      ! show the inside ring
+      call textsize(0.9, 0.9)
+      call ShowCircularText(5.0, str4)
+      call vflush()
+<P>
+      idum= getkey()
+      select case(idum)
+       case(:-1,ichar(&#146;q&#146;),ichar(&#146;Q&#146;))
+         exit
+      end select
+<P>
+      call color(D_BLACK)
       call clear()
-      call color(4)
-      call circle(0.0,0.0,75.0)
-      call move2(-75.0,0.0)
-      call draw2(75.0,0.0)
-      call move2(0.0,-75.0)
-      call draw2(0.0,75.0)
-      call color(7)
-      call linewidth(200)
-      call textang(3.0*i)
-      call move2(0.0,0.0)
-      call drawchar(char(i))
-      ipaws=getkey()
    enddo
    call vexit()
+   contains
+<P>
+   subroutine ShowCircularText(r, str)  ! show a ring of text
+      use M_draw, only : move2, textang, drawchar
+<P>
+      real              :: r
+      character(len=*)  :: str
+      real              :: i, inc, x, y, a
+      integer           :: j
+      character(len=1)  :: c
+      real,parameter    :: pi = 3.1415926535
+<P>
+      j = 1
+      inc = 360.0 / len_trim(str)
+<P>
+      i=0.0
+      do i10 = 1,len_trim(str)
+         !
+         ! calculate the next drawing position
+         c = str(j:j)
+         x = r * cos(i * pi / 180.0)
+         y = r * sin(i * pi / 180.0)
+         call move2(x, y)
+         !
+         ! calculate angle for next character
+         a = 90.0 + i
+         !
+         ! set the orientation of the next character
+         call textang(a)
+         !
+         ! draw the character
+         call drawchar(c)
+         j = j + 1
+         i=i+inc
+      enddo
+<P>
+   end subroutine ShowCircularText
+<P>
    end program demo_drawchar
 <P>
 </PRE>
 </BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>drawchar (3m_draw)</TD> <TD align=right width=33%><I>June 12, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from cad0288c-a79a-4ab8-b784-65e421f42169 using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>drawchar (3m_draw)</TD> <TD align=right width=33%><I>August 26, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from bd3cbf86-65ca-4d2d-94cd-180d17c4732b using man macros.</FONT>
 </div>
 </div>
-<center><img src="images/drawchar.3m_draw.gif"></center> 
+<br><br><center><img src="images/drawchar.3m_draw.gif"></center> 
 </body>
 </HTML>

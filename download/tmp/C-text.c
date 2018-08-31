@@ -284,7 +284,7 @@ PROCEDURE int draw_hershfont(char *fontname) {
 /*
  * At the moment, for
  * the Hershey characters, the height returned is always that of the
- * difference between the maximun descender and ascender.
+ * difference between the maximum descender and ascender.
  */
 PROCEDURE void draw_getcharsize(char c, float *width, float *height){
       int     i;
@@ -974,70 +974,72 @@ PROCEDURE float draw_strlength(char *s){ /* Hershey SoftHardware Hardware */
       }
 }
 /******************************************************************************/
-#ident "@(#)M_DRAW:boxtext - Draw text so it fits in a 'box' - note only works with Hershey text"
+#ident "@(#)M_DRAW:boxtext - Stretch and draw text so it fits in a 'box' - note only works with Hershey text"
 PROCEDURE void draw_boxtext(float x, float y, float l, float h, char *s) {
-        float   oscsizex, oscsizey;
-        Token   *tok;
+   float oscsizex, oscsizey;
+   Token *tok;
 
-        if (!vdevice.initialised)
-                draw_verror("boxtext: draw not initialised");
+   if(!vdevice.initialised)
+      draw_verror("boxtext: draw not initialised");
 
-        if (vdevice.attr->a.softtext != HERSHEY)
-                draw_verror("boxtext: need a hershey vector font loaded");
+   if(vdevice.attr->a.softtext != HERSHEY)
+      draw_verror("boxtext: need a hershey vector font loaded");
 
-        if (vdevice.inobject) {
-                tok = draw_newtokens(6 + strlen(s) / sizeof(Token));
+   if(vdevice.inobject) {
+      tok = draw_newtokens(6 + strlen(s) / sizeof(Token));
 
-                tok[0].i = OBJ_BOXTEXT;
-                tok[1].f = x;
-                tok[2].f = y;
-                tok[3].f = l;
-                tok[4].f = h;
-                strcpy((char *)&tok[5], s);
+      tok[0].i = OBJ_BOXTEXT;
+      tok[1].f = x;
+      tok[2].f = y;
+      tok[3].f = l;
+      tok[4].f = h;
+      strcpy((char *) &tok[5], s);
 
-                return;
-        }
+      return;
+   }
 
-        oscsizex = SCSIZEX;
-        oscsizey = SCSIZEY;
-        /*
-         * set width so string length is the same a "l"
-         */
-        SCSIZEX = l / (float)draw_istrlength(s);
+   oscsizex = SCSIZEX;
+   oscsizey = SCSIZEY;
+   if(strlen(s) != 0) {
+      /*
+       set width so string length is the same a "l"
+       */
+      SCSIZEX = l /(float) draw_istrlength(s);
 
-        /*
-         * set character height so it's the same as "h"
-         */
-        SCSIZEY = h / (float)(ftab.as - ftab.dec);
-        draw_move(x, y, vdevice.cpW[V_Z]);
+      /*
+       * set character height so it's the same as "h"
+       */
+      SCSIZEY = h /(float) (ftab.as - ftab.dec);
+      draw_move(x, y, vdevice.cpW[V_Z]);
 
-        /* assumes justification is bottom left */
-        draw_pushattributes();
-	draw_centertext(0);
-        draw_drawstr(s);
-        draw_popattributes();
+      /* assumes justification is bottom left */
+      draw_pushattributes();
+      draw_centertext(0);
+      draw_drawstr(s);
+      draw_popattributes();
+   }
 
-        SCSIZEX = oscsizex;
-        SCSIZEY = oscsizey;
+   SCSIZEX = oscsizex;
+   SCSIZEY = oscsizey;
 }
 /******************************************************************************/
 #ident "@(#)M_DRAW:boxfit - Set up the scales etc for text so that a string of 'nchars' characters of the maximum width in the font fits in a box."
 PROCEDURE void draw_boxfit(float l, float h, int nchars) {
-        if (!vdevice.initialised) {
+        if(!vdevice.initialised) {
                 draw_verror("boxfit: draw not initialised");
         }
 
-        if (vdevice.attr->a.softtext != HERSHEY) {
+        if(vdevice.attr->a.softtext != HERSHEY) {
                 draw_verror("boxfit: cannot rescale hardware font");
         }
 
-        SCSIZEX = l / (float)(nchars * ftab.mw);
-        SCSIZEY = h / (float)(ftab.as - ftab.dec);
+        SCSIZEX = l /(float)(nchars * ftab.mw);
+        SCSIZEY = h /(float)(ftab.as - ftab.dec);
 }
 /******************************************************************************/
 #ident "@(#)M_DRAW:centertext - Turns centering of text on or off. Turns off all other justifying."
 /*
- *      (Just like in old M_DRAW).
+ *     (Just like in old M_DRAW).
  */
 PROCEDURE void draw_centertext(int onoff) {
    /*--------------------------------------------------------------------*/

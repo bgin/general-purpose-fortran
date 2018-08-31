@@ -203,7 +203,7 @@ Input file "cygwin_results.txt"
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION
-PRODUCT:        CLI library utilities and examples
+PRODUCT:        GPF (General Purpose Fortran) utilities and examples
 PROGRAM:        numdiff(1f)
 DESCRIPTION:    compare otherwise essentially identical files for numeric differences.
 VERSION:        3.0, 20131201
@@ -687,7 +687,7 @@ end subroutine percent_diff
 !  Author: John S. Urban
 !  Date:   1986,1990,2013
 !
-!  given a line of up to 264 characters of structure " par1 par2 par3 ... par(n) " where par(i) are seperated by a delimiter 
+!  given a line of up to 264 characters of structure " par1 par2 par3 ... par(n) " where par(i) are separated by a delimiter 
 !  find how many pars and beginning and ending column of each, ignoring leading and trailing blanks
 !  output array sizes should be istart(132), iterm(132)
 !

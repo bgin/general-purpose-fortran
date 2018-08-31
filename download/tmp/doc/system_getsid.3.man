@@ -9,7 +9,7 @@ DESCRIPTION
        If pid is 0, it specifies the calling process.
 RETURN VALUE
        Upon successful completion, system_getsid() shall return the process group
-       ID of the session leader of the specified process.  Otherwise,
+       ID of the session leader of the specified process. Otherwise,
        it shall return -1 and set errno to indicate the error.
 EXAMPLE
   Get SID from Fortran

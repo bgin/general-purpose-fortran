@@ -2593,7 +2593,7 @@ character(len=*),parameter :: ident="@(#)sparanoia(3f): test real value operatio
 !        ERROR  ... COUNT OF ERRORS DETECTED TESTING POWERS.
 !        I      ... SCRATCH FOR ENUMERATING CASES
 !        IQ     ... TEMPORARY FOR HOLDING INTEGER EXPONENTS
-!        PARTU  ... FLAG TO INDICATE THE DETECION OF PARTIAL UNDERFLOW
+!        PARTU  ... FLAG TO INDICATE THE DETECTION OF PARTIAL UNDERFLOW
 !
         REAL C, EPSP1, EXP2, H, MINDIF
 !        C      ... 1/(RADIX^LARGE_INTEGER)

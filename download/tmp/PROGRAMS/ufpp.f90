@@ -229,7 +229,7 @@
 !!    $! this text is converted into the help_version subroutine by ufpp ...
 !!    $! in a format that works with what(1), do not use ",>,\ characters in the labels
 !!    $FILTER VERSION
-!!    PRODUCT:        CLI library utilities and examples
+!!    PRODUCT:        GPF (General Purpose Fortran) utilities and examples
 !!    PROGRAM:        cf(1f)
 !!    DESCRIPTI0N:    convert multiple values between Celsius and Fahrenheit
 !!    VERSION:        1.0, 2016-04-09
@@ -367,7 +367,7 @@
 !!    stopit=.false.
 !!    if(l_version)then
 !!    help_text=[ CHARACTER(LEN=128) :: &
-!!    '@(#)PRODUCT:        CLI library utilities and examples>',&
+!!    '@(#)PRODUCT:        GPF (General Purpose Fortran) utilities and examples>',&
 !!    '@(#)PROGRAM:        cf(1f)>',&
 !!    '@(#)DESCRIPTION:    convert multiple values between Celsius and Fahrenheit>',&
 !!    '@(#)VERSION:        1.0, 2016-04-09>',&
@@ -3620,13 +3620,13 @@ logical                        :: stopit=.false.
 stopit=.false.
 if(l_version)then
 help_text=[ CHARACTER(LEN=128) :: &
-'@(#)PRODUCT:        CLI library utilities and examples>',&
+'@(#)PRODUCT:        GPF (General Purpose Fortran) utilities and examples>',&
 '@(#)PROGRAM:        ufpp(1f)>',&
 '@(#)DESCRIPTION:    Fortran Pre-processor>',&
 '@(#)VERSION:        4.0: 20170502>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
-'@(#)COMPILED:       Mon, Jun 4th, 2018 7:37:47 AM>',&
+'@(#)COMPILED:       Thu, Aug 16th, 2018 12:02:28 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

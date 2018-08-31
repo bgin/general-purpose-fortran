@@ -3,6 +3,7 @@
 #####################################################################################################################################
 INDX(){
 export TOPIC="$1" NAME
+export SECTION="$2"
 HTML >tmp/html/BOOK_$TOPIC.html
 (
    echo 'function loadthem(){'
@@ -15,8 +16,8 @@ HTML >tmp/html/BOOK_$TOPIC.html
       )
    else
       # make sure sort(1) does not sort case-insensitive
-      echo "$TOPIC.3.html"
-      mank -k "\[${TOPIC}"|env LC_ALL=C /usr/bin/sort|tr -d '()'|awk '{printf "%s.%s.html\n",$1,$2}'
+      echo "$TOPIC.3{SECTION}.html"
+      mank -k "\[${TOPIC}\>"|env LC_ALL=C /usr/bin/sort|tr -d '()'|awk '{printf "%s.%s.html\n",$1,$2}'
    fi| uniq|while read NAME
    do
       echo "append(\"$NAME\");"
@@ -296,12 +297,11 @@ loadthem();
 EOF
 }
 #####################################################################################################################################
-for BOOKNAME in $*
-do
+BOOKNAME=$1
+SECTION=$2
    echo 'Creating book '"$BOOKNAME"
    banner $BOOKNAME
-   INDX $BOOKNAME
-done
+   INDX $BOOKNAME $SECTION
 #####################################################################################################################################
 exit
 #####################################################################################################################################

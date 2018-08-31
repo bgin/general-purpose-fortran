@@ -911,7 +911,7 @@ integer, intent(in) :: hi
 ! return type
 integer(INT32) :: r
 
-   ! Use real value to caluclate range
+   ! Use real value to calculate range
    r = lo + floor((hi - lo + 1.0_IEEE64) * mtprng_rand_real2(state))
 
 end function mtprng_rand_range

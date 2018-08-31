@@ -140,7 +140,7 @@ Each of the procedural functions includes an example program in the correspondin
 The object-oriented interface does not have individual man(1) pages, but is instead demonstrated using the following
 example program:
 
- program  object_oriented
+ program object_oriented
  !
  ! This is an example using the object-oriented class/type model defined in M_strings_oop
  ! This is essentially the same functionality as the procedures combined with several Fortran intrinsics and overloaded operators

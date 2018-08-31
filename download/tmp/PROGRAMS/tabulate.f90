@@ -268,13 +268,13 @@ logical                        :: stopit=.false.
 stopit=.false.
 if(l_version)then
 help_text=[ CHARACTER(LEN=128) :: &
-'@(#)PRODUCT:        CLI library utilities and examples>',&
+'@(#)PRODUCT:        GPF (General Purpose Fortran) utilities and examples>',&
 '@(#)PROGRAM:        tabulate>',&
 '@(#)DESCRIPTION:    print values alongside a text graph of the values>',&
 '@(#)VERSION:        Thu Nov 23,  2000>',&
 '@(#)AUTHORS:        John S. Urban>',&
 '@(#)LANGUAGE:       Fortran>',&
-'@(#)COMPILED:       Mon, Jun 4th, 2018 8:54:44 AM>',&
+'@(#)COMPILED:       Thu, Aug 16th, 2018 12:01:46 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

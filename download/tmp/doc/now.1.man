@@ -22,35 +22,35 @@ OPTIONS
       Base time array:
        (1) %Y -- year, yyyy                                2018
        (2) %M -- month of year, 01 to 12                   06
-       (3) %D -- day of month, 01 to 31                    10
-           %d -- day of month, with suffix (1st, 2nd,...)  10th
+       (3) %D -- day of month, 01 to 31                    24
+           %d -- day of month, with suffix (1st, 2nd,...)  24th
        (4) %Z -- minutes from UTC                          -0240
            %z -- -+hh:mm from UTC                          -04:00
            %T -- -+hhmm  from UTC                          -0400
-       (5) %h -- hours, 00 to 23                           12
-           %H -- hour (1 to 12, or twelve-hour clock)      12
-           %N -- midnight< AM <=noon; noon<= PM <midnight  PM
-       (6) %m -- minutes, 00 to 59                         07
-       (7) %s -- sec, 00 to 59                             54
-       (8) %x -- milliseconds 000 to 999                   728
+       (5) %h -- hours, 00 to 23                           09
+           %H -- hour (1 to 12, or twelve-hour clock)      9
+           %N -- midnight< AM <=noon; noon<= PM <midnight  AM
+       (6) %m -- minutes, 00 to 59                         48
+       (7) %s -- sec, 00 to 59                             47
+       (8) %x -- milliseconds 000 to 999                   621
       Conversions:
-           %E -- Unix Epoch time                           1528646874.7280092
-           %e -- integer value of Unix Epoch time          1528646875
-           %J -- Julian  date                              2458280.1721612155
-           %j -- integer value of Julian Date(Julian Day)  2458280
-           %O -- Ordinal day (day of year)                 161
-           %o -- Whole days since Unix Epoch date          17692
+           %E -- Unix Epoch time                           1529848127.6220069
+           %e -- integer value of Unix Epoch time          1529848128
+           %J -- Julian  date                              2458294.0755511806
+           %j -- integer value of Julian Date(Julian Day)  2458294
+           %O -- Ordinal day (day of year)                 175
+           %o -- Whole days since Unix Epoch date          17706
            %U -- day of week, 1..7 Sunday=1                1
            %u -- day of week, 1..7 Monday=1                7
-           %i -- ISO week of year 1..53                    23
-           %I -- iso-8601 week-numbering date(yyyy-Www-d)  2018-W23-7
+           %i -- ISO week of year 1..53                    25
+           %I -- iso-8601 week-numbering date(yyyy-Www-d)  2018-W25-7
        Names:
            %l -- abbreviated month name                    Jun
            %L -- full month name                           June
            %w -- first three characters of weekday         Sun
            %W -- weekday name                              Sunday
-           %p -- phase of moon                             Waning crescent
-           %P -- percent of way from new to full moon      -21%
+           %p -- phase of moon                             Waxing gibbous
+           %P -- percent of way from new to full moon      73%
        Literals:
            %% -- a literal %                               %
            %t -- tab character                             	
@@ -61,10 +61,10 @@ OPTIONS
            %q -- single quote (apostrophe)                 '
            %Q -- double quote                              "
        Program timing:
-           %c -- CPU_TIME(3f) output                       0.29999999999999999E-001
+           %c -- CPU_TIME(3f) output                       0.45999999999999999E-001
            %C -- number of times this routine is used      1
            %S -- seconds since last use of this format     0.0000000000000000
-           %k -- time in seconds from SYSTEM_CLOCK(3f)     665554.375
+           %k -- time in seconds from SYSTEM_CLOCK(3f)     646221.875
       
       If no percent (%) is found in the format one of several
       alternate substitutions occurs.
@@ -72,25 +72,25 @@ OPTIONS
       If the format is composed entirely of one of the following
       keywords the following substitutions occur:
         "iso-8601",
-        "iso"        ==> %Y-%M-%DT%h:%m:%s%z             2018-06-10T12:07:54-04:00
+        "iso"        ==> %Y-%M-%DT%h:%m:%s%z             2018-06-24T09:48:47-04:00
         "iso-8601W",
-        "isoweek"    ==> %I                              2018-W23-7
-        "sql"        ==> "%Y-%M-%D %h:%m:%s.%x"          "2018-06-10 12:07:54.737"
-        "sqlday"     ==> "%Y-%M-%D"                      "2018-06-10"
-        "sqltime"    ==> "%h:%m:%s.%x"                   "12:07:54.738"
+        "isoweek"    ==> %I                              2018-W25-7
+        "sql"        ==> "%Y-%M-%D %h:%m:%s.%x"          "2018-06-24 09:48:47.630"
+        "sqlday"     ==> "%Y-%M-%D"                      "2018-06-24"
+        "sqltime"    ==> "%h:%m:%s.%x"                   "09:48:47.631"
         "rfc-2822"   ==> %w, %D %l %Y %h:%m:%s %T
-                         Sun, 10 Jun 2018 12:07:54 -0400
-        "rfc-3339"   ==> %Y-%M-%DT%h:%m:%s%z             2018-06-10T12:07:54-04:00
+                         Sun, 24 Jun 2018 09:48:47 -0400
+        "rfc-3339"   ==> %Y-%M-%DT%h:%m:%s%z             2018-06-24T09:48:47-04:00
         "date"       ==> %w %l %D %h:%m:%s UTC%z %Y
-                         Sun Jun 10 12:07:54 UTC-04:00 2018
+                         Sun Jun 24 09:48:47 UTC-04:00 2018
         "short"      ==> %w, %l %d, %Y %H:%m:%s %N UTC%z
-                         Sun, Jun 10th, 2018 12:07:54 PM UTC-04:00
+                         Sun, Jun 24th, 2018 9:48:47 AM UTC-04:00
         "long"," "   ==> %W, %L %d, %Y %H:%m:%s %N UTC%z
-                         Sunday, June 10th, 2018 12:07:54 PM UTC-04:00
-        "suffix"     ==> %Y%D%M%h%m%s                    20181006120754
-        "formal"     ==> The %d of %L %Y                 The 10th of June 2018
+                         Sunday, June 24th, 2018 9:48:47 AM UTC-04:00
+        "suffix"     ==> %Y%D%M%h%m%s                    20182406094847
+        "formal"     ==> The %d of %L %Y                 The 24th of June 2018
         "lord"       ==> the %d day of %L in the year of our Lord %Y
-                         the 10th day of June in the year of our Lord 2018
+                         the 24th day of June in the year of our Lord 2018
         "easter"     ==> FOR THE YEAR OF THE CURRENT DATE:
                            Easter day: the %d day of %L in the year of our Lord %Y
         "all"        ==> A SAMPLE OF DATE FORMATS
@@ -98,20 +98,20 @@ OPTIONS
       common macros:
          year          %Y  2018
          month         %M  06
-         day           %D  10
+         day           %D  24
          timezone      %z  -04:00
-         hour          %h  12
-         minute        %m  07
-         second        %s  54
-         millisecond   %x  744
-         epoch         %e  1528646875
-         julian        %j  2458280
-         ordinal       %O  161
+         hour          %h  09
+         minute        %m  48
+         second        %s  47
+         millisecond   %x  637
+         epoch         %e  1529848128
+         julian        %j  2458294
+         ordinal       %O  175
          weekday       %u  7
       if none of these keywords are found then every letter that
       is a macro is assumed to have an implied percent in front
       of it. For example:
-         YMDhms ==> %Y%M%D%h%m%s ==> 20180610120754
+         YMDhms ==> %Y%M%D%h%m%s ==> 20180624094847
       
 
    -dat date_vector  :

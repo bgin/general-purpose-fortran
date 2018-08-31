@@ -12,7 +12,7 @@ SYNOPSIS
 
 DESCRIPTION
     SPLIT(3f) parses a string using specified delimiter characters and
-    store tokens into an array
+    store tokens into an allocatable array
 
 OPTIONS
 

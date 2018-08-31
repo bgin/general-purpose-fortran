@@ -4,8 +4,8 @@ listout(3f) - [M_strings] copy ICURVE() to ICURVE_EXPANDED() expanding negative 
 SYNOPSIS
   subroutine listout(icurve_lists,icurve_expanded,inums,ierr)
 
-   real,intent(in)       :: icurve_lists(:)
-   real,intent(out)      :: icurve_expanded(:)
+   integer,intent(in)    :: icurve_lists(:)
+   integer,intent(out)   :: icurve_expanded(:)
    integer,intent(out)   :: inums
    integer,intent(out)   :: ierr
 

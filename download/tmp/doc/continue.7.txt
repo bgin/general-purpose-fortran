@@ -6,7 +6,7 @@
    continue
 .SH DESCRIPTION
 .nf
-  Execution of a CONTINUE statement has no effect.  A CONTINUE statement
+  Execution of a CONTINUE statement has no effect. A CONTINUE statement
   is most often used as a labeled line that is used in transfer control
   statements to numerically labeled lines such as GOTO. It is often
   very confusing to have executable statements on labeled lines; a

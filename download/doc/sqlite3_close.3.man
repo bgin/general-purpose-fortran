@@ -2,7 +2,7 @@ NAME
   sqlite3_close(3f) - [M_sqlite] Close a database file
 
 SYNOPSIS
-   call sqlite3_close(db)
+   subroutine sqlite3_close(db)
 
        type(SQLITE_DATABASE) db
 

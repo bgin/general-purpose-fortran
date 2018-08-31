@@ -87,12 +87,12 @@ logical                        :: stopit=.false.
 stopit=.false.
 if(l_version)then
 help_text=[ CHARACTER(LEN=128) :: &
-'@(#)PRODUCT:        CLI library utilities and examples>',&
+'@(#)PRODUCT:        GPF (General Purpose Fortran) utilities and examples>',&
 '@(#)PROGRAM:        findll(1f)>',&
 '@(#)DESCRIPTION:    find long lines>',&
 '@(#)VERSION:        23.1 20160618>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Mon, Jun 4th, 2018 9:01:29 AM>',&
+'@(#)COMPILED:       Thu, Aug 16th, 2018 12:10:52 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

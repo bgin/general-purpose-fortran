@@ -55,7 +55,7 @@ or make sure zero-length vectors are changed to have length
 #include <sys/types.h>
 #include "draw.h"
 
-extern FILE     *_voutfile();
+extern FILE     *_draw_outfile();
 
 #define MAX(x, y)       ((x) > (y) ? (x) : (y))
 #define MIN(x, y)       ((x) < (y) ? (x) : (y))
@@ -72,12 +72,12 @@ extern FILE     *_voutfile();
 
 static int      RTF_first_time = 1, drawn = 0, pslstx = -1, pslsty = -1;/* last (x, y) drawn */
 static int      MIN_LINE_X= 0, MAX_LINE_X= 0 ,MIN_LINE_Y= 0, MAX_LINE_Y = 0;
-extern  FILE    *fp;
+extern  FILE    *draw_fp;
 
-int OLDX;
-int OLDY;
-int RTF_MOVED=0;
-int rtf_count=0;
+static int OLDX;
+static int OLDY;
+static int RTF_MOVED=0;
+static int rtf_count=0;
 
 #define CMAPSIZE 256
 struct rgb_color {
@@ -89,10 +89,10 @@ static struct rgb_color RTF_carr[CMAPSIZE];
 
 /******************************************************************************/
 /* Create line of unknown length for storing a polyline in */
-static int  GATHER_COUNT=0;
-#define     GATHERLINE_INC 65536
-char      *pGATHERLINE;
-int         GATHERLINE_CURRENT_SIZE = 0;
+static int      GATHER_COUNT=0;
+#define         GATHERLINE_INC 65536
+char            *pGATHERLINE;
+static int      GATHERLINE_CURRENT_SIZE = 0;
 /******************************************************************************/
 static int      lineopen = FALSE; /* PolyLine not open */
 static int      shapeopen = FALSE; /* shape not open */
@@ -104,7 +104,7 @@ extern float hardwidth[128]; /* array to store hardware character widths */
 char fontstyle[256];
 /******************************************************************************/
 /* make a line from (x,y) to (x2,y2) */
-void rtfline(int ix1,int iy1,int ix2,int iy2){
+static void rtfline(int ix1,int iy1,int ix2,int iy2){
         int inw_x, inw_y;
         int iw, ih;
         /* Get the page coordinates of northwest corner */
@@ -118,38 +118,38 @@ void rtfline(int ix1,int iy1,int ix2,int iy2){
         iw = abs(ix1 - ix2); /* horizontal distance */
         ih = abs(iy1 - iy2); /* vertical distance */
         rtf_count++;
-        fprintf(fp,"\n{\\comment RTFLINE}");
-        fprintf (fp, "{\\*\\do\\dobxpage\\dobypage\\dodhgt%d",rtf_count);
+        fprintf(draw_fp,"\n{\\comment RTFLINE}");
+        fprintf (draw_fp, "{\\*\\do\\dobxpage\\dobypage\\dodhgt%d",rtf_count);
 
         /* <dpsimple> ----> <dpsimpledpk><dphead><dpprops> */
            /* <dpsimpledpk> */
-              fprintf (fp, "\\dpline");
-              fprintf (fp, "\\dpptx%d\\dppty%d", ix1,FLIPY(iy1));
-              fprintf (fp, "\\dpptx%d\\dppty%d", ix2,FLIPY(iy2));
+              fprintf (draw_fp, "\\dpline");
+              fprintf (draw_fp, "\\dpptx%d\\dppty%d", ix1,FLIPY(iy1));
+              fprintf (draw_fp, "\\dpptx%d\\dppty%d", ix2,FLIPY(iy2));
            /* </dpsimpledpk> */
 
            /* <dphead> */
               /* POSITION AND SIZE */
               /* dpxN X-offset of the drawing primitive from it's anchor */
               /* dpyN Y-offset of the drawing primitive from it's anchor */
-              fprintf (fp, "\\dpx%d\\dpy%d ", inw_x, inw_y);
+              fprintf (draw_fp, "\\dpx%d\\dpy%d ", inw_x, inw_y);
 
               /* dpxsizeN X-size of the drawing primitive */
               /* dpysizeN Y-size of the drawing primitive */
-              fprintf (fp, "\\dpxsize%d\\dpysize%d", iw, ih);
+              fprintf (draw_fp, "\\dpxsize%d\\dpysize%d", iw, ih);
            /* </dphead> */
 
            /* <dpprops> */
               /* PROPERTIES */
               /* line thickness */
-              fprintf (fp, "\\dplinew%d ",15);
+              fprintf (draw_fp, "\\dplinew%d ",15);
 
               /* RGB of line color */
-              fprintf (fp, "\\dplinecor%d\\dplinecog%d\\dplinecob%d", 0,0,0);
+              fprintf (draw_fp, "\\dplinecor%d\\dplinecog%d\\dplinecob%d", 0,0,0);
            /* </dpprops> */
         /* </dpsimple> */
 
-        fprintf (fp, "}\n");
+        fprintf (draw_fp, "}\n");
 }
 /******************************************************************************/
 static int RTF_header(){
@@ -167,23 +167,23 @@ static int RTF_header(){
    un = &unstr; /* initialize the pointer to an address with enough room to store the returned value in */
    uname(un);
 /* Start off the RTF file.  Page units are in twips */
-   fprintf( fp, "{\\rtf1\\ansi\n");
-   fprintf( fp, "\\deff0{\\fonttbl {\\f0 \\froman Times New Roman;}}\n");
-   fprintf( fp, "\\paperw%d \\paperh%d ", RTFXSIZE, RTFYSIZE);
-   fprintf( fp, "\\deflang1033\\plain\\f0\\fs20\n");
-   fprintf( fp, "\n");
+   fprintf( draw_fp, "{\\rtf1\\ansi\n");
+   fprintf( draw_fp, "\\deff0{\\fonttbl {\\f0 \\froman Times New Roman;}}\n");
+   fprintf( draw_fp, "\\paperw%d \\paperh%d ", RTFXSIZE, RTFYSIZE);
+   fprintf( draw_fp, "\\deflang1033\\plain\\f0\\fs20\n");
+   fprintf( draw_fp, "\n");
 
-   fprintf(fp,"{\\*\\generator @(#)M_DRAW RTF Driver Version 1.0.0, October  2007; John S. Urban}\n");
+   fprintf(draw_fp,"{\\*\\generator @(#)M_DRAW RTF Driver Version 1.0.0, October  2007; John S. Urban}\n");
 
    if ((username = getlogin()) == NULL ){
       pw = getpwuid(getuid());
       username = pw->pw_name;
    }
-   fprintf(fp,"{\\info\n");
-   fprintf(fp,"{\\comment ---------------------------------------------------------------------}\n");
-   fprintf(fp,"{\\title %s}\n","M_DRAW RTF plots");
-   fprintf(fp,"{\\author %s}\n",username);
-   fprintf(fp,"{\\doccomm on OS=%.*s NETWORK_NAME=%.*s RELEASE=%.*s VERSION=%.*s MACHINE=%.*s}\n",
+   fprintf(draw_fp,"{\\info\n");
+   fprintf(draw_fp,"{\\comment ---------------------------------------------------------------------}\n");
+   fprintf(draw_fp,"{\\title %s}\n","M_DRAW RTF plots");
+   fprintf(draw_fp,"{\\author %s}\n",username);
+   fprintf(draw_fp,"{\\doccomm on OS=%.*s NETWORK_NAME=%.*s RELEASE=%.*s VERSION=%.*s MACHINE=%.*s}\n",
        (int)sizeof(un->sysname),  un->sysname,
        (int)sizeof(un->nodename), un->nodename,
        (int)sizeof(un->release),  un->release,
@@ -191,7 +191,7 @@ static int RTF_header(){
        (int)sizeof(un->machine),  un->machine);
 #endif
 /*----------------------------------------------------------------------------*/
-    fprintf(fp,"{\\creatim\\yr%d\\mo%d\\dy%d\\hr%d\\min%d\\sec%d}\n",
+    fprintf(draw_fp,"{\\creatim\\yr%d\\mo%d\\dy%d\\hr%d\\min%d\\sec%d}\n",
       thetime->tm_year+1900,
       thetime->tm_mon,
       thetime->tm_mday,
@@ -199,9 +199,9 @@ static int RTF_header(){
       thetime->tm_min,
       thetime->tm_sec
     );
-    fprintf(fp,"}\n"); /* end info section */
+    fprintf(draw_fp,"}\n"); /* end info section */
 
-    fprintf(fp,"{\\pard\n");
+    fprintf(draw_fp,"{\\pard\n");
     /*
     rtfline(0,0,RTFXSIZE,RTFYSIZE);
     rtfline(RTFXSIZE,0,0,RTFYSIZE);
@@ -210,7 +210,7 @@ static int RTF_header(){
 }
 /******************************************************************************/
 /* change index i in the color map to the appropriate rgb value. */
-int RTF_mapcolor(int i, int r, int g, int b) {
+static int RTF_mapcolor(int i, int r, int g, int b) {
    if (i >= CMAPSIZE || i < 0 ){
       return(-1);
    }
@@ -224,7 +224,7 @@ int RTF_mapcolor(int i, int r, int g, int b) {
 static int RTF_init(void) {
    int prefx, prefy, prefxs, prefys;
    int i;
-   fp = _voutfile();
+   draw_fp = _draw_outfile();
    rtf_count=0;
 
    if (!RTF_first_time) return(1);
@@ -244,7 +244,7 @@ static int RTF_init(void) {
    }
 
    /*
-   fprintf(fp,"<p><a name=\"Page%d\"></a>\n", pgroup);
+   fprintf(draw_fp,"<p><a name=\"Page%d\"></a>\n", pgroup);
    */
    vdevice.depth = 8;
    for (i = 0; i < CMAPSIZE; i++) /* set up the basic colors */
@@ -287,18 +287,18 @@ static int closeline(void){
    if(lineopen){
       if(RTF_MOVED == 0 ){
          /* draw small line to make a point */
-         //fprintf(fp,"{\\comment CLOSELINE point RTFLINE}");
+         //fprintf(draw_fp,"{\\comment CLOSELINE point RTFLINE}");
          //rtfline(OLDX-1,OLDY-1,OLDX+1,OLDY+1);
       }
       /* end curve */
-      fprintf (fp, "\\dppolycount%d\n", GATHER_COUNT);
-      fprintf (fp, "%s\n", pGATHERLINE);
-      fprintf (fp, "\\dpx0\\dpy0\\dpxsize%d\\dpysize%d", RTFXSIZE, RTFYSIZE);
-      fprintf (fp, "\\dplinew%d",curwid); /* line width */
-      fprintf (fp, "\\dplinecor%d\\dplinecog%d\\dplinecob%d",
+      fprintf (draw_fp, "\\dppolycount%d\n", GATHER_COUNT);
+      fprintf (draw_fp, "%s\n", pGATHERLINE);
+      fprintf (draw_fp, "\\dpx0\\dpy0\\dpxsize%d\\dpysize%d", RTFXSIZE, RTFYSIZE);
+      fprintf (draw_fp, "\\dplinew%d",curwid); /* line width */
+      fprintf (draw_fp, "\\dplinecor%d\\dplinecog%d\\dplinecob%d",
        RTF_carr[curcol].red, RTF_carr[curcol].green, RTF_carr[curcol].blue);
-      fprintf(fp, "}\n");
-      //fprintf(fp, "{\\comment CLOSELINE}\n");
+      fprintf(draw_fp, "}\n");
+      //fprintf(draw_fp, "{\\comment CLOSELINE}\n");
       lineopen = FALSE; /* Polyline not open */
       GATHER_COUNT = 0;
       //free it
@@ -309,7 +309,7 @@ static int closeline(void){
 /******************************************************************************/
 static int closeshape(void){
    if(shapeopen){
-      fprintf(fp, "\n"); /* end curve */
+      fprintf(draw_fp, "\n"); /* end curve */
       shapeopen = FALSE; /* Polyline not open */
       GATHER_COUNT = 0;
    }
@@ -318,12 +318,12 @@ static int closeshape(void){
 /******************************************************************************/
 static int openline(void){
    if(!lineopen){
-      //fprintf(fp,"{\\comment OPENLINE}\n"); /* start curve */
+      //fprintf(draw_fp,"{\\comment OPENLINE}\n"); /* start curve */
       pGATHERLINE = malloc (GATHERLINE_INC);
       GATHERLINE_CURRENT_SIZE=GATHERLINE_INC;
       GATHER_COUNT=0;
       rtf_count++;
-      fprintf(fp,"{\\*\\do\\dobxpage\\dobypage\\dodhgt%d\\dppolyline",rtf_count);
+      fprintf(draw_fp,"{\\*\\do\\dobxpage\\dobypage\\dodhgt%d\\dppolyline",rtf_count);
       MIN_LINE_X= pslstx, MAX_LINE_X = pslstx ,MIN_LINE_Y= pslsty, MAX_LINE_Y = pslsty;
       lineopen = TRUE; /* Polyline open */
    }
@@ -341,17 +341,17 @@ static int openshape(void){
 static int RTF_exit(void) {
    closeline(); /* close Polyline line if it open */
    closeshape(); /* close shape line if it open */
-   fprintf(fp,"\\par}\n");
-   fprintf(fp,"\n}\n"); /* End of Document */
+   fprintf(draw_fp,"\\par}\n");
+   fprintf(draw_fp,"\n}\n"); /* End of Document */
    drawn = 0;
    GATHER_COUNT = 0;
 
-   if (fp != stdout && fp != stderr ){
-                fflush(fp);
+   if (draw_fp != stdout && draw_fp != stderr ){
+                fflush(draw_fp);
                 if(vdevice.writestoprocess == 2){
-                   pclose(fp);
+                   pclose(draw_fp);
                 }else{
-                   fclose(fp);
+                   fclose(draw_fp);
                 }
    }
    return (0);
@@ -379,7 +379,7 @@ static int RTF_draw(int x, int y) {
    openshape();              /* start shape if required */
    openline();               /* start line if required */
    if(GATHER_COUNT == 0){
-      fprintf(fp,"{\\comment RTF_draw to RTFLINE}");
+      fprintf(draw_fp,"{\\comment RTF_draw to RTFLINE}");
       rtfline(x,y,x+1,y+1);  /* unclear what happens to zero-length vector */
 
       OLDX=x;
@@ -417,8 +417,8 @@ static int RTF_clear(void) {
    closeshape();                     /* close shape if required */
    if (drawn){
      pgroup++;                       /* increment page id */
-    fprintf(fp,"\\page\\par}\n");    /* Page Clear, End of Page Group */
-    fprintf(fp,"{\\pard\n");
+    fprintf(draw_fp,"\\page\\par}\n");    /* Page Clear, End of Page Group */
+    fprintf(draw_fp,"{\\pard\n");
    }
    drawn = 0;
    GATHER_COUNT = 0;
@@ -512,43 +512,43 @@ static int RTF_font(char *fontname) {
 /******************************************************************************/
 /*  print the given string, escaped as good RTF*/
 /*  actually escapes much more than is necessary*/
-void esc(char *s ){
+static void esc(char *s ){
    int ch;
    while ((ch = *s++)){
       switch(ch) {
       case 9:
-         fputs("\\tab ", fp);
+         fputs("\\tab ", draw_fp);
          break;
       case 12:
-         fputs("\\page",fp);
+         fputs("\\page",draw_fp);
          break;
 
       case '\\':
-         fputs("\\\\",fp);
+         fputs("\\\\",draw_fp);
          break;
 
       case '{':
-         fputs("\\{",fp);
+         fputs("\\{",draw_fp);
          break;
 
       case '}':
-         fputs("\\}",fp);
+         fputs("\\}",draw_fp);
          break;
 
       case '\n':
-         fputs("\n\\line ",fp);
+         fputs("\n\\line ",draw_fp);
          break;
 
       default:
          /* ignore control characters instead? */
          if (ch < ' ' || ch >= 128) {
-            fprintf(fp,"\\'%02x",ch);
+            fprintf(draw_fp,"\\'%02x",ch);
          }else{
-            fputc(ch,fp);
+            fputc(ch,draw_fp);
          }
       }
    }
-   fprintf(fp,"\n");
+   fprintf(draw_fp,"\n");
    return;
 }
 /******************************************************************************/
@@ -587,34 +587,34 @@ static int RTF_string(char *s) {
         x=(int)(vdevice.cpVx+slen*vdevice.attr->a.textcos);
         y=(int)(uneven+vdevice.cpVy+slen*vdevice.attr->a.textsin);
 
-       //fprintf(fp,"<v:line from=\"%d,%d\" to=\"%d,%d\"\n", vdevice.cpVx, FLIPY(vdevice.cpVy+ijust), x, FLIPY(y+ijust));
+       //fprintf(draw_fp,"<v:line from=\"%d,%d\" to=\"%d,%d\"\n", vdevice.cpVx, FLIPY(vdevice.cpVy+ijust), x, FLIPY(y+ijust));
 
       /* character outline stroke color */
 
       /* character fill color */
-      fprintf(fp,"//rgb(%d,%d,%d)\n",
+      fprintf(draw_fp,"//rgb(%d,%d,%d)\n",
           RTF_carr[curcol].red, RTF_carr[curcol].green, RTF_carr[curcol].blue);
 
-      //fprintf(fp,"style=%s;",fontstyle);
-      //fprintf(fp,"fontsize:%d\"/>\n",(int)sheight);
+      //fprintf(draw_fp,"style=%s;",fontstyle);
+      //fprintf(draw_fp,"fontsize:%d\"/>\n",(int)sheight);
 /* -------------------------------------------------------------------------- */
 /*
    Write the contents of string into this exact-positioned
    paragraph, feeding each one through esc(line).
 */
 
-        fprintf(fp,"\n{\\comment RTF_string}");
-        fprintf(fp,"{\\pard \\pvpg\\phpg");
+        fprintf(draw_fp,"\n{\\comment RTF_string}");
+        fprintf(draw_fp,"{\\pard \\pvpg\\phpg");
 
         /* corner of */
-        fprintf(fp,"\\posx%d \\posy%d", OLDX, OLDY-First_Line_Height) ;
-        fprintf(fp,"\\absw%d \\absh-%d", OLDX,OLDY + First_Line_Height);
-        fprintf(fp,"\\f0\\fs20"); /*  select font from font table and font size */
+        fprintf(draw_fp,"\\posx%d \\posy%d", OLDX, OLDY-First_Line_Height) ;
+        fprintf(draw_fp,"\\absw%d \\absh-%d", OLDX,OLDY + First_Line_Height);
+        fprintf(draw_fp,"\\f0\\fs20"); /*  select font from font table and font size */
         esc(s);
         /*
-        fprintf(fp,"\n\\line");
+        fprintf(draw_fp,"\n\\line");
         */
-        fprintf(fp,"{\\par\n"); /*  close paragraph */
+        fprintf(draw_fp,"{\\par\n"); /*  close paragraph */
         esc(s);
    drawn = 1;
    pslstx = x;
@@ -624,7 +624,7 @@ static int RTF_string(char *s) {
 }
 /******************************************************************************/
 /* RTF_char output a character */
-int RTF_char(char c){
+static int RTF_char(char c){
    char  s[2];
    s[0] = c;
    s[1]='\0';
@@ -633,7 +633,7 @@ int RTF_char(char c){
 }
 /******************************************************************************/
 /* make a polygon */
-int RTF_fill_A(int n, int x[],int y[]){
+static int RTF_fill_A(int n, int x[],int y[]){
    int i;
    int ix1, iy1;
    int inw_x, inw_y;
@@ -657,31 +657,31 @@ int RTF_fill_A(int n, int x[],int y[]){
    /* So that (x[i],y[i]) are relative to the NW corner */
 
    rtf_count++;
-   fprintf (fp, "{\\*\\do\\dobxpage\\dobypage\\dodhgt%d",rtf_count);
-   fprintf (fp, "\\dppolygon\\dppolycount%d\n",n);
+   fprintf (draw_fp, "{\\*\\do\\dobxpage\\dobypage\\dodhgt%d",rtf_count);
+   fprintf (draw_fp, "\\dppolygon\\dppolycount%d\n",n);
 
    for (i=0;i <n;i++){
       ix1 = x[i]-inw_x;
       iy1 = y[i]-inw_y;
-      fprintf(fp, "\\dpptx%d\\dppty%d%c", ix1,FLIPY(iy1),linefeed[(i % 8/7)]);
+      fprintf(draw_fp, "\\dpptx%d\\dppty%d%c", ix1,FLIPY(iy1),linefeed[(i % 8/7)]);
    }
-   fprintf (fp, "\n\\dpx%d\\dpy%d", inw_x, FLIPY(y[0]-inw_y));
+   fprintf (draw_fp, "\n\\dpx%d\\dpy%d", inw_x, FLIPY(y[0]-inw_y));
 
    iw = abs(ise_x - inw_x); /* horizontal distance */
    ih = abs(inw_y - ise_y); /* vertical distance */
-   fprintf (fp, "\\dpxsize%d\\dpysize%d\n", iw, ih);
+   fprintf (draw_fp, "\\dpxsize%d\\dpysize%d\n", iw, ih);
 
    /* RGB of background color */
-   fprintf (fp, "\\dpfillbgcr%d\\dpfillbgcg%d\\dpfillbgcb%d\n",
+   fprintf (draw_fp, "\\dpfillbgcr%d\\dpfillbgcg%d\\dpfillbgcb%d\n",
        RTF_carr[curcol].red, RTF_carr[curcol].green, RTF_carr[curcol].blue);
    /* RGB of foreground color */
-   fprintf (fp, "\\dpfillfgcr%d\\dpfillfgcg%d\\dpfillfgcb%d\n",
+   fprintf (draw_fp, "\\dpfillfgcr%d\\dpfillfgcg%d\\dpfillfgcb%d\n",
        RTF_carr[curcol].red, RTF_carr[curcol].green, RTF_carr[curcol].blue);
    /* line width and RGB of outline color */
-   fprintf (fp, "\\dplinew1\\dplinecor%d\\dplinecog%d\\dplinecob%d\n",
+   fprintf (draw_fp, "\\dplinew1\\dplinecor%d\\dplinecog%d\\dplinecob%d\n",
        RTF_carr[curcol].red, RTF_carr[curcol].green, RTF_carr[curcol].blue);
    /* fill pattern */
-   fprintf (fp, "\\dpfillpat%d\n}\n", 1);
+   fprintf (draw_fp, "\\dpfillpat%d\n}\n", 1);
 
    vdevice.cpVx = x[n - 1];
    vdevice.cpVy = y[n - 1];
@@ -692,32 +692,32 @@ int RTF_fill_A(int n, int x[],int y[]){
 }
 /******************************************************************************/
 /* make a polygon based to corner of page */
-int RTF_fill(int n, int x[],int y[]){
+static int RTF_fill(int n, int x[],int y[]){
    int i;
    static char linefeed[2] = {' ','\n'};
 
    closeline(); /* close line if required */
    closeshape(); /* close line if required */
    rtf_count++;
-   fprintf (fp, "{\\*\\do\\dobxpage\\dobypage\\dodhgt%d",rtf_count);
-   fprintf (fp, "\\dppolygon\\dppolycount%d\n",n);
+   fprintf (draw_fp, "{\\*\\do\\dobxpage\\dobypage\\dodhgt%d",rtf_count);
+   fprintf (draw_fp, "\\dppolygon\\dppolycount%d\n",n);
 
    for (i=0;i <n;i++){
-      fprintf(fp, "\\dpptx%d\\dppty%d%c", x[i],FLIPY(y[i]),linefeed[(i % 8/7)]);
+      fprintf(draw_fp, "\\dpptx%d\\dppty%d%c", x[i],FLIPY(y[i]),linefeed[(i % 8/7)]);
    }
-   fprintf (fp, "\n\\dpx0\\dpy0\\dpxsize%d\\dpysize%d\n", RTFXSIZE, RTFYSIZE);
+   fprintf (draw_fp, "\n\\dpx0\\dpy0\\dpxsize%d\\dpysize%d\n", RTFXSIZE, RTFYSIZE);
 
    /* RGB of background color */
-   fprintf (fp, "\\dpfillbgcr%d\\dpfillbgcg%d\\dpfillbgcb%d",
+   fprintf (draw_fp, "\\dpfillbgcr%d\\dpfillbgcg%d\\dpfillbgcb%d",
        RTF_carr[curcol].red, RTF_carr[curcol].green, RTF_carr[curcol].blue);
    /* RGB of foreground color */
-   fprintf (fp, "\\dpfillfgcr%d\\dpfillfgcg%d\\dpfillfgcb%d",
+   fprintf (draw_fp, "\\dpfillfgcr%d\\dpfillfgcg%d\\dpfillfgcb%d",
        RTF_carr[curcol].red, RTF_carr[curcol].green, RTF_carr[curcol].blue);
    /* line width and RGB of outline color */
-   fprintf (fp, "\\dplinew1\\dplinecor%d\\dplinecog%d\\dplinecob%d\n",
+   fprintf (draw_fp, "\\dplinew1\\dplinecor%d\\dplinecog%d\\dplinecob%d\n",
        RTF_carr[curcol].red, RTF_carr[curcol].green, RTF_carr[curcol].blue);
    /* fill pattern */
-   fprintf (fp, "\\dpfillpat%d\n}\n", 1);
+   fprintf (draw_fp, "\\dpfillpat%d\n}\n", 1);
 
    vdevice.cpVx = x[n - 1];
    vdevice.cpVy = y[n - 1];
@@ -755,8 +755,8 @@ static DevEntry rtfdev = {
    noop          /* Syncronize the display */
 };
 /******************************************************************************/
-/* _RTF_devcpy copy the rtf device into vdevice.dev.  */
-int _RTF_devcpy() {
+/* copy the rtf device into vdevice.dev.  */
+int _RTF_draw_devcpy(void) {
    vdevice.dev = rtfdev;
    return(0);
 }

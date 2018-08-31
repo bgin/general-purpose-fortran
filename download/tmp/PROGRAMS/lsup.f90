@@ -37,7 +37,7 @@ character(len=:),allocatable     :: currentdir
          if(filename.eq.'')exit
          if(filename.eq.'.')exit
       enddo
-      if(isize.eq.i)exit                        ! put a blank line out as a seperator between pathnames
+      if(isize.eq.i)exit                        ! put a blank line out as a separator between pathnames
       write(*,*)
    enddo
 contains
@@ -146,13 +146,13 @@ logical                        :: stopit=.false.
 stopit=.false.
 if(l_version)then
 help_text=[ CHARACTER(LEN=128) :: &
-'@(#)PRODUCT:        CLI library utilities and examples>',&
+'@(#)PRODUCT:        GPF (General Purpose Fortran) utilities and examples>',&
 '@(#)PROGRAM:        lsup(1f)>',&
 '@(#)DESCRIPTION:    show permits of a pathname and all directory components of the pathname>',&
 '@(#)VERSION:        1.0.0>',&
 '@(#)DATE:           2017-10-12>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Mon, Jun 4th, 2018 9:01:11 AM>',&
+'@(#)COMPILED:       Sat, Aug 25th, 2018 1:48:22 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

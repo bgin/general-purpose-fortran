@@ -147,8 +147,8 @@
 !!          call redo(line) ! store into history if not "r".
 !!          if(line.eq.'quit')stop ! exit program if user enters "quit"
 !!          ! now call user code to process new line of data
-!!          ! As an example, call the system shell using a common f77 extension:
-!!          call execute_command_line(trim(line),cmdstat=cstat,cmdmsg=sstat) ! f08 equivalent
+!!          ! As an example, call the system shell
+!!          call execute_command_line(trim(line),cmdstat=cstat,cmdmsg=sstat)
 !!       enddo
 !!       end program redoit
 !!

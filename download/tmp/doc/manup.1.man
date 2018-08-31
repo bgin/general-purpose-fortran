@@ -2,7 +2,7 @@ NAME
    manup(1f) - [DEVELOPER] Simple markup of text to a man(1) page
 
 SYNOPSIS
-   manup FILE -cmd -section 1 -product "CLI utilities" -help .F. -version .F.
+   manup FILE -cmd -section 1 -product "GPF utilities" -help .F. -version .F.
 
 DESCRIPTION
      FILE

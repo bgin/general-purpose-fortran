@@ -8,9 +8,24 @@ public slurp
 public dirname
 public splitpath
 public isdir
+public get_tmp
 public read_line
 public read_all
-public get_tmp
+public read_table
+public rd
+
+character(len=*),parameter :: ident_read_table="@(#)M_io::read_table(3f): read file containing a table of numeric values "
+interface read_table
+   module procedure read_table_real, read_table_doubleprecision
+end interface
+
+character(len=*),parameter :: ident_rd="@(#)M_io::rd(3f): ask for string or number  from standard input with user-definable prompt"
+interface rd
+   module procedure rd_character
+   module procedure rd_integer
+   module procedure rd_real
+   module procedure rd_doubleprecision
+end interface
 CONTAINS
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -95,7 +110,9 @@ CONTAINS
 function uniq(name,istart,verbose,create)
 use M_journal, only : journal
 implicit none
+
 character(len=*),parameter::ident="@(#)M_io::uniq(3f):append a number to the end of filename to make a unique name if name exists"
+
 !-----------------------------------------------------------------------------------------------------------------------------------
 character(len=*),intent(in)  :: name
 character(len=:),allocatable :: uniq
@@ -255,7 +272,9 @@ end function uniq
 !===================================================================================================================================
 subroutine print_inquire(iunit,name) ! Version: JSU-1997-12-31
 use M_journal, only : journal
+
 character(len=*),parameter::ident="@(#)M_io::print_inquire(3f): Do INQUIRE on file by name/number and print results"
+
 integer,intent(in)          :: iunit         ! if iunit >= 0 then query by unit number, else by name
 character(len=*),intent(in) :: name
       character(len=1024)   :: nm
@@ -356,6 +375,203 @@ end subroutine print_inquire
 !===================================================================================================================================
 !>
 !!##NAME
+!!    read_table(3f) - [M_io] read file containing a table of numeric values
+!!
+!!##SYNOPSIS
+!!
+!!       subroutine read_table(filename,array,ierr)
+!!       character(len=*),intent(in)             :: filename
+!!
+!!       doubleprecision,allocatable,intent(out) :: array(:,:)
+!!          or
+!!       real,allocatable,intent(out)            :: array(:,:)
+!!
+!!       integer,intent(out)                     :: ierr
+!!
+!!##DESCRIPTION
+!!     Read a table from a file that is assumed to be columns of
+!!     space-delimited numbers, with each row containing the same
+!!     numer of values
+!!
+!!##OPTIONS
+!!       filename   filename to read
+!!       array      array to create
+!!       ierr       zero if no error occurred
+!!##EXAMPLES
+!!
+!!    Sample program, assuming the input file "inputfile" exists:
+!!
+!!     program demo_read_table
+!!     use M_io, only :: read_table
+!!     doubleprecision,allocatable :: array(:,:)
+!!
+!!     ! create test file
+!!     open(file='inputfile',unit=10)
+!!     write(10,'(a)') '1 10  45'
+!!     write(10,'(a)') '10 10  45'
+!!     write(10,'(a)') '  2 20  15'
+!!     write(10,'(a)') ' 20.345 20  15'
+!!     write(10,'(a)') '  3 30.111   0'
+!!     write(10,'(a)') '30 30e3   0'
+!!     write(10,'(a)') '  4 300.444e-1 -10'
+!!     write(10,'(a)') '40 30.5555d0 -10'
+!!     write(10,'(a)') '  4 300.444E-1 -10'
+!!     write(10,'(a)') '40 30.5555D0 -10'
+!!     close(unit=10)
+!!
+!!     ! read file as a table
+!!     call read_table('inputfile',array,ierr)
+!!
+!!     ! print values
+!!     do i=1,size(array,dim=1)
+!!        write(*,*)array(i,:)
+!!     enddo
+!!
+!!     ! remove sample file
+!!     open(file='inputfile',unit=10)
+!!     close(unit=10,status='delete')
+!!
+!!     end program demo_read_table
+!!
+!!    Expected output
+!!
+!!     1.0000000000000000        10.000000000000000        45.000000000000000
+!!     10.000000000000000        10.000000000000000        45.000000000000000
+!!     2.0000000000000000        20.000000000000000        15.000000000000000
+!!     20.344999999999999        20.000000000000000        15.000000000000000
+!!     3.0000000000000000        30.111000000000001        0.0000000000000000
+!!     30.000000000000000        30000.000000000000        0.0000000000000000
+!!     4.0000000000000000        30.044400000000000       -10.000000000000000
+!!     40.000000000000000        30.555499999999999       -10.000000000000000
+!!     4.0000000000000000        30.044400000000000       -10.000000000000000
+!!     40.000000000000000        30.555499999999999       -10.000000000000000
+!===================================================================================================================================
+subroutine read_table_doubleprecision(filename,array,ierr)
+use M_strings, only : s2vs
+implicit none
+
+character(len=*),intent(in)             :: FILENAME
+doubleprecision,allocatable,intent(out) :: array(:,:)
+integer,intent(out)                     :: ierr
+
+character(len=1),allocatable :: text(:) ! array to hold file in memory
+integer                      :: length
+integer                      :: irows
+integer                      :: icols
+integer                      :: nchars
+integer                      :: i
+integer                      :: j
+integer                      :: k
+integer                      :: istart
+character(len=:),allocatable :: line
+
+    call slurp(FILENAME,text,lines=irows,length=length) ! allocate character array and copy file into it
+    nchars=size(text)
+    ierr=0
+
+    if(.not.allocated(text))then
+       write(*,*)'*read_table_doubleprecision* failed to load file '//FILENAME
+       ierr=-1
+    else
+       allocate(character(len=length) :: line)
+       ! find number of values on first line and assume this is constant
+       line(:)=''
+       do i=1,nchars
+          if(text(i).eq.NEW_LINE('A'))then
+             exit
+          endif
+          line(i:i)=text(i)
+       enddo
+       icols=size(s2vs(line))
+       allocate(array(irows,icols))
+
+       array=0.0d0
+       istart=1
+       do j=1,irows
+          k=0
+          line(:)=''
+          do i=istart,nchars
+             if(text(i).eq.NEW_LINE('A').or.i.eq.nchars)then
+                exit
+             endif
+             k=k+1
+             line(k:k)=text(i)
+          enddo
+          istart=i+1
+          array(j,:)=s2vs(line)
+       enddo
+
+       deallocate(text)  ! release memory
+    endif
+
+end subroutine read_table_doubleprecision
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+subroutine read_table_real(filename,array,ierr)
+use M_strings, only : s2vs
+implicit none
+
+character(len=*),intent(in)             :: FILENAME
+real,allocatable,intent(out) :: array(:,:)
+integer,intent(out)                     :: ierr
+
+character(len=1),allocatable :: text(:) ! array to hold file in memory
+integer                      :: length
+integer                      :: irows
+integer                      :: icols
+integer                      :: nchars
+integer                      :: i
+integer                      :: j
+integer                      :: k
+integer                      :: istart
+character(len=:),allocatable :: line
+
+    call slurp(FILENAME,text,lines=irows,length=length) ! allocate character array and copy file into it
+    nchars=size(text)
+    ierr=0
+
+    if(.not.allocated(text))then
+       write(*,*)'*read_table_real* failed to load file '//FILENAME
+       ierr=-1
+    else
+       allocate(character(len=length) :: line)
+       ! find number of values on first line and assume this is constant
+       line(:)=''
+       do i=1,nchars
+          if(text(i).eq.NEW_LINE('A'))then
+             exit
+          endif
+          line(i:i)=text(i)
+       enddo
+       icols=size(s2vs(line))
+       allocate(array(irows,icols))
+
+       array=0.0d0
+       istart=1
+       do j=1,irows
+          k=0
+          line(:)=''
+          do i=istart,nchars
+             if(text(i).eq.NEW_LINE('A').or.i.eq.nchars)then
+                exit
+             endif
+             k=k+1
+             line(k:k)=text(i)
+          enddo
+          istart=i+1
+          array(j,:)=s2vs(line)
+       enddo
+
+       deallocate(text)  ! release memory
+    endif
+
+end subroutine read_table_real
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+!>
+!!##NAME
 !!    SLURP(3f) - [M_io] read a file into a character array
 !!##SYNOPSIS
 !!
@@ -364,14 +580,18 @@ end subroutine print_inquire
 !!       subroutine slurp(filename,text)
 !!       character(len=*),intent(in) :: filename
 !!       character(len=1),allocatable,intent(out) :: text(:)
+!!       integer,intent(out),optional :: length
+!!       integer,intent(out),optional :: lines
 !!##DESCRIPTION
 !!    Read an entire file into memory as a stream, retaining line end
-!!    terminals.  Never casually read an entire file into memory if you can
+!!    terminals. Never casually read an entire file into memory if you can
 !!    process it per line or in smaller units; as large files can consume
 !!    unreasonable amounts of memory.
 !!##OPTIONS
 !!       filename   filename to read into memory
 !!       text       array of characters to hold file
+!!       length     length of longest line read(Optional).
+!!       lines      number of lines read(Optional).
 !!##EXAMPLES
 !!
 !!    Sample program, assuming the input file "inputfile" exists:
@@ -407,17 +627,27 @@ end subroutine print_inquire
 !!     >that the sample program
 !!     >will reverse
 !===================================================================================================================================
-subroutine slurp(filename,text)
+subroutine slurp(filename,text,length,lines)
 !-----------------------------------------------------------------------------------------------------------------------------------
 implicit none
+
 character(len=*),parameter::ident="@(#)M_io::slurp(3f):allocate text array and read file filename into it"
+
 character(len=*),intent(in)              :: filename    ! filename to shlep
 character(len=1),allocatable,intent(out) :: text(:)     ! array to hold file
+integer,intent(out),optional             :: length      ! length of longest line
+integer,intent(out),optional             :: lines       ! number of lines
 !-----------------------------------------------------------------------------------------------------------------------------------
    integer :: nchars=0             ! holds size of file
    integer :: igetunit             ! use newunit=igetunit in f08
    integer :: ios=0                ! used for I/O error status
+   integer :: length_local
+   integer :: lines_local
+   integer :: i
+   integer :: icount
 !-----------------------------------------------------------------------------------------------------------------------------------
+   length_local=0
+   lines_local=0
    igetunit=notopen(10,99)         ! find unused file unit number (hopefully)
    if(igetunit.lt.0)then
       call stderr_local('*slurp* could not find unused file unit number')
@@ -449,8 +679,31 @@ character(len=1),allocatable,intent(out) :: text(:)     ! array to hold file
       if(ios.ne.0)then
          call stderr_local( '*slurp* bad read of '//trim(filename) )
       endif
+   else
+      allocate ( text(0) )           ! make enough storage to hold file
    endif
-   close(iostat=ios,unit=igetunit)     ! close if opened successfully or not
+
+   close(iostat=ios,unit=igetunit)            ! close if opened successfully or not
+
+   if(present(lines).or.present(length))then  ! get length of longest line and number of lines
+      icount=0
+      do i=1,nchars
+         if(text(i).eq.NEW_LINE('A'))then
+            lines_local=lines_local+1
+            length_local=max(length_local,icount)
+            icount=0
+         endif
+         icount=icount+1
+      enddo
+      if(nchars.ne.0)then
+         if(text(nchars).ne.NEW_LINE('A'))then
+            lines_local=lines_local+1
+            length_local=max(length_local,icount)
+         endif
+      endif
+      if(present(lines))lines=lines_local
+      if(present(length))length=length_local
+   endif
 !-----------------------------------------------------------------------------------------------------------------------------------
 contains
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -597,7 +850,9 @@ integer function notopen(start,end,err)
 ! access computing environment
 use iso_fortran_env, only : error_unit,input_unit,output_unit
 implicit none
+
 character(len=*),parameter::ident="@(#)M_io::notopen(3f): find free FORTRAN unit number to OPEN() a file"
+
 integer,optional,intent(in)    :: start                           ! unit number to start looking at
 integer,optional,intent(in)    :: end                             ! last unit number to look at
 integer,optional,intent(out)   :: err                             ! error flag returned
@@ -713,7 +968,9 @@ end function notopen
 !===================================================================================================================================
 function dirname(filename) result (directory)
 implicit none
+
 character(len=*),parameter::ident="@(#)M_io::dirname(3f):strip last component from filename"
+
 character(len=*),intent(in)      :: filename
 character(len=:),allocatable     :: directory
 integer                          :: iend
@@ -866,7 +1123,9 @@ end function dirname
 subroutine splitpath(path,dir,name,basename,ext)
 use M_strings, only : split
 implicit none
+
 character(len=*),parameter::ident="@(#)M_io::splitpath(3f):split Unix pathname into components (dir,name,basename,extension)"
+
 !===================================================================================================================================
 character(len=*),intent(in)     :: path
 character(len=*),intent(out)    :: dir
@@ -945,7 +1204,7 @@ character(len=*),intent(out)    :: ext
 !===================================================================================================================================
    iend=len_trim(name)
    where=INDEX(name,'.',BACK=.true.)         ! find any extension
-   if(where.gt.0.and.where.ne.1)then         ! only consider a non-blank entension name
+   if(where.gt.0.and.where.ne.1)then         ! only consider a non-blank extension name
       ext=name(where:)
       basename=name(:where-1)
    else
@@ -995,7 +1254,9 @@ end subroutine splitpath
 !===================================================================================================================================
 function isdir(dirname)
 implicit none
+
 character(len=*),parameter::ident="@(#)M_io::isdir(3f): determine if DIRNAME is a directory name ON UNIX-COMPATIBLE file systems"
+
 logical                     :: isdir
 character(len=*),intent(in) :: dirname
 
@@ -1051,6 +1312,10 @@ end function isdir
 function read_all(line,lun) result(ier)
 use iso_fortran_env, only : INPUT_UNIT
 implicit none
+
+character(len=*),parameter::ident="&
+&@(#)M_io::read_all(3f): read a line from specified LUN into allocatable string up to line length limit"
+
 character(len=:),allocatable,intent(out) :: line
 integer,intent(in),optional              :: lun
 integer                                  :: ier
@@ -1132,6 +1397,10 @@ function read_line(line,lun) result(ier)
 use iso_fortran_env, only : INPUT_UNIT
 use M_strings,only : notabs
 implicit none
+
+character(len=*),parameter::ident="&
+&@(#)M_io::read_line(3f): read a line from specified LUN into allocatable string up to line length limit"
+
 character(len=:),allocatable,intent(out) :: line
 integer,intent(in),optional              :: lun
 integer                                  :: ier
@@ -1238,6 +1507,131 @@ character(len=:),allocatable :: tname
       tname=tname//'/'
    endif
 end function get_tmp
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+!>
+!!##NAME
+!! rd(3f) - [M_io] ask for string from standard input with user-definable prompt
+!!##SYNOPSIS
+!!
+!!   function rd(prompt,default) result(strout)
+!!
+!!    character(len=*),intent(in)              :: prompt
+!!
+!!    character(len=*),intent(in)              :: default
+!!          or
+!!    integer,intent(in)                       :: default
+!!          or
+!!    real,intent(in)                          :: default
+!!          or
+!!    doubleprecision,intent(in)               :: default
+!!
+!!    character(len=:),allocatable,intent(out) :: strout
+!!
+!!##DESCRIPTION
+!!    Ask for string or value from standard input with user-definable prompt up to 20 times
+!!
+!!##OPTIONS
+!!    prompt    Prompt string; displayed on same line as input is read from
+!!    default   default answer on carriage-return. The type of the default determines the
+!!              type of the output.
+!!##RETURNS
+!!    strout    returned string or value
+!!              If an end-of-file or system error is encountered the , string "EOF" is returned, or
+!!              a "Nan" numeric value.
+!!              A blank string is not allowed as a return value unless the default is a blank string!
+!!##EXAMPLE
+!!
+!!   Sample program:
+!!
+!!    program demo_rd
+!!    use M_io, only : rd
+!!    character(len=:),allocatable :: mystring
+!!       mystring=rd('Enter string:',default='Today')
+!!       write(*,*)mystring
+!!    end program demo_rd
+!===================================================================================================================================
+function rd_character(prompt,default) result(strout)
+! 1995 John S. Urban
+!
+use,intrinsic :: iso_fortran_env, only : stdin=>input_unit !!, stdout=>output_unit, stderr=>error_unit
+use M_journal,                    only : journal
+implicit none
+
+character(len=*),parameter::ident="@(#)M_io::rd_character(3fp): ask for string from standard input with user-definable prompt"
+
+character(len=:),allocatable :: strout
+character(len=*)             :: prompt
+character(len=*)             :: default
+
+character(len=:),allocatable :: line
+integer             :: len_default
+integer             :: igot
+integer             :: ierr
+integer             :: icount
+real                :: count
+real                :: what4
+!===================================================================================================================================
+   len_default=len(prompt)
+!===================================================================================================================================
+   do icount=1,20                                                  ! prevent infinite loop on error or end-of-file
+      if(len_default.gt.0)write(*,'(a,'' '')',advance='no')prompt   ! write prompt
+      ierr=read_all(strout,stdin)                                  ! get back string
+      igot=len(strout)
+      if(ierr.ne.0)then
+         strout='EOF'
+         cycle
+      elseif(igot.eq.0.and.len_default.gt.0)then
+         strout=default
+      elseif(igot.le.0)then
+         call journal('*rd* blank string not allowed')
+         cycle
+      else
+         exit
+      endif
+   enddo
+end function rd_character
+!===================================================================================================================================
+function rd_doubleprecision(prompt,default) result(dvalue)
+use M_strings, only : s2v
+implicit none
+
+character(len=*),parameter::ident="@(#)M_io::rd_doubleprecision(3fp): ask for number from standard input with user-definable prompt"
+
+doubleprecision              :: dvalue
+character(len=*),intent(in)  :: prompt
+doubleprecision,intent(in)   :: default
+character(len=:),allocatable :: strout
+strout=rd_character(prompt,'NaN')
+if(strout.eq.'NaN')then
+   dvalue=default
+else
+   dvalue=s2v(strout)
+endif
+end function rd_doubleprecision
+!===================================================================================================================================
+function rd_real(prompt,default) result(rvalue)
+implicit none
+
+character(len=*),parameter::ident="@(#)M_io::rd_real(3fp): ask for number from standard input with user-definable prompt"
+
+real                         :: rvalue
+character(len=*),intent(in)  :: prompt
+real,intent(in)              :: default
+rvalue=rd(prompt,dble(rvalue))
+end function rd_real
+!===================================================================================================================================
+function rd_integer(prompt,default) result(ivalue)
+implicit none
+
+character(len=*),parameter::ident="@(#)M_io::rd_integer(3fp): ask for number from standard input with user-definable prompt"
+
+integer                      :: ivalue
+character(len=*),intent(in)  :: prompt
+integer,intent(in)           :: default
+ivalue=rd(prompt,dble(ivalue))
+end function rd_integer
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================

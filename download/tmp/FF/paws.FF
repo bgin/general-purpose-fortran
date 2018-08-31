@@ -82,7 +82,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $! this is converted into the help_version subroutine by ufpp ...
 $! To work with what(1), do not use ",>,\ characters
 $DOCUMENT VERSION
-PRODUCT:        CLI library utilities and examples
+PRODUCT:        GPF (General Purpose Fortran) utilities and examples
 PROGRAM:        paws(1f)
 DESCRIPTION:    pause until specified time or for specified duration
 VERSION:        1.0, 20160731

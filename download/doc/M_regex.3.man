@@ -6,7 +6,7 @@ SYNOPSIS
 
 DESCRIPTION
 
-   These routines interface with the C implementation of  IEEE Std 1003.2 ( POSIX.2 ) RE (Regular
+   These routines interface with the C implementation of IEEE Std 1003.2 ( POSIX.2 ) RE (Regular
    Expressions).
 
    o The regcomp(3c) function compiles an RE written as a string into an internal form
@@ -202,7 +202,7 @@ DESCRIPTION
    back reference: \ followed by a non-zero decimal digit d matches the same
    sequence of characters matched by the dth parenthesized subexpression
    (numbering subexpressions by the positions of their opening parentheses,
-   left to right), so that (e.g.)  \([bc]\)\1 matches bb or cc but not bc .
+   left to right), so that (e.g.) \([bc]\)\1 matches bb or cc but not bc .
 
 C WRAPPERS
 
@@ -247,7 +247,7 @@ GENERAL
                  at that location), regardless of the value of nmatch.
                  See below for the definition of pmatch and nmatch. This
                  is an extension, compatible with but not specified by
-                 IEEE Std 1003.2 (   POSIX.2   ), and should be used with
+                 IEEE Std 1003.2 ( POSIX.2 ), and should be used with
                  caution in software intended to be portable to other
                  systems. Note that a non-zero rm_so does not imply
                  REG_NOTBOL; REG_STARTEND affects only the location of
@@ -340,7 +340,7 @@ SEE ALSO
 
    These routines implement IEEE Std 1003.2 ("POSIX.2") regular expressions ("RE"s); see re_format(7).
 
-   IEEE Std 1003.2 (   POSIX.2   ), sections 2.8 (Regular Expression Notation) and B.5 (C Binding for Regular Expression Matching).
+   IEEE Std 1003.2 (POSIX.2), sections 2.8 (Regular Expression Notation) and B.5 (C Binding for Regular Expression Matching).
 
     regcomp (3p)  - regular expression matching
     regex (3)     - regular-expression library

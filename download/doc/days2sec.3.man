@@ -29,7 +29,7 @@ DESCRIPTION
 
          A decimal fraction is supported on the seconds (Actually,
          any of the numeric values may represent positive floating
-         point numbers).  Spaces are ignored.
+         point numbers). Spaces are ignored.
 
        NNdNNhNNmNNs
          Simple numeric values may also be used with unit suffixes; where

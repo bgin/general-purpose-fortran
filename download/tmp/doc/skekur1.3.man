@@ -12,11 +12,9 @@ SYNOPSIS
 
 DESCRIPTION
    FOR: Computing SKEWNESS and KURTOSIS for entries 1 through NHI
-        in vector Y.  The values may be centered about either the
-        MEAN (IOPT <> 0) or about ZERO (IOPT = 0).  The traditional
+        in vector Y. The values may be centered about either the
+        MEAN (IOPT <> 0) or about ZERO (IOPT = 0). The traditional
         divisor of N (NOT N-1) is used when the MEAN is estimated.
-
-   SUBPROGRAMS CALLED: -NONE-
 
    CURRENT VERSION COMPLETED FEBRUARY 28, 1986
 OPTIONS

@@ -31,99 +31,99 @@
 /*
 #define XT
 #define PC
+#define HPGT
  */
 
 /*
  interactive devices
 */
 
-int _X11_devcpy(void);
-int _x11_devcpy(void);
-int _GRW_devcpy(void);
-int _PC_devcpy(void);
+int _X11_draw_devcpy(void);
+int _x11_draw_devcpy(void);
+int _GRW_draw_devcpy(void);
+int _PC_draw_devcpy(void);
+int _HPGT_draw_devcpy(void);
 /*
  sometimes tek goes to a file
 */
-int _TEK_devcpy(void);
-int _XTEK_devcpy(void);
-int _XT_devcpy(void);
+int _TEK_draw_devcpy(void);
+int _XTEK_draw_devcpy(void);
+int _XT_draw_devcpy(void);
 
 /*
 PostScript
 */
 
-int _PS_devcpy(void);
-int _PSP_devcpy(void);
-int _PPSC_devcpy(void);
-int _PPSG_devcpy(void);
-int _PSC_devcpy(void);
-int _PSG_devcpy(void);
+int _PS_draw_devcpy(void);
+int _PSP_draw_devcpy(void);
+int _PPSC_draw_devcpy(void);
+int _PPSG_draw_devcpy(void);
+int _PSC_draw_devcpy(void);
+int _PSG_draw_devcpy(void);
 
 /*
  HP formats
 */
 
-int _PCL_PORT_devcpy(void);
-int _PCL_LAND_devcpy(void);
-int _PCL5_PORT_devcpy(void);
-int _PCL5_LAND_devcpy(void);
+int _PCL_PORT_draw_devcpy(void);
+int _PCL_LAND_draw_devcpy(void);
+int _PCL5_PORT_draw_devcpy(void);
+int _PCL5_LAND_draw_devcpy(void);
 
-int _HPGL_LAND_devcpy(void);
-int _HPGL_PORT_devcpy(void);
-int _HPGL2_LAND_devcpy(void);
-int _HPGL2_PORT_devcpy(void);
+int _HPGL_LAND_draw_devcpy(void);
+int _HPGL_PORT_draw_devcpy(void);
+int _HPGL2_LAND_draw_devcpy(void);
+int _HPGL2_PORT_draw_devcpy(void);
 
 /*
 Sorta HP
 */
-int _DXY_devcpy(void);
+int _DXY_draw_devcpy(void);
 
 /*
 # metafiles to be read by something else
 */
-int _CGMT_devcpy(void);
-int _UNIXPLOT_devcpy(void);
-int _VOG_devcpy(void);
-int _GNU_devcpy(void);
-int _SVG_devcpy(void);
-int _XFIG_devcpy(void);
-int _CANVAS_devcpy(void);
-int _USEMAP_devcpy(void);
-
+int _CGMT_draw_devcpy(void);
+int _UNIXPLOT_draw_devcpy(void);
+int _VOG_draw_devcpy(void);
+int _GNU_draw_devcpy(void);
+int _SVG_draw_devcpy(void);
+int _XFIG_draw_devcpy(void);
+int _CANVAS_draw_devcpy(void);
+int _USEMAP_draw_devcpy(void);
 
 /*
  proprietary formats
 */
-int _MIF_devcpy(void);
-int _MIF4_devcpy(void);
-int _VML_devcpy(void);
-int _FTI_devcpy(void);
-int _PDF_devcpy(void);
-int _RTF_devcpy(void);
+int _MIF_draw_devcpy(void);
+int _MIF4_draw_devcpy(void);
+int _VML_draw_devcpy(void);
+int _FTI_draw_devcpy(void);
+int _PDF_draw_devcpy(void);
+int _RTF_draw_devcpy(void);
 
 /*
 Poskanzer pixmaps
 */
-int _PBM_devcpy(void);
-int _P1_devcpy(void);
-int _P4_devcpy(void);
-int _PPM_devcpy(void);
-int _P3_devcpy(void);
-int _P6_devcpy(void);
-
+int _PBM_draw_devcpy(void);
+int _P1_draw_devcpy(void);
+int _P4_draw_devcpy(void);
+int _PPM_draw_devcpy(void);
+int _P3_draw_devcpy(void);
+int _P6_draw_devcpy(void);
 
 /*
 Other pixmaps
 */
-int _CHAR_devcpy(void);
-int _BM_devcpy(void);
-int _XBM_devcpy(void);
+int _CHAR_draw_devcpy(void);
+int _BM_draw_devcpy(void);
+int _XBM_draw_devcpy(void);
 
-int _NIL_devcpy(void);
+int _NIL_draw_devcpy(void);
 
 struct vdev     vdevice;
 
-FILE    *fp = (FILE *)NULL;
+FILE    *draw_fp = (FILE *)NULL;
 
 static int      allocated = 0;
 static int      badcount=0;
@@ -140,49 +140,49 @@ void draw_voutput(char *path) {
 Open the graphics output file for most devices. Note that
    o the special file names - and + use stdout and stderr respectively
    o filenames starting with |  open and write to a process that work in pipes
-   o if the pathname is blank an attempt is made to read the variable VOUTPUT
+   o if the pathname is blank an attempt is made to read the variable M_DRAW_OUTPUT
      but the program must call voutput explicitly.
 */
         if (strcmp(path, "-") == 0 ) {
-           fp=stdout;
+           draw_fp=stdout;
         }else if (strcmp(path, "+") == 0 ) {
-           fp=stderr;
+           draw_fp=stderr;
         }else if (path[0] == '|') {
-           if( (fp=popen(&path[1],"w")) == (FILE *)NULL){
+           if( (draw_fp=popen(&path[1],"w")) == (FILE *)NULL){
                 fprintf(stderr,
-                   "voutput: could not open process [%s]; appending to VOUTPUT\n",path);
-                if ((fp = fopen("VOUTPUT", "a")) == (FILE *)NULL) {
-                        fprintf(stderr,"voutput: could not open VOUTPUT\n");
+                   "voutput: could not open process [%s]; appending to M_DRAW_OUTPUT\n",path);
+                if ((draw_fp = fopen("M_DRAW_OUTPUT", "a")) == (FILE *)NULL) {
+                        fprintf(stderr,"voutput: could not open M_DRAW_OUTPUT\n");
                         fprintf(stderr,"voutput: using stdout. Good Luck!\n");
-                        fp = stdout;
+                        draw_fp = stdout;
                 }
                 return;
            }else{
              vdevice.writestoprocess=2;
            }
-        }else if ((fp = fopen(path, "w")) == (FILE *)NULL) {
+        }else if ((draw_fp = fopen(path, "w")) == (FILE *)NULL) {
                 fprintf(stderr,
-                   "voutput: could not open [%s]; appending to VOUTPUT\n",path);
-                if ((fp = fopen("VOUTPUT", "a")) == (FILE *)NULL) {
-                        fprintf(stderr,"voutput: could not open VOUTPUT\n");
+                   "voutput: could not open [%s]; appending to M_DRAW_OUTPUT\n",path);
+                if ((draw_fp = fopen("M_DRAW_OUTPUT", "a")) == (FILE *)NULL) {
+                        fprintf(stderr,"voutput: could not open M_DRAW_OUTPUT\n");
                         fprintf(stderr,"voutput: using stdout. Good Luck!\n");
-                        fp = stdout;
+                        draw_fp = stdout;
                 }
         }
         return;
 }
 /******************************************************************************/
 /* return a pointer to current output file - designed for internal use only.  */
-FILE * _voutfile(void) {
+FILE * _draw_outfile(void) {
 
-        if( fp == (FILE *)NULL || fileno(fp) == -1 ){
-           fp=stdout;
+        if( draw_fp == (FILE *)NULL || fileno(draw_fp) == -1 ){
+           draw_fp=stdout;
            return(stdout);
         }else{
-           return(fp);
+           return(draw_fp);
         }
         /*
-        return(fp == (FILE *)NULL ? stdout : fp);
+        return(draw_fp == (FILE *)NULL ? stdout : draw_fp);
         */
 }
 /******************************************************************************/
@@ -239,12 +239,12 @@ static void draw_getdev(char *dev) {
 
 #ifdef NIL
         if (strncmp(device, "nil", 3) == 0)
-                _NIL_devcpy();
+                _NIL_draw_devcpy();
         else
 #endif
 #ifdef SUN
         if (strncmp(device, "sun", 3) == 0)
-                _SUN_devcpy();
+                _SUN_draw_devcpy();
         else
 #endif
 #ifdef TG
@@ -253,232 +253,237 @@ static void draw_getdev(char *dev) {
          * all tk widgets names start with a leading dot, This should keep
          * them from clashing with other devices names.
          */
-        if ((*device == '.') && (_TG_devcpy(device) >= 0))
+        if ((*device == '.') && (_TG_draw_devcpy(device) >= 0))
                 /* NULL BODY */ ;
         else
 #endif
 #ifdef PC
          if (strncmp(device, "PC", 2) == 0)
-                 _PC_devcpy();
+                 _PC_draw_devcpy();
         else
 #endif
 #ifdef X11
         if (strncmp(device, "X11", 3) == 0)
-                _X11_devcpy();
+                _X11_draw_devcpy();
         else
         if (strncmp(device, "x11", 3) == 0)
-                _x11_devcpy();
+                _x11_draw_devcpy();
         else
 #endif
 #ifdef DECX11
         if (strncmp(device, "decX11", 6) == 0)
-                _DECX11_devcpy();
+                _DECX11_draw_devcpy();
         else
 #endif
 #ifdef RTF
         if (strncmp(device, "rtf", 3) == 0)
-                _RTF_devcpy();
+                _RTF_draw_devcpy();
+        else
+#endif
+#ifdef HPGT
+        if (strncmp(device, "hpgt", 4) == 0)
+                _HPGT_draw_devcpy();
         else
 #endif
 #ifdef SVG
         if (strncmp(device, "svg", 3) == 0)
-                _SVG_devcpy();
+                _SVG_draw_devcpy();
         else
 #endif
 #ifdef XFIG
         if (strncmp(device, "xfig", 4) == 0)
-                _XFIG_devcpy();
+                _XFIG_draw_devcpy();
         else
 #endif
 #ifdef CANVAS
         if (strncmp(device, "canvas", 6) == 0)
-                _CANVAS_devcpy();
+                _CANVAS_draw_devcpy();
         else
 #endif
 #ifdef USEMAP
         if (strncmp(device, "usemap", 6) == 0)
-                _USEMAP_devcpy();
+                _USEMAP_draw_devcpy();
         else
 #endif
 #ifdef MINGW
         if (strncmp(device, "grwin", 5) == 0)
-                _GRW_devcpy();
+                _GRW_draw_devcpy();
         else
 #endif
 #ifdef NeXT
         if (strncmp(device, "NeXT", 4) == 0)
-                _NeXT_devcpy();
+                _NeXT_draw_devcpy();
         else
 #endif
 #ifdef POSTSCRIPT
         if (strncmp(device, "postscript", 10) == 0) {
-                _PS_devcpy();
+                _PS_draw_devcpy();
         } else if (strncmp(device, "ppostscript", 11) == 0) {
-                _PSP_devcpy();
+                _PSP_draw_devcpy();
         } else if (strncmp(device, "ppsm", 4) == 0) {
-                _PSP_devcpy();
+                _PSP_draw_devcpy();
         } else if (strncmp(device, "ppsc", 4) == 0) {
-                _PPSC_devcpy();
+                _PPSC_draw_devcpy();
         } else if (strncmp(device, "ppsg", 4) == 0) {
-                _PPSG_devcpy();
+                _PPSG_draw_devcpy();
         } else if (strncmp(device, "pps", 3) == 0) {
-                _PSP_devcpy();
+                _PSP_draw_devcpy();
         } else if (strncmp(device, "psm", 3) == 0) {
-                _PS_devcpy();
+                _PS_draw_devcpy();
         } else if (strncmp(device, "psc", 3) == 0) {
-                _PSC_devcpy();
+                _PSC_draw_devcpy();
         } else if (strncmp(device, "psg", 3) == 0) {
-                _PSG_devcpy();
+                _PSG_draw_devcpy();
         } else if (strncmp(device, "ps", 2) == 0) {
-                _PS_devcpy();
+                _PS_draw_devcpy();
         } else
 #endif
 #ifdef HPGL
         if (strncmp(device, "pclport", 7) == 0)
-                _PCL_PORT_devcpy();
+                _PCL_PORT_draw_devcpy();
         else if (strncmp(device, "pclland", 7) == 0)
-                _PCL_LAND_devcpy();
+                _PCL_LAND_draw_devcpy();
         else if (strncmp(device, "hpglland", 8) == 0)
-                _HPGL_LAND_devcpy();
+                _HPGL_LAND_draw_devcpy();
         else if (strncmp(device, "hpglport", 8) == 0)
-                _HPGL_PORT_devcpy();
+                _HPGL_PORT_draw_devcpy();
         else if ( strncmp(device, "hpgl", 4) == 0)
-                _HPGL_LAND_devcpy();
+                _HPGL_LAND_draw_devcpy();
         else
 #endif
 #ifdef PCL5
         if (strncmp(device, "pcl5port", 8) == 0)
-                _PCL5_PORT_devcpy();
+                _PCL5_PORT_draw_devcpy();
         else if (strncmp(device, "pcl5land", 8) == 0)
-                _PCL5_LAND_devcpy();
+                _PCL5_LAND_draw_devcpy();
         else if (strncmp(device, "hpgl2land", 9) == 0)
-                _HPGL2_LAND_devcpy();
+                _HPGL2_LAND_draw_devcpy();
         else if (strncmp(device, "hpgl2port", 9) == 0)
-                _HPGL2_PORT_devcpy();
+                _HPGL2_PORT_draw_devcpy();
         else
 #endif
 #ifdef DXY
         if (strncmp(device, "dxy", 3) == 0)
-                _DXY_devcpy();
+                _DXY_draw_devcpy();
         else
 #endif
 #ifdef TEK
         if (strncmp(device, "tek", 3) == 0)
-                _TEK_devcpy();
+                _TEK_draw_devcpy();
         else
 #endif
 #ifdef XTEK
         if (strncmp(device, "xtek", 4) == 0)
-                _XTEK_devcpy();
+                _XTEK_draw_devcpy();
         else
 #endif
 #ifdef XT
         if (strncmp(device, "xt", 2) == 0)
-                _XT_devcpy();
+                _XT_draw_devcpy();
         else
 #endif
 #ifdef CGMT
         if (strncmp(device, "cgmt", 4) == 0)
-                _CGMT_devcpy();
+                _CGMT_draw_devcpy();
         else
 #endif
 #ifdef MIF
         if (strncmp(device, "mif4", 4) == 0)
-                _MIF4_devcpy();
+                _MIF4_draw_devcpy();
         else
         if (strncmp(device, "mif", 3) == 0)
-                _MIF_devcpy();
+                _MIF_draw_devcpy();
         else
 #endif
 #ifdef PDF
         if (strncmp(device, "pdf", 3) == 0)
-                _PDF_devcpy();
+                _PDF_draw_devcpy();
         else
 #endif
 #ifdef UNIXPLOT
         if (strncmp(device, "unixplot", 8) == 0)
-                _UNIXPLOT_devcpy();
+                _UNIXPLOT_draw_devcpy();
         else
 #endif
 #ifdef VML
         if (strncmp(device, "vml", 3) == 0)
-                _VML_devcpy();
+                _VML_draw_devcpy();
         else
 #endif
 #ifdef VOG
         if (strncmp(device, "vog", 3) == 0)
-                _VOG_devcpy();
+                _VOG_draw_devcpy();
         else
 #endif
 #ifdef GNU
         if (strncmp(device, "gnu", 3) == 0)
-                _GNU_devcpy();
+                _GNU_draw_devcpy();
         else
 #endif
 #ifdef FTI
         if (strncmp(device, "fti", 3) == 0)
-                _FTI_devcpy();
+                _FTI_draw_devcpy();
         else
 #endif
 #ifdef PBM
         if (strncmp(device, "pbm", 3) == 0)
-                _PBM_devcpy();
+                _PBM_draw_devcpy();
         else
         if (strncmp(device, "p1", 2) == 0)
-                _P1_devcpy();
+                _P1_draw_devcpy();
         else
         if (strncmp(device, "p4", 2) == 0)
-                _P4_devcpy();
+                _P4_draw_devcpy();
         else
         if (strncmp(device, "xbm", 3) == 0)
-                _XBM_devcpy();
+                _XBM_draw_devcpy();
         else
         if (strncmp(device, "bm", 2) == 0)
-                _BM_devcpy();
+                _BM_draw_devcpy();
         else
 #endif
 #ifdef PPM
         if (strncmp(device, "char", 4) == 0)
-                _CHAR_devcpy();
+                _CHAR_draw_devcpy();
         else
         if (strncmp(device, "ppm", 3) == 0)
-                _PPM_devcpy();
+                _PPM_draw_devcpy();
         else
         if (strncmp(device, "p3", 2) == 0)
-                _P3_devcpy();
+                _P3_draw_devcpy();
         else
         if (strncmp(device, "p6", 2) == 0)
-                _P6_devcpy();
+                _P6_draw_devcpy();
         else
 #endif
 #ifdef HERCULES
         if (strncmp(device, "hercules", 8) == 0)
-                _hgc_devcpy();
+                _hgc_draw_devcpy();
         else
 #endif
 #ifdef MSWIN
         if (strncmp(device, "mswin", 5) == 0)
-                _mswin_devcpy();
+                _mswin_draw_devcpy();
         else
 #endif
 #ifdef CGA
         if (strncmp(device, "cga", 3) == 0)
-                _cga_devcpy();
+                _cga_draw_devcpy();
         else
 #endif
 #ifdef EGA
         if (strncmp(device, "ega", 3) == 0)
-                _ega_devcpy();
+                _ega_draw_devcpy();
         else
 #endif
 #ifdef VGA
         if (strncmp(device, "vga", 3) == 0)
-                _vga_devcpy();
+                _vga_draw_devcpy();
         else
 #endif
 #ifdef SIGMA
         if (strncmp(device, "sigma", 5) == 0)
-                _sigma_devcpy();
+                _sigma_draw_devcpy();
         else
 #endif
         {
@@ -523,6 +528,9 @@ static void draw_getdev(char *dev) {
 #endif
 #ifdef XT
         fprintf(stderr," xt     (X11 xterm(1) character mode)\n");
+#endif
+#ifdef HPGT
+        fprintf(stderr," hpgt   (Hewlett Package Graphics Terminal)\n");
 #endif
 #ifdef TG
         fprintf(stderr," .*     (Tk Graphic Widgets)\n");
@@ -643,8 +651,9 @@ static void draw_getdev(char *dev) {
               fprintf(stderr, "error: too many tries at device name [%d]'\n",badcount);
               exit(1);
            }
-           fprintf(stderr, "W-A-R-N-I-N-G: device set to nil [%d]'\n",badcount);
-           _NIL_devcpy();
+           fprintf(stderr, "W-A-R-N-I-N-G: device set to nil [%d].\n",badcount);
+           fprintf(stderr, "               Default can be changed using environment variable $M_DRAW_DEVICE'\n");
+           _NIL_draw_devcpy();
 
         }
 }
@@ -652,12 +661,12 @@ static void draw_getdev(char *dev) {
 /* -------------------------------------------------------------------------- */
 /* vinit initialise M_DRAW */
 void draw_vinit(char *device){
-        char    *VOUTPUT;
-        if(fp == (FILE *)NULL || fileno(fp) == -1 ){
-                fp = stdout;
-                if ((VOUTPUT = getenv("VOUTPUT")) != (char *)NULL) {
-                        /* fprintf(stderr,"FILENAME=%s\n",VOUTPUT); */
-                        if(strlen(VOUTPUT)>0)draw_voutput(VOUTPUT);
+        char    *M_DRAW_OUTPUT;
+        if(draw_fp == (FILE *)NULL || fileno(draw_fp) == -1 ){
+                draw_fp = stdout;
+                if ((M_DRAW_OUTPUT = getenv("M_DRAW_OUTPUT")) != (char *)NULL) {
+                        /* fprintf(stderr,"FILENAME=%s\n",M_DRAW_OUTPUT); */
+                        if(strlen(M_DRAW_OUTPUT)>0)draw_voutput(M_DRAW_OUTPUT);
                 }
         }
 
@@ -934,7 +943,7 @@ void draw_vexit(void) {
         (*vdevice.dev.Vexit)();
 
         vdevice.initialised = 0;
-        fp = stdout;
+        draw_fp = stdout;
         badcount=0;
 }
 

@@ -1,0 +1,7 @@
+NAME
+   push(3f) - [M_DRAWPLUS] call pushviewport(), pushmatrix(), pushattributes()
+SYNOPSIS
+    subroutine push()
+DESCRIPTION
+   call pushattributes(), pushmatrix(), pushviewport()
+EXAMPLE

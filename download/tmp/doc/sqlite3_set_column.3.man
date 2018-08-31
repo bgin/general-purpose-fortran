@@ -2,7 +2,7 @@ NAME
    sqlite3_set_column(3f)  - [M_sqlite] Convenience routines to set the value of a column
 
 SYNOPSIS
-   call sqlite3_set_column(column, value)
+   subroutine sqlite3_set_column(column, value)
 
        type(SQLITE_COLUMN) column
        any type value

@@ -1,4 +1,5 @@
 function loadthem(){
+append("M_messages.3{SECTION}.html");
 append("M_messages.3.html");
 append("blocks.3.html");
 append("junbad.3.html");

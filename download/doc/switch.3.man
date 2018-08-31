@@ -19,7 +19,7 @@ DESCRIPTION
 
    SWITCH(3f): generic function that switches CHARACTER string to an array
    of single characters or an array of single characters to a CHARACTER
-   string. Useful in passing strings to C.  New Fortran features may
+   string. Useful in passing strings to C. New Fortran features may
    supersede these routines.
 
 

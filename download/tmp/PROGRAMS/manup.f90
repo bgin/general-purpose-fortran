@@ -12,7 +12,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   manup(1f) - [DEVELOPER] Simple markup of text to a man(1) page               ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
-'   manup FILE -cmd -section 1 -product "CLI utilities" -help .F. -version .F.   ',&
+'   manup FILE -cmd -section 1 -product "GPF utilities" -help .F. -version .F.   ',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
 '     FILE                                                                       ',&
@@ -50,7 +50,7 @@ end subroutine help_usage
 !!
 !!##SYNOPSIS
 !!
-!!    manup FILE -cmd -section 1 -product "CLI utilities" -help .F. -version .F.
+!!    manup FILE -cmd -section 1 -product "GPF utilities" -help .F. -version .F.
 !!
 !!##DESCRIPTION
 !!      FILE
@@ -87,7 +87,7 @@ logical                        :: stopit=.false.
 stopit=.false.
 if(l_version)then
 help_text=[ CHARACTER(LEN=128) :: &
-'@(#)PRODUCT:        CLI library utilities and examples>',&
+'@(#)PRODUCT:        GPF (General Purpose Fortran) utilities and examples>',&
 '@(#)PROGRAM:        manup(1)>',&
 '@(#)DESCRIPTION:    convert text formatted to simple markup rules into a man(1) page>',&
 '@(#)VERSION:        1.0, 2016-05-14>',&
@@ -95,7 +95,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Mon, Jun 4th, 2018 8:50:06 AM>',&
+'@(#)COMPILED:       Thu, Aug 16th, 2018 11:55:59 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -393,7 +393,7 @@ implicit none
    integer                            :: ilen
 !-----------------------------------------------------------------------------------------------------------------------------------
 !  parse command line arguments
-   call kracken('manup',' -cmd -section 1 -product "CLI utilities" -asis .F. -help .F. -version .F.' )
+   call kracken('manup',' -cmd -section 1 -product "GPF utilities" -asis .F. -help .F. -version .F.' )
    call help_usage(lget('manup_help'))       ! process -help switch
    call help_version(lget('manup_version'))  ! process -version switch
    cmd=sget('manup_cmd')

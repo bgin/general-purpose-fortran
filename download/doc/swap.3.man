@@ -1,5 +1,5 @@
 NAME
-     swap(3f) - [M_swap] elemental subroutine swaps two standard type variables of like type
+     swap(3f) - [M_sort] elemental subroutine swaps two standard type variables of like type
 SYNOPSIS
      subroutine swap(X,Y)
 DESCRIPTION
@@ -16,7 +16,7 @@ EXAMPLE
   Example program:
 
    program try_swap
-   use M_swap, only : swap
+   use M_sort, only : swap
    integer             :: iarray(2)=[10,20]
    real                :: rarray(2)=[11.11,22.22]
    doubleprecision     :: darray(2)=[1234.56789d0,9876.54321d0]

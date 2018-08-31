@@ -52,15 +52,16 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 
 </A>
 <BLOCKQUOTE>
-<B>textjustify(3f) </B>- [M_DRAW:TEXT] general text justification (C only)
+<B>textjustify(3f) </B>- [M_draw:TEXT] general text justification (C only)
 <B>
 </B></BLOCKQUOTE>
 <A name=contents></A><H3>CONTENTS</H3></A>
 <BLOCKQUOTE>
 <A HREF=#1>Synopsis</A><BR>
 <A HREF=#2>Description</A><BR>
+<A HREF=#3>Example</A><BR>
 </BLOCKQUOTE>
-<A name=3>
+<A name=4>
 
      <H3>SYNOPSIS</H3>
 
@@ -69,16 +70,9 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <PRE>
 subroutine <B>textjustify</B>(<I>val</I>)
 <B>character</B>(kind=c_short) :: ival
+<B>character</B>(kind=c_char) :: <I>val</I>
 </PRE>
-<TABLE cellpadding=3><!-- tsb: subroutine <B>textjustify</B>(<I>val</I>)
- -->
-<TR></TR><TR></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-<B>character</B>(kind=c_char)
-:: <I>val</I>
-</TD></TR>
-<TR></TR></TABLE></BLOCKQUOTE>
+</BLOCKQUOTE>
 <A name=2>
 
      <H3>DESCRIPTION</H3>
@@ -87,9 +81,9 @@ subroutine <B>textjustify</B>(<I>val</I>)
 <BLOCKQUOTE>
 General (direct) control of text justification. The value of <I>val</I> is made
 up of the logical OR of the following predefined constants in draw.h
-(FOR C and Fortran only). V_LEFT, V_RIGHT, V_XCENTERED, V_TOP, V_BOTTOM,
-V_YCENTERED. Centering takes priority, as does RIGHT and TOP justification
-(if you were silly enough to set it to V_LEFT|V_RIGHT for EXAMPLE that
+(FOR C and Fortran only). D_LEFT, D_RIGHT, D_XCENTERED, D_TOP, D_BOTTOM,
+D_YCENTERED. Centering takes priority, as does RIGHT and TOP justification
+(if you were silly enough to set it to D_LEFT|D_RIGHT for EXAMPLE that
 is). A value of 0 (zero) (in all languages) resets the textjustification
 to the default.
 <P>
@@ -97,16 +91,80 @@ to the default.
        ! from Fortran, use IANY() to OR the array of options, and CHAR()
        ! to convert the integer result to a C_CHAR type. KIND C_CHAR is
        ! defined by loading a the intrinsic module for C bindings ("USE ISO_C_BINDING").
-       ival=iany([V_XCENTERED,V_YCENTERED])
+       ival=iany([D_XCENTERED,D_YCENTERED])
        val=char(ival)
        call textjustify(val)
 <P>
 </PRE>
 </BLOCKQUOTE>
+<A name=3>
+
+     <H3>EXAMPLE</H3>
+
+</A>
+<BLOCKQUOTE>
+Sample program:
+<P>
+<PRE>
+   program demo_textjustify
+   use M_draw
+   use M_draw,    only  : D_BLACK,   D_WHITE
+   use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
+   use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
+   use M_drawplus, only : biggest_ortho2
+   use iso_c_binding
+   implicit none
+   real :: x1=-20.0, x2=20.0, y1=-20.0, y2=20.0
+      call prefsize(int(x2-x1)*30,int(y2-y1)*30)
+      !!call voutput(&#146;|ppmtogif &gt;images/textjustify.3M_draw.gif&#146;)
+      !!call vinit(&#146;p6&#146;)
+      call vinit(&#146; &#146;)
+      call biggest_ortho2(x1,x2,y1,y2)
+      call clear()
+      call textsize(0.9, 1.4)
+      call font("times.rb")
+      call linewidth(20)
+      call seejustify( "right|top",           iany([d_right,d_top]),           -10.0, -10.0 )
+      call seejustify( "right|ycentered",     iany([d_right,d_ycentered]),     -10.0,   0.0 )
+      call seejustify( "right|bottom",        iany([d_right,d_bottom]),        -10.0, +10.0 )
+      call seejustify( "xcentered|top",       iany([d_xcentered,d_top]),         0.0, -10.0 )
+      call seejustify( "xcentered|ycentered", iany([d_xcentered,d_ycentered]),   0.0,   0.0 )
+      call seejustify( "xcentered|bottom",    iany([d_xcentered,d_bottom]),      0.0, +10.0 )
+      call seejustify( "left|top",            iany([d_left,d_top]),            +10.0, -10.0 )
+      call seejustify( "left|ycentered",      iany([d_left,d_ycentered]),      +10.0,   0.0 )
+      call seejustify( "left|bottom",         iany([d_left,d_bottom]),         +10.0, +10.0 )
+      call vexit()
+   contains
+      subroutine seejustify(string,justify,x,y)
+         implicit none
+         real                    :: x, y
+         real                    :: height, width
+         integer(kind=c_short)   :: justify
+         character(len=*)        :: string
+         character(kind=c_char)  :: byte
+         call color(D_RED)
+         call move2(x-1.0,y); call draw2(x+1.0,y); call move2(x,y-1.0); call draw2(x,y+1.0)
+         call circle(x,y,5.0)
+         call color(D_BLUE)
+         call move2(x,y)
+         byte=char(justify)
+         call textjustify(byte)
+         call drawstr(string)
+         call color(D_WHITE)
+         call rmove2(-strlength(string),0.0)
+         call rdraw2(+strlength(string),0.0)
+         call getfontsize(width, height)
+         call rmove2(0.0,height)
+         call rmove2(-strlength(string),0.0)
+         call rdraw2(+strlength(string),0.0)
+      end subroutine seejustify
+   end program demo_textjustify
+</PRE>
+</BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>textjustify (3m_draw)</TD> <TD align=right width=33%><I>June 12, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 33b9da70-1d09-43db-b56b-e26616d7f2be using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>textjustify (3m_draw)</TD> <TD align=right width=33%><I>August 26, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from afff9cec-91a4-441c-a2fd-c5b3bbe55a6f using man macros.</FONT>
 </div>
 </div>
-<center><img src="images/textjustify.3m_draw.gif"></center> 
+<br><br><center><img src="images/textjustify.3m_draw.gif"></center> 
 </body>
 </HTML>

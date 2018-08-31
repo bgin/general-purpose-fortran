@@ -2,7 +2,7 @@ NAME
    sqlite3_prepare_select(3f) - [M_sqlite] Prepare a selection of data from the database
 
 SYNOPSIS
-   call sqlite3_prepare_select(db, tablename, columns, stmt, extra_clause)
+   subroutine sqlite3_prepare_select(db, tablename, columns, stmt, extra_clause)
 
     type(SQLITE_DATABASE)     :: db
     character(len=*)          :: tablename

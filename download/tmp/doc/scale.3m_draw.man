@@ -1,5 +1,5 @@
 NAME
-   scale(3f) - [M_DRAW:TRANSFORMATION] Set up scaling factors in x, y, and z axis.
+   scale(3f) - [M_draw:TRANSFORMATION] Set up scaling factors in x, y, and z axis.
 
 SYNOPSIS
          subroutine scale(x, y, z)

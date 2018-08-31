@@ -80,15 +80,18 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 
 </A>
 <BLOCKQUOTE>
-The DEALLOCATE statement causes allocatable variables to be deallocated; it causes pointer targets to be
-deallocated and the pointers to be disassociated.
+The DEALLOCATE statement causes allocatable variables to be deallocated;
+it causes pointer targets to be deallocated and the pointers to be
+disassociated.
 <P>
-An allocate-object shall not depend on the value, bounds, allocation status, or association status of another
-allocate-object in the same DEALLOCATE statement; it also shall not depend on the value of the stat-variable
-or errmsg-variable in the same DEALLOCATE statement.
+An allocate-object shall not depend on the value, bounds, allocation
+status, or association status of another allocate-object in the same
+DEALLOCATE statement; it also shall not depend on the value of the
+stat-variable or errmsg-variable in the same DEALLOCATE statement.
 <P>
-The status of objects that were not successfully allocated or deallocated can be individually checked with
-the intrinsic functions ALLOCATED or ASSOCIATED.
+The status of objects that were not successfully allocated or
+deallocated can be individually checked with the intrinsic functions
+ALLOCATED or ASSOCIATED.
 </BLOCKQUOTE>
 <A name=3>
 
@@ -157,51 +160,75 @@ An example of a DEALLOCATE statement is:
 </A>
 <BLOCKQUOTE>
 <P>
-Deallocating an unallocated allocatable variable causes an error condition in the DEALLOCATE statement.
-Deallocating an allocatable variable with the TARGET attribute causes the pointer association status of any
-pointer associated with it to become undefined.
+Deallocating an unallocated allocatable variable causes an error
+<TABLE cellpadding=3><!-- tsb: Deallocating an unallocated allocatable variable causes an error
+ -->
+<TR></TR><TR></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+condition in the DEALLOCATE statement.
+Deallocating an allocatable
+variable with the TARGET attribute causes the pointer association
+status of any pointer associated with it to become undefined.
+</TD></TR>
+<TR></TR></TABLE>When the execution of a procedure is terminated by execution of a
+RETURN or END statement, an unsaved allocatable local variable of
+the procedure retains its allocation and definition status if it
+is a function result variable or a subobject thereof; otherwise,
+it is deallocated.
 <P>
-When the execution of a procedure is terminated by execution of a RETURN or END statement, an unsaved
-allocatable local variable of the procedure retains its allocation and definition status if it is a function result
-variable or a subobject thereof; otherwise, it is deallocated.
+When a BLOCK construct terminates, an unsaved allocatable local
+variable of the construct is deallocated.
 <P>
-When a BLOCK construct terminates, an unsaved allocatable local variable of the construct is deallocated.
+If an executable construct references a function whose result is either
+allocatable or a structure with a subobject that is allocatable,
+and the function reference is executed, an allocatable result and
+any subobject that is an allocated allocatable entity in the result
+returned by the function is deallocated after execution of the
+innermost executable construct containing the reference.
 <P>
-If an executable construct references a function whose result is either allocatable or a structure with a subobject
-that is allocatable, and the function reference is executed, an allocatable result and any subobject that is an
-allocated allocatable entity in the result returned by the function is deallocated after execution of the innermost
-executable construct containing the reference.
+If a function whose result is either allocatable or a structure with
+an allocatable subobject is referenced in the specification part
+of a scoping unit or BLOCK construct, and the function reference
+is executed, an allocatable result and any subobject that is an
+allocated allocatable entity in the result returned by the function
+is deallocated before execution of the executable constructs of the
+scoping unit or block.
 <P>
-If a function whose result is either allocatable or a structure with an allocatable subobject is referenced in the
-specification part of a scoping unit or BLOCK construct, and the function reference is executed, an allocatable
-result and any subobject that is an allocated allocatable entity in the result returned by the function is deallocated
-before execution of the executable constructs of the scoping unit or block.
+When a procedure is invoked, any allocated allocatable object that
+is an actual argument corresponding to an INTENT (OUT) allocatable
+dummy argument is deallocated; any allocated allocatable object that
+is a subobject of an actual argument corresponding to an INTENT (OUT)
+dummy argument is deallocated.
 <P>
-When a procedure is invoked, any allocated allocatable object that is an actual argument corresponding to an
-INTENT (OUT) allocatable dummy argument is deallocated; any allocated allocatable object that is a subobject
-of an actual argument corresponding to an INTENT (OUT) dummy argument is deallocated.
+When an intrinsic assignment statement (7.2.1.3) is executed,
+any noncoarray allocated allocatable subobject of the variable is
+deallocated before the assignment takes place.
 <P>
-When an intrinsic assignment statement (7.2.1.3) is executed, any noncoarray allocated allocatable subobject of
-the variable is deallocated before the assignment takes place.
+When a variable of derived type is deallocated, any allocated
+allocatable subobject is deallocated.
 <P>
-When a variable of derived type is deallocated, any allocated allocatable subobject is deallocated.
+If an allocatable component is a subobject of a finalizable object,
+that object is finalized before the component is automatically
+deallocated.
 <P>
-If an allocatable component is a subobject of a finalizable object, that object is finalized before the component
-is automatically deallocated.
-<P>
-The effect of automatic deallocation is the same as that of a DEALLOCATE statement without a dealloc-opt-list.
+The effect of automatic deallocation is the same as that of a
+DEALLOCATE statement without a dealloc-opt-list.
 </BLOCKQUOTE>
 <P>
 <P>
 <BLOCKQUOTE>
-There is implicit synchronization of all images in association with each DEALLOCATE statement that deallocates
-one or more coarrays. On each image, execution of the segment (8.5.1) following the statement is delayed until all
-other images have executed the same statement the same number of times. If the coarray is a dummy argument,
-its ultimate argument (12.5.2.3) shall be the same coarray on every image.
+There is implicit synchronization of all images in association with
+each DEALLOCATE statement that deallocates one or more coarrays. On
+each image, execution of the segment (8.5.1) following the statement
+is delayed until all other images have executed the same statement
+the same number of times. If the coarray is a dummy argument, its
+ultimate argument (12.5.2.3) shall be the same coarray on every image.
 <P>
-There is also an implicit synchronization of all images in association with the deallocation of a coarray or coarray
-subcomponent caused by the execution of a RETURN or END statement or the termination of a BLOCK
-construct.
+There is also an implicit synchronization of all images in association
+with the deallocation of a coarray or coarray subcomponent caused by
+the execution of a RETURN or END statement or the termination of a
+BLOCK construct.
 <P>
 <PRE>
     In the following example:
@@ -215,9 +242,11 @@ construct.
 <P>
 </PRE>
 <BLOCKQUOTE>
-on return from subroutine PROCESS, the allocation status of X is preserved because X has the SAVE
-attribute. TEMP does not have the SAVE attribute, so it will be deallocated if it was allocated. On the
-next invocation of PROCESS, TEMP will have an allocation status of unallocated.
+on return from subroutine PROCESS, the allocation status of X is
+preserved because X has the SAVE attribute. TEMP does not have the
+SAVE attribute, so it will be deallocated if it was allocated. On
+the next invocation of PROCESS, TEMP will have an allocation status
+of unallocated.
 </BLOCKQUOTE>
 </BLOCKQUOTE>
 <A name=6>
@@ -227,51 +256,67 @@ next invocation of PROCESS, TEMP will have an allocation status of unallocated.
 </A>
 <BLOCKQUOTE>
 <P>
-If a pointer appears in a DEALLOCATE statement, its association status shall be defined. Deallocating a pointer
-that is disassociated or whose target was not created by an ALLOCATE statement causes an error condition
-in the DEALLOCATE statement. If a pointer is associated with an allocatable entity, the pointer shall not be
-deallocated.
+If a pointer appears in a DEALLOCATE statement, its association status
+shall be defined. Deallocating a pointer
+that is disassociated or whose target was not created by an ALLOCATE
+statement causes an error condition in the DEALLOCATE statement. If a
+pointer is associated with an allocatable entity, the pointer shall
+not be deallocated.
 <P>
-If a pointer appears in a DEALLOCATE statement, it shall be associated with the whole of an object that was
-created by allocation. Deallocating a pointer target causes the pointer association status of any other pointer
-that is associated with the target or a portion of the target to become undefined.
+If a pointer appears in a DEALLOCATE statement, it shall be associated
+with the whole of an object that was
+created by allocation. Deallocating a pointer target causes the
+pointer association status of any other pointer that is associated
+with the target or a portion of the target to become undefined.
 <P>
-If an ALLOCATE or DEALLOCATE statement with a coarray allocate-object is executed when one or more
-images has initiated termination of execution, the stat-variable becomes defined with the processor-dependent
-positive integer value of the constant STAT STOPPED IMAGE from the intrinsic module ISO_FORTRAN_ENV (13.8.2).
-If any other error condition occurs during execution of the ALLOCATE or DEALLOCATE
-statement, the stat-variable becomes defined with a processor-dependent positive integer value different from
-STAT STOPPED IMAGE. In either case, each allocate-object has a processor-dependent status:
-<BLOCKQUOTE>
-<TABLE cellpadding=3><!-- tsb: If an ALLOCATE or DEALLOCATE statement with a coarray allocate-object is executed when one or more
+If an ALLOCATE or DEALLOCATE statement with a coarray
+allocate-object is executed when one or more images has initiated
+termination of execution, the stat-variable becomes defined with the
+processor-dependent positive integer value of the constant STAT STOPPED
+<TABLE cellpadding=3><!-- tsb: If an ALLOCATE or DEALLOCATE statement with a coarray
+ -->
+<TR></TR><TR></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+IMAGE from the intrinsic module ISO_FORTRAN_ENV (13.8.2).
+If any other
+error condition occurs during execution of the ALLOCATE or DEALLOCATE
+statement, the stat-variable becomes defined with a processor-dependent
+positive integer value different from STAT STOPPED IMAGE. In either
+case, each allocate-object has a processor-dependent status:
+<TABLE width=100% cellpadding=3><!-- tsb: IMAGE from the intrinsic module ISO_FORTRAN_ENV (13.8.2).
  -->
 <TR></TR><TR></TR>
 <TR valign=top><TD width=3%>
 o
 </TD><TD>
-each allocate-object that was successfully allocated shall have an allocation status of allocated or a pointer
-association status of associated;
+each allocate-object that was successfully allocated shall have
+an allocation status of allocated or a pointer association
+status of associated;
 </TD></TR>
 <TR valign=top><TD width=3%>
 o
 </TD><TD>
-each allocate-object that was successfully deallocated shall have an allocation status of unallocated or a
-pointer association status of disassociated;
+each allocate-object that was successfully deallocated shall
+have an allocation status of unallocated or a pointer association
+status of disassociated;
 </TD></TR>
 <TR valign=top><TD width=3%>
 o
 </TD><TD>
-each allocate-object that was not successfully allocated or deallocated shall retain its previous allocation
-status or pointer association status.
+each allocate-object that was not successfully allocated or
+deallocated shall retain its previous allocation status or
+pointer association status.
+</TD></TR>
+<TR></TR></TABLE><!-- .RE -->
 </TD></TR>
 <TR></TR></TABLE></BLOCKQUOTE>
-</BLOCKQUOTE>
 <P>
 <P>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>deallocate (7)</TD> <TD align=right width=33%><I>June 12, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 7e4dc320-7cc6-416d-8e6a-d6173afb01e8 using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>deallocate (7)</TD> <TD align=right width=33%><I>August 26, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 3b07dffa-b123-43b6-bbab-6a4c5ce5dbd5 using man macros.</FONT>
 </div>
 </div>
-<center><img src="images/deallocate.7.gif"></center> 
+<br><br><center><img src="images/deallocate.7.gif"></center> 
 </body>
 </HTML>

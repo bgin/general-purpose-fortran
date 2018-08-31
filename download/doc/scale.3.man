@@ -1,27 +1,21 @@
 NAME
-
      scale(3f) - [INTRINSIC:MODEL_COMPONENTS] Scale a real value
 
 SYNTAX
-
    result = scale(x, i)
 
 DESCRIPTION
-
    scale(x,i) returns x * radix(x)**i.
 
 ARGUMENTS
-
    X  - The type of the argument shall be a REAL.
    I  - The type of the argument shall be a INTEGER.
 
 RETURN VALUE
-
    The return value is of the same type and kind as X.
    Its value is x * radix(x)**i.
 
 EXAMPLE
-
   Sample program:
 
     program test_scale
@@ -34,7 +28,6 @@ EXAMPLE
     0.570043862      0.570043862
 
 STANDARD
-
    [[Fortran 95]] and later
 
 CLASS
@@ -42,6 +35,5 @@ CLASS
    [[Elemental procedure|Elemental function]]
 
 SEE ALSO
-
    [[radix]]
 

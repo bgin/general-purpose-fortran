@@ -12,12 +12,35 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   huegif(1f) - generate color wheels as GIF pixmap files                       ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
-'   huegif                                                                       ',&
+'   huegif [--help|--version]                                                    ',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
 '                                                                                ',&
 '    Generates color wheels using the HSL (Hue Lightness, Saturation)            ',&
 '    model as GIF pixel files.                                                   ',&
+'                                                                                ',&
+'    The following files will be generated, of the name hue.3_NNN.gif,           ',&
+'    where NNN is the lightness for the particular plot:                         ',&
+'                                                                                ',&
+'      hue.3_100.gif                                                             ',&
+'      hue.3_095.gif                                                             ',&
+'      hue.3_090.gif                                                             ',&
+'      hue.3_085.gif                                                             ',&
+'      hue.3_080.gif                                                             ',&
+'      hue.3_075.gif                                                             ',&
+'      hue.3_070.gif                                                             ',&
+'      hue.3_065.gif                                                             ',&
+'      hue.3_060.gif                                                             ',&
+'      hue.3_055.gif                                                             ',&
+'      hue.3_050.gif                                                             ',&
+'      hue.3_045.gif                                                             ',&
+'      hue.3_040.gif                                                             ',&
+'      hue.3_035.gif                                                             ',&
+'      hue.3_030.gif                                                             ',&
+'      hue.3_025.gif                                                             ',&
+'      hue.3_020.gif                                                             ',&
+'      hue.3_015.gif                                                             ',&
+'      hue.3_010.gif                                                             ',&
 '                                                                                ',&
 'OPTIONS                                                                         ',&
 '    --help      display this help and exit                                      ',&
@@ -36,12 +59,35 @@ end subroutine help_usage
 !!
 !!##SYNOPSIS
 !!
-!!    huegif
+!!    huegif [--help|--version]
 !!
 !!##DESCRIPTION
 !!
 !!     Generates color wheels using the HSL (Hue Lightness, Saturation)
 !!     model as GIF pixel files.
+!!
+!!     The following files will be generated, of the name hue.3_NNN.gif,
+!!     where NNN is the lightness for the particular plot:
+!!
+!!       hue.3_100.gif
+!!       hue.3_095.gif
+!!       hue.3_090.gif
+!!       hue.3_085.gif
+!!       hue.3_080.gif
+!!       hue.3_075.gif
+!!       hue.3_070.gif
+!!       hue.3_065.gif
+!!       hue.3_060.gif
+!!       hue.3_055.gif
+!!       hue.3_050.gif
+!!       hue.3_045.gif
+!!       hue.3_040.gif
+!!       hue.3_035.gif
+!!       hue.3_030.gif
+!!       hue.3_025.gif
+!!       hue.3_020.gif
+!!       hue.3_015.gif
+!!       hue.3_010.gif
 !!
 !!##OPTIONS
 !!     --help      display this help and exit
@@ -58,13 +104,13 @@ logical                        :: stopit=.false.
 stopit=.false.
 if(l_version)then
 help_text=[ CHARACTER(LEN=128) :: &
-'@(#)PRODUCT:        CLI library utilities and examples>',&
+'@(#)PRODUCT:        GPF (General Purpose Fortran) utilities and examples>',&
 '@(#)PROGRAM:        huegif(1f)>',&
 '@(#)DESCRIPTION:    generate GIF pixel files with color wheels at different lightness>',&
 '@(#)VERSION:        1.0 20170604>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Mon, Jun 4th, 2018 8:51:12 AM>',&
+'@(#)COMPILED:       Sat, Aug 25th, 2018 8:38:16 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

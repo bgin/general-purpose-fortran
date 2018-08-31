@@ -259,7 +259,7 @@ DEFINITION
    $FILTER [comment|write|help|version|shell[ -cmd COMMAND]] [-file NAME][! comment]
    $FILTER VARIABLE -varname NAME
 
-      COMMENT:  write text prefixed by two exclamations and a space
+      COMMENT:  write text prefixed by an exclamation and a space
       WRITE:    write text as Fortran WRITE(3f) statements
       HELP:     write text as a subroutine called HELP_USAGE
       VERSION:  write text as a subroutine called HELP_VERSION

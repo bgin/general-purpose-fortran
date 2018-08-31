@@ -14,7 +14,7 @@
 !!    unit_check_start(3f)  call command "goodbad NAME start ..."
 !!    unit_check(3f)        if expression is .F. call command "goodbad NAME bad" and stop program
 !!    unit_check_good(3f)   call command "goodbad NAME good"
-!!    unit_check_bad(3f)    call command "goodbad NAME bad" and  stop program
+!!    unit_check_bad(3f)    call command "goodbad NAME bad" and stop program
 !!
 !!    The existence of a command called "goodbad" is assumed. This is generally a script that makes entries for each unit in an
 !!    SQLite data file which is then used to create CSV and HTML reports on the status of each unit. A sample goodbad(1) command
@@ -182,7 +182,7 @@ end subroutine stderr
 !!     character(len=*),intent(in),optional :: stderr
 !!##DESCRIPTION
 !!
-!!    FSTOP(3f) call STOP(3f).  What a call to STOP does is very system
+!!    FSTOP(3f) call STOP(3f). What a call to STOP does is very system
 !!    dependent, so using an abstraction layer is useful, as it allows just
 !!    the fstop() routine to be changed; and STOP does not allow a variable
 !!    to be used on the numeric access status (this has changed at f2015).

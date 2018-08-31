@@ -38,8 +38,8 @@ static int      LoYold = -1, HiYold = -1, HiXold = -1;
 static int      tlstx, tlsty;
 static int      click;                  /* to emulate a mouse click */
 
-extern FILE *fp;
-extern FILE *_voutfile();
+extern FILE *draw_fp;
+extern FILE *_draw_outfile();
 
 static int xterm=-1; /* tek or xterm */
 
@@ -48,52 +48,52 @@ static int PAUSE;
 
 static int TEKMODE=-1;
 /******************************************************************************/
-void XTERM_4010(){
+static void XTERM_4010(){
    int i;
-   if (fp != stdout && fp != stderr)return;
+   if (draw_fp != stdout && draw_fp != stderr)return;
 /* already assumed in TEK mode */
    if (TEKMODE == 1) return;
-   fflush(fp);
-   putc(ESC,fp);
-   putc('[',fp);
-   putc('?',fp);
-   putc('3',fp);
-   putc('8',fp);
-   putc('h',fp);
-   fflush(fp);
+   fflush(draw_fp);
+   putc(ESC,draw_fp);
+   putc('[',draw_fp);
+   putc('?',draw_fp);
+   putc('3',draw_fp);
+   putc('8',draw_fp);
+   putc('h',draw_fp);
+   fflush(draw_fp);
    for (i=1;i<PAUSE;i++){
-      putc(0,fp);
+      putc(0,draw_fp);
    }
-   fflush(fp);
+   fflush(draw_fp);
    TEKMODE=1;
    return;
 }
 /******************************************************************************/
-void XTERM_vt102(){
+static void XTERM_vt102(){
    int i;
-   if (fp != stdout && fp != stderr)return;
+   if (draw_fp != stdout && draw_fp != stderr)return;
    if (TEKMODE == 0) return; /* already in VT102 mode */
-   fflush(fp);
-   putc(ESC,fp);
-   putc(ETX,fp);
-   /* putc('T',fp); */
-   fflush(fp);
+   fflush(draw_fp);
+   putc(ESC,draw_fp);
+   putc(ETX,draw_fp);
+   /* putc('T',draw_fp); */
+   fflush(draw_fp);
    for (i=1;i<PAUSE;i++){
-      putc(0,fp);
+      putc(0,draw_fp);
    }
-   fflush(fp);
+   fflush(draw_fp);
    TEKMODE=0;
    return;
 }
 /******************************************************************************/
 /* TEK_init set up the graphics mode.  */
-int TEK_init(void) {
+static int TEK_init(void) {
         /* actually only need to set modes in xhair and pause routines */
         char            *varname;
 
         vdevice.depth = 1;
-        fp = _voutfile();
-        putc(GS,fp);                    /* enter graphics mode */
+        draw_fp = _draw_outfile();
+        putc(GS,draw_fp);                    /* enter graphics mode */
 
         vdevice.sizeX = vdevice.sizeY = TEK_Y_SIZE;
         vdevice.sizeSx = TEK_X_SIZE;
@@ -114,19 +114,18 @@ int TEK_init(void) {
 }
 /******************************************************************************/
 /* cleans up before going back to normal mode */
-int TEK_exit(void)
-{
+static int TEK_exit(void) {
         if(xterm==0)XTERM_4010();
-        putc(US,fp);
-        putc(CAN,fp);
+        putc(US,draw_fp);
+        putc(CAN,draw_fp);
         TEKMODE=-3; /* do xterm settings for sure */
         if(xterm==0)XTERM_vt102();
-        fflush(fp);
-        if (fp != stdout && fp != stderr){
+        fflush(draw_fp);
+        if (draw_fp != stdout && draw_fp != stderr){
                 if(vdevice.writestoprocess == 2){
-                   pclose(fp);
+                   pclose(draw_fp);
                 }else{
-                   fclose(fp);
+                   fclose(draw_fp);
                 }
         }
         TEKMODE=-3; /* do xterm settings for sure */
@@ -156,27 +155,27 @@ static void out_bytes(int x,int y) {
          */
 
         if (HiYold != HiY) {
-                fprintf(fp,"%c", HiY);
+                fprintf(draw_fp,"%c", HiY);
                 HiYold = HiY;
         }
 
         if ((LoYold != LoY) || (HiXold != HiX)) {
-                fprintf(fp,"%c", LoY);
+                fprintf(draw_fp,"%c", LoY);
                 LoYold = LoY;
                 if (HiXold != HiX) {
-                        fprintf(fp,"%c", HiX);
+                        fprintf(draw_fp,"%c", HiX);
                         HiXold = HiX;
                 }
         }
 
-        fprintf(fp,"%c", LoX);
+        fprintf(draw_fp,"%c", LoX);
 }
 /******************************************************************************/
 /* TEK_draw draw from the current graphics position to the new one (x, y) */
-int TEK_draw(int x, int y) {
+static int TEK_draw(int x, int y) {
         if(xterm==0 )XTERM_4010();
         if (tlstx != vdevice.cpVx || tlsty != vdevice.cpVy) {
-                putc(GS,fp);
+                putc(GS,draw_fp);
                 LoYold = HiYold = HiXold = -1;  /* Force output of all bytes */
                 out_bytes(vdevice.cpVx, vdevice.cpVy);
         }
@@ -186,14 +185,14 @@ int TEK_draw(int x, int y) {
         tlsty = y;
 
         if(xterm==0 )XTERM_vt102();
-        if (fp == stdout || fp == stderr){
-           fflush(fp);
+        if (draw_fp == stdout || draw_fp == stderr){
+           fflush(draw_fp);
         }
         return(UNUSED);
 }
 /******************************************************************************/
 /* TEK_getkey return the next key typed.  */
-int TEK_getkey(void) {
+static int TEK_getkey(void) {
 #ifdef BSD
         struct sgttyb   oldtty, newtty;
         char            c;
@@ -243,7 +242,7 @@ int TEK_getkey(void) {
  * In this case the keys 1 to 9 are used, with each one returning a power of
  * two.
  */
-int TEK_locator(int *x, int *y) {
+static int TEK_locator(int *x, int *y) {
         char            buf[5];
         int             i;
 #ifdef BSD
@@ -279,9 +278,9 @@ int TEK_locator(int *x, int *y) {
         ioctl(0, TCSETA, &newtty);
 #endif
 
-        fputs("\037\033\032", fp);
-        if (fp == stdout || fp == stderr){
-           fflush(fp);
+        fputs("\037\033\032", draw_fp);
+        if (draw_fp == stdout || draw_fp == stderr){
+           fflush(draw_fp);
         }
 
         /* Tek 4010/4014 return 8 bytes upon cross-hair read:
@@ -333,18 +332,18 @@ int TEK_locator(int *x, int *y) {
  *      throw away the sleep(2) and bung in a loop.
  *      Here's a sample ...
  *
- *      for (i = 0; i < 960; i++) putc(0,fp);
+ *      for (i = 0; i < 960; i++) putc(0,draw_fp);
  *
  *      (for 9600 baud rate)
  *
  */
-int TEK_clear(void) {
+static int TEK_clear(void) {
         if(xterm==0)XTERM_4010();
-        putc(US,fp);
-        putc(ESC,fp);
-        putc(FF,fp);
-        if (fp == stdout || fp == stderr){
-           fflush(fp);
+        putc(US,draw_fp);
+        putc(ESC,draw_fp);
+        putc(FF,draw_fp);
+        if (draw_fp == stdout || draw_fp == stderr){
+           fflush(draw_fp);
         }
 
         tlstx = tlsty = -1;
@@ -353,8 +352,8 @@ int TEK_clear(void) {
            TEKMODE=-6; /* do xterm settings for sure */
            XTERM_vt102();
         }else{
-           if (fp == stdout || fp == stderr){
-              fflush(fp);
+           if (draw_fp == stdout || draw_fp == stderr){
+              fflush(draw_fp);
               sleep(1); /* for Tektronix slow erase */
            }
         }
@@ -362,14 +361,14 @@ int TEK_clear(void) {
 }
 /******************************************************************************/
 /* set for large or small mode.  */
-int TEK_font(char *font) {
+static int TEK_font(char *font) {
         if(xterm==0)XTERM_4010();
         if (strcmp(font, "small") == 0) {
-                fprintf(fp,"\033:");
+                fprintf(draw_fp,"\033:");
                 vdevice.hwidth = 8.0;
                 vdevice.hheight = 15.0;
         } else if (strcmp(font, "large") == 0) {
-                fprintf(fp,"\0338");
+                fprintf(draw_fp,"\0338");
                 vdevice.hwidth = 14.0;
                 vdevice.hheight = 17.0;
         } else {
@@ -384,54 +383,54 @@ int TEK_font(char *font) {
 }
 /******************************************************************************/
 /* outputs one char */
-int TEK_char(char c) {
+static int TEK_char(char c) {
         if(xterm==0)XTERM_4010();
         if (tlstx != vdevice.cpVx || tlsty != vdevice.cpVy) {
-                putc(GS,fp);
+                putc(GS,draw_fp);
                 LoYold = HiYold = HiXold = -1;  /* Force output of all bytes */
                 out_bytes(vdevice.cpVx, vdevice.cpVy);
         }
 
-        putc(US,fp);
-        putc(c,fp);
+        putc(US,draw_fp);
+        putc(c,draw_fp);
 
         tlstx = tlsty = -1;
 
         if(xterm==0)XTERM_vt102();
-        if (fp == stdout || fp == stderr){
-           fflush(fp);
+        if (draw_fp == stdout || draw_fp == stderr){
+           fflush(draw_fp);
         }
         return(UNUSED);
 }
 /******************************************************************************/
 /* outputs a string */
-int TEK_string(char *s) {
+static int TEK_string(char *s) {
         if(xterm==0)XTERM_4010();
         if (tlstx != vdevice.cpVx || tlsty != vdevice.cpVy) {   /* move to start */
-                putc(GS,fp);
+                putc(GS,draw_fp);
                 LoYold = HiYold = HiXold = -1;  /* Force output of all bytes */
                 out_bytes(vdevice.cpVx, vdevice.cpVy);
         }
 
-        putc(US,fp);
-        fputs(s, fp);
+        putc(US,draw_fp);
+        fputs(s, draw_fp);
 
         tlstx = tlsty = -1;
 
         if(xterm==0)XTERM_vt102();
-        if (fp == stdout || fp == stderr){
-           fflush(fp);
+        if (draw_fp == stdout || draw_fp == stderr){
+           fflush(draw_fp);
         }
         return(UNUSED);
 }
 /******************************************************************************/
 /* "fill" a polygon */
-int TEK_fill(int n, int x[], int y[]) {
+static int TEK_fill(int n, int x[], int y[]) {
         int     i;
 
         if(xterm==0)XTERM_4010();
         if (tlstx != x[0] || tlsty != y[0]) {
-                putc(GS,fp);
+                putc(GS,draw_fp);
                 LoYold = HiYold = HiXold = -1;  /* Force output of all bytes */
                 out_bytes(x[0], y[0]);
         }
@@ -441,8 +440,8 @@ int TEK_fill(int n, int x[], int y[]) {
 
         out_bytes(x[0], y[0]);
 
-        if (fp == stdout || fp == stderr){
-           fflush(fp);
+        if (draw_fp == stdout || draw_fp == stderr){
+           fflush(draw_fp);
         }
 
         tlstx = vdevice.cpVx = x[n - 1];
@@ -452,10 +451,10 @@ int TEK_fill(int n, int x[], int y[]) {
 }
 /******************************************************************************/
 /* flush the tektronix device (and force return to vt102 mode on xterm) */
-int TEK_sync(void) {
+static int TEK_sync(void) {
 
-        if (fp == stdout || fp == stderr){
-           fflush(fp);
+        if (draw_fp == stdout || draw_fp == stderr){
+           fflush(draw_fp);
         }
         TEKMODE=-1; /* do xterm settings for sure */
         if(xterm==0)XTERM_vt102();
@@ -491,12 +490,8 @@ static DevEntry tekdev = {
                 TEK_sync       /* Syncronize the display */
 };
 /******************************************************************************/
-/*
- * _TEK_devcpy
- *
- *      copy the tektronix device into vdevice.dev.
- */
-int _TEK_devcpy(void) {
+/* copy the tektronix device into vdevice.dev.  */
+int _TEK_draw_devcpy(void) {
 
         vdevice.dev = tekdev;
         vdevice.dev.Vinit = TEK_init;
@@ -504,13 +499,8 @@ int _TEK_devcpy(void) {
         return(UNUSED);
 }
 /******************************************************************************/
-/*
- * _XTEK_devcpy
- *
- *      xterm(1) version
- *      copy the tektronix device into vdevice.dev.
- */
-int _XTEK_devcpy(void) {
+/* copy the xterm(1) version of the tektronix device into vdevice.dev.  */
+int _XTEK_draw_devcpy(void) {
 
         vdevice.dev = tekdev;
         vdevice.dev.Vinit = TEK_init;

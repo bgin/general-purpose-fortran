@@ -1,7 +1,7 @@
 #!/bin/sh
 #set -x
 # @(#)Strip FORTRAN90 from specially-formatted man(1) pages and run demo programs
-banner.sh test_M_pixel_manpages.sh
+banner.sh test_M_pixel
 #
 # use to test man pages that follow special format and do not require interactive
 # input from the terminal
@@ -19,7 +19,7 @@ do
  CMD=$(which xxx_ 2>/dev/null)
  [ "$CMD" != '' ] && rm $CMD
 
- mank 3 $TOPIC|
+ mank -s 3m_pixel $TOPIC|
     col -b|
     expand|
     sed -n -e '\%^ *program  *demo_%,\%^ *end  *program  *demo_%{p}' >/tmp/xxx_.F90
@@ -35,7 +35,7 @@ do
 done
 }
 ################################################################################
-RUNTHEM $(mank -k M_pixel|cprint 1)
+RUNTHEM $(mank -s 3m_pixel -k M_pixel|cprint 1)
 ################################################################################
 exit
 ################################################################################

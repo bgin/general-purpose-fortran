@@ -9,11 +9,20 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'     _unlink(1f) - [FUNIX:FILESYSTEM] remove file                               ',&
+'   _unlink(1f) - [FUNIX:FILESYSTEM] call the unlink(3c) function to remove the specified file',&
+'                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '     _unlink file(s)                                                            ',&
+'     _unlink OPTION                                                             ',&
+'                                                                                ',&
 'DESCRIPTION                                                                     ',&
-'EXAMPLE                                                                         ',&
+'       Call the unlink function to remove the specified FILE.                   ',&
+'                                                                                ',&
+'OPTIONS                                                                         ',&
+'       FILES      list of files to remove                                       ',&
+'       --help     display this help and exit                                    ',&
+'       --version  output version information and exit                           ',&
+'                                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -22,13 +31,20 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!      _unlink(1f) - [FUNIX:FILESYSTEM] remove file
+!!    _unlink(1f) - [FUNIX:FILESYSTEM] call the unlink(3c) function to remove the specified file
+!!
 !!##SYNOPSIS
 !!
 !!      _unlink file(s)
-!!##DESCRIPTION
-!!##EXAMPLE
+!!      _unlink OPTION
 !!
+!!##DESCRIPTION
+!!        Call the unlink function to remove the specified FILE.
+!!
+!!##OPTIONS
+!!        FILES      list of files to remove
+!!        --help     display this help and exit
+!!        --version  output version information and exit
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -40,7 +56,7 @@ logical                        :: stopit=.false.
 stopit=.false.
 if(l_version)then
 help_text=[ CHARACTER(LEN=128) :: &
-'@(#)PRODUCT:        CLI library utilities and examples>',&
+'@(#)PRODUCT:        GPF (General Purpose Fortran) utilities and examples>',&
 '@(#)PROGRAM:        _unlink(1f)>',&
 '@(#)DESCRIPTION:    remove file by unlinking it>',&
 '@(#)VERSION:        1.0, 2016-12-03>',&
@@ -49,14 +65,14 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Mon, Jun 4th, 2018 8:59:57 AM>',&
+'@(#)COMPILED:       Thu, Aug 16th, 2018 12:09:07 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
 endif
 end subroutine help_version
 !-----------------------------------------------------------------------------------------------------------------------------------
-program demo_system_rename
+program demo_system_unlink
 use M_kracken, only : kracken,lget,sgets,IPvalue
 use M_system, only : system_unlink
 use M_system, only : system_perror
@@ -76,4 +92,4 @@ integer                            :: ierr, i
          call system_perror('*_unlink*')
       endif
    enddo
-end program demo_system_rename
+end program demo_system_unlink

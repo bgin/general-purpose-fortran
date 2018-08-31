@@ -1,10 +1,10 @@
 NAME
-   vgetdev(3f) - [M_DRAW:DEVICE] Get name of current device
+   vgetdev(3f) - [M_draw:DEVICE] Get name of current device
 SYNOPSIS
          subroutine vgetdev(device)
          character *(*) device
 DESCRIPTION
 
-   Gets the name of the current M_DRAW device. The C version of the routine
+   Gets the name of the current M_draw device. The C version of the routine
    also returns a pointer to it's argument.
 

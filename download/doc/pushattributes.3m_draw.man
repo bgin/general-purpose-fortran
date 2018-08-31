@@ -1,9 +1,9 @@
 NAME
-   pushattributes(3f) - [M_DRAW:ATTRIBUTE_STACK] Save the current attributes on the attribute stack.
+   pushattributes(3f) - [M_draw:ATTRIBUTE_STACK] Save the current attributes on the attribute stack.
 
 
 SYNOPSIS
-         subroutine pushattributes
+         subroutine pushattributes()
 
 DESCRIPTION
 

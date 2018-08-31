@@ -50,6 +50,13 @@ lastprogram rep.f90 rep.FF
 
 lastprogram intrinsics.f90
 
+# 
+lastprogram clock.f90
+lastprogram draw.f90
+lastprogram minefield.f90
+lastprogram slice.f90
+lastprogram xy.f90
+
 # Example programs
 lastprogram fseq.f90 fseq.FF
 lastprogram paranoid.f90 paranoid.FF

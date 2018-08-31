@@ -28,12 +28,12 @@
 static int      NIL_lastx = -1, NIL_lasty = -1;/* last (x, y) drawn */
 /******************************************************************************/
 /* change index i in the color map to the appropriate rgb value. */
-int NIL_mapcolor(int i, int r, int g, int b) {
+static int NIL_mapcolor(int i, int r, int g, int b) {
    return(0);
 }
 /******************************************************************************/
 /* NIL_RESIZE  for initialization or a page clear, see if device is resized   */
-int NIL_RESIZE(void) {
+static int NIL_RESIZE(void) {
    int prefx, prefy, prefxs, prefys;
    draw_getprefposandsize(&prefx, &prefy, &prefxs, &prefys);
 
@@ -48,7 +48,7 @@ int NIL_RESIZE(void) {
 }
 /******************************************************************************/
 /* NIL_init set up the environment. Returns 1 on success. */
-int NIL_init(void) {
+static int NIL_init(void) {
    NIL_RESIZE();
 
    vdevice.depth = 8; /* set number of colors available */
@@ -58,35 +58,35 @@ int NIL_init(void) {
 }
 /******************************************************************************/
 /* NIL_exit do a flush and close the output file if necessary.  */
-int NIL_exit(void) {
+static int NIL_exit(void) {
    return (0);
 }
 /******************************************************************************/
 /* NIL_draw draw to an x, y point.  */
-int NIL_draw(int x, int y) {
+static int NIL_draw(int x, int y) {
    NIL_lastx=x;
    NIL_lasty=y;
    return (0);
 }
 /******************************************************************************/
 /* NIL_clear flush the current page without resetting the graphics state */
-int NIL_clear(void) {
+static int NIL_clear(void) {
    NIL_RESIZE();
    return(0);
 }
 /******************************************************************************/
 /* NIL_color change the color of the pen */
-int NIL_color(int col) {
+static int NIL_color(int col) {
    return(0);
 }
 /******************************************************************************/
 /* value sets raster line width */
-int NIL_setlw(int width) {
+static int NIL_setlw(int width) {
    return(0);
 }
 /******************************************************************************/
 /* NIL_font load in small or large - could be improved.  */
-int NIL_font(char *font) {
+static int NIL_font(char *font) {
 
    if (strcmp(font, "small") == 0) {
       vdevice.hwidth = 12.0/72.0/.03937;
@@ -100,19 +100,19 @@ int NIL_font(char *font) {
 }
 /******************************************************************************/
 /* NIL_string output a string.  */
-int NIL_string(char *s) {
+static int NIL_string(char *s) {
    NIL_lastx = NIL_lasty = -1;
    return(0);
 }
 /******************************************************************************/
 /* NIL_char output a character */
-int NIL_char(char c) {
+static int NIL_char(char c) {
 	 NIL_lastx = NIL_lasty = -1;
    return(0);
 }
 /******************************************************************************/
 /* fill a polygon */
-int NIL_fill(int n, int x[], int y[]) {
+static int NIL_fill(int n, int x[], int y[]) {
    vdevice.cpVx = x[n - 1];
    vdevice.cpVy = y[n - 1];
    NIL_lastx = NIL_lasty = -1;           /* fill destroys current path */
@@ -147,8 +147,8 @@ noop,           /*  Swap front and back buffers */
 noop            /*  Syncronize the display */
 };
 /******************************************************************************/
-/* _NIL_devcpy copy the nil device into vdevice.dev.  */
-int _NIL_devcpy(void) {
+/* copy the nil device into vdevice.dev.  */
+int _NIL_draw_devcpy(void) {
    vdevice.dev = nildev;
    return(0);
 }

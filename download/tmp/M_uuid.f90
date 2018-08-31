@@ -46,7 +46,8 @@ use M_random, only : mtprng_state, mtprng_init, mtprng_rand64
 implicit none
 private
 
-!generate UUIDs according to RFC 4122
+character(len=*),parameter::ident="@(#)M_uuid::M_uid(3fm): generate UUIDs according to RFC 4122"
+
 ! Only versions  0(Nil), 1 (time-based) and 4 (pseudo-RNG-based) are implemented.
 
 integer, parameter       :: i4b = selected_int_kind(9)
@@ -158,6 +159,10 @@ contains
 !!     urn:uuid:5b0946b8-0eb4-4966-619d-047b7f7e2056
 !===================================================================================================================================
 function generate_uuid(version) result(uuid)
+
+character(len=*),parameter::ident="&
+&@(#)M_uuid::generate_uuid(3f): generate(approximately) a UUID (Universally Unique IDentifier) string per RFC 4122"
+
 integer, intent(in), optional :: version
 character(len=36) :: uuid
 
@@ -273,7 +278,7 @@ use M_time, only : date_to_unix, realtime
 use, intrinsic :: iso_fortran_env, only : int8, int16, int32, int64, real32, real64, dp=>real128
 implicit none
 
-character(len=*),parameter::ident="@(#)returns the number of 100-ns intervals since 1582-10-15T00:00:00-0"
+! returns the number of 100-ns intervals since 1582-10-15T00:00:00-0
 
 ! Not really: Assuming only used as an internal routine for M_UUID(3fm)
 !   Fortran date time arrays only report up to the millisecond,

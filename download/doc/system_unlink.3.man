@@ -41,7 +41,7 @@ DESCRIPTION
 RETURN VALUE
 
    Upon successful completion, these functions shall return 0. Otherwise,
-   these functions shall return -1 and set  errno  to indicate the error. If
+   these functions shall return -1 and set errno to indicate the error. If
    -1 is returned, the named file shall not be changed.
 
 EXAMPLES

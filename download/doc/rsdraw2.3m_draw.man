@@ -1,5 +1,5 @@
 NAME
-   rsdraw2(3f) - [M_DRAW:DRAW] Relative draw in screen units (-1.0 to 1.0).
+   rsdraw2(3f) - [M_draw:DRAW] Relative draw in screen units (-1.0 to 1.0).
 
 SYNOPSIS
          subroutine rsdraw2(deltax, deltay)

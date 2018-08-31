@@ -68,13 +68,13 @@ logical                        :: stopit=.false.
 stopit=.false.
 if(l_version)then
 help_text=[ CHARACTER(LEN=128) :: &
-'@(#)PRODUCT:        CLI library utilities and examples>',&
+'@(#)PRODUCT:        GPF (General Purpose Fortran) utilities and examples>',&
 '@(#)PROGRAM:        _uuidgen(1)>',&
 '@(#)DESCRIPTION:    output a UUID (Universally Unique ID)>',&
 '@(#)VERSION:        1.0, 20180427>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Mon, Jun 4th, 2018 9:00:06 AM>',&
+'@(#)COMPILED:       Thu, Aug 16th, 2018 12:09:17 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

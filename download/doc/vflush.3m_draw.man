@@ -1,8 +1,8 @@
 NAME
-   vflush(3f) - [M_DRAW:FLUSHING] Call device flush or syncronisation routine
+   vflush(3f) - [M_draw:FLUSHING] Call device flush or syncronisation routine
 
 SYNOPSIS
-         subroutine vflush
+         subroutine vflush()
 
 DESCRIPTION
 

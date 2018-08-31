@@ -11,7 +11,7 @@ ARGUMENT
    I    shall be of type integer.
 
 RESULT
-   Default logical.  The result has the value true if and only if I is
+   Default logical. The result has the value true if and only if I is
    a value for the scalar-int-variable in an IOSTAT= specifier
    that would indicate an end-of-record condition.
 

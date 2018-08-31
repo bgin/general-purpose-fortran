@@ -10,7 +10,7 @@ SYNOPSIS
 DESCRIPTION
 
    The system_access(3f) function checks pathname existence and access
-   permissions.  The function checks the pathname for accessibility
+   permissions. The function checks the pathname for accessibility
    according to the bit pattern contained in amode, using the real user
    ID in place of the effective user ID and the real group ID in place
    of the effective group ID.
@@ -19,8 +19,8 @@ DESCRIPTION
    permissions to be checked (R_OK, W_OK, X_OK) or the existence test (F_OK).
 
 OPTIONS
-       pathname   a character string representing a directory pathname.  Trailing spaces are ignored.
-       amode      bitwise-inclusive OR  of the values R_OK, W_OK, X_OK, or F_OK.
+       pathname   a character string representing a directory pathname. Trailing spaces are ignored.
+       amode      bitwise-inclusive OR of the values R_OK, W_OK, X_OK, or F_OK.
 
 RETURN VALUE
        If not true an error occurred or the requested access is not granted

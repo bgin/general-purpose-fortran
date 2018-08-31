@@ -1,5 +1,5 @@
 NAME
-   rdraw2(3f) - [M_DRAW:DRAW] Relative draw from current position to given point
+   rdraw2(3f) - [M_draw:DRAW] Relative draw from current position to given point
 
 SYNOPSIS
          subroutine rdraw2(deltax, deltay)
@@ -20,23 +20,26 @@ EXAMPLE
   Sample program:
 
      program demo_rdraw2
-     use M_DRAW, only: vinit, prefsize, ortho2,linewidth,getkey
-     use M_DRAW, only: clear, move2, rdraw2, vexit,color
+     use M_draw, only: vinit, prefsize, ortho2,linewidth,getkey
+     use M_draw, only: clear, move2, rdraw2, vexit,color
+     use M_draw,    only  : D_BLACK,   D_WHITE
+     use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
+     use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
      integer :: ipaws
 
      call prefsize(200,200)
-     call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
-     call ortho2(-55.0, 55.0, -55.0,  55.0)
+     call vinit(' ') ! start graphics using device $M_draw_DEVICE
+     call ortho2(-55.0, 55.0, -55.0, 55.0)
      call linewidth(400)
-     call color(7)
+     call color(D_WHITE)
      call clear()
 
-     call color(1)
+     call color(D_RED)
      call move2(-50.0,0.0)
      call square(50.0)
 
      call linewidth(200)
-     call color(2)
+     call color(D_GREEN)
      call move2(  0.0,-50.0)
      call square(50.0)
 

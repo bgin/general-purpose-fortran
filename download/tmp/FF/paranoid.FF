@@ -40,7 +40,7 @@ $!      (C) 2011 WESTINGHOUSE ELECTRIC COMPANY LLC
 
  Sample beginning of dialog ...
 
-   ================================================================================
+   ============================================================
    Tuesday, February 7th, 2017 4:35:06 AM UTC-0300
     sysname:   CYGWIN_NT-10.0
     release:  2.6.0(0.304/5/3)
@@ -64,7 +64,7 @@ $!      (C) 2011 WESTINGHOUSE ELECTRIC COMPANY LLC
         -fno-range-check
         -frecord-marker=4
         -J /home/urbanjs/V600/lib/CYGWIN64_GFORTRAN
-   ================================================================================
+   ============================================================
    *paranoid*" double precision test(3f)
     Is this a program restart after failure (1)
     or a start from scratch (0) ?

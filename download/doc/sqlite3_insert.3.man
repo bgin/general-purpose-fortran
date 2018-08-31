@@ -2,7 +2,7 @@ NAME
    sqlite3_insert(3f) - [M_sqlite] Insert a complete row into the given table
 
 SYNOPSIS
-   call sqlite3_insert(db, tablename, columns)
+   subroutine sqlite3_insert(db, tablename, columns)
 
     type(SQLITE_DATABASE) db
     character(len=*) tablename

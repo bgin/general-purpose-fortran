@@ -2,7 +2,7 @@ NAME
    sqlite3_finalize(3f) - [M_sqlite] Finalize the prepared SQL statement
 
 SYNOPSIS
-   call sqlite3_finalize(stmt)
+   subroutine sqlite3_finalize(stmt)
 
     type(SQLITE_STATEMENT) stmt
 

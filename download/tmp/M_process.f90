@@ -111,10 +111,12 @@
 !!    gnuplot(1) program or continue on in the program.
 !!
 !!     program gnuplotExample
-!!     ! @(#)  Example of Fortran writing GNUPLOT command and data file.
 !!     use M_process ,only: process_open_write, process_writeline
 !!     use M_process ,only: streampointer, process_close
 !!     implicit none
+!!     !
+!!     ! Example of Fortran writing GNUPLOT command and data file.
+!!     !
 !!     character(len=4096) :: line                             !*! line of data to write (assumed long enough to hold any command line)
 !!     type(streampointer) :: fp                               !*! C file pointer returned by process_open()
 !!     integer :: ierr                                         !*! check status of calls to process module routines
@@ -246,7 +248,7 @@ module M_process
 ! only: c_int, c_char, c_null_char, c_associated, c_ptr, c_null_ptr, c_new_line
 use, intrinsic :: ISO_C_BINDING
 implicit none
-character(len=*),parameter :: ident="@(#)M_process(3fm): call C process open,close,read,write functions "
+character(len=*),parameter::ident="@(#)M_process(3fm): call C process open,close,read,write functions"
 
 PRIVATE
 PUBLIC  ::  process_open_read  ! (cmd,fp,ierr)                  ! open process to read from
@@ -407,7 +409,7 @@ contains
 !!
 !===================================================================================================================================
 subroutine process_open_read(cmd,fp,ierr)
-character(len=*),parameter :: ident="@(#)M_process::process_open_read(3f):open process to read from"
+character(len=*),parameter::ident="@(#)M_process::process_open_read(3f): open process to read from"
 
    character(len=*),intent(in)     :: cmd  ! shell command to start process with
    type(streampointer),intent(out) :: fp           ! file pointer returned for process
@@ -431,7 +433,7 @@ end subroutine process_open_read
 !!
 !===================================================================================================================================
 subroutine process_open_write(cmd,fp,ierr)
-character(len=*),parameter :: ident="@(#)M_process::process_open_write(3f):open process to write to"
+character(len=*),parameter::ident="@(#)M_process::process_open_write(3f): open process to write to"
 
    character(len=*),intent(in)     :: cmd  ! shell command to start process with
    type(streampointer),intent(out) :: fp           ! file pointer returned for process
@@ -454,7 +456,7 @@ end subroutine process_open_write
 !!
 !===================================================================================================================================
 subroutine process_open(cmd,mode,fp,ierr)
-character(len=*),parameter :: ident="@(#)M_process::process_open(3fp):open process"
+character(len=*),parameter::ident="@(#)M_process::process_open(3fp): open process"
 
    character(len=*),intent(in)     :: cmd  ! shell command to start process with
    character(len=*),intent(in)     :: mode         ! read/write/mode parameter to pass to popen(3c)
@@ -486,7 +488,7 @@ end subroutine process_open
 !!
 !===================================================================================================================================
 subroutine process_close(fp,ierr)
-character(len=*),parameter :: ident="@(#)M_process::process_close(3f):close process"
+character(len=*),parameter::ident="@(#)M_process::process_close(3f): close process"
    ! DO NOT MAKE fp INTENT(IN)
    type(streampointer) :: fp           ! file pointer returned for process
    integer(c_int) ::  ios
@@ -520,7 +522,7 @@ end subroutine process_close
 !!
 !===================================================================================================================================
 subroutine process_readline(readfrom,fp,ierr)
-character(len=*),parameter :: ident="@(#)M_process::process_readline(3f):read line from process"
+character(len=*),parameter::ident="@(#)M_process::process_readline(3f): read line from process"
 !  readfrom must be at least two
    character(len=*),intent(out)   :: readfrom
    type(streampointer),intent(in) :: fp
@@ -632,7 +634,9 @@ end subroutine process_readline
 !!       M_process(3fm)
 !===================================================================================================================================
 function process_readall(cmd,delim,ierr)  result(string)      !! not hardened
-character(len=*),parameter     :: ident="@(#)M_process::process_readall(3f):read all lines from process"
+
+character(len=*),parameter::ident="@(#)M_process::process_readall(3f): read all lines from process"
+
 character(len=*),intent(in)              :: cmd
 character(len=:),allocatable             :: string      !! assume will not run out of memory
 integer,intent(out),optional             :: ierr
@@ -692,7 +696,7 @@ end function process_readall
 !!
 !===================================================================================================================================
 subroutine process_writeline_scalar(writefrom,fp,ierr,trm)
-character(len=*),parameter :: ident="@(#)M_process::process_writeline_scalar(3fp):write line to process"
+character(len=*),parameter::ident="@(#)M_process::process_writeline_scalar(3fp): write line to process"
 character(len=*),intent(in)    :: writefrom
 type(streampointer),intent(in) :: fp
 integer,intent(out)            :: ierr
@@ -724,7 +728,9 @@ logical,intent(in),optional    :: trm
 
 end subroutine process_writeline_scalar
 subroutine process_writeline_array(writefrom,fp,ierr)
-character(len=*),parameter :: ident="@(#)M_process::process_writeline_array(3fp):write lines to process"
+
+character(len=*),parameter::ident="@(#)M_process::process_writeline_array(3fp): write lines to process"
+
 character(len=*),intent(in)    :: writefrom(:)
 type(streampointer),intent(in) :: fp
 integer,intent(out)            :: ierr

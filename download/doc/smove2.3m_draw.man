@@ -1,5 +1,5 @@
 NAME
-   smove2(3f) - [M_DRAW:MOVE] Move current graphics position in screen coordinates (-1.0 to 1.0).
+   smove2(3f) - [M_draw:MOVE] Move current graphics position in screen coordinates (-1.0 to 1.0).
 
 SYNOPSIS
          subroutine smove2(x, y)

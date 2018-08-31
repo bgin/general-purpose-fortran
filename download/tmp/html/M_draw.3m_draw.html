@@ -52,34 +52,24 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 
 </A>
 <BLOCKQUOTE>
-<B>M_DRAW(3f) </B>- [M_DRAW] The M_DRAW graphics library
-</BLOCKQUOTE>
+<B>M_draw(3fm) </B>- [M_draw] The M_draw graphics library
+<B>
+</B></BLOCKQUOTE>
 <A name=contents></A><H3>CONTENTS</H3></A>
 <BLOCKQUOTE>
-<A HREF=#1>Synopsis</A><BR>
-<A HREF=#2>Description</A><BR>
-<A HREF=#3>Library Function Descriptions</A><BR>
-<A HREF=#4>Example</A><BR>
-<A HREF=#5>Bugs</A><BR>
+<A HREF=#1>Description</A><BR>
+<A HREF=#2>Library Function Descriptions</A><BR>
+<A HREF=#3>Example</A><BR>
+<A HREF=#4>Bugs</A><BR>
 </BLOCKQUOTE>
-<A name=6>
-
-     <H3>SYNOPSIS</H3>
-
-</A>
-<BLOCKQUOTE>
-<PRE>
-<P>
-</PRE>
-</BLOCKQUOTE>
-<A name=2>
+<A name=5>
 
      <H3>DESCRIPTION</H3>
 
 </A>
 <BLOCKQUOTE>
 <P>
-M_DRAW is a portable public-domain device-independent graphics library
+M_draw is a portable public-domain device-independent graphics library
 intended for being called from Fortran that is based on VOGLE (from
 the The University of Melbourne) that is loosely based on the Silicon
 Graphics Iris GL library. It was also partly inspired by the DIGS
@@ -126,7 +116,7 @@ bitmap driver.
 o
 </TD><TD>
 Color PBM (Poskazner pixmap P3 and P6 formats). If you have the
-pbmplus package you can use it to make M_DRAW appear to write
+pbmplus package you can use it to make M_draw appear to write
 any format pbmplus writes (assuming your system supports the
 <B>popen</B>(3c) function).
 </TD></TR>
@@ -147,22 +137,18 @@ A driver for Microsoft VML (Vector Markup Language)
 </TD></TR>
 <TR></TR></TABLE></BLOCKQUOTE>
 <P>
-M_DRAW is intended to produce simple graphics composed of line drawings and
+M_draw is intended to produce simple graphics composed of line drawings and
 polygon fills in two and three dimensions. It handles circles, curves,
 arcs, patches, polygons, and software text in a device independent
 fashion. Simple hidden line removal is also available via polygon
 backfacing. Access to hardware text and double buffering of drawings
 depends on the driver.
 <P>
-M_DRAW is callable from C, FORTRAN 77, Fortran 90+ , and Pascal on most
-platforms.
+M_draw is based on VOGLE, which is callable from C, Fortran, and Pascal;
+but M_draw is only supported in Fortran (the C components are being converted
+to Fortran).
 <P>
-M_DRAW is portable. It has been used on Cray UNICOS, SGI IRIX64 and IRIX,
-IBM AIX, NeXT, Digital ULTRIX and Digital Unix, Sun SunOS and Solaris,
-Linux, Compaq Tru64 UNIX, HP HP-UX, and CygWin. It has been run on
-additional platforms including most PCs.
-<P>
-The original source&#146;s ownership statement
+The original VOGLE source&#146;s ownership statement
 <P>
 <PRE>
       This software is public domain and may be used for any purpose commercial
@@ -172,10 +158,9 @@ The original source&#146;s ownership statement
       people who get copies don&#146;t go round claiming they wrote it. Use at your
       own risk.
 <P>
-<P>
 </PRE>
 </BLOCKQUOTE>
-<A name=3>
+<A name=2>
 
      <H3>LIBRARY FUNCTION DESCRIPTIONS</H3>
 
@@ -247,7 +232,7 @@ Specify preferred position of window
 Specify preferred width and height of window
 </TD></TR>
 <TR></TR></TABLE>Some devices are basically window oriented - like sunview and X11. You
-can give M_DRAW some information on the window that it will use with these
+can give M_draw some information on the window that it will use with these
 routines. These can make your code very device independent. Both routines
 take arguments which are in device space. (0, 0) is the top left hand
 corner in device space. To have any effect these routines must be called
@@ -260,7 +245,7 @@ file or loaded in with the <B>xrdb</B>(1) command:
       draw*smallfont: fixed
       draw*largefont: 9x15
       ! title on decoration bar for the window
-      draw*title: My M_DRAW program
+      draw*title: My M_draw program
       ! window geometry and position,
       ! overridden by prefsize(3c) and prefposition(3c)
       draw.Geometry: =500x500-10+20
@@ -794,7 +779,7 @@ A polygon is composed of a number of coplanar line segments connected
 end to end to form a closed shape.
 </TD></TR>
 <TR><TD colspan=2>
-In M_DRAW curves are estimated by a series of line segments, and thus
+In M_draw curves are estimated by a series of line segments, and thus
 may be included easily into polygons.
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
@@ -844,67 +829,62 @@ not self-intersecting in this way is called a simple polygon.
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 <B>font</B>(fontname)
-Set the current font
+set the current font
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 <B>numchars</B>()
-Return number of characters in the current SOFTWARE font.
+return number of characters in the current SOFTWARE font.
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 <B>textsize</B>(width, height)
-Set maximum size of a character in the current SOFTWARE font.
+set maximum size of a character in the current SOFTWARE font.
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 <B>textang</B>(ang)
-Set the SOFTWARE text angle.
+set the SOFTWARE text angle.
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 <B>fixedwidth</B>(onoff)
-Turns fixedwidth mode on or off for SOFTWARE fonts.
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-<B>centertext</B>(onoff)
-Turns centertext mode on or off for SOFTWARE fonts.
+turns fixedwidth mode on or off for SOFTWARE fonts.
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 <B>getcharsize</B>(c, width, height)
-Get the width and height of a character.
+get the width and height of a character.
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 <B>getfontdec</B>()
-Return size of maximum font descender
+return size of maximum font descender
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 <B>getfontsize</B>(width, height)
-Get maximum width and height of a character in a font.
+get maximum width and height of a character in a font.
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 <B>drawchar</B>(c)
-Draw the character c and update current position.
+draw the character c and update current position.
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 <B>drawstr</B>(str)
-Draw the text in string at the current position.
+draw the text in string at the current position.
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 <B>strlength</B>(str)
-Return the length of the string s
+return the length of the string s
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 <B>boxtext</B>(x, y, l, h, s)
-Draw the SOFTWARE string s so that it fits in the imaginary box
+stretch and draw the SOFTWARE string s so that it fits in the imaginary box
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
@@ -914,7 +894,7 @@ resize the SOFTWARE text size so it fits in a box
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 <B>textjustify</B>(val)
-general text justification (C only)
+general text justification
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
@@ -928,11 +908,6 @@ right justify text
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
-<B>xcentertext</B>()
-center text in the X direction
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
 <B>topjustify</B>()
 top justify text
 </TD></TR>
@@ -943,20 +918,30 @@ bottom justify text
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
+<B>centertext</B>(onoff)
+turns centertext mode on or off for SOFTWARE fonts.
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+<B>xcentertext</B>()
+center text in the X direction
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
 <B>ycentertext</B>()
 center text in the Y direction
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 <B>textslant</B>()
-Defines the obliqueness of the fonts.
+defines the obliqueness of the fonts.
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 <B>textweight</B>()
-Defines the weight of the fonts.
+defines the weight of the fonts.
 </TD></TR>
-<TR></TR></TABLE>M_DRAW supports hardware and software fonts. The software fonts are based
+<TR></TR></TABLE>M_draw supports hardware and software fonts. The software fonts are based
 on the character set digitized by Dr Allen V. Hershey while working at
 the U. S. National Bureau of Standards. Exactly what hardware fonts are
 supported depends on the device, but it is guaranteed that the names
@@ -969,9 +954,9 @@ by placing the following defaults in the ~/.Xdefaults file:
      draw.largefont: X11-font-name
 <P>
 </PRE>
-It is noted here that text is always assumed to be drawn parallel to the
-(x, y) plane, using whatever the current z coordinate is. The following
-software fonts are supported:
+It is noted here that hardware text is always assumed to be drawn
+parallel to the (x, y) plane, using whatever the current z coordinate
+is. The following software fonts are supported:
 <P>
 <PRE>
       astrology       cursive         cyrillic        futura.l
@@ -986,7 +971,7 @@ A markers font "markers" is also provided for doing markers - you need
 to have centertext mode on for this to give sensible results when placing
 the markers.
 <P>
-If the environment variable "M_DRAW_FONTPATH" is set M_DRAW looks for the software
+If the environment variable "M_draw_FONTPATH" is set M_draw looks for the software
 fonts in the directory given by this value.
 <P>
 the default font is futura.l
@@ -1159,7 +1144,7 @@ Draw in the front buffer. This will always work.
 <B>swapbuffers</B>()
 Swap the front and back buffers.
 </TD></TR>
-<TR></TR></TABLE>Where possible M_DRAW allows for front and back buffers to enable
+<TR></TR></TABLE>Where possible M_draw allows for front and back buffers to enable
 things like animation and smooth updating of the screen. The routine
 backbuffer is used to initialise double buffering.
 </BLOCKQUOTE>
@@ -1190,43 +1175,79 @@ Gets the current graphics position
 Gets the current screen graphics position in screen coords (<B>-1</B> to 1)
 </TD></TR>
 <TR></TR></TABLE></BLOCKQUOTE>
-<A name=4>
+<A name=3>
 
      <H3>EXAMPLE</H3>
 
 </A>
 <BLOCKQUOTE>
-Sample program
+Sample program:
 <P>
 <PRE>
-   program demo_M_DRAW
-<P>
-   use M_DRAW
+   program demo_M_draw
+   use M_draw
+   use M_draw,    only  : D_BLACK,   D_WHITE
+   use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
+   use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
+   use M_drawplus, only : biggest_ortho2
    use M_units,    only : cosd, sind
    implicit none
-<P>
-      integer  :: i
-      integer  :: j
-      integer  :: icolor
-      integer  :: ipaws
+   integer  :: ipaws
+   real     :: x1, y1
+   integer  :: icolor
+   integer  :: i,j
 <P>
       ! initialize image
       call prefsize(400,400)  ! set size before starting
-      call vinit(&#146; &#146;)         ! start graphics using device $M_DRAW_DEVICE
-      call color(0)
+      call vinit(&#146; &#146;)         ! start graphics using device $M_draw_DEVICE
+      call textsize(10.0,10.0)
+      call mapcolor( 0,   255,255,255 )  !white
+      call mapcolor( 1,   255,  0,  0 )  !red
+      call mapcolor( 2,     0,255,  0 )  !green
+      call mapcolor( 3,   255,255,  0 )  !yellow
+      call mapcolor( 4,     0,  0,255 )  !blue
+      call mapcolor( 5,   255,  0,255 )  !magenta
+      call mapcolor( 6,     0,255,255 )  !cyan
+      call mapcolor( 7,     0,  0,  0 )  !black
+      call mapcolor( 8,     0,155,  0 )
+      call mapcolor( 9,   155,155,155 )
+      call mapcolor(10,   155,255,255 )
+      call mapcolor(11,   155,155,  0 )
+      call mapcolor(12,     0,  0,155 )
+      call mapcolor(13,   155,  0,155 )
+      call mapcolor(14,     0,155,155 )
+      call mapcolor(15,   100,100,100 )
+      call mapcolor(16,   155,100,100 )
+      call color(D_BLACK)
       call clear()            ! clear to color 0
-      call color(7)
+      call color(D_WHITE)
 <P>
       ! map area of virtual world to specified device area
       ! notice Y-axis for viewport is zero at TOP
-         ! viewport(left, right, bottom, top)
-      call viewport(0.0,  400.0,  400.0, 0.0)
       ! define the virtual world area we want to work in
-          !ortho2(left, right, bottom,   top)
-      call ortho2(0.0,  400.0,    0.0, 400.0)
+      call biggest_ortho2(0.0,  400.0,    0.0, 400.0)
       ! the drawing routines use these world units
 <P>
+      ! put some colored boxes into pixmap by address
+      ! so show how the pixel map can be edited easily with
+      ! other routines that can manipulate a pixel array.
+      ! The P_pixel array was created when vinit(3f) was called
+      call polyfill(.true.)
+      icolor=1
+      do i=0,3
+         do j=0,3
+            x1=j*100.0
+            y1=i*100.0
+            icolor=icolor+1
+            call color(icolor)
+            call rect(x1,y1,x1+100.0,y1+100.0)
+         enddo
+      enddo
+      call polyfill(.false.)
+<P>
       ! draw polar grids
+      call linewidth(100)
+<P>
       call linewidth(100)
       call color(14)
       call target(200.0,200.0,200.0)
@@ -1236,22 +1257,33 @@ Sample program
       call target(100.0,200.0,50.0)
 <P>
       ! draw some lines
-      call color(1)
+      call color(D_RED)
       call linewidth(200)
       call line(1.0,1.0,400.0,400.0)
 <P>
-      call color(4)
+      call color(D_BLUE)
+      call linewidth(250)
       call line(350.0,200.0,350.0,300.0)
 <P>
       ! print some text
       call color(1)
-      !call hershey(x,y,height,itext,theta,ntext)
       call linewidth(125)
+      call font(&#146;futura.l&#146;)
+      call hershey(40.0, 40.0,35.0,&#146;Hello World&#146;,0.0)
       call color(7)
       call linewidth(25)
+      call hershey(40.0, 80.0,35.0,&#146;Hello World&#146;,0.0)
       call linewidth(100)
+      call hershey(40.0,120.0,35.0,&#146;Hello World&#146;,30.0)
 <P>
+      call hershey(  40.0,350.0,35.0,&#146;Hello World&#146;,0.0)
+      call font(&#146;futura.m&#146;)
+      call hershey(  40.0,310.0,35.0,&#146;Hello World&#146;,0.0)
+      call font(&#146;times.r&#146;)
+      call hershey( 350.0,400.0,35.0,&#146;Hello World&#146;,90.0)
       call linewidth(50)
+      call font(&#146;times.i&#146;)
+      call hershey(200.0,120.0,15.0,&#146;Hello World&#146;,20.0)
 <P>
       ipaws=getkey()
       call vexit()
@@ -1275,11 +1307,29 @@ contains
             call circle(xc,yc,real(i))
          enddo
       end subroutine target
+<P>
+      subroutine line(x1,y1,x2,y2)
+      real,intent(in) :: x1,y1,x2,y2
+      call move2(x1,y1)
+      call draw2(x2,y2)
+      end subroutine line
+<P>
+      subroutine hershey(x,y,height,itext,theta)
+      real,intent(in)               :: x,y
+      real,intent(in)               :: height
+      character(len=*),intent(in)   :: itext
+      real,intent(in)               :: theta
+      call move2(x,y)
+      call textang(theta)
+      call textsize(height,height)
+      call drawstr(itext)
+      end subroutine hershey
+<P>
 </PRE>
-end program demo_M_DRAW
+end program demo_M_draw
 </BLOCKQUOTE>
 </BLOCKQUOTE>
-<A name=5>
+<A name=4>
 
      <H3>BUGS</H3>
 
@@ -1298,11 +1348,21 @@ The yobbarays may be turned on or they may be turned off.
 When creating an object, current position and text size are not
 actually changed so almost any query routine to get position or font
 size or whatever will not work properly.
+<P>
+If call <B>vexit</B>(3f) and then call <B>vinit</B>(3f) everything should probably
+be reset to initial values at program startup, such as linewidth,
+current font, and color. It is currently left up to the output device
+initialization routine. It should not be. To minimize the issue,
+call all the push* routines after a <B>vinit</B>(3f) and call all the pop*
+routines before <B>vexit</B>(3f).
+<P>
+Exactly what attributes should and should not be reset with a
+<B>vnewdev</B>(3f) is questionable.
 </BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>M_draw (3m_draw)</TD> <TD align=right width=33%><I>June 12, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 6a91e166-e348-447a-9997-1dda7e27ddfa using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>M_draw (3m_draw)</TD> <TD align=right width=33%><I>August 26, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 162a95ca-8079-44f1-a9c8-b23b15849d14 using man macros.</FONT>
 </div>
 </div>
-<center><img src="images/M_draw.3m_draw.gif"></center> 
+<br><br><center><img src="images/M_draw.3m_draw.gif"></center> 
 </body>
 </HTML>

@@ -30,7 +30,7 @@ using an array constructor:
       ],shape(xx),order[2,1])
 
 This is because an array constructor can be used to create and assign
-values only to rank-one arrays.  To define arrays of more than one
+values only to rank-one arrays. To define arrays of more than one
 dimension with an array constructor, you must use the RESHAPE(3f) intrinsic
 function.
 
@@ -94,7 +94,7 @@ Results:
    > [ 11, 22, 33, 44, 55 ]
 
 We could do a more robust version that handles REAL and COMPLEX values
-as well as NaN values, but it has already been done.  If you need to
+as well as NaN values, but it has already been done. If you need to
 print a variety of small matrices see:
 
   dispmodule(3f), "A Fortran 95 module for pretty-printing matrices".

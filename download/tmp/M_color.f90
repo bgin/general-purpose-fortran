@@ -698,10 +698,10 @@ end subroutine rgbcmy
 !!    <pre>
 !!    subroutine rgbmono</a>(rr,rg,rb,ri,status)
 !!
-!!     real, intent(in)  :: RR ! red component of the input color in the range 0 to 100
-!!     real, intent(in)  :: RG ! green component of the input color in the range 0 to 100
-!!     real, intent(in)  :: RB ! blue component of the input color in the range 0 to 100
-!!     real, intent(out) :: RI ! grayscale intensity calculated in the range 0 to 100
+!!     real, intent(in)  :: RR
+!!     real, intent(in)  :: RG
+!!     real, intent(in)  :: RB
+!!     real, intent(out) :: RI
 !!     integer           :: status
 !!    </pre>
 !!
@@ -716,6 +716,14 @@ end subroutine rgbcmy
 !!    of monochrome intensities available.
 !! </dd>
 !! <!-- ======================================================================= -->
+!! <dt> OPTIONS  </dt><dd>
+!!     RR      red component of the input color in the range 0 to 100
+!!     RG      green component of the input color in the range 0 to 100
+!!     RB      blue component of the input color in the range 0 to 100
+!!     RI      grayscale intensity calculated in the range 0 to 100
+!!     status  zero (0) if no error occurred, otherwise result is out of bounds
+!! </dd>
+!! <!-- ======================================================================= -->
 !! </dl>
 !===================================================================================================================================
 subroutine rgbmono(rr,rg,rb,ri,status)
@@ -725,9 +733,10 @@ character(len=*),parameter :: ident="@(#)M_color::rgbmono(3f): convert RGB color
 ! intensities as 0.30*R + 0.59*G + 0.11*B, as in US color television systems, NTSC encoding.
 ! Note that most devices do not have an infinite range of monochrome intensities available.
 
-real,intent(in)  :: rr,rg,rb                ! red, green, blue, & intensity range from 0 to 100
-real,intent(out) :: ri
-integer          :: status
+real,intent(in)      :: rr,rg,rb                ! red, green, blue, & intensity range from 0 to 100
+real,intent(out)     :: ri
+integer,intent(out)  :: status
+   status=0
    if(rr .lt. 0.0 .or. rr .gt. 100.0 ) status = 1 !---- passive check for valid range of values.
    if(rg .lt. 0.0 .or. rg .gt. 100.0 ) status = 1 !---- passive check for valid range of values.
    if(rb .lt. 0.0 .or. rb .gt. 100.0 ) status = 1 !---- passive check for valid range of values.
@@ -1171,27 +1180,29 @@ end SUBROUTINE closest_color_name
 !! <blockquote>
 !! A sample program:
 !! <pre>
-!!       program showcolors
-!!       use m_color, only : hue, color_name2rgb
-!!       implicit none
-!!       character(len=*),parameter :: ident="&
-!!       &@(#)M_color::showcolors(1f): list colors known to colorname2rgb(3f) & corresponding RGB values"
-!!       character(len=20) :: name
-!!       character(len=20) :: echoname
-!!       real              :: red,green,blue
-!!       integer           :: i
-!!       TRYALL: do i=1,10000
-!!          ! weird little thing where the color names have aliases that are numeric strings
-!!          write(name,'(i0)')i
-!!          ! get the RGB values and English name of the color
-!!          call color_name2rgb(name,red,green,blue,echoname)
-!!          ! the last color name is "Unknown" so the loop should exit
-!!          if(echoname.eq.'Unknown')exit TRYALL
-!!          ! display the English name and RGB values for the name
-!!          write(*,*)echoname,int([red,green,blue])
-!!       enddo TRYALL
-!!       !write(*,*)'Number of colors found is ',i-1
-!!       end program showcolors
+!!  program showcolors
+!!  use m_color, only : hue, color_name2rgb
+!!  implicit none
+!!  !
+!!  ! list colors known to colorname2rgb(3f) & corresponding RGB values"
+!!  !
+!!  character(len=*),parameter :: ident="&
+!!  character(len=20) :: name
+!!  character(len=20) :: echoname
+!!  real              :: red,green,blue
+!!  integer           :: i
+!!  TRYALL: do i=1,10000
+!!     ! weird little thing where the color names have aliases that are numeric strings
+!!     write(name,'(i0)')i
+!!     ! get the RGB values and English name of the color
+!!     call color_name2rgb(name,red,green,blue,echoname)
+!!     ! the last color name is "Unknown" so the loop should exit
+!!     if(echoname.eq.'Unknown')exit TRYALL
+!!     ! display the English name and RGB values for the name
+!!     write(*,*)echoname,int([red,green,blue])
+!!  enddo TRYALL
+!!  !write(*,*)'Number of colors found is ',i-1
+!!  end program showcolors
 !! </pre>
 !! </blockquote>
 !! </dd>

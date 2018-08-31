@@ -140,7 +140,7 @@ logical                        :: stopit=.false.
 stopit=.false.
 if(l_version)then
 help_text=[ CHARACTER(LEN=128) :: &
-'@(#)PRODUCT:        CLI library utilities and examples>',&
+'@(#)PRODUCT:        GPF (General Purpose Fortran) utilities and examples>',&
 '@(#)PROGRAM:        gcd(1f)>',&
 '@(#)DESCRIPTION:    Determine greatest common divisor of a list of integers>',&
 '@(#)!VERSION:       1.0, 20170317>',&
@@ -148,7 +148,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)UUID:           8f39b1e5-592f-4a22-946f-b8da2aa49633>',&
-'@(#)COMPILED:       Mon, Jun 4th, 2018 8:52:32 AM>',&
+'@(#)COMPILED:       Thu, Aug 16th, 2018 11:59:03 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

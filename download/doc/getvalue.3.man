@@ -11,8 +11,8 @@ DEFINITION
       Note this is breaking the rule of only accessing the calculator thru jucalc(3f).
       It should only be used from user JUOWN1(3f) routines to avoid recursion
 OPTIONS
-   varnam  name of calculator variable to look up that is assumed to be a valid defined
-   name of a numeric variable. If it does not exist zero is returned.
+   varnam   name of calculator variable to look up that is assumed to be a valid defined
+            name of a numeric variable. If it does not exist zero is returned.
 EXAMPLE
   Program:
 

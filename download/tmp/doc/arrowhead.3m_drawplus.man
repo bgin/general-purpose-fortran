@@ -1,0 +1,42 @@
+NAME
+   arrowhead(3f) - [M_drawplus] Draw arrow head (for text boxes and line markers)
+
+SYNOPSIS
+  subroutine arrowhead(xpoint,ypoint,xstart,ystart,size,idraw)
+
+   real,intent(in)    :: xpoint,ypoint
+   real,intent(in)    :: xstart,ystart
+   real,intent(in)    :: size
+   integer,intent(in) :: idraw
+
+DESCRIPTION
+   given line segment
+
+     START --> POINT
+
+   draw an arrow head of overall length SIZE measured along the line segment.
+   The arrow head is 2/3 SIZE wide and the indent is 1/3 SIZE.
+
+   if IDRAW is 0, draw line from x3 to START too X3 and leave current
+   position at POINT.
+
+                  o START
+                  |
+                  |
+                  |
+                  |
+                  |  1/3*size
+                  |<------->
+                  |
+                  |
+     P1  o .      |      . o P2   ---------
+          \  .    |   .   /         ^
+           \   .  | .    /          |
+            \     o P3  / -------   |
+             \         /     ^     SIZE
+              \       /      |      |
+               \     /    2/3*SIZE  |
+                \   /        V      V
+                 \ /      -----------------
+                  o POINT
+

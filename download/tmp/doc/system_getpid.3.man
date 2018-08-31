@@ -6,7 +6,7 @@ DESCRIPTION
        The system_getpid() function returns the process ID of the
        calling process.
 RETURN VALUE
-       The value returned is the integer process ID.  The system_getpid()
+       The value returned is the integer process ID. The system_getpid()
        function shall always be successful and no return value is reserved
        to indicate an error.
 EXAMPLE

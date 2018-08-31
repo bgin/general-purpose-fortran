@@ -184,7 +184,7 @@ logical                        :: stopit=.false.
 stopit=.false.
 if(l_version)then
 help_text=[ CHARACTER(LEN=128) :: &
-'@(#)PRODUCT:        CLI library utilities and examples>',&
+'@(#)PRODUCT:        GPF (General Purpose Fortran) utilities and examples>',&
 '@(#)PROGRAM:        factors(1f)>',&
 '@(#)DESCRIPTION:    Determine prime factors of numbers>',&
 '@(#)VERSION:        1.1, 20161007>',&
@@ -194,7 +194,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
 '@(#)UUID:           37a84d23-0b17-4cd5-bb09-54e23d2e66a6>',&
-'@(#)COMPILED:       Mon, Jun 4th, 2018 8:52:24 AM>',&
+'@(#)COMPILED:       Thu, Aug 16th, 2018 11:58:52 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

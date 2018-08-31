@@ -83,8 +83,8 @@ These documents may be obtained from the following organizations:
 #define TRUE  1
 #define FALSE 0
 
-extern FILE     *fp;
-extern FILE     *_voutfile();
+extern FILE     *draw_fp;
+extern FILE     *_draw_outfile();
 
 static int      first_time = TRUE,
                 page_count = 1,
@@ -111,7 +111,7 @@ static int CGMT_mapcolor(int i, int r, int g, int b) {
         carray[i].red = (unsigned short)(r);
         carray[i].green = (unsigned short)(g);
         carray[i].blue = (unsigned short)(b);
-        fprintf(fp,"COLRTABLE %d %d %d %d;\n",i+1,r,g,b);
+        fprintf(draw_fp,"COLRTABLE %d %d %d %d;\n",i+1,r,g,b);
         CMAPSIZE_used = MAX(CMAPSIZE_used,i+1);
         return(0);
 }
@@ -120,45 +120,45 @@ static int CGMT_init(void){ /* set up graphic environment. Returns 1 on success.
         int CGMT_mapcolor(int i, int r, int g, int b);
         int i;
 
-        fp = _voutfile();
+        draw_fp = _draw_outfile();
 
         if (!first_time)
                 return(1);
 
-        fputs("BEGMF 'THIS CGM CREATED BY M_DRAW';\n",fp);
-        fputs("% Computer Graphics Metatfile %\n",fp);
-        fputs("% clear text CGM driver for M_DRAW 1.3 %\n",fp);
-        fputs("% Based on ANSI X3.122-1986 %\n",fp);
-        fputs("   MFVERSION 1;\n",fp);
-        fputs("   MFDESC 'M_DRAW CLEAR TEXT CGM';\n",fp);
-        fputs("   MFELEMLIST 'DRAWINGPLUS';\n",fp);
-        fputs("   INTEGERPREC -32768 32767;\n",fp);
-        fputs("   COLRPREC 255;\n",fp);
-        fputs("   COLRINDEXPREC 255;\n",fp);
+        fputs("BEGMF 'THIS CGM CREATED BY M_DRAW';\n",draw_fp);
+        fputs("% Computer Graphics Metatfile %\n",draw_fp);
+        fputs("% clear text CGM driver for M_DRAW 1.3 %\n",draw_fp);
+        fputs("% Based on ANSI X3.122-1986 %\n",draw_fp);
+        fputs("   MFVERSION 1;\n",draw_fp);
+        fputs("   MFDESC 'M_DRAW CLEAR TEXT CGM';\n",draw_fp);
+        fputs("   MFELEMLIST 'DRAWINGPLUS';\n",draw_fp);
+        fputs("   INTEGERPREC -32768 32767;\n",draw_fp);
+        fputs("   COLRPREC 255;\n",draw_fp);
+        fputs("   COLRINDEXPREC 255;\n",draw_fp);
                 /* reserve pen 0 for use by background */
-        fputs("   MAXCOLRINDEX 256;\n",fp);
-        fputs("   COLRVALUEEXT 0 0 0 255 255 255;\n",fp);
+        fputs("   MAXCOLRINDEX 256;\n",draw_fp);
+        fputs("   COLRVALUEEXT 0 0 0 255 255 255;\n",draw_fp);
 
-        fputs("BEGMFDEFAULTS;\n",fp);
-        fputs("   VDCINTEGERPREC 0 32767;\n",fp);
-        fputs("ENDMFDEFAULTS;\n",fp);
+        fputs("BEGMFDEFAULTS;\n",draw_fp);
+        fputs("   VDCINTEGERPREC 0 32767;\n",draw_fp);
+        fputs("ENDMFDEFAULTS;\n",draw_fp);
 
-        fputs("BEGPIC 'PICTURE1';\n",fp);
-        fputs("   COLRMODE INDEXED;\n",fp);
-        fputs("   BACKCOLR 255 255 255;\n",fp);
-        fputs("   VDCEXT 0 0 32767 32767;\n",fp);
-        fputs("   MARKERSIZEMODE ABSTRACT;\n",fp);
-        fputs("   EDGEWIDTHMODE ABSTRACT;\n",fp);
-        fputs("   SCALEMODE ABSTRACT 0;\n",fp);
-        fputs("   LINEWIDTHMODE ABSTRACT;\n",fp);
-        fputs("BEGPICBODY;\n",fp);
-        fputs("  INTSTYLE SOLID;\n",fp);
-        fputs("  LINETYPE 1;\n",fp);
-        fputs("  LINEWIDTH 2;\n",fp);
-        fputs("  TEXTCOLR 8;\n",fp);
-        fputs("  LINECOLR 8;\n",fp);
-        fputs("  EDGECOLR 8;\n",fp);
-        fputs("  FILLCOLR 8;\n",fp);
+        fputs("BEGPIC 'PICTURE1';\n",draw_fp);
+        fputs("   COLRMODE INDEXED;\n",draw_fp);
+        fputs("   BACKCOLR 255 255 255;\n",draw_fp);
+        fputs("   VDCEXT 0 0 32767 32767;\n",draw_fp);
+        fputs("   MARKERSIZEMODE ABSTRACT;\n",draw_fp);
+        fputs("   EDGEWIDTHMODE ABSTRACT;\n",draw_fp);
+        fputs("   SCALEMODE ABSTRACT 0;\n",draw_fp);
+        fputs("   LINEWIDTHMODE ABSTRACT;\n",draw_fp);
+        fputs("BEGPICBODY;\n",draw_fp);
+        fputs("  INTSTYLE SOLID;\n",draw_fp);
+        fputs("  LINETYPE 1;\n",draw_fp);
+        fputs("  LINEWIDTH 2;\n",draw_fp);
+        fputs("  TEXTCOLR 8;\n",draw_fp);
+        fputs("  LINECOLR 8;\n",draw_fp);
+        fputs("  EDGECOLR 8;\n",draw_fp);
+        fputs("  FILLCOLR 8;\n",draw_fp);
 
         vdevice.sizeSx  = CGMT_X_SIZE;
         vdevice.sizeSy  = CGMT_Y_SIZE;
@@ -191,13 +191,13 @@ static int CGMT_init(void){ /* set up graphic environment. Returns 1 on success.
 
         /* print initial color table */
         CMAPSIZE_used = 16;
-        fputs ("COLRTABLE 1\n",fp);
+        fputs ("COLRTABLE 1\n",draw_fp);
         for( i = 0; i <CMAPSIZE_used; i++) {
-           fprintf(fp,"   %d %d %d\n",carray[i].red,
+           fprintf(draw_fp,"   %d %d %d\n",carray[i].red,
                                        carray[i].green,
                                        carray[i].blue);
         }
-        fputs(";\n",fp);
+        fputs(";\n",draw_fp);
 
         plotlstx = -1111111;
         plotlsty = -1111111;
@@ -207,15 +207,15 @@ static int CGMT_init(void){ /* set up graphic environment. Returns 1 on success.
 /******************************************************************************/
 /* close the CGMT output file */
 static int CGMT_exit(void) {
-        fputs("ENDPIC;\n",fp);
-        fputs("ENDMF;\n",fp);
-        fflush(fp);
-        if (fp != stdout && fp != stderr ){
-                fflush(fp);
+        fputs("ENDPIC;\n",draw_fp);
+        fputs("ENDMF;\n",draw_fp);
+        fflush(draw_fp);
+        if (draw_fp != stdout && draw_fp != stderr ){
+                fflush(draw_fp);
                 if(vdevice.writestoprocess == 2){
-                   pclose(fp);
+                   pclose(draw_fp);
                 }else{
-                   fclose(fp);
+                   fclose(draw_fp);
                 }
         }
         plotlstx = -1;
@@ -234,7 +234,7 @@ static int CGMT_draw(int x, int y) {
                 plotlsty=vdevice.cpVy;
         }
 
-        fprintf(fp, "LINE %d %d %d %d;\n", plotlstx, plotlsty, x, y);
+        fprintf(draw_fp, "LINE %d %d %d %d;\n", plotlstx, plotlsty, x, y);
 
         drawn = TRUE;
         plotlstx = x;
@@ -246,7 +246,7 @@ static int CGMT_setlw(int rasters){ /* line width in rasters */
         curwidth=abs(rasters);
         curwidth=MAX(1,curwidth);
         if ( drawn != 0 ){
-                fprintf(fp, "LINEWIDTH %d;\n",curwidth*vdevice.sizeX/10000);
+                fprintf(draw_fp, "LINEWIDTH %d;\n",curwidth*vdevice.sizeX/10000);
         }
         return(UNUSED);
 }
@@ -256,29 +256,29 @@ static int CGMT_clear(void) {
         int i;
         if (drawn){
 
-                fputs("ENDPIC;\n",fp);
+                fputs("ENDPIC;\n",draw_fp);
 
                 page_count++;
-                fprintf(fp,"BEGPIC 'PICTURE%d';\n",page_count);
-                fputs("   COLRMODE INDEXED;\n",fp);
-                fprintf(fp,"   BACKCOLR %d %d %d;\n",carray[curcol].red,
+                fprintf(draw_fp,"BEGPIC 'PICTURE%d';\n",page_count);
+                fputs("   COLRMODE INDEXED;\n",draw_fp);
+                fprintf(draw_fp,"   BACKCOLR %d %d %d;\n",carray[curcol].red,
                                                   carray[curcol].green,
                                                   carray[curcol].blue);
-                fputs("   VDCEXT 0 0 32767 32767;\n",fp);
-                fputs("   LINEWIDTHMODE ABSTRACT;\n",fp);
-                fputs("   MARKERSIZEMODE ABSTRACT;\n",fp);
-                fputs("   EDGEWIDTHMODE ABSTRACT;\n",fp);
-                fputs("   SCALEMODE ABSTRACT 0;\n",fp);
-                fputs("BEGPICBODY;\n",fp);
+                fputs("   VDCEXT 0 0 32767 32767;\n",draw_fp);
+                fputs("   LINEWIDTHMODE ABSTRACT;\n",draw_fp);
+                fputs("   MARKERSIZEMODE ABSTRACT;\n",draw_fp);
+                fputs("   EDGEWIDTHMODE ABSTRACT;\n",draw_fp);
+                fputs("   SCALEMODE ABSTRACT 0;\n",draw_fp);
+                fputs("BEGPICBODY;\n",draw_fp);
                 CGMT_setlw(curwidth); /* page-independent declaration */
                 /* print current color table */
-                fputs("COLRTABLE 1\n",fp);
+                fputs("COLRTABLE 1\n",draw_fp);
                 for ( i = 0; i <CMAPSIZE_used; i++){
-                   fprintf(fp,"   %d %d %d\n",carray[i].red,
+                   fprintf(draw_fp,"   %d %d %d\n",carray[i].red,
                                               carray[i].green,
                                               carray[i].blue);
                 }
-                fputs(";\n",fp);
+                fputs(";\n",draw_fp);
         }
         drawn = FALSE;
         plotlstx = -1;
@@ -294,10 +294,10 @@ static int CGMT_color(int col) {
         } else if ( col < 0 ){
                 CGMT_setlw(abs(col));
         } else{
-                fprintf(fp,"LINECOLR %d;\n",col+1);
-                fprintf(fp,"TEXTCOLR %d;\n",col+1);
-                fprintf(fp,"EDGECOLR %d;\n",col+1);
-                fprintf(fp,"FILLCOLR %d;\n",col+1);
+                fprintf(draw_fp,"LINECOLR %d;\n",col+1);
+                fprintf(draw_fp,"TEXTCOLR %d;\n",col+1);
+                fprintf(draw_fp,"EDGECOLR %d;\n",col+1);
+                fprintf(draw_fp,"FILLCOLR %d;\n",col+1);
         }
         return(UNUSED);
 }
@@ -319,15 +319,15 @@ static int CGMT_font(char *fontname) {
         return(1);
 }
 /******************************************************************************/
-int CGMT_char(char c) { /* CGMT_char output a character */
-        fprintf(fp, "TEXT %d %d FINAL '%c';\n",plotlstx, plotlsty, c);
+static int CGMT_char(char c) { /* CGMT_char output a character */
+        fprintf(draw_fp, "TEXT %d %d FINAL '%c';\n",plotlstx, plotlsty, c);
         plotlstx = vdevice.cpVx += (int)vdevice.hwidth;
         drawn = TRUE;
         return(UNUSED);
 }
 /******************************************************************************/
 static int CGMT_string(char *s){ /* output a character string */
-        fprintf(fp, "TEXT %d %d FINAL '%s';\n",plotlstx, plotlsty, s);
+        fprintf(draw_fp, "TEXT %d %d FINAL '%s';\n",plotlstx, plotlsty, s);
         plotlstx = vdevice.cpVx += (int)vdevice.hwidth * (int)strlen(s) ;
         drawn = TRUE;
         return(UNUSED);
@@ -340,15 +340,15 @@ static int CGMT_fill(int n,int x[],int y[]) {
         /* only put a linefeed into prints of polygon points every 5 sets of points */
         static char linefeed[2] = {' ','\n'};
 
-        fprintf(fp, "INTSTYLE SOLID;\n");
-        fprintf(fp, "POLYGON\n");
+        fprintf(draw_fp, "INTSTYLE SOLID;\n");
+        fprintf(draw_fp, "POLYGON\n");
 
         for (i = 0; i < n; i++)
         {
-                fprintf(fp, "%d %d%c", x[i], y[i], linefeed[(i % 6)/5]);
+                fprintf(draw_fp, "%d %d%c", x[i], y[i], linefeed[(i % 6)/5]);
         }
 
-        fprintf(fp, ";\n");
+        fprintf(draw_fp, ";\n");
 
         vdevice.cpVx = x[n - 1];
         vdevice.cpVy = y[n - 1];
@@ -359,7 +359,7 @@ static int CGMT_fill(int n,int x[],int y[]) {
 }
 /******************************************************************************/
 static int CGMT_sync(void){
-        fflush(fp);
+        fflush(draw_fp);
         return(UNUSED);
 }
 /******************************************************************************/
@@ -392,7 +392,7 @@ static DevEntry CGMTdev = {
 };
 /******************************************************************************/
 /* copy the device into vdevice.dev.  */
-int _CGMT_devcpy(void) {
+int _CGMT_draw_devcpy(void) {
         vdevice.dev = CGMTdev;
         return(UNUSED);
 }

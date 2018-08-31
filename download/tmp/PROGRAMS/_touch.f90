@@ -52,7 +52,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    change file access timestamp to current time, creating file is necessary>',&
 '@(#)VERSION:        1.0, 20180217>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Mon, Jun 4th, 2018 8:59:13 AM>',&
+'@(#)COMPILED:       Thu, Aug 16th, 2018 12:08:17 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

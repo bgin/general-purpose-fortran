@@ -108,7 +108,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $! this is converted into the help_version subroutine by ufpp ...
 $! To work with what(1), do not use ",>,\ characters in the descriptions
 $DOCUMENT VERSION
-PRODUCT:        CLI library utilities and examples
+PRODUCT:        GPF (General Purpose Fortran) utilities and examples
 PROGRAM:        sec2days(1f)
 DESCRIPTION:    convert seconds to string of form dd-hh:mm:ss
 VERSION:        1.0, 2016-06-17

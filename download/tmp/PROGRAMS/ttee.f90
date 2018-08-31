@@ -226,7 +226,7 @@ logical                        :: stopit=.false.
 stopit=.false.
 if(l_version)then
 help_text=[ CHARACTER(LEN=128) :: &
-'@(#)PRODUCT:        CLI library utilities and examples>',&
+'@(#)PRODUCT:        GPF (General Purpose Fortran) utilities and examples>',&
 '@(#)PROGRAM:        ttee(1f)>',&
 '@(#)DESCRIPTION:    split stdout to a file with optional timestamp labeling>',&
 '@(#)VERSION:        1.0, 20150913>',&
@@ -236,7 +236,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)COPYRIGHT:      Copyright (C) 2009 John S. Urban>',&
 '@(#)LICENSE:        This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Mon, Jun 4th, 2018 8:55:11 AM>',&
+'@(#)COMPILED:       Thu, Aug 16th, 2018 12:02:17 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

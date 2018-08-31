@@ -1,5 +1,5 @@
 NAME
-   vsetflush(3f) - [M_DRAW:FLUSHING] Set global flushing status
+   vsetflush(3f) - [M_draw:FLUSHING] Set global flushing status
 
 SYNOPSIS
          subroutine vsetflush(yesno)

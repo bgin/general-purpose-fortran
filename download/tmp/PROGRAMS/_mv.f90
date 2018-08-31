@@ -13,10 +13,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 'SYNOPSIS                                                                        ',&
 '     _mv SOURCE DEST                                                            ',&
 'DESCRIPTION                                                                     ',&
-'       Rename SOURCE to DEST                                                    ',&
+'       Rename file SOURCE to DEST                                               ',&
 '                                                                                ',&
 'EXAMPLE                                                                         ',&
-'     _mv file.text file.txt                                                     ',&
+'     _mv file.text /tmp/file.txt                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -30,11 +30,11 @@ end subroutine help_usage
 !!
 !!      _mv SOURCE DEST
 !!##DESCRIPTION
-!!        Rename SOURCE to DEST
+!!        Rename file SOURCE to DEST
 !!
 !!##EXAMPLE
 !!
-!!      _mv file.text file.txt
+!!      _mv file.text /tmp/file.txt
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -46,7 +46,7 @@ logical                        :: stopit=.false.
 stopit=.false.
 if(l_version)then
 help_text=[ CHARACTER(LEN=128) :: &
-'@(#)PRODUCT:        CLI library utilities and examples>',&
+'@(#)PRODUCT:        GPF (General Purpose Fortran) utilities and examples>',&
 '@(#)PROGRAM:        _mv(1f)>',&
 '@(#)DESCRIPTION:    rename file>',&
 '@(#)VERSION:        1.0, 2016-12-03>',&
@@ -56,7 +56,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
 '@(#)COMPILED:       Sun, Nov 27th, 2016 10:47:13 PM>',&
-'@(#)COMPILED:       Mon, Jun 4th, 2018 8:58:18 AM>',&
+'@(#)COMPILED:       Sat, Aug 25th, 2018 6:25:17 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

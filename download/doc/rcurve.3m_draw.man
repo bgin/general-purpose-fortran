@@ -1,5 +1,5 @@
 NAME
-   rcurve(3f) - [M_DRAW:CURVE] Draw a rational curve.
+   rcurve(3f) - [M_draw:CURVE] Draw a rational curve.
 
 SYNOPSIS
          subroutine rcurve(geom)

@@ -1,8 +1,8 @@
 NAME
-   pushviewport(3f) - [M_DRAW:VIEWPORT] Save current viewport
+   pushviewport(3f) - [M_draw:VIEWPORT] Save current viewport
 
 SYNOPSIS
-         subroutine pushviewport
+         subroutine pushviewport()
 DESCRIPTION
 
    Save current viewport.

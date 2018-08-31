@@ -1,5 +1,5 @@
 function loadthem(){
-append("INTRINSIC.3.html");
+append("INTRINSIC.3{SECTION}.html");
 append("abs.3.html");
 append("achar.3.html");
 append("acos.3.html");
@@ -115,7 +115,6 @@ append("ishft.3.html");
 append("ishftc.3.html");
 append("kind.3.html");
 append("lbound.3.html");
-append("lcobound.3.html");
 append("leadz.3.html");
 append("len.3.html");
 append("len_trim.3.html");
@@ -198,7 +197,6 @@ append("transfer.3.html");
 append("transpose.3.html");
 append("trim.3.html");
 append("ubound.3.html");
-append("ucobound.3.html");
 append("unpack.3.html");
 append("verify.3.html");
 }

@@ -567,12 +567,12 @@ logical                        :: stopit=.false.
 stopit=.false.
 if(l_version)then
 help_text=[ CHARACTER(LEN=128) :: &
-'@(#)PRODUCT:        CLI library utilities and examples>',&
+'@(#)PRODUCT:        GPF (General Purpose Fortran) utilities and examples>',&
 '@(#)PROGRAM:        asa2pdf(1f)>',&
 '@(#)DESCRIPTION:    convert text files with ASA carriage return to Adobe PDF files>',&
 '@(#)VERSION:        2.0, 20170210>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Mon, Jun 4th, 2018 8:55:55 AM>',&
+'@(#)COMPILED:       Thu, Aug 16th, 2018 12:03:42 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

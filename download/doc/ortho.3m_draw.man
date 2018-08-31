@@ -1,5 +1,5 @@
 NAME
-   ortho(3f) - [M_DRAW:PROJECTION] Define x,y,z clipping planes.
+   ortho(3f) - [M_draw:PROJECTION] Define x,y,z clipping planes.
 
 SYNOPSIS
          subroutine ortho(left, right, bottom, top, near_d, far_d)

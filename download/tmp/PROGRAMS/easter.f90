@@ -44,12 +44,12 @@ logical                        :: stopit=.false.
 stopit=.false.
 if(l_version)then
 help_text=[ CHARACTER(LEN=128) :: &
-'@(#)PRODUCT:        CLI library utilities and examples>',&
+'@(#)PRODUCT:        GPF (General Purpose Fortran) utilities and examples>',&
 '@(#)PROGRAM:        easter(1)>',&
 '@(#)DESCRIPTION:    output the month and day Easter falls on for a particular year>',&
 '@(#)VERSION:        1.0, 20170223>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Mon, Jun 4th, 2018 9:00:36 AM>',&
+'@(#)COMPILED:       Thu, Aug 16th, 2018 12:09:52 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

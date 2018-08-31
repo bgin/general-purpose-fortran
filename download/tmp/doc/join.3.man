@@ -25,7 +25,7 @@ OPTIONS
      TRM     option to trim each element of STR of trailing spaces. Defaults to .TRUE.
 RESULT
      STRING  CHARACTER variable composed of all of the elements of STR() appended together
-             with the optional seperator SEP placed between the elements.
+             with the optional separator SEP placed between the elements.
 
 EXAMPLE
 

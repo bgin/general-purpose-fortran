@@ -1,5 +1,5 @@
 NAME
-   draw(3f) - [M_DRAW:DRAW] Draw from current graphics position to (x, y, z)
+   draw(3f) - [M_draw:DRAW] Draw from current graphics position to (x, y, z)
 
 SYNOPSIS
          subroutine draw(x, y, z)

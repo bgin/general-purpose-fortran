@@ -16,7 +16,7 @@ DESCRIPTION
    If path names a symbolic link, mkfifo() shall fail and set errno to
    [EEXIST].
 
-   The  FIFO's user ID will be set to the process' effective user ID.
+   The FIFO's user ID will be set to the process' effective user ID.
 
    The FIFO's group ID shall be set to the group ID of the parent
    directory or to the effective group ID of the process.
@@ -25,10 +25,10 @@ DESCRIPTION
    ID to the group ID of the parent directory.
 
    Implementations may, but need not, provide an implementation-defined
-   way to initialize  the FIFO's group ID to the effective group ID of
+   way to initialize the FIFO's group ID to the effective group ID of
    the calling process.
 
-   Upon  successful  completion, mkfifo() shall mark for update the
+   Upon successful completion, mkfifo() shall mark for update the
    last data access, last data modification, and last file status change
    timestamps of the file.
 

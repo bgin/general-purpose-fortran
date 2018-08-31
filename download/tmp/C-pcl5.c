@@ -25,13 +25,13 @@ HPGL2 files.
 #define MIN(x,y)        ((x) < (y) ? (x) : (y))
 
 
-extern FILE     *_voutfile();
+extern FILE     *_draw_outfile();
 
 static int drawn = 0;
 
 static int      plotlstx, plotlsty;     /* position of last draw */
 
-extern  FILE     *fp;
+extern  FILE     *draw_fp;
 
 #define CMAPSIZE 256
 
@@ -106,18 +106,18 @@ CORRECT THESE NOTES:
 static int HPGL2_common_init(int minx,int  maxx,int  miny,int  maxy){
         vdevice.depth = 8;
 
-        fp = _voutfile();
+        draw_fp = _draw_outfile();
 
         /* * The next line is for serial lines if you need to set modes */
-        fprintf(fp, "\033.(;\033.I81;;17;\033.N;19:IN;");
+        fprintf(draw_fp, "\033.(;\033.I81;;17;\033.N;19:IN;");
 
         /* * Cause scaling to be 0 to maxX maxY.  */
-        fprintf(fp, "IP%d,%d,%d,%d;", minx, miny, maxx, maxy);
+        fprintf(draw_fp, "IP%d,%d,%d,%d;", minx, miny, maxx, maxy);
 
-        fprintf(fp, "SC0,%d,0,%d;", vdevice.sizeSx, vdevice.sizeSy);
-        fprintf(fp,"TR0;\n"); /* transparency mode off, white areas are opaque */
-        fprintf(fp,"NP256;\n"); /* Establish the number of pens in the HPGL/2 palette*/
-        fprintf(fp,"CR0,255,0,255,0,255;\n"); /* set color range for relative color data in the HPGL/2 palette*/
+        fprintf(draw_fp, "SC0,%d,0,%d;", vdevice.sizeSx, vdevice.sizeSy);
+        fprintf(draw_fp,"TR0;\n"); /* transparency mode off, white areas are opaque */
+        fprintf(draw_fp,"NP256;\n"); /* Establish the number of pens in the HPGL/2 palette*/
+        fprintf(draw_fp,"CR0,255,0,255,0,255;\n"); /* set color range for relative color data in the HPGL/2 palette*/
 
         HPGL2_mapcolor( 0,255,255,255); /* black */
         HPGL2_mapcolor( 1,255,0  ,0  ); /* red */
@@ -149,17 +149,17 @@ static int HPGL2_common_init(int minx,int  maxx,int  miny,int  maxy){
 static int PCL5_common_init(int minx, int maxx, int miny, int maxy) {
         vdevice.depth = 8;
 
-        fp = _voutfile();
+        draw_fp = _draw_outfile();
 
         /* (exit PCL5 mode) Enter HPGL2 mode, cause scaling to be 0 to maxX maxY */
         pcl5[P_CLEAR]=malloc(100);
         sprintf(pcl5[P_CLEAR], "\033%%%%1A\033E\n\033&l2A\033&l1O\033%%%%1B\nIP%d,%d,%d,%d;SC0,%d,0,%d;",
         minx, miny, maxx, maxy, vdevice.sizeSx, vdevice.sizeSy);
 
-        fprintf(fp,pcl5[P_CLEAR]);
-        fprintf(fp,"TR0;\n"); /* transparency mode off, white areas are opaque */
-        fprintf(fp,"NP256;\n"); /* Establish the number of pens in the HPGL/2 palette*/
-        fprintf(fp,"CR0,255,0,255,0,255;\n"); /* set color range for relative color data in the HPGL/2 palette*/
+        fprintf(draw_fp,pcl5[P_CLEAR]);
+        fprintf(draw_fp,"TR0;\n"); /* transparency mode off, white areas are opaque */
+        fprintf(draw_fp,"NP256;\n"); /* Establish the number of pens in the HPGL/2 palette*/
+        fprintf(draw_fp,"CR0,255,0,255,0,255;\n"); /* set color range for relative color data in the HPGL/2 palette*/
 
         plotcmds = pcl5;
         plotlstx = -1111111;
@@ -174,19 +174,19 @@ static int PCL5_common_init(int minx, int maxx, int miny, int maxy) {
 static int HPGL2_common_initp(int minx, int maxx, int miny, int maxy) {
         vdevice.depth = 8;
 
-        fp = _voutfile();
+        draw_fp = _draw_outfile();
 
         /* * The next line is for serial lines if you need to set modes */
-        fprintf(fp, "\033.(;\033.I81;;17;\033.N;19:IN;");
+        fprintf(draw_fp, "\033.(;\033.I81;;17;\033.N;19:IN;");
 
         /* * Cause scaling to be 0 to maxX maxY.  */
-        fprintf(fp, "IP%d,%d,%d,%d;", minx, miny, maxx, maxy);
+        fprintf(draw_fp, "IP%d,%d,%d,%d;", minx, miny, maxx, maxy);
 
-        fprintf(fp, "SC0,%d,0,%d;", vdevice.sizeSx, vdevice.sizeSy);
-        fprintf(fp, "RO90;");  /* rotate 90 degrees */
-        fprintf(fp,"TR0;\n"); /* transparency mode off, white areas are opaque */
-        fprintf(fp,"NP256;\n"); /* Establish the number of pens in the HPGL/2 palette*/
-        fprintf(fp,"CR0,255,0,255,0,255;\n"); /* set color range for relative color data in the HPGL/2 palette*/
+        fprintf(draw_fp, "SC0,%d,0,%d;", vdevice.sizeSx, vdevice.sizeSy);
+        fprintf(draw_fp, "RO90;");  /* rotate 90 degrees */
+        fprintf(draw_fp,"TR0;\n"); /* transparency mode off, white areas are opaque */
+        fprintf(draw_fp,"NP256;\n"); /* Establish the number of pens in the HPGL/2 palette*/
+        fprintf(draw_fp,"CR0,255,0,255,0,255;\n"); /* set color range for relative color data in the HPGL/2 palette*/
 
         plotcmds = HPGL2;
         plotlstx = -1111111;
@@ -202,17 +202,17 @@ static int HPGL2_common_initp(int minx, int maxx, int miny, int maxy) {
 static int PCL5_common_initp(int minx,int maxx,int miny,int maxy) {
         vdevice.depth = 8;
 
-        fp = _voutfile();
+        draw_fp = _draw_outfile();
 
         /* (exit PCL5 mode) Enter HPGL2 mode, cause scaling to be 0 to maxX maxY , rotate 90 degrees */
         pcl5[P_CLEAR]=malloc(100);
         sprintf(pcl5[P_CLEAR], "\033%%%%1A\033E\n\033&l2A\033&l1O\033%%%%1B\nIP%d,%d,%d,%d;SC0,%d,0,%d;RO90;",
         minx, miny, maxx, maxy, vdevice.sizeSx, vdevice.sizeSy);
 
-        fprintf(fp,pcl5[P_CLEAR]);
-        fprintf(fp,"TR0;\n"); /* transparency mode off, white areas are opaque */
-        fprintf(fp,"NP256;\n"); /* Establish the number of pens in the HPGL/2 palette*/
-        fprintf(fp,"CR0,255,0,255,0,255;\n"); /* set color range for relative color data in the HPGL/2 palette*/
+        fprintf(draw_fp,pcl5[P_CLEAR]);
+        fprintf(draw_fp,"TR0;\n"); /* transparency mode off, white areas are opaque */
+        fprintf(draw_fp,"NP256;\n"); /* Establish the number of pens in the HPGL/2 palette*/
+        fprintf(draw_fp,"CR0,255,0,255,0,255;\n"); /* set color range for relative color data in the HPGL/2 palette*/
 
         plotcmds = pcl5;
         plotlstx = -1111111;
@@ -309,9 +309,9 @@ static int PCL5_LAND_init(void) {
  */
 static int HPGL2_draw(int x, int y) {
         if (plotlstx != vdevice.cpVx || plotlsty != vdevice.cpVy)
-                fprintf(fp, plotcmds[P_MOVE], vdevice.cpVx, vdevice.cpVy);
+                fprintf(draw_fp, plotcmds[P_MOVE], vdevice.cpVx, vdevice.cpVy);
 
-        fprintf(fp, plotcmds[P_DRAW], x, y);
+        fprintf(draw_fp, plotcmds[P_DRAW], x, y);
         plotlstx = x;
         plotlsty = y;
         drawn = 1;
@@ -322,16 +322,16 @@ static int HPGL2_draw(int x, int y) {
  * exit from draw printing the command to put away the pen and flush the buffer.
  */
 static int HPGL2_exit(void) {
-        fprintf(fp, plotcmds[P_PEN], 0);
-        fprintf(fp, plotcmds[P_EXIT]);
-        fflush(fp);
+        fprintf(draw_fp, plotcmds[P_PEN], 0);
+        fprintf(draw_fp, plotcmds[P_EXIT]);
+        fflush(draw_fp);
 
-        if (fp != stdout && fp != stderr ){
-                fflush(fp);
+        if (draw_fp != stdout && draw_fp != stderr ){
+                fflush(draw_fp);
                 if(vdevice.writestoprocess == 2){
-                   pclose(fp);
+                   pclose(draw_fp);
                 }else{
-                   fclose(fp);
+                   fclose(draw_fp);
                 }
         }
         drawn = 1;
@@ -342,7 +342,7 @@ static int HPGL2_exit(void) {
  */
 static int HPGL2_clear(void) {
         if (drawn){
-                fprintf(fp, plotcmds[P_CLEAR]);
+                fprintf(draw_fp, plotcmds[P_CLEAR]);
         }
         drawn = 0;
         return(UNUSED);
@@ -362,7 +362,7 @@ static int HPGL2_setlw(int i) {
          */
          line_width=line_width*0.0846666/4.0;
       }
-      fprintf(fp,plotcmds[P_WIDE] , line_width);
+      fprintf(draw_fp,plotcmds[P_WIDE] , line_width);
    return(UNUSED);
 }
 /******************************************************************************/
@@ -381,7 +381,7 @@ static int HPGL2_color(int i) {
    {
       HPGL2_setlw(abs(i));
    } else {
-      fprintf(fp, plotcmds[P_PEN], i);
+      fprintf(draw_fp, plotcmds[P_PEN], i);
       /*
          The pen thickness might return to the default each time
          a new pen is selected in HPGL2; but draw expects
@@ -394,7 +394,7 @@ static int HPGL2_color(int i) {
 
          Could reduce redundant calls by checking if same as last call
       */
-      fprintf(fp,plotcmds[P_WIDE] , line_width);
+      fprintf(draw_fp,plotcmds[P_WIDE] , line_width);
    }
         return(UNUSED);
 }
@@ -410,7 +410,7 @@ static int HPGL2_mapcolor(int i,int  r,int  g,int  b) {
         if (i >= CMAPSIZE){
                 return(UNUSED);
         }
-        fprintf(fp, "PC%d,%d,%d,%d\n", i, r, g, b);
+        fprintf(draw_fp, "PC%d,%d,%d,%d\n", i, r, g, b);
         return(UNUSED);
 }
 /******************************************************************************/
@@ -423,11 +423,11 @@ static int HPGL2_font(char *font) {
         if (strcmp(font, "small") == 0) {
                 vdevice.hwidth = 97.01; /* Size in plotter resolution units */
                 vdevice.hheight = vdevice.hwidth * 2.0;
-                fprintf(fp, plotcmds[P_TXTSIZE], 0.16, 0.32);
+                fprintf(draw_fp, plotcmds[P_TXTSIZE], 0.16, 0.32);
         } else if (strcmp(font, "large") == 0) {
                 vdevice.hwidth = 145.5;
                 vdevice.hheight = vdevice.hwidth * 2.0;
-                fprintf(fp, plotcmds[P_TXTSIZE], 0.24, 0.48);
+                fprintf(draw_fp, plotcmds[P_TXTSIZE], 0.24, 0.48);
         } else
                 return(0);
 
@@ -442,13 +442,13 @@ static int HPGL2_font(char *font) {
 static int HPGL2_char(char c) {
 
         if (plotlstx != vdevice.cpVx || plotlsty != vdevice.cpVy)
-                fprintf(fp, plotcmds[P_MOVE], vdevice.cpVx, vdevice.cpVy);
+                fprintf(draw_fp, plotcmds[P_MOVE], vdevice.cpVx, vdevice.cpVy);
 
-        fprintf(fp, plotcmds[P_BEGTXT]);
+        fprintf(draw_fp, plotcmds[P_BEGTXT]);
 
-        fprintf(fp, "%c", c);
+        fprintf(draw_fp, "%c", c);
 
-        fprintf(fp, plotcmds[P_ENDTXT]);
+        fprintf(draw_fp, plotcmds[P_ENDTXT]);
 
         plotlstx = plotlsty = -1111111;
         drawn = 1;
@@ -459,13 +459,13 @@ static int HPGL2_char(char c) {
 static int HPGL2_string(char *s) {
 
         if (plotlstx != vdevice.cpVx || plotlsty != vdevice.cpVy)
-                fprintf(fp, plotcmds[P_MOVE], vdevice.cpVx, vdevice.cpVy);
+                fprintf(draw_fp, plotcmds[P_MOVE], vdevice.cpVx, vdevice.cpVy);
 
-        fprintf(fp, plotcmds[P_BEGTXT]);
+        fprintf(draw_fp, plotcmds[P_BEGTXT]);
 
-        fputs(s, fp);
+        fputs(s, draw_fp);
 
-        fprintf(fp, plotcmds[P_ENDTXT]);
+        fprintf(draw_fp, plotcmds[P_ENDTXT]);
 
         plotlstx = plotlsty = -1111111;
         drawn = 1;
@@ -480,27 +480,27 @@ static int HPGL2_fill(int n, int x[], int y[]) {
         yclose=y[0];
 
         if (plotlstx != x[0] || plotlsty != y[0])
-                fprintf(fp, plotcmds[P_MOVE], x[0], y[0]);      /* update current position if needed */
+                fprintf(draw_fp, plotcmds[P_MOVE], x[0], y[0]);      /* update current position if needed */
 
-        fprintf(fp, plotcmds[P_FILL]);                          /* enter polygon mode */
+        fprintf(draw_fp, plotcmds[P_FILL]);                          /* enter polygon mode */
 
         move_draw=P_DRAW;
         for (i = 1; i < n; i++){
                 /* If not last point in list and hit first point close this as a subpolygon */
                 if (x[i] == xclose && y[i] == yclose && (i != (n-1)) )
                 {
-                   fprintf(fp, plotcmds[P_DRAW], x[i], y[i]);   /* define polygon vertices */
-                   fprintf(fp, plotcmds[P_BREAKFILL]);          /* end subpolygon */
+                   fprintf(draw_fp, plotcmds[P_DRAW], x[i], y[i]);   /* define polygon vertices */
+                   fprintf(draw_fp, plotcmds[P_BREAKFILL]);          /* end subpolygon */
                    move_draw=P_MOVE;                            /* move to first point in next subpolygon */
                 }else{
-                   fprintf(fp, plotcmds[move_draw],x[i],y[i]);  /* define polygon vertices */
+                   fprintf(draw_fp, plotcmds[move_draw],x[i],y[i]);  /* define polygon vertices */
                    move_draw=P_DRAW;                            /* if moving because starting a new subpolygon return to drawing */
                 }
         }
 
-        fprintf(fp, plotcmds[P_ENDFILL]);                       /* end polygon and fill it */
+        fprintf(draw_fp, plotcmds[P_ENDFILL]);                       /* end polygon and fill it */
 
-        fprintf(fp, plotcmds[P_MOVE], x[n-1], y[n-1]);          /* current position should be last one moved to, not x0,y0 */
+        fprintf(draw_fp, plotcmds[P_MOVE], x[n-1], y[n-1]);          /* current position should be last one moved to, not x0,y0 */
 
         plotlstx = vdevice.cpVx = x[n - 1];
         plotlsty = vdevice.cpVy = y[n - 1];
@@ -536,7 +536,7 @@ static DevEntry HPGL2dev = {
         noop            /* int (*Vsync)() -- Syncronise display */
 };
 /******************************************************************************/
-int _PCL5_LAND_devcpy(void){ /* copy the PCL5 landscape device into vdevice.dev.  */
+int _PCL5_LAND_draw_devcpy(void){ /* copy the PCL5 landscape device into vdevice.dev.  */
         vdevice.dev = HPGL2dev;
         vdevice.dev.Vinit = PCL5_LAND_init;
 /* if you don't have structure assignment ... this would set Vinit
@@ -552,19 +552,19 @@ int _PCL5_LAND_devcpy(void){ /* copy the PCL5 landscape device into vdevice.dev.
         return(UNUSED);
 }
 /******************************************************************************/
-int _PCL5_PORT_devcpy(void){/* copy the PCL5 portrait device into vdevice.dev.  */
+int _PCL5_PORT_draw_devcpy(void){/* copy the PCL5 portrait device into vdevice.dev.  */
         vdevice.dev = HPGL2dev;
         vdevice.dev.Vinit = PCL5_PORT_init;
         return(UNUSED);
 }
 /******************************************************************************/
-int _HPGL2_PORT_devcpy(void){/* copy the HPGL2 portrait device into vdevice.dev.  */
+int _HPGL2_PORT_draw_devcpy(void){/* copy the HPGL2 portrait device into vdevice.dev.  */
         vdevice.dev = HPGL2dev;
         vdevice.dev.Vinit = HPGL2_PORT_init;
         return(UNUSED);
 }
 /******************************************************************************/
-int _HPGL2_LAND_devcpy(void){/* copy the HPGL2 landscape  device into vdevice.dev.  */
+int _HPGL2_LAND_draw_devcpy(void){/* copy the HPGL2 landscape  device into vdevice.dev.  */
         vdevice.dev = HPGL2dev;
         vdevice.dev.Vinit = HPGL2_LAND_init;
         return(UNUSED);

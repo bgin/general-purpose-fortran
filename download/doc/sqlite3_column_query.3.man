@@ -2,7 +2,7 @@ NAME
    sqlite3_column_query - [M_sqlite] Convenience routine to query a column or a function of that column
 
 SYNOPSIS
-     call sqlite3_column_query(column, name, type, length, function)
+     subroutine sqlite3_column_query(column, name, type, length, function)
 
        type(SQLITE_COLUMN) column
        character(len=*) name

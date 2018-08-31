@@ -417,7 +417,7 @@ logical                        :: stopit=.false.
 stopit=.false.
 if(l_version)then
 help_text=[ CHARACTER(LEN=128) :: &
-'@(#)PRODUCT:        CLI library utilities and examples>',&
+'@(#)PRODUCT:        GPF (General Purpose Fortran) utilities and examples>',&
 '@(#)PROGRAM:        numdiff(1f)>',&
 '@(#)DESCRIPTION:    compare otherwise essentially identical files for numeric differences.>',&
 '@(#)VERSION:        3.0, 20131201>',&
@@ -427,7 +427,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)COPYRIGHT:      1985, 1986, 1989, 1990, 20090501, 20131129 John. S. Urban>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Mon, Jun 4th, 2018 8:53:42 AM>',&
+'@(#)COMPILED:       Sat, Aug 25th, 2018 1:49:12 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -906,7 +906,7 @@ end subroutine percent_diff
 !  Author: John S. Urban
 !  Date:   1986,1990,2013
 !
-!  given a line of up to 264 characters of structure " par1 par2 par3 ... par(n) " where par(i) are seperated by a delimiter
+!  given a line of up to 264 characters of structure " par1 par2 par3 ... par(n) " where par(i) are separated by a delimiter
 !  find how many pars and beginning and ending column of each, ignoring leading and trailing blanks
 !  output array sizes should be istart(132), iterm(132)
 !

@@ -1,5 +1,5 @@
 NAME
-   rdraw(3f) - [M_DRAW:DRAW] Relative draw
+   rdraw(3f) - [M_draw:DRAW] Relative draw
 
 SYNOPSIS
     subroutine rdraw(deltax, deltay, deltaz)

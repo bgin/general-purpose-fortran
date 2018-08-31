@@ -2,7 +2,7 @@ NAME
    sqlite3_get_column(3f) - [M_sqlite] Convenience routine to get the value of a column
 
 SYNOPSIS
-   call sqlite3_get_column(column, value)
+   subroutine sqlite3_get_column(column, value)
 
     type(SQLITE_COLUMN) :: column
     any type            :: value

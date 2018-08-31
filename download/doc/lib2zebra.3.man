@@ -1,0 +1,44 @@
+NAME
+lib2zebra.a(3f) - The library for converting files to and from zebra format
+
+SYNOPSIS
+   The following routines can be found in lib2zebra/attach:
+
+   * txt2bin   - read ASCII file of columns and convert to binary ush(1) file
+   * bin2zebra - read standard binary or ASCII file and convert to zebra file
+   * juaz2bz   - read from ASCII zebra and write binary zebra
+   * jubz2az   - read from binary zebra and write ASCII zebra
+
+DESCRIPTION
+
+   The USH program directly reads zebra format files. These files are direct-access
+   files that are optimal for quick data access. Other input formats are converted to
+   zebra format by the "scripts/tocovert" script when the USH ATTACH command is used.
+   (The file formats are described in example programs in the Appendix). The script uses
+   programs in the lib2zebra/ directory to convert files in other formats to zebra files.
+
+   In addition, some of the programs convert to and ASCII versions of the binary file
+   formats so that the data can be examined with an editor and be archived and moved
+   between platforms that are not binary compatible.
+
+   Note that when supported, Fortran extensions that allow switching between different
+   binary endian formats are used so that non-native binary formats can be
+   read directly.
+
+   The main programs for the conversion programs are in lib2zebra/EXE and lib2zbra/inc:
+
+   EXE/a2b.F     - convert ASCII USH sequential file to BINARY format
+   EXE/az2bz.F   - convert ASCII zebra to binary zebra file
+   EXE/b2a.F     - standard binary to standard ASCII file
+   EXE/b2z.F     - convert standard binary or standard ascii file to a zebra file
+   EXE/b2zgiga.F - convert standard file to zebra file using big scratch array
+   inc/b2z.h     - the main source included by b2z.F and b2zgiga.F
+   EXE/bz2az.F   - convert binary zebra to ASCII zebra file
+   EXE/c2b.F     - convert space-delimited columns of numbers into BINARY USH sequential file
+
+   A read-only filter for NRC DataBank files that converts them to ASCII zebra format
+   is in "EXE/NRCDB/":
+
+   EXE/NRCDB/nrcdb2az.c  -- convert NRC DataBank file to ASCII zebra file
+
+   The directory "EXE/NRCDB/doc" contains documentation on the NRC DataBank file format.

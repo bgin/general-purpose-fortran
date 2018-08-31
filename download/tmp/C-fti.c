@@ -22,8 +22,8 @@ Next time in:
 #include <stdlib.h>
 #include <string.h>
 #include "draw.h"
-extern FILE     *_voutfile();
-extern  FILE     *fp;
+extern FILE     *_draw_outfile();
+extern  FILE     *draw_fp;
 #define ABS(x)    ((x) < 0 ? -(x) : (x))
 #define MIN(x, y)       ((x) < (y) ? (x) : (y))
 
@@ -42,13 +42,13 @@ static int FTI_color(int col){ /* change the current color */
         }
         switch(icol) {
         case 0:
-                fprintf(fp,"color(iconcolor);\n");
+                fprintf(draw_fp,"color(iconcolor);\n");
                 break;
         case 7:
-                fprintf(fp,"color(outlinecolor);\n");
+                fprintf(draw_fp,"color(outlinecolor);\n");
                 break;
         default:
-                fprintf(fp,"color(%d);\n",icol); /* Set current pen color index to n. */
+                fprintf(draw_fp,"color(%d);\n",icol); /* Set current pen color index to n. */
         }
         return(0);
 }
@@ -58,23 +58,23 @@ static int FTI_init(void) {
         vdevice.sizeSx = 1000;
         vdevice.sizeX = vdevice.sizeY = MIN(vdevice.sizeSy,vdevice.sizeSx);
         vdevice.depth = 1;
-        fp = _voutfile();
+        draw_fp = _draw_outfile();
         GLOBAL_lastx = -1111111;
         GLOBAL_lasty = -1111111;
-        (void) fprintf(fp,"#FTI\n");                                                /* magic number of a clear text FTI file */
-        (void) fprintf(fp,"# CREATOR: M_DRAW FTI driver; version 1.0 1997/08/02\n"); /* FTI file can contain comment lines*/
-        (void) fprintf(fp,"# Version 1: 19970802, Author: John S. Urban\n");
-               fprintf(fp,"color(outlinecolor);\n");
+        (void) fprintf(draw_fp,"#FTI\n");                                                /* magic number of a clear text FTI file */
+        (void) fprintf(draw_fp,"# CREATOR: M_DRAW FTI driver; version 1.0 1997/08/02\n"); /* FTI file can contain comment lines*/
+        (void) fprintf(draw_fp,"# Version 1: 19970802, Author: John S. Urban\n");
+               fprintf(draw_fp,"color(outlinecolor);\n");
         return(1);
 }
 /******************************************************************************/
 static int FTI_fill(int n, int x[], int y[]){ /* "fill" a polygon */
         int     i;
-        fprintf(fp,"bgnpolygon();\n"); /* begin polygon */
+        fprintf(draw_fp,"bgnpolygon();\n"); /* begin polygon */
         for (i = 0; i < n; i++){
-                fprintf(fp,"   vertex(%f,%f);\n",x[i]/10.0,y[i]/10.0); /* draw outline across graphics array */
+                fprintf(draw_fp,"   vertex(%f,%f);\n",x[i]/10.0,y[i]/10.0); /* draw outline across graphics array */
         }
-        fprintf(fp,"endpolygon();\n"); /* end polygon */
+        fprintf(draw_fp,"endpolygon();\n"); /* end polygon */
         /* update current position */
         GLOBAL_lastx = vdevice.cpVx = x[n - 1];
         GLOBAL_lasty = vdevice.cpVy = y[n - 1];
@@ -85,28 +85,28 @@ static int FTI_draw(int x,int  y){ /* print the commands to draw a line from the
         if (GLOBAL_lastx != vdevice.cpVx || GLOBAL_lasty != vdevice.cpVy){
              GLOBAL_lastx=vdevice.cpVx;
              GLOBAL_lasty=vdevice.cpVy;
-             fprintf(fp,"move(%f,%f);\n",GLOBAL_lastx/10.0,GLOBAL_lasty/10.0);
+             fprintf(draw_fp,"move(%f,%f);\n",GLOBAL_lastx/10.0,GLOBAL_lasty/10.0);
         }
-        fprintf(fp,"draw(%f,%f);\n",x/10.0,y/10.0);
+        fprintf(draw_fp,"draw(%f,%f);\n",x/10.0,y/10.0);
         return(UNUSED);
 }
 /*******************************************************************************/
 static int FTI_exit(void){ /* exit from draw printing the command to flush the buffer.  */
-        fflush(fp); /* flush the output file */
-        if (fp != stdout && fp != stderr ){
-                (void) fprintf(fp,"# End of FTI File\n");
-                fflush(fp);
+        fflush(draw_fp); /* flush the output file */
+        if (draw_fp != stdout && draw_fp != stderr ){
+                (void) fprintf(draw_fp,"# End of FTI File\n");
+                fflush(draw_fp);
                 if(vdevice.writestoprocess == 2){
-                   pclose(fp);
+                   pclose(draw_fp);
                 }else{
-                   fclose(fp);
+                   fclose(draw_fp);
                 }
         }
         return(UNUSED);
 }
 /*******************************************************************************/
 static int FTI_clear(void){ /* flush current page and clear graphics array */
-                (void) fprintf(fp,"# End of FTI Page\n");
+                (void) fprintf(draw_fp,"# End of FTI Page\n");
         return(UNUSED);
 }
 /******************************************************************************/
@@ -128,12 +128,12 @@ static int FTI_string(char *s){ /* output a string.  */
                 GLOBAL_lastx=vdevice.cpVx;
                 GLOBAL_lasty=vdevice.cpVy;
         }
-        fprintf(fp,"# %s\n",s);
+        fprintf(draw_fp,"# %s\n",s);
         GLOBAL_lastx = GLOBAL_lasty = -1111111; /* undefine current position because used hardware text ?*/
         return(UNUSED);
 }
 /******************************************************************************/
-int FTI_char(char c){ /* output a character */
+static int FTI_char(char c){ /* output a character */
   char  s[2];
   s[0] = c; s[1]='\0';
   FTI_string(s);
@@ -170,7 +170,7 @@ static DevEntry FTIdev = {
                 noop         /* Syncronize the display */
 };
 /******************************************************************************/
-int _FTI_devcpy(void) {
+int _FTI_draw_devcpy(void) {
         vdevice.dev = FTIdev;
         vdevice.dev.Vinit = FTI_init;
         return(UNUSED);

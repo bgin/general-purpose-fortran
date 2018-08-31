@@ -7,6 +7,7 @@ SYNOPSIS
    character(len=*),intent(in)  :: string
    integer                      :: index
    character(len=*),intent(in)  :: ioflag
+
 DEFINITION
    Breaking the rule of only accessing the calculator thru jucalc:
 
@@ -15,6 +16,7 @@ DEFINITION
    problems with recursion if a routine called by the calculator
    in JUOWN1(3f) wants to store something back into the calculator
    variable table.
+
 OPTIONS
    varnam0   variable name to create or replace in calculator module
    string    string to associate with the calculator variable name varnam0

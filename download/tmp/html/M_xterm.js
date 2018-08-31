@@ -1,4 +1,5 @@
 function loadthem(){
+append("M_xterm.3{SECTION}.html");
 append("M_xterm.3.html");
 append("xterm_clear.3.html");
 append("xterm_colors.3.html");

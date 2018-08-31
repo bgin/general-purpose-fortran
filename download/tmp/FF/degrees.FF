@@ -68,7 +68,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $! this is converted into the help_version subroutine by ufpp ...
 $! To work with what(1), do not use ",>,\ characters in descriptions
 $DOCUMENT VERSION
-PRODUCT:        CLI library utilities and examples
+PRODUCT:        GPF (General Purpose Fortran) utilities and examples
 PROGRAM:        degrees(1f)
 DESCRIPTION:    convert multiple values between Celsius and Fahrenheit
 VERSION:        1.0, 2016-04-09
@@ -180,6 +180,17 @@ $!==============================================================================
 $OUTPUT tmp/_degrees_expected.txt
 Fahrenheit   Celsius
  -459.67F     -273.15C
+ -400.00F     -240.00C
+ -300.00F     -184.44C
+ -200.00F     -128.89C
+ -150.00F     -101.11C
+ -128.60F      -89.22C
+ -125.00F      -87.22C
+ -100.00F      -73.33C
+  -75.00F      -59.44C
+  -50.00F      -45.56C
+  -40.00F      -40.00C
+  -30.00F      -34.44C
   -20.00F      -28.89C
   -15.00F      -26.11C
   -10.00F      -23.33C
@@ -210,6 +221,21 @@ Fahrenheit   Celsius
   105.00F       40.56C
   110.00F       43.33C
   115.00F       46.11C
+  120.00F       48.89C
+  125.00F       51.67C
+  130.00F       54.44C
+  134.00F       56.67C
+  135.00F       57.22C
+  140.00F       60.00C
+  145.00F       62.78C
+  150.00F       65.56C
+  160.00F       71.11C
+  170.00F       76.67C
+  180.00F       82.22C
+  190.00F       87.78C
+  200.00F       93.33C
+  210.00F       98.89C
+  212.00F      100.00C
 Celsius      Fahrenheit
     0.00C       32.00F
   100.00C      212.00F

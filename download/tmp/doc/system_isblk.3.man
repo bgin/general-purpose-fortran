@@ -8,7 +8,7 @@ DESCRIPTION
 The isblk(3f) function checks if path is a path to a block device.
 
 OPTIONS
-path   a character string representing a block device pathname.  Trailing spaces are ignored.
+path   a character string representing a block device pathname. Trailing spaces are ignored.
 
 RETURN VALUE
        The system_isblk() function should always be successful and no

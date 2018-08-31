@@ -48,7 +48,7 @@ logical                        :: stopit=.false.
 stopit=.false.
 if(l_version)then
 help_text=[ CHARACTER(LEN=128) :: &
-'@(#)PRODUCT:        CLI library utilities and examples>',&
+'@(#)PRODUCT:        GPF (General Purpose Fortran) utilities and examples>',&
 '@(#)PROGRAM:        _yes(1)>',&
 '@(#)DESCRIPTION:    output a string repeatedly until killed or limit is reached>',&
 '@(#)VERSION:        1.0, 20150508>',&
@@ -57,7 +57,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Mon, Jun 4th, 2018 9:00:15 AM>',&
+'@(#)COMPILED:       Fri, Aug 24th, 2018 9:42:44 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -95,7 +95,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '    Sample commands                                                             ',&
 '                                                                                ',&
 '       # repeat a command 20 times, pausing and clearing:                       ',&
-'       _yes  date --repeat 20  |xargs -iXX  sh -c ''''XX;sleep 2;clear''''      ',&
+'       _yes  date --repeat 20  |xargs -iXX  sh -c ''XX;sleep 2;clear''          ',&
 '                                                                                ',&
 'REPORTING BUGS                                                                  ',&
 '    Report _yes bugs to <http://www.urbanjost.altervista.org/index.html>        ',&
@@ -132,7 +132,7 @@ end subroutine help_usage
 !!     Sample commands
 !!
 !!        # repeat a command 20 times, pausing and clearing:
-!!        _yes  date --repeat 20  |xargs -iXX  sh -c ''XX;sleep 2;clear''
+!!        _yes  date --repeat 20  |xargs -iXX  sh -c 'XX;sleep 2;clear'
 !!
 !!##REPORTING BUGS
 !!     Report _yes bugs to <http://www.urbanjost.altervista.org/index.html>

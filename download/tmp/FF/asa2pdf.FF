@@ -275,7 +275,7 @@ asa(1)/nasa(1), fpr(1), enscript(1), a2ps(1), and ps2pdf(1).
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION
-PRODUCT:        CLI library utilities and examples
+PRODUCT:        GPF (General Purpose Fortran) utilities and examples
 PROGRAM:        asa2pdf(1f)
 DESCRIPTION:    convert text files with ASA carriage return to Adobe PDF files
 VERSION:        2.0, 20170210

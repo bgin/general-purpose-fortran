@@ -1,50 +1,55 @@
 NAME
     M_fixedform(3fm) - [NCURSES] convert a text block into a TUI (screen interface)
+
 SYNOPSIS
    use :: M_fixedform, only : icount_ptr,page_ptr,page_pd,icount_pd
    use :: M_fixedform, only : fixedform ,loaddata
+
 DESCRIPTION
    M_fixedform(3fm) takes a text block as input, and converts it
    to a form-like screen interface using the ncurses(3f) library. An
    appropriate action is taken for each keypress.
+
 EXAMPLE
-program fifo
-implicit none
-use M_fixedform, only : fixedform, loaddata, icount_ptr, page_ptr, page_pd, icount_pd
-implicit none
-   call make_data()
-   page_ptr=>page_pd
-   icount_ptr=>icount_pd
-   call loaddata('test.dat')      ! fill the page(*) with user data
-   call fixedform()
-end program fifo
-subroutine make_data()
-open(unit=10,file='test.dat')
-write(10,'(a)')[character(len=80) ::
-'',
-'',
-'',
-'',
-'',
-'',
-'',
-'',
-'',
-'',
-'',
-'',
-'',
-'',
-'',
-'',
-'',
-'',
-'',
-'',
-'',
-'',
-'',
-''
-]
-end subroutine make_data
+Sample program:
+
+   program fifo
+   implicit none
+   use M_fixedform, only : fixedform, loaddata, icount_ptr, page_ptr, page_pd, icount_pd
+   implicit none
+      call make_data()
+      page_ptr=>page_pd
+      icount_ptr=>icount_pd
+      call loaddata('test.dat')      ! fill the page(*) with user data
+      call fixedform()
+   end program fifo
+   subroutine make_data()
+   open(unit=10,file='test.dat')
+   write(10,'(a)')[character(len=80) ::
+   '',
+   '',
+   '',
+   '',
+   '',
+   '',
+   '',
+   '',
+   '',
+   '',
+   '',
+   '',
+   '',
+   '',
+   '',
+   '',
+   '',
+   '',
+   '',
+   '',
+   '',
+   '',
+   '',
+   ''
+   ]
+   end subroutine make_data
 

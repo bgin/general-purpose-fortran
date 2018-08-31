@@ -2,7 +2,7 @@ NAME
    sqlite3_reset(3f) - [M_sqlite] Reset the prepared SQL statement so that it can be used again
 
 SYNOPSIS
-   call sqlite3_reset(stmt)
+   subroutine sqlite3_reset(stmt)
 
     type(SQLITE_STATEMENT) stmt
 

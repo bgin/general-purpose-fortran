@@ -42,16 +42,16 @@ static  char            *wintitle;
 static int GLOBAL_device = X11DEV;
 /******************************************************************************/
 /* PROTOTYPES */
-int X11_mapcolor(int i, int r, int g, int b);
-int X11_backbuf(void);
-int X11_color(int ind);
-int X11_clear(void);
-int X11_swapbuf(void);
-int X11_frontbuf(void);
-int X11_sync(void);
-int X11_checkkey(void);
+static int X11_mapcolor(int i, int r, int g, int b);
+static int X11_backbuf(void);
+static int X11_color(int ind);
+static int X11_clear(void);
+static int X11_swapbuf(void);
+static int X11_frontbuf(void);
+static int X11_sync(void);
+static int X11_checkkey(void);
 /******************************************************************************/
-void X11_NEW(void){
+static void X11_NEW(void){
    int idum;
    idum=X11_checkkey();
    XFlush(display);
@@ -63,7 +63,7 @@ void X11_NEW(void){
    XFlush(display);
 }
 /******************************************************************************/
-int X11_RESIZE(void) { /* Adjust to new window size if it has changed */
+static int X11_RESIZE(void) { /* Adjust to new window size if it has changed */
 
    XWindowAttributes retWindowAttributes;
    int x, y, w, h;
@@ -99,8 +99,8 @@ int X11_RESIZE(void) { /* Adjust to new window size if it has changed */
    return(UNUSED);
 }
 /******************************************************************************/
-int X11_init(void) { /* X11_init -- initialises X11 display.  */
-   extern int myhandler();
+static int X11_init(void) { /* X11_init -- initialises X11 display.  */
+   extern int X11_driver_handler();
    int             i;
    int             x, y, prefx, prefy, prefxs, prefys;
    unsigned int    bw, depth, mask;
@@ -118,7 +118,7 @@ int X11_init(void) { /* X11_init -- initialises X11 display.  */
    av[0] = me;
    av[1] = (char *)NULL;
 
-   varname=getenv("USHDRIVER");
+   varname=getenv("PLTDEVICE");
    if(varname==(char *)NULL) {
       varname="UNDEFINED";
    }
@@ -134,7 +134,7 @@ int X11_init(void) { /* X11_init -- initialises X11 display.  */
       screen = DefaultScreen(display);
       colormap = DefaultColormap(display, screen);
 
-      XSetIOErrorHandler(myhandler);
+      XSetIOErrorHandler(X11_driver_handler);
    }
 
 /* Set our standard colors...  */
@@ -315,17 +315,15 @@ int X11_init(void) { /* X11_init -- initialises X11 display.  */
    XFlush(display);
 
 /* Wait for Exposure event. */
-/*
-!!        do {
-!!                XNextEvent(display, &event);
-!!        } while (event.type != Expose && event.type != MapNotify);
-*/
+
+
+        do {
+                XNextEvent(display, &event);
+        } while (event.type != Expose && event.type != MapNotify);
 
 /* Set the input Focus to us. */
-/*
-!!        if (prefx == -1 && prefxs == -1)
-!!                XSetInputFocus(display, winder, RevertToParent, CurrentTime);
-*/
+        if (prefx == -1 && prefxs == -1)
+                XSetInputFocus(display, winder, RevertToParent, CurrentTime);
 
    X11_RESIZE();
    vdevice.sizeX = vdevice.sizeY = MIN(h, w);
@@ -342,9 +340,9 @@ int X11_init(void) { /* X11_init -- initialises X11 display.  */
 }
 /******************************************************************************/
 /* X11_exit   cleans up before returning the window to normal.  */
-int X11_exit(void) {
+static int X11_exit(void) {
    char            *varname;
-   varname=getenv("USHDRIVER");
+   varname=getenv("PLTDEVICE");
    if(varname==NULL) {
       varname="UNDEFINED";
    }
@@ -399,7 +397,7 @@ int X11_exit(void) {
  * Note: (0, 0) is defined as the top left of the window in X (easy
  * to forget).
  */
-int X11_draw(int x, int y) {
+static int X11_draw(int x, int y) {
    XDrawLine(display,
        theDrawable,
        theGC,
@@ -416,7 +414,7 @@ int X11_draw(int x, int y) {
  *
  *      grab a character from the keyboard - blocks until one is there.
  */
-int X11_getkey(void) {
+static int X11_getkey(void) {
    char    c;
 
    do {
@@ -437,7 +435,7 @@ int X11_getkey(void) {
  *      Check if there has been a keyboard key pressed.
  *      and return it if there is.
  */
-int X11_checkkey(void) {
+static int X11_checkkey(void) {
    char    c;
 
    if (!XCheckWindowEvent(display, winder, KeyPressMask, &event))
@@ -456,7 +454,7 @@ int X11_checkkey(void) {
  * return the window location of the cursor, plus which mouse button,
  * if any, has been pressed.
  */
-int X11_locator(int *wx, int *wy) {
+static int X11_locator(int *wx, int *wy) {
    Window  rootw, childw;
    int     x, y ;
    unsigned int mask;
@@ -468,7 +466,7 @@ int X11_locator(int *wx, int *wy) {
    return(mask >> 8);
 }
 /******************************************************************************/
-int X11_clear(void) { /* Clear the screen (or current buffer )to current colour */
+static int X11_clear(void) { /* Clear the screen (or current buffer )to current colour */
    X11_RESIZE();
    XSync(display, 0);
    XSetBackground(display, theGC, colour);
@@ -487,7 +485,7 @@ int X11_clear(void) { /* Clear the screen (or current buffer )to current colour 
 /* set the current drawing color index if ind >= 0.;
    set the line width in raster units if ind  <  0.
  */
-int X11_color(int ind) {
+static int X11_color(int ind) {
    static unsigned int line_width=0; /* 0 would be fast line of width 1 */
    int line_style = LineSolid;       /* If LineOnOffDash or LineDoubleDash, must set dashes */
    int cap_style = CapRound;         /* else CapNotLast, CapButt, or CapProjecting */
@@ -508,7 +506,7 @@ int X11_color(int ind) {
 }
 /******************************************************************************/
 /* set the line width in raster units if ind  <  0.  input units in 1/10000 of X size */
-int X11_setlw(int ind) {
+static int X11_setlw(int ind) {
    static unsigned int line_width=0; /* 0 would be fast line of width 1 */
    int line_style = LineSolid;       /* If LineOnOffDash or LineDoubleDash, must set dashes */
    int cap_style = CapRound;         /* else CapNotLast, CapButt, or CapProjecting */
@@ -524,7 +522,7 @@ int X11_setlw(int ind) {
 }
 /******************************************************************************/
 /* change index i in the color map to the appropriate r, g, b, value.  */
-int X11_mapcolor(int i, int r, int g, int b) {
+static int X11_mapcolor(int i, int r, int g, int b) {
    int     stat;
    XColor  tmp;
 
@@ -571,7 +569,7 @@ int X11_mapcolor(int i, int r, int g, int b) {
 }
 /******************************************************************************/
 /* Set up a hardware font. Return 1 on success 0 otherwise.  */
-int X11_font(char *fontfile) {
+static int X11_font(char *fontfile) {
    XGCValues       xgcvals;
 
    if (font_id != (XFontStruct *)NULL)
@@ -609,7 +607,7 @@ int X11_font(char *fontfile) {
 }
 /******************************************************************************/
 /* outputs one char - is more complicated for other devices */
-int X11_char(char c) {
+static int X11_char(char c) {
    /* char    *s = "  "; */
    char  s[2];
    s[0] = c; 
@@ -621,14 +619,14 @@ int X11_char(char c) {
    return(UNUSED);
 }
 /******************************************************************************/
-int X11_string(char s[]) { /* Display a string at the current drawing position.  */
+static int X11_string(char s[]) { /* Display a string at the current drawing position.  */
    XDrawString(display, theDrawable, theGC, vdevice.cpVx, (int)(vdevice.sizeSy - vdevice.cpVy), s, strlen(s));
    if (vdevice.sync)
       XFlush(display);
    return(UNUSED);
 }
 /******************************************************************************/
-int X11_fill(int n, int x[], int y[]) { /* fill a polygon */
+static int X11_fill(int n, int x[], int y[]) { /* fill a polygon */
    char    buf[BUFSIZ];
    XPoint  plist[MAXVERTS];
    int     i;
@@ -654,7 +652,7 @@ int X11_fill(int n, int x[], int y[]) { /* fill a polygon */
 }
 /******************************************************************************/
 /* Set up double buffering by allocating the back buffer and setting drawing into it.  */
-int X11_backbuf(void) {
+static int X11_backbuf(void) {
         if (!back_used)
                 bbuf = XCreatePixmap(display,
                     (Drawable)winder,
@@ -671,7 +669,7 @@ int X11_backbuf(void) {
 }
 /******************************************************************************/
 /* Swap the back and from buffers. (Really, just copy the back buffer to the screen).  */
-int X11_swapbuf(void) {
+static int X11_swapbuf(void) {
    XCopyArea(display,
        theDrawable,
        winder,
@@ -686,12 +684,12 @@ int X11_swapbuf(void) {
    return(UNUSED);
 }
 /******************************************************************************/
-int X11_frontbuf(void) { /* Make sure we draw to the screen.  */
+static int X11_frontbuf(void) { /* Make sure we draw to the screen.  */
    theDrawable = (Drawable)winder;
    return(UNUSED);
 }
 /******************************************************************************/
-int X11_sync(void) { /* Syncronise the display with what we think has been sent to it...  */
+static int X11_sync(void) { /* Syncronise the display with what we think has been sent to it...  */
    XSync(display, 0);
    return(UNUSED);
 }
@@ -750,19 +748,19 @@ static DevEntry x11dev = {
    X11_sync
 };
 /******************************************************************************/
-int _X11_devcpy() { /* copy the X11 device into vdevice.dev.  */
+int _X11_draw_devcpy(void) { /* copy the X11 device into vdevice.dev.  */
    vdevice.dev = X11dev;
    GLOBAL_device = X11DEV;
    return(UNUSED);
 }
 /******************************************************************************/
-int _x11_devcpy() { /* copy the x11 device into vdevice.dev.  */
+int _x11_draw_devcpy(void) { /* copy the x11 device into vdevice.dev.  */
    vdevice.dev = x11dev;
    GLOBAL_device = x11DEV;
    return(UNUSED);
 }
 /******************************************************************************/
-int myhandler(Display *display,XErrorEvent *myerr) { /* myhandler */
+int X11_driver_handler(Display *display,XErrorEvent *myerr) { /* X11_driver_handler */
    char msg[80];
    XGetErrorText(display,myerr->error_code,msg,80);
    fprintf(stderr,"*draw* STOPPED code %s\n",msg);

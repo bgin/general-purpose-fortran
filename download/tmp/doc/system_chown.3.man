@@ -11,12 +11,12 @@ SYNOPSIS
 DESCRIPTION
        The chown(3f) function changes owner and group of a file
 
-       The  path  argument  points  to  a pathname naming a file. The
+       The path argument points to a pathname naming a file. The
        user ID and group ID of the named file shall be set to the numeric
        values contained in owner and group, respectively.
 
        Only processes with an effective user ID equal to the user ID of
-       the file or with appropriate privileges may  change  the ownership
+       the file or with appropriate privileges may change the ownership
        of a file.
 
 OPTIONS
@@ -27,7 +27,7 @@ OPTIONS
 
 RETURN VALUE
        The system_chown() function should return zero (0) if successful.
-       Otherwise, these functions shall return −1 and set errno  to
+       Otherwise, these functions shall return −1 and set errno to
        indicate the error. If −1 is returned, no changes are made in
        the user ID and group ID of the file.
 

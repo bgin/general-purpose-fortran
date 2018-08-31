@@ -69,7 +69,7 @@ A specifier that requires a scalar-default-char-expr may have a
 limited list of character values. These values are listed for each
 such specifier. Any trailing blanks are ignored. The value specified
 is without regard to case. Some specifiers have a default value if the
-specifier is omitted.  No specifier shall appear more than once in a
+specifier is omitted. No specifier shall appear more than once in a
 given connect-spec-list.
 
 If the NEWUNIT= specifier does not appear, a file-unit-number shall

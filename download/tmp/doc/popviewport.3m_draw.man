@@ -1,8 +1,8 @@
 NAME
-   popviewport(3f) - [M_DRAW:VIEWPORT] Retrieve last viewport
+   popviewport(3f) - [M_draw:VIEWPORT] Retrieve last viewport
 
 SYNOPSIS
-         subroutine popviewport
+         subroutine popviewport()
 
 DESCRIPTION
 

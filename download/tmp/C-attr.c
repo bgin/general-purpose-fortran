@@ -19,26 +19,26 @@ static void draw_copyattributes(Attribute *a, Attribute *b){
 	 a->style=(char *)NULL;
    }
 
-   a->dashp = b->dashp;
-   a->dash = b->dash;
-   a->adist = b->adist;
-   a->color = b->color;
-   a->fill = b->fill;
-   a->hatch = b->hatch;
+   a->dashp        = b->dashp;
+   a->dash         = b->dash;
+   a->adist        = b->adist;
+   a->color        = b->color;
+   a->fill         = b->fill;
+   a->hatch        = b->hatch;
    a->inbackbuffer = b->inbackbuffer;
-   a->textcos = b->textcos;
-   a->textsin = b->textsin;
-   a->hatchcos = b->hatchcos;
-   a->hatchsin = b->hatchsin;
-   a->hatchpitch = b->hatchpitch;
-   a->justify = b->justify;
-   a->skew = b->skew;
-   a->bold = b->bold;
-   a->fixedwidth = b->fixedwidth;
-   a->fontwidth = b->fontwidth;
-   a->fontheight = b->fontheight;
-   a->softtext = b->softtext;
-   a->exvp = b->exvp;
+   a->textcos      = b->textcos;
+   a->textsin      = b->textsin;
+   a->hatchcos     = b->hatchcos;
+   a->hatchsin     = b->hatchsin;
+   a->hatchpitch   = b->hatchpitch;
+   a->justify      = b->justify;
+   a->skew         = b->skew;
+   a->bold         = b->bold;
+   a->fixedwidth   = b->fixedwidth;
+   a->fontwidth    = b->fontwidth;
+   a->fontheight   = b->fontheight;
+   a->softtext     = b->softtext;
+   a->exvp         = b->exvp;
    strcpy(a->font, b->font);
 }
 /******************************************************************************/

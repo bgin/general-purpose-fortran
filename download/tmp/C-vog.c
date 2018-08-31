@@ -20,7 +20,7 @@
 #include <sys/types.h>
 #include "draw.h"
 
-extern FILE     *_voutfile();
+extern FILE     *_draw_outfile();
 
 #define MAX(x, y)       ((x) > (y) ? (x) : (y))
 #define MIN(x, y)       ((x) < (y) ? (x) : (y))
@@ -34,11 +34,11 @@ extern FILE     *_voutfile();
 static int      vog_first_time = 1;
 static int      VOGlastx = -1, VOGlasty = -1;/* last (x, y) drawn */
 
-extern  FILE     *fp;
+extern  FILE     *draw_fp;
 /******************************************************************************/
 static int      pgroup=1; /* groupid reserved for the entire page */
 /******************************************************************************/
-int VOG_header(void) {
+static int VOG_header(void) {
 
    time_t tod;
 #ifndef MINGW
@@ -47,7 +47,7 @@ int VOG_header(void) {
    char *username;
    struct passwd *pw;
    time(&tod);
-   fprintf(fp,"#M_DRAW VOG Driver. Data Creation Date: %s",ctime(&tod));
+   fprintf(draw_fp,"#M_DRAW VOG Driver. Data Creation Date: %s",ctime(&tod));
 
 #ifndef MINGW
    un = &unstr; /* initialize the pointer to an address with enough room to store the returned value in */
@@ -57,7 +57,7 @@ int VOG_header(void) {
       pw = getpwuid(getuid());
       username = pw->pw_name;
    }
-   fprintf(fp,"#  For: %s on OS=%.*s\n#       NETWORK_NAME=%.*s\n#       RELEASE=%.*s\n#       VERSION=%.*s\n#       MACHINE=%.*s\n",
+   fprintf(draw_fp,"#  For: %s on OS=%.*s\n#       NETWORK_NAME=%.*s\n#       RELEASE=%.*s\n#       VERSION=%.*s\n#       MACHINE=%.*s\n",
        username,
        (int)sizeof(un->sysname),  un->sysname,
        (int)sizeof(un->nodename), un->nodename,
@@ -70,16 +70,16 @@ int VOG_header(void) {
 }
 /******************************************************************************/
 /* change index i in the color map to the appropriate rgb value. */
-int VOG_mapcolor(int i, int r, int g, int b) {
-   fprintf(fp,"mapcolor %d %d %d %d\n",i,r,g,b);
+static int VOG_mapcolor(int i, int r, int g, int b) {
+   fprintf(draw_fp,"mapcolor %d %d %d %d\n",i,r,g,b);
    return(0);
 }
 /******************************************************************************/
 /* VOG_init set up the environment. Returns 1 on success. */
-int VOG_init(void) {
+static int VOG_init(void) {
    int prefx, prefy, prefxs, prefys;
    int VOG_header();
-   fp = _voutfile();
+   draw_fp = _draw_outfile();
 if (!vog_first_time) return(1); VOG_header();
 
    draw_getprefposandsize(&prefx, &prefy, &prefxs, &prefys);
@@ -95,55 +95,55 @@ if (!vog_first_time) return(1); VOG_header();
    }
 
 
-   fprintf(fp,"#vinit vog\n");
-   fprintf(fp,"page 0 %d 0 %d\n",vdevice.sizeSx,vdevice.sizeSy);
+   fprintf(draw_fp,"#vinit vog\n");
+   fprintf(draw_fp,"page 0 %d 0 %d\n",vdevice.sizeSx,vdevice.sizeSy);
 
    return (1);
 }
 /******************************************************************************/
 /* VOG_exit do a flush and close the output file if necessary.  */
-int VOG_exit(void) {
-   fprintf(fp, "vflush\n"); 
-   fprintf(fp, "page 0\n"); 
-   fprintf(fp,"#vexit\n"); /* End of Document */
+static int VOG_exit(void) {
+   fprintf(draw_fp, "vflush\n"); 
+   fprintf(draw_fp, "page 0\n"); 
+   fprintf(draw_fp,"#vexit\n"); /* End of Document */
 
-   if (fp != stdout && fp != stderr ){
-                fflush(fp);
+   if (draw_fp != stdout && draw_fp != stderr ){
+                fflush(draw_fp);
                 if(vdevice.writestoprocess == 2){
-                   pclose(fp);
+                   pclose(draw_fp);
                 }else{
-                   fclose(fp);
+                   fclose(draw_fp);
                 }
    }
    return (0);
 }
 /******************************************************************************/
 /* VOG_draw draw to an x, y point.  */
-int VOG_draw(int x, int y) {
+static int VOG_draw(int x, int y) {
    if (VOGlastx != vdevice.cpVx || VOGlasty != vdevice.cpVy ){
-      fprintf(fp, "move2 %d %d;", vdevice.cpVx, vdevice.cpVy);
+      fprintf(draw_fp, "move2 %d %d;", vdevice.cpVx, vdevice.cpVy);
    }
-   fprintf(fp, " draw2 %d %d\n", x ,y);
+   fprintf(draw_fp, " draw2 %d %d\n", x ,y);
    VOGlastx=x;
    VOGlasty=y;
    return (0);
 }
 /******************************************************************************/
 /* VOG_clear flush the current page without resetting the graphics state */
-int VOG_clear(void) {
+static int VOG_clear(void) {
      pgroup++; /* increment page id */
-     fprintf(fp,"clear\n#Page %d\n", pgroup);
+     fprintf(draw_fp,"clear\n#Page %d\n", pgroup);
    return(0);
 }
 /******************************************************************************/
 /* VOG_color change the color of the pen
  *      kludged so negative value sets raster line width
  */
-int VOG_color(int col) {
+static int VOG_color(int col) {
    if ( col < 0 ) {
-    fprintf(fp,"linewidth %d\n",ABS(col));
+    fprintf(draw_fp,"linewidth %d\n",ABS(col));
    } else {
-     fprintf(fp,"color %d\n",col);
+     fprintf(draw_fp,"color %d\n",col);
    }
    return(0);
 }
@@ -151,16 +151,16 @@ int VOG_color(int col) {
 /* 
  *      value sets raster line width
  */
-int VOG_setlw(int width) {
+static int VOG_setlw(int width) {
    if ( width > 0 ) {
-    /*fprintf(fp,"linewidth %d\n",width*vdevice.sizeX/10000); */
-    fprintf(fp,"linewidth %d\n",width);
+    /*fprintf(draw_fp,"linewidth %d\n",width*vdevice.sizeX/10000); */
+    fprintf(draw_fp,"linewidth %d\n",width);
    }
    return(0);
 }
 /******************************************************************************/
 /* VOG_font load in small or large - could be improved.  */
-int VOG_font(char *font) {
+static int VOG_font(char *font) {
    
 
    if (strcmp(font, "small") == 0) {
@@ -172,44 +172,44 @@ int VOG_font(char *font) {
    } else
       return(0);
 
-   fprintf(fp, "textsize %f %f;",vdevice.hwidth,vdevice.hheight);
-   fprintf(fp, "font %s \n",font);
+   fprintf(draw_fp, "textsize %f %f;",vdevice.hwidth,vdevice.hheight);
+   fprintf(draw_fp, "font %s \n",font);
    return(1);
 }
 /******************************************************************************/
 /* VOG_string output a string.  */
-int VOG_string(char *s) {
+static int VOG_string(char *s) {
 
     if (VOGlastx != vdevice.cpVx || VOGlasty != vdevice.cpVy){
-       fprintf(fp, "move2 %d %d;", vdevice.cpVx, vdevice.cpVy);
+       fprintf(draw_fp, "move2 %d %d;", vdevice.cpVx, vdevice.cpVy);
     }
-   fprintf(fp, "textsize %f %f;",vdevice.hwidth,vdevice.hheight);
-   fprintf(fp, "drawstr %s \n",s);
+   fprintf(draw_fp, "textsize %f %f;",vdevice.hwidth,vdevice.hheight);
+   fprintf(draw_fp, "drawstr %s \n",s);
    VOGlastx = VOGlasty = -1;
 
    return(0);
 }
 /******************************************************************************/
 /* VOG_char output a character */
-int VOG_char(char c) {
+static int VOG_char(char c) {
          if (VOGlastx != vdevice.cpVx || VOGlasty != vdevice.cpVy){
-            fprintf(fp, "move2 %d %d;", vdevice.cpVx, vdevice.cpVy);
+            fprintf(draw_fp, "move2 %d %d;", vdevice.cpVx, vdevice.cpVy);
          }
-         fprintf(fp, "drawchar %c",c);
+         fprintf(draw_fp, "drawchar %c",c);
          VOGlastx = VOGlasty = -1;
    return(0);
 }
 /******************************************************************************/
 /* fill a polygon */
-int VOG_fill(int n, int x[], int y[]) {
+static int VOG_fill(int n, int x[], int y[]) {
    int     i;
    static char linefeed[2] = {';','\n'};
-   fprintf(fp, "polyfill 1;move2 %d %d;makepoly;\n", x[0],y[0]); /* start of polygon */
+   fprintf(draw_fp, "polyfill 1;move2 %d %d;makepoly;\n", x[0],y[0]); /* start of polygon */
    for (i = 1; i < n; i++)
    {
-      fprintf(fp, "draw2 %d %d%c", x[i], y[i],linefeed[(i % 8/7)]);
+      fprintf(draw_fp, "draw2 %d %d%c", x[i], y[i],linefeed[(i % 8/7)]);
    }
-   fprintf(fp, "closepoly;polyfill 0\n"); /* end of polygon */
+   fprintf(draw_fp, "closepoly;polyfill 0\n"); /* end of polygon */
    vdevice.cpVx = x[n - 1];
    vdevice.cpVy = y[n - 1];
    VOGlastx = VOGlasty = -1;           /* fill destroys current path */
@@ -244,8 +244,8 @@ static DevEntry vogdev = {
    noop          /* Syncronize the display */
 };
 /******************************************************************************/
-/* _VOG_devcpy copy the vog device into vdevice.dev.  */
-int _VOG_devcpy(void) {
+/* copy the vog device into vdevice.dev.  */
+int _VOG_draw_devcpy(void) {
    vdevice.dev = vogdev;
    return(0);
 }

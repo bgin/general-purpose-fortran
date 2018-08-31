@@ -2,7 +2,7 @@ NAME
    sqlite3_create_table(3f) - [M_sqlite] Create a new table
 
 SYNOPSIS
-   call sqlite3_create_table(db)
+   subroutine sqlite3_create_table(db)
 
     type(SQLITE_DATABASE)      :: db
     character(len=*)           :: tablename

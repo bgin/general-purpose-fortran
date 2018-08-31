@@ -1,5 +1,5 @@
 ."
-." An introductory man page for the BLAS1 subroutines.  Contains a
+." An introductory man page for the BLAS1 subroutines. Contains a
 brief description of
 ." each subroutine and many examples of how to correctly call the
 subroutines.
@@ -25,7 +25,7 @@ BLAS routines and
 INTRO_BLAS1 - Introduction to vector-vector linear algebra (matrix)
 subprograms
 .SH DESCRIPTION
-The Level 1 BLAS perform basic vector-vector operations.  The
+The Level 1 BLAS perform basic vector-vector operations. The
 following three types of vector-vector operations are available:
 Routines for scaling, copying, swapping, and computing linear
 combination of vectors.
@@ -33,7 +33,7 @@ Routines for computing dot products between vectors and various vector
 norms.
 Routines for generating or applying plane or modified plane rotations.
 The Basic Linear Algebra Subprograms (BLAS) were developed to enhance
-the portability of published linear algebra codes.  Because these
+the portability of published linear algebra codes. Because these
 subprograms are portable, modular, self-documenting, and efficient,
 you can incorporate them into your programs.
 To realize the full power of the BLAS you must understand the
@@ -42,23 +42,23 @@ following three subjects:
 - FORTRAN array argument association
 - BLAS indexing conventions
 .SS FORTRAN storage of arrays
-Arrays in FORTRAN are stored in column major order.  This means that
-the eariler indexes in an array declaration toggle first.  Consider
+Arrays in FORTRAN are stored in column major order. This means that
+the eariler indexes in an array declaration toggle first. Consider
 the following specifications:
 DIMENSION A(N1,N2),B(N3)
 .RS 0
 EQUIVALENCE (A,B)
-where N3 = N1 * N2.  Then A(I,J) is associated with the same memory
+where N3 = N1 * N2. Then A(I,J) is associated with the same memory
 location as B(K) where
 K = I + (J-1) * N1
 This means that successive elements of a column of A are adjacent in
 memory, while successive elements of a row of A are stored with a
-difference of N1 storage units between them.  Remember that the size
+difference of N1 storage units between them. Remember that the size
 of a storage unit depends on the data type.
 .SS FORTRAN array argument association
 When a FORTRAN subprogram is called with an array element as argument,
-the value is not passed.  Instead, the subprogram receives the address
-in memory of the element.  Consider the following code segment:
+the value is not passed. Instead, the subprogram receives the address
+in memory of the element. Consider the following code segment:
 .nf
 M=11
 N=13
@@ -75,10 +75,10 @@ REAL X(N)
  .
 .fi
 In this example, the subroutine SUBR is given the address of the first
-element of the third column of A.  Because it treats that argument as a
+element of the third column of A. Because it treats that argument as a
 one-dimensional array, successive elements X(1), X(2), ..., occupy the
 same memory locations as successive elements of the \fIthird\fP column
-of A: that is, A(1,3), A(2,3), ....  Hence, the entire third column of
+of A: that is, A(1,3), A(2,3), .... Hence, the entire third column of
 A is available to the subprogram.
 .SS BLAS Indexing Conventions
 The rest of this section describes the topics of manipulating array
@@ -92,42 +92,42 @@ X or X(I,J)
 of storage units \fIbetween\fP successive vector elements, for
 instance the variable INCX.
 The notation for describing a BLAS vector in calling a BLAS subroutine
-is the triad (N,X,INCX).  A few very brief examples follow.  If X is a
+is the triad (N,X,INCX). A few very brief examples follow. If X is a
 one dimensional array of length N, then (N,X,1) represents forward
 storage of X i.e. X(1), X(2), ..., X(N) and (N,X,-1) represents
 backward
-storage of X i.e. X(N), X(N-1), ..., X(1).  If A is an M by N array,
+storage of X i.e. X(N), X(N-1), ..., X(1). If A is an M by N array,
 then (M,A(1,J),1) represents column J and (N,A(I,1),M) represents row
-I.  Finally, if an M by N matrix is embedded in the upper left-hand
+I. Finally, if an M by N matrix is embedded in the upper left-hand
 corner of an array B of size LDB by NMAX, then column J is
-(M,B(1,J),1) and row I is (N,B(I,1),LDB).  More specific details
+(M,B(1,J),1) and row I is (N,B(I,1),LDB). More specific details
 follow.
 .SS Forward Storage
 As an example of the BLAS vector declaration using the above, suppose
-that X represents a declared real array.  Let N be the vector length
-and let INCX be the increment.  Suppose that a logical vector x with
-components x(i), i = 1, 2,..., N, is to be stored in X.  If INCX >= 0,
-then x(i) is stored in X(1 + (I-1) * INCX).  This is known as forward
+that X represents a declared real array. Let N be the vector length
+and let INCX be the increment. Suppose that a logical vector x with
+components x(i), i = 1, 2,..., N, is to be stored in X. If INCX >= 0,
+then x(i) is stored in X(1 + (I-1) * INCX). This is known as forward
 array storage starting at X(1) with stride equal to INCX, ending with
-X(1 - (N-1) * INCX).  Thus, if N = 4 and INCX = 2, the logical vector
+X(1 - (N-1) * INCX). Thus, if N = 4 and INCX = 2, the logical vector
 x with components x(1), x(2), x(3), and x(4) are stored in memory in
 the array elements X(1), X(3), X(5), and X(7), respectively.
 This method of indexing, using a starting element, a number of
 elements, and a stride, is especially useful for accessing
-one-dimensional vectors in multidimensional arrays.  For instance, if
+one-dimensional vectors in multidimensional arrays. For instance, if
 A is defined as
 REAL A(M,N)
 Then to access the 2nd row of A, one uses forward storage with an
-stride of M.  Thus a BLAS routine call with
+stride of M. Thus a BLAS routine call with
 X=A(2,1)
 and increment/stride of
 INCX=M
-will access A(2,i) for i = 1,2,...,N.  To access the third column of A
+will access A(2,i) for i = 1,2,...,N. To access the third column of A
 in a BLAS routine call with
 X=A(1,3)
 and increment/stride of
 INCX=1
-This approach also works with multidimensional arrays.  As an example,
+This approach also works with multidimensional arrays. As an example,
 if A is defined as
 REAL A(M,N,P)
 to access the P elements of A at row 3 and column 4 one could call a
@@ -137,22 +137,22 @@ and increment/stride of
 INCX=M*N
 .SS Backward Storage
 Some BLAS routines permit backward storage of vectors, which is
-specified by using a negative increment INCX.  If INCX < 0, then x(i)
-is stored "backwards" in X.  Specifically x(i) is stored in X(1 +
-(N-I) * |INCX|) or equivalently in X(1 - (N-I) * INCX).  This is
+specified by using a negative increment INCX. If INCX < 0, then x(i)
+is stored "backwards" in X. Specifically x(i) is stored in X(1 +
+(N-I) * |INCX|) or equivalently in X(1 - (N-I) * INCX). This is
 called backward storage starting from X(1 - (N-1) * INCX) with stride
-equal to INCX, ending with X(1).  Thus, if N = 4 and INCX = -2, the
+equal to INCX, ending with X(1). Thus, if N = 4 and INCX = -2, the
 logical vector components x(1), x(2), x(3), and x(4) are stored in the
 array elements X(7), X(5), X(3), and X(1), respectively.
 Note: INCX = 0 is permitted by some BLAS routines and is not permitted
-by others.  When it is allowed, it means that logical vector x is a
+by others. When it is allowed, it means that logical vector x is a
 vector of length N, all whose components are equal the value of X(1).
 .SS Further Stride
 
 EXAMPLES
 
 The following examples illustrate how to use increment arguments to
-perform different operations with the same subprogram.  These
+perform different operations with the same subprogram. These
 
 EXAMPLES
 
@@ -214,7 +214,7 @@ example:SAXPY         DAXPY        CAXPY         ZAXPY
 -------------------------------------------------------------
 .fi
 .SS FORTRAN type declaration for functions
-Always declare the data type of external functions.  Declaring the
+Always declare the data type of external functions. Declaring the
 data type of the complex Level 1 BLAS functions is particularly
 important because, based on the first letter of their names and the
 Fortran data typing rules, the default implied data type would be
@@ -231,12 +231,12 @@ INTEGER               ISAMAX, IDAMAX, ICAMAX, IZAMAX, ISAMIN, IDAMIN,
 .fi
 .SS Summary Table of Level 1 BLAS Routines
 The following table contains the purpose, operation, and name of each
-Level 1 BLAS routine.  The first routine name listed in each table
+Level 1 BLAS routine. The first routine name listed in each table
 block is the name of the manual page that contains documentation for
-any routines listed in that block.  The routines marked with an
+any routines listed in that block. The routines marked with an
 asterisk (*) are extensions to the standard set of Level 1 BLAS
-routines.  For the complete details about each operation, see the
-individual man pages.  Note: functions marked with an asterisk [*] are
+routines. For the complete details about each operation, see the
+individual man pages. Note: functions marked with an asterisk [*] are
 extensions to the standard set of Level 1 BLAS routines that may not
 be present on all systems.
 The man(1) command can find a man page online by either the real,

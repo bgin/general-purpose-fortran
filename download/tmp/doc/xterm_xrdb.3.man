@@ -22,42 +22,42 @@ EXAMPLE
 
   A sample program:
 
-   program demo_xterm_xrdb
-   use M_xterm, only : xterm_xrdb
-   character(len=:),allocatable :: cache
-      call xterm_xrdb('FAVORITES')
-   enddo
-   end program demo_xterm_xrdb
+    program demo_xterm_xrdb
+    use M_xterm, only : xterm_xrdb
+    character(len=:),allocatable :: cache
+       call xterm_xrdb('FAVORITES')
+    enddo
+    end program demo_xterm_xrdb
 
   Sample output:
 
-   FAVORITES*VT100.allowWindowOps:        true
-   FAVORITES*VT100.allowTitleOps:         true
-   FAVORITES*VT100.allowFontOps:          true
-   FAVORITES*saveLines:                   10000
-   FAVORITES*c132:                        on
-   FAVORITES*scrollBar:                   true
-   FAVORITES*RightScrollBar:              true
-   FAVORITES*scrollbar*background:        black
-   FAVORITES*scrollbar*foreground:        red
-   FAVORITES.VT100.scrollbar.foreground:  red
-   FAVORITES*scrollbar*thickness:         13
-   FAVORITESXTerm*internalBorder:         2
-   FAVORITES*VT100.background:  rgb:0000/8b8b/0000
-   FAVORITES*VT100.foreground:  rgb:ffff/ffff/ffff
-   FAVORITES*VT100.cursorColor: rgb:ffff/0000/0000
-   FAVORITES*VT100.geometry: 80x24+0+55
-   FAVORITES*windowName:    FAVORITES
-   FAVORITES*iconName:      FAVORITES
-   FAVORITES*VT100*font: -misc-fixed-medium-r-normal--20-200-75-75-c-100-iso10646-1
+    FAVORITES*VT100.allowWindowOps:        true
+    FAVORITES*VT100.allowTitleOps:         true
+    FAVORITES*VT100.allowFontOps:          true
+    FAVORITES*saveLines:                   10000
+    FAVORITES*c132:                        on
+    FAVORITES*scrollBar:                   true
+    FAVORITES*RightScrollBar:              true
+    FAVORITES*scrollbar*background:        black
+    FAVORITES*scrollbar*foreground:        red
+    FAVORITES.VT100.scrollbar.foreground:  red
+    FAVORITES*scrollbar*thickness:         13
+    FAVORITESXTerm*internalBorder:         2
+    FAVORITES*VT100.background:  rgb:0000/8b8b/0000
+    FAVORITES*VT100.foreground:  rgb:ffff/ffff/ffff
+    FAVORITES*VT100.cursorColor: rgb:ffff/0000/0000
+    FAVORITES*VT100.geometry: 80x24+0+55
+    FAVORITES*windowName:    FAVORITES
+    FAVORITES*iconName:      FAVORITES
+    FAVORITES*VT100*font: -misc-fixed-medium-r-normal--20-200-75-75-c-100-iso10646-1
 
   Sample usage:
 
-   # load resources into X11 client memory
-   ./demo_xterm_xrdb|xrdb -merge
-   # or put them permanently into you X11 resource file
-   ./demo_xterm_xrdb >> ~/.Xresources
-   # then
-   # launch an xterm(1) using the resource specifications
-   xterm -name FAVORITES
+    # load resources into X11 client memory
+    ./demo_xterm_xrdb|xrdb -merge
+    # or put them permanently into you X11 resource file
+    ./demo_xterm_xrdb >> ~/.Xresources
+    # then
+    # launch an xterm(1) using the resource specifications
+    xterm -name FAVORITES
 

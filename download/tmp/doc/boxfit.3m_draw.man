@@ -1,5 +1,5 @@
 NAME
-   boxfit(3f) - [M_DRAW:TEXT] resize the SOFTWARE text size so it fits in a box
+   boxfit(3f) - [M_draw:TEXT] resize the SOFTWARE text size so it fits in a box
 
 SYNOPSIS
         subroutine boxfit(l, h, nchars)

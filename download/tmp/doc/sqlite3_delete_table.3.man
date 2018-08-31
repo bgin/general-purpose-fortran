@@ -2,7 +2,7 @@ NAME
    sqlite3_delete_table(3f) - [M_sqlite] Delete a table
 
 SYNOPSIS
-   call sqlite3_delete_table(db)
+   subroutine sqlite3_delete_table(db)
 
     type(SQLITE_DATABASE) db
     character(len=*) tablename

@@ -10,12 +10,12 @@ DESCRIPTION
 
    The system_getlogin() function returns a string containing the user
    name associated by the login activity with the controlling terminal
-   of the current process.  Otherwise, it returns a null string and sets
+   of the current process. Otherwise, it returns a null string and sets
    errno to indicate the error.
 
    Three names associated with the current process can be determined:
       o system_getpwuid(system_getuid()) returns the name associated with the real user ID of the process.
-      o system_getpwuid(system_geteuid()) returns the  name  associated with  the  effective user ID of the process
+      o system_getpwuid(system_geteuid()) returns the name associated with the effective user ID of the process
       o system_getlogin() returns the name associated with the current login activity
 
 RETURN VALUE

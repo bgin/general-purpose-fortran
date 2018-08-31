@@ -18,7 +18,7 @@ DESCRIPTION
 
   the modify directives are as follows-
 
-   DIRECTIVE  EXPLANATION
+   DIRECTIVE EXPLANATION
 
    ^STRING#   Causes the string of characters between the ^ and the
               next # to be inserted before the characters pointed to

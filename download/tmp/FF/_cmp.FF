@@ -268,6 +268,7 @@ end program same
 $ENDIF
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $IFDEF UFPP_TEST
+
 Tests, Examples and Utility Programs
 
    This section is input for the ufpp(1) preprocessor. It runs tests
@@ -282,7 +283,9 @@ Tests, Examples and Utility Programs
 
 $SYSTEM goodbad _cmp start -section 1
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
       Generate test input file
+
 $SYSTEM mkdir -p tmp/
 $OUTPUT tmp/_testin.txt
 ================================================================================
@@ -294,12 +297,22 @@ Arbitrary text
 Arbitrary text
 ================================================================================
 $OUTPUT
+
+      On some systems you cannot have the same file opened multiple times, so  copy file
+
+$SYSTEM cp tmp/_testin.txt tmp/__testin.txt
+
       Run _cmp(1) command on test file, assuming correct _cmp(1) command is in path
 
-$SYSTEM _cmp tmp/_testin.txt tmp/_testin.txt
+$SYSTEM _cmp tmp/_testin.txt tmp/__testin.txt
+
+      This should have returned true so continue on to this point
+
 $SYSTEM goodbad _cmp good -section 1
+
         cleanup
 
 $SYSTEM rm -f tmp/_testin.txt 
+$SYSTEM rm -f tmp/__testin.txt 
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $ENDIF

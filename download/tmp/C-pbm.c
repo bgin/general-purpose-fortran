@@ -197,8 +197,8 @@
 #include <math.h>
 #include "draw.h"
 
-extern FILE     *_voutfile();
-extern  FILE     *fp;
+extern FILE     *_draw_outfile();
+extern  FILE     *draw_fp;
 
 #define byte unsigned char
 
@@ -232,7 +232,6 @@ static int GLOBAL_lastx, GLOBAL_lasty;     /* position of last draw */
 /******************************************************************************/
 /* PROTOTYPES */
 static void PBM_SOLID_FILL(int n, int x[], int y[]); /* fill polygon of n points drawn by polyline <x,y>.  */
-
 /******************************************************************************/
 static void PBM_MEMSET(void){/* set graphics array to all zero */
         int i;
@@ -285,7 +284,7 @@ static int PBM_init(void) {
 
         vdevice.depth = 1;
 
-        fp = _voutfile();
+        draw_fp = _draw_outfile();
 
         /* Cause scaling to be 0 to maxX maxY: prefx, vdevice.sizeSx+prefx, prefy, vdevice.sizeSy+prefy */
 
@@ -465,11 +464,11 @@ static void P1_print_graphics(void){ /* print_graphics -- print the graphics bit
         char *username;
         struct passwd *pw;
 
-        (void) fprintf(fp,"P1\n"); /* magic number of a pbm file */
-        (void) fprintf(fp,"# CREATOR: M_DRAW pbm driver; version 2.0 1996/12/07\n"); /*pbm P1 file can contain comment lines*/
-        (void) fprintf(fp,"# V1: 1995, John S. Urban\n");
+        (void) fprintf(draw_fp,"P1\n"); /* magic number of a pbm file */
+        (void) fprintf(draw_fp,"# CREATOR: M_DRAW pbm driver; version 2.0 1996/12/07\n"); /*pbm P1 file can contain comment lines*/
+        (void) fprintf(draw_fp,"# V1: 1995, John S. Urban\n");
         time(&tod);
-        fprintf(fp,"# CreationDate: %s",ctime(&tod));
+        fprintf(draw_fp,"# CreationDate: %s",ctime(&tod));
 
 #ifndef MINGW
         un = &unstr; /* initialize the pointer to an address with enough room to store the returned value in */
@@ -479,7 +478,7 @@ static void P1_print_graphics(void){ /* print_graphics -- print the graphics bit
                 pw = getpwuid(getuid());
                 username = pw->pw_name;
         }
-        fprintf(fp,"# For: %s on OS=%.*s NETWORK_NAME=%.*s RELEASE=%.*s VERSION=%.*s MACHINE=%.*s\n",username,
+        fprintf(draw_fp,"# For: %s on OS=%.*s NETWORK_NAME=%.*s RELEASE=%.*s VERSION=%.*s MACHINE=%.*s\n",username,
         (int)sizeof(un->sysname),  un->sysname,
         (int)sizeof(un->nodename), un->nodename,
         (int)sizeof(un->release),  un->release,
@@ -487,7 +486,7 @@ static void P1_print_graphics(void){ /* print_graphics -- print the graphics bit
         (int)sizeof(un->machine),  un->machine);
 #endif
 
-        (void) fprintf(fp,"%d %d\n",X_SIZE,Y_SIZE); /* size of bitmap */
+        (void) fprintf(draw_fp,"%d %d\n",X_SIZE,Y_SIZE); /* size of bitmap */
 
         /* notice going from bottom to top because putting out in a right handed coordinate system, was assuming left-handed */
         for (y = (Y_SIZE-1); y >= 0; y--) {
@@ -502,9 +501,9 @@ static void P1_print_graphics(void){ /* print_graphics -- print the graphics bit
                                 /* output a character representing the bit */
                                 index = Y_SIZE * x + y;
                                 if (( *(graphics + index) & bit) != 0)
-                                        (void) fprintf(fp,"1");
+                                        (void) fprintf(draw_fp,"1");
                                 else
-                                        (void) fprintf(fp,"0");
+                                        (void) fprintf(draw_fp,"0");
                                 /* increment the dataset column counter */
                                 column++;
 
@@ -512,13 +511,13 @@ static void P1_print_graphics(void){ /* print_graphics -- print the graphics bit
                                 write_column++;
                                 if ( write_column > 70 )
                                 {
-                                        (void) fprintf(fp,"\n");
+                                        (void) fprintf(draw_fp,"\n");
                                         write_column = 1;
                                 }
                         }
                 } /* end of writing a row */
         } /* end of writing a column */
-        (void) fprintf(fp,"\n");
+        (void) fprintf(draw_fp,"\n");
         GLOBAL_drawn = UNDRAWN;
 }
 /*******************************************************************************/
@@ -533,11 +532,11 @@ static void P4_print_graphics(void){ /* print_graphics -- print the graphics bit
         char *username;
         struct passwd *pw;
 
-        (void) fprintf(fp,"P4\n"); /* magic number of a pbm file */
-        (void) fprintf(fp,"# CREATOR: M_DRAW pbm driver; version 2.0 1996/12/07\n"); /*pbm P4 file can contain comment lines*/
-        (void) fprintf(fp,"# V1: 1995, John S. Urban\n");
+        (void) fprintf(draw_fp,"P4\n"); /* magic number of a pbm file */
+        (void) fprintf(draw_fp,"# CREATOR: M_DRAW pbm driver; version 2.0 1996/12/07\n"); /*pbm P4 file can contain comment lines*/
+        (void) fprintf(draw_fp,"# V1: 1995, John S. Urban\n");
         time(&tod);
-        fprintf(fp,"# CreationDate: %s",ctime(&tod));
+        fprintf(draw_fp,"# CreationDate: %s",ctime(&tod));
 #ifndef MINGW
         un = &unstr; /* initialize the pointer to an address with enough room to store the returned value in */
         uname(un);
@@ -545,7 +544,7 @@ static void P4_print_graphics(void){ /* print_graphics -- print the graphics bit
            pw = getpwuid(getuid());
            username = pw->pw_name;
         }
-        fprintf(fp,"# For: %s on OS=%.*s NETWORK_NAME=%.*s RELEASE=%.*s VERSION=%.*s MACHINE=%.*s\n",username,
+        fprintf(draw_fp,"# For: %s on OS=%.*s NETWORK_NAME=%.*s RELEASE=%.*s VERSION=%.*s MACHINE=%.*s\n",username,
         (int)sizeof(un->sysname),  un->sysname,
         (int)sizeof(un->nodename), un->nodename,
         (int)sizeof(un->release),  un->release,
@@ -553,13 +552,13 @@ static void P4_print_graphics(void){ /* print_graphics -- print the graphics bit
         (int)sizeof(un->machine),  un->machine);
 #endif
 
-        (void) fprintf(fp,"%d %d\n",X_SIZE,Y_SIZE); /* size of bitmap */
+        (void) fprintf(draw_fp,"%d %d\n",X_SIZE,Y_SIZE); /* size of bitmap */
 
 /* notice going from bottom to top because putting out in a right handed coordinate system, was assuming left-handed */
         for (y = (Y_SIZE-1); y >= 0; y--) {
                 for ( x = 0; x <(X_SIZE + 7) / 8; x++){
                         index = Y_SIZE * x + y;
-                        putc((char)*(graphics + index),fp);
+                        putc((char)*(graphics + index),draw_fp);
                 }
         }
         GLOBAL_drawn = UNDRAWN;
@@ -584,14 +583,14 @@ static void BM_print_graphics1(void){ /* print_graphics -- print the graphics bi
                                 /* output a character representing the bit */
                                 index = Y_SIZE * x + y;
                                 if ((*(graphics+index) & bit) != 0)
-                                        (void) fprintf(fp,"-");
+                                        (void) fprintf(draw_fp,"-");
                                 else
-                                        (void) fprintf(fp,"#");
+                                        (void) fprintf(draw_fp,"#");
                                 /* increment the dataset column counter */
                                 column++;
                         }
                 } /* end of writing a row */
-                (void) fprintf(fp,"\n");
+                (void) fprintf(draw_fp,"\n");
         } /* end of writing a column */
         GLOBAL_drawn = UNDRAWN;
 }
@@ -600,8 +599,8 @@ static void BM_print_graphics(void) { /* print_graphics -- print the graphics bi
         int x, y; /* current location */
         /* notice going from bottom to top because putting out in a right handed coordinate system, was assuming left-handed */
         for (y = (Y_SIZE-1); y >= 0; y--) {
-           for ( x = 0; x < X_SIZE ; x++) GET_BIT(x,y) ?  putc('#',fp) : putc('-',fp);
-           (void) putc('\n',fp); /* end of writing a row */
+           for ( x = 0; x < X_SIZE ; x++) GET_BIT(x,y) ?  putc('#',draw_fp) : putc('-',draw_fp);
+           (void) putc('\n',draw_fp); /* end of writing a row */
         } /* end of writing columns */
         GLOBAL_drawn = UNDRAWN;
 }
@@ -617,9 +616,9 @@ static void XBM_print_graphics(void){/* print graphics bitmap as an X11 bitmap f
         byte  item;
 
         /* should probably use filename to build strings */
-        fprintf(fp,"#define M_DRAW_width %d\n",X_SIZE);
-        fprintf(fp,"#define M_DRAW_height %d\n",Y_SIZE);
-        fprintf(fp,"static char M_DRAW_bits[] = {\n ");
+        fprintf(draw_fp,"#define M_DRAW_width %d\n",X_SIZE);
+        fprintf(draw_fp,"#define M_DRAW_height %d\n",Y_SIZE);
+        fprintf(draw_fp,"static char M_DRAW_bits[] = {\n ");
 
         /* number of bytes to write */
         nbytes = Y_SIZE * ((X_SIZE + 7)/8);
@@ -632,31 +631,31 @@ static void XBM_print_graphics(void){/* print graphics bitmap as an X11 bitmap f
         for (y = (Y_SIZE-1); y >= 0; y--) {
                 for ( x = 0; x <(X_SIZE + 7) / 8; x++,nbytes--){
                         index = Y_SIZE * x + y;
-                        putc('0',fp);
-                        putc('x',fp);
+                        putc('0',draw_fp);
+                        putc('x',draw_fp);
                         item = *(graphics + index);
                         /*
                            cute trick that I probably will not remember for
                            writing hex representation of the bitmap in order
                            desired by X11 bitmap file
                         */
-                        putc(hexchar[item & 15],fp);
-                        putc(hexchar[item >> 4],fp);
+                        putc(hexchar[item & 15],draw_fp);
+                        putc(hexchar[item >> 4],draw_fp);
                         print_column += 5;
                         if (print_column>75){
-                                putc(',',fp);
-                                putc('\n',fp);
-                                putc(' ',fp);
+                                putc(',',draw_fp);
+                                putc('\n',draw_fp);
+                                putc(' ',draw_fp);
                                 print_column=1;
                         }else{
-                                putc(',',fp);
+                                putc(',',draw_fp);
                         }
                         if(nbytes == 2)
                                 break; /* special rules for printing last byte */
                 }
         }
         index = Y_SIZE * x + y;
-        fprintf(fp,"0x%02x\n};\n",(byte) *(graphics+index)); /* last byte should not be followed by a comma */
+        fprintf(draw_fp,"0x%02x\n};\n",(byte) *(graphics+index)); /* last byte should not be followed by a comma */
         GLOBAL_drawn = UNDRAWN;
 }
 /******************************************************************************/
@@ -681,18 +680,18 @@ static void PBM_PRINT(void){/* exit from draw printing the command to flush the 
                         P1_print_graphics();
                 }
         }
-        fflush(fp); /* flush the output file */
+        fflush(draw_fp); /* flush the output file */
 }
 /******************************************************************************/
 static int PBM_exit(void){/* exit from draw printing the command to flush the buffer.  */
         PBM_PRINT();
         free(graphics); /* release the graphics data */
-        if (fp != stdout && fp != stderr ){
-                fflush(fp);
+        if (draw_fp != stdout && draw_fp != stderr ){
+                fflush(draw_fp);
                 if(vdevice.writestoprocess == 2){
-                   pclose(fp);
+                   pclose(draw_fp);
                 }else{
-                   fclose(fp);
+                   fclose(draw_fp);
                 }
         }
         return(0);
@@ -1062,7 +1061,7 @@ static DevEntry PBMdev = {
                 noop         /* Syncronize the display */
 };
 /******************************************************************************/
-int _PBM_devcpy(void) {
+int _PBM_draw_devcpy(void) {
         vdevice.dev = PBMdev;
         vdevice.dev.Vinit = PBM_init;
         vdevice.dev.devname = "pbm";
@@ -1070,7 +1069,7 @@ int _PBM_devcpy(void) {
         return(0);
 }
 /******************************************************************************/
-int _BM_devcpy(void){
+int _BM_draw_devcpy(void){
         vdevice.dev = PBMdev;
         vdevice.dev.Vinit = PBM_init;
         vdevice.dev.devname = "bm";
@@ -1078,7 +1077,7 @@ int _BM_devcpy(void){
         return(0);
 }
 /******************************************************************************/
-int _P1_devcpy(void){
+int _P1_draw_devcpy(void){
         vdevice.dev = PBMdev;
         vdevice.dev.Vinit = PBM_init;
         vdevice.dev.devname="p1";
@@ -1086,7 +1085,7 @@ int _P1_devcpy(void){
         return(0);
 }
 /******************************************************************************/
-int _XBM_devcpy(void) {
+int _XBM_draw_devcpy(void) {
         vdevice.dev = PBMdev;
         vdevice.dev.Vinit = PBM_init;
         vdevice.dev.devname="xbm";
@@ -1094,7 +1093,7 @@ int _XBM_devcpy(void) {
         return(0);
 }
 /******************************************************************************/
-int _P4_devcpy(void) {
+int _P4_draw_devcpy(void) {
         vdevice.dev = PBMdev;
         vdevice.dev.Vinit = PBM_init;
         vdevice.dev.devname="p4";

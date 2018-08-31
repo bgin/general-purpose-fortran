@@ -1,5 +1,6 @@
 NAME
    stddev(3f) - [M_math:statistics] given a real vector and the vector average calculate the standard deviation
+
 SYNTAX
    function stddev(vector,n,avg)
 
@@ -7,6 +8,7 @@ SYNTAX
    real,intent(in)    :: vector(n)
    real,intent(in)    :: avg
    real               :: stddev
+
 DESCRIPTION
    Clearly the average gives one number around which the n observations
    tend to cluster. And the standard deviation gives a measure of how the
@@ -19,10 +21,11 @@ DESCRIPTION
    deviation can be used jointly to summarize where the observations are
    concentrated. Tchebysheff's theorem states :
 
-      A fraction of at least 1 - (1/k**2) of the observations  lie within k
-      standard  deviations  of the average.  The theorem  guarantees  lower
-      bounds on the percentage of observations within k standard deviations
-      of the average.
+    A fraction of at least 1 - (1/k**2) of the observations lie
+    within k standard deviations of the average. The theorem
+    guarantees lower bounds on the percentage of observations
+    within k standard deviations of the average.
+
 OPTIONS
    n            the size of the input vector
    vector(n)    the input vector
@@ -30,8 +33,12 @@ OPTIONS
 
 RETURNS
    stddev       the standard deviation of the vector
+
 EXAMPLE
+
 AUTHOR
    1994 John S. Urban
+
 REFERENCE
-   From Mark's  Handbook,  page 17-19, 8th edition
+   From Mark's Handbook, page 17-19, 8th edition
+

@@ -20,9 +20,9 @@ DESCRIPTION
 
    where xbar and stddev are the sample mean and standard deviation
 
-   Note that this is apparently The skewness and kurtosis calculated by the
-   MicroSoft Excel product.  I checked the Excel help and Excel uses the
-   above formulas.  No references are given in the Excel documentation. Note
+   Note that this is apparently the skewness and kurtosis calculated by the
+   MicroSoft Excel product. I checked the Excel help and Excel uses the
+   above formulas. No references are given in the Excel documentation. Note
    that this converges on the standard expression for excess kurtosis and
    skewness as N becomes large.
 OPTIONS

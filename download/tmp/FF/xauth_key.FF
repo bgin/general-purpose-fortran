@@ -48,7 +48,7 @@ contains
 !-----------------------------------------------------------------------------------------------------------------------------------
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION
-PRODUCT:        CLI library utilities and examples
+PRODUCT:        GPF (General Purpose Fortran) utilities and examples
 PROGRAM:        xauth_key(1)
 DESCRIPTION:    generate random strings such as magic cookies for xauth
 VERSION:        1.0, 20171219

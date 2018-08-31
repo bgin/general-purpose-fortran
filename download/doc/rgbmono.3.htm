@@ -8,10 +8,10 @@
    <pre>
    subroutine rgbmono</a>(rr,rg,rb,ri,status)
 
-    real, intent(in)  :: RR ! red component of the input color in the range 0 to 100
-    real, intent(in)  :: RG ! green component of the input color in the range 0 to 100
-    real, intent(in)  :: RB ! blue component of the input color in the range 0 to 100
-    real, intent(out) :: RI ! grayscale intensity calculated in the range 0 to 100
+    real, intent(in)  :: RR
+    real, intent(in)  :: RG
+    real, intent(in)  :: RB
+    real, intent(out) :: RI
     integer           :: status
    </pre>
 
@@ -24,6 +24,14 @@
    as 0.30*R + 0.59*G + 0.11*B, as in U.S. color television systems,
    NTSC encoding.  Note that most devices do not have an infinite range
    of monochrome intensities available.
+</dd>
+<!-- ======================================================================= -->
+<dt> OPTIONS  </dt><dd>
+    RR      red component of the input color in the range 0 to 100
+    RG      green component of the input color in the range 0 to 100
+    RB      blue component of the input color in the range 0 to 100
+    RI      grayscale intensity calculated in the range 0 to 100
+    status  zero (0) if no error occurred, otherwise result is out of bounds
 </dd>
 <!-- ======================================================================= -->
 </dl>

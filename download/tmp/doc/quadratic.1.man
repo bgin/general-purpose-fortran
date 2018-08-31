@@ -2,7 +2,7 @@ NAME
        quadratic(1f) - [MATH] Calculate and print the roots of a quadratic formula even if they are complex
 
 SYNOPSIS
-       quadratic A B C |[--help|--version]
+       quadratic A B C [--verbose]|[--help|--version]
 
 DESCRIPTION
    Given the equation
@@ -12,26 +12,32 @@ DESCRIPTION
    Use the quadratic formula to determine the root values of the equation.
 
 OPTIONS
-       A,B,C    coefficients
+       A,B,C       coefficients
+       --verbose   echo input values
+       --help      display help text and exit
+       --version   display version information and exit
 
 EXAMPLE
+  This program uses NAMELIST to crack the command line arguments,
+  and complex numbers.
+
   Sample usage:
 
-   quadratic 1.0  5.0  2.0
+   quadratic A=1.0  B=5.0  C=2.0
     for 1*x**2 + 5*x + 2 = 0
     the roots (ie. "x intercepts") are real so the parabola crosses the x-axis at two points:
     z1 =-0.438447237
     z2 =-4.561553
     discriminant =17
 
-   quadratic 1.0  2.0  5.0 # There are no real roots (Discriminant = -16)!
+   quadratic A=1.0  B=2.0  C=5.0 # There are no real roots (Discriminant = -16)!
     for 1*x**2 + 2*x + 5 = 0
     the roots(ie. "x intercepts")  are complex:
     z1 = ( -1.00000000    ,  2.00000000    )
     z2 = ( -1.00000000    , -2.00000000    )
     discriminant =-16
 
-   quadratic 9 12 4
+   quadratic A=9 B=12 C=4
     for 9*x**2 + 12*x + 4 = 0
     the roots (ie. "x intercepts") are repeated (real and equal) so the parabola just touches the x-axis at:
     z1 = z2 =-0.666666687

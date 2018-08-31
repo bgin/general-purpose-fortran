@@ -283,7 +283,7 @@ MODULE M_display_UTIL
   use putstrmodule
   implicit none
 
-character(len=*),parameter::ident="@(#)M_display(3fm) [M_display] module for pretty-printing matrices"
+character(len=*),parameter::ident="@(#)M_display(3fm): module for pretty-printing matrices"
 
   ! ***************** PUBLIC ENTITIES (ONLY PUBLIC TO M_display, NOT TO USER PROGRAMS) ***************
   private
@@ -1041,13 +1041,12 @@ end subroutine trim_real
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-
-  pure subroutine tostring_get(sa, st)
-    ! Copy trimmed elements of sa (containing individual elements as strings) to the final
-    ! tostring result st, separated by tosset % sep strings.
-    character(*), intent(in)  :: sa(:)
-    character(*), intent(out) :: st
-    integer                   :: i, k, n, sepl
+pure subroutine tostring_get(sa, st)
+! Copy trimmed elements of sa (containing individual elements as strings) to the final
+! tostring result st, separated by tosset % sep strings.
+character(*), intent(in)  :: sa(:)
+character(*), intent(out) :: st
+integer                   :: i, k, n, sepl
     sepl = tosset % seplen
     k = 0
     do i = 1,size(sa)
@@ -1057,16 +1056,15 @@ end subroutine trim_real
       st(k+1:k+n) = trim(sa(i))
       k = k + n
     end do
-  end subroutine tostring_get
+end subroutine tostring_get
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-
-  pure subroutine tostring_get_complex(sar, sgn, sai, st)
-    ! Version of tostring_get for complex numbers
-    character(*), intent(in)  :: sar(:), sai(:), sgn(*)
-    character(*), intent(out) :: st
-    integer                   :: i, k, n, sepl
+pure subroutine tostring_get_complex(sar, sgn, sai, st)
+! Version of tostring_get for complex numbers
+character(*), intent(in)  :: sar(:), sai(:), sgn(*)
+character(*), intent(out) :: st
+integer                   :: i, k, n, sepl
     sepl = tosset % seplen
     k = 0
     do i = 1,size(sar)
@@ -1081,7 +1079,7 @@ end subroutine trim_real
       st(k+n+1:k+n+1) = 'i'
       k = k + n + 1
     end do
-  end subroutine tostring_get_complex
+end subroutine tostring_get_complex
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -1113,30 +1111,28 @@ end subroutine trim_real
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-
-  function getboxlist(unit) result(p)
-    ! Return boxlist associated with specified unit. If this list does not exist a new list is started.
-    integer, intent(in) :: unit
-    type(boxlist), pointer :: p
-    p => firstboxlist
-    do while(associated(p))
-      if (p % unit == unit) return
-      p => p % nextboxlist
-    end do
-    allocate(p)
-    p % nextboxlist => firstboxlist  ! put at head of list
-    p % unit = unit
-    firstboxlist => p
-  end function getboxlist
+function getboxlist(unit) result(p)
+! Return boxlist associated with specified unit. If this list does not exist a new list is started.
+integer, intent(in) :: unit
+type(boxlist), pointer :: p
+   p => firstboxlist
+   do while(associated(p))
+     if (p % unit == unit) return
+     p => p % nextboxlist
+   end do
+   allocate(p)
+   p % nextboxlist => firstboxlist  ! put at head of list
+   p % unit = unit
+   firstboxlist => p
+end function getboxlist
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-
-  subroutine clearboxlist(unit)
-    ! Deallocate all boxes associated with unit
-    integer, intent(in) :: unit
-    type(boxnode), pointer :: p, q
-    type(boxlist), pointer :: blp
+subroutine clearboxlist(unit)
+! Deallocate all boxes associated with unit
+integer, intent(in) :: unit
+type(boxnode), pointer :: p, q
+type(boxlist), pointer :: blp
     blp => firstboxlist
     do while(associated(blp))
       if (blp % unit == unit) exit
@@ -1154,109 +1150,106 @@ end subroutine trim_real
       firstboxlist => blp % nextboxlist
     endif
     deallocate(blp)
-  end subroutine clearboxlist
+end subroutine clearboxlist
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-
-  subroutine newbox(unit, m, n, boxp)
-    ! Create a new box
-    character, pointer :: boxp(:,:)
-    integer, intent(in) :: unit, m, n
-    type(boxnode), pointer :: p
-    type(boxlist), pointer :: blp
-    allocate(p)
-    allocate(p % box(n, m))
-    blp => getboxlist(unit)
-    if (.not.associated(blp % firstbox)) then
-      blp % firstbox => p
-    else
-      blp % lastbox % nextbox => p
-    end if
-    blp % lastbox => p
-    boxp => p % box
-    boxp = ' '
-  end subroutine newbox
+subroutine newbox(unit, m, n, boxp)
+! Create a new box
+character, pointer :: boxp(:,:)
+integer, intent(in) :: unit, m, n
+type(boxnode), pointer :: p
+type(boxlist), pointer :: blp
+   allocate(p)
+   allocate(p % box(n, m))
+   blp => getboxlist(unit)
+   if (.not.associated(blp % firstbox)) then
+     blp % firstbox => p
+   else
+     blp % lastbox % nextbox => p
+   end if
+   blp % lastbox => p
+   boxp => p % box
+   boxp = ' '
+end subroutine newbox
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-
-  function tostr(a) result(s)
-    ! Copy char array to string
-    character, intent(in) :: a(:)
-    character(size(a)) s
-    integer i
-    do i=1,size(a)
-      s(i:i) = a(i)
-    enddo
-  end function tostr
+function tostr(a) result(s)
+! Copy char array to string
+character, intent(in) :: a(:)
+character(size(a)) s
+integer i
+   do i=1,size(a)
+     s(i:i) = a(i)
+   enddo
+ end function tostr
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-
-  subroutine dispboxlist(unit, sep)
-    ! Display the list of boxes associated with unit
-    integer, intent(in) :: unit
-    type(boxnode), pointer :: pfirst, p
-    type(boxlist), pointer :: blp
-    integer k, nlines, h, w, ns
-    character(*), intent(in) :: sep
-    blp => getboxlist(unit)
-    pfirst => blp % firstbox
-    nlines = 0
-    p => pfirst
-    do while (associated(p))
-      nlines = max(nlines, size(p % box, 2))
-      p => p % nextbox
-    enddo
-    do k=1,nlines
-      p => pfirst
-      ns = 0
-      do while (associated(p))
-        h = size(p % box, 2)
-        w = size(p % box, 1)
-        if (k <= h) then
-          select case(unit)
-          case(-1)
-            continue
-          case(-2)
-            call putstr(sep(1:ns) // tostr(p % box(:,k)))
-          case(-3)
-            write(*,    '(2A)', advance = 'no') sep(1:ns), tostr(p % box(:,k))
-          case default
-            write(unit, '(2A)', advance = 'no') sep(1:ns), tostr(p % box(:,k))
-          end select
-        else
-          select case(unit)
-          case(-1)
-            continue
-          case(-2)
-            call putstr(sep(1:ns) // repeat(' ', w))
-          case(-3)
-            write(*,    '(2A)', advance = 'no') sep(1:ns), repeat(' ', w)
-          case default
-            write(unit, '(2A)', advance = 'no') sep(1:ns), repeat(' ', w)
-          end select
-        end if
-        p => p % nextbox
-        ns = len(sep)
-      enddo
-      call dispnewline(unit)
-    enddo
-    call clearboxlist(unit)
-  end subroutine dispboxlist
+subroutine dispboxlist(unit, sep)
+   ! Display the list of boxes associated with unit
+   integer, intent(in) :: unit
+   type(boxnode), pointer :: pfirst, p
+   type(boxlist), pointer :: blp
+   integer k, nlines, h, w, ns
+   character(*), intent(in) :: sep
+   blp => getboxlist(unit)
+   pfirst => blp % firstbox
+   nlines = 0
+   p => pfirst
+   do while (associated(p))
+     nlines = max(nlines, size(p % box, 2))
+     p => p % nextbox
+   enddo
+   do k=1,nlines
+     p => pfirst
+     ns = 0
+     do while (associated(p))
+       h = size(p % box, 2)
+       w = size(p % box, 1)
+       if (k <= h) then
+         select case(unit)
+         case(-1)
+           continue
+         case(-2)
+           call putstr(sep(1:ns) // tostr(p % box(:,k)))
+         case(-3)
+           write(*,    '(2A)', advance = 'no') sep(1:ns), tostr(p % box(:,k))
+         case default
+           write(unit, '(2A)', advance = 'no') sep(1:ns), tostr(p % box(:,k))
+         end select
+       else
+         select case(unit)
+         case(-1)
+           continue
+         case(-2)
+           call putstr(sep(1:ns) // repeat(' ', w))
+         case(-3)
+           write(*,    '(2A)', advance = 'no') sep(1:ns), repeat(' ', w)
+         case default
+           write(unit, '(2A)', advance = 'no') sep(1:ns), repeat(' ', w)
+         end select
+       end if
+       p => p % nextbox
+       ns = len(sep)
+     enddo
+     call dispnewline(unit)
+   enddo
+   call clearboxlist(unit)
+end subroutine dispboxlist
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-  subroutine dispnewline(unit)
-    integer, intent(in) :: unit
-    select case(unit)
-    case(-1); continue
-    case(-2); call putnl
-    case(-3); write(*,*)
-    case default; write(unit,*)
-    end select
-  end subroutine dispnewline
+subroutine dispnewline(unit)
+integer, intent(in) :: unit
+   select case(unit)
+   case(-1); continue
+   case(-2); call putnl
+   case(-3); write(*,*)
+   case default; write(unit,*)
+   end select
+end subroutine dispnewline
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -1315,7 +1308,6 @@ MODULE M_display
   interface disp_set
     module procedure disp_set, disp_set_ds
   end interface
-
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -2000,7 +1992,8 @@ end function disp_get
 !===================================================================================================================================
 subroutine disp_scalar_int(x, fmt, advance, sep, trim, unit, zeroas)
 
-character(len=*),parameter::ident="@(#)integer scalar without title  (call disp_title_scalar_int(3f) with title='')"
+character(len=*),parameter::ident="&
+&@(#)M_disp::disp_scalar_int(3f): integer scalar without title  (call disp_title_scalar_int(3f) with title='')"
 
 character(*), intent(in), optional :: fmt, advance, sep, trim, zeroas
 integer(dint), intent(in)          :: x
@@ -2013,7 +2006,9 @@ end subroutine disp_scalar_int
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 subroutine disp_title_scalar_int(title, x, fmt, advance, sep, style, trim, unit, zeroas)
-! Default integer scalar with title
+
+character(len=*),parameter::ident="@(#)M_display::disp_scalar_int(3f): Default integer scalar with title"
+
 character(*), intent(in) :: title
 character(*), intent(in), optional :: fmt, advance, sep, style, trim, zeroas
 integer(dint), intent(in)          :: x
@@ -2026,7 +2021,9 @@ end subroutine disp_title_scalar_int
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 subroutine disp_vector_int(x, fmt, advance, lbound, sep, style, trim, unit, orient, zeroas)
-! Default integer vector without title
+
+character(len=*),parameter::ident="@(#)M_display::disp_vector_int(3f): Default integer vector without title"
+
 character(*), intent(in), optional :: fmt, advance, sep, style, trim, zeroas, orient
 integer(dint), intent(in) :: x(:)
 integer, intent(in), optional :: unit, lbound(:)
@@ -2810,7 +2807,7 @@ end subroutine getwid_dint
     character(*),   intent(in)                    :: fmt
     character(len_f_cplx(x, fmt))                 :: st
     character(widthmax_sngl(real(x), fmt))        :: sar(size(x))
-    character(widthmax_sngl(abs(x-real(x)), fmt)) :: sai(size(x))  ! x-real(x) instead of aimag(x) to enable the fnction
+    character(widthmax_sngl(abs(x-real(x)), fmt)) :: sai(size(x))  ! x-real(x) instead of aimag(x) to enable the function
     character(1)                                  :: sgn(size(x))  ! to pass -stand:f95 switch of the ifort compiler.
     integer                                       :: w, d, wr, wi, i
     logical                                       :: gedit
@@ -3332,7 +3329,7 @@ end subroutine getwid_dint
     character(*),   intent(in)                    :: fmt
     character(len_f_cpld(x, fmt))                 :: st
     character(widthmax_dble(real(x), fmt))        :: sar(size(x))
-    character(widthmax_dble(abs(x-real(x)), fmt)) :: sai(size(x))  ! x-real(x) instead of aimag(x) to enable the fnction
+    character(widthmax_dble(abs(x-real(x)), fmt)) :: sai(size(x))  ! x-real(x) instead of aimag(x) to enable the function
     character(1)                                  :: sgn(size(x))  ! to pass -stand:f95 switch of the ifort compiler.
     integer                                       :: w, d, wr, wi, i
     logical                                       :: gedit
@@ -3686,7 +3683,7 @@ end subroutine getwid_dint
   !
   ! NOTE 2: DOUBLE PRECISION
   !   The double precision functions and subroutines above (the sections marked DOUBLE PRECISION
-  !   PROECDURES and DOUBLE PRECISION COMPLEX PROECEDURES) are copies of the sections marked SINGLE
+  !   PROCEDURES and DOUBLE PRECISION COMPLEX PROCEDURES) are copies of the sections marked SINGLE
   !   PRECISION PROCEDURES and SINGLE PRECISION COMPLEX PROCEDURES, with the kind parameter sngl
   !   changed to dble, the procedure name suffixes _sngl and _cplx changed to _dble and _cpld, and
   !   single changed to double (only appears in comments). The add-on module DISP_R16MOD is another

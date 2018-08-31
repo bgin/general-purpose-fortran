@@ -1,7 +1,7 @@
 NAME
 
 M_math(3fp) - [M_math] module collecting various general math-related
-procedures together
+procedures
 
 DESCRIPTION
 
@@ -58,4 +58,15 @@ MATRICES
 POLYNOMIALS
 
   * quadratic(3f) return roots of quadratic equation
+
+CURVE FITS TO FUNCTIONS
+
+  * gcsgau1: solve a system of simultaneous linear equations
+  * glstsq: least squares fit to a polynomial expression
+
+THE CALCULUS
+
+  * qhfg: compute vector of integral values for given general table
+  * qhsg: compute vector of integral values for given general table
+  * qtfg: compute vector of integral values for given general table
 

@@ -52,7 +52,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 
 </A>
 <BLOCKQUOTE>
-<B>vinit(3f) </B>- [M_DRAW:DEVICE] Initialise device
+<B>vinit(3f) </B>- [M_draw:DEVICE] Initialise device
 <B>
 </B></BLOCKQUOTE>
 <A name=contents></A><H3>CONTENTS</H3></A>
@@ -70,7 +70,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <BLOCKQUOTE>
 <PRE>
 subroutine <B>vinit</B>(<I>device</I>)
-character *(*) <I>device</I>
+<B>character</B>(len=*),intent(<I>in</I>) :: <I>device</I>
 </PRE>
 </BLOCKQUOTE>
 <A name=2>
@@ -79,14 +79,14 @@ character *(*) <I>device</I>
 
 </A>
 <BLOCKQUOTE>
-<P>
 Initialise the <I>device</I>.
 </BLOCKQUOTE>
 <P>
 <P>
-<PRE>
- Note 1 :- Currently available devices are:
+<BLOCKQUOTE>
+Note 1 :- Currently available devices are:
 <P>
+<PRE>
        INTERACTIVE DEVICES:
        --------------------
        PC   - native MSW PC driver; only tested from CygWin
@@ -110,7 +110,7 @@ Initialise the <I>device</I>.
              pcl5land (color PCL5 landscape)
              pcl5port (color PCL5 portrait)
 <P>
-       PIXMAPS (color)  and BITMAPS (monochrome)
+       PIXMAPS (color) and BITMAPS (monochrome)
        -----------------------------------------
        char   - An ASCII file that can be displayed to most
                 xterm(1) terminal emulators that support
@@ -124,6 +124,7 @@ Initialise the <I>device</I>.
        bm     - bitmap format for atobm(1)
 <P>
 </PRE>
+</BLOCKQUOTE>
 <A name=>
 
     <H4>&nbsp; &nbsp; METAFILES</H4>
@@ -199,7 +200,7 @@ FILES:
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 vog
-- M_DRAW low level call record (debug)
+- M_draw low level call record (debug)
 </TD></TR>
 <TR><TD colspan=2>
 OTHER:
@@ -230,7 +231,7 @@ null
 <P>
 </PRE>
 <BLOCKQUOTE>
-:- Drivers I&#146;ve dropped but are in the original distribution
+:- Drivers I&#146;ve dropped but are <I>in</I> the original distribution
 ------------------------------------------------------------
 <P>
 <PRE>
@@ -244,41 +245,27 @@ null
 </PRE>
 </BLOCKQUOTE>
 Note 2 :- If <I>device</I> is a NULL or a null string the value
-of the environment variable "M_DRAW_DEVICE" is taken as the
+of the environment variable "M_draw_DEVICE" is taken as the
 <I>device</I> type to be opened. The format of the variable is
 <P>
 <PRE>
-            M_DRAW_DEVICE [ xsize [ ysize [ xoffset [ yoffset ] ] ]
+            M_draw_DEVICE [ xsize [ ysize [ xoffset [ yoffset ] ] ]
 <P>
 </PRE>
 <BLOCKQUOTE>
 That is, if present xsize and ysize will be used
-in a call to <B>prefsize</B>(3c), and xoffset and yoffset will
-be used in a call to <B>preposition</B>(3c).
+<I>in</I> a call to <B>prefsize</B>(3c), and xoffset and yoffset will
+be used <I>in</I> a call to <B>preposition</B>(3c).
 </BLOCKQUOTE>
 <P>
 Note 3 :- after <B>vinit</B>() it is wise to explicitly clear the screen.
-e.g.: in C
-<B>color</B>(BLACK);
-<B>clear</B>();
+e.g.:
+call <B>color</B>(D_BLACK)
+call <B>clear</B>()
 <BLOCKQUOTE>
 <TABLE cellpadding=3><!-- tsb: Note 3 :- after <B>vinit</B>() it is wise to explicitly clear the screen.
  -->
 <TR></TR><TR></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-or
-in Fortran
-call <B>color</B>(BLACK)
-call clear
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-or
-in Pascal
-<B>Color</B>(BLACK);
-Clear;
-</TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 Note 4 :
@@ -354,7 +341,7 @@ cgmt
 <BLOCKQUOTE>
 <P>
 The vml, canvas, svg, and usemap drivers are primarily used to generate
-graphics for inclusion in HTML documents. Browsers such as Opera, Safari,
+graphics for inclusion <I>in</I> HTML documents. Browsers such as Opera, Safari,
 Foxfire, and Chrome can easily incorporate graphics generated using the
 SVG (Scalable Vector Graphics) format or the HTML5 CANVAS element.
 </BLOCKQUOTE>
@@ -391,7 +378,7 @@ xfig
 <P>
 <PRE>
    The xfig(1) command can be used to edit graphics generated with the
-   M_DRAW graphics library; and to convert the xfig(1)-format file to
+   M_draw graphics library; and to convert the xfig(1)-format file to
    many other output formats. If you are generating pixmaps with the PPM
    driver and want to use them as image maps in your HTML documents the
    usemap driver can be used.
@@ -408,7 +395,7 @@ xfig
    be defined before any other Fig objects. By default, 16 colors are
    defined. If undefined colors are used they are assigned a dash pattern
    or a fill pattern to help distinguish them. Use of hardware dash and
-   M_DRAW software dash could get confusing.
+   M_draw software dash could get confusing.
 <P>
    Also, in the current driver version all lines are drawn as a series
    of move-draw vectors, which can make the files relatively very large.
@@ -427,56 +414,67 @@ xfig
 
 </A>
 <BLOCKQUOTE>
-program demo_vinit
-use M_draw
-use ISO_C_BINDING
-<B>integer</B>(kind=c_int),parameter :: BLACK = 0, GREEN = 2
-<TABLE cellpadding=3><!-- tsb: program demo_vinit
- -->
-<TR></TR><TR></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-<B>character</B>(len=50) ::
-<I>device</I>
-! read in <I>device</I> name
-print*,&#146;Enter output <I>device</I>:&#146;
-<B>read</B>(*,&#146;(a)&#146;)<I>device</I>
-call <B>vinit</B>(<I>device</I>)
-! set font to hardware text large
-call <B>font</B>(&#146;large&#146;)
-! set current color to black
-call <B>color</B>(BLACK)
-! clear to current color
-call clear
-! we want to draw in green
-call <B>color</B>(GREEN)
-! draw a horizontal line at y = 0
-call <B>move2</B>(<B>-1.0</B>, 0.0)
-call <B>draw2</B>(1.0, 0.0)
-! pause for some input
-<B>idum=getkey</B>()
-! draw a line along x = 0
-call <B>move2</B>(0.0, 0.0)
-call <B>draw2</B>(0.0, 1.0)
-! move to the middle of the screen
-call <B>move2</B>(0.0, 0.0)
-! draw &#146;Hello&#146; starting at the origin
-call <B>drawstr</B>(&#146;Hello&#146;)
-! pause again
-<B>idum=getkey</B>()
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-!
-set screen back to original state
-call vexit
-end program demo_vinit
-</TD></TR>
-<TR></TR></TABLE></BLOCKQUOTE>
+Sample program:
+<P>
+<PRE>
+      program demo_vinit
+      use M_draw
+      use ISO_C_BINDING
+      integer :: ios
+      character(len=50) :: device
+<P>
+      ! read in device name and start graphics mode
+      print*,&#146;Enter output device:&#146;
+      read(*,&#146;(a)&#146;,iostat=ios)device
+      if(ios.ne.0)device=&#146; &#146;
+      call vinit(device)
+      ! by default the drawing surface is
+      ! a square ranging from -1 to 1 in both
+      ! the X and Y axis
+<P>
+      ! set font to large hardware font
+      call font(&#146;large&#146;)
+<P>
+      ! set current color to black
+      call color(D_BLACK)
+<P>
+      ! clear to current color
+      call clear()
+<P>
+      ! we want to draw in green
+      call color(D_GREEN)
+<P>
+      ! draw a horizontal line at y = 0
+      call move2(-1.0, 0.0)
+      call draw2(1.0, 0.0)
+<P>
+      ! pause for some input
+      idum=getkey()
+<P>
+      ! draw a line along x = 0
+      call move2(0.0, 0.0)
+      call draw2(0.0, 1.0)
+<P>
+      ! move to the middle of the screen
+      call move2(0.0, 0.0)
+<P>
+      ! draw &#146;Hello&#146; starting at the origin
+      call drawstr(&#146;Hello&#146;)
+<P>
+      ! pause again
+      idum=getkey()
+<P>
+      !  wrap up and exit graphics mode
+      call vexit()
+<P>
+      end program demo_vinit
+<P>
+</PRE>
+</BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>vinit (3m_draw)</TD> <TD align=right width=33%><I>June 12, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 375b5f89-e11f-4cd6-8185-85d2722c98d0 using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>vinit (3m_draw)</TD> <TD align=right width=33%><I>August 26, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 7e090605-4613-41d4-9cdc-b5adc99a7cd6 using man macros.</FONT>
 </div>
 </div>
-<center><img src="images/vinit.3m_draw.gif"></center> 
+<br><br><center><img src="images/vinit.3m_draw.gif"></center> 
 </body>
 </HTML>

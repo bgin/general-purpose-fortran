@@ -1,9 +1,9 @@
 NAME
-   patchcurves(3f) - [M_DRAW:PATCH] Set the number of curves making up a patch.
+   patchcurves(3f) - [M_draw:PATCH] Set the number of curves making up a patch.
 
 SYNOPSIS
          subroutine patchcurves(nt, nu)
-         integer nt, nu
+         integer,intent(in) :: nt, nu
 
 DESCRIPTION
 

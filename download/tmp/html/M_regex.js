@@ -1,4 +1,5 @@
 function loadthem(){
+append("M_regex.3{SECTION}.html");
 append("M_regex.3.html");
 append("regcomp.3.html");
 append("regerror.3.html");

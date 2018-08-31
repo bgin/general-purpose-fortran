@@ -1,13 +1,13 @@
 NAME
-   strlength(3f) - [M_DRAW:TEXT] return length of string
+   strlength(3f) - [M_draw:TEXT] return length of string
 
 SYNOPSIS
 
       real function strlength(string)
-      character(len=*),intent(in)    :: string
+      character(len=*),intent(in) :: string
 
 DESCRIPTION
-   Return the length of the string s in world units.
+   Return the length of the string "STRING" in world units.
 
 RETURNS
    STRLENGTH  length of string using current font size
@@ -17,21 +17,24 @@ EXAMPLE
 
    program demo_strlength
    use :: M_draw
+   use M_drawplus, only : biggest_ortho2
+   use M_draw,    only  : D_BLACK,   D_WHITE
+   use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
+   use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
    real    :: left
    real    :: baseline
    integer :: icolor=0
    real    :: texth=10.0
       !! set up drawing surface
       call prefsize(800, 400)
-      call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
-      call viewport(0.0, 800.0, 400.0, 0.0)
-      call ortho2(-100.0, 300.0, -100.0, 100.0)
-      call color(7)
+      call vinit(' ') ! start graphics using device $M_draw_DEVICE
+      call biggest_ortho2(-100.0, 300.0, -100.0, 100.0)
+      call color(D_WHITE)
       call clear()
-      call linewidth(30)
+      call linewidth(40)
       call textsize(texth, texth)
       call xcentertext()
-      call color(1)
+      call color(D_RED)
 
       baseline=85.0
       call move2(0.0,baseline)
@@ -63,11 +66,13 @@ EXAMPLE
    !! reduce some duplicate code; very specific to this EXAMPLE
       call color(icolor)
       baseline=baseline-texth*1.5    ! move down before drawing line
-      call makepoly()
-      xx=strlength(string)
-      call rect(left,baseline-texth*0.3,left+xx,baseline+texth)
-      call closepoly()
-      call color(7)
+         call polyfill(.true.)
+            call makepoly()
+               xx=strlength(string)
+               call rect(left,baseline-texth*0.3,left+xx,baseline+texth)
+            call closepoly()
+         call polyfill(.false.)
+      call color(D_WHITE)
       call move2(left, baseline)
       call drawstr(string)    ! draw string
       icolor=icolor+1         ! set pen color

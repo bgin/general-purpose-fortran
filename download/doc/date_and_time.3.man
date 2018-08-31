@@ -17,14 +17,14 @@ DESCRIPTION
 
    VALUES is intent(out) and provides the following:
 
- * value(1): - The year
- * value(2): - The month
- * value(3): - The day of the month
- * value(4): - Time difference with UTC in minutes
- * value(5): - The hour of the day
- * value(6): - The minutes of the hour
- * value(7): - The seconds of the minute
- * value(8): - The milliseconds of the second
+   * value(1): - The year
+   * value(2): - The month
+   * value(3): - The day of the month
+   * value(4): - Time difference with UTC in minutes
+   * value(5): - The hour of the day
+   * value(6): - The minutes of the hour
+   * value(7): - The seconds of the minute
+   * value(8): - The milliseconds of the second
 
 ARGUMENTS
 

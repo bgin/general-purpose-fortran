@@ -52,15 +52,16 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 
 </A>
 <BLOCKQUOTE>
-<B>curve(3f) </B>- [M_DRAW:CURVE] Draw a curve.
+<B>curve(3f) </B>- [M_draw:CURVE] Draw a curve.
 <B>
 </B></BLOCKQUOTE>
 <A name=contents></A><H3>CONTENTS</H3></A>
 <BLOCKQUOTE>
 <A HREF=#1>Synopsis</A><BR>
 <A HREF=#2>Description</A><BR>
+<A HREF=#3>Example</A><BR>
 </BLOCKQUOTE>
-<A name=3>
+<A name=4>
 
      <H3>SYNOPSIS</H3>
 
@@ -79,10 +80,201 @@ real <I>geom</I>(3,4)
 <BLOCKQUOTE>
 Draw a curve.
 </BLOCKQUOTE>
+<A name=3>
+
+     <H3>EXAMPLE</H3>
+
+</A>
+<BLOCKQUOTE>
+Sample Program:
+<P>
+<PRE>
+   program demo_curve
+   !
+   !      using curves
+   !
+   use M_draw
+<P>
+   integer i
+   character(len=50) :: buf
+   real bezier(4, 4), cardinal(4, 4), bspline(4, 4)
+   real geom1(3, 4), geom2(3, 6)
+   !
+   ! curve basis types
+   !
+   data bezier /                                            &
+   &          -1.0,   3.0,    -3.0,   1.0,                  &
+   &          3.0,    -6.0,   3.0,    0.0,                  &
+   &          -3.0,   3.0,    0.0,    0.0,                  &
+   &          1.0,    0.0,    0.0,    0.0                   &
+   &  /
+<P>
+   data cardinal /                                          &
+   &          -0.5,   1.5,    -1.5,   0.5,                  &
+   &          1.0,    -2.5,   2.0,    -0.5,                 &
+   &          -0.5,   0.0,    0.5,    0.0,                  &
+   &          0.0,    1.0,    0.0,    0.0                   &
+   &  /
+<P>
+   data bspline /                                           &
+   &          -0.166666,     0.5,     -0.5,     0.166666,   &
+   &           0.5,         -1.0,      0.5,     0.0,        &
+   &          -0.5,          0.0,      0.5,     0.0,        &
+   &           0.166666,     0.666666, 0.166666, 0.0        &
+   &  /
+<P>
+   !
+   ! Geometry matrix to demonstrate basic spline segments
+   !
+   data geom1 /                      &
+   &           -180.0, 10.0, 0.0,    &
+   &           -100.0, 110.0, 0.0,   &
+   &           -100.0, -90.0, 0.0,   &
+   &           0.0, 50.0, 0.0        &
+   &  /
+<P>
+   !
+   ! Geometry matrix to demonstrate overlapping control points to
+   ! produce continuous (Well, except for the bezier ones) curves
+   ! from spline segments
+   !
+   data geom2 /                      &
+   &          200.0, 480.0, 0.0,     &
+   &          380.0, 180.0, 0.0,     &
+   &          250.0, 430.0, 0.0,     &
+   &          100.0, 130.0, 0.0,     &
+   &          50.0,  280.0, 0.0,     &
+   &          150.0, 380.0, 0.0      &
+   &  /
+<P>
+<P>
+   print*,&#146;Enter output device:&#146;
+   read(*,&#146;(a)&#146;,iostat=ios) buf
+   if(ios.ne.0)buf=&#146; &#146;
+<P>
+   call vinit(buf)
+<P>
+   call ortho2(-200.0, 400.0, -100.0, 500.0)
+<P>
+   call color(D_BLACK)
+   call clear()
+<P>
+   call color(D_YELLOW)
+<P>
+   call textsize(10.0, 10.0)
+   !
+   ! label the control points in geom1
+   !
+   do i = 1, 4
+      call move2(geom1(1, i), geom1(2, i))
+      write(buf, &#146;(i1)&#146;)i
+      call drawstr(buf)
+   enddo
+   !
+   ! label the control points in geom2
+   !
+   do i = 1, 6
+      call move2(geom2(1, i), geom2(2, i))
+      write(buf, &#146;(i1)&#146;)i
+      call drawstr(buf)
+   enddo
+   !
+   ! scale the current font so that 30 of the largest characters
+   ! in the current font will fit in a region 300 world units wide,
+   ! 20 high.
+   !
+   call boxfit(300.0, 20.0, 30)
+<P>
+   !
+   ! set the number of line segments appearing in each curve to 20
+   !
+   call curveprecision(20)
+<P>
+   !
+   ! copy the bezier basis matrix into the curve basis matrix.
+   !
+   call curvebasis(bezier)
+<P>
+   call color(D_RED)
+<P>
+   !
+   ! draw a curve using the current basis matrix (bezier in this case)
+   ! and the control points in geom1
+   !
+   call curve(geom1)
+<P>
+   call move2(70.0, 60.0)
+   call drawstr(&#146;Bezier Curve Segment&#146;)
+<P>
+   call move2(-190.0, 450.0)
+   call drawstr(&#146;Three overlapping Bezier Curves&#146;)
+<P>
+   !
+   ! curven draws overlapping curve segments according to geom2, the
+   ! number of curve segments drawn is three less than the number of
+   ! points passed, assuming there are a least four points in the
+   ! geometry matrix (in this case geom2). This call will draw 3
+   ! overlapping curve segments in the current basis matrix - still
+   ! bezier.
+   !
+   call curven(6, geom2)
+<P>
+   idum=getkey()
+   !
+   ! load in the cardinal basis matrix
+   !
+   call curvebasis(cardinal)
+<P>
+   call color(D_MAGENTA)
+<P>
+   call move2(70.0, 10.0)
+   call drawstr(&#146;Cardinal Curve Segment&#146;)
+   !
+   ! plot out a curve segment using the cardinal basis matrix
+   !
+   call curve(geom1)
+<P>
+   call move2(-190.0, 400.0)
+   call drawstr(&#146;Three overlapping Cardinal Curves&#146;)
+   !
+   ! now draw a bunch of them again.
+   !
+   call curven(6, geom2)
+<P>
+   idum=getkey()
+   !
+   ! change the basis matrix again
+   !
+   call curvebasis(bspline)
+<P>
+   call color(D_GREEN)
+<P>
+   call move2(70.0, -40.0)
+   call drawstr(&#146;Bspline Curve Segment&#146;)
+   !
+   ! now draw our curve segment in the new basis&#46;&#46;&#46;
+   !
+   call curve(geom1)
+<P>
+   call move2(-190.0, 350.0)
+   call drawstr(&#146;Three overlapping Bspline Curves&#146;)
+   !
+   ! &#46;&#46;&#46;and do some overlapping ones
+   !
+   call curven(6, geom2)
+<P>
+   idum=getkey()
+<P>
+   call vexit()
+<P>
+   end program demo_curve
+<P>
+</PRE>
+</BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>curve (3m_draw)</TD> <TD align=right width=33%><I>June 12, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 246f5df0-2f11-4f61-9723-2c119a6a924e using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>curve (3m_draw)</TD> <TD align=right width=33%><I>August 26, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from a372871c-fc6b-41d9-86a6-5c31f794ef6b using man macros.</FONT>
 </div>
 </div>
-<center><img src="images/curve.3m_draw.gif"></center> 
+<br><br><center><img src="images/curve.3m_draw.gif"></center> 
 </body>
 </HTML>

@@ -1,29 +1,42 @@
 Module M_sort
-use M_swap, only : swap
 implicit none
 integer,parameter :: cd=kind(0.0d0)
 private
+public swap
 public sort_shell
 public sort_quick_rx
 public unique
-character(len=*),parameter :: ident1="@(#)M_sort::sort_shell(3f): Generic subroutine sorts the array X using a shell sort"
 !===================================================================================================================================
 ! SORT_SHELL is a Generic Interface in a module with PRIVATE specific procedures. This means the individual subroutines
 ! cannot be called from outside of this module.
 
 ! the PRIVATE declaration requires use of a module.
 
+!===================================================================================================================================
+character(len=*),parameter::ident2="M_sort::sort_shell(3f): Generic subroutine sorts the array X using a shell sort"
 interface sort_shell
    module procedure sort_shell_integers, sort_shell_reals, sort_shell_strings
    module procedure sort_shell_complex, sort_shell_doubles, sort_shell_complex_double
 end interface
 !===================================================================================================================================
+character(len=*),parameter::ident3="M_sort::unique(3f): assuming an array is sorted, return array with duplicate values removed"
 interface unique
    module procedure unique_integers, unique_reals, unique_strings
    module procedure unique_complex, unique_doubles, unique_complex_double
 end interface
 !===================================================================================================================================
+character(len=*),parameter::ident1="M_sort::swap(3f): swap two variables of like type (real,integer,complex,character,double)"
+interface swap
+   module procedure r_swap, i_swap, c_swap, s_swap, d_swap, l_swap, cd_swap
+end interface
+!===================================================================================================================================
+
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 contains
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
 !!##NAME
@@ -53,7 +66,7 @@ contains
 !!    Theory              Computational complexity theory, Big O notation, Total orderLists, InplacementStabilityComparison sort,
 !!                        Adaptive sort, Sorting network, Integer sorting, X + Y sorting, Transdichotomous model, Quantum sort
 !!
-!!    In the mean time those keywords can be  useful in locating materials on the WWW, especially in Wikipedia.
+!!    In the mean time those keywords can be useful in locating materials on the WWW, especially in Wikipedia.
 !!
 !!##QUICKSORT
 !!
@@ -218,7 +231,9 @@ contains
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 subroutine sort_shell_strings(lines,order,startcol,endcol)
-character(len=*),parameter :: ident="@(#)M_sort::sort_shell_strings(3fp):sort strings over specified field using shell sort"
+
+character(len=*),parameter::ident="@(#)M_sort::sort_shell_strings(3fp):sort strings over specified field using shell sort"
+
 character(len=*),  intent(inout)          :: lines(:)       ! input/output array
 character(len=*),  intent(in)             :: order          ! sort order 'ascending'|'descending'
 integer,           optional,intent(in)    :: startcol,  endcol  ! beginning and ending column to sort by
@@ -248,7 +263,9 @@ integer,           optional,intent(in)    :: startcol,  endcol  ! beginning and 
 contains
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine sort_shell_strings_lh(lines,startcol,endcol)
-character(len=*),parameter :: ident="@(#)M_sort::sort_shell_strings_lh(3fp):sort strings(a-z) over specified field using shell sort"
+
+character(len=*),parameter::ident="@(#)M_sort::sort_shell_strings_lh(3fp):sort strings(a-z) over specified field using shell sort"
+
 !  1989 John S. Urban
 !  lle to sort 'a-z', lge to sort 'z-a'
 !  should carefully check for bad input values,
@@ -296,7 +313,9 @@ integer                         :: startcol_local, endcol_local
 end subroutine sort_shell_strings_lh
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine sort_shell_strings_hl(lines,startcol,endcol)
-character(len=*),parameter :: ident="@(#)M_sort::sort_shell_strings_hl(3fp):sort strings(z-a) over specified field using shell sort"
+
+character(len=*),parameter::ident="@(#)M_sort::sort_shell_strings_hl(3fp):sort strings(z-a) over specified field using shell sort"
+
 !  1989 John S. Urban
 !  lle to sort 'a-z', lge to sort 'z-a'
 !  should carefully check for bad input values,
@@ -348,7 +367,9 @@ end subroutine sort_shell_strings
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 subroutine sort_shell_integers(iarray,order)
-character(len=*),parameter :: ident="@(#)M_sort::sort_shell_integers(3fp):sort integer array using Shell sort and specified order"
+
+character(len=*),parameter::ident="@(#)M_sort::sort_shell_integers(3fp):sort integer array using Shell sort and specified order"
+
 integer,intent(inout)          :: iarray(:)   ! iarray input/output array
 character(len=*),  intent(in)  ::  order      ! sort order 'ascending'|'descending'
 
@@ -362,7 +383,9 @@ contains
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine sort_shell_integers_hl(iarray)
 ! Copyright (C) 1989,1996 John S. Urban;  all rights reserved
-character(len=*),parameter :: ident="@(#)M_sort::sort_shell_integers_hl(3fp):sort integer array using Shell sort (high to low)"
+
+character(len=*),parameter::ident="@(#)M_sort::sort_shell_integers_hl(3fp):sort integer array using Shell sort (high to low)"
+
 integer,intent(inout)      :: iarray(:)  ! input/output array
 integer                    :: n          ! number of elements in input array (iarray)
 integer                    :: igap, i, j, k, jg
@@ -390,7 +413,9 @@ end subroutine sort_shell_integers_hl
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine sort_shell_integers_lh(iarray) ! sort an integer array in ascending order (low to high)
 ! Copyright (C) 1989,1996 John S. Urban;  all rights reserved
-character(len=*),parameter :: ident="@(#)M_sort::sort_shell_integers_lh(3fp):sort integer array using Shell sort low to high"
+
+character(len=*),parameter::ident="@(#)M_sort::sort_shell_integers_lh(3fp):sort integer array using Shell sort low to high"
+
 integer,intent(inout) :: iarray(:)      ! iarray input/output array
    integer            :: n
    integer            :: igap, i, j, k, jg
@@ -422,7 +447,9 @@ end subroutine sort_shell_integers
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 subroutine sort_shell_reals(array,order)
-character(len=*),parameter :: ident="@(#)M_sort::sort_shell_reals(3fp):sort real array using Shell sort and specified order"
+
+character(len=*),parameter::ident="@(#)M_sort::sort_shell_reals(3fp):sort real array using Shell sort and specified order"
+
 real,intent(inout)          :: array(:)   ! input/output array
 character(len=*),intent(in) :: order      ! sort order 'ascending'|'descending'
 
@@ -435,7 +462,9 @@ character(len=*),intent(in) :: order      ! sort order 'ascending'|'descending'
 contains
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine sort_shell_reals_hl(array)
-character(len=*),parameter :: ident="@(#)M_sort::sort_shell_reals_hl(3fp):sort real array using Shell sort (high to low)"
+
+character(len=*),parameter::ident="@(#)M_sort::sort_shell_reals_hl(3fp):sort real array using Shell sort (high to low)"
+
 !  Copyright(C) 1989 John S. Urban
 real,intent(inout) :: array(:) ! input array
    integer         :: n        ! number of elements in input array (array)
@@ -463,11 +492,13 @@ real,intent(inout) :: array(:) ! input array
 end subroutine sort_shell_reals_hl
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine sort_shell_reals_lh(array)
-character(len=*),parameter :: ident="@(#)M_sort::sort_shell_reals_lh(3fp):sort real array using Shell sort (low to high)"
+
+character(len=*),parameter::ident="@(#)M_sort::sort_shell_reals_lh(3fp):sort real array using Shell sort (low to high)"
+
 !  Copyright(C) 1989 John S. Urban
 real,intent(inout) :: array(:)            ! input array
-   integer         :: n                   ! number of elements in input array (array)
-   integer         :: i, j, k, igap, jg
+integer         :: n                   ! number of elements in input array (array)
+integer         :: i, j, k, igap, jg
    n=size(array)
    igap=n
    INFINITE: do
@@ -495,7 +526,9 @@ end subroutine sort_shell_reals
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 subroutine sort_shell_doubles(array,order)
-character(len=*),parameter :: ident="@(#)M_sort::sort_shell_doubles(3fp):sort double array using Shell sort and specified order"
+
+character(len=*),parameter::ident="@(#)M_sort::sort_shell_doubles(3fp):sort double array using Shell sort and specified order"
+
 doubleprecision,intent(inout)          :: array(:)   ! input/output array
 character(len=*),intent(in) :: order      ! sort order 'ascending'|'descending'
 
@@ -508,11 +541,13 @@ character(len=*),intent(in) :: order      ! sort order 'ascending'|'descending'
 contains
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine sort_shell_doubles_hl(array)
-character(len=*),parameter :: ident="@(#)M_sort::sort_shell_doubles_hl(3fp):sort double array using Shell sort (high to low)"
+
+character(len=*),parameter::ident="@(#)M_sort::sort_shell_doubles_hl(3fp):sort double array using Shell sort (high to low)"
+
 !  Copyright(C) 1989 John S. Urban
 doubleprecision,intent(inout) :: array(:) ! input array
-   integer         :: n        ! number of elements in input array (array)
-   integer         :: i, j, k, igap, jg
+integer         :: n        ! number of elements in input array (array)
+integer         :: i, j, k, igap, jg
    n=size(array)
    igap=n
    INFINITE: do
@@ -536,7 +571,9 @@ doubleprecision,intent(inout) :: array(:) ! input array
 end subroutine sort_shell_doubles_hl
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine sort_shell_doubles_lh(array)
-character(len=*),parameter :: ident="@(#)M_sort::sort_shell_doubles_lh(3fp):sort double array using Shell sort (low to high)"
+
+character(len=*),parameter::ident="@(#)M_sort::sort_shell_doubles_lh(3fp):sort double array using Shell sort (low to high)"
+
 !  Copyright(C) 1989 John S. Urban
 doubleprecision,intent(inout) :: array(:)            ! input array
    integer         :: n                   ! number of elements in input array (array)
@@ -568,7 +605,8 @@ end subroutine sort_shell_doubles
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 subroutine sort_shell_complex(array,order,type)  ! select ascending or descending order
-character(len=*),parameter :: ident="@(#)M_sort::sort_shell_complex(3fp):sort complex array using Shell sort"
+
+character(len=*),parameter::ident="@(#)M_sort::sort_shell_complex(3fp):sort complex array using Shell sort"
 
 complex,intent(inout)         :: array(:)   ! array  input/output array
 character(len=*),  intent(in) :: order      ! sort order 'ascending'|'descending'
@@ -583,7 +621,9 @@ endif
 contains
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine sort_shell_complex_hl(array,type)
-character(len=*),parameter :: ident="@(#)M_sort::sort_shell_reals_hl(3fp):sort complex array using Shell sort (high to low)"
+
+character(len=*),parameter::ident="@(#)M_sort::sort_shell_reals_hl(3fp):sort complex array using Shell sort (high to low)"
+
 !     Copyright(C) 1989 John S. Urban   all rights reserved
    complex,intent(inout)       :: array(:)            ! input array
    character(len=*),intent(in) :: type
@@ -623,7 +663,9 @@ character(len=*),parameter :: ident="@(#)M_sort::sort_shell_reals_hl(3fp):sort c
 end subroutine sort_shell_complex_hl
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine sort_shell_complex_lh(array,type)
-character(len=*),parameter :: ident="@(#)M_sort::sort_shell_reals_lh(3fp):sort complex array using Shell sort (low to high)"
+
+character(len=*),parameter::ident="@(#)M_sort::sort_shell_reals_lh(3fp):sort complex array using Shell sort (low to high)"
+
 !  Copyright(C) 1989 John S. Urban   all rights reserved
 !  array    input array
 !  n        number of elements in input array (array)
@@ -668,7 +710,9 @@ end subroutine sort_shell_complex
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 subroutine sort_shell_complex_double(array,order,type)  ! select ascending or descending order
-character(len=*),parameter :: ident="@(#)M_sort::sort_shell_complex_double(3fp):sort double complex array using Shell sort"
+
+character(len=*),parameter::ident="@(#)M_sort::sort_shell_complex_double(3fp):sort double complex array using Shell sort"
+
 
 complex(kind=cd),intent(inout)         :: array(:)   ! array  input/output array
 character(len=*),  intent(in) :: order      ! sort order 'ascending'|'descending'
@@ -683,7 +727,9 @@ endif
 contains
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine sort_shell_complex_double_hl(array,type)
-character(len=*),parameter :: ident="@(#)M_sort::sort_shell_reals_hl(3fp):sort double complex array using Shell sort (high to low)"
+
+character(len=*),parameter::ident="@(#)M_sort::sort_shell_reals_hl(3fp):sort double complex array using Shell sort (high to low)"
+
 !     Copyright(C) 1989 John S. Urban   all rights reserved
    complex(kind=cd),intent(inout)       :: array(:)            ! input array
    character(len=*),intent(in) :: type
@@ -723,7 +769,9 @@ character(len=*),parameter :: ident="@(#)M_sort::sort_shell_reals_hl(3fp):sort d
 end subroutine sort_shell_complex_double_hl
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine sort_shell_complex_double_lh(array,type)
-character(len=*),parameter :: ident="@(#)M_sort::sort_shell_reals_lh(3fp):sort double complex array using Shell sort (low to high)"
+
+character(len=*),parameter::ident="@(#)M_sort::sort_shell_reals_lh(3fp):sort double complex array using Shell sort (low to high)"
+
 !  Copyright(C) 1989 John S. Urban   all rights reserved
 !  array    input array
 !  n        number of elements in input array (array)
@@ -839,6 +887,9 @@ end subroutine sort_shell_complex_double
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
 subroutine sort_quick_rx(data,indx)
+
+character(len=*),parameter::ident="@(#)M_sort::sort_quick_rx(3f): indexed hybrid quicksort of a real array"
+
 real,intent(in)         :: data(:)
 integer,intent(out)     :: indx(:)
 
@@ -1201,6 +1252,238 @@ integer,intent(out)            :: ivals
       ivals=isize
    endif
 end subroutine unique_complex_double
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!! DESCRIPTION: swap(3f):subroutine swaps two variables of like type (real,integer,complex,character,double)
+!!##VERSION:     1.0 19970201
+!! AUTHOR:      John S. Urban
+!!
+!!     M_sort::swap(3f): swap two variables of like type (real,integer,complex,character,double)
+!!
+!!     SWAP is a Generic Interface in a module with PRIVATE specific procedures.
+!!     This means the individual subroutines cannot be called from outside of the M_sort(3fm) module.
+!!
+!!      o procedure names are declared private in this module so they are not accessible except by their generic name
+!!      o procedures must include a "use M_sort" to access the generic name "swap"
+!!      o if these routines are recompiled, routines with the USE statement should then be recompiled and reloaded.
+!===================================================================================================================================
+!===================================================================================================================================
+!>
+!!##NAME
+!!      swap(3f) - [M_sort] elemental subroutine swaps two standard type variables of like type
+!!##SYNOPSIS
+!!
+!!      subroutine swap(X,Y)
+!!##DESCRIPTION
+!!    Generic subroutine SWAP(GEN1,GEN2) swaps two variables of like type
+!!    (real, integer, complex, character, double, logical).
+!!
+!!    On output, the values of X and Y have been interchanged.
+!!    Swapping is commonly required in procedures that sort data.
+!!
+!!    SWAP(3f) is elemental, so it can operate on vectors and arrays as well
+!!    as scalar values.
+!!
+!!##EXAMPLE
+!!
+!!   Example program:
+!!
+!!    program try_swap
+!!    use M_sort, only : swap
+!!    integer             :: iarray(2)=[10,20]
+!!    real                :: rarray(2)=[11.11,22.22]
+!!    doubleprecision     :: darray(2)=[1234.56789d0,9876.54321d0]
+!!    complex             :: carray(2)=[(1234,56789),(9876,54321)]
+!!    logical             :: larray(2)=[.true.,.false.]
+!!    character(len=16)   :: string(2)=["First string    ","The other string"]
+!!
+!!    integer             :: one(13)=1
+!!    integer             :: two(13)=2
+!!
+!!    integer             :: one2(3,3)=1
+!!    integer             :: two2(3,3)=2
+!!
+!!       print *, "integers before swap ", iarray
+!!       call swap (iarray(1), iarray(2))
+!!       print *, "integers after swap  ", iarray
+!!
+!!       print *, "reals before swap ", rarray
+!!       call swap (rarray(1), rarray(2))
+!!       print *, "reals after swap  ", rarray
+!!
+!!       print *, "doubles before swap ", darray
+!!       call swap (darray(1), darray(2))
+!!       print *, "doubles after swap  ", darray
+!!
+!!       print *, "complexes before swap ", carray
+!!       call swap (carray(1), carray(2))
+!!       print *, "complexes after swap  ", carray
+!!
+!!       print *, "logicals before swap ", larray
+!!       call swap (larray(1), larray(2))
+!!       print *, "logicals after swap  ", larray
+!!
+!!       print *, "strings before swap ", string
+!!       call swap (string(1), string(2))
+!!       print *, "strings after swap ", string
+!!
+!!       write(*,*)'swap two vectors'
+!!       write(*,'("one before: ",*(i0,:","))') one
+!!       write(*,'("two before: ",*(i0,:","))') two
+!!       call swap(one,two)
+!!       write(*,'("one after: ",*(i0,:","))') one
+!!       write(*,'("two after: ",*(i0,:","))') two
+!!
+!!       write(*,*)'given these arrays initially each time '
+!!       one2=1
+!!       two2=2
+!!       call printarrays()
+!!
+!!       write(*,*)'swap two rows'
+!!       one2=1
+!!       two2=2
+!!       call swap(one2(2,:),two2(3,:))
+!!       call printarrays()
+!!
+!!       write(*,*)'swap two columns'
+!!       one2=1
+!!       two2=2
+!!       call swap(one2(:,2),two2(:,2))
+!!       call printarrays()
+!!
+!!       write(*,*)'swap two arrays with same number of elements'
+!!       one2=1
+!!       two2=2
+!!       call swap(one2,two2)
+!!       call printarrays()
+!!
+!!       contains
+!!       subroutine printarrays()
+!!       integer :: i
+!!       do i=1,size(one2(1,:))
+!!          write(*,'(*(i0,:","))') one2(i,:)
+!!       enddo
+!!       write(*,*)
+!!       do i=1,size(two2(1,:))
+!!          write(*,'(*(i0,:","))') two2(i,:)
+!!       enddo
+!!       end subroutine printarrays
+!!
+!!    end program try_swap
+!!
+!!   Expected Results:
+!!
+!!    > integers before swap           10          20
+!!    > integers after swap            20          10
+!!    > reals before swap    11.1099997       22.2199993
+!!    > reals after swap     22.2199993       11.1099997
+!!    > doubles before swap    1234.5678900000000        9876.5432099999998
+!!    > doubles after swap     9876.5432099999998        1234.5678900000000
+!!    > complexes before swap  (  1234.00000    ,  56789.0000    ) (  9876.00000    ,  54321.0000    )
+!!    > complexes after swap   (  9876.00000    ,  54321.0000    ) (  1234.00000    ,  56789.0000    )
+!!    > logicals before swap  T F
+!!    > logicals after swap   F T
+!!    > strings before swap First string    The other string
+!!    > strings after swap The other stringFirst string
+!!    > swap two vectors
+!!    >one before: 1,1,1,1,1,1,1,1,1,1,1,1,1
+!!    >two before: 2,2,2,2,2,2,2,2,2,2,2,2,2
+!!    >one after: 2,2,2,2,2,2,2,2,2,2,2,2,2
+!!    >two after: 1,1,1,1,1,1,1,1,1,1,1,1,1
+!!    > given these arrays initially each time
+!!    >1,1,1
+!!    >1,1,1
+!!    >1,1,1
+!!    >
+!!    >2,2,2
+!!    >2,2,2
+!!    >2,2,2
+!!    > swap two rows
+!!    >1,1,1
+!!    >2,2,2
+!!    >1,1,1
+!!    >
+!!    >2,2,2
+!!    >2,2,2
+!!    >1,1,1
+!!    > swap two columns
+!!    >1,2,1
+!!    >1,2,1
+!!    >1,2,1
+!!    >
+!!    >2,1,2
+!!    >2,1,2
+!!    >2,1,2
+!!    > swap two arrays with same number of elements
+!!    >2,2,2
+!!    >2,2,2
+!!    >2,2,2
+!!    >
+!!    >1,1,1
+!!    >1,1,1
+!!    >1,1,1
+!===================================================================================================================================
+!===================================================================================================================================
+elemental subroutine d_swap(x,y)
+character(len=*),parameter::ident="@(#)M_sort::d_swap(3fp): swap two double variables"
+doubleprecision, intent(inout) :: x,y
+doubleprecision                :: temp
+   temp = x; x = y; y = temp
+end subroutine d_swap
+!===================================================================================================================================
+elemental subroutine r_swap(x,y)
+character(len=*),parameter::ident="@(#)M_sort::r_swap(3fp): swap two real variables"
+real, intent(inout) :: x,y
+real                :: temp
+   temp = x; x = y; y = temp
+end subroutine r_swap
+!===================================================================================================================================
+elemental subroutine i_swap(i,j)
+character(len=*),parameter::ident="@(#)M_sort::i_swap(3fp): swap two integer variables"
+integer, intent(inout) :: i,j
+integer                :: itemp
+   itemp = i; i = j; j = itemp
+end subroutine i_swap
+!===================================================================================================================================
+elemental subroutine l_swap(l,ll)
+character(len=*),parameter::ident="@(#)M_sort::l_swap(3fp): swap two logical variables"
+logical, intent(inout) :: l,ll
+logical                :: ltemp
+   ltemp = l; l = ll; ll = ltemp
+end subroutine l_swap
+!===================================================================================================================================
+elemental subroutine c_swap(xx,yy)
+character(len=*),parameter::ident="@(#)M_sort::c_swap(3fp): swap two complex variables"
+complex, intent(inout) :: xx,yy
+complex                :: tt
+   tt = xx; xx = yy; yy = tt
+end subroutine c_swap
+!===================================================================================================================================
+elemental subroutine cd_swap(xx,yy)
+character(len=*),parameter::ident="@(#)M_sort::cd_swap(3fp): swap two double complex variables"
+complex(kind=cd), intent(inout) :: xx,yy
+complex(kind=cd)                :: tt
+   tt = xx; xx = yy; yy = tt
+end subroutine cd_swap
+!===================================================================================================================================
+elemental subroutine s_swap(string1,string2)
+
+!>
+!!   F90 NOTE:
+!!    string_temp is an automatic character object whose size is not a constant expression.
+!!    Automatic objects cannot be saved or initialized.
+!!    Note that the len of a dummy argument can be used to calculate the automatic variable length.
+!!    Therefore, you can make sure len is at least max(len(string1),len(string2)) by adding the two lengths together:
+!===================================================================================================================================
+
+character(len=*),parameter::ident="@(#)M_sort::s_swap(3fp): swap two double variables"
+character(len=*), intent(inout)             :: string1,string2
+!character( len=len(string1) + len(string2)) :: string_temp
+character( len=max(len(string1),len(string2))) :: string_temp
+   string_temp = string1; string1 = string2; string2 = string_temp
+end subroutine s_swap
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================

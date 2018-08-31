@@ -1,5 +1,5 @@
 NAME
-   up(3f) - [M_DRAW:VIEWPORT] Specify the world up.
+   up(3f) - [M_draw:VIEWPORT] Specify the world up.
 
 SYNOPSIS
          subroutine up(x, y, z)

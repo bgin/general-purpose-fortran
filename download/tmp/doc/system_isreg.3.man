@@ -8,7 +8,7 @@ DESCRIPTION
        The isreg(3f) function checks if path is a regular file
 
 OPTIONS
-       path   a character string representing a pathname.  Trailing spaces are ignored.
+       path   a character string representing a pathname. Trailing spaces are ignored.
 
 RETURN VALUE
        The system_isreg() function should always be successful and no

@@ -1,8 +1,8 @@
 NAME
-   popmatrix(3f) - [M_DRAW:MATRIX_STACK] Reinstall the last matrix pushed
+   popmatrix(3f) - [M_draw:MATRIX_STACK] Reinstall the last matrix pushed
 
 SYNOPSIS
-         subroutine popmatrix
+         subroutine popmatrix()
 
 DESCRIPTION
 

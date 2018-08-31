@@ -1,5 +1,6 @@
 #!/bin/bash
 #@(#) make HTML page that is an index to the tar file contents
+#set -x
 banner.sh make_index
 
 source $(dirname $0)/functions.sh
@@ -24,14 +25,6 @@ cat <<\EOF
    This includes
 <ul>
 
-   <li><a href="../source.html" title="
-      The what(1) command was run on the expanded source directory to produce
-      a listing that shows what procedures are in which files: The what(1)
-      command used is a customized version (included in this collection)
-      that can generate simple HTML documents.
-      "
-      >the GPF(General Purpose Fortran) sources</a>
-   </li>
 
    <li>  <a href="man3.html"> manpages for the <em>procedures</em> </a> as *roff and HTML </li>
 
@@ -47,6 +40,15 @@ cat <<\EOF
        </ul>
    </li>
    <li>  <a href="man1.html"> manpages for the <em>example programs</em> </a> as *roff and HTML </li>
+
+   <li><a href="../source.html" title="
+      The what(1) command was run on the expanded source directory to produce
+      a listing that shows what procedures are in which files: The what(1)
+      command used is a customized version (included in this collection)
+      that can generate simple HTML documents.
+      "
+      >the GPF(General Purpose Fortran) sources</a>
+   </li>
 
    <li>a <a href="../Makefile">make(1) file</a> to build the source </li>
 

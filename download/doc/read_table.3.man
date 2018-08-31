@@ -1,0 +1,69 @@
+NAME
+   read_table(3f) - [M_io] read file containing a table of numeric values
+
+SYNOPSIS
+      subroutine read_table(filename,array,ierr)
+      character(len=*),intent(in)             :: filename
+
+      doubleprecision,allocatable,intent(out) :: array(:,:)
+         or
+      real,allocatable,intent(out)            :: array(:,:)
+
+      integer,intent(out)                     :: ierr
+
+DESCRIPTION
+    Read a table from a file that is assumed to be columns of
+    space-delimited numbers, with each row containing the same
+    numer of values
+
+OPTIONS
+      filename   filename to read
+      array      array to create
+      ierr       zero if no error occurred
+EXAMPLES
+   Sample program, assuming the input file "inputfile" exists:
+
+    program demo_read_table
+    use M_io, only :: read_table
+    doubleprecision,allocatable :: array(:,:)
+
+    ! create test file
+    open(file='inputfile',unit=10)
+    write(10,'(a)') '1 10  45'
+    write(10,'(a)') '10 10  45'
+    write(10,'(a)') '  2 20  15'
+    write(10,'(a)') ' 20.345 20  15'
+    write(10,'(a)') '  3 30.111   0'
+    write(10,'(a)') '30 30e3   0'
+    write(10,'(a)') '  4 300.444e-1 -10'
+    write(10,'(a)') '40 30.5555d0 -10'
+    write(10,'(a)') '  4 300.444E-1 -10'
+    write(10,'(a)') '40 30.5555D0 -10'
+    close(unit=10)
+
+    ! read file as a table
+    call read_table('inputfile',array,ierr)
+
+    ! print values
+    do i=1,size(array,dim=1)
+       write(*,*)array(i,:)
+    enddo
+
+    ! remove sample file
+    open(file='inputfile',unit=10)
+    close(unit=10,status='delete')
+
+    end program demo_read_table
+
+   Expected output
+
+    1.0000000000000000        10.000000000000000        45.000000000000000
+    10.000000000000000        10.000000000000000        45.000000000000000
+    2.0000000000000000        20.000000000000000        15.000000000000000
+    20.344999999999999        20.000000000000000        15.000000000000000
+    3.0000000000000000        30.111000000000001        0.0000000000000000
+    30.000000000000000        30000.000000000000        0.0000000000000000
+    4.0000000000000000        30.044400000000000       -10.000000000000000
+    40.000000000000000        30.555499999999999       -10.000000000000000
+    4.0000000000000000        30.044400000000000       -10.000000000000000
+    40.000000000000000        30.555499999999999       -10.000000000000000

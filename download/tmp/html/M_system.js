@@ -1,4 +1,5 @@
 function loadthem(){
+append("M_system.3{SECTION}.html");
 append("M_system.3.html");
 append("fileglob.3.html");
 append("set_environment_variable.3.html");

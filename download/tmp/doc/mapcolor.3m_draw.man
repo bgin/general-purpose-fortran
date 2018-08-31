@@ -1,5 +1,5 @@
 NAME
-   mapcolor(3f) - [M_DRAW:COLOR] set a color index using RGB values
+   mapcolor(3f) - [M_draw:COLOR] set a color index using RGB values
 
 SYNOPSIS
         subroutine mapcolor(indx, red, green, blue)
@@ -21,18 +21,16 @@ OPTIONS
 EXAMPLE
  Color wheel EXAMPLE:
 
-   !     good program to exercise color tables, and look at differences
-   !     when actual output device has a color table that is dynamic,
-   !     or only has a small color table (a frame in this program takes
-   !     at least SLICES*RINGS colors to produce accurately).
-   !
    program demo_mapcolor
-   use M_DRAW
-   use M_DRAWPLUS, only : biggest_ortho2
+   !   good program to exercise color tables, and look at differences
+   !   when actual output device has a color table that is dynamic,
+   !   or only has a small color table (a frame in this program takes
+   !   at least SLICES*RINGS colors to produce accurately).
+   use M_draw
+   use M_drawplus, only : biggest_ortho2
    use m_color, only : hue
    use M_units, only : cosd, sind
    implicit none
-      character(len=4096)  :: filename
       real                 :: lightstep
       integer              :: ii,iframe
       integer,parameter    :: SLICES=30
@@ -40,19 +38,34 @@ EXAMPLE
       real                 :: LIGHTNESS
       integer,parameter    :: BOX=1200
       integer              :: ipaws
+      integer              :: istart, iend
+      character(len=20)    :: device
       call prefsize(BOX,BOX)
-      call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
-      call color(0)
+      call vinit(' ') ! start graphics using device $M_draw_DEVICE
+      call polyfill(.true.)
+      call color(D_BLACK)
       call clear()
-      call color(7)
+      call color(D_WHITE)
       call biggest_ortho2(-110./2.,85./2.,-110./2.,110./2.)
       LIGHTNESS=100.0
       lightstep=-5
-      do ii=1,19
+
+      call vgetdev(device)
+      select case(device)
+      case ('p6','p3','ppm') ! just do one wheel
+         istart=10
+         iend=10
+         LIGHTNESS=50.0
+      case default           ! do many lighnesses
+         istart=1
+         iend=19
+      end select
+
+      do ii=istart,iend
          iframe=ii
-         call color(0)
+         call color(D_BLACK)
          call clear()
-         call color(7)
+         call color(D_WHITE)
          call wheel()
          LIGHTNESS=LIGHTNESS+LIGHTSTEP
          ipaws=getkey()
@@ -65,7 +78,7 @@ EXAMPLE
       real              :: hue_val
       integer           :: ii
       call textang(0.0)
-      call color(7)
+      call color(D_WHITE)
       call textsize(5.0,6.0)
       call font('times.r')
       call move2(0.0,103.0/2.0)
@@ -117,7 +130,7 @@ EXAMPLE
       radius3=radius1+4
       radius4=radius1+7
       ! draw tic from wheel to start of angle label
-      call color(7)
+      call color(D_WHITE)
       call linewidth(40)
       call move2( radius1*cosd(hue_val), radius1*sind(hue_val) )
       call draw2( radius3*cosd(hue_val), radius3*sind(hue_val) )
@@ -128,7 +141,7 @@ EXAMPLE
       call linewidth(20)
       call drawstr(inline)
       call linewidth(0)
-      step=radius1/(RINGS)
+      step=radius1/real(RINGS)
       radius2=radius1-step
       ! draw a chunk in a slice
       MAXCOLORS=(256)-buffer
@@ -167,6 +180,4 @@ EXAMPLE
       hue_val=hue_val+ANG_INC
    end subroutine slice
    end program demo_mapcolor
-
-IMAGE
 

@@ -1,4 +1,4 @@
-! @(#) Test of random number consistency for ran_mod : 20111230 - John S. Urban
+! Test of random number consistency for ran_mod : 20111230 - John S. Urban
 ! compare output using numdiff utility to template file.
 !-------------------------------------------------------------------------------
 !From: "Ohkawa, Katsuhiro" <ohkawak@westinghouse.com>
@@ -73,7 +73,7 @@ END FUNCTION RAN_MOD
 !-------------------------------------------------------------------------------
 !-!
 !-!C                                                                       RAN1_1
-!-!C @(#)ran1.f    1.2 97/07/02                                            RAN1_2
+!-!C ran1.f    1.2 97/07/02                                                RAN1_2
 !-!C                                                                       RAN1_3
 !-!      FUNCTION RAN1(IDUM)                                               RAN1_4
 !-!      INTEGER IDUM,IA,IM,IQ,IR,NTAB,NDIV                                RAN1_5

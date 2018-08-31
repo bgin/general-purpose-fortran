@@ -1117,7 +1117,6 @@ end subroutine kracken
 !!
 !!     call setprompts('demo', ' -int My INTEGER value  -float My REAL value  -str My CHARACTER value')
 !!     call kracken(   'demo', ' -int 100 -float 123.456 -str DEFAULT')
-!!     write(*,*)'GOT HERE A'
 !!     write(*,'(a,i0)')'INTEGER IS ',iget('demo_int')
 !!     write(*,'(a,g0)')'REAL IS ',rget('demo_float')
 !!     write(*,'(a,a)')'STRING IS '//trim(sget('demo_str'))

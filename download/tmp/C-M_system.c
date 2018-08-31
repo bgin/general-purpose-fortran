@@ -135,7 +135,7 @@ size_t length_copy;
       length_copy=MIN(length_in,length_out);
 
       strncpy(variable,*ep,length_copy);
-      *ep=*ep++;
+      *ep++;
    }
 }
 /*--------------------------------------------------------------------------------------------------------------------------------*/
@@ -385,22 +385,22 @@ int i;
        P    port (Solaris 10 and up)
        s    socket
        ?    some other file type
-  The file mode bits listed are similar to symbolic mode specifications (*note Symbolic Modes::).  But    ls    combines
+  The file mode bits listed are similar to symbolic mode specifications (*note Symbolic Modes::). But ls(1) combines
   multiple bits into the third character of each set of permissions as follows:
        s    If the set-user-ID or set-group-ID bit and the corresponding executable bit are both set.
        S    If the set-user-ID or set-group-ID bit is set but the corresponding executable bit is not set.
-       t    If the restricted deletion flag or sticky bit, and the other-executable bit, are both set.  The restricted deletion
+       t    If the restricted deletion flag or sticky bit, and the other-executable bit, are both set. The restricted deletion
         flag is another name for the sticky bit.  *Note Mode Structure::.
        T    If the restricted deletion flag or sticky bit is set but the other-executable bit is not set.
        x    If the executable bit is set and none of the above apply.
        -    Otherwise.
   Following the file mode bits is a single character that specifies
   whether an alternate access method such as an access control list
-  applies to the file.  When the character following the file mode
-  bits is a space, there is no alternate access method.  When it is a
+  applies to the file. When the character following the file mode
+  bits is a space, there is no alternate access method. When it is a
   printing character, then there is such a method.
 
-  GNU    ls    uses a    .    character to indicate a file with a security context, but no other alternate access method.
+  GNU ls(1) uses a . character to indicate a file with a security context, but no other alternate access method.
 
   A file with any other combination of alternate access methods is marked with a    +    character.
 

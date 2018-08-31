@@ -1,5 +1,5 @@
 NAME
-   rsmove2(3f) - [M_DRAW:MOVE] Relative move in screen units (-1.0 to 1.0).
+   rsmove2(3f) - [M_draw:MOVE] Relative move in screen units (-1.0 to 1.0).
 
 SYNOPSIS
          subroutine rsmove2(deltax, deltay)

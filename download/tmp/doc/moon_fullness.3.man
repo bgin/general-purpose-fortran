@@ -12,8 +12,8 @@ DESCRIPTION
  fmtdate(3f) routine.
 
  The moon circles the earth every 29.530588853 days on average, so pick
- a starting point and count.  A new moon occurred at January 6, 2000,
- 18:14 UTC.  Then it is easy to count the number of days since the last
+ a starting point and count. A new moon occurred at January 6, 2000,
+ 18:14 UTC. Then it is easy to count the number of days since the last
  new moon. This is an approximate calculation.
 
 OPTIONS
@@ -23,5 +23,5 @@ OPTIONS
 RESULTS
 
  moon_fullness  0 is a new or dark moon, 100 is a full moon, + for waxing
-            and - for waning.
+                and - for waning.
 

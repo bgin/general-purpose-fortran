@@ -23,9 +23,9 @@
 <dd>
 <p>
     The M_time(3f) Fortran module and associated utility programs
-    provide date and time related procedures.  Both a procedural and OOP (Object Oriented Programming)
+    provide date and time related procedures. Both a procedural and OOP (Object Oriented Programming)
     interface are provided. Each routine is accompanied by a man(1) page
-    which includes a sample program for that procedure.  This manual,
+    which includes a sample program for that procedure. This manual,
     the source and example utility programs are included in the download.
 </p>
 <h3>Utility programs that use the M_time(3f) module:</h3>
@@ -152,7 +152,7 @@
     Epoch Times to add and subtract  times  from  dates  or  to  calculate  the
     interval  between  dates. But JEDs and UETs and even the Gregorian Calendar
     arrays in the DAT arrays are not the way we typically describe a  date   on
-    the Civilian Calendar.  So the fmtdate(3f) routine lets us print a DAT array
+    the Civilian Calendar. So the fmtdate(3f) routine lets us print a DAT array
     in a variety of familiar styles.
 </p>
 
@@ -606,7 +606,7 @@ A  "date_and_time" array <b>"DAT"</b> has the same format as the array of values
 </p>
 
     The   <b>Proleptic  Gregorian  Calendar</b>  assumes the Gregorian Calendar
-    existed back to the beginning of the Julian Day calendar  (4713  BC).  This
+    existed back to the beginning of the Julian Day calendar  (4713  BC). This
     means  historic   dates  will often be confused, as the Julian Calendar was
     used in the USA until 1752-09-03, for example. The Gregorian  Calendar  was
     formally  decreed   on   1582-10-15  but was not adapted in many countries.
@@ -614,7 +614,7 @@ A  "date_and_time" array <b>"DAT"</b> has the same format as the array of values
 
     Note   that  the Proleptic Gregorian  Calendar includes a year zero (0). It
     is frequently used in computer software to simplify the handling  of  older
-    dates.  For  example,  it  is the calendar used by MySQL, SQLite, PHP, CIM,
+    dates. For  example,  it  is the calendar used by MySQL, SQLite, PHP, CIM,
     Delphi, Python and COBOL. The Proleptic Gregorian Calendar  is   explicitly
     required  for  all  dates  before 1582 by ISO 8601:2004 (clause 4.3.2.1 The
     Gregorian calendar) if the partners to information exchange agree.
@@ -661,7 +661,7 @@ A  "date_and_time" array <b>"DAT"</b> has the same format as the array of values
 <p>
     M_time(3f) is intended for use in the recent era and is not
     appropriate  for  use  with historical dates that used some other
-    calendar scheme such as the Julian Calendar.  That is, you have to
+    calendar scheme such as the Julian Calendar. That is, you have to
     remember to account for conversions to other calendar systems when
     using historical dates.
 </p>

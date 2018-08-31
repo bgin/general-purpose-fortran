@@ -1,55 +1,60 @@
 !>
 !!##NAME
 !!     M_fixedform(3fm) - [NCURSES] convert a text block into a TUI (screen interface)
+!!
 !!##SYNOPSIS
 !!
 !!    use :: M_fixedform, only : icount_ptr,page_ptr,page_pd,icount_pd
 !!    use :: M_fixedform, only : fixedform ,loaddata
+!!
 !!##DESCRIPTION
 !!    M_fixedform(3fm) takes a text block as input, and converts it
 !!    to a form-like screen interface using the ncurses(3f) library. An
 !!    appropriate action is taken for each keypress.
+!!
 !!##EXAMPLE
 !!
-!! program fifo
-!! implicit none
-!! use M_fixedform, only : fixedform, loaddata, icount_ptr, page_ptr, page_pd, icount_pd
-!! implicit none
-!!    call make_data()
-!!    page_ptr=>page_pd
-!!    icount_ptr=>icount_pd
-!!    call loaddata('test.dat')      ! fill the page(*) with user data
-!!    call fixedform()
-!! end program fifo
-!! subroutine make_data()
-!! open(unit=10,file='test.dat')
-!! write(10,'(a)')[character(len=80) ::
-!! '',
-!! '',
-!! '',
-!! '',
-!! '',
-!! '',
-!! '',
-!! '',
-!! '',
-!! '',
-!! '',
-!! '',
-!! '',
-!! '',
-!! '',
-!! '',
-!! '',
-!! '',
-!! '',
-!! '',
-!! '',
-!! '',
-!! '',
-!! ''
-!! ]
-!! end subroutine make_data
+!! Sample program:
+!!
+!!    program fifo
+!!    implicit none
+!!    use M_fixedform, only : fixedform, loaddata, icount_ptr, page_ptr, page_pd, icount_pd
+!!    implicit none
+!!       call make_data()
+!!       page_ptr=>page_pd
+!!       icount_ptr=>icount_pd
+!!       call loaddata('test.dat')      ! fill the page(*) with user data
+!!       call fixedform()
+!!    end program fifo
+!!    subroutine make_data()
+!!    open(unit=10,file='test.dat')
+!!    write(10,'(a)')[character(len=80) ::
+!!    '',
+!!    '',
+!!    '',
+!!    '',
+!!    '',
+!!    '',
+!!    '',
+!!    '',
+!!    '',
+!!    '',
+!!    '',
+!!    '',
+!!    '',
+!!    '',
+!!    '',
+!!    '',
+!!    '',
+!!    '',
+!!    '',
+!!    '',
+!!    '',
+!!    '',
+!!    '',
+!!    ''
+!!    ]
+!!    end subroutine make_data
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 !<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>-
@@ -1165,7 +1170,7 @@ subroutine start_screen()                ! set up for using main screen window
    call getmaxyx(stdscr,LINES,COLS)      !! should not have to set these
    ierr=noecho()                         ! Note that without noecho() some ugly escape characters might have been printed  on screen
    ierr=cbreak()                         ! Line buffering disabled, Pass on everything to me
-   ierr=raw()                            ! pass on everything, including interupt and flow control (ctrl-C, ...)
+   ierr=raw()                            ! pass on everything, including interrupt and flow control (ctrl-C, ...)
    ierr=keypad(stdscr, TRUE)             ! Enable keypad mode
    mouse_mask=mousemask(ALL_MOUSE_EVENTS,C_NULL_PTR)
    if(has_colors())then

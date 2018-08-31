@@ -20,7 +20,7 @@ static int MAXCOLOR_used;
 #define FLIPY(y)        ((vdevice.sizeSy*page)-(y))
 
 
-extern FILE     *_voutfile();
+extern FILE     *_draw_outfile();
 
 static int      page = 1;
 static int      drawn = 0; /* has this page been drawn on yet? */
@@ -38,7 +38,7 @@ struct rgb_color{
 
 static struct rgb_color carray[MAXCOLOR];
 
-extern  FILE     *fp;
+extern  FILE     *draw_fp;
 
 int prefx, prefy, prefxs, prefys;
 
@@ -67,9 +67,9 @@ static int xfig_mapcolor(int i, int r, int g, int b) {
            color_field=32 to 543 (512 total)
         */
         if(!drawn){
-          fprintf(fp,"0 %d #%2.2x%2.2x%2.2x\n",i+32,r,g,b);
+          fprintf(draw_fp,"0 %d #%2.2x%2.2x%2.2x\n",i+32,r,g,b);
         }else{
-          fprintf(fp,"#0 %d #%2.2x%2.2x%2.2x\n", i+32,r,g,b);
+          fprintf(draw_fp,"#0 %d #%2.2x%2.2x%2.2x\n", i+32,r,g,b);
           fprintf(stderr,"xfig only supports mapcolor before any drawing\n");
         }
         return(0);
@@ -81,7 +81,7 @@ static int xfig_mapcolor(int i, int r, int g, int b) {
  *      Set up the environment. Returns 1 on success.
  */
 static int xfig_init(void) {
-        int i; fp = _voutfile();
+        int i; draw_fp = _draw_outfile();
 
         draw_getprefposandsize(&prefx, &prefy, &prefxs, &prefys);
         if (prefxs != -1 ) {
@@ -94,17 +94,17 @@ static int xfig_init(void) {
            vdevice.sizeX = vdevice.sizeY = MIN(XSPACE_SIZE,YSPACE_SIZE); /* current viewport to use */
         }
 
-        fprintf(fp,"#FIG 3.2\n");
-        fprintf(fp,"Portrait\n");
-        fprintf(fp,"Center\n");
-        fprintf(fp,"Inches\n");
-        fprintf(fp,"Letter\n");
-        fprintf(fp,"100\n");
-        fprintf(fp,"Multiple\n");
-        fprintf(fp,"-2\n");
-        fprintf(fp,"#xfig file from M_DRAW\n");
-        fprintf(fp,"1200 2\n");
-        fprintf(fp,"# PAGESIZE 0 0 %d %d\n",vdevice.sizeX,vdevice.sizeY);
+        fprintf(draw_fp,"#FIG 3.2\n");
+        fprintf(draw_fp,"Portrait\n");
+        fprintf(draw_fp,"Center\n");
+        fprintf(draw_fp,"Inches\n");
+        fprintf(draw_fp,"Letter\n");
+        fprintf(draw_fp,"100\n");
+        fprintf(draw_fp,"Multiple\n");
+        fprintf(draw_fp,"-2\n");
+        fprintf(draw_fp,"#xfig file from M_DRAW\n");
+        fprintf(draw_fp,"1200 2\n");
+        fprintf(draw_fp,"# PAGESIZE 0 0 %d %d\n",vdevice.sizeX,vdevice.sizeY);
 
         vdevice.depth = 8;
 
@@ -143,16 +143,16 @@ static int xfig_init(void) {
 /******************************************************************************/
 static int xfig_exit(void) { /* Flush remaining data and close output file if necessary.  */
    if(drawn){
-      fprintf(fp,"-6\n"); /* END PAGE */
+      fprintf(draw_fp,"-6\n"); /* END PAGE */
    }
-   fprintf(fp,"# EXIT\n");  /* end page */
-   fflush(fp);
-   if (fp != stdout && fp != stderr ) {
-                fflush(fp);
+   fprintf(draw_fp,"# EXIT\n");  /* end page */
+   fflush(draw_fp);
+   if (draw_fp != stdout && draw_fp != stderr ) {
+                fflush(draw_fp);
                 if(vdevice.writestoprocess == 2){
-                   pclose(fp);
+                   pclose(draw_fp);
                 }else{
-                   fclose(fp);
+                   fclose(draw_fp);
                 }
    }
    return(0);
@@ -182,11 +182,11 @@ int     L_FILL_COLOR;
 static int xfig_draw(int x, int y) {               /* draw to an x, y point.  */
 
    if(!drawn){ /* START PAGE */
-      fprintf(fp,"6 0 %d %d %d\n",FLIPY(0),vdevice.sizeX,FLIPY(vdevice.sizeY));
+      fprintf(draw_fp,"6 0 %d %d %d\n",FLIPY(0),vdevice.sizeX,FLIPY(vdevice.sizeY));
       drawn = 1;
    }
    /*
-   fprintf(fp,"# VECTOR\n");
+   fprintf(draw_fp,"# VECTOR\n");
    */
 
    L_THICKNESS=curwid*vdevice.sizeX*2/1200/80/3;
@@ -195,7 +195,7 @@ static int xfig_draw(int x, int y) {               /* draw to an x, y point.  */
    L_FILL_COLOR=(curcol%MAXCOLOR_used)+32;
    L_LINE_STYLE=curcol/MAXCOLOR_used;
 
-   fprintf(fp,"%d %d %d %d %d %d %d %d %d %f %d %d %d %d %d %d\n",
+   fprintf(draw_fp,"%d %d %d %d %d %d %d %d %d %f %d %d %d %d %d %d\n",
       L_OBJECT_TYPE,L_SUB_TYPE, L_LINE_STYLE,
       L_THICKNESS,  L_PEN_COLOR,L_FILL_COLOR,
       L_DEPTH,      L_PEN_STYLE,L_AREA_FILL,    L_STYLE_VAL,     L_JOIN_STYLE,
@@ -205,8 +205,8 @@ static int xfig_draw(int x, int y) {               /* draw to an x, y point.  */
    if (xfiglstx != vdevice.cpVx || xfiglsty != vdevice.cpVy) {
    }
 
-   fprintf(fp," %d %d", vdevice.cpVx, FLIPY(vdevice.cpVy) );  /* move */
-   fprintf(fp," %d %d\n", x, FLIPY(y) ); /* draw */
+   fprintf(draw_fp," %d %d", vdevice.cpVx, FLIPY(vdevice.cpVy) );  /* move */
+   fprintf(draw_fp," %d %d\n", x, FLIPY(y) ); /* draw */
 
    xfiglstx = x;
    xfiglsty = y;
@@ -268,13 +268,13 @@ static int xfig_font(char *fontname) {
 static int xfig_clear(void) {                  /* xfig_clear - Erase the plot */
    if (drawn) {
 
-      fprintf(fp,"-6\n"); /* END PAGE */
-      fprintf(fp,"# END PAGE %d\n",page);
+      fprintf(draw_fp,"-6\n"); /* END PAGE */
+      fprintf(draw_fp,"# END PAGE %d\n",page);
       page=page+1;
-      fprintf(fp,"# START PAGE %d\n",page);
+      fprintf(draw_fp,"# START PAGE %d\n",page);
       /* BGCOLOR */
       /*
-      fprintf(fp,"~ %d %d %d\n",
+      fprintf(draw_fp,"~ %d %d %d\n",
          (carray[curcol].red+1)*256-1,
          (carray[curcol].green+1)*256-1,
          (carray[curcol].blue+1)*256-1);
@@ -311,7 +311,7 @@ static int xfig_char(char c) {                           /* Output a character *
 static int xfig_string(char *s) {
 
    if(!drawn){ /* START PAGE */
-      fprintf(fp,"6 0 %d %d %d\n",FLIPY(0),vdevice.sizeX,FLIPY(vdevice.sizeY));
+      fprintf(draw_fp,"6 0 %d %d %d\n",FLIPY(0),vdevice.sizeX,FLIPY(vdevice.sizeY));
       drawn = 1;
    }
 
@@ -321,27 +321,27 @@ static int xfig_string(char *s) {
       vdevice.hheight=11.0*300.0/72.0;
    }
 
-   fprintf(fp,"4 ");                             /* OBJECT   text */
-   fprintf(fp,"0 ");                             /* SUB_TYPE left justified */
-   fprintf(fp," %d ",(curcol%MAXCOLOR_used)+32); /* COLOR  */
-   fprintf(fp," %d ",(curcol%MAXCOLOR_used)+32); /* DEPTH  */
-   fprintf(fp," -1 ");                           /* PEN_STYLE  */
-   fprintf(fp," %d ",xfigfont                 ); /* FONT  */
-   fprintf(fp," %f ",vdevice.hwidth/1200.0*72.); /* FONT SIZE IN POINTS */
-   fprintf(fp," %f ",                            /* ANGLE IN RADIANS */
+   fprintf(draw_fp,"4 ");                             /* OBJECT   text */
+   fprintf(draw_fp,"0 ");                             /* SUB_TYPE left justified */
+   fprintf(draw_fp," %d ",(curcol%MAXCOLOR_used)+32); /* COLOR  */
+   fprintf(draw_fp," %d ",(curcol%MAXCOLOR_used)+32); /* DEPTH  */
+   fprintf(draw_fp," -1 ");                           /* PEN_STYLE  */
+   fprintf(draw_fp," %d ",xfigfont                 ); /* FONT  */
+   fprintf(draw_fp," %f ",vdevice.hwidth/1200.0*72.); /* FONT SIZE IN POINTS */
+   fprintf(draw_fp," %f ",                            /* ANGLE IN RADIANS */
       atan2((double)vdevice.attr->a.textsin,(double)vdevice.attr->a.textcos));
    if( xfigfont == 0){
-      fprintf(fp," %d ",4                        ); /* FONT FLAGS  */
-      fprintf(fp," %f ",vdevice.hheight          ); /* HEIGHT      */
-      fprintf(fp," %f ",vdevice.hwidth*strlen(s) ); /* LENGTH      */
+      fprintf(draw_fp," %d ",4                        ); /* FONT FLAGS  */
+      fprintf(draw_fp," %f ",vdevice.hheight          ); /* HEIGHT      */
+      fprintf(draw_fp," %f ",vdevice.hwidth*strlen(s) ); /* LENGTH      */
    }else{
-      fprintf(fp," %d ",4                        ); /* FONT FLAGS  */
-      fprintf(fp," %f ",vdevice.hheight          ); /* HEIGHT      */
-      fprintf(fp," %f ",draw_strlength(s)       ); /* LENGTH      */
+      fprintf(draw_fp," %d ",4                        ); /* FONT FLAGS  */
+      fprintf(draw_fp," %f ",vdevice.hheight          ); /* HEIGHT      */
+      fprintf(draw_fp," %f ",draw_strlength(s)       ); /* LENGTH      */
    }
-   fprintf(fp," %d ",vdevice.cpVx      );         /* X             */
-   fprintf(fp," %d ",FLIPY(vdevice.cpVy));        /* Y             */
-   fprintf(fp,"%s\\001\n",s);                     /* STRING        */
+   fprintf(draw_fp," %d ",vdevice.cpVx      );         /* X             */
+   fprintf(draw_fp," %d ",FLIPY(vdevice.cpVy));        /* Y             */
+   fprintf(draw_fp,"%s\\001\n",s);                     /* STRING        */
 
    xfiglstx = xfiglsty = -1;
    return(0);
@@ -373,11 +373,11 @@ static int xfig_fill(int n, int x[], int y[]) {  /* fill and draw the polygon */
    int     i;
 
    if(!drawn){ /* START PAGE */
-      fprintf(fp,"6 0 %d %d %d\n",FLIPY(0),vdevice.sizeX,FLIPY(vdevice.sizeY));
+      fprintf(draw_fp,"6 0 %d %d %d\n",FLIPY(0),vdevice.sizeX,FLIPY(vdevice.sizeY));
       drawn = 1;
    }
 
-   fprintf(fp,"# POLYGON\n");
+   fprintf(draw_fp,"# POLYGON\n");
 
    /*
    THICKNESS=curwid*vdevice.sizeX*2/1200/80/3;
@@ -395,7 +395,7 @@ static int xfig_fill(int n, int x[], int y[]) {  /* fill and draw the polygon */
    FILL_COLOR=(curcol%MAXCOLOR_used)+32;
    NPOINTS=n+1;
 
-   fprintf(fp,"%d %d %d %d %d %d %d %d %d %f %d %d %d %d %d %d\n",
+   fprintf(draw_fp,"%d %d %d %d %d %d %d %d %d %f %d %d %d %d %d %d\n",
       OBJECT_TYPE,SUB_TYPE,LINE_STYLE,
       THICKNESS,PEN_COLOR,FILL_COLOR,
       DEPTH,PEN_STYLE,AREA_FILL,STYLE_VAL,JOIN_STYLE,
@@ -403,9 +403,9 @@ static int xfig_fill(int n, int x[], int y[]) {  /* fill and draw the polygon */
       NPOINTS);
    for (i = 0; i < n; i++)
    {
-      fprintf(fp," %d %d\n", x[i], FLIPY(y[i]));
+      fprintf(draw_fp," %d %d\n", x[i], FLIPY(y[i]));
    }
-   fprintf(fp," %d %d\n# END POLYGON\n", x[0], FLIPY(y[0]));
+   fprintf(draw_fp," %d %d\n# END POLYGON\n", x[0], FLIPY(y[0]));
    vdevice.cpVx = x[n - 1];
    vdevice.cpVy = y[n - 1];
    xfiglstx = xfiglsty = -1;
@@ -440,7 +440,7 @@ static DevEntry xfigdev = {
         noop            /* syncronize the display */
 };
 /******************************************************************************/
-int _XFIG_devcpy(void) {      /* copy the xfig plot device into vdevice.dev.  */
+int _XFIG_draw_devcpy(void) {      /* copy the xfig plot device into vdevice.dev.  */
         vdevice.dev = xfigdev;
         return(0);
 }

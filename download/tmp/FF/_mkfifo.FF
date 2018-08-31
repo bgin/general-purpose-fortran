@@ -5,11 +5,17 @@ NAME
 SYNOPSIS
      _mkfifo file(s)
 DESCRIPTION 
+   Create named pipes (FIFOs) with the given NAMEs.
+OPTIONS
+   files      pathnames of named pipes to create
+   --help     display this help and exit
+   --version  output version information and exit
 EXAMPLE
 $DOCUMENT END
+
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION
-PRODUCT:        CLI library utilities and examples
+PRODUCT:        GPF (General Purpose Fortran) utilities and examples
 PROGRAM:        _mkfifo(1f)
 DESCRIPTION:    make FIFO pipe file
 VERSION:        1.0, 2016-12-04

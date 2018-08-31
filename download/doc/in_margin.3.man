@@ -11,7 +11,7 @@ SYNOPSIS
 
 DESCRIPTION
   Compare two values to see if they are relatively equal using the
-  specified allowed margin.  That is, see if  VALUE_MEASURED is in
+  specified allowed margin. That is, see if VALUE_MEASURED is in
   the range VALUE_EXPECTED +- ALLOWED_ERROR where the allowed error
   varies with the magnitude of the values, such that the allowed error
   is margin * average magnitude of measured and expected).
@@ -19,9 +19,9 @@ DESCRIPTION
   So the allowed error is smaller when the magnitudes are smaller.
 
 OPTIONS
-  expected_value  First value
-  measured_value  Second value
-  allowed_margin  Allowed relative margin
+  expected_value   First value
+  measured_value   Second value
+  allowed_margin   Allowed relative margin
 
 EXAMPLE
   Sample program:

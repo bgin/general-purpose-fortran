@@ -2,7 +2,7 @@ NAME
    sqlite3_query_table(3f) - [M_sqlite] Retrieve the column names and types from a table
 
 SYNOPSIS
-   call sqlite3_query_table(db, tablename, columns)
+   subroutine sqlite3_query_table(db, tablename, columns)
 
     type(SQLITE_DATABASE) db
     character(len=*) tablename

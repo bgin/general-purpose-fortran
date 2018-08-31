@@ -21,14 +21,14 @@ RETURN VALUE
    These functions return a REAL variable or array under
    the following rules:
 
- 1. real(x) is converted to a default real type if X is an integer
-    or real variable.
+   1. real(x) is converted to a default real type if X is an integer
+      or real variable.
 
- 2. real(x) is converted to a real type with the kind type parameter
-    of X if X is a complex variable.
+   2. real(x) is converted to a real type with the kind type parameter
+      of X if X is a complex variable.
 
- 3. real(x, kind) is converted to a real type with kind type
-    parameter KIND if X is a complex, integer, or real variable.
+   3. real(x, kind) is converted to a real type with kind type
+      parameter KIND if X is a complex, integer, or real variable.
 
 EXAMPLE
 

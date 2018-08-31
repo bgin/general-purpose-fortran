@@ -27,16 +27,17 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                                                                                ',&
 'OPTIONS                                                                         ',&
 '                                                                                ',&
-'     date    provide the same eight values used by the DATE_AND_TIME(3f) intrinsic.',&
+'     date    provide the same eight values used by the DATE_AND_TIME(3f)        ',&
+'             intrinsic.                                                         ',&
 '                                                                                ',&
-'       ·     value(1)  The year                                                 ',&
-'          ·  value(2)  The month                                                ',&
-'          ·  value(3)  The day of the month                                     ',&
-'          ·  value(4)  Time difference with UTC in minutes                      ',&
-'          ·  value(5)  The hour of the day                                      ',&
-'          ·  value(6)  The minutes of the hour                                  ',&
-'          ·  value(7)  The seconds of the minute                                ',&
-'          ·  value(8)  The milliseconds of the second                           ',&
+'           · value(1)  The year                                                 ',&
+'           · value(2)  The month                                                ',&
+'           · value(3)  The day of the month                                     ',&
+'           · value(4)  Time difference with UTC in minutes                      ',&
+'           · value(5)  The hour of the day                                      ',&
+'           · value(6)  The minutes of the hour                                  ',&
+'           · value(7)  The seconds of the minute                                ',&
+'           · value(8)  The milliseconds of the second                           ',&
 '                                                                                ',&
 '     N|Name  Planet numbers in range 1 to 8 (Mercury:1 Venus:2 Mars:4           ',&
 '             Jupiter:5 Saturn:6 Uranus:7 Neptune:8). If not specified           ',&
@@ -90,16 +91,17 @@ end subroutine help_usage
 !!
 !!##OPTIONS
 !!
-!!      date    provide the same eight values used by the DATE_AND_TIME(3f) intrinsic.
+!!      date    provide the same eight values used by the DATE_AND_TIME(3f)
+!!              intrinsic.
 !!
-!!        ·     value(1)  The year
-!!           ·  value(2)  The month
-!!           ·  value(3)  The day of the month
-!!           ·  value(4)  Time difference with UTC in minutes
-!!           ·  value(5)  The hour of the day
-!!           ·  value(6)  The minutes of the hour
-!!           ·  value(7)  The seconds of the minute
-!!           ·  value(8)  The milliseconds of the second
+!!            · value(1)  The year
+!!            · value(2)  The month
+!!            · value(3)  The day of the month
+!!            · value(4)  Time difference with UTC in minutes
+!!            · value(5)  The hour of the day
+!!            · value(6)  The minutes of the hour
+!!            · value(7)  The seconds of the minute
+!!            · value(8)  The milliseconds of the second
 !!
 !!      N|Name  Planet numbers in range 1 to 8 (Mercury:1 Venus:2 Mars:4
 !!              Jupiter:5 Saturn:6 Uranus:7 Neptune:8). If not specified
@@ -137,12 +139,12 @@ logical                        :: stopit=.false.
 stopit=.false.
 if(l_version)then
 help_text=[ CHARACTER(LEN=128) :: &
-'@(#)PRODUCT:        CLI library utilities and examples>',&
+'@(#)PRODUCT:        GPF (General Purpose Fortran) utilities and examples>',&
 '@(#)PROGRAM:        planets(1)>',&
 '@(#)DESCRIPTION:    ephemeris position of planets for adjusting an equitorial telescope>',&
 '@(#)VERSION:        1.0, 20170910>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Mon, Jun 4th, 2018 9:00:45 AM>',&
+'@(#)COMPILED:       Sat, Aug 25th, 2018 9:40:32 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

@@ -209,6 +209,7 @@ done
 BLANKOUT(){
 rm -rf   tmp/*             # ensure scratch directory is empty
 mkdir -p tmp/PROGRAMS      # make sure scratch directories exist
+mkdir -p tmp/PROGRAMS/M_DRAW_EXAMPLES
 mkdir -p tmp/html
 mkdir -p tmp/scripts/
 for NUMBER in 1 2 3 4 5 6 7 8
@@ -244,6 +245,7 @@ getsource.sh            # expand source archive file from my target location
 supplemental_source.sh  # create user-supplied procedures "c" and "juown1" required for the calculator module
 getprograms.sh          # get some programs to add to the procedures
 makemakefile.sh         # create makefile
+cp /home/urbanjs/V600/LIBRARY/libGPF/EXE/DRAW/EXAMPLES/*.f90 tmp/PROGRAMS/M_DRAW_EXAMPLES/
 ####################################################################################################################################
 echo 'create documents in tmp/doc, tmp/man, and tmp/html'
 (MAKEMANDIR)
@@ -254,7 +256,7 @@ echo 'copy permanent document repository to tmp area to create tar file from'
 cp -r -p doc tmp/
 ####################################################################################################################################
 echo 'put a few scripts into the tar file that might be of interest'
-for NAME in \
+for NAME in   \
    txt2man    \
    man2html   \
    manserver  \
@@ -262,6 +264,7 @@ for NAME in \
    mank       \
    makemake   \
    inpath     \
+   h          \
    manvi      \
    $NULL
 do
@@ -292,10 +295,11 @@ cp /home/urbanjs/V600/LIBRARY/libGPF/draw/hershey/hershey.sh tmp/
    cd doc/images/
    banner 'test pixel'
    env DISPLAY= test_M_pixel_manpages.sh
-   env DISPLAY= test_M_draw_manpages.sh
 )
 #----------------------------------------------------------------------------------------------------------------------------------#
-:  copy pixmap files needed by documentation
+env DISPLAY= test_M_draw_manpages.sh
+#----------------------------------------------------------------------------------------------------------------------------------#
+:  copy pixmap files needed to documentation
 (
 cd $DIRNAME
 mkdir -p tmp/html/images
@@ -310,11 +314,35 @@ cp -r -p ../html/StyleSheets tmp/html/
 )
 ####################################################################################################################################
 # combine man pages into books
-book.sh M_kracken M_strings M_time M_system M_color M_pixel M_calculator M_units M_math M_process M_logic 
-book.sh M_Compare_Float_Numbers M_debug M_factor M_io M_journal M_messages M_sort M_xterm INTRINSIC
-book.sh M_stopwatch M_display M_regex
+book.sh ARGUMENTS
+book.sh M_strings
+book.sh M_time
+book.sh M_system
+book.sh M_calculator
+book.sh M_units
+book.sh M_math
+book.sh M_process
+book.sh M_logic
+book.sh M_Compare_Float_Numbers
+book.sh M_debug
+book.sh M_factor
+book.sh M_io
+book.sh M_journal
+book.sh M_messages
+book.sh M_sort
+book.sh M_xterm
+book.sh INTRINSIC
+book.sh M_stopwatch
+book.sh M_display
+book.sh M_regex
 book.sh M_sqlite
-book.sh M_draw
+
+book.sh M_color
+book.sh M_pixel                       m_pixel
+book.sh M_draw                        m_draw
+book.sh M_drawplus                    m_drawplus
+book.sh M_xyplot                      m_xyplot  
+
 book.sh INDEX
 #tmp/M_anyscalar.f90
 #tmp/M_calculator_plus.f90
@@ -343,29 +371,10 @@ echo 'now that all procedure descriptions are in place make main index page down
 make_index.sh
 #----------------------------------------------------------------------------------------------------------------------------------#
 echo 'build index of source file metadata using what(1) command'
-(
-   cd tmp
-   header.sh
-   # set LC_ALL=C to make sure sort(1) does not sort case-insensitive without it being specified
-   what $(find . -path './*/*' -prune -o -type f -printf '%P '|xargs -n 1|env LC_ALL=C sort --ignore-case -t . -k 2r,2r -k 1,1|xargs) -html
-   footer.sh
-) >tmp/source.html
+what_source.sh
 #----------------------------------------------------------------------------------------------------------------------------------#
 echo 'build index of program file metadata using what(1) command'
-(
-   header.sh
-   cd tmp/PROGRAMS
-   what $(find . -path './*/*' -prune -o -type f -printf '../PROGRAMS/%P ') -html|
-   sed -n -e '\%^ *<td>%,\%^ *</td>%{
-s/^/ZZZZ:/
-s/ZZZZ:.*DESCRIPTION *://
-/ZZZZ:/d
-s/^/<td>/
-s/$/<\/td>/
-#\%^ *DESCRIPTION *:.*%{!d;p;n}
-}' -e p
-   footer.sh
-) > tmp/html/programs.html
+what_program.sh
 ####################################################################################################################################
 echo 'create tar file for downloading'
 (cd tmp;tar cvfz ../GPF.tgz *)

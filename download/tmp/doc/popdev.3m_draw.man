@@ -1,5 +1,5 @@
 NAME
-   popdev(3f) - [M_DRAW:DEVICE] pop device from stack created by pushdev.
+   popdev(3f) - [M_draw:DEVICE] pop device from stack created by pushdev.
 
 SYNOPSIS
           subroutine popdev()

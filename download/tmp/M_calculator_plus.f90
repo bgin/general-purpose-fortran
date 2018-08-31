@@ -559,7 +559,7 @@ end subroutine jucalcx
 !!       o If an error occurs the error flag returns the column number where the
 !!         expression that failed begins.
 !!
-!!     line          LINE is a string of numeric expressions. Each expression can be up to
+!!     line         LINE is a string of numeric expressions. Each expression can be up to
 !!                  (iclen_calc=255) characters long. The syntax of an expression is as
 !!                  described in the main document of the Calculator Library. Assuming the
 !!                  delimiters include a space character an example would be:
@@ -581,6 +581,7 @@ end subroutine jucalcx
 !!##DEPENDENCIES
 !!       o jucalcx
 !!       o User-supplied routines:
+!!
 !!         All programs that call the calculator routine must supply their own
 !!         JUOWN1 and C procedures. See the example program for samples.
 !!           o juown1
@@ -915,7 +916,7 @@ character(len=*),parameter :: ident=&
    integer,intent(out)                   :: ierr            ! ierr==0 if no error, column number error string starts at
 !-----------------------------------------------------------------------------------------------------------------------------------
    character(len=iclen_calc) :: outlin
-   character(len=256)        :: delims                      ! maleable copy of delimiters at which to break input into expressions
+   character(len=256)        :: delims                      ! malleable copy of delimiters at which to break input into expressions
    character(len=1)          :: ch
    integer                   :: iend
    integer                   :: ilen

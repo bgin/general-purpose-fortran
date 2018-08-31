@@ -1,5 +1,5 @@
 NAME
-   ortho2(3f) - [M_DRAW:PROJECTION] define the area of the virtual world coordinates to map to the viewport
+   ortho2(3f) - [M_draw:PROJECTION] define the area of the virtual world coordinates to map to the viewport
 
 SYNOPSIS
          subroutine ortho2(left, right, bottom, top)

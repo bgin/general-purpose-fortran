@@ -1,12 +1,14 @@
 NAME
     M_io(3f) - [M_io] Fortran I/O module
 SYNOPSIS
-    use M_io, only : slurp, notopen, print_inquire, uniq use M_io, only :
-    dirname, splitpath, isdir, get_tmp use M_io, only : read_line, read_all
+    use M_io, only : slurp, notopen, print_inquire, uniq, read_table use M_io,
+    only : dirname, splitpath, isdir, get_tmp use M_io, only : read_line,
+    read_all
 DESCRIPTION
     The M_io module is a collection of routines related to basic I/O (input/
     output) operations.
       + SLURP - read a file into a character array
+      + READ_TABLE - read a file into a numeric array
       + NOTOPEN - find unused FUN/LUN file-unit-number
       + PRINT_INQUIRE - run INQUIRE(3f) on a file by name or number and print
         results
@@ -23,4 +25,5 @@ DESCRIPTION
         limit
       + GET_TMP - get name for system scratch directory from environment
         variables
+      + RD - ask for string from standard input with user-definable prompt
 

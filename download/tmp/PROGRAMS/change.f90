@@ -85,12 +85,12 @@ logical                        :: stopit=.false.
 stopit=.false.
 if(l_version)then
 help_text=[ CHARACTER(LEN=128) :: &
-'@(#)PRODUCT:        CLI library utilities and examples>',&
+'@(#)PRODUCT:        GPF (General Purpose Fortran) utilities and examples>',&
 '@(#)PROGRAM:        change(1f)>',&
 '@(#)DESCRIPTION:    rename files by changing old fixed string to new string>',&
 '@(#)VERSION:        1.0, 2017-06-29>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Mon, Jun 4th, 2018 8:50:53 AM>',&
+'@(#)COMPILED:       Thu, Aug 16th, 2018 11:56:56 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

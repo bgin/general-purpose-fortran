@@ -23,8 +23,8 @@ ARGUMENTS
 
 RETURN VALUE
 
-   associated(pointer) returns a scalar value of type logical(4).
-   There are several cases:
+ associated(pointer) returns a scalar value of type logical(4). There are
+ several cases:
 
  1. When the optional TARGET is not present then
     associated(pointer) is true if POINTER is associated with a

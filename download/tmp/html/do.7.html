@@ -309,7 +309,7 @@
 3 Execution of a CYCLE statement that belongs to a DO construct that is
   not a DO CONCURRENT construct
   causes immediate progression to step (3) of the current execution
-  cycle of the DO construct to which it belongs.  If this construct is a
+  cycle of the DO construct to which it belongs. If this construct is a
   nonblock DO construct, the do-term-action-stmt or do-term-shared-stmt
   is not executed.
 <P>
@@ -320,7 +320,7 @@
   same effect as execution of a CYCLE statement
   belonging to that construct. In a nonblock DO construct, transfer
   of control to the do-term-action-stmt or do-term-shared-stmt causes
-  that statement to be executed.  Unless a further transfer of control
+  that statement to be executed. Unless a further transfer of control
   results, step (3) of the current execution cycle of the DO construct
   is then executed.
 <P>
@@ -372,7 +372,7 @@
       execution of the construct. A variable that is defined or becomes
       undefined by more than one iteration of the current execution of
       the construct becomes undefined when the current execution of
-      the construct terminates.  A pointer that is referenced in an
+      the construct terminates. A pointer that is referenced in an
       iteration either shall be previously pointer associated during
       that iteration, or shall not have its pointer association changed
       during any iteration. A pointer that has its pointer association

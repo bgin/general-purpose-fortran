@@ -253,7 +253,7 @@ end function anyscalar_to_real
 pure elemental function anyinteger_to_128bit(intin) result(ii38)
 use iso_fortran_env, only : error_unit !! ,input_unit,output_unit
 implicit none
-character(len=*),parameter::ident="@(#)M_anyscalar::anyinteger_to_128: convert integer parameter of any kind to 128-bit integer"
+character(len=*),parameter::ident="@(#)M_anyscalar::anyinteger_to_128(3f): convert integer parameter of any kind to 128-bit integer"
 class(*),intent(in)     :: intin
    integer(kind=int128) :: ii38
    select type(intin)

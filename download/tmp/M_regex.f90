@@ -11,7 +11,7 @@
 !!
 !!##DESCRIPTION
 !!
-!!    These routines interface with the C implementation of  IEEE Std 1003.2 ( POSIX.2 ) RE (Regular
+!!    These routines interface with the C implementation of IEEE Std 1003.2 ( POSIX.2 ) RE (Regular
 !!    Expressions).
 !!
 !!    o The regcomp(3c) function compiles an RE written as a string into an internal form
@@ -207,7 +207,7 @@
 !!    back reference: \ followed by a non-zero decimal digit d matches the same
 !!    sequence of characters matched by the dth parenthesized subexpression
 !!    (numbering subexpressions by the positions of their opening parentheses,
-!!    left to right), so that (e.g.)  \([bc]\)\1 matches bb or cc but not bc .
+!!    left to right), so that (e.g.) \([bc]\)\1 matches bb or cc but not bc .
 !!
 !!##C WRAPPERS
 !!
@@ -252,7 +252,7 @@
 !!                  at that location), regardless of the value of nmatch.
 !!                  See below for the definition of pmatch and nmatch. This
 !!                  is an extension, compatible with but not specified by
-!!                  IEEE Std 1003.2 (   POSIX.2   ), and should be used with
+!!                  IEEE Std 1003.2 ( POSIX.2 ), and should be used with
 !!                  caution in software intended to be portable to other
 !!                  systems. Note that a non-zero rm_so does not imply
 !!                  REG_NOTBOL; REG_STARTEND affects only the location of
@@ -345,7 +345,7 @@
 !!
 !!    These routines implement IEEE Std 1003.2 ("POSIX.2") regular expressions ("RE"s); see re_format(7).
 !!
-!!    IEEE Std 1003.2 (   POSIX.2   ), sections 2.8 (Regular Expression Notation) and B.5 (C Binding for Regular Expression Matching).
+!!    IEEE Std 1003.2 (POSIX.2), sections 2.8 (Regular Expression Notation) and B.5 (C Binding for Regular Expression Matching).
 !!
 !!     regcomp (3p)  - regular expression matching
 !!     regex (3)     - regular-expression library
@@ -724,8 +724,8 @@ end function regmatch
 !!      from either into human-readable messages, and REGFREE() frees any
 !!      dynamically-allocated storage used by the internal form of an RE.
 !!
-!!      These routines implement IEEE Std 1003.2 (   POSIX.2   ) regular
-!!      expressions (   RE   s); see re_format(7).
+!!      These routines implement IEEE Std 1003.2 (POSIX.2) regular
+!!      expressions (RE s); see re_format(7).
 !!
 !!      Specifically, The REGERROR(3f) function maps a non-zero errcode from either
 !!      REGCOMP(3f) or REGEXEC(3f) to a human-readable, printable message.
@@ -851,7 +851,7 @@ end function regerror
 !!      remaining regex_type is no longer a valid compiled RE and the effect of supplying it to regexec() or regerror() is undefined.
 !!
 !!##OPTIONS
-!!      this  a compiled regular expression previously allocated using regcomp(3f).
+!!      THIS  a compiled regular expression previously allocated using regcomp(3f).
 !!
 !!##EXAMPLE
 !!

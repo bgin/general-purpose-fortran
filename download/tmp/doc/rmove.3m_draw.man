@@ -1,5 +1,5 @@
 NAME
-   rmove(3f) - [M_DRAW:MOVE] Relative move
+   rmove(3f) - [M_draw:MOVE] Relative move
 
 SYNOPSIS
          subroutine rmove(deltax, deltay, deltaz)

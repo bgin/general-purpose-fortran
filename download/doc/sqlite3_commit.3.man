@@ -1,7 +1,7 @@
 NAME
   sqlite3_commit(3f) - [M_sqlite] Commits a transaction on the given database
 SYNOPSIS
-   call sqlite3_commit(db)
+   subroutine sqlite3_commit(db)
 
     type(SQLITE_DATABASE) db
 

@@ -1,5 +1,5 @@
 NAME
-   makepoly(3f) - [M_DRAW:POLYGONS] opens polygon constructed by a series of move-draws and closed by closepoly
+   makepoly(3f) - [M_draw:POLYGONS] opens polygon constructed by a series of move-draws and closed by closepoly
 
 SYNOPSIS
       subroutine makepoly()
@@ -12,7 +12,7 @@ EXAMPLE
  Sample program:
 
    program demo_makepoly
-   use :: M_DRAW
+   use :: M_draw
    implicit none
    integer,parameter :: wide=640, tall=640
    integer :: rows, xoff, yoff, box_sz
@@ -22,12 +22,12 @@ EXAMPLE
    integer :: movie(300,0:wide-1,0:tall-1)
    integer :: ipaws
       call prefsize(wide,tall)
-      call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
+      call vinit(' ') ! start graphics using device $M_draw_DEVICE
       call ortho2(0.0, real(wide), 0.0, real(tall) )
       ! call linewidth(3) ! really slows down pbm driver because all lines are polygons
-      call color(7)
+      call color(D_WHITE)
       call clear()
-      call color(0)
+      call color(D_BLACK)
       rows=1
       box_sz=MIN(wide,tall)/rows       ! size of biggest box to use and get specified number of rows
       nrows = tall/box_sz              ! number of rows of objects to draw
@@ -41,7 +41,7 @@ EXAMPLE
             left = (i20-1)*box_sz+xoff
             do i30 = 1, nrows
                bottom = (i30-1)*box_sz+yoff
-               call color(0)
+               call color(D_BLACK)
             call makepoly()
                call rect(left,bottom,left+box_sz,bottom+box_sz)
             call closepoly()
@@ -61,7 +61,7 @@ EXAMPLE
    !  Make shapes using hypocycloidal curves.
    !
    subroutine hypoc(xcenter,ycenter,sunr0,planet0,offset0,radius,ilines,ang,angs,ifill)
-   use M_DRAW
+   use M_draw
    implicit none
    real,parameter     :: PI= 3.14159265358979323846264338327950288419716939937510
    real,intent(in)    :: xcenter, ycenter      ! center of curve

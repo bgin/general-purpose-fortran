@@ -1,4 +1,5 @@
 function loadthem(){
+append("M_time.3{SECTION}.html");
 append("M_time.3.html");
 append("box_month.3.html");
 append("d2j.3.html");
@@ -9,6 +10,7 @@ append("date_to_julian.3.html");
 append("date_to_unix.3.html");
 append("days2sec.3.html");
 append("dow.3.html");
+append("easter.3.html");
 append("ephemeris.3.html");
 append("fmtdate.3.html");
 append("fmtdate_usage.3.html");

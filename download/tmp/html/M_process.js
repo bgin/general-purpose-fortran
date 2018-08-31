@@ -1,4 +1,5 @@
 function loadthem(){
+append("M_process.3{SECTION}.html");
 append("M_process.3.html");
 append("process_close.3.html");
 append("process_open.3.html");

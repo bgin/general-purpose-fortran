@@ -16,52 +16,60 @@
  *
  *	NB. no overflow checking is done on the string s.
  */
-int draw_getstring( int bcol, char *s){
-	int	i, nc, pos, col;
-	float	cw, ch;
+int draw_getstring (int bcol, char *s) {
+   int i, nc, pos, col;
+   float cw, ch;
 
-	s[0] = '\0';
-	pos = -1;
-	nc = draw_numchars() + 32;
+   s[0] = '\0';
+   pos = -1;
+   nc = draw_numchars () + 32;
 
-	col = vdevice.attr->a.color;
+   col = vdevice.attr->a.color;
 
-	while ((i = draw_getkey()) != CR) {
-		switch (i) {
-		case EOT:
-			s[++pos] = '\0';
-			return (pos);
+   while ((i = draw_getkey ()) != CR) {
+      /*
+      fprintf(stderr,"CHAR=%d\n",i);
+      */
+      switch (i) {
+      case -1:
+	 s[++pos] = '\0';
+	 return (pos);
+      case EOT:
+	 s[++pos] = '\0';
+	 return (pos);
 
-		case BS:
-		case DEL:
-			if (pos >= 0) {
-				/*
-				 * Over draw prev char in color bcol
-				 */
-				draw_getcharsize(s[pos], &cw, &ch);
-				draw_rmove(-cw, 0.0, 0.0);
-				draw_color(bcol);
-				draw_drawchar(s[pos]);
-				draw_rmove(-cw, 0.0, 0.0);
-				draw_color(col);
-				s[pos--] = '\0';
-			}
-			break;
+      case BS:
+      case DEL:
+	 if (pos >= 0) {
+	    /*
+	     * Over draw prev char in color bcol
+	     */
+	    draw_getcharsize (s[pos], &cw, &ch);
+	    draw_rmove (-cw, 0.0, 0.0);
+	    draw_color (bcol);
+	    draw_drawchar (s[pos]);
+	    draw_rmove (-cw, 0.0, 0.0);
+	    draw_color (col);
+	    s[pos--] = '\0';
+	 }
+	 break;
 
-		default:
-			/*
-			 * A new char... draw it in color col.
-			 */
-			if (i > nc || i < 32)
-				continue;
+      default:
+	 /*
+	  * A new char... draw it in color col.
+	  */
+	 if (i > nc || i < 32){
+	    continue;
+	 }
 
-			s[++pos] = (char)i;
-			draw_drawchar(s[pos]);
-		}
-	}
+	 s[++pos] = (char) i;
+	 draw_drawchar (s[pos]);
+      }
+   }
 
-	s[++pos] = '\0';
+   s[++pos] = '\0';
 
-	return(pos);
+   return (pos);
 }
+
 /******************************************************************************/

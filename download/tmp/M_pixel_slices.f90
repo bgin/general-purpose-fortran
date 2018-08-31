@@ -358,7 +358,6 @@ module M_pixel_slices
 !!    !call execute_system_command('display dl_slices.3.gif')
 !!    END PROGRAM demo_dl_slices
 !===================================================================================================================================
-!
 PRIVATE
 !-----------------------------------------------------------------------------------------------------------------------------------
 PUBLIC  :: DL_INIT           ! (XMAX0,YMAX0,VPX,VPY,ZOM)
@@ -405,7 +404,7 @@ real,save    :: XSCALEQ,YSCALEQ,ZSCALEQ,AMINQ,ALPHQ,BETQ
 contains
 ! ==================================================================================================================================
       SUBROUTINE dl_slices(A,INX,INZ,NX,NZ,ALPHA,BETA,XH,YH,ZH,IFLAG,IAXIS,XT,NXT,XASTART,XAEND,NMX,NNX,MLX,TSX,NDX,SMX,&
-     &      YT,NYT,NMY,NNY,MLY,TSY,NDY,SMY, ZT,NZT,ZASTART,ZAEND,NMZ,NNZ,MLZ,TSZ,NDZ,SMZ, AMININ,AMAXIN,ICOL)
+     &      YT,NYT,NMY,NNY,MLY,TSY,NDY,SMY, ZT,NZT,ZASTART,ZAEND,NMZ,NNZ,MLZ,TSZ,NDZ,SMZ, AMININ,AMAXIN,ICOL,maxsize)
 !
 !     CREATED BY D. LONG     APR, 1984 AT JPL
 !     REVISED BY D. LONG     MAY, 1986
@@ -459,12 +458,24 @@ contains
 !              ICOL(5) PLOT
 !
       DIMENSION A(INX,INZ),AS(2),ICOL(*),IC(4)
-      PARAMETER (MAXSIZE=204800)
-      DIMENSION H(MAXSIZE,2),P(MAXSIZE,2)
+      integer,intent(in),optional :: maxsize
+      integer                     :: maxsize_local
+      ! PARAMETER (maxsize=204800)
+      ! DIMENSION H(maxsize,2),P(maxsize_local,2)
+      real,allocatable :: h(:,:)
+      real,allocatable :: p(:,:)
       CHARACTER*(*) XT,YT,ZT
       LOGICAL FLAG,HHIGH
       SAVE TPI
       DATA TPI/3.141592654/
+      if(present(maxsize))then
+         maxsize_local=maxsize
+      else
+         maxsize_local=204800
+      endif
+
+      allocate(h(maxsize_local,2))
+      allocate(p(maxsize_local,2))
 !
       ALPHQ=ALPHA*TPI/180.0  ! X-AXIS INCLINATION 0-80 DEGS
       BETQ=BETA*TPI/180.0    ! Z-AXIS ANGLE 5-80 DEGS
@@ -556,7 +567,7 @@ contains
 !
       IPEN=3
       DO I=1,NX
-         IF (I.GT.MAXSIZE) GOTO 999
+         IF (I.GT.maxsize_local) GOTO 999
          CALL DL_VXPT3D(H(I,1),H(I,2),A(I,1),I,1,NX) ! INITIALIZE HISTORY ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
          CALL dl_plot(H(I,1),H(I,2),IPEN)   ! PLOT SIDE LINE
          IPEN=2
@@ -580,7 +591,7 @@ contains
 71    continue
       CALL dl_move(H(NX,1),H(NX,2))
       DO I=1,NZ        ! PLOT RIGHT SIDE CURVE
-         IF (NX+I.GT.MAXSIZE) GOTO 999
+         IF (NX+I.GT.maxsize_local) GOTO 999
          CALL DL_VXPT3D(XP,YP,A(NX,I),NX,I,NX) ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
          H(NX+I,1)=XP
          H(NX+I,2)=YP
@@ -608,7 +619,7 @@ contains
 !        DETERMINE START POINT LOCATION
          CALL DL_VXPT3D(XP1,YP1,A(IDCT,IZ),1,IZ,NX) ! LEFT-MOST DATA POINT ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
          IF (XP1.LT.H(1,1)) THEN  ! DATA TO LEFT OF HISTORY ARRAY
-!           IF (IPCT.GT.MAXSIZE) GOTO 999
+!           IF (IPCT.GT.maxsize_local) GOTO 999
 !           P(IPCT,1)=XP1
 !           P(IPCT,2)=YP1
 !           IPCT=IPCT+1
@@ -629,7 +640,7 @@ contains
                   IDCT=IDCT+1
                   GOTO 100
                ENDIF
-               IF (IPCT.GT.MAXSIZE) GOTO 999
+               IF (IPCT.GT.maxsize_local) GOTO 999
                P(IPCT,1)=XP1
                P(IPCT,2)=YP1
                IPCT=IPCT+1
@@ -643,13 +654,13 @@ contains
          X0=H(1,1)
          Y0=H(1,2)
          IP=3
-         IF (IPCT.GT.MAXSIZE) GOTO 999
+         IF (IPCT.GT.maxsize_local) GOTO 999
          P(IPCT,1)=H(1,1)
          P(IPCT,2)=H(1,2)
          IPCT=IPCT+1
          DO I=2,IHOLD
             IF (H(I,1).GT.DX1) exit
-               IF (IPCT.GT.MAXSIZE) GOTO 999
+               IF (IPCT.GT.maxsize_local) GOTO 999
                P(IPCT,1)=H(I,1)
                P(IPCT,2)=H(I,2)
                IPCT=IPCT+1
@@ -689,7 +700,7 @@ contains
                HY1=Y    ! HIGHEST START POINT
                DX1=X    ! TO THE INTERSECTION
                DY1=Y
-               IF (IPCT.GT.MAXSIZE) GOTO 999
+               IF (IPCT.GT.maxsize_local) GOTO 999
                P(IPCT,1)=X
                P(IPCT,2)=Y
                IPCT=IPCT+1
@@ -701,7 +712,7 @@ contains
 !
             IF (HX2.LE.DX2) THEN ! CHECKED ALL H SEGS OVER D SEGS
                IF (HHIGH) THEN ! DRAW HIGHEST SEGMENT
-                  IF (IPCT.GT.MAXSIZE) GOTO 999
+                  IF (IPCT.GT.maxsize_local) GOTO 999
                   P(IPCT,1)=HX2
                   P(IPCT,2)=HY2
                   IPCT=IPCT+1
@@ -720,7 +731,7 @@ contains
  34               CONTINUE
                   IF (IDCT.LE.NX+1) THEN
                      CALL DL_VXPT3D(X,Y,A(IDCT-1,IZ),IDCT-1,IZ,NX) ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
-                     IF(IPCT.GT.MAXSIZE)GOTO 999
+                     IF(IPCT.GT.maxsize_local)GOTO 999
                      P(IPCT,1)=X
                      P(IPCT,2)=Y
                      IPCT=IPCT+1
@@ -753,7 +764,7 @@ contains
                GOTO 100
             ELSE
                IF (.NOT.HHIGH) THEN ! PLOT DATA THAT IS HIGHEST
-                  IF (IPCT.GT.MAXSIZE) GOTO 999
+                  IF (IPCT.GT.maxsize_local) GOTO 999
                   P(IPCT,1)=DX2
                   P(IPCT,2)=DY2
                   IPCT=IPCT+1
@@ -786,7 +797,7 @@ contains
          X=H(IHCT,1)
          Y=H(IHCT,2)
          IHCT=IHCT+1
-         IF (IPCT.GT.MAXSIZE) GOTO 999
+         IF (IPCT.GT.maxsize_local) GOTO 999
          P(IPCT,1)=X
          P(IPCT,2)=Y
          IPCT=IPCT+1
@@ -2006,7 +2017,7 @@ contains
          ENDIF
          IL=IPNT(ICC+1)   ! STARTING INDEX
          IW=21          ! CHARACTER WIDTH
-         IF (IL.EQ.0) GOTO 90  ! NO PLOTING INFO
+         IF (IL.EQ.0) GOTO 90  ! NO PLOTTING INFO
          IPENLAST=3
 70       CONTINUE
          IY=IBITS(IFNT(IL),0,6)

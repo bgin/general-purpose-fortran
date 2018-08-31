@@ -89,13 +89,13 @@ logical                        :: stopit=.false.
 stopit=.false.
 if(l_version)then
 help_text=[ CHARACTER(LEN=128) :: &
-'@(#)PRODUCT:        CLI library utilities and examples>',&
+'@(#)PRODUCT:        GPF (General Purpose Fortran) utilities and examples>',&
 '@(#)PROGRAM:        xauth_key(1)>',&
 '@(#)DESCRIPTION:    generate random strings such as magic cookies for xauth>',&
 '@(#)VERSION:        1.0, 20171219>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Mon, Jun 4th, 2018 9:01:46 AM>',&
+'@(#)COMPILED:       Thu, Aug 16th, 2018 12:11:14 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

@@ -27,12 +27,11 @@
 !!    !    and the same font names are not available
 !!    !    print_ascii(3f) and print_ppm(3f) do not exist in VOGLE
 !!    !    state(3f) does not exist in VOGLE
-!!    !    biggest_ortho2(3f) is like juaspct(3f)
 !!    !    viewport is in terms of pixels, not range -1.0 to 1.0
 !!
 !!   Module variables
 !!
-!!    use M_pixel,    only :  P_pixel, P_ColorMap, P_debug
+!!    use M_pixel, only : P_pixel, P_ColorMap, P_debug
 !!
 !!##DESCRIPTION
 !!
@@ -130,7 +129,7 @@
 !!       ! change background color directly
 !!       where (P_pixel.eq.0) P_pixel=9
 !!       ! write standard gif file
-!!       call writegif('M_pixel.3.gif',P_pixel,P_ColorMap)
+!!       call writegif('M_pixel.3m_pixel.gif',P_pixel,P_ColorMap)
 !!
 !!    contains
 !!
@@ -282,9 +281,8 @@ public  :: vexit               ! close down pixel drawing module
 !    Mod.sources:  Volume 4, Issue 25
 !    Submitted by: seismo!s3sun!sdcsvax!brian (Brian Kantor)
 !
-!
 !    The following is a fortran-77 subroutine called 'HERSHEY' which will use the
-!    Public-Domain Hershey fonts to draw letters, numbers, and symbols.  It is
+!    Public-Domain Hershey fonts to draw letters, numbers, and symbols. It is
 !    in use here at UCSD in connection with several plotting packages for lettering
 !    and for point plotting.
 !
@@ -293,8 +291,8 @@ public  :: vexit               ! close down pixel drawing module
 !    which they are stored.
 !
 !    I contacted the authors of this subroutine and obtained their permission to
-!    distribute the subroutine.  I'm in the process of writing a 'c' subroutine
-!    to also use the Hershey data.  I will submit that for posting when I'm
+!    distribute the subroutine. I'm in the process of writing a 'c' subroutine
+!    to also use the Hershey data. I will submit that for posting when I'm
 !    done.
 !
 !       Brian Kantor    UCSD Computer Graphics Lab
@@ -321,9 +319,9 @@ public  :: vexit               ! close down pixel drawing module
 !     Submitted by: seismo!s3sun!sdcsvax!brian (Brian Kantor)
 !
 !
-!     How it works:  The subroutine and data storage assume that you are
-!     using a system with 32-bit integers.  The character index is used to
-!     index into array 'istart'.  The resulting starting index is used to
+!     How it works: The subroutine and data storage assume that you are
+!     using a system with 32-bit integers. The character index is used to
+!     index into array 'istart'. The resulting starting index is used to
 !     begin retrieval from array 'symbcd'.
 !
 !     Each 32 bit word in 'symbcd' contains two 16 bit fields, which in turn
@@ -1410,10 +1408,10 @@ contains
 !!    enddo
 !!
 !!    !! render pixel array to a file
-!!    call writegif('rect.3.gif',P_pixel,P_colormap)
+!!    call writegif('rect.3m_pixel.gif',P_pixel,P_colormap)
 !!
 !!    !! display graphic assuming display(1) is available
-!!    call execute_command_line('display rect.3.gif')
+!!    call execute_command_line('display rect.3m_pixel.gif')
 !!
 !!    !! wrap up graphics
 !!    call vexit()
@@ -1478,7 +1476,7 @@ real,intent(in)            :: x1,y1,x2,y2
    if(P_debug)write(*,*)'linewidth ',P_width,';move2 ',x1,y1,';draw2 ',x2,y2
 
 !-----------------------------------------------------------------------------------------------------------------------------------
-! allow collecting points in a continious polyline into a polygon as a first cut using makepoly(3f) and closepoly(3f)
+! allow collecting points in a continuous polyline into a polygon as a first cut using makepoly(3f) and closepoly(3f)
 ! assuming all line drawing goes thru this routine, and using fixed size array
    if(P_inpolygon)then
       if(P_polyvertex.gt.P_MAXVERTS)then
@@ -1738,7 +1736,7 @@ end subroutine swapcoord
 !!##DIFFERENT APPROACH TO THE ALGORITHM
 !!
 !! A different approach to the Bresenham algorithm works more from the practical side. It was published by Pitteway ^[1] and confirmed
-!! by van Aken ^[2]. Again we first consider a line in the first octant, which means a slope between 0 and 1. Mathematicall y spoken,
+!! by van Aken ^[2]. Again we first consider a line in the first octant, which means a slope between 0 and 1. Mathematically spoken,
 !! we want to draw a line from point (x[1],y[1]) to (x[2],y[2]). The intervals in the two directions are dx=x[2]-x[1] and dy=y[2]-y
 !! [1], and the slope is dy/dx. The line equation can be written as y=y[1]+(x-x[1])*dy/dx. In this first octant, we have 0<dy<=dx.
 !!
@@ -2237,8 +2235,8 @@ end subroutine draw_line_single
 !!    enddo
 !!    call vexit()
 !!    !! write to file and display with display(1)
-!!    call write_animated_gif('hershey.3.gif',movie,P_colormap,delay=40)
-!!    !call execute_command_line('display hershey.3.gif')
+!!    call write_animated_gif('hershey.3m_pixel.gif',movie,P_colormap,delay=40)
+!!    !call execute_command_line('display hershey.3m_pixel.gif')
 !!    end program demo_hershey
 !===================================================================================================================================
 subroutine hershey(x,y,height,itext,theta,ntext)
@@ -2281,9 +2279,9 @@ character(len=*),parameter::ident="@(#)M_pixel::hershey(3f): draw text string as
 !  BEGIN SUB-SCRIPTING (1002), OR END SUPER/SUB-SCRIPTING (1003),
 !  OR BACK-SPACE (1004).
 !  ISTART(P_ICHR(J)) contains the address in SYMBOL of the Jth
-!  character.  SYMBCD contains the pen instructions stored in a
-!  special form.  ISSTAR and SSYMBC contain addresses and pen
-!  instructions for the special centered symbols.  WIDTH contains
+!  character. SYMBCD contains the pen instructions stored in a
+!  special form. ISSTAR and SSYMBC contain addresses and pen
+!  instructions for the special centered symbols. WIDTH contains
 !  the widths of the characters.
 !
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -2362,8 +2360,8 @@ character(len=*),parameter::ident="@(#)M_pixel::hershey(3f): draw text string as
         enddo
       else
          !  plot a character string.
-         !  first find pointer array  P_ichr  containing the starts of characters-
-         !  but only if  P_just1 and P_just2  are not 1, when  P_ichr is assumed
+         !  first find pointer array P_ichr containing the starts of characters-
+         !  but only if P_just1 and P_just2  are not 1, when P_ichr is assumed
          !  correctly transmitted through common /ajust/.
         if(P_just1.ne.1.or.P_just2.ne.1)then
           n=ntext
@@ -2497,7 +2495,7 @@ character(len=*),parameter::ident="@(#)M_pixel::chrcod(3fp): return symbol numbe
      &          410,408,1000,1000,27,28,29,30,31,32,33,34,35,36, &
      &          37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52, &
      &          405,427,406,424/
-!  IILU IS A LOOK-UP TABLE FOR ITALIC CHARACTERS ONLY.  IT IS
+!  IILU IS A LOOK-UP TABLE FOR ITALIC CHARACTERS ONLY. IT IS
 !  IDENTICAL TO IRLU WITH FOUR ITALIC SPECIAL SYMBOLS SUBSTITUTED
 !  FOR REGULAR ONES.
    data iilu/1000,422,1000,411,72,418,419,1000,67,68,69,63,70, &
@@ -2510,8 +2508,8 @@ character(len=*),parameter::ident="@(#)M_pixel::chrcod(3fp): return symbol numbe
 !  IGLU IS A LOOK-UP TABLE FOR GREEK CHARACTERS ARRANGED BY THE
 !  INTEGER VALUE OF THEIR ROMAN EXPRESSION WITH A=1, B=2, ETC.
 !  AMBIGUOUS CASES GIVE 25 FOR EPSILON OR ETA, 26 FOR OMEGA OR
-!  OMICRON, 27 FOR PHI,PI,OR PSI, AND 28 FOR TAU OR THETA.  ADDITIONAL
-!  LETTERS MUST BE CHECKED FOR THESE CASE.  A VALUE OF 50 IS RETURNED
+!  OMICRON, 27 FOR PHI,PI,OR PSI, AND 28 FOR TAU OR THETA. ADDITIONAL
+!  LETTERS MUST BE CHECKED FOR THESE CASE. A VALUE OF 50 IS RETURNED
 !  FOR THOSE ROMAN LETTERS WHICH HAVE NO CORRESPONDING GREEK LETTER.
    data iglu/1,2,22,4,25,50,3,50,9,50,10,11,12,13,26,27,50,17,18,28,20,50,50,14,50,6/
 ! FINDS LENGTH OF STRING WITH BLANKS TRIMMED FROM RIGHT END.
@@ -2776,8 +2774,8 @@ END SUBROUTINE CHRCOD
 !!       call nextline('Unto his nest again,')
 !!       call nextline('I shall not live in vain.')
 !!
-!!       call writegif('strlength.3.gif',P_pixel,P_colormap)
-!!       call execute_command_line('display strlength.3.gif')
+!!       call writegif('strlength.3m_pixel.gif',P_pixel,P_colormap)
+!!       call execute_command_line('display strlength.3m_pixel.gif')
 !!       call vexit()
 !!    contains
 !!    subroutine nextline(string)
@@ -2880,7 +2878,7 @@ character(len=*),parameter::ident="@(#)M_pixel::justfy(3f): calculate values for
       scale=height/21.0
       jquart=(ntext+3)/4
 !  translate integer string into character variable, then get pointers
-!  into the array  P_ichr.
+!  into the array P_ichr.
 !
       call chrcod(text_local,ntxt)
 !
@@ -2894,7 +2892,7 @@ character(len=*),parameter::ident="@(#)M_pixel::justfy(3f): calculate values for
       s(3)=s(1)
 !
 !  sum the widths of the remaining text, recalling that trailing blanks
-!  were lopped off by  chrcod.
+!  were lopped off by chrcod.
       oldwid=0.0
       do i=lead,P_nchr
          l=P_ichr(i)
@@ -3050,7 +3048,7 @@ end subroutine if_init
 !!    call color(2)
 !!    call arc(44.0,12.0,12.0,-90.0,90.0)
 !!    ! write gif with a transparent background
-!!    call writegif('arc.3.gif',P_pixel,P_ColorMap,transparent)
+!!    call writegif('arc.3m_pixel.gif',P_pixel,P_ColorMap,transparent)
 !!    call vexit()
 !!    end program demo_arc
 !===================================================================================================================================
@@ -3136,7 +3134,7 @@ end subroutine arc
 !!    call circle( 25.0, 25.0, 20.0)
 !!    call circle( 25.0,-25.0, 20.0)
 !!    !! render the pixel map
-!!    call writegif('circle.3.gif',P_pixel,P_colormap)
+!!    call writegif('circle.3m_pixel.gif',P_pixel,P_colormap)
 !!    !! display the graphic assuming display(1) is available
 !!    call execute_command_line('display circle.3.ppm')
 !!    !! exit graphics mode
@@ -3222,7 +3220,7 @@ end subroutine circle
 !!          call linewidth(i/5/3)
 !!          call draw2(x,y)
 !!       enddo
-!!       call writegif('linewidth.3.gif',P_pixel,P_colormap)
+!!       call writegif('linewidth.3m_pixel.gif',P_pixel,P_colormap)
 !!       call vexit()
 !!    end program demo_linewidth
 !===================================================================================================================================
@@ -3299,10 +3297,10 @@ end subroutine linewidth
 !!           x1=x1+width
 !!        enddo
 !!        ! write plot as GIF file
-!!        call writegif('color.3.gif',P_pixel,P_colormap)
+!!        call writegif('color.3m_pixel.gif',P_pixel,P_colormap)
 !!        call vexit()
 !!        ! use system to display GIF file
-!!        call execute_command_line('display color.3.gif')
+!!        call execute_command_line('display color.3m_pixel.gif')
 !!     end program demo_color
 !===================================================================================================================================
 subroutine color(icolor)
@@ -3567,10 +3565,10 @@ end subroutine mapcolor
 !!          x1=x1+width
 !!       enddo
 !!       ! write plot as GIF file
-!!       call writegif('circleprecision.3.gif',P_pixel,P_colormap)
+!!       call writegif('circleprecision.3m_pixel.gif',P_pixel,P_colormap)
 !!       call vexit()
 !!       ! use system to display GIF file
-!!       call execute_command_line('display circleprecision.3.gif')
+!!       call execute_command_line('display circleprecision.3m_pixel.gif')
 !!    end program demo_circleprecision
 !===================================================================================================================================
 subroutine circleprecision(nsegs)
@@ -3946,8 +3944,8 @@ end subroutine biggest_ortho2
 !!         call rmove2(10.0, 0.0)
 !!         call rdraw2( 0.0,10.0)
 !!      enddo
-!!      call writegif('rmove2.3.gif',P_pixel,P_colormap)
-!!      call  execute_command_line('display rmove2.3.gif')
+!!      call writegif('rmove2.3m_pixel.gif',P_pixel,P_colormap)
+!!      call  execute_command_line('display rmove2.3m_pixel.gif')
 !!      call vexit()
 !!      end program demo_rmove2
 !===================================================================================================================================
@@ -4000,7 +3998,7 @@ end subroutine rmove2
 !!      call draw2(300.0,200.0)
 !!      call move2(300.0,-200.0)
 !!      call draw2(-300.0,200.0)
-!!      call writegif('move2.3.gif',P_pixel,P_colormap)
+!!      call writegif('move2.3m_pixel.gif',P_pixel,P_colormap)
 !!      call vexit()
 !!      end program demo_move2
 !===================================================================================================================================
@@ -4063,8 +4061,8 @@ end subroutine move2
 !!      call move2(  0.0,-50.0)
 !!      call square(50.0)
 !!
-!!      call writegif('rdraw2.3.gif',P_pixel,P_colormap)
-!!      call execute_command_line('display rdraw2.3.gif')
+!!      call writegif('rdraw2.3m_pixel.gif',P_pixel,P_colormap)
+!!      call execute_command_line('display rdraw2.3m_pixel.gif')
 !!      call vexit()
 !!
 !!      contains
@@ -4156,7 +4154,7 @@ end subroutine rdraw2
 !!          call draw2(x,y)
 !!       enddo
 !!       ! write the pixel map array as a GIF image file
-!!       call writegif('draw2.3.gif',P_pixel,P_colormap)
+!!       call writegif('draw2.3m_pixel.gif',P_pixel,P_colormap)
 !!       ! exit graphics mode
 !!       call vexit()
 !!    end program demo_draw2
@@ -4189,13 +4187,13 @@ end subroutine draw2
 !!    integer width, height
 !!
 !!##DESCRIPTION
-!!    Specify the preferred width and height of the pixel array  opened by the *next* vinit(3f).
+!!    Specify the preferred width and height of the pixel array opened by the *next* vinit(3f).
 !!    The pixel array is then available via the M_pixel(3fm) module as variable P_pixel. Note
 !!    that the width corresponds to the number of rows in the array, and height to the number
 !!    of columns.
 !!
 !!##OPTIONS
-!!    WIDTH   width of pixel array  to create when vinit(3f) is called
+!!    WIDTH   width of pixel array to create when vinit(3f) is called
 !!    HEIGHT  height of pixel array to create when vinit(3f) is called
 !!
 !!##EXAMPLE
@@ -4211,14 +4209,14 @@ end subroutine draw2
 !!         call prefsize(60*2,40*2)
 !!         call vinit()
 !!         call picture()
-!!         call writegif('prefsize.3.gif',P_pixel,P_colormap)
+!!         call writegif('prefsize.3m_pixel.gif',P_pixel,P_colormap)
 !!         call vexit()
 !!
 !!         ! make second file with another size
 !!         call prefsize(60*3,40*3)
 !!         call vinit()
 !!         call picture()
-!!         call writegif('prefsize_B.3.gif',P_pixel,P_colormap)
+!!         call writegif('prefsize_B.3m_pixel.gif',P_pixel,P_colormap)
 !!         call vexit()
 !!      contains
 !!      subroutine picture
@@ -4283,7 +4281,7 @@ end subroutine prefsize
 !!      call draw2(300.0,200.0)
 !!      call move2(300.0,-200.0)
 !!      call draw2(-300.0,200.0)
-!!      call writegif('vexit.3.gif',P_pixel,P_colormap)
+!!      call writegif('vexit.3m_pixel.gif',P_pixel,P_colormap)
 !!      call vexit()
 !!      end program demo_vexit
 !===================================================================================================================================
@@ -4334,7 +4332,7 @@ end subroutine vexit
 !!      call draw2(300.0,200.0)
 !!      call move2(300.0,-200.0)
 !!      call draw2(-300.0,200.0)
-!!      call writegif('vinit.3.gif',P_pixel,P_colormap)
+!!      call writegif('vinit.3m_pixel.gif',P_pixel,P_colormap)
 !!      call vexit()
 !!      end program demo_vinit
 !===================================================================================================================================
@@ -4460,7 +4458,7 @@ end subroutine vinit
 !!          write(filename,'("hypoc.",i0,".gif")')ilines
 !!          !!call writegif(filename,P_pixel,P_colormap)
 !!       enddo
-!!       call write_animated_gif('makepoly.3.gif',movie,P_colormap,delay=70)
+!!       call write_animated_gif('makepoly.3m_pixel.gif',movie,P_colormap,delay=70)
 !!       call vexit()
 !!    contains
 !!    !
@@ -4737,10 +4735,10 @@ end subroutine print_ascii
 !!      ppm - portable pixmap file format
 !!
 !!##DESCRIPTION
-!!      The portable pixmap format is a  lowest  common  denominator
-!!      color image file format.  The definition is as follows:
+!!      The portable pixmap format is a lowest common denominator
+!!      color image file format. The definition is as follows:
 !!
-!!      - A "magic number" for identifying the  file  type.   A  ppm
+!!      - A "magic number" for identifying the file type. A ppm
 !!        file's magic number is the two characters "P3".
 !!
 !!      - Whitespace (blanks, TABs, CRs, LFs).
@@ -4757,15 +4755,15 @@ end subroutine print_ascii
 !!
 !!      - Whitespace.
 !!
-!!      - Width * height pixels, each  three  ASCII  decimal  values
+!!      - Width * height pixels, each three ASCII decimal values
 !!        between 0 and the specified maximum value, starting at the
-!!        top-left  corner  of  the  pixmap,  proceeding  in  normal
-!!        English  reading  order.   The three values for each pixel
+!!        top-left corner of the pixmap,  proceeding in normal
+!!        English reading order. The three values for each pixel
 !!        represent red, green, and blue, respectively; a value of 0
-!!        means  that color is off, and the maximum value means that
+!!        means that color is off, and the maximum value means that
 !!        color is maxxed out.
 !!
-!!      - Characters from a "#" to the next end-of-line are  ignored
+!!      - Characters from a "#" to the next end-of-line are ignored
 !!        (comments).
 !!
 !!      - No line should be longer than 70 characters.
@@ -4783,25 +4781,25 @@ end subroutine print_ascii
 !!      Programs that read this format should be as lenient as possible,
 !!      accepting anything that looks remotely like a pixmap.
 !!
-!!      There is also a variant on the format, available by  setting
-!!      the  RAWBITS  option  at  compile  time.   This  variant  is
+!!      There is also a variant on the format, available by setting
+!!      the RAWBITS option at compile time. This variant is
 !!      different in the following ways:
 !!
 !!      - The "magic number" is "P6" instead of "P3".
 !!
-!!      - The pixel values are stored as  plain  bytes,  instead  of
+!!      - The pixel values are stored as plain bytes,  instead of
 !!        ASCII decimal.
 !!
-!!      - Whitespace is not allowed in the pixels area, and  only  a
-!!        single  character  of  whitespace (typically a newline) is
+!!      - Whitespace is not allowed in the pixels area, and only a
+!!        single character of whitespace (typically a newline) is
 !!        allowed after the maxval.
 !!
-!!      - The files are smaller and many times faster  to  read  and
+!!      - The files are smaller and many times faster to read and
 !!        write.
 !!
-!!      Note that this raw format can only be used for maxvals  less
-!!      than or equal to 255.  If you use the ppm library and try to
-!!      write a file with a larger  maxval,  it  will  automatically
+!!      Note that this raw format can only be used for maxvals less
+!!      than or equal to 255. If you use the ppm library and try to
+!!      write a file with a larger maxval,  it will automatically
 !!      fall back on the slower but more general plain format.
 !!
 !!##AUTHOR
@@ -4860,10 +4858,10 @@ end subroutine print_ascii
 !!          call drawstr('aA')
 !!       enddo
 !!       ! write plot as GIF file
-!!       call writegif('textsize.3.gif',P_pixel,P_colormap)
+!!       call writegif('textsize.3m_pixel.gif',P_pixel,P_colormap)
 !!       call vexit()
 !!       ! use system to display GIF file
-!!       call execute_command_line('display textsize.3.gif')
+!!       call execute_command_line('display textsize.3m_pixel.gif')
 !!    end program demo_textsize
 !===================================================================================================================================
 subroutine textsize(width,height)
@@ -5005,8 +5003,8 @@ end subroutine xcentertext
 !!       enddo
 !!    enddo
 !!
-!!    call  writegif('centertext.3.gif',P_pixel,P_colormap)
-!!    call  execute_command_line('display centertext.3.gif')
+!!    call  writegif('centertext.3m_pixel.gif',P_pixel,P_colormap)
+!!    call  execute_command_line('display centertext.3m_pixel.gif')
 !!
 !!    call vexit()
 !!
@@ -5071,8 +5069,8 @@ end subroutine centertext
 !!       call drawstr('angled text')
 !!    enddo
 !!
-!!    call writegif('textang.3.gif',P_pixel,P_colormap)
-!!    call execute_command_line('display textang.3.gif')
+!!    call writegif('textang.3m_pixel.gif',P_pixel,P_colormap)
+!!    call execute_command_line('display textang.3m_pixel.gif')
 !!
 !!    call vexit()
 !!
@@ -5151,8 +5149,8 @@ end subroutine textang
 !!       call nextline('COMPLEX, or times.r')
 !!       call nextline('ITALIC, or times.i')
 !!       call nextline('DUPLEX, or futura.m')
-!!       call writegif('font.3.gif',P_pixel,P_colormap)
-!!       !call execute_command_line('display font.3.gif')
+!!       call writegif('font.3m_pixel.gif',P_pixel,P_colormap)
+!!       !call execute_command_line('display font.3m_pixel.gif')
 !!       call vexit()
 !!    contains
 !!    subroutine nextline(string)
@@ -5241,8 +5239,8 @@ end subroutine font
 !!    enddo
 !!    call vexit()
 !!    !! write to file and display with display(1)
-!!    call write_animated_gif('drawchar.3.gif',movie,P_colormap)
-!!    call execute_command_line('display drawchar.3.gif')
+!!    call write_animated_gif('drawchar.3m_pixel.gif',movie,P_colormap)
+!!    call execute_command_line('display drawchar.3m_pixel.gif')
 !!    end program demo_drawchar
 !===================================================================================================================================
 subroutine drawchar(ch)
@@ -5448,7 +5446,7 @@ end subroutine getdisplaysize
 !!    real,intent(in) :: x, y
 !!
 !!##DESCRIPTION
-!!    Draw a point at x, y.  Points are drawn with the current color as
+!!    Draw a point at x, y. Points are drawn with the current color as
 !!    a circle with a diameter equal to the current linewidth.
 !!
 !!##EXAMPLE
@@ -5466,7 +5464,7 @@ end subroutine getdisplaysize
 !!       call linewidth(50*i)
 !!       call point2(real(i*25),real(i*25))
 !!    enddo
-!!    call writegif('point2.3.gif',P_pixel,P_colormap)
+!!    call writegif('point2.3m_pixel.gif',P_pixel,P_colormap)
 !!    call vexit()
 !!    end program demo_point2
 !===================================================================================================================================
@@ -5610,7 +5608,7 @@ end subroutine state
 !!          enddo
 !!          xx=xx+16.0
 !!       enddo
-!!       call writegif('poly2.3.gif',P_pixel,P_colormap)
+!!       call writegif('poly2.3m_pixel.gif',P_pixel,P_colormap)
 !!       call vexit()
 !!    contains
 !!
@@ -5757,7 +5755,7 @@ integer,intent(in) :: inx1,iny1,inx2,iny2
    !                * P4
    !
 
-   ! thick lines are made from filled polygon(s).  add a circle to ends of really thick lines
+   ! thick lines are made from filled polygon(s). Add a circle to ends of really thick lines
    call PPM_ENDCAP_CIRCLE(inx1,iny1)
    call PPM_ENDCAP_CIRCLE(inx2,iny2)
 

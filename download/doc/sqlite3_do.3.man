@@ -1,7 +1,7 @@
 NAME
   sqlite3_do(3f) - [M_sqlite] Run a single SQL command
 SYNOPSIS
-   call sqlite3_do(db, command)
+   subroutine sqlite3_do(db, command)
 
        type(SQLITE_DATABASE) db
        character(len=*) command

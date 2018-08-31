@@ -2,7 +2,7 @@ NAME
    sqlite3_next_row(3f) - [M_sqlite] Gets the next row of data from a selection
 
 SYNOPSIS
-   call sqlite3_next_row(stmt, columns, finished)
+   subroutine sqlite3_next_row(stmt, columns, finished)
 
     type(SQLITE_STATEMENT) :: stmt
     type(SQLITE_COLUMN)    :: columns(:)

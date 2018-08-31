@@ -28,25 +28,26 @@ DESCRIPTION
 
 
 OPTIONS
-  x      = array of x values, input
-  y      = array of y values, input that are changed to hold the output
-  ixn    = number of points in arrays x and y to use
-  itype  = expression being solved
-          (1) Y=a*X+b
-          (2) Y=a*b**X
-          (3) Y=a*log10(X)+b
-          (4) Y=a*X**b
-          (5) Y=a*e*(-b**X)
+  x      array of x values, input
+  y      array of y values, input that are changed to hold the output
+  ixn    number of points in arrays x and y to use
+  itype  expression being solved
+         1. Y=a*X+b
+         2. Y=a*b**X
+         3. Y=a*log10(X)+b
+         4. Y=a*X**b
+         5. Y=a*e*(-b**X)
 
 
 NOTE: odd use of arrays specifically optimized for calling from USH
 
 RETURNS
 
-  a      = slope of linearized line
-  b      = y intercept of linearized line
-  r2     = correlation coefficient (1=perfect)
-           In general, if the correlation coefficient is <0.5 the correlation
-           is regarded as insignificant. If it is >0.8 the derived linear fit
-           is considered highly significant.
+  a      slope of linearized line
+  b      y intercept of linearized line
+  r2     correlation coefficient (1=perfect)
+
+         In general, if the correlation coefficient is <0.5 the correlation
+         is regarded as insignificant. If it is >0.8 the derived linear fit
+         is considered highly significant.
 

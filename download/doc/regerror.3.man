@@ -14,8 +14,8 @@ DESCRIPTION
      from either into human-readable messages, and REGFREE() frees any
      dynamically-allocated storage used by the internal form of an RE.
 
-     These routines implement IEEE Std 1003.2 (   POSIX.2   ) regular
-     expressions (   RE   s); see re_format(7).
+     These routines implement IEEE Std 1003.2 (POSIX.2) regular
+     expressions (RE s); see re_format(7).
 
      Specifically, The REGERROR(3f) function maps a non-zero errcode from either
      REGCOMP(3f) or REGEXEC(3f) to a human-readable, printable message.

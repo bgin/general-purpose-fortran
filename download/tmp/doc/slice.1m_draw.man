@@ -1,0 +1,23 @@
+NAME
+    slice(1f) - display a grid of Z values with a 3D view
+
+SYNOPSIS
+    slice -f FILENAME -d DEVICE
+
+DESCRIPTION
+   Given a file that defines a grid of Z values display each row as a
+   curve with the DL_SLICE(3f) routine with a 3D view.
+
+   Enter "h" in graphics window for help on controlling the displayed
+   curves'
+
+OPTIONS
+   -d DEVICE    device type. Defaults to "X11".
+   -f FILENAME  filename with contents of form
+
+                   z1 z2 z3 z4 z5 ...
+                   z1 z2 z3 z4 z5 ...
+                   z1 z2 z3 z4 z5 ...
+                   z1 z2 z3 z4 z5 ...
+
+END $DOCUMENT

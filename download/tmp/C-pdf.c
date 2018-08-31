@@ -73,7 +73,7 @@ o clear text, even though not encouraged by Adobe documentation
 #include <sys/types.h>
 #include "draw.h"
 
-extern FILE     *_voutfile();
+extern FILE     *_draw_outfile();
 
 /* How to convert degrees to radians */
 #ifndef PI
@@ -103,10 +103,10 @@ static int      points_printed=0;
 static int      PDF_first_time = 1;
 static int      drawn = 0;
 static int      LAST_X = -1, LAST_Y = -1;/* last (x, y) drawn */
-extern  FILE     *fp;
+extern FILE     *draw_fp;
 static long     stream_start=0;
 
-int PDF_MOVED=0;
+static int PDF_MOVED=0;
 
 #define CMAPSIZE 256
 struct rgb_color {
@@ -135,22 +135,22 @@ Assuming physical units are 72 points per inch, and want to use integers
 for coordinates, then making 10 rasters per point gives a resolution of
 720 rasters per inch.
 */
-int num_xrefs=0;
-long *xrefs=NULL;
+static int num_xrefs=0;
+static long *xrefs=NULL;
 /******************************************************************************/
-static int PDFprint(char *s) { /* print string to FILE fp preceding ()\ by \ */
+static int PDFprint(char *s) { /* print string to FILE draw_fp preceding ()\ by \ */
         char c;
         while ((c = *s++)){
                 switch(c) {
                 case '(':
                 case ')':
                 case '\\':
-                    putc('\\',fp);
+                    putc('\\',draw_fp);
                         break;
                 default:
                         break;
                 }
-                    putc(c,fp);
+                    putc(c,draw_fp);
         }
         return(0);
 }
@@ -162,7 +162,7 @@ in array, allocate a new array and copy old one to it.
 
 Make sure to release this storage when driver is closed.
 */
-void store_start_obj(int id){
+static void store_start_obj(int id){
    if(id >= num_xrefs) {
       long *new_xrefs;
       int delta, new_num_xrefs;
@@ -184,8 +184,11 @@ void store_start_obj(int id){
       xrefs = new_xrefs;
       num_xrefs = new_num_xrefs;
    }
-   xrefs[id] = ftell(fp);
-   fprintf(fp,"%d 0 obj\n",id);
+   xrefs[id] = ftell(draw_fp);
+   /*
+   fprintf(stderr,"id=%ld,pos=%ld\n",id,xrefs[id]);
+   */
+   fprintf(draw_fp,"%d 0 obj\n",id);
 }
 /******************************************************************************/
 static int PDF_header() {
@@ -199,7 +202,7 @@ static int PDF_header() {
    char *username;
    struct passwd *pw;
 
-   fprintf(fp,"%%PDF-1.4\n");
+   fprintf(draw_fp,"%%PDF-1.4\n");
    /*
       Note: If a PDF file contains binary data, as most do , it is
       recommended that the header line be immediately followed by a
@@ -208,15 +211,15 @@ static int PDF_header() {
       transfer applications that inspect data near the beginning of a
       file to determine whether to treat the file's contents as text or as binary.
    */
-   fprintf(fp,"%%%c%c%c%c\n",128,129,130,131);
-   fprintf(fp,"%% PDF: Adobe Portable Document Format\n");
+   fprintf(draw_fp,"%%%c%c%c%c\n",128,129,130,131);
+   fprintf(draw_fp,"%% PDF: Adobe Portable Document Format\n");
 
 
-   fprintf(fp,"%% Info Section\n");
+   fprintf(draw_fp,"%% Info Section\n");
    store_start_obj(2);  /* Info is assumed to be object 2 */
-   fprintf(fp,"<</Producer(M_DRAW PDF driver 1.0 2005-04-01, John S. Urban)\n");
-   fprintf(fp,"  /Title(M_DRAW PDF plot)\n");
-   fprintf(fp,"  /Subject(graphic)\n");
+   fprintf(draw_fp,"<</Producer(M_DRAW PDF driver 1.0 2005-04-01, John S. Urban)\n");
+   fprintf(draw_fp,"  /Title(M_DRAW PDF plot)\n");
+   fprintf(draw_fp,"  /Subject(graphic)\n");
 
 /* int tm_min       Minutes after the hour [0-59] */
 /* int tm_hour      Hours since midnight [0-23] */
@@ -230,14 +233,14 @@ static int PDF_header() {
 /* char *tm_zone    Timezone string, for example, GMT */
    timebuf = time(&timebuf);
    thetime = localtime(&timebuf);
-   fprintf(fp,"  /CreationDate(D:%4.4d%2.2d%2.2d%2.2d%2.2d%2.2d)\n",
+   fprintf(draw_fp,"  /CreationDate(D:%4.4d%2.2d%2.2d%2.2d%2.2d%2.2d)\n",
       thetime->tm_year+1900,
       thetime->tm_mon+1,
       thetime->tm_mday,
       thetime->tm_hour,
       thetime->tm_min,
       thetime->tm_sec);
-   fprintf(fp,"  /ModDate(D:%4.4d%2.2d%2.2d%2.2d%2.2d%2.2d)\n",
+   fprintf(draw_fp,"  /ModDate(D:%4.4d%2.2d%2.2d%2.2d%2.2d%2.2d)\n",
       thetime->tm_year+1900,
       thetime->tm_mon+1,
       thetime->tm_mday,
@@ -252,26 +255,26 @@ static int PDF_header() {
       pw = getpwuid(getuid());
       username = pw->pw_name;
    }
-   fprintf(fp,"  /Author(%s)\n",username);
-   fprintf(fp,"  /Creator(PID=%ld)\n",(long)getpid());
+   fprintf(draw_fp,"  /Author(%s)\n",username);
+   fprintf(draw_fp,"  /Creator(PID=%ld)\n",(long)getpid());
 
-   fprintf(fp,"  /Keywords(M_DRAW graphics library on OS=");
+   fprintf(draw_fp,"  /Keywords(M_DRAW graphics library on OS=");
        PDFprint(un->sysname);
-   fprintf(fp,"\n  NETWORK_NAME=");
+   fprintf(draw_fp,"\n  NETWORK_NAME=");
        PDFprint(un->nodename);
-   fprintf(fp,"\n  RELEASE=");
+   fprintf(draw_fp,"\n  RELEASE=");
        PDFprint(un->release);
-   fprintf(fp,"\n  VERSION=");
+   fprintf(draw_fp,"\n  VERSION=");
        PDFprint(un->version);
-   fprintf(fp,"\n  MACHINE=");
+   fprintf(draw_fp,"\n  MACHINE=");
        PDFprint(un->machine);
 #endif
-   fprintf(fp,")>>endobj\n");
+   fprintf(draw_fp,")>>endobj\n");
    return(0);
 }
 /******************************************************************************/
 /* change index i in the color map to the appropriate rgb value. */
-int PDF_mapcolor(int i, int r, int g, int b) {
+static int PDF_mapcolor(int i, int r, int g, int b) {
    if (i >= CMAPSIZE || i < 0 ){
       return(-1);
    }
@@ -307,7 +310,7 @@ static int PDF_init(void) {
    page_yscale=1.0/RAS_PER_PT;
    num_xrefs=0;
    xrefs=NULL;
-   fp = _voutfile();
+   draw_fp = _draw_outfile();
 
    if (!PDF_first_time) return(1);
 
@@ -324,23 +327,23 @@ static int PDF_init(void) {
       vdevice.sizeSx = PDF_XSIZE*RAS_PER_PT;  /* size in resolution rasters */
       vdevice.sizeX = vdevice.sizeY = MIN(PDF_XSIZE*RAS_PER_PT,PDF_YSIZE*RAS_PER_PT); /* current viewport to use */
    }
-   fprintf(fp,"%% width=%fin height=%fin \n",
+   fprintf(draw_fp,"%% width=%fin height=%fin \n",
       (float)vdevice.sizeSx/72.0/RAS_PER_PT,
       (float)vdevice.sizeSy/72.0/RAS_PER_PT);
-   fprintf(fp,"%% width=%frasters height=%frasters \n",
+   fprintf(draw_fp,"%% width=%frasters height=%frasters \n",
       (float)vdevice.sizeSx,
       (float)vdevice.sizeSy);
 
-   fprintf(fp,"%% create contents for page=%d\n", pgroup);
+   fprintf(draw_fp,"%% create contents for page=%d\n", pgroup);
    /*
    An indirect reference to object FOLLOWING this stream
    */
    store_start_obj((pgroup-1)*3+pplus);
-   fprintf(fp,"<< /Length %d 0 R>>%% length follows stream\n",(pgroup-1)*3+pplus+1);
+   fprintf(draw_fp,"<< /Length %d 0 R>>%% length follows stream\n",(pgroup-1)*3+pplus+1);
 
-   fprintf(fp,"stream\n");
-   stream_start=(long)ftell(fp);
-   fprintf(fp,"q\n");  /* save graphics state onto stack */
+   fprintf(draw_fp,"stream\n");
+   stream_start=(long)ftell(draw_fp);
+   fprintf(draw_fp,"q\n");  /* save graphics state onto stack */
 
 /*
 · Translations are specified as   [1 0 0 1 tx ty ], where tx and ty are the distances
@@ -357,16 +360,16 @@ static int PDF_init(void) {
 
 
 
-   fprintf(fp,"1 0 0 1 %f %f cm %% Translate\n",page_dx,page_dy);
-   fprintf(fp,"%f %f %f %f 0 0 cm %% Rotate\n",
+   fprintf(draw_fp,"1 0 0 1 %f %f cm %% Translate\n",page_dx,page_dy);
+   fprintf(draw_fp,"%f %f %f %f 0 0 cm %% Rotate\n",
    cos(page_angle),
    sin(page_angle),
    -sin(page_angle),
    cos(page_angle));
-   fprintf(fp,"%f 0 0 %f 0 0 cm %% Scale\n",page_xscale,page_yscale);
-   fprintf(fp,"1 j\n"); /* line cap circular */
-   fprintf(fp,"1 J\n"); /* line join circular */
-   fprintf(fp,"%d w\n",(int)(curwid*vdevice.sizeX/10000)); /* line width */
+   fprintf(draw_fp,"%f 0 0 %f 0 0 cm %% Scale\n",page_xscale,page_yscale);
+   fprintf(draw_fp,"1 j\n"); /* line cap circular */
+   fprintf(draw_fp,"1 J\n"); /* line join circular */
+   fprintf(draw_fp,"%d w\n",(int)(curwid*vdevice.sizeX/10000)); /* line width */
 
    vdevice.depth = 8;
    for (i = 0; i < CMAPSIZE; i++) /* set up the basic colors */
@@ -414,12 +417,12 @@ static int closeline(void){
 
       /*
           Does not seem needed for PDF using Adobe, xpdf gv viewers
-          fprintf(fp,"\nS %% circle cx=\"%d\" cy=\"%d\" r=\"%d\"\n",LAST_X,LAST_Y,vdevice.sizeX*curwid/1000/2);
+          fprintf(draw_fp,"\nS %% circle cx=\"%d\" cy=\"%d\" r=\"%d\"\n",LAST_X,LAST_Y,vdevice.sizeX*curwid/1000/2);
        */
-         fprintf(fp, " S\n");  /* end and stroke curve*/
+         fprintf(draw_fp, " S\n");  /* end and stroke curve*/
 
       } else{
-         fprintf(fp, " S\n");  /* end and stroke curve*/
+         fprintf(draw_fp, " S\n");  /* end and stroke curve*/
       }
       PolyLineOpen = FALSE; /* Polyline not open */
    }
@@ -460,89 +463,89 @@ static int PDF_exit(void) {
    long POS;
    closeline(); /* close Polyline line if it is open */
    closeObject(); /* close object if it is open */
-   fprintf(fp,"Q");
-   POS=ftell(fp);
-   fprintf(fp,"\nendstream\n");
-   fprintf(fp,"endobj\n");
+   fprintf(draw_fp,"Q");
+   POS=ftell(draw_fp);
+   fprintf(draw_fp,"\nendstream\n");
+   fprintf(draw_fp,"endobj\n");
 
    store_start_obj((pgroup-1)*3+pplus+1);
-   fprintf(fp,"%ld endobj",(long)POS-stream_start);
-   fprintf(fp,"%% size of stream, start=%ld end=%ld\n",stream_start,(long)POS);
+   fprintf(draw_fp,"%ld endobj",(long)POS-stream_start);
+   fprintf(draw_fp,"%% size of stream, start=%ld end=%ld\n",stream_start,(long)POS);
 
    store_start_obj((pgroup-1)*3+pplus+2);
-   fprintf(fp,"<</Type/Page/MediaBox[ 0 0 %d %d ]/Parent 3 0 R\n",vdevice.sizeSx/RAS_PER_PT,vdevice.sizeSy/RAS_PER_PT);
-   fprintf(fp,"/Resources <</ProcSet[/PDF/Text]/Font<<\n");
+   fprintf(draw_fp,"<</Type/Page/MediaBox[ 0 0 %d %d ]/Parent 3 0 R\n",vdevice.sizeSx/RAS_PER_PT,vdevice.sizeSy/RAS_PER_PT);
+   fprintf(draw_fp,"/Resources <</ProcSet[/PDF/Text]/Font<<\n");
    /* one for each basefont */
-   fprintf(fp,"   /F1<</Type/Font/Subtype/Type1/BaseFont/Courier/Encoding/WinAnsiEncoding\n");
-   fprintf(fp," /FirstChar 32/LastChar 251/Widths[\n");
-   fprintf(fp," 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600\n");
-   fprintf(fp," 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600\n");
-   fprintf(fp," 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600\n");
-   fprintf(fp," 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600\n");
-   fprintf(fp," 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600\n");
-   fprintf(fp," 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600\n");
-   fprintf(fp," 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600\n");
-   fprintf(fp," 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600\n");
-   fprintf(fp," 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600\n");
-   fprintf(fp," 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600\n");
-   fprintf(fp," 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600\n");
-   fprintf(fp," 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600\n");
-   fprintf(fp," 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600\n");
-   fprintf(fp," 600 600 600 600 600 600 600 600 600 600 600 600]>>\n");
-   fprintf(fp,"   /F2<</Type/Font/Subtype/Type1/BaseFont/Helvetica/Encoding/WinAnsiEncoding\n");
-   fprintf(fp," /FirstChar 32/LastChar 251/Widths[\n");
-   fprintf(fp," 278 333 474 556 556 889 722 278 333 333 389 584 278 333 278 278\n");
-   fprintf(fp," 556 556 556 556 556 556 556 556 556 556 333 333 584 584 584 611\n");
-   fprintf(fp," 975 722 722 722 722 667 611 778 722 278 556 722 611 833 722 778\n");
-   fprintf(fp," 667 778 722 667 611 722 667 944 667 667 611 333 278 333 584 556\n");
-   fprintf(fp," 278 556 611 556 611 556 333 611 611 278 278 556 278 889 611 611\n");
-   fprintf(fp," 611 611 389 556 333 611 556 778 556 556 500 389 280 389 584 278\n");
-   fprintf(fp," 278 278 278 278 278 278 278 278 278 278 278 278 278 278 278 278\n");
-   fprintf(fp," 278 278 278 278 278 278 278 278 278 278 278 278 278 278 278 278\n");
-   fprintf(fp," 278 333 556 556 167 556 556 556 556 238 500 556 333 333 611 611\n");
-   fprintf(fp," 278 556 556 556 278 278 556 350 278 500 500 556 1000 1000 278 611\n");
-   fprintf(fp," 278 333 333 333 333 333 333 333 333 278 333 333 278 333 333 333\n");
-   fprintf(fp," 1000 278 278 278 278 278 278 278 278 278 278 278 278 278 278 278\n");
-   fprintf(fp," 278 1000 278 370 278 278 278 278 611 778 1000 365 278 278 278 278\n");
-   fprintf(fp," 278 889 278 278 278 278 278 278 278 611 944 611]>>\n");
-   fprintf(fp,">> >>/Contents %d 0 R>> endobj\n", (pgroup-1)*3+pplus);
+   fprintf(draw_fp,"   /F1<</Type/Font/Subtype/Type1/BaseFont/Courier/Encoding/WinAnsiEncoding\n");
+   fprintf(draw_fp," /FirstChar 32/LastChar 251/Widths[\n");
+   fprintf(draw_fp," 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600\n");
+   fprintf(draw_fp," 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600\n");
+   fprintf(draw_fp," 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600\n");
+   fprintf(draw_fp," 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600\n");
+   fprintf(draw_fp," 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600\n");
+   fprintf(draw_fp," 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600\n");
+   fprintf(draw_fp," 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600\n");
+   fprintf(draw_fp," 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600\n");
+   fprintf(draw_fp," 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600\n");
+   fprintf(draw_fp," 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600\n");
+   fprintf(draw_fp," 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600\n");
+   fprintf(draw_fp," 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600\n");
+   fprintf(draw_fp," 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600 600\n");
+   fprintf(draw_fp," 600 600 600 600 600 600 600 600 600 600 600 600]>>\n");
+   fprintf(draw_fp,"   /F2<</Type/Font/Subtype/Type1/BaseFont/Helvetica/Encoding/WinAnsiEncoding\n");
+   fprintf(draw_fp," /FirstChar 32/LastChar 251/Widths[\n");
+   fprintf(draw_fp," 278 333 474 556 556 889 722 278 333 333 389 584 278 333 278 278\n");
+   fprintf(draw_fp," 556 556 556 556 556 556 556 556 556 556 333 333 584 584 584 611\n");
+   fprintf(draw_fp," 975 722 722 722 722 667 611 778 722 278 556 722 611 833 722 778\n");
+   fprintf(draw_fp," 667 778 722 667 611 722 667 944 667 667 611 333 278 333 584 556\n");
+   fprintf(draw_fp," 278 556 611 556 611 556 333 611 611 278 278 556 278 889 611 611\n");
+   fprintf(draw_fp," 611 611 389 556 333 611 556 778 556 556 500 389 280 389 584 278\n");
+   fprintf(draw_fp," 278 278 278 278 278 278 278 278 278 278 278 278 278 278 278 278\n");
+   fprintf(draw_fp," 278 278 278 278 278 278 278 278 278 278 278 278 278 278 278 278\n");
+   fprintf(draw_fp," 278 333 556 556 167 556 556 556 556 238 500 556 333 333 611 611\n");
+   fprintf(draw_fp," 278 556 556 556 278 278 556 350 278 500 500 556 1000 1000 278 611\n");
+   fprintf(draw_fp," 278 333 333 333 333 333 333 333 333 278 333 333 278 333 333 333\n");
+   fprintf(draw_fp," 1000 278 278 278 278 278 278 278 278 278 278 278 278 278 278 278\n");
+   fprintf(draw_fp," 278 1000 278 370 278 278 278 278 611 778 1000 365 278 278 278 278\n");
+   fprintf(draw_fp," 278 889 278 278 278 278 278 278 278 611 944 611]>>\n");
+   fprintf(draw_fp,">> >>/Contents %d 0 R>> endobj\n", (pgroup-1)*3+pplus);
 
    store_start_obj(3);
-   fprintf(fp," << /Type /Pages /Count %d\n",pgroup);
-   fprintf(fp,"/Kids [\n");
+   fprintf(draw_fp," << /Type /Pages /Count %d\n",pgroup);
+   fprintf(draw_fp,"/Kids [\n");
    for(i=1;i<=pgroup;i++){
-      fprintf(fp,"%d 0 R\n",(i-1)*3+6);
+      fprintf(draw_fp,"%d 0 R\n",(i-1)*3+6);
    }
-   fprintf(fp,"]\n");
+   fprintf(draw_fp,"]\n");
 
-   fprintf(fp,">>endobj\n");
+   fprintf(draw_fp,">>endobj\n");
 
    store_start_obj(1);
-   fprintf(fp," << /Type /Catalog /Pages 3 0 R>> endobj\n");
+   fprintf(draw_fp," << /Type /Catalog /Pages 3 0 R>> endobj\n");
 
-   STARTXREF=ftell(fp);
-   fprintf(fp,"xref\n");                              /* Index for PDF */
-   fprintf(fp,"0 %d\n",(pgroup-1)*3+pplus+3);               /* size of index */
-   fprintf(fp,"0000000000 65535 f \n");   /* */
+   STARTXREF=ftell(draw_fp);
+   fprintf(draw_fp,"xref\n");                              /* Index for PDF */
+   fprintf(draw_fp,"0 %d\n",(pgroup-1)*3+pplus+3);               /* size of index */
+   fprintf(draw_fp,"0000000000 65535 f \n");   /* */
    for(i=1;i<(pgroup)*3+pplus;i++){
-      fprintf(fp, "%10.10ld 00000 n \n",xrefs[i]); /* */
+      fprintf(draw_fp, "%10.10ld 00000 n \n",xrefs[i]); /* */
    }
    /* note Root and Info are not relative, assume obj1 is root, obj2 is info */
-   fprintf(fp,"trailer << /Size %d /Root 1 0 R /Info 2 0 R>>\n",
+   fprintf(draw_fp,"trailer << /Size %d /Root 1 0 R /Info 2 0 R>>\n",
       (pgroup)*3+pplus);  /* */
-   fprintf(fp,"startxref\n"); /* */
-   fprintf(fp,"%4.4d\n",STARTXREF);   /* */
-   fprintf(fp,"%%%%EOF\n");     /* */
+   fprintf(draw_fp,"startxref\n"); /* */
+   fprintf(draw_fp,"%4.4d\n",STARTXREF);   /* */
+   fprintf(draw_fp,"%%%%EOF\n");     /* */
 
    drawn = 0;
    points_printed = 0;
 
-   fflush(fp);
-   if (fp != stdout && fp != stderr ){
+   fflush(draw_fp);
+   if (draw_fp != stdout && draw_fp != stderr ){
                 if(vdevice.writestoprocess == 2){
-                   pclose(fp);
+                   pclose(draw_fp);
                 }else{
-                   fclose(fp);
+                   fclose(draw_fp);
                 }
    }
    if(num_xrefs != 0){
@@ -563,7 +566,7 @@ static int PDF_draw(int x, int y) {
       closeline(); /* close line if required */
       openObject(); /* start Object if required */
       openline(); /* start line */
-      fprintf(fp, "%d %d m", vdevice.cpVx, vdevice.cpVy);
+      fprintf(draw_fp, "%d %d m", vdevice.cpVx, vdevice.cpVy);
       LAST_X=vdevice.cpVx;
       LAST_Y=vdevice.cpVy;
       PDF_MOVED=0;
@@ -572,13 +575,13 @@ static int PDF_draw(int x, int y) {
    openline(); /* start line if required */
 
    if(points_printed == 0){
-      fprintf(fp, "%d %d m", x ,y);
+      fprintf(draw_fp, "%d %d m", x ,y);
 
       PDF_MOVED=0;
    }else{
       if(LAST_X != x || LAST_Y != y)PDF_MOVED=PDF_MOVED+1;
 
-      fprintf(fp, "%c%d %d l", linefeed[(points_printed % 8/7)], x ,y);
+      fprintf(draw_fp, "%c%d %d l", linefeed[(points_printed % 8/7)], x ,y);
    }
 
    points_printed++;
@@ -596,39 +599,39 @@ static int PDF_clear(void) {
    if (drawn)
    {
 
-     fprintf(fp,"Q");  /* restore graphics state from stack */
-     POS=ftell(fp);
-     fprintf(fp,"\nendstream\n");
-     fprintf(fp,"endobj\n");
+     fprintf(draw_fp,"Q");  /* restore graphics state from stack */
+     POS=ftell(draw_fp);
+     fprintf(draw_fp,"\nendstream\n");
+     fprintf(draw_fp,"endobj\n");
 
      store_start_obj((pgroup-1)*3+pplus+1);
-     fprintf(fp,"%ld endobj",(long)POS-stream_start);
-     fprintf(fp,"%% size of stream, start=%ld end=%ld\n",stream_start,(long)POS);
+     fprintf(draw_fp,"%ld endobj",(long)POS-stream_start);
+     fprintf(draw_fp,"%% size of stream, start=%ld end=%ld\n",stream_start,(long)POS);
 
      store_start_obj((pgroup-1)*3+pplus+2);
-     fprintf(fp,"<</Type/Page/MediaBox [ 0 0 %d %d ] /Parent 3 0 R /Resources <</ProcSet[/PDF]>>\n",
+     fprintf(draw_fp,"<</Type/Page/MediaBox [ 0 0 %d %d ] /Parent 3 0 R /Resources <</ProcSet[/PDF]>>\n",
         vdevice.sizeSx/RAS_PER_PT, vdevice.sizeSy/RAS_PER_PT);
-     fprintf(fp,"/Contents %d 0 R>> endobj\n", (pgroup-1)*3+pplus);
-     fprintf(fp,"%% End Page %d\n",pgroup); /* Page Clear, End of Page Group */
+     fprintf(draw_fp,"/Contents %d 0 R>> endobj\n", (pgroup-1)*3+pplus);
+     fprintf(draw_fp,"%% End Page %d\n",pgroup); /* Page Clear, End of Page Group */
 
      pgroup++; /* increment page id */
-     fprintf(fp,"%% id=Page%d\n", pgroup);
+     fprintf(draw_fp,"%% id=Page%d\n", pgroup);
 
      store_start_obj((pgroup-1)*3+pplus);
-     fprintf(fp,"<< /Length %d 0 R>> ",(pgroup-1)*3+pplus+1);
-     fprintf(fp,"stream\n");
-     stream_start=(long)ftell(fp);
-     fprintf(fp,"q\n");  /* save graphics state onto stack */
-     fprintf(fp,"1 0 0 1 %f %f cm %% Translate\n",page_dx,page_dy);
-     fprintf(fp,"%f %f %f %f 0 0 cm %% Rotate\n",
+     fprintf(draw_fp,"<< /Length %d 0 R>> ",(pgroup-1)*3+pplus+1);
+     fprintf(draw_fp,"stream\n");
+     stream_start=(long)ftell(draw_fp);
+     fprintf(draw_fp,"q\n");  /* save graphics state onto stack */
+     fprintf(draw_fp,"1 0 0 1 %f %f cm %% Translate\n",page_dx,page_dy);
+     fprintf(draw_fp,"%f %f %f %f 0 0 cm %% Rotate\n",
         cos(page_angle),
         sin(page_angle),
         -sin(page_angle),
         cos(page_angle));
-     fprintf(fp,"%f 0 0 %f 0 0 cm %% Scale\n",page_xscale,page_yscale);
-     fprintf(fp,"1 j\n"); /* line cap circular */
-     fprintf(fp,"1 J\n"); /* line join circular */
-     fprintf(fp,"%d w\n",(int)(curwid*vdevice.sizeX/10000)); /* line width */
+     fprintf(draw_fp,"%f 0 0 %f 0 0 cm %% Scale\n",page_xscale,page_yscale);
+     fprintf(draw_fp,"1 j\n"); /* line cap circular */
+     fprintf(draw_fp,"1 J\n"); /* line join circular */
+     fprintf(draw_fp,"%d w\n",(int)(curwid*vdevice.sizeX/10000)); /* line width */
    }
    closeObject(); /* close Object if required */
    drawn = 0;
@@ -644,7 +647,7 @@ static int PDF_setlw(int width) {
    closeline(); /* close line if required */
    closeObject(); /* close Object if required */
    curwid = abs(width);
-   fprintf(fp,"%d w\n",(int)(curwid*vdevice.sizeX/10000)); /* line width */
+   fprintf(draw_fp,"%d w\n",(int)(curwid*vdevice.sizeX/10000)); /* line width */
    return(0);
 }
 /******************************************************************************/
@@ -662,11 +665,11 @@ static int PDF_color(int col) {
    } else {
       curpat = col/CMAPSIZE;
       curcol = col % CMAPSIZE;
-      fprintf(fp,"%f %f %f RG ",
+      fprintf(draw_fp,"%f %f %f RG ",
          PDF_carr[curcol].red/255.0,
          PDF_carr[curcol].green/255.0,
          PDF_carr[curcol].blue/255.0);
-      fprintf(fp,"%f %f %f rg\n",
+      fprintf(draw_fp,"%f %f %f rg\n",
          PDF_carr[curcol].red/255.0,
          PDF_carr[curcol].green/255.0,
          PDF_carr[curcol].blue/255.0);
@@ -756,34 +759,34 @@ static int PDF_string(char *s) {
    rot=r2d(atan2((double)vdevice.attr->a.textsin,(double)vdevice.attr->a.textcos));
    rot=atan2((double)vdevice.attr->a.textsin,(double)vdevice.attr->a.textcos);
 
-   fprintf(fp,"BT %s", hardfont);                  /* Font family /F1 or /F2 */
-   fprintf(fp," %d Tf ", (int)vdevice.hheight);                  /* Font size */
+   fprintf(draw_fp,"BT %s", hardfont);                  /* Font family /F1 or /F2 */
+   fprintf(draw_fp," %d Tf ", (int)vdevice.hheight);                  /* Font size */
    /* M_DRAW currently does not use baseline, it uses bottom of font box. Should change */
    fudge=vdevice.cpVy+0.22*vdevice.hheight;
    if(rot != 0){
-      fprintf(fp,"%f %f %f %f ",cos(rot),sin(rot),-sin(rot),cos(rot)); /* Rotate */
-      fprintf(fp,"%d %d Tm(",(int)vdevice.cpVx,(int)fudge);  /* Translate x, y position for start of string */
+      fprintf(draw_fp,"%f %f %f %f ",cos(rot),sin(rot),-sin(rot),cos(rot)); /* Rotate */
+      fprintf(draw_fp,"%d %d Tm(",(int)vdevice.cpVx,(int)fudge);  /* Translate x, y position for start of string */
    }else{
-      fprintf(fp,"%d %d Td(",
+      fprintf(draw_fp,"%d %d Td(",
          (int)vdevice.cpVx,                 /* x position for start of string */
          (int)fudge);                /* y position for start of string */
    }
 
    for(i=0; (c=s[i]) != '\0' ;i++) {
       switch(c) {   /* Do I need to expand strings like </text> or ; to &amp; or something? */
-      case '(' : fprintf(fp, "\\(");   break;
-      case ')' : fprintf(fp, "\\)");   break;
-      case '\\': fprintf(fp, "\\\\"); break;
-      default  : fprintf(fp, "%c",c);
+      case '(' : fprintf(draw_fp, "\\(");   break;
+      case ')' : fprintf(draw_fp, "\\)");   break;
+      case '\\': fprintf(draw_fp, "\\\\"); break;
+      default  : fprintf(draw_fp, "%c",c);
       }
    }
-   fprintf(fp,")Tj ");
+   fprintf(draw_fp,")Tj ");
    /*
    if(rot != 0){
-      fprintf(fp,"1 0 0 1 0 0 Tm\n");
+      fprintf(draw_fp,"1 0 0 1 0 0 Tm\n");
    }
    */
-   fprintf(fp,"ET\n");
+   fprintf(draw_fp,"ET\n");
    drawn = 1;
    /* This position needs made accurate */
    slength=strlen(s);
@@ -793,7 +796,7 @@ static int PDF_string(char *s) {
 
 }
 /******************************************************************************/
-int PDF_char(char c){ /* PDF_char output a character */
+static int PDF_char(char c){ /* PDF_char output a character */
    char  s[2];
    s[0] = c;
    s[1]='\0';
@@ -808,16 +811,16 @@ static int PDF_fill(int n, int x[], int y[]) { /* fill a polygon */
    closeline(); /* close line if required */
    closeObject(); /* close line if required */
 
-   fprintf(fp,"%d %d m\n", x[0],y[0]);
+   fprintf(draw_fp,"%d %d m\n", x[0],y[0]);
 
    for (i = 1; i < n; i++)
    {
-      fprintf(fp, "%d %d l%c", x[i], y[i],linefeed[(i % 8/7)]);
+      fprintf(draw_fp, "%d %d l%c", x[i], y[i],linefeed[(i % 8/7)]);
    }
 
    /* close path */
-   fprintf(fp, "%d %d l%c", x[0], y[0],linefeed[(i % 8/7)]);
-   fprintf(fp, "f*\n");
+   fprintf(draw_fp, "%d %d l%c", x[0], y[0],linefeed[(i % 8/7)]);
+   fprintf(draw_fp, "f*\n");
 
    vdevice.cpVx = x[n - 1]; /* update current position */
    vdevice.cpVy = y[n - 1];
@@ -856,8 +859,8 @@ static DevEntry pdfdev = {
    noop          /* Syncronize the display */
 };
 /******************************************************************************/
-/* _PDF_devcpy copy the pdf device into vdevice.dev.  */
-int _PDF_devcpy() {
+/* copy the pdf device into vdevice.dev.  */
+int _PDF_draw_devcpy(void) {
    vdevice.dev = pdfdev;
    return(0);
 }

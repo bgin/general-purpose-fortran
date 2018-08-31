@@ -1,8 +1,8 @@
 NAME
-   popattributes(3f) - [M_DRAW:ATTRIBUTE_STACK] Restore attributes to what they were at last pushattributes().
+   popattributes(3f) - [M_draw:ATTRIBUTE_STACK] Restore attributes to what they were at last pushattributes().
 
 SYNOPSIS
-         subroutine popattributes
+         subroutine popattributes()
 
 DESCRIPTION
 

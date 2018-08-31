@@ -13,7 +13,7 @@ DESCRIPTION
      remaining regex_type is no longer a valid compiled RE and the effect of supplying it to regexec() or regerror() is undefined.
 
 OPTIONS
-     this  a compiled regular expression previously allocated using regcomp(3f).
+     THIS  a compiled regular expression previously allocated using regcomp(3f).
 
 EXAMPLE
   Sample program

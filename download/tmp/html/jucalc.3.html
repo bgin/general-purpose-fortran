@@ -58,12 +58,13 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <BLOCKQUOTE>
 <A HREF=#1>Synopsis</A><BR>
 <A HREF=#2>Description</A><BR>
-<A HREF=#3>Dependencies</A><BR>
-<A HREF=#4>Examples</A><BR>
-<A HREF=#5>See Also</A><BR>
-<A HREF=#6>References</A><BR>
+<A HREF=#3>Options</A><BR>
+<A HREF=#4>Dependencies</A><BR>
+<A HREF=#5>Examples</A><BR>
+<A HREF=#6>See Also</A><BR>
+<A HREF=#7>References</A><BR>
 </BLOCKQUOTE>
-<A name=7>
+<A name=8>
 
      <H3>SYNOPSIS</H3>
 
@@ -86,35 +87,102 @@ subroutine <B>jucalc</B>(inline,outlin,mssg,slast,ierr)
 
 </A>
 <BLOCKQUOTE>
+<B>JUCALC</B>() evaluates FORTRAN-like expressions. It can be used to add
+calculator-like abilities to your program.
+</BLOCKQUOTE>
+<A name=3>
+
+     <H3>OPTIONS</H3>
+
+</A>
+<BLOCKQUOTE>
 <TABLE cellpadding=3>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
-<B>JUCALC</B>() evaluates FORTRAN-like expressions. It can be used to
-add
-calculator-like abilities to your program.
+inline
+INLINE is a string expression up to (iclen_calc=512) characters long.
+The syntax of an expression is described in
+the main document of the Calculator Library.
 </TD></TR>
-<TR></TR></TABLE><!-- .nf -->
-<PRE>
-    inline  INLINE is a string expression up to (iclen_calc=512) characters long.
-            The syntax of an expression is described in
-            the main document of  the  Calculator  Library.
-    outlin  Returned numeric value as a string when IERR=0.
-    mssg    MSSG is a string that can serve several purposes
-            o Returned string value when IERR=2
-            o Error message string when IERR=-1
-            o Message from &#146;funcs&#146; or &#146;dump&#146; command when IERR=1
-    slast   SLAST has different meanings depending on whether a string or number
-            is being returned
-            o REAL value set to last successfully calculated value when IERR=0
-            o Number of characters in returned string variable when IERR=2
-    ierr    status flag.
-            o  -1 ==&gt; An error occurred
-            o  0 ==&gt; A numeric value was returned
-            o  1 ==&gt; A message was returned
-            o  2 ==&gt; A string value was returned
-</PRE>
-</BLOCKQUOTE>
-<A name=3>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+outlin
+Returned numeric value as a string when IERR=0.
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+mssg
+MSSG is a string that can serve several purposes
+<TABLE width=100% cellpadding=3><!-- tsb: mssg
+ -->
+<TR></TR><TR></TR>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+Returned string value when IERR=2
+</TD></TR>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+Error message string when IERR=<B>-1</B>
+</TD></TR>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+Message from &#146;funcs&#146; or &#146;dump&#146; command when IERR=1
+</TD></TR>
+<TR></TR></TABLE><!-- .TP -->
+</TD></TR>
+<TR valign=top><TD width=3% nowrap>
+<B></B> </TD><TD valign=bottom>
+slast
+SLAST has different meanings depending on whether a string or number
+is being returned
+<TABLE width=100% cellpadding=3><!-- tsb: slast
+ -->
+<TR></TR><TR></TR>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+REAL value set to last successfully calculated value when IERR=0
+</TD></TR>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+Number of characters in returned string variable when IERR=2
+</TD></TR>
+<TR></TR></TABLE><!-- .TP -->
+</TD></TR>
+<TR valign=top><TD width=3% nowrap>
+<B></B> </TD><TD valign=bottom>
+ierr
+status flag.
+<TABLE width=100% cellpadding=3><!-- tsb: ierr
+ -->
+<TR></TR><TR></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+o
+<B>-1</B> ==&gt; An error occurred
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+o
+0 ==&gt; A numeric value was returned
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+o
+1 ==&gt; A message was returned
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+o
+2 ==&gt; A string value was returned
+</TD></TR>
+<TR></TR></TABLE></TD></TR>
+<TR></TR></TABLE></BLOCKQUOTE>
+<A name=4>
 
      <H3>DEPENDENCIES</H3>
 
@@ -151,13 +219,13 @@ o
 </TD><TD>
 len_trim
 </TD></TR>
-<TR valign=top><TD width=3% nowrap>
-<B></B> </TD><TD valign=bottom>
+<TR valign=top><TD width=3%>
 o
+</TD><TD>
 User-supplied routines: juown1, c
 </TD></TR>
 <TR></TR></TABLE></BLOCKQUOTE>
-<A name=4>
+<A name=5>
 
      <H3>EXAMPLES</H3>
 
@@ -210,7 +278,7 @@ Example calculator program
 <P>
 </PRE>
 </BLOCKQUOTE>
-<A name=5>
+<A name=6>
 
      <H3>SEE ALSO</H3>
 
@@ -218,7 +286,7 @@ Example calculator program
 <BLOCKQUOTE>
 see <B>INUM0</B>(),RNUM0(),SNUM0(),STRGAR2(),JUCALCX().
 </BLOCKQUOTE>
-<A name=6>
+<A name=7>
 
      <H3>REFERENCES</H3>
 
@@ -227,9 +295,9 @@ see <B>INUM0</B>(),RNUM0(),SNUM0(),STRGAR2(),JUCALCX().
 NONE.
 </BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>jucalc (3)</TD> <TD align=right width=33%><I>June 12, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 05eec0ee-078d-4d5c-8867-866c2ead3417 using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>jucalc (3)</TD> <TD align=right width=33%><I>August 26, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 3e43d405-fb93-470d-ab79-5fc85c2d1b0f using man macros.</FONT>
 </div>
 </div>
-<center><img src="images/jucalc.3.gif"></center> 
+<br><br><center><img src="images/jucalc.3.gif"></center> 
 </body>
 </HTML>

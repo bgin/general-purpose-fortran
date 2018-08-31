@@ -32,11 +32,12 @@
 !!       subroutine cartesian_to_polar(x,y,radius,inclination)
 !!       subroutine polar_to_cartesian(radius,inclination,x,y)
 !!
-!!    Where the input values may be any standard scalar value supported by
-!!    the anyscalar_to_real(3f) function (real,integer,doubleprecision) within
-!!    the range allowed by the function.
+!!##CONSTANTS SYNOPSIS
+!!   Simple constants:
 !!
-!!    Tables:
+!!     use M_constants, only : e,gamma,euler,golden_ratio,pi
+!!     use M_constants, only : deg_per_rad, rad_per_deg
+!!     use M_constants, only : c__m_per_sec, c__ft_per_sec
 !!
 !!##DESCRIPTION
 !!
@@ -44,15 +45,11 @@
 !!    procedures that are used to convert between various physical units
 !!    and common named constants.
 !!
-!!       +---------------------------+
-!!       |Angle|Area        |Base    |
-!!       |-----+------------+--------|
-!!       |Data |Energy      |Length  |
-!!       |-----+------------+--------|
-!!       |Mass |Power       |Pressure|
-!!       |-----+------------+--------|
-!!       |Speed|Temperature |Time    |
-!!       +---------------------------+
+!!    The input values may be any standard scalar value supported by
+!!    the anyscalar_to_real(3f) function (real,integer,doubleprecision) within
+!!    the range allowed by the function.
+!!
+!!##PROCEDURES
 !!
 !!    Angular Units
 !!
@@ -97,8 +94,28 @@
 !!   Note that your compiler is less likely to inline small procedures in a
 !!   module than it would statement functions or CONTAINED functions.
 !!
-!!##EXAMPLES
+!!##CONSTANTS
 !!
+!!   "c__m_per_sec"   Speed of light in a vacuum
+!!   "c__ft_per_sec"  Speed of light in a vacuum
+!!   "deg_per_rad"
+!!   "rad_per_deg"
+!!   "e"              The base of the natural logarithm system. "e"
+!!                    was named in honor of Euler, but is known as Napier's constant.
+!!   "euler"
+!!   "gamma"          The Euler-Mascheroni constant is often denoted by
+!!                    a lower-case Gamma.
+!!   "golden_ratio"
+!!
+!!   "pi"             The ratio of the circumference of a circle to the diameter of the circle
+!!
+!!##NOTES
+!!
+!!   Gamma is defined as
+!!
+!!    Gamma = limit ( M -> Infinity ) ( Sum ( 1 <= N <= M ) 1 / N ) - Log ( M )
+!!
+!!##EXAMPLES
 !!
 !!   Simple usage example:
 !!
@@ -107,7 +124,11 @@
 !!    use M_units, only : f2c, c2f
 !!    use M_units, only : sind, cosd, tand
 !!    use M_units, only : asind, acosd, atand, atan2d
+!!    !!
 !!    use M_units, only : pi=>pi,radian,degree,e
+!!    use M_units, only : e,euler,pi,golden_ratio,deg_per_rad,rad_per_deg
+!!    use M_units, only : c__m_per_sec, c__ft_per_sec
+!!    !!
 !!    implicit none
 !!    write(*,*)r2d([0.0,PI/4.0,PI/2.0,3.0*PI/2.0,PI])
 !!    write(*,*)d2r([0.0,45.0,90.0,135.0,180.0])
@@ -115,7 +136,21 @@
 !!    write(*,*)c2f([-40.0,0.0,100.0])
 !!    write(*,*)PI
 !!    write(*,*)E
+!!    !!
+!!    write(*,101) "Napier's constant (e) is about ",e
+!!    write(*,101) "The Euler-Mascheroni constant (euler or gamma) is about ",euler
+!!    write(*,101) "pi (pi) is about ",pi
+!!    write(*,101) "The Golden Ratio (golden_ratio) is about ",golden_ratio
+!!    write(*,101) "Deg_Per_Rad is about ",Deg_Per_Rad
+!!    write(*,101) "Rad_Per_Deg is about ",Rad_Per_Deg
+!!    !!
+!!    write(*,101) "Speed of light in a vacuum (m/sec)       ", c__m_per_sec
+!!    write(*,101) "Speed of light in a vacuum (ft/sec)      ", c__ft_per_sec
+!!    !!
+!!    101 format(a,t57,g0)
+!!    !!
 !!    end program testit
+!!
 !!
 !!   Results:
 !!
@@ -125,14 +160,22 @@
 !!    >-40.0000000   32.0000000   212.000000
 !!    > 3.14159274
 !!    > 2.71828175
+!!    >Napier's constant (e) is about                          2.7182818284590451
+!!    >The Euler-Mascheroni constant (euler or gamma) is about 0.57721566490153287
+!!    >pi (pi) is about                                        3.1415926535897931
+!!    >The Golden Ratio (golden_ratio) is about                1.6180339887498949
+!!    >Deg_Per_Rad is about                                    57.295779513082323
+!!    >Rad_Per_Deg is about                                    0.17453292519943295E-001
+!!    >Speed of light in a vacuum (m/sec)                      299792458.00000000
+!!    >Speed of light in a vacuum (ft/sec)                     983571056.00000000
 !===================================================================================================================================
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 module m_units
 use M_anyscalar,only : anyscalar_to_real, anyscalar_to_double
-   implicit none                        ! require all variables to be declared
-   private
+implicit none                        ! require all variables to be declared
+private
 !  common trigonometric functions using degrees instead of radians for units
       public sind
       public cosd
@@ -163,32 +206,48 @@ use M_anyscalar,only : anyscalar_to_real, anyscalar_to_double
 !  tables
       public symbol2atomnum ! return atomic number given element symbol name
       public atomnum2symbol ! return element symbol given atomic number
+!===================================================================================================================================
 !  constants
-      doubleprecision,parameter,public :: pi_d       =  3.141592653589793238462643383279500d0
-      doubleprecision,parameter,public :: e_d        =  2.718281828459045235360d0
-      doubleprecision,parameter,public :: radian_d   = 57.29577951310d0                       !degrees
-      doubleprecision,parameter,public :: degree_d   =  0.0174532925199430d0                  !radians
 
-      real,parameter,public :: pi         =  3.141592653589793238462643383279500d0
-      real,parameter,public :: e          =  2.718281828459045235360d0
-      real,parameter,public :: radian     = 57.29577951310d0                       !degrees
-      real,parameter,public :: degree     =  0.0174532925199430d0                  !radians
+doubleprecision, parameter, private :: eighth_circle_rad_d  = atan(1.0d0)            ! pi/4
+doubleprecision, parameter, private :: quarter_circle_rad_d = 2*eighth_circle_rad_d  ! pi/2
+doubleprecision, parameter, private :: half_circle_rad_d    = 4*eighth_circle_rad_d  ! pi
+doubleprecision, parameter, private :: circle_rad_d         = 8*eighth_circle_rad_d  ! 2pi
 
+real, parameter, private :: eighth_circle_rad_r  = atan(1.0)              ! pi/4
+real, parameter, private :: quarter_circle_rad_r = 2*eighth_circle_rad_r  ! pi/2
+real, parameter, private :: half_circle_rad_r    = 4*eighth_circle_rad_r  ! pi
+real, parameter, private :: circle_rad_r         = 8*eighth_circle_rad_r  ! 2pi
 
-
-      doubleprecision,parameter        :: degrees_to_radians_D = PI_D / 180.0D+00
-      real,parameter                   :: degrees_to_radians = real(PI / 180.0D+00)
-
-      doubleprecision, parameter, private :: eighth_circle_rad_d  = atan(1.0d0)            ! pi/4
-      doubleprecision, parameter, private :: quarter_circle_rad_d = 2*eighth_circle_rad_d  ! pi/2
-      doubleprecision, parameter, private :: half_circle_rad_d    = 4*eighth_circle_rad_d  ! pi
-      doubleprecision, parameter, private :: circle_rad_d         = 8*eighth_circle_rad_d  ! 2pi
-
-      real, parameter, private :: eighth_circle_rad_r  = atan(1.0)              ! pi/4
-      real, parameter, private :: quarter_circle_rad_r = 2*eighth_circle_rad_r  ! pi/2
-      real, parameter, private :: half_circle_rad_r    = 4*eighth_circle_rad_r  ! pi
-      real, parameter, private :: circle_rad_r         = 8*eighth_circle_rad_r  ! 2pi
-
+!===================================================================================================================================
+integer, public, parameter :: DP = selected_real_kind(15)
+real(kind=DP), public, parameter ::              &
+!---------------------!------------------------------------------------------------
+                      ! velocity of light in a vacuum
+   c__m_per_sec       = 2.99792458d+8,                                            & ! m/sec
+   c__ft_per_sec      = 9.83571056d+8,                                            & ! ft/sec
+!---------------------!------------------------------------------------------------
+                      ! "e" is the base of the natural logarithm system.
+                      ! "e" was named in honor of Euler, but is known as Napier's constant.
+   e                  = 2.71828182845904523536028747135266249775724709369995d+00, &
+!---------------------!------------------------------------------------------------
+   euler              = 0.577215664901532860606512090082402431042d+00,            &
+!---------------------!------------------------------------------------------------
+                      ! The Euler-Mascheroni constant is often denoted by a lower-case Gamma.  Gamma is defined as
+                      ! Gamma = limit ( M -> Infinity ) ( Sum ( 1 <= N <= M ) 1 / N ) - Log ( M )
+   gamma              = 0.577215664901532860606512090082402431042d+00,            &
+!---------------------!------------------------------------------------------------
+   pi                 = 3.14159265358979323846264338327950288419716939937510d0,   &
+!---------------------!------------------------------------------------------------
+                      ! for two values A+B is to A as A is to B
+   Golden_Ratio       = 1.6180339887498948482045868_DP,                           &
+!---------------------!------------------------------------------------------------
+   Deg_Per_Rad        = 57.2957795130823208767981548_DP,                          &
+   Rad_Per_Deg        = 0.01745329251994329576923691_DP,                          &
+   degrees_to_radians = PI / 180.0D+00,                                           &
+!---------------------!------------------------------------------------------------
+   end=99999    ! END OF CONSTANTS
+!===================================================================================================================================
       interface norm_angle_rad                                  ! a Generic Interface in a module with PRIVATE specific procedures
          module procedure norm_angle_rad_real, norm_angle_rad_double
       end interface
@@ -197,6 +256,7 @@ use M_anyscalar,only : anyscalar_to_real, anyscalar_to_double
          module procedure norm_angle_360_real, norm_angle_360_double
          module procedure norm_angle_360_integer
       end interface
+
 
 contains
 !***********************************************************************************************************************************

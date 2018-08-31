@@ -8,10 +8,10 @@ SYNOPSIS
       integer                      :: ierr
 
 DESCRIPTION
-       The  chmod() function shall change UID, _ISGID, S_ISVTX, and the
+       The system_chmod(3f) function shall change UID, _ISGID, S_ISVTX, and the
        file permission bits of the file named by the pathname pointed
        to by the path argument to the corresponding bits in the mode
-       argument. The application  shall  ensure  that the  effective user
+       argument. The application shall ensure that the effective user
        ID of the process matches the owner of the file or the process
        has appropriate privileges in order to do this.
 
@@ -39,7 +39,7 @@ DESCRIPTION
 
 
 RETURN VALUE
-       Upon  successful completion, system_chmod(3f) returns 0.
+       Upon successful completion, system_chmod(3f) returns 0.
        Otherwise, it returns -1 and sets errno to indicate the error. If
        -1 is returned, no change to the file mode occurs.
 
@@ -69,7 +69,7 @@ EXAMPLES
    ierr=system_chmod('_test2', R_WXU)
 
    !Setting Different Permissions for Owner, Group, and Other
-   ! The  following  example  sets owner permissions for CHANGEFILE to read, write, and execute, group permissions to read and
+   ! The following example sets owner permissions for CHANGEFILE to read, write, and execute, group permissions to read and
    ! execute, and other permissions to read.
    open(file='_test3',unit=10)
    write(10,*)'TEST FILE 3'
@@ -77,17 +77,17 @@ EXAMPLES
    ierr=system_chmod('_test3', IANY([R_WXU,R_GRP,X_GRP,R_OTH]));
 
    !Setting and Checking File Permissions
-   ! The following example sets the file permission bits for a file named /home/cnd/mod1, then calls the  stat()  function  to
+   ! The following example sets the file permission bits for a file named /home/cnd/mod1, then calls the stat() function to
    ! verify the permissions.
 
    ierr=system_chmod("home/cnd/mod1", IANY([R_WXU,R_WXG,R_OTH,W_OTH]))
    status = system_stat("home/cnd/mod1", buffer)
 
-   ! In  order  to  ensure  that the S_ISUID and S_ISGID bits are set, an application requiring this should use stat() after a
+   ! In order to ensure that the S_ISUID and S_ISGID bits are set, an application requiring this should use stat() after a
    ! successful chmod() to verify this.
 
    !    Any files currently open could possibly become invalid if the mode
-   !    of the  file  is changed  to  a value which would deny access to
+   !    of the file is changed to a value which would deny access to
    !    that process.
 
    end program demo_system_chmod

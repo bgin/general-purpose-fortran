@@ -1,10 +1,9 @@
 NAME
-   M_DRAW(3f) - [M_DRAW] The M_DRAW graphics library
-SYNOPSIS
+   M_draw(3fm) - [M_draw] The M_draw graphics library
 
 DESCRIPTION
 
-   M_DRAW is a portable public-domain device-independent graphics library
+   M_draw is a portable public-domain device-independent graphics library
    intended for being called from Fortran that is based on VOGLE (from
    the The University of Melbourne) that is loosely based on the Silicon
    Graphics Iris GL library. It was also partly inspired by the DIGS
@@ -21,29 +20,25 @@ DESCRIPTION
      * Monochrome PBM (Poskazner bitmap P1 and P4 formats) and X11
        bitmap driver.
      * Color PBM (Poskazner pixmap P3 and P6 formats). If you have the
-       pbmplus package you can use it to make M_DRAW appear to write
+       pbmplus package you can use it to make M_draw appear to write
        any format pbmplus writes (assuming your system supports the
        popen(3c) function).
      * A clear-text CGM (Computer Graphics Metafile) driver.
      * A different (color) PostScript driver.
      * A driver for Microsoft VML (Vector Markup Language)
 
-   M_DRAW is intended to produce simple graphics composed of line drawings and
+   M_draw is intended to produce simple graphics composed of line drawings and
    polygon fills in two and three dimensions. It handles circles, curves,
    arcs, patches, polygons, and software text in a device independent
    fashion. Simple hidden line removal is also available via polygon
    backfacing. Access to hardware text and double buffering of drawings
    depends on the driver.
 
-   M_DRAW is callable from C, FORTRAN 77, Fortran 90+ , and Pascal on most
-   platforms.
+   M_draw is based on VOGLE, which is callable from C, Fortran, and Pascal;
+   but M_draw is only supported in Fortran (the C components are being converted
+   to Fortran).
 
-   M_DRAW is portable. It has been used on Cray UNICOS, SGI IRIX64 and IRIX,
-   IBM AIX, NeXT, Digital ULTRIX and Digital Unix, Sun SunOS and Solaris,
-   Linux, Compaq Tru64 UNIX, HP HP-UX, and CygWin. It has been run on
-   additional platforms including most PCs.
-
-   The original source's ownership statement
+   The original VOGLE source's ownership statement
 
       This software is public domain and may be used for any purpose commercial
       or otherwise. It is offered without any guarantee as to its suitability
@@ -51,7 +46,6 @@ DESCRIPTION
       that the source is passed on to anyone that requests a copy, and that
       people who get copies don't go round claiming they wrote it. Use at your
       own risk.
-
 
 LIBRARY FUNCTION DESCRIPTIONS
 
@@ -70,7 +64,7 @@ LIBRARY FUNCTION DESCRIPTIONS
    prefsize(width, height)          Specify preferred width and height of window
 
    Some devices are basically window oriented - like sunview and X11. You
-   can give M_DRAW some information on the window that it will use with these
+   can give M_draw some information on the window that it will use with these
    routines. These can make your code very device independent. Both routines
    take arguments which are in device space. (0, 0) is the top left hand
    corner in device space. To have any effect these routines must be called
@@ -82,7 +76,7 @@ LIBRARY FUNCTION DESCRIPTIONS
       draw*smallfont: fixed
       draw*largefont: 9x15
       ! title on decoration bar for the window
-      draw*title: My M_DRAW program
+      draw*title: My M_draw program
       ! window geometry and position,
       ! overridden by prefsize(3c) and prefposition(3c)
       draw.Geometry: =500x500-10+20
@@ -249,7 +243,7 @@ LIBRARY FUNCTION DESCRIPTIONS
    A polygon is composed of a number of coplanar line segments connected
    end to end to form a closed shape.
 
-   In M_DRAW curves are estimated by a series of line segments, and thus
+   In M_draw curves are estimated by a series of line segments, and thus
    may be included easily into polygons.
 
    Regular    A polygon with all sides and interior angles the same. Regular
@@ -270,31 +264,35 @@ LIBRARY FUNCTION DESCRIPTIONS
 
 
    TEXT ROUTINES
-   font(fontname)                   Set the current font
-   numchars()                       Return number of characters in the current SOFTWARE font.
-   textsize(width, height)          Set maximum size of a character in the current SOFTWARE font.
-   textang(ang)                     Set the SOFTWARE text angle.
-   fixedwidth(onoff)                Turns fixedwidth mode on or off for SOFTWARE fonts.
-   centertext(onoff)                Turns centertext mode on or off for SOFTWARE fonts.
-   getcharsize(c, width, height)    Get the width and height of a character.
-   getfontdec()                     Return size of maximum font descender
-   getfontsize(width, height)       Get maximum width and height of a character in a font.
-   drawchar(c)                      Draw the character c and update current position.
-   drawstr(str)                     Draw the text in string at the current position.
-   strlength(str)                   Return the length of the string s
-   boxtext(x, y, l, h, s)           Draw the SOFTWARE string s so that it fits in the imaginary box
+   font(fontname)                   set the current font
+   numchars()                       return number of characters in the current SOFTWARE font.
+   textsize(width, height)          set maximum size of a character in the current SOFTWARE font.
+   textang(ang)                     set the SOFTWARE text angle.
+   fixedwidth(onoff)                turns fixedwidth mode on or off for SOFTWARE fonts.
+   getcharsize(c, width, height)    get the width and height of a character.
+   getfontdec()                     return size of maximum font descender
+   getfontsize(width, height)       get maximum width and height of a character in a font.
+   drawchar(c)                      draw the character c and update current position.
+   drawstr(str)                     draw the text in string at the current position.
+   strlength(str)                   return the length of the string s
+   boxtext(x, y, l, h, s)           stretch and draw the SOFTWARE string s so that it fits in the imaginary box
    boxfit(x, y, l, h, s)            resize the SOFTWARE text size so it fits in a box
-   textjustify(val)                 general text justification (C only)
+
+   textjustify(val)                 general text justification
+
    leftjustify()                    left justify text
    rightjustify()                   right justify text
-   xcentertext()                    center text in the X direction
    topjustify()                     top justify text
    bottomjustify()                  bottom justify text
-   ycentertext()                    center text in the Y direction
-   textslant()                      Defines the obliqueness of the fonts.
-   textweight()                     Defines the weight of the fonts.
 
-   M_DRAW supports hardware and software fonts. The software fonts are based
+   centertext(onoff)                turns centertext mode on or off for SOFTWARE fonts.
+   xcentertext()                    center text in the X direction
+   ycentertext()                    center text in the Y direction
+
+   textslant()                      defines the obliqueness of the fonts.
+   textweight()                     defines the weight of the fonts.
+
+   M_draw supports hardware and software fonts. The software fonts are based
    on the character set digitized by Dr Allen V. Hershey while working at
    the U. S. National Bureau of Standards. Exactly what hardware fonts are
    supported depends on the device, but it is guaranteed that the names
@@ -305,9 +303,9 @@ LIBRARY FUNCTION DESCRIPTIONS
      draw.smallfont: X11-font-name
      draw.largefont: X11-font-name
 
-   It is noted here that text is always assumed to be drawn parallel to the
-   (x, y) plane, using whatever the current z coordinate is. The following
-   software fonts are supported:
+   It is noted here that hardware text is always assumed to be drawn
+   parallel to the (x, y) plane, using whatever the current z coordinate
+   is. The following software fonts are supported:
 
       astrology       cursive         cyrillic        futura.l
       futura.m        gothic.eng      gothic.ger      gothic.ita
@@ -320,7 +318,7 @@ LIBRARY FUNCTION DESCRIPTIONS
    to have centertext mode on for this to give sensible results when placing
    the markers.
 
-   If the environment variable "M_DRAW_FONTPATH" is set M_DRAW looks for the software
+   If the environment variable "M_draw_FONTPATH" is set M_draw looks for the software
    fonts in the directory given by this value.
 
    the default font is futura.l
@@ -384,7 +382,7 @@ LIBRARY FUNCTION DESCRIPTIONS
    frontbuffer()               Draw in the front buffer. This will always work.
    swapbuffers()               Swap the front and back buffers.
 
-   Where possible M_DRAW allows for front and back buffers to enable
+   Where possible M_draw allows for front and back buffers to enable
    things like animation and smooth updating of the screen. The routine
    backbuffer is used to initialise double buffering.
 
@@ -395,36 +393,72 @@ LIBRARY FUNCTION DESCRIPTIONS
    sgetgp2(x, y)               Gets the current screen graphics position in screen coords (-1 to 1)
 
 EXAMPLE
-  Sample program
+  Sample program:
 
-   program demo_M_DRAW
-
-   use M_DRAW
+   program demo_M_draw
+   use M_draw
+   use M_draw,    only  : D_BLACK,   D_WHITE
+   use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
+   use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
+   use M_drawplus, only : biggest_ortho2
    use M_units,    only : cosd, sind
    implicit none
-
-      integer  :: i
-      integer  :: j
-      integer  :: icolor
-      integer  :: ipaws
+   integer  :: ipaws
+   real     :: x1, y1
+   integer  :: icolor
+   integer  :: i,j
 
       ! initialize image
       call prefsize(400,400)  ! set size before starting
-      call vinit(' ')         ! start graphics using device $M_DRAW_DEVICE
-      call color(0)
+      call vinit(' ')         ! start graphics using device $M_draw_DEVICE
+      call textsize(10.0,10.0)
+      call mapcolor( 0,   255,255,255 )  !white
+      call mapcolor( 1,   255,  0,  0 )  !red
+      call mapcolor( 2,     0,255,  0 )  !green
+      call mapcolor( 3,   255,255,  0 )  !yellow
+      call mapcolor( 4,     0,  0,255 )  !blue
+      call mapcolor( 5,   255,  0,255 )  !magenta
+      call mapcolor( 6,     0,255,255 )  !cyan
+      call mapcolor( 7,     0,  0,  0 )  !black
+      call mapcolor( 8,     0,155,  0 )
+      call mapcolor( 9,   155,155,155 )
+      call mapcolor(10,   155,255,255 )
+      call mapcolor(11,   155,155,  0 )
+      call mapcolor(12,     0,  0,155 )
+      call mapcolor(13,   155,  0,155 )
+      call mapcolor(14,     0,155,155 )
+      call mapcolor(15,   100,100,100 )
+      call mapcolor(16,   155,100,100 )
+      call color(D_BLACK)
       call clear()            ! clear to color 0
-      call color(7)
+      call color(D_WHITE)
 
       ! map area of virtual world to specified device area
       ! notice Y-axis for viewport is zero at TOP
-         ! viewport(left, right, bottom, top)
-      call viewport(0.0,  400.0,  400.0, 0.0)
       ! define the virtual world area we want to work in
-          !ortho2(left, right, bottom,   top)
-      call ortho2(0.0,  400.0,    0.0, 400.0)
+      call biggest_ortho2(0.0,  400.0,    0.0, 400.0)
       ! the drawing routines use these world units
 
+      ! put some colored boxes into pixmap by address
+      ! so show how the pixel map can be edited easily with
+      ! other routines that can manipulate a pixel array.
+      ! The P_pixel array was created when vinit(3f) was called
+      call polyfill(.true.)
+      icolor=1
+      do i=0,3
+         do j=0,3
+            x1=j*100.0
+            y1=i*100.0
+            icolor=icolor+1
+            call color(icolor)
+            call rect(x1,y1,x1+100.0,y1+100.0)
+         enddo
+      enddo
+      call polyfill(.false.)
+
       ! draw polar grids
+      call linewidth(100)
+
       call linewidth(100)
       call color(14)
       call target(200.0,200.0,200.0)
@@ -434,22 +468,33 @@ EXAMPLE
       call target(100.0,200.0,50.0)
 
       ! draw some lines
-      call color(1)
+      call color(D_RED)
       call linewidth(200)
       call line(1.0,1.0,400.0,400.0)
 
-      call color(4)
+      call color(D_BLUE)
+      call linewidth(250)
       call line(350.0,200.0,350.0,300.0)
 
       ! print some text
       call color(1)
-      !call hershey(x,y,height,itext,theta,ntext)
       call linewidth(125)
+      call font('futura.l')
+      call hershey(40.0, 40.0,35.0,'Hello World',0.0)
       call color(7)
       call linewidth(25)
+      call hershey(40.0, 80.0,35.0,'Hello World',0.0)
       call linewidth(100)
+      call hershey(40.0,120.0,35.0,'Hello World',30.0)
 
+      call hershey(  40.0,350.0,35.0,'Hello World',0.0)
+      call font('futura.m')
+      call hershey(  40.0,310.0,35.0,'Hello World',0.0)
+      call font('times.r')
+      call hershey( 350.0,400.0,35.0,'Hello World',90.0)
       call linewidth(50)
+      call font('times.i')
+      call hershey(200.0,120.0,15.0,'Hello World',20.0)
 
       ipaws=getkey()
       call vexit()
@@ -470,7 +515,25 @@ EXAMPLE
             call circle(xc,yc,real(i))
          enddo
       end subroutine target
-   end program demo_M_DRAW
+
+      subroutine line(x1,y1,x2,y2)
+      real,intent(in) :: x1,y1,x2,y2
+      call move2(x1,y1)
+      call draw2(x2,y2)
+      end subroutine line
+
+      subroutine hershey(x,y,height,itext,theta)
+      real,intent(in)               :: x,y
+      real,intent(in)               :: height
+      character(len=*),intent(in)   :: itext
+      real,intent(in)               :: theta
+      call move2(x,y)
+      call textang(theta)
+      call textsize(height,height)
+      call drawstr(itext)
+      end subroutine hershey
+
+   end program demo_M_draw
 
 BUGS
 
@@ -486,4 +549,14 @@ BUGS
    When creating an object, current position and text size are not
    actually changed so almost any query routine to get position or font
    size or whatever will not work properly.
+
+   If call vexit(3f) and then call vinit(3f) everything should probably
+   be reset to initial values at program startup, such as linewidth,
+   current font, and color. It is currently left up to the output device
+   initialization routine. It should not be. To minimize the issue,
+   call all the push* routines after a vinit(3f) and call all the pop*
+   routines before vexit(3f).
+
+   Exactly what attributes should and should not be reset with a
+   vnewdev(3f) is questionable.
 

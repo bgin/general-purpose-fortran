@@ -11,7 +11,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '       penv(1f) - print all or part of environment in formats readable by various shells',&
 'SYNOPSIS                                                                        ',&
-'       penv [variable...] [-C|-B] [-p PREFIX] [-v]                              ',&
+'       penv [variable...] [-C|-B|-v] [-p PREFIX]                                ',&
 '       penv [--help|--version]                                                  ',&
 'DESCRIPTION                                                                     ',&
 '       If no arguments are given, penv(1f) prints the entire environment.       ',&
@@ -21,14 +21,17 @@ help_text=[ CHARACTER(LEN=128) :: &
 '       If the -p switch is used variables beginning with that prefix will be    ',&
 '       displayed.                                                               ',&
 'OPTIONS                                                                         ',&
+'    OUTPUT FORMAT                                                               ',&
 '       -C           print output in a form that can be sourced into a           ',&
 '                    C shell (eg. as a setenv(1) command).                       ',&
 '       -B           print output in a form that can be sourced into a           ',&
 '                    Bourne shell.                                               ',&
-'       -p           print only variables with the given prefix                  ',&
 '       -v           values only. Do not print variable names                    ',&
+'    VARIABLE SELECTION                                                          ',&
+'       -p           print only variables with the given prefix                  ',&
 '       variable(s)  if variable names are given, print the value for            ',&
 '                    each one that is set.                                       ',&
+'    INFORMATION                                                                 ',&
 '       --help       display this help and exit                                  ',&
 '       --version    output version information and exit                         ',&
 '                                                                                ',&
@@ -68,7 +71,7 @@ end subroutine help_usage
 !!        penv(1f) - print all or part of environment in formats readable by various shells
 !!##SYNOPSIS
 !!
-!!        penv [variable...] [-C|-B] [-p PREFIX] [-v]
+!!        penv [variable...] [-C|-B|-v] [-p PREFIX]
 !!        penv [--help|--version]
 !!##DESCRIPTION
 !!        If no arguments are given, penv(1f) prints the entire environment.
@@ -78,14 +81,17 @@ end subroutine help_usage
 !!        If the -p switch is used variables beginning with that prefix will be
 !!        displayed.
 !!##OPTIONS
+!!     OUTPUT FORMAT
 !!        -C           print output in a form that can be sourced into a
 !!                     C shell (eg. as a setenv(1) command).
 !!        -B           print output in a form that can be sourced into a
 !!                     Bourne shell.
-!!        -p           print only variables with the given prefix
 !!        -v           values only. Do not print variable names
+!!     VARIABLE SELECTION
+!!        -p           print only variables with the given prefix
 !!        variable(s)  if variable names are given, print the value for
 !!                     each one that is set.
+!!     INFORMATION
 !!        --help       display this help and exit
 !!        --version    output version information and exit
 !!
@@ -125,7 +131,7 @@ logical                        :: stopit=.false.
 stopit=.false.
 if(l_version)then
 help_text=[ CHARACTER(LEN=128) :: &
-'@(#)PRODUCT:        CLI library utilities and examples>',&
+'@(#)PRODUCT:        GPF (General Purpose Fortran) utilities and examples>',&
 '@(#)PROGRAM:        penv(1f)>',&
 '@(#)DESCRIPTION:    Print values from the environment table>',&
 '@(#)VERSION:        1.0 2016-11-27>',&
@@ -133,7 +139,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)COPYRIGHT:      Copyright (C) 2016 John S. Urban>',&
-'@(#)COMPILED:       Mon, Jun 4th, 2018 8:54:10 AM>',&
+'@(#)COMPILED:       Sat, Aug 25th, 2018 5:42:04 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

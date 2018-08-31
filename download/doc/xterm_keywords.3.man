@@ -10,7 +10,7 @@ DESCRIPTION
    Tektronix 4010 emulator mode or Digital VT102 emulator mode.
 
 OPTIONS
-   keyword   Recognized keyword are
+   keyword   Recognized keyword values are
 
              raise      raise to top of window stack
              lower      lower to back of window stack
@@ -22,15 +22,15 @@ OPTIONS
              tek        switch to Tektronix 4010 terminal emulator mode
 
 EXAMPLE
-  A sample program:
+   A sample program:
 
-   program demo_xterm_keywords
-   use M_xterm, only : xterm_keywords
-   implicit none
-      call xterm_keywords('iconify')
-      write(*,*)'do some stuff'
-      call xterm_keywords('uniconify')
-      call xterm_keywords('raise')
-   endif
-   end program demo_xterm_keywords
+    program demo_xterm_keywords
+    use M_xterm, only : xterm_keywords
+    implicit none
+       call xterm_keywords('iconify')
+       write(*,*)'do some stuff'
+       call xterm_keywords('uniconify')
+       call xterm_keywords('raise')
+    endif
+    end program demo_xterm_keywords
 

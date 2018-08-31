@@ -12,7 +12,7 @@ DEFINITION
 
    Normally values are stored or defined in the calculator module
    M_calculator(3fm) using the jucalc(3f) routine or the convenience
-   routines in the module M_calculator_plus(3fm).  For efficiency when
+   routines in the module M_calculator_plus(3fm). For efficiency when
    large numbers of values require being stored the stuff(3f) procedure
    can be used to store numeric values by name in the calculator
    dictionary.

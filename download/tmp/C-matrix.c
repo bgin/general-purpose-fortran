@@ -152,7 +152,7 @@ a[3][3]= b[3][0] *c[0][3] +b[3][1] *c[1][3] +b[3][2] *c[2][3] +b[3][3] *c[3][3];
 }
 
 /******************************************************************************/
-#ident "@(#)M_DRAW:multmatrix - Premultipy the top matrix on the stack by 'mat'"
+#ident "@(#)M_DRAW:multmatrix - Premultiply the top matrix on the stack by 'mat'"
 void draw_multmatrix(Matrix mat){
         Matrix  prod;
         float   *m;

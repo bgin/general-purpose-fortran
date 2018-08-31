@@ -1,5 +1,5 @@
 NAME
-   clipping(3f) - [M_DRAW:CLIPPING] Turn clipping on or off
+   clipping(3f) - [M_draw:CLIPPING] Turn clipping on or off
 
 SYNOPSIS
          subroutine clipping(onoff)

@@ -2,7 +2,7 @@ NAME
    sqlite3_step(3f) - [M_sqlite] Run the prepared SQL statement
 
 SYNOPSIS
-   call sqlite3_step(stmt, completion)
+   subroutine sqlite3_step(stmt, completion)
 
     type(SQLITE_STATEMENT) stmt
     integer completion

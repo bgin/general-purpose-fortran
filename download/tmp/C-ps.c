@@ -125,8 +125,8 @@ static float    graymap[8] = {
                         0.0     /* DRAW BLACK (So you "see" the line) */
 };
 
-extern FILE     *_voutfile();
-extern  FILE     *fp;
+extern FILE     *_draw_outfile();
+extern  FILE     *draw_fp;
 
 /******************************************************************************/
 static int PS_string(char *s);
@@ -143,18 +143,18 @@ static int PS_header(int xmin,int ymin,int xmax,int ymax,int xoff,int yoff) {
 /*----------------------------------------------------------------------------*/
    char *username;
    struct passwd *pw;
-        fputs("%!PS-Adobe-1.0\n", fp);
-        fprintf(fp,"%%%%DocumentFonts: Courier Helvetica-Bold\n");
-        fprintf(fp,"%%%%Creator: M_DRAW PostScript driver 3.0\n");
-        fprintf(fp,"%%%%Title: M_DRAW\n");
+        fputs("%!PS-Adobe-1.0\n", draw_fp);
+        fprintf(draw_fp,"%%%%DocumentFonts: Courier Helvetica-Bold\n");
+        fprintf(draw_fp,"%%%%Creator: M_DRAW PostScript driver 3.0\n");
+        fprintf(draw_fp,"%%%%Title: M_DRAW\n");
         a=72.0/300.0;
-        fprintf(fp,"%%%%BoundingBox: %d %d %d %d\n",
+        fprintf(draw_fp,"%%%%BoundingBox: %d %d %d %d\n",
           (int)((xmin+xoff)*a-3), (int)((ymin+yoff)*a-3),
           (int)((xmax+xoff)*a+5), (int)((ymax+yoff)*a+5));
-        fprintf(fp,"%%%%Pages: (atend)\n") ;
+        fprintf(draw_fp,"%%%%Pages: (atend)\n") ;
 
         time(&tod);
-        fprintf(fp,"%%%%CreationDate: %s",ctime(&tod));
+        fprintf(draw_fp,"%%%%CreationDate: %s",ctime(&tod));
 
 /*----------------------------------------------------------------------------*/
 #ifndef MINGW
@@ -165,7 +165,7 @@ static int PS_header(int xmin,int ymin,int xmax,int ymax,int xoff,int yoff) {
         pw = getpwuid(getuid());
         username = pw->pw_name;
         }
-        fprintf(fp,"%%%%For: %s on OS=%.*s NETWORK_NAME=%.*s RELEASE=%.*s VERSION=%.*s MACHINE=%.*s\n",username,
+        fprintf(draw_fp,"%%%%For: %s on OS=%.*s NETWORK_NAME=%.*s RELEASE=%.*s VERSION=%.*s MACHINE=%.*s\n",username,
                 (int)sizeof(un->sysname),  un->sysname,
                 (int)sizeof(un->nodename), un->nodename,
                 (int)sizeof(un->release),  un->release,
@@ -182,20 +182,20 @@ static int PS_header(int xmin,int ymin,int xmax,int ymax,int xoff,int yoff) {
 static int PS_common_init(void) {
         int i;
 
-        fprintf(fp, "2 setlinewidth\n1 setlinejoin\n1 setlinecap\n");   /* Set other line drawing parameters    */
-        fprintf(fp, "/sf /Courier findfont def\n");                     /* Speed up symbol font handling        */
-        fprintf(fp, "/m /moveto load def\n");                           /* Move                                 */
-        fprintf(fp, "/B /moveto load def\n");                           /* Beginning of PolyLine                */
-        fprintf(fp, "/E /stroke load def\n");                           /* End of PolyLine                      */
-        fprintf(fp, "/d { lineto } def\n");                             /* Draw                                 */
-        fprintf(fp, "/p /lineto load def\n");                           /* Polygon Draw                         */
-        fprintf(fp, "/h { sf exch scalefont setfont } def\n");          /* Set character height                 */
-        fprintf(fp, "/s /show load def\n");                             /* Show character string                */
-        fprintf(fp, "/g /setgray load def\n");                          /* Set gray scale                       */
-        fprintf(fp, "/RJ { stringwidth neg exch neg exch rmoveto } bind def\n");                        /* Right Justify string */
-        fprintf(fp, "/CJ { stringwidth 2 div neg exch 2 div neg exch rmoveto } bind def\n");            /* Center string */
-        fprintf(fp, "45 h\n");                                          /* Set a default font height            */
-        fprintf(fp, "%%%%EndProlog\n");                                                 /* Set a default font height            */
+        fprintf(draw_fp, "2 setlinewidth\n1 setlinejoin\n1 setlinecap\n");   /* Set other line drawing parameters    */
+        fprintf(draw_fp, "/sf /Courier findfont def\n");                     /* Speed up symbol font handling        */
+        fprintf(draw_fp, "/m /moveto load def\n");                           /* Move                                 */
+        fprintf(draw_fp, "/B /moveto load def\n");                           /* Beginning of PolyLine                */
+        fprintf(draw_fp, "/E /stroke load def\n");                           /* End of PolyLine                      */
+        fprintf(draw_fp, "/d { lineto } def\n");                             /* Draw                                 */
+        fprintf(draw_fp, "/p /lineto load def\n");                           /* Polygon Draw                         */
+        fprintf(draw_fp, "/h { sf exch scalefont setfont } def\n");          /* Set character height                 */
+        fprintf(draw_fp, "/s /show load def\n");                             /* Show character string                */
+        fprintf(draw_fp, "/g /setgray load def\n");                          /* Set gray scale                       */
+        fprintf(draw_fp, "/RJ { stringwidth neg exch neg exch rmoveto } bind def\n");                        /* Right Justify string */
+        fprintf(draw_fp, "/CJ { stringwidth 2 div neg exch 2 div neg exch rmoveto } bind def\n");            /* Center string */
+        fprintf(draw_fp, "45 h\n");                                          /* Set a default font height            */
+        fprintf(draw_fp, "%%%%EndProlog\n");                                                 /* Set a default font height            */
 
         drawn = 0;
 
@@ -236,7 +236,7 @@ static int PS_common_init(void) {
 static int PS_init(void) /* PS_init set up the PostScript (Landscape) environment. Returns 1 on success.  */
 {
         int prefx, prefy, prefxs, prefys;
-        fp = _voutfile();
+        draw_fp = _draw_outfile();
         if (!ps_first_time)
                 return(1);
 /*
@@ -263,12 +263,12 @@ static int PS_init(void) /* PS_init set up the PostScript (Landscape) environmen
            vdevice.sizeX = vdevice.sizeY = 2250;
         }
         PS_header(0,0,vdevice.sizeSy,vdevice.sizeSx,prefy,prefx);
-        fprintf(fp,"%%%%Orientation: Landscape\n");
-        fprintf(fp,"%%%%EndComments\n");
-        fprintf(fp,"%%%%BeginProlog\n");
+        fprintf(draw_fp,"%%%%Orientation: Landscape\n");
+        fprintf(draw_fp,"%%%%EndComments\n");
+        fprintf(draw_fp,"%%%%BeginProlog\n");
 
-        fprintf(fp,"save\n");
-        fprintf(fp, "72 300 div dup scale 90 rotate %d %d translate\n",prefx,0-vdevice.sizeSy-prefy);
+        fprintf(draw_fp,"save\n");
+        fprintf(draw_fp, "72 300 div dup scale 90 rotate %d %d translate\n",prefx,0-vdevice.sizeSy-prefy);
 
         PS_common_init();
         return (1);
@@ -283,11 +283,11 @@ static int PS_setls(int lss) {
         int     i, d, a, b, offset;
 
         if (ls == 0xffff) {
-                fprintf(fp, "[] 0 setdash\n");
+                fprintf(draw_fp, "[] 0 setdash\n");
                 return(0);
         }
 
-        fputc('[', fp);
+        fputc('[', draw_fp);
 
         for (i = 0; i < 16; i++)        /* Over 16 bits */
                 if ((ls & (1 << i)))
@@ -311,14 +311,14 @@ static int PS_setls(int lss) {
 
                 if (a != b) {
                         b = a;
-                        fprintf(fp, "%d ", d * 2 + 1);
+                        fprintf(draw_fp, "%d ", d * 2 + 1);
                         d = 0;
                 }
 
                 d++;
         }
 
-        fprintf(fp, "] %d setdash\n", offset);
+        fprintf(draw_fp, "] %d setdash\n", offset);
 
         return(0);
 }
@@ -326,8 +326,8 @@ static int PS_setls(int lss) {
 /******************************************************************************/
 static void closeline(void){
    if(polyopen){
-      if ( points % 10 ) fprintf(fp,"\n");
-      fprintf(fp, "E %%PTS=%d\n",points);
+      if ( points % 10 ) fprintf(draw_fp,"\n");
+      fprintf(draw_fp, "E %%PTS=%d\n",points);
       polyopen = FALSE; /* Polyline not open */
       points = 0;
    }
@@ -342,11 +342,11 @@ static int PS_setlw(int w){ /* Set the line width */
            line_width=MAX(1,line_width);
            closeline(); /* close line if required */
            if (drawn != 0 ) {
-              fprintf(fp, "%hd setlinewidth\n",line_width);
+              fprintf(draw_fp, "%hd setlinewidth\n",line_width);
               curwidthwritten = w;
            }
         }
-        /*fprintf(fp, "%% %hd linewidth %hd w %hd curwidth %hd curwidthwritten \n",line_width,w,curwidth,curwidthwritten);*/
+        /*fprintf(draw_fp, "%% %hd linewidth %hd w %hd curwidth %hd curwidthwritten \n",line_width,w,curwidth,curwidthwritten);*/
         return(0);
 }
 /******************************************************************************/
@@ -364,16 +364,16 @@ static int PS_color(int col) {
         } else if (vdevice.depth == 1 ){ /* Monochrome World : Everything is black and white */
                 if (col == curback )  /* you should see everything except the background color */
                 {
-                  fprintf(fp," 1 g\n"); /* draw same as background (WHITE) */
+                  fprintf(draw_fp," 1 g\n"); /* draw same as background (WHITE) */
                 } else {
-                  fprintf(fp," 0 g\n"); /* Everything is black if not background */
+                  fprintf(draw_fp," 0 g\n"); /* Everything is black if not background */
                 }
         } else if (vdevice.depth == 3 ) {
-                fprintf(fp, "%3.2f g\n", graymap[col % 8]);
+                fprintf(draw_fp, "%3.2f g\n", graymap[col % 8]);
         } else {
                 if (col >= CMAPSIZE)
                         return(0);
-                fprintf(fp, "%f %f %f setrgbcolor\n",
+                fprintf(draw_fp, "%f %f %f setrgbcolor\n",
                    ps_carr[col].red/255.0,
                    ps_carr[col].green/255.0,
                    ps_carr[col].blue/255.0);
@@ -385,8 +385,8 @@ static int PS_color(int col) {
 static void iffirst(int ii) {
         if ( drawn == 0 ){
            ++Page_Count;
-           fprintf(fp, "%%%%Page: %d %d\n",Page_Count,Page_Count);
-           fprintf(fp, "save %% %d\n",ii);
+           fprintf(draw_fp, "%%%%Page: %d %d\n",Page_Count,Page_Count);
+           fprintf(draw_fp, "save %% %d\n",ii);
            drawn = 1;          /* must be set to prevent recursion before PS_ routines are called */
            PS_color(curcol);   /* page-independent declaration of current color for purposes of structuring */
            PS_setlw(curwidth); /* page-independent declaration of current width for purposes of structuring */
@@ -397,7 +397,7 @@ static void iffirst(int ii) {
 static void openline(void){
    if(!polyopen){
       PS_setlw(curwidth); /* If current color has not been written, update it */
-      fprintf(fp, "%d %d B\n", vdevice.cpVx, vdevice.cpVy);
+      fprintf(draw_fp, "%d %d B\n", vdevice.cpVx, vdevice.cpVy);
       polyopen = TRUE; /* Polyline open */
    }
 }
@@ -405,7 +405,7 @@ static void openline(void){
 /* set up the PostScript (Portrait) environment. Returns 1 on success.  */
 static int PSP_init(void) {
         int prefx, prefy, prefxs, prefys;
-        fp = _voutfile();
+        draw_fp = _draw_outfile();
 
         if (!ps_first_time)
                 return(1);
@@ -424,11 +424,11 @@ static int PSP_init(void) {
         }
 
         PS_header(0,0,vdevice.sizeSx,vdevice.sizeSy,prefx,prefy);
-        fprintf(fp,"%%%%Orientation: Portrait\n");
-        fprintf(fp,"%%%%EndComments\n");
-        fprintf(fp,"%%%%BeginProlog\n");
-        fprintf(fp,"save\n");
-        fprintf(fp,"72 300 div dup scale %d %d translate\n",prefx,prefy);
+        fprintf(draw_fp,"%%%%Orientation: Portrait\n");
+        fprintf(draw_fp,"%%%%EndComments\n");
+        fprintf(draw_fp,"%%%%BeginProlog\n");
+        fprintf(draw_fp,"save\n");
+        fprintf(draw_fp,"72 300 div dup scale %d %d translate\n",prefx,prefy);
 
         PS_common_init();
         return (1);
@@ -439,24 +439,24 @@ static int PS_exit(void) {
         closeline(); /* close Polyline line if it open */
 
         if (drawn){
-          fprintf(fp, "showpage\n");
-          fprintf(fp, "restore\n");
-          fflush(fp);
+          fprintf(draw_fp, "showpage\n");
+          fprintf(draw_fp, "restore\n");
+          fflush(draw_fp);
         }else{
            drawn = 0;
         }
 
-        fprintf(fp,"%%%%Trailer\n");
-        fprintf(fp,"%%%%Pages: %d\n",Page_Count) ;
-        fprintf(fp, "restore\n");
-        fprintf(fp,"%%%%EOF\n") ;
-        if (fp != stdout && fp != stderr ){
+        fprintf(draw_fp,"%%%%Trailer\n");
+        fprintf(draw_fp,"%%%%Pages: %d\n",Page_Count) ;
+        fprintf(draw_fp, "restore\n");
+        fprintf(draw_fp,"%%%%EOF\n") ;
+        if (draw_fp != stdout && draw_fp != stderr ){
 
-                fflush(fp);
+                fflush(draw_fp);
                 if(vdevice.writestoprocess == 2){
-                   pclose(fp);
+                   pclose(draw_fp);
                 }else{
-                   fclose(fp);
+                   fclose(draw_fp);
                 }
         }
 
@@ -474,7 +474,7 @@ static int PS_draw(int x, int y) {
         }
 
         openline();
-        fprintf(fp, "%d %d d%c", x, y,ten[points%10]);
+        fprintf(draw_fp, "%d %d d%c", x, y,ten[points%10]);
         points++;
         pslstx = x;
         pslsty = y;
@@ -558,7 +558,7 @@ static int PS_font(char *fontname) {
 static int PS_clear(void) {
    if (drawn){
       closeline(); /* close line if required */
-      fprintf(fp, "showpage restore\n");
+      fprintf(draw_fp, "showpage restore\n");
    }
    points = 0;
    drawn = 0;
@@ -568,7 +568,7 @@ static int PS_clear(void) {
 }
 /******************************************************************************/
 /* PS_char output a character */
-int PS_char(char c) {
+static int PS_char(char c) {
   char  s[2];
   s[0] = c; s[1]='\0';
   PS_string(s);
@@ -607,8 +607,8 @@ static int STRIPSPECIAL(char *s,char *stmp) {
 static int DISPSTR(int x, int y, float rot, char *s, int just, float szw, float szh) {
     char tmpstr[256];
 
-    /*fprintf(fp,"/%s findfont [ %f 0 0 %f 0 0] makefont setfont %% scale the font\n",hardfont,szw,szh*0.78);*/
-    fprintf(fp,"/%s findfont [ %f 0 0 %f 0 0] makefont setfont %% scale the font\n",hardfont,szw,szh);
+    /*fprintf(draw_fp,"/%s findfont [ %f 0 0 %f 0 0] makefont setfont %% scale the font\n",hardfont,szw,szh*0.78);*/
+    fprintf(draw_fp,"/%s findfont [ %f 0 0 %f 0 0] makefont setfont %% scale the font\n",hardfont,szw,szh);
 
     if (szw <= 0.0 || szh <=0.0 ) {
         /*fprintf(stderr,"*DISPSTR* zero size for string %s=%f %f\n",s,szw,szh);*/
@@ -620,23 +620,23 @@ static int DISPSTR(int x, int y, float rot, char *s, int just, float szw, float 
         return(0);
     }
 
-    fprintf(fp, "gsave\n");
-    fprintf(fp, "%d %d translate\n", x, (int)(y+0.22*szh));  /*JSU NOW */  /*JSU NOW */
-    fprintf(fp, "%f rotate\n", rot);
-    fprintf(fp, "0 0  m %% Transformed text location\n");
+    fprintf(draw_fp, "gsave\n");
+    fprintf(draw_fp, "%d %d translate\n", x, (int)(y+0.22*szh));  /*JSU NOW */  /*JSU NOW */
+    fprintf(draw_fp, "%f rotate\n", rot);
+    fprintf(draw_fp, "0 0  m %% Transformed text location\n");
     STRIPSPECIAL(s, tmpstr);
     switch (just) {
     case 0:
-        fprintf(fp, "(%s) s\n", tmpstr);
+        fprintf(draw_fp, "(%s) s\n", tmpstr);
         break;
     case 1:
-        fprintf(fp, "(%s) RJ s\n", tmpstr);
+        fprintf(draw_fp, "(%s) RJ s\n", tmpstr);
         break;
     case 2:
-        fprintf(fp, "(%s) CS s\n", tmpstr);
+        fprintf(draw_fp, "(%s) CS s\n", tmpstr);
         break;
     }
-    fprintf(fp, "grestore\n");
+    fprintf(draw_fp, "grestore\n");
     return(0);
 }
 /******************************************************************************/
@@ -680,28 +680,28 @@ static int PS_fill(int n, int x[], int y[]) {
    closeline(); /* close line if required */
    iffirst(4);
 
-   fprintf(fp, " newpath %d %d m %% Fill a polygon\n", x[0], y[0]);
+   fprintf(draw_fp, " newpath %d %d m %% Fill a polygon\n", x[0], y[0]);
 
    for (i = 1; i < n; i++) {
-      fprintf(fp, " %d %d p%c", x[i], y[i],linefeed[(i % 8)/7]);
+      fprintf(draw_fp, " %d %d p%c", x[i], y[i],linefeed[(i % 8)/7]);
    }
-   fprintf(fp, "closepath\n");
+   fprintf(draw_fp, "closepath\n");
 
    if (vdevice.depth == 1 ) {
       if (curcol == curback ) {
-         fprintf(fp, "1 g\n");  /* solid white fill */
+         fprintf(draw_fp, "1 g\n");  /* solid white fill */
       }else{
-         fprintf(fp, "0 g\n");  /* solid black fill */
+         fprintf(draw_fp, "0 g\n");  /* solid black fill */
       }
    } else if (vdevice.depth == 3 ) {
-      fprintf(fp, "%3.2f g\n", graymap[curcol % 8]);
+      fprintf(draw_fp, "%3.2f g\n", graymap[curcol % 8]);
    } else if (vdevice.depth > 1 && curcol < CMAPSIZE) {
-      fprintf(fp,"%f %f %f setrgbcolor\n",
+      fprintf(draw_fp,"%f %f %f setrgbcolor\n",
                    ps_carr[curcol].red/255.0,
                    ps_carr[curcol].green/255.0,
                    ps_carr[curcol].blue/255.0);
    }
-   fprintf(fp, "eofill\n");
+   fprintf(draw_fp, "eofill\n");
    vdevice.cpVx = x[n - 1];
    vdevice.cpVy = y[n - 1];
    pslstx = pslsty = -1;      /* fill destroys current path */
@@ -740,7 +740,7 @@ static DevEntry psdev = {
 };
 /******************************************************************************/
 /* copy the PostScript device into vdevice.dev.  */
-int _PS_devcpy(void) {
+int _PS_draw_devcpy(void) {
 /*      - if you don't have structure assignment ...
         char    *dev, *tdev, *edev;
         dev = (char *)&psdev;
@@ -757,35 +757,35 @@ int _PS_devcpy(void) {
 }
 /******************************************************************************/
 /* copy the PostScript portrait device into vdevice.dev.  */
-int _PSP_devcpy(void) {
+int _PSP_draw_devcpy(void) {
         vdevice.dev = psdev;
         vdevice.dev.Vinit = PSP_init;
         vdevice.depth = 1;
         return(0);
 }
 /******************************************************************************/
-int _PSC_devcpy(void) {
+int _PSC_draw_devcpy(void) {
         vdevice.dev = psdev;
         vdevice.dev.Vinit = PS_init;
         vdevice.depth = 13;
         return(0);
 }
 /******************************************************************************/
-int _PPSC_devcpy(void) {
+int _PPSC_draw_devcpy(void) {
         vdevice.dev = psdev;
         vdevice.dev.Vinit = PSP_init;
         vdevice.depth = 13;
         return(0);
 }
 /******************************************************************************/
-int _PSG_devcpy(void){ /* grayscale PostScript, 8 shades */
+int _PSG_draw_devcpy(void){ /* grayscale PostScript, 8 shades */
         vdevice.dev = psdev;
         vdevice.dev.Vinit = PS_init;
         vdevice.depth = 3;
         return(0);
 }
 /******************************************************************************/
-int _PPSG_devcpy(void){ /* Portrait grayscale PostScript, 8 shades */
+int _PPSG_draw_devcpy(void){ /* Portrait grayscale PostScript, 8 shades */
         vdevice.dev = psdev;
         vdevice.dev.Vinit = PSP_init;
         vdevice.depth = 3;

@@ -11,7 +11,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '   _sleep(1f) - [TIME] pause for specified duration                             ',&
 'SYNOPSIS                                                                        ',&
-'   _sleep [dd-hh:mm:ss[.xxx]|xxx.yyy[s|m|h|d]] --version|--help                 ',&
+'   _sleep [dd-hh:mm:ss[.xxx]|xxx.yyy[s|m|h|d]] [-countdown|-countup -count]|--help|--version',&
 'DESCRIPTION                                                                     ',&
 '   Given a duration in the form dd-hh:mm:ss.xxx where dd is days, hh            ',&
 '   hours, mm minutes and ss.xxx seconds pause for the specified amount          ',&
@@ -38,6 +38,13 @@ help_text=[ CHARACTER(LEN=128) :: &
 '      or                                                                        ',&
 '   xx[.yy]SUFFIX  where Suffix may be s for seconds, m for minutes, h for hours,',&
 '                  or d for days.                                                ',&
+'   -countdown     sleep in one-second intervals and count down to               ',&
+'                  end of sleep command                                          ',&
+'   -countup       sleep in one-second intervals and count up till end           ',&
+'                  of command                                                    ',&
+'   -count COUNT   how many seconds between counts when -countdown and -countup  ',&
+'                  are specified. Values other than one may trim the total sleep ',&
+'                  time by up to COUNT seconds.                                  ',&
 '   --help         display this help and exit                                    ',&
 '   --version      output version information and exit                           ',&
 'EXAMPLE                                                                         ',&
@@ -57,7 +64,7 @@ end subroutine help_usage
 !!    _sleep(1f) - [TIME] pause for specified duration
 !!##SYNOPSIS
 !!
-!!    _sleep [dd-hh:mm:ss[.xxx]|xxx.yyy[s|m|h|d]] --version|--help
+!!    _sleep [dd-hh:mm:ss[.xxx]|xxx.yyy[s|m|h|d]] [-countdown|-countup -count]|--help|--version
 !!##DESCRIPTION
 !!    Given a duration in the form dd-hh:mm:ss.xxx where dd is days, hh
 !!    hours, mm minutes and ss.xxx seconds pause for the specified amount
@@ -84,6 +91,13 @@ end subroutine help_usage
 !!       or
 !!    xx[.yy]SUFFIX  where Suffix may be s for seconds, m for minutes, h for hours,
 !!                   or d for days.
+!!    -countdown     sleep in one-second intervals and count down to
+!!                   end of sleep command
+!!    -countup       sleep in one-second intervals and count up till end
+!!                   of command
+!!    -count COUNT   how many seconds between counts when -countdown and -countup
+!!                   are specified. Values other than one may trim the total sleep
+!!                   time by up to COUNT seconds.
 !!    --help         display this help and exit
 !!    --version      output version information and exit
 !!##EXAMPLE
@@ -104,13 +118,13 @@ logical                        :: stopit=.false.
 stopit=.false.
 if(l_version)then
 help_text=[ CHARACTER(LEN=128) :: &
-'@(#)PRODUCT:        CLI library utilities and examples>',&
+'@(#)PRODUCT:        GPF (General Purpose Fortran) utilities and examples>',&
 '@(#)PROGRAM:        _sleep(1f)>',&
 '@(#)DESCRIPTION:    given string of form days-hh:mm:ss pause for specified amount of time>',&
 '@(#)VERSION:        1.0, 20170822>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
-'@(#)COMPILED:       Mon, Jun 4th, 2018 8:59:04 AM>',&
+'@(#)COMPILED:       Thu, Aug 16th, 2018 12:08:06 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -118,23 +132,36 @@ endif
 end subroutine help_version
 !-----------------------------------------------------------------------------------------------------------------------------------
 program demo_system_sleep
-use M_kracken, only: kracken, sgets, lget
+use M_kracken, only: kracken, sgets, lget, iget
 use M_time, only :   days2sec, realtime, system_sleep
 use M_strings, only: substitute
 implicit none
 real(kind=realtime)           :: delay_value
 character(len=80),allocatable :: delays(:)
 integer                       :: i
+integer                       :: j
 integer, allocatable          :: seed(:)
 integer                       :: n
 real                          :: chance
 integer                       :: values(1:8)
-   call kracken('_sleep',' -oo 0.0 -help .F. -version .F.')    ! parse command line
-   call help_usage(lget('_sleep_help'))                        ! display help information and stop if true
-   call help_version(lget('_sleep_version'))                   ! display version information and stop if true
+logical                       :: countdown, countup
+logical                       :: verbose
+integer                       :: count
+   call kracken('sleep',' -oo 0.0 -help .F. -version .F. -countdown .F. -countup .F. -count 1 -verbose .F.') ! parse command line
+   call help_usage(lget('sleep_help'))                        ! display help information and stop if true
+   call help_version(lget('sleep_version'))                   ! display version information and stop if true
+   countdown=lget('sleep_countdown')
+   countup=lget('sleep_countup')
+   count=iget('sleep_count')
+   verbose=lget('sleep_verbose')
 !===================================================================================================================================
    ! determine value of cyclical pause duration
-   delays=sgets('_sleep_oo')
+   delays=sgets('sleep_oo')
+   if(verbose)write(*,*)'DELAYS(SEC)=',delays
+   if(verbose)write(*,*)'COUNTDOWN=',countdown
+   if(verbose)write(*,*)'COUNTUP=',countup
+   if(verbose)write(*,*)'COUNT=',count
+   if(count.lt.1)count=1
    do i=1,size(delays)
       if(index(delays(i),'r').ne.0)then                                  ! random number seconds between zero and value specified
          call substitute(delays(i),'r','s')                              ! change 'r' suffix to 's'
@@ -151,7 +178,23 @@ integer                       :: values(1:8)
       else                                                               ! simply convert to seconds
          delay_value=max( 0.0d0, days2sec(delays(i)) )
       endif
-      call system_sleep(delay_value)
+      if(verbose)write(*,*)'DELAY(SEC)=',delay_value
+      if(countdown.and.delay_value.gt.1)then
+         if(verbose)write(*,*)'COUNTDOWN'
+         do j=int(delay_value),1,-count
+            call system_sleep(count)
+            write(*,'(i0,a)',advance='no')j,merge(new_line('A'),' ',mod(j,10).eq.0)
+         enddo
+      elseif(countup.and.delay_value.gt.1)then
+         if(verbose)write(*,*)'COUNTUP'
+         do j=1,int(delay_value),count
+            call system_sleep(count)
+            write(*,'(i0,a)',advance='no')j,merge(new_line('A'),' ',mod(j,10).eq.0)
+         enddo
+      else
+         if(verbose)write(*,*)'SLEEP'
+         call system_sleep(delay_value)
+      endif
    enddo
 !===================================================================================================================================
 end program demo_system_sleep

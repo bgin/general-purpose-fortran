@@ -24,7 +24,7 @@ DESCRIPTION
    Theory              Computational complexity theory, Big O notation, Total orderLists, InplacementStabilityComparison sort,
                        Adaptive sort, Sorting network, Integer sorting, X + Y sorting, Transdichotomous model, Quantum sort
 
-   In the mean time those keywords can be  useful in locating materials on the WWW, especially in Wikipedia.
+   In the mean time those keywords can be useful in locating materials on the WWW, especially in Wikipedia.
 
 QUICKSORT
 

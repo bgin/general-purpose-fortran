@@ -380,7 +380,7 @@ end interface
 !!    EPERM   The process does not have permission to send the signal to
 !!            any receiving process.
 !!    ESRCH   No process or process group can be found corresponding to
-!!            that specified by pid.  The following sections are informative.
+!!            that specified by pid. The following sections are informative.
 !!
 !!##EXAMPLE
 !!
@@ -509,7 +509,7 @@ end interface
 !!
 !!##DESCRIPTION
 !!        The system_getuid(3f) function shall return the real user ID
-!!        of the calling process.  The getuid() function shall always be
+!!        of the calling process. The getuid() function shall always be
 !!        successful and no return value is reserved to indicate the error.
 !!##EXAMPLE
 !!
@@ -626,7 +626,7 @@ end interface
 !!        If pid is 0, it specifies the calling process.
 !!##RETURN VALUE
 !!        Upon successful completion, system_getsid() shall return the process group
-!!        ID of the session leader of the specified process.  Otherwise,
+!!        ID of the session leader of the specified process. Otherwise,
 !!        it shall return -1 and set errno to indicate the error.
 !!##EXAMPLE
 !!
@@ -659,7 +659,7 @@ end interface
 !!        The system_getpid() function returns the process ID of the
 !!        calling process.
 !!##RETURN VALUE
-!!        The value returned is the integer process ID.  The system_getpid()
+!!        The value returned is the integer process ID. The system_getpid()
 !!        function shall always be successful and no return value is reserved
 !!        to indicate an error.
 !!##EXAMPLE
@@ -953,7 +953,7 @@ contains
 !!##DESCRIPTION
 !!
 !!    The system_access(3f) function checks pathname existence and access
-!!    permissions.  The function checks the pathname for accessibility
+!!    permissions. The function checks the pathname for accessibility
 !!    according to the bit pattern contained in amode, using the real user
 !!    ID in place of the effective user ID and the real group ID in place
 !!    of the effective group ID.
@@ -962,8 +962,8 @@ contains
 !!    permissions to be checked (R_OK, W_OK, X_OK) or the existence test (F_OK).
 !!
 !!##OPTIONS
-!!        pathname   a character string representing a directory pathname.  Trailing spaces are ignored.
-!!        amode      bitwise-inclusive OR  of the values R_OK, W_OK, X_OK, or F_OK.
+!!        pathname   a character string representing a directory pathname. Trailing spaces are ignored.
+!!        amode      bitwise-inclusive OR of the values R_OK, W_OK, X_OK, or F_OK.
 !!
 !!##RETURN VALUE
 !!        If not true an error occurred or the requested access is not granted
@@ -1040,7 +1040,7 @@ end function system_access
 !!        The issock(3f) function checks if path is a path to a socket
 !!
 !!##OPTIONS
-!!        path   a character string representing a socket pathname.  Trailing spaces are ignored.
+!!        path   a character string representing a socket pathname. Trailing spaces are ignored.
 !!
 !!##RETURN VALUE
 !!        The system_issock() function should always be successful and no
@@ -1113,7 +1113,7 @@ end function system_issock
 !!        The isfifo(3f) function checks if path is a path to a fifo - named pipe.
 !!
 !!##OPTIONS
-!!        path   a character string representing a fifo - named pipe pathname.  Trailing spaces are ignored.
+!!        path   a character string representing a fifo - named pipe pathname. Trailing spaces are ignored.
 !!
 !!##RETURN VALUE
 !!        The system_isfifo() function should always be successful and no
@@ -1186,7 +1186,7 @@ end function system_isfifo
 !!        The ischr(3f) function checks if path is a path to a character device.
 !!
 !!##OPTIONS
-!!        path   a character string representing a character device pathname.  Trailing spaces are ignored.
+!!        path   a character string representing a character device pathname. Trailing spaces are ignored.
 !!
 !!##RETURN VALUE
 !!        The system_ischr() function should always be successful and no
@@ -1259,7 +1259,7 @@ end function system_ischr
 !!        The isreg(3f) function checks if path is a regular file
 !!
 !!##OPTIONS
-!!        path   a character string representing a pathname.  Trailing spaces are ignored.
+!!        path   a character string representing a pathname. Trailing spaces are ignored.
 !!
 !!##RETURN VALUE
 !!        The system_isreg() function should always be successful and no
@@ -1329,7 +1329,7 @@ end function system_isreg
 !!        The islnk(3f) function checks if path is a path to a link.
 !!
 !!##OPTIONS
-!!        path   a character string representing a link pathname.  Trailing spaces are ignored.
+!!        path   a character string representing a link pathname. Trailing spaces are ignored.
 !!
 !!##RETURN VALUE
 !!        The system_islnk() function should always be successful and no
@@ -1400,7 +1400,7 @@ end function system_islnk
 !! The isblk(3f) function checks if path is a path to a block device.
 !!
 !!##OPTIONS
-!! path   a character string representing a block device pathname.  Trailing spaces are ignored.
+!! path   a character string representing a block device pathname. Trailing spaces are ignored.
 !!
 !!##RETURN VALUE
 !!        The system_isblk() function should always be successful and no
@@ -1476,12 +1476,12 @@ end function system_isblk
 !!##DESCRIPTION
 !!        The chown(3f) function changes owner and group of a file
 !!
-!!        The  path  argument  points  to  a pathname naming a file. The
+!!        The path argument points to a pathname naming a file. The
 !!        user ID and group ID of the named file shall be set to the numeric
 !!        values contained in owner and group, respectively.
 !!
 !!        Only processes with an effective user ID equal to the user ID of
-!!        the file or with appropriate privileges may  change  the ownership
+!!        the file or with appropriate privileges may change the ownership
 !!        of a file.
 !!
 !!##OPTIONS
@@ -1492,7 +1492,7 @@ end function system_isblk
 !!
 !!##RETURN VALUE
 !!        The system_chown() function should return zero (0) if successful.
-!!        Otherwise, these functions shall return −1 and set errno  to
+!!        Otherwise, these functions shall return −1 and set errno to
 !!        indicate the error. If −1 is returned, no changes are made in
 !!        the user ID and group ID of the file.
 !!
@@ -1557,7 +1557,7 @@ end function system_chown
 !!        The isdir(3f) function checks if path is a path to a directory.
 !!
 !!##OPTIONS
-!!        path   a character string representing a directory pathname.  Trailing spaces are ignored.
+!!        path   a character string representing a directory pathname. Trailing spaces are ignored.
 !!
 !!##RETURN VALUE
 !!        The system_isdir() function should always be successful and no
@@ -1722,19 +1722,19 @@ end subroutine system_cpu_time
 !!##DESCRIPTION
 !!        The link() function shall create a new link (directory entry) for the existing file, path1.
 !!
-!!        The  path1  argument points to a pathname naming an existing file. The path2 argument points to a pathname naming the new
-!!        directory entry to be created. The link() function shall atomically create a new link for the existing file and the  link
+!!        The path1 argument points to a pathname naming an existing file. The path2 argument points to a pathname naming the new
+!!        directory entry to be created. The link() function shall atomically create a new link for the existing file and the link
 !!        count of the file shall be incremented by one.
 !!
-!!        If  path1  names a directory, link() shall fail unless the process has appropriate privileges and the implementation
+!!        If path1 names a directory, link() shall fail unless the process has appropriate privileges and the implementation
 !!        supports
 !!        using link() on directories.
 !!
-!!        If path1 names a symbolic link, it is implementation-defined whether link() follows the symbolic link, or creates  a  new
+!!        If path1 names a symbolic link, it is implementation-defined whether link() follows the symbolic link, or creates a new
 !!        link to the symbolic link itself.
 !!
-!!        Upon  successful  completion,  link()  shall mark for update the last file status change timestamp of the file. Also, the
-!!        last data modification and last file status change timestamps of the directory that  contains  the  new  entry  shall  be
+!!        Upon successful completion, link() shall mark for update the last file status change timestamp of the file. Also, the
+!!        last data modification and last file status change timestamps of the directory that contains the new entry shall be
 !!        marked for update.
 !!
 !!        If link() fails, no link shall be created and the link count of the file shall remain unchanged.
@@ -1742,10 +1742,10 @@ end subroutine system_cpu_time
 !!        The implementation may require that the calling process has permission to access the existing file.
 !!
 !!        The linkat() function shall be equivalent to the link() function except that symbolic links shall be handled as specified
-!!        by the value of flag (see below) and except in the case where either path1 or path2 or both are relative paths.  In  this
-!!        case  a  relative  path path1 is interpreted relative to the directory associated with the file descriptor fd1 instead of
-!!        the current working directory and similarly for path2 and the file descriptor fd2.  If the  file  descriptor  was  opened
-!!        without  O_SEARCH, the function shall check whether directory searches are permitted using the current permissions of the
+!!        by the value of flag (see below) and except in the case where either path1 or path2 or both are relative paths. In this
+!!        case a relative path path1 is interpreted relative to the directory associated with the file descriptor fd1 instead of
+!!        the current working directory and similarly for path2 and the file descriptor fd2. If the file descriptor was opened
+!!        without O_SEARCH, the function shall check whether directory searches are permitted using the current permissions of the
 !!        directory underlying the file descriptor. If the file descriptor was opened with O_SEARCH, the function shall not perform
 !!        the check.
 !!
@@ -1755,19 +1755,19 @@ end subroutine system_cpu_time
 !!              If path1 names a symbolic link, a new link for the target of the symbolic link is created.
 !!
 !!        If linkat() is passed the special value AT_FDCWD in the fd1 or fd2 parameter, the current working directory shall be used
-!!        for the respective path argument. If both fd1 and fd2 have value AT_FDCWD, the behavior shall be identical to a  call  to
+!!        for the respective path argument. If both fd1 and fd2 have value AT_FDCWD, the behavior shall be identical to a call to
 !!        link(), except that symbolic links shall be handled as specified by the value of flag.
 !!
 !!        Some implementations do allow links between file systems.
 !!
-!!        If path1 refers to a symbolic link, application developers should use linkat() with appropriate flags to  select  whether
+!!        If path1 refers to a symbolic link, application developers should use linkat() with appropriate flags to select whether
 !!        or not the symbolic link should be resolved.
 !!
-!!        If  the  AT_SYMLINK_FOLLOW flag is clear in the flag argument and the path1 argument names a symbolic link, a new link is
+!!        If the AT_SYMLINK_FOLLOW flag is clear in the flag argument and the path1 argument names a symbolic link, a new link is
 !!        created for the symbolic link path1 and not its target.
 !!
 !!##RETURN VALUE
-!!        Upon successful completion, these functions shall return 0. Otherwise, these functions shall return -1 and set  errno  to
+!!        Upon successful completion, these functions shall return 0. Otherwise, these functions shall return -1 and set errno to
 !!        indicate the error.
 !!
 !!##EXAMPLES
@@ -1850,7 +1850,7 @@ end function system_link
 !!##RETURN VALUE
 !!
 !!    Upon successful completion, these functions shall return 0. Otherwise,
-!!    these functions shall return -1 and set  errno  to indicate the error. If
+!!    these functions shall return -1 and set errno to indicate the error. If
 !!    -1 is returned, the named file shall not be changed.
 !!
 !!##EXAMPLES
@@ -1893,10 +1893,10 @@ end function system_unlink
 !!     integer(kind=c_int) :: umask_c
 !!
 !!##DESCRIPTION
-!!        The  umask()  function sets the file mode creation mask of the
+!!        The system_umask(3f) function sets the file mode creation mask of the
 !!        process to cmask and return the previous value of the mask. Only
 !!        the file permission bits of cmask (see <sys/stat.h>) are used;
-!!        the meaning of the other  bits  is  implementation-defined.
+!!        the meaning of the other bits is implementation-defined.
 !!
 !!        The file mode creation mask of the process is used to turn off
 !!        permission bits in the mode argument supplied during calls to
@@ -1916,7 +1916,7 @@ end function system_unlink
 !!        other bits in that value is unspecified, except that a subsequent
 !!        call to umask() with the returned value as cmask shall leave the
 !!        state of the mask the same as its state before the first call,
-!!        including  any  unspecified  use  of those bits.
+!!        including any unspecified use of those bits.
 !!
 !!##ERRORS
 !!        No errors are defined.
@@ -2327,10 +2327,10 @@ end function system_rename
 !!       integer                      :: ierr
 !!
 !!##DESCRIPTION
-!!        The  chmod() function shall change UID, _ISGID, S_ISVTX, and the
+!!        The system_chmod(3f) function shall change UID, _ISGID, S_ISVTX, and the
 !!        file permission bits of the file named by the pathname pointed
 !!        to by the path argument to the corresponding bits in the mode
-!!        argument. The application  shall  ensure  that the  effective user
+!!        argument. The application shall ensure that the effective user
 !!        ID of the process matches the owner of the file or the process
 !!        has appropriate privileges in order to do this.
 !!
@@ -2358,7 +2358,7 @@ end function system_rename
 !!
 !!
 !!##RETURN VALUE
-!!        Upon  successful completion, system_chmod(3f) returns 0.
+!!        Upon successful completion, system_chmod(3f) returns 0.
 !!        Otherwise, it returns -1 and sets errno to indicate the error. If
 !!        -1 is returned, no change to the file mode occurs.
 !!
@@ -2389,7 +2389,7 @@ end function system_rename
 !!    ierr=system_chmod('_test2', R_WXU)
 !!
 !!    !Setting Different Permissions for Owner, Group, and Other
-!!    ! The  following  example  sets owner permissions for CHANGEFILE to read, write, and execute, group permissions to read and
+!!    ! The following example sets owner permissions for CHANGEFILE to read, write, and execute, group permissions to read and
 !!    ! execute, and other permissions to read.
 !!    open(file='_test3',unit=10)
 !!    write(10,*)'TEST FILE 3'
@@ -2397,17 +2397,17 @@ end function system_rename
 !!    ierr=system_chmod('_test3', IANY([R_WXU,R_GRP,X_GRP,R_OTH]));
 !!
 !!    !Setting and Checking File Permissions
-!!    ! The following example sets the file permission bits for a file named /home/cnd/mod1, then calls the  stat()  function  to
+!!    ! The following example sets the file permission bits for a file named /home/cnd/mod1, then calls the stat() function to
 !!    ! verify the permissions.
 !!
 !!    ierr=system_chmod("home/cnd/mod1", IANY([R_WXU,R_WXG,R_OTH,W_OTH]))
 !!    status = system_stat("home/cnd/mod1", buffer)
 !!
-!!    ! In  order  to  ensure  that the S_ISUID and S_ISGID bits are set, an application requiring this should use stat() after a
+!!    ! In order to ensure that the S_ISUID and S_ISGID bits are set, an application requiring this should use stat() after a
 !!    ! successful chmod() to verify this.
 !!
 !!    !    Any files currently open could possibly become invalid if the mode
-!!    !    of the  file  is changed  to  a value which would deny access to
+!!    !    of the file is changed to a value which would deny access to
 !!    !    that process.
 !!
 !!    end program demo_system_chmod
@@ -2580,7 +2580,7 @@ end function system_rmdir
 !!    If path names a symbolic link, mkfifo() shall fail and set errno to
 !!    [EEXIST].
 !!
-!!    The  FIFO's user ID will be set to the process' effective user ID.
+!!    The FIFO's user ID will be set to the process' effective user ID.
 !!
 !!    The FIFO's group ID shall be set to the group ID of the parent
 !!    directory or to the effective group ID of the process.
@@ -2589,10 +2589,10 @@ end function system_rmdir
 !!    ID to the group ID of the parent directory.
 !!
 !!    Implementations may, but need not, provide an implementation-defined
-!!    way to initialize  the FIFO's group ID to the effective group ID of
+!!    way to initialize the FIFO's group ID to the effective group ID of
 !!    the calling process.
 !!
-!!    Upon  successful  completion, mkfifo() shall mark for update the
+!!    Upon successful completion, mkfifo() shall mark for update the
 !!    last data access, last data modification, and last file status change
 !!    timestamps of the file.
 !!
@@ -3183,6 +3183,7 @@ end subroutine system_putenv
 !>
 !!##NAME
 !!    set_environment_variable(3f) - [M_system:ENVIRONMENT] call setenv(3c) to set environment variable
+!!
 !!##SYNOPSIS
 !!
 !!   subroutine set_environment_variable(NAME, VALUE, STATUS)
@@ -3190,9 +3191,11 @@ end subroutine system_putenv
 !!    character(len=*)               :: NAME
 !!    character(len=*)               :: VALUE
 !!    integer, optional, intent(out) :: STATUS
+!!
 !!##DESCRIPTION
 !!    The set_environment_variable() procedure adds or changes the value of environment variables.
 !!
+!!##OPTIONS
 !!    NAME    If name does not already exist in the environment, then string is added to the environment.
 !!            If name does exist, then the value of name in the environment is changed to value.
 !!    VALUE   Value to assign to environment variable NAME
@@ -3209,18 +3212,18 @@ end subroutine system_putenv
 !!    use iso_c_binding
 !!    implicit none
 !!    integer :: ierr
-!!
+!!       !!
 !!       write(*,'(a)')'no environment variables containing "GRU":'
 !!       call execute_command_line('env|grep GRU')
-!!
+!!       !!
 !!       call set_environment_variable('GRU','this is the value',ierr)
 !!       write(*,'(a,i0)')'now "GRU" should be defined, status=',ierr
 !!       call execute_command_line('env|grep GRU')
-!!
+!!       !!
 !!       call set_environment_variable('GRU2','this is the second value',ierr)
 !!       write(*,'(a,i0)')'now "GRU" and "GRU2" should be defined, status =',ierr
+!!       !!
 !!       call execute_command_line('env|grep GRU')
-!!
 !!    end program demo_set_environment_variable
 !!
 !!   Results:
@@ -3342,7 +3345,7 @@ end subroutine system_clearenv
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_unsetenv(3f) - [M_system:ENVIRONMENT] change or add an environment variable by calling unsetenv(3c)
+!!    system_unsetenv(3f) - [M_system:ENVIRONMENT] delete an environment variable by calling unsetenv(3c)
 !!##SYNOPSIS
 !!
 !!   subroutine system_unsetenv(name,ierr)
@@ -3380,7 +3383,7 @@ end subroutine system_clearenv
 !!      end program demo_system_unsetenv
 !===================================================================================================================================
 subroutine system_unsetenv(name,ierr)
-character(len=*),parameter :: ident="@(#)M_system::system_unsetenv(3f): call unsetenv(3c) to remove variable from  environment"
+character(len=*),parameter :: ident="@(#)M_system::system_unsetenv(3f): call unsetenv(3c) to remove variable from environment"
 character(len=*),intent(in)  :: name
 integer,intent(out),optional :: ierr
    integer                   :: ierr_local
@@ -3694,12 +3697,12 @@ end subroutine system_gethostname
 !!
 !!    The system_getlogin() function returns a string containing the user
 !!    name associated by the login activity with the controlling terminal
-!!    of the current process.  Otherwise, it returns a null string and sets
+!!    of the current process. Otherwise, it returns a null string and sets
 !!    errno to indicate the error.
 !!
 !!    Three names associated with the current process can be determined:
 !!       o system_getpwuid(system_getuid()) returns the name associated with the real user ID of the process.
-!!       o system_getpwuid(system_geteuid()) returns the  name  associated with  the  effective user ID of the process
+!!       o system_getpwuid(system_geteuid()) returns the name associated with the effective user ID of the process
 !!       o system_getlogin() returns the name associated with the current login activity
 !!
 !!##RETURN VALUE
@@ -3721,7 +3724,7 @@ end subroutine system_gethostname
 !!
 !!    login[JSU]
 !===================================================================================================================================
-!--       The  following  example calls the getlogin() function to obtain the name of the user associated with the calling process,
+!--       The following example calls the getlogin() function to obtain the name of the user associated with the calling process,
 !--       and passes this information to the getpwnam() function to get the associated user database information.
 !--           ...
 !--           char *lgn;
@@ -4052,7 +4055,7 @@ end function C2F_string
 !!
 !!    This function returns information about a file. No permissions are
 !!    required on the file itself, but execute (search) permission is required
-!!    on all of the directories in path that lead to the file.  The elements
+!!    on all of the directories in path that lead to the file. The elements
 !!    that are obtained and stored in the array VALUES:
 !!
 !!       VALUES(1) Device ID

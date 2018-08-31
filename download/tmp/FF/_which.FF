@@ -26,7 +26,7 @@ RETURN VALUE
 EXAMPLE
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION
-PRODUCT:        CLI library utilities and examples
+PRODUCT:        GPF (General Purpose Fortran) utilities and examples
 PROGRAM:        _which(1f)
 DESCRIPTION:    list pathnames of leaf names that are executable and can be found using the $PATH variable
 VERSION:        1.0, 2017-10-15

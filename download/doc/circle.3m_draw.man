@@ -1,5 +1,5 @@
 NAME
-   circle(3f) - [M_DRAW:ARCS] Draw a circle.
+   circle(3f) - [M_draw:ARCS] Draw a circle.
 
 SYNOPSIS
         subroutine circle(x, y, radius)
@@ -9,13 +9,14 @@ SYNOPSIS
 
 DESCRIPTION
 
-Draw a circle. x, y, and radius are values in world units.
+   Draw a circle. x, y, and radius are values in world units.
 
-Draw a circle using current line width and color
+   Draw a circle using current line width and color
 
-Note: circles
-are regarded as polygons, so if polyfill or polyhatch has been called
-with 1, the circle will be filled or hatched accordingly.
+   NOTE
+
+   circles are regarded as polygons, so if polyfill or polyhatch has been
+   called with .true., the circle will be filled or hatched accordingly.
 
 OPTIONS
    X,Y        Coordinates for the center of the circle
@@ -25,32 +26,60 @@ EXAMPLE
   Sample program:
 
    program demo_circle
-   use M_DRAW
-   integer :: ipaws
-   !! set up drawing surface
-   call prefsize(400,400)
-   call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
-   call ortho2(left=-100.0, right=100.0, bottom=-100.0, top=100.0)
-   call color(3)
-   call clear()
-   call color(4)
-   call linewidth(200)
-   !! draw some circles
-   call circle(0.0, 0.0, 90.0)
-   call color(1)
-   call circle(0.0, 0.0, 40.0)
-   call color(2)
-   call circle(-25.0, 25.0, 20.0)
-   call circle(-25.0,-25.0, 20.0)
-   call circle( 25.0, 25.0, 20.0)
-   call circle( 25.0,-25.0, 20.0)
+      use M_draw
+      use M_drawPLUS, only : biggest_ortho2
+      use M_draw,    only  : D_BLACK,   D_WHITE
+      use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
+      use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
+      implicit none
+      real :: b=0.5
+      real :: R=5
+      integer :: ipaws
+   ! set up drawing surface
+      call prefsize(1000,200)
+      call vinit(' ') ! start graphics using device $M_draw_DEVICE
+      call biggest_ortho2(-25.0-b,25.0+b,-R-b,R+b)
+      call linewidth(200)
+      call color(D_CYAN)
+      call clear()
+   ! draw circles with hatching and fill
+      call color(D_WHITE)
+      call circle(-20.0,0.0, R)
+      call color(D_RED)
+      call circle(-10.0,0.0, R)
+      call polyfill(.true.)
+      call color(D_GREEN)
+      call circle(0.0,0.0,R)
+      call linewidth(20)
+      call polyhatch(.true.)
+      call hatchpitch(1.0/2.0)
+      call color(D_MAGENTA)
+      call circle(10.0,0.0,R)
+   ! layer calls to get a filled crosshatched circle
+   ! first a solid colored circle
+      call color(D_YELLOW)
+      call polyfill(.true.)
+      call circle(20.0,0.0,R)
 
-   ipaws=getkey()
-   !! exit graphics mode
-   call vexit()
+   ! draw hatch lines at 45 degrees
+      call color(D_GREEN)
+      call linewidth(80)
+      call polyhatch(.true.)
+      call hatchpitch(2.0/3.0)
+      call hatchang(45.0)
+      call circle(20.0,0.0,R)
+   ! draw hatch lines at -45 degrees
+      call hatchang(-45.0)
+      call circle(20.0,0.0,R)
+
+   ! outline circle with a thick border
+      call color(D_WHITE)
+      call linewidth(160)
+      call polyhatch(.false.)
+      call circle(20.0,0.0,R)
+
+      ipaws=getkey()
+   ! exit graphics mode
+      call vexit()
    end program demo_circle
-
-IMAGE
-   circles are drawn with polygon fill and hatch fill options. Multiple
-   calls were used to create the filled, crosshatched and outlined circle.
 

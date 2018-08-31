@@ -3,7 +3,7 @@ NAME
 SYNOPSIS
      _mv SOURCE DEST
 DESCRIPTION
-       Rename SOURCE to DEST
+       Rename file SOURCE to DEST
 
 EXAMPLE
-     _mv file.text file.txt
+     _mv file.text /tmp/file.txt

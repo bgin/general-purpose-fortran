@@ -593,8 +593,9 @@ end function gcd_cuboid
 !!             exponents of the corresponding prime factors.
 !!    verbose  optional LOGICAL constant or variable, controls printing
 !!             of results.
-!!              o .false. - Results are not printed.
-!!              o .true. - Results are printed.
+!!
+!!              o false - Results are not printed.
+!!              o true - Results are printed.
 !!##EXAMPLE
 !!
 !!

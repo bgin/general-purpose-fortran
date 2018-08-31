@@ -9,7 +9,7 @@
 #define POINT(x, y)     (0x10000 * (y) + (x))
 #define MAXCOLOR        7
 
-extern FILE     *_voutfile();
+extern FILE     *_draw_outfile();
 
 static int      uplot_first_time = 1, drawn = 0,
 #ifdef MAP_TO_LINESTYLES
@@ -33,7 +33,7 @@ static char     *colormap[MAXCOLOR + 1] = {
         "solid"
 };
 
-extern  FILE     *fp;
+extern  FILE     *draw_fp;
 
 /*
  * putpt
@@ -41,16 +41,16 @@ extern  FILE     *fp;
  *      Put a point out to the file.  Two two-byte values, little-endian.
  *      NOTE:  This assumes 8-bit chars and 16-bit shorts.
  */
-static void putpt(int x, int y, FILE *fp) {
+static void putpt(int x, int y, FILE *draw_fp) {
         short sx, sy;
 
         sx = (short) x;
         sy = (short) y;
 
-        putc((sx & 0xff), fp);
-        putc(((sx >> 8) & 0xff), fp);
-        putc((sy & 0xff), fp);
-        putc(((sy >> 8) & 0xff), fp);
+        putc((sx & 0xff), draw_fp);
+        putc(((sx >> 8) & 0xff), draw_fp);
+        putc((sy & 0xff), draw_fp);
+        putc(((sy >> 8) & 0xff), draw_fp);
 }
 
 /*
@@ -59,14 +59,14 @@ static void putpt(int x, int y, FILE *fp) {
  *      Set up the unixplot environment. Returns 1 on success.
  */
 static int uplot_init(void) {
-        fp = _voutfile();
+        draw_fp = _draw_outfile();
 
         if (!uplot_first_time)
                 return(1);
 
-        putc('s', fp);
-        putpt(0, 0, fp);
-        putpt(SPACE_SIZE, SPACE_SIZE, fp);
+        putc('s', draw_fp);
+        putpt(0, 0, draw_fp);
+        putpt(SPACE_SIZE, SPACE_SIZE, draw_fp);
 
         vdevice.sizeSx = vdevice.sizeSy = SPACE_SIZE;
         vdevice.sizeX = vdevice.sizeY = SPACE_SIZE;
@@ -83,13 +83,13 @@ static int uplot_init(void) {
  *      Flush remaining data and close the output file if necessary.
  */
 static int uplot_exit(void) {
-        fflush(fp);
-        if (fp != stdout && fp != stderr ) {
-                fflush(fp);
+        fflush(draw_fp);
+        if (draw_fp != stdout && draw_fp != stderr ) {
+                fflush(draw_fp);
                 if(vdevice.writestoprocess == 2){
-                   pclose(fp);
+                   pclose(draw_fp);
                 }else{
-                   fclose(fp);
+                   fclose(draw_fp);
                 }
         }
         return(0);
@@ -103,12 +103,12 @@ static int uplot_exit(void) {
 static int uplot_draw(int x, int y) {
         if (uplotlstx != vdevice.cpVx || uplotlsty != vdevice.cpVy)
         {
-                putc('m', fp);
-                putpt(vdevice.cpVx, vdevice.cpVy, fp);
+                putc('m', draw_fp);
+                putpt(vdevice.cpVx, vdevice.cpVy, draw_fp);
         }
 
-        putc('n', fp);
-        putpt(x, y, fp);
+        putc('n', draw_fp);
+        putpt(x, y, draw_fp);
         uplotlstx = x;
         uplotlsty = y;
         drawn = 1;
@@ -141,7 +141,7 @@ static int uplot_font(char *font) {
  */
 static int uplot_clear(void) {
         if (drawn) {
-                putc('e', fp);
+                putc('e', draw_fp);
         }
         drawn = 0;
         return(0);
@@ -159,7 +159,7 @@ static int uplot_color(int col) {
 
 #ifdef MAP_TO_LINESTYLES
         curcol = col;
-        fprintf(fp, "f%s\n", colormap[curcol]);
+        fprintf(draw_fp, "f%s\n", colormap[curcol]);
 #endif
         return(0);
 }
@@ -172,11 +172,11 @@ static int uplot_color(int col) {
 static int uplot_char(char c) {
         if (uplotlstx != vdevice.cpVx || uplotlsty != vdevice.cpVy)
         {
-                putc('m', fp);
-                putpt(vdevice.cpVx, vdevice.cpVy, fp);
+                putc('m', draw_fp);
+                putpt(vdevice.cpVx, vdevice.cpVy, draw_fp);
         }
 
-        fprintf(fp, "t%c\n", c);
+        fprintf(draw_fp, "t%c\n", c);
 
         drawn = 1;
         uplotlstx = uplotlsty = -1;
@@ -191,11 +191,11 @@ static int uplot_char(char c) {
 static int uplot_string(char *s) {
         if (uplotlstx != vdevice.cpVx || uplotlsty != vdevice.cpVy)
         {
-                putc('m', fp);
-                putpt(vdevice.cpVx, vdevice.cpVy, fp);
+                putc('m', draw_fp);
+                putpt(vdevice.cpVx, vdevice.cpVy, draw_fp);
         }
 
-        fprintf(fp, "t%s\n", s);
+        fprintf(draw_fp, "t%s\n", s);
 
         drawn = 1;
         uplotlstx = uplotlsty = -1;
@@ -210,16 +210,16 @@ static int uplot_string(char *s) {
 static int uplot_fill(int n, int x[], int y[]) {
         int     i;
 
-        putc('m', fp);
-        putpt(x[0], y[0], fp);
+        putc('m', draw_fp);
+        putpt(x[0], y[0], draw_fp);
 
         for (i = 1; i < n; i++)
         {
-                putc('n', fp);
-                putpt(x[i], y[i], fp);
+                putc('n', draw_fp);
+                putpt(x[i], y[i], draw_fp);
         }
-        putc('n', fp);
-        putpt(x[0], y[0], fp);
+        putc('n', draw_fp);
+        putpt(x[0], y[0], draw_fp);
 
         vdevice.cpVx = x[n - 1];
         vdevice.cpVy = y[n - 1];
@@ -257,12 +257,8 @@ static DevEntry uplotdev = {
         noop            /* syncronize the display */
 };
 
-/*
- * _UNIXPLOT_devcpy
- *
- *      copy the unixplot device into vdevice.dev.
- */
-int _UNIXPLOT_devcpy(void) {
+/* copy the unixplot device into vdevice.dev.  */
+int _UNIXPLOT_draw_devcpy(void) {
         vdevice.dev = uplotdev;
         return(0);
 }

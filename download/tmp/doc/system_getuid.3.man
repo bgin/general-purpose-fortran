@@ -5,7 +5,7 @@ SYNOPSIS
 
 DESCRIPTION
        The system_getuid(3f) function shall return the real user ID
-       of the calling process.  The getuid() function shall always be
+       of the calling process. The getuid() function shall always be
        successful and no return value is reserved to indicate the error.
 EXAMPLE
   Get group ID from Fortran:

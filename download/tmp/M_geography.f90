@@ -38,7 +38,7 @@ contains
 !!    (http://astrofloyd.org) (Sat Apr 1 2017)as part of the
 !!    libSUFR package, see: http://libsufr.sourceforge.net/
 !!
-!!    Copyright (c) 2002-2017  AstroFloyd - astrofloyd.org
+!!    Copyright (c) 2002-2017 AstroFloyd - astrofloyd.org
 !!
 !!    This is free software: you can redistribute it and/or modify it
 !!    under the terms of the GNU General Public License as published by
@@ -47,11 +47,11 @@ contains
 !!
 !!    This software is distributed in the hope that it will be useful,
 !!    but WITHOUT ANY WARRANTY; without even the implied warranty of
-!!    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+!!    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 !!    General Public License for more details.
 !!
 !!    You should have received a copy of the GNU General Public License
-!!    along with this code.  If not, see <http://www.gnu.org/licenses/>.
+!!    along with this code. If not, see <http://www.gnu.org/licenses/>.
 !===================================================================================================================================
 !***********************************************************************************************************************************
 function geographical_distance(ll1,bb1, ll2,bb2, miles)

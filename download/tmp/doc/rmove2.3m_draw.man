@@ -1,5 +1,5 @@
 NAME
-   rmove2(3f) - [M_DRAW:MOVE] Relative move in world units.
+   rmove2(3f) - [M_draw:MOVE] Relative move in world units.
 
 SYNOPSIS
     subroutine rmove2(deltax, deltay)
@@ -16,11 +16,11 @@ EXAMPLE
   Sample program:
 
      program demo_rmove2
-     use M_DRAW, only: prefsize, vinit, ortho2, clear, getkey
-     use M_DRAW, only: move2, rmove2, rdraw2, vexit
-     use M_DRAW, only: linewidth
+     use M_draw, only: prefsize, vinit, ortho2, clear, getkey
+     use M_draw, only: move2, rmove2, rdraw2, vexit
+     use M_draw, only: linewidth
      call prefsize(500,500)
-     call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
+     call vinit(' ') ! start graphics using device $M_draw_DEVICE
      call ortho2(-110.0,110.0,-110.0,110.0)
      call move2(-100.0,-100.0)
      call linewidth(70)

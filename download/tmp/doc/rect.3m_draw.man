@@ -1,5 +1,5 @@
 NAME
-   rect(3f) - [M_DRAW:POLYGONS] Draw a rectangle given two corners
+   rect(3f) - [M_draw:POLYGONS] Draw a rectangle given two corners
 
 SYNOPSIS
       subroutine rect(x1, y1, x2, y2)
@@ -29,35 +29,38 @@ EXAMPLE
 
    program demo_rect
    use M_draw
+   use M_drawplus, only : biggest_ortho2
+   use M_draw,    only  : D_BLACK,   D_WHITE
+   use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
+   use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
    implicit none
-   integer :: i, ipaws
-   real    :: r
+   integer :: ipaws
+   real    :: b=0.2
 
    !! set up graphics area
-   call prefsize(400,400)
-   call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
-   call ortho2(left=-100.0, right=100.0, bottom=-100.0, top=100.0)
+   call prefsize(1000,200)
+   call vinit(' ') ! start graphics using device $M_draw_DEVICE
+   call biggest_ortho2(-25.0-b, 25.0+b, -5.0-b, 5.0+b)
 
-   !! make sure display is ready, which can be a problem with X11
-   call vflush()
-   ipaws=getkey()
-
-   !! draw some filled rectangles
+   call linewidth(150)
+   call color(D_RED)
+   call rect(-24.0, -4.0, -12.0, 4.0)
    call polyfill(.true.)
-   do i=95,5,-10
-      call color(i/10)
-      r=real(i)
-      call rect( -1.0*r, -1.0*r, 1.0*r, 1.0*r )
-   enddo
-
-   !! draw some rectangles
-   call polyfill(.false.)
-   call linewidth(50)
-   call color(7)
-   do i=5,95,5
-      r=real(i)
-      call rect( -1.0*r, -1.0*r, 1.0*r, 1.0*r )
-   enddo
+   call color(D_GREEN)
+   call rect(-10.0, -4.0, -2.0, 4.0)
+   call polyhatch(.true.)
+   call hatchpitch(0.4)
+   call hatchang(30.0)
+   call linewidth(20)
+   call color(D_BLUE)
+   call rect(0.0, -4.0, 20.0, 3.0)
+   call linewidth(200)
+   call color(D_BLUE)
+   call move2(-25.0, -5.0)
+   call draw2(-25.0, 5.0)
+   call draw2(25.0, 5.0)
+   call draw2(25.0, -5.0)
+   call draw2(-25.0, -5.0)
 
    !! pause
    call vflush()

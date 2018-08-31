@@ -61,7 +61,7 @@ DESCRIPTION
 
    The interface has been implemented in such a way that you can use
    a few high-level routines for common tasks, such as inserting data
-   into a database and querying the contents.  To this end the module
+   into a database and querying the contents. To this end the module
    defines a set of routines and functions as well as several derived
    types to hide the low-level details.
 
@@ -237,7 +237,7 @@ EXAMPLE
    !
    ! Note that a transaction (via calls to sqlite3_begin and
    ! sqlite3_commit pair) is used, so that all the inserts can be
-   ! done in one go.  Inserting with autocommit is much slower,
+   ! done in one go. Inserting with autocommit is much slower,
    ! as the database file needs to be flushed every time.
    !
       call sqlite3_begin(db)

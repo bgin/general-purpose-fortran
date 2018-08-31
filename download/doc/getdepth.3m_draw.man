@@ -1,8 +1,8 @@
 NAME
-   getdepth(3f) - [M_DRAW:DEVICE] Return number of bit planes (color planes)
+   getdepth(3f) - [M_draw:DEVICE] Return number of bit planes (color planes)
 
 SYNOPSIS
-         integer function  getdepth()
+         integer function getdepth()
 
 DESCRIPTION
    Returns the number of bit planes (or color planes) for a particular

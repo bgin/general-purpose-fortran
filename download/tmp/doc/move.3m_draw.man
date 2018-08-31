@@ -1,5 +1,5 @@
 NAME
-   move(3f) - [M_DRAW:MOVE] Move current graphics position to (x, y, z)
+   move(3f) - [M_draw:MOVE] Move current graphics position to (x, y, z)
 
 SYNOPSIS
          subroutine move(x, y, z)

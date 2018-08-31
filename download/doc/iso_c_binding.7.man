@@ -161,7 +161,7 @@ THE ISO_C_BINDING INTRINSIC MODULE
      parameter on the processor or shall be -1.
 
      The value of C_CHAR shall be a valid value for a character kind type
-     parameter on the processor or shall be -1.  The value of C_CHAR is
+     parameter on the processor or shall be -1. The value of C_CHAR is
      known as the C character kind.
 
      The entity C_NULL_PTR shall be a named constant of type C_PTR. The

@@ -95,7 +95,7 @@ Impact
 #include <sys/types.h>
 #include "draw.h"
 
-extern FILE     *_voutfile();
+extern FILE     *_draw_outfile();
 
 #define MAX(x, y)       ((x) > (y) ? (x) : (y))
 #define MIN(x, y)       ((x) < (y) ? (x) : (y))
@@ -112,11 +112,11 @@ extern FILE     *_voutfile();
 
 static int      points=0;
 static int      vml_first_time = 1, drawn = 0, pslstx = -1, pslsty = -1;/* last (x, y) drawn */
-extern  FILE     *fp;
+extern  FILE     *draw_fp;
 
-int OLDX;
-int OLDY;
-int VML_MOVED=0;
+static int OLDX;
+static int OLDY;
+static int VML_MOVED=0;
 
 #define CMAPSIZE 256
 struct rgb_color {
@@ -144,11 +144,11 @@ static int VML_header() {
 #endif
    char *username;
    struct passwd *pw;
-   fprintf(fp,"<html xmlns:v=\"urn:schemas-microsoft-com:vml\"\n");
-   fprintf(fp,"      xmlns:o=\"urn:schemas-microsoft-com:office:office\">\n");
-   fprintf(fp,"<!--\n");
+   fprintf(draw_fp,"<html xmlns:v=\"urn:schemas-microsoft-com:vml\"\n");
+   fprintf(draw_fp,"      xmlns:o=\"urn:schemas-microsoft-com:office:office\">\n");
+   fprintf(draw_fp,"<!--\n");
    time(&tod);
-   fprintf(fp,"  Data Creation Date: %s",ctime(&tod));
+   fprintf(draw_fp,"  Data Creation Date: %s",ctime(&tod));
 /*----------------------------------------------------------------------------*/
 #ifndef MINGW
    un = &unstr; /* initialize the pointer to an address with enough room to store the returned value in */
@@ -158,7 +158,7 @@ static int VML_header() {
       pw = getpwuid(getuid());
       username = pw->pw_name;
    }
-   fprintf(fp,"  For: %s on OS=%.*s\n       NETWORK_NAME=%.*s\n       RELEASE=%.*s\n       VERSION=%.*s\n       MACHINE=%.*s\n",
+   fprintf(draw_fp,"  For: %s on OS=%.*s\n       NETWORK_NAME=%.*s\n       RELEASE=%.*s\n       VERSION=%.*s\n       MACHINE=%.*s\n",
        username,
        (int)sizeof(un->sysname),  un->sysname,
        (int)sizeof(un->nodename), un->nodename,
@@ -167,31 +167,31 @@ static int VML_header() {
        (int)sizeof(un->machine),  un->machine);
 #endif
 /*----------------------------------------------------------------------------*/
-   fprintf(fp,"-->\n");
+   fprintf(draw_fp,"-->\n");
 
-   fprintf(fp,"<head>\n");
+   fprintf(draw_fp,"<head>\n");
 
-      fprintf(fp,"<style>\n");
-      fprintf(fp," v\\:* { behavior:url(#default#VML); }\n");
-      fprintf(fp," o\\:* { behavior:url(#default#VML); }\n");
-      fprintf(fp,"</style>\n");
+      fprintf(draw_fp,"<style>\n");
+      fprintf(draw_fp," v\\:* { behavior:url(#default#VML); }\n");
+      fprintf(draw_fp," o\\:* { behavior:url(#default#VML); }\n");
+      fprintf(draw_fp,"</style>\n");
 
-      fprintf(fp,"<title>VML graphics</title>\n");
+      fprintf(draw_fp,"<title>VML graphics</title>\n");
 
-      fprintf(fp,"<meta name=\"Author\" content=\"John S. Urban\">\n");
-      fprintf(fp,"<meta name=\"Description\" content=\"@(#)M_DRAW VML Driver Version 1.0.1, March  1999\">\n");
+      fprintf(draw_fp,"<meta name=\"Author\" content=\"John S. Urban\">\n");
+      fprintf(draw_fp,"<meta name=\"Description\" content=\"@(#)M_DRAW VML Driver Version 1.0.1, March  1999\">\n");
 
-   fprintf(fp,"</head>\n");
+   fprintf(draw_fp,"</head>\n");
 
-   fprintf(fp,"<body topmargin=\"10\" leftmargin=\"10\" bgcolor=\"#FFFFFF\" link=\"#000066\" vlink=\"#666666\" text=\"#000000\">\n");
-   fprintf(fp,"<font face=\"VERDANA,ARIAL,HELVETICA\" size=\"2\">\n");
-   fprintf(fp,"<p>&nbsp;</p>\n");
+   fprintf(draw_fp,"<body topmargin=\"10\" leftmargin=\"10\" bgcolor=\"#FFFFFF\" link=\"#000066\" vlink=\"#666666\" text=\"#000000\">\n");
+   fprintf(draw_fp,"<font face=\"VERDANA,ARIAL,HELVETICA\" size=\"2\">\n");
+   fprintf(draw_fp,"<p>&nbsp;</p>\n");
 
    return(0);
 }
 /******************************************************************************/
 /* change index i in the color map to the appropriate rgb value. */
-int VML_mapcolor(int i, int r, int g, int b) {
+static int VML_mapcolor(int i, int r, int g, int b) {
    if (i >= CMAPSIZE || i < 0 ){
       return(-1);
    }
@@ -206,7 +206,7 @@ static int VML_init(void) {
    int prefx, prefy, prefxs, prefys;
    int i;
    int VML_header();
-   fp = _voutfile();
+   draw_fp = _draw_outfile();
 
    if (!vml_first_time) return(1);
 
@@ -224,13 +224,13 @@ static int VML_init(void) {
       vdevice.sizeX = vdevice.sizeY = MIN(VMLXSIZE,VMLYSIZE)*VMLTORAS; /* current viewport to use */
    }
 
-   fprintf(fp,"<a name=\"Page%d\"></a>\n", pgroup);
-   fprintf(fp,"<v:group id=\"Page%d\" style='mso-position-horizontal-relative:char;", pgroup);
-   fprintf(fp," mso-position-vertical-relative:line;");
-   fprintf(fp," left:0pt;top:0pt;width:%dpt;height:%dpt'\n",vdevice.sizeSx/VMLTORAS,vdevice.sizeSy/VMLTORAS);
+   fprintf(draw_fp,"<a name=\"Page%d\"></a>\n", pgroup);
+   fprintf(draw_fp,"<v:group id=\"Page%d\" style='mso-position-horizontal-relative:char;", pgroup);
+   fprintf(draw_fp," mso-position-vertical-relative:line;");
+   fprintf(draw_fp," left:0pt;top:0pt;width:%dpt;height:%dpt'\n",vdevice.sizeSx/VMLTORAS,vdevice.sizeSy/VMLTORAS);
 
-   fprintf(fp," url=\"#Page%d\"", pgroup);
-   fprintf(fp," coordsize=\"%d,%d\" >\n",vdevice.sizeSx,vdevice.sizeSy);
+   fprintf(draw_fp," url=\"#Page%d\"", pgroup);
+   fprintf(draw_fp," coordsize=\"%d,%d\" >\n",vdevice.sizeSx,vdevice.sizeSy);
 
    vdevice.depth = 8;
    for (i = 0; i < CMAPSIZE; i++) /* set up the basic colors */
@@ -273,21 +273,21 @@ static int closeline(void){
    if(lineopen){
       if(VML_MOVED == 0 ){
          /* NULL LINES ARE NOT POINTS, BUT NO-OPS TO 2002+ WINDOWS */
-         /* fprintf(fp," <!-- NULL LINE-->"); */
-         /* fprintf(fp," %d %d ",OLDX+1,OLDY+1); */
+         /* fprintf(draw_fp," <!-- NULL LINE-->"); */
+         /* fprintf(draw_fp," %d %d ",OLDX+1,OLDY+1); */
 
          /* draw small square to make a point */
          /* TOO BIG, SHOWS UP IN SOFTWARE TEXT TOO (MAYBE JUST MAKE SMALLER?
-         fprintf(fp," t %d %d r %d %d %d %d %d %d %d %d",-VMLTORAS/2,-VMLTORAS/2,
+         fprintf(draw_fp," t %d %d r %d %d %d %d %d %d %d %d",-VMLTORAS/2,-VMLTORAS/2,
                  0,VMLTORAS,
                  VMLTORAS,0,
                  0,-VMLTORAS,
                  -VMLTORAS,0);
          */
 
-         fprintf(fp," t -1 -1 r 1 1 ");
+         fprintf(draw_fp," t -1 -1 r 1 1 ");
       }
-      fprintf(fp, " e"); /* end curve */
+      fprintf(draw_fp, " e"); /* end curve */
       lineopen = FALSE; /* Polyline not open */
       points = 0;
    }
@@ -296,8 +296,8 @@ static int closeline(void){
 /******************************************************************************/
 static int closeshape(void){
    if(shapeopen){
-      fprintf(fp, "\"><v:stroke joinstyle=\"round\" endcap=\"round\"/>\n"); /* end curve */
-      fprintf(fp, "</v:shape>\n"); /* end curve */
+      fprintf(draw_fp, "\"><v:stroke joinstyle=\"round\" endcap=\"round\"/>\n"); /* end curve */
+      fprintf(draw_fp, "</v:shape>\n"); /* end curve */
       shapeopen = FALSE; /* Polyline not open */
       points = 0;
    }
@@ -306,7 +306,7 @@ static int closeshape(void){
 /******************************************************************************/
 static int openline(void){
    if(!lineopen){
-      fprintf(fp,"\nm");
+      fprintf(draw_fp,"\nm");
       lineopen = TRUE; /* Polyline open */
    }
    return (0);
@@ -314,12 +314,12 @@ static int openline(void){
 /******************************************************************************/
 static int openshape(void){
    if(!shapeopen){
-      fprintf(fp,
+      fprintf(draw_fp,
           "<v:shape ");
-      fprintf(fp,
+      fprintf(draw_fp,
           " style='position:absolute;top:0;left:0;width:%d;height:%d'\n", vdevice.sizeSx,vdevice.sizeSy);
-      fprintf(fp,"filled=\"false\" stroke=\"true\"");
-      fprintf(fp,
+      fprintf(draw_fp,"filled=\"false\" stroke=\"true\"");
+      fprintf(draw_fp,
           " strokeweight=\"%dpt\" strokecolor=\"rgb(%d,%d,%d)\"\npath=\"nf",
           curwid*vdevice.sizeX/10000/VMLTORAS,
           vml_carr[curcol].red, vml_carr[curcol].green, vml_carr[curcol].blue);
@@ -333,17 +333,17 @@ static int openshape(void){
 static int VML_exit(void) {
    closeline(); /* close Polyline line if it open */
    closeshape(); /* close shape line if it open */
-   fprintf(fp, "</v:group>\n"); /* Page Clear, End of Page Group */
-   fprintf(fp,"</font>\n</body>\n</html>\n"); /* End of Document */
+   fprintf(draw_fp, "</v:group>\n"); /* Page Clear, End of Page Group */
+   fprintf(draw_fp,"</font>\n</body>\n</html>\n"); /* End of Document */
    drawn = 0;
    points = 0;
 
-   if (fp != stdout && fp != stderr ){
-                fflush(fp);
+   if (draw_fp != stdout && draw_fp != stderr ){
+                fflush(draw_fp);
                 if(vdevice.writestoprocess == 2){
-                   pclose(fp);
+                   pclose(draw_fp);
                 }else{
-                   fclose(fp);
+                   fclose(draw_fp);
                 }
    }
    return (0);
@@ -358,7 +358,7 @@ static int VML_draw(int x, int y) {
       closeline(); /* close line if required */
       openshape(); /* start shape if required */
       openline(); /* start line */
-      fprintf(fp, " %d %d l", vdevice.cpVx, FLIPY(vdevice.cpVy));
+      fprintf(draw_fp, " %d %d l", vdevice.cpVx, FLIPY(vdevice.cpVy));
 
       OLDX=vdevice.cpVx;
       OLDY=FLIPY(vdevice.cpVy);
@@ -369,7 +369,7 @@ static int VML_draw(int x, int y) {
    openshape(); /* start shape if required */
    openline(); /* start line if required */
    if(points == 0){
-      fprintf(fp, " %d %d l", x ,FLIPY(y));
+      fprintf(draw_fp, " %d %d l", x ,FLIPY(y));
 
       OLDX=x;
       OLDY=FLIPY(y);
@@ -381,7 +381,7 @@ static int VML_draw(int x, int y) {
       OLDX=x;
       OLDY=FLIPY(y);
 
-      fprintf(fp, "%c%d %d", linefeed[(points % 8/7)], x ,FLIPY(y));
+      fprintf(draw_fp, "%c%d %d", linefeed[(points % 8/7)], x ,FLIPY(y));
    }
    points++;
    pslstx = x;
@@ -398,14 +398,14 @@ static int VML_clear(void) {
    {
 
      pgroup++; /* increment page id */
-     fprintf(fp, "</v:group>\n"); /* Page Clear, End of Page Group */
-     fprintf(fp,"<a name=\"Page%d\"></a>\n", pgroup);
-     fprintf(fp,"<br/>\n");
-     fprintf(fp,"<v:group id=\"Page%d\" style='mso-position-horizontal-relative:char;", pgroup);
-     fprintf(fp,"mso-position-vertical-relative:line;");
-     fprintf(fp,"left:0pt;top:0pt;width:%dpt;height:%dpt'\n",vdevice.sizeSx/VMLTORAS,vdevice.sizeSy/VMLTORAS);
-     fprintf(fp," url=\"#Page%d\"", pgroup);
-     fprintf(fp," coordsize=\"%d,%d\" >\n",vdevice.sizeSx,vdevice.sizeSy);
+     fprintf(draw_fp, "</v:group>\n"); /* Page Clear, End of Page Group */
+     fprintf(draw_fp,"<a name=\"Page%d\"></a>\n", pgroup);
+     fprintf(draw_fp,"<br/>\n");
+     fprintf(draw_fp,"<v:group id=\"Page%d\" style='mso-position-horizontal-relative:char;", pgroup);
+     fprintf(draw_fp,"mso-position-vertical-relative:line;");
+     fprintf(draw_fp,"left:0pt;top:0pt;width:%dpt;height:%dpt'\n",vdevice.sizeSx/VMLTORAS,vdevice.sizeSy/VMLTORAS);
+     fprintf(draw_fp," url=\"#Page%d\"", pgroup);
+     fprintf(draw_fp," coordsize=\"%d,%d\" >\n",vdevice.sizeSx,vdevice.sizeSy);
    }
    drawn = 0;
    points = 0;
@@ -533,51 +533,51 @@ static int VML_string(char *s) {
         x=(int)(vdevice.cpVx+slen*vdevice.attr->a.textcos);
         y=(int)(uneven+vdevice.cpVy+slen*vdevice.attr->a.textsin);
 
-fprintf(fp,"<v:line from=\"%d,%d\" to=\"%d,%d\"\n", vdevice.cpVx, FLIPY(vdevice.cpVy+ijust), x, FLIPY(y+ijust));
+fprintf(draw_fp,"<v:line from=\"%d,%d\" to=\"%d,%d\"\n", vdevice.cpVx, FLIPY(vdevice.cpVy+ijust), x, FLIPY(y+ijust));
 
       /* the coordinate reference */
-      fprintf(fp,
+      fprintf(draw_fp,
           " style='position:absolute;top:0;left:0;width:%d;height:%d'\n", vdevice.sizeSx,vdevice.sizeSy);
 
-      fprintf(fp,"filled=\"false\" stroke=\"true\"");
+      fprintf(draw_fp,"filled=\"false\" stroke=\"true\"");
 
       /* 
-      fprintf(fp," strokeweight=\"%dpt\" ", curwid*vdevice.sizeX/10000/VMLTORAS,
+      fprintf(draw_fp," strokeweight=\"%dpt\" ", curwid*vdevice.sizeX/10000/VMLTORAS,
        */
 
       /* character outline stroke color */
-      fprintf(fp," strokecolor=\"rgb(%d,%d,%d)\">\n",
+      fprintf(draw_fp," strokecolor=\"rgb(%d,%d,%d)\">\n",
           vml_carr[curcol].red, vml_carr[curcol].green, vml_carr[curcol].blue);
 
       /* character fill color */
-fprintf(fp,"<v:fill on=\"t\" color=\"rgb(%d,%d,%d)\"/>\n",
+fprintf(draw_fp,"<v:fill on=\"t\" color=\"rgb(%d,%d,%d)\"/>\n",
           vml_carr[curcol].red, vml_carr[curcol].green, vml_carr[curcol].blue);
 
-fprintf(fp,"<v:path textpathok=\"t\"></v:path>\n");
+fprintf(draw_fp,"<v:path textpathok=\"t\"></v:path>\n");
 
           /* string */
-fprintf(fp,"<v:textpath  on=\"t\" fitpath =\"t\" string=\"");
+fprintf(draw_fp,"<v:textpath  on=\"t\" fitpath =\"t\" string=\"");
    for(i=0; (c=s[i]) != '\0' ;i++)
    {
       switch(c) {
       case '"':
-         fprintf(fp, "&quot;");
+         fprintf(draw_fp, "&quot;");
          break;
       case '<':
-         fprintf(fp, "&lt;");
+         fprintf(draw_fp, "&lt;");
          break;
       case '>':
-         fprintf(fp, "&gt;");
+         fprintf(draw_fp, "&gt;");
          break;
       default:
-         fprintf(fp, "%c",c);
+         fprintf(draw_fp, "%c",c);
       }
 
    }
-fprintf(fp,"\" style=\"%s;",fontstyle);
+fprintf(draw_fp,"\" style=\"%s;",fontstyle);
 
-fprintf(fp,"v-text-align:stretch-justify;fontsize:%d\"/>\n",(int)sheight);
-fprintf(fp,"</v:line>\n");
+fprintf(draw_fp,"v-text-align:stretch-justify;fontsize:%d\"/>\n",(int)sheight);
+fprintf(draw_fp,"</v:line>\n");
 
    drawn = 1;
    pslstx = x;
@@ -587,7 +587,7 @@ fprintf(fp,"</v:line>\n");
 }
 /******************************************************************************/
 /* VML_char output a character */
-int VML_char(char c){
+static int VML_char(char c){
    char  s[2];
    s[0] = c; 
    s[1]='\0';
@@ -601,18 +601,18 @@ static int VML_fill(int n, int x[], int y[]) {
    static char linefeed[2] = {' ','\n'};
    closeline(); /* close line if required */
    closeshape(); /* close line if required */
-   fprintf(fp, "<v:shape style='position:absolute;top:0;left:0;width:%d;height:%d'\n",
+   fprintf(draw_fp, "<v:shape style='position:absolute;top:0;left:0;width:%d;height:%d'\n",
         vdevice.sizeSx,vdevice.sizeSy);
-   fprintf(fp, " stroke=\"false\" filled=\"true\" fillcolor=\"rgb(%d,%d,%d)\" coordsize=\"%d,%d\"\npath=\"m %d %d l\n",
+   fprintf(draw_fp, " stroke=\"false\" filled=\"true\" fillcolor=\"rgb(%d,%d,%d)\" coordsize=\"%d,%d\"\npath=\"m %d %d l\n",
        vml_carr[curcol].red, vml_carr[curcol].green, vml_carr[curcol].blue, 
        vdevice.sizeSx,vdevice.sizeSy,
        (int)x[0],(int)FLIPY(y[0]));
 
    for (i = 1; i < n; i++) {
-      fprintf(fp, " %d %d%c", x[i], FLIPY(y[i]),linefeed[(i % 8/7)]);
+      fprintf(draw_fp, " %d %d%c", x[i], FLIPY(y[i]),linefeed[(i % 8/7)]);
    }
 
-   fprintf(fp, " x e\"/></v:shape>\n"); /* end of polygon */
+   fprintf(draw_fp, " x e\"/></v:shape>\n"); /* end of polygon */
 
    vdevice.cpVx = x[n - 1];
    vdevice.cpVy = y[n - 1];
@@ -650,8 +650,8 @@ static DevEntry vmldev = {
    noop          /* Syncronize the display */
 };
 /******************************************************************************/
-/* _VML_devcpy copy the vml device into vdevice.dev.  */
-int _VML_devcpy() {
+/*  copy the vml device into vdevice.dev.  */
+int _VML_draw_devcpy(void) {
    vdevice.dev = vmldev;
    return(0);
 }

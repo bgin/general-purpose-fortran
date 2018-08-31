@@ -28,8 +28,8 @@ should help.
 #include <math.h>
 #include "draw.h"
 
-extern FILE *_voutfile();
-extern FILE *fp;
+extern FILE *_draw_outfile();
+extern FILE *draw_fp;
 
 #define byte unsigned char
 
@@ -63,7 +63,7 @@ static int USEMAP_setlw(int w){ /* Set the line width */
    return(0);
 }
 /******************************************************************************/
-int USEMAP_color(int col){ /* change the current color */
+static int USEMAP_color(int col){ /* change the current color */
    if(col < 0){
       /* set linewidth */
    } else{
@@ -72,7 +72,7 @@ int USEMAP_color(int col){ /* change the current color */
    return(0);
 }
 /******************************************************************************/
-int USEMAP_mapcolor(int indx, int r, int g, int b){  /* set values in pseudo color map.  */
+static int USEMAP_mapcolor(int indx, int r, int g, int b){  /* set values in pseudo color map.  */
    if (indx < CMAPSIZE && indx >= 0) {
       coltab[indx].r = ABS(r % CMAPSIZE) ;
       coltab[indx].g = ABS(g % CMAPSIZE) ;
@@ -81,7 +81,7 @@ int USEMAP_mapcolor(int indx, int r, int g, int b){  /* set values in pseudo col
    return(0);
 }
 /******************************************************************************/
-int USEMAP_init(void) {
+static int USEMAP_init(void) {
    int prefx, prefy, prefxs, prefys;
    int i;
    /* see if a size was user-specified using the prefsize procedure */
@@ -117,7 +117,7 @@ int USEMAP_init(void) {
 
    vdevice.depth = CMAPDEPTH;
 
-   fp = _voutfile();
+   draw_fp = _draw_outfile();
 
    /* Cause scaling to be 0 to maxX maxY: prefx, vdevice.sizeSx+prefx, prefy, vdevice.sizeSy+prefy */
 
@@ -137,57 +137,57 @@ int USEMAP_init(void) {
       USEMAP_mapcolor(i, 255, 255, 255);
    }
 
-   fprintf(fp,"<html>\n");
-   fprintf(fp,"<!-- =======================================================================-->\n");
-   fprintf(fp,"</--\n");
-   fprintf(fp,"   This file lists the polygons in your plot as HTML image maps.\n");
-   fprintf(fp,"   if the same plot is generated with the ppm driver\n");
-   fprintf(fp,"   and that is converted to a GIF file you will have n");
-   fprintf(fp,"   an HTML document with clickable regions in it.\n");
-   fprintf(fp,"\n");
-   fprintf(fp,"   If the polygons overlap you need to reverse the order\n");
-   fprintf(fp,"   of polygon definitions in the output file.\n");
-   fprintf(fp,"-->\n");
-   fprintf(fp,"<!-- =======================================================================-->\n");
-   fprintf(fp,"<head>\n");
-      fprintf(fp,"  <meta http-equiv=\"Content-Language\" content=\"en\" />\n");
-      fprintf(fp,"  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=us-ascii\" />\n");
-      fprintf(fp,"  <meta name=\"description\" content=\"polygons mapped to HTML images \"/>\n");
-      fprintf(fp,"  <meta name=\"author\" content=\"John S. Urban\">\n");
-      fprintf(fp,"  <meta name=\"date\" content=\"2010-06-11\">\n");
-      fprintf(fp,"  <meta name=\"keywords\" content=\"M_DRAW, USEMAP, IMG, Image Maps, HTML\">\n");
-      fprintf(fp,"  <meta name=\"generator\" content=\"M_DRAW graphics library\" />\n");
-      fprintf(fp,"  <title>Image Map</title>\n");
-      fprintf(fp,"  <style type=\"text/css\">\n");
-      fprintf(fp,"  </style>\n");
-      fprintf(fp,"  <script type=\"text/javascript\">\n");
-      fprintf(fp,"//||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
-      fprintf(fp,"// do something when different regions are clicked; could be any ECMAScript function, or simply use URLs instead )\n");
-      fprintf(fp,"    function dosomething(elementid,string){\n");
-      fprintf(fp,"       alert( string );\n");
-      fprintf(fp,"    }\n");
-      fprintf(fp,"//||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
-      fprintf(fp,"  </script>\n");
-   fprintf(fp,"</head>\n");
-   fprintf(fp,"<!-- =======================================================================-->\n");
-   fprintf(fp,"<body>\n");
+   fprintf(draw_fp,"<html>\n");
+   fprintf(draw_fp,"<!-- =======================================================================-->\n");
+   fprintf(draw_fp,"</--\n");
+   fprintf(draw_fp,"   This file lists the polygons in your plot as HTML image maps.\n");
+   fprintf(draw_fp,"   if the same plot is generated with the ppm driver\n");
+   fprintf(draw_fp,"   and that is converted to a GIF file you will have n");
+   fprintf(draw_fp,"   an HTML document with clickable regions in it.\n");
+   fprintf(draw_fp,"\n");
+   fprintf(draw_fp,"   If the polygons overlap you need to reverse the order\n");
+   fprintf(draw_fp,"   of polygon definitions in the output file.\n");
+   fprintf(draw_fp,"-->\n");
+   fprintf(draw_fp,"<!-- =======================================================================-->\n");
+   fprintf(draw_fp,"<head>\n");
+      fprintf(draw_fp,"  <meta http-equiv=\"Content-Language\" content=\"en\" />\n");
+      fprintf(draw_fp,"  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=us-ascii\" />\n");
+      fprintf(draw_fp,"  <meta name=\"description\" content=\"polygons mapped to HTML images \"/>\n");
+      fprintf(draw_fp,"  <meta name=\"author\" content=\"John S. Urban\">\n");
+      fprintf(draw_fp,"  <meta name=\"date\" content=\"2010-06-11\">\n");
+      fprintf(draw_fp,"  <meta name=\"keywords\" content=\"M_DRAW, USEMAP, IMG, Image Maps, HTML\">\n");
+      fprintf(draw_fp,"  <meta name=\"generator\" content=\"M_DRAW graphics library\" />\n");
+      fprintf(draw_fp,"  <title>Image Map</title>\n");
+      fprintf(draw_fp,"  <style type=\"text/css\">\n");
+      fprintf(draw_fp,"  </style>\n");
+      fprintf(draw_fp,"  <script type=\"text/javascript\">\n");
+      fprintf(draw_fp,"//||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
+      fprintf(draw_fp,"// do something when different regions are clicked; could be any ECMAScript function, or simply use URLs instead )\n");
+      fprintf(draw_fp,"    function dosomething(elementid,string){\n");
+      fprintf(draw_fp,"       alert( string );\n");
+      fprintf(draw_fp,"    }\n");
+      fprintf(draw_fp,"//||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
+      fprintf(draw_fp,"  </script>\n");
+   fprintf(draw_fp,"</head>\n");
+   fprintf(draw_fp,"<!-- =======================================================================-->\n");
+   fprintf(draw_fp,"<body>\n");
 
    return(1);
 }
 /******************************************************************************/
-int USEMAP_fill(int n, int x[], int y[]) { /* "fill" a polygon */
+static int USEMAP_fill(int n, int x[], int y[]) { /* "fill" a polygon */
    int     i;
    int icount = 0;
 
    if(POLYGON_COUNT == 0){
 
-      fprintf(fp,"<div><img id=\"IMAGE%d\" ",PAGE_COUNT);
-         fprintf(fp," src=\"IMAGE%d.gif\" ",PAGE_COUNT);
-         fprintf(fp," alt=\"Page %d\" ",PAGE_COUNT);
-         fprintf(fp," usemap=\"#PAGE%d\" ",PAGE_COUNT);
-         fprintf(fp," height=\"%d\" width=\"%d\" />\n",vdevice.sizeSx,vdevice.sizeSy);
+      fprintf(draw_fp,"<div><img id=\"IMAGE%d\" ",PAGE_COUNT);
+         fprintf(draw_fp," src=\"IMAGE%d.gif\" ",PAGE_COUNT);
+         fprintf(draw_fp," alt=\"Page %d\" ",PAGE_COUNT);
+         fprintf(draw_fp," usemap=\"#PAGE%d\" ",PAGE_COUNT);
+         fprintf(draw_fp," height=\"%d\" width=\"%d\" />\n",vdevice.sizeSx,vdevice.sizeSy);
 
-      fprintf(fp,"<map id=\"PAGE%d\" name=\"PAGE%d\">\n",PAGE_COUNT,PAGE_COUNT);
+      fprintf(draw_fp,"<map id=\"PAGE%d\" name=\"PAGE%d\">\n",PAGE_COUNT,PAGE_COUNT);
    }
    POLYGON_COUNT++;
 
@@ -195,22 +195,22 @@ int USEMAP_fill(int n, int x[], int y[]) { /* "fill" a polygon */
    GLOBAL_lastx=x[0];
    GLOBAL_lasty=y[0];
 
-   fprintf(fp,"<area title=\"POLYGON: %d color:%d %d %d\" alt=\"POLYGON%d region\" shape=\"poly\" coords=\"",
+   fprintf(draw_fp,"<area title=\"POLYGON: %d color:%d %d %d\" alt=\"POLYGON%d region\" shape=\"poly\" coords=\"",
       POLYGON_COUNT,
       coltab[GLOBAL_color].r, coltab[GLOBAL_color].g, coltab[GLOBAL_color].b,
       POLYGON_COUNT);
 
    for (i = 1; i < n; i++) {
       icount++;
-      if(i > 1){ fprintf(fp,","); }                     /* seperate point values with a comma */
-      /* if(icount > 10){ fprintf(fp,"\n   "); icount=0;}*/  /* add line breaks once in a while */
-      fprintf(fp,"%d,%d",x[i],FLIPY(y[i]));             /* draw outline across graphics array */
+      if(i > 1){ fprintf(draw_fp,","); }                     /* seperate point values with a comma */
+      /* if(icount > 10){ fprintf(draw_fp,"\n   "); icount=0;}*/  /* add line breaks once in a while */
+      fprintf(draw_fp,"%d,%d",x[i],FLIPY(y[i]));             /* draw outline across graphics array */
    }
    if ( x[n-1] != x[0] || y[n-1] != y[0] ){
    /* close the polygon if it is not closed */
-      fprintf(fp,",%d,%d",x[0],FLIPY(y[0])); /* draw outline across graphics array */
+      fprintf(draw_fp,",%d,%d",x[0],FLIPY(y[0])); /* draw outline across graphics array */
    }
-   fprintf(fp,"\" onClick=\"dosomething('PAGE%d','clicked POLYGON%d');\">\n",PAGE_COUNT,POLYGON_COUNT);
+   fprintf(draw_fp,"\" onClick=\"dosomething('PAGE%d','clicked POLYGON%d');\">\n",PAGE_COUNT,POLYGON_COUNT);
 
    /* update current position */
    GLOBAL_lastx = vdevice.cpVx = x[n - 1];
@@ -219,7 +219,7 @@ int USEMAP_fill(int n, int x[], int y[]) { /* "fill" a polygon */
    return(0);
 }
 /******************************************************************************/
-int USEMAP_draw(int x, int y) { /* print the commands to draw a line from the current graphics position to (x, y).  */
+static int USEMAP_draw(int x, int y) { /* print the commands to draw a line from the current graphics position to (x, y).  */
 
    if (GLOBAL_lastx != vdevice.cpVx || GLOBAL_lasty != vdevice.cpVy){
       GLOBAL_lastx=vdevice.cpVx;
@@ -228,30 +228,30 @@ int USEMAP_draw(int x, int y) { /* print the commands to draw a line from the cu
    return(0);
 }
 /*******************************************************************************/
-int USEMAP_exit(void) { /* exit from draw printing the command to flush the buffer.  */
+static int USEMAP_exit(void) { /* exit from draw printing the command to flush the buffer.  */
    if(POLYGON_COUNT != 0){
-      fprintf(fp,"<area title=\"BACKGROUND\" alt=\"background\" shape=\"rect\" coords=\"0,0,%d,%d\" onclick=\"dosomething('PAGE%d','you clicked BACKGROUND');\" />\n",
+      fprintf(draw_fp,"<area title=\"BACKGROUND\" alt=\"background\" shape=\"rect\" coords=\"0,0,%d,%d\" onclick=\"dosomething('PAGE%d','you clicked BACKGROUND');\" />\n",
          vdevice.sizeSy,vdevice.sizeSx,PAGE_COUNT);
-      fprintf(fp,"</map>\n</div>\n");
+      fprintf(draw_fp,"</map>\n</div>\n");
    }
-   fprintf(fp,"</body>\n");
-   fprintf(fp,"</html>\n");
-   if (fp != stdout && fp != stderr ){
-	        fflush(fp);
+   fprintf(draw_fp,"</body>\n");
+   fprintf(draw_fp,"</html>\n");
+   if (draw_fp != stdout && draw_fp != stderr ){
+	        fflush(draw_fp);
 	        if(vdevice.writestoprocess == 2){
-		   pclose(fp);
+		   pclose(draw_fp);
 		}else{
-                   fclose(fp);
+                   fclose(draw_fp);
 		}
    }
    return(0);
 }
 /******************************************************************************/
-int USEMAP_clear(void) { /* flush current page and clear graphics array */
+static int USEMAP_clear(void) { /* flush current page and clear graphics array */
    if(POLYGON_COUNT != 0){
-      fprintf(fp,"<area title=\"BACKGROUND\" alt=\"background\" shape=\"rect\" coords=\"0,0,%d,%d\" onclick=\"dosomething('PAGE%d','you clicked BACKGROUND');\" />\n",
+      fprintf(draw_fp,"<area title=\"BACKGROUND\" alt=\"background\" shape=\"rect\" coords=\"0,0,%d,%d\" onclick=\"dosomething('PAGE%d','you clicked BACKGROUND');\" />\n",
          vdevice.sizeSy,vdevice.sizeSx,PAGE_COUNT);
-      fprintf(fp,"</map>\n</div>\n");
+      fprintf(draw_fp,"</map>\n</div>\n");
    }
    PAGE_COUNT++;
    POLYGON_COUNT=0;
@@ -336,7 +336,7 @@ static DevEntry USEMAPdev = {
    noop            /* Syncronize the display */
 };
 /******************************************************************************/
-int _USEMAP_devcpy(void) {
+int _USEMAP_draw_devcpy(void) {
    vdevice.dev = USEMAPdev;
    vdevice.dev.Vinit = USEMAP_init;
    vdevice.dev.devname = "usemap";

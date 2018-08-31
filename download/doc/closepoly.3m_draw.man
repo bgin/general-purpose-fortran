@@ -1,5 +1,5 @@
 NAME
-   closepoly(3f) - [M_DRAW:POLYGONS] Terminates a polygon opened by makepoly(3f)
+   closepoly(3f) - [M_draw:POLYGONS] Terminates a polygon opened by makepoly(3f)
 
 SYNOPSIS
       subroutine closepoly()

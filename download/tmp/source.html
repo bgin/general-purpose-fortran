@@ -42,16 +42,6 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <div id="Container">
 <div id="Content">
 <html><head><title></title></head><body><table border="1">
-<tr><td><a href="hershey.sh">hershey.sh</a></td>
-<td>
-	 Makes the binary Hershey font file for M_DRAW<br/>
-</td>
-<tr><td><a href="source.html">source.html</a></td>
-<td>
-</td>
-<tr><td><a href="draw.h">draw.h</a></td>
-<td>
-</td>
 <tr><td><a href="c.f90">c.f90</a></td>
 <td>
 </td>
@@ -71,31 +61,25 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <td>
 	M_anyscalar::anyscalar_to_double(3f): convert integer or real parameter of any kind to doubleprecision<br/>
 	M_anyscalar::anyscalar_to_real(3f): convert integer or real parameter of any kind to real<br/>
-	M_anyscalar::anyinteger_to_128: convert integer parameter of any kind to 128-bit integer<br/>
+	M_anyscalar::anyinteger_to_128(3f): convert integer parameter of any kind to 128-bit integer<br/>
+</td>
+<tr><td><a href="M_bessel.f90">M_bessel.f90</a></td>
+<td>
+	 Bessel functions j(x), y(x), i(x), k(x) for real arguments and integer orders<br/>
+	       COMPUTE THE I BESSEL FUNCTION FOR A GIVEN ARGUMENT AND ORDER   ! BESI.9     <br/>
+	       COMPUTE THE J BESSEL FUNCTION FOR A GIVEN ARGUMENT AND ORDER   ! BESJ.9     <br/>
+	     BESJ0 CALCULATES THE BESSEL FUNCTION J(X) OF ORDER ZERO.        ! BESJ0.17<br/>
+	     BESJ1 CALCULATES THE BESSEL FUNCTION J(X) OF ORDER ONE.         ! BESJ1.17<br/>
+	       COMPUTE THE K BESSEL FUNCTION FOR A GIVEN ARGUMENT AND ORDER   ! BESK.8     <br/>
+	       COMPUTE THE Y BESSEL FUNCTION FOR A GIVEN ARGUMENT AND ORDER   ! BESY.9     <br/>
+	     BESY0 CALCULATES THE BESSEL FUNCTION Y(X) OF ORDER ZERO.        ! BESY0.17<br/>
 </td>
 <tr><td><a href="M_calculator.f90">M_calculator.f90</a></td>
 <td>
 	compute(1f): line mode calculator program (that calls jucalc(3f))<br/>
 	M_calculator::jucalc(3f): The procedure JUCALC acts like a calculator<br/>
-	M_calculator::help_funcs(3fp): prints help for calculator functions<br/>
-	M_calculator::jupars(3fp): crack out the parenthesis and solve<br/>
-	M_calculator::jufuns(3fp):reduce name(p1,p2,...) (p(i) are non-parenthesized expressions)<br/>
-	M_calculator::stufftok(3fp): add a new token variable and assign string to it<br/>
-	M_calculator::juargs(3fp):given 'par1,par2,...' store  non-parenthesized expression par(n) into a real or string array<br/>
-	M_calculator::jucals(3fp): resolve a series of terms into a single value and restring<br/>
-	M_calculator::jupows(3fp): expand power functions in a string, working from left to right<br/>
-	M_calculator::jufacs(3fp):reduce unparenthesized string with only * and / operators to val<br/>
 	M_calculator::juator(3f):returns a real value rval8 from a numeric character string chars.<br/>
-	M_calculator::jurtoa(3fp): returns a numeric character string from a real value.<br/>
-	M_calculator::jusqes(3fp):change +-[] to #=(),replace strings with placeholders,delete comments<br/>
-	M_calculator::jubous(3fp):locate where entry is/should go in sorted dictionary<br/>
-	M_calculator::juaddr(3fp): add new variable to numeric value dictionary at specified location<br/>
-	M_calculator::juadds(3fp): insert new variable name into string dictionary at specified location<br/>
-	M_calculator::given_name_get_stringvalue(3fp): return associated value for variable name<br/>
 	M_calculator::getvalue(3f): given numeric variable name return value<br/>
-	M_calculator::integer_stuff(3fp): pass INTEGER value to STUFF(3f)<br/>
-	M_calculator::real_stuff(3fp): pass REAL value to STUFF(3f)<br/>
-	M_calculator::real_stuff(3fp): pass DOUBLEPRECISION value to STUFF(3f)<br/>
 	M_calculator::stuffa(3f): directly store a string into calculator variable name table<br/>
 </td>
 <tr><td><a href="M_calculator_plus.f90">M_calculator_plus.f90</a></td>
@@ -111,26 +95,12 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <tr><td><a href="M_color.f90">M_color.f90</a></td>
 <td>
 	M_color::hue(3f): convert color components from one color model to another<br/>
-	M_color::rgbhls(3fp): given red,green,blue values calculate hue,lightness,saturation<br/>
-	M_color::rgbhvs(3fp): given red,green,blue calculate hue,saturation,value components<br/>
-	M_color::cmyrgb(3fp): given cyan,magenta,yellow calculate red,green,blue components<br/>
-	M_color::rgbcmy(3fp): given red,green,blue calculate cyan,magenta,yellow components<br/>
 	M_color::rgbmono(3f): convert RGB colors to a reasonable grayscale<br/>
-	M_color::rgbval(3fp): ensure a value is in the appropriate range and quadrant<br/>
-	M_color::hlsrgb(3fp): convert HLS(hue,lightness,saturation) values to RGB components<br/>
-	M_color::hvsrgb(3fp): given hue,saturation,value calculate red,green,blue components<br/>
-	M_color::yiqrgb(3fp): convert luma,orange-blue chrominance,purple-green chrominance to RGB<br/>
-	M_color::rgbyiq(3fp): convert RGB to luma,orange-blue chrominance,purple-green chrominance<br/>
 	M_color::closest_color_name(3f): given RGB values, try to find closest named color<br/>
-	M_color::showcolors(1f): list colors known to colorname2rgb(3f) & corresponding RGB values<br/>
 	M_color::color_name2rgb(3f): given a color name, return rgb color values in range 0 to 100<br/>
 </td>
 <tr><td><a href="M_Compare_Float_Numbers.f90">M_Compare_Float_Numbers.f90</a></td>
 <td>
-</td>
-<tr><td><a href="M_constants.f90">M_constants.f90</a></td>
-<td>
-	M_constants(3fm): A collection of commonly used constants (pi, e, gamma, ...)'<br/>
 </td>
 <tr><td><a href="M_csv.f90">M_csv.f90</a></td>
 <td>
@@ -148,33 +118,38 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 </td>
 <tr><td><a href="M_display.f90">M_display.f90</a></td>
 <td>
-	M_display(3fm) [M_display] module for pretty-printing matrices<br/>
-	integer scalar without title  (call disp_title_scalar_int(3f) with title='')<br/>
+	M_display(3fm): module for pretty-printing matrices<br/>
+	M_disp::disp_scalar_int(3f): integer scalar without title  (call disp_title_scalar_int(3f) with title='')<br/>
+	M_display::disp_scalar_int(3f): Default integer scalar with title<br/>
+	M_display::disp_vector_int(3f): Default integer vector without title<br/>
 </td>
 <tr><td><a href="M_draw.f90">M_draw.f90</a></td>
 <td>
-	s2c(3f):copy string(1:Clen(string)) to char array with null terminator<br/>
+	 Demonstrate just how much you can put in an object<br/>
 </td>
 <tr><td><a href="M_drawplus.f90">M_drawplus.f90</a></td>
 <td>
-	jucall(3f) invoke object with specified transformation<br/>
+	M_drawplus::arrowhead(3f): Draw arrow head (for text boxes and line markers)<br/>
+	invokeobj(3f) invoke object with specified transformation applied and then restored<br/>
 	pop(3f): call popviewport(), popmatrix(), popattributes()<br/>
 	push(3f): call pushattributes(), pushmatrix(), pushviewport()<br/>
+	create circular arc, leaving CP at end of arc<br/>
+	Like M_DASH arc routine without move at end so can be in a polygon<br/>
 	biggest_ortho2(3f) given a window size, find and set to largest accommodating viewport<br/>
+	m_draw:uconic(3f) general conic sections<br/>
 	 Fortran MODULE interface to M_DRAW C routines using Fortran ISO_C_BINDING interface<br/>
+	help_usage(3f): prints help information<br/>
+	juvog(3f): parse most M_draw(3fm) routines positionally <br/>
+	iflogic(3f): evaluate string in calculator and return false if value is zero<br/>
+	spirographc(3f):draw hypocycloidal curves<br/>
+	 draw smooth curve thru set up points using spline-fitting technique<br/>
+	 internal routine called by SMOOT<br/>
+	 internal routine called by SMOOT<br/>
 </td>
 <tr><td><a href="M_factor.f90">M_factor.f90</a></td>
 <td>
 	M_factor::least_common_multiple(3f): function finds LCM for (i,j)|m(:)|m(:,:)|m(:,:,:)'<br/>
 	M_factor::greatest_common_divisor(3f): function finds GCD for (i,j)|m(:)|m(:,:)|m(:,:,:)<br/>
-	M_factor::lcm(3fp): least common multiple of two integers<br/>
-	M_factor::lcm_vector(3fp): least common multiple of integer array m(:)<br/>
-	M_factor::lcm_matrix(3fp):least common multiple of integer matrix m(:,:)<br/>
-	M_factor::lcm_cuboid(3fp):least common multiple of integer cuboid m(:,:,:)<br/>
-	M_factor::gcd(3fp): compute greatest common divisor of two integers<br/>
-	M_factor::gcd_vector(3fp):greatest common divisor of integer vector m(:)<br/>
-	M_factor::gcd_matrix(3fp):greatest common divisor of integer matrix array m(:,:)<br/>
-	M_factor::gcd_cuboid(3fp):greatest common divisor of integer cuboid m(:,:,:)<br/>
 	M_factor::prime_factors(3f):decompose a number into its prime factors<br/>
 	M_factor::i_is_prime(3f): reports whether an integer is prime<br/>
 </td>
@@ -209,9 +184,6 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <tr><td><a href="M_history.f90">M_history.f90</a></td>
 <td>
 	M_history::redo(3f): open binary direct access file for keeping history<br/>
-	M_history::open_history(3fp): open history file for REDO(3f) procedure<br/>
-	M_history::redoline(3fp): redo a previous input line<br/>
-	M_history::help(3fp): prints help for REDO(3f)<br/>
 </td>
 <tr><td><a href="M_html.f90">M_html.f90</a></td>
 <td>
@@ -221,6 +193,8 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 </td>
 <tr><td><a href="M_io.f90">M_io.f90</a></td>
 <td>
+	M_io::read_table(3f): read file containing a table of numeric values <br/>
+	M_io::rd(3f): ask for string or number  from standard input with user-definable prompt<br/>
 	M_io::uniq(3f):append a number to the end of filename to make a unique name if name exists<br/>
 	M_io::print_inquire(3f): Do INQUIRE on file by name/number and print results<br/>
 	M_io::slurp(3f):allocate text array and read file filename into it<br/>
@@ -228,19 +202,13 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_io::dirname(3f):strip last component from filename<br/>
 	M_io::splitpath(3f):split Unix pathname into components (dir,name,basename,extension)<br/>
 	M_io::isdir(3f): determine if DIRNAME is a directory name ON UNIX-COMPATIBLE file systems<br/>
+	M_io::read_all(3f): read a line from specified LUN into allocatable string up to line length limit<br/>
+	M_io::read_line(3f): read a line from specified LUN into allocatable string up to line length limit<br/>
 	M_io::get_tmp(3f): Return the name of the scratch directory<br/>
 </td>
 <tr><td><a href="M_journal.f90">M_journal.f90</a></td>
 <td>
 	M_journal::journal(3fg): provides public message routine, no paging or graphic mode change<br/>
-	M_journal::write_msg(3fp): basic message routine used for journal files<br/>
-	M_journal::set_stdout(3fp): change I/O logical unit value for standard writes<br/>
-	M_journal::change_model(3fp): change integer journal(3f) modes<br/>
-	M_journal::wm(3fp): calls JOURNAL('sc',message)<br/>
-	M_journal::wm_r(3fp): append real to message and pass to write_msg()<br/>
-	M_journal::wm_l(3fp): append logical to message and pass to write_msg()<br/>
-	M_journal::wm_d(3fp): append doubleprecision to message and pass to write_msg()<br/>
-	M_journal::wm_i(3fp): append integer to string and pass to write_msg()<br/>
 </td>
 <tr><td><a href="M_kracken.f90">M_kracken.f90</a></td>
 <td>
@@ -260,36 +228,21 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_kracken::setprompts(3f): set explicit prompts for keywords in interactive mode<br/>
 	M_kracken::dissect(3f): convenient call to parse() define defaults, then process<br/>
 	M_kracken::parse(3f): parse user command and store tokens into Language Dictionary<br/>
-	M_kracken::store(3fp): replace dict. name's value (if allow='add' add name if necessary)<br/>
-	M_kracken::subscript(3fp): return the subscript value of a string when given it's name<br/>
-	M_kracken::get_command_arguments(3fp): return all command arguments as an allocated string<br/>
-	M_kracken::menu(3fp): prompt for values using a menu interface<br/>
 	M_kracken::show(3f): dump dictionary entries<br/>
 </td>
 <tr><td><a href="M_list.f90">M_list.f90</a></td>
 <td>
 	M_list::insert(3f): Generic subroutine inserts element into allocatable array at specified position<br/>
 	M_list::insert(3f): Generic subroutine deletes element from allocatable array at specified position<br/>
-	M_list::binary_search(3f) binary search of a sorted array.<br/>
-	M_list::locate(3f) find PLACE in sorted character array where VARNAME can be found or should be placed<br/>
-	M_list::remove_c(3fp) remove string from allocatable string array at specified position<br/>
-	M_list::remove_r(3fp) remove value from allocatable array at specified position<br/>
-	M_list::remove_i(3fp) remove value from allocatable array at specified position<br/>
-	M_list::insert_c(3fp) place string into allocatable string array at specified position<br/>
-	M_list::insert_r(3fp) place value into allocatable array at specified position<br/>
-	M_list::insert_i(3fp) place value into allocatable array at specified position<br/>
-	M_list::delete(3f) remove string from sorted allocatable string array if present<br/>
-	M_list::add(3f) place string into sorted allocatable string array if not present<br/>
+	M_list::binary_search(3f): binary search of a sorted array.<br/>
+	M_list::locate(3f): find PLACE in sorted character array where VARNAME can be found or should be placed<br/>
+	M_list::delete(3f): remove string from sorted allocatable string array if present<br/>
+	M_list::add(3f): place string into sorted allocatable string array if not present<br/>
 </td>
 <tr><td><a href="M_logic.f90">M_logic.f90</a></td>
 <td>
 	M_logic(3fm): Allows if/else/elseif/endif logic to be applied to input files<br/>
 	M_logic::cond(3f): process if/else/elseif/endif directives passed from input files<br/>
-	M_logic::if(3fp): process IF command in input files<br/>
-	M_logic::evalit(3fp): evaluate expression from an IF/ELSEIF and set write flag<br/>
-	M_logic::else(3fp): process ELSE command in input files<br/>
-	M_logic::elseif(3fp): process ELSEIF command in input files<br/>
-	M_logic::endif(3fp): process ENDIF command in input files<br/>
 </td>
 <tr><td><a href="M_math.f90">M_math.f90</a></td>
 <td>
@@ -299,6 +252,13 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_math::splift(3f): fits a spline to the n data points given in x and y<br/>
 	M_math::splint(3f): interpolates and twice differentiates a cubic spline<br/>
 	M_math::linearint(3f):linear interpolation of curve X(i),Y(i) at given XI(j) values<br/>
+	 SOLVE A SYSTEM OF SIMULTANEOUS LINEAR EQUATIONS OF THE FORM<br/>
+	 least squares fit to a polynomial expression<br/>
+	 SOLVE A SYSTEM OF SIMULTANEOUS LINEAR EQUATIONS<br/>
+	 Fit discrete data in a least squares sense by polynomials in one variable.<br/>
+	       COMPUTE VECTOR OF INTEGRAL VALUES FOR GIVEN GENERAL TABLE<br/>
+	    COMPUTE VECTOR OF INTEGRAL VALUES FOR GIVEN GENERAL TABLE<br/>
+	       COMPUTE VECTOR OF INTEGRAL VALUES FOR GIVEN GENERAL TABLE<br/>
 	M_math::citer(3f): determine various geometric properties of circle segment given radius and area of the segment.<br/>
 	M_math::envelope(3f):Find the vertices (in clockwise order) of a polygon enclosing the points (x(i), y(i), i=1, ..., n.<br/>
 	M_math::inpolygon(3f):Subroutine to determine whether or not an integer point is in a polygon of integer points<br/>
@@ -349,11 +309,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <td>
 	M_pixel::rect(3f): draw line rectangle given two opposite corners<br/>
 	M_pixel::line(3f): draw line between two points applying line width and color<br/>
-	M_pixel::swapcoor(3fp): swap two coordinates (integers)<br/>
-	M_pixel::draw_line_single(3fp): draw line between two points in pixel array<br/>
 	M_pixel::hershey(3f): draw text string as Hershey software vector fonts<br/>
-	M_pixel::hstylus(3fp): move to new current position(CP) or draw from CP to new position and update CP<br/>
-	M_pixel::chrcod(3fp): return symbol numbers or formatting codes for a text string<br/>
 	M_pixel::strlength: length of string using current font size<br/>
 	M_pixel::justfy(3f): calculate values for justifying Hershey fonts called by hershey(3f)<br/>
 	M_pixel::polyline(3f): draw lines between points<br/>
@@ -367,9 +323,6 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_pixel::circleprecision(3f): set number of line segments making up a circle<br/>
 	M_pixel::getviewport(3f): return viewport in screen pixel coordinates<br/>
 	M_pixel::viewport(3f): Specify which part of the screen to draw in.<br/>
-	M_pixel::mapping(3fp): calculate conversion factors between viewport and world window<br/>
-	M_pixel::world2viewport(3fp): convert world coordinates to viewports<br/>
-	M_pixel::viewport2world(3fp): convert viewport to world coordinates<br/>
 	M_pixel::ortho2(3f): define the area of the virtual world coordinates to map to the viewport<br/>
 	M_pixel::biggest_ortho2(3f): given a window size, find and set to largest accommodating viewport<br/>
 	M_pixel::rmove2(3f): relative move<br/>
@@ -397,26 +350,18 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_pixel::state(3f): print graphics state of M_pixel graphics module<br/>
 	M_pixel::poly2(3f): construct a polygon from an array of points<br/>
 	M_pixel::vflush(3f): flush current page<br/>
-	M_pixel::PPM_DRAW_FILL_LINE(3fp): draws a line across a graphics array<br/>
-	M_pixel::PPM_DRAW_THICK_LINE(3fp): draw line from current pixel graphics position to (x, y) using polygons for line thickness<br/>
-	M_pixel::PPM_SOLID_FILL(3fp): fill polygon of n points that are in viewport coordinates<br/>
-	M_pixel::PPM_ENDCAP_CIRCEL(3fp): Draw a circle on thick line segment end point<br/>
 </td>
 <tr><td><a href="M_pixel_slices.f90">M_pixel_slices.f90</a></td>
 <td>
 </td>
 <tr><td><a href="M_process.f90">M_process.f90</a></td>
 <td>
-	  Example of Fortran writing GNUPLOT command and data file.<br/>
-	M_process(3fm): call C process open,close,read,write functions <br/>
-	M_process::process_open_read(3f):open process to read from<br/>
-	M_process::process_open_write(3f):open process to write to<br/>
-	M_process::process_open(3fp):open process<br/>
-	M_process::process_close(3f):close process<br/>
-	M_process::process_readline(3f):read line from process<br/>
-	M_process::process_readall(3f):read all lines from process<br/>
-	M_process::process_writeline_scalar(3fp):write line to process<br/>
-	M_process::process_writeline_array(3fp):write lines to process<br/>
+	M_process(3fm): call C process open,close,read,write functions<br/>
+	M_process::process_open_read(3f): open process to read from<br/>
+	M_process::process_open_write(3f): open process to write to<br/>
+	M_process::process_close(3f): close process<br/>
+	M_process::process_readline(3f): read line from process<br/>
+	M_process::process_readall(3f): read all lines from process<br/>
 </td>
 <tr><td><a href="M_random.f90">M_random.f90</a></td>
 <td>
@@ -451,34 +396,20 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_exec::regfree(3f): release storage created by regcomp(3f) compiled regular expression<br/>
 	M_regex::regsub(3f): perform regex substitutions<br/>
 </td>
+<tr><td><a href="M_slices.f90">M_slices.f90</a></td>
+<td>
+	M_slices::dl_slices(3f): Routine to plot data in 3-D overlay form.<br/>
+	M_slices::dl_init(3f): initialize the longlib graphics plot package<br/>
+	M_slices::dl_symbol(3f): routine to plot characters and symbols<br/>
+</td>
 <tr><td><a href="M_sort.f90">M_sort.f90</a></td>
 <td>
-	M_sort::sort_shell(3f): Generic subroutine sorts the array X using a shell sort<br/>
-	M_sort::sort_shell_strings(3fp):sort strings over specified field using shell sort<br/>
-	M_sort::sort_shell_strings_lh(3fp):sort strings(a-z) over specified field using shell sort<br/>
-	M_sort::sort_shell_strings_hl(3fp):sort strings(z-a) over specified field using shell sort<br/>
-	M_sort::sort_shell_integers(3fp):sort integer array using Shell sort and specified order<br/>
-	M_sort::sort_shell_integers_hl(3fp):sort integer array using Shell sort (high to low)<br/>
-	M_sort::sort_shell_integers_lh(3fp):sort integer array using Shell sort low to high<br/>
-	M_sort::sort_shell_reals(3fp):sort real array using Shell sort and specified order<br/>
-	M_sort::sort_shell_reals_hl(3fp):sort real array using Shell sort (high to low)<br/>
-	M_sort::sort_shell_reals_lh(3fp):sort real array using Shell sort (low to high)<br/>
-	M_sort::sort_shell_doubles(3fp):sort double array using Shell sort and specified order<br/>
-	M_sort::sort_shell_doubles_hl(3fp):sort double array using Shell sort (high to low)<br/>
-	M_sort::sort_shell_doubles_lh(3fp):sort double array using Shell sort (low to high)<br/>
-	M_sort::sort_shell_complex(3fp):sort complex array using Shell sort<br/>
-	M_sort::sort_shell_reals_hl(3fp):sort complex array using Shell sort (high to low)<br/>
-	M_sort::sort_shell_reals_lh(3fp):sort complex array using Shell sort (low to high)<br/>
-	M_sort::sort_shell_complex_double(3fp):sort double complex array using Shell sort<br/>
-	M_sort::sort_shell_reals_hl(3fp):sort double complex array using Shell sort (high to low)<br/>
-	M_sort::sort_shell_reals_lh(3fp):sort double complex array using Shell sort (low to high)<br/>
+	M_sort::sort_quick_rx(3f): indexed hybrid quicksort of a real array<br/>
 </td>
 <tr><td><a href="M_sqlite.f90">M_sqlite.f90</a></td>
 <td>
 	M_sqlite::sqlite3_do(3f): Run a single SQL command<br/>
 	M_sqlite::sqlite3_create_table(3f): Create a new table<br/>
-	M_system::Ca2Fs_v1(3fp): function copies null-terminated char array to string<br/>
-	M_system::Fs2Ca(3fp): function copies string to null terminated char array<br/>
 </td>
 <tr><td><a href="M_stopwatch.f90">M_stopwatch.f90</a></td>
 <td>
@@ -491,13 +422,12 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_strings::string_to_value(3f): Generic subroutine converts numeric string to a number (a2d,a2r,a2i)<br/>
 	M_strings::v2s(3f): Generic function returns string given REAL|INTEGER|DOUBLEPRECISION value(d2s,r2s,i2s)<br/>
 	M_strings::matchw(3f): compare string to pattern which may contain wildcard characters<br/>
-	M_strings::split(3f): parse string on delimiter characters and store tokens into an array<br/>
+	M_strings::split(3f): parse string on delimiter characters and store tokens into an allocatable array<br/>
 	M_strings::chomp(3f): Tokenize a string : JSU- 20151030<br/>
 	M_strings::delim(3f): parse a string and store tokens into an array<br/>
 	M_strings::replace(3f): Globally replace one substring for another in string<br/>
 	M_strings::substitute(3f): Globally substitute one substring for another in string<br/>
 	M_strings::change(3f): change a character string like a line editor<br/>
-	M_strings::strtok(3fp): Tokenize a string : JSU- 20151030<br/>
 	M_strings::modif(3f): Emulate the MODIFY command from the line editor XEDIT<br/>
 	M_strings::len_white(3f): return position of last non-blank/non-null character in string<br/>
 	M_strings::crop(3f): trim leading and trailings blanks from string<br/>
@@ -506,8 +436,6 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_strings::reverse(3f): Return a string reversed<br/>
 	M_strings::upper(3f): Changes a string to uppercase<br/>
 	M_strings::lower(3f): Changes a string to lowercase over specified range<br/>
-	M_strings::a2s(3fp): function to copy char array to string<br/>
-	M_strings::s2a(3fp): function to copy string(1:Clen(string)) to char array<br/>
 	M_strings::s2c(3f): copy string(1:Clen(string)) to char array with null terminator<br/>
 	M_strings::c2s(3f): copy pointer to C char array till a null is encountered to a Fortran string up to 4096 characters<br/>
 	M_strings::indent(3f): find number of leading spaces in a string<br/>
@@ -520,19 +448,11 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_strings::merge_str(3f): pads first and second arguments to MERGE(3f) to same length<br/>
 	M_strings::compact(3f): Converts white-space to single spaces<br/>
 	M_strings::noesc(3f): convert non-printable characters to a space<br/>
-	M_strings::a2r(3fp): subroutine returns real value from string<br/>
-	M_strings::a2i(3fp): subroutine returns integer value from string<br/>
-	M_strings::a2d(3fp): subroutine returns double value from string<br/>
 	M_strings::s2v(3f): returns doubleprecision number from string<br/>
-	M_strings::value_to_string(3fp): subroutine returns a string from a value<br/>
 	M_strings::v2s_bug(3f): function returns string given numeric value<br/>
-	M_strings::d2s(3fp): private function returns string given doubleprecision value<br/>
-	M_strings::r2s(3fp): private function returns string given real value<br/>
-	M_strings::i2s(3fp): private function returns string given integer value<br/>
-	M_strings::trimzeros(3fp): Delete trailing zeros from numeric decimal string<br/>
 	M_strings::listout(3f): copy icurve_lists to icurve_expanded expanding negative numbers to ranges (1 -10 means 1 thru 10)<br/>
 	M_strings::describe(3f): return string describing long name of a single character<br/>
-	M_strings::getvals: read arbitrary number of values from a character variable up to size of values<br/>
+	M_strings::getvals(3f): read arbitrary number of values from a character variable up to size of values<br/>
 	M_strings::string_to_values(3f): reads an array of numbers from a numeric string<br/>
 	M_strings::s2vs(3f): function returns array of values from a string<br/>
 	M_strings::isprint(3f): indicates if input character is a printable ASCII character<br/>
@@ -583,17 +503,6 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_strings::string_multiply_value(3f): multiply TYPE(STRING) value times<br/>
 	M_strings::eq(3f): compare derived type string objects (eq,lt,gt,le,ge,ne)<br/>
 </td>
-<tr><td><a href="M_swap.f90">M_swap.f90</a></td>
-<td>
-	M_swap::swap(3f): swap two variables of like type (real,integer,complex,character,double)'<br/>
-	M_swap::d_swap(3fp): swap two double variables<br/>
-	M_swap::d_swap(3fp): swap two real variables<br/>
-	M_swap::d_swap(3fp): swap two integer variables<br/>
-	M_swap::d_swap(3fp): swap two logical variables<br/>
-	M_swap::d_swap(3fp): swap two complex variables<br/>
-	M_swap::cd_swap(3fp): swap two double complex variables<br/>
-	M_swap::d_swap(3fp): swap two double variables<br/>
-</td>
 <tr><td><a href="M_system.f90">M_system.f90</a></td>
 <td>
 	M_system::system_srand(3f): call srand(3c)<br/>
@@ -633,13 +542,11 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_system::system_putenv(3f): call putenv(3c)<br/>
 	M_system::set_environment_variable(3f): call setenv(3c) to set environment variable<br/>
 	M_system::system_clearenv(3f): emulate clearenv(3c) to clear environment<br/>
-	M_system::system_unsetenv(3f): call unsetenv(3c) to remove variable from  environment<br/>
+	M_system::system_unsetenv(3f): call unsetenv(3c) to remove variable from environment<br/>
 	M_system::system_readenv(3f): read next entry from environment table<br/>
 	M_system::fileglob(3f): Returns list of files using a file globbing pattern<br/>
 	M_system::system_uname(3f): call my_uname(3c) which calls uname(3c)<br/>
 	M_system::system_gethostname(3f): get name of current host by calling gethostname(3c)<br/>
-	M_system::arr2str(3fp): function copies null-terminated char array to string<br/>
-	M_system::str2arr(3fp): function copies string to null terminated char array<br/>
 	M_system::system_stat(3f): call stat(3c) to get pathname information<br/>
 </td>
 <tr><td><a href="M_time.f90">M_time.f90</a></td>
@@ -673,8 +580,6 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_time::easter(3f): calculate date for Easter given a year<br/>
 	M_time::ephemeris(3f): ephemeris position of planets for adjusting an equatorial telescope<br/>
 	M_time::system_sleep(3f): call sleep(3c) or usleep(3c)<br/>
-	M_time::call_sleep(3fp): call sleep(3c)<br/>
-	M_time::call_usleep(3fp): call usleep(3c)<br/>
 	M_time::now_ex(3f): use of now(3f) outside of a module<br/>
 	M_time::construct_from_dat(3f): construct TYPE(DATE_TIME) with DAT date-time array<br/>
 	M_time::construct_from_jed(3f): construct TYPE(DATE_TIME) with REAL Julian JED date-time value<br/>
@@ -718,15 +623,11 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_units::atomnum2symbol(3f): return element symbol given atomic number<br/>
 	M_units::symbol2atomnum(3f): return atomic number given element symbol name<br/>
 	M_units::pounds_to_kilograms(3f): converts a measurement in pounds to kilograms.<br/>
-	M_units::norm_angle_rad_double(3fp): Return input angle given in radians as doubleprecision angle between 0 and 2pi<br/>
-	M_units::norm_angle_rad_real(3fp): Return input angle given in radians as real angle between 0 and 2pi<br/>
-	M_units:: norm_angle_360_double(3fp): Returns angle in degrees between 0 and 360<br/>
-	M_units:: norm_angle_360_real(3fp): Returns angle in degrees between 0 and 360<br/>
-	M_units:: norm_angle_360_integer(3fp): Returns angle in degrees between 0 and 360<br/>
 </td>
 <tr><td><a href="M_uuid.f90">M_uuid.f90</a></td>
 <td>
-	returns the number of 100-ns intervals since 1582-10-15T00:00:00-0<br/>
+	M_uuid::M_uid(3fm): generate UUIDs according to RFC 4122<br/>
+	M_uuid::generate_uuid(3f): generate(approximately) a UUID (Universally Unique IDentifier) string per RFC 4122<br/>
 </td>
 <tr><td><a href="M_writegif.f90">M_writegif.f90</a></td>
 <td>
@@ -755,6 +656,45 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_xterm::xterm_get_geometry(3f): Obtain current xterm(1) window size in character rows and columns<br/>
 	M_xterm::xterm_get_position(3f): Obtain current xterm(1) window position<br/>
 </td>
+<tr><td><a href="M_xyplot.f90">M_xyplot.f90</a></td>
+<td>
+	M_xyplot(3fm): XY plot procedures<br/>
+	M_xyplot::plot_setfill(3f): set background, middleground, and foreground colors for plot<br/>
+	M_xyplot::plot_fetch(3f): call fetch (and calculator if fetched string starts with $ or double-quote)<br/>
+	M_xyplot::plot_hcopy(3f): process hcopy command<br/>
+	M_xyplot::plot_noclose(3f): flag whether to keep current device open while switching to alternate device<br/>
+	M_xyplot::plot_set_xmin(3f): set value for xmin/xmax/ymin/... command<br/>
+	M_xyplot::plot_storage(3f): if on a storage tube, clear the screen to unclutter it<br/>
+	M_xyplot::plot_setmark(3f): set or display marker geometries<br/>
+	M_xyplot::plot_page_aspect(3f): Get aspect ratio from ASPECT command and call xy_aspct<br/>
+	testmarks(1f): draw examples of dash codes, pen styles, and screen markers<br/>
+	M_xyplot::plot_marks(3f): draw screen of markers or pen styles or dash codes or color table or fonts<br/>
+	M_xyplot::plot_title(3f): allow user to add extra title lines by number<br/>
+	M_xyplot::plot_jut(3f): allow user to place text on screen<br/>
+	M_xyplot::plot_sz(3f): close and reopen window to new size if possible<br/>
+	M_xyplot ::plot_drawplot(3f): draw an xy plot<br/>
+	M_xyplot::plot_juparea(3f): parse parea command<br/>
+	M_xyplot::plot_jupage(3f): a good try at allowing mixing of PLT commands and vogle commands<br/>
+	M_xyplot::plot_id(3f): allow user to alter legend strings by number<br/>
+	M_xyplot::plot_clear(3f): clear graphics area and ensure in graphics mode<br/>
+	xy_jumapc(3f): map colors using HUE command<br/>
+	M_xyplot::plot_toggle(3f): copy of TOGGLE that uses xy_retrv2 instead of RETREV<br/>
+	M_xyplot::plot_opentrail(3f): set name of trail file and open it or turn off trail on error<br/>
+	M_xyplot::plot_z(3f): Interactive ZOOM mode<br/>
+	M_xyplot::plot_zmode(3f): Interactive ZOOM mode<br/>
+	plot string line at current position<br/>
+	 check and set font and store it so can query it<br/>
+	 FORTRAN interface point for M_DASH functions that return real values<br/>
+	M_xyplot::plot_axes(3f): generically draw linear axis and logarithmic axis<br/>
+	M_xyplot::plot_page(3f): initialize plot page and set up common page-related values<br/>
+	M_xyplot::plot_getdatarange(3f):  get plot window extremes, set plot window extremes for dual axis<br/>
+	M_xyplot::plot_line(3f): buffer curve data and call xy_line<br/>
+	M_xyplot::plot_label(3f): set plot axis labels<br/>
+	M_xyplot::plot_resetplot(3f): reset plot-related common values<br/>
+	M_xyplot::plot_set_nice_range(3f): determine nice range for creating an axis<br/>
+	M_xyplot::plot_setdash(3f):  allow user to display|alter|retrieve  dash codes by style number<br/>
+	 get marker geometries<br/>
+</td>
 <tr><td><a href="nc_errmessage.f90">nc_errmessage.f90</a></td>
 <td>
 </td>
@@ -778,15 +718,9 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <td>
 	paranoia(3f): call doublprecision or real versions of paranoia<br/>
 </td>
-<tr><td><a href="pixel_slice.f90">pixel_slice.f90</a></td>
-<td>
-	M_pixel::pixel_slice(3f): simplified call of dl_slices to plot a 3d-surface<br/>
-</td>
 <tr><td><a href="ran_mod.f90">ran_mod.f90</a></td>
 <td>
-	 Test of random number consistency for ran_mod : 20111230 - John S. Urban<br/>
 	randmod(3f): random number generator<br/>
-	ran1.f    1.2 97/07/02                                            RAN1_2<br/>
 </td>
 <tr><td><a href="sparanoia.f90">sparanoia.f90</a></td>
 <td>
@@ -949,7 +883,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_DRAW:popmatrix - Pop the top matrix from the stack.<br/>
 	M_DRAW:loadmatrix - load matrix<br/>
 	M_DRAW:mult4x4 - multiply 4 x 4 matrices b and c assigning them into a.<br/>
-	M_DRAW:multmatrix - Premultipy the top matrix on the stack by 'mat'<br/>
+	M_DRAW:multmatrix - Premultiply the top matrix on the stack by 'mat'<br/>
 	M_DRAW:identmatrix - Return a 4 x 4 identity matrix<br/>
 	M_DRAW:multvector - Multiply the vector a and the matrix b to form v. Need it to be snappy again.<br/>
 	M_DRAW:premultvector - PreMultiply the vector a and the matrix b to form v.  Need it to be snappy again.<br/>
@@ -970,9 +904,6 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_DRAW:rmove2 - Move Relative in 2D.<br/>
 	M_DRAW:smove2 - Move directly as a fraction of the screen size.<br/>
 	M_DRAW:rsmove2 - Relative move as a fraction of the screen size.<br/>
-</td>
-<tr><td><a href="C-M_draw.c">C-M_draw.c</a></td>
-<td>
 </td>
 <tr><td><a href="C-M_drawplus.c">C-M_drawplus.c</a></td>
 <td>
@@ -1186,7 +1117,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_DRAW:drawstr - Draw a string from the current pen position.<br/>
 	M_DRAW:istrlength - Find out the length of a string in raw 'Hershey coordinates'.<br/>
 	M_DRAW:strlength - Find out the length (in world coords) of a string.<br/>
-	M_DRAW:boxtext - Draw text so it fits in a 'box' - note only works with Hershey text<br/>
+	M_DRAW:boxtext - Stretch and draw text so it fits in a 'box' - note only works with Hershey text<br/>
 	M_DRAW:boxfit - Set up the scales etc for text so that a string of 'nchars' characters of the maximum width in the font fits in a box.<br/>
 	M_DRAW:centertext - Turns centering of text on or off. Turns off all other justifying.<br/>
 	M_DRAW:textjustify - Directly turns on/off justification<br/>
@@ -1272,22 +1203,6 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <tr><td><a href="C-yobbarays.c">C-yobbarays.c</a></td>
 <td>
 	M_DRAW:yobbarays - Turns on (or off) yobba rays, as described by Larry Dart's friend.<br/>
-</td>
-<tr><td><a href="exrc">exrc</a></td>
-<td>
-	 advanced vi(1) configuration file <br/>
-</td>
-<tr><td><a href="Makefile">Makefile</a></td>
-<td>
-	 Makefile started by makeout(1) 2018-06-12 08:09:42<br/>
-</td>
-<tr><td><a href="Makefile_picky">Makefile_picky</a></td>
-<td>
-	 Makefile started by makeout(1) 2018-06-12 08:09:39<br/>
-</td>
-<tr><td><a href="vimrc">vimrc</a></td>
-<td>
-	 An example for a vimrc file.<br/>
 </td>
 </table></body></html>
 </div>

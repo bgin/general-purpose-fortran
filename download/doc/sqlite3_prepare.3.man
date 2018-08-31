@@ -2,7 +2,7 @@ NAME
    sqlite3_prepare(3f) - [M_sqlite] Reset the prepared SQL statement so that it can be used again
 
 SYNOPSIS
-   call sqlite3_prepare(db, command, stmt, columns)
+   subroutine sqlite3_prepare(db, command, stmt, columns)
 
     type(SQLITE_DATABASE)       :: db
     character(len=*)            :: command

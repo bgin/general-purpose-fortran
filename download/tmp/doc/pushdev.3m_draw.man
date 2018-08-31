@@ -1,5 +1,5 @@
 NAME
-   pushdev(3f) - [M_DRAW:DEVICE] push current device onto a stack
+   pushdev(3f) - [M_draw:DEVICE] push current device onto a stack
 
 SYNOPSIS
          subroutine pushdev(device)
@@ -9,7 +9,7 @@ DESCRIPTION
    Initialize a new device without changing attributes, viewport etc,
    but save the previously initialised device on a stack.
 
-   Note, this is intended to completely change the device, it will not  work
+   Note, this is intended to completely change the device, it will not work
    if you pushdev() the same device that you are already running. (This will
    be fixed at a later date).
 

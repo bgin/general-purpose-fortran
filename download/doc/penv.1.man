@@ -1,7 +1,7 @@
 NAME
        penv(1f) - print all or part of environment in formats readable by various shells
 SYNOPSIS
-       penv [variable...] [-C|-B] [-p PREFIX] [-v]
+       penv [variable...] [-C|-B|-v] [-p PREFIX]
        penv [--help|--version]
 DESCRIPTION
        If no arguments are given, penv(1f) prints the entire environment.
@@ -11,14 +11,17 @@ DESCRIPTION
        If the -p switch is used variables beginning with that prefix will be
        displayed.
 OPTIONS
+    OUTPUT FORMAT
        -C           print output in a form that can be sourced into a
                     C shell (eg. as a setenv(1) command).
        -B           print output in a form that can be sourced into a
                     Bourne shell.
-       -p           print only variables with the given prefix
        -v           values only. Do not print variable names
+    VARIABLE SELECTION
+       -p           print only variables with the given prefix
        variable(s)  if variable names are given, print the value for
                     each one that is set.
+    INFORMATION
        --help       display this help and exit
        --version    output version information and exit
 

@@ -1,9 +1,9 @@
 NAME
-    circleprecision(3f) - [M_DRAW:ARCS] Set number of line segments used to approximate a circle
+    circleprecision(3f) - [M_draw:ARCS] Set number of line segments used to approximate a circle
 
 SYNOPSIS
         subroutine circleprecision(nsegs)
-        integer,intent(in)   :: nsegs
+        integer,intent(in) :: nsegs
 
    Set the number of line segments making up a circle. Default is currently
    32. The number of segments in an arc or sector is calculated from the
@@ -17,7 +17,11 @@ EXAMPLE
   Sample program:
 
    program demo_circleprecision
-   use M_DRAW
+   use M_draw
+   use M_draw,    only  : D_BLACK,   D_WHITE
+   use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
+   use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
+   use M_drawPLUS, only : biggest_ortho2
    use M_strings,  only : v2s
    real    :: b=0.5
    real    :: y1,y2,ym,x1,x2
@@ -27,13 +31,13 @@ EXAMPLE
    integer :: ipaws
       !! set up long bar as plotting area
       call prefsize(1000,200)
-      call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
-      call ortho2(-25.0-b, 25.0+b, -5.0-b, 5.0+b)
+      call vinit(' ') ! start graphics using device $M_draw_DEVICE
+      call biggest_ortho2(-25.0-b, 25.0+b, -5.0-b, 5.0+b)
       call textsize( 2.5/2.0, 3.0/2.0)
-      call font('DUPLEX')
+      call font('futura.l')
       call centertext(.true.)
       call linewidth(30)
-      call color(2)
+      call color(D_GREEN)
       y1=-5
       y2=5
       ym=0

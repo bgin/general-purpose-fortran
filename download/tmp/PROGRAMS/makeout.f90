@@ -159,12 +159,12 @@ logical                        :: stopit=.false.
 stopit=.false.
 if(l_version)then
 help_text=[ CHARACTER(LEN=128) :: &
-'@(#)PRODUCT:        CLI library utilities and examples>',&
+'@(#)PRODUCT:        GPF (General Purpose Fortran) utilities and examples>',&
 '@(#)PROGRAM:        makeout(1f)>',&
 '@(#)DESCRIPTION:    create Makefile for current directory>',&
 '@(#)VERSION:        1.0, 2017-12-09>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Tue, Jun 12th, 2018 7:13:09 AM>',&
+'@(#)COMPILED:       Sun, Aug 26th, 2018 1:34:53 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -294,7 +294,6 @@ character(len=maxlen)           :: ext
          bases=bases//lower(trim(basename))//' '                  ! append source file basenames//'.o' together into string
       case('.h','.inc')
          sources=sources//trim(name)//' '                         ! append source file names together into string
-         objects=objects//trim(basename)//'.o '                   ! append source file basenames//'.o ' together into string
          bases=bases//lower(trim(basename))//' '                  ! append source file basenames//' ' together into string
       endselect PREFIXES
    enddo
@@ -397,7 +396,7 @@ character(len=maxlen)           :: ext
       &'\t$(F90) $(LDFLAGS) $@.f90 -o $@ $(OBJS) $(LIBS)   ',&
       &'                                                   ',&
       &'clean:                                             ',&
-      &'\trm -f $(PROG) $(OBJS) *.mod                      ',&
+      &'\trm -f $(PROG) $(CPROG) $(OBJS) *.mod             ',&
       &'                                                   ',&
       &'.SUFFIXES: $(SUFFIXES) .f90 .F90 .ff .FF .shf      ',&
       &'# .shf -- assumed to write Fortran code to stdout when executed  ',&
@@ -428,7 +427,7 @@ character(len=maxlen)           :: ext
       &'.FF.o:                                                                            ',&
       &'\t@# run thru ufpp(1) preprocessor with system commands allowed                   ',&
       &'\t@[ -x $(*F).F90 ] || echo "error: $(*F).F90 exists"                             ',&
-      &'\tufpp -D F90 OS=`uname -o` -verbose -system .true. -i $(<) -o $(*F).F90          ',&
+      &'\tufpp -D F90 `uname -o` -verbose -system .true. -i $(<) -o $(*F).F90             ',&
       &'\t@[ -s $(*F).F90 ] || echo "error: $(*F).F90 is empty"                           ',&
       &'\t$(F90) $(F90FLAGS) -c $(*F).F90                                                 ',&
       &'# clean up scratch files                                                          ',&
@@ -440,7 +439,7 @@ character(len=maxlen)           :: ext
       &'.ff.o:                                                                            ',&
       &'\t@# run thru ufpp(1) preprocessor with system commands allowed                   ',&
       &'\t@[ -x $(*F).F90 ] || echo "error: $(*F).F90 exists"                             ',&
-      &'\tufpp -D F90 OS=`uname -o` -verbose -i $(<) -o $(*F).F90                         ',&
+      &'\tufpp -D F90 `uname -o` -verbose -i $(<) -o $(*F).F90                            ',&
       &'\t@[ -s $(*F).F90 ] || echo "error: $(*F).F90 is empty"                           ',&
       &'\t$(F90) $(F90FLAGS) -c $(*F).F90                                                 ',&
       &'# clean up scratch files                                                          ',&

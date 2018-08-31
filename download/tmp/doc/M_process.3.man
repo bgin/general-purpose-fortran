@@ -108,10 +108,12 @@ EXAMPLES
    gnuplot(1) program or continue on in the program.
 
     program gnuplotExample
-    ! @(#)  Example of Fortran writing GNUPLOT command and data file.
     use M_process ,only: process_open_write, process_writeline
     use M_process ,only: streampointer, process_close
     implicit none
+    !
+    ! Example of Fortran writing GNUPLOT command and data file.
+    !
     character(len=4096) :: line                             !*! line of data to write (assumed long enough to hold any command line)
     type(streampointer) :: fp                               !*! C file pointer returned by process_open()
     integer :: ierr                                         !*! check status of calls to process module routines

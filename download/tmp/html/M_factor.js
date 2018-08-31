@@ -1,4 +1,5 @@
 function loadthem(){
+append("M_factor.3{SECTION}.html");
 append("M_factor.3.html");
 append("greatest_common_divisor.3.html");
 append("i_is_prime.3.html");

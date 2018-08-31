@@ -1,5 +1,5 @@
 NAME
-   getcharsize(3f) - [M_DRAW:TEXT] Get the width and height of a character.
+   getcharsize(3f) - [M_draw:TEXT] Get the width and height of a character.
 
 SYNOPSIS
         subroutine getcharsize(c, width, height)

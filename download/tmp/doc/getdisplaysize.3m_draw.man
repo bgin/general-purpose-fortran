@@ -1,5 +1,5 @@
 NAME
-   getdisplaysize(3f) - [M_DRAW:ASPECT] Returns width and height of device in device units
+   getdisplaysize(3f) - [M_draw:ASPECT] Returns width and height of device in device units
 
 SYNOPSIS
          subroutine getdisplaysize(w, h)

@@ -1,12 +1,12 @@
 NAME
-   vinit(3f) - [M_DRAW:DEVICE] Initialise device
+   vinit(3f) - [M_draw:DEVICE] Initialise device
 
 SYNOPSIS
          subroutine vinit(device)
-         character *(*) device
-DESCRIPTION
+         character(len=*),intent(in) :: device
 
-Initialise the device.
+DESCRIPTION
+   Initialise the device.
 
 
  Note 1 :- Currently available devices are:
@@ -34,7 +34,7 @@ Initialise the device.
              pcl5land (color PCL5 landscape)
              pcl5port (color PCL5 portrait)
 
-       PIXMAPS (color)  and BITMAPS (monochrome)
+       PIXMAPS (color) and BITMAPS (monochrome)
        -----------------------------------------
        char   - An ASCII file that can be displayed to most
                 xterm(1) terminal emulators that support
@@ -69,7 +69,7 @@ Initialise the device.
        vml      - Microsoft Vector Markup Language
 
        FILES:
-       vog      - M_DRAW low level call record (debug)
+       vog      - M_draw low level call record (debug)
 
        OTHER:
        ------
@@ -97,27 +97,19 @@ Initialise the device.
        mswin - IBM PC Microsoft Windows.
 
     Note 2 :- If device is a NULL or a null string the value
-         of the environment variable "M_DRAW_DEVICE" is taken as the
+         of the environment variable "M_draw_DEVICE" is taken as the
          device type to be opened. The format of the variable is
 
-            M_DRAW_DEVICE [ xsize [ ysize [ xoffset [ yoffset ] ] ]
+            M_draw_DEVICE [ xsize [ ysize [ xoffset [ yoffset ] ] ]
 
          That is, if present xsize and ysize will be used
          in a call to prefsize(3c), and xoffset and yoffset will
          be used in a call to preposition(3c).
 
     Note 3 :- after vinit() it is wise to explicitly clear the screen.
-    e.g.: in C
-         color(BLACK);
-         clear();
-
-    or    in Fortran
-         call color(BLACK)
-         call clear
-
-    or    in Pascal
-         Color(BLACK);
-         Clear;
+    e.g.:
+         call color(D_BLACK)
+         call clear()
 
     Note 4 :  Sun, X11, decX11, apollo, hercules, cga and ega support
               double buffering.
@@ -204,7 +196,7 @@ vml
 xfig
 
    The xfig(1) command can be used to edit graphics generated with the
-   M_DRAW graphics library; and to convert the xfig(1)-format file to
+   M_draw graphics library; and to convert the xfig(1)-format file to
    many other output formats. If you are generating pixmaps with the PPM
    driver and want to use them as image maps in your HTML documents the
    usemap driver can be used.
@@ -221,7 +213,7 @@ xfig
    be defined before any other Fig objects. By default, 16 colors are
    defined. If undefined colors are used they are assigned a dash pattern
    or a fill pattern to help distinguish them. Use of hardware dash and
-   M_DRAW software dash could get confusing.
+   M_draw software dash could get confusing.
 
    Also, in the current driver version all lines are drawn as a series
    of move-draw vectors, which can make the files relatively very large.
@@ -233,38 +225,57 @@ xfig
    Alternatively, could use depth to keep up to 999 pages separate
 
 EXAMPLE
+ Sample program:
+
       program demo_vinit
       use M_draw
       use ISO_C_BINDING
-      integer(kind=c_int),parameter :: BLACK = 0, GREEN = 2
-      character(len=50) ::  device
-      ! read in device name
+      integer :: ios
+      character(len=50) :: device
+
+      ! read in device name and start graphics mode
       print*,'Enter output device:'
-      read(*,'(a)')device
+      read(*,'(a)',iostat=ios)device
+      if(ios.ne.0)device=' '
       call vinit(device)
-      ! set font to hardware text large
+      ! by default the drawing surface is
+      ! a square ranging from -1 to 1 in both
+      ! the X and Y axis
+
+      ! set font to large hardware font
       call font('large')
+
       ! set current color to black
-      call color(BLACK)
+      call color(D_BLACK)
+
       ! clear to current color
-      call clear
+      call clear()
+
       ! we want to draw in green
-      call color(GREEN)
+      call color(D_GREEN)
+
       ! draw a horizontal line at y = 0
       call move2(-1.0, 0.0)
       call draw2(1.0, 0.0)
+
       ! pause for some input
       idum=getkey()
+
       ! draw a line along x = 0
       call move2(0.0, 0.0)
       call draw2(0.0, 1.0)
+
       ! move to the middle of the screen
       call move2(0.0, 0.0)
+
       ! draw 'Hello' starting at the origin
       call drawstr('Hello')
+
       ! pause again
       idum=getkey()
-      !  set screen back to original state
-      call vexit
+
+      !  wrap up and exit graphics mode
+      call vexit()
+
       end program demo_vinit
 

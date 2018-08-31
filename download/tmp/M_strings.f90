@@ -143,7 +143,7 @@
 !! The object-oriented interface does not have individual man(1) pages, but is instead demonstrated using the following
 !! example program:
 !!
-!!  program  object_oriented
+!!  program object_oriented
 !!  !
 !!  ! This is an example using the object-oriented class/type model defined in M_strings_oop
 !!  ! This is essentially the same functionality as the procedures combined with several Fortran intrinsics and overloaded operators
@@ -389,7 +389,7 @@ character(len=*),parameter::ident="@(#)M_strings(3f): Fortran module containing 
 PRIVATE
 
 !----------------------# TOKENS
-PUBLIC split           !  subroutine parses a string using specified delimiter characters and store tokens into an array
+PUBLIC split           !  subroutine parses a string using specified delimiter characters and store tokens into an allocatable array
 PUBLIC chomp           !  function consumes input line as it returns next token in a string using specified delimiters
 PUBLIC delim           !  subroutine parses a string using specified delimiter characters and store tokens into an array
 !----------------------# EDITING
@@ -448,14 +448,19 @@ PUBLIC v2s_bug         !  generic function returns string given numeric REAL|DOU
  PRIVATE trimzeros     !  Delete trailing zeros from numeric decimal string
 PUBLIC listout         !  copy ICURVE() to ICURVE_EXPANDED() expanding negative numbers to ranges (1 -10 means 1 thru 10)
 !-----------------------------------------------------------------------------------------------------------------------------------
+!
 ! extend intrinsics to accept CHARACTER values
+!
 PUBLIC int, real, dble
+
 interface int;     module procedure int_s2v;           end interface
 interface real;    module procedure real_s2v;          end interface
 interface dble;    module procedure dble_s2v;          end interface
+
 interface int;     module procedure ints_s2v;          end interface
 interface real;    module procedure reals_s2v;         end interface
 interface dble;    module procedure dbles_s2v;         end interface
+
 !-----------------------------------------------------------------------------------------------------------------------------------
 !----------------------# BASE CONVERSION
 PUBLIC base            !  convert whole number string in base [2-36] to string in alternate base [2-36]
@@ -708,7 +713,7 @@ end function matchw
 !!
 !!##DESCRIPTION
 !!     SPLIT(3f) parses a string using specified delimiter characters and
-!!     store tokens into an array
+!!     store tokens into an allocatable array
 !!
 !!##OPTIONS
 !!
@@ -832,14 +837,15 @@ end function matchw
    subroutine split(input_line,array,delimiters,order,nulls)
 !-----------------------------------------------------------------------------------------------------------------------------------
 
-character(len=*),parameter::ident="@(#)M_strings::split(3f): parse string on delimiter characters and store tokens into an array"
+character(len=*),parameter::ident="&
+&@(#)M_strings::split(3f): parse string on delimiter characters and store tokens into an allocatable array"
 
 !  John S. Urban
 !-----------------------------------------------------------------------------------------------------------------------------------
    intrinsic index, min, present, len
 !-----------------------------------------------------------------------------------------------------------------------------------
 !  given a line of structure " par1 par2 par3 ... parn " store each par(n) into a separate variable in array.
-!    o by default  adjacent delimiters in the input string do not create an empty string in the output array
+!    o by default adjacent delimiters in the input string do not create an empty string in the output array
 !    o no quoting of delimiters is supported
    character(len=*),intent(in)              :: input_line  ! input string to tokenize
    character(len=*),optional,intent(in)     :: delimiters  ! list of delimiter characters
@@ -881,7 +887,7 @@ character(len=*),parameter::ident="@(#)M_strings::split(3f): parse string on del
 !-----------------------------------------------------------------------------------------------------------------------------------
    n=len(input_line)+1                        ! max number of strings INPUT_LINE could split into if all delimiter
    allocate(ibegin(n))                        ! allocate enough space to hold starting location of tokens if string all tokens
-   allocate(iterm(n))                         ! allocate enough space to hold ending  location of tokens if string all tokens
+   allocate(iterm(n))                         ! allocate enough space to hold ending location of tokens if string all tokens
    ibegin(:)=1
    iterm(:)=1
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -1517,7 +1523,7 @@ character(len=*),parameter::ident="@(#)M_strings::replace(3f): Globally replace 
    len_old=len(old_local)                              ! length of old substring to be replaced
    len_new=len(new_local)                              ! length of new substring to replace old substring
    left_margin=1                                       ! left_margin is left margin of window to change
-   right_margin=len(targetline)                        ! right_margin is right margin  of window to change
+   right_margin=len(targetline)                        ! right_margin is right margin of window to change
    newline=''                                          ! begin with a blank line as output string
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(present(range))then
@@ -1655,8 +1661,8 @@ character(len=*),parameter::ident="@(#)M_strings::substitute(3f): Globally subst
    character(len=*),intent(in)   :: old                ! old substring to replace
    character(len=*),intent(in)   :: new                ! new substring
    integer,intent(out),optional  :: ierr               ! error code. if ierr = -1 bad directive, >=0 then ierr changes made
-   integer,intent(in),optional   :: start              ! start sets the left  margin
-   integer,intent(in),optional   :: end                ! end sets the right  margin
+   integer,intent(in),optional   :: start              ! start sets the left margin
+   integer,intent(in),optional   :: end                ! end sets the right margin
 !-----------------------------------------------------------------------------------------------------------------------------------
    character(len=len(targetline)):: dum1               ! scratch string buffers
    integer                       :: ml, mr, ier1
@@ -1692,7 +1698,7 @@ character(len=*),parameter::ident="@(#)M_strings::substitute(3f): Globally subst
    len_new=len(new)                                    ! length of new substring to replace old substring
    if(id.le.0)then                                     ! no window so change entire input string
       il=1                                             ! il is left margin of window to change
-      ir=maxlengthout                                  ! ir is right margin  of window to change
+      ir=maxlengthout                                  ! ir is right margin of window to change
       dum1(:)=' '                                      ! begin with a blank line
    else                                                ! if window is set
       il=ml                                            ! use left margin
@@ -1948,10 +1954,10 @@ end subroutine change
 !===================================================================================================================================
 FUNCTION strtok(source_string,itoken,token_start,token_end,delimiters) result(strtok_status)
 !   DESCRIPTION:
-!      The  STRTOK(3f)  function is used to isolate sequential tokens in a string, SOURCE_STRING.
-!      These tokens are delimited in the  string by  at  least  one  of the characters in DELIMITERS.
-!      The first time that STRTOK(3f) is called, ITOKEN should  be  specified as zero.
-!      Subsequent calls, wishing  to  obtain further tokens from the same string, should pass back in TOKEN_START
+!      The STRTOK(3f) function is used to isolate sequential tokens in a string, SOURCE_STRING.
+!      These tokens are delimited in the string by at least one of the characters in DELIMITERS.
+!      The first time that STRTOK(3f) is called, ITOKEN should be specified as zero.
+!      Subsequent calls, wishing to obtain further tokens from the same string, should pass back in TOKEN_START
 !      until the function result returns .false.
 
 character(len=*),parameter::ident="@(#)M_strings::strtok(3fp): Tokenize a string : JSU- 20151030"
@@ -2029,7 +2035,7 @@ end function strtok
 !!
 !!   the modify directives are as follows-
 !!
-!!    DIRECTIVE  EXPLANATION
+!!    DIRECTIVE EXPLANATION
 !!
 !!    ^STRING#   Causes the string of characters between the ^ and the
 !!               next # to be inserted before the characters pointed to
@@ -2069,23 +2075,23 @@ character(len=*),parameter::ident="@(#)M_strings::modif(3f): Emulate the MODIFY 
 ! MODIF
 ! =====
 ! ACTION- MODIFIES THE LINE CURRENTLY POINTED AT. THE INPUT STRING CLINE IS ASSUMED TO BE LONG ENOUGH TO ACCOMMODATE THE CHANGES
-!         THE MODIFY  DIRECTIVES ARE AS FOLLOWS-
+!         THE MODIFY DIRECTIVES ARE AS FOLLOWS-
 !
 !   DIRECTIVE                       EXPLANATION
 !   ---------                       ------------
 !   ^STRING#   CAUSES THE STRING OF CHARACTERS BETWEEN THE ^ AND THE
 !              NEXT  # TO BE INSERTED BEFORE THE CHARACTERS POINTED TO
 !              BY THE ^.  AN ^ OR & WITHIN THE STRING IS TREATED AS A
-!              REGULAR  CHARACTER.  IF THE CLOSING # IS NOT SPECIFIED,
+!              REGULAR CHARACTER.  IF THE CLOSING # IS NOT SPECIFIED,
 !              MODIF(3f) INSERTS THE REMAINDER OFTHELINE AS IF A # WAS
 !              SPECIFIED AFTER THE LAST NONBLANK CHARACTER.
 !
 !              THERE ARE TWO EXCEPTIONS. THE COMBINATION ^# CAUSES A #
-!              TO BE INSERTED BEFORE THE CHARACTER POINTED TO  BY  THE
+!              TO BE INSERTED BEFORE THE CHARACTER POINTED TO BY THE
 !              ^,  AND AN ^ AS THE LAST CHARACTER OF THE DIRECTIVES
 !              CAUSES A BLANK TO BE INSERTED.
 !
-!   #          (WHEN NOT THE FIRST # AFTER AN ^) CAUSES THE  CHARACTER
+!   #          (WHEN NOT THE FIRST # AFTER AN ^) CAUSES THE CHARACTER
 !              ABOVE IT TO BE DELETED.
 !
 !   &          REPLACES THE CHARACTER ABOVE IT WITH A SPACE.
@@ -2127,7 +2133,7 @@ character(len=*),intent(in) ::  mod         !STRING TO DIRECT MODIFICATION
                ICHAR=ICHAR+1                !INCREMENT COUNTER FOR NEW LINE
                DUM2(ICHAR:ICHAR)=C(1:1)     !INSERT INSERT MODE TERMINATOR
             ENDIF
-            DO    J=IC,I                    !LOOP OF NUMBER OF CHARS INSERTED
+            DO J=IC,I                       !LOOP OF NUMBER OF CHARS INSERTED
                ICHAR=ICHAR+1                !INCREMENT COUNTER FOR NEW LINE
                IF(ICHAR.GT.LMAX)GOTO 999    !IF AT BUFFER LIMIT, QUIT
                DUM2(ICHAR:ICHAR)=CLINE(J:J) !APPEND CHARS FROM ORIG LINE
@@ -2432,7 +2438,7 @@ END FUNCTION transliterate
 !!      TRM     option to trim each element of STR of trailing spaces. Defaults to .TRUE.
 !!##RESULT
 !!      STRING  CHARACTER variable composed of all of the elements of STR() appended together
-!!              with the optional seperator SEP placed between the elements.
+!!              with the optional separator SEP placed between the elements.
 !!
 !!##EXAMPLE
 !!
@@ -2750,7 +2756,7 @@ end function lower
 !!
 !!    SWITCH(3f): generic function that switches CHARACTER string to an array
 !!    of single characters or an array of single characters to a CHARACTER
-!!    string. Useful in passing strings to C.  New Fortran features may
+!!    string. Useful in passing strings to C. New Fortran features may
 !!    supersede these routines.
 !!
 !!
@@ -3844,14 +3850,14 @@ end function noesc
 !!       returns a real value from a numeric character string.
 !!
 !!       works with any g-format input, including integer, real, and
-!!       exponential.  If the input string begins with "B", "Z", or "O"
+!!       exponential. If the input string begins with "B", "Z", or "O"
 !!       and otherwise represents a positive whole number it is assumed to
 !!       be a binary, hexadecimal, or octal value. If the string contains
 !!       commas they are removed. If string is of the form NN:MMM... or
 !!       NN#MMM NN is assumed to be the base of the whole number.
 !!
 !!       if an error occurs in the READ, IOSTAT is returned in IERR and
-!!       value is set to zero.  if no error occurs, IERR=0.
+!!       value is set to zero. if no error occurs, IERR=0.
 !!##OPTIONS
 !!       CHARS  input string to read numeric value from
 !!##RETURNS
@@ -3929,9 +3935,9 @@ character(len=*),parameter::ident="@(#)M_strings::a2d(3fp): subroutine returns d
       write(frmt,fmt)pnd-1                                      ! build format of form '(BN,Gn.0)'
       read(local_chars(:pnd-1),fmt=frmt,iostat=ierr,iomsg=msg)basevalue   ! try to read value from string
       if(decodebase(local_chars(pnd+1:),basevalue,ivalu))then
-         valu=ivalu
+         valu=real(ivalu)
       else
-         valu=0.0
+         valu=0.0d0
          ierr=-1
       endif
    else
@@ -3954,7 +3960,7 @@ character(len=*),parameter::ident="@(#)M_strings::a2d(3fp): subroutine returns d
       end select
    endif
    if(ierr.ne.0)then                                            ! if an error occurred ierr will be non-zero.
-      valu=0.0                                                  ! set returned value to zero on error
+      valu=0.0d0                                                ! set returned value to zero on error
          if(local_chars.ne.'eod')then                           ! print warning message
             call journal('sc','*a2d* - cannot produce number from string ['//trim(chars)//']')
             if(msg.ne.'')then
@@ -4277,7 +4283,7 @@ end subroutine value_to_string
 !!
 !!    v2s(3f) returns a representation of a numeric value as a string when
 !!    given a numeric value of type REAL, DOUBLEPRECISION, or INTEGER. It
-!!    creates the strings using internal WRITE() statements.  trailing zeros
+!!    creates the strings using internal WRITE() statements. Trailing zeros
 !!    are removed from non-zero values, and the string is left-justified.
 !!
 !!       o  VALUE - input value to be converted to a string
@@ -4440,8 +4446,8 @@ end subroutine trimzeros
 !!
 !!   subroutine listout(icurve_lists,icurve_expanded,inums,ierr)
 !!
-!!    real,intent(in)       :: icurve_lists(:)
-!!    real,intent(out)      :: icurve_expanded(:)
+!!    integer,intent(in)    :: icurve_lists(:)
+!!    integer,intent(out)   :: icurve_expanded(:)
 !!    integer,intent(out)   :: inums
 !!    integer,intent(out)   :: ierr
 !!
@@ -5064,7 +5070,7 @@ subroutine getvals(line,values,icount,ierr)
 implicit none
 
 character(len=*),parameter::ident="&
-&@(#)M_strings::getvals: read arbitrary number of values from a character variable up to size of values"
+&@(#)M_strings::getvals(3f): read arbitrary number of values from a character variable up to size of values"
 
 ! JSU 20170831
 
@@ -6455,32 +6461,32 @@ character(len=*),parameter::ident="@(#)M_strings::eq(3f): compare derived type s
 
    class(string),intent(in) :: self
    type(string),intent(in)  :: other
-   eq= self%str .eq.  other%str
+   eq= self%str .eq. other%str
 end function eq
 logical function lt(self,other)
    class(string),intent(in) :: self
    type(string),intent(in)  :: other
-   lt= self%str .lt.  other%str
+   lt= self%str .lt. other%str
 end function lt
 logical function gt(self,other)
    class(string),intent(in) :: self
    type(string),intent(in)  :: other
-   gt= self%str .gt.  other%str
+   gt= self%str .gt. other%str
 end function gt
 logical function le(self,other)
    class(string),intent(in) :: self
    type(string),intent(in)  :: other
-   le= self%str .le.  other%str
+   le= self%str .le. other%str
 end function le
 logical function ge(self,other)
    class(string),intent(in) :: self
    type(string),intent(in)  :: other
-   ge= self%str .ge.  other%str
+   ge= self%str .ge. other%str
 end function ge
 logical function ne(self,other)
    class(string),intent(in) :: self
    type(string),intent(in)  :: other
-   ne= self%str .ne.  other%str
+   ne= self%str .ne. other%str
 end function ne
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!

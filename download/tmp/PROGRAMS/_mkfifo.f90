@@ -13,6 +13,11 @@ help_text=[ CHARACTER(LEN=128) :: &
 'SYNOPSIS                                                                        ',&
 '     _mkfifo file(s)                                                            ',&
 'DESCRIPTION                                                                     ',&
+'   Create named pipes (FIFOs) with the given NAMEs.                             ',&
+'OPTIONS                                                                         ',&
+'   files      pathnames of named pipes to create                                ',&
+'   --help     display this help and exit                                        ',&
+'   --version  output version information and exit                               ',&
 'EXAMPLE                                                                         ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
@@ -27,9 +32,15 @@ end subroutine help_usage
 !!
 !!      _mkfifo file(s)
 !!##DESCRIPTION
+!!    Create named pipes (FIFOs) with the given NAMEs.
+!!##OPTIONS
+!!    files      pathnames of named pipes to create
+!!    --help     display this help and exit
+!!    --version  output version information and exit
 !!##EXAMPLE
 !!
 !===================================================================================================================================
+
 subroutine help_version(l_version)
 implicit none
 character(len=*),parameter     :: ident="@(#)help_version(3f): prints version information"
@@ -40,14 +51,14 @@ logical                        :: stopit=.false.
 stopit=.false.
 if(l_version)then
 help_text=[ CHARACTER(LEN=128) :: &
-'@(#)PRODUCT:        CLI library utilities and examples>',&
+'@(#)PRODUCT:        GPF (General Purpose Fortran) utilities and examples>',&
 '@(#)PROGRAM:        _mkfifo(1f)>',&
 '@(#)DESCRIPTION:    make FIFO pipe file>',&
 '@(#)VERSION:        1.0, 2016-12-04>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Mon, Jun 4th, 2018 8:58:09 AM>',&
+'@(#)COMPILED:       Sat, Aug 25th, 2018 6:24:07 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

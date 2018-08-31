@@ -136,8 +136,8 @@ References: 1) Fundamentals of Interactive Computer Graphics, Foley & Van Dam, A
 #include <math.h>
 #include "draw.h"
 
-extern FILE     *_voutfile();
-extern  FILE     *fp;
+extern FILE     *_draw_outfile();
+extern  FILE     *draw_fp;
 static FILE     *fpP6;
 
 #define byte unsigned char
@@ -239,7 +239,7 @@ static int PPM_setlw(int w){ /* Set the line width */
    return(0);
 }
 /******************************************************************************/
-int PPM_color(int col){ /* change the current color */
+static int PPM_color(int col){ /* change the current color */
    if(col < 0){
       PPM_setlw(abs(col));
    } else{
@@ -248,7 +248,7 @@ int PPM_color(int col){ /* change the current color */
    return(0);
 }
 /******************************************************************************/
-int PPM_mapcolor(int indx, int r, int g, int b){  /* set values in pseudo color map.  */
+static int PPM_mapcolor(int indx, int r, int g, int b){  /* set values in pseudo color map.  */
    if (indx < CMAPSIZE && indx >= 0) {
       coltab[indx].r = ABS(r % CMAPSIZE) ;
       coltab[indx].g = ABS(g % CMAPSIZE) ;
@@ -257,7 +257,7 @@ int PPM_mapcolor(int indx, int r, int g, int b){  /* set values in pseudo color 
    return(0);
 }
 /******************************************************************************/
-int PPM_RESIZE(void) {
+static int PPM_RESIZE(void) {
    int prefx, prefy, prefxs, prefys;
    int i;
 
@@ -297,7 +297,7 @@ int PPM_RESIZE(void) {
 #endif
 }
 /******************************************************************************/
-int PPM_init(void) {
+static int PPM_init(void) {
    int i;
    int PPM_MEMSET(void); /* set graphics array to all zero */
 
@@ -307,7 +307,7 @@ int PPM_init(void) {
 
    vdevice.depth = CMAPDEPTH;
 
-   fp = _voutfile();
+   draw_fp = _draw_outfile();
 
    /* Cause scaling to be 0 to maxX maxY: prefx, vdevice.sizeSx+prefx, prefy, vdevice.sizeSy+prefy */
 
@@ -519,7 +519,7 @@ static int PPM_ENDCAP_CIRCLE(int x, int y){ /* Draw a circle on thick line segme
    return(0);
 }
 /******************************************************************************/
-int PPM_fill(int n, int x[], int y[]) { /* "fill" a polygon */
+static int PPM_fill(int n, int x[], int y[]) { /* "fill" a polygon */
    int     i;
 
    /* update current position if needed */
@@ -542,7 +542,7 @@ int PPM_fill(int n, int x[], int y[]) { /* "fill" a polygon */
    return(0);
 }
 /******************************************************************************/
-int PPM_draw(int x, int y) { /* print the commands to draw a line from the current graphics position to (x, y).  */
+static int PPM_draw(int x, int y) { /* print the commands to draw a line from the current graphics position to (x, y).  */
    int     holdx, holdy;
    int xwide[4], ywide[4];
    float cosa, sina;
@@ -599,17 +599,17 @@ static int P3_print_graphics(void) { /* print_graphics -- print the graphics bit
    char *username;
    struct passwd *pw;
 
-   (void) fprintf(fp,"P3\n"); /* magic number of a clear text PPM file */
+   (void) fprintf(draw_fp,"P3\n"); /* magic number of a clear text PPM file */
 #ifndef TRUECOLOR
-   (void) fprintf(fp,"# PRINTTIMECOLOR 256 entry colortable version\n");
+   (void) fprintf(draw_fp,"# PRINTTIMECOLOR 256 entry colortable version\n");
 #else
-   (void) fprintf(fp,"# TRUECOLOR 8192 entry colortable version\n");
+   (void) fprintf(draw_fp,"# TRUECOLOR 8192 entry colortable version\n");
 #endif
-   (void) fprintf(fp,"# CREATOR: M_DRAW ppm driver; version 1.0 1997/02/02\n"); /* ppm P3 file can contain comment lines*/
-   (void) fprintf(fp,"# 19970202, John S. Urban\n");
+   (void) fprintf(draw_fp,"# CREATOR: M_DRAW ppm driver; version 1.0 1997/02/02\n"); /* ppm P3 file can contain comment lines*/
+   (void) fprintf(draw_fp,"# 19970202, John S. Urban\n");
 
         time(&tod);
-        fprintf(fp,"# CreationDate: %s",ctime(&tod));
+        fprintf(draw_fp,"# CreationDate: %s",ctime(&tod));
 
 #ifndef MINGW
         un = &unstr; /* initialize the pointer to an address with enough room to store the returned value in */
@@ -619,7 +619,7 @@ static int P3_print_graphics(void) { /* print_graphics -- print the graphics bit
         pw = getpwuid(getuid());
         username = pw->pw_name;
         }
-        fprintf(fp,"# For: %s on OS=%.*s NETWORK_NAME=%.*s RELEASE=%.*s VERSION=%.*s MACHINE=%.*s\n",username,
+        fprintf(draw_fp,"# For: %s on OS=%.*s NETWORK_NAME=%.*s RELEASE=%.*s VERSION=%.*s MACHINE=%.*s\n",username,
                 (int)sizeof(un->sysname),  un->sysname,
                 (int)sizeof(un->nodename), un->nodename,
                 (int)sizeof(un->release),  un->release,
@@ -627,9 +627,9 @@ static int P3_print_graphics(void) { /* print_graphics -- print the graphics bit
                 (int)sizeof(un->machine),  un->machine);
 #endif
 
-   (void) fprintf(fp,"# csplit multiframe file FILE.p3: csplit -f P3 -k FILE.p3 '%%^P3%%' '/^P3/' '{999}'\n");
-   (void) fprintf(fp,"%d %d\n",X_SIZE,Y_SIZE); /* size of bitmap */
-   (void) fprintf(fp,"255\n"); /* maximum value of a color intensity*/
+   (void) fprintf(draw_fp,"# csplit multiframe file FILE.p3: csplit -f P3 -k FILE.p3 '%%^P3%%' '/^P3/' '{999}'\n");
+   (void) fprintf(draw_fp,"%d %d\n",X_SIZE,Y_SIZE); /* size of bitmap */
+   (void) fprintf(draw_fp,"255\n"); /* maximum value of a color intensity*/
 
    /* notice going from bottom to top because putting out in a right handed coordinate system, was assuming left-handed */
    for (y = (Y_SIZE-1); y >= 0; y--) { /* Loop for each byte in the array */
@@ -638,16 +638,16 @@ static int P3_print_graphics(void) { /* print_graphics -- print the graphics bit
 #ifndef TRUECOLOR
          pix = (int)*(graphics_rgb + index);
          /* The manual says a P3 ppm file should not be wider than 70 characters */
-         (void) fprintf(fp,"%d %d %d\n",coltab[pix].r, coltab[pix].g, coltab[pix].b);
+         (void) fprintf(draw_fp,"%d %d %d\n",coltab[pix].r, coltab[pix].g, coltab[pix].b);
 #else
          /* The manual says a P3 ppm file should not be wider than 70 characters */
-         (void) fprintf(fp,"%d " ,graphics_r[index]);
-         (void) fprintf(fp,"%d " ,graphics_g[index]);
-         (void) fprintf(fp,"%d\n",graphics_b[index]);
+         (void) fprintf(draw_fp,"%d " ,graphics_r[index]);
+         (void) fprintf(draw_fp,"%d " ,graphics_g[index]);
+         (void) fprintf(draw_fp,"%d\n",graphics_b[index]);
 #endif
       }
    } /* end of writing a column */
-   (void) fprintf(fp,"\n");
+   (void) fprintf(draw_fp,"\n");
    GLOBAL_drawn = UNDRAWN;
    return(0);
 }
@@ -668,12 +668,12 @@ static void P6_print_graphics(void) { /* print_graphics -- print the graphics bi
    struct passwd *pw;
    varname=getenv("P6TO");
    if(varname==(char *)NULL) { /* P6TO is undefined so use standard I/O */
-      fpP6 = fp;
+      fpP6 = draw_fp;
    } else{                     /* P6TO is defined so try to use p6to filter */
       fpP6 = popen("p6to", "w");
       if (!fpP6) {
          fprintf(stderr, "*P6_print_graphics* Couldn't open pipe to p6to command.\n");
-         fpP6 = fp; /* drop back to using normal file */
+         fpP6 = draw_fp; /* drop back to using normal file */
          /* exit(1); */
       }
    }
@@ -740,7 +740,7 @@ static void CHAR_print_graphics(void) /* print_graphics -- print the graphics bi
    int icolor;
 
    /* notice going from bottom to top because putting out in a right handed coordinate system, was assuming left-handed */
-   (void) fprintf(fp,"\033[8;%d;%dt\n",Y_SIZE,X_SIZE);  /* set xterm size to array size if possible */
+   (void) fprintf(draw_fp,"\033[8;%d;%dt\n",Y_SIZE,X_SIZE);  /* set xterm size to array size if possible */
    for (y = (Y_SIZE-1); y >= 0; y--) { /* Loop for each byte in the array */
       for ( x = 0; x < X_SIZE ; x++){
          index = Y_SIZE * x + y;
@@ -750,11 +750,11 @@ static void CHAR_print_graphics(void) /* print_graphics -- print the graphics bi
 #else
          icolor=(graphics_r[index]*1+graphics_g[index]*2+graphics_b[index]*4)/255 % 8;
 #endif
-         (void) fprintf(fp,"\033[4%dm ",icolor);
+         (void) fprintf(draw_fp,"\033[4%dm ",icolor);
       }
-   (void) fprintf(fp,"\n");
+   (void) fprintf(draw_fp,"\n");
    } /* end of writing a column */
-   (void) fprintf(fp,"\033[37;40m\n");
+   (void) fprintf(draw_fp,"\033[37;40m\n");
    GLOBAL_drawn = UNDRAWN;
 }
 /******************************************************************************/
@@ -776,18 +776,18 @@ static int PPM_PRINT(void) {
          P3_print_graphics();
       }
    }
-   fflush(fp); /* flush the output file */
+   fflush(draw_fp); /* flush the output file */
    return(0);
 }
 /******************************************************************************/
-int PPM_exit(void) { /* exit from draw printing the command to flush the buffer.  */
+static int PPM_exit(void) { /* exit from draw printing the command to flush the buffer.  */
    PPM_PRINT();
-   if (fp != stdout && fp != stderr ){
-                fflush(fp);
+   if (draw_fp != stdout && draw_fp != stderr ){
+                fflush(draw_fp);
                 if(vdevice.writestoprocess == 2){
-                   pclose(fp);
+                   pclose(draw_fp);
                 }else{
-                   fclose(fp);
+                   fclose(draw_fp);
                 }
    }
 
@@ -803,7 +803,7 @@ int PPM_exit(void) { /* exit from draw printing the command to flush the buffer.
    return(0);
 }
 /******************************************************************************/
-int PPM_clear(void) { /* flush current page and clear graphics array */
+static int PPM_clear(void) { /* flush current page and clear graphics array */
 
    int PPM_MEMSET(); /* set graphics array to all zero */
 
@@ -1153,7 +1153,7 @@ static DevEntry PPMdev = {
    noop         /* Syncronize the display */
 };
 /******************************************************************************/
-int _PPM_devcpy(void) {
+int _PPM_draw_devcpy(void) {
    vdevice.dev = PPMdev;
    vdevice.dev.Vinit = PPM_init;
    vdevice.dev.devname = "ppm";
@@ -1161,7 +1161,7 @@ int _PPM_devcpy(void) {
    return(0);
 }
 /******************************************************************************/
-int _P3_devcpy(void) {
+int _P3_draw_devcpy(void) {
    vdevice.dev = PPMdev;
    vdevice.dev.Vinit = PPM_init;
    vdevice.dev.devname = "p3";
@@ -1169,7 +1169,7 @@ int _P3_devcpy(void) {
    return(0);
 }
 /******************************************************************************/
-int _P6_devcpy(void) {
+int _P6_draw_devcpy(void) {
    vdevice.dev = PPMdev;
    vdevice.dev.Vinit = PPM_init;
    vdevice.dev.devname = "p6";
@@ -1177,7 +1177,7 @@ int _P6_devcpy(void) {
    return(0);
 }
 /******************************************************************************/
-int _CHAR_devcpy(void) {
+int _CHAR_draw_devcpy(void) {
    vdevice.dev = PPMdev;
    vdevice.dev.Vinit = PPM_init;
    vdevice.dev.devname = "char";
