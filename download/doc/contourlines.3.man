@@ -1,0 +1,145 @@
+NAME
+  contourlines(3f) - [M_DRAW:CONTOUR] calculate contour lines from ungridded data f(x,y) and call user-supplied routine with results
+
+SYNOPSIS
+   SUBROUTINE ContourLines(x,y,z,ismopt,iexp,jexp,clist,epslon,ierr,cntcrv)
+
+      real,intent(in),dimension(:) :: x
+      real,intent(in),dimension(:) :: y
+      real,intent(in),dimension(:) :: z
+      integer,intent(in)           :: ismopt
+      integer,intent(in)           :: iexp
+      integer,intent(in)           :: jexp
+      real,intent(in),dimension(:) :: clist
+      real,intent(out)             :: epslon
+      integer,intent(out)          :: ierr
+      external cntcrv
+
+DESCRIPTION
+
+   contourlines(3f) is a general algorithm for the construction of
+   contour plots. It computes contour lines of constant z for the
+   function z = f(x,y).
+
+   From the original COSMIC description:
+
+   The graphical presentation of experimentally or theoretically generated
+   data sets frequently involves the construction of contour plots. A
+   general computer algorithm has been developed for the construction
+   of contour plots. The algorithm provides for efficient and accurate
+   contouring with a modular approach which allows flexibility in modifying
+   the algorithm for special applications. The algorithm accepts as input
+   data values at a set of points irregularly distributed over a plane. The
+   algorithm is based on an interpolation scheme in which the points in
+   the plane are connected by straight line segments to form a set of
+   triangles. In general, the data is smoothed using a least-squares-error
+   fit of the data to a bivariate polynomial. To construct the contours,
+   interpolation along the edges of the triangles is performed, using the
+   bivariable polynomial if data smoothing was performed. Once the contour
+   points have been located, the contour may be drawn.
+
+AUTHORS
+
+   This is a public domain routine from PDAS (Public Domain Aeronautical
+   Software) converted to modules; which was derived from COSMIC Program
+   Number ARC-11441; which originated at NASA Ames Research Center,
+   circa 1981.
+
+COMMENTS
+
+   From the original PDAS description:
+
+   There are many additional algorithms available for computation of contour lines.
+   There are several in the Transactions for Mathematical Software and
+   elsewhere. This routine was deemed worthy of inclusion in the NASA COSMIC
+   collection, but I cannot swear to its status among contour generators.
+
+OPTIONS
+    x            input list of x values
+    y            input list of y values
+    z            input list of z values
+    ismopt       smoothing option flag (0=no/off, 1=yes/on)
+    iexp,jexp    i and j exponent value for smoothing
+                 If smoothing is used, these values are used to define
+                 a polynomial used for a least-squares fit of the data.
+    clist        list of constant contour values
+    epslon       error function (normalized value) returned to caller
+                 if ismopt is non-zero
+    ierr         return error flag
+                   0. for normal return
+                   1. for invalid value for number of values in x,y,z
+                   2. for number of ismopt coefficients greater
+                      than 'maxcof' or number of values in x,y,z
+EXAMPLE
+
+  TEST1:
+
+   program TestCase
+   use M_ContourPlot, only : contourlines
+   implicit none
+   !
+   integer,parameter    :: NPTS=121
+   real,parameter,dimension(8):: c = &
+         [0.1, 0.2, 0.5, 1.0, 2.0, 4.0, 6.0, 8.0]
+   real                 :: eps
+   integer              :: errCode
+   integer,parameter    :: DBG=2
+   integer              :: ierr
+   !integer              :: iexp=0, jexp=0, ism=0
+   integer              :: iexp=2, jexp=3, ism=1
+   integer              :: i,j,k
+   real,dimension(NPTS) :: x,y,z
+   external             :: my_CntCrv
+   !
+      k=0
+      do j=0,10
+         do i=0,10
+            k=k+1
+            x(k)=0.1*real(i)
+            y(k)=0.1*real(j)
+         end do
+      end do
+      !
+      z=(x-0.5)**2 + (y-0.5)**2
+      z(:)=16.0*z(:)
+      !
+      ! write out the input values for inspection
+      open(unit=dbg, file='test.log', status='replace', &
+         iostat=errCode, action='write', position='rewind')
+      write(DBG,'(I4,3F12.6)') (k,x(k),y(k),z(k),k=1,npts)
+      !
+      call ContourLines(x,y,z, ism,iexp,jexp, c, eps,ierr,my_CntCrv)
+   END PROGRAM TestCase
+   ! ----------------------------------------------------------------
+   subroutine my_CntCrv(x,y,n,z)
+   ! User-supplied routine used to plot or process the contour lines
+   implicit none
+   integer,intent(in)          :: n
+   real,intent(in),dimension(n):: x,y
+   real,intent(in)             :: z
+   !
+   integer,save                :: gnu=0
+   integer                     :: k
+   integer                     :: errCode
+      if(gnu.eq.0)then
+         ! on first call, set up output file
+         gnu=1
+         open(unit=gnu, file='test1.gnu', status='replace', &
+            iostat=errCode, action='write', position='rewind')
+         write(*,*) "File test1.gnu added to your directory"
+      endif
+      ! write a contour line out to a file followed by a blank line
+      write(gnu,'("# level ",g0)') z
+      write(gnu,'(2f12.5)') (x(k),y(k),k=1,n)
+      write(gnu,'(a)') " "
+   !
+   end subroutine my_CntCrv
+
+   #!/bin/sh
+   # Example execution of gnuplot(1) to plot the output file
+   gnuplot <<\EOF
+   plot 'test1.gnu' with lines
+   pause mouse "click mouse to exit ..."
+   quit
+   EOF
+

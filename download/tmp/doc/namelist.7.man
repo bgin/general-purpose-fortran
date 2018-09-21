@@ -60,8 +60,6 @@ DESCRIPTION
 
    A group name or object name is without regard to case.
 
-OPTIONS
-RESULTS
 EXAMPLE
    An example of a NAMELIST statement is:
 

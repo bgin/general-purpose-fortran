@@ -1,5 +1,5 @@
 function loadthem(){
-append("M_io.3{SECTION}.html");
+append("M_io.3{}.html");
 append("M_io.3.html");
 append("dirname.3.html");
 append("get_tmp.3.html");

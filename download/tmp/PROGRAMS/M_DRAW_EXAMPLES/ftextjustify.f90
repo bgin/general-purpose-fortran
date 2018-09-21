@@ -2,7 +2,7 @@ program testit
 use M_draw, only : vinit, prefsize, clear, getkey, textsize, font, color, linewidth, textjustify
 use M_draw, only : vflush, vexit, move2, circle, drawstr, draw2
 use M_draw, only : d_right, d_top, d_ycentered, d_bottom, d_xcentered, d_top, d_ycentered, d_left 
-use M_drawplus, only : biggest_ortho2
+use M_drawplus, only : page
 use iso_c_binding
 implicit none
 real              :: x1=-20, x2=20, y1=-20, y2=20
@@ -17,7 +17,7 @@ character(len=50) :: device
       call prefsize(int(x2-x1)*15,int(y2-y1)*15)
    end select
    call vinit(device)
-   call biggest_ortho2(x1,x2,y1,y2)
+   call page(x1,x2,y1,y2)
    call clear()
    idum=getkey()
    call textsize(0.9*scl, 1.4*scl)

@@ -1,5 +1,18 @@
 SUPPLEMENTAL_SOURCE(){
 #   create user-supplied procedures "c" and "juown1" required for the calculator module
+#   create
+#----------------------------------------------------------------------------------------------------------------------------------#
+echo 'create cntrcv.f90' 1>&2
+cat >tmp/cntcrv.f90 <<\EOF
+subroutine cntcrv (xx,yy,npoint,zcon)
+!@(#)cntcrv(3f): place-holder for user-supplied routine used by M_contourplot(3fm)
+implicit none
+real,intent(in),dimension(:):: xx,yy
+integer,intent(in):: npoint
+real,intent(in):: zcon
+end subroutine cntcrv
+EOF
+#----------------------------------------------------------------------------------------------------------------------------------#
 echo 'create c.f90' 1>&2
 cat >tmp/c.f90 <<\EOF
 !===================================================================================================================================
@@ -14,22 +27,22 @@ cat > tmp/juown1.f90 <<\EOF
 !===================================================================================================================================
 subroutine juown1(func,iflen,args,iargstp,n,fval,ctmp,ier)
 ! if the function owncode(1) is called this subroutine can be accessed to do user-written functions.
-use M_journal, only     : journal
-use m_calculator, only  : x, y, icname_calc, valuer, values
+   use M_journal, only     : journal
+   use m_calculator, only  : x, y, icname_calc, valuer, values
 !use m_calculator, only : iclen_calc, stuff, getvalue
-use M_strings, only     : lower
-use M_process, only     : process_readall
-implicit none
-character(len=*),parameter :: ident="@(#)juown1(3f): extend functions available to the calculator routine "
-integer,parameter          :: dp=kind(0.0d0)
-character(len=*)           :: func
-integer                    :: iflen
-real(kind=dp)              :: args(100)
-integer                    :: iargstp(100)
-integer                    :: n
-real(kind=dp)              :: fval
-character(len=*)           :: ctmp
-integer                    :: ier
+   use M_strings, only     : lower
+   use M_process, only     : process_readall
+   implicit none
+   character(len=*),parameter :: ident="@(#)juown1(3f): extend functions available to the calculator routine "
+   integer,parameter          :: dp=kind(0.0d0)
+   character(len=*)           :: func
+   integer                    :: iflen
+   real(kind=dp)              :: args(100)
+   integer                    :: iargstp(100)
+   integer                    :: n
+   real(kind=dp)              :: fval
+   character(len=*)           :: ctmp
+   integer                    :: ier
 !-----------------------------------------------------------------------------------------------------------------------------------
    integer                    :: i10, ilen, i, ii
    character(len=icname_calc) :: func2
@@ -54,7 +67,7 @@ integer                    :: ier
 !-----------------------------------------------------------------------------------------------------------------------------------
    select case(func2)
 !-----------------------------------------------------------------------------------------------------------------------------------
-   case('$sh')! $sh gets one line of output from a shell command
+    case('$sh')! $sh gets one line of output from a shell command
       ctmp=' '
       if(n.gt.0)then
          ii=int(args(1)+0.5)

@@ -11,7 +11,7 @@ EXAMPLE
 
    program demo_callobj
       use M_draw
-      use M_drawplus, only : biggest_ortho2
+      use M_drawplus, only : page
       implicit none
       integer :: ipaws
       integer :: ix, iy
@@ -24,7 +24,7 @@ EXAMPLE
       !! Background color
       !call color(D_WHITE)
       !! Page setup
-      !call biggest_ortho2(0.0,2124.0,0.0,2124.0)
+      !call page(0.0,2124.0,0.0,2124.0)
       !call color(D_BLACK)
 
       call makeobj(1111)
@@ -273,7 +273,7 @@ EXAMPLE
 
       ! make a big page and call object with various transformations
       call color(D_WHITE)
-      call biggest_ortho2( 0.0, 20000.0, 0.0, 20000.0)
+      call page( 0.0, 20000.0, 0.0, 20000.0)
       call clear()
       call color(D_BLACK)
 

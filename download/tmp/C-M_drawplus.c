@@ -23,7 +23,7 @@ void SetBarcodeStart(float xstart,float ystart){
 }
 /*------------------------------------------------------------------------------*/
 /*
-   @(#) 39 bar code
+   @(#) M_drawplus::barcode(3c): draw 3-of-9 bar code
    given an ASCII string, do what's necessary. tack on delimiter '*'s
 */
 void PrintBarcode(char *string)

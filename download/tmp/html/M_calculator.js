@@ -1,5 +1,5 @@
 function loadthem(){
-append("M_calculator.3{SECTION}.html");
+append("M_calculator.3{}.html");
 append("M_calculator.3.html");
 append("M_calculator_example.3.html");
 append("M_calculator_programmer_notes.3.html");

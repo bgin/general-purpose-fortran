@@ -30,7 +30,7 @@ EXAMPLE
       >kernel-version : 2016-08-31 14:32
       >machine        : x86_64
 
-      >_uname -all
+      >_uname --all
       >CYGWIN_NT-10.0 buzz 2.6.0(0.304/5/3) 2016-08-31 14:32 x86_64
 
       >_uname -machine

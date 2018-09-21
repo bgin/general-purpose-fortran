@@ -93,7 +93,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    minefield game>',&
 '@(#)VERSION:        4.0, 20180616>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Thu, Aug 16th, 2018 12:13:09 PM>',&
+'@(#)COMPILED:       Thu, Sep 20th, 2018 7:47:20 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -132,11 +132,11 @@ end program sweepit
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-      subroutine minefield(irows0,icols0,switch) ! draw a minesweep program
+subroutine minefield(irows0,icols0,switch) ! draw a minesweep program
 !@(#) draw a minesweep game that quits on 'q'
 ! Created: 19971231
-      use M_draw
-      use M_drawplus, only : biggest_ortho2
+   use M_draw
+   use M_drawplus, only : page
 !      storage
 !        -1 to -9 for unexposed and 0 to 8 adjacent bombs
 !        -10 for unexposed and a bomb
@@ -145,70 +145,69 @@ end program sweepit
 !        10 to 18 for marked as bomb and not one
 
 !     prototype showing functions used in calculators, toggle buttons, and menus
-      integer storage(0:100,0:100)  ! storage for the minesweep game
-      intrinsic min,max
-      logical switch
-      logical iwon
-      iwon=.false.
+integer storage(0:100,0:100)  ! storage for the minesweep game
+intrinsic min,max
+logical switch
+logical iwon
+iwon=.false.
 !----------------------------------------------------------------------------------------------------------------------------------!
-      istart=iyearsec()
-      irows=min(max(1,irows0),99)                                  ! make sure OK values for rows and columns
-      icols=min(max(1,icols0),99)
+   istart=iyearsec()
+   irows=min(max(1,irows0),99)                                  ! make sure OK values for rows and columns
+   icols=min(max(1,icols0),99)
 !----------------------------------------------------------------------------------------------------------------------------------!
-      call pushattributes()                                        ! save graphics environment
-      call pushmatrix()
-      call pushviewport()
-      call circleprecision(100)
+   call pushattributes()                                        ! save graphics environment
+   call pushmatrix()
+   call pushviewport()
+   call circleprecision(100)
 
-      ! lay out a window such that boxes are 10x10, with room above for a 20x100 bomb counter
-      ! The window value 0,0 is in the middle of the bomb field
-      call biggest_ortho2(-icols*5.0,icols*5.0,-irows*5.0,irows*5.0+20.0) ! set window and viewport so each box 10 units on a side
+   ! lay out a window such that boxes are 10x10, with room above for a 20x100 bomb counter
+   ! The window value 0,0 is in the middle of the bomb field
+   call page(-icols*5.0,icols*5.0,-irows*5.0,irows*5.0+20.0) ! set window and viewport so each box 10 units on a side
 !----------------------------------------------------------------------------------------------------------------------------------!
-      ! count bombs
-      call zqjbombs(irows,icols,storage,icount) ! fill storage with -1 to -9 for 0 to 8 adjacent bombs, and -10 for a bomb
+   ! count bombs
+   call zqjbombs(irows,icols,storage,icount) ! fill storage with -1 to -9 for 0 to 8 adjacent bombs, and -10 for a bomb
 !----------------------------------------------------------------------------------------------------------------------------------!
-      call color(2)                                                ! background color
-      call clear()                                                 ! clear display area to background color
-      if(irows0.lt.13.and.icols0.lt.13)then
-         call color(-4)                                            ! set line thickness
-      elseif(irows0.lt.24.and.icols0.lt.24)then
-         call color(-3)                                            ! set line thickness
-      elseif(irows0.lt.40.and.icols0.lt.40)then
-         call color(-2)                                            ! set line thickness
-      else
-         call color(-1)                                            ! set line thickness
-      endif
-      call font('futura.m')                                        ! select text font for numbers
+   call color(2)                                                ! background color
+   call clear()                                                 ! clear display area to background color
+   if(irows0.lt.13.and.icols0.lt.13)then
+      call color(-4)                                            ! set line thickness
+   elseif(irows0.lt.24.and.icols0.lt.24)then
+      call color(-3)                                            ! set line thickness
+   elseif(irows0.lt.40.and.icols0.lt.40)then
+      call color(-2)                                            ! set line thickness
+   else
+      call color(-1)                                            ! set line thickness
+   endif
+   call font('futura.m')                                        ! select text font for numbers
 
-100   continue
+   INFINITE : do
       isecs=iyearsec()-istart
       call zqjbox(icols,irows,storage,.false.,icount,iwon,isecs)  ! draw the gameboard
       ! if it looks like you won check to see
-      if(icount.eq.0)then                                          ! see if actually won or if badly marked bombs
-            icovered=0
-            ibadbomb=0
-            do i10=1,irows
-               do i20=1,icols
+      if(icount.eq.0)then                                         ! see if actually won or if badly marked bombs
+         icovered=0
+         ibadbomb=0
+         do i10=1,irows
+            do i20=1,icols
                if( storage(i10,i20).lt.0)then
                   icovered=icovered+1
                elseif(storage(i10,i20).gt.9)then
                   ibadbomb=ibadbomb+1
                endif
-               enddo
             enddo
-            if(icovered+ibadbomb.eq.0)then                         ! YOU WON
-              iwon=.true.
-              goto 999
-            endif
+         enddo
+         if(icovered+ibadbomb.eq.0)then                           ! YOU WON
+            iwon=.true.
+            exit INFINITE
+         endif
       endif
-      call zqjcheck(icols,irows,storage,letter,icount,switch)      ! change values to 0 to 8 (9 for bomb marker)
-      if(letter.ne.113)goto 100                                    ! if not the letter q, continue
-
-999   continue
-      call zqjbox(icols,irows,storage,.true.,icount,iwon,isecs)    ! display all values while quitting
-      call popattributes()                                         ! restore graphics environment
-      call popmatrix()
-      call popviewport()
+      call zqjcheck(icols,irows,storage,letter,icount,switch)     ! change values to 0 to 8 (9 for bomb marker)
+      if(letter.eq.113)exit INFINITE                              ! if not the letter q, continue
+   enddo INFINITE
+   call zqjbox(icols,irows,storage,.true.,icount,iwon,isecs)      ! display all values while quitting
+   call popattributes()                                           ! restore graphics environment
+   call popmatrix()
+   call popviewport()
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
@@ -216,7 +215,7 @@ contains
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-      subroutine zqjbox(icols,irows,storage,all,icount,iwon,isecs)     ! draw the gameboard
+   subroutine zqjbox(icols,irows,storage,all,icount,iwon,isecs)     ! draw the gameboard
       use M_draw
       character line*80
       integer storage(0:100,0:100)
@@ -261,82 +260,82 @@ contains
       call color(6)  ! rectangle color
       call textsize(5.5,5.5)
       do 30 i30=1,irows
-      do 40 i40=1,icols
-         icolor=storage(i30,i40)
-         xmin=(i40-1)*10.0-icols*5.0
-         xmax=xmin+10.0
-         ymax=irows*5.0-(i30-1)*10.0
-         ymin=ymax-10.0
-         if(icolor.ge.0.and.icolor.le.8)then   ! if an exposed piece
-            write(line,'(i3)')icolor
-            call color(0)
-            call polyfill(.true.)
-            call rect(xmin,ymin,xmax,ymax)
-            call color(7)
-            call polyfill(.false.)
-            call rect(xmin,ymin,xmax,ymax)
-            call color(icolor)
-            write(line,'(i1.1)')icolor
-            call move2(xmin+5.0,ymin+5.0)
-            call drawstr(line)
-         elseif(icolor.eq.9)then               ! exposed bomb
-            if(iwon)then
-               call zqjsmiley(xmin,xmax,ymin,ymax)
-            else
+         do 40 i40=1,icols
+            icolor=storage(i30,i40)
+            xmin=(i40-1)*10.0-icols*5.0
+            xmax=xmin+10.0
+            ymax=irows*5.0-(i30-1)*10.0
+            ymin=ymax-10.0
+            if(icolor.ge.0.and.icolor.le.8)then   ! if an exposed piece
+               write(line,'(i3)')icolor
+               call color(0)
+               call polyfill(.true.)
+               call rect(xmin,ymin,xmax,ymax)
+               call color(7)
+               call polyfill(.false.)
+               call rect(xmin,ymin,xmax,ymax)
+               call color(icolor)
+               write(line,'(i1.1)')icolor
+               call move2(xmin+5.0,ymin+5.0)
+               call drawstr(line)
+            elseif(icolor.eq.9)then               ! exposed bomb
+               if(iwon)then
+                  call zqjsmiley(xmin,xmax,ymin,ymax)
+               else
+                  call color(1)
+                  call polyfill(.true.)
+                  call rect(xmin,ymin,xmax,ymax)
+                  call polyfill(.false.)
+                  call color(7)
+                  call rect(xmin,ymin,xmax,ymax)
+               endif
+               ! unexposed pieces and mistakenly marked bombs
+            elseif(all.eqv..true.)then   ! end of game, expose all pieces
+               call color(7)
+               call polyfill(.true.)
+               call rect(xmin,ymin,xmax,ymax)
+               call color(0)
+               call circle((xmax+xmin)/2.0,(ymax+ymin)/2.0,5.0)   ! circle unexposed pieces
+               call polyfill(.false.)
+               call color(7)
+               call rect(xmin,ymin,xmax,ymax)
+               if(icolor.eq.-10)then         ! unexposed bomb. Put green square out over black square
+                  icolor=2
+                  call color(icolor)
+                  call polyfill(.true.)
+                  call rect(xmin,ymin,xmax,ymax)
+                  call polyfill(.false.)
+               elseif(icolor.gt.9)then   ! marked as a bomb but not one
+                  call color(1)
+                  call circle((xmax+xmin)/2.0,(ymax+ymin)/2.0,5.0)
+                  icolor=icolor-10
+               elseif(icolor.lt.0)then       ! unexposed
+                  icolor=-icolor-1
+               endif
+               call color(icolor)
+               write(line,'(i1.1)')icolor
+               call move2(xmin+5.0,ymin+5.0)
+               call drawstr(line)
+            elseif(icolor.gt.9)then               ! mistaken bomb marker
                call color(1)
                call polyfill(.true.)
                call rect(xmin,ymin,xmax,ymax)
                call polyfill(.false.)
                call color(7)
                call rect(xmin,ymin,xmax,ymax)
-            endif
-         ! unexposed pieces and mistakenly marked bombs
-         elseif(all.eqv..true.)then   ! end of game, expose all pieces
-            call color(7)
-            call polyfill(.true.)
-            call rect(xmin,ymin,xmax,ymax)
-            call color(0)
-            call circle((xmax+xmin)/2.0,(ymax+ymin)/2.0,5.0)   ! circle unexposed pieces
-            call polyfill(.false.)
-            call color(7)
-            call rect(xmin,ymin,xmax,ymax)
-            if(icolor.eq.-10)then         ! unexposed bomb. Put green square out over black square
-               icolor=2
-               call color(icolor)
-               call polyfill(.true.)
+            else                                  ! unexposed piece
+               call color(7)
                call rect(xmin,ymin,xmax,ymax)
-               call polyfill(.false.)
-            elseif(icolor.gt.9)then   ! marked as a bomb but not one
-               call color(1)
-               call circle((xmax+xmin)/2.0,(ymax+ymin)/2.0,5.0)
-               icolor=icolor-10
-            elseif(icolor.lt.0)then       ! unexposed
-               icolor=-icolor-1
             endif
-            call color(icolor)
-            write(line,'(i1.1)')icolor
-            call move2(xmin+5.0,ymin+5.0)
-            call drawstr(line)
-         elseif(icolor.gt.9)then               ! mistaken bomb marker
-            call color(1)
-            call polyfill(.true.)
-            call rect(xmin,ymin,xmax,ymax)
-            call polyfill(.false.)
-            call color(7)
-            call rect(xmin,ymin,xmax,ymax)
-         else                                  ! unexposed piece
-            call color(7)
-            call rect(xmin,ymin,xmax,ymax)
-         endif
 40       continue
 30    continue
       call swapbuffers()
       call vflush()
-      end subroutine zqjbox
+   end subroutine zqjbox
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-      subroutine zqjcheck(ic,ir,st,letter,icount,switch)
+   subroutine zqjcheck(ic,ir,st,letter,icount,switch)
 !        -1 to -9 for unexposed and 0 to 8 adjacent bombs
 !        -10 for unexposed and a bomb
 !        0 to 8 for exposed good values
@@ -359,93 +358,95 @@ contains
          mouse2=2
          mouse3=4
       endif
-100   continue
-      letter=checkkey()          ! see if a character was pressed in graphic window, get ordinal of letter last pressed
-      istat=locator(xx,yy)                                     ! get location and mouse key pressed
-      if(letter.eq.113)goto 999                                ! quit if letter q
-      if(istat.eq.0)goto 100                                   ! wait until a mouse key is clicked
-      xdelta=xx-ic*(-5)                                        ! distance from left edge
-      ydelta=yy-ir*(-5)                                        ! distance from top edge
-      ! row and column number to point into into st array
-      ixdelta=(xdelta+5.)/10.0+.5
-      iydelta=(ydelta+5.)/10.0+.5
-      ! if pick location is a valid box location
-      if(iydelta.ge.1.and.iydelta.le.ir .and.ixdelta.ge.1.and.ixdelta.le.ic) then
-         ii=st(abs(iydelta-ir)+1,ixdelta)                      ! value in selected box
-         ! if ii is less than 0 figure new values
-         if(ii.lt.0)then
-            EXPOSED=-(ii)-1
-         else
-            EXPOSED=ii
-         endif
-         !MOUSE 1
-         if(ii.lt.0.and.istat.eq.mouse1)then                   ! this one has not been exposed
-            !EXPOSING UNEXPOSED (M1)
-            st(abs(iydelta-ir)+1,ixdelta)=EXPOSED              ! expose the piece marked
-            ! EXPOSED BOMB BY MISTAKE
-            if(EXPOSED.eq.9)then                               ! exposed a bomb with mouse 1
-               call move2(xx,yy)                               ! get current position to point selected for boom routine
-               call draw2(xx,yy)
-               call zqjboom(ic,ir)
-               call system_sleep(1)                               ! pause for a second
-               letter=113
-               goto 999
-            ! EXPOSED A ZERO; BE NICE AND EXPOSE EVERYTHING OBVIOUS (ADJACENT TO A ZERO)
-            elseif(EXPOSED.eq.0)then
-               call zqjzeros(ir,ic,st)                       ! if exposed a zero, clear around it pseudo-recursively
-            endif
-         !MOUSE 2
-         elseif(ii.lt.0.and.istat.eq.mouse2)then
-            !MARKING UNEXPOSED PIECE AS A BOMB (M2)
-            icount=icount-1                                    ! mouse two is for marking bombs
-            if(EXPOSED.eq.9)then
-               st(abs(iydelta-ir)+1,ixdelta)=EXPOSED           ! correctly found a bomb
+      INFINITE : do
+         letter=checkkey()          ! see if a character was pressed in graphic window, get ordinal of letter last pressed
+         istat=locator(xx,yy)                                     ! get location and mouse key pressed
+         if(letter.eq.113)goto 999                                ! quit if letter q
+         if(istat.eq.0)cycle INFINITE                             ! wait until a mouse key is clicked
+         xdelta=xx-ic*(-5)                                        ! distance from left edge
+         ydelta=yy-ir*(-5)                                        ! distance from top edge
+         ! row and column number to point into into st array
+         ixdelta=(xdelta+5.)/10.0+.5
+         iydelta=(ydelta+5.)/10.0+.5
+         ! if pick location is a valid box location
+         if(iydelta.ge.1.and.iydelta.le.ir .and.ixdelta.ge.1.and.ixdelta.le.ic) then
+            ii=st(abs(iydelta-ir)+1,ixdelta)                      ! value in selected box
+            ! if ii is less than 0 figure new values
+            if(ii.lt.0)then
+               EXPOSED=-(ii)-1
             else
-               st(abs(iydelta-ir)+1,ixdelta)=EXPOSED+10        ! something marked as a bomb that is not; add 10 (so 0 is 10, 1 is 11, 8 is 18)
+               EXPOSED=ii
             endif
-         !MOUSE 3
-         elseif(istat.eq.mouse3.and.ii.gt.9)then                    ! something already marked as a bomb that is not
-            st(abs(iydelta-ir)+1,ixdelta)=-(ii-10)-1           ! put it back to an unmarked value and expose it (BACK DOOR)
-            icount=icount+1
-         elseif(istat.eq.mouse3.and.ii.eq.9)then               ! something already marked as a bomb that is
-            st(abs(iydelta-ir)+1,ixdelta)=-10                  ! put it back to an unmarked value
-            icount=icount+1
-         elseif(istat.eq.mouse3.and.ii.ge.0)then               ! something exposed already. Why cover it back up?
-         ! use other keys for testing
-         elseif(ii.lt.0.and.ii.ge.-9.and.istat.eq.(mouse1+mouse2+mouse3))then       ! CHEAT AND EXPOSE NON-BOMBS
-            st(abs(iydelta-ir)+1,ixdelta)=EXPOSED
-         elseif(istat.eq.(mouse3+mouse2))then                  ! CHEAT AND EXPOSE ALL ZERO REGIONS
-            do i10=1,99
-               do i20=1,99
-                  if( st(i10,i20).eq.-1)then
-                     st(i10,i20)=0
-                  endif
+            !MOUSE 1
+            if(ii.lt.0.and.istat.eq.mouse1)then                   ! this one has not been exposed
+               !EXPOSING UNEXPOSED (M1)
+               st(abs(iydelta-ir)+1,ixdelta)=EXPOSED              ! expose the piece marked
+               ! EXPOSED BOMB BY MISTAKE
+               if(EXPOSED.eq.9)then                               ! exposed a bomb with mouse 1
+                  call move2(xx,yy)                               ! get current position to point selected for boom routine
+                  call draw2(xx,yy)
+                  call zqjboom(ic,ir)
+                  call system_sleep(1)                               ! pause for a second
+                  letter=113
+                  goto 999
+                  ! EXPOSED A ZERO; BE NICE AND EXPOSE EVERYTHING OBVIOUS (ADJACENT TO A ZERO)
+               elseif(EXPOSED.eq.0)then
+                  call zqjzeros(ir,ic,st)                       ! if exposed a zero, clear around it pseudo-recursively
+               endif
+               !MOUSE 2
+            elseif(ii.lt.0.and.istat.eq.mouse2)then
+               !MARKING UNEXPOSED PIECE AS A BOMB (M2)
+               icount=icount-1                                    ! mouse two is for marking bombs
+               if(EXPOSED.eq.9)then
+                  st(abs(iydelta-ir)+1,ixdelta)=EXPOSED           ! correctly found a bomb
+               else
+                  st(abs(iydelta-ir)+1,ixdelta)=EXPOSED+10        ! something marked as a bomb that is not; add 10 (so 0 is 10, 1 is 11, 8 is 18)
+               endif
+               !MOUSE 3
+            elseif(istat.eq.mouse3.and.ii.gt.9)then                    ! something already marked as a bomb that is not
+               st(abs(iydelta-ir)+1,ixdelta)=-(ii-10)-1           ! put it back to an unmarked value and expose it (BACK DOOR)
+               icount=icount+1
+            elseif(istat.eq.mouse3.and.ii.eq.9)then               ! something already marked as a bomb that is
+               st(abs(iydelta-ir)+1,ixdelta)=-10                  ! put it back to an unmarked value
+               icount=icount+1
+            elseif(istat.eq.mouse3.and.ii.ge.0)then               ! something exposed already. Why cover it back up?
+               ! use other keys for testing
+            elseif(ii.lt.0.and.ii.ge.-9.and.istat.eq.(mouse1+mouse2+mouse3))then       ! CHEAT AND EXPOSE NON-BOMBS
+               st(abs(iydelta-ir)+1,ixdelta)=EXPOSED
+            elseif(istat.eq.(mouse3+mouse2))then                  ! CHEAT AND EXPOSE ALL ZERO REGIONS
+               do i10=1,99
+                  do i20=1,99
+                     if( st(i10,i20).eq.-1)then
+                        st(i10,i20)=0
+                     endif
+                  enddo
                enddo
-            enddo
-            call zqjzeros(ir,ic,st)                            ! if exposed a zero, clear around it pseudo-recursively
-         elseif(istat.eq.mouse3+mouse1)then                    ! CHEAT AND EXPOSE ALL UNEXPOSED REGIONS
-            do i30=1,99
-               do i40=1,99
-                  if( st(i30,i40).lt.0)then
-                     if(st(i30,i40).eq.-10) icount=icount-1
-                     st(i30,i40)=-st(i30,i40)-1
-                  endif
+               call zqjzeros(ir,ic,st)                            ! if exposed a zero, clear around it pseudo-recursively
+            elseif(istat.eq.mouse3+mouse1)then                    ! CHEAT AND EXPOSE ALL UNEXPOSED REGIONS
+               do i30=1,99
+                  do i40=1,99
+                     if( st(i30,i40).lt.0)then
+                        if(st(i30,i40).eq.-10) icount=icount-1
+                        st(i30,i40)=-st(i30,i40)-1
+                     endif
+                  enddo
                enddo
-            enddo
-            call zqjzeros(ir,ic,st)                          ! if exposed a zero, clear around it pseudo-recursively
+               call zqjzeros(ir,ic,st)                          ! if exposed a zero, clear around it pseudo-recursively
+            else
+               !write(*,*)'took no action ',istat,ii
+            endif
          else
-            !write(*,*)'took no action ',istat,ii
+            cycle INFINITE                                        ! picked a location out of boxes
          endif
-      else
-         goto 100                                              ! picked a location out of boxes
-      endif
+         exit INFINITE
+      enddo INFINITE
 !----------------------------------------------------------------------------------------------------------------------------------!
 999   continue
-      end subroutine zqjcheck
+   end subroutine zqjcheck
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-      subroutine zqjzeros(irows,icols,s)
+   subroutine zqjzeros(irows,icols,s)
       ! brute force approach
       ! search for 0 boxes and pop all adjacent boxes
       ! loop until no changes made
@@ -477,11 +478,11 @@ contains
          endif
          if(ichange.eq.0)exit
       enddo
-      end subroutine zqjzeros
+   end subroutine zqjzeros
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-      subroutine zqjbombs(irows,icols,storage,icount)
+   subroutine zqjbombs(irows,icols,storage,icount)
       use M_draw
       use M_random, only : init_random_seed
       ! fill storage with -1 to -9 for 0 to 8 adjacent bombs, and -10 for a bomb
@@ -527,11 +528,11 @@ contains
             endif
          enddo
       enddo
-      end subroutine zqjbombs
+   end subroutine zqjbombs
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-      subroutine zqjboom(icols,irows)
+   subroutine zqjboom(icols,irows)
       use M_draw
       call polyfill(.true.)
       call frontbuffer()
@@ -570,11 +571,11 @@ contains
          istep=1
       enddo
       call polyfill(.false.)
-      end subroutine zqjboom
+   end subroutine zqjboom
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-      subroutine zqjsmiley(xmin,xmax,ymin,ymax)
+   subroutine zqjsmiley(xmin,xmax,ymin,ymax)
       ! draw a smiley face in the box defined by xmin,xmax,ymin,ymax
       use M_draw
       use M_drawplus, only : uconic
@@ -610,8 +611,8 @@ contains
       H=PH+PF
       call polyfill(.true.)
       !call makepoly()
-        !CALL UCONIC (X,Y,P,E,THETA1,THETA2,ORIENTATION)
-         call UCONIC(X+XQ1,Y+YQ1,H,E,0.0,360.0,90.0)
+      !CALL UCONIC (X,Y,P,E,THETA1,THETA2,ORIENTATION)
+      call UCONIC(X+XQ1,Y+YQ1,H,E,0.0,360.0,90.0)
       !call closepoly()
       call circle(X+XQ1,Y+1.5*YQ1,H/2.0)                ! draw the pupil
       XC=(-0.5)/5.0*radius                               ! draw the other eye
@@ -619,74 +620,74 @@ contains
       XQ1=XC-AE
       YQ1=YC
       !call  makepoly()
-         call UCONIC(X+XQ1,Y+YQ1,H,E,0.0,360.0,90.0)
+      call UCONIC(X+XQ1,Y+YQ1,H,E,0.0,360.0,90.0)
       !call closepoly()
       call circle(X+XQ1,Y+1.5*YQ1,H/2.0)                ! fill the other pupil
       do 10 i10=1,2                                     ! fill and outline the smile
          call makepoly()
-            call move2(X-3.249/5.0*radius,Y-0.6698/5.0*radius)
-            call draw2(X-3.225/5.0*radius,Y-0.8426/5.0*radius)
-            call draw2(X-3.176/5.0*radius,Y-1.448/5.0*radius)
-            call draw2(X-2.692/5.0*radius,Y-2.269/5.0*radius)
-            call draw2(X-2.039/5.0*radius,Y-2.895/5.0*radius)
-            call draw2(X-0.9985/5.0*radius,Y-3.457/5.0*radius)
-            call draw2(X+0.5985/5.0*radius,Y-3.414/5.0*radius)
-            call draw2(X+1.445/5.0*radius,Y-2.873/5.0*radius)
-            call draw2(X+2.438/5.0*radius,Y-1.901/5.0*radius)
-            call draw2(X+2.825/5.0*radius,Y-1.123/5.0*radius)
-            call draw2(X+2.921/5.0*radius,Y-0.7778/5.0*radius)
-            call draw2(X+3.551/5.0*radius,Y-0.5185/5.0*radius)
-            call draw2(X+2.534/5.0*radius,Y-0.3673/5.0*radius)
-            call draw2(X+2.849/5.0*radius,Y-0.7994/5.0*radius)
-            call draw2(X+2.317/5.0*radius,Y-1.448/5.0*radius)
-            call draw2(X+1.566/5.0*radius,Y-2.204/5.0*radius)
-            call draw2(X+0.7437/5.0*radius,Y-2.830/5.0*radius)
-            call draw2(X+0.4197E-01/5.0*radius,Y-3.003/5.0*radius)
-            call draw2(X-0.9743/5.0*radius,Y-2.938/5.0*radius)
-            call draw2(X-1.942/5.0*radius,Y-2.528/5.0*radius)
-            call draw2(X-2.547/5.0*radius,Y-1.923/5.0*radius)
-            call draw2(X-2.886/5.0*radius,Y-1.469/5.0*radius)
-            call draw2(X-3.152/5.0*radius,Y-1.102/5.0*radius)
-            call draw2(X-3.152/5.0*radius,Y-0.8210/5.0*radius)
-            call draw2(X-3.176/5.0*radius,Y-0.7346/5.0*radius)
-            call draw2(X-2.838/5.0*radius,Y-0.4105/5.0*radius)
-            call draw2(X-3.515/5.0*radius,Y-0.2377/5.0*radius)
-            call draw2(X-3.249/5.0*radius,Y-0.6698/5.0*radius)
+         call move2(X-3.249/5.0*radius,Y-0.6698/5.0*radius)
+         call draw2(X-3.225/5.0*radius,Y-0.8426/5.0*radius)
+         call draw2(X-3.176/5.0*radius,Y-1.448/5.0*radius)
+         call draw2(X-2.692/5.0*radius,Y-2.269/5.0*radius)
+         call draw2(X-2.039/5.0*radius,Y-2.895/5.0*radius)
+         call draw2(X-0.9985/5.0*radius,Y-3.457/5.0*radius)
+         call draw2(X+0.5985/5.0*radius,Y-3.414/5.0*radius)
+         call draw2(X+1.445/5.0*radius,Y-2.873/5.0*radius)
+         call draw2(X+2.438/5.0*radius,Y-1.901/5.0*radius)
+         call draw2(X+2.825/5.0*radius,Y-1.123/5.0*radius)
+         call draw2(X+2.921/5.0*radius,Y-0.7778/5.0*radius)
+         call draw2(X+3.551/5.0*radius,Y-0.5185/5.0*radius)
+         call draw2(X+2.534/5.0*radius,Y-0.3673/5.0*radius)
+         call draw2(X+2.849/5.0*radius,Y-0.7994/5.0*radius)
+         call draw2(X+2.317/5.0*radius,Y-1.448/5.0*radius)
+         call draw2(X+1.566/5.0*radius,Y-2.204/5.0*radius)
+         call draw2(X+0.7437/5.0*radius,Y-2.830/5.0*radius)
+         call draw2(X+0.4197E-01/5.0*radius,Y-3.003/5.0*radius)
+         call draw2(X-0.9743/5.0*radius,Y-2.938/5.0*radius)
+         call draw2(X-1.942/5.0*radius,Y-2.528/5.0*radius)
+         call draw2(X-2.547/5.0*radius,Y-1.923/5.0*radius)
+         call draw2(X-2.886/5.0*radius,Y-1.469/5.0*radius)
+         call draw2(X-3.152/5.0*radius,Y-1.102/5.0*radius)
+         call draw2(X-3.152/5.0*radius,Y-0.8210/5.0*radius)
+         call draw2(X-3.176/5.0*radius,Y-0.7346/5.0*radius)
+         call draw2(X-2.838/5.0*radius,Y-0.4105/5.0*radius)
+         call draw2(X-3.515/5.0*radius,Y-0.2377/5.0*radius)
+         call draw2(X-3.249/5.0*radius,Y-0.6698/5.0*radius)
          call closepoly()
          call polyfill(.false.)
 10    continue
-      end subroutine zqjsmiley
+   end subroutine zqjsmiley
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-integer function iyearsec()    ! NOTE: delta of JULIAN date would give wrong time across YEAR change
-use M_draw
-use M_time, only: d2o
-   ! returns seconds since beginning of year
-   integer vtime(8)
-   equivalence(vtime(1),iye)
-   equivalence(vtime(2),imo)
-   equivalence(vtime(3),ida)
-   equivalence(vtime(5),ihh)
-   equivalence(vtime(6),imm)
-   equivalence(vtime(7),iss)
+   integer function iyearsec()    ! NOTE: delta of JULIAN date would give wrong time across YEAR change
+      use M_draw
+      use M_time, only: d2o
+      ! returns seconds since beginning of year
+      integer vtime(8)
+      equivalence(vtime(1),iye)
+      equivalence(vtime(2),imo)
+      equivalence(vtime(3),ida)
+      equivalence(vtime(5),ihh)
+      equivalence(vtime(6),imm)
+      equivalence(vtime(7),iss)
 
-   equivalence(vtime(4),idow)
-   equivalence(vtime(8),ijul)
+      equivalence(vtime(4),idow)
+      equivalence(vtime(8),ijul)
 
-   call date_and_time(values=vtime)               ! initialize seed value using clock
-   ijul=d2o(vtime)
-   ! NOTE: 31 536 000=365*24*3600
+      call date_and_time(values=vtime)               ! initialize seed value using clock
+      ijul=d2o(vtime)
+      ! NOTE: 31 536 000=365*24*3600
 
-   iyearsec=ijul*24*60*60
-   iyearsec=iyearsec+ihh*60*60
-   iyearsec=iyearsec+imm*60
-   iyearsec=iyearsec+iss
-end function iyearsec
+      iyearsec=ijul*24*60*60
+      iyearsec=iyearsec+ihh*60*60
+      iyearsec=iyearsec+imm*60
+      iyearsec=iyearsec+iss
+   end function iyearsec
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-      end subroutine minefield
+end subroutine minefield
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!

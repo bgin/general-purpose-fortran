@@ -18,7 +18,7 @@ EXAMPLE
 
    program demo_fixedwidth
       use M_draw
-      use M_drawplus, only : biggest_ortho2
+      use M_drawplus, only : page
       implicit none
       real,parameter :: x1=0.0,  x2=40.0,  y1=0.0,  y2=4.0
       real,parameter :: scl=3*0.7
@@ -26,7 +26,7 @@ EXAMPLE
    ! set up display
       call prefsize(1000,100)
       call vinit(' ')
-      call biggest_ortho2(x1,x2,y1,y2)
+      call page(x1,x2,y1,y2)
    ! set font appearance
       call linewidth(200)
       call font("times.rb")

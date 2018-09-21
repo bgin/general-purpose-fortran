@@ -32,7 +32,7 @@ EXAMPLE
      call polyline2([-0.5,-0.5, -0.5,+0.5, +0.5,+0.5, +0.5,-0.5])
      call color(4)
      call polyline2( [-1,-1,+1,+1,-1] , &  ! X values
-                & [-1,+1,+1,-1,-1] )    ! Y values
+                   & [-1,+1,+1,-1,-1] )    ! Y values
      ipaws=getkey()
      call vexit()
      end program demo_polyline2

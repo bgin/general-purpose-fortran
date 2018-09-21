@@ -12,14 +12,14 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   manup(1f) - [DEVELOPER] Simple markup of text to a man(1) page               ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
-'   manup FILE -cmd -section 1 -product "GPF utilities" -help .F. -version .F.   ',&
+'   manup FILE -cmd title -section N --product "product name" -help .F. --version .F.',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
 '     FILE                                                                       ',&
 '        The input filename                                                      ',&
 '                                                                                ',&
-'     -section N  N is the man(1) section number. Typically the following categories',&
-'                 are used:                                                      ',&
+'     -section N  N is the man(1) section number. Typically the following        ',&
+'                 categories are used:                                           ',&
 '                                                                                ',&
 '                 User Commands(1)      Executable programs or shell commands    ',&
 '                 System Calls(2)       System calls (functions provided by the kernel)',&
@@ -33,6 +33,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                                                                                ',&
 '                 See the man(1) page for man(1) for further details.            ',&
 '                                                                                ',&
+'     -title      title for manpage header                                       ',&
 '     -product    description for manpage header                                 ',&
 '     -asis       no formatting except for header lines.                         ',&
 '                                                                                ',&
@@ -50,14 +51,14 @@ end subroutine help_usage
 !!
 !!##SYNOPSIS
 !!
-!!    manup FILE -cmd -section 1 -product "GPF utilities" -help .F. -version .F.
+!!    manup FILE -cmd title -section N --product "product name" -help .F. --version .F.
 !!
 !!##DESCRIPTION
 !!      FILE
 !!         The input filename
 !!
-!!      -section N  N is the man(1) section number. Typically the following categories
-!!                  are used:
+!!      -section N  N is the man(1) section number. Typically the following
+!!                  categories are used:
 !!
 !!                  User Commands(1)      Executable programs or shell commands
 !!                  System Calls(2)       System calls (functions provided by the kernel)
@@ -71,6 +72,7 @@ end subroutine help_usage
 !!
 !!                  See the man(1) page for man(1) for further details.
 !!
+!!      -title      title for manpage header
 !!      -product    description for manpage header
 !!      -asis       no formatting except for header lines.
 !!
@@ -95,7 +97,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Thu, Aug 16th, 2018 11:55:59 AM>',&
+'@(#)COMPILED:       Thu, Sep 20th, 2018 1:02:24 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

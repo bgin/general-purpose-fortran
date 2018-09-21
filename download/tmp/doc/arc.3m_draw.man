@@ -27,7 +27,7 @@ EXAMPLE
 
    program demo_arc
       use M_draw
-      use M_drawplus, only : biggest_ortho2
+      use M_drawplus, only : page
       use M_draw,    only  : D_BLACK,   D_WHITE
       use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
       use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
@@ -42,7 +42,7 @@ EXAMPLE
       call color(D_BLACK)
       call clear()
       call color(D_YELLOW)
-      call biggest_ortho2(-25.0-b, 25.0+b, -5.0-b, 5.0+b)
+      call page(-25.0-b, 25.0+b, -5.0-b, 5.0+b)
       call textsize(1.0,1.4)
       call font("futura.l")
       call centertext(.true.)

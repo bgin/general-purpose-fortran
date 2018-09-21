@@ -27,7 +27,7 @@ EXAMPLE
    !   or only has a small color table (a frame in this program takes
    !   at least SLICES*RINGS colors to produce accurately).
    use M_draw
-   use M_drawplus, only : biggest_ortho2
+   use M_drawplus, only : page
    use m_color, only : hue
    use M_units, only : cosd, sind
    implicit none
@@ -46,7 +46,7 @@ EXAMPLE
       call color(D_BLACK)
       call clear()
       call color(D_WHITE)
-      call biggest_ortho2(-110./2.,85./2.,-110./2.,110./2.)
+      call page(-110./2.,85./2.,-110./2.,110./2.)
       LIGHTNESS=100.0
       lightstep=-5
 

@@ -1,5 +1,5 @@
 function loadthem(){
-append("ARGUMENTS.3{SECTION}.html");
+append("ARGUMENTS.3{}.html");
 append("M_getopt.3.html");
 append("M_getopt_long.3.html");
 append("M_kracken.3.html");

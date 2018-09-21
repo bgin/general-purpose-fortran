@@ -1691,7 +1691,7 @@ contains
       Z=ZOM
       xmax=xmax0
       ymax=ymax0
-      call biggest_ortho2(0.0,xmax,0.0,ymax)
+      call page(0.0,xmax,0.0,ymax)
       XMINQ=0.0
       YMINQ=0.0
       XMAXQ=xmax

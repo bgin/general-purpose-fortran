@@ -1,5 +1,5 @@
 function loadthem(){
-append("INTRINSIC.3{SECTION}.html");
+append("INTRINSIC.3{}.html");
 append("abs.3.html");
 append("achar.3.html");
 append("acos.3.html");

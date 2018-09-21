@@ -3,6 +3,7 @@ append("./BOOK_ARGUMENTS.html");
 append("./BOOK_INDEX.html");
 append("./BOOK_INTRINSIC.html");
 append("./BOOK_M_Compare_Float_Numbers.html");
+append("./BOOK_M_calcomp.html");
 append("./BOOK_M_calculator.html");
 append("./BOOK_M_color.html");
 append("./BOOK_M_debug.html");

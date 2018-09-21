@@ -402,7 +402,7 @@
 !!    use M_draw,    only  : D_BLACK,   D_WHITE
 !!    use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
 !!    use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
-!!    use M_drawplus, only : biggest_ortho2
+!!    use M_drawplus, only : page
 !!    use M_units,    only : cosd, sind
 !!    implicit none
 !!    integer  :: ipaws
@@ -438,7 +438,7 @@
 !!       ! map area of virtual world to specified device area
 !!       ! notice Y-axis for viewport is zero at TOP
 !!       ! define the virtual world area we want to work in
-!!       call biggest_ortho2(0.0,  400.0,    0.0, 400.0)
+!!       call page(0.0,  400.0,    0.0, 400.0)
 !!       ! the drawing routines use these world units
 !!
 !!       ! put some colored boxes into pixmap by address
@@ -1474,7 +1474,7 @@
 !!
 !!    program demo_rect
 !!    use M_draw
-!!    use M_drawplus, only : biggest_ortho2
+!!    use M_drawplus, only : page
 !!    use M_draw,    only  : D_BLACK,   D_WHITE
 !!    use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
 !!    use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
@@ -1485,7 +1485,7 @@
 !!    !! set up graphics area
 !!    call prefsize(1000,200)
 !!    call vinit(' ') ! start graphics using device $M_draw_DEVICE
-!!    call biggest_ortho2(-25.0-b, 25.0+b, -5.0-b, 5.0+b)
+!!    call page(-25.0-b, 25.0+b, -5.0-b, 5.0+b)
 !!
 !!    call linewidth(150)
 !!    call color(D_RED)
@@ -1619,14 +1619,14 @@
 !!
 !!    program demo_polyhatch
 !!    use M_draw
-!!    use M_drawplus, only : biggest_ortho2, spirograph
+!!    use M_drawplus, only : page, spirograph
 !!    use M_draw,    only  : D_BLACK,   D_WHITE
 !!    use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
 !!    use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
 !!    real :: N=11
 !!    call prefsize(600*10/6,200*10/6)
 !!    call vinit(' ')
-!!    call biggest_ortho2( -15.0, 15.0, -5.0, 5.0)
+!!    call page( -15.0, 15.0, -5.0, 5.0)
 !!    call linewidth(100)
 !!    call color(D_BLACK)
 !!    call clear()
@@ -1827,7 +1827,8 @@
 !!    use M_draw
 !!    ! Using polygons, hatching, and filling.
 !!    integer           :: ios
-!!    character(len=50) :: device print*,'Enter output device:'
+!!    character(len=50) :: device
+!!       print*,'Enter output device:'
 !!       read(*,'(a)',iostat=ios)device
 !!       if(ios.ne.0)then
 !!          call prefsize(1000,1000)
@@ -2297,7 +2298,7 @@
 !!    use M_draw,    only  : D_BLACK,   D_WHITE
 !!    use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
 !!    use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
-!!    use M_drawPLUS, only : biggest_ortho2
+!!    use M_drawPLUS, only : page
 !!    use M_strings,  only : v2s
 !!    real    :: b=0.5
 !!    real    :: y1,y2,ym,x1,x2
@@ -2308,7 +2309,7 @@
 !!       !! set up long bar as plotting area
 !!       call prefsize(1000,200)
 !!       call vinit(' ') ! start graphics using device $M_draw_DEVICE
-!!       call biggest_ortho2(-25.0-b, 25.0+b, -5.0-b, 5.0+b)
+!!       call page(-25.0-b, 25.0+b, -5.0-b, 5.0+b)
 !!       call textsize( 2.5/2.0, 3.0/2.0)
 !!       call font('futura.l')
 !!       call centertext(.true.)
@@ -2367,7 +2368,7 @@
 !!
 !!    program demo_arc
 !!       use M_draw
-!!       use M_drawplus, only : biggest_ortho2
+!!       use M_drawplus, only : page
 !!       use M_draw,    only  : D_BLACK,   D_WHITE
 !!       use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
 !!       use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
@@ -2382,7 +2383,7 @@
 !!       call color(D_BLACK)
 !!       call clear()
 !!       call color(D_YELLOW)
-!!       call biggest_ortho2(-25.0-b, 25.0+b, -5.0-b, 5.0+b)
+!!       call page(-25.0-b, 25.0+b, -5.0-b, 5.0+b)
 !!       call textsize(1.0,1.4)
 !!       call font("futura.l")
 !!       call centertext(.true.)
@@ -2442,7 +2443,7 @@
 !!
 !!    program demo_sector
 !!    use M_draw
-!!    use M_drawplus, only : biggest_ortho2
+!!    use M_drawplus, only : page
 !!    use M_draw,    only  : D_BLACK,   D_WHITE
 !!    use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
 !!    use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
@@ -2456,7 +2457,7 @@
 !!       call color(D_BLACK)
 !!       call clear()
 !!       call color(D_YELLOW)
-!!       call biggest_ortho2(-25.0-b, 25.0+b, -5.0-b, 5.0+b)
+!!       call page(-25.0-b, 25.0+b, -5.0-b, 5.0+b)
 !!       call textsize(1.0,1.4)
 !!       call font("futura.l")
 !!       call centertext(.true.)
@@ -2546,7 +2547,7 @@
 !!
 !!    program demo_circle
 !!       use M_draw
-!!       use M_drawPLUS, only : biggest_ortho2
+!!       use M_drawPLUS, only : page
 !!       use M_draw,    only  : D_BLACK,   D_WHITE
 !!       use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
 !!       use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
@@ -2557,7 +2558,7 @@
 !!    ! set up drawing surface
 !!       call prefsize(1000,200)
 !!       call vinit(' ') ! start graphics using device $M_draw_DEVICE
-!!       call biggest_ortho2(-25.0-b,25.0+b,-R-b,R+b)
+!!       call page(-25.0-b,25.0+b,-R-b,R+b)
 !!       call linewidth(200)
 !!       call color(D_CYAN)
 !!       call clear()
@@ -2620,7 +2621,7 @@
 !!
 !!    program demo_point
 !!    use M_draw
-!!    use M_drawplus, only : biggest_ortho2
+!!    use M_drawplus, only : page
 !!    use M_draw,    only  : D_BLACK,   D_WHITE
 !!    use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
 !!    use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
@@ -2631,7 +2632,7 @@
 !!       call vinit(' ')
 !!       call color(D_BLACK)
 !!       call clear()
-!!       call biggest_ortho2(-25.0, 25.0, -5.0, 5.0)
+!!       call page(-25.0, 25.0, -5.0, 5.0)
 !!
 !!       ! draw points using various linewidths and colors
 !!       do i=1,300
@@ -2982,7 +2983,7 @@
 !!    use M_draw,    only  : D_BLACK,   D_WHITE
 !!    use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
 !!    use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
-!!    use M_drawplus, only : biggest_ortho2
+!!    use M_drawplus, only : page
 !!    real    :: left
 !!    real    :: baseline=80.0
 !!    integer :: icolor=1
@@ -2990,7 +2991,7 @@
 !!       !! set up drawing surface
 !!       call prefsize(400, 400)
 !!       call vinit(' ') ! start graphics using device $M_draw_DEVICE
-!!       call biggest_ortho2(-100.0, 100.0, -100.0, 100.0)
+!!       call page(-100.0, 100.0, -100.0, 100.0)
 !!       call color(D_WHITE)
 !!       call clear()
 !!       call textsize(10.0, 10.0)
@@ -3177,7 +3178,7 @@
 !!
 !!    program demo_fixedwidth
 !!       use M_draw
-!!       use M_drawplus, only : biggest_ortho2
+!!       use M_drawplus, only : page
 !!       implicit none
 !!       real,parameter :: x1=0.0,  x2=40.0,  y1=0.0,  y2=4.0
 !!       real,parameter :: scl=3*0.7
@@ -3185,7 +3186,7 @@
 !!    ! set up display
 !!       call prefsize(1000,100)
 !!       call vinit(' ')
-!!       call biggest_ortho2(x1,x2,y1,y2)
+!!       call page(x1,x2,y1,y2)
 !!    ! set font appearance
 !!       call linewidth(200)
 !!       call font("times.rb")
@@ -3457,6 +3458,42 @@
 !!##DESCRIPTION
 !!    Draw a text string at the current position. Uses current line color
 !!    and thickness and text centering mode.
+!!
+!!##EXAMPLE
+!!
+!!  Sample program:
+!!
+!!       program demo_drawstr
+!!       use M_draw
+!!       call vinit('')
+!!       ! by default the drawing surface is
+!!       ! a square ranging from -1 to 1 in both
+!!       ! the X and Y axis
+!!
+!!       call color(D_BLACK)    ! set current color to black
+!!       call clear()           ! clear to current color
+!!
+!!       ! SET COMMON TEXT ATTRIBUTES
+!!       call color(D_GREEN)    ! we want to draw in green
+!!       call font('futura.m')  ! set font
+!!       call textsize(0.1,0.1) ! font size
+!!
+!!       ! DRAW A STRING
+!!       call move2(-1.0, 0.0)
+!!       call drawstr('Hello')  ! draw string at current position
+!!       ! note that current position is now at end of this string
+!!
+!!       ! CHANGE SOME TEXT ATTRIBUTES AGAIN
+!!       call linewidth(20)     ! set line width
+!!       call color(D_RED)      ! change color
+!!       call textang(45.0)     ! change text angle
+!!
+!!       call drawstr(' World!')! draw string at current position
+!!       idum=getkey()          ! pause
+!!
+!!       call vexit()           !  wrap up and exit graphics mode
+!!
+!!       end program demo_drawstr
 !===================================================================================================================================
 !>
 !!##NAME
@@ -3480,7 +3517,7 @@
 !!
 !!    program demo_strlength
 !!    use :: M_draw
-!!    use M_drawplus, only : biggest_ortho2
+!!    use M_drawplus, only : page
 !!    use M_draw,    only  : D_BLACK,   D_WHITE
 !!    use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
 !!    use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
@@ -3491,7 +3528,7 @@
 !!       !! set up drawing surface
 !!       call prefsize(800, 400)
 !!       call vinit(' ') ! start graphics using device $M_draw_DEVICE
-!!       call biggest_ortho2(-100.0, 300.0, -100.0, 100.0)
+!!       call page(-100.0, 300.0, -100.0, 100.0)
 !!       call color(D_WHITE)
 !!       call clear()
 !!       call linewidth(40)
@@ -3575,14 +3612,14 @@
 !!     use M_draw,     only : D_BLACK,   D_WHITE
 !!     use M_draw,     only : D_RED,     D_GREEN,    D_BLUE
 !!     use M_draw,     only : D_YELLOW,  D_MAGENTA,  D_CYAN
-!!     use M_drawplus, only : biggest_ortho2
+!!     use M_drawplus, only : page
 !!     implicit none
 !!     real              :: x1=0.0,    x2=40.0,    y1=0.0,    y2=7.0
 !!     real              :: xmin=1.0,  xmax=39.0,  ymin=1.0,  ymax=6.0
 !!     integer           :: idum
 !!        call prefsize(int(x2-x1)*25,int(y2-y1)*25)
 !!        call vinit(' ')
-!!        call biggest_ortho2(x1,x2,y1,y2)
+!!        call page(x1,x2,y1,y2)
 !!        call centertext(.true.)
 !!        call font("times.rb")
 !!        call color(D_GREEN)
@@ -3646,7 +3683,7 @@
 !!    use M_draw,    only  : D_BLACK,   D_WHITE
 !!    use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
 !!    use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
-!!    use M_drawplus, only : biggest_ortho2
+!!    use M_drawplus, only : page
 !!    use iso_c_binding
 !!    implicit none
 !!    real :: x1=-20.0, x2=20.0, y1=-20.0, y2=20.0
@@ -3654,7 +3691,7 @@
 !!       !!call voutput('|ppmtogif >images/textjustify.3M_draw.gif')
 !!       !!call vinit('p6')
 !!       call vinit(' ')
-!!       call biggest_ortho2(x1,x2,y1,y2)
+!!       call page(x1,x2,y1,y2)
 !!       call clear()
 !!       call textsize(0.9, 1.4)
 !!       call font("times.rb")
@@ -3714,7 +3751,7 @@
 !!
 !!    program demo_leftjustify
 !!    use M_draw
-!!    use M_drawplus, only : biggest_ortho2
+!!    use M_drawplus, only : page
 !!    use M_draw,    only  : D_BLACK,   D_WHITE
 !!    use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
 !!    use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
@@ -3725,7 +3762,7 @@
 !!       call prefsize(1200,120)
 !!       call vinit(' ')
 !!       x1=0; x2=40; y1=0; y2=4; scl=1.9
-!!       call biggest_ortho2(x1,x2,y1,y2)
+!!       call page(x1,x2,y1,y2)
 !!       call textsize(0.9*scl,1.4*scl)
 !!       call font("times.rb")
 !!       call linewidth(200)
@@ -3766,7 +3803,7 @@
 !!    use M_draw,    only  : D_BLACK,   D_WHITE
 !!    use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
 !!    use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
-!!    use M_drawplus, only : biggest_ortho2
+!!    use M_drawplus, only : page
 !!    implicit none
 !!    real    :: x1, x2, y1, y2
 !!    real    :: scl, ax, bx
@@ -3774,7 +3811,7 @@
 !!       call prefsize(1200,120)
 !!       call vinit(' ')
 !!       x1=0; x2=40; y1=0; y2=4; scl=1.9
-!!       call biggest_ortho2(x1,x2,y1,y2)
+!!       call page(x1,x2,y1,y2)
 !!       call textsize(0.9*scl,1.4*scl)
 !!       call font("times.rb")
 !!       call linewidth(200)
@@ -3816,7 +3853,7 @@
 !!
 !!    program demo_xcentertext
 !!    use M_draw
-!!    use M_drawplus, only : biggest_ortho2
+!!    use M_drawplus, only : page
 !!    implicit none
 !!    real    :: x1, x2, y1, y2
 !!    real    :: scl, ax, bx
@@ -3824,7 +3861,7 @@
 !!       call prefsize(1200,120)
 !!       call vinit(' ')
 !!       x1=0; x2=40; y1=0; y2=4; scl=1.9
-!!       call biggest_ortho2(x1,x2,y1,y2)
+!!       call page(x1,x2,y1,y2)
 !!       call textsize(0.9*scl,1.4*scl)
 !!       call font("times.rb")
 !!       call linewidth(200)
@@ -3862,7 +3899,7 @@
 !!
 !!    program demo_topjustify
 !!    use M_draw
-!!    use M_drawplus, only : biggest_ortho2
+!!    use M_drawplus, only : page
 !!    implicit none
 !!    real    :: x1, x2, y1, y2
 !!    real    :: scl, ax, bx
@@ -3870,7 +3907,7 @@
 !!       call prefsize(1200,120)
 !!       call vinit(' ')
 !!       x1=0; x2=40; y1=0; y2=4; scl=1.9
-!!       call biggest_ortho2(x1,x2,y1,y2)
+!!       call page(x1,x2,y1,y2)
 !!       call textsize(0.9*scl,1.4*scl)
 !!       call font("times.rb")
 !!       call linewidth(200)
@@ -3908,7 +3945,7 @@
 !!
 !!    program demo_bottomjustify
 !!    use M_draw
-!!    use M_drawplus, only : biggest_ortho2
+!!    use M_drawplus, only : page
 !!    implicit none
 !!    real    :: x1, x2, y1, y2
 !!    real    :: scl, ax, bx
@@ -3916,7 +3953,7 @@
 !!       call prefsize(1200,120)
 !!       call vinit(' ')
 !!       x1=0; x2=40; y1=0; y2=4; scl=1.9
-!!       call biggest_ortho2(x1,x2,y1,y2)
+!!       call page(x1,x2,y1,y2)
 !!       call textsize(0.9*scl,1.4*scl)
 !!       call font("times.rb")
 !!       call linewidth(200)
@@ -3954,7 +3991,7 @@
 !!
 !!    program demo_ycentertext
 !!    use M_draw
-!!    use M_drawplus, only : biggest_ortho2
+!!    use M_drawplus, only : page
 !!    implicit none
 !!    real    :: x1, x2, y1, y2
 !!    real    :: scl, ax, bx
@@ -3964,7 +4001,7 @@
 !!       call color(D_BLACK)
 !!       call clear()
 !!       x1=0; x2=40; y1=0; y2=4; scl=1.9
-!!       call biggest_ortho2(x1,x2,y1,y2)
+!!       call page(x1,x2,y1,y2)
 !!       call textsize(0.9*scl,1.4*scl)
 !!       call font("times.rb")
 !!       call linewidth(200)
@@ -4011,7 +4048,7 @@
 !!
 !!    program demo_textslant
 !!    use M_draw
-!!    use M_drawplus, only : biggest_ortho2
+!!    use M_drawplus, only : page
 !!    implicit none
 !!    real    :: x1, x2, y1, y2
 !!    real    :: scl
@@ -4021,7 +4058,7 @@
 !!       call color(D_BLACK)
 !!       call clear()
 !!       x1=0.0; x2=40.0; y1=0.0; y2=10.0; scl=3*0.7
-!!       call biggest_ortho2(x1,x2,y1,y2)
+!!       call page(x1,x2,y1,y2)
 !!       call font("times.rb")
 !!       call linewidth(180)
 !!       call textsize(0.8*scl,1.2*scl)
@@ -4062,7 +4099,7 @@
 !!
 !!    program demo_textweight
 !!    use M_draw
-!!    use M_drawplus, only : biggest_ortho2
+!!    use M_drawplus, only : page
 !!    implicit none
 !!    real,parameter :: w=40.0
 !!    integer        :: key
@@ -4071,7 +4108,7 @@
 !!       call color(D_BLACK)
 !!       call clear()
 !!       call color(D_YELLOW)
-!!       call biggest_ortho2(-w,w,-w,w)
+!!       call page(-w,w,-w,w)
 !!       call font("times.rb")
 !!       call linewidth(180)
 !!       call textsize(15.0,15.0)
@@ -4117,14 +4154,14 @@
 !!    use M_draw,     only : D_BLACK,   D_WHITE
 !!    use M_draw,     only : D_RED,     D_GREEN,    D_BLUE
 !!    use M_draw,     only : D_YELLOW,  D_MAGENTA,  D_CYAN
-!!    use M_drawPLUS, only : biggest_ortho2
+!!    use M_drawPLUS, only : page
 !!    implicit none
 !!    real    :: b=.5
 !!    real    :: R=4.6
 !!    integer :: ipaws
 !!    call prefsize(1000,200)
 !!    call vinit(' ') ! start graphics using device $M_draw_DEVICE
-!!    call biggest_ortho2(-25.0-b, 25.0+b, -5.0-b, 5.0+b)
+!!    call page(-25.0-b, 25.0+b, -5.0-b, 5.0+b)
 !!    call color(D_YELLOW)
 !!    call clear()
 !!    call textsize(2.4,3.0)
@@ -4216,7 +4253,7 @@
 !!
 !!   program demo_dashcode
 !!   use M_draw
-!!   use M_drawplus, only : biggest_ortho2
+!!   use M_drawplus, only : page
 !!   implicit none
 !!   integer        :: icolor
 !!   integer        :: ikey
@@ -4227,7 +4264,7 @@
 !!      call vinit(' ')
 !!      call color(D_BLACK)
 !!      call clear()
-!!      call biggest_ortho2(-25.0-b, 25.0+b, -5.0-b, 5.0+b)
+!!      call page(-25.0-b, 25.0+b, -5.0-b, 5.0+b)
 !!      call textsize(2.0, 2.4)
 !!      call font("futura.m")
 !!      call ycentertext()
@@ -4509,7 +4546,7 @@
 !!
 !!     program demo_color
 !!     use M_draw
-!!     use M_drawPLUS, only : biggest_ortho2
+!!     use M_drawPLUS, only : page
 !!     use M_strings,  only : v2s
 !!     real    :: b=0.5
 !!     real    :: y1,y2,ym,x1,x2
@@ -4519,7 +4556,7 @@
 !!        !! set up long bar as plotting area
 !!        call prefsize(1000,200)
 !!        call vinit(' ') ! start graphics using device $M_draw_DEVICE
-!!        call biggest_ortho2(-25.0-b, 25.0+b, -5.0-b, 5.0+b)
+!!        call page(-25.0-b, 25.0+b, -5.0-b, 5.0+b)
 !!        call textsize( 3.5, 4.0)
 !!        call font('futura.m')
 !!        call centertext(.true.)
@@ -4582,7 +4619,7 @@
 !!    !   or only has a small color table (a frame in this program takes
 !!    !   at least SLICES*RINGS colors to produce accurately).
 !!    use M_draw
-!!    use M_drawplus, only : biggest_ortho2
+!!    use M_drawplus, only : page
 !!    use m_color, only : hue
 !!    use M_units, only : cosd, sind
 !!    implicit none
@@ -4601,7 +4638,7 @@
 !!       call color(D_BLACK)
 !!       call clear()
 !!       call color(D_WHITE)
-!!       call biggest_ortho2(-110./2.,85./2.,-110./2.,110./2.)
+!!       call page(-110./2.,85./2.,-110./2.,110./2.)
 !!       LIGHTNESS=100.0
 !!       lightstep=-5
 !!
@@ -5485,7 +5522,7 @@
 !!
 !!    program demo_expandviewport
 !!    use M_draw
-!!    use M_drawplus, only : biggest_ortho2
+!!    use M_drawplus, only : page
 !!    use M_draw,    only  : D_BLACK,   D_WHITE
 !!    use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
 !!    use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
@@ -5557,7 +5594,7 @@
 !!
 !!    program demo_unexpandviewport
 !!    use M_draw
-!!    use M_drawplus, only : biggest_ortho2
+!!    use M_drawplus, only : page
 !!    use M_draw,    only  : D_BLACK,   D_WHITE
 !!    use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
 !!    use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
@@ -5897,146 +5934,92 @@
 !!   Sample program:
 !!
 !!    program demo_windows
-!!    !@(#) Demonstrate just how much you can put in an object
-!!    !
 !!    use M_draw
-!!    !
 !!    integer CUBE, TOPLEFT, TOPRIGHT, BOTTOMLEFT, BOTTOMRIGHT
 !!    parameter(CUBE = 1, TOPLEFT = 2, TOPRIGHT = 3, BOTTOMLEFT = 4, BOTTOMRIGHT = 5)
-!!    !
 !!    character(len=20) :: device
-!!    !
 !!    print*,'Enter device name:'
 !!    read(*,'(A)',iostat=ios)device
 !!    if(ios.ne.0)device=' '
 !!    call vinit(device)
 !!    call pushviewport
-!!    !
 !!    call textsize(0.5, 0.9)
 !!    call font('futura.m')
-!!    !
 !!    call color(D_BLACK)
 !!    call clear
-!!    !
 !!    ! make an object that represents the cube
-!!    !
 !!    call makecube
-!!    !
 !!    ! set up an object which draws in the top left of the screen.
-!!    !
 !!    call makeobj(TOPLEFT)
 !!    call viewport(-1.0, 0.0, 0.0, 1.0)
 !!    call ortho2(-5.0, 5.0, -5.0, 5.0)
-!!    !
 !!    call color(D_RED)
-!!    !
 !!    call rect(-5.0, -5.0, 5.0, 5.0)
-!!    !
 !!    call perspective(40.0, 1.0, 0.1, 1000.0)
 !!    call lookat(5.0, 8.0, 5.0, 0.0, 0.0, 0.0, 0.0)
-!!    !
-!!    !          Call an object within another object
-!!    !
+!!    ! Call an object within another object
 !!    call callobj(CUBE)
-!!    !
 !!    call color(D_GREEN)
-!!    !
 !!    call move2(-4.5, -4.5)
 !!    call drawstr('perspective/lookat')
 !!    call closeobj
-!!    !
 !!    ! now set up one which draws in the top right of the screen
-!!    !
 !!    call makeobj(TOPRIGHT)
 !!    call viewport(0.0, 1.0, 0.0, 1.0)
 !!    call ortho2(-5.0, 5.0, -5.0, 5.0)
-!!    !
 !!    call color(D_GREEN)
-!!    !
 !!    call rect(-5.0, -5.0, 5.0, 5.0)
-!!    !
 !!    call window(-5.0, 5.0, -5.0, 5.0, -5.0, 5.0)
 !!    call lookat(5.0, 8.0, 5.0, 0.0, 0.0, 0.0, 0.0)
-!!    !
 !!    call callobj(CUBE)
-!!    !
 !!    call color(D_RED)
-!!    !
 !!    call move2(-4.5, -4.5)
 !!    call drawstr('window/lookat')
 !!    call closeobj
-!!    !
 !!    ! try the bottom left
-!!    !
 !!    call makeobj(BOTTOMLEFT)
 !!    call viewport(-1.0, 0.0, -1.0, 0.0)
 !!    call ortho2(-5.0, 5.0, -5.0, 5.0)
-!!    !
 !!    call color(D_MAGENTA)
-!!    !
 !!    call rect(-5.0, -5.0, 5.0, 5.0)
-!!    !
 !!    call perspective(40.0, 1.0, 0.1, 1000.0)
 !!    call polarview(15.0, 30.0, 30.0, 30.0)
-!!    !
 !!    call callobj(CUBE)
-!!    !
 !!    call color(D_YELLOW)
-!!    !
 !!    call move2(-4.5, -4.5)
 !!    call drawstr('perspective/polarview')
 !!    call closeobj
-!!    !
 !!    ! and the bottom right
-!!    !
 !!    call makeobj(BOTTOMRIGHT)
 !!    call viewport(0.0, 1.0, -1.0, 0.0)
 !!    call ortho2(-5.0, 5.0, -5.0, 5.0)
-!!    !
 !!    call color(D_CYAN)
-!!    !
 !!    call rect(-5.0, -5.0, 5.0, 5.0)
-!!    !
 !!    call window(-5.0, 5.0, -5.0, 5.0, -5.0, 5.0)
 !!    call polarview(8.0, -18.0, -3.0, 18.0)
-!!    !
 !!    call callobj(CUBE)
-!!    !
 !!    call color(D_BLUE)
-!!    !
 !!    call move2(-4.5, -4.5)
 !!    call drawstr('window/polarview')
 !!    call closeobj
-!!    !
 !!    ! now draw them
-!!    !
 !!    call callobj(TOPLEFT)
 !!    call callobj(TOPRIGHT)
 !!    call callobj(BOTTOMLEFT)
 !!    call callobj(BOTTOMRIGHT)
-!!    !
 !!    idum=getkey()
-!!    !
 !!    call vexit
-!!    !
 !!    !=====================================================================
 !!    contains
 !!    !=====================================================================
 !!    subroutine makecube
-!!    !
 !!    ! set up a cube
-!!    !
 !!    integer CUBE
 !!    parameter (CUBE = 1)
-!!    !
 !!    call makeobj(CUBE)
-!!    !
 !!    ! The border around the cube
-!!    !
 !!    call rect(-5.0, -5.0, 10.0, 10.0)
-!!    !
 !!    ! Make the cube from 4 squares
-!!    !
 !!    call pushmatrix()
 !!    call side()
 !!    call rotate(90.0, 'x')
@@ -6046,23 +6029,17 @@
 !!    call rotate(90.0, 'x')
 !!    call side()
 !!    call popmatrix()
-!!    !
 !!    call closeobj()
-!!    !
 !!    end subroutine makecube
 !!    !=====================================================================
 !!    subroutine side
-!!    !
 !!    ! define a face for the cube
-!!    !
 !!    call pushmatrix
 !!    call translate(0.0, 0.0, 1.0)
 !!    call rect(-1.0, -1.0, 1.0, 1.0)
 !!    call popmatrix
-!!    !
 !!    end subroutine side
 !!    !=====================================================================
-!!    !
 !!    end program demo_windows
 !===================================================================================================================================
 !>
@@ -6870,7 +6847,7 @@
 !!
 !!    program demo_callobj
 !!       use M_draw
-!!       use M_drawplus, only : biggest_ortho2
+!!       use M_drawplus, only : page
 !!       implicit none
 !!       integer :: ipaws
 !!       integer :: ix, iy
@@ -6883,7 +6860,7 @@
 !!       !! Background color
 !!       !call color(D_WHITE)
 !!       !! Page setup
-!!       !call biggest_ortho2(0.0,2124.0,0.0,2124.0)
+!!       !call page(0.0,2124.0,0.0,2124.0)
 !!       !call color(D_BLACK)
 !!
 !!       call makeobj(1111)
@@ -7132,7 +7109,7 @@
 !!
 !!       ! make a big page and call object with various transformations
 !!       call color(D_WHITE)
-!!       call biggest_ortho2( 0.0, 20000.0, 0.0, 20000.0)
+!!       call page( 0.0, 20000.0, 0.0, 20000.0)
 !!       call clear()
 !!       call color(D_BLACK)
 !!
@@ -7365,7 +7342,7 @@
 !!    program demo_saveobj
 !!    ! create object in file "circle.obj" for use with loadobj(3f)
 !!    use M_draw
-!!    use M_drawplus, only : invokeobj,biggest_ortho2, pop, push
+!!    use M_drawplus, only : invokeobj,page, pop, push
 !!    implicit none
 !!    character(len=:),allocatable :: env
 !!    integer :: ipaws
@@ -7402,7 +7379,7 @@
 !!       endif
 !!       !------------------------------------------------------------
 !!       call vinit(' ')  ! set up device
-!!       call biggest_ortho2(-100.0,100.0,-100.0,100.0)
+!!       call page(-100.0,100.0,-100.0,100.0)
 !!       call loadobj(100,"circle.obj")
 !!       ! translate x,y,z scale x,y,z rotate x,y,z object
 !!       call invokeobj(   0.0,  0.0, 0.0,1.0,1.0,1.0,0.0,0.0,0.0, 100)
@@ -7739,11 +7716,17 @@
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !----------------------------------------------------------------------------------------------------------------------------------!
 module M_draw
+!
 ! hide logicals from C
 ! trim and append null to intent(in) character strings
-   use ISO_C_BINDING
-   implicit none
-   private
+! logical to _Bool mapping not consistent across compilers, g95 does not even define KIND=C_BOOL; so make NAME_F routines
+!
+use ISO_C_BINDING
+implicit none
+
+character(len=*),parameter::ident="@(#)M_draw::M_draw(3fm):: The M_draw graphics library module"
+
+private
 !-------------------------------------------------------------------------------
 integer(kind=c_short),public,parameter :: D_XCENTERED=     1_C_SHORT
 integer(kind=c_short),public,parameter :: D_YCENTERED=     2_C_SHORT

@@ -1,0 +1,52 @@
+NAME
+    rdpnt(3f): [M_drawplus::locator] reads coordinates of point locator clicked at
+
+SYNOPSIS
+   subroutine rdpnt(oldx,oldy,sx,sy,ibut)
+
+DESCRIPTION
+   Move to the initial point given, and then move to the next point selected by
+   the locator, and return the new point location in world coordinates and the
+   mouse or button number used to select the new point. Send a bell character
+   to stdout upon return.
+
+   This routine simplifies the differences in use between mouse selections
+   made on a Tektronix terminal or terminal emulator and other devices such as
+   X11 Windows servers.
+
+OPTIONS
+
+     OLDX, OLDY  initial point to move to
+     SX, SY      new point selected by locator and draw to from initial point
+     IBUT        mouse button value returned by LOCATOR(3f) procedure. If the
+                 value is -1 no locator device is supported.
+
+EXAMPLE
+  Sample program:
+
+   program demo_rdpnt
+   use M_drawplus, only : rdpnt
+   use M_draw
+   implicit none
+   real    :: x1, y1, x2, y2
+   integer :: key
+   call vinit(' ')
+   x1=0.0
+   y1=0.0
+    write(*,*)'click at the same point twice to end the loop'
+   do
+      call rdpnt(x1,y1,x2,y2,key)
+      if(key.le.0)exit
+      ! if the mouse is clicked twice without moving exit the loop
+      if(x1.eq.x2 .and. y1.eq.y2)exit
+      write(*,*)'points are ',x1,y1,' and ',x2,y2,'; and key is ',key
+      call color(D_RED)
+      call circle(x1,y1,0.03)
+      call color(D_GREEN)
+      call circle(x2,y2,0.05)
+      x1=x2
+      y1=y2
+   enddo
+   call vexit()
+   end program demo_rdpnt
+

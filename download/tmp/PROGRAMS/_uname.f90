@@ -40,7 +40,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '      >kernel-version : 2016-08-31 14:32                                        ',&
 '      >machine        : x86_64                                                  ',&
 '                                                                                ',&
-'      >_uname -all                                                              ',&
+'      >_uname --all                                                             ',&
 '      >CYGWIN_NT-10.0 buzz 2.6.0(0.304/5/3) 2016-08-31 14:32 x86_64             ',&
 '                                                                                ',&
 '      >_uname -machine                                                          ',&
@@ -87,7 +87,7 @@ end subroutine help_usage
 !!       >kernel-version : 2016-08-31 14:32
 !!       >machine        : x86_64
 !!
-!!       >_uname -all
+!!       >_uname --all
 !!       >CYGWIN_NT-10.0 buzz 2.6.0(0.304/5/3) 2016-08-31 14:32 x86_64
 !!
 !!       >_uname -machine
@@ -107,7 +107,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    print system information>',&
 '@(#)VERSION:        1.0, 20161107>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Thu, Aug 16th, 2018 12:08:57 PM>',&
+'@(#)COMPILED:       Thu, Sep 20th, 2018 7:31:39 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

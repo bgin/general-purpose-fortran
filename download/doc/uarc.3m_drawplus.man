@@ -1,5 +1,5 @@
 NAME
-    uarc(3f) - [M_DRAWPLUS] create circular arc, leaving CP at end of arc
+    uarc(3f) - [M_drawplus] create circular arc, leaving CP at end of arc
 
 SYNOPSIS
    subroutine uarc(x,y,angle)

@@ -16,7 +16,7 @@ EXAMPLE
    program demo_saveobj
    ! create object in file "circle.obj" for use with loadobj(3f)
    use M_draw
-   use M_drawplus, only : invokeobj,biggest_ortho2, pop, push
+   use M_drawplus, only : invokeobj,page, pop, push
    implicit none
    character(len=:),allocatable :: env
    integer :: ipaws
@@ -53,7 +53,7 @@ EXAMPLE
       endif
       !------------------------------------------------------------
       call vinit(' ')  ! set up device
-      call biggest_ortho2(-100.0,100.0,-100.0,100.0)
+      call page(-100.0,100.0,-100.0,100.0)
       call loadobj(100,"circle.obj")
       ! translate x,y,z scale x,y,z rotate x,y,z object
       call invokeobj(   0.0,  0.0, 0.0,1.0,1.0,1.0,0.0,0.0,0.0, 100)

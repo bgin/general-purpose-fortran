@@ -1,11 +1,8 @@
 NAME
-     _mkfifo(1f) - [FUNIX:FILESYSTEM] make a FIFO pipe by calling mkfifo(3c)
+     _rm(1f) - [FUNIX:FILESYSTEM] remove file
 SYNOPSIS
-     _mkfifo file(s)
+     _rm file(s)
 DESCRIPTION
-   Create named pipes (FIFOs) with the given NAMEs.
-OPTIONS
-   files      pathnames of named pipes to create
-   --help     display this help and exit
-   --version  output version information and exit
+     Remove file(s).
 EXAMPLE
+     _rm *.o

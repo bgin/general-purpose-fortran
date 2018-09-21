@@ -1,5 +1,5 @@
 function loadthem(){
-append("M_math.3{SECTION}.html");
+append("M_math.3{}.html");
 append("M_math.3.html");
 append("accdig.3.html");
 append("almost.3.html");

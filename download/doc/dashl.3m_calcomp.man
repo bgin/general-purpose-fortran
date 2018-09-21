@@ -1,0 +1,51 @@
+NAME
+   dashl(3f) - [M_calcomp:general] draws a polyline with dashed lines
+
+SYNOPSIS
+       call dashl(xarray,yarray,npts,inc)
+
+DESCRIPTION
+
+  DASHL is a FORTRAN subroutine which draws dashed lines connecting a series of
+  data points. Its operation is similar to that of the LINE subroutine.
+
+OPTIONS
+
+    XARRAY   is the name of the array containing abscissas (X values) of the
+             data points to be plotted and the scaling parameters for
+             the X array.
+
+    YARRAY   is the name of the array containing ordinates (Y values) of the
+             data points to be plotted and the scaling parameters for
+             the Y array.
+
+    NPTS     is the quantity of data points to be plotted.
+
+    INC      is the increment between array elements to be plotted.
+             INC is greater than 1 if the values to be plotted are in
+             a mixed or multi-dimensioned array. (Normally INC = 1).
+
+
+  COMMENTS:
+
+ The arrays must be dimensioned with at least NPTS + 2 elements.
+ The adjusted minimum value (FIRSTV) and the adjusted delta value
+ (DELTAV), normally provided by the SCALE subroutine, must be stored
+ following the data array.
+
+ For the X array, the adjusted minimum is stored in XARRAY(NPTS*INC+1),
+ and the adjusted delta is in XARRAY(NPTS*INC+INC+1).
+ Similarly, for the Y array, the minimum is in YARRAY(NPTS*INC+1),
+ and the delta is in YARRAY(NPTS*INC+INC+1). Therefore, XARRAY
+ and YARRAY must be dimensioned to be at least NPTS*INC+INC+1 .
+
+ If scaling is not required, the user must place the appropriate
+ minimum and delta values in the specified elements of the arrays.
+ For a one-to-one correspondence between array data and plotted data,
+ these values should be 0.0 (minimum) and 1.0 (delta).
+
+ A dashed line, with dashes approximately 0.1 inch long, is drawn
+ connecting sequential points. Coding is optimized so that plotting may
+ either begin at the first point and progress forward or begin at the
+ last point and progress backward.
+

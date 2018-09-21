@@ -29,7 +29,7 @@ EXAMPLE
 
    program demo_rect
    use M_draw
-   use M_drawplus, only : biggest_ortho2
+   use M_drawplus, only : page
    use M_draw,    only  : D_BLACK,   D_WHITE
    use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
    use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
@@ -40,7 +40,7 @@ EXAMPLE
    !! set up graphics area
    call prefsize(1000,200)
    call vinit(' ') ! start graphics using device $M_draw_DEVICE
-   call biggest_ortho2(-25.0-b, 25.0+b, -5.0-b, 5.0+b)
+   call page(-25.0-b, 25.0+b, -5.0-b, 5.0+b)
 
    call linewidth(150)
    call color(D_RED)

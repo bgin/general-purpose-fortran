@@ -996,7 +996,7 @@ end subroutine output_case
 !==================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-subroutine define(opts,ireset)                              !@(#)define(3f): process 'DEFINEvariablename[=expression]' directive
+subroutine define(opts,ireset)                              !@(#)define(3f): process 'DEFINE variablename[=expression]' directive
 character(len=*),intent(in)    :: opts                      ! packed uppercase working copy of input line with leading $verb removed
 integer,intent(in)             :: ireset                    ! 0= can redefine variable, anything else fail on redefine
 
@@ -2314,7 +2314,7 @@ subroutine format_g_man()
 !-----------------------------------------------------------------------------------------------------------------------------------
          exit ALL
       endblock WRITEIT
-      call stderr('G_MAN=',G_MAN)
+      call stderr('G_MAN='//G_MAN)
       call stop_ufpp('ERROR(print_comment_block:ufpp) - FAILED TO WRITE COMMENT BLOCK')
    endblock ALL
 end subroutine format_g_man
@@ -2869,7 +2869,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   $FILTER [comment|write|help|version|shell[ -cmd COMMAND]] [-file NAME][! comment]',&
 '   $FILTER VARIABLE -varname NAME                                               ',&
 '                                                                                ',&
-'      COMMENT:  write text prefixed by two exclamations and a space             ',&
+'      COMMENT:  write text prefixed by an exclamation and a space               ',&
 '      WRITE:    write text as Fortran WRITE(3f) statements                      ',&
 '      HELP:     write text as a subroutine called HELP_USAGE                    ',&
 '      VERSION:  write text as a subroutine called HELP_VERSION                  ',&
@@ -3373,7 +3373,7 @@ end subroutine help_usage
 !!    $FILTER [comment|write|help|version|shell[ -cmd COMMAND]] [-file NAME][! comment]
 !!    $FILTER VARIABLE -varname NAME
 !!
-!!       COMMENT:  write text prefixed by two exclamations and a space
+!!       COMMENT:  write text prefixed by an exclamation and a space
 !!       WRITE:    write text as Fortran WRITE(3f) statements
 !!       HELP:     write text as a subroutine called HELP_USAGE
 !!       VERSION:  write text as a subroutine called HELP_VERSION
@@ -3626,7 +3626,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        4.0: 20170502>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
-'@(#)COMPILED:       Thu, Aug 16th, 2018 12:02:28 PM>',&
+'@(#)COMPILED:       Thu, Sep 20th, 2018 7:21:19 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

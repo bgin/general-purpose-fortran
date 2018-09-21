@@ -1,13 +1,13 @@
 !>
 !!##NAME
-!!    M_DRAWPLUS(3f) - [M_DRAWPLUS] Additional routines using the M_DRAW graphics library
+!!    M_drawplus(3f) - [M_drawplus] Additional routines using the M_DRAW graphics library
 !!##SYNOPSIS
 !!
 !!
 !!##DESCRIPTION
 !!
-!!    M_DRAWPLUS(3f) is a collection of higher level graphic routines that call the
-!!    base M_DRAW(3f) graphics routines.
+!!    M_drawplus(3f) is a collection of higher level graphic routines that call the
+!!    base M_draw(3f) graphics routines.
 !!
 !!##LIBRARY FUNCTION DESCRIPTIONS
 !!
@@ -21,11 +21,16 @@
 !!
 !!    INTERACTIVE ROUTINES
 !!
+!!        subroutine rdbox(returnx1,returny1,returnx2,returny2,ikey)
+!!        reads two points and outline defined box and return points
+!!        subroutine rdpnt(oldx,oldy,sx,sy,ibut)
+!!        reads coordinates of point locator clicked at
+!!
 !!    FLUSHING
 !!
 !!    PROJECTION AND VIEWPORT ROUTINES
 !!
-!!        subroutine biggest_ortho2 (left, right, bottom, top)
+!!        subroutine page (left, right, bottom, top)
 !!
 !!    MATRIX STACK ROUTINES
 !!
@@ -95,12 +100,13 @@ implicit none
 private
 
 public  :: page
-public  :: biggest_ortho2
 public  :: invokeobj
 public  :: spirograph
 public  :: call_draw
 public  :: draw_interpret
 public  :: arrowhead
+public  :: rdpnt
+public  :: rdbox
 
 public  :: barcode
 public  :: pop
@@ -232,22 +238,22 @@ end subroutine arrowhead
 !===================================================================================================================================
 !>
 !!##NAME
-!!       page_rri(3fp) - [M_drawplus] - new page
+!!       page_rri(3fp) - [M_drawplus] - new world window with viewport set to largest area with same aspect ratio
 !!
 !!##SYNOPSIS
 !!
-!!   subroutine polyline2(xsize,ysize,icolor)
+!!   subroutine page_rri(xsize,ysize,icolor)
 !!
 !!    integer,intent(in)          :: xsize
 !!    integer,intent(in)          :: ysize
 !!    integer,intent(in)          :: icolor
 !!
 !!##DESCRIPTION
-!!    Given a horizontal size and vertical size and color set to window
-!!    to the rectangle defined by the corner points <0.0,0.0> and <xsize,ysize>
-!!    and set the viewport to the largest viewport on the display with the same
-!!    aspect ratio and start a new page with the specified background color if
-!!    background color is supported on the device.
+!!    Given a horizontal size and vertical size and color set the window to
+!!    the rectangle defined by the corner points <0.0,0.0> and <xsize,ysize>
+!!    and set the viewport to the largest viewport on the display with the
+!!    same aspect ratio and start a new page with the specified background
+!!    color if background color is supported on the device.
 !!
 !!##OPTIONS
 !!    XSIZE    X size of requested window
@@ -281,7 +287,7 @@ subroutine page_rri(xsize,ysize,icolor)
 real,intent(in)             :: xsize
 real,intent(in)             :: ysize
 integer                     :: icolor
-   call biggest_ortho2(0.0,xsize,0.0,ysize)
+   call page(0.0,xsize,0.0,ysize)
    call pushattributes()
       call color(icolor)
       call clear()
@@ -327,7 +333,7 @@ end subroutine page_rri
 !!      call polyline2([-0.5,-0.5, -0.5,+0.5, +0.5,+0.5, +0.5,-0.5])
 !!      call color(4)
 !!      call polyline2( [-1,-1,+1,+1,-1] , &  ! X values
-!!                 & [-1,+1,+1,-1,-1] )    ! Y values
+!!                    & [-1,+1,+1,-1,-1] )    ! Y values
 !!      ipaws=getkey()
 !!      call vexit()
 !!      end program demo_polyline2
@@ -400,7 +406,7 @@ end subroutine polyline2_r
 !----------------------------------------------------------------------------------------------------------------------------------!
 !>
 !!##NAME
-!!    invokeobj(3f) - [M_DRAWPLUS] invoke object with specified transformations
+!!    invokeobj(3f) - [M_drawplus] invoke object with specified transformations
 !!
 !!##SYNOPSIS
 !!
@@ -421,7 +427,9 @@ end subroutine polyline2_r
 !!    iobject     object to invoke
 !===================================================================================================================================
 subroutine invokeobj(xt,yt,zt,xs,ys,zs,xr,yr,zr,iobject)
-character(len=*),parameter::ident="@(#)invokeobj(3f) invoke object with specified transformation applied and then restored"
+
+character(len=*),parameter::ident="&
+&@(#)M_drawplus::invokeobj(3f): invoke object with specified transformation applied and then restored"
 
 real,intent(in)    :: xt,yt,zt  ! linear transforms
 real,intent(in)    :: xs,ys,zs  ! scaling
@@ -443,7 +451,7 @@ end subroutine invokeobj
 !----------------------------------------------------------------------------------------------------------------------------------!
 !>
 !!##NAME
-!!    pop(3f) - [M_DRAWPLUS] call popviewport(), popmatrix(), popattributes()
+!!    pop(3f) - [M_drawplus] call popviewport(), popmatrix(), popattributes()
 !!##SYNOPSIS
 !!
 !!    subroutine pop()
@@ -453,7 +461,9 @@ end subroutine invokeobj
 !!
 !===================================================================================================================================
 subroutine pop()
-character(len=*),parameter::ident="@(#)pop(3f): call popviewport(), popmatrix(), popattributes()"
+
+character(len=*),parameter::ident="@(#)M_drawplus::pop(3f): call popviewport(), popmatrix(), popattributes()"
+
    call popviewport()
    call popmatrix()
    call popattributes()
@@ -463,7 +473,7 @@ end subroutine pop
 !----------------------------------------------------------------------------------------------------------------------------------!
 !>
 !!##NAME
-!!    push(3f) - [M_DRAWPLUS] call pushviewport(), pushmatrix(), pushattributes()
+!!    push(3f) - [M_drawplus] call pushviewport(), pushmatrix(), pushattributes()
 !!##SYNOPSIS
 !!
 !!     subroutine push()
@@ -473,7 +483,9 @@ end subroutine pop
 !!
 !===================================================================================================================================
 subroutine push()
-character(len=*),parameter::ident="@(#)push(3f): call pushattributes(), pushmatrix(), pushviewport()"
+
+character(len=*),parameter::ident="@(#)M_drawplus::push(3f): call pushattributes(), pushmatrix(), pushviewport()"
+
    call pushattributes()
    call pushmatrix()
    call pushviewport()
@@ -483,7 +495,7 @@ end subroutine push
 !----------------------------------------------------------------------------------------------------------------------------------!
 !>
 !!##NAME
-!!     uarc(3f) - [M_DRAWPLUS] create circular arc, leaving CP at end of arc
+!!     uarc(3f) - [M_drawplus] create circular arc, leaving CP at end of arc
 !!
 !!##SYNOPSIS
 !!
@@ -503,7 +515,9 @@ subroutine uarc(x,y,angle)
 ! with counterclockwise angles positive.
 !-----------------------------------------------------------------------------------------------------------------------------------
 use M_draw
-character(len=*),parameter::ident="@(#)create circular arc, leaving CP at end of arc"
+
+character(len=*),parameter::ident="@(#)M_drawplus::create circular arc, leaving CP at end of arc"
+
 real,intent(in) :: x
 real,intent(in) :: y
 real,intent(in) :: angle
@@ -563,7 +577,8 @@ real :: ynow
 !===================================================================================================================================
 subroutine arc2(x, y, radius, startang, endang)
 use M_draw
-character(len=*),parameter::ident="@(#)Like M_DASH arc routine without move at end so can be in a polygon"
+
+character(len=*),parameter::ident="@(#)M_drawplus::arc2(3f): Like M_DASH arc routine without move at end so can be in a polygon"
 
 real,intent(in) :: x
 real,intent(in) :: y
@@ -606,27 +621,73 @@ end subroutine arc2
 !----------------------------------------------------------------------------------------------------------------------------------!
 !>
 !!##NAME
-!!    biggest_ortho2(3f) - [M_DRAWPLUS] set window into largest viewport available
+!!    page(3f) - [M_drawplus] set window into largest viewport available
 !!
 !!##SYNOPSIS
 !!
-!!       subroutine biggest_ortho2(xsmall,xlarge,ysmall,ylarge)
-!!       real, intent=(in) :: xsmall
-!!       real, intent=(in) :: xlarge
-!!       real, intent=(in) :: ysmall
-!!       real, intent=(in) :: ylarge
+!!    subroutine page(xsmall,xlarge,ysmall,ylarge)
+!!    real, intent=(in) :: xsmall
+!!    real, intent=(in) :: xlarge
+!!    real, intent=(in) :: ysmall
+!!    real, intent=(in) :: ylarge
+!!
+!!    subroutine page(xsize,ysize,icolor)
+!!    real, intent=(in)    :: xsize
+!!    real, intent=(in)    :: ysize
+!!    integer, intent=(in) :: icolor
 !!
 !!##DESCRIPTION
-!!    Given a window size, and assuming a one-to-one correspondence of window
-!!    units (ie. an "x-unit" is as long as a "y-unit"), find the largest area
-!!    on the display surface that has the same aspect ratio, and set the
-!!    viewport to it.
+!!    FORM SUBROUTINE PAGE(XSMALL,XLARGE,YSMALL,YLARGE)
 !!
-!!    assumes that the screen rasters are square.
+!!    Set the window to the rectangle defined by the corner points
+!!    <xsmall,ysmall> and <xlarge,ylarge>.
+!!
+!!    Also, given the window size, and assuming a one-to-one correspondence
+!!    of window units (ie. an "x-unit" is as long as a "y-unit"), find the
+!!    largest area on the display surface that has the same aspect ratio,
+!!    and set the viewport to it.
+!!
+!!    FORM SUBROUTINE PAGE(XSIZE,YSIZE,ICOLOR)
+!!
+!!    Size the window to the rectangle defined by the corner points
+!!    <0.0,0.0> and <xsize,ysize> and the viewport to the largest centered
+!!    area that has the same aspect ratio, and set the background color to
+!!    the value mapped to color ICOLOR.
+!!
+!!##EXAMPLE
+!!
+!!   Sample program:
+!!
+!!    program demo_page
+!!    use M_draw
+!!    use M_drawplus, only : page
+!!    use M_draw,    only  : D_BLACK,   D_WHITE
+!!    use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
+!!    use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
+!!    implicit none
+!!    integer :: ipaws
+!!    real,parameter :: radius=25.0
+!!       call prefsize(600,600)
+!!       call vinit(' ') ! start graphics using device $M_draw_DEVICE
+!!       call page(-radius, radius, -radius, radius)
+!!       call linewidth(200)
+!!       call clear()
+!!       call color(D_BLUE)
+!!       call move2(-radius, -radius)
+!!       call draw2(-radius, radius)
+!!       call draw2(radius, radius)
+!!       call draw2(radius, -radius)
+!!       call draw2(-radius, -radius)
+!!       call color(D_CYAN)
+!!       call circle(0.0,0.0,radius)
+!!       call vflush()
+!!       ipaws=getkey()
+!!       call vexit()
+!!    end program demo_page
 !===================================================================================================================================
 subroutine biggest_ortho2(xsmall,xlarge,ysmall,ylarge)
-!----------------------------------------------------------------------------------------------------------------------------------!
-character(len=*),parameter::ident="@(#)biggest_ortho2(3f) given a window size, find and set to largest accommodating viewport"
+
+character(len=*),parameter::ident="@(#)M_drawplus::page(3f): given a window size, find and set to largest accommodating viewport"
 
 real,intent(in)  :: xsmall
 real,intent(in)  :: xlarge
@@ -659,7 +720,7 @@ real             :: ysplit
       if(xlarge-xsmall.ne.0.0)then
          tryy=vwide*(ylarge-ysmall)/(xlarge-xsmall) ! calculate required height
       else                             ! ERROR: do something desperate
-         call journal('*biggest_ortho2* window has a zero X dimension')
+         call journal('*page* window has a zero X dimension')
          tryy=vhigh
       endif
       if(tryy.gt.vhigh)then ! if required height too great, fit with y maximized
@@ -667,7 +728,7 @@ real             :: ysplit
          if(ylarge-ysmall.ne.0.0)then
             tryx=vhigh*(xlarge-xsmall)/(ylarge-ysmall)
          else                          ! ERROR: do something desperate
-            call journal('*biggest_ortho2* window has a zero Y dimension')
+            call journal('*page* window has a zero Y dimension')
             tryx=vwide
          endif
       endif
@@ -709,7 +770,7 @@ real             :: ysplit
       if(xmin.ne.xmax.and.ymin.ne.ymax)then
          call viewport(xmin,xmax,ymin,ymax)
       else
-         call journal('*biggest_ortho2* window has zero dimension,no viewport set')
+         call journal('*page* window has zero dimension,no viewport set')
       endif
 !     to prevent clipping lines that are right on edge of window fudge a bit
       !bugx=.001*(xlarge-xsmall)
@@ -722,7 +783,7 @@ real             :: ysplit
       if(xsmall.ne.xlarge.and.ysmall.ne.ylarge)then
          call ortho2(xsmall,xlarge,ysmall,ylarge)
       else    ! ERROR: do something desperate
-         call journal('*biggest_ortho2* window has zero dimension, no window set')
+         call journal('*page* window has zero dimension, no window set')
       endif
 end subroutine biggest_ortho2
 !----------------------------------------------------------------------------------------------------------------------------------!
@@ -730,7 +791,7 @@ end subroutine biggest_ortho2
 !----------------------------------------------------------------------------------------------------------------------------------!
 !>
 !!##NAME
-!!    uconic(3f) - [M_DRAWPLUS] general conic sections
+!!    uconic(3f) - [M_drawplus] general conic sections
 !!##SYNOPSIS
 !!
 !!    uconic(x,y,p,e,theta1,theta2,orientation)
@@ -878,7 +939,9 @@ subroutine uconic(x,y,p,e,th1,th2,rangle)
 use M_draw
 use ISO_C_BINDING
 use m_units, only: d2r
-character(len=*),parameter::ident="@(#)m_draw:uconic(3f) general conic sections"
+
+character(len=*),parameter::ident="@(#)M_drawplus::m_draw:uconic(3f): general conic sections"
+
 real :: an
 real :: angdel
 real :: anginc
@@ -1152,6 +1215,9 @@ end subroutine uconic
 ! trim and append null to intent(in) character strings
 subroutine barcode(XCORNER_IN,YCORNER_IN,XSMALL_IN,XLARGE_IN,YSIZE_IN,STRING)
 implicit none
+
+character(len=*),parameter::ident="@(#)M_drawplus::barcode(3f): draw 3-of-9 bar code"
+
 ! void barcode( float xcorner, float ycorner, float xsmall, float xlarge, float ysize, char *string);
    interface
       subroutine barcode_F(XCORNER,YCORNER,XSMALL,XLARGE,YSIZE,STRING) bind(C,NAME='barcode')
@@ -1423,7 +1489,7 @@ use M_draw
 !!implicit real   (a-h,o-z)
 implicit none
 
-character(len=*),parameter :: ident="@(#)juvog(3f): parse most M_draw(3fm) routines positionally "
+character(len=*),parameter::ident="@(#)M_drawplus::call_draw(3f): parse most M_draw(3fm) routines positionally"
 
 ! parse most M_draw(3fm) routines positionally
 ! simplistic, does not handle quoted parameters directly, just parses on space
@@ -1582,11 +1648,11 @@ real                         :: value4
    case('rcurve')
    case('curve')
    case('curven')
-   ! m_drawplus
+   ! M_drawplus
    case('invokeobj')        ; call invokeobj(rnum0(x1),rnum0(x2),rnum0(x3),rnum0(x4),rnum0(x5),  &
                                             & rnum0(x6),rnum0(x7),rnum0(x8),rnum0(x9),inum0(x10) )
-   case('biggest_ortho2')   ; call biggest_ortho2(rnum0(x1),rnum0(x2),rnum0(x3),rnum0(x4))
-   case('page')             ; call biggest_ortho2(rnum0(x1),rnum0(x2),rnum0(x3),rnum0(x4))
+   case('biggest_ortho2')   ; call page(rnum0(x1),rnum0(x2),rnum0(x3),rnum0(x4))
+   case('page')             ; call page(rnum0(x1),rnum0(x2),rnum0(x3),rnum0(x4))
    case('pop')              ; call pop()
    case('push')             ; call push()
    case('spirograph')       ; call spirograph(rnum0(x1),rnum0(x2), &             ! xcenter, ycenter
@@ -1862,7 +1928,9 @@ end subroutine call_draw
 logical function iflogic(string)
 use M_calculator_plus, only : inum0
 use M_strings, only         : lower
-character(len=*),parameter :: ident="@(#)iflogic(3f): evaluate string in calculator and return false if value is zero"
+
+character(len=*),parameter::ident="@(#)M_drawplus::iflogic(3fp): evaluate string in calculator and return false if value is zero"
+
 character(len=*)           :: string
    select case(lower(string))
    case('.true.','t','.t.','true')
@@ -1928,7 +1996,9 @@ subroutine spirograph(xcenter,ycenter,sunr0,planet0,offset0,radius,ilines,ang,an
 !     Huge variety of shapes can be generated using this routine.
 !===================================================================================================================================
 use M_draw
-character(len=*),parameter :: ident="@(#)spirographc(3f):draw hypocycloidal curves"
+
+character(len=*),parameter::ident="@(#)M_drawplus::spirograph(3f): draw hypocycloidal curves"
+
 real,parameter :: PI= 3.14159265358979323846264338327950288419716939937510
 real,intent(in)    :: xcenter, ycenter      ! center of curve
 real,intent(in)    :: sunr0,planet0,offset0 ! radii of sun, planet, and planet offset
@@ -2021,8 +2091,12 @@ end subroutine spirograph
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 subroutine smoot(xn,yn,ic)
+use M_draw
+
 !! public :: ismoo,ismoo1,ismoo2,ismoo3,perin
-!@(#) draw smooth curve thru set up points using spline-fitting technique
+
+character(len=*),parameter::ident="@(#)M_drawplus::smoot(3f): draw smooth curve thru set up points using spline-fitting technique"
+
 !
 ! 4.4  subroutine smoot
 !      ----------------
@@ -2123,7 +2197,6 @@ subroutine smoot(xn,yn,ic)
 !     the plot mode let ic be less than -23.
 ! earlier version of this procedure was
 !     subroutine smooth (xn,yn,ic)
-use M_draw
 real :: xn
 real :: yn
 integer :: ic
@@ -2350,8 +2423,10 @@ real :: y3
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 subroutine reflx(vx1,vy1,vx2,vy2)
-!@(#) internal routine called by SMOOT
 implicit none
+
+character(len=*),parameter::ident="@(#)M_drawplus::reflx(3fp): internal routine called by SMOOT"
+
 real,intent(in)  :: vx1
 real,intent(in)  :: vy1
 real,intent(out) :: vx2
@@ -2374,7 +2449,9 @@ end subroutine reflx
 !===================================================================================================================================
 subroutine plot_in(x,y,lc)
 use M_draw
-!@(#) internal routine called by SMOOT
+
+character(len=*),parameter::ident="@(#)M_drawplus::plot_in(3fp): internal routine called by SMOOT"
+
 real,intent(in) :: x
 real,intent(in) :: y
 integer,intent(in) :: lc
@@ -2387,8 +2464,253 @@ end subroutine plot_in
 !===================================================================================================================================
 end subroutine smoot
 !===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
+!>
+!!##NAME
+!!    rdbox(3f) - [M_drawplus:locator] - reads two points and outline defined box and return points
+!!
+!!##SYNOPSIS
+!!
+!!   subroutine rdbox(returnx1,returny1,returnx2,returny2,ikey)
+!!
+!!    real,intent(out)    :: returnx1, returny1
+!!    real,intent(out)    :: returnx2, returny2
+!!    integer,intent(out) :: ikey
+!!
+!!##DESCRIPTION
+!!
+!!    In workstation windows click, hold down mouse, release at opposite
+!!    corner to define the opposite corners of a box. The box is drawn
+!!    using current drawing attributes. The IKEY value indicates which
+!!    mouse was pressed.
+!!
+!!    Note that on a device such as a Tektronix terminal (or emulator,
+!!    such as xterm(1)) where you have to wait for a keypress to get the
+!!    position of the crosshairs LOCATOR(3f) returns 0 automatically on
+!!    every second call. So RDBOX(3f) waits for the locator to return zero
+!!    so that we know the mouse button has been released.
+!!
+!!    As the mouse is moved a dot is drawn at each point, leaving a trail
+!!    marking the mouse motion. Simple directions are written to stdout,
+!!    and when a box is defined the coordinates of the corners are printed:
+!!
+!!     *rdbox* READY
+!!     *rdbox* RELEASE MOUSE AT OTHER CORNER
+!!     corners are 0.311320752 0.584905684 and 0.311320752 0.584905684 ; and key is 4
+!!
+!!
+!!##OPTIONS
+!!
+!!    RETURNX1,RETURNY1   return coordinates of first corner of box
+!!
+!!    RETURNX2,RETURNY2   return coordinates of opposite corner of box
+!!
+!!    IKEY                returns the identifier of the mouse that was pressed,
+!!                        using the LOCATOR(3f) function from the M_DRAW(3fm) module.
+!!
+!!                        o A return value of 2 indicates the second mouse button
+!!                          has been pressed.
+!!
+!!                        o A return value of 1 indicates the first mouse button
+!!                          has been pressed.
+!!##EXAMPLE
+!!
+!!   Sample program:
+!!
+!!      program demo_rdbox
+!!      use M_drawplus, only : rdbox
+!!      use M_draw
+!!      implicit none
+!!      real    :: x1, y1, x2, y2
+!!      integer :: key
+!!      call vinit(' ')
+!!      call color(D_GREEN)
+!!      do
+!!         call rdbox(x1,y1,x2,y2,key)
+!!         if(key.le.0)exit
+!!         ! if the mouse is clicked twice without moving exit the loop
+!!         if(x1.eq.x2 .and. y1.eq.y2)exit
+!!         write(*,*)'corners are ',x1,y1,' and ',x2,y2,'; and key is ',key
+!!         call move2(x1,y1)
+!!         call draw2(x2,y2)
+!!         call move2(x1,y2)
+!!         call draw2(x2,y1)
+!!      enddo
+!!      call vexit()
+!!      end program demo_rdbox
+!===================================================================================================================================
+subroutine rdbox(returnx1,returny1,returnx2,returny2,ikey)
+use M_journal, only : journal
+use M_draw
+implicit none
+
+character(len=*),parameter::ident="@(#)M_drawplus::rdbox(3f): reads two points and outline defined box and return points"
+
+real,intent(out)    :: returnx1, returny1
+real,intent(out)    :: returnx2, returny2
+integer,intent(out) :: ikey
+logical             :: release1, release2
+real                :: bt
+real                :: con1
+real                :: x, y
+
+   call getgp2(returnx1,returny1)
+   returnx2=returnx1
+   returny2=returny1
+   release1 = .false.                                ! assume pressing a key until a 0 is received, then assume ready to start
+   release2 = .false.                                ! assume pressing a key until a 0 is received, then assume ready to start
+   ikey=-1
+
+   INFINITE: do
+      call vflush()
+      bt = locator(x, y)                         ! note that this function SETS the x and y variables, which is not always portable
+      if (bt .eq. -1) then                       ! not an interactive device; could just ask for numbers?
+         call journal('*rdbox* no locator device found')
+         exit INFINITE
+      else if (bt .eq. 0.and.(.not.release1)) then   ! haven't hit the null state yet
+         release1 = .true.                           ! ready to wait for first keypress
+         call journal('s','*rdbox* READY')
+      else if (bt .eq. 0.and.release2) then          ! this is the second release
+         returnx2=x
+         returny2=y
+         exit INFINITE
+      else if (bt .ne. 0.and.(.not.release2)) then   ! this is the first read
+         returnx1 = x
+         returny1 = y
+         ikey=bt
+         release2=.true.                           ! ready for release
+         con1=(returnx1-returnx2)/4000.0           ! warning: con1 is an arbitrary number, trying to make a small move to make a dot
+         call move2(x-con1,y)
+         call draw2(x+con1,y)
+         call move2(x,y-con1)
+         call draw2(x,y+con1)
+         call journal('s','*rdbox* RELEASE MOUSE AT OTHER CORNER')
+      else if (release1) then                        ! make points as you move around; not as nice as rubber-banding but OK
+         call point2(x,y)
+      endif
+   enddo INFINITE
+
+   call journal('s',char(07))                        ! send bell character
+end subroutine rdbox
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+!>
+!!##NAME
+!!     rdpnt(3f): [M_drawplus::locator] reads coordinates of point locator clicked at
+!!
+!!##SYNOPSIS
+!!
+!!    subroutine rdpnt(oldx,oldy,sx,sy,ibut)
+!!
+!!##DESCRIPTION
+!!    Move to the initial point given, and then move to the next point selected by
+!!    the locator, and return the new point location in world coordinates and the
+!!    mouse or button number used to select the new point. Send a bell character
+!!    to stdout upon return.
+!!
+!!    This routine simplifies the differences in use between mouse selections
+!!    made on a Tektronix terminal or terminal emulator and other devices such as
+!!    X11 Windows servers.
+!!
+!!##OPTIONS
+!!
+!!      OLDX, OLDY  initial point to move to
+!!      SX, SY      new point selected by locator and draw to from initial point
+!!      IBUT        mouse button value returned by LOCATOR(3f) procedure. If the
+!!                  value is -1 no locator device is supported.
+!!
+!!##EXAMPLE
+!!
+!!   Sample program:
+!!
+!!    program demo_rdpnt
+!!    use M_drawplus, only : rdpnt
+!!    use M_draw
+!!    implicit none
+!!    real    :: x1, y1, x2, y2
+!!    integer :: key
+!!    call vinit(' ')
+!!    x1=0.0
+!!    y1=0.0
+!!     write(*,*)'click at the same point twice to end the loop'
+!!    do
+!!       call rdpnt(x1,y1,x2,y2,key)
+!!       if(key.le.0)exit
+!!       ! if the mouse is clicked twice without moving exit the loop
+!!       if(x1.eq.x2 .and. y1.eq.y2)exit
+!!       write(*,*)'points are ',x1,y1,' and ',x2,y2,'; and key is ',key
+!!       call color(D_RED)
+!!       call circle(x1,y1,0.03)
+!!       call color(D_GREEN)
+!!       call circle(x2,y2,0.05)
+!!       x1=x2
+!!       y1=y2
+!!    enddo
+!!    call vexit()
+!!    end program demo_rdpnt
+!===================================================================================================================================
+subroutine rdpnt(oldx,oldy,selected_x,selected_y,ibut)
+use M_journal,  only : journal
+use M_draw
+implicit none
+
+character(len=*),parameter::ident="@(#)M_drawplus::rdpnt(3f): reads coordinates of point locator clicked at"
+
+! see M_DRAW locator(3f) description for more details
+real,intent(in)     :: oldx, oldy
+real,intent(out)    :: selected_x, selected_y
+integer,intent(out) :: ibut
+real    :: x, y
+logical :: act
+logical :: curpnt
+
+   call move2(oldx,oldy)
+   call draw2(oldx,oldy)
+   act = .false.   ! have you activated a button since the read started?
+   curpnt = .false.
+   selected_x=oldx
+   selected_y=oldy
+!     locator returns whether a mouse button has been
+!     pressed or not. In a device such as the tektronix
+!     where you have to wait for a keypress to get the
+!     position of the crosshairs locator returns 0
+!     automatically on every second call. A return value
+!     of 2 indicates the second mouse button has been pressed.
+!     A return value of 1 indicates the first mouse button has
+!     been pressed. We wait for the locator to return zero so
+!     that we know the mouse button has been released.
+   INFINITE: do
+      call vflush()
+      ibut = locator(x, y)
+      if (ibut .eq. -1) then
+         call journal('*rdpnt* no locator device found')
+         exit INFINITE
+      elseif(ibut .ge. 2 .and. act)then
+         selected_x=x
+         selected_y=y
+         exit INFINITE
+      elseif(ibut .eq. 0)then
+         act = .true.
+      elseif(act) then
+         act = .false.
+         if (ibut .eq. 1)then
+            if (curpnt)then
+               call move2(selected_x, selected_y)
+               call draw2(x, y)
+               curpnt = .false.
+            else
+               curpnt = .true.
+            endif
+            selected_x = x
+            selected_y = y
+            exit INFINITE
+         endif
+      endif
+   enddo INFINITE
+   call journal('s',char(07))       ! send bell character
+end subroutine rdpnt
 !----------------------------------------------------------------------------------------------------------------------------------!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !----------------------------------------------------------------------------------------------------------------------------------!

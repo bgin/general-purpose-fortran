@@ -1,0 +1,43 @@
+NAME
+   factor(3f) - [M_calcomp:basic] rescale entire plot
+
+SYNOPSIS
+       call factor(fact)
+
+DESCRIPTION:
+
+ Subroutine FACTOR enables the user to enlarge or reduce the
+ size of the entire plot by changing the ratio of the desired plot
+ size to the normal plot size. FACTOR is often called only once in
+ a program, immediately after the initialization call to PLOTS,
+ to rescale all plotting to a single specific scale.
+
+ Because CALCOMP inches are unit-less units in PDF files, this routine
+ is not necessary unless inch units greater than 100 are needed (100 is
+ maximum PDF frame size) or if the program needs to remain portable to
+ standard true-inch CALCOMP libraries and using the actual values used
+ in the PLOT calls would produce a very small or very large plot.
+
+ USERS TRYING TO PRODUCE TRUE INCHES PLEASE NOTE:
+
+ In this CALCOMP, all frames are scaled individually to the maximum
+ size obtainable on the output device they are produced on. This means
+ to keep frames scaled relative to each other, you must move to the
+ same maximum XY value IN EACH FRAME (see routine NFRAME description)
+ with a call to PLOTS so that each frame is the same number of
+ unit-less units in size. An example program at the end of this manual
+ illustrates keeping frames scaled relative to each other.
+
+OPTIONS
+
+   FACT    is the ratio of the desired plot size to the normal plot
+           size. For example, if FACT=2.0, all subsequent pen
+           movements will be twice their normal size. When FACT is
+           reset to 1.0, all plotting returns to normal size.
+           During the debugging of a plotting application program,
+           plotting time can be saved by reducing the size of the
+           entire plot output on certain devices such as pen
+           plotters. This is done by calling FACTOR with a value
+           less than 1.0 after calling PLOTS. When debugging is
+           completed, this call statement can be removed.
+

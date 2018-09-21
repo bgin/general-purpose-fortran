@@ -65,8 +65,9 @@ do
    ;;
    *) GROUP='&nbsp;' ;;
    esac
+   SECT=$(echo "$SECT"|tr -d ')(')
 
-   echo "<tr><td style=\"background:$KOLOR;\">$GROUP</td><td><a href=\"$NAME.$SECTION.html\">$NAME</a></td><td>$OTHER</td></tr>"
+   echo "<tr><td style=\"background:$KOLOR;\">$GROUP</td><td><a href=\"$NAME.$SECT.html\">$NAME</a></td><td>$OTHER</td></tr>"
 done
 #----------------------------------------------------------------------------------------------------------------------------------#
 cat <<\EOF

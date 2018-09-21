@@ -154,7 +154,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)UUID:           8f39b1e5-592f-4a22-946f-b8da2aa49633>',&
-'@(#)COMPILED:       Thu, Aug 16th, 2018 11:59:14 AM>',&
+'@(#)COMPILED:       Thu, Sep 20th, 2018 7:15:57 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

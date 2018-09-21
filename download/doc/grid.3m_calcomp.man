@@ -1,0 +1,53 @@
+NAME
+   grid(3f) - [M_calcomp:general] draws a linear grid
+
+SYNOPSIS
+  subroutine grid(xpage,ypage,deltax,deltay,nxsp,nysp)
+
+   real,intent(in)    :: xpage, ypage
+   real,intent(in)    :: deltax, deltay
+   integer,intent(in) :: nxsp, nysp
+
+DESCRIPTION
+
+ GRID(3f) draws a linear grid.
+
+OPTIONS
+
+   XPAGE,YPAGE  are the coordinates, in inches, of the lower left
+                corner of the grid
+
+   DELTAX       is the number of inches between grid lines in the X
+                direction.
+
+   DELTAY       is the number of inches between grid lines in the Y
+                direction.
+
+   NXSP,NYSP    are the number of grid intervals in the X and Y
+                directions, respectively. The number of grid lines is
+                one more than the number of grid intervals.
+
+  COMMENTS
+
+ GRID generates a linear grid of any size. The number of lines drawn is
+ NXSP+1 in the X direction and NYSP+1 in the Y direction.
+
+EXAMPLE
+  Sample program:
+
+   program demo_grid
+   use M_calcomp, only : plots, plot, newpen, grid
+   use M_calcomp, only : END
+   implicit none
+   real              :: xmax=8.5,ymax=11.0
+   real              :: step
+      call plots(0.0,xmax,0.0,ymax)  ! make a 8 1/2 x 11 inch page
+      call newpen(1)                 ! red
+      step=0.25                      ! make 1/4 inch grid
+      call grid(0.0,0.0,step,step,int(xmax/step)+1,int(ymax/step)+1)
+      call newpen(2)                 ! green
+      step=0.50                      ! make 1/2 inch grid
+      call grid(0.0,0.0,step,step,int(xmax/step)+1,int(ymax/step)+1)
+      call plot(0.0,0.0,END)         ! end graphics
+   end program demo_grid
+

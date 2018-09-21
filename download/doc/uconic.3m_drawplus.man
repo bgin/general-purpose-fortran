@@ -1,5 +1,5 @@
 NAME
-   uconic(3f) - [M_DRAWPLUS] general conic sections
+   uconic(3f) - [M_drawplus] general conic sections
 SYNOPSIS
    uconic(x,y,p,e,theta1,theta2,orientation)
 

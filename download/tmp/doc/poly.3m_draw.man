@@ -17,7 +17,8 @@ EXAMPLE
    use M_draw
    ! Using polygons, hatching, and filling.
    integer           :: ios
-   character(len=50) :: device print*,'Enter output device:'
+   character(len=50) :: device
+      print*,'Enter output device:'
       read(*,'(a)',iostat=ios)device
       if(ios.ne.0)then
          call prefsize(1000,1000)

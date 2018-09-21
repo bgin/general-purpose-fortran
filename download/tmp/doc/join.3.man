@@ -17,12 +17,14 @@ DESCRIPTION
      with elements 1 to N joined from left to right.
      By default each element is trimmed of trailing spaces and the default separator is
      a null string.
+
 OPTIONS
      STR(:)  array of CHARACTER variables to be joined
      SEP     separator string to place between each variable. defaults to a null string.
      LEFT    string to place at left of each element
      RIGHT   string to place at right of each element
      TRM     option to trim each element of STR of trailing spaces. Defaults to .TRUE.
+
 RESULT
      STRING  CHARACTER variable composed of all of the elements of STR() appended together
              with the optional separator SEP placed between the elements.

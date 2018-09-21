@@ -83,7 +83,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    list pathnames of leaf names that are executable and can be found using the $PATH variable>',&
 '@(#)VERSION:        1.0, 2017-10-15>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Thu, Aug 16th, 2018 12:06:17 PM>',&
+'@(#)COMPILED:       Thu, Sep 20th, 2018 7:27:27 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

@@ -2,7 +2,7 @@ NAME
    xy(1f) - [M_xyplot] Draw a basic XY plot
 
 SYNOPSIS
-   plot [-f] FILE -xlabel STR -ylabel STR -d DEVICE -m NNNN -fn FILENAME -sz MARKER_SIZE
+   xy [-f] FILE -xlabel STR -ylabel STR -d DEVICE -m NNNN -fn FILENAME -sz MARKER_SIZE
 
 DESCRIPTION
    Create a basic XY plot from a simple ASCII table of numeric

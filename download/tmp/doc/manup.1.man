@@ -2,14 +2,14 @@ NAME
    manup(1f) - [DEVELOPER] Simple markup of text to a man(1) page
 
 SYNOPSIS
-   manup FILE -cmd -section 1 -product "GPF utilities" -help .F. -version .F.
+   manup FILE -cmd title -section N --product "product name" -help .F. --version .F.
 
 DESCRIPTION
      FILE
         The input filename
 
-     -section N  N is the man(1) section number. Typically the following categories
-                 are used:
+     -section N  N is the man(1) section number. Typically the following
+                 categories are used:
 
                  User Commands(1)      Executable programs or shell commands
                  System Calls(2)       System calls (functions provided by the kernel)
@@ -23,6 +23,7 @@ DESCRIPTION
 
                  See the man(1) page for man(1) for further details.
 
+     -title      title for manpage header
      -product    description for manpage header
      -asis       no formatting except for header lines.
 

@@ -13,7 +13,7 @@ SYNOPSIS
    use :: M_pixel, only : line,        linewidth,       polyline,    move2
    use :: M_pixel, only : move2,       draw2,           prefsize,    vinit
    use :: M_pixel, only : textang,     textsize,        drawstr,     getgp2
-   use :: M_pixel, only : vflush,      biggest_ortho2,  point2,      getdisplaysize
+   use :: M_pixel, only : vflush,      page,            point2,      getdisplaysize
    use :: M_pixel, only : poly2,       centertext,      xcentertext, ycentertext
    use :: M_pixel, only : makepoly,    closepoly,       font
 

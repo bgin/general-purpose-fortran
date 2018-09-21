@@ -63,8 +63,13 @@ source $DIRNAME/scripts/functions.sh
 MAN2MAN(){
 
 #echo 'MAN2MAN: take a *.man file and make man(1) page using txt2man(1) in tmp/man and HTML version of man(1) page in tmp/html'
-
 SECTION=$1
+#set -x -v
+: NAME             $NAME
+: SECTION          $SECTION
+: SECTION_NUMBER   $SECTION_NUMBER
+: PUTMAN           $PUTMAN
+: PUTHTML          $PUTHTML
 
 # convert *.man file to roff and then to html
 
@@ -112,8 +117,6 @@ done
 )
 }
 ####################################################################################################################################
-# make sure directories exist for man pages and convert files to man(1) pages
-MAKEMANDIR(){
 # Order files will be processed
 # *.htm   assumed to look like a man(1) page convert to flat txt and then run thru txt2man like a *.man file
 # *.man   text files that look like a man(1) page that are to be run thru txt2man to make a *roff file.
@@ -122,6 +125,9 @@ MAKEMANDIR(){
 # *.htm   assumed to need a header and footer make into an HTML document and OVERWRITE file made from man(1) page
 # *.html  copied as-is only to HTML directory, OVERWRITING anything files made by previous steps
 # *.md
+####################################################################################################################################
+# make sure directories exist for man pages and convert files to man(1) pages
+MAKEMANDIR(){
 
    pwd
    cd doc && (
@@ -210,6 +216,7 @@ BLANKOUT(){
 rm -rf   tmp/*             # ensure scratch directory is empty
 mkdir -p tmp/PROGRAMS      # make sure scratch directories exist
 mkdir -p tmp/PROGRAMS/M_DRAW_EXAMPLES
+mkdir -p tmp/PROGRAMS/CALCOMP_EXAMPLES
 mkdir -p tmp/html
 mkdir -p tmp/scripts/
 for NUMBER in 1 2 3 4 5 6 7 8
@@ -240,12 +247,15 @@ PUTMAN ........ $PUTMAN
 ================================================================================
 EOF
 ####################################################################################################################################
+#TEST# cd doc; export PUTHTML=../tmp/html PUTMAN=../tmp/man NAME=minefield SECTION_NUMBER=1 ;MAN2MAN 1m_draw
+####################################################################################################################################
 BLANKOUT                # make empty tmp directory, removing previous output files
 getsource.sh            # expand source archive file from my target location
 supplemental_source.sh  # create user-supplied procedures "c" and "juown1" required for the calculator module
 getprograms.sh          # get some programs to add to the procedures
 makemakefile.sh         # create makefile
 cp /home/urbanjs/V600/LIBRARY/libGPF/EXE/DRAW/EXAMPLES/*.f90 tmp/PROGRAMS/M_DRAW_EXAMPLES/
+cp /home/urbanjs/V600/LIBRARY/libGPF/EXE/CALCOMP/EXAMPLES/*.f90 tmp/PROGRAMS/CALCOMP_EXAMPLES/
 ####################################################################################################################################
 echo 'create documents in tmp/doc, tmp/man, and tmp/html'
 (MAKEMANDIR)
@@ -297,7 +307,14 @@ cp /home/urbanjs/V600/LIBRARY/libGPF/draw/hershey/hershey.sh tmp/
    env DISPLAY= test_M_pixel_manpages.sh
 )
 #----------------------------------------------------------------------------------------------------------------------------------#
+# M_draw GIF images and manpage tests
 env DISPLAY= test_M_draw_manpages.sh
+#----------------------------------------------------------------------------------------------------------------------------------#
+# M_calcomp GIF images and manpage tests
+(
+cd ../draw/calcomp/
+ufpp UFPP_TEST -i M_calcomp.FF -system -verbose
+)
 #----------------------------------------------------------------------------------------------------------------------------------#
 :  copy pixmap files needed to documentation
 (
@@ -342,6 +359,7 @@ book.sh M_pixel                       m_pixel
 book.sh M_draw                        m_draw
 book.sh M_drawplus                    m_drawplus
 book.sh M_xyplot                      m_xyplot  
+book.sh M_calcomp                     m_calcomp
 
 book.sh INDEX
 #tmp/M_anyscalar.f90

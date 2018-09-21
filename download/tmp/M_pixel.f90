@@ -15,7 +15,7 @@
 !!    use :: M_pixel, only : line,        linewidth,       polyline,    move2
 !!    use :: M_pixel, only : move2,       draw2,           prefsize,    vinit
 !!    use :: M_pixel, only : textang,     textsize,        drawstr,     getgp2
-!!    use :: M_pixel, only : vflush,      biggest_ortho2,  point2,      getdisplaysize
+!!    use :: M_pixel, only : vflush,      page,            point2,      getdisplaysize
 !!    use :: M_pixel, only : poly2,       centertext,      xcentertext, ycentertext
 !!    use :: M_pixel, only : makepoly,    closepoly,       font
 !!
@@ -223,7 +223,7 @@ data P_ColorMap(1:3,0:16) / &
 public  :: viewport            ! define viewport into screen units
 public  :: getviewport         ! query viewport in screen units
 public  :: ortho2              ! define window area in virtual world to map to viewport
-public  :: biggest_ortho2      ! define window area in virtual world as big as possible with one-to-one correspondence
+public  :: page                ! define window area in virtual world as big as possible with one-to-one correspondence
 !public  :: getviewport         ! returns limits of current viewport in screen coordinates
 public  :: getdisplaysize      ! returns the width and height of the device in pixels
 ! draw routines
@@ -3361,7 +3361,7 @@ end subroutine color
 !!       call color(0)
 !!       call clear()
 !!       call color(7)
-!!       call biggest_ortho2(-110./2.,85./2.,-110./2.,110./2.)
+!!       call page(-110./2.,85./2.,-110./2.,110./2.)
 !!       LIGHTNESS=100.0
 !!       lightstep=-5
 !!       do ii=1,19
@@ -3785,13 +3785,13 @@ end subroutine ortho2
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    biggest_ortho2(3f) - [M_pixel] define the area of the virtual world coordinates to map to the viewport
+!!    page(3f) - [M_pixel] define the area of the virtual world coordinates to map to the viewport
 !!
 !!##SYNOPSIS
 !!
 !!  definition:
 !!
-!!    subroutine biggest_ortho2(left, right, bottom, top)
+!!    subroutine page(left, right, bottom, top)
 !!    real,intent(in) :: left, right, bottom, top
 !!
 !!##DESCRIPTION
@@ -3802,11 +3802,10 @@ end subroutine ortho2
 !!##EXAMPLE
 !!
 !===================================================================================================================================
-subroutine biggest_ortho2(xsmall,xlarge,ysmall,ylarge)
+subroutine page(xsmall,xlarge,ysmall,ylarge)
 use M_journal, only : journal
 
-character(len=*),parameter::ident="&
-&@(#)M_pixel::biggest_ortho2(3f): given a window size, find and set to largest accommodating viewport"
+character(len=*),parameter::ident="@(#)M_pixel::page(3f): given a window size, find and set to largest accommodating viewport"
 
 real,intent(in) :: xsmall
 real,intent(in) :: xlarge
@@ -3847,7 +3846,7 @@ real :: ysplit
       if(xlarge-xsmall.ne.0.0)then
          tryy=vwide*(ylarge-ysmall)/(xlarge-xsmall) ! calculate required height
       else                             ! ERROR: do something desperate
-         call journal('*P_biggest_ortho2* window has a zero X dimension')
+         call journal('*P_page* window has a zero X dimension')
          tryy=vhigh
       endif
       if(tryy.gt.vhigh)then ! if required height too great, fit with y maximized
@@ -3855,7 +3854,7 @@ real :: ysplit
          if(ylarge-ysmall.ne.0.0)then
             tryx=vhigh*(xlarge-xsmall)/(ylarge-ysmall)
          else                          ! ERROR: do something desperate
-            call journal('*P_biggest_ortho2* window has a zero Y dimension')
+            call journal('*P_page* window has a zero Y dimension')
             tryx=vwide
          endif
       endif
@@ -3897,14 +3896,14 @@ real :: ysplit
       if(xmin.ne.xmax.and.ymin.ne.ymax)then
          call viewport(xmin,xmax,ymax,ymin)
       else
-       call journal('*P_biggest_ortho2* window has zero dimension,no viewport set')
+       call journal('*P_page* window has zero dimension,no viewport set')
       endif
       if(xsmall.ne.xlarge.and.ysmall.ne.ylarge)then
          call ortho2(xsmall,xlarge,ysmall,ylarge)
       else    ! ERROR: do something desperate
-        call journal('*P_biggest_ortho2* window has zero dimension, no window set')
+        call journal('*P_page* window has zero dimension, no window set')
       endif
-end subroutine biggest_ortho2
+end subroutine page
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!

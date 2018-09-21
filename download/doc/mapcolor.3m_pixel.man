@@ -43,7 +43,7 @@ EXAMPLE
       call color(0)
       call clear()
       call color(7)
-      call biggest_ortho2(-110./2.,85./2.,-110./2.,110./2.)
+      call page(-110./2.,85./2.,-110./2.,110./2.)
       LIGHTNESS=100.0
       lightstep=-5
       do ii=1,19

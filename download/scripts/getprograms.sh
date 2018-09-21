@@ -56,6 +56,7 @@ lastprogram draw.f90
 lastprogram minefield.f90
 lastprogram slice.f90
 lastprogram xy.f90
+lastprogram cn.f90
 
 # Example programs
 lastprogram fseq.f90 fseq.FF

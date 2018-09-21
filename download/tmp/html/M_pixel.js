@@ -1,8 +1,7 @@
 function loadthem(){
-append("M_pixel.3{SECTION}.html");
+append("M_pixel.3{m_pixel}.html");
 append("M_pixel.3m_pixel.html");
 append("arc.3m_pixel.html");
-append("biggest_ortho2.3m_pixel.html");
 append("centertext.3m_pixel.html");
 append("circle.3m_pixel.html");
 append("circleprecision.3m_pixel.html");
@@ -25,6 +24,7 @@ append("makepoly.3m_pixel.html");
 append("mapcolor.3m_pixel.html");
 append("move2.3m_pixel.html");
 append("ortho2.3m_pixel.html");
+append("page.3m_pixel.html");
 append("point2.3m_pixel.html");
 append("poly2.3m_pixel.html");
 append("polyline.3m_pixel.html");

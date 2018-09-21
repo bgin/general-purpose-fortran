@@ -1,5 +1,5 @@
 function loadthem(){
-append("M_draw.3{SECTION}.html");
+append("M_draw.3{m_draw}.html");
 append("M_draw.3m_draw.html");
 append("arc.3m_draw.html");
 append("backbuffer.3m_draw.html");
@@ -15,10 +15,10 @@ append("circle.3m_draw.html");
 append("circleprecision.3m_draw.html");
 append("clear.3m_draw.html");
 append("clipping.3m_draw.html");
-append("clock.1.html");
 append("closeobj.3m_draw.html");
 append("closepoly.3m_draw.html");
 append("color.3m_draw.html");
+append("contourlines.3.html");
 append("curve.3m_draw.html");
 append("curvebasis.3m_draw.html");
 append("curven.3m_draw.html");
@@ -61,6 +61,7 @@ append("lookat.3m_draw.html");
 append("makeobj.3m_draw.html");
 append("makepoly.3m_draw.html");
 append("mapcolor.3m_draw.html");
+append("minefield.1m_draw.html");
 append("move.3m_draw.html");
 append("move2.3m_draw.html");
 append("numchars.3m_draw.html");

@@ -91,50 +91,176 @@ appropriate action is taken for each keypress.
 Sample program:
 <P>
 <PRE>
-   program fifo
-   implicit none
+   program demo_M_fixedform
    use M_fixedform, only : fixedform, loaddata, icount_ptr, page_ptr, page_pd, icount_pd
+   use M_strings, only : split, s2v
    implicit none
-      call make_data()
-      page_ptr=&gt;page_pd
-      icount_ptr=&gt;icount_pd
-      call loaddata(&#146;test.dat&#146;)      ! fill the page(*) with user data
-      call fixedform()
-   end program fifo
+   character(len=5),parameter :: &
+   & names(10)=[character(len=5) :: "RED","WHITE","BLUE","NAME","DATE","VALUE","EAST","WEST","NORTH","SOUTH"]
+   character(len=:),allocatable   :: tabs
+   character(len=132),allocatable :: answers(:) ! output array of tokens
+   logical                        :: lanswer
+   real                           :: ranswer
+   integer                        :: i
+   ! make a namelist for the form
+   logical                        :: red, white, blue
+   character(len=80)              :: name
+   character(len=80)              :: date
+   real                           :: value
+   logical                        :: east, west, north, south
+   namelist /form/ RED,WHITE,BLUE,NAME,DATE,VALUE,EAST,WEST,NORTH,SOUTH
+   call make_data()
+   page_ptr=&gt;page_pd
+   icount_ptr=&gt;icount_pd
+   call loaddata(&#146;test.dat&#146;)      ! fill the page(*) with user data
+   call fixedform(tabs)           ! display the form converted to a TDU
+<P>
+   write(*,*)&#146;The field values are returned left to right, top to bottom&#146;
+   write(*,*)&#146;as a tab-delimited string. The returned string is &#46;&#46;&#46;&#146;
+   write(*,*)tabs
+   write(*,&#146;(a)&#146;)repeat(&#146;=&#146;,80)
+<P>
+   write(*,*)&#146;The strings can be read from the string, reformatted as a &#146;
+   write(*,*)&#146;NAMELIST string, or parsed.&#146;
+   write(*,&#146;(a)&#146;)repeat(&#146;=&#146;,80)
+<P>
+   write(*,*)&#146;parse string into an array of strings using tab delimiter&#146;
+   call split(tabs,answers,char(9),nulls=&#146;return&#146;)
+   write(*,*)&#146;ARRAY IS&#146;
+   write(*,&#146;(i0,t5,a)&#146;)(i,trim(answers(i)),i=1,size(answers))
+   write(*,&#146;(a)&#146;)repeat(&#146;=&#146;,80)
+<P>
+   ! different ways of converting the strings to other types
+<P>
+   write(*,*)&#146; convert a T/F string to a logical&#146;
+   lanswer=answers(1).eq.&#146;T&#146;
+   write(*,*)&#146; RED is &#146;,lanswer
+   ! or use an internal read
+   read(answers(2),*) lanswer
+   write(*,*)&#146; WHITE is &#146;,lanswer
+   write(*,&#146;(a)&#146;)repeat(&#146;=&#146;,80)
+<P>
+   write(*,*)&#146; NAME is  &#146;,trim(answers(5))
+   write(*,&#146;(a)&#146;)repeat(&#146;=&#146;,80)
+<P>
+   write(*,*)&#146; get a numeric value from a string&#146;
+   ranswer=real(s2v(answers(6)))
+   write(*,*)&#146; VALUE is &#146;,ranswer
+   ! or
+   read(answers(6),&#146;(g20.13)&#146;) ranswer
+   write(*,*)&#146; VALUE is &#146;,ranswer
+   write(*,&#146;(a)&#146;)repeat(&#146;=&#146;,80)
+<P>
+   write(*,*)&#146;write out the data in the form of a namelist file&#146;
+   NAME=&#146;UNKNOWN&#146;
+   DATE=&#146;&#146;
+   VALUE=0.00
+   !!open(11,status=&#146;scratch&#146;)
+   open(11,file=&#146;form.txt&#146;)
+   write(11,&#146;("&FORM")&#146;)
+   do i=1,size(answers)
+      answers(i)=adjustl(answers(i))
+      if(answers(i).eq.&#146;&#146;)then
+         write(11,&#146;(*(a))&#146;)"! ",trim(names(i)),&#146; was blank&#146;
+      elseif(index(trim(answers(i)),&#146; &#146;).ne.0)then
+         write(11,&#146;(*(a))&#146;)trim(names(i)),&#146;="&#146;,trim(answers(i)),&#146;",&#146;
+      else
+         write(11,&#146;(*(a))&#146;)trim(names(i)),&#146;=&#146;,trim(answers(i)),&#146;,&#146;
+      endif
+   enddo
+   write(11,&#146;("/")&#146;)
+   ! read the namelist file (an internal file could have been used instead of a file)
+   write(*,*)&#146;read it back in&#146;
+   rewind(11)
+   read(11,form)
+   write(*,*)&#146;write out namelist using namelist output&#146;
+   write(*,form)
+   write(*,&#146;(a)&#146;)repeat(&#146;=&#146;,80)
+   contains
    subroutine make_data()
-   open(unit=10,file=&#146;test.dat&#146;)
-   write(10,&#146;(a)&#146;)[character(len=80) ::
-   &#146;&#146;,
-   &#146;&#146;,
-   &#146;&#146;,
-   &#146;&#146;,
-   &#146;&#146;,
-   &#146;&#146;,
-   &#146;&#146;,
-   &#146;&#146;,
-   &#146;&#146;,
-   &#146;&#146;,
-   &#146;&#146;,
-   &#146;&#146;,
-   &#146;&#146;,
-   &#146;&#146;,
-   &#146;&#146;,
-   &#146;&#146;,
-   &#146;&#146;,
-   &#146;&#146;,
-   &#146;&#146;,
-   &#146;&#146;,
-   &#146;&#146;,
-   &#146;&#146;,
-   &#146;&#146;,
-   &#146;&#146;
-   ]
+   integer,parameter :: LUN=10
+   integer           :: ios
+   open(unit=LUN,file=&#146;test.dat&#146;)
+   write(LUN,&#146;(a)&#146;)[character(len=80) ::                                            &
+      &#146;@    The simplest use of FIXEDFORM is when a text file is used to define a     @&#146;, &
+      &#146;@    form to be generated much like it could be drawn on paper:                @&#146;, &
+      &#146;################################################################################&#146;, &
+      &#146;#                                                                              #&#146;, &
+      &#146;#  ~ A basic form definition:         ~  ^ RED                                 #&#146;, &
+      &#146;#  ~ o Underlines become input fields ~  ^ WHITE                               #&#146;, &
+      &#146;#  ~ o Up-carets become menu options  ~  ^ BLUE                                #&#146;, &
+      &#146;#  ~ o Pound characters define boxes  ~                                        #&#146;, &
+      &#146;#  ~ o Text otherwise displays as-is  ~  Connected by pound characters or      #&#146;, &
+      &#146;#  ~   for the most part.             ~  adjacent to one another, up-carets    #&#146;, &
+      &#146;#  Name:  ___________________            form a radio button.                  #&#146;, &
+      &#146;#  Date:  ___________________            #######################               #&#146;, &
+      &#146;#  Value: ___________________            ^      ^       ^      ^               #&#146;, &
+      &#146;#                                       EAST   WEST   NORTH  SOUTH             #&#146;, &
+      &#146;#                                                                              #&#146;, &
+      &#146;# When the cursor is over a menu item it is toggled by pressing the space bar. #&#146;, &
+      &#146;# A tab character moves to the next selectable item. Typing in an input value  #&#146;, &
+      &#146;# changes the value. When the form is complete use the ctrl-S keys to submit.  #&#146;, &
+      &#146;################################################################################&#146; ]
+   close(unit=LUN,iostat=ios)
    end subroutine make_data
+   end program demo_M_fixedform
 <P>
 </PRE>
+<BLOCKQUOTE>
+A sample of the output from filling out the screen
+<P>
+<PRE>
+   &gt; The field values are returned left to right, top to bottom
+   &gt; as a tab-delimited string. The returned string is &#46;&#46;&#46;
+   &gt; F  F       T       John S. Urban           2018-09-20              13.97                   F       T       F       F
+   &gt;============================================================================
+   &gt; The strings can be read from the string, reformatted as a
+   &gt; NAMELIST string, or parsed.
+   &gt;============================================================================
+   &gt; parse string into an array of strings using tab delimiter
+   &gt; ARRAY IS
+   &gt;1   F
+   &gt;2   F
+   &gt;3   T
+   &gt;4   John S. Urban
+   &gt;5   2018-09-20
+   &gt;6   13.97
+   &gt;7   F
+   &gt;8   T
+   &gt;9   F
+   &gt;10  F
+   &gt;============================================================================
+   &gt;  convert a T/F string to a logical
+   &gt;  RED is  F
+   &gt;  WHITE is  F
+   &gt;============================================================================
+   &gt;  NAME is  2018-09-20
+   &gt;============================================================================
+   &gt;  get a numeric value from a string
+   &gt;  VALUE is    13.9700003
+   &gt;  VALUE is    13.9700003
+   &gt;============================================================================
+   &gt; write out the data in the form of a namelist file
+   &gt; read it back in
+   &gt; write out namelist using namelist output
+   &gt;&FORM
+   &gt; RED=F,
+   &gt; WHITE=F,
+   &gt; BLUE=T,
+   &gt; NAME="John S. Urban                                                                   ",
+   &gt; DATE="2018-09-20                                                                      ",
+   &gt; VALUE=  13.9700003    ,
+   &gt; EAST=F,
+   &gt; WEST=T,
+   &gt; NORTH=F,
+   &gt; SOUTH=F,
+   &gt; /
+   &gt;============================================================================
+</PRE>
+</BLOCKQUOTE>
 </BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>M_fixedform (3)</TD> <TD align=right width=33%><I>August 26, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 67148e3f-00c5-498a-8201-524a8294c7ee using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>M_fixedform (3)</TD> <TD align=right width=33%><I>September 21, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 82f5dc26-941d-4dbb-8fae-7b0b66c22614 using man macros.</FONT>
 </div>
 </div>
 <br><br><center><img src="images/M_fixedform.3.gif"></center> 

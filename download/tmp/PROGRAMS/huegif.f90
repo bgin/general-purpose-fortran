@@ -110,7 +110,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0 20170604>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Sat, Aug 25th, 2018 8:38:16 PM>',&
+'@(#)COMPILED:       Thu, Sep 20th, 2018 7:13:11 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -142,7 +142,7 @@ implicit none
    call color(0)
    call clear()
    call color(7)
-   call biggest_ortho2(-110./2.,85./2.,-110./2.,110./2.)
+   call page(-110./2.,85./2.,-110./2.,110./2.)
 
    LIGHTNESS=100.0
    lightstep=-5

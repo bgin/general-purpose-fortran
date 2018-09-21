@@ -1609,8 +1609,7 @@ end subroutine signs
 !===================================================================================================================================
 !>
 !!##NAME
-!!    percent_done(3f) - [M_messages] non-advancing status counter displays percentage done
-!!                       on terminal displays
+!!    percent_done(3f) - [M_messages] non-advancing status counter displays percentage done on terminal displays
 !!
 !!##SYNOPSIS
 !!
@@ -1656,10 +1655,10 @@ subroutine percent_done(part,whole)
 use M_anyscalar, only : anyscalar_to_real
 implicit none
 character(len=*),parameter::ident="@(#)place a non-advancing status counter on terminal display (not redirected)"
-   class(*),intent(in)  :: part
-   class(*),intent(in)  :: whole
-   real                 :: part_local
-   real                 :: whole_local
+class(*),intent(in)  :: part
+class(*),intent(in)  :: whole
+real                 :: part_local
+real                 :: whole_local
    part_local=anyscalar_to_real(part)
    whole_local=anyscalar_to_real(whole)
    write(*,fmt="(a1,' Percent Complete: ',t21,f0.2,'%')",ADVANCE="NO") achar(13), (part_local/whole_local)*100.0

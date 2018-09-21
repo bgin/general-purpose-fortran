@@ -17,7 +17,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sat, Aug 25th, 2018 1:48:32 PM>',&
+'@(#)COMPILED:       Thu, Sep 20th, 2018 11:29:07 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -10896,8 +10896,6 @@ write(io,'(a)')'         used to separate two values in a namelist input stateme
 write(io,'(a)')''
 write(io,'(a)')'   A group name or object name is without regard to case.'
 write(io,'(a)')''
-write(io,'(a)')'OPTIONS'
-write(io,'(a)')'RESULTS'
 write(io,'(a)')'EXAMPLE'
 write(io,'(a)')'   An example of a NAMELIST statement is:'
 write(io,'(a)')''

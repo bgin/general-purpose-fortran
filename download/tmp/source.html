@@ -49,6 +49,10 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <td>
 	 user-added calculator call function for ncurses routines<br/>
 </td>
+<tr><td><a href="cntcrv.f90">cntcrv.f90</a></td>
+<td>
+	cntcrv(3f): place-holder for user-supplied routine used by M_contourplot(3fm)<br/>
+</td>
 <tr><td><a href="dparanoia.f90">dparanoia.f90</a></td>
 <td>
 	dparanoia(3f): test doubleprecisions operations in programming environment<br/>
@@ -65,18 +69,49 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 </td>
 <tr><td><a href="M_bessel.f90">M_bessel.f90</a></td>
 <td>
-	 Bessel functions j(x), y(x), i(x), k(x) for real arguments and integer orders<br/>
-	       COMPUTE THE I BESSEL FUNCTION FOR A GIVEN ARGUMENT AND ORDER   ! BESI.9     <br/>
-	       COMPUTE THE J BESSEL FUNCTION FOR A GIVEN ARGUMENT AND ORDER   ! BESJ.9     <br/>
-	     BESJ0 CALCULATES THE BESSEL FUNCTION J(X) OF ORDER ZERO.        ! BESJ0.17<br/>
-	     BESJ1 CALCULATES THE BESSEL FUNCTION J(X) OF ORDER ONE.         ! BESJ1.17<br/>
-	       COMPUTE THE K BESSEL FUNCTION FOR A GIVEN ARGUMENT AND ORDER   ! BESK.8     <br/>
-	       COMPUTE THE Y BESSEL FUNCTION FOR A GIVEN ARGUMENT AND ORDER   ! BESY.9     <br/>
-	     BESY0 CALCULATES THE BESSEL FUNCTION Y(X) OF ORDER ZERO.        ! BESY0.17<br/>
+	 M_bessel::bes(3f):calculate Bessel functions J(X), Y(X), I(X), K(X) for real arguments and integer orders<br/>
+	 M_bessel::besi(3f):compute the I Bessel function for a given argument and order <br/>
+	 M_bessel::besj(3f):compute the J Bessel function for a given argument and order<br/>
+	 M_bessel::besj0(3f):calculates the Bessel function J(X) of order zero.<br/>
+	 M_bessel::besj1(3f): calculates the Bessel function J(X) of order one. <br/>
+	 M_bessel::besk(3f):compute the K Bessel function for a given argument and order <br/>
+	 M_bessel::besy(3f):compute the Y Bessel function for a given argument and order<br/>
+	 M_bessel::besy0(3f): calculates the Bessel function Y(X) of order zero.<br/>
+</td>
+<tr><td><a href="M_calcomp.f90">M_calcomp.f90</a></td>
+<td>
+	M_calcomp::circl(3f): draws an arc or spiral<br/>
+	M_calcomp::dashl(3f): draws a polyline with dashed lines<br/>
+	M_calcomp::dashp(3f): draw from current position to new point with dashed line<br/>
+	M_calcomp::elips(3f): draw an elliptical arc<br/>
+	M_calcomp::fit(3f): draws a semi-hyperbolic curve through three points<br/>
+	M_calcomp::grid(3f): draws a linear grid<br/>
+	M_calcomp::poly(3f): draw an equilateral polygon<br/>
+	M_calcomp::rect(3f): draw a rectangle<br/>
+	M_calcomp::curvx(3f): plots a function of X over a given range<br/>
+	M_calcomp::curvy(3f): plots a function of Y over a given range<br/>
+	M_calcomp::fline(3f): plot a polyline with optional fit<br/>
+	M_calcomp::lgaxs(3f): draw logarithmic axis<br/>
+	M_calcomp::lglin(3f): draw polyline in log-log or semi-log mode<br/>
+	M_calcomp::polar(3f): plot radial values versus angular variables (as polar coordinates)<br/>
+	M_calcomp::scalg(3f): determine scale factors for a logarithmic scale<br/>
+	M_calcomp::smoot(3f): draw a polyline using modified spline-fitting technique<br/>
+	M_calcomp::axis(3f): Draw linear axis with numeric scale and axis label<br/>
+	M_calcomp::factor(3f): rescale entire plot<br/>
+	M_calcomp::mset(3f): this is a general mode setting routine.<br/>
+	M_calcomp::line(3f): Plot a polyline with optional rescaling<br/>
+	M_calcomp::newpen(3f): select new pen color and move to origin<br/>
+	M_calcomp::nframe(3f): start new frame<br/>
+	M_calcomp::number(3f): plots a floating-point number<br/>
+	M_calcomp::plot(3f): move with pen up or down or start new origin or terminate plotting<br/>
+	M_calcomp::plots(3f): initialize the CALCOMP package<br/>
+	M_calcomp::scale(3f): calculate scaling factors for producing XY plots with LINE(3f) and AXIS(3f) routines<br/>
+	M_calcomp::symbol(3f): draw text string or marker<br/>
+	M_calcomp::where(3f): return current position and current plot-scaling factor<br/>
+	M_calcomp::cntour(3f): draw a contour plot<br/>
 </td>
 <tr><td><a href="M_calculator.f90">M_calculator.f90</a></td>
 <td>
-	compute(1f): line mode calculator program (that calls jucalc(3f))<br/>
 	M_calculator::jucalc(3f): The procedure JUCALC acts like a calculator<br/>
 	M_calculator::juator(3f):returns a real value rval8 from a numeric character string chars.<br/>
 	M_calculator::getvalue(3f): given numeric variable name return value<br/>
@@ -102,6 +137,10 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <tr><td><a href="M_Compare_Float_Numbers.f90">M_Compare_Float_Numbers.f90</a></td>
 <td>
 </td>
+<tr><td><a href="M_contourplot.f90">M_contourplot.f90</a></td>
+<td>
+	M_contourplot::contourlines(3f):calculate contour lines from ungridded data f(x,y) and call user-supplied routine with results<br/>
+</td>
 <tr><td><a href="M_csv.f90">M_csv.f90</a></td>
 <td>
 	M_csv::csv_write(3f): write scalar intrinsic type using current CSV style<br/>
@@ -125,26 +164,30 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 </td>
 <tr><td><a href="M_draw.f90">M_draw.f90</a></td>
 <td>
-	 Demonstrate just how much you can put in an object<br/>
+	M_draw::M_draw(3fm):: The M_draw graphics library module<br/>
+</td>
+<tr><td><a href="M_drawinc.f90">M_drawinc.f90</a></td>
+<td>
+	 draw a simple geometric illusion<br/>
 </td>
 <tr><td><a href="M_drawplus.f90">M_drawplus.f90</a></td>
 <td>
 	M_drawplus::arrowhead(3f): Draw arrow head (for text boxes and line markers)<br/>
-	invokeobj(3f) invoke object with specified transformation applied and then restored<br/>
-	pop(3f): call popviewport(), popmatrix(), popattributes()<br/>
-	push(3f): call pushattributes(), pushmatrix(), pushviewport()<br/>
-	create circular arc, leaving CP at end of arc<br/>
-	Like M_DASH arc routine without move at end so can be in a polygon<br/>
-	biggest_ortho2(3f) given a window size, find and set to largest accommodating viewport<br/>
-	m_draw:uconic(3f) general conic sections<br/>
+	M_drawplus::invokeobj(3f): invoke object with specified transformation applied and then restored<br/>
+	M_drawplus::pop(3f): call popviewport(), popmatrix(), popattributes()<br/>
+	M_drawplus::push(3f): call pushattributes(), pushmatrix(), pushviewport()<br/>
+	M_drawplus::create circular arc, leaving CP at end of arc<br/>
+	M_drawplus::arc2(3f): Like M_DASH arc routine without move at end so can be in a polygon<br/>
+	M_drawplus::page(3f): given a window size, find and set to largest accommodating viewport<br/>
+	M_drawplus::m_draw:uconic(3f): general conic sections<br/>
 	 Fortran MODULE interface to M_DRAW C routines using Fortran ISO_C_BINDING interface<br/>
+	M_drawplus::barcode(3f): draw 3-of-9 bar code<br/>
 	help_usage(3f): prints help information<br/>
-	juvog(3f): parse most M_draw(3fm) routines positionally <br/>
-	iflogic(3f): evaluate string in calculator and return false if value is zero<br/>
-	spirographc(3f):draw hypocycloidal curves<br/>
-	 draw smooth curve thru set up points using spline-fitting technique<br/>
-	 internal routine called by SMOOT<br/>
-	 internal routine called by SMOOT<br/>
+	M_drawplus::call_draw(3f): parse most M_draw(3fm) routines positionally<br/>
+	M_drawplus::spirograph(3f): draw hypocycloidal curves<br/>
+	M_drawplus::smoot(3f): draw smooth curve thru set up points using spline-fitting technique<br/>
+	M_drawplus::rdbox(3f): reads two points and outline defined box and return points<br/>
+	M_drawplus::rdpnt(3f): reads coordinates of point locator clicked at<br/>
 </td>
 <tr><td><a href="M_factor.f90">M_factor.f90</a></td>
 <td>
@@ -324,7 +367,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_pixel::getviewport(3f): return viewport in screen pixel coordinates<br/>
 	M_pixel::viewport(3f): Specify which part of the screen to draw in.<br/>
 	M_pixel::ortho2(3f): define the area of the virtual world coordinates to map to the viewport<br/>
-	M_pixel::biggest_ortho2(3f): given a window size, find and set to largest accommodating viewport<br/>
+	M_pixel::page(3f): given a window size, find and set to largest accommodating viewport<br/>
 	M_pixel::rmove2(3f): relative move<br/>
 	M_pixel::move2(3f): move current position<br/>
 	M_pixel::rdraw2(3f): relative draw<br/>
@@ -505,20 +548,20 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 </td>
 <tr><td><a href="M_system.f90">M_system.f90</a></td>
 <td>
-	M_system::system_srand(3f): call srand(3c)<br/>
-	M_system::system_kill(3f): call kill(3c) to send a signal to a process<br/>
-	M_system::system_errno(3f): return errno(3c)<br/>
-	M_system::system_geteuid(3f): call geteuid(3c)<br/>
-	M_system::system_getuid(3f): call getuid(3c)<br/>
-	M_system::system_getegid(3f): call getegid(3c)<br/>
-	M_system::system_getgid(3f): call getgid(3c)<br/>
-	M_system::system_getsid(3f): call getsid(3c) to get session leader for given pid<br/>
-	M_system::system_getpid(3f): call getpid(3c)<br/>
-	M_system::system_getppid(3f): call getppid(3c)<br/>
-	M_system::system_umask(3f): call umask(3c)<br/>
-	M_system::system_rand(3f): call rand(3c)<br/>
-	M_system::system_initenv(3f): initialize environment table for reading<br/>
-	M_system::system_access(3f): determine if pathname is a socket<br/>
+	 M_system::system_srand(3f): call srand(3c)<br/>
+	 M_system::system_kill(3f): call kill(3c) to send a signal to a process<br/>
+	 M_system::system_errno(3f): return errno(3c)<br/>
+	 M_system::system_geteuid(3f): call geteuid(3c)<br/>
+	 M_system::system_getuid(3f): call getuid(3c)<br/>
+	 M_system::system_getegid(3f): call getegid(3c)<br/>
+	 M_system::system_getgid(3f): call getgid(3c)<br/>
+	 M_system::system_getsid(3f): call getsid(3c) to get session leader for given pid<br/>
+	 M_system::system_getpid(3f): call getpid(3c)<br/>
+	 M_system::system_getppid(3f): call getppid(3c)<br/>
+	 M_system::system_umask(3f): call umask(3c)<br/>
+	 M_system::system_rand(3f): call rand(3c)<br/>
+	 M_system::system_initenv(3f): initialize environment table for reading<br/>
+	M_system::system_access(3f): checks accessibility or existence of a pathname<br/>
 	M_system::system_issock(3f): determine if pathname is a socket<br/>
 	M_system::system_isfifo(3f): determine if pathname is a fifo(named pipe)<br/>
 	M_system::system_ischr(3f): determine if pathname is a link<br/>
@@ -527,8 +570,8 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_system::system_isblk(3f): determine if pathname is a block device<br/>
 	M_system::system_chown(3f): change owner and group of a file relative to directory file descriptor<br/>
 	M_system::system_isdir(3f): determine if DIRNAME is a directory name<br/>
-	M_system::system_cpu_time(3f): get processor time using times(3c)<br/>
-	M_system::system_cpu_time(3f): get processor time using times(3c)<br/>
+	 M_system::system_cpu_time(3f): get processor time using times(3c)<br/>
+	 M_system::system_cpu_time(3f): get processor time using times(3c)<br/>
 	M_system::system_link(3f): call link(3c) to create a file link<br/>
 	M_system::system_unlink(3f): call unlink(3c) to rm file link<br/>
 	M_system::system_perror(3f): call perror(3c) to display error message<br/>
@@ -907,7 +950,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 </td>
 <tr><td><a href="C-M_drawplus.c">C-M_drawplus.c</a></td>
 <td>
-	 39 bar code<br/>
+	 M_drawplus::barcode(3c): draw 3-of-9 bar code<br/>
 </td>
 <tr><td><a href="C-M_getkey.c">C-M_getkey.c</a></td>
 <td>

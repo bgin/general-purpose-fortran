@@ -1,11 +1,11 @@
 NAME
-   M_DRAWPLUS(3f) - [M_DRAWPLUS] Additional routines using the M_DRAW graphics library
+   M_drawplus(3f) - [M_drawplus] Additional routines using the M_DRAW graphics library
 SYNOPSIS
 
 DESCRIPTION
 
-   M_DRAWPLUS(3f) is a collection of higher level graphic routines that call the
-   base M_DRAW(3f) graphics routines.
+   M_drawplus(3f) is a collection of higher level graphic routines that call the
+   base M_draw(3f) graphics routines.
 
 LIBRARY FUNCTION DESCRIPTIONS
 
@@ -19,11 +19,16 @@ LIBRARY FUNCTION DESCRIPTIONS
 
    INTERACTIVE ROUTINES
 
+       subroutine rdbox(returnx1,returny1,returnx2,returny2,ikey)
+       reads two points and outline defined box and return points
+       subroutine rdpnt(oldx,oldy,sx,sy,ibut)
+       reads coordinates of point locator clicked at
+
    FLUSHING
 
    PROJECTION AND VIEWPORT ROUTINES
 
-       subroutine biggest_ortho2 (left, right, bottom, top)
+       subroutine page (left, right, bottom, top)
 
    MATRIX STACK ROUTINES
 

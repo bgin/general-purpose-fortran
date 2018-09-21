@@ -12,7 +12,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   xy(1f) - [M_xyplot] Draw a basic XY plot                                     ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
-'   plot [-f] FILE -xlabel STR -ylabel STR -d DEVICE -m NNNN -fn FILENAME -sz MARKER_SIZE',&
+'   xy [-f] FILE -xlabel STR -ylabel STR -d DEVICE -m NNNN -fn FILENAME -sz MARKER_SIZE',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
 '   Create a basic XY plot from a simple ASCII table of numeric                  ',&
@@ -41,7 +41,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   -version   display version to stdout and exit                                ',&
 '                                                                                ',&
 'EXAMPLE                                                                         ',&
-'   Create a simple with with X and Y filss and draw plot                        ',&
+'   Create a simple file with X and Y values and draw plot                       ',&
 '                                                                                ',&
 '      program demo_xy                                                           ',&
 '         ! set up the data file                                                 ',&
@@ -70,7 +70,7 @@ end subroutine help_usage
 !!
 !!##SYNOPSIS
 !!
-!!    plot [-f] FILE -xlabel STR -ylabel STR -d DEVICE -m NNNN -fn FILENAME -sz MARKER_SIZE
+!!    xy [-f] FILE -xlabel STR -ylabel STR -d DEVICE -m NNNN -fn FILENAME -sz MARKER_SIZE
 !!
 !!##DESCRIPTION
 !!    Create a basic XY plot from a simple ASCII table of numeric
@@ -100,7 +100,7 @@ end subroutine help_usage
 !!
 !!##EXAMPLE
 !!
-!!    Create a simple with with X and Y filss and draw plot
+!!    Create a simple file with X and Y values and draw plot
 !!
 !!       program demo_xy
 !!          ! set up the data file
@@ -133,7 +133,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20180706>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Thu, Aug 16th, 2018 12:13:48 PM>',&
+'@(#)COMPILED:       Thu, Sep 20th, 2018 7:48:24 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -146,7 +146,7 @@ use M_draw,    only : centertext, drawstr, move2, textsize,strlength, rect, circ
 use M_xyplot,  only : plot_set_plot_area, plot_set_nice_range, plot_init_globals
 use M_xyplot,  only : plot_axes, plot_label, plot_line, plot_page, plot_resetplot
 use M_xyplot,  only : plot_ids, plot_axis
-use M_kracken, only : sget, lget, iget, kracken
+use M_kracken, only : sget, lget, iget, kracken, rget
 use M_strings, only : merge_str
 use M_math,    only : bds
 use M_io,      only : read_table
@@ -167,7 +167,7 @@ real                         :: xsmall, xlarge, ysmall, ylarge
 real                         :: text_width, text_height
 integer                      :: key
 integer                      :: marker_frequency
-integer                      :: marker_size
+real                         :: marker_size
 character(len=:),allocatable :: device
 character(len=:),allocatable :: xlabel
 character(len=:),allocatable :: ylabel
@@ -186,7 +186,7 @@ integer                      :: istart,iend
    xlabel=trim(sget('plt_xlabel'))
    ylabel=trim(sget('plt_ylabel'))
    marker_frequency=iget('plt_m')
-   marker_size=iget('plt_sz')
+   marker_size=rget('plt_sz')
    verbose=lget('plt_verbose')
 !-----------------------------------------------------------------------------------------------------------------------------------
    allocate(xy_array(0,0))

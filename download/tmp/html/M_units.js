@@ -1,5 +1,5 @@
 function loadthem(){
-append("M_units.3{SECTION}.html");
+append("M_units.3{}.html");
 append("M_units.3.html");
 append("atomnum2symbol.3.html");
 append("c2f.3.html");

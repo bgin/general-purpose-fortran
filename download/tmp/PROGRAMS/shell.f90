@@ -271,7 +271,7 @@ subroutine pixel(ifound)
  use :: M_pixel, only : closepoly       ! [M_pixel] close and render polygon
  use :: M_pixel, only : font            ! [M_pixel] select font style
 
-use :: M_pixel, only : biggest_ortho2  ! [M_pixel] define the area of the virtual world coordinates to map to the viewport
+use :: M_pixel, only : page  ! [M_pixel] define the area of the virtual world coordinates to map to the viewport
 use :: M_pixel, only : hershey         ! [M_pixel] draw text string as Hershey software vector fonts
 use :: M_pixel, only : justfy          ! [M_pixel] return lengths used to justify a string when calling hershey
 use :: M_pixel, only : polyline        ! [M_pixel] connect points with lines
@@ -907,7 +907,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Thu, Aug 16th, 2018 12:11:24 PM>',&
+'@(#)COMPILED:       Thu, Sep 20th, 2018 7:35:54 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

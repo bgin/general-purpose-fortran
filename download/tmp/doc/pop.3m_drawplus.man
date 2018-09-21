@@ -1,5 +1,5 @@
 NAME
-   pop(3f) - [M_DRAWPLUS] call popviewport(), popmatrix(), popattributes()
+   pop(3f) - [M_drawplus] call popviewport(), popmatrix(), popattributes()
 SYNOPSIS
    subroutine pop()
 DESCRIPTION

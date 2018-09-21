@@ -1411,7 +1411,7 @@ END SUBROUTINE dl_slices
 subroutine dl_init(xmax0,ymax0,vpx,vpy,zom)
 !     FORTRAN-77 VERSION:   DGL JULY, 1987
 use M_draw
-use M_drawplus, only : biggest_ortho2
+use M_drawplus, only : page
 real,intent(in)   :: xmax0
 real,intent(in)   :: ymax0
 real,intent(in)   :: vpx
@@ -1422,7 +1422,7 @@ character(len=*),parameter::ident="@(#)M_slices::dl_init(3f): initialize the lon
    Z=ZOM
    xmax=xmax0
    ymax=ymax0
-   call biggest_ortho2(0.0,xmax,0.0,ymax)
+   call page(0.0,xmax,0.0,ymax)
    XMINQ=0.0
    YMINQ=0.0
    XMAXQ=xmax

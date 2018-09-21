@@ -13,7 +13,7 @@ EXAMPLE
 
    program demo_point
    use M_draw
-   use M_drawplus, only : biggest_ortho2
+   use M_drawplus, only : page
    use M_draw,    only  : D_BLACK,   D_WHITE
    use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
    use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
@@ -24,7 +24,7 @@ EXAMPLE
       call vinit(' ')
       call color(D_BLACK)
       call clear()
-      call biggest_ortho2(-25.0, 25.0, -5.0, 5.0)
+      call page(-25.0, 25.0, -5.0, 5.0)
 
       ! draw points using various linewidths and colors
       do i=1,300

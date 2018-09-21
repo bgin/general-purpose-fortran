@@ -14,7 +14,7 @@ EXAMPLE
 
    program demo_bottomjustify
    use M_draw
-   use M_drawplus, only : biggest_ortho2
+   use M_drawplus, only : page
    implicit none
    real    :: x1, x2, y1, y2
    real    :: scl, ax, bx
@@ -22,7 +22,7 @@ EXAMPLE
       call prefsize(1200,120)
       call vinit(' ')
       x1=0; x2=40; y1=0; y2=4; scl=1.9
-      call biggest_ortho2(x1,x2,y1,y2)
+      call page(x1,x2,y1,y2)
       call textsize(0.9*scl,1.4*scl)
       call font("times.rb")
       call linewidth(200)

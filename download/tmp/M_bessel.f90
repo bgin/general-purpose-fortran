@@ -13,7 +13,7 @@ public besy0
 contains
 !===================================================================================================================================
       SUBROUTINE BES(X,NO,KODE,RSLT1,RSLT2,T1,T2,IERR)                      ! BES.2     
-!@(#) Bessel functions j(x), y(x), i(x), k(x) for real arguments and integer orders
+!@(#) M_bessel::bes(3f):calculate Bessel functions J(X), Y(X), I(X), K(X) for real arguments and integer orders
 !                                                                           ! BES.3     
 !     SANDIA MATHEMATICAL PROGRAM LIBRARY                                   ! BES.4     
 !     APPLIED MATHEMATICS DIVISION 2642                                     ! BES.5     
@@ -577,7 +577,7 @@ contains
 !        SUBROUTINE BESI                                                   ! BESI.6     
 !                                                                          ! BESI.7     
 !        PURPOSE                                                           ! BESI.8     
-!@(#)       COMPUTE THE I BESSEL FUNCTION FOR A GIVEN ARGUMENT AND ORDER   ! BESI.9     
+!@(#) M_bessel::besi(3f):compute the I Bessel function for a given argument and order 
 !                                                                          ! BESI.10    
 !        USAGE                                                             ! BESI.11    
 !           CALL BESI(X,N,BI,IER)                                          ! BESI.12    
@@ -687,7 +687,7 @@ contains
 !        SUBROUTINE BESJ                                                   ! BESJ.6     
 !                                                                          ! BESJ.7     
 !        PURPOSE                                                           ! BESJ.8     
-!@(#)       COMPUTE THE J BESSEL FUNCTION FOR A GIVEN ARGUMENT AND ORDER   ! BESJ.9     
+!@(#) M_bessel::besj(3f):compute the J Bessel function for a given argument and order
 !                                                                          ! BESJ.10    
 !        USAGE                                                             ! BESJ.11    
 !           CALL BESJ(X,N,BJ,D,IER)                                        ! BESJ.12    
@@ -802,7 +802,7 @@ contains
 !                                                                         ! BESJ0.14
 !     ABSTRACT                                                            ! BESJ0.15
 !                                                                         ! BESJ0.16
-!@(#)     BESJ0 CALCULATES THE BESSEL FUNCTION J(X) OF ORDER ZERO.        ! BESJ0.17
+!@(#) M_bessel::besj0(3f):calculates the Bessel function J(X) of order zero.
 !         SERIES EVALUATION IS USED FOR SMALL ARGUMENTS, RECURRENCE       ! BESJ0.18
 !         TECHNIQUES ARE USED FOR MIDRANGE, AND HANKEL-S ASYMPTOTIC       ! BESJ0.19
 !         EXPANSION IS USED FOR LARGE ARGUMENTS.                          ! BESJ0.20
@@ -851,7 +851,7 @@ contains
 !                                                                         ! BESJ1.14
 !     ABSTRACT                                                            ! BESJ1.15
 !                                                                         ! BESJ1.16
-!@(#)     BESJ1 CALCULATES THE BESSEL FUNCTION J(X) OF ORDER ONE.         ! BESJ1.17
+!@(#) M_bessel::besj1(3f): calculates the Bessel function J(X) of order one. 
 !         SERIES EVALUATION IS USED FOR SMALL ARGUMENTS, RECURRENCE       ! BESJ1.18
 !         TECHNIQUES ARE USED FOR MIDRANGE, AND HANKEL-S ASYMPTOTIC       ! BESJ1.19
 !         EXPANSION IS USED FOR LARGE ARGUMENTS.                          ! BESJ1.20
@@ -893,7 +893,7 @@ contains
 !                                                                          ! BESK.5     
 !        SUBROUTINE BESK                                                   ! BESK.6     
 !                                                                          ! BESK.7     
-!@(#)       COMPUTE THE K BESSEL FUNCTION FOR A GIVEN ARGUMENT AND ORDER   ! BESK.8     
+!@(#) M_bessel::besk(3f):compute the K Bessel function for a given argument and order 
 !                                                                          ! BESK.9     
 !        USAGE                                                             ! BESK.10    
 !           CALL BESK(X,N,BK,IER)                                          ! BESK.11    
@@ -1026,7 +1026,7 @@ contains
 !        SUBROUTINE BESY                                                   ! BESY.6     
 !                                                                          ! BESY.7     
 !        PURPOSE                                                           ! BESY.8     
-!@(#)       COMPUTE THE Y BESSEL FUNCTION FOR A GIVEN ARGUMENT AND ORDER   ! BESY.9     
+!@(#) M_bessel::besy(3f):compute the Y Bessel function for a given argument and order
 !                                                                          ! BESY.10    
 !        USAGE                                                             ! BESY.11    
 !           CALL BESY(X,N,BY,IER)                                          ! BESY.12    
@@ -1198,7 +1198,7 @@ contains
 !                                                                         ! BESY0.14
 !     ABSTRACT                                                            ! BESY0.15
 !                                                                         ! BESY0.16
-!@(#)     BESY0 CALCULATES THE BESSEL FUNCTION Y(X) OF ORDER ZERO.        ! BESY0.17
+!@(#) M_bessel::besy0(3f): calculates the Bessel function Y(X) of order zero.
 !         SERIES EVALUATION IS USED FOR SMALL ARGUMENTS, RECURRENCE       ! BESY0.18
 !         TECHNIQUES ARE USED FOR MIDRANGE, AND HANKEL-S ASYMPTOTIC       ! BESY0.19
 !         EXPANSION IS USED FOR LARGE ARGUMENTS.                          ! BESY0.20

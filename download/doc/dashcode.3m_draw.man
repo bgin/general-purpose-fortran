@@ -20,7 +20,7 @@ EXAMPLE
 
   program demo_dashcode
   use M_draw
-  use M_drawplus, only : biggest_ortho2
+  use M_drawplus, only : page
   implicit none
   integer        :: icolor
   integer        :: ikey
@@ -31,7 +31,7 @@ EXAMPLE
      call vinit(' ')
      call color(D_BLACK)
      call clear()
-     call biggest_ortho2(-25.0-b, 25.0+b, -5.0-b, 5.0+b)
+     call page(-25.0-b, 25.0+b, -5.0-b, 5.0+b)
      call textsize(2.0, 2.4)
      call font("futura.m")
      call ycentertext()

@@ -1,0 +1,32 @@
+NAME
+   fit(3f) - [M_calcomp:general] draws a semi-hyperbolic curve through three points
+
+SYNOPSIS
+       call fit(xpage1,ypage1,xpage2,ypage2,xpage3,ypage3)
+
+DESCRIPTION
+
+ FIT is a FORTRAN subroutine which draws a semi-hyperbolic curve through three
+ points.
+
+OPTIONS
+
+   XPAGE1,YPAGE1   are the X and Y coordinates, in inches, of the three
+   XPAGE2,YPAGE2   points through which the curve passes.
+   XPAGE3,YPAGE3
+
+COMMENTS
+
+ This subroutine generates a semi-hyperbolic fit using the three given points.
+ A set of points for which a fit is not possible is drawn with straight-line
+ segments.
+
+RESTRICTIONS
+
+ The curve through the three points must be multi-valued in both X and Y.
+ That is, the middle point (XPAGE2,YPAGE2) must be between the endpoints along
+ the X-axis or the Y-axis.
+
+       XPAGE1<YPAGE2<XPAGE3 or XPAGE1>XPAGE2>XPAGE3 or
+       YPAGE1<YPAGE2<YPAGE3 or YPAGE1>YPAGE2>YPAGE3
+

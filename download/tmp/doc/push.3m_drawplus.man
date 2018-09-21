@@ -1,5 +1,5 @@
 NAME
-   push(3f) - [M_DRAWPLUS] call pushviewport(), pushmatrix(), pushattributes()
+   push(3f) - [M_drawplus] call pushviewport(), pushmatrix(), pushattributes()
 SYNOPSIS
     subroutine push()
 DESCRIPTION

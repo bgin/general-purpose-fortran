@@ -11,7 +11,7 @@ MAKEMAKEFILE(){
 cd tmp
     SANI='fsanitize=address,null,undefined'
     SANI=
-env MAKEMAKE_LDFLAGS="-fno-range-check -Wall -fbounds-check -g -I. -J. $SANI" \
+env MAKEMAKE_LDFLAGS=" -Wl,--allow-multiple-definition -fno-range-check -Wall -fbounds-check -g -I. -J. $SANI" \
     MAKEMAKE_F90FLAGS="-Wall -Wuninitialized -fbounds-check -fno-range-check -g -I. -J. $SANI" \
     MAKEMAKE_F90='gfortran' \
     MAKEMAKE_LIBS='-lncurses -lsqlite3 -lreadline -lX11' \
@@ -31,7 +31,7 @@ MAKEOUT(){
 cd tmp
     SANI='fsanitize=address,null,undefined'
     SANI=
-env LDFLAGS="-fno-range-check -Wall -fbounds-check -g -I. -J. $SANI" \
+env LDFLAGS="-Wl,--allow-multiple-definition -fno-range-check -Wall -fbounds-check -g -I. -J. $SANI" \
     F90FLAGS="-Wall -Wuninitialized -fbounds-check -fno-range-check -g -I. -J. $SANI" \
     F90='gfortran' \
     LIBS='-lncurses -lsqlite3 -lreadline -lX11' \

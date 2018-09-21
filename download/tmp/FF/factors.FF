@@ -35,7 +35,7 @@ integer             :: iend=0
         elseif(ios.ne.0)then
            cycle
         endif
-	call printme(number,number)
+        call printme(number,number)
       enddo
    else                                                                      ! numbers are on command line
       do i=1,size(values)
@@ -51,9 +51,9 @@ integer             :: iend=0
    integer            :: ivalue,j,k
       do ivalue=ii,jj                                                               ! for values from ii to jj print factors
          call prime_factors(ivalue, nprm, iprm, iexp, verbose)                      ! get the factors
-	 if(.not.verbose)then                                                       ! if not printed yet print the values
-	    write(*,'(i0,": ",*(i0:,1x))')ivalue,( (iprm(k),j=1,iexp(k)) ,k=1,nprm) ! "VALUE: FACTOR(1) FACTOR(2) FACTOR(3) ..."
-	 endif
+         if(.not.verbose)then                                                       ! if not printed yet print the values
+            write(*,'(i0,": ",*(i0:,1x))')ivalue,( (iprm(k),j=1,iexp(k)) ,k=1,nprm) ! "VALUE: FACTOR(1) FACTOR(2) FACTOR(3) ..."
+         endif
       enddo
    end subroutine printme
 
@@ -71,14 +71,14 @@ DESCRIPTION
    Print the prime factors of each specified integer NUMBER. If none are
    specified on the command line, read them from standard input.
 
-   Typically, the numbers must be positive integers where 
+   Typically, the numbers must be positive integers where
 
       2 <= NUMBER <= (2**31)-1 or 2147483647.
 
 OPTIONS
-       -start N   if specified factor a range of numbers starting with this 
+       -start N   if specified factor a range of numbers starting with this
                   value. If -end is specified defaults to 2.
-       -end M     if specified factor a range of numbers ending with this 
+       -end M     if specified factor a range of numbers ending with this
                   value. If -start is specified defaults to huge(0).
        --help     display this help and exit
        --version  output version information and exit

@@ -1,6 +1,5 @@
 NAME
-   percent_done(3f) - [M_messages] non-advancing status counter displays percentage done
-                      on terminal displays
+   percent_done(3f) - [M_messages] non-advancing status counter displays percentage done on terminal displays
 
 SYNOPSIS
   subroutine percent_done(part,whole)

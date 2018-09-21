@@ -1,0 +1,61 @@
+NAME
+   cntour(3f) - [M_calcomp:scientific] draw a contour plot
+
+SYNOPSIS
+       call cntour(a, NX_Q, NY_Q, x, y, hgt, cv, ncv, legend, ndima)
+
+DESCRIPTION
+
+ A contour map is a graphical representation of a three-dimensional surface or
+ a function of two variables. A contour is defined as the intersection of the
+ surface or function with a specified plane parallel to the reference plane.
+ If the surface is denoted by z = f(x,y) where x and y are the coordinate
+ values in the (x,y)-plane (reference plane), then z equals a constant defines
+ the plane of intersection.
+
+ A contour map consists of a set of contours, usually generated for equally
+ spaced values of z. In a region where the surface changes rapidly, the
+ individual contours are close together, and where the surface changes
+ gradually, they are far apart. Thus, a contour map provides a means of
+ observing topological behavior of a surface as well as locating regions where
+ the function z has specific values.
+
+ The CNTOUR subroutine and its supporting routines provide the
+ user with a general-purpose package for preparing contour maps.
+ The package was developed at the Westinghouse Research Laboratories
+ and released at the Westinghouse Symposium for general use.
+
+OPTIONS
+
+   A         input double-subscripted array containing the discrete
+             values of the function.
+   NX_Q        index of the last row of data in A (INTEGER).
+
+   NY_Q        index of the last column of data in A (INTEGER).
+
+   X         single-scripted array containing values of x
+             corresponding to row positions of A.
+
+   Y         single-subscripted array containing values of y
+             corresponding to column positions of A.
+
+   HGT       height of plot restricted to less than or equal to 6.5
+             inches (REAL). The width is established accordingly.
+
+   CV        single-scripted array of contour values to be plotted.
+
+   NCV       number of contour values (INTEGER).
+
+   LEGEND    Logical option. If .TRUE., the legend relating contour
+             values and their identification numbers is printed. If
+             .FALSE., this legend will not be printed.
+
+   NDIMA     the dimensional number of rows for A.
+
+  COMMENTS
+
+ The CALCOMP initialization (PLOTS(0,0,0)) and termination (PLOT(X,Y,999))
+ calls must be supplied by the user, external to CNTOUR. These calls were
+ left out of CNTOUR to allow the user to create multiple plots in a single
+ program.
+

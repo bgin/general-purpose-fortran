@@ -17,7 +17,7 @@ EXAMPLE
 
    program demo_textweight
    use M_draw
-   use M_drawplus, only : biggest_ortho2
+   use M_drawplus, only : page
    implicit none
    real,parameter :: w=40.0
    integer        :: key
@@ -26,7 +26,7 @@ EXAMPLE
       call color(D_BLACK)
       call clear()
       call color(D_YELLOW)
-      call biggest_ortho2(-w,w,-w,w)
+      call page(-w,w,-w,w)
       call font("times.rb")
       call linewidth(180)
       call textsize(15.0,15.0)

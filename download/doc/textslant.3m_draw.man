@@ -22,7 +22,7 @@ EXAMPLE
 
    program demo_textslant
    use M_draw
-   use M_drawplus, only : biggest_ortho2
+   use M_drawplus, only : page
    implicit none
    real    :: x1, x2, y1, y2
    real    :: scl
@@ -32,7 +32,7 @@ EXAMPLE
       call color(D_BLACK)
       call clear()
       x1=0.0; x2=40.0; y1=0.0; y2=10.0; scl=3*0.7
-      call biggest_ortho2(x1,x2,y1,y2)
+      call page(x1,x2,y1,y2)
       call font("times.rb")
       call linewidth(180)
       call textsize(0.8*scl,1.2*scl)

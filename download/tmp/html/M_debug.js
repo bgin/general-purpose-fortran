@@ -1,5 +1,5 @@
 function loadthem(){
-append("M_debug.3{SECTION}.html");
+append("M_debug.3{}.html");
 append("M_debug.3.html");
 append("fstop.3.html");
 append("pdec.3.html");

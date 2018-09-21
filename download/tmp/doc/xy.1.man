@@ -2,7 +2,7 @@ NAME
    xy(1f) - [M_xyplot] Draw a basic XY plot
 
 SYNOPSIS
-   plot [-f] FILE -xlabel STR -ylabel STR -d DEVICE -m NNNN -fn FILENAME -sz MARKER_SIZE
+   xy [-f] FILE -xlabel STR -ylabel STR -d DEVICE -m NNNN -fn FILENAME -sz MARKER_SIZE
 
 DESCRIPTION
    Create a basic XY plot from a simple ASCII table of numeric
@@ -31,7 +31,7 @@ OPTIONS
    -version   display version to stdout and exit
 
 EXAMPLE
-   Create a simple with with X and Y filss and draw plot
+   Create a simple file with X and Y values and draw plot
 
       program demo_xy
          ! set up the data file

@@ -400,7 +400,7 @@ EXAMPLE
    use M_draw,    only  : D_BLACK,   D_WHITE
    use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
    use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
-   use M_drawplus, only : biggest_ortho2
+   use M_drawplus, only : page
    use M_units,    only : cosd, sind
    implicit none
    integer  :: ipaws
@@ -436,7 +436,7 @@ EXAMPLE
       ! map area of virtual world to specified device area
       ! notice Y-axis for viewport is zero at TOP
       ! define the virtual world area we want to work in
-      call biggest_ortho2(0.0,  400.0,    0.0, 400.0)
+      call page(0.0,  400.0,    0.0, 400.0)
       ! the drawing routines use these world units
 
       ! put some colored boxes into pixmap by address

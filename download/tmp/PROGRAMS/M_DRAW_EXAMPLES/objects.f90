@@ -1,6 +1,6 @@
 program demo_rect
    use M_draw
-   use M_drawplus, only : biggest_ortho2
+   use M_drawplus, only : page
    implicit none
    integer :: ipaws
    integer :: ix, iy
@@ -13,7 +13,7 @@ program demo_rect
    !! Background color
    !call color(7)
    !! Page setup
-   !call biggest_ortho2(0.0,2124.0,0.0,2124.0)
+   !call page(0.0,2124.0,0.0,2124.0)
    !call color(0)
 
    call makeobj(1111)
@@ -262,7 +262,7 @@ program demo_rect
 
 ! make a big page and call object with various transformations
    call color(7)
-   call biggest_ortho2( 0.0, 20000.0, 0.0, 20000.0)
+   call page( 0.0, 20000.0, 0.0, 20000.0)
    call clear()
    call color(0)
 

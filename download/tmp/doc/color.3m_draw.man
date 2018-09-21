@@ -21,7 +21,7 @@ EXAMPLE
 
     program demo_color
     use M_draw
-    use M_drawPLUS, only : biggest_ortho2
+    use M_drawPLUS, only : page
     use M_strings,  only : v2s
     real    :: b=0.5
     real    :: y1,y2,ym,x1,x2
@@ -31,7 +31,7 @@ EXAMPLE
        !! set up long bar as plotting area
        call prefsize(1000,200)
        call vinit(' ') ! start graphics using device $M_draw_DEVICE
-       call biggest_ortho2(-25.0-b, 25.0+b, -5.0-b, 5.0+b)
+       call page(-25.0-b, 25.0+b, -5.0-b, 5.0+b)
        call textsize( 3.5, 4.0)
        call font('futura.m')
        call centertext(.true.)

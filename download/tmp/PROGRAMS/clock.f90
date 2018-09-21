@@ -9,7 +9,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'   clock(1f) - [M_DRAW] display a clock using the M_draw(3f) graphics module    ',&
+'   clock(1f) - display a clock using the M_draw(3f) graphics module             ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   clock [SECONDS] [ -sz PIXELS ]                                               ',&
@@ -41,7 +41,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    clock(1f) - [M_DRAW] display a clock using the M_draw(3f) graphics module
+!!    clock(1f) - display a clock using the M_draw(3f) graphics module
 !!
 !!##SYNOPSIS
 !!
@@ -81,7 +81,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    draw a clock>',&
 '@(#)VERSION:        1.0, 20180616>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Thu, Aug 16th, 2018 12:12:51 PM>',&
+'@(#)COMPILED:       Thu, Sep 20th, 2018 7:46:48 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -118,7 +118,7 @@ end program clockit
 subroutine vclock(isec) ! draw a M_DRAW clock
 !@(#) draw a M_DRAW clock that quits on 'q'
 use M_draw
-use M_drawplus, only : biggest_ortho2
+use M_drawplus, only : page
 use M_time, only : system_sleep, d2o, date_to_julian, dow
 use M_color, only : hue
 !     make this into a calculator
@@ -142,7 +142,7 @@ character(len=9) :: day
    call pushmatrix()
    call pushviewport()
    call circleprecision(200)
-   call biggest_ortho2(-50.0,50.0,-50.0,50.0)
+   call page(-50.0,50.0,-50.0,50.0)
    call linewidth(100)
 !==================================================================================================================================!
 1  continue

@@ -1,5 +1,5 @@
 function loadthem(){
-append("M_stopwatch.3{SECTION}.html");
+append("M_stopwatch.3{}.html");
 append("M_stopwatch.3.html");
 append("create_watch.3.html");
 append("create_watchgroup.3.html");

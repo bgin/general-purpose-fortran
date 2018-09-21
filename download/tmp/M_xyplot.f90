@@ -83,16 +83,16 @@ integer            :: ireg3q          ! number of time curves in pseudo file
 !                                4. original file curve number for time lines
 integer            :: itq(4,IHNQ2)    ! keep track of pseudo file time curves
 
-integer           :: icodeq      ! plot code
-character(len=8)  :: varidq      ! variable id
-integer           :: nodq        ! node
-integer           :: isnodq      ! subnode
-integer           :: itnodq      ! tertiary node
-integer           :: iunitq      ! units code
-character(len=80) :: alphaq      ! alpha field
-integer,parameter :: KAQ=20      ! limit on length of alphaq string in standard file
-character(len=80) :: alpha2q     ! second alpha field in zebra file
-integer           :: itimeq      ! time pointer
+integer            :: icodeq      ! plot code
+character(len=8)   :: varidq      ! variable id
+integer            :: nodq        ! node
+integer            :: isnodq      ! subnode
+integer            :: itnodq      ! tertiary node
+integer            :: iunitq      ! units code
+character(len=80)  :: alphaq      ! alpha field
+integer,parameter  :: KAQ=20      ! limit on length of alphaq string in standard file
+character(len=80)  :: alpha2q     ! second alpha field in zebra file
+integer            :: itimeq      ! time pointer
 !     if this file has been read before, first extra integer in a header
 !     line may be the number of points in curve that are significant
 integer                :: ipadq(5)      ! extra integers. Not set by user, used internally by PLT
@@ -359,7 +359,7 @@ private priv_logrng             ! logrng
 private priv_setrng             ! setrng
 private priv_endgrid            ! endgrid
 private priv_jugrid             ! jugrid
-private priv_juseg              ! juseg
+private priv_drawseg_using_pen  ! juseg
 private priv_jubox              ! jubox
 private priv_draw_y_nums        ! draw_y_nums
 private priv_draw_y_label       ! draw_y_label
@@ -3427,7 +3427,7 @@ use M_journal,    only : journal
 use m_calculator, only : stuffa
 use m_kracken,    only : iget,sget
 use M_draw
-use M_drawplus,   only : biggest_ortho2
+use M_drawplus,   only : page
 implicit none
 
 character(len=*),parameter::ident="@(#)M_xyplot::xy_init_graphics(3fp): Initialize PLT graphics environment"
@@ -3435,8 +3435,6 @@ character(len=*),parameter::ident="@(#)M_xyplot::xy_init_graphics(3fp): Initiali
 character(len=256) :: value
 character(len=256) :: cmd_d
 character(len=256) :: hcopyfile
-real               :: aa
-real               :: bb
 integer            :: i
 integer            :: i10
 integer            :: idum
@@ -3510,33 +3508,23 @@ real               :: yy
    call getdisplaysize(xx,yy)                   ! get screen size in terms of raster units
    shape=xx/yy                                  ! determine initial aspect ratio of drawing surface and set drawing area accordingly
    call xy_aspct(0.0,shape,0.0,1.0)
-   call xy_storer('aspect_oo',shape,'no_add',ierr)              ! store current shape into dictionary
+   call xy_storer('aspect_oo',shape,'no_add',ierr)           ! store current shape into dictionary
    call centertext(.false.)                                  ! do not center text
    call vsetflush(.false.)                                   ! turn off automatic flushing
    call vflush()                                             ! forces a flush
    if(value.eq.'x11'.or.value.eq.'X11'.or.value.eq.'PC')then
       idum=checkkey()
-      call plot_clear('all')                                      ! as recommended, we clear after initializing graphics
+      call plot_clear('all')                                 ! as recommended, we clear after initializing graphics
       call frontbuffer()
-      xx=4800.0
-      bb=0.0
-      aa=40
-      do i10=1,1 ! 200 ! 500
-         call biggest_ortho2(-bb,xx+bb,-bb,xx+bb)
-         call xy_illusion('V1.0.0','BETA','PLT','PLT')
-         idum=checkkey()
-         call vflush()                                       ! forces a flush
-         bb=bb+aa
-         if(i10.eq.100)aa=-aa
-      enddo
+      call vflush()                                          ! forces a flush
    else
-      call plot_clear('all')                                      ! as recommended, we clear after initializing graphics
+      call plot_clear('all')                                 ! as recommended, we clear after initializing graphics
    endif
 
    call font('futura.l')                                     ! set preferred default font
    call vflush()                                             ! forces a flush
-   !call xy_setsize('-1 -1 -1 -1')                               ! so an output device does not pick up this size
-   call xy_jumapc('reload')                                     ! load PLT color table for first device
+   !call xy_setsize('-1 -1 -1 -1')                           ! so an output device does not pick up this size
+   call xy_jumapc('reload')                                  ! load PLT color table for first device
 end subroutine xy_init_graphics
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
@@ -4724,7 +4712,7 @@ end subroutine xy_laxis
 subroutine xy_pickpnt(itype,xecho,yecho,ibut)
 use M_journal, only : journal
 use M_draw
-use M_drawplus, only : pop, push
+use M_drawplus, only : pop, push, rdpnt
 implicit none
 
 character(len=*),parameter::ident="&
@@ -4751,7 +4739,7 @@ real                :: xminv, xmaxv, yminv, ymaxv
    call getgp2(xecho,yecho)
    isize=0
    ibut=-1
-   call xy_rdpnt(xecho,yecho,x1,y1,ibut)  ! first point
+   call rdpnt(xecho,yecho,x1,y1,ibut)  ! first point
    if(ibut.lt.0.or.ibut.gt.2)goto 999     ! no locator device found if lt 0; asked to quit if greater than 3
 !-----------------------------------------------------------------------
 !  establish initial min and max
@@ -4783,11 +4771,11 @@ real                :: xminv, xmaxv, yminv, ymaxv
       xecho=x1
       yecho=y1
       INNER: do
-         call xy_rdpnt(xecho,yecho,x1,y1,ibut)
+         call rdpnt(xecho,yecho,x1,y1,ibut)
          if(ibut.eq.1)then
             cycle OUTER
          elseif(ibut.eq.2)then       ! back up one index to ignore last point
-            call journal('s','*xy_rdpnt* backing up')
+            call journal('s','*rdpnt* backing up')
             isize=max(1,isize-1)
             xecho=xy_arrayq(isize)*con(1)+con(2)  ! recalculate point to move back too
             yecho=xy_arrayq(isize+IMAXQ2/2)*con(3)+con(4)
@@ -5238,7 +5226,7 @@ real              :: ymint
          s2=xcol/2.0-width
          call color(plot_ids(i10)%color)        ! set color
          call xy_rasters(plot_ids(i10)%width)      ! set curve width
-         call priv_juseg(i10,xleft-s2,rx,xleft+s2,rx) ! draw a line using pen style ipen NOT to axis scale for legend box
+         call priv_drawseg_using_pen(i10,xleft-s2,rx,xleft+s2,rx) ! draw line using pen style ipen NOT to axis scale for legend box
 !        call color(iforeq)
          call color(max(0,inum0(plot_fetch('title_c'))))    ! calculate color of ti
          call xy_rasters(2)
@@ -8410,71 +8398,6 @@ real,intent(in) :: y2
       call draw2(x1,y1)
 
 end subroutine xy_boxit
-!----------------------------------------------------------------------------------------------------------------------------------!
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!----------------------------------------------------------------------------------------------------------------------------------!
-subroutine xy_rdpnt(oldx,oldy,sx,sy,ibut)
-use M_journal, only : journal
-use M_draw
-implicit none
-
-character(len=*),parameter::ident="@(#)M_xyplot::xy_rdpnt(3fp): xy_rdpnt reads coordinates of point locator clicked at"
-
-!     see M_DRAW locator() description
-real,intent(in)     :: oldx
-real,intent(in)     :: oldy
-real,intent(out)    :: sx
-real,intent(out)    :: sy
-integer,intent(out) :: ibut
-real x, y
-logical act, curpnt
-
-      call move2(oldx,oldy)
-      call draw2(oldx,oldy)
-      act = .false.   ! have you activated a button since the read started?
-      curpnt = .false.
-      sx=0.0
-      sy=0.0
-!     locator returns whether a mouse button has been
-!     pressed or not. In a device such as the tektronix
-!     where you have to wait for a keypress to get the
-!     position of the crosshairs locator returns 0
-!     automatically on every second call. A return value
-!     of 2 indicates the second mouse button has been pressed.
-!     A return value of 1 indicates the first mouse button has
-!     been pressed. We wait for the locator to return zero so
-!     that we know the mouse button has been released.
-1     continue
-      call vflush()
-      ibut = locator(x, y)
-      if (ibut .eq. -1) then
-         call journal('*xy_rdpnt* no locator device found')
-         goto 999
-      else if (ibut .ge. 2 .and. act) then
-         sx=x
-         sy=y
-         goto 999
-      else if (ibut .eq. 0) then
-         act = .true.
-      else if (act) then
-         act = .false.
-         if (ibut .eq. 1) then
-            if (curpnt) then
-               call move2(sx, sy)
-               call draw2(x, y)
-               curpnt = .false.
-            else
-               curpnt = .true.
-            endif
-            sx = x
-            sy = y
-            goto 999
-         endif
-      endif
-      goto 1
-999   continue
-      call journal('s',char(07))       ! send bell character
-end subroutine xy_rdpnt
 !-----------------------------------------------------------------------------------------------------------------------------------
 ![][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]-
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -9553,7 +9476,7 @@ end subroutine priv_findlongest
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine plot_page(xsmall,xlarge,ysmall,ylarge)
 use M_draw
-use M_drawplus, only : biggest_ortho2
+use M_drawplus, only : page
 implicit none
 
 character(len=*),parameter::ident="@(#)M_xyplot::plot_page(3f): initialize plot page and set up common page-related values"
@@ -9563,7 +9486,7 @@ real,intent(in)    :: xlarge
 real,intent(in)    :: ysmall
 real,intent(in)    :: ylarge
 
-      call biggest_ortho2(xsmall,xlarge,ysmall,ylarge)
+      call page(xsmall,xlarge,ysmall,ylarge)
       XMIN0Q2=xsmall  ! window area for entire display, leave alone
       XMAX0Q2=xlarge
       YMIN0Q2=ysmall
@@ -9944,11 +9867,11 @@ end subroutine xy_line
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
-subroutine priv_juseg(ipen,x1,y1,x2,y2)
+subroutine priv_drawseg_using_pen(ipen,x1,y1,x2,y2)
 implicit none
 
 character(len=*),parameter::ident="&
-&@(#)M_xyplot::priv_juseg(3fp):  draw a line using pen style ipen NOT to axis scale NOT setting color"
+&@(#)M_xyplot::priv_drawseg_using_pen(3fp):  draw a line using pen style ipen NOT to axis scale NOT setting color"
 
 !     conversion arrays used to distinguish between toframe and priv_toscale lines
 
@@ -9967,7 +9890,7 @@ real            :: x(2), y(2)
    ipenq2=ipen                            ! pen style (color,width,dash code)
    ivals=2                                ! number of points in the curve
    call priv_toscale(x,y,ivals,con2,'no') ! draw the line (push and pop color, font,...)
-end subroutine priv_juseg
+end subroutine priv_drawseg_using_pen
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
@@ -10490,8 +10413,9 @@ end subroutine xy_jugetwn
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 subroutine xy_zoom(xmin,ymin,xmax,ymax,iend)
-use M_journal, only : journal
+use M_journal,  only : journal
 use M_draw
+use M_drawplus, only : rdbox
 implicit none
 
 character(len=*),parameter::ident="@(#)M_xyplot::xy_zoom(3fp):  given current four numbers defining a box"
@@ -10547,7 +10471,7 @@ real             :: yratio
 !     iend=1 quit zoom loop
 !     iend=3 request to reset xmin,ymin,xmax,ymax
       iend=1                                   ! initialize return status code to quit zoom loop
-      call xy_rdbox(x1,y1,x2,y2,ikey)             ! choose first box on press and release
+      call rdbox(x1,y1,x2,y2,ikey)             ! choose first box on press and release
       if(x1.eq.x2.and.y1.eq.y2.and.ikey.le.2)then
          goto 999         ! requesting to end loop
       endif
@@ -10562,7 +10486,7 @@ real             :: yratio
          iend=3                                 ! flag that want reset
          goto 999
       else
-         call xy_rdbox(x3,y3,x4,y4,ikey)              ! choose second box on press and release; note ignoring key
+         call rdbox(x3,y3,x4,y4,ikey)              ! choose second box on press and release; note ignoring key
          if(x3.eq.x4.and.y3.eq.y4)goto 999         ! requesting to end loop
       endif
       call xy_boxit(x3,y3,x4,y4)
@@ -10627,93 +10551,6 @@ real             :: yratio
 999   continue
       call vflush()
 end subroutine xy_zoom
-!===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
-!===================================================================================================================================
-subroutine xy_illusion(top,bottom,left,right)
-use M_draw
-implicit none
-
-character(len=*),parameter::ident="@(#)M_xyplot::xy_illusion(3fp): draw a simple geometric illusion"
-
-character(len=*),intent(in) :: top,bottom,left,right
-integer                     :: i, i10, i20, i30
-real                        :: smin, smid, smax
-real                        :: x, y
-real                        :: x1, y1
-real                        :: xx
-integer,save                :: iarx(9,16)  ! fill color, number of points
-integer,save                :: iary(9,16)  ! x,y values for making polygons
-!-----------------------------------------------------------------------------------------------------------------------------------
-data(iarx(i,1), iary(i,1),i=1,9)/  1, 9, 1950,1350, 4350,1350, 4350,3150, 3450,3150, 3450,2850, 4050,2850, 4050,1650, 1950,1650/
-data(iarx(i,2), iary(i,2),i=1,5)/  1, 5, 450,1650,  750,1350,  1350,1350, 1350,1650/
-data(iarx(i,3), iary(i,3),i=1,5)/  1, 5, 750,3150,  1050,2850, 2850,2850, 2850,3150/
-data(iarx(i,4), iary(i,4),i=1,5)/  1, 5, 750,3150,  750,1950,  1050,1950, 1050,2850/
-data(iarx(i,5), iary(i,5),i=1,5)/  2, 5, 3750,1950, 4050,1650, 4050,2850, 3750,2850/
-data(iarx(i,6), iary(i,6),i=1,5)/  2, 5, 1950,1950, 1950,1650, 4050,1650, 3750,1950/
-data(iarx(i,7), iary(i,7),i=1,9)/  2, 9, 1350,1650, 1350,1950, 750,1950,  750,3150,  2850,3150, 2850,3450, 450,3450,  450,1650/
-data(iarx(i,8), iary(i,8),i=1,5)/  2, 5, 4350,3150, 4050,3450, 3450,3450, 3450,3150/
-data(iarx(i,9), iary(i,9),i=1,9)/  3, 9, 3450,1950, 3450,4350, 1650,4350, 1650,3450, 1950,3450, 1950,4050, 3150,4050, 3150,1950/
-data(iarx(i,10),iary(i,10),i=1,5)/ 3, 5, 3150,450,  3450,750,  3450,1350, 3150,1350/
-data(iarx(i,11),iary(i,11),i=1,5)/ 3, 5, 1650,750,  1950,1050, 1950,2850, 1650,2850/
-data(iarx(i,12),iary(i,12),i=1,5)/ 3, 5, 1650,750,  2850,750,  2850,1050, 1950,1050/
-data(iarx(i,13),iary(i,13),i=1,5)/ 4, 5, 2850,1950, 3150,1950, 3150,4050, 2850,3750/
-data(iarx(i,14),iary(i,14),i=1,9)/ 4, 9, 3150,1350, 2850,1350, 2850,750,  1650,750,  1650,2850, 1350,2850, 1350,450,  3150,450/
-data(iarx(i,15),iary(i,15),i=1,5)/ 4, 5, 2850,3750, 3150,4050, 1950,4050, 1950,3750/
-data(iarx(i,16),iary(i,16),i=1,5)/ 4, 5, 1650,4350, 1350,4050, 1350,3450, 1650,3450/
-!-----------------------------------------------------------------------------------------------------------------------------------
-      call xy_obj12345('before')   ! begin M_DRAW object 12345
-
-      call linewidth(30)
-      do i10=1,16               ! draw each polygon
-         call polyfill(.true.)
-         call color(iarx(1,i10))
-         do i30=1,2             ! make filled polygon on first pass, outlined on second
-            call makepoly()
-               x1=iarx(2,i10)
-               y1=iary(2,i10)
-               call move2(x1,y1)
-               do i20=3,iary(1,i10)
-                  x=iarx(i20,i10)
-                  y=iary(i20,i10)
-                  call draw2(x,y)
-               enddo
-               call draw2(x1,y1)
-            call closepoly()
-            call color(7)
-            call polyfill(.false.)
-         enddo
-      enddo
-
-      call linewidth(75)
-      call textsize(410.0,400.0)
-      call xcentertext()
-      call color(7)
-      smid=(450.0+4350.0)/2.0
-      smax=4350.0
-      smin=450.0
-      xx=130.0
-
-      call textang(0.0)
-      call move2(smid+xx,smax)
-      call drawstr(top)
-
-      call textang(180.0)
-      call move2(smid-xx,smin)
-      call drawstr(bottom)
-
-      call textang(90.0)
-      call move2(smin,smid+xx)
-      call drawstr(left)
-
-      call textang(270.0)
-      call move2(smax,smid-xx)
-      call drawstr(right)
-
-      call textang(0.0)
-      call xy_obj12345('after')
-
-end subroutine xy_illusion
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
@@ -10956,7 +10793,7 @@ real            :: yystep2
          call xy_rasters(idwid(-1))        ! set curve width
          do i20=0,iydiv(1)
             sy = i20 * cony + YMIN
-            call priv_juseg(ix1,XMIN,sy,xmaxend1,sy) ! major grid y-axis grid lines
+            call priv_drawseg_using_pen(ix1,XMIN,sy,xmaxend1,sy) ! major grid y-axis grid lines
          enddo
       endif
 !-------------------------------------------------------------------------------
@@ -10974,12 +10811,12 @@ real            :: yystep2
                    anow=aleft10+i25*astep
                    rnow=log10(anow)
                    sy2=(rnow-vals(6))/y*(YMAX-YMIN)+YMIN
-                   call priv_juseg(ix2,XMIN,sy2,xmaxend2,sy2)    ! minor y-axis grid lines for decade-style log scale
+                   call priv_drawseg_using_pen(ix2,XMIN,sy2,xmaxend2,sy2)    ! minor y-axis grid lines for decade-style log scale
                 enddo
             else
                 do i30=1,abs(iydiv(2)-1)
                    sy2=sy+i30*(YMAX-YMIN)*ystep2/y
-                   call priv_juseg(ix2,XMIN,sy2,xmaxend2,sy2)    ! minor y-axis grid lines
+                   call priv_drawseg_using_pen(ix2,XMIN,sy2,xmaxend2,sy2)    ! minor y-axis grid lines
                 enddo
              endif
           enddo
@@ -10991,7 +10828,7 @@ real            :: yystep2
          call xy_rasters(idwid(-1))                 ! set curve width
          do i10=0,ixdiv(1)
             sx = i10 * conx + XMIN
-            call priv_juseg(iy1,sx,YMIN,sx,ymaxend1)  ! major x-axis grid lines
+            call priv_drawseg_using_pen(iy1,sx,YMIN,sx,ymaxend1)  ! major x-axis grid lines
          enddo
       endif
 !-------------------------------------------------------------------------------
@@ -11009,22 +10846,22 @@ real            :: yystep2
                    anow=aleft10+i35*astep
                    rnow=log10(anow)
                    sx2=(rnow-vals(4))/x*(XMAX-XMIN)+XMIN
-                   call priv_juseg(iy2,sx2,YMIN,sx2,ymaxend2)   ! minor decade-style logarithmic x-axis grid lines
+                   call priv_drawseg_using_pen(iy2,sx2,YMIN,sx2,ymaxend2)   ! minor decade-style logarithmic x-axis grid lines
                 enddo
              else
                 do i15=1,ixdiv(2)-1
                    sx2=sx+i15*(XMAX-XMIN)*xstep2/x
-                   call priv_juseg(iy2,sx2,YMIN,sx2,ymaxend2)   ! minor x-axis grid lines
+                   call priv_drawseg_using_pen(iy2,sx2,YMIN,sx2,ymaxend2)   ! minor x-axis grid lines
                 enddo
              endif
           enddo
       endif
-!-----------------------------------------------------------------------
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-!-----------------------------------------------------------------------
+      !-----------------------------------------------------------------------
+      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      !-----------------------------------------------------------------------
       if(icrvs2.ne.icrvs.or.aymul.ne.0.0)then  ! put tics pointing out on right axis
          if(aymul.ne.0)then
-!           force right step to be correct size
+            ! force right step to be correct size
             bb=vals(7)*aymul+aycon
             aa=vals(6)*aymul+aycon
             range1=bb-aa   ! how many units should be along right edge
@@ -11047,7 +10884,7 @@ real            :: yystep2
             sy = i50 * cony + YMIN
             sy = sy-SHIFT
             if(sy.le.YMAX.and.sy.ge.YMIN)then
-               call priv_juseg(-1,XMAX,sy,XMAX+TICLNY,sy)   ! right-axis major tic lines
+               call priv_drawseg_using_pen(-1,XMAX,sy,XMAX+TICLNY,sy)   ! right-axis major tic lines
             endif
          enddo
 !-----------------------------------------------------------------------
@@ -11069,14 +10906,14 @@ real            :: yystep2
                      rnow=log10(anow)
                      sy2=(rnow-vals(10))/yy*(YMAX-YMIN)+YMIN
                      if(sy2.le.YMAX.and.sy2.ge.YMIN)then
-                        call priv_juseg(-2,XMAX,sy2,XMAX+TICLNY2/2,sy2)  ! right-axis minor decade-style logarithmic tics
+                        call priv_drawseg_using_pen(-2,XMAX,sy2,XMAX+TICLNY2/2,sy2) ! right-axis minor decade-style logarithmic tics
                      endif
                   enddo
                else         ! linear divisions
                   do i60=1,iydiv(4)-1
                      sy2=sy+i60*(YMAX-YMIN)/actor*yystep2/yy
                      if(sy2.le.YMAX.and.sy2.ge.YMIN)then
-                        call priv_juseg(-2,XMAX,sy2,XMAX+TICLNY2/2,sy2) ! right axis minor tics
+                        call priv_drawseg_using_pen(-2,XMAX,sy2,XMAX+TICLNY2/2,sy2) ! right axis minor tics
                      endif
                  enddo
                endif
@@ -11177,75 +11014,6 @@ integer                     :: idum
       call vflush          ! flush the graphics display
    endif
 end subroutine xy_obj12345
-!===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
-!===================================================================================================================================
-subroutine xy_rdbox(returnx,returny,returnx2,returny2,ikey)
-!     In workstation windows click, hold down mouse, release at opposite corner
-!     In Tektronix window
-use M_journal, only : journal
-use M_draw
-implicit none
-
-character(len=*),parameter::ident="&
-&@(#)M_xyplot::xy_rdbox(3fp): xy_rdbox  reads two points and outlines defined box and returns points"
-
-logical release1, release2
-
-!     locator returns whether a mouse button has been pressed or not.
-
-!     In a device such as the tektronix where you have to wait for a
-!     keypress to get the position of the crosshairs locator returns 0
-!     automatically on every second call.
-
-!     A return value of 2 indicates the second mouse button has been pressed.
-!     A return value of 1 indicates the first mouse button has been pressed.
-!     We wait for the locator to return zero so that we know the mouse button has been released.
-integer            :: ikey
-real               :: bt
-real               :: con1
-real               :: returnx, returny
-real               :: returnx2, returny2
-real               :: x, y
-
-      call getgp2(returnx,returny)
-      returnx2=returnx
-      returny2=returny
-      release1 = .false.     ! assume pressing a key until a 0 is received, then assume ready to start
-      release2 = .false.     ! assume pressing a key until a 0 is received, then assume ready to start
-      ikey=-1
-!#-----------------------------------------------------------------------
-      INFINITE: do
-         call vflush()
-         bt = locator(x, y)         ! note that this function SETS the x and y variables, which is not always portable
-         if (bt .eq. -1) then       ! not an interactive device; could just ask for numbers?
-            call journal('*xy_rdbox* no locator device found')
-            exit INFINITE
-         else if (bt .eq. 0.and.(.not.release1)) then   ! haven't hit the null state yet
-            release1 = .true.       ! ready to wait for first keypress
-            call journal('s','*xy_rdbox* READY')
-         else if (bt .eq. 0.and.release2) then   ! this is the second release
-               returnx2=x
-               returny2=y
-               exit INFINITE
-         else if (bt .ne. 0.and.(.not.release2)) then ! this is the first read
-               returnx = x
-               returny = y
-               ikey=bt
-               release2=.true.     ! ready for release
-               con1=0.25/4.0 ! warning: con1 is an arbitrary number
-               call move2(x-con1,y)
-               call draw2(x+con1,y)
-               call move2(x,y-con1)
-               call draw2(x,y+con1)
-               call journal('s','*xy_rdbox* RELEASE MOUSE AT OTHER CORNER')
-         else if (release1) then   ! make points as you move around; not as nice as rubber-banding but OK
-               call point2(x,y)
-         endif
-      enddo INFINITE
-!#-----------------------------------------------------------------------
-      call journal('s',char(07)) ! send bell character
-end subroutine xy_rdbox
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================

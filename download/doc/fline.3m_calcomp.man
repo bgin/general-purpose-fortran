@@ -1,0 +1,112 @@
+NAME
+   fline(3f) - [M_calcomp:scientific] plot a polyline with optional fit
+
+SYNOPSIS
+       call fline(xarray,yarray,npts,inc,+-lintyp,inteq)
+
+DESCRIPTION
+
+OPTIONS
+
+    XARRAY      is the name of the array containing the values to be
+                plotted as the abscissa and the appropriate scaling
+                parameters.
+
+    YARRAY      is the name of the array containing the values to be
+                plotted as the ordinates and the appropriate scaling
+                parameters.
+
+    NPTS        is the number of data points to be plotted:
+
+                if NPTS >0 a straight line is drawn between the points.
+
+                if NPTS <0 a smooth curve, drawn using a modified
+                spline-fitting technique, is drawn between the points.
+
+    INC         is the increment between elements in the array to be
+                plotted. INC >1 if the values to be plotted are in a
+                mixed array. (Usually INC = 1.)
+    LINTYP      is used to control the type of graph produced:
+
+                if LINTYP = 0 a line is plotted between successive data
+                points. (No symbols are plotted.)
+
+                if LINTYP = 1 a line plot is produced, with a symbol at
+                each data point.
+
+                if LINTYP = n a line plot is produced, with a symbol at
+                every nth data point.
+
+                if LINTYP = -n, connecting lines are not plotted between
+                data points; a symbol appears at every nth data point.
+
+    INTEQ       is the integer equivalent used to specify the symbol to
+                be plotted at a data point. (Refer to the description of
+                SYMBOL for possible values of INTEQ.)
+
+  COMMENTS:
+
+ The arrays must be dimensioned with at least NPTS + 2 elements. The adjusted
+ minimum value (FIRSTV) and the adjusted delta value (DELTAV), normally
+ provided by the SCALE subroutine, must be stored following the data array.
+
+ For the X array, the adjusted minimum is stored in XARRAY (NPTS*INC + 1), and
+ the adjusted delta is in XARRAY (NPTS*INC + INC + 1). Similarly, for the Y
+ array, the minimum is in YARRAY (NPTS*INC + 1), and the delta is in YARRAY
+ (NPTS*INC + INC + 1). Therefore, XARRAY and YARRAY must be dimensioned to be
+ at least NPTS*INC+INC+1 .
+
+ If scaling is not required, the user must place the appropriate minimum and
+ delta values in the specified elements in the arrays. For a one-to-one
+ correspondence between array data and plotted data, these values should be
+ 0.0 (minimum) and 1.0 (delta).
+
+EXAMPLE
+  Sample program
+
+   program demo_fline
+   use M_calcomp
+   implicit none
+   ! based on concepts of CALIFORNIA COMPUTER PRODUCTS, 1968
+   real :: xar(10)=[0.75,1.75,2.25,2.75,3.25,4.25,4.75,5.75,0.0,1.0]
+   real :: yar(10)=[3.25,2.00,5.25,6.50,6.75,6.25,3.25,4.25,0.0,1.0]
+   character(len=50) :: ibcd
+   integer           :: inteq
+      call plots(0.0,10.0,0.0,10.0)
+   !     DRAW FRAME
+      call plot(7.0,0.0,2)
+      call plot(7.0,9.0,2)
+      call plot(0.0,9.0,2)
+      call plot(0.0,0.0,2)
+   !     DRAW AXIS
+      ibcd='SERVICE TIME'
+      call axis(0.75,0.75,ibcd,-12,5.0,0.0,5.0,1.0)
+      ibcd='FREQUENCY'
+      call axis(0.75,0.75,ibcd, 9,7.0,90.0,0.0,100.0)
+   !     DRAW COMMENTS
+      ibcd='USING FLINE AND SMOOT SUBROUTINES'
+      call symbol(0.7,8.25,0.14,ibcd,inteq,0.0,34)
+      call plot(5.0,7.8,3)
+      call plot(5.1,7.8,2)
+      ibcd='SMOOT'
+      call symbol(5.2,7.80,0.09,ibcd,inteq,0.0, 6)
+      inteq = 1
+      call symbol(5.0,7.60,0.10,ibcd,inteq,0.0,-1)
+      inteq=999
+      ibcd='FLINE'
+      call symbol(5.2,7.60,0.09,ibcd,inteq,0.0, 5)
+   ! SMOOTHING
+      call smoot(0.75,3.75,0)
+      call smoot(1.75,2.5,-2)
+      call smoot(2.25,5.75,-2)
+      call smoot(2.75,7.0,-2)
+      call smoot(3.25,7.25,-2)
+      call smoot(4.25,6.75,-2)
+      call smoot(4.75,3.75,-2)
+      call smoot(5.75,4.75,-24)
+   ! FLINE IS USED
+      call plot(0.75,3.25,3)
+      call fline(xar, yar, -8,1,1,1)
+      call nframe()
+   end program demo_fline
+
