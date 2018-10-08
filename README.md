@@ -1,17 +1,17 @@
 # General-Purpose Fortran Repository
 
-This is a repository of general purpose Fortran modules and libraries.
-
-This initial release is a collection of Fortran modules (and in some cases
-their associated C support routines) providing
+The GPF (General-Purpose Fortran) repository consists of  Fortran modules
+and libraries (and in some cases their associated C support routines)
+providing
 
 *  __string operations__
 *  simple __numeric expression parsing__
 *  __command line parsing__
 *  __command line history__ editing
 *  a __date and time__ module
-*  The VOGLE graphics library, and the beginnings of a __pixel graphics module__ similar to the VOGLE graphics library interface
-*  libraries for message handling, unit testing, and debugging
+*  The low-level __M_draw__ graphics library, and the beginnings of a
+   __pixel graphics module__ similar to the VOGLE graphics library interface
+*  libraries for __message handling__, __unit testing__, and __debugging__
 *  a growing number of Fortran interfaces to common C routines, including
    +  many __POSIX system routines__
    +  a module for reading and writing lines to a process (a __popen(3c)__ interface)
@@ -19,24 +19,20 @@ their associated C support routines) providing
    +  an interface to the __sqlite3(3c)__ SQL file library
    +  an interface to the __regex(3c)__ Regular Expression library
    +  routines for controlling the X11 Windows attributes of an xterm(1) terminal emulator,
-      including the program setxt(1)
+      including the program __setxt__(1)
 
 The majority of these routines come with a man(1) page in *roff and HTML format.
 An index into the documentation is contained in the
 [[overview]](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/download.html)
 
 A [collection of programs](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/man_1k.html) that use the
-repository code are included. These range from useful utilities (a pre-processor, an
-SCCS-style meta-data reader, regression testing utilities, ...) to simple
+repository code are included. These range from useful utilities (a __pre-processor__, an
+__SCCS-style meta-data reader__, __regression testing utilities__, ...) to simple
 example programs that exercise the modules.
 
-Code additions are strongly encouraged (if this remains a personal
-collection the purpose of the repository is essentially negated).
+Code additions are strongly encouraged (This is intended to be a development of
+the Fortran community).
 
-This (mostly) Fortran repository contains modules and procedures
-primarily useful for creating a command line interface (CLI) for a
-Fortran program. A modern Fortran compiler is assumed. This code has
-been tested using gfortran (GNU Fortran (GCC) 6.4.0).
 
 This repository concentrates on those "other" Fortran procedures
 that solve the day-to-day non-numeric(mostly) issues in programming. Large
@@ -44,6 +40,9 @@ repositories of numeric algorithms written in Fortran exist at such sites as
 the [ netlib ](http://www.netlib.org) repository. The Fortran Wiki [
 fortranwiki.org ](http://fortranwiki.org) contains information on many Fortran
 resources (If you do not see a link there to your favorites please add them.)
+
+A modern Fortran compiler is assumed. This code has
+been tested using gfortran GNU Fortran (GCC) 7.3.0.
 
 ## Routine Categories and Descriptions
 
