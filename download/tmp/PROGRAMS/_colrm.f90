@@ -9,7 +9,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'       _colrm(1f) - [FUNIX]remove columns from a file                           ',&
+'       _colrm(1f) - [FUNIX] remove columns from a file                          ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '       _colrm [first [last]]                                                    ',&
@@ -46,7 +46,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!        _colrm(1f) - [FUNIX]remove columns from a file
+!!        _colrm(1f) - [FUNIX] remove columns from a file
 !!
 !!##SYNOPSIS
 !!
@@ -94,7 +94,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20180324>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Thu, Sep 20th, 2018 7:30:48 PM>',&
+'@(#)COMPILED:       Sun, Sep 23rd, 2018 5:16:20 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

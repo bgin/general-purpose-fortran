@@ -1,7 +1,9 @@
 function loadthem(){
 append("M_system.3{}.html");
 append("M_system.3.html");
+append("_printenv.1.html");
 append("fileglob.3.html");
+append("penv.1.html");
 append("set_environment_variable.3.html");
 append("system_access.3.html");
 append("system_chdir.3.html");
@@ -13,6 +15,7 @@ append("system_cpu_time.3.html");
 append("system_errno.3.html");
 append("system_getcwd.3.html");
 append("system_getegid.3.html");
+append("system_getenv.3.html");
 append("system_geteuid.3.html");
 append("system_getgid.3.html");
 append("system_getgrgid.3.html");

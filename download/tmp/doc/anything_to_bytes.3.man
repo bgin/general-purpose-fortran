@@ -1,0 +1,67 @@
+NAME
+   anything_to_bytes(3f) - [M_anything] convert standard types to bytes (character(len=1):: array(:))
+
+SYNOPSIS
+   function anything_to_bytes_arr(anything) result(chars)
+
+    class(*),intent(in)  :: anything
+            or
+    class(*),intent(in)  :: anything(:)
+
+    character(len=1),allocatable :: chars(:)
+
+DESCRIPTION
+
+   This function uses polymorphism to allow input arguments of different
+   types. It is used to create other procedures that can take many
+   argument types as input options and convert them to a single type
+   to simplify storing arbitrary data, to simplify generating data
+   hashes, ...
+
+OPTIONS
+
+   VALUEIN  input array or scalar to convert to type CHARACTER(LEN=1).
+            May be of KIND INTEGER(kind=int8), INTEGER(kind=int16),
+            INTEGER(kind=int32), INTEGER(kind=int64),
+            INTEGER(kind=int128), REAL(kind=real32, REAL(kind=real64),
+            REAL(kind=real128), complex, or CHARACTER(len=*)
+   RESULTS
+            The returned value is an array of bytes (character(len=1)).
+
+EXAMPLE
+  Sample program
+
+   program demo_anything_to_bytes
+   use M_anything,      only : anything_to_bytes
+   !!use M_anything,      only : int128, real256
+   !!use iso_fortran_env, only : int8, int16, int32, int64
+   !!use iso_fortran_env, only : real32, real64, real128
+   implicit none
+   integer :: i
+      write(*,'(/,4(1x,z2.2))')anything_to_bytes([(i*i,i=1,10)])
+      write(*,'(/,4(1x,z2.2))')anything_to_bytes([11.11,22.22,33.33])
+      write(*,'(/,4(1x,z2.2))')anything_to_bytes('This is a string')
+   end program demo_anything_to_bytes
+
+  Expected output
+
+    01 00 00 00
+    04 00 00 00
+    09 00 00 00
+    10 00 00 00
+    19 00 00 00
+    24 00 00 00
+    31 00 00 00
+    40 00 00 00
+    51 00 00 00
+    64 00 00 00
+
+    8F C2 31 41
+    8F C2 B1 41
+    EC 51 05 42
+
+    54 68 69 73
+    20 69 73 20
+    61 20 73 74
+    72 69 6E 67
+

@@ -572,7 +572,7 @@ end subroutine process_readline
 !!        function process_readall(cmd,delim,ierr)  result(string)
 !!        character(len=*),intent(in)              :: cmd
 !!        character(len=*),intent(in),optional     :: delim
-!!        integer,intent(out)                      :: ierr
+!!        integer,intent(out),optional             :: ierr
 !!        character(len=:),allocatable             :: string
 !!##OPTIONS
 !!       cmd               command to pass to system
@@ -637,15 +637,16 @@ function process_readall(cmd,delim,ierr)  result(string)      !! not hardened
 
 character(len=*),parameter::ident="@(#)M_process::process_readall(3f): read all lines from process"
 
-character(len=*),intent(in)              :: cmd
-character(len=:),allocatable             :: string      !! assume will not run out of memory
-integer,intent(out),optional             :: ierr
-character(len=*),intent(in),optional     :: delim
-character(len=:),allocatable             :: delim_local
-   integer                               :: ierr_local(3), ierr_read
-   integer                               :: i
-   type(streampointer)                   :: fp
-   character(len=4096)                   :: line        !! assumed long enough
+character(len=*),intent(in)           :: cmd
+character(len=:),allocatable          :: string      !! assume will not run out of memory
+character(len=*),intent(in),optional  :: delim
+integer,intent(out),optional          :: ierr
+
+character(len=:),allocatable          :: delim_local
+integer                               :: ierr_local(3), ierr_read
+integer                               :: i
+type(streampointer)                   :: fp
+character(len=4096)                   :: line        !! assumed long enough
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(present(delim))then
       delim_local=delim

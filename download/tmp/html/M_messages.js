@@ -9,7 +9,9 @@ append("jundragon.3.html");
 append("junroach.3.html");
 append("junsun.3.html");
 append("juntrolls.3.html");
+append("note.1.html");
 append("percent_done.3.html");
 append("signs.3.html");
 append("tabgraph.3.html");
+append("tabulate.1.html");
 }

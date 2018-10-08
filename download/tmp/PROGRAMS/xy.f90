@@ -19,6 +19,17 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   values. The first column is assumed to be the shared X values for            ',&
 '   the other columns.                                                           ',&
 '                                                                                ',&
+'   A plot of all Y columns is followed by a plot of each Y column               ',&
+'   by default.                                                                  ',&
+'                                                                                ',&
+'   If an interactive device is selected (X11, x11, xtek, tek, PC)               ',&
+'   then a pause occurs after each plot. Single character commands are           ',&
+'    o q quit                                                                    ',&
+'    o n next                                                                    ',&
+'    o p previous                                                                ',&
+'    o v toggle verbose mode                                                     ',&
+'    o 0 redisplay plot of all curves                                            ',&
+'                                                                                ',&
 'OPTIONS                                                                         ',&
 '   -d         M_draw(3fm) device name (X11,pdf,svg, ...). Enter the             ',&
 '              device name "list" for a list of available devices on             ',&
@@ -77,6 +88,17 @@ end subroutine help_usage
 !!    values. The first column is assumed to be the shared X values for
 !!    the other columns.
 !!
+!!    A plot of all Y columns is followed by a plot of each Y column
+!!    by default.
+!!
+!!    If an interactive device is selected (X11, x11, xtek, tek, PC)
+!!    then a pause occurs after each plot. Single character commands are
+!!     o q quit
+!!     o n next
+!!     o p previous
+!!     o v toggle verbose mode
+!!     o 0 redisplay plot of all curves
+!!
 !!##OPTIONS
 !!    -d         M_draw(3fm) device name (X11,pdf,svg, ...). Enter the
 !!               device name "list" for a list of available devices on
@@ -133,7 +155,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20180706>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Thu, Sep 20th, 2018 7:48:24 PM>',&
+'@(#)COMPILED:       Sat, Sep 22nd, 2018 6:51:56 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -147,7 +169,7 @@ use M_xyplot,  only : plot_set_plot_area, plot_set_nice_range, plot_init_globals
 use M_xyplot,  only : plot_axes, plot_label, plot_line, plot_page, plot_resetplot
 use M_xyplot,  only : plot_ids, plot_axis
 use M_kracken, only : sget, lget, iget, kracken, rget
-use M_strings, only : merge_str
+use M_strings, only : merge_str, v2s
 use M_math,    only : bds
 use M_io,      only : read_table
 implicit none
@@ -182,7 +204,6 @@ integer                      :: istart,iend
    call help_version(lget('plt_version'))                           ! if -version option is present, display version text and exit
 
    device=trim(sget('plt_d'))
-   title=trim(sget('plt_title'))
    xlabel=trim(sget('plt_xlabel'))
    ylabel=trim(sget('plt_ylabel'))
    marker_frequency=iget('plt_m')
@@ -203,7 +224,6 @@ integer                      :: istart,iend
       stop 3
    endif
 
-   title=merge_str(filename,title, title.eq.'#N#' )
    if(irows.eq.0.or.icols.lt.2)then
       write(*,*)'*xy* ERROR: datafile must have at least one row and at least two columns'
       stop 2
@@ -263,14 +283,48 @@ integer                      :: istart,iend
    key=getkey()
    ! if more than one Y column print each curve
    if(icols.gt.2)then
-      !!INFINITE: do
-         do i=2,icols
+      if(device.eq.'x11'.or.device.eq.'X11'.or.device.eq.'PC'.or.device.eq.'tek'.or.device.eq.'xtek')then
+         i=2
+         INFINITE: do
             istart=i
             iend=i
             call drawone()
             key=getkey()
+            select case(char(key))
+             case('0')
+               istart=2
+               iend=icols
+               call drawone()
+               key=getkey()
+             case('v')
+               verbose=merge(.false.,.true.,verbose)
+             case('p')
+               i=max(2,i-1)
+             case('h')
+               write(*,'(a)')[character(len=80) :: &
+               & ' 0   plot all curves and wait for a return', &
+               & ' h   help                                 ', &
+               & ' n   previous frame                       ', &
+               & ' p   previous frame                       ', &
+               & ' q   quit                                 ', &
+               & ' v   toggle verbose mode                  ', &
+               & ' ']
+             case('n')
+               i=min(icols,i+1)
+             case('q')
+               exit INFINITE
+             case default
+               i=min(icols,i+1)
+               write(*,*)'q to quit, h for help'
+            end select
+         enddo INFINITE
+      else
+         do i=2,icols
+            istart=i
+            iend=i
+            call drawone()
          enddo
-      !!endo INFINITE
+      endif
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
    ! WARNING: NOTE RECALLING plot_set_nice_range WITH LOG10(). THIS WILL PROBABLY NOT BE REQUIRED IN THE NEXT VERSION
@@ -283,27 +337,30 @@ contains
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()(
 !-----------------------------------------------------------------------------------------------------------------------------------
-subroutine drawtitle()
-   ilets=len_trim(title)
-   biggest=16.0
-   if(ilets.le.biggest)then
-      text_width=((xlarge-xsmall)*0.95)/biggest
-   else
-      text_width=((xlarge-xsmall)*0.95)/ilets
-   endif
-   call centertext(.true.)
-   text_height=text_width*1.16
-   call textsize(text_width,text_height)
-   !!text_width=((xlarge-xsmall)/strlength(title))*text_width
-   text_height=text_width*1.16
-   call move2((xlarge-xsmall)/2.0,ylarge-0.7*text_height)
-   call drawstr(title)
-   call centertext(.false.)
-end subroutine drawtitle
+   subroutine drawtitle()
+      title=trim(sget('plt_title'))
+      title=merge_str(filename,title, title.eq.'#N#' )//"("//v2s(istart)//"-"//v2s(iend)//")"
+      ilets=len_trim(title)
+      biggest=16.0
+      if(ilets.le.biggest)then
+         text_width=((xlarge-xsmall)*0.95)/biggest
+      else
+         text_width=((xlarge-xsmall)*0.95)/ilets
+      endif
+      call centertext(.true.)
+      text_height=text_width*1.16
+      call textsize(text_width,text_height)
+      !!text_width=((xlarge-xsmall)/strlength(title))*text_width
+      text_height=text_width*1.16
+      call move2((xlarge-xsmall)/2.0,ylarge-0.7*text_height)
+      call drawstr(title)
+      call centertext(.false.)
+   end subroutine drawtitle
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()(
 !-----------------------------------------------------------------------------------------------------------------------------------
-subroutine printdata()
+   subroutine printdata()
+   integer :: i
       write(*,*)'FILE=',filename
       write(*,*)'TITLE=',title
       write(*,*)'XLABEL=',xlabel
@@ -313,8 +370,8 @@ subroutine printdata()
       write(*,*)'XHIGH=',xhigh
       write(*,*)'YLOW= ',ylow
       write(*,*)'YHIGH=',yhigh
-      do i=2,size(xy_array,dim=2)
-         write(*,'(a,i0)')' CURVE=',i-1
+      do i=istart,iend
+         write(*,'(a,i0)')' CURVE=',i
          call bds(xy_array(:,i),irows,statistics)
          write(*,*)' mean                         ',statistics(1)
          write(*,*)' second moment about the mean ',statistics(2)
@@ -330,11 +387,11 @@ subroutine printdata()
          write(*,*)' location of largest value    ',statistics(12)
          write(*,*)' location of smallest value   ',statistics(13)
       enddo
-end subroutine printdata
+   end subroutine printdata
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()(
 !-----------------------------------------------------------------------------------------------------------------------------------
-subroutine drawone()
+   subroutine drawone()
 !-----------------------------------------------------------------------------------------------------------------------------------
       ylow=minval(xy_array(:,istart:iend))
       yhigh=maxval(xy_array(:,istart:iend))
@@ -366,7 +423,7 @@ subroutine drawone()
          call plot_line(ipen,irows,'toleft',xy_array(:,1),xy_array(:,ipen))
       enddo
       call vflush()
-end subroutine drawone
+   end subroutine drawone
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()(
 !-----------------------------------------------------------------------------------------------------------------------------------

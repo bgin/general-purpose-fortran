@@ -6,7 +6,7 @@
 !!   Public objects:
 !!
 !!    use m_system, only : set_environment_variable, system_unsetenv, &
-!!    system_putenv
+!!    system_putenv, system_getenv
 !!
 !!    use m_system, only :  system_intenv, system_readenv, system_clearenv
 !!
@@ -49,6 +49,7 @@
 !!    call -- Always check the return value.
 !!##ENVIRONMENT ACCESS
 !!        o  system_putenv(3f):     call putenv(3c)
+!!        o  system_getenv(3f):     function call to get_environment_variable(3f)
 !!        o  system_unsetenv(3f):   call unsetenv(3c) to remove variable from environment
 !!        o  set_environment_variable(3f): set environment variable by calling setenv(3c)
 !!
@@ -157,6 +158,7 @@ public :: system_errno
 public :: system_perror
 
 public :: system_putenv
+public :: system_getenv
 public :: set_environment_variable
 public :: system_unsetenv
 
@@ -1017,7 +1019,7 @@ interface
   end function c_access
 end interface
 
-   if(c_access(str2arr(pathname),int(amode,kind=c_int)).eq.0)then
+   if(c_access(str2arr(trim(pathname)),int(amode,kind=c_int)).eq.0)then
       system_access=.true.
    else
       system_access=.false.
@@ -1036,7 +1038,10 @@ end function system_access
 !!
 !!##SYNOPSIS
 !!
-!!    logical function system_issock()
+!!   logical function system_issock(pathname)
+!!
+!!    character(len=*),intent(in) :: pathname
+!!    logical                     :: system_issock
 !!
 !!##DESCRIPTION
 !!        The issock(3f) function checks if path is a path to a socket
@@ -1095,7 +1100,7 @@ interface
   end function c_issock
 end interface
 
-   if(c_issock(str2arr(pathname)).eq.1)then
+   if(c_issock(str2arr(trim(pathname))).eq.1)then
       system_issock=.true.
    else
       system_issock=.false.
@@ -1111,7 +1116,10 @@ end function system_issock
 !!
 !!##SYNOPSIS
 !!
-!!    logical function system_isfifo()
+!!   logical function system_isfifo(pathname)
+!!
+!!    character(len=*),intent(in) :: pathname
+!!    logical                     :: system_issock
 !!
 !!##DESCRIPTION
 !!        The isfifo(3f) function checks if path is a path to a fifo - named pipe.
@@ -1170,7 +1178,7 @@ interface
   end function c_isfifo
 end interface
 
-   if(c_isfifo(str2arr(pathname)).eq.1)then
+   if(c_isfifo(str2arr(trim(pathname))).eq.1)then
       system_isfifo=.true.
    else
       system_isfifo=.false.
@@ -1186,7 +1194,10 @@ end function system_isfifo
 !!
 !!##SYNOPSIS
 !!
-!!    logical function system_ischr()
+!!   logical function system_ischr(pathname)
+!!
+!!    character(len=*),intent(in) :: pathname
+!!    logical                     :: system_issock
 !!
 !!##DESCRIPTION
 !!        The ischr(3f) function checks if path is a path to a character device.
@@ -1245,7 +1256,7 @@ interface
   end function c_ischr
 end interface
 
-   if(c_ischr(str2arr(pathname)).eq.1)then
+   if(c_ischr(str2arr(trim(pathname))).eq.1)then
       system_ischr=.true.
    else
       system_ischr=.false.
@@ -1261,7 +1272,10 @@ end function system_ischr
 !!
 !!##SYNOPSIS
 !!
-!!    logical function system_isreg()
+!!   logical function system_isreg(pathname)
+!!
+!!    character(len=*),intent(in) :: pathname
+!!    logical                     :: system_isreg
 !!
 !!##DESCRIPTION
 !!        The isreg(3f) function checks if path is a regular file
@@ -1317,7 +1331,7 @@ interface
   end function c_isreg
 end interface
 
-   if(c_isreg(str2arr(pathname)).eq.1)then
+   if(c_isreg(str2arr(trim(pathname))).eq.1)then
       system_isreg=.true.
    else
       system_isreg=.false.
@@ -1333,7 +1347,10 @@ end function system_isreg
 !!
 !!##SYNOPSIS
 !!
-!!    logical function system_islnk()
+!!    logical function system_islnk(pathname)
+!!
+!!    character(len=*),intent(in) :: pathname
+!!    logical                     :: system_islnk
 !!
 !!##DESCRIPTION
 !!        The islnk(3f) function checks if path is a path to a link.
@@ -1390,7 +1407,7 @@ interface
   end function c_islnk
 end interface
 
-   if(c_islnk(str2arr(pathname)).eq.1)then
+   if(c_islnk(str2arr(trim(pathname))).eq.1)then
       system_islnk=.true.
    else
       system_islnk=.false.
@@ -1406,7 +1423,10 @@ end function system_islnk
 !!
 !!##SYNOPSIS
 !!
-!!    logical function system_isblk()
+!!   logical function system_isblk(pathname)
+!!
+!!    character(len=*),intent(in) :: pathname
+!!    logical                     :: system_isblk
 !!
 !!##DESCRIPTION
 !! The isblk(3f) function checks if path is a path to a block device.
@@ -1465,7 +1485,7 @@ interface
   end function c_isblk
 end interface
 
-   if(c_isblk(str2arr(pathname)).eq.1)then
+   if(c_isblk(str2arr(trim(pathname))).eq.1)then
       system_isblk=.true.
    else
       system_isblk=.false.
@@ -1551,7 +1571,7 @@ interface
   end function c_chown
 end interface
 
-   if(c_chown(str2arr(dirname),int(owner,kind=c_int),int(group,kind=c_int)).eq.1)then
+   if(c_chown(str2arr(trim(dirname)),int(owner,kind=c_int),int(group,kind=c_int)).eq.1)then
       system_chown=.true.
    else
       system_chown=.false.
@@ -1567,7 +1587,10 @@ end function system_chown
 !!
 !!##SYNOPSIS
 !!
-!!    logical function system_isdir()
+!!   logical function system_isdir(pathname)
+!!
+!!    character(len=*),intent(in) :: pathname
+!!    logical                     :: system_issock
 !!
 !!##DESCRIPTION
 !!        The isdir(3f) function checks if path is a path to a directory.
@@ -1631,7 +1654,7 @@ interface
   end function c_isdir
 end interface
 
-   if(c_isdir(str2arr(dirname)).eq.1)then
+   if(c_isdir(str2arr(trim(dirname))).eq.1)then
       system_isdir=.true.
    else
       system_isdir=.false.
@@ -1818,7 +1841,7 @@ interface
   end function c_link
 end interface
 
-   c_ierr=c_link(str2arr(oldname),str2arr(newname))
+   c_ierr=c_link(str2arr(trim(oldname)),str2arr(trim(newname)))
    ierr=c_ierr
 
 end function system_link
@@ -1899,7 +1922,7 @@ interface
   integer(kind=c_int)          :: c_ierr
   end function c_unlink
 end interface
-   ierr=c_unlink(str2arr(fname))
+   ierr=c_unlink(str2arr(trim(fname)))
 end function system_unlink
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -2072,7 +2095,7 @@ end interface
    flush(unit=ERROR_UNIT,iostat=ios)
    flush(unit=OUTPUT_UNIT,iostat=ios)
    flush(unit=INPUT_UNIT,iostat=ios)
-   call c_perror(str2arr(prefix))
+   call c_perror(str2arr((trim(prefix))))
    call c_flush()
 
 end subroutine system_perror
@@ -3219,6 +3242,60 @@ end subroutine system_putenv
 !===================================================================================================================================
 !>
 !!##NAME
+!!    system_getenv(3f) - [M_system:ENVIRONMENT] get environment variable from Fortran by calling get_environment_variable(3f)
+!!
+!!##SYNOPSIS
+!!
+!!    function system_getenv(name)
+!!
+!!     character(len=:),allocatable   :: system_getenv
+!!     character(len=*),intent(in)    :: name
+!!
+!!##DESCRIPTION
+!!    The system_getenv() function gets the value of an environment variable.
+!!
+!!##OPTIONS
+!!    name    Return the value of the specified environment variable or
+!!            blank if the variable is not defined.
+!!
+!!##EXAMPLE
+!!
+!!   Sample setting an environment variable from Fortran:
+!!
+!!    program demo_system_getenv
+!!    use M_system, only: system_getenv
+!!    implicit none
+!!    integer :: ierr
+!!
+!!       write(*,'("USER     : ",a)')system_getenv('USER')
+!!       write(*,'("LOGNAME  : ",a)')system_getenv('LOGNAME')
+!!       write(*,'("USERNAME : ",a)')system_getenv('USERNAME')
+!!
+!!    end program demo_system_getenv
+!===================================================================================================================================
+function system_getenv(name) result(var)
+
+character(len=*),parameter::ident="@(#)M_system::system_getenv(3f): call get_environment_variable(3f)"
+
+character(len=*),intent(in)  :: name
+integer                      :: howbig
+character(len=:),allocatable :: var
+
+   call get_environment_variable(name, length=howbig)  ! get length required to hold value
+   if(howbig.ne.0)then
+      allocate(character(len=howbig) :: var)           ! make string to hold value of sufficient size
+      var(:)=' '
+      call get_environment_variable(name, var)         ! get value
+   else
+      var=''
+   endif
+
+end function system_getenv
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+!>
+!!##NAME
 !!    set_environment_variable(3f) - [M_system:ENVIRONMENT] call setenv(3c) to set environment variable
 !!
 !!##SYNOPSIS
@@ -3859,7 +3936,7 @@ end function system_getlogin
 !!    for /tmp permits[drwxrwxrwx --S] 17407 41777
 !===================================================================================================================================
 function system_perm(mode) result (perms)
-use M_anyscalar, only : anyinteger_to_128bit
+use M_anything, only : anyinteger_to_128bit
 class(*),intent(in)          :: mode
 character(len=:),allocatable :: perms
    type(c_ptr)               :: permissions
@@ -3926,7 +4003,7 @@ end function system_perm
 !!    group[default] for 197121
 !===================================================================================================================================
 function system_getgrgid(gid) result (gname)
-use M_anyscalar, only : anyinteger_to_128bit
+use M_anything, only : anyinteger_to_128bit
 class(*),intent(in)                        :: gid
 character(len=:),allocatable               :: gname
    character(kind=c_char,len=1)            :: groupname(4097)  ! assumed long enough for any groupname
@@ -3991,7 +4068,7 @@ end function system_getgrgid
 !!    end program demo_system_getpwuid
 !===================================================================================================================================
 function system_getpwuid(uid) result (uname)
-use M_anyscalar, only : anyinteger_to_128bit
+use M_anything, only : anyinteger_to_128bit
 class(*),intent(in)                        :: uid
 character(len=:),allocatable               :: uname
    character(kind=c_char,len=1)            :: username(4097)  ! assumed long enough for any username
@@ -4216,7 +4293,7 @@ interface
    end subroutine c_stat
 end interface
 !-----------------------------------------------------------------------------------------------------------------------------------
-   call c_stat(str2arr(pathname),cvalues,cierr,0_c_int)
+   call c_stat(str2arr(trim(pathname)),cvalues,cierr,0_c_int)
    values=cvalues
    if(present(ierr))then
       ierr=cierr

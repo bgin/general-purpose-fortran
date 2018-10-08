@@ -1,6 +1,6 @@
 NAME
 
-   anyinteger_to_128bit(3f) - [M_anyscalar] convert integer any kind to integer(kind=128)
+   anyinteger_to_128bit(3f) - [M_anything] convert integer any kind to integer(kind=128)
 
 SYNOPSIS
 
@@ -30,7 +30,7 @@ EXAMPLE
    Sample program
 
     program scalars
-    use M_anyscalar,     only : int128
+    use M_anything,     only : int128
     use iso_fortran_env, only : int8, int16, int32, int64
     implicit none
        ! call same function with many scalar input types
@@ -42,7 +42,7 @@ EXAMPLE
     contains
 
     function squarei(invalue)
-    use M_anyscalar, only : anyinteger_to_128bit, int128
+    use M_anything, only : anyinteger_to_128bit, int128
     implicit none
     class(*),intent(in)  :: invalue
     real                 :: invalue_local

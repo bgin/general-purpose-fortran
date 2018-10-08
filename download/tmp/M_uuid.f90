@@ -7,6 +7,9 @@ module M_uuid
 !!
 !!    use m_uuid, only : generate_uuid
 !!
+!!##QUOTE
+!!    Remember you are unique, just like everyone else.
+!!
 !!##DESCRIPTION
 !!
 !!    A universally unique identifier (UUID) is a 128-bit number used to

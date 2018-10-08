@@ -9,7 +9,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'   huegif(1f) - generate color wheels as GIF pixmap files                       ',&
+'   huegif(1f) - [M_pixel] generate color wheels as GIF pixmap files             ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   huegif [--help|--version]                                                    ',&
@@ -55,7 +55,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    huegif(1f) - generate color wheels as GIF pixmap files
+!!    huegif(1f) - [M_pixel] generate color wheels as GIF pixmap files
 !!
 !!##SYNOPSIS
 !!
@@ -110,7 +110,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0 20170604>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Thu, Sep 20th, 2018 7:13:11 PM>',&
+'@(#)COMPILED:       Sun, Sep 23rd, 2018 5:16:50 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

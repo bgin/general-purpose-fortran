@@ -63,10 +63,11 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <A HREF=#4>Named Constants</A><BR>
 <A HREF=#5>Interoperability With C</A><BR>
 <A HREF=#6>General</A><BR>
-&nbsp; &nbsp; &nbsp;<A HREF=#7>Named Constants And Derived Types In The Module</A><BR>
-<A HREF=#8>Procedures In The Module</A><BR>
+<A HREF=#7>The Iso_c_binding Intrinsic Module</A><BR>
+&nbsp; &nbsp; &nbsp;<A HREF=#8>Named Constants And Derived Types In The Module</A><BR>
+<A HREF=#9>Procedures In The Module</A><BR>
 </BLOCKQUOTE>
-<A name=9>
+<A name=10>
 
      <H3>SYNOPSIS</H3>
 
@@ -269,10 +270,16 @@ Both are equivalent to <I>the</I> value &#145;NULL&#145; <I>in</I> <I>C</I>.
 <P>
 </PRE>
 </BLOCKQUOTE>
-THE ISO_C_BINDING INTRINSIC MODULE
-<P>
-<P>
 <A name=7>
+
+     <H3>THE ISO_C_BINDING INTRINSIC MODULE</H3>
+
+</A>
+<BLOCKQUOTE>
+<P>
+<P>
+</BLOCKQUOTE>
+<A name=8>
 
     <H4>&nbsp; &nbsp; NAMED CONSTANTS AND DERIVED TYPES IN THE MODULE</H4>
 </A>
@@ -313,7 +320,7 @@ THE ISO_C_BINDING INTRINSIC MODULE
 <P>
 </PRE>
 </BLOCKQUOTE>
-<A name=8>
+<A name=9>
 
      <H3>PROCEDURES IN THE MODULE</H3>
 
@@ -375,7 +382,12 @@ If C_PTR_2 is present, <I>the</I> result is false if C_PTR_1 is a <I>C</I> null 
 </A>
 <BLOCKQUOTE>
 SUBROUTINE <B>FOO</B>(GAMMA) <B>BIND</B>(<I>C</I>)
-IMPORT C_PTR
+</BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; IMPORT C_PTR</H4>
+</A>
+<BLOCKQUOTE>
 <B>TYPE</B>(C_PTR), VALUE :: GAMMA
 </BLOCKQUOTE>
 <A name=>
@@ -1102,7 +1114,12 @@ Such a function may be invoked from <I>Fortran</I> as follows:
 </A>
 <BLOCKQUOTE>
 SUBROUTINE <B>COPY</B>(IN, OUT) <B>BIND</B>(<I>C</I>)
-IMPORT C_CHAR
+</BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; IMPORT C_CHAR</H4>
+</A>
+<BLOCKQUOTE>
 <B>CHARACTER</B>(KIND=C_CHAR), <B>DIMENSION</B>(*) :: IN, OUT
 </BLOCKQUOTE>
 <A name=>
@@ -1160,23 +1177,19 @@ function prototype.
 A <I>C</I> variable whose name has external linkage may interoperate <I>with</I> a <I>common</I> block or <I>with</I> a variable declared
 <I>in</I> <I>the</I> scope <I>of</I> a <I>module</I>. <I>The</I> <I>common</I> block or variable shall be specified to have <I>the</I> BIND attribute.
 </TD></TR>
-<TR><TD colspan=2>
-At most one variable that is associated <I>with</I> a particular <I>C</I> variable whose name has external linkage is permitted
+<TR></TR></TABLE>At most one variable that is associated <I>with</I> a particular <I>C</I> variable whose name has external linkage is permitted
 to be declared within all <I>the</I> <I>Fortran</I> program units <I>of</I> a program. A variable shall not be initially defined by
 more than one processor.
-</TD></TR>
-<TR><TD colspan=2>
+<P>
 If a <I>common</I> block is specified <I>in</I> a BIND statement, it shall be specified <I>in</I> a BIND statement <I>with</I> <I>the</I> same bind-
 ing label <I>in</I> each scoping unit <I>in</I> which it is declared. A <I>C</I> variable whose name has external linkage interoperates
 <I>with</I> a <I>common</I> block that has been specified <I>in</I> a BIND statement
 if <I>the</I> <I>C</I> variable is <I>of</I> a <I>struct</I> type <I>and</I> <I>the</I> <I>variables</I> that are members <I>of</I> <I>the</I> <I>common</I> block are <I>interoperable</I>
 <I>with</I> corresponding components <I>of</I> <I>the</I> <I>struct</I> type, or
 if <I>the</I> <I>common</I> block contains a single variable, <I>and</I> <I>the</I> variable is <I>interoperable</I> <I>with</I> <I>the</I> <I>C</I> variable.
-</TD></TR>
-<TR><TD colspan=2>
+<P>
 There does not have to be an associated <I>C</I> entity <I>for</I> a <I>Fortran</I> entity <I>with</I> <I>the</I> BIND attribute.
-</TD></TR>
-<TR><TD colspan=2>
+<P>
 <PRE>
        NOTE 15.23
        The following are examples of the usage of the BIND attribute for variables and for a common block.
@@ -1184,43 +1197,57 @@ There does not have to be an associated <I>C</I> entity <I>for</I> a <I>Fortran<
        respectively. The Fortran common blocks, COM and SINGLE, interoperate with the C variables, com and
        single, respectively.
 <P>
-       MODULE LINK_TO_C_VARS
-         USE, INTRINSIC :: ISO_C_BINDING
-         INTEGER(C_INT), BIND(C) :: C_EXTERN
-          INTEGER(C_LONG) :: C2
-          BIND(C, NAME=&#146;myVariable&#146;) :: C2
-<P>
-          COMMON /COM/ R, S
-          REAL(C_FLOAT) :: R, S, T
-          BIND(C) :: /COM/, /SINGLE/
-          COMMON /SINGLE/ T
-        END MODULE LINK_TO_C_VARS
-        int c_extern;
-        long myVariable;
-        struct float r, s; com;
-        float single;
-<P>
 </PRE>
 </TD></TR>
+<TR></TR></TABLE><A name=>
+
+    <H4>&nbsp; &nbsp; MODULE LINK_TO_C_VARS</H4>
+</A>
+<BLOCKQUOTE>
+USE, INTRINSIC :: ISO_C_BINDING
+<B>INTEGER</B>(C_INT), <B>BIND</B>(<I>C</I>) :: C_EXTERN
+<B>INTEGER</B>(C_LONG) :: C2
+<B>BIND</B>(<I>C</I>, NAME=&#146;myVariable&#146;) :: C2
+<BLOCKQUOTE>
+<P>
+COMMON /COM/ R, S
+<B>REAL</B>(C_FLOAT) :: R, S, T
+<B>BIND</B>(<I>C</I>) :: /COM/, /SINGLE/
+COMMON /SINGLE/ T
+</BLOCKQUOTE>
+</BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; END MODULE LINK_TO_C_VARS</H4>
+</A>
+<BLOCKQUOTE>
+int c_extern;
+long myVariable;
+<I>struct</I> float r, s; com;
+float single;
+</BLOCKQUOTE>
+<TABLE cellpadding=3><!-- tsb: int c_extern;
+ -->
+<TR></TR><TR></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 15.4.2
 <I>Binding</I> <I>labels</I> <I>for</I> <I>common</I> <I>blocks</I> <I>and</I> <I>variables</I>
 <I>The</I> binding label <I>of</I> a variable or <I>common</I> block is a default character value that specifies <I>the</I> name by which
 <I>the</I> variable or <I>common</I> block is known to <I>the</I> companion processor.
-</TD></TR>
-<TR><TD colspan=2>
+<P>
 If a variable or <I>common</I> block has <I>the</I> BIND attribute <I>with</I> <I>the</I> NAME= specifier <I>and</I> <I>the</I> value <I>of</I> its expression,
 after discarding leading <I>and</I> trailing blanks, has nonzero length, <I>the</I> variable or <I>common</I> block has this as its
 binding label. <I>The</I> case <I>of</I> letters <I>in</I> <I>the</I> binding label is significant. If a variable or <I>common</I> block has <I>the</I> BIND
 attribute specified without a NAME= specifier, <I>the</I> binding label is <I>the</I> same as <I>the</I> name <I>of</I> <I>the</I> entity using
 lower case letters. Otherwise, <I>the</I> variable or <I>common</I> block has no binding label.
-</TD></TR>
-<TR><TD colspan=2>
+<P>
 <I>The</I> binding label <I>of</I> a <I>C</I> variable whose name has external linkage is <I>the</I> same as <I>the</I> name <I>of</I> <I>the</I> <I>C</I> variable.
 A <I>Fortran</I> variable or <I>common</I> block <I>with</I> <I>the</I> BIND attribute that has <I>the</I> same binding label as a <I>C</I> variable
 whose name has external linkage is linkage associated (16.5.1.5) <I>with</I> that variable.
-</TD></TR>
+<TABLE width=100% cellpadding=3><!-- tsb: <I>The</I> binding label <I>of</I> a <I>C</I> variable whose name has external linkage is <I>the</I> same as <I>the</I> name <I>of</I> <I>the</I> <I>C</I> variable.
+ -->
+<TR></TR><TR></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 15.5
@@ -1267,22 +1294,18 @@ input/output operations on <I>the</I> same external file, <I>the</I> results are
 <I>The</I> binding label <I>of</I> a <I>procedure</I> is a default character value that specifies <I>the</I> name by which a <I>procedure</I> <I>with</I>
 <I>the</I> BIND attribute is known to <I>the</I> companion processor.
 </TD></TR>
-<TR><TD colspan=2>
-If a <I>procedure</I> has <I>the</I> BIND attribute <I>with</I> <I>the</I> NAME= specifier <I>and</I> <I>the</I> value <I>of</I> its expression, after discarding
+<TR></TR></TABLE>If a <I>procedure</I> has <I>the</I> BIND attribute <I>with</I> <I>the</I> NAME= specifier <I>and</I> <I>the</I> value <I>of</I> its expression, after discarding
 leading <I>and</I> trailing blanks, has nonzero length, <I>the</I> <I>procedure</I> has this as its binding label. <I>The</I> case <I>of</I> letters
 <I>in</I> <I>the</I> binding label is significant. If a <I>procedure</I> has <I>the</I> BIND attribute <I>with</I> no NAME= specifier, <I>and</I> <I>the</I>
 <I>procedure</I> is not a dummy <I>procedure</I>, internal <I>procedure</I>, or <I>procedure</I> <I>pointer</I>, then <I>the</I> binding label <I>of</I> <I>the</I>
 <I>procedure</I> is <I>the</I> same as <I>the</I> name <I>of</I> <I>the</I> <I>procedure</I> using lower case letters. Otherwise, <I>the</I> <I>procedure</I> has no
 binding label.
-</TD></TR>
-<TR><TD colspan=2>
+<P>
 C1506 A <I>procedure</I> defined <I>in</I> a submodule shall not have a binding label unless its interface is declared <I>in</I> <I>the</I>
 ancestor <I>module</I>.
-</TD></TR>
-<TR><TD colspan=2>
+<P>
 <I>The</I> binding label <I>for</I> a <I>C</I> function whose name has external linkage is <I>the</I> same as <I>the</I> <I>C</I> function name.
-</TD></TR>
-<TR><TD colspan=2>
+<P>
 <PRE>
        NOTE 15.24
        In the following sample, the binding label of C SUB is "c_sub", and the binding label of C FUNC is
@@ -1290,37 +1313,49 @@ ancestor <I>module</I>.
 <P>
        SUBROUTINE C_SUB() BIND(C)
          &#46;&#46;&#46;
-       END SUBROUTINE C_SUB
-<P>
-       INTEGER(C_INT) FUNCTION C_FUNC() BIND(C, NAME="C_funC")
-         USE, INTRINSIC :: ISO_C_BINDING
-         &#46;&#46;&#46;
-       END FUNCTION C_FUNC
-<P>
-       The C International Standard permits functions to have names that are not permitted as Fortran names;
-       it also distinguishes between names that would be considered as the same name in Fortran. For example,
-       a C name may begin with an underscore, and C names that differ in case are distinct names.
-<P>
-       The specification of a binding label allows a program to use a Fortran name to refer to a procedure defined
-       by a companion processor.
-<P>
 </PRE>
 </TD></TR>
+<TR></TR></TABLE><A name=>
+
+    <H4>&nbsp; &nbsp; END SUBROUTINE C_SUB</H4>
+</A>
+<BLOCKQUOTE>
+<P>
+<B>INTEGER</B>(C_INT) FUNCTION <B>C_FUNC</B>() <B>BIND</B>(<I>C</I>, NAME="C_funC")
+USE, INTRINSIC :: ISO_C_BINDING
+&#46;&#46;&#46;
+</BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; END FUNCTION C_FUNC</H4>
+</A>
+<BLOCKQUOTE>
+<P>
+<I>The</I> <I>C</I> International Standard permits <I>functions</I> to have names that are not permitted as <I>Fortran</I> names;
+it also distinguishes <I>between</I> names that would be considered as <I>the</I> same name <I>in</I> <I>Fortran</I>. For example,
+a <I>C</I> name may begin <I>with</I> an underscore, <I>and</I> <I>C</I> names that differ <I>in</I> case are distinct names.
+<P>
+<I>The</I> specification <I>of</I> a binding label allows a program to use a <I>Fortran</I> name to refer to a <I>procedure</I> defined
+by a companion processor.
+</BLOCKQUOTE>
+<TABLE cellpadding=3><!-- tsb: <I>The</I> specification <I>of</I> a binding label allows a program to use a <I>Fortran</I> name to refer to a <I>procedure</I> defined
+ -->
+<TR></TR><TR></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 15.5.3
 <I>Exceptions</I> <I>and</I> <I>IEEE</I> <I>arithmetic</I> <I>procedures</I>
 A <I>procedure</I> defined by means other than <I>Fortran</I> shall not use signal (<I>C</I> International Standard, 7.14.1) to change
 <I>the</I> handling <I>of</I> any exception that is being handled by <I>the</I> <I>Fortran</I> processor.
-</TD></TR>
-<TR></TR></TABLE>A <I>procedure</I> defined by means other than <I>Fortran</I> shall not alter <I>the</I> floating-point status (14.7) other than by
+<P>
+A <I>procedure</I> defined by means other than <I>Fortran</I> shall not alter <I>the</I> floating-point status (14.7) other than by
 setting an exception flag to signaling.
 <P>
 <I>The</I> values <I>of</I> <I>the</I> floating-point exception flags on entry to a <I>procedure</I> defined by means other than <I>Fortran</I> are
 processor-dependent.
 </TD></TR>
 <TR></TR></TABLE><P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>iso_c_binding (7)</TD> <TD align=right width=33%><I>September 21, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 5c54c9dd-7a83-4cd6-9360-6cbd38507b20 using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>iso_c_binding (7)</TD> <TD align=right width=33%><I>October 07, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 7a3ddc43-902b-4de2-b817-ddb8f1ce1be3 using man macros.</FONT>
 </div>
 </div>
 <br><br><center><img src="images/iso_c_binding.7.gif"></center> 

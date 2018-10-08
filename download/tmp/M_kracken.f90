@@ -1145,7 +1145,7 @@ character(len=*),parameter::ident="@(#)M_kracken::setprompts(3f): set explicit p
 
 character(len=*),intent(in):: verb   ! verb name to define prompts for
 character(len=*),intent(in):: init   ! string to define prompts instead of values
-      call parse('?'//trim(verb),init,"add") ! initialize command, prefixing verb with question mark character to designate prompts
+      call parse('?'//trim(verb),init,'add') ! initialize command, prefixing verb with question mark character to designate prompts
 end subroutine setprompts
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -1194,8 +1194,8 @@ integer,intent(out),optional :: error_return
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(debug) write(*,*)'START DISSECT ',trim(verb)//'::'//trim(init)//'::'//trim(pars)
 !-----------------------------------------------------------------------------------------------------------------------------------
-   call store(trim(verb)//'_?','.false.',"add",ier)   ! all commands have the option -? to invoke prompt mode
-   call parse(trim(verb),init,"add")                  ! initialize command
+   call store(trim(verb)//'_?','.false.','add',ier)   ! all commands have the option -? to invoke prompt mode
+   call parse(trim(verb),init,'add')                  ! initialize command
 !-----------------------------------------------------------------------------------------------------------------------------------
    call parse(verb,pars,"no_add",ier)                 ! process user command options
    if(lget(trim(verb)//'_?'))then                     ! if -? option was present prompt for values
@@ -1325,15 +1325,15 @@ integer                              ::  iend
    endif
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
    if(subscript(trim(verb)//'_?') .le. 0 )then          ! assuming if adding this is initial call
-      call store(trim(verb)//'_?','.false.',"add",ier)  ! all commands have the option -? to invoke prompt mode
+      call store(trim(verb)//'_?','.false.','add',ier)  ! all commands have the option -? to invoke prompt mode
    elseif(allow.eq.'add')then
-      call store(trim(verb)//'_?','.false.',"add",ier)  ! all commands have the option -? to invoke prompt mode
+      call store(trim(verb)//'_?','.false.','add',ier)  ! all commands have the option -? to invoke prompt mode
    endif
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
    if(subscript(trim(verb)//'_>') .le. 0 )then          ! assuming if adding this is initial call
-      call store(trim(verb)//'_>','#N#',"add",ier)      ! all commands have the option -> to write journal(3f) output
+      call store(trim(verb)//'_>','#N#','add',ier)      ! all commands have the option -> to write journal(3f) output
    elseif(allow.eq.'add')then
-      call store(trim(verb)//'_>','#N#',"add",ier)      ! all commands have the option -> to write journal(3f) output
+      call store(trim(verb)//'_>','#N#','add',ier)      ! all commands have the option -> to write journal(3f) output
    endif
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 !  Process special mode-setting calls
@@ -1490,21 +1490,119 @@ end subroutine parse
 !!   subroutine store(name1,value1,allow1,ier)
 !!
 !!    character(len=*),intent(in) :: name1
-!!    character(len=*),intent(in) :: value1
+!!    class(*),intent(in)         :: value1
 !!    character(len=*),intent(in) :: allow1
 !!    integer,intent(out)         :: ier
 !!
 !!##DESCRIPTION
+!!    Normally a command string and the associated values are placed in
+!!    the dictionary by a call to KRACKEN(3f) when parsing a command
+!!    line, or DISSECT(3f) and PARSE(3f) when creating input file
+!!    interpreters. Rarely there may be a need to place
+!!    <NAME,VALUE> pairs directly into the command dictionary, so this
+!!    routine is public in the M_kracken(3fm) module. However,
+!!    *this routine is primarily assumed to be an internal procedure*.
 !!
 !!##OPTIONS
 !!    NAME1    name in dictionary of form VERB_KEYWORD
-!!    VALUE1   value to be associated to NAME1
-!!    ALLOW1   flag to allow new VERB_KEYWORD name being added
+!!    VALUE1   value to be associated to NAME1. Value may be of type INTEGER,
+!!             REAL, DOUBLEPRECISION, LOGICAL or CHARACTER.
+!!    ALLOW1   flag to allow new VERB_KEYWORD name being added. Should be
+!!               o 'define'  -  add or replace a new VERB_KEYWORD entry and value
+!!               o 'add'     -  add or append to a new VERB_KEYWORD entry and value
+!!               o 'no_add' or 'append' - append to an *EXISTING* entry value
+!!               o 'replace' - replace an *EXISTING* entry
+!!
+!!             'add' or 'no_add'. If 'add' and the value is not blank it will
+!!             be APPENDED to the current value. If 'replace' it will replace
+!!             the value instead of appending to it.
 !!
 !!##RETURNS
 !!    IER      flag if error occurs in adding or setting value
 !!
 !!##EXAMPLE
+!!
+!!   Sample program:
+!!
+!!    program demo_store
+!!    use M_kracken, only : store, show
+!!    implicit none
+!!    integer :: ier
+!!    ! The following should be equivalent to
+!!    ! call kracken('MY',' &
+!!    ! & -STRING My string value &
+!!    ! & -INTEGER 1234 &
+!!    ! & -INTEGER 0987654321 &
+!!    ! & -REAL 1234.5678 &
+!!    ! & -DOUBLE 123.4567d8 &
+!!    ! & -LOGICAL T &
+!!    ! & '
+!!    call store('MY_STRING','My string value','add',ier)
+!!    if(ier.ne.0)write(*,*)'ERROR: could not store MY_STRING ier=',ier
+!!    ! now the verb MY is defined with the option -STRING so the
+!!    ! dictionary has MY_STRING='My string value' defined
+!!
+!!    ! this will be an error because MY does not have the -INTEGER
+!!    ! keyword defined
+!!    call store('MY_INTEGER',12345678,'no_add',ier)
+!!
+!!    ! now define MY_INTEGER
+!!    call store('MY_INTEGER',1234,'add',ier)
+!!    ! if 'no_add' it will APPEND to current string
+!!    call store('MY_INTEGER',987654321,'add',ier)
+!!
+!!    call store('MY_REAL',1234.5678,'add',ier)
+!!    call store('MY_DOUBLE',123.4567d8,'add',ier)
+!!    call store('MY_LOGICAL',.true.,'add',ier)
+!!
+!!    call show('MY',.false.,0)
+!!    write(*,*)repeat('=',76)
+!!
+!!    ! if 'replace' is used REPLACE instead of APPEND to current value
+!!    call store('MY_INTEGER',987654321,'replace',ier)
+!!    call show('MY',.false.,0)
+!!    write(*,*)repeat('=',76)
+!!
+!!    ! 'replace' can only replace an existing entry, not add one
+!!    call store('MY_UNKNOWN',987654321,'replace',ier)
+!!    call show('MY',.false.,0)
+!!    write(*,*)repeat('=',76)
+!!
+!!    end program demo_store
+!!
+!!   Results:
+!!    >########################################################
+!!    >error: UNKNOWN OPTION -INTEGER
+!!    >MY parameters are
+!!    > -STRING My string value
+!!    >########################################################
+!!    > MY_STRING            = My string value
+!!    > MY_REAL              = 1234.5677
+!!    > MY_LOGICAL           = T
+!!    > MY_INTEGER           = 1234 987654321
+!!    > MY_DOUBLE            = 12345670000.000000
+!!    > =======================================================================
+!!    > MY_STRING            = My string value
+!!    > MY_REAL              = 1234.5677
+!!    > MY_LOGICAL           = T
+!!    > MY_INTEGER           = 987654321
+!!    > MY_DOUBLE            = 12345670000.000000
+!!    > =======================================================================
+!!    >########################################################
+!!    >error: UNKNOWN OPTION -UNKNOWN
+!!    >MY parameters are
+!!    > -STRING My string value
+!!    > -REAL 1234.5677
+!!    > -LOGICAL T
+!!    > -INTEGER 987654321
+!!    > -DOUBLE 12345670000.000000
+!!    >########################################################
+!!    > MY_STRING            = My string value
+!!    > MY_REAL              = 1234.5677
+!!    > MY_LOGICAL           = T
+!!    > MY_INTEGER           = 987654321
+!!    > MY_DOUBLE            = 12345670000.000000
+!!    > =======================================================================
 !!
 !!##SEE ALSO
 !!    M_kracken, kracken
@@ -1515,27 +1613,45 @@ end subroutine parse
 !===================================================================================================================================
 subroutine store(name1,value1,allow1,ier)
 
-character(len=*),parameter::ident="@(#)M_kracken::store(3fp): replace dict. name's value (if allow='add' add name if necessary)"
+character(len=*),parameter::ident="&
+&@(#)M_kracken::store(3fp): replace or add dictionary entry name  and value (if allow='add' add name if necessary)"
 
 !-----------------------------------------------------------------------------------------------------------------------------------
-character(len=*),intent(in)           :: name1       ! name in dictionary of form VERB_KEYWORD
-character(len=*),intent(in)           :: value1      ! value to be associated to NAME1
-character(len=*),intent(in)           :: allow1      ! flag to allow new VERB_KEYWORD name being added
-integer,intent(out)                   :: ier         ! flag if error occurs in adding or setting value
+character(len=*),intent(in)        :: name1       ! name in dictionary of form VERB_KEYWORD
+class(*),intent(in)                :: value1      ! value to be associated to NAME1
+character(len=*),intent(in)        :: allow1      ! flag to allow new VERB_KEYWORD name being added
+integer,intent(out)                :: ier         ! flag if error occurs in adding or setting value
 !-----------------------------------------------------------------------------------------------------------------------------------
-   integer                            :: ilen
-   character(len=IPverb)              :: name
-   integer                            :: indx
-   character(len=10)                  :: allow
-   character(len=IPvalue)             :: value
-   character(len=IPvalue)             :: mssge       ! the  message/error/string  value
-   integer                            :: nlen
-   integer                            :: new
-   integer                            :: ii
-   integer                            :: i10
-   integer                            :: inew
+character(len=:),allocatable       :: l_value1    ! value to be associated to NAME1
+integer                            :: ilen
+character(len=IPverb)              :: name
+integer                            :: indx
+character(len=10)                  :: allow
+character(len=IPvalue)             :: value
+character(len=IPvalue)             :: mssge       ! the  message/error/string  value
+integer                            :: nlen
+integer                            :: new
+integer                            :: ii
+integer                            :: i10
+integer                            :: inew
 !-----------------------------------------------------------------------------------------------------------------------------------
-   if(debug) write(*,*)'STORE ',trim(name1)//'::'//trim(value1)//'::'//trim(allow1)
+   select type(value1)                         ! convert non-character values to character string
+   type is(integer)
+      allocate(character(len=30):: l_value1)
+      write(l_value1,'(i0)')value1
+   type is(logical)
+      l_value1=merge('T','F',value1)
+   type is(real)
+      allocate(character(len=30):: l_value1)
+      write(l_value1,'(g0.8)')value1
+   type is(doubleprecision)
+      allocate(character(len=30):: l_value1)
+      write(l_value1,'(g0)')value1
+   type is(character(len=*))
+      l_value1=value1
+   end select
+!-----------------------------------------------------------------------------------------------------------------------------------
+   if(debug) write(*,*)'STORE ',trim(name1)//'::'//trim(l_value1)//'::'//trim(allow1)
 !-----------------------------------------------------------------------------------------------------------------------------------
    value=" "
    name=" "
@@ -1548,7 +1664,7 @@ integer,intent(out)                   :: ier         ! flag if error occurs in a
       name(ii+1:)='oo'
    endif
 
-   value=value1                                      ! store into a standard size variable for this type
+   value=l_value1                                    ! store into a standard size variable for this type
    allow=allow1                                      ! store into a standard size variable for this type
    nlen=len(name1)
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -1562,7 +1678,7 @@ integer,intent(out)                   :: ier         ! flag if error occurs in a
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(indx > 0)then                                  ! found the variable name
       new=1
-   elseif(indx <= 0.and.allow  ==  "add")then        ! check if the name needs added
+   elseif(indx <= 0.and.(allow  ==  'add'.or. allow == 'define'))then        ! check if the name needs added and allow to add
       inew=iabs(indx)                                ! adding the new variable name in the variable name array
       call insert(name,dict_verbs,inew)              ! pull down the dictionary arrays to make room for new value
       call insert(" ",dict_vals,inew)
@@ -1608,14 +1724,20 @@ integer,intent(out)                   :: ier         ! flag if error occurs in a
          if(dict_calls(iabs(indx)).eq.0.or.dict_vals(iabs(indx)).eq.' ')then
             dict_vals(iabs(indx))=value                                               ! store a defined variable's value
          else
-            dict_vals(iabs(indx))= trim(dict_vals(iabs(indx)))//' '//value            ! append a defined variable's value
+            if(allow.eq.'define')then
+               dict_vals(iabs(indx))= value                                           ! set a defined variable's value
+            else
+               dict_vals(iabs(indx))= trim(dict_vals(iabs(indx)))//' '//value         ! append a defined variable's value
+            endif
          endif
          dict_lens(iabs(indx))= len_trim(dict_vals(iabs(indx)))                       ! store length of string
          dict_calls(iabs(indx))=dict_calls(iabs(indx))+1                              ! detect duplicate use of a keyword
       endif
    else
-      if(dict_calls(iabs(indx)).eq.0.or.dict_vals(iabs(indx)).eq.' ')then
+      if(dict_calls(iabs(indx)).eq.0.or.dict_vals(iabs(indx)).eq.' ')then             ! if first time given a value or value blank
          dict_vals(iabs(indx))=value                                                  ! store a defined variable's value
+      elseif(allow.eq.'replace'.or.allow.eq.'define')then
+         dict_vals(iabs(indx))= value                                                 ! set a defined variable's value
       else
          dict_vals(iabs(indx))= trim(dict_vals(iabs(indx)))//' '//value               ! append a defined variable's value
       endif
@@ -1639,7 +1761,7 @@ integer,intent(out)                   :: ier         ! flag if error occurs in a
    !()()()()()()()()()()-                              !
    !---------------------------------------------------!
 !-----------------------------------------------------------------------------------------------------------------------------------
-   if(debug) write(*,*)'STORE END ',trim(name1)//'::'//trim(value1)//'::'//trim(allow1)
+   if(debug) write(*,*)'STORE END ',trim(name1)//'::'//trim(l_value1)//'::'//trim(allow1)
 !-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine store
 !===================================================================================================================================
@@ -2032,7 +2154,7 @@ character(len=*),intent(in)  :: verb
       endif
    enddo INFINITE
 !-----------------------------------------------------------------------------------------------------------------------------------
-   call store(trim(verb)//'_?','.false.',"add",ierr)                      ! all commands have the option -? to invoke prompt mode
+   call store(trim(verb)//'_?','.false.','add',ierr)                      ! all commands have the option -? to invoke prompt mode
 !-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine menu
 !===================================================================================================================================

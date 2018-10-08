@@ -9,6 +9,17 @@ DESCRIPTION
    values. The first column is assumed to be the shared X values for
    the other columns.
 
+   A plot of all Y columns is followed by a plot of each Y column
+   by default.
+
+   If an interactive device is selected (X11, x11, xtek, tek, PC)
+   then a pause occurs after each plot. Single character commands are
+    o q quit
+    o n next
+    o p previous
+    o v toggle verbose mode
+    o 0 redisplay plot of all curves
+
 OPTIONS
    -d         M_draw(3fm) device name (X11,pdf,svg, ...). Enter the
               device name "list" for a list of available devices on

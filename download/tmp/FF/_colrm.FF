@@ -1,7 +1,7 @@
 $ifdef TESTPRG90
 $DOCUMENT HELP -file _colrm.1.man
 NAME
-       _colrm(1f) - [FUNIX]remove columns from a file
+       _colrm(1f) - [FUNIX] remove columns from a file
 
 SYNOPSIS
        _colrm [first [last]]

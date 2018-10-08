@@ -3,7 +3,7 @@ $IFDEF TESTPRG90
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file asa2pdf.1.man
 NAME
-    asa2pdf(1f) - [FILE FILTER]Convert text files with/without
+    asa2pdf(1f) - [FILE FILTER] Convert text files with/without
                   ASA carriage control to an Adobe PDF file.
 
 SYNOPSIS

@@ -73,7 +73,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 subroutine <B>store</B>(name1,value1,allow1,ier)
 <P>
    character(len=*),intent(in) :: name1
-   character(len=*),intent(in) :: value1
+   class(*),intent(in)         :: value1
    character(len=*),intent(in) :: allow1
    integer,intent(out)         :: ier
 <P>
@@ -85,7 +85,13 @@ subroutine <B>store</B>(name1,value1,allow1,ier)
 
 </A>
 <BLOCKQUOTE>
-<P>
+Normally a command string and the associated values are placed in
+the dictionary by a call to <B>KRACKEN</B>(3f) when parsing a command
+line, or <B>DISSECT</B>(3f) and <B>PARSE</B>(3f) when creating input file
+interpreters. Rarely there may be a need to place
+&lt;NAME,VALUE&gt; pairs directly into the command dictionary, so this
+routine is public in the <B>M_kracken</B>(3fm) module. However,
+*this routine is primarily assumed to be an internal procedure*.
 </BLOCKQUOTE>
 <A name=3>
 
@@ -102,14 +108,41 @@ name in dictionary of form VERB_KEYWORD
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 VALUE1
-value to be associated to NAME1
+value to be associated to NAME1. Value may be of type INTEGER,
+REAL, DOUBLEPRECISION, LOGICAL or CHARACTER.
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B> </TD><TD valign=bottom>
 ALLOW1
-flag to allow new VERB_KEYWORD name being added
+flag to allow new VERB_KEYWORD name being added. Should be
+<TABLE width=100% cellpadding=3><!-- tsb: ALLOW1
+ -->
+<TR></TR><TR></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+o &#146;define&#146;
+-  add or replace a new VERB_KEYWORD entry and value
 </TD></TR>
-<TR></TR></TABLE></BLOCKQUOTE>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+o &#146;add&#146;
+-  add or append to a new VERB_KEYWORD entry and value
+</TD></TR>
+<TR></TR></TABLE><TABLE width=100% cellpadding=3>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+</TD></TR>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+</TD></TR>
+<TR></TR></TABLE><!-- .PP -->
+</TD></TR>
+<TR></TR></TABLE><!-- 'add' or 'no_add'. If 'add' and the value is not blank it will -->
+be APPENDED to the current value. If &#146;replace&#146; it will replace
+the value instead of appending to it.
+</BLOCKQUOTE>
 <A name=4>
 
      <H3>RETURNS</H3>
@@ -129,6 +162,154 @@ flag if error occurs in adding or setting value
 
 </A>
 <BLOCKQUOTE>
+Sample program:
+<P>
+<PRE>
+   program demo_store
+   use M_kracken, only : store, show
+   implicit none
+   integer :: ier
+   ! The following should be equivalent to
+   ! call kracken(&#146;MY&#146;,&#146; &
+   ! & -STRING My string value &
+   ! & -INTEGER 1234 &
+   ! & -INTEGER 0987654321 &
+   ! & -REAL 1234.5678 &
+   ! & -DOUBLE 123.4567d8 &
+   ! & -LOGICAL T &
+   ! & &#146;
+   call store(&#146;MY_STRING&#146;,&#146;My string value&#146;,&#146;add&#146;,ier)
+   if(ier.ne.0)write(*,*)&#146;ERROR: could not store MY_STRING ier=&#146;,ier
+   ! now the verb MY is defined with the option -STRING so the
+   ! dictionary has MY_STRING=&#146;My string value&#146; defined
+<P>
+   ! this will be an error because MY does not have the -INTEGER
+   ! keyword defined
+   call store(&#146;MY_INTEGER&#146;,12345678,&#146;no_add&#146;,ier)
+<P>
+   ! now define MY_INTEGER
+   call store(&#146;MY_INTEGER&#146;,1234,&#146;add&#146;,ier)
+   ! if &#146;no_add&#146; it will APPEND to current string
+   call store(&#146;MY_INTEGER&#146;,987654321,&#146;add&#146;,ier)
+<P>
+   call store(&#146;MY_REAL&#146;,1234.5678,&#146;add&#146;,ier)
+   call store(&#146;MY_DOUBLE&#146;,123.4567d8,&#146;add&#146;,ier)
+   call store(&#146;MY_LOGICAL&#146;,.true.,&#146;add&#146;,ier)
+<P>
+   call show(&#146;MY&#146;,.false.,0)
+   write(*,*)repeat(&#146;=&#146;,76)
+<P>
+   ! if &#146;replace&#146; is used REPLACE instead of APPEND to current value
+   call store(&#146;MY_INTEGER&#146;,987654321,&#146;replace&#146;,ier)
+   call show(&#146;MY&#146;,.false.,0)
+   write(*,*)repeat(&#146;=&#146;,76)
+<P>
+   ! &#146;replace&#146; can only replace an existing entry, not add one
+   call store(&#146;MY_UNKNOWN&#146;,987654321,&#146;replace&#146;,ier)
+   call show(&#146;MY&#146;,.false.,0)
+   write(*,*)repeat(&#146;=&#146;,76)
+<P>
+   end program demo_store
+<P>
+</PRE>
+Results:
+&gt;########################################################
+&gt;error: UNKNOWN OPTION <B>-INTEGER</B>
+&gt;MY parameters are
+&gt; <B>-STRING</B> My string value
+&gt;########################################################
+<BLOCKQUOTE>
+<TABLE cellpadding=3><!-- tsb: Results:
+ -->
+<TR></TR><TR></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+&gt; MY_STRING
+= My string value
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+&gt; MY_REAL
+= 1234.5677
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+&gt; MY_LOGICAL
+= T
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+&gt; MY_INTEGER
+= 1234 987654321
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+&gt; MY_DOUBLE
+= 12345670000.000000
+&gt; =======================================================================
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+&gt; MY_STRING
+= My string value
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+&gt; MY_REAL
+= 1234.5677
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+&gt; MY_LOGICAL
+= T
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+&gt; MY_INTEGER
+= 987654321
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+&gt; MY_DOUBLE
+= 12345670000.000000
+&gt; =======================================================================
+&gt;########################################################
+&gt;error: UNKNOWN OPTION <B>-UNKNOWN</B>
+&gt;MY parameters are
+&gt; <B>-STRING</B> My string value
+&gt; <B>-REAL</B> 1234.5677
+&gt; <B>-LOGICAL</B> T
+&gt; <B>-INTEGER</B> 987654321
+&gt; <B>-DOUBLE</B> 12345670000.000000
+&gt;########################################################
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+&gt; MY_STRING
+= My string value
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+&gt; MY_REAL
+= 1234.5677
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+&gt; MY_LOGICAL
+= T
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+&gt; MY_INTEGER
+= 987654321
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B></B> </TD><TD valign=bottom>
+&gt; MY_DOUBLE
+= 12345670000.000000
+&gt; =======================================================================
+</TD></TR>
+<TR></TR></TABLE></BLOCKQUOTE>
 </BLOCKQUOTE>
 <A name=6>
 
@@ -143,7 +324,7 @@ dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
 parse,dissect,store,setprompts,show
 </BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>store (3)</TD> <TD align=right width=33%><I>September 21, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 02ab32e5-05da-4eb7-a663-29d5b61feadb using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>store (3)</TD> <TD align=right width=33%><I>October 07, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 77ba3193-c0af-4d32-9642-0136e540c968 using man macros.</FONT>
 </div>
 </div>
 <br><br><center><img src="images/store.3.gif"></center> 

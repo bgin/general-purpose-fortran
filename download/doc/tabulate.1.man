@@ -1,5 +1,5 @@
 NAME
-     tabulate(1f) - write out a row of numbers and a text-based scaled graph
+     tabulate(1f) - [M_messages] write out a row of numbers and a text-based scaled graph
 
 SYNOPSIS
      tabulate -min 0 -max 100 -fill ' ' -len 0

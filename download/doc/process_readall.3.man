@@ -6,7 +6,7 @@ SYNOPSIS
        function process_readall(cmd,delim,ierr)  result(string)
        character(len=*),intent(in)              :: cmd
        character(len=*),intent(in),optional     :: delim
-       integer,intent(out)                      :: ierr
+       integer,intent(out),optional             :: ierr
        character(len=:),allocatable             :: string
 OPTIONS
       cmd               command to pass to system

@@ -17,6 +17,7 @@ append("getdisplaysize.3m_pixel.html");
 append("getgp2.3m_pixel.html");
 append("getviewport.3m_pixel.html");
 append("hershey.3m_pixel.html");
+append("huegif.1.html");
 append("justfy.3m_pixel.html");
 append("line.3m_pixel.html");
 append("linewidth.3m_pixel.html");

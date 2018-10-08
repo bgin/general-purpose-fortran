@@ -5,8 +5,8 @@ NAME
 SYNOPSIS
    subroutine unit_check_good(name,options)
 
-    character(len=*),intent(in) :: name
-    character(len=*),intent(in) :: options
+    character(len=*),intent(in)          :: name
+    character(len=*),intent(in),optional :: options
 
 DESCRIPTION
 

@@ -2,7 +2,10 @@ NAME
    system_isreg(3f) - [M_system] checks if argument is a regular file
 
 SYNOPSIS
-   logical function system_isreg()
+  logical function system_isreg(pathname)
+
+   character(len=*),intent(in) :: pathname
+   logical                     :: system_isreg
 
 DESCRIPTION
        The isreg(3f) function checks if path is a regular file

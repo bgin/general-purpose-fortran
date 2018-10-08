@@ -219,7 +219,7 @@ contains
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 integer function lcm(i,j)
-use M_anyscalar,     only : int128
+use M_anything,     only : int128
 implicit none
 
 character(len=*),parameter::ident="@(#)M_factor::lcm(3fp): least common multiple of two integers"

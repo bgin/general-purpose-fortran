@@ -311,314 +311,157 @@ Description
 <P>
 To illustrate the usage of the library, here is a small example that is
 essentially the FLIBS example:
-!--------------------------------------------------------------------
-! csvtable.f90 --
-<BLOCKQUOTE>
-<TABLE cellpadding=3><!-- tsb: To illustrate the usage of the library, here is a small example that is
- -->
-<TR></TR><TR></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-!
-Program to read a simple CSV file and put it into a
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-!
-SQLite database, just to demonstrate how the Fortran
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-!
-interface works.
-program demo_csvtable
-use M_sqlite
-implicit none
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-<B>type</B>(SQLITE_DATABASE)
-:: db
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-<B>type</B>(SQLITE_STATEMENT)
-:: stmt
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-<B>type</B>(SQLITE_COLUMN), pointer
-:: <B>column</B>(:)
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-integer
-:: lun = 10
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-integer
-:: ierr
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-<B>character</B>(len=40), <B>dimension</B>(4)
-:: name
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-real
-:: salin
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-real
-:: temp
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-<B>character</B>(len=40)
-:: station
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-<B>character</B>(len=40)
-:: date
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-logical
-:: finished
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-integer
-:: j
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-<B>character</B>(len=40), pointer
-:: <B>result</B>(:,:)
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-<B>character</B>(len=:),allocatable
-:: errmsg
-!--------------------------------------------------------------------
-call <B>sqlite3_open</B>(&#146;somedata.db&#146;, db)
-!--------------------------------------------------------------------
-! The first part of the program simply defines the table:
-<B>allocate</B>(<B>column</B>(4))
-call <B>sqlite3_column_props</B>(<B>column</B>(1), <B>name</B>(1), SQLITE_CHAR, 10)
-call <B>sqlite3_column_props</B>(<B>column</B>(2), <B>name</B>(2), SQLITE_CHAR, 10)
-call <B>sqlite3_column_props</B>(<B>column</B>(3), <B>name</B>(3), SQLITE_REAL)
-call <B>sqlite3_column_props</B>(<B>column</B>(4), <B>name</B>(4), SQLITE_REAL)
-call <B>sqlite3_create_table</B>(db, &#146;measurements&#146;, column)
-!--------------------------------------------------------------------
-! The second part reads a data file and stores the data in a table:
-call <B>csvdata</B>() ! create CSV file for demonstration
-! Open a CSV file to feed data into the database
-<B>open</B>(lun, file = &#146;somedata.csv&#146;)
-<TABLE width=100% cellpadding=3><!-- tsb: <B>character</B>(len=:),allocatable
- -->
-<TR></TR><TR></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-!
-To keep it simple:
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-!
-- The first line contains the names of the four columns
-<B>read</B>(lun, *) name
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-!
-- All lines after this contain the name of the station,
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-!
-the date and the two values.
-!--------------------------------------------------------------------
-! Insert the values into the table.
-!
-! Note that a transaction (via calls to sqlite3_begin and
-! sqlite3_commit pair) is used, so that all the inserts can be
-! done in one go. Inserting with autocommit is much slower,
-! as the database file needs to be flushed every time.
-!
-call <B>sqlite3_begin</B>(db)
-do
-<B>read</B>(lun,*,iostat=ierr) station, date, salin, temp
-<B>if</B>(ierr .ne. 0) exit
-call <B>sqlite3_set_column</B>(<B>column</B>(1), station)
-<TABLE width=100% cellpadding=3><!-- tsb: !
- -->
-<TR></TR><TR></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-call <B>sqlite3_set_column</B>(<B>column</B>(2), date
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-call <B>sqlite3_set_column</B>(<B>column</B>(3), salin
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-call <B>sqlite3_set_column</B>(<B>column</B>(4), temp
-call <B>sqlite3_insert</B>(db, &#146;measurements&#146;, column)
-enddo
-call <B>sqlite3_commit</B>(db)
-<B>close</B>(lun)
-!--------------------------------------------------------------------
-! To check that it works, retrieve the average salinity and average
-! temperature per station and print them sorted by station name
-!
-! Retrieve the data by constructing an SQL query that will
-! actually look like:
-!
-</TD></TR>
-<TR></TR></TABLE><!-- .RE -->
-</TD></TR>
-<TR></TR></TABLE><!-- .TP -->
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-!
-SELECT station, <B>AVG</B>(salinity), <B>AVG</B>(temperature) FROM measurements
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-!
-GROUP BY station ORDER BY station;
-!
-! The routine sqlite3_prepare_select takes care of the actual
-! construction of the above SQL query:
-!
-! We want a simple report, the mean of salinity and temperature
-! sorted by the station
-!
-<B>deallocate</B>(column)
 <P>
-<B>allocate</B>(<B>column</B>(3))
-call sqlite3_column_query &
-& (<B>column</B>(1), &#146;station&#146;, SQLITE_CHAR)
-call sqlite3_column_query &
-& (<B>column</B>(2), <B>name</B>(3), SQLITE_REAL, function=&#146;avg&#146;)
-call sqlite3_column_query &
-& (<B>column</B>(3), <B>name</B>(4), SQLITE_REAL, function=&#146;avg&#146;)
+<PRE>
+   !--------------------------------------------------------------------
+   ! csvtable.f90 --
+   !    Program to read a simple CSV file and put it into a
+   !    SQLite database, just to demonstrate how the Fortran
+   !    interface works.
+   program demo_csvtable
+   use M_sqlite
+   implicit none
+   type(SQLITE_DATABASE)             :: db
+   type(SQLITE_STATEMENT)            :: stmt
+   type(SQLITE_COLUMN), pointer      :: column(:)
+   integer                           :: lun = 10
+   integer                           :: ierr
+   character(len=40), dimension(4)   :: name
+   real                              :: salin
+   real                              :: temp
+   character(len=40)                 :: station
+   character(len=40)                 :: date
+   logical                           :: finished
+   integer                           :: j
+   character(len=40), pointer        :: result(:,:)
+   character(len=:),allocatable      :: errmsg
+   !--------------------------------------------------------------------
+      call sqlite3_open(&#146;somedata.db&#146;, db)
+   !--------------------------------------------------------------------
+   ! The first part of the program simply defines the table:
+      allocate(column(4))
+      call sqlite3_column_props(column(1), name(1), SQLITE_CHAR, 10)
+      call sqlite3_column_props(column(2), name(2), SQLITE_CHAR, 10)
+      call sqlite3_column_props(column(3), name(3), SQLITE_REAL)
+      call sqlite3_column_props(column(4), name(4), SQLITE_REAL)
+      call sqlite3_create_table(db, &#146;measurements&#146;, column)
+   !--------------------------------------------------------------------
+   ! The second part reads a data file and stores the data in a table:
+      call csvdata() ! create CSV file for demonstration
+      ! Open a CSV file to feed data into the database
+      open(lun, file = &#146;somedata.csv&#146;)
+      !    To keep it simple:
+      !    - The first line contains the names of the four columns
+      read(lun, *) name
+      !    - All lines after this contain the name of the station,
+      !      the date and the two values.
+   !--------------------------------------------------------------------
+   ! Insert the values into the table.
+   !
+   ! Note that a transaction (via calls to sqlite3_begin and
+   ! sqlite3_commit pair) is used, so that all the inserts can be
+   ! done in one go. Inserting with autocommit is much slower,
+   ! as the database file needs to be flushed every time.
+   !
+      call sqlite3_begin(db)
+      do
+         read(lun,*,iostat=ierr) station, date, salin, temp
+         if(ierr .ne. 0) exit
+         call sqlite3_set_column(column(1), station)
+         call sqlite3_set_column(column(2), date   )
+         call sqlite3_set_column(column(3), salin  )
+         call sqlite3_set_column(column(4), temp   )
+         call sqlite3_insert(db, &#146;measurements&#146;, column)
+      enddo
+      call sqlite3_commit(db)
+      close(lun)
+   !--------------------------------------------------------------------
+   ! To check that it works, retrieve the average salinity and average
+   ! temperature per station and print them sorted by station name
+   !
+   ! Retrieve the data by constructing an SQL query that will
+   ! actually look like:
+   !
+   !  SELECT station, AVG(salinity), AVG(temperature) FROM measurements
+   !         GROUP BY station ORDER BY station;
+   !
+   ! The routine sqlite3_prepare_select takes care of the actual
+   ! construction of the above SQL query:
+      !
+      ! We want a simple report, the mean of salinity and temperature
+      ! sorted by the station
+      !
+      deallocate(column)
 <P>
-call <B>sqlite3_prepare_select</B>(db, &#146;measurements&#146;, column, stmt, &
-& &#146;group by station order by station&#146;)
-!--------------------------------------------------------------------
-<B>write</B>(*, &#146;(3a20)&#146;)&#146;Station&#146;, &#146;Mean salinity&#146;, &#146;Mean temperature&#146;
-do
-call <B>sqlite3_next_row</B>(stmt, column, finished)
-<B>if</B>(finished) exit
-call <B>sqlite3_get_column</B>(<B>column</B>(1), station)
-<TABLE width=100% cellpadding=3><!-- tsb: call <B>sqlite3_prepare_select</B>(db, &#146;measurements&#146;, column, stmt, &
- -->
-<TR></TR><TR></TR>
-<TR><TD width=6%>&nbsp;</TD><TD>
-<TABLE width=100% cellpadding=3>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-call <B>sqlite3_get_column</B>(<B>column</B>(2), salin
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-call <B>sqlite3_get_column</B>(<B>column</B>(3), temp
-<B>write</B>(*, &#146;(a20,2f20.3)&#146;) station, salin, temp
-enddo
-!
-! Get the entire table
-!
-call <B>sqlite3_get_table</B>(db, "select * from measurements", result, errmsg)
-</TD></TR>
-<TR></TR></TABLE></TD></TR>
-<TR></TR></TABLE><!-- .PP -->
+      allocate(column(3))
+      call sqlite3_column_query &
+         & (column(1), &#146;station&#146;, SQLITE_CHAR)
+      call sqlite3_column_query &
+         & (column(2), name(3), SQLITE_REAL, function=&#146;avg&#146;)
+      call sqlite3_column_query &
+         & (column(3), name(4), SQLITE_REAL, function=&#146;avg&#146;)
 <P>
-<B>if</B>(associated(result))then
-<B>write</B>(*,*) &#146;Number of columns: &#146;, <B>size</B>(result,1)
-<TABLE width=100% cellpadding=3><!-- tsb: <B>if</B>(associated(result))then
- -->
-<TR></TR><TR></TR>
-<TR><TD width=6%>&nbsp;</TD><TD>
-<TABLE width=100% cellpadding=3>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-<B>write</B>(*,*) &#146;Number of rows:
-do j = <B>1,size</B>(result,2)
-<B>write</B>(*,&#146;(10a20)&#146;) <B>result</B>(:,j)
-enddo
-<B>deallocate</B>(result)
-else
-<B>write</B>(*,*) &#146;Error: result table not allocated&#146;
-<B>write</B>(*,*) &#146;Error: &#146;, <B>trim</B>(errmsg)
-endif
-</TD></TR>
-<TR></TR></TABLE></TD></TR>
-<TR></TR></TABLE><!-- .PP -->
+      call sqlite3_prepare_select(db, &#146;measurements&#146;, column, stmt, &
+         & &#146;group by station order by station&#146;)
+   !--------------------------------------------------------------------
+      write(*, &#146;(3a20)&#146;)&#146;Station&#146;, &#146;Mean salinity&#146;, &#146;Mean temperature&#146;
+      do
+         call sqlite3_next_row(stmt, column, finished)
+         if(finished) exit
+         call sqlite3_get_column(column(1), station)
+         call sqlite3_get_column(column(2), salin  )
+         call sqlite3_get_column(column(3), temp   )
+         write(*, &#146;(a20,2f20.3)&#146;) station, salin, temp
+      enddo
+      !
+      ! Get the entire table
+      !
+      call sqlite3_get_table(db, "select * from measurements", result, errmsg)
 <P>
-call <B>sqlite3_close</B>(db)
-end program demo_csvtable
-!--------------------------------------------------------------------
-subroutine <B>csvdata</B>()
-! create fake datafile
-implicit none
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-integer
-:: lun = 10
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-real, <B>dimension</B>(5)
-:: r
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-<B>character</B>(len=100)
-:: line
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-<B>character</B>(len=40)
-:: string
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-<B>character</B>(len=20),<B>dimension</B>(6)
-:: station =
-& <B>[character</B>(len=20) :: &#146;NW1&#146;,&#146;NW2&#146;,&#146;OS30_LONGER_NAME&#146;,&#146;DH&#146;,&#146;DO&#146;,&#146;Ah111&#146; ]
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B></B> </TD><TD valign=bottom>
-integer
-:: i
-<B>open</B>(lun, file=&#146;somedata.csv&#146;)
-<B>write</B>(lun, &#146;(a)&#146;) &#146;station,date,salinity,temperature&#146;
-do i = 1,100
-call <B>random_number</B>(r)
-line = <B>station</B>(1+int(5.0*r(1)))
-<B>write</B>(string, &#146;(i0,a,i0,a,i0)&#146;) &
-& 2005, &#146;-&#146;, 1+int(12.0*r(2)), &#146;-&#146;, 1+int(28.0*r(3))
-line = <B>trim</B>(line) // &#146;,&#146; // string
-<B>write</B>(string, &#146;(f10.2)&#146;) 28.0+6.0*r(4)
-line = <B>trim</B>(line) // &#146;,&#146; // <B>adjustl</B>(string)
-<B>write</B>(string, &#146;(f10.2)&#146;) 15.0+5.0*r(5)
-line = <B>trim</B>(line) // &#146;,&#146; // <B>adjustl</B>(string)
-<B>write</B>(lun, &#146;(a)&#146;) <B>trim</B>(line)
-enddo
-<B>close</B>(lun)
-end subroutine csvdata
-!--------------------------------------------------------------------
-</TD></TR>
-<TR></TR></TABLE></BLOCKQUOTE>
+      if(associated(result))then
+         write(*,*) &#146;Number of columns: &#146;, size(result,1)
+         write(*,*) &#146;Number of rows:    &#146;, size(result,2)
+         do j = 1,size(result,2)
+            write(*,&#146;(10a20)&#146;) result(:,j)
+         enddo
+         deallocate(result)
+      else
+         write(*,*) &#146;Error: result table not allocated&#146;
+         write(*,*) &#146;Error: &#146;, trim(errmsg)
+      endif
+<P>
+      call sqlite3_close(db)
+   end program demo_csvtable
+   !--------------------------------------------------------------------
+   subroutine csvdata()
+   ! create fake datafile
+   implicit none
+   integer                         :: lun = 10
+   real, dimension(5)              :: r
+   character(len=100)              :: line
+   character(len=40)               :: string
+   character(len=20),dimension(6)  :: station =
+   & [character(len=20) :: &#146;NW1&#146;,&#146;NW2&#146;,&#146;OS30_LONGER_NAME&#146;,&#146;DH&#146;,&#146;DO&#146;,&#146;Ah111&#146; ]
+   integer                         :: i
+   open(lun, file=&#146;somedata.csv&#146;)
+   write(lun, &#146;(a)&#146;) &#146;station,date,salinity,temperature&#146;
+   do i = 1,100
+      call random_number(r)
+      line = station(1+int(5.0*r(1)))
+      write(string, &#146;(i0,a,i0,a,i0)&#146;) &
+      & 2005, &#146;-&#146;, 1+int(12.0*r(2)), &#146;-&#146;, 1+int(28.0*r(3))
+      line = trim(line) // &#146;,&#146; // string
+      write(string, &#146;(f10.2)&#146;) 28.0+6.0*r(4)
+      line = trim(line) // &#146;,&#146; // adjustl(string)
+      write(string, &#146;(f10.2)&#146;) 15.0+5.0*r(5)
+      line = trim(line) // &#146;,&#146; // adjustl(string)
+      write(lun, &#146;(a)&#146;) trim(line)
+   enddo
+   close(lun)
+   end subroutine csvdata
+   !--------------------------------------------------------------------
+<P>
+</PRE>
 </BLOCKQUOTE>
 <A name=6>
 
@@ -684,7 +527,7 @@ by work by Al Danial (<A HREF="http://danial.org">http://danial.org</A>).
 </TD></TR>
 <TR></TR></TABLE></BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>M_sqlite (3)</TD> <TD align=right width=33%><I>September 21, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 11940cbf-3707-43f5-9707-03112dea3f25 using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>M_sqlite (3)</TD> <TD align=right width=33%><I>October 07, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 3507ba9d-e6f3-4f24-ad15-0f322f2960e6 using man macros.</FONT>
 </div>
 </div>
 <br><br><center><img src="images/M_sqlite.3.gif"></center> 

@@ -1,7 +1,7 @@
 $!==================================================================================================================================
 $DOCUMENT HELP -file huegif.1.man
 NAME
-   huegif(1f) - generate color wheels as GIF pixmap files
+   huegif(1f) - [M_pixel] generate color wheels as GIF pixmap files
 
 SYNOPSIS
    huegif [--help|--version]

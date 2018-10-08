@@ -2,7 +2,10 @@ NAME
    system_ischr(3f) - [M_system] checks if argument is a character device
 
 SYNOPSIS
-   logical function system_ischr()
+  logical function system_ischr(pathname)
+
+   character(len=*),intent(in) :: pathname
+   logical                     :: system_issock
 
 DESCRIPTION
        The ischr(3f) function checks if path is a path to a character device.

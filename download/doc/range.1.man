@@ -1,5 +1,5 @@
 NAME
-       range(1f) - expand list of whole numbers where negative curve numbers designate ranges (1 -10 means 1 thru 10)
+       range(1f) - [M_strings] expand list of whole numbers where negative curve numbers designate ranges (1 -10 means 1 thru 10)
 SYNOPSIS
        range VALUES
 

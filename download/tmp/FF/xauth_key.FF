@@ -4,7 +4,7 @@ $ifdef TESTPRG90
 !===================================================================================================================================
 $DOCUMENT HELP -file xauth_key.1.man
 NAME
-   xauth_key(1f) - generate magic cookies for xauth
+   xauth_key(1f) - [M_random] generate magic cookies for xauth
 SYNOPSIS
    xauth_key [characters] [-n number_of_characters]
 DESCRIPTION

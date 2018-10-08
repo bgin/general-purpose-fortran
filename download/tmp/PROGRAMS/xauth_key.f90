@@ -12,7 +12,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'   xauth_key(1f) - generate magic cookies for xauth                             ',&
+'   xauth_key(1f) - [M_random] generate magic cookies for xauth                  ',&
 'SYNOPSIS                                                                        ',&
 '   xauth_key [characters] [-n number_of_characters]                             ',&
 'DESCRIPTION                                                                     ',&
@@ -36,7 +36,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    xauth_key(1f) - generate magic cookies for xauth
+!!    xauth_key(1f) - [M_random] generate magic cookies for xauth
 !!##SYNOPSIS
 !!
 !!    xauth_key [characters] [-n number_of_characters]
@@ -95,7 +95,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20171219>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Thu, Sep 20th, 2018 7:35:37 PM>',&
+'@(#)COMPILED:       Sun, Sep 23rd, 2018 5:17:00 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

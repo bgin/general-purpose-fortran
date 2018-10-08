@@ -39,6 +39,7 @@ append("modif.3.html");
 append("noesc.3.html");
 append("nospace.3.html");
 append("notabs.3.html");
+append("range.1.html");
 append("replace.3.html");
 append("reverse.3.html");
 append("s2c.3.html");

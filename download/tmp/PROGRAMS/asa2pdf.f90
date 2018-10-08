@@ -9,7 +9,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'    asa2pdf(1f) - [FILE FILTER]Convert text files with/without                  ',&
+'    asa2pdf(1f) - [FILE FILTER] Convert text files with/without                 ',&
 '                  ASA carriage control to an Adobe PDF file.                    ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
@@ -286,7 +286,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!     asa2pdf(1f) - [FILE FILTER]Convert text files with/without
+!!     asa2pdf(1f) - [FILE FILTER] Convert text files with/without
 !!                   ASA carriage control to an Adobe PDF file.
 !!
 !!##SYNOPSIS
@@ -572,7 +572,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    convert text files with ASA carriage return to Adobe PDF files>',&
 '@(#)VERSION:        2.0, 20170210>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Thu, Sep 20th, 2018 7:22:55 PM>',&
+'@(#)COMPILED:       Sun, Sep 23rd, 2018 5:16:09 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

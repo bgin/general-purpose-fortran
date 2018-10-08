@@ -1,5 +1,6 @@
 NAME
-  illusion [M_drawinc:banner] - draw a banner page with short labels at the compass points
+  illusion(3f) - [M_drawinc:banner] draw a banner page with short labels at the compass points
+
 SYNOPSIS
   subroutine illusion(top,bottom,left,right)
 
@@ -7,13 +8,16 @@ SYNOPSIS
    character(len=*),intent(in) :: bottom
    character(len=*),intent(in) :: left
    character(len=*),intent(in) :: right
+
 DESCRIPTION
    Draw a simple geometric illusion with short labels at the four compass points as a banner page
+
 OPTIONS
    TOP      short top banner label
    BOTTOM   short bottom banner label
    LEFT     short left banner label
    RIGHT    short right banner label
+
 EXAMPLE
   Sample program
 

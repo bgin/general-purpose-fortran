@@ -2,7 +2,10 @@ NAME
    system_isdir(3f) - [M_system] checks if argument is a directory path
 
 SYNOPSIS
-   logical function system_isdir()
+  logical function system_isdir(pathname)
+
+   character(len=*),intent(in) :: pathname
+   logical                     :: system_issock
 
 DESCRIPTION
        The isdir(3f) function checks if path is a path to a directory.

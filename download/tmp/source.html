@@ -4,6 +4,7 @@
 <meta name="keywords" content="Fortran, Fortran code, Fortran source code repository, Fortran library, Fortran archive,         " />
 <meta name="keywords" content="General Purpose Fortran, Fortran modules, Fortran examples                                       " />
 <meta name="keywords" content="Fortran Repository" />
+<meta name="keywords" content="Fortran Collection" />
 <style>
 body {xfont-style: italic}
 body { background-color:#FFF; color:#333; font-family:Verdana, Arial, Helvetica, sans-serif; font-size:1em; line-height:1.3em; }
@@ -66,6 +67,12 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_anyscalar::anyscalar_to_double(3f): convert integer or real parameter of any kind to doubleprecision<br/>
 	M_anyscalar::anyscalar_to_real(3f): convert integer or real parameter of any kind to real<br/>
 	M_anyscalar::anyinteger_to_128(3f): convert integer parameter of any kind to 128-bit integer<br/>
+</td>
+<tr><td><a href="M_anything.f90">M_anything.f90</a></td>
+<td>
+	M_anything::anyscalar_to_double(3f): convert integer or real parameter of any kind to doubleprecision<br/>
+	M_anything::anyscalar_to_real(3f): convert integer or real parameter of any kind to real<br/>
+	M_anything::anyinteger_to_128(3f): convert integer parameter of any kind to 128-bit integer<br/>
 </td>
 <tr><td><a href="M_bessel.f90">M_bessel.f90</a></td>
 <td>
@@ -223,6 +230,13 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 </td>
 <tr><td><a href="M_getopt_long.f90">M_getopt_long.f90</a></td>
 <td>
+</td>
+<tr><td><a href="M_hashkeys.f90">M_hashkeys.f90</a></td>
+<td>
+	M_hashkeys::sha256(3f): SHA-256 interface function<br/>
+	M_hashkeys::dirty_sha256(3f): Quick and dirty SHA-256 interface function (no bit-swapping).<br/>
+	M_hashkeys::crc32_hash_arr: CRC (Cyclic Redunancy Check) calculation<br/>
+	djb2(3f): call C routine djb2(3c) with a Fortran CHARACTER variable<br/>
 </td>
 <tr><td><a href="M_history.f90">M_history.f90</a></td>
 <td>
@@ -439,6 +453,9 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_exec::regfree(3f): release storage created by regcomp(3f) compiled regular expression<br/>
 	M_regex::regsub(3f): perform regex substitutions<br/>
 </td>
+<tr><td><a href="M_sha3.f90">M_sha3.f90</a></td>
+<td>
+</td>
 <tr><td><a href="M_slices.f90">M_slices.f90</a></td>
 <td>
 	M_slices::dl_slices(3f): Routine to plot data in 3-D overlay form.<br/>
@@ -583,6 +600,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_system::system_mkfifo(3f): call mkfifo(3c) to create a new FIFO special file<br/>
 	M_system::system_mkdir(3f): call mkdir(3c) to create empty directory<br/>
 	M_system::system_putenv(3f): call putenv(3c)<br/>
+	M_system::system_getenv(3f): call get_environment_variable(3f)<br/>
 	M_system::set_environment_variable(3f): call setenv(3c) to set environment variable<br/>
 	M_system::system_clearenv(3f): emulate clearenv(3c) to clear environment<br/>
 	M_system::system_unsetenv(3f): call unsetenv(3c) to remove variable from environment<br/>
@@ -715,7 +733,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_xyplot::plot_title(3f): allow user to add extra title lines by number<br/>
 	M_xyplot::plot_jut(3f): allow user to place text on screen<br/>
 	M_xyplot::plot_sz(3f): close and reopen window to new size if possible<br/>
-	M_xyplot ::plot_drawplot(3f): draw an xy plot<br/>
+	M_xyplot::plot_drawplot(3f): draw an xy plot<br/>
 	M_xyplot::plot_juparea(3f): parse parea command<br/>
 	M_xyplot::plot_jupage(3f): a good try at allowing mixing of PLT commands and vogle commands<br/>
 	M_xyplot::plot_id(3f): allow user to alter legend strings by number<br/>
@@ -958,6 +976,9 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	 Driver for reading a character from keyboard in raw I/O mode */<br/>
 	 Driver for reading a character from keyboard in raw I/O mode */<br/>
 	 Driver for reading a character from keyboard in raw I/O mode */<br/>
+</td>
+<tr><td><a href="C-M_hashkeys.c">C-M_hashkeys.c</a></td>
+<td>
 </td>
 <tr><td><a href="C-M_readline.c">C-M_readline.c</a></td>
 <td>

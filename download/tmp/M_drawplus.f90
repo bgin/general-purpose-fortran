@@ -2598,7 +2598,7 @@ end subroutine rdbox
 !===================================================================================================================================
 !>
 !!##NAME
-!!     rdpnt(3f): [M_drawplus::locator] reads coordinates of point locator clicked at
+!!     rdpnt(3f) - [M_drawplus:locator] reads coordinates of point locator clicked at
 !!
 !!##SYNOPSIS
 !!

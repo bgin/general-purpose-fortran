@@ -4,7 +4,7 @@ SYNOPSIS
   Public objects:
 
    use m_system, only : set_environment_variable, system_unsetenv, &
-   system_putenv
+   system_putenv, system_getenv
 
    use m_system, only :  system_intenv, system_readenv, system_clearenv
 
@@ -47,6 +47,7 @@ DESCRIPTION
    call -- Always check the return value.
 ENVIRONMENT ACCESS
        o  system_putenv(3f):     call putenv(3c)
+       o  system_getenv(3f):     function call to get_environment_variable(3f)
        o  system_unsetenv(3f):   call unsetenv(3c) to remove variable from environment
        o  set_environment_variable(3f): set environment variable by calling setenv(3c)
 

@@ -27,7 +27,7 @@
 ! Michael Quinlan.
 !>
 !!##NAME
-!!    M_generic_list(3f) - A Generic Linked List Implementation in Fortran 95
+!!    M_generic_list(3f) - [M_generic_list] A Generic Linked List Implementation in Fortran 95
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION

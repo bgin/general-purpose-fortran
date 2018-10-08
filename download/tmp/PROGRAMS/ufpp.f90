@@ -260,7 +260,7 @@
 !!    program cf
 !!    use M_kracken, only: kracken, rgets, lget
 !!    implicit none
-!!    $ID ENT cf(1f): convert multiple values between Celsius and Fahrenheit
+!!    $IDENT cf(1f): convert multiple values between Celsius and Fahrenheit
 !!    real,allocatable                :: val(:)
 !!    integer                         :: i, isum=0
 !!      call kracken('cf','-F -C -help .F. -version .F.' ) ! define and crack command line arguments
@@ -319,7 +319,7 @@
 !! <xmp>
 !!    subroutine help_usage(l_help)
 !!    implicit none
-!!    character(len=*),parameter     :: ident="@(#)help_usage(3f): prints help information"
+!!    character(len=*),parameter     :: ident="@ (#)help_usage(3f): prints help information"
 !!    logical,intent(in)             :: l_help
 !!    character(len=:),allocatable :: help_text(:)
 !!    integer                        :: i
@@ -395,7 +395,7 @@
 !!    program cf
 !!    use M_kracken, only: kracken, rgets, lget
 !!    implicit none
-!!    character(len=*),parameter::ident="@(#)cf(1f): convert multiple values between Celsius and Fahrenheit"
+!!    character(len=*),parameter::ident="@ (#)cf(1f): convert multiple values between Celsius and Fahrenheit"
 !!    real,allocatable                :: val(:)
 !!    integer                         :: i, isum=0
 !!      call kracken('cf','-F -C -help .F. -version .F.' ) ! define and crack command line arguments
@@ -3626,7 +3626,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        4.0: 20170502>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
-'@(#)COMPILED:       Thu, Sep 20th, 2018 7:21:19 PM>',&
+'@(#)COMPILED:       Sun, Sep 30th, 2018 10:01:37 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

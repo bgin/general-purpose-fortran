@@ -24,7 +24,7 @@ then
 EOF
       man -k .|
          expand |
-         env LC_ALL=C sort --ignore-leading-blanks --dictionary-order --ignore-case --ignore-nonprinting -k 2,2 -k 4,4 |
+         env LC_ALL=C sort --ignore-leading-blanks --dictionary-order --ignore-case --ignore-nonprinting -k 2,2 -k 4,4 -k 5,5|
          uniq|
          cat -n >> $TFILE
       EDIT=${FCEDIT:-${EDITOR:-${VISUAL:-vim}}}

@@ -194,12 +194,12 @@ application-specific.
 RFC 4180 formalized CSV. It defines the MIME type "text/csv", and
 CSV files that follow its rules should be very widely portable. Among
 its requirements: MS-DOS-style lines that end with (CR/LF) characters
-(optional for the last line).  An optional header record (there is no sure
+(optional for the last line). An optional header record (there is no sure
 way to detect whether it is present, so care is required when importing).
 Each record "should" contain the same number of comma-separated fields.
-Any field may be quoted (with double quotes).  Fields containing a
+Any field may be quoted (with double quotes). Fields containing a
 line-break, double-quote or commas should be quoted. (If they are not, the
-file will likely be impossible to process correctly).  A (double) quote
+file will likely be impossible to process correctly). A (double) quote
 character in a field must be represented by two (double) quote characters.
 
 The format can be processed by most programs that claim to read CSV
@@ -237,7 +237,7 @@ registered with the IANA.
 Rules typical of these and other "CSV" specifications and implementations
 are as follows: CSV is a delimited data format that has fields/columns
 separated by the comma character and records/rows terminated by
-newlines.  A CSV file does not require a specific character encoding,
+newlines  A CSV file does not require a specific character encoding,
 byte order, or line terminator format (some software does not support
 all line-end variations).  A record ends at a line terminator. However,
 line-terminators can be embedded as data within fields, so software

@@ -1,5 +1,5 @@
 NAME
-   anyscalar_to_double(3f) - [M_anyscalar] convert integer or real parameter of any kind to doubleprecision
+   anyscalar_to_double(3f) - [M_anything] convert integer or real parameter of any kind to doubleprecision
 
 SYNOPSIS
    pure elemental function anyscalar_to_double(valuein) result(d_out)
@@ -9,9 +9,9 @@ SYNOPSIS
 
 DESCRIPTION
 
-   This function uses polymorphism to allow arguments of different types
-   generically. It is used to create other procedures that can take
-   many scalar arguments as input options.
+   This function uses polymorphism to allow input arguments of different
+   types. It is used to create other procedures that can take many
+   scalar arguments as input options.
 
 OPTIONS
 
@@ -28,7 +28,7 @@ EXAMPLE
   Sample program
 
     program scalars
-    use M_anyscalar,     only : int128, real256
+    use M_anything,     only : int128, real256
     use iso_fortran_env, only : int8, int16, int32, int64
     use iso_fortran_env, only : real32, real64, real128
     implicit none
@@ -45,7 +45,7 @@ EXAMPLE
     contains
 
     function squarei(invalue) result (dvalue)
-    use M_anyscalar, only : anyscalar_to_double
+    use M_anything, only : anyscalar_to_double
     implicit none
     class(*),intent(in)  :: invalue
     doubleprecision      :: invalue_local

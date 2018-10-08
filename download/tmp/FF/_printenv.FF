@@ -1,7 +1,7 @@
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file _printenv.1.man
 NAME
-       _printenv(1f) - print all or part of environment in formats readable by various shells
+       _printenv(1f) - [M_system:ENVIRONMENT] print all or part of environment in formats readable by various shells
 SYNOPSIS
        _printenv [variable...] [-C|-B] 
        _printenv [--help|--version]

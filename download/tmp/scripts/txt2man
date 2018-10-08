@@ -242,7 +242,7 @@ BEGIN {
 }
 ####################################################################################################################################
 # line composed entirely of uppercase letters and spaces
-/^[[:upper:][:space:]]+$/ {
+/^[[:upper:]_[:space:]]+$/ {
 	# Section header
 	if ((in_bd + 0) == 1) {
 		in_bd = 0

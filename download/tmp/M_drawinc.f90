@@ -2,9 +2,11 @@ module M_drawinc
 !>
 !!##NAME
 !!       M_drawinc(3f) - [M_drawinc] various routines based on the M_draw(3fm) module included into a module
+!!
 !!##SYNOPSIS
 !!
 !!       Use M_drawinc, only : illusion
+!!
 !!##DESCRIPTION
 !!       Various routines that are based on the graphics module M_draw(3fm)
 !!       have been collected into a module to provide default interfaces.
@@ -17,7 +19,8 @@ contains
 !==================================================================================================================================!
 !>
 !!##NAME
-!!   illusion [M_drawinc:banner] - draw a banner page with short labels at the compass points
+!!   illusion(3f) - [M_drawinc:banner] draw a banner page with short labels at the compass points
+!!
 !!##SYNOPSIS
 !!
 !!   subroutine illusion(top,bottom,left,right)
@@ -26,13 +29,16 @@ contains
 !!    character(len=*),intent(in) :: bottom
 !!    character(len=*),intent(in) :: left
 !!    character(len=*),intent(in) :: right
+!!
 !!##DESCRIPTION
 !!    Draw a simple geometric illusion with short labels at the four compass points as a banner page
+!!
 !!##OPTIONS
 !!    TOP      short top banner label
 !!    BOTTOM   short bottom banner label
 !!    LEFT     short left banner label
 !!    RIGHT    short right banner label
+!!
 !!##EXAMPLE
 !!
 !!   Sample program

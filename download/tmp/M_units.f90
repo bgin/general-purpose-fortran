@@ -173,7 +173,7 @@
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 module m_units
-use M_anyscalar,only : anyscalar_to_real, anyscalar_to_double
+use M_anything,only : anyscalar_to_real, anyscalar_to_double
 implicit none                        ! require all variables to be declared
 private
 !  common trigonometric functions using degrees instead of radians for units

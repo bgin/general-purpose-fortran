@@ -1,6 +1,6 @@
 module M_csv
 use M_strings, only   : substitute, v2s
-use M_anyscalar, only : anyscalar_to_double
+use M_anything, only : anyscalar_to_double
 implicit none
 private
 character(len=1),public       :: G_separator   =','

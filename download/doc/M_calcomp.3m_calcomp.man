@@ -382,8 +382,8 @@ CALCOMP SUPPLEMENT
  of the following primary example program can be used as a guide as to
  how to nullify the affects of these differences.
 
-        II.  DIFFERENCES FROM 7600 CALCOMP LIBRARIES
-        --------------------------------------------
+        II. DIFFERENCES FROM 7600 CALCOMP LIBRARIES
+        -------------------------------------------
 
   1. For subroutines SYMBOL, AXIS, and LGAXS, the parameter used to
      specify text or title information (IBCD) has been changed to be

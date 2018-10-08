@@ -1,5 +1,5 @@
 NAME
-   clock(1f) - display a clock using the M_draw(3f) graphics module
+   clock(1f) - [M_draw] display a clock using the M_draw(3f) graphics module
 
 SYNOPSIS
    clock [SECONDS] [ -sz PIXELS ]

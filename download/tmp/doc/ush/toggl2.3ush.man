@@ -1,0 +1,59 @@
+NAME
+subroutine toggl2(verb,pars)
+
+SYNOPSIS
+subroutine toggl2(verb,pars)
+    TOGGL2() is a copy of the TOGGLE() routine that uses RETRV2() instead of
+    RETREV() so that the 'on' and 'off' keywords can be specified as Calculator
+    string expressions instead of fixed strings.
+
+SYNOPSIS
+    For users of the Language library TOGGLE() is an example for the common
+    problem of commands that have no parameters but are merely 'ON' or 'OFF'.
+    This routine helps you to easily create a command of the form:
+
+         command   # toggle from current state to opposite state.
+         command on # explicitly turn this command on
+         command off # explicitly turn this command off
+
+    TOGGL2() does the same thing as TOGGLE() except that now an additional
+    command syntax is permitted:
+
+         command $MODE
+
+    where $MODE is a valid Calculator string variable name or expression.
+
+      + If value is explicitly on or off, set appropriate string.
+      + if no value is specified, toggle on/off value.
+
+DESCRIPTION
+    After this routine is called the RETREV or FETCH procedures can be used to
+    query the dictionary entry 'verb_oo'. It will either be the string "on" or
+    the string "off".
+
+    character, intent=(in) :: verb*(*)
+        VERB is the command verb name, from 1 to 20 characters.
+    character, intent=(in) :: pars*(*)
+        PARS is the remaining parameter part of the command.
+
+DEPENDENCIES
+      + retrv2
+      + parse
+      + store
+      + len_trim
+      + jun
+
+EXAMPLES
+    See the Programmer's example for a simple code with a call to TOGGLE() in
+    it. TOGGL2() is used in much the same way but with the Calculator library
+    loaded.
+
+SEE ALSO
+    see PARSE().
+
+REFERENCES
+      + NONE.
+
+AUTHOR
+      + John S. Urban
+

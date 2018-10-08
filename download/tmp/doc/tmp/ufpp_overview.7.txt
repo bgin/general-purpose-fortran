@@ -202,7 +202,7 @@ string declaration
        program cf
        use M_kracken, only: kracken, rgets, lget
        implicit none
-       $ID ENT cf(1f): convert multiple values between Celsius and Fahrenheit
+       $IDENT cf(1f): convert multiple values between Celsius and Fahrenheit
        real,allocatable                :: val(:)
        integer                         :: i, isum=0
          call kracken('cf','-F -C -help .F. -version .F.' ) ! define and crack command line arguments
@@ -261,7 +261,7 @@ The output from "ufpp F90 -i FILE -system" is:
 
        subroutine help_usage(l_help)
        implicit none
-       character(len=*),parameter     :: ident="@(#)help_usage(3f): prints help information"
+       character(len=*),parameter     :: ident="@ (#)help_usage(3f): prints help information"
        logical,intent(in)             :: l_help
        character(len=:),allocatable :: help_text(:)
        integer                        :: i
@@ -337,7 +337,7 @@ The output from "ufpp F90 -i FILE -system" is:
        program cf
        use M_kracken, only: kracken, rgets, lget
        implicit none
-       character(len=*),parameter::ident="@(#)cf(1f): convert multiple values between Celsius and Fahrenheit"
+       character(len=*),parameter::ident="@ (#)cf(1f): convert multiple values between Celsius and Fahrenheit"
        real,allocatable                :: val(:)
        integer                         :: i, isum=0
          call kracken('cf','-F -C -help .F. -version .F.' ) ! define and crack command line arguments

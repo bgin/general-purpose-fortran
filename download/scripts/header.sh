@@ -10,6 +10,7 @@ cat <<EOF
 <meta name="keywords" content="Fortran, Fortran code, Fortran source code repository, Fortran library, Fortran archive,         " />
 <meta name="keywords" content="General Purpose Fortran, Fortran modules, Fortran examples                                       " />
 <meta name="keywords" content="Fortran Repository" />
+<meta name="keywords" content="Fortran Collection" />
 EOF
 cat <<\EOF
 <style>

@@ -2,7 +2,10 @@ NAME
    system_islnk(3f) - [M_system] checks if argument is a link
 
 SYNOPSIS
-   logical function system_islnk()
+   logical function system_islnk(pathname)
+
+   character(len=*),intent(in) :: pathname
+   logical                     :: system_islnk
 
 DESCRIPTION
        The islnk(3f) function checks if path is a path to a link.

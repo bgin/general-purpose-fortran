@@ -9,14 +9,14 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'    slice(1f) - display a grid of Z values with a 3D view                       ',&
+'    slice(1f) - [M_slices] display a grid of Z values with a 3D view            ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '    slice -f FILENAME -d DEVICE                                                 ',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
 '   Given a file that defines a grid of Z values display each row as a           ',&
-'   curve with the DL_SLICE(3f) routine with a 3D view.                          ',&
+'   curve with the DL_SLICES(3f) routine with a 3D view.                         ',&
 '                                                                                ',&
 '   Enter "h" in graphics window for help on controlling the displayed           ',&
 '   curves''                                                                     ',&
@@ -39,7 +39,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!     slice(1f) - display a grid of Z values with a 3D view
+!!     slice(1f) - [M_slices] display a grid of Z values with a 3D view
 !!
 !!##SYNOPSIS
 !!
@@ -47,7 +47,7 @@ end subroutine help_usage
 !!
 !!##DESCRIPTION
 !!    Given a file that defines a grid of Z values display each row as a
-!!    curve with the DL_SLICE(3f) routine with a 3D view.
+!!    curve with the DL_SLICES(3f) routine with a 3D view.
 !!
 !!    Enter "h" in graphics window for help on controlling the displayed
 !!    curves'
@@ -79,7 +79,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20180617>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Thu, Sep 20th, 2018 7:45:54 PM>',&
+'@(#)COMPILED:       Sun, Sep 23rd, 2018 5:17:40 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

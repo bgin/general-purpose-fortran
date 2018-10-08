@@ -9,7 +9,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'     tabulate(1f) - write out a row of numbers and a text-based scaled graph    ',&
+'     tabulate(1f) - [M_messages] write out a row of numbers and a text-based scaled graph',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '     tabulate -min 0 -max 100 -fill '' '' -len 0                                ',&
@@ -136,7 +136,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!      tabulate(1f) - write out a row of numbers and a text-based scaled graph
+!!      tabulate(1f) - [M_messages] write out a row of numbers and a text-based scaled graph
 !!
 !!##SYNOPSIS
 !!
@@ -274,7 +274,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        Thu Nov 23,  2000>',&
 '@(#)AUTHORS:        John S. Urban>',&
 '@(#)LANGUAGE:       Fortran>',&
-'@(#)COMPILED:       Thu, Sep 20th, 2018 7:19:59 PM>',&
+'@(#)COMPILED:       Sun, Sep 23rd, 2018 5:18:08 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

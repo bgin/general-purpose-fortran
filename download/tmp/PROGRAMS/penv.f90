@@ -9,7 +9,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'       penv(1f) - print all or part of environment in formats readable by various shells',&
+'       penv(1f) - [M_system:ENVIRONMENT] print all or part of environment in formats readable by various shells',&
 'SYNOPSIS                                                                        ',&
 '       penv [variable...] [-C|-B|-v] [-p PREFIX]                                ',&
 '       penv [--help|--version]                                                  ',&
@@ -68,7 +68,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!        penv(1f) - print all or part of environment in formats readable by various shells
+!!        penv(1f) - [M_system:ENVIRONMENT] print all or part of environment in formats readable by various shells
 !!##SYNOPSIS
 !!
 !!        penv [variable...] [-C|-B|-v] [-p PREFIX]
@@ -139,7 +139,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)COPYRIGHT:      Copyright (C) 2016 John S. Urban>',&
-'@(#)COMPILED:       Thu, Sep 20th, 2018 7:18:45 PM>',&
+'@(#)COMPILED:       Sun, Sep 23rd, 2018 5:16:40 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

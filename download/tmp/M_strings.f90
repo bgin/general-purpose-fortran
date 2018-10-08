@@ -4176,13 +4176,13 @@ end function dbles_s2v
 !!
 !!##OPTIONS
 !!       o  VALUE - input value to be converted to a string
+!!       o  FMT - You may specify a specific format that produces a string up to the length of CHARS; optional.
+!!
 !!##RETURNS
 !!       o  CHARS - returned string representing input value, must be at least 23 characters long;
 !!                  or what is required by optional FMT if longer.
 !!       o  ILEN - position of last non-blank character in returned string; optional.
-!!       o  IERR - If not zero, error occurred.; optional.
-!!       o  FMT - You may specify a specific format that produces a string up to the length of CHARS; optional.
-!!
+!!       o  IERR - If not zero, error occurred; optional.
 !!##EXAMPLE
 !!
 !!
@@ -4240,6 +4240,7 @@ character(len=:),allocatable             :: fmt_local
          write(chars,fmt_local,iostat=err_local)gval
       type is (real)
          fmt_local='(bz,g23.10e3)'
+         fmt_local='(bz,g0.8e3)'
          if(fmt.ne.'') fmt_local=fmt
          write(chars,fmt_local,iostat=err_local)gval
       type is (doubleprecision)

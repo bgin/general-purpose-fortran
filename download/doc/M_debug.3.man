@@ -2,7 +2,14 @@ NAME
    M_debug(3fm) - [M_debug] a collection of Fortran routines for supporting the development of
                   unit tests, and providing error processing and debugging procedures.
 SYNOPSIS
-   The M_debug(3fm) Fortran module provides procedures and data useful in providing error processing and debugging capabilities.
+   The M_debug(3fm) Fortran module provides procedures and data useful
+   in providing error processing and debugging capabilities.
+
+QUOTE
+
+Do not let your victories go to your head, nor let your failures go to
+your heart.
+
 DESCRIPTION
 
    fstop(3f)             calls 'STOP VALUE' passing in a value (1-32), with optional message
@@ -14,9 +21,17 @@ DESCRIPTION
    unit_check_good(3f)   call command "goodbad NAME good"
    unit_check_bad(3f)    call command "goodbad NAME bad" and stop program
 
-   The existence of a command called "goodbad" is assumed. This is generally a script that makes entries for each unit in an
-   SQLite data file which is then used to create CSV and HTML reports on the status of each unit. A sample goodbad(1) command
-   written in the bash(1) shell and using the sqlite3(1) command should be included in this distribution.
+   The existence of a command called "goodbad" is assumed. This is
+   generally a script that makes entries for each unit in an SQLite data
+   file which is then used to create CSV and HTML reports on the status of
+   each unit. A sample goodbad(1) command written in the bash(1) shell and
+   using the sqlite3(1) command should be included in this distribution.
+
+   These are often combined with the M_hashkeys(3fm) and various math
+   and statistical routines to create various unit tests.
+
+   The intrinsics ANY(3f) and ALL(3f) are particularly useful in calls
+   to unit_check(3f).
 
 EXAMPLE
   Sample program:

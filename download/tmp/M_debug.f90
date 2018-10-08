@@ -4,7 +4,14 @@
 !!                   unit tests, and providing error processing and debugging procedures.
 !!##SYNOPSIS
 !!
-!!    The M_debug(3fm) Fortran module provides procedures and data useful in providing error processing and debugging capabilities.
+!!    The M_debug(3fm) Fortran module provides procedures and data useful
+!!    in providing error processing and debugging capabilities.
+!!
+!!##QUOTE
+!!
+!! Do not let your victories go to your head, nor let your failures go to
+!! your heart.
+!!
 !!##DESCRIPTION
 !!
 !!    fstop(3f)             calls 'STOP VALUE' passing in a value (1-32), with optional message
@@ -16,9 +23,17 @@
 !!    unit_check_good(3f)   call command "goodbad NAME good"
 !!    unit_check_bad(3f)    call command "goodbad NAME bad" and stop program
 !!
-!!    The existence of a command called "goodbad" is assumed. This is generally a script that makes entries for each unit in an
-!!    SQLite data file which is then used to create CSV and HTML reports on the status of each unit. A sample goodbad(1) command
-!!    written in the bash(1) shell and using the sqlite3(1) command should be included in this distribution.
+!!    The existence of a command called "goodbad" is assumed. This is
+!!    generally a script that makes entries for each unit in an SQLite data
+!!    file which is then used to create CSV and HTML reports on the status of
+!!    each unit. A sample goodbad(1) command written in the bash(1) shell and
+!!    using the sqlite3(1) command should be included in this distribution.
+!!
+!!    These are often combined with the M_hashkeys(3fm) and various math
+!!    and statistical routines to create various unit tests.
+!!
+!!    The intrinsics ANY(3f) and ALL(3f) are particularly useful in calls
+!!    to unit_check(3f).
 !!
 !!##EXAMPLE
 !!
@@ -141,7 +156,9 @@ contains
 !===================================================================================================================================
 subroutine stderr(message,generic)
 implicit none
+
 character(len=*),parameter::ident="@(#)M_debug::stderr(3f): writes a message to standard error using a standard f2003 method"
+
 character(len=*),intent(in)  :: message
 class(*),intent(in),optional :: generic
    if(present(generic))then
@@ -216,7 +233,9 @@ end subroutine stderr
 !!
 !===================================================================================================================================
 subroutine fstop(ierr,stdout,stderr)
+
 character(len=*),parameter::ident="@(#)M_debug::fstop(3f): calls 'STOP VALUE' passing in a value (1-32), with optional message"
+
 integer,intent(in)                   :: ierr
 character(len=*),optional,intent(in) :: stdout
 character(len=*),optional,intent(in) :: stderr
@@ -381,7 +400,9 @@ end subroutine fstop
 !!     myroutine.3                                                                    2017/02/03 07:23:40  1
 !===================================================================================================================================
 subroutine unit_check(name,logical_expression,message)
+
 character(len=*),parameter::ident="@(#)M_debug::unit_check(3f):if .not.expression call 'goodbad NAME bad' & stop program"
+
 character(len=*),intent(in)          :: name
 logical,intent(in)                   :: logical_expression
 character(len=*),intent(in),optional :: message
@@ -454,7 +475,9 @@ end subroutine unit_check
 !!     end program demo_unit_check_start
 !===================================================================================================================================
 subroutine unit_check_start(name,options)
+
 character(len=*),parameter::ident="@(#)M_debug::unit_check_start(3f): call 'goodbad NAME start'"
+
 character(len=*),intent(in)          :: name
 character(len=*),intent(in),optional :: options
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -513,7 +536,9 @@ end subroutine unit_check_start
 !!     end program demo_unit_check_bad
 !===================================================================================================================================
 subroutine unit_check_bad(name,options)
+
 character(len=*),parameter::ident="@(#)M_debug::unit_check_bad(3f): call 'goodbad NAME bad'"
+
 character(len=*),intent(in)          :: name
 character(len=*),intent(in),optional :: options
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -538,8 +563,8 @@ end subroutine unit_check_bad
 !!
 !!    subroutine unit_check_good(name,options)
 !!
-!!     character(len=*),intent(in) :: name
-!!     character(len=*),intent(in) :: options
+!!     character(len=*),intent(in)          :: name
+!!     character(len=*),intent(in),optional :: options
 !!
 !!##DESCRIPTION
 !!
@@ -570,7 +595,9 @@ end subroutine unit_check_bad
 !!     end program demo_unit_check_good
 !===================================================================================================================================
 subroutine unit_check_good(name,options)
+
 character(len=*),parameter::ident="@(#)M_debug::unit_check_good(3f): call 'goodbad NAME good'"
+
 character(len=*),intent(in)          :: name
 character(len=*),intent(in),optional :: options
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -634,7 +661,9 @@ end subroutine unit_check_good
 !!      John S. Urban
 !===================================================================================================================================
 subroutine pdec(string)
+
 character(len=*),parameter::ident="@(#)M_debug::pdec(3f): write ASCII Decimal Equivalent (ADE) numbers vertically beneath string"
+
 character(len=*),intent(in) :: string  ! the string to print
    integer :: ilen  ! number of characters in string to print
    integer :: i     ! counter used to step thru string

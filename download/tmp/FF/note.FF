@@ -1,7 +1,7 @@
 $!==================================================================================================================================
 $DOCUMENT HELP -file note.1.man
 NAME
-    note(1f) - print large block letters
+    note(1f) - [M_messages] print large block letters
 
 SYNOPSIS
     note STRING(S) [-font FontName] |-test|-help|-version

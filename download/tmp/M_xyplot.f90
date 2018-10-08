@@ -1093,7 +1093,7 @@ end subroutine plot_setfill
 !!
 !!      program T_plot_fetch
 !!      parameter(IPvalue=255)
-!!      call store('VERB_KEYWORD','This is a value','add',ierr)
+!!      call store('VERB_KEYWORD','This is a value','define',ierr)
 !!      write(*,*)'VALUE is ',plot_fetch('VERB_KEYWORD')
 !!      end program T_plot_fetch
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -1193,67 +1193,67 @@ real              :: rtemp
    iseeq=5
    ifooq2=0   ! default file number specified on f command
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-   call parse('aspect   ','-oo 1 ','add')
-   call parse('c        ','-oo ','add')
-   call parse('exact    ','-oo off ','add')
+   call parse('aspect   ','-oo 1 ','define')
+   call parse('c        ','-oo ','define')
+   call parse('exact    ','-oo off ','define')
    call parse('grid     ',' -xl 5 -xt 4 -yl 5 -yt 4 -minor off-oo on -tx 1 -ty 1 -txx 1 -tyy 1 &
-                          & -major on -bg 0 -mg 0 -fg 7 -box off -w 7','add')
-   call parse('right    ','-oo -m 0 -b 0 -units 0   ' ,'add')
-   call parse('hcopy    ','-oo ppostscript -f "$STR(""hcopy_%."",$HDEVICE)" -sz -obj' ,'add')
-   call parse('zoom     ','-oo off ','add')
-   call parse('top      ','-oo -m 0 -b 0 -units 0   ' ,'add')
-   call parse('le       ','-oo off  ','add')
-   call parse('ivp      ','-oo off  ','add')
+                          & -major on -bg 0 -mg 0 -fg 7 -box off -w 7','define')
+   call parse('right    ','-oo -m 0 -b 0 -units 0   ' ,'define')
+   call parse('hcopy    ','-oo ppostscript -f "$STR(""hcopy_%."",$HDEVICE)" -sz -obj' ,'define')
+   call parse('zoom     ','-oo off ','define')
+   call parse('top      ','-oo -m 0 -b 0 -units 0   ' ,'define')
+   call parse('le       ','-oo off  ','define')
+   call parse('ivp      ','-oo off  ','define')
    call parse('id       ','-oo -t -c -w -m -d -n -on -off -fx on -fn futura.l -ch ID_CHARS -f &
-                           & -W 2 -l "#N#" -sz  -start 1 -grid .false.','add')
-   call parse('page     ','-oo 0 8.5 0 11','add')
-   call parse('parea    ','-oo -rows 0 -cols 0 -a 1 -g 0','add')
-   call parse('plot     ','-oo -vs -f -z -idonly -v -c -e 0%','add')
-   call parse('relate   ','-oo -dual off -m 1 -b 0','add')
-   call parse('setdash  ','-oo -p ','add')
-   call parse('setmark  ','-oo -p -fill -sz -fn futura.l','add')
-   call parse('sz       ','-oo 800 600 -p 0','add')
-   call parse('title    ','-oo -l 1 -fn futura.l -off "#N#" -c 7 -fx off -ch TITLE_CHARS -w 4','add')
-   call parse('xlabel   ','-oo -fn futura.l -ch 40 -fx off -fmt -off "#N#" -w 3 -O 0','add')
-   call parse('xlog     ','-oo off  -type decade','add')
-   call parse('xmax     ','-oo 123.456 -fn futura.l -w 3','add')
-   call parse('xmin     ','-oo 123.456 -fn futura.l -ch 60 -fx off -w 3 -R "#N#" -r "#N#" -> "#N#"','add')
-   call parse('ylabel   ','-oo -fn futura.l -fmt -w 3 -O 90 -off "#N#"','add')
-   call parse('ylog     ','-oo off -type decade ','add')
-   call parse('ymax     ','-oo 123.456 -fn futura.l -w 3','add')
-   call parse('ymin     ','-oo 123.456 -fn futura.l -w 3','add')
-   call parse('xlabel2  ','-oo -fn futura.l -fmt -off "#N#" -O 0','add')
-   call parse('xmax2    ','-oo 123.456 -fn futura.l','add')
-   call parse('xmin2    ','-oo 123.456 -fn futura.l','add')
-   call parse('ylabel2  ','-oo -fn futura.l -off "#N#" -w 3 -fmt -O 90 ','add')
-   call parse('ymax2    ','-oo 123.456 -fn futura.l -w 3','add')
-   call parse('ymin2    ','-oo 123.456 -fn futura.l -w 3','add')
-   call parse('t        ','-oo -l -p -c -j -box -sz -on -off -fn -a -asz 3','add') ! print text in graphics area
-   call parse('d        ','-oo -f ','add')
-   call parse('idbox    ','-oo -p default -c 0 -s -box -999 ','add')
+                           & -W 2 -l "#N#" -sz  -start 1 -grid .false.','define')
+   call parse('page     ','-oo 0 8.5 0 11','define')
+   call parse('parea    ','-oo -rows 0 -cols 0 -a 1 -g 0','define')
+   call parse('plot     ','-oo -vs -f -z -idonly -v -c -e 0%','define')
+   call parse('relate   ','-oo -dual off -m 1 -b 0','define')
+   call parse('setdash  ','-oo -p ','define')
+   call parse('setmark  ','-oo -p -fill -sz -fn futura.l','define')
+   call parse('sz       ','-oo 800 600 -p 0','define')
+   call parse('title    ','-oo -l 1 -fn futura.l -off "#N#" -c 7 -fx off -ch TITLE_CHARS -w 4','define')
+   call parse('xlabel   ','-oo -fn futura.l -ch 40 -fx off -fmt -off "#N#" -w 3 -O 0','define')
+   call parse('xlog     ','-oo off  -type decade','define')
+   call parse('xmax     ','-oo 123.456 -fn futura.l -w 3','define')
+   call parse('xmin     ','-oo 123.456 -fn futura.l -ch 60 -fx off -w 3 -R "#N#" -r "#N#" -> "#N#"','define')
+   call parse('ylabel   ','-oo -fn futura.l -fmt -w 3 -O 90 -off "#N#"','define')
+   call parse('ylog     ','-oo off -type decade ','define')
+   call parse('ymax     ','-oo 123.456 -fn futura.l -w 3','define')
+   call parse('ymin     ','-oo 123.456 -fn futura.l -w 3','define')
+   call parse('xlabel2  ','-oo -fn futura.l -fmt -off "#N#" -O 0','define')
+   call parse('xmax2    ','-oo 123.456 -fn futura.l','define')
+   call parse('xmin2    ','-oo 123.456 -fn futura.l','define')
+   call parse('ylabel2  ','-oo -fn futura.l -off "#N#" -w 3 -fmt -O 90 ','define')
+   call parse('ymax2    ','-oo 123.456 -fn futura.l -w 3','define')
+   call parse('ymin2    ','-oo 123.456 -fn futura.l -w 3','define')
+   call parse('t        ','-oo -l -p -c -j -box -sz -on -off -fn -a -asz 3','define') ! print text in graphics area
+   call parse('d        ','-oo -f ','define')
+   call parse('idbox    ','-oo -p default -c 0 -s -box -999 ','define')
    call parse('ban      ','-oo -ch 80 -w 4 -fx off -fn futura.l -br $PLTBR -bm $PLTBM -bl $PLTBL &
                                                               & -tr $PLTTR -tm $PLTTM -tl $PLTTL &
                                                            & -lt $PLTLT -lm $PLTLM -lb $PLTLB &
-                                                           & -rt $PLTRT -rm $PLTRM -rb $PLTRB' ,'add')
-   call parse('echoall  ','-oo off','add')
-   call parse('print    ','-oo ','add')
-   call parse('reset    ','-oo ','add')
+                                                           & -rt $PLTRT -rm $PLTRM -rb $PLTRB' ,'define')
+   call parse('echoall  ','-oo off','define')
+   call parse('print    ','-oo ','define')
+   call parse('reset    ','-oo ','define')
    call parse('header   ','-oo -code "#N#" -name "#N# " -node "#N#" -subnode "#N#" -ternode "#N#" -units "#N#" &
-                          & -alpha "#N#" -time "#N#" -points "#N#" -stat "#N#" -f -msg 6 -alpha2 "#N#" -alpha3 "#N#"','add')
-   call parse('help     ','-oo -t -f " " ->','add')
-   call parse('hue      ','-oo -rgb -hls -hsv ','add')
-   call parse('math     ','-oo -t -o -rec 0 ->','add')
-   call parse('p        ','-oo -type text','add')
-   call parse('read     ','-oo ','add')
-   call parse('save     ','-oo " " -t -list -type binary -ver 2','add')
-   call parse('set      ','-oo','add')
-   call parse('units    ','-oo -t -upper "#N#"','add')
-   call parse('seefont  ','-oo ','add')
-   call parse('report   ','-oo on ','add')
-   call parse(';        ','-oo ','add')
+                          & -alpha "#N#" -time "#N#" -points "#N#" -stat "#N#" -f -msg 6 -alpha2 "#N#" -alpha3 "#N#"','define')
+   call parse('help     ','-oo -t -f " " ->','define')
+   call parse('hue      ','-oo -rgb -hls -hsv ','define')
+   call parse('math     ','-oo -t -o -rec 0 ->','define')
+   call parse('p        ','-oo -type text','define')
+   call parse('read     ','-oo ','define')
+   call parse('save     ','-oo " " -t -list -type binary -ver 2','define')
+   call parse('set      ','-oo','define')
+   call parse('units    ','-oo -t -upper "#N#"','define')
+   call parse('seefont  ','-oo ','define')
+   call parse('report   ','-oo on ','define')
+   call parse(';        ','-oo ','define')
 
-   call parse('quit     ','-oo -name skull','add')
-   call parse('show     ','-oo -verbs .false. -width 0','add')
+   call parse('quit     ','-oo -name skull','define')
+   call parse('show     ','-oo -verbs .false. -width 0','define')
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
    LLQ(ldebugq)=.false.     ! debug mode
    LLQ(ibafxedq)=.false.    ! ban    text is proportionally spaced
@@ -1274,15 +1274,15 @@ real              :: rtemp
    itumaxq=0              ! index of highest non-blank text line for t command
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 !  special direct stores into the command dictionary using STORE instead of PARSE
-   call store('label_w','3','add',ier)
-   call store('min_w','3','add',ier)
+   call store('label_w','3','define',ier)
+   call store('min_w','3','define',ier)
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-   call store('p_oo',char(07),'add',ier) ! default pause string is bell character
-   call store('title_01',' ','add',ier)  ! just make sure enough room in dictionary
-   call store('title_02',' ','add',ier)
-   call store('title_03',' ','add',ier)
-   call store('title_04',' ','add',ier)
-   call store('title_05',' ','add',ier)
+   call store('p_oo',char(07),'define',ier) ! default pause string is bell character
+   call store('title_01',' ','define',ier)  ! just make sure enough room in dictionary
+   call store('title_02',' ','define',ier)
+   call store('title_03',' ','define',ier)
+   call store('title_04',' ','define',ier)
+   call store('title_05',' ','define',ier)
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 !  set up pen defaults
    call xy_resetpens()
@@ -1315,9 +1315,9 @@ real              :: rtemp
    iforeq=7                          ! default foreground color is white
    ibackq=0                          ! default background color is black
    imidlq=0                          ! default middleground color value
-   call store('label_fn','futura.l','add',ier)
-   call store('min_fn','futura.l','add',ier)
-   call store('idbox_p','default','add',ier)
+   call store('label_fn','futura.l','define',ier)
+   call store('min_fn','futura.l','define',ier)
+   call store('idbox_p','default','define',ier)
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
    ilongq2=0                             ! number of places reserved for numeric y-labels
    call stuff('FALSE',1.0d0,'')         ! a handy mnemonic
@@ -1411,8 +1411,8 @@ real              :: rtemp
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 !  aliases for commands or simple commands with no keyword  parameters
 !  look up name verb_oo to see if it is in dictionary or not, so need these stub names
-   call store('info_oo    ','13 ','add',ier)  ! info command
-   call store('cd_oo      ',' 8 ','add',ier)  ! alias for chdir
+   call store('info_oo    ','13 ','define',ier)  ! info command
+   call store('cd_oo      ',' 8 ','define',ier)  ! alias for chdir
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 end subroutine xy_init_default
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -1618,7 +1618,7 @@ end function xy_noclose
 !===================================================================================================================================
 subroutine plot_set_xmin(name,imaxv)
 use M_journal, only : journal
-use m_kracken, only: store, IPvalue
+use M_kracken, only: store, IPvalue
 use M_calculator_plus, only : inum0, strgar2
 implicit none
 
@@ -1714,10 +1714,10 @@ integer                :: lennum
    endif
 !=======================================================================--------
    temp1=name(:imaxv)//'_fn'                         ! create xmin_fn so easy to find font
-   call store('min_fn',plot_fetch(temp1(:i3)),'no_add',ier)
+   call store('min_fn',plot_fetch(temp1(:i3)),'replace',ier)
 !=======================================================================--------
    temp1=name(:imaxv)//'_w'                          ! create min_w so easy to find width
-   call store('min_w',plot_fetch(temp1(:i2)),'no_add',ier)
+   call store('min_w',plot_fetch(temp1(:i2)),'replace',ier)
 !=======================================================================--------
 end subroutine plot_set_xmin
 !===================================================================================================================================
@@ -1867,7 +1867,7 @@ end subroutine plot_setmark
 subroutine plot_page_aspect()
 !     1992 John S. Urban
 use M_journal,         only : journal
-use m_kracken,         only : store
+use M_kracken,         only : store
 use M_calculator_plus, only : rnum0
 implicit none
 
@@ -1879,7 +1879,7 @@ real              :: shape
    shape=rnum0(plot_fetch('aspect_oo'))
    if(shape.le.0)then
       call journal('*aspect* ratio <= 0, reset to 1')
-      call store('aspect_oo','1','no_add',ier)
+      call store('aspect_oo','1','replace',ier)
       call xy_aspct(0.0,1.0,0.0,1.0)
    else
       call xy_aspct(0.0,shape,0.0,1.0)
@@ -2135,7 +2135,7 @@ subroutine plot_title()
 !     store them in unused part of language dictionary
 !     NOTE: assume they are stored sequentially when printing
 !     and stop printing when a blank title line is encountered
-use m_kracken, only: store,current_command_length
+use M_kracken, only: store,current_command_length
 use M_calculator_plus, only : inum0
 implicit none
 
@@ -2156,7 +2156,7 @@ integer           :: lennum
       if(current_command_length.le.0)then ! no parameters were specified, clear titles
          do 10 i10=1,10  ! assume no more than 10 title lines
             write(name,'(''title_'',i2.2)')i10
-            call store(name,' ','add',ier)
+            call store(name,' ','define',ier)
 10       continue
 !======================================================================
       elseif( plot_fetch('title_off').eq.' ')then   ! flag to no display normal title lines
@@ -2172,7 +2172,7 @@ integer           :: lennum
          else
             iline=max(1,iline)
             write(name,'(''title_'',i2.2)')iline
-            call store(name,temp1q,'add',ier)
+            call store(name,temp1q,'define',ier)
          endif
 !======================================================================
       endif
@@ -2451,9 +2451,10 @@ end subroutine plot_jut
 !===================================================================================================================================
 subroutine plot_sz()
 use M_calculator_plus, only : strgar2
-use M_journal, only: journal
-use M_system,  only: set_environment_variable
+use M_journal,         only : journal
+use M_system,          only : set_environment_variable
 use M_draw
+use M_kracken,         only : store
 implicit none
 
 character(len=*),parameter::ident="@(#)M_xyplot::plot_sz(3f): close and reopen window to new size if possible"
@@ -2529,7 +2530,7 @@ real                        :: shape
 !-----------------------------------------------------------------------
    shape=real(iwidth)/real(iheight)
    call xy_aspct(0.0,shape,0.0,1.0)
-   call xy_storer('aspect_oo',shape,'no_add',ierr)
+   call store('aspect_oo',shape,'replace',ierr)
    call plot_clear('all')                               ! clear and flush
    call xy_setsize('-1 -1 -1 -1')                     ! reset so X11 and tek device do not set output device sizes for hcopy
    call xy_jumapc('reload')                           ! reload PLT color table
@@ -2543,7 +2544,7 @@ use M_draw
 use M_calculator_plus, only : inum0, rnum0
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot ::plot_drawplot(3f): draw an xy plot"
+character(len=*),parameter::ident="@(#)M_xyplot::plot_drawplot(3f): draw an xy plot"
 
 !     1989 John S. Urban
 logical,intent(in)         :: lclear                                 ! flag to not clear if creating a segment
@@ -2966,7 +2967,7 @@ subroutine plot_id(icmdlen)
 ! 1992 John S. Urban
 
 use M_journal, only : journal
-use m_kracken, only: lget
+use M_kracken, only: lget
 use M_calculator_plus, only : inum0, strgar2, rnum0
 use M_strings, only : listout
 implicit none
@@ -3425,7 +3426,7 @@ end subroutine xy_fxed
 subroutine xy_init_graphics()
 use M_journal,    only : journal
 use m_calculator, only : stuffa
-use m_kracken,    only : iget,sget
+use M_kracken,    only : iget, sget, store
 use M_draw
 use M_drawplus,   only : page
 implicit none
@@ -3508,7 +3509,7 @@ real               :: yy
    call getdisplaysize(xx,yy)                   ! get screen size in terms of raster units
    shape=xx/yy                                  ! determine initial aspect ratio of drawing surface and set drawing area accordingly
    call xy_aspct(0.0,shape,0.0,1.0)
-   call xy_storer('aspect_oo',shape,'no_add',ierr)           ! store current shape into dictionary
+   call store('aspect_oo',shape,'replace',ierr)              ! store current shape into dictionary
    call centertext(.false.)                                  ! do not center text
    call vsetflush(.false.)                                   ! turn off automatic flushing
    call vflush()                                             ! forces a flush
@@ -6410,7 +6411,7 @@ end subroutine xy_listout3
 !!       + retrev
 !! SEE ALSO
 !!
-!!     see PARSE(),RETREV(),FETCH(),STORE(),xy_storer(),plot_fetch(),plot_toggle().
+!!     see PARSE(),RETREV(),FETCH(),STORE(), plot_fetch(),plot_toggle().
 !!
 !! REFERENCES
 !! AUTHOR
@@ -6515,7 +6516,7 @@ end subroutine xy_retrv2
 !! -------------------------------------------------------------------------------
 subroutine plot_toggle(verb,pars)
 use M_journal, only : journal
-use m_kracken, only: parse, store, IPvalue, IPverb
+use M_kracken, only: parse, store, IPvalue, IPverb
 implicit none
 
 character(len=*),parameter::ident="@(#)M_xyplot::plot_toggle(3f): copy of TOGGLE that uses xy_retrv2 instead of RETREV"
@@ -6533,8 +6534,8 @@ integer            :: ilenv
       ilenp=len(pars)
       tempv=verb(:ilenv)//'_oo'
       call xy_retrv2(tempv,oldval,ilen,ier)             ! store current value
-      call parse(verb(:ilenv),' -oo','no_add')       ! clear any old value
-      call parse(verb(:ilenv),pars(:ilenp),'no_add') ! process user command
+      call parse(verb(:ilenv),' -oo','replace')       ! clear any old value
+      call parse(verb(:ilenv),pars(:ilenp),'replace') ! process user command
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
       call xy_retrv2(tempv(:ilenv+3),value,ilen,ier) ! get parameter string verb_oo
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -6562,64 +6563,6 @@ integer            :: ilenv
       endif
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 end subroutine plot_toggle
-!===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
-!===================================================================================================================================
-!>
-!!                                                  Language Library Version 5.0.0
-!!
-!!    subroutine xy_storer(name1,rval,allow1,ier)
-!!
-!!##SYNOPSIS
-!!
-!!     Convert a numeric value to a string and then call STORE() to store the
-!!     string in the dictionary.
-!!##DESCRIPTION
-!!
-!!     character, intent=(in) :: name1*(*)
-!!         NAME1 is the name of the dictionary entry. It may be up to 20
-!!         characters long.
-!!     real, intent=(in) :: rval*(*)
-!!         RVAL is the real value to store
-!!     character, intent=(in) :: allow1*(*)
-!!         ALLOW1 is 'add' to permit this entry to be added to the dictionary if
-!!         it is not already present; else it should be 'replace'.
-!!     integer, intent=(out) :: ier*(*)
-!!         IER is 0 if no error occurs. See STORE() for the meaning of specific
-!!         values.
-!!
-!!##DEPENDENCIES
-!!       + store
-!!##SEE ALSO
-!!
-!!     see STORE(), PARSE(), FETCH(), RETREVE(), P2().
-!!
-!!##REFERENCES
-!!       + NONE.
-!!
-!!##AUTHOR
-!!       + John S. Urban
-!===================================================================================================================================
-!===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
-!===================================================================================================================================
-subroutine xy_storer(name1,rval,allow1,ier)
-use m_kracken, only : store
-implicit none
-
-character(len=*),parameter::ident="@(#)M_xyplot::xy_storer(3fp): convert a numeric value to a string and then call store"
-
-!-----------------------------------------------------------------------------------------------------------------------------------
-character(len=*),intent(in) :: name1       ! the name of the dictionary entry
-real,intent(in)             :: rval        ! the real value to store
-character(len=*),intent(in) :: allow1      ! 'add' to permit entry to be added to the dictionary; else it should be 'replace'.
-integer,intent(out)         :: ier
-!-----------------------------------------------------------------------------------------------------------------------------------
-character(len=20)           :: value
-!-----------------------------------------------------------------------------------------------------------------------------------
-   write(value,'(g20.13e3)')rval
-   call store(name1(:len(name1)),value,allow1(:len(allow1)),ier)
-end subroutine xy_storer
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
@@ -7253,7 +7196,7 @@ temp=' '
       endif
       write(*,*)' to ',w*upx,'x',t*upy
       write(temp(1:21),'(i10,1x,i10)') int(w),int(t)
-      call store('sz_oo',temp,'no_add',ierr)
+      call store('sz_oo',temp,'replace',ierr)
       call plot_sz()
 !-------------------------------------------------------------------------------------
    elseif(letter.eq.'l')then                   ! pan left

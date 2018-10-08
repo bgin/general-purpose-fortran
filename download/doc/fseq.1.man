@@ -1,5 +1,5 @@
 NAME
-   fseq(1f) - print a sequence of numbers, optionally appending file lines.
+   fseq(1f) - [M_kracken] print a sequence of numbers, optionally appending file lines.
 SYNOPSIS
    fseq [OPTION]...
 DESCRIPTION

@@ -25,28 +25,30 @@ lastprogram makeout.f90
 lastprogram manup.f90
 lastprogram t2m.f90 
 
-lastprogram degrees.f90 degrees.FF
-lastprogram alphabet.f90 alphabet.FF
-lastprogram base.f90 base.FF
+lastprogram degrees.f90    degrees.FF
+lastprogram alphabet.f90   alphabet.FF
+lastprogram base.f90       base.FF
 
-lastprogram notabs.f90 notabs.FF
-lastprogram dtu.f90 dtu.FF
-lastprogram colors.f90 colors.FF
-lastprogram compute.f90 compute.FF
-lastprogram huegif.f90 huegif.FF
-lastprogram note.f90 note.FF
-lastprogram exchange.f90 exchange.FF
-lastprogram change.f90 change.FF
-lastprogram xauth_key.f90 xauth_key.FF
-
-lastprogram shell.f90 shell.FF
-lastprogram penv.f90 penv.FF
-lastprogram findll.f90 findll.FF
+lastprogram notabs.f90     notabs.FF
+lastprogram dtu.f90        dtu.FF
+lastprogram colors.f90     colors.FF
+lastprogram compute.f90    compute.FF
+lastprogram huegif.f90     huegif.FF
+lastprogram note.f90       note.FF
+lastprogram exchange.f90   exchange.FF
+lastprogram change.f90     change.FF
+lastprogram xauth_key.f90  xauth_key.FF
+lastprogram hasher.f90     hasher.FF
+lastprogram sha3.f90       
+lastprogram digeest.f90
+lastprogram shell.f90      shell.FF
+lastprogram penv.f90       penv.FF
+lastprogram findll.f90     findll.FF
 lastprogram table2html.f90 table2html.FF
-lastprogram tabulate.f90 tabulate.FF
-lastprogram asa2pdf.f90 asa2pdf.FF
-lastprogram cprint.f90 cprint.FF
-lastprogram rep.f90 rep.FF
+lastprogram tabulate.f90   tabulate.FF
+lastprogram asa2pdf.f90    asa2pdf.FF
+lastprogram cprint.f90     cprint.FF
+lastprogram rep.f90        rep.FF
 
 lastprogram intrinsics.f90
 

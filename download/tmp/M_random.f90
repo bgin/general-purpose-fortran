@@ -14,7 +14,12 @@
 !!    use M_random, only : mtprng_rand64, mtprng_rand, mtprng_rand_range
 !!    use M_random, only : mtprng_rand_real3, mtprng_rand_real2, mtprng_rand_real1
 !!
+!!##QUOTE
+!!
+!!   The generation of random numbers is too important to be left to chance --¿Robert R. Coveyou
+!!
 !!##DESCRIPTION
+!!
 !!   INTRINSIC RANDOM_SEED()
 !!    o init_random_seed_by_system_clock(3f): initialize random_number(3f) to return a single value with system clock
 !!    o init_random_seed_by_dat(3f): initialize random_number(3f) to return a single value using date_and_time(3f)

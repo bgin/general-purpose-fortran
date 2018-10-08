@@ -11,6 +11,7 @@ append("polyline2.3m_drawplus.html");
 append("pop.3m_drawplus.html");
 append("push.3m_drawplus.html");
 append("rdbox.3.html");
+append("rdpnt.3.html");
 append("spirograph.3m_drawplus.html");
 append("uarc.3m_drawplus.html");
 append("uconic.3m_drawplus.html");

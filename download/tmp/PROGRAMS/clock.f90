@@ -9,7 +9,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'   clock(1f) - display a clock using the M_draw(3f) graphics module             ',&
+'   clock(1f) - [M_draw] display a clock using the M_draw(3f) graphics module    ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   clock [SECONDS] [ -sz PIXELS ]                                               ',&
@@ -41,7 +41,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    clock(1f) - display a clock using the M_draw(3f) graphics module
+!!    clock(1f) - [M_draw] display a clock using the M_draw(3f) graphics module
 !!
 !!##SYNOPSIS
 !!
@@ -81,7 +81,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    draw a clock>',&
 '@(#)VERSION:        1.0, 20180616>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Thu, Sep 20th, 2018 7:46:48 PM>',&
+'@(#)COMPILED:       Sun, Sep 23rd, 2018 5:17:22 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

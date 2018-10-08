@@ -15,6 +15,7 @@ append("circle.3m_draw.html");
 append("circleprecision.3m_draw.html");
 append("clear.3m_draw.html");
 append("clipping.3m_draw.html");
+append("clock.1m_draw.html");
 append("closeobj.3m_draw.html");
 append("closepoly.3m_draw.html");
 append("color.3m_draw.html");

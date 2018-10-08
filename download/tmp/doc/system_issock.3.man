@@ -2,7 +2,10 @@ NAME
    system_issock(3f) - [M_system] checks if argument is a socket
 
 SYNOPSIS
-   logical function system_issock()
+  logical function system_issock(pathname)
+
+   character(len=*),intent(in) :: pathname
+   logical                     :: system_issock
 
 DESCRIPTION
        The issock(3f) function checks if path is a path to a socket

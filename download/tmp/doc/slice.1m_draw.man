@@ -1,12 +1,12 @@
 NAME
-    slice(1f) - display a grid of Z values with a 3D view
+    slice(1f) - [M_slices] display a grid of Z values with a 3D view
 
 SYNOPSIS
     slice -f FILENAME -d DEVICE
 
 DESCRIPTION
    Given a file that defines a grid of Z values display each row as a
-   curve with the DL_SLICE(3f) routine with a 3D view.
+   curve with the DL_SLICES(3f) routine with a 3D view.
 
    Enter "h" in graphics window for help on controlling the displayed
    curves'
