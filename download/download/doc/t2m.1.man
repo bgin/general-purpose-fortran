@@ -1,0 +1,59 @@
+NAME
+   t2m(1f) - [DEVELOPER] basic markup of text to a man(1) page
+
+SYNOPSIS
+   t2m FILE -cmd -section 1 -product "" -help .F. -version .F.
+
+DESCRIPTION
+   Minimalist conversion of a text file to a man page. Lines that are all upper-case
+   starting in column 1 start a section. Otherwise the sections are printed essentially
+   as-is.
+
+   Lines beginning in column 1 that are all uppercase letters become section headers, and
+   a basic header and footer are added.
+
+OPTIONS
+     FILE
+        The input filename
+
+     -section N  N is the man(1) section number. Typically the following categories
+                 are used:
+
+                  User Commands       1  Executable programs or shell commands
+                  System Calls        2  System calls (functions provided by the kernel)
+                  Library Calls       3  Library calls (functions within program libraries)
+                  Special Files       4  Special files (usually found in /dev)
+                  File Formats        5  File formats and conventions (eg. /etc/passwd)
+                  Games               6  Games
+                  Miscellaneous       7  Miscellaneous (including macro packages and conventions), e.g. man(7), groff(7)
+                  System Admin.       8  System administration commands (usually only for root)
+                  Kernel Extensions   9  Kernel routines [Non standard]
+
+                 See the man(1) page for man(1) for further details.
+
+     -cmd
+     -product
+     -help       display help and exit
+     -version    display version information and exit
+
+EXAMPLES
+
+    A short example
+
+     # use help txt as input to t2m to make man(1) page
+     t2m --help|t2m >t2m.1
+     # check out new man(1) page
+     nroff -man t2m.1|more
+     # install man page in a common location (location varies)
+        # man pages are commonly kept as compressed files
+        gzip t2m.1
+        # place file in a directory read by man(1) command.
+        # can be changed with environment variable MANPATH
+        # or by adding a directory to the default manpath.
+        # varies from system to system
+        mv -i t2m.1.gz /usr/share/man/man1/
+        # make sure file is readable by all users
+        chmod a=r,u+w /usr/share/man/man1/t2m.1.gz
+     # test man page
+     man t2m|more
+

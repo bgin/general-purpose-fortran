@@ -1,0 +1,10 @@
+NAME
+   numchars(3f) - [M_draw:TEXT] Return number of characters in the current SOFTWARE font.
+
+SYNOPSIS
+        integer function numchars()
+
+DESCRIPTION
+   Return the number of characters in the current font. Applicable only to
+   software fonts.
+

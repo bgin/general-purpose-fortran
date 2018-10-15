@@ -1,0 +1,62 @@
+NAME
+   page(3f) - [M_drawplus] set window into largest viewport available
+
+SYNOPSIS
+   subroutine page(xsmall,xlarge,ysmall,ylarge)
+   real, intent=(in) :: xsmall
+   real, intent=(in) :: xlarge
+   real, intent=(in) :: ysmall
+   real, intent=(in) :: ylarge
+
+   subroutine page(xsize,ysize,icolor)
+   real, intent=(in)    :: xsize
+   real, intent=(in)    :: ysize
+   integer, intent=(in) :: icolor
+
+DESCRIPTION
+   FORM SUBROUTINE PAGE(XSMALL,XLARGE,YSMALL,YLARGE)
+
+   Set the window to the rectangle defined by the corner points
+   <xsmall,ysmall> and <xlarge,ylarge>.
+
+   Also, given the window size, and assuming a one-to-one correspondence
+   of window units (ie. an "x-unit" is as long as a "y-unit"), find the
+   largest area on the display surface that has the same aspect ratio,
+   and set the viewport to it.
+
+   FORM SUBROUTINE PAGE(XSIZE,YSIZE,ICOLOR)
+
+   Size the window to the rectangle defined by the corner points
+   <0.0,0.0> and <xsize,ysize> and the viewport to the largest centered
+   area that has the same aspect ratio, and set the background color to
+   the value mapped to color ICOLOR.
+
+EXAMPLE
+  Sample program:
+
+   program demo_page
+   use M_draw
+   use M_drawplus, only : page
+   use M_draw,    only  : D_BLACK,   D_WHITE
+   use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
+   use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
+   implicit none
+   integer :: ipaws
+   real,parameter :: radius=25.0
+      call prefsize(600,600)
+      call vinit(' ') ! start graphics using device $M_draw_DEVICE
+      call page(-radius, radius, -radius, radius)
+      call linewidth(200)
+      call clear()
+      call color(D_BLUE)
+      call move2(-radius, -radius)
+      call draw2(-radius, radius)
+      call draw2(radius, radius)
+      call draw2(radius, -radius)
+      call draw2(-radius, -radius)
+      call color(D_CYAN)
+      call circle(0.0,0.0,radius)
+      call vflush()
+      ipaws=getkey()
+      call vexit()
+   end program demo_page

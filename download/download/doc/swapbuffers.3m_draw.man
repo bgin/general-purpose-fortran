@@ -1,0 +1,8 @@
+NAME
+   swapbuffers(3f) - [M_draw:DOUBLE_BUFFERING] Swap the front and back buffers.
+
+SYNOPSIS
+         subroutine swapbuffers()
+
+DESCRIPTION
+   Swap the front and back buffers.

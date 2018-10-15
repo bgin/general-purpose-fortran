@@ -1,0 +1,44 @@
+NAME
+   xterm_occupancy(3f) - [M_xterm] try to move xterm(1) to specified virtual display
+
+SYNOPSIS
+   subroutine xterm_occupancy(windowname)
+   character(len=*)    :: windowname
+
+DESCRIPTION
+
+   Move an xterm(1) window to the specified virtual display, if the
+   X11 Windows window manager supports the property WM_OCCUPATION.
+
+   If your window manager supports multiple virtual displays by defining
+   the property WM_OCCUPANCY (use xprop -id $WINDOWID to see) then you
+   can move your windows to specific virtual displays; usually by number
+   or by name. The name "all" is typically special and makes the window
+   visible in all the virtual displays.
+
+   This works for the ctwm(1) window manager.
+
+   If your window manager has assigned the property WS_OCCUPATION as
+   seen by entering
+
+      xprop -id $WINDOWID
+
+         WM_OCCUPATION(STRING) = "2"
+         WM_OCCUPATION(STRING) = "Two"
+
+OPTIONS
+   windowname   The name and/or numeric name of the virtual display.
+                The name "all" is usually special and means all
+                virtual displays.
+
+EXAMPLE
+
+  A sample program:
+
+   program demo_xterm_occupancy
+   use M_xterm, only : xterm_occupancy
+   call xterm_occupancy("all")
+   call xterm_occupancy("1")
+   call xterm_occupancy("Project A")
+   end program demo_xterm_occupancy
+

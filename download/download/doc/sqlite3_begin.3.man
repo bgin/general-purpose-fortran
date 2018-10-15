@@ -1,0 +1,23 @@
+NAME
+   sqlite3_begin(3f) - [M_sqlite] Start a transaction on the given database
+
+SYNOPSIS
+  subroutine sqlite3_begin(db)
+
+   type(SQLITE_DATABASE) db
+
+DESCRIPTION
+   Start a transaction on the given database. When the corresponding
+   routine sqlite3_commit is called, all changes will be made
+   permanent. Use a transaction to gather lots of changes to the
+   database - this is much faster than an automatic commission after
+   each change.
+
+   Note:
+
+      Should be accompanied by a call to either
+      sqlite3_commit or sqlite3_rollback
+
+OPTIONS
+     db    Structure variable identifying  the database
+

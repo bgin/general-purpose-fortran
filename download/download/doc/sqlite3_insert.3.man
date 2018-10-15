@@ -1,0 +1,18 @@
+NAME
+   sqlite3_insert(3f) - [M_sqlite] Insert a complete row into the given table
+
+SYNOPSIS
+   subroutine sqlite3_insert(db, tablename, columns)
+
+    type(SQLITE_DATABASE) db
+    character(len=*) tablename
+    type(SQLITE_COLUMN), dimension(:) columns
+
+DESCRIPTION
+   Insert a complete new row into the table.
+
+OPTIONS
+   db            Structure identifying the database connection
+   tablename     Name of the table into which the row must be inserted
+   columns       An array of values for all columns to be inserted
+

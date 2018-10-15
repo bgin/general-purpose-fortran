@@ -1,0 +1,57 @@
+NAME
+   rect(3f) - [M_calcomp:general] draw a rectangle
+
+SYNOPSIS
+   call rect(xpage,ypage,height,width,angle,ipen)
+
+DESCRIPTION
+
+  RECT is a FORTRAN subroutine used to draw rectangles.
+
+OPTIONS
+
+   XPAGE,YPAGE  are the coordinates, in inches, of the rectangle's lower
+                left corner, before rotation.
+
+   HEIGHT       is the rectangle's height, in inches.
+
+   WIDTH        is the rectangle's width, in inches. (This parameter
+                defines the base of the rectangle.)
+
+   ANGLE        is the angle, in degrees, at which the rectangle's base
+                is to be drawn. (Rectangle is rotated about XPAGE,YPAGE.)
+
+   IPEN         is the code that moves the pen to the rectangle's
+                starting point.
+
+                If the value of IPEN is:
+
+                 3, the pen is up for the move;
+                 2, the pen is down for the move.
+
+EXAMPLE
+  Sample program:
+
+   program demo_rect
+   use M_calcomp, only : plots, plot, newpen, rect
+   use M_calcomp, only : END,MOVE,DRAW
+   implicit none
+   real  :: xmax=8.5,ymax=7.0
+   real  :: xstart=2.5, ystart=1.0 ! lower left corner before rotation
+   real  :: height=3.0, width=5.0
+   real  :: angle
+      call plots(0.0,xmax,0.0,ymax)
+      ! (make a small dot at xstart,ystart>
+      call rect(xstart,ystart,0.04,0.04,45.0,MOVE)
+      ! rectangle
+      call newpen(1)
+      angle=0.0
+      call rect(xstart,ystart,height,width,angle,MOVE)
+      ! rotated rectangle
+      angle=45.0
+      call newpen(2)
+      call rect(xstart,ystart,height,width,angle,MOVE)
+      ! end graphics
+      call plot(0.0,0.0,END)
+   end program demo_rect
+

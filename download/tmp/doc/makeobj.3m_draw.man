@@ -1,9 +1,0 @@
-NAME
-   makeobj(3f) - [M_draw:OBJECT] Commence the object number n.
-SYNOPSIS
-        subroutine makeobj(n)
-        integer n
-
-DESCRIPTION
-   Commence the object number n.
-

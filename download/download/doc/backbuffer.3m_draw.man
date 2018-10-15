@@ -1,0 +1,9 @@
+NAME
+   backbuffer(3f) - [M_draw:DOUBLE_BUFFERING] Draw in the backbuffer. Returns -1 if the device is not up to it.
+
+SYNOPSIS
+         integer function backbuffer()
+
+DESCRIPTION
+   Make M_draw draw in the backbuffer. Returns -1 if the device is not up to it.
+

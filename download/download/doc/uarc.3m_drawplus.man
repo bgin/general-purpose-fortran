@@ -1,0 +1,13 @@
+NAME
+    uarc(3f) - [M_drawplus] create circular arc, leaving CP at end of arc
+
+SYNOPSIS
+   subroutine uarc(x,y,angle)
+
+    real,intent(in) :: x
+    real,intent(in) :: y
+    real,intent(in) :: angle
+
+DESCRIPTION
+    given center point and angle in degrees, draw circular arc from
+    current point with counterclockwise angles positive.

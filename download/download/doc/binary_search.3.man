@@ -1,0 +1,21 @@
+NAME
+   binary_search(3f) - [M_list] binary search of a sorted array.
+SYNTAX
+  pure function binary_search(id,arr) result(jloc)
+
+   integer,intent(in)              :: id
+   integer,dimension(:),intent(in) :: arr
+   integer                         :: jloc
+
+DESCRIPTION
+
+   Binary search is a search algorithm that finds the position of a target
+   value within a sorted array.
+
+OPTIONS
+
+     ID    Keyword to match in ARR.
+     ARR   Array to search.
+     JLOC  If found, 'JLOC' is the matched position in 'ARR'.
+           If not found, returns zero (0).
+

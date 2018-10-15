@@ -1,0 +1,493 @@
+      PROGRAM STMTST
+      use m_steam67
+!@(#) TEST 2 OF 3 FOR (W) STEAM PROPERTY FUNCTIONS. the short tests
+!
+!     PREPARED BY C.P.SAALBACH, 09/17/79.
+!     STMTST IS USED TO ASSURE THAT INDIVIDUAL RESULTS WHICH ARE
+!     RETURNED BY THE STEAM PROPERTY FUNCTIONS ARE CORRECT.
+!     THE RESULTS ARE PRINTED AND MAY BE COMPARED WITH THE STEAM
+!     PROPERTY TABLE VALUES WHICH APPEAR IN THE STANDARD REFERENCE,
+!     "ASME STEAM TABLES 1967", PUBLISHED BY THE AMERICAN SOCIETY
+!     OF MECHANICAL ENGINEERS.  ALSO PRINTED, AS A CONVENIENCE TO
+!     QUICKLY CHECK THAT THE RESULTS HAVE NOT CHANGED, ARE PERIODIC
+!     CHECKSUMS AND A TOTAL OF ALL CHECKSUMS.
+!     INPUT CONSISTS OF UPPER AND LOWER LIMITS OF TEMPERATURE AND
+!     PRESSURE, AND INCREMENTS OF SAME AT WHICH STEAM PROPERTY RESULTS
+!     ARE CALCULATED AND DISPLAYED.  CURRENT VALUES USED ARE RECOMMENDED
+!     SINCE THEY PROVIDE A SAMPLE OF VALUES THROUGHOUT THE TOTAL
+!     REGIONS IN WHICH THE ROUTINES ARE APPLICABLE.
+!
+      implicit double precision(a-h, o-z)
+      DIMENSION P(500),T(500),H(500),S(500),V(500),Z1(500),Z2(500)
+      DIMENSION Z3(500)
+      WRITE(6,1001)
+1001  FORMAT(1H1,16HTESTS STARTED.   //)
+      SUMT=0.d0
+      P32=PSL67(32.0d0)
+      PCT=PSL67(705.47d0)
+      READ(5,100) PMIN,PMAX,DELP
+      READ(5,100) TMIN,TMAX,DELT
+      CALL LIMITS(P32,PCT,PMIN,PMAX,DELP)
+      CALL LIMITS(32.0d0,705.47d0,TMIN,TMAX,DELT)
+      CALL XARRAY(P,PMIN,PMAX,DELP,NP)
+      CALL XARRAY(T,TMIN,TMAX,DELT,NT)
+!
+! CALCULATE HSL(T),PSL(T),SSL(T),VSL(T)
+!
+      SUM=0.d0
+      WRITE(6,201)
+      WRITE(6,214) PMIN,PMAX,DELP
+      WRITE(6,215) TMIN,TMAX,DELT
+      WRITE(6,101)
+      DO I=1,NT
+         Z1(I)=PSL67(T(I))
+         H(I)=HSL67(T(I))
+         S(I)=SSL67(T(I))
+         V(I)=VSL67(T(I))
+         Z2(I)=0.d0
+         IF(H(I).LE.906.d0) Z2(I)=TSLH67(H(I))
+         WRITE(6,105) T(I),Z1(I),H(I),S(I),V(I),Z2(I)
+         SUM=SUM+T(I)+Z1(I)+H(I)+S(I)+V(I)+Z2(I)
+      enddo
+      SUMT=SUMT+SUM
+      WRITE(6,216) SUM
+!
+! CALCULATE PSV(S)
+!
+      SUM=0.d0
+      WRITE(6,202)
+      WRITE(6,214) PMIN,PMAX,DELP
+      WRITE(6,215) TMIN,TMAX,DELT
+      WRITE(6,101)
+      HX=HSS67(PMIN,TMIN,S(1),VX)
+      HX=HSS67(PMAX,TMAX,S(NT),VX)
+      CALL HSARRY(S,NT)
+      DO I=1,NT
+         Z1(I)=PSV67(S(I))
+         WRITE(6,103) S(I),Z1(I)
+         SUM=SUM+S(I)+Z1(I)
+      enddo
+      SUMT=SUMT+SUM
+      WRITE(6,216) SUM
+!
+! CALCULATE P,HSV(P),TSL(P)
+!
+      SUM=0.d0
+      WRITE(6,204)
+      WRITE(6,214) PMIN,PMAX,DELP
+      WRITE(6,215) TMIN,TMAX,DELT
+      WRITE(6,101)
+      DO I=1,NP
+         H(I)=HSV67(P(I),TX,SX,VX)
+         Z1(I)=TSL67(P(I))
+         WRITE(6,103) P(I),H(I),Z1(I)
+         SUM=SUM+P(I)+H(I)+Z1(I)
+      enddo
+      SUMT=SUMT+SUM
+      WRITE(6,216) SUM
+!
+! CALCULATE CONDL(P,T),PRLIQ(P,T)
+!
+      N=0
+    4 CONTINUE
+      SUM=0.d0
+      WRITE(6,205)
+      READ(5,100) PMIN,PMAX,DELP
+      READ(5,100) TMIN,TMAX,DELT
+      CALL LIMITS(P32,15500.d0,PMIN,PMAX,DELP)
+      CALL LIMITS(32.0d0,705.47d0,TMIN,TMAX,DELT)
+      WRITE(6,214) PMIN,PMAX,DELP
+      WRITE(6,215) TMIN,TMAX,DELT
+      WRITE(6,101)
+      CALL XARRAY(P,PMIN,PMAX,DELP,NP)
+      DO I=1,NP
+         TMX=705.47d0
+         IF(P(I).LT.PCT) TMX=TSL67(P(I))
+         IF(TMIN.GT.TMX) exit
+         CALL XARRAY(T,TMIN,TMX,DELT,NT)
+         DO J=1,NT
+            Z1(J)=CONDL67(P(I),T(J))
+            Z2(J)=PRLIQ67(P(I),T(J))
+            WRITE(6,104) P(I),T(J),Z1(J),Z2(J)
+            SUM=SUM+P(I)+T(J)+Z1(J)+Z2(J)
+         enddo
+      enddo
+      SUMT=SUMT+SUM
+      WRITE(6,216) SUM
+      N=N+1
+      IF(N.LT.2) GOTO 4
+!
+! CALCULATE VISL(P,T)
+!
+      N=0
+    7 CONTINUE
+      SUM=0.d0
+      WRITE(6,206)
+      READ(5,100) PMIN,PMAX,DELP
+      READ(5,100) TMIN,TMAX,DELT
+      CALL LIMITS(P32,15500.d0,PMIN,PMAX,DELP)
+      CALL LIMITS(32.0d0,705.47d0,TMIN,TMAX,DELT)
+      WRITE(6,214) PMIN,PMAX,DELP
+      WRITE(6,215) TMIN,TMAX,DELT
+      WRITE(6,101)
+      CALL XARRAY(P,PMIN,PMAX,DELP,NP)
+      DO I=1,NP
+         TMX=705.47d0
+         IF(P(I).LT.PCT) TMX=TSL67(P(I))
+         IF(TMIN.GT.TMX) exit
+         CALL XARRAY(T,TMIN,TMX,DELT,NT)
+         DO J=1,NT
+            Z1(J)=VISL67(P(I),T(J))
+            WRITE(6,103) P(I),T(J),Z1(J)
+            SUM=SUM+P(I)+T(J)+Z1(J)
+         enddo
+      enddo
+      SUMT=SUMT+SUM
+      WRITE(6,216) SUM
+      N=N+1
+      IF(N.LT.2) GOTO 7
+!
+! CALCULATE CPL(P,T),HCL(P,T),VCL(P,T)
+!
+      N=0
+   10 CONTINUE
+      SUM=0.d0
+      WRITE(6,207)
+      READ(5,100) PMIN,PMAX,DELP
+      READ(5,100) TMIN,TMAX,DELT
+      CALL LIMITS(P32,15500.d0,PMIN,PMAX,DELP)
+      CALL LIMITS(32.0d0,705.47d0,TMIN,TMAX,DELT)
+      WRITE(6,214) PMIN,PMAX,DELP
+      WRITE(6,215) TMIN,TMAX,DELT
+      WRITE(6,101)
+      CALL XARRAY(P,PMIN,PMAX,DELP,NP)
+      DO I=1,NP
+         TMX=705.47d0
+         IF(P(I).LT.PCT) TMX=TSL67(P(I))
+         IF(TMIN.GT.TMX) exit
+         CALL XARRAY(T,TMIN,TMX,DELT,NT)
+         DO J=1,NT
+            Z1(J)=CPL67(P(I),T(J))
+            H(J)=HCL67(P(I),T(J),SX)
+            V(J)=VCL67(P(I),T(J))
+            WRITE(6,102) P(I),T(J),Z1(J),H(J),V(J)
+            SUM=SUM+P(I)+T(J)+Z1(J)+H(J)+V(J)
+         enddo
+      enddo
+      SUMT=SUMT+SUM
+      WRITE(6,216) SUM
+      N=N+1
+      IF(N.LT.2) GOTO 10
+!
+! CALCULATE HSSICL(P,S),SSSICL(P,H)
+!
+      N=0
+   13 CONTINUE
+      SUM=0.0d0
+      WRITE(6,208)
+      READ(5,100) PMIN,PMAX,DELP
+      READ(5,100) TMIN,TMAX,DELT
+      CALL LIMITS(P32,15500.d0,PMIN,PMAX,DELP)
+      CALL LIMITS(32.0d0,705.47d0,TMIN,TMAX,DELT)
+      WRITE(6,214) PMIN,PMAX,DELP
+      WRITE(6,215) TMIN,TMAX,DELT
+      WRITE(6,101)
+      CALL XARRAY(P,PMIN,PMAX,DELP,NP)
+      DO I=1,NP
+         TMX=TMAX
+         IF(P(I).LT.PCT) TMX=TSL67(P(I))
+         IF(TMIN.GT.TMX) exit
+         CALL XARRAY(T,TMIN,TMX,DELT,NT)
+         H(1)=HCL67(P(I),TMIN,S(1))
+         H(NT)=HCL67(P(I),TMX,S(NT))
+         CALL HSARRY(S,NT)
+         CALL HSARRY(H,NT)
+         DO J=1,NT
+            Z1(J)=HSSICL67(P(I),S(J),T1)
+            Z2(J)=SSSICL67(P(I),H(J),T2)
+            WRITE(6,106) P(I),T1,S(J),Z1(J),T2,H(J),Z2(J)
+            SUM=SUM+P(I)+T1+S(J)+Z1(J)+T2+H(J)+Z2(J)
+         enddo
+      enddo
+      SUMT=SUMT+SUM
+      WRITE(6,216) SUM
+      N=N+1
+      IF(N.LT.2) GOTO 13
+!
+! CALCULATE CONDV(P,T),PRSTM(P,T)
+!
+      N=0
+   16 CONTINUE
+      SUM=0.0d0
+      WRITE(6,209)
+      READ(5,100) PMIN,PMAX,DELP
+      READ(5,100) TMIN,TMAX,DELT
+      CALL LIMITS(0.01d0,15500.d0,PMIN,PMAX,DELP)
+      CALL LIMITS(32.0d0,1600.d0,TMIN,TMAX,DELT)
+      WRITE(6,214) PMIN,PMAX,DELP
+      WRITE(6,215) TMIN,TMAX,DELT
+      WRITE(6,101)
+      CALL XARRAY(P,PMIN,PMAX,DELP,NP)
+      DO I=1,NP
+         TMN=0.0d0
+         IF(P(I).LT.P32) TMN=32.0d0
+         IF(P(I).GT.PCT) TMN=705.47d0
+         IF(TMN.EQ.0.0d0) TMN=TSL67(P(I))
+         IF(TMN.LT.TMIN) TMN=TMIN
+         IF(TMN.GT.TMAX) exit
+         CALL XARRAY(T,TMN,TMAX,DELT,NT)
+         DO J=1,NT
+            Z1(J)=CONDV67(P(I),T(J))
+            Z2(J)=0.d0
+            IF(T(J).GE.36.0d0.AND.T(J).LE.1596.d0) Z2(J)=PRSTM67(P(I),T(J))
+            WRITE(6,104) P(I),T(J),Z1(J),Z2(J)
+            SUM=SUM+P(I)+T(J)+Z1(J)+Z2(J)
+         enddo   
+      enddo
+      SUMT=SUMT+SUM
+      WRITE(6,216) SUM
+      N=N+1
+      IF(N.LT.2) GOTO 16
+!
+! CALCULATE CPV(P,T),HSS(P,T),HSSISS(P,S),SSSISS(P,H)
+!
+      N=0
+   19 CONTINUE
+      SUM=0.0d0
+      WRITE(6,210)
+      READ(5,100) PMIN,PMAX,DELP
+      READ(5,100) TMIN,TMAX,DELT
+      CALL LIMITS(0.01d0,15500.0d0,PMIN,PMAX,DELP)
+      CALL LIMITS(32.d0,1600.d0,TMIN,TMAX,DELT)
+      WRITE(6,214) PMIN,PMAX,DELP
+      WRITE(6,215) TMIN,TMAX,DELT
+      WRITE(6,101)
+      CALL XARRAY(P,PMIN,PMAX,DELP,NP)
+      DO I=1,NP
+         TMN=0.0d0
+         IF(P(I).LT.P32) TMN=32.0d0
+         IF(P(I).GT.PCT) TMN=705.47d0
+         IF(TMN.EQ.0.0d0) TMN=TSL67(P(I))
+         IF(TMN.LT.TMIN) TMN=TMIN
+         IF(TMN.GT.TMAX) exit
+         CALL XARRAY(T,TMN,TMAX,DELT,NT)
+         H(1)=HSS67(P(I),TMN,S(1),VX)
+         H(NT)=HSS67(P(I),TMAX,S(NT),VX)
+         CALL HSARRY(H,NT)
+         CALL HSARRY(S,NT)
+         DO J=1,NT
+            Z1(J)=HSS67(P(I),T(J),SX,VX)
+            Z2(J)=HSSISS67(P(I),S(J),T1,VX,XX)
+            Z3(J)=0.0d0
+            IF(H(J).LE.1800.d0) Z3(J)=SSSISS67(P(I),H(J),T2,VX,XX)
+            WRITE(6,107) P(I),T(J),Z1(J),T1,S(J),Z2(J),T2,H(J),Z3(J)
+            SUM=SUM+P(I)+T(J)+Z1(J)+T1+S(J)+Z2(J)+T2+H(J)+Z3(J)
+         enddo
+      enddo
+      SUMT=SUMT+SUM
+      WRITE(6,216) SUM
+      N=N+1
+      IF(N.LT.2) GOTO 19
+!
+! CALCULATE VISV(P,T)
+!
+      N=0
+   22 CONTINUE
+      SUM=0.0d0
+      WRITE(6,211)
+      READ(5,100) PMIN,PMAX,DELP
+      READ(5,100) TMIN,TMAX,DELT
+      CALL LIMITS(0.01d0,15500.d0,PMIN,PMAX,DELP)
+      CALL LIMITS(32.0d0,1600.d0,TMIN,TMAX,DELT)
+      WRITE(6,214) PMIN,PMAX,DELP
+      WRITE(6,215) TMIN,TMAX,DELT
+      WRITE(6,101)
+      CALL XARRAY(P,PMIN,PMAX,DELP,NP)
+      DO I=1,NP
+         TMN=0.0d0
+         IF(P(I).LT.P32) TMN=32.0d0
+         IF(P(I).GT.PCT) TMN=705.47d0
+         IF(TMN.EQ.0.d0) TMN=TSL67(P(I))
+         IF(TMN.LT.TMIN) TMN=TMIN
+         IF(TMN.GT.TMAX) exit
+         CALL XARRAY(T,TMN,TMAX,DELT,NT)
+         DO J=1,NT
+            Z1(J)=0.0d0
+            IF(T(J).GE.36.0d0.AND.T(J).LE.1596.d0) Z1(J)=CPV67(P(I),T(J),VX)
+            Z2(J)=VISV67(P(I),T(J))
+            WRITE(6,104) P(I),T(J),Z1(J),Z2(J)
+            SUM=SUM+P(I)+T(J)+Z1(J)+Z2(J)
+         enddo   
+      enddo   
+      SUMT=SUMT+SUM
+      WRITE(6,216) SUM
+      N=N+1
+      IF(N.LT.2) GOTO 22
+!
+! CALCULATE CRFLO(P,H)
+!
+      N=0
+      SUM=0.
+      WRITE(6,212)
+      READ(5,100) PMIN,PMAX,DELP
+      READ(5,100) TMIN,TMAX,DELT
+      CALL LIMITS(0.01d0,15500.d0,PMIN,PMAX,DELP)
+      CALL LIMITS(32.0d0,1600.d0,TMIN,TMAX,DELT)
+      WRITE(6,214) PMIN,PMAX,DELP
+      WRITE(6,215) TMIN,TMAX,DELT
+      WRITE(6,101)
+      CALL XARRAY(P,PMIN,PMAX,DELP,NP)
+      DO I=1,NP
+         TMN=0.0d0
+         IF(P(I).LT.P32) TMN=32.0d0
+         IF(P(I).GT.PCT) TMN=705.47d0
+         IF(TMN.EQ.0.0d0) TMN=TSL67(P(I))
+         IF(TMN.LT.TMIN) TMN=TMIN
+         IF(TMN.GT.TMAX) exit
+         CALL XARRAY(T,TMN,TMAX,DELT,NT)
+         DO J=1,NT
+            Z1(J)=0.d0
+            HX=HSS67(P(I),T(J),SX,VX)
+            IF(HX.LE.1800.d0) Z1(J)=CRFLO67(P(I),HX,D)/P(I)
+            WRITE(6,103) P(I),HX,Z1(J)
+            SUM=SUM+P(I)+HX+Z1(J)
+         ENDDO
+      ENDDO
+      SUMT=SUMT+SUM
+      WRITE(6,216) SUM
+!
+! CALCULATE CRVEL(P,H)
+!
+      N=0
+      SUM=0.0d0
+      WRITE(6,213)
+      READ(5,100) PMIN,PMAX,DELP
+      READ(5,100) TMIN,TMAX,DELT
+      CALL LIMITS(0.01d0,15500.d0,PMIN,PMAX,DELP)
+      CALL LIMITS(32.0d0,1600.d0,TMIN,TMAX,DELT)
+      WRITE(6,214) PMIN,PMAX,DELP
+      WRITE(6,215) TMIN,TMAX,DELT
+      WRITE(6,101)
+      CALL XARRAY(P,PMIN,PMAX,DELP,NP)
+      DO I=1,NP
+         TMN=0.0d0
+         IF(P(I).LT.P32) TMN=32.0d0
+         IF(P(I).GT.PCT) TMN=705.47d0
+         IF(TMN.EQ.0.0d0) TMN=TSL67(P(I))
+         IF(TMN.LT.TMIN) TMN=TMIN
+         IF(TMN.GT.TMAX) exit
+         CALL XARRAY(T,TMN,TMAX,DELT,NT)
+         IF(P(I).LE.PCT) H(1)=HCL67(P(I),TMN,SX)
+         IF(P(I).GT.PCT) H(1)=HSS67(P(I),TMN,SX,VX)
+         H(NT)=HSS67(P(I),TMAX,SX,VX)
+         CALL HSARRY(H,NT)
+         DO J=1,NT
+            Z1(J)=0.0d0
+            HX=H(J)
+            IF(HX.LE.1800.d0) Z1(J)=CRVEL67(P(I),HX,G)
+            WRITE(6,103) P(I),HX,Z1(J)
+            SUM=SUM+P(I)+HX+Z1(J)
+         enddo   
+      enddo
+      SUMT=SUMT+SUM
+      WRITE(6,216) SUM
+      WRITE(6,217) SUMT
+      WRITE(6,1002)
+1002  FORMAT(1H0,16HTESTS COMPLETED. )
+      STOP
+  100 FORMAT(3D20.8)
+  101 FORMAT(1H0)
+  102 FORMAT(5D20.8)
+  103 FORMAT(3D20.8)
+  104 FORMAT(4D20.8)
+  105 FORMAT(6D18.8)
+  106 FORMAT(7D15.6)
+  107 FORMAT(9D13.6)
+  201 FORMAT(1H1,9X,38H T,PSL(T),HSL(T),SSL(T),VSL(T),TSLH(H))
+  202 FORMAT(1H1,9X,10H S,PSV(S) )
+!  203 FORMAT(1H1,9X,23H P,T,H=HCL(P,T),TSLH(H))
+  204 FORMAT(1H1,9X,21H P,HSV(P),TSL(P)     )
+  205 FORMAT(1H1,9X,26H P,T,CONDL(P,T),PRLIQ(P,T))
+  206 FORMAT(1H1,9X,14H P,T,VISL(P,T))
+  207 FORMAT(1H1,9X,31H P,T,CPL(P,T),HCL(P,T),VCL(P,T))
+  208 FORMAT(1H1,9X,34H P,T,S,HSSICL(P,S),T,H,SSSICL(P,H))
+  209 FORMAT(1H1,9X,26H P,T,CONDV(P,T),PRSTM(P,T))
+  210 FORMAT(1H1,9X,45H P,T,HSS(P,T),T,S,HSSISS(P,S),T,H,SSSISS(P,H))
+  211 FORMAT(1H1,9X,23H P,T,CPV(P,T),VISV(P,V))
+  212 FORMAT(1H1,9X,15H P,H,CRFLO(P,H))
+  213 FORMAT(1H1,9X,15H P,H,CRVEL(P,H))
+  214 FORMAT(1H0,9X,5HPMIN=,E16.6,4X,5HPMAX=,E16.6,4X,5HDELP=,E16.6)
+  215 FORMAT(1H ,9X,5HTMIN=,E16.6,4X,5HTMAX=,E16.6,4X,5HDELT=,E16.6)
+  216 FORMAT(1H0,9X,4HSUM=,E24.16)
+  217 FORMAT(1H1,9X,10HTOTAL SUM=,E24.16)
+      END PROGRAM STMTST
+!-------------------------------------------------------------------------------
+      SUBROUTINE XARRAY(X,XMIN,XMAX,DELX,N)
+!     GIVEN AN ARRAY TO FILL, A MINIMUM, A MAXIMUM,
+!     AND DELTA; PUT MIN IN X(1), FIND A "NICE"
+!     NUMBER FOR X(2), THEN FILL INCREMENTTING BY
+!     DELS UNTIL REACH JUST BELOW XMAX. FILL LAST
+!     VALUE WITH XMAX, RETURN NUMBER OF  ELEMENTS
+!     FILLED IN N.
+!     ASSUME XMAX IS GREATER THAN XMIN AND
+!     THAT DELX IS GREATER THAN ZERO AND IS A "NICE"
+!     VALUE TO INCREMENT BY.
+!     JOHN S. URBAN. AVOIDS SOME ROUND-OFF ERRORS
+!     IN THE ORIGINAL
+      implicit double precision (a-h, o-z)
+      dimension X(500)
+      IDELS=INT(XMIN/DELX)+1
+      RIGHT2=DELX*IDELS
+      RIGHT=RIGHT2-XMIN
+      IF(RIGHT.LE. DELX/1000.0)THEN
+          FK1=RIGHT2+DELX
+       ELSE
+          FK1=RIGHT2
+       ENDIF
+       N=INT((XMAX-FK1+0.5*DELX)/DELX)
+       IF(FK1+DELX*(N-1)+DELX.LT.(XMAX-DELX*0.001))N=N+1
+       IF(FK1+DELX*(N-1)+DELX*0.001.GE.XMAX)N=N-1
+       IF(N+2.GT.500)THEN
+           WRITE(*,*)'*XARRAY* NEEDED ',N+2,' VALUES, ONLY 500 ALLOWED'
+           N=498
+       ENDIF
+       DO I30=0,N-1
+          X(I30+2)=FK1+I30*DELX
+       enddo
+       X(1)=XMIN
+       X(MAX(2,N+2))=XMAX
+       N=MAX(2,N+2)
+       IF(DELX.LE.0)WRITE(*,*)'*XARRAY* DELX.LE.0'
+       IF(XMAX.LE.XMIN)WRITE(*,*)'*XARRAY* XMAX.LE.XMIN'
+       END SUBROUTINE XARRAY
+!-------------------------------------------------------------------------------
+      SUBROUTINE LIMITS(FCMN,FCMX,FMIN,FMAX,FDEL)
+      implicit double precision(a-h, o-z)
+      IF(FMAX.GE.FMIN) GOTO 3
+         X=FMAX
+         FMAX=FMIN
+         FMIN=X
+    3 CONTINUE
+      FDEL=ABS(FDEL)
+      IF(FMIN.GT.FCMN) GOTO 1
+         FMIN=FCMN
+         IF(FMIN.GT.FMAX) FMAX=FMIN
+    1 CONTINUE
+         IF(FMAX.LT.FCMX) GOTO 2
+         FMAX=FCMX
+         IF(FMIN.GT.FMAX) FMIN=FMAX
+    2 CONTINUE
+      END SUBROUTINE LIMITS
+!-------------------------------------------------------------------------------
+      SUBROUTINE HSARRY(X,N)
+      implicit double precision(a-h, o-z)
+      DIMENSION X(N)
+      IF(N.LE.2) RETURN
+      FN=N-1
+      DELX=(X(N)-X(1))/FN
+      NX=N-2
+      DO I=1,NX
+         X(I+1)=X(I)+DELX
+      ENDDO
+      END SUBROUTINE HSARRY
+!-------------------------------------------------------------------------------

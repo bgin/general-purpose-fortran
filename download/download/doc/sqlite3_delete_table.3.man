@@ -1,0 +1,21 @@
+NAME
+   sqlite3_delete_table(3f) - [M_sqlite] Delete a table
+
+SYNOPSIS
+   subroutine sqlite3_delete_table(db)
+
+    type(SQLITE_DATABASE) db
+    character(len=*) tablename
+
+DESCRIPTION
+   Delete an existing table by name. Convenience routine that constructs
+   an SQL statement to do the actual job.
+
+   Note:
+
+    The table can not be recovered, unless this is part of a transaction
+
+OPTIONS
+   db            Structure for the database
+   tablename     Name of the table to be deleted
+

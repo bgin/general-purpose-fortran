@@ -1,0 +1,9 @@
+NAME
+   sdraw2(3f) - [M_draw:DRAW] Draw in screen coordinates (-1.0 to 1.0).
+
+SYNOPSIS
+         subroutine sdraw2(x, y)
+         real x, y
+DESCRIPTION
+   Draw in screen coordinates (-1.0 to 1.0).
+

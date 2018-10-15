@@ -1,8 +1,0 @@
-NAME
-   genobj(3f) - [M_draw:OBJECT] Returns a unique object identifier.
-
-SYNOPSIS
-        integer function genobj()
-DESCRIPTION
-   Returns a unique object identifier.
-

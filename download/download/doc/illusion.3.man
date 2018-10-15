@@ -1,0 +1,38 @@
+NAME
+  illusion(3f) - [M_drawinc:banner] draw a banner page with short labels at the compass points
+
+SYNOPSIS
+  subroutine illusion(top,bottom,left,right)
+
+   character(len=*),intent(in) :: top
+   character(len=*),intent(in) :: bottom
+   character(len=*),intent(in) :: left
+   character(len=*),intent(in) :: right
+
+DESCRIPTION
+   Draw a simple geometric illusion with short labels at the four compass points as a banner page
+
+OPTIONS
+   TOP      short top banner label
+   BOTTOM   short bottom banner label
+   LEFT     short left banner label
+   RIGHT    short right banner label
+
+EXAMPLE
+  Sample program
+
+   program testit
+   use M_draw,      only : vinit, color, clear, backbuffer, getkey, vexit
+   use M_drawplus,  only : page
+   use M_drawinc,   only : illusion
+   call vinit(' ')
+   call page(0.0,4800.0,0.0,4800.0)
+   call color(6)
+   call clear()
+   call color(5)
+   idum=backbuffer()
+   call illusion('TOP','BOTTOM','LEFT','RIGHT')
+   idum=getkey()
+   call vexit()
+   end program testit
+

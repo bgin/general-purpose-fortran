@@ -1,0 +1,100 @@
+NAME
+   locate(3f) - [M_list] finds the index where a string is found or should be in a sorted array
+
+SYNOPSIS
+  subroutine locate(varname,dictionary,place,ier,mssg)
+
+   character(len=*),intent=(in)          :: VARNAME
+   character(len=*),allocatable          :: DICTIONARY(:)
+   integer, intent(out)                  :: PLACE
+
+   integer, intent(out),optional         :: IER
+   character(len=*),intent(out),optional :: ERRMSG
+
+DESCRIPTION
+
+   LOCATE(3f) finds the index where the string VARNAME is found or should
+   be found in an array. The string array must be sorted in descending
+   order (highest at top). If VARNAME is not found it returns the index
+   where the name should be placed at with a negative sign.
+
+OPTIONS
+
+
+   VARNAME       the entry name to locate in the dictionary.
+
+   DICTIONARY    is the dictionary array.
+
+   PLACE         is the subscript that the entry was found at if it is
+                 greater than zero(0).
+
+                 If PLACE is negative, the absolute value of
+                 PLACE indicates the subscript value where the
+                 new entry should be placed in order to keep the
+                 dictionary alphabetized.
+
+   IER           is zero(0) if no error occurs.
+                 If an error occurs and IER is not
+                 present, the program is stopped.
+
+   ERRMSG        description of any error
+
+EXAMPLES
+
+   Find if a string is in a sorted array,
+   and insert the string into the dictionary
+   if it is not present ...
+
+
+    program demo_locate
+    use M_sort, only : sort_shell
+    use M_list, only : locate
+    implicit none
+    character(len=20),allocatable :: arr(:)
+    integer                       :: i
+
+    arr=[character(len=20) :: '', 'ZZZ', 'aaa', 'b', 'xxx' ]
+    ! make sure sorted in descending order
+    call sort_shell(arr,order='d')
+
+    call update(arr,'b')
+    call update(arr,'[')
+    call update(arr,'c')
+    call update(arr,'ZZ')
+    call update(arr,'ZZZZ')
+    call update(arr,'z')
+
+    contains
+    subroutine update(arr,string)
+    character(len=*),allocatable :: arr(:)
+    character(len=*)             :: string
+    integer                      :: place, plus, ii, end
+    ! find where string is or should be
+    call locate(string,arr,place)
+    write(*,*)'for "'//string//'" index is ',place, size(arr)
+    ! if string was not found insert it
+    if(place.lt.1)then
+       plus=abs(place)
+       ii=len(arr)
+       end=size(arr)
+       ! empty array
+       if(end.eq.0)then
+          arr=[character(len=ii) :: string ]
+       ! put in front of array
+       elseif(plus.eq.1)then
+          arr=[character(len=ii) :: string, arr]
+       ! put at end of array
+       elseif(plus.eq.end)then
+          arr=[character(len=ii) :: arr, string ]
+       ! put in middle of array
+       else
+          arr=[character(len=ii) :: arr(:plus-1), string,arr(plus:) ]
+       endif
+       ! show array
+       write(*,'("SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
+    endif
+    end subroutine update
+    end program demo_locate
+
+AUTHOR
+   1989,2017 John S. Urban

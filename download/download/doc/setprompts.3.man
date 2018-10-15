@@ -1,0 +1,49 @@
+NAME
+         setprompts(3f) - [ARGUMENTS:M_kracken] set explicit prompts for keywords in interactive mode
+SYNOPSIS
+  subroutine setprompts(verb,init)
+
+   character(len=*),intent(in):: verb
+   character(len=*),intent(in):: init
+
+DESCRIPTION
+
+   Optionally set prompts for interactive prompting mode.
+   The syntax of the call is the same as for KRACKEN(3f)/DISSECT(3f) except that prompt
+   strings are given instead of default values. It is called before a call to KRACKEN(3f)
+   or DISSECT(3f).
+
+OPTIONS
+   verb    name to define prompts for
+   string  to define prompts instead of values
+RETURNS
+EXAMPLE
+  Sample program:
+
+    program demo_setprompts
+    use M_kracken, only : kracken,iget,rget,sget,setprompts
+    implicit none
+
+    call setprompts('demo', ' -int My INTEGER value  -float My REAL value  -str My CHARACTER value')
+    call kracken(   'demo', ' -int 100 -float 123.456 -str DEFAULT')
+    write(*,'(a,i0)')'INTEGER IS ',iget('demo_int')
+    write(*,'(a,g0)')'REAL IS ',rget('demo_float')
+    write(*,'(a,a)')'STRING IS '//trim(sget('demo_str'))
+
+    end program demo_setprompts
+
+  Example execution and output:
+
+       $ demo_setprompts -?
+       demo parameters are
+       >   1)My CHARACTER value:[DEFAULT]
+           3)My INTEGER value:[100]
+           4)My REAL value:[123.456]
+       Enter parameter number to change("RETURN" to finish):
+
+SEE ALSO
+   M_kracken, kracken
+
+   dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+
+   parse,dissect,store,setprompts,show

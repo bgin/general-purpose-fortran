@@ -1,0 +1,232 @@
+Mon, Oct 15, 2018 12:26:42 AM
+================================================================================
+DIRNAME ....... /home/urbanjs/V600/LIBRARY/libGPF/download
+PUTMAN ........ /home/urbanjs/V600/LIBRARY/libGPF/download/tmp/man
+================================================================================
+                                                                                                
+                                                                                                
+                                                                                         XX     
+                   X                                                                      X     
+                   X                                                                      X     
+  XXXXXX  XXXXX   XXXX    XXXXX   XXXXX  XX  XX  XXX XX   XXXXX   XXXXX           XXXXX   X XX  
+ X    X  X     X   X     X     X X     X  X   X    XX  X X     X X     X         X     X  XX  X 
+ X    X  XXXXXXX   X      XXX    X     X  X   X    X     X       XXXXXXX          XXX     X   X 
+ X    X  X         X         XX  X     X  X   X    X     X       X                   XX   X   X 
+  XXXXX  X     X   X  X  X     X X     X  X  XX    X     X     X X     X         X     X  X   X 
+      X   XXXXX     XX    XXXXX   XXXXX    XX XX XXXXX    XXXXX   XXXXX     X     XXXXX  XXX XXX
+      X                                                                                         
+  XXXX                                                                                          
+x - M_anyscalar.f90
+x - M_journal.f90
+x - M_messages.f90
+x - M_strings.f90
+x - M_overload.f90
+x - M_io.f90
+x - M_html.f90
+x - M_debug.f90
+x - M_time.f90
+x - M_sort.f90
+x - M_math.f90
+x - M_bessel.f90
+x - M_random.f90
+x - M_calculator.f90
+x - M_history.f90
+x - M_readline.f90
+x - M_list.f90
+x - M_kracken.f90
+x - M_getopt.f90
+x - M_getopt_long.f90
+x - M_calculator_plus.f90
+x - M_logic.f90
+x - M_process.f90
+x - M_color.f90
+x - M_getkey.f90
+x - M_system.f90
+x - M_treesort.f90
+x - M_units.f90
+x - M_Compare_Float_Numbers.f90
+x - M_factor.f90
+x - M_ncurses.f90
+x - M_xterm.f90
+x - M_fixedform.f90
+x - M_regex.f90
+x - M_stopwatch.f90
+x - M_csv.f90
+x - M_geography.f90
+x - M_display.f90
+x - M_readgif.f90
+x - M_writegif_animated.f90
+x - M_writegif.f90
+x - M_pixel.f90
+x - M_pixel_slices.f90
+x - M_draw.f90
+x - M_regex.c
+x - M_readline.c
+x - M_getkey.c
+x - M_drawplus.c
+x - M_sqlite.c
+x - jubiglet.c
+x - read_line.c
+x - jucolor.c
+x - hlsrgb.c
+x - hvsrgb.c
+x - rgbhls.c
+x - rgbhvs.c
+x - rgbval.c
+x - rgbmono.c
+x - M_units.c
+x - gauss.c
+x - M_system.c
+x - macros.c
+x - C-arcs.c
+x - C-aspect.c
+x - C-attr.c
+x - C-buffer.c
+x - C-clip.c
+x - C-curves.c
+x - C-draw.c
+x - C-drivers.c
+x - C-getgp.c
+x - C-getstring.c
+x - C-mapping.c
+x - C-matrix.c
+x - C-move.c
+x - C-newtokens.c
+x - C-objects.c
+x - C-patches.c
+x - C-points.c
+x - C-polygons.c
+x - C-pref.c
+x - C-rect.c
+x - C-scale.c
+x - C-tensor.c
+x - C-text.c
+x - C-trans.c
+x - C-valloc.c
+x - C-verror.c
+x - C-viewing.c
+x - C-viewp.c
+x - C-yobbarays.c
+x - C-canvas.c
+x - C-cgmt.c
+x - C-fti.c
+x - C-gnu.c
+x - C-hpdxy.c
+x - C-mif.c
+x - C-pdf.c
+x - C-ppm.c
+x - C-ps.c
+x - C-svg.c
+x - C-unixplot.c
+x - C-X11.c
+x - C-xfig.c
+x - C-pcl5.c
+x - C-pbm.c
+x - C-usemap.c
+x - C-vml.c
+x - C-vog.c
+x - C-rtf.c
+x - C-nil.c
+x - C-hpgt.c
+x - C-tek.c
+x - M_drawplus.f90
+x - M_xyplot.f90
+x - M_drawinc.f90
+x - M_slices.f90
+x - M_contourplot.f90
+x - M_calcomp.f90
+x - M_sqlite.f90
+x - M_generic_list.f90
+x - M_uuid.f90
+x - ran_mod.f90
+x - calc_NC.f90
+x - strgar3.f90
+x - dparanoia.f90
+x - paranoia.f90
+x - sparanoia.f90
+x - nc_printplain.f90
+x - nc_printhtml.f90
+x - nc_errmessage.f90
+x - nc_printescape.f90
+x - nc_printunicode.f90
+x - M_hashkeys.f90
+x - M_hashkeys.c
+x - M_anything.f90
+x - M_sha3.f90
+x - M_big_integer.f90
+create cntrcv.f90
+create c.f90
+create juown1.f90
+                                                                                                                
+                                                                                                                
+                                                                                                         XX     
+                   X                                                                                      X     
+                   X                                                                                      X     
+  XXXXXX  XXXXX   XXXX   XXXXXX  XXX XX   XXXXX   XXXXXX XXX XX   XXXX   XXX X    XXXXX           XXXXX   X XX  
+ X    X  X     X   X      X    X   XX  X X     X X    X    XX  X      X   X X X  X     X         X     X  XX  X 
+ X    X  XXXXXXX   X      X    X   X     X     X X    X    X      XXXXX   X X X   XXX             XXX     X   X 
+ X    X  X         X      X    X   X     X     X X    X    X     X    X   X X X      XX              XX   X   X 
+  XXXXX  X     X   X  X   X    X   X     X     X  XXXXX    X     X    X   X X X  X     X         X     X  X   X 
+      X   XXXXX     XX    XXXXX  XXXXX    XXXXX       X  XXXXX    XXXX X XX X XX  XXXXX     X     XXXXX  XXX XXX
+      X                   X                           X                                                         
+  XXXX                   XXX                      XXXX                                                          
+sec2days and f90
+ar: PROGRAM.a: Malformed archive
+ERROR: PROGRAM sec2days.f90 NOT FOUND
+days2sec and f90
+ar: PROGRAM.a: Malformed archive
+ERROR: PROGRAM days2sec.f90 NOT FOUND
+now and f90
+ar: PROGRAM.a: Malformed archive
+ERROR: PROGRAM now.f90 NOT FOUND
+ttee and f90
+ar: PROGRAM.a: Malformed archive
+ERROR: PROGRAM ttee.f90 NOT FOUND
+month and f90
+ar: PROGRAM.a: Malformed archive
+ERROR: PROGRAM month.f90 NOT FOUND
+paws and f90
+ar: PROGRAM.a: Malformed archive
+ERROR: PROGRAM paws.f90 NOT FOUND
+today and f90
+ar: PROGRAM.a: Malformed archive
+ERROR: PROGRAM today.f90 NOT FOUND
+factors and f90
+ar: PROGRAM.a: Malformed archive
+ERROR: PROGRAM factors.f90 NOT FOUND
+lcm and f90
+ar: PROGRAM.a: Malformed archive
+ERROR: PROGRAM lcm.f90 NOT FOUND
+gcd and f90
+ar: PROGRAM.a: Malformed archive
+ERROR: PROGRAM gcd.f90 NOT FOUND
+quadratic and f90
+ar: PROGRAM.a: Malformed archive
+ERROR: PROGRAM quadratic.f90 NOT FOUND
+numdiff and f90
+ar: PROGRAM.a: Malformed archive
+ERROR: PROGRAM numdiff.f90 NOT FOUND
+what and f90
+ar: PROGRAM.a: Malformed archive
+ERROR: PROGRAM what.f90 NOT FOUND
+ufpp and f90
+ar: PROGRAM.a: Malformed archive
+ERROR: PROGRAM ufpp.f90 NOT FOUND
+ufpp_template and f90
+ar: PROGRAM.a: Malformed archive
+ERROR: PROGRAM ufpp_template.f90 NOT FOUND
+makeout and f90
+ar: PROGRAM.a: Malformed archive
+ERROR: PROGRAM makeout.f90 NOT FOUND
+manup and f90
+ar: PROGRAM.a: Malformed archive
+ERROR: PROGRAM manup.f90 NOT FOUND
+t2m and f90
+ar: PROGRAM.a: Malformed archive
+ERROR: PROGRAM t2m.f90 NOT FOUND
+degrees and f90
+ar: PROGRAM.a: Malformed archive
+ERROR: PROGRAM degrees.f90 NOT FOUND
+alphabet and f90
+ar: PROGRAM.a: Malformed archive
+ERROR: PROGRAM alphabet.f90 NOT FOUND

@@ -1,0 +1,45 @@
+NAME
+     scale3(3f) - [M_math] find nice log range
+
+SYNOPSIS
+  subroutine scale3(xmin, xmax, n, xminp, xmaxp, dist)
+
+   real,intent(in)      :: xmin, xmax
+   integer,intent(in)   :: n
+   real,intent(out)     :: xminp, xmaxp, dist
+
+DESCRIPTION
+
+   Find nice logarithmic range using "CACM Algorithm 463 scale3".
+   Typically used to find nice ranges for axis scales. Given XMIN, XMAX
+   and N, where N is greater than 1, find new log range. Finds a new
+   range XMINP and XMAXP divisible into exactly N LOGARITHMIC intervals,
+   where the ratio of adjacent uniformly spaced scale values
+   is DIST.
+
+EXAMPLE
+    program demo_scale3
+    use M_math, only : scale3
+    implicit none
+    real :: start, end
+    real :: xminp, xmaxp, dist
+    integer :: intervals
+    integer :: ios
+    ! real :: treme(2)
+    intervals=5
+    write(*,*)'Enter start and end values'
+    do
+      read(*,*,iostat=ios)start,end
+      if(ios.ne.0)exit
+      call scale3(start,end,intervals,xminp,xmaxp,dist)
+      ! treme(1)=log10(xminp)
+      ! treme(2)=log10(xmaxp)
+      ! treme(1)=floor(treme(1))
+      ! treme(2)=ceiling(treme(2))
+      ! if(treme(2).eq.treme(1))treme(2)=treme(2)+1
+      write(*,'(a,g0,a,g0,a,i0,a,g0)') &
+              & 'nice range is 10**',log10(xminp),' to 10**',log10(xmaxp),' by ', &
+              & nint((log10(xmaxp)-log10(xminp))/dist),' intervals of ',dist
+    enddo
+    end program demo_scale3
+

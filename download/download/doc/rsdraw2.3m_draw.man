@@ -1,0 +1,10 @@
+NAME
+   rsdraw2(3f) - [M_draw:DRAW] Relative draw in screen units (-1.0 to 1.0).
+
+SYNOPSIS
+         subroutine rsdraw2(deltax, deltay)
+         real deltax, deltay
+
+DESCRIPTION
+   Relative sdraw2. delatx and deltay are in screen units (-1.0 to 1.0).
+

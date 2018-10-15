@@ -1,0 +1,28 @@
+NAME
+   visible(3f) - [M_strings] expand a string to control and meta-control representations
+
+SYNOPSIS
+   function visible(input) result(output)
+
+    character(len=*),intent(in)           :: input
+    character(len=:),allocatable          :: output
+DESCRIPTION
+
+    visible(3f) expands characters to commonly used sequences used to represent the characters
+    as control sequences or meta-control sequences.
+
+EXAMPLES
+  Sample Program:
+
+    program demo_visible
+    use M_strings, only : visible
+    integer :: i
+       READFILE: block
+          do i=0,255
+             write(*,'(a)')visible(char(i))
+          enddo
+    end program demo_visible
+BUGS
+    The expansion is not reversible, as input sequences such as "M-" or "^a"
+    will look like expanded sequences.
+

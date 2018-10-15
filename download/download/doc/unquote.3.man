@@ -1,0 +1,45 @@
+NAME
+    unquote(3f) - [M_strings] remove quotes from string as if read with list-directed input
+SYNOPSIS
+  function unquote(quoted_str,esc) result (unquoted_str)
+
+   character(len=*),intent(in)          :: quoted_str
+   character(len=1),optional,intent(in) :: esc
+   character(len=:),allocatable         :: unquoted_str
+DESCRIPTION
+   Remove quotes from a CHARACTER variable as if it was read using
+   list-directed input.  This is particularly useful for processing
+   tokens read from input such as CSV files.
+
+   Fortran can now read using list-directed input from an internal file,
+   which should handle quoted strings, but list-directed input does not
+   support escape characters, which UNQUOTE(3f) does.
+OPTIONS
+   quoted_str  input string to remove quotes from using the rules of
+               list-directed input (two adjacent quotes inside a quoted
+               region are replaced by a single quote, a single quote or
+               double quote is selected as the delimiter based on which
+               is encountered first going from left to right, ...)
+   esc         optional character used to protect the next quote
+               character from being processed as a quote, but simply as
+               a plain character.
+RESULT
+   unquoted_str  The output string, which is based on removing quotes from quoted_str.
+EXAMPLE
+  Sample program:
+
+   program demo_unquote
+      use M_csv, only : unquote
+      implicit none
+      character(len=128)           :: quoted_str
+      character(len=:),allocatable :: unquoted_str
+      character(len=1),parameter   :: esc='\'
+      integer                      :: ios
+      do
+         read(*,'(a)',iostat=ios)quoted_str
+         if(ios.ne.0)exit
+         write(*,'(a)')'QUOTED       ['//trim(quoted_str)//']'
+         unquoted_str=unquote(trim(quoted_str),esc)
+         write(*,'(a)')'UNQUOTED     ['//unquoted_str//']'
+      enddo
+   end program demo_unquote

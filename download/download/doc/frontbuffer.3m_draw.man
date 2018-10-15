@@ -1,0 +1,10 @@
+NAME
+   frontbuffer(3f) - [M_draw:DOUBLE_BUFFERING] Draw in the front buffer. This will always work.
+
+SYNOPSIS
+         subroutine frontbuffer()
+
+DESCRIPTION
+
+   Make M_draw draw in the front buffer. This will always work.
+
