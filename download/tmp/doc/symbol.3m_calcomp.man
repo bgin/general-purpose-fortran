@@ -1,0 +1,188 @@
+NAME
+   symbol(3f) - [M_calcomp:basic] draw text string or marker
+
+SYNOPSIS
+ The "standard" call which produces a line of text is:
+
+       call symbol(xpage,ypage,height,ibcd,inteq,angle,+nchar)
+
+DESCRIPTION
+
+ The SYMBOL subroutine produces plot annotation at any angle
+ and in practically any size. There are two SYMBOL call formats:
+
+     1) the "standard" call, which can be used to draw text such
+        as titles, captions, and legends.
+
+     2) the "special" call, which is used to draw special
+        centered symbols such as a box, octagon, triangle, etc., for
+        denoting data points.
+
+ Both forms of the SYMBOL calling sequence have seven arguments.
+ Which form is being used is determined by the value of the NCHAR
+ parameter.
+
+ The standard characters that are drawn by SYMBOL include the
+ letters A-Z, digits 0-9, and certain special characters. See Table 2
+ for a description of CALCOMP's symbol table.
+
+ The parameter NCHAR is used to specify whether a text string
+ or a single symbol is being plotted. If NCHAR is >= 0, the text
+ string in IBCD is used. If NCHAR= -1 or -2, a single symbol is
+ produced using the value of INTEQ (Which MUST then be between 0 and
+ 90, inclusive).
+
+ It is recommended that 999 be used for INTEQ when NCHAR is greater
+ than or equal to zero, and either a dummy character variable (e.g.
+ CHARACTER*1 DUMMY) or a literal character string (e.g. ' ') be used
+ for IBCD when NCHAR is less than zero (not just a plain word as a
+ dummy variable)!
+
+OPTIONS FOR STRINGS
+
+    XPAGE, YPAGE  are the coordinates, in inches, of the lower left-hand
+                  corner (before character rotation) of the first character
+                  to be produced. The pen is up while moving to this point.
+
+                  Annotation may be continued from the position following
+                  that at which the last annotation ended. Continuation
+                  occurs when XPAGE and/or YPAGE equals 999.0, and may be
+                  applied to X or Y independently. (Calling WHERE to
+                  obtain the current pen position and using RXPAGE, RYPAGE
+                  in another call to SYMBOL would not give the same results
+                  as using 999.)
+
+    HEIGHT        is the height, in inches, of the character(s) to be
+                  plotted. For best results, it should be a multiple of
+                  seven times the standard CALCOMP increment size of 0.01
+                  (e.g., 0.07, 0.14, 0.21), but other values are
+                  acceptable. The width of a character, including spacing,
+                  is normally the same as the height (e.g., a string of 10
+                  characters 0.14 inch high is 1.4 inches wide).
+
+    IBCD          is the text to be used as annotation. The character(s)
+                  must be in a character array or single variable. (The
+                  data should be stored as TYPE CHARACTER.)
+
+    INTEQ         Ignored (Assuming NCHAR is positive!)
+
+    ANGLE         is the angle, in degrees from the X axis, at which the
+                  annotation is to be plotted. If ANGLE=0.0, the
+                  character(s) will be plotted right side up and parallel
+                  to the X axis. The absolute magnitude of ANGLE can not
+                  exceed 1800 degrees.
+
+    +NCHAR        is the number of characters to be plotted from IBCD.
+                  If NCHAR=0, one alphanumeric character is produced, using
+                  a single character which is the first element of IBCD.
+
+ For example, the following call to SYMBOL will result in the characters TITLE
+ 10 being output beginning at the X and Y coordinates of 1.0 .
+
+    character grlbl*8
+    grlbl='title 10'
+    call symbol(1.0,1.0,0.14,grlbl,999,0.0,8)
+
+OPTIONS FOR SYMBOLS
+
+ A second form is the "special" call, which produces only a single symbol
+ based on the value of INTEQ - not on the ASCII representation of a character.
+
+ The "special" call is:
+
+       call symbol(xpage,ypage,height,ibcd,inteq,angle,-nchar)
+
+    XPAGE, YPAGE,   are the same as described for the "standard" call. If
+    and ANGLE       the symbol to be produced is one of the centered symbols
+                    (e.g., if INTEQ is less than 14), XPAGE, YPAGE represent
+                    the geometric center of the character produced.
+
+    HEIGHT          is the height (and width), in inches, of the centered
+                    symbol to be drawn. Preferably, it should be a multiple
+                    of four times the CALCOMP 0.01 increment size.
+
+    IBCD            Ignored (assuming NCHAR is negative!)
+
+    INTEQ           is the integer equivalent of the desired symbol. Valid
+                    integers and their symbols are listed in the Symbol Table
+                    (Table 2). If INTEQ is 0 through 14, a centered symbol
+                    is produced. INTEQ -MUST- be greater than or equal to zero
+                    and less than or equal to 90 .
+
+    NCHAR           is negative and determines whether the pen is up or down
+                    during the move to XPAGE, YPAGE.
+
+                    When NCHAR is:
+
+                    -1, the pen is up during the move, after which a single
+                    symbol is produced.
+
+                    -2, or less, the pen is down during the move, after which
+                    a single symbol is produced.
+
+ For example, the following call to SYMBOL will result in special symbol
+ number 5 being output with its center at X and Y coordinates of 1.0 .
+
+       CALL SYMBOL(1.0,1.0,0.16,' ',5,0.0,-1)
+
+ Table 2 shows the current symbols available and the integer equivalents for
+ each symbol which are used in the "special" call. When a "standard" call to
+ SYMBOL is made, the host computer's internal characters are translated to the
+ appropriate characters from this table.
+
+EXAMPLES
+  Sample program
+
+   program demo_symbol
+   use M_calcomp
+
+   ! produce a symbol table which shows the characters
+   ! available in the symbol(3f) routine.
+   !
+   character(len= 38),parameter :: ichr1='CHARACTERS AVAILABLE IN SYMBOL ROUTINE'
+   character(len= 38),parameter :: ichr2='  FOR CALCOMP ON THE CRAY COMPUTER    '
+   character(len= 60),parameter :: ichr3='INTEGER FOR USE IN SYMBOL CALL SHOWN TO LEFT OF EACH SYMBOL'
+   character(len= 1 )           :: ibcd
+   integer                      :: ia,ib
+   integer                      :: m
+   real                         :: z, xs, ys, x, y
+      call plots(0.0,10.0,0.0,10.0)
+      call plot(0.8,0.8,1001)
+      call plot(0.0,11.0,2)
+      call plot(8.5,11.0,2)
+      call plot(8.5,0.0,2)
+      call plot(0.0,0.0,2)
+      call symbol(0.4,10.50,.2,ichr1,inteq,0.0,38)
+      call symbol(0.4,10.25,.2,ichr2,inteq,0.0,38)
+      call plot(8.1,10.0,3)
+      call plot(0.4,10.0,2)
+      call plot(0.4, 0.5,2)
+      call plot(8.1, 0.5,2)
+      z=0.0
+      m=0
+      xs=0.85
+      ys=0.25
+      x=0.4
+      y=9.5
+      do ia=1,6
+         do ib=1,15
+            call number(x+0.10,y+0.18,0.14,z,0.0,-1)
+            call symbol(x+xs,y+ys, 0.4, ibcd,m,0.0,-1)
+            Z=Z+1.0
+            M=M+1
+            Y=Y-0.6
+         enddo
+         if(ia.eq.6) call number(x+0.10,y+0.18,0.14,z,0.0,-1)
+         if(ia.eq.6) call symbol(x+xs,y+ys,0.4,ibcd,m,0.0,-1)
+         x=x+1.283
+         call plot(x,0.5,3)
+         call plot(x,10.0,2)
+         y=9.5
+         xs=0.65
+         ys=0.05
+      enddo
+      call symbol(0.6,0.25,0.12,ichr3,inteq,0.0,60)
+      call nframe()
+      call plot(0.0,0.0,999)
+   end program demo_symbol
+

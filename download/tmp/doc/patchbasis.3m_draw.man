@@ -1,0 +1,10 @@
+NAME
+   patchbasis(3f) - [M_draw:PATCH] Define the t and u basis matrices of a patch.
+
+SYNOPSIS
+         subroutine patchbasis(tbasis, ubasis)
+         real :: tbasis(4,4), ubasis(4,4)
+DESCRIPTION
+
+   Define the t and u basis matrices of a patch.
+

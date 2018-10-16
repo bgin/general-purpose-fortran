@@ -60,34 +60,6 @@ source $DIRNAME/scripts/functions.sh
 #  XXXX     XX XX XXX XXX  XXXXX     XX    XXXXX   XXXXX  XXX XXX  XXXXX
 #
 ####################################################################################################################################
-MAN2MAN(){
-
-#echo 'MAN2MAN: take a *.man file and make man(1) page using txt2man(1) in tmp/man and HTML version of man(1) page in tmp/html'
-SECTION=$1
-#set -x -v
-: NAME             $NAME
-: SECTION          $SECTION
-: SECTION_NUMBER   $SECTION_NUMBER
-: PUTMAN           $PUTMAN
-: PUTHTML          $PUTHTML
-
-# convert *.man file to roff and then to html
-
-# convert to roff and install and convert to html and install
-
-echo "MAN2MAN: $NAME.$SECTION.man ==> $PUTMAN/man$SECTION_NUMBER/$NAME.$SECTION.gz"
-echo "MAN2MAN: $NAME.$SECTION.man ==> $PUTHTML/$NAME.$SECTION.html"
-export AUX_FILENAME="$NAME.$SECTION"
-txt2man -s $SECTION_NAME -t "$NAME" $NAME.$SECTION.man|
-   tee $PUTMAN/man$SECTION_NUMBER/$NAME.$SECTION|
-   man2html >$PUTHTML/$NAME.$SECTION.html
-
-gzip --force $PUTMAN/man$SECTION_NUMBER/$NAME.$SECTION
-
-chmod a=r,u+w $PUTMAN/man$SECTION_NUMBER/$NAME.$SECTION.gz
-
-}
-####################################################################################################################################
 GETSECTION(){
 # function to get section number from a document file
 #echo "GETSECTION $NAME $SUFFIX" 1>&2
@@ -104,19 +76,7 @@ SUFFIX=$2
 ####################################################################################################################################
 # convert *.man files to make man(1) pages in tmp/man and HTML versions of man(1) pages in tmp/html
 txt2man -h >doc/txt2man.1.man
-####################################################################################################################################
-MAN_TO_ROFF(){
-(
-for NAME in ${*:-*.[1-8]*.man}
-do
-   echo $NAME
-   GETSECTION $NAME .man
-   NAME=$(BASENAME $SHORTNAME .$SECTION)
-   MAN2MAN $SECTION
-done
-)
-}
-####################################################################################################################################
+
 # Order files will be processed
 # *.htm   assumed to look like a man(1) page convert to flat txt and then run thru txt2man like a *.man file
 # *.man   text files that look like a man(1) page that are to be run thru txt2man to make a *roff file.
@@ -148,9 +108,9 @@ do
    ) | html2txt $NAME > tmp/$NEWNAME.man
 done
 #------------------------------------------------------------------------------#
-echo 'Convert *.man pages to *roff files and install as man pages'
-(cd $DIRNAME/doc;MAN_TO_ROFF)
-(cd $DIRNAME/doc/tmp;MAN_TO_ROFF)
+echo 'Convert *.man pages to *roff files and install as man pages and html pages'
+(cd $DIRNAME/doc;     man2man.sh)
+(cd $DIRNAME/doc/tmp; man2man.sh)
 #------------------------------------------------------------------------------#
 echo 'Take *.[1-8]*.txt man pages and make into as-is man(1) pages and HTML pages'
 for NAME in ${*:-*.[1-8]*.txt}
@@ -256,7 +216,7 @@ getprograms.sh          # get some programs to add to the procedures
 makemakefile.sh         # create makefile
 cp    /home/urbanjs/V600/LIBRARY/libGPF/EXE/DRAW/EXAMPLES/*.f90    tmp/PROGRAMS/M_DRAW_EXAMPLES/
 cp    /home/urbanjs/V600/LIBRARY/libGPF/EXE/CALCOMP/EXAMPLES/*.f90 tmp/PROGRAMS/CALCOMP_EXAMPLES/
-cp -r /home/urbanjs/V600/LIBRARY/libGPF/EXE/HASHKEYS/testvectors   tmp/PROGRAMS/
+cp -r /home/urbanjs/V600/LIBRARY/libGPF/EXE/HASHKEYS/test_vectors  tmp/PROGRAMS/
 ####################################################################################################################################
 echo 'create documents in tmp/doc, tmp/man, and tmp/html'
 (MAKEMANDIR)

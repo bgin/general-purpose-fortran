@@ -1,0 +1,45 @@
+NAME
+    scale1(3f) - [M_math] find new range xMINP XMAXP divisible into approximately N linear intervals of size DIST
+
+SYNOPSIS
+  subroutine scale1(xmin, xmax, n, xminp, xmaxp, dist)
+
+   real,intent(in)      :: xmin, xmax
+   integer,intent(in)   :: n
+   real,intent(out)     :: xminp, xmaxp, dist
+
+DESCRIPTION
+
+   Find new range divisible into approximately n linear intervals using
+   "CACM Algorithm 463 scale1". Typically used to find nice ranges for
+   axis scales.
+
+EXAMPLE
+   Sample program
+
+    program demo_scale1
+    use M_math, only : scale1
+    implicit none
+    real :: start, end
+    real :: xminp, xmaxp, dist
+    integer :: intervals
+    intervals=5
+    write(*,*)'Enter start and end values'
+    do
+      read(*,*,end=999)start,end
+      call scale1(start,end,intervals,xminp,xmaxp,dist)
+      write(*,'(a,g0,a,g0,a,i0,a,g0)') &
+              & 'nice range is ',xminp,' to ',xmaxp,' by ', &
+              & nint((xmaxp-xminp)/dist),' intervals of ',dist
+    enddo
+    999 continue
+    end program demo_scale1
+
+   Example output
+
+    printf '3 87 \n 0.1 2.3 \n -20 30|demo_scale1
+     Enter start and end values
+    nice range is 0.00000000 to 100.000000 by 5 intervals of 20.0000000
+    nice range is 0.00000000 to 2.50000000 by 5 intervals of 0.500000000
+    nice range is -20.0000000 to 30.0000000 by 5 intervals of 10.0000000
+

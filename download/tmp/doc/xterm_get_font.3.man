@@ -1,0 +1,21 @@
+NAME
+   xterm_get_font(3f) - [M_xterm] obtain xterm(1) font name
+SYNOPSIS
+   function xterm_get_font() result(fontname)
+   character(len=:),allocatable :: fontname
+
+DESCRIPTION
+   Sends an escape sequence to stdout to query the fontname of an xterm(1) window.
+
+   For this to work stdout must be your terminal device; so this may not be used
+   effectively in a pipe or when redirection is used, depending on your system.
+
+EXAMPLE
+  A sample program:
+
+   program demo_xterm_get_font
+   use M_xterm, only : xterm_get_font
+   implicit none
+      write(*,*) xterm_get_font()
+   end program demo_xterm_get_font
+

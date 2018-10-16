@@ -34,13 +34,14 @@ lastprogram dtu.f90        dtu.FF
 lastprogram colors.f90     colors.FF
 lastprogram compute.f90    compute.FF
 lastprogram huegif.f90     huegif.FF
+lastprogram color_wheel.f90
 lastprogram note.f90       note.FF
 lastprogram exchange.f90   exchange.FF
 lastprogram change.f90     change.FF
 lastprogram xauth_key.f90  xauth_key.FF
 lastprogram hasher.f90     hasher.FF
 lastprogram sha3.f90       
-lastprogram digeest.f90
+lastprogram digest.f90
 lastprogram shell.f90      shell.FF
 lastprogram penv.f90       penv.FF
 lastprogram findll.f90     findll.FF

@@ -1,0 +1,27 @@
+NAME
+   color_wheel(1f) - [M_draw] generate HLS color wheels
+
+SYNOPSIS
+   color_wheel [--help|--version]
+
+DESCRIPTION
+
+   Generates color wheels using the HLS (Hue Lightness, Saturation)
+   model.
+
+   Note that if the output device does not support at least 1200 colors
+   in the color table that output will appear incorrect.
+
+OPTIONS
+   --help      display this help and exit
+
+   --version   output version information and exit
+EXAMPLE
+  Sample usage
+
+   # generate Adobe PDF document
+   export M_DRAW_FONTLIB=/usr/share/hershey
+   export M_DRAW_DEVICE=pdf
+   color_wheel
+   # display PDF file using an Adobe PDF viewer
+   xpdf look.hue

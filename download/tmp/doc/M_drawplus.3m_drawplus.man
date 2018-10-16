@@ -1,0 +1,88 @@
+NAME
+   M_drawplus(3f) - [M_drawplus] Additional routines using the M_DRAW graphics library
+SYNOPSIS
+
+DESCRIPTION
+
+   M_drawplus(3f) is a collection of higher level graphic routines that call the
+   base M_draw(3f) graphics routines.
+
+LIBRARY FUNCTION DESCRIPTIONS
+
+   DEVICE ROUTINES
+
+   ROUTINES FOR SETTING UP WINDOWS
+
+   CLIPPING ROUTINES
+
+   COLOR ROUTINES
+
+   INTERACTIVE ROUTINES
+
+       subroutine rdbox(returnx1,returny1,returnx2,returny2,ikey)
+       reads two points and outline defined box and return points
+       subroutine rdpnt(oldx,oldy,sx,sy,ibut)
+       reads coordinates of point locator clicked at
+
+   FLUSHING
+
+   PROJECTION AND VIEWPORT ROUTINES
+
+       subroutine page (left, right, bottom, top)
+
+   MATRIX STACK ROUTINES
+
+       subroutine pop
+
+       subroutine push
+
+   VIEWPOINT ROUTINES
+
+   MOVE ROUTINES
+
+   LINESTYLE ROUTINES
+
+   DRAW ROUTINES
+
+       subroutine polyline2(arrx(:),arry(:))
+
+       subroutine arrowhead(x1,y1,x2,y2,size,idraw)
+
+   ARCS AND CIRCLES
+
+       subroutine uarc
+
+   CURVE ROUTINES
+
+       subroutine uconic(x,y,p,e,theta1,theta2,orientation)
+
+       subroutine spirograph(xcenter,ycenter,sunr0,planet0,offset0,radius,ilines,ang,angs,ifill)
+
+       subroutine smoot, ismoo,ismoo1,ismoo2,ismoo3,perin
+
+   RECTANGLES AND GENERAL POLYGON ROUTINES
+
+   TEXT ROUTINES
+
+   TRANSFORMATIONS ROUTINES
+
+   PATCH ROUTINES
+
+   POINT ROUTINES
+
+   OBJECT ROUTINES
+
+       subroutine invokeobj(xt,yt,zt,xs,ys,zs,xr,yr,zr,iobject)
+
+   DOUBLE BUFFERING
+
+   POSITION ROUTINES
+
+   HIGH LEVEL ROUTINES
+
+       subroutine barcode
+
+       subroutine call_draw
+
+       subroutine draw_interpret
+

@@ -1,0 +1,46 @@
+NAME
+   system_isreg(3f) - [M_system] checks if argument is a regular file
+
+SYNOPSIS
+  logical function system_isreg(pathname)
+
+   character(len=*),intent(in) :: pathname
+   logical                     :: system_isreg
+
+DESCRIPTION
+       The isreg(3f) function checks if path is a regular file
+
+OPTIONS
+       path   a character string representing a pathname. Trailing spaces are ignored.
+
+RETURN VALUE
+       The system_isreg() function should always be successful and no
+       return value is reserved to indicate an error.
+
+ERRORS
+       No errors are defined.
+
+SEE ALSO
+   system_islnk(3f), system_stat(3f), system_isdir(3f), system_perm(3f)
+
+EXAMPLE
+  check if filename is a regular file
+
+   end program demo_system_isreg
+       Sample program:
+
+          program demo_system_isreg
+          Use M_system, only : system_isreg
+          implicit none
+          integer                     :: i
+          character(len=80),parameter :: names(*)=[ &
+          '/tmp            ', &
+          'test.txt        ', &
+          '.               ']
+          do i=1,size(names)
+             write(*,*)' is ',trim(names(i)),' a regular file? ', isreg(names(i))
+          enddo
+          end program demo_system_isreg
+
+       Results:
+

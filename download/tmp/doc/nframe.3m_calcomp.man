@@ -1,0 +1,111 @@
+NAME
+   nframe(3f) - [M_calcomp:basic] start new frame
+
+SYNOPSIS
+       call nframe()
+
+DESCRIPTION
+
+ Terminates the current frame and resets the current pen position and
+ origin to zero (The lower left-hand corner of the new frame).
+
+ NFRAME is a locally-developed routine.
+
+ Subroutine NFRAME allows users to define the logical beginning
+ and ending of a plot. This capability is necessary if plots are to
+ be drawn on a graphics device with a limited display area (e.g.,
+ a graphics terminal or microfiche/ film). A call to NFRAME enters
+ a plot terminator in the user's metalanguage file. All plotting
+ data generated between calls to NFRAME is treated as a single plot
+ by the graphics post processing procedures. The absence of calls to
+ NFRAME results in all plotting data being processed as a single
+ plot by the post processor (e.g., all plotting data will be drawn
+ in a single frame on microfiche).
+
+ The call to NFRAME should be placed before the call to subroutine
+ PLOT that is used to move the pen to the origin of the next plot.
+ Be aware that the area encompassed by moving the pen to
+ establish the origin of a plot is considered part of the plot and will
+ produce a visible bottom and left margin on plot frames if no negative
+ values are subsequently used.
+
+ As mentioned previously, a plot frame is limited to a maximum size in
+ either the X or Y direction of 100 "CALCOMP inches." Each plot frame is
+ initialized by a call to subroutine PLOT with the third argument
+ (IPEN) equal to -2 or -3. For example:
+
+       CALL PLOT(0.5,1.0,-3)
+
+ says to move 0.5 inches in the X-direction and 1.0 inch in the
+ Y-direction before establishing a new origin. When establishing a
+ new origin, all offsets are included inside the frame boundary and
+ are therefore part of the plot frame size. If any X or Y coordinate
+ value (plus the appropriate offset) exceeds the 100 inch limit,
+ results are unpredictable. In programs where X and Y coordinate values
+ exceed the scaling limit, a call to the CALCOMP routine FACTOR
+ may be used to scale down the plot size appropriately. No additional
+ offset is added by the call to NFRAME. Knowledge of the plot frame
+ size in the X and Y directions will be needed to scale pen plots to
+ actual inches with the device dependent post processing procedures.
+ The following example is provided to assist in understanding how the
+ frame size is determined.
+
+EXAMPLE
+ Sample program
+
+       program caltest
+       use M_calcomp
+       !
+       ! Perform initialization
+       call plots(14)
+       !
+       ! Establish origin for first plot (Negative Y values up to -0.5 are
+       ! now permitted also)
+       call plot( 0.0, 0.5, -3)
+       !
+       ! Draw a box inside of which all lines will appear
+       ! but notice plot frame size now includes the offset plus this box size
+       ! Plot frame size = maximum coordinate value used + offset
+       ! Plot frame size in the X-direction is 8 inches
+       ! Plot frame size in the Y-direction is 9.5 inches (0.5 offset in PLOT
+       call above!
+       call plot( 8.0, 0.0, 2)
+       call plot( 8.0, 9.0, 2)
+       call plot( 0.0, 9.0, 2)
+       call plot( 0.0, 0.0, 2)
+       !
+       ! Calls to generate first plot go here
+       .
+       .
+       .
+       ! Terminate first plot
+       call nframe
+       !
+       ! Establish origin for second plot
+       call plot(1.0, 2.0, -3)
+       ! Plot frame size in the X-direction is 6 inches
+       ! Plot frame size in the Y-direction is 6 inches
+       call plot(5.0, 0.0, 2)
+       call plot(5.0, 4.0, 2)
+       call plot(0.0, 4.0, 2)
+       call plot(0.0, 0.0, 2)
+       !
+       ! Calls to generate second plot go here
+       .
+       .
+       .
+       ! Close the plot file
+       call plot(0.0, 0.0, 999)
+       end program caltest
+
+ An inch drawn in frame 1 will not appear equal in length to an inch
+ drawn in frame 2 because their unit-less frame sizes are not equal (
+ 8.5 x 9 versus 6 x 6 ) !
+
+ The size of each frame is determined by the maximum value reached
+ in each frame relative to the ORIGINAL frame origin. Each frame, when
+ plotted, is stretched without distortion to the maximum size
+ it can obtain in the plotting area specified on post-processor calls
+ (Usually the SIZE, and XI and YI parameters as described in the DOCLIB
+ document GRPHDOC).
+

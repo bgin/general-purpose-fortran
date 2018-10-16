@@ -1,0 +1,120 @@
+NAME
+     journal(3f) - [M_journal] provides public message routine, no paging or graphic mode change"
+SYNOPSIS
+
+   subroutine journal([where,]message,[VALUE])
+
+    character(len=*),intent(in) :: where
+    character(len=*),intent(in) :: msg
+
+  WRITE MESSAGES
+
+      call journal(where,message,[VALUE])
+
+   shortcut for "call journal('sc',message)"
+
+      call journal(message)
+
+  OPEN OR CLOSE TRAIL FILE
+
+   open a trail file, or close trail if filename is blank
+
+      call journal('O',[trailfile_name|''])
+
+  SET OUTPUT TIME PREFIX
+
+   set the NOW(3f) function display format for timestamps
+
+      call journal('%',time_stamp_prefix_specification)
+
+  MODES
+
+   Turn on/off writing DEBUG messages to trail file
+
+      call journal([.true.|.false.],'debug')
+
+  ASSIGN STDOUT TO AN ALTERNATE FILE
+   change stdout to iunit and open filename; or close unit and go back to stdout if filename=''
+
+      call journal(iunit,filename)
+
+   change stdout to iunit to use a file already open
+
+      call journal(iunit)
+
+DESCRIPTION
+
+   If a user procedure is used for outputting messages instead of calling
+   WRITE(3f) it is easy to provide control of when messages are printed
+   (ie. a "verbose" mode, or "quite" mode), creating files to replace
+   program execution, duplicating output, ...
+
+OPTIONS
+  WHERE  indicates where messages are written. A combination of the
+         following characters can be used...
+
+     Usually one of these to write to the standard output files ...
+
+     S   write to stdout or iounit set with journal(unit) or
+         journal(unit,filename).
+     E   write to stderr
+
+     And one of these to write to trail file (ignore if no trail file
+     defined) ...
+
+     C   write to trail file as a comment (if file is open)
+         Writing output "as a comment" means it is preceded by a pound(#)
+         character.
+     T   write to trail file (if file is open)
+
+     Usually used by itself
+
+     D   write to trail file as a comment with DEBUG: prefix in front
+         of message (if file is open) if debug mode is on
+
+     Modifier for S|E|C|T|D specifiers
+
+     +   subsequent files are written to with advance='no'. Position is
+         important. '+sc' does an advance='no' on both files, 's+c'
+         only does the advance='no' for the trail file.
+
+     Mode changing options used by themselves:
+
+     >   turn off debug messages
+     <   turn on debug messages
+     O   open trail file using value of "message" parameter or close
+         trail file if no filename or a blank filename.
+     %   set prefix to run thru now(3f) to generate time prefix strings
+
+  MESSAGE   message to write to stdout, stderr, and the trail file when
+            writing message.
+  FILENAME  when WHERE="O" to turn the trail file on or off, the "message"
+            field becomes the trail filename to open. If blank, writing
+            to the trail file is turned off.
+  TFORMAT   when WHERE="%" the message is treated as a time format
+            specification as described under now(3f).
+  VALUE     a numeric value to optionally be appended to the message
+
+EXAMPLE
+  Sample program:
+
+   program demo_journal
+   use M_journal, only : journal
+
+   !! BASIC USAGE
+   call journal('write to standard output as-is, and trail file as a comment')
+
+   ! since we have not opened a trail file yet, only stdout will display output
+   call journal('sc','write to standard output as-is, and trail file as a comment')
+   call journal('c','ignored, as trail file is not open')
+
+   ! now open trail file "trail"
+   call journal('o','trail')
+   call journal('sc','same thing, with ')
+   ! only write to trail file if open
+   call journal('c','not ignored, as trail file is open. Written with # suffix')
+   call journal('t','not ignored, as trail file is open. Written as-is')
+   ! turn off trail file
+   call journal('o')
+
+   end program demo_journal

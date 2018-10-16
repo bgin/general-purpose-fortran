@@ -59,7 +59,7 @@ cat <<\EOF
 </ul>
 
 <p>
-   My own <a href="../../../FAQ/html/faq.html">FAQ on</a> Fortran is also available, with links to other Fortran resources.
+   My own <a href="../../../FAQ/html/faq.html">FAQ </a>on Fortran is also available, with links to other Fortran resources.
 </p>
 
 </p>

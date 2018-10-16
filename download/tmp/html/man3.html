@@ -1,0 +1,678 @@
+<html>
+<head>
+<title></title>
+<meta name="keywords" content="Fortran, Fortran code, Fortran source code repository, Fortran library, Fortran archive,         " />
+<meta name="keywords" content="General Purpose Fortran, Fortran modules, Fortran examples                                       " />
+<meta name="keywords" content="Fortran Repository" />
+<meta name="keywords" content="Fortran Collection" />
+<style>
+body {xfont-style: italic}
+body { background-color:#FFF; color:#333; font-family:Verdana, Arial, Helvetica, sans-serif; font-size:1em; line-height:1.3em; }
+
+a,li span { color:#000; }
+a:visited { color:#666; }
+a:hover, a.nav:hover, a:hover math { background-color:#000; color:#FFF; }
+a.nav,a:link.nav, a:visited.nav { background-color:#FFF; color:#000; }
+
+h1,h2,h3,h4,h5,h6 { color:#333; font-family:georgia, verdana, sans-serif; }
+h1 { font-size:200%; line-height: 1.1em;color:#F33}
+h2 { font-size:173%; }
+h3 { font-size:144%; }
+h4 { font-size:120%; }
+h5,h6 { font-size:100% }
+table { border:double #000; border-collapse:collapse; }
+td { border:thin solid #888; margin: auto; padding: auto; border: auto;}
+td { padding-left: 1em; padding-right: 1em;}
+li { margin-bottom:0.5em; }
+blockquote { display:block; font-size:90%; font-style:italic; line-height:1.5em; margin:0 0 1.5em; padding:0 2.5em; }
+pre { background-color:#DDD; font-size:90%; overflow:auto; padding:1em; }
+xmp { background-color:#DCC; font-size:80%; display: block; font-family: monospace; white-space: pre; margin: 1em 0; }
+
+#Container { margin:0 10px; text-align:center; }
+#Content { border-top:none; margin:auto; padding:0.3em; text-align:left; width:100%; max-width:55em; }
+span.webName { font-size:.5em; }
+textarea#content { font-size: 1em; line-height: 1.125; }
+h1#pageName { line-height:1em; margin:0.2em 0 0.2em 0; padding:0; }
+.property { color:#666; font-size:80%; }
+a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
+.byline { color:#666; font-size:.8em; font-style:italic; margin-bottom:1em; padding-top:1px; }
+</style>
+</head>
+<body>
+<a href="http://www.urbanjost.altervista.org/LIBRARY/libGPF/GPF.html">[GPF Home Page]</a>
+<div id="Container">
+<div id="Content">
+<h1>libGPF man(3) pages</h1>
+<table border="1">
+<tr> <th>grouping</th> <th>page</th> <th>description</th> </tr>
+<tr><td style="background:#cac6f5;">&nbsp;</td><td><a href="ARGUMENTS.3.html">ARGUMENTS</a></td><td>collection of command line argument parsers</td></tr>
+<tr><td style="background:#d4f9ca;">&nbsp;</td><td><a href="intro_blas1.3.html">intro_blas1</a></td><td>Introduction to vector-vector linear algebra (matrix) subprograms</td></tr>
+<tr><td style="background:#f1eec3;">&nbsp;</td><td><a href="system_getkey.3.html">system_getkey</a></td><td>read single character from keyboard in hot (raw I/O) mode</td></tr>
+<tr><td style="background:#c7ebf1;">ARGUMENTS:M_getopt</td><td><a href="M_getopt.3.html">M_getopt</a></td><td> parse command line arguments. similar to those in standard C library.</td></tr>
+<tr><td style="background:#ecdfe0;">ARGUMENTS:M_getopt_long</td><td><a href="M_getopt_long.3.html">M_getopt_long</a></td><td> parse command line options like Sun getopt_long, including the Sun CLIP specific...</td></tr>
+<tr><td style="background:#c9d7cd;">ARGUMENTS:M_kracken</td><td><a href="M_kracken.3.html">M_kracken</a></td><td> parse command line options of Fortranprograms using Unix-like syntax</td></tr>
+<tr><td style="background:#c9d7cd;">ARGUMENTS:M_kracken</td><td><a href="dget.3.html">dget</a></td><td> given keyword fetch doubleprecision value from command argument</td></tr>
+<tr><td style="background:#c9d7cd;">ARGUMENTS:M_kracken</td><td><a href="dgets.3.html">dgets</a></td><td> given keyword fetch doubleprecision array from command arguments</td></tr>
+<tr><td style="background:#c9d7cd;">ARGUMENTS:M_kracken</td><td><a href="dissect.3.html">dissect</a></td><td> convenient call to parse() - define defaults, then process</td></tr>
+<tr><td style="background:#c9d7cd;">ARGUMENTS:M_kracken</td><td><a href="iget.3.html">iget</a></td><td> given keyword fetch integer value from command argument</td></tr>
+<tr><td style="background:#c9d7cd;">ARGUMENTS:M_kracken</td><td><a href="igets.3.html">igets</a></td><td> given keyword fetch integer array from command arguments</td></tr>
+<tr><td style="background:#c9d7cd;">ARGUMENTS:M_kracken</td><td><a href="kracken.3.html">kracken</a></td><td> crack command line options on Fortran programs, using "-KEYWORD VALUE" syntax</td></tr>
+<tr><td style="background:#c9d7cd;">ARGUMENTS:M_kracken</td><td><a href="lget.3.html">lget</a></td><td> given keyword fetch logical value from command arguments</td></tr>
+<tr><td style="background:#c9d7cd;">ARGUMENTS:M_kracken</td><td><a href="lgets.3.html">lgets</a></td><td> given keyword fetch logical array from command argument</td></tr>
+<tr><td style="background:#c9d7cd;">ARGUMENTS:M_kracken</td><td><a href="parse.3.html">parse</a></td><td> parse user command and store tokens into Language Dictionary</td></tr>
+<tr><td style="background:#c9d7cd;">ARGUMENTS:M_kracken</td><td><a href="retrev.3.html">retrev</a></td><td> get keyword value as a string from a command's argument list processed by kracken(3f)</td></tr>
+<tr><td style="background:#c9d7cd;">ARGUMENTS:M_kracken</td><td><a href="rget.3.html">rget</a></td><td> given keyword fetch real value from command argument</td></tr>
+<tr><td style="background:#c9d7cd;">ARGUMENTS:M_kracken</td><td><a href="rgets.3.html">rgets</a></td><td> given keyword fetch real array from command arguments</td></tr>
+<tr><td style="background:#c9d7cd;">ARGUMENTS:M_kracken</td><td><a href="setprompts.3.html">setprompts</a></td><td> set explicit prompts for keywords in interactive mode</td></tr>
+<tr><td style="background:#c9d7cd;">ARGUMENTS:M_kracken</td><td><a href="sget.3.html">sget</a></td><td> given keyword fetch string value and length from command arguments</td></tr>
+<tr><td style="background:#c9d7cd;">ARGUMENTS:M_kracken</td><td><a href="sgets.3.html">sgets</a></td><td> given keyword fetch string value parsed on whitespace into an array</td></tr>
+<tr><td style="background:#c9d7cd;">ARGUMENTS:M_kracken</td><td><a href="show.3.html">show</a></td><td> dump dictionary entries</td></tr>
+<tr><td style="background:#c9d7cd;">ARGUMENTS:M_kracken</td><td><a href="store.3.html">store</a></td><td> add or replace value for specified name in dictionary(if allow='add' add name if nee...</td></tr>
+<tr><td style="background:#e3cce1;">M_Compare_Float_Numbers</td><td><a href="M_Compare_Float_Numbers.3.html">M_Compare_Float_Numbers</a></td><td> perform relational comparisons on real numbers</td></tr>
+<tr><td style="background:#cbc7d7;">M_DRAW:CONTOUR</td><td><a href="contourlines.3.html">contourlines</a></td><td> calculate contour lines from ungridded data f(x, y) and call user-supplied routine with r...</td></tr>
+<tr><td style="background:#e6c1c1;">M_RANDOM</td><td><a href="M_random.3.html">M_random</a></td><td> Routines for generating random numbers and strings</td></tr>
+<tr><td style="background:#cdf9d3;">M_anything</td><td><a href="anyinteger_to_128bit.3.html">anyinteger_to_128bit</a></td><td> convert integer any kind to integer(kind=128)</td></tr>
+<tr><td style="background:#cdf9d3;">M_anything</td><td><a href="anyscalar_to_double.3.html">anyscalar_to_double</a></td><td> convert integer or real parameter of any kind to doubleprecision</td></tr>
+<tr><td style="background:#cdf9d3;">M_anything</td><td><a href="anyscalar_to_real.3.html">anyscalar_to_real</a></td><td> convert integer or real parameter of any kind to real</td></tr>
+<tr><td style="background:#cdf9d3;">M_anything</td><td><a href="anything_to_bytes.3.html">anything_to_bytes</a></td><td> convert standard types to bytes (character(len=1):: array(:))</td></tr>
+<tr><td style="background:#eef2df;">M_big_integer</td><td><a href="M_big_integer.3.html">M_big_integer</a></td><td> define new data type BIG_INTEGER and operators</td></tr>
+<tr><td style="background:#c6eee6;">M_calcomp:M_calcomp</td><td><a href="M_calcomp.3m_calcomp.html">M_calcomp</a></td><td> emulate old Calcomp graphics library</td></tr>
+<tr><td style="background:#ead9f3;">M_calcomp:basic</td><td><a href="axis.3m_calcomp.html">axis</a></td><td> draw linear axis with numeric scale and axis label</td></tr>
+<tr><td style="background:#ead9f3;">M_calcomp:basic</td><td><a href="factor.3m_calcomp.html">factor</a></td><td> rescale entire plot</td></tr>
+<tr><td style="background:#ead9f3;">M_calcomp:basic</td><td><a href="line.3m_calcomp.html">line</a></td><td> plot a polyline with optional rescaling</td></tr>
+<tr><td style="background:#ead9f3;">M_calcomp:basic</td><td><a href="newpen.3m_calcomp.html">newpen</a></td><td> select new pen color and move to origin</td></tr>
+<tr><td style="background:#ead9f3;">M_calcomp:basic</td><td><a href="nframe.3m_calcomp.html">nframe</a></td><td> start new frame</td></tr>
+<tr><td style="background:#ead9f3;">M_calcomp:basic</td><td><a href="number.3m_calcomp.html">number</a></td><td> plots a floating-point number</td></tr>
+<tr><td style="background:#ead9f3;">M_calcomp:basic</td><td><a href="plot.3m_calcomp.html">plot</a></td><td> move with pen up or down or start new origin or terminate plotting</td></tr>
+<tr><td style="background:#ead9f3;">M_calcomp:basic</td><td><a href="plots.3m_calcomp.html">plots</a></td><td> initialize the CALCOMP package</td></tr>
+<tr><td style="background:#ead9f3;">M_calcomp:basic</td><td><a href="scale.3m_calcomp.html">scale</a></td><td> calculate scaling factors for producing XY plots with LINE(3f) and AXIS(3f) routines</td></tr>
+<tr><td style="background:#ead9f3;">M_calcomp:basic</td><td><a href="symbol.3m_calcomp.html">symbol</a></td><td> draw text string or marker</td></tr>
+<tr><td style="background:#ead9f3;">M_calcomp:basic</td><td><a href="where.3m_calcomp.html">where</a></td><td> return current position and current plot-scaling factor</td></tr>
+<tr><td style="background:#c0c0eb;">M_calcomp:general</td><td><a href="circl.3m_calcomp.html">circl</a></td><td> draws an arc or spiral</td></tr>
+<tr><td style="background:#c0c0eb;">M_calcomp:general</td><td><a href="dashl.3m_calcomp.html">dashl</a></td><td> draws a polyline with dashed lines</td></tr>
+<tr><td style="background:#c0c0eb;">M_calcomp:general</td><td><a href="dashp.3m_calcomp.html">dashp</a></td><td> draw from current position to new point with dashed line</td></tr>
+<tr><td style="background:#c0c0eb;">M_calcomp:general</td><td><a href="elips.3m_calcomp.html">elips</a></td><td> draw an elliptical arc</td></tr>
+<tr><td style="background:#c0c0eb;">M_calcomp:general</td><td><a href="fit.3m_calcomp.html">fit</a></td><td> draws a semi-hyperbolic curve through three points</td></tr>
+<tr><td style="background:#c0c0eb;">M_calcomp:general</td><td><a href="grid.3m_calcomp.html">grid</a></td><td> draws a linear grid</td></tr>
+<tr><td style="background:#c0c0eb;">M_calcomp:general</td><td><a href="poly.3m_calcomp.html">poly</a></td><td> draw an equilateral polygon</td></tr>
+<tr><td style="background:#c0c0eb;">M_calcomp:general</td><td><a href="rect.3m_calcomp.html">rect</a></td><td> draw a rectangle</td></tr>
+<tr><td style="background:#d4fce4;">M_calcomp:scientific</td><td><a href="cntour.3m_calcomp.html">cntour</a></td><td> draw a contour plot</td></tr>
+<tr><td style="background:#d4fce4;">M_calcomp:scientific</td><td><a href="curvx.3m_calcomp.html">curvx</a></td><td> plots a function of X over a given range</td></tr>
+<tr><td style="background:#d4fce4;">M_calcomp:scientific</td><td><a href="curvy.3m_calcomp.html">curvy</a></td><td> plots a function of Y over a given range</td></tr>
+<tr><td style="background:#d4fce4;">M_calcomp:scientific</td><td><a href="fline.3m_calcomp.html">fline</a></td><td> plot a polyline with optional fit</td></tr>
+<tr><td style="background:#d4fce4;">M_calcomp:scientific</td><td><a href="lgaxs.3m_calcomp.html">lgaxs</a></td><td> draw logarithmic axis</td></tr>
+<tr><td style="background:#d4fce4;">M_calcomp:scientific</td><td><a href="lglin.3m_calcomp.html">lglin</a></td><td> draw polyline in log-log or semi-log mode</td></tr>
+<tr><td style="background:#d4fce4;">M_calcomp:scientific</td><td><a href="polar.3m_calcomp.html">polar</a></td><td> plot radial values versus angular variables (as polar coordinates)</td></tr>
+<tr><td style="background:#d4fce4;">M_calcomp:scientific</td><td><a href="scalg.3m_calcomp.html">scalg</a></td><td> determine scale factors for a logarithmic scale</td></tr>
+<tr><td style="background:#d4fce4;">M_calcomp:scientific</td><td><a href="smoot.3m_calcomp.html">smoot</a></td><td> draw a polyline using modified spline-fitting technique</td></tr>
+<tr><td style="background:#f4edd7;">M_calculator</td><td><a href="M_calculator.3.html">M_calculator</a></td><td> module of routines for parsingexpressions and returning values</td></tr>
+<tr><td style="background:#f4edd7;">M_calculator</td><td><a href="M_calculator_example.3.html">M_calculator_example</a></td><td> Example program for module M_calculator(3fm)</td></tr>
+<tr><td style="background:#f4edd7;">M_calculator</td><td><a href="M_calculator_programmer_notes.3.html">M_calculator_programmer_notes</a></td><td> Programmer notes formodule M_calculator</td></tr>
+<tr><td style="background:#f4edd7;">M_calculator</td><td><a href="getvalue.3.html">getvalue</a></td><td> given numeric variable name return doubleprecision value directly from calculatordictionary...</td></tr>
+<tr><td style="background:#f4edd7;">M_calculator</td><td><a href="igetvalue.3.html">igetvalue</a></td><td> given numeric variable name return integer value directly from calculatordictionary for eff...</td></tr>
+<tr><td style="background:#f4edd7;">M_calculator</td><td><a href="jucalc.3.html">jucalc</a></td><td> parse calculator expression and return numeric or string value</td></tr>
+<tr><td style="background:#f4edd7;">M_calculator</td><td><a href="rgetvalue.3.html">rgetvalue</a></td><td> given numeric variable name return real value directly from calculator dictionary for effic...</td></tr>
+<tr><td style="background:#f4edd7;">M_calculator</td><td><a href="stuff.3.html">stuff</a></td><td> directly store value into calculator directory for efficiency</td></tr>
+<tr><td style="background:#f4edd7;">M_calculator</td><td><a href="stuffa.3.html">stuffa</a></td><td> stuffa(3f): directly store a string into calculator variable name table</td></tr>
+<tr><td style="background:#f7fffa;">M_calculator_plus</td><td><a href="M_calculator_plus.3.html">M_calculator_plus</a></td><td> convenience routines forcalling the M_calculator(3fm) module</td></tr>
+<tr><td style="background:#f7fffa;">M_calculator_plus</td><td><a href="dnum0.3.html">dnum0</a></td><td> return double precision value from string expression using JUCALC</td></tr>
+<tr><td style="background:#f7fffa;">M_calculator_plus</td><td><a href="inum0.3.html">inum0</a></td><td> return integer value from calculator expression</td></tr>
+<tr><td style="background:#f7fffa;">M_calculator_plus</td><td><a href="jucalcx.3.html">jucalcx</a></td><td> return value from a string expression processing messages to simplify call to JUCALC(3f)</td></tr>
+<tr><td style="background:#f7fffa;">M_calculator_plus</td><td><a href="rnum0.3.html">rnum0</a></td><td> returns real number from string expression using JUCALC(3f)</td></tr>
+<tr><td style="background:#f7fffa;">M_calculator_plus</td><td><a href="snum0.3.html">snum0</a></td><td> resolve a calculator expression into a string(return blank on errors)</td></tr>
+<tr><td style="background:#f7fffa;">M_calculator_plus</td><td><a href="strgar2.3.html">strgar2</a></td><td> read a string into a real array USING CALCULATOR, allowing quoted strings in arguments,</td></tr>
+<tr><td style="background:#f7fffa;">M_calculator_plus</td><td><a href="strgarr.3.html">strgarr</a></td><td> read a string into an array using jucalc(3f) calculator</td></tr>
+<tr><td style="background:#eccaff;">M_color</td><td><a href="M_color.3.html">M_color</a></td><td>a Fortran module that lets you convert between common color models</td></tr>
+<tr><td style="background:#eccaff;">M_color</td><td><a href="closest_color_name.3.html">closest_color_name</a></td><td> returns the closest name for the given RGB values.</td></tr>
+<tr><td style="background:#eccaff;">M_color</td><td><a href="color_name2rgb.3.html">color_name2rgb</a></td><td> returns the RGB values in the range 0 to 100 for a given known color name.</td></tr>
+<tr><td style="background:#eccaff;">M_color</td><td><a href="hue.3.html">hue</a></td><td> converts a color's components from one color model toanother.</td></tr>
+<tr><td style="background:#eccaff;">M_color</td><td><a href="rgbmono.3.html">rgbmono</a></td><td> converts RGB colors to a reasonable grayscale intensity.</td></tr>
+<tr><td style="background:#d6e1df;">M_csv</td><td><a href="csv_write_row.3.html">csv_write_row</a></td><td> Write a one-dimensional array of items to the CSV-file</td></tr>
+<tr><td style="background:#d6e1df;">M_csv</td><td><a href="csv_write_table.3.html">csv_write_table</a></td><td>Write a two-dimensional array of items to the CSV-file</td></tr>
+<tr><td style="background:#fafacd;">M_debug</td><td><a href="M_debug.3.html">M_debug</a></td><td> a collection of Fortran routines for supporting the development ofunit tests, and providing erro...</td></tr>
+<tr><td style="background:#fafacd;">M_debug</td><td><a href="fstop.3.html">fstop</a></td><td> call stop with both a number and a message</td></tr>
+<tr><td style="background:#fafacd;">M_debug</td><td><a href="pdec.3.html">pdec</a></td><td> write out string with ASCII decimal equivalent vertically under it</td></tr>
+<tr><td style="background:#fafacd;">M_debug</td><td><a href="stderr.3.html">stderr</a></td><td> write message to stderr</td></tr>
+<tr><td style="background:#fafacd;">M_debug</td><td><a href="unit_check.3.html">unit_check</a></td><td> if logical expression is false, call command "goodbad NAME bad" and stop program</td></tr>
+<tr><td style="background:#fafacd;">M_debug</td><td><a href="unit_check_bad.3.html">unit_check_bad</a></td><td> call command "goodbad NAME bad" and stop program</td></tr>
+<tr><td style="background:#fafacd;">M_debug</td><td><a href="unit_check_good.3.html">unit_check_good</a></td><td> call command "goodbad NAME good"</td></tr>
+<tr><td style="background:#fafacd;">M_debug</td><td><a href="unit_check_start.3.html">unit_check_start</a></td><td> call command "goodbad NAME start"</td></tr>
+<tr><td style="background:#d5d6d7;">M_display</td><td><a href="M_display.3.html">M_display</a></td><td> module for pretty-printing matrices</td></tr>
+<tr><td style="background:#d5d6d7;">M_display</td><td><a href="disp.3.html">disp</a></td><td> pretty-print a matrix</td></tr>
+<tr><td style="background:#d5d6d7;">M_display</td><td><a href="disp_get.3.html">disp_get</a></td><td> return default settings in a structure of DISP(3f) settings</td></tr>
+<tr><td style="background:#d5d6d7;">M_display</td><td><a href="disp_set.3.html">disp_set</a></td><td> set default options for disp(3f)</td></tr>
+<tr><td style="background:#d5d6d7;">M_display</td><td><a href="tostring.3.html">tostring</a></td><td> change numbers to a string</td></tr>
+<tr><td style="background:#d5d6d7;">M_display</td><td><a href="tostring_disp_factory.3.html">tostring_disp_factory</a></td><td> set DISP(3f) output back to original defaults</td></tr>
+<tr><td style="background:#d5d6d7;">M_display</td><td><a href="tostring_set.3.html">tostring_set</a></td><td> set modes for TOSTRING(3f)</td></tr>
+<tr><td style="background:#d5d6d7;">M_display</td><td><a href="tostring_set_factory.3.html">tostring_set_factory</a></td><td> set TOSTRING(3f) output back to original defaults</td></tr>
+<tr><td style="background:#f2c4e8;">M_draw:ARCS</td><td><a href="arc.3m_draw.html">arc</a></td><td> Draw an arc in world units.</td></tr>
+<tr><td style="background:#f2c4e8;">M_draw:ARCS</td><td><a href="circle.3m_draw.html">circle</a></td><td> Draw a circle.</td></tr>
+<tr><td style="background:#f2c4e8;">M_draw:ARCS</td><td><a href="circleprecision.3m_draw.html">circleprecision</a></td><td> Set number of line segments used to approximate a circle</td></tr>
+<tr><td style="background:#f2c4e8;">M_draw:ARCS</td><td><a href="sector.3m_draw.html">sector</a></td><td> Draw a sector. Note: sectors are polygons.</td></tr>
+<tr><td style="background:#c1c0c3;">M_draw:ASPECT</td><td><a href="getaspect.3m_draw.html">getaspect</a></td><td> Returns the ratio height over width of the display device.</td></tr>
+<tr><td style="background:#c1c0c3;">M_draw:ASPECT</td><td><a href="getdisplaysize.3m_draw.html">getdisplaysize</a></td><td> Returns width and height of device in device units</td></tr>
+<tr><td style="background:#c1c0c3;">M_draw:ASPECT</td><td><a href="getfactors.3m_draw.html">getfactors</a></td><td> Returns width over min(width of device, height of device) and height over min(width of dev...</td></tr>
+<tr><td style="background:#e8f1f2;">M_draw:ATTRIBUTE_STACK</td><td><a href="popattributes.3m_draw.html">popattributes</a></td><td> Restore attributes to what they were at last pushattributes().</td></tr>
+<tr><td style="background:#e8f1f2;">M_draw:ATTRIBUTE_STACK</td><td><a href="pushattributes.3m_draw.html">pushattributes</a></td><td> Save the current attributes on the attribute stack.</td></tr>
+<tr><td style="background:#effcf6;">M_draw:CLIPPING</td><td><a href="clipping.3m_draw.html">clipping</a></td><td> Turn clipping on or off</td></tr>
+<tr><td style="background:#f9eef9;">M_draw:COLOR</td><td><a href="clear.3m_draw.html">clear</a></td><td> Clears screen to current color</td></tr>
+<tr><td style="background:#f9eef9;">M_draw:COLOR</td><td><a href="color.3m_draw.html">color</a></td><td> Set current color</td></tr>
+<tr><td style="background:#f9eef9;">M_draw:COLOR</td><td><a href="mapcolor.3m_draw.html">mapcolor</a></td><td> set a color index using RGB values</td></tr>
+<tr><td style="background:#f2e4d3;">M_draw:CURVE</td><td><a href="curve.3m_draw.html">curve</a></td><td> Draw a curve.</td></tr>
+<tr><td style="background:#f2e4d3;">M_draw:CURVE</td><td><a href="curvebasis.3m_draw.html">curvebasis</a></td><td> Define a basis matrix for a curve.</td></tr>
+<tr><td style="background:#f2e4d3;">M_draw:CURVE</td><td><a href="curven.3m_draw.html">curven</a></td><td> Draw n-3 overlapping curve segments. Note: n must be at least 4.</td></tr>
+<tr><td style="background:#f2e4d3;">M_draw:CURVE</td><td><a href="curveprecision.3m_draw.html">curveprecision</a></td><td> Define number of line segments used to draw a curve.</td></tr>
+<tr><td style="background:#f2e4d3;">M_draw:CURVE</td><td><a href="rcurve.3m_draw.html">rcurve</a></td><td> Draw a rational curve.</td></tr>
+<tr><td style="background:#c6d0fd;">M_draw:DEVICE</td><td><a href="getdepth.3m_draw.html">getdepth</a></td><td> Return number of bit planes (color planes)</td></tr>
+<tr><td style="background:#c6d0fd;">M_draw:DEVICE</td><td><a href="popdev.3m_draw.html">popdev</a></td><td> pop device from stack created by pushdev.</td></tr>
+<tr><td style="background:#c6d0fd;">M_draw:DEVICE</td><td><a href="pushdev.3m_draw.html">pushdev</a></td><td> push current device onto a stack</td></tr>
+<tr><td style="background:#c6d0fd;">M_draw:DEVICE</td><td><a href="vexit.3m_draw.html">vexit</a></td><td> Reset window/terminal and exit graphics mode. Must be last routine called.</td></tr>
+<tr><td style="background:#c6d0fd;">M_draw:DEVICE</td><td><a href="vgetdev.3m_draw.html">vgetdev</a></td><td> Get name of current device</td></tr>
+<tr><td style="background:#c6d0fd;">M_draw:DEVICE</td><td><a href="vinit.3m_draw.html">vinit</a></td><td> Initialise device</td></tr>
+<tr><td style="background:#c6d0fd;">M_draw:DEVICE</td><td><a href="vnewdev.3m_draw.html">vnewdev</a></td><td> Reinitialize to use new device without changing</td></tr>
+<tr><td style="background:#c6d0fd;">M_draw:DEVICE</td><td><a href="voutput.3m_draw.html">voutput</a></td><td> Redirect output from *next* vinit to file</td></tr>
+<tr><td style="background:#ced6e1;">M_draw:DOUBLE_BUFFERING</td><td><a href="backbuffer.3m_draw.html">backbuffer</a></td><td> Draw in the backbuffer. Returns -1 if the device is not up to it.</td></tr>
+<tr><td style="background:#ced6e1;">M_draw:DOUBLE_BUFFERING</td><td><a href="frontbuffer.3m_draw.html">frontbuffer</a></td><td> Draw in the front buffer. This will always work.</td></tr>
+<tr><td style="background:#ced6e1;">M_draw:DOUBLE_BUFFERING</td><td><a href="swapbuffers.3m_draw.html">swapbuffers</a></td><td> Swap the front and back buffers.</td></tr>
+<tr><td style="background:#cbc3d5;">M_draw:DRAW</td><td><a href="draw.3m_draw.html">draw</a></td><td> Draw from current graphics position to (x, y, z)</td></tr>
+<tr><td style="background:#cbc3d5;">M_draw:DRAW</td><td><a href="draw2.3m_draw.html">draw2</a></td><td> Draw from current graphics position to given point (x, y)</td></tr>
+<tr><td style="background:#cbc3d5;">M_draw:DRAW</td><td><a href="rdraw.3m_draw.html">rdraw</a></td><td> Relative draw</td></tr>
+<tr><td style="background:#cbc3d5;">M_draw:DRAW</td><td><a href="rdraw2.3m_draw.html">rdraw2</a></td><td> Relative draw from current position to given point</td></tr>
+<tr><td style="background:#cbc3d5;">M_draw:DRAW</td><td><a href="rsdraw2.3m_draw.html">rsdraw2</a></td><td> Relative draw in screen units (-1.0 to 1.0).</td></tr>
+<tr><td style="background:#cbc3d5;">M_draw:DRAW</td><td><a href="sdraw2.3m_draw.html">sdraw2</a></td><td> Draw in screen coordinates (-1.0 to 1.0).</td></tr>
+<tr><td style="background:#eed1ed;">M_draw:FLUSHING</td><td><a href="vflush.3m_draw.html">vflush</a></td><td> Call device flush or syncronisation routine</td></tr>
+<tr><td style="background:#eed1ed;">M_draw:FLUSHING</td><td><a href="vsetflush.3m_draw.html">vsetflush</a></td><td> Set global flushing status</td></tr>
+<tr><td style="background:#d1fff7;">M_draw:INTERACTIVE</td><td><a href="checkkey.3m_draw.html">checkkey</a></td><td> Returns zero if no key is pressed or ASCII ordinal</td></tr>
+<tr><td style="background:#d1fff7;">M_draw:INTERACTIVE</td><td><a href="getkey.3m_draw.html">getkey</a></td><td> Return ASCII ordinal of next key typed</td></tr>
+<tr><td style="background:#d1fff7;">M_draw:INTERACTIVE</td><td><a href="getstring.3m_draw.html">getstring</a></td><td> Read in a string, echoing it in current font</td></tr>
+<tr><td style="background:#d1fff7;">M_draw:INTERACTIVE</td><td><a href="locator.3m_draw.html">locator</a></td><td> Find out where cursor is</td></tr>
+<tr><td style="background:#d1fff7;">M_draw:INTERACTIVE</td><td><a href="slocator.3m_draw.html">slocator</a></td><td> Find out where cursor is in screen coordinates</td></tr>
+<tr><td style="background:#e5c7e9;">M_draw:LINESTYLE</td><td><a href="dashcode.3m_draw.html">dashcode</a></td><td> set dash pattern length</td></tr>
+<tr><td style="background:#e5c7e9;">M_draw:LINESTYLE</td><td><a href="linestyle.3m_draw.html">linestyle</a></td><td> set the line dash pattern</td></tr>
+<tr><td style="background:#e5c7e9;">M_draw:LINESTYLE</td><td><a href="linewidth.3m_draw.html">linewidth</a></td><td> set line width in rasters</td></tr>
+<tr><td style="background:#ede1ed;">M_draw:MATRIX_STACK</td><td><a href="popmatrix.3m_draw.html">popmatrix</a></td><td> Reinstall the last matrix pushed</td></tr>
+<tr><td style="background:#ede1ed;">M_draw:MATRIX_STACK</td><td><a href="pushmatrix.3m_draw.html">pushmatrix</a></td><td> Save the current transformation matrix on the matrix stack.</td></tr>
+<tr><td style="background:#ece1fb;">M_draw:MOVE</td><td><a href="move.3m_draw.html">move</a></td><td> Move current graphics position to (x, y, z)</td></tr>
+<tr><td style="background:#ece1fb;">M_draw:MOVE</td><td><a href="move2.3m_draw.html">move2</a></td><td> Move graphics position to point (x, y)</td></tr>
+<tr><td style="background:#ece1fb;">M_draw:MOVE</td><td><a href="rmove.3m_draw.html">rmove</a></td><td> Relative move</td></tr>
+<tr><td style="background:#ece1fb;">M_draw:MOVE</td><td><a href="rmove2.3m_draw.html">rmove2</a></td><td> Relative move in world units.</td></tr>
+<tr><td style="background:#ece1fb;">M_draw:MOVE</td><td><a href="rsmove2.3m_draw.html">rsmove2</a></td><td> Relative move in screen units (-1.0 to 1.0).</td></tr>
+<tr><td style="background:#ece1fb;">M_draw:MOVE</td><td><a href="smove2.3m_draw.html">smove2</a></td><td> Move current graphics position in screen coordinates (-1.0 to 1.0).</td></tr>
+<tr><td style="background:#cbc8d4;">M_draw:OBJECT</td><td><a href="callobj.3m_draw.html">callobj</a></td><td> Draw object number n.</td></tr>
+<tr><td style="background:#cbc8d4;">M_draw:OBJECT</td><td><a href="closeobj.3m_draw.html">closeobj</a></td><td> Close the current object.</td></tr>
+<tr><td style="background:#cbc8d4;">M_draw:OBJECT</td><td><a href="delobj.3m_draw.html">delobj</a></td><td> Delete the object number n.</td></tr>
+<tr><td style="background:#cbc8d4;">M_draw:OBJECT</td><td><a href="genobj.3m_draw.html">genobj</a></td><td> Returns a unique object identifier.</td></tr>
+<tr><td style="background:#cbc8d4;">M_draw:OBJECT</td><td><a href="getopenobj.3m_draw.html">getopenobj</a></td><td> Return the number of the current object.</td></tr>
+<tr><td style="background:#cbc8d4;">M_draw:OBJECT</td><td><a href="isobj.3m_draw.html">isobj</a></td><td> Returns non-zero if there is an object of number n.</td></tr>
+<tr><td style="background:#cbc8d4;">M_draw:OBJECT</td><td><a href="loadobj.3m_draw.html">loadobj</a></td><td> Load the object in the file filename as object number n.</td></tr>
+<tr><td style="background:#cbc8d4;">M_draw:OBJECT</td><td><a href="makeobj.3m_draw.html">makeobj</a></td><td> Commence the object number n.</td></tr>
+<tr><td style="background:#cbc8d4;">M_draw:OBJECT</td><td><a href="saveobj.3m_draw.html">saveobj</a></td><td> Save object number n into file filename. Does NOT save objects called inside object n.</td></tr>
+<tr><td style="background:#e3e3ff;">M_draw:PATCH</td><td><a href="patch.3m_draw.html">patch</a></td><td> Draws a patch in the current basis, according to the geometry matrices gx, gy, and gz.</td></tr>
+<tr><td style="background:#e3e3ff;">M_draw:PATCH</td><td><a href="patchbasis.3m_draw.html">patchbasis</a></td><td> Define the t and u basis matrices of a patch.</td></tr>
+<tr><td style="background:#e3e3ff;">M_draw:PATCH</td><td><a href="patchcurves.3m_draw.html">patchcurves</a></td><td> Set the number of curves making up a patch.</td></tr>
+<tr><td style="background:#e3e3ff;">M_draw:PATCH</td><td><a href="patchprecision.3m_draw.html">patchprecision</a></td><td> Set minimum number of line segments making up curves in a patch.</td></tr>
+<tr><td style="background:#e3e3ff;">M_draw:PATCH</td><td><a href="rpatch.3m_draw.html">rpatch</a></td><td> Draws a rational patch in the current basis, according to the geometry matrices gx, gy, gz,...</td></tr>
+<tr><td style="background:#e0dfc9;">M_draw:POINT</td><td><a href="point.3m_draw.html">point</a></td><td> Draw a point at x, y, z</td></tr>
+<tr><td style="background:#e0dfc9;">M_draw:POINT</td><td><a href="point2.3m_draw.html">point2</a></td><td> Draw a point at x, y.</td></tr>
+<tr><td style="background:#c7dcfa;">M_draw:POLYGONS</td><td><a href="backface.3m_draw.html">backface</a></td><td> Turns on culling of backfacing polygons.</td></tr>
+<tr><td style="background:#c7dcfa;">M_draw:POLYGONS</td><td><a href="backfacedir.3m_draw.html">backfacedir</a></td><td> Sets backfacing direction to clockwise or anti-clockwise</td></tr>
+<tr><td style="background:#c7dcfa;">M_draw:POLYGONS</td><td><a href="closepoly.3m_draw.html">closepoly</a></td><td> Terminates a polygon opened by makepoly(3f)</td></tr>
+<tr><td style="background:#c7dcfa;">M_draw:POLYGONS</td><td><a href="hatchang.3m_draw.html">hatchang</a></td><td> Set the angle of the hatch lines.</td></tr>
+<tr><td style="background:#c7dcfa;">M_draw:POLYGONS</td><td><a href="hatchpitch.3m_draw.html">hatchpitch</a></td><td> Set the distance between hatch lines.</td></tr>
+<tr><td style="background:#c7dcfa;">M_draw:POLYGONS</td><td><a href="makepoly.3m_draw.html">makepoly</a></td><td> opens polygon constructed by a series of move-draws and closed by closepoly</td></tr>
+<tr><td style="background:#c7dcfa;">M_draw:POLYGONS</td><td><a href="poly.3m_draw.html">poly</a></td><td> Construct a polygon from an array of points</td></tr>
+<tr><td style="background:#c7dcfa;">M_draw:POLYGONS</td><td><a href="poly2.3m_draw.html">poly2</a></td><td> Construct an (x, y) polygon from an array of points</td></tr>
+<tr><td style="background:#c7dcfa;">M_draw:POLYGONS</td><td><a href="polyfill.3m_draw.html">polyfill</a></td><td> Set the polygon fill flag</td></tr>
+<tr><td style="background:#c7dcfa;">M_draw:POLYGONS</td><td><a href="polyhatch.3m_draw.html">polyhatch</a></td><td> Set the polygon hatch flag</td></tr>
+<tr><td style="background:#c7dcfa;">M_draw:POLYGONS</td><td><a href="rect.3m_draw.html">rect</a></td><td> Draw a rectangle given two corners</td></tr>
+<tr><td style="background:#c3fcd7;">M_draw:POSITION</td><td><a href="getgp.3m_draw.html">getgp</a></td><td> Gets the current graphics position</td></tr>
+<tr><td style="background:#c3fcd7;">M_draw:POSITION</td><td><a href="getgp2.3m_draw.html">getgp2</a></td><td> Gets the current graphics position in world coordinates</td></tr>
+<tr><td style="background:#c3fcd7;">M_draw:POSITION</td><td><a href="getgpt.3m_draw.html">getgpt</a></td><td> Gets the current transformed graphics position in world coords.</td></tr>
+<tr><td style="background:#c3fcd7;">M_draw:POSITION</td><td><a href="sgetgp2.3m_draw.html">sgetgp2</a></td><td> Gets the current screen graphics position in screen coords (-1 to 1)</td></tr>
+<tr><td style="background:#f5dbf4;">M_draw:PROJECTION</td><td><a href="ortho.3m_draw.html">ortho</a></td><td> Define x, y, z clipping planes.</td></tr>
+<tr><td style="background:#f5dbf4;">M_draw:PROJECTION</td><td><a href="ortho2.3m_draw.html">ortho2</a></td><td> define the area of the virtual world coordinates to map to the viewport</td></tr>
+<tr><td style="background:#f5dbf4;">M_draw:PROJECTION</td><td><a href="perspective.3m_draw.html">perspective</a></td><td> Specify perspective viewing pyramid</td></tr>
+<tr><td style="background:#f5dbf4;">M_draw:PROJECTION</td><td><a href="window.3m_draw.html">window</a></td><td> Specify a perspective viewing pyramid</td></tr>
+<tr><td style="background:#d6f3ea;">M_draw:TEXT</td><td><a href="bottomjustify.3m_draw.html">bottomjustify</a></td><td> bottom justify text</td></tr>
+<tr><td style="background:#d6f3ea;">M_draw:TEXT</td><td><a href="boxfit.3m_draw.html">boxfit</a></td><td> resize the SOFTWARE text size so it fits in a box</td></tr>
+<tr><td style="background:#d6f3ea;">M_draw:TEXT</td><td><a href="boxtext.3m_draw.html">boxtext</a></td><td> stretch and draw the SOFTWARE string s so that it fits in the imaginary box</td></tr>
+<tr><td style="background:#d6f3ea;">M_draw:TEXT</td><td><a href="centertext.3m_draw.html">centertext</a></td><td> Turns centertext mode on or off for SOFTWARE fonts.</td></tr>
+<tr><td style="background:#d6f3ea;">M_draw:TEXT</td><td><a href="drawchar.3m_draw.html">drawchar</a></td><td> Draw the character c and update current position.</td></tr>
+<tr><td style="background:#d6f3ea;">M_draw:TEXT</td><td><a href="drawstr.3m_draw.html">drawstr</a></td><td> Draw the text in string at the current position.</td></tr>
+<tr><td style="background:#d6f3ea;">M_draw:TEXT</td><td><a href="fixedwidth.3m_draw.html">fixedwidth</a></td><td> Turns fixedwidth mode on or off for SOFTWARE fonts.</td></tr>
+<tr><td style="background:#d6f3ea;">M_draw:TEXT</td><td><a href="font.3m_draw.html">font</a></td><td> Set the current font by name</td></tr>
+<tr><td style="background:#d6f3ea;">M_draw:TEXT</td><td><a href="getcharsize.3m_draw.html">getcharsize</a></td><td> Get the width and height of a character.</td></tr>
+<tr><td style="background:#d6f3ea;">M_draw:TEXT</td><td><a href="getfontdec.3m_draw.html">getfontdec</a></td><td> Return size of maximum font descender</td></tr>
+<tr><td style="background:#d6f3ea;">M_draw:TEXT</td><td><a href="getfontsize.3m_draw.html">getfontsize</a></td><td> Get maximum width and height of a character in a font.</td></tr>
+<tr><td style="background:#d6f3ea;">M_draw:TEXT</td><td><a href="leftjustify.3m_draw.html">leftjustify</a></td><td> left justify text</td></tr>
+<tr><td style="background:#d6f3ea;">M_draw:TEXT</td><td><a href="numchars.3m_draw.html">numchars</a></td><td> Return number of characters in the current SOFTWARE font.</td></tr>
+<tr><td style="background:#d6f3ea;">M_draw:TEXT</td><td><a href="rightjustify.3m_draw.html">rightjustify</a></td><td> right justify text</td></tr>
+<tr><td style="background:#d6f3ea;">M_draw:TEXT</td><td><a href="strlength.3m_draw.html">strlength</a></td><td> return length of string</td></tr>
+<tr><td style="background:#d6f3ea;">M_draw:TEXT</td><td><a href="textang.3m_draw.html">textang</a></td><td> Set the SOFTWARE text angle.</td></tr>
+<tr><td style="background:#d6f3ea;">M_draw:TEXT</td><td><a href="textjustify.3m_draw.html">textjustify</a></td><td> general text justification (C only)</td></tr>
+<tr><td style="background:#d6f3ea;">M_draw:TEXT</td><td><a href="textsize.3m_draw.html">textsize</a></td><td> Set text size of a character in the current SOFTWARE font in world units.</td></tr>
+<tr><td style="background:#d6f3ea;">M_draw:TEXT</td><td><a href="textslant.3m_draw.html">textslant</a></td><td> Defines the obliqueness of the fonts.</td></tr>
+<tr><td style="background:#d6f3ea;">M_draw:TEXT</td><td><a href="textweight.3m_draw.html">textweight</a></td><td> Defines the weight of the fonts.</td></tr>
+<tr><td style="background:#d6f3ea;">M_draw:TEXT</td><td><a href="topjustify.3m_draw.html">topjustify</a></td><td> top justify text</td></tr>
+<tr><td style="background:#d6f3ea;">M_draw:TEXT</td><td><a href="xcentertext.3m_draw.html">xcentertext</a></td><td> set text centering mode on in X direction</td></tr>
+<tr><td style="background:#d6f3ea;">M_draw:TEXT</td><td><a href="ycentertext.3m_draw.html">ycentertext</a></td><td> center text in the Y direction</td></tr>
+<tr><td style="background:#effbef;">M_draw:TRANSFORMATION</td><td><a href="rotate.3m_draw.html">rotate</a></td><td> Set up a rotation in axis axis where axis is one of 'x', 'y', or 'z'.</td></tr>
+<tr><td style="background:#effbef;">M_draw:TRANSFORMATION</td><td><a href="scale.3m_draw.html">scale</a></td><td> Set up scaling factors in x, y, and z axis.</td></tr>
+<tr><td style="background:#effbef;">M_draw:TRANSFORMATION</td><td><a href="translate.3m_draw.html">translate</a></td><td> Set up a translation.</td></tr>
+<tr><td style="background:#c8f9e6;">M_draw:VIEWPORT</td><td><a href="expandviewport.3m_draw.html">expandviewport</a></td><td> use the entire device viewport</td></tr>
+<tr><td style="background:#c8f9e6;">M_draw:VIEWPORT</td><td><a href="getviewport.3m_draw.html">getviewport</a></td><td> Returns limits of current viewport in screen coordinates</td></tr>
+<tr><td style="background:#c8f9e6;">M_draw:VIEWPORT</td><td><a href="lookat.3m_draw.html">lookat</a></td><td> Specify the viewer's position</td></tr>
+<tr><td style="background:#c8f9e6;">M_draw:VIEWPORT</td><td><a href="polarview.3m_draw.html">polarview</a></td><td> Specify the viewer's position in polar coordinates</td></tr>
+<tr><td style="background:#c8f9e6;">M_draw:VIEWPORT</td><td><a href="popviewport.3m_draw.html">popviewport</a></td><td> Retrieve last viewport</td></tr>
+<tr><td style="background:#c8f9e6;">M_draw:VIEWPORT</td><td><a href="pushviewport.3m_draw.html">pushviewport</a></td><td> Save current viewport</td></tr>
+<tr><td style="background:#c8f9e6;">M_draw:VIEWPORT</td><td><a href="unexpandviewport.3m_draw.html">unexpandviewport</a></td><td> undo expandviewport(3f)</td></tr>
+<tr><td style="background:#c8f9e6;">M_draw:VIEWPORT</td><td><a href="up.3m_draw.html">up</a></td><td> Specify the world up.</td></tr>
+<tr><td style="background:#c8f9e6;">M_draw:VIEWPORT</td><td><a href="viewport.3m_draw.html">viewport</a></td><td> Specify which part of screen to draw in</td></tr>
+<tr><td style="background:#d5dff8;">M_draw:WINDOW_SETUP</td><td><a href="prefposition.3m_draw.html">prefposition</a></td><td> Specify preferred position of window</td></tr>
+<tr><td style="background:#d5dff8;">M_draw:WINDOW_SETUP</td><td><a href="prefsize.3m_draw.html">prefsize</a></td><td> Specify preferred width and height of window in physical units</td></tr>
+<tr><td style="background:#edface;">M_draw</td><td><a href="M_draw.3m_draw.html">M_draw</a></td><td> The M_draw graphics library</td></tr>
+<tr><td style="background:#ede7cd;">M_drawinc:banner</td><td><a href="illusion.3.html">illusion</a></td><td> draw a banner page with short labels at the compass points</td></tr>
+<tr><td style="background:#ddd7ea;">M_drawplus:locator</td><td><a href="rdbox.3.html">rdbox</a></td><td> - reads two points and outline defined box and return points</td></tr>
+<tr><td style="background:#ddd7ea;">M_drawplus:locator</td><td><a href="rdpnt.3.html">rdpnt</a></td><td> reads coordinates of point locator clicked at</td></tr>
+<tr><td style="background:#dfe9dc;">M_drawplus</td><td><a href="M_drawplus.3m_drawplus.html">M_drawplus</a></td><td> Additional routines using the M_DRAW graphics library</td></tr>
+<tr><td style="background:#dfe9dc;">M_drawplus</td><td><a href="arrowhead.3m_drawplus.html">arrowhead</a></td><td> Draw arrow head (for text boxes and line markers)</td></tr>
+<tr><td style="background:#dfe9dc;">M_drawplus</td><td><a href="call_draw.3m_drawplus.html">call_draw</a></td><td> Given a string reprsenting a M_draw procedure and parameters call the routine</td></tr>
+<tr><td style="background:#dfe9dc;">M_drawplus</td><td><a href="draw_interpret.3m_drawplus.html">draw_interpret</a></td><td> call interpreter for testing M_draw(3fm) routines</td></tr>
+<tr><td style="background:#dfe9dc;">M_drawplus</td><td><a href="invokeobj.3m_drawplus.html">invokeobj</a></td><td> invoke object with specified transformations</td></tr>
+<tr><td style="background:#dfe9dc;">M_drawplus</td><td><a href="page.3M_drawplus.html">page</a></td><td> set window into largest viewport available</td></tr>
+<tr><td style="background:#dfe9dc;">M_drawplus</td><td><a href="polyline2.3m_drawplus.html">polyline2</a></td><td> - draw an unclosed polyline in the XY plane</td></tr>
+<tr><td style="background:#dfe9dc;">M_drawplus</td><td><a href="pop.3m_drawplus.html">pop</a></td><td> call popviewport(), popmatrix(), popattributes()</td></tr>
+<tr><td style="background:#dfe9dc;">M_drawplus</td><td><a href="push.3m_drawplus.html">push</a></td><td> call pushviewport(), pushmatrix(), pushattributes()</td></tr>
+<tr><td style="background:#dfe9dc;">M_drawplus</td><td><a href="spirograph.3m_drawplus.html">spirograph</a></td><td> draw a hypotrochoid</td></tr>
+<tr><td style="background:#dfe9dc;">M_drawplus</td><td><a href="uarc.3m_drawplus.html">uarc</a></td><td> create circular arc, leaving CP at end of arc</td></tr>
+<tr><td style="background:#dfe9dc;">M_drawplus</td><td><a href="uconic.3m_drawplus.html">uconic</a></td><td> general conic sections</td></tr>
+<tr><td style="background:#d4f2db;">M_factor</td><td><a href="M_factor.3.html">M_factor</a></td><td> module for least common multiple, greatest common divisor, and prime factors</td></tr>
+<tr><td style="background:#d4f2db;">M_factor</td><td><a href="greatest_common_divisor.3.html">greatest_common_divisor</a></td><td> calculate greatest common divisor oftwo integers or vector m(:), matrix m(:, :) or cuboi...</td></tr>
+<tr><td style="background:#d4f2db;">M_factor</td><td><a href="i_is_prime.3.html">i_is_prime</a></td><td> Determine if a number is prime using Sieve of Erasthosthenes</td></tr>
+<tr><td style="background:#d4f2db;">M_factor</td><td><a href="least_common_multiple.3.html">least_common_multiple</a></td><td> Least common multiple of two integersor vector m(:), matrix m(:, :) or cuboid m(:, :, :)</td></tr>
+<tr><td style="background:#d4f2db;">M_factor</td><td><a href="prime_factors.3.html">prime_factors</a></td><td> decompose a number into its prime factors</td></tr>
+<tr><td style="background:#d8d9d6;">M_generic_list</td><td><a href="M_generic_list.3.html">M_generic_list</a></td><td> A Generic Linked List Implementation in Fortran 95</td></tr>
+<tr><td style="background:#fad1d2;">M_geography</td><td><a href="geographical_distance.3.html">geographical_distance</a></td><td> Compute the distance between two points over the Earth's surface.</td></tr>
+<tr><td style="background:#f7dcea;">M_hashkeys:bucket_hash</td><td><a href="djb2_hash.3.html">djb2_hash</a></td><td> djb2 string hash (algorithm by Daniel J. Bernstein)</td></tr>
+<tr><td style="background:#f7dcea;">M_hashkeys:bucket_hash</td><td><a href="sdbm_hash.3.html">sdbm_hash</a></td><td> sdbm string hash</td></tr>
+<tr><td style="background:#fad5cd;">M_hashkeys</td><td><a href="b3hs_hash_key_jenkins.3.html">b3hs_hash_key_jenkins</a></td><td> hash key algorithm by Bob Jenkins</td></tr>
+<tr><td style="background:#fad5cd;">M_hashkeys</td><td><a href="dirtys_sha256.3.html">dirtys_sha256</a></td><td> generate a SHA-256 hashing</td></tr>
+<tr><td style="background:#fad5cd;">M_hashkeys</td><td><a href="sha256.3.html">sha256</a></td><td> generate a SHA-256 hashing</td></tr>
+<tr><td style="background:#ffeaf6;">M_history</td><td><a href="redo.3.html">redo</a></td><td> Fortran-based Input History Editor</td></tr>
+<tr><td style="background:#dedef7;">M_io</td><td><a href="M_io.3.html">M_io</a></td><td> Fortran I/O module</td></tr>
+<tr><td style="background:#dedef7;">M_io</td><td><a href="dirname.3.html">dirname</a></td><td> strip last component from filename</td></tr>
+<tr><td style="background:#dedef7;">M_io</td><td><a href="get_tmp.3.html">get_tmp</a></td><td> Return the name of the scratch directory</td></tr>
+<tr><td style="background:#dedef7;">M_io</td><td><a href="isdir.3.html">isdir</a></td><td> checks if argument is a directory path</td></tr>
+<tr><td style="background:#dedef7;">M_io</td><td><a href="notopen.3.html">notopen</a></td><td> Find a FUN/LUN (Fortran-unit-number) that is not in use</td></tr>
+<tr><td style="background:#dedef7;">M_io</td><td><a href="print_inquire.3.html">print_inquire</a></td><td> Do INQUIRE on file by name/number and print results</td></tr>
+<tr><td style="background:#dedef7;">M_io</td><td><a href="rd.3.html">rd</a></td><td> ask for string from standard input with user-definable prompt</td></tr>
+<tr><td style="background:#dedef7;">M_io</td><td><a href="read_all.3.html">read_all</a></td><td> read a line from specified LUN into allocatable string up to line length limit</td></tr>
+<tr><td style="background:#dedef7;">M_io</td><td><a href="read_line.3.html">read_line</a></td><td> read a line from specified LUN into allocatable string up to line length limit</td></tr>
+<tr><td style="background:#dedef7;">M_io</td><td><a href="read_table.3.html">read_table</a></td><td> read file containing a table of numeric values</td></tr>
+<tr><td style="background:#dedef7;">M_io</td><td><a href="slurp.3.html">slurp</a></td><td> read a file into a character array</td></tr>
+<tr><td style="background:#dedef7;">M_io</td><td><a href="splitpath.3.html">splitpath</a></td><td> split a Unix pathname into components</td></tr>
+<tr><td style="background:#dedef7;">M_io</td><td><a href="uniq.3.html">uniq</a></td><td> append a number to the end of filename to make a unique name if name exists</td></tr>
+<tr><td style="background:#dde0f5;">M_journal</td><td><a href="M_journal.3.html">M_journal</a></td><td> write program messages to stdout and/or a log file</td></tr>
+<tr><td style="background:#dde0f5;">M_journal</td><td><a href="journal.3.html">journal</a></td><td> provides public message routine, no paging or graphic mode change"</td></tr>
+<tr><td style="background:#fddbc1;">M_list</td><td><a href="add.3.html">add</a></td><td> insert entry into an allocatable sorted string array if it is not present</td></tr>
+<tr><td style="background:#fddbc1;">M_list</td><td><a href="binary_search.3.html">binary_search</a></td><td> binary search of a sorted array.</td></tr>
+<tr><td style="background:#fddbc1;">M_list</td><td><a href="delete.3.html">delete</a></td><td> delete entry by name from an allocatable sorted string array if it is present</td></tr>
+<tr><td style="background:#fddbc1;">M_list</td><td><a href="insert.3.html">insert</a></td><td> insert entry into a string array at specified position</td></tr>
+<tr><td style="background:#fddbc1;">M_list</td><td><a href="locate.3.html">locate</a></td><td> finds the index where a string is found or should be in a sorted array</td></tr>
+<tr><td style="background:#fddbc1;">M_list</td><td><a href="remove.3.html">remove</a></td><td> remove entry from an allocatable array at specified position</td></tr>
+<tr><td style="background:#c4c6c4;">M_logic</td><td><a href="M_logic.3.html">M_logic</a></td><td>process input files with embedded if/else/elseif/endif commands</td></tr>
+<tr><td style="background:#c4c6c4;">M_logic</td><td><a href="cond.3.html">cond</a></td><td>process input files with embedded if/else/elseif/endif commands</td></tr>
+<tr><td style="background:#d1edc9;">M_math:fit</td><td><a href="julfit.3.html">julfit</a></td><td> linear least squares curve fits, destroys input arrays</td></tr>
+<tr><td style="background:#d1edc9;">M_math:fit</td><td><a href="julfit1.3.html">julfit1</a></td><td> internal routine for linear least square fit(y=a*x+b), changes the y array</td></tr>
+<tr><td style="background:#d1edc9;">M_math:fit</td><td><a href="linearint.3.html">linearint</a></td><td> interpolates a curve defined by X(i), Y(i) using linear interpolation at given XI(j) values</td></tr>
+<tr><td style="background:#d1edc9;">M_math:fit</td><td><a href="lowess.3.html">lowess</a></td><td> procedures for locally weighted regression</td></tr>
+<tr><td style="background:#d1edc9;">M_math:fit</td><td><a href="splift.3.html">splift</a></td><td> fits a spline to the n data points given in x and yand also returns first and second derivatives</td></tr>
+<tr><td style="background:#d1edc9;">M_math:fit</td><td><a href="splint.3.html">splint</a></td><td> interpolates and twice differentiates a cubic spline</td></tr>
+<tr><td style="background:#ccece7;">M_math:geometry</td><td><a href="citer.3.html">citer</a></td><td> determine various geometric properties of circle segmentgiven radius and area of the seg...</td></tr>
+<tr><td style="background:#ccece7;">M_math:geometry</td><td><a href="envelope.3.html">envelope</a></td><td> Find vertices (in clockwise order) of a polygon enclosing the points (x(i), y(i), i=1, ....</td></tr>
+<tr><td style="background:#ccece7;">M_math:geometry</td><td><a href="inpolygon.3.html">inpolygon</a></td><td> determine whether or not an integer point is in an integer polygon</td></tr>
+<tr><td style="background:#ccece7;">M_math:geometry</td><td><a href="locpt.3.html">locpt</a></td><td> find if a point is inside a polygonal path</td></tr>
+<tr><td style="background:#ccece7;">M_math:geometry</td><td><a href="poly_intercept.3.html">poly_intercept</a></td><td> intersection of a straight line and polygonal path</td></tr>
+<tr><td style="background:#ccece7;">M_math:geometry</td><td><a href="polyarea.3.html">polyarea</a></td><td> compute the area bounded by a closed polygonal curve</td></tr>
+<tr><td style="background:#f0f0f4;">M_math:statistics</td><td><a href="bds.3.html">bds</a></td><td> Basic Statistical Measures</td></tr>
+<tr><td style="background:#f0f0f4;">M_math:statistics</td><td><a href="extremum.3.html">extremum</a></td><td> Finds the minimum and maximum value in a REAL array.</td></tr>
+<tr><td style="background:#f0f0f4;">M_math:statistics</td><td><a href="skekur1.3.html">skekur1</a></td><td> variant on calculating skewness and kurtosis of an array</td></tr>
+<tr><td style="background:#f0f0f4;">M_math:statistics</td><td><a href="skekurx.3.html">skekurx</a></td><td> Compute unbiased estimator of the population SKEWNESS and KURTOSIS</td></tr>
+<tr><td style="background:#f0f0f4;">M_math:statistics</td><td><a href="stddev.3.html">stddev</a></td><td> given a real vector and the vector average calculate the standard deviation</td></tr>
+<tr><td style="background:#e0f8de;">M_math</td><td><a href="M_math.3.html">M_math</a></td><td> module collecting various general math-relatedprocedures</td></tr>
+<tr><td style="background:#e0f8de;">M_math</td><td><a href="accdig.3.html">accdig</a></td><td> compare two real numbers only up to a specified number of digits</td></tr>
+<tr><td style="background:#e0f8de;">M_math</td><td><a href="almost.3.html">almost</a></td><td> return true or false if two numbers agree up to specified number of digits</td></tr>
+<tr><td style="background:#e0f8de;">M_math</td><td><a href="dp_accdig.3.html">dp_accdig</a></td><td> compare two DOUBLEPRECISION numbers only up to a specified number of digits</td></tr>
+<tr><td style="background:#e0f8de;">M_math</td><td><a href="in_margin.3.html">in_margin</a></td><td> check if two reals are approximately equal using a relative margin</td></tr>
+<tr><td style="background:#e0f8de;">M_math</td><td><a href="invert_2x2.3.html">invert_2x2</a></td><td> directly invert 2x2 matrix</td></tr>
+<tr><td style="background:#e0f8de;">M_math</td><td><a href="invert_3x3.3.html">invert_3x3</a></td><td> directly invert 3x3 matrix</td></tr>
+<tr><td style="background:#e0f8de;">M_math</td><td><a href="invert_4x4.3.html">invert_4x4</a></td><td> directly invert 4x4 matrix</td></tr>
+<tr><td style="background:#e0f8de;">M_math</td><td><a href="quadratic.3.html">quadratic</a></td><td> calculate the roots of a quadratic formula even if they are complex</td></tr>
+<tr><td style="background:#e0f8de;">M_math</td><td><a href="scale1.3.html">scale1</a></td><td> find new range xMINP XMAXP divisible into approximately N linear intervals of size DIST</td></tr>
+<tr><td style="background:#e0f8de;">M_math</td><td><a href="scale3.3.html">scale3</a></td><td> find nice log range</td></tr>
+<tr><td style="background:#cbf4fa;">M_messages</td><td><a href="M_messages.3.html">M_messages</a></td><td> module collecting various general routines for displaying messages</td></tr>
+<tr><td style="background:#cbf4fa;">M_messages</td><td><a href="blocks.3.html">blocks</a></td><td> write out 132-character string in large block letters</td></tr>
+<tr><td style="background:#cbf4fa;">M_messages</td><td><a href="junbad.3.html">junbad</a></td><td> print an eye-catching image of a skull.</td></tr>
+<tr><td style="background:#cbf4fa;">M_messages</td><td><a href="junbat.3.html">junbat</a></td><td> print an eye-catching image of a bat.</td></tr>
+<tr><td style="background:#cbf4fa;">M_messages</td><td><a href="junbuster.3.html">junbuster</a></td><td> call journal(3f) to print eye-catching ASCII graphic (ghostbuster)</td></tr>
+<tr><td style="background:#cbf4fa;">M_messages</td><td><a href="jundragon.3.html">jundragon</a></td><td> fill in a character array with a message</td></tr>
+<tr><td style="background:#cbf4fa;">M_messages</td><td><a href="junroach.3.html">junroach</a></td><td> print an eye-catching image of a roach.</td></tr>
+<tr><td style="background:#cbf4fa;">M_messages</td><td><a href="junsun.3.html">junsun</a></td><td> print an eye-catching image of a smiling sun.</td></tr>
+<tr><td style="background:#cbf4fa;">M_messages</td><td><a href="juntrolls.3.html">juntrolls</a></td><td> print an eye-catching bulletin</td></tr>
+<tr><td style="background:#cbf4fa;">M_messages</td><td><a href="percent_done.3.html">percent_done</a></td><td> non-advancing status counter displays percentage done on terminal displays</td></tr>
+<tr><td style="background:#cbf4fa;">M_messages</td><td><a href="signs.3.html">signs</a></td><td> write out 132-character string in large block letters</td></tr>
+<tr><td style="background:#cbf4fa;">M_messages</td><td><a href="tabgraph.3.html">tabgraph</a></td><td> write out a row of numbers and a text-based scaled graph</td></tr>
+<tr><td style="background:#ebfbd4;">M_overload</td><td><a href="M_overload.3.html">M_overload</a></td><td> overloads of standard operators and intrinsic procedures</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="M_pixel.3m_pixel.html">M_pixel</a></td><td> module for drawing into a pixel array with 2D vector operations</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="arc.3m_pixel.html">arc</a></td><td> draw an arc using current line width and color</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="centertext.3m_pixel.html">centertext</a></td><td> set text centering mode for drawstr(3f) and drawc(3f)</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="circle.3m_pixel.html">circle</a></td><td> draw a circle using current line width and color</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="circleprecision.3m_pixel.html">circleprecision</a></td><td> set number of line segments used to approximate a circle</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="clear.3m_pixel.html">clear</a></td><td> clear background to current color or specified color index</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="closepoly.3m_pixel.html">closepoly</a></td><td> Terminates a polygon opened by makepoly(3f)</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="color.3m_pixel.html">color</a></td><td> set current color index</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="dl_slices.3.html">dl_slices</a></td><td> basic 3-d surface plotting routine</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="draw2.3m_pixel.html">draw2</a></td><td> draw from current position to given point</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="drawchar.3m_pixel.html">drawchar</a></td><td> Draw a character at the current position</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="drawstr.3m_pixel.html">drawstr</a></td><td> Draw the text string at the current position</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="font.3m_pixel.html">font</a></td><td> select font style by name</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="getdisplaysize.3m_pixel.html">getdisplaysize</a></td><td> Returns the width and height of the device in pixels</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="getgp2.3m_pixel.html">getgp2</a></td><td> Gets the current graphics position in world coords.</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="getviewport.3m_pixel.html">getviewport</a></td><td> return viewport in screen pixel coordinates</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="hershey.3m_pixel.html">hershey</a></td><td> draw text string as Hershey software vector fonts</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="justfy.3m_pixel.html">justfy</a></td><td> return lengths used to justify a string when calling hershey</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="line.3m_pixel.html">line</a></td><td> draw line between two points</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="linewidth.3m_pixel.html">linewidth</a></td><td> set linewidth</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="makepoly.3m_pixel.html">makepoly</a></td><td> opens polygon constructed by a series of move-draws and closed by closepoly |</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="mapcolor.3m_pixel.html">mapcolor</a></td><td> set a color index using RGB values</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="move2.3m_pixel.html">move2</a></td><td> change current position</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="ortho2.3m_pixel.html">ortho2</a></td><td> define the area of the virtual world coordinates to map to the viewport</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="page.3m_pixel.html">page</a></td><td> define the area of the virtual world coordinates to map to the viewport</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="point2.3m_pixel.html">point2</a></td><td> Draw a point at x, y</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="poly2.3m_pixel.html">poly2</a></td><td> construct a polygon from an array of points</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="polyline.3m_pixel.html">polyline</a></td><td> connect points with lines</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="prefsize.3m_pixel.html">prefsize</a></td><td> specify size of pixel array</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="print_ascii.3m_pixel.html">print_ascii</a></td><td> print small pixel array as ASCII text</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="print_ppm.3m_pixel.html">print_ppm</a></td><td> print pixel array as a ppm p3 file</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="rdraw2.3m_pixel.html">rdraw2</a></td><td> draw from current position to given point</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="rect.3m_pixel.html">rect</a></td><td> draw rectangle given two corners</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="rmove2.3m_pixel.html">rmove2</a></td><td> relative move</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="state.3m_pixel.html">state</a></td><td> print graphics state of M_pixel graphics module</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="strlength.3m_pixel.html">strlength</a></td><td> return length of string</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="textang.3m_pixel.html">textang</a></td><td> set text angle</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="textsize.3m_pixel.html">textsize</a></td><td> set text size in world units</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="vexit.3m_pixel.html">vexit</a></td><td> exit pixel graphics mode</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="viewport.3m_pixel.html">viewport</a></td><td> Specify which part of the screen to draw in.</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="vinit.3m_pixel.html">vinit</a></td><td> initialize pixel graphics module</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="xcentertext.3m_pixel.html">xcentertext</a></td><td> set text centering mode on for drawstr(3f) and drawc(3f) in X direction</td></tr>
+<tr><td style="background:#e0f9e6;">M_pixel</td><td><a href="ycentertext.3m_pixel.html">ycentertext</a></td><td> set text centering mode on for drawstr(3f) and drawc(3f) in Y direction</td></tr>
+<tr><td style="background:#caedcd;">M_process</td><td><a href="M_process.3.html">M_process</a></td><td> Fortran Module for calling process-related C functions from Fortran</td></tr>
+<tr><td style="background:#caedcd;">M_process</td><td><a href="process_close.3.html">process_close</a></td><td> Fortran Module for calling process-related C functions from Fortran</td></tr>
+<tr><td style="background:#caedcd;">M_process</td><td><a href="process_open_read.3.html">process_open_read</a></td><td> Fortran Module for calling process-related C functions from Fortran</td></tr>
+<tr><td style="background:#caedcd;">M_process</td><td><a href="process_open_write.3.html">process_open_write</a></td><td> Fortran Module for calling process-related C functions from Fortran</td></tr>
+<tr><td style="background:#caedcd;">M_process</td><td><a href="process_readall.3.html">process_readall</a></td><td> read all lines from process into single string</td></tr>
+<tr><td style="background:#caedcd;">M_process</td><td><a href="process_readline.3.html">process_readline</a></td><td> Fortran Module for calling process-related C functions from Fortran</td></tr>
+<tr><td style="background:#caedcd;">M_process</td><td><a href="process_writeline.3.html">process_writeline</a></td><td> Fortran Module for calling process-related C functions from Fortran</td></tr>
+<tr><td style="background:#f4d9ce;">M_random:MERSENNE TWISTER</td><td><a href="mtprng_init.3.html">mtprng_init</a></td><td> Initialize the Mersenne Twister random number generator with "seed"</td></tr>
+<tr><td style="background:#f4d9ce;">M_random:MERSENNE TWISTER</td><td><a href="mtprng_init_by_array.3.html">mtprng_init_by_array</a></td><td> Initialize the Mersenne Twister random number generator with "seed" array</td></tr>
+<tr><td style="background:#f4d9ce;">M_random:MERSENNE TWISTER</td><td><a href="mtprng_rand.3.html">mtprng_rand</a></td><td> Obtain the next 32-bit integer in the pseudo-random sequence</td></tr>
+<tr><td style="background:#f4d9ce;">M_random:MERSENNE TWISTER</td><td><a href="mtprng_rand64.3.html">mtprng_rand64</a></td><td> Obtain the next 64-bit integer in the pseudo-random sequence</td></tr>
+<tr><td style="background:#f4d9ce;">M_random:MERSENNE TWISTER</td><td><a href="mtprng_rand_rang.3.html">mtprng_rand_rang</a></td><td> Obtain a pseudo-random integer in the range [lo, hi</td></tr>
+<tr><td style="background:#f4d9ce;">M_random:MERSENNE TWISTER</td><td><a href="mtprng_rand_real1.3.html">mtprng_rand_real1</a></td><td> Obtain a pseudo-random real number in the range [0.0, 1.0</td></tr>
+<tr><td style="background:#f4d9ce;">M_random:MERSENNE TWISTER</td><td><a href="mtprng_rand_real2.3.html">mtprng_rand_real2</a></td><td> Obtain a pseudo-random real number in the range [0, <1)</td></tr>
+<tr><td style="background:#f4d9ce;">M_random:MERSENNE TWISTER</td><td><a href="mtprng_rand_real3.3.html">mtprng_rand_real3</a></td><td> Obtain a pseudo-random real number in the range (0< XXX <1)</td></tr>
+<tr><td style="background:#dee1ff;">M_random</td><td><a href="init_random_seed.3.html">init_random_seed</a></td><td> seed random_number(3f) with single value like srand(3c) usage</td></tr>
+<tr><td style="background:#dee1ff;">M_random</td><td><a href="init_random_seed_by_dat.3.html">init_random_seed_by_dat</a></td><td> seed random_number(3f) with values from date_and_time(3f)</td></tr>
+<tr><td style="background:#dee1ff;">M_random</td><td><a href="init_random_seed_by_system_clock.3.html">init_random_seed_by_system_clock</a></td><td> seed random_number(3f) with system clock value</td></tr>
+<tr><td style="background:#dee1ff;">M_random</td><td><a href="random_hex.3.html">random_hex</a></td><td> create random string composed of provided characters of specified length</td></tr>
+<tr><td style="background:#dee1ff;">M_random</td><td><a href="random_kiss64.3.html">random_kiss64</a></td><td> A 64-bit KISS random number generator by George Margaglia.</td></tr>
+<tr><td style="background:#dee1ff;">M_random</td><td><a href="random_string.3.html">random_string</a></td><td> create random string composed of provided characters of specified length</td></tr>
+<tr><td style="background:#fdcfee;">M_readgif</td><td><a href="readgif.3.html">readgif</a></td><td> read a GIF file</td></tr>
+<tr><td style="background:#dfd8d7;">M_readline</td><td><a href="M_readline.3.html">M_readline</a></td><td> Calling readline(3c) from Fortran</td></tr>
+<tr><td style="background:#dfd8d7;">M_readline</td><td><a href="system_readline.3.html">system_readline</a></td><td> Call readline(3c) from Fortran</td></tr>
+<tr><td style="background:#fbc0f5;">M_regex</td><td><a href="M_regex.3.html">M_regex</a></td><td> Fortran interface to POSIX 1003.2 regular expression library using ISO_C_BINDING.</td></tr>
+<tr><td style="background:#fbc0f5;">M_regex</td><td><a href="regcomp.3.html">regcomp</a></td><td> Compile a regular expression into a regex object</td></tr>
+<tr><td style="background:#fbc0f5;">M_regex</td><td><a href="regerror.3.html">regerror</a></td><td> maps a non-zero errcode from either regcomp(3f) or regexec(3f) to a human-readable, printable me...</td></tr>
+<tr><td style="background:#fbc0f5;">M_regex</td><td><a href="regexec.3.html">regexec</a></td><td> Execute a compiled regex against a string</td></tr>
+<tr><td style="background:#fbc0f5;">M_regex</td><td><a href="regfree.3.html">regfree</a></td><td> Release storage used by the internal form of the RE (Regular Expression)</td></tr>
+<tr><td style="background:#fbc0f5;">M_regex</td><td><a href="regmatch.3.html">regmatch</a></td><td> return selected substring defined by the MATCHES(2, :) array</td></tr>
+<tr><td style="background:#fbc0f5;">M_regex</td><td><a href="regsub.3.html">regsub</a></td><td> perform regex substitutions</td></tr>
+<tr><td style="background:#e2ecdb;">M_sha3</td><td><a href="M_sha3.3.html">M_sha3</a></td><td> a module implementing the SHA-3 hash function</td></tr>
+<tr><td style="background:#c4c8ea;">M_slices</td><td><a href="dl_init.3m_slices.html">dl_init</a></td><td> initialize the longlib graphics plot package</td></tr>
+<tr><td style="background:#c4c8ea;">M_slices</td><td><a href="dl_slices.3m_slices.html">dl_slices</a></td><td>plot data in 3-D overlay form</td></tr>
+<tr><td style="background:#c4c8ea;">M_slices</td><td><a href="dl_symbol.3m_slices.html">dl_symbol</a></td><td> routine to plot characters and symbols</td></tr>
+<tr><td style="background:#dfd6e0;">M_sort</td><td><a href="M_sort.3.html">M_sort</a></td><td> Fortran module containing sorting algorithms for arrays of standard scalar types</td></tr>
+<tr><td style="background:#dfd6e0;">M_sort</td><td><a href="sort_quick_rx.3.html">sort_quick_rx</a></td><td> indexed hybrid quicksort of a real array</td></tr>
+<tr><td style="background:#dfd6e0;">M_sort</td><td><a href="sort_shell.3.html">sort_shell</a></td><td> Generic subroutine sorts the array X using Shell's method</td></tr>
+<tr><td style="background:#dfd6e0;">M_sort</td><td><a href="swap.3.html">swap</a></td><td> elemental subroutine swaps two standard type variables of like type</td></tr>
+<tr><td style="background:#dfd6e0;">M_sort</td><td><a href="unique.3.html">unique</a></td><td> assuming an array is sorted, return array with duplicate values removed</td></tr>
+<tr><td style="background:#fffaf3;">M_sqlite</td><td><a href="M_sqlite.3.html">M_sqlite</a></td><td> Fortran interface to SQLite3 API</td></tr>
+<tr><td style="background:#fffaf3;">M_sqlite</td><td><a href="sqlite3_begin.3.html">sqlite3_begin</a></td><td> Start a transaction on the given database</td></tr>
+<tr><td style="background:#fffaf3;">M_sqlite</td><td><a href="sqlite3_close.3.html">sqlite3_close</a></td><td> Close a database file</td></tr>
+<tr><td style="background:#fffaf3;">M_sqlite</td><td><a href="sqlite3_column_props.3.html">sqlite3_column_props</a></td><td> Convenience routine to set the properties of a column</td></tr>
+<tr><td style="background:#fffaf3;">M_sqlite</td><td><a href="sqlite3_column_query.3.html">sqlite3_column_query</a></td><td> Convenience routine to query a column or a function of that column</td></tr>
+<tr><td style="background:#fffaf3;">M_sqlite</td><td><a href="sqlite3_commit.3.html">sqlite3_commit</a></td><td> Commits a transaction on the given database</td></tr>
+<tr><td style="background:#fffaf3;">M_sqlite</td><td><a href="sqlite3_create_table.3.html">sqlite3_create_table</a></td><td> Create a new table</td></tr>
+<tr><td style="background:#fffaf3;">M_sqlite</td><td><a href="sqlite3_delete_table.3.html">sqlite3_delete_table</a></td><td> Delete a table</td></tr>
+<tr><td style="background:#fffaf3;">M_sqlite</td><td><a href="sqlite3_do.3.html">sqlite3_do</a></td><td> Run a single SQL command</td></tr>
+<tr><td style="background:#fffaf3;">M_sqlite</td><td><a href="sqlite3_errmsg.3.html">sqlite3_errmsg</a></td><td> Return the last error message</td></tr>
+<tr><td style="background:#fffaf3;">M_sqlite</td><td><a href="sqlite3_error.3.html">sqlite3_error</a></td><td> Return the last error code</td></tr>
+<tr><td style="background:#fffaf3;">M_sqlite</td><td><a href="sqlite3_finalize.3.html">sqlite3_finalize</a></td><td> Finalize the prepared SQL statement</td></tr>
+<tr><td style="background:#fffaf3;">M_sqlite</td><td><a href="sqlite3_get_column.3.html">sqlite3_get_column</a></td><td> Convenience routine to get the value of a column</td></tr>
+<tr><td style="background:#fffaf3;">M_sqlite</td><td><a href="sqlite3_get_table.3.html">sqlite3_get_table</a></td><td> Call sqlite3_exec() and return the result in an array of strings</td></tr>
+<tr><td style="background:#fffaf3;">M_sqlite</td><td><a href="sqlite3_insert.3.html">sqlite3_insert</a></td><td> Insert a complete row into the given table</td></tr>
+<tr><td style="background:#fffaf3;">M_sqlite</td><td><a href="sqlite3_libversion.3.html">sqlite3_libversion</a></td><td> obtain string describing library version</td></tr>
+<tr><td style="background:#fffaf3;">M_sqlite</td><td><a href="sqlite3_libversion_number.3.html">sqlite3_libversion_number</a></td><td> obtain library version number</td></tr>
+<tr><td style="background:#fffaf3;">M_sqlite</td><td><a href="sqlite3_next_row.3.html">sqlite3_next_row</a></td><td> Gets the next row of data from a selection</td></tr>
+<tr><td style="background:#fffaf3;">M_sqlite</td><td><a href="sqlite3_open.3.html">sqlite3_open</a></td><td> Open a database file</td></tr>
+<tr><td style="background:#fffaf3;">M_sqlite</td><td><a href="sqlite3_prepare.3.html">sqlite3_prepare</a></td><td> Reset the prepared SQL statement so that it can be used again</td></tr>
+<tr><td style="background:#fffaf3;">M_sqlite</td><td><a href="sqlite3_prepare_select.3.html">sqlite3_prepare_select</a></td><td> Prepare a selection of data from the database</td></tr>
+<tr><td style="background:#fffaf3;">M_sqlite</td><td><a href="sqlite3_query_table.3.html">sqlite3_query_table</a></td><td> Retrieve the column names and types from a table</td></tr>
+<tr><td style="background:#fffaf3;">M_sqlite</td><td><a href="sqlite3_reset.3.html">sqlite3_reset</a></td><td> Reset the prepared SQL statement so that it can be used again</td></tr>
+<tr><td style="background:#fffaf3;">M_sqlite</td><td><a href="sqlite3_rollback.3.html">sqlite3_rollback</a></td><td> Rolls back any changes to the database since the last commit</td></tr>
+<tr><td style="background:#fffaf3;">M_sqlite</td><td><a href="sqlite3_set_column.3.html">sqlite3_set_column</a></td><td> Convenience routines to set the value of a column</td></tr>
+<tr><td style="background:#fffaf3;">M_sqlite</td><td><a href="sqlite3_sourceid.3.html">sqlite3_sourceid</a></td><td> obtain string describing library version</td></tr>
+<tr><td style="background:#fffaf3;">M_sqlite</td><td><a href="sqlite3_step.3.html">sqlite3_step</a></td><td> Run the prepared SQL statement</td></tr>
+<tr><td style="background:#d3d3d7;">M_stopwatch</td><td><a href="M_stopwatch.3.html">M_stopwatch</a></td><td> package for measuring cpu and wall clock execution time</td></tr>
+<tr><td style="background:#d3d3d7;">M_stopwatch</td><td><a href="create_watch.3.html">create_watch</a></td><td> creates and initializes a M_StopWatch watch</td></tr>
+<tr><td style="background:#d3d3d7;">M_stopwatch</td><td><a href="create_watchgroup.3.html">create_watchgroup</a></td><td> creates a M_StopWatch watch group</td></tr>
+<tr><td style="background:#d3d3d7;">M_stopwatch</td><td><a href="destroy_watch.3.html">destroy_watch</a></td><td> destroys a M_StopWatch watch</td></tr>
+<tr><td style="background:#d3d3d7;">M_stopwatch</td><td><a href="destroy_watchgroup.3.html">destroy_watchgroup</a></td><td> destroys a M_StopWatch watch group</td></tr>
+<tr><td style="background:#d3d3d7;">M_stopwatch</td><td><a href="end_pause_watch.3.html">end_pause_watch</a></td><td> resumes a paused M_StopWatch watch</td></tr>
+<tr><td style="background:#d3d3d7;">M_stopwatch</td><td><a href="inquiry_stopwatch.3.html">inquiry_stopwatch</a></td><td> returns M_StopWatch options and system dependent values</td></tr>
+<tr><td style="background:#d3d3d7;">M_stopwatch</td><td><a href="join_watchgroup.3.html">join_watchgroup</a></td><td> adds a M_StopWatch watch to a watch group</td></tr>
+<tr><td style="background:#d3d3d7;">M_stopwatch</td><td><a href="leave_watchgroup.3.html">leave_watchgroup</a></td><td> removes a M_StopWatch watch from a watch group</td></tr>
+<tr><td style="background:#d3d3d7;">M_stopwatch</td><td><a href="option_stopwatch.3.html">option_stopwatch</a></td><td> sets M_StopWatch options</td></tr>
+<tr><td style="background:#d3d3d7;">M_stopwatch</td><td><a href="pause_watch.3.html">pause_watch</a></td><td> pauses a M_StopWatch watch</td></tr>
+<tr><td style="background:#d3d3d7;">M_stopwatch</td><td><a href="print_watch.3.html">print_watch</a></td><td> prints the current value of a M_StopWatch watch</td></tr>
+<tr><td style="background:#d3d3d7;">M_stopwatch</td><td><a href="read_watch.3.html">read_watch</a></td><td> reads the values from a M_StopWatch watch</td></tr>
+<tr><td style="background:#d3d3d7;">M_stopwatch</td><td><a href="reset_watch.3.html">reset_watch</a></td><td> resets a M_StopWatch watch to 0.0</td></tr>
+<tr><td style="background:#d3d3d7;">M_stopwatch</td><td><a href="start_watch.3.html">start_watch</a></td><td> starts a M_StopWatch watch</td></tr>
+<tr><td style="background:#d3d3d7;">M_stopwatch</td><td><a href="stop_watch.3.html">stop_watch</a></td><td> stops a M_StopWatch watch</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="M_strings.3.html">M_strings</a></td><td> Fortran string module</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="adjustc.3.html">adjustc</a></td><td> center text</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="base.3.html">base</a></td><td> convert whole number string in base [2-36] to string in alternate base [2-36</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="c2s.3.html">c2s</a></td><td> convert C string pointer to Fortran character string</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="change.3.html">change</a></td><td> change old string to new string with a directive like a line editor</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="chomp.3.html">chomp</a></td><td> Tokenize a string, consuming it one token per call</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="codebase.3.html">codebase</a></td><td> convert whole number in base 10 to string in base [2-36</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="compact.3.html">compact</a></td><td> converts contiguous whitespace to a single character (or nothing)</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="crop.3.html">crop</a></td><td> trim leading blanks and trailing blanks from a string</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="decodebase.3.html">decodebase</a></td><td> convert whole number string in base [2-36] to base 10 number</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="delim.3.html">delim</a></td><td> parse a string and store tokens into an array</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="describe.3.html">describe</a></td><td> returns a string describing the name of a single character</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="expand.3.html">expand</a></td><td> expand C-like escape sequences</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="getvals.3.html">getvals</a></td><td> read arbitrary number of REAL values from a character variable up to size of VALUES() array</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="indent.3.html">indent</a></td><td> count number of leading spaces in a string</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="isalnum.3.html">isalnum</a></td><td> test membership in subsets of ASCII character set</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="isalpha.3.html">isalpha</a></td><td> test membership in subsets of ASCII character set</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="isascii.3.html">isascii</a></td><td> test membership in subsets of ASCII character set</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="isblank.3.html">isblank</a></td><td> test membership in subsets of ASCII character set</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="iscntrl.3.html">iscntrl</a></td><td> test membership in subsets of ASCII character set</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="isdigit.3.html">isdigit</a></td><td> test membership in subsets of ASCII character set</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="isgraph.3.html">isgraph</a></td><td> test membership in subsets of ASCII character set</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="islower.3.html">islower</a></td><td> test membership in subsets of ASCII character set</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="isprint.3.html">isprint</a></td><td> test membership in subsets of ASCII character set</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="ispunct.3.html">ispunct</a></td><td> test membership in subsets of ASCII character set</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="isspace.3.html">isspace</a></td><td> test membership in subsets of ASCII character set</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="isupper.3.html">isupper</a></td><td> test membership in subsets of ASCII character set</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="isxdigit.3.html">isxdigit</a></td><td> test membership in subsets of ASCII character set</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="join.3.html">join</a></td><td> append an array of character variables with specified separator into a single CHARACTER variable</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="len_white.3.html">len_white</a></td><td> get length of string trimmed of whitespace.</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="lenset.3.html">lenset</a></td><td> return string trimmed or padded to specified length</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="listout.3.html">listout</a></td><td> copy ICURVE() to ICURVE_EXPANDED() expanding negative numbers to ranges (1 -10 means 1 thru 10)</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="lower.3.html">lower</a></td><td> changes a string to lowercase over specified range</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="matchw.3.html">matchw</a></td><td> compare given string for match to pattern which may contain wildcard characters</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="merge_str.3.html">merge_str</a></td><td> pads strings to same length and then calls MERGE(3f)</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="modif.3.html">modif</a></td><td> emulate the MODIFY command from the line editor XEDIT</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="noesc.3.html">noesc</a></td><td> convert non-printable characters to a space.</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="nospace.3.html">nospace</a></td><td> remove all whitespace from input string</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="notabs.3.html">notabs</a></td><td> expand tab characters</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="replace.3.html">replace</a></td><td> Globally replace one substring for another in string</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="reverse.3.html">reverse</a></td><td> Return a string reversed</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="s2c.3.html">s2c</a></td><td> convert character variable to array of characters with last element set to null</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="s2v.3.html">s2v</a></td><td> function returns doubleprecision numeric value from a string</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="s2vs.3.html">s2vs</a></td><td> given a string representing numbers return a numeric array</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="split.3.html">split</a></td><td> parse string into an array using specified delimiters</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="string_to_value.3.html">string_to_value</a></td><td> subroutine returns real value from string</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="string_to_values.3.html">string_to_values</a></td><td> read a string representing numbers into a numeric array</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="substitute.3.html">substitute</a></td><td> Globally substitute one substring for another in string</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="switch.3.html">switch</a></td><td> generic composition of a2s() and s2a() converts between CHARACTER scalar and array of single c...</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="transliterate.3.html">transliterate</a></td><td> replace characters from old set with new set</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="unquote.3.html">unquote</a></td><td> remove quotes from string as if read with list-directed input</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="upper.3.html">upper</a></td><td> changes a string to uppercase</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="v2s.3.html">v2s</a></td><td> return numeric string from a numeric value</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="value_to_string.3.html">value_to_string</a></td><td> return numeric string from a numeric value</td></tr>
+<tr><td style="background:#f4cfe0;">M_strings</td><td><a href="visible.3.html">visible</a></td><td> expand a string to control and meta-control representations</td></tr>
+<tr><td style="background:#eef6cd;">M_system:ENVIRONMENT</td><td><a href="set_environment_variable.3.html">set_environment_variable</a></td><td> call setenv(3c) to set environment variable</td></tr>
+<tr><td style="background:#eef6cd;">M_system:ENVIRONMENT</td><td><a href="system_clearenv.3.html">system_clearenv</a></td><td> clear environment by calling clearenv(3c)</td></tr>
+<tr><td style="background:#eef6cd;">M_system:ENVIRONMENT</td><td><a href="system_getenv.3.html">system_getenv</a></td><td> get environment variable from Fortran by calling get_environment_variable(3f)</td></tr>
+<tr><td style="background:#eef6cd;">M_system:ENVIRONMENT</td><td><a href="system_initenv.3.html">system_initenv</a></td><td> initialize environment table pointer and size so table can be read by readenv(3f)</td></tr>
+<tr><td style="background:#eef6cd;">M_system:ENVIRONMENT</td><td><a href="system_putenv.3.html">system_putenv</a></td><td> set environment variable from Fortran by calling putenv(3c)</td></tr>
+<tr><td style="background:#eef6cd;">M_system:ENVIRONMENT</td><td><a href="system_readenv.3.html">system_readenv</a></td><td> step thru and read environment table</td></tr>
+<tr><td style="background:#eef6cd;">M_system:ENVIRONMENT</td><td><a href="system_unsetenv.3.html">system_unsetenv</a></td><td> delete an environment variable by calling unsetenv(3c)</td></tr>
+<tr><td style="background:#c7ebf8;">M_system:QUERY</td><td><a href="system_getegid.3.html">system_getegid</a></td><td> get the effective group ID (GID) of current process from Fortran by calling getegid(3c)</td></tr>
+<tr><td style="background:#c7ebf8;">M_system:QUERY</td><td><a href="system_geteuid.3.html">system_geteuid</a></td><td> get effective UID of current process from Fortran by calling geteuid(3c)</td></tr>
+<tr><td style="background:#c7ebf8;">M_system:QUERY</td><td><a href="system_getgid.3.html">system_getgid</a></td><td> get the real group ID (GID) of current process from Fortran by calling getgid(3c)</td></tr>
+<tr><td style="background:#c7ebf8;">M_system:QUERY</td><td><a href="system_getgrgid.3.html">system_getgrgid</a></td><td> get groupd name associated with a GID</td></tr>
+<tr><td style="background:#c7ebf8;">M_system:QUERY</td><td><a href="system_gethostname.3.html">system_gethostname</a></td><td> get name of current host</td></tr>
+<tr><td style="background:#c7ebf8;">M_system:QUERY</td><td><a href="system_getlogin.3.html">system_getlogin</a></td><td> get login name</td></tr>
+<tr><td style="background:#c7ebf8;">M_system:QUERY</td><td><a href="system_getpid.3.html">system_getpid</a></td><td> get PID (process ID) of current process from Fortran by calling getpid(3c)</td></tr>
+<tr><td style="background:#c7ebf8;">M_system:QUERY</td><td><a href="system_getppid.3.html">system_getppid</a></td><td> get parent process ID (PPID) of current process from Fortran by calling getppid(3c)</td></tr>
+<tr><td style="background:#c7ebf8;">M_system:QUERY</td><td><a href="system_getpwuid.3.html">system_getpwuid</a></td><td> get login name associated with a UID</td></tr>
+<tr><td style="background:#c7ebf8;">M_system:QUERY</td><td><a href="system_getsid.3.html">system_getsid</a></td><td> get the process group ID of a session leader</td></tr>
+<tr><td style="background:#c7ebf8;">M_system:QUERY</td><td><a href="system_getuid.3.html">system_getuid</a></td><td> get real UID of current process from Fortran by calling getuid(3c)</td></tr>
+<tr><td style="background:#c1cac1;">M_system</td><td><a href="M_system.3.html">M_system</a></td><td> Fortran interface to C system interface</td></tr>
+<tr><td style="background:#c1cac1;">M_system</td><td><a href="fileglob.3.html">fileglob</a></td><td> Read output of an ls(1) command from Fortran</td></tr>
+<tr><td style="background:#c1cac1;">M_system</td><td><a href="system_access.3.html">system_access</a></td><td> checks accessibility or existence of a pathname</td></tr>
+<tr><td style="background:#c1cac1;">M_system</td><td><a href="system_chdir.3.html">system_chdir</a></td><td> call chdir(3c) from Fortran to change working directory</td></tr>
+<tr><td style="background:#c1cac1;">M_system</td><td><a href="system_chmod.3.html">system_chmod</a></td><td> call chmod(3c) to change permission mode of a file relative to directory file descriptor</td></tr>
+<tr><td style="background:#c1cac1;">M_system</td><td><a href="system_chown.3.html">system_chown</a></td><td> change file owner and group</td></tr>
+<tr><td style="background:#c1cac1;">M_system</td><td><a href="system_closedir.3.html">system_closedir</a></td><td> close a directory stream by calling closedir(3c)</td></tr>
+<tr><td style="background:#c1cac1;">M_system</td><td><a href="system_cpu_time.3.html">system_cpu_time</a></td><td> get processor time by calling times(3c)</td></tr>
+<tr><td style="background:#c1cac1;">M_system</td><td><a href="system_errno.3.html">system_errno</a></td><td> C error return value</td></tr>
+<tr><td style="background:#c1cac1;">M_system</td><td><a href="system_getcwd.3.html">system_getcwd</a></td><td> call getcwd(3c) to get the pathname of the current working directory</td></tr>
+<tr><td style="background:#c1cac1;">M_system</td><td><a href="system_getumask.3.html">system_getumask</a></td><td> get current umask</td></tr>
+<tr><td style="background:#c1cac1;">M_system</td><td><a href="system_isblk.3.html">system_isblk</a></td><td> checks if argument is a block device</td></tr>
+<tr><td style="background:#c1cac1;">M_system</td><td><a href="system_ischr.3.html">system_ischr</a></td><td> checks if argument is a character device</td></tr>
+<tr><td style="background:#c1cac1;">M_system</td><td><a href="system_isdir.3.html">system_isdir</a></td><td> checks if argument is a directory path</td></tr>
+<tr><td style="background:#c1cac1;">M_system</td><td><a href="system_isfifo.3.html">system_isfifo</a></td><td> checks if argument is a fifo - named pipe</td></tr>
+<tr><td style="background:#c1cac1;">M_system</td><td><a href="system_islnk.3.html">system_islnk</a></td><td> checks if argument is a link</td></tr>
+<tr><td style="background:#c1cac1;">M_system</td><td><a href="system_isreg.3.html">system_isreg</a></td><td> checks if argument is a regular file</td></tr>
+<tr><td style="background:#c1cac1;">M_system</td><td><a href="system_issock.3.html">system_issock</a></td><td> checks if argument is a socket</td></tr>
+<tr><td style="background:#c1cac1;">M_system</td><td><a href="system_kill.3.html">system_kill</a></td><td> send a signal to a process or a group of processes</td></tr>
+<tr><td style="background:#c1cac1;">M_system</td><td><a href="system_link.3.html">system_link</a></td><td> link one file to another file relative to two directory file descriptors</td></tr>
+<tr><td style="background:#c1cac1;">M_system</td><td><a href="system_mkdir.3.html">system_mkdir</a></td><td> call mkdir(3c) to create a new directory</td></tr>
+<tr><td style="background:#c1cac1;">M_system</td><td><a href="system_mkfifo.3.html">system_mkfifo</a></td><td> make a FIFO special file relative to directory file descriptor</td></tr>
+<tr><td style="background:#c1cac1;">M_system</td><td><a href="system_opendir.3.html">system_opendir</a></td><td> open directory stream by calling opendir(3c)</td></tr>
+<tr><td style="background:#c1cac1;">M_system</td><td><a href="system_perm.3.html">system_perm</a></td><td> get file type and permission as a string</td></tr>
+<tr><td style="background:#c1cac1;">M_system</td><td><a href="system_perror.3.html">system_perror</a></td><td> print error message for last C error on stderr</td></tr>
+<tr><td style="background:#c1cac1;">M_system</td><td><a href="system_rand.3.html">system_rand</a></td><td> call pseudo-random number generator rand(3c)</td></tr>
+<tr><td style="background:#c1cac1;">M_system</td><td><a href="system_readdir.3.html">system_readdir</a></td><td> read a directory using readdir(3c)</td></tr>
+<tr><td style="background:#c1cac1;">M_system</td><td><a href="system_remove.3.html">system_remove</a></td><td> call remove(3c) to remove file</td></tr>
+<tr><td style="background:#c1cac1;">M_system</td><td><a href="system_rename.3.html">system_rename</a></td><td> call rename(3c) to rename a system file</td></tr>
+<tr><td style="background:#c1cac1;">M_system</td><td><a href="system_rewinddir.3.html">system_rewinddir</a></td><td> call rewinddir(3c) to rewind directory stream</td></tr>
+<tr><td style="background:#c1cac1;">M_system</td><td><a href="system_rmdir.3.html">system_rmdir</a></td><td> call rmdir(3c) to remove empty directories</td></tr>
+<tr><td style="background:#c1cac1;">M_system</td><td><a href="system_setumask.3.html">system_setumask</a></td><td> set the file mode creation umask</td></tr>
+<tr><td style="background:#c1cac1;">M_system</td><td><a href="system_srand.3.html">system_srand</a></td><td> set seed for pseudo-random number generator system_rand(3f)</td></tr>
+<tr><td style="background:#c1cac1;">M_system</td><td><a href="system_stat.3.html">system_stat</a></td><td> Get file status information</td></tr>
+<tr><td style="background:#c1cac1;">M_system</td><td><a href="system_stat_print.3.html">system_stat_print</a></td><td> print the principal info obtained for a pathname from system_stat(3f)</td></tr>
+<tr><td style="background:#c1cac1;">M_system</td><td><a href="system_uname.3.html">system_uname</a></td><td> call a C wrapper that calls uname(3c) to get current system information from Fortran</td></tr>
+<tr><td style="background:#c1cac1;">M_system</td><td><a href="system_unlink.3.html">system_unlink</a></td><td> remove a directory entry relative to directory file descriptor</td></tr>
+<tr><td style="background:#d7dcd8;">M_time</td><td><a href="M_time.3.html">M_time</a></td><td> Fortran module for manipulating and presenting time and date values</td></tr>
+<tr><td style="background:#d7dcd8;">M_time</td><td><a href="box_month.3.html">box_month</a></td><td> create specified month in a character array</td></tr>
+<tr><td style="background:#d7dcd8;">M_time</td><td><a href="d2j.3.html">d2j</a></td><td> given DAT date-time array returns Julian Date</td></tr>
+<tr><td style="background:#d7dcd8;">M_time</td><td><a href="d2o.3.html">d2o</a></td><td> converts DAT date-time array to Ordinal day</td></tr>
+<tr><td style="background:#d7dcd8;">M_time</td><td><a href="d2u.3.html">d2u</a></td><td> given DAT date-time array returns Unix Epoch Time (UET starts at 0000 on 1 Jan. 1970, UTC)</td></tr>
+<tr><td style="background:#d7dcd8;">M_time</td><td><a href="d2w.3.html">d2w</a></td><td> calculate iso-8601 Week-numbering year date yyyy-Www-d given DAT date-time array</td></tr>
+<tr><td style="background:#d7dcd8;">M_time</td><td><a href="date_to_julian.3.html">date_to_julian</a></td><td> converts DAT date-time array to Julian Date</td></tr>
+<tr><td style="background:#d7dcd8;">M_time</td><td><a href="date_to_unix.3.html">date_to_unix</a></td><td> converts DAT date-time array to Unix Epoch Time</td></tr>
+<tr><td style="background:#d7dcd8;">M_time</td><td><a href="days2sec.3.html">days2sec</a></td><td> convert string of form [[-]dd-]hh:mm:ss.nn to seconds</td></tr>
+<tr><td style="background:#d7dcd8;">M_time</td><td><a href="dow.3.html">dow</a></td><td> given a date-time array DAT return the day of the week</td></tr>
+<tr><td style="background:#d7dcd8;">M_time</td><td><a href="easter.3.html">easter</a></td><td> calculate date for Easter given a year</td></tr>
+<tr><td style="background:#d7dcd8;">M_time</td><td><a href="ephemeris.3.html">ephemeris</a></td><td> ephemeris position of planets for adjusting an equatorial telescope</td></tr>
+<tr><td style="background:#d7dcd8;">M_time</td><td><a href="fmtdate.3.html">fmtdate</a></td><td> given DAT date-time array return date as string using specified format</td></tr>
+<tr><td style="background:#d7dcd8;">M_time</td><td><a href="fmtdate_usage.3.html">fmtdate_usage</a></td><td> display macros recognized by fmtdate(3f) and now(3f)</td></tr>
+<tr><td style="background:#d7dcd8;">M_time</td><td><a href="guessdate.3.html">guessdate</a></td><td> reads in a date, in various formats</td></tr>
+<tr><td style="background:#d7dcd8;">M_time</td><td><a href="j2d.3.html">j2d</a></td><td> given a JED (Julian Ephemeris Date) returns a date-time array DAT.</td></tr>
+<tr><td style="background:#d7dcd8;">M_time</td><td><a href="julian_to_date.3.html">julian_to_date</a></td><td> converts a JED(Julian Ephemeris Date) to a DAT date-time array.</td></tr>
+<tr><td style="background:#d7dcd8;">M_time</td><td><a href="mo2d.3.html">mo2d</a></td><td> given month name return DAT date-time array for beginning of that month in current year</td></tr>
+<tr><td style="background:#d7dcd8;">M_time</td><td><a href="mo2v.3.html">mo2v</a></td><td> given month name return month number (1-12) of that month</td></tr>
+<tr><td style="background:#d7dcd8;">M_time</td><td><a href="moon_fullness.3.html">moon_fullness</a></td><td> return percentage of moon phase from new to full</td></tr>
+<tr><td style="background:#d7dcd8;">M_time</td><td><a href="now.3.html">now</a></td><td> return string representing current time given format</td></tr>
+<tr><td style="background:#d7dcd8;">M_time</td><td><a href="o2d.3.html">o2d</a></td><td> converts Ordinal day to DAT date-time array</td></tr>
+<tr><td style="background:#d7dcd8;">M_time</td><td><a href="ordinal_to_date.3.html">ordinal_to_date</a></td><td> when given a valid year and day of the year returns the DAT array for the date</td></tr>
+<tr><td style="background:#d7dcd8;">M_time</td><td><a href="phase_of_moon.3.html">phase_of_moon</a></td><td> return name for phase of moon for given date</td></tr>
+<tr><td style="background:#d7dcd8;">M_time</td><td><a href="sec2days.3.html">sec2days</a></td><td> convert seconds to string of form dd-hh:mm:ss</td></tr>
+<tr><td style="background:#d7dcd8;">M_time</td><td><a href="system_sleep.3.html">system_sleep</a></td><td> call C sleep(3c) or usleep(3c) procedure</td></tr>
+<tr><td style="background:#d7dcd8;">M_time</td><td><a href="u2d.3.html">u2d</a></td><td> given Unix Epoch Time returns DAT date-time array</td></tr>
+<tr><td style="background:#d7dcd8;">M_time</td><td><a href="unix_to_date.3.html">unix_to_date</a></td><td> converts Unix Epoch Time to DAT date-time array</td></tr>
+<tr><td style="background:#d7dcd8;">M_time</td><td><a href="v2mo.3.html">v2mo</a></td><td> returns the month name of a Common month number</td></tr>
+<tr><td style="background:#d7dcd8;">M_time</td><td><a href="w2d.3.html">w2d</a></td><td> calculate DAT date-time array from iso-8601 Week-numbering year date yyyy-Www-d</td></tr>
+<tr><td style="background:#e0daca;">M_units:LENGTH</td><td><a href="feet_to_meters.3.html">feet_to_meters</a></td><td> converts a measurement in feet to meters</td></tr>
+<tr><td style="background:#e0daca;">M_units:LENGTH</td><td><a href="meters_to_feet.3.html">meters_to_feet</a></td><td> converts a measurement in meters to feet</td></tr>
+<tr><td style="background:#f4d2d1;">M_units:MASS</td><td><a href="pounds_to_kilograms.3.html">pounds_to_kilograms</a></td><td> - converts a measurement in pounds-mass to kilograms.</td></tr>
+<tr><td style="background:#dcc8dc;">M_units:SYMBOLS</td><td><a href="atomnum2symbol.3.html">atomnum2symbol</a></td><td> return element symbol given atomic number</td></tr>
+<tr><td style="background:#dcc8dc;">M_units:SYMBOLS</td><td><a href="symbol2atomnum.3.html">symbol2atomnum</a></td><td> return atomic number given element symbol name</td></tr>
+<tr><td style="background:#dcc8e6;">M_units:TEMPERATURE</td><td><a href="c2f.3.html">c2f</a></td><td> convert Celsius to Fahrenheit</td></tr>
+<tr><td style="background:#dcc8e6;">M_units:TEMPERATURE</td><td><a href="f2c.3.html">f2c</a></td><td> convert Fahrenheit to Celsius</td></tr>
+<tr><td style="background:#e1e6ec;">M_units:TRIGONOMETRY</td><td><a href="cartesian_to_polar.3.html">cartesian_to_polar</a></td><td> convert Cartesian coordinates to polar coordinates</td></tr>
+<tr><td style="background:#e1e6ec;">M_units:TRIGONOMETRY</td><td><a href="cartesian_to_spherical.3.html">cartesian_to_spherical</a></td><td> convert Cartesian coordinates to ISO polar coordinates</td></tr>
+<tr><td style="background:#e1e6ec;">M_units:TRIGONOMETRY</td><td><a href="cosd.3.html">cosd</a></td><td> calculate sine of value in degrees</td></tr>
+<tr><td style="background:#e1e6ec;">M_units:TRIGONOMETRY</td><td><a href="d2r.3.html">d2r</a></td><td> convert degrees to radians</td></tr>
+<tr><td style="background:#e1e6ec;">M_units:TRIGONOMETRY</td><td><a href="norm_angle_360.3.html">norm_angle_360</a></td><td> Return input angle given in degrees as angle between 0 and 360</td></tr>
+<tr><td style="background:#e1e6ec;">M_units:TRIGONOMETRY</td><td><a href="norm_angle_rad.3.html">norm_angle_rad</a></td><td> Return input angle given in radians as angle between 0 and 2pi</td></tr>
+<tr><td style="background:#e1e6ec;">M_units:TRIGONOMETRY</td><td><a href="polar_to_cartesian.3.html">polar_to_cartesian</a></td><td> convert polar coordinates to Cartesian coordinates</td></tr>
+<tr><td style="background:#e1e6ec;">M_units:TRIGONOMETRY</td><td><a href="r2d.3.html">r2d</a></td><td> convert radians to degrees</td></tr>
+<tr><td style="background:#e1e6ec;">M_units:TRIGONOMETRY</td><td><a href="sind.3.html">sind</a></td><td> calculate sine of value in degrees</td></tr>
+<tr><td style="background:#e1e6ec;">M_units:TRIGONOMETRY</td><td><a href="spherical_to_cartesian.3.html">spherical_to_cartesian</a></td><td> convert ISO polar coordinates to Cartesian coordinates</td></tr>
+<tr><td style="background:#e1e6ec;">M_units:TRIGONOMETRY</td><td><a href="tand.3.html">tand</a></td><td> calculate tangent of value in degrees</td></tr>
+<tr><td style="background:#f9c3c7;">M_units</td><td><a href="M_units.3.html">M_units</a></td><td> convert between various physical units</td></tr>
+<tr><td style="background:#ccdcde;">M_uuid</td><td><a href="M_uuid.3.html">M_uuid</a></td><td> a module of UUID (Universally Unique IDentifier) procedures</td></tr>
+<tr><td style="background:#ccdcde;">M_uuid</td><td><a href="generate_uuid.3.html">generate_uuid</a></td><td> generate(approximately) a UUID (Universally Unique IDentifier) string per RFC 4122</td></tr>
+<tr><td style="background:#fdfef6;">M_writegif</td><td><a href="writegif.3.html">writegif</a></td><td> Codes pixel-map with palette into GIF format. Optional transparent color</td></tr>
+<tr><td style="background:#fad9c8;">M_writegif_animated</td><td><a href="write_animated_gif.3.html">write_animated_gif</a></td><td> Codes pixel-maps with palette into animated GIF format. Optional transparent color</td></tr>
+<tr><td style="background:#deffff;">M_xterm</td><td><a href="M_xterm.3.html">M_xterm</a></td><td> send escape sequences to an xterm(1) window that control VT102 emulator attributes</td></tr>
+<tr><td style="background:#deffff;">M_xterm</td><td><a href="xterm_clear.3.html">xterm_clear</a></td><td> clear xterm(1) screen using escape sequences</td></tr>
+<tr><td style="background:#deffff;">M_xterm</td><td><a href="xterm_colors.3.html">xterm_colors</a></td><td> set xterm(1) colors</td></tr>
+<tr><td style="background:#deffff;">M_xterm</td><td><a href="xterm_font.3.html">xterm_font</a></td><td> set xterm(1) font</td></tr>
+<tr><td style="background:#deffff;">M_xterm</td><td><a href="xterm_geometry.3.html">xterm_geometry</a></td><td> set xterm(1) size using escape sequences</td></tr>
+<tr><td style="background:#deffff;">M_xterm</td><td><a href="xterm_get_colors.3.html">xterm_get_colors</a></td><td> query xterm(1) colors</td></tr>
+<tr><td style="background:#deffff;">M_xterm</td><td><a href="xterm_get_font.3.html">xterm_get_font</a></td><td> obtain xterm(1) font name</td></tr>
+<tr><td style="background:#deffff;">M_xterm</td><td><a href="xterm_get_geometry.3.html">xterm_get_geometry</a></td><td> obtain xterm(1) screen size in character units</td></tr>
+<tr><td style="background:#deffff;">M_xterm</td><td><a href="xterm_get_iconstate.3.html">xterm_get_iconstate</a></td><td> obtain xterm(1) icon state using escape sequences</td></tr>
+<tr><td style="background:#deffff;">M_xterm</td><td><a href="xterm_get_pencolor.3.html">xterm_get_pencolor</a></td><td> query xterm(1) color by number</td></tr>
+<tr><td style="background:#deffff;">M_xterm</td><td><a href="xterm_get_position.3.html">xterm_get_position</a></td><td> obtain xterm(1) screen position</td></tr>
+<tr><td style="background:#deffff;">M_xterm</td><td><a href="xterm_keywords.3.html">xterm_keywords</a></td><td> sent hints to X11 Window manager and select modes</td></tr>
+<tr><td style="background:#deffff;">M_xterm</td><td><a href="xterm_labels.3.html">xterm_labels</a></td><td> set xterm(1) X11 WIndow labels using escape sequences</td></tr>
+<tr><td style="background:#deffff;">M_xterm</td><td><a href="xterm_occupancy.3.html">xterm_occupancy</a></td><td> try to move xterm(1) to specified virtual display</td></tr>
+<tr><td style="background:#deffff;">M_xterm</td><td><a href="xterm_pencolor.3.html">xterm_pencolor</a></td><td> set xterm(1) color by number using escape sequences</td></tr>
+<tr><td style="background:#deffff;">M_xterm</td><td><a href="xterm_position.3.html">xterm_position</a></td><td> set xterm(1) window position using escape sequences</td></tr>
+<tr><td style="background:#deffff;">M_xterm</td><td><a href="xterm_width.3.html">xterm_width</a></td><td> set xterm(1) width to 80 or 132 characters</td></tr>
+<tr><td style="background:#deffff;">M_xterm</td><td><a href="xterm_xrdb.3.html">xterm_xrdb</a></td><td> write current xterm(1) window attributes as X11 Windows resources</td></tr>
+<tr><td style="background:#d7d4e0;">NCURSES</td><td><a href="M_fixedform.3.html">M_fixedform</a></td><td> convert a text block into a TUI (screen interface)</td></tr>
+</table>
+</div>
+</div>
+</body>
+</html>

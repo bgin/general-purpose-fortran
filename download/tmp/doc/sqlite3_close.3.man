@@ -1,0 +1,19 @@
+NAME
+  sqlite3_close(3f) - [M_sqlite] Close a database file
+
+SYNOPSIS
+   subroutine sqlite3_close(db)
+
+       type(SQLITE_DATABASE) db
+
+DESCRIPTION
+
+   Close the database connection. Simply an interface to the corresponding C
+   function.
+
+   Side effects:
+
+     The database file is closed and can no longer be accessed
+
+OPTIONS
+       db    Structure variable identifying the database connection

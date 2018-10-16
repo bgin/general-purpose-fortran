@@ -1,0 +1,8 @@
+NAME
+   getfontdec(3f) - [M_draw:TEXT] Return size of maximum font descender
+
+SYNOPSIS
+        real function getfontdec()
+DESCRIPTION
+   Get the descender size of a character in a font.
+

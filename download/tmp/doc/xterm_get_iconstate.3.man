@@ -1,0 +1,23 @@
+NAME
+   xterm_get_iconstate(3f) - [M_xterm] obtain xterm(1) icon state using escape sequences
+SYNOPSIS
+   function xterm_get_iconstate() result(state)
+   integer :: state
+
+DESCRIPTION
+   Sends an escape sequence to stdout to query the icon state of an xterm(1) window.
+
+   For this to work stdout must be your terminal device; so this may not work
+   effectively in a pipe or when redirection is used, depending on your system.
+
+RESULT
+   state  returns  'opened' if window is not iconified; 'closed' if iconified.
+
+EXAMPLE
+  A sample program:
+
+   program demo_xterm_get_iconstate
+   use M_xterm, only : xterm_get_iconstate
+   implicit none
+      write(*,*) xterm_get_iconstate()
+   end program demo_xterm_get_iconstate

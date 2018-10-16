@@ -1,0 +1,12 @@
+NAME
+   clipping(3f) - [M_draw:CLIPPING] Turn clipping on or off
+
+SYNOPSIS
+         subroutine clipping(onoff)
+
+         logical onoff
+DESCRIPTION
+
+Turn clipping on or off. Non-zero is considered on. Note: on some devices
+turning clipping off may not be a good idea.
+

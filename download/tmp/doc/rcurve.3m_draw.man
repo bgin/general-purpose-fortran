@@ -1,0 +1,10 @@
+NAME
+   rcurve(3f) - [M_draw:CURVE] Draw a rational curve.
+
+SYNOPSIS
+         subroutine rcurve(geom)
+         real geom(4,4)
+
+DESCRIPTION
+   Draw a rational curve.
+

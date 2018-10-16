@@ -1,0 +1,39 @@
+NAME
+rd(3f) - [M_io] ask for string from standard input with user-definable prompt
+SYNOPSIS
+  function rd(prompt,default) result(strout)
+
+   character(len=*),intent(in)              :: prompt
+
+   character(len=*),intent(in)              :: default
+         or
+   integer,intent(in)                       :: default
+         or
+   real,intent(in)                          :: default
+         or
+   doubleprecision,intent(in)               :: default
+
+   character(len=:),allocatable,intent(out) :: strout
+
+DESCRIPTION
+   Ask for string or value from standard input with user-definable prompt up to 20 times
+
+OPTIONS
+   prompt    Prompt string; displayed on same line as input is read from
+   default   default answer on carriage-return. The type of the default determines the
+             type of the output.
+RETURNS
+   strout    returned string or value
+             If an end-of-file or system error is encountered the , string "EOF" is returned, or
+             a "Nan" numeric value.
+             A blank string is not allowed as a return value unless the default is a blank string!
+EXAMPLE
+  Sample program:
+
+   program demo_rd
+   use M_io, only : rd
+   character(len=:),allocatable :: mystring
+      mystring=rd('Enter string:',default='Today')
+      write(*,*)mystring
+   end program demo_rd
+

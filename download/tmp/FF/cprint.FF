@@ -1,0 +1,141 @@
+$IFDEF TESTPRG90
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+$DOCUMENT HELP -file cprint.1.man
+NAME
+   cprint(1f) - [FILE FILTER] filter prints specified columns 
+SYNOPSIS
+   cprint [columns ][-delimiters delim] |-help|-version
+
+DESCRIPTION
+   cprint is a filter that prints the specified columns
+
+OPTIONS
+    columns      numbers indicating which columns to print
+    -delimiters  input column delimiter character(s) (default: whitespace)
+    -help        display command help and exit
+    -version     display command metadata and exit
+EXAMPLES
+  Sample usage:
+
+      >echo d e h l o r w|cprint 3 2 4 4 5 7 5 6 4 1
+      h e l l o w o r l d 
+
+$DOCUMENT END
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+$DOCUMENT VERSION
+PRODUCT:        GPF (General Purpose Fortran) utilities and examples
+PROGRAM:        cprint(1f) 
+DESCRIPTION:    filter to print specified columns
+VERSION:        1.0, 20170224
+AUTHOR:         John S. Urban
+HOME PAGE:      http://www.urbanjost.altervista.org/index.html
+$DOCUMENT END
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+program cprint
+use M_kracken, only : kracken, igets,  sget, lget, sgets
+use M_kracken, only : IPvalue
+use M_strings, only : split
+implicit none
+
+$@(#) cprint(1f): filter to specified columns
+
+character(len=IPvalue)             :: line
+character(len=:),allocatable       :: delimiters ! characters used to delimit columns
+character(len=4096),allocatable    :: array(:)
+integer,allocatable                :: icols(:)
+character(len=4096),allocatable    :: acols(:)
+integer                            :: ios
+integer                            :: isize
+integer                            :: i
+logical                            :: verbose
+!-----------------------------------------------------------------------------------------------------------------------------------
+call kracken('cprint',      &                    ! define command options and default values and then process command-line arguments
+'&      
+& -delimiters               &
+& -help .F.                 &
+& -version .F.              &
+& -verbose .F. ')
+call help_usage(lget('cprint_help'))             ! if -help option is present, display help text and exit
+call help_version(lget('cprint_version'))        ! if -version option is present, display version text and exit
+delimiters=sget('cprint_delimiters')             ! get -delimiters values
+icols=igets('cprint_oo')
+acols=sgets('cprint_oo')
+verbose=lget('cprint_verbose')
+if(verbose)then
+   write(*,'("COLUMNS=",*("[",i0,"]":","))')icols
+endif
+!-----------------------------------------------------------------------------------------------------------------------------------
+INFINITE: do
+   read(*,'(a)',iostat=ios) line
+   if(ios.ne.0)exit INFINITE
+   call split(line,array,delimiters)             ! split line into columns
+   !write(*,'("ARRAY=",*("[",a,"]":","))')(trim(array(i)),i=1,size(array))
+   isize=size(array)
+   do i=1,size(icols)
+      if( icols(i).gt.0 .and. icols(i).le.isize )then
+         write(*,'(a,1x)',advance='no')trim(array(icols(i)))
+      else
+         write(*,'(a,1x)',advance='no')trim(acols(i))
+      endif
+   enddo
+   write(*,*)
+enddo INFINITE
+end program
+!===================================================================================================================================
+$ENDIF
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+$IFDEF UFPP_TEST
+$SYSTEM mkdir -p tmp/
+$SYSTEM cprint 
+$ENDIF
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+$DOCUMENT NULL
+$!
+$!  A Bourne shell script that does something similar
+$!
+#!/bin/sh
+################################################################################
+#ident  "@(#)print selected columns (1.0 20070909 John S. Urban)"
+#
+# Basically, given a list of space-delimited columns to print convert this to an awk expression
+#
+#     pcols 3 2 1 # only print columns 1, 2 and 3 in reverse order
+#  if not a simple integer, an option is converted to " value " 
+#     pcols 1 and 2
+#  prints column 1 of standard input, then the word " and " and then column 2
+#  Often, this script is very usefully combined with xargs(1)
+#
+################################################################################
+export STRING 
+STRING=''
+################################################################################
+for WORD in $*
+do
+   #echo "WORD{${WORD}}"
+   case "$WORD" in
+   [0-9]|[0-9][0-9]|[0-9][0-9][0-9]|[0-9][0-9][0-9][0-9])
+    [ "$STRING" != '' ] && STRING="$STRING ,"
+    STRING="$STRING \$$WORD"
+   ;;
+   *)
+    [ "$STRING" != '' ] && STRING="$STRING ,"
+    STRING="$STRING \"$WORD\""
+   ;;
+   esac
+done
+#echo "$STRING" >&2
+awk "{print $STRING}"
+exit
+################################################################################
+$DOCUMENT END
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+$DOCUMENT NULL
+#!/bin/sh
+#ident  "@(#)pcols.sh  1.0  print selected columns 20070909 John S. Urban"
+export STRING 
+STRING=`echo " $*"|sed -e 's/ \([1-9][1-9]*\)/$\1 /g' -e 's/ *$//' -e 's/[0-9] /&, /g'`
+awk "{print $STRING}"
+exit
+################################################################################
+$DOCUMENT END
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

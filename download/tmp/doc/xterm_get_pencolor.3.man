@@ -1,0 +1,33 @@
+NAME
+   xterm_get_pencolor(3f) - [M_xterm] query xterm(1) color by number
+SYNOPSIS
+   function xterm_get_pencolor(pennum) result(color)
+   integer,intent(in)  :: pennum
+   character(len=*)    :: color
+
+DESCRIPTION
+
+   Get the color of an xterm(1) color number.
+
+OPTIONS
+   pennum   which pen number to describe the color  of
+
+RETURNS
+   color  A string specifying the pen color in the
+          form "rgb:RR/GG/BB"
+
+EXAMPLE
+
+  A sample program:
+
+   program demo_xterm_get_pencolor
+   use M_xterm, only : xterm_get_pencolor
+   character(len=:),allocatable :: cache
+   do i=0,15
+      cache=xterm_get_pencolor(i)
+      write(*,'(i4.4,1x,a)')i,cache
+   enddo
+   end program demo_xterm_get_pencolor
+
+  Sample output:
+

@@ -1,0 +1,15 @@
+NAME
+   _unlink(1f) - [FUNIX:FILESYSTEM] call the unlink(3c) function to remove the specified file
+
+SYNOPSIS
+     _unlink file(s)
+     _unlink OPTION
+
+DESCRIPTION
+       Call the unlink function to remove the specified FILE.
+
+OPTIONS
+       FILES      list of files to remove
+       --help     display this help and exit
+       --version  output version information and exit
+

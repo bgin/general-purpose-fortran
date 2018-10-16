@@ -1,0 +1,15 @@
+NAME
+      nc2html(1) - [NCURSES] print an ncurses(3c) window dump as HTML
+DESCRIPTION
+      Given a file generated with the ncurses(3c) putwin(3c) procedure
+      read the file and write it out an an HTML file for printing or
+      for inclusion much like a IMG file into an HTML document.
+SYNOPSIS
+          nc2html -i INPUT_FILE -o OUTPUT_FILE [-pg]'
+OPTIONS
+         -i INPUT_FILE    Name of ncurses(3c) window dump file generated
+                          by putwin(3c).
+         -o OUTPUT_FILE   Name of HTML file to generate.
+         -pg              Optionally display the ncurses(3c) window dump file
+                          and pause
+EXAMPLE

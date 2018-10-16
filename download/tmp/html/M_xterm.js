@@ -1,0 +1,20 @@
+function loadthem(){
+append("M_xterm.3.html");
+append("xterm_clear.3.html");
+append("xterm_colors.3.html");
+append("xterm_font.3.html");
+append("xterm_geometry.3.html");
+append("xterm_get_colors.3.html");
+append("xterm_get_font.3.html");
+append("xterm_get_geometry.3.html");
+append("xterm_get_iconstate.3.html");
+append("xterm_get_pencolor.3.html");
+append("xterm_get_position.3.html");
+append("xterm_keywords.3.html");
+append("xterm_labels.3.html");
+append("xterm_occupancy.3.html");
+append("xterm_pencolor.3.html");
+append("xterm_position.3.html");
+append("xterm_width.3.html");
+append("xterm_xrdb.3.html");
+}

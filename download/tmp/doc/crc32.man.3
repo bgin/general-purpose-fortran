@@ -1,0 +1,30 @@
+NAME
+   crc32(3f) - [M_hashkeys] CRC (Cyclic Redunancy Check)
+SYNOPSIS
+   function crc32(a,continue) result (crc)
+
+DESCRIPTION
+This ia 32-bit version of the Cyclic Redundancy Check(CRC).  This variant
+of CRC-32 uses LSB-first order, sets the initial CRC to FFFFFFFF_int32,
+and complements the final CRC.
+
+The result should be in accordance with ISO 3309, ITU-T V.42, Gzip
+and PNG.
+
+REFERENCES
+   Algorithms are described in "Computation of CRC" in Wikipedia.
+AUTHOR
+   This was derived from an unattributed example of http://rosettacode.org,
+   but has been modified.
+EXAMPLE
+  Sample program:
+
+   program demo_crc32
+   use M_hashkeys, only : crc32
+   implicit none
+   integer(int32) :: crc = 0
+   character(*), parameter :: s = "The quick brown fox jumps over the lazy dog"
+      crc=crc32(s)
+      print "(Z8)", crc
+      print "(i0)", crc
+   end program demo_crc32

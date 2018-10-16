@@ -1,0 +1,8 @@
+NAME
+   curveprecision(3f) - [M_draw:CURVE] Define number of line segments used to draw a curve.
+SYNOPSIS
+         subroutine curveprecision(nsegs)
+         integer nsegs
+DESCRIPTION
+   Define the number of line segments used to draw a curve.
+

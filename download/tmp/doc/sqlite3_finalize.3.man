@@ -1,0 +1,14 @@
+NAME
+   sqlite3_finalize(3f) - [M_sqlite] Finalize the prepared SQL statement
+
+SYNOPSIS
+   subroutine sqlite3_finalize(stmt)
+
+    type(SQLITE_STATEMENT) stmt
+
+DESCRIPTION
+   Free all resources associated with the prepared statement.
+
+OPTIONS
+   stmt    A derived type used as a handle to the prepared statement
+

@@ -16,11 +16,14 @@ HTML >tmp/html/BOOK_$TOPIC.html
       )
    else
       # make sure sort(1) does not sort case-insensitive
-      echo "$TOPIC.3{$SECTION}.html"
-      mank -k "\[${TOPIC}\>"|env LC_ALL=C /usr/bin/sort|tr -d '()'|awk '{printf "%s.%s.html\n",$1,$2}'
+      echo "$TOPIC.3${SECTION}.html"
+      mank -k "\[${TOPIC}\>"|env LC_ALL=C /usr/bin/sort -k 2r,2r -k 1,1|tr -d '()'| awk '{printf "%s.%s.html\n",$1,$2}'
    fi| uniq|while read NAME
    do
-      echo "append(\"$NAME\");"
+      if [ -r "tmp/html/$NAME" ]
+      then
+         echo "append(\"$NAME\");"
+      fi
    done
    echo '}'
 ) > tmp/html/$TOPIC.js
