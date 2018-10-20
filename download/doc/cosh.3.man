@@ -23,10 +23,10 @@ EXAMPLE
 
   Sample program:
 
-   program test_cosh
+   program demo_cosh
      real(8) :: x = 1.0_8
      x = cosh(x)
-   end program test_cosh
+   end program demo_cosh
 
 STANDARD
 

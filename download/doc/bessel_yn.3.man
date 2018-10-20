@@ -32,10 +32,10 @@ EXAMPLE
 
   Sample program:
 
-   program test_besyn
+   program demo_besyn
      real(8) :: x = 1.0_8
      x = bessel_yn(5,x)
-   end program test_besyn
+   end program demo_besyn
 
 STANDARD
 

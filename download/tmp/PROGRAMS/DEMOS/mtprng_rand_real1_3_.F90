@@ -1,5 +1,5 @@
           program demo_mtprng_real1
-          use M_random, only : mtprng_state, mtprng_rand_real1
+          use M_random, only : mtprng_state, mtprng_rand_real1,mtprng_init
           use, intrinsic :: iso_fortran_env, only : int32
           implicit none
           integer(INT32) :: seed

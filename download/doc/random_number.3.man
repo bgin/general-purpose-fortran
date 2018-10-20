@@ -19,10 +19,10 @@ EXAMPLE
 
   Sample program:
 
-    program test_random_number
+    program demo_random_number
       real :: r(5,5)
       call random_number(r)
-    end program
+    end program demo_random_number
 
 STANDARD
 

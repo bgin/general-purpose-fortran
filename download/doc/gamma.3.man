@@ -28,10 +28,10 @@ EXAMPLE
 
   Sample program:
 
-   program test_gamma
+   program demo_gamma
      real :: x = 1.0
      x = gamma(x) ! returns 1.0
-   end program test_gamma
+   end program demo_gamma
 
 STANDARD
 

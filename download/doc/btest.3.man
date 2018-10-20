@@ -23,7 +23,7 @@ EXAMPLE
 
   Sample program:
 
-    program test_btest
+    program demo_btest
         integer :: i = 32768 + 1024 + 64
         integer :: pos
         logical :: bool
@@ -31,7 +31,7 @@ EXAMPLE
             bool = btest(i, pos)
             print *, pos, bool
         end do
-    end program test_btest
+    end program demo_btest
 
 STANDARD
 

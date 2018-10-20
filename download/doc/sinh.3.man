@@ -22,10 +22,10 @@ EXAMPLE
 
   Sample program:
 
-   program test_sinh
+   program demo_sinh
      real(8) :: x = - 1.0_8
      x = sinh(x)
-   end program test_sinh
+   end program demo_sinh
 
 STANDARD
 

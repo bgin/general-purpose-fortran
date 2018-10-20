@@ -25,10 +25,10 @@ EXAMPLE
 
   Sample program:
 
-    program test_erf
+    program demo_erf
       real(8) :: x = 0.17_8
       x = erf(x)
-    end program test_erf
+    end program demo_erf
 
 STANDARD
 

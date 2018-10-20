@@ -342,7 +342,7 @@ EXAMPLES
     Oriented interface to the conventional procedures found in the M_time(3fm)
     module.
 
-    program testit
+    program demo_M_time
        call procedural()
        call object_oriented()
     !===============================================================================
@@ -556,7 +556,7 @@ EXAMPLES
        write(*,*)answer%format("FOR %%DELTA(DURATION='1-20:30:40.50')      %W, %L %d, %Y %H:%m:%s %N")
 
     end subroutine object_oriented
-    end program testit
+    end program demo_M_time
 
     Sample output of example program ...
 

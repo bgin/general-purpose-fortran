@@ -31,7 +31,7 @@ EXAMPLE
 
   Sample program:
 
-   program test_modulo
+   program demo_modulo
      print *, modulo(17,3)        ! yields 2
      print *, modulo(17.5,5.5)    ! yields 1.0
 
@@ -40,7 +40,7 @@ EXAMPLE
 
      print *, modulo(17,-3)       ! yields -1
      print *, modulo(17.5,-5.5)   ! yields -4.5
-   end program
+   end program demo_modulo
 
 STANDARD
 

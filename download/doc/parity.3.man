@@ -29,10 +29,10 @@ EXAMPLE
 
   Sample program:
 
-   program test_parity
+   program demo_parity
      logical :: x(2) = [ .true., .false. ]
      print *, parity(x) ! T
-   end program
+   end program demo_parity
 
 STANDARD
 

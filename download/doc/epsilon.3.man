@@ -22,12 +22,12 @@ EXAMPLE
 
   Sample program:
 
-    program test_epsilon
+    program demo_epsilon
         real :: x = 3.143
         real(8) :: y = 2.33
         print *, epsilon(x)
         print *, epsilon(y)
-    end program test_epsilon
+    end program demo_epsilon
 
 STANDARD
 

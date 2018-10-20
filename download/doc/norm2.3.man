@@ -28,10 +28,10 @@ EXAMPLE
 
   Sample program:
 
-   program test_norm2
+   program demo_norm2
      real :: x(5) = [ real :: 1, 2, 3, 4, 5 ]
      print *, norm2(x)  ! = sqrt(55.) ~ 7.416
-   end program
+   end program demo_norm2
 
 STANDARD
 

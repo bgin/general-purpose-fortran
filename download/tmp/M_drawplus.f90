@@ -1312,6 +1312,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '     ! $FILTER END                                                              ',&
 '                                                                                ',&
 '     call draw_interpret(draw_cmds,delimiters='';'')                            ',&
+'     end program demo_draw_interpret                                            ',&
 '                                                                                ',&
 'SEE ALSO                                                                        ',&
 '    call_draw(3f), M_draw(3fm), M_drawplus(3fm)                                 ',&
@@ -1368,6 +1369,7 @@ end subroutine help_usage
 !!      ! $FILTER END
 !!
 !!      call draw_interpret(draw_cmds,delimiters=';')
+!!      end program demo_draw_interpret
 !!
 !!##SEE ALSO
 !!     call_draw(3f), M_draw(3fm), M_drawplus(3fm)

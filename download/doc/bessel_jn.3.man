@@ -30,10 +30,10 @@ EXAMPLE
 
   Sample program:
 
-   program test_besjn
+   program demo_besjn
      real(8) :: x = 1.0_8
      x = bessel_jn(5,x)
-   end program test_besjn
+   end program demo_besjn
 
 STANDARD
 

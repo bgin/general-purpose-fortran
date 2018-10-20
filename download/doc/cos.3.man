@@ -23,10 +23,10 @@ EXAMPLE
 
   Sample program:
 
-   program test_cos
+   program demo_cos
      real :: x = 0.0
      x = cos(x)
-   end program test_cos
+   end program demo_cos
 
 STANDARD
 

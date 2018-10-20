@@ -60,7 +60,7 @@ EXAMPLE
 
   Sample program:
 
-    program test_all
+    program demo_all
       logical l
       l = all((/.true., .true., .true./))
       print *, l
@@ -74,7 +74,7 @@ EXAMPLE
           print *, all(a .eq. b, 1)
           print *, all(a .eq. b, 2)
        end subroutine section
-    end program test_all
+    end program demo_all
 
   Case (i):
 

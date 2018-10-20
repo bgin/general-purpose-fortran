@@ -24,10 +24,10 @@ EXAMPLE
 
   Sample program:
 
-    program test_acosh
+    program demo_acosh
       real(8), dimension(3) :: x = (/ 1.0, 2.0, 3.0 /)
       write (*,*) acosh(x)
-    end program
+    end program demo_acosh
 
 STANDARD
 

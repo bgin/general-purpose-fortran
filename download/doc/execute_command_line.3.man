@@ -65,7 +65,7 @@ EXAMPLE
 
   Sample program:
 
-   program test_exec
+   program demo_exec
      integer :: i
 
      call execute_command_line("external_prog.exe", exitstat=i)
@@ -73,7 +73,7 @@ EXAMPLE
 
      call execute_command_line("reindex_files.exe", wait=.false.)
      print *, "Now reindexing files in the background"
-   end program test_exec
+   end program demo_exec
 
 NOTE
 

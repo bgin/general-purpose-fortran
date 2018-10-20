@@ -36,7 +36,7 @@ EXAMPLE
 
 Sample program:
 
-    program test_any
+    program demo_any
       logical l
       l = any((/.true., .true., .true./))
       print *, l
@@ -50,7 +50,7 @@ Sample program:
           print *, any(a .eq. b, 1)
           print *, any(a .eq. b, 2)
         end subroutine section
-    end program test_any
+    end program demo_any
 
 STANDARD
 

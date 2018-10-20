@@ -78,13 +78,14 @@ cat <<\EOF
    # using gfortran(1) and gcc(1). It is usually easiest to try
    # it and then handle any failures individually ...
 
-   make
+     make
 
    # you might want to edit hershey.sh to select where hershey
    # font files will be installed (default is /usr/share/hershey), 
    # and then enter ...
 
-   bash hershey.sh
+     bash hershey.sh
+
 </pre>
 
 <p>
@@ -95,8 +96,29 @@ cat <<\EOF
    For other programming environments you will need to change the lines
    in the Makefile that define the compiler command. Many Fortran 2003
    features are required. Recently, I have only tested with GNU Fortran
-   (GCC) 6.4.0 .
+   (GCC) 7.3.0 .
 </p>
+
+<p>
+   Note to run the graphics programs you generally have to set
+   some environmental variables.  Some examples:
+</p>
+
+<pre>
+      export M_DRAW_FONTLIB=/usr/share/hershey
+      export M_DRAW_DEVICE=X11
+      export M_DRAW_OUTPUT=out.pdf
+            or
+      export M_DRAW_OUTPUT="|ppmtogif > out.gif"
+</pre>
+
+<pre>
+   # Totally optionally, to build all the sample programs including
+   # the small sample programs from the man(1) pages
+
+     #!/bin/bash
+     make PROGFILES="$(find PROGRAMS -name '*.f90' ! -empty)" -j 10
+</pre>
 
 <hr>
 <h3> MAN  pages:</h3>

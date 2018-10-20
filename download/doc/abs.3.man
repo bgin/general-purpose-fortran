@@ -23,7 +23,7 @@ RETURN VALUE
 EXAMPLE
   Sample program:
 
-     program test_abs
+     program demo_abs
      integer :: i = -1, iout
      real :: x = -1.e0, xout, zout
      complex :: z = (-3.e0,4.e0)
@@ -34,7 +34,7 @@ EXAMPLE
         write(*,*)'OUTPUTS:',iout,xout,zout
         ! 3 - 4 -5 right triangle test :
         write(*,*)'The abs() of (3.0,4.0) should be 5.0',abs((3.0,4.0))
-     end program test_abs
+     end program demo_abs
   Results:
 
     INPUTS:   -1  -1.00000000    (-3.00000000,4.00000000)

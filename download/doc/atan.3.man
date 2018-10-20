@@ -29,10 +29,10 @@ EXAMPLE
 
   Sample program:
 
-   program test_atan
+   program demo_atan
      real(8) :: x = 2.866_8
      x = atan(x)
-   end program test_atan
+   end program demo_atan
 
 STANDARD
 

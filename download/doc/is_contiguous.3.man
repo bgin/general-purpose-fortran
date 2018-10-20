@@ -49,7 +49,7 @@ EXAMPLE
 
   Sample program:
 
-    program test_is_contiguous
+    program demo_is_contiguous
     REAL, DIMENSION (1000, 1000), TARGET :: A
     REAL, DIMENSION (:, :), POINTER       :: IN, OUT
     IN => A              ! Associate IN with target A
@@ -58,7 +58,7 @@ EXAMPLE
     write(*,*)'IN is ',IS_CONTIGUOUS(IN)
     write(*,*)'OUT is ',IS_CONTIGUOUS(OUT)
 
-    end program test_is_contiguous
+    end program demo_is_contiguous
 
 STANDARD
 

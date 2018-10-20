@@ -23,10 +23,10 @@ EXAMPLE
 
   Sample program:
 
-   program test_besj0
+   program demo_besj0
      real(8) :: x = 0.0_8
      x = bessel_j0(x)
-   end program test_besj0
+   end program demo_besj0
 
 STANDARD
 

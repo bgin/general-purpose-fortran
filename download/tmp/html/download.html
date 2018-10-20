@@ -111,13 +111,14 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
    # using gfortran(1) and gcc(1). It is usually easiest to try
    # it and then handle any failures individually ...
 
-   make
+     make
 
    # you might want to edit hershey.sh to select where hershey
    # font files will be installed (default is /usr/share/hershey), 
    # and then enter ...
 
-   bash hershey.sh
+     bash hershey.sh
+
 </pre>
 
 <p>
@@ -128,8 +129,29 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
    For other programming environments you will need to change the lines
    in the Makefile that define the compiler command. Many Fortran 2003
    features are required. Recently, I have only tested with GNU Fortran
-   (GCC) 6.4.0 .
+   (GCC) 7.3.0 .
 </p>
+
+<p>
+   Note to run the graphics programs you generally have to set
+   some environmental variables.  Some examples:
+</p>
+
+<pre>
+      export M_DRAW_FONTLIB=/usr/share/hershey
+      export M_DRAW_DEVICE=X11
+      export M_DRAW_OUTPUT=out.pdf
+            or
+      export M_DRAW_OUTPUT="|ppmtogif > out.gif"
+</pre>
+
+<pre>
+   # Totally optionally, to build all the sample programs including
+   # the small sample programs from the man(1) pages
+
+     #!/bin/bash
+     make PROGFILES="$(find PROGRAMS -name '*.f90' ! -empty)" -j 10
+</pre>
 
 <hr>
 <h3> MAN  pages:</h3>
@@ -836,17 +858,17 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
  <td class="odd" >   <a href="./log.3.html"> log.3 </a> </td>
  <td class="odd" >   <a href="./log10.3.html"> log10.3 </a> </td>
  <td class="odd" >   <a href="./logical.3.html"> logical.3 </a> </td>
- <td class="odd" >   <a href="./log_gamma.3.html"> log_gamma.3 </a> </td>
+ <td class="odd" >   <a </td>
 </tr>
 <tr><!-- line 90 -->
- <td class="even" >  <a </td>
+ <td class="even" > href="./log_gamma.3.html"> log_gamma.3 </a> </td>
  <td> &nbsp; </td>
  <td> &nbsp; </td>
  <td> &nbsp; </td>
  <td> &nbsp; </td>
 </tr>
 <tr><!-- line 91 -->
- <td class="odd" > href="./lookat.3m_draw.html"> lookat.3m_draw </a> </td>
+ <td class="odd" >  <a href="./lookat.3m_draw.html"> lookat.3m_draw </a> </td>
  <td class="odd" >   <a href="./lower.3.html"> lower.3 </a> </td>
  <td class="odd" >   <a href="./lowess.3.html"> lowess.3 </a> </td>
  <td class="odd" >   <a href="./lsup.1.html"> lsup.1 </a> </td>
@@ -923,716 +945,716 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
  <td class="odd" >   <a href="./mtprng_rand_rang.3.html"> mtprng_rand_rang.3 </a> </td>
 </tr>
 <tr><!-- line 102 -->
- <td class="even" >  <a href="./mtprng_rand_real1.3.html"> mtprng_rand_real1.3 </a> </td>
+ <td class="even" >  <a href="./mtprng_rand_range.3.html"> mtprng_rand_range.3 </a> </td>
+ <td class="even" >   <a href="./mtprng_rand_real1.3.html"> mtprng_rand_real1.3 </a> </td>
  <td class="even" >   <a href="./mtprng_rand_real2.3.html"> mtprng_rand_real2.3 </a> </td>
  <td class="even" >   <a href="./mtprng_rand_real3.3.html"> mtprng_rand_real3.3 </a> </td>
  <td class="even" >   <a href="./mvbits.3.html"> mvbits.3 </a> </td>
- <td class="even" >   <a href="./M_big_integer.3.html"> M_big_integer.3 </a> </td>
 </tr>
 <tr><!-- line 103 -->
- <td class="odd" >  <a href="./M_calcomp.3m_calcomp.html"> M_calcomp.3m_calcomp </a> </td>
+ <td class="odd" >  <a href="./M_big_integer.3.html"> M_big_integer.3 </a> </td>
+ <td class="odd" >   <a href="./M_calcomp.3m_calcomp.html"> M_calcomp.3m_calcomp </a> </td>
  <td class="odd" >   <a href="./M_calculator.3.html"> M_calculator.3 </a> </td>
  <td class="odd" >   <a href="./M_calculator_example.3.html"> M_calculator_example.3 </a> </td>
  <td class="odd" >   <a href="./M_calculator_plus.3.html"> M_calculator_plus.3 </a> </td>
- <td class="odd" >   <a href="./M_calculator_programmer_notes.3.html"> M_calculator_programmer_notes.3 </a> </td>
 </tr>
 <tr><!-- line 104 -->
- <td class="even" >  <a href="./M_color.3.html"> M_color.3 </a> </td>
+ <td class="even" >  <a href="./M_calculator_programmer_notes.3.html"> M_calculator_programmer_notes.3 </a> </td>
+ <td class="even" >   <a href="./M_color.3.html"> M_color.3 </a> </td>
  <td class="even" >   <a href="./M_Compare_Float_Numbers.3.html"> M_Compare_Float_Numbers.3 </a> </td>
  <td class="even" >   <a href="./M_debug.3.html"> M_debug.3 </a> </td>
  <td class="even" >   <a href="./M_display.3.html"> M_display.3 </a> </td>
- <td class="even" >   <a href="./M_draw.3m_draw.html"> M_draw.3m_draw </a> </td>
 </tr>
 <tr><!-- line 105 -->
- <td class="odd" >  <a href="./M_drawplus.3m_drawplus.html"> M_drawplus.3m_drawplus </a> </td>
+ <td class="odd" >  <a href="./M_draw.3m_draw.html"> M_draw.3m_draw </a> </td>
+ <td class="odd" >   <a href="./M_drawplus.3m_drawplus.html"> M_drawplus.3m_drawplus </a> </td>
  <td class="odd" >   <a href="./M_factor.3.html"> M_factor.3 </a> </td>
  <td class="odd" >   <a href="./M_fixedform.3.html"> M_fixedform.3 </a> </td>
  <td class="odd" >   <a href="./M_generic_list.3.html"> M_generic_list.3 </a> </td>
- <td class="odd" >   <a href="./M_getopt.3.html"> M_getopt.3 </a> </td>
 </tr>
 <tr><!-- line 106 -->
- <td class="even" >  <a href="./M_getopt_long.3.html"> M_getopt_long.3 </a> </td>
+ <td class="even" >  <a href="./M_getopt.3.html"> M_getopt.3 </a> </td>
+ <td class="even" >   <a href="./M_getopt_long.3.html"> M_getopt_long.3 </a> </td>
  <td class="even" >   <a href="./M_io.3.html"> M_io.3 </a> </td>
  <td class="even" >   <a href="./M_journal.3.html"> M_journal.3 </a> </td>
  <td class="even" >   <a href="./M_kracken.3.html"> M_kracken.3 </a> </td>
- <td class="even" >   <a href="./M_logic.3.html"> M_logic.3 </a> </td>
 </tr>
 <tr><!-- line 107 -->
- <td class="odd" >  <a href="./M_math.3.html"> M_math.3 </a> </td>
+ <td class="odd" >  <a href="./M_logic.3.html"> M_logic.3 </a> </td>
+ <td class="odd" >   <a href="./M_math.3.html"> M_math.3 </a> </td>
  <td class="odd" >   <a href="./M_messages.3.html"> M_messages.3 </a> </td>
  <td class="odd" >   <a href="./M_overload.3.html"> M_overload.3 </a> </td>
  <td class="odd" >   <a href="./M_pixel.3m_pixel.html"> M_pixel.3m_pixel </a> </td>
- <td class="odd" >   <a href="./M_process.3.html"> M_process.3 </a> </td>
 </tr>
 <tr><!-- line 108 -->
- <td class="even" >  <a href="./M_random.3.html"> M_random.3 </a> </td>
+ <td class="even" >  <a href="./M_process.3.html"> M_process.3 </a> </td>
+ <td class="even" >   <a href="./M_random.3.html"> M_random.3 </a> </td>
  <td class="even" >   <a href="./M_readline.3.html"> M_readline.3 </a> </td>
  <td class="even" >   <a href="./M_regex.3.html"> M_regex.3 </a> </td>
  <td class="even" >   <a href="./M_sha3.3.html"> M_sha3.3 </a> </td>
- <td class="even" >   <a href="./M_sort.3.html"> M_sort.3 </a> </td>
 </tr>
 <tr><!-- line 109 -->
- <td class="odd" >  <a href="./M_sqlite.3.html"> M_sqlite.3 </a> </td>
+ <td class="odd" >  <a href="./M_sort.3.html"> M_sort.3 </a> </td>
+ <td class="odd" >   <a href="./M_sqlite.3.html"> M_sqlite.3 </a> </td>
  <td class="odd" >   <a href="./M_stopwatch.3.html"> M_stopwatch.3 </a> </td>
  <td class="odd" >   <a href="./M_strings.3.html"> M_strings.3 </a> </td>
  <td class="odd" >   <a href="./M_system.3.html"> M_system.3 </a> </td>
- <td class="odd" >   <a href="./M_time.3.html"> M_time.3 </a> </td>
 </tr>
 <tr><!-- line 110 -->
- <td class="even" >  <a href="./M_units.3.html"> M_units.3 </a> </td>
+ <td class="even" >  <a href="./M_time.3.html"> M_time.3 </a> </td>
+ <td class="even" >   <a href="./M_units.3.html"> M_units.3 </a> </td>
  <td class="even" >   <a href="./M_uuid.3.html"> M_uuid.3 </a> </td>
  <td class="even" >   <a href="./M_xterm.3.html"> M_xterm.3 </a> </td>
  <td class="even" >   <a href="./namelist.7.html"> namelist.7 </a> </td>
- <td class="even" >   <a href="./nc2html.1.html"> nc2html.1 </a> </td>
 </tr>
 <tr><!-- line 111 -->
- <td class="odd" >  <a href="./nearest.3.html"> nearest.3 </a> </td>
+ <td class="odd" >  <a href="./nc2html.1.html"> nc2html.1 </a> </td>
+ <td class="odd" >   <a href="./nearest.3.html"> nearest.3 </a> </td>
  <td class="odd" >   <a href="./newpen.3m_calcomp.html"> newpen.3m_calcomp </a> </td>
  <td class="odd" >   <a href="./new_line.3.html"> new_line.3 </a> </td>
  <td class="odd" >   <a href="./nframe.3m_calcomp.html"> nframe.3m_calcomp </a> </td>
- <td class="odd" >   <a href="./nint.3.html"> nint.3 </a> </td>
 </tr>
 <tr><!-- line 112 -->
- <td class="even" >  <a href="./noesc.3.html"> noesc.3 </a> </td>
+ <td class="even" >  <a href="./nint.3.html"> nint.3 </a> </td>
+ <td class="even" >   <a href="./noesc.3.html"> noesc.3 </a> </td>
  <td class="even" >   <a href="./norm2.3.html"> norm2.3 </a> </td>
  <td class="even" >   <a href="./norm_angle_360.3.html"> norm_angle_360.3 </a> </td>
  <td class="even" >   <a href="./norm_angle_rad.3.html"> norm_angle_rad.3 </a> </td>
- <td class="even" >   <a href="./nospace.3.html"> nospace.3 </a> </td>
 </tr>
 <tr><!-- line 113 -->
- <td class="odd" >  <a href="./not.3.html"> not.3 </a> </td>
+ <td class="odd" >  <a href="./nospace.3.html"> nospace.3 </a> </td>
+ <td class="odd" >   <a href="./not.3.html"> not.3 </a> </td>
  <td class="odd" >   <a href="./notabs.1.html"> notabs.1 </a> </td>
  <td class="odd" >   <a href="./notabs.3.html"> notabs.3 </a> </td>
  <td class="odd" >   <a href="./note.1.html"> note.1 </a> </td>
- <td class="odd" >   <a href="./notopen.3.html"> notopen.3 </a> </td>
 </tr>
 <tr><!-- line 114 -->
- <td class="even" >  <a href="./now.1.html"> now.1 </a> </td>
+ <td class="even" >  <a href="./notopen.3.html"> notopen.3 </a> </td>
+ <td class="even" >   <a href="./now.1.html"> now.1 </a> </td>
  <td class="even" >   <a href="./now.3.html"> now.3 </a> </td>
  <td class="even" >   <a href="./null.3.html"> null.3 </a> </td>
  <td class="even" >   <a href="./nullify.7.html"> nullify.7 </a> </td>
- <td class="even" >   <a href="./number.3m_calcomp.html"> number.3m_calcomp </a> </td>
 </tr>
 <tr><!-- line 115 -->
- <td class="odd" >  <a href="./numchars.3m_draw.html"> numchars.3m_draw </a> </td>
+ <td class="odd" >  <a href="./number.3m_calcomp.html"> number.3m_calcomp </a> </td>
+ <td class="odd" >   <a href="./numchars.3m_draw.html"> numchars.3m_draw </a> </td>
  <td class="odd" >   <a href="./numdiff.1.html"> numdiff.1 </a> </td>
  <td class="odd" >   <a href="./num_images.3.html"> num_images.3 </a> </td>
  <td class="odd" >   <a href="./o2d.3.html"> o2d.3 </a> </td>
- <td class="odd" >   <a href="./open.7.html"> open.7 </a> </td>
 </tr>
 <tr><!-- line 116 -->
- <td class="even" >  <a href="./option_stopwatch.3.html"> option_stopwatch.3 </a> </td>
+ <td class="even" >  <a href="./open.7.html"> open.7 </a> </td>
+ <td class="even" >   <a href="./option_stopwatch.3.html"> option_stopwatch.3 </a> </td>
  <td class="even" >   <a href="./ordinal_to_date.3.html"> ordinal_to_date.3 </a> </td>
  <td class="even" >   <a href="./ortho.3m_draw.html"> ortho.3m_draw </a> </td>
  <td class="even" >   <a href="./ortho2.3m_draw.html"> ortho2.3m_draw </a> </td>
- <td class="even" >   <a href="./ortho2.3m_pixel.html"> ortho2.3m_pixel </a> </td>
 </tr>
 <tr><!-- line 117 -->
- <td class="odd" >  <a href="./pack.3.html"> pack.3 </a> </td>
+ <td class="odd" >  <a href="./ortho2.3m_pixel.html"> ortho2.3m_pixel </a> </td>
+ <td class="odd" >   <a href="./pack.3.html"> pack.3 </a> </td>
  <td class="odd" >   <a href="./page.3M_drawplus.html"> page.3M_drawplus </a> </td>
  <td class="odd" >   <a href="./page.3m_pixel.html"> page.3m_pixel </a> </td>
  <td class="odd" >   <a href="./pancakes.7.html"> pancakes.7 </a> </td>
- <td class="odd" >   <a href="./paranoid.1.html"> paranoid.1 </a> </td>
 </tr>
 <tr><!-- line 118 -->
- <td class="even" >  <a href="./parity.3.html"> parity.3 </a> </td>
+ <td class="even" >  <a href="./paranoid.1.html"> paranoid.1 </a> </td>
+ <td class="even" >   <a href="./parity.3.html"> parity.3 </a> </td>
  <td class="even" >   <a href="./parse.3.html"> parse.3 </a> </td>
  <td class="even" >   <a href="./patch.3m_draw.html"> patch.3m_draw </a> </td>
  <td class="even" >   <a href="./patchbasis.3m_draw.html"> patchbasis.3m_draw </a> </td>
- <td class="even" >   <a href="./patchcurves.3m_draw.html"> patchcurves.3m_draw </a> </td>
 </tr>
 <tr><!-- line 119 -->
- <td class="odd" >  <a href="./patchprecision.3m_draw.html"> patchprecision.3m_draw </a> </td>
+ <td class="odd" >  <a href="./patchcurves.3m_draw.html"> patchcurves.3m_draw </a> </td>
+ <td class="odd" >   <a href="./patchprecision.3m_draw.html"> patchprecision.3m_draw </a> </td>
  <td class="odd" >   <a href="./pause_watch.3.html"> pause_watch.3 </a> </td>
  <td class="odd" >   <a href="./paws.1.html"> paws.1 </a> </td>
  <td class="odd" >   <a href="./pdec.3.html"> pdec.3 </a> </td>
- <td class="odd" >   <a href="./pendulum.1.html"> pendulum.1 </a> </td>
 </tr>
 <tr><!-- line 120 -->
- <td class="even" >  <a href="./penv.1.html"> penv.1 </a> </td>
+ <td class="even" >  <a href="./pendulum.1.html"> pendulum.1 </a> </td>
+ <td class="even" >   <a href="./penv.1.html"> penv.1 </a> </td>
  <td class="even" >   <a href="./percent_done.3.html"> percent_done.3 </a> </td>
  <td class="even" >   <a href="./perspective.3m_draw.html"> perspective.3m_draw </a> </td>
  <td class="even" >   <a href="./phase_of_moon.3.html"> phase_of_moon.3 </a> </td>
- <td class="even" >   <a href="./planets.1.html"> planets.1 </a> </td>
 </tr>
 <tr><!-- line 121 -->
- <td class="odd" >  <a href="./plot.3m_calcomp.html"> plot.3m_calcomp </a> </td>
+ <td class="odd" >  <a href="./planets.1.html"> planets.1 </a> </td>
+ <td class="odd" >   <a href="./plot.3m_calcomp.html"> plot.3m_calcomp </a> </td>
  <td class="odd" >   <a href="./plots.3m_calcomp.html"> plots.3m_calcomp </a> </td>
  <td class="odd" >   <a href="./point.3m_draw.html"> point.3m_draw </a> </td>
  <td class="odd" >   <a href="./point2.3m_draw.html"> point2.3m_draw </a> </td>
- <td class="odd" >   <a href="./point2.3m_pixel.html"> point2.3m_pixel </a> </td>
 </tr>
 <tr><!-- line 122 -->
- <td class="even" >  <a href="./pointers.7.html"> pointers.7 </a> </td>
+ <td class="even" >  <a href="./point2.3m_pixel.html"> point2.3m_pixel </a> </td>
+ <td class="even" >   <a href="./pointers.7.html"> pointers.7 </a> </td>
  <td class="even" >   <a href="./polar.3m_calcomp.html"> polar.3m_calcomp </a> </td>
  <td class="even" >   <a href="./polarview.3m_draw.html"> polarview.3m_draw </a> </td>
  <td class="even" >   <a href="./polar_to_cartesian.3.html"> polar_to_cartesian.3 </a> </td>
- <td class="even" >   <a href="./poly.3m_calcomp.html"> poly.3m_calcomp </a> </td>
 </tr>
 <tr><!-- line 123 -->
- <td class="odd" >  <a href="./poly.3m_draw.html"> poly.3m_draw </a> </td>
+ <td class="odd" >  <a href="./poly.3m_calcomp.html"> poly.3m_calcomp </a> </td>
+ <td class="odd" >   <a href="./poly.3m_draw.html"> poly.3m_draw </a> </td>
  <td class="odd" >   <a href="./poly2.3m_draw.html"> poly2.3m_draw </a> </td>
  <td class="odd" >   <a href="./poly2.3m_pixel.html"> poly2.3m_pixel </a> </td>
  <td class="odd" >   <a href="./polyarea.3.html"> polyarea.3 </a> </td>
- <td class="odd" >   <a href="./polyfill.3m_draw.html"> polyfill.3m_draw </a> </td>
 </tr>
 <tr><!-- line 124 -->
- <td class="even" >  <a href="./polyhatch.3m_draw.html"> polyhatch.3m_draw </a> </td>
+ <td class="even" >  <a href="./polyfill.3m_draw.html"> polyfill.3m_draw </a> </td>
+ <td class="even" >   <a href="./polyhatch.3m_draw.html"> polyhatch.3m_draw </a> </td>
  <td class="even" >   <a href="./polyline.3m_pixel.html"> polyline.3m_pixel </a> </td>
  <td class="even" >   <a href="./polyline2.3m_drawplus.html"> polyline2.3m_drawplus </a> </td>
  <td class="even" >   <a href="./poly_intercept.3.html"> poly_intercept.3 </a> </td>
- <td class="even" >   <a href="./pop.3m_drawplus.html"> pop.3m_drawplus </a> </td>
 </tr>
 <tr><!-- line 125 -->
- <td class="odd" >  <a href="./popattributes.3m_draw.html"> popattributes.3m_draw </a> </td>
+ <td class="odd" >  <a href="./pop.3m_drawplus.html"> pop.3m_drawplus </a> </td>
+ <td class="odd" >   <a href="./popattributes.3m_draw.html"> popattributes.3m_draw </a> </td>
  <td class="odd" >   <a href="./popcnt.3.html"> popcnt.3 </a> </td>
  <td class="odd" >   <a href="./popdev.3m_draw.html"> popdev.3m_draw </a> </td>
  <td class="odd" >   <a href="./popmatrix.3m_draw.html"> popmatrix.3m_draw </a> </td>
- <td class="odd" >   <a href="./poppar.3.html"> poppar.3 </a> </td>
 </tr>
 <tr><!-- line 126 -->
- <td class="even" >  <a href="./popviewport.3m_draw.html"> popviewport.3m_draw </a> </td>
+ <td class="even" >  <a href="./poppar.3.html"> poppar.3 </a> </td>
+ <td class="even" >   <a href="./popviewport.3m_draw.html"> popviewport.3m_draw </a> </td>
  <td class="even" >   <a href="./pounds_to_kilograms.3.html"> pounds_to_kilograms.3 </a> </td>
  <td class="even" >   <a href="./ppm.5.html"> ppm.5 </a> </td>
  <td class="even" >   <a href="./precision.3.html"> precision.3 </a> </td>
- <td class="even" >   <a href="./prefposition.3m_draw.html"> prefposition.3m_draw </a> </td>
 </tr>
 <tr><!-- line 127 -->
- <td class="odd" >  <a href="./prefsize.3m_draw.html"> prefsize.3m_draw </a> </td>
+ <td class="odd" >  <a href="./prefposition.3m_draw.html"> prefposition.3m_draw </a> </td>
+ <td class="odd" >   <a href="./prefsize.3m_draw.html"> prefsize.3m_draw </a> </td>
  <td class="odd" >   <a href="./prefsize.3m_pixel.html"> prefsize.3m_pixel </a> </td>
  <td class="odd" >   <a href="./present.3.html"> present.3 </a> </td>
  <td class="odd" >   <a href="./prime_factors.3.html"> prime_factors.3 </a> </td>
- <td class="odd" >   <a href="./print_ascii.3m_pixel.html"> print_ascii.3m_pixel </a> </td>
 </tr>
 <tr><!-- line 128 -->
- <td class="even" >  <a href="./print_inquire.3.html"> print_inquire.3 </a> </td>
+ <td class="even" >  <a href="./print_ascii.3m_pixel.html"> print_ascii.3m_pixel </a> </td>
+ <td class="even" >   <a href="./print_inquire.3.html"> print_inquire.3 </a> </td>
  <td class="even" >   <a href="./print_ppm.3m_pixel.html"> print_ppm.3m_pixel </a> </td>
  <td class="even" >   <a href="./print_watch.3.html"> print_watch.3 </a> </td>
  <td class="even" >   <a href="./process_close.3.html"> process_close.3 </a> </td>
- <td class="even" >   <a href="./process_open_read.3.html"> process_open_read.3 </a> </td>
 </tr>
 <tr><!-- line 129 -->
- <td class="odd" >  <a href="./process_open_write.3.html"> process_open_write.3 </a> </td>
+ <td class="odd" >  <a href="./process_open_read.3.html"> process_open_read.3 </a> </td>
+ <td class="odd" >   <a href="./process_open_write.3.html"> process_open_write.3 </a> </td>
  <td class="odd" >   <a href="./process_readall.3.html"> process_readall.3 </a> </td>
  <td class="odd" >   <a href="./process_readline.3.html"> process_readline.3 </a> </td>
  <td class="odd" >   <a href="./process_writeline.3.html"> process_writeline.3 </a> </td>
- <td class="odd" >   <a href="./product.3.html"> product.3 </a> </td>
 </tr>
 <tr><!-- line 130 -->
- <td class="even" >  <a href="./protected.7.html"> protected.7 </a> </td>
+ <td class="even" >  <a href="./product.3.html"> product.3 </a> </td>
+ <td class="even" >   <a href="./protected.7.html"> protected.7 </a> </td>
  <td class="even" >   <a href="./pumpkin_roll.7.html"> pumpkin_roll.7 </a> </td>
  <td class="even" >   <a href="./push.3m_drawplus.html"> push.3m_drawplus </a> </td>
  <td class="even" >   <a href="./pushattributes.3m_draw.html"> pushattributes.3m_draw </a> </td>
- <td class="even" >   <a href="./pushdev.3m_draw.html"> pushdev.3m_draw </a> </td>
 </tr>
 <tr><!-- line 131 -->
- <td class="odd" >  <a href="./pushmatrix.3m_draw.html"> pushmatrix.3m_draw </a> </td>
+ <td class="odd" >  <a href="./pushdev.3m_draw.html"> pushdev.3m_draw </a> </td>
+ <td class="odd" >   <a href="./pushmatrix.3m_draw.html"> pushmatrix.3m_draw </a> </td>
  <td class="odd" >   <a href="./pushviewport.3m_draw.html"> pushviewport.3m_draw </a> </td>
  <td class="odd" >   <a href="./quadratic.1.html"> quadratic.1 </a> </td>
  <td class="odd" >   <a href="./quadratic.3.html"> quadratic.3 </a> </td>
- <td class="odd" >   <a href="./r2d.3.html"> r2d.3 </a> </td>
 </tr>
 <tr><!-- line 132 -->
- <td class="even" >  <a href="./radix.3.html"> radix.3 </a> </td>
+ <td class="even" >  <a href="./r2d.3.html"> r2d.3 </a> </td>
+ <td class="even" >   <a href="./radix.3.html"> radix.3 </a> </td>
  <td class="even" >   <a href="./random_hex.3.html"> random_hex.3 </a> </td>
  <td class="even" >   <a href="./random_kiss64.3.html"> random_kiss64.3 </a> </td>
  <td class="even" >   <a href="./random_number.3.html"> random_number.3 </a> </td>
- <td class="even" >   <a href="./random_seed.3.html"> random_seed.3 </a> </td>
 </tr>
 <tr><!-- line 133 -->
- <td class="odd" >  <a href="./random_string.3.html"> random_string.3 </a> </td>
+ <td class="odd" >  <a href="./random_seed.3.html"> random_seed.3 </a> </td>
+ <td class="odd" >   <a href="./random_string.3.html"> random_string.3 </a> </td>
  <td class="odd" >   <a href="./range.1.html"> range.1 </a> </td>
  <td class="odd" >   <a href="./range.3.html"> range.3 </a> </td>
  <td class="odd" >   <a href="./rank.3.html"> rank.3 </a> </td>
- <td class="odd" >   <a href="./rcurve.3m_draw.html"> rcurve.3m_draw </a> </td>
 </tr>
 <tr><!-- line 134 -->
- <td class="even" >  <a href="./rd.3.html"> rd.3 </a> </td>
+ <td class="even" >  <a href="./rcurve.3m_draw.html"> rcurve.3m_draw </a> </td>
+ <td class="even" >   <a href="./rd.3.html"> rd.3 </a> </td>
  <td class="even" >   <a href="./rdbox.3.html"> rdbox.3 </a> </td>
  <td class="even" >   <a href="./rdpnt.3.html"> rdpnt.3 </a> </td>
  <td class="even" >   <a href="./rdraw.3m_draw.html"> rdraw.3m_draw </a> </td>
- <td class="even" >   <a href="./rdraw2.3m_draw.html"> rdraw2.3m_draw </a> </td>
 </tr>
 <tr><!-- line 135 -->
- <td class="odd" >  <a href="./rdraw2.3m_pixel.html"> rdraw2.3m_pixel </a> </td>
+ <td class="odd" >  <a href="./rdraw2.3m_draw.html"> rdraw2.3m_draw </a> </td>
+ <td class="odd" >   <a href="./rdraw2.3m_pixel.html"> rdraw2.3m_pixel </a> </td>
  <td class="odd" >   <a href="./readgif.3.html"> readgif.3 </a> </td>
  <td class="odd" >   <a href="./read_all.3.html"> read_all.3 </a> </td>
  <td class="odd" >   <a href="./read_line.3.html"> read_line.3 </a> </td>
- <td class="odd" >   <a href="./read_table.3.html"> read_table.3 </a> </td>
 </tr>
 <tr><!-- line 136 -->
- <td class="even" >  <a href="./read_watch.3.html"> read_watch.3 </a> </td>
+ <td class="even" >  <a href="./read_table.3.html"> read_table.3 </a> </td>
+ <td class="even" >   <a href="./read_watch.3.html"> read_watch.3 </a> </td>
  <td class="even" >   <a href="./real.3.html"> real.3 </a> </td>
  <td class="even" >   <a href="./recipes.7.html"> recipes.7 </a> </td>
  <td class="even" >   <a href="./rect.3m_calcomp.html"> rect.3m_calcomp </a> </td>
- <td class="even" >   <a href="./rect.3m_draw.html"> rect.3m_draw </a> </td>
 </tr>
 <tr><!-- line 137 -->
- <td class="odd" >  <a href="./rect.3m_pixel.html"> rect.3m_pixel </a> </td>
+ <td class="odd" >  <a href="./rect.3m_draw.html"> rect.3m_draw </a> </td>
+ <td class="odd" >   <a href="./rect.3m_pixel.html"> rect.3m_pixel </a> </td>
  <td class="odd" >   <a href="./redo.3.html"> redo.3 </a> </td>
  <td class="odd" >   <a href="./regcomp.3.html"> regcomp.3 </a> </td>
  <td class="odd" >   <a href="./regerror.3.html"> regerror.3 </a> </td>
- <td class="odd" >   <a href="./regexec.3.html"> regexec.3 </a> </td>
 </tr>
 <tr><!-- line 138 -->
- <td class="even" >  <a href="./regfree.3.html"> regfree.3 </a> </td>
+ <td class="even" >  <a href="./regexec.3.html"> regexec.3 </a> </td>
+ <td class="even" >   <a href="./regfree.3.html"> regfree.3 </a> </td>
  <td class="even" >   <a href="./regmatch.3.html"> regmatch.3 </a> </td>
  <td class="even" >   <a href="./regsub.3.html"> regsub.3 </a> </td>
  <td class="even" >   <a href="./remove.3.html"> remove.3 </a> </td>
- <td class="even" >   <a href="./rep.1.html"> rep.1 </a> </td>
 </tr>
 <tr><!-- line 139 -->
- <td class="odd" >  <a href="./repeat.3.html"> repeat.3 </a> </td>
+ <td class="odd" >  <a href="./rep.1.html"> rep.1 </a> </td>
+ <td class="odd" >   <a href="./repeat.3.html"> repeat.3 </a> </td>
  <td class="odd" >   <a href="./replace.3.html"> replace.3 </a> </td>
  <td class="odd" >   <a href="./reset_watch.3.html"> reset_watch.3 </a> </td>
  <td class="odd" >   <a href="./reshape.3.html"> reshape.3 </a> </td>
- <td class="odd" >   <a href="./retrev.3.html"> retrev.3 </a> </td>
 </tr>
 <tr><!-- line 140 -->
- <td class="even" >  <a href="./rever.1.html"> rever.1 </a> </td>
+ <td class="even" >  <a href="./retrev.3.html"> retrev.3 </a> </td>
+ <td class="even" >   <a href="./rever.1.html"> rever.1 </a> </td>
  <td class="even" >   <a href="./reverse.3.html"> reverse.3 </a> </td>
  <td class="even" >   <a href="./rewind.7.html"> rewind.7 </a> </td>
  <td class="even" >   <a href="./rgbmono.3.html"> rgbmono.3 </a> </td>
- <td class="even" >   <a href="./rget.3.html"> rget.3 </a> </td>
 </tr>
 <tr><!-- line 141 -->
- <td class="odd" >  <a href="./rgets.3.html"> rgets.3 </a> </td>
+ <td class="odd" >  <a href="./rget.3.html"> rget.3 </a> </td>
+ <td class="odd" >   <a href="./rgets.3.html"> rgets.3 </a> </td>
  <td class="odd" >   <a href="./rgetvalue.3.html"> rgetvalue.3 </a> </td>
  <td class="odd" >   <a href="./rightjustify.3m_draw.html"> rightjustify.3m_draw </a> </td>
  <td class="odd" >   <a href="./rmove.3m_draw.html"> rmove.3m_draw </a> </td>
- <td class="odd" >   <a href="./rmove2.3m_draw.html"> rmove2.3m_draw </a> </td>
 </tr>
 <tr><!-- line 142 -->
- <td class="even" >  <a href="./rmove2.3m_pixel.html"> rmove2.3m_pixel </a> </td>
+ <td class="even" >  <a href="./rmove2.3m_draw.html"> rmove2.3m_draw </a> </td>
+ <td class="even" >   <a href="./rmove2.3m_pixel.html"> rmove2.3m_pixel </a> </td>
  <td class="even" >   <a href="./rnum0.3.html"> rnum0.3 </a> </td>
  <td class="even" >   <a href="./rotate.3m_draw.html"> rotate.3m_draw </a> </td>
  <td class="even" >   <a href="./rpatch.3m_draw.html"> rpatch.3m_draw </a> </td>
- <td class="even" >   <a href="./rrspacing.3.html"> rrspacing.3 </a> </td>
 </tr>
 <tr><!-- line 143 -->
- <td class="odd" >  <a href="./rsdraw2.3m_draw.html"> rsdraw2.3m_draw </a> </td>
+ <td class="odd" >  <a href="./rrspacing.3.html"> rrspacing.3 </a> </td>
+ <td class="odd" >   <a href="./rsdraw2.3m_draw.html"> rsdraw2.3m_draw </a> </td>
  <td class="odd" >   <a href="./rsmove2.3m_draw.html"> rsmove2.3m_draw </a> </td>
  <td class="odd" >   <a href="./s2c.3.html"> s2c.3 </a> </td>
  <td class="odd" >   <a href="./s2v.3.html"> s2v.3 </a> </td>
- <td class="odd" >   <a href="./s2vs.3.html"> s2vs.3 </a> </td>
 </tr>
 <tr><!-- line 144 -->
- <td class="even" >  <a href="./same_type_as.3.html"> same_type_as.3 </a> </td>
+ <td class="even" >  <a href="./s2vs.3.html"> s2vs.3 </a> </td>
+ <td class="even" >   <a href="./same_type_as.3.html"> same_type_as.3 </a> </td>
  <td class="even" >   <a href="./save.7.html"> save.7 </a> </td>
  <td class="even" >   <a href="./saveobj.3m_draw.html"> saveobj.3m_draw </a> </td>
  <td class="even" >   <a href="./scale.3.html"> scale.3 </a> </td>
- <td class="even" >   <a href="./scale.3m_calcomp.html"> scale.3m_calcomp </a> </td>
 </tr>
 <tr><!-- line 145 -->
- <td class="odd" >  <a href="./scale.3m_draw.html"> scale.3m_draw </a> </td>
+ <td class="odd" >  <a href="./scale.3m_calcomp.html"> scale.3m_calcomp </a> </td>
+ <td class="odd" >   <a href="./scale.3m_draw.html"> scale.3m_draw </a> </td>
  <td class="odd" >   <a href="./scale1.3.html"> scale1.3 </a> </td>
  <td class="odd" >   <a href="./scale3.3.html"> scale3.3 </a> </td>
  <td class="odd" >   <a href="./scalg.3m_calcomp.html"> scalg.3m_calcomp </a> </td>
- <td class="odd" >   <a href="./scan.3.html"> scan.3 </a> </td>
 </tr>
 <tr><!-- line 146 -->
- <td class="even" >  <a href="./scratch.7.html"> scratch.7 </a> </td>
+ <td class="even" >  <a href="./scan.3.html"> scan.3 </a> </td>
+ <td class="even" >   <a href="./scratch.7.html"> scratch.7 </a> </td>
  <td class="even" >   <a href="./sdbm_hash.3.html"> sdbm_hash.3 </a> </td>
  <td class="even" >   <a href="./sdraw2.3m_draw.html"> sdraw2.3m_draw </a> </td>
  <td class="even" >   <a href="./sec2days.1.html"> sec2days.1 </a> </td>
- <td class="even" >   <a href="./sec2days.3.html"> sec2days.3 </a> </td>
 </tr>
 <tr><!-- line 147 -->
- <td class="odd" >  <a href="./sector.3m_draw.html"> sector.3m_draw </a> </td>
+ <td class="odd" >  <a href="./sec2days.3.html"> sec2days.3 </a> </td>
+ <td class="odd" >   <a href="./sector.3m_draw.html"> sector.3m_draw </a> </td>
  <td class="odd" >   <a href="./select.7.html"> select.7 </a> </td>
  <td class="odd" >   <a href="./selected_char_kind.3.html"> selected_char_kind.3 </a> </td>
  <td class="odd" >   <a href="./selected_int_kind.3.html"> selected_int_kind.3 </a> </td>
- <td class="odd" >   <a href="./selected_real_kind.3.html"> selected_real_kind.3 </a> </td>
 </tr>
 <tr><!-- line 148 -->
- <td class="even" >  <a href="./setprompts.3.html"> setprompts.3 </a> </td>
+ <td class="even" >  <a href="./selected_real_kind.3.html"> selected_real_kind.3 </a> </td>
+ <td class="even" >   <a href="./setprompts.3.html"> setprompts.3 </a> </td>
  <td class="even" >   <a href="./setxt.1.html"> setxt.1 </a> </td>
  <td class="even" >   <a href="./set_environment_variable.3.html"> set_environment_variable.3 </a> </td>
  <td class="even" >   <a href="./set_exponent.3.html"> set_exponent.3 </a> </td>
- <td class="even" >   <a href="./sget.3.html"> sget.3 </a> </td>
 </tr>
 <tr><!-- line 149 -->
- <td class="odd" >  <a href="./sgetgp2.3m_draw.html"> sgetgp2.3m_draw </a> </td>
+ <td class="odd" >  <a href="./sget.3.html"> sget.3 </a> </td>
+ <td class="odd" >   <a href="./sgetgp2.3m_draw.html"> sgetgp2.3m_draw </a> </td>
  <td class="odd" >   <a href="./sgets.3.html"> sgets.3 </a> </td>
  <td class="odd" >   <a href="./sha256.3.html"> sha256.3 </a> </td>
  <td class="odd" >   <a href="./shape.3.html"> shape.3 </a> </td>
- <td class="odd" >   <a href="./shell.1.html"> shell.1 </a> </td>
 </tr>
 <tr><!-- line 150 -->
- <td class="even" >  <a href="./shifta.3.html"> shifta.3 </a> </td>
+ <td class="even" >  <a href="./shell.1.html"> shell.1 </a> </td>
+ <td class="even" >   <a href="./shifta.3.html"> shifta.3 </a> </td>
  <td class="even" >   <a href="./shiftl.3.html"> shiftl.3 </a> </td>
  <td class="even" >   <a href="./shiftr.3.html"> shiftr.3 </a> </td>
  <td class="even" >   <a href="./show.3.html"> show.3 </a> </td>
- <td class="even" >   <a href="./sign.3.html"> sign.3 </a> </td>
 </tr>
 <tr><!-- line 151 -->
- <td class="odd" >  <a href="./sign.7.html"> sign.7 </a> </td>
+ <td class="odd" >  <a href="./sign.3.html"> sign.3 </a> </td>
+ <td class="odd" >   <a href="./sign.7.html"> sign.7 </a> </td>
  <td class="odd" >   <a href="./signs.3.html"> signs.3 </a> </td>
  <td class="odd" >   <a href="./sin.3.html"> sin.3 </a> </td>
  <td class="odd" >   <a href="./sind.3.html"> sind.3 </a> </td>
- <td class="odd" >   <a href="./sinh.3.html"> sinh.3 </a> </td>
 </tr>
 <tr><!-- line 152 -->
- <td class="even" >  <a href="./size.3.html"> size.3 </a> </td>
+ <td class="even" >  <a href="./sinh.3.html"> sinh.3 </a> </td>
+ <td class="even" >   <a href="./size.3.html"> size.3 </a> </td>
  <td class="even" >   <a href="./skekur1.3.html"> skekur1.3 </a> </td>
  <td class="even" >   <a href="./skekurx.3.html"> skekurx.3 </a> </td>
  <td class="even" >   <a href="./slice.1m_draw.html"> slice.1m_draw </a> </td>
- <td class="even" >   <a href="./slocator.3m_draw.html"> slocator.3m_draw </a> </td>
 </tr>
 <tr><!-- line 153 -->
- <td class="odd" >  <a href="./slurp.3.html"> slurp.3 </a> </td>
+ <td class="odd" >  <a href="./slocator.3m_draw.html"> slocator.3m_draw </a> </td>
+ <td class="odd" >   <a href="./slurp.3.html"> slurp.3 </a> </td>
  <td class="odd" >   <a href="./smoot.3m_calcomp.html"> smoot.3m_calcomp </a> </td>
  <td class="odd" >   <a href="./smove2.3m_draw.html"> smove2.3m_draw </a> </td>
  <td class="odd" >   <a href="./sngl.3.html"> sngl.3 </a> </td>
- <td class="odd" >   <a href="./snum0.3.html"> snum0.3 </a> </td>
 </tr>
 <tr><!-- line 154 -->
- <td class="even" >  <a href="./soft_pretzel.7.html"> soft_pretzel.7 </a> </td>
+ <td class="even" >  <a href="./snum0.3.html"> snum0.3 </a> </td>
+ <td class="even" >   <a href="./soft_pretzel.7.html"> soft_pretzel.7 </a> </td>
  <td class="even" >   <a href="./sort_quick_rx.3.html"> sort_quick_rx.3 </a> </td>
  <td class="even" >   <a href="./sort_shell.3.html"> sort_shell.3 </a> </td>
  <td class="even" >   <a href="./spacing.3.html"> spacing.3 </a> </td>
- <td class="even" >   <a href="./spherical_to_cartesian.3.html"> spherical_to_cartesian.3 </a> </td>
 </tr>
 <tr><!-- line 155 -->
- <td class="odd" >  <a href="./spirograph.3m_drawplus.html"> spirograph.3m_drawplus </a> </td>
+ <td class="odd" >  <a href="./spherical_to_cartesian.3.html"> spherical_to_cartesian.3 </a> </td>
+ <td class="odd" >   <a href="./spirograph.3m_drawplus.html"> spirograph.3m_drawplus </a> </td>
  <td class="odd" >   <a href="./splift.3.html"> splift.3 </a> </td>
  <td class="odd" >   <a href="./splint.3.html"> splint.3 </a> </td>
  <td class="odd" >   <a href="./split.3.html"> split.3 </a> </td>
- <td class="odd" >   <a href="./splitname.1.html"> splitname.1 </a> </td>
 </tr>
 <tr><!-- line 156 -->
- <td class="even" >  <a href="./splitpath.3.html"> splitpath.3 </a> </td>
+ <td class="even" >  <a href="./splitname.1.html"> splitname.1 </a> </td>
+ <td class="even" >   <a href="./splitpath.3.html"> splitpath.3 </a> </td>
  <td class="even" >   <a href="./spread.3.html"> spread.3 </a> </td>
  <td class="even" >   <a href="./sqlite3_begin.3.html"> sqlite3_begin.3 </a> </td>
  <td class="even" >   <a href="./sqlite3_close.3.html"> sqlite3_close.3 </a> </td>
- <td class="even" >   <a href="./sqlite3_column_props.3.html"> sqlite3_column_props.3 </a> </td>
 </tr>
 <tr><!-- line 157 -->
- <td class="odd" >  <a href="./sqlite3_column_query.3.html"> sqlite3_column_query.3 </a> </td>
+ <td class="odd" >  <a href="./sqlite3_column_props.3.html"> sqlite3_column_props.3 </a> </td>
+ <td class="odd" >   <a href="./sqlite3_column_query.3.html"> sqlite3_column_query.3 </a> </td>
  <td class="odd" >   <a href="./sqlite3_commit.3.html"> sqlite3_commit.3 </a> </td>
  <td class="odd" >   <a href="./sqlite3_create_table.3.html"> sqlite3_create_table.3 </a> </td>
  <td class="odd" >   <a href="./sqlite3_delete_table.3.html"> sqlite3_delete_table.3 </a> </td>
- <td class="odd" >   <a href="./sqlite3_do.3.html"> sqlite3_do.3 </a> </td>
 </tr>
 <tr><!-- line 158 -->
- <td class="even" >  <a href="./sqlite3_errmsg.3.html"> sqlite3_errmsg.3 </a> </td>
+ <td class="even" >  <a href="./sqlite3_do.3.html"> sqlite3_do.3 </a> </td>
+ <td class="even" >   <a href="./sqlite3_errmsg.3.html"> sqlite3_errmsg.3 </a> </td>
  <td class="even" >   <a href="./sqlite3_error.3.html"> sqlite3_error.3 </a> </td>
  <td class="even" >   <a href="./sqlite3_finalize.3.html"> sqlite3_finalize.3 </a> </td>
  <td class="even" >   <a href="./sqlite3_get_column.3.html"> sqlite3_get_column.3 </a> </td>
- <td class="even" >   <a href="./sqlite3_get_table.3.html"> sqlite3_get_table.3 </a> </td>
 </tr>
 <tr><!-- line 159 -->
- <td class="odd" >  <a href="./sqlite3_insert.3.html"> sqlite3_insert.3 </a> </td>
+ <td class="odd" >  <a href="./sqlite3_get_table.3.html"> sqlite3_get_table.3 </a> </td>
+ <td class="odd" >   <a href="./sqlite3_insert.3.html"> sqlite3_insert.3 </a> </td>
  <td class="odd" >   <a href="./sqlite3_libversion.3.html"> sqlite3_libversion.3 </a> </td>
  <td class="odd" >   <a href="./sqlite3_libversion_number.3.html"> sqlite3_libversion_number.3 </a> </td>
  <td class="odd" >   <a href="./sqlite3_next_row.3.html"> sqlite3_next_row.3 </a> </td>
- <td class="odd" >   <a href="./sqlite3_open.3.html"> sqlite3_open.3 </a> </td>
 </tr>
 <tr><!-- line 160 -->
- <td class="even" >  <a href="./sqlite3_prepare.3.html"> sqlite3_prepare.3 </a> </td>
+ <td class="even" >  <a href="./sqlite3_open.3.html"> sqlite3_open.3 </a> </td>
+ <td class="even" >   <a href="./sqlite3_prepare.3.html"> sqlite3_prepare.3 </a> </td>
  <td class="even" >   <a href="./sqlite3_prepare_select.3.html"> sqlite3_prepare_select.3 </a> </td>
  <td class="even" >   <a href="./sqlite3_query_table.3.html"> sqlite3_query_table.3 </a> </td>
  <td class="even" >   <a href="./sqlite3_reset.3.html"> sqlite3_reset.3 </a> </td>
- <td class="even" >   <a href="./sqlite3_rollback.3.html"> sqlite3_rollback.3 </a> </td>
 </tr>
 <tr><!-- line 161 -->
- <td class="odd" >  <a href="./sqlite3_set_column.3.html"> sqlite3_set_column.3 </a> </td>
+ <td class="odd" >  <a href="./sqlite3_rollback.3.html"> sqlite3_rollback.3 </a> </td>
+ <td class="odd" >   <a href="./sqlite3_set_column.3.html"> sqlite3_set_column.3 </a> </td>
  <td class="odd" >   <a href="./sqlite3_sourceid.3.html"> sqlite3_sourceid.3 </a> </td>
  <td class="odd" >   <a href="./sqlite3_step.3.html"> sqlite3_step.3 </a> </td>
  <td class="odd" >   <a href="./sqrt.3.html"> sqrt.3 </a> </td>
- <td class="odd" >   <a href="./start_watch.3.html"> start_watch.3 </a> </td>
 </tr>
 <tr><!-- line 162 -->
- <td class="even" >  <a href="./state.3m_pixel.html"> state.3m_pixel </a> </td>
+ <td class="even" >  <a href="./start_watch.3.html"> start_watch.3 </a> </td>
+ <td class="even" >   <a href="./state.3m_pixel.html"> state.3m_pixel </a> </td>
  <td class="even" >   <a href="./stddev.3.html"> stddev.3 </a> </td>
  <td class="even" >   <a href="./stderr.3.html"> stderr.3 </a> </td>
  <td class="even" >   <a href="./stop.7.html"> stop.7 </a> </td>
- <td class="even" >   <a href="./stop_watch.3.html"> stop_watch.3 </a> </td>
 </tr>
 <tr><!-- line 163 -->
- <td class="odd" >  <a href="./storage_size.3.html"> storage_size.3 </a> </td>
+ <td class="odd" >  <a href="./stop_watch.3.html"> stop_watch.3 </a> </td>
+ <td class="odd" >   <a href="./storage_size.3.html"> storage_size.3 </a> </td>
  <td class="odd" >   <a href="./store.3.html"> store.3 </a> </td>
  <td class="odd" >   <a href="./strgar2.3.html"> strgar2.3 </a> </td>
  <td class="odd" >   <a href="./strgarr.3.html"> strgarr.3 </a> </td>
- <td class="odd" >   <a href="./string_to_value.3.html"> string_to_value.3 </a> </td>
 </tr>
 <tr><!-- line 164 -->
- <td class="even" >  <a href="./string_to_values.3.html"> string_to_values.3 </a> </td>
+ <td class="even" >  <a href="./string_to_value.3.html"> string_to_value.3 </a> </td>
+ <td class="even" >   <a href="./string_to_values.3.html"> string_to_values.3 </a> </td>
  <td class="even" >   <a href="./strlength.3m_draw.html"> strlength.3m_draw </a> </td>
  <td class="even" >   <a href="./strlength.3m_pixel.html"> strlength.3m_pixel </a> </td>
  <td class="even" >   <a href="./stuff.3.html"> stuff.3 </a> </td>
- <td class="even" >   <a href="./stuffa.3.html"> stuffa.3 </a> </td>
 </tr>
 <tr><!-- line 165 -->
- <td class="odd" >  <a href="./substitute.3.html"> substitute.3 </a> </td>
+ <td class="odd" >  <a href="./stuffa.3.html"> stuffa.3 </a> </td>
+ <td class="odd" >   <a href="./substitute.3.html"> substitute.3 </a> </td>
  <td class="odd" >   <a href="./sum.3.html"> sum.3 </a> </td>
  <td class="odd" >   <a href="./swap.3.html"> swap.3 </a> </td>
  <td class="odd" >   <a href="./swapbuffers.3m_draw.html"> swapbuffers.3m_draw </a> </td>
- <td class="odd" >   <a href="./switch.3.html"> switch.3 </a> </td>
 </tr>
 <tr><!-- line 166 -->
- <td class="even" >  <a href="./symbol.3m_calcomp.html"> symbol.3m_calcomp </a> </td>
+ <td class="even" >  <a href="./switch.3.html"> switch.3 </a> </td>
+ <td class="even" >   <a href="./symbol.3m_calcomp.html"> symbol.3m_calcomp </a> </td>
  <td class="even" >   <a href="./symbol2atomnum.3.html"> symbol2atomnum.3 </a> </td>
  <td class="even" >   <a href="./system_access.3.html"> system_access.3 </a> </td>
  <td class="even" >   <a href="./system_chdir.3.html"> system_chdir.3 </a> </td>
- <td class="even" >   <a href="./system_chmod.3.html"> system_chmod.3 </a> </td>
 </tr>
 <tr><!-- line 167 -->
- <td class="odd" >  <a href="./system_chown.3.html"> system_chown.3 </a> </td>
+ <td class="odd" >  <a href="./system_chmod.3.html"> system_chmod.3 </a> </td>
+ <td class="odd" >   <a href="./system_chown.3.html"> system_chown.3 </a> </td>
  <td class="odd" >   <a href="./system_clearenv.3.html"> system_clearenv.3 </a> </td>
  <td class="odd" >   <a href="./system_clock.3.html"> system_clock.3 </a> </td>
  <td class="odd" >   <a href="./system_closedir.3.html"> system_closedir.3 </a> </td>
- <td class="odd" >   <a href="./system_cpu_time.3.html"> system_cpu_time.3 </a> </td>
 </tr>
 <tr><!-- line 168 -->
- <td class="even" >  <a href="./system_errno.3.html"> system_errno.3 </a> </td>
+ <td class="even" >  <a href="./system_cpu_time.3.html"> system_cpu_time.3 </a> </td>
+ <td class="even" >   <a href="./system_errno.3.html"> system_errno.3 </a> </td>
  <td class="even" >   <a href="./system_getcwd.3.html"> system_getcwd.3 </a> </td>
  <td class="even" >   <a href="./system_getegid.3.html"> system_getegid.3 </a> </td>
  <td class="even" >   <a href="./system_getenv.3.html"> system_getenv.3 </a> </td>
- <td class="even" >   <a href="./system_geteuid.3.html"> system_geteuid.3 </a> </td>
 </tr>
 <tr><!-- line 169 -->
- <td class="odd" >  <a href="./system_getgid.3.html"> system_getgid.3 </a> </td>
+ <td class="odd" >  <a href="./system_geteuid.3.html"> system_geteuid.3 </a> </td>
+ <td class="odd" >   <a href="./system_getgid.3.html"> system_getgid.3 </a> </td>
  <td class="odd" >   <a href="./system_getgrgid.3.html"> system_getgrgid.3 </a> </td>
  <td class="odd" >   <a href="./system_gethostname.3.html"> system_gethostname.3 </a> </td>
  <td class="odd" >   <a href="./system_getkey.3.html"> system_getkey.3 </a> </td>
- <td class="odd" >   <a href="./system_getlogin.3.html"> system_getlogin.3 </a> </td>
 </tr>
 <tr><!-- line 170 -->
- <td class="even" >  <a href="./system_getpid.3.html"> system_getpid.3 </a> </td>
+ <td class="even" >  <a href="./system_getlogin.3.html"> system_getlogin.3 </a> </td>
+ <td class="even" >   <a href="./system_getpid.3.html"> system_getpid.3 </a> </td>
  <td class="even" >   <a href="./system_getppid.3.html"> system_getppid.3 </a> </td>
  <td class="even" >   <a href="./system_getpwuid.3.html"> system_getpwuid.3 </a> </td>
  <td class="even" >   <a href="./system_getsid.3.html"> system_getsid.3 </a> </td>
- <td class="even" >   <a href="./system_getuid.3.html"> system_getuid.3 </a> </td>
 </tr>
 <tr><!-- line 171 -->
- <td class="odd" >  <a href="./system_getumask.3.html"> system_getumask.3 </a> </td>
+ <td class="odd" >  <a href="./system_getuid.3.html"> system_getuid.3 </a> </td>
+ <td class="odd" >   <a href="./system_getumask.3.html"> system_getumask.3 </a> </td>
  <td class="odd" >   <a href="./system_initenv.3.html"> system_initenv.3 </a> </td>
  <td class="odd" >   <a href="./system_isblk.3.html"> system_isblk.3 </a> </td>
  <td class="odd" >   <a href="./system_ischr.3.html"> system_ischr.3 </a> </td>
- <td class="odd" >   <a href="./system_isdir.3.html"> system_isdir.3 </a> </td>
 </tr>
 <tr><!-- line 172 -->
- <td class="even" >  <a href="./system_isfifo.3.html"> system_isfifo.3 </a> </td>
+ <td class="even" >  <a href="./system_isdir.3.html"> system_isdir.3 </a> </td>
+ <td class="even" >   <a href="./system_isfifo.3.html"> system_isfifo.3 </a> </td>
  <td class="even" >   <a href="./system_islnk.3.html"> system_islnk.3 </a> </td>
  <td class="even" >   <a href="./system_isreg.3.html"> system_isreg.3 </a> </td>
  <td class="even" >   <a href="./system_issock.3.html"> system_issock.3 </a> </td>
- <td class="even" >   <a href="./system_kill.3.html"> system_kill.3 </a> </td>
 </tr>
 <tr><!-- line 173 -->
- <td class="odd" >  <a href="./system_link.3.html"> system_link.3 </a> </td>
+ <td class="odd" >  <a href="./system_kill.3.html"> system_kill.3 </a> </td>
+ <td class="odd" >   <a href="./system_link.3.html"> system_link.3 </a> </td>
  <td class="odd" >   <a href="./system_mkdir.3.html"> system_mkdir.3 </a> </td>
  <td class="odd" >   <a href="./system_mkfifo.3.html"> system_mkfifo.3 </a> </td>
  <td class="odd" >   <a href="./system_opendir.3.html"> system_opendir.3 </a> </td>
- <td class="odd" >   <a href="./system_perm.3.html"> system_perm.3 </a> </td>
 </tr>
 <tr><!-- line 174 -->
- <td class="even" >  <a href="./system_perror.3.html"> system_perror.3 </a> </td>
+ <td class="even" >  <a href="./system_perm.3.html"> system_perm.3 </a> </td>
+ <td class="even" >   <a href="./system_perror.3.html"> system_perror.3 </a> </td>
  <td class="even" >   <a href="./system_putenv.3.html"> system_putenv.3 </a> </td>
  <td class="even" >   <a href="./system_rand.3.html"> system_rand.3 </a> </td>
  <td class="even" >   <a href="./system_readdir.3.html"> system_readdir.3 </a> </td>
- <td class="even" >   <a href="./system_readenv.3.html"> system_readenv.3 </a> </td>
 </tr>
 <tr><!-- line 175 -->
- <td class="odd" >  <a href="./system_readline.3.html"> system_readline.3 </a> </td>
+ <td class="odd" >  <a href="./system_readenv.3.html"> system_readenv.3 </a> </td>
+ <td class="odd" >   <a href="./system_readline.3.html"> system_readline.3 </a> </td>
  <td class="odd" >   <a href="./system_remove.3.html"> system_remove.3 </a> </td>
  <td class="odd" >   <a href="./system_rename.3.html"> system_rename.3 </a> </td>
  <td class="odd" >   <a href="./system_rewinddir.3.html"> system_rewinddir.3 </a> </td>
- <td class="odd" >   <a href="./system_rmdir.3.html"> system_rmdir.3 </a> </td>
 </tr>
 <tr><!-- line 176 -->
- <td class="even" >  <a href="./system_setumask.3.html"> system_setumask.3 </a> </td>
+ <td class="even" >  <a href="./system_rmdir.3.html"> system_rmdir.3 </a> </td>
+ <td class="even" >   <a href="./system_setumask.3.html"> system_setumask.3 </a> </td>
  <td class="even" >   <a href="./system_sleep.3.html"> system_sleep.3 </a> </td>
  <td class="even" >   <a href="./system_srand.3.html"> system_srand.3 </a> </td>
  <td class="even" >   <a href="./system_stat.3.html"> system_stat.3 </a> </td>
- <td class="even" >   <a href="./system_stat_print.3.html"> system_stat_print.3 </a> </td>
 </tr>
 <tr><!-- line 177 -->
- <td class="odd" >  <a href="./system_uname.3.html"> system_uname.3 </a> </td>
- <td class="odd" >   <a href="./system_unlink.3.html"> system_unlink.3 </a> </td>
- <td class="odd" >   <a href="./system_unsetenv.3.html"> system_unsetenv.3 </a> </td>
- <td class="odd" >   <a href="./system_utime.3.html"> system_utime.3 </a> </td>
+ <td class="odd" >  <a href="./system_stat_print.3.html"> system_stat_print.3 </a> </td>
+ <td class="odd" >   <a href="./system_uname.3.html"> system_uname.3 </a> </td>
  <td class="odd" >   <a </td>
+ <td> &nbsp; </td>
+ <td> &nbsp; </td>
 </tr>
 <tr><!-- line 178 -->
- <td class="even" > href="./t2m.1.html"> t2m.1 </a> </td>
- <td> &nbsp; </td>
- <td> &nbsp; </td>
+ <td class="even" > href="./system_unlink.3.html"> system_unlink.3 </a> </td>
+ <td class="even" >   <a href="./system_unsetenv.3.html"> system_unsetenv.3 </a> </td>
+ <td class="even" >   <a href="./system_utime.3.html"> system_utime.3 </a> </td>
  <td> &nbsp; </td>
  <td> &nbsp; </td>
 </tr>
 <tr><!-- line 179 -->
- <td class="odd" >  <a href="./tabgraph.3.html"> tabgraph.3 </a> </td>
+ <td class="odd" >  <a href="./t2m.1.html"> t2m.1 </a> </td>
+ <td class="odd" >   <a href="./tabgraph.3.html"> tabgraph.3 </a> </td>
  <td class="odd" >   <a href="./table2html.1.html"> table2html.1 </a> </td>
  <td class="odd" >   <a href="./tabulate.1.html"> tabulate.1 </a> </td>
  <td class="odd" >   <a href="./tan.3.html"> tan.3 </a> </td>
- <td class="odd" >   <a href="./tand.3.html"> tand.3 </a> </td>
 </tr>
 <tr><!-- line 180 -->
- <td class="even" >  <a href="./tanh.3.html"> tanh.3 </a> </td>
+ <td class="even" >  <a href="./tand.3.html"> tand.3 </a> </td>
+ <td class="even" >   <a href="./tanh.3.html"> tanh.3 </a> </td>
  <td class="even" >   <a href="./textang.3m_draw.html"> textang.3m_draw </a> </td>
  <td class="even" >   <a href="./textang.3m_pixel.html"> textang.3m_pixel </a> </td>
  <td class="even" >   <a href="./textjustify.3m_draw.html"> textjustify.3m_draw </a> </td>
- <td class="even" >   <a href="./textsize.3m_draw.html"> textsize.3m_draw </a> </td>
 </tr>
 <tr><!-- line 181 -->
- <td class="odd" >  <a href="./textsize.3m_pixel.html"> textsize.3m_pixel </a> </td>
+ <td class="odd" >  <a href="./textsize.3m_draw.html"> textsize.3m_draw </a> </td>
+ <td class="odd" >   <a href="./textsize.3m_pixel.html"> textsize.3m_pixel </a> </td>
  <td class="odd" >   <a href="./textslant.3m_draw.html"> textslant.3m_draw </a> </td>
  <td class="odd" >   <a href="./textweight.3m_draw.html"> textweight.3m_draw </a> </td>
  <td class="odd" >   <a href="./this_image.3.html"> this_image.3 </a> </td>
- <td class="odd" >   <a href="./tiny.3.html"> tiny.3 </a> </td>
 </tr>
 <tr><!-- line 182 -->
- <td class="even" >  <a href="./today.1.html"> today.1 </a> </td>
+ <td class="even" >  <a href="./tiny.3.html"> tiny.3 </a> </td>
+ <td class="even" >   <a href="./today.1.html"> today.1 </a> </td>
  <td class="even" >   <a href="./topjustify.3m_draw.html"> topjustify.3m_draw </a> </td>
  <td class="even" >   <a href="./tostring.3.html"> tostring.3 </a> </td>
  <td class="even" >   <a href="./tostring_disp_factory.3.html"> tostring_disp_factory.3 </a> </td>
- <td class="even" >   <a href="./tostring_set.3.html"> tostring_set.3 </a> </td>
 </tr>
 <tr><!-- line 183 -->
- <td class="odd" >  <a href="./tostring_set_factory.3.html"> tostring_set_factory.3 </a> </td>
+ <td class="odd" >  <a href="./tostring_set.3.html"> tostring_set.3 </a> </td>
+ <td class="odd" >   <a href="./tostring_set_factory.3.html"> tostring_set_factory.3 </a> </td>
  <td class="odd" >   <a href="./trailz.3.html"> trailz.3 </a> </td>
  <td class="odd" >   <a href="./transfer.3.html"> transfer.3 </a> </td>
  <td class="odd" >   <a href="./translate.3m_draw.html"> translate.3m_draw </a> </td>
- <td class="odd" >   <a href="./transliterate.3.html"> transliterate.3 </a> </td>
 </tr>
 <tr><!-- line 184 -->
- <td class="even" >  <a href="./transpose.3.html"> transpose.3 </a> </td>
+ <td class="even" >  <a href="./transliterate.3.html"> transliterate.3 </a> </td>
+ <td class="even" >   <a href="./transpose.3.html"> transpose.3 </a> </td>
  <td class="even" >   <a href="./trim.3.html"> trim.3 </a> </td>
  <td class="even" >   <a href="./ttee.1.html"> ttee.1 </a> </td>
  <td class="even" >   <a href="./txt2man.1.html"> txt2man.1 </a> </td>
- <td class="even" >   <a href="./u2d.3.html"> u2d.3 </a> </td>
 </tr>
 <tr><!-- line 185 -->
- <td class="odd" >  <a href="./uarc.3m_drawplus.html"> uarc.3m_drawplus </a> </td>
+ <td class="odd" >  <a href="./u2d.3.html"> u2d.3 </a> </td>
+ <td class="odd" >   <a href="./uarc.3m_drawplus.html"> uarc.3m_drawplus </a> </td>
  <td class="odd" >   <a href="./ubound.3.html"> ubound.3 </a> </td>
  <td class="odd" >   <a href="./uconic.3m_drawplus.html"> uconic.3m_drawplus </a> </td>
  <td class="odd" >   <a href="./ufpp.1.html"> ufpp.1 </a> </td>
- <td class="odd" >   <a href="./ufpp_overview.7.html"> ufpp_overview.7 </a> </td>
 </tr>
 <tr><!-- line 186 -->
- <td class="even" >  <a href="./unexpandviewport.3m_draw.html"> unexpandviewport.3m_draw </a> </td>
+ <td class="even" >  <a href="./ufpp_overview.7.html"> ufpp_overview.7 </a> </td>
+ <td class="even" >   <a href="./unexpandviewport.3m_draw.html"> unexpandviewport.3m_draw </a> </td>
  <td class="even" >   <a href="./uniq.3.html"> uniq.3 </a> </td>
  <td class="even" >   <a href="./unique.3.html"> unique.3 </a> </td>
  <td class="even" >   <a href="./unit_check.3.html"> unit_check.3 </a> </td>
- <td class="even" >   <a href="./unit_check_bad.3.html"> unit_check_bad.3 </a> </td>
 </tr>
 <tr><!-- line 187 -->
- <td class="odd" >  <a href="./unit_check_good.3.html"> unit_check_good.3 </a> </td>
+ <td class="odd" >  <a href="./unit_check_bad.3.html"> unit_check_bad.3 </a> </td>
+ <td class="odd" >   <a href="./unit_check_good.3.html"> unit_check_good.3 </a> </td>
  <td class="odd" >   <a href="./unit_check_start.3.html"> unit_check_start.3 </a> </td>
  <td class="odd" >   <a href="./unix_to_date.3.html"> unix_to_date.3 </a> </td>
  <td class="odd" >   <a href="./unpack.3.html"> unpack.3 </a> </td>
- <td class="odd" >   <a href="./unquote.3.html"> unquote.3 </a> </td>
 </tr>
 <tr><!-- line 188 -->
- <td class="even" >  <a href="./up.3m_draw.html"> up.3m_draw </a> </td>
+ <td class="even" >  <a href="./unquote.3.html"> unquote.3 </a> </td>
+ <td class="even" >   <a href="./up.3m_draw.html"> up.3m_draw </a> </td>
  <td class="even" >   <a href="./upper.3.html"> upper.3 </a> </td>
  <td class="even" >   <a href="./use.7.html"> use.7 </a> </td>
  <td class="even" >   <a href="./v2mo.3.html"> v2mo.3 </a> </td>
- <td class="even" >   <a href="./v2s.3.html"> v2s.3 </a> </td>
 </tr>
 <tr><!-- line 189 -->
- <td class="odd" >  <a href="./value_to_string.3.html"> value_to_string.3 </a> </td>
+ <td class="odd" >  <a href="./v2s.3.html"> v2s.3 </a> </td>
+ <td class="odd" >   <a href="./value_to_string.3.html"> value_to_string.3 </a> </td>
  <td class="odd" >   <a href="./verify.3.html"> verify.3 </a> </td>
  <td class="odd" >   <a href="./vexit.3m_draw.html"> vexit.3m_draw </a> </td>
  <td class="odd" >   <a href="./vexit.3m_pixel.html"> vexit.3m_pixel </a> </td>
- <td class="odd" >   <a href="./vflush.3m_draw.html"> vflush.3m_draw </a> </td>
 </tr>
 <tr><!-- line 190 -->
- <td class="even" >  <a href="./vgetdev.3m_draw.html"> vgetdev.3m_draw </a> </td>
+ <td class="even" >  <a href="./vflush.3m_draw.html"> vflush.3m_draw </a> </td>
+ <td class="even" >   <a href="./vgetdev.3m_draw.html"> vgetdev.3m_draw </a> </td>
  <td class="even" >   <a href="./viewport.3m_draw.html"> viewport.3m_draw </a> </td>
  <td class="even" >   <a href="./viewport.3m_pixel.html"> viewport.3m_pixel </a> </td>
  <td class="even" >   <a href="./vinit.3m_draw.html"> vinit.3m_draw </a> </td>
- <td class="even" >   <a href="./vinit.3m_pixel.html"> vinit.3m_pixel </a> </td>
 </tr>
 <tr><!-- line 191 -->
- <td class="odd" >  <a href="./visible.3.html"> visible.3 </a> </td>
+ <td class="odd" >  <a href="./vinit.3m_pixel.html"> vinit.3m_pixel </a> </td>
+ <td class="odd" >   <a href="./visible.3.html"> visible.3 </a> </td>
  <td class="odd" >   <a href="./vnewdev.3m_draw.html"> vnewdev.3m_draw </a> </td>
  <td class="odd" >   <a href="./voutput.3m_draw.html"> voutput.3m_draw </a> </td>
  <td class="odd" >   <a href="./vsetflush.3m_draw.html"> vsetflush.3m_draw </a> </td>
- <td class="odd" >   <a href="./w2d.3.html"> w2d.3 </a> </td>
 </tr>
 <tr><!-- line 192 -->
- <td class="even" >  <a href="./what.1.html"> what.1 </a> </td>
+ <td class="even" >  <a href="./w2d.3.html"> w2d.3 </a> </td>
+ <td class="even" >   <a href="./what.1.html"> what.1 </a> </td>
  <td class="even" >   <a href="./what_overview.7.html"> what_overview.7 </a> </td>
  <td class="even" >   <a href="./where.3m_calcomp.html"> where.3m_calcomp </a> </td>
  <td class="even" >   <a href="./where.7.html"> where.7 </a> </td>
- <td class="even" >   <a href="./window.3m_draw.html"> window.3m_draw </a> </td>
 </tr>
 <tr><!-- line 193 -->
- <td class="odd" >  <a href="./writegif.3.html"> writegif.3 </a> </td>
+ <td class="odd" >  <a href="./window.3m_draw.html"> window.3m_draw </a> </td>
+ <td class="odd" >   <a href="./writegif.3.html"> writegif.3 </a> </td>
  <td class="odd" >   <a href="./write_animated_gif.3.html"> write_animated_gif.3 </a> </td>
  <td class="odd" >   <a href="./xauth_key.1.html"> xauth_key.1 </a> </td>
  <td class="odd" >   <a href="./xcentertext.3m_draw.html"> xcentertext.3m_draw </a> </td>
- <td class="odd" >   <a href="./xcentertext.3m_pixel.html"> xcentertext.3m_pixel </a> </td>
 </tr>
 <tr><!-- line 194 -->
- <td class="even" >  <a href="./xterm_clear.3.html"> xterm_clear.3 </a> </td>
+ <td class="even" >  <a href="./xcentertext.3m_pixel.html"> xcentertext.3m_pixel </a> </td>
+ <td class="even" >   <a href="./xterm_clear.3.html"> xterm_clear.3 </a> </td>
  <td class="even" >   <a href="./xterm_colors.3.html"> xterm_colors.3 </a> </td>
  <td class="even" >   <a href="./xterm_font.3.html"> xterm_font.3 </a> </td>
  <td class="even" >   <a href="./xterm_geometry.3.html"> xterm_geometry.3 </a> </td>
- <td class="even" >   <a href="./xterm_get_colors.3.html"> xterm_get_colors.3 </a> </td>
 </tr>
 <tr><!-- line 195 -->
- <td class="odd" >  <a href="./xterm_get_font.3.html"> xterm_get_font.3 </a> </td>
+ <td class="odd" >  <a href="./xterm_get_colors.3.html"> xterm_get_colors.3 </a> </td>
+ <td class="odd" >   <a href="./xterm_get_font.3.html"> xterm_get_font.3 </a> </td>
  <td class="odd" >   <a href="./xterm_get_geometry.3.html"> xterm_get_geometry.3 </a> </td>
  <td class="odd" >   <a href="./xterm_get_iconstate.3.html"> xterm_get_iconstate.3 </a> </td>
  <td class="odd" >   <a href="./xterm_get_pencolor.3.html"> xterm_get_pencolor.3 </a> </td>
- <td class="odd" >   <a href="./xterm_get_position.3.html"> xterm_get_position.3 </a> </td>
 </tr>
 <tr><!-- line 196 -->
- <td class="even" >  <a href="./xterm_keywords.3.html"> xterm_keywords.3 </a> </td>
+ <td class="even" >  <a href="./xterm_get_position.3.html"> xterm_get_position.3 </a> </td>
+ <td class="even" >   <a href="./xterm_keywords.3.html"> xterm_keywords.3 </a> </td>
  <td class="even" >   <a href="./xterm_labels.3.html"> xterm_labels.3 </a> </td>
  <td class="even" >   <a href="./xterm_occupancy.3.html"> xterm_occupancy.3 </a> </td>
  <td class="even" >   <a href="./xterm_pencolor.3.html"> xterm_pencolor.3 </a> </td>
- <td class="even" >   <a href="./xterm_position.3.html"> xterm_position.3 </a> </td>
 </tr>
 <tr><!-- line 197 -->
- <td class="odd" >  <a href="./xterm_width.3.html"> xterm_width.3 </a> </td>
+ <td class="odd" >  <a href="./xterm_position.3.html"> xterm_position.3 </a> </td>
+ <td class="odd" >   <a href="./xterm_width.3.html"> xterm_width.3 </a> </td>
  <td class="odd" >   <a href="./xterm_xrdb.3.html"> xterm_xrdb.3 </a> </td>
  <td class="odd" >   <a href="./xy.1.html"> xy.1 </a> </td>
  <td class="odd" >   <a href="./ycentertext.3m_draw.html"> ycentertext.3m_draw </a> </td>
- <td class="odd" >   <a href="./ycentertext.3m_pixel.html"> ycentertext.3m_pixel </a> </td>
 </tr>
 <tr><!-- line 198 -->
- <td class="even" >  <a href="./_cmp.1.html"> _cmp.1 </a> </td>
+ <td class="even" >  <a href="./ycentertext.3m_pixel.html"> ycentertext.3m_pixel </a> </td>
+ <td class="even" >   <a href="./_cmp.1.html"> _cmp.1 </a> </td>
  <td class="even" >   <a href="./_colrm.1.html"> _colrm.1 </a> </td>
  <td class="even" >   <a href="./_dirname.1.html"> _dirname.1 </a> </td>
  <td class="even" >   <a href="./_echo.1.html"> _echo.1 </a> </td>
- <td class="even" >   <a href="./_false.1.html"> _false.1 </a> </td>
 </tr>
 <tr><!-- line 199 -->
- <td class="odd" >  <a href="./_grep.1.html"> _grep.1 </a> </td>
+ <td class="odd" >  <a href="./_false.1.html"> _false.1 </a> </td>
+ <td class="odd" >   <a href="./_grep.1.html"> _grep.1 </a> </td>
  <td class="odd" >   <a href="./_hostname.1.html"> _hostname.1 </a> </td>
  <td class="odd" >   <a href="./_kill.1.html"> _kill.1 </a> </td>
  <td class="odd" >   <a href="./_ln.1.html"> _ln.1 </a> </td>
- <td class="odd" >   <a href="./_logname.1.html"> _logname.1 </a> </td>
 </tr>
 <tr><!-- line 200 -->
- <td class="even" >  <a href="./_ls.1.html"> _ls.1 </a> </td>
+ <td class="even" >  <a href="./_logname.1.html"> _logname.1 </a> </td>
+ <td class="even" >   <a href="./_ls.1.html"> _ls.1 </a> </td>
  <td class="even" >   <a href="./_mv.1.html"> _mv.1 </a> </td>
  <td class="even" >   <a href="./_printenv.1.html"> _printenv.1 </a> </td>
  <td class="even" >   <a href="./_pwd.1.html"> _pwd.1 </a> </td>
- <td class="even" >   <a href="./_rm.1.html"> _rm.1 </a> </td>
 </tr>
 <tr><!-- line 201 -->
- <td class="odd" >  <a href="./_rmdir.1.html"> _rmdir.1 </a> </td>
+ <td class="odd" >  <a href="./_rm.1.html"> _rm.1 </a> </td>
+ <td class="odd" >   <a href="./_rmdir.1.html"> _rmdir.1 </a> </td>
  <td class="odd" >   <a href="./_sleep.1.html"> _sleep.1 </a> </td>
  <td class="odd" >   <a href="./_stat.1.html"> _stat.1 </a> </td>
  <td class="odd" >   <a href="./_touch.1.html"> _touch.1 </a> </td>
- <td class="odd" >   <a href="./_true.1.html"> _true.1 </a> </td>
 </tr>
 <tr><!-- line 202 -->
- <td class="even" >  <a href="./_tty.1.html"> _tty.1 </a> </td>
+ <td class="even" >  <a href="./_true.1.html"> _true.1 </a> </td>
+ <td class="even" >   <a href="./_tty.1.html"> _tty.1 </a> </td>
  <td class="even" >   <a href="./_uname.1.html"> _uname.1 </a> </td>
  <td class="even" >   <a href="./_unlink.1.html"> _unlink.1 </a> </td>
  <td class="even" >   <a href="./_uuidgen.1.html"> _uuidgen.1 </a> </td>
- <td class="even" >   <a href="./_which.1.html"> _which.1 </a> </td>
 </tr>
 <tr><!-- line 203 -->
- <td class="odd" >  <a href="./_yes.1.html"> _yes.1 </a> </td>
+ <td class="odd" >  <a href="./_which.1.html"> _which.1 </a> </td>
+ <td class="odd" >   <a href="./_yes.1.html"> _yes.1 </a> </td>
  <td class="odd" >  &nbsp; </td>
- <td> &nbsp; </td>
  <td> &nbsp; </td>
  <td> &nbsp; </td>
 </tr>

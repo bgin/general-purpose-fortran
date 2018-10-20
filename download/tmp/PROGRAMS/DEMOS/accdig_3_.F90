@@ -1,7 +1,12 @@
           program demo_accdig ! fortran 90 example
           use M_math, only : accdig
-          integer digi
-          real vals(9)
+          implicit none
+          integer :: digi
+          integer :: i10, i20, i30
+          integer :: ind, ind1, ind2
+          real    :: acurcy, acurcy1, acurcy2
+          real    :: a, b
+          real    :: vals(9)
           data vals/ &
             &1.234680,   1.2345378,  2.2234568, 1.2345678, &
             &1.2345679, -1.2345678, 76.234567,  2.4691356, &

@@ -28,11 +28,11 @@ EXAMPLE
 
   Sample program:
 
-    program test_spread
+    program demo_spread
       integer :: a = 1, b(2) = (/ 1, 2 /)
       write(*,*) spread(a, 1, 2)            ! "1 1"
       write(*,*) spread(b, 1, 2)            ! "1 1 2 2"
-    end program
+    end program demo_spread
 
 STANDARD
 

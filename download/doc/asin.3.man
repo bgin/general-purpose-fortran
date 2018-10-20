@@ -24,10 +24,10 @@ EXAMPLE
 
   Sample program:
 
-    program test_asin
+    program demo_asin
       real(8) :: x = 0.866_8
       x = asin(x)
-    end program test_asin
+    end program demo_asin
 
 STANDARD
 

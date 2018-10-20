@@ -22,10 +22,10 @@ EXAMPLE
 
   Sample program:
 
-    program test_sin
+    program demo_sin
       real :: x = 0.0
       x = sin(x)
-    end program test_sin
+    end program demo_sin
 
 STANDARD
 

@@ -22,10 +22,10 @@ EXAMPLE
 
   Sample program:
 
-   program test_tan
+   program demo_tan
      real(8) :: x = 0.165_8
      x = tan(x)
-   end program test_tan
+   end program demo_tan
 
 STANDARD
 

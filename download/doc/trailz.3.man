@@ -23,9 +23,9 @@ EXAMPLE
 
   Sample program:
 
-    program test_trailz
+    program demo_trailz
       write (*,*) trailz(8)  ! prints 3
-    end program
+    end program demo_trailz
 
 STANDARD
 

@@ -34,10 +34,10 @@ EXAMPLE
 
   Sample program:
 
-   program test_real
+   program demo_real
      complex :: x = (1.0, 2.0)
      print *, real(x), real(x,8)
-   end program test_real
+   end program demo_real
 
 STANDARD
 

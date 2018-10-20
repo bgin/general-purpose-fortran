@@ -42,7 +42,7 @@ None
 
 EXAMPLE
 
-    program test_time_and_date
+    program demo_time_and_date
 
         character(8)  :: date
         character(10) :: time
@@ -56,7 +56,7 @@ EXAMPLE
         print '(a,2x,a,2x,a)', date, time, zone
         print '(8i5)', values
 
-    end program test_time_and_date
+    end program demo_time_and_date
 
 STANDARD
 

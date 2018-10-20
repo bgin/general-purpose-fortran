@@ -188,7 +188,7 @@ end function  anything_to_bytes_scalar
 !!
 !!   Sample program
 !!
-!!     program scalars
+!!     program demo_anyscalar_to_double
 !!     use M_anything,      only : int128, real256
 !!     use iso_fortran_env, only : int8, int16, int32, int64
 !!     use iso_fortran_env, only : real32, real64, real128
@@ -215,7 +215,7 @@ end function  anything_to_bytes_scalar
 !!        dvalue=invalue_local*invalue_local
 !!     end function squarei
 !!
-!!     end program scalars
+!!     end program demo_anyscalar_to_double
 !===================================================================================================================================
 pure elemental function anyscalar_to_double(valuein) result(d_out)
 use iso_fortran_env, only : error_unit !! ,input_unit,output_unit
@@ -271,7 +271,8 @@ end function anyscalar_to_double
 !!
 !!   Sample program
 !!
-!!     program scalars
+!!     program demo_anyscalar_to_real
+!!     program demo_anyscalar_to_double
 !!     use M_anything,     only : int128, real256
 !!     use iso_fortran_env, only : int8, int16, int32, int64
 !!     use iso_fortran_env, only : real32, real64, real128
@@ -298,7 +299,7 @@ end function anyscalar_to_double
 !!        dvalue=invalue_local*invalue_local
 !!     end function squarei
 !!
-!!     end program scalars
+!!     end program demo_anyscalar_to_real
 !===================================================================================================================================
 pure elemental function anyscalar_to_real(valuein) result(r_out)
 use iso_fortran_env, only : error_unit !! ,input_unit,output_unit
@@ -354,7 +355,7 @@ end function anyscalar_to_real
 !!
 !!    Sample program
 !!
-!!     program scalars
+!!     program demo_anyinteger_to_128bit
 !!     use M_anything,     only : int128
 !!     use iso_fortran_env, only : int8, int16, int32, int64
 !!     implicit none
@@ -376,7 +377,7 @@ end function anyscalar_to_real
 !!        dvalue=invalue_local*invalue_local
 !!     end function squarei
 !!
-!!     end program scalars
+!!     end program demo_anyinteger_to_128bit
 !===================================================================================================================================
 pure elemental function anyinteger_to_128bit(intin) result(ii38)
 use iso_fortran_env, only : error_unit !! ,input_unit,output_unit

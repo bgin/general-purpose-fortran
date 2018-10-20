@@ -5643,7 +5643,6 @@ end function isalnum
 !!    implicit none
 !!    integer           :: ba,bd
 !!    character(len=40) :: x,y
-!!    integer           :: r
 !!
 !!    print *,' BASE CONVERSION'
 !!    write(*,'("Start   Base (2 to 36): ")',advance='no'); read *, bd
@@ -5651,7 +5650,7 @@ end function isalnum
 !!    INFINITE: do
 !!       write(*,'("Enter number in start base: ")',advance='no'); read *, x
 !!       if(x.eq.'0') exit INFINITE
-!!       if(base(x,bd,y,ba)then
+!!       if(base(x,bd,y,ba))then
 !!            write(*,'("In base ",I2,": ",A20)')  ba, y
 !!        else
 !!          print *,'Error in decoding/encoding number.'

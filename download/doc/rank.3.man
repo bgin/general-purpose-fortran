@@ -24,12 +24,12 @@ EXAMPLE
 
   Sample program:
 
-   program test_rank
+   program demo_rank
      integer :: a
      real, allocatable :: b(:,:)
 
      print *, rank(a), rank(b) ! Prints:  0  2
-   end program test_rank
+   end program demo_rank
 
 STANDARD
 

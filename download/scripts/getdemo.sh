@@ -10,7 +10,7 @@ TOPIC=$1
 SECTION=$2
 SECTION=${SECTION/(/}
 SECTION=${SECTION/)/}
-   FILE=${TOPIC}_${SECTION}_.F90
+   FILE=${TOPIC}_${SECTION}_.f90
    man -s $SECTION $TOPIC|
       col -b|
       expand|

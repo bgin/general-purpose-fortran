@@ -18,11 +18,11 @@ RETURN VALUE
 EXAMPLE
   Sample program:
 
-    program test_scale
+    program demo_scale
       real :: x = 178.1387e-4
       integer :: i = 5
       print *, scale(x,i), x*radix(x)**i
-    end program test_scale
+    end program demo_scale
   Results:
 
     0.570043862      0.570043862

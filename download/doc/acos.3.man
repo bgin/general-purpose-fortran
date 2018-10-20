@@ -23,10 +23,10 @@ EXAMPLE
 
   Sample program:
 
-    program test_acos
+    program demo_acos
       real(8) :: x = 0.866_8
       x = acos(x)
-    end program test_acos
+    end program demo_acos
 
 STANDARD
 

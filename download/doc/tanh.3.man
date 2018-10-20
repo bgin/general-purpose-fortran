@@ -26,10 +26,10 @@ EXAMPLE
 
   Sample program:
 
-   program test_tanh
+   program demo_tanh
      real(8) :: x = 2.1_8
      x = tanh(x)
-   end program test_tanh
+   end program demo_tanh
 
 STANDARD
 

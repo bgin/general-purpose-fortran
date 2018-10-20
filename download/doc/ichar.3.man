@@ -27,10 +27,10 @@ EXAMPLE
 
   Sample program:
 
-    program test_ichar
+    program demo_ichar
       integer i
       i = ichar(' ')
-    end program test_ichar
+    end program demo_ichar
 
 NOTE
 

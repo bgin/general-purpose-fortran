@@ -17,8 +17,4 @@
             ! $FILTER END
 
             call draw_interpret(draw_cmds,delimiters=';')
-
-SEE ALSO
-       call_draw(3f), M_draw(3fm), M_drawplus(3fm)
-
-                                                        October 20, 2018                             draw_interpret(3m_drawplus)
+            end program demo_draw_interpret

@@ -23,10 +23,10 @@ EXAMPLE
 
   Sample program:
 
-   program test_asinh
+   program demo_asinh
      real(8), dimension(3) :: x = (/ -1.0, 0.0, 1.0 /)
      write (*,*) asinh(x)
-   end program
+   end program demo_asinh
 
 STANDARD
 

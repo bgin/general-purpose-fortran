@@ -19,7 +19,7 @@ EXAMPLE
 
   Sample program:
 
-   program test_move_alloc
+   program demo_move_alloc
        integer, allocatable :: a(:), b(:)
 
        allocate(a(3))
@@ -27,7 +27,7 @@ EXAMPLE
        call move_alloc(a, b)
        print *, allocated(a), allocated(b)
        print *, b
-   end program test_move_alloc
+   end program demo_move_alloc
 
 STANDARD
 

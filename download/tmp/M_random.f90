@@ -653,7 +653,7 @@ end subroutine mtprng_init
 !!      init_key(1) = nint(11*secnds(0.))
 !!      init_key(2) = nint(37*secnds(0.))
 !!      init_key(3) = nint(97*secnds(0.))
-!!      call mtprng_init_by_array(seed, init_key)
+!!      call mtprng_init_by_array(init_key, state )
 !!      ! returns a INT64 integer with a range in 0 .. 2^32-1
 !!      write(*,*) mtprng_rand64(state)
 !!      ! returns a IEEE64 real, may be used as double precision
@@ -665,7 +665,7 @@ subroutine mtprng_init_by_array(init_key, state)
 character(len=*),parameter::ident="@(#)M_random::mtprng_int_by_array(3f): Initialize with an array of seeds"
 
 ! arguments
-integer(INT32), dimension(:), intent(in) :: init_key
+integer(INT32),intent(in)       :: init_key(:)
 type(mtprng_state), intent(out) :: state
 
    ! working storage
@@ -872,7 +872,7 @@ end function mtprng_rand
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    mtprng_rand_rang(3f) - [M_random:MERSENNE TWISTER] Obtain a pseudo-random integer in the range [lo,hi]
+!!    mtprng_rand_range(3f) - [M_random:MERSENNE TWISTER] Obtain a pseudo-random integer in the range [lo,hi]
 !!##SYNOPSIS
 !!
 !!    function mtprng_rand_range(state, lo, hi) result(r)
@@ -897,14 +897,14 @@ end function mtprng_rand
 !!   Sample program:
 !!
 !!    program demo_mtprng_rand_range
-!!    use M_random, only : mtprng_state, mtprng_init, mtprng_rand_rang
+!!    use M_random, only : mtprng_state, mtprng_init, mtprng_rand_range
 !!    use, intrinsic :: iso_fortran_env, only : int32
 !!    implicit none
 !!    integer(INT32) :: seed
 !!    type(mtprng_state) :: state
 !!      seed = nint(100*secnds(0.))
 !!      call mtprng_init(seed, state)
-!!      write(*,*) mtprng_rand_rang(state,20,30)
+!!      write(*,*) mtprng_rand_range(state,20,30)
 !!    end program demo_mtprng_rand_range
 !===================================================================================================================================
 function mtprng_rand_range(state, lo, hi) result(r)
@@ -946,7 +946,7 @@ end function mtprng_rand_range
 !!   Sample program:
 !!
 !!    program demo_mtprng_real1
-!!    use M_random, only : mtprng_state, mtprng_rand_real1
+!!    use M_random, only : mtprng_state, mtprng_rand_real1,mtprng_init
 !!    use, intrinsic :: iso_fortran_env, only : int32
 !!    implicit none
 !!    integer(INT32) :: seed

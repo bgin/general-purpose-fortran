@@ -42,7 +42,7 @@ RETURN VALUE
 EXAMPLE
   Sample program:
 
-   program test_get_command_argument
+   program demo_get_command_argument
    implicit none
      integer :: count,i, longest, argument_length
      integer,allocatable  :: istat(:), ilen(:)
@@ -71,7 +71,7 @@ EXAMPLE
      ! show the results
      write (*,'(i3.3,1x,i0.5,1x,i0.5,1x,"[",a,"]")') (i,istat(i),ilen(i),arguments(i)(:ilen(i)),i=0,count)
 
-   end program test_get_command_argument
+   end program demo_get_command_argument
 
 
  Sample output:

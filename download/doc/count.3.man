@@ -32,7 +32,7 @@ EXAMPLE
 
   Sample program:
 
-   program test_count
+   program demo_count
        integer, dimension(2,3) :: a, b
        logical, dimension(2,3) :: mask
        a = reshape( (/ 1, 2, 3, 4, 5, 6 /), (/ 2, 3 /))
@@ -52,7 +52,7 @@ EXAMPLE
        print '(3i3)', count(mask, 1)
        print *
        print '(3i3)', count(mask, 2)
-   end program test_count
+   end program demo_count
 
    Expected Results:
 

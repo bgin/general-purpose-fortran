@@ -30,7 +30,7 @@ EXAMPLE
 
   Sample program:
 
-    program test_size
+    program demo_size
     integer :: arr(0:2,-5:5)=reshape([(((i-1)*11+j,i=1,3),j=1,11)],[3,11])
        write(*,*) 'SIZE of simple one-dimensional array=',size([ 11, 22, 33 ])    ! 3
 
@@ -82,7 +82,7 @@ EXAMPLE
        write(*,*)'UBOUND(arr,DIM=2):',ubound(arr,dim=2)
     end subroutine interfaced
 
-    end program test_size
+    end program demo_size
 
     ! NOTE: If NOINTERFACE(3f) had an assumed-shape argument with : for dimensions it
     !       could only be properly called with an explicit interface

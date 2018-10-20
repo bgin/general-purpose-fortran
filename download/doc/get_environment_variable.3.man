@@ -45,7 +45,7 @@ EXAMPLE
 
   Sample program:
 
-   program test_getenv
+   program demo_getenv
      character(len=:),allocatable :: var
      character(len=:),allocatable :: homedir
      integer :: howbig
@@ -58,7 +58,7 @@ EXAMPLE
      call get_environment_variable(var, homedir)
      ! print environment variable name value
      write (*,'(a,"=""",a,"""")')var,trim(homedir)
-   end program test_getenv
+   end program demo_getenv
 
 Typical Results:
 

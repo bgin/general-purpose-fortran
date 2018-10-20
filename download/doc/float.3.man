@@ -22,10 +22,10 @@ EXAMPLE
 
   Sample program:
 
-    program test_float
+    program demo_float
         integer :: i = 1
         if (float(i) /= 1.) call abort
-    end program test_float
+    end program demo_float
 
 STANDARD
 

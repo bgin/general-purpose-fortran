@@ -27,10 +27,10 @@ EXAMPLE
 
   Sample program:
 
-   program test_erfc
+   program demo_erfc
      real(8) :: x = 0.17_8
      x = erfc(x)
-   end program test_erfc
+   end program demo_erfc
 
 STANDARD
 

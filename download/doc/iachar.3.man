@@ -26,10 +26,10 @@ EXAMPLE
 
   Sample program:
 
-    program test_iachar
+    program demo_iachar
       integer i
       i = iachar(' ')
-    end program test_iachar
+    end program demo_iachar
 
 NOTE
 
