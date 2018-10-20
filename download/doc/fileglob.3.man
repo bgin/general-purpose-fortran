@@ -1,7 +1,8 @@
 NAME
   fileglob(3f) - [M_system] Read output of an ls(1) command from Fortran
+
 SYNOPSIS
-  subroutine fileglob(glob, list)
+  subroutine fileglob(glob,list)
 
    character(len=*),intent(in)   :: glob
    character(len=*),pointer      :: list(:)
@@ -9,6 +10,7 @@ SYNOPSIS
 DESCRIPTION
    Non-portable procedure uses the shell and the ls(1) command to expand a filename
    and returns a pointer to a list of expanded filenames.
+
 OPTIONS
    glob   Pattern for the filenames (like: *.txt)
    list   Allocated list of filenames (returned), the caller must deallocate it.
@@ -16,10 +18,10 @@ OPTIONS
 EXAMPLE
   Read output of an ls(1) command from Fortran
 
-   program test_fileglob  ! simple unit test
+   program demo_fileglob  ! simple unit test
       call testit('*.*')
       call testit('/tmp/__notthere.txt')
-   end program test_fileglob
+   contains
 
    subroutine testit(string)
       use M_system, only : fileglob
@@ -30,4 +32,6 @@ EXAMPLE
       write(*,'(a)')(trim(list(i)),i=1,size(list))
       deallocate(list)
    end subroutine testit
+
+   end program demo_fileglob  ! simple unit test
 

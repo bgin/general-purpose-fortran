@@ -139,7 +139,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)COPYRIGHT:      Copyright (C) 2016 John S. Urban>',&
-'@(#)COMPILED:       Mon, Oct 15th, 2018 5:17:25 PM>',&
+'@(#)COMPILED:       Thu, Oct 18th, 2018 11:23:48 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -150,6 +150,7 @@ program penv
 use M_kracken, only : kracken, lget, sget, sgets, IPvalue
 use M_system, only : system_initenv, system_readenv, system_unsetenv, system_putenv
 use M_system, only : system_clearenv
+use M_strings, only : matchw
 implicit none
 character(len=:),allocatable       :: string
 logical                            :: Csyntax, Bsyntax, printedsome, valuesonly, missing=.false.
@@ -178,24 +179,24 @@ character(len=256)                 :: sstat
    names=sgets('penv_oo')                                                    ! get list of individual names (assumed no spaces)
    if(size(names).ne.0)then                                                  ! print variables specified by name
       do i=1,size(names)                                                     ! step thru names
-            if(index(names(i),'=').eq.0)then
+         if(index(names(i),'=').eq.0)then
             call get_environment_variable(name=trim(names(i)),length=ilength,status=istatus)
             select case(istatus)
-            case(0)                                                          ! variable is defined
+             case(0)                                                         ! variable is defined
                if(ilength.eq.0)then                                          ! value= apparently cannot have zero length
                   avalue=''
                else
                   allocate(character(len=ilength) :: avalue)                      ! make long enough to hold value
                   call get_environment_variable(name=trim(names(i)),value=avalue) ! get environment variable value by name
                endif
-            case(-1)                                                         ! blank value
+             case(-1)                                                        ! blank value
                avalue=' '
-            case(1)                                                          ! name not found
+             case(1)                                                         ! name not found
                missing=.true.
                cycle
-            case(2)                                                          ! environment variables not supported
+             case(2)                                                         ! environment variables not supported
                cycle
-            case default                                                     ! unknown error
+             case default                                                    ! unknown error
                cycle
             end select
             string=trim(names(i))//'='//avalue(:ilength)                     ! build string to same format system_readenv(3f) gets
@@ -220,8 +221,9 @@ character(len=256)                 :: sstat
          do
             string=system_readenv()
             if(string.eq.'') exit
-            if(index(string,trim(prefixes(i))).ne.1)cycle
-            call printformatted()
+            if(matchw(string,trim(prefixes(i))//'*'))then
+               call printformatted()
+            endif
          enddo
       enddo
    endif
@@ -235,10 +237,10 @@ character(len=256)                 :: sstat
       enddo
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
-  string=sget('penv_cmd')
-  if(string.ne.'')then
-     call execute_command_line(trim(string),cmdstat=cstat,cmdmsg=sstat)
-  endif
+   string=sget('penv_cmd')
+   if(string.ne.'')then
+      call execute_command_line(trim(string),cmdstat=cstat,cmdmsg=sstat)
+   endif
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(missing)then                                                           ! a specifically named variable was not found
       stop 1                                                                 ! return non-zero system exit status if supported
@@ -269,15 +271,15 @@ function printquoted_SH(string) result (quoted)
 ! print variable names and variable values with quotes and special escaping of ' for sh(1) shell
 character(len=*),intent(in)    :: string
 character(len=:),allocatable   :: quoted
-   integer                     :: i
-   character                   :: c
+integer                        :: i
+character                      :: c
    quoted="'"
    do i=1,len(string)
       c=string(i:i)
       select case(c)
-      case ("'")
+       case ("'")
          quoted=quoted//"'\''"
-      case default
+       case default
          quoted=quoted//c
       end select
    enddo
@@ -288,17 +290,17 @@ function printquoted_CSH(string) result (quoted)
 ! print variable names and variable values with quotes and special escaping of ' and ! for csh(1) shell
 character(len=*),intent(in)    :: string
 character(len=:),allocatable   :: quoted
-   integer                     :: i
-   character                   :: c
+integer                        :: i
+character                      :: c
    quoted="'"
    do i=1,len(string)
       c=string(i:i)
       select case(c)
-      case ("'")
+       case ("'")
          quoted=quoted//"'\''"
-      case ('!')
+       case ('!')
          quoted=quoted//"\!"
-      case default
+       case default
          quoted=quoted//c
       end select
    enddo

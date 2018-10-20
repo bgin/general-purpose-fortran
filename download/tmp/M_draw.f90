@@ -1922,8 +1922,6 @@
 !!    integer :: rows, xoff, yoff, box_sz
 !!    integer :: i20, i30, ncols, nrows, ilines
 !!    real    :: bottom, left, sun_radius, planet_radius, planet_offset
-!!    character(len=40) :: filename
-!!    integer :: movie(300,0:wide-1,0:tall-1)
 !!    integer :: ipaws
 !!       call prefsize(wide,tall)
 !!       call vinit(' ') ! start graphics using device $M_draw_DEVICE
@@ -4156,8 +4154,7 @@
 !!    use M_draw,     only : D_YELLOW,  D_MAGENTA,  D_CYAN
 !!    use M_drawPLUS, only : page
 !!    implicit none
-!!    real    :: b=.5
-!!    real    :: R=4.6
+!!    real    :: b=0.5
 !!    integer :: ipaws
 !!    call prefsize(1000,200)
 !!    call vinit(' ') ! start graphics using device $M_draw_DEVICE

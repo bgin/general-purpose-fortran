@@ -45,5 +45,3 @@ EXAMPLE
    ierr=system_mkdir('_scratch',IANY([R_USR,W_USR,X_USR)])
    end program demo_system_mkdir
 
-  Expected results:
-

@@ -3368,7 +3368,7 @@ end subroutine Easter
 !!##SYNOPSIS
 !!
 !!
-!!    subroutine ephemeris(itime,planet,declination_,declination_m,declination_compass,ascent_hours,ascent_minutes)
+!!    subroutine ephemeris(itime,planet,declination_d,declination_m,declination_compass,ascent_hours,ascent_minutes)
 !!
 !!     integer,parameter            :: dp=kind(0.0d0)
 !!     integer,intent(in)           :: itime(8)
@@ -3420,11 +3420,9 @@ end subroutine Easter
 !!
 !!      program demo_ephemeris
 !!      use M_time, only : ephemeris, fmtdate
-!!      integer,parameter   :: dp=kind(0.0d0)
-!!
-!!      integer             :: itime(8)
-!!      class(*),intent(in) :: planet
-!!
+!!      implicit none
+!!      integer            :: itime(8)
+!!      integer            :: planet
 !!      integer            :: declination_d, declination_m
 !!      character(len=1)   :: declination_compass
 !!      integer            :: ascent_hours, ascent_minutes

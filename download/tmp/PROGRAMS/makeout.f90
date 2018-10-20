@@ -11,19 +11,19 @@ help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '       makeout(1f) - [DEVELOPER] Generate a Makefile from the sources (C, Fortran) in the current directory',&
 'SYNOPSIS                                                                        ',&
-'       makeout program_files [-o [filename]] [-v][--version|--help]             ',&
+'       makeout program_files [-o [filename]] [-l LIBNAME] [-v][--version|--help]',&
 'DESCRIPTION                                                                     ',&
 '  If all the source for a set of programs exists in a single directory,         ',&
-'  with a subdirectory containing the files with main programs, then makeout(1)  ',&
-'  creates a make(1) file for the current directory and the specified programs.  ',&
-'  A mixture of C and Fortran files is allowed. makeout(1) looks for             ',&
-'  dependencies created by INCLUDE(7f), "#include", and USE(3f) statements       ',&
-'  in their most common forms.                                                   ',&
+'  with a subdirectory containing the files with main programs,                  ',&
+'  then makeout(1) creates a make(1) file for the current directory              ',&
+'  and the specified programs. A mixture of C and Fortran files is               ',&
+'  allowed. makeout(1) looks for dependencies created by INCLUDE(7f),            ',&
+'  "#include", and USE(3f) statements in their most common forms.                ',&
 '                                                                                ',&
 '  The resulting makefile is quite simple, with few comments. The targets        ',&
 '  and rules are explicit. The goal is to provide a well defined starting        ',&
-'  point for your Fortran makefile. You will most certainly need to edit         ',&
-'  the resultant makefile, but doing so is intended to be quite simple.          ',&
+'  point for your Fortran makefile. You might need to customize the              ',&
+'  resultant makefile, but doing so is intended to be quite simple.              ',&
 '                                                                                ',&
 '  For more complex dependencies see your compiler information, as               ',&
 '  several compilers have switches that will generate a very complete            ',&
@@ -33,7 +33,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '       ifort     -gen-dep  # Intel Compiler Suite                               ',&
 '                                                                                ',&
 'OPTIONS                                                                         ',&
-'       program_files  optional name of program files                            ',&
+'       program_files  optional name of program files.                           ',&
 '                      Defaults to current directory.                            ',&
 '       -o             output file. If not present, defaults to stdout.          ',&
 '                      If present but no value is given "Makefile" is            ',&
@@ -47,6 +47,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                        profile     adds -pg option for gprof(1)                ',&
 '                        production  good options for optimized performance      ',&
 '                        debug       typical debug options                       ',&
+'       -l LIBNAME     optional library name to merge all *.o files into         ',&
 '                                                                                ',&
 '       --help         display command help and exit                             ',&
 '       --version      output version information and exit EXAMPLES              ',&
@@ -58,15 +59,16 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   F90             defaults to "gfortran"                                       ',&
 '   F90FLAGS        defaults to "-O"                                             ',&
 '                                                                                ',&
-'   FC              defaults to "f90"                                            ',&
+'   FC              defaults to "gfortran"                                       ',&
 '   FFLAGS          defaults to "-O"                                             ',&
 '                                                                                ',&
 '   LDFLAGS         defaults to "-s"                                             ',&
 '   LIBS            defaults to "-lncurses -lsqlite3 -lreadline"                 ',&
 'EXAMPLES                                                                        ',&
-'    Common usage                                                                ',&
+'  Common usage                                                                  ',&
 '                                                                                ',&
-'        env F90=f90 makeout PROGRAMS/testit.f90 -o;make                         ',&
+'    makeout PROGRAMS/testit.f90 -o                                              ',&
+'    make                                                                        ',&
 '                                                                                ',&
 'SEE ALSO                                                                        ',&
 '  If your project needs exceeds the capabilities of makeout(1), see             ',&
@@ -85,19 +87,19 @@ end subroutine help_usage
 !!        makeout(1f) - [DEVELOPER] Generate a Makefile from the sources (C, Fortran) in the current directory
 !!##SYNOPSIS
 !!
-!!        makeout program_files [-o [filename]] [-v][--version|--help]
+!!        makeout program_files [-o [filename]] [-l LIBNAME] [-v][--version|--help]
 !!##DESCRIPTION
 !!   If all the source for a set of programs exists in a single directory,
-!!   with a subdirectory containing the files with main programs, then makeout(1)
-!!   creates a make(1) file for the current directory and the specified programs.
-!!   A mixture of C and Fortran files is allowed. makeout(1) looks for
-!!   dependencies created by INCLUDE(7f), "#include", and USE(3f) statements
-!!   in their most common forms.
+!!   with a subdirectory containing the files with main programs,
+!!   then makeout(1) creates a make(1) file for the current directory
+!!   and the specified programs. A mixture of C and Fortran files is
+!!   allowed. makeout(1) looks for dependencies created by INCLUDE(7f),
+!!   "#include", and USE(3f) statements in their most common forms.
 !!
 !!   The resulting makefile is quite simple, with few comments. The targets
 !!   and rules are explicit. The goal is to provide a well defined starting
-!!   point for your Fortran makefile. You will most certainly need to edit
-!!   the resultant makefile, but doing so is intended to be quite simple.
+!!   point for your Fortran makefile. You might need to customize the
+!!   resultant makefile, but doing so is intended to be quite simple.
 !!
 !!   For more complex dependencies see your compiler information, as
 !!   several compilers have switches that will generate a very complete
@@ -107,7 +109,7 @@ end subroutine help_usage
 !!        ifort     -gen-dep  # Intel Compiler Suite
 !!
 !!##OPTIONS
-!!        program_files  optional name of program files
+!!        program_files  optional name of program files.
 !!                       Defaults to current directory.
 !!        -o             output file. If not present, defaults to stdout.
 !!                       If present but no value is given "Makefile" is
@@ -121,6 +123,7 @@ end subroutine help_usage
 !!                         profile     adds -pg option for gprof(1)
 !!                         production  good options for optimized performance
 !!                         debug       typical debug options
+!!        -l LIBNAME     optional library name to merge all *.o files into
 !!
 !!        --help         display command help and exit
 !!        --version      output version information and exit EXAMPLES
@@ -132,16 +135,17 @@ end subroutine help_usage
 !!    F90             defaults to "gfortran"
 !!    F90FLAGS        defaults to "-O"
 !!
-!!    FC              defaults to "f90"
+!!    FC              defaults to "gfortran"
 !!    FFLAGS          defaults to "-O"
 !!
 !!    LDFLAGS         defaults to "-s"
 !!    LIBS            defaults to "-lncurses -lsqlite3 -lreadline"
 !!##EXAMPLES
 !!
-!!     Common usage
+!!   Common usage
 !!
-!!         env F90=f90 makeout PROGRAMS/testit.f90 -o;make
+!!     makeout PROGRAMS/testit.f90 -o
+!!     make
 !!
 !!##SEE ALSO
 !!   If your project needs exceeds the capabilities of makeout(1), see
@@ -164,7 +168,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    create Makefile for current directory>',&
 '@(#)VERSION:        1.0, 2017-12-09>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Mon, Oct 15th, 2018 5:19:36 PM>',&
+'@(#)COMPILED:       Fri, Oct 19th, 2018 6:52:33 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -174,7 +178,7 @@ end subroutine help_version
 !----------------------------------------------------------------------------------------------------------------------------------
 program makeout
 use M_io, only                         : splitpath, read_line
-use M_kracken, only                    : kracken, rget, lget, sgets, sget
+use M_kracken, only                    : kracken, rget, lget, sgets, sget, IPvalue
 use M_sort, only                       : sort_shell, unique
 use M_strings, only                    : expand, split, lower, substitute, chomp
 use M_system, only                     : system_opendir,system_readdir, system_closedir, system_stat, system_isdir
@@ -187,25 +191,26 @@ implicit none
 character(len=*),parameter::ident="@(#)makeout(1f): Generate a Makefile from the sources (C, Fortran) in the current directory."
 
 character(len=:),allocatable    :: programs(:)
-character(len=4096),allocatable :: c_programs(:)
-character(len=4096),allocatable :: f_programs(:)
+character(len=IPvalue),allocatable :: c_programs(:)
+character(len=IPvalue),allocatable :: f_programs(:)
 character(len=:),allocatable    :: fixed(:)
 character(len=:),allocatable    :: directory
 character(len=:),allocatable    :: sources
-character(len=4096),allocatable :: sources_array(:)
-character(len=4096),allocatable :: sources_array_lower(:)
+character(len=IPvalue),allocatable :: sources_array(:)
+character(len=IPvalue),allocatable :: sources_array_lower(:)
 character(len=:),allocatable    :: objects
 character(len=:),allocatable    :: bases
 type(c_ptr)                     :: dir
 character(len=:),allocatable    :: filename
 character(len=:),allocatable    :: outfile
 character(len=:),allocatable    :: makeout_mode
+character(len=:),allocatable    :: libname
 logical                         :: makeout_v
 integer                         :: i, io, ios
 integer                         :: ierr
 character(len=256)              :: message
 
-integer,parameter               :: maxlen=4096
+integer,parameter               :: maxlen=IPvalue
 character(len=maxlen)           :: dirname
 character(len=maxlen)           :: name
 character(len=maxlen)           :: basename
@@ -215,13 +220,14 @@ character(len=maxlen)           :: ext
    objects=''                                                     ! list of target objects starts with empty array
    bases=''                                                       ! list of target names
 !----------------------------------------------------------------------------------------------------------------------------------
-   call kracken('makeout',' -help F -version F -v .F. -o "#N#" -mode ') ! define and crack command line
+   call kracken('makeout',' -help F -version F -v .F. -l -o "#N#" -mode ') ! define and crack command line
    call help_usage(lget('makeout_help'))
    call help_version(lget('makeout_version'))
    makeout_v=lget('makeout_v')
    makeout_mode=sget('makeout_mode')
 
    outfile=sget('makeout_o')                                      ! open output file if specified
+   libname=sget('makeout_l')
    if(outfile.eq.'#N#')then
       io=OUTPUT_UNIT
    else
@@ -306,6 +312,10 @@ character(len=maxlen)           :: ext
    write(io,'(a)')repeat('# ',40)
    write(io,'(a)')'# platform-specific values you will probably change'
    write(io,'(a)')'# '
+   if(libname.ne.'')then
+      call printmakevar('LIBRARY','lib'//trim(libname)//'.a')
+      call printmakevar('LIB',trim(libname))
+   endif
    select case(makeout_mode)
    case('debug')
       call printmakevar('LIBS','-lncurses -lsqlite3 -lreadline')
@@ -318,7 +328,7 @@ character(len=maxlen)           :: ext
       & -Wunused &
       & -Wuninitialized &
       &')
-      call printmakevar('FC','f90')
+      call printmakevar('FC','gfortran')
       call printmakevar('FFLAGS',' &
       & -std=f2008 &
       & -Og &
@@ -355,7 +365,7 @@ character(len=maxlen)           :: ext
       call printmakevar('LIBS','-lncurses -lsqlite3 -lreadline')
       call printmakevar('CC','cc')
       call printmakevar('CFLAGS','-pg')
-      call printmakevar('FC','f90')
+      call printmakevar('FC','gfortran')
       call printmakevar('FFLAGS','-pg')
       call printmakevar('F90','gfortran')
       call printmakevar('F90FLAGS','-pg')
@@ -364,7 +374,7 @@ character(len=maxlen)           :: ext
       call printmakevar('LIBS','-lncurses -lsqlite3 -lreadline')
       call printmakevar('CC','cc')
       call printmakevar('CFLAGS','-O')
-      call printmakevar('FC','f90')
+      call printmakevar('FC','gfortran')
       call printmakevar('FFLAGS','-O3  -march=native -Wall -fwhole-file -std=f2008')
       call printmakevar('F90','gfortran')
       call printmakevar('F90FLAGS','-O3  -march=native -Wall -fwhole-file -std=f2008')
@@ -374,7 +384,7 @@ character(len=maxlen)           :: ext
       call printmakevar('LIBS','-lncurses -lsqlite3 -lreadline')
       call printmakevar('CC','cc')
       call printmakevar('CFLAGS','-O')
-      call printmakevar('FC','f90')
+      call printmakevar('FC','gfortran')
       call printmakevar('FFLAGS','-O')
       call printmakevar('F90','gfortran')
       call printmakevar('F90FLAGS','-O')
@@ -389,6 +399,7 @@ character(len=maxlen)           :: ext
       write(io,'(a)')'all: $(PROG) $(CPROG)'
    endif
 !----------------------------------------------------------------------------------------------------------------------------------
+   if(libname.eq.'')then
    fixed=[character(len=132) :: &
       &'                                                   ',&
       &'$(PROG): $(OBJS)                                   ',&
@@ -446,6 +457,68 @@ character(len=maxlen)           :: ext
       &'\t@rm -f $(*F).F90 # ${?F:.ff=.o}                                                 ',&
       &'#=================================================================================',&
       &'']
+   else
+   fixed=[character(len=132) :: &
+      &'                                                   ',&
+      &'$(PROG): $(LIBRARY)                                ',&
+      &'                                                   ',&
+      &'\t$(F90) $(LDFLAGS) $@.f90 -L. -l$(LIB) -o $@ $(LIBS)',&
+      &'                                                   ',&
+      &'$(LIBRARY): $(OBJS)                                ',&
+      &'\t$(AR) $(ARFLAGS) $@ $^                           ',&
+      &'                                                   ',&
+      &'clean:                                             ',&
+      &'\trm -f $(PROG) $(CPROG) $(OBJS) *.mod             ',&
+      &'                                                   ',&
+      &'.SUFFIXES: $(SUFFIXES) .f90 .F90 .ff .FF .shf      ',&
+      &'# .shf -- assumed to write Fortran code to stdout when executed  ',&
+      &'# .FF -- run thru ufpp(1) with    $system directives allowed     ',&
+      &'# .ff -- run thru ufpp(1) without $system directives allowed     ',&
+      &'                                                   ',&
+      &'.f90.o:                                            ',&
+      &'\t$(F90) $(F90FLAGS) -c $<                         ',&
+      &'                                                   ',&
+      &'.F90.o:                                            ',&
+      &'\t$(F90) $(F90FLAGS) -c $<                         ',&
+      &'                                                   ',&
+      &'.f95.o:                                            ',&
+      &'\t$(F90) $(F90FLAGS) -c $<                         ',&
+      &'                                                   ',&
+      &'.F95.o:                                            ',&
+      &'\t$(F90) $(F90FLAGS) -c $<                         ',&
+      &'                                                   ',&
+      &'.f03.o:                                            ',&
+      &'\t$(F90) $(F90FLAGS) -c $<                         ',&
+      &'                                                   ',&
+      &'.F03.o:                                            ',&
+      &'\t$(F90) $(F90FLAGS) -c $<                         ',&
+      &'#=================================================================================',&
+      &'# Fortran free format file known to have ufpp(1) preprocessor directives          ',&
+      &'# run thru ufpp(1) preprocessor with system commands allowed, variable F90 defined',&
+      &'# Assumes .F90 file does not exist previously, as it will overwrite it.           ',&
+      &'.FF.o:                                                                            ',&
+      &'\t@# run thru ufpp(1) preprocessor with system commands allowed                   ',&
+      &'\t@[ -x $(*F).F90 ] || echo "error: $(*F).F90 exists"                             ',&
+      &'\tufpp -D F90 `uname -o` -verbose -system .true. -i $(<) -o $(*F).F90             ',&
+      &'\t@[ -s $(*F).F90 ] || echo "error: $(*F).F90 is empty"                           ',&
+      &'\t$(F90) $(F90FLAGS) -c $(*F).F90                                                 ',&
+      &'# clean up scratch files                                                          ',&
+      &'\t@rm -f $(*F).F90 # ${?F:.FF=.o}                                                 ',&
+      &'#=================================================================================',&
+      &'# Fortran free format file known to have ufpp(1) preprocessor directives          ',&
+      &'# run thru ufpp(1) preprocessor with no system commands allowed, variable F90     ',&
+      &'# defined. Assumes .F90 file does not exist previously, as it will overwrite it.  ',&
+      &'.ff.o:                                                                            ',&
+      &'\t@# run thru ufpp(1) preprocessor with system commands allowed                   ',&
+      &'\t@[ -x $(*F).F90 ] || echo "error: $(*F).F90 exists"                             ',&
+      &'\tufpp -D F90 `uname -o` -verbose -i $(<) -o $(*F).F90                            ',&
+      &'\t@[ -s $(*F).F90 ] || echo "error: $(*F).F90 is empty"                           ',&
+      &'\t$(F90) $(F90FLAGS) -c $(*F).F90                                                 ',&
+      &'# clean up scratch files                                                          ',&
+      &'\t@rm -f $(*F).F90 # ${?F:.ff=.o}                                                 ',&
+      &'#=================================================================================',&
+      &'']
+   endif
    do i=1,size(fixed)
       write(io,'(a)')expand(trim(fixed(i)))
    enddo
@@ -489,7 +562,7 @@ implicit none
    character(len=:),allocatable  :: depends
    character(len=:),allocatable  :: token
    integer                       :: i
-   integer,parameter             :: maxlen=4096
+   integer,parameter             :: maxlen=IPvalue
    character(len=maxlen)         :: dirname
    character(len=maxlen)         :: name
    character(len=maxlen)         :: basename
@@ -521,17 +594,17 @@ end subroutine find_dependencies
 function scanfile(filename) result (depends)
 implicit none
 character(len=*),intent(in) :: filename
-   character(len=4096),allocatable :: array(:) ! output array of tokens
+   character(len=IPvalue),allocatable :: array(:) ! output array of tokens
    character(len=:),allocatable    :: line
    character(len=:),allocatable    :: depends
-   character(len=4096),allocatable :: depends_array(:)
+   character(len=IPvalue),allocatable :: depends_array(:)
    integer                         :: iunique
    integer                         :: i
    integer                         :: ios
    integer                         :: lun
    integer                         :: ifound
    character(len=256)              :: message
-   integer,parameter               :: maxlen=4096
+   integer,parameter               :: maxlen=IPvalue
    character(len=maxlen)           :: dirname
    character(len=maxlen)           :: name
    character(len=maxlen)           :: basename

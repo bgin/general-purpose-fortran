@@ -21,8 +21,7 @@ EXAMPLE
    use M_draw,     only : D_YELLOW,  D_MAGENTA,  D_CYAN
    use M_drawPLUS, only : page
    implicit none
-   real    :: b=.5
-   real    :: R=4.6
+   real    :: b=0.5
    integer :: ipaws
    call prefsize(1000,200)
    call vinit(' ') ! start graphics using device $M_draw_DEVICE

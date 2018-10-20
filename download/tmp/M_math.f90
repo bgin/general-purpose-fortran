@@ -157,7 +157,7 @@ contains
 
 !>
 !!##NAME
-!!     julfit(3f) - [M_math:fit] linear least squares curve fits , destroys input arrays
+!!     julfit(3f) - [M_math:fit] linear least squares curve fits, destroys input arrays
 !!
 !!##SYNOPSIS
 !!
@@ -213,7 +213,7 @@ contains
 !>
 !! PRODUCT:        CLI library utilities and examples
 !! PROGRAM:        julfit(3f)
-!! DESCRIPTION:    linear least squares curve fits , destroys input arrays
+!! DESCRIPTION:    linear least squares curve fits, destroys input arrays
 !! AUTHOR:         John S. Urban
 !! HOME PAGE:      http://www.urbanjost.altervista.org/index.html
 !===================================================================================================================================
@@ -328,11 +328,14 @@ end subroutine julfit
 !!       real,intent(out)   :: r2
 !!##DESCRIPTION
 !!
-!!    While the method of least squares often gives optimal estimates parameters for linear processes,
-!!    it is very sensitive to the presence of unusual data points in the data used to fit a model, as the square of the
-!!    distance from the resulting fit is used in the calculation.
-!!    That is, a few outliers can sometimes seriously skew the results of a least squares analysis;
-!!    this makes model validation, especially with respect to outliers, critical to obtaining sound answers.
+!!    While the method of least squares often gives optimal estimates
+!!    parameters for linear processes, it is very sensitive to the presence
+!!    of unusual data points in the data used to fit a model, as the square
+!!    of the distance from the resulting fit is used in the calculation.
+!!
+!!    That is, a few outliers can sometimes seriously skew the results of a
+!!    least squares analysis; this makes model validation, especially with
+!!    respect to outliers, critical to obtaining sound answers.
 !!
 !!##OPTIONS
 !!     X     input X values
@@ -345,34 +348,35 @@ end subroutine julfit
 !!
 !!   sample program
 !!
-!!    program demo_julfit1
-!!    implicit none
-!!    intrinsic random_number
-!!    integer :: points
-!!    real    :: slope, intercept
-!!    write(*,*)'For y=m*x+b enter M and B and number of points N:'
-!!    read(*,*)slope,intercept,points
-!!    call testit()
-!!    contains
+!!       program demo_julfit1
+!!          use M_math, only : julfit1
+!!          implicit none
+!!          intrinsic random_number
+!!          integer :: points
+!!          real    :: slope, intercept
+!!          write(*,*)'For y=m*x+b enter M and B and number of points N:'
+!!          read(*,*)slope,intercept,points
+!!          call testit()
+!!       contains
 !!
-!!    subroutine testit()
-!!    real    :: x(points), y(points)
-!!    real    :: slope_out, intercept_out, r2
-!!    integer :: i, ii
-!!    real    :: rndnum
-!!       do i=1,points
-!!          x(i)=i*0.10
-!!          ! assigned pseudorandom numbers from the uniform distribution in the interval 0  x < 1.
-!!          call random_number(rndnum)
-!!          y(i)=slope*(x(i)+4.0*(rndnum-0.5))+intercept
-!!       enddo
-!!       !write(*,*)(ii,x(ii),y(ii),new_line('A'),ii=1,points)
-!!       call julfit1(x,y,points,slope_out,intercept_out,r2)
-!!       write(*,*)'SLOPE AND INTERCEPT IN  ',slope,intercept
-!!       write(*,*)'SLOPE AND INTERCEPT OUT ',slope_out,intercept_out,r2
-!!    end subroutine testit
+!!          subroutine testit()
+!!             real    :: x(points), y(points)
+!!             real    :: slope_out, intercept_out, r2
+!!             integer :: i
+!!             real    :: rndnum
+!!             do i=1,points
+!!                x(i)=i*0.10
+!!                ! assigned pseudorandom numbers from the uniform distribution in the interval 0  x < 1.
+!!                call random_number(rndnum)
+!!                y(i)=slope*(x(i)+4.0*(rndnum-0.5))+intercept
+!!             enddo
+!!             !write(*,*)(ii,x(ii),y(ii),new_line('A'),ii=1,points)
+!!             call julfit1(x,y,points,slope_out,intercept_out,r2)
+!!             write(*,*)'SLOPE AND INTERCEPT IN  ',slope,intercept
+!!             write(*,*)'SLOPE AND INTERCEPT OUT ',slope_out,intercept_out,r2
+!!          end subroutine testit
 !!
-!!    end program demo_julfit1
+!!       end program demo_julfit1
 !!
 !!   Results
 !!
@@ -4423,11 +4427,11 @@ END SUBROUTINE accdig
 !!
 !!       subroutine dp_accdig(x,y,rdgits,acurcy,ind)
 !!
-!!        doubleprecision,intent(in)     :: X
-!!        doubleprecision,intent(in)     :: Y
-!!        doubleprecision,intent(in)     :: DIGI0
-!!        doubleprecision,intent(out)    :: acurcy
-!!        integer,intent(out) :: ind
+!!        doubleprecision,intent(in)  :: X
+!!        doubleprecision,intent(in)  :: Y
+!!        real,intent(in)             :: DIGI0
+!!        doubleprecision,intent(out) :: acurcy
+!!        integer,intent(out)         :: ind
 !!
 !!##DESCRIPTION
 !!
@@ -4491,8 +4495,10 @@ END SUBROUTINE accdig
 !!
 !!    program demo_dp_accdig ! fortran 90 example
 !!    use M_math, only : dp_accdig
+!!    implicit none
 !!    integer digi
-!!    real vals(9)
+!!    doubleprecision :: a, b
+!!    doubleprecision :: vals(9)
 !!    data vals/ &
 !!      &1.234680,   1.2345378,  2.2234568, 1.2345678, &
 !!      &1.2345679, -1.2345678, 76.234567,  2.4691356, &
@@ -4550,24 +4556,34 @@ END SUBROUTINE accdig
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
-SUBROUTINE dp_accdig (X,Y,digi0,ACURCY,IND)
-use M_journal, only : journal
+SUBROUTINE dp_accdig (x,y,digi0,ACURCY,IND)
+use M_journal, only  : journal
+use M_anything, only : anyscalar_to_double
 implicit none
+
 character(len=*),parameter::ident="@(#)M_math::dp_accdig(3f): compare two double values only up to a specified number of digits"
+
 !  INPUT ...
-   doubleprecision,intent(in)  :: x           ! FIRST  OF TWO DOUBLE NUMBERS TO BE COMPARED.
-   doubleprecision,intent(in)  :: y           ! SECOND OF TWO DOUBLE NUMBERS TO BE COMPARED.
-   doubleprecision,intent(in)  :: digi0       ! NUMBER OF DIGITS TO BE SATISFIED IN RELATIVE TOLERANCE.
+   class(*),intent(in)         :: x           ! FIRST  OF TWO DOUBLE NUMBERS TO BE COMPARED.
+   class(*),intent(in)         :: y           ! SECOND OF TWO DOUBLE NUMBERS TO BE COMPARED.
+   class(*),intent(in)         :: digi0       ! NUMBER OF DIGITS TO BE SATISFIED IN RELATIVE TOLERANCE.
+
+   doubleprecision             :: x_local
+   doubleprecision             :: y_local
+
 !  OUTPUT ...
    integer,intent(out)         :: ind         ! = 0, IF TOLERANCE IS     SATISFIED.
                                               ! = 1, IF TOLERANCE IS NOT SATISFIED.
-   doubleprecision,intent(out) :: acurcy      ! = - LOG10 (ABS((X-Y)/Y)))
+   doubleprecision,intent(out) :: acurcy      ! = - LOG10 (ABS((x_local-y_local)/y_local)))
    doubleprecision             ::  diff
    doubleprecision             ::  digi
    integer                     ::  idble_significant_digits
 !  ==================================================================
+   x_local=anyscalar_to_double(x)
+   y_local=anyscalar_to_double(y)
+   digi=anyscalar_to_double(digi0)
+!  ==================================================================
    idble_significant_digits=int(log10(2.0**digits(0.0d0))) ! MAXIMUM NUMBER OF SIGNIFICANT DIGITS IN A DOUBLE NUMBER.
-   digi=digi0
    if(digi.le.0)then
       call journal('sc','*dp_accdig* bad number of significant digits=',dble(digi))
       digi=idble_significant_digits
@@ -4575,13 +4591,13 @@ character(len=*),parameter::ident="@(#)M_math::dp_accdig(3f): compare two double
       call journal('sc','*dp_accdig* significant digit request too high=',dble(digi))
       digi=min(digi,dble(idble_significant_digits))
    endif
-   diff = x - y
+   diff = x_local - y_local
    if (diff .eq. 0.0) then
       acurcy = digi
-   else if (y .eq. 0.0) then
-      acurcy = - log10 (abs (x))
+   else if (y_local .eq. 0.0) then
+      acurcy = - log10 (abs (x_local))
    else
-      acurcy = - log10 ( abs(diff) ) + log10 ( abs(y) )
+      acurcy = - log10 ( abs(diff) ) + log10 ( abs(y_local) )
    endif
    if (acurcy .lt. digi ) then
       ind = 1
@@ -4633,7 +4649,7 @@ end subroutine dp_accdig
 !===================================================================================================================================
 !===================================================================================================================================
 elemental pure function in_margin(expected_value, measured_value, allowed_margin)
-use :: M_anyscalar, only : anyscalar_to_double
+use :: M_anything, only : anyscalar_to_double
 implicit none
 character(len=*),parameter::ident="@(#)M_math::in_margin(3f): check if two reals are approximately equal using a relative margin"
 class(*),intent(in) :: expected_value, measured_value, allowed_margin
@@ -4869,6 +4885,8 @@ end subroutine scale1
 !!    is DIST.
 !!
 !!##EXAMPLE
+!!
+!!   Sample program:
 !!
 !!     program demo_scale3
 !!     use M_math, only : scale3

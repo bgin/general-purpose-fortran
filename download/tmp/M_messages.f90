@@ -1652,7 +1652,7 @@ end subroutine signs
 !!    Percent Complete: 100.00%
 !===================================================================================================================================
 subroutine percent_done(part,whole)
-use M_anyscalar, only : anyscalar_to_real
+use M_anything, only : anyscalar_to_real
 implicit none
 character(len=*),parameter::ident="@(#)place a non-advancing status counter on terminal display (not redirected)"
 class(*),intent(in)  :: part

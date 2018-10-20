@@ -28,7 +28,7 @@ RESULTS
 EXAMPLE
    Sample program
 
-    program scalars
+    program demo_anyinteger_to_128bit
     use M_anything,     only : int128
     use iso_fortran_env, only : int8, int16, int32, int64
     implicit none
@@ -50,4 +50,4 @@ EXAMPLE
        dvalue=invalue_local*invalue_local
     end function squarei
 
-    end program scalars
+    end program demo_anyinteger_to_128bit

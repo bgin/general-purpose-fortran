@@ -1,5 +1,5 @@
 NAME
-   OPEN(3f) -- [FORTRAN:I/O] Initiates or modifies a connection between an external file and a specified unit.
+   OPEN(7f) - [FORTRAN:IO] Initiates or modifies a connection between an external file and a specified unit.
 SYNOPSIS
 
   OPEN (connect-spec-list)

@@ -1,19 +1,19 @@
 NAME
        makeout(1f) - [DEVELOPER] Generate a Makefile from the sources (C, Fortran) in the current directory
 SYNOPSIS
-       makeout program_files [-o [filename]] [-v][--version|--help]
+       makeout program_files [-o [filename]] [-l LIBNAME] [-v][--version|--help]
 DESCRIPTION
   If all the source for a set of programs exists in a single directory,
-  with a subdirectory containing the files with main programs, then makeout(1)
-  creates a make(1) file for the current directory and the specified programs.
-  A mixture of C and Fortran files is allowed. makeout(1) looks for
-  dependencies created by INCLUDE(7f), "#include", and USE(3f) statements
-  in their most common forms.
+  with a subdirectory containing the files with main programs,
+  then makeout(1) creates a make(1) file for the current directory
+  and the specified programs. A mixture of C and Fortran files is
+  allowed. makeout(1) looks for dependencies created by INCLUDE(7f),
+  "#include", and USE(3f) statements in their most common forms.
 
   The resulting makefile is quite simple, with few comments. The targets
   and rules are explicit. The goal is to provide a well defined starting
-  point for your Fortran makefile. You will most certainly need to edit
-  the resultant makefile, but doing so is intended to be quite simple.
+  point for your Fortran makefile. You might need to customize the
+  resultant makefile, but doing so is intended to be quite simple.
 
   For more complex dependencies see your compiler information, as
   several compilers have switches that will generate a very complete
@@ -23,7 +23,7 @@ DESCRIPTION
        ifort     -gen-dep  # Intel Compiler Suite
 
 OPTIONS
-       program_files  optional name of program files
+       program_files  optional name of program files.
                       Defaults to current directory.
        -o             output file. If not present, defaults to stdout.
                       If present but no value is given "Makefile" is
@@ -37,6 +37,7 @@ OPTIONS
                         profile     adds -pg option for gprof(1)
                         production  good options for optimized performance
                         debug       typical debug options
+       -l LIBNAME     optional library name to merge all *.o files into
 
        --help         display command help and exit
        --version      output version information and exit EXAMPLES
@@ -48,15 +49,16 @@ ENVIRONMENT
    F90             defaults to "gfortran"
    F90FLAGS        defaults to "-O"
 
-   FC              defaults to "f90"
+   FC              defaults to "gfortran"
    FFLAGS          defaults to "-O"
 
    LDFLAGS         defaults to "-s"
    LIBS            defaults to "-lncurses -lsqlite3 -lreadline"
 EXAMPLES
-    Common usage
+  Common usage
 
-        env F90=f90 makeout PROGRAMS/testit.f90 -o;make
+    makeout PROGRAMS/testit.f90 -o
+    make
 
 SEE ALSO
   If your project needs exceeds the capabilities of makeout(1), see

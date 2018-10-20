@@ -1,6 +1,0 @@
-NAME
-   recipes(7f) - [RECIPES] list recipes
-
-DESCRIPTION
-  recipes as man pages
-

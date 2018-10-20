@@ -81,7 +81,7 @@ EXAMPLE
       write (*, FMT="('File mode (octal):',           T30, O19)") buff(3)
       write (*, FMT="('Number of links:',             T30, I0)") buff(4)
       write (*, FMT="('Owner''s uid/username:',       T30, I0,1x, A)") buff(5), system_getpwuid(buff(5))
-      write (*, FMT="('Owner''s gid/group:',          T30, I0),1x, A") buff(6), system_getgrgid(buff(6))
+      write (*, FMT="('Owner''s gid/group:',          T30, I0,1x, A)") buff(6), system_getgrgid(buff(6))
       write (*, FMT="('Device where located:',        T30, I0)") buff(7)
       write (*, FMT="('File size(bytes):',            T30, I0)") buff(8)
       write (*, FMT="('Last access time:',            T30, I0,1x, A)") buff(9), fmtdate(u2d(int(buff(9))),fmt_date)
@@ -91,7 +91,7 @@ EXAMPLE
       write (*, FMT="('No. of blocks allocated:',     T30, I0)") buff(13)
    endif
 
-  end program demo_system_stat
-                              1
+   end program demo_system_stat
+
   Results:
 

@@ -4,8 +4,9 @@ SYNOPSIS
    integer(kind=c_int) function system_geteuid()
 
 DESCRIPTION
-       The system_geteuid(3f) function shall return the effective user ID of the calling process.
-       The geteuid() function shall always be successful and no return value is reserved to indicate the error.
+       The system_geteuid(3f) function shall return the effective user
+       ID of the calling process. The geteuid() function shall always be
+       successful and no return value is reserved to indicate the error.
 EXAMPLE
   Get group ID from Fortran:
 

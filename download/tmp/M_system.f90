@@ -17,7 +17,7 @@
 !!    system_stat, system_isdir, system_islnk, system_isreg, &
 !!    system_isblk, system_ischr, system_isfifo,             &
 !!    system_access,                                         &
-!!    system_access,                                         &
+!!    system_utime,                                          &
 !!    system_issock, system_perm, system_stat_print
 !!
 !!    !!use M_system, only : system_getc, system_putc
@@ -86,6 +86,7 @@
 !!        o  system_remove(3f):     call remove(3c) to remove file
 !!        o  system_rmdir(3f):      call rmdir(3c) to remove empty directory
 !!        o  system_unlink(3f):     call unlink(3c) to remove a link to a file
+!!        o  system_utime(3f):      call utime(3c) to set file access and modification times
 !!
 !!        o  fileglob(3f): Returns list of files using a file globbing pattern
 !!
@@ -189,6 +190,7 @@ public :: system_chmod
 public :: system_chown
 public :: system_link
 public :: system_unlink
+public :: system_utime
 
 public :: system_setumask
 public :: system_getumask
@@ -481,8 +483,9 @@ end interface
 !!    integer(kind=c_int) function system_geteuid()
 !!
 !!##DESCRIPTION
-!!        The system_geteuid(3f) function shall return the effective user ID of the calling process.
-!!        The geteuid() function shall always be successful and no return value is reserved to indicate the error.
+!!        The system_geteuid(3f) function shall return the effective user
+!!        ID of the calling process. The geteuid() function shall always be
+!!        successful and no return value is reserved to indicate the error.
 !!##EXAMPLE
 !!
 !!   Get group ID from Fortran:
@@ -995,9 +998,6 @@ contains
 !!           enddo
 !!           end program demo_system_access
 !===================================================================================================================================
-!===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!===================================================================================================================================
 !! int my_access(const char *path, int amode){
 !!        R_OK, W_OK, X_OK, F_OK
 !! }
@@ -1034,6 +1034,142 @@ end function system_access
 !===================================================================================================================================
 !>
 !!##NAME
+!!        system_utime(3f) - [M_system] set file access and modification times
+!!
+!!##SYNOPSIS
+!!
+!!        function utime(pathname,times)
+!!
+!!         character(len=*),intent(in) :: pathname
+!!         integer,intent(in),optional :: times(2)
+!!         logical                     :: utime
+!!
+!!##DESCRIPTION
+!!        The system_utime(3f) function sets the access and modification
+!!        times of the file named by the path argument by calling utime(3c).
+!!
+!!        If times() is not present the access and modification times of
+!!        the file shall be set to the current time.
+!!
+!!        To use system_utime(3f) the effective user ID of the process must
+!!        match the owner of the file, or the process has to have write
+!!        permission to the file or has appro- priate privileges,
+!!
+!!##OPTIONS
+!!        times     If present, the values will be interpreted as the access
+!!                  and modification times as Unix Epoch values. That is,
+!!                  they are times measured in seconds since the Unix Epoch.
+!!
+!!        pathname  name of the file whose acccess and modification times
+!!                  are to be updated.
+!!
+!!##RETURN VALUE
+!!        Upon successful completion .TRUE. is returned. Otherwise,
+!!        .FALSE. is returned and errno shall be set to indicate the error,
+!!        and the file times remain unaffected.
+!!
+!!##ERRORS
+!!        The underlying utime(3c) function fails if:
+!!
+!!        EACCES  Search permission is denied by a component of the path
+!!                prefix; or the times argument is a null pointer and the
+!!                effective user ID of the process does not match the owner
+!!                of the file, the process does not have write permission
+!!                for the file, and the process does not have appropriate
+!!                privileges.
+!!
+!!        ELOOP  A loop exists in symbolic links encountered during
+!!               resolution of the path argument.
+!!
+!!        ENAMETOOLONG   The length of a component of a pathname is longer
+!!                       than {NAME_MAX}.
+!!
+!!        ENOENT   A component of path does not name an existing file
+!!                 or path is an empty string.
+!!
+!!        ENOTDIR  A component of the path prefix names an existing file
+!!                 that is neither a directory nor a symbolic link to a
+!!                 directory, or the path argument contains at least one
+!!                 non-<slash> character and ends with one or more trailing
+!!                 <slash> characters and the last pathname component
+!!                 names an existing file that is neither a directory nor
+!!                 a symbolic link to a directory.
+!!
+!!        EPERM  The times argument is not a null pointer and the effective
+!!               user ID of the calling process does not match the owner
+!!               of the file and the calling process does not have
+!!               appropriate privileges.
+!!
+!!        EROFS  The file system containing the file is read-only.
+!!
+!!   The utime() function may fail if:
+!!
+!!        ELOOP  More than {SYMLOOP_MAX} symbolic links were encountered
+!!               during resolution of the path argument.
+!!
+!!        ENAMETOOLONG  The length of a pathname exceeds {PATH_MAX}, or
+!!                      pathname resolution of a symbolic link produced
+!!                      an intermediate result with a length that exceeds
+!!                      {PATH_MAX}.
+!!
+!!##EXAMPLES
+!!
+!!      Sample program
+!!
+!!       program demo_system_utime
+!!       use M_system, only : system_utime, system_perror
+!!       use M_time, only   : d2u
+!!       implicit none
+!!       character(len=4096) :: pathname
+!!       integer             :: times(2)
+!!          do i=1,command_argument_count()
+!!             call get_command_argument(i, pathname)
+!!             if(.not.system_utime(pathname,times))then
+!!                call system_perror('*demo_system_utime*')
+!!             endif
+!!          enddo
+!!       end program demo_system_utime
+!===================================================================================================================================
+function system_utime(pathname,times)
+use M_time, only   : d2u
+implicit none
+
+character(len=*),parameter::ident="@(#)M_system::system_utime(3f): set access and modification times of a pathname"
+
+character(len=*),intent(in) :: pathname
+integer,intent(in),optional :: times(2)
+integer                     :: times_local(2)
+logical                     :: system_utime
+
+!! int my_utime(const char *path, int times[2])
+interface
+  function c_utime(c_pathname,c_times) bind (C,name="my_utime") result (c_ierr)
+  import c_char,c_int
+  character(kind=c_char,len=1),intent(in) :: c_pathname(*)
+  integer(kind=c_int),intent(in)          :: c_times(2)
+  integer(kind=c_int)                     :: c_ierr
+  end function c_utime
+end interface
+   if(present(times))then
+      times_local=times
+   else
+      times_local=d2u()
+   endif
+   if(c_utime(str2arr(trim(pathname)),int(times_local,kind=c_int)).eq.0)then
+      system_utime=.true.
+   else
+      system_utime=.false.
+      !!if(system_errno().ne.0)then
+      !!   call perror('*system_utime*')
+      !!endif
+   endif
+
+end function system_utime
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+!>
+!!##NAME
 !!    system_issock(3f) - [M_system] checks if argument is a socket
 !!
 !!##SYNOPSIS
@@ -1061,28 +1197,23 @@ end function system_access
 !!
 !!##EXAMPLE
 !!
-!!   check if filename is a directory
+!!   check if filename is a socket
 !!
+!!    program demo_system_issock
+!!    Use M_system, only : system_issock
+!!    implicit none
+!!    integer                     :: i
+!!    character(len=80),parameter :: names(*)=[ &
+!!    '/tmp            ', &
+!!    '/tmp/NOTTHERE   ', &
+!!    '/usr/local      ', &
+!!    '.               ', &
+!!    'sock.test       ', &
+!!    'PROBABLY_NOT    ']
+!!    do i=1,size(names)
+!!       write(*,*)' is ',trim(names(i)),' a socket? ', system_issock(names(i))
+!!    enddo
 !!    end program demo_system_issock
-!!        Sample program:
-!!
-!!           program demo_system_issock
-!!           Use M_system, only : system_issock
-!!           implicit none
-!!           integer                     :: i
-!!           character(len=80),parameter :: names(*)=[ &
-!!           '/tmp            ', &
-!!           '/tmp/NOTTHERE   ', &
-!!           '/usr/local      ', &
-!!           '.               ', &
-!!           'sock.test       ']
-!!           'PROBABLY_NOT    ']
-!!           do i=1,size(names)
-!!              write(*,*)' is ',trim(names(i)),' a socket? ', issock(names(i))
-!!           enddo
-!!           end program demo_system_issock
-!!
-!!        Results:
 !===================================================================================================================================
 function system_issock(pathname)
 implicit none
@@ -1139,28 +1270,23 @@ end function system_issock
 !!
 !!##EXAMPLE
 !!
-!!   check if filename is a directory
+!!   check if filename is a FIFO file
 !!
+!!    program demo_system_isfifo
+!!    Use M_system, only : system_isfifo
+!!    implicit none
+!!    integer                     :: i
+!!    character(len=80),parameter :: names(*)=[ &
+!!    '/tmp            ', &
+!!    '/tmp/NOTTHERE   ', &
+!!    '/usr/local      ', &
+!!    '.               ', &
+!!    'fifo.test       ', &
+!!    'PROBABLY_NOT    ']
+!!    do i=1,size(names)
+!!       write(*,*)' is ',trim(names(i)),' a fifo(named pipe)? ', system_isfifo(names(i))
+!!    enddo
 !!    end program demo_system_isfifo
-!!        Sample program:
-!!
-!!           program demo_system_isfifo
-!!           Use M_system, only : system_isfifo
-!!           implicit none
-!!           integer                     :: i
-!!           character(len=80),parameter :: names(*)=[ &
-!!           '/tmp            ', &
-!!           '/tmp/NOTTHERE   ', &
-!!           '/usr/local      ', &
-!!           '.               ', &
-!!           'fifo.test       ']
-!!           'PROBABLY_NOT    ']
-!!           do i=1,size(names)
-!!              write(*,*)' is ',trim(names(i)),' a fifo(named pipe)? ', isfifo(names(i))
-!!           enddo
-!!           end program demo_system_isfifo
-!!
-!!        Results:
 !===================================================================================================================================
 function system_isfifo(pathname)
 implicit none
@@ -1217,28 +1343,25 @@ end function system_isfifo
 !!
 !!##EXAMPLE
 !!
-!!   check if filename is a directory
+!!   check if filename is a character file
 !!
+!!    program demo_system_ischr
+!!    Use M_system, only : system_ischr
+!!    implicit none
+!!    integer                     :: i
+!!    character(len=80),parameter :: names(*)=[ &
+!!    '/tmp            ', &
+!!    '/tmp/NOTTHERE   ', &
+!!    '/usr/local      ', &
+!!    '.               ', &
+!!    'char_dev.test   ', &
+!!    'PROBABLY_NOT    ']
+!!    do i=1,size(names)
+!!       write(*,*)' is ',trim(names(i)),' a character device? ', system_ischr(names(i))
+!!    enddo
 !!    end program demo_system_ischr
-!!        Sample program:
 !!
-!!           program demo_system_ischr
-!!           Use M_system, only : system_ischr
-!!           implicit none
-!!           integer                     :: i
-!!           character(len=80),parameter :: names(*)=[ &
-!!           '/tmp            ', &
-!!           '/tmp/NOTTHERE   ', &
-!!           '/usr/local      ', &
-!!           '.               ', &
-!!           'char_dev.test   ', &
-!!           'PROBABLY_NOT    ']
-!!           do i=1,size(names)
-!!              write(*,*)' is ',trim(names(i)),' a character device? ', ischr(names(i))
-!!           enddo
-!!           end program demo_system_ischr
-!!
-!!        Results:
+!!   Results:
 !===================================================================================================================================
 function system_ischr(pathname)
 implicit none
@@ -1297,23 +1420,18 @@ end function system_ischr
 !!
 !!   check if filename is a regular file
 !!
+!!    program demo_system_isreg
+!!    Use M_system, only : system_isreg
+!!    implicit none
+!!    integer                     :: i
+!!    character(len=80),parameter :: names(*)=[ &
+!!    '/tmp            ', &
+!!    'test.txt        ', &
+!!    '.               ']
+!!    do i=1,size(names)
+!!       write(*,*)' is ',trim(names(i)),' a regular file? ', system_isreg(names(i))
+!!    enddo
 !!    end program demo_system_isreg
-!!        Sample program:
-!!
-!!           program demo_system_isreg
-!!           Use M_system, only : system_isreg
-!!           implicit none
-!!           integer                     :: i
-!!           character(len=80),parameter :: names(*)=[ &
-!!           '/tmp            ', &
-!!           'test.txt        ', &
-!!           '.               ']
-!!           do i=1,size(names)
-!!              write(*,*)' is ',trim(names(i)),' a regular file? ', isreg(names(i))
-!!           enddo
-!!           end program demo_system_isreg
-!!
-!!        Results:
 !===================================================================================================================================
 function system_isreg(pathname)
 implicit none
@@ -1371,25 +1489,25 @@ end function system_isreg
 !!##EXAMPLE
 !!
 !!
-!!        Sample program:
+!!   Sample program:
 !!
-!!           program demo_system_islnk
-!!           Use M_system, only : system_islnk
-!!           implicit none
-!!           integer                     :: i
-!!           character(len=80),parameter :: names(*)=[ &
-!!           '/tmp            ', &
-!!           '/tmp/NOTTHERE   ', &
-!!           '/usr/local      ', &
-!!           '.               ', &
-!!           'link.test       ']
-!!           'PROBABLY_NOT    ']
-!!           do i=1,size(names)
-!!              write(*,*)' is ',trim(names(i)),' a link? ', islnk(names(i))
-!!           enddo
-!!           end program demo_system_islnk
+!!    program demo_system_islnk
+!!    Use M_system, only : system_islnk
+!!    implicit none
+!!    integer                     :: i
+!!    character(len=80),parameter :: names(*)=[ &
+!!    '/tmp            ', &
+!!    '/tmp/NOTTHERE   ', &
+!!    '/usr/local      ', &
+!!    '.               ', &
+!!    'link.test       ', &
+!!    'PROBABLY_NOT    ']
+!!    do i=1,size(names)
+!!       write(*,*)' is ',trim(names(i)),' a link? ', system_islnk(names(i))
+!!    enddo
+!!    end program demo_system_islnk
 !!
-!!        Results:
+!!   Results:
 !===================================================================================================================================
 function system_islnk(pathname)
 implicit none
@@ -1446,28 +1564,25 @@ end function system_islnk
 !!
 !!##EXAMPLE
 !!
-!!   check if filename is a directory
+!!   check if filename is a block device
 !!
+!!    program demo_system_isblk
+!!    Use M_system, only : system_isblk
+!!    implicit none
+!!    integer                     :: i
+!!    character(len=80),parameter :: names(*)=[ &
+!!    '/tmp            ', &
+!!    '/tmp/NOTTHERE   ', &
+!!    '/usr/local      ', &
+!!    '.               ', &
+!!    'block_device.tst', &
+!!    'PROBABLY_NOT    ']
+!!    do i=1,size(names)
+!!        write(*,*)' is ',trim(names(i)),' a block device? ', system_isblk(names(i))
+!!    enddo
 !!    end program demo_system_isblk
-!!        Sample program:
 !!
-!!           program demo_system_isblk
-!!           Use M_system, only : system_isblk
-!!           implicit none
-!!           integer                     :: i
-!!           character(len=80),parameter :: names(*)=[ &
-!!           '/tmp            ', &
-!!           '/tmp/NOTTHERE   ', &
-!!           '/usr/local      ', &
-!!           '.               ', &
-!!           'block_device.tst', &
-!!           'PROBABLY_NOT    ']
-!!           do i=1,size(names)
-!!               write(*,*)' is ',trim(names(i)),' a block device? ', isblk(names(i))
-!!           enddo
-!!           end program demo_system_isblk
-!!
-!!        Results:
+!!   Results:
 !===================================================================================================================================
 function system_isblk(pathname)
 implicit none
@@ -1533,20 +1648,20 @@ end function system_isblk
 !!##EXAMPLE
 !!
 !!
-!!        Sample program:
+!!   Sample program:
 !!
-!!           program demo_system_chown
-!!           Use M_system, only : system_chown
-!!           implicit none
-!!           integer                     :: i
-!!           character(len=80),parameter :: names(*)=[ 'myfile1','/usr/local']
-!!           do i=1,size(names)
-!!              ierr=chown(names(i))
-!!              write(*,*)' for ',trim(names(i)),' ownership is ', chown(names(i))
-!!           enddo
-!!           end program demo_system_chown
+!!    program demo_system_chown
+!!    Use M_system, only : system_chown
+!!    implicit none
+!!    integer                     :: i
+!!    character(len=80),parameter :: names(*)=[ 'myfile1','/usr/local']
+!!    do i=1,size(names)
+!!       ierr=chown(names(i))
+!!       write(*,*)' for ',trim(names(i)),' ownership is ', system_chown(names(i))
+!!    enddo
+!!    end program demo_system_chown
 !!
-!!        Results:
+!!   Results:
 !===================================================================================================================================
 
 function system_chown(dirname,owner,group)
@@ -1612,31 +1727,28 @@ end function system_chown
 !!
 !!   check if filename is a directory
 !!
-!!    end program demo_system_isdir
-!!        Sample program:
+!!      program demo_system_isdir
+!!      Use M_system, only : system_isdir
+!!      implicit none
+!!      integer                     :: i
+!!      character(len=80),parameter :: names(*)=[ &
+!!      '/tmp            ', &
+!!      '/tmp/NOTTHERE   ', &
+!!      '/usr/local      ', &
+!!      '.               ', &
+!!      'PROBABLY_NOT    ']
+!!      do i=1,size(names)
+!!         write(*,*)' is ',trim(names(i)),' a directory? ', system_isdir(names(i))
+!!      enddo
+!!      end program demo_system_isdir
 !!
-!!           program demo_system_isdir
-!!           Use M_system, only : system_isdir
-!!           implicit none
-!!           integer                     :: i
-!!           character(len=80),parameter :: names(*)=[ &
-!!           '/tmp            ', &
-!!           '/tmp/NOTTHERE   ', &
-!!           '/usr/local      ', &
-!!           '.               ', &
-!!           'PROBABLY_NOT    ']
-!!           do i=1,size(names)
-!!              write(*,*)' is ',trim(names(i)),' a directory? ', system_isdir(names(i))
-!!           enddo
-!!           end program demo_system_isdir
+!!   Results:
 !!
-!!        Results:
-!!
-!!           is /tmp a directory?  T
-!!           is /tmp/NOTTHERE a directory?  F
-!!           is /usr/local a directory?  T
-!!           is . a directory?  T
-!!           is PROBABLY_NOT a directory?  F
+!!      is /tmp a directory?  T
+!!      is /tmp/NOTTHERE a directory?  F
+!!      is /usr/local a directory?  T
+!!      is . a directory?  T
+!!      is PROBABLY_NOT a directory?  F
 !===================================================================================================================================
 function system_isdir(dirname)
 implicit none
@@ -1689,35 +1801,35 @@ end function system_isdir
 !!##EXAMPLES
 !!
 !!
-!!    Sample program:
+!!   Sample program:
 !!
-!!       program demo_system_cpu_time
+!!    program demo_system_cpu_time
 !!
-!!       use M_system, only : system_cpu_time
-!!       use ISO_C_BINDING, only : c_float
-!!       implicit none
-!!       real    :: user_start, system_start, total_start
-!!       real    :: user_finish, system_finish, total_finish
-!!       integer :: i
-!!       real    :: value
+!!    use M_system, only : system_cpu_time
+!!    use ISO_C_BINDING, only : c_float
+!!    implicit none
+!!    real    :: user_start, system_start, total_start
+!!    real    :: user_finish, system_finish, total_finish
+!!    integer :: i
+!!    real    :: value
 !!
-!!          call system_cpu_time(total_start,user_start,system_start)
+!!       call system_cpu_time(total_start,user_start,system_start)
 !!
-!!          value=0.0
-!!          do i=1,1000000
-!!             value=sqrt(real(i)+value)
-!!             write(10,*)value
-!!          enddo
-!!          flush(10)
-!!          write(*,*)'average sqrt value=',value/10000.0
-!!          call system_cpu_time(totl_finish,user_finish,system_finish)
-!!          write(*,*)'USER ......',user_finish-user_start
-!!          write(*,*)'SYSTEM ....',system_finish-system_start
-!!          write(*,*)'TOTAL .....',total_finish-total_start
+!!       value=0.0
+!!       do i=1,1000000
+!!          value=sqrt(real(i)+value)
+!!          write(10,*)value
+!!       enddo
+!!       flush(10)
+!!       write(*,*)'average sqrt value=',value/10000.0
+!!       call system_cpu_time(totl_finish,user_finish,system_finish)
+!!       write(*,*)'USER ......',user_finish-user_start
+!!       write(*,*)'SYSTEM ....',system_finish-system_start
+!!       write(*,*)'TOTAL .....',total_finish-total_start
 !!
-!!       end program demo_system_cpu_time
+!!    end program demo_system_cpu_time
 !!
-!!    Typical Results:
+!!   Typical Results:
 !===================================================================================================================================
 !! GET ERRORS ABOUT MISSING LONGEST_ENV_VARIABLE IN GFORTRAN 6.4.0 IF JUST USE INTERFACE INSTEAD OF MAKING SUBROUTINE
 !!character(len=*),parameter :: ident_cpu_time="@(#) M_system::system_cpu_time(3f): get processor time using times(3c)"
@@ -2464,7 +2576,6 @@ end function system_rename
 !!    !    that process.
 !!
 !!    end program demo_system_chmod
-!!
 !===================================================================================================================================
 function system_chmod(filename,mode) result(ierr)
    character(len=*),intent(in)  :: filename
@@ -2553,15 +2664,18 @@ end subroutine system_getcwd
 !>
 !!##NAME
 !!       system_rmdir(3f) - [M_system] call rmdir(3c) to remove empty directories
+!!
 !!##SYNOPSIS
 !!
 !!    function system_rmdir(dirname) result(err)
 !!
 !!     character(*),intent(in) :: dirname
 !!     integer(c_int) :: err
+!!
 !!##DESCRIPTION
 !!        DIRECTORY  The name of a directory to remove if it is empty
 !!        err        zero (0) if no error occurred
+!!
 !!##EXAMPLE
 !!
 !!   Sample program:
@@ -2620,9 +2734,15 @@ end function system_rmdir
 !!        system_mkfifo(3f)  - [M_system] make a FIFO special file relative to directory file descriptor
 !!##SYNOPSIS
 !!
+!!   function system_mkfifo(pathname,mode) result(ierr)
+!!
+!!    character(len=*),intent(in)       :: pathname
+!!    integer,intent(in)                :: mode
+!!    integer :: ierr
+!!
 !!##DESCRIPTION
 !!    The mkfifo() function creates a new FIFO special file named by the
-!!    pathname pointed to by path.
+!!    pathname.
 !!
 !!    The file permission bits of the new FIFO are initialized from mode.
 !!
@@ -2685,8 +2805,8 @@ end function system_rmdir
 !!      ierr= mkfifo("myfile",IANY([R_WXU,R_WXG,R_WXO]));
 !!      ierr= mkfifo("myfile",ACCESSPERMS);
 !!##RETURN VALUE
-!!    Upon successful completion, these functions shall return 0.
-!!    Otherwise, these functions return -1 and set errno to indicate the error.
+!!    Upon successful completion, return 0.
+!!    Otherwise, return -1 and set errno to indicate the error.
 !!    If -1 is returned, no FIFO is created.
 !!
 !!##EXAMPLES
@@ -2707,18 +2827,12 @@ end function system_rmdir
 !!          call system_perror('*mkfifo* error:')
 !!       endif
 !!    end program demo_system_mkfifo
-!!
-!!##EXAMPLE
-!!
-!!    integer :: ierr
-!!    ierr=system_mkfifo('_scratch',IANY([R_USR,W_USR,X_USR]))
-!!    end program demo_system_mkfifo
 !===================================================================================================================================
-function system_mkfifo(dirname,mode) result(err)
+function system_mkfifo(pathname,mode) result(err)
 
 character(len=*),parameter::ident="@(#)M_system::system_mkfifo(3f): call mkfifo(3c) to create a new FIFO special file"
 
-character(len=*),intent(in)       :: dirname
+character(len=*),intent(in)       :: pathname
 integer,intent(in)                :: mode
    integer                        :: c_mode
    integer                        :: err
@@ -2733,7 +2847,7 @@ interface
 end interface
 !-----------------------------------------------------------------------------------------------------------------------------------
    c_mode=mode
-   err= c_mkfifo(str2arr(trim(dirname)),c_mode)
+   err= c_mkfifo(str2arr(trim(pathname)),c_mode)
 end function system_mkfifo
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -2787,8 +2901,6 @@ end function system_mkfifo
 !!    integer :: ierr
 !!    ierr=system_mkdir('_scratch',IANY([R_USR,W_USR,X_USR)])
 !!    end program demo_system_mkdir
-!!
-!!   Expected results:
 !===================================================================================================================================
 function system_mkdir(dirname,mode) result(err)
 
@@ -3172,30 +3284,30 @@ end subroutine system_closedir
 !!
 !!   Sample setting an environment variable from Fortran:
 !!
-!!    program demo_system_putenv
-!!    use M_system, only: system_putenv
-!!    use iso_c_binding
-!!    implicit none
-!!    integer :: ierr
-!!
-!!       write(*,'(a)')'no environment variables containing "GRU":'
-!!       call execute_command_line('env|grep GRU')
-!!
-!!       call system_putenv('GRU=this is the value',ierr)
-!!       write(*,'(a,i0)')'now "GRU" should be defined: ',ierr
-!!       call execute_command_line('env|grep GRU')
-!!
-!!       call system_putenv('GRU2=this is the second value',ierr)
-!!       write(*,'(a,i0)')'now "GRU" and "GRU2" should be defined: ',ierr
-!!       call execute_command_line('env|grep GRU')
-!!
-!!       call system_putenv('GRU2',ierr)
-!!       call system_putenv('GRU',ierr)
-!!       write(*,'(a,i0)')'should be gone, varies with different putenv(3c): ',ierr
-!!       call execute_command_line('env|grep GRU')
-!!       write(*,'(a)')'system_unsetenv(3f) is a better way to remove variables'
-!!
-!!    end program demo_system_putenv
+!!     program demo_system_putenv
+!!     use M_system, only: system_putenv
+!!     use iso_c_binding
+!!     implicit none
+!!     integer :: ierr
+!!        !
+!!        write(*,'(a)')'no environment variables containing "GRU":'
+!!        call execute_command_line('env|grep GRU')
+!!        !
+!!        call system_putenv('GRU=this is the value',ierr)
+!!        write(*,'(a,i0)')'now "GRU" should be defined: ',ierr
+!!        call execute_command_line('env|grep GRU')
+!!        !
+!!        call system_putenv('GRU2=this is the second value',ierr)
+!!        write(*,'(a,i0)')'now "GRU" and "GRU2" should be defined: ',ierr
+!!        call execute_command_line('env|grep GRU')
+!!        !
+!!        call system_putenv('GRU2',ierr)
+!!        call system_putenv('GRU',ierr)
+!!        write(*,'(a,i0)')'should be gone, varies with different putenv(3c): ',ierr
+!!        call execute_command_line('env|grep GRU')
+!!        write(*,'(a)')'system_unsetenv(3f) is a better way to remove variables'
+!!        !
+!!     end program demo_system_putenv
 !!
 !!   Results:
 !!
@@ -3605,9 +3717,10 @@ end function system_readenv
 !>
 !!##NAME
 !!   fileglob(3f) - [M_system] Read output of an ls(1) command from Fortran
+!!
 !!##SYNOPSIS
 !!
-!!   subroutine fileglob(glob, list)
+!!   subroutine fileglob(glob,list)
 !!
 !!    character(len=*),intent(in)   :: glob
 !!    character(len=*),pointer      :: list(:)
@@ -3615,6 +3728,7 @@ end function system_readenv
 !!##DESCRIPTION
 !!    Non-portable procedure uses the shell and the ls(1) command to expand a filename
 !!    and returns a pointer to a list of expanded filenames.
+!!
 !!##OPTIONS
 !!    glob   Pattern for the filenames (like: *.txt)
 !!    list   Allocated list of filenames (returned), the caller must deallocate it.
@@ -3623,10 +3737,10 @@ end function system_readenv
 !!
 !!   Read output of an ls(1) command from Fortran
 !!
-!!    program test_fileglob  ! simple unit test
+!!    program demo_fileglob  ! simple unit test
 !!       call testit('*.*')
 !!       call testit('/tmp/__notthere.txt')
-!!    end program test_fileglob
+!!    contains
 !!
 !!    subroutine testit(string)
 !!       use M_system, only : fileglob
@@ -3637,6 +3751,8 @@ end function system_readenv
 !!       write(*,'(a)')(trim(list(i)),i=1,size(list))
 !!       deallocate(list)
 !!    end subroutine testit
+!!
+!!    end program demo_fileglob  ! simple unit test
 !===================================================================================================================================
 subroutine fileglob(glob, list) ! NON-PORTABLE AT THIS POINT. REQUIRES ls(1) command, assumes 1 line per file
 !  The length of the character strings in list() must be long enough for the filenames.
@@ -4063,8 +4179,8 @@ end function system_getgrgid
 !!    use M_system, only: system_getuid
 !!    implicit none
 !!    character(len=:),allocatable :: name
-!!    name=system_getpwuid(system_getuid))
-!!    write(*,'("login[",a,"] for ",i0)')name,uid
+!!       name=system_getpwuid(system_getuid))
+!!       write(*,'("login[",a,"] for ",i0)')name,uid
 !!    end program demo_system_getpwuid
 !===================================================================================================================================
 function system_getpwuid(uid) result (uname)
@@ -4256,7 +4372,7 @@ end function C2F_string
 !!       write (*, FMT="('File mode (octal):',           T30, O19)") buff(3)
 !!       write (*, FMT="('Number of links:',             T30, I0)") buff(4)
 !!       write (*, FMT="('Owner''s uid/username:',       T30, I0,1x, A)") buff(5), system_getpwuid(buff(5))
-!!       write (*, FMT="('Owner''s gid/group:',          T30, I0),1x, A") buff(6), system_getgrgid(buff(6))
+!!       write (*, FMT="('Owner''s gid/group:',          T30, I0,1x, A)") buff(6), system_getgrgid(buff(6))
 !!       write (*, FMT="('Device where located:',        T30, I0)") buff(7)
 !!       write (*, FMT="('File size(bytes):',            T30, I0)") buff(8)
 !!       write (*, FMT="('Last access time:',            T30, I0,1x, A)") buff(9), fmtdate(u2d(int(buff(9))),fmt_date)
@@ -4266,8 +4382,8 @@ end function C2F_string
 !!       write (*, FMT="('No. of blocks allocated:',     T30, I0)") buff(13)
 !!    endif
 !!
-!!   end program demo_system_stat
-!!                               1
+!!    end program demo_system_stat
+!!
 !!   Results:
 !===================================================================================================================================
 subroutine system_stat(pathname,values,ierr)
@@ -4322,8 +4438,15 @@ end subroutine system_stat
 !!
 !!    program demo_system_stat_print
 !!    use M_system, only : system_stat_print
-!!    call system_stat_print(pathname)
+!!    implicit none
+!!       call system_stat_print('/tmp')
+!!       call system_stat_print('/etc/hosts')
 !!    end program demo_system_stat_print
+!!
+!!   Sample Result
+!!
+!!     41777 drwxrwxrwx --S 1  JSU      None     0    2018-10-19T21:10:39 /tmp
+!!    100750 -rwxr-x--- --- 1  SYSTEM   SYSTEM   824  2018-08-17T01:21:55 /etc/hosts
 !===================================================================================================================================
 subroutine system_stat_print(filename,lun)
 !!use M_system, only      : system_getpwuid, system_getgrgid, system_perm, system_stat

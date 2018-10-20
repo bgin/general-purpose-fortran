@@ -35,12 +35,12 @@ env LDFLAGS="-Wl,--allow-multiple-definition -fno-range-check -Wall -fbounds-che
     F90FLAGS="-Wall -Wuninitialized -fbounds-check -fno-range-check -g -I. -J. $SANI" \
     F90='gfortran' \
     LIBS='-lncurses -lsqlite3 -lreadline -lX11' \
-    makeout "`find PROGRAMS -type f|xargs`" -o
+    makeout "`find PROGRAMS -type f|xargs`" -l GPF -o
 
 mv Makefile Makefile_picky
 env F90='gfortran' \
     LIBS='-lncurses -lsqlite3 -lreadline -lX11' \
-    makeout "`find PROGRAMS -type f|xargs`" -o
+    makeout "`find PROGRAMS -type f|xargs`" -l GPF -o
 )
 }
 ################################################################################

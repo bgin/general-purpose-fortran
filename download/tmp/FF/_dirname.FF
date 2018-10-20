@@ -5,7 +5,7 @@ use M_strings, only : split
 use M_io,      only : dirname
 implicit none
 logical                          :: zero=.false.
-character(len=4096),allocatable  :: array(:)
+character(len=:),allocatable     :: array(:)
 integer                          :: i
 !-----------------------------------------------------------------------------------------------------------------------------------
 !  define command arguments, default values and crack command line

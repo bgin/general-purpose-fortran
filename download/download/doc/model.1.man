@@ -1,9 +1,0 @@
-NAME
-   model(1f) - [FORTRAN:iso_fortran_env] fortran numeric model information
-
-SYNOPSIS
-   model
-
-DESCRIPTION
-   The following routines are called for various types:
-

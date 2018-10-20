@@ -8,14 +8,14 @@ SYNOPSIS
   vector, matrix, or cuboid.
 
    integer function greatest_common_divisor(i,j)
-    integer,intent(in)::  i,j
+   integer,intent(in)::  i,j
      or
    integer function greatest_common_divisor(m)
-    integer,intent(in)::  m(:)
-     or
-    integer,intent(in)::  m(:,:)
-     or
-    integer,intent(in)::  m(:,:,:)
+   integer,intent(in)::  m(:)
+    or
+   integer,intent(in)::  m(:,:)
+    or
+   integer,intent(in)::  m(:,:,:)
 
 DESCRIPTION
 

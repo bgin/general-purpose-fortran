@@ -24,11 +24,12 @@ EXAMPLES
     Sample program
 
      program demo_draw_interpret
-     use M_drawplus, only : call_draw
+     use M_drawplus, only : draw_interpret
+     character(len=:),allocatable :: draw_cmds(:)
 
      ! $FILTER variable -varname DRAW_CMDS
 
-     DRAW_CMDS=[ CHARACTER(LEN=128) ::                                         &
+     draw_cmds=[ character(len=128) ::                                         &
      'set N=11; prefsize 600 200; vinit ;page -15 15 -5 5                    ',&
      'textsize .3 .3; linewidth 150/3; color 0; clear                        ',&
      'color  1;  spirograph  -10  0  N  1  N  5  1000  0  0  0               ',&
@@ -40,8 +41,7 @@ EXAMPLES
 
      ! $FILTER END
 
-     call draw_interpret(DRAW_CMDS,delimiters=';')
-     end program demo_draw_interpret
+     call draw_interpret(draw_cmds,delimiters=';')
 
 SEE ALSO
     call_draw(3f), M_draw(3fm), M_drawplus(3fm)

@@ -177,6 +177,7 @@ rm -rf   tmp/*             # ensure scratch directory is empty
 mkdir -p tmp/PROGRAMS      # make sure scratch directories exist
 mkdir -p tmp/PROGRAMS/M_DRAW_EXAMPLES
 mkdir -p tmp/PROGRAMS/CALCOMP_EXAMPLES
+mkdir -p tmp/PROGRAMS/NCURSES_EXAMPLES
 mkdir -p tmp/html
 mkdir -p tmp/scripts/
 for NUMBER in 1 2 3 4 5 6 7 8
@@ -216,6 +217,7 @@ getprograms.sh          # get some programs to add to the procedures
 makemakefile.sh         # create makefile
 cp    /home/urbanjs/V600/LIBRARY/libGPF/EXE/DRAW/EXAMPLES/*.f90    tmp/PROGRAMS/M_DRAW_EXAMPLES/
 cp    /home/urbanjs/V600/LIBRARY/libGPF/EXE/CALCOMP/EXAMPLES/*.f90 tmp/PROGRAMS/CALCOMP_EXAMPLES/
+cp    /home/urbanjs/V600/LIBRARY/libGPF/EXE/NCURSES/EXAMPLES/*.f90 tmp/PROGRAMS/NCURSES_EXAMPLES/
 cp -r /home/urbanjs/V600/LIBRARY/libGPF/EXE/HASHKEYS/test_vectors  tmp/PROGRAMS/
 ####################################################################################################################################
 echo 'create documents in tmp/doc, tmp/man, and tmp/html'
@@ -354,6 +356,9 @@ what_source.sh
 #----------------------------------------------------------------------------------------------------------------------------------#
 echo 'build index of program file metadata using what(1) command'
 what_program.sh
+#----------------------------------------------------------------------------------------------------------------------------------#
+echo 'extract demo programs from man(1) pages'
+getdemo.sh
 ####################################################################################################################################
 echo 'create tar file for downloading'
 (cd tmp;tar cvfz ../GPF.tgz *)

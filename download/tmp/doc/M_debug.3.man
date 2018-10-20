@@ -65,7 +65,6 @@ EXAMPLE
     ! write(*,*)all(array.lt.100)
     ! write(*,*)all([a,b,c,d].eq.[21,51,14,45]) ! compare a list. This would return T
     ! write(*,*)all(arr.eq.[21,51,14,45])       ! compare an array. This would return T
-end
 
     ! this will make sense ...
 

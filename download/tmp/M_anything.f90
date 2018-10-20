@@ -5,6 +5,7 @@
 module M_anything
 use ISO_FORTRAN_ENV, only : INT8, INT16, INT32, INT64       !  1           2           4           8
 use ISO_FORTRAN_ENV, only : REAL32, REAL64, REAL128         !  4           8          10
+implicit none
 private
 
 ! on this platform, (select_int_kind(i),i=1,100) returns
@@ -13,6 +14,7 @@ private
 ! on this platform, (select_real_kind(i),i=1,100) returns
 ! 1:6=   4, 7:15 = 8, 16:18= 10, 19:33= 16, 34:  = -1
 
+integer                  :: i
 integer,parameter        :: k(38)=[(selected_int_kind(i),i=1,38)]
 integer,public,parameter :: int128=k(38)
 

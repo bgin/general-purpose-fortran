@@ -1,3 +1,0 @@
-NAME
-   hello(1f) - [] "hello world!" examples
-

@@ -1,9 +1,0 @@
-NAME
-   delobj(3f) - [M_draw:OBJECT] Delete the object number n.
-
-SYNOPSIS
-        subroutine delobj(n)
-        integer n
-DESCRIPTION
-   Delete the object number n.
-

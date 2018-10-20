@@ -1,7 +1,7 @@
 NAME
     _hostname(1f) - [FUNIX] display hostname
 SYNTAX
-    hostname [-help|-version]
+    _hostname [-help|-version]
 DESCRIPTION
     Calls system_gethostname(3f), which calls get_hostname(3c) to determine
     the current host name.

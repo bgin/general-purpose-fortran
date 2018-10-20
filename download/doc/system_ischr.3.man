@@ -24,26 +24,23 @@ SEE ALSO
    system_isreg(3f), system_stat(3f), system_isdir(3f), system_perm(3f)
 
 EXAMPLE
-  check if filename is a directory
+  check if filename is a character file
 
+   program demo_system_ischr
+   Use M_system, only : system_ischr
+   implicit none
+   integer                     :: i
+   character(len=80),parameter :: names(*)=[ &
+   '/tmp            ', &
+   '/tmp/NOTTHERE   ', &
+   '/usr/local      ', &
+   '.               ', &
+   'char_dev.test   ', &
+   'PROBABLY_NOT    ']
+   do i=1,size(names)
+      write(*,*)' is ',trim(names(i)),' a character device? ', system_ischr(names(i))
+   enddo
    end program demo_system_ischr
-       Sample program:
 
-          program demo_system_ischr
-          Use M_system, only : system_ischr
-          implicit none
-          integer                     :: i
-          character(len=80),parameter :: names(*)=[ &
-          '/tmp            ', &
-          '/tmp/NOTTHERE   ', &
-          '/usr/local      ', &
-          '.               ', &
-          'char_dev.test   ', &
-          'PROBABLY_NOT    ']
-          do i=1,size(names)
-             write(*,*)' is ',trim(names(i)),' a character device? ', ischr(names(i))
-          enddo
-          end program demo_system_ischr
-
-       Results:
+  Results:
 

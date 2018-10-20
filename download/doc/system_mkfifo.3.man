@@ -1,9 +1,15 @@
 NAME
        system_mkfifo(3f)  - [M_system] make a FIFO special file relative to directory file descriptor
 SYNOPSIS
+  function system_mkfifo(pathname,mode) result(ierr)
+
+   character(len=*),intent(in)       :: pathname
+   integer,intent(in)                :: mode
+   integer :: ierr
+
 DESCRIPTION
    The mkfifo() function creates a new FIFO special file named by the
-   pathname pointed to by path.
+   pathname.
 
    The file permission bits of the new FIFO are initialized from mode.
 
@@ -66,8 +72,8 @@ DESCRIPTION
      ierr= mkfifo("myfile",IANY([R_WXU,R_WXG,R_WXO]));
      ierr= mkfifo("myfile",ACCESSPERMS);
 RETURN VALUE
-   Upon successful completion, these functions shall return 0.
-   Otherwise, these functions return -1 and set errno to indicate the error.
+   Upon successful completion, return 0.
+   Otherwise, return -1 and set errno to indicate the error.
    If -1 is returned, no FIFO is created.
 
 EXAMPLES
@@ -86,10 +92,5 @@ EXAMPLES
       if(status.ne.0)then
          call system_perror('*mkfifo* error:')
       endif
-   end program demo_system_mkfifo
-
-EXAMPLE
-   integer :: ierr
-   ierr=system_mkfifo('_scratch',IANY([R_USR,W_USR,X_USR]))
    end program demo_system_mkfifo
 

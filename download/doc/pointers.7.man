@@ -1,5 +1,5 @@
 NAME
-    pointers(7) - [FORTRAN] Pointers and targets methods
+    pointers(7f) - [FORTRAN] Pointers and targets methods
 
 DESCRIPTION
    In Fortran, the concept of pointers differs from that in C-like

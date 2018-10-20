@@ -5,7 +5,7 @@ use M_strings, only : split
 use M_io,      only : dirname
 implicit none
 logical                          :: zero=.false.
-character(len=4096),allocatable  :: array(:)
+character(len=:),allocatable     :: array(:)
 integer                          :: i
 !-----------------------------------------------------------------------------------------------------------------------------------
 !  define command arguments, default values and crack command line
@@ -113,7 +113,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Mon, Oct 15th, 2018 5:21:57 PM>',&
+'@(#)COMPILED:       Fri, Oct 19th, 2018 1:11:29 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

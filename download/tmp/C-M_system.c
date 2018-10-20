@@ -1,16 +1,17 @@
+#include <dirent.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <grp.h>
+#include <pwd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
+#include <sys/stat.h>
 #include <sys/types.h>
 #include <sys/utsname.h>
-#include <dirent.h>
-#include <errno.h>
 #include <unistd.h>
-#include <fcntl.h>
-#include <sys/stat.h>
-#include <strings.h>
-#include <pwd.h>
-#include <grp.h>
+#include <utime.h>
 
 #define MIN(x,y)  ((x) < (y) ? (x) : (y))
 
@@ -53,6 +54,25 @@ char **ep;
 
 extern long int longest_env_variable;
        long int longest_env_variable=0L;
+/*--------------------------------------------------------------------------------------------------------------------------------*/
+/*
+   wrapper around utime(3c) for a call from Fortran
+*/
+int my_utime(const char *file, int times[2]) {
+   struct utimbuf ut;
+   /* time_t ut[2]; */
+   int n;
+
+   ut.actime  = (time_t)times[0];
+   ut.modtime = (time_t)times[1];
+   n = utime (file, &ut);
+   /*
+   ut[0] = times[0];
+   ut[1] = times[l];
+   n = utime (file, ut);
+   */
+   return (n);
+}
 /*--------------------------------------------------------------------------------------------------------------------------------*/
 /*
    wrapper around chown(3c) for a call from Fortran

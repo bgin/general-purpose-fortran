@@ -45,7 +45,7 @@ character(len=*),parameter::ident="@(#)M_kracken(3fm): parse command line option
 ! NOTE:   many parameters may be  reduced in size so as to just accommodate being used as a command line parser.
 !         In particular, some might want to change:
    logical,public            :: stop_command=.false.               ! indication to return stop_command as false in interactive mode
-   integer, parameter,public :: IPvalue=4096                       ! length of keyword value
+   integer, parameter,public :: IPvalue=4096*4                     ! length of keyword value
    integer, parameter,public :: IPcmd=32768                        ! length of command
    integer, parameter,public :: IPverb=20                          ! length of verb
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -60,7 +60,7 @@ character(len=*),parameter::ident="@(#)M_kracken(3fm): parse command line option
    integer(kind=k_int),allocatable            :: dict_calls(:)     ! number of times this keyword stored on a call to parse
 !-----------------------------------------------------------------------------------------------------------------------------------
    character(len=1),save,public               :: kracken_comment='#'
-   character(len=IPcmd),public                :: leftover=' '      ! remaining command(s) on line
+   character(len=:),public,allocatable        :: leftover          ! remaining command(s) on line
    integer,public,save                        :: current_command_length=0 ! length of options for current command
 contains
 !===================================================================================================================================
@@ -1282,7 +1282,7 @@ character(len=*),intent(in)     ::  string ! string is character input string wi
 character(len=*),intent(in)     ::  allow  ! keyword indicating whether commands may be added or only replaced
 integer,optional,intent(out)    ::  error_return
 !-----------------------------------------------------------------------------------------------------------------------------------
-character(len=IPvalue+2)             ::  dummy  ! working copy of string
+character(len=:),allocatable         ::  dummy  ! working copy of string
 character(len=IPvalue),dimension(2)  ::  var
 character(len=3)                     ::  delmt
 character(len=2)                     ::  init
@@ -1317,7 +1317,7 @@ integer                              ::  iend
    if(islen  ==  0)then                                 ! if input string is blank, even default variable will not be changed
       return
    endif
-   dummy=string
+   dummy=string//'  '
    ipln=len_trim(verb)             ! find number of characters in verb prefix string
    if(size(dict_verbs).ne.0)then
       dict_calls=0                 ! clear number of times this keyword stored on a call to parse
@@ -1417,7 +1417,7 @@ integer                              ::  iend
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
       elseif(currnt == kracken_comment .and. delmt == "off")then   ! rest of line is comment
          islen=ipoint
-         dummy=" "
+         dummy(:)=" "
          prev=" "
          leftover=" "
          cycle
@@ -1430,7 +1430,7 @@ integer                              ::  iend
          endif
 
          islen=ipoint
-         dummy=" "
+         dummy(:)=" "
          prev=" "
          cycle
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

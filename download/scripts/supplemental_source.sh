@@ -17,6 +17,9 @@ echo 'create c.f90' 1>&2
 cat >tmp/c.f90 <<\EOF
 !===================================================================================================================================
 real function c(fval,n) ! curve number, data point subscript, file number
+implicit none
+real,intent(in)    :: fval
+integer,intent(in) :: n
    c=0.0
 end function c
 !===================================================================================================================================

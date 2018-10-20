@@ -15,7 +15,7 @@ SYNOPSIS
    system_stat, system_isdir, system_islnk, system_isreg, &
    system_isblk, system_ischr, system_isfifo,             &
    system_access,                                         &
-   system_access,                                         &
+   system_utime,                                          &
    system_issock, system_perm, system_stat_print
 
    !!use M_system, only : system_getc, system_putc
@@ -84,6 +84,7 @@ FILE SYSTEM
        o  system_remove(3f):     call remove(3c) to remove file
        o  system_rmdir(3f):      call rmdir(3c) to remove empty directory
        o  system_unlink(3f):     call unlink(3c) to remove a link to a file
+       o  system_utime(3f):      call utime(3c) to set file access and modification times
 
        o  fileglob(3f): Returns list of files using a file globbing pattern
 

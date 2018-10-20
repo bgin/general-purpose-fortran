@@ -1,13 +1,16 @@
 NAME
       system_rmdir(3f) - [M_system] call rmdir(3c) to remove empty directories
+
 SYNOPSIS
    function system_rmdir(dirname) result(err)
 
     character(*),intent(in) :: dirname
     integer(c_int) :: err
+
 DESCRIPTION
        DIRECTORY  The name of a directory to remove if it is empty
        err        zero (0) if no error occurred
+
 EXAMPLE
   Sample program:
 

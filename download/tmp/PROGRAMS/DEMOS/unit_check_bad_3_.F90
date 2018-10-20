@@ -1,0 +1,20 @@
+           program demo_unit_check_bad
+           use M_debug, only: unit_check_start
+           use M_debug, only: unit_check
+           use M_debug, only: unit_check_good, unit_check_bad
+
+           implicit none
+           integer :: x
+           x=10
+           call unit_check_start('myroutine')
+
+           call unit_check('myroutine', x.gt.3 ,'test if big enough')
+           call unit_check('myroutine', x.lt.100 ,'test if small enough')
+
+           !write(*,*)'checks on "myroutine" passed'
+           !call unit_check_good('myroutine')
+
+           write(*,*)'checks on "myroutine" failed'
+           call unit_check_bad ('myroutine') ! program execution stopped
+
+           end program demo_unit_check_bad

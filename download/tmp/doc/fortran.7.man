@@ -23,7 +23,7 @@ SYNOPSIS
    intrinsics_project (7)  [FORTRAN] intrinsic man(1) pages
    namelist (7)          [FORTRAN:STATEMENT] specify a group of data to be referred to by a single name in data input/output
    nullify (7)           [FORTRAN:STATEMENT] causes pointers to be disassociated
-   open (7)              [FORTRAN:I/O] Initiates or modifies a connection between an external file and a specified unit.
+   open (7)              [FORTRAN:IO] Initiates or modifies a connection between an external file and a specified unit.
    save (7)              [FORTRAN:STATEMENT:ATTRIBUTE] specifies that a local variable retains its status and value after a RETURN
    scratch (7)           [FORTRAN:OPEN] where scratch files are typically written by OPEN(3f)
    select (7)            [FORTRAN:EXECUTION CONTROL] masked array assignment

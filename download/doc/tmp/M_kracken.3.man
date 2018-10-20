@@ -113,12 +113,12 @@ NOTE: many parameters may be reduced in size so as to just accommodate being
 used as a command line parser. In particular, some might want to change:
 
    logical,public            :: stop_command=.false. ! indication to return stop_command as false in interactive mode
-   integer, parameter,public :: IPvalue=4096         ! length of keyword value
-   integer, parameter,public :: IPcmd=32768          ! length of command
+   integer, parameter,public :: IPvalue=32768        ! length of keyword value
+   integer, parameter,public :: IPcmd=IPvalue*100    ! length of command
    integer, parameter,public :: IPverb=20            ! length of verb
-   character(len=1),save,public :: kracken_comment='#'
-   character(len=IPcmd),public  :: leftover=' '      ! remaining command(s) on line
-   integer,public,save          :: current_command_length=0 ! length of options for current command
+   character(len=1),save,public         :: kracken_comment='#'
+   character(len=:),allocatable,public  :: leftover                 ! remaining command(s) on line
+   integer,public,save                  :: current_command_length=0 ! length of options for current command
 
 Interactive menu mode
 
@@ -181,7 +181,7 @@ more efficient if the routine doing the parsing is called many times.
      call kracken('cmd',' DEFAULT STRING -x 123 -y 456 ')
      call showstring()
      call showvalue()
-     end program demo_placement
+     contains
 
      subroutine showstring()
      use M_kracken, only : sget
@@ -198,6 +198,8 @@ more efficient if the routine doing the parsing is called many times.
      y=rget('cmd_y')
      write(*,*)' X and Y are ',x,y
      end subroutine showvalue
+
+     end program demo_placement
 
       xxx
        string is DEFAULT STRING

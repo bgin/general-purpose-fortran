@@ -4,9 +4,9 @@
 !!
 !!##SYNOPSIS
 !!
-!!   use getopt_m, only : getopt
-!!   use getopt_m, only : option_s
-!!   use getopt_m, only : optarg,optopt,optind
+!!   use M_getopt, only : getopt
+!!   use M_getopt, only : option_s
+!!   use M_getopt, only : optarg,optopt,optind
 !!
 !!##DESCRIPTION
 !!
@@ -65,7 +65,7 @@
 !!   Sample program:
 !!
 !!    program demo_getopts
-!!    use getopt_m, only : getopt,option_s,optarg,optopt
+!!    use M_getopt, only : getopt,option_s,optarg,optopt
 !!    implicit none
 !!
 !!    character(len=*),parameter :: OPTIONS='ab:c'

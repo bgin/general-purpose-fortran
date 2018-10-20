@@ -1,5 +1,5 @@
 NAME
-Array_Constructors - [FORTRAN] An array constructor can be used to create and assign values to rank-one arrays (and array constants)
+Array_Constructors(7f) - [FORTRAN] An array constructor can be used to create and assign values to rank-one arrays (and array constants)
 SYNTAX
 An array constructor takes the following form:
 

@@ -309,7 +309,8 @@ EXAMPLE
       endif
 
       call sqlite3_close(db)
-   end program demo_csvtable
+   !--------------------------------------------------------------------
+   contains
    !--------------------------------------------------------------------
    subroutine csvdata()
    ! create fake datafile
@@ -337,6 +338,8 @@ EXAMPLE
    enddo
    close(lun)
    end subroutine csvdata
+   !--------------------------------------------------------------------
+   end program demo_csvtable
    !--------------------------------------------------------------------
 
 LIMITATIONS

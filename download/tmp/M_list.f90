@@ -637,7 +637,7 @@ end subroutine insert_i
 !!
 !!     program demo_delete
 !!     use M_sort, only : sort_shell
-!!     use M_list, only : add
+!!     use M_list, only : delete
 !!     implicit none
 !!     character(len=20),allocatable :: arr(:)
 !!     integer                       :: i

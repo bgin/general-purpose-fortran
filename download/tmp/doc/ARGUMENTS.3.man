@@ -1,5 +1,5 @@
 NAME
-       ARGUMENTS(3f) -  collection of command line argument parsers
+       ARGUMENTS(3f) - [ARGUMENTS] collection of command line argument parsers
 SYNOPSIS
 
    use M_kracken

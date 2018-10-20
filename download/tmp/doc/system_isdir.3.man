@@ -26,29 +26,26 @@ SEE ALSO
 EXAMPLE
   check if filename is a directory
 
-   end program demo_system_isdir
-       Sample program:
+     program demo_system_isdir
+     Use M_system, only : system_isdir
+     implicit none
+     integer                     :: i
+     character(len=80),parameter :: names(*)=[ &
+     '/tmp            ', &
+     '/tmp/NOTTHERE   ', &
+     '/usr/local      ', &
+     '.               ', &
+     'PROBABLY_NOT    ']
+     do i=1,size(names)
+        write(*,*)' is ',trim(names(i)),' a directory? ', system_isdir(names(i))
+     enddo
+     end program demo_system_isdir
 
-          program demo_system_isdir
-          Use M_system, only : system_isdir
-          implicit none
-          integer                     :: i
-          character(len=80),parameter :: names(*)=[ &
-          '/tmp            ', &
-          '/tmp/NOTTHERE   ', &
-          '/usr/local      ', &
-          '.               ', &
-          'PROBABLY_NOT    ']
-          do i=1,size(names)
-             write(*,*)' is ',trim(names(i)),' a directory? ', system_isdir(names(i))
-          enddo
-          end program demo_system_isdir
+  Results:
 
-       Results:
-
-          is /tmp a directory?  T
-          is /tmp/NOTTHERE a directory?  F
-          is /usr/local a directory?  T
-          is . a directory?  T
-          is PROBABLY_NOT a directory?  F
+     is /tmp a directory?  T
+     is /tmp/NOTTHERE a directory?  F
+     is /usr/local a directory?  T
+     is . a directory?  T
+     is PROBABLY_NOT a directory?  F
 

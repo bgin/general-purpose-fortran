@@ -1,4 +1,4 @@
-#@(#) Makefile started by makeout(1) 2018-10-15 19:21:16
+#@(#) Makefile started by makeout(1) 2018-10-20 04:02:26
 
 PROGFILES = PROGRAMS/alphabet.f90 PROGRAMS/asa2pdf.f90 PROGRAMS/base.f90 PROGRAMS/change.f90 PROGRAMS/choose.f90 \
         PROGRAMS/clock.f90 PROGRAMS/cn.f90 PROGRAMS/colors.f90 PROGRAMS/color_wheel.f90 PROGRAMS/compute.f90 \
@@ -38,18 +38,18 @@ SRCS =  C-arcs.c C-aspect.c C-attr.c C-buffer.c C-canvas.c  \
      C-scale.c C-svg.c C-tek.c C-tensor.c C-text.c C-trans.c  \
      C-unixplot.c C-usemap.c C-valloc.c C-verror.c C-viewing.c C-viewp.c  \
      C-vml.c C-vog.c C-X11.c C-xfig.c C-yobbarays.c c.f90  \
-     calc_NC.f90 cntcrv.f90 dparanoia.f90 draw.h juown1.f90 M_anyscalar.f90  \
-     M_anything.f90 M_bessel.f90 M_big_integer.f90 M_calcomp.f90 M_calculator.f90 M_calculator_plus.f90  \
-     M_color.f90 M_Compare_Float_Numbers.f90 M_contourplot.f90 M_csv.f90 M_debug.f90 M_display.f90  \
-     M_draw.f90 M_drawinc.f90 M_drawplus.f90 M_factor.f90 M_fixedform.f90 M_generic_list.f90  \
-     M_geography.f90 M_getkey.f90 M_getopt.f90 M_getopt_long.f90 M_hashkeys.f90 M_history.f90  \
-     M_html.f90 M_io.f90 M_journal.f90 M_kracken.f90 M_list.f90 M_logic.f90  \
-     M_math.f90 M_messages.f90 M_ncurses.f90 M_overload.f90 M_pixel.f90 M_pixel_slices.f90  \
-     M_process.f90 M_random.f90 M_readgif.f90 M_readline.f90 M_regex.f90 M_sha3.f90  \
-     M_slices.f90 M_sort.f90 M_sqlite.f90 M_stopwatch.f90 M_strings.f90 M_system.f90  \
-     M_time.f90 M_treesort.f90 M_units.f90 M_uuid.f90 M_writegif.f90 M_writegif_animated.f90  \
-     M_xterm.f90 M_xyplot.f90 nc_errmessage.f90 nc_printescape.f90 nc_printhtml.f90 nc_printplain.f90  \
-     nc_printunicode.f90 paranoia.f90 ran_mod.f90 sparanoia.f90 strgar3.f90 
+     calc_NC.f90 cntcrv.f90 dparanoia.f90 draw.h juown1.f90 M_anything.f90  \
+     M_bessel.f90 M_big_integer.f90 M_calcomp.f90 M_calculator.f90 M_calculator_plus.f90 M_color.f90  \
+     M_Compare_Float_Numbers.f90 M_contourplot.f90 M_csv.f90 M_debug.f90 M_display.f90 M_draw.f90  \
+     M_drawinc.f90 M_drawplus.f90 M_factor.f90 M_fixedform.f90 M_generic_list.f90 M_geography.f90  \
+     M_getkey.f90 M_getopt.f90 M_getopt_long.f90 M_hashkeys.f90 M_history.f90 M_html.f90  \
+     M_io.f90 M_journal.f90 M_kracken.f90 M_list.f90 M_logic.f90 M_math.f90  \
+     M_messages.f90 M_ncurses.f90 M_overload.f90 M_pixel.f90 M_pixel_slices.f90 M_process.f90  \
+     M_random.f90 M_readgif.f90 M_readline.f90 M_regex.f90 M_sha3.f90 M_slices.f90  \
+     M_sort.f90 M_sqlite.f90 M_stopwatch.f90 M_strings.f90 M_system.f90 M_time.f90  \
+     M_treesort.f90 M_units.f90 M_uuid.f90 M_writegif.f90 M_writegif_animated.f90 M_xterm.f90  \
+     M_xyplot.f90 nc_errmessage.f90 nc_printescape.f90 nc_printhtml.f90 nc_printplain.f90 nc_printunicode.f90  \
+     paranoia.f90 ran_mod.f90 sparanoia.f90 strgar3.f90 
 
 OBJS =  C-arcs.o C-aspect.o C-attr.o C-buffer.o C-canvas.o  \
      C-cgmt.o C-clip.o C-curves.o C-draw.o C-drivers.o C-fti.o  \
@@ -63,21 +63,23 @@ OBJS =  C-arcs.o C-aspect.o C-attr.o C-buffer.o C-canvas.o  \
      C-scale.o C-svg.o C-tek.o C-tensor.o C-text.o C-trans.o  \
      C-unixplot.o C-usemap.o C-valloc.o C-verror.o C-viewing.o C-viewp.o  \
      C-vml.o C-vog.o C-X11.o C-xfig.o C-yobbarays.o c.o  \
-     calc_NC.o cntcrv.o dparanoia.o juown1.o M_anyscalar.o M_anything.o  \
-     M_bessel.o M_big_integer.o M_calcomp.o M_calculator.o M_calculator_plus.o M_color.o  \
-     M_Compare_Float_Numbers.o M_contourplot.o M_csv.o M_debug.o M_display.o M_draw.o  \
-     M_drawinc.o M_drawplus.o M_factor.o M_fixedform.o M_generic_list.o M_geography.o  \
-     M_getkey.o M_getopt.o M_getopt_long.o M_hashkeys.o M_history.o M_html.o  \
-     M_io.o M_journal.o M_kracken.o M_list.o M_logic.o M_math.o  \
-     M_messages.o M_ncurses.o M_overload.o M_pixel.o M_pixel_slices.o M_process.o  \
-     M_random.o M_readgif.o M_readline.o M_regex.o M_sha3.o M_slices.o  \
-     M_sort.o M_sqlite.o M_stopwatch.o M_strings.o M_system.o M_time.o  \
-     M_treesort.o M_units.o M_uuid.o M_writegif.o M_writegif_animated.o M_xterm.o  \
-     M_xyplot.o nc_errmessage.o nc_printescape.o nc_printhtml.o nc_printplain.o nc_printunicode.o  \
-     paranoia.o ran_mod.o sparanoia.o strgar3.o 
+     calc_NC.o cntcrv.o dparanoia.o juown1.o M_anything.o M_bessel.o  \
+     M_big_integer.o M_calcomp.o M_calculator.o M_calculator_plus.o M_color.o M_Compare_Float_Numbers.o  \
+     M_contourplot.o M_csv.o M_debug.o M_display.o M_draw.o M_drawinc.o  \
+     M_drawplus.o M_factor.o M_fixedform.o M_generic_list.o M_geography.o M_getkey.o  \
+     M_getopt.o M_getopt_long.o M_hashkeys.o M_history.o M_html.o M_io.o  \
+     M_journal.o M_kracken.o M_list.o M_logic.o M_math.o M_messages.o  \
+     M_ncurses.o M_overload.o M_pixel.o M_pixel_slices.o M_process.o M_random.o  \
+     M_readgif.o M_readline.o M_regex.o M_sha3.o M_slices.o M_sort.o  \
+     M_sqlite.o M_stopwatch.o M_strings.o M_system.o M_time.o M_treesort.o  \
+     M_units.o M_uuid.o M_writegif.o M_writegif_animated.o M_xterm.o M_xyplot.o  \
+     nc_errmessage.o nc_printescape.o nc_printhtml.o nc_printplain.o nc_printunicode.o paranoia.o  \
+     ran_mod.o sparanoia.o strgar3.o 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 # platform-specific values you will probably change
 # 
+LIBRARY = libGPF.a
+LIB = GPF
 LIBS = -lncurses -lsqlite3 -lreadline -lX11
 CC = cc
 CFLAGS = -O
@@ -89,9 +91,12 @@ LDFLAGS =
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 all: $(PROG) $(CPROG)
 
-$(PROG): $(OBJS)
+$(PROG): $(LIBRARY)
 
-	$(F90) $(LDFLAGS) $@.f90 -o $@ $(OBJS) $(LIBS)
+	$(F90) $(LDFLAGS) $@.f90 -L. -l$(LIB) -o $@ $(LIBS)
+
+$(LIBRARY): $(OBJS)
+	$(AR) $(ARFLAGS) $@ $^
 
 clean:
 	rm -f $(PROG) $(CPROG) $(OBJS) *.mod
@@ -214,8 +219,8 @@ M_io.o: M_journal.o M_strings.o
 M_kracken.o: M_debug.o M_journal.o M_list.o M_strings.o 
 M_list.o: M_debug.o 
 M_logic.o: M_calculator_plus.o M_journal.o 
-M_math.o: M_anyscalar.o M_journal.o M_sort.o 
-M_messages.o: M_anyscalar.o M_journal.o 
+M_math.o: M_anything.o M_journal.o M_sort.o 
+M_messages.o: M_anything.o M_journal.o 
 M_overload.o: M_strings.o 
 M_pixel.o: M_journal.o M_math.o M_sort.o M_units.o 
 M_pixel_slices.o: M_pixel.o 

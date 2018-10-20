@@ -1,9 +1,0 @@
-NAME
-   sgetgp2(3f) - [M_draw:POSITION] Gets the current screen graphics position in screen coords (-1 to 1)
-
-SYNOPSIS
-         subroutine sgetgp2(x, y)
-         real x, y
-
-DESCRIPTION
-   Gets the current screen graphics position in screen coords (-1 to 1)

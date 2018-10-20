@@ -1294,11 +1294,12 @@ help_text=[ CHARACTER(LEN=128) :: &
 '    Sample program                                                              ',&
 '                                                                                ',&
 '     program demo_draw_interpret                                                ',&
-'     use M_drawplus, only : call_draw                                           ',&
+'     use M_drawplus, only : draw_interpret                                      ',&
+'     character(len=:),allocatable :: draw_cmds(:)                               ',&
 '                                                                                ',&
 '     ! $FILTER variable -varname DRAW_CMDS                                      ',&
 '                                                                                ',&
-'     DRAW_CMDS=[ CHARACTER(LEN=128) ::                                         &',&
+'     draw_cmds=[ character(len=128) ::                                         &',&
 '     ''set N=11; prefsize 600 200; vinit ;page -15 15 -5 5                    '',&',&
 '     ''textsize .3 .3; linewidth 150/3; color 0; clear                        '',&',&
 '     ''color  1;  spirograph  -10  0  N  1  N  5  1000  0  0  0               '',&',&
@@ -1310,8 +1311,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                                                                                ',&
 '     ! $FILTER END                                                              ',&
 '                                                                                ',&
-'     call draw_interpret(DRAW_CMDS,delimiters='';'')                            ',&
-'     end program demo_draw_interpret                                            ',&
+'     call draw_interpret(draw_cmds,delimiters='';'')                            ',&
 '                                                                                ',&
 'SEE ALSO                                                                        ',&
 '    call_draw(3f), M_draw(3fm), M_drawplus(3fm)                                 ',&
@@ -1350,11 +1350,12 @@ end subroutine help_usage
 !!     Sample program
 !!
 !!      program demo_draw_interpret
-!!      use M_drawplus, only : call_draw
+!!      use M_drawplus, only : draw_interpret
+!!      character(len=:),allocatable :: draw_cmds(:)
 !!
 !!      ! $FILTER variable -varname DRAW_CMDS
 !!
-!!      DRAW_CMDS=[ CHARACTER(LEN=128) ::                                         &
+!!      draw_cmds=[ character(len=128) ::                                         &
 !!      'set N=11; prefsize 600 200; vinit ;page -15 15 -5 5                    ',&
 !!      'textsize .3 .3; linewidth 150/3; color 0; clear                        ',&
 !!      'color  1;  spirograph  -10  0  N  1  N  5  1000  0  0  0               ',&
@@ -1366,8 +1367,7 @@ end subroutine help_usage
 !!
 !!      ! $FILTER END
 !!
-!!      call draw_interpret(DRAW_CMDS,delimiters=';')
-!!      end program demo_draw_interpret
+!!      call draw_interpret(draw_cmds,delimiters=';')
 !!
 !!##SEE ALSO
 !!     call_draw(3f), M_draw(3fm), M_drawplus(3fm)
@@ -1435,26 +1435,26 @@ end subroutine draw_interpret
 !!
 !!    Simple Example
 !!
-!!        program demo_call_draw
-!!        use M_drawplus, only : call_draw
-!!        use M_io, only : read_line
-!!        implicit none
-!!        character(len=:),allocatable :: line
-!!        logical                      :: found
-!!        integer                      :: iend
-!!           INFINITE: do while (read_line(line)==0)
-!!              line=adjustl(line)
-!!              iend=scan(line,' #;')-1
-!!              if(iend.le.0)iend=len_trim(line)
-!!              if(iend.ne.0)then
-!!                 line=line//' '
-!!                 call call_draw(line(:iend),line(iend+1:),found)
-!!                 if(.not.found)then
-!!                    write(*,*)'ERROR: ',line(:iend),'['line(iend+1):']',' not found'
-!!                 endif
-!!              endif
-!!           enddo INFINITE
-!!        end program demo_call_draw
+!!       program demo_call_draw
+!!          use M_drawplus, only : call_draw
+!!          use M_io, only : read_line
+!!          implicit none
+!!          character(len=:),allocatable :: line
+!!          logical                      :: found
+!!          integer                      :: iend
+!!          INFINITE: do while (read_line(line)==0)
+!!             line=adjustl(line)
+!!             iend=scan(line,' #;')-1
+!!             if(iend.le.0)iend=len_trim(line)
+!!             if(iend.ne.0)then
+!!                line=line//' '
+!!                call call_draw(line(:iend),line(iend+1:),found)
+!!                if(.not.found)then
+!!                   write(*,*)'ERROR: ',line(:iend),'[',line(iend+1:),']',' not found'
+!!                endif
+!!             endif
+!!          enddo INFINITE
+!!       end program demo_call_draw
 !!
 !!    Sample
 !!

@@ -15,6 +15,13 @@ EXAMPLE
 
    program demo_system_stat_print
    use M_system, only : system_stat_print
-   call system_stat_print(pathname)
+   implicit none
+      call system_stat_print('/tmp')
+      call system_stat_print('/etc/hosts')
    end program demo_system_stat_print
+
+  Sample Result
+
+    41777 drwxrwxrwx --S 1  JSU      None     0    2018-10-19T21:10:39 /tmp
+   100750 -rwxr-x--- --- 1  SYSTEM   SYSTEM   824  2018-08-17T01:21:55 /etc/hosts
 

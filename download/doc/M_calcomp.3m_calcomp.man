@@ -297,7 +297,7 @@ CALCOMP SETUP
 
  Since this version of a CALCOMP-compatible library uses the M_draw(3f)
  graphic primitives, the same environment variables can be used to
- select the type and size of output. For exampe:
+ select the type and size of output. For example:
 
    # where the M_draw(3f) font files are located
    export M_DRAW_FONTLIB=/usr/share/hershey
@@ -678,6 +678,7 @@ EXAMPLE
          end select
    !-----------------------------------------------------------------------
       enddo NEXTREAD
+      close(unit=kin,status='delete')
    !-----------------------------------------------------------------------
    contains
 

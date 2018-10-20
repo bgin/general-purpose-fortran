@@ -392,7 +392,7 @@
 !!
 !!  Since this version of a CALCOMP-compatible library uses the M_draw(3f)
 !!  graphic primitives, the same environment variables can be used to
-!!  select the type and size of output. For exampe:
+!!  select the type and size of output. For example:
 !!
 !!    # where the M_draw(3f) font files are located
 !!    export M_DRAW_FONTLIB=/usr/share/hershey
@@ -774,6 +774,7 @@
 !!          end select
 !!    !-----------------------------------------------------------------------
 !!       enddo NEXTREAD
+!!       close(unit=kin,status='delete')
 !!    !-----------------------------------------------------------------------
 !!    contains
 !!
@@ -4508,8 +4509,6 @@ END SUBROUTINE LINE
 !!    character(len= 4)  :: ICHR3='ANG='
 !!    character(len= 4)  :: ICHR4=', H='
 !!    character(len= 19) :: ICHR5='ANGULAR LETTER TEST'
-!!    character(len= 10) :: LBCD1='X-ABSCISSA'
-!!    character(len= 10) :: LBCD2='Y-ORDINATE'
 !!    call plots(0.0,10.0,0.0,10.0)
 !!    ! PLOT ANGULAR LETTER TEST
 !!    call plot(4.5,5.5,-3)
