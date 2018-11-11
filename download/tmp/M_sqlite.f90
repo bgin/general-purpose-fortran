@@ -47,7 +47,7 @@
 !!    call sqlite3_commit(db)
 !!    call sqlite3_do(db,command)
 !!    call sqlite3_finalize(stmt)
-!!    call sqlite3_get_table(db,commmand,result,errmsg)
+!!    call sqlite3_get_table(db,command,result,errmsg)
 !!    call sqlite3_insert(db,tablename,columns)
 !!    call sqlite3_next_row(stmt,columns,finished)
 !!    call sqlite3_open(filename,db)
@@ -74,18 +74,17 @@
 !!
 !!##DESCRIPTION
 !!
-!!    THIS IS AN EXPERIMENTAL ATTEMPT TO BEGIN A FORTRAN SQLITE3
-!!    INTERFACE.
+!!    THIS IS AN EXPERIMENTAL ATTEMPT TO BEGIN A FORTRAN SQLITE3 INTERFACE.
 !!
 !!    The M_sqlite(3f) module provides a high-level means for
 !!    Fortran programmers to use the SQLite3 library by Richard Hipp
 !!    (http://www.sqlite.org)
 !!
-!!    The interface has been implemented in such a way that you can use
-!!    a few high-level routines for common tasks, such as inserting data
-!!    into a database and querying the contents. To this end the module
-!!    defines a set of routines and functions as well as several derived
-!!    types to hide the low-level details.
+!!    The interface has been implemented in such a way that you can use a
+!!    few high-level routines for common tasks, such as inserting data into
+!!    a database and querying the contents. To this end the module defines
+!!    a set of routines and functions as well as several derived types to
+!!    hide the low-level details.
 !!
 !!    The remaining majority of the routines merely prepare SQL statements
 !!    or are a simple interface to the original C functions. Therefore, when
@@ -178,7 +177,7 @@
 !!                                    -- Retrieve the next row of a SELECT query.
 !!    **call sqlite3_get_column(column, value)
 !!                                    -- Get the value of a column
-!!    call sqlite3_get_table(db, commmand, result, errmsg)
+!!    call sqlite3_get_table(db, command, result, errmsg)
 !!                                    -- Get the result of a query in a
 !!                                       single two-dimensional array
 !!    call sqlite3_query_table(db, tablename, columns)
@@ -342,7 +341,7 @@
 !!    real, dimension(5)              :: r
 !!    character(len=100)              :: line
 !!    character(len=40)               :: string
-!!    character(len=20),dimension(6)  :: station =
+!!    character(len=20),dimension(6)  :: station = &
 !!    & [character(len=20) :: 'NW1','NW2','OS30_LONGER_NAME','DH','DO','Ah111' ]
 !!    integer                         :: i
 !!    open(lun, file='somedata.csv')
@@ -1923,7 +1922,7 @@ end subroutine sqlite3_prepare
 !!
 !!##SYNOPSIS
 !!
-!!    subroutine sqlite3_get_table(db, commmand, result, errmsg)
+!!    subroutine sqlite3_get_table(db, command, result, errmsg)
 !!
 !!     type(SQLITE_DATABASE)    :: db
 !!     character(len=*)         :: command

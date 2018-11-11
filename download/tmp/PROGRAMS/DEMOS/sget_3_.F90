@@ -8,7 +8,7 @@
             string=sget('demo_string')
             a=sget('demo_a')
             b=sget('demo_b')
-            write(*,'("string is ",a')trim(string)
-            write(*,'("a is ",a')trim(a)
-            write(*,'("b is ",a')trim(b)
+            write(*,'("string is ",a)')trim(string)
+            write(*,'("a is ",a)')trim(a)
+            write(*,'("b is ",a)')trim(b)
           end program demo_sget

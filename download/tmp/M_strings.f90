@@ -1,6 +1,6 @@
 !>
 !!##NAME
-!!    M_strings(3f) - [M_strings] Fortran string module
+!!    M_strings(3f) - [M_strings:INTRO] Fortran string module
 !!##SYNOPSIS
 !!
 !!  public entities:
@@ -86,13 +86,12 @@
 !!    value_to_string   generic subroutine returns string given numeric value (REAL, DOUBLEPRECISION, INTEGER )
 !!    v2s               generic function returns string from numeric value (REAL, DOUBLEPRECISION, INTEGER )
 !!    trimzeros         delete trailing zeros from numeric decimal string
-!!    listout           copy ICURVE() to ICURVE_EXPANDED() expanding negative numbers to ranges (1 -10 means 1 thru 10)
-!!
-!!    LOGICAL TESTS
-!!
-!!    matchw  compares given string for match to pattern which may contain wildcard characters
+!!    listout           expand a list of numbers where  negative numbers denote range ends (1 -10 means 1 thru 10)
+!!    isnumber          determine if string represents a number
 !!
 !!    CHARACTER TESTS
+!!
+!!    matchw  compares given string for match to pattern which may contain wildcard characters
 !!
 !!    o isalnum   returns .true. if character is a letter or digit
 !!    o isalpha   returns .true. if character is a letter and .false. otherwise
@@ -109,17 +108,50 @@
 !!    o isxdigit  returns .true. if character is a hexadecimal digit (0-9, a-f, or A-F).
 !!
 !!    BASE CONVERSION
-!!    o base       convert whole number string in base [2-36] to string in alternate base [2-36]
-!!    o codebase   convert whole number string in base [2-36] to base 10 number
-!!    o decodebase convert whole number in base 10 to string in base [2-36]
+!!
+!!    base       convert whole number string in base [2-36] to string in alternate base [2-36]
+!!    codebase   convert whole number string in base [2-36] to base 10 number
+!!    decodebase convert whole number in base 10 to string in base [2-36]
+!!
+!!    MISCELLANEOUS
+!!
+!!    describe   returns a string describing the name of a single character
+!!##OVERVIEW
+!!
+!!    Fortran lets you access the characters in a string using ranges
+!!    much like they are character arrays, assignment, comparisons with
+!!    standard operators, supports dynamically allocatable strings and
+!!    supports concatentation using the // operator, as well as a number
+!!    of intrinsic string routines
+!!
+!!    INTRINSICS
+!!
+!!        adjustl   Left adjust a string
+!!        adjustr   Right adjust a string
+!!        index     Position of a substring within a string
+!!        repeat    Repeated string concatenation
+!!        scan      Scan a string for the presence of a set of characters
+!!        trim      Remove trailing blank characters of a string
+!!        verify    Scan a string for the absence of a set of characters
+!!        len       It returns the length of a character string
+!!        achar     converts an integer into a character
+!!        iachar    converts a character into an integer
+!!        len_trim  finds length of string with trailing spaces ignored
+!!        new_line  Newline character
+!!        selected_char_kind  Choose character kind
+!!        lge       Lexical greater than or equal
+!!        lgt       Lexical greater than
+!!        lle       Lexical less than or equal
+!!        llt       Lexical less than
+!!
 !!
 !!##DESCRIPTION
 !!
-!!    The M_strings module is a collection of Fortran procedures that process
-!!    character strings. Routines for parsing, tokenizing, changing case,
-!!    substituting new strings for substrings, locating strings with simple
-!!    wildcard expressions, removing tabs and line terminators and other
-!!    string manipulations are included.
+!!    The M_strings module is a collection of Fortran procedures that
+!!    supplement the built in routines. Routines for parsing, tokenizing,
+!!    changing case, substituting new strings for substrings, locating
+!!    strings with simple wildcard expressions, removing tabs and line
+!!    terminators and other string manipulations are included.
 !!
 !!    M_strings_oop is a companion module that provides an OOP interface
 !!    to the M_strings module.
@@ -136,6 +168,13 @@
 !!    to the M_strings(3fm) module; as described in the example program
 !!    OBJECT_ORIENTED shown below...
 !!
+!!##SEE ALSO
+!!
+!!    There are additional routines in other GPF modules for working with
+!!    expressions (M_calculator), time strings (M_time), random strings
+!!    (M_random, M_uuid), lists (M_list), and interfacing with the C regular
+!!    expression library (M_regex).
+!!
 !!##EXAMPLES
 !!
 !!
@@ -143,7 +182,7 @@
 !! The object-oriented interface does not have individual man(1) pages, but is instead demonstrated using the following
 !! example program:
 !!
-!!  program object_oriented
+!!  program demo_M_strings
 !!  !
 !!  ! This is an example using the object-oriented class/type model defined in M_strings_oop
 !!  ! This is essentially the same functionality as the procedures combined with several Fortran intrinsics and overloaded operators
@@ -293,8 +332,7 @@
 !!
 !!    write(*,*)repeat('=',78)
 !!
-!!  end program object_oriented
-!!
+!!  end program demo_M_strings
 !!
 !!  Expected output
 !!
@@ -328,8 +366,8 @@
 !!   chars .................... . [ ][ ][ ][T][h][i][s][ ][ ][i][s][ ][ ][a][ ][ ][S][t][r][i][n][g][!][ ][ ][ ][ ][ ][ ][ ]
 !!   =============================================================================
 !!   str2%str ................... [\t\tSome tabs\t   x\bX ]
-!!   expand ..................... [         Some tabs          xX]
-!!   notabs ..................... [                Some tabs          xX]
+!!   expand ..................... [         Some tabs          x   X]
+!!   notabs ..................... [                Some tabs          x    X]
 !!   noesc ...................... [  Some tabs    x X]
 !!   =============================================================================
 !!   Casting to numeric variables
@@ -422,8 +460,6 @@ PUBLIC unquote         !  remove quotes from string as if read with list-directe
 PUBLIC lenset          !  return a string as specified length
 PUBLIC merge_str       !  make strings of equal length and then call MERGE(3f) intrinsic
 PUBLIC len_white       !  find location of last non-whitespace character
-!----------------------# CONTENT TESTS
-PUBLIC matchw          !  compares given string for match to pattern which may contain wildcard characters
 !----------------------# NONALPHA
 PUBLIC noesc           !  elemental function converts non-printable ASCII8 characters to a space
 PUBLIC notabs          !  convert tabs to spaces in output while maintaining columns, assuming a tab is set every 8 characters
@@ -445,8 +481,9 @@ PUBLIC v2s             !  generic function returns string given numeric REAL|DOU
  PRIVATE r2s           !  function returns strings from real value
  PRIVATE i2s           !  function returns strings from integer value
 PUBLIC v2s_bug         !  generic function returns string given numeric REAL|DOUBLEPRECISION|INTEGER value
+PUBLIC isnumber        !  determine if string represents a number
  PRIVATE trimzeros     !  Delete trailing zeros from numeric decimal string
-PUBLIC listout         !  copy ICURVE() to ICURVE_EXPANDED() expanding negative numbers to ranges (1 -10 means 1 thru 10)
+PUBLIC listout         !  expand a list of numbers where  negative numbers denote range ends (1 -10 means 1 thru 10)
 !-----------------------------------------------------------------------------------------------------------------------------------
 !
 ! extend intrinsics to accept CHARACTER values
@@ -467,6 +504,7 @@ PUBLIC base            !  convert whole number string in base [2-36] to string i
 PUBLIC codebase        !  convert whole number string in base [2-36] to base 10 number
 PUBLIC decodebase      !  convert whole number in base 10 to string in base [2-36]
 !----------------------# LOGICAL TESTS
+PUBLIC matchw          !  compares given string for match to pattern which may contain wildcard characters
 PUBLIC isalnum         !  elemental function returns .true. if CHR is a letter or digit
 PUBLIC isalpha         !  elemental function returns .true. if CHR is a letter and .false. otherwise
 PUBLIC isascii         !  elemental function returns .true. if the low order byte of c is in the range char(0) to char(127)
@@ -522,7 +560,7 @@ CONTAINS
 !===================================================================================================================================
 !>
 !!##NAME
-!!    matchw(3f) - [M_strings] compare given string for match to pattern which may contain wildcard characters
+!!    matchw(3f) - [M_strings:COMPARE] compare given string for match to pattern which may contain wildcard characters
 !!
 !!##SYNOPSIS
 !!
@@ -545,20 +583,65 @@ CONTAINS
 !!
 !!   Example program
 !!
-!!    program demo_matchw
-!!    use M_strings, only : matchw
-!!
-!!    ! first match is not all of string so F
-!!    write(*,*)matchw('*c*ax ','abcdefgaxaxaxax')
-!!    ! true
-!!    write(*,*)matchw('*c*ax*','abcdefgaxaxaxax')
-!!
-!!    write(*,*)merge('MATCH','ERROR',matchw('abcdefgaxaxaxax','*c*ax*'))
-!!    write(*,*)merge('MATCH','ERROR',matchw('abcdefgaxaxaxax','*c??f*'))
-!!    write(*,*)merge('ERROR','NO   ',matchw('abcdefgaxaxaxax','*a??f'))
-!!    write(*,*)merge('ERROR','NO   ',matchw('abcdefgaxaxaxax','*y'))
-!!
-!!    end program demo_matchw
+!!     program demo_matchw
+!!     call demo1()
+!!     call demo2()
+!!     contains
+!!     !!
+!!     ! basic example
+!!     !!
+!!     subroutine demo1()
+!!     use M_strings, only : matchw
+!!     ! first match is not all of string so F
+!!     write(*,*)matchw('*c*ax ','abcdefgaxaxaxax')
+!!     ! true
+!!     write(*,*)matchw('*c*ax*','abcdefgaxaxaxax')
+!!     !
+!!     write(*,*)merge('MATCH','ERROR',matchw('abcdefgaxaxaxax','*c*ax*'))
+!!     write(*,*)merge('MATCH','ERROR',matchw('abcdefgaxaxaxax','*c??f*'))
+!!     write(*,*)merge('ERROR','NO   ',matchw('abcdefgaxaxaxax','*a??f'))
+!!     write(*,*)merge('ERROR','NO   ',matchw('abcdefgaxaxaxax','*y'))
+!!     end subroutine demo1
+!!     !!
+!!     ! More extensive example
+!!     !!
+!!     subroutine demo2()
+!!     use M_strings, only : matchw
+!!     !implicit none
+!!     integer np, ns
+!!     parameter (np =  19, ns =  6)
+!!     character pattern(np)*8, string(ns)*12
+!!     character pattern2(np)*8
+!!     integer s, p
+!!     data pattern /'*','a*a','a*','ab*','*a','a*a','a?d?','a?d*','abra',&
+!!     & 'aa','a','ab','*','?','????','?*','*?','***?','****?'/
+!!     data pattern2/'*','a**a','a*d?','ab*','*a','a*a','a?d?','a?d*','alda',&
+!!     & 'aa','a','ab','*','?','???a','????','**','***a','?????'/
+!!     data string / 'abracadabra', 'aldabra', 'alda', 'carta', 'abdc', 'abra'/
+!!        !
+!!        write(*,'("TABLE 1",t18, *(a6))') pattern
+!!        do s = 1,ns
+!!           write(*, '(a, 100L6)') &
+!!            & string(s),(matchw(string(s),pattern(p)), p=1,np)
+!!        enddo
+!!        !
+!!        write(*,'("TABLE 2",t18, *(a6))') pattern2
+!!        do s = 1,ns
+!!           write(*, '(a, 100L6)') &
+!!            & string(s),(matchw(string(s),pattern2(p)), p=1,np)
+!!        enddo
+!!        !
+!!        stop
+!!        !
+!!        do s = 1,ns
+!!           do p=1,np
+!!           write(*, '(a,a,L7)') &
+!!            & string(s),pattern2(p),matchw(string(s),pattern2(p))
+!!           enddo
+!!        enddo
+!!     end subroutine demo2
+!!     !
+!!     end program demo_matchw
 !!
 !!   Expected output
 !!
@@ -569,43 +652,6 @@ CONTAINS
 !!     > NO
 !!     > NO
 !!
-!!   More extensive example
-!!
-!!    program test_matchw
-!!    use M_strings, only : matchw
-!!    !implicit none
-!!    integer np, ns
-!!    parameter (np =  19, ns =  6)
-!!    character pattern(np)*8, string(ns)*12
-!!    character pattern2(np)*8
-!!    integer s, p
-!!    data pattern /'*','a*a','a*','ab*','*a','a*a','a?d?','a?d*','abra',&
-!!    & 'aa','a','ab','*','?','????','?*','*?','***?','****?'/
-!!    data pattern2/'*','a**a','a*d?','ab*','*a','a*a','a?d?','a?d*','alda',&
-!!    & 'aa','a','ab','*','?','???a','????','**','***a','?????'/
-!!    data string / 'abracadabra', 'aldabra', 'alda', 'carta', 'abdc', 'abra'/
-!!
-!!       write(*,'("TABLE 1",t18, *(a6))') pattern
-!!       do s = 1,ns
-!!          write(*, '(a, 100L6)') &
-!!           & string(s),(matchw(string(s),pattern(p)), p=1,np)
-!!       enddo
-!!
-!!       write(*,'("TABLE 2",t18, *(a6))') pattern2
-!!       do s = 1,ns
-!!          write(*, '(a, 100L6)') &
-!!           & string(s),(matchw(string(s),pattern2(p)), p=1,np)
-!!       enddo
-!!
-!!       stop
-!!
-!!       do s = 1,ns
-!!          do p=1,np
-!!          write(*, '(a,a,L7)') &
-!!           & string(s),pattern2(p),matchw(string(s),pattern2(p))
-!!          enddo
-!!       enddo
-!!    end program test_matchw
 !!
 !!   Expected output
 !!
@@ -696,7 +742,7 @@ end function matchw
 !===================================================================================================================================
 !>
 !!##NAME
-!!    split(3f) - [M_strings] parse string into an array using specified delimiters
+!!    split(3f) - [M_strings:TOKENS] parse string into an array using specified delimiters
 !!
 !!##SYNOPSIS
 !!
@@ -746,36 +792,34 @@ end function matchw
 !!  Sample program:
 !!
 !!    program demo_split
-!!
-!!     use M_strings, only: split
-!!     character(len=*),parameter     :: &
-!!     & line='  aBcdef   ghijklmnop qrstuvwxyz  1:|:2     333|333 a B cc    '
-!!     character(len=256),allocatable :: array(:) ! output array of tokens
-!!        write(*,*)'INPUT LINE:['//LINE//']'
-!!     write(*,'(80("="))')
-!!        write(*,*)'typical call:'
-!!        CALL split(line,array)
-!!        write(*,'(i0," ==> ",a)')(i,trim(array(i)),i=1,size(array))
-!!        write(*,*)'SIZE:',SIZE(array)
-!!     write(*,'(80("-"))')
-!!      write(*,*)'custom list of delimiters (colon and vertical line):'
-!!      CALL split(line,array,delimiters=':|',order='sequential',nulls='ignore')
-!!      write(*,'(i0," ==> ",a)')(i,trim(array(i)),i=1,size(array))
-!!      write(*,*)'SIZE:',SIZE(array)
-!!     write(*,'(80("-"))')
-!!      write(*,*)&
-!!      &'custom list of delimiters, reverse array order and count null fields:'
-!!        CALL split(line,array,delimiters=':|',order='reverse',nulls='return')
-!!        write(*,'(i0," ==> ",a)')(i,trim(array(i)),i=1,size(array))
-!!        write(*,*)'SIZE:',SIZE(array)
-!!     write(*,'(80("-"))')
-!!        write(*,*)'INPUT LINE:['//LINE//']'
-!!        write(*,*)&
-!!        &'default delimiters and reverse array order and return null fields:'
-!!        CALL split(line,array,delimiters='',order='reverse',nulls='return')
-!!        write(*,'(i0," ==> ",a)')(i,trim(array(i)),i=1,size(array))
-!!        write(*,*)'SIZE:',SIZE(array)
-!!
+!!    use M_strings, only: split
+!!    character(len=*),parameter     :: &
+!!    & line='  aBcdef   ghijklmnop qrstuvwxyz  1:|:2     333|333 a B cc    '
+!!    character(len=256),allocatable :: array(:) ! output array of tokens
+!!       write(*,*)'INPUT LINE:['//LINE//']'
+!!    write(*,'(80("="))')
+!!       write(*,*)'typical call:'
+!!       CALL split(line,array)
+!!       write(*,'(i0," ==> ",a)')(i,trim(array(i)),i=1,size(array))
+!!       write(*,*)'SIZE:',SIZE(array)
+!!    write(*,'(80("-"))')
+!!     write(*,*)'custom list of delimiters (colon and vertical line):'
+!!     CALL split(line,array,delimiters=':|',order='sequential',nulls='ignore')
+!!     write(*,'(i0," ==> ",a)')(i,trim(array(i)),i=1,size(array))
+!!     write(*,*)'SIZE:',SIZE(array)
+!!    write(*,'(80("-"))')
+!!     write(*,*)&
+!!     &'custom list of delimiters, reverse array order and count null fields:'
+!!       CALL split(line,array,delimiters=':|',order='reverse',nulls='return')
+!!       write(*,'(i0," ==> ",a)')(i,trim(array(i)),i=1,size(array))
+!!       write(*,*)'SIZE:',SIZE(array)
+!!    write(*,'(80("-"))')
+!!       write(*,*)'INPUT LINE:['//LINE//']'
+!!       write(*,*)&
+!!       &'default delimiters and reverse array order and return null fields:'
+!!       CALL split(line,array,delimiters='',order='reverse',nulls='return')
+!!       write(*,'(i0," ==> ",a)')(i,trim(array(i)),i=1,size(array))
+!!       write(*,*)'SIZE:',SIZE(array)
 !!    end program demo_split
 !!
 !!   Output
@@ -958,7 +1002,7 @@ character(len=*),parameter::ident="&
 !===================================================================================================================================
 !>
 !!##NAME
-!!    chomp(3f) - [M_strings] Tokenize a string, consuming it one token per call
+!!    chomp(3f) - [M_strings:TOKENS] Tokenize a string, consuming it one token per call
 !!
 !!##SYNOPSIS
 !!
@@ -987,30 +1031,30 @@ character(len=*),parameter::ident="&
 !!
 !!  Sample program:
 !!
-!!    program test_chomp
+!!    program demo_chomp
 !!
-!!       use M_strings, only : chomp
-!!       implicit none
-!!       character(len=100)            :: inline
-!!       character(len=:),allocatable  :: token
-!!       character(len=*),parameter    :: delimiters=' ;,'
-!!       integer                       :: ios
-!!       integer                       :: icount
-!!       integer                       :: itoken
-!!          icount=0
-!!          do        ! read lines from stdin until end-of-file or error
-!!             read (unit=*,fmt="(a)",iostat=ios) inline
-!!             if(ios.ne.0)stop
-!!             icount=icount+1
-!!             itoken=0
-!!             write(*,*)'INLINE ',trim(inline)
-!!             do while ( chomp(inline,token,delimiters).ge. 0)
-!!                itoken=itoken+1
-!!                print *, itoken,'TOKEN=['//trim(token)//']'
-!!             enddo
+!!    use M_strings, only : chomp
+!!    implicit none
+!!    character(len=100)            :: inline
+!!    character(len=:),allocatable  :: token
+!!    character(len=*),parameter    :: delimiters=' ;,'
+!!    integer                       :: ios
+!!    integer                       :: icount
+!!    integer                       :: itoken
+!!       icount=0
+!!       do        ! read lines from stdin until end-of-file or error
+!!          read (unit=*,fmt="(a)",iostat=ios) inline
+!!          if(ios.ne.0)stop
+!!          icount=icount+1
+!!          itoken=0
+!!          write(*,*)'INLINE ',trim(inline)
+!!          do while ( chomp(inline,token,delimiters).ge. 0)
+!!             itoken=itoken+1
+!!             print *, itoken,'TOKEN=['//trim(token)//']'
 !!          enddo
+!!       enddo
 !!
-!!    end program test_chomp
+!!    end program demo_chomp
 !!
 !!    sample input file
 !!
@@ -1085,7 +1129,7 @@ end function chomp
 !===================================================================================================================================
 !>
 !!##NAME
-!!      delim(3f) - [M_strings] parse a string and store tokens into an array
+!!      delim(3f) - [M_strings:TOKENS] parse a string and store tokens into an array
 !!##SYNOPSIS
 !!
 !!    subroutine delim(line,array,n,icount,ibegin,iterm,ilen,dlim)
@@ -1321,7 +1365,7 @@ end subroutine delim
 !===================================================================================================================================
 !>
 !!##NAME
-!!    replace(3f) - [M_strings] Globally replace one substring for another in string
+!!    replace(3f) - [M_strings:EDITING] Globally replace one substring for another in string
 !!
 !!##SYNOPSIS
 !!
@@ -1355,7 +1399,7 @@ end subroutine delim
 !!
 !!   Sample Program:
 !!
-!!    program test_replace
+!!    program demo_replace
 !!    use M_strings, only : replace
 !!    implicit none
 !!    character(len=:),allocatable :: targetline
@@ -1396,7 +1440,7 @@ end subroutine delim
 !!    write(*,*)'TEST    [',targetline.eq.expected,']'
 !!    end subroutine testit
 !!
-!!    end program test_replace
+!!    end program demo_replace
 !!
 !!   Expected output
 !!
@@ -1585,7 +1629,7 @@ end function replace
 !===================================================================================================================================
 !>
 !!##NAME
-!!    substitute(3f) - [M_strings] Globally substitute one substring for another in string
+!!    substitute(3f) - [M_strings:EDITING] Globally substitute one substring for another in string
 !!
 !!##SYNOPSIS
 !!
@@ -1616,7 +1660,7 @@ end function replace
 !!
 !!   Sample Program:
 !!
-!!    program test_substitute
+!!    program demo_substitute
 !!    use M_strings, only : substitute
 !!    implicit none
 !!    ! must be long enough to hold changed line
@@ -1639,7 +1683,7 @@ end function replace
 !!    call substitute(targetline,'i','')
 !!    write(*,*)'i => ""     : '//trim(targetline)
 !!
-!!    end program test_substitute
+!!    end program demo_substitute
 !!
 !!   Expected output
 !!
@@ -1774,7 +1818,7 @@ end subroutine substitute
 !===================================================================================================================================
 !>
 !!##NAME
-!!    change(3f) - [M_strings] change old string to new string with a directive like a line editor
+!!    change(3f) - [M_strings:EDITING] change old string to new string with a directive like a line editor
 !!
 !!##SYNOPSIS
 !!
@@ -1784,7 +1828,6 @@ end subroutine substitute
 !!     character(len=*),intent(in)    :: cmd
 !!     integer                        :: ierr
 !!##DESCRIPTION
-!!
 !!    change an old substring into a new substring in a character variable
 !!    like a line editor. Primarily used to create interactive utilities
 !!    such as input history editors for interactive line-mode programs. The
@@ -1915,7 +1958,7 @@ end subroutine change
 !!   Sample program:
 !!
 !!     !===============================================================================
-!!     program test_strtok
+!!     program demo_strtok
 !!     use M_strings, only : strtok
 !!     character(len=264)          :: inline
 !!     character(len=*),parameter  :: delimiters=' ;,'
@@ -1929,7 +1972,7 @@ end subroutine change
 !!              print *, itoken,'TOKEN=['//(inline(istart:iend))//']',istart,iend
 !!           enddo
 !!        enddo
-!!     end program test_strtok
+!!     end program demo_strtok
 !!     !===============================================================================
 !!
 !!     sample input file
@@ -2011,7 +2054,7 @@ end function strtok
 !===================================================================================================================================
 !>
 !!##NAME
-!!    modif(3f) - [M_strings] emulate the MODIFY command from the line editor XEDIT
+!!    modif(3f) - [M_strings:EDITING] emulate the MODIFY command from the line editor XEDIT
 !!
 !!##SYNOPSIS
 !!
@@ -2053,16 +2096,45 @@ end function strtok
 !!
 !!##EXAMPLES
 !!
-!!
 !!   Example input/output:
 !!
 !!    THE INPUT LINE........ 10 THIS STRING  TO BE MORTIFD
 !!    THE DIRECTIVES LINE...        ^ IS THE#        D#  ^IE
 !!    ALTERED INPUT LINE.... 10 THIS IS THE STRING  TO BE MODIFIED
+!!
+!!   Sample program:
+!!
+!!    program demo_modif
+!!    use M_strings, only : modif
+!!    implicit none
+!!    character(len=256)           :: line
+!!    integer                      :: ios
+!!    integer                      :: count
+!!    integer                      :: COMMAND_LINE_LENGTH
+!!    character(len=:),allocatable :: COMMAND_LINE
+!!       ! get command name length
+!!       call get_command_argument(0,length=count)
+!!       ! get command line length
+!!       call get_command(length=COMMAND_LINE_LENGTH)
+!!       ! allocate string big enough to hold command line
+!!       allocate(character(len=COMMAND_LINE_LENGTH+200) :: COMMAND_LINE)
+!!       ! get command line as a string
+!!       call get_command(command=COMMAND_LINE)
+!!       ! trim leading spaces just in case
+!!       COMMAND_LINE=adjustl(COMMAND_LINE)
+!!       ! remove command name
+!!       COMMAND_LINE=adjustl(COMMAND_LINE(COUNT+2:))
+!!       INFINITE: do
+!!          read(*,'(a)',iostat=ios)line
+!!          if(ios.ne.0)exit
+!!          call modif(line,COMMAND_LINE)
+!!          write(*,'(a)')trim(line)
+!!       enddo INFINITE
+!!    end program demo_modif
 !===================================================================================================================================
 SUBROUTINE MODIF(CLINE,MOD)
 
-character(len=*),parameter::ident="@(#)M_strings::modif(3f): Emulate the MODIFY command from the line editor XEDIT"
+!$@(#) M_strings::modif(3f): Emulate the MODIFY command from the line editor XEDIT
 
 !
 ! MODIF
@@ -2098,15 +2170,16 @@ character(len=*),parameter::ident="@(#)M_strings::modif(3f): Emulate the MODIFY 
 ! THE DIRECTIVES LINE...        ^ IS THE#        D#  ^IE
 ! ALTERED INPUT LINE.... 10 THIS IS THE STRING  TO BE MODIFIED
 !CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-character(len=*) :: cline                   !STRING TO BE MODIFIED
-character(len=*),intent(in) ::  mod         !STRING TO DIRECT MODIFICATION
-   character(len=:),allocatable  :: cmod
-   character(len=3),parameter :: c='#&^'    !ASSIGN DEFAULT EDIT CHARACTERS
-   integer,parameter :: maxscra=255         !LENGTH OF SCRATCH BUFFER
-   character(len=maxscra) :: dum2           !SCRATCH CHARACTER BUFFER
-   logical linsrt                           !FLAG FOR INSERTING DATA ON LINE
-   integer :: i, j, ic, ichar, iend, lmax, lmx1
-      CMOD=MOD
+character(len=*)            :: cline        !STRING TO BE MODIFIED
+character(len=*),intent(in) :: mod          !STRING TO DIRECT MODIFICATION
+character(len=len(cline))   :: cmod
+character(len=3),parameter  :: c='#&^'      !ASSIGN DEFAULT EDIT CHARACTERS
+integer                     :: maxscra      !LENGTH OF SCRATCH BUFFER
+character(len=len(cline))   :: dum2         !SCRATCH CHARACTER BUFFER
+logical                     :: linsrt       !FLAG FOR INSERTING DATA ON LINE
+integer :: i, j, ic, ichar, iend, lmax, lmx1
+maxscra=len(cline)
+      CMOD=TRIM(MOD)
       LMAX=MIN0(LEN(CLINE),MAXSCRA)         !DETERMINE MAXIMUM LINE LENGTH
       LMX1=LMAX-1                           !MAX LINE LENGTH -1
       DUM2=' '                              !INITIALIZE NEW LINE
@@ -2165,7 +2238,7 @@ END SUBROUTINE MODIF                        !RETURN
 !===================================================================================================================================
 !>
 !!##NAME
-!!      len_white(3f) - [M_strings] get length of string trimmed of whitespace.
+!!      len_white(3f) - [M_strings:LENGTH] get length of string trimmed of whitespace.
 !!
 !!##SYNOPSIS
 !!
@@ -2265,7 +2338,7 @@ end function len_white
 !===================================================================================================================================
 !>
 !!##NAME
-!!    crop(3f) - [M_strings] trim leading blanks and trailing blanks from a string
+!!    crop(3f) - [M_strings:WHITESPACE] trim leading blanks and trailing blanks from a string
 !!
 !!##SYNOPSIS
 !!
@@ -2307,7 +2380,7 @@ end function crop
 !===================================================================================================================================
 !>
 !!##NAME
-!!    transliterate(3f) - [M_strings] replace characters from old set with new set
+!!    transliterate(3f) - [M_strings:EDITING] replace characters from old set with new set
 !!
 !!##SYNOPSIS
 !!
@@ -2400,7 +2473,7 @@ END FUNCTION transliterate
 !===================================================================================================================================
 !>
 !!##NAME
-!!      join(3f) - [M_strings] append an array of character variables with specified separator into a single CHARACTER variable
+!!      join(3f) - [M_strings:EDITING] append CHARACTER variable array into a single CHARACTER variable with specified separator
 !!
 !!##SYNOPSIS
 !!
@@ -2498,7 +2571,7 @@ end function join
 !===================================================================================================================================
 !>
 !!##NAME
-!!      reverse(3f) - [M_strings] Return a string reversed
+!!      reverse(3f) - [M_strings:EDITING] Return a string reversed
 !!
 !!##SYNOPSIS
 !!
@@ -2546,7 +2619,7 @@ end function reverse
 !===================================================================================================================================
 !>
 !!##NAME
-!!      upper(3f) - [M_strings] changes a string to uppercase
+!! upper(3f) - [M_strings:CASE] changes a string to uppercase
 !!
 !!##SYNOPSIS
 !!
@@ -2638,7 +2711,7 @@ end function upper
 !===================================================================================================================================
 !>
 !!##NAME
-!!      lower(3f) - [M_strings] changes a string to lowercase over specified range
+!!    lower(3f) - [M_strings:CASE] changes a string to lowercase over specified range
 !!
 !!##SYNOPSIS
 !!
@@ -2716,16 +2789,17 @@ end function lower
 !>
 !!##NAME
 !!
-!!    switch(3f) - [M_strings] generic composition of a2s() and s2a() converts between CHARACTER scalar and array of single characters
+!!    switch(3f) - [M_strings:ARRAY] converts between CHARACTER scalar and array of single characters
 !!
 !!##SYNOPSIS
+!!
 !!
 !!    pure function switch(array) result (string)
 !!
 !!     character(len=1),intent(in) :: array(:)
 !!     character(len=SIZE(array))  :: string
 !!
-!!    or
+!!      or
 !!
 !!    pure function switch(string) result (array)
 !!
@@ -2740,6 +2814,7 @@ end function lower
 !!
 !!
 !!##EXAMPLES
+!!
 !!
 !!  Sample program:
 !!
@@ -2780,20 +2855,20 @@ end function lower
 !!
 !!  Expected output
 !!
-!!     F T T T T T
-!!     T
-!!     F
-!!     DASHES is all dashes
-!!     F
-!!     F
-!!     T
-!!     This is a string of letters
-!!     [T][h][i][s][ ][i][s][ ][a][ ][s][t][r][i][n][g][ ][o][f][ ][l][e][t][t][e][r][s]
-!!      F  T  T  T  F  T  T  F  T  F  T  T  T  T  T  T  F  T  T  F  T  T  T  T  T  T  T
-!!     LINE=Thisisastringofletters
-!!     F T T T T T T T T T T T T T T T T T T T T T
-!!     F
-!!     T
+!!    >  F T T T T T
+!!    >  T
+!!    >  F
+!!    >  DASHES is all dashes
+!!    >  F
+!!    >  F
+!!    >  T
+!!    >  This is a string of letters
+!!    >  [T][h][i][s][ ][i][s][ ][a][ ][s][t][r][i][n][g][ ][o][f][ ][l][e][t][t][e][r][s]
+!!    >   F  T  T  T  F  T  T  F  T  F  T  T  T  T  T  T  F  T  T  F  T  T  T  T  T  T  T
+!!    >  LINE=Thisisastringofletters
+!!    >  F T T T T T T T T T T T T T T T T T T T T T
+!!    >  F
+!!    >  T
 !===================================================================================================================================
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -2828,7 +2903,7 @@ end function s2a
 !===================================================================================================================================
 !>
 !!##NAME
-!!      s2c(3f) - [M_strings] convert character variable to array of characters with last element set to null
+!!      s2c(3f) - [M_strings:ARRAY] convert character variable to array of characters with last element set to null
 !!
 !!##SYNOPSIS
 !!
@@ -2887,7 +2962,7 @@ end function s2c
 !===================================================================================================================================
 !>
 !!##NAME
-!!      c2s(3f) - [M_strings] convert C string pointer to Fortran character string
+!!      c2s(3f) - [M_strings:ARRAY] convert C string pointer to Fortran character string
 !!
 !!##SYNOPSIS
 !!
@@ -2949,7 +3024,7 @@ end function c2s
 !===================================================================================================================================
 !>
 !!##NAME
-!!      indent(3f) - [M_strings] count number of leading spaces in a string
+!!      indent(3f) - [M_strings:WHITESPACE] count number of leading spaces in a string
 !!
 !!##SYNOPSIS
 !!
@@ -3002,7 +3077,7 @@ end function indent
 !===================================================================================================================================
 !>
 !!##NAME
-!!    visible(3f) - [M_strings] expand a string to control and meta-control representations
+!!    visible(3f) - [M_strings:NONALPHA] expand a string to control and meta-control representations
 !!
 !!##SYNOPSIS
 !!
@@ -3022,10 +3097,9 @@ end function indent
 !!     program demo_visible
 !!     use M_strings, only : visible
 !!     integer :: i
-!!        READFILE: block
-!!           do i=0,255
-!!              write(*,'(a)')visible(char(i))
-!!           enddo
+!!        do i=0,255
+!!           write(*,'(a)')visible(char(i))
+!!        enddo
 !!     end program demo_visible
 !!##BUGS
 !!     The expansion is not reversible, as input sequences such as "M-" or "^a"
@@ -3083,7 +3157,7 @@ end function visible
 !===================================================================================================================================
 !>
 !!##NAME
-!!    expand(3f) - [M_strings] expand C-like escape sequences
+!!    expand(3f) - [M_strings:NONALPHA] expand C-like escape sequences
 !!
 !!##SYNOPSIS
 !!
@@ -3229,7 +3303,7 @@ end function expand
 !===================================================================================================================================
 !>
 !!##NAME
-!!    notabs(3f) - [M_strings] expand tab characters
+!!    notabs(3f) - [M_strings:NONALPHA] expand tab characters
 !!##SYNOPSIS
 !!
 !!    subroutine notabs(INSTR,OUTSTR,ILEN)
@@ -3342,7 +3416,7 @@ END SUBROUTINE notabs
 !===================================================================================================================================
 !>
 !!##NAME
-!!       adjustc(3f) - [M_strings] center text
+!!       adjustc(3f) - [M_strings:WHITESPACE] center text
 !!
 !!##SYNOPSIS
 !!
@@ -3428,7 +3502,7 @@ end function adjustc
 !===================================================================================================================================
 !>
 !!##NAME
-!!    nospace(3f) - [M_strings] remove all whitespace from input string
+!!    nospace(3f) - [M_strings:WHITESPACE] remove all whitespace from input string
 !!
 !!##SYNOPSIS
 !!
@@ -3490,7 +3564,7 @@ end function nospace
 !===================================================================================================================================
 !>
 !!##NAME
-!!    lenset(3f) - [M_strings] return string trimmed or padded to specified length
+!!    lenset(3f) - [M_strings:LENGTH] return string trimmed or padded to specified length
 !!
 !!##SYNOPSIS
 !!
@@ -3537,7 +3611,7 @@ end function lenset
 !===================================================================================================================================
 !>
 !!##NAME
-!!    merge_str(3f) - [M_strings] pads strings to same length and then calls MERGE(3f)
+!!    merge_str(3f) - [M_strings:LENGTH] pads strings to same length and then calls MERGE(3f)
 !!
 !!##SYNOPSIS
 !!
@@ -3566,7 +3640,7 @@ end function lenset
 !!        write(*,'("[",a,"]")') answer
 !!        answer=merge_str('first string', 'second string is longer',10.ne.10)
 !!        write(*,'("[",a,"]")') answer
-!!    end program demo_merge_str
+!!     end program demo_merge_str
 !!
 !!    Expected output
 !!
@@ -3592,7 +3666,7 @@ end function merge_str
 !===================================================================================================================================
 !>
 !!##NAME
-!!    compact(3f) - [M_strings] converts contiguous whitespace to a single character (or nothing)
+!!    compact(3f) - [M_strings:WHITESPACE] converts contiguous whitespace to a single character (or nothing)
 !!
 !!##SYNOPSIS
 !!
@@ -3629,7 +3703,6 @@ end function merge_str
 !!     write(*,*)compact('  This     is      a     test  ',char='')
 !!     ! produces 'This:is:a:test               '
 !!     write(*,*)compact('  This     is      a     test  ',char=':')
-!!
 !!     ! note CHAR is used to replace the whitespace, but if CHAR is
 !!     ! in the original string it is just copied
 !!     write(*,*)compact('A  AA    A   AAAAA',char='A')
@@ -3699,7 +3772,7 @@ end function compact
 !===================================================================================================================================
 !>
 !!##NAME
-!!     noesc(3f) - [M_strings] convert non-printable characters to a space.
+!!     noesc(3f) - [M_strings:NONALPHA] convert non-printable characters to a space.
 !!
 !!##SYNOPSIS
 !!
@@ -3807,7 +3880,7 @@ end function noesc
 !===================================================================================================================================
 !>
 !!##NAME
-!!      string_to_value(3f) - [M_strings] subroutine returns real value from string
+!!      string_to_value(3f) - [M_strings:NUMERIC] subroutine returns real value from string
 !!
 !!##SYNOPSIS
 !!
@@ -3943,7 +4016,7 @@ end subroutine a2d
 !===================================================================================================================================
 !>
 !!##NAME
-!!      s2v(3f) - [M_strings] function returns doubleprecision numeric value from a string
+!!      s2v(3f) - [M_strings:NUMERIC] function returns doubleprecision numeric value from a string
 !!
 !!##SYNOPSIS
 !!
@@ -4115,7 +4188,7 @@ end function dbles_s2v
 !===================================================================================================================================
 !>
 !!##NAME
-!!      value_to_string(3f) - [M_strings] return numeric string from a numeric value
+!!      value_to_string(3f) - [M_strings:NUMERIC] return numeric string from a numeric value
 !!
 !!##SYNOPSIS
 !!
@@ -4239,7 +4312,7 @@ end subroutine value_to_string
 !===================================================================================================================================
 !>
 !!##NAME
-!!      v2s(3f) - [M_strings] return numeric string from a numeric value
+!!      v2s(3f) - [M_strings:NUMERIC] return numeric string from a numeric value
 !!##SYNOPSIS
 !!
 !!       function v2s(value) result(outstr)
@@ -4336,7 +4409,247 @@ end function i2s
 !===================================================================================================================================
 !>
 !!##NAME
-!!    trimzeros(3fp) - [M_strings] Delete trailing zeros from numeric decimal string
+!!    isnumber(3f) - [M_strings:NUMERIC] determine if a string represents a number
+!!##SYNOPSIS
+!!
+!!    function isnumber(str,msg)
+!!
+!!     character(len=*),intent(in)  :: str
+!!     character(len=:),intent(out),allocatable,optional  :: msg
+!!##DESCRIPTION
+!!     ISNUMBER(3f) returns a value greater than zero if the string represents
+!!     a number, and a number less than or equal to zero if it is a bad number.
+!!     Blank characters are ignored.
+!!##OPTIONS
+!!     str  the string to evaluate as to whether it represents a numeric value
+!!          or not
+!!     msg  An optional message describing the string
+!!##RETURNS
+!!     isnumber  the following values are returned
+!!
+!!                1 for an integer             [-+]NNNNN
+!!                2 for a whole number         [-+]NNNNN.
+!!                3 for a real value           [-+]NNNNN.MMMM
+!!                4 for a exponential value    [-+]NNNNN.MMMM[-+]LLLL
+!!                                             [-+]NNNNN.MMMM[ed][-+]LLLL
+!!
+!!               values less than 1 represent an error
+!!
+!!##EXAMPLES
+!!
+!!   As the example shows, you can use an internal READ(3f) along with the IOSTAT=
+!!   parameter to check (and read) a string as well.
+!!
+!!     program demo_isnumber
+!!     use M_strings, only : isnumber
+!!     implicit none
+!!     character(len=256) :: line
+!!     real               :: value
+!!     integer            :: ios
+!!     integer            :: answer
+!!     character(len=256) :: message
+!!     character(len=:),allocatable :: description
+!!        write(*,*)'Begin entering values, one per line'
+!!        do
+!!           read(*,'(a)',iostat=ios)line
+!!           !
+!!           ! try string as number using list-directed input
+!!           line=''
+!!           read(line,*,iostat=ios,iomsg=message) value
+!!           if(ios.eq.0)then
+!!              write(*,*)'VALUE=',value
+!!           else
+!!              write(*,*)'ERROR:',ios,trim(message)
+!!           endif
+!!           !
+!!           ! try string using isnumber(3f)
+!!           answer=isnumber(line,msg=description)
+!!           if(answer.gt.0)then
+!!              write(*,*)' for ',trim(line),' ',answer,':',description
+!!           else
+!!              write(*,*)' ERROR for ',trim(line),' ',answer,':',description
+!!           endif
+!!           !
+!!        enddo
+!!     end program demo_isnumber
+!!
+!!  Example run
+!!
+!!     Begin entering values
+!!     ERROR:          -1 End of file
+!!      ERROR for            -1 :null string
+!!    10
+!!     VALUE=   10.0000000
+!!      for 10            1 :integer
+!!    20
+!!     VALUE=   20.0000000
+!!      for 20            1 :integer
+!!    20.
+!!     VALUE=   20.0000000
+!!      for 20.            2 :whole number
+!!    30.1
+!!     VALUE=   30.1000004
+!!      for 30.1            3 :real number
+!!    3e1
+!!     VALUE=   30.0000000
+!!      for 3e1            4 :value with exponent
+!!    1-2
+!!     VALUE=   9.99999978E-03
+!!      for 1-2            4 :value with exponent
+!!    100.22d-4
+!!     VALUE=   1.00220004E-02
+!!      for 100.22d-4            4 :value with exponent
+!!    1--2
+!!     ERROR:        5010 Bad real number in item 1 of list input
+!!      ERROR for 1--2           -5 :bad number
+!!    e
+!!     ERROR:        5010 Bad real number in item 1 of list input
+!!      ERROR for e           -6 :missing leading value before exponent
+!!    e1
+!!     ERROR:        5010 Bad real number in item 1 of list input
+!!      ERROR for e1           -6 :missing leading value before exponent
+!!    1e
+!!     ERROR:        5010 Bad real number in item 1 of list input
+!!      ERROR for 1e           -3 :missing exponent
+!!    1e+
+!!     ERROR:        5010 Bad real number in item 1 of list input
+!!      ERROR for 1e+           -4 :missing exponent after sign
+!!    1e+2.0
+!!     ERROR:        5010 Bad real number in item 1 of list input
+!!      ERROR for 1e+2.0           -5 :bad number
+!===================================================================================================================================
+function isNumber(string,msg,verbose)
+implicit none
+
+character(len=*),parameter::ident="@(#)M_strings::isnumber(3f): Determines if a string is a number of not."
+
+character(len=*),intent(in)    :: string
+character(len=:),intent(out),allocatable,optional :: msg
+logical,intent(in),optional                      :: verbose
+integer                      :: isnumber
+
+integer             :: i,iend
+character(len=1),allocatable :: z(:)
+character(len=:),allocatable :: message
+logical                      :: founddigit
+logical                      :: verbose_local
+
+   i=1
+   founddigit=.false.
+   isnumber=0
+   z=switch(trim(nospace(string)))
+   iend=size(z)
+   message='not a number'
+   if(present(verbose))then
+      verbose_local=verbose
+   else
+      verbose_local=.false.
+   endif
+   DONE : block
+      if(iend.eq.0)then
+         isnumber=-1                   ! string is null
+         message='null string'
+         exit DONE
+      endif
+
+      if(index('+-',z(i)).ne.0) i=i+1  ! skip optional leading sign
+      if(i.gt.iend)then
+         isnumber=-2                   ! string was just a sign
+         message='just a sign'
+         exit DONE
+      endif
+
+      call next()                      ! position I to next non-digit or end of string+1
+
+      if(i.gt.iend)then
+         isnumber=1                    ! [+-]NNNNNN
+         message='integer'
+         exit DONE
+      endif
+      if(z(i).eq.'.')then              ! a period would be OK at this point
+         i=i+1
+      endif
+
+      if(i.gt.iend)then                ! [+-]NNNNNN.
+         isnumber=2
+         message='whole number'
+         exit DONE
+      endif
+
+      call next()                      ! position I to next non-digit or end of string+1
+      if(i.gt.iend)then
+         isnumber=3                    ! [+-]NNNNNN.MMMM
+         message='real number'
+         exit DONE
+      endif
+
+      if(index('eEdD',z(i)).ne.0)then
+         i=i+1
+         if(i.eq.2)then
+            isnumber=-6                   ! [+-]NNNNNN[.[MMMM]]e but a value must follow
+            message='missing leading value before exponent'
+            exit DONE
+         endif
+      endif
+      if(i.gt.iend)then
+         isnumber=-3                   ! [+-]NNNNNN[.[MMMM]]e but a value must follow
+         message='missing exponent'
+         exit DONE
+      endif
+      if(.not.founddigit)then
+         isnumber=-7
+         message='missing value before exponent'
+         exit DONE
+      endif
+      if(index('+-',z(i)).ne.0) i=i+1
+      if(i.gt.iend)then
+         isnumber=-4                   ! [+-]NNNNNN[.[MMMM]]e[+-] but a value must follow
+         message='missing exponent after sign'
+         exit DONE
+      endif
+      call next()                      ! position I to next non-digit or end of string+1
+      if(i.gt.iend)then
+         isnumber=4                    ! [+-]NNNNNN.MMMMe[+-]LL
+         message='value with exponent'
+         exit DONE
+      endif
+      isnumber=-5
+      message='bad number'
+   endblock DONE
+   if(verbose_local)then
+      write(*,*)trim(string)//' is '//message
+   endif
+   if(present(msg))then
+      msg=message
+   endif
+
+contains
+   subroutine next() ! move to next non-digit or end of string+1
+      integer :: j
+      do j=i,iend
+         if(.not.isdigit(z(j)))then
+            exit
+         endif
+         founddigit=.true.
+         if(verbose_local) write(*,*)'I=',i,' J=',j,' Z(j)=',z(j)
+      enddo
+      i=j
+      if(verbose_local)then
+         write(*,*)'I and J=',i
+         if(i.le.iend) then
+            write(*,*)'Z(I)=',z(i)
+         else
+            write(*,*)'====>'
+         endif
+      endif
+   end subroutine next
+end function isNumber
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+!>
+!!##NAME
+!!    trimzeros(3fp) - [M_strings:NUMERIC] Delete trailing zeros from numeric decimal string
 !!##SYNOPSIS
 !!
 !!    subroutine trimzeros(str)
@@ -4406,7 +4719,7 @@ end subroutine trimzeros
 !===================================================================================================================================
 !>
 !!##NAME
-!! listout(3f) - [M_strings] copy ICURVE() to ICURVE_EXPANDED() expanding negative numbers to ranges (1 -10 means 1 thru 10)
+!! listout(3f) - [M_strings:NUMERIC] expand a list of numbers where negative numbers denote range ends (1 -10 means 1 thru 10)
 !!
 !!##SYNOPSIS
 !!
@@ -4522,7 +4835,7 @@ end subroutine listout
 !===================================================================================================================================
 !>
 !!##NAME
-!!     unquote(3f) - [M_strings] remove quotes from string as if read with list-directed input
+!!     unquote(3f) - [M_strings:QUOTES] remove quotes from string as if read with list-directed input
 !!##SYNOPSIS
 !!
 !!   function unquote(quoted_str,esc) result (unquoted_str)
@@ -4554,7 +4867,7 @@ end subroutine listout
 !!   Sample program:
 !!
 !!    program demo_unquote
-!!       use M_csv, only : unquote
+!!       use M_strings, only : unquote
 !!       implicit none
 !!       character(len=128)           :: quoted_str
 !!       character(len=:),allocatable :: unquoted_str
@@ -4836,9 +5149,9 @@ character(len=:),allocatable  :: string
    case(    30  ); STRING="ctrl-^ or ctrl-= (RS) record separator"
    case(    31  ); STRING="ctrl-_ (US) unit separator"
    case(    32  ); STRING="space"
-   case(    33  ); STRING="! exclamation point"
+   case(    33  ); STRING="! exclamation point (screamer, gasper, slammer, startler, bang, shriek, pling)"
    case(    34  ); STRING=""" quotation marks"
-   case(    35  ); STRING="# number sign"
+   case(    35  ); STRING="# number sign (hash, pound sign, hashtag)"
    case(    36  ); STRING="$ currency symbol"
    case(    37  ); STRING="% percent"
    case(    38  ); STRING="& ampersand"
@@ -4940,7 +5253,7 @@ end function describe
 !===================================================================================================================================
 !>
 !!##NAME
-!!    getvals(3f) - [M_strings] read arbitrary number of REAL values from a character variable up to size of VALUES() array
+!!    getvals(3f) - [M_strings:NUMERIC] read arbitrary number of REAL values from a character variable up to size of VALUES() array
 !!
 !!##SYNOPSIS
 !!
@@ -4990,7 +5303,7 @@ end function describe
 !!
 !!   Sample program:
 !!
-!!       program tryit
+!!       program demo_getvals
 !!       use M_strings, only: getvals
 !!       implicit none
 !!       character(len=256) :: line
@@ -5002,7 +5315,7 @@ end function describe
 !!          call getvals(line,values,icount,ierr)
 !!          write(*,*)'VALUES=',values(:icount)
 !!       enddo INFINITE
-!!       end program tryit
+!!       end program demo_getvals
 !!
 !!   Sample input lines
 !!
@@ -5092,7 +5405,7 @@ end subroutine getvals
 !===================================================================================================================================
 !>
 !!##NAME
-!!      string_to_values(3f) - [M_strings] read a string representing numbers into a numeric array
+!!      string_to_values(3f) - [M_strings:NUMERIC] read a string representing numbers into a numeric array
 !!
 !!##SYNOPSIS
 !!
@@ -5254,7 +5567,7 @@ end subroutine string_to_values
 !===================================================================================================================================
 !>
 !!##NAME
-!!      s2vs(3f) - [M_strings] given a string representing numbers return a numeric array
+!!      s2vs(3f) - [M_strings:NUMERIC] given a string representing numbers return a numeric array
 !!
 !!##SYNOPSIS
 !!
@@ -5540,7 +5853,7 @@ end function islower
 !>
 !!##NAME
 !!    isalnum,isalpha,iscntrl,isdigit,isgraph,islower,
-!!    isprint,ispunct,isspace,isupper,isascii,isblank,isxdigit(3f) - [M_strings] test membership in subsets of ASCII character set
+!!    isprint,ispunct,isspace,isupper,isascii,isblank,isxdigit(3f) - [M_strings:COMPARE] test membership in subsets of ASCII set
 !!
 !!##SYNOPSIS
 !!
@@ -5617,7 +5930,7 @@ end function isalnum
 !>
 !!##NAME
 !!
-!!    base(3f) - [M_strings] convert whole number string in base [2-36] to string in alternate base [2-36]
+!!    base(3f) - [M_strings:BASE] convert whole number string in base [2-36] to string in alternate base [2-36]
 !!
 !!##SYNOPSIS
 !!
@@ -5685,7 +5998,7 @@ end function base
 !>
 !!##NAME
 !!
-!!    decodebase(3f) - [M_strings] convert whole number string in base [2-36] to base 10 number
+!!    decodebase(3f) - [M_strings:BASE] convert whole number string in base [2-36] to base 10 number
 !!
 !!##SYNOPSIS
 !!
@@ -5799,7 +6112,7 @@ end function decodebase
 !>
 !!##NAME
 !!
-!!    codebase(3f) - [M_strings] convert whole number in base 10 to string in base [2-36]
+!!    codebase(3f) - [M_strings:BASE] convert whole number in base 10 to string in base [2-36]
 !!
 !!##SYNOPSIS
 !!

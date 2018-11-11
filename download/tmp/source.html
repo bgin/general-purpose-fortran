@@ -183,6 +183,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_drawplus::create circular arc, leaving CP at end of arc<br/>
 	M_drawplus::arc2(3f): Like M_DASH arc routine without move at end so can be in a polygon<br/>
 	M_drawplus::page(3f): given a window size, find and set to largest accommodating viewport<br/>
+	M_drawplus::m_draw:ellipse(3f):: draw ellipse or elliptical arc<br/>
 	M_drawplus::m_draw:uconic(3f): general conic sections<br/>
 	 Fortran MODULE interface to M_DRAW C routines using Fortran ISO_C_BINDING interface<br/>
 	M_drawplus::barcode(3f): draw 3-of-9 bar code<br/>
@@ -192,6 +193,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_drawplus::smoot(3f): draw smooth curve thru set up points using spline-fitting technique<br/>
 	M_drawplus::rdbox(3f): reads two points and outline defined box and return points<br/>
 	M_drawplus::rdpnt(3f): reads coordinates of point locator clicked at<br/>
+	display sample page of a font<br/>
 </td>
 <tr><td><a href="M_factor.f90">M_factor.f90</a></td>
 <td>
@@ -215,6 +217,12 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 </td>
 <tr><td><a href="M_generic_list.f90">M_generic_list.f90</a></td>
 <td>
+	M_generic_list::list_init(3f): Initialize a head node SELF and optionally store the provided DATA.<br/>
+	M_generic_list::list_free(3f): Free the entire list and all data, beginning at SELF<br/>
+	M_generic_list::list_insert(3f): Insert a list node after SELF containing DATA (optional)<br/>
+	M_generic_list::list_put(3f): Store the encoded DATA in list node SELF<br/>
+	M_generic_list::list_put(3f): Return the DATA stored in the node SELF<br/>
+	M_generic_list::list_put(3f): Return the next node after SELF<br/>
 </td>
 <tr><td><a href="M_geography.f90">M_geography.f90</a></td>
 <td>
@@ -232,7 +240,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <td>
 	M_hashkeys::sha256(3f): SHA-256 interface function<br/>
 	M_hashkeys::dirty_sha256(3f): Quick and dirty SHA-256 interface function (no bit-swapping).<br/>
-	M_hashkeys::crc32_hash_arr: CRC (Cyclic Redunancy Check) calculation<br/>
+	M_hashkeys::crc32_hash_arr: CRC (Cyclic Redundancy Check) calculation<br/>
 	djb2(3f): call C routine djb2(3c) with a Fortran CHARACTER variable<br/>
 </td>
 <tr><td><a href="M_history.f90">M_history.f90</a></td>
@@ -288,7 +296,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <td>
 	M_list::insert(3f): Generic subroutine inserts element into allocatable array at specified position<br/>
 	M_list::insert(3f): Generic subroutine deletes element from allocatable array at specified position<br/>
-	M_list::binary_search(3f): binary search of a sorted array.<br/>
+	M_list::binary_search(3f): binary search of a sorted integer array.<br/>
 	M_list::locate(3f): find PLACE in sorted character array where VARNAME can be found or should be placed<br/>
 	M_list::delete(3f): remove string from sorted allocatable string array if present<br/>
 	M_list::add(3f): place string into sorted allocatable string array if not present<br/>
@@ -347,7 +355,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_messages::juntrolls(3f):print eye-catching ASCII graphic (trolls) with message<br/>
 	M_messages::tabgraph(3f): write columns of numbers with a text scale to the right<br/>
 	M_messages::blocks(3f): write out 132-character string in large block letters<br/>
-	M_messages::signs(3f):write up to 132 large block letters<br/>
+	M_messages::signs(3f):write large block letters<br/>
 	place a non-advancing status counter on terminal display (not redirected)<br/>
 </td>
 <tr><td><a href="M_ncurses.f90">M_ncurses.f90</a></td>
@@ -485,7 +493,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_strings::replace(3f): Globally replace one substring for another in string<br/>
 	M_strings::substitute(3f): Globally substitute one substring for another in string<br/>
 	M_strings::change(3f): change a character string like a line editor<br/>
-	M_strings::modif(3f): Emulate the MODIFY command from the line editor XEDIT<br/>
+	 M_strings::modif(3f): Emulate the MODIFY command from the line editor XEDIT<br/>
 	M_strings::len_white(3f): return position of last non-blank/non-null character in string<br/>
 	M_strings::crop(3f): trim leading and trailings blanks from string<br/>
 	M_strings::transliterate(3f): replace characters from old set with new set<br/>
@@ -507,6 +515,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_strings::noesc(3f): convert non-printable characters to a space<br/>
 	M_strings::s2v(3f): returns doubleprecision number from string<br/>
 	M_strings::v2s_bug(3f): function returns string given numeric value<br/>
+	M_strings::isnumber(3f): Determines if a string is a number of not.<br/>
 	M_strings::listout(3f): copy icurve_lists to icurve_expanded expanding negative numbers to ranges (1 -10 means 1 thru 10)<br/>
 	M_strings::describe(3f): return string describing long name of a single character<br/>
 	M_strings::getvals(3f): read arbitrary number of values from a character variable up to size of values<br/>

@@ -6,4 +6,4 @@
               write(*,'("[",a,"]")') answer
               answer=merge_str('first string', 'second string is longer',10.ne.10)
               write(*,'("[",a,"]")') answer
-       end program demo_merge_str
+           end program demo_merge_str

@@ -99,7 +99,7 @@ M_calculator_Example(5f) - [M_calculator] Example program for module M_calculato
 </pre>
 
 <!--FORTRAN90--><xmp>
-   program compute
+   program demo_M_calculator
 
       !     line mode calculator that calls jucalc
       !
@@ -136,7 +136,8 @@ M_calculator_Example(5f) - [M_calculator] Example program for module M_calculato
            write(6,'(a)')'warning===> unexpected ierr value from jucalc'
          end select
       enddo INFINITE
-      end program compute
+      end program demo_M_calculator
+
       !#cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
       subroutine juown1(func,iflen,args,iargstp,n,fval,ctmp,ier)
       ! extend functions available to the calculator routine

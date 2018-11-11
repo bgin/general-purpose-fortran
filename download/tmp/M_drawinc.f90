@@ -43,7 +43,7 @@ contains
 !!
 !!   Sample program
 !!
-!!    program testit
+!!    program demo_illusion
 !!    use M_draw,      only : vinit, color, clear, backbuffer, getkey, vexit
 !!    use M_drawplus,  only : page
 !!    use M_drawinc,   only : illusion
@@ -56,7 +56,7 @@ contains
 !!    call illusion('TOP','BOTTOM','LEFT','RIGHT')
 !!    idum=getkey()
 !!    call vexit()
-!!    end program testit
+!!    end program demo_illusion
 !===================================================================================================================================
 subroutine illusion(top,bottom,left,right) !@(#) draw a simple geometric illusion
 use M_draw

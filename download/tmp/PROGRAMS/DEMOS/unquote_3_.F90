@@ -1,5 +1,5 @@
           program demo_unquote
-             use M_csv, only : unquote
+             use M_strings, only : unquote
              implicit none
              character(len=128)           :: quoted_str
              character(len=:),allocatable :: unquoted_str

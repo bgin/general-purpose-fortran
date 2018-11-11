@@ -141,56 +141,74 @@ contains
 !!    program demo_sha256
 !!    use M_hashkeys, only : sha256, dirty_sha256
 !!    implicit none
-!!    character(len=1000000) :: str
-!!    character(len=64)      :: ref
-!!    character(16777216*64) :: bigstr
-!!    integer :: i
+!!    character(len=:),allocatable :: str
+!!    character(len=64)            :: ref
 !!
 !!    ! Test the sha256 function with a set of reference strings.
-!!          str = ""
-!!          call unit_check('',sha256(str)=="E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",'sha256 1')
-!!          str = "abc"
-!!          call unit_check('',sha256(str)=="BA7816BF8F01CFEA414140DE5DAE2223B00361A396177A9CB410FF61F20015AD",'sha256 2')
-!!          str = "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq"
-!!          call unit_check('',sha256(str)=="248D6A61D20638B8E5C026930C3E6039A33CE45964FF2167F6ECEDD419DB06C1",'sha256 3')
-!!          str = "abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmnoijklmnopjklmnopqklmnopqrlmnopqrsmnopqrstnopqrstu"
-!!          call unit_check('',sha256(str)=="CF5B16A778AF8380036CE59E7B0492370B249B11E8F07A51AFAC45037AFEE9D1",'test sha256 4')
-!!          str = "message digest"
-!!          call unit_check('',sha256(str)=="F7846F55CF23E14EEBEAB5B4E1550CAD5B509E3348FBC4EFA3A1413D393CB650",'test sha256 6')
-!!          str = "secure hash algorithm"
-!!          call unit_check('',sha256(str)=="F30CEB2BB2829E79E4CA9753D35A8ECC00262D164CC077080295381CBD643F0D",'test sha256 7 ')
-!!          str = "SHA256 is considered to be safe"
-!!          call unit_check('',sha256(str)=="6819D915C73F4D1E77E4E1B52D1FA0F9CF9BEAEAD3939F15874BD988E2A23630",'test sha256 8 ')
-!!          str = "For this sample, this 63-byte string will be used as input data"
-!!          call unit_check('',sha256(str)=="F08A78CBBAEE082B052AE0708F32FA1E50C5C421AA772BA5DBB406A2EA6BE342",'test sha256 9 ')
-!!          str = "This is exactly 64 bytes long, not counting the terminating byte"
-!!          call unit_check('',sha256(str)=="AB64EFF7E88E2E46165E29F2BCE41826BD4C7B3552F6B382A9E7D3AF47C245F8",'test sha256 10 ')
 !!
-!!          do i=1,1000000
-!!             str(i:i) = "a"
-!!          enddo
-!!          call unit_check('',sha256(str)=="CDC76E5C9914FB9281A1C7E284D73E67F1809A48A497200E046D39CCC7112CD0",'test sha256 5')
-!!          ! Check the quick and dirty implementation as well.
-!!          ref = "69E3FACD5F08321F78117BD53476E5321845433356F106E7013E68EC367F3017"
-!!          call unit_check('',dirty_sha256(str)==ref,'test sha256 6')
+!!    str=""
+!!    ref="E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+!!    call unit_check(sha256(str)==ref,'test sha256 1')
 !!
-!!          write(*,*)'A long test'
-!!          do i=1,16777216
-!!             bigstr(1+(i-1)*64:i*64) = "abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmno"
-!!          enddo
-!!          call unit_check('',sha256(bigstr)=="50E72A0E26442FE2552DC3938AC58658228C0CBFB1D2CA872AE435266FCD055E",'test sha256 11 ')
+!!    str="abc"
+!!    ref="BA7816BF8F01CFEA414140DE5DAE2223B00361A396177A9CB410FF61F20015AD"
+!!    call unit_check(sha256(str)==ref,'test sha256 2')
+!!
+!!    str="abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq"
+!!    ref="248D6A61D20638B8E5C026930C3E6039A33CE45964FF2167F6ECEDD419DB06C1"
+!!    call unit_check(sha256(str)==ref,'test sha256 3')
+!!
+!!    str="abcdefghbcdefghicdefghijdefghijkefghijklfghi&
+!!         &jklmghijklmnhijklmnoijklmnopjklmnopqklmnopqrlmnopqrsmnopqrstnopqrstu"
+!!    ref="CF5B16A778AF8380036CE59E7B0492370B249B11E8F07A51AFAC45037AFEE9D1"
+!!    call unit_check(sha256(str)==ref,'test sha256 4')
+!!
+!!    str=repeat("a",1000000)
+!!    ref="CDC76E5C9914FB9281A1C7E284D73E67F1809A48A497200E046D39CCC7112CD0"
+!!    call unit_check(sha256(str)==ref,'test sha256 5')
+!!
+!!    str="message digest"
+!!    ref="F7846F55CF23E14EEBEAB5B4E1550CAD5B509E3348FBC4EFA3A1413D393CB650"
+!!    call unit_check(sha256(str)==ref,'test sha256 6')
+!!
+!!    str="secure hash algorithm"
+!!    ref="F30CEB2BB2829E79E4CA9753D35A8ECC00262D164CC077080295381CBD643F0D"
+!!    call unit_check(sha256(str)==ref,'test sha256 7')
+!!
+!!    str="SHA256 is considered to be safe"
+!!    ref="6819D915C73F4D1E77E4E1B52D1FA0F9CF9BEAEAD3939F15874BD988E2A23630"
+!!    call unit_check(sha256(str)==ref,'test sha256 8')
+!!
+!!    str="For this sample, this 63-byte string will be used as input data"
+!!    ref="F08A78CBBAEE082B052AE0708F32FA1E50C5C421AA772BA5DBB406A2EA6BE342"
+!!    call unit_check(sha256(str)==ref,'test sha256 9')
+!!
+!!    str="This is exactly 64 bytes long, not counting the terminating byte"
+!!    ref="AB64EFF7E88E2E46165E29F2BCE41826BD4C7B3552F6B382A9E7D3AF47C245F8"
+!!    call unit_check(sha256(str)==ref,'test sha256 10')
+!!
+!!    ! Check the quick and dirty implementation as well.
+!!    ref="69E3FACD5F08321F78117BD53476E5321845433356F106E7013E68EC367F3017"
+!!    call unit_check(dirty_sha256(str)==ref,'test dirtysha256 1')
+!!
+!!    !!str=repeat("abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmno",16777216)
+!!    !!ref="50E72A0E26442FE2552DC3938AC58658228C0CBFB1D2CA872AE435266FCD055E"
+!!    !!call unit_check(sha256(str)==ref,'test sha256 11 -- long test')
+!!
 !!    contains
-!!    subroutine unit_check(label,test,message)
-!!    character(len=*),intent(in) :: label
+!!    subroutine unit_check(test,message)
 !!    logical,intent(in)          :: test
 !!    character(len=*),intent(in) :: message
+!!       write(*,'(a)') repeat("=",64)
+!!       write(*,'(a)') sha256(str)
+!!       write(*,'(a)') ref
 !!       if(test)then
 !!          write(*,*)"PASSED: ",trim(message)
 !!       else
 !!          write(*,*)"FAILED: ",trim(message)
 !!       endif
 !!    end subroutine unit_check
-!!
+!!    !
 !!    end program demo_sha256
 !!
 !!##UNIT TEST
@@ -789,7 +807,7 @@ contains
       str = "a"
       pos0   = 1
       break  = 0
-      length = 1
+     length = 1
       call consume_chunk(str, length, inp, pos0, break, swap)
 
       ! Check the first word.
@@ -1083,10 +1101,11 @@ contains
    end subroutine test_sha256_6
 
    subroutine test_sha256_11
-      character(16777216*64) :: str
+      integer,parameter     :: big=16777216
+      character(len=big*64) :: str
       integer :: i
       write(*,*)'A long test'
-      do i=1,16777216
+      do i=1,big
          str(1+(i-1)*64:i*64) = "abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmno"
       enddo
       call unit_check('',sha256(str)=="50E72A0E26442FE2552DC3938AC58658228C0CBFB1D2CA872AE435266FCD055E",'test sha256 11 ')
@@ -1141,9 +1160,9 @@ end subroutine test_suite_sha256
 !!            integer(kind=int128); real(kind=real32); real(kind=real64);
 !!            real(kind=real128).
 !!
-!!     CONTINUE   indicate whether to continue accumlating the hash value
+!!     CONTINUE   indicate whether to continue accumulating the hash value
 !!                from the last call. This is not threadsafe. This allows
-!!                for continued hashes so that a hash can be calulated for
+!!                for continued hashes so that a hash can be calculated for
 !!                a series of calls.
 !!
 !!##RETURNS
@@ -1237,7 +1256,7 @@ end function djb2_hash_scalar
 !===================================================================================================================================
 !>
 !!##NAME
-!!    crc32_hash(3f) - [M_hashkeys] CRC (Cyclic Redunancy Check)
+!!    crc32_hash(3f) - [M_hashkeys] CRC (Cyclic Redundancy Check)
 !!
 !!##SYNOPSIS
 !!
@@ -1320,7 +1339,7 @@ function crc32_hash_arr(anything,continue) result (crc_64)
 use,intrinsic :: ISO_FORTRAN_ENV, only : int8,int16,int32,int64,real32,real64,real128
 implicit none
 
-character(len=*),parameter::ident="@(#)M_hashkeys::crc32_hash_arr: CRC (Cyclic Redunancy Check) calculation"
+character(len=*),parameter::ident="@(#)M_hashkeys::crc32_hash_arr: CRC (Cyclic Redundancy Check) calculation"
 
 class(*),intent(in)          :: anything(:)
 logical,intent(in),optional  :: continue
@@ -1456,9 +1475,9 @@ end function crc32_hash_scalar
 !!            integer(kind=int128); real(kind=real32); real(kind=real64);
 !!            real(kind=real128).
 !!
-!!     CONTINUE   indicate whether to continue accumlating the hash value
+!!     CONTINUE   indicate whether to continue accumulating the hash value
 !!                from the last call. This is not threadsafe. This allows
-!!                for continued hashes so that a hash can be calulated for
+!!                for continued hashes so that a hash can be calculated for
 !!                a series of calls.
 !!
 !!##RETURNS

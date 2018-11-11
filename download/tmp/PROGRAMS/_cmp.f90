@@ -161,7 +161,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    compare two files byte by byte>',&
 '@(#)VERSION:        1.0-20171126>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Mon, Oct 15th, 2018 5:28:42 PM>',&
+'@(#)COMPILED:       Sat, Nov 10th, 2018 2:29:52 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -176,7 +176,9 @@ use M_strings, only : split, substitute
 use M_strings, only : describe, visible
 use M_debug,   only : stderr
 implicit none
+
 character(len=*),parameter::ident="@(#)_cmp(1f): compare two files byte by byte"
+
 character(len=4096),allocatable :: filenames(:)      ! array of filenames to read
 character(len=256)              :: message           ! message field for returned messages
 logical                         :: quiet   = .FALSE. ! switch to describe difference found

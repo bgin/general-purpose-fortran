@@ -32,19 +32,34 @@ EXAMPLE
        >  HH      HH  EE          LL          LL          OOO     OO
        >  HH      HH  EEEEEEEEEE  LLLLLLLLLL  LLLLLLLLLL  OOOOOOOOOO
        >  HH      HH  EEEEEEEEEE  LLLLLLLLLL  LLLLLLLLLL   OOOOOOOO
+                                         
+       note HELLO -font banner
+                                         
+       >  XXX XXX XXXXXXX XXXXX   XXXXX     XXX  
+       >   X   X   X    X   X       X      X   X 
+       >   X   X   X        X       X     X     X
+       >   X   X   X  X     X       X     X     X
+       >   XXXXX   XXXX     X       X     X     X
+       >   X   X   X  X     X       X     X     X
+       >   X   X   X        X       X     X     X
+       >   X   X   X    X   X   X   X   X  X   X 
+       >  XXX XXX XXXXXXX XXXXXXX XXXXXXX   XXX  
+                                         
+                                         
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION
 PRODUCT:        GPF (General Purpose Fortran) utilities and examples
 PROGRAM:        note(1f)
 DESCRIPTION:    print alphabet in big block letters using blocks(3f) and signs(3f)
-VERSION:        2.0, 20160624
+VERSION:        3.0, 20181028
 AUTHOR:         John S. Urban
 REPORTING BUGS: http://www.urbanjost.altervista.org/
 HOME PAGE:      http://www.urbanjost.altervista.org/index.html
 COPYRIGHT:      Copyright (c) 1984, 1996 John S. Urban
 LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.
                 There is NO WARRANTY, to the extent permitted by law.
+$!VERSION:        2.0, 20160624
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 program block_letters

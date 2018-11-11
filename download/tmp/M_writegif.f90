@@ -25,7 +25,7 @@
 !!    use M_writegif, only : writegif
 !!    integer  :: Pixel(100,100)
 !!    integer  :: Transparent = 0
-!!    integer, :: ColorMap (3,0:7)
+!!    integer  :: ColorMap (3,0:7)
 !!    colormap(:,0)=[255,255,255]
 !!    colormap(:,1)=[255,  0,  0]
 !!    colormap(:,2)=[  0,255,  0]

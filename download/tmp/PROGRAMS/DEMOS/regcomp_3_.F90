@@ -1,6 +1,6 @@
           program demo_regcomp
           use M_regex, only: regex_type, regcomp, regexec, regfree
-          use M_regex, only: regmatch, regsub
+          use M_regex, only: regmatch
           implicit none
           type(regex_type)             :: regex
           integer                      :: matches(2,1)

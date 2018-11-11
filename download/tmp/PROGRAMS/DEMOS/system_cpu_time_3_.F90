@@ -17,7 +17,7 @@
              enddo
              flush(10)
              write(*,*)'average sqrt value=',value/10000.0
-             call system_cpu_time(totl_finish,user_finish,system_finish)
+             call system_cpu_time(total_finish,user_finish,system_finish)
              write(*,*)'USER ......',user_finish-user_start
              write(*,*)'SYSTEM ....',system_finish-system_start
              write(*,*)'TOTAL .....',total_finish-total_start

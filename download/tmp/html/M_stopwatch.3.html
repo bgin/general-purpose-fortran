@@ -605,6 +605,7 @@ name&#146;&#146;.
 <BLOCKQUOTE>
 <PRE>
 <P>
+! program demo_M_stopwatch and modules
 ! The following times are measured:
 !
 !  o each phase each time through the loop
@@ -681,7 +682,7 @@ end subroutine subone
 <P>
 end module workers
 <P>
-program advanced
+program demo_M_stopwatch
 use M_stopwatch
 use globals
 use workers
@@ -743,7 +744,7 @@ write(unit=*,fmt=*)&
 &"      on the Total watch while printing."
 <P>
 call destroy_watch(w)                ! destroy the watches
-end program advanced
+end program demo_M_stopwatch
 </PRE>
 <P>
 Expected output:

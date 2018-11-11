@@ -621,7 +621,7 @@ end function gcd_cuboid
 !!
 !!  Sample program:
 !!
-!!    program find_prime_factors
+!!    program demo_prime_factors
 !!    use M_factor, only : prime_factors
 !!    implicit none
 !!       integer  :: number
@@ -636,7 +636,7 @@ end function gcd_cuboid
 !!         endif
 !!       enddo
 !!    999 continue
-!!    end program find_prime_factors
+!!    end program demo_prime_factors
 !!
 !!
 !!##PEDIGREE
@@ -778,7 +778,7 @@ end subroutine prime_factors
 !!
 !!    sample program
 !!
-!!     program testit
+!!     program demo_i_is_prime
 !!     use m_factor, only: i_is_prime
 !!     implicit none
 !!     integer  :: i
@@ -797,7 +797,7 @@ end subroutine prime_factors
 !!     write(*,*)'number of primes between 2 and ',n,' is ',icount
 !!     write(*,*)'sum of primes between 2 and ',n,' is ',isum
 !!
-!!     end program testit
+!!     end program demo_i_is_prime
 !! !
 !===================================================================================================================================
 function i_is_prime ( n )

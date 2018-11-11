@@ -26,7 +26,7 @@ XXtd { border:thin solid #888; }
 XXtd { border:none; }
 li { margin-bottom:0.5em; }
 blockquote { display:block; font-size:100%; font-style:italic; line-height:1.1em; margin:0 0 1.5em; padding:0 2.5em; }
-pre { background-color:#DDD; font-size:99%; overflow:auto; padding:1em; }
+pre { background-color:#DDD; font-size:100%; overflow:auto; padding:1em; }
 a,li span { color:#000; }
 a:hover, a.nav:hover, a:hover math { background-color:#000; color:#FFF; }
 #Container { margin:0 10px; text-align:center; background-color: #BBB}
@@ -34,9 +34,9 @@ a:hover, a.nav:hover, a:hover math { background-color:#000; color:#FFF; }
 span.webName { font-size:.5em; }
 textarea#content { font-size: 1em; line-height: 1.125; }
 h1#pageName { line-height:1em; margin:0.2em 0 0.2em 0; padding:0; }
-.property { color:#666; font-size:80%; }
+.property { color:#666; font-size:100%; }
 a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
-.byline { color:#666; font-size:.8em; font-style:italic; margin-bottom:1em; padding-top:1px; } 
+.byline { color:#666; font-size:1.0em; font-style:italic; margin-bottom:1em; padding-top:1px; } 
 </style> 
 </head>
 <BODY bgcolor=#F0F0F0 text=#000000 link=#0000ff vlink=#C000C0 alink=#ff0000><A NAME=top></A>
@@ -87,7 +87,7 @@ other procedures will provide a variety of sort methods, including &#46;&#46;&#4
 <TABLE cellpadding=3>
 <TR valign=top><TD colspan=2>
 <B>Exchange sorts</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
-Bubble sort, Cocktail shaker sort, Oddâ€“even sort, Comb sort, Gnome sort, Quicksort, Stooge sort, Bogosort
+Bubble sort, Cocktail shaker sort, Odd   even sort, Comb sort, Gnome sort, Quicksort, Stooge sort, Bogosort
 </TD></TR>
 <TR valign=top><TD colspan=2>
 <B>Selection sorts</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
@@ -108,7 +108,7 @@ Radix sort, Flashsort
 </TD></TR>
 <TR valign=top><TD colspan=2>
 <B>Concurrent sorts</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
-Bitonic sorter, Batcher oddâ€“even mergesort, Pairwise sorting network
+Bitonic sorter, Batcher odd   even mergesort, Pairwise sorting network
 </TD></TR>
 <TR valign=top><TD colspan=2>
 <B>Hybrid sorts</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
@@ -136,29 +136,64 @@ Adaptive sort, Sorting network, Integer sorting, X + Y sorting, Transdichotomous
 <BLOCKQUOTE>
 <P>
 Quicksort, also known as partition-exchange sort, uses these steps
-<P>
-Âo Choose any element of the array to be the pivot.
-Âo Divide all other elements (except the pivot) into two partitions.
-Âo All elements less than the pivot must be in the first partition.
-Âo All elements greater than the pivot must be in the second partition.
-Âo Use recursion to sort both partitions.
-Âo Join the first sorted partition, the pivot, and the second sorted partition.
+<BLOCKQUOTE>
+<TABLE cellpadding=3><!-- tsb: Quicksort, also known as partition-exchange sort, uses these steps
+ -->
+<TR></TR><TR></TR>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+Choose any element of the array to be the pivot.
+</TD></TR>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+Divide all other elements (except the pivot) into two partitions.
+</TD></TR>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+All elements less than the pivot must be in the first partition.
+</TD></TR>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+All elements greater than the pivot must be in the second partition.
+</TD></TR>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+Use recursion to sort both partitions.
+</TD></TR>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+Join the first sorted partition, the pivot, and the second sorted partition.
+</TD></TR>
+<TR></TR></TABLE></BLOCKQUOTE>
 <P>
 The best pivot creates partitions of equal length (or lengths differing
 by 1).
 <P>
 The worst pivot creates an empty partition (for example, if the pivot
 is the first or last element of a sorted array).
-<P>
-The run-time of Quicksort ranges from Â  <B>O</B>(n log n) Â  with the best
-pivots, to Â  <B>O</B>(n2) Â  with the worst pivots, where Â  n Â  is the
+<TABLE cellpadding=3><!-- tsb: The worst pivot creates an empty partition (for example, if the pivot
+ -->
+<TR></TR><TR></TR>
+<TR valign=top><TD colspan=2>
+<B>The run-time of Quicksort ranges from</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+<B>O</B>(n log n)    with the best
+</TD></TR>
+<TR valign=top><TD colspan=2>
+<B>pivots, to</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+<B>O</B>(n2)    with the worst pivots, where    n    is the
 number of elements in the array.
-<P>
-Quicksort has a reputation as the fastest sort. Optimized variants of
+</TD></TR>
+<TR></TR></TABLE>Quicksort has a reputation as the fastest sort. Optimized variants of
 quicksort are common features of many languages and libraries.
 </BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>M_sort (3)</TD> <TD align=right width=33%><I>October 20, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from a84f4f04-037e-493b-b63f-b61cd725d8e9 using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>M_sort (3)</TD> <TD align=right width=33%><I>November 10, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from b28e1b88-3cbd-465c-9061-3ab3b6bacecb using man macros.</FONT>
 </div>
 </div>
 <br><br><center><img src="images/M_sort.3.gif"></center> 

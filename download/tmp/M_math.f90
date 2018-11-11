@@ -479,7 +479,6 @@ end subroutine julfit1
 !!
 !!##PURPOSE
 !!
-!!
 !!    Lowess is a data analysis technique for producing a "smooth" set of
 !!    values from a time series which has been contaminated with noise,
 !!    or from a scatter plot with a "noisy" relationship between the two
@@ -672,7 +671,8 @@ end subroutine julfit1
 !!
 !!   Example program:
 !!
-!!       program T_lowess
+!!       program demo_lowess
+!!       use M_math, only : lowess
 !!       !  test driver for lowess
 !!       !  for expected output, see introduction
 !!       real x(20), y(20), ys(20), rw(20), res(20)
@@ -684,7 +684,7 @@ end subroutine julfit1
 !!       write(*,*) ys
 !!       call lowess(x,y,20,.25,2,0.,ys,rw,res)
 !!       write(*,*) ys
-!!       end
+!!       end program demo_lowess
 !!
 !!       The following are data and output from LOWESS that can
 !!       be used to check your implementation of the routines. The
@@ -2947,8 +2947,10 @@ END SUBROUTINE CITER
 !===================================================================================================================================
 SUBROUTINE envelope(x, y, n, vertex, nvert) !-- saved from url=(0048)http://users.bigpond.net.au/amiller/envelope.f90
 IMPLICIT NONE
+
 character(len=*),parameter::ident="&
 &@(#)M_math::envelope(3f):Find the vertices (in clockwise order) of a polygon enclosing the points (x(i), y(i), i=1, ..., n."
+
 INTEGER,INTENT(IN) :: n
 REAL,INTENT(IN)    :: x(n), y(n)
 INTEGER :: vertex(n), nvert
@@ -2961,194 +2963,196 @@ INTEGER :: iwk(n)                  ! iwk() is an integer work array which must h
 
 INTEGER :: next(n), i, i1, i2, j, jp1, jp2, i2save, i3, i2next
 REAL    :: xmax, xmin, ymax, ymin, dist, dmax, dmin, x1, y1, dx, dy, x2, y2, &
-         &  dx1, dx2, dmax1, dmax2, dy1, dy2, temp, zero = 0.0
+&  dx1, dx2, dmax1, dmax2, dy1, dy2, temp, zero = 0.0
 
-IF (n < 2) RETURN
+   IF (n < 2) RETURN
 
 !  Choose the points with smallest & largest x- values as the
 !  first two vertices of the polygon.
 
-IF (x(1) > x(n)) THEN
-  vertex(1) = n
-  vertex(2) = 1
-  xmin = x(n)
-  xmax = x(1)
-ELSE
-  vertex(1) = 1
-  vertex(2) = n
-  xmin = x(1)
-  xmax = x(n)
-END IF
+   IF (x(1) > x(n)) THEN
+      vertex(1) = n
+      vertex(2) = 1
+      xmin = x(n)
+      xmax = x(1)
+   ELSE
+      vertex(1) = 1
+      vertex(2) = n
+      xmin = x(1)
+      xmax = x(n)
+   endif
 
-DO i = 2, n-1
-  temp = x(i)
-  IF (temp < xmin) THEN
-    vertex(1) = i
-    xmin = temp
-  ELSE IF (temp > xmax) THEN
-    vertex(2) = i
-    xmax = temp
-  END IF
-END DO
+   DO i = 2, n-1
+      temp = x(i)
+      IF (temp < xmin) THEN
+         vertex(1) = i
+         xmin = temp
+      ELSE IF (temp > xmax) THEN
+         vertex(2) = i
+         xmax = temp
+      endif
+   END DO
 
 !       Special case, xmax = xmin.
 
-IF (xmax == xmin) THEN
-  IF (y(1) > y(n)) THEN
-    vertex(1) = n
-    vertex(2) = 1
-    ymin = y(n)
-    ymax = y(1)
-  ELSE
-    vertex(1) = 1
-    vertex(2) = n
-    ymin = y(1)
-    ymax = y(n)
-  END IF
+   IF (xmax == xmin) THEN
+      IF (y(1) > y(n)) THEN
+         vertex(1) = n
+         vertex(2) = 1
+         ymin = y(n)
+         ymax = y(1)
+      ELSE
+         vertex(1) = 1
+         vertex(2) = n
+         ymin = y(1)
+         ymax = y(n)
+      endif
 
-  DO i = 2, n-1
-    temp = y(i)
-    IF (temp < ymin) THEN
-      vertex(1) = i
-      ymin = temp
-    ELSE IF (temp > ymax) THEN
-      vertex(2) = i
-      ymax = temp
-    END IF
-  END DO
+      DO i = 2, n-1
+         temp = y(i)
+         IF (temp < ymin) THEN
+            vertex(1) = i
+            ymin = temp
+         ELSE IF (temp > ymax) THEN
+            vertex(2) = i
+            ymax = temp
+         endif
+      END DO
 
-  nvert = 2
-  IF (ymax == ymin) nvert = 1
-  RETURN
-END IF
+      nvert = 2
+      IF (ymax == ymin) nvert = 1
+      RETURN
+   endif
 
 !  Set up two initial lists of points; those points above & those below the
 !  line joining the first two vertices.    next(i) will hold the pointer to the
 !  point furthest from the line joining vertex(i) to vertex(i+1) on the left
 !  hand side.
 
-i1 = vertex(1)
-i2 = vertex(2)
-iwk(i1) = -1
-iwk(i2) = -1
-dx = xmax - xmin
-y1 = y(i1)
-dy = y(i2) - y1
-dmax = zero
-dmin = zero
-next(1) = -1
-next(2) = -1
+   i1 = vertex(1)
+   i2 = vertex(2)
+   iwk(i1) = -1
+   iwk(i2) = -1
+   dx = xmax - xmin
+   y1 = y(i1)
+   dy = y(i2) - y1
+   dmax = zero
+   dmin = zero
+   next(1) = -1
+   next(2) = -1
 
-DO i = 1, n
-  IF (i == vertex(1) .OR. i == vertex(2)) CYCLE
-  dist = (y(i) - y1)*dx - (x(i) - xmin)*dy
-  IF (dist > zero) THEN
-    iwk(i1) = i
-    i1 = i
-    IF (dist > dmax) THEN
-      next(1) = i
-      dmax = dist
-    END IF
-  ELSE IF (dist < zero) THEN
-    iwk(i2) = i
-    i2 = i
-    IF (dist < dmin) THEN
-      next(2) = i
-      dmin = dist
-    END IF
-  END IF
-END DO
+   DO i = 1, n
+      IF (i == vertex(1) .OR. i == vertex(2)) CYCLE
+      dist = (y(i) - y1)*dx - (x(i) - xmin)*dy
+      IF (dist > zero) THEN
+         iwk(i1) = i
+         i1 = i
+         IF (dist > dmax) THEN
+            next(1) = i
+            dmax = dist
+         endif
+      ELSE IF (dist < zero) THEN
+         iwk(i2) = i
+         i2 = i
+         IF (dist < dmin) THEN
+            next(2) = i
+            dmin = dist
+         endif
+      endif
+   END DO
 
 !  Ends of lists are indicated by pointers to -ve positions.
 
-iwk(i1) = -1
-iwk(i2) = -1
-nvert = 2
+   iwk(i1) = -1
+   iwk(i2) = -1
+   nvert = 2
 
-j = 1
+   j = 1
 
 !  Start of main process.
 
 !  Introduce new vertex between vertices j & j+1, if one has been found.
 !  Otherwise increase j.   Exit if no more vertices.
 
-40 IF (next(j) < 0) THEN
-IF (j == nvert) RETURN
-j = j + 1
-GO TO 40
-END IF
+40 continue
+   IF (next(j) < 0) THEN
+      IF (j == nvert) RETURN
+      j = j + 1
+      GOTO 40
+   endif
 
-jp1 = j + 1
-DO i = nvert, jp1, -1
-  vertex(i+1) = vertex(i)
-  next(i+1) = next(i)
-END DO
-jp2 = jp1 + 1
-nvert = nvert + 1
-IF (jp2 > nvert) jp2 = 1
-i1 = vertex(j)
-i2 = next(j)
-i3 = vertex(jp2)
-vertex(jp1) = i2
+   jp1 = j + 1
+   DO i = nvert, jp1, -1
+      vertex(i+1) = vertex(i)
+      next(i+1) = next(i)
+   END DO
+   jp2 = jp1 + 1
+   nvert = nvert + 1
+   IF (jp2 > nvert) jp2 = 1
+   i1 = vertex(j)
+   i2 = next(j)
+   i3 = vertex(jp2)
+   vertex(jp1) = i2
 
 !  Process the list of points associated with vertex j.   New list at vertex j
 !  consists of those points to the left of the line joining it to the new
 !  vertex (j+1).   Similarly for the list at the new vertex.
 !  Points on or to the right of these lines are dropped.
 
-x1 = x(i1)
-x2 = x(i2)
-y1 = y(i1)
-y2 = y(i2)
-dx1 = x2 - x1
-dx2 = x(i3) - x2
-dy1 = y2 - y1
-dy2 = y(i3) - y2
-DMAX1 = zero
-dmax2 = zero
-next(j) = -1
-next(jp1) = -1
-i2save = i2
-i2next = iwk(i2)
-i = iwk(i1)
-iwk(i1) = -1
-iwk(i2) = -1
+   x1 = x(i1)
+   x2 = x(i2)
+   y1 = y(i1)
+   y2 = y(i2)
+   dx1 = x2 - x1
+   dx2 = x(i3) - x2
+   dy1 = y2 - y1
+   dy2 = y(i3) - y2
+   DMAX1 = zero
+   dmax2 = zero
+   next(j) = -1
+   next(jp1) = -1
+   i2save = i2
+   i2next = iwk(i2)
+   i = iwk(i1)
+   iwk(i1) = -1
+   iwk(i2) = -1
 
-60 IF (i /= i2save) THEN
-  dist = (y(i) - y1)*dx1 - (x(i) - x1)*dy1
-  IF (dist > zero) THEN
-    iwk(i1) = i
-    i1 = i
-    IF (dist > DMAX1) THEN
-      next(j) = i
-      DMAX1 = dist
-    END IF
-  ELSE
-    dist = (y(i) - y2)*dx2 - (x(i) - x2)*dy2
-    IF (dist > zero) THEN
-      iwk(i2) = i
-      i2 = i
-      IF (dist > dmax2) THEN
-        next(jp1) = i
-        dmax2 = dist
-      END IF
-    END IF
-  END IF
-  i = iwk(i)
-ELSE
-  i = i2next
-END IF
+60 continue
+   IF (i /= i2save) THEN
+      dist = (y(i) - y1)*dx1 - (x(i) - x1)*dy1
+      IF (dist > zero) THEN
+         iwk(i1) = i
+         i1 = i
+         IF (dist > DMAX1) THEN
+            next(j) = i
+            DMAX1 = dist
+         endif
+      ELSE
+         dist = (y(i) - y2)*dx2 - (x(i) - x2)*dy2
+         IF (dist > zero) THEN
+            iwk(i2) = i
+            i2 = i
+            IF (dist > dmax2) THEN
+               next(jp1) = i
+               dmax2 = dist
+            endif
+         endif
+      endif
+      i = iwk(i)
+   ELSE
+      i = i2next
+   endif
 
 !  Get next point from old list at vertex j.
 
-IF (i > 0) GO TO 60
+   IF (i > 0) GOTO 60
 
 !  End lists with -ve values.
 
-iwk(i1) = -1
-iwk(i2) = -1
+   iwk(i1) = -1
+   iwk(i2) = -1
 
-GO TO 40
+   GOTO 40
 END SUBROUTINE envelope
 !>
 !!##NAME
@@ -3703,14 +3707,22 @@ end function polyarea
 !!
 !!   Sample program:
 !!
-!!    program testit
+!!    program demo_extremum
 !!    use M_math, only : extremum
 !!    real,allocatable :: arr(:)
 !!    arr=[-10.0,8.8,-5.0,0.0,5.0,10.0,-0.3]
 !!    call extremum(arr,small,big)
+!!    write(*,*)'ARRAY=',arr
 !!    write(*,*)'SMALL=',small
 !!    write(*,*)'BIG=',big
-!!    end program testit
+!!    end program demo_extremum
+!!
+!!   Results:
+!!
+!!     ARRAY= -10.000 8.80 -5.00 0.00 5.00 10.0 -0.300
+!!     SMALL= -10.000
+!!     BIG= 10.00
+!! ================================================================================
 !!
 !!##SEE ALSO
 !!    minval(3f), maxval(3f)
@@ -4162,6 +4174,24 @@ END SUBROUTINE SKEKURX
 !!
 !!##EXAMPLE
 !!
+!!   example:
+!!
+!!     program demo_stddev
+!!     use M_math, only : stddev
+!!     implicit none
+!!     integer :: i
+!!     real,parameter :: vals(*)=[(i*1.0,i=0,100)]
+!!        !!write(*,*)vals
+!!        write(*,*)size(vals)
+!!        write(*,*)sum(vals)/size(vals)
+!!        write(*,*)stddev(vals,size(vals),sum(vals)/size(vals))
+!!     end program demo_stddev
+!!
+!!   output:
+!!
+!!          101
+!!    50.0000000
+!!    29.3001709
 !!
 !!##AUTHOR
 !!    1994 John S. Urban
@@ -4202,6 +4232,40 @@ end function stddev
 !!    Returns true or false depending on whether the two numbers given agree to within the specified
 !!    number of digits as calculated by ACCDIG(3f).
 !!##EXAMPLE
+!!
+!!   sample:
+!!
+!!    program demo_almost
+!!    use M_math, only : almost
+!!    real    :: x, y
+!!    logical :: z
+!!    x=1.2345678
+!!    y=1.2300000
+!!    do i=1,8
+!!       z=almost(x,y,real(i),verbose=.true.)
+!!       write(*,*)i,z
+!!    enddo
+!!    end program demo_almost
+!!
+!!   output:
+!!
+!!     *almost* for values 1.23456776 1.23000002 agreement of 2.43020344 digits out of requested 1.0
+!!            1   T
+!!     *almost* for values 1.23456776 1.23000002 agreement of 2.43020344 digits out of requested 2.0
+!!            2   T
+!!     *almost* for values 1.23456776 1.23000002 agreement of 2.43020344 digits out of requested 3.0
+!!            3   F
+!!     *almost* for values 1.23456776 1.23000002 agreement of 2.43020344 digits out of requested 4.0
+!!            4   F
+!!     *almost* for values 1.23456776 1.23000002 agreement of 2.43020344 digits out of requested 5.0
+!!            5   F
+!!     *almost* for values 1.23456776 1.23000002 agreement of 2.43020344 digits out of requested 6.0
+!!            6   F
+!!     *almost* for values 1.23456776 1.23000002 agreement of 2.43020344 digits out of requested 7.0
+!!            7   F
+!!     *accdig* significant digit request too high= 8.00000000
+!!     *almost* for values 1.23456776 1.23000002 agreement of 2.43020344 digits out of requested 8.0
+!!            8   F
 !!
 !===================================================================================================================================
 function almost(x,y,digits,verbose)

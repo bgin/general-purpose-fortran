@@ -51,13 +51,13 @@ contains
 !!    other procedures will provide a variety of sort methods, including ...
 !!
 !!
-!!    Exchange sorts      Bubble sort, Cocktail shaker sort, Oddâ€“even sort, Comb sort, Gnome sort, Quicksort, Stooge sort, Bogosort
+!!    Exchange sorts      Bubble sort, Cocktail shaker sort, Odd   even sort, Comb sort, Gnome sort, Quicksort, Stooge sort, Bogosort
 !!    Selection sorts     Selection sort, Heapsort, Smoothsort, Cartesian tree sort, Tournament sort, Cycle sort
 !!    Insertion sorts     Insertion sort, Shellsort, Splaysort, Tree sort, Library sort, Patience sorting
 !!    Merge sorts         Merge sort, Cascade merge sort, Oscillating merge sort, Polyphase merge sort
 !!    Distribution sorts  American flag sort, Bead sort, Bucket sort, Burstsort, Counting sort, Pigeonhole sort, Proxmap sort,
 !!                        Radix sort, Flashsort
-!!    Concurrent sorts    Bitonic sorter, Batcher oddâ€“even mergesort, Pairwise sorting network
+!!    Concurrent sorts    Bitonic sorter, Batcher odd   even mergesort, Pairwise sorting network
 !!    Hybrid sorts        Block merge sortTimsort, Introsort, Spreadsort
 !!    Other               Topological sorting,Pancake sorting, Spaghetti sort
 !!
@@ -72,12 +72,12 @@ contains
 !!
 !!    Quicksort, also known as partition-exchange sort, uses these steps
 !!
-!!    Âo Choose any element of the array to be the pivot.
-!!    Âo Divide all other elements (except the pivot) into two partitions.
-!!    Âo All elements less than the pivot must be in the first partition.
-!!    Âo All elements greater than the pivot must be in the second partition.
-!!    Âo Use recursion to sort both partitions.
-!!    Âo Join the first sorted partition, the pivot, and the second sorted partition.
+!!     o Choose any element of the array to be the pivot.
+!!     o Divide all other elements (except the pivot) into two partitions.
+!!     o All elements less than the pivot must be in the first partition.
+!!     o All elements greater than the pivot must be in the second partition.
+!!     o Use recursion to sort both partitions.
+!!     o Join the first sorted partition, the pivot, and the second sorted partition.
 !!
 !!    The best pivot creates partitions of equal length (or lengths differing
 !!    by 1).
@@ -85,8 +85,8 @@ contains
 !!    The worst pivot creates an empty partition (for example, if the pivot
 !!    is the first or last element of a sorted array).
 !!
-!!    The run-time of Quicksort ranges from Â  O(n log n) Â  with the best
-!!    pivots, to Â  O(n2) Â  with the worst pivots, where Â  n Â  is the
+!!    The run-time of Quicksort ranges from    O(n log n)    with the best
+!!    pivots, to    O(n2)    with the worst pivots, where    n    is the
 !!    number of elements in the array.
 !!
 !!    Quicksort has a reputation as the fastest sort. Optimized variants of
@@ -862,7 +862,7 @@ end subroutine sort_shell_complex_double
 !!
 !!  Sample usage:
 !!
-!!    program test_sort_quick_rx
+!!    program demo_sort_quick_rx
 !!    use M_sort, only : sort_quick_rx
 !!    implicit none
 !!    integer,parameter            :: isz=10000000
@@ -881,7 +881,7 @@ end subroutine sort_shell_complex_double
 !!       endif
 !!    enddo
 !!    write(*,*)'test of sort_quick_rx(3f) complete'
-!!    end program test_sort_quick_rx
+!!    end program demo_sort_quick_rx
 !===================================================================================================================================
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -1084,7 +1084,7 @@ end subroutine sort_quick_rx
 !!
 !!    Sample program
 !!
-!!     program testit
+!!     program demo_unique
 !!     use M_sort, only : unique
 !!     implicit none
 !!     character(len=:),allocatable :: strings(:)
@@ -1101,7 +1101,7 @@ end subroutine sort_quick_rx
 !!     write(*,'("SIZE=",i0)')size(strings)
 !!     write(*,'("ICOUNT=",i0)')icount
 !!
-!!     end program testit
+!!     end program demo_unique
 !!
 !!    Expected output
 !!
@@ -1290,7 +1290,7 @@ end subroutine unique_complex_double
 !!
 !!   Example program:
 !!
-!!    program try_swap
+!!    program demo_swap
 !!    use M_sort, only : swap
 !!    integer             :: iarray(2)=[10,20]
 !!    real                :: rarray(2)=[11.11,22.22]
@@ -1371,7 +1371,7 @@ end subroutine unique_complex_double
 !!       enddo
 !!       end subroutine printarrays
 !!
-!!    end program try_swap
+!!    end program demo_swap
 !!
 !!   Expected Results:
 !!

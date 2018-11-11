@@ -40,26 +40,4 @@
              & basename(:longest),    &
              & ext(:longest)
           enddo
-
-       Output
-
-          | dirs/name.ext | dirs          | name.ext      | name          | .ext
-          | xx/IO/zz/NN.FF| xx/IO/zz      | NN.FF         | NN            | .FF
-          | xx/IO/zz/NN   | xx/IO/zz      | NN            | NN            |
-          | /xx/IO/zz/NN  | /xx/IO/zz     | NN            | NN            |
-          | /xx/IO/zz/    | /xx/IO/zz     |               |               |
-          | /xx/IO/zz.A/  | /xx/IO/zz.A   |               |               |
-          | /xx/IO/zz/.   | /xx/IO/zz/.   |               |               |
-          |               | .             |               |               |
-          | ./            | .             |               |               |
-          | /             | /             |               |               |
-          | /..           | /             |               |               |
-          | ./..          | ./..          |               |               |
-          | name.         |               | name.         | name          | .
-          | .name         |               | .name         | .name         |
-          | .name.        |               | .name.        | .name         | .
-          | .             | .             |               |               |
-          | ..            |               |               |               |
-          | ...           |               | ...           | ..            | .
-
-                                                        October 20, 2018                                            splitpath(3)
+       end program demo_splitpath

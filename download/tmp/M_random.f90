@@ -1,6 +1,6 @@
 !>
 !!##NAME
-!!    M_random(3f) - [M_RANDOM] Routines for generating random numbers and strings
+!!    M_random(3f) - [M_random::INTRO] Routines for generating random numbers and strings
 !!##SYNOPSIS
 !!
 !!   See the routines:
@@ -15,7 +15,7 @@
 !!
 !!##QUOTE
 !!
-!!   The generation of random numbers is too important to be left to chance --¿Robert R. Coveyou
+!!   The generation of random numbers is too important to be left to chance -- Robert R. Coveyou
 !!
 !!##DESCRIPTION
 !!
@@ -33,7 +33,7 @@
 !!   MISCELLANEOUS
 !!    o random_kiss64(3f): A 64-bit KISS random number generator by George Margaglia.
 !!
-!!   MERSENEE TWISTER ALGORITHM
+!!   MERSENNE TWISTER ALGORITHM
 !!    o mtprng_int(3f): Initializes the Mersenne Twister random number generator with
 !!    o mtprng_int_by_array(3f): Initialize with an array of seeds
 !!
@@ -215,7 +215,7 @@ end function random_hex
 !!
 !!    Sample usage:
 !!
-!!     program test_random_kiss64
+!!     program demo_random_kiss64
 !!     use M_random, only : random_kiss64
 !!       implicit none
 !!       integer, parameter    :: i8b = selected_int_kind(18)  ! eight-byte integer
@@ -234,7 +234,7 @@ end function random_hex
 !!       else
 !!          print *, "Fail"
 !!       end if
-!!     end program test_random_kiss64
+!!     end program demo_random_kiss64
 !===================================================================================================================================
 function random_kiss64()
 
@@ -598,6 +598,10 @@ end subroutine init_random_seed
 !!      ! returns a INT64 integer with a range in 0 .. 2^32-1
 !!      write(*,*) mtprng_rand64(state)
 !!    end program demo_mtprng_init
+!!
+!!   Sample Results:
+!!
+!!      867010878
 !===================================================================================================================================
 subroutine mtprng_init(seed, state)
 
@@ -946,7 +950,9 @@ end function mtprng_rand_range
 !!   Sample program:
 !!
 !!    program demo_mtprng_real1
-!!    use M_random, only : mtprng_state, mtprng_rand_real1,mtprng_init
+!!    use M_random, only : mtprng_init
+!!    use M_random, only : mtprng_state
+!!    use M_random, only : mtprng_rand_real1
 !!    use, intrinsic :: iso_fortran_env, only : int32
 !!    implicit none
 !!    integer(INT32) :: seed

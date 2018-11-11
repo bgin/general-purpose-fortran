@@ -1,6 +1,6 @@
 !>
 !!##NAME
-!!    M_draw(3fm) - [M_draw] The M_draw graphics library
+!!    M_draw(3fm) - [M_draw::INTRO] The M_draw graphics library
 !!
 !!##DESCRIPTION
 !!
@@ -18,9 +18,9 @@
 !!      * HTML5 Canvas driver.
 !!      * SVG driver.
 !!      * A PCL5/HPGL2 driver that supports prefsize() calls.
-!!      * Monochrome PBM (Poskazner bitmap P1 and P4 formats) and X11
+!!      * Monochrome PBM (Poskanzer bitmap P1 and P4 formats) and X11
 !!        bitmap driver.
-!!      * Color PBM (Poskazner pixmap P3 and P6 formats). If you have the
+!!      * Color PBM (Poskanzer pixmap P3 and P6 formats). If you have the
 !!        pbmplus package you can use it to make M_draw appear to write
 !!        any format pbmplus writes (assuming your system supports the
 !!        popen(3c) function).
@@ -219,7 +219,7 @@
 !!    right-handed Cartesian coordinate system and positive angles sweep
 !!    counterclockwise. If filling sectors or circles (As described in the
 !!    section on polygons) hatch pitch is measured in world coordinates
-!!    and is initially set to 0.1. The intial hatch angle is zero(0).
+!!    and is initially set to 0.1. The initial hatch angle is zero(0).
 !!
 !!    CURVE ROUTINES
 !!    curvebasis(basis)           Define a basis matrix for a curve.
@@ -4480,7 +4480,7 @@
 !!
 !!    Clears the screen to the current color. Causes a new page to begin
 !!    on file-based devices that support multiple pages (Currently, the
-!!    pixmap devices do not support multple pages).
+!!    pixmap devices do not support multiple pages).
 !!
 !!##EXAMPLE
 !!
@@ -4645,7 +4645,7 @@
 !!          istart=10
 !!          iend=10
 !!          LIGHTNESS=50.0
-!!       case default           ! do many lighnesses
+!!       case default           ! do many lightnesses
 !!          istart=1
 !!          iend=19
 !!       end select

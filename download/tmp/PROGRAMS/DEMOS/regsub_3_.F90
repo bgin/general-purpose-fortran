@@ -58,8 +58,8 @@
 
                 write(*,'(a)')repeat('-',80)                          ! put out a number line
                 write(*,'(a)') input_line(i)
-
-                call regsub(input_line(i),matches,'username="\1" &    ! replace \n lines
+                                                                      ! replace \n lines
+                call regsub(input_line(i),matches,'username="\1" &
                 &password="\2" UID="\3" GID="\4" name="\5" &
                 &home="\6" shell="\7" ',output_line)
                 write(*,'(a)') output_line

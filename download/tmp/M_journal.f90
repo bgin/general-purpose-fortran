@@ -8,7 +8,7 @@ private
 
 !>
 !!##NAME
-!!      journal(3f) - [M_journal] provides public message routine, no paging or graphic mode change"
+!!      journal(3f) - [M_journal] provides public message routine, no paging or graphic mode change
 !!##SYNOPSIS
 !!
 !!

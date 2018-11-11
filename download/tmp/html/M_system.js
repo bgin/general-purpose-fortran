@@ -55,6 +55,5 @@ append("system_uname.3.html");
 append("system_unlink.3.html");
 append("system_unsetenv.3.html");
 append("system_utime.3.html");
-append("_printenv.1.html");
 append("penv.1.html");
 }

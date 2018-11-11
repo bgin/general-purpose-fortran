@@ -306,7 +306,7 @@ EXAMPLES
    No)     echo "Do stuff when answer is $RESULT" ;;
    Cancel) echo "Do stuff when answer is $RESULT" ;;
    EXIT)   echo "Do stuff when answer is escape key ;;
-   *)      echo "$0 : ERROR: unknown answr $RESULT" ;;
+   *)      echo "$0 : ERROR: unknown answer $RESULT" ;;
    esac
    # redirection of descriptor 2 (stderr) to be the duplicate
    # of descriptor 1 and descriptor 1 is restored to its original 

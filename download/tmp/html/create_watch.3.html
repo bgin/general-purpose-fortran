@@ -263,6 +263,51 @@ and returns a status code.  The third call creates one
 watch with the cpu and wall clocks, the name &#146;unnamed
 watch&#146;, and returns a status code.
 <P>
+<PRE>
+<P>
+   program demo_creat_watch
+   ! example program starts a watch W1, stops it, and prints the results
+   use,intrinsic :: iso_fortran_env, only : &
+      ERROR_UNIT, INPUT_UNIT, OUTPUT_UNIT ! access computing environment
+   use M_stopwatch, only : watchtype
+   use M_stopwatch, only : option_stopwatch, create_watch, start_watch
+   use M_stopwatch, only : stop_watch, print_watch, destroy_watch
+   implicit none
+   type (watchtype) w1
+   character(len=:),allocatable :: cmd
+   integer errcode
+<P>
+      cmd=&#146;hostname;sleep 3;date;pwd&#146;
+<P>
+      call option_stopwatch(                                            &
+         default_clock=[character(len=4) :: &#146;cpu&#146;,&#146;wall&#146;,&#146;user&#146;,&#146;sys&#146;], &
+         io_unit_print=ERROR_UNIT,                                      &
+         io_unit_error=ERROR_UNIT)
+<P>
+      call create_watch(watch=w1, name=&#146;times&#146;)
+      call start_watch(watch=w1)
+<P>
+      call execute_command_line(cmd) ! do something that takes some time
+<P>
+      call stop_watch(watch=w1)
+      call print_watch(watch=w1, title=&#146;COMMAND:&#146;//cmd, err=errcode)
+      call destroy_watch(w1)
+<P>
+   end program demo_creat_watch
+</PRE>
+<P>
+Expected typical output:
+<P>
+<PRE>
+   buzz
+   Sun Nov  4 20:56:29 EST 2018
+   /home/urbanjs/V600
+   COMMAND:hostname;sleep 3;date;pwd
+     times:
+           cpu=    0.03 user=    0.00  sys=    0.03 wall=    3.38
+</PRE>
+<P>
+<P>
 </BLOCKQUOTE>
 <A name=5>
 

@@ -1,6 +1,6 @@
 !>
 !!##NAME
-!!    M_system(3fm) - [M_system] Fortran interface to C system interface
+!!    M_system(3fm) - [M_system::INTRO] Fortran interface to C system interface
 !!##SYNOPSIS
 !!
 !!   Public objects:
@@ -1053,14 +1053,14 @@ end function system_access
 !!
 !!        To use system_utime(3f) the effective user ID of the process must
 !!        match the owner of the file, or the process has to have write
-!!        permission to the file or has appro- priate privileges,
+!!        permission to the file or has appropriate privileges,
 !!
 !!##OPTIONS
 !!        times     If present, the values will be interpreted as the access
 !!                  and modification times as Unix Epoch values. That is,
 !!                  they are times measured in seconds since the Unix Epoch.
 !!
-!!        pathname  name of the file whose acccess and modification times
+!!        pathname  name of the file whose access and modification times
 !!                  are to be updated.
 !!
 !!##RETURN VALUE
@@ -1122,6 +1122,7 @@ end function system_access
 !!       implicit none
 !!       character(len=4096) :: pathname
 !!       integer             :: times(2)
+!!       integer             :: i
 !!          do i=1,command_argument_count()
 !!             call get_command_argument(i, pathname)
 !!             if(.not.system_utime(pathname,times))then
@@ -1641,8 +1642,8 @@ end function system_isblk
 !!
 !!##RETURN VALUE
 !!        The system_chown() function should return zero (0) if successful.
-!!        Otherwise, these functions shall return −1 and set errno to
-!!        indicate the error. If −1 is returned, no changes are made in
+!!        Otherwise, these functions shall return    1 and set errno to
+!!        indicate the error. If    1 is returned, no changes are made in
 !!        the user ID and group ID of the file.
 !!
 !!##EXAMPLE
@@ -1652,16 +1653,22 @@ end function system_isblk
 !!
 !!    program demo_system_chown
 !!    Use M_system, only : system_chown
+!!    Use M_system, only : system_getuid
+!!    Use M_system, only : system_getgid
+!!    use M_system, only : system_perror
 !!    implicit none
 !!    integer                     :: i
-!!    character(len=80),parameter :: names(*)=[ 'myfile1','/usr/local']
+!!    character(len=80),parameter :: names(*)=[character(len=80) :: 'myfile1','/usr/local']
 !!    do i=1,size(names)
-!!       ierr=chown(names(i))
-!!       write(*,*)' for ',trim(names(i)),' ownership is ', system_chown(names(i))
+!!       if(.not.  system_chown(&
+!!       & trim(names(i)),  &
+!!       & system_getuid(), &
+!!       & system_getgid()) &
+!!          )then
+!!          call system_perror('*demo_system_chown* '//trim(names(i)))
+!!       endif
 !!    enddo
 !!    end program demo_system_chown
-!!
-!!   Results:
 !===================================================================================================================================
 
 function system_chown(dirname,owner,group)
@@ -1822,7 +1829,7 @@ end function system_isdir
 !!       enddo
 !!       flush(10)
 !!       write(*,*)'average sqrt value=',value/10000.0
-!!       call system_cpu_time(totl_finish,user_finish,system_finish)
+!!       call system_cpu_time(total_finish,user_finish,system_finish)
 !!       write(*,*)'USER ......',user_finish-user_start
 !!       write(*,*)'SYSTEM ....',system_finish-system_start
 !!       write(*,*)'TOTAL .....',total_finish-total_start
@@ -2013,7 +2020,7 @@ end function system_link
 !!   Removing a link to a file
 !!
 !!    program demo_system_unlink
-!!    use M_system, only : system_unlink, system_perroZ
+!!    use M_system, only : system_unlink, system_perror
 !!    ierr = system_unlink('myfile1')
 !!    if(ierr.ne.0)then
 !!       call system_perror('*demo_system_unlink*')
@@ -2533,49 +2540,52 @@ end function system_rename
 !!
 !!    program demo_system_chmod
 !!    use M_system, only : system_chmod
+!!    use M_system, only : system_stat
 !!    use M_system, only : R_GRP,R_OTH,R_USR,R_WXG,R_WXO
 !!    use M_system, only : R_WXU,W_GRP,W_OTH,W_USR,X_GRP,X_OTH,X_USR
 !!    use M_system, only : DEFFILEMODE, ACCESSPERMS
 !!    implicit none
-!!    integer :: ierr
-!!    integer :: status
-!!    !Setting Read Permissions for User, Group, and Others
-!!    ! The following example sets read permissions for the owner, group, and others.
-!!    open(file='_test1',unit=10)
-!!    write(10,*)'TEST FILE 1'
-!!    close(unit=10)
-!!    ierr=system_chmod('_test1', IANY(R_USR,R_GRP,R_OTH))
+!!    integer         :: ierr
+!!    integer         :: status
+!!    integer(kind=8) :: buffer(13)
+!!       !Setting Read Permissions for User, Group, and Others
+!!       ! The following example sets read permissions for the owner, group, and others.
+!!       open(file='_test1',unit=10)
+!!       write(10,*)'TEST FILE 1'
+!!       close(unit=10)
+!!       ierr=system_chmod('_test1', IANY([R_USR,R_GRP,R_OTH]))
 !!
-!!    !Setting Read, Write, and Execute Permissions for the Owner Only
-!!    ! The following example sets read, write, and execute permissions for the owner, and no permissions for group and others.
-!!    open(file='_test2',unit=10)
-!!    write(10,*)'TEST FILE 2'
-!!    close(unit=10)
-!!    ierr=system_chmod('_test2', R_WXU)
+!!       !Setting Read, Write, and Execute Permissions for the Owner Only
+!!       ! The following example sets read, write, and execute permissions for the owner, and no permissions for group and others.
+!!       open(file='_test2',unit=10)
+!!       write(10,*)'TEST FILE 2'
+!!       close(unit=10)
+!!       ierr=system_chmod('_test2', R_WXU)
 !!
-!!    !Setting Different Permissions for Owner, Group, and Other
-!!    ! The following example sets owner permissions for CHANGEFILE to read, write, and execute, group permissions to read and
-!!    ! execute, and other permissions to read.
-!!    open(file='_test3',unit=10)
-!!    write(10,*)'TEST FILE 3'
-!!    close(unit=10)
-!!    ierr=system_chmod('_test3', IANY([R_WXU,R_GRP,X_GRP,R_OTH]));
+!!       !Setting Different Permissions for Owner, Group, and Other
+!!       ! The following example sets owner permissions for CHANGEFILE to read, write, and execute, group permissions to read and
+!!       ! execute, and other permissions to read.
+!!       open(file='_test3',unit=10)
+!!       write(10,*)'TEST FILE 3'
+!!       close(unit=10)
+!!       ierr=system_chmod('_test3', IANY([R_WXU,R_GRP,X_GRP,R_OTH]));
 !!
-!!    !Setting and Checking File Permissions
-!!    ! The following example sets the file permission bits for a file named /home/cnd/mod1, then calls the stat() function to
-!!    ! verify the permissions.
+!!       !Setting and Checking File Permissions
+!!       ! The following example sets the file permission bits for a file named /home/cnd/mod1, then calls the stat() function to
+!!       ! verify the permissions.
 !!
-!!    ierr=system_chmod("home/cnd/mod1", IANY([R_WXU,R_WXG,R_OTH,W_OTH]))
-!!    status = system_stat("home/cnd/mod1", buffer)
+!!       ierr=system_chmod("home/cnd/mod1", IANY([R_WXU,R_WXG,R_OTH,W_OTH]))
+!!       call system_stat("home/cnd/mod1", buffer,status)
 !!
-!!    ! In order to ensure that the S_ISUID and S_ISGID bits are set, an application requiring this should use stat() after a
-!!    ! successful chmod() to verify this.
+!!       ! In order to ensure that the S_ISUID and S_ISGID bits are set, an application requiring this should use stat() after a
+!!       ! successful chmod() to verify this.
 !!
-!!    !    Any files currently open could possibly become invalid if the mode
-!!    !    of the file is changed to a value which would deny access to
-!!    !    that process.
+!!       !    Any files currently open could possibly become invalid if the mode
+!!       !    of the file is changed to a value which would deny access to
+!!       !    that process.
 !!
 !!    end program demo_system_chmod
+!!
 !===================================================================================================================================
 function system_chmod(filename,mode) result(ierr)
    character(len=*),intent(in)  :: filename
@@ -2899,7 +2909,7 @@ end function system_mkfifo
 !!    use M_system, only : DEFFILEMODE, ACCESSPERMS
 !!    implicit none
 !!    integer :: ierr
-!!    ierr=system_mkdir('_scratch',IANY([R_USR,W_USR,X_USR)])
+!!    ierr=system_mkdir('_scratch',IANY([R_USR,W_USR,X_USR]))
 !!    end program demo_system_mkdir
 !===================================================================================================================================
 function system_mkdir(dirname,mode) result(err)
@@ -4035,10 +4045,10 @@ end function system_getlogin
 !!    integer             :: ierr
 !!    character(len=:),allocatable :: perms
 !!       values=0
-!!       call get_command_argument(1, string) ! get pathname from command line
-!!       call system_stat(string,values,ier)  ! get pathname information
+!!       call get_command_argument(1, string)  ! get pathname from command line
+!!       call system_stat(string,values,ierr)  ! get pathname information
 !!       if(ierr.eq.0)then
-!!          perms=system_perm(values(3))      ! convert permit mode to a string
+!!          perms=system_perm(values(3))       ! convert permit mode to a string
 !!          ! print permits as a string, decimal value, and octal value
 !!          write(*,'("for ",a," permits[",a,"]",1x,i0,1x,o0)') &
 !!                  trim(string),perms,values(3),values(3)
@@ -4175,12 +4185,14 @@ end function system_getgrgid
 !!   Sample program:
 !!
 !!    program demo_system_getpwuid
-!!    use M_system, only : system_pwuid
+!!    use M_system, only : system_getpwuid
 !!    use M_system, only: system_getuid
 !!    implicit none
 !!    character(len=:),allocatable :: name
-!!       name=system_getpwuid(system_getuid))
-!!       write(*,'("login[",a,"] for ",i0)')name,uid
+!!    integer                      :: uid
+!!       uid=system_getuid()
+!!       name=system_getpwuid(uid)
+!!       write(*,'("login[",a,"] has UID ",i0)')name,uid
 !!    end program demo_system_getpwuid
 !===================================================================================================================================
 function system_getpwuid(uid) result (uname)

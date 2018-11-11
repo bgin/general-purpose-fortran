@@ -35,7 +35,7 @@ module M_pixel_slices
 !!    removal, gives the illusion of depth.
 !!
 !!    dl_slices contains an internal working storage array
-!!    dimensioned sufficiently large for most sufaces. However,
+!!    dimensioned sufficiently large for most surfaces. However,
 !!    for very complex surfaces, the working storage buffer length may
 !!    be exceeded. In this case an error message is written to
 !!    the terminal and the routine terminated.

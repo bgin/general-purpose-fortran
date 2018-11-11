@@ -758,7 +758,8 @@ CONTAINS
 !===================================================================================================================================
 !>
 !!##NAME
-!!   contourlines(3f) - [M_DRAW:CONTOUR] calculate contour lines from ungridded data f(x,y) and call user-supplied routine with results
+!!   contourlines(3f) - [M_contourplot] calculate contour lines from ungridded data f(x,y)
+!!                      and call user-supplied routine with results
 !!
 !!##SYNOPSIS
 !!
@@ -835,6 +836,7 @@ CONTAINS
 !!
 !!   TEST1:
 !!
+!!    ! program demo_contourlines and user routine
 !!    program TestCase
 !!    use M_ContourPlot, only : contourlines
 !!    implicit none
@@ -895,6 +897,7 @@ CONTAINS
 !!       write(gnu,'(a)') " "
 !!    !
 !!    end subroutine my_CntCrv
+!!    ! end program demo_contourlines and user routine
 !!
 !!    #!/bin/sh
 !!    # Example execution of gnuplot(1) to plot the output file

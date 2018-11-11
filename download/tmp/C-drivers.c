@@ -695,6 +695,7 @@ void draw_vinit(char *device){
         vdevice.attr->a.fill = 0;
         vdevice.attr->a.hatch = 0;
         vdevice.attr->a.backface = 0;
+        vdevice.attr->a.color = 0;
         vdevice.attr->a.justify = V_LEFT|V_BOTTOM;
         vdevice.attr->a.bold = 0;
         vdevice.attr->a.inbackbuffer = 0;

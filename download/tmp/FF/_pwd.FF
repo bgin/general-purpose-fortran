@@ -29,6 +29,7 @@ LICENSE:        Public Domain. This is free software: you are free to change and
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 program demo_system_getcwd
+use iso_fortran_env, only : ERROR_UNIT, OUTPUT_UNIT, INPUT_UNIT  ! access computing environment
 use M_kracken, only : kracken, lget
 use M_system,  only : system_getcwd
 implicit none
@@ -39,9 +40,9 @@ integer                      :: ierr
    call help_version(lget('_pwd_version'))
    call system_getcwd(dirname,ierr)
    if(ierr.eq.0)then
-      write(*,'(a)')trim(dirname)
+      write(OUTPUT_UNIT,'(a)')trim(dirname)
    else
-      write(*,*)'*pwd* ERROR OBTAINING CURRENT DIRECTORY NAME'
+      write(ERROR_UNIT,*)'*pwd* ERROR: cannot obtain current directory name'
    endif
 end program demo_system_getcwd
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

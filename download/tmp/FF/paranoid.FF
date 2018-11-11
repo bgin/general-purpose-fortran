@@ -2,7 +2,7 @@ $IFDEF TESTPRG90
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file paranoid.1.man
 NAME
-    paranoid(1f) - [DEVELOPER] call doublprecision and real versions of paranoia(3f)
+    paranoid(1f) - [DEVELOPER] call doubleprecision and real versions of paranoia(3f)
 SYNOPSIS
     paranoid
 DESCRIPTION

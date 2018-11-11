@@ -1,8 +1,0 @@
-NAME
-   closeobj(3f) - [M_draw:OBJECT] Close the current object.
-
-SYNOPSIS
-        subroutine closeobj()
-DESCRIPTION
-
-   Close the current object.

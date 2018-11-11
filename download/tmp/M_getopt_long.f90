@@ -18,7 +18,7 @@
 !!
 !!   Sample program:
 !!
-!!    program selftest_program
+!!    program demo_M_getopt_long
 !!      use M_getopt_long
 !!      implicit none
 !!      character(len=1) :: c
@@ -83,7 +83,8 @@
 !!      end if
 !!
 !!      stop
-!!    end program selftest_program
+!!    end program demo_M_getopt_long
+!!
 !!##AUTHOR
 !!     * [[getopt_long_module]] by [[Joe Krahn]].
 !!     * slightly modified from original - JSU

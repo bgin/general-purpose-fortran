@@ -30,14 +30,14 @@ help_text=[ CHARACTER(LEN=128) :: &
 '     date    provide the same eight values used by the DATE_AND_TIME(3f)        ',&
 '             intrinsic.                                                         ',&
 '                                                                                ',&
-'           · value(1)  The year                                                 ',&
-'           · value(2)  The month                                                ',&
-'           · value(3)  The day of the month                                     ',&
-'           · value(4)  Time difference with UTC in minutes                      ',&
-'           · value(5)  The hour of the day                                      ',&
-'           · value(6)  The minutes of the hour                                  ',&
-'           · value(7)  The seconds of the minute                                ',&
-'           · value(8)  The milliseconds of the second                           ',&
+'             value(1)  The year                                                 ',&
+'             value(2)  The month                                                ',&
+'             value(3)  The day of the month                                     ',&
+'             value(4)  Time difference with UTC in minutes                      ',&
+'             value(5)  The hour of the day                                      ',&
+'             value(6)  The minutes of the hour                                  ',&
+'             value(7)  The seconds of the minute                                ',&
+'             value(8)  The milliseconds of the second                           ',&
 '                                                                                ',&
 '     N|Name  Planet numbers in range 1 to 8 (Mercury:1 Venus:2 Mars:4           ',&
 '             Jupiter:5 Saturn:6 Uranus:7 Neptune:8). If not specified           ',&
@@ -94,14 +94,14 @@ end subroutine help_usage
 !!      date    provide the same eight values used by the DATE_AND_TIME(3f)
 !!              intrinsic.
 !!
-!!            · value(1)  The year
-!!            · value(2)  The month
-!!            · value(3)  The day of the month
-!!            · value(4)  Time difference with UTC in minutes
-!!            · value(5)  The hour of the day
-!!            · value(6)  The minutes of the hour
-!!            · value(7)  The seconds of the minute
-!!            · value(8)  The milliseconds of the second
+!!              value(1)  The year
+!!              value(2)  The month
+!!              value(3)  The day of the month
+!!              value(4)  Time difference with UTC in minutes
+!!              value(5)  The hour of the day
+!!              value(6)  The minutes of the hour
+!!              value(7)  The seconds of the minute
+!!              value(8)  The milliseconds of the second
 !!
 !!      N|Name  Planet numbers in range 1 to 8 (Mercury:1 Venus:2 Mars:4
 !!              Jupiter:5 Saturn:6 Uranus:7 Neptune:8). If not specified
@@ -144,7 +144,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    ephemeris position of planets for adjusting an equitorial telescope>',&
 '@(#)VERSION:        1.0, 20170910>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Mon, Oct 15th, 2018 5:28:17 PM>',&
+'@(#)COMPILED:       Sat, Nov 10th, 2018 6:03:48 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

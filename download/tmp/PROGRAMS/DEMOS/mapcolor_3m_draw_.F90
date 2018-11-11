@@ -33,7 +33,7 @@
                 istart=10
                 iend=10
                 LIGHTNESS=50.0
-             case default           ! do many lighnesses
+             case default           ! do many lightnesses
                 istart=1
                 iend=19
              end select

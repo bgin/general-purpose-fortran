@@ -127,7 +127,6 @@ append("vsetflush.3m_draw.html");
 append("window.3m_draw.html");
 append("xcentertext.3m_draw.html");
 append("ycentertext.3m_draw.html");
-append("contourlines.3.html");
 append("clock.1m_draw.html");
 append("minefield.1m_draw.html");
 append("color_wheel.1.html");

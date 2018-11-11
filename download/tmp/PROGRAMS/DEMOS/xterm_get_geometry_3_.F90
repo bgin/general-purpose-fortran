@@ -3,5 +3,5 @@
           implicit none
           integer :: irows, icols
              call xterm_get_geometry(irows,icols)
-             write(*,*)'rows=',rows,' cols=',cols
+             write(*,*)'rows=',irows,' cols=',icols
           end program demo_xterm_get_geometry

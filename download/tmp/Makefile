@@ -1,4 +1,4 @@
-#@(#) Makefile started by makeout(1) 2018-10-20 15:13:57
+#@(#) Makefile started by makeout(1) 2018-11-10 20:47:57
 
 PROGFILES = PROGRAMS/alphabet.f90 PROGRAMS/asa2pdf.f90 PROGRAMS/base.f90 PROGRAMS/change.f90 PROGRAMS/choose.f90 \
         PROGRAMS/clock.f90 PROGRAMS/cn.f90 PROGRAMS/colors.f90 PROGRAMS/color_wheel.f90 PROGRAMS/compute.f90 \
@@ -9,16 +9,17 @@ PROGFILES = PROGRAMS/alphabet.f90 PROGRAMS/asa2pdf.f90 PROGRAMS/base.f90 PROGRAM
         PROGRAMS/minefield.f90 PROGRAMS/model.f90 PROGRAMS/month.f90 PROGRAMS/nc2html.f90 PROGRAMS/notabs.f90 \
         PROGRAMS/note.f90 PROGRAMS/now.f90 PROGRAMS/numdiff.f90 PROGRAMS/paranoid.f90 PROGRAMS/paws.f90 \
         PROGRAMS/pendulum.f90 PROGRAMS/penv.f90 PROGRAMS/phone.f90 PROGRAMS/planets.f90 PROGRAMS/quadratic.f90 \
-        PROGRAMS/redo.f90 PROGRAMS/rep.f90 PROGRAMS/rever.f90 PROGRAMS/sec2days.f90 PROGRAMS/setxt.f90 \
-        PROGRAMS/sha3.f90 PROGRAMS/shell.f90 PROGRAMS/slice.f90 PROGRAMS/splitname.f90 PROGRAMS/sqlite3_version.f90 \
-        PROGRAMS/t2m.f90 PROGRAMS/table2html.f90 PROGRAMS/tabulate.f90 PROGRAMS/today.f90 PROGRAMS/ttee.f90 \
-        PROGRAMS/ufpp.f90 PROGRAMS/ufpp_template.f90 PROGRAMS/what.f90 PROGRAMS/xauth_key.f90 PROGRAMS/xy.f90 \
-        PROGRAMS/_cmp.f90 PROGRAMS/_colrm.f90 PROGRAMS/_dirname.f90 PROGRAMS/_echo.f90 PROGRAMS/_false.f90 \
-        PROGRAMS/_grep.f90 PROGRAMS/_hostname.f90 PROGRAMS/_kill.f90 PROGRAMS/_ln.f90 PROGRAMS/_logname.f90 \
-        PROGRAMS/_ls.f90 PROGRAMS/_mkdir.f90 PROGRAMS/_mkfifo.f90 PROGRAMS/_mv.f90 PROGRAMS/_printenv.f90 \
-        PROGRAMS/_pwd.f90 PROGRAMS/_rm.f90 PROGRAMS/_rmdir.f90 PROGRAMS/_showumask.f90 PROGRAMS/_sleep.f90 \
-        PROGRAMS/_stat.f90 PROGRAMS/_touch.f90 PROGRAMS/_true.f90 PROGRAMS/_tty.f90 PROGRAMS/_uname.f90 \
-        PROGRAMS/_unlink.f90 PROGRAMS/_uuidgen.f90 PROGRAMS/_which.f90 PROGRAMS/_yes.f90
+        PROGRAMS/redo.f90 PROGRAMS/rep.f90 PROGRAMS/rever.f90 PROGRAMS/sec2days.f90 PROGRAMS/seefont.f90 \
+        PROGRAMS/setxt.f90 PROGRAMS/sha3.f90 PROGRAMS/shell.f90 PROGRAMS/slice.f90 PROGRAMS/splitname.f90 \
+        PROGRAMS/sqlite3_version.f90 PROGRAMS/t2m.f90 PROGRAMS/table2html.f90 PROGRAMS/tabulate.f90 PROGRAMS/today.f90 \
+        PROGRAMS/ttee.f90 PROGRAMS/ufpp.f90 PROGRAMS/ufpp_template.f90 PROGRAMS/what.f90 PROGRAMS/xauth_key.f90 \
+        PROGRAMS/xy.f90 PROGRAMS/_cmp.f90 PROGRAMS/_colrm.f90 PROGRAMS/_dirname.f90 PROGRAMS/_echo.f90 \
+        PROGRAMS/_false.f90 PROGRAMS/_grep.f90 PROGRAMS/_hostname.f90 PROGRAMS/_kill.f90 PROGRAMS/_ln.f90 \
+        PROGRAMS/_logname.f90 PROGRAMS/_ls.f90 PROGRAMS/_mkdir.f90 PROGRAMS/_mkfifo.f90 PROGRAMS/_mv.f90 \
+        PROGRAMS/_printenv.f90 PROGRAMS/_pwd.f90 PROGRAMS/_rename.f90 PROGRAMS/_rm.f90 PROGRAMS/_rmdir.f90 \
+        PROGRAMS/_showumask.f90 PROGRAMS/_sleep.f90 PROGRAMS/_stat.f90 PROGRAMS/_time.f90 PROGRAMS/_touch.f90 \
+        PROGRAMS/_true.f90 PROGRAMS/_tty.f90 PROGRAMS/_uname.f90 PROGRAMS/_unlink.f90 PROGRAMS/_uuidgen.f90 \
+        PROGRAMS/_which.f90 PROGRAMS/_yes.f90
 
 CPROGFILES = PROGRAMS/h2v.c
 
@@ -83,7 +84,7 @@ LIB = GPF
 LIBS = -lncurses -lsqlite3 -lreadline -lX11
 CC = cc
 CFLAGS = -O
-FC = f90
+FC = gfortran
 FFLAGS = -O
 F90 = gfortran
 F90FLAGS = -O

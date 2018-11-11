@@ -21,7 +21,7 @@ OPTIONS
 
 RETURN VALUE
        Which returns the number of failed arguments, or -1 when no
-       programname´ was given.
+       programname   was given.
 
 EXAMPLE
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

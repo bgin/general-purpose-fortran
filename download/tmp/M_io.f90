@@ -402,7 +402,7 @@ end subroutine print_inquire
 !!    Sample program, assuming the input file "inputfile" exists:
 !!
 !!     program demo_read_table
-!!     use M_io, only :: read_table
+!!     use M_io, only : read_table
 !!     doubleprecision,allocatable :: array(:,:)
 !!
 !!     ! create test file
@@ -1098,6 +1098,7 @@ end function dirname
 !!       & basename(:longest),    &
 !!       & ext(:longest)
 !!    enddo
+!!   end program demo_splitpath
 !!
 !!   Output
 !!
@@ -1467,7 +1468,7 @@ end function read_line
 !!
 !!   Sample:
 !!
-!!     program testit
+!!     program demo_get_tmp
 !!     use M_io, only : get_tmp, uniq
 !!     implicit none
 !!     character(len=:),allocatable :: answer
@@ -1475,9 +1476,8 @@ end function read_line
 !!        write(*,*)'result is ',answer
 !!        answer=get_tmp()//uniq('_scratch',create=.false.)
 !!        write(*,*)'the file ',answer,' was a good scratch file name, at least a moment ago'
+!!     end program demo_get_tmp
 !!
-!!     end program testit
-!! <h3>Results:</h3>
 !!   Sample Results:
 !!
 !!     result is /cygdrive/c/Users/JSU/AppData/Local/Temp/

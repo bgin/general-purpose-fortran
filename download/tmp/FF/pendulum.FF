@@ -37,7 +37,7 @@ DESCRIPTION
 
    Therefore in terms of the length the frequency is
 
-      f = [�sqrt(g/L)]/2
+      f = [ sqrt(g/L)]/2
 
    The length equations are:
 
@@ -185,40 +185,40 @@ $ENDIF
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT NULL
 Period equation
-The equation for the period of a simple pendulum starting at a small angle (α) is:
-T = 2π√(L/g)
+The equation for the period of a simple pendulum starting at a small angle (  ) is:
+T = 2     (L/g)
 where
 T is the period in seconds (s)
-π is the Greek letter pi and is approximately 3.14
-√ is the square root of what is included in the parentheses
+   is the Greek letter pi and is approximately 3.14
+    is the square root of what is included in the parentheses
 L is the length of the rod or wire in meters or feet
-g is the acceleration due to gravity (9.8 m/s² or 32 ft/s² on Earth)
+g is the acceleration due to gravity (9.8 m/s   or 32 ft/s   on Earth)
 Thus, if L = 2 meters:
-T = 2 * 3.14 * √(2/9.8) = 6.28 * √(0.2) = 6.28 * 0.45
+T = 2 * 3.14 *    (2/9.8) = 6.28 *    (0.2) = 6.28 * 0.45
 T = 2.8 seconds (rounding off a little).
 Frequency equation
-f = 1/[2π√(L/g)]
+f = 1/[2     (L/g)]
 The equation can also be rearranged to be:
-f = [√(g/L)]/2π
+f = [   (g/L)]/2  
 Thus, if L = 2 meters,
-f = [√(9.8/2)]/2*3.14
-f = [√(4.9)]/6.28 = 2.21/6.28 = 0.353 Hz.
+f = [   (9.8/2)]/2*3.14
+f = [   (4.9)]/6.28 = 2.21/6.28 = 0.353 Hz.
 Length of wire
 You can find the length of the rod or wire for a given frequency or period.
 Frequency
 Solve the equation for L:
-f = [√(g/L)]/2π
-2πf = √(g/L)
+f = [   (g/L)]/2  
+2  f =    (g/L)
 Square both sides of the equation:
-4π2f2 = g/L
+4  2f2 = g/L
 Solve for L:
-L = g/(4π2f2)
+L = g/(4  2f2)
 For example, the length of a pendulum that would have a frequency of 1 Hz (1 cycle per second) is about 0.25 meters.
 Period
 Likewise, the length of the wire for a given period is:
-T = 2π√(L/g)
+T = 2     (L/g)
 Square both sides:
-T2 = 4π2(L/g)
+T2 = 4  2(L/g)
 Solve for L:
-L = gT2/4π2
+L = gT2/4  2
 

@@ -482,9 +482,9 @@ end function lget
 !!      string=sget('demo_string')
 !!      a=sget('demo_a')
 !!      b=sget('demo_b')
-!!      write(*,'("string is ",a')trim(string)
-!!      write(*,'("a is ",a')trim(a)
-!!      write(*,'("b is ",a')trim(b)
+!!      write(*,'("string is ",a)')trim(string)
+!!      write(*,'("a is ",a)')trim(a)
+!!      write(*,'("b is ",a)')trim(b)
 !!    end program demo_sget
 !!
 !!   Example program runs:
@@ -983,7 +983,7 @@ end function sgets
 !!
 !!   Sample program:
 !!
-!!       program krackenbasic
+!!       program demo_kracken
 !!
 !!       use M_kracken
 !!       ! define command arguments, default values and crack command line
@@ -1018,8 +1018,7 @@ end function sgets
 !!          & dget('cmd_dble'),           &
 !!          & iget('cmd_int')             &
 !!          & )
-!!       end program krackenbasic
-!!
+!!       contains
 !!       subroutine mymain(filename,value1,value2,ivalue3)
 !!       ! this routine is using conventional values and does
 !!       ! not use M_kracken(3fm) module at all
@@ -1033,6 +1032,7 @@ end function sgets
 !!          print *, 'filename=',trim(filename)
 !!          print *, 'values=',value1,value2,ivalue3
 !!       end subroutine mymain
+!!       end program demo_kracken
 !!
 !!   expected output from : "./cmd"
 !!
@@ -1838,7 +1838,7 @@ end function subscript
 !!
 !!   Sample usage if procedure is made public for debugging:
 !!
-!!    program testit
+!!    program demo_get_command_arguments
 !!    use M_journal, only : journal
 !!    implicit none
 !!    integer :: ier
@@ -1847,7 +1847,7 @@ end function subscript
 !!    write(*,*)'CMD=',trim(cmd)
 !!    write(*,*)'LEN(CMD)=',len(cmd)
 !!    write(*,*)'IER=',ier
-!!    end program testit
+!!    end program demo_get_command_arguments
 !!##SEE ALSO
 !!    M_kracken, kracken
 !!

@@ -13,8 +13,8 @@ private
    public tabgraph      ! <a href="tabgraph.3.html">write columns of numbers with a text scale to the right</a>
 
    ! BLOCK LETTERS
-   public blocks        ! <a href="blocks.3.html">write out 132-character string in large block letters</a>
-   public signs         ! <a href="signs.3.html">write up to 132 large block letters</a>
+   public blocks        ! <a href="blocks.3.html">write large block letters</a>
+   public signs         ! <a href="signs.3.html">write large block letters</a>
 
    ! PROGRESS AND STATUS
    public percent_done  ! <a href=percent_done.3.html"> place a non-advancing status counter on terminal display </a>
@@ -44,10 +44,10 @@ contains
 !!
 !!    Example program:
 !!
-!!       program seebad
+!!       program demo_junbad
 !!       use M_messages, only : junbad
 !!          call junbad('s')
-!!       end program seebad
+!!       end program demo_junbad
 !!
 !!    Expected output:
 !!
@@ -144,10 +144,10 @@ end subroutine junbad
 !!
 !!  Sample program:
 !!
-!!    program seepic
+!!    program demo_junbad
 !!    use M_messages, only : junbat
 !!       call junbat('s')
-!!    end program seepic
+!!    end program demo_junbad
 !===================================================================================================================================
 !>
 !! PROCEDURE:   junbat(3f)
@@ -217,10 +217,10 @@ end subroutine junbat
 !!
 !!  Sample program:
 !!
-!!    program seebuster
+!!    program demo_junbuster
 !!    use M_messages, only : junbuster
 !!       call junbuster('s')
-!!    end program seebuster
+!!    end program demo_junbuster
 !===================================================================================================================================
 !>
 !! AUTHORS:     John S. Urban
@@ -272,22 +272,21 @@ end subroutine junbuster
 !!
 !!##SYNOPSIS
 !!
-!!
-!!      SUBROUTINE jundragon(where,a)
+!!      subroutine jundragon(where,a)
 !!
 !!       character(len=*),intent(in) :: where
 !!       character(len=32),intent(in) :: a(8)
 !!
 !!##DESCRIPTION
-!!
-!! Prints out a pretty message shaped like a dragon puffing smoke
+!!    Prints out a pretty message shaped like a dragon puffing smoke
 !!
 !!##EXAMPLE
 !!
 !!   Sample program:
 !!
-!!    program seedragon
-!!       character(len=32) :: a(8)
+!!    program demo_sundragon
+!!    use M_messages, only : jundragon
+!!    character(len=32) :: a(8)
 !!       a(1)='Puff, the magic dragon----------'
 !!       a(2)='lived by the sea----------------'
 !!       a(3)='and frolicked in the Autumn mist'
@@ -297,8 +296,7 @@ end subroutine junbuster
 !!       a(7)='--------------------------------'
 !!       a(8)='--------------------------------'
 !!       call jundragon('s',a)
-!!    end program seedragon
-!!
+!!    end program demo_sundragon
 !!
 !!     >                 \=/,         _-===-_-====-_-===-_-==========-_-====-_
 !!     >                |  @___oo   (  Puff, the magic dragon----------       )_
@@ -474,10 +472,10 @@ end subroutine junroach
 !!
 !!  Sample program:
 !!
-!!    program seepic
+!!    program demo_junsun
 !!    use M_messages, only : junsun
 !!       call junsun('s')
-!!    end program seepic
+!!    end program demo_junsun
 !===================================================================================================================================
 !>
 !! AUTHOR:     John S. Urban
@@ -551,7 +549,7 @@ end subroutine junsun
 !!
 !!  Sample program:
 !!
-!!    program seepic
+!!    program demo_juntrolls
 !!    use M_messages, only : juntrolls
 !!       call juntrolls('s',[         &
 !!          'Please ...           ',  &
@@ -559,7 +557,7 @@ end subroutine junsun
 !!          '   the               ',  &
 !!          '   TROLLS!           '   &
 !!          ])
-!!    end program seepic
+!!    end program demo_juntrolls
 !===================================================================================================================================
 !>
 !! DESCRIPTION: print eye-catching ASCII graphic (trolls) with message
@@ -676,43 +674,47 @@ end subroutine juntrolls
 !!
 !!   Sample program:
 !!
-!!        program testit
-!!        character*500 ctmp
-!!        real array(4)
-!!        do 20 i20=1,4
-!!        do 10 i10=1,400
-!!           array(1)=i10*12/100.0
-!!           array(2)=sin(array(1))
-!!           array(3)=cos(array(1))
-!!           if(i20.eq.1)then
-!!              ! fixed width of 50 for scale
-!!              call tabgraph(ctmp,array,3,-1.0,1.0,' ',50)
-!!              ! ctmp  --> CTMP string to fill
-!!              ! array --> ARRAY data
-!!              ! 3     --> IVALS
-!!              !-1     --> RMIN
-!!              ! 1     --> RMAX
-!!              !' '    --> CFILL
-!!              !50     --> ILEN
-!!           elseif(i20.eq.2)then
-!!              ! fixed width of 90 for scale with a non-blank fill character
-!!              call tabgraph(ctmp,array,3,-1.0,1.0,'.',90)
-!!           elseif(i20.eq.3)then
-!!              ! 0 len auto-sizes scale region
-!!              call tabgraph(ctmp,array,3,-1.0,1.0,' ',0)
-!!           elseif(i20.eq.4)then
-!!             ! number of values less than or equal to 1
-!!             call tabgraph(ctmp,array,1,0.0,48.0,' ',0)
-!!           endif
-!!           if(i10.eq.1)then
-!!              ilen=len_trim(ctmp)
-!!              ilen=max(ilen,1)
-!!           endif
-!!           write(*,'(a)')ctmp(1:ilen) ! tabgraph test program
-!!           ! write(*,'(i5,a)')i10,ctmp(1:ilen) write with a number count
-!!        10     continue
-!!        20     continue
-!!        end program testit
+!!      program demo_tabgraph
+!!      use M_messages, only : tabgraph
+!!      implicit none
+!!      character(len=500) :: ctmp
+!!      integer            :: i10, i20
+!!      real               :: array(4)
+!!      integer            :: ilen
+!!      do i20=1,4
+!!         do i10=1,400
+!!            array(1)=i10*12/100.0
+!!            array(2)=sin(array(1))
+!!            array(3)=cos(array(1))
+!!            if(i20.eq.1)then
+!!            ! fixed width of 50 for scale
+!!               call tabgraph(ctmp,array,3,-1.0,1.0,' ',50)
+!!               ! ctmp  --> CTMP string to fill
+!!               ! array --> ARRAY data
+!!               ! 3     --> IVALS
+!!               !-1     --> RMIN
+!!               ! 1     --> RMAX
+!!               !' '    --> CFILL
+!!               !50     --> ILEN
+!!            elseif(i20.eq.2)then
+!!            ! fixed width of 90 for scale with a non-blank fill character
+!!               call tabgraph(ctmp,array,3,-1.0,1.0,'.',90)
+!!            elseif(i20.eq.3)then
+!!            ! 0 len auto-sizes scale region
+!!               call tabgraph(ctmp,array,3,-1.0,1.0,' ',0)
+!!            elseif(i20.eq.4)then
+!!            ! number of values less than or equal to 1
+!!               call tabgraph(ctmp,array,1,0.0,48.0,' ',0)
+!!            endif
+!!            if(i10.eq.1)then
+!!               ilen=len_trim(ctmp)
+!!               ilen=max(ilen,1)
+!!            endif
+!!            write(*,'(a)')ctmp(1:ilen) ! tabgraph test program
+!!            ! write(*,'(i5,a)')i10,ctmp(1:ilen) write with a number count
+!!         enddo
+!!      enddo
+!!      end program demo_tabgraph
 !!
 !!  The purpose of this routine becomes much clearer when looking at a sample
 !!  output. The third pass thru loop 20 in the test code above will produce:
@@ -797,7 +799,7 @@ end subroutine juntrolls
 !!##NOTES
 !!
 !! TABGRAPH makes it very easy to find values in particular ranges in printed output.
-!! works particularly well with the once ubiquitous fan-fold paper.
+!! Works particularly well with the once-ubiquitous fan-fold paper.
 !===================================================================================================================================
 !>
 !! PRODUCT:            CLI library utilities and examples
@@ -889,19 +891,19 @@ end subroutine tabgraph
 
 !>
 !!##NAME
-!!    blocks(1f) - [M_messages] write out 132-character string in large block letters
+!!    blocks(1f) - [M_messages] write large block letters
 !!
 !!##SYNOPSIS
 !!
 !!    subroutine blocks(string,iounit)
 !!
-!!     character(len=132)  ::  string
-!!     integer iounit
+!!     character(len=*)  ::  string
+!!     integer :: iounit
 !!
 !!##DESCRIPTION
-!!    Given a string up to 132 characters long, BLOCKS() writes out the string
-!!    left-justified in large block letters 10 lines tall between columns 2 and
-!!    131 for a string up to 10 characters.
+!!    Given a string, BLOCKS() writes out the string
+!!    left-justified starting in column 2 in large block letters 10 lines tall
+!!    Note that 10 characters will fit between columns 2 and 131.
 !!
 !!    This can be used to make banners in program output files; it is also handy
 !!    for making attention-catching notices in interactive programs. The routine
@@ -910,14 +912,17 @@ end subroutine tabgraph
 !!
 !!    If the output unit number is negative, JOURNAL() is called instead
 !!    of writing to a unit
+!!##OPTIONS
+!!    STRING  The string to represent in block characters
+!!    IOUNIT  The unit number (the LUN) for the file to write to
 !!
 !!##EXAMPLE
 !!
 !!   Sample program:
 !!
-!!    program demo
+!!    program demo_blocks
 !!       call blocks('NOTICE',6)
-!!    end program demo
+!!    end program demo_blocks
 !!
 !!    would produce:
 !!
@@ -958,12 +963,11 @@ integer,intent(in)              :: iout
 !character,intent(in),optional  :: char
 !character                      :: filler_local
 !character                      :: char_local
-   character(len=12)            :: alf(10,95)
-   integer,parameter            :: maxchar=132
-   character(len=maxchar*12+1)  :: line
-   integer                      :: l(maxchar)
-   integer                      :: ilet,irow,ii,kk,ip,lstr,mm
-   save
+character(len=12)               :: alf(10,95)
+character(len=len(str)*12+1)    :: line
+integer                         :: l(len(str))
+integer                         :: ilet,irow,ii,kk,ip,lstr,mm
+save
       data ((alf(irow,ilet),ilet=1,5),irow=1,10) /                      &
      &' AAAAAAAA ','BBBBBBBBB ',' CCCCCCCC ','DDDDDDDDD ','EEEEEEEEEE', &
      &'AAAAAAAAAA','BBBBBBBBBB','CCCCCCCCCC','DDDDDDDDDD','EEEEEEEEEE', &
@@ -1188,7 +1192,7 @@ integer,intent(in)              :: iout
      &'   |||    ','  {{      ','      }}  ','          ','          ', &
      &'   |||    ','   {{{{   ','   }}}}   ','          ','          '/
 !-----------------------------------------------------------------------------------------------------------------------------------
-   lstr=min(len_trim(str),maxchar)  ! have space to print maxchar characters at most
+   lstr=len_trim(str)              ! have space to print lstr characters
    do ii = 1, lstr                 ! find column number for this letter
       ip=index('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456@$%&*()-_=+\][>.<,?/!;''":#^789 abcdefghijklmnopqrstuvwxyz|{}~`',str(ii:ii))
       if (ip .eq. 0) then      ! if not found, letter is not supported
@@ -1205,7 +1209,7 @@ integer,intent(in)              :: iout
       if(iout.ge.0)then
          write (*,'(1x,*(a12):)') (alf(kk,l(mm)), mm = 1, lstr)
       else
-         write (LINE, '(1x,132(a12):)') (alf(kk,l(mm)), mm = 1, lstr)
+         write (LINE, '(1x,*(a12):)') (alf(kk,l(mm)), mm = 1, lstr)
          call journal(LINE)
       endif
    enddo
@@ -1216,17 +1220,17 @@ end subroutine blocks
 !===================================================================================================================================
 !>
 !!##NAME
-!!     signs(3f) - [M_messages] write out 132-character string in large block letters
+!!     signs(3f) - [M_messages] write out string in large block letters
 !!
 !!##SYNOPSIS
 !!
 !!     subroutine signs(string,iounit)
 !!
-!!      character(len=132),intent(in)  :: string
+!!      character(len=*),intent(in)  :: string
 !!      integer,intent(in)             :: iounit
 !!
 !!##DESCRIPTION
-!!     Given a string up to 132 characters long, signs() writes out the string
+!!     SIGNS(2f) writes out the string
 !!     left-justified in large (13 lines x 8 columns) block letters starting in
 !!     column 2.
 !!
@@ -1269,17 +1273,16 @@ subroutine signs(str,iout)
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
 !=======================================================================--------
 implicit none
-character(len=*),parameter :: ident="@(#)M_messages::signs(3f):write up to 132 large block letters"
-character(len=*),intent(in) :: str       ! string to write
-integer,intent(in)          :: iout      ! unit number to write to
+character(len=*),parameter :: ident="@(#)M_messages::signs(3f):write large block letters"
+character(len=*),intent(in) :: str         ! string to write
+integer,intent(in)          :: iout        ! unit number to write to
 !     ******************************************************************
-      character(len=8),save       :: alf(13,95) ! store block letters
-      integer,parameter           :: maxchars=132
-      integer                     :: l(maxchars)! alphabet
-      integer                     :: i30, k, mm ! loop counters
-      integer                     :: ip
-      integer                     :: lstr
-      integer                     :: irow, ilet
+character(len=8),save       :: alf(13,95)  ! store block letters
+integer                     :: l(len(str)) ! alphabet
+integer                     :: i30, k, mm  ! loop counters
+integer                     :: ip
+integer                     :: lstr
+integer                     :: irow, ilet
 !     ******************************************************************
       DATA ((ALF(IROW,ILET),ILET=1,5),IROW=1,13) / &
      & '        ' , '        ' , '        ' , '        ' , '        ', &
@@ -1586,7 +1589,7 @@ integer,intent(in)          :: iout      ! unit number to write to
 !!   order and the INDEX() call could be replaced with a simple ICHAR()
 !!   call.
 
-   lstr=min(len_trim(str),maxchars)
+   lstr=len_trim(str)
    do i30 = 1, lstr     ! find column number for this letter
       ip=index('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456@$%&*()-_=+\][>.<,?/!;''":#^789 abcdefghijklmnopqrstuvwxyz|{}~`',str(i30:i30))
       if (ip .eq. 0) then  ! if not found, letter is not supported
@@ -1598,7 +1601,7 @@ integer,intent(in)          :: iout      ! unit number to write to
    enddo
 !-----------------------------------------------------------------------------------------------------------------------------------
    do k = 1, 13
-      write (iout, '(1x,132a8:)') (alf(k,l(mm)), mm = 1, lstr)
+      write (iout, '(1x,*(a8:))') (alf(k,l(mm)), mm = 1, lstr)
    enddo
    contains
 end subroutine signs
@@ -1634,7 +1637,7 @@ end subroutine signs
 !!
 !!   Sample program:
 !!
-!!    program progress
+!!    program demo_percent_done
 !!    use m_time, only : system_sleep
 !!    use m_messages, only : percent_done
 !!    implicit none
@@ -1645,7 +1648,7 @@ end subroutine signs
 !!       call system_sleep(1)  !give a delay in seconds
 !!    enddo
 !!
-!!    end program progress
+!!    end program demo_percent_done
 !!
 !!   Results:
 !!

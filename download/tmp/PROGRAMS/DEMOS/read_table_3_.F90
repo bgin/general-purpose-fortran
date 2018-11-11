@@ -1,5 +1,5 @@
            program demo_read_table
-           use M_io, only :: read_table
+           use M_io, only : read_table
            doubleprecision,allocatable :: array(:,:)
 
            ! create test file

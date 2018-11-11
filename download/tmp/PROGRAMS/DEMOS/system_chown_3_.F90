@@ -1,10 +1,18 @@
           program demo_system_chown
           Use M_system, only : system_chown
+          Use M_system, only : system_getuid
+          Use M_system, only : system_getgid
+          use M_system, only : system_perror
           implicit none
           integer                     :: i
-          character(len=80),parameter :: names(*)=[ 'myfile1','/usr/local']
+          character(len=80),parameter :: names(*)=[character(len=80) :: 'myfile1','/usr/local']
           do i=1,size(names)
-             ierr=chown(names(i))
-             write(*,*)' for ',trim(names(i)),' ownership is ', system_chown(names(i))
+             if(.not.  system_chown(&
+             & trim(names(i)),  &
+             & system_getuid(), &
+             & system_getgid()) &
+                )then
+                call system_perror('*demo_system_chown* '//trim(names(i)))
+             endif
           enddo
           end program demo_system_chown

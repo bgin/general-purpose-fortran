@@ -26,7 +26,7 @@ XXtd { border:thin solid #888; }
 XXtd { border:none; }
 li { margin-bottom:0.5em; }
 blockquote { display:block; font-size:100%; font-style:italic; line-height:1.1em; margin:0 0 1.5em; padding:0 2.5em; }
-pre { background-color:#DDD; font-size:99%; overflow:auto; padding:1em; }
+pre { background-color:#DDD; font-size:100%; overflow:auto; padding:1em; }
 a,li span { color:#000; }
 a:hover, a.nav:hover, a:hover math { background-color:#000; color:#FFF; }
 #Container { margin:0 10px; text-align:center; background-color: #BBB}
@@ -34,9 +34,9 @@ a:hover, a.nav:hover, a:hover math { background-color:#000; color:#FFF; }
 span.webName { font-size:.5em; }
 textarea#content { font-size: 1em; line-height: 1.125; }
 h1#pageName { line-height:1em; margin:0.2em 0 0.2em 0; padding:0; }
-.property { color:#666; font-size:80%; }
+.property { color:#666; font-size:100%; }
 a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
-.byline { color:#666; font-size:.8em; font-style:italic; margin-bottom:1em; padding-top:1px; } 
+.byline { color:#666; font-size:1.0em; font-style:italic; margin-bottom:1em; padding-top:1px; } 
 </style> 
 </head>
 <BODY bgcolor=#F0F0F0 text=#000000 link=#0000ff vlink=#C000C0 alink=#ff0000><A NAME=top></A>
@@ -53,7 +53,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 
 </A>
 <BLOCKQUOTE>
-<B>matchw(3f) </B>- [M_strings] compare given string for match to pattern which may contain wildcard characters
+<B>matchw(3f) </B>- [M_strings:COMPARE] compare given string for match to pattern which may contain wildcard characters
 <B>
 </B></BLOCKQUOTE>
 <A name=contents></A><H3>CONTENTS</H3></A>
@@ -113,20 +113,65 @@ Both strings may have trailing spaces which are ignored.
 Example program
 <P>
 <PRE>
-   program demo_matchw
-   use M_strings, only : matchw
-<P>
-   ! first match is not all of string so F
-   write(*,*)matchw(&#146;*c*ax &#146;,&#146;abcdefgaxaxaxax&#146;)
-   ! true
-   write(*,*)matchw(&#146;*c*ax*&#146;,&#146;abcdefgaxaxaxax&#146;)
-<P>
-   write(*,*)merge(&#146;MATCH&#146;,&#146;ERROR&#146;,matchw(&#146;abcdefgaxaxaxax&#146;,&#146;*c*ax*&#146;))
-   write(*,*)merge(&#146;MATCH&#146;,&#146;ERROR&#146;,matchw(&#146;abcdefgaxaxaxax&#146;,&#146;*c??f*&#146;))
-   write(*,*)merge(&#146;ERROR&#146;,&#146;NO   &#146;,matchw(&#146;abcdefgaxaxaxax&#146;,&#146;*a??f&#146;))
-   write(*,*)merge(&#146;ERROR&#146;,&#146;NO   &#146;,matchw(&#146;abcdefgaxaxaxax&#146;,&#146;*y&#146;))
-<P>
-   end program demo_matchw
+    program demo_matchw
+    call demo1()
+    call demo2()
+    contains
+    !!
+    ! basic example
+    !!
+    subroutine demo1()
+    use M_strings, only : matchw
+    ! first match is not all of string so F
+    write(*,*)matchw(&#146;*c*ax &#146;,&#146;abcdefgaxaxaxax&#146;)
+    ! true
+    write(*,*)matchw(&#146;*c*ax*&#146;,&#146;abcdefgaxaxaxax&#146;)
+    !
+    write(*,*)merge(&#146;MATCH&#146;,&#146;ERROR&#146;,matchw(&#146;abcdefgaxaxaxax&#146;,&#146;*c*ax*&#146;))
+    write(*,*)merge(&#146;MATCH&#146;,&#146;ERROR&#146;,matchw(&#146;abcdefgaxaxaxax&#146;,&#146;*c??f*&#146;))
+    write(*,*)merge(&#146;ERROR&#146;,&#146;NO   &#146;,matchw(&#146;abcdefgaxaxaxax&#146;,&#146;*a??f&#146;))
+    write(*,*)merge(&#146;ERROR&#146;,&#146;NO   &#146;,matchw(&#146;abcdefgaxaxaxax&#146;,&#146;*y&#146;))
+    end subroutine demo1
+    !!
+    ! More extensive example
+    !!
+    subroutine demo2()
+    use M_strings, only : matchw
+    !implicit none
+    integer np, ns
+    parameter (np =  19, ns =  6)
+    character pattern(np)*8, string(ns)*12
+    character pattern2(np)*8
+    integer s, p
+    data pattern /&#146;*&#146;,&#146;a*a&#146;,&#146;a*&#146;,&#146;ab*&#146;,&#146;*a&#146;,&#146;a*a&#146;,&#146;a?d?&#146;,&#146;a?d*&#146;,&#146;abra&#146;,&
+    & &#146;aa&#146;,&#146;a&#146;,&#146;ab&#146;,&#146;*&#146;,&#146;?&#146;,&#146;????&#146;,&#146;?*&#146;,&#146;*?&#146;,&#146;***?&#146;,&#146;****?&#146;/
+    data pattern2/&#146;*&#146;,&#146;a**a&#146;,&#146;a*d?&#146;,&#146;ab*&#146;,&#146;*a&#146;,&#146;a*a&#146;,&#146;a?d?&#146;,&#146;a?d*&#146;,&#146;alda&#146;,&
+    & &#146;aa&#146;,&#146;a&#146;,&#146;ab&#146;,&#146;*&#146;,&#146;?&#146;,&#146;???a&#146;,&#146;????&#146;,&#146;**&#146;,&#146;***a&#146;,&#146;?????&#146;/
+    data string / &#146;abracadabra&#146;, &#146;aldabra&#146;, &#146;alda&#146;, &#146;carta&#146;, &#146;abdc&#146;, &#146;abra&#146;/
+       !
+       write(*,&#146;("TABLE 1",t18, *(a6))&#146;) pattern
+       do s = 1,ns
+          write(*, &#146;(a, 100L6)&#146;) &
+           & string(s),(matchw(string(s),pattern(p)), p=1,np)
+       enddo
+       !
+       write(*,&#146;("TABLE 2",t18, *(a6))&#146;) pattern2
+       do s = 1,ns
+          write(*, &#146;(a, 100L6)&#146;) &
+           & string(s),(matchw(string(s),pattern2(p)), p=1,np)
+       enddo
+       !
+       stop
+       !
+       do s = 1,ns
+          do p=1,np
+          write(*, &#146;(a,a,L7)&#146;) &
+           & string(s),pattern2(p),matchw(string(s),pattern2(p))
+          enddo
+       enddo
+    end subroutine demo2
+    !
+    end program demo_matchw
 <P>
 </PRE>
 Expected output
@@ -139,47 +184,8 @@ Expected output
     &gt; NO
     &gt; NO
 <P>
+<P>
 </PRE>
-More extensive example
-<P>
-<PRE>
-   program test_matchw
-   use M_strings, only : matchw
-   !implicit none
-   integer np, ns
-   parameter (np =  19, ns =  6)
-   character pattern(np)*8, string(ns)*12
-   character pattern2(np)*8
-   integer s, p
-   data pattern /&#146;*&#146;,&#146;a*a&#146;,&#146;a*&#146;,&#146;ab*&#146;,&#146;*a&#146;,&#146;a*a&#146;,&#146;a?d?&#146;,&#146;a?d*&#146;,&#146;abra&#146;,&
-   & &#146;aa&#146;,&#146;a&#146;,&#146;ab&#146;,&#146;*&#146;,&#146;?&#146;,&#146;????&#146;,&#146;?*&#146;,&#146;*?&#146;,&#146;***?&#146;,&#146;****?&#146;/
-   data pattern2/&#146;*&#146;,&#146;a**a&#146;,&#146;a*d?&#146;,&#146;ab*&#146;,&#146;*a&#146;,&#146;a*a&#146;,&#146;a?d?&#146;,&#146;a?d*&#146;,&#146;alda&#146;,&
-   & &#146;aa&#146;,&#146;a&#146;,&#146;ab&#146;,&#146;*&#146;,&#146;?&#146;,&#146;???a&#146;,&#146;????&#146;,&#146;**&#146;,&#146;***a&#146;,&#146;?????&#146;/
-   data string / &#146;abracadabra&#146;, &#146;aldabra&#146;, &#146;alda&#146;, &#146;carta&#146;, &#146;abdc&#146;, &#146;abra&#146;/
-<P>
-      write(*,&#146;("TABLE 1",t18, *(a6))&#146;) pattern
-      do s = 1,ns
-         write(*, &#146;(a, 100L6)&#146;) &
-          & string(s),(matchw(string(s),pattern(p)), p=1,np)
-      enddo
-<P>
-      write(*,&#146;("TABLE 2",t18, *(a6))&#146;) pattern2
-      do s = 1,ns
-         write(*, &#146;(a, 100L6)&#146;) &
-          & string(s),(matchw(string(s),pattern2(p)), p=1,np)
-      enddo
-<P>
-      stop
-<P>
-      do s = 1,ns
-         do p=1,np
-         write(*, &#146;(a,a,L7)&#146;) &
-          & string(s),pattern2(p),matchw(string(s),pattern2(p))
-         enddo
-      enddo
-</PRE>
-end program test_matchw
-<P>
 Expected output
 <P>
 <PRE>
@@ -200,7 +206,7 @@ Expected output
 </PRE>
 </BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>matchw (3)</TD> <TD align=right width=33%><I>October 20, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from eac68ae6-045e-4a0e-861d-835905594ebe using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>matchw (3)</TD> <TD align=right width=33%><I>November 10, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 3fd94d70-34f5-40ad-a5fc-1700f5bf6e54 using man macros.</FONT>
 </div>
 </div>
 <br><br><center><img src="images/matchw.3.gif"></center> 

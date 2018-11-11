@@ -9,7 +9,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'       _printenv(1f) - [M_system:ENVIRONMENT] print all or part of environment in formats readable by various shells',&
+'       _printenv(1f) - [FUNIX:ENVIRONMENT] print all or part of environment in formats readable by various shells',&
 'SYNOPSIS                                                                        ',&
 '       _printenv [variable...] [-C|-B]                                          ',&
 '       _printenv [--help|--version]                                             ',&
@@ -50,7 +50,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!        _printenv(1f) - [M_system:ENVIRONMENT] print all or part of environment in formats readable by various shells
+!!        _printenv(1f) - [FUNIX:ENVIRONMENT] print all or part of environment in formats readable by various shells
 !!##SYNOPSIS
 !!
 !!        _printenv [variable...] [-C|-B]
@@ -101,7 +101,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0 2016-11-27>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Mon, Oct 15th, 2018 5:23:50 PM>',&
+'@(#)COMPILED:       Sat, Nov 10th, 2018 2:25:16 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

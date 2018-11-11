@@ -17,7 +17,6 @@
 
            function squarei(invalue) result (dvalue)
            use M_anything, only : anyscalar_to_double
-           implicit none
            class(*),intent(in)  :: invalue
            doubleprecision      :: invalue_local
            doubleprecision      :: dvalue

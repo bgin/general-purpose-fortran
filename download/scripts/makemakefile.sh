@@ -1,7 +1,7 @@
 #!/bin/bash
 ################################################################################
 #@(#) run makemake(1) to make Makefile for this collection
-banner makemakefile.sh
+banner.sh makemakefile.sh
 ################################################################################
 MAKEMAKEFILE(){
 #  create basic makefile for plain .f90 files that compose libGPF.a

@@ -6,11 +6,11 @@ private
 public binary_search ! [M_list] binary search of a sorted array.
 
 public locate        ! [M_list] find PLACE in sorted character array where VARNAME can be found or should be placed
-public insert        ! [M_list] insert entry into a sorted allocatable character array at specified position
+public insert        ! [M_list] insert entry into a sorted allocatable array at specified position
    private insert_c
    private insert_r
    private insert_i
-public remove        ! [M_list] delete entry by index from a sorted allocatable character array if it is present
+public remove        ! [M_list] delete entry by index from a sorted allocatable array if it is present
    private remove_c
    private remove_r
    private remove_i
@@ -32,7 +32,7 @@ end interface
 contains
 !>
 !!##NAME
-!!    binary_search(3f) - [M_list] binary search of a sorted array.
+!!    binary_search(3f) - [M_list] binary search of a sorted integer array.
 !!##SYNTAX
 !!   pure function binary_search(id,arr) result(jloc)
 !!
@@ -43,7 +43,7 @@ contains
 !!##DESCRIPTION
 !!
 !!    Binary search is a search algorithm that finds the position of a target
-!!    value within a sorted array.
+!!    value within an integer sorted array.
 !!
 !!##OPTIONS
 !!
@@ -55,7 +55,7 @@ contains
 pure function binary_search(id,arr) result(jloc)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_list::binary_search(3f): binary search of a sorted array."
+character(len=*),parameter::ident="@(#)M_list::binary_search(3f): binary search of a sorted integer array."
 
 integer,intent(in)              :: id        !! key word to match in `arr`
 integer,dimension(:),intent(in) :: arr       !! array to search (it is assumed to be sorted)
@@ -216,11 +216,11 @@ subroutine locate(varname,dictionary,place,ier,errmsg)
 character(len=*),parameter::ident="&
 &@(#)M_list::locate(3f): find PLACE in sorted character array where VARNAME can be found or should be placed"
 
-!     (Assuming an alphabetized array of character strings)
+!     Assuming an alphabetized array of character strings where it is
+!     is assumed all variable names are lexically greater than a blank string.
 !
-!     If it is not found report where it should be placed as a NEGATIVE index number.
+!      1. If it is not found report where it should be placed as a NEGATIVE index number.
 !
-!     It is assumed all variable names are lexically greater than a blank string.
 
 character(len=*),intent(in)             :: varname
 integer,intent(out)                     :: place
@@ -294,7 +294,7 @@ character(len=*),intent(out),optional   :: errmsg
 end subroutine locate
 !>
 !!##NAME
-!!    remove(3f) - [M_list] remove entry from an allocatable  array at specified position
+!!    remove(3f) - [M_list] remove entry from an allocatable array at specified position
 !!
 !!##SYNOPSIS
 !!

@@ -4,6 +4,7 @@
              implicit none
              character(len=4096) :: pathname
              integer             :: times(2)
+             integer             :: i
                 do i=1,command_argument_count()
                    call get_command_argument(i, pathname)
                    if(.not.system_utime(pathname,times))then

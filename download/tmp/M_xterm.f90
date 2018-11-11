@@ -166,7 +166,6 @@ contains
 !!     use M_xterm, only : xterm_xrdb
 !!     character(len=:),allocatable :: cache
 !!        call xterm_xrdb('FAVORITES')
-!!     enddo
 !!     end program demo_xterm_xrdb
 !!
 !!   Sample output:
@@ -182,7 +181,7 @@ contains
 !!     FAVORITES*scrollbar*foreground:        red
 !!     FAVORITES.VT100.scrollbar.foreground:  red
 !!     FAVORITES*scrollbar*thickness:         13
-!!     FAVORITESXTerm*internalBorder:         2
+!!     FAVORITES*XTerm*internalBorder:         2
 !!     FAVORITES*VT100.background:  rgb:0000/8b8b/0000
 !!     FAVORITES*VT100.foreground:  rgb:ffff/ffff/ffff
 !!     FAVORITES*VT100.cursorColor: rgb:ffff/0000/0000
@@ -682,7 +681,7 @@ end subroutine xterm_colors
 !!    !is reached
 !!    do i=1,count
 !!       call get_command_argument(number=i,value=string)
-!!       write(*,'(2a)',advance='no')font=',trim(string)
+!!       write(*,'(2a)',advance='no')'font=',trim(string)
 !!       call xterm_font(string)
 !!       if(i.eq.count)exit
 !!       read(*,'(a)',iostat=ios)paws
@@ -762,7 +761,6 @@ end subroutine xterm_font
 !!        write(*,*)'do some stuff'
 !!        call xterm_keywords('uniconify')
 !!        call xterm_keywords('raise')
-!!     endif
 !!     end program demo_xterm_keywords
 !===================================================================================================================================
 subroutine xterm_keywords(keyword)
@@ -872,6 +870,7 @@ end subroutine xterm_position
 !!    program demo_xterm_geometry
 !!    use M_xterm, only : xterm_geometry
 !!    implicit none
+!!    integer :: ios
 !!    integer :: rows, cols
 !!    write(*,'(a)',advance='no')'Enter rows and columns: '
 !!    read(*,*,iostat=ios)rows,cols
@@ -1212,7 +1211,7 @@ end function xterm_get_iconstate
 !!    implicit none
 !!    integer :: irows, icols
 !!       call xterm_get_geometry(irows,icols)
-!!       write(*,*)'rows=',rows,' cols=',cols
+!!       write(*,*)'rows=',irows,' cols=',icols
 !!    end program demo_xterm_get_geometry
 !===================================================================================================================================
 subroutine xterm_get_geometry(rows,cols)
@@ -1265,7 +1264,7 @@ end subroutine xterm_get_geometry
 !!    implicit none
 !!    integer :: iright, idown
 !!       call xterm_get_position(iright,idown)
-!!       write(*,*)'right=',right,' down=',down
+!!       write(*,*)'right=',iright,' down=',idown
 !!    end program demo_xterm_get_position
 !===================================================================================================================================
 subroutine xterm_get_position(right,down)

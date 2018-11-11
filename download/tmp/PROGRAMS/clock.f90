@@ -1,3 +1,12 @@
+program clockit
+use M_kracken,  only : kracken, iget, sget, lget
+use M_draw
+use M_drawplus, only : page
+use M_time,     only : system_sleep, d2o, fmtdate
+use M_color,    only : hue
+implicit none
+call clockit_main()
+contains
 subroutine help_usage(l_help)
 implicit none
 character(len=*),parameter     :: ident="@(#)help_usage(3f): prints help information"
@@ -81,20 +90,20 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    draw a clock>',&
 '@(#)VERSION:        1.0, 20180616>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Mon, Oct 15th, 2018 5:36:00 PM>',&
+'@(#)COMPILED:       Sun, Nov 11th, 2018 12:28:44 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
 endif
 end subroutine help_version
 !-----------------------------------------------------------------------------------------------------------------------------------
-program clockit
+subroutine clockit_main()
 
-!@(#) M_DRAW-based clock
+character(len=*),parameter::ident="@(#)M_DRAW-based clock"
 
-use M_draw
-use M_kracken, only: kracken, iget, sget, lget
-character(20) device
+character(len=20) :: device
+integer           :: ix, iy
+integer           :: iseconds
 
 !  define command arguments, default values and crack command line
    call kracken('clock','-1 -sz 500 -d X11 -help .F. -version .F.') ! define command and default values and crack command line
@@ -111,45 +120,57 @@ character(20) device
    call vclock(iseconds)                                            ! draw clock
    call vexit()                                                     ! exit graphics
 
-end program clockit
+end subroutine clockit_main
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
 subroutine vclock(isec) ! draw a M_DRAW clock
 !@(#) draw a M_DRAW clock that quits on 'q'
-use M_draw
-use M_drawplus, only : page
-use M_time, only : system_sleep, d2o, date_to_julian, dow
-use M_color, only : hue
 !     make this into a calculator
 character(len=10) :: line
-REAL HH,MM,SS
-integer iHH,iMM,iSS, vtime(8), ihh12
-equivalence(vtime(1),iye)  !  Year since 1900
-equivalence(vtime(2),imo)  !  Months since January [0-12]
-equivalence(vtime(3),ida)  !  Day of the month [1-31]
-equivalence(vtime(5),ihh)  !  Hours since midnight [0-23]
-equivalence(vtime(6),imm)  !  Minutes after the hour [0-59]
-equivalence(vtime(7),iss)  !  Seconds after the minute [0-60]
-equivalence(vtime(4),idow) !  Days since Sunday [0-6]
-equivalence(vtime(8),ijul) !  Days since January 1 [0-365]
-integer isec ! number of seconds to run
-integer CURRENT_COLOR
-character(len=9) :: day
+REAL              :: HH,MM,SS
+integer           :: dat(8)
+integer           :: ihh12
+equivalence(dat(1),iye)  !  Year since 1900
+equivalence(dat(2),imo)  !  Months since January [0-12]
+equivalence(dat(3),ida)  !  Day of the month [1-31]
+equivalence(dat(5),ihh)  !  Hours since midnight [0-23]
+equivalence(dat(6),imm)  !  Minutes after the hour [0-59]
+equivalence(dat(7),iss)  !  Seconds after the minute [0-60]
+equivalence(dat(4),idow) !  Days since Sunday [0-6]
+equivalence(dat(8),ijul) !  Days since January 1 [0-365]
+integer           :: iye
+integer           :: imo
+integer           :: ida
+integer           :: iHH,iMM,iSS
+integer           :: idow
+integer           :: isec ! number of seconds to run
+integer           :: CURRENT_COLOR
+integer           :: ijul
+integer           :: ir,ig,ib
+integer           :: i10
+integer           :: i40
+integer           :: icount
+integer           :: idum
+integer           :: istatus
+integer           :: letter
+real              :: a
+real              :: anext
+real              :: r,g,b
+real              :: hue_val
+real              :: rlightness
+real              :: saturation
 !==================================================================================================================================!
    icount=0
    call pushattributes()
    call pushmatrix()
    call pushviewport()
-   call circleprecision(200)
+   call circleprecision(260)
    call page(-50.0,50.0,-50.0,50.0)
-   call linewidth(100)
+   call linewidth(80)
 !==================================================================================================================================!
-1  continue
-   call date_and_time(values=vtime) ! initialize hour, minute, and second hands
-   call dow(vtime,idow,day,ierr)
-   idow=idow-1
-   ijul=d2o(vtime)
+INFINITE: do
+   call date_and_time(values=dat) ! initialize hour, minute, and second hands
    ihh12=mod(ihh,12)
    ! GET TIME
    MM=real(IMM)*(-6.0)+90.0
@@ -166,9 +187,9 @@ character(len=9) :: day
    call circle(0.0,0.0,50.0)
 
    CURRENT_COLOR=4
-   RLIGHTNESS=IHH/12.0/2.0*100.0
-   SATURATION=IMM+40
-   HUE_VAL=ISS*6
+   RLIGHTNESS=real(IHH)/12.0/2.0*100.0
+   SATURATION=real(IMM+40)
+   HUE_VAL=real(ISS*6)
    call hue("hls",hue_val,RLIGHTNESS,saturation,"rgb",r,g,b,istatus)
    ir=int(r*255.0/100.0+0.50)
    ig=int(g*255.0/100.0+0.50)
@@ -182,7 +203,7 @@ character(len=9) :: day
          call color(2)  ! number circle color
          call circle(COS(A)*45.0,SIN(A)*45.0,4.0)
          call color(1)  ! number circle color
-         call circle(COS(A)*45.0,SIN(A)*45.0,4.0*imm/60.0)
+         call circle(COS(A)*45.0,SIN(A)*45.0,4.0*real(imm)/60.0)
       else
          call color(7)  ! number circle color
          call circle(COS(A)*45.0,SIN(A)*45.0,4.0)
@@ -214,8 +235,8 @@ character(len=9) :: day
    call draw_hands(hh,mm,ss)  ! draw hands to be seen
 
    call polyfill(.false.)
-   call draw_date(imo,ida,iye,ijul)
-   call draw_dow(idow,ihh,imm,iss)
+   call draw_date(dat)
+   call draw_dow(dat)
 
    ! DRAW BUTTON
    call polyfill(.true.)
@@ -229,16 +250,15 @@ character(len=9) :: day
    !write(*,*)icount,' Ordinal=',letter
 
    ! CHECK TO QUIT
-   if(letter.eq.113.or.letter.lt.0)goto 999  ! quit on letter q
-   if(icount.gt.isec.and.isec.gt.0)goto 999 ! quit from here so hands are drawn
+   if(letter.eq.113.or.letter.lt.0)exit INFINITE  ! quit on letter q
+   if(icount.gt.isec.and.isec.gt.0)exit INFINITE ! quit from here so hands are drawn
 
    ! PAUSE
    call system_sleep(1)            ! pause for one second
    icount=icount+1            ! increment number of seconds since started
 
-   goto 1
+enddo INFINITE
 !==================================================================================================================================!
-999 CONTINUE
    ! HOUSECLEANING AND RESTORE PREVIOUS STATE
    call vflush()
    call popattributes()
@@ -248,35 +268,29 @@ end subroutine vclock
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-subroutine draw_date(imo,ida,iye,ijul)
-use M_draw
-character(len=9) :: cdate
+subroutine draw_date(dat)
+integer,intent(in) :: dat(*)
    call color(6)
    call centertext(.true.)
    call font('futura.l')
-   call textsize(5.5,5.5)
    !call rect(-20.0,8.0,20.0,28.0)
    call color(0)
 
+   call textsize(4.0,4.5)
    call move2(36.0,46.0)
-   write(cdate,'(i2.2,''/'',i2.2,''/'',i2.2)')imo,ida,iye-2000
-   call drawstr(cdate)  ! MM/DD/YY
+   call drawstr(fmtdate(dat,'%Y-%M-%D'))  ! YYYY-MM-DD
 
+   call textsize(5.5,5.5)
    call move2(36.0,-46.0)
-   write(cdate,'(''(day '',i3.3,'')'')')ijul
-   call drawstr(cdate)   ! ordinal day
+   call drawstr(fmtdate(dat,'%O'))   ! ordinal day
 
    call centertext(.false.)
 end subroutine draw_date
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-subroutine draw_dow(idow,ihh,imm,iss)
-use M_draw
-character(len=9),save :: cdays(7)
-character(len=8) :: ctime
-   data cdays/'Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'/
-   write(ctime,'(i2.2,'':'',i2.2,'':'',i2.2)')ihh,imm,iss
+subroutine draw_dow(dat)
+integer,intent(in) :: dat(*)
    call color(6)
    call centertext(.true.)
    call font('futura.l')
@@ -284,10 +298,10 @@ character(len=8) :: ctime
    call color(0)
 
    call move2(-36.0,46.0)
-   call drawstr(cdays(idow+1))  ! day of week
+   call drawstr(fmtdate(dat,'%W'))  ! day of week
 
    call move2(-36.0,-46.0)
-   call drawstr(ctime)   ! HH:MM:SS
+   call drawstr(fmtdate(dat,'%h:%m:%s'))   ! HH:MM:SS
 
    call centertext(.false.)
 end subroutine draw_dow
@@ -295,7 +309,6 @@ end subroutine draw_dow
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
 subroutine draw_hands(hh,mm,ss)
-implicit none
 real,intent(in) :: hh,mm,ss
    call draw_hand(HH,0.0,0.0,27.0,2.50)
    call draw_hand(MM,0.0,0.0,37.0,2.15)
@@ -305,9 +318,7 @@ end subroutine draw_hands
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
 SUBROUTINE draw_hand(AA,X,Y,L,W)
-use M_draw
-implicit none
-   REAL,intent(in) ::  AA, X, Y, L, W
+REAL,intent(in) ::  AA, X, Y, L, W
    call move2(X,Y)
    call rotate(AA,'z')
    call makepoly()
@@ -325,6 +336,10 @@ implicit none
    call popattributes()
    call rotate(-AA,'z')
 END SUBROUTINE draw_hand
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
+end program clockit
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!

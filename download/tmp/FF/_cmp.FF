@@ -83,7 +83,9 @@ use M_strings, only : split, substitute
 use M_strings, only : describe, visible
 use M_debug,   only : stderr
 implicit none
+
 $@(#) _cmp(1f): compare two files byte by byte
+
 character(len=4096),allocatable :: filenames(:)      ! array of filenames to read
 character(len=256)              :: message           ! message field for returned messages
 logical                         :: quiet   = .FALSE. ! switch to describe difference found

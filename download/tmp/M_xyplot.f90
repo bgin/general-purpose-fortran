@@ -347,6 +347,7 @@ public xy_setsize             ! setsize
 public xy_aspct               ! aspct
 public xy_pickpnt             ! pickpnt calculate value from screen for first curve in list
 public xy_obj12345            ! obj12345
+public xy_juprint             ! juprint
 
 private priv_getpage            ! getpage
 private priv_jusym              ! jusym
@@ -2541,6 +2542,7 @@ end subroutine plot_sz
 subroutine plot_drawplot(lclear)
 use M_journal, only : journal
 use M_draw
+use M_drawplus, only : plain_rect
 use M_calculator_plus, only : inum0, rnum0
 implicit none
 
@@ -2789,7 +2791,7 @@ real                       :: ymint
          call xy_rasters(iraz)
          rax=(xmaxt-xmint)/1000.0          ! find a small amount to move in so roundoff does not remove outline in vogle package
          ray=(ymaxt-ymint)/1000.0          ! find a small amount to move in so roundoff does not remove outline in vogle package
-         call xy_boxit(xmint+rax,ymint+ray,xmaxt-rax,ymaxt-ray)  ! overall box around entire plot_area
+         call plain_rect(xmint+rax,ymint+ray,xmaxt-rax,ymaxt-ray)  ! overall box around entire plot_area
       endif
 !-----------------------------------------------------------------------------------------------------------------------------------
       if(plot_fetch('plot_idonly').eq.' ')then
@@ -3552,6 +3554,7 @@ subroutine xy_iftext()
 use M_journal, only : journal
 use M_draw
 use M_drawplus, only : pop, push
+use M_drawplus, only : plain_rect
 implicit none
 
 character(len=*),parameter::ident="@(#)M_xyplot::xy_iftext(3fp): Add user-specified text strings to plot"
@@ -3669,11 +3672,11 @@ real        :: ymint
             call color(iboxc)
             call polyfill(.true.)
             call makepoly()
-            call xy_boxit(Rxleft,Rybot,Rxright,Rytop)
+            call plain_rect(Rxleft,Rybot,Rxright,Rytop)
             call closepoly()
             call polyfill(.false.)
             call color(iforeq)           ! draw box in foreground color around the region
-            call xy_boxit(Rxleft,Rybot,Rxright,Rytop)
+            call plain_rect(Rxleft,Rybot,Rxright,Rytop)
          endif
       endif
 !-----------------------------------------------------------------------
@@ -5794,6 +5797,7 @@ end subroutine xy_loadtl
 subroutine xy_tidybox1(itextc,ichars,iwchar,ibox,plot_setmark_size,cwhere,xmint0,xmaxt0,ymint0,ymaxt0,xmark)
 use M_journal, only : journal
 use M_draw
+use M_drawplus, only : plain_rect
 use M_calculator_plus, only : strgar2
 implicit none
 
@@ -6051,11 +6055,11 @@ data values/0.0,0.0,0.0,0.0/ ! initialize xy_array of numeric values
               call rect(xleft+xshift,ybot,right2,ytop)
               call color(plot_ids(0)%color)
               call xy_rasters(plot_ids(0)%width)
-              call xy_boxit(xleft+xshift,ybot,right2,ytop)
+              call plain_rect(xleft+xshift,ybot,right2,ytop)
            else if(ibox.le.-999) then                          ! no box
            else                                                ! unfilled box
               call color(abs(ibox))
-              call xy_boxit(xleft+xshift,ybot,right2,ytop)
+              call plain_rect(xleft+xshift,ybot,right2,ytop)
            endif
         endif
         !---------------------------------------------------------------
@@ -6069,6 +6073,7 @@ subroutine xy_tidybox2(itextc,ichars,iwchar,ibox,plot_setmark_size,cwhere,xmint,
 use M_journal, only : journal
 use M_draw
 use M_drawplus, only : pop, push
+use M_drawplus, only : plain_rect
 use M_calculator_plus, only : strgar2
 implicit none
 
@@ -6157,11 +6162,11 @@ data values/0.0,0.0,0.0,0.0/ ! initialize xy_array of numeric values
          call rect(xleft,ybottom,xright,ytop)             ! draw fill
          call xy_rasters(plot_ids(0)%width)
          call color(plot_ids(0)%color)
-         call xy_boxit(xleft,ybottom,xright,ytop)            ! draw border
+         call plain_rect(xleft,ybottom,xright,ytop)            ! draw border
       else if(ibox.le.-999) then                          ! no box
       else                                                ! unfilled box
          call color(abs(ibox))
-         call xy_boxit(xleft,ybottom,xright,ytop)
+         call plain_rect(xleft,ybottom,xright,ytop)
       endif
       ybox=ytop-ybottom
 !-----------------------------------------------------------------------
@@ -8320,27 +8325,6 @@ character(len=*),intent(in) :: string
 integer,intent(in)    :: ichars
    xy_ustrlen2=strlength(string(1:ichars))
 end function xy_ustrlen2
-!----------------------------------------------------------------------------------------------------------------------------------!
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!----------------------------------------------------------------------------------------------------------------------------------!
-subroutine xy_boxit(x1,y1,x2,y2)
-use M_draw
-implicit none
-
-character(len=*),parameter::ident="@(#)M_xyplot::xy_boxit(3fp): Draw a rectangle"
-
-real,intent(in) :: x1
-real,intent(in) :: y1
-real,intent(in) :: x2
-real,intent(in) :: y2
-
-      call move2(x1,y1)
-      call draw2(x2,y1)
-      call draw2(x2,y2)
-      call draw2(x1,y2)
-      call draw2(x1,y1)
-
-end subroutine xy_boxit
 !-----------------------------------------------------------------------------------------------------------------------------------
 ![][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]-
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -10359,6 +10343,7 @@ subroutine xy_zoom(xmin,ymin,xmax,ymax,iend)
 use M_journal,  only : journal
 use M_draw
 use M_drawplus, only : rdbox
+use M_drawplus, only : plain_rect
 implicit none
 
 character(len=*),parameter::ident="@(#)M_xyplot::xy_zoom(3fp):  given current four numbers defining a box"
@@ -10418,7 +10403,7 @@ real             :: yratio
       if(x1.eq.x2.and.y1.eq.y2.and.ikey.le.2)then
          goto 999         ! requesting to end loop
       endif
-      call xy_boxit(x1,y1,x2,y2)
+      call plain_rect(x1,y1,x2,y2)
       call vflush()
       if(ikey.eq.1)then                         ! if used key one, assume just zooming in
          x3=xmin
@@ -10432,7 +10417,7 @@ real             :: yratio
          call rdbox(x3,y3,x4,y4,ikey)              ! choose second box on press and release; note ignoring key
          if(x3.eq.x4.and.y3.eq.y4)goto 999         ! requesting to end loop
       endif
-      call xy_boxit(x3,y3,x4,y4)
+      call plain_rect(x3,y3,x4,y4)
       call vflush()
       xecho=x4
       yecho=y4
@@ -10573,6 +10558,7 @@ end subroutine priv_hilow
 !===================================================================================================================================
 subroutine priv_jubox(imidl,XMIN,YMIN,XMAX,YMAX)
 use M_draw
+use M_drawplus, only : plain_rect
 implicit none
 
 character(len=*),parameter::ident="@(#)M_xyplot::priv_jubox(3fp): draw a filled box around current scaled plot area"
@@ -10583,7 +10569,7 @@ real,intent(in) :: XMIN, YMIN, XMAX, YMAX
       call color(imidl)
       call polyfill(.true.)
       call makepoly()
-      call xy_boxit(XMIN,YMIN,XMAX,YMAX)
+      call plain_rect(XMIN,YMIN,XMAX,YMAX)
       call closepoly()
    endif
 end subroutine priv_jubox
@@ -10596,6 +10582,7 @@ subroutine priv_jugrid(ixdiv,iydiv,igrid,vals,XMIN,XMAX,YMIN,YMAX,     &
 
 use M_calculator, only: stuff
 use M_draw
+use M_drawplus, only : plain_rect
 implicit none
 
 character(len=*),parameter::ident="&
@@ -10870,7 +10857,7 @@ real            :: yystep2
       call color(idcol(0))
       call xy_rasters(idwid(0))
       if(idwid(0).ne.0)then
-         call xy_boxit(XMIN,YMIN,XMAX,YMAX)  ! thickened axis border
+         call plain_rect(XMIN,YMIN,XMAX,YMAX)  ! thickened axis border
       endif
       call xy_rasters(idwid(-1))
 !-----------------------------------------------------------------------

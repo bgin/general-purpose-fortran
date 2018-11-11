@@ -121,7 +121,7 @@
           real, dimension(5)              :: r
           character(len=100)              :: line
           character(len=40)               :: string
-          character(len=20),dimension(6)  :: station =
+          character(len=20),dimension(6)  :: station = &
           & [character(len=20) :: 'NW1','NW2','OS30_LONGER_NAME','DH','DO','Ah111' ]
           integer                         :: i
           open(lun, file='somedata.csv')

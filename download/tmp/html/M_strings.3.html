@@ -26,7 +26,7 @@ XXtd { border:thin solid #888; }
 XXtd { border:none; }
 li { margin-bottom:0.5em; }
 blockquote { display:block; font-size:100%; font-style:italic; line-height:1.1em; margin:0 0 1.5em; padding:0 2.5em; }
-pre { background-color:#DDD; font-size:99%; overflow:auto; padding:1em; }
+pre { background-color:#DDD; font-size:100%; overflow:auto; padding:1em; }
 a,li span { color:#000; }
 a:hover, a.nav:hover, a:hover math { background-color:#000; color:#FFF; }
 #Container { margin:0 10px; text-align:center; background-color: #BBB}
@@ -34,9 +34,9 @@ a:hover, a.nav:hover, a:hover math { background-color:#000; color:#FFF; }
 span.webName { font-size:.5em; }
 textarea#content { font-size: 1em; line-height: 1.125; }
 h1#pageName { line-height:1em; margin:0.2em 0 0.2em 0; padding:0; }
-.property { color:#666; font-size:80%; }
+.property { color:#666; font-size:100%; }
 a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
-.byline { color:#666; font-size:.8em; font-style:italic; margin-bottom:1em; padding-top:1px; } 
+.byline { color:#666; font-size:1.0em; font-style:italic; margin-bottom:1em; padding-top:1px; } 
 </style> 
 </head>
 <BODY bgcolor=#F0F0F0 text=#000000 link=#0000ff vlink=#C000C0 alink=#ff0000><A NAME=top></A>
@@ -53,15 +53,17 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 
 </A>
 <BLOCKQUOTE>
-<B>M_strings(3f) </B>- [M_strings] Fortran string module
+<B>M_strings(3f) </B>- [M_strings:INTRO] Fortran string module
 </BLOCKQUOTE>
 <A name=contents></A><H3>CONTENTS</H3></A>
 <BLOCKQUOTE>
 <A HREF=#1>Synopsis</A><BR>
-<A HREF=#2>Description</A><BR>
-<A HREF=#3>Examples</A><BR>
+<A HREF=#2>Overview</A><BR>
+<A HREF=#3>Description</A><BR>
+<A HREF=#4>See Also</A><BR>
+<A HREF=#5>Examples</A><BR>
 </BLOCKQUOTE>
-<A name=4>
+<A name=6>
 
      <H3>SYNOPSIS</H3>
 
@@ -308,19 +310,11 @@ delete trailing zeros from numeric decimal string
 </TD></TR>
 <TR valign=top><TD colspan=2>
 <B>listout</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
-copy <B>ICURVE</B>() to <B>ICURVE_EXPANDED</B>() expanding negative numbers to ranges (1 <B>-10</B> means 1 thru 10)
+expand a list of numbers where  negative numbers denote range ends (1 <B>-10</B> means 1 thru 10)
 </TD></TR>
-<TR></TR></TABLE></BLOCKQUOTE>
-<A name=>
-
-    <H4>&nbsp; &nbsp; LOGICAL TESTS</H4>
-</A>
-<BLOCKQUOTE>
-<P>
-<TABLE cellpadding=3>
-<TR valign=top><TD width=6% nowrap>
-<B>matchw</B> </TD><TD valign=bottom>
-compares given string for match to pattern which may contain wildcard characters
+<TR valign=top><TD colspan=2>
+<B>isnumber</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+determine if string represents a number
 </TD></TR>
 <TR></TR></TABLE></BLOCKQUOTE>
 <A name=>
@@ -330,6 +324,10 @@ compares given string for match to pattern which may contain wildcard characters
 <BLOCKQUOTE>
 <P>
 <TABLE cellpadding=3>
+<TR valign=top><TD width=6% nowrap>
+<B>matchw</B> </TD><TD valign=bottom>
+compares given string for match to pattern which may contain wildcard characters
+</TD></TR>
 <TR valign=top><TD colspan=2>
 <B>o isalnum</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
 returns .true. if character is a letter or digit
@@ -388,34 +386,133 @@ returns .true. if character is a hexadecimal digit (0-9, a-f, or A-F).
     <H4>&nbsp; &nbsp; BASE CONVERSION</H4>
 </A>
 <BLOCKQUOTE>
+<P>
 <TABLE cellpadding=3>
 <TR valign=top><TD width=6% nowrap>
-<B>o base</B> </TD><TD valign=bottom>
+<B>base</B> </TD><TD valign=bottom>
 convert whole number string in base [2-36] to string in alternate base [2-36]
 </TD></TR>
 <TR valign=top><TD colspan=2>
-<B>o codebase</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+<B>codebase</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
 convert whole number string in base [2-36] to base 10 number
-</TD></TR>
-<TR></TR></TABLE><TABLE cellpadding=3>
-<TR valign=top><TD width=3%>
-o
-</TD><TD>
 decodebase convert whole number in base 10 to string in base [2-36]
 </TD></TR>
 <TR></TR></TABLE></BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; MISCELLANEOUS</H4>
+</A>
+<BLOCKQUOTE>
+<P>
+<TABLE cellpadding=3>
+<TR valign=top><TD colspan=2>
+<B>describe</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+returns a string describing the name of a single character
+</TD></TR>
+<TR></TR></TABLE></BLOCKQUOTE>
 <A name=2>
+
+     <H3>OVERVIEW</H3>
+
+</A>
+<BLOCKQUOTE>
+<P>
+Fortran lets you access the characters in a string using ranges
+much like they are character arrays, assignment, comparisons with
+standard operators, supports dynamically allocatable strings and
+supports concatentation using the // operator, as well as a number
+of intrinsic string routines
+</BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; INTRINSICS</H4>
+</A>
+<BLOCKQUOTE>
+<P>
+<TABLE cellpadding=3>
+<TR valign=top><TD colspan=2>
+<B>adjustl</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+Left adjust a string
+</TD></TR>
+<TR valign=top><TD colspan=2>
+<B>adjustr</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+Right adjust a string
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B>index</B> </TD><TD valign=bottom>
+Position of a substring within a string
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B>repeat</B> </TD><TD valign=bottom>
+Repeated string concatenation
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B>scan</B> </TD><TD valign=bottom>
+Scan a string for the presence of a set of characters
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B>trim</B> </TD><TD valign=bottom>
+Remove trailing blank characters of a string
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B>verify</B> </TD><TD valign=bottom>
+Scan a string for the absence of a set of characters
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B>len</B> </TD><TD valign=bottom>
+It returns the length of a character string
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B>achar</B> </TD><TD valign=bottom>
+converts an integer into a character
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B>iachar</B> </TD><TD valign=bottom>
+converts a character into an integer
+</TD></TR>
+<TR valign=top><TD colspan=2>
+<B>len_trim</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+finds length of string with trailing spaces ignored
+</TD></TR>
+<TR valign=top><TD colspan=2>
+<B>new_line</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+Newline character
+</TD></TR>
+<TR valign=top><TD colspan=2>
+<B>selected_char_kind</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+Choose character kind
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B>lge</B> </TD><TD valign=bottom>
+Lexical greater than or equal
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B>lgt</B> </TD><TD valign=bottom>
+Lexical greater than
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B>lle</B> </TD><TD valign=bottom>
+Lexical less than or equal
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B>llt</B> </TD><TD valign=bottom>
+Lexical less than
+</TD></TR>
+<TR></TR></TABLE></BLOCKQUOTE>
+<P>
+<P>
+<A name=3>
 
      <H3>DESCRIPTION</H3>
 
 </A>
 <BLOCKQUOTE>
 <P>
-The M_strings module is a collection of Fortran procedures that process
-character strings. Routines for parsing, tokenizing, changing case,
-substituting new strings for substrings, locating strings with simple
-wildcard expressions, removing tabs and line terminators and other
-string manipulations are included.
+The M_strings module is a collection of Fortran procedures that
+supplement the built in routines. Routines for parsing, tokenizing,
+changing case, substituting new strings for substrings, locating
+strings with simple wildcard expressions, removing tabs and line
+terminators and other string manipulations are included.
 <P>
 M_strings_oop is a companion module that provides an OOP interface
 to the M_strings module.
@@ -436,7 +533,19 @@ module) provides an OOP (Object-Oriented Programming) interface
 to the <B>M_strings</B>(3fm) module; as described in the example program
 OBJECT_ORIENTED shown below&#46;&#46;&#46;
 </BLOCKQUOTE>
-<A name=3>
+<A name=4>
+
+     <H3>SEE ALSO</H3>
+
+</A>
+<BLOCKQUOTE>
+<P>
+There are additional routines in other GPF modules for working with
+expressions (M_calculator), time strings (M_time), random strings
+(M_random, M_uuid), lists (M_list), and interfacing with the C regular
+expression library (M_regex).
+</BLOCKQUOTE>
+<A name=5>
 
      <H3>EXAMPLES</H3>
 
@@ -448,7 +557,7 @@ The object-oriented interface does not have individual <B>man</B>(1) pages, but 
 example program:
 <P>
 <PRE>
- program object_oriented
+ program demo_M_strings
  !
  ! This is an example using the object-oriented class/type model defined in M_strings_oop
  ! This is essentially the same functionality as the procedures combined with several Fortran intrinsics and overloaded operators
@@ -598,8 +707,7 @@ example program:
 <P>
    write(*,*)repeat(&#146;=&#146;,78)
 <P>
- end program object_oriented
-<P>
+ end program demo_M_strings
 <P>
  Expected output
 <P>
@@ -633,8 +741,8 @@ example program:
   chars &#46;&#46;&#46;................. . [ ][ ][ ][T][h][i][s][ ][ ][i][s][ ][ ][a][ ][ ][S][t][r][i][n][g][!][ ][ ][ ][ ][ ][ ][ ]
   =============================================================================
   str2%str &#46;&#46;&#46;................ [\t\tSome tabs\t   x\bX ]
-  expand &#46;&#46;&#46;.................. [         Some tabs          xX]
-  notabs &#46;&#46;&#46;.................. [                Some tabs          xX]
+  expand &#46;&#46;&#46;.................. [         Some tabs          x   X]
+  notabs &#46;&#46;&#46;.................. [                Some tabs          x    X]
   noesc &#46;&#46;&#46;................... [  Some tabs    x X]
   =============================================================================
   Casting to numeric variables
@@ -682,7 +790,7 @@ example program:
 </PRE>
 </BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>M_strings (3)</TD> <TD align=right width=33%><I>October 20, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 6236abd2-feec-4185-90d3-39277f0d6507 using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>M_strings (3)</TD> <TD align=right width=33%><I>November 10, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 8e7a1e6b-e270-4f03-9cd1-8bab43cfe938 using man macros.</FONT>
 </div>
 </div>
 <br><br><center><img src="images/M_strings.3.gif"></center> 

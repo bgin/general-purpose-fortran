@@ -92,7 +92,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    M_calcomp(3fm) - [M_calcomp:M_calcomp] emulate old Calcomp graphics library
+!!    M_calcomp(3fm) - [M_calcomp::INTRO] emulate old Calcomp graphics library
 !!
 !!##SYNOPSIS
 !!
@@ -412,7 +412,7 @@
 !!    # the name of the output file
 !!    export M_DRAW_OUTPUT=calcomp.p3
 !!
-!!    # optionall set up the virtual size in inches of the calcomp drawing surface
+!!    # optionally set up the virtual size in inches of the calcomp drawing surface
 !!    export CALCOMP_XMIN CALCOMP_XMAX CALCOMP_YMIN CALCOMP_YMAX
 !!    CALCOMP_XMIN=0
 !!    CALCOMP_XMAX=8.5
@@ -4611,11 +4611,12 @@ end subroutine newpen
 !!
 !!  Sample program
 !!
-!!        program caltest
+!!        program demo_nframe
 !!        use M_calcomp
+!!        implicit none
 !!        !
 !!        ! Perform initialization
-!!        call plots(14)
+!!        call plots(0.0,10.0,0.0,10.0)
 !!        !
 !!        ! Establish origin for first plot (Negative Y values up to -0.5 are
 !!        ! now permitted also)
@@ -4626,18 +4627,18 @@ end subroutine newpen
 !!        ! Plot frame size = maximum coordinate value used + offset
 !!        ! Plot frame size in the X-direction is 8 inches
 !!        ! Plot frame size in the Y-direction is 9.5 inches (0.5 offset in PLOT
-!!        call above!
+!!        ! call above
 !!        call plot( 8.0, 0.0, 2)
 !!        call plot( 8.0, 9.0, 2)
 !!        call plot( 0.0, 9.0, 2)
 !!        call plot( 0.0, 0.0, 2)
 !!        !
 !!        ! Calls to generate first plot go here
-!!        .
-!!        .
-!!        .
+!!        ! .
+!!        ! .
+!!        ! .
 !!        ! Terminate first plot
-!!        call nframe
+!!        call nframe()
 !!        !
 !!        ! Establish origin for second plot
 !!        call plot(1.0, 2.0, -3)
@@ -4649,12 +4650,12 @@ end subroutine newpen
 !!        call plot(0.0, 0.0, 2)
 !!        !
 !!        ! Calls to generate second plot go here
-!!        .
-!!        .
-!!        .
+!!        ! .
+!!        ! .
+!!        ! .
 !!        ! Close the plot file
 !!        call plot(0.0, 0.0, 999)
-!!        end program caltest
+!!        end program demo_nframe
 !!
 !!  An inch drawn in frame 1 will not appear equal in length to an inch
 !!  drawn in frame 2 because their unit-less frame sizes are not equal (
@@ -6870,7 +6871,7 @@ character(len=*),parameter::ident="@(#)M_calcomp::cntour(3f): draw a contour plo
 !  SIGNIFICANCE FOR 'SYMBOL').
 !
 !  THE SCALING IN THE FOLLOWING STATEMENTS WAS ALSO MODIFIED WHEN THIS
-!  SUBROUTINE WAS CONVERTED TO THE CRAY.  THE STATEMENTS ORIGINALLY
+!  SUBROUTINE WAS CONVERTED TO THE CRAY. THE STATEMENTS ORIGINALLY
 !  READ  (WHERE ENCXDE WAS A TWO-WORD INTEGER ARRAY)
 !
 !     ENCODE(9,1,ENCXDE) CV(I)
@@ -6887,7 +6888,7 @@ character(len=*),parameter::ident="@(#)M_calcomp::cntour(3f): draw a contour plo
 220 DIS = DIS - 0.20
 !
 !  THE FOLLOWING STATEMENT WAS ORIGINALLY USED TO POSITION THE
-!  CONTOUR PLOT BESIDE THE LEGEND.  IT HAS BEEN "COMMENTED OUT"
+!  CONTOUR PLOT BESIDE THE LEGEND. IT HAS BEEN "COMMENTED OUT"
 !  SO THAT THE CONTOUR PLOT MAY BE POSITIONED BELOW THE LEGEND.
 !  THIS ARRANGEMENTS PERMITS LARGER CONTOUR PLOTS.
 !

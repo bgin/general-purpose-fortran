@@ -53,14 +53,14 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Mon, Oct 15th, 2018 5:25:17 PM>',&
+'@(#)COMPILED:       Sat, Nov 10th, 2018 2:26:39 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
 endif
 end subroutine help_version
 !-----------------------------------------------------------------------------------------------------------------------------------
-program demo_system_rename
+program demo_system_remove
 use M_kracken, only : kracken,lget,sgets,IPvalue
 use M_system, only : system_remove
 use M_system, only : system_perror
@@ -80,4 +80,4 @@ integer                            :: ierr, i
          call system_perror('*_rm*')
       endif
    enddo
-end program demo_system_rename
+end program demo_system_remove

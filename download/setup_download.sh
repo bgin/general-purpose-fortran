@@ -3,23 +3,6 @@
 #(@)# process doc files and convert to man(1) pages, html documents, ...
 #set -x
 ####################################################################################################################################
-(
-exec 2>&1
-date
-
-DIRNAME=`dirname $0`
-cd $DIRNAME
-export DIRNAME=`pwd`
-
-export PUTMAN=$DIRNAME/tmp/man
-export PUTHTML=$DIRNAME/tmp/html
-export MANPATH=$DIRNAME/tmp/man
-
-PATH=$PATH:$DIRNAME/scripts
-
-source $DIRNAME/scripts/functions.sh
-####################################################################################################################################
-#
 #   Assuming most users would simply like the .f90 files, and not have
 #   to install ufpp, what, goodbad, ccall, html2f90, html2man, and the
 #   other components of the programming environment take the source archive
@@ -33,6 +16,18 @@ source $DIRNAME/scripts/functions.sh
 #    html2man  -- GNU commands take --help switch and then convert this to a man(1) page
 #    txt2man   -- perl script converts text files following specified markdown rules into a man(1) page
 #    manserver --
+####################################################################################################################################
+(
+exec 2>&1
+date
+DIRNAME=`dirname $0`
+cd $DIRNAME
+export DIRNAME=`pwd`
+export PUTMAN=$DIRNAME/tmp/man
+export PUTHTML=$DIRNAME/tmp/html
+export MANPATH=$DIRNAME/tmp/man
+PATH=$PATH:$DIRNAME/scripts
+source $DIRNAME/scripts/functions.sh
 ####################################################################################################################################
 #  Unexpected
 #  When changed NAME line in man(1) pages to format
@@ -76,7 +71,6 @@ SUFFIX=$2
 ####################################################################################################################################
 # convert *.man files to make man(1) pages in tmp/man and HTML versions of man(1) pages in tmp/html
 txt2man -h >doc/txt2man.1.man
-
 # Order files will be processed
 # *.htm   assumed to look like a man(1) page convert to flat txt and then run thru txt2man like a *.man file
 # *.man   text files that look like a man(1) page that are to be run thru txt2man to make a *roff file.
@@ -88,7 +82,6 @@ txt2man -h >doc/txt2man.1.man
 ####################################################################################################################################
 # make sure directories exist for man pages and convert files to man(1) pages
 MAKEMANDIR(){
-
    pwd
    cd doc && (
       rm -rfv tmp
@@ -159,11 +152,9 @@ do
    echo "$NAME to $PUTHTML"
    cp $NAME $PUTHTML
    GETSECTION $NAME .html
-   # if no man page of this name exists make a plain text one, assuming not
-   # suitable for formatting (or it would be a .htm page)
+   # if no man page of this name exists make a plain text one, assuming not suitable for formatting (or it would be a .htm page)
    # If it does not have a NAME line at the top it will cause problems with
-   # manb(1). If it does not a ".nf" line in it after that, it will be
-   # formatted, which may or may not work.
+   # manb(1). If it does not a ".nf" line in it after that, it will be formatted, which may or may not work.
    if [ ! -r "$PUTMAN/man$SECTION_NUMBER/$SHORTNAME.*" ]
    then
       html2txt $NAME >tmp/$SHORTNAME.txt
@@ -179,7 +170,6 @@ mkdir -p tmp/PROGRAMS/M_DRAW_EXAMPLES
 mkdir -p tmp/PROGRAMS/CALCOMP_EXAMPLES
 mkdir -p tmp/PROGRAMS/NCURSES_EXAMPLES
 mkdir -p tmp/html
-mkdir -p tmp/scripts/
 for NUMBER in 1 2 3 4 5 6 7 8
 do
    mkdir -p tmp/man/man$NUMBER
@@ -211,51 +201,23 @@ EOF
 #TEST# cd doc; export PUTHTML=../tmp/html PUTMAN=../tmp/man NAME=minefield SECTION_NUMBER=1 ;MAN2MAN 1m_draw
 ####################################################################################################################################
 BLANKOUT                # make empty tmp directory, removing previous output files
-getsource.sh            # expand source archive file from my target location
-supplemental_source.sh  # create user-supplied procedures "c" and "juown1" required for the calculator module
-getprograms.sh          # get some programs to add to the procedures
-makemakefile.sh         # create makefile
-cp    /home/urbanjs/V600/LIBRARY/libGPF/EXE/DRAW/EXAMPLES/*.f90    tmp/PROGRAMS/M_DRAW_EXAMPLES/
-cp    /home/urbanjs/V600/LIBRARY/libGPF/EXE/CALCOMP/EXAMPLES/*.f90 tmp/PROGRAMS/CALCOMP_EXAMPLES/
-cp    /home/urbanjs/V600/LIBRARY/libGPF/EXE/NCURSES/EXAMPLES/*.f90 tmp/PROGRAMS/NCURSES_EXAMPLES/
-cp -r /home/urbanjs/V600/LIBRARY/libGPF/EXE/HASHKEYS/test_vectors  tmp/PROGRAMS/
-####################################################################################################################################
+buildsources.sh         # get all the code source files except the demo files from the man(1) pages
 echo 'create documents in tmp/doc, tmp/man, and tmp/html'
 (MAKEMANDIR)
+####################################################################################################################################
 build.apropos
 mank.sh           # make html index pages of the man pages
 ####################################################################################################################################
-echo 'copy permanent document repository to tmp area to create tar file from'
-cp -r -p doc tmp/
+#echo 'copy permanent document repository to tmp area to create tar file from'
+#cp -r -p doc tmp/
 ####################################################################################################################################
-echo 'put a few scripts into the tar file that might be of interest'
-for NAME in   \
-   txt2man    \
-   man2html   \
-   manserver  \
-   goodbad    \
-   mank       \
-   makemake   \
-   inpath     \
-   h          \
-   manvi      \
-   $NULL
-do
-   cp `which $NAME`  tmp/scripts/
-done
-
-cp -r $(dirname $(which manserver) )/manserver_dir/ tmp/scripts/
-cp /home/urbanjs/.twm/scripts_vi/vimrc tmp/
-cp /home/urbanjs/.twm/scripts_vi/exrc tmp/
-
+buildscripts.sh # put a few scripts into the tar file that might be of interest
+####################################################################################################################################
 cp /home/urbanjs/V600/LIBRARY/libGPF/draw/inc/draw.h tmp/
-
 mkdir tmp/data/ tmp/fonts/
-
 cp /home/urbanjs/V600/LIBRARY/libGPF/draw/hershey/data/hersh.oc tmp/data/
 cp /home/urbanjs/V600/LIBRARY/libGPF/draw/hershey/data/hersh.or tmp/data/
 cp -r -p /home/urbanjs/V600/LIBRARY/libGPF/draw/hershey/fonts/*.hmp tmp/fonts/
-
 cp /home/urbanjs/V600/LIBRARY/libGPF/draw/hershey/hershey.sh tmp/
 ####################################################################################################################################
 # extract test programs for M_pixel module and run them to test man(1) pages
@@ -266,7 +228,7 @@ cp /home/urbanjs/V600/LIBRARY/libGPF/draw/hershey/hershey.sh tmp/
 (
    cd $DIRNAME
    cd doc/images/
-   banner 'test pixel'
+   banner.sh 'test pixel'
    env DISPLAY= test_M_pixel_manpages.sh
 )
 #----------------------------------------------------------------------------------------------------------------------------------#
@@ -293,60 +255,7 @@ mkdir -p tmp/html/
 cp -r -p ../html/StyleSheets tmp/html/
 )
 ####################################################################################################################################
-# combine man pages into books
-book.sh ARGUMENTS
-book.sh M_strings
-book.sh M_time
-book.sh M_system
-book.sh M_calculator
-book.sh M_units
-book.sh M_math
-book.sh M_process
-book.sh M_logic
-book.sh M_Compare_Float_Numbers
-book.sh M_debug
-book.sh M_factor
-book.sh M_io
-book.sh M_journal
-book.sh M_messages
-book.sh M_sort
-book.sh M_xterm
-book.sh INTRINSIC
-book.sh M_stopwatch
-book.sh M_display
-book.sh M_regex
-book.sh M_sqlite
-
-book.sh M_color
-book.sh M_pixel                       m_pixel
-book.sh M_draw                        m_draw
-book.sh M_drawplus                    m_drawplus
-book.sh M_xyplot                      m_xyplot  
-book.sh M_calcomp                     m_calcomp
-
-book.sh INDEX
-#tmp/M_anyscalar.f90
-#tmp/M_calculator_plus.f90
-#tmp/M_constants.f90
-#tmp/M_csv.f90
-#tmp/M_fixedform.f90
-#tmp/M_geodesic.f90
-#tmp/M_geography.f90
-#tmp/M_getkey.f90
-#tmp/M_getopt.f90
-#tmp/M_getopt_long.f90
-#tmp/M_history.f90
-#tmp/M_html.f90
-#tmp/M_ncurses.f90
-#tmp/M_pixel_slices.f90
-#tmp/M_random.f90
-#tmp/M_readgif.f90
-#tmp/M_readline.f90
-#tmp/M_swap.f90
-#tmp/M_treesort.f90
-#tmp/M_writegif.f90
-#tmp/M_writegif_animated.f90
-#tmp/M_sqlite.f90
+buildbooks.sh # combine man pages into books
 #----------------------------------------------------------------------------------------------------------------------------------#
 echo 'now that all procedure descriptions are in place make main index page download.html'
 make_index.sh
@@ -362,6 +271,9 @@ getdemo.sh
 ####################################################################################################################################
 echo 'create tar file for downloading'
 (cd tmp;tar cvfz ../GPF.tgz *)
+#----------------------------------------------------------------------------------------------------------------------------------#
+echo 'build all the programs'
+makeall.sh
 #----------------------------------------------------------------------------------------------------------------------------------#
 (doxygen.sh)
 #----------------------------------------------------------------------------------------------------------------------------------#

@@ -5,5 +5,4 @@
               write(*,*)'do some stuff'
               call xterm_keywords('uniconify')
               call xterm_keywords('raise')
-           endif
            end program demo_xterm_keywords

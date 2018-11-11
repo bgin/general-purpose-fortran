@@ -22,6 +22,7 @@ append("iscntrl.3.html");
 append("isdigit.3.html");
 append("isgraph.3.html");
 append("islower.3.html");
+append("isnumber.3.html");
 append("isprint.3.html");
 append("ispunct.3.html");
 append("isspace.3.html");

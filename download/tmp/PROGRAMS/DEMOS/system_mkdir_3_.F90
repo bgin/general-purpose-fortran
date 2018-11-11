@@ -6,5 +6,5 @@
           use M_system, only : DEFFILEMODE, ACCESSPERMS
           implicit none
           integer :: ierr
-          ierr=system_mkdir('_scratch',IANY([R_USR,W_USR,X_USR)])
+          ierr=system_mkdir('_scratch',IANY([R_USR,W_USR,X_USR]))
           end program demo_system_mkdir

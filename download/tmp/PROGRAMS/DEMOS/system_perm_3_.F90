@@ -6,10 +6,10 @@
           integer             :: ierr
           character(len=:),allocatable :: perms
              values=0
-             call get_command_argument(1, string) ! get pathname from command line
-             call system_stat(string,values,ier)  ! get pathname information
+             call get_command_argument(1, string)  ! get pathname from command line
+             call system_stat(string,values,ierr)  ! get pathname information
              if(ierr.eq.0)then
-                perms=system_perm(values(3))      ! convert permit mode to a string
+                perms=system_perm(values(3))       ! convert permit mode to a string
                 ! print permits as a string, decimal value, and octal value
                 write(*,'("for ",a," permits[",a,"]",1x,i0,1x,o0)') &
                         trim(string),perms,values(3),values(3)

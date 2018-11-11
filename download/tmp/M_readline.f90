@@ -26,8 +26,8 @@
 !!
 !!   the test program
 !!
-!!    program testit
-!!       use m_readline
+!!    program demo_M_readline
+!!       use M_readline
 !!       implicit none
 !!       character(len=256):: line
 !!       integer                       :: cstat
@@ -49,7 +49,7 @@
 !!          !call system(trim(line))    ! common extension
 !!          call execute_command_line(trim(line),cmdstat=cstat,cmdmsg=sstat) ! f08 equivalent
 !!       enddo
-!!    end program testit
+!!    end program demo_M_readline
 !===================================================================================================================================
 MODULE M_readline
 ! @(#) Call readline(3c) from Fortran using ISO_C_BINDING

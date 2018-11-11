@@ -63,7 +63,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Mon, Oct 15th, 2018 5:25:05 PM>',&
+'@(#)COMPILED:       Sat, Nov 10th, 2018 2:26:17 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -71,6 +71,7 @@ endif
 end subroutine help_version
 !-----------------------------------------------------------------------------------------------------------------------------------
 program demo_system_getcwd
+use iso_fortran_env, only : ERROR_UNIT, OUTPUT_UNIT, INPUT_UNIT  ! access computing environment
 use M_kracken, only : kracken, lget
 use M_system,  only : system_getcwd
 implicit none
@@ -81,8 +82,8 @@ integer                      :: ierr
    call help_version(lget('_pwd_version'))
    call system_getcwd(dirname,ierr)
    if(ierr.eq.0)then
-      write(*,'(a)')trim(dirname)
+      write(OUTPUT_UNIT,'(a)')trim(dirname)
    else
-      write(*,*)'*pwd* ERROR OBTAINING CURRENT DIRECTORY NAME'
+      write(ERROR_UNIT,*)'*pwd* ERROR: cannot obtain current directory name'
    endif
 end program demo_system_getcwd

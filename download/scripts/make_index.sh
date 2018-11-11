@@ -27,8 +27,8 @@ cat <<\EOF
 
 
    <li>  <a href="man3.html"> manpages for the <em>procedures</em> </a> as *roff and HTML </li>
+   <li>  <a href="man1.html"> manpages for the <em>example programs</em> </a> as *roff and HTML </li>
 
-   <li>  selected <a href="programs.html"> example programs</a>
          <br/> Some of the most useful programs for developers are
        <ul>
        <li><a href="what_overview.7.html">An overview of what(1)</a>, 
@@ -39,7 +39,6 @@ cat <<\EOF
        <li><a href="makeout.1.html"> makeout(1)</a> -- Generate initial make(1) files for a directory</li>
        </ul>
    </li>
-   <li>  <a href="man1.html"> manpages for the <em>example programs</em> </a> as *roff and HTML </li>
 
    <li><a href="../source.html" title="
       The what(1) command was run on the expanded source directory to produce
@@ -49,6 +48,7 @@ cat <<\EOF
       "
       >the GPF(General Purpose Fortran) sources</a>
    </li>
+   <li>  selected <a href="programs.html"> example program sources</a>
 
    <li>a <a href="../Makefile">make(1) file</a> to build the source </li>
 

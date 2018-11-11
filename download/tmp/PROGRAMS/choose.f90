@@ -314,7 +314,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   No)     echo "Do stuff when answer is $RESULT" ;;                            ',&
 '   Cancel) echo "Do stuff when answer is $RESULT" ;;                            ',&
 '   EXIT)   echo "Do stuff when answer is escape key ;;                          ',&
-'   *)      echo "$0 : ERROR: unknown answr $RESULT" ;;                          ',&
+'   *)      echo "$0 : ERROR: unknown answer $RESULT" ;;                         ',&
 '   esac                                                                         ',&
 '   # redirection of descriptor 2 (stderr) to be the duplicate                   ',&
 '   # of descriptor 1 and descriptor 1 is restored to its original               ',&
@@ -422,7 +422,7 @@ end subroutine help_usage
 !!    No)     echo "Do stuff when answer is $RESULT" ;;
 !!    Cancel) echo "Do stuff when answer is $RESULT" ;;
 !!    EXIT)   echo "Do stuff when answer is escape key ;;
-!!    *)      echo "$0 : ERROR: unknown answr $RESULT" ;;
+!!    *)      echo "$0 : ERROR: unknown answer $RESULT" ;;
 !!    esac
 !!    # redirection of descriptor 2 (stderr) to be the duplicate
 !!    # of descriptor 1 and descriptor 1 is restored to its original
@@ -459,7 +459,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20180331>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Mon, Oct 15th, 2018 5:31:32 PM>',&
+'@(#)COMPILED:       Sat, Nov 10th, 2018 2:31:50 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

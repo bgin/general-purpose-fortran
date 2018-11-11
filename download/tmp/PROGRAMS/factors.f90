@@ -194,7 +194,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
 '@(#)UUID:           37a84d23-0b17-4cd5-bb09-54e23d2e66a6>',&
-'@(#)COMPILED:       Mon, Oct 15th, 2018 5:14:36 PM>',&
+'@(#)COMPILED:       Sat, Nov 10th, 2018 2:17:36 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

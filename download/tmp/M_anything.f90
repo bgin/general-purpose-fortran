@@ -207,7 +207,6 @@ end function  anything_to_bytes_scalar
 !!
 !!     function squarei(invalue) result (dvalue)
 !!     use M_anything, only : anyscalar_to_double
-!!     implicit none
 !!     class(*),intent(in)  :: invalue
 !!     doubleprecision      :: invalue_local
 !!     doubleprecision      :: dvalue
@@ -272,7 +271,6 @@ end function anyscalar_to_double
 !!   Sample program
 !!
 !!     program demo_anyscalar_to_real
-!!     program demo_anyscalar_to_double
 !!     use M_anything,     only : int128, real256
 !!     use iso_fortran_env, only : int8, int16, int32, int64
 !!     use iso_fortran_env, only : real32, real64, real128
@@ -291,7 +289,6 @@ end function anyscalar_to_double
 !!
 !!     function squarei(invalue) result (dvalue)
 !!     use M_anything, only : anyscalar_to_real
-!!     implicit none
 !!     class(*),intent(in)  :: invalue
 !!     real                 :: invalue_local
 !!     real                 :: dvalue
@@ -360,24 +357,36 @@ end function anyscalar_to_real
 !!     use iso_fortran_env, only : int8, int16, int32, int64
 !!     implicit none
 !!        ! call same function with many scalar input types
-!!        write(*,*)squarei(2_int8)
-!!        write(*,*)squarei(2_int16)
-!!        write(*,*)squarei(2_int32)
-!!        write(*,*)squarei(2_int64)
-!!        write(*,*)squarei(2_int128)
+!!        write(*,*)squarei(huge(0_int8)),huge(0_int8) , &
+!!        & '16129'
+!!        write(*,*)squarei(huge(0_int16)),huge(0_int16) , &
+!!        & '1073676289'
+!!        write(*,*)squarei(huge(0_int32)),huge(0_int32) , &
+!!        & '4611686014132420609'
+!!        write(*,*)squarei(huge(0_int64)),huge(0_int64) , &
+!!        & '85070591730234615847396907784232501249'
+!!        write(*,*)squarei(huge(0_int128)),huge(0_int128) , &
+!!        & '28948022309329048855892746252171976962977213799489202546401021394546514198529'
 !!     contains
-!!
+!!     !
 !!     function squarei(invalue)
 !!     use M_anything, only : anyinteger_to_128bit, int128
-!!     implicit none
 !!     class(*),intent(in)  :: invalue
-!!     real                 :: invalue_local
-!!     integer(kind=int128) :: squarei
+!!     doubleprecision      :: invalue_local
+!!     doubleprecision      :: squarei
 !!        invalue_local=anyinteger_to_128bit(invalue)
-!!        dvalue=invalue_local*invalue_local
+!!        squarei=invalue_local*invalue_local
 !!     end function squarei
-!!
+!!     !
 !!     end program demo_anyinteger_to_128bit
+!!
+!!   Results
+!!
+!!    16129.000000000000       127 !!    16129
+!!    1073676289.0000000       32767 !!    1073676289
+!!    4.6116860141324206E+018  2147483647 !!    4611686014132420609
+!!    8.5070591730234616E+037  9223372036854775807 !!    85070591730234615847396907784232501249
+!!    2.8948022309329049E+076 170141183460469231731687303715884105727 !!    28948022309329048855892746252171976962977213799489202546401021394546514198529
 !===================================================================================================================================
 pure elemental function anyinteger_to_128bit(intin) result(ii38)
 use iso_fortran_env, only : error_unit !! ,input_unit,output_unit

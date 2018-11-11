@@ -1,5 +1,4 @@
            program demo_anyscalar_to_real
-           program demo_anyscalar_to_double
            use M_anything,     only : int128, real256
            use iso_fortran_env, only : int8, int16, int32, int64
            use iso_fortran_env, only : real32, real64, real128
@@ -18,7 +17,6 @@
 
            function squarei(invalue) result (dvalue)
            use M_anything, only : anyscalar_to_real
-           implicit none
            class(*),intent(in)  :: invalue
            real                 :: invalue_local
            real                 :: dvalue

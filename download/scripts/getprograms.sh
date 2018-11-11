@@ -60,6 +60,7 @@ lastprogram minefield.f90
 lastprogram slice.f90
 lastprogram xy.f90
 lastprogram cn.f90
+lastprogram seefont.f90
 
 # Example programs
 lastprogram fseq.f90 fseq.FF
@@ -89,6 +90,7 @@ lastprogram _mkfifo.f90 _mkfifo.FF
 lastprogram _mv.f90 _mv.FF
 lastprogram _printenv.f90 _printenv.FF
 lastprogram _pwd.f90 _pwd.FF
+lastprogram _rename.f90 _rename.FF
 lastprogram _rm.f90 _rm.FF
 lastprogram _rmdir.f90 _rmdir.FF
 lastprogram _showumask.f90 _showumask.FF
@@ -101,6 +103,7 @@ lastprogram _unlink.f90 _unlink.FF
 lastprogram _uuidgen.f90 _uuidgen.FF
 lastprogram _which.f90 _which.FF
 lastprogram _yes.f90 _yes.FF
+lastprogram _time.f90 _time.FF
 
 lastprogram phone.f90 phone.FF
 lastprogram sqlite3_version.f90 sqlite3_version.FF

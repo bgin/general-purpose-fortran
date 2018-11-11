@@ -9,7 +9,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'minefield(1f) - [M_DRAW] minefield game                                         ',&
+'minefield(1f) - [M_draw] minefield game                                         ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   minefield [[-r rows] [-c columns]] |[ --help --version ]                     ',&
@@ -47,7 +47,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!! minefield(1f) - [M_DRAW] minefield game
+!! minefield(1f) - [M_draw] minefield game
 !!
 !!##SYNOPSIS
 !!
@@ -93,7 +93,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    minefield game>',&
 '@(#)VERSION:        4.0, 20180616>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Mon, Oct 15th, 2018 5:36:25 PM>',&
+'@(#)COMPILED:       Sat, Nov 10th, 2018 3:30:36 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

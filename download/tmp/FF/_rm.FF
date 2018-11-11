@@ -22,7 +22,7 @@ LICENSE:        Public Domain. This is free software: you are free to change and
                 There is NO WARRANTY, to the extent permitted by law.
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-program demo_system_rename
+program demo_system_remove
 use M_kracken, only : kracken,lget,sgets,IPvalue
 use M_system, only : system_remove
 use M_system, only : system_perror
@@ -42,5 +42,5 @@ integer                            :: ierr, i
          call system_perror('*_rm*')
       endif
    enddo
-end program demo_system_rename
+end program demo_system_remove
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

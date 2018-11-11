@@ -26,7 +26,7 @@ XXtd { border:thin solid #888; }
 XXtd { border:none; }
 li { margin-bottom:0.5em; }
 blockquote { display:block; font-size:100%; font-style:italic; line-height:1.1em; margin:0 0 1.5em; padding:0 2.5em; }
-pre { background-color:#DDD; font-size:99%; overflow:auto; padding:1em; }
+pre { background-color:#DDD; font-size:100%; overflow:auto; padding:1em; }
 a,li span { color:#000; }
 a:hover, a.nav:hover, a:hover math { background-color:#000; color:#FFF; }
 #Container { margin:0 10px; text-align:center; background-color: #BBB}
@@ -34,9 +34,9 @@ a:hover, a.nav:hover, a:hover math { background-color:#000; color:#FFF; }
 span.webName { font-size:.5em; }
 textarea#content { font-size: 1em; line-height: 1.125; }
 h1#pageName { line-height:1em; margin:0.2em 0 0.2em 0; padding:0; }
-.property { color:#666; font-size:80%; }
+.property { color:#666; font-size:100%; }
 a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
-.byline { color:#666; font-size:.8em; font-style:italic; margin-bottom:1em; padding-top:1px; } 
+.byline { color:#666; font-size:1.0em; font-style:italic; margin-bottom:1em; padding-top:1px; } 
 </style> 
 </head>
 <BODY bgcolor=#F0F0F0 text=#000000 link=#0000ff vlink=#C000C0 alink=#ff0000><A NAME=top></A>
@@ -128,6 +128,7 @@ Delay time [ 1/100 of seconds]; optional
 Sample call:
 <P>
 <PRE>
+   program demo_write_animated_gif
    !***************************************************************************
    !&gt; author: Jacob Williams
    !
@@ -135,26 +136,25 @@ Sample call:
    !
    !# See also
    !  * [Make a circle illusion animation](<A HREF="http://codegolf.stackexchange.com/questions/34887/make-a-circle-illusion-animation">http://codegolf.stackexchange.com/questions/34887/make-a-circle-illusion-animation</A>)
-<P>
-   program circle_illusion
+   !
    use, intrinsic :: iso_fortran_env, only: wp=&gt;real64
    use M_writegif_animated, only : write_animated_gif
    implicit none
-<P>
+   !
    logical,parameter :: new = .true.
-<P>
+   !
    integer,parameter  :: n        = 200  !! size of image (square)
    real(wp),parameter :: rcircle  = n/2  !! radius of the big circle
    integer,parameter  :: time_sep = 5    !! deg
-<P>
+   !
    real(wp),parameter :: deg2rad = acos(-1.0_wp)/180.0_wp
-<P>
+   !
    integer,dimension(:,:,:),allocatable :: pixel    !! pixel values
-<P>
+   !
    real(wp),dimension(2) :: xy
    real(wp)              :: r,t
    integer               :: i,j,k,row,col,m,n_cases,ang_sep,iframe
-<P>
+   !
    integer,dimension(3,0:5)  :: colormap
    integer,parameter  :: white = 0
    integer,parameter  :: gray  = 1
@@ -162,14 +162,14 @@ Sample call:
    integer,parameter  :: green = 3
    integer,parameter  :: blue  = 4
    integer,parameter  :: black = 5
-<P>
+   !
    colormap(:,black) = [0,0,0]
    colormap(:,white) = [255,255,255]
    colormap(:,gray)  = [200,200,200]
    colormap(:,red)   = [255,0,0]
    colormap(:,green) = [0,255,0]
    colormap(:,blue)  = [0,0,255]
-<P>
+   !
    if (new) then
        ang_sep = 5
        n_cases = 3
@@ -177,25 +177,21 @@ Sample call:
        ang_sep = 20
        n_cases = 0
    end if
-<P>
+   !
    !how many frames:
    iframe=0
    do k=0,355,time_sep
        iframe=iframe+1
    end do
    allocate(pixel(iframe,0:n,0:n))
-<P>
+   !
    iframe=0
    do k=0,355,time_sep
-<P>
        !frame number:
        iframe=iframe+1
-<P>
        !clear entire image:
        pixel(iframe,:,:) = white
-<P>
        if (new) call draw_circle(n/2,n/2,red,n/2)
-<P>
        !draw polar grid:
        do j=0,180-ang_sep,ang_sep
            do i=-n/2, n/2
@@ -208,7 +204,6 @@ Sample call:
                end if
            end do
        end do
-<P>
        !draw dots:
        do m=0,n_cases
            do j=0,360-ang_sep,ang_sep
@@ -225,122 +220,86 @@ Sample call:
                end if
            end do
        end do
-<P>
-</PRE>
-<BLOCKQUOTE>
-end do
-<P>
-call <B>write_animated_gif</B>(&#146;circle_illusion.gif&#146;,pixel,colormap,delay=5)
-<P>
-<B>deallocate</B>(pixel)
-<P>
-contains
-!***************************************************************************
-!&gt; author: Jacob Williams
-!
-<TABLE cellpadding=3><!-- tsb: contains
- -->
-<TR></TR><TR></TR>
-<TR valign=top><TD width=6% nowrap>
-<B>!</B> </TD><TD valign=bottom>
-Draw a square.
-</TD></TR>
-<TR><TD colspan=2>
-<PRE>
-       subroutine draw_square(r,c,icolor)
-<P>
-       implicit none
-       integer,intent(in) :: r      !! row of center
-       integer,intent(in) :: c      !! col of center
-       integer,intent(in) :: icolor !! color value
-<P>
-       integer,parameter :: d = 10 !square size
-<P>
+   end do
+   !
+   call write_animated_gif(&#146;circle_illusion.gif&#146;,pixel,colormap,delay=5)
+   !
+   deallocate(pixel)
+   !
+   contains
+   !***************************************************************************
+   !&gt; author: Jacob Williams
+   !
+   !  Draw a square.
+   !
+   subroutine draw_square(r,c,icolor)
+   implicit none
+   integer,intent(in) :: r      !! row of center
+   integer,intent(in) :: c      !! col of center
+   integer,intent(in) :: icolor !! color value
+   !
+   integer,parameter :: d = 10 !square size
+   !
        pixel(iframe,max(0,r-d):min(n,r+d),max(0,c-d):min(n,c+d)) = icolor
-<P>
-       end subroutine draw_square
-</PRE>
-!***************************************************************************
-!&gt; author: Jacob Williams
-!
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B>!</B> </TD><TD valign=bottom>
-Draw a circle.
-</TD></TR>
-<TR><TD colspan=2>
-<PRE>
-       subroutine draw_circle(r,c,icolor,d)
-<P>
-       implicit none
-<P>
-       integer,intent(in) :: r      !! row of center
-       integer,intent(in) :: c      !! col of center
-       integer,intent(in) :: icolor !! color value
-       integer,intent(in) :: d      !! diameter
-<P>
-       integer :: i,j
-<P>
+   !
+   end subroutine draw_square
+   !***************************************************************************
+   !&gt; author: Jacob Williams
+   !
+   !  Draw a circle.
+   subroutine draw_circle(r,c,icolor,d)
+   implicit none
+   !
+   integer,intent(in) :: r      !! row of center
+   integer,intent(in) :: c      !! col of center
+   integer,intent(in) :: icolor !! color value
+   integer,intent(in) :: d      !! diameter
+   !
+   integer :: i,j
+   !
        do i=max(0,r-d),min(n,r+d)
            do j=max(0,c-d),min(n,c+d)
                if (sqrt(dble(i-r)**2 + dble(j-c)**2)&lt;=d) &
                    pixel(iframe,i,j) = icolor
            end do
        end do
+   !
+   end subroutine draw_circle
+   !***************************************************************************
+   !&gt; author: Jacob Williams
+   !
+   !  Convert from x,y to row,col.
+   subroutine convert(xy,row,col)
+   implicit none
+   !
+   real(wp),dimension(2),intent(in) :: xy  !! coordinates
+   integer,intent(out) :: row
+   integer,intent(out) :: col
+   !
+      row = int(-xy(2) + n/2.0_wp)
+      col = int( xy(1) + n/2.0_wp)
+   !
+   end subroutine convert
+   !***************************************************************************
+   !&gt; author: Jacob Williams
+   !
+   !  Convert spherical to cartesian coordinates.
+   subroutine spherical_to_cartesian(r,theta,xy)
+   implicit none
+   !
+   real(wp),intent(in) :: r
+   real(wp),intent(in) :: theta
+   real(wp),dimension(2),intent(out) :: xy
+   !
+      xy(1) = r * cos(theta)
+      xy(2) = r * sin(theta)
+   !
+   end subroutine spherical_to_cartesian
+   !***************************************************************************
+   end program demo_write_animated_gif
+   !***************************************************************************
 <P>
-       end subroutine draw_circle
 </PRE>
-!***************************************************************************
-!&gt; author: Jacob Williams
-!
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B>!</B> </TD><TD valign=bottom>
-Convert from x,y to row,col.
-</TD></TR>
-<TR><TD colspan=2>
-<PRE>
-       subroutine convert(xy,row,col)
-<P>
-       implicit none
-<P>
-       real(wp),dimension(2),intent(in) :: xy  !! coordinates
-       integer,intent(out) :: row
-       integer,intent(out) :: col
-<P>
-       row = int(-xy(2) + n/2.0_wp)
-       col = int( xy(1) + n/2.0_wp)
-<P>
-       end subroutine convert
-</PRE>
-!***************************************************************************
-!&gt; author: Jacob Williams
-!
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B>!</B> </TD><TD valign=bottom>
-Convert spherical to cartesian coordinates.
-</TD></TR>
-<TR></TR></TABLE><!-- .nf -->
-<PRE>
-       subroutine spherical_to_cartesian(r,theta,xy)
-<P>
-       implicit none
-<P>
-       real(wp),intent(in) :: r
-       real(wp),intent(in) :: theta
-       real(wp),dimension(2),intent(out) :: xy
-<P>
-       xy(1) = r * cos(theta)
-       xy(2) = r * sin(theta)
-<P>
-       end subroutine spherical_to_cartesian
-</PRE>
-!***************************************************************************
-<P>
-end program circle_illusion
-!***************************************************************************
-</BLOCKQUOTE>
 </BLOCKQUOTE>
 <A name=5>
 
@@ -416,7 +375,7 @@ or tort (Including negligence or otherwise) arising in any way out of the use
 of this software, even if advised of the possibility of such damage.
 </BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>write_animated_gif (3)</TD> <TD align=right width=33%><I>October 20, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from a3659ac9-08cb-442f-96da-d195b7db1e62 using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>write_animated_gif (3)</TD> <TD align=right width=33%><I>November 10, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 9b7fbc05-f342-4897-89c9-825f5b78de9c using man macros.</FONT>
 </div>
 </div>
 <br><br><center><img src="images/write_animated_gif.3.gif"></center> 

@@ -1,4 +1,4 @@
-           program demo_bash
+           program demo_M_process
            use M_process ,only : process_open_write, process_writeline
            use M_process ,only : streampointer, process_close
            implicit none
@@ -61,4 +61,4 @@
               call process_close(fp,ierr)
               write(*,'(a)')'CLOSED THE PROCESS. RETURNING TO PROGRAM'
 
-              end program demo_bash
+              end program demo_M_process

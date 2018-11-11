@@ -145,7 +145,7 @@ contains
 !!
 !!   Sample usage:
 !!
-!!    program uuidgen
+!!    program demo_generate_uuid
 !!    use M_uuid, only : generate_uuid
 !!    implicit none
 !!    character(len=36) :: uuid
@@ -154,7 +154,7 @@ contains
 !!       uuid=generate_uuid(4)  ! version 4 (pseudo-RNG-based), default
 !!       ! RFC 4122 defines a Uniform Resource Name (URN) namespace for UUIDs.
 !!       write(*,'("urn:uuid:",a36)')uuid
-!!    end program uuidgen
+!!    end program demo_generate_uuid
 !!
 !!   Typical output:
 !!

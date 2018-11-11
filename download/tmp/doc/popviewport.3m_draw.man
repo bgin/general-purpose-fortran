@@ -1,9 +1,0 @@
-NAME
-   popviewport(3f) - [M_draw:VIEWPORT] Retrieve last viewport
-
-SYNOPSIS
-         subroutine popviewport()
-
-DESCRIPTION
-
-   Retrieve last viewport.

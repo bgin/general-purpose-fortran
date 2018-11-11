@@ -26,7 +26,7 @@ XXtd { border:thin solid #888; }
 XXtd { border:none; }
 li { margin-bottom:0.5em; }
 blockquote { display:block; font-size:100%; font-style:italic; line-height:1.1em; margin:0 0 1.5em; padding:0 2.5em; }
-pre { background-color:#DDD; font-size:99%; overflow:auto; padding:1em; }
+pre { background-color:#DDD; font-size:100%; overflow:auto; padding:1em; }
 a,li span { color:#000; }
 a:hover, a.nav:hover, a:hover math { background-color:#000; color:#FFF; }
 #Container { margin:0 10px; text-align:center; background-color: #BBB}
@@ -34,9 +34,9 @@ a:hover, a.nav:hover, a:hover math { background-color:#000; color:#FFF; }
 span.webName { font-size:.5em; }
 textarea#content { font-size: 1em; line-height: 1.125; }
 h1#pageName { line-height:1em; margin:0.2em 0 0.2em 0; padding:0; }
-.property { color:#666; font-size:80%; }
+.property { color:#666; font-size:100%; }
 a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
-.byline { color:#666; font-size:.8em; font-style:italic; margin-bottom:1em; padding-top:1px; } 
+.byline { color:#666; font-size:1.0em; font-style:italic; margin-bottom:1em; padding-top:1px; } 
 </style> 
 </head>
 <BODY bgcolor=#F0F0F0 text=#000000 link=#0000ff vlink=#C000C0 alink=#ff0000><A NAME=top></A>
@@ -196,80 +196,80 @@ User-supplied routines:
 Sample program:
 <P>
 <PRE>
-      program T_strgarr
-      use M_kracken, only: sget, kracken, lget
-      use M_calculator_plus, only : strgarr
-      real vals(41)
-      character(len=80) :: line=&#146; &#146;
-      character(len=10) :: delims=&#146; ;&#146;
-      !  define command arguments, default values and crack command line
-      call kracken(&#146;cmd&#146;,&#146;-d " ;" -test .false. -help .false. -begin -end&#146;)
-      !----------------------------------------------------------
-      write(*,*)&#146;SGET&#146;,trim(sget(&#146;cmd_test&#146;))
-      write(*,*)&#146;LGET&#146;,lget(&#146;cmd_test&#146;)
-      if(lget(&#146;cmd_test&#146;))then   ! cursory test
-         call strgarr("10;2/3;sin(4.314)",41,vals,ifound,&#146; ;&#146;,ierr)
-         write(*,*)&#146;values are&#146;,(vals(i),i=1,ifound)
-         sumtarget= 9.74497986
-         tol=       0.00000001
-         sumup=sum(vals(:ifound))
-         ipass=0
-         if(ifound.ne.3) ipass=ipass+1
-         if(ierr.ne.0)   ipass=ipass+2
-         if( sumup &gt;= (sumtarget-tol) .and. sumup &lt;= (sumtarget+tol) ) then
-         else
-            ipass=ipass+4
-         endif
-         if(ipass.eq.0)then
-            write(*,*)&#146;sum is &#146;,sumup
-            write(*,*)&#146;number of values is&#146;,ifound
-            write(*,*)&#146;error flag is&#146;,ierr
-            write(*,*)&#146;STRGARR*: PASSED&#146;
-            stop(0)
-         else
-            write(*,*)&#146;IFOUND:&#146;,ifound
-            write(*,*)&#146;IERR  :&#146;,ierr
-            write(*,*)&#146;SUM   :&#146;,sumup
-            write(*,*)&#146;STRGARR*: FAILED&#146;,ipass
-            stop(-1)
-         endif
-      endif
-      !----------------------------------------------------------
-      delims=sget(&#146;cmd_d&#146;)
-      write(*,*)&#146;DELIMS=[&#146;,trim(delims),&#146;]&#146;
-      !----------------------------------------------------------
-      line=sget(&#146;cmd_begin&#146;)
-      write(*,*)&#146;BEGIN:&#146;,trim(line)
-      if(line.ne.&#146; &#146;)then
-         call strgarr(line,41,vals,ifound,delims,ierr)
-      endif
-      !----------------------------------------------------------
-      line=sget(&#146;cmd_oo&#146;)
-      write(*,*)&#146;LINE:&#146;,trim(line)
-      if(line.ne.&#146; &#146;)then
-         call strgarr(line,41,vals,ifound,delims,ierr)
-         write(*,*)(VALS(I),I=1,IFOUND)
+   program demo_strgarr
+   use M_kracken, only: sget, kracken, lget
+   use M_calculator_plus, only : strgarr
+   real vals(41)
+   character(len=80) :: line=&#146; &#146;
+   character(len=10) :: delims=&#146; ;&#146;
+   !  define command arguments, default values and crack command line
+   call kracken(&#146;cmd&#146;,&#146;-d " ;" -test .false. -help .false. -begin -end&#146;)
+   !----------------------------------------------------------
+   write(*,*)&#146;SGET&#146;,trim(sget(&#146;cmd_test&#146;))
+   write(*,*)&#146;LGET&#146;,lget(&#146;cmd_test&#146;)
+   if(lget(&#146;cmd_test&#146;))then   ! cursory test
+      call strgarr("10;2/3;sin(4.314)",41,vals,ifound,&#146; ;&#146;,ierr)
+      write(*,*)&#146;values are&#146;,(vals(i),i=1,ifound)
+      sumtarget= 9.74497986
+      tol=       0.00000001
+      sumup=sum(vals(:ifound))
+      ipass=0
+      if(ifound.ne.3) ipass=ipass+1
+      if(ierr.ne.0)   ipass=ipass+2
+      if( sumup &gt;= (sumtarget-tol) .and. sumup &lt;= (sumtarget+tol) ) then
       else
-         INFINITE: do
-            read(*,&#146;(a)&#146;,iostat=ios)line
-            if(ios.ne.0)then
-               exit INFINITE
-            endif
-            call strgarr(line,41,vals,ifound,delims,ierr)
-            write(*,*)IERR,IFOUND,&#146;:&#146;,(VALS(I),I=1,IFOUND)
-         enddo INFINITE
+         ipass=ipass+4
       endif
-      !----------------------------------------------------------
-      line=sget(&#146;cmd_end&#146;)
-      write(*,*)&#146;END&#146;,trim(line)
-      if(line.ne.&#146; &#146;)then
+      if(ipass.eq.0)then
+         write(*,*)&#146;sum is &#146;,sumup
+         write(*,*)&#146;number of values is&#146;,ifound
+         write(*,*)&#146;error flag is&#146;,ierr
+         write(*,*)&#146;STRGARR*: PASSED&#146;
+         stop 0
+      else
+         write(*,*)&#146;IFOUND:&#146;,ifound
+         write(*,*)&#146;IERR  :&#146;,ierr
+         write(*,*)&#146;SUM   :&#146;,sumup
+         write(*,*)&#146;STRGARR*: FAILED&#146;,ipass
+         stop -1
+      endif
+   endif
+   !----------------------------------------------------------
+   delims=sget(&#146;cmd_d&#146;)
+   write(*,*)&#146;DELIMS=[&#146;,trim(delims),&#146;]&#146;
+   !----------------------------------------------------------
+   line=sget(&#146;cmd_begin&#146;)
+   write(*,*)&#146;BEGIN:&#146;,trim(line)
+   if(line.ne.&#146; &#146;)then
+      call strgarr(line,41,vals,ifound,delims,ierr)
+   endif
+   !----------------------------------------------------------
+   line=sget(&#146;cmd_oo&#146;)
+   write(*,*)&#146;LINE:&#146;,trim(line)
+   if(line.ne.&#146; &#146;)then
+      call strgarr(line,41,vals,ifound,delims,ierr)
+      write(*,*)(VALS(I),I=1,IFOUND)
+   else
+      INFINITE: do
+         read(*,&#146;(a)&#146;,iostat=ios)line
+         if(ios.ne.0)then
+            exit INFINITE
+         endif
          call strgarr(line,41,vals,ifound,delims,ierr)
-         write(*,*)&#146;END:&#146;,(VALS(I),I=1,IFOUND)
-      endif
-      !----------------------------------------------------------
-      end
+         write(*,*)IERR,IFOUND,&#146;:&#146;,(VALS(I),I=1,IFOUND)
+      enddo INFINITE
+   endif
+   !----------------------------------------------------------
+   line=sget(&#146;cmd_end&#146;)
+   write(*,*)&#146;END&#146;,trim(line)
+   if(line.ne.&#146; &#146;)then
+      call strgarr(line,41,vals,ifound,delims,ierr)
+      write(*,*)&#146;END:&#146;,(VALS(I),I=1,IFOUND)
+   endif
+   !----------------------------------------------------------
+   end program demo_strgarr
 <P>
-      ! NOTE: user must supply the JUOWN1 and C procedures.
+   ! NOTE: user must supply the JUOWN1 and C procedures.
 <P>
 </PRE>
 </BLOCKQUOTE>
@@ -291,7 +291,7 @@ If there is only one expression see <B>RNUM0</B>(), <B>JUCALCX</B>(), <B>JUCALC<
 none.
 </BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>strgarr (3)</TD> <TD align=right width=33%><I>October 20, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from f9730e66-bf86-4df2-887b-1a578aa7617a using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>strgarr (3)</TD> <TD align=right width=33%><I>November 10, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from e41a14e0-5cc8-433e-840e-ed573873ce97 using man macros.</FONT>
 </div>
 </div>
 <br><br><center><img src="images/strgarr.3.gif"></center> 

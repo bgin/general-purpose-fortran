@@ -45,7 +45,7 @@
 !!
 !!   Example calculator program
 !!
-!!       program compute
+!!       program demo_jucalc
 !!       !compute(1f): line mode calculator program (that calls jucalc(3f))
 !!       !     requires:
 !!       !     c(), juown1()
@@ -85,7 +85,7 @@
 !!          end select
 !!       enddo INFINITE
 !!       999 continue
-!!       end program compute
+!!       end program demo_jucalc
 !!
 !!##SEE ALSO
 !!     see INUM0(),RNUM0(),SNUM0(),STRGAR2(),JUCALCX().
@@ -93,7 +93,7 @@
 !!    NONE.
 !===================================================================================================================================
 !>
-!! AUTHOR   John S. Urbn
+!! AUTHOR   John S. Urban
 !!##VERSION  1.0 19971123,20161218
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -173,7 +173,7 @@ module m_calculator
 
 !>
 !!##NAME
-!!    stuff(3f) - [M_calculator] directly store value into calculator directory for efficiency
+!!    stuff(3f) - [M_calculator] directly store value into calculator dictionary for efficiency
 !!
 !!##SYNOPSIS
 !!
@@ -201,12 +201,20 @@ module m_calculator
 !!
 !!##OPTIONS
 !!    varnam0   name of calculator variable to define or replace
-!!    value     numeric value to associate with the name varnam0. May be integer, real, or doubleprecison.
+!!    value     numeric value to associate with the name varnam0. May be integer, real, or doubleprecision.
 !!    ioflag    optional flag to use journal logging. This string is passed directly to M_journal::journal(3f)
 !!              as the first parameter. The default is to not log the definitions to the journal(3f) command.
 !!
 !!##EXAMPLE
 !!
+!!   Sample program:
+!!
+!!    program demo_stuff
+!!    use M_calculator, only : stuff
+!!    implicit none
+!!    call stuff('A',10.0)
+!!    call stuff('PI',3.141592653589793238462643383279502884197169399375105820974944592307d0)
+!!    end program demo_stuff
 !===================================================================================================================================
    INTERFACE STUFF
    module procedure integer_stuff,real_stuff,double_stuff
@@ -2232,6 +2240,7 @@ end subroutine jufacs
 !!          an unexpected error has occurred, set error flag and
 !!          error message and set rval to zero and return.
 !!       6. note that blanks are treated as null, not zero.
+!!
 !!##OPTIONS
 !!      chars  is the input string
 !!      rval   is the doubleprecision output value
@@ -3185,6 +3194,15 @@ end subroutine double_stuff
 !!              is blank, the journal(3f) routine is not evoked.
 !!##EXAMPLE
 !!
+!!   Sample program:
+!!
+!!    program demo_stuffa
+!!    use M_calculator, only : stuffa
+!!    implicit none
+!!    integer :: ii
+!!       call stuffa('$A','',ii,'')
+!!       call stuffa('$mystring','this is the value of the string',ii,'')
+!!    end program demo_stuffa
 !===================================================================================================================================
 subroutine stuffa(varnam0,string,index,ioflag)
 character(len=*),parameter :: ident=&

@@ -303,7 +303,7 @@ EOF
 BOOKNAME=$1
 SECTION=$2
    echo 'Creating book '"$BOOKNAME"
-   banner $BOOKNAME
+   banner.sh $BOOKNAME
    INDX $BOOKNAME $SECTION
 #####################################################################################################################################
 exit

@@ -127,18 +127,18 @@
 !!##EXAMPLE PROGRAM
 !!   Sample program
 !!
-!!       program redoit
+!!       program demo_redo
 !!       use M_history, only : redo
 !!       implicit none
 !!       character(len=1024) ::  line
 !!       integer             :: ios
 !!       integer             :: cstat
 !!       character(len=256)  :: sstat
-!!       write(*,'(a)') &
-!!       & 'REDO(3f) COMMAND INPUT EDITOR',
-!!       & 'enter "r" or "r r_command" on the input line to go',
-!!       & 'into history edit mode. Once in history edit mode you',
-!!       & 'may enter "?" to get some help. Enter "quit" to exit',
+!!       write(*,'(a)')                                             &
+!!       & 'REDO(3f) COMMAND INPUT EDITOR',                         &
+!!       & 'enter "r" or "r r_command" on the input line to go',    &
+!!       & 'into history edit mode. Once in history edit mode you', &
+!!       & 'may enter "?" to get some help. Enter "quit" to exit',  &
 !!       & 'the program.'
 !!       do
 !!          write(*,'(a)',advance='no')'>->'    ! write prompt
@@ -150,7 +150,7 @@
 !!          ! As an example, call the system shell
 !!          call execute_command_line(trim(line),cmdstat=cstat,cmdmsg=sstat)
 !!       enddo
-!!       end program redoit
+!!       end program demo_redo
 !!
 !!##SAMPLE USAGE
 !!

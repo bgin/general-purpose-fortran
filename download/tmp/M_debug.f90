@@ -9,8 +9,8 @@
 !!
 !!##QUOTE
 !!
-!! Do not let your victories go to your head, nor let your failures go to
-!! your heart.
+!!    Do not let your victories go to your head, nor let your failures go
+!!    to your heart.
 !!
 !!##DESCRIPTION
 !!
@@ -35,7 +35,7 @@
 !!    The intrinsics ANY(3f) and ALL(3f) are particularly useful in calls
 !!    to unit_check(3f).
 !!
-!!##EXAMPLE
+!!##EXAMPLES
 !!
 !!   Sample program:
 !!
@@ -640,14 +640,15 @@ end subroutine unit_check_good
 !!         Format integer constants > 32767 are not supported on HP-UX
 !!         when newer compilers are available use unlimited
 !!
-!!##EXAMPLE
+!!##EXAMPLES
 !!
 !!
 !!    Sample program:
 !!
-!!       program demo
-!!       call pdec(' ABCDEFG abcdefg ')
-!!       end program demo
+!!       program demo_pdec
+!!       use M_debug, only : pdec
+!!       call pdec(' ABCDEFG abcdefg    ')
+!!       end program demo_pdec
 !!
 !!    would produce (notice trailing space is trimmed):
 !!

@@ -9,7 +9,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'   _sleep(1f) - [TIME] pause for specified duration                             ',&
+'   _sleep(1f) - [FUNIX:TIME] pause for specified duration                       ',&
 'SYNOPSIS                                                                        ',&
 '   _sleep [dd-hh:mm:ss[.xxx]|xxx.yyy[s|m|h|d]] [-countdown|-countup -count]|--help|--version',&
 'DESCRIPTION                                                                     ',&
@@ -61,7 +61,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    _sleep(1f) - [TIME] pause for specified duration
+!!    _sleep(1f) - [FUNIX:TIME] pause for specified duration
 !!##SYNOPSIS
 !!
 !!    _sleep [dd-hh:mm:ss[.xxx]|xxx.yyy[s|m|h|d]] [-countdown|-countup -count]|--help|--version
@@ -124,7 +124,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20170822>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
-'@(#)COMPILED:       Mon, Oct 15th, 2018 5:25:55 PM>',&
+'@(#)COMPILED:       Sat, Nov 10th, 2018 2:27:11 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

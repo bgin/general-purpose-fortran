@@ -2233,21 +2233,18 @@ end subroutine d2w
 !!     program demo_w2d
 !!     use M_time, only : w2d, fmtdate
 !!     implicit none
-!!
-!!        write(*,'(a)')Given Monday 29 December 2008 is written "2009-W01-1"'
+!!        write(*,'(a)')'Given Monday 29 December 2008 is written "2009-W01-1"'
 !!        call printit(2009,1,1)
-!!        write(*,'(a)')Given Sunday 3 January 2010 is written "2009-W53-7"'
+!!        write(*,'(a)')'Given Sunday 3 January 2010 is written "2009-W53-7"'
 !!        call printit(2009,53,7)
-!!        write(*,'(a)')Given the Gregorian date Sun 31 December 2006 is written 2006-W52-7'
+!!        write(*,'(a)')'Given the Gregorian date Sun 31 December 2006 is written 2006-W52-7'
 !!        call printit(2006,52,7)
-!!        write(*,'(a)')Given 27 September 2008 is 2008-W39-6'
+!!        write(*,'(a)')'Given 27 September 2008 is 2008-W39-6'
 !!        call printit(2008,39,6)
-!!
 !!     contains
 !!     subroutine printit(iso_year,iso_week,iso_weekday)
 !!     integer  :: iso_year, iso_week, iso_weekday ! ISO-8601 Week:   2016-W29-1
 !!     integer  :: dat(8)                          ! input date array
-!!
 !!        call w2d(iso_year,iso_week,iso_weekday,dat)
 !!        write(*,'(a,i0)')'GIVEN:           '
 !!        write(*,'(a,i0)')'ISO-8601 year    ',iso_year
@@ -2256,7 +2253,6 @@ end subroutine d2w
 !!        write(*,'(a,i0)')'RESULT:          '
 !!        write(*,'(a,*(i0:,","))')'   DAT array        ',dat
 !!        write(*,'(a,/,77("="))')'    '//fmtdate(dat,'long')
-!!
 !!     end subroutine printit
 !!     end program demo_w2d
 !!
@@ -3150,7 +3146,7 @@ end function days2sec
 !!##DESCRIPTION
 !!  Phases Of The Moon
 !!
-!!  This is a private procedure used to support the %p field descriptor for the
+!!  This procedure is used to support the %p field descriptor for the
 !!  fmtdate(3f) routine.
 !!
 !!  The moon circles the earth every 29.530588853 days on average, so pick a
@@ -3175,6 +3171,32 @@ end function days2sec
 !!  Note that technically the four states (new, first quarter, full, third
 !!  quarter) are events not phases. That is to say, the moon is technically
 !!  only new for an instant.
+!!
+!!##EXAMPLES
+!!
+!!   Sample:
+!!
+!!    program demo_phase_of_moon
+!!    use M_time, only : now
+!!    use M_time, only : phase_of_moon
+!!    use M_time, only : moon_fullness
+!!    implicit none
+!!    integer             :: dat(8)
+!!       ! generate DAT array
+!!       call date_and_time(values=dat)
+!!       ! show DAT array
+!!       write(*,'(" Today is:",*(i0:,":"))')dat
+!!       ! the %p and %P fields are supported by fmtdate(3f)
+!!       write(*,*)now('The phase of the moon is %p, with a fullness of %P')
+!!       write(*,'(1x,*(a))',advance='no')'The phase of the moon is ',trim( phase_of_moon(dat)),','
+!!       write(*,'(1x,a,i0,a)')'with a fullness of ', moon_fullness(dat),'%'
+!!    end program demo_phase_of_moon
+!!
+!!   Sample output:
+!!
+!!     Today is:2018:11:3:-240:20:18:44:245
+!!     The phase of the moon is Waning crescent, with a fullness of -30%
+!!     The phase of the moon is Waning crescent, with a fullness of -30%
 !===================================================================================================================================
 function phase_of_moon(datin)
 implicit none
@@ -3216,7 +3238,7 @@ end function phase_of_moon
 !!
 !!##DESCRIPTION
 !!
-!!  This is a private procedure used to support the %P field descriptor for the
+!!  This procedure is used to support the %P field descriptor for the
 !!  fmtdate(3f) routine.
 !!
 !!  The moon circles the earth every 29.530588853 days on average, so pick
@@ -3232,6 +3254,32 @@ end function phase_of_moon
 !!
 !!  moon_fullness  0 is a new or dark moon, 100 is a full moon, + for waxing
 !!                 and - for waning.
+!!
+!!##EXAMPLES
+!!
+!!   Sample:
+!!
+!!    program demo_moon_fullness
+!!    use M_time, only : now
+!!    use M_time, only : phase_of_moon
+!!    use M_time, only : moon_fullness
+!!    implicit none
+!!    integer             :: dat(8)
+!!       ! generate DAT array
+!!       call date_and_time(values=dat)
+!!       ! show DAT array
+!!       write(*,'(" Today is:",*(i0:,":"))')dat
+!!       ! the %p and %P fields are supported by fmtdate(3f)
+!!       write(*,*)now('The phase of the moon is %p, with a fullness of %P')
+!!       write(*,'(1x,*(a))',advance='no')'The phase of the moon is ',trim( phase_of_moon(dat)),','
+!!       write(*,'(1x,a,i0,a)')'with a fullness of ', moon_fullness(dat),'%'
+!!    end program demo_moon_fullness
+!!
+!!   Sample output:
+!!
+!!     Today is:2018:11:3:-240:20:18:44:245
+!!     The phase of the moon is Waning crescent, with a fullness of -30%
+!!     The phase of the moon is Waning crescent, with a fullness of -30%
 !===================================================================================================================================
 function moon_fullness(datin)
 implicit none

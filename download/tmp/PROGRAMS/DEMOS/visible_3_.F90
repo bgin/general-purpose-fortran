@@ -1,8 +1,7 @@
            program demo_visible
            use M_strings, only : visible
            integer :: i
-              READFILE: block
-                 do i=0,255
-                    write(*,'(a)')visible(char(i))
-                 enddo
+              do i=0,255
+                 write(*,'(a)')visible(char(i))
+              enddo
            end program demo_visible

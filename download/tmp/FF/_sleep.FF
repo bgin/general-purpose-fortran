@@ -2,7 +2,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $IF DEFINED(TESTPRG90) ! Place test program source here
 $DOCUMENT HELP -file _sleep.1.man
 NAME
-   _sleep(1f) - [TIME] pause for specified duration
+   _sleep(1f) - [FUNIX:TIME] pause for specified duration
 SYNOPSIS
    _sleep [dd-hh:mm:ss[.xxx]|xxx.yyy[s|m|h|d]] [-countdown|-countup -count]|--help|--version
 DESCRIPTION

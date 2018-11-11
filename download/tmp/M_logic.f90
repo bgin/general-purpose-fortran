@@ -45,7 +45,7 @@
 !!
 !!   Here is an example program that will read in a file and write just lines from the file to output that are in true blocks...
 !!
-!!    program logic
+!!    program demo_M_logic
 !!    use M_journal, only : journal  ! for logging messages
 !!    use M_strings, only : lower, delim,v2s ! convert character case; split string
 !!    use M_logic, only : cond
@@ -93,7 +93,7 @@
 !!          endif
 !!       end select
 !!    enddo READLINE
-!!    end program logic
+!!    end program demo_M_logic
 !!
 !!   Here is an input file for the test program
 !!

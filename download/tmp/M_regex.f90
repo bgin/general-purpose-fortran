@@ -423,7 +423,7 @@ contains
 !!
 !!    program demo_regcomp
 !!    use M_regex, only: regex_type, regcomp, regexec, regfree
-!!    use M_regex, only: regmatch, regsub
+!!    use M_regex, only: regmatch
 !!    implicit none
 !!    type(regex_type)             :: regex
 !!    integer                      :: matches(2,1)
@@ -988,8 +988,8 @@ end subroutine regfree
 !!
 !!          write(*,'(a)')repeat('-',80)                          ! put out a number line
 !!          write(*,'(a)') input_line(i)
-!!
-!!          call regsub(input_line(i),matches,'username="\1" &    ! replace \n lines
+!!                                                                ! replace \n lines
+!!          call regsub(input_line(i),matches,'username="\1" &
 !!          &password="\2" UID="\3" GID="\4" name="\5" &
 !!          &home="\6" shell="\7" ',output_line)
 !!          write(*,'(a)') output_line

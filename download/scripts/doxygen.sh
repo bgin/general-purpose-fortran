@@ -1,6 +1,6 @@
 #!/bin/bash
 #@(#) attempt to generate doxygen documentation for this collection
-banner doxygen.sh
+banner.sh doxygen.sh
 cd tmp|| exit
 ################################################################################
 cat >mainpage.txt <<\EOF

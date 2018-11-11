@@ -212,7 +212,7 @@ END MODULE PUTSTRMODULE
 !!
 !! A longer example program:
 !!
-!!    program dispdemo
+!!    program demo_M_display
 !!    use M_display
 !!    implicit none
 !!    integer, parameter :: rk = selected_real_kind(6), n = 3
@@ -235,7 +235,7 @@ END MODULE PUTSTRMODULE
 !!      call disp([11,12,13], advance='no')
 !!      call disp([.true., .false., .true.], advance='no')
 !!      call disp(['A','B','C'])
-!!    end program dispdemo
+!!    end program demo_M_display
 !!
 !! Expected results:
 !!

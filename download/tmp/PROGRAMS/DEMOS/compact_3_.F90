@@ -7,7 +7,6 @@
            write(*,*)compact('  This     is      a     test  ',char='')
            ! produces 'This:is:a:test               '
            write(*,*)compact('  This     is      a     test  ',char=':')
-
            ! note CHAR is used to replace the whitespace, but if CHAR is
            ! in the original string it is just copied
            write(*,*)compact('A  AA    A   AAAAA',char='A')

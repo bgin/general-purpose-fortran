@@ -310,22 +310,21 @@ end function dnum0
 !!   Sample program:
 !!
 !!     !     NOTE: user must supply the JUOWN1 and C procedures.
-!!     program DEMO_SNUM0
-!!     use m_calculator_plus, only: iclen_calc, rnum0, snum0
-!!     CHARACTER(len=80)  :: IC,JC,KC
+!!     program demo_snum0
+!!     use m_calculator_plus, only: rnum0, snum0
+!!     character(len=80)  :: ic,jc,kc
 !!
-!!     RDUM=RNUM0('A=83/2') ! set a variable in the calculator
-!!     KC=SNUM0('$MYTITLE="This is my title variable"')
+!!     rdum=rnum0('A=83/2') ! set a variable in the calculator
+!!     kc=snum0('$MYTITLE="This is my title variable"')
 !!
-!!     IC=SNUM0('$STR("VALUE IS [",A,"]")')
-!!     JC=SNUM0('$MYTITLE')
+!!     ic=snum0('$STR("VALUE IS [",A,"]")')
+!!     jc=snum0('$MYTITLE')
 !!
-!!     WRITE(*,*)'IC=',TRIM(IC)
-!!     WRITE(*,*)'JC=',TRIM(JC)
-!!     WRITE(*,*)'KC=',TRIM(KC)
+!!     write(*,*)'IC=',trim(ic)
+!!     write(*,*)'JC=',trim(jc)
+!!     write(*,*)'KC=',trim(kc)
 !!
-!!     end program DEMO_SNUM0
-!!     $endif
+!!     end program demo_snum0
 !!
 !!    The output should look like
 !!
@@ -456,17 +455,26 @@ end function snum0
 !!
 !!    Sample program:
 !!
-!!     program TEST_JUCALCX
+!!     program demo_jucalcx
 !!     !     NOTE: user must supply the JUOWN1 and C procedures.
-!!     use m_calculator, only: iclen_calc
+!!     use M_calculator,      only : iclen_calc
+!!     use M_calculator_plus, only : jucalcx
 !!     character(len=iclen_calc) ::  outlin0
 !!     doubleprecision :: outval
 !!     call jucalcx('A=3.4**5    ',outval,outlin0,ierr,ilen)
 !!     write(*,*)'value of expression is ',outval
-!!     write(*,*)'string representation of value is ',outlin0
+!!     write(*,*)'string representation of value is ',trim(outlin0)
 !!     write(*,*)'error flag value is ',ierr
 !!     write(*,*)'length of expression is ',ilen
-!!     end program TEST_JUCALCX
+!!     end program demo_jucalcx
+!!
+!!   Results:
+!!
+!!     value of expression is    454.35424000000000
+!!     string representation of value is 454.35424
+!!     error flag value is            0
+!!     length of expression is            8
+!! ================================================================================
 !!
 !!##SEE ALSO
 !!     See also: STRGAR(),RNUM0(),JUCALC(),INUM0(),SNUM0()
@@ -591,82 +599,82 @@ end subroutine jucalcx
 !!           o c
 !!##EXAMPLES
 !!
-!!    Sample program:
+!!   Sample program:
 !!
-!!       program T_strgarr
-!!       use M_kracken, only: sget, kracken, lget
-!!       use M_calculator_plus, only : strgarr
-!!       real vals(41)
-!!       character(len=80) :: line=' '
-!!       character(len=10) :: delims=' ;'
-!!       !  define command arguments, default values and crack command line
-!!       call kracken('cmd','-d " ;" -test .false. -help .false. -begin -end')
-!!       !----------------------------------------------------------
-!!       write(*,*)'SGET',trim(sget('cmd_test'))
-!!       write(*,*)'LGET',lget('cmd_test')
-!!       if(lget('cmd_test'))then   ! cursory test
-!!          call strgarr("10;2/3;sin(4.314)",41,vals,ifound,' ;',ierr)
-!!          write(*,*)'values are',(vals(i),i=1,ifound)
-!!          sumtarget= 9.74497986
-!!          tol=       0.00000001
-!!          sumup=sum(vals(:ifound))
-!!          ipass=0
-!!          if(ifound.ne.3) ipass=ipass+1
-!!          if(ierr.ne.0)   ipass=ipass+2
-!!          if( sumup >= (sumtarget-tol) .and. sumup <= (sumtarget+tol) ) then
-!!          else
-!!             ipass=ipass+4
-!!          endif
-!!          if(ipass.eq.0)then
-!!             write(*,*)'sum is ',sumup
-!!             write(*,*)'number of values is',ifound
-!!             write(*,*)'error flag is',ierr
-!!             write(*,*)'STRGARR*: PASSED'
-!!             stop(0)
-!!          else
-!!             write(*,*)'IFOUND:',ifound
-!!             write(*,*)'IERR  :',ierr
-!!             write(*,*)'SUM   :',sumup
-!!             write(*,*)'STRGARR*: FAILED',ipass
-!!             stop(-1)
-!!          endif
-!!       endif
-!!       !----------------------------------------------------------
-!!       delims=sget('cmd_d')
-!!       write(*,*)'DELIMS=[',trim(delims),']'
-!!       !----------------------------------------------------------
-!!       line=sget('cmd_begin')
-!!       write(*,*)'BEGIN:',trim(line)
-!!       if(line.ne.' ')then
-!!          call strgarr(line,41,vals,ifound,delims,ierr)
-!!       endif
-!!       !----------------------------------------------------------
-!!       line=sget('cmd_oo')
-!!       write(*,*)'LINE:',trim(line)
-!!       if(line.ne.' ')then
-!!          call strgarr(line,41,vals,ifound,delims,ierr)
-!!          write(*,*)(VALS(I),I=1,IFOUND)
+!!    program demo_strgarr
+!!    use M_kracken, only: sget, kracken, lget
+!!    use M_calculator_plus, only : strgarr
+!!    real vals(41)
+!!    character(len=80) :: line=' '
+!!    character(len=10) :: delims=' ;'
+!!    !  define command arguments, default values and crack command line
+!!    call kracken('cmd','-d " ;" -test .false. -help .false. -begin -end')
+!!    !----------------------------------------------------------
+!!    write(*,*)'SGET',trim(sget('cmd_test'))
+!!    write(*,*)'LGET',lget('cmd_test')
+!!    if(lget('cmd_test'))then   ! cursory test
+!!       call strgarr("10;2/3;sin(4.314)",41,vals,ifound,' ;',ierr)
+!!       write(*,*)'values are',(vals(i),i=1,ifound)
+!!       sumtarget= 9.74497986
+!!       tol=       0.00000001
+!!       sumup=sum(vals(:ifound))
+!!       ipass=0
+!!       if(ifound.ne.3) ipass=ipass+1
+!!       if(ierr.ne.0)   ipass=ipass+2
+!!       if( sumup >= (sumtarget-tol) .and. sumup <= (sumtarget+tol) ) then
 !!       else
-!!          INFINITE: do
-!!             read(*,'(a)',iostat=ios)line
-!!             if(ios.ne.0)then
-!!                exit INFINITE
-!!             endif
-!!             call strgarr(line,41,vals,ifound,delims,ierr)
-!!             write(*,*)IERR,IFOUND,':',(VALS(I),I=1,IFOUND)
-!!          enddo INFINITE
+!!          ipass=ipass+4
 !!       endif
-!!       !----------------------------------------------------------
-!!       line=sget('cmd_end')
-!!       write(*,*)'END',trim(line)
-!!       if(line.ne.' ')then
+!!       if(ipass.eq.0)then
+!!          write(*,*)'sum is ',sumup
+!!          write(*,*)'number of values is',ifound
+!!          write(*,*)'error flag is',ierr
+!!          write(*,*)'STRGARR*: PASSED'
+!!          stop 0
+!!       else
+!!          write(*,*)'IFOUND:',ifound
+!!          write(*,*)'IERR  :',ierr
+!!          write(*,*)'SUM   :',sumup
+!!          write(*,*)'STRGARR*: FAILED',ipass
+!!          stop -1
+!!       endif
+!!    endif
+!!    !----------------------------------------------------------
+!!    delims=sget('cmd_d')
+!!    write(*,*)'DELIMS=[',trim(delims),']'
+!!    !----------------------------------------------------------
+!!    line=sget('cmd_begin')
+!!    write(*,*)'BEGIN:',trim(line)
+!!    if(line.ne.' ')then
+!!       call strgarr(line,41,vals,ifound,delims,ierr)
+!!    endif
+!!    !----------------------------------------------------------
+!!    line=sget('cmd_oo')
+!!    write(*,*)'LINE:',trim(line)
+!!    if(line.ne.' ')then
+!!       call strgarr(line,41,vals,ifound,delims,ierr)
+!!       write(*,*)(VALS(I),I=1,IFOUND)
+!!    else
+!!       INFINITE: do
+!!          read(*,'(a)',iostat=ios)line
+!!          if(ios.ne.0)then
+!!             exit INFINITE
+!!          endif
 !!          call strgarr(line,41,vals,ifound,delims,ierr)
-!!          write(*,*)'END:',(VALS(I),I=1,IFOUND)
-!!       endif
-!!       !----------------------------------------------------------
-!!       end
+!!          write(*,*)IERR,IFOUND,':',(VALS(I),I=1,IFOUND)
+!!       enddo INFINITE
+!!    endif
+!!    !----------------------------------------------------------
+!!    line=sget('cmd_end')
+!!    write(*,*)'END',trim(line)
+!!    if(line.ne.' ')then
+!!       call strgarr(line,41,vals,ifound,delims,ierr)
+!!       write(*,*)'END:',(VALS(I),I=1,IFOUND)
+!!    endif
+!!    !----------------------------------------------------------
+!!    end program demo_strgarr
 !!
-!!       ! NOTE: user must supply the JUOWN1 and C procedures.
+!!    ! NOTE: user must supply the JUOWN1 and C procedures.
 !!
 !!##SEE ALSO
 !!    To parse a list of numbers instead of expressions see STRGAR().
@@ -828,7 +836,7 @@ END SUBROUTINE strgarr
 !!
 !!  Sample program:
 !!
-!!     program T_STRGAR2
+!!     program demo_strgar2
 !!     use M_calculator_plus, only : strgar2
 !!     integer             :: ios
 !!     integer             :: i
@@ -886,7 +894,7 @@ END SUBROUTINE strgarr
 !!           write(*,*)'ifound=',ifound
 !!           write(*,*)'values are',(vals(i),i=1,ifound)
 !!        enddo
-!!     end program T_STRGAR2
+!!     end program demo_strgar2
 !!
 !!##SEE ALSO
 !!

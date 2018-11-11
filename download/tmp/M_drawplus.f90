@@ -58,13 +58,19 @@
 !!
 !!        subroutine uconic(x,y,p,e,theta1,theta2,orientation)
 !!
+!!        subroutine ellipse(xpage,ypage,rmaj,rmin,angle,th0,thf,ipen)
+!!
 !!        subroutine spirograph(xcenter,ycenter,sunr0,planet0,offset0,radius,ilines,ang,angs,ifill)
 !!
 !!        subroutine smoot, ismoo,ismoo1,ismoo2,ismoo3,perin
 !!
 !!    RECTANGLES AND GENERAL POLYGON ROUTINES
 !!
+!!        subroutine plain_rect(x1,y1,x2,y2)
+!!
 !!    TEXT ROUTINES
+!!
+!!        subroutine seefont(fontin)
 !!
 !!    TRANSFORMATIONS ROUTINES
 !!
@@ -105,6 +111,7 @@ public  :: spirograph
 public  :: call_draw
 public  :: draw_interpret
 public  :: arrowhead
+public  :: plain_rect
 public  :: rdpnt
 public  :: rdbox
 
@@ -112,11 +119,14 @@ public  :: barcode
 public  :: pop
 public  :: push
 public  :: uconic
+public  :: ellipse
 public  :: uarc
 public  :: polyline2
 integer :: ismoo,ismoo1,ismoo2,ismoo3
 real    :: perin
 public  :: smoot, ismoo,ismoo1,ismoo2,ismoo3,perin
+
+public  :: seefont
 
 private :: arc2
 
@@ -233,6 +243,47 @@ integer,intent(in) :: idraw
       call move2(xpoint,ypoint)
    endif
 end subroutine arrowhead
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!    plain_rect(3f) - [M_drawplus] - draw a simple rectangle that does not act as a polygon
+!!##SYNOPSIS
+!!
+!!   subroutine plain_rect(x1,y1,x2,y2)
+!!
+!!    real,intent(in) :: x1
+!!    real,intent(in) :: y1
+!!    real,intent(in) :: x2
+!!    real,intent(in) :: y2
+!!##DESCRIPTION
+!!    The M_draw(3fm) routine rect(3f) is treated as a polygon. This simple routine ensures just the
+!!    outline of the box is draw regardless of whether polygon fill or hatchfill mode is on.
+!!##OPTIONS
+!!    X1,Y1   coordinates of a corner of the box
+!!    X2,Y2   coordinates of opposite corner of the box
+!!##EXAMPLE
+!!
+!===================================================================================================================================
+subroutine plain_rect(x1,y1,x2,y2)
+use M_draw
+implicit none
+
+character(len=*),parameter::ident="@(#)M_xyplot::plain_rect(3fp): Draw a rectangle"
+
+real,intent(in) :: x1
+real,intent(in) :: y1
+real,intent(in) :: x2
+real,intent(in) :: y2
+
+      call move2(x1,y1)
+      call draw2(x2,y1)
+      call draw2(x2,y2)
+      call draw2(x1,y2)
+      call draw2(x1,y1)
+
+end subroutine plain_rect
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
@@ -786,6 +837,135 @@ real             :: ysplit
          call journal('*page* window has zero dimension, no window set')
       endif
 end subroutine biggest_ortho2
+!----------------------------------------------------------------------------------------------------------------------------------!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!----------------------------------------------------------------------------------------------------------------------------------!
+!>
+!!##NAME
+!!    ellipse(3f) - [M_drawplus] draws an ellipse or elliptical arc.
+!!##SYNOPSIS
+!!
+!!    subroutine ellipse (XPAGE,YPAGE,RMAJ,RMIN,ANGLE,THO,THF,IPEN)
+!!
+!!##DESCRIPTION
+!!    ellipse(3f) is a FORTRAN subroutine which draws an ellipse or
+!!    elliptical arc.
+!!
+!!##OPTIONS
+!!    XPAGE,YPAGE  are the coordinates, in inches, of the starting point of
+!!                 the ellipse or arc.
+!!
+!!    RMAJ,RMIN    are the lengths, in inches, of the semimajor and
+!!                 semiminor axes, respectively.
+!!
+!!    ANGLE        is the angle of the major axis, in degrees.
+!!
+!!    THO,THF      are the angles, in degrees with respect to ANGLE, of the
+!!                 arc's starting and ending points.
+!!     IPEN        is the code that moves the pen to the arc's starting
+!!                 point.  If the value of IPEN is:
+!!
+!!                   3, the pen is up for the move;
+!!                   2, the pen is down for the move.
+!!
+!!    COMMENTS
+!!
+!!    THO and THF may be positive or negative.  If THO is less than THF, the arc is
+!!    drawn in a counterclockwise direction; if THO is greater than THF, the arc is
+!!    drawn in a clockwise direction.
+!===================================================================================================================================
+subroutine ellipse(xpage,ypage,rmaj,rmin,angle,th0,thf,ipen)
+use M_draw
+use ISO_C_BINDING
+implicit none
+
+character(len=*),parameter::ident="@(#)M_drawplus::m_draw:ellipse(3f):: draw ellipse or elliptical arc"
+
+real,intent(in)    :: xpage
+real,intent(in)    :: ypage
+real,intent(in)    :: rmaj
+real,intent(in)    :: rmin
+real,intent(in)    :: angle
+real,intent(in)    :: th0
+real,intent(in)    :: thf
+integer,intent(in) :: ipen
+
+real    :: ab
+real    :: absq
+real    :: alp
+real    :: bsq
+real    :: d
+real    :: dthe
+real    :: fctr
+integer :: i
+integer :: n
+real    :: st
+real    :: the0
+real    :: the_n
+real    :: thef
+real    :: xc
+real    :: xdum
+real    :: xf
+real    :: yc
+real    :: ydum
+real    :: yf
+
+   if ((abs(rmaj)+abs(rmin)).eq.0)then
+      if(ipen.eq.2)then
+         call draw2(xpage,ypage)
+      else
+         call move2(xpage,ypage)
+      endif
+      return
+   endif
+
+   alp = angle/57.2958
+   the0 = th0  / 57.2958
+   thef = thf  / 57.2958
+   d=rmaj*rmin/sqrt((rmaj*sin(the0))**2+(rmin*cos(the0))**2)
+   xc = xpage - d * cos(the0 + alp)
+   yc = ypage - d * sin(the0 + alp)
+   bsq=rmin*rmin
+   absq=rmaj*rmaj-bsq
+   ab=rmaj*rmin
+
+   if(ipen.eq.2)then
+      call draw2(xpage,ypage)
+   else
+      call move2(xpage,ypage)
+   endif
+
+   call getgp2(xdum,ydum) !
+   fctr=1.0
+   dthe = 0.03/(abs(rmaj)+abs(rmin))/fctr
+   n  =int((thef - the0)/dthe)
+
+   if(n.lt.0)then
+      n = -n
+      dthe = -dthe
+   elseif(n.eq.0)then
+      n = 1
+      dthe = -dthe
+   endif
+
+   the_n = the0 + dthe
+
+   do i=1,n
+      st=sin(the_n)
+      d=ab/sqrt(absq*st*st+bsq)
+      xf=xc+d*cos(the_n+alp)
+      yf=yc+d*sin(the_n+alp)
+      call draw2(xf,yf)
+      the_n = the_n + dthe
+   enddo
+
+   st=sin(thef)
+   d=ab/sqrt(absq*st*st+bsq)
+   xf=xc+d*cos(thef+alp)
+   yf=yc+d*sin(thef+alp)
+   call draw2(xf,yf)
+
+end subroutine ellipse
 !----------------------------------------------------------------------------------------------------------------------------------!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !----------------------------------------------------------------------------------------------------------------------------------!
@@ -1410,7 +1590,7 @@ end subroutine draw_interpret
 !----------------------------------------------------------------------------------------------------------------------------------!
 !>
 !!##NAME
-!!     call_draw(3f) - [M_drawplus] Given a string reprsenting a M_draw procedure and parameters  call the routine
+!!     call_draw(3f) - [M_drawplus] Given a string representing a M_draw procedure and parameters  call the routine
 !!##SYNOPSIS
 !!
 !!   subroutine call_draw(verb,parameters,found)
@@ -2009,26 +2189,26 @@ integer,intent(in) :: ilines                ! number of points to sample along c
 real,intent(in)    :: ang                   ! angle to rotate the shape by, to orientate it.
 real,intent(in)    :: angs                  ! angle to start sampling points at; ccw is +; 0 is East
 integer,intent(in) :: ifill                 ! 1 make a filled polygon, 2 make a hatched polygon
-real    :: ang1
-real    :: con1
-real    :: con2
-real    :: factor
-integer :: i10
-real    :: offset
-real    :: planet
-real    :: r
-real    :: sunr
-real    :: u
-real    :: xpoin
-real    :: xpoin1
-real    :: ypoin
-real    :: ypoin1
+real               :: ang1
+real               :: con1
+real               :: con2
+real               :: factor
+integer            :: i10
+real               :: offset
+real               :: planet
+real               :: r
+real               :: sunr
+real               :: u
+real               :: xpoin
+real               :: xpoin1
+real               :: ypoin
+real               :: ypoin1
 
    sunr=sunr0
    offset=offset0
    planet=planet0
 
-   if(ilines.eq.0.0) return
+   if(ilines.eq.0) return
    if(planet.eq.0.0) return
    if(sunr.eq.0.0)   return
 
@@ -2553,7 +2733,7 @@ real,intent(out)    :: returnx1, returny1
 real,intent(out)    :: returnx2, returny2
 integer,intent(out) :: ikey
 logical             :: release1, release2
-real                :: bt
+integer             :: ibt
 real                :: con1
 real                :: x, y
 
@@ -2566,21 +2746,21 @@ real                :: x, y
 
    INFINITE: do
       call vflush()
-      bt = locator(x, y)                         ! note that this function SETS the x and y variables, which is not always portable
-      if (bt .eq. -1) then                       ! not an interactive device; could just ask for numbers?
+      ibt = locator(x, y)                         ! note that this function SETS the x and y variables, which is not always portable
+      if (ibt .eq. -1) then                       ! not an interactive device; could just ask for numbers?
          call journal('*rdbox* no locator device found')
          exit INFINITE
-      else if (bt .eq. 0.and.(.not.release1)) then   ! haven't hit the null state yet
-         release1 = .true.                           ! ready to wait for first keypress
+      else if (ibt .eq. 0 .and. (.not.release1)) then   ! haven't hit the null state yet
+         release1 = .true.                              ! ready to wait for first keypress
          call journal('s','*rdbox* READY')
-      else if (bt .eq. 0.and.release2) then          ! this is the second release
+      else if (ibt .eq. 0 .and. release2) then          ! this is the second release
          returnx2=x
          returny2=y
          exit INFINITE
-      else if (bt .ne. 0.and.(.not.release2)) then   ! this is the first read
+      else if (ibt .ne. 0 .and. (.not.release2)) then   ! this is the first read
          returnx1 = x
          returny1 = y
-         ikey=bt
+         ikey=ibt
          release2=.true.                           ! ready for release
          con1=(returnx1-returnx2)/4000.0           ! warning: con1 is an arbitrary number, trying to make a small move to make a dot
          call move2(x-con1,y)
@@ -2713,10 +2893,370 @@ logical :: curpnt
    enddo INFINITE
    call journal('s',char(07))       ! send bell character
 end subroutine rdpnt
-!----------------------------------------------------------------------------------------------------------------------------------!
+!==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!----------------------------------------------------------------------------------------------------------------------------------!
+!==================================================================================================================================!
+!>
+!!##NAME
+!!    seefont(3f) - [M_drawplus] display font sample pages
+!!##SYNOPSIS
+!!
+!!    seefont(fontin)
+!!
+!!     character(len=128),intent(in) :: fontin
+!!##DESCRIPTION
+!!   The seefont(3f) routine displays pages of sample fonts.
+!!
+!!    o blank name: show sample of all fonts, then details on each one.
+!!    o known font name: show chart on just that font
+!!    o unknown name: show sample of all fonts and quit
+!!    o pause between pages, in graphics area use q(uit) to quit,
+!!      n(ext) to display the next font, and p(revious) for previous font.
+!!      A numeric string shows font by number.
+!!##OPTIONS
+!!    fontin  name of font to display
+!!##EXAMPLE
+!!
+!!   Sample program:
+!!
+!!    program demo_seefont
+!!    use M_draw
+!!    use M_drawplus, only : seefont
+!!    implicit none
+!!    character(len=128) :: fontname
+!!    integer            :: iwidth
+!!       call prefsize(1000,800)
+!!       call vinit(' ')
+!!       call linewidth(20)
+!!       call seefont(' ')
+!!       call vexit()
+!!    end program demo_seefont
+!===================================================================================================================================
+subroutine seefont(fontin)
+use M_journal, only : journal
+use m_calculator,      only: stuff
+use m_calculator_plus, only: dnum0
+use M_draw
+implicit none
+
+character(len=*),parameter::ident="@(#)display sample page of a font"
+
+character(len=*),intent(in)   :: fontin
+character(len=80)             :: line
+integer,parameter             :: ifontnames=33
+character(len=20)             :: fontname(0:ifontnames)
+doubleprecision               :: rval8
+integer                       :: BGCOLOR   ! background color
+integer                       :: FCOLOR    ! font color
+integer                       :: NCOLOR    ! number color
+integer                       :: LCOLOR    ! little letter color
+integer                       :: BCOLOR    ! box color
+real                          :: back
+integer                       :: i10
+integer                       :: i20
+integer                       :: i30
+integer                       :: i35
+integer                       :: i40
+integer                       :: i80
+integer                       :: i90
+integer                       :: ibox
+integer                       :: icols
+integer                       :: icount
+integer                       :: idelta
+integer                       :: idum
+integer                       :: iend
+integer                       :: ilen
+integer                       :: iordinal
+integer                       :: irows
+integer                       :: istart
+real                          :: rleft
+real                          :: step
+real                          :: tdec
+real                          :: tsize
+real                          :: xmax
+real                          :: xmin
+real                          :: y
+real                          :: ymax
+real                          :: ymin
+
+   fontname( 1)='astrology'
+   fontname( 2)='cursive'
+   fontname( 3)='cyrillic'
+   fontname( 4)='futura.l'
+   fontname( 5)='futura.m'
+   fontname( 6)='gothic.eng'
+   fontname( 7)='gothic.ger'
+   fontname( 8)='gothic.ita'
+   fontname( 9)='greek'
+   fontname(10)='markers'
+   fontname(11)='math.low'
+   fontname(12)='math.upp'
+   fontname(13)='meteorology'
+   fontname(14)='music'
+   fontname(15)='script'
+   fontname(16)='symbolic'
+   fontname(17)='times.g'
+   fontname(18)='times.i'
+   fontname(19)='times.ib'
+   fontname(20)='times.r'
+   fontname(21)='times.rb'
+   fontname(22)='japanese'
+   fontname(23)='small'
+   fontname(24)='large'
+   fontname(25)='orall_aa'
+   fontname(26)='orall_ab'
+   fontname(27)='orall_ac'
+   fontname(28)='orall_ad'
+   fontname(29)='orall_ae'
+   fontname(30)='orall_af'
+   fontname(31)='orall_ag'
+   fontname(32)='orall_ah'
+   fontname(33)='orall_ai'
+
+   idum=backbuffer()
+   !write(*,*)'bg, f, n, l, b'
+   !read(*,*)bgcolor,fcolor,ncolor,lcolor,bcolor
+   BGCOLOR=0
+   FCOLOR=7
+   NCOLOR=1
+   LCOLOR=4
+   BCOLOR=2
+   iordinal=-1 ! initialize for when no page displayed
+!-----------------------------------------------------------------------------------------------------------------------------------
+   !  calculate ISTART and IEND and IDELTA (flag if to show one font)
+   istart=-1
+   iend=-1
+   if(fontin.eq. ' ')then  ! if string is blank, show all fonts
+      istart=1
+      iend=ifontnames
+   else                    ! look up string as a font name.
+      ! display all font names as text(and see if input string matches one)
+      do i20=0,ifontnames
+         if(fontin.eq.fontname(i20))then ! if fontname matches
+            istart=i20
+            iend=i20
+            exit
+         endif
+      enddo
+      if(istart.lt.0)then ! no match to fontnames, so try string as a number
+         rval8=dnum0(fontin)
+         if(rval8.le.0.or.rval8.gt.ifontnames)then
+            call journal('*seefont* unknown font name/number')
+            do i90=1,ifontnames   ! list all font names
+               line=fontname(i90)//'is font '
+               call journal('sc',line(:len_trim(line)),i90)
+            enddo
+            return
+         else ! got a number in range
+            istart=int(rval8+0.5)
+            istart=min(ifontnames,istart)
+            istart=max(istart,0)
+            iend=istart
+         endif
+      endif
+   endif
+   !  if istart is -1 or 0 no match, else a specific font was asked for
+!-----------------------------------------------------------------------------------------------------------------------------------
+   idelta=iend-istart
+!-----------------------------------------------------------------------------------------------------------------------------------
+   do i80=1,ifontnames   ! list all font names
+      line=fontname(i80)//'is font '
+      call journal('sc',line(:len_trim(line)),i80)
+   enddo
+!-----------------------------------------------------------------------------------------------------------------------------------
+     icount=0  ! clear X11 key buffer on X11 on Linux (anybody else need this?)
+100  continue  ! flush key presses in case someone has been clicking around
+     idum=checkkey()
+     icount=icount+1
+     if(idum.gt.0.and.icount.lt.100)then
+        !call journal('sc','*seefont* flushing ',idum)
+        goto 100
+     endif
+!-----------------------------------------------------------------------------------------------------------------------------------
+! draw sample page with a line of each font
+   if(idelta.gt.0)then  ! doing all fonts
+     idum=backbuffer()
+     call makeobj(12345)
+     call push()          ! save graphics environment
+     call polyfill(.false.)
+     call color(BGCOLOR)
+     call clear()                   ! clear display area to background color
+     icount=1
+     irows=ifontnames
+     icols=irows
+     ! set window and viewport so each box 10 units on a side
+     call page((-icols)*5.0,icols*5.0,-irows*5.0,irows*5.0)
+     call color(FCOLOR)
+     !call move2((-icols)*5.0,(-irows)*5.0)
+     !call draw2(( icols)*5.0,( irows)*5.0)
+     !call move2((-icols)*5.0,( irows)*5.0)
+     !call draw2(( icols)*5.0,(-irows)*5.0)
+     call centertext(.false.)
+     call fixedwidth(.false.)
+     tsize=4.3*2.8*0.85
+     step=1.88
+     call textsize(tsize,tsize*4.0/3.0)
+     rleft=(-icols)*5.0+4.0
+     y=irows*5.0+tsize*.5
+     do i35=1,ifontnames
+        call font('futura.l')
+        tdec=getfontdec()
+        y=y-step*tsize
+        call move2(rleft,y)
+        call rmove2(0.0,tdec+tsize/2.0)
+        write(line,'(i3,'')'')')i35
+        call drawstr(line(1:4))
+        call drawstr(fontname(i35))
+        call move2(rleft+8.3*tsize,y)
+        call font(fontname(i35))      ! select text font for numbers
+        tdec=getfontdec()
+        call rmove2(0.0,tdec+tsize/2.0)
+        call drawstr('@ABCZabcz012')
+        if(y.lt.(-irows)*5.0+tsize*step.or.i35.eq.ifontnames)then
+           y=irows*5.0+tsize*.5
+           rleft=rleft+(2*icols*5.0)/2.0
+        endif
+     enddo
+
+     call pop()  ! restore graphics environment
+     call closeobj()
+     call callobj(12345)
+     call swapbuffers()
+     call vflush()
+     call journal('*seefont* enter q(uit) or n(ext) in graphic area')
+     iordinal=getkey()
+     if(iordinal.eq.113)then
+        call stuff('PLTOBJECT',12345.0d0,'')
+        return
+     endif
+     ! instructions for multi-font display
+     call journal('*seefont* #=========================#')
+     call journal('*seefont* | In graphics area press: |')
+     call journal('*seefont* |    n for next font      |')
+     call journal('*seefont* |    p for previous font  |')
+     call journal('*seefont* |    q to quit            |')
+     call journal('*seefont* #=========================#')
+
+   endif
+!-----------------------------------------------------------------------------------------------------------------------------------
+!  do font-specific pages in detail
+   irows=10
+   icols=10
+   icount=0   ! no infinite loops
+60 continue   ! come here with new istart value if 'p' for previous
+   do 10 i10=istart,iend
+      idum=backbuffer()
+      call makeobj(12345)
+      icount=icount+1
+
+      call push()          ! save graphics environment
+      call polyfill(.false.)
+      call color(BGCOLOR)            ! background color
+      call clear()                   ! clear display area to background color
+
+      ! lay out window with boxes are 10x10, with room above for 10x100 title
+      ! The window value 0,0 is in the middle of the box area
+
+      ! set window and viewport so each box 10 units on a side
+                 ! xsmall,      xlarge,   ysmall,        ylarge
+      call page((-icols)*5.0,icols*5.0,-irows*5.0-9.0,irows*5.0+10.0)
+      call color(FCOLOR)
+               ! x1,          y1,             x2,        y2
+      call rect((-icols)*5.0, -irows*5.0-9.0, icols*5.0, irows*5.0+10.0)
+
+      call centertext(.false.)       ! all text should be centered
+      tsize=8.0
+
+      y=irows*5.0+10.0-tsize
+      call move2((-icols)*5.0+4.0,y)
+
+      call font('times.rb')          ! select text font for numbers
+      call textsize(tsize,tsize)
+      ilen=len_trim(fontname(i10))
+      write(line,'(a)')fontname(i10)(1:ilen)
+      call drawstr(line)
+
+      call textsize(tsize/2.0,tsize/2.0)
+      call drawstr('(')
+      write(line,'(i3)')i10
+      if(i10.lt.10)then
+         call drawstr(line(3:3))
+      else
+         call drawstr(line(2:3))
+      endif
+      call drawstr(')')
+!-----------------------------------------------------------------------------------------------------------------------------------
+!     draw the boxed letters
+      ibox=33
+      do i30=1,irows
+         do i40=1,icols
+            xmin=(i40-1)*10.0-icols*5.0
+            xmax=xmin+10.0
+            ymax=irows*5.0-(i30-1)*10.0
+            ymin=ymax-10.0
+            call color(BCOLOR)
+            call rect(xmin,ymin,xmax,ymax)
+
+            call color(FCOLOR)
+            call centertext(.true.)    ! all text should be centered
+            call textsize(5.5,5.5)
+            call font(fontname(i10))   ! select text font for numbers
+            write(line,'(a1)')char(ibox)
+            call move2(xmin+5.0,ymin+5.0)
+            call drawstr(line)
+
+            call centertext(.false.)   ! all text should be centered
+            call font('futura.m')      ! select text font for numbers
+            call textsize(2.0,2.5)
+
+            call color(NCOLOR)
+            write(line,'(i3)')ibox
+            call move2(xmin,ymin)
+            call drawstr(line)
+
+            call color(LCOLOR)
+            write(line,'(a1)')char(ibox)
+            back=strlength(line)
+            call move2(xmax-back*2,ymin)
+            call drawstr(line)
+
+            ibox=ibox+1
+            if(ibox.ge.128)goto 50
+         enddo
+      enddo
+50    continue
+!-----------------------------------------------------------------------------------------------------------------------------------
+      call pop()           ! restore graphics environment
+      call closeobj()
+      call callobj(12345)
+      call swapbuffers()
+      call vflush()
+      if(icount.gt.200) goto 999  ! been in here too long, assume a loop in a batch job
+      if(idelta.le.0)goto 999  ! originally single font requested
+      iordinal=getkey()
+      if(iordinal.eq.113)then     ! quit on "q" key
+         goto 999
+      elseif(iordinal.eq.110)then ! next on "n" key but at end
+      elseif(iordinal.eq.112)then ! back to previous on "p" key
+         istart=i10-1
+         if(istart.le.0)istart=ifontnames
+         iend=ifontnames
+         goto 60
+      endif
+10 continue
+
+   if(iordinal.le.-1)goto 999  ! not an interactive graphics device so end
+   istart=1
+   iend=ifontnames
+   go to 60 ! keep going until a q is entered or hit end, then quit
+!-----------------------------------------------------------------------------------------------------------------------------------
+999   continue
+   call stuff('PLTOBJECT',12345.0d0,'')
+end subroutine seefont
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
 end module M_drawplus
-!----------------------------------------------------------------------------------------------------------------------------------!
+!==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!----------------------------------------------------------------------------------------------------------------------------------!
+!==================================================================================================================================!

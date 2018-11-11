@@ -14,7 +14,7 @@ SECTION=${SECTION/)/}
    man -s $SECTION $TOPIC|
       col -b|
       expand|
-      sed -n -e '\%^ *program  *demo_%,\%^ *end  *program  *demo_%{p}' >$FILE
+      sed -n -e '\%^[ !]*program  *demo_%,\%^[ !]*end  *program  *demo_%{p}' >$FILE
   
    if [ -s "$FILE" ]
    then
@@ -27,8 +27,6 @@ SECTION=${SECTION/)/}
    fi
 }
 ################################################################################
-export M_DRAW_DEVICE=p6
-export M_DRAW_OUTPUT="|ppmtogif > $TOPIC.gif"
 export MANPATH=`pwd`/tmp/man
 mkdir -p tmp/PROGRAMS/DEMOS
 cd tmp/PROGRAMS/DEMOS

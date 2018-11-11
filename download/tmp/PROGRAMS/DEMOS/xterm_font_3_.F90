@@ -11,7 +11,7 @@
           !is reached
           do i=1,count
              call get_command_argument(number=i,value=string)
-             write(*,'(2a)',advance='no')font=',trim(string)
+             write(*,'(2a)',advance='no')'font=',trim(string)
              call xterm_font(string)
              if(i.eq.count)exit
              read(*,'(a)',iostat=ios)paws

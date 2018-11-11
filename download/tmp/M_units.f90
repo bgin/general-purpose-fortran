@@ -1,6 +1,6 @@
 !>
 !!##NAME
-!!    M_units(3fm) - [M_units] convert between various physical units
+!!    M_units(3fm) - [M_units::INTRO] convert between various physical units
 !!
 !!##SYNOPSIS
 !!
@@ -119,7 +119,7 @@
 !!
 !!   Simple usage example:
 !!
-!!    program testit
+!!    program demo_M_units
 !!    use M_units, only : r2d, d2r
 !!    use M_units, only : f2c, c2f
 !!    use M_units, only : sind, cosd, tand
@@ -149,7 +149,7 @@
 !!    !!
 !!    101 format(a,t57,g0)
 !!    !!
-!!    end program testit
+!!    end program demo_M_units
 !!
 !!
 !!   Results:
@@ -172,7 +172,7 @@
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-module m_units
+module M_units
 use M_anything,only : anyscalar_to_real, anyscalar_to_double
 implicit none                        ! require all variables to be declared
 private
@@ -366,8 +366,9 @@ end function f2c
 !!
 !!    program demo_r2d
 !!    use M_units, only :  r2d
-!!    use M_units, only : pi=>pi
+!!    use M_units, only : pi8=>pi
 !!    implicit none
+!!    real :: pi=real(pi8)
 !!       write(*,*)'With REAL array input    ', r2d([ 0.0, PI/4.0, PI/2.0, 3.0*PI/2.0, PI ])
 !!       write(*,*)'With INTEGER array input ', r2d([0,1,2,3,4])
 !!       write(*,*)'With DOUBLEPRECISION     ', r2d(0.0d0),r2d(PI/4.0d0),r2d(PI/2.0d0),r2d(3.0d0*PI/2.0d0),r2d(PI)
@@ -1233,7 +1234,7 @@ end subroutine symbol2atomnum
 !!     doubleprecision     :: pounds_to_kilograms
 !!
 !!##DESCRIPTION
-!!    Converts pounds-mass to kilgrams using the formula:
+!!    Converts pounds-mass to kilograms using the formula:
 !!
 !!       kilograms = 0.45359237 * pounds
 !!
@@ -1438,7 +1439,7 @@ end function norm_angle_360_integer
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-end module m_units
+end module M_units
 !***********************************************************************************************************************************
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !***********************************************************************************************************************************

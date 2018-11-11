@@ -21,7 +21,7 @@
 !!
 !!   Sample program
 !!
-!!    program test_system_getkey
+!!    program demo_system_getkey
 !!    use M_getkey, only : system_getkey
 !!    character :: A
 !!    integer   :: icount
@@ -69,7 +69,7 @@
 !!       write(*,"('enter choice (q to quit):')")
 !!       end subroutine menu
 !!
-!!    end program test_system_getkey
+!!    end program demo_system_getkey
 !!
 !!##HOW IT WORKS
 !!

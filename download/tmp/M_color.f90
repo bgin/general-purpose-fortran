@@ -715,8 +715,41 @@ end subroutine rgbcmy
 !!     RR      red component of the input color in the range 0 to 100
 !!     RG      green component of the input color in the range 0 to 100
 !!     RB      blue component of the input color in the range 0 to 100
+!!##RETURNS
 !!     RI      grayscale intensity calculated in the range 0 to 100
 !!     status  zero (0) if no error occurred, otherwise result is out of bounds
+!!##EXAMPLES
+!!
+!!   Sample:
+!!
+!!    program demo_rgbmono
+!!    use M_color, only : rgbmono
+!!    implicit none
+!!    real    :: gray
+!!    integer :: ierr
+!!    call rgbmono(100.0,  0.0,  0.0,gray,ierr); write(*,*)'red     ',gray
+!!    call rgbmono(  0.0,100.0,  0.0,gray,ierr); write(*,*)'green   ',gray
+!!    call rgbmono(  0.0,  0.0,100.0,gray,ierr); write(*,*)'blue    ',gray
+!!    call rgbmono(100.0,100.0,  0.0,gray,ierr); write(*,*)'Yellow  ',gray
+!!    call rgbmono(  0.0,100.0,100.0,gray,ierr); write(*,*)'Cyan    ',gray
+!!    call rgbmono(100.0,  0.0,100.0,gray,ierr); write(*,*)'Magenta ',gray
+!!    call rgbmono(100.0,100.0,100.0,gray,ierr); write(*,*)'White   ',gray
+!!    call rgbmono( 00.0,  0.0,  0.0,gray,ierr); write(*,*)'Black   ',gray
+!!    call rgbmono( 50.0,  0.0,  0.0,gray,ierr); write(*,*)'Maroon  ',gray
+!!    call rgbmono(100.0, 50.0, 50.0,gray,ierr); write(*,*)'Pink    ',gray
+!!    end program demo_rgbmono
+!!   Results:
+!!
+!!     red        30.0000019
+!!     green      58.9999962
+!!     blue       11.0000000
+!!     Yellow     89.0000000
+!!     Cyan       70.0000000
+!!     Magenta    41.0000000
+!!     White      100.000000
+!!     Black      0.00000000
+!!     Maroon     15.0000010
+!!     Pink       65.0000000
 !===================================================================================================================================
 subroutine rgbmono(rr,rg,rb,ri,status)
 character(len=*),parameter :: ident="@(#)M_color::rgbmono(3f): convert RGB colors to a reasonable grayscale"
@@ -1150,13 +1183,12 @@ end SUBROUTINE closest_color_name
 !!
 !!    A sample program:
 !!
-!!     program showcolors
+!!     program demo_color_name2rgb
 !!     use m_color, only : hue, color_name2rgb
 !!     implicit none
 !!     !
-!!     ! list colors known to colorname2rgb(3f) & corresponding RGB values"
+!!     ! list colors known to colorname2rgb(3f) & corresponding RGB values
 !!     !
-!!     character(len=*),parameter :: ident="&
 !!     character(len=20) :: name
 !!     character(len=20) :: echoname
 !!     real              :: red,green,blue
@@ -1172,7 +1204,7 @@ end SUBROUTINE closest_color_name
 !!        write(*,*)echoname,int([red,green,blue])
 !!     enddo TRYALL
 !!     !write(*,*)'Number of colors found is ',i-1
-!!     end program showcolors
+!!     end program demo_color_name2rgb
 !===================================================================================================================================
 subroutine color_name2rgb(name,r,g,b,echoname)
 use M_strings, only: lower
