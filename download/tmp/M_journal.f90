@@ -204,9 +204,9 @@ character(len=*),intent(in)  :: msg
       case('T','t')
          if(trailopen) then
             write(itrail,'(a)',advance=adv)prefix//trim(msg)
-         elseif(times.eq.0)then
-            write(stdout,'(a)',advance=adv)prefix//trim(msg)
-            times=times+1
+         !!elseif(times.eq.0)then
+         !!   write(stdout,'(a)',advance=adv)prefix//trim(msg)
+         !!   times=times+1
          endif
       case('S','s')
          write(stdout,'(a)',advance=adv)prefix//trim(msg)
@@ -240,8 +240,8 @@ character(len=*),intent(in)  :: msg
          if(trailopen)then
             write(itrail,'(2a)',advance=adv)comment,prefix//trim(msg)
          elseif(times.eq.0)then
-            write(stdout,'(a)',advance=adv)prefix//trim(msg)
-            times=times+1
+            !! write(stdout,'(a)',advance=adv)prefix//trim(msg)
+            !! times=times+1
          endif
       case('D','d')
          if(debug)then

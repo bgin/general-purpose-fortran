@@ -1,7 +1,8 @@
            program demo_unique
            use M_sort, only : unique
            implicit none
-           character(len=:),allocatable :: strings(:)
+           !!character(len=:),allocatable :: strings(:)
+           character(len=2),allocatable :: strings(:)
            integer                      :: icount
 
            strings=[character(len=2) :: '1','1','2','3','4','4','10','20','20','30']

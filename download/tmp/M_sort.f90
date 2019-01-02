@@ -877,7 +877,7 @@ end subroutine sort_shell_complex_double
 !!    write(*,*)'checking index of sort_quick_rx(3f)'
 !!    do i=1,isz-1
 !!       if(rr(ii(i)).gt.rr(ii(i+1)))then
-!!          write(*,*)'Error in sorting reals small to large ',i,rr(ii(i),rr(ii(i+1))
+!!          write(*,*)'Error in sorting reals small to large ',i,rr(ii(i)),rr(ii(i+1))
 !!       endif
 !!    enddo
 !!    write(*,*)'test of sort_quick_rx(3f) complete'
@@ -1087,7 +1087,8 @@ end subroutine sort_quick_rx
 !!     program demo_unique
 !!     use M_sort, only : unique
 !!     implicit none
-!!     character(len=:),allocatable :: strings(:)
+!!     !!character(len=:),allocatable :: strings(:)
+!!     character(len=2),allocatable :: strings(:)
 !!     integer                      :: icount
 !!
 !!     strings=[character(len=2) :: '1','1','2','3','4','4','10','20','20','30']

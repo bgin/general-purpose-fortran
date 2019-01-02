@@ -1,6 +1,6 @@
           program demo_is_contiguous
           implicit none
-          intrinsic, is_contiguous
+          intrinsic is_contiguous
           REAL, DIMENSION (1000, 1000), TARGET :: A
           REAL, DIMENSION (:, :), POINTER       :: IN, OUT
           IN => A              ! Associate IN with target A

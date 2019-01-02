@@ -46,7 +46,7 @@
 !!    M_generic_list(3fm)  defines a Generic Linked List Implementation in Fortran 95.
 !!    This module, described in detail at http://fortranwiki.org is by:
 !!
-!!     JASONR.BLEVINS
+!!     JASON R. BLEVINS
 !!     Department of Economics, Duke University
 !!     May18,2009
 !!
@@ -152,7 +152,7 @@ contains
 !!##AUTHOR
 !!    Fortran 95 Implementation by:
 !!
-!!     JASONR.BLEVINS
+!!     JASON R. BLEVINS
 !!     Department of Economics, Duke University
 !!     May 18,2009
 !!##SEE ALSO
@@ -193,20 +193,20 @@ contains
 !!        ptr%p%x = 2.7183
 !!        ! Initialize the list with the first data element
 !!        call list_init(list, transfer(ptr, list_data))
-!!        print *,    Initializing list with data:   , ptr%p
+!!        print *, 'Initializing list with data:'   , ptr%p
 !!        ! Allocate a second data element
 !!        allocate(ptr%p)
 !!        ptr%p%x = 0.5772
 !!        ! Insert the second into the list
 !!        call list_insert(list, transfer(ptr, list_data))
-!!        print *,    Inserting node with data:   , ptr%p
+!!        print *, 'Inserting node with data:'   , ptr%p
 !!        ! Retrieve data from the second node and free memory
 !!        ptr = transfer(list_get(list_next(list)), ptr)
-!!        print *,    Second node data:   , ptr%p
+!!        print *,    'Second node data:'   , ptr%p
 !!        deallocate(ptr%p)
 !!        ! Retrieve data from the head node and free memory
 !!        ptr = transfer(list_get(list), ptr)
-!!        print *,    Head node data:   , ptr%p
+!!        print *, 'Head node data:'   , ptr%p
 !!        deallocate(ptr%p)
 !!        ! Free the list
 !!        call list_free(list)
@@ -250,7 +250,7 @@ end subroutine list_init
 !!##AUTHOR
 !!    Fortran 95 Implementation by:
 !!
-!!     JASONR.BLEVINS
+!!     JASON R. BLEVINS
 !!     Department of Economics, Duke University
 !!     May 18,2009
 !!##SEE ALSO
@@ -364,7 +364,7 @@ end subroutine list_free
 !!##AUTHOR
 !!    Fortran 95 Implementation by:
 !!
-!!     JASONR.BLEVINS
+!!     JASON R. BLEVINS
 !!     Department of Economics, Duke University
 !!     May 18,2009
 !!##SEE ALSO
@@ -476,7 +476,7 @@ end subroutine list_insert
 !!##AUTHOR
 !!    Fortran 95 Implementation by:
 !!
-!!     JASONR.BLEVINS
+!!     JASON R. BLEVINS
 !!     Department of Economics, Duke University
 !!     May 18,2009
 !!##SEE ALSO
@@ -583,7 +583,7 @@ end subroutine list_put
 !!##AUTHOR
 !!    Fortran 95 Implementation by:
 !!
-!!     JASONR.BLEVINS
+!!     JASON R. BLEVINS
 !!     Department of Economics, Duke University
 !!     May 18,2009
 !!##SEE ALSO
@@ -685,7 +685,7 @@ end function list_get
 !!##AUTHOR
 !!    Fortran 95 Implementation by:
 !!
-!!     JASONR.BLEVINS
+!!     JASON R. BLEVINS
 !!     Department of Economics, Duke University
 !!     May 18,2009
 !!##SEE ALSO

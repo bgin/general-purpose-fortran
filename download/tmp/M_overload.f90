@@ -9,6 +9,7 @@
 !!
 !!    int(), real(), dble()  allow strings to be converted to numeric values
 !!                           using the standard intrinsic names
+!!
 !!##DESCRIPTION
 !!   Operator and function overloads have a wide range of applications from
 !!   allowing existing Fortran routines to be used with almost no source-code
@@ -148,4 +149,3 @@ end function dbles_s2v
 !===================================================================================================================================
 end module m_overload
 !-----------------------------------------------------------------------------------------------------------------------------------
-

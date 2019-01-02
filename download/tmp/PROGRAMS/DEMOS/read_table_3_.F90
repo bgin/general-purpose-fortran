@@ -20,6 +20,9 @@
            call read_table('inputfile',array,ierr)
 
            ! print values
+           write(*,*)'size=',size(array)
+           write(*,*)'size=',size(array,dim=1)
+           write(*,*)'size=',size(array,dim=2)
            do i=1,size(array,dim=1)
               write(*,*)array(i,:)
            enddo

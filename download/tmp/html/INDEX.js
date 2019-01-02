@@ -21,6 +21,7 @@ append("./BOOK_M_process.html");
 append("./BOOK_M_regex.html");
 append("./BOOK_M_sort.html");
 append("./BOOK_M_sqlite.html");
+append("./BOOK_M_steam67.html");
 append("./BOOK_M_stopwatch.html");
 append("./BOOK_M_strings.html");
 append("./BOOK_M_system.html");

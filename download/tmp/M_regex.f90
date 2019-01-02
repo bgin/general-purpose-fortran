@@ -6,8 +6,8 @@
 !!      M_regex(3fm) - [M_regex] Fortran interface to POSIX 1003.2 regular expression library using ISO_C_BINDING.
 !!##SYNOPSIS
 !!
-!!      regcomp(3f), regexec(3f), regerror(3f), regfree(3f)
-!!      regmatch(3f), regsub(3f)
+!!      use M_regex, only : regcomp(3f), regexec(3f), regerror(3f), regfree(3f)
+!!      use M_regex, only : regmatch(3f), regsub(3f)
 !!
 !!##DESCRIPTION
 !!
@@ -19,9 +19,10 @@
 !!    o regerror(3c) transforms error codes from either into human-readable messages
 !!    o and regfree(3c) frees any dynamically-allocated storage used by the internal form of an RE.
 !!
-!!    The Fortran interface is composed of wrapper routines that call the
-!!    C library, plus some extensions (ie. regmatch(3f), regsub(3f)). See the C documentation
-!!    for further details about implementation, performance, and limitations.
+!!    The Fortran interface is composed of wrapper routines that call the C
+!!    library, plus some extensions (ie. regmatch(3f), regsub(3f)). See the
+!!    C documentation for further details about implementation, performance,
+!!    and limitations.
 !!
 !!    The following constructs are recognized in a ERE (Extended Regular Expression):
 !!
@@ -353,7 +354,6 @@
 !!     regex.h (0p)  - regular expression matching types
 !!     regexp (n)    - Match a regular expression against a string
 !!     regsub (n)    - Perform substitutions based on regular expression pattern matching
-!!
 !===================================================================================================================================
 module M_regex
 use ISO_C_Binding, only: C_ptr, C_int, C_size_t, C_char, C_NULL_char, C_NULL_ptr

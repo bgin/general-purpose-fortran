@@ -1,4 +1,5 @@
 #!/bin/bash
+################################################################################
 #@(#)man2html: call commands to convert man(1) page to HTML if man2html(1) is missing
 ################################################################################
 # try to find a command to change file to HTML
@@ -69,16 +70,16 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }\
 </head>
 }' -e '/^ *<[bB][oO][dD][yY].*/{
 a\
-<h5><a href="download.html">[UP]</a></h5> \
+<h5><a href="download.html">[UP]</a></h5>\
 <div id="Container">\
 <div id="Content">
 }' -e '/^<\/[bB][oO][dD][yY]/{
 i\
+<br><br><center><img src="z-q-j-z-q-j"></center>\
 </div>\
 </div>
 }' -e '/<\/BODY>/{
 i\
-<br><br><center><img src="z-q-j-z-q-j"></center> \
 </body>
 }' -e 's/<\/BODY>//'|sed -e "s/z-q-j-z-q-j/images\/$(basename ${IMG_FILENAME} .man).gif/"
 }

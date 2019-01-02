@@ -10,7 +10,6 @@
           integer i
           logical back, backdir, fill
           character(len=50) :: device
-          character(len=1)  :: c
           integer :: ios
           !
           call prefsize(300, 300)
@@ -140,7 +139,6 @@
 
           integer TETRAHEDRON, NSIDES, NFACES, NPNTS
           parameter (TETRAHEDRON = 1, NSIDES = 3, NFACES = 4, NPNTS = 4)
-          integer,parameter :: GREEN=2, YELLOW=3, CYAN=6, MAGENTA=5
           integer colface(NFACES)
           real pnts(3, NPNTS)
           integer faces(NSIDES, NFACES)

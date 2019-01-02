@@ -29,7 +29,7 @@ cat << EOT
 NAME
   txt2man - [DEVELOPER] convert flat ASCII text to man page format
 SYNOPSIS
-  txt2man [-hpTX] [-t mytitle] [-P pname] [-r rel] [-s sect]
+  txt2man [-hpTxX] [-t mytitle] [-P pname] [-r rel] [-s sect]
           [-v vol] [-I txt] [-B txt] [ifile]
 DESCRIPTION
   txt2man converts the input text into nroff/troff standard man(7)
@@ -112,6 +112,7 @@ OPTIONS
   -B txt      Emphasize (bold) text in output. Can be specified more than once.
   -T          Text result previewing using PAGER, usually more(1).
   -X          X11 result previewing using gxditview(1).
+  -x          Basic example input file
 ENVIRONMENT
   PAGER    name of paging command, usually more(1), or less(1). If not set
            falls back to more(1).
@@ -147,6 +148,38 @@ AUTHOR
 EOT
 }
 ################################################################################
+example(){
+cat <<\EOF
+NAME
+     sample(3f) - [category] this is a sample routine
+SYNOPSIS
+    subroutine sample(in1,in2,out1)
+
+     real,intent(in)     :: in1
+     real,intent(in)     :: in2
+     real,intent(out)    :: out1
+     integer,intent(out) :: ierr
+
+DESCRIPTION
+   Description of the procedure goes here.
+     o point one
+     o point two
+     o point three
+OPTIONS
+   IN1   description of IN1
+   IN2   description of IN2
+   IERR  description of IERR
+RETURNS
+   OUT1  description of OUT1
+EXAMPLE
+  Sample program:
+
+   program demo_sample
+   write(*,*)'exercise sample'
+   end program demo_sample
+EOF
+}
+################################################################################
 sys=$(uname -s)
 rel=
 volume=
@@ -156,7 +189,7 @@ doprobe=
 itxt=
 btxt=
 post=cat
-while getopts :hpTXr:s:t:v:P:I:B: opt
+while getopts :hpTxXr:s:t:v:P:I:B: opt
 do
 	case $opt in
 	r) rel=$OPTARG;;
@@ -171,6 +204,7 @@ do
 	X) post="groff -m man  -X";;
 	T) post="groff -mandoc -Tlatin1 | ${PAGER:-more}";;
 	X) post="groff -mandoc -X";;
+	x) example; exit;;
 	*) usage; exit;;
 	esac
 done

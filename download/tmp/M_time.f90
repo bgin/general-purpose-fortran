@@ -1237,6 +1237,9 @@ character(len=:),allocatable         :: timestr
          case('k'); call system_clock(count=systemclock,count_rate=countrate)  ! systemclock/countrate
                     write(text(iout:),'(G0)')real(systemclock)/countrate
          !=====================================================================================
+         case('K'); call system_clock(count=systemclock,count_rate=countrate)  ! system clock count
+                    write(text(iout:),'(I0)') systemclock
+         !=====================================================================================
          case('l'); write(text(iout:),'(A3)')v2mo(valloc(2))              ! three characters of the name of the month of the year
          !=====================================================================================
          case('L'); write(text(iout:),'(A)')v2mo(valloc(2))               ! name of the month of the year
@@ -1402,6 +1405,7 @@ end function fmtdate
 !!         %C -- number of times this routine is used      1
 !!         %S -- seconds since last use of this format     .0000000000000000
 !!         %k -- time in seconds from SYSTEM_CLOCK(3f)     723258.812
+!!         %K -- time in clicks from SYSTEM_CLOCK(3f)      723258812
 !!
 !!    If no percent (%) is found in the format one of several
 !!    alternate substitutions occurs.
@@ -1512,6 +1516,7 @@ usage=[ CHARACTER(LEN=128) :: &
 &'     %%C -- number of times this routine is used      %C     ',&
 &'     %%S -- seconds since last use of this format     %S     ',&
 &'     %%k -- time in seconds from SYSTEM_CLOCK(3f)     %k     ',&
+&'     %%K -- time in clicks from SYSTEM_CLOCK(3f)      %K     ',&
 &'%b                                                           ',&
 &'%bIf no percent (%%) is found in the format one of several   ',&
 &'%balternate substitutions occurs.                            ',&

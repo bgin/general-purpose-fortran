@@ -2,19 +2,21 @@ module M_math
 implicit none
 private
   ! GEOMETRY
-  public citer          ! determine various geometric properties of circle segment given radius and area of the segment.
-  public envelope       ! Find the vertices (in clockwise order) of a polygon enclosing the points (x(i), y(i), i=1, ..., n.
-  public inpolygon      ! Subroutine to determine whether or not a point is in a polygon
-  public locpt          ! find if a point is inside a polygonal path
-  public poly_intercept ! find points where a line intersects a polygon
-  public polyarea       ! find area of a polygon
+  public citer              ! determine various geometric properties of circle segment given radius and area of the segment.
+  public envelope           ! Find the vertices (in clockwise order) of a polygon enclosing the points (x(i), y(i), i=1, ..., n.
+  public inpolygon          ! Subroutine to determine whether or not a point is in a polygon
+  public locpt              ! find if a point is inside a polygonal path
+  public poly_intercept     ! find points where a line intersects a polygon
+  public polyarea           ! find area of a polygon
+  public polyarea_shoelace  ! find area of a polygon using shoelace algorithm
+  public polyarea_mid_point ! find area of a polygon
   ! FIT
-  public julfit         ! linear least square fit
-  public julfit1        ! linear least square fit(y=a*x+b)
-  public lowess         ! data smoothing using locally weighted regression
-  public splift         ! fits a spline to the n data points given in x and y
-  public splint         ! interpolates and twice differentiates a cubic spline
-  public linearint      ! linear interpolation
+  public julfit             ! linear least square fit
+  public julfit1            ! linear least square fit(y=a*x+b)
+  public lowess             ! data smoothing using locally weighted regression
+  public splift             ! fits a spline to the n data points given in x and y
+  public splint             ! interpolates and twice differentiates a cubic spline
+  public linearint          ! linear interpolation
   ! FITS
   public ju_polfit
   public ju_pvalue
@@ -43,6 +45,7 @@ private
   public invert_2x2     ! directly invert 2x2 matrix
   public invert_3x3     ! directly invert 3x3 matrix
   public invert_4x4     ! directly invert 4x4 matrix
+  public magic_square   ! create magic squares
   ! POLYNOMIAL
   public quadratic      ! return roots of quadratic equation even if complex
 
@@ -2939,6 +2942,85 @@ END SUBROUTINE CITER
 !!
 !!##EXAMPLE
 !!
+!!
+!!   Draw a polygon and the envelope of the polygon, and find the area of
+!!   each polygon. Also place a number of small circles in the plot area colored
+!!   according to whether they fall within the border of the original polygon.
+!!
+!!    program demo_envelope
+!!    use M_draw
+!!    use M_drawplus, only : page
+!!    use M_math,     only : envelope        ! Find vertices (in clockwise order) of a polygon enclosing the points
+!!    use M_math,     only : locpt           ! find if a point is inside a polygonal path
+!!    use M_math,     only : polyarea        ! compute the area bounded by a closed polygonal curve
+!!    implicit none
+!!    integer,parameter :: n=6
+!!    !  3--------------4
+!!    !   \           /
+!!    !     \       /
+!!    !       \   /
+!!    !         X 2,5
+!!    !       /  !!    !     /      !!    !   /          !!    !  1--------------6
+!!    real,parameter    :: x(n)=[-5.0, 0.0,-5.0, 5.0, 0.0, 5.0]
+!!    real,parameter    :: y(n)=[-5.0, 0.0, 5.0, 5.0, 0.0,-5.0]
+!!    real              :: xy(2,n)
+!!    integer           :: vertex(n)
+!!    integer           :: nvert
+!!    integer           :: i
+!!    integer           :: idum
+!!       xy(1,:)=x
+!!       xy(2,:)=y
+!!       call vinit(' ')
+!!       call page(-10.0,10.0,-10.0,10.0)
+!!       call color(D_BLACK) ! set current color to black
+!!       call clear()        ! clear to current color
+!!       call polyfill(.true.)
+!!       call color(D_BLUE)  ! we want to draw polygon in this color
+!!       call poly2(n,xy)    ! draw filled polygon using points given
+!!       idum=getkey()       ! pause for some input
+!!       call color(D_CYAN)
+!!       call polyhatch(.true.)
+!!       call envelope(x, y, n, vertex, nvert)   ! calculate envelope
+!!       call poly2(nvert,xy(:,vertex(1:nvert))) ! draw hatched envelope
+!!       idum=getkey()       ! pause for some input
+!!       call polyhatch(.false.)
+!!       call linewidth(50)
+!!       call color(D_WHITE)
+!!       call poly2(n,xy)    ! draw line along original points
+!!       idum=getkey()       ! pause for some input
+!!       call random_seed()
+!!       do i=1,70
+!!          call pickrandom()
+!!       enddo
+!!       idum=getkey()       ! pause for some input
+!!       call vexit()        ! wrap up and exit graphics mode
+!!       write(*,*)'polyarea=',polyarea(x,y)
+!!       write(*,*)'polyarea=',polyarea( xy(1,vertex(1:nvert)), xy(2,vertex(1:nvert)))
+!!    contains
+!!    subroutine pickrandom()
+!!    ! randomly pick a point in the plot area and color it according to whether it is inside
+!!    ! the original polygon
+!!    real :: pointx, pointy
+!!    integer :: l, m
+!!       call random_number(pointx)
+!!       call random_number(pointy)
+!!       pointx=pointx*20.0-10.0
+!!       pointy=pointy*20.0-10.0
+!!       call locpt(pointx,pointy,x,y,n,l,m)
+!!       select case(l)
+!!        case(-1)
+!!          call color(D_RED)
+!!        case(0)
+!!          call color(D_YELLOW)
+!!        case(1)
+!!          call color(D_GREEN)
+!!        case default
+!!          write(*,*)'*pickrandom* internal error: L value unknown'
+!!          call color(D_WHITE)
+!!       end select
+!!       call circle(pointx,pointy,0.2)
+!!    end subroutine pickrandom
+!!    end program demo_envelope
 !===================================================================================================================================
 !>
 !! Programmer: Alan Miller
@@ -3182,14 +3264,16 @@ END SUBROUTINE envelope
 !!    lies inside the polygon, otherwise it returns .false.
 !===================================================================================================================================
 LOGICAL FUNCTION INPOLYGON(XIN, YIN, XCONV, YCONV, NCONV)
+
 character(len=*),parameter::ident="&
 &@(#)M_math::inpolygon(3f):Subroutine to determine whether or not an integer point is in a polygon of integer points"
-   integer,intent(in)  :: xin,yin                       ! coordinates of the point to be checked
-   integer,intent(in)  :: nconv                         !
-   INTEGER             :: XCONV(NCONV), YCONV(NCONV)
-   REAL                :: X,Y                           ! real copy of input point
-   integer             :: Z(4)= [-32701,-32701,32701,32701]
-   integer             :: i, j, m
+
+integer,intent(in)  :: xin,yin                       ! coordinates of the point to be checked
+integer,intent(in)  :: nconv                         !
+INTEGER             :: XCONV(NCONV), YCONV(NCONV)
+REAL                :: X,Y                           ! real copy of input point
+integer             :: Z(4)= [-32701,-32701,32701,32701]
+integer             :: i, j, m
 
       X=XIN
       Y=YIN
@@ -3266,6 +3350,88 @@ character(len=*),parameter::ident="&
 !!    o Fortran 66 version by A.H. Morris
 !!    o Converted to ELF90 compatibility by Alan Miller, 15 February 1997
 !!      saved from url=(0050)http://users.bigpond.net.au/amiller/NSWC/locpt.f90
+!!
+!!##EXAMPLE
+!!
+!!
+!!   Draw a polygon and the envelope of the polygon, and find the area of
+!!   each polygon. Also place a number of small circles in the plot area colored
+!!   according to whether they fall within the border of the original polygon.
+!!
+!!    program demo_envelope
+!!    use M_draw
+!!    use M_drawplus, only : page
+!!    use M_math,     only : envelope        ! Find vertices (in clockwise order) of a polygon enclosing the points
+!!    use M_math,     only : locpt           ! find if a point is inside a polygonal path
+!!    use M_math,     only : polyarea        ! compute the area bounded by a closed polygonal curve
+!!    implicit none
+!!    integer,parameter :: n=6
+!!    !  3--------------4
+!!    !   \           /
+!!    !     \       /
+!!    !       \   /
+!!    !         X 2,5
+!!    !       /  !!    !     /      !!    !   /          !!    !  1--------------6
+!!    real,parameter    :: x(n)=[-5.0, 0.0,-5.0, 5.0, 0.0, 5.0]
+!!    real,parameter    :: y(n)=[-5.0, 0.0, 5.0, 5.0, 0.0,-5.0]
+!!    real              :: xy(2,n)
+!!    integer           :: vertex(n)
+!!    integer           :: nvert
+!!    integer           :: i
+!!    integer           :: idum
+!!       xy(1,:)=x
+!!       xy(2,:)=y
+!!       call vinit(' ')
+!!       call page(-10.0,10.0,-10.0,10.0)
+!!       call color(D_BLACK) ! set current color to black
+!!       call clear()        ! clear to current color
+!!       call polyfill(.true.)
+!!       call color(D_BLUE)  ! we want to draw polygon in this color
+!!       call poly2(n,xy)    ! draw filled polygon using points given
+!!       idum=getkey()       ! pause for some input
+!!       call color(D_CYAN)
+!!       call polyhatch(.true.)
+!!       call envelope(x, y, n, vertex, nvert)   ! calculate envelope
+!!       call poly2(nvert,xy(:,vertex(1:nvert))) ! draw hatched envelope
+!!       idum=getkey()       ! pause for some input
+!!       call polyhatch(.false.)
+!!       call linewidth(50)
+!!       call color(D_WHITE)
+!!       call poly2(n,xy)    ! draw line along original points
+!!       idum=getkey()       ! pause for some input
+!!       call random_seed()
+!!       do i=1,70
+!!          call pickrandom()
+!!       enddo
+!!       idum=getkey()       ! pause for some input
+!!       call vexit()        ! wrap up and exit graphics mode
+!!       write(*,*)'polyarea=',polyarea(x,y)
+!!       write(*,*)'polyarea=',polyarea( xy(1,vertex(1:nvert)), xy(2,vertex(1:nvert)))
+!!    contains
+!!    subroutine pickrandom()
+!!    ! randomly pick a point in the plot area and color it according to whether it is inside
+!!    ! the original polygon
+!!    real :: pointx, pointy
+!!    integer :: l, m
+!!       call random_number(pointx)
+!!       call random_number(pointy)
+!!       pointx=pointx*20.0-10.0
+!!       pointy=pointy*20.0-10.0
+!!       call locpt(pointx,pointy,x,y,n,l,m)
+!!       select case(l)
+!!        case(-1)
+!!          call color(D_RED)
+!!        case(0)
+!!          call color(D_YELLOW)
+!!        case(1)
+!!          call color(D_GREEN)
+!!        case default
+!!          write(*,*)'*pickrandom* internal error: L value unknown'
+!!          call color(D_WHITE)
+!!       end select
+!!       call circle(pointx,pointy,0.2)
+!!    end subroutine pickrandom
+!!    end program demo_envelope
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 SUBROUTINE locpt (x0, y0, x, y, n, l, m)
@@ -3582,9 +3748,12 @@ RETURN
    ierr = -i
 
 END SUBROUTINE Poly_Intercept
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 !>
 !!##NAME
-!!        polyarea(3f) - [M_math:geometry] compute the area bounded by a closed polygonal curve
+!!        polyarea(3f) - [M_math:geometry] compute the area bounded by a simple closed polygonal curve
 !!
 !!##SYNOPSIS
 !!
@@ -3595,16 +3764,25 @@ END SUBROUTINE Poly_Intercept
 !!       REAL                 :: fn_val
 !!
 !!##DESCRIPTION
-!!    Given a sequence of points (X(I),Y(I)), polyarea(3f) computes the area
-!!    bounded by the closed polygonal curve which passes through the points in
-!!    the order that they are indexed. The final point of the curve is assumed
-!!    to be the first point given. Therefore, it need not be listed at the end
-!!    of X and Y. The curve is not required to be simple ( e.g. It may cross over
-!!    itself).
+!!    Given a sequence of points (X(I),Y(I)), polyarea(3f) computes the
+!!    area bounded by the closed polygonal curve which passes through the
+!!    points in the order that they are indexed. The final point of the
+!!    curve is assumed to be the first point given. Therefore, it need
+!!    not be listed at the end of X and Y. The polygon should be simple
+!!    (e.g. It may not cross over itself).
+!!
+!!    If the vertices are given in counterclockwise order, the area will
+!!    be positive.  If the vertices are given in clockwise order, the area
+!!    will be negative.
 !!
 !!##OPTIONS
+!!    x   x coordinates of the points that define the simple polygon
+!!    y   y coordinates of the points that define the simple polygon
+!!
+!!    The X and Y arrays are assumed to be of the same size.
 !!
 !!##RETURNS
+!!    fn_val   the area of the simple polygon
 !!
 !!##EXAMPLE
 !!
@@ -3629,19 +3807,28 @@ END SUBROUTINE Poly_Intercept
 !!    real,allocatable :: x(:)
 !!    real,allocatable :: y(:)
 !!
-!!    x=[ 0.0, 10.0,  0.0,  0.0, 10.0, 0.0]
-!!    y=[10.0, 10.0,  0.0, 10.0,  0.0, 0.0]
+!!    x=[ 0.0, 10.0,  0.0, 10.0,  0.0,  0.0]   !! hourglass crosses itself. unexpected value
+!!    y=[10.0, 10.0,  0.0,  0.0, 10.0, 10.0]
 !!    write(*,*)'polyarea=',polyarea(x,y)
 !!
-!!    x=[ 0.0,  0.0, 10.0, 10.0,  0.0 ]
+!!    x=[ 0.0, 10.0,  0.0,  0.0, 10.0, 0.0,  0.0] !! crosses itself. maybe not what you expect
+!!    y=[10.0, 10.0,  0.0, 10.0,  0.0, 0.0, 10.0]
+!!    write(*,*)'polyarea=',polyarea(x,y)
+!!
+!!    x=[ 0.0,  0.0, 10.0, 10.0,  0.0 ]     ! square
 !!    y=[ 0.0, 10.0, 10.0,  0.0,  0.0 ]
 !!    write(*,*)'polyarea=',polyarea(x,y)
 !!
-!!    x=[ 0.0, 10.0, 10.0,  0.0,  0.0 ]
+!!    x=[ 0.0, 10.0, 10.0,  0.0,  0.0 ]     ! square
 !!    y=[10.0, 10.0,  0.0,  0.0, 10.0 ]
 !!    write(*,*)'polyarea=',polyarea(x,y)
 !!
 !!    end program demo_polyarea
+!!
+!!  polyarea=   0.00000000
+!!  polyarea=  -100.000000
+!!  polyarea=  -100.000000
+!!  polyarea=  -100.000000
 !===================================================================================================================================
 !>
 !! PROCEDURE:    polyarea(3f)
@@ -3651,6 +3838,7 @@ END SUBROUTINE Poly_Intercept
 !===================================================================================================================================
 function polyarea(x, y) result(fn_val)
 implicit none
+
 character(len=*),parameter::ident="@(#)M_math::polyarea(3f): compute the area bounded by a closed polygonal curve"
 
 real, intent(in)     :: x(:)
@@ -3681,6 +3869,159 @@ endif
      fn_val = 0.5*a
    end select
 end function polyarea
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+doubleprecision function polyarea_mid_point(N,P)     !Calculates the area enclosed by the polygon P.
+
+! from rosetta code Sunday, December 30th, 2018 7:07:10 PM UTC-05:00
+
+! Uses the mid-point rule for integration. Consider the line joining (x1,y1) to (x2,y2)
+! The area under that line (down to the x-axis) is the y-span midpoint (y1 + y2)/2 times the width (x2 - x1)
+! This is the trapezoidal rule for a single interval, and follows from simple geometry.
+! Now consider a sequence of such points heading in the +x direction: each successive interval's area is positive.
+! Follow with a sequence of points heading in the -x direction, back to the first point: their areas are all negative.
+! The resulting sum is the area below the +x sequence and above the -x sequence: the area of the polygon.
+! The point sequence can wobble as it wishes and can meet the other side, but it must not cross itself
+! as would be done in a figure 8 drawn with a crossover instead of a meeting.
+! A clockwise traversal (as for an island) gives a positive area; use anti-clockwise for a lake.
+INTEGER N                               ! The number of points.
+DOUBLE COMPLEX P(N)                     ! The points.
+DOUBLE COMPLEX PP,PC                    ! Point Previous and Point Current.
+DOUBLE COMPLEX W                        ! Polygon centre. Map coordinates usually have large offsets.
+DOUBLE PRECISION A                      ! The area accumulator.
+INTEGER I                               ! A stepper.
+   IF (N.LT.3) STOP "*polyarea_mid_point* ERROR: at least three points are needed! "        !Good grief.
+   W = (P(1) + P(N/3) + P(2*N/3))/3     ! An initial working average.
+   W = SUM(P(1:N) - W)/N + W            ! A good working average is the average itself.
+   A = 0                                ! The area enclosed by the point sequence.
+   PC = P(N) - W                        ! The last point is implicitly joined to the first.
+   DO I = 1,N                           ! Step through the positions.
+      PP = PC                           ! Previous position.
+      PC = P(I) - W                     ! Current position.
+      A = (DIMAG(PC) + DIMAG(PP))*(DBLE(PC) - DBLE(PP)) + A  ! Area integral component.
+   END DO                               ! On to the next position.
+   polyarea_mid_point = A/2             ! Divide by two once.
+END FUNCTION polyarea_mid_point         ! The units are those of the points.
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!        polyarea_shoelace(3f) - [M_math:geometry] compute area bounded by a simple closed polygon using the shoelace algorithm
+!!
+!!##SYNOPSIS
+!!
+!!   function polyarea_shoelace(x, y)
+!!
+!!    class(*), intent(in) :: x(:)
+!!    class(*), intent(in) :: y(:)
+!!    doubleprecision      :: polyarea_shoelace
+!!
+!!##DESCRIPTION
+!!    Given a sequence of points (X(I),Y(I)), polyarea_shoelace(3f) computes the
+!!    area bounded by the closed polygonal curve which passes through the
+!!    points in the order that they are indexed. The final point of the
+!!    curve is assumed to be the first point given. Therefore, it need
+!!    not be listed at the end of X and Y. The polygon should be simple
+!!    (e.g. It may not cross over itself).
+!!
+!!    If the vertices are given in counterclockwise order, the area will
+!!    be positive.  If the vertices are given in clockwise order, the area
+!!    will be negative.
+!!
+!!##OPTIONS
+!!    x   x coordinates of the points that define the simple polygon.
+!!        May be any standard scalar numeric value type supported by
+!!        M_anything::anyscalar_to_double(3f).
+!!    y   y coordinates of the points that define the simple polygon.
+!!        May be any standard scalar numeric value type supported by
+!!        M_anything::anyscalar_to_double(3f).
+!!
+!!    The X and Y arrays are assumed to be of the same size.
+!!
+!!##RETURNS
+!!    polyarea_shoelace   the area of the simple polygon
+!!
+!!##EXAMPLE
+!!
+!!   Sample program:
+!!
+!!    !   (0,10) ########### (10,10)
+!!    !          ##       #
+!!    !          # #     #
+!!    !          #  #   #
+!!    !          #   # #
+!!    !          #    #
+!!    !          #   # #
+!!    !          #  #   #
+!!    !          # #     #
+!!    !          ##       #
+!!    !     (0,0)########### (10,0)
+!!
+!!    program demo_polyarea_shoelace
+!!    use M_math, only : polyarea_shoelace
+!!    implicit none
+!!    !                          A  B      C    D      E    F
+!!    real,allocatable :: x(:)
+!!    real,allocatable :: y(:)
+!!
+!!    x=[ 0.0, 10.0,  0.0, 10.0,  0.0,  0.0]   !! hourglass crosses itself. unexpected value
+!!    y=[10.0, 10.0,  0.0,  0.0, 10.0, 10.0]
+!!    write(*,*)'polyarea_shoelace=',polyarea_shoelace(x,y)
+!!
+!!    x=[ 0.0, 10.0,  0.0,  0.0, 10.0, 0.0,  0.0] !! crosses itself. maybe not what you expect
+!!    y=[10.0, 10.0,  0.0, 10.0,  0.0, 0.0, 10.0]
+!!    write(*,*)'polyarea_shoelace=',polyarea_shoelace(x,y)
+!!
+!!    x=[ 0.0,  0.0, 10.0, 10.0,  0.0 ]     ! square clockwise
+!!
+!!    y=[ 0.0, 10.0, 10.0,  0.0,  0.0 ]
+!!    write(*,*)'polyarea_shoelace=',polyarea_shoelace(x,y)
+!!
+!!    x=[ 0.0, 0.0, 10.0,  10.0,  0.0 ]     ! square counterclockwise
+!!    y=[10.0, 0.0,  0.0,  10.0, 10.0 ]
+!!    write(*,*)'polyarea_shoelace=',polyarea_shoelace(x,y)
+!!
+!!    end program demo_polyarea_shoelace
+!!
+!!   Results:
+!!
+!!     polyarea_shoelace=   0.0000000000000000
+!!     polyarea_shoelace=  -100.00000000000000
+!!     polyarea_shoelace=  -100.00000000000000
+!!     polyarea_shoelace=   100.00000000000000
+!===================================================================================================================================
+doubleprecision function polyarea_shoelace(x,y)
+use m_anything, only : anyscalar_to_double
+
+character(len=*),parameter::ident="@(#)Area enclosed by simple (non-intersecting) polygon P, by the shoelace method."
+
+class(*),intent(in)          :: x(:), y(:)
+
+doubleprecision,allocatable  :: px(:)    ! The X values for the points.
+doubleprecision,allocatable  :: py(:)    ! The Y values for the points.
+integer                      :: n        ! The number of points.
+integer                      :: ipx,ipy  ! size of PX and PY
+doubleprecision              :: area     !
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! determine number of points
+   px=anyscalar_to_double(x) ! allow any scalar numeric type at cost of making copy
+   py=anyscalar_to_double(y)
+   ipx=ubound(px,dim=1)
+   ipy=ubound(py,dim=1)
+   if(ipx.ne.ipy)then
+      write(*,*)'*polyarea_shoelace* WARNING: input arrays not same size'
+   endif
+   n=min(ipx,ipy)
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+   area = sum(px(1:n - 1)*py(2:n)) + px(n)*py(1) - sum(px(2:n)*py(1:n - 1)) - px(1)*py(n)
+   polyarea_shoelace = area/2        ! The midpoint formula requires area halving.
+
+END FUNCTION polyarea_shoelace       ! Negative for clockwise, positive for counter-clockwise.
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 
 !>
 !!##NAME
@@ -5195,6 +5536,194 @@ endif
    discriminant = b*b - 4.0*a*c
 
 end subroutine quadratic
+
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
+!>
+!!##NAME
+!!   magic_square(3f) - [M_math] create an N x N magic square array, N>2
+!!##SYNOPSIS
+!!
+!!   subroutine magic_square(array)
+!!
+!!    class(*) :: array
+!!
+!!##DESCRIPTION
+!!    This procedure returns  a magic squares array, an n by n matrix in
+!!    which each integer 1, 2, ..., n*n appears exactly once and all columns,
+!!    rows, and diagonals sum to the same number.
+!!
+!!##OPTIONS
+!!    array  An array to fill with the magic square values. The
+!!           smallest dimension should be >= 3. Since a square is required
+!!           only the values only array(1:n,1:n) will be filled, where
+!!           n=min(rows,columns).
+!!
+!!           The array may be INTEGER, REAL, or DOUBLEPRECISION.
+!!
+!!           Note that the routine allocates an integer array of the size
+!!           determined by the input routine during execution.
+!!
+!!##AUTHOR
+!!   John S. Urban
+!!
+!!   Based on an algorithm for magic squares from
+!!
+!!     Mathematical Recreations and Essays, 12th ed.,
+!!     by W. W. Rouse Ball and H. S. M. Coxeter
+!!##EXAMPLE
+!!
+!!   Sample program
+!!
+!!    program demo_magic_square
+!!    use M_math, only : magic_square
+!!    implicit none
+!!    integer           :: arr(15,15)
+!!    integer           :: i, j, k
+!!
+!!       do k=1,15
+!!          write(*,*)'K=',k
+!!          call magic_square(arr(:k,:k))
+!!          do i=1,k
+!!             write(*,'(i2,":",*(i5):)')i,(int(arr(i,j)),j=1,k),sum(arr(k,:k))
+!!          enddo
+!!       enddo
+!!    end program demo_magic_square
+!===================================================================================================================================
+subroutine magic_square(array)
+implicit none
+class(*)            :: array(:,:)
+integer,allocatable :: iarray(:,:)
+integer             :: cols
+integer             :: rows
+integer             :: n
+
+integer             :: t
+integer             :: i,  j,  m
+integer             :: i1, j1, m1
+integer             :: im, jm, mm
+integer             :: k
+integer             :: m2
+!
+   select type(array)
+   type is (integer)
+      rows=size(array,dim=1)
+      cols=size(array,dim=2)
+   type is (real)
+      rows=size(array,dim=1)
+      cols=size(array,dim=2)
+   type is (doubleprecision)
+      rows=size(array,dim=1)
+      cols=size(array,dim=2)
+   end select
+
+   n=min(rows,cols)
+   allocate(iarray(n,n))
+   if (mod(n,4) .eq. 0) then
+!
+!  double even order
+!
+      k = 1
+      do i = 1, n
+         do j = 1, n
+            iarray(i,j) = k
+            if (mod(i,4)/2 .eq. mod(j,4)/2) iarray(i,j) = n*n+1 - k
+            k = k+1
+         enddo
+      enddo
+   else
+      if (mod(n,2) .eq. 0) then
+         m = n/2
+      else
+         m = n
+      endif
+!
+!     odd order or upper corner of even order
+!
+      iarray(:m,:m)=0
+      i = 1
+      j = (m+1)/2
+      mm = m*m
+      do k = 1, mm
+         iarray(i,j) = k
+         i1 = i-1
+         j1 = j+1
+         if(i1.lt.1) i1 = m
+         if(j1.gt.m) j1 = 1
+         if(iarray(i1,j1).ne.0) then
+            i1 = i+1
+            j1 = j
+         endif
+         i = i1
+         j = j1
+      enddo
+      if (mod(n,2) .eq. 0) then
+!
+!     rest of even order
+!
+         t = m*m
+         do i = 1, m
+            do j = 1, m
+               im = i+m
+               jm = j+m
+               iarray(i,jm) = iarray(i,j) + 2*t
+               iarray(im,j) = iarray(i,j) + 3*t
+               iarray(im,jm) = iarray(i,j) + t
+            enddo
+         enddo
+         m1 = (m-1)/2
+         if (m1.ne.0) then
+            do j = 1, m1
+               call iswap(m,iarray(1:,j),iarray(m+1:,j))
+            enddo
+            m1 = (m+1)/2
+            m2 = m1 + m
+            call iswap(1,iarray(m1:m1,1),iarray(m2:m2,1))
+            call iswap(1,iarray(m1:m1,m1),iarray(m2:m2,m1))
+            m1 = n+1-(m-3)/2
+            if(m1.le.n)then
+               do j = m1, n
+                  call iswap(m,iarray(1:,j),iarray(m+1:,j))
+               enddo
+            endif
+         endif
+      endif
+   endif
+   select type(array)
+   type is (integer)
+      array=iarray
+   type is (real)
+      array=real(iarray)
+   type is (doubleprecision)
+      array=dble(iarray)
+   end select
+   deallocate(iarray)
+end subroutine magic_square
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
+subroutine iswap(n,x,y)
+
+character(len=*),parameter::ident="@(#)m_matrix::iswap(3f): swap two integer arrays"
+
+integer,intent(in) :: n
+integer            :: x(:),y(:)
+
+integer            :: temp
+integer            :: i
+
+   if(n.gt.0)then
+      do i = 1, n
+         temp = x(n)
+         x(n) = y(n)
+         y(n) = temp
+      enddo
+   endif
+end subroutine iswap
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
 
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!

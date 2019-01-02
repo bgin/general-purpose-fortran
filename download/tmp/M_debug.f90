@@ -18,19 +18,28 @@
 !!    pdec(3f)              write ASCII Decimal Equivalent (ADE) numbers vertically beneath string
 !!    stderr(3f)            Write message on stderr
 !!
+!!    UNIT TESTS
+!!
 !!    unit_check_start(3f)  call command "goodbad NAME start ..."
 !!    unit_check(3f)        if expression is .F. call command "goodbad NAME bad" and stop program
 !!    unit_check_good(3f)   call command "goodbad NAME good"
 !!    unit_check_bad(3f)    call command "goodbad NAME bad" and stop program
 !!
-!!    The existence of a command called "goodbad" is assumed. This is
+!!    The existence of a command called "goodbad" is assumed.
+!!    This is
 !!    generally a script that makes entries for each unit in an SQLite data
 !!    file which is then used to create CSV and HTML reports on the status of
 !!    each unit. A sample goodbad(1) command written in the bash(1) shell and
 !!    using the sqlite3(1) command should be included in this distribution.
 !!
-!!    These are often combined with the M_hashkeys(3fm) and various math
+!!    The flexibility introduced by calling an external script or program is that
+!!    The goodbad(1) command can be changed as desired to write CSV files or simple
+!!    logs or to notify developers with e-mail as desired.
+!!
+!!    These routines are often combined with the M_hashkeys(3fm) routines and various math
 !!    and statistical routines to create various unit tests.
+!!
+!!    Comparisions of real values can be done with M_Compare_Float_Numbers(3fm)
 !!
 !!    The intrinsics ANY(3f) and ALL(3f) are particularly useful in calls
 !!    to unit_check(3f).
@@ -97,17 +106,19 @@ module m_debug
 use iso_fortran_env, only : ERROR_UNIT        ! access computing environment
 implicit none
 private
-   integer,save,public :: io_debug=ERROR_UNIT ! mutable copy of ERROR_UNIT, but initialized to the unit used for stderr
-   logical,save,public :: debug=.false.
-   integer,parameter,public :: EXIT_SUCCESS=0
-   integer,parameter,public :: EXIT_FAILURE=1
-   public stderr
-   public pdec
-   public fstop
-   public unit_check
-   public unit_check_good
-   public unit_check_bad
-   public unit_check_start
+integer,save,public :: io_debug=ERROR_UNIT ! mutable copy of ERROR_UNIT, but initialized to the unit used for stderr
+logical,save,public :: debug=.false.
+integer,parameter,public :: EXIT_SUCCESS=0
+integer,parameter,public :: EXIT_FAILURE=1
+logical,save ::  STOP_G=.true.             ! global value indicating whether unit checks should stop program or not
+integer,save :: ICOUNT_G=0
+public stderr
+public pdec
+public fstop
+public unit_check
+public unit_check_good
+public unit_check_bad
+public unit_check_start
 contains
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -160,6 +171,7 @@ character(len=*),parameter::ident="@(#)M_debug::stderr(3f): writes a message to 
 
 character(len=*),intent(in)  :: message
 class(*),intent(in),optional :: generic
+
    if(present(generic))then
       write(error_unit,'(a,1x)',advance='no')trim(message)    ! write message to standard error
       select type(generic)
@@ -345,7 +357,7 @@ end subroutine fstop
 !>
 !!
 !!##NAME
-!!    unit_check(3f) - [M_debug] if logical expression is false, call command "goodbad NAME bad" and stop program
+!!    unit_check(3f) - [M_debug] if logical expression is false, call command "goodbad NAME bad" and stop program by default
 !!
 !!##SYNOPSIS
 !!
@@ -417,7 +429,7 @@ character(len=*),intent(in),optional :: message
    if(.not.logical_expression)then
       call stderr('unit_check:        STOPPING PROGRAM ON TEST OF '//trim(name))    ! write to standard error
       call execute_command_line('goodbad '//trim(name)//' bad')
-      stop 1
+      if(STOP_G) call fstop(1)
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine unit_check
@@ -427,7 +439,7 @@ end subroutine unit_check
 !>
 !!
 !!##NAME
-!!    unit_check_start(3f) - [M_debug] call command "goodbad NAME start"
+!!    unit_check_start(3f) - [M_debug] call command "goodbad NAME start" and optionally set options
 !!
 !!##SYNOPSIS
 !!
@@ -435,12 +447,16 @@ end subroutine unit_check
 !!
 !!     character(len=*),intent(in) :: name
 !!     character(len=*),intent(in),optional :: options
+!!     logical,intent(in),optional :: stop
 !!
 !!##DESCRIPTION
 !!
 !!    unit_check_start(3f) calls the shell command
 !!
 !!       goodbad NAME start [options]
+!!
+!!    if the parameter STOP=.false. is present, the unit checks will no longer stop the program.
+!!    This has the same effect as setting the environment variable M_DEBUG_STOP to "FALSE".
 !!
 !!##EXAMPLES
 !!
@@ -473,18 +489,38 @@ end subroutine unit_check
 !!
 !!     end program demo_unit_check_start
 !===================================================================================================================================
-subroutine unit_check_start(name,options)
+subroutine unit_check_start(name,options,stop)
 
 character(len=*),parameter::ident="@(#)M_debug::unit_check_start(3f): call 'goodbad NAME start'"
 
 character(len=*),intent(in)          :: name
 character(len=*),intent(in),optional :: options
+logical,intent(in),optional          :: stop
+character(len=20)                    :: var
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(present(options))then
       call execute_command_line('goodbad '//trim(name)//' start '//trim(options))
    else
       call execute_command_line('goodbad '//trim(name)//' start')
    endif
+!-----------------------------------------------------------------------------------------------------------------------------------
+   if(present(stop))then
+      STOP_G=stop
+   else
+      STOP_G=.true.
+   endif
+   call get_environment_variable('M_DEBUG_STOP',var)
+   select case(var)
+   case('FALSE','false')
+      STOP_G=.false.
+   case('1')
+      STOP_G=.false.
+   case('no','NO')
+      STOP_G=.false.
+   end select
+!-----------------------------------------------------------------------------------------------------------------------------------
+   ICOUNT_G=1
+!-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine unit_check_start
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -547,7 +583,7 @@ character(len=*),intent(in),optional :: options
       call execute_command_line('goodbad '//trim(name)//' bad')
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
-   stop 1
+   if(STOP_G) call fstop(1)
 !-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine unit_check_bad
 !===================================================================================================================================

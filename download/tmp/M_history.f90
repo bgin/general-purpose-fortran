@@ -4,9 +4,10 @@
 !!
 !!##SYNOPSIS
 !!
-!!    subroutine redo(inputline)
+!!    subroutine redo(inputline,r)
 !!
 !!      character(len=*) :: inputline
+!!      character(len=1),intent(in),optional :: r
 !!
 !!##DESCRIPTION
 !!    the redo(3f) routine lets you recall, list, save, and modify previously
@@ -36,6 +37,11 @@
 !!                           ! for storing the line into the input history
 !!                           ! unless the input line is the "r" command
 !!      READ(LINE,101)A,I,K  ! read from variable like you did from file
+!!##OPTIONS
+!!      inputline    line to record into history buffer file or to edit.
+!!
+!!      r            Optional letter to use as command to invoke editing.
+!!                   Defaults to 'r'.
 !!
 !!##USAGE
 !!    When prompted for an input line by your program you may at any
@@ -214,7 +220,7 @@ module M_history
 
 contains
 !===================================================================================================================================
-subroutine redo(inputline)
+subroutine redo(inputline,rin)
 !      if line starts with r word call redol()
 !      uses unit 1071
 !       r
@@ -222,10 +228,18 @@ subroutine redo(inputline)
 !
 character(len=*),parameter     :: ident="@(#)M_history::redo(3f): open binary direct access file for keeping history"
 character(len=*),intent(inout) :: inputline                ! user string
-   integer,save                :: iobuf=1071               ! unit number to use for redo history buffer
-   integer,save                :: iredo                    ! number of lines read from standard input into redo file
-   logical,save                :: lcalled=.false.          ! flag whether first time this routine called or not
-   character(len=READLEN)      :: onerecord
+character(len=1),intent(in),optional :: rin                ! character to use to trigger editing
+character(len=1)                     :: r                  ! character to use to trigger editing
+integer,save                         :: iobuf=1071         ! unit number to use for redo history buffer
+integer,save                         :: iredo              ! number of lines read from standard input into redo file
+logical,save                         :: lcalled=.false.    ! flag whether first time this routine called or not
+character(len=READLEN)               :: onerecord
+!-----------------------------------------------------------------------------------------------------------------------------------
+if(present(rin))then
+   r=rin
+else
+   r='r'
+endif
 !-----------------------------------------------------------------------------------------------------------------------------------
 !  open history file and initialize
    if(.not.lcalled)then                                    ! open the redo buffer file
@@ -240,10 +254,10 @@ character(len=*),intent(inout) :: inputline                ! user string
 !-----------------------------------------------------------------------------------------------------------------------------------
    ilast=len_trim(inputline)
 
-   if(ilast.eq.1.and.inputline(1:1).eq.'r')then                             ! redo command
+   if(ilast.eq.1.and.inputline(1:1).eq.r)then                             ! redo command
       call redol(inputline,iobuf,iredo,READLEN,' ')
       ilast=len_trim(inputline)
-   elseif(inputline(1:min(2,len(inputline))).eq.'r ')then                   ! redo command with a string following
+   elseif(inputline(1:min(2,len(inputline))).eq.r//' ')then                   ! redo command with a string following
       call redol(inputline,iobuf,iredo,READLEN,inputline(3:max(3,ilast)))
       ilast=len_trim(inputline)
    endif

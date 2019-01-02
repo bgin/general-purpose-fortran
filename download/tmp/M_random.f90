@@ -12,6 +12,8 @@
 !!    use M_random, only : mtprng_int, mtprng_int_by_array
 !!    use M_random, only : mtprng_rand64, mtprng_rand, mtprng_rand_range
 !!    use M_random, only : mtprng_rand_real3, mtprng_rand_real2, mtprng_rand_real1
+!!    use M_random, only : random_permutations
+!!    use M_random, only : scramble
 !!
 !!##QUOTE
 !!
@@ -32,6 +34,8 @@
 !!
 !!   MISCELLANEOUS
 !!    o random_kiss64(3f): A 64-bit KISS random number generator by George Margaglia.
+!!    o random_permutation(3f): populate integer array with a random permutation of the values 1 to size(array)
+!!    o scramble(3f): generate an integer array of specified size populated with a random permutation of 1 to size(array)
 !!
 !!   MERSENNE TWISTER ALGORITHM
 !!    o mtprng_int(3f): Initializes the Mersenne Twister random number generator with
@@ -57,6 +61,8 @@ public random_string
 public random_hex
 
 public random_kiss64
+public random_permutation
+public scramble
 
 public :: mtprng_state, mtprng_init, mtprng_init_by_array, mtprng_rand64, mtprng_rand
 public :: mtprng_rand_range, mtprng_rand_real1, mtprng_rand_real2, mtprng_rand_real3
@@ -200,6 +206,177 @@ end function random_hex
 !==================================================================================================================================!
 !>
 !!##NAME
+!!    random_permutation(3f) - [M_random] Populate an integer array with the values 1 to size(array)
+!!
+!!##SYNOPSIS
+!!
+!!    subroutine random_permutation( array )
+!!    integer,intent(inout) :: array(:)
+!!
+!!##DESCRIPTION
+!!    Populate the given integer array with the numbers 1 to size(array) arranged in
+!!    random order.
+!!
+!!##OPTIONS
+!!    array    Integer array that will be filled with integers 1 to N in
+!!             random order
+!!
+!!##EXAMPLE
+!!
+!!   Sample program
+!!
+!!     program demo_random_permutation
+!!     use M_random, only : random_permutation
+!!     implicit none
+!!     integer                    :: array(10)
+!!     character(len=*),parameter :: list(*)=[character(len=5) :: &
+!!             & 'one','two','three','four','five',&
+!!             & 'six','seven','eight','nine','ten']
+!!     integer                    :: i, j
+!!     do i = 1,8
+!!        call random_permutation(array)
+!!        write(*,'(*(i5,1x))') array
+!!        ! use random values as indices to randomize another array
+!!        write(*,'(*(a,1x))') (adjustr(list(array(j))),j=1,size(array))
+!!     enddo
+!!     end program demo_random_permutation
+!!
+!!   Example output
+!!
+!!        6     5     4    10     3     2     1     7     8     9
+!!      six  five  four   ten three   two   one seven eight  nine
+!!        5     3     1     2    10     7     4     9     6     8
+!!     five three   one   two   ten seven  four  nine   six eight
+!!       10     1     9     5     3     4     2     6     7     8
+!!      ten   one  nine  five three  four   two   six seven eight
+!!        7     5     1     8    10     2     6     9     3     4
+!!    seven  five   one eight   ten   two   six  nine three  four
+!!        6     8     1    10     9     7     4     5     3     2
+!!      six eight   one   ten  nine seven  four  five three   two
+!!        2     4     8     9     7     3     6     1    10     5
+!!      two  four eight  nine seven three   six   one   ten  five
+!!        6     5     2     9     8    10     1     7     3     4
+!!      six  five   two  nine eight   ten   one seven three  four
+!!        5     3     4     9     6     2    10     1     7     8
+!!     five three  four  nine   six   two   ten   one seven eight
+!===================================================================================================================================
+subroutine random_permutation( array )
+
+character(len=*),parameter::ident="&
+&@(#)M_random::random_permutation(3f): populate an integer array with a random permutation of the integers 1 to size(array)"
+
+integer,intent(inout) :: array(:)
+
+integer               :: i
+integer               :: j
+integer               :: n
+integer               :: number_of_values
+integer               :: temp
+real                  :: random
+
+   number_of_values = size(array)
+   array=[(i,i=1,number_of_values)]
+
+   n=number_of_values
+   do i=1,number_of_values-1
+      n=n-1
+      call random_number(random)
+      j=1+n*random
+      if(j>=n+1)j=1
+      ! switch values
+      temp=array(i+j)
+      array(i+j)=array(i)
+      array(i)=temp
+   enddo
+
+end subroutine random_permutation
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
+!>
+!!##NAME
+!!    scramble(3f) - [M_random] return an integer array peopulated with the values 1 to size(array)
+!!
+!!##SYNOPSIS
+!!
+!!    function scramble( number_of_values )
+!!    integer,intent(in) :: number_of_values
+!!
+!!##DESCRIPTION
+!!    Return an integer array of the size specified populated with the
+!!    numbers 1 to number_of_values in random order.
+!!
+!!##OPTIONS
+!!    number_of_values  size of integer array to create
+!!
+!!##RETURNS
+!!    scramble    Integer array filled with integers 1 to N in random order
+!!
+!!##EXAMPLE
+!!
+!!   Sample program
+!!
+!!     program demo_scramble
+!!     use M_random, only : scramble
+!!     implicit none
+!!     character(len=*),parameter :: list(*)=[character(len=5) :: &
+!!             & 'one','two','three','four','five',&
+!!             & 'six','seven','eight','nine','ten']
+!!     integer                    :: i
+!!     integer                    :: n
+!!     character(len=len(list))   :: newlist(size(list))
+!!     n=size(list)
+!!     do i = 1,8
+!!        ! use random values as indices to randomize array
+!!        newlist=list(scramble(n))
+!!        write(*,'(*(a,1x))') newlist
+!!     enddo
+!!     end program demo_scramble
+!!
+!!   Example output
+!!
+!!    ten   six   eight one   four  nine  two   five  three seven
+!!    three five  ten   nine  one   four  six   seven two   eight
+!!    four  eight ten   two   seven nine  six   three one   five
+!!    three one   nine  seven ten   five  two   six   eight four
+!!    two   seven nine  one   four  three eight ten   five  six
+!!    three one   nine  six   ten   five  eight two   four  seven
+!!    four  five  six   eight one   ten   three nine  seven two
+!!    three nine  four  two   one   seven ten   five  six   eight
+!===================================================================================================================================
+function scramble( number_of_values ) result(array)
+
+character(len=*),parameter::ident="@(#)M_random::scramble(3f): return an integer array of random values 1 to N."
+
+integer,intent(in)    :: number_of_values
+integer,allocatable   :: array(:)
+
+integer               :: i, j
+integer               :: n
+integer               :: temp
+real                  :: random
+
+   allocate(array(number_of_values))
+   array=[(i,i=1,number_of_values)]
+
+   n=number_of_values
+   do i=1,number_of_values-1
+      n=n-1
+      call random_number(random)
+      j=1+n*random
+      if(j>=n+1)j=1
+      ! switch values
+      temp=array(i+j)
+      array(i+j)=array(i)
+      array(i)=temp
+   enddo
+
+end function scramble
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
+!>
+!!##NAME
 !!       random_kiss64 - [M_random] A 64-bit KISS random number generator by George Margaglia.
 !!##SYNOPSIS
 !!
@@ -213,27 +390,26 @@ end function random_hex
 !!##EXAMPLE
 !!
 !!
-!!    Sample usage:
+!!   Sample usage:
 !!
 !!     program demo_random_kiss64
 !!     use M_random, only : random_kiss64
-!!       implicit none
-!!       integer, parameter    :: i8b = selected_int_kind(18)  ! eight-byte integer
-!!       integer(i8b)          :: i, t
-!!       integer(i8b),external :: random_kiss64
+!!     implicit none
+!!     integer, parameter    :: i8b = selected_int_kind(18)  ! eight-byte integer
+!!     integer(i8b)          :: i, t
 !!
-!!       write(*,*)'HUGE=',huge(0_i8b)
+!!        write(*,*)'HUGE=',huge(0_i8b)
 !!
-!!       do i = 1, 100000000
-!!          t = random_kiss64()
-!!          if(i.eq.mod(i,100000+1)=100000)write(*,*)i,' T=',T
-!!       end do
+!!        do i = 1, 100000000
+!!           t = random_kiss64()
+!!           if(mod(i,1000000+1)==1000000)write(*,*)i,' T=',T
+!!        enddo
 !!
-!!       if (t .eq. 1666297717051644203_i8b) then
-!!          print *, "100 million calls to KISS() OK"
-!!       else
-!!          print *, "Fail"
-!!       end if
+!!        if (t .eq. 1666297717051644203_i8b) then
+!!           print *, "100 million calls to KISS() OK"
+!!        else
+!!           print *, "Fail"
+!!        endif
 !!     end program demo_random_kiss64
 !===================================================================================================================================
 function random_kiss64()
@@ -619,7 +795,7 @@ type(mtprng_state), intent(out) :: state
    !   a generator by Knuth. See original source for details.
    do i = 1, N - 1
       state%mt(i) = iand(4294967295_INT64,1812433253_INT64 * ieor(state%mt(i-1),ishft(state%mt(i-1),-30_INT64)) + i)
-   end do
+   enddo
 
    state%mti = N
 
@@ -693,10 +869,10 @@ type(mtprng_state), intent(out) :: state
       if (i >= N) then
          state%mt(0) = state%mt(N-1)
          i = 1
-      end if
+      endif
 
       if (j >= key_length) j = 0
-   end do
+   enddo
 
    do k = N-1, 0, -1
       state%mt(i) = ieor(state%mt(i),(ieor(state%mt(i-1),ishft(state%mt(i-1),-30_INT64) * 1566083941_INT64))) - i
@@ -706,8 +882,8 @@ type(mtprng_state), intent(out) :: state
       if (i>=N) then
          state%mt(0) = state%mt(N-1)
          i = 1
-      end if
-   end do
+      endif
+   enddo
 
    state%mt(0) = 1073741824_INT64 ! 0x40000000, assuring non-zero initial array
 
@@ -782,19 +958,19 @@ integer(INT64) :: r
       do kk = 0, N - M - 1
          r = ior(iand(state%mt(kk),UPPER_MASK),iand(state%mt(kk+1),LOWER_MASK))
          state%mt(kk) = ieor(ieor(state%mt(kk + M),ishft(r,-1_INT64)),mag01(iand(r,1_INT64)))
-      end do
+      enddo
 
       do kk = N - M, N - 2
          r = ior(iand(state%mt(kk),UPPER_MASK),iand(state%mt(kk+1),LOWER_MASK))
          state%mt(kk) = ieor(ieor(state%mt(kk + (M - N)),ishft(r,-1_INT64)),mag01(iand(r,1_INT64)))
-      end do
+      enddo
 
       r = ior(iand(state%mt(N-1),UPPER_MASK),iand(state%mt(0),LOWER_MASK))
       state%mt(N-1) = ieor(ieor(state%mt(M-1),ishft(r,-1)),mag01(iand(r,1_INT64)))
 
       ! Start using the array from first element
       state%mti = 0
-   end if
+   endif
 
    ! Here is where we actually calculate the number with a series of
    !   transformations
@@ -868,7 +1044,7 @@ integer(INT32) :: r
       r = x - 4294967296_INT64
    else
       r = x
-   end if
+   endif
 
 end function mtprng_rand
 !==================================================================================================================================!

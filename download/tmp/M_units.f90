@@ -88,9 +88,6 @@
 !!     o cartesian_to_polar:  Convert cartesian coordinates to polar
 !!     o polar:  Convert polar coordinates to cartesian
 !!
-!!   And the real constants PI, RADIAN, DEGREE, E.
-!!   And the double_precision constants PI_D, RADIAN_D, DEGREE_D, E_D.
-!!
 !!   Note that your compiler is less likely to inline small procedures in a
 !!   module than it would statement functions or CONTAINED functions.
 !!
@@ -125,7 +122,7 @@
 !!    use M_units, only : sind, cosd, tand
 !!    use M_units, only : asind, acosd, atand, atan2d
 !!    !!
-!!    use M_units, only : pi=>pi,radian,degree,e
+!!    use M_units, only : pi=>pi,e
 !!    use M_units, only : e,euler,pi,golden_ratio,deg_per_rad,rad_per_deg
 !!    use M_units, only : c__m_per_sec, c__ft_per_sec
 !!    !!

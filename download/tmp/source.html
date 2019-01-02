@@ -62,6 +62,18 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <td>
 	juown1(3f): extend functions available to the calculator routine <br/>
 </td>
+<tr><td><a href="mat88_user.f90">mat88_user.f90</a></td>
+<td>
+</td>
+<tr><td><a href="matrix.f90">matrix.f90</a></td>
+<td>
+	 PRINT TABLE OF VARIABLE ID NAMES (UP TO) EIGHT PER LINE<br/>
+	 read next variable from a <br/>
+	appnum(3f): subroutine returns a string given a prefix string and a real value<br/>
+</td>
+<tr><td><a href="ml_user.f90">ml_user.f90</a></td>
+<td>
+</td>
 <tr><td><a href="M_anything.f90">M_anything.f90</a></td>
 <td>
 	M_anything::anyscalar_to_double(3f): convert integer or real parameter of any kind to doubleprecision<br/>
@@ -327,6 +339,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_math::locpt(3f): find if a point is inside a polygonal path<br/>
 	M_math::poly_intercept(3f): Calculates the points at which a line <A,B<br/>
 	M_math::polyarea(3f): compute the area bounded by a closed polygonal curve<br/>
+	Area enclosed by simple (non-intersecting) polygon P, by the shoelace method.<br/>
 	M_math::extremum(3f):Find the minimum and maximum value in a REAL array<br/>
 	M_math::bds(3f): Basic Descriptive Statistics (based on a routine from the IBM collection)<br/>
 	M_math::skekur1(3f): variant on calculating skewness and kurtosis of an array<br/>
@@ -340,9 +353,21 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_math::scale1(3f):given xmin,xmax,n, find new range xminp xmaxp divisible into approximately n linear intervals of size dist<br/>
 	M_math::scale3(3f):find nice log range.<br/>
 	M_math::quadratic(3f): calculate the roots of a quadratic formula even if they are complex<br/>
+	m_matrix::iswap(3f): swap two integer arrays<br/>
 	M_math::invert_2x2(3f): performs a direct calculation of the inverse of a 2x2 matrix<br/>
 	M_math::invert_3x3(3f): performs a direct calculation of the inverse of a 3x3 matrix<br/>
 	M_math::invert_4x4(3f): performs a direct calculation of the inverse of a 4x4 matrix<br/>
+</td>
+<tr><td><a href="M_matrix.f90">M_matrix.f90</a></td>
+<td>
+	M_matrix::mat88(3f): initialize and/or pass commands to matrix laboratory interpreter<br/>
+	M_matrix::mat_matfn6(3f):evaluate utility functions<br/>
+	M_matrix::mat_getch(3f): get next character from input line<br/>
+	M_matrix::mat_formz: system dependent routine to print with z format<br/>
+	issue interactive prompt with optional pause<br/>
+	M_matrix::mat_stack1(3f): Unary Operations<br/>
+	M_matrix::mat_rrot(3f): Applies a plane rotation.<br/>
+	M_matrix::mat_rset(3f): copies a scalar, dx, to a scalar, dy.<br/>
 </td>
 <tr><td><a href="M_messages.f90">M_messages.f90</a></td>
 <td>
@@ -366,6 +391,10 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <tr><td><a href="M_overload.f90">M_overload.f90</a></td>
 <td>
 	M_overload(3fm): overloads of standard operators and intrinsic procedures<br/>
+</td>
+<tr><td><a href="M_parcel.f90">M_parcel.f90</a></td>
+<td>
+	M_parcel(3fm): includes the global data needed for parcel processing<br/>
 </td>
 <tr><td><a href="M_pixel.f90">M_pixel.f90</a></td>
 <td>
@@ -429,6 +458,8 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <td>
 	M_random::random_string(3f): create random string composed of provided characters of specified length<br/>
 	M_random::random_hex(3f): create random hexadecimal string of specified length<br/>
+	M_random::random_permutation(3f): populate an integer array with a random permutation of the integers 1 to size(array)<br/>
+	M_random::scramble(3f): return an integer array of random values 1 to N.<br/>
 	M_random::random_kiss64(3f): A 64-bit KISS random number generator by George Margaglia.<br/>
 	M_random::init_random_seed_by_system_clock(3f): initialize random_number(3f) to return a single value with system clock<br/>
 	M_random::init_random_seed_by_dat(3f): initialize random_number(3f) to return a single value using date_and_time(3f)<br/>
@@ -475,6 +506,22 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <td>
 	M_sqlite::sqlite3_do(3f): Run a single SQL command<br/>
 	M_sqlite::sqlite3_create_table(3f): Create a new table<br/>
+</td>
+<tr><td><a href="M_steam67.f90">M_steam67.f90</a></td>
+<td>
+	 compute thermal conductivity of water at pressure P and temperature T<br/>
+	 summation of a polynomial<br/>
+	 CPL67 calculates specific isobaric head capacity of water at pressure P and temperature T<br/>
+	 function CPV67 calculates specific isobaric heat capacity and specific volume of water at pressure P and temperature T<br/>
+	crflo67(3f): critical flow and degrees superheat of wet/superheated steam at PRES,ENTH<br/>
+	function critvs67(press, enth, gamma)<br/>
+	critical flow velocity and isentropic exponent of wet/superheated steam<br/>
+	calculate specific enthalpy/volume and entropy of liquid(P,T)<br/>
+	calculate V,S,specific enthalpy for liquid given (P,T)<br/>
+	   specific enthalpy = HSS67(P,T,s,v)<br/>
+	calculate specific enthalpy and entropy of water at pressure P and temp T<br/>
+	print error message and stop program<br/>
+	print pedigree of library and return version value<br/>
 </td>
 <tr><td><a href="M_stopwatch.f90">M_stopwatch.f90</a></td>
 <td>
@@ -762,6 +809,14 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_xyplot::plot_set_nice_range(3f): determine nice range for creating an axis<br/>
 	M_xyplot::plot_setdash(3f):  allow user to display|alter|retrieve  dash codes by style number<br/>
 	 get marker geometries<br/>
+</td>
+<tr><td><a href="M_zebra.f90">M_zebra.f90</a></td>
+<td>
+	 read from data file and split it up for optimum access into a direct access zebra file<br/>
+	 read from ASCII zebra and write binary zebra<br/>
+	 read from binary zebra and write ASCII zebra<br/>
+	 read inline ASCII file of columns and convert to a separate file of numbers<br/>
+	slashto80(3f): place backslash in column 80 if already present<br/>
 </td>
 <tr><td><a href="nc_errmessage.f90">nc_errmessage.f90</a></td>
 <td>

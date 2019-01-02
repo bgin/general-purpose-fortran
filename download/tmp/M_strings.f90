@@ -2987,12 +2987,13 @@ use, intrinsic :: iso_c_binding, only: c_ptr,c_f_pointer,c_char,c_null_char
 character(len=*),parameter::ident="&
 &@(#)M_strings::c2s(3f): copy pointer to C char array till a null is encountered to a Fortran string up to 4096 characters"
 
-   integer,parameter                             :: max_length=4096
-   type(c_ptr), intent(in)                       :: c_string_pointer
-   character(len=:), allocatable                 :: f_string
-   character(kind=c_char), dimension(:), pointer :: char_array_pointer => null()
-   character(len=max_length)                            :: aux_string
-   integer                                       :: i,length=0
+integer,parameter                             :: max_length=4096
+type(c_ptr), intent(in)                       :: c_string_pointer
+character(len=:), allocatable                 :: f_string
+character(kind=c_char), dimension(:), pointer :: char_array_pointer => null()
+character(len=max_length)                            :: aux_string
+integer                                       :: i,length=0
+
    call c_f_pointer(c_string_pointer,char_array_pointer,[max_length])
    if (.not.associated(char_array_pointer)) then
      allocate(character(len=4)::f_string)
@@ -3001,23 +3002,15 @@ character(len=*),parameter::ident="&
    endif
    aux_string=" "
    do i=1,max_length
-
-     !!write(*,*)'c2s got here c2 ',i
-     !!write(*,*)'c2s got here c2 ',i,size(char_array_pointer)
-     !!write(*,*)'c2s got here c2 ',i,'cannot use char_array_pointer'
-     !!write(*,*)'c2s got here c2 ',i,trim(switch(char_array_pointer))
-     !!write(*,*)'c2s got here c2 ',i,char_array_pointer(i)
-
      if (char_array_pointer(i)==c_null_char) then
        length=i-1
        exit
      endif
-     write(*,*)'c2s got here d'
      aux_string(i:i)=char_array_pointer(i)
    enddo
    allocate(character(len=length)::f_string)
    f_string=aux_string(1:length)
-   write(*,*)'c2s got here f'
+
 end function c2s
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!

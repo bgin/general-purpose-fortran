@@ -29,20 +29,20 @@
               ptr%p%x = 2.7183
               ! Initialize the list with the first data element
               call list_init(list, transfer(ptr, list_data))
-              print *,    Initializing list with data:   , ptr%p
+              print *, 'Initializing list with data:'   , ptr%p
               ! Allocate a second data element
               allocate(ptr%p)
               ptr%p%x = 0.5772
               ! Insert the second into the list
               call list_insert(list, transfer(ptr, list_data))
-              print *,    Inserting node with data:   , ptr%p
+              print *, 'Inserting node with data:'   , ptr%p
               ! Retrieve data from the second node and free memory
               ptr = transfer(list_get(list_next(list)), ptr)
-              print *,    Second node data:   , ptr%p
+              print *,    'Second node data:'   , ptr%p
               deallocate(ptr%p)
               ! Retrieve data from the head node and free memory
               ptr = transfer(list_get(list), ptr)
-              print *,    Head node data:   , ptr%p
+              print *, 'Head node data:'   , ptr%p
               deallocate(ptr%p)
               ! Free the list
               call list_free(list)

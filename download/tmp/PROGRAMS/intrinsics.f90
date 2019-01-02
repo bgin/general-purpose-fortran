@@ -17,7 +17,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sat, Nov 10th, 2018 6:04:05 PM>',&
+'@(#)COMPILED:       Sun, Nov 11th, 2018 2:07:14 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -6180,7 +6180,7 @@ write(io,'(a)')'  Sample program:'
 write(io,'(a)')''
 write(io,'(a)')'   program demo_is_contiguous'
 write(io,'(a)')'   implicit none'
-write(io,'(a)')'   intrinsic, is_contiguous'
+write(io,'(a)')'   intrinsic is_contiguous'
 write(io,'(a)')'   REAL, DIMENSION (1000, 1000), TARGET :: A'
 write(io,'(a)')'   REAL, DIMENSION (:, :), POINTER       :: IN, OUT'
 write(io,'(a)')'   IN => A              ! Associate IN with target A'
@@ -9593,7 +9593,8 @@ write(io,'(a)')'     system_clock(3f) - [INTRINSIC:SYSTEM ENVIRONMENT] Return nu
 write(io,'(a)')''
 write(io,'(a)')'SYNTAX'
 write(io,'(a)')''
-write(io,'(a)')'   call system_clock([count, count_rate, count_max])'
+write(io,'(a)')'  subroutine system_clock([count, count_rate, count_max])'
+write(io,'(a)')''
 write(io,'(a)')'   integer,intent(out),optional  :: count'
 write(io,'(a)')'   integer,intent(out),optional  :: count_rate'
 write(io,'(a)')'      or'
