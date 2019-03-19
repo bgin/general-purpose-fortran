@@ -15,6 +15,8 @@
        public :: watchgroup
        public :: setup_watches
 
+       public test_suite_M_stopwatch
+
        ! the group with all the watches; global var
        type (watchgroup), public :: ALL_GROUPS
 

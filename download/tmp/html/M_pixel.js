@@ -25,7 +25,7 @@ append("ortho2.3m_pixel.html");
 append("page.3m_pixel.html");
 append("point2.3m_pixel.html");
 append("poly2.3m_pixel.html");
-append("polyline.3m_pixel.html");
+append("polyline2.3m_pixel.html");
 append("prefsize.3m_pixel.html");
 append("print_ascii.3m_pixel.html");
 append("print_ppm.3m_pixel.html");

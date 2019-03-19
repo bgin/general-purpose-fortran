@@ -77,6 +77,7 @@ module M_readgif
 ! Authors: Jos Bergervoet, Van Snyder, Maurizio Cremonesi, Clive Page, and others
 ! Original code from: http://it.geocities.com/butonoj/doc/gif-io/gifio.htm (now a dead link)
 public :: readgif                     ! procedure, see below
+public test_suite_M_readgif
 private
 ! *****     private stuff     ******************************************
 integer,private, parameter :: interlace = 6    ! index of bit indicating interlaced
@@ -724,6 +725,49 @@ integer :: rslt
       end do
     end if
   end subroutine read_image
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine test_suite_M_readgif()
+
+!! setup
+   call test___copy_m_readgif_Gif89_type()
+   call test___copy_m_readgif_Gif_screen_type()
+   call test_readgif()
+!! teardown
+contains
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test___copy_m_readgif_Gif89_type()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('__copy_m_readgif_Gif89_type',msg='')
+   !!call unit_check('__copy_m_readgif_Gif89_type', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('__copy_m_readgif_Gif89_type',msg='')
+end subroutine test___copy_m_readgif_Gif89_type
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test___copy_m_readgif_Gif_screen_type()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('__copy_m_readgif_Gif_screen_type',msg='')
+   !!call unit_check('__copy_m_readgif_Gif_screen_type', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('__copy_m_readgif_Gif_screen_type',msg='')
+end subroutine test___copy_m_readgif_Gif_screen_type
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_readgif()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('readgif',msg='')
+   !!call unit_check('readgif', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('readgif',msg='')
+end subroutine test_readgif
+!===================================================================================================================================
+end subroutine test_suite_M_readgif
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!

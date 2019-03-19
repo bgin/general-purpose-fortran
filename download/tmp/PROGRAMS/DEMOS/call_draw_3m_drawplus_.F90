@@ -11,7 +11,7 @@
                    if(iend.le.0)iend=len_trim(line)
                    if(iend.ne.0)then
                       line=line//' '
-                      call call_draw(line(:iend),line(iend+1:),found)
+                      call call_draw(line(:iend),line(iend+2:),found)
                       if(.not.found)then
                          write(*,*)'ERROR: ',line(:iend),'[',line(iend+1:),']',' not found'
                       endif

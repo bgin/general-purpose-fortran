@@ -1,0 +1,195 @@
+<html> 
+<head> 
+<title> </title>
+<style> 
+px {font-family: "Lucida Console", Monaco, monospace}
+p { font-size:100%; font-style:italic; line-height:1.1em; }
+body {xfont-style: sans-serif}
+body {
+color:#333; font-family:Verdana, Arial, Helvetica, sans-serif; font-size:1em; line-height:1.3em; }
+a:visited { color:#666; }
+h1,h2,h3,h4,h5,h6 { color:#333; font-family:georgia, verdana, sans-serif; }
+h1 { font-size:150%; page-break-before:auto;background-color: #aaaaff}
+h2 { font-size:143%;color:teal; }
+h3 { font-size:134%;color:blue; }
+h4 { font-size:120%;color:gray; }
+p{ padding: 0;margin:0; }
+p{ padding-right:1.4em; }
+p{ padding-bottom:1em; }
+p{ padding-top:1em; }
+p{ whitespace: pre-wrap; }
+h5,h6 { font-size:100% }
+a.nav,a:link.nav, a:visited.nav { background-color:#FFF; color:#000; }
+XXtable { border:double #000; border-collapse:collapse; }
+XXtable { border-collapse:collapse; }
+XXtd { border:thin solid #888; }
+XXtd { border:none; }
+li { margin-bottom:0.5em; }
+blockquote { display:block; font-size:100%; font-style:italic; line-height:1.1em; margin:0 0 1.5em; padding:0 2.5em; }
+pre { background-color:#DDD; font-size:100%; overflow:auto; padding:1em; }
+a,li span { color:#000; }
+a:hover, a.nav:hover, a:hover math { background-color:#000; color:#FFF; }
+#Container { margin:0 10px; text-align:center; background-color: #BBB}
+#Content { border-top:none; margin:auto; padding:0.3em; text-align:left; width:100%; max-width:55em; background:#FFF}
+span.webName { font-size:.5em; }
+textarea#content { font-size: 1em; line-height: 1.125; }
+h1#pageName { line-height:1em; margin:0.2em 0 0.2em 0; padding:0; }
+.property { color:#666; font-size:100%; }
+a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
+.byline { color:#666; font-size:1.0em; font-style:italic; margin-bottom:1em; padding-top:1px; } 
+</style> 
+</head>
+<BODY bgcolor=#F0F0F0 text=#000000 link=#0000ff vlink=#C000C0 alink=#ff0000><A NAME=top></A>
+<h5><a href="download.html">[UP]</a></h5>
+<div id="Container">
+<div id="Content">
+<CENTER>
+<H1><HR><I>Manual Reference Pages &nbsp;-&nbsp;</I><NOBR>mat88 (3)</NOBR><HR></H1>
+</CENTER>
+<P>
+<A name=0>
+
+     <H3>NAME</H3>
+
+</A>
+<BLOCKQUOTE>
+<B>MAT88(3f) </B>- [M_matrix] initialize and/or pass commands to matrix laboratory interpreter
+</BLOCKQUOTE>
+<A name=contents></A><H3>CONTENTS</H3></A>
+<BLOCKQUOTE>
+<A HREF=#1>Synopsis</A><BR>
+<A HREF=#2>Description</A><BR>
+<A HREF=#3>Options</A><BR>
+<A HREF=#4>Example</A><BR>
+</BLOCKQUOTE>
+<A name=5>
+
+     <H3>SYNOPSIS</H3>
+
+</A>
+<BLOCKQUOTE>
+<PRE>
+subroutine <B>MAT88</B>(init,cmd)
+<P>
+   integer,intent(in)          :: init
+   character(len=*),intent(in) :: cmd)
+</PRE>
+</BLOCKQUOTE>
+<A name=2>
+
+     <H3>DESCRIPTION</H3>
+
+</A>
+<BLOCKQUOTE>
+<B>MAT88</B>(3f) is modeled on <B>MATLAB</B>(3f) (MATrix LABoratory), a FORTRAN
+package developed by Argonne National Laboratories for in-house use.
+It provides comprehensive vector and tensor operations in a package
+which may be programmed, either through a macro language or through
+execution of script files.
+<P>
+Matlab is reentrant and recursive. Functions supported include (but
+are not by any means limited to) sin, cos, tan, arcfunctions, upper
+triangular, lower triangular, determinants, matrix multiplication,
+identity, Hilbert matrices, eigenvalues and eigenvectors, matrix
+roots and products, inversion and so on and so forth.
+<P>
+The HELP command describes using the interpreter.
+</BLOCKQUOTE>
+<A name=3>
+
+     <H3>OPTIONS</H3>
+
+</A>
+<BLOCKQUOTE>
+<TABLE cellpadding=3>
+<TR valign=top><TD width=6% nowrap>
+<B>INIT</B> </TD><TD valign=bottom>
+flag indicating purpose of call
+<P>
+0 For ordinary first entry with reads from stdin
+<B>-1</B> negative for silent initialization (ignores CMD)
+1 positive for subsequent entries, enter command mode
+reading commands from stdin.
+2 subsequent entry , return after doing CMD
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B>CMD</B> </TD><TD valign=bottom>
+MAT88 command to perform
+</TD></TR>
+<TR></TR></TABLE></BLOCKQUOTE>
+<A name=4>
+
+     <H3>EXAMPLE</H3>
+
+</A>
+<BLOCKQUOTE>
+Sample program
+<P>
+<PRE>
+      program demo_MAT88
+      use M_matrix, only : mat88
+      call MAT88(0,&#146; &#146;)
+      end program demo_MAT88
+      !-------------------------------------------------------------
+      SUBROUTINE mat88_user(A,M,N,S,T)  ! sample mat88_user routine
+      ! Allows personal  Fortran  subroutines  to  be  linked  into
+      ! MAT88. The subroutine should have the heading
+      !
+      !               SUBROUTINE mat88_user(A,M,N,S,T)
+      !               DOUBLEPRECISION A(M,N),S,T
+      !
+      ! The MAT88 statement Y = USER(X,s,t) results in a call to
+      ! the subroutine with a copy of the matrix X stored in the
+      ! argument A, its column and row dimensions in M and N,
+      ! and the scalar parameters S and T stored in S and T.
+      ! If S and T are omitted, they are set to 0.0. After
+      ! the return, A is stored in Y. The dimensions M and
+      ! N may be reset within the subroutine. The statement Y =
+      ! USER(K) results in a call with M = 1, N = 1 and A(1,1) =
+      ! FLOAT(K). After the subroutine has been written, it must
+      ! be compiled and linked to the MAT88 object code within the
+      ! local operating system.
+      !
+      integer M,N
+      DOUBLEPRECISION A(M,N),S,T
+      !
+      if(s.eq.0.and.t.eq.0)then
+         ! print statistics for matrix, for example
+         write(*,*)&#146;m=&#146;,m
+         write(*,*)&#146;n=&#146;,n
+         write(*,*)&#146;s=&#146;,s
+         write(*,*)&#146;t=&#146;,t
+<P>
+         DO i10 = 1, M
+            write(*,*)(a(i10,i20),i20=1,n)
+         enddo
+      else  ! a(i,j)=a(i,j)*s+t  in a linear fashion
+         DO i30 = 1, M
+            DO i40 = 1, N
+               a(i30,i40)=a(i30,i40)*S+T
+            enddo
+         enddo
+      endif
+      END SUBROUTINE mat88_user
+<P>
+</PRE>
+Example 2:
+<P>
+<PRE>
+   program bigmat
+   use M_matrix, only : mat88
+   ! pass strings to MAT88 but do not enter interactive mode
+   call mat88(-1,&#146; &#146;)                    ! initialize
+   call mat88( 2,&#146;a=&lt;1 2 3 4; 5 6 7 8&gt;&#146;)
+   call mat88( 2,&#146;save("file1")&#146;)
+   call mat88( 2,&#146;help INTRO&#146;)
+   end
+</PRE>
+</BLOCKQUOTE>
+<P><HR>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>mat88 (3)</TD> <TD align=right width=33%><I>March 18, 2019</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from dbdc7cae-a3b4-49af-a835-3e07c88d55fe using man macros.</FONT>
+<br><br><center><img src="images/mat88.3m_matrix.gif"></center>
+</div>
+</div>
+</body>
+</HTML>

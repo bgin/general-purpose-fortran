@@ -1,8 +1,9 @@
              program demo_getvals
              use M_strings, only: getvals
              implicit none
-             character(len=256) :: line
-             real               :: values(256/2+1)
+             integer,parameter  :: longest_line=256
+             character(len=longest_line) :: line
+             real               :: values(longest_line/2+1)
              integer            :: ios,icount,ierr
              INFINITE: do
                 read(*,'(a)',iostat=ios) line

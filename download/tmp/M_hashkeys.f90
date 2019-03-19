@@ -148,64 +148,65 @@ contains
 !!
 !!    str=""
 !!    ref="E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
-!!    call unit_check(sha256(str)==ref,'test sha256 1')
+!!    call unit_check('sha256',sha256(str)==ref,'test sha256 1')
 !!
 !!    str="abc"
 !!    ref="BA7816BF8F01CFEA414140DE5DAE2223B00361A396177A9CB410FF61F20015AD"
-!!    call unit_check(sha256(str)==ref,'test sha256 2')
+!!    call unit_check('sha256',sha256(str)==ref,'test sha256 2')
 !!
 !!    str="abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq"
 !!    ref="248D6A61D20638B8E5C026930C3E6039A33CE45964FF2167F6ECEDD419DB06C1"
-!!    call unit_check(sha256(str)==ref,'test sha256 3')
+!!    call unit_check('sha256',sha256(str)==ref,'test sha256 3')
 !!
 !!    str="abcdefghbcdefghicdefghijdefghijkefghijklfghi&
 !!         &jklmghijklmnhijklmnoijklmnopjklmnopqklmnopqrlmnopqrsmnopqrstnopqrstu"
 !!    ref="CF5B16A778AF8380036CE59E7B0492370B249B11E8F07A51AFAC45037AFEE9D1"
-!!    call unit_check(sha256(str)==ref,'test sha256 4')
+!!    call unit_check('sha256',sha256(str)==ref,'test sha256 4')
 !!
 !!    str=repeat("a",1000000)
 !!    ref="CDC76E5C9914FB9281A1C7E284D73E67F1809A48A497200E046D39CCC7112CD0"
-!!    call unit_check(sha256(str)==ref,'test sha256 5')
+!!    call unit_check('sha256',sha256(str)==ref,'test sha256 5')
 !!
 !!    str="message digest"
 !!    ref="F7846F55CF23E14EEBEAB5B4E1550CAD5B509E3348FBC4EFA3A1413D393CB650"
-!!    call unit_check(sha256(str)==ref,'test sha256 6')
+!!    call unit_check('sha256',sha256(str)==ref,'test sha256 6')
 !!
 !!    str="secure hash algorithm"
 !!    ref="F30CEB2BB2829E79E4CA9753D35A8ECC00262D164CC077080295381CBD643F0D"
-!!    call unit_check(sha256(str)==ref,'test sha256 7')
+!!    call unit_check('sha256',sha256(str)==ref,'test sha256 7')
 !!
 !!    str="SHA256 is considered to be safe"
 !!    ref="6819D915C73F4D1E77E4E1B52D1FA0F9CF9BEAEAD3939F15874BD988E2A23630"
-!!    call unit_check(sha256(str)==ref,'test sha256 8')
+!!    call unit_check('sha256',sha256(str)==ref,'test sha256 8')
 !!
 !!    str="For this sample, this 63-byte string will be used as input data"
 !!    ref="F08A78CBBAEE082B052AE0708F32FA1E50C5C421AA772BA5DBB406A2EA6BE342"
-!!    call unit_check(sha256(str)==ref,'test sha256 9')
+!!    call unit_check('sha256',sha256(str)==ref,'test sha256 9')
 !!
 !!    str="This is exactly 64 bytes long, not counting the terminating byte"
 !!    ref="AB64EFF7E88E2E46165E29F2BCE41826BD4C7B3552F6B382A9E7D3AF47C245F8"
-!!    call unit_check(sha256(str)==ref,'test sha256 10')
+!!    call unit_check('sha256',sha256(str)==ref,'test sha256 10')
 !!
 !!    ! Check the quick and dirty implementation as well.
 !!    ref="69E3FACD5F08321F78117BD53476E5321845433356F106E7013E68EC367F3017"
-!!    call unit_check(dirty_sha256(str)==ref,'test dirtysha256 1')
+!!    call unit_check('sha256',dirty_sha256(str)==ref,'test dirtysha256 1')
 !!
 !!    !!str=repeat("abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmno",16777216)
 !!    !!ref="50E72A0E26442FE2552DC3938AC58658228C0CBFB1D2CA872AE435266FCD055E"
-!!    !!call unit_check(sha256(str)==ref,'test sha256 11 -- long test')
+!!    !!call unit_check('sha256',sha256(str)==ref,'test sha256 11 -- long test')
 !!
 !!    contains
-!!    subroutine unit_check(test,message)
+!!    subroutine unit_check(name,test,message)
+!!    character(len=*),intent(in) :: name
 !!    logical,intent(in)          :: test
 !!    character(len=*),intent(in) :: message
 !!       write(*,'(a)') repeat("=",64)
 !!       write(*,'(a)') sha256(str)
 !!       write(*,'(a)') ref
 !!       if(test)then
-!!          write(*,*)"PASSED: ",trim(message)
+!!          write(*,*)trim(name)," PASSED: ",trim(message)
 !!       else
-!!          write(*,*)"FAILED: ",trim(message)
+!!          write(*,*)trim(name)," FAILED: ",trim(message)
 !!       endif
 !!    end subroutine unit_check
 !!    !
@@ -224,7 +225,7 @@ contains
 function sha256(str)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_hashkeys::sha256(3f): SHA-256 interface function"
+character(len=*),parameter::ident_1="@(#)M_hashkeys::sha256(3f): SHA-256 interface function"
 
 ! Define the interface.
 character(len=64) :: sha256           ! The SHA-256 digest as a string of length 64.
@@ -314,7 +315,8 @@ end function sha256
 function dirty_sha256(str)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_hashkeys::dirty_sha256(3f): Quick and dirty SHA-256 interface function (no bit-swapping)."
+character(len=*),parameter::ident_2="&
+&@(#)M_hashkeys::dirty_sha256(3f): Quick and dirty SHA-256 interface function (no bit-swapping)."
 
 ! Define the interface.
 character(len=64) :: dirty_sha256   ! The SHA-256 digest as a string of length 64.
@@ -791,7 +793,7 @@ contains
       call consume_chunk(str, length, inp, pos0, break, swap)
 
       ! Check the first word.
-      call unit_check('',inp(1)==empty_str_bin_flip,'message padding A')
+      call unit_check('pad_message1',inp(1)==empty_str_bin_flip,'message padding A')
 
       ! Set the message to "abc".
       str = "abc"
@@ -801,7 +803,7 @@ contains
       call consume_chunk(str, length, inp, pos0, break, swap)
 
       ! Check the first word.
-      call unit_check('',inp(1)==abc_bin_flip,'message padding B')
+      call unit_check('pad_message1',inp(1)==abc_bin_flip,'message padding B')
 
       ! Set the message to "a".
       str = "a"
@@ -811,7 +813,7 @@ contains
       call consume_chunk(str, length, inp, pos0, break, swap)
 
       ! Check the first word.
-      call unit_check('',inp(1)==a_bin_flip,'message padding C')
+      call unit_check('pad_message1',inp(1)==a_bin_flip,'message padding C')
 
    end subroutine pad_message1
 
@@ -832,41 +834,41 @@ contains
       call consume_chunk(str, length, inp, pos0, break, swap)
 
       ! Check the whole message.
-      call unit_check('',inp(1)== abca_bin_flip,'message padding 2')
-      call unit_check('',inp(2)== bcab_bin_flip,'message padding 2')
-      call unit_check('',inp(3)== cabc_bin_flip,'message padding 2')
-      call unit_check('',inp(4)== abca_bin_flip,'message padding 2')
-      call unit_check('',inp(5)== abca_bin_flip,'message padding 2')
-      call unit_check('',inp(6)== bcab_bin_flip,'message padding 2')
-      call unit_check('',inp(7)== cabc_bin_flip,'message padding 2')
-      call unit_check('',inp(8)== abca_bin_flip,'message padding 2')
-      call unit_check('',inp(9)== abca_bin_flip,'message padding 2')
-      call unit_check('',inp(10)==bcab_bin_flip,'message padding 2')
-      call unit_check('',inp(11)==cabc_bin_flip,'message padding 2')
-      call unit_check('',inp(12)==abca_bin_flip,'message padding 2')
-      call unit_check('',inp(13)==abca_bin_flip,'message padding 2')
-      call unit_check('',inp(14)==bcab_bin_flip,'message padding 2')
-      call unit_check('',inp(15)==ca_one_zero_flip,'message padding 2')
-      call unit_check('',inp(16)==empty_bin,'message padding 2')
+      call unit_check('pad_message2',inp(1)== abca_bin_flip,'message padding 2')
+      call unit_check('pad_message2',inp(2)== bcab_bin_flip,'message padding 2')
+      call unit_check('pad_message2',inp(3)== cabc_bin_flip,'message padding 2')
+      call unit_check('pad_message2',inp(4)== abca_bin_flip,'message padding 2')
+      call unit_check('pad_message2',inp(5)== abca_bin_flip,'message padding 2')
+      call unit_check('pad_message2',inp(6)== bcab_bin_flip,'message padding 2')
+      call unit_check('pad_message2',inp(7)== cabc_bin_flip,'message padding 2')
+      call unit_check('pad_message2',inp(8)== abca_bin_flip,'message padding 2')
+      call unit_check('pad_message2',inp(9)== abca_bin_flip,'message padding 2')
+      call unit_check('pad_message2',inp(10)==bcab_bin_flip,'message padding 2')
+      call unit_check('pad_message2',inp(11)==cabc_bin_flip,'message padding 2')
+      call unit_check('pad_message2',inp(12)==abca_bin_flip,'message padding 2')
+      call unit_check('pad_message2',inp(13)==abca_bin_flip,'message padding 2')
+      call unit_check('pad_message2',inp(14)==bcab_bin_flip,'message padding 2')
+      call unit_check('pad_message2',inp(15)==ca_one_zero_flip,'message padding 2')
+      call unit_check('pad_message2',inp(16)==empty_bin,'message padding 2')
 
       call consume_chunk(str, length, inp, pos0, break, swap)
 
-      call unit_check('',inp(1)== empty_bin,'message padding 2')
-      call unit_check('',inp(2)== empty_bin,'message padding 2')
-      call unit_check('',inp(3)== empty_bin,'message padding 2')
-      call unit_check('',inp(4)== empty_bin,'message padding 2')
-      call unit_check('',inp(5)== empty_bin,'message padding 2')
-      call unit_check('',inp(6)== empty_bin,'message padding 2')
-      call unit_check('',inp(7)== empty_bin,'message padding 2')
-      call unit_check('',inp(8)== empty_bin,'message padding 2')
-      call unit_check('',inp(9)== empty_bin,'message padding 2')
-      call unit_check('',inp(10)==empty_bin,'message padding 2')
-      call unit_check('',inp(11)==empty_bin,'message padding 2')
-      call unit_check('',inp(12)==empty_bin,'message padding 2')
-      call unit_check('',inp(13)==empty_bin,'message padding 2')
-      call unit_check('',inp(14)==empty_bin,'message padding 2')
-      call unit_check('',inp(15)==empty_bin,'message padding 2')
-      call unit_check('',inp(16)==little_endian_464,'message padding 2')
+      call unit_check('pad_message2',inp(1)== empty_bin,'message padding 2')
+      call unit_check('pad_message2',inp(2)== empty_bin,'message padding 2')
+      call unit_check('pad_message2',inp(3)== empty_bin,'message padding 2')
+      call unit_check('pad_message2',inp(4)== empty_bin,'message padding 2')
+      call unit_check('pad_message2',inp(5)== empty_bin,'message padding 2')
+      call unit_check('pad_message2',inp(6)== empty_bin,'message padding 2')
+      call unit_check('pad_message2',inp(7)== empty_bin,'message padding 2')
+      call unit_check('pad_message2',inp(8)== empty_bin,'message padding 2')
+      call unit_check('pad_message2',inp(9)== empty_bin,'message padding 2')
+      call unit_check('pad_message2',inp(10)==empty_bin,'message padding 2')
+      call unit_check('pad_message2',inp(11)==empty_bin,'message padding 2')
+      call unit_check('pad_message2',inp(12)==empty_bin,'message padding 2')
+      call unit_check('pad_message2',inp(13)==empty_bin,'message padding 2')
+      call unit_check('pad_message2',inp(14)==empty_bin,'message padding 2')
+      call unit_check('pad_message2',inp(15)==empty_bin,'message padding 2')
+      call unit_check('pad_message2',inp(16)==little_endian_464,'message padding 2')
    end subroutine pad_message2
 ! Test the ch function.
    subroutine test_ch
@@ -877,7 +879,7 @@ contains
       g = ipad3
       aa = iand(not(e),g)
       bb = iand(e,f)
-      call unit_check('',ieor(aa,bb)==maj(e,f,g),'test the ch function')
+      call unit_check('test_ch',ieor(aa,bb)==maj(e,f,g),'test the ch function')
    end subroutine test_ch
 
 ! Test the maj function.
@@ -891,7 +893,7 @@ contains
       aa = iand(a,b)
       bb = iand(a,c)
       cc = iand(b,c)
-      call unit_check('',ieor(aa,ieor(bb,cc))==maj(a,b,c),'test the maj function')
+      call unit_check('test_maj',ieor(aa,ieor(bb,cc))==maj(a,b,c),'test the maj function')
 
       a = ipad2
       b = ipad3
@@ -899,7 +901,7 @@ contains
       aa = iand(a,b)
       bb = iand(a,c)
       cc = iand(b,c)
-      call unit_check('',ieor(aa,ieor(bb,cc))==maj(a,b,c),'test the maj function')
+      call unit_check('test_maj',ieor(aa,ieor(bb,cc))==maj(a,b,c),'test the maj function')
 
       a = ipad3
       b = ipad4
@@ -907,7 +909,7 @@ contains
       aa = iand(a,b)
       bb = iand(a,c)
       cc = iand(b,c)
-      call unit_check('',ieor(aa,ieor(bb,cc))==maj(a,b,c),'test the maj function')
+      call unit_check('test_maj',ieor(aa,ieor(bb,cc))==maj(a,b,c),'test the maj function')
 
       a = ipad4
       b = ipad5
@@ -915,7 +917,7 @@ contains
       aa = iand(a,b)
       bb = iand(a,c)
       cc = iand(b,c)
-      call unit_check('',ieor(aa,ieor(bb,cc))==maj(a,b,c),'test the maj function')
+      call unit_check('test_maj',ieor(aa,ieor(bb,cc))==maj(a,b,c),'test the maj function')
 
    end subroutine test_maj
 
@@ -925,32 +927,32 @@ contains
       a   = ishftc(ipad1, -2)
       b   = ishftc(ipad1, -13)
       c   = ishftc(ipad1, -22)
-      call unit_check('',ieor(a,ieor(b,c))==cs0(ipad1),'test the major sigma-9 function')
+      call unit_check('test_cs0',ieor(a,ieor(b,c))==cs0(ipad1),'test the major sigma-9 function')
 
       a   = ishftc(ipad2, -2)
       b   = ishftc(ipad2, -13)
       c   = ishftc(ipad2, -22)
-      call unit_check('',ieor(a,ieor(b,c))==cs0(ipad2),'test the major sigma-9 function')
+      call unit_check('test_cs0',ieor(a,ieor(b,c))==cs0(ipad2),'test the major sigma-9 function')
 
       a   = ishftc(ipad3, -2)
       b   = ishftc(ipad3, -13)
       c   = ishftc(ipad3, -22)
-      call unit_check('',ieor(a,ieor(b,c))==cs0(ipad3),'test the major sigma-9 function')
+      call unit_check('test_cs0',ieor(a,ieor(b,c))==cs0(ipad3),'test the major sigma-9 function')
 
       a   = ishftc(ipad4, -2)
       b   = ishftc(ipad4, -13)
       c   = ishftc(ipad4, -22)
-      call unit_check('',ieor(a,ieor(b,c))==cs0(ipad4),'test the major sigma-9 function')
+      call unit_check('test_cs0',ieor(a,ieor(b,c))==cs0(ipad4),'test the major sigma-9 function')
 
       a   = ishftc(ipad5, -2)
       b   = ishftc(ipad5, -13)
       c   = ishftc(ipad5, -22)
-      call unit_check('',ieor(a,ieor(b,c))==cs0(ipad5),'test the major sigma-9 function')
+      call unit_check('test_cs0',ieor(a,ieor(b,c))==cs0(ipad5),'test the major sigma-9 function')
 
       a   = ishftc(ipad6, -2)
       b   = ishftc(ipad6, -13)
       c   = ishftc(ipad6, -22)
-      call unit_check('',ieor(a,ieor(b,c))==cs0(ipad6),'test the major sigma-9 function')
+      call unit_check('test_cs0',ieor(a,ieor(b,c))==cs0(ipad6),'test the major sigma-9 function')
    end subroutine test_cs0
 
 ! Test the major sigma-1 function.
@@ -959,32 +961,32 @@ contains
       a   = ishftc(ipad1, -6)
       b   = ishftc(ipad1, -11)
       c   = ishftc(ipad1, -25)
-      call unit_check('',ieor(a,ieor(b,c))==cs1(ipad1),'test the major sigma-9 function')
+      call unit_check('test_cs1',ieor(a,ieor(b,c))==cs1(ipad1),'test the major sigma-9 function')
 
       a   = ishftc(ipad2, -6)
       b   = ishftc(ipad2, -11)
       c   = ishftc(ipad2, -25)
-      call unit_check('',ieor(a,ieor(b,c))==cs1(ipad2),'test the major sigma-9 function')
+      call unit_check('test_cs1',ieor(a,ieor(b,c))==cs1(ipad2),'test the major sigma-9 function')
 
       a   = ishftc(ipad3, -6)
       b   = ishftc(ipad3, -11)
       c   = ishftc(ipad3, -25)
-      call unit_check('',ieor(a,ieor(b,c))==cs1(ipad3),'test the major sigma-9 function')
+      call unit_check('test_cs1',ieor(a,ieor(b,c))==cs1(ipad3),'test the major sigma-9 function')
 
       a   = ishftc(ipad4, -6)
       b   = ishftc(ipad4, -11)
       c   = ishftc(ipad4, -25)
-      call unit_check('',ieor(a,ieor(b,c))==cs1(ipad4),'test the major sigma-9 function')
+      call unit_check('test_cs1',ieor(a,ieor(b,c))==cs1(ipad4),'test the major sigma-9 function')
 
       a   = ishftc(ipad5, -6)
       b   = ishftc(ipad5, -11)
       c   = ishftc(ipad5, -25)
-      call unit_check('',ieor(a,ieor(b,c))==cs1(ipad5),'test the major sigma-9 function')
+      call unit_check('test_cs1',ieor(a,ieor(b,c))==cs1(ipad5),'test the major sigma-9 function')
 
       a   = ishftc(ipad6, -6)
       b   = ishftc(ipad6, -11)
       c   = ishftc(ipad6, -25)
-      call unit_check('',ieor(a,ieor(b,c))==cs1(ipad6),'test the major sigma-9 function')
+      call unit_check('test_cs1',ieor(a,ieor(b,c))==cs1(ipad6),'test the major sigma-9 function')
 
    end subroutine test_cs1
 
@@ -995,32 +997,32 @@ contains
       a   = ishftc(ipad1, -7)
       b   = ishftc(ipad1, -18)
       c   =  ishft(ipad1, -3)
-      call unit_check('',ieor(a,ieor(b,c))==ms0(ipad1),'test the minor sigma-0 function')
+      call unit_check('test_ms0',ieor(a,ieor(b,c))==ms0(ipad1),'test the minor sigma-0 function')
 
       a   = ishftc(ipad2, -7)
       b   = ishftc(ipad2, -18)
       c   =  ishft(ipad2, -3)
-      call unit_check('',ieor(a,ieor(b,c))==ms0(ipad2),'test the minor sigma-0 function')
+      call unit_check('test_ms0',ieor(a,ieor(b,c))==ms0(ipad2),'test the minor sigma-0 function')
 
       a   = ishftc(ipad3, -7)
       b   = ishftc(ipad3, -18)
       c   =  ishft(ipad3, -3)
-      call unit_check('',ieor(a,ieor(b,c))==ms0(ipad3),'test the minor sigma-0 function')
+      call unit_check('test_ms0',ieor(a,ieor(b,c))==ms0(ipad3),'test the minor sigma-0 function')
 
       a   = ishftc(ipad4, -7)
       b   = ishftc(ipad4, -18)
       c   =  ishft(ipad4, -3)
-      call unit_check('',ieor(a,ieor(b,c))==ms0(ipad4),'test the minor sigma-0 function')
+      call unit_check('test_ms0',ieor(a,ieor(b,c))==ms0(ipad4),'test the minor sigma-0 function')
 
       a   = ishftc(ipad5, -7)
       b   = ishftc(ipad5, -18)
       c   =  ishft(ipad5, -3)
-      call unit_check('',ieor(a,ieor(b,c))==ms0(ipad5),'test the minor sigma-0 function')
+      call unit_check('test_ms0',ieor(a,ieor(b,c))==ms0(ipad5),'test the minor sigma-0 function')
 
       a   = ishftc(ipad6, -7)
       b   = ishftc(ipad6, -18)
       c   =  ishft(ipad6, -3)
-      call unit_check('',ieor(a,ieor(b,c))==ms0(ipad6),'test the minor sigma-0 function')
+      call unit_check('test_ms0',ieor(a,ieor(b,c))==ms0(ipad6),'test the minor sigma-0 function')
 
    end subroutine test_ms0
 
@@ -1031,32 +1033,32 @@ contains
       a   = ishftc(ipad1, -17)
       b   = ishftc(ipad1, -19)
       c   =  ishft(ipad1, -10)
-      call unit_check('',ieor(a,ieor(b,c))==ms1(ipad1),'test the minor sigma-1 function')
+      call unit_check('test_ms1',ieor(a,ieor(b,c))==ms1(ipad1),'test the minor sigma-1 function')
 
       a   = ishftc(ipad2, -17)
       b   = ishftc(ipad2, -19)
       c   =  ishft(ipad2, -10)
-      call unit_check('',ieor(a,ieor(b,c))==ms1(ipad2),'test the minor sigma-1 function')
+      call unit_check('test_ms1',ieor(a,ieor(b,c))==ms1(ipad2),'test the minor sigma-1 function')
 
       a   = ishftc(ipad3, -17)
       b   = ishftc(ipad3, -19)
       c   =  ishft(ipad3, -10)
-      call unit_check('',ieor(a,ieor(b,c))==ms1(ipad3),'test the minor sigma-1 function')
+      call unit_check('test_ms1',ieor(a,ieor(b,c))==ms1(ipad3),'test the minor sigma-1 function')
 
       a   = ishftc(ipad4, -17)
       b   = ishftc(ipad4, -19)
       c   =  ishft(ipad4, -10)
-      call unit_check('',ieor(a,ieor(b,c))==ms1(ipad4),'test the minor sigma-1 function')
+      call unit_check('test_ms1',ieor(a,ieor(b,c))==ms1(ipad4),'test the minor sigma-1 function')
 
       a   = ishftc(ipad5, -17)
       b   = ishftc(ipad5, -19)
       c   =  ishft(ipad5, -10)
-      call unit_check('',ieor(a,ieor(b,c))==ms1(ipad5),'test the minor sigma-1 function')
+      call unit_check('test_ms1',ieor(a,ieor(b,c))==ms1(ipad5),'test the minor sigma-1 function')
 
       a   = ishftc(ipad6, -17)
       b   = ishftc(ipad6, -19)
       c   =  ishft(ipad6, -10)
-      call unit_check('',ieor(a,ieor(b,c))==ms1(ipad6),'test the minor sigma-1 function')
+      call unit_check('test_ms1',ieor(a,ieor(b,c))==ms1(ipad6),'test the minor sigma-1 function')
 
    end subroutine test_ms1
 
@@ -1064,13 +1066,13 @@ contains
    subroutine test_sha256_1
       character(len=1000000) :: str
       str = ""
-      call unit_check('',sha256(str)=="E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",'sha256 1')
+      call unit_check('test_sha256_1',sha256(str)=="E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",'sha256 1')
       str = "abc"
-      call unit_check('',sha256(str)=="BA7816BF8F01CFEA414140DE5DAE2223B00361A396177A9CB410FF61F20015AD",'sha256 2')
+      call unit_check('test_sha256_1',sha256(str)=="BA7816BF8F01CFEA414140DE5DAE2223B00361A396177A9CB410FF61F20015AD",'sha256 2')
       str = "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq"
-      call unit_check('',sha256(str)=="248D6A61D20638B8E5C026930C3E6039A33CE45964FF2167F6ECEDD419DB06C1",'sha256 3')
+      call unit_check('test_sha256_1',sha256(str)=="248D6A61D20638B8E5C026930C3E6039A33CE45964FF2167F6ECEDD419DB06C1",'sha256 3')
       str = "abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmnoijklmnopjklmnopqklmnopqrlmnopqrsmnopqrstnopqrstu"
-      call unit_check('',sha256(str)=="CF5B16A778AF8380036CE59E7B0492370B249B11E8F07A51AFAC45037AFEE9D1",'test sha256 4')
+      call unit_check('test_sha256_1',sha256(str)=="CF5B16A778AF8380036CE59E7B0492370B249B11E8F07A51AFAC45037AFEE9D1",'sha256 4')
    end subroutine test_sha256_1
 
    subroutine test_sha256_5
@@ -1080,24 +1082,24 @@ contains
       do i=1,1000000
          str(i:i) = "a"
       enddo
-      call unit_check('',sha256(str)=="CDC76E5C9914FB9281A1C7E284D73E67F1809A48A497200E046D39CCC7112CD0",'test sha256 5')
+      call unit_check('test_sha356_5',sha256(str)=="CDC76E5C9914FB9281A1C7E284D73E67F1809A48A497200E046D39CCC7112CD0",'sha256 5')
       ! Check the quick and dirty implementation as well.
       ref = "69E3FACD5F08321F78117BD53476E5321845433356F106E7013E68EC367F3017"
-      call unit_check('',dirty_sha256(str)==ref,'test sha256 6')
+      call unit_check('test_sha356_5',dirty_sha256(str)==ref,'test sha256 6')
    end subroutine test_sha256_5
 
    subroutine test_sha256_6
       character(len=1000000) :: str
       str = "message digest"
-      call unit_check('',sha256(str)=="F7846F55CF23E14EEBEAB5B4E1550CAD5B509E3348FBC4EFA3A1413D393CB650",'test sha256 6')
+      call unit_check('test_sha256_6',sha256(str)=="F7846F55CF23E14EEBEAB5B4E1550CAD5B509E3348FBC4EFA3A1413D393CB650",'sha256 6')
       str = "secure hash algorithm"
-      call unit_check('',sha256(str)=="F30CEB2BB2829E79E4CA9753D35A8ECC00262D164CC077080295381CBD643F0D",'test sha256 7 ')
+      call unit_check('test_sha256_6',sha256(str)=="F30CEB2BB2829E79E4CA9753D35A8ECC00262D164CC077080295381CBD643F0D",'sha256 7 ')
       str = "SHA256 is considered to be safe"
-      call unit_check('',sha256(str)=="6819D915C73F4D1E77E4E1B52D1FA0F9CF9BEAEAD3939F15874BD988E2A23630",'test sha256 8 ')
+      call unit_check('test_sha256_6',sha256(str)=="6819D915C73F4D1E77E4E1B52D1FA0F9CF9BEAEAD3939F15874BD988E2A23630",'sha256 8 ')
       str = "For this sample, this 63-byte string will be used as input data"
-      call unit_check('',sha256(str)=="F08A78CBBAEE082B052AE0708F32FA1E50C5C421AA772BA5DBB406A2EA6BE342",'test sha256 9 ')
+      call unit_check('test_sha256_6',sha256(str)=="F08A78CBBAEE082B052AE0708F32FA1E50C5C421AA772BA5DBB406A2EA6BE342",'sha256 9 ')
       str = "This is exactly 64 bytes long, not counting the terminating byte"
-      call unit_check('',sha256(str)=="AB64EFF7E88E2E46165E29F2BCE41826BD4C7B3552F6B382A9E7D3AF47C245F8",'test sha256 10 ')
+      call unit_check('test_sha256_6',sha256(str)=="AB64EFF7E88E2E46165E29F2BCE41826BD4C7B3552F6B382A9E7D3AF47C245F8",'sha256 10 ')
    end subroutine test_sha256_6
 
    subroutine test_sha256_11
@@ -1108,7 +1110,7 @@ contains
       do i=1,big
          str(1+(i-1)*64:i*64) = "abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmno"
       enddo
-      call unit_check('',sha256(str)=="50E72A0E26442FE2552DC3938AC58658228C0CBFB1D2CA872AE435266FCD055E",'test sha256 11 ')
+      call unit_check('test_sha256_11',sha256(str)=="50E72A0E26442FE2552DC3938AC58658228C0CBFB1D2CA872AE435266FCD055E",'sha256 11 ')
    end subroutine test_sha256_11
 
 end subroutine test_suite_sha256
@@ -1199,7 +1201,7 @@ end subroutine test_suite_sha256
 function djb2_hash_arr(anything,continue) result(hash_128)
 implicit none
 
-character(len=*),parameter::ident="@(#)djb2_hash(3fp): DJB2 hash of array (algorithm by Daniel J. Bernstein )"
+character(len=*),parameter::ident_3="@(#)djb2_hash(3fp): DJB2 hash of array (algorithm by Daniel J. Bernstein )"
 
 class(*),intent(in)          :: anything(:)
 logical,intent(in),optional  :: continue
@@ -1235,7 +1237,7 @@ end function djb2_hash_arr
 function djb2_hash_scalar(anything,continue) result(hash_128)
 implicit none
 
-character(len=*),parameter::ident="@(#)djb2_hash(3fp): djb2 hash of scalar"
+character(len=*),parameter::ident_4="@(#)djb2_hash(3fp): djb2 hash of scalar"
 
 class(*),intent(in)          :: anything
 logical,intent(in),optional  :: continue
@@ -1339,7 +1341,7 @@ function crc32_hash_arr(anything,continue) result (crc_64)
 use,intrinsic :: ISO_FORTRAN_ENV, only : int8,int16,int32,int64,real32,real64,real128
 implicit none
 
-character(len=*),parameter::ident="@(#)M_hashkeys::crc32_hash_arr: CRC (Cyclic Redundancy Check) calculation"
+character(len=*),parameter::ident_5="@(#)M_hashkeys::crc32_hash_arr: CRC (Cyclic Redundancy Check) calculation"
 
 class(*),intent(in)          :: anything(:)
 logical,intent(in),optional  :: continue
@@ -1398,7 +1400,7 @@ end function crc32_hash_arr
 function crc32_hash_scalar(anything,continue) result(hash_64)
 implicit none
 
-character(len=*),parameter::ident="@(#)crc32_hash_scalar(3fp): crc32 hash of scalar"
+character(len=*),parameter::ident_6="@(#)crc32_hash_scalar(3fp): crc32 hash of scalar"
 
 class(*),intent(in)          :: anything
 logical,intent(in),optional  :: continue
@@ -1515,7 +1517,7 @@ function sdbm_hash_arr(anything,continue) result(hash_128)
 use,intrinsic :: ISO_FORTRAN_ENV, only : int8,int16,int32,int64,real32,real64,real128
 implicit none
 
-character(len=*),parameter::ident="@(#)sdbm_hash_arr(3fp): sdbm hash of array"
+character(len=*),parameter::ident_7="@(#)sdbm_hash_arr(3fp): sdbm hash of array"
 
 class(*),intent(in)          :: anything(:)
 logical,intent(in),optional  :: continue
@@ -1551,7 +1553,7 @@ end function sdbm_hash_arr
 function sdbm_hash_scalar(anything,continue) result(hash_128)
 implicit none
 
-character(len=*),parameter::ident="@(#)sdbm_hash_scalar(3fp): sdbm hash of scalar"
+character(len=*),parameter::ident_8="@(#)sdbm_hash_scalar(3fp): sdbm hash of scalar"
 
 class(*),intent(in)          :: anything
 logical,intent(in),optional  :: continue
@@ -1584,7 +1586,7 @@ end function sdbm_hash_scalar
 function djb2(anything)
 implicit none
 
-character(len=*),parameter::ident="@(#)djb2(3f): call C routine djb2(3c) with a Fortran CHARACTER variable"
+character(len=*),parameter::ident_9="@(#)djb2(3f): call C routine djb2(3c) with a Fortran CHARACTER variable"
 
 ! extern int djb2(char *s);
 interface

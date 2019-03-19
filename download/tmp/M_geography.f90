@@ -1,6 +1,7 @@
 module M_geography
 private
 public geographical_distance
+public test_suite_M_geography
 contains
 !>
 !!##NAME
@@ -90,5 +91,28 @@ logical,intent(in)         :: miles
    if(miles) geographical_distance = geographical_distance * 0.62137119d0
 
 end function geographical_distance
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine test_suite_M_geography()
+
+!! setup
+   call test_geographical_distance()
+!! teardown
+contains
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_geographical_distance()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('geographical_distance',msg='')
+   !!call unit_check('geographical_distance', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('geographical_distance',msg='')
+end subroutine test_geographical_distance
+!===================================================================================================================================
+end subroutine test_suite_M_geography
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 
 end module M_geography

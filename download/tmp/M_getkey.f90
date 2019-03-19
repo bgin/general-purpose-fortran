@@ -174,6 +174,7 @@ module M_getkey
    private
    public system_timeout_getkey
    public system_getkey
+   public test_suite_M_getkey
 
       interface
          function system_timeout_getkey(delay) bind(c, name='Ftimeout_getkey')
@@ -191,7 +192,30 @@ module M_getkey
             character(kind=c_char) :: system_getkey
          end function system_getkey
       end interface
+contains
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine test_suite_M_getkey()
 
+!! setup
+call test_system_getkey()
+!! teardown
+contains
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_getkey()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_getkey',msg='')
+   !!call unit_check('system_getkey', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_getkey',msg='')
+end subroutine test_system_getkey
+
+end subroutine test_suite_M_getkey
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 end module M_getkey
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=

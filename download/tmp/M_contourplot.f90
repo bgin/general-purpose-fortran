@@ -11,6 +11,7 @@ MODULE M_Smooth
    public  :: Polyx2
    private :: Hypot
    private :: SolveSVD,SVD,SVDbackSubstitution
+   public  :: test_suite_M_smooth
 
 CONTAINS
 !===================================================================================================================================
@@ -727,6 +728,31 @@ END Subroutine SVDbackSubstitution
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+subroutine test_suite_M_smooth
+   call test_polyx2()
+   call test_smoothsurface()
+contains
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_polyx2()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('polyx2',msg='')
+   !!call unit_check('polyx2', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('polyx2',msg='')
+end subroutine test_polyx2
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_smoothsurface()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('smoothsurface',msg='')
+   !!call unit_check('smoothsurface', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('smoothsurface',msg='')
+end subroutine test_smoothsurface
+!===================================================================================================================================
+end subroutine test_suite_M_smooth
+!===================================================================================================================================
 END Module M_Smooth
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
@@ -751,6 +777,8 @@ MODULE M_ContourPlot
          real,intent(in):: zcon
       end subroutine cntcrv
    end interface
+
+   public  :: test_suite_M_contourplot
 
 CONTAINS
 !===================================================================================================================================
@@ -914,7 +942,7 @@ SUBROUTINE ContourLines(x,y,z,ismopt,iexp,jexp,clist,epslon,ierr,cntcrv)
 
 IMPLICIT NONE
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_1="&
 &@(#)M_contourplot::contourlines(3f):calculate contour lines from ungridded data f(x,y) and call user-supplied routine with results"
 
 REAL,INTENT(IN),DIMENSION(:):: x      ! input list of x values
@@ -1832,6 +1860,25 @@ external cntcrv
          IF (j > 0) GOTO 120
 200      continue
 END Subroutine Cntour
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine test_suite_M_contourplot()
+!! setup
+   call test_contourlines()
+!! teardown
+contains
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_contourlines()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('contourlines',msg='')
+   !!call unit_check('contourlines', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('contourlines',msg='')
+end subroutine test_contourlines
+!===================================================================================================================================
+end subroutine test_suite_M_contourplot
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================

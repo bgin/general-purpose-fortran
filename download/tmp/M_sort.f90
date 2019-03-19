@@ -1,36 +1,41 @@
-Module M_sort
-implicit none
-integer,parameter :: cd=kind(0.0d0)
-private
-public swap
-public sort_shell
-public sort_quick_rx
-public unique
 !===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+Module M_sort
+implicit none                       ! declare that all variables must be explicitly declared
+integer,parameter :: cd=kind(0.0d0)
+private                             ! the PRIVATE declaration requires use of a module, and changes the default from PUBLIC
+public sort_quick_rx
+public sort_shell
+public swap
+public unique
+public test_suite_m_sort
+!===================================================================================================================================
+
+character(len=*),parameter::ident_1="@(#)M_sort::sort_shell(3f): Generic subroutine sorts the array X using a shell sort"
+
 ! SORT_SHELL is a Generic Interface in a module with PRIVATE specific procedures. This means the individual subroutines
 ! cannot be called from outside of this module.
-
-! the PRIVATE declaration requires use of a module.
-
-!===================================================================================================================================
-character(len=*),parameter::ident2="M_sort::sort_shell(3f): Generic subroutine sorts the array X using a shell sort"
 interface sort_shell
    module procedure sort_shell_integers, sort_shell_reals, sort_shell_strings
    module procedure sort_shell_complex, sort_shell_doubles, sort_shell_complex_double
 end interface
 !===================================================================================================================================
-character(len=*),parameter::ident3="M_sort::unique(3f): assuming an array is sorted, return array with duplicate values removed"
+
+character(len=*),parameter::ident_2="&
+&@(#)M_sort::unique(3f): assuming an array is sorted, return array with duplicate values removed"
+
 interface unique
    module procedure unique_integers, unique_reals, unique_strings
    module procedure unique_complex, unique_doubles, unique_complex_double
 end interface
 !===================================================================================================================================
-character(len=*),parameter::ident1="M_sort::swap(3f): swap two variables of like type (real,integer,complex,character,double)"
+
+character(len=*),parameter::ident_3="@(#)M_sort::swap(3f): swap two variables of like type (real,integer,complex,character,double)"
+
 interface swap
    module procedure r_swap, i_swap, c_swap, s_swap, d_swap, l_swap, cd_swap
 end interface
-!===================================================================================================================================
-
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
@@ -51,13 +56,13 @@ contains
 !!    other procedures will provide a variety of sort methods, including ...
 !!
 !!
-!!    Exchange sorts      Bubble sort, Cocktail shaker sort, Odd   even sort, Comb sort, Gnome sort, Quicksort, Stooge sort, Bogosort
+!!    Exchange sorts      Bubble sort, Cocktail shaker sort, Odd-even sort, Comb sort, Gnome sort, Quicksort, Stooge sort, Bogosort
 !!    Selection sorts     Selection sort, Heapsort, Smoothsort, Cartesian tree sort, Tournament sort, Cycle sort
 !!    Insertion sorts     Insertion sort, Shellsort, Splaysort, Tree sort, Library sort, Patience sorting
 !!    Merge sorts         Merge sort, Cascade merge sort, Oscillating merge sort, Polyphase merge sort
 !!    Distribution sorts  American flag sort, Bead sort, Bucket sort, Burstsort, Counting sort, Pigeonhole sort, Proxmap sort,
 !!                        Radix sort, Flashsort
-!!    Concurrent sorts    Bitonic sorter, Batcher odd   even mergesort, Pairwise sorting network
+!!    Concurrent sorts    Bitonic sorter, Batcher odd-even mergesort, Pairwise sorting network
 !!    Hybrid sorts        Block merge sortTimsort, Introsort, Spreadsort
 !!    Other               Topological sorting,Pancake sorting, Spaghetti sort
 !!
@@ -85,8 +90,8 @@ contains
 !!    The worst pivot creates an empty partition (for example, if the pivot
 !!    is the first or last element of a sorted array).
 !!
-!!    The run-time of Quicksort ranges from    O(n log n)    with the best
-!!    pivots, to    O(n2)    with the worst pivots, where    n    is the
+!!    The run-time of Quicksort ranges from O(n log n) with the best
+!!    pivots, to O(n2) with the worst pivots, where n is the
 !!    number of elements in the array.
 !!
 !!    Quicksort has a reputation as the fastest sort. Optimized variants of
@@ -97,32 +102,33 @@ contains
 !!    sort_shell(3f) - [M_sort] Generic subroutine sorts the array X using Shell's method
 !!##SYNOPSIS
 !!
-!!    Usage:
+!!    subroutine sort_shell(lines,order[,startcol,endcol])
 !!
-!!    for real, integer data:
-!!       call sort_shell(X,ORDER='A|D')
+!!     character(len=*),intent(inout) :: lines(:)
+!!     character(len=*),intent(in)    :: order
+!!     integer,optional,intent(in)    :: startcol, endcol
 !!
-!!     X          input/output numeric array
-!!     order      Ascending (a-z) or Descending (z-a) sort order
+!!    subroutine sort_shell(ints,order)
 !!
-!!     for complex, complex(kind=kind(0.0d0)) data:
-!!        call sort_shell(X,order='A|D',type='R|I|S')
+!!     integer,intent(inout)          :: ints(:)
+!!     character(len=*),intent(in)    :: order
 !!
-!!     X          input/output complex array
-!!     order      Ascending (a-z) or Descending (z-a) sort order
-!!     type       Sort by Real component, Imaginary component, or Sqrt(R**2+I**2)
+!!    subroutine sort_shell(reals,order)
 !!
-!!     for character data:
-!!        call sort_shell(X,order='A|D',[startcol=NN,endcol=MM])
+!!     real,intent(inout)             :: reals(:)
+!!     character(len=*),intent(in)    :: order
 !!
-!!     X          input/output character array
-!!     order      Ascending (a-z) or Descending (z-a) sort order
-!!     startcol   character position in strings which starts search field
-!!     endcol     character position in strings which ends search field
+!!    subroutine sort_shell(complexs,order,type)
+!!
+!!     character(len=*),intent(inout) :: lines(:)
+!!     character(len=*),intent(in)    :: order
+!!     character(len=*),intent(in)    :: type
+!!
 !!
 !!##DESCRIPTION
 !!
-!!       subroutine sort_shell(3f) sorts an array over a specified field in numeric or alphanumeric order.
+!!       subroutine sort_shell(3f) sorts an array over a specified field
+!!       in numeric or alphanumeric order.
 !!
 !!       From Wikipedia, the free encyclopedia:
 !!
@@ -158,22 +164,29 @@ contains
 !!      o  if these routines are recompiled, routines with the use statement should then be recompiled and reloaded.
 !!
 !!##OPTIONS
+!!    Usage:
 !!
-!!     X      is a vector or integer, real, complex, doubleprecision, character,
-!!            or doubleprecision complex values to be sorted
+!!     X          input/output array to sort of type CHARACTER, INTEGER,
+!!                REAL, DOUBLEPRECISION, COMPLEX, or DOUBLEPRECISION COMPLEX.
+!!     order      sort order
+!!                o A for Ascending  (a-z for strings, small to large for values)
+!!                o D for Descending (z-a for strings, large to small for values, default)
 !!
-!!     order  sort order
-!!            o A for ascending
-!!            o D for descending (default)
-!!
-!!     type       Sort by Real component, Imaginary component, or Sqrt(R**2+I**2)
-!!                Only applies to complex types.
+!!    FOR CHARACTER DATA:
 !!
 !!     startcol   character position in strings which starts sort field.
 !!                Only applies to character values. Defaults to 1. Optional.
 !!     endcol     character position in strings which ends sort field
 !!                Only applies to character values. Defaults to end of string.
 !!                Optional.
+!!
+!!    FOR COMPLEX AND COMPLEX(KIND=KIND(0.0D0)) DATA:
+!!
+!!     type       Sort by
+!!
+!!                  R  for Real component,
+!!                  I  for Imaginary component,
+!!                  S  Sqrt(R**2+I**2)
 !!
 !!##EXAMPLE
 !!
@@ -232,7 +245,7 @@ contains
 !===================================================================================================================================
 subroutine sort_shell_strings(lines,order,startcol,endcol)
 
-character(len=*),parameter::ident="@(#)M_sort::sort_shell_strings(3fp):sort strings over specified field using shell sort"
+character(len=*),parameter::ident_4="@(#)M_sort::sort_shell_strings(3fp):sort strings over specified field using shell sort"
 
 character(len=*),  intent(inout)          :: lines(:)       ! input/output array
 character(len=*),  intent(in)             :: order          ! sort order 'ascending'|'descending'
@@ -264,7 +277,8 @@ contains
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine sort_shell_strings_lh(lines,startcol,endcol)
 
-character(len=*),parameter::ident="@(#)M_sort::sort_shell_strings_lh(3fp):sort strings(a-z) over specified field using shell sort"
+character(len=*),parameter::ident_5="&
+&@(#)M_sort::sort_shell_strings_lh(3fp):sort strings(a-z) over specified field using shell sort"
 
 !  1989 John S. Urban
 !  lle to sort 'a-z', lge to sort 'z-a'
@@ -314,7 +328,8 @@ end subroutine sort_shell_strings_lh
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine sort_shell_strings_hl(lines,startcol,endcol)
 
-character(len=*),parameter::ident="@(#)M_sort::sort_shell_strings_hl(3fp):sort strings(z-a) over specified field using shell sort"
+character(len=*),parameter::ident_6="&
+&@(#)M_sort::sort_shell_strings_hl(3fp):sort strings(z-a) over specified field using shell sort"
 
 !  1989 John S. Urban
 !  lle to sort 'a-z', lge to sort 'z-a'
@@ -368,7 +383,7 @@ end subroutine sort_shell_strings
 !===================================================================================================================================
 subroutine sort_shell_integers(iarray,order)
 
-character(len=*),parameter::ident="@(#)M_sort::sort_shell_integers(3fp):sort integer array using Shell sort and specified order"
+character(len=*),parameter::ident_7="@(#)M_sort::sort_shell_integers(3fp):sort integer array using Shell sort and specified order"
 
 integer,intent(inout)          :: iarray(:)   ! iarray input/output array
 character(len=*),  intent(in)  ::  order      ! sort order 'ascending'|'descending'
@@ -384,7 +399,7 @@ contains
 subroutine sort_shell_integers_hl(iarray)
 ! Copyright (C) 1989,1996 John S. Urban;  all rights reserved
 
-character(len=*),parameter::ident="@(#)M_sort::sort_shell_integers_hl(3fp):sort integer array using Shell sort (high to low)"
+character(len=*),parameter::ident_8="@(#)M_sort::sort_shell_integers_hl(3fp):sort integer array using Shell sort (high to low)"
 
 integer,intent(inout)      :: iarray(:)  ! input/output array
 integer                    :: n          ! number of elements in input array (iarray)
@@ -414,7 +429,7 @@ end subroutine sort_shell_integers_hl
 subroutine sort_shell_integers_lh(iarray) ! sort an integer array in ascending order (low to high)
 ! Copyright (C) 1989,1996 John S. Urban;  all rights reserved
 
-character(len=*),parameter::ident="@(#)M_sort::sort_shell_integers_lh(3fp):sort integer array using Shell sort low to high"
+character(len=*),parameter::ident_9="@(#)M_sort::sort_shell_integers_lh(3fp):sort integer array using Shell sort low to high"
 
 integer,intent(inout) :: iarray(:)      ! iarray input/output array
    integer            :: n
@@ -448,7 +463,7 @@ end subroutine sort_shell_integers
 !===================================================================================================================================
 subroutine sort_shell_reals(array,order)
 
-character(len=*),parameter::ident="@(#)M_sort::sort_shell_reals(3fp):sort real array using Shell sort and specified order"
+character(len=*),parameter::ident_10="@(#)M_sort::sort_shell_reals(3fp):sort real array using Shell sort and specified order"
 
 real,intent(inout)          :: array(:)   ! input/output array
 character(len=*),intent(in) :: order      ! sort order 'ascending'|'descending'
@@ -463,7 +478,7 @@ contains
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine sort_shell_reals_hl(array)
 
-character(len=*),parameter::ident="@(#)M_sort::sort_shell_reals_hl(3fp):sort real array using Shell sort (high to low)"
+character(len=*),parameter::ident_11="@(#)M_sort::sort_shell_reals_hl(3fp):sort real array using Shell sort (high to low)"
 
 !  Copyright(C) 1989 John S. Urban
 real,intent(inout) :: array(:) ! input array
@@ -493,7 +508,7 @@ end subroutine sort_shell_reals_hl
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine sort_shell_reals_lh(array)
 
-character(len=*),parameter::ident="@(#)M_sort::sort_shell_reals_lh(3fp):sort real array using Shell sort (low to high)"
+character(len=*),parameter::ident_12="@(#)M_sort::sort_shell_reals_lh(3fp):sort real array using Shell sort (low to high)"
 
 !  Copyright(C) 1989 John S. Urban
 real,intent(inout) :: array(:)            ! input array
@@ -527,7 +542,7 @@ end subroutine sort_shell_reals
 !===================================================================================================================================
 subroutine sort_shell_doubles(array,order)
 
-character(len=*),parameter::ident="@(#)M_sort::sort_shell_doubles(3fp):sort double array using Shell sort and specified order"
+character(len=*),parameter::ident_13="@(#)M_sort::sort_shell_doubles(3fp):sort double array using Shell sort and specified order"
 
 doubleprecision,intent(inout)          :: array(:)   ! input/output array
 character(len=*),intent(in) :: order      ! sort order 'ascending'|'descending'
@@ -542,7 +557,7 @@ contains
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine sort_shell_doubles_hl(array)
 
-character(len=*),parameter::ident="@(#)M_sort::sort_shell_doubles_hl(3fp):sort double array using Shell sort (high to low)"
+character(len=*),parameter::ident_14="@(#)M_sort::sort_shell_doubles_hl(3fp):sort double array using Shell sort (high to low)"
 
 !  Copyright(C) 1989 John S. Urban
 doubleprecision,intent(inout) :: array(:) ! input array
@@ -572,7 +587,7 @@ end subroutine sort_shell_doubles_hl
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine sort_shell_doubles_lh(array)
 
-character(len=*),parameter::ident="@(#)M_sort::sort_shell_doubles_lh(3fp):sort double array using Shell sort (low to high)"
+character(len=*),parameter::ident_15="@(#)M_sort::sort_shell_doubles_lh(3fp):sort double array using Shell sort (low to high)"
 
 !  Copyright(C) 1989 John S. Urban
 doubleprecision,intent(inout) :: array(:)            ! input array
@@ -606,7 +621,7 @@ end subroutine sort_shell_doubles
 !===================================================================================================================================
 subroutine sort_shell_complex(array,order,type)  ! select ascending or descending order
 
-character(len=*),parameter::ident="@(#)M_sort::sort_shell_complex(3fp):sort complex array using Shell sort"
+character(len=*),parameter::ident_16="@(#)M_sort::sort_shell_complex(3fp):sort complex array using Shell sort"
 
 complex,intent(inout)         :: array(:)   ! array  input/output array
 character(len=*),  intent(in) :: order      ! sort order 'ascending'|'descending'
@@ -622,7 +637,7 @@ contains
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine sort_shell_complex_hl(array,type)
 
-character(len=*),parameter::ident="@(#)M_sort::sort_shell_reals_hl(3fp):sort complex array using Shell sort (high to low)"
+character(len=*),parameter::ident_17="@(#)M_sort::sort_shell_reals_hl(3fp):sort complex array using Shell sort (high to low)"
 
 !     Copyright(C) 1989 John S. Urban   all rights reserved
    complex,intent(inout)       :: array(:)            ! input array
@@ -648,8 +663,8 @@ character(len=*),parameter::ident="@(#)M_sort::sort_shell_reals_hl(3fp):sort com
             case('i','I')
                if(aimag(array(j)).ge.aimag(array(jg)))exit INSIDE
             case default
-               csize1=sqrt(dble(array(j))**2+dble(array(j))**2)
-               csize2=sqrt(dble(array(jg))**2+dble(array(jg))**2)
+               csize1=sqrt(dble(array(j))**2+aimag(array(j))**2)
+               csize2=sqrt(dble(array(jg))**2+aimag(array(jg))**2)
                if(csize1.ge.csize2)exit INSIDE
             end select
             call swap(array(j),array(jg))
@@ -664,7 +679,7 @@ end subroutine sort_shell_complex_hl
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine sort_shell_complex_lh(array,type)
 
-character(len=*),parameter::ident="@(#)M_sort::sort_shell_reals_lh(3fp):sort complex array using Shell sort (low to high)"
+character(len=*),parameter::ident_18="@(#)M_sort::sort_shell_reals_lh(3fp):sort complex array using Shell sort (low to high)"
 
 !  Copyright(C) 1989 John S. Urban   all rights reserved
 !  array    input array
@@ -691,8 +706,8 @@ character(len=*),parameter::ident="@(#)M_sort::sort_shell_reals_lh(3fp):sort com
             case('i','I')
                if(aimag(array(j)).le.aimag(array(jg)))exit INSIDE
             case default
-               csize1=sqrt(dble(array(j))**2+dble(array(j))**2)
-               csize2=sqrt(dble(array(jg))**2+dble(array(jg))**2)
+               csize1=sqrt(dble(array(j))**2+aimag(array(j))**2)
+               csize2=sqrt(dble(array(jg))**2+aimag(array(jg))**2)
                if(csize1.le.csize2)exit INSIDE
             end select
             call swap(array(j),array(jg))
@@ -711,8 +726,7 @@ end subroutine sort_shell_complex
 !===================================================================================================================================
 subroutine sort_shell_complex_double(array,order,type)  ! select ascending or descending order
 
-character(len=*),parameter::ident="@(#)M_sort::sort_shell_complex_double(3fp):sort double complex array using Shell sort"
-
+character(len=*),parameter::ident_19="@(#)M_sort::sort_shell_complex_double(3fp):sort double complex array using Shell sort"
 
 complex(kind=cd),intent(inout)         :: array(:)   ! array  input/output array
 character(len=*),  intent(in) :: order      ! sort order 'ascending'|'descending'
@@ -728,7 +742,7 @@ contains
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine sort_shell_complex_double_hl(array,type)
 
-character(len=*),parameter::ident="@(#)M_sort::sort_shell_reals_hl(3fp):sort double complex array using Shell sort (high to low)"
+character(len=*),parameter::ident_20="@(#)M_sort::sort_shell_reals_hl(3fp):sort double complex array using Shell sort (high to low)"
 
 !     Copyright(C) 1989 John S. Urban   all rights reserved
    complex(kind=cd),intent(inout)       :: array(:)            ! input array
@@ -754,8 +768,8 @@ character(len=*),parameter::ident="@(#)M_sort::sort_shell_reals_hl(3fp):sort dou
             case('i','I')
                if(aimag(array(j)).ge.aimag(array(jg)))exit INSIDE
             case default
-               cdsize1=sqrt(dble(array(j))**2+dble(array(j))**2)
-               cdsize2=sqrt(dble(array(jg))**2+dble(array(jg))**2)
+               cdsize1=sqrt(dble(array(j))**2+aimag(array(j))**2)
+               cdsize2=sqrt(dble(array(jg))**2+aimag(array(jg))**2)
                if(cdsize1.ge.cdsize2)exit INSIDE
             end select
             call swap(array(j),array(jg))
@@ -770,7 +784,7 @@ end subroutine sort_shell_complex_double_hl
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine sort_shell_complex_double_lh(array,type)
 
-character(len=*),parameter::ident="@(#)M_sort::sort_shell_reals_lh(3fp):sort double complex array using Shell sort (low to high)"
+character(len=*),parameter::ident_21="@(#)M_sort::sort_shell_reals_lh(3fp):sort double complex array using Shell sort (low to high)"
 
 !  Copyright(C) 1989 John S. Urban   all rights reserved
 !  array    input array
@@ -797,8 +811,8 @@ character(len=*),parameter::ident="@(#)M_sort::sort_shell_reals_lh(3fp):sort dou
             case('i','I')
                if(aimag(array(j)).le.aimag(array(jg)))exit INSIDE
             case default
-               cdsize1=sqrt(dble(array(j))**2+dble(array(j))**2)
-               cdsize2=sqrt(dble(array(jg))**2+dble(array(jg))**2)
+               cdsize1=sqrt(dble(array(j))**2+aimag(array(j))**2)
+               cdsize2=sqrt(dble(array(jg))**2+aimag(array(jg))**2)
                if(cdsize1.le.cdsize2)exit INSIDE
             end select
             call swap(array(j),array(jg))
@@ -888,7 +902,7 @@ end subroutine sort_shell_complex_double
 !==================================================================================================================================!
 subroutine sort_quick_rx(data,indx)
 
-character(len=*),parameter::ident="@(#)M_sort::sort_quick_rx(3f): indexed hybrid quicksort of a real array"
+character(len=*),parameter::ident_22="@(#)M_sort::sort_quick_rx(3f): indexed hybrid quicksort of a real array"
 
 real,intent(in)         :: data(:)
 integer,intent(out)     :: indx(:)
@@ -1428,42 +1442,42 @@ end subroutine unique_complex_double
 !===================================================================================================================================
 !===================================================================================================================================
 elemental subroutine d_swap(x,y)
-character(len=*),parameter::ident="@(#)M_sort::d_swap(3fp): swap two double variables"
+character(len=*),parameter::ident_23="@(#)M_sort::d_swap(3fp): swap two double variables"
 doubleprecision, intent(inout) :: x,y
 doubleprecision                :: temp
    temp = x; x = y; y = temp
 end subroutine d_swap
 !===================================================================================================================================
 elemental subroutine r_swap(x,y)
-character(len=*),parameter::ident="@(#)M_sort::r_swap(3fp): swap two real variables"
+character(len=*),parameter::ident_24="@(#)M_sort::r_swap(3fp): swap two real variables"
 real, intent(inout) :: x,y
 real                :: temp
    temp = x; x = y; y = temp
 end subroutine r_swap
 !===================================================================================================================================
 elemental subroutine i_swap(i,j)
-character(len=*),parameter::ident="@(#)M_sort::i_swap(3fp): swap two integer variables"
+character(len=*),parameter::ident_25="@(#)M_sort::i_swap(3fp): swap two integer variables"
 integer, intent(inout) :: i,j
 integer                :: itemp
    itemp = i; i = j; j = itemp
 end subroutine i_swap
 !===================================================================================================================================
 elemental subroutine l_swap(l,ll)
-character(len=*),parameter::ident="@(#)M_sort::l_swap(3fp): swap two logical variables"
+character(len=*),parameter::ident_26="@(#)M_sort::l_swap(3fp): swap two logical variables"
 logical, intent(inout) :: l,ll
 logical                :: ltemp
    ltemp = l; l = ll; ll = ltemp
 end subroutine l_swap
 !===================================================================================================================================
 elemental subroutine c_swap(xx,yy)
-character(len=*),parameter::ident="@(#)M_sort::c_swap(3fp): swap two complex variables"
+character(len=*),parameter::ident_27="@(#)M_sort::c_swap(3fp): swap two complex variables"
 complex, intent(inout) :: xx,yy
 complex                :: tt
    tt = xx; xx = yy; yy = tt
 end subroutine c_swap
 !===================================================================================================================================
 elemental subroutine cd_swap(xx,yy)
-character(len=*),parameter::ident="@(#)M_sort::cd_swap(3fp): swap two double complex variables"
+character(len=*),parameter::ident_28="@(#)M_sort::cd_swap(3fp): swap two double complex variables"
 complex(kind=cd), intent(inout) :: xx,yy
 complex(kind=cd)                :: tt
    tt = xx; xx = yy; yy = tt
@@ -1479,12 +1493,228 @@ elemental subroutine s_swap(string1,string2)
 !!    Therefore, you can make sure len is at least max(len(string1),len(string2)) by adding the two lengths together:
 !===================================================================================================================================
 
-character(len=*),parameter::ident="@(#)M_sort::s_swap(3fp): swap two double variables"
+character(len=*),parameter::ident_29="@(#)M_sort::s_swap(3fp): swap two double variables"
 character(len=*), intent(inout)             :: string1,string2
 !character( len=len(string1) + len(string2)) :: string_temp
 character( len=max(len(string1),len(string2))) :: string_temp
    string_temp = string1; string1 = string2; string2 = string_temp
 end subroutine s_swap
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine test_suite_m_sort()
+   call test_sort_shell()
+   call test_sort_quick_rx()
+   call test_unique()
+   call test_swap()
+end subroutine test_suite_m_sort
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine test_sort_shell()
+use M_debug, only : unit_check, unit_check_start, unit_check_good, unit_check_bad, unit_check_done
+implicit none
+integer,parameter            :: cd=kind(0.0d0)
+integer,parameter            :: isz=10000
+complex(kind=cd)             :: ccdd(isz)
+complex                      :: cc(isz)
+doubleprecision              :: dd(isz)
+real                         :: rr(isz), rr2(isz)
+integer                      :: ii(isz)
+character(len=:),allocatable :: array(:)
+integer                      :: csz
+!-----------------------------------------------------------------------------------------------------------------------------------
+call unit_check_start('sort_shell','-library libGPF') ! start tests
+!-----------------------------------------------------------------------------------------------------------------------------------
+array= [ character(len=20) :: &
+   'red',   'green', 'blue', 'yellow', 'orange',   'black', 'white', 'brown', 'gray', 'cyan',   'magenta',  'purple']
+csz=size(array)
+call sort_shell(array,order='a')
+call unit_check('sort_shell',all(array(1:csz-1) .le. array(2:csz)),msg='sort string array, ascending')  ! verify in ascending order
+!-----------------------------------------------------------------------------------------------------------------------------------
+array= [ character(len=20) :: &
+   'RED',   'GREEN', 'BLUE', 'YELLOW', 'ORANGE',   'BLACK', 'WHITE', 'BROWN', 'GRAY', 'CYAN',   'MAGENTA',  'PURPLE']
+csz=size(array)
+call sort_shell(array,order='d')
+call unit_check('sort_shell',all(array(1:csz-1) .ge. array(2:csz)),msg='sort string array, descending') ! verify in descending order
+!-----------------------------------------------------------------------------------------------------------------------------------
+CALL RANDOM_NUMBER(RR)                                           ! RR contains uniformly distributed random numbers from 0.0 to <1.0
+II=RR*HUGE(1)                                                    ! spread values out along range of INTEGER
+call sort_shell(ii,order='a')
+call unit_check('sort_shell',all(ii(1:isz-1) .le. ii(2:isz)),msg='sort integer, ascending array')  ! verify in ascending order
+!-----------------------------------------------------------------------------------------------------------------------------------
+CALL RANDOM_NUMBER(RR)
+II=RR*HUGE(1)
+call sort_shell(ii,order='d')
+call unit_check('sort_shell',all(ii(1:isz-1) .ge. ii(2:isz)),msg='sort integer, descending array')
+!-----------------------------------------------------------------------------------------------------------------------------------
+CALL RANDOM_NUMBER(RR)
+call sort_shell(rr,order='a')
+call unit_check('sort_shell',all(rr(1:isz-1) .le. rr(2:isz)),msg='sort real, ascending')
+!-----------------------------------------------------------------------------------------------------------------------------------
+CALL RANDOM_NUMBER(RR)
+call sort_shell(rr,order='d')
+call unit_check('sort_shell',all(rr(1:isz-1) .ge. rr(2:isz)),msg='sort real, descending')
+!-----------------------------------------------------------------------------------------------------------------------------------
+CALL RANDOM_NUMBER(RR)
+dd=RR*2000.0d0
+call sort_shell(dd,order='a')
+call unit_check('sort_shell',all(dd(1:isz-1) .le. dd(2:isz)),msg='sort doubleprecision, ascending')
+!-----------------------------------------------------------------------------------------------------------------------------------
+CALL RANDOM_NUMBER(RR)
+dd=RR*2000.0d0
+call sort_shell(dd,order='d')
+call unit_check('sort_shell',all(dd(1:isz-1) .ge. dd(2:isz)),msg='sort doubleprecision, descending')
+!-----------------------------------------------------------------------------------------------------------------------------------
+CALL RANDOM_NUMBER(RR)
+CALL RANDOM_NUMBER(RR2)
+
+cc=cmplx(RR*20000.0,RR2*20000.0)
+call sort_shell(cc,order='a',type='real')
+call unit_check('sort_shell',all(real(cc(1:isz-1)) .le. real(cc(2:isz))),msg='sort complex by real component, ascending')
+
+cc=cmplx(RR*20000.0,RR2*20000.0)
+call sort_shell(cc,order='d',type='real')
+call unit_check('sort_shell',all(real(cc(1:isz-1)) .ge. real(cc(2:isz))),msg='sort complex by real component, descending')
+
+cc=cmplx(RR*20000.0,RR2*20000.0)
+call sort_shell(cc,order='a',type='imaginary')
+call unit_check('sort_shell',all(aimag(cc(1:isz-1)).le.aimag(cc(2:isz))),msg='sort complex by imaginary component, ascending')
+
+cc=cmplx(RR*20000.0,RR2*20000.0)
+call sort_shell(cc,order='d',type='imaginary')
+call unit_check('sort_shell',all(aimag(cc(1:isz-1)) .ge. aimag(cc(2:isz))),msg='sort complex by imaginary component, descending')
+
+cc=cmplx(RR*20000.0,RR2*20000.0)
+call sort_shell(cc,order='a',type='size')
+call unit_check('sort_shell', &
+   all(sqrt( dble(cc(1:isz-1))**2 +aimag(cc(1:isz-1))**2) .le. sqrt(dble(cc(2:isz))**2+aimag(cc(2:isz))**2)), &
+   msg='sort complex array by magnitude, ascending')
+
+cc=cmplx(RR*20000.0,RR2*20000.0)
+call sort_shell(cc,order='d',type='size')
+call unit_check('sort_shell', &
+   all(sqrt( dble(cc(1:isz-1))**2 +aimag(cc(1:isz-1))**2) .ge. sqrt(dble(cc(2:isz))**2+aimag(cc(2:isz))**2)), &
+   msg='sort complex array by magnitude, descending')
+!-----------------------------------------------------------------------------------------------------------------------------------
+CALL RANDOM_NUMBER(RR)
+CALL RANDOM_NUMBER(RR2)
+
+ccdd=cmplx(RR*20000.0,RR2*20000.0)
+call sort_shell(ccdd,order='a',type='real')
+call unit_check('sort_shell',all(real(ccdd(1:isz-1)).le.real(ccdd(2:isz))), msg='sort double complex by real component, ascending')
+
+ccdd=cmplx(RR*20000.0,RR2*20000.0)
+call sort_shell(ccdd,order='d',type='real')
+call unit_check('sort_shell',all(real(ccdd(1:isz-1)).ge.real(ccdd(2:isz))), msg='sort double complex by real component, descending')
+
+ccdd=cmplx(RR*20000.0,RR2*20000.0)
+call sort_shell(ccdd,order='a',type='imaginary')
+call unit_check('sort_shell', &
+   all(aimag(ccdd(1:isz-1)).le.aimag(ccdd(2:isz))), msg='sort double complex by imaginary component, ascending')
+
+ccdd=cmplx(RR*20000.0,RR2*20000.0)
+call sort_shell(ccdd,order='d',type='imaginary')
+call unit_check('sort_shell', &
+   all(aimag(ccdd(1:isz-1)).ge.aimag(ccdd(2:isz))), msg='sort double complex by imaginary component, descending')
+
+ccdd=cmplx(RR*20000.0,RR2*20000.0)
+call sort_shell(ccdd,order='a',type='size')
+call unit_check('sort_shell', &
+   all(sqrt(real(ccdd(1:isz-1))**2+aimag(ccdd(1:isz-1))**2) .le. sqrt(real(ccdd(2:isz))**2+aimag(ccdd(2:isz))**2)),  &
+   msg='sort double complex by magnitude, ascending')
+
+ccdd=cmplx(RR*20000.0,RR2*20000.0)
+call sort_shell(ccdd,order='d',type='size')
+call unit_check('sort_shell', &
+   all(sqrt(real(ccdd(1:isz-1))**2+aimag(ccdd(1:isz-1))**2) .ge. sqrt(real(ccdd(2:isz))**2+aimag(ccdd(2:isz))**2)),  &
+   msg='sort double complex by magnitude, descending')
+!-----------------------------------------------------------------------------------------------------------------------------------
+call unit_check_done('sort_shell') ! assume if got here passed checks
+!-----------------------------------------------------------------------------------------------------------------------------------
+end subroutine test_sort_shell
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine test_sort_quick_rx
+use M_debug,   only : unit_check, unit_check_start, unit_check_good, unit_check_bad, unit_check_done
+implicit none
+integer,parameter            :: cd=kind(0.0d0)
+integer,parameter            :: isz=10000000
+real                         :: rr(isz)
+integer                      :: ii(isz)
+integer                      :: i
+logical                      :: gb
+call unit_check_start('sort_quick_rx', '-library libGPF') ! start tests
+
+CALL RANDOM_NUMBER(RR)
+rr=rr*45000
+gb=.true.
+call sort_quick_rx(rr,ii)
+do i=1,isz-1
+   if(rr(ii(i)).gt.rr(ii(i+1)))then
+      call unit_check_bad('sort_quit_rx',msg='Error in sorting reals from small to large')
+      gb=.false.
+   endif
+enddo
+if(gb)call unit_check_good('sort_quick_rx',msg='sort real array')
+
+end subroutine test_sort_quick_rx
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine test_unique
+use M_debug, only : unit_check_start, unit_check, unit_check_bad, unit_check_good, unit_check_done
+implicit none
+integer,allocatable :: ints(:)
+integer             :: icount
+call unit_check_start('unique', '-library libGPF') ! start tests
+
+ints=[1,1,2,3,4,4,10,20,20,30]
+call unique(ints,icount)
+call unit_check('unique',icount.eq.7 .and. all(ints.eq.[1, 2, 3, 4, 10, 20, 30]),msg='eliminate duplicates from array')
+
+ints=[integer ::]
+call unique(ints,icount)
+call unit_check('unique',icount.eq.0 .and. all(ints.eq.[integer::]),msg='check empty array ')
+
+ints=[10]
+call unique(ints,icount)
+call unit_check('unique',icount.eq.1 .and. all(ints.eq.[10]),msg='check array of one element')
+
+ints=[10,10,10,10]
+call unique(ints,icount)
+call unit_check('unique',icount.eq.1 .and. all(ints.eq.[10]),msg='all duplicates')
+
+ints=[10,20,30,40]
+call unique(ints,icount)
+call unit_check('unique',icount.eq.4 .and. all(ints.eq.[10, 20, 30, 40]),msg='no change required')
+
+call unit_check_done('unique',msg='test of unique(3f) completed') ! assume if got here passed checks
+end subroutine test_unique
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine test_swap
+use M_debug,   only : unit_check, unit_check_start, unit_check_good, unit_check_bad, unit_check_done
+implicit none
+integer             :: iarray2(2)=[20,10],iarray(2)=[10,20]
+real                :: rarray2(2)=[22.22,11.11],rarray(2)=[11.11,22.22]
+doubleprecision     :: darray2(2)=[9876.54321d0,1234.56789d0],darray(2)=[1234.56789d0,9876.54321d0]
+complex             :: carray2(2)=[(9876,54321),(1234,56789)],carray(2)=[(1234,56789),(9876,54321)]
+logical             :: larray2(2)=[.false.,.true.],larray(2)=[.true.,.false.]
+character(len=16)   :: string2(2)=["The other string","First string    "],string(2)=["First string    ", "The other string"]
+
+   call unit_check_start('swap',' -library libGPF') ! start tests
+   call swap (iarray(1), iarray(2)); call unit_check('swap',all(iarray.eq.iarray2),'integer test')
+   call swap (rarray(1), rarray(2)); call unit_check('swap',all(rarray.eq.rarray2),'real test')
+   call swap (darray(1), darray(2)); call unit_check('swap',all(darray.eq.darray2),'double test')
+   call swap (carray(1), carray(2)); call unit_check('swap',all(carray.eq.carray2),'complex test')
+   call swap (larray(1), larray(2)); call unit_check('swap',all(larray.eqv.larray2),'logical test')
+   call swap (string(1), string(2)); call unit_check('swap',all(string.eq.string2),'string test')
+   call unit_check_done('swap')
+
+end subroutine test_swap
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================

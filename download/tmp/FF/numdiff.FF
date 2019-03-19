@@ -77,7 +77,7 @@ EXAMPLE
 
    We will assume we have two files meeting the above criteria called
    "cray_results.txt" and "cygwin_results.txt". To compare the values
-   we enter.
+   we enter
 
      numdiff -old cray_results.txt -new cygwin_results.txt -percent 0.00001
 

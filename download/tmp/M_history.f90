@@ -208,6 +208,7 @@ module M_history
    private
 
    public  :: redo                  !  copy a line into history file or edit history if command is "r" and return line
+   public  ::  test_suite_M_history
 
    private :: open_history          !  open history file
    private :: redol                 !  edit history
@@ -595,5 +596,28 @@ usage=[ &
       call journal('sc',usage(i))
    enddo
 end subroutine help
+!===================================================================================================================================
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine test_suite_M_history()
+
+!! setup
+   call test_redo()
+!! teardown
+contains
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_redo()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('redo',msg='')
+   !!call unit_check('redo', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('redo',msg='')
+end subroutine test_redo
+!===================================================================================================================================
+end subroutine test_suite_M_history
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 end module M_history

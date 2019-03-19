@@ -47,7 +47,7 @@ integer,save,public           :: G_LUN
 !       - for single items you must indicate whether to advance or not
 !       - for one-dimensional items, the argument is optional. Default is to advance.
 !
-character(len=*),parameter::ident="@(#)M_csv::csv_write(3f): write scalar intrinsic type using current CSV style"
+character(len=*),parameter::ident_1="@(#)M_csv::csv_write(3f): write scalar intrinsic type using current CSV style"
 
 public csv_write
 
@@ -57,6 +57,7 @@ interface csv_write
    module procedure csv_write_table
 end interface
 
+public test_suite_M_csv
 contains
 !>
 !!##NAME
@@ -189,4 +190,47 @@ integer,intent(in),optional     :: lun
         call csv_write_row( array(:,i), advance=.true., lun=lun_local )
     enddo
 end subroutine csv_write_table
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine test_suite_M_csv()
+
+!! setup
+   call test_csv_write_row()
+   call test_csv_write_scalar()
+   call test_csv_write_table()
+!! teardown
+contains
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_csv_write_row()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('csv_write_row',msg='')
+   !!call unit_check('csv_write_row', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('csv_write_row',msg='')
+end subroutine test_csv_write_row
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_csv_write_scalar()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('csv_write_scalar',msg='')
+   !!call unit_check('csv_write_scalar', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('csv_write_scalar',msg='')
+end subroutine test_csv_write_scalar
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_csv_write_table()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('csv_write_table',msg='')
+   !!call unit_check('csv_write_table', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('csv_write_table',msg='')
+end subroutine test_csv_write_table
+!===================================================================================================================================
+end subroutine test_suite_M_csv
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 end module M_csv

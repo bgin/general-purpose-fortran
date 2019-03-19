@@ -103,7 +103,7 @@ M_calculator_Example(5f) - [M_calculator] Example program for module M_calculato
 
       !     line mode calculator that calls jucalc
       !
-      use m_calculator, only: jucalc,iclen_calc
+      use M_calculator, only: jucalc,iclen_calc
       implicit none
       integer, parameter        :: k_dbl = SELECTED_REAL_KIND(15,300) ! real*8
       character(len=iclen_calc) :: event, line
@@ -159,7 +159,7 @@ M_calculator_Example(5f) - [M_calculator] Example program for module M_calculato
       !      set to  0 if a number is returned
       !      set to  2 if a string is returned
       !
-      use m_calculator, only: x,y,values,valuer,iclen_calc
+      use M_calculator, only: x,y,values,valuer,iclen_calc
       ! values: the values of string variables
       ! valuer: the lengths of the string variable values
       character(len=*)          :: func

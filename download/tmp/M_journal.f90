@@ -131,9 +131,12 @@ private
 !!    end program demo_journal
 !===================================================================================================================================
 public journal
+
 interface journal
    module procedure write_msg, wm_i, wm_r, wm_c, wm_l, wm_d, wm, set_stdout, change_model
 end interface journal
+
+public test_suite_M_journal
 
 character(len=*),parameter :: ident="@(#)M_journal::journal(3fg): provides public message routine, no paging or graphic mode change"
 
@@ -374,6 +377,106 @@ integer,intent(in)                :: ival      ! integer value to add to message
 end subroutine wm_i
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+subroutine test_suite_M_journal()
+
+!! setup
+   call test_change_model()
+   call test_set_stdout()
+   call test_wm()
+   call test_wm_c()
+   call test_wm_d()
+   call test_wm_i()
+   call test_wm_l()
+   call test_wm_r()
+   call test_write_msg()
+!! teardown
+contains
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_change_model()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('change_model',msg='')
+   !!call unit_check('change_model', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('change_model',msg='')
+end subroutine test_change_model
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_set_stdout()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('set_stdout',msg='')
+   !!call unit_check('set_stdout', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('set_stdout',msg='')
+end subroutine test_set_stdout
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_wm()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('wm',msg='')
+   !!call unit_check('wm', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('wm',msg='')
+end subroutine test_wm
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_wm_c()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('wm_c',msg='')
+   !!call unit_check('wm_c', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('wm_c',msg='')
+end subroutine test_wm_c
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_wm_d()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('wm_d',msg='')
+   !!call unit_check('wm_d', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('wm_d',msg='')
+end subroutine test_wm_d
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_wm_i()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('wm_i',msg='')
+   !!call unit_check('wm_i', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('wm_i',msg='')
+end subroutine test_wm_i
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_wm_l()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('wm_l',msg='')
+   !!call unit_check('wm_l', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('wm_l',msg='')
+end subroutine test_wm_l
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_wm_r()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('wm_r',msg='')
+   !!call unit_check('wm_r', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('wm_r',msg='')
+end subroutine test_wm_r
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_write_msg()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('write_msg',msg='')
+   !!call unit_check('write_msg', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('write_msg',msg='')
+end subroutine test_write_msg
+!===================================================================================================================================
+end subroutine test_suite_M_journal
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 
 end module M_journal

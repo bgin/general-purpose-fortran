@@ -156,8 +156,36 @@ module M_pixel
 !  Modify pixel data with vector drawing calls
 !
 use M_units,    only : cosd, sind
+use ISO_C_binding, only :  c_short, c_int, c_float
 implicit none         !  Check all declarations
 private
+!-------------------------------------------------------------------------------
+integer(kind=c_short),public,parameter :: D_XCENTERED=     1_C_SHORT
+integer(kind=c_short),public,parameter :: D_YCENTERED=     2_C_SHORT
+integer(kind=c_short),public,parameter :: D_LEFT=          4_C_SHORT  ! The default
+integer(kind=c_short),public,parameter :: D_RIGHT=         8_C_SHORT
+integer(kind=c_short),public,parameter :: D_TOP=          16_C_SHORT
+integer(kind=c_short),public,parameter :: D_BOTTOM=       32_C_SHORT ! The default
+!-------------------------------------------------------------------------------
+integer(kind=c_short),public,parameter :: D_NORMAL=        0_C_SHORT ! The default
+integer(kind=c_short),public,parameter :: D_BOLD=          1_C_SHORT
+!-------------------------------------------------------------------------------
+integer(kind=c_short),public,parameter :: D_THICK=         1_C_SHORT
+integer(kind=c_short),public,parameter :: D_THIN=          0_C_SHORT ! The default
+!-------------------------------------------------------------------------------
+integer(kind=c_int),public,parameter   :: D_BLACK    =  0_C_INT
+integer(kind=c_int),public,parameter   :: D_RED      =  1_C_INT
+integer(kind=c_int),public,parameter   :: D_GREEN    =  2_C_INT
+integer(kind=c_int),public,parameter   :: D_YELLOW   =  3_C_INT
+integer(kind=c_int),public,parameter   :: D_BLUE     =  4_C_INT
+integer(kind=c_int),public,parameter   :: D_MAGENTA  =  5_C_INT
+integer(kind=c_int),public,parameter   :: D_CYAN     =  6_C_INT
+integer(kind=c_int),public,parameter   :: D_WHITE    =  7_C_INT
+!-------------------------------------------------------------------------------
+public MATRIX
+type, bind(C) :: MATRIX
+   real(KIND=C_FLOAT),dimension(4,4) :: ARRAY
+end type MATRIX
 !==================================================================================================================================!
 real,parameter      :: PI=3.14159265358979323844
 real,parameter      :: D2R=acos(-1.0)/180.0
@@ -232,7 +260,7 @@ public  :: rmove2              ! relative move current position
 public  :: draw2               ! draw from current position to specified point
 public  :: rdraw2              ! relative draw from current position to specified point
 public  :: line                ! draw line between two points
-public  :: polyline            ! draw polyline
+public  :: polyline2           ! draw polyline2
 public  :: point2              ! draw a point
 ! polygons
 public  :: rect                ! draw rectangle
@@ -1420,7 +1448,7 @@ contains
 !===================================================================================================================================
 subroutine rect(x1,y1, x2,y2)
 
-character(len=*),parameter::ident="@(#)M_pixel::rect(3f): draw line rectangle given two opposite corners"
+character(len=*),parameter::ident_1="@(#)M_pixel::rect(3f): draw line rectangle given two opposite corners"
 
 !
 !  x1,y1 ############ x2,y1
@@ -1462,7 +1490,7 @@ end subroutine rect
 !===================================================================================================================================
 subroutine line(x1,y1, x2,y2 )
 
-character(len=*),parameter::ident="@(#)M_pixel::line(3f): draw line between two points applying line width and color"
+character(len=*),parameter::ident_2="@(#)M_pixel::line(3f): draw line between two points applying line width and color"
 
 real,intent(in)            :: x1,y1,x2,y2
 
@@ -1526,7 +1554,7 @@ end subroutine line
 !==================================================================================================================================!
 subroutine swapcoord(p1, p2)
 
-character(len=*),parameter::ident="@(#)M_pixel::swapcoor(3fp): swap two coordinates (integers)"
+character(len=*),parameter::ident_3="@(#)M_pixel::swapcoor(3fp): swap two coordinates (integers)"
 
     integer, intent(inout) :: p1, p2
     integer :: t
@@ -2035,7 +2063,7 @@ end subroutine swapcoord
 !===================================================================================================================================
 subroutine draw_line_single(x1,y1, x2,y2 )
 
-character(len=*),parameter::ident="@(#)M_pixel::draw_line_single(3fp): draw line between two points in pixel array"
+character(len=*),parameter::ident_4="@(#)M_pixel::draw_line_single(3fp): draw line between two points in pixel array"
 
 integer,intent(in)            :: x1,y1,x2,y2
 
@@ -2241,7 +2269,7 @@ end subroutine draw_line_single
 !===================================================================================================================================
 subroutine hershey(x,y,height,itext,theta,ntext)
 
-character(len=*),parameter::ident="@(#)M_pixel::hershey(3f): draw text string as Hershey software vector fonts"
+character(len=*),parameter::ident_5="@(#)M_pixel::hershey(3f): draw text string as Hershey software vector fonts"
 
       character(len=*),intent(in)   :: itext
       real,intent(in)               :: x,y
@@ -2433,7 +2461,7 @@ end subroutine hershey
 !==================================================================================================================================!
 subroutine hstylus(xi,yi,ipen)
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_6="&
 &@(#)M_pixel::hstylus(3fp): move to new current position(CP) or draw from CP to new position and update CP"
 
 real,intent(in)    :: xi,yi
@@ -2458,7 +2486,7 @@ end subroutine hstylus
 !==================================================================================================================================!
 subroutine chrcod(text,ntext)
 
-character(len=*),parameter::ident="@(#)M_pixel::chrcod(3fp): return symbol numbers or formatting codes for a text string"
+character(len=*),parameter::ident_7="@(#)M_pixel::chrcod(3fp): return symbol numbers or formatting codes for a text string"
 
 !  Given text string in text, NTEXT characters
 !  returns P_ICHR containing P_NCHR symbol numbers or codes for
@@ -2798,7 +2826,7 @@ END SUBROUTINE CHRCOD
 !===================================================================================================================================
 function strlength(string)
 
-character(len=*),parameter::ident="@(#)M_pixel::strlength: length of string using current font size"
+character(len=*),parameter::ident_8="@(#)M_pixel::strlength: length of string using current font size"
 
 character(len=*),intent(in)    :: string
 real                           :: strlength
@@ -2848,7 +2876,7 @@ end function strlength
 !===================================================================================================================================
 subroutine justfy(s, height, text, ntext)
 
-character(len=*),parameter::ident="@(#)M_pixel::justfy(3f): calculate values for justifying Hershey fonts called by hershey(3f)"
+character(len=*),parameter::ident_9="@(#)M_pixel::justfy(3f): calculate values for justifying Hershey fonts called by hershey(3f)"
 
 !  Given the text string TEXT with NTEXT characters, height HEIGHT, this routine
 !  gives 4 distances in inches, all from the left end of the string -
@@ -2917,41 +2945,84 @@ end subroutine justfy
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    polyline(3f) - [M_pixel] connect points with lines
-!!
+!!    polyline2(3f) - [M_pixel] - draw an unclosed polyline in the XY plane
 !!##SYNOPSIS
 !!
-!!  definition:
+!!        subroutine polyline2(arrx,arry)
 !!
-!!    subroutine polyline(x,y)
-!!    real,intent(in) :: x(:)
-!!    real,intent(in) :: y(:)
+!!           integer,intent(in)          :: arrx(:)
+!!           integer,intent(in),optional :: arry(:)
 !!
 !!##DESCRIPTION
-!!    Draw a line through a series of points described by the
-!!    arrays X and Y.
+!!        Given either a single array composed of pairs <x(i),y(i)> of
+!!        values defining points or an X and Y array move to first point
+!!        and draw to remaining points using current line style.
 !!
 !!##OPTIONS
-!!    X    array of x-coordinates
-!!    Y    array of y-coordinates
+!!        ARRX   If ARRY is present, an array of X values
+!!
+!!        ARRY   An optional array of Y values
 !!
 !!##EXAMPLE
 !!
+!!   Sample program:
+!!
+!!    demo_polyline2
+!!    use M_pixel
+!!    use M_writegif, only : writegif
+!!    implicit none
+!!    integer :: transparent=0
+!!    integer :: ipaws
+!!    call prefsize(300,300)
+!!    call vinit(' ')
+!!    call ortho2(-2.0,2.0,-2.0,2.0)
+!!    call color(2)
+!!    call linewidth(100)
+!!    call polyline2([-0.5,-0.5, -0.5,+0.5, +0.5,+0.5, +0.5,-0.5])
+!!    call color(4)
+!!    call polyline2( [-1,-1,+1,+1,-1] , &  ! X values
+!!    & [-1,+1,+1,-1,-1] )    ! Y values
+!!     ! write gif with a transparent background
+!!    call writegif('polyline2.3m_pixel.gif',P_pixel,P_ColorMap,transparent)
+!!    call vexit()
+!!    end program demo_polyline2
 !===================================================================================================================================
-subroutine polyline(x,y)
+subroutine polyline2(x,y)
+use :: M_anything, only : anyscalar_to_real
+class(*),intent(in)          :: x(:)
+class(*),intent(in),optional :: y(:)
+real,allocatable             :: arrx(:)
+real,allocatable             :: arry(:)
+integer                      :: i
+integer                      :: isizex
+integer                      :: isizey
+integer                      :: ipairs
+! assuming nice data in x,y pairs
+arrx=anyscalar_to_real(x)
+if(present(y))then    ! two arrays means X array and Y array
+   arry=anyscalar_to_real(y)
+   isizex=size(arrx)
+   isizey=size(arry)
+   ipairs=min(isizex,isizey)
+   if(ipairs.gt.0)then
+      call move2(arrx(1),arry(1))
+   endif
+   do i=2,ipairs
+      call draw2(arrx(i),arry(i))
+   enddo
+else                      ! one array means array is <x1,y1>, <x2,y2>, <x3,y3>, ...
+   isizex=size(arrx)
+   isizey=0
+   ipairs=isizex/2
+   if(ipairs.gt.0)then
+      call move2(arrx(1),arrx(2))
+   endif
+   do i=3,ipairs*2,2
+      call draw2(arrx(i),arrx(i+1))
+   enddo
+endif
 
-character(len=*),parameter::ident="@(#)M_pixel::polyline(3f): draw lines between points"
-
-real,intent(in) :: x(:)
-real,intent(in) :: y(:)
-
-integer            :: i
-
-do i=1,size(x)-1
-   call line(x(i),y(i),x(i+1),y(i+1))
-enddo
-
-end subroutine polyline
+end subroutine polyline2
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
@@ -2977,7 +3048,7 @@ end subroutine polyline
 !===================================================================================================================================
 subroutine clear(indx)
 
-character(len=*),parameter::ident="@(#)M_pixel::clear(3f): set background color all to specified color index"
+character(len=*),parameter::ident_10="@(#)M_pixel::clear(3f): set background color all to specified color index"
 
 integer,intent(in),optional :: indx
 call if_init()
@@ -2992,7 +3063,7 @@ end subroutine clear
 !==================================================================================================================================!
 subroutine if_init()
 
-character(len=*),parameter::ident="@(#)M_pixel::if_init(3f): check if pixel graphics library has been initialized"
+character(len=*),parameter::ident_11="@(#)M_pixel::if_init(3f): check if pixel graphics library has been initialized"
 
    if(.not.P_VINIT_CALLED)then
       write(*,*)'*draw_line_single* WARNING: P_vinit(3f) was not called'
@@ -3054,7 +3125,7 @@ end subroutine if_init
 !===================================================================================================================================
 subroutine arc(x,y,radius,startang,endang)
 
-character(len=*),parameter::ident="@(#)M_pixel::arc(3f): draw a arc using current line width and color"
+character(len=*),parameter::ident_12="@(#)M_pixel::arc(3f): draw a arc using current line width and color"
 
 real,intent(in) :: x,y
 real,intent(in) :: radius
@@ -3143,7 +3214,7 @@ end subroutine arc
 !===================================================================================================================================
 subroutine circle(x,y,radius)
 
-character(len=*),parameter::ident="@(#)M_pixel::circle(3f): draw a circle using current line width and color"
+character(len=*),parameter::ident_13="@(#)M_pixel::circle(3f): draw a circle using current line width and color"
 
 real,intent(in) :: x
 real,intent(in) :: y
@@ -3226,7 +3297,7 @@ end subroutine circle
 !===================================================================================================================================
 subroutine linewidth(iwidth)
 
-character(len=*),parameter::ident="@(#)M_pixel::linewidth(3f): set line width for lines drawn in pixel image"
+character(len=*),parameter::ident_14="@(#)M_pixel::linewidth(3f): set line width for lines drawn in pixel image"
 
 integer,intent(in) :: iwidth
    real            :: xwidth
@@ -3305,7 +3376,7 @@ end subroutine linewidth
 !===================================================================================================================================
 subroutine color(icolor)
 
-character(len=*),parameter::ident="@(#)M_pixel::color(3f): set current color for lines drawn in pixel image"
+character(len=*),parameter::ident_15="@(#)M_pixel::color(3f): set current color for lines drawn in pixel image"
 
 integer,intent(in) :: icolor
    P_COLOR_INDEX=icolor
@@ -3487,7 +3558,7 @@ end subroutine color
 !===================================================================================================================================
 subroutine mapcolor(indx,red,green,blue)
 
-character(len=*),parameter::ident="@(#)M_pixel::mapcolor(3f): set a color index using RGB values"
+character(len=*),parameter::ident_16="@(#)M_pixel::mapcolor(3f): set a color index using RGB values"
 
 integer,intent(in) :: indx
 integer,intent(in) :: red
@@ -3573,7 +3644,7 @@ end subroutine mapcolor
 !===================================================================================================================================
 subroutine circleprecision(nsegs)
 
-character(len=*),parameter::ident="@(#)M_pixel::circleprecision(3f): set number of line segments making up a circle"
+character(len=*),parameter::ident_17="@(#)M_pixel::circleprecision(3f): set number of line segments making up a circle"
 
 integer,intent(in) :: nsegs
    P_nsegs=nsegs
@@ -3622,7 +3693,7 @@ end subroutine circleprecision
 !===================================================================================================================================
 subroutine getviewport(left,right,bottom,top)
 
-character(len=*),parameter::ident="@(#)M_pixel::getviewport(3f): return viewport in screen pixel coordinates"
+character(len=*),parameter::ident_18="@(#)M_pixel::getviewport(3f): return viewport in screen pixel coordinates"
 
 real,intent(out)    :: left
 real,intent(out)    :: right
@@ -3666,7 +3737,7 @@ end subroutine getviewport
 !===================================================================================================================================
 subroutine viewport(left,right,bottom,top)
 
-character(len=*),parameter::ident="@(#)M_pixel::viewport(3f): Specify which part of the screen to draw in."
+character(len=*),parameter::ident_19="@(#)M_pixel::viewport(3f): Specify which part of the screen to draw in."
 
 real,intent(in) :: left, right, bottom, top
 
@@ -3696,7 +3767,7 @@ end subroutine viewport
 subroutine mapping()
 use M_math,only : invert_4x4
 
-character(len=*),parameter::ident="@(#)M_pixel::mapping(3fp): calculate conversion factors between viewport and world window"
+character(len=*),parameter::ident_20="@(#)M_pixel::mapping(3fp): calculate conversion factors between viewport and world window"
 
    real, dimension(4,4) :: viewport,viewport_inv
    real, dimension(4)   :: window, factors
@@ -3721,7 +3792,7 @@ end subroutine mapping
 !==================================================================================================================================!
 subroutine world2viewport(xw,yw,xv,yv)
 
-character(len=*),parameter::ident="@(#)M_pixel::world2viewport(3fp): convert world coordinates to viewports"
+character(len=*),parameter::ident_21="@(#)M_pixel::world2viewport(3fp): convert world coordinates to viewports"
 
 real,intent(in)  :: xw,yw
 real,intent(out) :: xv,yv
@@ -3735,7 +3806,7 @@ end subroutine world2viewport
 !==================================================================================================================================!
 subroutine viewport2world(xv,yv,xw,yw)
 
-character(len=*),parameter::ident="@(#)M_pixel::viewport2world(3fp): convert viewport to world coordinates"
+character(len=*),parameter::ident_22="@(#)M_pixel::viewport2world(3fp): convert viewport to world coordinates"
 
 real,intent(in)  :: xv,yv
 real,intent(out) :: xw,yw
@@ -3769,7 +3840,8 @@ end subroutine viewport2world
 !===================================================================================================================================
 subroutine ortho2(left, right, bottom, top)
 
-character(len=*),parameter::ident="@(#)M_pixel::ortho2(3f): define the area of the virtual world coordinates to map to the viewport"
+character(len=*),parameter::ident_23="&
+&@(#)M_pixel::ortho2(3f): define the area of the virtual world coordinates to map to the viewport"
 
 real,intent(in) :: left, right, bottom, top ! Define x (left, right), and y (bottom, top) clipping planes.
 
@@ -3805,7 +3877,7 @@ end subroutine ortho2
 subroutine page(xsmall,xlarge,ysmall,ylarge)
 use M_journal, only : journal
 
-character(len=*),parameter::ident="@(#)M_pixel::page(3f): given a window size, find and set to largest accommodating viewport"
+character(len=*),parameter::ident_24="@(#)M_pixel::page(3f): given a window size, find and set to largest accommodating viewport"
 
 real,intent(in) :: xsmall
 real,intent(in) :: xlarge
@@ -3950,7 +4022,7 @@ end subroutine page
 !===================================================================================================================================
 subroutine rmove2(Xdelta,Ydelta)
 
-character(len=*),parameter::ident="@(#)M_pixel::rmove2(3f): relative move"
+character(len=*),parameter::ident_25="@(#)M_pixel::rmove2(3f): relative move"
 
 real,intent(in) :: Xdelta
 real,intent(in) :: Ydelta
@@ -4003,7 +4075,7 @@ end subroutine rmove2
 !===================================================================================================================================
 subroutine move2(x,y)
 
-character(len=*),parameter::ident="@(#)M_pixel::move2(3f): move current position"
+character(len=*),parameter::ident_26="@(#)M_pixel::move2(3f): move current position"
 
 real,intent(in) :: x,y
 
@@ -4077,7 +4149,7 @@ end subroutine move2
 !===================================================================================================================================
 subroutine rdraw2(xdelta,ydelta)
 
-character(len=*),parameter::ident="@(#)M_pixel::rdraw2(3f): relative draw"
+character(len=*),parameter::ident_27="@(#)M_pixel::rdraw2(3f): relative draw"
 
 real,intent(in) :: xdelta
 real,intent(in) :: ydelta
@@ -4160,7 +4232,7 @@ end subroutine rdraw2
 !===================================================================================================================================
 subroutine draw2(x,y)
 
-character(len=*),parameter::ident="@(#)M_pixel::draw2(3f): draw a line from current position to specified point"
+character(len=*),parameter::ident_28="@(#)M_pixel::draw2(3f): draw a line from current position to specified point"
 
 real,intent(in) :: x
 real,intent(in) :: y
@@ -4231,7 +4303,7 @@ end subroutine draw2
 !===================================================================================================================================
 subroutine prefsize(x,y)
 
-character(len=*),parameter::ident="@(#)M_pixel::prefsize(3f): specify size of pixel array"
+character(len=*),parameter::ident_29="@(#)M_pixel::prefsize(3f): specify size of pixel array"
 
 integer,intent(in) :: x
 integer,intent(in) :: y
@@ -4286,7 +4358,7 @@ end subroutine prefsize
 !===================================================================================================================================
 subroutine vexit()
 
-character(len=*),parameter::ident="@(#)M_pixel::vexit(3f): exit pixel array drawing module"
+character(len=*),parameter::ident_30="@(#)M_pixel::vexit(3f): exit pixel array drawing module"
 
    if(allocated(P_pixel))then
       deallocate(P_Pixel)
@@ -4337,7 +4409,7 @@ end subroutine vexit
 !===================================================================================================================================
 subroutine vinit(string)
 
-character(len=*),parameter::ident="@(#)M_pixel::vinit(3f): initialize pixel array drawing module"
+character(len=*),parameter::ident_31="@(#)M_pixel::vinit(3f): initialize pixel array drawing module"
 
 character(len=*),optional :: string
 
@@ -4526,7 +4598,7 @@ end subroutine vinit
 !===================================================================================================================================
 subroutine makepoly()
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_32="&
 &@(#)M_pixel::makepoly(3f): opens polygon constructed by a series of move-draws and closed by closepoly"
 
    P_inpolygon=.true.
@@ -4550,7 +4622,7 @@ end subroutine makepoly
 !===================================================================================================================================
 subroutine closepoly()
 
-character(len=*),parameter::ident="@(#)M_pixel::makepoly(3f): terminate a polygon opened by makepoly(3f)"
+character(len=*),parameter::ident_33="@(#)M_pixel::makepoly(3f): terminate a polygon opened by makepoly(3f)"
 
    P_inpolygon=.false.
    call poly2(P_polyvertex-1,P_polypoints)
@@ -4596,7 +4668,7 @@ end subroutine closepoly
 !===================================================================================================================================
 subroutine print_ppm(filename)
 
-character(len=*),parameter::ident="@(#)M_pixel::print_ppm(3f): print pixel array as a P3 PPM file"
+character(len=*),parameter::ident_34="@(#)M_pixel::print_ppm(3f): print pixel array as a P3 PPM file"
 
 character(len=*),intent(in) :: filename
 
@@ -4688,7 +4760,7 @@ end subroutine print_ppm
 subroutine print_ascii(filename)
 use,intrinsic :: iso_fortran_env, only : ERROR_UNIT, INPUT_UNIT, OUTPUT_UNIT
 
-character(len=*),parameter::ident="@(#)M_pixel::print_ascii(3f): print pixel array as an ASCII block of text"
+character(len=*),parameter::ident_35="@(#)M_pixel::print_ascii(3f): print pixel array as an ASCII block of text"
 
 character(len=*),intent(in),optional  :: filename
 character(len=1024)                   :: message
@@ -4865,7 +4937,7 @@ end subroutine print_ascii
 !===================================================================================================================================
 subroutine textsize(width,height)
 
-character(len=*),parameter::ident="@(#)M_pixel::textsize(3f): set text size in world units"
+character(len=*),parameter::ident_36="@(#)M_pixel::textsize(3f): set text size in world units"
 
 real,intent(in) :: width
 real,intent(in) :: height
@@ -4897,7 +4969,7 @@ end subroutine textsize
 !===================================================================================================================================
 subroutine ycentertext()
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_37="&
 &@(#)M_pixel::ycentertext(3f): set text centering mode on for drawstr(3f) and drawc(3f) in Y direction"
 
    P_X_centertext=.false.
@@ -4931,7 +5003,7 @@ end subroutine ycentertext
 !===================================================================================================================================
 subroutine xcentertext()
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_38="&
 &@(#)M_pixel::xcentertext(3f): set text centering mode for drawstr(3f) and drawc(3f) in X direction"
 
    P_X_CENTERTEXT=.true.
@@ -5011,7 +5083,7 @@ end subroutine xcentertext
 !===================================================================================================================================
 subroutine centertext(onoff)
 
-character(len=*),parameter::ident="@(#)M_pixel::centertext(3f): set text centering mode for drawstr(3f) and drawc(3f)"
+character(len=*),parameter::ident_39="@(#)M_pixel::centertext(3f): set text centering mode for drawstr(3f) and drawc(3f)"
 
 logical,intent(in) :: onoff
 
@@ -5077,7 +5149,7 @@ end subroutine centertext
 !===================================================================================================================================
 subroutine textang(ang)
 
-character(len=*),parameter::ident="@(#)M_pixel::textang(3f): set angle in degrees to draw text at using drawstr(3f)"
+character(len=*),parameter::ident_40="@(#)M_pixel::textang(3f): set angle in degrees to draw text at using drawstr(3f)"
 
 real,intent(in) :: ang
 
@@ -5169,7 +5241,7 @@ end subroutine textang
 !===================================================================================================================================
 subroutine font(fontname)
 
-character(len=*),parameter::ident="@(#)M_pixel::font(3f): select font style by name"
+character(len=*),parameter::ident_41="@(#)M_pixel::font(3f): select font style by name"
 
 character(len=*),intent(in) :: fontname
       select case(fontname)
@@ -5244,7 +5316,7 @@ end subroutine font
 !===================================================================================================================================
 subroutine drawchar(ch)
 
-character(len=*),parameter::ident="@(#)M_pixel::drawchar(3f): draw text at the current position"
+character(len=*),parameter::ident_42="@(#)M_pixel::drawchar(3f): draw text at the current position"
 
 character(len=1),intent(in) :: ch
 
@@ -5268,11 +5340,98 @@ end subroutine drawchar
 !!##DESCRIPTION
 !!    Draw a text string at the current position. Uses current line color
 !!    and thickness and text centering mode.
+!!
+!!##EXAMPLE
+!!
+!!  Sample program:
+!!
+!!       program demo_drawstr
+!!       use M_pixel
+!!       use :: M_writegif, only : writegif
+!!       implicit none
+!!       call prefsize(400,400)
+!!       call vinit()
+!!       call ortho2(-1.0,1.0,-1.0,1.0)
+!!       ! by default the drawing surface is
+!!       ! a square ranging from -1 to 1 in both
+!!       ! the X and Y axis
+!!       write(*,*)D_BLACK, D_GREEN, D_RED
+!!
+!!       call color(D_BLACK)    ! set current color to black
+!!       call clear()           ! clear to current color
+!!
+!!       ! SET COMMON TEXT ATTRIBUTES
+!!       call color(D_GREEN)    ! we want to draw in green
+!!       call circle(0.0,0.0,1.0)
+!!       call font('futura.m')  ! set font
+!!       call textsize(0.1,0.1) ! font size
+!!
+!!       ! DRAW A STRING
+!!       call move2(-1.0, 0.0)
+!!       call drawstr('Hello')  ! draw string at current position
+!!       ! note that current position is now at end of this string
+!!
+!!       ! CHANGE SOME TEXT ATTRIBUTES AGAIN
+!!       call linewidth(20)     ! set line width
+!!       call color(D_RED)      ! change color
+!!       call textang(45.0)     ! change text angle
+!!
+!!       call drawstr(' World!')! draw string at current position
+!!       !! render pixel array to a file
+!!       call writegif('drawstr.3m_pixel.gif',P_pixel,P_colormap)
+!!       !! display graphic assuming display(1) is available
+!!       call execute_command_line('display drawstr.3m_pixel.gif')
+!!
+!!       call vexit()           !  wrap up and exit graphics mode
+!!
+!!       end program demo_drawstr
+!!   Results:
+!! ================================================================================
+!! *ccall*: MAKING TEMPORARY DIRECTORY /tmp/CCALL_CYGWIN64_GFORTRAN_34908
+!! r - /tmp/_JSU.ff
+!! a - /tmp/CCALL_CYGWIN64_GFORTRAN_34908/_JSU.34908.f90
+!! /home/urbanjs/.twm/scripts_regression/goodbad: _JSU.1 0 _JSU start --section 1
+!! *ccall*: REMOVING /tmp/CCALL_CYGWIN64_GFORTRAN_34908
+!! ================================================================================
+!!               0           2           1
+!! ================================================================================
+!!   Results:
+!! ================================================================================
+!! *ccall*: MAKING TEMPORARY DIRECTORY /tmp/CCALL_CYGWIN64_GFORTRAN_11392
+!! r - /tmp/_JSU.ff
+!! a - /tmp/CCALL_CYGWIN64_GFORTRAN_11392/_JSU.11392.f90
+!! /home/urbanjs/.twm/scripts_regression/goodbad: _JSU.1 0 _JSU start --section 1
+!! *ccall*: REMOVING /tmp/CCALL_CYGWIN64_GFORTRAN_11392
+!! ================================================================================
+!!               0           2           1
+!! ================================================================================
+!!   Results:
+!! ================================================================================
+!! *ccall*: MAKING TEMPORARY DIRECTORY /tmp/CCALL_CYGWIN64_GFORTRAN_36436
+!! r - /tmp/_JSU.ff
+!! a - /tmp/CCALL_CYGWIN64_GFORTRAN_36436/_JSU.36436.f90
+!! /home/urbanjs/.twm/scripts_regression/goodbad: _JSU.1 0 _JSU start --section 1
+!! *ccall*: REMOVING /tmp/CCALL_CYGWIN64_GFORTRAN_36436
+!! ================================================================================
+!!               0           2           1
+!! ================================================================================
+!!   Results:
+!! ================================================================================
+!! *ccall*: MAKING TEMPORARY DIRECTORY /tmp/CCALL_CYGWIN64_GFORTRAN_13432
+!! r - /tmp/_JSU.ff
+!! a - /tmp/CCALL_CYGWIN64_GFORTRAN_13432/_JSU.13432.f90
+!! /home/urbanjs/.twm/scripts_regression/goodbad: _JSU.1 0 _JSU start --section 1
+!! *ccall*: REMOVING /tmp/CCALL_CYGWIN64_GFORTRAN_13432
+!! ================================================================================
+!!               0           2           1
+!! ================================================================================
+!!
+!!   Results:
 !===================================================================================================================================
 subroutine drawstr(string)
 use :: M_units, only : cosd, sind
 
-character(len=*),parameter::ident="@(#)M_pixel::drawstr(3f): draw text at the current position"
+character(len=*),parameter::ident_43="@(#)M_pixel::drawstr(3f): draw text at the current position"
 
 character(len=*),intent(in)  :: string
 character(len=:),allocatable :: fontstring
@@ -5395,7 +5554,7 @@ end subroutine drawstr
 !===================================================================================================================================
 subroutine getgp2(x, y)
 
-character(len=*),parameter::ident="@(#)M_pixel::getgp2(3f): get current graphics position"
+character(len=*),parameter::ident_44="@(#)M_pixel::getgp2(3f): get current graphics position"
 
 real,intent(out) :: x, y
 
@@ -5422,7 +5581,7 @@ end subroutine getgp2
 !===================================================================================================================================
 subroutine getdisplaysize(w, h)
 
-character(len=*),parameter::ident="@(#)M_pixel::getdisplaysize(3f): Returns the width and height of the device in pixels"
+character(len=*),parameter::ident_45="@(#)M_pixel::getdisplaysize(3f): Returns the width and height of the device in pixels"
 
 real,intent(out) :: w, h
 
@@ -5469,7 +5628,7 @@ end subroutine getdisplaysize
 !===================================================================================================================================
 subroutine point2(x, y)
 
-character(len=*),parameter::ident="@(#)M_pixel::point2(3f): Draw a point at x, y"
+character(len=*),parameter::ident_46="@(#)M_pixel::point2(3f): Draw a point at x, y"
 
 real,intent(in) :: x, y
 
@@ -5527,7 +5686,7 @@ end subroutine point2
 !===================================================================================================================================
 recursive subroutine state(string)
 
-character(len=*),parameter::ident="@(#)M_pixel::state(3f): print graphics state of M_pixel graphics module"
+character(len=*),parameter::ident_47="@(#)M_pixel::state(3f): print graphics state of M_pixel graphics module"
 
 character(len=*),intent(in),optional :: string
 character(len=40)         :: string_local
@@ -5641,7 +5800,7 @@ end subroutine state
 !===================================================================================================================================
 subroutine poly2(n,points)
 
-character(len=*),parameter::ident="@(#)M_pixel::poly2(3f): construct a polygon from an array of points"
+character(len=*),parameter::ident_48="@(#)M_pixel::poly2(3f): construct a polygon from an array of points"
 
 integer,intent(in) :: n
 real,intent(in)    :: points(2, n)
@@ -5663,7 +5822,7 @@ end subroutine poly2
 !==================================================================================================================================!
 subroutine vflush()
 
-character(len=*),parameter::ident="@(#)M_pixel::vflush(3f): flush current page"
+character(len=*),parameter::ident_49="@(#)M_pixel::vflush(3f): flush current page"
 
 end subroutine vflush
 !==================================================================================================================================!
@@ -5671,7 +5830,7 @@ end subroutine vflush
 !==================================================================================================================================!
 subroutine PPM_DRAW_FILL_LINE(xstart,ystart,x,y)
 
-character(len=*),parameter::ident="@(#)M_pixel::PPM_DRAW_FILL_LINE(3fp): draws a line across a graphics array"
+character(len=*),parameter::ident_50="@(#)M_pixel::PPM_DRAW_FILL_LINE(3fp): draws a line across a graphics array"
 
 integer,intent(in) :: xstart,ystart
 integer,intent(in) :: x,y
@@ -5737,7 +5896,7 @@ end subroutine PPM_DRAW_FILL_LINE
 !===================================================================================================================================
 subroutine PPM_draw_thick_line(inx1,iny1,inx2, iny2)
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_51="&
 &@(#)M_pixel::PPM_DRAW_THICK_LINE(3fp): draw line from current pixel graphics position to (x, y) using polygons for line thickness"
 
 integer,intent(in) :: inx1,iny1,inx2,iny2
@@ -5821,7 +5980,7 @@ end function PPM_YINTERCEPT
 subroutine PPM_SOLID_FILL(x,y,n)
 use M_sort, only : sort_shell
 
-character(len=*),parameter::ident="@(#)M_pixel::PPM_SOLID_FILL(3fp): fill polygon of n points that are in viewport coordinates"
+character(len=*),parameter::ident_52="@(#)M_pixel::PPM_SOLID_FILL(3fp): fill polygon of n points that are in viewport coordinates"
 
 integer,intent(in) :: n
 integer,intent(in) :: x(0:n-1)
@@ -5888,7 +6047,7 @@ end subroutine PPM_SOLID_FILL
 !===================================================================================================================================
 subroutine PPM_ENDCAP_CIRCLE(x, y)
 
-character(len=*),parameter::ident="@(#)M_pixel::PPM_ENDCAP_CIRCEL(3fp): Draw a circle on thick line segment end point"
+character(len=*),parameter::ident_53="@(#)M_pixel::PPM_ENDCAP_CIRCEL(3fp): Draw a circle on thick line segment end point"
 
 integer,intent(in) :: x
 integer,intent(in) :: y

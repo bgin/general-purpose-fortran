@@ -39,7 +39,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 'EXAMPLE                                                                         ',&
 '  Create a simple file with X,Y,Z values and draw plot                          ',&
 '                                                                                ',&
-'   program TestCase                                                             ',&
+'   program demo_cn                                                              ',&
 '   use M_ContourPlot, only : contourlines                                       ',&
 '   implicit none                                                                ',&
 '   integer,parameter    :: NPTS=121                                             ',&
@@ -74,7 +74,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   call execute_command_line(cmd//'' -d svg'')                                  ',&
 '   !                                                                            ',&
 '   close(DBG,status=''delete'')                                                 ',&
-'   end program TestCase                                                         ',&
+'   end program demo_cn                                                          ',&
 '                                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
@@ -116,7 +116,7 @@ end subroutine help_usage
 !!
 !!   Create a simple file with X,Y,Z values and draw plot
 !!
-!!    program TestCase
+!!    program demo_cn
 !!    use M_ContourPlot, only : contourlines
 !!    implicit none
 !!    integer,parameter    :: NPTS=121
@@ -151,7 +151,7 @@ end subroutine help_usage
 !!    call execute_command_line(cmd//' -d svg')
 !!    !
 !!    close(DBG,status='delete')
-!!    end program TestCase
+!!    end program demo_cn
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -169,7 +169,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20180706>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Sat, Nov 10th, 2018 3:05:25 PM>',&
+'@(#)COMPILED:       Sun, Jan 13th, 2019 7:17:32 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

@@ -368,6 +368,7 @@ PUBLIC  :: DL_SLICES
                              !           YT,NYT,              NMY,NNY,MLY,TSY,NDY,SMY,
                              !           ZT,NZT,ZASTART,ZAEND,NMZ,NNZ,MLZ,TSZ,NDZ,SMZ,
                              !           AMININ,AMAXIN,ICOL)
+public test_suite_M_pixel_slices
 !-----------------------------------------------------------------------------------------------------------------------------------
 PRIVATE :: DL_VXPT3D         ! (X,Y,AVAL,IX,IZ,NX)
 PRIVATE :: DL_INTERSECT      ! (FLAG,X,Y,AX1,AY1,AX2,AY2,BX1,BY1,BX2,BY2,A)
@@ -2111,5 +2112,47 @@ contains
       DL_INBOX=CD
 
       END FUNCTION DL_INBOX
-! ==================================================================================================================================
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine test_suite_M_pixel_slices()
+
+!! setup
+   call test_dl_init()
+   call test_dl_slices()
+   call test_dl_symbol()
+!! teardown
+contains
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_dl_init()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('dl_init',msg='')
+   !!call unit_check('dl_init', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('dl_init',msg='')
+end subroutine test_dl_init
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_dl_slices()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('dl_slices',msg='')
+   !!call unit_check('dl_slices', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('dl_slices',msg='')
+end subroutine test_dl_slices
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_dl_symbol()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('dl_symbol',msg='')
+   !!call unit_check('dl_symbol', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('dl_symbol',msg='')
+end subroutine test_dl_symbol
+!===================================================================================================================================
+end subroutine test_suite_M_pixel_slices
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 end module M_pixel_slices

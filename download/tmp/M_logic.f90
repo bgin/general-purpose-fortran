@@ -154,6 +154,7 @@ character(len=*),parameter :: ident="@(#)M_logic(3fm): Allows if/else/elseif/end
    private :: else                                            !
    private :: elseif                                          !
    private :: endif                                           !
+   public  :: test_suite_M_logic
    contains
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
@@ -304,6 +305,26 @@ integer                    :: noelse
          eb=.false.
    endif
 end subroutine endif
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine test_suite_M_logic()
+
+!! setup
+   call test_cond()
+!! teardown
+contains
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_cond()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('cond',msg='')
+   !!call unit_check('cond', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('cond',msg='')
+end subroutine test_cond
+!===================================================================================================================================
+end subroutine test_suite_M_logic
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================

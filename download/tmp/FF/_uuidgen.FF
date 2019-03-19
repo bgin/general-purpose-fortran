@@ -112,22 +112,18 @@ OPTIONS
     --version   output version information and exit
 
 EXAMPLES
-    Sample commands
+  Sample commands
 
-       _uuidgen
-       _uuidgen -urn
-       _uuidgen -method time -repeat 30
-
-  Typical output:
-
+   _uuidgen
    4bb8051e-4af3-11e8-6603-4254ffee9a14
 
+   _uuidgen -urn
    urn:uuid:e9fd7cab-69f2-4cd6-4b5e-d54b9fbf617a
 
+   _uuidgen -method time -repeat 4
    3d684844-4b33-11e8-465d-426c6bd7f9d4
    3d686f8e-4b33-11e8-465d-3251f8fa45ae
    3d686f8e-4b33-11e8-465d-46ec7c7b05e1
-   3d686f8e-4b33-11e8-465d-bc2fd4eeb1ac
 
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

@@ -13,6 +13,7 @@ public read_line
 public read_all
 public read_table
 public rd
+public test_suite_M_io
 
 character(len=*),parameter :: ident_read_table="@(#)M_io::read_table(3f): read file containing a table of numeric values "
 interface read_table
@@ -111,7 +112,8 @@ function uniq(name,istart,verbose,create)
 use M_journal, only : journal
 implicit none
 
-character(len=*),parameter::ident="@(#)M_io::uniq(3f):append a number to the end of filename to make a unique name if name exists"
+character(len=*),parameter::ident_1="&
+&@(#)M_io::uniq(3f):append a number to the end of filename to make a unique name if name exists"
 
 !-----------------------------------------------------------------------------------------------------------------------------------
 character(len=*),intent(in)  :: name
@@ -273,7 +275,7 @@ end function uniq
 subroutine print_inquire(iunit,name) ! Version: JSU-1997-12-31
 use M_journal, only : journal
 
-character(len=*),parameter::ident="@(#)M_io::print_inquire(3f): Do INQUIRE on file by name/number and print results"
+character(len=*),parameter::ident_2="@(#)M_io::print_inquire(3f): Do INQUIRE on file by name/number and print results"
 
 integer,intent(in)          :: iunit         ! if iunit >= 0 then query by unit number, else by name
 character(len=*),intent(in) :: name
@@ -423,6 +425,9 @@ end subroutine print_inquire
 !!     call read_table('inputfile',array,ierr)
 !!
 !!     ! print values
+!!     write(*,*)'size=',size(array)
+!!     write(*,*)'size=',size(array,dim=1)
+!!     write(*,*)'size=',size(array,dim=2)
 !!     do i=1,size(array,dim=1)
 !!        write(*,*)array(i,:)
 !!     enddo
@@ -433,18 +438,21 @@ end subroutine print_inquire
 !!
 !!     end program demo_read_table
 !!
-!!    Expected output
+!!   Results:
 !!
-!!     1.0000000000000000        10.000000000000000        45.000000000000000
-!!     10.000000000000000        10.000000000000000        45.000000000000000
-!!     2.0000000000000000        20.000000000000000        15.000000000000000
-!!     20.344999999999999        20.000000000000000        15.000000000000000
-!!     3.0000000000000000        30.111000000000001        0.0000000000000000
-!!     30.000000000000000        30000.000000000000        0.0000000000000000
-!!     4.0000000000000000        30.044400000000000       -10.000000000000000
-!!     40.000000000000000        30.555499999999999       -10.000000000000000
-!!     4.0000000000000000        30.044400000000000       -10.000000000000000
-!!     40.000000000000000        30.555499999999999       -10.000000000000000
+!!     size=          30
+!!     size=          10
+!!     size=           3
+!!       1.0000000000000000        10.000000000000000        45.000000000000000
+!!       10.000000000000000        10.000000000000000        45.000000000000000
+!!       2.0000000000000000        20.000000000000000        15.000000000000000
+!!       20.344999999999999        20.000000000000000        15.000000000000000
+!!       3.0000000000000000        30.111000000000001        0.0000000000000000
+!!       30.000000000000000        30000.000000000000        0.0000000000000000
+!!       4.0000000000000000        30.044400000000000       -10.000000000000000
+!!       40.000000000000000        30.555499999999999       -10.000000000000000
+!!       4.0000000000000000        30.044400000000000       -10.000000000000000
+!!       40.000000000000000        30.555499999999999       -10.000000000000000
 !===================================================================================================================================
 subroutine read_table_doubleprecision(filename,array,ierr)
 use M_strings, only : s2vs
@@ -575,18 +583,20 @@ end subroutine read_table_real
 !!    SLURP(3f) - [M_io] read a file into a character array
 !!##SYNOPSIS
 !!
-!!    Usage
+!!   subroutine slurp(filename,text)
 !!
-!!       subroutine slurp(filename,text)
-!!       character(len=*),intent(in) :: filename
-!!       character(len=1),allocatable,intent(out) :: text(:)
-!!       integer,intent(out),optional :: length
-!!       integer,intent(out),optional :: lines
+!!    character(len=*),intent(in) :: filename
+!!    character(len=1),allocatable,intent(out) :: text(:)
+!!    integer,intent(out),optional :: length
+!!    integer,intent(out),optional :: lines
 !!##DESCRIPTION
 !!    Read an entire file into memory as a stream, retaining line end
-!!    terminals. Never casually read an entire file into memory if you can
-!!    process it per line or in smaller units; as large files can consume
-!!    unreasonable amounts of memory.
+!!    terminators.
+!!
+!!    NOTE:
+!!    Never casually read an entire file into memory if you can process it
+!!    per line or in smaller units; as large files can consume unreasonable
+!!    amounts of memory.
 !!##OPTIONS
 !!       filename   filename to read into memory
 !!       text       array of characters to hold file
@@ -631,7 +641,7 @@ subroutine slurp(filename,text,length,lines)
 !-----------------------------------------------------------------------------------------------------------------------------------
 implicit none
 
-character(len=*),parameter::ident="@(#)M_io::slurp(3f):allocate text array and read file filename into it"
+character(len=*),parameter::ident_3="@(#)M_io::slurp(3f):allocate text array and read file filename into it"
 
 character(len=*),intent(in)              :: filename    ! filename to shlep
 character(len=1),allocatable,intent(out) :: text(:)     ! array to hold file
@@ -656,6 +666,9 @@ integer,intent(out),optional             :: lines       ! number of lines
    ! open named file in stream mode positioned to append
    open (unit=igetunit,            &
    & file=trim(filename),          &
+  !----------------------------
+  !& form='UNFORMATTED',           &
+  !----------------------------
    & access='stream',              &
    & status='old',                 &
    & position='append',iostat=ios)
@@ -664,13 +677,13 @@ integer,intent(out),optional             :: lines       ! number of lines
       ! get file size in bytes and position file to beginning of file
       !
       inquire(unit=igetunit,pos=nchars)   ! get number of bytes in file plus one
+      !   inquire(file=filename, size=filesize)            ! how many characters are in the file:
       rewind(igetunit)                    ! get back to beginning of file
       nchars=nchars-1 ! opened for append, so subtract one to get current length
       if(nchars.le.0)then
          call stderr_local( '*slurp* empty file '//trim(filename) )
          return
       endif
-      !
       ! read file into text array
       !
       if(allocated(text))deallocate(text) ! make sure text array not allocated
@@ -851,7 +864,7 @@ integer function notopen(start,end,err)
 use iso_fortran_env, only : error_unit,input_unit,output_unit
 implicit none
 
-character(len=*),parameter::ident="@(#)M_io::notopen(3f): find free FORTRAN unit number to OPEN() a file"
+character(len=*),parameter::ident_4="@(#)M_io::notopen(3f): find free FORTRAN unit number to OPEN() a file"
 
 integer,optional,intent(in)    :: start                           ! unit number to start looking at
 integer,optional,intent(in)    :: end                             ! last unit number to look at
@@ -969,7 +982,7 @@ end function notopen
 function dirname(filename) result (directory)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_io::dirname(3f):strip last component from filename"
+character(len=*),parameter::ident_5="@(#)M_io::dirname(3f):strip last component from filename"
 
 character(len=*),intent(in)      :: filename
 character(len=:),allocatable     :: directory
@@ -1125,7 +1138,7 @@ subroutine splitpath(path,dir,name,basename,ext)
 use M_strings, only : split
 implicit none
 
-character(len=*),parameter::ident="@(#)M_io::splitpath(3f):split Unix pathname into components (dir,name,basename,extension)"
+character(len=*),parameter::ident_6="@(#)M_io::splitpath(3f):split Unix pathname into components (dir,name,basename,extension)"
 
 !===================================================================================================================================
 character(len=*),intent(in)     :: path
@@ -1256,7 +1269,7 @@ end subroutine splitpath
 function isdir(dirname)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_io::isdir(3f): determine if DIRNAME is a directory name ON UNIX-COMPATIBLE file systems"
+character(len=*),parameter::ident_7="@(#)M_io::isdir(3f): determine if DIRNAME is a directory name ON UNIX-COMPATIBLE file systems"
 
 logical                     :: isdir
 character(len=*),intent(in) :: dirname
@@ -1314,7 +1327,7 @@ function read_all(line,lun) result(ier)
 use iso_fortran_env, only : INPUT_UNIT
 implicit none
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_8="&
 &@(#)M_io::read_all(3f): read a line from specified LUN into allocatable string up to line length limit"
 
 character(len=:),allocatable,intent(out) :: line
@@ -1399,7 +1412,7 @@ use iso_fortran_env, only : INPUT_UNIT
 use M_strings,only : notabs
 implicit none
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_9="&
 &@(#)M_io::read_line(3f): read a line from specified LUN into allocatable string up to line length limit"
 
 character(len=:),allocatable,intent(out) :: line
@@ -1484,7 +1497,7 @@ end function read_line
 !===================================================================================================================================
 function get_tmp() result(tname)
 
-character(len=*),parameter::ident="@(#)M_io::get_tmp(3f): Return the name of the scratch directory"
+character(len=*),parameter::ident_10="@(#)M_io::get_tmp(3f): Return the name of the scratch directory"
 
 character(len=:),allocatable :: tname
    integer :: lngth
@@ -1559,7 +1572,7 @@ use,intrinsic :: iso_fortran_env, only : stdin=>input_unit !!, stdout=>output_un
 use M_journal,                    only : journal
 implicit none
 
-character(len=*),parameter::ident="@(#)M_io::rd_character(3fp): ask for string from standard input with user-definable prompt"
+character(len=*),parameter::ident_11="@(#)M_io::rd_character(3fp): ask for string from standard input with user-definable prompt"
 
 character(len=:),allocatable :: strout
 character(len=*)             :: prompt
@@ -1597,7 +1610,8 @@ function rd_doubleprecision(prompt,default) result(dvalue)
 use M_strings, only : s2v
 implicit none
 
-character(len=*),parameter::ident="@(#)M_io::rd_doubleprecision(3fp): ask for number from standard input with user-definable prompt"
+character(len=*),parameter::ident_12="&
+&@(#)M_io::rd_doubleprecision(3fp): ask for number from standard input with user-definable prompt"
 
 doubleprecision              :: dvalue
 character(len=*),intent(in)  :: prompt
@@ -1614,7 +1628,7 @@ end function rd_doubleprecision
 function rd_real(prompt,default) result(rvalue)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_io::rd_real(3fp): ask for number from standard input with user-definable prompt"
+character(len=*),parameter::ident_13="@(#)M_io::rd_real(3fp): ask for number from standard input with user-definable prompt"
 
 real                         :: rvalue
 character(len=*),intent(in)  :: prompt
@@ -1625,13 +1639,186 @@ end function rd_real
 function rd_integer(prompt,default) result(ivalue)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_io::rd_integer(3fp): ask for number from standard input with user-definable prompt"
+character(len=*),parameter::ident_14="@(#)M_io::rd_integer(3fp): ask for number from standard input with user-definable prompt"
 
 integer                      :: ivalue
 character(len=*),intent(in)  :: prompt
 integer,intent(in)           :: default
 ivalue=rd(prompt,dble(ivalue))
 end function rd_integer
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine test_suite_M_io()
+
+!! setup
+   call test_dirname()
+   call test_get_tmp()
+   call test_isdir()
+   call test_notopen()
+   call test_print_inquire()
+   call test_rd_character()
+   call test_rd_doubleprecision()
+   call test_rd_integer()
+   call test_rd_real()
+   call test_read_all()
+   call test_read_line()
+   call test_read_table_doubleprecision()
+   call test_read_table_real()
+   call test_slurp()
+   call test_splitpath()
+   call test_uniq()
+!! teardown
+contains
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_dirname()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('dirname',msg='')
+   !!call unit_check('dirname', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('dirname',msg='')
+end subroutine test_dirname
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_get_tmp()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('get_tmp',msg='')
+   !!call unit_check('get_tmp', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('get_tmp',msg='')
+end subroutine test_get_tmp
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_isdir()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('isdir',msg='')
+   !!call unit_check('isdir', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('isdir',msg='')
+end subroutine test_isdir
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_notopen()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('notopen',msg='')
+   !!call unit_check('notopen', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('notopen',msg='')
+end subroutine test_notopen
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_print_inquire()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('print_inquire',msg='')
+   !!call unit_check('print_inquire', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('print_inquire',msg='')
+end subroutine test_print_inquire
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_rd_character()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('rd_character',msg='')
+   !!call unit_check('rd_character', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('rd_character',msg='')
+end subroutine test_rd_character
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_rd_doubleprecision()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('rd_doubleprecision',msg='')
+   !!call unit_check('rd_doubleprecision', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('rd_doubleprecision',msg='')
+end subroutine test_rd_doubleprecision
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_rd_integer()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('rd_integer',msg='')
+   !!call unit_check('rd_integer', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('rd_integer',msg='')
+end subroutine test_rd_integer
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_rd_real()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('rd_real',msg='')
+   !!call unit_check('rd_real', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('rd_real',msg='')
+end subroutine test_rd_real
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_read_all()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('read_all',msg='')
+   !!call unit_check('read_all', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('read_all',msg='')
+end subroutine test_read_all
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_read_line()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('read_line',msg='')
+   !!call unit_check('read_line', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('read_line',msg='')
+end subroutine test_read_line
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_read_table_doubleprecision()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('read_table_doubleprecision',msg='')
+   !!call unit_check('read_table_doubleprecision', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('read_table_doubleprecision',msg='')
+end subroutine test_read_table_doubleprecision
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_read_table_real()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('read_table_real',msg='')
+   !!call unit_check('read_table_real', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('read_table_real',msg='')
+end subroutine test_read_table_real
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_slurp()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('slurp',msg='')
+   !!call unit_check('slurp', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('slurp',msg='')
+end subroutine test_slurp
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_splitpath()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('splitpath',msg='')
+   !!call unit_check('splitpath', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('splitpath',msg='')
+end subroutine test_splitpath
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_uniq()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('uniq',msg='')
+   !!call unit_check('uniq', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('uniq',msg='')
+end subroutine test_uniq
+!===================================================================================================================================
+end subroutine test_suite_M_io
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================

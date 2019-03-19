@@ -382,7 +382,7 @@
 !!
 !!##AUTHOR
 !!
-!!     This version (20180311), by John Urban,  uses the ISO_C_BINDING
+!!     This version (20180311), by John Urban, uses the ISO_C_BINDING
 !!     interface to provide portability between PEs (Programming
 !!     Environments). The extensions are modeled on modules by Arjen Markus
 !!     <arjenmarkus@sourceforge.net> and the associated C code is inspired
@@ -431,6 +431,7 @@ type SQLITE_COLUMN
 end type SQLITE_COLUMN
 
 public SQLITE_STATEMENT, SQLITE_DATABASE, SQLITE_COLUMN
+public test_suite_M_sqlite
 
 private :: typename
 private :: column_func
@@ -1131,7 +1132,7 @@ type(SQLITE_DATABASE)             :: db
 character(len=*),intent(in)       :: command
 type(c_ptr)                       :: errmsg_cptr
 
-character(len=*),parameter::ident="@(#)M_sqlite::sqlite3_do(3f): Run a single SQL command"
+character(len=*),parameter::ident_1="@(#)M_sqlite::sqlite3_do(3f): Run a single SQL command"
 
    interface
       function sqlite3_do_f(handle, command, errmsg_cptr_c) bind(C,name="sqlite3_do_c")
@@ -1333,7 +1334,7 @@ character(len=*)                   :: tablename
 type(SQLITE_COLUMN), dimension(:)  :: columns
 character(len=*), optional         :: primary
 
-character(len=*),parameter::ident="@(#)M_sqlite::sqlite3_create_table(3f): Create a new table"
+character(len=*),parameter::ident_2="@(#)M_sqlite::sqlite3_create_table(3f): Create a new table"
 
    character(len=:),allocatable        :: command
    character(len=:),allocatable        :: primary_
@@ -2148,7 +2149,7 @@ pure function Ca2Fs_v1(array)  result (string)
 character(len=1),intent(in)  :: array(:)
 character(len=size(array))   :: string
 
-character(len=*),parameter::ident="@(#)M_system::Ca2Fs_v1(3fp): function copies null-terminated char array to string"
+character(len=*),parameter::ident_3="@(#)M_system::Ca2Fs_v1(3fp): function copies null-terminated char array to string"
 
    integer                      :: i
 
@@ -2169,7 +2170,7 @@ pure function Fs2Ca(string) result (array)
 character(len=*),intent(in)     :: string
 character(len=1,kind=c_char)    :: array(len(string)+1)
 
-character(len=*),parameter::ident="@(#)M_system::Fs2Ca(3fp): function copies string to null terminated char array"
+character(len=*),parameter::ident_4="@(#)M_system::Fs2Ca(3fp): function copies string to null terminated char array"
 
    integer                      :: i
 
@@ -2377,7 +2378,377 @@ end interface
 
 end subroutine my_print
 !===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine test_suite_M_sqlite()
+
+!! setup
+   call test___copy_m_sqlite_Sqlite_column()
+   call test___copy_m_sqlite_Sqlite_database()
+   call test___copy_m_sqlite_Sqlite_statement()
+   call test___final_m_sqlite_Sqlite_column()
+   call test___final_m_sqlite_Sqlite_database()
+   call test_sqlite3_begin()
+   call test_sqlite3_close()
+   call test_sqlite3_column_props()
+   call test_sqlite3_column_query()
+   call test_sqlite3_commit()
+   call test_sqlite3_create_table()
+   call test_sqlite3_delete_table()
+   call test_sqlite3_do()
+   call test_sqlite3_errmsg()
+   call test_sqlite3_error()
+   call test_sqlite3_finalize()
+   call test_sqlite3_get_column_char()
+   call test_sqlite3_get_column_double()
+   call test_sqlite3_get_column_int()
+   call test_sqlite3_get_column_real()
+   call test_sqlite3_get_table()
+   call test_sqlite3_insert()
+   call test_sqlite3_libversion()
+   call test_sqlite3_next_row()
+   call test_sqlite3_open()
+   call test_sqlite3_prepare()
+   call test_sqlite3_prepare_select()
+   call test_sqlite3_query_table()
+   call test_sqlite3_reset()
+   call test_sqlite3_rollback()
+   call test_sqlite3_set_column_char()
+   call test_sqlite3_set_column_double()
+   call test_sqlite3_set_column_int()
+   call test_sqlite3_set_column_real()
+   call test_sqlite3_sourceid()
+   call test_sqlite3_step()
+!! teardown
+contains
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test___copy_m_sqlite_Sqlite_column()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('__copy_m_sqlite_Sqlite_column',msg='')
+   !!call unit_check('__copy_m_sqlite_Sqlite_column', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('__copy_m_sqlite_Sqlite_column',msg='')
+end subroutine test___copy_m_sqlite_Sqlite_column
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test___copy_m_sqlite_Sqlite_database()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('__copy_m_sqlite_Sqlite_database',msg='')
+   !!call unit_check('__copy_m_sqlite_Sqlite_database', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('__copy_m_sqlite_Sqlite_database',msg='')
+end subroutine test___copy_m_sqlite_Sqlite_database
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test___copy_m_sqlite_Sqlite_statement()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('__copy_m_sqlite_Sqlite_statement',msg='')
+   !!call unit_check('__copy_m_sqlite_Sqlite_statement', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('__copy_m_sqlite_Sqlite_statement',msg='')
+end subroutine test___copy_m_sqlite_Sqlite_statement
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test___final_m_sqlite_Sqlite_column()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('__final_m_sqlite_Sqlite_column',msg='')
+   !!call unit_check('__final_m_sqlite_Sqlite_column', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('__final_m_sqlite_Sqlite_column',msg='')
+end subroutine test___final_m_sqlite_Sqlite_column
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test___final_m_sqlite_Sqlite_database()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('__final_m_sqlite_Sqlite_database',msg='')
+   !!call unit_check('__final_m_sqlite_Sqlite_database', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('__final_m_sqlite_Sqlite_database',msg='')
+end subroutine test___final_m_sqlite_Sqlite_database
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sqlite3_begin()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('sqlite3_begin',msg='')
+   !!call unit_check('sqlite3_begin', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('sqlite3_begin',msg='')
+end subroutine test_sqlite3_begin
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sqlite3_close()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('sqlite3_close',msg='')
+   !!call unit_check('sqlite3_close', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('sqlite3_close',msg='')
+end subroutine test_sqlite3_close
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sqlite3_column_props()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('sqlite3_column_props',msg='')
+   !!call unit_check('sqlite3_column_props', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('sqlite3_column_props',msg='')
+end subroutine test_sqlite3_column_props
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sqlite3_column_query()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('sqlite3_column_query',msg='')
+   !!call unit_check('sqlite3_column_query', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('sqlite3_column_query',msg='')
+end subroutine test_sqlite3_column_query
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sqlite3_commit()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('sqlite3_commit',msg='')
+   !!call unit_check('sqlite3_commit', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('sqlite3_commit',msg='')
+end subroutine test_sqlite3_commit
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sqlite3_create_table()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('sqlite3_create_table',msg='')
+   !!call unit_check('sqlite3_create_table', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('sqlite3_create_table',msg='')
+end subroutine test_sqlite3_create_table
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sqlite3_delete_table()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('sqlite3_delete_table',msg='')
+   !!call unit_check('sqlite3_delete_table', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('sqlite3_delete_table',msg='')
+end subroutine test_sqlite3_delete_table
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sqlite3_do()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('sqlite3_do',msg='')
+   !!call unit_check('sqlite3_do', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('sqlite3_do',msg='')
+end subroutine test_sqlite3_do
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sqlite3_errmsg()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('sqlite3_errmsg',msg='')
+   !!call unit_check('sqlite3_errmsg', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('sqlite3_errmsg',msg='')
+end subroutine test_sqlite3_errmsg
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sqlite3_error()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('sqlite3_error',msg='')
+   !!call unit_check('sqlite3_error', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('sqlite3_error',msg='')
+end subroutine test_sqlite3_error
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sqlite3_finalize()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('sqlite3_finalize',msg='')
+   !!call unit_check('sqlite3_finalize', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('sqlite3_finalize',msg='')
+end subroutine test_sqlite3_finalize
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sqlite3_get_column_char()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('sqlite3_get_column_char',msg='')
+   !!call unit_check('sqlite3_get_column_char', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('sqlite3_get_column_char',msg='')
+end subroutine test_sqlite3_get_column_char
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sqlite3_get_column_double()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('sqlite3_get_column_double',msg='')
+   !!call unit_check('sqlite3_get_column_double', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('sqlite3_get_column_double',msg='')
+end subroutine test_sqlite3_get_column_double
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sqlite3_get_column_int()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('sqlite3_get_column_int',msg='')
+   !!call unit_check('sqlite3_get_column_int', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('sqlite3_get_column_int',msg='')
+end subroutine test_sqlite3_get_column_int
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sqlite3_get_column_real()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('sqlite3_get_column_real',msg='')
+   !!call unit_check('sqlite3_get_column_real', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('sqlite3_get_column_real',msg='')
+end subroutine test_sqlite3_get_column_real
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sqlite3_get_table()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('sqlite3_get_table',msg='')
+   !!call unit_check('sqlite3_get_table', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('sqlite3_get_table',msg='')
+end subroutine test_sqlite3_get_table
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sqlite3_insert()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('sqlite3_insert',msg='')
+   !!call unit_check('sqlite3_insert', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('sqlite3_insert',msg='')
+end subroutine test_sqlite3_insert
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sqlite3_libversion()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('sqlite3_libversion',msg='')
+   !!call unit_check('sqlite3_libversion', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('sqlite3_libversion',msg='')
+end subroutine test_sqlite3_libversion
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sqlite3_next_row()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('sqlite3_next_row',msg='')
+   !!call unit_check('sqlite3_next_row', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('sqlite3_next_row',msg='')
+end subroutine test_sqlite3_next_row
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sqlite3_open()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('sqlite3_open',msg='')
+   !!call unit_check('sqlite3_open', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('sqlite3_open',msg='')
+end subroutine test_sqlite3_open
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sqlite3_prepare()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('sqlite3_prepare',msg='')
+   !!call unit_check('sqlite3_prepare', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('sqlite3_prepare',msg='')
+end subroutine test_sqlite3_prepare
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sqlite3_prepare_select()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('sqlite3_prepare_select',msg='')
+   !!call unit_check('sqlite3_prepare_select', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('sqlite3_prepare_select',msg='')
+end subroutine test_sqlite3_prepare_select
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sqlite3_query_table()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('sqlite3_query_table',msg='')
+   !!call unit_check('sqlite3_query_table', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('sqlite3_query_table',msg='')
+end subroutine test_sqlite3_query_table
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sqlite3_reset()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('sqlite3_reset',msg='')
+   !!call unit_check('sqlite3_reset', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('sqlite3_reset',msg='')
+end subroutine test_sqlite3_reset
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sqlite3_rollback()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('sqlite3_rollback',msg='')
+   !!call unit_check('sqlite3_rollback', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('sqlite3_rollback',msg='')
+end subroutine test_sqlite3_rollback
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sqlite3_set_column_char()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('sqlite3_set_column_char',msg='')
+   !!call unit_check('sqlite3_set_column_char', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('sqlite3_set_column_char',msg='')
+end subroutine test_sqlite3_set_column_char
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sqlite3_set_column_double()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('sqlite3_set_column_double',msg='')
+   !!call unit_check('sqlite3_set_column_double', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('sqlite3_set_column_double',msg='')
+end subroutine test_sqlite3_set_column_double
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sqlite3_set_column_int()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('sqlite3_set_column_int',msg='')
+   !!call unit_check('sqlite3_set_column_int', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('sqlite3_set_column_int',msg='')
+end subroutine test_sqlite3_set_column_int
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sqlite3_set_column_real()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('sqlite3_set_column_real',msg='')
+   !!call unit_check('sqlite3_set_column_real', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('sqlite3_set_column_real',msg='')
+end subroutine test_sqlite3_set_column_real
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sqlite3_sourceid()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('sqlite3_sourceid',msg='')
+   !!call unit_check('sqlite3_sourceid', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('sqlite3_sourceid',msg='')
+end subroutine test_sqlite3_sourceid
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sqlite3_step()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('sqlite3_step',msg='')
+   !!call unit_check('sqlite3_step', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('sqlite3_step',msg='')
+end subroutine test_sqlite3_step
+!===================================================================================================================================
+end subroutine test_suite_M_sqlite
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!

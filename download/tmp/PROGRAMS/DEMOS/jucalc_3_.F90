@@ -2,7 +2,7 @@
              !compute(1f): line mode calculator program (that calls jucalc(3f))
              !     requires:
              !     c(), juown1()
-             use m_calculator, only: jucalc,iclen_calc
+             use M_calculator, only: jucalc,iclen_calc
              ! iclen_calc : max length of expression or variable value as a string
              implicit none
              integer,parameter         :: dp=kind(0.0d0)

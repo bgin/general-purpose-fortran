@@ -139,8 +139,12 @@ module M_system
 use,intrinsic     :: iso_c_binding, only: c_float, c_int, c_char
 use,intrinsic     :: iso_c_binding, only: c_ptr, c_f_pointer, c_null_char, c_null_ptr
 use,intrinsic     :: iso_c_binding
+use iso_fortran_env, only : int8, int16, int32, int64
+
 implicit none
 private
+! C types. Might be platform dependent
+integer,parameter,public :: mode_t=int32
 
 public :: system_rand
 public :: system_srand
@@ -215,6 +219,7 @@ public :: fileglob
 public :: R_GRP,R_OTH,R_USR,R_WXG,R_WXO,R_WXU,W_GRP,W_OTH,W_USR,X_GRP,X_OTH,X_USR,DEFFILEMODE,ACCESSPERMS
 public :: R_OK,W_OK,X_OK,F_OK  ! for system_access
 
+public test_suite_M_system
 !===================================================================================================================================
 type, bind(C) :: dirent_SYSTEMA
   integer(c_long)    :: d_ino
@@ -232,7 +237,6 @@ type, bind(C) :: dirent_CYGWIN
   character(len=1,kind=c_char) ::  d_name(256)
 end type
 
-integer,parameter,public :: mode_t=kind(c_int)
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -913,23 +917,23 @@ end interface
 !===================================================================================================================================
 !!type(c_ptr),bind(c,name="environ") :: c_environ
 
-integer(kind=c_int),bind(c,name="FS_IRGRP") ::R_GRP
-integer(kind=c_int),bind(c,name="FS_IROTH") ::R_OTH
-integer(kind=c_int),bind(c,name="FS_IRUSR") ::R_USR
-integer(kind=c_int),bind(c,name="FS_IRWXG") ::R_WXG
-integer(kind=c_int),bind(c,name="FS_IRWXO") ::R_WXO
-integer(kind=c_int),bind(c,name="FS_IRWXU") ::R_WXU
-integer(kind=c_int),bind(c,name="FS_IWGRP") ::W_GRP
-integer(kind=c_int),bind(c,name="FS_IWOTH") ::W_OTH
-integer(kind=c_int),bind(c,name="FS_IWUSR") ::W_USR
-integer(kind=c_int),bind(c,name="FS_IXGRP") ::X_GRP
-integer(kind=c_int),bind(c,name="FS_IXOTH") ::X_OTH
-integer(kind=c_int),bind(c,name="FS_IXUSR") ::X_USR
-integer(kind=c_int),bind(c,name="FDEFFILEMODE") :: DEFFILEMODE
-integer(kind=c_int),bind(c,name="FACCESSPERMS") :: ACCESSPERMS
+integer(kind=mode_t),bind(c,name="FS_IRGRP") ::R_GRP
+integer(kind=mode_t),bind(c,name="FS_IROTH") ::R_OTH
+integer(kind=mode_t),bind(c,name="FS_IRUSR") ::R_USR
+integer(kind=mode_t),bind(c,name="FS_IRWXG") ::R_WXG
+integer(kind=mode_t),bind(c,name="FS_IRWXO") ::R_WXO
+integer(kind=mode_t),bind(c,name="FS_IRWXU") ::R_WXU
+integer(kind=mode_t),bind(c,name="FS_IWGRP") ::W_GRP
+integer(kind=mode_t),bind(c,name="FS_IWOTH") ::W_OTH
+integer(kind=mode_t),bind(c,name="FS_IWUSR") ::W_USR
+integer(kind=mode_t),bind(c,name="FS_IXGRP") ::X_GRP
+integer(kind=mode_t),bind(c,name="FS_IXOTH") ::X_OTH
+integer(kind=mode_t),bind(c,name="FS_IXUSR") ::X_USR
+integer(kind=mode_t),bind(c,name="FDEFFILEMODE") :: DEFFILEMODE
+integer(kind=mode_t),bind(c,name="FACCESSPERMS") :: ACCESSPERMS
 
 ! Host names are limited to {HOST_NAME_MAX} bytes.
-integer(kind=c_int),bind(c,name="FHOST_NAME_MAX") :: HOST_NAME_MAX
+integer(kind=mode_t),bind(c,name="FHOST_NAME_MAX") :: HOST_NAME_MAX
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -1004,7 +1008,7 @@ contains
 function system_access(pathname,amode)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_system::system_access(3f): checks accessibility or existence of a pathname"
+character(len=*),parameter::ident_1="@(#)M_system::system_access(3f): checks accessibility or existence of a pathname"
 
 character(len=*),intent(in) :: pathname
 integer,intent(in)          :: amode
@@ -1135,7 +1139,7 @@ function system_utime(pathname,times)
 use M_time, only   : d2u
 implicit none
 
-character(len=*),parameter::ident="@(#)M_system::system_utime(3f): set access and modification times of a pathname"
+character(len=*),parameter::ident_2="@(#)M_system::system_utime(3f): set access and modification times of a pathname"
 
 character(len=*),intent(in) :: pathname
 integer,intent(in),optional :: times(2)
@@ -1219,7 +1223,7 @@ end function system_utime
 function system_issock(pathname)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_system::system_issock(3f): determine if pathname is a socket"
+character(len=*),parameter::ident_3="@(#)M_system::system_issock(3f): determine if pathname is a socket"
 
 character(len=*),intent(in) :: pathname
 logical                     :: system_issock
@@ -1292,7 +1296,7 @@ end function system_issock
 function system_isfifo(pathname)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_system::system_isfifo(3f): determine if pathname is a fifo(named pipe)"
+character(len=*),parameter::ident_4="@(#)M_system::system_isfifo(3f): determine if pathname is a fifo(named pipe)"
 
 character(len=*),intent(in) :: pathname
 logical                     :: system_isfifo
@@ -1367,7 +1371,7 @@ end function system_isfifo
 function system_ischr(pathname)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_system::system_ischr(3f): determine if pathname is a link"
+character(len=*),parameter::ident_5="@(#)M_system::system_ischr(3f): determine if pathname is a link"
 
 character(len=*),intent(in) :: pathname
 logical                     :: system_ischr
@@ -1437,7 +1441,7 @@ end function system_ischr
 function system_isreg(pathname)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_system::system_isreg(3f): determine if pathname is a regular file"
+character(len=*),parameter::ident_6="@(#)M_system::system_isreg(3f): determine if pathname is a regular file"
 
 character(len=*),intent(in) :: pathname
 logical                     :: system_isreg
@@ -1513,7 +1517,7 @@ end function system_isreg
 function system_islnk(pathname)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_system::system_islnk(3f): determine if pathname is a link"
+character(len=*),parameter::ident_7="@(#)M_system::system_islnk(3f): determine if pathname is a link"
 
 character(len=*),intent(in) :: pathname
 logical                     :: system_islnk
@@ -1588,7 +1592,7 @@ end function system_islnk
 function system_isblk(pathname)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_system::system_isblk(3f): determine if pathname is a block device"
+character(len=*),parameter::ident_8="@(#)M_system::system_isblk(3f): determine if pathname is a block device"
 
 character(len=*),intent(in) :: pathname
 logical                     :: system_isblk
@@ -1674,7 +1678,7 @@ end function system_isblk
 function system_chown(dirname,owner,group)
 implicit none
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_9="&
 &@(#)M_system::system_chown(3f): change owner and group of a file relative to directory file descriptor"
 
 character(len=*),intent(in) :: dirname
@@ -1760,7 +1764,7 @@ end function system_chown
 function system_isdir(dirname)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_system::system_isdir(3f): determine if DIRNAME is a directory name"
+character(len=*),parameter::ident_10="@(#)M_system::system_isdir(3f): determine if DIRNAME is a directory name"
 
 character(len=*),intent(in) :: dirname
 logical                     :: system_isdir
@@ -1944,7 +1948,7 @@ end subroutine system_cpu_time
 !===================================================================================================================================
 function system_link(oldname,newname) result(ierr)
 
-character(len=*),parameter::ident="@(#)M_system::system_link(3f): call link(3c) to create a file link"
+character(len=*),parameter::ident_11="@(#)M_system::system_link(3f): call link(3c) to create a file link"
 
 character(len=*),intent(in) :: oldname
 character(len=*),intent(in) :: newname
@@ -2029,7 +2033,7 @@ end function system_link
 !===================================================================================================================================
 function system_unlink(fname) result (ierr)
 
-character(len=*),parameter::ident="@(#)M_system::system_unlink(3f): call unlink(3c) to rm file link"
+character(len=*),parameter::ident_12="@(#)M_system::system_unlink(3f): call unlink(3c) to rm file link"
 
 character(len=*),intent(in) :: fname
 integer                     :: ierr
@@ -2199,7 +2203,7 @@ end function system_getumask
 subroutine system_perror(prefix)
 use iso_fortran_env, only : ERROR_UNIT, INPUT_UNIT, OUTPUT_UNIT     ! access computing environment
 
-character(len=*),parameter::ident="@(#)M_system::system_perror(3f): call perror(3c) to display error message"
+character(len=*),parameter::ident_13="@(#)M_system::system_perror(3f): call perror(3c) to display error message"
 
 character(len=*),intent(in) :: prefix
    integer                  :: ios
@@ -2287,7 +2291,7 @@ end subroutine system_perror
 !===================================================================================================================================
 subroutine system_chdir(path, err)
 
-character(len=*),parameter::ident="@(#)M_system::system_chdir(3f): call chdir(3c)"
+character(len=*),parameter::ident_14="@(#)M_system::system_chdir(3f): call chdir(3c)"
 
 character(len=*)               :: path
 integer, optional, intent(out) :: err
@@ -2371,7 +2375,7 @@ end subroutine system_chdir
 !===================================================================================================================================
 function system_remove(path) result(err)
 
-character(len=*),parameter::ident="@(#)M_system::system_remove(3f): call remove(3c) to remove file"
+character(len=*),parameter::ident_15="@(#)M_system::system_remove(3f): call remove(3c) to remove file"
 
 character(*),intent(in) :: path
 integer(c_int)          :: err
@@ -2469,7 +2473,7 @@ end function system_remove
 !===================================================================================================================================
 function system_rename(input,output) result(ierr)
 
-character(len=*),parameter::ident="@(#)M_system::system_rename(3f): call rename(3c) to change filename"
+character(len=*),parameter::ident_16="@(#)M_system::system_rename(3f): call rename(3c) to change filename"
 
 character(*),intent(in)    :: input,output
 integer                    :: ierr
@@ -2642,7 +2646,7 @@ end function system_chmod
 !===================================================================================================================================
 subroutine system_getcwd(output,ierr)
 
-character(len=*),parameter::ident="@(#)M_system::system_getcwd(3f):call getcwd(3c) to get pathname of current working directory"
+character(len=*),parameter::ident_17="@(#)M_system::system_getcwd(3f):call getcwd(3c) to get pathname of current working directory"
 
 character(len=:),allocatable,intent(out) :: output
 integer,intent(out)                      :: ierr
@@ -2720,7 +2724,7 @@ end subroutine system_getcwd
 !===================================================================================================================================
 function system_rmdir(dirname) result(err)
 
-character(len=*),parameter::ident="@(#)M_system::system_rmdir(3f): call rmdir(3c) to remove empty directory"
+character(len=*),parameter::ident_18="@(#)M_system::system_rmdir(3f): call rmdir(3c) to remove empty directory"
 
 character(*),intent(in) :: dirname
 integer(c_int) :: err
@@ -2840,7 +2844,7 @@ end function system_rmdir
 !===================================================================================================================================
 function system_mkfifo(pathname,mode) result(err)
 
-character(len=*),parameter::ident="@(#)M_system::system_mkfifo(3f): call mkfifo(3c) to create a new FIFO special file"
+character(len=*),parameter::ident_19="@(#)M_system::system_mkfifo(3f): call mkfifo(3c) to create a new FIFO special file"
 
 character(len=*),intent(in)       :: pathname
 integer,intent(in)                :: mode
@@ -2914,7 +2918,7 @@ end function system_mkfifo
 !===================================================================================================================================
 function system_mkdir(dirname,mode) result(err)
 
-character(len=*),parameter::ident="@(#)M_system::system_mkdir(3f): call mkdir(3c) to create empty directory"
+character(len=*),parameter::ident_20="@(#)M_system::system_mkdir(3f): call mkdir(3c) to create empty directory"
 
 character(len=*),intent(in)       :: dirname
 integer,intent(in)                :: mode
@@ -3332,7 +3336,7 @@ end subroutine system_closedir
 !===================================================================================================================================
 subroutine system_putenv(string, err)
 
-character(len=*),parameter::ident="@(#)M_system::system_putenv(3f): call putenv(3c)"
+character(len=*),parameter::ident_21="@(#)M_system::system_putenv(3f): call putenv(3c)"
 
 interface
    integer(kind=c_int)  function c_putenv(c_string) bind(C,name="putenv")
@@ -3397,7 +3401,7 @@ end subroutine system_putenv
 !===================================================================================================================================
 function system_getenv(name) result(var)
 
-character(len=*),parameter::ident="@(#)M_system::system_getenv(3f): call get_environment_variable(3f)"
+character(len=*),parameter::ident_22="@(#)M_system::system_getenv(3f): call get_environment_variable(3f)"
 
 character(len=*),intent(in)  :: name
 integer                      :: howbig
@@ -3473,7 +3477,7 @@ end function system_getenv
 !===================================================================================================================================
 subroutine set_environment_variable(NAME, VALUE, STATUS)
 
-character(len=*),parameter::ident="@(#)M_system::set_environment_variable(3f): call setenv(3c) to set environment variable"
+character(len=*),parameter::ident_23="@(#)M_system::set_environment_variable(3f): call setenv(3c) to set environment variable"
 
    character(len=*)               :: NAME
    character(len=*)               :: VALUE
@@ -3538,7 +3542,7 @@ end subroutine set_environment_variable
 subroutine system_clearenv(ierr)
 !  emulating because not available on some platforms
 
-character(len=*),parameter::ident="@(#)M_system::system_clearenv(3f): emulate clearenv(3c) to clear environment"
+character(len=*),parameter::ident_24="@(#)M_system::system_clearenv(3f): emulate clearenv(3c) to clear environment"
 
 integer,intent(out),optional    :: ierr
    character(len=:),allocatable :: string
@@ -3624,7 +3628,7 @@ end subroutine system_clearenv
 !===================================================================================================================================
 subroutine system_unsetenv(name,ierr)
 
-character(len=*),parameter::ident="@(#)M_system::system_unsetenv(3f): call unsetenv(3c) to remove variable from environment"
+character(len=*),parameter::ident_25="@(#)M_system::system_unsetenv(3f): call unsetenv(3c) to remove variable from environment"
 
 character(len=*),intent(in)  :: name
 integer,intent(out),optional :: ierr
@@ -3703,7 +3707,7 @@ end subroutine system_unsetenv
 !===================================================================================================================================
 function system_readenv() result(string)
 
-character(len=*),parameter::ident="@(#)M_system::system_readenv(3f): read next entry from environment table"
+character(len=*),parameter::ident_26="@(#)M_system::system_readenv(3f): read next entry from environment table"
 
 character(len=:),allocatable  :: string
 character(kind=c_char)        :: c_buff(longest_env_variable+1)
@@ -3748,11 +3752,11 @@ end function system_readenv
 !!   Read output of an ls(1) command from Fortran
 !!
 !!    program demo_fileglob  ! simple unit test
-!!       call testit('*.*')
-!!       call testit('/tmp/__notthere.txt')
+!!       call tryit('*.*')
+!!       call tryit('/tmp/__notthere.txt')
 !!    contains
 !!
-!!    subroutine testit(string)
+!!    subroutine tryit(string)
 !!       use M_system, only : fileglob
 !!       character(len=255),pointer :: list(:)
 !!       character(len=*) :: string
@@ -3760,7 +3764,7 @@ end function system_readenv
 !!       write(*,*)'Files:',size(list)
 !!       write(*,'(a)')(trim(list(i)),i=1,size(list))
 !!       deallocate(list)
-!!    end subroutine testit
+!!    end subroutine tryit
 !!
 !!    end program demo_fileglob  ! simple unit test
 !===================================================================================================================================
@@ -3771,7 +3775,7 @@ use M_io,only: notopen,uniq                             ! notopen: needed to ope
                                                         ! uniq:    adds number suffixs to a filename to make it uniq
 implicit none
 
-character(len=*),parameter::ident="@(#)M_system::fileglob(3f): Returns list of files using a file globbing pattern"
+character(len=*),parameter::ident_27="@(#)M_system::fileglob(3f): Returns list of files using a file globbing pattern"
 
 !-----------------------------------------------------------------------------------------------------------------------------------
 character(len=*),intent(in)   :: glob                   ! Pattern for the filenames (like: *.txt)
@@ -3847,7 +3851,7 @@ end subroutine fileglob
 subroutine system_uname(WHICH,NAMEOUT)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_system::system_uname(3f): call my_uname(3c) which calls uname(3c)"
+character(len=*),parameter::ident_28="@(#)M_system::system_uname(3f): call my_uname(3c) which calls uname(3c)"
 
 character(KIND=C_CHAR),intent(in) :: WHICH
 character(len=*),intent(out)      :: NAMEOUT
@@ -3911,7 +3915,7 @@ end subroutine system_uname
 subroutine system_gethostname(NAME,IERR)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_system::system_gethostname(3f): get name of current host by calling gethostname(3c)"
+character(len=*),parameter::ident_29="@(#)M_system::system_gethostname(3f): get name of current host by calling gethostname(3c)"
 
 character(len=:),allocatable,intent(out) :: NAME
 integer,intent(out)                      :: IERR
@@ -4062,7 +4066,7 @@ end function system_getlogin
 !!    for /tmp permits[drwxrwxrwx --S] 17407 41777
 !===================================================================================================================================
 function system_perm(mode) result (perms)
-use M_anything, only : anyinteger_to_128bit
+use M_anything, only : anyinteger_to_64bit
 class(*),intent(in)          :: mode
 character(len=:),allocatable :: perms
    type(c_ptr)               :: permissions
@@ -4075,7 +4079,7 @@ interface
    end function c_perm
 end interface
 
-   mode_local=int(anyinteger_to_128bit(mode),kind=c_long)
+   mode_local=int(anyinteger_to_64bit(mode),kind=c_long)
    permissions = c_perm(mode_local)
    if(.not.c_associated(permissions)) then
       write(*,'(a)')'*system_perm* Error getting permissions. not associated'
@@ -4129,7 +4133,7 @@ end function system_perm
 !!    group[default] for 197121
 !===================================================================================================================================
 function system_getgrgid(gid) result (gname)
-use M_anything, only : anyinteger_to_128bit
+use M_anything, only : anyinteger_to_64bit
 class(*),intent(in)                        :: gid
 character(len=:),allocatable               :: gname
    character(kind=c_char,len=1)            :: groupname(4097)  ! assumed long enough for any groupname
@@ -4145,7 +4149,7 @@ interface
    end function c_getgrgid
 end interface
 !-----------------------------------------------------------------------------------------------------------------------------------
-   gid_local=anyinteger_to_128bit(gid)
+   gid_local=anyinteger_to_64bit(gid)
    ierr = c_getgrgid(gid_local,groupname)
    if(ierr.eq.0)then
       gname=trim(arr2str(groupname))
@@ -4196,7 +4200,7 @@ end function system_getgrgid
 !!    end program demo_system_getpwuid
 !===================================================================================================================================
 function system_getpwuid(uid) result (uname)
-use M_anything, only : anyinteger_to_128bit
+use M_anything, only : anyinteger_to_64bit
 class(*),intent(in)                        :: uid
 character(len=:),allocatable               :: uname
    character(kind=c_char,len=1)            :: username(4097)  ! assumed long enough for any username
@@ -4212,7 +4216,7 @@ interface
    end function c_getpwuid
 end interface
 !-----------------------------------------------------------------------------------------------------------------------------------
-   uid_local=anyinteger_to_128bit(uid)
+   uid_local=anyinteger_to_64bit(uid)
    ierr = c_getpwuid(uid_local,username)
    if(ierr.eq.0)then
       uname=trim(arr2str(username))
@@ -4226,7 +4230,7 @@ end function system_getpwuid
 !===================================================================================================================================
 pure function arr2str(array)  result (string)
 
-character(len=*),parameter::ident="@(#)M_system::arr2str(3fp): function copies null-terminated char array to string"
+character(len=*),parameter::ident_30="@(#)M_system::arr2str(3fp): function copies null-terminated char array to string"
 
 character(len=1),intent(in)  :: array(:)
 character(len=size(array))   :: string
@@ -4247,7 +4251,7 @@ end function arr2str
 !===================================================================================================================================
 pure function str2arr(string) result (array)
 
-character(len=*),parameter::ident="@(#)M_system::str2arr(3fp): function copies string to null terminated char array"
+character(len=*),parameter::ident_31="@(#)M_system::str2arr(3fp): function copies string to null terminated char array"
 
 character(len=*),intent(in)     :: string
 character(len=1,kind=c_char)    :: array(len(string)+1)
@@ -4401,7 +4405,7 @@ end function C2F_string
 subroutine system_stat(pathname,values,ierr)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_system::system_stat(3f): call stat(3c) to get pathname information"
+character(len=*),parameter::ident_32="@(#)M_system::system_stat(3f): call stat(3c) to get pathname information"
 
 character(len=*),intent(in)          :: pathname
 
@@ -4513,6 +4517,486 @@ EQUIVALENCE                                      &
 end subroutine system_stat_print
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+subroutine test_suite_M_system()
+
+!! setup
+   call test___copy_INTEGER_4()
+   call test___copy_INTEGER_8()
+   call test___copy_m_system_Dirent_cygwin()
+   call test___copy_m_system_Dirent_systema()
+   call test_fileglob()
+   call test_set_environment_variable()
+   call test_system_access()
+   call test_system_chdir()
+   call test_system_chmod()
+   call test_system_chown()
+   call test_system_clearenv()
+   call test_system_closedir()
+   call test_system_cpu_time()
+   call test_system_getcwd()
+   call test_system_getenv()
+   call test_system_getgrgid()
+   call test_system_gethostname()
+   call test_system_getlogin()
+   call test_system_getpwuid()
+   call test_system_getumask()
+   call test_system_isblk()
+   call test_system_ischr()
+   call test_system_isdir()
+   call test_system_isfifo()
+   call test_system_islnk()
+   call test_system_isreg()
+   call test_system_issock()
+   call test_system_link()
+   call test_system_mkdir()
+   call test_system_mkfifo()
+   call test_system_opendir()
+   call test_system_perm()
+   call test_system_perror()
+   call test_system_putenv()
+   call test_system_readdir()
+   call test_system_readenv()
+   call test_system_remove()
+   call test_system_rename()
+   call test_system_rewinddir()
+   call test_system_rmdir()
+   call test_system_setumask()
+   call test_system_stat()
+   call test_system_stat_print()
+   call test_system_uname()
+   call test_system_unlink()
+   call test_system_unsetenv()
+   call test_system_utime()
+!! teardown
+contains
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test___copy_INTEGER_4()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('__copy_INTEGER_4',msg='')
+   !!call unit_check('__copy_INTEGER_4', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('__copy_INTEGER_4',msg='')
+end subroutine test___copy_INTEGER_4
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test___copy_INTEGER_8()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('__copy_INTEGER_8',msg='')
+   !!call unit_check('__copy_INTEGER_8', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('__copy_INTEGER_8',msg='')
+end subroutine test___copy_INTEGER_8
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test___copy_m_system_Dirent_cygwin()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('__copy_m_system_Dirent_cygwin',msg='')
+   !!call unit_check('__copy_m_system_Dirent_cygwin', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('__copy_m_system_Dirent_cygwin',msg='')
+end subroutine test___copy_m_system_Dirent_cygwin
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test___copy_m_system_Dirent_systema()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('__copy_m_system_Dirent_systema',msg='')
+   !!call unit_check('__copy_m_system_Dirent_systema', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('__copy_m_system_Dirent_systema',msg='')
+end subroutine test___copy_m_system_Dirent_systema
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_fileglob()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('fileglob',msg='')
+   !!call unit_check('fileglob', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('fileglob',msg='')
+end subroutine test_fileglob
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_set_environment_variable()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('set_environment_variable',msg='')
+   !!call unit_check('set_environment_variable', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('set_environment_variable',msg='')
+end subroutine test_set_environment_variable
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_access()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_access',msg='')
+   !!call unit_check('system_access', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_access',msg='')
+end subroutine test_system_access
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_chdir()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_chdir',msg='')
+   !!call unit_check('system_chdir', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_chdir',msg='')
+end subroutine test_system_chdir
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_chmod()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_chmod',msg='')
+   !!call unit_check('system_chmod', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_chmod',msg='')
+end subroutine test_system_chmod
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_chown()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_chown',msg='')
+   !!call unit_check('system_chown', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_chown',msg='')
+end subroutine test_system_chown
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_clearenv()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_clearenv',msg='')
+   !!call unit_check('system_clearenv', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_clearenv',msg='')
+end subroutine test_system_clearenv
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_closedir()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_closedir',msg='')
+   !!call unit_check('system_closedir', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_closedir',msg='')
+end subroutine test_system_closedir
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_cpu_time()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_cpu_time',msg='')
+   !!call unit_check('system_cpu_time', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_cpu_time',msg='')
+end subroutine test_system_cpu_time
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_getcwd()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_getcwd',msg='')
+   !!call unit_check('system_getcwd', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_getcwd',msg='')
+end subroutine test_system_getcwd
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_getenv()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_getenv',msg='')
+   !!call unit_check('system_getenv', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_getenv',msg='')
+end subroutine test_system_getenv
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_getgrgid()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_getgrgid',msg='')
+   !!call unit_check('system_getgrgid', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_getgrgid',msg='')
+end subroutine test_system_getgrgid
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_gethostname()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_gethostname',msg='')
+   !!call unit_check('system_gethostname', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_gethostname',msg='')
+end subroutine test_system_gethostname
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_getlogin()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_getlogin',msg='')
+   !!call unit_check('system_getlogin', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_getlogin',msg='')
+end subroutine test_system_getlogin
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_getpwuid()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_getpwuid',msg='')
+   !!call unit_check('system_getpwuid', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_getpwuid',msg='')
+end subroutine test_system_getpwuid
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_getumask()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_getumask',msg='')
+   !!call unit_check('system_getumask', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_getumask',msg='')
+end subroutine test_system_getumask
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_isblk()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_isblk',msg='')
+   !!call unit_check('system_isblk', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_isblk',msg='')
+end subroutine test_system_isblk
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_ischr()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_ischr',msg='')
+   !!call unit_check('system_ischr', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_ischr',msg='')
+end subroutine test_system_ischr
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_isdir()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_isdir',msg='')
+   !!call unit_check('system_isdir', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_isdir',msg='')
+end subroutine test_system_isdir
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_isfifo()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_isfifo',msg='')
+   !!call unit_check('system_isfifo', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_isfifo',msg='')
+end subroutine test_system_isfifo
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_islnk()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_islnk',msg='')
+   !!call unit_check('system_islnk', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_islnk',msg='')
+end subroutine test_system_islnk
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_isreg()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_isreg',msg='')
+   !!call unit_check('system_isreg', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_isreg',msg='')
+end subroutine test_system_isreg
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_issock()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_issock',msg='')
+   !!call unit_check('system_issock', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_issock',msg='')
+end subroutine test_system_issock
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_link()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_link',msg='')
+   !!call unit_check('system_link', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_link',msg='')
+end subroutine test_system_link
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_mkdir()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_mkdir',msg='')
+   !!call unit_check('system_mkdir', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_mkdir',msg='')
+end subroutine test_system_mkdir
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_mkfifo()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_mkfifo',msg='')
+   !!call unit_check('system_mkfifo', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_mkfifo',msg='')
+end subroutine test_system_mkfifo
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_opendir()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_opendir',msg='')
+   !!call unit_check('system_opendir', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_opendir',msg='')
+end subroutine test_system_opendir
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_perm()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_perm',msg='')
+   !!call unit_check('system_perm', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_perm',msg='')
+end subroutine test_system_perm
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_perror()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_perror',msg='')
+   !!call unit_check('system_perror', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_perror',msg='')
+end subroutine test_system_perror
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_putenv()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_putenv',msg='')
+   !!call unit_check('system_putenv', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_putenv',msg='')
+end subroutine test_system_putenv
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_readdir()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_readdir',msg='')
+   !!call unit_check('system_readdir', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_readdir',msg='')
+end subroutine test_system_readdir
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_readenv()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_readenv',msg='')
+   !!call unit_check('system_readenv', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_readenv',msg='')
+end subroutine test_system_readenv
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_remove()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_remove',msg='')
+   !!call unit_check('system_remove', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_remove',msg='')
+end subroutine test_system_remove
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_rename()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_rename',msg='')
+   !!call unit_check('system_rename', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_rename',msg='')
+end subroutine test_system_rename
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_rewinddir()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_rewinddir',msg='')
+   !!call unit_check('system_rewinddir', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_rewinddir',msg='')
+end subroutine test_system_rewinddir
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_rmdir()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_rmdir',msg='')
+   !!call unit_check('system_rmdir', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_rmdir',msg='')
+end subroutine test_system_rmdir
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_setumask()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_setumask',msg='')
+   !!call unit_check('system_setumask', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_setumask',msg='')
+end subroutine test_system_setumask
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_stat()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_stat',msg='')
+   !!call unit_check('system_stat', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_stat',msg='')
+end subroutine test_system_stat
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_stat_print()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_stat_print',msg='')
+   !!call unit_check('system_stat_print', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_stat_print',msg='')
+end subroutine test_system_stat_print
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_uname()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_uname',msg='')
+   !!call unit_check('system_uname', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_uname',msg='')
+end subroutine test_system_uname
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_unlink()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_unlink',msg='')
+   !!call unit_check('system_unlink', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_unlink',msg='')
+end subroutine test_system_unlink
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_unsetenv()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_unsetenv',msg='')
+   !!call unit_check('system_unsetenv', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_unsetenv',msg='')
+end subroutine test_system_unsetenv
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_utime()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_utime',msg='')
+   !!call unit_check('system_utime', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_utime',msg='')
+end subroutine test_system_utime
+!===================================================================================================================================
+end subroutine test_suite_M_system
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 end module M_system
 !===================================================================================================================================

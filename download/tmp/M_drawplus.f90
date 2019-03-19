@@ -167,7 +167,7 @@ contains
 !!    draw an arrow head of overall length SIZE measured along the line segment.
 !!    The arrow head is 2/3 SIZE wide and the indent is 1/3 SIZE.
 !!
-!!    if IDRAW is 0, draw line from x3 to START too X3 and leave current
+!!    if IDRAW is 0, draw line from x3 to START to P3 and leave current
 !!    position at POINT.
 !!
 !!                   o START
@@ -189,12 +189,57 @@ contains
 !!                 \   /        V      V
 !!                  \ /      -----------------
 !!                   o POINT
+!!##EXAMPLE
+!!
+!!   Sample program:
+!!
+!!    program demo_arrowhead
+!!    use :: M_draw
+!!    use :: M_drawplus, only : arrowhead
+!!    implicit none
+!!    real :: xpoint,ypoint, xstart,ystart
+!!    real :: PI, ang, size
+!!    integer :: i, idraw, idum
+!!    call prefsize(600,600)
+!!    call vinit('')
+!!    call ortho2(-10.0,10.0,-10.0,10.0)
+!!    call linewidth(100)
+!!    call color(D_WHITE)
+!!    call clear()
+!!    xstart=0.0
+!!    ystart=0.0
+!!    size=1.00
+!!    idraw=0
+!!
+!!    call color(D_RED)
+!!    xpoint=9.0
+!!    ypoint=0.0
+!!    call arrowhead(xpoint,ypoint,xstart,ystart,size,idraw)
+!!
+!!    call color(D_GREEN)
+!!    xpoint=9.0
+!!    ypoint=9.0
+!!    call arrowhead(xpoint,ypoint,xstart,ystart,size,idraw)
+!!
+!!    call color(D_BLACK)
+!!    idraw=-1
+!!    PI=4.0*atan(1.0)
+!!    ang=PI/2.0
+!!    do i=1,20+1
+!!       xpoint=9.0*cos(ang)
+!!       ypoint=9.0*sin(ang)
+!!       call arrowhead(xpoint,ypoint,xstart,ystart,size,idraw)
+!!       ang=ang+PI/20.0
+!!    enddo
+!!    idum=getkey()
+!!    call vexit()
+!!    end program demo_arrowhead
 !===================================================================================================================================
 subroutine arrowhead(xpoint,ypoint,xstart,ystart,size,idraw)
 use M_draw
 implicit none
 
-character(len=*),parameter::ident="@(#)M_drawplus::arrowhead(3f): Draw arrow head (for text boxes and line markers)"
+character(len=*),parameter::ident_1="@(#)M_drawplus::arrowhead(3f): Draw arrow head (for text boxes and line markers)"
 
 real,intent(in)    :: xpoint,ypoint
 real,intent(in)    :: xstart,ystart
@@ -270,7 +315,7 @@ subroutine plain_rect(x1,y1,x2,y2)
 use M_draw
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::plain_rect(3fp): Draw a rectangle"
+character(len=*),parameter::ident_2="@(#)M_xyplot::plain_rect(3fp): Draw a rectangle"
 
 real,intent(in) :: x1
 real,intent(in) :: y1
@@ -462,9 +507,9 @@ end subroutine polyline2_r
 !!##SYNOPSIS
 !!
 !!       subroutine invokeobj(xt,yt,zt,xs,ys,zs,xr,yr,zr,iobject)
-!!       real,intent(in)    ::  xt,yt,zt
-!!       real,intent(in)    ::  xs,ys,zs
-!!       real,intent(in)    ::  xr,yr,zr
+!!       real,intent(in)    :: xt,yt,zt
+!!       real,intent(in)    :: xs,ys,zs
+!!       real,intent(in)    :: xr,yr,zr
 !!       integer,intent(in) :: iobject
 !!
 !!##DESCRIPTION
@@ -476,10 +521,68 @@ end subroutine polyline2_r
 !!    xs,ys,zs    scaling
 !!    xr,yr,zr    rotation in degrees
 !!    iobject     object to invoke
+!!##EXAMPLE
+!!
+!!  Sample program
+!!
+!!    program demo_invokeobj
+!!    use M_draw
+!!    use M_drawplus, only : invokeobj
+!!    implicit none
+!!    real :: a, angle, step
+!!    integer :: i, idum
+!!    ! set window size
+!!       call prefsize(700,700)
+!!       call prefposition( 0, 0)
+!!       call vinit ('X11')
+!!       a=1.0
+!!    ! make an object to draw ( a disk with an arrow on it)
+!!       call makeobj(12345)
+!!       call polyfill(.TRUE.)
+!!       call color( 5)
+!!       call circle( 0.0, 0.0, a)
+!!       call color( 3)
+!!       call makepoly()
+!!       call move2( 0.00*a, 0.80*a)
+!!       call draw2( 0.50*a, 0.30*a)
+!!       call draw2( 0.20*a, 0.30*a)
+!!       call draw2( 0.20*a,-0.80*a)
+!!       call draw2(-0.20*a,-0.80*a)
+!!       call draw2(-0.20*a, 0.30*a)
+!!       call draw2(-0.50*a, 0.30*a)
+!!       call draw2( 0.00*a, 0.80*a)
+!!       call closepoly()
+!!       call polyfill(.FALSE.)
+!!       call color(7)
+!!       call linewidth(20)
+!!       call circleprecision(200)
+!!       call circle( 0.0, 0.0, a)
+!!       call vflush()
+!!       call closeobj()
+!!    ! draw the disk invoking different rotation
+!!       ANGLE=0.0
+!!       STEP=0.4
+!!       idum=backbuffer()
+!!       idum=-1
+!!       if(idum.ne.-1)then
+!!          do i=1,int(360/STEP*10)
+!!             idum=backbuffer()
+!!             call clear()
+!!             call invokeobj( 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, ANGLE, ANGLE, ANGLE,12345)
+!!             ANGLE=ANGLE+STEP
+!!             call swapbuffers()
+!!          enddo
+!!       else
+!!          ANGLE=45.0
+!!          call invokeobj( 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, ANGLE, ANGLE, ANGLE,12345)
+!!          idum=getkey()
+!!       endif
+!!       call vexit()
+!!    end program demo_invokeobj
 !===================================================================================================================================
 subroutine invokeobj(xt,yt,zt,xs,ys,zs,xr,yr,zr,iobject)
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_3="&
 &@(#)M_drawplus::invokeobj(3f): invoke object with specified transformation applied and then restored"
 
 real,intent(in)    :: xt,yt,zt  ! linear transforms
@@ -513,7 +616,7 @@ end subroutine invokeobj
 !===================================================================================================================================
 subroutine pop()
 
-character(len=*),parameter::ident="@(#)M_drawplus::pop(3f): call popviewport(), popmatrix(), popattributes()"
+character(len=*),parameter::ident_4="@(#)M_drawplus::pop(3f): call popviewport(), popmatrix(), popattributes()"
 
    call popviewport()
    call popmatrix()
@@ -535,7 +638,7 @@ end subroutine pop
 !===================================================================================================================================
 subroutine push()
 
-character(len=*),parameter::ident="@(#)M_drawplus::push(3f): call pushattributes(), pushmatrix(), pushviewport()"
+character(len=*),parameter::ident_5="@(#)M_drawplus::push(3f): call pushattributes(), pushmatrix(), pushviewport()"
 
    call pushattributes()
    call pushmatrix()
@@ -559,6 +662,42 @@ end subroutine push
 !!##DESCRIPTION
 !!     given center point and angle in degrees, draw circular arc from
 !!     current point with counterclockwise angles positive.
+!!##EXAMPLE
+!!
+!!   Sample program
+!!
+!!    program demo_uarc
+!!    use :: M_draw
+!!    use :: M_drawplus, only : uarc
+!!    integer :: i, idum
+!!    call prefsize(400,400)
+!!    call vinit(' ')
+!!    call color(D_BLACK)
+!!    call clear()
+!!    call linewidth(300)
+!!    call ortho2(-10.0,10.0,-10.0,10.0)
+!!    ! draw square with rounded corners, filled in
+!!    ! yellow, outlined in blue
+!!    call color(D_YELLOW)
+!!    call polyfill(.true.)
+!!    do i=1,2
+!!       call makepoly()
+!!       call move2(-9.0,-7.0)
+!!       call draw2(-9.0, 7.0)
+!!       call uarc(-7.0,7.0,-90.0)
+!!       call draw2(7.0,9.0)
+!!       call uarc( 7.0,7.0,-90.0)
+!!       call draw2(9.0,-7.0)
+!!       call uarc( 7.0,-7.0,-90.0)
+!!       call draw2( -7.0,-9.0)
+!!       call uarc(-7.0,-7.0,-90.0)
+!!       call closepoly()
+!!       call color(D_BLUE)
+!!       call polyfill(.false.)
+!!    enddo
+!!    idum=getkey()
+!!    call vexit()
+!!    end program demo_uarc
 !===================================================================================================================================
 subroutine uarc(x,y,angle)
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -567,7 +706,7 @@ subroutine uarc(x,y,angle)
 !-----------------------------------------------------------------------------------------------------------------------------------
 use M_draw
 
-character(len=*),parameter::ident="@(#)M_drawplus::create circular arc, leaving CP at end of arc"
+character(len=*),parameter::ident_6="@(#)M_drawplus::create circular arc, leaving CP at end of arc"
 
 real,intent(in) :: x
 real,intent(in) :: y
@@ -609,7 +748,7 @@ real :: ynow
 !----------------------------------------------------------------------------------------------------------------------------------!
 !>
 !!##NAME
-!!    arc2(3f) - [MDASHPLUS] draw an arc
+!!    arc2(3fp) - [M_drawplus] draw an arc
 !!
 !!##SYNOPSIS
 !!
@@ -623,13 +762,14 @@ real :: ynow
 !!
 !!##DESCRIPTION
 !!    M_DASH arc(3f) routine does a move so it cannot be included in a
-!!    polygon very easily . This routine is called by M_DASH version of
+!!    polygon very easily. This routine is called by M_drawplus(3fm) version of
 !!    uarc(3f)
 !===================================================================================================================================
 subroutine arc2(x, y, radius, startang, endang)
 use M_draw
 
-character(len=*),parameter::ident="@(#)M_drawplus::arc2(3f): Like M_DASH arc routine without move at end so can be in a polygon"
+character(len=*),parameter::ident_7="&
+&@(#)M_drawplus::arc2(3f): Like M_draw(3f) arc(3f) routine without move at end so can be in a polygon"
 
 real,intent(in) :: x
 real,intent(in) :: y
@@ -738,7 +878,7 @@ end subroutine arc2
 !===================================================================================================================================
 subroutine biggest_ortho2(xsmall,xlarge,ysmall,ylarge)
 
-character(len=*),parameter::ident="@(#)M_drawplus::page(3f): given a window size, find and set to largest accommodating viewport"
+character(len=*),parameter::ident_8="@(#)M_drawplus::page(3f): given a window size, find and set to largest accommodating viewport"
 
 real,intent(in)  :: xsmall
 real,intent(in)  :: xlarge
@@ -843,6 +983,7 @@ end subroutine biggest_ortho2
 !>
 !!##NAME
 !!    ellipse(3f) - [M_drawplus] draws an ellipse or elliptical arc.
+!!
 !!##SYNOPSIS
 !!
 !!    subroutine ellipse (XPAGE,YPAGE,RMAJ,RMIN,ANGLE,THO,THF,IPEN)
@@ -879,7 +1020,7 @@ use M_draw
 use ISO_C_BINDING
 implicit none
 
-character(len=*),parameter::ident="@(#)M_drawplus::m_draw:ellipse(3f):: draw ellipse or elliptical arc"
+character(len=*),parameter::ident_9="@(#)M_drawplus::m_draw:ellipse(3f):: draw ellipse or elliptical arc"
 
 real,intent(in)    :: xpage
 real,intent(in)    :: ypage
@@ -1120,7 +1261,7 @@ use M_draw
 use ISO_C_BINDING
 use m_units, only: d2r
 
-character(len=*),parameter::ident="@(#)M_drawplus::m_draw:uconic(3f): general conic sections"
+character(len=*),parameter::ident_10="@(#)M_drawplus::m_draw:uconic(3f): general conic sections"
 
 real :: an
 real :: angdel
@@ -1162,7 +1303,7 @@ real :: yy
    thetal=theta2                             ! save last location
    anginc=3.                                 ! set initial arc segment angle
    an=theta2-theta1                          ! determine the angular span of the arc
-   finer=abs(2.*p*e)                         ! compute fine tuning threshhold
+   finer=abs(2.0*p*e)                        ! compute fine tuning threshhold
    call translate(x,y,0.0)                   ! create uconic coordinate system
    n=(theta2-theta1)/anginc
    anginc=(theta2-theta1)/float(n)           ! update angle increment to leave small angle at end
@@ -1396,7 +1537,7 @@ end subroutine uconic
 subroutine barcode(XCORNER_IN,YCORNER_IN,XSMALL_IN,XLARGE_IN,YSIZE_IN,STRING)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_drawplus::barcode(3f): draw 3-of-9 bar code"
+character(len=*),parameter::ident_11="@(#)M_drawplus::barcode(3f): draw 3-of-9 bar code"
 
 ! void barcode( float xcorner, float ycorner, float xsmall, float xlarge, float ysize, char *string);
    interface
@@ -1573,9 +1714,9 @@ character(len=*)                :: delimiters
          if(iend.ne.0)then
             if(cmds(i)(:1).eq.'#') cycle
             cmds(i)=trim(cmds(i))//' '
-            call call_draw(cmds(i)(:iend),cmds(i)(iend+1:),found)
+            call call_draw(cmds(i)(:iend),cmds(i)(iend+2:),found)
             if(.not.found)then
-               write(*,'(*(a))')'ERROR: ',trim(cmds(i)(:iend)),' [',trim(cmds(i)(iend+1:)),']',' not found'
+               write(*,'(*(a))')'ERROR: ',trim(cmds(i)(:iend)),' [',trim(cmds(i)(iend+2:)),']',' not found'
             endif
          endif
       enddo
@@ -1590,7 +1731,7 @@ end subroutine draw_interpret
 !----------------------------------------------------------------------------------------------------------------------------------!
 !>
 !!##NAME
-!!     call_draw(3f) - [M_drawplus] Given a string representing a M_draw procedure and parameters  call the routine
+!!     call_draw(3f) - [M_drawplus] Given a string representing a M_draw procedure and parameters call the routine
 !!##SYNOPSIS
 !!
 !!   subroutine call_draw(verb,parameters,found)
@@ -1630,7 +1771,7 @@ end subroutine draw_interpret
 !!             if(iend.le.0)iend=len_trim(line)
 !!             if(iend.ne.0)then
 !!                line=line//' '
-!!                call call_draw(line(:iend),line(iend+1:),found)
+!!                call call_draw(line(:iend),line(iend+2:),found)
 !!                if(.not.found)then
 !!                   write(*,*)'ERROR: ',line(:iend),'[',line(iend+1:),']',' not found'
 !!                endif
@@ -1671,7 +1812,7 @@ use M_draw
 !!implicit real   (a-h,o-z)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_drawplus::call_draw(3f): parse most M_draw(3fm) routines positionally"
+character(len=*),parameter::ident_12="@(#)M_drawplus::call_draw(3f): parse most M_draw(3fm) routines positionally"
 
 ! parse most M_draw(3fm) routines positionally
 ! simplistic, does not handle quoted parameters directly, just parses on space
@@ -1820,16 +1961,16 @@ real                         :: value4
    case('window')           ; call window(rnum0(x1),rnum0(x2),rnum0(x3),rnum0(x4),rnum0(x5),rnum0(x6))
    case('xcentertext')      ; call xcentertext()
    case('ycentertext')      ; call ycentertext()
-   case('patchbasis')       ; write(*,*)'*juvogl* patchbasis not implemented'
-   case('patchprecision')   ; write(*,*)'*juvogl* patchprecision not implemented'
-   case('patchcurves')      ; write(*,*)'*juvogl* patchcurves not implemented'
-   case('rpatch')           ; write(*,*)'*juvogl* rpatch not implemented'
-   case('patch')            ; write(*,*)'*juvogl* patch not implemented'
-   case('curvebasis')
-   case('curveprecision')
-   case('rcurve')
-   case('curve')
-   case('curven')
+   case('patchbasis')       ; write(*,*)'*call_draw* patchbasis not implemented'
+   case('patchprecision')   ; write(*,*)'*call_draw* patchprecision not implemented'
+   case('patchcurves')      ; write(*,*)'*call_draw* patchcurves not implemented'
+   case('rpatch')           ; write(*,*)'*call_draw* rpatch not implemented'
+   case('patch')            ; write(*,*)'*call_draw* patch not implemented'
+   case('curvebasis')       ; write(*,*)'*call_draw* curvebasis not implemented'
+   case('curveprecision')   ; write(*,*)'*call_draw* curveprecision not implemented'
+   case('rcurve')           ; write(*,*)'*call_draw* rcurve not implemented'
+   case('curve')            ; write(*,*)'*call_draw* curve not implemented'
+   case('curven')           ; write(*,*)'*call_draw* curven not implemented'
    ! M_drawplus
    case('invokeobj')        ; call invokeobj(rnum0(x1),rnum0(x2),rnum0(x3),rnum0(x4),rnum0(x5),  &
                                             & rnum0(x6),rnum0(x7),rnum0(x8),rnum0(x9),inum0(x10) )
@@ -2004,7 +2145,7 @@ real                         :: value4
      if(x1(1:1).eq.'$'.or.x1(1:1).eq.'"')then
         call drawstr( trim(snum0(parameters)))
      else
-        call drawstr(parameters)
+        call drawstr(trim(parameters))
      endif
 !-----------------------------------------------------------------------------------------------------------------------------------
    case('strlength')
@@ -2111,7 +2252,7 @@ logical function iflogic(string)
 use M_calculator_plus, only : inum0
 use M_strings, only         : lower
 
-character(len=*),parameter::ident="@(#)M_drawplus::iflogic(3fp): evaluate string in calculator and return false if value is zero"
+character(len=*),parameter::ident_13="@(#)M_drawplus::iflogic(3fp): evaluate string in calculator and return false if value is zero"
 
 character(len=*)           :: string
    select case(lower(string))
@@ -2179,7 +2320,7 @@ subroutine spirograph(xcenter,ycenter,sunr0,planet0,offset0,radius,ilines,ang,an
 !===================================================================================================================================
 use M_draw
 
-character(len=*),parameter::ident="@(#)M_drawplus::spirograph(3f): draw hypocycloidal curves"
+character(len=*),parameter::ident_14="@(#)M_drawplus::spirograph(3f): draw hypocycloidal curves"
 
 real,parameter :: PI= 3.14159265358979323846264338327950288419716939937510
 real,intent(in)    :: xcenter, ycenter      ! center of curve
@@ -2277,7 +2418,8 @@ use M_draw
 
 !! public :: ismoo,ismoo1,ismoo2,ismoo3,perin
 
-character(len=*),parameter::ident="@(#)M_drawplus::smoot(3f): draw smooth curve thru set up points using spline-fitting technique"
+character(len=*),parameter::ident_15="&
+&@(#)M_drawplus::smoot(3f): draw smooth curve thru set up points using spline-fitting technique"
 
 !
 ! 4.4  subroutine smoot
@@ -2607,7 +2749,7 @@ real :: y3
 subroutine reflx(vx1,vy1,vx2,vy2)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_drawplus::reflx(3fp): internal routine called by SMOOT"
+character(len=*),parameter::ident_16="@(#)M_drawplus::reflx(3fp): internal routine called by SMOOT"
 
 real,intent(in)  :: vx1
 real,intent(in)  :: vy1
@@ -2632,7 +2774,7 @@ end subroutine reflx
 subroutine plot_in(x,y,lc)
 use M_draw
 
-character(len=*),parameter::ident="@(#)M_drawplus::plot_in(3fp): internal routine called by SMOOT"
+character(len=*),parameter::ident_17="@(#)M_drawplus::plot_in(3fp): internal routine called by SMOOT"
 
 real,intent(in) :: x
 real,intent(in) :: y
@@ -2727,7 +2869,7 @@ use M_journal, only : journal
 use M_draw
 implicit none
 
-character(len=*),parameter::ident="@(#)M_drawplus::rdbox(3f): reads two points and outline defined box and return points"
+character(len=*),parameter::ident_18="@(#)M_drawplus::rdbox(3f): reads two points and outline defined box and return points"
 
 real,intent(out)    :: returnx1, returny1
 real,intent(out)    :: returnx2, returny2
@@ -2838,7 +2980,7 @@ use M_journal,  only : journal
 use M_draw
 implicit none
 
-character(len=*),parameter::ident="@(#)M_drawplus::rdpnt(3f): reads coordinates of point locator clicked at"
+character(len=*),parameter::ident_19="@(#)M_drawplus::rdpnt(3f): reads coordinates of point locator clicked at"
 
 ! see M_DRAW locator(3f) description for more details
 real,intent(in)     :: oldx, oldy
@@ -2939,7 +3081,7 @@ use m_calculator_plus, only: dnum0
 use M_draw
 implicit none
 
-character(len=*),parameter::ident="@(#)display sample page of a font"
+character(len=*),parameter::ident_20="@(#)display sample page of a font"
 
 character(len=*),intent(in)   :: fontin
 character(len=80)             :: line

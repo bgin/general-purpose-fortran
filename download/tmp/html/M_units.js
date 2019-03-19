@@ -1,5 +1,9 @@
 function loadthem(){
 append("M_units.3.html");
+append("acosd.3.html");
+append("asind.3.html");
+append("atan2d.3.html");
+append("atand.3.html");
 append("atomnum2symbol.3.html");
 append("c2f.3.html");
 append("cartesian_to_polar.3.html");

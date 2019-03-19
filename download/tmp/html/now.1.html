@@ -105,37 +105,37 @@ The FORMAT string is expanded using the following macros:
       Description                                        Example
 <P>
       Base time array:
-       (1) %Y -- year, yyyy                                2018
-       (2) %M -- month of year, 01 to 12                   06
-       (3) %D -- day of month, 01 to 31                    24
-           %d -- day of month, with suffix (1st, 2nd,&#46;&#46;&#46;)  24th
-       (4) %Z -- minutes from UTC                          -0240
-           %z -- -+hh:mm from UTC                          -04:00
-           %T -- -+hhmm  from UTC                          -0400
-       (5) %h -- hours, 00 to 23                           09
-           %H -- hour (1 to 12, or twelve-hour clock)      9
-           %N -- midnight&lt; AM &lt;=noon; noon&lt;= PM &lt;midnight  AM
-       (6) %m -- minutes, 00 to 59                         48
-       (7) %s -- sec, 00 to 59                             47
-       (8) %x -- milliseconds 000 to 999                   621
+       (1) %Y -- year, yyyy                                2019
+       (2) %M -- month of year, 01 to 12                   01
+       (3) %D -- day of month, 01 to 31                    13
+           %d -- day of month, with suffix (1st, 2nd,&#46;&#46;&#46;)  13th
+       (4) %Z -- minutes from UTC                          -0300
+           %z -- -+hh:mm from UTC                          -05:00
+           %T -- -+hhmm  from UTC                          -0500
+       (5) %h -- hours, 00 to 23                           18
+           %H -- hour (1 to 12, or twelve-hour clock)      6
+           %N -- midnight&lt; AM &lt;=noon; noon&lt;= PM &lt;midnight  PM
+       (6) %m -- minutes, 00 to 59                         39
+       (7) %s -- sec, 00 to 59                             40
+       (8) %x -- milliseconds 000 to 999                   420
       Conversions:
-           %E -- Unix Epoch time                           1529848127.6220069
-           %e -- integer value of Unix Epoch time          1529848128
-           %J -- Julian  date                              2458294.0755511806
-           %j -- integer value of Julian Date(Julian Day)  2458294
-           %O -- Ordinal day (day of year)                 175
-           %o -- Whole days since Unix Epoch date          17706
+           %E -- Unix Epoch time                           1547422780.4199724
+           %e -- integer value of Unix Epoch time          1547422780
+           %J -- Julian  date                              2458497.4858845021
+           %j -- integer value of Julian Date(Julian Day)  2458497
+           %O -- Ordinal day (day of year)                 013
+           %o -- Whole days since Unix Epoch date          17909
            %U -- day of week, 1..7 Sunday=1                1
            %u -- day of week, 1..7 Monday=1                7
-           %i -- ISO week of year 1..53                    25
-           %I -- iso-8601 week-numbering date(yyyy-Www-d)  2018-W25-7
+           %i -- ISO week of year 1..53                    2
+           %I -- iso-8601 week-numbering date(yyyy-Www-d)  2019-W02-7
        Names:
-           %l -- abbreviated month name                    Jun
-           %L -- full month name                           June
+           %l -- abbreviated month name                    Jan
+           %L -- full month name                           January
            %w -- first three characters of weekday         Sun
            %W -- weekday name                              Sunday
-           %p -- phase of moon                             Waxing gibbous
-           %P -- percent of way from new to full moon      73%
+           %p -- phase of moon                             First quarter
+           %P -- percent of way from new to full moon      51%
        Literals:
            %% -- a literal %                               %
            %t -- tab character                                 
@@ -146,10 +146,11 @@ The FORMAT string is expanded using the following macros:
            %q -- single quote (apostrophe)                 &#146;
            %Q -- double quote                              "
        Program timing:
-           %c -- CPU_TIME(3f) output                       0.45999999999999999E-001
+           %c -- CPU_TIME(3f) output                       0.31000000000000000E-001
            %C -- number of times this routine is used      1
            %S -- seconds since last use of this format     0.0000000000000000
-           %k -- time in seconds from SYSTEM_CLOCK(3f)     646221.875
+           %k -- time in seconds from SYSTEM_CLOCK(3f)     348548.094
+           %K -- time in clicks from SYSTEM_CLOCK(3f)      348548107
 <P>
       If no percent (%) is found in the format one of several
       alternate substitutions occurs.
@@ -157,46 +158,46 @@ The FORMAT string is expanded using the following macros:
       If the format is composed entirely of one of the following
       keywords the following substitutions occur:
         "iso-8601",
-        "iso"        ==&gt; %Y-%M-%DT%h:%m:%s%z             2018-06-24T09:48:47-04:00
+        "iso"        ==&gt; %Y-%M-%DT%h:%m:%s%z             2019-01-13T18:39:40-05:00
         "iso-8601W",
-        "isoweek"    ==&gt; %I                              2018-W25-7
-        "sql"        ==&gt; "%Y-%M-%D %h:%m:%s.%x"          "2018-06-24 09:48:47.630"
-        "sqlday"     ==&gt; "%Y-%M-%D"                      "2018-06-24"
-        "sqltime"    ==&gt; "%h:%m:%s.%x"                   "09:48:47.631"
+        "isoweek"    ==&gt; %I                              2019-W02-7
+        "sql"        ==&gt; "%Y-%M-%D %h:%m:%s.%x"          "2019-01-13 18:39:40.440"
+        "sqlday"     ==&gt; "%Y-%M-%D"                      "2019-01-13"
+        "sqltime"    ==&gt; "%h:%m:%s.%x"                   "18:39:40.441"
         "rfc-2822"   ==&gt; %w, %D %l %Y %h:%m:%s %T
-                         Sun, 24 Jun 2018 09:48:47 -0400
-        "rfc-3339"   ==&gt; %Y-%M-%DT%h:%m:%s%z             2018-06-24T09:48:47-04:00
+                         Sun, 13 Jan 2019 18:39:40 -0500
+        "rfc-3339"   ==&gt; %Y-%M-%DT%h:%m:%s%z             2019-01-13T18:39:40-05:00
         "date"       ==&gt; %w %l %D %h:%m:%s UTC%z %Y
-                         Sun Jun 24 09:48:47 UTC-04:00 2018
+                         Sun Jan 13 18:39:40 UTC-05:00 2019
         "short"      ==&gt; %w, %l %d, %Y %H:%m:%s %N UTC%z
-                         Sun, Jun 24th, 2018 9:48:47 AM UTC-04:00
+                         Sun, Jan 13th, 2019 6:39:40 PM UTC-05:00
         "long"," "   ==&gt; %W, %L %d, %Y %H:%m:%s %N UTC%z
-                         Sunday, June 24th, 2018 9:48:47 AM UTC-04:00
-        "suffix"     ==&gt; %Y%D%M%h%m%s                    20182406094847
-        "formal"     ==&gt; The %d of %L %Y                 The 24th of June 2018
+                         Sunday, January 13th, 2019 6:39:40 PM UTC-05:00
+        "suffix"     ==&gt; %Y%D%M%h%m%s                    20191301183940
+        "formal"     ==&gt; The %d of %L %Y                 The 13th of January 2019
         "lord"       ==&gt; the %d day of %L in the year of our Lord %Y
-                         the 24th day of June in the year of our Lord 2018
+                         the 13th day of January in the year of our Lord 2019
         "easter"     ==&gt; FOR THE YEAR OF THE CURRENT DATE:
                            Easter day: the %d day of %L in the year of our Lord %Y
         "all"        ==&gt; A SAMPLE OF DATE FORMATS
       otherwise the following words are replaced with the most
       common macros:
-         year          %Y  2018
-         month         %M  06
-         day           %D  24
-         timezone      %z  -04:00
-         hour          %h  09
-         minute        %m  48
-         second        %s  47
-         millisecond   %x  637
-         epoch         %e  1529848128
-         julian        %j  2458294
-         ordinal       %O  175
+         year          %Y  2019
+         month         %M  01
+         day           %D  13
+         timezone      %z  -05:00
+         hour          %h  18
+         minute        %m  39
+         second        %s  40
+         millisecond   %x  460
+         epoch         %e  1547422780
+         julian        %j  2458497
+         ordinal       %O  013
          weekday       %u  7
       if none of these keywords are found then every letter that
       is a macro is assumed to have an implied percent in front
       of it. For example:
-         YMDhms ==&gt; %Y%M%D%h%m%s ==&gt; 20180624094847
+         YMDhms ==&gt; %Y%M%D%h%m%s ==&gt; 20190113183940
 <P>
 <P>
 </PRE>
@@ -307,7 +308,7 @@ assumed, and Leap Seconds are not specifically accounted for.
 <B>month</B>(1), <B>sec2days</B>(1), <B>days2sec</B>(1), <B>easter</B>(1), <B>paws</B>(1), <B>today</B>(1), <B>ttee</B>(1)
 </BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>now (1)</TD> <TD align=right width=33%><I>December 31, 2018</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from f4ac3b18-c8fc-4d37-9d21-571689e33fd8 using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>now (1)</TD> <TD align=right width=33%><I>March 18, 2019</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from ebe865d2-d034-480d-a259-248cd78d1f83 using man macros.</FONT>
 <br><br><center><img src="images/now.1.gif"></center>
 </div>
 </div>

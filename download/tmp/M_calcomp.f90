@@ -12,13 +12,14 @@
 !!
 !!    If you have a need similar to mine for this CALCOMP library note that
 !!    many so-called "CALCOMP-compatible" libraries varied slightly from
-!!    the standard (ie. the library supplied by CALCOMP). As graphics
+!!    the "standard" (ie. the library supplied by CALCOMP). As graphics
 !!    capabilities expanded the vendors often added routines to fill
 !!    polygons with patterns; to provide clipping and viewporting options;
 !!    to add color and line thickness control; to select hardware fonts and
-!!    so on. Although the M_draw(3f) library being called supports those
-!!    features, this library emulates only the original CALCOMP library
-!!    capabilities. That is, you may have to add a few routines if you
+!!    so on. Although the M_draw(3f) library being called by this CALCOMP
+!!    emulator supports those features, this library only emulates the
+!!    original CALCOMP library capabilities with a few exceptions (NFRAME,
+!!    WIDTH, NEWPEN). That is, you may have to add a few routines if you
 !!    need some of those additional features; or change your code to call
 !!    M_draw(3f) directly.
 !!
@@ -126,7 +127,7 @@
 !!
 !!  CALCOMP BASIC SOFTWARE
 !!
-!!   PLOT    - Move or Draw to specified point,
+!!   PLOT    - Move or draw to specified point,
 !!             establish plot origin, update pen position
 !!             and terminate plotting
 !!   PLOTS   - Initialization, specify output file unit number
@@ -140,6 +141,7 @@
 !!   AXIS    - Draws an annotated linear graph axis
 !!   LINE    - Scale and plot a set of X,Y values
 !!   NEWPEN  - Select new pen color
+!!   WIDTH   - Set line thickness
 !!
 !!   Sample Plotting Program
 !!
@@ -156,11 +158,11 @@
 !!
 !!  CALCOMP SCIENTIFIC FUNCTIONAL SOFTWARE
 !!
-!!   CURVX    - Draws a function of X over a given range
-!!   CURVY    - Draws a function of Y over a given range
-!!   FLINE    - Draws a smooth curve through a set of data points
-!!   SMOOT    - Draws a smooth curve through sequential data points
-!!   SCALG    - Performs scaling for logarithmic plotting
+!!   CURVX   - Draws a function of X over a given range
+!!   CURVY   - Draws a function of Y over a given range
+!!   FLINE   - Draws a smooth curve through a set of data points
+!!   SMOOT   - Draws a smooth curve through sequential data points
+!!   SCALG   - Performs scaling for logarithmic plotting
 !!   LGAXS   - Plots an annotated logarithmic axis
 !!   LGLIN   - Draws data in either log-log or semi-log mode
 !!   POLAR   - Draws data points using polar coordinates
@@ -199,6 +201,8 @@
 !!        graphic devices other than pen plotters.
 !!
 !!      o Color is supported via the NEWPEN routine
+!!
+!!      o Line thickness is supported via the WIDTH routine
 !!
 !!      o Frames will not plot to true inches unless specific steps are
 !!        taken in the generation and post-processing of the plot file.
@@ -260,9 +264,9 @@
 !!##CALCOMP BASIC SOFTWARE
 !!
 !!  The routines included in the CALCOMP Basic Software category are PLOT,
-!!  PLOTS, FACTOR, WHERE, SYMBOL, NUMBER, SCALE, AXIS, LINE and NEWPEN.
-!!  NFRAME, an enhancement, is included here because it performs a basic
-!!  function.
+!!  PLOTS, FACTOR, WHERE, SYMBOL, NUMBER, SCALE, AXIS, LINE, WIDTH and
+!!  NEWPEN. NFRAME, an enhancement, is included here because it performs
+!!  a basic function.
 !!
 !!  Usually when examining existing CALCOMP code you will find it breaks down
 !!  into two categories - that which produces XY plots and that which does
@@ -549,7 +553,7 @@
 !!         CALL SYMBOL(1.0,1.0,0.14,DUMMY,5,0.0,-1)
 !!
 !!   3. Because of interfacing the CALCOMP routines to the device
-!!      dependent M_DRAW(3fm)-based post-processing procedures,  some limit for
+!!      dependent M_DRAW(3fm)-based post-processing procedures, some limit for
 !!      the maximum plot size had to be established. For the CALCOMP
 !!      library, a plot frame is limited to a maximum size in either the
 !!      X or Y direction of 100 "CALCOMP inches". (The actual frame size
@@ -876,6 +880,7 @@ module M_calcomp
    public lglin
    public line
    public newpen
+   public width
    public nframe
    public number
    public plot
@@ -895,6 +900,14 @@ module M_calcomp
    public mset
    public setpar
    public MOVE, DRAW, END
+   integer,parameter,public :: black=0
+   integer,parameter,public :: red=1
+   integer,parameter,public :: green=2
+   integer,parameter,public :: yellow=3
+   integer,parameter,public :: purple=4
+   integer,parameter,public :: magenta=5
+   integer,parameter,public :: cyan=6
+   integer,parameter,public :: white=7
 
    private primitive__addrec
    private primitive__merger
@@ -911,6 +924,7 @@ module M_calcomp
    private primitive__end_plotting
    private primitive__start_plotting
    private primitive__wpen
+   private primitive__width
 !     FOR CONTOUR PLOTS
 INTEGER,save :: NX_Q,NY_Q,II_Q,NN_Q,IX_Q,IY_Q,IXD_Q(4),IYD_Q(4),NXM1_Q,NYM1_Q,DIREC_Q,NTRK_Q, REC_Q(2048),TRK_Q(255),TRKA_Q(255),C_Q
 REAL,save    :: RATIO_Q,CVV_Q,HX_Q(255),HY_Q(255)
@@ -1120,7 +1134,7 @@ contains
 subroutine circl(startx,starty,start_angle,end_angle,start_radius,end_radius,dash_code)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_calcomp::circl(3f): draws an arc or spiral"
+character(len=*),parameter::ident_1="@(#)M_calcomp::circl(3f): draws an arc or spiral"
 
 real,intent(in) :: startx
 real,intent(in) :: starty
@@ -1199,7 +1213,7 @@ end subroutine circl
 !!
 !!##SYNOPSIS
 !!
-!!        call dashl(xarray,yarray,npts,inc)
+!!        subroutine dashl(xarray,yarray,npts,inc)
 !!
 !!##DESCRIPTION
 !!
@@ -1245,9 +1259,60 @@ end subroutine circl
 !!  connecting sequential points. Coding is optimized so that plotting may
 !!  either begin at the first point and progress forward or begin at the
 !!  last point and progress backward.
+!!
+!!##EXAMPLE
+!!
+!!   Sample program
+!!
+!!    program demo_dashl
+!!    use M_calcomp
+!!    character * 28 ichr1
+!!    character * 26 ichr2
+!!    character * 10 lbcd1,lbcd2
+!!    dimension xarray(62),yarray(62)
+!!    ICHR1='PLOTTED ON A CALCOMP PLOTTER'
+!!    ICHR2='USING  Y = X -0.7*X +0.1*X'
+!!    LBCD1='X-ABSCISSA'
+!!    LBCD2='Y-ORDINATE'
+!!    ! PLOT GRAPH ILLUSTRATING SCALE, AXIS, AND LINE
+!!    deltax=0.04
+!!    ! AXIS DRAWS LABELS AS MUCH AS 0.4 INCHES TO THE NEGATIVE OF AXIS CENTER;
+!!    ! EITHER USE AN ORIGIN OFFSET OF AT LEAST THIS VALUE OR DO NOT USE AN
+!!    ! ORIGIN VALUE OF LESS THAN 0.4 OR CLIPPING WILL OCCUR
+!!    call plots(0.0,12.0,0.0,12.0)
+!!    call width(0)
+!!    call newpen(WHITE)
+!!    call rect(0.0,0.0,11.0,10.0,0.0,7)
+!!    call plot(0.4,0.4,-MOVE)
+!!    deltax=2.0*deltax
+!!    xarray(1)=deltax
+!!    do j=1,60
+!!       yarray(j)=xarray(j)**2-0.7*xarray(j)**3+0.1*xarray(j)**4
+!!       xarray(j+1)=xarray(j)+deltax
+!!    enddo
+!!    call scale(xarray(1), 6.5,60,1)
+!!    call scale(yarray(1),10.0,60,1)
+!!    call axis(0.0,0.0,lbcd1,-10, 6.5, 0.0,xarray(61),xarray(62))
+!!    call axis(0.0,0.0,lbcd2, 10,10.0,90.0,yarray(61),yarray(62))
+!!    call width(40)
+!!    !!call newpen(RED)
+!!    !!linetype=-1
+!!    !!inteq=4
+!!    !!call line(xarray(1),yarray(1),60,1,linetype,inteq)
+!!    call newpen(GREEN)
+!!    call dashl(xarray(1),yarray(1),60,1)
+!!    call newpen(1)
+!!    call symbol(1.3,10.,.14,ichr1,inteq,0.0,28)
+!!    call symbol(1.3,9.7,.14,ichr2,inteq,0.0,26)
+!!    call width(0)
+!!    call number(2.98,9.8,.1,2.0,0.,-1)
+!!    call number(3.96,9.8,.1,3.0,0.,-1)
+!!    call number(4.94,9.8,.1,4.0,0.,-1)
+!!    call plot(0.0,0.0,END)
+!!    end program demo_dashl
 !===================================================================================================================================
 SUBROUTINE DASHL  (X,Y,N,K)
-character(len=*),parameter::ident="@(#)M_calcomp::dashl(3f): draws a polyline with dashed lines"
+character(len=*),parameter::ident_2="@(#)M_calcomp::dashl(3f): draws a polyline with dashed lines"
       DIMENSION X(*), Y(*)
 !.....TEST LESS THAN TWO POINTS
       if(N-1)  90,90,80
@@ -1318,7 +1383,7 @@ END SUBROUTINE DASHL
 !!
 !!##SYNOPSIS
 !!
-!!        call dashp(xpage,ypage,dash)
+!!        subroutine dashp(xpage,ypage,dash)
 !!
 !!##DESCRIPTION
 !!
@@ -1340,7 +1405,7 @@ END SUBROUTINE DASHL
 !===================================================================================================================================
 SUBROUTINE DASHP  (X,Y,DL)
 
-character(len=*),parameter::ident="@(#)M_calcomp::dashp(3f): draw from current position to new point with dashed line"
+character(len=*),parameter::ident_3="@(#)M_calcomp::dashp(3f): draw from current position to new point with dashed line"
 
 !.....A DASHED LINE IS DRAWN IN INCHES FROM THE CURRENT PEN POSITION TO
 !.....THE SPECIFIED XPAGE, YPAGE. THE SIZE OF THE DASH WILL BE AS CALLED
@@ -1401,7 +1466,7 @@ END SUBROUTINE DASHP
 !!
 !!##SYNOPSIS
 !!
-!!        call elips(xpage,ypage,rmaj,rmin,angle,tho,thf,ipen)
+!!        subroutine elips(xpage,ypage,rmaj,rmin,angle,tho,thf,ipen)
 !!
 !!##DESCRIPTION
 !!
@@ -1447,26 +1512,26 @@ END SUBROUTINE DASHP
 !!    integer                  :: ipen
 !!    integer,parameter        :: END=999, MOVE=3, DRAW=2
 !!    lines=[character(len=80) :: &
-!!          '#---------------------------------------------------------------------#-', &
-!!          '#  move over in the x direction the same amount you change axis length  ', &
-!!          '#---------#---------#---------#---------#---------#---------#---------#-', &
-!!          '|6.5      !8.0      !0.5      !0.7      ! 0.0     ! 0.0     ! 360.0   !3', &
-!!          '|6.6      !8.0      !0.6      !0.6      ! 0.0     ! 0.0     ! 360.0   !3', &
-!!          '|6.7      !8.0      !0.7      !0.5      ! 0.0     ! 0.0     ! 360.0   !3', &
-!!          '|6.8      !8.0      !0.8      !0.4      ! 0.0     ! 0.0     ! 360.0   !3', &
-!!          '|6.9      !8.0      !0.9      !0.3      ! 0.0     ! 0.0     ! 360.0   !3', &
-!!          '|7.0      !8.0      !1.0      !0.2      ! 0.0     ! 0.0     ! 360.0   !3', &
-!!          '#---------#---------#---------#---------#---------#---------#---------#-', &
-!!          '#  different end angles of different signs                              ', &
-!!          '#---------#---------#---------#---------#---------#---------#---------#-', &
-!!          '|5.0      !8.0      !1.0      !0.2      ! 0.0     ! 0.0     !  45.0   !3', &
-!!          '|3.0      !8.0      !1.0      !0.2      ! 0.0     ! 0.0     ! -60.0   !3', &
-!!          '#---------#---------#---------#---------#---------#---------#---------#-', &
-!!          '# circles                                                               ', &
-!!          '#---------#---------#---------#---------#---------#---------#---------#-', &
-!!          '#---------#---------#---------#---------#---------#---------#---------#-', &
-!!          '#  end of values to call ELIPS(3f) with                                 ', &
-!!          '#---------------------------------------------------------------------#-']
+!!    '#---------------------------------------------------------------------#-',&
+!!    '#  move over in the x direction the same amount you change axis length  ',&
+!!    '#---------#---------#---------#---------#---------#---------#---------#-',&
+!!    '|6.5      !8.0      !0.5      !0.7      ! 0.0     ! 0.0     ! 360.0   !3',&
+!!    '|6.6      !8.0      !0.6      !0.6      ! 0.0     ! 0.0     ! 360.0   !3',&
+!!    '|6.7      !8.0      !0.7      !0.5      ! 0.0     ! 0.0     ! 360.0   !3',&
+!!    '|6.8      !8.0      !0.8      !0.4      ! 0.0     ! 0.0     ! 360.0   !3',&
+!!    '|6.9      !8.0      !0.9      !0.3      ! 0.0     ! 0.0     ! 360.0   !3',&
+!!    '|7.0      !8.0      !1.0      !0.2      ! 0.0     ! 0.0     ! 360.0   !3',&
+!!    '#---------#---------#---------#---------#---------#---------#---------#-',&
+!!    '#  different end angles of different signs                              ',&
+!!    '#---------#---------#---------#---------#---------#---------#---------#-',&
+!!    '|5.0      !8.0      !1.0      !0.2      ! 0.0     ! 0.0     !  45.0   !3',&
+!!    '|3.0      !8.0      !1.0      !0.2      ! 0.0     ! 0.0     ! -60.0   !3',&
+!!    '#---------#---------#---------#---------#---------#---------#---------#-',&
+!!    '# circles                                                               ',&
+!!    '#---------#---------#---------#---------#---------#---------#---------#-',&
+!!    '#---------#---------#---------#---------#---------#---------#---------#-',&
+!!    '#  end of values to call ELIPS(3f) with                                 ',&
+!!    '#---------------------------------------------------------------------#-']
 !!       call plots(0.0,10.0,0.0,10.0)
 !!       do i=1,size(lines)
 !!          write(*,'(a)')lines(i)
@@ -1488,7 +1553,7 @@ END SUBROUTINE DASHP
 !!    end program demo_elips
 !===================================================================================================================================
 subroutine elips(x0,y0,a,b,alpha,thet0, thetf, iv)
-character(len=*),parameter::ident="@(#)M_calcomp::elips(3f): draw an elliptical arc"
+character(len=*),parameter::ident_4="@(#)M_calcomp::elips(3f): draw an elliptical arc"
 real,intent(in)       :: x0, y0
 real,intent(in)       :: a
 real,intent(in)       :: b
@@ -1547,7 +1612,7 @@ end subroutine elips
 !!
 !!##SYNOPSIS
 !!
-!!        call fit(xpage1,ypage1,xpage2,ypage2,xpage3,ypage3)
+!!        subroutine fit(xpage1,ypage1,xpage2,ypage2,xpage3,ypage3)
 !!
 !!##DESCRIPTION
 !!
@@ -1574,9 +1639,49 @@ end subroutine elips
 !!
 !!        XPAGE1<YPAGE2<XPAGE3 or XPAGE1>XPAGE2>XPAGE3 or
 !!        YPAGE1<YPAGE2<YPAGE3 or YPAGE1>YPAGE2>YPAGE3
+!!
+!!##EXAMPLE
+!!
+!!   Sample program:
+!!
+!!    program demo_fit
+!!    use M_calcomp, only : plots, plot, newpen, width, fit
+!!    use M_calcomp, only : black ,red ,green ,yellow
+!!    use M_calcomp, only : purple ,magenta ,cyan ,white
+!!    implicit none
+!!    integer,parameter  :: MOVE=3, DRAW=2
+!!    integer            :: i
+!!    real               :: x(3)=[-3.0,1.0,4.4],y(3)=[3.2,1.0,-4.0]
+!!    call plots(0.0,10.0,0.0,10.0)      ! initialize graphics
+!!    call plot(5.0,5.0,-3)              ! set origin
+!!    call newpen(green)
+!!    call crosshair(0.0,0.0,2.0)        ! draw a crosshair at origin point <0,0>
+!!    call width(30); call newpen(red)
+!!    do i=1,size(x)                     ! mark the points
+!!       call crosshair(x(i),y(i),0.2)
+!!    enddo
+!!    x=[-3.0, 1.0, 4.4]
+!!    y=[ 3.2, 1.0,-4.0]
+!!    call width(80); call newpen(yellow)
+!!    call fit(x(2),y(2),x(3),y(3),x(1),y(1))   ! draw in wrong order
+!!    call width(40);call newpen(magenta)
+!!    call fit(x(2),y(2),x(1),y(1),x(3),y(3))   ! draw in wrong order
+!!    call width(140); call newpen(green)
+!!    call fit(x(1),y(1),x(2),y(2),x(3),y(3))   ! draw in right order to get fit
+!!    call plot(0.0,0.0,999)                    ! terminate graphics and pause
+!!    contains
+!!    subroutine crosshair(x,y,s)
+!!    real,intent(in) :: x,y,s
+!!        call plot(x+s,y    ,MOVE)
+!!        call plot(x-s,y    ,DRAW)
+!!        call plot(x    ,y+s,MOVE)
+!!        call plot(x    ,y-s,DRAW)
+!!    end subroutine crosshair
+!!    end program demo_fit
+!!
 !===================================================================================================================================
 SUBROUTINE FIT (XA,YA,XB,YB,XC,YC)
-character(len=*),parameter::ident="@(#)M_calcomp::fit(3f): draws a semi-hyperbolic curve through three points"
+character(len=*),parameter::ident_5="@(#)M_calcomp::fit(3f): draws a semi-hyperbolic curve through three points"
 
       DIMENSION SS(8,9),THETA(2)
       SAVE A,B
@@ -1707,7 +1812,7 @@ END SUBROUTINE FIT
 subroutine grid (x,y,xs,ys,m,n)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_calcomp::grid(3f): draws a linear grid"
+character(len=*),parameter::ident_6="@(#)M_calcomp::grid(3f): draws a linear grid"
 
 real,intent(in)    :: x,y ! (x,y) is the starting position of grid
 real,intent(in)    :: xs  ! xs    is the space of grid in x direction.
@@ -1758,7 +1863,7 @@ end subroutine grid
 !!
 !!##SYNOPSIS
 !!
-!!        call poly(xpage,ypage,slen,sn,angle)
+!!        subroutine poly(xpage,ypage,slen,sn,angle)
 !!
 !!##DESCRIPTION
 !!
@@ -1820,7 +1925,7 @@ real            :: tho
 real            :: xn
 real            :: yn
 
-character(len=*),parameter::ident="@(#)M_calcomp::poly(3f): draw an equilateral polygon"
+character(len=*),parameter::ident_7="@(#)M_calcomp::poly(3f): draw an equilateral polygon"
 
    n = rn
    xn = x
@@ -1862,7 +1967,7 @@ end subroutine poly
 !!
 !!##SYNOPSIS
 !!
-!!    call rect(xpage,ypage,height,width,angle,ipen)
+!!    subroutine rect(xpage,ypage,height,width,angle,ipen)
 !!
 !!##DESCRIPTION
 !!
@@ -1899,7 +2004,7 @@ end subroutine poly
 !!    implicit none
 !!    real  :: xmax=8.5,ymax=7.0
 !!    real  :: xstart=2.5, ystart=1.0 ! lower left corner before rotation
-!!    real  :: height=3.0, width=5.0
+!!    real  :: height=3.0, wdth=5.0
 !!    real  :: angle
 !!       call plots(0.0,xmax,0.0,ymax)
 !!       ! (make a small dot at xstart,ystart>
@@ -1907,17 +2012,17 @@ end subroutine poly
 !!       ! rectangle
 !!       call newpen(1)
 !!       angle=0.0
-!!       call rect(xstart,ystart,height,width,angle,MOVE)
+!!       call rect(xstart,ystart,height,wdth,angle,MOVE)
 !!       ! rotated rectangle
 !!       angle=45.0
 !!       call newpen(2)
-!!       call rect(xstart,ystart,height,width,angle,MOVE)
+!!       call rect(xstart,ystart,height,wdth,angle,MOVE)
 !!       ! end graphics
 !!       call plot(0.0,0.0,END)
 !!    end program demo_rect
 !===================================================================================================================================
 SUBROUTINE RECT (X,Y,H,W,TH,IV)
-character(len=*),parameter::ident="@(#)M_calcomp::rect(3f): draw a rectangle"
+character(len=*),parameter::ident_8="@(#)M_calcomp::rect(3f): draw a rectangle"
 
       THETA = TH/57.2958
       XS = SIN(THETA)
@@ -1983,7 +2088,7 @@ END SUBROUTINE SOLUT
 !!
 !!##SYNOPSIS
 !!
-!!        call curvx(xo,xf,coeff1,exp1,coeff2,exp2,coeff3,exp3,coeff4,exp4)
+!!        subroutine curvx(xo,xf,coeff1,exp1,coeff2,exp2,coeff3,exp3,coeff4,exp4)
 !!
 !!##DESCRIPTION
 !!
@@ -2059,7 +2164,7 @@ END SUBROUTINE SOLUT
 !!    end program demo_curvx
 !===================================================================================================================================
 SUBROUTINE CURVX  (X0,XF,A,E,B,F,C,G,D,H)
-character(len=*),parameter::ident="@(#)M_calcomp::curvx(3f): plots a function of X over a given range"
+character(len=*),parameter::ident_9="@(#)M_calcomp::curvx(3f): plots a function of X over a given range"
 
 !.....CALL CURVX
 !..... (XO, XF, COEFF1, EXP1, COEFF2, EXP2, COEFF3, EXP3, COEFF4, EXP4)
@@ -2103,7 +2208,7 @@ END SUBROUTINE CURVX
 !!
 !!##SYNOPSIS
 !!
-!!        call curvy(yo,yf,coeff1,exp1,coeff2,exp2,coeff3,exp3,coeff4,exp4)
+!!        subroutine curvy(yo,yf,coeff1,exp1,coeff2,exp2,coeff3,exp3,coeff4,exp4)
 !!
 !!##DESCRIPTION
 !!
@@ -2181,7 +2286,7 @@ END SUBROUTINE CURVX
 !!    end program demo_curvx
 !===================================================================================================================================
 SUBROUTINE CURVY  (Y0,YF,A,E,B,F,C,G,D,H)
-character(len=*),parameter::ident="@(#)M_calcomp::curvy(3f): plots a function of Y over a given range"
+character(len=*),parameter::ident_10="@(#)M_calcomp::curvy(3f): plots a function of Y over a given range"
 
 !.....CALL CURVY
 !..... (YO, YF, COEFF1, EXP1, COEFF2, EXP2, COEFF3, EXP3, COEFF4, EXP4)
@@ -2289,7 +2394,7 @@ END SUBROUTINE FIT4
 !!
 !!##SYNOPSIS
 !!
-!!        call fline(xarray,yarray,npts,inc,+-lintyp,inteq)
+!!        subroutine fline(xarray,yarray,npts,inc,+-lintyp,inteq)
 !!
 !!##DESCRIPTION
 !!
@@ -2333,20 +2438,21 @@ END SUBROUTINE FIT4
 !!
 !!   COMMENTS:
 !!
-!!  The arrays must be dimensioned with at least NPTS + 2 elements. The adjusted
-!!  minimum value (FIRSTV) and the adjusted delta value (DELTAV), normally
-!!  provided by the SCALE subroutine, must be stored following the data array.
+!!  The arrays must be dimensioned with at least NPTS + 2 elements. The
+!!  adjusted minimum value (FIRSTV) and the adjusted delta value (DELTAV),
+!!  normally provided by the SCALE subroutine, must be stored following
+!!  the data array.
 !!
-!!  For the X array, the adjusted minimum is stored in XARRAY (NPTS*INC + 1), and
-!!  the adjusted delta is in XARRAY (NPTS*INC + INC + 1). Similarly, for the Y
-!!  array, the minimum is in YARRAY (NPTS*INC + 1), and the delta is in YARRAY
-!!  (NPTS*INC + INC + 1). Therefore, XARRAY and YARRAY must be dimensioned to be
-!!  at least NPTS*INC+INC+1 .
+!!  For the X array, the adjusted minimum is stored in XARRAY (NPTS*INC +
+!!  1), and the adjusted delta is in XARRAY (NPTS*INC + INC + 1). Similarly,
+!!  for the Y array, the minimum is in YARRAY (NPTS*INC + 1), and the delta
+!!  is in YARRAY (NPTS*INC + INC + 1). Therefore, XARRAY and YARRAY must
+!!  be dimensioned to be at least NPTS*INC+INC+1 .
 !!
-!!  If scaling is not required, the user must place the appropriate minimum and
-!!  delta values in the specified elements in the arrays. For a one-to-one
-!!  correspondence between array data and plotted data, these values should be
-!!  0.0 (minimum) and 1.0 (delta).
+!!  If scaling is not required, the user must place the appropriate
+!!  minimum and delta values in the specified elements in the arrays. For
+!!  a one-to-one correspondence between array data and plotted data, these
+!!  values should be 0.0 (minimum) and 1.0 (delta).
 !!
 !!##EXAMPLE
 !!
@@ -2399,7 +2505,7 @@ END SUBROUTINE FIT4
 !!    end program demo_fline
 !===================================================================================================================================
 SUBROUTINE FLINE (X,Y,NN,K,J,L)
-character(len=*),parameter::ident="@(#)M_calcomp::fline(3f): plot a polyline with optional fit"
+character(len=*),parameter::ident_11="@(#)M_calcomp::fline(3f): plot a polyline with optional fit"
 
 !             X  IS THE NAME OF THE ARRAY OF UNSCALED ORDINATE VALUES.
 !             Y  IS THE NAME OF THE ARRAY OF UNSCALED ABCISSA VALUES.
@@ -2540,7 +2646,7 @@ END SUBROUTINE FLINE
 !!
 !!##SYNOPSIS
 !!
-!!        call lgaxs(xpage,ypage,ibcd,+-nchar,axlen,angle,firstv,deltav)
+!!        subroutine lgaxs(xpage,ypage,ibcd,+-nchar,axlen,angle,firstv,deltav)
 !!
 !!##DESCRIPTION
 !!
@@ -2692,7 +2798,7 @@ END SUBROUTINE FLINE
 !!    end program demo_lgaxs
 !===================================================================================================================================
 SUBROUTINE LGAXS(XO,YO,IBCD,N,DIST,THETA,VORG,DELTA)
-character(len=*),parameter::ident="@(#)M_calcomp::lgaxs(3f): draw logarithmic axis"
+character(len=*),parameter::ident_12="@(#)M_calcomp::lgaxs(3f): draw logarithmic axis"
 ! EARLIER VERSION OF THIS SUBROUTINE WAS
 
 !     SUBROUTINE LGAXIS(XO,YO,IBCD,N,DIST,THETA,VORG,DELTA)
@@ -2838,7 +2944,7 @@ END SUBROUTINE LGAXS
 !!
 !!##SYNOPSIS
 !!
-!!        call lglin(xarray,yarray,npts,inc,+-lintyp,inteq,logtyp)
+!!        subroutine lglin(xarray,yarray,npts,inc,+-lintyp,inteq,logtyp)
 !!
 !!##DESCRIPTION
 !!
@@ -3024,7 +3130,7 @@ END SUBROUTINE LGAXS
 !             LOGTYP=1 PRODUCES A SEMI-LOG PLOT LINEAR IN X.
 !             LOGTYP=-1 PRODUCES A SEMI-LOG PLOT LINEAR IN Y.
 SUBROUTINE LGLIN (XARRA,YARRA,NV,K,JTYPE,NSY,LGTYP)
-character(len=*),parameter::ident="@(#)M_calcomp::lglin(3f): draw polyline in log-log or semi-log mode"
+character(len=*),parameter::ident_13="@(#)M_calcomp::lglin(3f): draw polyline in log-log or semi-log mode"
       DIMENSION XARRA(*), YARRA(*)
 !
 !  THE VARIABLE IBCD HAS BEEN DECLARED AS CHARACTER TYPE FOR USE IN
@@ -3141,7 +3247,7 @@ END SUBROUTINE LGLIN
 !!
 !!##SYNOPSIS
 !!
-!!        call polar(radar,angar,npts,inc,+-lintyp,inteq,rmax,dr)
+!!        subroutine polar(radar,angar,npts,inc,+-lintyp,inteq,rmax,dr)
 !!
 !!##DESCRIPTION
 !!
@@ -3291,7 +3397,7 @@ END SUBROUTINE LGLIN
 !!    end program demo_polar
 !===================================================================================================================================
 SUBROUTINE POLAR(RADAR,ANGAR,NPTS,INC,LTYP,INTEQ,RMAX,DR)
-character(len=*),parameter::ident="@(#)M_calcomp::polar(3f): plot radial values versus angular variables (as polar coordinates)"
+character(len=*),parameter::ident_14="@(#)M_calcomp::polar(3f): plot radial values versus angular variables (as polar coordinates)"
 !.....
 !.....  RARRAY IS THE ARRAY CONTAINING THE RADIAL VALUES OF THE POINTS
 !.....          TO BE PLOTTED, IN INCHES.
@@ -3451,7 +3557,7 @@ END SUBROUTINE REFLX
 !!    scalg(3f) - [M_calcomp:scientific] determine scale factors for a logarithmic scale
 !!##SYNOPSIS
 !!
-!!        call scalg(array,axlen,npts,inc)
+!!        subroutine scalg(array,axlen,npts,inc)
 !!
 !!##DESCRIPTION
 !!
@@ -3650,7 +3756,7 @@ END SUBROUTINE REFLX
 !!    end program demo_scalg
 !===================================================================================================================================
 subroutine scalg(array,axlen,npts,inc)
-character(len=*),parameter::ident="@(#)M_calcomp::scalg(3f): determine scale factors for a logarithmic scale"
+character(len=*),parameter::ident_15="@(#)M_calcomp::scalg(3f): determine scale factors for a logarithmic scale"
 
 !  IN THE CALCOMP CORP. ORIGINAL, HAS A BUG: IF ARRAY CONTAINED
 !  ANY VALUES .LT. 1.0, THE LOWER BOUND OF THE AXIS WOULD BE TOO
@@ -3684,7 +3790,7 @@ end subroutine scalg
 !!
 !!##SYNOPSIS
 !!
-!!        call smoot(xpage,ypage,ipen)
+!!        subroutine smoot(xpage,ypage,ipen)
 !!
 !!##DESCRIPTION
 !!
@@ -3818,7 +3924,7 @@ end subroutine scalg
 !!    end program demo_smoot
 !===================================================================================================================================
 subroutine smoot(xn,yn,ic)
-character(len=*),parameter::ident="@(#)M_calcomp::smoot(3f): draw a polyline using modified spline-fitting technique"
+character(len=*),parameter::ident_16="@(#)M_calcomp::smoot(3f): draw a polyline using modified spline-fitting technique"
 
 !     THE SMOOTH ROUTINE SIMULATES THE 'PLOT' ROUTINE WITH A NEW 'PLOT'
 !     MODE (DRAWING A SMOOTH CURVE TO THE NEW POINT).  THE SMOOTH MODE
@@ -3968,7 +4074,7 @@ END SUBROUTINE SMOOT
 !!
 !!##SYNOPSIS
 !!
-!!        call axis(xpage,ypage,ibcd,+-nchar,axlen,angle,firstv,deltav)
+!!        subroutine axis(xpage,ypage,ibcd,+-nchar,axlen,angle,firstv,deltav)
 !!
 !!##DESCRIPTION
 !!
@@ -4099,7 +4205,7 @@ END SUBROUTINE SMOOT
 !!    end program demo_axis
 !===================================================================================================================================
 SUBROUTINE AXIS(XPAGE,YPAGE,IBCD,NCHAR,AXLEN,ANGLE,FIRSTV,DELTAV)
-character(len=*),parameter::ident="@(#)M_calcomp::axis(3f): Draw linear axis with numeric scale and axis label"
+character(len=*),parameter::ident_17="@(#)M_calcomp::axis(3f): Draw linear axis with numeric scale and axis label"
 
 !.....     XPAGE,YPAGE  COORDINATES OF STARTING POINT OF AXIS, IN INCHES
 !.....     IBCD         AXIS TITLE.
@@ -4190,7 +4296,7 @@ END SUBROUTINE AXIS
 !!
 !!##SYNOPSIS
 !!
-!!        call factor(fact)
+!!        subroutine factor(fact)
 !!
 !!##DESCRIPTION:
 !!
@@ -4228,10 +4334,80 @@ END SUBROUTINE AXIS
 !!            plotters. This is done by calling FACTOR with a value
 !!            less than 1.0 after calling PLOTS. When debugging is
 !!            completed, this call statement can be removed.
+!!##EXAMPLE
+!!
+!!   Sample program:
+!!
+!!    program demo_factor
+!!    use M_calcomp, only : plots, plot, number, symbol, newpen
+!!    use M_calcomp, only : nframe, factor, rect
+!!    use M_calcomp, only : MOVE, END, DRAW
+!!    call plots(0.0,10.0,0.0,10.0)
+!!    call draw_car_prices()
+!!    call nframe()
+!!    call factor(0.5)
+!!    call draw_car_prices()
+!!    call plot( 5.0, 5.0,-3)
+!!    call factor(0.5)
+!!    call draw_car_prices()
+!!    call plot(0.0,0.0,end)
+!!    contains
+!!    subroutine draw_car_prices()
+!!       character * 21 ichr6
+!!       character * 19 ichr7
+!!       character * 17 ichr8
+!!       ichr6='CAR MODEL AGE (YEARS)'
+!!       ichr7='CAR VALUE (DOLLARS)'
+!!       ichr8='AVERAGE CAR VALUE'
+!!       !     CALL TO SYMBOL USES -0.5Y, -0.8-.14  X
+!!       !     (-.14 FOR CHARACTER HEIGHT)
+!!       call rect(0.0,0.0,10.0,10.0,0.0,7)
+!!       call plot(0.95,0.5,-MOVE)
+!!       ! PLOT CAR VALUE CHART WITHOUT USING SCALE,AXIS,OR LINE
+!!       x=1.0
+!!       ! PLOT X-AXIS
+!!       do i=1,7
+!!          call plot(x-1.0,0.0,MOVE)
+!!          call plot(x   , 0.0,DRAW)
+!!          call plot(x   ,-0.1,DRAW)
+!!          call number(x-.02,-0.25,0.1,x,0.0,-1)
+!!          x=x+1.0
+!!       enddo
+!!       call symbol(2.0,-0.5,0.14,ichr6,inteq,0.0,21)
+!!       ! PLOT Y-AXIS
+!!       value=1000.0
+!!       do i=1,6
+!!          y=0.0015*value
+!!          call plot(0.0,y-1.5,MOVE)
+!!          call plot(0.0,y-.75,DRAW)
+!!          call plot(-.1,y-.75,DRAW)
+!!          call plot(0.0,y-.75,DRAW)
+!!          call plot(0.0,y    ,DRAW)
+!!          call plot(-.1,y    ,DRAW)
+!!          call number(-0.7,y,0.14,value,0.0,-1)
+!!          value=value+1000.0
+!!       enddo
+!!       call symbol(-0.8,3.1,0.14,ichr7,inteq,90.0,19)
+!!       ! PLOT CURVES
+!!       call newpen(2)
+!!       do i=2000,6000,500
+!!          value=i
+!!          age=0.0
+!!          call plot(age,0.0015*value,MOVE)
+!!          do j=1,84
+!!             value=value*0.972
+!!             age=age+0.08333
+!!             call plot(age,0.0015*value,DRAW)
+!!          enddo
+!!       enddo
+!!       call newpen(3)
+!!       call symbol(3.0,6.0,0.21,ichr8,inteq,0.0,17)
+!!       end subroutine draw_car_prices
+!!       end program demo_factor
 !===================================================================================================================================
 subroutine factor(fct)
 implicit none
-character(len=*),parameter::ident="@(#)M_calcomp::factor(3f): rescale entire plot"
+character(len=*),parameter::ident_18="@(#)M_calcomp::factor(3f): rescale entire plot"
 real,intent(in) :: fct
    call plot(fct,fct,1001)
 end subroutine factor
@@ -4240,7 +4416,7 @@ end subroutine factor
 !===================================================================================================================================
 SUBROUTINE mset(MODE)
 !
-character(len=*),parameter::ident="@(#)M_calcomp::mset(3f): this is a general mode setting routine."
+character(len=*),parameter::ident_19="@(#)M_calcomp::mset(3f): this is a general mode setting routine."
 !
 ! FUNCTION: SET THE MODE ACCORDING TO THE CHARACTER VALUE PASSED
 !           AS MODE. THE MODES ARE SET IN COMMON WMODE
@@ -4303,7 +4479,7 @@ END SUBROUTINE mpset
 !!
 !!##SYNOPSIS
 !!
-!!        call line(xarray,yarray,npts,inc,+-lintyp,inteq)
+!!        subroutine line(xarray,yarray,npts,inc,+-lintyp,inteq)
 !!
 !!##DESCRIPTION
 !!
@@ -4372,44 +4548,58 @@ END SUBROUTINE mpset
 !!
 !!    program demo_line
 !!    use M_calcomp
-!!    character (len= 28) :: ICHR1='PLOTTED ON A CALCOMP PLOTTER'
-!!    character (len= 26) :: ICHR2='USING  Y = X -0.7*X +0.1*X'
-!!    character (len= 10) :: LBCD1='X-ABSCISSA'
-!!    character (len= 10) :: LBCD2='Y-ORDINATE'
+!!    call plots(0.0,30.0,0.0,30.0)
+!!    call drawplot(0) ! solid line
+!!    call plot( 0.0,15.0,-MOVE)
+!!    call drawplot(1) ! symbol at each point and line
+!!    call plot( 15.0, 0.0,-MOVE)
+!!    call drawplot(-1) ! symbol at each point and no line
+!!    call plot(0.0,0.0,999)
+!!    contains
+!!    subroutine drawplot(linetype)
+!!    character * 28 ichr1
+!!    character * 26 ichr2
+!!    character * 10 lbcd1,lbcd2
 !!    dimension xarray(62),yarray(62)
-!!       call plots(0.0,10.0,0.0,10.0)
-!!    ! PLOT GRAPH ILLUSTRATING SCALE(3f), AXIS(3f), AND LINE(3f)
-!!       deltax=0.04
-!!       i=3
-!!    ! AXIS(3f) DRAWS LABELS AS MUCH AS 0.4 INCHES TO THE NEGATIVE OF AXIS CENTER;
+!!    ICHR1='PLOTTED ON A CALCOMP PLOTTER'
+!!    ICHR2='USING  Y = X -0.7*X +0.1*X'
+!!    LBCD1='X-ABSCISSA'
+!!    LBCD2='Y-ORDINATE'
+!!    ! PLOT GRAPH ILLUSTRATING SCALE, AXIS, AND LINE
+!!    deltax=0.04
+!!    ! AXIS DRAWS LABELS AS MUCH AS 0.4 INCHES TO THE NEGATIVE OF AXIS CENTER;
 !!    ! EITHER USE AN ORIGIN OFFSET OF AT LEAST THIS VALUE OR DO NOT USE AN
 !!    ! ORIGIN VALUE OF LESS THAN 0.4 OR CLIPPING WILL OCCUR
-!!       call plot(0.4,0.4,-3)
-!!       deltax=2.0*deltax
-!!       xarray(1)=deltax
-!!       do j=1,60
-!!          yarray(j)=xarray(j)**2-0.7*xarray(j)**3+0.1*xarray(j)**4
-!!          xarray(j+1)=xarray(j)+deltax
-!!       enddo
-!!       call scale(xarray(1), 6.5,60,1)
-!!       call scale(yarray(1),10.0,60,1)
-!!       call axis(0.0,0.0,lbcd1,-10, 6.5, 0.0,xarray(61),xarray(62))
-!!       call axis(0.0,0.0,lbcd2, 10,10.0,90.0,yarray(61),yarray(62))
-!!       call newpen(i)
-!!       call line(xarray(1),yarray(1),60,1,2*(i-2),i)
-!!       call newpen(1)
-!!       call symbol(1.3,10.,.14,ichr1,inteq,0.0,28)
-!!       call symbol(1.3,9.7,.14,ichr2,inteq,0.0,26)
-!!       call number(2.98,9.8,0.1,2.0,0.0,-1)
-!!       call number(3.96,9.8,0.1,3.0,0.0,-1)
-!!       call number(4.94,9.8,0.1,4.0,0.0,-1)
-!!       !call plot(10.0,0.0,-3)
-!!       !call nframe()
-!!       call plot(0.0,0.0,999)
+!!    call width(0)
+!!    call newpen(WHITE)
+!!    call rect(0.0,0.0,10.0,10.0,0.0,7)
+!!    call plot(0.4,0.4,-3)
+!!    deltax=2.0*deltax
+!!    xarray(1)=deltax
+!!    do j=1,60
+!!       yarray(j)=xarray(j)**2-0.7*xarray(j)**3+0.1*xarray(j)**4
+!!       xarray(j+1)=xarray(j)+deltax
+!!    enddo
+!!    inteq=4
+!!    call scale(xarray(1), 6.5,60,1)
+!!    call scale(yarray(1),10.0,60,1)
+!!    call axis(0.0,0.0,lbcd1,-10, 6.5, 0.0,xarray(61),xarray(62))
+!!    call axis(0.0,0.0,lbcd2, 10,10.0,90.0,yarray(61),yarray(62))
+!!    call width(20)
+!!    call newpen(GREEN)
+!!    call line(xarray(1),yarray(1),60,1,linetype,inteq)
+!!    call newpen(1)
+!!    call symbol(1.3,10.,.14,ichr1,inteq,0.0,28)
+!!    call symbol(1.3,9.7,.14,ichr2,inteq,0.0,26)
+!!    call number(2.98,9.8,.1,2.0,0.,-1)
+!!    call number(3.96,9.8,.1,3.0,0.,-1)
+!!    call number(4.94,9.8,.1,4.0,0.,-1)
+!!    call plot(-0.4,-0.4,-3)
+!!    end subroutine drawplot
 !!    end program demo_line
 !===================================================================================================================================
 SUBROUTINE LINE(XARRAY,YARRAY,NPTS,INC,LINTYP,INTEQ)
-character(len=*),parameter::ident="@(#)M_calcomp::line(3f): Plot a polyline with optional rescaling"
+character(len=*),parameter::ident_20="@(#)M_calcomp::line(3f): Plot a polyline with optional rescaling"
 
 !.....     XARRAY  NAME OF ARRAY CONTAINING ABSCISSA OR X VALUES.
 !.....     YARRAY  NAME OF ARRAY CONTAINING ORDINATE OR Y VALUES.
@@ -4470,6 +4660,64 @@ END SUBROUTINE LINE
 !===================================================================================================================================
 !>
 !!##NAME
+!!    width(3f) - [M_calcomp:basic] select pen width
+!!
+!!##SYNOPSIS
+!!
+!!   subroutine width(iwidth)
+!!
+!!    integer,intent(in) :: iwidth
+!!
+!!##DESCRIPTION
+!!
+!!    Select a new pen width.  Sets the current line width in units of
+!!    1/10,000 of the X size of the display surface
+!!
+!!##EXAMPLE
+!!
+!!   Sample program:
+!!
+!!    program demo_width
+!!       use M_calcomp
+!!       implicit none
+!!       integer :: i,n, ii
+!!       real    :: angle, rad, xx, yy
+!!       call plots(0.0,10.0,0.0,10.0)
+!!       call plot(5.0,5.0,-3)
+!!       angle=0.0
+!!       n=30
+!!       do i=1,n
+!!          ii=360/n
+!!          call width(i*10)
+!!          rad=0.0174533*angle
+!!          xx=5.0*cos (rad)
+!!          yy=5.0*sin (rad)
+!!          call plot( 0.0, 0.0,3)
+!!          call plot(  xx,  yy,2)
+!!          angle=angle+360.0/n
+!!       enddo
+!!       call plot(0.0,0.0,999)
+!!    end program demo_width
+!!
+!!  COMMENTS
+!!
+!!  This routine was not part of the original Calcomp library.
+!===================================================================================================================================
+subroutine width(iwidth)
+implicit none
+character(len=*),parameter::ident_21="@(#)M_calcomp::width(3f): select new pen width"
+integer,intent(in)    :: iwidth ! (positive integer) new pen width
+
+   if(iwidth.ge.0)then
+      call primitive__width(iwidth)
+   endif
+
+end subroutine width
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
 !!    newpen(3f) - [M_calcomp:basic] select new pen color and move to origin
 !!
 !!##SYNOPSIS
@@ -4485,14 +4733,14 @@ END SUBROUTINE LINE
 !!  is output-device-dependent, but on almost all color devices the
 !!  following values will produce the associated colors:
 !!
-!!     0   black
-!!     1   red
-!!     2   green
-!!     3   yellow
-!!     4   purple
-!!     5   magenta
-!!     6   cyan
-!!     7   white (the default)
+!!    0 or BLACK
+!!    1 or RED
+!!    2 or GREEN
+!!    3 or YELLOW
+!!    4 or PURPLE
+!!    5 or MAGENTA
+!!    6 or CYAN
+!!    7 or WHITE    (the default)
 !!
 !!  COMMENTS
 !!
@@ -4539,7 +4787,7 @@ END SUBROUTINE LINE
 !===================================================================================================================================
 subroutine newpen(index)
 implicit none
-character(len=*),parameter::ident="@(#)M_calcomp::newpen(3f): select new pen color and move to origin"
+character(len=*),parameter::ident_22="@(#)M_calcomp::newpen(3f): select new pen color and move to origin"
 integer,intent(in)    :: index ! (positive integer) new pen color
 
    if(index.ge.0)then
@@ -4559,7 +4807,7 @@ end subroutine newpen
 !!
 !!##SYNOPSIS
 !!
-!!        call nframe()
+!!        subroutine nframe()
 !!
 !!##DESCRIPTION
 !!
@@ -4669,7 +4917,7 @@ end subroutine newpen
 !!  document GRPHDOC).
 !===================================================================================================================================
 subroutine nframe
-character(len=*),parameter::ident="@(#)M_calcomp::nframe(3f): start new frame"
+character(len=*),parameter::ident_23="@(#)M_calcomp::nframe(3f): start new frame"
    call plot(0.0,0.0,1008)
 end subroutine nframe
 !===================================================================================================================================
@@ -4681,7 +4929,7 @@ end subroutine nframe
 !!
 !!##SYNOPSIS
 !!
-!!        call number(xpage,ypage,height,fpn,angle,+-ndec)
+!!        subroutine number(xpage,ypage,height,fpn,angle,+-ndec)
 !!
 !!##DESCRIPTION
 !!
@@ -4747,7 +4995,7 @@ end subroutine nframe
 !!    end program demo_number
 !===================================================================================================================================
 SUBROUTINE NUMBER(XPAGE,YPAGE,HEIGHT,FPN,ANGLE,NDEC)
-character(len=*),parameter::ident="@(#)M_calcomp::number(3f): plots a floating-point number"
+character(len=*),parameter::ident_24="@(#)M_calcomp::number(3f): plots a floating-point number"
 !.....     XPAGE,YPAGE COORDINATES OF LOWER LEFT CORNER OF NUMBER.
 !.....     HEIGHT   HEIGHT OF PLOTTED NUMBER.
 !.....     FPN      FLOATING POINT NUMBER TO BE PLOTTED.
@@ -4834,7 +5082,7 @@ END SUBROUTINE NUMBER
 !!
 !!##SYNOPSIS
 !!
-!!        call plot(xpage,ypage,+-ipen)
+!!        subroutine plot(xpage,ypage,+-ipen)
 !!
 !!##DESCRIPTION
 !!
@@ -4916,7 +5164,7 @@ END SUBROUTINE NUMBER
 !!    integer                     :: inteq
 !!    real                        :: x,y
 !!    real                        :: psi
-!!    real                        :: thick, width
+!!    real                        :: thick, wdth
 !!    real                        :: tsqr, wsqr
 !!    real                        :: tx, wx
 !!       call plots(0.0,24.0,0.0,12.0)
@@ -4960,10 +5208,10 @@ END SUBROUTINE NUMBER
 !!       enddo
 !!       call symbol(-0.30,3.5,0.14,ichr3,inteq,90.0,14)
 !!       thick=3.0
-!!       width=25.0
+!!       wdth=25.0
 !!       do i=1,3
 !!          tsqr=thick*thick
-!!          wsqr=width*width
+!!          wsqr=wdth*wdth
 !!          psi=100.99*tsqr
 !!          call symbol(0.6,psi/1000.0,0.1,ichr4,inteq,0.0,5)
 !!          call number(999.0,999.0,0.10,thick,0.0,0)
@@ -4976,7 +5224,7 @@ END SUBROUTINE NUMBER
 !!          enddo
 !!          psi=10099.0*81.0/wsqr
 !!          call symbol(9.2,psi/1000.0,0.1,ichr6,inteq,0.0,5)
-!!          call number(999.0,999.0,0.10,width,0.0,0)
+!!          call number(999.0,999.0,0.10,wdth,0.0,0)
 !!          call symbol(999.0,999.0,0.10,ichr7,inteq,0.0,4)
 !!          call symbol( 9.0, 999.0,0.12,ibcd,7,0.0,-1)
 !!          do j=5,50
@@ -4985,7 +5233,7 @@ END SUBROUTINE NUMBER
 !!             call plot(tx,psi/1000.0,2)
 !!          enddo
 !!          thick=thick+3.0
-!!          width=width-5.0
+!!          wdth=wdth-5.0
 !!       enddo
 !!       call symbol(3.3,8.5,.14,ichr8,inteq,0.0,29)
 !!       call symbol(3.1,8.2,.14,ichr9,inteq,0.0,32)
@@ -4996,7 +5244,7 @@ END SUBROUTINE NUMBER
 !!    end program demo_plot
 !===================================================================================================================================
 SUBROUTINE PLOT(XPAG, YPAG, IPEN)
-character(len=*),parameter::ident="@(#)M_calcomp::plot(3f): move with pen up or down or start new origin or terminate plotting"
+character(len=*),parameter::ident_25="@(#)M_calcomp::plot(3f): move with pen up or down or start new origin or terminate plotting"
 !
 !  SUBROUTINE DESCRIPTION -
 !
@@ -5246,7 +5494,7 @@ END SUBROUTINE PLOT
 !!
 !!##SYNOPSIS
 !!
-!!    call plots(0.0,10.0,0.0,10.0)
+!!    subroutine plots(0.0,10.0,0.0,10.0)
 !!
 !!##DESCRIPTION
 !!
@@ -5266,65 +5514,29 @@ END SUBROUTINE PLOT
 !!
 !!   Sample program:
 !!
-!!    program demo_car
-!!    use M_calcomp, only : plots, plot, number, symbol, newpen
-!!    use M_calcomp, only : MOVE, END, DRAW
-!!    character * 21 ichr6
-!!    character * 19 ichr7
-!!    character * 17 ichr8
-!!       ichr6='CAR MODEL AGE (YEARS)'
-!!       ichr7='CAR VALUE (DOLLARS)'
-!!       ichr8='AVERAGE CAR VALUE'
-!!       call plots(0.0,10.0,0.0,10.0)
-!!       !     CALL TO SYMBOL USES -0.5Y, -0.8-.14  X
-!!       !     (-.14 FOR CHARACTER HEIGHT)
-!!       call plot(0.95,0.5,-MOVE)
-!!       ! PLOT CAR VALUE CHART WITHOUT USING SCALE,AXIS,OR LINE
-!!       x=1.0
-!!       ! PLOT X-AXIS
-!!       do i=1,7
-!!          call plot(x-1.0,0.0,MOVE)
-!!          call plot(x   , 0.0,DRAW)
-!!          call plot(x   ,-0.1,DRAW)
-!!          call number(x-.02,-0.25,0.1,x,0.0,-1)
-!!          x=x+1.0
-!!       enddo
-!!       call symbol(2.0,-0.5,0.14,ichr6,inteq,0.0,21)
-!!       ! PLOT Y-AXIS
-!!       value=1000.0
-!!       do i=1,6
-!!          y=0.0015*value
-!!          call plot(0.0,y-1.5,MOVE)
-!!          call plot(0.0,y-.75,DRAW)
-!!          call plot(-.1,y-.75,DRAW)
-!!          call plot(0.0,y-.75,DRAW)
-!!          call plot(0.0,y    ,DRAW)
-!!          call plot(-.1,y    ,DRAW)
-!!          call number(-0.7,y,0.14,value,0.0,-1)
-!!          value=value+1000.0
-!!       enddo
-!!       call symbol(-0.8,3.1,0.14,ichr7,inteq,90.0,19)
-!!       ! PLOT CURVES
-!!       call newpen(2)
-!!       do i=2000,6000,500
-!!          value=i
-!!          age=0.0
-!!          call plot(age,0.0015*value,MOVE)
-!!          do j=1,84
-!!             value=value*0.972
-!!             age=age+0.08333
-!!             call plot(age,0.0015*value,DRAW)
-!!          enddo
-!!       enddo
-!!       call newpen(3)
-!!       call symbol(3.0,6.0,0.21,ichr8,inteq,0.0,17)
-!!       call plot(0.0,0.0,END)
-!!    end program demo_car
+!!    program demo_plots
+!!    use M_calcomp, only : plots, plot, newpen, width, rect
+!!    use M_calcomp, only : black ,red ,green ,yellow
+!!    use M_calcomp, only : purple ,magenta ,cyan ,white
+!!    use M_calcomp, only : MOVE, DRAW, END
+!!    implicit none
+!!    call plots(0.0,10.0,0.0,10.0)          ! initialize graphics
+!!    call width(80)
+!!    call rect(0.0,0.0,10.0,10.0,0.0,GREEN) ! outline plot area
+!!    call plot(5.0,5.0,-3)                  ! set origin
+!!    call newpen(RED)                       ! make X across area
+!!    call plot(-5.0,-5.0, MOVE)
+!!    call plot( 5.0, 5.0, DRAW)
+!!    call plot(-5.0, 5.0, MOVE)
+!!    call plot( 5.0,-5.0, DRAW)
+!!    call plot( 0.0, 0.0, END)
+!!    end program demo_plots
+!!
 !===================================================================================================================================
 SUBROUTINE PLOTS(xmin,xmax,ymin,ymax)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_calcomp::plots(3f): initialize the CALCOMP package"
+character(len=*),parameter::ident_26="@(#)M_calcomp::plots(3f): initialize the CALCOMP package"
 
 real,intent(in) :: xmin, xmax, ymin, ymax
 !
@@ -5349,7 +5561,7 @@ END SUBROUTINE PLOTS
 !!
 !!##SYNOPSIS
 !!
-!!        call scale(array,axlen,npts,+-inc)
+!!        subroutine scale(array,axlen,npts,+-inc)
 !!
 !!##DESCRIPTION
 !!
@@ -5496,7 +5708,7 @@ END SUBROUTINE PLOTS
 !!    end program demo_scale
 !===================================================================================================================================
 SUBROUTINE SCALE(ARRAY,AXLEN,NPTS,INC)
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_27="&
 &@(#)M_calcomp::scale(3f): calculate scaling factors for producing XY plots with LINE(3f) and AXIS(3f) routines"
 
 !.....     ARRAY   NAME OF ARRAY CONTAINING VALUES TO BE SCALED.
@@ -5571,7 +5783,7 @@ END SUBROUTINE SCALE
 !!
 !!  The "standard" call which produces a line of text is:
 !!
-!!        call symbol(xpage,ypage,height,ibcd,inteq,angle,+nchar)
+!!        subroutine symbol(xpage,ypage,height,ibcd,inteq,angle,+nchar)
 !!
 !!##DESCRIPTION
 !!
@@ -5756,7 +5968,7 @@ END SUBROUTINE SCALE
 !===================================================================================================================================
 SUBROUTINE SYMBOL(XPAGE,YPAGE,HEIGHT,STRING,INTEQ,ANGLE,NCHAR)
 use M_strings, only : upper
-character(len=*),parameter::ident="@(#)M_calcomp::symbol(3f): draw text string or marker"
+character(len=*),parameter::ident_28="@(#)M_calcomp::symbol(3f): draw text string or marker"
 !
 !  PROCEDURE DESCRIPTION -
 !
@@ -6258,7 +6470,7 @@ END SUBROUTINE SYMBOL
 !!
 !!##SYNOPSIS
 !!
-!!        call where(rxpage,rypage,rfact)
+!!        subroutine where(rxpage,rypage,rfact)
 !!
 !!##DESCRIPTION
 !!
@@ -6293,7 +6505,7 @@ END SUBROUTINE SYMBOL
 !===================================================================================================================================
 subroutine where(xpag,ypag,fct)
 implicit none
-character(len=*),parameter::ident="@(#)M_calcomp::where(3f): return current position and current plot-scaling factor"
+character(len=*),parameter::ident_29="@(#)M_calcomp::where(3f): return current position and current plot-scaling factor"
 real,intent(out) :: xpag
 real,intent(out) :: ypag
 real,intent(out) :: fct
@@ -6622,7 +6834,7 @@ END SUBROUTINE primitive__TRACER
 !!
 !!##SYNOPSIS
 !!
-!!        call cntour(a, NX_Q, NY_Q, x, y, hgt, cv, ncv, legend, ndima)
+!!        subroutine cntour(a, NX_Q, NY_Q, x, y, hgt, cv, ncv, legend, ndima)
 !!
 !!##DESCRIPTION
 !!
@@ -6680,7 +6892,7 @@ END SUBROUTINE primitive__TRACER
 !!  program.
 !===================================================================================================================================
 SUBROUTINE CNTOUR (AM,XX,YY,TOTX,TOTY,HGT,CV,CVN,TAB,NDIMYY)
-character(len=*),parameter::ident="@(#)M_calcomp::cntour(3f): draw a contour plot"
+character(len=*),parameter::ident_30="@(#)M_calcomp::cntour(3f): draw a contour plot"
    INTEGER XX,YY,CVN
    CHARACTER ENCXDE*9
    REAL AM(NDIMYY,*),TOTX(*),TOTY(*),CV(*),HGT
@@ -6997,6 +7209,7 @@ END SUBROUTINE primitive__MERGER
 !     primitive__draw_text  # print hardware text, from symbol.f
 !     primitive__draw_line  # draw a line segment, plot.f, symbol.f
 !     primitive__wpen    # change pen color, newpen.f
+!     primitive__width   # line thickness, from width.f
 !     primitive__end_plotting  # terminate graphics, plot.f
 !     primitive__start_plotting  # initialize graphics, plots.f
 !
@@ -7083,6 +7296,17 @@ end subroutine primitive__draw_line
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+subroutine primitive__width(iwidth8)
+use M_draw
+implicit none
+integer :: iwidth8  ! INTEGER4/INTEGER8
+   if(iwidth8.ge.0)then
+      call linewidth(int(iwidth8))
+   endif
+end subroutine primitive__width
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 subroutine primitive__wpen(ipen8)
 use M_draw
 implicit none
@@ -7124,7 +7348,7 @@ real,intent(in),optional :: xmin, xmax, ymin, ymax
 real                     :: xmin_local, xmax_local, ymin_local, ymax_local
 character(len=80)        :: string
 character(len=20)        :: device
-real                     :: width
+real                     :: wdth
 integer                  :: iend
 integer                  :: ierr
 
@@ -7138,11 +7362,12 @@ integer                  :: ierr
    call string_to_value(primitive__fgetvar('CALCOMP_YMIN',v2s(ymin_local)),ymin_local,ierr)
    call string_to_value(primitive__fgetvar('CALCOMP_YMAX',v2s(ymax_local)),ymax_local,ierr)
 
-   device=primitive__fgetvar('VDEVICE',' ')
-   if(device(:3).ne.'X11'.and.device(:3).ne.'tek')then  ! do not open the file for an interactive device
-      iend=len_trim(device) ! find the last non-blank character in the device name
-      string='calcomp.'//device(:iend) ! make up an output file name
-      call voutput(string(1:iend+8)) ! open output file for a batch output device run
+   device=primitive__fgetvar('M_DRAW_DEVICE',' ')
+   if(device(:3).ne.'X11'.and.device(:3).ne.'tek')then   ! do not open the file for an interactive device
+      iend=len_trim(device)                              ! find the last non-blank character in the device name
+      string='calcomp.'//device(:iend)                   ! make up an output file name
+      string=primitive__fgetvar('M_DRAW_OUTPUT',string)
+      call voutput(trim(string))                         ! open output file for a batch output device run
    endif
    call vinit(' ') ! initialize device
 
@@ -7158,8 +7383,8 @@ integer                  :: ierr
    call move(0.0,0.0,0.0)
 !   call textsize(xx,yy)
 !   call rasters(1)
-   call string_to_value(primitive__fgetvar('CALCOMP_WIDTH','20'),width,ierr)
-   call linewidth(int(width))
+   call string_to_value(primitive__fgetvar('CALCOMP_WIDTH','20'),wdth,ierr)
+   call linewidth(int(wdth))
 end subroutine primitive__start_plotting
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=

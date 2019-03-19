@@ -1,6 +1,7 @@
 function loadthem(){
 append("M_strings.3.html");
 append("adjustc.3.html");
+append("atleast.3.html");
 append("base.3.html");
 append("c2s.3.html");
 append("change.3.html");
@@ -36,6 +37,7 @@ append("lower.3.html");
 append("matchw.3.html");
 append("merge_str.3.html");
 append("modif.3.html");
+append("msg.3.html");
 append("noesc.3.html");
 append("nospace.3.html");
 append("notabs.3.html");

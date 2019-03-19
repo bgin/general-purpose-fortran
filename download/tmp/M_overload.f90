@@ -48,12 +48,13 @@
 module m_overload
 use M_strings, only : s2v
 implicit none
-character(len=*),parameter::ident="@(#)M_overload(3fm): overloads of standard operators and intrinsic procedures"
+character(len=*),parameter::ident_1="@(#)M_overload(3fm): overloads of standard operators and intrinsic procedures"
 private
 public boolean_equal, boolean_notequal      !
 public operator(==)
 public operator(/=)
 public int, real, dble                      ! extend intrinsics to accept CHARACTER values
+public test_suite_M_overload
 
 interface operator ( == )
    module procedure boolean_equal
@@ -146,6 +147,98 @@ character(len=*),intent(in) :: chars(:)
       dbles_s2v(i)=s2v(chars(i))
    enddo
 end function dbles_s2v
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine test_suite_M_overload()
+
+!! setup
+   call test_boolean_equal()
+   call test_boolean_notequal()
+   call test_dble_s2v()
+   call test_dbles_s2v()
+   call test_int_s2v()
+   call test_ints_s2v()
+   call test_real_s2v()
+   call test_reals_s2v()
+!! teardown
+contains
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_boolean_equal()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('boolean_equal',msg='')
+   !!call unit_check('boolean_equal', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('boolean_equal',msg='')
+end subroutine test_boolean_equal
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_boolean_notequal()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('boolean_notequal',msg='')
+   !!call unit_check('boolean_notequal', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('boolean_notequal',msg='')
+end subroutine test_boolean_notequal
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_dble_s2v()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('dble_s2v',msg='')
+   !!call unit_check('dble_s2v', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('dble_s2v',msg='')
+end subroutine test_dble_s2v
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_dbles_s2v()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('dbles_s2v',msg='')
+   !!call unit_check('dbles_s2v', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('dbles_s2v',msg='')
+end subroutine test_dbles_s2v
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_int_s2v()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('int_s2v',msg='')
+   !!call unit_check('int_s2v', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('int_s2v',msg='')
+end subroutine test_int_s2v
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_ints_s2v()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('ints_s2v',msg='')
+   !!call unit_check('ints_s2v', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('ints_s2v',msg='')
+end subroutine test_ints_s2v
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_real_s2v()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('real_s2v',msg='')
+   !!call unit_check('real_s2v', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('real_s2v',msg='')
+end subroutine test_real_s2v
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_reals_s2v()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('reals_s2v',msg='')
+   !!call unit_check('reals_s2v', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('reals_s2v',msg='')
+end subroutine test_reals_s2v
+!===================================================================================================================================
+end subroutine test_suite_M_overload
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 end module m_overload
 !-----------------------------------------------------------------------------------------------------------------------------------

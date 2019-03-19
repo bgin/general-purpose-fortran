@@ -1,3 +1,6 @@
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 module M_list
 use M_debug, only : debug
 implicit none
@@ -17,19 +20,26 @@ public remove        ! [M_list] delete entry by index from a sorted allocatable 
 public add           ! [M_list] insert entry by name into a sorted allocatable character array if it is not present
 public delete        ! [M_list] delete entry by name from a sorted allocatable character array if it is present
 
-character(len=*),parameter :: ident1=&
-                 &"@(#)M_list::insert(3f): Generic subroutine inserts element into allocatable array at specified position"
+character(len=*),parameter::ident_1="&
+&@(#)M_list::insert(3f): Generic subroutine inserts element into allocatable array at specified position"
 interface insert
    module procedure insert_c, insert_r, insert_i
 end interface
 
-character(len=*),parameter :: ident2=&
-                 &"@(#)M_list::insert(3f): Generic subroutine deletes element from allocatable array at specified position"
+character(len=*),parameter::ident_2="&
+&@(#)M_list::insert(3f): Generic subroutine deletes element from allocatable array at specified position"
 interface remove
    module procedure remove_c, remove_r, remove_i
 end interface
 
+public test_suite_m_list
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 contains
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 !>
 !!##NAME
 !!    binary_search(3f) - [M_list] binary search of a sorted integer array.
@@ -41,21 +51,21 @@ contains
 !!    integer                         :: jloc
 !!
 !!##DESCRIPTION
-!!
 !!    Binary search is a search algorithm that finds the position of a target
 !!    value within an integer sorted array.
 !!
 !!##OPTIONS
-!!
 !!      ID    Keyword to match in ARR.
 !!      ARR   Array to search.
+!!
+!!##RESULT
 !!      JLOC  If found, 'JLOC' is the matched position in 'ARR'.
 !!            If not found, returns zero (0).
 !===================================================================================================================================
 pure function binary_search(id,arr) result(jloc)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_list::binary_search(3f): binary search of a sorted integer array."
+character(len=*),parameter::ident_3="@(#)M_list::binary_search(3f): binary search of a sorted integer array."
 
 integer,intent(in)              :: id        !! key word to match in `arr`
 integer,dimension(:),intent(in) :: arr       !! array to search (it is assumed to be sorted)
@@ -107,6 +117,9 @@ integer,parameter :: iswtch = 16
    endif
 
 end function binary_search
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 !>
 !!##NAME
 !!    locate(3f) - [M_list] finds the index where a string is found or should be in a sorted array
@@ -130,7 +143,6 @@ end function binary_search
 !!    where the name should be placed at with a negative sign.
 !!
 !!##OPTIONS
-!!
 !!
 !!    VARNAME       the entry name to locate in the dictionary.
 !!
@@ -213,7 +225,7 @@ end function binary_search
 !===================================================================================================================================
 subroutine locate(varname,dictionary,place,ier,errmsg)
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_4="&
 &@(#)M_list::locate(3f): find PLACE in sorted character array where VARNAME can be found or should be placed"
 
 !     Assuming an alphabetized array of character strings where it is
@@ -292,6 +304,9 @@ character(len=*),intent(out),optional   :: errmsg
    endif
    if(debug)write(*,*)'END LOCATE place=',place,' ARRAYSIZE=',size(dictionary)
 end subroutine locate
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 !>
 !!##NAME
 !!    remove(3f) - [M_list] remove entry from an allocatable array at specified position
@@ -357,7 +372,7 @@ end subroutine locate
 !===================================================================================================================================
 subroutine remove_c(dictionary,place)
 
-character(len=*),parameter::ident="@(#)M_list::remove_c(3fp): remove string from allocatable string array at specified position"
+character(len=*),parameter::ident_5="@(#)M_list::remove_c(3fp): remove string from allocatable string array at specified position"
 
 character(len=*),allocatable :: dictionary(:)
 integer,intent(in)           :: place
@@ -378,7 +393,7 @@ integer                      :: ii, end
 end subroutine remove_c
 subroutine remove_r(dictionary,place)
 
-character(len=*),parameter::ident="@(#)M_list::remove_r(3fp): remove value from allocatable array at specified position"
+character(len=*),parameter::ident_6="@(#)M_list::remove_r(3fp): remove value from allocatable array at specified position"
 
 real,allocatable    :: dictionary(:)
 integer,intent(in)  :: place
@@ -399,7 +414,7 @@ integer             :: end
 end subroutine remove_r
 subroutine remove_i(dictionary,place)
 
-character(len=*),parameter::ident="@(#)M_list::remove_i(3fp): remove value from allocatable array at specified position"
+character(len=*),parameter::ident_7="@(#)M_list::remove_i(3fp): remove value from allocatable array at specified position"
 integer,allocatable    :: dictionary(:)
 integer,intent(in)     :: place
 integer                :: end
@@ -418,6 +433,9 @@ integer                :: end
    if(debug)write(*,*) 'END REMOVE_I PLACE=',place,' NEWSIZE=',size(dictionary)
 
 end subroutine remove_i
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 !>
 !!##NAME
 !!    insert(3f) - [M_list] insert entry into a string array at specified position
@@ -537,7 +555,7 @@ end subroutine remove_i
 !===================================================================================================================================
 subroutine insert_c(varname,dictionary,place)
 
-character(len=*),parameter::ident="@(#)M_list::insert_c(3fp): place string into allocatable string array at specified position"
+character(len=*),parameter::ident_8="@(#)M_list::insert_c(3fp): place string into allocatable string array at specified position"
 
 character(len=*),intent(in)  :: varname
 character(len=*),allocatable :: dictionary(:)
@@ -562,7 +580,7 @@ integer                      :: ii, end
 end subroutine insert_c
 subroutine insert_r(varname,dictionary,place)
 
-character(len=*),parameter::ident="@(#)M_list::insert_r(3fp): place value into allocatable array at specified position"
+character(len=*),parameter::ident_9="@(#)M_list::insert_r(3fp): place value into allocatable array at specified position"
 
 real,intent(in)       :: varname
 real,allocatable      :: dictionary(:)
@@ -586,7 +604,7 @@ integer               :: end
 end subroutine insert_r
 subroutine insert_i(varname,dictionary,place)
 
-character(len=*),parameter::ident="@(#)M_list::insert_i(3fp): place value into allocatable array at specified position"
+character(len=*),parameter::ident_10="@(#)M_list::insert_i(3fp): place value into allocatable array at specified position"
 
 integer,intent(in)    :: varname
 integer,allocatable   :: dictionary(:)
@@ -608,6 +626,9 @@ integer               :: end
    endif
    if(debug)write(*,*) 'END INSERT_I VARNAME=',varname,' PLACE=',place,' NEWSIZE=',size(dictionary)
 end subroutine insert_i
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 !>
 !!##NAME
 !!    delete(3f) - [M_list] delete entry by name from an allocatable sorted string array if it is present
@@ -661,7 +682,7 @@ end subroutine insert_i
 !===================================================================================================================================
 subroutine delete(varname,dictionary)
 
-character(len=*),parameter::ident="@(#)M_list::delete(3f): remove string from sorted allocatable string array if present"
+character(len=*),parameter::ident_11="@(#)M_list::delete(3f): remove string from sorted allocatable string array if present"
 
 character(len=*),intent(in)  :: varname
 character(len=*),allocatable :: dictionary(:)
@@ -675,6 +696,9 @@ character(len=*),allocatable :: dictionary(:)
       endif
    enddo INFINITE
 end subroutine delete
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 !>
 !!##NAME
 !!    add(3f) - [M_list] insert entry into an allocatable sorted string array if it is not present
@@ -737,7 +761,7 @@ end subroutine delete
 !===================================================================================================================================
 subroutine add(varname,dictionary)
 
-character(len=*),parameter::ident="@(#)M_list::add(3f): place string into sorted allocatable string array if not present"
+character(len=*),parameter::ident_12="@(#)M_list::add(3f): place string into sorted allocatable string array if not present"
 
 character(len=*),intent(in)  :: varname
 character(len=*),allocatable :: dictionary(:)
@@ -747,4 +771,89 @@ character(len=*),allocatable :: dictionary(:)
       call insert(varname,dictionary,abs(place))
    endif
 end subroutine add
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine test_suite_m_list
+use M_debug, only : unit_check, unit_check_start, unit_check_good, unit_check_bad, unit_check_done, unit_check_level, msg
+!!use M_list, only : locate, add, delete, insert, remove
+character(len=*),parameter ::  share=' -library libGPF -filename `pwd`/M_list.FF -documentation y -ufpp y -ccall n -archive GPF.a'
+character(len=20),allocatable :: dict(:)
+   call test_add()
+   call test_delete()
+   call test_locate()
+   call test_insert()
+   call test_remove()
+   call test_binary_search()
+contains
+!===================================================================================================================================
+subroutine test_add
+   call unit_check_start('M_list::add',   &
+   & ' -description "add string into allocatable string array by name" '//share)
+   call add('A',dict)
+   write(*,*)'ARRAY=',dict !  ARRAY=A
+   write(*,*) all(dict.eq.[character(len=20) :: 'A'])
+   call unit_check('M_list::add',all(dict.eq.[character(len=20) :: 'A']),'string adds (checkpoint 1)')
+
+   call add('b',dict)
+   call add('c',dict)
+   call add('z',dict)
+   write(*,*)'ARRAY=',dict ! ARRAY=z c b A
+   write(*,*) all(dict.eq.[character(len=20) :: 'z','c','b','A'])
+   call unit_check('M_list::add',all(dict.eq.[character(len=20) :: 'z','c','b','A']),'string adds (checkpoint 2)')
+
+   call add('ZZ',dict)
+   call add('not this one',dict)
+   call add('ZZZ',dict)
+   call add('Z',dict)
+   write(*,*)'ARRAY=',dict ! ARRAY=z not this one c b ZZZ ZZ Z A
+   call unit_check('M_list::add',all(dict.eq.[character(len=20) :: 'z','not this one','c','b','ZZZ','ZZ','Z','A']),'string adds ')
+
+   call unit_check_done('M_list::add')     ! if got here everthing passed so put in good status code
+end subroutine test_add
+!===================================================================================================================================
+subroutine test_delete
+   call unit_check_start('M_list::delete',&
+   & ' -description "delete string by name from allocatable string array" '//share)
+
+   call delete('not this one',dict)
+   call delete('Z',dict)
+   call delete('X',dict)
+   write(*,*)'ARRAY=',dict ! ARRAY=z c b ZZZ ZZ A
+   call unit_check('M_list::delete',all(dict.eq.[character(len=20) :: 'z','c','b','ZZZ','ZZ','A']),'string deletes ')
+
+   call unit_check_done('M_list::delete')
+end subroutine test_delete
+!===================================================================================================================================
+subroutine test_locate
+   call unit_check_start('M_list::locate',&
+   & ' -description "locate string in allocatable string array sorted in descending order" '//share)
+   call unit_check_done('M_list::locate')
+end subroutine test_locate
+!===================================================================================================================================
+subroutine test_insert
+   call unit_check_start('M_list::insert',&
+   & ' -description "insert value into allocatable array by index"  '//share)
+   call unit_check_done('M_list::insert')
+end subroutine test_insert
+!===================================================================================================================================
+subroutine test_remove
+   call unit_check_start('M_list::remove',&
+   & ' -description "remove value from allocatable array by index"  '//share)
+   call unit_check_done('M_list::remove')
+end subroutine test_remove
+!===================================================================================================================================
+subroutine test_binary_search
+   call unit_check_start('M_list::binary_search',&
+   & ' -description "binary search of a sorted array"  '//share)
+   call unit_check_done('M_list::binary_search')
+end subroutine test_binary_search
+!===================================================================================================================================
+end subroutine test_suite_m_list
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 end module M_list
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================

@@ -17,4 +17,5 @@ append("rdbox.3.html");
 append("rdpnt.3.html");
 append("draw.1.html");
 append("seefont.1.html");
+append("target.1.html");
 }

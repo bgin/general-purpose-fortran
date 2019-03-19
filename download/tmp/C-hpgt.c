@@ -16,8 +16,10 @@
 
 #ifdef BSD
 #include <sgtty.h>
-#else
+#elif HPUX
 #include <sys/termio.h>
+#else
+#include <termio.h>
 #endif
 #include "draw.h"
 

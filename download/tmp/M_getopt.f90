@@ -122,6 +122,7 @@ module M_getopt
 
     integer, private:: grpind=2            ! grpind is index of next option within group; always >= 2
 
+    public test_suite_M_getopt
 contains
 !-----------------------------------------------------------------------------------------------------------------------------------
 character function substr( str, i, j )
@@ -266,5 +267,70 @@ integer                      :: i, arglen
 
 end function process_short
 !-----------------------------------------------------------------------------------------------------------------------------------
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine test_suite_M_getopt()
+
+!! setup
+   call test___copy_m_getopt_Option_s()
+   call test_getopt()
+   call test_process_long()
+   call test_process_short()
+   call test_substr()
+!! teardown
+contains
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test___copy_m_getopt_Option_s()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('__copy_m_getopt_Option_s',msg='')
+   !!call unit_check('__copy_m_getopt_Option_s', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('__copy_m_getopt_Option_s',msg='')
+end subroutine test___copy_m_getopt_Option_s
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_getopt()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('getopt',msg='')
+   !!call unit_check('getopt', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('getopt',msg='')
+end subroutine test_getopt
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_process_long()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('process_long',msg='')
+   !!call unit_check('process_long', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('process_long',msg='')
+end subroutine test_process_long
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_process_short()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('process_short',msg='')
+   !!call unit_check('process_short', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('process_short',msg='')
+end subroutine test_process_short
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_substr()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('substr',msg='')
+   !!call unit_check('substr', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('substr',msg='')
+end subroutine test_substr
+!===================================================================================================================================
+end subroutine test_suite_M_getopt
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 end module M_getopt
-!-----------------------------------------------------------------------------------------------------------------------------------
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================

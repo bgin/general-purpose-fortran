@@ -10,8 +10,8 @@
 !!       elemental real function c2f(celsius)
 !!       elemental real function f2c(fahrenheit)
 !!
-!!       elemental real function r2d(radians)
-!!       elemental real function d2r(degrees)
+!!       elemental real|double function r2d(radians)
+!!       elemental real|double function d2r(degrees)
 !!
 !!       elemental real function feet_to_meters(feet)
 !!       elemental real function meters_to_feet(meters)
@@ -122,11 +122,13 @@
 !!    use M_units, only : sind, cosd, tand
 !!    use M_units, only : asind, acosd, atand, atan2d
 !!    !!
-!!    use M_units, only : pi=>pi,e
-!!    use M_units, only : e,euler,pi,golden_ratio,deg_per_rad,rad_per_deg
+!!    use M_units, only : pi8=>pi
+!!    use M_units, only : e,euler,golden_ratio,deg_per_rad,rad_per_deg
 !!    use M_units, only : c__m_per_sec, c__ft_per_sec
 !!    !!
 !!    implicit none
+!!    real pi
+!!    pi=pi8
 !!    write(*,*)r2d([0.0,PI/4.0,PI/2.0,3.0*PI/2.0,PI])
 !!    write(*,*)d2r([0.0,45.0,90.0,135.0,180.0])
 !!    write(*,*)f2c([-40.0,32.0,212.0])
@@ -136,7 +138,7 @@
 !!    !!
 !!    write(*,101) "Napier's constant (e) is about ",e
 !!    write(*,101) "The Euler-Mascheroni constant (euler or gamma) is about ",euler
-!!    write(*,101) "pi (pi) is about ",pi
+!!    write(*,101) "pi (pi) is about ",pi8
 !!    write(*,101) "The Golden Ratio (golden_ratio) is about ",golden_ratio
 !!    write(*,101) "Deg_Per_Rad is about ",Deg_Per_Rad
 !!    write(*,101) "Rad_Per_Deg is about ",Rad_Per_Deg
@@ -147,16 +149,14 @@
 !!    101 format(a,t57,g0)
 !!    !!
 !!    end program demo_M_units
-!!
-!!
 !!   Results:
 !!
-!!    > 0.00000000   45.0000000   90.0000000   270.000000   180.000000
-!!    > 0.00000000  0.785398185   1.57079637   2.35619450   3.14159274
-!!    >-40.0000000   0.00000000   100.000000
-!!    >-40.0000000   32.0000000   212.000000
-!!    > 3.14159274
-!!    > 2.71828175
+!!    >   0.00000000       45.0000000       90.0000000       270.000000       180.000000
+!!    >   0.00000000      0.785398185       1.57079637       2.35619450       3.14159274
+!!    >  -40.0000000       0.00000000       100.000000
+!!    >  -40.0000000       32.0000000       212.000000
+!!    >   3.14159274
+!!    >   2.7182818284590451
 !!    >Napier's constant (e) is about                          2.7182818284590451
 !!    >The Euler-Mascheroni constant (euler or gamma) is about 0.57721566490153287
 !!    >pi (pi) is about                                        3.1415926535897931
@@ -203,6 +203,8 @@ private
 !  tables
       public symbol2atomnum ! return atomic number given element symbol name
       public atomnum2symbol ! return element symbol given atomic number
+
+      public test_suite_M_units
 !===================================================================================================================================
 !  constants
 
@@ -254,6 +256,12 @@ real(kind=DP), public, parameter ::              &
          module procedure norm_angle_360_integer
       end interface
 
+      interface r2d
+         module procedure r2d_d, r2d_r, r2d_i
+      end interface
+      interface d2r
+         module procedure d2r_d, d2r_r, d2r_i
+      end interface
 
 contains
 !***********************************************************************************************************************************
@@ -293,7 +301,7 @@ contains
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 elemental real function c2f(celsius)
-character(len=*),parameter::ident="@(#)M_units::c2f(3f): Convert celsius to fahrenheit"
+character(len=*),parameter::ident_1="@(#)M_units::c2f(3f): Convert celsius to fahrenheit"
 class(*),intent(in)           :: celsius        ! celsius value to convert to fahrenheit
    real                       :: celsius_local
    celsius_local=anyscalar_to_real(celsius)
@@ -334,7 +342,7 @@ end function c2f
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 elemental real function f2c(fahrenheit)
-character(len=*),parameter::ident="@(#)M_units::f2c(3f): Convert fahrenheit to celsius"
+character(len=*),parameter::ident_2="@(#)M_units::f2c(3f): Convert fahrenheit to celsius"
 class(*),intent(in)           :: fahrenheit     ! input fahrenheit to convert to celsius
    real                       :: fahrenheit_local
    fahrenheit_local=anyscalar_to_real(fahrenheit)
@@ -378,13 +386,29 @@ end function f2c
 !!     With DOUBLEPRECISION        0.00000000       45.0000000       90.0000000       270.000000       180.000000
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
-elemental real function r2d(radians)
-character(len=*),parameter::ident="@(#)M_units::r2d(3f): Convert radians to degrees"
-class(*),intent(in)           :: radians        ! input radians to convert to degrees
-   real                       :: radians_local
-   radians_local=anyscalar_to_real(radians)
-   r2d=real(radians_local * 180.d0 / acos(-1.0d0)) ! do the conversion
-end function r2d
+elemental doubleprecision function r2d_i(iradians)
+
+character(len=*),parameter::ident_3="@(#)M_units::r2d_i(3f): Convert radians to degrees"
+
+integer,intent(in)           :: iradians        ! input radians to convert to degrees
+   r2d_i=dble(iradians) * 180.0d0 / acos(-1.0d0) ! do the conversion
+end function r2d_i
+!-----------------------------------------------------------------------------------------------------------------------------------
+elemental doubleprecision function r2d_d(radians)
+
+character(len=*),parameter::ident_4="@(#)M_units::r2d_d(3f): Convert radians to degrees"
+
+doubleprecision,intent(in)           :: radians        ! input radians to convert to degrees
+   r2d_d=radians * 180.0d0 / acos(-1.0d0) ! do the conversion
+end function r2d_d
+!-----------------------------------------------------------------------------------------------------------------------------------
+elemental real function r2d_r(radians)
+
+character(len=*),parameter::ident_5="@(#)M_units::r2d_r(3f): Convert radians to degrees"
+
+real,intent(in)           :: radians        ! input radians to convert to degrees
+   r2d_r=radians * 180.0 / acos(-1.0) ! do the conversion
+end function r2d_r
 !***********************************************************************************************************************************
 !>
 !!##NAME
@@ -421,13 +445,29 @@ end function r2d
 !!    With DOUBLEPRECISION     0.00000 0.785398185 1.57079637 2.35619450 3.14159274
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
-elemental real function d2r(degrees)
-character(len=*),parameter::ident="@(#)M_units::d2r(3f): Convert degrees to radians"
-class(*),intent(in)           :: degrees        ! input degrees to convert to radians
-   real                       :: degrees_local
-   degrees_local=anyscalar_to_real(degrees)
-   d2r=real(degrees_local*acos(-1.0d0)/180.d0)     ! do the unit conversion
-end function d2r
+elemental real function d2r_r(degrees)
+
+character(len=*),parameter::ident_6="@(#)M_units::d2r_r(3f): Convert degrees to radians"
+
+real,intent(in)           :: degrees        ! input degrees to convert to radians
+   d2r_r=degrees*acos(-1.0)/180.0     ! do the unit conversion
+end function d2r_r
+!-----------------------------------------------------------------------------------------------------------------------------------
+elemental doubleprecision function d2r_d(degrees)
+
+character(len=*),parameter::ident_7="@(#)M_units::d2r_d(3f): Convert degrees to radians"
+
+doubleprecision,intent(in) :: degrees        ! input degrees to convert to radians
+   d2r_d=degrees*acos(-1.0d0)/180.d0     ! do the unit conversion
+end function d2r_d
+!-----------------------------------------------------------------------------------------------------------------------------------
+elemental doubleprecision function d2r_i(idegrees)
+
+character(len=*),parameter::ident_8="@(#)M_units::d2r_i(3f): Convert degrees to radians"
+
+integer,intent(in) :: idegrees        ! input degrees to convert to radians
+   d2r_i=dble(idegrees)*acos(-1.0d0)/180.d0     ! do the unit conversion
+end function d2r_i
 !***********************************************************************************************************************************
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !***********************************************************************************************************************************
@@ -443,7 +483,8 @@ end function d2r
 !!    Calculate sine of input value in degrees
 !!
 !!##OPTIONS
-!!    degrees    any standard scalar value supported by anyscalar_to_real(3f).
+!!    degrees    any standard scalar value supported by anyscalar_to_real(3f)
+!!
 !!##EXAMPLE
 !!
 !!   Sample program
@@ -474,9 +515,11 @@ end function d2r
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 elemental real function sind(angle_in_degrees)
-character(len=*),parameter::ident="@(#)M_units::sind(3f): sin(3f) with degrees as input instead of radians"
+
+character(len=*),parameter::ident_9="@(#)M_units::sind(3f): sin(3f) with degrees as input instead of radians"
+
 class(*),intent(in)           :: angle_in_degrees
-   real                       :: angle_in_degrees_local
+real                       :: angle_in_degrees_local
    angle_in_degrees_local=anyscalar_to_real(angle_in_degrees)
    sind=sin(angle_in_degrees_local*degrees_to_radians)
 end function sind
@@ -525,9 +568,11 @@ end function sind
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 elemental real function cosd(angle_in_degrees)
-character(len=*),parameter::ident="@(#)M_units::cosd(3f): cos(3f) with degrees as input instead of radians"
+
+character(len=*),parameter::ident_10="@(#)M_units::cosd(3f): cos(3f) with degrees as input instead of radians"
+
 class(*),intent(in)           :: angle_in_degrees
-   real                       :: angle_in_degrees_local
+real                       :: angle_in_degrees_local
    angle_in_degrees_local=anyscalar_to_real(angle_in_degrees)
    cosd=cos(angle_in_degrees_local*degrees_to_radians)
 end function cosd
@@ -566,43 +611,183 @@ end function cosd
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 elemental real function tand(angle_in_degrees)
-character(len=*),parameter::ident="@(#)M_units::tand(3f): tan(3f) with degrees as input instead of radians"
+
+character(len=*),parameter::ident_11="@(#)M_units::tand(3f): tan(3f) with degrees as input instead of radians"
+
 class(*),intent(in)           :: angle_in_degrees
-   real                       :: angle_in_degrees_local
+real                       :: angle_in_degrees_local
    angle_in_degrees_local=anyscalar_to_real(angle_in_degrees)
    tand=tan(angle_in_degrees_local*degrees_to_radians)
 end function tand
 !***********************************************************************************************************************************
+!>
+!!##NAME
+!!    asind(3f) - [M_units:TRIGONOMETRY] calculate arcsine of value in degrees
+!!##SYNOPSIS
+!!
+!!    elemental real function asind(value)
+!!
+!!     class(*),intent(in) :: value
+!!##DESCRIPTION
+!!    Calculate arcsine of input value in degrees. It converts the input
+!!    value to radians from degrees and calls asin(3f).
+!!
+!!##OPTIONS
+!!    value    any standard scalar value supported by anyscalar_to_real(3f)
+!!
+!!##EXAMPLE
+!!
+!!   Sample program
+!!
+!!    program demo_asind
+!!    use M_units, only :  asind
+!!    implicit none
+!!       write(*, *)asind([ 0.0, 0.258819044, 0.5, 0.707106829, 0.866025448,  &
+!!                       & 0.965925813, 1.0, -8.74227766E-08, -1.0 ])
+!!    end program demo_asind
+!!
+!!   Results
+!!
+!!       0.0 15.0  30.0 45.0000038  60.00 75.0 90.0 -5.00895612E-06  -90.0
+!===================================================================================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
 elemental real function asind(x)
-character(len=*),parameter::ident="@(#)M_units::asind(3f): asin(3f) with degrees as output instead of radians"
+
+character(len=*),parameter::ident_12="@(#)M_units::asind(3f): asin(3f) with degrees as output instead of radians"
+
 class(*),intent(in)           :: x
-   real                       :: x_local
+real                          :: x_local
    x_local=anyscalar_to_real(x)
    asind=asin(x_local)/degrees_to_radians
 end function asind
 !***********************************************************************************************************************************
+!>
+!!##NAME
+!!    acosd(3f) - [M_units:TRIGONOMETRY] calculate arccosine of value in degrees
+!!##SYNOPSIS
+!!
+!!    elemental real function acosd(value)
+!!
+!!     class(*),intent(in) :: value
+!!##DESCRIPTION
+!!    Calculate arcsine of input value in degrees. It converts the input value
+!!    from degrees to radians and calls acos(3f).
+!!
+!!##OPTIONS
+!!    value    any standard scalar value supported by anyscalar_to_real(3f)
+!!
+!!##EXAMPLE
+!!
+!!   Sample program
+!!
+!!    program demo_acosd
+!!    use M_units, only :  acosd, cosd
+!!    implicit none
+!!       write(*, *)       cosd(0.0),cosd(45.0),cosd(120.0),cosd(180.0),cosd(720.0)
+!!       write(*, *)acosd([cosd(0.0),cosd(45.0),cosd(120.0),cosd(180.0),cosd(720.0) ])
+!!    end program demo_acosd
+!!
+!!   Results
+!!
+!!       1.00000000      0.707106769     -0.500000000      -1.00000000       1.00000000
+!!       0.00000000       45.0000000       120.000000       180.000000       0.00000000
+!===================================================================================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
 elemental real function acosd(x)
-character(len=*),parameter::ident="@(#)M_units::acosd(3f): calculate arc-cos of angle in degrees"
+
+character(len=*),parameter::ident_13="@(#)M_units::acosd(3f): calculate arc-cos of angle in degrees"
+
 class(*),intent(in)           :: x
-   real                       :: x_local
+real                          :: x_local
    x_local=anyscalar_to_real(x)
    acosd=acos(x_local)/degrees_to_radians
 end function acosd
 !***********************************************************************************************************************************
+!>
+!!##NAME
+!!    atand(3f) - [M_units:TRIGONOMETRY] calculate arctangent of value in degrees
+!!##SYNOPSIS
+!!
+!!    elemental real function atand(value)
+!!
+!!     class(*),intent(in) :: value
+!!##DESCRIPTION
+!!    Calculate arctangent of input value in degrees. It calls atan(3f) and
+!!    converts the output to degrees from radians.
+!!
+!!##OPTIONS
+!!    value    any standard scalar value supported by anyscalar_to_real(3f)
+!!
+!!##EXAMPLE
+!!
+!!
+!!   Sample program:
+!!
+!!    program demo_atand
+!!    use M_units, only :  atand, tand
+!!    implicit none
+!!       write(*, *)       tand(0.0),tand(45.0),tand(120.0),tand(180.0),tand(720.0)
+!!       write(*, *)atand([tand(0.0),tand(45.0),tand(120.0),tand(180.0),tand(720.0) ])
+!!    end program demo_atand
+!!
+!!   Results:
+!!
+!!       0.00000000       1.00000000      -1.73205078      -1.22464685E-16  -4.89858741E-16
+!!       0.00000000       45.0000000      -60.0000000      -7.01670955E-15  -2.80668382E-14
+!===================================================================================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
 elemental real function atand(x)
-character(len=*),parameter::ident="@(#)M_units::atand(3f): result is arc-tangent of angle in degrees"
+
+character(len=*),parameter::ident_14="@(#)M_units::atand(3f): result is arc-tangent of angle in degrees"
+
 class(*),intent(in)           :: x
-   real                       :: x_local
+real                          :: x_local
    x_local=anyscalar_to_real(x)
    atand=atan(x_local)/degrees_to_radians
 end function atand
 !***********************************************************************************************************************************
+!>
+!!##NAME
+!!    atan2d(3f) - [M_units:TRIGONOMETRY] calculate arctangent of the complex number X + i Y
+!!##SYNOPSIS
+!!
+!!    elemental real function atan2d(x,y)
+!!
+!!     class(*),intent(in) :: x
+!!     class(*),intent(in) :: y
+!!##DESCRIPTION
+!!    Calculate arctangent of arctangent of the complex number
+!!
+!!       X + i Y.
+!!
+!!    in degrees. It calls atan2(3f) and converts the output from radians to degrees.
+!!
+!!##OPTIONS
+!!    X    any standard scalar value supported by anyscalar_to_real(3f)
+!!    Y    any standard scalar value supported by anyscalar_to_real(3f)
+!!
+!!##EXAMPLE
+!!
+!!        Sample program:
+!!
+!!           program demo_atan2d
+!!           use M_units, only : atan2d
+!!           real(4) :: x = 1.e0_4, y = 0.5e0_4
+!!             write(*,*)atan2d(y,x)
+!!           end program demo_atan2d
+!!   Results:
+!!
+!!       26.5650501
+!===================================================================================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
 elemental real function atan2d(x,y)
-character(len=*),parameter::ident="@(#)M_units::atan2d(3f): calculate arc-tangent of angle in degrees"
+
+character(len=*),parameter::ident_15="@(#)M_units::atan2d(3f): calculate arc-tangent of angle in degrees"
+
 class(*),intent(in)           :: x
 class(*),intent(in)           :: y
-   real                       :: x_local
-   real                       :: y_local
+real                       :: x_local
+real                       :: y_local
    x_local=anyscalar_to_real(x)
    y_local=anyscalar_to_real(y)
    atan2d=atan2(x_local,y_local)/degrees_to_radians
@@ -649,7 +834,7 @@ end function atan2d
 !!     With DOUBLEPRECISION      -0.304800004   0.00000000  0.304800004
 !===================================================================================================================================
 elemental function feet_to_meters(feet)
-character(len=*),parameter::ident="@(#)M_units::feet_to_meters(3f): converts a measurement in feet to meters"
+character(len=*),parameter::ident_16="@(#)M_units::feet_to_meters(3f): converts a measurement in feet to meters"
 class(*),intent(in)           :: feet                           ! the input length in feet.
 real                          :: feet_to_meters                 ! OUTPUT, the corresponding length in meters.
    real                       :: feet_local
@@ -693,7 +878,7 @@ end function feet_to_meters
 !!     With DOUBLEPRECISION       -3.28083992       0.00000000       3.28083992
 !===================================================================================================================================
 elemental function meters_to_feet(meters)
-character(len=*),parameter::ident="@(#)M_units::meters_to_feet(3f): converts a measurement in meters to feet"
+character(len=*),parameter::ident_17="@(#)M_units::meters_to_feet(3f): converts a measurement in meters to feet"
 class(*),intent(in)           :: meters                         ! the input length in meters.
 real                          :: meters_to_feet                 ! OUTPUT, the corresponding length in feet.
    real                       :: meters_local
@@ -756,7 +941,8 @@ end function meters_to_feet
 !===================================================================================================================================
 subroutine cartesian_to_spherical(x,y,z,radius,inclination,azimuth)
 implicit none
-character(len=*),parameter::ident="@(#)M_units::cartesian_to_spherical(3f): convert Cartesian coordinates to ISO polar coordinates"
+character(len=*),parameter::ident_18="&
+&@(#)M_units::cartesian_to_spherical(3f): convert Cartesian coordinates to ISO polar coordinates"
 real,intent(in)  :: x,y,z
 real,intent(out) :: radius,inclination,azimuth
    radius=sqrt(x**2+y**2+z**2)
@@ -825,7 +1011,8 @@ end subroutine cartesian_to_spherical
 !===================================================================================================================================
 subroutine spherical_to_cartesian(radius,inclination,azimuth,x,y,z)
 implicit none
-character(len=*),parameter::ident="@(#)M_units::spherical_to_cartesian(3f): convert spherical coordinates to cartesian coordinates"
+character(len=*),parameter::ident_19="&
+&@(#)M_units::spherical_to_cartesian(3f): convert spherical coordinates to cartesian coordinates"
 real,intent(in) :: radius,inclination,azimuth
 real,intent(out)  :: x,y,z
    if(radius.eq.0)then
@@ -890,7 +1077,7 @@ end subroutine spherical_to_cartesian
 !===================================================================================================================================
 subroutine cartesian_to_polar(x,y,radius,inclination)
 implicit none
-character(len=*),parameter::ident="@(#)M_units::cartesian_to_polar(3f): convert Cartesian coordinates to polar coordinates"
+character(len=*),parameter::ident_20="@(#)M_units::cartesian_to_polar(3f): convert Cartesian coordinates to polar coordinates"
 real,intent(in)  :: x,y
 real,intent(out) :: radius,inclination
    radius=sqrt(x**2+y**2)
@@ -953,7 +1140,7 @@ end subroutine cartesian_to_polar
 !===================================================================================================================================
 subroutine polar_to_cartesian(radius,inclination,x,y)
 implicit none
-character(len=*),parameter::ident="@(#)M_units::polar_to_cartesian(3f): convert polar coordinates to cartesian coordinates"
+character(len=*),parameter::ident_21="@(#)M_units::polar_to_cartesian(3f): convert polar coordinates to cartesian coordinates"
 real,intent(in) :: radius,inclination
 real,intent(out)  :: x,y
    if(radius.eq.0)then
@@ -1116,7 +1303,7 @@ end subroutine polar_to_cartesian
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine atomnum2symbol(atomnum,symbol)
 implicit none
-character(len=*),parameter::ident="@(#)M_units::atomnum2symbol(3f): return element symbol given atomic number"
+character(len=*),parameter::ident_22="@(#)M_units::atomnum2symbol(3f): return element symbol given atomic number"
 integer,intent(in)           :: atomnum
 character(len=2),intent(out) :: symbol
 integer,parameter            :: nelements=109
@@ -1185,7 +1372,7 @@ end subroutine atomnum2symbol
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine symbol2atomnum(symbol,atomnum)
 implicit none
-character(len=*),parameter::ident="@(#)M_units::symbol2atomnum(3f): return atomic number given element symbol name"
+character(len=*),parameter::ident_23="@(#)M_units::symbol2atomnum(3f): return atomic number given element symbol name"
 character(len=2),intent(in) :: symbol
 integer,intent(out)         :: atomnum
 integer,parameter           :: nelements=109
@@ -1269,7 +1456,7 @@ end subroutine symbol2atomnum
 !!     DOUBLEPRECISION   0.45359237000000002
 !===================================================================================================================================
 elemental function pounds_to_kilograms ( pounds )
-character(len=*),parameter::ident="@(#)M_units::pounds_to_kilograms(3f): converts a measurement in pounds to kilograms."
+character(len=*),parameter::ident_24="@(#)M_units::pounds_to_kilograms(3f): converts a measurement in pounds to kilograms."
 class(*),intent(in) :: pounds
    doubleprecision  :: pounds_to_kilograms
    doubleprecision  :: pounds_local
@@ -1319,7 +1506,7 @@ end function pounds_to_kilograms
 !===================================================================================================================================
 elemental function norm_angle_rad_double(ang)
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_25="&
 &@(#)M_units::norm_angle_rad_double(3fp): Return input angle given in radians as doubleprecision angle between 0 and 2pi"
 
 doubleprecision, intent(in) :: ang
@@ -1329,7 +1516,7 @@ end function norm_angle_rad_double
 !===================================================================================================================================
 elemental function norm_angle_rad_real(ang)
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_26="&
 &@(#)M_units::norm_angle_rad_real(3fp): Return input angle given in radians as real angle between 0 and 2pi"
 
 real, intent(in) :: ang
@@ -1409,7 +1596,7 @@ end function norm_angle_rad_real
 !===================================================================================================================================
 elemental function norm_angle_360_double(ang)
 
-character(len=*),parameter::ident="@(#)M_units:: norm_angle_360_double(3fp): Returns angle in degrees between 0 and 360"
+character(len=*),parameter::ident_27="@(#)M_units:: norm_angle_360_double(3fp): Returns angle in degrees between 0 and 360"
 
 doubleprecision,intent(in) :: ang
 doubleprecision            :: norm_angle_360_double
@@ -1418,7 +1605,7 @@ end function norm_angle_360_double
 !===================================================================================================================================
 elemental function norm_angle_360_real(ang)
 
-character(len=*),parameter::ident="@(#)M_units:: norm_angle_360_real(3fp): Returns angle in degrees between 0 and 360"
+character(len=*),parameter::ident_28="@(#)M_units:: norm_angle_360_real(3fp): Returns angle in degrees between 0 and 360"
 
 real,intent(in) :: ang
 real            :: norm_angle_360_real
@@ -1427,12 +1614,315 @@ end function norm_angle_360_real
 !===================================================================================================================================
 elemental function norm_angle_360_integer(ang)
 
-character(len=*),parameter::ident="@(#)M_units:: norm_angle_360_integer(3fp): Returns angle in degrees between 0 and 360"
+character(len=*),parameter::ident_29="@(#)M_units:: norm_angle_360_integer(3fp): Returns angle in degrees between 0 and 360"
 
 integer,intent(in) :: ang
 integer            :: norm_angle_360_integer
    norm_angle_360_integer = ang - dble(floor(ang/360.d0)) * 360.d0
 end function norm_angle_360_integer
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine test_suite_M_units()
+
+!! setup
+   call test_acosd()
+   call test_asind()
+   call test_atan2d()
+   call test_atand()
+   call test_atomnum2symbol()
+   call test_c2f()
+   call test_cartesian_to_polar()
+   call test_cartesian_to_spherical()
+   call test_cosd()
+   call test_d2r_d()
+   call test_d2r_i()
+   call test_d2r_r()
+   call test_f2c()
+   call test_feet_to_meters()
+   call test_meters_to_feet()
+   call test_norm_angle_360_double()
+   call test_norm_angle_360_integer()
+   call test_norm_angle_360_real()
+   call test_norm_angle_rad_double()
+   call test_norm_angle_rad_real()
+   call test_polar_to_cartesian()
+   call test_pounds_to_kilograms()
+   call test_r2d_d()
+   call test_r2d_i()
+   call test_r2d_r()
+   call test_sind()
+   call test_spherical_to_cartesian()
+   call test_symbol2atomnum()
+   call test_tand()
+!! teardown
+contains
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_acosd()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('acosd',msg='')
+   !!call unit_check('acosd', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('acosd',msg='')
+end subroutine test_acosd
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_asind()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('asind',msg='')
+   !!call unit_check('asind', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('asind',msg='')
+end subroutine test_asind
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_atan2d()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('atan2d',msg='')
+   !!call unit_check('atan2d', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('atan2d',msg='')
+end subroutine test_atan2d
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_atand()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('atand',msg='')
+   !!call unit_check('atand', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('atand',msg='')
+end subroutine test_atand
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_atomnum2symbol()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('atomnum2symbol',msg='')
+   !!call unit_check('atomnum2symbol', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('atomnum2symbol',msg='')
+end subroutine test_atomnum2symbol
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_c2f()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('c2f',msg='')
+   !!call unit_check('c2f', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('c2f',msg='')
+end subroutine test_c2f
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_cartesian_to_polar()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('cartesian_to_polar',msg='')
+   !!call unit_check('cartesian_to_polar', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('cartesian_to_polar',msg='')
+end subroutine test_cartesian_to_polar
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_cartesian_to_spherical()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('cartesian_to_spherical',msg='')
+   !!call unit_check('cartesian_to_spherical', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('cartesian_to_spherical',msg='')
+end subroutine test_cartesian_to_spherical
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_cosd()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('cosd',msg='')
+   !!call unit_check('cosd', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('cosd',msg='')
+end subroutine test_cosd
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_d2r_d()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('d2r_d',msg='')
+   !!call unit_check('d2r_d', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('d2r_d',msg='')
+end subroutine test_d2r_d
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_d2r_i()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('d2r_i',msg='')
+   !!call unit_check('d2r_i', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('d2r_i',msg='')
+end subroutine test_d2r_i
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_d2r_r()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('d2r_r',msg='')
+   !!call unit_check('d2r_r', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('d2r_r',msg='')
+end subroutine test_d2r_r
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_f2c()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('f2c',msg='')
+   !!call unit_check('f2c', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('f2c',msg='')
+end subroutine test_f2c
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_feet_to_meters()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('feet_to_meters',msg='')
+   !!call unit_check('feet_to_meters', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('feet_to_meters',msg='')
+end subroutine test_feet_to_meters
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_meters_to_feet()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('meters_to_feet',msg='')
+   !!call unit_check('meters_to_feet', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('meters_to_feet',msg='')
+end subroutine test_meters_to_feet
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_norm_angle_360_double()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('norm_angle_360_double',msg='')
+   !!call unit_check('norm_angle_360_double', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('norm_angle_360_double',msg='')
+end subroutine test_norm_angle_360_double
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_norm_angle_360_integer()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('norm_angle_360_integer',msg='')
+   !!call unit_check('norm_angle_360_integer', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('norm_angle_360_integer',msg='')
+end subroutine test_norm_angle_360_integer
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_norm_angle_360_real()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('norm_angle_360_real',msg='')
+   !!call unit_check('norm_angle_360_real', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('norm_angle_360_real',msg='')
+end subroutine test_norm_angle_360_real
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_norm_angle_rad_double()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('norm_angle_rad_double',msg='')
+   !!call unit_check('norm_angle_rad_double', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('norm_angle_rad_double',msg='')
+end subroutine test_norm_angle_rad_double
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_norm_angle_rad_real()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('norm_angle_rad_real',msg='')
+   !!call unit_check('norm_angle_rad_real', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('norm_angle_rad_real',msg='')
+end subroutine test_norm_angle_rad_real
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_polar_to_cartesian()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('polar_to_cartesian',msg='')
+   !!call unit_check('polar_to_cartesian', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('polar_to_cartesian',msg='')
+end subroutine test_polar_to_cartesian
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_pounds_to_kilograms()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('pounds_to_kilograms',msg='')
+   !!call unit_check('pounds_to_kilograms', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('pounds_to_kilograms',msg='')
+end subroutine test_pounds_to_kilograms
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_r2d_d()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('r2d_d',msg='')
+   !!call unit_check('r2d_d', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('r2d_d',msg='')
+end subroutine test_r2d_d
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_r2d_i()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('r2d_i',msg='')
+   !!call unit_check('r2d_i', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('r2d_i',msg='')
+end subroutine test_r2d_i
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_r2d_r()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('r2d_r',msg='')
+   !!call unit_check('r2d_r', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('r2d_r',msg='')
+end subroutine test_r2d_r
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sind()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('sind',msg='')
+   !!call unit_check('sind', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('sind',msg='')
+end subroutine test_sind
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_spherical_to_cartesian()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('spherical_to_cartesian',msg='')
+   !!call unit_check('spherical_to_cartesian', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('spherical_to_cartesian',msg='')
+end subroutine test_spherical_to_cartesian
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_symbol2atomnum()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('symbol2atomnum',msg='')
+   !!call unit_check('symbol2atomnum', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('symbol2atomnum',msg='')
+end subroutine test_symbol2atomnum
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_tand()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('tand',msg='')
+   !!call unit_check('tand', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('tand',msg='')
+end subroutine test_tand
+!===================================================================================================================================
+end subroutine test_suite_M_units
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================

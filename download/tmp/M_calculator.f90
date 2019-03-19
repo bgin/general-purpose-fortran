@@ -49,7 +49,7 @@
 !!       !compute(1f): line mode calculator program (that calls jucalc(3f))
 !!       !     requires:
 !!       !     c(), juown1()
-!!       use m_calculator, only: jucalc,iclen_calc
+!!       use M_calculator, only: jucalc,iclen_calc
 !!       ! iclen_calc : max length of expression or variable value as a string
 !!       implicit none
 !!       integer,parameter         :: dp=kind(0.0d0)
@@ -99,7 +99,7 @@
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
-module m_calculator
+module M_calculator
 
    use M_journal, only : journal
    use M_IO, only : print_inquire
@@ -124,6 +124,7 @@ module m_calculator
    public :: rgetvalue
    public :: stuff
    public :: stuffa
+   public :: test_suite_M_calculator
 
    integer,parameter                      :: ixyc_calc=50                ! number of variables in $X() and $(Y) array
    integer,parameter                      :: icbuf_calc=20*(iclen_calc/2+1) ! buffer for string as it is expanded
@@ -401,6 +402,7 @@ real(kind=dp),save                     :: rlast=0.0_dp
       enddo BIG
       slast=rlast                                           ! set returned value to last successfully calculated real value
 end subroutine jucalc
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -524,6 +526,7 @@ help_text=[ &
 &'                                                                                ']
    WRITE(*,'(a)')(help_text(i),i=1,size(help_text))
 end subroutine help_funcs
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -644,6 +647,7 @@ integer                   :: iwnchr
       string=dummy
    enddo INFINITE
 end subroutine jupars
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -659,9 +663,9 @@ end subroutine jupars
 !===================================================================================================================================
 subroutine jufuns(wstrng,nchars,ier)
 use M_time,    only : date_to_unix , unix_to_date, fmtdate, now, fmtdate_usage, realtime
-use M_STRINGS, only : matchw, change, modif, delim
-use M_TIME,    only : date_to_julian,day_of_week=>dow, d2o, now
-use M_math,    only : round, dp_accdig
+use M_strings, only : matchw, change, modif, delim
+use M_time,    only : date_to_julian,day_of_week=>dow, d2o, now
+use M_math,    only : round, dp_accdig, ncr
 use M_random,  only : init_random_seed
 implicit doubleprecision (a-h,o-z)
 character(len=*),parameter :: ident=&
@@ -846,7 +850,7 @@ case("abs","aint","anint","ceil","ceiling","floor","frac","int","nint",&
          end select
       endif
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=------------------------------------------------------------
-case("atan2","dim","mod","bessel_jn","bessel_yn","sign","hypot","modulo","scale")
+case("atan2","dim","mod","bessel_jn","bessel_yn","sign","hypot","modulo","scale","ncr")
       if(n.ne.2)then                                                           ! check number of parameters
         mssge='*jufuns* incorrect number of parameters in '//wstrng2(:iend)
         ier=-1
@@ -855,21 +859,17 @@ case("atan2","dim","mod","bessel_jn","bessel_yn","sign","hypot","modulo","scale"
         ier=-1
       else                                                                     ! single numeric argument
          select case (wstrng2(:iend))
-         case("atan2");      fval=  atan2      (  args(1),       args(2)       )
-         case("dim");        fval=  dim        (  args(1),       args(2)       )
-         case("mod");        fval=  mod        (  args(1),       args(2)       )
-         case("modulo");     fval=  modulo     (  args(1),       args(2)       )
-         case("scale");      fval=  scale      (  args(1),       int(args(2))  )
-         case("bessel_jn");  fval=  bessel_jn  (  int(args(1)),  args(2)       )
-         case("bessel_yn");  fval=  bessel_yn  (  int(args(1)),  args(2)       )
-         case("btest")
-            if (btest( int(args(1)), int(args(2)) ) ) then
-               fval=TRUE
-            else
-               fval=FALSE
-            endif
-         case("sign");       fval=  sign       (  args(1),       args(2)       )
-         case("hypot");      fval=  hypot      (  args(1),       args(2)       )
+         case("atan2");      fval=  atan2       ( args(1),       args(2)       )
+         case("dim");        fval=  dim         ( args(1),       args(2)       )
+         case("mod");        fval=  mod         ( args(1),       args(2)       )
+         case("modulo");     fval=  modulo      ( args(1),       args(2)       )
+         case("ncr");        call ncr           ( int(args(1)),  int(args(2)), fval, ierr)
+         case("scale");      fval=  scale       ( args(1),       int(args(2))  )
+         case("bessel_jn");  fval=  bessel_jn   ( int(args(1)),  args(2)       )
+         case("bessel_yn");  fval=  bessel_yn   ( int(args(1)),  args(2)       )
+         case("btest");      fval=  merge(TRUE, FALSE,  btest( int(args(1)),  int(args(2))  ) )
+         case("sign");       fval=  sign        ( args(1),       args(2)       )
+         case("hypot");      fval=  hypot       ( args(1),       args(2)       )
          end select
       endif
 !=======================================================================------------------------------------------------------------
@@ -1790,6 +1790,7 @@ end select
          ier=-1
       end select
 end subroutine jufuns
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -1825,6 +1826,7 @@ character(len=*),parameter :: ident=&
          ier=-1
       endif
 end subroutine stufftok
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -1899,6 +1901,7 @@ integer,intent(in)                    :: mx        ! up to mx par(i) will be ext
    write(mssge,'(a,i4,a)')'more than ',mx,' arguments not allowed'
    ier=-1
 end subroutine juargs
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -1978,6 +1981,7 @@ character(len=*),parameter :: ident=&
       enddo
       call jurtoa(value,string,nchar,ier) ! successfully completed. convert sum of terms (value) to a string and return
 end subroutine jucals
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -2108,6 +2112,7 @@ character(len=*),parameter :: ident=&
          wstrng=dummy
       enddo INFINITE
 end subroutine jupows
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -2212,6 +2217,7 @@ character(len=*),parameter :: ident=&
          ip=iright+1
       enddo
 end subroutine jufacs
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -2310,6 +2316,7 @@ integer,intent(out)         :: ierr
       rval8=value(indx)
    endif
 end subroutine juator
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -2419,6 +2426,7 @@ character(len=*),parameter :: ident=&
       mssge='cannot represent value using (g20.13e3) format '
       ierr=-1
 end subroutine jurtoa
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -2668,6 +2676,7 @@ character(len=*),parameter :: ident=&
      endif
    endif
 end subroutine jusqes
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -2745,6 +2754,7 @@ integer,intent(out)              :: ier
    enddo
    mssge='error 02 in jubous'
 end subroutine jubous
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -2795,6 +2805,7 @@ integer                      :: ier
       ix(istart)=newnam(1:nchars)
    endif
 end subroutine juaddr
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -2859,6 +2870,7 @@ character(len=*),parameter :: ident=&
          ix2(istart)=newnam(1:nchars)
       endif
 end subroutine juadds
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -2909,6 +2921,7 @@ integer,intent(out)          :: ierr
       mssge=values(index)
    endif
 end subroutine given_name_get_stringvalue
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -2962,6 +2975,7 @@ character(len=*),intent(in) :: varnam
       getvalue=value(index)
    endif
 end function getvalue
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -3005,6 +3019,7 @@ implicit none
 character(len=*),intent(in) :: varnam
    igetvalue=int(getvalue(varnam))
 end function igetvalue
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -3048,6 +3063,7 @@ implicit none
 character(len=*),intent(in) :: varnam
    rgetvalue=real(getvalue(varnam))
 end function rgetvalue
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -3075,6 +3091,7 @@ character(len=*),parameter :: ident=&
       call double_stuff(varnam0,dble(int4),ioflag)
    endif
 end subroutine integer_stuff
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 !#----------------------------------------------------------------------------------------------------------------------------------
 !#()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
 !#----------------------------------------------------------------------------------------------------------------------------------
@@ -3102,6 +3119,7 @@ character(len=*),parameter :: ident=&
       call double_stuff(varnam0,dble(val4),ioflag)
    endif
 end subroutine real_stuff
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 !#----------------------------------------------------------------------------------------------------------------------------------
 !#()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
 !#----------------------------------------------------------------------------------------------------------------------------------
@@ -3162,6 +3180,7 @@ character(len=*),intent(in),optional    :: ioflag
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine double_stuff
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -3246,10 +3265,151 @@ character(len=*),intent(in)  :: ioflag
    valuer(index)=max(ilen,1)
 !-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine stuffa
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
-end module m_calculator
+subroutine test_suite_M_calculator
+
+!!call test_jucalc()
+!!call test_juaddr()
+!!call test_juadds()
+!!call test_jubous()
+!!call test_jucals()
+!!call test_jusqes()
+
+!!call test_juator()
+!!call test_jurtoa()
+
+!!call test_getvalue()
+!!call test_igetvalue()
+!!call test_rgetvalue()
+
+!!call test_stuffa()
+!!call test_integer_stuff()
+!!call test_real_stuff()
+!!call test_double_stuff()
+
+!!call test_c()
+!!call test_juown1()
+
+end subroutine test_suite_M_calculator
+!-----------------------------------------------------------------------------------------------------------------------------------
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!-----------------------------------------------------------------------------------------------------------------------------------
+end module M_calculator
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine test_suite_M_calculator()
+
+!! setup
+   call test_double_stuff()
+   call test_getvalue()
+   call test_igetvalue()
+   call test_integer_stuff()
+   call test_jucalc()
+   call test_real_stuff()
+   call test_rgetvalue()
+   call test_stuffa()
+   call test_c()
+   call test_juown1()
+contains
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_double_stuff()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('double_stuff',msg='')
+   !!call unit_check('double_stuff', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('double_stuff',msg='')
+end subroutine test_double_stuff
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_getvalue()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('getvalue',msg='')
+   !!call unit_check('getvalue', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('getvalue',msg='')
+end subroutine test_getvalue
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_igetvalue()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('igetvalue',msg='')
+   !!call unit_check('igetvalue', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('igetvalue',msg='')
+end subroutine test_igetvalue
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_integer_stuff()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('integer_stuff',msg='')
+   !!call unit_check('integer_stuff', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('integer_stuff',msg='')
+end subroutine test_integer_stuff
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_jucalc()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('jucalc',msg='')
+   !!call unit_check('jucalc', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('jucalc',msg='')
+end subroutine test_jucalc
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_real_stuff()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('real_stuff',msg='')
+   !!call unit_check('real_stuff', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('real_stuff',msg='')
+end subroutine test_real_stuff
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_rgetvalue()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('rgetvalue',msg='')
+   !!call unit_check('rgetvalue', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('rgetvalue',msg='')
+end subroutine test_rgetvalue
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_stuffa()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('stuffa',msg='')
+   !!call unit_check('stuffa', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('stuffa',msg='')
+end subroutine test_stuffa
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_c()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('c',msg='')
+   !!call unit_check('c', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('c',msg='')
+end subroutine test_c
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_juown1()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('juown1',msg='')
+   !!call unit_check('juown1', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('juown1',msg='')
+end subroutine test_juown1
+!===================================================================================================================================
+end subroutine test_suite_M_calculator
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -3282,7 +3442,7 @@ subroutine juown1(func,iflen,args,iargstp,n,fval,ctmp,ier)
 !         set to  0 if a number is returned
 !         set to  2 if a string is returned
 !
-      use m_calculator, only : x, y, values, valuer
+      use M_calculator, only : x, y, values, valuer
       character(len=*) func
       character(len=*) ctmp
 
@@ -3306,6 +3466,7 @@ subroutine juown1(func,iflen,args,iargstp,n,fval,ctmp,ier)
          endif
       enddo
 end subroutine juown1
+
 !ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 real function c(fval,n)
 !     a built-in calculator function called c must be satisfied.
@@ -3318,4 +3479,4 @@ end function c
 end module M_noown
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!-----------------------------------------------------------------------------------------------------------------------------------
+!-----------------------------k------------------------------------------------------------------------------------------------------

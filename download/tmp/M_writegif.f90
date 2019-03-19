@@ -73,10 +73,13 @@
 module M_writegif
 implicit none         !  Check all declarations
 
-character(len=*),parameter::ident="@(#)This module can write a GIF file in GIF89 format from raster data"
+character(len=*),parameter::ident_1="@(#)This module can write a GIF file in GIF89 format from raster data"
 
 private               !  bin_io is used private, no transfer to main program
 public  :: writegif   !  Writes GIF89 image, given pixel array and color map
+
+public test_suite_M_writegif
+
 private :: giflzw, slicewrite, InitTable, flushbuffer
 integer, parameter, private     :: Bufend=260
 character(len=Bufend), private  :: buf
@@ -314,4 +317,27 @@ integer, intent(in), optional           :: Transparent ! Optional
   close(unit=F_unit)
   return
 end subroutine writegif
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine test_suite_M_writegif()
+
+!! setup
+   call test_writegif()
+!! teardown
+contains
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_writegif()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('writegif',msg='')
+   !!call unit_check('writegif', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('writegif',msg='')
+end subroutine test_writegif
+!===================================================================================================================================
+end subroutine test_suite_M_writegif
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 end module M_writegif

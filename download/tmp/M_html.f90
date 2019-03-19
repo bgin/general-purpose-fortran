@@ -20,6 +20,7 @@ private
 public h_open
 public h_close
 public h_array
+public test_suite_M_html
 CONTAINS
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -63,7 +64,7 @@ subroutine h_array(iounit,array)
 use M_journal, only : journal
 implicit none
 
-character(len=*),parameter::ident="@(#)M_html::h_array(3f):write table from array"
+character(len=*),parameter::ident_1="@(#)M_html::h_array(3f):write table from array"
 
 integer,intent(in) :: iounit
 real,intent(in)    :: array(:,:)
@@ -122,7 +123,7 @@ subroutine h_close(iounit)
 use M_journal, only : journal
 implicit none
 
-character(len=*),parameter::ident="@(#)M_html::h_close(3f):close HTML file"
+character(len=*),parameter::ident_2="@(#)M_html::h_close(3f):close HTML file"
 
 integer,intent(in) :: iounit
    write(iounit,*)'</body>'
@@ -174,7 +175,7 @@ subroutine h_open(iounit,filename)
 use M_journal, only : journal
 implicit none
 
-character(len=*),parameter::ident="@(#)M_html::h_open(3f):open HTML file"
+character(len=*),parameter::ident_3="@(#)M_html::h_open(3f):open HTML file"
 
 character(len=*),intent(in) :: filename
 integer,intent(in)          :: iounit
@@ -182,6 +183,46 @@ end subroutine h_open
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
+subroutine test_suite_M_html()
+
+!! setup
+   call test_h_array()
+   call test_h_close()
+   call test_h_open()
+!! teardown
+contains
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_h_array()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('h_array',msg='')
+   !!call unit_check('h_array', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('h_array',msg='')
+end subroutine test_h_array
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_h_close()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('h_close',msg='')
+   !!call unit_check('h_close', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('h_close',msg='')
+end subroutine test_h_close
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_h_open()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('h_open',msg='')
+   !!call unit_check('h_open', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('h_open',msg='')
+end subroutine test_h_open
+!===================================================================================================================================
+end subroutine test_suite_M_html
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 END MODULE M_html
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!

@@ -9,52 +9,55 @@ private
 private stderr
 private upper
 !-----------------------------------------------------------------------------------------------------------------------------------
-!EPOCH TIME (UT starts at 0000 on 1 Jan. 1970)
+! UNIT TESTS
+   public test_suite_M_string
+
+! EPOCH TIME (UT starts at 0000 on 1 Jan. 1970)
    public date_to_unix   !(dat,UNIXTIME,IERR)                 ! Convert date array to Unix Time
    public unix_to_date   !(unixtime,DAT,IERR)                 ! Convert Unix Time to date array
    public d2u            !(dat) result (UNIXTIME)             ! Convert date array to Unix Time
    public u2d            !(unixtime) result (DAT)             ! Convert Unix Time to date array
-!JULIAN
+! JULIAN
    public julian_to_date !(julian,DAT,IERR)                   ! Convert Julian Date to date array
    public date_to_julian !(dat,JULIAN,IERR)                   ! Convert date array to Julian Date
    public d2j            !(dat) result (JULIAN)               ! Convert date array to Julian Date
    public j2d            !(julian) result (DAT)               ! Convert Julian Date to date array
-!DAY OF WEEK
+! DAY OF WEEK
    public dow            !(dat,[WEEKDAY],[DAY],IERR)          ! Convert date array to day of the week as number(Mon=1) and name
-!WEEK OF YEAR
+! WEEK OF YEAR
    public d2w  !(dat,ISO_YEAR,ISO_WEEK,ISO_WEEKDAY,ISO_NAME)  ! Calculate iso-8601 Week-numbering year date yyyy-Www-d
    public w2d  !(iso_year,iso_week,iso_weekday,DAT)           ! given iso-8601 Week-numbering year date yyyy-Www-d calculate date
-!ORDINAL DAY
+! ORDINAL DAY
    public d2o            !(dat) result(ORDINAL)               ! given date array return ordinal day of year, Jan 1st=1
    public o2d            !(ordinal) result(DAT)               ! given ordinal day of year return date array, Jan 1st=1
    public ordinal_to_date!(year,ordinal_day,DAT)              ! given ordinal day of year return date array, Jan 1st=1
-!PRINTING DATES
+! PRINTING DATES
    public fmtdate        !(dat,format) result (TIMESTR)       ! Convert date array to string using format
    public fmtdate_usage  !(indent)                            ! display macros recognized by fmtdate(3f)
    public now            !(format) result (NOW)               ! return string representing current time given format
    public box_month      !(dat,CALEN)                         ! print specified month into character array
-!PRINTING DURATIONS
+! PRINTING DURATIONS
    public sec2days       !(seconds) result (dhms)             ! converts seconds to string D-HH:MM:SS
    public days2sec       !(str) result (seconds)              ! converts string D-HH:MM:SS to seconds from small to large
-!MONTH NAME
+! MONTH NAME
    public mo2v           !(month_name) result (MONTH_NUMBER)  ! given month name return month number
    public v2mo           !(month_number) result (MONTH_NAME)  ! given month number return month name
    public mo2d           !(month_name) result (DAT)           ! return date array for first day of given month name in current year
-!ASTROLOGICAL
+! ASTROLOGICAL
    public easter         !(year,month,day)                    ! calculate month and day Easter falls on for given year
    public moon_fullness  !(datin) result(FULLNESS)            ! percentage of moon phase from new to full
    public phase_of_moon  !(datin) result(PHASE)               ! return name for phase of moon for given date
    public ephemeris      !(dat,planet,DD,DM,DC,AH,AM)         ! ephemeris position of planets for adjusting an equatorial telescope
-!READING DATES
+! READING DATES
    public guessdate      !(anot,dat)                          ! Converts a date string to a date array, in various formats
-!C INTERFACE
+! C INTERFACE
    public system_sleep   !(wait_seconds)                      ! Call sleep(3c)
    private call_sleep
    private call_usleep
 !-----------------------------------------------------------------------------------------------------------------------------------
    integer,parameter,public       :: realtime=kind(0.0d0)     ! type for 1 epoch time and julian days
 !-----------------------------------------------------------------------------------------------------------------------------------
-!INTERNAL
+! INTERNAL
    real(kind=realtime),parameter,private :: SECDAY=86400.0d0  ! 24:00:00 hours as seconds
 !-----------------------------------------------------------------------------------------------------------------------------------
 !  integer,parameter       :: igreg_1582=15+31*(10+12*1582)   ! ASSUMES: Gregorian Calendar was adopted 15 Oct. 1582 (588829)
@@ -135,7 +138,8 @@ subroutine date_to_julian(dat,julian,ierr)
 ! * Julian Date starts at noon; while Civil Calendar date starts at midnight
 !-----------------------------------------------------------------------------------------------------------------------------------
 
-character(len=*),parameter::ident="@(#)M_time::date_to_julian(3f): Converts proleptic Gregorian DAT date-time array to Julian Date"
+character(len=*),parameter::ident_1="&
+&@(#)M_time::date_to_julian(3f): Converts proleptic Gregorian DAT date-time array to Julian Date"
 
 integer,intent(in)               :: dat(8)   ! array like returned by DATE_AND_TIME(3f)
 real(kind=realtime),intent(out)  :: julian   ! Julian Date (non-negative, but may be non-integer)
@@ -178,6 +182,37 @@ integer,intent(out)              :: ierr     ! Error return: 0 =successful execu
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine date_to_julian
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_date_to_julian()
+use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
+!!use M_time,    only : date_to_julian, now, fmtdate, date_to_unix, realtime
+implicit none
+real(kind=realtime) :: julian
+integer             :: ierr
+
+   call unit_check_start('date_to_julian',msg='Checking Julian Date') ! assume if got here passed checks
+
+   call date_to_julian( [1970, 1, 1,0, 0,0,0,0] ,julian,ierr)
+   call unit_check('date_to_julian',abs(julian-2440587.5).lt.0.00001 ,msg="Dec 31st, 1969  8:00(2440587.5)")
+
+   call date_to_julian( [1995, 1, 1,0,12,0,0,0] ,julian,ierr)
+   call unit_check('date_to_julian',int(julian).eq.2449719 ,msg="Jan  1st, 1995 12:00(2449719)")
+
+   call date_to_julian( [1995,10,19,0,12,0,0,0] ,julian,ierr)
+   call unit_check('date_to_julian',int(julian).eq.2450010, msg="Oct 19th, 1995 12:00(2450010)")
+
+   call date_to_julian( [1995,12,31,0,12,0,0,0] ,julian,ierr)
+   call unit_check('date_to_julian',int(julian).eq.2450083, msg="Dec 31st, 1995 12:00(2450083)")
+
+   call date_to_julian( [1996, 1, 1,0,12,0,0,0] ,julian,ierr)
+   call unit_check('date_to_julian',int(julian).eq.2450084, msg="Jan  1st, 1996 12:00(2450084)")
+
+   call date_to_julian( [1996,12,31,0,12,0,0,0] ,julian,ierr)
+   call unit_check('date_to_julian',int(julian).eq.2450449, msg="Dec 31th, 1996 12:00(2450449)")
+
+   call unit_check_done('date_to_julian')
+
+end subroutine test_date_to_julian
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -234,13 +269,13 @@ end subroutine date_to_julian
 !!
 !!    results:
 !!
-!!     Sample Date=Tuesday, July 19th, 2016 02:00:00 PM
-!!     Day Before =Monday, July 18th, 2016 02:00:00 PM
-!!     Day After  =Wednesday, July 20th, 2016 02:00:00 PM
+!!     Sample Date=Tuesday, July 19th, 2016 11:05:45 AM UTC-04:00
+!!     Day Before =Monday, July 18th, 2016 11:05:45 AM UTC-04:00
+!!     Day After  =Wednesday, July 20th, 2016 11:05:45 AM UTC-04:00
 !===================================================================================================================================
 subroutine julian_to_date(julian,dat,ierr)
 
-character(len=*),parameter::ident="@(#)M_time::julian_to_date(3f): Converts Julian Date to DAT date-time array"
+character(len=*),parameter::ident_2="@(#)M_time::julian_to_date(3f): Converts Julian Date to DAT date-time array"
 
 real(kind=realtime),intent(in)   :: julian            ! Julian Date (non-negative)
 integer,intent(out)              :: dat(8)
@@ -312,6 +347,38 @@ integer,intent(out)              :: ierr              ! 0 for successful executi
    ierr=0
 
 end subroutine julian_to_date
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_julian_to_date()
+use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
+!!use M_time, only : julian_to_date, fmtdate, realtime
+   implicit none
+   real(kind=realtime)          :: juliandate
+   integer                      :: dat(8)
+   integer                      :: ierr
+   character(len=:),allocatable :: expected
+
+   call unit_check_start('julian_to_date')
+
+   juliandate=2457589.129d0                 ! set sample Julian Date
+   call julian_to_date(juliandate,dat,ierr) ! create DAT array for this date
+   expected='Tuesday, July 19th, 2016 11:05:45 AM'
+   expected='2016-07-19 11:05:45'
+   write(*,*)fmtdate(dat,'year-month-day hour:minute:second')
+   call unit_check('julian_to_date',fmtdate(dat,'year-month-day hour:minute:second').eq.expected,msg=msg(juliandate,'==>',expected))
+
+   call julian_to_date(juliandate-1.0d0,dat,ierr) ! go back one day
+   expected='Monday, July 18th, 2016 11:05:45 AM'
+   expected='2016-07-18 11:05:45'
+   call unit_check('julian_to_date',fmtdate(dat,'year-month-day hour:minute:second').eq.expected,msg=msg(juliandate,'==>',expected))
+
+   call julian_to_date(juliandate+1.0d0,dat,ierr) ! go forward one day
+   expected='Wednesday, July 20th, 2016 11:05:45 AM'
+   expected='2016-07-20 11:05:45'
+   call unit_check('julian_to_date',fmtdate(dat,'year-month-day hour:minute:second').eq.expected,msg=msg(juliandate,'==>',expected))
+
+   call unit_check_done('julian_to_date')
+
+end subroutine test_julian_to_date
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -366,7 +433,7 @@ end subroutine julian_to_date
 !===================================================================================================================================
 subroutine date_to_unix(dat,unixtime,ierr)
 
-character(len=*),parameter::ident="@(#)M_time::date_to_unix(3f): Convert DAT date-time array to Unix Epoch Time"
+character(len=*),parameter::ident_3="@(#)M_time::date_to_unix(3f): Convert DAT date-time array to Unix Epoch Time"
 
 integer,intent(in)              :: dat(8)       ! date time array similar to that returned by DATE_AND_TIME
 real(kind=realtime),intent(out) :: unixtime     ! Unix time (seconds)
@@ -385,6 +452,20 @@ endif
    if(ierr.ne.0) return                               ! Error
    unixtime=(julian-julian_at_epoch)*secday
 end subroutine date_to_unix
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_date_to_unix
+use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
+real(kind=realtime)              :: unixtime
+integer                          :: ierr
+
+call unit_check_start('date_to_unix')
+
+call date_to_unix([2017,03,29,-240,01,46,47,0],unixtime,ierr)
+call unit_check('d2u',abs(unixtime-1490766407).lt.0.001 ,msg=msg(d2u([2017,03,29,-240,01,46,47,0]) ))
+
+call unit_check_done('date_to_unix')
+
+end subroutine test_date_to_unix
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -446,7 +527,7 @@ end subroutine date_to_unix
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine unix_to_date(unixtime,dat,ierr)
 
-character(len=*),parameter::ident="@(#)M_time::unix_to_date(3f): Converts Unix Time to DAT date-time array"
+character(len=*),parameter::ident_4="@(#)M_time::unix_to_date(3f): Converts Unix Time to DAT date-time array"
 
 class(*),intent(in)              :: unixtime                            ! Unix time (seconds)
 integer,intent(out)              :: dat(8)                              ! date and time array
@@ -472,6 +553,12 @@ integer,intent(out)              :: ierr                                ! 0 for 
    call julian_to_date(julian,dat,ierr)                           ! calculate date-time array from Julian Date
    !dat(4)=get_timezone()                                          ! need to get time zone
 end subroutine unix_to_date
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_unix_to_date
+use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
+call unit_check_start('unix_to_date')
+call unit_check_done('unix_to_date')
+end subroutine test_unix_to_date
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -541,7 +628,7 @@ end subroutine unix_to_date
 !===================================================================================================================================
 function d2o(dat) result (ordinal)
 
-character(len=*),parameter::ident="@(#)M_time::d2o(3f): Converts DAT date-time array to Ordinal day"
+character(len=*),parameter::ident_5="@(#)M_time::d2o(3f): Converts DAT date-time array to Ordinal day"
 
 ! JSU 2015-12-13
 integer,intent(in)         :: dat(8)                  ! date time array similar to that returned by DATE_AND_TIME
@@ -558,6 +645,34 @@ integer                    :: ordinal                 ! the returned number of d
       ordinal=int((unixtime-unix_first_day)/secday)+1
    endif
 end function d2o
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_d2o()
+use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
+!!use M_time, only : d2o
+implicit none
+integer                      :: iday,iyear,omonth,oday,rday
+integer                      :: i,dat(8)
+character(len=40),parameter  :: tests(*)=[ &
+   'ordinal  year  month  month_day  ',  &
+   '100      2004  4      9          ',  &
+   '100      2005  4      10         ',  &
+   '100      2006  4      10         ',  &
+   '100      2007  4      10         ',  &
+   '100      2008  4      9          ',  &
+   '100      2016  4      9          ']
+
+   call unit_check_start('d2o')
+
+    do i=2,size(tests)
+       read(tests(i),*)iday,iyear,omonth,oday
+       dat=o2d(iday,iyear)
+       rday=d2o(dat)
+       call unit_check('d2o',iday.eq.rday,msg=tests(i))
+    enddo
+
+   call unit_check_done('d2o')
+
+end subroutine test_d2o
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -608,7 +723,7 @@ end function d2o
 subroutine ordinal_to_date(yyyy, ddd, dat)
 implicit none
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_6="&
 &@(#)M_time::ordinal_to_date(3f): when given a valid year and day of the year returns the DAT array for the date"
 
 integer, intent(in)   :: yyyy
@@ -653,6 +768,33 @@ integer,intent(out)   :: dat(8)
    endif
 
 end subroutine ordinal_to_date
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_ordinal_to_date()
+use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
+!!use M_time, only : o2d, ordinal_to_date, d2o
+implicit none
+integer                      :: iday,iyear,omonth,oday,rday
+integer                      :: i,dat(8)
+character(len=40),parameter  :: tests(*)=[ &
+   'ordinal  year  month  month_day  ',  &
+   '100      2004  4      9          ',  &
+   '100      2005  4      10         ',  &
+   '100      2006  4      10         ',  &
+   '100      2007  4      10         ',  &
+   '100      2008  4      9          ',  &
+   '100      2016  4      9          ']
+
+   call unit_check_start('ordinal_to_date')
+
+   do i=2,size(tests)
+      read(tests(i),*)iday,iyear,omonth,oday
+      call ordinal_to_date(iyear,iday,dat)
+      call unit_check('ordinal_to_date',dat(2).eq.omonth.and.dat(3).eq.oday,msg=msg('year',iyear,'ordinal',iday))
+   enddo
+
+   call unit_check_done('ordinal_to_date')
+
+end subroutine test_ordinal_to_date
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -710,7 +852,7 @@ end subroutine ordinal_to_date
 !===================================================================================================================================
 function o2d(ordinal,year) result (dat)
 
-character(len=*),parameter::ident="@(#)M_time::o2d(3f): Converts ordinal day to DAT date-time array"
+character(len=*),parameter::ident_7="@(#)M_time::o2d(3f): Converts ordinal day to DAT date-time array"
 
 integer                    :: dat(8)                  ! date time array similar to that returned by DATE_AND_TIME
 integer,intent(in)         :: ordinal                 ! the returned number of days
@@ -731,6 +873,33 @@ integer,optional           :: year
       dat=u2d(unixtime)
    endif
 end function o2d
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_o2d()
+use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
+!!use M_time, only : o2d, ordinal_to_date, d2o
+implicit none
+integer                      :: iday,iyear,omonth,oday,rday
+integer                      :: i,dat(8)
+character(len=40),parameter  :: tests(*)=[ &
+   'ordinal  year  month  month_day  ',  &
+   '100      2004  4      9          ',  &
+   '100      2005  4      10         ',  &
+   '100      2006  4      10         ',  &
+   '100      2007  4      10         ',  &
+   '100      2008  4      9          ',  &
+   '100      2016  4      9          ']
+
+  call unit_check_start('o2d')
+
+   do i=2,size(tests)
+      read(tests(i),*)iday,iyear,omonth,oday
+      dat=o2d(iday,iyear)
+      call unit_check('o2d',dat(1).eq.iyear.and.dat(2).eq.omonth.and.dat(3).eq.oday,msg=tests(i))
+   enddo
+
+   call unit_check_done('o2d')
+
+end subroutine test_o2d
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -786,7 +955,7 @@ end function o2d
 !===================================================================================================================================
 function v2mo(imonth) result(month_name)
 
-character(len=*),parameter::ident="@(#)M_time::v2mo(3f): returns the month name of a Common month number"
+character(len=*),parameter::ident_8="@(#)M_time::v2mo(3f): returns the month name of a Common month number"
 
 ! JSU 2015-12-13
 character(len=:),allocatable :: month_name                                        ! string containing month name or abbreviation.
@@ -801,6 +970,12 @@ integer,intent(in)           :: imonth                                          
    end select
 
 end function v2mo
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_v2mo
+use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
+call unit_check_start('v2mo')
+call unit_check_done('v2mo')
+end subroutine test_v2mo
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -841,7 +1016,7 @@ end function v2mo
 !===================================================================================================================================
 function mo2d(month_name) result (dat)
 
-character(len=*),parameter::ident="@(#)M_time::mo2d(3f): month name to DAT date-time array for 1st of that month in current year"
+character(len=*),parameter::ident_9="@(#)M_time::mo2d(3f): month name to DAT date-time array for 1st of that month in current year"
 
 integer                     :: dat(8)
 character(len=*),intent(in) :: month_name
@@ -857,6 +1032,12 @@ character(len=*),intent(in) :: month_name
    dat(7)=0 ! set seconds to zero
    dat(8)=0 ! set milliseconds to zero
 end function mo2d
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mo2d
+use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
+call unit_check_start('mo2d')
+call unit_check_done('mo2d')
+end subroutine test_mo2d
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -908,7 +1089,7 @@ end function mo2d
 !===================================================================================================================================
 function mo2v(month_name) result(imonth)
 
-character(len=*),parameter::ident="@(#)M_time::mo2v(3f): given month name return month number (1-12) of that month"
+character(len=*),parameter::ident_10="@(#)M_time::mo2v(3f): given month name return month number (1-12) of that month"
 
 ! JSU 2015-12-13
 character(len=*),intent(in):: month_name   ! string containing month name or abbreviation.
@@ -939,6 +1120,33 @@ integer                    :: imonth       ! the number of the month(1-12), or -
      end select
   end select FIND
 end function mo2v
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mo2v()
+use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
+!!use M_time,     only: mo2v
+
+call unit_check_start('mo2v')
+
+call unit_check('mo2v', mo2v('jan')       .eq.  1   ,msg='Check January')
+call unit_check('mo2v', mo2v('Feb')       .eq.  2   ,msg='Check Febuary')
+call unit_check('mo2v', mo2v('March')     .eq.  3   ,msg='Check March')
+call unit_check('mo2v', mo2v('APR')       .eq.  4   ,msg='Check April')
+call unit_check('mo2v', mo2v('may')       .eq.  5   ,msg='Check May')
+call unit_check('mo2v', mo2v('jun')       .eq.  6   ,msg='Check Jun')
+call unit_check('mo2v', mo2v('july')      .eq.  7   ,msg='Check July')
+call unit_check('mo2v', mo2v('Aug')       .eq.  8   ,msg='Check August')
+call unit_check('mo2v', mo2v('Sept')      .eq.  9   ,msg='Check September')
+call unit_check('mo2v', mo2v('Oct')       .eq.  10  ,msg='Check October')
+call unit_check('mo2v', mo2v('Nov')       .eq.  11  ,msg='Check November')
+call unit_check('mo2v', mo2v('December')  .eq.  12  ,msg='Check December')
+call unit_check('mo2v', mo2v('jax')       .eq.  1   ,msg='Check "jax"')
+call unit_check('mo2v', mo2v('ja')        .eq.  1   ,msg='Check "ja"')
+call unit_check('mo2v', mo2v('j')         .eq. -1   ,msg='Check "j"')
+call unit_check('mo2v', mo2v('')          .eq. -1   ,msg='Check ""')
+
+call unit_check_done('mo2v') ! assume if got here passed checks
+
+end subroutine test_mo2v
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -991,7 +1199,7 @@ end function mo2v
 !===================================================================================================================================
 function now(format)
 
-character(len=*),parameter::ident="@(#)M_time::now(3f): return string representing current time given format"
+character(len=*),parameter::ident_11="@(#)M_time::now(3f): return string representing current time given format"
 
 ! JSU 2015-10-24
 character(len=*),intent(in),optional :: format
@@ -1005,6 +1213,12 @@ character(len=:),allocatable         :: now
       now=trim(fmtdate(values))
    endif
 end function now
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_now
+use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
+call unit_check_start('now')
+call unit_check_done('now')
+end subroutine test_now
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -1069,7 +1283,7 @@ end function now
 !===================================================================================================================================
 function fmtdate(values,format) RESULT (timestr)
 
-character(len=*),parameter::ident="@(#)M_time::fmtdate(3f): given DAT date-time array return date as string using format"
+character(len=*),parameter::ident_12="@(#)M_time::fmtdate(3f): given DAT date-time array return date as string using format"
 
 ! JSU 2015-10-24
 integer,dimension(8),intent(in)      :: values    ! numeric time values as DATE_AND_TIME(3f) intrinsic returns
@@ -1318,6 +1532,57 @@ character(len=:),allocatable         :: timestr
    enddo
    timestr=trim(text)
 end function fmtdate
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_fmtdate
+use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
+!!use M_time, only: guessdate, fmtdate
+implicit none
+character(len=80)  :: date1
+character(len=80)  :: date2
+character(len=80)  :: iso_week_date
+character(len=132) :: comment
+character(len=372),allocatable :: line(:)
+integer            :: dat(8)
+integer            :: i
+! the data file with dates to read and expected answers and comments
+line=[ character(len=372) :: &
+& ' "Sat 1 Jan 2005",  "2005-01-01", "2004-W53-6", " " ', &
+& ' "Sun 2 Jan 2005",  "2005-01-02", "2004-W53-7", " " ', &
+& ' "Sat 31 Dec 2005", "2005-12-31", "2005-W52-6", " " ', &
+& ' "Mon 1 Jan 2007",  "2007-01-01", "2007-W01-1", "Both years 2007 start with the same day." ', &
+& ' "Sun 30 Dec 2007", "2007-12-30", "2007-W52-7", " " ', &
+& ' "Mon 31 Dec 2007", "2007-12-31", "2008-W01-1", " " ', &
+& ' "Tue 1 Jan 2008",  "2008-01-01", "2008-W01-2", &
+& "Gregorian year 2008 is a leap year. ISO year 2008 is 2 days shorter: 1 day longer at the start,  3 days shorter at the end." ', &
+& ' "Sun 28 Dec 2008", "2008-12-28", "2008-W52-7", " ISO year 2009 begins three days before the end of Gregorian 2008." ', &
+& ' "Mon 29 Dec 2008", "2008-12-29", "2009-W01-1", " " ', &
+& ' "Tue 30 Dec 2008", "2008-12-30", "2009-W01-2", " " ', &
+& ' "Wed 31 Dec 2008", "2008-12-31", "2009-W01-3", " " ', &
+& ' "Thu 1 Jan 2009",  "2009-01-01", "2009-W01-4", " " ', &
+& ' "Thu 31 Dec 2009", "2009-12-31", "2009-W53-4", "ISO year 2009 has 53 weeks and ends three days into Gregorian year 2010." ', &
+& ' "Fri 1 Jan 2010",  "2010-01-01", "2009-W53-5", " " ', &
+& ' "Sat 2 Jan 2010",  "2010-01-02", "2009-W53-6", " " ', &
+& ' "Sun 3 Jan 2010",  "2010-01-03", "2009-W53-7", " " ', &
+&' ' ]
+
+call unit_check_start('fmtdate')
+
+do i=1,size(line)-1
+   read(line(i),*)date1,date2,iso_week_date,comment
+   if(unit_check_level.gt.0)then
+      call unit_check_msg('fmtdate','GIVEN:'//trim(date1)//' '//trim(comment))
+   endif
+
+   call guessdate(date1,dat)                                         ! convert date string to DAT
+   call unit_check('fmtdate',fmtdate(dat,'year-month-day').eq.trim(date2),msg=msg(fmtdate(dat,'year-month-day')))
+
+   ! convert DAT to ISO week date, all generated dates should match ISO week date
+   call unit_check('fmtdate',fmtdate(dat,"%I").eq.iso_week_date, msg=iso_week_date)
+enddo
+
+call unit_check_done('fmtdate')
+
+end subroutine test_fmtdate
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -1454,7 +1719,7 @@ end function fmtdate
 !===================================================================================================================================
 subroutine fmtdate_usage(indent)
 
-character(len=*),parameter::ident="@(#)M_time::fmtdate_usage(3f): display macros recognized by fmtdate(3f)"
+character(len=*),parameter::ident_13="@(#)M_time::fmtdate_usage(3f): display macros recognized by fmtdate(3f)"
 
 ! JSU 2015-10-24
 integer,intent(in),optional       :: indent
@@ -1575,6 +1840,12 @@ end subroutine fmtdate_usage
 !        -      (hyphen) do not pad the field
 !        _      (underscore) pad with spaces
 !        0      (zero) pad with zeros
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_fmtdate_usage
+use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
+call unit_check_start('fmtdate_usage')
+call unit_check_done('fmtdate_usage')
+end subroutine test_fmtdate_usage
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -1665,7 +1936,7 @@ end subroutine fmtdate_usage
 subroutine guessdate(datestring,dat,ier)
 use M_strings, only: string_to_values, s2v, split, v2s
 
-character(len=*),parameter::ident="@(#)M_time::guessdate(3f): Guess format of a date string to create a DAT date-time array"
+character(len=*),parameter::ident_14="@(#)M_time::guessdate(3f): Guess format of a date string to create a DAT date-time array"
 
 ! based on - JRH 1991-03-19
 ! modified - JSU, 20160729
@@ -1931,6 +2202,59 @@ integer,optional                  :: ier
    dat(8)=imill
    if(present(ier))ier=ier_local
 end subroutine guessdate
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_guessdate
+use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
+!!use M_time, only: guessdate, w2d, d2w, fmtdate
+implicit none
+character(len=80)  :: date1
+character(len=80)  :: date2
+character(len=80)  :: iso_week_date
+character(len=132) :: comment
+character(len=10)  :: iso_name
+character(len=10)  :: status
+character(len=372),allocatable :: line(:)
+integer            :: dat(8)
+integer            :: dat2(8)
+integer            :: iso_year
+integer            :: iso_week
+integer            :: iso_weekday
+integer            :: i
+
+call unit_check_start('guessdate')
+
+! the data file with dates to read and expected answers and comments
+line=[ character(len=372) :: &
+
+& ' "Sat 1 Jan 2005",  "2005-01-01", "2004-W53-6", " " ', &
+& ' "Sun 2 Jan 2005",  "2005-01-02", "2004-W53-7", " " ', &
+& ' "Sat 31 Dec 2005", "2005-12-31", "2005-W52-6", " " ', &
+& ' "Mon 1 Jan 2007",  "2007-01-01", "2007-W01-1", "Both years 2007 start with the same day." ', &
+& ' "Sun 30 Dec 2007", "2007-12-30", "2007-W52-7", " " ', &
+& ' "Mon 31 Dec 2007", "2007-12-31", "2008-W01-1", " " ', &
+& ' "Tue 1 Jan 2008",  "2008-01-01", "2008-W01-2", &
+& "Gregorian year 2008 is a leap year. ISO year 2008 is 2 days shorter: 1 day longer at the start,  3 days shorter at the end." ', &
+& ' "Sun 28 Dec 2008", "2008-12-28", "2008-W52-7", " ISO year 2009 begins three days before the end of Gregorian 2008." ', &
+& ' "Mon 29 Dec 2008", "2008-12-29", "2009-W01-1", " " ', &
+& ' "Tue 30 Dec 2008", "2008-12-30", "2009-W01-2", " " ', &
+& ' "Wed 31 Dec 2008", "2008-12-31", "2009-W01-3", " " ', &
+& ' "Thu 1 Jan 2009",  "2009-01-01", "2009-W01-4", " " ', &
+& ' "Thu 31 Dec 2009", "2009-12-31", "2009-W53-4", "ISO year 2009 has 53 weeks and ends three days into Gregorian year 2010." ', &
+& ' "Fri 1 Jan 2010",  "2010-01-01", "2009-W53-5", " " ', &
+& ' "Sat 2 Jan 2010",  "2010-01-02", "2009-W53-6", " " ', &
+& ' "Sun 3 Jan 2010",  "2010-01-03", "2009-W53-7", " " ', &
+
+&' ' ]
+do i=1,size(line)-1
+   read(line(i),*)date1,date2,iso_week_date,comment
+   call guessdate(date1,dat)                                         ! convert date string to DAT
+   call unit_check('guessdate',fmtdate(dat,"%I").eq.iso_week_date,msg=date1)
+   call unit_check('guessdate',fmtdate(dat,"year-month-day").eq.date2,msg=date2)
+enddo
+
+call unit_check_done('guessdate')
+
+end subroutine test_guessdate
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -1998,7 +2322,7 @@ end subroutine guessdate
 !===================================================================================================================================
 subroutine dow(values, weekday, day, ierr)
 
-character(len=*),parameter::ident="@(#)M_time::dow(3f): Given DAT date-time array return the day of the week"
+character(len=*),parameter::ident_15="@(#)M_time::dow(3f): Given DAT date-time array return the day of the week"
 
 integer,intent(in)                    :: values(8) ! date and time array used to get time zone
 integer,intent(out),optional          :: weekday   ! The day of the week, 1 = Monday, 7 = Sunday
@@ -2049,6 +2373,25 @@ integer,intent(out),optional          :: ierr      ! Error code,0=correct,-1=inv
    endif
 
 end subroutine dow
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_dow
+use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
+!!use M_time, only : dow
+implicit none
+integer          :: dat(8)     ! input date array
+integer          :: weekday
+character(len=9) :: day
+integer          :: ierr
+call unit_check_start('dow')
+
+   call dow(dat, weekday, day, ierr)
+   write(*,'(a,i0)')'weekday=',weekday
+   write(*,'(a,a)')'day=',trim(day)
+   write(*,'(a,i0)')'ierr=',ierr
+
+call unit_check_done('dow')
+
+end subroutine test_dow
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -2157,7 +2500,7 @@ end subroutine dow
 !===================================================================================================================================
 subroutine d2w(dat,iso_year,iso_week,iso_weekday,iso_name)
 
-character(len=*),parameter::ident="@(#)M_time::d2w(3f): DAT date-time array to iso-8601 Week-numbering year date yyyy-Www-d"
+character(len=*),parameter::ident_16="@(#)M_time::d2w(3f): DAT date-time array to iso-8601 Week-numbering year date yyyy-Www-d"
 
 integer,intent(in)              :: dat(8)     ! input date array
 integer,intent(out)             :: iso_year, iso_week, iso_weekday
@@ -2198,6 +2541,67 @@ contains
    end function uncorrected_week_of_year
 
 end subroutine d2w
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_d2w()
+use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
+!!use M_time, only : d2w
+implicit none
+integer          :: dat(8)
+integer          :: iyear,iweek,iweekday
+character(len=10):: name
+
+   call unit_check_start('d2w',msg='Examples of contemporary dates around New Year''s Day')
+   call date_and_time(values=dat)
+
+   dat=[2005,01,01,dat(4),0,0,0,0] !  Sat 1 Jan 2005 2005-01-01 2004-W53-6
+   call showme("2004-W53-6")
+   dat=[2005,01,02,dat(4),0,0,0,0] !  Sun 2 Jan 2005 2005-01-02 2004-W53-7
+   call showme("2004-W53-7")
+   dat=[2005,12,31,dat(4),0,0,0,0] !  Sat 31 Dec 2005 2005-12-31 2005-W52-6
+   call showme("2005-W52-6")
+   dat=[2007,01,01,dat(4),0,0,0,0] !  Mon 1 Jan 2007 2007-01-01 2007-W01-1 Both years 2007 start with the same day.
+   call showme("2007-W01-1")
+   dat=[2007,12,30,dat(4),0,0,0,0] !  Sun 30 Dec 2007 2007-12-30 2007-W52-7
+   call showme("2007-W52-7")
+   dat=[2007,12,31,dat(4),0,0,0,0] !  Mon 31 Dec 2007 2007-12-31 2008-W01-1
+   call showme("2008-W01-1")
+   dat=[2008,01,01,dat(4),0,0,0,0] !  Tue 1 Jan 2008 2008-01-01 2008-W01-2
+                                   !     Gregorian year 2008 is a leap year. ...
+                                   !     ISO year 2008 is 2 days shorter: 1 day longer at the start, 3 days shorter at the end.
+   call showme("2008-W01-2")
+   dat=[2008,12,28,dat(4),0,0,0,0] !  Sun 28 Dec 2008 2008-12-28 2008-W52-7 ...
+                                   !     ISO year 2009 begins three days before the end of Gregorian 2008.
+   call showme("2008-W52-7")
+   dat=[2008,12,29,dat(4),0,0,0,0] !  Mon 29 Dec 2008 2008-12-29 2009-W01-1
+   call showme("2009-W01-1")
+   dat=[2008,12,30,dat(4),0,0,0,0] !  Tue 30 Dec 2008 2008-12-30 2009-W01-2
+   call showme("2009-W01-2")
+   dat=[2008,12,31,dat(4),0,0,0,0] !  Wed 31 Dec 2008 2008-12-31 2009-W01-3
+   call showme("2009-W01-3")
+   dat=[2009,01,01,dat(4),0,0,0,0] !  Thu 1 Jan 2009 2009-01-01 2009-W01-4
+   call showme("2009-W01-4")
+   dat=[2009,12,31,dat(4),0,0,0,0] !  Thu 31 Dec 2009 2009-12-31 2009-W53-4  ...
+                                   !     ISO year 2009 has 53 weeks and ends three days into Gregorian year 2010.
+   call showme("2009-W53-4")
+   dat=[2010,01,01,dat(4),0,0,0,0] !  Fri 1 Jan 2010 2010-01-01 2009-W53-5
+   call showme("2009-W53-5")
+   dat=[2010,01,02,dat(4),0,0,0,0] !  Sat 2 Jan 2010 2010-01-02 2009-W53-6
+   call showme("2009-W53-6")
+   dat=[2010,01,03,dat(4),0,0,0,0] !  Sun 3 Jan 2010 2010-01-03 2009-W53-7
+   call showme("2009-W53-7")
+
+   call unit_check_done('d2w') ! assume if got here passed checks
+
+contains
+
+subroutine showme(string)
+use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
+character(len=*) :: string
+   call d2w(dat,iyear,iweek,iweekday,name)
+   call unit_check('d2w', name.eq.string ,msg=msg(iyear,iweek,iweekday,name,string))
+end subroutine showme
+
+end subroutine test_d2w
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -2362,7 +2766,8 @@ end subroutine d2w
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine w2d(iso_year,iso_week,iso_weekday,dat)
 
-character(len=*),parameter::ident="@(#)M_time::w2d(3f): convert iso-8601 Week-numbering year date yyyy-Www-d to DAT date-time array"
+character(len=*),parameter::ident_17="&
+&@(#)M_time::w2d(3f): convert iso-8601 Week-numbering year date yyyy-Www-d to DAT date-time array"
 
 integer,intent(in)              :: iso_year, iso_week, iso_weekday
 integer,intent(out)             :: dat(8)     ! output date array
@@ -2375,6 +2780,50 @@ integer,intent(out)             :: dat(8)     ! output date array
    ordinal=iso_week*7+iso_weekday-correction     ! calculate ordinal day
    dat=o2d(ordinal,iso_year)                     ! convert ordinal to DAT (routine works with negative values or days past year end)
 end subroutine w2d
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_w2d
+use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
+!!use M_time, only: w2d
+implicit none
+character(len=372),allocatable :: line(:)
+integer            :: y,m,d
+integer            :: iso_year
+integer            :: iso_week
+integer            :: iso_weekday
+integer            :: dat(8)
+integer            :: i
+
+call unit_check_start('w2d')
+
+! the data file with dates to read and expected answers and comments
+line=[ character(len=372) :: &
+
+& ' 2005 01 01  2004 53 6   ', &
+& ' 2005 01 02  2004 53 7   ', &
+& ' 2005 12 31  2005 52 6   ', &
+& ' 2007 01 01  2007 01 1   ', &
+& ' 2007 12 30  2007 52 7   ', &
+& ' 2007 12 31  2008 01 1   ', &
+& ' 2008 01 01  2008 01 2   ', &
+& ' 2008 12 28  2008 52 7   ', &
+& ' 2008 12 29  2009 01 1   ', &
+& ' 2008 12 30  2009 01 2   ', &
+& ' 2008 12 31  2009 01 3   ', &
+& ' 2009 01 01  2009 01 4   ', &
+& ' 2009 12 31  2009 53 4   ', &
+& ' 2010 01 01  2009 53 5   ', &
+& ' 2010 01 02  2009 53 6   ', &
+& ' 2010 01 03  2009 53 7   ', &
+& '                          ' ]
+do i=1,size(line)-1
+   read(line(i),*)y,m,d,iso_year,iso_week,iso_weekday
+   call w2d(iso_year,iso_week,iso_weekday,dat)                                      ! convert ISO week date to DAT
+   call unit_check('w2d',dat(1).eq.y.and.dat(2).eq.m.and.dat(3).eq.d,msg=line(i))   ! all should match
+enddo
+
+call unit_check_done('w2d')
+
+end subroutine test_w2d
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -2431,7 +2880,7 @@ end subroutine w2d
 subroutine box_month(dat,calen)
 use M_strings, only : adjustc, v2s
 
-character(len=*),parameter::ident="@(#)M_time::box_month(3f): generate month specified by DAT date-time array in character array"
+character(len=*),parameter::ident_18="@(#)M_time::box_month(3f): generate month specified by DAT date-time array in character array"
 
 integer,parameter                :: wklen=3*7
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -2466,6 +2915,12 @@ character(len=wklen)             :: calen(8)
    enddo MNTH
 !-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine box_month
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_box_month
+use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
+call unit_check_start('box_month')
+call unit_check_done('box_month')
+end subroutine test_box_month
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -2511,7 +2966,7 @@ end subroutine box_month
 !===================================================================================================================================
 function d2j(dat) result (julian)
 
-character(len=*),parameter::ident="@(#)M_time::d2j(3f): Given DAT date-time array returns Julian Date"
+character(len=*),parameter::ident_19="@(#)M_time::d2j(3f): Given DAT date-time array returns Julian Date"
 
 integer,intent(in),optional :: dat(8)
 real(kind=realtime)         :: julian
@@ -2526,6 +2981,36 @@ real(kind=realtime)         :: julian
    endif
 
 end function d2j
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_d2j
+use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
+real(kind=realtime)         :: julian
+
+call unit_check_start('d2j')
+
+   call unit_check_start('d2j',msg='Checking Julian Date') ! assume if got here passed checks
+
+   julian=d2j( [1970, 1, 1,0, 0,0,0,0])
+   call unit_check('d2j',abs(julian-2440587.5).lt.0.00001 ,msg="Dec 31st, 1969  8:00(2440587.5)")
+
+   julian=d2j( [1995, 1, 1,0,12,0,0,0])
+   call unit_check('d2j',int(julian).eq.2449719 ,msg="Jan  1st, 1995 12:00(2449719)")
+
+   julian=d2j( [1995,10,19,0,12,0,0,0])
+   call unit_check('d2j',int(julian).eq.2450010, msg="Oct 19th, 1995 12:00(2450010)")
+
+   julian=d2j( [1995,12,31,0,12,0,0,0])
+   call unit_check('d2j',int(julian).eq.2450083, msg="Dec 31st, 1995 12:00(2450083)")
+
+   julian=d2j( [1996, 1, 1,0,12,0,0,0])
+   call unit_check('d2j',int(julian).eq.2450084, msg="Jan  1st, 1996 12:00(2450084)")
+
+   julian=d2j( [1996,12,31,0,12,0,0,0])
+   call unit_check('d2j',int(julian).eq.2450449, msg="Dec 31th, 1996 12:00(2450449)")
+
+call unit_check_done('d2j')
+
+end subroutine test_d2j
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -2580,13 +3065,43 @@ end function d2j
 !===================================================================================================================================
 function j2d(julian) result (dat)
 
-character(len=*),parameter::ident="@(#)M_time::j2d(3f): Given Julian Date returns DAT date-time array"
+character(len=*),parameter::ident_20="@(#)M_time::j2d(3f): Given Julian Date returns DAT date-time array"
 
 real(kind=realtime),intent(in)   :: julian
 integer                          :: dat(8)
    integer                       :: ierr
    call julian_to_date(julian,dat,ierr)
 end function j2d
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_j2d
+use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
+real(kind=realtime)          :: juliandate
+integer                      :: dat(8)
+integer                      :: ierr
+character(len=:),allocatable :: expected
+
+call unit_check_start('j2d')
+
+
+   juliandate=2457589.129d0                 ! set sample Julian Date
+
+   expected='2016-07-19 11:05:45'
+   call unit_check('j2d',fmtdate(j2d(juliandate),'year-month-day hour:minute:second').eq.expected, &
+   & msg=msg(juliandate,'==>',expected))
+
+   ! go back one day
+   expected='2016-07-18 11:05:45'
+   call unit_check('j2d',fmtdate(j2d(juliandate-1.0d0),'year-month-day hour:minute:second').eq.expected, &
+   & msg=msg(juliandate,'==>',expected))
+
+   ! go forward one day
+   expected='2016-07-20 11:05:45'
+   call unit_check('j2d',fmtdate(j2d(juliandate+1.0d0),'year-month-day hour:minute:second').eq.expected, &
+   & msg=msg(juliandate,'==>',expected))
+
+call unit_check_done('j2d')
+
+end subroutine test_j2d
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -2638,7 +3153,7 @@ end function j2d
 !===================================================================================================================================
 function d2u(dat) result (unixtime)
 
-character(len=*),parameter::ident="@(#)M_time::d2u(3f): Given DAT date-time array returns Unix Epoch time"
+character(len=*),parameter::ident_21="@(#)M_time::d2u(3f): Given DAT date-time array returns Unix Epoch time"
 
 real(kind=realtime)           :: unixtime
 integer,intent(in),optional   :: dat(8)
@@ -2651,6 +3166,27 @@ integer,intent(in),optional   :: dat(8)
    endif
    call date_to_unix(datlocal,unixtime,ierr)
 end function d2u
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_d2u()
+use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
+!!use M_time, only : d2u
+implicit none
+
+!  Note that time zones are usually -HHMM or -HH:MM and not MM, which is what the DAT array uses
+!  Comparing to Unix date(1) command:
+!    date --date "Wed Mar 29 01:46:47 EDT 2017" +%s      ! 1490766407
+!    date --date "Wed Mar 29 01:46:47 2017" +%s          ! 1490766407
+!    date --date "Wed Mar 29 01:46:47 -400 2017" +%s     ! 1490766407
+!    date --date "Wed Mar 29 01:46:47 UTC-400 2017" +%s  ! 1490766407
+!    date --date "Wed Mar 29 01:46:47 UTC-4:00 2017" +%s ! 1490766407
+
+   call unit_check_start('d2u')
+
+   call unit_check('d2u',nint(d2u([2017,03,29,-240,01,46,47,0])+0.5).eq.1490766407,msg=msg(d2u([2017,03,29,-240,01,46,47,0]) ))
+
+   call unit_check_done('d2u')
+
+end subroutine test_d2u
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -2705,7 +3241,7 @@ end function d2u
 !===================================================================================================================================
 function u2d(unixtime) result (dat)
 
-character(len=*),parameter::ident="@(#)M_time::u2d(3f): Given Unix Epoch Time returns DAT date-time array"
+character(len=*),parameter::ident_22="@(#)M_time::u2d(3f): Given Unix Epoch Time returns DAT date-time array"
 
 class(*),intent(in),optional      :: unixtime
 integer                           :: dat(8)
@@ -2726,7 +3262,12 @@ integer                           :: dat(8)
    call unix_to_date(local_unixtime,dat,ierr)
 
 end function u2d
-
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_u2d
+use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
+call unit_check_start('u2d')
+call unit_check_done('u2d')
+end subroutine test_u2d
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -2809,7 +3350,7 @@ end function get_timezone
 function sec2days(seconds,crop) result(dhms)
 use M_strings, only: split, compact, s2v, transliterate
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_23="&
 &@(#)M_time::sec2days(3f): converts seconds or string of form IId JJh KKm LLs to string showing days of form D-HH:MM:SS"
 
 !use iso_fortran_env, only : int64
@@ -2934,6 +3475,22 @@ character(len=:),allocatable      :: dhms
    endif
 
 end function sec2days
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sec2days()
+use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
+!!use M_time, only: sec2days
+implicit none
+
+   call unit_check_start('sec2days')
+
+   call unit_check('sec2days',sec2days(129860).eq.             '1-12:04:20',msg=msg('129860 is 1-12:04:20'))
+   call unit_check('sec2days',sec2days(80000.0d0).eq.          '0-22:13:20',msg=msg('80000.0d0 is 0-22:13:20'))
+   call unit_check('sec2days',sec2days(80000,crop=.true.).eq.    '22:13:20',msg=msg('80000 is 22:13:20'))
+   call unit_check('sec2days',sec2days('1day 2hr 3 min 4s').eq.'1-02:03:04',msg=msg('1day 2hr 3 min 4s is 1-02:03:04'))
+
+   call unit_check_done('sec2days')
+
+end subroutine test_sec2days
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -3034,7 +3591,7 @@ function days2sec(str) result(time)
 use M_strings, only: split, compact, s2v, transliterate
 implicit none
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_24="&
 &@(#)M_time::days2sec(3f): convert string [[-]dd-]hh:mm:ss.nn to seconds or string IId JJh KKm LLs to seconds"
 
 character(len=*),intent(in)       :: str
@@ -3135,6 +3692,32 @@ real(kind=realtime)               :: time
    endif
 
 end function days2sec
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_days2sec()
+use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
+!!use M_time, only  : days2sec, realtime
+implicit none
+
+   call unit_check_start('days2sec')
+
+   call unit_check('days2sec',nint(days2sec('1')).eq.             1, msg='1')
+   call unit_check('days2sec',nint(days2sec('1:00')).eq.         60, msg='1:00')
+   call unit_check('days2sec',nint(days2sec('1:00:00')).eq.    3600, msg='1:00:00')
+   call unit_check('days2sec',nint(days2sec('1-00:00:00')).eq.86400, msg='1-00:00:00')
+   call unit_check('days2sec',nint(days2sec('1d2h 3.0 minutes 4sec')).eq.93784,msg='1d2h 3.0 minutes 4sec')
+
+   call unit_check('days2sec',nint(days2sec(' 1-12:04:20              ')) .eq. 129860,msg='1-12:04:20')
+   call unit_check('days2sec',nint(days2sec(' 1.5 days                ')) .eq. 129600,msg='1.5 days')
+   call unit_check('days2sec',nint(days2sec(' 1.5 days 4hrs 30minutes ')) .eq. 145800,msg='1.5 days 4 hrs 30 minutes')
+   call unit_check('days2sec',nint(days2sec(' 1.5d                    ')) .eq. 129600,msg='1.5d')
+   call unit_check('days2sec',nint(days2sec(' 1d2h3m4s                ')) .eq. 93784,msg='1d2h3m4s')
+   call unit_check('days2sec',nint(days2sec(' 1d1d1d                  ')) .eq. 259200,msg='DUPLICATES: 1d1d1d')
+   call unit_check('days2sec',nint(days2sec(' 4d-12h                  ')) .eq. 302400,msg='NEGATIVE VALUES: 4d-12h')
+   call unit_check('days2sec',nint(days2sec(' 3  d  1 2   h           ')) .eq. 302400,msg='WHITESPACE: 3 d 1 2 h')
+
+   call unit_check_done('days2sec')
+
+end subroutine test_days2sec
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -3206,7 +3789,7 @@ end function days2sec
 function phase_of_moon(datin)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_time::phase_of_moon(3f): return name for phase of moon for given date"
+character(len=*),parameter::ident_25="@(#)M_time::phase_of_moon(3f): return name for phase of moon for given date"
 
 integer,intent(in)            :: datin(8)
 character(len=:),allocatable  :: phase_of_moon
@@ -3228,6 +3811,12 @@ phase = int( days * ( size(phase_names) / syndonic_month ))+1 ! index into phase
 phase_of_moon=phase_names(phase)
 
 end function phase_of_moon
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_phase_of_moon
+use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
+call unit_check_start('phase_of_moon')
+call unit_check_done('phase_of_moon')
+end subroutine test_phase_of_moon
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -3289,7 +3878,7 @@ end function phase_of_moon
 function moon_fullness(datin)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_time::moon_fullness(3f): return percentage of moon phase from new to full"
+character(len=*),parameter::ident_26="@(#)M_time::moon_fullness(3f): return percentage of moon phase from new to full"
 
 integer,intent(in)            :: datin(8)
 integer                       :: moon_fullness
@@ -3308,6 +3897,12 @@ else                                                                   ! if wani
 endif
 
 end function moon_fullness
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_moon_fullness
+use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
+call unit_check_start('moon_fullness')
+call unit_check_done('moon_fullness')
+end subroutine test_moon_fullness
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -3390,7 +3985,7 @@ end function moon_fullness
 SUBROUTINE Easter(year, month, day)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_time::easter(3f): calculate date for Easter given a year"
+character(len=*),parameter::ident_27="@(#)M_time::easter(3f): calculate date for Easter given a year"
 
 integer, intent(in)   :: year
 integer, intent(out)  :: day, month
@@ -3410,6 +4005,74 @@ integer, intent(out)  :: day, month
    day = l + 28 - 31 * ( month / 4 )
 
 end subroutine Easter
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_easter()
+use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
+!!use M_time,  only : easter
+implicit none
+character(len=20),parameter  :: tests(*)=[ &
+'1980,4,6  ',  &
+'1981,4,19 ',  &
+'1982,4,11 ',  &
+'1983,4,3  ',  &
+'1984,4,22 ',  &
+'1985,4,7  ',  &
+'1986,3,30 ',  &
+'1987,4,19 ',  &
+'1988,4,3  ',  &
+'1989,3,26 ',  &
+'1990,4,15 ',  &
+'1991,3,31 ',  &
+'1992,4,19 ',  &
+'1993,4,11 ',  &
+'1994,4,3  ',  &
+'1995,4,16 ',  &
+'1996,4,7  ',  &
+'1997,3,30 ',  &
+'1998,4,12 ',  &
+'1999,4,4  ',  &
+'2000,4,23 ',  &
+'2001,4,15 ',  &
+'2002,3,31 ',  &
+'2003,4,20 ',  &
+'2004,4,11 ',  &
+'2005,3,27 ',  &
+'2006,4,16 ',  &
+'2007,4,8  ',  &
+'2008,3,23 ',  &
+'2009,4,12 ',  &
+'2010,4,4  ',  &
+'2011,4,24 ',  &
+'2012,4,8  ',  &
+'2013,3,31 ',  &
+'2014,4,20 ',  &
+'2015,4,5  ',  &
+'2016,3,27 ',  &
+'2017,4,16 ',  &
+'2018,4,1  ',  &
+'2019,4,21 ',  &
+'2020,4,12 ',  &
+'2021,4,4  ',  &
+'2022,4,17 ',  &
+'2023,4,9  ',  &
+'2024,3,31 '   ]
+
+integer :: tmonth, tday
+integer :: inyear, outmonth, outday
+integer :: ii
+character (len=5)  :: mon(3:4) = (/ 'march', 'april' /)
+
+call unit_check_start('easter') ! assume if got here passed checks
+
+do ii=1,size(tests)
+   read(tests(ii),*)inyear,tmonth,tday
+   call easter(inyear,outmonth,outday)
+   call unit_check('easter', tmonth.eq.outmonth.and.tday.eq.outday ,msg=msg(tests(ii),'month=',mon(outmonth)))
+enddo
+
+call unit_check_done('easter') ! assume if got here passed checks
+
+end subroutine test_easter
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -3512,7 +4175,8 @@ end subroutine Easter
 subroutine ephemeris(itime,planet,declination_d,declination_m,declination_compass,ascent_hours,ascent_minutes)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_time::ephemeris(3f): ephemeris position of planets for adjusting an equatorial telescope"
+character(len=*),parameter::ident_28="&
+&@(#)M_time::ephemeris(3f): ephemeris position of planets for adjusting an equatorial telescope"
 
 integer,parameter            :: dp=kind(0.0d0)
 integer,intent(in)           :: itime(8)
@@ -3663,6 +4327,53 @@ data (a(i,8),i=1,9)/&
 end subroutine planet_coordinates
 !-----------------------------------------------------------------------------------------------------------------------------------
 END subroutine ephemeris
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_ephemeris()
+use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
+!!use M_time, only : ephemeris, fmtdate
+implicit none
+     integer,parameter  :: itime(8)=[1982,3,10,0,6,0,0,0] ! For: Wednesday, March 10th, 1982 6:00:00 AM UTC+00:00
+     integer            :: planet
+     integer            :: D_d, D_m, A_h, A_m
+     character(len=1)   :: D_c
+
+block
+integer :: io=6
+if(unit_check_level.gt.0)then
+write(io,'(a)')'   Find ascent and declination of planets on March 10th, 1982 at 6h UT'
+write(io,'(a)')''
+write(io,'(a)')'      Planet     Ascent     Declination'
+write(io,'(a)')'      Mercury    21 H 51    14 ° 45 mn S'
+write(io,'(a)')'      Venus      20 H 26    14 ° 57 mn S'
+write(io,'(a)')'      Mars       13 H 08     3 ° 45 mn S'
+write(io,'(a)')'      Jupiter    14 H 32    13 ° 30 mn S'
+write(io,'(a)')'      Saturn     13 H 22     5 ° 42 mn S'
+write(io,'(a)')''
+endif
+end block
+
+call unit_check_start('ephemeris')
+
+     do planet=1,8
+        if(planet.eq.3)cycle
+        call ephemeris(itime, planet, D_d,D_m,D_c, A_h,A_m)
+        call unit_check('ephemeris',D_c.eq.'S','Compass direction S')
+        select case(planet)
+        case(1); call unit_check('ephemeris',all([A_h,A_m,D_d,D_m].eq.[21,51,14,45]),'Mercury')
+        case(2); call unit_check('ephemeris',all([A_h,A_m,D_d,D_m].eq.[20,26,14,57]),'Venus')
+        case(3);
+        case(4); call unit_check('ephemeris',all([A_h,A_m,D_d,D_m].eq.[13,08,03,45]),'Mars')
+        case(5); call unit_check('ephemeris',all([A_h,A_m,D_d,D_m].eq.[14,32,13,30]),'Jupiter')
+        case(6); call unit_check('ephemeris',all([A_h,A_m,D_d,D_m].eq.[13,22,05,42]),'Saturn')
+        case(7); call unit_check('ephemeris',all([A_h,A_m,D_d,D_m].eq.[16,11,20,54]),'Uranus')
+        case(8); call unit_check('ephemeris',all([A_h,A_m,D_d,D_m].eq.[17,46,22,07]),'Nepture')
+        end select
+
+     enddo
+
+call unit_check_done('ephemeris')
+
+end subroutine test_ephemeris
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -3739,7 +4450,7 @@ END subroutine ephemeris
 subroutine system_sleep(seconds)
 use,intrinsic                 :: iso_c_binding, only: c_int
 
-character(len=*),parameter::ident="@(#)M_time::system_sleep(3f): call sleep(3c) or usleep(3c)"
+character(len=*),parameter::ident_29="@(#)M_time::system_sleep(3f): call sleep(3c) or usleep(3c)"
 
 class(*),intent(in)           :: seconds
 integer(kind=c_int)           :: cint
@@ -3749,13 +4460,36 @@ integer(kind=c_int)           :: cint
    type is (real(kind=realtime)); cint=nint(seconds*1000000.0)  ; call call_usleep(cint)
    end select
 end subroutine system_sleep
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_sleep()
+use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
+!!use M_time, only: system_sleep
+implicit none
+   integer :: systemcount1, countrate1
+   integer :: systemcount2, countrate2
+   real    :: slept_in_seconds
+
+   call unit_check_start('system_sleep')
+
+   call system_clock(count=systemcount1,count_rate=countrate1)
+   call system_sleep(10)
+   call system_clock(count=systemcount2,count_rate=countrate2)
+   slept_in_seconds=real(systemcount2-systemcount1)/real(countrate1)
+
+   ! a sluggish system might make more than 12 seconds pass
+   call unit_check('system_sleep',  slept_in_seconds .ge. 9.5 .and. slept_in_seconds .le. 12.0 , &
+      & msg=msg('asked to sleep 10 seconds, slept',slept_in_seconds,'seconds'))
+
+   call unit_check_done('system_sleep')
+
+end subroutine test_system_sleep
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 subroutine call_sleep(wait_seconds)
 use,intrinsic                   :: iso_c_binding, only: c_int
 
-character(len=*),parameter::ident="@(#)M_time::call_sleep(3fp): call sleep(3c)"
+character(len=*),parameter::ident_30="@(#)M_time::call_sleep(3fp): call sleep(3c)"
 
 integer(kind=c_int),intent(in)  :: wait_seconds
 integer(kind=c_int)             :: how_long
@@ -3775,7 +4509,7 @@ end subroutine call_sleep
 !===================================================================================================================================
 subroutine call_usleep(wait_seconds)
 use,intrinsic                   :: iso_c_binding, only: c_int
-character(len=*),parameter::ident="@(#)M_time::call_usleep(3fp): call usleep(3c)"
+character(len=*),parameter::ident_31="@(#)M_time::call_usleep(3fp): call usleep(3c)"
 integer(kind=c_int),intent(in)  :: wait_seconds
 integer(kind=c_int)             :: how_long
 interface
@@ -3792,6 +4526,126 @@ end subroutine call_usleep
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
+subroutine test_suite_M_string
+use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
+use,intrinsic :: iso_c_binding, only: c_int, c_char, c_null_char
+
+implicit none
+integer :: ierr
+character(len=*),parameter :: SAME='-library libGPF -section 3 -description'
+
+!! no not use M_system version or will create a circular dependency
+call put_environment_variable('TZ','America/New_York',ierr) ! some of the test values assume EST
+
+call unit_check_msg('M_time','This section contains unit tests for procedures in the M_time(3f) module.')
+
+call unit_check_start('box_month      ',SAME//' "print specified month into character array" ')
+call test_box_month()
+call unit_check_start('d2j            ',SAME//' "Convert date array to Julian Date" ')
+call test_d2j()
+call unit_check_start('d2o            ',SAME//' "Converts date-time array to Ordinal day" ')
+call test_d2o()
+call unit_check_start('d2u            ',SAME//' "Convert date array to Unix Time" ')
+call test_d2u()
+call unit_check_start('d2w            ',SAME//' "Calculate iso-8601 Week-numbering year date yyyy-Www-d" ')
+call test_d2w()
+call unit_check_start('date_to_julian ',SAME//' "Converts Proleptic Gregorian date array to Julian Date" ')
+call test_date_to_julian()
+call unit_check_start('date_to_unix   ',SAME//' "Converts date array to Unix Time (UT starts at 0000 on 1 Jan. 1970, UTC)" ')
+call test_date_to_unix()
+call unit_check_start('days2sec       ',SAME//' "converts string D-HH:MM:SS to seconds from small to large" ')
+call test_days2sec()
+call unit_check_start('dow            ',SAME//' "Return the day of the week" ')
+call test_dow()
+call unit_check_start('easter         ',SAME//' "Determine month and day Easter falls on for given year" ')
+call test_easter()
+call unit_check_start('ephemeris      ',SAME//' "ephemeris position of planets for adjusting an equatorial telescope" ')
+call test_ephemeris()
+call unit_check_start('fmtdate        ',SAME//' "given date array return date as string using format" ')
+call test_fmtdate()
+call unit_check_start('fmtdate_usage  ',SAME//' "display macros recognized by fmtdate(3f)" ')
+call test_fmtdate_usage()
+call unit_check_start('guessdate      ',SAME//' "Reads in a date, in various formats" ')
+call test_guessdate()
+call unit_check_start('j2d            ',SAME//' "Convert Julian Date to date array" ')
+call test_j2d()
+call unit_check_start('julian_to_date ',SAME//' "Converts Julian Date to (year, month, day, hour, minute, second)" ')
+call test_julian_to_date()
+call unit_check_start('mo2d           ',SAME//' "given month name return date array for beginning of that month in current year" ')
+call test_mo2d()
+call unit_check_start('mo2v           ',SAME//' "given month as name return month number (1-12) of that month" ')
+call test_mo2v()
+call unit_check_start('moon_fullness  ',SAME//' "return name for phase of moon for given date" ')
+call test_moon_fullness()
+call unit_check_start('now            ',SAME//' "return string representing current time given format" ')
+call test_now()
+call unit_check_start('now_ex         ',SAME//' "use of now(3f) outside of a module" ')
+call test_now_ex()
+call unit_check_start('o2d            ',SAME//' "given ordinal day of year return date array, Jan 1st=1" ')
+call test_o2d()
+call unit_check_start('ordinal_to_date',SAME//' "given ordinal day of year return date array, Jan 1st=1" ')
+call test_ordinal_to_date()
+call unit_check_start('phase_of_moon  ',SAME//' "percentage of moon phase from new to full" ')
+call test_phase_of_moon()
+call unit_check_start('sec2days       ',SAME//' "converts seconds to string D-HH:MM:SS" ')
+call test_sec2days()
+call unit_check_start('system_sleep   ',SAME//' "call sleep(3c)" ')
+call test_system_sleep()
+call unit_check_start('u2d            ',SAME//' "Convert Unix Time to date array" ')
+call test_u2d()
+call unit_check_start('unix_to_date   ',SAME//' "Converts Unix Time to date array" ')
+call test_unix_to_date()
+call unit_check_start('v2mo           ',SAME//' "returns the month name of a Common month" ')
+call test_v2mo()
+call unit_check_start('w2d            ',SAME//' "Given iso-8601 Week-numbering year date yyyy-Www-d calculate date" ')
+call test_w2d()
+
+contains
+!===================================================================================================================================
+subroutine put_environment_variable(name,value,status)
+
+!  This is an private copy of the set_environment_variable routine(3f) routine from
+!  M_system.FF that is duplicated in order to prevent a circular dependency.
+
+character(len=*),parameter::ident_32="@(#)M_system::put_environment_variable(3f): call setenv(3c) to set environment variable"
+
+   character(len=*)               :: NAME
+   character(len=*)               :: VALUE
+   integer, optional, intent(out) :: STATUS
+   integer                        :: loc_err
+
+interface
+   integer(kind=c_int) function c_setenv(c_name,c_VALUE) bind(C,NAME="setenv")
+      import c_int, c_char
+      character(kind=c_char)   :: c_name(*)
+      character(kind=c_char)   :: c_VALUE(*)
+   end function
+end interface
+
+   loc_err =  c_setenv(str2arr(trim(NAME)),str2arr(VALUE))
+   if (present(STATUS)) STATUS = loc_err
+end subroutine put_environment_variable
+!===================================================================================================================================
+pure function str2arr(string) result (array)
+
+
+character(len=*),parameter::ident_33="@(#)M_system::str2arr(3fp): function copies string to null terminated char array"
+
+character(len=*),intent(in)     :: string
+character(len=1,kind=c_char)    :: array(len(string)+1)
+   integer                      :: i
+
+   do i = 1,len_trim(string)
+      array(i) = string(i:i)
+   enddo
+   array(size(array))=c_null_char
+
+end function str2arr
+!===================================================================================================================================
+end subroutine test_suite_M_string
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
 end module m_time
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -3799,11 +4653,19 @@ end module m_time
 ! M_time calls now_ex as a regular procedure to prevent a dependency loop
 function now_ex(format)
 use M_time, only: now
-character(len=*),parameter::ident="@(#)M_time::now_ex(3f): use of now(3f) outside of a module"
+
+character(len=*),parameter::ident_34="@(#)M_time::now_ex(3f): use of now(3f) outside of a module"
+
 character(len=*),intent(in),optional :: format
 character(len=:),allocatable         :: now_ex
    now_ex=now(format)
 end function now_ex
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_now_ex
+use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
+call unit_check_start('now_ex')
+call unit_check_done('now_ex')
+end subroutine test_now_ex
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -3927,7 +4789,7 @@ contains
 ! this function is used internally in the module, but is also declared to be a constructor for creating TYPE(DATE_TYPE) structures
 !
 function construct_from_dat(dat)
-character(len=*),parameter::ident="@(#)M_time::construct_from_dat(3f): construct TYPE(DATE_TIME) with DAT date-time array"
+character(len=*),parameter::ident_35="@(#)M_time::construct_from_dat(3f): construct TYPE(DATE_TIME) with DAT date-time array"
 integer,intent(in)          :: dat(:)                       ! (maybe partial) date time array
 integer                     :: datlocal(8)                  ! date time array similar to that returned by DATE_AND_TIME
 type(date_time)             :: construct_from_dat
@@ -3947,7 +4809,7 @@ type(date_time)             :: construct_from_dat
 end function construct_from_dat
 !===================================================================================================================================
 function construct_from_jed(jed)
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_36="&
 &@(#)M_time::construct_from_jed(3f): construct TYPE(DATE_TIME) with REAL Julian JED date-time value"
 real(kind=realtime),intent(in)   :: jed
 type(date_time)                 :: construct_from_jed
@@ -3955,7 +4817,7 @@ type(date_time)                 :: construct_from_jed
 end function construct_from_jed
 !===================================================================================================================================
 function construct_from_uet(uet)
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_37="&
 &@(#)M_time::construct_from_uet(3f): construct TYPE(DATE_TIME) with INTEGER Unix UET date-time value"
 integer,intent(in)   :: uet
 type(date_time)                 :: construct_from_uet
@@ -3968,7 +4830,7 @@ end function construct_from_uet
 ! These functions are privately used to define the methods that TYPE(DATE_TIME) will support
 !===================================================================================================================================
 function dt2d(self) result (dat)
-character(len=*),parameter::ident="@(#)M_time::dt2d(3f): convert derived type date_time to DAT date-time array"
+character(len=*),parameter::ident_38="@(#)M_time::dt2d(3f): convert derived type date_time to DAT date-time array"
 class(date_time),intent(in) :: self
 integer                     :: dat(8)                  ! date time array similar to that returned by DATE_AND_TIME
    dat=[self%year, self%month, self%day, self%tz, self%hour, self%minute, self%second, self%millisecond]
@@ -3977,14 +4839,14 @@ end function dt2d
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 function epoch(self) result (epoch_seconds)
-character(len=*),parameter::ident="@(#)M_time::epoch(3f): convert derived type date_time to unix epoch seconds"
+character(len=*),parameter::ident_39="@(#)M_time::epoch(3f): convert derived type date_time to unix epoch seconds"
 class(date_time),intent(in) :: self
 real(kind=realtime)         :: epoch_seconds
    epoch_seconds=d2u(dt2d(self))
 end function epoch
 !===================================================================================================================================
 function format(self,fmt) result (string)
-character(len=*),parameter::ident="@(#)M_time::format(3f): convert derived type date_time to formatted string"
+character(len=*),parameter::ident_40="@(#)M_time::format(3f): convert derived type date_time to formatted string"
 class(date_time),intent(in)           :: self
 character(len=*),intent(in),optional  :: fmt
    character(len=:),allocatable          :: fmtlocal
@@ -4017,21 +4879,21 @@ character(len=*),intent(in),optional  :: fmt
 end function format
 !===================================================================================================================================
 function julian(self) result (julian_days)
-character(len=*),parameter::ident="@(#)M_time::julian(3f): convert derived type date_time to julian date"
+character(len=*),parameter::ident_41="@(#)M_time::julian(3f): convert derived type date_time to julian date"
 class(date_time),intent(in) :: self
 real(kind=realtime)         :: julian_days
     julian_days=d2j(dt2d(self))
 end function julian
 !===================================================================================================================================
 function ordinal(self) result (ordinal_days)
-character(len=*),parameter::ident="@(#)M_time::ordinal(3f): convert derived type date_time to ordinal date"
+character(len=*),parameter::ident_42="@(#)M_time::ordinal(3f): convert derived type date_time to ordinal date"
 class(date_time),intent(in) :: self
 integer                     :: ordinal_days
     ordinal_days=d2o(dt2d(self))
 end function ordinal
 !===================================================================================================================================
 function weekday(self) result (iday)
-character(len=*),parameter::ident="@(#)M_time::weekday(3f): convert derived type date_time to weekday (1=Monday,7=Sunday)"
+character(len=*),parameter::ident_43="@(#)M_time::weekday(3f): convert derived type date_time to weekday (1=Monday,7=Sunday)"
 class(date_time),intent(in)   :: self
 integer                       :: iday
    integer                    :: ierr      ! Error return,0=correct,-1=invalid Julian Date,-2=neither day nor weekday specified
@@ -4047,7 +4909,7 @@ function delta(self,year,month,day,tz,hour,minute,second,millisecond,week,durati
 ! or "a month from now". Once the arbitrary values are used to change the original date_time value convert it to
 ! Epoch time and back to make sure you get a valid date.
 !
-character(len=*),parameter::ident="@(#)M_time::delta(3f): add times to a type(date_time)"
+character(len=*),parameter::ident_44="@(#)M_time::delta(3f): add times to a type(date_time)"
 class(date_time),intent(in)           :: self
 integer,intent(in),optional           :: year, month, day, tz, hour, minute, second, millisecond, week
 character(len=*),intent(in),optional  :: duration
@@ -4079,7 +4941,7 @@ subroutine init_dt(self,year,month,day,tz,hour,minute,second,millisecond,type,da
 ! If not, initialize to the current time or start of epoch depending on TYPE=["now"|"epoch"]
 ! Then, apply specific values, typically specified by keyword value
 !
-character(len=*),parameter::ident="@(#)M_time::init_dt(3f): initialize TYPE(DATE_TIME)"
+character(len=*),parameter::ident_45="@(#)M_time::init_dt(3f): initialize TYPE(DATE_TIME)"
 class(date_time)                     :: self
 type(date_time)                      :: holddt
 integer,intent(in),optional          :: year, month, day, tz, hour, minute, second, millisecond
@@ -4140,7 +5002,7 @@ end subroutine init_dt
 ! FUNCTIONS FOR DEFINING OVERLOADED OPERATORS
 !===================================================================================================================================
 function plus_seconds(self,seconds) result (dattim)
-character(len=*),parameter::ident="@(#)M_time::plus_seconds(3f): add derived type date_time object and seconds"
+character(len=*),parameter::ident_46="@(#)M_time::plus_seconds(3f): add derived type date_time object and seconds"
 class(date_time),intent(in)    :: self
 real(kind=realtime),intent(in) :: seconds
 type(date_time)                :: dattim
@@ -4151,7 +5013,7 @@ type(date_time)                :: dattim
 end function plus_seconds
 !===================================================================================================================================
 function minus_seconds(self,seconds) result (dattim)
-character(len=*),parameter::ident="@(#)M_time::minus_seconds(3f): subtract seconds from derived type date_time object"
+character(len=*),parameter::ident_47="@(#)M_time::minus_seconds(3f): subtract seconds from derived type date_time object"
 class(date_time),intent(in)    :: self
 real(kind=realtime),intent(in) :: seconds
 type(date_time)                :: dattim
@@ -4159,7 +5021,7 @@ type(date_time)                :: dattim
 end function minus_seconds
 !===================================================================================================================================
 function minus_date_time(self,other) result (seconds)
-character(len=*),parameter::ident="@(#)M_time::minus_date_time(3f): add derived type date_time object and seconds"
+character(len=*),parameter::ident_48="@(#)M_time::minus_date_time(3f): add derived type date_time object and seconds"
 class(date_time),intent(in)   :: self
 type(date_time),intent(in)    :: other
 real(kind=realtime)           :: seconds
@@ -4167,7 +5029,7 @@ real(kind=realtime)           :: seconds
 end function minus_date_time
 !===================================================================================================================================
 logical function eq(self,other)
-character(len=*),parameter::ident="@(#)M_time::eq(3f): compare derived type date_time objects (eq,lt,gt,le,ge,ne)"
+character(len=*),parameter::ident_49="@(#)M_time::eq(3f): compare derived type date_time objects (eq,lt,gt,le,ge,ne)"
 class(date_time),intent(in)   :: self
 type(date_time),intent(in)    :: other
    eq= int(d2u(dt2d(self))) .eq. int(d2u(dt2d(other)))

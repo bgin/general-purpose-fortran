@@ -2,7 +2,7 @@
 
              !     line mode calculator that calls jucalc
              !
-             use m_calculator, only: jucalc,iclen_calc
+             use M_calculator, only: jucalc,iclen_calc
              implicit none
              integer, parameter        :: k_dbl = SELECTED_REAL_KIND(15,300) ! real*8
              character(len=iclen_calc) :: event, line

@@ -3491,6 +3491,15 @@
 !!       call vexit()           !  wrap up and exit graphics mode
 !!
 !!       end program demo_drawstr
+!!   Results:
+!! ================================================================================
+!! *ccall*: MAKING TEMPORARY DIRECTORY /tmp/CCALL_CYGWIN64_GFORTRAN_33416
+!! r - /tmp/_JSU.ff
+!! a - /tmp/CCALL_CYGWIN64_GFORTRAN_33416/_JSU.33416.f90
+!! /home/urbanjs/.twm/scripts_regression/goodbad: _JSU.1 0 _JSU start --section 1
+!! *ccall*: REMOVING /tmp/CCALL_CYGWIN64_GFORTRAN_33416
+!! ================================================================================
+!! ================================================================================
 !===================================================================================================================================
 !>
 !!##NAME
@@ -6454,12 +6463,51 @@
 !!
 !!##SYNOPSIS
 !!
-!!          subroutine scale(x, y, z)
+!!    subroutine scale(x, y, z)
 !!
-!!          real x, y, z
+!!     real,intent(in) ::  x, y, z
 !!##DESCRIPTION
+!!    Set up scaling factors in x, y, and z axis. The scaling is applied relative
+!!    to the current transformation matrix; ie. the scaling is accumulative.
 !!
-!!    Set up scaling factors in x, y, and z axis.
+!!##OPTIONS
+!!    x  scaling factor to apply in X direction to current transformation matrix
+!!    y  scaling factor to apply in Y direction to current transformation matrix
+!!    x  scaling factor to apply in Z direction to current transformation matrix
+!!##EXAMPLE
+!!
+!!  Sample program
+!!
+!!    program demo_scale
+!!    use M_drawplus, only : draw_interpret
+!!    character(len=:),allocatable :: draw_cmds(:)
+!!    draw_cmds=[ character(len=128) ::                                      &
+!!    '# set up display                                                    ',&
+!!    'prefsize 300 300;prefposition 200 10;vinit X11;                     ',&
+!!    'set SIZE=1.2                                                        ',&
+!!    'color 3;clear;color 2; ortho2 -SIZE SIZE -SIZE SIZE                 ',&
+!!    'set X=-0.75 Y=0.75                                                  ',&
+!!    '# create an object to repeatedly draw                               ',&
+!!    'makeobj 1                                                           ',&
+!!    'polyfill .true.;color 1; rect 0 0 X Y                               ',&
+!!    'polyfill .false.;linewidth 200;color 2 ;rect 0 0 X Y                ',&
+!!    'closeobj                                                            ',&
+!!    '# draw opbject, rotating coordindate system between instantiations  ',&
+!!    'pushmatrix                                                          ',&
+!!    'scale 1.1 2.0                                                       ',&
+!!    'callobj 1                                                           ',&
+!!    'scale 0.5 0.5                                                       ',&
+!!    'callobj 1                                                           ',&
+!!    'circle 0 0 X/3                                                      ',&
+!!    'popmatrix                                                           ',&
+!!    'color 5;circle 0 0 X/3                                              ',&
+!!    'getkey;vexit                                                        ']
+!!    write(*,'(a)')draw_cmds
+!!    call draw_interpret(draw_cmds,delimiters=';')
+!!    end program demo_scale
+!!
+!!##SEE ALSO
+!!     rotate, translate, pushmatrix, popmatrix
 !===================================================================================================================================
 !>
 !!##NAME
@@ -6472,7 +6520,47 @@
 !!          character axis
 !!##DESCRIPTION
 !!
-!!    Set up a rotation in axis axis. Where axis is one of 'x', 'y', or 'z'.
+!!    Set up a rotation of coordinate system along specified axis, relative
+!!    to current coordinate system.
+!!
+!!##OPTIONS
+!!    angle  Angle in degrees to rotate coordinate system, with clockwise
+!!           angles being positive.
+!!
+!!    axis   Which axis to performat rotation about. Allowed values are 'x',
+!!           'y', and 'z'.
+!!
+!!##EXAMPLE
+!!
+!!   Sample usage
+!!    program demo_rotate
+!!    use M_drawplus, only : draw_interpret
+!!    character(len=:),allocatable :: draw_cmds(:)
+!!    draw_cmds=[ character(len=128) ::                                      &
+!!    '# set up display                                                    ',&
+!!    'prefsize 300 300;prefposition 200 10;vinit X11;                     ',&
+!!    'set SIZE=1.2                                                        ',&
+!!    'color 3;clear;color 2; ortho2 -SIZE SIZE -SIZE SIZE                 ',&
+!!    'set X=-0.75 Y=0.75                                                  ',&
+!!    '# create an object to repeatedly draw                               ',&
+!!    'makeobj 1                                                           ',&
+!!    'polyfill .true.;color 1; rect 0 0 X Y                               ',&
+!!    'polyfill .false.;linewidth 200;color 2 ;rect 0 0 X Y                ',&
+!!    'closeobj                                                            ',&
+!!    '# draw opbject, rotating coordindate system between instantiations  ',&
+!!    'callobj 1                                                           ',&
+!!    'rotate 45 z                                                         ',&
+!!    'callobj 1                                                           ',&
+!!    'rotate 45 z                                                         ',&
+!!    'callobj 1                                                           ',&
+!!    'circle 0 0 X/3                                                      ',&
+!!    'getkey;vexit                                                        ']
+!!    write(*,'(a)')draw_cmds
+!!    call draw_interpret(draw_cmds,delimiters=';')
+!!    end program demo_rotate
+!!
+!!##SEE ALSO
+!!     translate, pushmatrix, popmatrix, scale
 !===================================================================================================================================
 !>
 !!##NAME
@@ -7717,7 +7805,7 @@ module M_draw
 use ISO_C_BINDING
 implicit none
 
-character(len=*),parameter::ident="@(#)M_draw::M_draw(3fm):: The M_draw graphics library module"
+character(len=*),parameter::ident_1="@(#)M_draw::M_draw(3fm):: The M_draw graphics library module"
 
 private
 !-------------------------------------------------------------------------------

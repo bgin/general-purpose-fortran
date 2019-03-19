@@ -168,7 +168,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    create Makefile for current directory>',&
 '@(#)VERSION:        1.0, 2017-12-09>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sat, Nov 10th, 2018 2:21:36 PM>',&
+'@(#)COMPILED:       Mon, Mar 18th, 2019 2:59:23 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -188,7 +188,7 @@ use,intrinsic :: iso_c_binding, only   : c_ptr
 use,intrinsic :: iso_fortran_env, only : OUTPUT_UNIT, ERROR_UNIT ! , INPUT_UNIT    ! access computing environment
 implicit none
 
-character(len=*),parameter::ident="@(#)makeout(1f): Generate a Makefile from the sources (C, Fortran) in the current directory."
+character(len=*),parameter::ident_1="@(#)makeout(1f): Generate a Makefile from the sources (C, Fortran) in the current directory."
 
 character(len=:),allocatable    :: programs(:)
 character(len=IPvalue),allocatable :: c_programs(:)
@@ -398,6 +398,7 @@ character(len=maxlen)           :: ext
    else
       write(io,'(a)')'all: $(PROG) $(CPROG)'
    endif
+   write(io,'(a)')expand('\tenv PATH="$$PATH:`pwd`/scripts" which test_suite && test_suite -l test_suite_log.txt')
 !----------------------------------------------------------------------------------------------------------------------------------
    if(libname.eq.'')then
    fixed=[character(len=132) :: &

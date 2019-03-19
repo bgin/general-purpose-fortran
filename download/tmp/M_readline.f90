@@ -58,6 +58,7 @@ MODULE M_readline
    IMPLICIT NONE
    PRIVATE
    PUBLIC system_readline
+   public test_suite_M_readline
 !-------------------------------------------------------------------------------
 ! define the call to the C routine
 ! extern char     *Freadline(int ilen, char *buf, char prompt[]);
@@ -73,7 +74,9 @@ MODULE M_readline
    END INTERFACE
 !-------------------------------------------------------------------------------
 contains
-! the routine that calls the C routine
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 !>
 !!##NAME
 !!      system_readline(3f) - [M_readline] Call readline(3c) from Fortran
@@ -132,15 +135,40 @@ contains
 !!    end program demo_system_readline
 !===================================================================================================================================
 SUBROUTINE system_readline(line,prompt)
-   USE ISO_C_BINDING
-   IMPLICIT NONE
-   CHARACTER(KIND=C_CHAR,LEN=*),INTENT(OUT) :: line
-   CHARACTER(KIND=C_CHAR,LEN=*),INTENT(IN)  :: prompt
+USE ISO_C_BINDING
+IMPLICIT NONE
+! the routine that calls the C routine
+CHARACTER(KIND=C_CHAR,LEN=*),INTENT(OUT) :: line
+CHARACTER(KIND=C_CHAR,LEN=*),INTENT(IN)  :: prompt
 
    ! trim to last non-blank character and append null for C
    CALL Freadline(INT(LEN(line),KIND=C_INT),line,trim(prompt)//ACHAR(0))
 
- END SUBROUTINE system_readline
-!-------------------------------------------------------------------------------
+END SUBROUTINE system_readline
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine test_suite_M_readline()
+
+!! setup
+   call test_system_readline()
+!! teardown
+contains
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_readline()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('system_readline',msg='')
+   !!call unit_check('system_readline', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('system_readline',msg='')
+end subroutine test_system_readline
+!===================================================================================================================================
+end subroutine test_suite_M_readline
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 END MODULE M_readline
-!-------------------------------------------------------------------------------
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================

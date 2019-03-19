@@ -13,8 +13,10 @@
 #include <termio.h>
 #elif Darwin
 #include <termios.h>
-#else
+#elif HPUX
 #include <sys/termio.h>
+#else
+#include <termio.h>
 #endif
 /*--------------------------*/
 #include "draw.h"

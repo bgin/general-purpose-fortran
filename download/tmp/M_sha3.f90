@@ -114,14 +114,30 @@ module M_sha3
 
   ! pre-computed values of the RC parameter in function iota
   integer(LANE),parameter,dimension(24) :: RC_C = [ &
-      transfer(z'8000000000000000',0_int64), transfer(z'4101000000000000',0_int64), transfer(z'5101000000000001',0_int64), &
-      transfer(z'0001000100000001',0_int64), transfer(z'D101000000000000',0_int64), transfer(z'8000000100000000',0_int64), &
-      transfer(z'8101000100000001',0_int64), transfer(z'9001000000000001',0_int64), transfer(z'5100000000000000',0_int64), &
-      transfer(z'1100000000000000',0_int64), transfer(z'9001000100000000',0_int64), transfer(z'5000000100000000',0_int64), &
-      transfer(z'D101000100000000',0_int64), transfer(z'D100000000000001',0_int64), transfer(z'9101000000000001',0_int64), &
-      transfer(z'C001000000000001',0_int64), transfer(z'4001000000000001',0_int64), transfer(z'0100000000000001',0_int64), &
-      transfer(z'5001000000000000',0_int64), transfer(z'5000000100000001',0_int64), transfer(z'8101000100000001',0_int64), &
-      transfer(z'0101000000000001',0_int64), transfer(z'8000000100000000',0_int64), transfer(z'1001000100000001',0_int64) ]
+   transfer(z'8000000000000000'*1_int64,0_int64), &
+   transfer(z'4101000000000000'*1_int64,0_int64), &
+   transfer(z'5101000000000001'*1_int64,0_int64), &
+   transfer(z'0001000100000001'*1_int64,0_int64), &
+   transfer(z'D101000000000000'*1_int64,0_int64), &
+   transfer(z'8000000100000000'*1_int64,0_int64), &
+   transfer(z'8101000100000001'*1_int64,0_int64), &
+   transfer(z'9001000000000001'*1_int64,0_int64), &
+   transfer(z'5100000000000000'*1_int64,0_int64), &
+   transfer(z'1100000000000000'*1_int64,0_int64), &
+   transfer(z'9001000100000000'*1_int64,0_int64), &
+   transfer(z'5000000100000000'*1_int64,0_int64), &
+   transfer(z'D101000100000000'*1_int64,0_int64), &
+   transfer(z'D100000000000001'*1_int64,0_int64), &
+   transfer(z'9101000000000001'*1_int64,0_int64), &
+   transfer(z'C001000000000001'*1_int64,0_int64), &
+   transfer(z'4001000000000001'*1_int64,0_int64), &
+   transfer(z'0100000000000001'*1_int64,0_int64), &
+   transfer(z'5001000000000000'*1_int64,0_int64), &
+   transfer(z'5000000100000001'*1_int64,0_int64), &
+   transfer(z'8101000100000001'*1_int64,0_int64), &
+   transfer(z'0101000000000001'*1_int64,0_int64), &
+   transfer(z'8000000100000000'*1_int64,0_int64), &
+   transfer(z'1001000100000001'*1_int64,0_int64) ]
 
   type sha3_state
      integer :: d ! size of digest in bits
@@ -135,6 +151,7 @@ module M_sha3
 
   public :: sha3, sha3_update, sha3_state, sha3_digest, sha3_hexdigest, sha3_file, sha3_auto_test
 
+  public test_suite_M_sha3
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
@@ -963,6 +980,89 @@ subroutine sha3_test61()
 end subroutine sha3_test61
 
 end subroutine sha3_auto_test
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine test_suite_M_sha3()
+
+!! setup
+   call test___copy_m_sha3_Sha3_state()
+   call test_sha3()
+   call test_sha3_auto_test()
+   call test_sha3_digest()
+   call test_sha3_file()
+   call test_sha3_hexdigest()
+   call test_sha3_update()
+!! teardown
+contains
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test___copy_m_sha3_Sha3_state()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('__copy_m_sha3_Sha3_state',msg='')
+   !!call unit_check('__copy_m_sha3_Sha3_state', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('__copy_m_sha3_Sha3_state',msg='')
+end subroutine test___copy_m_sha3_Sha3_state
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sha3()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('sha3',msg='')
+   !!call unit_check('sha3', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('sha3',msg='')
+end subroutine test_sha3
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sha3_auto_test()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('sha3_auto_test',msg='')
+   !!call unit_check('sha3_auto_test', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('sha3_auto_test',msg='')
+end subroutine test_sha3_auto_test
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sha3_digest()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('sha3_digest',msg='')
+   !!call unit_check('sha3_digest', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('sha3_digest',msg='')
+end subroutine test_sha3_digest
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sha3_file()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('sha3_file',msg='')
+   !!call unit_check('sha3_file', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('sha3_file',msg='')
+end subroutine test_sha3_file
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sha3_hexdigest()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('sha3_hexdigest',msg='')
+   !!call unit_check('sha3_hexdigest', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('sha3_hexdigest',msg='')
+end subroutine test_sha3_hexdigest
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sha3_update()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('sha3_update',msg='')
+   !!call unit_check('sha3_update', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('sha3_update',msg='')
+end subroutine test_sha3_update
+!===================================================================================================================================
+end subroutine test_suite_M_sha3
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================

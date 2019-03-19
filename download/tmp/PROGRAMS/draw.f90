@@ -30,12 +30,10 @@ character(len=256)             :: delim
          if(iend.le.0)iend=len_trim(cmds(i))
          if(iend.ne.0)then
             cmds(i)=trim(cmds(i))//' '
-            !!write(*,*)'CMDS(I)=',i,trim(cmds(i))
-            !!write(*,*)'VERB=',i,trim(cmds(i))
             if(cmds(i)(:1).eq.'#') cycle
-            call call_draw(cmds(i)(:iend),cmds(i)(iend+1:),found)
+            call call_draw(cmds(i)(:iend),cmds(i)(iend+2:),found)
             if(.not.found)then
-               write(*,'(*(a))')'ERROR: ',trim(cmds(i)(:iend)),' [',trim(cmds(i)(iend+1:)),']',' not found'
+               write(*,'(*(a))')'ERROR: ',trim(cmds(i)(:iend)),' [',trim(cmds(i)(iend+2:)),']',' not found'
             endif
          endif
       enddo
@@ -58,7 +56,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20180722>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Sat, Nov 10th, 2018 3:07:00 PM>',&
+'@(#)COMPILED:       Sun, Jan 13th, 2019 7:18:35 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

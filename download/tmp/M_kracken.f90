@@ -8,7 +8,7 @@ use M_strings, only: upper, string_to_value, split, s2v
 use M_list,    only: locate, insert
 implicit none
 
-character(len=*),parameter::ident="@(#)M_kracken(3fm): parse command line options of Fortran programs using Unix-like syntax"
+character(len=*),parameter::ident_1="@(#)M_kracken(3fm): parse command line options of Fortran programs using Unix-like syntax"
 
 !===================================================================================================================================
    private
@@ -40,6 +40,8 @@ character(len=*),parameter::ident="@(#)M_kracken(3fm): parse command line option
    private :: subscript             ! return the subscript value of a string when given it's name
    private :: menu                  ! generate an interactive menu when -? option is used
    private :: get_command_arguments ! get_command_arguments: return all command arguments as a string
+!-----------------------------------------------------------------------------------------------------------------------------------
+   public test_suite_M_kracken
 !-----------------------------------------------------------------------------------------------------------------------------------
 ! length of verbs and entries in Language dictionary
 ! NOTE:   many parameters may be  reduced in size so as to just accommodate being used as a command line parser.
@@ -125,7 +127,7 @@ contains
 !===================================================================================================================================
 subroutine retrev(name,val,len,ier)
 
-character(len=*),parameter::ident="@(#)M_kracken::retrev(3f): retrieve token value from Language Dictionary when given NAME"
+character(len=*),parameter::ident_2="@(#)M_kracken::retrev(3f): retrieve token value from Language Dictionary when given NAME"
 
 !-----------------------------------------------------------------------------------------------------------------------------------
 character(len=*),intent(in)     :: name        ! name of variable to retrieve value for in form VERB_NAME
@@ -203,7 +205,8 @@ end subroutine retrev
 !===================================================================================================================================
 function dget(keyword)
 
-character(len=*),parameter::ident="@(#)M_kracken::dget(3f): given keyword fetch dble value from Language Dictionary (zero on err)"
+character(len=*),parameter::ident_3="&
+&@(#)M_kracken::dget(3f): given keyword fetch dble value from Language Dictionary (zero on err)"
 
 real(kind=dp)                :: dget              ! function type
 character(len=*),intent(in)  :: keyword           ! keyword to retrieve value for from dictionary
@@ -268,7 +271,8 @@ end function dget
 !===================================================================================================================================
 function rget(keyword)
 
-character(len=*),parameter::ident="@(#)M_kracken::rget(3f): given keyword fetch real value from language dictionary (zero on err)"
+character(len=*),parameter::ident_4="&
+&@(#)M_kracken::rget(3f): given keyword fetch real value from language dictionary (zero on err)"
 
 !-----------------------------------------------------------------------------------------------------------------------------------
    real                        :: rget             ! function type
@@ -337,7 +341,8 @@ end function rget
 !===================================================================================================================================
 function iget(keyword)
 
-character(len=*),parameter::ident="@(#)M_kracken::iget(3f): given keyword fetch integer value from Language Dictionary (0 on err)"
+character(len=*),parameter::ident_5="&
+&@(#)M_kracken::iget(3f): given keyword fetch integer value from Language Dictionary (0 on err)"
 
 !-----------------------------------------------------------------------------------------------------------------------------------
    integer                      :: iget            ! function type
@@ -408,7 +413,7 @@ end function iget
 !===================================================================================================================================
 function lget(keyword)
 
-character(len=*),parameter::ident="@(#)M_kracken::lget(3f): given keyword fetch logical value from lang. dictionary (.f. on err)"
+character(len=*),parameter::ident_6="@(#)M_kracken::lget(3f): given keyword fetch logical value from lang. dictionary (.f. on err)"
 
 !-----------------------------------------------------------------------------------------------------------------------------------
 logical                      :: lget               ! procedure type
@@ -507,7 +512,8 @@ end function lget
 !===================================================================================================================================
 function sget(name,ilen) result(string)
 
-character(len=*),parameter::ident="@(#)M_kracken::sget(3f): Fetch string value and length of specified NAME from lang. dictionary"
+character(len=*),parameter::ident_7="&
+&@(#)M_kracken::sget(3f): Fetch string value and length of specified NAME from lang. dictionary"
 
 !  This routine trusts that the desired name exists. A blank is returned if the name is not in the dictionary
 character(len=:),allocatable  :: string      ! returned value
@@ -588,7 +594,7 @@ end function sget
 !===================================================================================================================================
 function dgets(keyword) result(darray)
 
-character(len=*),parameter::ident="@(#)M_kracken::dgets(3f): given keyword fetch dble value from Language Dictionary (0 on err)"
+character(len=*),parameter::ident_8="@(#)M_kracken::dgets(3f): given keyword fetch dble value from Language Dictionary (0 on err)"
 
 character(len=*),intent(in) :: keyword                      ! keyword to retrieve value for from dictionary
 real(kind=dp),allocatable   :: darray(:)                    ! function type
@@ -668,7 +674,8 @@ end function dgets
 !===================================================================================================================================
 function igets(keyword) result(iarray)
 
-character(len=*),parameter::ident="@(#)M_kracken::igets(3f): given keyword fetch integer array from string in dictionary(0 on err)"
+character(len=*),parameter::ident_9="&
+&@(#)M_kracken::igets(3f): given keyword fetch integer array from string in dictionary(0 on err)"
 
 character(len=*),intent(in) :: keyword             ! keyword to retrieve value for from dictionary
 integer,allocatable         :: iarray(:)           ! convert value to an array
@@ -757,7 +764,7 @@ end function igets
 !===================================================================================================================================
 function rgets(keyword) result(rarray)
 
-character(len=*),parameter::ident="@(#)M_kracken::rgets(3f): given keyword fetch real array from string in dictionary (0 on err)"
+character(len=*),parameter::ident_10="@(#)M_kracken::rgets(3f): given keyword fetch real array from string in dictionary (0 on err)"
 
 character(len=*),intent(in) :: keyword             ! keyword to retrieve value for from dictionary
 real,allocatable            :: rarray(:)           ! convert value to an array
@@ -824,7 +831,8 @@ end function rgets
 !===================================================================================================================================
 function lgets(keyword) result(larray)
 
-character(len=*),parameter::ident="@(#)M_kracken::lgets(3f): given keyword fetch logical array from string in dictionary(F on err)"
+character(len=*),parameter::ident_11="&
+&@(#)M_kracken::lgets(3f): given keyword fetch logical array from string in dictionary(F on err)"
 
 character(len=*),intent(in)  :: keyword                    ! the dictionary keyword (in form VERB_KEYWORD) to retrieve
 logical,allocatable          :: larray(:)                  ! convert value to an array
@@ -918,7 +926,7 @@ end function lgets
 !===================================================================================================================================
 function sgets(name,delim) result(strings)
 
-character(len=*),parameter::ident="@(#)M_kracken::sgets(3f): Fetch strings value for specified NAME from the lang. dictionary"
+character(len=*),parameter::ident_12="@(#)M_kracken::sgets(3f): Fetch strings value for specified NAME from the lang. dictionary"
 
 ! This routine trusts that the desired name exists. A blank is returned if the name is not in the dictionary
 character(len=IPvalue),allocatable  :: strings(:)
@@ -1053,7 +1061,7 @@ end function sgets
 !===================================================================================================================================
 subroutine kracken(verb,string,error_return)
 
-character(len=*),parameter::ident="@(#)M_kracken::kracken(3f): define and parse command line options"
+character(len=*),parameter::ident_13="@(#)M_kracken::kracken(3f): define and parse command line options"
 
 !  get the entire command line argument list and pass it and the prototype to dissect()
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -1141,7 +1149,7 @@ end subroutine kracken
 !===================================================================================================================================
 subroutine setprompts(verb,init)
 
-character(len=*),parameter::ident="@(#)M_kracken::setprompts(3f): set explicit prompts for keywords in interactive mode"
+character(len=*),parameter::ident_14="@(#)M_kracken::setprompts(3f): set explicit prompts for keywords in interactive mode"
 
 character(len=*),intent(in):: verb   ! verb name to define prompts for
 character(len=*),intent(in):: init   ! string to define prompts instead of values
@@ -1183,7 +1191,7 @@ end subroutine setprompts
 !===================================================================================================================================
 subroutine dissect(verb,init,pars,error_return)
 
-character(len=*),parameter::ident="@(#)M_kracken::dissect(3f): convenient call to parse() define defaults, then process"
+character(len=*),parameter::ident_15="@(#)M_kracken::dissect(3f): convenient call to parse() define defaults, then process"
 
 character(len=*),intent(in)  :: verb                     ! the name of the command to be reset/defined  and then set
 character(len=*),intent(in)  :: init                     ! used to define or reset command options; usually hard-set in the program.
@@ -1244,14 +1252,92 @@ end subroutine dissect
 !!
 !!##OPTIONS
 !!
-!!    VERB          command name to process
-!!    STRING        string is character input string with first verb removed (options + other commands)
-!!    ALLOW         keyword indicating whether commands may be added or only replaced
+!!    VERB     command name to process
+!!    STRING   string is character input string with first verb removed (options + other commands)
+!!    ALLOW    flag to allow or disallow new VERB_KEYWORD name being added. Should be
+!!              NEW VARIABLES ARE ALLOWED
+!!               o 'define'  -  add or replace a new VERB_KEYWORD entry and value
+!!               o 'add'     -  add or append to a new VERB_KEYWORD entry and value
+!!              NO NEW VARIABLES ARE ALLOWED
+!!               o 'append' or 'no_add' - append to an *EXISTING* entry value
+!!               o 'replace' - replace an *EXISTING* entry
+!!
+!!             That is, ff 'add' or 'append' and the value is not blank
+!!             it will be APPENDED to the current value. If 'define' or
+!!             'replace' it will replace the value instead of appending
+!!             to it.
+!!##RETURNS
 !!    ERROR_RETURN  error code. If zero, no error occurred
 !!
-!!##RETURNS
-!!
 !!##EXAMPLE
+!!
+!!   sample program:
+!!
+!!    program demo_parse
+!!    use M_kracken, only : parse, sget, iget, rget
+!!    use M_strings, only : chomp
+!!    implicit none
+!!    character(len=:),allocatable  :: verb
+!!    character(len=*),parameter    :: delimiters=' ;,'
+!!    integer     :: i
+!!    integer     :: ierr
+!!    character(len=132) :: line
+!!    character(len=132), parameter :: commands(5)= [character(len=132) :: &
+!!      'start -i 10 -message this is a message', &
+!!      'end -i 20 -j 30 -k 55.55 ', &
+!!      'list', &
+!!      'help -oo', &
+!!      'end -i 44.44 ']
+!!      do i=1,size(commands)
+!!         line=commands(i) ! need mutable line
+!!         if(chomp(line,verb,delimiters).ge. 0)then
+!!            call parse(verb,line,'add',ierr)
+!!            write(*,*)'do whatever a '//verb//' command does'
+!!            select case(verb)
+!!            case('start')
+!!               write(*,*)trim(sget('start_i'))
+!!               write(*,*)trim(sget('start_message'))
+!!            case('end')
+!!               write(*,*)iget('end_i')
+!!               write(*,*)iget('end_j')
+!!               write(*,*)rget('end_k')
+!!            case('list')
+!!               write(*,*)'list things'
+!!            case('help')
+!!               write(*,*)'show help text'
+!!            endselect
+!!         endif
+!!      enddo
+!!      ! look at some of the values as strings or numbers
+!!      write(*,*)trim(sget('start_i'))
+!!      write(*,*)trim(sget('start_message'))
+!!      write(*,*)iget('end_i')
+!!      write(*,*)iget('end_j')
+!!      write(*,*)rget('end_k')
+!!    end program demo_parse
+!!
+!!   Results:
+!!
+!!     do whatever a start command does
+!!     10
+!!     this is a message
+!!     do whatever a end command does
+!!              20
+!!              30
+!!       55.5499992
+!!     do whatever a list command does
+!!     list things
+!!     do whatever a help command does
+!!     show help text
+!!     do whatever a end command does
+!!              44
+!!              30
+!!       55.5499992
+!!     10
+!!     this is a message
+!!              44
+!!              30
+!!       55.5499992
 !!
 !!##SEE ALSO
 !!    M_kracken, kracken
@@ -1262,7 +1348,7 @@ end subroutine dissect
 !===================================================================================================================================
 subroutine parse(verb,string,allow,error_return)
 
-character(len=*),parameter::ident="@(#)M_kracken::parse(3f): parse user command and store tokens into Language Dictionary"
+character(len=*),parameter::ident_16="@(#)M_kracken::parse(3f): parse user command and store tokens into Language Dictionary"
 
 !!!   set up odd for future expansion
 !!!   need to handle a minus followed by a blank character
@@ -1513,9 +1599,9 @@ end subroutine parse
 !!               o 'no_add' or 'append' - append to an *EXISTING* entry value
 !!               o 'replace' - replace an *EXISTING* entry
 !!
-!!             'add' or 'no_add'. If 'add' and the value is not blank it will
-!!             be APPENDED to the current value. If 'replace' it will replace
-!!             the value instead of appending to it.
+!!             If 'add' or 'append' and the value is not blank it will
+!!             be APPENDED to the current value. If 'define' or 'replace'
+!!             it will replace the value instead of appending to it.
 !!
 !!##RETURNS
 !!    IER      flag if error occurs in adding or setting value
@@ -1613,7 +1699,7 @@ end subroutine parse
 !===================================================================================================================================
 subroutine store(name1,value1,allow1,ier)
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_17="&
 &@(#)M_kracken::store(3fp): replace or add dictionary entry name  and value (if allow='add' add name if necessary)"
 
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -1789,7 +1875,7 @@ end subroutine store
 !===================================================================================================================================
 function subscript(chars0)
 
-character(len=*),parameter::ident="@(#)M_kracken::subscript(3fp): return the subscript value of a string when given it's name"
+character(len=*),parameter::ident_18="@(#)M_kracken::subscript(3fp): return the subscript value of a string when given it's name"
 
 !  WARNING: only request value of names known to exist
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -1857,7 +1943,8 @@ end function subscript
 !===================================================================================================================================
 subroutine get_command_arguments(string,istatus)
 
-character(len=*),parameter::ident="@(#)M_kracken::get_command_arguments(3fp): return all command arguments as an allocated string"
+character(len=*),parameter::ident_19="&
+&@(#)M_kracken::get_command_arguments(3fp): return all command arguments as an allocated string"
 
 !  try to guess original quoting and reintroduce quotes
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -1937,7 +2024,7 @@ end subroutine get_command_arguments
 !===================================================================================================================================
 subroutine menu(verb)
 
-character(len=*),parameter::ident="@(#)M_kracken::menu(3fp): prompt for values using a menu interface"
+character(len=*),parameter::ident_20="@(#)M_kracken::menu(3fp): prompt for values using a menu interface"
 
 !-----------------------------------------------------------------------------------------------------------------------------------
 character(len=*),intent(in)  :: verb
@@ -2182,6 +2269,25 @@ end subroutine menu
 !!
 !!##EXAMPLE
 !!
+!!   Sample program:
+!!
+!!     program demo_show
+!!     use M_kracken, only : kracken, show
+!!     implicit none
+!!
+!!     call kracken('demo', ' default keyword -i 10 -j 20.20 -value my default string')
+!!     call show('demo',.false.,0)
+!!
+!!     end program demo_show
+!!   Results:
+!!
+!!     demo_value           = my default string
+!!     demo_oo              = default keyword
+!!     demo_j               = 20.20
+!!     demo_i               = 10
+!!     demo_?               = .false.
+!!     demo_>               = #N#
+!!
 !!##SEE ALSO
 !!    M_kracken, kracken
 !!
@@ -2191,7 +2297,7 @@ end subroutine menu
 !===================================================================================================================================
 subroutine show(VERB_NAME0,VERBS_ONLY,IWIDE0)
 
-character(len=*),parameter::ident="@(#)M_kracken::show(3f): dump dictionary entries"
+character(len=*),parameter::ident_21="@(#)M_kracken::show(3f): dump dictionary entries"
 
 character(len=*),intent(in)   :: VERB_NAME0     ! verb prefix to display. Default is all
 logical,intent(in)            :: VERBS_ONLY     ! flag to show verbs only
@@ -2289,6 +2395,189 @@ subroutine initd()
    dict_calls=[integer ::]               ! number of times this keyword stored on a call to parse
    dict_lens=[integer ::]                ! significant lengths of string variable values
 end subroutine initd
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine test_suite_M_kracken()
+
+!! setup
+   call test_dget()
+   call test_dgets()
+   call test_dissect()
+   call test_iget()
+   call test_igets()
+   call test_kracken()
+   call test_lget()
+   call test_lgets()
+   call test_parse()
+   call test_retrev()
+   call test_rget()
+   call test_rgets()
+   call test_setprompts()
+   call test_sget()
+   call test_sgets()
+   call test_show()
+   call test_store()
+!! teardown
+contains
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_dget()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('dget',msg='')
+   !!call unit_check('dget', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('dget',msg='')
+end subroutine test_dget
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_dgets()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('dgets',msg='')
+   !!call unit_check('dgets', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('dgets',msg='')
+end subroutine test_dgets
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_dissect()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('dissect',msg='')
+   !!call unit_check('dissect', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('dissect',msg='')
+end subroutine test_dissect
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_iget()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('iget',msg='')
+   !!call unit_check('iget', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('iget',msg='')
+end subroutine test_iget
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_igets()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('igets',msg='')
+   !!call unit_check('igets', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('igets',msg='')
+end subroutine test_igets
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_kracken()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('kracken',msg='')
+   !!call unit_check('kracken', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('kracken',msg='')
+end subroutine test_kracken
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_lget()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('lget',msg='')
+   !!call unit_check('lget', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('lget',msg='')
+end subroutine test_lget
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_lgets()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('lgets',msg='')
+   !!call unit_check('lgets', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('lgets',msg='')
+end subroutine test_lgets
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_parse()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('parse',msg='')
+   !!call unit_check('parse', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('parse',msg='')
+end subroutine test_parse
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_retrev()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('retrev',msg='')
+   !!call unit_check('retrev', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('retrev',msg='')
+end subroutine test_retrev
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_rget()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('rget',msg='')
+   !!call unit_check('rget', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('rget',msg='')
+end subroutine test_rget
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_rgets()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('rgets',msg='')
+   !!call unit_check('rgets', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('rgets',msg='')
+end subroutine test_rgets
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_setprompts()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('setprompts',msg='')
+   !!call unit_check('setprompts', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('setprompts',msg='')
+end subroutine test_setprompts
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sget()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('sget',msg='')
+   !!call unit_check('sget', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('sget',msg='')
+end subroutine test_sget
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_sgets()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('sgets',msg='')
+   !!call unit_check('sgets', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('sgets',msg='')
+end subroutine test_sgets
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_show()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('show',msg='')
+   !!call unit_check('show', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('show',msg='')
+end subroutine test_show
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_store()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('store',msg='')
+   !!call unit_check('store', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('store',msg='')
+end subroutine test_store
+!===================================================================================================================================
+end subroutine test_suite_M_kracken
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================

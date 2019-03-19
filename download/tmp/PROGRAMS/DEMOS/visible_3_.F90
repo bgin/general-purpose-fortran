@@ -2,6 +2,6 @@
            use M_strings, only : visible
            integer :: i
               do i=0,255
-                 write(*,'(a)')visible(char(i))
+                 write(*,'(i0,1x,a)')i,visible(char(i))
               enddo
            end program demo_visible

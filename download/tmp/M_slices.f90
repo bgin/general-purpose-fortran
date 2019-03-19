@@ -14,6 +14,7 @@ PUBLIC  :: DL_SLICES         ! DL_SLICES(A,INX,INZ,NX,NZ,ALPHA,BETA,XH,YH,ZH,IFL
                              !           YT,NYT,              NMY,NNY,MLY,TSY,NDY,SMY,
                              !           ZT,NZT,ZASTART,ZAEND,NMZ,NNZ,MLZ,TSZ,NDZ,SMZ,
                              !           AMININ,AMAXIN,ICOL)
+public test_suite_M_slices
 !-----------------------------------------------------------------------------------------------------------------------------------
 PRIVATE :: DL_VXPT3D         ! (X,Y,AVAL,IX,IZ,NX)
 PRIVATE :: DL_INTERSECT      ! (FLAG,X,Y,AX1,AY1,AX2,AY2,BX1,BY1,BX2,BY2,A)
@@ -132,7 +133,7 @@ SUBROUTINE dl_slices(a,INX,INZ,NX,NZ,ALPHA,BETA,XH,YH,ZH,IFLAG,IAXIS,XT,NXT, &
 !
 !     COORDINATE SYSTEM IS:  Y  Z  X
 !
-character(len=*),parameter::ident="@(#)M_slices::dl_slices(3f): Routine to plot data in 3-D overlay form."
+character(len=*),parameter::ident_1="@(#)M_slices::dl_slices(3f): Routine to plot data in 3-D overlay form."
 
 real,intent(in)             :: A(INX,INZ)
 integer,intent(in),optional :: maxsize
@@ -1417,7 +1418,7 @@ real,intent(in)   :: ymax0
 real,intent(in)   :: vpx
 real,intent(in)   :: vpy
 real,intent(in)   :: zom
-character(len=*),parameter::ident="@(#)M_slices::dl_init(3f): initialize the longlib graphics plot package"
+character(len=*),parameter::ident_2="@(#)M_slices::dl_init(3f): initialize the longlib graphics plot package"
 
    Z=ZOM
    xmax=xmax0
@@ -1552,7 +1553,7 @@ SUBROUTINE DL_SYMBOL(X,Y,S,T,A,NN,IS)
 !     MACHINE DEPENDENT NOTES:
 !        1. THE FUNCTION IBITS(I,J,K) RETURNS THE VALUE OF THE BITS
 !           IN I STARTING AT J FOR K BITS.
-character(len=*),parameter::ident="@(#)M_slices::dl_symbol(3f): routine to plot characters and symbols"
+character(len=*),parameter::ident_3="@(#)M_slices::dl_symbol(3f): routine to plot characters and symbols"
 character(len=*)    :: T
 logical             :: LENGTH
 real,save           :: OLDX,OLDY
@@ -1866,6 +1867,46 @@ INTEGER FUNCTION DL_INBOX(X,Y,X_BOTTOM_LEFT,Y_BOTTOM_LEFT,X_top_right,Y_top_righ
       DL_INBOX=CD
 
 END FUNCTION DL_INBOX
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine test_suite_M_slices()
+
+!! setup
+   call test_dl_init()
+   call test_dl_slices()
+   call test_dl_symbol()
+!! teardown
+contains
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_dl_init()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('dl_init',msg='')
+   !!call unit_check('dl_init', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('dl_init',msg='')
+end subroutine test_dl_init
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_dl_slices()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('dl_slices',msg='')
+   !!call unit_check('dl_slices', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('dl_slices',msg='')
+end subroutine test_dl_slices
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_dl_symbol()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('dl_symbol',msg='')
+   !!call unit_check('dl_symbol', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('dl_symbol',msg='')
+end subroutine test_dl_symbol
+!===================================================================================================================================
+end subroutine test_suite_M_slices
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!

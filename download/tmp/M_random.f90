@@ -66,6 +66,8 @@ public scramble
 
 public :: mtprng_state, mtprng_init, mtprng_init_by_array, mtprng_rand64, mtprng_rand
 public :: mtprng_rand_range, mtprng_rand_real1, mtprng_rand_real2, mtprng_rand_real3
+
+public test_suite_M_random
 !==================================================================================================================================!
 ! Kind types for IEEE 754/IEC 60559 single- and double-precision reals
 integer, parameter :: IEEE32 = selected_real_kind(  6,  37 )
@@ -127,7 +129,7 @@ contains
 !===================================================================================================================================
 function random_string(chars,length) result(out)
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_1="&
 &@(#)M_random::random_string(3f): create random string composed of provided characters of specified length"
 
 character(len=*),intent(in)     :: chars
@@ -195,7 +197,7 @@ end function random_string
 !===================================================================================================================================
 function random_hex(length) result(out)
 
-character(len=*),parameter::ident="@(#)M_random::random_hex(3f): create random hexadecimal string of specified length"
+character(len=*),parameter::ident_2="@(#)M_random::random_hex(3f): create random hexadecimal string of specified length"
 
 integer,intent(in)              :: length
 character(len=:),allocatable    :: out
@@ -262,7 +264,7 @@ end function random_hex
 !===================================================================================================================================
 subroutine random_permutation( array )
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_3="&
 &@(#)M_random::random_permutation(3f): populate an integer array with a random permutation of the integers 1 to size(array)"
 
 integer,intent(inout) :: array(:)
@@ -346,7 +348,7 @@ end subroutine random_permutation
 !===================================================================================================================================
 function scramble( number_of_values ) result(array)
 
-character(len=*),parameter::ident="@(#)M_random::scramble(3f): return an integer array of random values 1 to N."
+character(len=*),parameter::ident_4="@(#)M_random::scramble(3f): return an integer array of random values 1 to N."
 
 integer,intent(in)    :: number_of_values
 integer,allocatable   :: array(:)
@@ -414,7 +416,7 @@ end function scramble
 !===================================================================================================================================
 function random_kiss64()
 
-character(len=*),parameter::ident="@(#)M_random::random_kiss64(3f): A 64-bit KISS random number generator by George Margaglia."
+character(len=*),parameter::ident_5="@(#)M_random::random_kiss64(3f): A 64-bit KISS random number generator by George Margaglia."
 
 ! From: FortranWiki.org
 ! Originally posted to comp.lang.fortran in the message 64-bit KISS RNGs.
@@ -493,7 +495,7 @@ end function random_kiss64
 !===================================================================================================================================
 subroutine init_random_seed_by_system_clock()
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_6="&
 &@(#)M_random::init_random_seed_by_system_clock(3f): initialize random_number(3f) to return a single value with system clock"
 
    integer :: i, n, clock
@@ -555,7 +557,7 @@ end subroutine init_random_seed_by_system_clock
 !===================================================================================================================================
 subroutine init_random_seed_by_dat()
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_7="&
 &@(#)M_random::init_random_seed_by_dat(3f): initialize random_number(3f) to return a single value using date_and_time(3f)"
 
 ! Initially based on a post on comp.lang.fortran.
@@ -628,7 +630,7 @@ end subroutine init_random_seed_by_dat
 !===================================================================================================================================
 subroutine init_random_seed(mine)
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_8="&
 &@(#)M_random::init_random_seed(3f): initialize random_number(3f) to return a single value with single integer seed like srand(3c)"
 
 ! to make this start with a single number like srand(3c) take the seed and
@@ -781,7 +783,8 @@ end subroutine init_random_seed
 !===================================================================================================================================
 subroutine mtprng_init(seed, state)
 
-character(len=*),parameter::ident="@(#)M_random::mtprng_int(3f): Initializes the Mersenne Twister random number generator with seed"
+character(len=*),parameter::ident_9="&
+&@(#)M_random::mtprng_int(3f): Initializes the Mersenne Twister random number generator with seed"
 
 ! arguments
 integer(INT32),     intent(in)  :: seed
@@ -842,7 +845,7 @@ end subroutine mtprng_init
 !===================================================================================================================================
 subroutine mtprng_init_by_array(init_key, state)
 
-character(len=*),parameter::ident="@(#)M_random::mtprng_int_by_array(3f): Initialize with an array of seeds"
+character(len=*),parameter::ident_10="@(#)M_random::mtprng_int_by_array(3f): Initialize with an array of seeds"
 
 ! arguments
 integer(INT32),intent(in)       :: init_key(:)
@@ -928,7 +931,7 @@ end subroutine mtprng_init_by_array
 !===================================================================================================================================
 function mtprng_rand64(state) result(r)
 
-character(len=*),parameter::ident="@(#)M_random::mtprng_rand64(3f): Obtain the next 64-bit integer in the pseudo-random sequence"
+character(len=*),parameter::ident_11="@(#)M_random::mtprng_rand64(3f): Obtain the next 64-bit integer in the pseudo-random sequence"
 
 ! arguments
 type(mtprng_state), intent(inout) :: state
@@ -1027,7 +1030,7 @@ end function mtprng_rand64
 !===================================================================================================================================
 function mtprng_rand(state) result(r)
 
-character(len=*),parameter::ident="@(#)M_random::mtprng_rand(3f): Obtain the next 32-bit integer in the pseudo-random sequence"
+character(len=*),parameter::ident_12="@(#)M_random::mtprng_rand(3f): Obtain the next 32-bit integer in the pseudo-random sequence"
 
 ! arguments
 type(mtprng_state), intent(inout) :: state
@@ -1089,7 +1092,7 @@ end function mtprng_rand
 !===================================================================================================================================
 function mtprng_rand_range(state, lo, hi) result(r)
 
-character(len=*),parameter::ident="@(#)M_random::mtprng_rand_range(3f): Obtain a pseudo-random integer in the range [lo,hi]"
+character(len=*),parameter::ident_13="@(#)M_random::mtprng_rand_range(3f): Obtain a pseudo-random integer in the range [lo,hi]"
 
 ! arguments
 type(mtprng_state), intent(inout) :: state
@@ -1140,7 +1143,7 @@ end function mtprng_rand_range
 !===================================================================================================================================
 function mtprng_rand_real1(state) result(r)
 
-character(len=*),parameter::ident="@(#)M_random::mtprng_rand_real1(3f): Obtain a pseudo-random real number .ge. 0 and .le.= 1."
+character(len=*),parameter::ident_14="@(#)M_random::mtprng_rand_real1(3f): Obtain a pseudo-random real number .ge. 0 and .le.= 1."
 
 ! arguments
 type(mtprng_state), intent(inout) :: state
@@ -1186,7 +1189,7 @@ end function mtprng_rand_real1
 !!    end program demo_mtprng_real2
 !===================================================================================================================================
 function mtprng_rand_real2(state) result(r)
-character(len=*),parameter::ident="@(#)M_random::mtprng_rand_real2(3f): Obtain a pseudo-random real number .ge. 0.0 and .lt. 1.0"
+character(len=*),parameter::ident_15="@(#)M_random::mtprng_rand_real2(3f): Obtain a pseudo-random real number .ge. 0.0 and .lt. 1.0"
 
 type(mtprng_state), intent(inout) :: state                                   ! arguments
 real(IEEE64)                      :: r                                       ! return type
@@ -1233,7 +1236,7 @@ end function mtprng_rand_real2
 !===================================================================================================================================
 function mtprng_rand_real3(state) result(r)
 
-character(len=*),parameter::ident="@(#)M_random::mtprng_rand_real3(3f): Obtain a pseudo-random real number .gt. 0 and .lt. 1."
+character(len=*),parameter::ident_16="@(#)M_random::mtprng_rand_real3(3f): Obtain a pseudo-random real number .gt. 0 and .lt. 1."
 
 ! arguments
 type(mtprng_state), intent(inout) :: state
@@ -1246,7 +1249,187 @@ real(IEEE64) :: r
    r = (real(mtprng_rand64(state),IEEE64) + 0.5_IEEE64) * factor
 
 end function mtprng_rand_real3
-!==================================================================================================================================!
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!==================================================================================================================================!
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine test_suite_M_random()
+
+!! setup
+   call test___copy_m_random_Mtprng_state()
+   call test_init_random_seed()
+   call test_init_random_seed_by_dat()
+   call test_init_random_seed_by_system_clock()
+   call test_mtprng_init()
+   call test_mtprng_init_by_array()
+   call test_mtprng_rand()
+   call test_mtprng_rand64()
+   call test_mtprng_rand_range()
+   call test_mtprng_rand_real1()
+   call test_mtprng_rand_real2()
+   call test_mtprng_rand_real3()
+   call test_random_hex()
+   call test_random_kiss64()
+   call test_random_permutation()
+   call test_random_string()
+   call test_scramble()
+!! teardown
+contains
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test___copy_m_random_Mtprng_state()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('__copy_m_random_Mtprng_state',msg='')
+   !!call unit_check('__copy_m_random_Mtprng_state', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('__copy_m_random_Mtprng_state',msg='')
+end subroutine test___copy_m_random_Mtprng_state
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_init_random_seed()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('init_random_seed',msg='')
+   !!call unit_check('init_random_seed', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('init_random_seed',msg='')
+end subroutine test_init_random_seed
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_init_random_seed_by_dat()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('init_random_seed_by_dat',msg='')
+   !!call unit_check('init_random_seed_by_dat', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('init_random_seed_by_dat',msg='')
+end subroutine test_init_random_seed_by_dat
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_init_random_seed_by_system_clock()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('init_random_seed_by_system_clock',msg='')
+   !!call unit_check('init_random_seed_by_system_clock', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('init_random_seed_by_system_clock',msg='')
+end subroutine test_init_random_seed_by_system_clock
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mtprng_init()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mtprng_init',msg='')
+   !!call unit_check('mtprng_init', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mtprng_init',msg='')
+end subroutine test_mtprng_init
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mtprng_init_by_array()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mtprng_init_by_array',msg='')
+   !!call unit_check('mtprng_init_by_array', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mtprng_init_by_array',msg='')
+end subroutine test_mtprng_init_by_array
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mtprng_rand()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mtprng_rand',msg='')
+   !!call unit_check('mtprng_rand', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mtprng_rand',msg='')
+end subroutine test_mtprng_rand
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mtprng_rand64()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mtprng_rand64',msg='')
+   !!call unit_check('mtprng_rand64', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mtprng_rand64',msg='')
+end subroutine test_mtprng_rand64
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mtprng_rand_range()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mtprng_rand_range',msg='')
+   !!call unit_check('mtprng_rand_range', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mtprng_rand_range',msg='')
+end subroutine test_mtprng_rand_range
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mtprng_rand_real1()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mtprng_rand_real1',msg='')
+   !!call unit_check('mtprng_rand_real1', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mtprng_rand_real1',msg='')
+end subroutine test_mtprng_rand_real1
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mtprng_rand_real2()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mtprng_rand_real2',msg='')
+   !!call unit_check('mtprng_rand_real2', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mtprng_rand_real2',msg='')
+end subroutine test_mtprng_rand_real2
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mtprng_rand_real3()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mtprng_rand_real3',msg='')
+   !!call unit_check('mtprng_rand_real3', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mtprng_rand_real3',msg='')
+end subroutine test_mtprng_rand_real3
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_random_hex()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('random_hex',msg='')
+   !!call unit_check('random_hex', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('random_hex',msg='')
+end subroutine test_random_hex
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_random_kiss64()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('random_kiss64',msg='')
+   !!call unit_check('random_kiss64', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('random_kiss64',msg='')
+end subroutine test_random_kiss64
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_random_permutation()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('random_permutation',msg='')
+   !!call unit_check('random_permutation', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('random_permutation',msg='')
+end subroutine test_random_permutation
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_random_string()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('random_string',msg='')
+   !!call unit_check('random_string', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('random_string',msg='')
+end subroutine test_random_string
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_scramble()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('scramble',msg='')
+   !!call unit_check('scramble', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('scramble',msg='')
+end subroutine test_scramble
+!===================================================================================================================================
+end subroutine test_suite_M_random
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 end module M_random

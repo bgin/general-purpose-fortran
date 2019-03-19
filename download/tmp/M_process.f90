@@ -248,7 +248,7 @@ module M_process
 ! only: c_int, c_char, c_null_char, c_associated, c_ptr, c_null_ptr, c_new_line
 use, intrinsic :: ISO_C_BINDING
 implicit none
-character(len=*),parameter::ident="@(#)M_process(3fm): call C process open,close,read,write functions"
+character(len=*),parameter::ident_1="@(#)M_process(3fm): call C process open,close,read,write functions"
 
 PRIVATE
 PUBLIC  ::  process_open_read  ! (cmd,fp,ierr)                  ! open process to read from
@@ -257,6 +257,7 @@ PUBLIC  ::  process_close      ! (fp,ierr)                      ! close process
 PUBLIC  ::  process_readline   ! (string,fp,ierr)               ! read line from process
 PUBLIC  ::  process_readall    ! (cmd,ierr) result(string)      ! read all lines from process
 PUBLIC  ::  process_writeline  ! (string,fp,ierr)               ! write line to process
+public test_suite_M_process
 PRIVATE ::  process_open       ! (fp,ierr)                      ! open process
 
 logical, PUBLIC ::  process_debug=.false.
@@ -409,7 +410,7 @@ contains
 !!
 !===================================================================================================================================
 subroutine process_open_read(cmd,fp,ierr)
-character(len=*),parameter::ident="@(#)M_process::process_open_read(3f): open process to read from"
+character(len=*),parameter::ident_2="@(#)M_process::process_open_read(3f): open process to read from"
 
    character(len=*),intent(in)     :: cmd  ! shell command to start process with
    type(streampointer),intent(out) :: fp           ! file pointer returned for process
@@ -433,7 +434,7 @@ end subroutine process_open_read
 !!
 !===================================================================================================================================
 subroutine process_open_write(cmd,fp,ierr)
-character(len=*),parameter::ident="@(#)M_process::process_open_write(3f): open process to write to"
+character(len=*),parameter::ident_3="@(#)M_process::process_open_write(3f): open process to write to"
 
    character(len=*),intent(in)     :: cmd  ! shell command to start process with
    type(streampointer),intent(out) :: fp           ! file pointer returned for process
@@ -456,7 +457,7 @@ end subroutine process_open_write
 !!
 !===================================================================================================================================
 subroutine process_open(cmd,mode,fp,ierr)
-character(len=*),parameter::ident="@(#)M_process::process_open(3fp): open process"
+character(len=*),parameter::ident_4="@(#)M_process::process_open(3fp): open process"
 
    character(len=*),intent(in)     :: cmd  ! shell command to start process with
    character(len=*),intent(in)     :: mode         ! read/write/mode parameter to pass to popen(3c)
@@ -488,7 +489,7 @@ end subroutine process_open
 !!
 !===================================================================================================================================
 subroutine process_close(fp,ierr)
-character(len=*),parameter::ident="@(#)M_process::process_close(3f): close process"
+character(len=*),parameter::ident_5="@(#)M_process::process_close(3f): close process"
    ! DO NOT MAKE fp INTENT(IN)
    type(streampointer) :: fp           ! file pointer returned for process
    integer(c_int) ::  ios
@@ -522,7 +523,7 @@ end subroutine process_close
 !!
 !===================================================================================================================================
 subroutine process_readline(readfrom,fp,ierr)
-character(len=*),parameter::ident="@(#)M_process::process_readline(3f): read line from process"
+character(len=*),parameter::ident_6="@(#)M_process::process_readline(3f): read line from process"
 !  readfrom must be at least two
    character(len=*),intent(out)   :: readfrom
    type(streampointer),intent(in) :: fp
@@ -636,7 +637,7 @@ end subroutine process_readline
 !===================================================================================================================================
 function process_readall(cmd,delim,ierr)  result(string)      !! not hardened
 
-character(len=*),parameter::ident="@(#)M_process::process_readall(3f): read all lines from process"
+character(len=*),parameter::ident_7="@(#)M_process::process_readall(3f): read all lines from process"
 
 character(len=*),intent(in)           :: cmd
 character(len=:),allocatable          :: string      !! assume will not run out of memory
@@ -698,7 +699,7 @@ end function process_readall
 !!
 !===================================================================================================================================
 subroutine process_writeline_scalar(writefrom,fp,ierr,trm)
-character(len=*),parameter::ident="@(#)M_process::process_writeline_scalar(3fp): write line to process"
+character(len=*),parameter::ident_8="@(#)M_process::process_writeline_scalar(3fp): write line to process"
 character(len=*),intent(in)    :: writefrom
 type(streampointer),intent(in) :: fp
 integer,intent(out)            :: ierr
@@ -731,7 +732,7 @@ logical,intent(in),optional    :: trm
 end subroutine process_writeline_scalar
 subroutine process_writeline_array(writefrom,fp,ierr)
 
-character(len=*),parameter::ident="@(#)M_process::process_writeline_array(3fp): write lines to process"
+character(len=*),parameter::ident_9="@(#)M_process::process_writeline_array(3fp): write lines to process"
 
 character(len=*),intent(in)    :: writefrom(:)
 type(streampointer),intent(in) :: fp
@@ -746,9 +747,99 @@ integer,intent(out)            :: ierr
    enddo
 
 end subroutine process_writeline_array
-!-----------------------------------------------------------------------------------------------------------------------------------
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()-
-!-----------------------------------------------------------------------------------------------------------------------------------
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine test_suite_M_process()
+
+!! setup
+   call test___copy_m_process_Streampointer()
+   call test_process_close()
+   call test_process_open_read()
+   call test_process_open_write()
+   call test_process_readall()
+   call test_process_readline()
+   call test_process_writeline_array()
+   call test_process_writeline_scalar()
+!! teardown
+contains
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test___copy_m_process_Streampointer()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('__copy_m_process_Streampointer',msg='')
+   !!call unit_check('__copy_m_process_Streampointer', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('__copy_m_process_Streampointer',msg='')
+end subroutine test___copy_m_process_Streampointer
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_process_close()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('process_close',msg='')
+   !!call unit_check('process_close', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('process_close',msg='')
+end subroutine test_process_close
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_process_open_read()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('process_open_read',msg='')
+   !!call unit_check('process_open_read', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('process_open_read',msg='')
+end subroutine test_process_open_read
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_process_open_write()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('process_open_write',msg='')
+   !!call unit_check('process_open_write', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('process_open_write',msg='')
+end subroutine test_process_open_write
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_process_readall()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('process_readall',msg='')
+   !!call unit_check('process_readall', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('process_readall',msg='')
+end subroutine test_process_readall
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_process_readline()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('process_readline',msg='')
+   !!call unit_check('process_readline', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('process_readline',msg='')
+end subroutine test_process_readline
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_process_writeline_array()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('process_writeline_array',msg='')
+   !!call unit_check('process_writeline_array', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('process_writeline_array',msg='')
+end subroutine test_process_writeline_array
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_process_writeline_scalar()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('process_writeline_scalar',msg='')
+   !!call unit_check('process_writeline_scalar', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('process_writeline_scalar',msg='')
+end subroutine test_process_writeline_scalar
+!===================================================================================================================================
+end subroutine test_suite_M_process
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 end module M_process
 !-==================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!

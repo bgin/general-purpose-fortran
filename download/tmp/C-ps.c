@@ -149,8 +149,8 @@ static int PS_header(int xmin,int ymin,int xmax,int ymax,int xoff,int yoff) {
         fprintf(draw_fp,"%%%%Title: M_DRAW\n");
         a=72.0/300.0;
         fprintf(draw_fp,"%%%%BoundingBox: %d %d %d %d\n",
-          (int)((xmin+xoff)*a-3), (int)((ymin+yoff)*a-3),
-          (int)((xmax+xoff)*a+5), (int)((ymax+yoff)*a+5));
+          (int)((xmin+xoff)*a), (int)((ymin+yoff)*a),
+          (int)((xmax+xoff)*a), (int)((ymax+yoff)*a));
         fprintf(draw_fp,"%%%%Pages: (atend)\n") ;
 
         time(&tod);

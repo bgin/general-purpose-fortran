@@ -1,0 +1,230 @@
+#!/bin/bash
+################################################################################
+#set -x
+export MYLIB=$HOME/lib/CYGWIN64_GFORTRAN
+if [ ! -d "$MYLIB" ]
+then
+   MYLIB=.
+fi
+################################################################################
+HELP(){
+(txt2man -T||cat) <<\EOF
+NAME
+   test_suite(1bash) - [DEVELOPER] find and execute test_suite_* procedures
+SYNOPSIS
+   test_suite [*.f90|*.o][-l logfile][-w]|[--help]
+
+DESCRIPTION
+   Generate and execute a program to call the test_suite_* Fortran procedures
+   the script finds, using a small program similiar to
+
+      program runtest
+      use M_xxxx
+      use M_debug
+      unit_check_command=''
+      unit_check_keep_going=.true.
+      unit_check_level=0
+         call test_suite_M_xxxx()
+      end program runtest
+OPTIONS
+   -l  logfile
+   -w  given a *.o as the input file try to build a test_suite_M_xxx
+       procedure, making a lot of assumptions about the format of the
+       output of the nm(1) command and the compiler being used. Probably
+       will only work with gfortran(1) on a Linux platform.
+
+EXAMPLE
+
+EOF
+exit
+}
+################################################################################
+RUN(){
+mkdir -p tmp
+export UUID=tmp/${SUBNAME}_$(uuidgen)
+#-------------------------------------------
+case "$SHORTNAME" in
+#-------------------------------------------
+M_*)
+echo "UUID IS $UUID"
+cat >$UUID.f90 <<EOF
+program runtest
+use $SHORTNAME
+use M_debug
+unit_check_command=''
+unit_check_keep_going=.true.
+unit_check_level=0
+   call ${SUBNAME}
+end program runtest
+EOF
+;;
+#-------------------------------------------
+*)
+cat >$UUID.f90 <<EOF
+program runtest
+use M_debug
+unit_check_command=''
+unit_check_keep_going=.true.
+unit_check_level=0
+   call ${SUBNAME}
+end program runtest
+EOF
+;;
+#-------------------------------------------
+esac
+#-------------------------------------------
+[ "$*" = '' ] && cat $UUID.f90
+LIBS='-lncurses -lsqlite3 -lreadline -lX11'
+echo "TEST SUITE FOR $SUBNAME"
+(
+   exec 2>&1
+   if [ -e $MYLIB/libGPF_C.a ]
+   then
+      gfortran $UUID.f90 -I. -L. -J. -I$MYLIB -L$MYLIB -lGPF -lGPF_C -o $UUID $LIBS
+   else
+      gfortran $UUID.f90 -I. -L. -J. -I$MYLIB -L$MYLIB -lGPF -o $UUID $LIBS
+   fi
+   [ -e $UUID ] && $UUID
+   rm -f $UUID $UUID.f90
+)
+}
+################################################################################
+WRITE_START(){
+cat <<EOF
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine test_suite_${SHORTNAME}()
+implicit none
+!! setup
+EOF
+}
+################################################################################
+WRITE_END(){
+cat <<EOF
+!===================================================================================================================================
+end subroutine test_suite_${SHORTNAME}
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+EOF
+}
+################################################################################
+WRITE(){
+cat <<EOF
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_$SUBNAME()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('$SUBNAME',msg='')
+   !!call unit_check('$SUBNAME', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('$SUBNAME',msg='')
+end subroutine test_$SUBNAME
+EOF
+}
+################################################################################
+# try to extract all external names and write template for test routines
+TEMPLATE(){
+NAMES=${*:-$(ls *.o )}
+SUBNAMES=''
+for NAME in $NAMES
+do
+   export SHORTNAME=$(basename $NAME .o)
+   WRITE_START
+   SUBNAMES=$(nm --extern-only --demangle --format=posix "$NAME" |
+     grep -w T|
+     awk '{print $1}' |
+     sed -e 's/.*_MOD_//'|
+     sed -e 's/_$//'|
+     grep -v '^test_'
+   )
+   for SUBNAME in $SUBNAMES
+   do
+      echo "   call test_${SUBNAME}()"
+   done
+   echo '!! teardown'
+   echo 'contains'
+   for SUBNAME in $SUBNAMES
+   do
+      WRITE $SUBNAME
+   done
+   WRITE_END
+done
+}
+################################################################################
+################################################################################
+################################################################################
+################################################################################
+test_suite_w=''
+LOG_FILE=/dev/null
+while getopts "chl:wt" arg; do
+  case $arg in
+    c) SAFE_EXIT=1 ;;
+    h) HELP ; exit ;;
+    l) LOG_FILE="$OPTARG" ;;
+    w) test_suite_w=yes;;
+    t) TIMESTAMP=1 ;;
+  esac
+done
+shift $((OPTIND-1))
+################################################################################
+if [ "$test_suite_w" != '' ]
+then
+        TEMPLATE $*|tee $LOG_FILE
+        exit
+fi
+################################################################################
+(
+NAMES=${*:-$(ls *.o )}
+SUBNAMES=''
+for NAME in $NAMES
+do
+   case "$NAME" in
+   *.o)
+        SHORTNAME=$(basename $NAME .o)
+        SUBNAMES=$(nm --extern-only --demangle --format=posix "$NAME" |
+           grep -w T|grep -i test_suite_ |
+           awk '{print $1}' |
+           sed -e 's/.*test_suite_/test_suite_/'|
+           sed -e 's/_$//')
+   ;;
+   *.a)
+        SHORTNAME=$(basename $NAME .o)
+        SUBNAMES=$(nm --extern-only --demangle --format=posix "$NAME" |
+           grep -w T|grep -i test_suite_ |
+           awk '{print $1}' |
+           sed -e 's/.*test_suite_/test_suite_/'|
+           sed -e 's/_$//')
+   ;;
+   *.f90)SHORTNAME=$(basename $NAME .f90)
+   ;;
+   *.F90)SHORTNAME=$(basename $NAME .F90)
+   ;;
+   *.FF) SHORTNAME=$(basename $NAME .FF)
+         ufpp UFPP_TEST -verbose -system -i $NAME
+   ;;
+   *.ff) SHORTNAME=$(basename $NAME .ff)
+         ufpp UFPP_TEST -verbose -i $NAME
+   ;;
+   *.f)  SHORTNAME=$(basename $NAME .f)
+   ;;
+   *.F)  SHORTNAME=$(basename $NAME .F)
+   ;;
+   esac
+    if [ "$SUBNAMES" = '' ]
+    then
+       SUBNAMES="$(grep -i test_suite_ $NAME|tr '()' ' '|xargs -n 1|grep test_suite_|sort|uniq|xargs)"
+    fi
+    if [ "$SUBNAMES" != '' ]
+    then
+       for SUBNAME in $SUBNAMES
+       do
+          RUN
+       done
+    fi
+done
+) |tee $LOG_FILE
+################################################################################
+exit
+################################################################################

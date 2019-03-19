@@ -30,6 +30,7 @@ private
   ! STATISTICS
   public extremum       ! find the minimum and maximum value in a real array
   public bds            ! basic descriptive statistics
+  public ncr            ! number of combinations of size R from N cases
   public skekurx        ! skew and kurtosis variant
   public skekur1        ! skew and kurtosis variant
   public stddev         ! standard deviation
@@ -48,6 +49,8 @@ private
   public magic_square   ! create magic squares
   ! POLYNOMIAL
   public quadratic      ! return roots of quadratic equation even if complex
+
+  public test_suite_M_math
 
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -225,7 +228,7 @@ contains
 !===================================================================================================================================
 subroutine julfit(x,y,ixn,itype,a,b,r2)
 use M_journal, only : journal
-character(len=*),parameter::ident="@(#)M_math::julfit(3f): linear least squares curve fits, destroys input arrays"
+character(len=*),parameter::ident_1="@(#)M_math::julfit(3f): linear least squares curve fits, destroys input arrays"
 integer,intent(in) :: ixn
 real               :: x(ixn)
 real               :: y(ixn)
@@ -410,7 +413,7 @@ end subroutine julfit
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine julfit1(x,y,ixn,a,b,r2)
 implicit none
-character(len=*),parameter::ident="@(#)M_math::julfit1(3f): linear least square fit of (y=a*x+b), changes the y array"
+character(len=*),parameter::ident_2="@(#)M_math::julfit1(3f): linear least square fit of (y=a*x+b), changes the y array"
 !implicit double precision(a-h,o-z)
 !-----------------------------------------------------------------------------------------------------------------------------------
 integer,intent(in) :: ixn
@@ -742,7 +745,7 @@ end subroutine julfit1
 !===================================================================================================================================
 subroutine lowess(x, y, n, f, nsteps, delta, ys, rw, res)
 use M_sort, only : sort_shell
-character(len=*),parameter::ident="@(#)M_math::lowess(3f): data smoothing using locally weighted regression"
+character(len=*),parameter::ident_3="@(#)M_math::lowess(3f): data smoothing using locally weighted regression"
 integer n
 integer nsteps
 real x(n), y(n), f, delta, ys(n), rw(n)
@@ -1003,7 +1006,7 @@ end subroutine lowest
 SUBROUTINE SPLIFT(X,Y,YP,YPP,N,ierr,a1,b1,an,bn)
 !-----------------------------------------------------------------------------------------------------------------------------------
 use M_journal, only : journal
-character(len=*),parameter::ident="@(#)M_math::splift(3f): fits a spline to the n data points given in x and y"
+character(len=*),parameter::ident_4="@(#)M_math::splift(3f): fits a spline to the n data points given in x and y"
 integer,intent(in)            :: N
 real,intent(in)               :: X(N),Y(N)
 real,intent(out)              :: YP(N),YPP(N)
@@ -1164,7 +1167,7 @@ end subroutine splift
 !! REPORTING BUGS: http://www.urbanjost.altervista.org/
 !===================================================================================================================================
 subroutine splint (x,y,ypp,n,xi,yi,ypi,yppi,ni,kerr)
-character(len=*),parameter::ident="@(#)M_math::splint(3f): interpolates and twice differentiates a cubic spline"
+character(len=*),parameter::ident_5="@(#)M_math::splint(3f): interpolates and twice differentiates a cubic spline"
 integer,intent(in)  :: n
 integer,intent(in)  :: ni
 real,intent(in)     :: x(n),y(n),ypp(n),xi(ni)
@@ -1285,7 +1288,7 @@ END SUBROUTINE SPLINT
 !===================================================================================================================================
 SUBROUTINE linearint(X,Y,N,XI,YI,NI,KERR)
 implicit none
-character(len=*),parameter::ident="@(#)M_math::linearint(3f):linear interpolation of curve X(i),Y(i) at given XI(j) values"
+character(len=*),parameter::ident_6="@(#)M_math::linearint(3f):linear interpolation of curve X(i),Y(i) at given XI(j) values"
 !
    INTEGER,intent(in)  :: N, NI
    REAL,intent(in)     :: X(N),Y(N),XI(NI)
@@ -2783,7 +2786,7 @@ end SUBROUTINE QTFG
 !-----------------------------------------------------------------------------------------------------------------------------------
 SUBROUTINE CITER(A,R,H,S,C,DADH)
 use M_journal, only : journal
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_7="&
 &@(#)M_math::citer(3f): determine various geometric properties of circle segment given radius and area of the segment."
 !
 ! COPYRIGHT (C) John S. Urban, 08/31/1995
@@ -3030,7 +3033,7 @@ END SUBROUTINE CITER
 SUBROUTINE envelope(x, y, n, vertex, nvert) !-- saved from url=(0048)http://users.bigpond.net.au/amiller/envelope.f90
 IMPLICIT NONE
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_8="&
 &@(#)M_math::envelope(3f):Find the vertices (in clockwise order) of a polygon enclosing the points (x(i), y(i), i=1, ..., n."
 
 INTEGER,INTENT(IN) :: n
@@ -3249,8 +3252,8 @@ END SUBROUTINE envelope
 !!      integer,intent(in)  xconv(nconv), yconv(nconv)
 !!
 !!##DESCRIPTION
-!!      Given a closed polygon find if a point lies inside the
-!!      polygon.
+!!   Given a closed polygon find if a point lies inside the polygon.
+!!   Intended for integer values, like pixel images.
 !!
 !!##OPTIONS
 !!    xin     the X coordinate of the point to be checked
@@ -3262,10 +3265,87 @@ END SUBROUTINE envelope
 !!##RESULT
 !!    INPOLYGON returns .true if the point
 !!    lies inside the polygon, otherwise it returns .false.
+!!##EXAMPLE
+!!
+!!   Sample program
+!!
+!!   Draw a polygon and an envelope of the polygon and then calculate random
+!!   points in the region and determine if they fall inside the polygon,
+!!   within the accuracy of integer values.
+!!
+!!    program demo_inpolygon
+!!    use M_draw
+!!    use M_drawplus, only : page
+!!    use M_math,     only : envelope        ! Find vertices (in clockwise order) of a polygon enclosing the points
+!!    use M_math,     only : inpolygon       ! find if a point is inside a polygonal path
+!!    use M_math,     only : polyarea        ! compute the area bounded by a closed polygonal curve
+!!    implicit none
+!!    integer,parameter :: n=6
+!!    !  3--------------4
+!!    !   \           /
+!!    !     \       /
+!!    !       \   /
+!!    !         X 2,5
+!!    !       /  !!    !     /      !!    !   /          !!    !  1--------------6
+!!    integer,parameter    :: x(n)=[-5, 0,-5, 5, 0, 5]
+!!    integer,parameter    :: y(n)=[-5, 0, 5, 5, 0,-5]
+!!    real              :: xy(2,n)
+!!    integer           :: vertex(n)
+!!    integer           :: nvert
+!!    integer           :: i
+!!    integer           :: idum
+!!    xy(1,:)=x
+!!    xy(2,:)=y
+!!    call vinit(' ')
+!!    call page(-10.0,10.0,-10.0,10.0)
+!!    call color(D_BLACK) ! set current color to black
+!!    call clear()        ! clear to current color
+!!    call polyfill(.true.)
+!!    call color(D_BLUE)  ! we want to draw polygon in this color
+!!    call poly2(n,xy)    ! draw filled polygon using points given
+!!    idum=getkey()       ! pause for some input
+!!    call color(D_CYAN)
+!!    call polyhatch(.true.)
+!!    call envelope(real(x), real(y), n, vertex, nvert)   ! calculate envelope
+!!
+!!    call poly2(nvert,xy(:,vertex(1:nvert))) ! draw hatched envelope
+!!    idum=getkey()       ! pause for some input
+!!    call polyhatch(.false.)
+!!    call linewidth(50)
+!!    call color(D_WHITE)
+!!    call poly2(n,xy)    ! draw line along original points
+!!    idum=getkey()       ! pause for some input
+!!    call random_seed()
+!!    do i=1,70
+!!       call pickrandom()
+!!    enddo
+!!    idum=getkey()       ! pause for some input
+!!    call vexit()        ! wrap up and exit graphics mode
+!!    write(*,*)'polyarea=',polyarea(real(x),real(y))
+!!    write(*,*)'polyarea=',polyarea( xy(1,vertex(1:nvert)), xy(2,vertex(1:nvert)))
+!!    contains
+!!    subroutine pickrandom()
+!!       ! randomly pick a point in the plot area and color it according to whether it is inside
+!!       ! the original polygon
+!!       real :: pointx, pointy
+!!       integer :: l, m
+!!       call random_number(pointx)
+!!       call random_number(pointy)
+!!       pointx=int(pointx*20.0-10.0)
+!!       pointy=int(pointy*20.0-10.0)
+!!       !call locpt(pointx,pointy,x,y,n,l,m)
+!!       if(inpolygon(int(pointx),int(pointy),x,y,n))then
+!!          call color(D_GREEN)
+!!       else
+!!          call color(D_RED)
+!!       endif
+!!       call circle(pointx,pointy,0.2)
+!!    end subroutine pickrandom
+!!    end program demo_inpolygon
 !===================================================================================================================================
 LOGICAL FUNCTION INPOLYGON(XIN, YIN, XCONV, YCONV, NCONV)
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_9="&
 &@(#)M_math::inpolygon(3f):Subroutine to determine whether or not an integer point is in a polygon of integer points"
 
 integer,intent(in)  :: xin,yin                       ! coordinates of the point to be checked
@@ -3436,7 +3516,7 @@ integer             :: i, j, m
 !-----------------------------------------------------------------------------------------------------------------------------------
 SUBROUTINE locpt (x0, y0, x, y, n, l, m)
 IMPLICIT NONE
-character(len=*),parameter::ident="@(#)M_math::locpt(3f): find if a point is inside a polygonal path"
+character(len=*),parameter::ident_10="@(#)M_math::locpt(3f): find if a point is inside a polygonal path"
 !-----------------------------------------------------------------------------------------------------------------------------------
    REAL, INTENT(IN)     :: x0, y0, x(:), y(:)
    INTEGER, INTENT(IN)  :: n
@@ -3574,7 +3654,7 @@ END SUBROUTINE locpt
 !===================================================================================================================================
 SUBROUTINE Poly_Intercept (a, b, x, y, n, u, v, m, num, ierr)
 IMPLICIT NONE
-character(len=*),parameter::ident="@(#)M_math::poly_intercept(3f): Calculates the points at which a line <A,B> crosses a polygon"
+character(len=*),parameter::ident_11="@(#)M_math::poly_intercept(3f): Calculates the points at which a line <A,B> crosses a polygon"
 
 REAL, INTENT(IN)      :: a(2)
 REAL, INTENT(IN)      :: b(2)
@@ -3839,7 +3919,7 @@ END SUBROUTINE Poly_Intercept
 function polyarea(x, y) result(fn_val)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_math::polyarea(3f): compute the area bounded by a closed polygonal curve"
+character(len=*),parameter::ident_12="@(#)M_math::polyarea(3f): compute the area bounded by a closed polygonal curve"
 
 real, intent(in)     :: x(:)
 real, intent(in)     :: y(:)
@@ -3995,7 +4075,7 @@ END FUNCTION polyarea_mid_point         ! The units are those of the points.
 doubleprecision function polyarea_shoelace(x,y)
 use m_anything, only : anyscalar_to_double
 
-character(len=*),parameter::ident="@(#)Area enclosed by simple (non-intersecting) polygon P, by the shoelace method."
+character(len=*),parameter::ident_13="@(#)Area enclosed by simple (non-intersecting) polygon P, by the shoelace method."
 
 class(*),intent(in)          :: x(:), y(:)
 
@@ -4073,7 +4153,7 @@ END FUNCTION polyarea_shoelace       ! Negative for clockwise, positive for coun
 !===================================================================================================================================
 subroutine extremum(array,small,big)
 implicit none
-character(len=*),parameter::ident="@(#)M_math::extremum(3f):Find the minimum and maximum value in a REAL array"
+character(len=*),parameter::ident_14="@(#)M_math::extremum(3f):Find the minimum and maximum value in a REAL array"
 
 real,intent(in)            :: array(:)
 real,intent(out),optional  :: small
@@ -4252,7 +4332,8 @@ end subroutine extremum
 !!
 !===================================================================================================================================
 SUBROUTINE BDS (X,N,STAT)
-character(len=*),parameter::ident="@(#)M_math::bds(3f): Basic Descriptive Statistics (based on a routine from the IBM collection)"
+character(len=*),parameter::ident_15="&
+&@(#)M_math::bds(3f): Basic Descriptive Statistics (based on a routine from the IBM collection)"
 !  RETURN WITH M,U2,U3,U4,V,S,G1,G2,BIG,SMALL,IB,IS IN THAT ORDER IN LOCATIONS STAT(1) THROUGH STAT(13)
 !-----------------------------------------------------------------------
 !  nobody likes equivalences any more
@@ -4359,7 +4440,7 @@ END SUBROUTINE BDS
 !!    Written by Charles P. Reeve
 !===================================================================================================================================
 SUBROUTINE SKEKUR1(Y,NHI,YSKEW,YKURT,IOPT)
-character(len=*),parameter::ident="@(#)M_math::skekur1(3f): variant on calculating skewness and kurtosis of an array"
+character(len=*),parameter::ident_16="@(#)M_math::skekur1(3f): variant on calculating skewness and kurtosis of an array"
 REAL,INTENT(IN)    ::  Y(*)
 INTEGER,INTENT(IN) :: NHI
 REAL,INTENT(OUT)   :: YSKEW
@@ -4433,7 +4514,7 @@ END SUBROUTINE SKEKUR1
 !!
 !===================================================================================================================================
 SUBROUTINE SKEKURX(Y,N,YSKEW,YKURT)
-character(len=*),parameter::ident="@(#)M_math::skekurx(3f): COMPUTE UNBIASED ESTIMATOR OF THE POPULATION SKEWNESS AND KURTOSIS"
+character(len=*),parameter::ident_17="@(#)M_math::skekurx(3f): COMPUTE UNBIASED ESTIMATOR OF THE POPULATION SKEWNESS AND KURTOSIS"
       integer,intent(in) :: n
       REAL,intent(in)    :: Y(*)
       REAL,intent(out)   :: YSKEW
@@ -4473,6 +4554,169 @@ character(len=*),parameter::ident="@(#)M_math::skekurx(3f): COMPUTE UNBIASED EST
       YKURT= RN*(RN+1.0d0) / ((RN-1.0d0)*(RN-2.0d0)*(RN-3.0d0)) * SUM4 - 3.0d0*(RN-1.0d0)**2/((RN-2.0d0)*(RN-3.0d0))
 !-----------------------------------------------------------------------
 END SUBROUTINE SKEKURX
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!      ncr(3f) - [M_math] Calculate the number of unique combinations of r objects out of n.
+!!
+!!##SYNOPSIS
+!!
+!!   subroutine ncr(n,r,ncomb,ier)
+!!
+!!     integer, intent(in)     :: n
+!!     integer, intent(in)     :: r
+!!     !!integer, parameter      :: dp = selected_real_kind(12, 60)
+!!     integer, parameter      :: dp = kind(0.0d0)
+!!     real (dp), intent(out)  :: ncomb
+!!     integer, intent(out)    :: ier
+!!
+!!##DESCRIPTION
+!!      Calculate the number of unique combinations of r objects out of n.
+!!
+!!##OPTIONS
+!!      ier  returns error code
+!!           * 0  if no error is detected
+!!           * 1  if n < 1
+!!           * 2  if r < 0
+!!           * 3  if r > n
+!!           * 4  if nCr > 1.e+308, i.e. if it overflows.  In this case, the
+!!                natural log of nCr is returned.
+!!##EXAMPLE
+!!
+!!   Sample program:
+!!
+!!    program demo_ncr
+!!    use m_math, only : ncr
+!!    implicit none
+!!    integer, parameter  :: dp = selected_real_kind(12, 60)
+!!    integer             :: n, r, ier
+!!    real (dp)           :: result
+!!    do
+!!       write(*, '(a)', advance='no') ' Enter n, r : '
+!!       read(*, *) n, r
+!!       call ncr(n, r, result, ier)
+!!       if (ier /= 0) then
+!!          write(*, *) ' Error, IER = ', ier
+!!          if (ier == 4) write(*, '(a, f12.5)') ' ln(ncr) = ', result
+!!       else
+!!          write(*, '(a, g16.8)') ' ncr = ', result
+!!       endif
+!!    enddo
+!!    end program demo_ncr
+!!
+!!##AUTHOR
+!!    Alan Miller
+!===================================================================================================================================
+SUBROUTINE ncr(n, r, ncomb, ier)
+! Programmer: Alan.Miller @ cmis.csiro.au
+! Latest revision - 28 July 1988 (Fortran 77 version)
+! Code converted using TO_F90 by Alan Miller
+! Date: 2000-01-20  Time: 18:08:52
+
+IMPLICIT NONE
+!!INTEGER, PARAMETER      :: dp = SELECTED_REAL_KIND(12, 60)
+integer, parameter      :: dp = kind(0.0d0)
+
+INTEGER, INTENT(IN)     :: n
+INTEGER, INTENT(IN)     :: r
+REAL (dp), INTENT(OUT)  :: ncomb
+INTEGER, INTENT(OUT)    :: ier
+INTEGER :: rr, i, nn
+   IF (n < 1) THEN
+      ier = 1
+   ELSEIF (r < 0) THEN
+      ier = 2
+   ELSEIF (r > n) THEN
+      ier = 3
+   ELSE
+      ier = 0
+   ENDIF
+   IF (ier /= 0) RETURN
+
+   IF (r <= n-r) THEN
+      rr = r
+   ELSE
+      rr = n - r
+   ENDIF
+
+   IF (rr == 0) THEN
+      ncomb = 1.0_dp
+      RETURN
+   ENDIF
+
+   IF (rr > 25) THEN
+      ncomb = lngamma(DBLE(n+1)) - lngamma(DBLE(r+1)) - lngamma(DBLE(n-r+1))
+      IF (ncomb > 709._dp) THEN
+         ier = 4
+      ELSE
+         ncomb = EXP(ncomb)
+      ENDIF
+      RETURN
+   ENDIF
+
+   ncomb = n
+   i = 1
+   nn = n
+   DO
+      IF (i == rr) RETURN
+      nn = nn - 1
+      i = i + 1
+      ncomb = (ncomb * nn) / REAL(i)
+   ENDDO
+
+END SUBROUTINE nCr
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+FUNCTION lngamma(z) RESULT(lanczos)
+
+!  Uses Lanczos-type approximation to ln(gamma) for z > 0.
+!  Reference:
+!       Lanczos, C. 'A precision approximation of the gamma
+!               function', J. SIAM Numer. Anal., B, 1, 86-96, 1964.
+!  Accuracy: About 14 significant digits except for small regions
+!            in the vicinity of 1 and 2.
+
+!  Programmer: Alan Miller
+!              1 Creswick Street, Brighton, Vic. 3187, Australia
+!  Latest revision - 14 October 1996
+
+   IMPLICIT NONE
+   !!INTEGER, PARAMETER    :: dp = SELECTED_REAL_KIND(12, 60)
+    integer, parameter      :: dp = kind(0.0d0)
+   REAL(dp), INTENT(IN)  :: z
+   REAL(dp)              :: lanczos
+
+! Local variables
+
+REAL(dp)  :: a(9) = (/ 0.9999999999995183D0, 676.5203681218835D0, &
+   -1259.139216722289D0, 771.3234287757674D0, &
+   -176.6150291498386D0, 12.50734324009056D0, &
+   -0.1385710331296526D0, 0.9934937113930748D-05, &
+   0.1659470187408462D-06 /), zero = 0.D0,   &
+   one = 1.d0, lnsqrt2pi = 0.9189385332046727D0, &
+   half = 0.5d0, sixpt5 = 6.5d0, seven = 7.d0, tmp
+INTEGER          :: j
+
+   IF (z <= zero) THEN
+      WRITE(*, *) 'Error: zero or -ve argument for lngamma'
+      RETURN
+   END IF
+
+   lanczos = zero
+   tmp = z + seven
+   DO j = 9, 2, -1
+      lanczos = lanczos + a(j)/tmp
+      tmp = tmp - one
+   END DO
+   lanczos = lanczos + a(1)
+   lanczos = LOG(lanczos) + lnsqrt2pi - (z + sixpt5) + (z - half)*LOG(z + sixpt5)
+END FUNCTION lngamma
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
@@ -4542,7 +4786,7 @@ END SUBROUTINE SKEKURX
 !===================================================================================================================================
 function stddev(vector,n,avg)
 implicit none
-character(len=*),parameter::ident="@(#)M_math::stddev(3f): find standard deviation of a real array"
+character(len=*),parameter::ident_18="@(#)M_math::stddev(3f): find standard deviation of a real array"
 integer,intent(in) :: n            ! number of elements in input array (vector)
 real,intent(in)    :: vector(n)    ! input vector
 real,intent(in)    :: avg          ! average of array
@@ -4569,9 +4813,18 @@ end function stddev
 !!    function almost(x,y,digits)
 !!    real,intent(in) :: x,y
 !!    real,intent(in) :: rdigits
+!!    logical,intent(in),optional :: verbose
+!!    logical                     :: almost
+!!
 !!##DESCRIPTION
 !!    Returns true or false depending on whether the two numbers given agree to within the specified
 !!    number of digits as calculated by ACCDIG(3f).
+!!##OPTIONS
+!!    x,y      expected and calculated values to be compared
+!!    rdigits  real number representing number of digits of precision to compare
+!!    verbose  optional value that specifies to print the results of the comparison if TRUE.
+!!##RETURNS
+!!    almost   TRUE if the input values compare up to the specified number of values
 !!##EXAMPLE
 !!
 !!   sample:
@@ -4607,10 +4860,9 @@ end function stddev
 !!     *accdig* significant digit request too high= 8.00000000
 !!     *almost* for values 1.23456776 1.23000002 agreement of 2.43020344 digits out of requested 8.0
 !!            8   F
-!!
 !===================================================================================================================================
 function almost(x,y,digits,verbose)
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_19="&
 &@(#)M_math::almost(3f): function to compare two real numbers only up to a specified number of digits by calling ACCDIG(3f)"
 real,intent(in)             :: x,y
 real,intent(in)             :: digits
@@ -4786,7 +5038,7 @@ end function almost
 SUBROUTINE accdig(X,Y,digi0,ACURCY,IND)
 use M_journal, only : journal
 implicit none
-character(len=*),parameter::ident="@(#)M_math::accdig(3f): compare two real numbers only up to a specified number of digits"
+character(len=*),parameter::ident_20="@(#)M_math::accdig(3f): compare two real numbers only up to a specified number of digits"
 !     INPUT ...
       real,intent(in) :: x           ! First  of two real numbers to be compared.
       real,intent(in) :: y           ! Second of two real numbers to be compared.
@@ -4974,7 +5226,7 @@ use M_journal, only  : journal
 use M_anything, only : anyscalar_to_double
 implicit none
 
-character(len=*),parameter::ident="@(#)M_math::dp_accdig(3f): compare two double values only up to a specified number of digits"
+character(len=*),parameter::ident_21="@(#)M_math::dp_accdig(3f): compare two double values only up to a specified number of digits"
 
 !  INPUT ...
    class(*),intent(in)         :: x           ! FIRST  OF TWO DOUBLE NUMBERS TO BE COMPARED.
@@ -5058,17 +5310,45 @@ end subroutine dp_accdig
 !!    program demo_in_margin
 !!    use :: M_math, only : in_margin
 !!    implicit none
+!!    write(*,*) in_margin(4.00000,3.99999,0.000000001)
+!!    write(*,*) in_margin(4.00000,3.99999,0.00000001)
+!!    write(*,*) in_margin(4.00000,3.99999,0.0000001)
+!!    write(*,*) in_margin(4.00000,3.99999,0.000001)
+!!
+!!    write(*,*) in_margin([4.0,40.0,400.0,4000.0,40000.0], [3.9,39.9,399.9,3999.9,39999.9] ,0.000001)
+!!    write(*,*) in_margin([4.0,40.0,400.0,4000.0,40000.0], [3.9,39.9,399.9,3999.9,39999.9] ,0.00001)
+!!
+!!    write(*,*) in_margin(4.00000,3.99999,0.00001)
+!!    write(*,*) in_margin(4.00000,3.99999,0.0001)
+!!    write(*,*) in_margin(4.00000,3.99999,0.001)
+!!    write(*,*) in_margin(4.00000,3.99999,0.01)
+!!
 !!    end program demo_in_margin
+!!
+!!   Results:
+!!
+!!     F
+!!     F
+!!     F
+!!     F
+!!     F F F F F
+!!     F F F F T
+!!     T
+!!     T
+!!     T
+!!     T
 !===================================================================================================================================
 !===================================================================================================================================
 elemental pure function in_margin(expected_value, measured_value, allowed_margin)
 use :: M_anything, only : anyscalar_to_double
 implicit none
-character(len=*),parameter::ident="@(#)M_math::in_margin(3f): check if two reals are approximately equal using a relative margin"
-class(*),intent(in) :: expected_value, measured_value, allowed_margin
-doubleprecision     :: expected, measured, margin
 
-   logical          :: in_margin
+character(len=*),parameter::ident_22="@(#)M_math::in_margin(3f): check if two reals are approximately equal using a relative margin"
+
+class(*),intent(in) :: expected_value, measured_value, allowed_margin
+logical             :: in_margin
+
+   doubleprecision     :: expected, measured, margin
 
    expected=anyscalar_to_double(expected_value)
    measured=anyscalar_to_double(measured_value)
@@ -5079,7 +5359,15 @@ doubleprecision     :: expected, measured, margin
    else
       in_margin=.true.   ! values comparable
    endif
+
 end function in_margin
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_in_margin
+use M_debug, only: unit_check, unit_check_start, unit_check_done, unit_check_good, unit_check_bad
+use M_debug, only: unit_check_level
+call unit_check_start('in_margin')
+call unit_check_done('in_margin')
+end subroutine test_in_margin
 function round(val,idigits0)
 implicit none
 character(len=*),parameter :: ident="@(#) M_math::round(3f): round val to specified number of significant digits"
@@ -5163,7 +5451,7 @@ subroutine scale1(xmin0, xmax0, n0, xminp, xmaxp, dist)
 !-----------------------------------------------------------------------------------------------------------------------------------
 use M_journal, only : journal
 implicit none
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_23="&
 &@(#)M_math::scale1(3f):given xmin,xmax,n, find new range xminp xmaxp divisible into approximately n linear intervals of size dist"
 !-----------------------------------------------------------------------------------------------------------------------------------
    real,intent(in)      :: xmin0, xmax0
@@ -5332,7 +5620,7 @@ subroutine scale3(xmin0, xmax0, n0 , xminp, xmaxp, dist)
 !-----------------------------------------------------------------------------------------------------------------------------------
 use M_journal, only : journal
 implicit none
-character(len=*),parameter::ident="@(#)M_math::scale3(3f):find nice log range."
+character(len=*),parameter::ident_24="@(#)M_math::scale3(3f):find nice log range."
 
 real,intent(in)               :: xmin0, xmax0
 integer,intent(in)            :: n0
@@ -5504,7 +5792,8 @@ end subroutine scale3
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine quadratic(a,b,c,z1,z2,discriminant)
 implicit none
-character(len=*),parameter::ident="@(#)M_math::quadratic(3f): calculate the roots of a quadratic formula even if they are complex"
+character(len=*),parameter::ident_25="&
+&@(#)M_math::quadratic(3f): calculate the roots of a quadratic formula even if they are complex"
 real,intent(in)     :: a, b, c         ! coefficients
 complex,intent(out) :: z1, z2          ! roots
 real,intent(out)    :: discriminant
@@ -5705,7 +5994,7 @@ end subroutine magic_square
 !==================================================================================================================================!
 subroutine iswap(n,x,y)
 
-character(len=*),parameter::ident="@(#)m_matrix::iswap(3f): swap two integer arrays"
+character(len=*),parameter::ident_26="@(#)m_matrix::iswap(3f): swap two integer arrays"
 
 integer,intent(in) :: n
 integer            :: x(:),y(:)
@@ -5729,7 +6018,7 @@ end subroutine iswap
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
 pure function double_invert_2x2(A) result(B)
-character(len=*),parameter::ident="@(#)M_math::invert_2x2(3f): performs a direct calculation of the inverse of a 2x2 matrix"
+character(len=*),parameter::ident_27="@(#)M_math::invert_2x2(3f): performs a direct calculation of the inverse of a 2x2 matrix"
    integer,parameter         :: wp=kind(0.0d0)
    real(kind=wp), intent(in) :: A(2,2)   !! Matrix
    real(kind=wp)             :: B(2,2)   !! Inverse matrix
@@ -5748,7 +6037,7 @@ end function double_invert_2x2
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
 pure function double_invert_3x3(A) result(B)
-character(len=*),parameter::ident="@(#)M_math::invert_3x3(3f): performs a direct calculation of the inverse of a 3x3 matrix"
+character(len=*),parameter::ident_28="@(#)M_math::invert_3x3(3f): performs a direct calculation of the inverse of a 3x3 matrix"
    integer,parameter         :: wp=kind(0.0d0)
    real(kind=wp), intent(in) :: A(3,3)   !! Matrix
    real(kind=wp)             :: B(3,3)   !! Inverse matrix
@@ -5774,7 +6063,7 @@ end function double_invert_3x3
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
 pure function double_invert_4x4(A) result(B)
-character(len=*),parameter::ident="@(#)M_math::invert_4x4(3f): performs a direct calculation of the inverse of a 4x4 matrix"
+character(len=*),parameter::ident_29="@(#)M_math::invert_4x4(3f): performs a direct calculation of the inverse of a 4x4 matrix"
    integer,parameter            :: wp=kind(0.0d0)
    real(kind=wp), intent(in) :: A(4,4)   !! Matrix
    real(kind=wp)             :: B(4,4)   !! Inverse matrix
@@ -6048,5 +6337,570 @@ end function complex_invert_4x4
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine test_suite_M_math()
 
+!! setup
+!  call test_citer              ! determine various geometric properties of circle segment given radius and area of the segment.
+!  call test_envelope           ! Find the vertices (in clockwise order) of a polygon enclosing the points [((x(i), y(i), i=1,n)].
+!  call test_inpolygon          ! Subroutine to determine whether or not a point is in a polygon
+!  call test_locpt              ! find if a point is inside a polygonal path
+!  call test_poly_intercept     ! find points where a line intersects a polygon
+!  call test_polyarea           ! find area of a polygon
+!  call test_polyarea_shoelace  ! find area of a polygon using shoelace algorithm
+!  call test_polyarea_mid_point ! find area of a polygon
+! FIT
+!  call test_julfit             ! linear least square fit
+!  call test_julfit1            ! linear least square fit(y=a*x+b)
+!  call test_lowess             ! data smoothing using locally weighted regression
+!  call test_splift             ! fits a spline to the n data points given in x and y
+!  call test_splint             ! interpolates and twice differentiates a cubic spline
+!  call test_linearint          ! linear interpolation
+! FITS
+!  call test_ju_polfit
+!  call test_ju_pvalue
+!  call test_glstsq
+!  private gcsgau1
+!  private gcsgau2
+! INTEGRATE
+!  call test_qhfg
+!  call test_qhsg
+!  call test_qtfg
+! STATISTICS
+!  call test_extremum       ! find the minimum and maximum value in a real array
+!  call test_bds            ! basic descriptive statistics
+!  call test_ncr            ! number of combinations of size R from N cases
+!  call test_skekurx        ! skew and kurtosis variant
+!  call test_skekur1        ! skew and kurtosis variant
+!  call test_stddev         ! standard deviation
+! COMPARING AND ROUNDING FLOATING POINT VALUES
+!  call test_accdig         ! compare two real numbers only up to a specified number of digits
+!  call test_almost         ! function compares two real numbers only up to a specified number of digits
+!  call test_dp_accdig      ! compare two double numbers only up to a specified number of digits
+call test_in_margin      ! check if two reals are approximately equal using a relative margin
+!  call test_round          ! round val to specified number of significant digits
+!  call test_scale1         ! given xmin,xmax,n, find new range xminp xmaxp divisible into ~ n linear intervals of size dist
+!  call test_scale3         ! find nice log range, typically for an axis
+! MATRIX
+!  call test_invert_2x2     ! directly invert 2x2 matrix
+!  call test_invert_3x3     ! directly invert 3x3 matrix
+!  call test_invert_4x4     ! directly invert 4x4 matrix
+!  call test_magic_square   ! create magic squares
+! POLYNOMIAL
+!  call test_quadratic      ! return roots of quadratic equation even if complex
+   call test___copy_INTEGER_4()
+   call test___copy_REAL_4()
+   call test___copy_REAL_8()
+   call test_accdig()
+   call test_almost()
+   call test_bds()
+   call test_citer()
+   call test_complex_invert_2x2()
+   call test_complex_invert_3x3()
+   call test_complex_invert_4x4()
+   call test_double_invert_2x2()
+   call test_double_invert_3x3()
+   call test_double_invert_4x4()
+   call test_dp_accdig()
+   call test_envelope()
+   call test_extremum()
+   call test_glstsq()
+   call test_in_margin()
+   call test_inpolygon()
+   call test_integer_invert_2x2()
+   call test_integer_invert_3x3()
+   call test_integer_invert_4x4()
+   call test_ju_polfit()
+   call test_ju_pvalue()
+   call test_julfit()
+   call test_julfit1()
+   call test_linearint()
+   call test_locpt()
+   call test_lowess()
+   call test_magic_square()
+   call test_ncr()
+   call test_poly_intercept()
+   call test_polyarea()
+   call test_polyarea_mid_point()
+   call test_polyarea_shoelace()
+   call test_qhfg()
+   call test_qhsg()
+   call test_qtfg()
+   call test_quadratic()
+   call test_real_invert_2x2()
+   call test_real_invert_3x3()
+   call test_real_invert_4x4()
+   call test_round()
+   call test_scale1()
+   call test_scale3()
+   call test_skekur1()
+   call test_skekurx()
+   call test_splift()
+   call test_splint()
+   call test_stddev()
+!! teardown
+contains
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test___copy_INTEGER_4()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('__copy_INTEGER_4',msg='')
+   !!call unit_check('__copy_INTEGER_4', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('__copy_INTEGER_4',msg='')
+end subroutine test___copy_INTEGER_4
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test___copy_REAL_4()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('__copy_REAL_4',msg='')
+   !!call unit_check('__copy_REAL_4', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('__copy_REAL_4',msg='')
+end subroutine test___copy_REAL_4
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test___copy_REAL_8()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('__copy_REAL_8',msg='')
+   !!call unit_check('__copy_REAL_8', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('__copy_REAL_8',msg='')
+end subroutine test___copy_REAL_8
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_accdig()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('accdig',msg='')
+   !!call unit_check('accdig', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('accdig',msg='')
+end subroutine test_accdig
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_almost()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('almost',msg='')
+   !!call unit_check('almost', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('almost',msg='')
+end subroutine test_almost
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_bds()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('bds',msg='')
+   !!call unit_check('bds', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('bds',msg='')
+end subroutine test_bds
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_citer()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('citer',msg='')
+   !!call unit_check('citer', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('citer',msg='')
+end subroutine test_citer
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_complex_invert_2x2()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('complex_invert_2x2',msg='')
+   !!call unit_check('complex_invert_2x2', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('complex_invert_2x2',msg='')
+end subroutine test_complex_invert_2x2
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_complex_invert_3x3()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('complex_invert_3x3',msg='')
+   !!call unit_check('complex_invert_3x3', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('complex_invert_3x3',msg='')
+end subroutine test_complex_invert_3x3
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_complex_invert_4x4()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('complex_invert_4x4',msg='')
+   !!call unit_check('complex_invert_4x4', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('complex_invert_4x4',msg='')
+end subroutine test_complex_invert_4x4
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_double_invert_2x2()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('double_invert_2x2',msg='')
+   !!call unit_check('double_invert_2x2', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('double_invert_2x2',msg='')
+end subroutine test_double_invert_2x2
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_double_invert_3x3()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('double_invert_3x3',msg='')
+   !!call unit_check('double_invert_3x3', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('double_invert_3x3',msg='')
+end subroutine test_double_invert_3x3
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_double_invert_4x4()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('double_invert_4x4',msg='')
+   !!call unit_check('double_invert_4x4', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('double_invert_4x4',msg='')
+end subroutine test_double_invert_4x4
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_dp_accdig()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('dp_accdig',msg='')
+   !!call unit_check('dp_accdig', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('dp_accdig',msg='')
+end subroutine test_dp_accdig
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_envelope()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('envelope',msg='')
+   !!call unit_check('envelope', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('envelope',msg='')
+end subroutine test_envelope
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_extremum()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('extremum',msg='')
+   !!call unit_check('extremum', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('extremum',msg='')
+end subroutine test_extremum
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_glstsq()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('glstsq',msg='')
+   !!call unit_check('glstsq', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('glstsq',msg='')
+end subroutine test_glstsq
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_in_margin()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('in_margin',msg='')
+   !!call unit_check('in_margin', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('in_margin',msg='')
+end subroutine test_in_margin
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_inpolygon()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('inpolygon',msg='')
+   !!call unit_check('inpolygon', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('inpolygon',msg='')
+end subroutine test_inpolygon
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_integer_invert_2x2()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('integer_invert_2x2',msg='')
+   !!call unit_check('integer_invert_2x2', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('integer_invert_2x2',msg='')
+end subroutine test_integer_invert_2x2
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_integer_invert_3x3()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('integer_invert_3x3',msg='')
+   !!call unit_check('integer_invert_3x3', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('integer_invert_3x3',msg='')
+end subroutine test_integer_invert_3x3
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_integer_invert_4x4()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('integer_invert_4x4',msg='')
+   !!call unit_check('integer_invert_4x4', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('integer_invert_4x4',msg='')
+end subroutine test_integer_invert_4x4
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_ju_polfit()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('ju_polfit',msg='')
+   !!call unit_check('ju_polfit', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('ju_polfit',msg='')
+end subroutine test_ju_polfit
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_ju_pvalue()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('ju_pvalue',msg='')
+   !!call unit_check('ju_pvalue', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('ju_pvalue',msg='')
+end subroutine test_ju_pvalue
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_julfit()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('julfit',msg='')
+   !!call unit_check('julfit', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('julfit',msg='')
+end subroutine test_julfit
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_julfit1()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('julfit1',msg='')
+   !!call unit_check('julfit1', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('julfit1',msg='')
+end subroutine test_julfit1
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_linearint()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('linearint',msg='')
+   !!call unit_check('linearint', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('linearint',msg='')
+end subroutine test_linearint
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_locpt()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('locpt',msg='')
+   !!call unit_check('locpt', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('locpt',msg='')
+end subroutine test_locpt
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_lowess()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('lowess',msg='')
+   !!call unit_check('lowess', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('lowess',msg='')
+end subroutine test_lowess
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_magic_square()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('magic_square',msg='')
+   !!call unit_check('magic_square', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('magic_square',msg='')
+end subroutine test_magic_square
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_ncr()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('ncr',msg='')
+   !!call unit_check('ncr', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('ncr',msg='')
+end subroutine test_ncr
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_poly_intercept()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('poly_intercept',msg='')
+   !!call unit_check('poly_intercept', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('poly_intercept',msg='')
+end subroutine test_poly_intercept
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_polyarea()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('polyarea',msg='')
+   !!call unit_check('polyarea', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('polyarea',msg='')
+end subroutine test_polyarea
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_polyarea_mid_point()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('polyarea_mid_point',msg='')
+   !!call unit_check('polyarea_mid_point', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('polyarea_mid_point',msg='')
+end subroutine test_polyarea_mid_point
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_polyarea_shoelace()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('polyarea_shoelace',msg='')
+   !!call unit_check('polyarea_shoelace', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('polyarea_shoelace',msg='')
+end subroutine test_polyarea_shoelace
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_qhfg()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('qhfg',msg='')
+   !!call unit_check('qhfg', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('qhfg',msg='')
+end subroutine test_qhfg
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_qhsg()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('qhsg',msg='')
+   !!call unit_check('qhsg', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('qhsg',msg='')
+end subroutine test_qhsg
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_qtfg()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('qtfg',msg='')
+   !!call unit_check('qtfg', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('qtfg',msg='')
+end subroutine test_qtfg
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_quadratic()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('quadratic',msg='')
+   !!call unit_check('quadratic', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('quadratic',msg='')
+end subroutine test_quadratic
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_real_invert_2x2()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('real_invert_2x2',msg='')
+   !!call unit_check('real_invert_2x2', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('real_invert_2x2',msg='')
+end subroutine test_real_invert_2x2
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_real_invert_3x3()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('real_invert_3x3',msg='')
+   !!call unit_check('real_invert_3x3', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('real_invert_3x3',msg='')
+end subroutine test_real_invert_3x3
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_real_invert_4x4()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('real_invert_4x4',msg='')
+   !!call unit_check('real_invert_4x4', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('real_invert_4x4',msg='')
+end subroutine test_real_invert_4x4
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_round()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('round',msg='')
+   !!call unit_check('round', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('round',msg='')
+end subroutine test_round
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_scale1()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('scale1',msg='')
+   !!call unit_check('scale1', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('scale1',msg='')
+end subroutine test_scale1
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_scale3()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('scale3',msg='')
+   !!call unit_check('scale3', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('scale3',msg='')
+end subroutine test_scale3
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_skekur1()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('skekur1',msg='')
+   !!call unit_check('skekur1', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('skekur1',msg='')
+end subroutine test_skekur1
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_skekurx()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('skekurx',msg='')
+   !!call unit_check('skekurx', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('skekurx',msg='')
+end subroutine test_skekurx
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_splift()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('splift',msg='')
+   !!call unit_check('splift', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('splift',msg='')
+end subroutine test_splift
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_splint()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('splint',msg='')
+   !!call unit_check('splint', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('splint',msg='')
+end subroutine test_splint
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_stddev()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('stddev',msg='')
+   !!call unit_check('stddev', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('stddev',msg='')
+end subroutine test_stddev
+!===================================================================================================================================
+end subroutine test_suite_M_math
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 end module M_math

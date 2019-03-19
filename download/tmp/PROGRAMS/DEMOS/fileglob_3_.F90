@@ -1,9 +1,9 @@
           program demo_fileglob  ! simple unit test
-             call testit('*.*')
-             call testit('/tmp/__notthere.txt')
+             call tryit('*.*')
+             call tryit('/tmp/__notthere.txt')
           contains
 
-          subroutine testit(string)
+          subroutine tryit(string)
              use M_system, only : fileglob
              character(len=255),pointer :: list(:)
              character(len=*) :: string
@@ -11,6 +11,6 @@
              write(*,*)'Files:',size(list)
              write(*,'(a)')(trim(list(i)),i=1,size(list))
              deallocate(list)
-          end subroutine testit
+          end subroutine tryit
 
           end program demo_fileglob  ! simple unit test

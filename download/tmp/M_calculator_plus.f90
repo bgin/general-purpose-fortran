@@ -9,6 +9,7 @@ public :: snum0   ! resolve a calculator expression into a string(return blank o
 public :: jucalcx ! call jucalc() calculator and display messages
 public :: strgarr ! read a string into an array USING CALCULATOR
 public :: strgar2 ! read a string into an array USING CALCULATOR
+public :: test_suite_M_calculator_plus
 contains
 !>
 !!##NAME
@@ -1060,5 +1061,90 @@ character(len=*),parameter :: ident=&
 !-----------------------------------------------------------------------------------------------------------------------------------
 999   continue
 end subroutine strgar2
-!-----------------------------------------------------------------------------------------------------------------------------------
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine test_suite_M_calculator_plus()
+
+!! setup
+   call test_dnum0()
+   call test_inum0()
+   call test_jucalcx()
+   call test_rnum0()
+   call test_snum0()
+   call test_strgar2()
+   call test_strgarr()
+!! teardown
+contains
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_dnum0()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('dnum0',msg='')
+   !!call unit_check('dnum0', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('dnum0',msg='')
+end subroutine test_dnum0
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_inum0()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('inum0',msg='')
+   !!call unit_check('inum0', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('inum0',msg='')
+end subroutine test_inum0
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_jucalcx()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('jucalcx',msg='')
+   !!call unit_check('jucalcx', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('jucalcx',msg='')
+end subroutine test_jucalcx
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_rnum0()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('rnum0',msg='')
+   !!call unit_check('rnum0', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('rnum0',msg='')
+end subroutine test_rnum0
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_snum0()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('snum0',msg='')
+   !!call unit_check('snum0', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('snum0',msg='')
+end subroutine test_snum0
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_strgar2()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('strgar2',msg='')
+   !!call unit_check('strgar2', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('strgar2',msg='')
+end subroutine test_strgar2
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_strgarr()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('strgarr',msg='')
+   !!call unit_check('strgarr', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('strgarr',msg='')
+end subroutine test_strgarr
+!===================================================================================================================================
+end subroutine test_suite_M_calculator_plus
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 end module M_calculator_plus
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================

@@ -28,4 +28,5 @@ append("scalg.3m_calcomp.html");
 append("smoot.3m_calcomp.html");
 append("symbol.3m_calcomp.html");
 append("where.3m_calcomp.html");
+append("width.3m_calcomp.html");
 }

@@ -84,7 +84,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                                                                                ',&
 '   We will assume we have two files meeting the above criteria called           ',&
 '   "cray_results.txt" and "cygwin_results.txt". To compare the values           ',&
-'   we enter.                                                                    ',&
+'   we enter                                                                     ',&
 '                                                                                ',&
 '     numdiff -old cray_results.txt -new cygwin_results.txt -percent 0.00001     ',&
 '                                                                                ',&
@@ -284,7 +284,7 @@ end subroutine help_usage
 !!
 !!    We will assume we have two files meeting the above criteria called
 !!    "cray_results.txt" and "cygwin_results.txt". To compare the values
-!!    we enter.
+!!    we enter
 !!
 !!      numdiff -old cray_results.txt -new cygwin_results.txt -percent 0.00001
 !!
@@ -427,7 +427,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)COPYRIGHT:      1985, 1986, 1989, 1990, 20090501, 20131129 John. S. Urban>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sat, Nov 10th, 2018 2:19:01 PM>',&
+'@(#)COMPILED:       Sun, Jan 13th, 2019 7:43:41 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

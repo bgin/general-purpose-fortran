@@ -2,7 +2,7 @@
           use M_factor, only : gcd=>greatest_common_divisor
           implicit none
           integer, allocatable :: matrix(:,:)
-             write(*,*)'SCALAR:'
+             ! SCALAR:
                 call writeit(26,130,26)
                 call writeit(91,390,13)
                 call writeit(-91,390,13)
@@ -10,7 +10,7 @@
                 call writeit(-41,-43,1)
                 call writeit(-20,-10,10)
                 call writeit(20,10,10)
-             write(*,*)'VECTOR:'
+             ! VECTOR:
                 call writeit_v([26,130,91,390],13)
                 call writeit_v([5,7,11,13,17,19,23,29,31,37,41,43,47],1)
                 call writeit_v([-20,-10,0],10)
@@ -22,7 +22,7 @@
                 call writeit_v([-41,-43],1)
                 call writeit_v([-20,-10],10)
                 call writeit_v([20,10],10)
-             write(*,*)'MATRIX:'
+             ! MATRIX:
                 matrix=reshape([ 11,22,33,44,55,66],[2,3])
                 call write_matrix(matrix,11)
                 matrix=reshape([5,7,11,13,17,19,23,29,31,37,41,43,47],[13,1])

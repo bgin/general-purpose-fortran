@@ -55,6 +55,7 @@ character(len=*),parameter::ident="&
    integer                       :: numbers(number_of_args)
    integer                       :: igot
    real                          :: x,y
+   real,allocatable                   :: realsa(:)
    character(len=IPvalue),allocatable :: stringsa(:)
    character(len=IPvalue),allocatable :: oldread
    integer                       :: ifound
@@ -274,7 +275,7 @@ subroutine pixel(ifound)
 use :: M_pixel, only : page  ! [M_pixel] define the area of the virtual world coordinates to map to the viewport
 use :: M_pixel, only : hershey         ! [M_pixel] draw text string as Hershey software vector fonts
 use :: M_pixel, only : justfy          ! [M_pixel] return lengths used to justify a string when calling hershey
-use :: M_pixel, only : polyline        ! [M_pixel] connect points with lines
+use :: M_pixel, only : polyline2       ! [M_pixel] connect points with lines
 
 use :: M_writegif,        only : writegif
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -358,9 +359,9 @@ integer :: ifound
          case('arc')
              call return_values(igot,iwant=5,ierr=ierr)
              if(ierr.eq.0) call arc(values(1),values(2),values(3),values(4),values(5))
-         case('polyline')
+         case('polyline2')
              call dissect(linet(:ii),'-oo ',linet(ii+1:),ierr)
-
+             call polyline2( rgets('polyline2_oo'))
          case('mapcolor')
              call return_values(igot,iwant=4,ierr=ierr)
              numbers(1:4)=int(values(1:4))
@@ -907,7 +908,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sat, Nov 10th, 2018 2:30:54 PM>',&
+'@(#)COMPILED:       Sun, Jan 13th, 2019 7:47:24 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

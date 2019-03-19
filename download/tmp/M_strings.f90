@@ -9,10 +9,10 @@
 !!    use M_strings, only : substitute,change,modif,transliterate,reverse,replace,join
 !!    use M_strings, only : upper,lower
 !!    use M_strings, only : adjustc,compact,nospace,indent,crop,unquote
-!!    use M_strings, only : len_white,lenset,merge_str
+!!    use M_strings, only : len_white,atleast,lenset,merge_str
 !!    use M_strings, only : switch,s2c,c2s
 !!    use M_strings, only : noesc,notabs,expand,visible
-!!    use M_strings, only : string_to_value,string_to_values,s2v,s2vs,value_to_string,v2s
+!!    use M_strings, only : string_to_value,string_to_values,s2v,s2vs,value_to_string,v2s,msg
 !!    use M_strings, only : listout,getvals
 !!    use M_strings, only : matchw
 !!    use M_strings, only : base, decodebase, codebase
@@ -61,6 +61,7 @@
 !!
 !!    len_white  find location of last non-whitespace character
 !!    lenset     return a string of specified length
+!!    atleast    return a string of at least specified length
 !!    merge_str  make strings of equal length and then call MERGE(3f) intrinsic
 !!
 !!    CHARACTER ARRAY VERSUS STRING
@@ -83,7 +84,9 @@
 !!    getvals           subroutine reads a relatively arbitrary number of values from a string using list-directed read
 !!    s2v               function returns DOUBLEPRECISION numeric value from string
 !!    s2vs              function returns a DOUBLEPRECISION array of numbers from a string
-!!    value_to_string   generic subroutine returns string given numeric value (REAL, DOUBLEPRECISION, INTEGER )
+!!    msg               append the values of up to nine values into a string
+!!
+!!    value_to_string   generic subroutine returns string given numeric value (REAL, DOUBLEPRECISION, INTEGER, LOGICAL )
 !!    v2s               generic function returns string from numeric value (REAL, DOUBLEPRECISION, INTEGER )
 !!    trimzeros         delete trailing zeros from numeric decimal string
 !!    listout           expand a list of numbers where  negative numbers denote range ends (1 -10 means 1 thru 10)
@@ -419,9 +422,11 @@
 MODULE M_strings !
 use iso_fortran_env, only : ERROR_UNIT        ! access computing environment
 use M_journal,       only : journal
+use M_debug, only : unit_check, unit_check_start, unit_check_good, unit_check_bad, unit_check_done
+use M_debug, only : unit_check_level
 implicit none    ! change default for every procedure contained in the module
 
-character(len=*),parameter::ident="@(#)M_strings(3f): Fortran module containing routines that deal with character strings"
+character(len=*),parameter::ident_1="@(#)M_strings(3f): Fortran module containing routines that deal with character strings"
 
 !-----------------------------------------------------------------------------------------------------------------------------------
 PRIVATE
@@ -430,11 +435,11 @@ PRIVATE
 PUBLIC split           !  subroutine parses a string using specified delimiter characters and store tokens into an allocatable array
 PUBLIC chomp           !  function consumes input line as it returns next token in a string using specified delimiters
 PUBLIC delim           !  subroutine parses a string using specified delimiter characters and store tokens into an array
+PRIVATE strtok          !  gets next token. Used by change(3f)
 !----------------------# EDITING
 PUBLIC substitute      !  subroutine non-recursively globally replaces old substring with new substring in string
 PUBLIC replace         !  function non-recursively globally replaces old substring with new substring in string
 PUBLIC change          !  replaces old substring with new substring in string with a directive like a line editor
-PRIVATE strtok         !  gets next token. Used by change(3f)
 PUBLIC modif           !  change string using a directive using rules similar to XEDIT line editor MODIFY command
 PUBLIC transliterate   !  when characters in set one are found replace them with characters from set two
 PUBLIC reverse         !  elemental function reverses character order in a string
@@ -458,6 +463,7 @@ PUBLIC crop            !  function trims leading and trailing spaces
 PUBLIC unquote         !  remove quotes from string as if read with list-directed input
 !----------------------# STRING LENGTH
 PUBLIC lenset          !  return a string as specified length
+PUBLIC atleast         !  return a string of at least specified length
 PUBLIC merge_str       !  make strings of equal length and then call MERGE(3f) intrinsic
 PUBLIC len_white       !  find location of last non-whitespace character
 !----------------------# NONALPHA
@@ -474,12 +480,14 @@ PUBLIC string_to_values!  subroutine returns values from a string
 PUBLIC getvals         !  subroutine returns values from a string
 PUBLIC s2v             !  function returns doubleprecision value from string
 PUBLIC s2vs            !  function returns a doubleprecision array of numbers from a string
+PUBLIC msg             !  function returns a string representing up to nine scalar intrinsic values
                        !------------------------------------------------------------------------------------------------------------
-PUBLIC value_to_string !  generic subroutine returns string given numeric REAL|DOUBLEPRECISION|INTEGER value
-PUBLIC v2s             !  generic function returns string given numeric REAL|DOUBLEPRECISION|INTEGER value
- PRIVATE d2s           !  function returns strings from doubleprecision value
- PRIVATE r2s           !  function returns strings from real value
- PRIVATE i2s           !  function returns strings from integer value
+PUBLIC value_to_string !  generic subroutine returns string given numeric REAL|DOUBLEPRECISION|INTEGER|LOGICAL value
+PUBLIC v2s             !  generic function returns string given numeric REAL|DOUBLEPRECISION|INTEGER|LOGICAL value
+ PRIVATE d2s           !  function returns string from doubleprecision value
+ PRIVATE r2s           !  function returns string from real value
+ PRIVATE i2s           !  function returns string from integer value
+ PRIVATE l2s           !  function returns string from logical value
 PUBLIC v2s_bug         !  generic function returns string given numeric REAL|DOUBLEPRECISION|INTEGER value
 PUBLIC isnumber        !  determine if string represents a number
  PRIVATE trimzeros     !  Delete trailing zeros from numeric decimal string
@@ -521,24 +529,32 @@ PUBLIC isxdigit        !  elemental function returns .true. if CHR is a hexadeci
 !----------------------#
 PUBLIC describe        !  returns a string describing character
 !----------------------#
+
+public test_suite_m_strings
+
 !-----------------------------------------------------------------------------------------------------------------------------------
-character(len=*),parameter :: ident1=&
-                 &"@(#)M_strings::switch(3f): toggle between string and array of characters; generic{a2s,s2a}"
+
+character(len=*),parameter::ident_2="@(#)M_strings::switch(3f): toggle between string and array of characters"
+
 interface switch
    module procedure a2s, s2a
 end interface switch
 ! note how returned result is "created" by the function
 !-----------------------------------------------------------------------------------------------------------------------------------
-character(len=*),parameter :: ident2=&
-                 &"@(#)M_strings::string_to_value(3f): Generic subroutine converts numeric string to a number (a2d,a2r,a2i)"
+
+character(len=*),parameter::ident_3="&
+&@(#)M_strings::string_to_value(3f): Generic subroutine converts numeric string to a number (a2d,a2r,a2i)"
+
 interface string_to_value
    module procedure a2d, a2r, a2i
 end interface
 !-----------------------------------------------------------------------------------------------------------------------------------
-character(len=*),parameter :: ident4=&
-                 &"@(#)M_strings::v2s(3f): Generic function returns string given REAL|INTEGER|DOUBLEPRECISION value(d2s,r2s,i2s)"
+
+character(len=*),parameter::ident_4="&
+&@(#)M_strings::v2s(3f): Generic function returns string given REAL|INTEGER|DOUBLEPRECISION value(d2s,r2s,i2s)"
+
 interface v2s
-   module procedure d2s, r2s, i2s
+   module procedure d2s, r2s, i2s, l2s
 end interface
 !-----------------------------------------------------------------------------------------------------------------------------------
 integer, parameter,public :: IPcmd=32768                        ! length of command
@@ -553,7 +569,6 @@ character, public, parameter :: ascii_ff  = char(12)  ! form feed or newpage
 character, public, parameter :: ascii_cr  = char(13)  ! carriage return
 character, public, parameter :: ascii_esc = char(27)  ! escape
 !-----------------------------------------------------------------------------------------------------------------------------------
-
 CONTAINS
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -576,8 +591,10 @@ CONTAINS
 !!    In this version to get a match entire string must be described by pattern.
 !!
 !!       o  "?" matching any one character
-!!       o  "*" matching zero or more characters.
+!!       o  "*" matching zero or more characters. Do NOT use adjacent asterisks.
 !!       o  Both strings may have trailing spaces which are ignored.
+!!       o  There is no escape character, so matching strings with literal
+!!          question mark and asterisk is problematic.
 !!
 !!##EXAMPLES
 !!
@@ -652,7 +669,6 @@ CONTAINS
 !!     > NO
 !!     > NO
 !!
-!!
 !!   Expected output
 !!
 !!    TABLE 1     * a*a  a*   ab* *a a*a a?d? a?d* abra aa a ab * ? ???? ?*   *? ***? ****?
@@ -669,11 +685,11 @@ CONTAINS
 !!    carta       T F    F    F   T  F   F    F    F    F  F F  T F F    F    F  F    T
 !!    abdc        T F    T    T   F  F   T    T    F    F  F F  T F F    T    F  F    F
 !!    abra        T F    F    T   T  T   F    F    F    F  F F  T F T    T    F  F    F
+!!##AUTHOR
+!!
+!!   Heavily based on a version from Clive Page, cgp@le.ac.uk,  2003 June 24.
 !===================================================================================================================================
 logical function matchw(string,pattern)
-!  "?" matching any one character, and
-!  "*" matching zero or more characters.
-!  Both strings may have trailing spaces which are ignored.
 ! Author: Clive Page, cgp@le.ac.uk,  2003 June 24.
 !
 ! Revised: John S. Urban
@@ -681,7 +697,7 @@ logical function matchw(string,pattern)
 ! Still has problems with adjacent wild-character characters
 !
 
-character(len=*),parameter::ident="@(#)M_strings::matchw(3f): compare string to pattern which may contain wildcard characters"
+character(len=*),parameter::ident_5="@(#)M_strings::matchw(3f): compare string to pattern which may contain wildcard characters"
 
 character(len=*),intent(in) :: pattern                            ! input: pattern may contain * and ?
 character(len=*),intent(in) :: string                             ! input: string to be compared
@@ -737,6 +753,71 @@ character(len=*),intent(in) :: string                             ! input: strin
    endif
 999   continue
 end function matchw
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_matchw()
+integer,parameter :: np =  19, ns =  6
+character,save ::  pattern(np)*8, string(ns)*12
+character ,save :: pattern2(np)*8
+data pattern /'*','a*a','a*','ab*','*a','a*a','a?d?','a?d*','abra','aa','a','ab','*','?','????','?*','*?','***?','****?'/
+data pattern2/'*','a**a','a*d?','ab*','*a','a*a','a?d?','a?d*','alda','aa','a','ab','*','?','???a','????','**','***a','?????'/
+data string / 'abracadabra', 'aldabra', 'alda', 'carta', 'abdc', 'abra'/
+character(len=:),allocatable :: expected(:)
+character(len=132)             :: out(14)
+integer                        :: iout
+integer                        :: p,s
+expected=[ character(len=132) :: &
+'TABLE 1       *     a*a   a*    ab*   *a    a*a   a?d?  a?d*  abra  aa    a     ab    *     ?     ????  ?*    *?    ***?  ****?', &
+'abracadabra   T     T     T     T     T     T     F     F     F     F     F     F     T     F     F     T     F     F     F', &
+'aldabra       T     T     T     F     T     T     F     T     F     F     F     F     T     F     F     T     F     F     F', &
+'alda          T     T     T     F     T     T     T     T     F     F     F     F     T     F     T     T     F     F     F', &
+'carta         T     F     F     F     T     F     F     F     F     F     F     F     T     F     F     T     F     F     F', &
+'abdc          T     F     T     T     F     F     T     T     F     F     F     F     T     F     T     T     F     F     F', &
+'abra          T     T     T     T     T     T     F     F     T     F     F     F     T     F     T     T     F     F     F', &
+'TABLE 2       *     a**a  a*d?  ab*   *a    a*a   a?d?  a?d*  alda  aa    a     ab    *     ?     ???a  ????  **    ***a  ?????', &
+'abracadabra   T     F     F     T     T     T     F     F     F     F     F     F     T     F     F     F     F     F     F', &
+'aldabra       T     F     F     F     T     T     F     T     F     F     F     F     T     F     F     F     F     F     F', &
+'alda          T     F     T     F     T     T     T     T     T     F     F     F     T     F     T     T     F     F     F', &
+'carta         T     F     F     F     T     F     F     F     F     F     F     F     T     F     F     F     F     F     T', &
+'abdc          T     F     T     T     F     F     T     T     F     F     F     F     T     F     F     T     F     F     F', &
+'abra          T     F     F     T     T     T     F     F     F     F     F     F     T     F     T     T     F     F     F' ]
+out=' '
+   call unit_check_start('matchw',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+
+   iout=1
+   write(out(iout),'("TABLE 1",t15, *(a6))') pattern
+   do s = 1,ns
+      iout=iout+1
+      write(out(iout), '(a, L3,*(L6))') string(s),(matchw(string(s),pattern(p)), p=1,np)
+   enddo
+   iout=iout+1
+   write(out(iout),'("TABLE 2",t15, *(a6))') pattern2
+   do s = 1,ns
+      iout=iout+1
+      write(out(iout), '(a, L3,*(L6))') string(s),(matchw(string(s),pattern2(p)), p=1,np)
+   enddo
+
+   if(unit_check_level.gt.0)then
+      write(*,'(a)')expected
+      write(*,'(a)')out
+      do s = 1,ns
+         do p=1,np
+            write(*, '(a,a,L7)') string(s),pattern2(p),matchw(string(s),pattern2(p))
+         enddo
+      enddo
+   endif
+
+   call unit_check('matchw',all(expected.eq.out),msg='array of matchw(3f) tests')
+   call unit_check_done('matchw')
+
+end subroutine test_matchw
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -878,7 +959,7 @@ end function matchw
    subroutine split(input_line,array,delimiters,order,nulls)
 !-----------------------------------------------------------------------------------------------------------------------------------
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_6="&
 &@(#)M_strings::split(3f): parse string on delimiter characters and store tokens into an allocatable array"
 
 !  John S. Urban
@@ -997,6 +1078,101 @@ character(len=*),parameter::ident="&
    enddo
 !-----------------------------------------------------------------------------------------------------------------------------------
    end subroutine split
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_split
+!!  split: parse a string using specified delimiter characters and store tokens into an array
+!!$SYSTEM  goodbad split start -library libGPF -filename `pwd`/M_strings.FF --section 3
+!!   USE M_strings, ONLY: split
+   INTRINSIC SIZE
+   CHARACTER(LEN=:),ALLOCATABLE    :: line
+   CHARACTER(LEN=:),ALLOCATABLE    :: order
+   CHARACTER(LEN=:),ALLOCATABLE    :: dlm
+!! CHARACTER(LEN=:),ALLOCATABLE    :: array(:)
+   CHARACTER(LEN=256),ALLOCATABLE  :: array(:)
+   character(len=10)               :: orders(3)=['sequential', '          ', 'reverse   ' ]
+   ! return strings composed of delimiters or not IGNORE|RETURN|IGNOREEND
+   character(len=10)               :: nulls(3)=['ignore    ', 'return    ', 'ignoreend ' ]
+!-----------------------------------------------------------------------------------------------------------------------------------
+   call unit_check_start('split',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+
+   dlm=''
+   LINE='abcdef ghijklmnop qrstuvwxyz  1:2  333333 a b cc    '
+   order=orders(3)
+   CALL testit()
+   CALL split(line,array,dlm,order,nulls(1))
+   if(unit_check_level.gt.0)then
+      write(*,*)size(array)
+   endif
+   order=orders(2)
+   CALL split(line,array,dlm,order,nulls(2))
+   if(unit_check_level.gt.0)then
+      write(*,*)size(array)
+   endif
+   order=orders(1)
+   CALL split(line,array,dlm,order,nulls(3))
+   if(unit_check_level.gt.0)then
+      write(*,*)size(array)
+   endif
+!-----------------------------------------------------------------------------------------------------------------------------------
+   LINE=' abcdef ghijklmnop qrstuvwxyz  1:2  333333 a b cc    '
+   CALL testit()
+!-----------------------------------------------------------------------------------------------------------------------------------
+   LINE='        abcdef ghijklmnop qrstuvwxyz  1:2  333333 a b cc    '
+   CALL testit()
+!-----------------------------------------------------------------------------------------------------------------------------------
+   LINE=' aABCDEF  ; b;;c d e;  ;  '
+   CALL testit()
+!-----------------------------------------------------------------------------------------------------------------------------------
+   dlm=';'
+   CALL testit()
+!-----------------------------------------------------------------------------------------------------------------------------------
+   dlm='; '
+   CALL testit()
+!-----------------------------------------------------------------------------------------------------------------------------------
+   dlm=';'
+   LINE=';;;abcdef;ghijklmnop;qrstuvwxyz;;1:2;;333333;a;b;cc;;'
+   CALL testit()
+   LINE=';;abcdef;ghijklmnop;qrstuvwxyz;;1:2;;333333;a;b;cc;'
+   CALL testit()
+   LINE=';abcdef;ghijklmnop;qrstuvwxyz;;1:2;;333333;a;b;cc;'
+   CALL testit()
+   LINE='abcdef;ghijklmnop;qrstuvwxyz;;1:2;;333333;a;b;cc'
+   CALL testit()
+!-----------------------------------------------------------------------------------------------------------------------------------
+   line='a b c d e f g h i j k l m n o p q r s t u v w x y z'
+   CALL split(line,array)
+   call unit_check('split',size(array).eq.26,msg='test delimiter')
+!-----------------------------------------------------------------------------------------------------------------------------------
+   dlm=' '
+   CALL split(line,array,dlm)
+   call unit_check('split',size(array).eq.26,msg='test delimiter')
+!-----------------------------------------------------------------------------------------------------------------------------------
+   call unit_check_done('split')
+!-----------------------------------------------------------------------------------------------------------------------------------
+   CONTAINS
+!-----------------------------------------------------------------------------------------------------------------------------------
+   SUBROUTINE testit()
+   integer :: i
+   if(unit_check_level.gt.0)then
+      WRITE(*,'(80("="))')
+      WRITE(*,'(A)')'parsing ['//TRIM(line)//']'//'with delimiters set to ['//dlm//'] and order '//trim(order)//''
+   endif
+   CALL split(line,array,dlm,order)
+   if(unit_check_level.gt.0)then
+      WRITE(*,'("number of tokens found=",i0)')SIZE(array)
+      WRITE(*,'(I0,T10,A)')(i,TRIM(array(i)),i=1,SIZE(array))
+   endif
+   END SUBROUTINE testit
+!-----------------------------------------------------------------------------------------------------------------------------------
+end subroutine test_split
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -1075,7 +1251,7 @@ character(len=*),parameter::ident="&
 !===================================================================================================================================
 FUNCTION chomp(source_string,token,delimiters)
 
-character(len=*),parameter::ident="@(#)M_strings::chomp(3f): Tokenize a string : JSU- 20151030"
+character(len=*),parameter::ident_7="@(#)M_strings::chomp(3f): Tokenize a string : JSU- 20151030"
 
 character(len=*)                         :: source_string    ! string to tokenize
 character(len=:),allocatable,intent(out) :: token            ! returned token
@@ -1124,6 +1300,46 @@ integer                                  :: chomp            ! returns copy of s
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
 end function chomp
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_chomp()
+!!use M_strings, only : chomp
+character(len=:),allocatable  :: str
+character(len=:),allocatable  :: token
+character(len=66),allocatable :: delimiters
+integer                       :: ipass
+   call unit_check_start('chomp',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+
+   str = 'a b ccc ddd x12#$)$*#@Z1!( ab cd ef'
+   delimiters=' #@$)*!('
+   ipass=0
+   do while ( chomp(str,token,delimiters) .ge. 0 )
+      ipass=ipass+1
+      if(unit_check_level.gt.0)then
+         print *, ipass,'TOKEN=['//trim(token)//']'
+      endif
+      select case(ipass)
+      case(1); call unit_check('chomp', token.eq.'a'   ,msg=msg('token=',token))
+      case(2); call unit_check('chomp', token.eq.'b'   ,msg=msg('token=',token))
+      case(3); call unit_check('chomp', token.eq.'ccc' ,msg=msg('token=',token))
+      case(4); call unit_check('chomp', token.eq.'ddd' ,msg=msg('token=',token))
+      case(5); call unit_check('chomp', token.eq.'x12' ,msg=msg('token=',token))
+      case(6); call unit_check('chomp', token.eq.'Z1'  ,msg=msg('token=',token))
+      case(7); call unit_check('chomp', token.eq.'ab'  ,msg=msg('token=',token))
+      case(8); call unit_check('chomp', token.eq.'cd'  ,msg=msg('token=',token))
+      case(9); call unit_check('chomp', token.eq.'ef'  ,msg=msg('token=',token))
+      end select
+   enddo
+
+   call unit_check_done('chomp')
+end subroutine test_chomp
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -1224,35 +1440,10 @@ end function chomp
 !!     end program demo_delim
 !!
 !!  Expected output
-!!
-!!    ========================================================
-!!    PARSING=[ first  second 10.3 words_of_stuff] on
-!!     number of tokens found=           4
-!!     last character in column           34
-!!    [first][second][10.3][words_of_stuff]
-!!    [first][second][10.3][words_of_stuff]
-!!    ========================================================
-!!    PARSING=[ first  second 10.3 words_of_stuff] on o
-!!     number of tokens found=           4
-!!     last character in column           34
-!!    [ first  sec][nd 10.3 w][rds_][f_stuff]
-!!    [ first  sec][nd 10.3 w][rds_][f_stuff]
-!!    ========================================================
-!!    PARSING=[ first  second 10.3 words_of_stuff] on  aeiou
-!!     number of tokens found=          10
-!!     last character in column           34
-!!
-!!    [f][rst][s][c][nd][10.3][w][rds_][f_st][ff]
-!!    =========================================================
-!!    PARSING=[AAAaBBBBBBbIIIIIi  J K L] on  aeiou
-!!     number of tokens found=           5
-!!     last character in column           24
-!!
-!!    [AAA][BBBBBBbIIIII][J][K][L]
 !===================================================================================================================================
 subroutine delim(line,array,n,icount,ibegin,iterm,ilen,dlim)
 
-character(len=*),parameter::ident="@(#)M_strings::delim(3f): parse a string and store tokens into an array"
+character(len=*),parameter::ident_8="@(#)M_strings::delim(3f): parse a string and store tokens into an array"
 
 !
 !     given a line of structure " par1 par2 par3 ... parn "
@@ -1360,6 +1551,72 @@ character(len=*),parameter::ident="@(#)M_strings::delim(3f): parse a string and 
       enddo
       icount=n  ! more than n elements
 end subroutine delim
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_delim()
+   character(len=80) :: line
+   character(len=80) :: dlm
+   integer,parameter :: n=10
+   character(len=20) :: array(n)=' '
+   integer           :: ibegin(n),iterm(n)
+   integer           :: icount
+   integer           :: ilen
+   call unit_check_start('delim',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   line=' first  second 10.3 words_of_stuff  '
+   dlm=' '
+
+   call testit()
+   call unit_check('delim',icount.eq.4,msg=' check number of tokens')
+   call unit_check('delim',ilen.eq.34,msg=' check position of last character')
+   call unit_check('delim',all(array(:icount).eq.[character(len=20) :: 'first','second','10.3','words_of_stuff']),msg='tokens')
+
+   ! change delimiter list and what is calculated or parsed
+   dlm=' aeiou'    ! NOTE SPACE IS FIRST
+   call testit()
+   call unit_check('delim',all(array(:icount).eq.&
+           [character(len=10) :: 'f','rst','s','c','nd','10.3','w','rds_','f_st','ff']),msg='delims')
+
+  call unit_check_done('delim')
+contains
+subroutine testit()
+integer                 :: i10
+   ! show line being parsed
+   ! call parsing procedure
+   call delim(line,array,n,icount,ibegin,iterm,ilen,dlm)
+
+   if(unit_check_level.gt.0)then
+      write(*,'(a)')'PARSING=['//trim(line)//'] on '//trim(dlm)
+      write(*,*)'number of tokens found=',icount
+      write(*,*)'last character in column ',ilen
+      if(icount.gt.0)then
+         if(ilen.ne.iterm(icount))then
+            write(*,*)'ignored from column ',iterm(icount)+1,' to ',ilen
+         endif
+         do i10=1,icount
+            ! check flag to see if ARRAY() was set
+            if(array(1).ne.'#N#')then
+               ! from returned array
+               write(*,'(a,a,a)',advance='no')'[',array(i10)(:iterm(i10)-ibegin(i10)+1),']'
+            endif
+         enddo
+         ! using start and end positions in IBEGIN() and ITERM()
+         write(*,*)
+         do i10=1,icount
+            ! from positions in original line
+            write(*,'(a,a,a)',advance='no') '[',line(ibegin(i10):iterm(i10)),']'
+         enddo
+         write(*,*)
+      endif
+   endif
+end subroutine testit
+end subroutine test_delim
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -1515,7 +1772,7 @@ end subroutine crack_cmd
 !===================================================================================================================================
 function replace(targetline,old,new,ierr,cmd,range) result (newline)
 
-character(len=*),parameter::ident="@(#)M_strings::replace(3f): Globally replace one substring for another in string"
+character(len=*),parameter::ident_9="@(#)M_strings::replace(3f): Globally replace one substring for another in string"
 
 !-----------------------------------------------------------------------------------------------------------------------------------
 ! parameters
@@ -1624,6 +1881,53 @@ character(len=*),parameter::ident="@(#)M_strings::replace(3f): Globally replace 
    if(present(ierr))ierr=ichange
 !-----------------------------------------------------------------------------------------------------------------------------------
 end function replace
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_replace()
+character(len=:),allocatable :: targetline
+
+   call unit_check_start('replace',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   targetline='this is the input string'
+
+   call testit('th','TH','THis is THe input string')
+
+   ! a null old substring means "at beginning of line"
+   call testit('','BEFORE:', 'BEFORE:THis is THe input string')
+
+   ! a null new string deletes occurrences of the old substring
+   call testit('i','', 'BEFORE:THs s THe nput strng')
+
+   targetline=replace('a b ab baaa aaaa aa aa a a a aa aaaaaa','aa','CCCC',range=[3,5])
+   call unit_check('replace',targetline.eq.'a b ab baaa aaCCCC CCCC CCCC a a a aa aaaaaa','example of using RANGE=')
+   call unit_check_done('replace')
+
+contains
+subroutine testit(old,new,expected)
+character(len=*),intent(in) :: old,new,expected
+
+   if(unit_check_level.gt.0)then
+      write(*,*)repeat('=',79)
+      write(*,*)'STARTED ['//targetline//']'
+      write(*,*)'OLD['//old//']', ' NEW['//new//']'
+   endif
+
+   targetline=replace(targetline,old,new)
+
+   if(unit_check_level.gt.0)then
+      write(*,*)'GOT     ['//targetline//']'
+      write(*,*)'EXPECTED['//expected//']'
+   endif
+   call unit_check('replace',targetline.eq.expected,msg='')
+   call unit_check_done('replace',msg='finished test of replacing substrings')
+end subroutine testit
+end subroutine test_replace
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -1694,7 +1998,7 @@ end function replace
 !===================================================================================================================================
 subroutine substitute(targetline,old,new,ierr,start,end)
 
-character(len=*),parameter::ident="@(#)M_strings::substitute(3f): Globally substitute one substring for another in string"
+character(len=*),parameter::ident_10="@(#)M_strings::substitute(3f): Globally substitute one substring for another in string"
 
 !-----------------------------------------------------------------------------------------------------------------------------------
    character(len=*)              :: targetline         ! input line to be changed
@@ -1813,6 +2117,84 @@ character(len=*),parameter::ident="@(#)M_strings::substitute(3f): Globally subst
    if(present(ierr))ierr=ier1
 !-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine substitute
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+!!  substitute: Globally substitute one substring for another in string
+!-----------------------------------------------------------------------------------------------------------------------------------
+subroutine test_substitute
+!!use M_strings, only : substitute
+implicit none
+character(len=:),allocatable    :: targetline   ! input line to be changed
+character(len=:),allocatable    :: old          ! old substring to replace
+character(len=:),allocatable    :: new          ! new substring
+integer                         :: ml           ! ml sets the left  margin
+integer                         :: mr           ! mr sets the right margin
+integer                         :: ier          ! error code. if ier = -1 bad directive, >= 0then ier changes made
+!-----------------------------------------------------------------------------------------------------------------------------------
+   targetline='This an that and any other '
+   old='an'
+   new='##'
+   ml=1
+   mr=len(targetline)
+   if(unit_check_level.gt.0)then
+      write(*,*)'ORIGINAL: '//targetline
+   endif
+   call substitute(targetline,old,new,ier,ml,mr) !Globally substitute one substring for another in string
+   if(unit_check_level.gt.0)then
+      write(*,*)'C@'//OLD//'@'//NEW//'@ ==>'//targetline
+   endif
+!-----------------------------------------------------------------------------------------------------------------------------------
+   if(ier.ne.3)then
+      if(unit_check_level.gt.0)then
+         write(*,*)ier,targetline
+      endif
+      call unit_check_bad('substitute')
+   endif
+!-----------------------------------------------------------------------------------------------------------------------------------
+   if(targetline.ne.'This ## that ##d ##y other ')then
+      call unit_check_bad('substitute')
+   endif
+!-----------------------------------------------------------------------------------------------------------------------------------
+   targetline='This and that, This and that,                               '
+   if(unit_check_level.gt.0)then
+      write(*,*)'ORIGINAL: '//targetline
+   endif
+
+   old=''
+   new='BEGINNING: '
+   call substitute(targetline,old,new) !Globally substitute one substring for another in string
+   if(unit_check_level.gt.0)then
+      write(*,*)'C@'//OLD//'@'//NEW//'@ ==>'//targetline
+   endif
+
+   old='This'
+   new='THIS'
+   call substitute(targetline,old,new) !Globally substitute one substring for another in string
+   if(unit_check_level.gt.0)then
+      write(*,*)'C@'//OLD//'@'//NEW//'@ ==>'//targetline
+   endif
+
+   old='that'
+   new='LONGER STRING'
+   call substitute(targetline,old,new) !Globally substitute one substring for another in string
+   if(unit_check_level.gt.0)then
+      write(*,*)'C@'//OLD//'@'//NEW//'@ ==>'//targetline
+   endif
+
+   old='LONGER STRING'
+   new=''
+   call substitute(targetline,old,new) !Globally substitute one substring for another in string
+   if(unit_check_level.gt.0)then
+      write(*,*)'C@'//OLD//'@'//NEW//'@ ==>'//targetline
+   endif
+
+   if ( targetline .ne. 'BEGINNING: THIS and , THIS and ,')then
+      call unit_check_bad('substitute')
+      stop 3
+   endif
+!-----------------------------------------------------------------------------------------------------------------------------------
+   call unit_check_good('substitute')
+!-----------------------------------------------------------------------------------------------------------------------------------
+end subroutine test_substitute
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -1890,7 +2272,7 @@ subroutine change(target_string,cmd,ierr)
 ! a null old_string implies "beginning of string"
 !===================================================================================================================================
 
-character(len=*),parameter::ident="@(#)M_strings::change(3f): change a character string like a line editor"
+character(len=*),parameter::ident_11="@(#)M_strings::change(3f): change a character string like a line editor"
 
 character(len=*),intent(inout)   :: target_string          ! line to be changed
 character(len=*),intent(in)      :: cmd                    ! contains the instructions changing the string
@@ -1930,6 +2312,62 @@ integer                          :: start_token,end_token
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine change
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_change
+!!use M_strings, only : change
+!character(len=132) :: direc
+character(len=132)  :: line=' The rain in Spain falls mainly on the plain. '
+integer             :: ier
+   if(unit_check_level.gt.0)then
+      write(*,*)' LINE='//trim(line)
+   endif
+   ! indicate test of change(3f) has begun
+   call unit_check_start('change',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   call change(line, 'c/ain/AIN'     ,ier)
+   if(unit_check_level.gt.0)then
+      write(*,*)'IER=',ier
+   endif
+   call unit_check('change',ier.eq.4,'without trailing slash')
+
+   call change(line, 'c/ The r/R/'   ,ier)
+   if(unit_check_level.gt.0)then
+      write(*,*)'IER=',ier
+   endif
+   call unit_check('change',ier.eq.1,'with trailing slash')
+
+   call change(line, 'c/ /'          ,ier)
+   if(unit_check_level.gt.0)then
+      write(*,*)'IER=',ier
+   endif
+   call unit_check('change',ier.ge.7,'no new string') ! remove spaces
+
+   call change(line, 'c//PREFIX:'    ,ier)
+   if(unit_check_level.gt.0)then
+      write(*,*)'IER=',ier
+   endif
+   call unit_check('change',ier.eq.1,'null new string')
+
+   call change(line, 'c/XYZ/xxxxxx:' ,ier)
+   if(unit_check_level.gt.0)then
+      write(*,*)'IER=',ier
+   endif
+   call unit_check('change',ier.eq.0,'no matching old string')
+
+   if(unit_check_level.gt.0)then
+      write(*,*)'IER=',ier,' LINE='//trim(line)
+   endif
+   call unit_check('change','PREFIX:RAINinSpAINfallsmAINlyontheplAIN.' .eq. line,'check cumulative changes')
+
+   call unit_check_done('change') ! indicate test of change(3f) passed
+end subroutine test_change
 !>
 !!##NAME
 !!     strtok(3f) - Tokenize a string
@@ -1938,9 +2376,9 @@ end subroutine change
 !!       function strtok(source_string,itoken,token_start,token_end,delimiters)
 !!                 result(strtok_status)
 !!
+!!        logical                      :: strtok_status    ! returned value
 !!        character(len=*),intent(in)  :: source_string    ! string to tokenize
 !!        integer,intent(inout)        :: itoken           ! token count since started
-!!        logical                      :: strtok_status    ! returned value
 !!        integer,intent(out)          :: token_start      ! beginning of token
 !!        integer,intent(out)          :: token_end        ! end of token
 !!        character(len=*),intent(in)  :: delimiters       ! list of separator characters
@@ -1953,6 +2391,10 @@ end subroutine change
 !!     ITOKEN should be specified as zero. Subsequent calls, wishing to obtain
 !!     further tokens from the same string, should pass back in TOKEN_START and
 !!     ITOKEN until the function result returns .false.
+!!
+!!     This routine assumes no other calls are made to it using any other input
+!!     string while it is processing an input line.
+!!
 !!##EXAMPLES
 !!
 !!   Sample program:
@@ -1992,14 +2434,8 @@ end subroutine change
 !!     9  TOKEN=[C]       35  35
 !===================================================================================================================================
 FUNCTION strtok(source_string,itoken,token_start,token_end,delimiters) result(strtok_status)
-!   DESCRIPTION:
-!      The STRTOK(3f) function is used to isolate sequential tokens in a string, SOURCE_STRING.
-!      These tokens are delimited in the string by at least one of the characters in DELIMITERS.
-!      The first time that STRTOK(3f) is called, ITOKEN should be specified as zero.
-!      Subsequent calls, wishing to obtain further tokens from the same string, should pass back in TOKEN_START
-!      until the function result returns .false.
 
-character(len=*),parameter::ident="@(#)M_strings::strtok(3fp): Tokenize a string : JSU- 20151030"
+character(len=*),parameter::ident_12="@(#)M_strings::strtok(3fp): Tokenize a string : JSU- 20151030"
 
 character(len=*),intent(in)  :: source_string    ! Source string to tokenize.
 character(len=*),intent(in)  :: delimiters       ! list of separator characters. May change between calls
@@ -2049,6 +2485,49 @@ integer,intent(out)          :: token_end        ! end of token found if functio
    endif
 !----------------------------------------------------------------------------------------------------------------------------
 end function strtok
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_strtok()
+   integer,parameter             :: length=264
+   character(len=length)         :: inline
+   integer                       :: istart(length/2+1)
+   integer                       :: iend(length/2+1)
+   integer,allocatable           :: istart_expected(:)
+   integer,allocatable           :: iend_expected(:)
+   character(len=:),allocatable  :: words_expected(:)
+   character(len=*),parameter    :: delimiters=' ;,'
+   integer                       :: is,ie
+   integer                       :: itoken
+   call unit_check_start('strtok',' &
+   & -section 3  &
+   & -library libGPF  &
+   & -filename `pwd`/M_strings.FF &
+   & -documentation y &
+   &  -ufpp         y &
+   &  -ccall        n &
+   &  -archive      GPF.a &
+   & ')
+   istart_expected=[ 2,  7,  10,  12,  17,  20,  28,  32,  35 ]
+   iend_expected=[ 5,  8,  10,  15,  18,  25,  30,  32,  35 ]
+   words_expected=[ character(len=10) :: 'this', 'is', 'a', 'test', 'of', 'strtok', 'A:B', ':', 'C']
+
+   inline=' this is a test of strtok; A:B :;,C;;'
+
+   itoken=0 ! must set ITOKEN=0 before looping on strtok(3f) on a new string.
+   if(unit_check_level.gt.0)then
+      write(*,*)trim(inline)
+   endif
+   do while ( strtok(inline,itoken,is,ie,delimiters) )
+      istart(itoken)=is
+      iend(itoken)=ie
+      if(unit_check_level.gt.0)then
+         print *, itoken,'TOKEN=['//(inline(istart(itoken):iend(itoken)))//']',istart(itoken),iend(itoken)
+      endif
+   enddo
+   call unit_check('strtok',all(istart(:itoken).eq.istart_expected) .and. &
+      all(iend(:itoken).eq.iend_expected), &
+      msg='parse a line into tokens with strtok(3f)')
+   call unit_check_done('strtok')
+end subroutine test_strtok
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -2233,6 +2712,28 @@ maxscra=len(cline)
 999   CONTINUE
       CLINE=DUM2                            !SET ORIGINAL CHARS TO NEW CHARS
 END SUBROUTINE MODIF                        !RETURN
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_modif()
+character(len=256)           :: line
+character(len=:),allocatable :: COMMAND_LINE
+   call unit_check_start('modif',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   line='ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+   command_line='###%aaaa# 1 2 3&  ^up'
+   call unit_check('modif',line.eq.'ABCDEFGHIJKLMNOPQRSTUVWXYZ',msg=line)
+   call unit_check('modif',line.eq.'ABCDEFGHIJKLMNOPQRSTUVWXYZ',msg=command_line)
+   call modif(line,COMMAND_LINE)
+   command_line='###%aaaa# 1 2 3&  ^up'
+   call unit_check('modif',line.eq.'%aaaaJ1L2N3 QRupSTUVWXYZ',msg=line)
+   call unit_check_done('modif')
+end subroutine test_modif
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -2247,16 +2748,20 @@ END SUBROUTINE MODIF                        !RETURN
 !!     character(len=*) :: string
 !!##DESCRIPTION
 !!
-!!      len_white(string) returns the position of the last
-!!      character in string that is not a whitespace character.
-!!      The Fortran90 intrinsic LEN_TRIM() should be used when
-!!      trailing whitespace can be assumed to always be spaces.
+!!      len_white(3f) returns the position of the last character in
+!!      string that is not a whitespace character. The Fortran90 intrinsic
+!!      LEN_TRIM() should be used when trailing whitespace can be assumed
+!!      to always be spaces.
 !!
-!!      This heavily used in the past because ANSI FORTRAN 77
-!!      character objects are fixed length and blank padded and
-!!      the LEN_TRIM() intrinsic did not exist. It should now
-!!      be used only when whitespace characters other than blanks
-!!      are likely.
+!!      This procedure was heavily used in the past because ANSI FORTRAN
+!!      77 character objects are fixed length and blank padded and the
+!!      LEN_TRIM() intrinsic did not exist. It should now be used only when
+!!      whitespace characters other than blanks are likely.
+!!##OPTIONS
+!!      string     input string whose trimmed length is being calculated
+!!                 ignoring all trailing whitespace characters.
+!!##RETURNS
+!!      len_white  the number of characters in the trimmed string
 !!
 !!##EXAMPLE
 !!
@@ -2316,7 +2821,7 @@ elemental integer function len_white(string)
 !                still need instead of LEN_TRIM() because some systems stil pad CHARACTER with NULL
 !-----------------------------------------------------------------------------------------------------------------------------------
 
-character(len=*),parameter::ident="@(#)M_strings::len_white(3f): return position of last non-blank/non-null character in string"
+character(len=*),parameter::ident_13="@(#)M_strings::len_white(3f): return position of last non-blank/non-null character in string"
 
 character(len=*),intent(in):: string ! input string to determine length of
 integer                    :: i10
@@ -2333,6 +2838,20 @@ intrinsic len
       end select
    enddo
 end function len_white
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_len_white()
+   call unit_check_start('len_white',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   call unit_check('len_white',len_white('A b c  '//char(9)//char(10)//char(11)//char(12)//char(13)).eq.5,msg='')
+   call unit_check_done('len_white',msg='len_white(3f) tests completed')
+end subroutine test_len_white
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -2369,12 +2888,29 @@ end function len_white
 function crop(strin) result (strout)
 use M_journal, only : journal
 
-character(len=*),parameter::ident="@(#)M_strings::crop(3f): trim leading and trailings blanks from string"
+character(len=*),parameter::ident_14="@(#)M_strings::crop(3f): trim leading and trailings blanks from string"
 
 character(len=*),intent(in)  :: strin
 character(len=:),allocatable :: strout
    strout=trim(adjustl(strin))
 end function crop
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_crop()
+   call unit_check_start('crop',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   call unit_check('crop',crop('    A B CC D      ').eq.'A B CC D',msg='crop string test 1')
+   call unit_check('crop',crop('A B CC D').eq.'A B CC D',msg='crop string test 2')
+   call unit_check('crop',crop('A B CC D    ').eq.'A B CC D',msg='crop string test 3')
+   call unit_check('crop',crop('     A B CC D    ').eq.'A B CC D',msg='crop string test 4')
+   call unit_check_done('crop')
+end subroutine test_crop
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -2432,7 +2968,7 @@ end function crop
 !===================================================================================================================================
 PURE FUNCTION transliterate(instr,old_set,new_set) RESULT(outstr)
 
-character(len=*),parameter::ident="@(#)M_strings::transliterate(3f): replace characters from old set with new set"
+character(len=*),parameter::ident_15="@(#)M_strings::transliterate(3f): replace characters from old set with new set"
 
 !-----------------------------------------------------------------------------------------------------------------------------------
 CHARACTER(LEN=*),INTENT(IN)  :: instr                             ! input string to change
@@ -2468,6 +3004,27 @@ INTEGER                      :: ii,jj
       ENDDO hopthru
    endif
 END FUNCTION transliterate
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_transliterate
+!!use M_strings, only: transliterate
+implicit none
+character(len=36),parameter :: lc='abcdefghijklmnopqrstuvwxyz0123456789'
+character(len=36),parameter :: uc='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+character(len=1)            :: chars(36)
+integer :: i
+   call unit_check_start('transliterate',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+call unit_check('transliterate',transliterate('AbCDefgHiJklmnoPQRStUvwxyZ',lc,uc).eq.uc(1:26),msg='transliterate to uppercase')
+call unit_check('transliterate',transliterate('AbCDefgHiJklmnoPQRStUvwxyZ',uc,lc).eq.lc(1:26),msg='transliterate to lowercase')
+call unit_check_done('transliterate')
+end subroutine test_transliterate
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -2522,22 +3079,10 @@ END FUNCTION transliterate
 !!          write(*,'(a)') join(s,left='[',right=']')
 !!          write(*,'(a)') join(s,left='>>')
 !!       end program demo_join
-!!
-!!    Expected output
-!!
-!!       United we stand, divided we fall.
-!!       United     we        stand,    divided   we fall.
-!!       United    | we       | stand,   | divided  | we fall. |
-!!       United    | we       | stand,   | divided  | we fall. |
-!!       United    | we       | stand,   | divided  | we fall. |
-!!       United<> we<> stand,<> divided<> we fall.<>
-!!       [United];[ we];[ stand,];[ divided];[ we fall.];
-!!       [United][ we][ stand,][ divided][ we fall.]
-!!       >>United>> we>> stand,>> divided>> we fall.
 !===================================================================================================================================
 pure function join(str,sep,trm,left,right) result (string)
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_16="&
 &@(#)M_strings::join(3f): append an array of character variables with specified separator into a single CHARACTER variable"
 
 character(len=*),intent(in)          :: str(:)
@@ -2566,6 +3111,41 @@ logical,intent(in),optional          :: trm
       endif
    enddo
 end function join
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_join()
+character(len=:),allocatable  :: s(:)
+   call unit_check_start('join',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+     & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   s=[character(len=10) :: 'United',' we',' stand,',' divided',' we fall.']
+
+   call testit( join(s),                            'United we stand, divided we fall.')
+   call testit( join(s,trm=.false.),                'United     we        stand,    divided   we fall.')
+   call testit( join(s,trm=.false.,sep='|'),        'United    | we       | stand,   | divided  | we fall. |')
+   call testit( join(s,sep='<>'),                   'United<> we<> stand,<> divided<> we fall.<>')
+   call testit( join(s,sep=';',left='[',right=']'), '[United];[ we];[ stand,];[ divided];[ we fall.];')
+   call testit( join(s,left='[',right=']'),         '[United][ we][ stand,][ divided][ we fall.]')
+   call testit( join(s,left='>>'),                  '>>United>> we>> stand,>> divided>> we fall.')
+   call unit_check_done('join',msg='join array of strings into a single string controlling seperators and white space')
+contains
+subroutine testit(generated,expected)
+character(len=*),intent(in) :: generated
+character(len=*),intent(in) :: expected
+   if(unit_check_level.gt.0)then
+      write(*,*)'JOIN(3F) TEST'
+      write(*,*)'INPUT       ','['//s//']'
+      write(*,*)'GENERATED   ',generated
+      write(*,*)'EXPECTED    ',expected
+   endif
+   call unit_check('join',generated.eq.expected,msg='output is '//generated)
+end subroutine testit
+end subroutine test_join
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -2591,6 +3171,7 @@ end function join
 !!       use M_strings, only: reverse
 !!       implicit none
 !!       character(len=:),allocatable  :: s
+!!          write(*,*)'REVERSE STRINGS:',reverse('Madam, I''m Adam')
 !!          s='abcdefghijklmnopqrstuvwxyz'
 !!          write(*,*) 'original input string is ....',s
 !!          write(*,*) 'reversed output string is ...',reverse(s)
@@ -2603,7 +3184,7 @@ end function join
 !===================================================================================================================================
 elemental function reverse(string ) result (rev)
 
-character(len=*),parameter::ident="@(#)M_strings::reverse(3f): Return a string reversed"
+character(len=*),parameter::ident_17="@(#)M_strings::reverse(3f): Return a string reversed"
 
 character(len=*),intent(in)    :: string   ! string to reverse
 character(len=len(string))     :: rev      ! return value (reversed string)
@@ -2614,6 +3195,35 @@ character(len=len(string))     :: rev      ! return value (reversed string)
       rev(i:i)=string(length-i+1:length-i+1)
    enddo
 end function reverse
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+!! test reverse(3f)
+subroutine test_reverse
+!!use M_strings, only: reverse
+implicit none
+character(len=36),parameter :: lc='abcdefghijklmnopqrstuvwxyz0123456789'
+integer :: i
+!-----------------------------------------------------------------------------------------------------------------------------------
+   call unit_check_start('reverse',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+if(reverse(lc).eq.'9876543210zyxwvutsrqponmlkjihgfedcba')then
+   call unit_check_good('reverse')
+else
+   if(unit_check_level.gt.0)then
+      write(*,*)'error: reverse '
+      write(*,*)'iN:  ['//lc//']'
+      write(*,*)'OUT: ['//reverse(lc)//']'
+   endif
+   call unit_check_bad('reverse')
+endif
+!-----------------------------------------------------------------------------------------------------------------------------------
+end subroutine test_reverse
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -2679,7 +3289,7 @@ end function reverse
 ! upper3: 267.21user 11.69system 4:49.21elapsed 96%CPU
 elemental pure function upper(str,begin,end) result (string)
 
-character(len=*),parameter::ident="@(#)M_strings::upper(3f): Changes a string to uppercase"
+character(len=*),parameter::ident_18="@(#)M_strings::upper(3f): Changes a string to uppercase"
 
 character(*), intent(In)      :: str                 ! inpout string to convert to all uppercase
 integer, intent(in), optional :: begin,end
@@ -2706,6 +3316,28 @@ integer, intent(in), optional :: begin,end
    end do
 
 end function upper
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_upper
+!!use M_strings, only: upper
+implicit none
+character(len=36),parameter :: lc='abcdefghijklmnopqrstuvwxyz0123456789'
+character(len=36),parameter :: uc='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+integer :: i
+!-----------------------------------------------------------------------------------------------------------------------------------
+   call unit_check_start('upper',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   call unit_check_start('upper')
+   call unit_check('upper',upper(lc).eq.uc)
+   call unit_check_done('upper')
+!-----------------------------------------------------------------------------------------------------------------------------------
+end subroutine test_upper
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -2755,7 +3387,7 @@ end function upper
 !===================================================================================================================================
 elemental pure function lower(str,begin,end) result (string)
 
-character(len=*),parameter::ident="@(#)M_strings::lower(3f): Changes a string to lowercase over specified range"
+character(len=*),parameter::ident_19="@(#)M_strings::lower(3f): Changes a string to lowercase over specified range"
 
 character(*), intent(In)     :: str
 character(len(str))          :: string
@@ -2783,6 +3415,28 @@ integer,intent(in),optional  :: begin, end
    end do
 
 end function lower
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_lower
+!!use M_strings, only: lower
+implicit none
+character(len=36),parameter :: lc='abcdefghijklmnopqrstuvwxyz0123456789'
+character(len=36),parameter :: uc='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+integer :: i
+!-----------------------------------------------------------------------------------------------------------------------------------
+   call unit_check_start('lower',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   call unit_check_start('lower')
+   call unit_check('lower',lower(uc).eq.lc,'lower')
+   call unit_check_done('lower')
+!-----------------------------------------------------------------------------------------------------------------------------------
+end subroutine test_lower
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -2875,7 +3529,7 @@ end function lower
 !===================================================================================================================================
 pure function a2s(array)  result (string)
 
-character(len=*),parameter::ident="@(#)M_strings::a2s(3fp): function to copy char array to string"
+character(len=*),parameter::ident_20="@(#)M_strings::a2s(3fp): function to copy char array to string"
 
 character(len=1),intent(in) :: array(:)
 character(len=SIZE(array))  :: string
@@ -2889,7 +3543,7 @@ end function a2s
 !===================================================================================================================================
 pure function s2a(string)  RESULT (array)
 
-character(len=*),parameter::ident="@(#)M_strings::s2a(3fp): function to copy string(1:Clen(string)) to char array"
+character(len=*),parameter::ident_21="@(#)M_strings::s2a(3fp): function to copy string(1:Clen(string)) to char array"
 
    character(len=*),intent(in) :: string
    character(len=1)            :: array(len(string))
@@ -2898,6 +3552,62 @@ character(len=*),parameter::ident="@(#)M_strings::s2a(3fp): function to copy str
    forall(i=1:len(string)) array(i) = string(i:i)
 ! ----------------------------------------------------------------------------------------------------------------------------------
 end function s2a
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_switch
+!!use M_switch, only: reverse
+!!use M_switch, only: switch
+implicit none
+character(len=36),parameter :: lc='abcdefghijklmnopqrstuvwxyz0123456789'
+character(len=36),parameter :: uc='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+character(len=1)            :: chars(36)
+integer :: i
+!-----------------------------------------------------------------------------------------------------------------------------------
+if(unit_check_level.gt.0)then
+   write(*,*)'switch:' ! switch: switch between single string and an array of single characters; generic name for {a2s,s2a}
+   write(*,*)'switch LC string to an array'
+   write(*,'(i0,1x,*(a,1x))') size(switch(lc)),switch(lc)
+   write(*,*)'switch UC string to an array'
+   write(*,'(i0,1x,*(a,1x))') size(switch(uc)),switch(uc)
+endif
+   call unit_check_start('switch',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_switch.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+if(size(switch(uc)).ne.36)then
+   call unit_check_bad('switch')
+endif
+chars=switch(uc)
+do i=1,size(chars)
+   if(chars(i).ne.uc(i:i))then
+      call unit_check_bad('switch')
+   endif
+enddo
+
+if(unit_check_level.gt.0)then
+   write(*,*)'put string UC into array CHARS'
+endif
+chars=switch(uc)
+if(unit_check_level.gt.0)then
+   write(*,*)'put CHARS array into CHARS array in reverse order like reverse'
+endif
+chars=chars(36:1:-1)
+if(unit_check_level.gt.0)then
+   write(*,*)'put CHARS array into string reversed and compare to original UC string'
+endif
+if( uc .ne. switch(chars(36:1:-1)) )then
+   if(unit_check_level.gt.0)then
+      write(*,*)switch(chars(36:1:-1))
+   endif
+   call unit_check_bad('switch')
+endif
+call unit_check_good('switch')
+!-----------------------------------------------------------------------------------------------------------------------------------
+end subroutine test_switch
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -2944,7 +3654,7 @@ end function s2a
 pure function s2c(string)  RESULT (array)
 use,intrinsic :: ISO_C_BINDING, only : C_CHAR
 
-character(len=*),parameter::ident="@(#)M_strings::s2c(3f): copy string(1:Clen(string)) to char array with null terminator"
+character(len=*),parameter::ident_22="@(#)M_strings::s2c(3f): copy string(1:Clen(string)) to char array with null terminator"
 
 character(len=*),intent(in)     :: string
 
@@ -2957,6 +3667,19 @@ character(len=*),intent(in)     :: string
    enddo
    array(size(array):)=achar(0)
 end function s2c
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_s2c()
+   call unit_check_start('s2c',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   call unit_check_done('s2c',msg='UNTESTED')
+end subroutine test_s2c
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -2984,7 +3707,7 @@ function c2s(c_string_pointer) result(f_string)
 ! If the C string is null, it returns "NULL", similar to C's "(null)" printed in similar cases:
 use, intrinsic :: iso_c_binding, only: c_ptr,c_f_pointer,c_char,c_null_char
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_23="&
 &@(#)M_strings::c2s(3f): copy pointer to C char array till a null is encountered to a Fortran string up to 4096 characters"
 
 integer,parameter                             :: max_length=4096
@@ -3012,6 +3735,19 @@ integer                                       :: i,length=0
    f_string=aux_string(1:length)
 
 end function c2s
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_c2s()
+   call unit_check_start('c2s',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   call unit_check_done('c2s',msg='UNTESTED')
+end subroutine test_c2s
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -3049,7 +3785,7 @@ end function c2s
 function indent(line)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_strings::indent(3f): find number of leading spaces in a string"
+character(len=*),parameter::ident_24="@(#)M_strings::indent(3f): find number of leading spaces in a string"
 
 integer                        :: indent
 character(len=*),intent(in)    :: line
@@ -3065,6 +3801,30 @@ character(len=*),intent(in)    :: line
       indent=len(line)
    endblock NOTSPACE
 end function indent
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_indent()
+character(len=1024) :: in
+   call unit_check_start('indent',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+
+   in='    should be four'
+   call unit_check('indent',indent(in).eq.4,msg=trim(in))
+
+   in='should be zero'
+   call unit_check('indent',indent(in).eq.0,msg=trim(in))
+
+   in='   should be three'
+   call unit_check('indent',indent(trim(in)).eq.3,msg=trim(in))
+
+   call unit_check_done('indent')
+end subroutine test_indent
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -3091,7 +3851,7 @@ end function indent
 !!     use M_strings, only : visible
 !!     integer :: i
 !!        do i=0,255
-!!           write(*,'(a)')visible(char(i))
+!!           write(*,'(i0,1x,a)')i,visible(char(i))
 !!        enddo
 !!     end program demo_visible
 !!##BUGS
@@ -3102,7 +3862,7 @@ function visible(input) result(output)
 character(len=*),intent(in)  :: input
 character(len=:),allocatable :: output
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_25="&
 &@(#)M_strings::visible(3f) expand escape sequences in a string to control and meta-control representations"
 
 integer                      :: i
@@ -3145,6 +3905,40 @@ do i=1,len(input)
    endif
 enddo
 end function visible
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_visible()
+integer :: i
+character(len=2) :: controls(0:31)
+   call unit_check_start('visible',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   do i=32,126
+      call unit_check('visible',visible(char(i)).eq.char(i))
+   enddo
+   controls=['^@  ', '^A  ', '^B  ', '^C  ', '^D  ', '^E  ', '^F  ', '^G  ', '^H  ', '^I  ', &
+             '^J  ', '^K  ', '^L  ', '^M  ', '^N  ', '^O  ', '^P  ', '^Q  ', '^R  ', '^S  ', &
+             '^T  ', '^U  ', '^V  ', '^W  ', '^X  ', '^Y  ', '^Z  ', '^[  ', '^\  ', '^]  ', &
+             '^^  ', '^_  ']
+   do i=0,31
+      call unit_check('visible',visible(char(i)).eq.controls(i))
+   enddo
+   call unit_check('visible',visible(char(127)).eq.'^?')
+   if(unit_check_level.gt.0)then
+      do i=0,255
+         write(*,'(i0,1x,a)')i,visible(char(i))
+      enddo
+   endif
+   do i=32,126
+      call unit_check('visible',char(i).eq.visible(char(i)))
+   enddo
+   call unit_check_done('visible')
+end subroutine test_visible
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -3211,7 +4005,7 @@ function expand(line,escape) result(lineout)
 USE ISO_C_BINDING ,ONLY: c_horizontal_tab
 implicit none
 
-character(len=*),parameter::ident="@(#)M_strings::expand(3f): return string with escape sequences expanded"
+character(len=*),parameter::ident_26="@(#)M_strings::expand(3f): return string with escape sequences expanded"
 
 character(len=*)                      :: line
 character(len=1),intent(in),optional  :: escape ! escape character. Default is backslash
@@ -3291,6 +4085,42 @@ character(len=1),intent(in),optional  :: escape ! escape character. Default is b
    enddo EXP
 
 end function expand
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_expand()
+
+character(len=*),parameter::ident_27="@(#)M_strings::test_expand(3f): test filter to expand escape sequences in input lines"
+
+integer :: i
+character(len=80) :: line
+   call unit_check_start('expand',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   call unit_check('expand',expand('\e\d0912J').eq.char(27)//'[2J','a vt102 sequence to clear the screen')
+   call unit_check('expand',expand('this is a test').eq.'this is a test',msg='test plain text')
+
+   !check all ASCII values
+   do i=0,127
+       write(line,'("%d",i3.3)')i
+       call unit_check('expand',expand(line,'%').eq.char(i),msg='check all valid decimal values')
+       write(line,'("%o",o3.3)')i
+       call unit_check('expand',expand(line,'%').eq.char(i),msg='check all valid octal values')
+       write(line,'("%x",z2.2)')i
+       call unit_check('expand',expand(line,'%').eq.char(i),msg='check all hexadecimal values')
+   enddo
+
+   call unit_check('expand',expand('%d008%d027%d013%d011%d007%d009','%').eq. &
+           char(8)//char(27)//char(13)//char(11)//char(7)//char(9),msg='test decimal escape characters')
+   call unit_check('expand',expand('%b%e%r%v%a%t','%').eq. &
+           char(8)//char(27)//char(13)//char(11)//char(7)//char(9),msg='test escape characters')
+   call unit_check_done('expand')
+
+end subroutine test_expand
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -3306,9 +4136,14 @@ end function expand
 !!     integer,intent=(out)          :: ILEN
 !!##DESCRIPTION
 !!     NOTABS() converts tabs in INSTR to spaces in OUTSTR while maintaining
-!!     columns. It assumes a tab is set every 8 characters. Lines are
-!!     limited to 1024 characters. Trailing spaces, carriage returns,
-!!     and line feeds are removed.
+!!     columns. It assumes a tab is set every 8 characters.  Trailing spaces,
+!!     carriage returns, and line feeds are removed.
+!!
+!!     It is often useful to expand tabs in input files to simplify further
+!!     processing such as tokenizing an input line.
+!!
+!!     Also, trailing carriage returns and line feed characters are removed,
+!!     as they are usually a problem created by going to and from MSWindows.
 !!
 !!     Sometimes tabs in files cause problems. For example: Some FORTRAN
 !!     compilers hate tabs; some printers; some editors will have problems
@@ -3342,30 +4177,20 @@ end function expand
 !!       endblock READFILE
 !!
 !!    end program demo_notabs
+!!##AUTHOR:
+!!     John S. Urban
+!!##SEE ALSO:
+!!     GNU/Unix commands expand(1) and unexpand(1)
 !===================================================================================================================================
 subroutine notabs(INSTR,OUTSTR,ILEN)
 
-character(len=*),parameter::ident="@(#)M_strings::notabs(3f): convert tabs to spaces while maintaining columns, remove CRLF chars"
+character(len=*),parameter::ident_28="&
+&@(#)M_strings::notabs(3f): convert tabs to spaces while maintaining columns, remove CRLF chars"
 
-!  o given input string INSTR return output string OUTSTR with tabs expanded
-!  o assuming tabs are set every 8 characters
-!  o carriage return and line feed characters are replaced with a space
-!  o ILEN holds the position of the last non-blank character in OUTSTR
-!
-! USES:
-!       It is often useful to expand tabs in input files to simplify further processing such as tokenizing an input line.
-!       Some FORTRAN compilers hate tabs in input files; some printers; some editors will have problems with tabs.
-!       Also, trailing carriage returns and line feed characters are removed, as they are usually a problem created
-!       by going to and from MSWIndows.
-! AUTHOR:
-!       John S. Urban
-!
-! SEE ALSO:
-!       GNU/Unix commands expand(1) and unexpand(1)
-!
-   CHARACTER(LEN=*),INTENT(IN)   :: instr     ! input line to scan for tab characters
-   CHARACTER(LEN=*),INTENT(OUT)  :: outstr    ! tab-expanded version of INSTR produced
-   INTEGER,INTENT(OUT)           :: ilen      ! column position of last character put into output string
+CHARACTER(LEN=*),INTENT(IN)   :: instr        ! input line to scan for tab characters
+CHARACTER(LEN=*),INTENT(OUT)  :: outstr       ! tab-expanded version of INSTR produced
+INTEGER,INTENT(OUT)           :: ilen         ! column position of last character put into output string
+                                              ! that is, ILEN holds the position of the last non-blank character in OUTSTR
 !===================================================================================================================================
    INTEGER,PARAMETER             :: tabsize=8 ! assume a tab stop is set every 8th column
    INTEGER                       :: ipos      ! position in OUTSTR to put next character of INSTR
@@ -3404,6 +4229,32 @@ character(len=*),parameter::ident="@(#)M_strings::notabs(3f): convert tabs to sp
       ilen=LEN_TRIM(outstr(:ipos))            ! trim trailing spaces
 !===================================================================================================================================
 END SUBROUTINE notabs
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_notabs()
+character(len=:),allocatable :: inline
+character(len=:),allocatable :: expected
+character(len=1024)          :: outline
+integer                      :: iout
+   call unit_check_start('notabs',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   inline= 'one '//char(9)//'and'//repeat(char(9),3)//'two'
+   expected='one     and                     two'
+   call notabs(inline,outline,iout)
+   if(unit_check_level.ne.0)then
+      write(*,*)'*test_notabs*',inline
+      write(*,*)'*test_notabs*',outline
+      write(*,*)'*test_notabs*',len_trim(outline),iout
+   endif
+   call unit_check('notabs',outline.eq.expected.and.iout.eq.35,msg='expand a line with tabs in it')
+   call unit_check_done('notabs',msg='')
+end subroutine test_notabs
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -3457,7 +4308,7 @@ END SUBROUTINE notabs
 !===================================================================================================================================
 pure function adjustc(string,length)
 
-character(len=*),parameter::ident="@(#)M_strings::adjustc(3f): center text"
+character(len=*),parameter::ident_29="@(#)M_strings::adjustc(3f): center text"
 
 !>
 !! PROCEDURE   adjustc(3f)
@@ -3490,6 +4341,67 @@ integer                      :: ileft          ! left edge of string if it is ce
       adjustc(1:inlen)=adjustl(string)         ! copy as much of input to output as can
    endif
 end function adjustc
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_adjustc
+character(len=80),allocatable :: expected(:)
+character(len=80),allocatable :: left(:)
+character(len=80),allocatable :: input(:)
+integer                       :: i
+   call unit_check_start('adjustc',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   expected=[ character(len=80) ::                                                     &
+   '12345678901234567890123456789012345678901234567890123456789012345678901234567890', &
+   '                            An Ode to Centered Text                             ', &
+   '                                                                                ', &
+   '       Centered text is acceptable when used for short phrases or titles,       ', &
+   '              like the name on your BUSINESS CARDS or LETTERHEAD.               ', &
+   '              In documents, you can center major section headings               ', &
+   '                  like "Introduction" and "Table of Contents."                  ', &
+   '                     But if you enjoy centering text, then                      ', &
+   '                          you should learn to use the                           ', &
+   '                                HARD LINE BREAK                                 ', &
+   '                              so your lines start                               ', &
+   '                                  in sensible                                   ', &
+   '                                    places.                                     ', &
+   '                                      OK?                                       ', &
+   '                                                                                ']
+   left=expected
+   input=expected
+   ! make copy with all strings left-justifed
+   do i=1,size(left)
+      left(i)=adjustl(left(i))
+   enddo
+   if(unit_check_level.gt.0)write(*,'(a)')left
+
+   ! now center the left-justifed copy
+   do i=1,size(left)
+      input(i)=adjustc(left(i))
+   enddo
+   ! check against expected output
+   call unit_check('adjustc',all(expected.eq.input),msg='text centering')
+
+   ! indent lines different amounts
+   do i=1,size(left)
+      input(i)=repeat(' ',i-1)//left(i)
+   enddo
+   if(unit_check_level.gt.0)write(*,'(a)')input
+
+   ! recenter it again
+   do i=1,size(left)
+      input(i)=adjustc(left(i))
+   enddo
+   if(unit_check_level.gt.0)write(*,'(a)')input
+   call unit_check('adjustc',all(expected.eq.input),msg='text centering')
+
+   call unit_check_done('adjustc')
+end subroutine test_adjustc
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -3535,7 +4447,7 @@ end function adjustc
 !===================================================================================================================================
 function nospace(line)
 
-character(len=*),parameter::ident="@(#)M_strings::nospace(3f): remove all whitespace from input string"
+character(len=*),parameter::ident_30="@(#)M_strings::nospace(3f): remove all whitespace from input string"
 
 character(len=*),intent(in)    ::  line             ! remove whitespace from this string and return it
 character(len=:),allocatable   ::  nospace          ! returned string
@@ -3552,6 +4464,101 @@ character(len=:),allocatable   ::  nospace          ! returned string
    enddo
    nospace=trim(nospace)                            ! blank out unpacked part of line
 end function nospace
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_nospace
+!!use M_strings, only: nospace
+implicit none
+   character(len=:),allocatable :: string
+   string='  This     is      a     test  '
+   string=nospace(string)
+   call unit_check_start('nospace',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   if (string .ne. 'Thisisatest')then
+      call unit_check_bad('nospace')
+   endif
+   call unit_check_good('nospace')
+end subroutine test_nospace
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+!>
+!!##NAME
+!!    atleast(3f) - [M_strings:LENGTH] return string padded to at least specified length
+!!
+!!##SYNOPSIS
+!!
+!!    function atleast(str,length) result(strout)
+!!
+!!     character(len=*)                           :: str
+!!     integer,intent(in)                         :: length
+!!     character(len=max(length,len(trim(line)))) ::  strout
+!!##DESCRIPTION
+!!    atleast(3f) pads a string with spaces to at least the specified
+!!    length. If the trimmed input string is longer than the requested
+!!    length the trimmed string is returned.
+!!##OPTIONS
+!!    str     the input string to return trimmed, but then padded to
+!!            the specified length if shorter than length
+!!    length  The minimum string length to return
+!!##RETURNS
+!!    strout  The input string padded to the requested length or
+!!            the trimmed input string if the input string is
+!!            longer than the requested length.
+!!
+!!##EXAMPLE
+!!
+!!    Sample Program:
+!!
+!!     program demo_atleast
+!!      use M_strings, only : atleast
+!!      implicit none
+!!      character(len=10)            :: string='abcdefghij'
+!!      character(len=:),allocatable :: answer
+!!         answer=atleast(string,5)
+!!         write(*,'("[",a,"]")') answer
+!!         answer=atleast(string,20)
+!!         write(*,'("[",a,"]")') answer
+!!     end program demo_atleast
+!!
+!!    Expected output:
+!!
+!!     [abcdefghij]
+!!     [abcdefghij          ]
+!===================================================================================================================================
+function atleast(line,length) result(strout)
+
+character(len=*),parameter::ident_31="@(#)M_strings::atleast(3f): return string padded to at least specified length"
+
+character(len=*),intent(in)  ::  line
+integer,intent(in)           ::  length
+character(len=max(length,len(trim(line)))) ::  strout
+   strout=line
+end function atleast
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_atleast()
+   call unit_check_start('atleast',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   call unit_check('atleast',atleast('Hello World',20)//'!'.eq.'Hello World         !',msg='check if padded')
+   call unit_check('atleast',len(atleast('Hello World',20)).eq.20,msg='check padded length')
+   call unit_check('atleast',len(atleast('Hello World',2)).eq.11 &
+           .and.atleast('Hello World',2).eq.'Hello World', &
+           msg='check not truncated')
+   call unit_check_done('atleast',msg='tests completed')
+end subroutine test_atleast
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -3569,7 +4576,11 @@ end function nospace
 !!##DESCRIPTION
 !!    lenset(3f) truncates a string or pads it with spaces to the specified
 !!    length.
-!!
+!!##OPTIONS
+!!    str     input string
+!!    length  output string length
+!!##RESULTS
+!!    strout  output string
 !!##EXAMPLE
 !!
 !!    Sample Program:
@@ -3592,13 +4603,33 @@ end function nospace
 !===================================================================================================================================
 function lenset(line,length) result(strout)
 
-character(len=*),parameter::ident="@(#)M_strings::lenset(3f): return string trimmed or padded to specified length"
+character(len=*),parameter::ident_32="@(#)M_strings::lenset(3f): return string trimmed or padded to specified length"
 
 character(len=*),intent(in)  ::  line
 integer,intent(in)           ::  length
 character(len=length)        ::  strout
    strout=line
 end function lenset
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_lenset()
+character(len=10)            :: string='abcdefghij'
+character(len=:),allocatable :: answer
+   call unit_check_start('lenset',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+
+        call unit_check('lenset',len(lenset(string, 5)).eq.5)
+        call unit_check('lenset',len(lenset(string,20)).eq.20)
+        call unit_check('lenset',lenset(string,20).eq.'abcdefghij')
+        call unit_check('lenset',lenset(string, 5).eq.'abcde')
+   call unit_check_done('lenset')
+end subroutine test_lenset
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -3644,7 +4675,7 @@ function merge_str(str1,str2,expr) result(strout)
 ! for some reason the MERGE(3f) intrinsic requires the strings it compares to be of equal length
 ! make an alias for MERGE(3f) that makes the lengths the same before doing the comparison by padding the shorter one with spaces
 
-character(len=*),parameter::ident="@(#)M_strings::merge_str(3f): pads first and second arguments to MERGE(3f) to same length"
+character(len=*),parameter::ident_33="@(#)M_strings::merge_str(3f): pads first and second arguments to MERGE(3f) to same length"
 
 character(len=*),intent(in)     :: str1
 character(len=*),intent(in)     :: str2
@@ -3654,6 +4685,33 @@ character(len=:),allocatable    :: strout
    big=max(len(str1),len(str2))
    strout=trim(merge(lenset(str1,big),lenset(str2,big),expr))
 end function merge_str
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_merge_str()
+character(len=:), allocatable :: answer
+   call unit_check_start('merge_str',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+
+   answer=merge_str('first string', 'second string is longer',10.eq.10)
+   if(unit_check_level.gt.0)then
+      write(*,*)'['//answer//']',len(answer)
+   endif
+   call unit_check('merge_str',answer.eq.'first string'.and.len(answer).eq.12,msg='check true value ')
+
+   answer=merge_str('first string', 'second string is longer',10.ne.10)
+   if(unit_check_level.gt.0)then
+      write(*,*)'['//answer//']',len(answer)
+   endif
+   call unit_check('merge_str',answer.eq.'second string is longer'.and.len(answer).eq.23,msg='check false value')
+
+   call unit_check_done('merge_str')
+end subroutine test_merge_str
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -3713,7 +4771,7 @@ end function merge_str
 !elemental pure function compact(str,char) result (outstr)
 function compact(str,char) result (outstr)
 
-character(len=*),parameter::ident="@(#)M_strings::compact(3f): Converts white-space to single spaces"
+character(len=*),parameter::ident_34="@(#)M_strings::compact(3f): Converts white-space to single spaces"
 
 character(len=*),intent(in)          :: str
 character(len=*),intent(in),optional :: char
@@ -3760,6 +4818,41 @@ endif
    end do IFSPACE
 
 end function compact
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_compact
+!!use M_strings, only: compact
+implicit none
+   call unit_check_start('compact',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   if (compact('  This  is     a    test  ') .ne. 'This is a test')then
+      call unit_check_bad('compact')
+      stop 1
+   endif
+   if (compact('This is a test') .ne. 'This is a test')then
+      call unit_check_bad('compact')
+      stop 2
+   endif
+   if (compact('This-is-a-test') .ne. 'This-is-a-test')then
+      call unit_check_bad('compact')
+      stop 3
+   endif
+   if (compact('  This  is     a    test  ',char='') .ne. 'Thisisatest')then
+      call unit_check_bad('compact')
+      stop 4
+   endif
+   if (compact('  This  is     a    test  ',char='t') .ne. 'Thististattest')then
+      call unit_check_bad('compact')
+      stop 5
+   endif
+   call unit_check_good('compact')
+end subroutine test_compact
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -3852,7 +4945,7 @@ end function compact
 !===================================================================================================================================
 elemental function noesc(INSTR)
 
-character(len=*),parameter::ident="@(#)M_strings::noesc(3f): convert non-printable characters to a space"
+character(len=*),parameter::ident_35="@(#)M_strings::noesc(3f): convert non-printable characters to a space"
 
    character(len=*),intent(in) :: INSTR   ! string that might contain nonprintable characters
    character(len=len(instr))   :: noesc
@@ -3868,6 +4961,44 @@ character(len=*),parameter::ident="@(#)M_strings::noesc(3f): convert non-printab
       endif
    enddo
 end function noesc
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_noesc  ! test noesc
+!!use M_strings, only : noesc
+   character(len=23) :: in,out,clr
+   integer :: i10
+  ! Use goodbad(1) to indicate the test sequence was begun
+   call unit_check_start('noesc',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   do i10=0,127
+      write(in, '(i3.3,1x,4a)')i10,char(i10),char(i10),char(i10),' eol'
+      write(clr,'(i3.3,1x,"    eol")')i10
+      out=noesc(in)
+      if(unit_check_level.gt.0)then
+         write(*,'(a)')trim(in)
+         write(*,'(a)')trim(out)
+      endif
+      SELECT CASE (i10)
+      CASE (:31,127)
+        if(out.ne.clr)then
+           write(*,*)'Error: noesc did not replace a string with blanks that it should have'
+           call unit_check_bad('noesc')
+        endif
+      CASE DEFAULT
+        if(in.ne.out)then
+           write(*,*)'Error: noesc changed a string it should not have'
+           call unit_check_bad('noesc')
+        endif
+      END SELECT
+   enddo
+   call unit_check_good('noesc')
+end subroutine test_noesc
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -3913,7 +5044,7 @@ end function noesc
 !===================================================================================================================================
 subroutine a2r(chars,valu,ierr)
 
-character(len=*),parameter::ident="@(#)M_strings::a2r(3fp): subroutine returns real value from string"
+character(len=*),parameter::ident_36="@(#)M_strings::a2r(3fp): subroutine returns real value from string"
 
    character(len=*),intent(in) :: chars                      ! input string
    real,intent(out)            :: valu                       ! value read from input string
@@ -3926,7 +5057,7 @@ end subroutine a2r
 !----------------------------------------------------------------------------------------------------------------------------------
 subroutine a2i(chars,valu,ierr)
 
-character(len=*),parameter::ident="@(#)M_strings::a2i(3fp): subroutine returns integer value from string"
+character(len=*),parameter::ident_37="@(#)M_strings::a2i(3fp): subroutine returns integer value from string"
 
    character(len=*),intent(in) :: chars                      ! input string
    integer,intent(out)         :: valu                       ! value read from input string
@@ -3939,7 +5070,7 @@ end subroutine a2i
 !----------------------------------------------------------------------------------------------------------------------------------
 subroutine a2d(chars,valu,ierr)
 
-character(len=*),parameter::ident="@(#)M_strings::a2d(3fp): subroutine returns double value from string"
+character(len=*),parameter::ident_38="@(#)M_strings::a2d(3fp): subroutine returns double value from string"
 
 !     1989,2016 John S. Urban.
 !
@@ -4004,6 +5135,99 @@ character(len=*),parameter::ident="@(#)M_strings::a2d(3fp): subroutine returns d
          endif
       endif
 end subroutine a2d
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_string_to_value
+!!use M_strings, only: string_to_value, s2v, v2s
+CHARACTER(len=80) :: STRING
+real RVALUE
+doubleprecision DVALUE
+doubleprecision SUM, SUM2, DELTA
+integer IVALUE
+integer GOOD
+integer :: ierr
+!===================================================================================================================================
+   call unit_check_start('string_to_value',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+!===================================================================================================================================
+   STRING=' -40.5e-2 '
+   CALL string_to_value(STRING,RVALUE,IERR)
+   CALL string_to_value(STRING,DVALUE,IERR)
+   CALL string_to_value(STRING,IVALUE,IERR)
+   if(unit_check_level.gt.0)then
+      WRITE(*,*) 'string_to_value: real value is ',-40.5e-2
+      WRITE(*,*) 'string_to_value: double value is ',-40.5d-2
+      WRITE(*,*) 'string_to_value: real value of string ['//trim(STRING)//'] is ',RVALUE
+      WRITE(*,*) 'string_to_value: double value of string ['//trim(STRING)//'] is ',DVALUE
+      WRITE(*,*) 'string_to_value: integer value of string ['//trim(STRING)//'] is ',IVALUE
+   endif
+   STRING=' -40.5d-2 '
+   if(unit_check_level.gt.0)then
+      CALL string_to_value(STRING,RVALUE,IERR)
+      WRITE(*,*) 'string_to_value: real value of string ['//trim(STRING)//'] is ',RVALUE
+      CALL string_to_value(STRING,DVALUE,IERR)
+      WRITE(*,*) 'string_to_value: double value of string ['//trim(STRING)//'] is ',DVALUE
+       CALL string_to_value(STRING,IVALUE,IERR)
+      WRITE(*,*) 'string_to_value: integer value of string ['//trim(STRING)//'] is ',IVALUE
+   endif
+   good=0
+   call unit_check('string_to_value',rvalue.eq.-40.5e-2)
+      good=good*10+1
+   call unit_check('string_to_value',dvalue.eq.-40.5d-2)
+      good=good*10+1
+   call unit_check('string_to_value',dvalue-spacing(dvalue).le.-40.5d-2.and.dvalue+spacing(dvalue).ge.-40.5d-2)
+      good=good*10+1
+   call unit_check('string_to_value',rvalue-spacing(rvalue).le.-40.5e-2.and.rvalue+spacing(rvalue).ge.-40.5e-2)
+      good=good*10+1
+!===================================================================================================================================
+   SUM=0.0d0
+   string='5.555555555555555555555555555555555'
+   CALL string_to_value(STRING,RVALUE,IERR)
+   SUM=SUM+RVALUE
+   CALL string_to_value(STRING,DVALUE,IERR)
+   SUM=SUM+DVALUE
+   CALL string_to_value(STRING,IVALUE,IERR)
+   SUM=SUM+IVALUE
+!===================================================================================================================================
+   SUM2=5.555555555555555555555555555555555d0+5.555555555555555555555555555555555e0+INT(5.555555555555555555555555555555555)
+   DELTA=spacing(0.0d0)+spacing(0.0)
+   if(unit_check_level.gt.0)then
+      write(*,'(80("="))')
+      WRITE(*,*) 'string_to_value: real value is ', 5.555555555555555555555555555555555e0
+      WRITE(*,*) 'string_to_value: double value is ', 5.555555555555555555555555555555555d0
+      WRITE(*,*) 'string_to_value: value of string ['//trim(STRING)//'] is ',RVALUE
+      WRITE(*,*) 'string_to_value: value of string ['//trim(STRING)//'] is ',DVALUE
+      WRITE(*,*) 'string_to_value: value of string ['//trim(STRING)//'] is ',IVALUE
+      WRITE(*,*) 'string_to_value: SUM=', SUM
+      WRITE(*,*) 'string_to_value: SUM2=', SUM2
+      WRITE(*,*) 'string_to_value: DELTA=', DELTA
+   endif
+   if(sum.eq.sum2)then
+      good=good*10+1
+      if(unit_check_level.gt.0)then
+      write(*,*)'string_to_value: good ',good
+      endif
+   else
+      call unit_check_bad('string_to_value')
+   endif
+   if(sum+delta.ge.sum2.and.sum-delta.le.sum2)then
+      good=good*10+1
+      if(unit_check_level.gt.0)then
+      write(*,*)'string_to_value: good ',good
+      endif
+   else
+      call unit_check_bad('string_to_value')
+   endif
+!===================================================================================================================================
+   call unit_check_good('string_to_value')
+!===================================================================================================================================
+end subroutine test_string_to_value
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -4108,7 +5332,7 @@ end subroutine a2d
 doubleprecision function s2v(chars,ierr)
 !  1989 John S. Urban
 
-character(len=*),parameter::ident="@(#)M_strings::s2v(3f): returns doubleprecision number from string"
+character(len=*),parameter::ident_39="@(#)M_strings::s2v(3f): returns doubleprecision number from string"
 
 
 character(len=*),intent(in) :: chars
@@ -4176,6 +5400,31 @@ character(len=*),intent(in) :: chars(:)
       dbles_s2v(i)=s2v(chars(i))
    enddo
 end function dbles_s2v
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_s2v()
+doubleprecision SUM, SUM2, DELTA
+   SUM2=5.555555555555555555555555555555555d0+5.555555555555555555555555555555555e0+INT(5.555555555555555555555555555555555)
+   DELTA=spacing(0.0d0)+spacing(0.0)
+
+   call unit_check_start('s2v',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+
+   SUM=s2v('5.55555555555555555555555555e0')+REAL(s2v('5.55555555555555555555555555d0'))+INT(s2v('5.55555555555555555555555555'))
+   if(unit_check_level.gt.0)then
+      WRITE(*,*) 's2v: SUM2=', SUM2
+      WRITE(*,*) 's2v: SUM=', SUM
+      WRITE(*,*) 's2v: DELTA=', DELTA
+   endif
+   call unit_check('s2v',sum+delta.ge.sum2.and.sum-delta.le.sum2)
+   call unit_check_done('s2v')
+end subroutine test_s2v
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -4193,6 +5442,7 @@ end function dbles_s2v
 !!     doubleprecision,intent(in)               :: value
 !!     real,intent(in)                          :: value
 !!     integer,intent(in)                       :: value
+!!     logical,intent(in)                       :: value
 !!     !--------
 !!     character(len=*),intent(out)             :: chars
 !!     integer,intent(out),optional             :: ilen
@@ -4200,20 +5450,21 @@ end function dbles_s2v
 !!     character(len=*),intent(in),optional     :: fmt
 !!##DESCRIPTION
 !!
-!!    value_to_string(3f)
-!!    that returns a numeric representation in a string given a numeric value of type
-!!    REAL, DOUBLEPRECISION, or INTEGER. It creates the strings using internal writes.
-!!    It then removes trailing zeros from non-zero values, and left-justifies the string.
+!!    value_to_string(3f) returns a numeric representation in a string given
+!!    a numeric value of type REAL, DOUBLEPRECISION, INTEGER or LOGICAL. It
+!!    creates the string using internal writes. It then removes trailing
+!!    zeros from non-zero values, and left-justifies the string.
 !!
 !!##OPTIONS
-!!       o  VALUE - input value to be converted to a string
-!!       o  FMT - You may specify a specific format that produces a string up to the length of CHARS; optional.
+!!       VALUE   input value to be converted to a string
+!!       FMT     You may specify a specific format that produces a string
+!!               up to the length of CHARS; optional.
 !!
 !!##RETURNS
-!!       o  CHARS - returned string representing input value, must be at least 23 characters long;
-!!                  or what is required by optional FMT if longer.
-!!       o  ILEN - position of last non-blank character in returned string; optional.
-!!       o  IERR - If not zero, error occurred; optional.
+!!       CHARS   returned string representing input value, must be at least
+!!               23 characters long; or what is required by optional FMT if longer.
+!!       ILEN    position of last non-blank character in returned string; optional.
+!!       IERR    If not zero, error occurred; optional.
 !!##EXAMPLE
 !!
 !!    Sample program:
@@ -4248,9 +5499,10 @@ end function dbles_s2v
 !!     The value is [1234]
 !!     The value is [0.33333333333333331]
 !===================================================================================================================================
+!===================================================================================================================================
 subroutine value_to_string(gval,chars,length,err,fmt)
 
-character(len=*),parameter::ident="@(#)M_strings::value_to_string(3fp): subroutine returns a string from a value"
+character(len=*),parameter::ident_40="@(#)M_strings::value_to_string(3fp): subroutine returns a string from a value"
 
 class(*),intent(in)                      :: gval
 character(len=*),intent(out)             :: chars
@@ -4259,24 +5511,29 @@ integer,optional                         :: err
 integer                                  :: err_local
 character(len=*),optional,intent(in)     :: fmt         ! format to write value with
 character(len=:),allocatable             :: fmt_local
+character(len=1024)                      :: msg
 
-!  Notice that the value GVAL can be any of several types ( INTEGER,REAL,DOUBLEPRECISION)
+!  Notice that the value GVAL can be any of several types ( INTEGER,REAL,DOUBLEPRECISION,LOGICAL)
 
    if (present(fmt)) then
       select type(gval)
       type is (integer)
          fmt_local='(i0)'
          if(fmt.ne.'') fmt_local=fmt
-         write(chars,fmt_local,iostat=err_local)gval
+         write(chars,fmt_local,iostat=err_local,iomsg=msg)gval
       type is (real)
          fmt_local='(bz,g23.10e3)'
-         fmt_local='(bz,g0.8e3)'
+         fmt_local='(bz,g0.8)'
          if(fmt.ne.'') fmt_local=fmt
-         write(chars,fmt_local,iostat=err_local)gval
+         write(chars,fmt_local,iostat=err_local,iomsg=msg)gval
       type is (doubleprecision)
          fmt_local='(bz,g0)'
          if(fmt.ne.'') fmt_local=fmt
-         write(chars,fmt_local,iostat=err_local)gval
+         write(chars,fmt_local,iostat=err_local,iomsg=msg)gval
+      type is (logical)
+         fmt_local='(l1)'
+         if(fmt.ne.'') fmt_local=fmt
+         write(chars,fmt_local,iostat=err_local,iomsg=msg)gval
       end select
       if(fmt.eq.'') then
          chars=adjustl(chars)
@@ -4285,42 +5542,134 @@ character(len=:),allocatable             :: fmt_local
    else                                                  ! no explicit format option present
       select type(gval)
       type is (integer)
-         write(chars,*,iostat=err_local)gval
+         write(chars,*,iostat=err_local,iomsg=msg)gval
       type is (real)
-         write(chars,*,iostat=err_local)gval
+         write(chars,*,iostat=err_local,iomsg=msg)gval
       type is (doubleprecision)
-         write(chars,*,iostat=err_local)gval
+         write(chars,*,iostat=err_local,iomsg=msg)gval
+      type is (logical)
+         write(chars,*,iostat=err_local,iomsg=msg)gval
       end select
       chars=adjustl(chars)
       if(index(chars,'.').ne.0) call trimzeros(chars)
    endif
 
-   if(present(length)) then ; length=len_trim(chars) ; endif
+   if(present(length)) then
+      length=len_trim(chars)
+   endif
 
-   if(present(err)) then ; err=err_local ; endif
+   if(present(err)) then
+      err=err_local
+   elseif(err_local.ne.0)then
+      !! cannot currently do I/O from a function being called from I/O
+      !!write(ERROR_UNIT,'(a)')'*value_to_string* WARNING:['//trim(msg)//']'
+      chars=chars//' *value_to_string* WARNING:['//trim(msg)//']'
+   endif
 
 end subroutine value_to_string
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_value_to_string
+!!use M_strings, only: value_to_string
+implicit none
+CHARACTER(LEN=80) :: STRING
+doubleprecision   :: DVALUE
+real              :: RVALUE
+integer           :: IVALUE
+integer           :: ILEN
+integer           :: IERR
+integer           :: IERRSUM=0
+!===================================================================================================================================
+   call unit_check_start('value_to_string',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   DVALUE=5.5555555555555555555555d0
+   call value_to_string(DVALUE,STRING,ILEN,IERR)
+   if(unit_check_level.gt.0)then
+      write(*,*)'value_to_string: DOUBLE TEST VALUE=',dvalue,'STRING=',trim(string),' ILEN=',ilen,'IERR=',ierr
+   endif
+   IERRSUM=IERRSUM+IERR
+   if(ILEN.le.0)IERRSUM=IERRSUM+1000
+
+   RVALUE=3.3333333333333333333333
+   call value_to_string(RVALUE,STRING,ILEN,IERR)
+   if(unit_check_level.gt.0)then
+      write(*,*)'value_to_string: REAL TEST VALUE=',rvalue,'STRING=',trim(string),' ILEN=',ilen,'IERR=',ierr
+   endif
+   IERRSUM=IERRSUM+IERR
+   if(ILEN.le.0)IERRSUM=IERRSUM+10000
+
+   IVALUE=1234567890
+   call value_to_string(IVALUE,STRING,ILEN,IERR)
+   if(unit_check_level.gt.0)then
+      write(*,*)'value_to_string: INTEGER TEST VALUE=',ivalue,'STRING=',trim(string),' ILEN=',ilen,'IERR=',ierr
+   endif
+   IERRSUM=IERRSUM+IERR
+   if(string.ne.'1234567890')then
+       IERRSUM=IERRSUM+100000
+   endif
+   if(ILEN.ne.10)then
+       IERRSUM=IERRSUM+1000000
+   endif
+
+   IVALUE=0
+   call value_to_string(IVALUE,STRING,ILEN,IERR)
+   if(unit_check_level.gt.0)then
+      write(*,*)'value_to_string: INTEGER TEST VALUE=',ivalue,'STRING=',trim(string),' ILEN=',ilen,'IERR=',ierr
+   endif
+
+   IVALUE=-12345
+   call value_to_string(IVALUE,STRING,ILEN,IERR)
+   if(unit_check_level.gt.0)then
+      write(*,*)'value_to_string: INTEGER TEST VALUE=',ivalue,'STRING=',trim(string),' ILEN=',ilen,'IERR=',ierr
+   endif
+   if(string.ne.'-12345')then
+       IERRSUM=IERRSUM+1000000
+   endif
+   if(ILEN.ne.6)then
+       IERRSUM=IERRSUM+10000000
+   endif
+!===================================================================================================================================
+   call unit_check('value_to_string',ierrsum.eq.0,msg='value_to_string'//v2s(ierrsum))
+   call unit_check_done('value_to_string')
+!===================================================================================================================================
+end subroutine test_value_to_string
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
 !!##NAME
 !!      v2s(3f) - [M_strings:NUMERIC] return numeric string from a numeric value
+!!
 !!##SYNOPSIS
 !!
 !!       function v2s(value) result(outstr)
 !!
-!!        integer|real|doubleprecision,intent(in ) :: value
+!!        integer|real|doubleprecision|logical,intent(in ) :: value
 !!        character(len=:),allocatable :: outstr
+!!        character(len=*),optional,intent(in) :: fmt
+!!
 !!##DESCRIPTION
 !!
-!!    v2s(3f) returns a representation of a numeric value as a string when
-!!    given a numeric value of type REAL, DOUBLEPRECISION, or INTEGER. It
-!!    creates the strings using internal WRITE() statements. Trailing zeros
-!!    are removed from non-zero values, and the string is left-justified.
+!!    v2s(3f) returns a representation of a numeric value as a
+!!    string when given a numeric value of type REAL, DOUBLEPRECISION,
+!!    INTEGER or LOGICAL. It creates the strings using internal WRITE()
+!!    statements. Trailing zeros are removed from non-zero values, and the
+!!    string is left-justified.
 !!
-!!       o  VALUE - input value to be converted to a string
-!!       o  OUTSTR - returned string representing input value,
+!!##OPTIONS
+!!    VALUE   input value to be converted to a string
+!!    FMT     format can be explicitly given, but is limited to
+!!            generating a string of eighty or less characters.
+!!
+!!##RETURNS
+!!    OUTSTR  returned string representing input value,
+!!
 !!##EXAMPLE
 !!
 !!   Sample Program:
@@ -4330,26 +5679,30 @@ end subroutine value_to_string
 !!    write(*,*) 'The value of 3.0/4.0 is ['//v2s(3.0/4.0)//']'
 !!    write(*,*) 'The value of 1234    is ['//v2s(1234)//']'
 !!    write(*,*) 'The value of 0d0     is ['//v2s(0d0)//']'
+!!    write(*,*) 'The value of .false. is ['//v2s(.false.)//']'
+!!    write(*,*) 'The value of .true. is  ['//v2s(.true.)//']'
 !!    end program demo_v2s
 !!
 !!   Expected output
 !!
 !!     The value of 3.0/4.0 is [0.75]
 !!     The value of 1234    is [1234]
-!!     The value of 0d0     is [0.0]
+!!     The value of 0d0     is [0]
+!!     The value of .false. is [F]
+!!     The value of .true. is  [T]
 !!
 !!##FILES AND METADATA
 !!
 !!       o  References: none
 !!       o  Dependencies: value_to_string
 !!       o  Legal Restrictions: none
-!!       o  QA:ufpp(1) ggodbad(1) test in source file
+!!       o  QA:ufpp(1) goodbad(1) test in source file
 !!       o  Authors: John S. Urban
 !===================================================================================================================================
 ! very odd compiler problems in many (but not all) programs using this routine; GNU Fortran (GCC) 5.4.0; 20161030
 function v2s_bug(gval) result(outstr)
 
-character(len=*),parameter::ident="@(#)M_strings::v2s_bug(3f): function returns string given numeric value"
+character(len=*),parameter::ident_40="@(#)M_strings::v2s_bug(3f): function returns string given numeric value"
 
 class(*),intent(in)          :: gval                         ! input value to convert to a string
 character(len=:),allocatable :: outstr                       ! output string to generate
@@ -4361,42 +5714,128 @@ character(len=80)            :: string
       call value_to_string(gval,string)
    type is (doubleprecision)
       call value_to_string(gval,string)
+   type is (logical)
+      call value_to_string(gval,string)
    end select
    outstr=trim(string)
 end function v2s_bug
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_v2s_bug()
+doubleprecision SUM, SUM2, DELTA
+   SUM2=5.555555555555555555555555555555555d0+5.555555555555555555555555555555555e0+INT(5.555555555555555555555555555555555)
+   DELTA=spacing(0.0d0)+spacing(0.0)
+   call unit_check_start('v2s_bug',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   SUM=s2v(v2s_bug(5.55555555555555555555555555d0))
+   SUM=SUM+REAL(s2v(v2s_bug(5.55555555555555555555555555e0)))
+   SUM=SUM+INT(s2v(v2s_bug(5.55555555555555555555555555e0)))
+   if(unit_check_level.gt.0)then
+      WRITE(*,*) 'v2s_bug: SUM2=', SUM2
+      WRITE(*,*) 'v2s_bug: SUM=', SUM
+      WRITE(*,*) 'v2s_bug: DELTA=', DELTA
+   endif
+   call unit_check('v2s_bug',sum+delta.ge.sum2.and.sum-delta.le.sum2)
+   call unit_check_done('v2s_bug')
+end subroutine test_v2s_bug
 !===================================================================================================================================
-function d2s(dvalue) result(outstr)
+function d2s(dvalue,fmt) result(outstr)
 
-character(len=*),parameter::ident="@(#)M_strings::d2s(3fp): private function returns string given doubleprecision value"
+character(len=*),parameter::ident_41="@(#)M_strings::d2s(3fp): private function returns string given doubleprecision value"
 
 doubleprecision,intent(in)   :: dvalue                         ! input value to convert to a string
+character(len=*),intent(in),optional :: fmt
 character(len=:),allocatable :: outstr                         ! output string to generate
 character(len=80)            :: string
-   call value_to_string(dvalue,string)
+   if(present(fmt))then
+      call value_to_string(dvalue,string,fmt=fmt)
+   else
+      call value_to_string(dvalue,string)
+   endif
    outstr=trim(string)
 end function d2s
 !===================================================================================================================================
-function r2s(rvalue) result(outstr)
+function r2s(rvalue,fmt) result(outstr)
 
-character(len=*),parameter::ident="@(#)M_strings::r2s(3fp): private function returns string given real value"
+character(len=*),parameter::ident_42="@(#)M_strings::r2s(3fp): private function returns string given real value"
 
-real,intent(in )             :: rvalue                         ! input value to convert to a string
+real,intent(in)              :: rvalue                         ! input value to convert to a string
+character(len=*),intent(in),optional :: fmt
 character(len=:),allocatable :: outstr                         ! output string to generate
 character(len=80)            :: string
-   call value_to_string(rvalue,string)
+   if(present(fmt))then
+      call value_to_string(rvalue,string,fmt=fmt)
+   else
+      call value_to_string(rvalue,string)
+   endif
    outstr=trim(string)
 end function r2s
 !===================================================================================================================================
-function i2s(ivalue) result(outstr)
+function i2s(ivalue,fmt) result(outstr)
 
-character(len=*),parameter::ident="@(#)M_strings::i2s(3fp): private function returns string given integer value"
+character(len=*),parameter::ident_43="@(#)M_strings::i2s(3fp): private function returns string given integer value"
 
-integer,intent(in )          :: ivalue                         ! input value to convert to a string
+integer,intent(in)           :: ivalue                         ! input value to convert to a string
+character(len=*),intent(in),optional :: fmt
 character(len=:),allocatable :: outstr                         ! output string to generate
 character(len=80)            :: string
-   call value_to_string(ivalue,string)
+   if(present(fmt))then
+      call value_to_string(ivalue,string,fmt=fmt)
+   else
+      call value_to_string(ivalue,string)
+   endif
    outstr=trim(string)
 end function i2s
+!===================================================================================================================================
+function l2s(lvalue,fmt) result(outstr)
+
+character(len=*),parameter::ident_44="@(#)M_strings::l2s(3fp): private function returns string given logical value"
+
+logical,intent(in)           :: lvalue                         ! input value to convert to a string
+character(len=*),intent(in),optional :: fmt
+character(len=:),allocatable :: outstr                         ! output string to generate
+character(len=80)             :: string
+   if(present(fmt))then
+      call value_to_string(lvalue,string,fmt=fmt)
+   else
+      call value_to_string(lvalue,string)
+   endif
+   outstr=trim(string)
+end function l2s
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_v2s()
+doubleprecision SUM, SUM2, DELTA
+   call unit_check_start('v2s',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   SUM2=5.555555555555555555555555555555555d0+5.555555555555555555555555555555555e0+INT(5.555555555555555555555555555555555)
+   DELTA=spacing(0.0d0)+spacing(0.0)
+   SUM=s2v(v2s(5.55555555555555555555555555d0))
+   SUM=SUM+REAL(s2v(v2s(5.55555555555555555555555555e0)))
+   SUM=SUM+INT(s2v(v2s(5.55555555555555555555555555e0)))
+   if(unit_check_level.gt.0)then
+      WRITE(*,*) 'v2s: SUM2=', SUM2
+      WRITE(*,*) 'v2s: SUM=', SUM
+      WRITE(*,*) 'v2s: DELTA=', DELTA
+   endif
+   call unit_check('v2s',sum+delta.ge.sum2.and.sum-delta.le.sum2)
+   call unit_check('v2s',v2s(1234).eq.'1234')
+   call unit_check('v2s',v2s(.true.).eq.'T')
+   call unit_check('v2s',v2s(.false.).eq.'F')
+   call unit_check_done('v2s')
+end subroutine test_v2s
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -4514,7 +5953,7 @@ end function i2s
 function isNumber(string,msg,verbose)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_strings::isnumber(3f): Determines if a string is a number of not."
+character(len=*),parameter::ident_45="@(#)M_strings::isnumber(3f): Determines if a string is a number of not."
 
 character(len=*),intent(in)    :: string
 character(len=:),intent(out),allocatable,optional :: msg
@@ -4637,6 +6076,30 @@ contains
       endif
    end subroutine next
 end function isNumber
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_isnumber
+!!use M_strings, only: isnumber
+implicit none
+integer,parameter             :: number_of_chars=128
+character(len=1)              :: char
+integer                       :: i
+   call unit_check_start('isnumber',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   call unit_check('isnumber',isnumber(' 123 ')                                           .eq. 1,  'integer string')
+   call unit_check('isnumber',isnumber(' -123. ')                                         .eq. 2,  'whole number string')
+   call unit_check('isnumber',isnumber(' -123.0')                                         .eq. 3,  'real string')
+   call unit_check('isnumber',isnumber(' -100.50')                                        .eq. 3,  'real string')
+   call unit_check('isnumber',all( [isnumber('4.4e0 '),isnumber('1e1'),isnumber('-3D-4')] .eq. 4), 'exponent string')
+   call unit_check('isnumber',isnumber(' Not a number')                                   .lt. 0,  'non-numeric string')
+   call unit_check_done('isnumber')
+end subroutine test_isnumber
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -4652,6 +6115,9 @@ end function isNumber
 !!    TRIMZEROS(3f) deletes trailing zeros from a string representing a
 !!    number. If the resulting string would end in a decimal point, one
 !!    trailing zero is added.
+!!##OPTIONS
+!!    str   input string will be assumed to be a numeric value and have trailing
+!!          zeros removed
 !!##EXAMPLES
 !!
 !!    Sample program:
@@ -4659,15 +6125,15 @@ end function isNumber
 !!       program demo_trimzeros
 !!       use M_strings, only : trimzeros
 !!       character(len=:),allocatable :: string
-!!       write(*,*)trimzeros('123.450000000000')
-!!       write(*,*)trimzeros('12345')
-!!       write(*,*)trimzeros('12345.')
-!!       write(*,*)trimzeros('12345.00e3')
+!!          write(*,*)trimzeros('123.450000000000')
+!!          write(*,*)trimzeros('12345')
+!!          write(*,*)trimzeros('12345.')
+!!          write(*,*)trimzeros('12345.00e3')
 !!       end program demo_trimzeros
 !===================================================================================================================================
 subroutine trimzeros(string)
 
-character(len=*),parameter::ident="@(#)M_strings::trimzeros(3fp): Delete trailing zeros from numeric decimal string"
+character(len=*),parameter::ident_46="@(#)M_strings::trimzeros(3fp): Delete trailing zeros from numeric decimal string"
 
 ! if zero needs added at end assumes input string has room
 character(len=*)             :: string
@@ -4707,6 +6173,19 @@ integer                      :: i, ii
       string=str
    endif
 end subroutine trimzeros
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_trimzeros()
+   call unit_check_start('trimzeros',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   call unit_check_done('trimzeros',msg='UNTESTED')
+end subroutine test_trimzeros
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -4759,7 +6238,7 @@ subroutine listout(icurve_lists,icurve_expanded,inums_out,ierr)
 use M_journal, only : journal
 implicit none
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_47="&
 &@(#)M_strings::listout(3f): copy icurve_lists to icurve_expanded expanding negative numbers to ranges (1 -10 means 1 thru 10)"
 
 !   Created: 19971231
@@ -4823,6 +6302,29 @@ integer               :: inums_max
    inums_out=icount-1
 
 end subroutine listout
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_listout()
+   integer,allocatable :: icurve_lists(:)        ! icurve_lists is input array
+   integer :: icurve_expanded(1000)  ! icurve_expanded is output array
+   integer :: inums                  ! number of icurve_lists values on input, number of icurve_expanded numbers on output
+   integer :: i
+   integer :: ierr
+   call unit_check_start('listout',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   icurve_lists=[1, 20, -30, 101, 100, 99, 100, -120, 222, -200]
+   inums=size(icurve_lists)
+   call listout(icurve_lists,icurve_expanded,inums,ierr)
+   call unit_check('listout',ierr.eq.0,msg='check error status ierr='//v2s(ierr))
+   call unit_check('listout',all(icurve_expanded(:inums).eq.[1,(i,i=20,30),101,100,99,(i,i=100,120),(i,i=222,200,-1)]),msg='expand')
+   call unit_check_done('listout')
+end subroutine test_listout
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
@@ -4865,13 +6367,31 @@ end subroutine listout
 !!       character(len=128)           :: quoted_str
 !!       character(len=:),allocatable :: unquoted_str
 !!       character(len=1),parameter   :: esc='\'
+!!       character(len=1024)          :: msg
 !!       integer                      :: ios
+!!       character(len=1024)          :: dummy
 !!       do
-!!          read(*,'(a)',iostat=ios)quoted_str
-!!          if(ios.ne.0)exit
+!!          write(*,'(a)',advance='no')'Enter test string:'
+!!          read(*,'(a)',iostat=ios,iomsg=msg)quoted_str
+!!          if(ios.ne.0)then
+!!             write(*,*)trim(msg)
+!!             exit
+!!          endif
+!!
+!!          ! the original string
 !!          write(*,'(a)')'QUOTED       ['//trim(quoted_str)//']'
+!!
+!!          ! the string processed by unquote(3f)
 !!          unquoted_str=unquote(trim(quoted_str),esc)
 !!          write(*,'(a)')'UNQUOTED     ['//unquoted_str//']'
+!!
+!!          ! read the string list-directed to compare the results
+!!          read(quoted_str,*,iostat=ios,iomsg=msg)dummy
+!!          if(ios.ne.0)then
+!!             write(*,*)trim(msg)
+!!          else
+!!             write(*,'(a)')'LIST DIRECTED['//trim(dummy)//']'
+!!          endif
 !!       enddo
 !!    end program demo_unquote
 !===================================================================================================================================
@@ -4940,6 +6460,53 @@ character(len=:),allocatable         :: unquoted_str
    unquoted_str=unquoted_str(:iput-1)
 !-----------------------------------------------------------------------------------------------------------------------------------
 end function unquote
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_unquote()
+integer,parameter            :: line_length=1024
+character(len=line_length)   :: quoted_str
+character(len=:),allocatable :: unquoted_str
+character(len=1),parameter   :: esc='\'
+character(len=line_length)   :: msg
+character(len=line_length)   :: dummy
+integer                      :: ios
+integer                      :: i
+character(len=:),allocatable :: tests(:)
+
+   tests=[ character(len=line_length) :: &
+      '"this is a test"',                         &
+      '"a test with a ""quote"" around a string"' ]
+
+   call unit_check_start('unquote',' &
+   & -section 3  &
+   & -library libGPF  &
+   & -filename `pwd`/M_strings.FF &
+   & -documentation y &
+   &  -ufpp         y &
+   &  -ccall        n &
+   &  -archive      GPF.a &
+   & ')
+
+   do i=1,size(tests)
+      quoted_str=tests(i)
+      unquoted_str=unquote(trim(quoted_str),esc)                    ! the string processed by unquote(3f)
+      read(quoted_str,*,iostat=ios,iomsg=msg)dummy                  ! read the string list-directed to compare the results
+
+      if(unit_check_level.gt.0)then
+         write(*,'(a)')'QUOTED        ['//trim(quoted_str)//']'     ! the original string
+         write(*,'(a)')'UNQUOTED      ['//unquoted_str//']'
+
+         if(ios.ne.0)then
+            write(*,*)trim(msg)
+         else
+            write(*,'(a)')'LIST DIRECTED ['//trim(dummy)//']'
+         endif
+      endif
+
+      call unit_check('unquote',unquoted_str.eq.dummy,msg='test string '//trim(quoted_str))
+
+   enddo
+   call unit_check_done('unquote')
+end subroutine test_unquote
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
@@ -5102,7 +6669,7 @@ end function unquote
 !===================================================================================================================================
 function describe(ch) result (string)
 
-character(len=*),parameter::ident="@(#)M_strings::describe(3f): return string describing long name of a single character"
+character(len=*),parameter::ident_48="@(#)M_strings::describe(3f): return string describing long name of a single character"
 
 character(len=1),intent(in)   :: ch
 character(len=:),allocatable  :: string
@@ -5241,6 +6808,46 @@ character(len=:),allocatable  :: string
          STRING='UNKNOWN'//v2s(ICHAR(ch))
    end select
 end function describe
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_describe
+!!use M_strings, only: describe
+implicit none
+integer,parameter             :: number_of_chars=128
+character(len=1)              :: char
+integer                       :: i
+!-----------------------------------------------------------------------------------------------------------------------------------
+! initialize database description of routine
+   call unit_check_start('describe',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
+      & ')
+
+! call all descriptions to exercise procedure
+if(unit_check_level.gt.0)then
+   do i=0,number_of_chars-1
+      write(*,*)i,char(i),' ',describe(char(i))
+   enddo
+endif
+
+! unit tests
+call unit_check('describe', describe(char( 23) ) .eq.  'ctrl-W (ETB) end of transmission block' , 'describe ctrl-W')
+call unit_check('describe', &
+   describe(char( 33) ) .eq.  '! exclamation point (screamer, gasper, slammer, startler, bang, shriek, pling)' , &
+   'describe exclamation point')
+call unit_check('describe', describe(char( 52) ) .eq.  '4 four'                                 , 'describe four')
+call unit_check('describe', describe(char( 63) ) .eq.  '? question mark'                        , 'describe question mark')
+call unit_check('describe', describe(char( 64) ) .eq.  '@ at sign'                              , 'describe at sign')
+call unit_check('describe', describe(char( 74) ) .eq.  'J majuscule J'                          , 'describe J')
+call unit_check('describe', describe(char( 117)) .eq.  'u miniscule u'                          , 'describe u')
+call unit_check('describe', describe(char( 126)) .eq.  '~ tilde'                                , 'describe tilde')
+call unit_check_done('describe')
+
+end subroutine test_describe
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -5253,7 +6860,7 @@ end function describe
 !!    subroutine getvals(line,values,icount,ierr)
 !!
 !!     character(len=*),intent(in)  :: line
-!!     class(*),intent(in)          :: values(:)
+!!     class(*),intent(out)         :: values(:)
 !!     integer,intent(out)          :: icount
 !!     integer,intent(out),optional :: ierr
 !!##DESCRIPTION
@@ -5281,14 +6888,16 @@ end function describe
 !!
 !!##OPTIONS
 !!
-!!   LINE      A character variable containing the characters represent a list
-!!             of numbers
+!!   LINE      A character variable containing the characters representing
+!!             a list of numbers
 !!
 !!##RETURNS
 !!
 !!   VALUES()  array holding numbers read from string. May be of type
-!!             INTEGER, REAL, DOUBLEPRECISION, or CHARACTER
-!!   ICOUNT    number of defined numbers in VALUES()
+!!             INTEGER, REAL, DOUBLEPRECISION, or CHARACTER. If CHARACTER the
+!!             strings are returned as simple words instead of numeric values.
+!!   ICOUNT    number of defined numbers in VALUES(). If ICOUNT reaches
+!!             the size of the VALUES() array parsing stops.
 !!   IERR      zero if no error occurred in reading numbers. Optional.
 !!             If not present and an error occurs the program is terminated.
 !!
@@ -5299,8 +6908,9 @@ end function describe
 !!       program demo_getvals
 !!       use M_strings, only: getvals
 !!       implicit none
-!!       character(len=256) :: line
-!!       real               :: values(256/2+1)
+!!       integer,parameter  :: longest_line=256
+!!       character(len=longest_line) :: line
+!!       real               :: values(longest_line/2+1)
 !!       integer            :: ios,icount,ierr
 !!       INFINITE: do
 !!          read(*,'(a)',iostat=ios) line
@@ -5340,13 +6950,12 @@ end function describe
 subroutine getvals(line,values,icount,ierr)
 implicit none
 
-character(len=*),parameter::ident="&
-&@(#)M_strings::getvals(3f): read arbitrary number of values from a character variable up to size of values"
+character(len=*),parameter::ident_49="@(#)M_strings::getvals(3f): read arbitrary number of values from a character variable"
 
 ! JSU 20170831
 
 character(len=*),intent(in)  :: line
-class(*),intent(in)          :: values(:)
+class(*),intent(out)         :: values(:)
 integer,intent(out)          :: icount
 integer,intent(out),optional :: ierr
 
@@ -5393,6 +7002,38 @@ integer,intent(out),optional :: ierr
    endif
 
 end subroutine getvals
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_getvals()
+integer,parameter  :: longest_line=256
+real               :: rvalues(longest_line/2+1)
+integer            :: ivalues(longest_line/2+1)
+doubleprecision    :: dvalues(longest_line/2+1)
+integer            :: icount,ierr
+   call unit_check_start('getvals',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+
+   call getvals('11,,,22,33,-44, 55 , ,66  ',ivalues,icount,ierr)
+   call unit_check('getvals',all(ivalues(:icount).eq.[11,22,33,-44,55,66]),msg='integer test')
+
+   call getvals('1234.56 3.3333, 5.5555',rvalues,icount,ierr)
+   call unit_check('getvals',all(rvalues(:icount).eq.[1234.56,3.3333,5.5555]),msg='real test')
+
+   call getvals('1234.56d0 3.3333d0, 5.5555d0',dvalues,icount,ierr)
+   if(unit_check_level.gt.0)then
+      write(*,*)dvalues(:icount)
+      write(*,*)[1234.56d0,3.3333d0,5.5555d0]
+   endif
+   call unit_check('getvals',all(dvalues(:icount).eq.[1234.56d0,3.3333d0,5.5555d0]),msg='double test')
+
+   call unit_check_done('getvals')
+end subroutine test_getvals
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -5479,7 +7120,7 @@ implicit none
 !   Quits if encounters any errors in read.
 !----------------------------------------------------------------------------------------------------------------------------------
 
-character(len=*),parameter::ident="@(#)M_strings::string_to_values(3f): reads an array of numbers from a numeric string"
+character(len=*),parameter::ident_50="@(#)M_strings::string_to_values(3f): reads an array of numbers from a numeric string"
 
 character(len=*),intent(in)  :: line          ! input string
 integer,intent(in)           :: iread         ! maximum number of values to try to read into values
@@ -5555,6 +7196,19 @@ integer,intent(out)          :: ierr          ! 0 if no error, else column numbe
       enddo LOOP
 !     error >>>>> more than iread numbers were in the line.
 end subroutine string_to_values
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_string_to_values()
+   call unit_check_start('string_to_values',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   call unit_check_done('string_to_values',msg='UNTESTED')
+end subroutine test_string_to_values
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -5618,7 +7272,7 @@ end subroutine string_to_values
 !===================================================================================================================================
 function s2vs(string,delim) result(darray)
 
-character(len=*),parameter::ident="@(#)M_strings::s2vs(3f): function returns array of values from a string"
+character(len=*),parameter::ident_51="@(#)M_strings::s2vs(3f): function returns array of values from a string"
 
 character(len=*),intent(in)        :: string                       ! keyword to retrieve value for from dictionary
 character(len=*),optional          :: delim                        ! delimiter characters
@@ -5642,12 +7296,34 @@ doubleprecision,allocatable        :: darray(:)                    ! function ty
    enddo
 !-----------------------------------------------------------------------------------------------------------------------------------
 end function s2vs
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_s2vs()
+character(len=80)           :: s=' 10 20e3;3.45 -400.3e-2;1234; 5678 '
+doubleprecision,allocatable :: values(:)
+integer,allocatable         :: ivalues(:)
+   call unit_check_start('s2vs',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+
+   values=s2vs(s)
+   ivalues=int(s2vs(s))
+   call unit_check('s2vs',size(values).eq.6, msg='number of values')
+   call unit_check('s2vs',all(ivalues.eq.[10, 20000, 3, -4,1234,5678]))
+   call unit_check_done('s2vs')
+end subroutine test_s2vs
+
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 elemental function isprint(onechar)
 
-character(len=*),parameter::ident="@(#)M_strings::isprint(3f): indicates if input character is a printable ASCII character"
+character(len=*),parameter::ident_52="@(#)M_strings::isprint(3f): indicates if input character is a printable ASCII character"
 
 character,intent(in) :: onechar
 logical              :: isprint
@@ -5656,12 +7332,140 @@ logical              :: isprint
       case default     ; isprint=.FALSE.
    end select
 end function isprint
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_isprint
+!!use M_strings, only: isprint
+implicit none
+integer :: i
+   call unit_check_start('isprint',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   do i=1,255
+      SELECT CASE (i)
+      CASE (32:126)
+         if (isprint(char(i)) .eqv. .false.)then
+            write(*,*)'   ',i,isprint(char(i))
+            call unit_check_bad('isprint')
+            stop 2
+         endif
+      CASE DEFAULT
+         if (isprint(char(i)) .eqv. .true.)then
+            write(*,*)'   ',i,isprint(char(i))
+            call unit_check_bad('isprint')
+            stop 3
+         endif
+      END SELECT
+   enddo
+call unit_check_good('isprint')
+end subroutine test_isprint
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+!>
+!!##NAME
+!!    msg(3f) - [M_strings] converts any standard scalar type to a string
+!!##SYNOPSIS
+!!
+!!    function msg(g1,g2g3,g4,g5,g6,g7,g8,g9)
+!!
+!!     class(*),intent(in),optional :: g1,g2,g3,g4,g5,g6,g7,g8,g9
+!!     character,len=(:),allocatable :: msg
+!!
+!!##DESCRIPTION
+!!    msg(3f) builds a space-seperated string from up to nine scalar values.
+!!
+!!##OPTIONS
+!!    g[1-9]  optional value to print the value of after the message. May
+!!            be of type INTEGER, LOGICAL, REAL, DOUBLEPRECISION, COMPLEX,
+!!            or CHARACTER.
+!!##RETURNS
+!!    msg     description to print
+!!
+!!##EXAMPLES
+!!
+!!   Sample program:
+!!
+!!    program demo_msg
+!!    use M_debug, only : msg
+!!    implicit none
+!!    character(len=:),allocatable :: pr
+!!
+!!    pr=msg('HUGE(3f) integers',huge(0),'and real',huge(0.0),'and double',huge(0.0d0))
+!!    write(*,'(a)')pr
+!!    pr=msg('real            :',huge(0.0),0.0,12345.6789,tiny(0.0) )
+!!    write(*,'(a)')pr
+!!    pr=msg('doubleprecision :',huge(0.0d0),0.0d0,12345.6789d0,tiny(0.0d0) )
+!!    write(*,'(a)')pr
+!!    pr=msg('complex         :',cmplx(huge(0.0),tiny(0.0)) )
+!!    write(*,'(a)')pr
+!!
+!!    ! although it will often work, using msg(3f) in an I/O statement is not recommended
+!!    write(*,*)msg('program will now stop')
+!!
+!!    end program demo_msg
+!===================================================================================================================================
+function msg(generic1, generic2, generic3, generic4, generic5, generic6, generic7, generic8, generic9)
+implicit none
+
+character(len=*),parameter::ident_53="@(#)M_debug::msg(3f): writes a message to a string composed of any standard scalar types"
+
+class(*),intent(in),optional  :: generic1 ,generic2 ,generic3 ,generic4 ,generic5
+class(*),intent(in),optional  :: generic6 ,generic7 ,generic8 ,generic9
+character(len=:), allocatable :: msg
+   character(len=4096)        :: line
+   integer                    :: ios
+   integer                    :: istart
+
+   istart=1
+   if(present(generic1))call print_generic(generic1)
+   if(present(generic2))call print_generic(generic2)
+   if(present(generic3))call print_generic(generic3)
+   if(present(generic4))call print_generic(generic4)
+   if(present(generic5))call print_generic(generic5)
+   if(present(generic6))call print_generic(generic6)
+   if(present(generic7))call print_generic(generic7)
+   if(present(generic8))call print_generic(generic8)
+   if(present(generic9))call print_generic(generic9)
+   msg=trim(line)
+contains
+!===================================================================================================================================
+subroutine print_generic(generic)
+!use, intrinsic :: iso_fortran_env, only : int8, int16, int32, biggest=>int64, real32, real64, dp=>real128
+use,intrinsic :: iso_fortran_env, only : int8, int16, int32, int64, real32, real64, real128
+class(*),intent(in),optional :: generic
+   select type(generic)
+      type is (integer(kind=int8));     write(line(istart:),'(i0)') generic
+      type is (integer(kind=int16));    write(line(istart:),'(i0)') generic
+      type is (integer(kind=int32));    write(line(istart:),'(i0)') generic
+      type is (integer(kind=int64));    write(line(istart:),'(i0)') generic
+      !type is (integer(kind=int128));   write(line(istart:),'(i0)') generic
+      type is (real(kind=real32));      write(line(istart:),'(1pg0)') generic
+      type is (real(kind=real64));      write(line(istart:),'(1pg0)') generic
+      type is (real(kind=real128));     write(line(istart:),'(1pg0)') generic
+      !type is (real(kind=real256));     write(line(istart:),'(1pg0)') generic
+      !type is (real);                   write(line(istart:),'(1pg0)') generic
+      !type is (doubleprecision);        write(line(istart:),'(1pg0)') generic
+      type is (logical);                write(line(istart:),'(1l)') generic
+      type is (character(len=*));       write(line(istart:),'(a)') generic
+      type is (complex);                write(line(istart:),'("("1pg0,",",1pg0,")")') generic
+   end select
+   istart=len_trim(line)+2
+end subroutine print_generic
+!===================================================================================================================================
+end function msg
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 elemental function isgraph(onechar)
 
-character(len=*),parameter::ident="@(#)M_strings::isgraph(3f) :indicates if character is printable ASCII character excluding space"
+character(len=*),parameter::ident_54="&
+&@(#)M_strings::isgraph(3f) :indicates if character is printable ASCII character excluding space"
 
 character,intent(in) :: onechar
 logical              :: isgraph
@@ -5672,12 +7476,44 @@ logical              :: isgraph
      isgraph=.FALSE.
    end select
 end function isgraph
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_isgraph
+!!use M_strings, only: isgraph
+implicit none
+integer :: i
+   call unit_check_start('isgraph',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   do i=1,255
+      SELECT CASE (i)
+      CASE (33:126)
+         if (isgraph(char(i)) .eqv. .false.)then
+            write(*,*)'   ',i,isgraph(char(i))
+            call unit_check_bad('isgraph')
+            stop 2
+         endif
+      CASE DEFAULT
+         if (isgraph(char(i)) .eqv. .true.)then
+            write(*,*)'   ',i,isgraph(char(i))
+            call unit_check_bad('isgraph')
+            stop 3
+         endif
+      END SELECT
+   enddo
+   call unit_check_good('isgraph')
+end subroutine test_isgraph
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 elemental function isalpha(ch) result(res)
 
-character(len=*),parameter::ident="@(#)M_strings::isalpha(3f): Return .true. if character is a letter and .false. otherwise"
+character(len=*),parameter::ident_55="@(#)M_strings::isalpha(3f): Return .true. if character is a letter and .false. otherwise"
 
 character,intent(in) :: ch
 logical              :: res
@@ -5688,12 +7524,47 @@ logical              :: res
      res=.false.
    end select
 end function isalpha
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_isalpha
+!!use M_strings, only: isalpha
+implicit none
+integer,parameter             :: number_of_chars=128
+character(len=1)              :: ch
+integer                       :: i
+   call unit_check_start('isalpha',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   do i=0,number_of_chars-1
+      ch=char(i)
+      SELECT CASE (ch)
+      CASE ('a':'z','A':'Z')
+         if (isalpha(ch) .eqv. .false.)then
+            write(*,*)'isalpha: failed on character ',i,isalpha(ch)
+            call unit_check_bad('isalpha')
+            stop 1
+         endif
+      CASE DEFAULT
+         if (isalpha(ch) .eqv. .true.)then
+            write(*,*)'isalpha: failed on character ',i,isalpha(ch)
+            call unit_check_bad('isalpha')
+            stop 2
+         endif
+      END SELECT
+   enddo
+   call unit_check_good('isalpha')
+end subroutine test_isalpha
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 elemental function isxdigit(ch) result(res)
 
-character(len=*),parameter::ident="@(#)M_strings::isxdigit(3f): returns .true. if c is a hexadecimal digit (0-9,a-f, or A-F)"
+character(len=*),parameter::ident_56="@(#)M_strings::isxdigit(3f): returns .true. if c is a hexadecimal digit (0-9,a-f, or A-F)"
 
 character,intent(in) :: ch
 logical              :: res
@@ -5704,12 +7575,48 @@ logical              :: res
      res=.false.
    end select
 end function isxdigit
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_isxdigit
+!!use M_strings, only: isxdigit
+implicit none
+integer,parameter             :: number_of_chars=128
+character(len=1)              :: ch
+integer                       :: i
+!-----------------------------------------------------------------------------------------------------------------------------------
+   call unit_check_start('isxdigit',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   do i=0,number_of_chars-1
+      ch=char(i)
+      SELECT CASE (ch)
+      CASE ('a':'f','A':'F','0':'9')
+         if (isxdigit(char(i)) .eqv. .false.)then
+            write(*,*)'isxdigit: failed on character ',i,isxdigit(char(i))
+            call unit_check_bad('isxdigit')
+            stop 1
+         endif
+      CASE DEFAULT
+         if (isxdigit(char(i)) .eqv. .true.)then
+            write(*,*)'isxdigit: failed on character ',i,isxdigit(char(i))
+            call unit_check_bad('isxdigit')
+            stop 2
+         endif
+      END SELECT
+   enddo
+   call unit_check_good('isxdigit')
+end subroutine test_isxdigit
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 elemental function isdigit(ch) result(res)
 
-character(len=*),parameter::ident="@(#)M_strings::isdigit(3f): Returns .true. if ch is a digit (0-9) and .false. otherwise"
+character(len=*),parameter::ident_57="@(#)M_strings::isdigit(3f): Returns .true. if ch is a digit (0-9) and .false. otherwise"
 
 character,intent(in) :: ch
 logical              :: res
@@ -5720,12 +7627,46 @@ logical              :: res
      res=.false.
    end select
 end function isdigit
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_isdigit
+!!use M_strings, only: isdigit
+implicit none
+integer,parameter             :: number_of_chars=128
+character(len=1)              :: char
+integer                       :: i
+   call unit_check_start('isdigit',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   do i=0,number_of_chars-1
+      SELECT CASE (i)
+      CASE (48:57)
+         if (isdigit(char(i)) .eqv. .false.)then
+            write(*,*)'isdigit: failed on character ',i,isdigit(char(i))
+            call unit_check_bad('isdigit')
+            stop 1
+         endif
+      CASE DEFAULT
+         if (isdigit(char(i)) .eqv. .true.)then
+            write(*,*)'isdigit: failed on character ',i,isdigit(char(i))
+            call unit_check_bad('isdigit')
+            stop 2
+         endif
+      END SELECT
+   enddo
+   call unit_check_good('isdigit')
+end subroutine test_isdigit
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 elemental function isblank(ch) result(res)
 
-character(len=*),parameter::ident="@(#)M_strings::isblank(3f): returns .true. if character is a blank (space or horizontal tab)"
+character(len=*),parameter::ident_58="@(#)M_strings::isblank(3f): returns .true. if character is a blank (space or horizontal tab)"
 
 character,intent(in) :: ch
 logical              :: res
@@ -5736,12 +7677,46 @@ logical              :: res
      res=.false.
    end select
 end function isblank
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_isblank
+!!use M_strings, only: isblank
+implicit none
+integer,parameter             :: number_of_chars=128
+character(len=1)              :: char
+integer                       :: i
+   call unit_check_start('isblank',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   do i=0,number_of_chars-1
+      select case (i)
+      case (9,32)
+         if (isblank(char(i)) .eqv. .false.)then
+            write(*,*)'isblank: failed on character ',i,isblank(char(i))
+            call unit_check_bad('isblank')
+            stop 1
+         endif
+      case default
+         if (isblank(char(i)) .eqv. .true.)then
+            write(*,*)'isblank: failed on character ',i,isblank(char(i))
+            call unit_check_bad('isblank')
+            stop 2
+         endif
+      end select
+   enddo
+   call unit_check_good('isblank')
+end subroutine test_isblank
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 elemental function isascii(ch) result(res)
 
-character(len=*),parameter::ident="@(#)M_strings::isascii(3f): returns .true. if character is in the range char(0) to char(127)"
+character(len=*),parameter::ident_59="@(#)M_strings::isascii(3f): returns .true. if character is in the range char(0) to char(127)"
 
 character,intent(in) :: ch
 logical              :: res
@@ -5752,12 +7727,46 @@ logical              :: res
      res=.false.
    end select
 end function isascii
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_isascii
+!!use M_strings, only: isascii
+implicit none
+integer,parameter             :: number_of_chars=128
+character(len=1)              :: char
+integer                       :: i
+   call unit_check_start('isascii',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   do i=0,number_of_chars-1
+      SELECT CASE (i)
+      CASE (0:127)
+         if (isascii(char(i)) .eqv. .false.)then
+            write(*,*)'isascii: failed on character ',i,isascii(char(i))
+            call unit_check_bad('isascii')
+            stop 1
+         endif
+      CASE DEFAULT
+         if (isascii(char(i)) .eqv. .true.)then
+            write(*,*)'isascii: failed on character ',i,isascii(char(i))
+            call unit_check_bad('isascii')
+            stop 2
+         endif
+      END SELECT
+   enddo
+   call unit_check_good('isascii')
+end subroutine test_isascii
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 elemental function isspace(ch) result(res)
 
-character(len=*),parameter::ident="@(#)M_strings::isspace(3f): true if null,space,tab,return,new line,vertical tab, or formfeed"
+character(len=*),parameter::ident_60="@(#)M_strings::isspace(3f): true if null,space,tab,return,new line,vertical tab, or formfeed"
 
 character,intent(in) :: ch
 logical              :: res
@@ -5772,12 +7781,47 @@ logical              :: res
      res=.false.
    end select
 end function isspace
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_isspace
+!!use M_strings, only: isspace
+implicit none
+integer,parameter             :: number_of_chars=128
+character(len=1)              :: char
+integer                       :: i
+!-----------------------------------------------------------------------------------------------------------------------------------
+   call unit_check_start('isspace',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   do i=0,number_of_chars-1
+      SELECT CASE (i)
+      CASE (0,9:13,32)
+         if (isspace(char(i)) .eqv. .false.)then
+            write(*,*)'isspace: failed on character ',i,isspace(char(i))
+            call unit_check_bad('isspace')
+            stop 1
+         endif
+      CASE DEFAULT
+         if (isspace(char(i)) .eqv. .true.)then
+            write(*,*)'isspace: failed on character ',i,isspace(char(i))
+            call unit_check_bad('isspace')
+            stop 2
+         endif
+      END SELECT
+   enddo
+   call unit_check_good('isspace')
+end subroutine test_isspace
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 elemental function iscntrl(ch) result(res)
 
-character(len=*),parameter::ident="@(#)M_strings::iscntrl(3f): true if a delete or ordinary control character(0x7F or 0x00-0x1F)"
+character(len=*),parameter::ident_61="@(#)M_strings::iscntrl(3f): true if a delete or ordinary control character(0x7F or 0x00-0x1F)"
 
 character,intent(in) :: ch
 logical              :: res
@@ -5788,12 +7832,47 @@ logical              :: res
      res=.false.
    end select
 end function iscntrl
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_iscntrl
+!!use M_strings, only: iscntrl
+implicit none
+integer,parameter             :: number_of_chars=128
+character(len=1)              :: char
+integer                       :: i
+!-----------------------------------------------------------------------------------------------------------------------------------
+   call unit_check_start('iscntrl',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   do i=0,number_of_chars-1
+      SELECT CASE (i)
+      CASE (0:31,127)
+         if (iscntrl(char(i)) .eqv. .false.)then
+            write(*,*)'iscntrl: failed on character ',i,iscntrl(char(i))
+            call unit_check_bad('iscntrl')
+            stop 1
+         endif
+      CASE DEFAULT
+         if (iscntrl(char(i)) .eqv. .true.)then
+            write(*,*)'iscntrl: failed on character ',i,iscntrl(char(i))
+            call unit_check_bad('iscntrl')
+            stop 2
+         endif
+      END SELECT
+   enddo
+   call unit_check_good('iscntrl')
+end subroutine test_iscntrl
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 elemental function ispunct(ch) result(res)
 
-character(len=*),parameter::ident="@(#)M_strings::ispunct(3f): true if a printable punctuation character (isgraph(c)&&"
+character(len=*),parameter::ident_62="@(#)M_strings::ispunct(3f): true if a printable punctuation character (isgraph(c)&&"
 
 character,intent(in) :: ch
 logical              :: res
@@ -5808,12 +7887,47 @@ logical              :: res
      res=.false.
    end select
 end function ispunct
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_ispunct
+!!use M_strings, only: ispunct
+implicit none
+integer,parameter             :: number_of_chars=128
+character(len=1)              :: char
+integer                       :: i
+!-----------------------------------------------------------------------------------------------------------------------------------
+   call unit_check_start('ispunct',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   do i=0,number_of_chars-1
+      SELECT CASE (i)
+      CASE (33:47, 58:64, 91:96, 123:126)
+         if (ispunct(char(i)) .eqv. .false.)then
+            write(*,*)'ispunct: failed on character ',i,ispunct(char(i))
+            call unit_check_bad('ispunct')
+            stop 1
+         endif
+      CASE DEFAULT
+         if (ispunct(char(i)) .eqv. .true.)then
+            write(*,*)'ispunct: failed on character ',i,ispunct(char(i))
+            call unit_check_bad('ispunct')
+            stop 2
+         endif
+      END SELECT
+   enddo
+   call unit_check_good('ispunct')
+end subroutine test_ispunct
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 pure elemental function isupper(ch) result(res)
 
-character(len=*),parameter::ident="@(#)M_strings::isupper(3f): returns true if character is an uppercase letter (A-Z)"
+character(len=*),parameter::ident_63="@(#)M_strings::isupper(3f): returns true if character is an uppercase letter (A-Z)"
 
 character,intent(in) :: ch
 logical              :: res
@@ -5824,12 +7938,48 @@ logical              :: res
      res=.false.
    end select
 end function isupper
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_isupper
+!!use M_strings, only: isupper
+implicit none
+integer,parameter             :: number_of_chars=128
+character(len=1)              :: ch
+integer                       :: i
+!-----------------------------------------------------------------------------------------------------------------------------------
+   call unit_check_start('isupper',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   do i=0,number_of_chars-1
+      ch=char(i)
+      SELECT CASE (ch)
+      CASE ('A':'Z')
+         if (isupper(ch) .eqv. .false.)then
+            write(*,*)'isupper: failed on character ',i,isupper(ch)
+            call unit_check_bad('isupper')
+            stop 1
+         endif
+      CASE DEFAULT
+         if (isupper(ch) .eqv. .true.)then
+            write(*,*)'isupper: failed on character ',i,isupper(ch)
+            call unit_check_bad('isupper')
+            stop 2
+         endif
+      END SELECT
+   enddo
+   call unit_check_good('isupper')
+end subroutine test_isupper
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 elemental function islower(ch) result(res)
 
-character(len=*),parameter::ident="@(#)M_strings::islower(3f): returns true if character is a miniscule letter (a-z)"
+character(len=*),parameter::ident_64="@(#)M_strings::islower(3f): returns true if character is a miniscule letter (a-z)"
 
 character,intent(in) :: ch
 logical              :: res
@@ -5840,6 +7990,42 @@ logical              :: res
      res=.false.
    end select
 end function islower
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_islower
+!!use M_strings, only: islower
+implicit none
+integer,parameter             :: number_of_chars=128
+character(len=1)              :: ch
+integer                       :: i
+!-----------------------------------------------------------------------------------------------------------------------------------
+   call unit_check_start('islower',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   do i=0,number_of_chars-1
+      ch=char(i)
+      SELECT CASE (ch)
+      CASE ('a':'z')
+         if (islower(ch) .eqv. .false.)then
+            write(*,*)'islower: failed on character ',i,islower(ch)
+            call unit_check_bad('islower')
+            stop 1
+         endif
+      CASE DEFAULT
+         if (islower(ch) .eqv. .true.)then
+            write(*,*)'islower: failed on character ',i,islower(ch)
+            call unit_check_bad('islower')
+            stop 2
+         endif
+      END SELECT
+   enddo
+   call unit_check_good('islower')
+end subroutine test_islower
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -5906,7 +8092,7 @@ end function islower
 !===================================================================================================================================
 elemental function isalnum(ch) result(res)
 
-character(len=*),parameter::ident="@(#)M_strings::isalnum(3f): returns true if character is a letter (a-z,A-Z) or digit(0-9)"
+character(len=*),parameter::ident_65="@(#)M_strings::isalnum(3f): returns true if character is a letter (a-z,A-Z) or digit(0-9)"
 
 character,intent(in)       :: ch
 logical                    :: res
@@ -5917,12 +8103,47 @@ logical                    :: res
      res=.false.
    end select
 end function isalnum
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_isalnum
+!!use M_strings, only: isalnum
+implicit none
+integer,parameter             :: number_of_chars=128
+character(len=1)              :: ch
+integer                       :: i
+!-----------------------------------------------------------------------------------------------------------------------------------
+   call unit_check_start('isalnum',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   do i=0,number_of_chars-1
+      ch=char(i)
+      SELECT CASE (ch)
+      CASE ('a':'z','A':'Z','0':'9')
+         if (isalnum(char(i)) .eqv. .false.)then
+            write(*,*)'isalnum: failed on character ',i,isalnum(char(i))
+            call unit_check_bad('isalnum')
+            stop 1
+         endif
+      CASE DEFAULT
+         if (isalnum(char(i)) .eqv. .true.)then
+            write(*,*)'isalnum: failed on character ',i,isalnum(char(i))
+            call unit_check_bad('isalnum')
+            stop 2
+         endif
+      END SELECT
+   enddo
+   call unit_check_good('isalnum')
+end subroutine test_isalnum
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
 !!##NAME
-!!
 !!    base(3f) - [M_strings:BASE] convert whole number string in base [2-36] to string in alternate base [2-36]
 !!
 !!##SYNOPSIS
@@ -5934,11 +8155,17 @@ end function isalnum
 !!    integer,intent(in)           :: b,a
 !!##DESCRIPTION
 !!
-!!    Convert a numeric string from base b1 to base b2. The function returns
-!!    FALSE if b not in [2..36] or if string x contains invalid
-!!    characters in base b or if result y is too big
+!!    Convert a numeric string from base B to base A. The function returns
+!!    FALSE if B is not in the range [2..36] or if string X contains invalid
+!!    characters in base B or if result Y is too big
 !!
 !!    The letters A,B,...,Z represent 10,11,...,36 in the base > 10.
+!!
+!!##OPTIONS
+!!    x   input string representing numeric whole value
+!!    b   assumed base of input string
+!!    y   output string
+!!    a   base specified for output string
 !!
 !!##EXAMPLE
 !!
@@ -5972,7 +8199,7 @@ character(len=*),intent(out) :: y
 integer,intent(in)           :: b,a
 integer                      :: temp
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_66="&
 &@(#)M_strings::base(3f): convert whole number string in base [2-36] to string in alternate base [2-36]"
 
 base=.true.
@@ -5988,6 +8215,69 @@ else
 endif
 
 end function base
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_base()
+   character(len=:),allocatable :: in(:)
+   character(len=:),allocatable :: expected(:)
+   call unit_check_start('base',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+
+   ! convert base2 values to base10 in brief mode
+   in=[character(len=32) :: '10','1010','101010','10101010','1010101010','101010101010']
+   expected=[character(len=10) :: '2','10','42','170','682','2730']
+   call checkit(in,expected,2,10)
+
+   ! convert base10 values to base2
+   in=[character(len=10) :: '2','10','42','170','682','2730']
+   expected=[ character(len=32) :: '10', '1010', '101010', '10101010', '1010101010', '101010101010']
+   call checkit(in,expected,10,2)
+
+   ! convert base10 values to base3
+   in=[character(len=7) :: '10','20','30','40','50']
+   expected = [character(len=10) :: '101', '202', '1010', '1111', '1212']
+   call checkit(in,expected,10,3)
+
+   ! convert values of various explicit bases to base10
+   call checkit(['11'],['3'],2,10)
+   call checkit(['1212'],['50'],3,10)
+   call checkit(['123123'],['1755'],4,10)
+
+! convert values of various explicit bases to base2 in brief mode
+   call checkit(['1111'],['1111'],2,2)
+   call checkit(['10'],['11'],3,2)
+   call checkit(['10'],['100'],4,2)
+   call checkit(['10'],['1000'],8,2)
+   call checkit(['10'],['10000'],16,2)
+
+   call unit_check_done('base')
+contains
+subroutine checkit(in,answers,inbase,outbase)
+character(len=*),intent(in)  :: in(:)
+character(len=*),intent(in)  :: answers(:)
+integer,intent(in)           :: inbase
+integer,intent(in)           :: outbase
+character(len=256)           :: answer
+integer                      :: i
+   do i=1,size(in)
+      if(base(in(i),inbase,answer,outbase))then
+           call unit_check('base',answer.eq.answers(i), &
+              'converting '//trim(in(i))//' got '//trim(answers(i))//' expected '//trim(answer) )
+       else
+          call unit_check_bad('base',msg='Error in decoding/encoding number.')
+       endif
+   enddo
+end subroutine checkit
+end subroutine test_base
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
 !>
 !!##NAME
 !!
@@ -5997,14 +8287,14 @@ end function base
 !!
 !!   logical function decodebase(x,b,y)
 !!
-!!    character(len=*),intent(in)  :: x
-!!    integer,intent(in)           :: b
-!!    integer,intent(out)          :: y
+!!    character(len=*),intent(in)  :: string
+!!    integer,intent(in)           :: base
+!!    integer,intent(out)          :: value
 !!##DESCRIPTION
 !!
-!!    Convert a numeric string from base b to base 10. The function returns
-!!    FALSE if b not in [2..36] or if string x contains invalid
-!!    characters in base b or if result y is too big
+!!    Convert a numeric string from base BASE to base 10. The function returns
+!!    FALSE if BASE is not in the range [2..36] or if string STRING  contains invalid
+!!    characters in base BASE or if result VALUE is too big
 !!
 !!    The letters A,B,...,Z represent 10,11,...,36 in the base > 10.
 !!
@@ -6013,6 +8303,10 @@ end function base
 !!              Eyrolles, Paris, 1988".
 !!
 !!    based on a F90 Version By J-P Moreau (www.jpmoreau.fr)
+!!##OPTIONS
+!!    x   input string
+!!    b   base of input string
+!!    y   output value in base10
 !!
 !!##EXAMPLE
 !!
@@ -6048,7 +8342,7 @@ end function base
 logical function decodebase(string,basein,out10)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_strings::decodebase(3f): convert whole number string in base [2-36] to base 10 number"
+character(len=*),parameter::ident_67="@(#)M_strings::decodebase(3f): convert whole number string in base [2-36] to base 10 number"
 
 character(len=*),intent(in)  :: string
 integer,intent(in)           :: basein
@@ -6102,6 +8396,53 @@ integer           :: basein_local
      out10=nint(out_sign*y)*sign(1,basein)
   endif ALL
 end function decodebase
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_decodebase()
+   character(len=:),allocatable :: in(:)
+   integer,allocatable          :: expected(:)
+   call unit_check_start('decodebase',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+
+   ! convert base2 values to base10 in brief mode
+   in=[character(len=32) :: '10','1010','101010','10101010','1010101010','101010101010']
+   expected=[2,10,42,170,682,2730]
+   call checkit(in,expected,2)
+
+   ! convert values of various explicit bases to base10
+   call checkit(['11'],[3],2)
+   call checkit(['1212'],[50],3)
+   call checkit(['123123'],[1755],4)
+   call checkit(['10'],[16],16)
+   call checkit(['10'],[8],8)
+
+   call unit_check_done('decodebase')
+contains
+subroutine checkit(in,answers,inbase)
+character(len=*),intent(in)  :: in(:)
+integer,intent(in)           :: answers(:)
+integer,intent(in)           :: inbase
+integer                      :: answer
+integer                      :: i
+   do i=1,size(in)
+      if(decodebase(in(i),inbase,answer))then
+           call unit_check('decodebase',answer.eq.answers(i), &
+              'converting '//trim(in(i)) )
+       else
+          call unit_check_bad('decodebase',msg='Error in decoding/encoding number.')
+       endif
+   enddo
+end subroutine checkit
+end subroutine test_decodebase
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
 !>
 !!##NAME
 !!
@@ -6149,7 +8490,7 @@ end function decodebase
 logical function codebase(inval10,outbase,answer)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_strings::codebase(3f): convert whole number in base 10 to string in base [2-36]"
+character(len=*),parameter::ident_68="@(#)M_strings::codebase(3f): convert whole number in base 10 to string in base [2-36]"
 
 integer,intent(in)           :: inval10
 integer,intent(in)           :: outbase
@@ -6184,6 +8525,208 @@ integer                      :: in_sign
      answer='0'
   endif
 end function codebase
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_codebase()
+character(len=:),allocatable :: in(:)
+integer,allocatable          :: expected(:)
+   call unit_check_start('codebase',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+
+   ! convert base10 values to base2 strings
+   in=[character(len=32) :: '10','1010','101010','10101010','1010101010','101010101010']
+   expected=[2,10,42,170,682,2730]
+   call checkit(in,expected,2)
+
+   ! convert values to various explicit bases
+   call checkit(['11'],[3],2)
+   call checkit(['1212'],[50],3)
+   call checkit(['123123'],[1755],4)
+   call checkit(['10'],[16],16)
+   call checkit(['10'],[8],8)
+
+   call unit_check_done('codebase')
+contains
+subroutine checkit(answer,values,outbase)
+character(len=*),intent(in)  :: answer(:)
+integer,intent(in)           :: values(:)
+integer,intent(in)           :: outbase
+character(len=32)            :: out
+integer                      :: i
+   do i=1,size(answer)
+      if(codebase(values(i),outbase,out) )then
+           call unit_check('codebase',out.eq.answer(i), &
+              'checking for '//trim(answer(i))//' in base '//v2s(outbase)//' from value '//v2s(values(i)) )
+       else
+          call unit_check_bad('codebase',msg='Error answer decoding/encoding number.')
+       endif
+   enddo
+end subroutine checkit
+end subroutine test_codebase
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+subroutine test_m_strings
+!!use M_strings, only: reverse
+!!use M_strings, only: lower
+!!use M_strings, only: switch
+!!use M_strings, only: isgraph,isprint
+implicit none
+character(len=36),parameter :: lc='abcdefghijklmnopqrstuvwxyz0123456789'
+character(len=36),parameter :: uc='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+character(len=1)            :: chars(36)
+integer :: i
+call unit_check_start('combined')
+!-----------------------------------------------------------------------------------------------------------------------------------
+! COMBINED TESTS
+chars=switch(uc)     ! convert string to character array
+chars=chars(36:1:-1) ! reverse order of characters
+call unit_check('combined',lower(reverse(switch(chars))).eq.lc,msg='combined lower(),reverse(),switch()')
+!-----------------------------------------------------------------------------------------------------------------------------------
+if(unit_check_level.gt.0)then
+   write(*,*)'isprint'
+   write(*,*)'   letter a      ',isprint('a')
+   write(*,*)'   horizontal tab',isprint(char(9))
+   write(*,*)'   array of letters;.',isprint([';','.',' '])
+   write(*,*)'   array of letters',isprint(switch(uc))
+   write(*,*)'   array of letters',isprint(uc)
+endif
+!-----------------------------------------------------------------------------------------------------------------------------------
+if(unit_check_level.gt.0)then
+   write(*,*)'isgraph'
+   write(*,*)'   letter a      ',isgraph('a')
+   write(*,*)'   horizontal tab',isgraph(char(9))
+   write(*,*)'   array of letters;.',isgraph([';','.',' '])
+   write(*,*)'   array of letters',isgraph(switch(uc))
+   write(*,*)'   array of letters',isgraph(uc)
+endif
+!-----------------------------------------------------------------------------------------------------------------------------------
+call unit_check_done('combined')
+end subroutine test_m_strings
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_int()
+   call unit_check_start('int',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   call unit_check('int',int('1234').eq.1234,msg='test string to integer for overloaded INT()')
+   call unit_check_done('int',msg=' overload of INT()')
+end subroutine test_int
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_real()
+   call unit_check_start('real',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   call unit_check('real', real('3.0d0').eq.3.0d0,msg='test string to real for overloaded REAL()')
+   call unit_check_done('real',msg='overload of REAL(3f)')
+end subroutine test_real
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_dble()
+   call unit_check_start('dble',' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      &  -ufpp         y &
+      &  -ccall        n &
+      &  -archive      GPF.a &
+      & ')
+   call unit_check('dble', dble('3.0d0').eq.3.0d0,msg='test string to double for overloaded DBLE()')
+   call unit_check_done('dble',msg='overload of DBLE(3f)')
+end subroutine test_dble
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+subroutine test_suite_m_strings()
+   call test_adjustc()
+   call test_atleast()
+   call test_base()
+   call test_c2s()
+   call test_change()
+   call test_chomp()
+   call test_codebase()
+   call test_compact()
+   call test_crop()
+   call test_decodebase()
+   call test_delim()
+   call test_describe()
+   call test_expand()
+   call test_getvals()
+   call test_indent()
+   call test_isalnum()
+   call test_isalpha()
+   call test_isascii()
+   call test_isblank()
+   call test_iscntrl()
+   call test_isdigit()
+   call test_isgraph()
+   call test_islower()
+   call test_isnumber()
+   call test_isprint()
+   call test_ispunct()
+   call test_isspace()
+   call test_isupper()
+   call test_isxdigit()
+   call test_join()
+   call test_len_white()
+   call test_lenset()
+   call test_listout()
+   call test_lower()
+   call test_matchw()
+   call test_merge_str()
+   call test_modif()
+   call test_noesc()
+   call test_nospace()
+   call test_notabs()
+   call test_replace()
+   call test_reverse()
+   call test_s2c()
+   call test_s2v()
+   call test_s2vs()
+   call test_split()
+   call test_string_to_value()
+   call test_string_to_values()
+   call test_strtok()
+   call test_substitute()
+   call test_switch()
+   call test_transliterate()
+   call test_unquote()
+   call test_upper()
+   call test_v2s()
+   call test_v2s_bug()
+   call test_value_to_string()
+   call test_visible()
+   call test_m_strings()
+   call test_dble()
+   call test_int()
+   call test_real()
+end subroutine test_suite_m_strings
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
@@ -6215,7 +8758,7 @@ module M_strings_oop
 ! methods it supports and overloading of operators to support the new data type.
 !
 use M_strings, only : upper, lower                       ! case
-use M_strings, only : lenset, adjustc, compact, crop     ! whitespace
+use M_strings, only : lenset, atleast, adjustc, compact, crop     ! whitespace
 use M_strings, only : reverse
 use M_strings, only : notabs, noesc, expand
 use M_strings, only : substitute, transliterate
@@ -6248,6 +8791,7 @@ contains
    procedure  ::  len            =>  oop_len
    procedure  ::  len_trim       =>  oop_len_trim
    procedure  ::  lenset         =>  oop_lenset
+   procedure  ::  atleast        =>  oop_atleast
    procedure  ::  match          =>  oop_matchw
    procedure  ::  lower          =>  oop_lower
    procedure  ::  noesc          =>  oop_noesc
@@ -6303,7 +8847,7 @@ contains
 !
 function construct_from_fill(chars,len)
 
-character(len=*),parameter::ident="@(#)M_strings::construct_from_fill(3f): construct TYPE(STRING)"
+character(len=*),parameter::ident_69="@(#)M_strings::construct_from_fill(3f): construct TYPE(STRING)"
 
 character(len=*),intent(in),optional :: chars
 integer,intent(in),optional          :: len
@@ -6327,7 +8871,7 @@ end function construct_from_fill
 !===================================================================================================================================
 function oop_len(self) result (length)
 
-character(len=*),parameter::ident="@(#)M_strings::oop_len(3f): length of string"
+character(len=*),parameter::ident_70="@(#)M_strings::oop_len(3f): length of string"
 
 class(string),intent(in)    :: self
 integer                     :: length
@@ -6338,7 +8882,7 @@ end function oop_len
 !===================================================================================================================================
 function oop_len_trim(self) result (length)
 
-character(len=*),parameter::ident="@(#)M_strings::oop_len_trim(3f): trimmed length of string"
+character(len=*),parameter::ident_71="@(#)M_strings::oop_len_trim(3f): trimmed length of string"
 
 class(string),intent(in)    :: self
 integer                     :: length
@@ -6349,7 +8893,7 @@ end function oop_len_trim
 !===================================================================================================================================
 function oop_switch(self) result (array)
 
-character(len=*),parameter::ident="@(#)M_strings::oop_switch(3f): convert string to array of single characters"
+character(len=*),parameter::ident_72="@(#)M_strings::oop_switch(3f): convert string to array of single characters"
 
 class(string),intent(in)    :: self
 character(len=1)            :: array(len(self%str))
@@ -6360,7 +8904,7 @@ end function oop_switch
 !===================================================================================================================================
 function oop_index(self,substring,back) result (location)
 
-character(len=*),parameter::ident="@(#)M_strings::oop_index(3f): find starting position of a substring in a string"
+character(len=*),parameter::ident_73="@(#)M_strings::oop_index(3f): find starting position of a substring in a string"
 
 class(string),intent(in)    :: self
 character(len=*),intent(in) :: substring
@@ -6377,7 +8921,7 @@ end function oop_index
 !===================================================================================================================================
 function oop_upper(self) result (string_out)
 
-character(len=*),parameter::ident="@(#)M_strings::oop_upper(3f): convert string to uppercase"
+character(len=*),parameter::ident_74="@(#)M_strings::oop_upper(3f): convert string to uppercase"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -6388,7 +8932,7 @@ end function oop_upper
 !===================================================================================================================================
 function oop_lower(self) result (string_out)
 
-character(len=*),parameter::ident="@(#)M_strings::oop_lower(3f): convert string to miniscule"
+character(len=*),parameter::ident_75="@(#)M_strings::oop_lower(3f): convert string to miniscule"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -6399,7 +8943,7 @@ end function oop_lower
 !===================================================================================================================================
 function oop_expand(self,escape_char) result (string_out)
 
-character(len=*),parameter::ident="@(#)M_strings::oop_expand(3f): expand common escape sequences by calling expand(3f)"
+character(len=*),parameter::ident_76="@(#)M_strings::oop_expand(3f): expand common escape sequences by calling expand(3f)"
 
 class(string),intent(in)      :: self
 character,intent(in),optional :: escape_char
@@ -6415,7 +8959,7 @@ end function oop_expand
 !===================================================================================================================================
 function oop_trim(self) result (string_out)
 
-character(len=*),parameter::ident="@(#)M_strings::oop_trim(3f): trim trailing spaces"
+character(len=*),parameter::ident_77="@(#)M_strings::oop_trim(3f): trim trailing spaces"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -6426,7 +8970,7 @@ end function oop_trim
 !===================================================================================================================================
 function oop_crop(self) result (string_out)
 
-character(len=*),parameter::ident="@(#)M_strings::oop_crop(3f): crop leading and trailing spaces"
+character(len=*),parameter::ident_78="@(#)M_strings::oop_crop(3f): crop leading and trailing spaces"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -6437,7 +8981,7 @@ end function oop_crop
 !===================================================================================================================================
 function oop_reverse(self) result (string_out)
 
-character(len=*),parameter::ident="@(#)M_strings::oop_reverse(3f): reverse string"
+character(len=*),parameter::ident_79="@(#)M_strings::oop_reverse(3f): reverse string"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -6448,7 +8992,7 @@ end function oop_reverse
 !===================================================================================================================================
 function oop_adjustl(self) result (string_out)
 
-character(len=*),parameter::ident="@(#)M_strings::oop_adjustl(3f): adjust string to left"
+character(len=*),parameter::ident_80="@(#)M_strings::oop_adjustl(3f): adjust string to left"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -6459,7 +9003,7 @@ end function oop_adjustl
 !===================================================================================================================================
 function oop_adjustr(self) result (string_out)
 
-character(len=*),parameter::ident="@(#)M_strings::oop_adjustr(3f): adjust string to right"
+character(len=*),parameter::ident_81="@(#)M_strings::oop_adjustr(3f): adjust string to right"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -6470,7 +9014,7 @@ end function oop_adjustr
 !===================================================================================================================================
 function oop_adjustc(self,length) result (string_out)
 
-character(len=*),parameter::ident="@(#)M_strings::oop_adjustc(3f): adjust string to center"
+character(len=*),parameter::ident_82="@(#)M_strings::oop_adjustc(3f): adjust string to center"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -6486,7 +9030,7 @@ end function oop_adjustc
 !===================================================================================================================================
 function oop_int(self) result (value)
 
-character(len=*),parameter::ident="@(#)M_strings::oop_int(3f): string to integer"
+character(len=*),parameter::ident_83="@(#)M_strings::oop_int(3f): string to integer"
 
 class(string),intent(in)     :: self
 integer                      :: value
@@ -6498,7 +9042,7 @@ end function oop_int
 !===================================================================================================================================
 function oop_real(self) result (value)
 
-character(len=*),parameter::ident="@(#)M_strings::oop_real(3f): string to real"
+character(len=*),parameter::ident_84="@(#)M_strings::oop_real(3f): string to real"
 
 class(string),intent(in)     :: self
 real                         :: value
@@ -6510,7 +9054,7 @@ end function oop_real
 !===================================================================================================================================
 function oop_dble(self) result (value)
 
-character(len=*),parameter::ident="@(#)M_strings::oop_dble(3f): string to double"
+character(len=*),parameter::ident_85="@(#)M_strings::oop_dble(3f): string to double"
 
 class(string),intent(in)     :: self
 doubleprecision              :: value
@@ -6522,7 +9066,7 @@ end function oop_dble
 !===================================================================================================================================
 function oop_compact(self,char) result (string_out)
 
-character(len=*),parameter::ident="@(#)M_strings::oop_compact(3f): adjust string to center"
+character(len=*),parameter::ident_86="@(#)M_strings::oop_compact(3f): adjust string to center"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -6539,7 +9083,7 @@ end function oop_compact
 !===================================================================================================================================
 function oop_substitute(self,old,new) result (string_out)
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_87="&
 &@(#)M_strings::oop_substitute(3f): change all occurrences of oldstring to newstring non-recursively"
 
 class(string),intent(in)     :: self
@@ -6554,7 +9098,7 @@ end function oop_substitute
 !===================================================================================================================================
 function oop_transliterate(self,old,new) result (string_out)
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_88="&
 &@(#)M_strings::oop_transliterate(3f): change all occurrences of oldstring to newstring non-recursively"
 
 class(string),intent(in)     :: self
@@ -6566,9 +9110,21 @@ end function oop_transliterate
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
+function oop_atleast(self,length) result (string_out)
+
+character(len=*),parameter::ident_89="@(#)M_strings::oop_atleast(3f): set string to at least specified length"
+
+class(string),intent(in)     :: self
+type(string)                 :: string_out
+integer,intent(in)           :: length
+   string_out%str=atleast(self%str,length)
+end function oop_atleast
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
 function oop_lenset(self,length) result (string_out)
 
-character(len=*),parameter::ident="@(#)M_strings::oop_lenset(3f): set string to specific length"
+character(len=*),parameter::ident_90="@(#)M_strings::oop_lenset(3f): set string to specific length"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -6580,7 +9136,7 @@ end function oop_lenset
 !===================================================================================================================================
 function oop_matchw(self,pattern) result (answer)
 
-character(len=*),parameter::ident="@(#)M_strings::oop_matchw(3f): test if wildcard pattern matches string"
+character(len=*),parameter::ident_91="@(#)M_strings::oop_matchw(3f): test if wildcard pattern matches string"
 
 class(string),intent(in)     :: self
 character(len=*),intent(in)  :: pattern
@@ -6592,7 +9148,7 @@ end function oop_matchw
 !===================================================================================================================================
 function oop_notabs(self) result (string_out)
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_92="&
 &@(#)M_strings::oop_notabs(3f): expand tab characters assuming tab stops every eight(8) characters"
 
 class(string),intent(in)     :: self
@@ -6607,7 +9163,7 @@ end function oop_notabs
 !===================================================================================================================================
 function oop_noesc(self) result (string_out)
 
-character(len=*),parameter::ident="@(#)M_strings::oop_noesc(3f): replace non-printable characters with spaces"
+character(len=*),parameter::ident_93="@(#)M_strings::oop_noesc(3f): replace non-printable characters with spaces"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -6618,7 +9174,7 @@ end function oop_noesc
 !===================================================================================================================================
 function p(self) result (string_out)
 
-character(len=*),parameter::ident="@(#)M_strings::oop_p(3f): return CHARACTER string from TYPE(STRING)"
+character(len=*),parameter::ident_94="@(#)M_strings::oop_p(3f): return CHARACTER string from TYPE(STRING)"
 
 class(string),intent(in)     :: self
 character(len=len(self%str)) :: string_out
@@ -6632,7 +9188,7 @@ subroutine init_string(self)
 ! allow for TYPE(STRING) object to be initialized.
 !
 
-character(len=*),parameter::ident="@(#)M_strings::init_dt(3f): initialize TYPE(STRING)"
+character(len=*),parameter::ident_95="@(#)M_strings::init_dt(3f): initialize TYPE(STRING)"
 
 class(string)                        :: self
    self%str=''
@@ -6644,7 +9200,7 @@ end subroutine init_string
 !===================================================================================================================================
 function string_plus_value(self,value) result (other)
 
-character(len=*),parameter::ident="@(#)M_strings::string_plus_value(3f): add value to TYPE(STRING)"
+character(len=*),parameter::ident_96="@(#)M_strings::string_plus_value(3f): add value to TYPE(STRING)"
 
 class(string),intent(in)      :: self
 type(string)                  :: other
@@ -6662,7 +9218,7 @@ end function string_plus_value
 !===================================================================================================================================
 function string_minus_value(self,value) result (other)
 
-character(len=*),parameter::ident="@(#)M_strings::string_minus_value(3f): subtract value from TYPE(STRING)"
+character(len=*),parameter::ident_97="@(#)M_strings::string_minus_value(3f): subtract value from TYPE(STRING)"
 
 class(string),intent(in)      :: self
 type(string)                  :: other
@@ -6684,7 +9240,7 @@ end function string_minus_value
 !===================================================================================================================================
 function string_append_value(self,value) result (other)
 
-character(len=*),parameter::ident="@(#)M_strings::string_append_value(3f): append value to TYPE(STRING)"
+character(len=*),parameter::ident_98="@(#)M_strings::string_append_value(3f): append value to TYPE(STRING)"
 
 class(string),intent(in)      :: self
 type(string)                  :: other
@@ -6702,7 +9258,7 @@ end function string_append_value
 !===================================================================================================================================
 function string_multiply_value(self,value) result (other)
 
-character(len=*),parameter::ident="@(#)M_strings::string_multiply_value(3f): multiply TYPE(STRING) value times"
+character(len=*),parameter::ident_99="@(#)M_strings::string_multiply_value(3f): multiply TYPE(STRING) value times"
 
 class(string),intent(in)      :: self
 type(string)                  :: other
@@ -6718,7 +9274,7 @@ end function string_multiply_value
 !===================================================================================================================================
 logical function eq(self,other)
 
-character(len=*),parameter::ident="@(#)M_strings::eq(3f): compare derived type string objects (eq,lt,gt,le,ge,ne)"
+character(len=*),parameter::ident_100="@(#)M_strings::eq(3f): compare derived type string objects (eq,lt,gt,le,ge,ne)"
 
    class(string),intent(in) :: self
    type(string),intent(in)  :: other

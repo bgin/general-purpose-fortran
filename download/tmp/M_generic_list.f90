@@ -43,10 +43,10 @@
 !!    data (and in particular -- pointers to arbitrary data types).
 !!
 !!##AUTHOR
-!!    M_generic_list(3fm)  defines a Generic Linked List Implementation in Fortran 95.
+!!    M_generic_list(3fm) defines a Generic Linked List Implementation in Fortran 95.
 !!    This module, described in detail at http://fortranwiki.org is by:
 !!
-!!     JASON R. BLEVINS
+!!     Jason R. Blevins
 !!     Department of Economics, Duke University
 !!     May18,2009
 !!
@@ -122,6 +122,8 @@ private
 public :: list_node_t, list_data
 public :: list_init, list_free
 public :: list_insert, list_put, list_get, list_next
+
+public test_suite_M_generic_list
 
 ! A public variable used as a MOLD for transfer()
 integer, dimension(:), allocatable :: list_data
@@ -221,7 +223,7 @@ contains
 !===================================================================================================================================
 subroutine list_init(self, data)
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_1="&
 &@(#)M_generic_list::list_init(3f): Initialize a head node SELF and optionally store the provided DATA."
 
 type(list_node_t), pointer :: self
@@ -327,7 +329,7 @@ end subroutine list_init
 !===================================================================================================================================
 subroutine list_free(self)
 
-character(len=*),parameter::ident="@(#)M_generic_list::list_free(3f): Free the entire list and all data, beginning at SELF"
+character(len=*),parameter::ident_2="@(#)M_generic_list::list_free(3f): Free the entire list and all data, beginning at SELF"
 
 type(list_node_t), pointer :: self
 type(list_node_t), pointer :: current
@@ -441,7 +443,7 @@ end subroutine list_free
 !===================================================================================================================================
 subroutine list_insert(self, data)
 
-character(len=*),parameter::ident="@(#)M_generic_list::list_insert(3f): Insert a list node after SELF containing DATA (optional)"
+character(len=*),parameter::ident_3="@(#)M_generic_list::list_insert(3f): Insert a list node after SELF containing DATA (optional)"
 
 type(list_node_t), pointer :: self
 integer, dimension(:), intent(in), optional :: data
@@ -553,7 +555,7 @@ end subroutine list_insert
 !===================================================================================================================================
 subroutine list_put(self, data)
 
-character(len=*),parameter::ident="@(#)M_generic_list::list_put(3f): Store the encoded DATA in list node SELF"
+character(len=*),parameter::ident_4="@(#)M_generic_list::list_put(3f): Store the encoded DATA in list node SELF"
 
 type(list_node_t), pointer :: self
 integer, dimension(:), intent(in) :: data
@@ -660,7 +662,7 @@ end subroutine list_put
 !===================================================================================================================================
 function list_get(self) result(data)
 
-character(len=*),parameter::ident="@(#)M_generic_list::list_put(3f): Return the DATA stored in the node SELF"
+character(len=*),parameter::ident_5="@(#)M_generic_list::list_put(3f): Return the DATA stored in the node SELF"
 
 type(list_node_t), pointer :: self
 integer, dimension(:), pointer :: data
@@ -762,7 +764,7 @@ end function list_get
 !===================================================================================================================================
 function list_next(self)
 
-character(len=*),parameter::ident="@(#)M_generic_list::list_put(3f): Return the next node after SELF"
+character(len=*),parameter::ident_6="@(#)M_generic_list::list_put(3f): Return the next node after SELF"
 
 type(list_node_t), pointer :: self
 type(list_node_t), pointer :: list_next
@@ -770,6 +772,96 @@ type(list_node_t), pointer :: list_next
     list_next => self%next
 
 end function list_next
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine test_suite_M_generic_list()
+
+!! setup
+   call test___copy_m_generic_list_List_node_t()
+   call test___deallocate_m_generic_list_List_node_t()
+   call test_list_free()
+   call test_list_get()
+   call test_list_init()
+   call test_list_insert()
+   call test_list_next()
+   call test_list_put()
+!! teardown
+contains
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test___copy_m_generic_list_List_node_t()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('__copy_m_generic_list_List_node_t',msg='')
+   !!call unit_check('__copy_m_generic_list_List_node_t', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('__copy_m_generic_list_List_node_t',msg='')
+end subroutine test___copy_m_generic_list_List_node_t
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test___deallocate_m_generic_list_List_node_t()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('__deallocate_m_generic_list_List_node_t',msg='')
+   !!call unit_check('__deallocate_m_generic_list_List_node_t', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('__deallocate_m_generic_list_List_node_t',msg='')
+end subroutine test___deallocate_m_generic_list_List_node_t
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_list_free()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('list_free',msg='')
+   !!call unit_check('list_free', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('list_free',msg='')
+end subroutine test_list_free
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_list_get()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('list_get',msg='')
+   !!call unit_check('list_get', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('list_get',msg='')
+end subroutine test_list_get
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_list_init()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('list_init',msg='')
+   !!call unit_check('list_init', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('list_init',msg='')
+end subroutine test_list_init
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_list_insert()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('list_insert',msg='')
+   !!call unit_check('list_insert', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('list_insert',msg='')
+end subroutine test_list_insert
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_list_next()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('list_next',msg='')
+   !!call unit_check('list_next', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('list_next',msg='')
+end subroutine test_list_next
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_list_put()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('list_put',msg='')
+   !!call unit_check('list_put', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('list_put',msg='')
+end subroutine test_list_put
+!===================================================================================================================================
+end subroutine test_suite_M_generic_list
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================

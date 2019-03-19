@@ -939,6 +939,7 @@ subroutine ident(opts)                                 !@(#)ident(3f): process $
    character(len=*)              :: opts
    character(len=G_line_length)  :: lang               ! language on $IDENT command
    character(len=:),allocatable  :: text
+   integer,save                  :: ident_count=1
 
    call dissect('ident','-oo -language fortran',opts)  ! parse options and inline comment on input line
    text=trim(sget('ident_oo'))
@@ -947,11 +948,13 @@ subroutine ident(opts)                                 !@(#)ident(3f): process $
    select case(lang)
    case('fortran')    !! should make look for characters not allowed in metadata, continue over multiple lines, ...
       select case(len(text))
-      case(:92)
-         write(G_iout,'("character(len=*),parameter::ident=""@(#)",a,''"'')')text
-      case(93:126)
-         write(G_iout,'("character(len=*),parameter::ident=""&")')
+      case(:89)
+         write(G_iout,'("character(len=*),parameter::ident_",i0,"=""@(#)",a,''"'')')ident_count,text
+         ident_count=ident_count+1
+      case(90:126)
+         write(G_iout,'("character(len=*),parameter::ident_",i0,"=""&")')ident_count
          write(G_iout,'(''&@(#)'',a,''"'')')text
+         ident_count=ident_count+1
       case default
          call stop_ufpp('*ufpp:exe* ERROR(ident::A) - IDENT TOO LONG:'//trim(G_SOURCE))
       end select
@@ -3081,8 +3084,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   >   print*, "This is the third SUB1"                                         ',&
 '   >end subroutine sub1                                                         ',&
 '   >$ENDIF                                                                      ',&
+'   >$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@',&
 '   >$! generate help_usage() procedure (and file to run thru txt2man(1) or other',&
 '   >$! filters to make man(1) page if $UFPP_DOCUMENT_DIR is set).               ',&
+'   >$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@',&
 '   >$FILTER HELP -file conditional_compile.man                                  ',&
 '   >NAME                                                                        ',&
 '   >    conditional_compile - basic example for ufpp(1) pre-processor.          ',&
@@ -3097,6 +3102,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   >       --version                                                            ',&
 '   >              output version information and exit                           ',&
 '   >$FILTER END                                                                 ',&
+'   >$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@',&
 '   >$! generate help_version() procedure                                        ',&
 '   >$FILTER VERSION                                                             ',&
 '   >DESCRIPTION: example program showing conditional compilation with ufpp(1)   ',&
@@ -3104,6 +3110,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   >VERSION:     1.0, 20160703                                                  ',&
 '   >AUTHOR:      John S. Urban                                                  ',&
 '   >$FILTER END                                                                 ',&
+'   >$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -3586,8 +3593,10 @@ end subroutine help_usage
 !!    >   print*, "This is the third SUB1"
 !!    >end subroutine sub1
 !!    >$ENDIF
+!!    >$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 !!    >$! generate help_usage() procedure (and file to run thru txt2man(1) or other
 !!    >$! filters to make man(1) page if $UFPP_DOCUMENT_DIR is set).
+!!    >$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 !!    >$FILTER HELP -file conditional_compile.man
 !!    >NAME
 !!    >    conditional_compile - basic example for ufpp(1) pre-processor.
@@ -3602,6 +3611,7 @@ end subroutine help_usage
 !!    >       --version
 !!    >              output version information and exit
 !!    >$FILTER END
+!!    >$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 !!    >$! generate help_version() procedure
 !!    >$FILTER VERSION
 !!    >DESCRIPTION: example program showing conditional compilation with ufpp(1)
@@ -3609,6 +3619,7 @@ end subroutine help_usage
 !!    >VERSION:     1.0, 20160703
 !!    >AUTHOR:      John S. Urban
 !!    >$FILTER END
+!!    >$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -3626,7 +3637,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        4.0: 20170502>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
-'@(#)COMPILED:       Sat, Nov 10th, 2018 2:21:09 PM>',&
+'@(#)COMPILED:       Thu, Feb 14th, 2019 2:38:51 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

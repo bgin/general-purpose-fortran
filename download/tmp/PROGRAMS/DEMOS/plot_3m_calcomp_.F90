@@ -18,7 +18,7 @@
           integer                     :: inteq
           real                        :: x,y
           real                        :: psi
-          real                        :: thick, width
+          real                        :: thick, wdth
           real                        :: tsqr, wsqr
           real                        :: tx, wx
              call plots(0.0,24.0,0.0,12.0)
@@ -62,10 +62,10 @@
              enddo
              call symbol(-0.30,3.5,0.14,ichr3,inteq,90.0,14)
              thick=3.0
-             width=25.0
+             wdth=25.0
              do i=1,3
                 tsqr=thick*thick
-                wsqr=width*width
+                wsqr=wdth*wdth
                 psi=100.99*tsqr
                 call symbol(0.6,psi/1000.0,0.1,ichr4,inteq,0.0,5)
                 call number(999.0,999.0,0.10,thick,0.0,0)
@@ -78,7 +78,7 @@
                 enddo
                 psi=10099.0*81.0/wsqr
                 call symbol(9.2,psi/1000.0,0.1,ichr6,inteq,0.0,5)
-                call number(999.0,999.0,0.10,width,0.0,0)
+                call number(999.0,999.0,0.10,wdth,0.0,0)
                 call symbol(999.0,999.0,0.10,ichr7,inteq,0.0,4)
                 call symbol( 9.0, 999.0,0.12,ibcd,7,0.0,-1)
                 do j=5,50
@@ -87,7 +87,7 @@
                    call plot(tx,psi/1000.0,2)
                 enddo
                 thick=thick+3.0
-                width=width-5.0
+                wdth=wdth-5.0
              enddo
              call symbol(3.3,8.5,.14,ichr8,inteq,0.0,29)
              call symbol(3.1,8.2,.14,ichr9,inteq,0.0,32)

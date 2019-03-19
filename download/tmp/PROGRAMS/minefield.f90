@@ -132,7 +132,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    minefield game>',&
 '@(#)VERSION:        4.0, 20180616>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Fri, Dec 7th, 2018 3:19:58 PM>',&
+'@(#)COMPILED:       Sat, Feb 2nd, 2019 12:11:12 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -406,6 +406,7 @@ integer :: i, j
    INFINITE : do
       letter=checkkey()          ! see if a character was pressed in graphic window, get ordinal of letter last pressed
       istat=locator(xx,yy)                                     ! get location and mouse key pressed
+      call system_sleep(0.04)                                  ! pause
       if(letter.eq.113)goto 999                                ! quit if letter q
       if(istat.eq.0)cycle INFINITE                             ! wait until a mouse key is clicked
       xdelta=xx-real(ic*(-5))                                  ! distance from left edge

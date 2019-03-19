@@ -7,7 +7,7 @@ module M_xyplot
 implicit none
 private
 
-character(len=*),parameter::ident="@(#)M_xyplot(3fm): XY plot procedures"
+character(len=*),parameter::ident_1="@(#)M_xyplot(3fm): XY plot procedures"
 
 !     contains sizes for the main global data xy_array
 integer,parameter    :: IMAXQ2=3000000  ! maximum number of values
@@ -148,6 +148,8 @@ integer                :: livpq
 integer                :: logleq
 integer                :: logxq
 integer                :: logyq
+logical lq2(0:21)
+integer,parameter :: logleq2=5   ! flag to ignore leading values .le. 0 during plotting of logarithmic scales
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
@@ -285,8 +287,6 @@ integer,parameter         :: ipq2=7
 doubleprecision,parameter :: piq2=3.14159265358979323846264338327950288419716939937510d0 ! 180 degrees
 real,save                 :: shq2(ipensq2,ipq2)
 !===================================================================================================================================
-logical lq2(0:21)
-integer,parameter :: logleq2=5   ! flag to ignore leading values .le. 0 during plotting of logarithmic scales
 !===================================================================================================================================
 public plot_init
 public plot_init_globals
@@ -348,6 +348,8 @@ public xy_aspct               ! aspct
 public xy_pickpnt             ! pickpnt calculate value from screen for first curve in list
 public xy_obj12345            ! obj12345
 public xy_juprint             ! juprint
+
+public test_suite_M_xyplot
 
 private priv_getpage            ! getpage
 private priv_jusym              ! jusym
@@ -1045,7 +1047,7 @@ subroutine plot_setfill()
 use M_calculator_plus, only : inum0
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::plot_setfill(3f): set background, middleground, and foreground colors for plot"
+character(len=*),parameter::ident_2="@(#)M_xyplot::plot_setfill(3f): set background, middleground, and foreground colors for plot"
 
 integer :: i440
 integer :: ifore0
@@ -1109,7 +1111,7 @@ use M_calculator,      only : iclen_calc
 use M_calculator_plus, only : jucalcx
 implicit none
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_3="&
 &@(#)M_xyplot::plot_fetch(3f): call fetch (and calculator if fetched string starts with $ or double-quote)"
 
 character(len=:),allocatable :: plot_fetch
@@ -1168,7 +1170,7 @@ use M_kracken,         only: parse, store
 use M_calculator_plus, only : rnum0
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_init_default(3fp): Initialize command dictionary and global values"
+character(len=*),parameter::ident_4="@(#)M_xyplot::xy_init_default(3fp): Initialize command dictionary and global values"
 
 !  1989 John S. Urban
 !
@@ -1416,7 +1418,9 @@ real              :: rtemp
    call store('cd_oo      ',' 8 ','define',ier)  ! alias for chdir
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 end subroutine xy_init_default
-!=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 !! plot_hcopy
 !!
 !! This is the routine that generates a copy of the current plot by closing the
@@ -1440,7 +1444,6 @@ end subroutine xy_init_default
 !! Note that if the -obj option is used, instead of calling the equivalent of PLOT
 !! a special object is called. This could be used by a sophisticated user, but is
 !! used to copy what shows on screen from ID, SHOWFONT, ... commands too.
-!===================================================================================================================================
 subroutine plot_hcopy()
 use M_journal,    only: journal
 use M_calculator, only: stuffa
@@ -1450,7 +1453,7 @@ use M_system,     only: set_environment_variable
 use M_calculator_plus, only : inum0, snum0
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::plot_hcopy(3f): process hcopy command"
+character(len=*),parameter::ident_5="@(#)M_xyplot::plot_hcopy(3f): process hcopy command"
 
 integer,parameter            :: dn=20                             ! device name length
 character(len=dn)            :: checkdev                          ! used to check a good device name has been used
@@ -1546,7 +1549,7 @@ END BLOCK FILENAME
    call vgetdev(hold_current_dev)                      ! get name of current device for restoring at end
 !-----------------------------------------------------------------------------------------------------------------------------------
    if( xy_noclose(hold_current_dev) )then                   ! check if actually want to close
-      call set_environment_variable('PLTDEVICE','NOCLOSE')
+      call set_environment_variable('M_DRAW_DEVICE','NOCLOSE')
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
 LINE: BLOCK
@@ -1586,7 +1589,7 @@ END BLOCK LINE
    call xy_jumapc('reload')                         ! reestablish color map
 !-----------------------------------------------------------------------------------------------------------------------------------
    if (xy_noclose(hold_current_dev))then                    ! if this is the X11 driver, refresh the plot
-      call set_environment_variable('PLTDEVICE','CLOSE')
+      call set_environment_variable('M_DRAW_DEVICE','CLOSE')
       if(iobj.lt.0)then
          call plot_drawplot(.true.)
       else
@@ -1601,7 +1604,7 @@ end subroutine plot_hcopy
 logical function xy_noclose(dev_name)
 implicit none
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_6="&
 &@(#)M_xyplot::plot_noclose(3f): flag whether to keep current device open while switching to alternate device"
 
 character(len=*),intent(in) ::  dev_name
@@ -1623,7 +1626,7 @@ use M_kracken, only: store, IPvalue
 use M_calculator_plus, only : inum0, strgar2
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::plot_set_xmin(3f): set value for xmin/xmax/ymin/... command"
+character(len=*),parameter::ident_7="@(#)M_xyplot::plot_set_xmin(3f): set value for xmin/xmax/ymin/... command"
 
 character(len=IPvalue) :: temp1 ! IPvalue= length of input command or parameter
 character(len=IPvalue) :: temp2
@@ -1728,7 +1731,7 @@ subroutine plot_storage()
 use M_draw, only : vgetdev
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::plot_storage(3f): if on a storage tube, clear the screen to unclutter it"
+character(len=*),parameter::ident_8="@(#)M_xyplot::plot_storage(3f): if on a storage tube, clear the screen to unclutter it"
 
 character(len=20) :: devname
    call vgetdev(devname)                          ! get name of current device
@@ -1750,7 +1753,7 @@ use M_calculator_plus, only : rnum0, strgar2
 use M_strings, only : listout
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::plot_setmark(3f): set or display marker geometries"
+character(len=*),parameter::ident_9="@(#)M_xyplot::plot_setmark(3f): set or display marker geometries"
 
 character(len=*)         :: parms
 real                     :: pat(ipq2)
@@ -1872,7 +1875,7 @@ use M_kracken,         only : store
 use M_calculator_plus, only : rnum0
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::plot_page_aspect(3f): Get aspect ratio from ASPECT command and call xy_aspct"
+character(len=*),parameter::ident_10="@(#)M_xyplot::plot_page_aspect(3f): Get aspect ratio from ASPECT command and call xy_aspct"
 
 integer           :: ier
 real              :: shape
@@ -1924,7 +1927,7 @@ use M_drawplus,        only : pop, push
 use M_drawplus,        only : spirograph
 implicit none
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_11="&
 &@(#)M_xyplot::plot_marks(3f): draw screen of markers or pen styles or dash codes or color table or fonts"
 
 character(len=*),intent(in)     :: nameit       ! drawing name type
@@ -2140,7 +2143,7 @@ use M_kracken, only: store,current_command_length
 use M_calculator_plus, only : inum0
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::plot_title(3f): allow user to add extra title lines by number"
+character(len=*),parameter::ident_12="@(#)M_xyplot::plot_title(3f): allow user to add extra title lines by number"
 
 character(len=20) :: name
 integer           :: i10
@@ -2188,7 +2191,7 @@ use M_calculator_plus, only : inum0, rnum0, strgar2
 use M_strings,         only : listout
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::plot_jut(3f): allow user to place text on screen"
+character(len=*),parameter::ident_13="@(#)M_xyplot::plot_jut(3f): allow user to place text on screen"
 
 character(len=*)        :: parms
 real                    :: xyz(3)
@@ -2458,7 +2461,7 @@ use M_draw
 use M_kracken,         only : store
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::plot_sz(3f): close and reopen window to new size if possible"
+character(len=*),parameter::ident_14="@(#)M_xyplot::plot_sz(3f): close and reopen window to new size if possible"
 
 character(len=20)           :: dev
 real                        :: rvals(2)
@@ -2514,7 +2517,7 @@ real                        :: shape
 !-----------------------------------------------------------------------
    call vgetdev(dev)                    ! get the name of the current device
    if(xy_noclose(dev))then
-      call set_environment_variable('PLTDEVICE','CLOSE')
+      call set_environment_variable('M_DRAW_DEVICE','CLOSE')
    endif
 !-----------------------------------------------------------------------
 !  should be checking for a valid output device name
@@ -2546,7 +2549,7 @@ use M_drawplus, only : plain_rect
 use M_calculator_plus, only : inum0, rnum0
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::plot_drawplot(3f): draw an xy plot"
+character(len=*),parameter::ident_15="@(#)M_xyplot::plot_drawplot(3f): draw an xy plot"
 
 !     1989 John S. Urban
 logical,intent(in)         :: lclear                                 ! flag to not clear if creating a segment
@@ -2870,7 +2873,7 @@ use M_journal, only : journal
 use M_calculator_plus, only : inum0, strgar2
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::plot_juparea(3f): parse parea command"
+character(len=*),parameter::ident_16="@(#)M_xyplot::plot_juparea(3f): parse parea command"
 
 real           :: rpat(4)
 integer        :: ichars
@@ -2916,7 +2919,8 @@ use M_draw
 use M_calculator_plus, only : strgar2
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::plot_jupage(3f): a good try at allowing mixing of PLT commands and vogle commands"
+character(len=*),parameter::ident_17="&
+&@(#)M_xyplot::plot_jupage(3f): a good try at allowing mixing of PLT commands and vogle commands"
 
 real,save :: rpat(4)=[0.0, 8.5, 0.0, 11.0]
 integer   :: ichars
@@ -2974,7 +2978,7 @@ use M_calculator_plus, only : inum0, strgar2, rnum0
 use M_strings, only : listout
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::plot_id(3f): allow user to alter legend strings by number"
+character(len=*),parameter::ident_18="@(#)M_xyplot::plot_id(3f): allow user to alter legend strings by number"
 
 integer,intent(in)          :: icmdlen
 
@@ -3184,7 +3188,7 @@ subroutine plot_clear(ctype)
 use M_draw
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::plot_clear(3f): clear graphics area and ensure in graphics mode"
+character(len=*),parameter::ident_19="@(#)M_xyplot::plot_clear(3f): clear graphics area and ensure in graphics mode"
 
 character(len=*),intent(in) :: ctype
 integer                     :: ibuf
@@ -3220,7 +3224,7 @@ subroutine xy_aspct(xsmall,xlarge,ysmall,ylarge)
       use m_calculator, only: stuff
 implicit none
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_20="&
 &@(#)M_xyplot::xy_aspct(3fp): Store plot window size in global variables and call BIGGEST_ORTHO2()"
 
 real,intent(in)   :: xsmall
@@ -3241,7 +3245,7 @@ use M_draw
 use M_calculator_plus, only : inum0
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_bans(3fp): draw banner lines from PLT ban command"
+character(len=*),parameter::ident_21="@(#)M_xyplot::xy_bans(3fp): draw banner lines from PLT ban command"
 
 real               :: bothi
 real               :: centr
@@ -3352,7 +3356,7 @@ subroutine xy_printban(name,startx,starty,slenfac,iprinted)
 use M_draw
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_printban(3fp): plot horizontal banner string at specified location"
+character(len=*),parameter::ident_22="@(#)M_xyplot::xy_printban(3fp): plot horizontal banner string at specified location"
 
 character(len=*),intent(in)    :: name
 real,intent(in)                :: startx
@@ -3380,7 +3384,7 @@ subroutine xy_printbanv(name,startx,starty,slenfac,iprinted)
 use M_draw
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_printbanv(3fp): plot vertical banner string"
+character(len=*),parameter::ident_23="@(#)M_xyplot::xy_printbanv(3fp): plot vertical banner string"
 
 character(len=*),intent(in)    :: name
 real,intent(in)                :: startx
@@ -3408,7 +3412,7 @@ end subroutine xy_printbanv
 subroutine xy_fxed(string,llisub)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_fxed(3fp): select whether a string is fixed-space or not"
+character(len=*),parameter::ident_24="@(#)M_xyplot::xy_fxed(3fp): select whether a string is fixed-space or not"
 
 character(len=*),intent(in)      :: string
 logical,intent(out)              :: llisub
@@ -3433,7 +3437,7 @@ use M_draw
 use M_drawplus,   only : page
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_init_graphics(3fp): Initialize PLT graphics environment"
+character(len=*),parameter::ident_25="@(#)M_xyplot::xy_init_graphics(3fp): Initialize PLT graphics environment"
 
 character(len=256) :: value
 character(len=256) :: cmd_d
@@ -3453,9 +3457,6 @@ real               :: yy
    value=' '                                               ! DEVICE [XRASTERS YRASTERS LEFT_EDGE TOP_EDGE ]
 !-----------------------------------------------------------------------------------------------------------------------------------
    call get_environment_variable('M_DRAW_DEVICE',value)    ! use device name from environment and do not prompt if set
-   if(value.eq.' ')then                                    ! read same environment variable as vogle does
-      call get_environment_variable('VDEVICE',value)
-   endif
 !-----------------------------------------------------------------------------------------------------------------------------------
    cmd_d=sget('plt_d')                                     ! check for command line argument
    if(cmd_d.ne.' ')then
@@ -3535,7 +3536,7 @@ end subroutine xy_init_graphics
 logical function xy_ifdrawn()
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_ifdrawn(3fp): xy_ifdrawn() is used to see if first page drawn or not"
+character(len=*),parameter::ident_26="@(#)M_xyplot::xy_ifdrawn(3fp): xy_ifdrawn() is used to see if first page drawn or not"
 
 ! if never called before in this program execution return .false. else return .true.
 logical,save :: ifcalled=.false.
@@ -3557,7 +3558,7 @@ use M_drawplus, only : pop, push
 use M_drawplus, only : plain_rect
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_iftext(3fp): Add user-specified text strings to plot"
+character(len=*),parameter::ident_27="@(#)M_xyplot::xy_iftext(3fp): Add user-specified text strings to plot"
 
 real        :: asz
 integer     :: i20
@@ -3721,7 +3722,7 @@ use M_draw,            only : vgetdev
 use M_calculator_plus, only : inum0
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_jucurv(3fp): find extrema for group of curves and set legend label defaults"
+character(len=*),parameter::ident_28="@(#)M_xyplot::xy_jucurv(3fp): find extrema for group of curves and set legend label defaults"
 
 real,intent(out)            :: xlowa(2),xhigha(2),ylowa(2),yhigha(2)
 integer,intent(out)         :: iunits(4)
@@ -3986,7 +3987,7 @@ use M_draw, only : mapcolor
 use M_strings, only: v2s, listout
 implicit none
 
-character(len=*),parameter::ident="@(#)xy_jumapc(3f): map colors using HUE command"
+character(len=*),parameter::ident_29="@(#)xy_jumapc(3f): map colors using HUE command"
 
 ! 1989 John S. Urban
 
@@ -4293,7 +4294,7 @@ use M_journal,    only : journal
 use M_draw
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_pause(3fp): conditionally  pause until graphic or text-window response"
+character(len=*),parameter::ident_30="@(#)M_xyplot::xy_pause(3fp): conditionally  pause until graphic or text-window response"
 
 character(len=1)       :: cjunk
 integer                :: i10
@@ -4358,7 +4359,7 @@ use M_journal, only : journal
 use M_draw
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_jutitl(3fp): add title lines to plot"
+character(len=*),parameter::ident_31="@(#)M_xyplot::xy_jutitl(3fp): add title lines to plot"
 
 integer,intent(in)      :: ifile
 integer,intent(in)      :: idonly
@@ -4382,7 +4383,7 @@ use M_draw
 use M_calculator_plus, only : inum0
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_jutitlX(3fp): draw plot titling information (titles and legend block)"
+character(len=*),parameter::ident_32="@(#)M_xyplot::xy_jutitlX(3fp): draw plot titling information (titles and legend block)"
 
 character(len=80)  :: l
 character(len=80)  :: ftitle(isize)                ! hold title lines from the file
@@ -4521,7 +4522,7 @@ subroutine xy_set_bigger(tallest,width,height,factor)
 use M_draw
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_set_bigger(3fp): change title line size"
+character(len=*),parameter::ident_33="@(#)M_xyplot::xy_set_bigger(3fp): change title line size"
 
 real,intent(in)    :: tallest
 real,intent(out)   :: width
@@ -4543,7 +4544,7 @@ use M_draw
 use M_calculator_plus, only : inum0, rnum0
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_laxis(3fp): draw linear axis and logarithmic axis for PLT"
+character(len=*),parameter::ident_34="@(#)M_xyplot::xy_laxis(3fp): draw linear axis and logarithmic axis for PLT"
 
 !-------------------------------------------------------------------------------
 !     ixdiv and iydiv are number of major and minor axis divisions
@@ -4719,7 +4720,7 @@ use M_draw
 use M_drawplus, only : pop, push, rdpnt
 implicit none
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_35="&
 &@(#)M_xyplot::xy_pickpnt(3fp): interactively draw a line to current left scale and store the curve or return point"
 
 !  if itype is 0, store a curve into the pseudo file
@@ -4832,7 +4833,7 @@ subroutine xy_setlbl(ii)
 use M_calculator_plus, only : inum0
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_setlbl(3fp): decide axis label strings"
+character(len=*),parameter::ident_36="@(#)M_xyplot::xy_setlbl(3fp): decide axis label strings"
 
 !     If axis label string is empty, use units to get default string
 !----- PUT IN CHECKS FOR LABELS THAT ARE TOO LONG
@@ -4899,7 +4900,7 @@ use M_debug
 use M_calculator_plus, only : strgar2
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_setsize(3fp): use values to set size and border on output device"
+character(len=*),parameter::ident_37="@(#)M_xyplot::xy_setsize(3fp): use values to set size and border on output device"
 
 !     note that a value of '-1 -1 -1 -1' will reset to default driver size
 !     assumes prefsize(3) and prefposition(3) will complain about bad values and take corrective action, as it is hard to say what
@@ -4931,7 +4932,7 @@ use M_drawplus,        only : pop, push
 use M_calculator_plus, only : inum0
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_tidybox(3fp): draw legend lines inside box specified on call"
+character(len=*),parameter::ident_38="@(#)M_xyplot::xy_tidybox(3fp): draw legend lines inside box specified on call"
 
 character(len=255) :: corners
 character(len=1)   :: cwhere
@@ -4987,7 +4988,7 @@ subroutine xy_arrow(xleft,ybot,xright,ytop,xto,yto,where,asz)
 use M_drawplus, only : arrowhead
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_arrow(3fp): Add xy_arrow from T text box to specified point"
+character(len=*),parameter::ident_39="@(#)M_xyplot::xy_arrow(3fp): Add xy_arrow from T text box to specified point"
 
 real             :: asz
 real             :: size
@@ -5062,7 +5063,7 @@ use M_draw
 use M_calculator_plus, only : inum0
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_idbox(3fp): Draw ID legend box specified with LEGEND command"
+character(len=*),parameter::ident_40="@(#)M_xyplot::xy_idbox(3fp): Draw ID legend box specified with LEGEND command"
 
 integer,parameter :: lbllen=255     ! maximum number of characters in a label
 real              :: factor
@@ -5259,7 +5260,7 @@ use M_draw
 use M_calculator_plus, only : inum0
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_idbox0(3fp): draw legend lines"
+character(len=*),parameter::ident_41="@(#)M_xyplot::xy_idbox0(3fp): draw legend lines"
 
 character(len=255)  :: line
 integer,parameter   :: lbllen=255 ! maximum number of characters in a label
@@ -5442,7 +5443,7 @@ subroutine xy_iflou(iflag)
 use M_journal, only : journal
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_iflou(3fp): set global flag for Leading Edge trimming (see LE command)"
+character(len=*),parameter::ident_42="@(#)M_xyplot::xy_iflou(3fp): set global flag for Leading Edge trimming (see LE command)"
 
 integer,intent(in)  :: iflag
 !     look up in the dictionary whether xy_jucurv and priv_toscale want leading values
@@ -5471,7 +5472,7 @@ use M_journal, only : journal
 use M_calculator_plus, only : inum0, rnum0
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_judraw(3fp): draw curves to plot scales using plot_ values"
+character(len=*),parameter::ident_43="@(#)M_xyplot::xy_judraw(3fp): draw curves to plot scales using plot_ values"
 !-----------------------------------------------------------------------------------------------------------------------------------
 real, dimension(:), allocatable :: holdx3,holdx4
 real, dimension(:), allocatable :: holdy3,holdy4
@@ -5659,7 +5660,7 @@ use M_journal, only : journal
 use M_calculator_plus, only : inum0
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_loadtl(3fp): load title xy_array"
+character(len=*),parameter::ident_44="@(#)M_xyplot::xy_loadtl(3fp): load title xy_array"
 
 character name*20, ztitle*(IZSZQ), ctemp*255
 character(len=80)        :: ftitle(isize)     ! hold title lines from the file
@@ -5721,7 +5722,7 @@ integer     :: ititles
       ilen1=min(80,len(ztitle))           ! makes assumption that title strings cannot be more than 80 characters to speed len_trim
       ilen=len_trim(ztitle(:ilen1))
       if(ilen.le.0)then  ! blank title line
-         call journal('*ifmore* blank title lines not permitted')
+         call journal('*xy_loadt* blank title lines not permitted')
          more=.false.
       elseif(ztitle(ilen:ilen).eq.char(92))then ! title  line ending in \ continues title block
          ztitle(ilen:ilen)=' '
@@ -5801,7 +5802,7 @@ use M_drawplus, only : plain_rect
 use M_calculator_plus, only : strgar2
 implicit none
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_45="&
 &@(#)M_xyplot::xy_tidybox1(3fp):draw legend lines in box with legend box autosized and pos. by edge number"
 
 real               :: gap
@@ -6077,7 +6078,7 @@ use M_drawplus, only : plain_rect
 use M_calculator_plus, only : strgar2
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_tidybox2(3fp): draw legend lines inside box specified on call"
+character(len=*),parameter::ident_46="@(#)M_xyplot::xy_tidybox2(3fp): draw legend lines inside box specified on call"
 
 real                 :: factor
 real                 :: gap1
@@ -6296,7 +6297,7 @@ subroutine xy_listout3(rcurve_in,iszin,rcurve_out,iszout,isize,inums)
 use M_journal, only : journal
 implicit none
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_47="&
 &@(#)M_xyplot::xy_listout3(3fp): copy rcurve_in to rcurve_out expanding negative curve numbers to ranges (1 -10 means 1 thru 10)"
 
 !     use rcurve(:,1) for list of numbers to expand
@@ -6429,7 +6430,7 @@ use m_calculator, only : iclen_calc
 use M_calculator_plus, only : jucalcx
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_retrv2(3fp): Call RETREV and then expand string variables with Calculator"
+character(len=*),parameter::ident_48="@(#)M_xyplot::xy_retrv2(3fp): Call RETREV and then expand string variables with Calculator"
 
 character(len=*),intent(in)  :: name
 character(len=*),intent(out) :: val
@@ -6524,7 +6525,7 @@ use M_journal, only : journal
 use M_kracken, only: parse, store, IPvalue, IPverb
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::plot_toggle(3f): copy of TOGGLE that uses xy_retrv2 instead of RETREV"
+character(len=*),parameter::ident_49="@(#)M_xyplot::plot_toggle(3f): copy of TOGGLE that uses xy_retrv2 instead of RETREV"
 
 ! If value is explicitly on or off, set appropriate string,
 ! if no value is specified, toggle on/off value.
@@ -6575,7 +6576,8 @@ subroutine plot_opentrail(ier)
 use M_journal, only : journal
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::plot_opentrail(3f): set name of trail file and open it or turn off trail on error"
+character(len=*),parameter::ident_50="&
+&@(#)M_xyplot::plot_opentrail(3f): set name of trail file and open it or turn off trail on error"
 
 integer,intent(out) :: ier
 character(len=256)  :: file
@@ -6610,7 +6612,8 @@ use M_journal, only : journal
 use M_math, only    : extremum
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_getdat(3fp): place data from specified file and curve into xy_arrayQ xy_array"
+character(len=*),parameter::ident_51="&
+&@(#)M_xyplot::xy_getdat(3fp): place data from specified file and curve into xy_arrayQ xy_array"
 
 !===================================================================================================================================
 integer,intent(in)            :: ifile   ! file number to extract data from
@@ -6799,11 +6802,11 @@ end subroutine xy_getdat
 !===================================================================================================================================
 subroutine xy_juput(ifile,irecord,rmin,rmax,ionend,iquiet)
 use M_journal, only    : journal
-use m_calculator, only : stuff
+use M_calculator, only : stuff
 use M_math, only       : extremum
 implicit none
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_52="&
 &@(#)M_xyplot::xy_juput(3fp): write current memory-resident curves in global variables(q) onto pseudo file"
 
 integer ipadz(5)
@@ -6927,7 +6930,7 @@ end subroutine xy_juput
 real function xy_slide(xmin,xmax,value,bottom)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_slide(3fp): slide value"
+character(len=*),parameter::ident_53="@(#)M_xyplot::xy_slide(3fp): slide value"
 
 real,intent(in) :: xmin
 real,intent(in) :: xmax
@@ -6943,7 +6946,7 @@ use M_journal, only : journal
 use M_draw
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::plot_z(3f): Interactive ZOOM mode"
+character(len=*),parameter::ident_54="@(#)M_xyplot::plot_z(3f): Interactive ZOOM mode"
 
 real               :: con(4)
 character(len=10)  :: action
@@ -7018,7 +7021,7 @@ use M_kracken, only: store
 use M_draw
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::plot_zmode(3f): Interactive ZOOM mode"
+character(len=*),parameter::ident_55="@(#)M_xyplot::plot_zmode(3f): Interactive ZOOM mode"
 
 real                  :: con(4)
 character(len=10)     :: action
@@ -7386,7 +7389,7 @@ subroutine xy_getrel(iuniti,iunito,rmult,const)
 !     since unit 0 is blank, assume not to convert if a 0 iunito is found.
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_getrel(3fp): return values to convert one set of units to another"
+character(len=*),parameter::ident_56="@(#)M_xyplot::xy_getrel(3fp): return values to convert one set of units to another"
 
 integer         :: iuniti
 integer         :: iunito
@@ -7411,7 +7414,7 @@ subroutine xy_units(n0,eunit)
 use M_strings,only: upper
 implicit none
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_57="&
 &@(#)M_xyplot::xy_units(3fp): given unit code return string label optionally converted to uppercase"
 
 integer,intent(in)  :: n0
@@ -7430,7 +7433,7 @@ subroutine xy_juprint(x,y,line,icenter)
 use M_draw
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_juprint(3fp): print string LINE at position x,y with embedded directives"
+character(len=*),parameter::ident_58="@(#)M_xyplot::xy_juprint(3fp): print string LINE at position x,y with embedded directives"
 
 !      icenter=1    centermode
 !      icenter=2    clear centering data, print right justified
@@ -7453,7 +7456,7 @@ end subroutine xy_juprint
 subroutine xy_justrlen(line,xlen,ylen,ydown,yup)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_justrlen(3fp): query string size with embedded directives"
+character(len=*),parameter::ident_59="@(#)M_xyplot::xy_justrlen(3fp): query string size with embedded directives"
 
 character(len=*) :: line
 integer          :: ilen
@@ -7483,7 +7486,7 @@ use M_journal,         only : journal
 use M_calculator_plus, only : inum0
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_justr(3fp): print string l at position x,y with embedded directives"
+character(len=*),parameter::ident_60="@(#)M_xyplot::xy_justr(3fp): print string l at position x,y with embedded directives"
 
 !     string is assumed to be [string]\directive\string\directive\string\directive\...
 !     does not allow for escaped backslash in string or null string between directives
@@ -8060,7 +8063,7 @@ subroutine xy_jucp2(line,ilen)
 use M_draw
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_jucp2(3fp): plot string line at current position"
+character(len=*),parameter::ident_61="@(#)M_xyplot::xy_jucp2(3fp): plot string line at current position"
 
 !     For some packages and machines it is best to put the string into
 !     a scratch variable and put a null character at the end
@@ -8139,7 +8142,7 @@ use M_draw
 use M_calculator_plus, only : inum0
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_juprints(3fp): simple print of string l at position x,y"
+character(len=*),parameter::ident_62="@(#)M_xyplot::xy_juprints(3fp): simple print of string l at position x,y"
 
 real,intent(in)      :: x
 real,intent(in)      :: y
@@ -8165,7 +8168,8 @@ subroutine xy_jucp(line)
 use M_draw
 implicit none
 
-character(len=*),parameter::ident="@(#)plot string line at current position"
+character(len=*),parameter::ident_63="@(#)M_xyplot::xy_jucp(3fp): plot string line at current position"
+
 
 !     For some packages and machines it is best to put the string into
 !     a scratch variable and put a null character at the end
@@ -8210,14 +8214,11 @@ end subroutine xy_jucp
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 subroutine xy_jufont(name)
-!CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCcccccccc
-!@(#) check and set font and store it so can query it
-!CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCcccccccc
 use M_journal, only : journal
 use M_draw
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_jucp(3fp): plot string line at current position"
+character(len=*),parameter::ident_64="@(#)xy_jufont(3f): check and set font and store it so can query it"
 
 character(len=*)      :: name
 character(len=60)     :: msg
@@ -8258,7 +8259,7 @@ end subroutine xy_jufont
 subroutine xy_getxy_jufont(name)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_jufont(3fp): check and set font and store it so can query it"
+character(len=*),parameter::ident_65="@(#)M_xyplot::xy_jufont(3fp): check and set font and store it so can query it"
 
 character*(*) name
    name=LASTNAMEQ
@@ -8271,7 +8272,7 @@ use M_draw
 use M_calculator_plus, only : rnum0
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_rasters(3fp): set line width"
+character(len=*),parameter::ident_66="@(#)M_xyplot::xy_rasters(3fp): set line width"
 
 integer,intent(in)   :: iwidth
    character(len=80) :: value
@@ -8304,7 +8305,7 @@ real function xy_ustrlen(string)
 use M_draw
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_ustrlen(3fp): get software string length including trailing whitespace"
+character(len=*),parameter::ident_67="@(#)M_xyplot::xy_ustrlen(3fp): get software string length including trailing whitespace"
 
 character(len=*),intent(in) :: string
    intrinsic len
@@ -8319,7 +8320,7 @@ real function xy_ustrlen2(string,ichars)
 use M_draw
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_ustrlen2(3fp): get software string length up to specified character"
+character(len=*),parameter::ident_68="@(#)M_xyplot::xy_ustrlen2(3fp): get software string length up to specified character"
 
 character(len=*),intent(in) :: string
 integer,intent(in)    :: ichars
@@ -8331,7 +8332,7 @@ end function xy_ustrlen2
 subroutine plot_get_plot_area(xsmall,xlarge,ysmall,ylarge)
 implicit none
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_69="&
 &@(#)M_xyplot::plot_get_plot_area(3fp): initialize plot page and set up common page-related values"
 
 real,intent(out)  :: xsmall
@@ -8350,7 +8351,7 @@ end subroutine plot_get_plot_area
 subroutine plot_set_plot_area(xsmall,xlarge,ysmall,ylarge)
 implicit none
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_70="&
 &@(#)M_xyplot::plot_set_plot_area(3fp): initialize plot page and set up common page-related values"
 
 real,intent(in)  :: xsmall
@@ -8390,7 +8391,7 @@ subroutine plot_axes() ! draw the axes
 use M_draw
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::plot_axes(3f): generically draw linear axis and logarithmic axis"
+character(len=*),parameter::ident_71="@(#)M_xyplot::plot_axes(3f): generically draw linear axis and logarithmic axis"
 
 !     draw y-axis first, as it adjusts left margin of plot area
 !
@@ -9136,7 +9137,7 @@ use M_journal, only : journal
 use M_draw
 implicit none
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_72="&
 &@(#)M_xyplot::priv_labelx(3fp): print a logarithmic label or linear label on x axis on bottom side"
 
 !     alabel is numeric value to print
@@ -9199,7 +9200,7 @@ subroutine priv_labely(iside,alabel,x,y,xtext,ytext,ilong,xxx,icount,ilogy,fmt)
 use M_draw
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::priv_labely(3fp): print logarithmic or linear y axis label on left or right"
+character(len=*),parameter::ident_73="@(#)M_xyplot::priv_labely(3fp): print logarithmic or linear y axis label on left or right"
 
 !     iside=1 for left side label, iside=2 for right side label
 !     alabel is numeric value to print
@@ -9262,7 +9263,7 @@ use M_strings, only : value_to_string, crop
 use M_time,    only : fmtdate, unix_to_date
 implicit none
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_74="&
 &@(#)M_xyplot::xy_toa(3fp): convert number to a nice string (1 to 20 characters) or explicit string for an axis label"
 
 real,intent(in)                 :: val32   ! number to convert to a string
@@ -9278,14 +9279,15 @@ character(len=*),intent(in)     :: fmt     !
                                            ! ' '    use value_to_string subroutine
                                            ! *%*    assume value is a Unix Epoch time value and use fmtdate to print the value
                                            ! other  user-specified 20 character format statement to write number with
-integer,intent(in)           :: icount     ! if using $x and $y xy_array, this is the subscript
-integer                      :: itime(8)
-integer                      :: ifail
-integer,parameter            :: ixyc=50
-character(len=255)           :: xc(ixyc), yc(ixyc), nc(ixyc),form2
-real                         :: alabel
-integer                      :: ios
-integer                      :: isub
+
+integer                         :: itime(8)
+integer,intent(in)              :: icount  ! if using $x and $y array, this is the subscript
+integer                         :: ifail
+integer,parameter               :: ixyc=50
+character(len=255)              :: xc(ixyc), yc(ixyc), nc(ixyc),form2
+real                            :: alabel
+integer                         :: ios
+integer                         :: isub
 common/zzrayc/xc,yc,nc
 save /zzrayc/
 
@@ -9311,12 +9313,12 @@ save /zzrayc/
       endif
       form=crop(form2)
       ilen=len_trim(form)
-      ilen=max(1,ilen) ! prevent problems from blank strings
-   elseif(index(fmt,'%').ne.0)then        ! assume value is a Unix Epoch Time value
+      ilen=max(1,ilen)                                ! prevent problems from blank strings
+   elseif(index(fmt,'%').ne.0)then                    ! assume value is a Unix Epoch Time value
       call unix_to_date(dble(val32),itime,ifail)
       form=fmtdate(itime,fmt)
       ilen=len_trim(form)
-   elseif(fmt.ne.' ')then        ! user-specified format up to 20 characters
+   elseif(fmt.ne.' ')then                             ! user-specified format up to 20 characters
       write(form,fmt=fmt,iostat=ios)val32
       if(ios.ne.0)then
          call journal('*xy_toa* cannot use user-specified format'//trim(fmt))
@@ -9406,7 +9408,7 @@ use M_draw
 use M_drawplus, only : page
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::plot_page(3f): initialize plot page and set up common page-related values"
+character(len=*),parameter::ident_75="@(#)M_xyplot::plot_page(3f): initialize plot page and set up common page-related values"
 
 real,intent(in)    :: xsmall
 real,intent(in)    :: xlarge
@@ -9429,7 +9431,7 @@ end subroutine plot_page
 subroutine priv_getpage(xsmall,xlarge,ysmall,ylarge)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::priv_getpage(3fp):  return plot page size"
+character(len=*),parameter::ident_76="@(#)M_xyplot::priv_getpage(3fp):  return plot page size"
 
 real,intent(out)    :: xsmall
 real,intent(out)    :: xlarge
@@ -9447,7 +9449,7 @@ end subroutine priv_getpage
 subroutine xy_setdatarange(x8)
 implicit none
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_77="&
 &@(#)M_xyplot::xy_setdatarange(3fp): set plot window extremes, set plot window extremes for dual axis"
 
 real       :: x8(8)
@@ -9463,7 +9465,7 @@ end subroutine xy_setdatarange
 subroutine plot_getdatarange(X8)
 implicit none
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_78="&
 &@(#)M_xyplot::plot_getdatarange(3f):  get plot window extremes, set plot window extremes for dual axis"
 
 real         :: x8(8)
@@ -9479,7 +9481,7 @@ end subroutine plot_getdatarange
 subroutine plot_setticper(TICPRX0,TICPRY0,TICPRX20,TICPRY20,TYPE)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::plot_setticper(3fp): set tic size"
+character(len=*),parameter::ident_79="@(#)M_xyplot::plot_setticper(3fp): set tic size"
 
 character(len=*)        :: type
 real                    :: ticprx0
@@ -9541,7 +9543,7 @@ subroutine xy_getscale(iadd,xslope,xinter,yslope,yinter)
 use M_draw
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_getscale(3fp): set up scaling between graphing area and user-scaled axis"
+character(len=*),parameter::ident_80="@(#)M_xyplot::xy_getscale(3fp): set up scaling between graphing area and user-scaled axis"
 
 ! iadd=0 uses left and bottom axis
 real           :: left,right,bottom,top
@@ -9586,7 +9588,7 @@ end subroutine xy_getscale
 subroutine plot_line(ipen,ivals,where,xar,yar)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::plot_line(3f): buffer curve data and call xy_line"
+character(len=*),parameter::ident_81="@(#)M_xyplot::plot_line(3f): buffer curve data and call xy_line"
 
 integer,intent(in) :: ipen
 integer,intent(in) :: ivals
@@ -9604,7 +9606,7 @@ subroutine plot_label(iwhich,label)
 use M_journal, only : journal
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::plot_label(3f): set plot axis labels"
+character(len=*),parameter::ident_82="@(#)M_xyplot::plot_label(3f): set plot axis labels"
 
 integer,intent(in)          :: iwhich
 character(len=*),intent(in) :: label
@@ -9620,7 +9622,7 @@ end subroutine plot_label
 subroutine plot_resetplot()
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::plot_resetplot(3f): reset plot-related common values"
+character(len=*),parameter::ident_83="@(#)M_xyplot::plot_resetplot(3f): reset plot-related common values"
 
    call xy_resetpens()
 
@@ -9704,7 +9706,7 @@ use M_draw
 use M_math, only : scale1
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::plot_set_nice_range(3f): determine nice range for creating an axis"
+character(len=*),parameter::ident_84="@(#)M_xyplot::plot_set_nice_range(3f): determine nice range for creating an axis"
 
 real        :: X8(8)
 real        :: xlow
@@ -9739,7 +9741,7 @@ use M_draw
 use M_drawplus, only : pop, push
 implicit none
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_85="&
 &@(#)M_xyplot::xy_line(3fp): draw polyline using data in xy_arrayx xy_arrayy, using pen style ipen"
 
 !===================================================================================================================================
@@ -9797,7 +9799,7 @@ end subroutine xy_line
 subroutine priv_drawseg_using_pen(ipen,x1,y1,x2,y2)
 implicit none
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_86="&
 &@(#)M_xyplot::priv_drawseg_using_pen(3fp):  draw a line using pen style ipen NOT to axis scale NOT setting color"
 
 !     conversion arrays used to distinguish between toframe and priv_toscale lines
@@ -9829,7 +9831,7 @@ use M_calculator_plus, only : strgar2
 use M_strings, only : listout
 implicit none
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_87="&
 &@(#)M_xyplot::plot_setdash(3f):  allow user to display|alter|retrieve  dash codes by style number"
 
 character(len=*),intent(in) :: parms   ! action keyword
@@ -10123,7 +10125,7 @@ use M_calculator_plus, only : inum0
 use M_math, only : scale1
 implicit none
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_88="&
 &@(#)M_xyplot::xy_jurang(3fp): return nice max and min values for the axis, and nice axis grid spacings"
 
 ! adjust the scaling according to user limits if specified
@@ -10236,7 +10238,7 @@ function xy_con_x(xvalue0) result(xvalue)
 use M_journal, only : journal
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_con_x(3fp): scale an axis value to the overall window/viewport"
+character(len=*),parameter::ident_89="@(#)M_xyplot::xy_con_x(3fp): scale an axis value to the overall window/viewport"
 
 real     :: xvalue0
 real     :: xvalue
@@ -10258,7 +10260,7 @@ function xy_con_y(yvalue0) result(yvalue)
 use M_journal, only : journal
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_con_y(3fp): scale an axis value to the overall window/viewport"
+character(len=*),parameter::ident_90="@(#)M_xyplot::xy_con_y(3fp): scale an axis value to the overall window/viewport"
 
 real     :: yvalue0
 real     :: yvalue
@@ -10280,7 +10282,7 @@ subroutine xy_setcnv(ilogx,ilogy)
 use M_drawplus, only : pop, push
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_setcnv(3fp): set up conversion table for xy_con_x and xy_con_y functions"
+character(len=*),parameter::ident_91="@(#)M_xyplot::xy_setcnv(3fp): set up conversion table for xy_con_x and xy_con_y functions"
 
 integer,intent(in) :: ilogx
 integer,intent(in) :: ilogy
@@ -10301,7 +10303,7 @@ subroutine xy_jugetwn(xsmall,xlarge,ysmall,ylarge)
 use M_draw
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_jugetwn(3fp): query current window ( appropriate for 2-d only)"
+character(len=*),parameter::ident_92="@(#)M_xyplot::xy_jugetwn(3fp): query current window ( appropriate for 2-d only)"
 
 real,intent(out) :: xsmall
 real,intent(out) :: xlarge
@@ -10346,7 +10348,7 @@ use M_drawplus, only : rdbox
 use M_drawplus, only : plain_rect
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_zoom(3fp):  given current four numbers defining a box"
+character(len=*),parameter::ident_93="@(#)M_xyplot::xy_zoom(3fp):  given current four numbers defining a box"
 
 real             :: high1
 real             :: high2
@@ -10505,7 +10507,7 @@ subroutine xy_convert(a,b,x,n)
 use M_journal, only : journal
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_convert(3fp): do a linear conversion on an xy_array of the form y=ax+b"
+character(len=*),parameter::ident_94="@(#)M_xyplot::xy_convert(3fp): do a linear conversion on an xy_array of the form y=ax+b"
 
 real       :: x(*)
 real       :: a
@@ -10533,7 +10535,8 @@ end subroutine xy_convert
 subroutine priv_hilow(rmin,rmax)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::priv_hilow(3fp): avoid bug where plot fails if zero range in abscissa or ordinate"
+character(len=*),parameter::ident_95="&
+&@(#)M_xyplot::priv_hilow(3fp): avoid bug where plot fails if zero range in abscissa or ordinate"
 
 real :: rmin
 real :: rmax
@@ -10561,7 +10564,7 @@ use M_draw
 use M_drawplus, only : plain_rect
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::priv_jubox(3fp): draw a filled box around current scaled plot area"
+character(len=*),parameter::ident_96="@(#)M_xyplot::priv_jubox(3fp): draw a filled box around current scaled plot area"
 
 integer,intent(in) :: imidl
 real,intent(in) :: XMIN, YMIN, XMAX, YMAX
@@ -10585,7 +10588,7 @@ use M_draw
 use M_drawplus, only : plain_rect
 implicit none
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_97="&
 &@(#)M_xyplot::priv_jugrid(3fp): draw linear and logarithmic grids after actual axis have been drawn"
 
 !     extracted this so can put colored box behind grid and come up with
@@ -10876,7 +10879,7 @@ use M_math, only : scale1
 use M_math, only : scale3
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::priv_logrng(3fp): return nice ranges for logarithmic scales"
+character(len=*),parameter::ident_98="@(#)M_xyplot::priv_logrng(3fp): return nice ranges for logarithmic scales"
 
 character(len=*) :: logtype
 integer          :: itic
@@ -10920,7 +10923,7 @@ use M_draw
 use M_drawplus, only : pop, push
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::xy_obj12345(3fp): create or close VOGLE object 12345"
+character(len=*),parameter::ident_99="@(#)M_xyplot::xy_obj12345(3fp): create or close VOGLE object 12345"
 
 logical                     :: ldummy
 character(len=*),intent(in) :: string
@@ -10950,7 +10953,7 @@ end subroutine xy_obj12345
 subroutine priv_setrng(rin,value,ichange)
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::priv_setrng(3fp): adjust the scaling according to user limits if specified"
+character(len=*),parameter::ident_100="@(#)M_xyplot::priv_setrng(3fp): adjust the scaling according to user limits if specified"
 
 real                ::  rin
 real,intent(out)    :: value
@@ -10969,7 +10972,7 @@ end subroutine priv_setrng
 subroutine priv_solidline(mode)  ! override dash code and symbol drawing and draw solid line for error bars
 implicit none
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_101="&
 &@(#)M_xyplot::priv_solidline(3fp): override dash code and symbol drawing and draw solid line for error bars"
 
 logical,intent(in)  :: mode
@@ -10988,7 +10991,8 @@ use M_journal, only : journal
 use M_draw
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::priv_toscale(3fp): display 2-d vector described by x and y to axis or plot scale"
+character(len=*),parameter::ident_102="&
+&@(#)M_xyplot::priv_toscale(3fp): display 2-d vector described by x and y to axis or plot scale"
 
 !     graph is in x,y xy_arrays; use points 1 to n
 
@@ -11140,7 +11144,7 @@ subroutine priv_endgrid(iflag,endnew,rmax,rmin,ticlen,istyle)
 use M_journal, only : journal
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::priv_endgrid(3fp): determine length of major and minor grid lines"
+character(len=*),parameter::ident_103="@(#)M_xyplot::priv_endgrid(3fp): determine length of major and minor grid lines"
 
 integer,intent(in)    :: iflag  !-> 0 = full grid, 1= tic makrs, 2= plain
 real,intent(out)      :: endnew !-> where to end line
@@ -11172,9 +11176,9 @@ use M_drawplus, only : pop, push
 use ISO_C_BINDING
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::priv_judash(3fp): draw dashed line"
+character(len=*),parameter::ident_104="@(#)M_xyplot::priv_judash(3fp): draw dashed line"
 
-!  primitive   dashed  code   generator.  assumes  a  simple   cartesian
+!  primitive dashed code generator. assumes a simple cartesian
 !  coordinate system where x-units and y-units are the same length.
 real             :: x(n)
 real             :: y(n)
@@ -11268,7 +11272,8 @@ real             :: sumlen
       else
         imark=0
       endif
-47    if (seglen .le. dist.and.dist.ne.0) then
+47    continue
+      if (seglen .le. dist.and.dist.ne.0) then
          f = seglen/diag
          curx = curx + dx*f
          cury = cury + dy*f
@@ -11308,7 +11313,7 @@ use M_draw
 use ISO_C_BINDING
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::priv_jufill(3fp): fill or draw impulse line under curve"
+character(len=*),parameter::ident_105="@(#)M_xyplot::priv_jufill(3fp): fill or draw impulse line under curve"
 
 !     given a curve of x(n),y(n) put a line every istep points or fill
 !     depending on clipping for now. Should let top/bottom be set
@@ -11437,9 +11442,9 @@ use M_drawplus, only : spirograph
 use M_drawplus, only : arrowhead
 implicit none
 
-character(len=*),parameter::ident="@(#)M_xyplot::priv_jusym(3fp): put symbols at points on a polyline"
+character(len=*),parameter::ident_106="@(#)M_xyplot::priv_jusym(3fp): put symbols at points on a polyline"
 
-!     given a curve of x(n),y(n) put a symbol every istep points, using symbol number im
+!     given a curve of X(N),Y(N) put a symbol every ISTEP points, using symbol number IM
 !     caution: when letters are used, centermode is off after call; and current font is used.
 !BETTER     might be a good option to not put a mark out unless it is at least 1 diameter from previous mark
 !BETTER     Make a coordinate mode that trims numeric strings and puts out numbers relative to axis coordinates
@@ -11621,6 +11626,596 @@ integer            :: jj
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine xy_getmark
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine test_suite_M_xyplot()
+
+!! setup
+   call test_plot_axes()
+   call test_plot_clear()
+   call test_plot_drawplot()
+   call test_plot_fetch()
+   call test_plot_get_plot_area()
+   call test_plot_getdatarange()
+   call test_plot_hcopy()
+   call test_plot_id()
+   call test_plot_init()
+   call test_plot_init_globals()
+   call test_plot_jupage()
+   call test_plot_juparea()
+   call test_plot_jut()
+   call test_plot_label()
+   call test_plot_line()
+   call test_plot_marks()
+   call test_plot_opentrail()
+   call test_plot_page()
+   call test_plot_page_aspect()
+   call test_plot_resetplot()
+   call test_plot_set_nice_range()
+   call test_plot_set_plot_area()
+   call test_plot_set_xmin()
+   call test_plot_setdash()
+   call test_plot_setfill()
+   call test_plot_setmark()
+   call test_plot_setticper()
+   call test_plot_storage()
+   call test_plot_sz()
+   call test_plot_title()
+   call test_plot_toggle()
+   call test_plot_z()
+   call test_plot_zmode()
+   call test_xy_aspct()
+   call test_xy_con_x()
+   call test_xy_con_y()
+   call test_xy_getdat()
+   call test_xy_getmark()
+   call test_xy_getrel()
+   call test_xy_getscale()
+   call test_xy_ifdrawn()
+   call test_xy_jucurv()
+   call test_xy_judraw()
+   call test_xy_jugetwn()
+   call test_xy_jumapc()
+   call test_xy_juprint()
+   call test_xy_juput()
+   call test_xy_jurang()
+   call test_xy_jutitlx()
+   call test_xy_line()
+   call test_xy_obj12345()
+   call test_xy_pickpnt()
+   call test_xy_resetpens()
+   call test_xy_setcnv()
+   call test_xy_setdatarange()
+   call test_xy_setsize()
+   call test_xy_toa()
+   call test_xy_units()
+!! teardown
+contains
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_plot_axes()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('plot_axes',msg='')
+   !!call unit_check('plot_axes', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('plot_axes',msg='')
+end subroutine test_plot_axes
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_plot_clear()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('plot_clear',msg='')
+   !!call unit_check('plot_clear', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('plot_clear',msg='')
+end subroutine test_plot_clear
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_plot_drawplot()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('plot_drawplot',msg='')
+   !!call unit_check('plot_drawplot', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('plot_drawplot',msg='')
+end subroutine test_plot_drawplot
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_plot_fetch()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('plot_fetch',msg='')
+   !!call unit_check('plot_fetch', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('plot_fetch',msg='')
+end subroutine test_plot_fetch
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_plot_get_plot_area()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('plot_get_plot_area',msg='')
+   !!call unit_check('plot_get_plot_area', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('plot_get_plot_area',msg='')
+end subroutine test_plot_get_plot_area
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_plot_getdatarange()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('plot_getdatarange',msg='')
+   !!call unit_check('plot_getdatarange', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('plot_getdatarange',msg='')
+end subroutine test_plot_getdatarange
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_plot_hcopy()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('plot_hcopy',msg='')
+   !!call unit_check('plot_hcopy', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('plot_hcopy',msg='')
+end subroutine test_plot_hcopy
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_plot_id()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('plot_id',msg='')
+   !!call unit_check('plot_id', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('plot_id',msg='')
+end subroutine test_plot_id
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_plot_init()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('plot_init',msg='')
+   !!call unit_check('plot_init', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('plot_init',msg='')
+end subroutine test_plot_init
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_plot_init_globals()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('plot_init_globals',msg='')
+   !!call unit_check('plot_init_globals', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('plot_init_globals',msg='')
+end subroutine test_plot_init_globals
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_plot_jupage()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('plot_jupage',msg='')
+   !!call unit_check('plot_jupage', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('plot_jupage',msg='')
+end subroutine test_plot_jupage
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_plot_juparea()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('plot_juparea',msg='')
+   !!call unit_check('plot_juparea', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('plot_juparea',msg='')
+end subroutine test_plot_juparea
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_plot_jut()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('plot_jut',msg='')
+   !!call unit_check('plot_jut', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('plot_jut',msg='')
+end subroutine test_plot_jut
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_plot_label()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('plot_label',msg='')
+   !!call unit_check('plot_label', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('plot_label',msg='')
+end subroutine test_plot_label
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_plot_line()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('plot_line',msg='')
+   !!call unit_check('plot_line', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('plot_line',msg='')
+end subroutine test_plot_line
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_plot_marks()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('plot_marks',msg='')
+   !!call unit_check('plot_marks', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('plot_marks',msg='')
+end subroutine test_plot_marks
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_plot_opentrail()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('plot_opentrail',msg='')
+   !!call unit_check('plot_opentrail', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('plot_opentrail',msg='')
+end subroutine test_plot_opentrail
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_plot_page()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('plot_page',msg='')
+   !!call unit_check('plot_page', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('plot_page',msg='')
+end subroutine test_plot_page
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_plot_page_aspect()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('plot_page_aspect',msg='')
+   !!call unit_check('plot_page_aspect', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('plot_page_aspect',msg='')
+end subroutine test_plot_page_aspect
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_plot_resetplot()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('plot_resetplot',msg='')
+   !!call unit_check('plot_resetplot', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('plot_resetplot',msg='')
+end subroutine test_plot_resetplot
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_plot_set_nice_range()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('plot_set_nice_range',msg='')
+   !!call unit_check('plot_set_nice_range', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('plot_set_nice_range',msg='')
+end subroutine test_plot_set_nice_range
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_plot_set_plot_area()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('plot_set_plot_area',msg='')
+   !!call unit_check('plot_set_plot_area', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('plot_set_plot_area',msg='')
+end subroutine test_plot_set_plot_area
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_plot_set_xmin()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('plot_set_xmin',msg='')
+   !!call unit_check('plot_set_xmin', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('plot_set_xmin',msg='')
+end subroutine test_plot_set_xmin
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_plot_setdash()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('plot_setdash',msg='')
+   !!call unit_check('plot_setdash', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('plot_setdash',msg='')
+end subroutine test_plot_setdash
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_plot_setfill()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('plot_setfill',msg='')
+   !!call unit_check('plot_setfill', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('plot_setfill',msg='')
+end subroutine test_plot_setfill
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_plot_setmark()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('plot_setmark',msg='')
+   !!call unit_check('plot_setmark', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('plot_setmark',msg='')
+end subroutine test_plot_setmark
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_plot_setticper()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('plot_setticper',msg='')
+   !!call unit_check('plot_setticper', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('plot_setticper',msg='')
+end subroutine test_plot_setticper
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_plot_storage()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('plot_storage',msg='')
+   !!call unit_check('plot_storage', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('plot_storage',msg='')
+end subroutine test_plot_storage
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_plot_sz()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('plot_sz',msg='')
+   !!call unit_check('plot_sz', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('plot_sz',msg='')
+end subroutine test_plot_sz
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_plot_title()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('plot_title',msg='')
+   !!call unit_check('plot_title', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('plot_title',msg='')
+end subroutine test_plot_title
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_plot_toggle()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('plot_toggle',msg='')
+   !!call unit_check('plot_toggle', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('plot_toggle',msg='')
+end subroutine test_plot_toggle
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_plot_z()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('plot_z',msg='')
+   !!call unit_check('plot_z', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('plot_z',msg='')
+end subroutine test_plot_z
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_plot_zmode()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('plot_zmode',msg='')
+   !!call unit_check('plot_zmode', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('plot_zmode',msg='')
+end subroutine test_plot_zmode
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_xy_aspct()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('xy_aspct',msg='')
+   !!call unit_check('xy_aspct', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('xy_aspct',msg='')
+end subroutine test_xy_aspct
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_xy_con_x()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('xy_con_x',msg='')
+   !!call unit_check('xy_con_x', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('xy_con_x',msg='')
+end subroutine test_xy_con_x
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_xy_con_y()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('xy_con_y',msg='')
+   !!call unit_check('xy_con_y', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('xy_con_y',msg='')
+end subroutine test_xy_con_y
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_xy_getdat()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('xy_getdat',msg='')
+   !!call unit_check('xy_getdat', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('xy_getdat',msg='')
+end subroutine test_xy_getdat
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_xy_getmark()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('xy_getmark',msg='')
+   !!call unit_check('xy_getmark', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('xy_getmark',msg='')
+end subroutine test_xy_getmark
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_xy_getrel()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('xy_getrel',msg='')
+   !!call unit_check('xy_getrel', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('xy_getrel',msg='')
+end subroutine test_xy_getrel
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_xy_getscale()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('xy_getscale',msg='')
+   !!call unit_check('xy_getscale', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('xy_getscale',msg='')
+end subroutine test_xy_getscale
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_xy_ifdrawn()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('xy_ifdrawn',msg='')
+   !!call unit_check('xy_ifdrawn', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('xy_ifdrawn',msg='')
+end subroutine test_xy_ifdrawn
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_xy_jucurv()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('xy_jucurv',msg='')
+   !!call unit_check('xy_jucurv', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('xy_jucurv',msg='')
+end subroutine test_xy_jucurv
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_xy_judraw()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('xy_judraw',msg='')
+   !!call unit_check('xy_judraw', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('xy_judraw',msg='')
+end subroutine test_xy_judraw
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_xy_jugetwn()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('xy_jugetwn',msg='')
+   !!call unit_check('xy_jugetwn', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('xy_jugetwn',msg='')
+end subroutine test_xy_jugetwn
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_xy_jumapc()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('xy_jumapc',msg='')
+   !!call unit_check('xy_jumapc', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('xy_jumapc',msg='')
+end subroutine test_xy_jumapc
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_xy_juprint()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('xy_juprint',msg='')
+   !!call unit_check('xy_juprint', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('xy_juprint',msg='')
+end subroutine test_xy_juprint
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_xy_juput()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('xy_juput',msg='')
+   !!call unit_check('xy_juput', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('xy_juput',msg='')
+end subroutine test_xy_juput
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_xy_jurang()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('xy_jurang',msg='')
+   !!call unit_check('xy_jurang', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('xy_jurang',msg='')
+end subroutine test_xy_jurang
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_xy_jutitlx()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('xy_jutitlx',msg='')
+   !!call unit_check('xy_jutitlx', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('xy_jutitlx',msg='')
+end subroutine test_xy_jutitlx
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_xy_line()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('xy_line',msg='')
+   !!call unit_check('xy_line', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('xy_line',msg='')
+end subroutine test_xy_line
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_xy_obj12345()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('xy_obj12345',msg='')
+   !!call unit_check('xy_obj12345', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('xy_obj12345',msg='')
+end subroutine test_xy_obj12345
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_xy_pickpnt()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('xy_pickpnt',msg='')
+   !!call unit_check('xy_pickpnt', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('xy_pickpnt',msg='')
+end subroutine test_xy_pickpnt
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_xy_resetpens()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('xy_resetpens',msg='')
+   !!call unit_check('xy_resetpens', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('xy_resetpens',msg='')
+end subroutine test_xy_resetpens
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_xy_setcnv()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('xy_setcnv',msg='')
+   !!call unit_check('xy_setcnv', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('xy_setcnv',msg='')
+end subroutine test_xy_setcnv
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_xy_setdatarange()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('xy_setdatarange',msg='')
+   !!call unit_check('xy_setdatarange', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('xy_setdatarange',msg='')
+end subroutine test_xy_setdatarange
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_xy_setsize()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('xy_setsize',msg='')
+   !!call unit_check('xy_setsize', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('xy_setsize',msg='')
+end subroutine test_xy_setsize
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_xy_toa()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('xy_toa',msg='')
+   !!call unit_check('xy_toa', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('xy_toa',msg='')
+end subroutine test_xy_toa
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_xy_units()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('xy_units',msg='')
+   !!call unit_check('xy_units', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('xy_units',msg='')
+end subroutine test_xy_units
+!===================================================================================================================================
+end subroutine test_suite_M_xyplot
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================

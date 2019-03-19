@@ -8,6 +8,7 @@ private
    public junroach      ! <a href="junroach.3.html">print eye-catching ASCII graphic (roach)</a>
    public junsun        ! <a href="junsun.3.html">print eye-catching ASCII graphic (sunshine)</a>
    public juntrolls     ! <a href="juntrolls.3.html">print eye-catching ASCII graphic (trolls) with message</a>
+   public test_suite_M_messages
 
    ! ILLUMINATE
    public tabgraph      ! <a href="tabgraph.3.html">write columns of numbers with a text scale to the right</a>
@@ -1658,7 +1659,7 @@ end subroutine signs
 subroutine percent_done(part,whole)
 use M_anything, only : anyscalar_to_real
 implicit none
-character(len=*),parameter::ident="@(#)place a non-advancing status counter on terminal display (not redirected)"
+character(len=*),parameter::ident_1="@(#)place a non-advancing status counter on terminal display (not redirected)"
 class(*),intent(in)  :: part
 class(*),intent(in)  :: whole
 real                 :: part_local
@@ -1671,4 +1672,127 @@ end subroutine percent_done
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine test_suite_M_messages()
+
+!! setup
+   call test_blocks()
+   call test_junbad()
+   call test_junbat()
+   call test_junbuster()
+   call test_jundragon()
+   call test_junroach()
+   call test_junsun()
+   call test_juntrolls()
+   call test_percent_done()
+   call test_signs()
+   call test_tabgraph()
+!! teardown
+contains
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_blocks()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('blocks',msg='')
+   !!call unit_check('blocks', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('blocks',msg='')
+end subroutine test_blocks
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_junbad()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('junbad',msg='')
+   !!call unit_check('junbad', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('junbad',msg='')
+end subroutine test_junbad
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_junbat()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('junbat',msg='')
+   !!call unit_check('junbat', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('junbat',msg='')
+end subroutine test_junbat
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_junbuster()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('junbuster',msg='')
+   !!call unit_check('junbuster', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('junbuster',msg='')
+end subroutine test_junbuster
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_jundragon()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('jundragon',msg='')
+   !!call unit_check('jundragon', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('jundragon',msg='')
+end subroutine test_jundragon
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_junroach()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('junroach',msg='')
+   !!call unit_check('junroach', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('junroach',msg='')
+end subroutine test_junroach
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_junsun()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('junsun',msg='')
+   !!call unit_check('junsun', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('junsun',msg='')
+end subroutine test_junsun
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_juntrolls()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('juntrolls',msg='')
+   !!call unit_check('juntrolls', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('juntrolls',msg='')
+end subroutine test_juntrolls
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_percent_done()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('percent_done',msg='')
+   !!call unit_check('percent_done', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('percent_done',msg='')
+end subroutine test_percent_done
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_signs()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('signs',msg='')
+   !!call unit_check('signs', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('signs',msg='')
+end subroutine test_signs
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_tabgraph()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('tabgraph',msg='')
+   !!call unit_check('tabgraph', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('tabgraph',msg='')
+end subroutine test_tabgraph
+!===================================================================================================================================
+end subroutine test_suite_M_messages
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 end module M_messages

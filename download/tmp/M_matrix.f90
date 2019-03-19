@@ -71,6 +71,9 @@ use M_journal, only : journal
 implicit none
 integer,parameter :: BIGMEM=200005
 public MAT88
+public mat_str2buf
+public mat_buf2str
+public test_suite_M_matrix
 ! till get rid of type mismatches, the following are public
 !==================================================================================================================================!
 character(len=1024),save :: STRINGQ
@@ -198,7 +201,7 @@ contains
 !===================================================================================================================================
 subroutine MAT88(init,string0)
 
-character(len=*),parameter::ident="@(#)M_matrix::mat88(3f): initialize and/or pass commands to matrix laboratory interpreter"
+character(len=*),parameter::ident_1="@(#)M_matrix::mat88(3f): initialize and/or pass commands to matrix laboratory interpreter"
 
 character(len=*),intent(in) :: string0
 integer                     :: init
@@ -503,7 +506,7 @@ end subroutine mat_files
 !==================================================================================================================================!
 subroutine mat_getsym()
 
-character(len=*),parameter::ident="@(#)m_matrix::mat_getsym(3fp): get a symbol"
+character(len=*),parameter::ident_2="@(#)m_matrix::mat_getsym(3fp): get a symbol"
 
 character(len=80) ::  mline
 integer,parameter :: a2=52
@@ -620,7 +623,7 @@ end subroutine mat_getsym
 !==================================================================================================================================!
 subroutine mat_str2buf(string,buf,lrecl)
 
-character(len=*),parameter::ident="@(#)M_matrix::mat_str2buf(3fp) :: convert string to hollerith"
+character(len=*),parameter::ident_3="@(#)M_matrix::mat_str2buf(3fp) :: convert string to hollerith"
 
 ! g95 compiler does not support Hollerith, this is a KLUDGE to give time to think about it
 
@@ -637,7 +640,10 @@ end subroutine mat_str2buf
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-subroutine mat_buf2str(string,buf,lrecl) ! convert string to hollerith
+subroutine mat_buf2str(string,buf,lrecl)
+
+character(len=*),parameter::ident_4="@(#)M_matrix::mat_buf2string(3fp) :: convert hollerith to string"
+
 integer,intent(in)           :: lrecl
 integer,intent(in)           :: buf(lrecl)
 character(len=*)             :: string
@@ -653,7 +659,7 @@ end subroutine mat_buf2str
 !==================================================================================================================================!
 subroutine mat_hilber(a,lda,n)
 
-character(len=*),parameter::ident="@(#)M_matrix::ml_hilbr(3fp): generate inverse hilbert matrix"
+character(len=*),parameter::ident_5="@(#)M_matrix::ml_hilbr(3fp): generate inverse hilbert matrix"
 
 integer         :: lda
 integer         :: n
@@ -685,7 +691,7 @@ end subroutine mat_hilber
 !==================================================================================================================================!
 subroutine mat_matfn6()
 !
-character(len=*),parameter::ident="@(#)M_matrix::mat_matfn6(3f):evaluate utility functions"
+character(len=*),parameter::ident_6="@(#)M_matrix::mat_matfn6(3f):evaluate utility functions"
 !
 integer :: i
 integer :: ia
@@ -981,7 +987,7 @@ end subroutine mat_matfn6
 !==================================================================================================================================!
 subroutine mat_funs(id)
 
-character(len=*),parameter::ident="@(#)M_matrix::ml_funcs(3fp):scan function list"
+character(len=*),parameter::ident_7="@(#)M_matrix::ml_funcs(3fp):scan function list"
 
 integer,intent(in) :: id(4)
 integer,parameter  :: funl=58                      ! number of functions
@@ -1045,7 +1051,7 @@ end subroutine mat_funs
 !==================================================================================================================================!
 subroutine mat_putid(x,y)
 
-character(len=*),parameter::ident="@(#)M_matrix::mat_putid(3fp): store a name"
+character(len=*),parameter::ident_8="@(#)M_matrix::mat_putid(3fp): store a name"
 
 integer,intent(out) :: x(4)
 integer,intent(in)  :: y(4)
@@ -1059,7 +1065,7 @@ end subroutine mat_putid
 !==================================================================================================================================!
 subroutine mat_getval(s)
 
-character(len=*),parameter::ident="@(#)M_matrix::mat_getval(3fp): form numerical value"
+character(len=*),parameter::ident_9="@(#)M_matrix::mat_getval(3fp): form numerical value"
 
 doubleprecision,intent(out) :: s
       s = 0.0d0
@@ -1074,7 +1080,7 @@ end subroutine mat_getval
 !==================================================================================================================================!
 subroutine mat_getch()
 
-character(len=*),parameter::ident="@(#)M_matrix::mat_getch(3f): get next character from input line"
+character(len=*),parameter::ident_10="@(#)M_matrix::mat_getch(3f): get next character from input line"
 
 integer :: l
 
@@ -1122,7 +1128,7 @@ end function mat_wdotur
 subroutine mat_appnum(rval,string,ilen,ierr)
 use M_strings, only: value_to_string
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_11="&
 &@(#)M_matrix::mat_appnum(3fp): subroutine returns a string given a prefix string and a real value"
 
 !     Input string should have at least 20 blank characters at end
@@ -1186,7 +1192,7 @@ end subroutine mat_wcopy
 !==================================================================================================================================!
 subroutine mat_wdiv(ar,ai,br,bi,cr,ci)
 
-character(len=*),parameter::ident="@(#)M_matrix::mat_wdiv(3fp): c = a/b"
+character(len=*),parameter::ident_12="@(#)M_matrix::mat_wdiv(3fp): c = a/b"
 
 doubleprecision :: ar
 doubleprecision :: ai
@@ -1247,7 +1253,7 @@ integer         :: n
 
 doubleprecision :: t
 !
-character(len=*),parameter::ident="@(#)M_matrix::mat_base(3fp): store base b representation of x in s(1:n)"
+character(len=*),parameter::ident_13="@(#)M_matrix::mat_base(3fp): store base b representation of x in s(1:n)"
 !
 integer,save :: plus=41
 integer,save :: minus=42
@@ -1381,7 +1387,7 @@ end function mat_pythag
 !==================================================================================================================================!
 SUBROUTINE mat_print(ID,K)
 
-character(len=*),parameter::ident="@(#)M_matrix::mat_print(3fp): primary output routine"
+character(len=*),parameter::ident_14="@(#)M_matrix::mat_print(3fp): primary output routine"
 
 integer           :: id(4)
 integer           :: k
@@ -1622,7 +1628,7 @@ END SUBROUTINE mat_print
 !==================================================================================================================================!
 subroutine mat_wsqrt(xr,xi,yr,yi)
 
-character(len=*),parameter::ident="@(#)M_matrix::mat_wsqrt(3fp): y = sqrt(x) with yr .ge. 0.0 and sign(yi) .eq. sign(xi)"
+character(len=*),parameter::ident_15="@(#)M_matrix::mat_wsqrt(3fp): y = sqrt(x) with yr .ge. 0.0 and sign(yi) .eq. sign(xi)"
 
 doubleprecision :: xr
 doubleprecision :: xi
@@ -1647,7 +1653,7 @@ end subroutine mat_wsqrt
 !==================================================================================================================================!
 subroutine mat_wlog(xr,xi,yr,yi)
 
-character(len=*),parameter::ident="@(#)M_matrix::mat_wlog(3fp): y = log(x)"
+character(len=*),parameter::ident_16="@(#)M_matrix::mat_wlog(3fp): y = log(x)"
 
 doubleprecision :: xr
 doubleprecision :: xi
@@ -1668,7 +1674,7 @@ end subroutine mat_wlog
 !==================================================================================================================================!
 subroutine mat_formz(lunit,x,y)
 
-character(len=*),parameter::ident="@(#)M_matrix::mat_formz: system dependent routine to print with z format"
+character(len=*),parameter::ident_17="@(#)M_matrix::mat_formz: system dependent routine to print with z format"
 
 integer                    :: lunit
 doubleprecision,intent(in) :: x,y
@@ -1689,7 +1695,7 @@ end subroutine mat_formz
 !==================================================================================================================================!
 subroutine mat_prompt(pause)
 
-character(len=*),parameter::ident="@(#)issue interactive prompt with optional pause"
+character(len=*),parameter::ident_18="@(#)issue interactive prompt with optional pause"
 
 integer,intent(in) :: pause
 character(len=1)   :: dummy
@@ -1713,7 +1719,7 @@ end subroutine mat_prompt
 !==================================================================================================================================!
 subroutine mat_magic(a,lda,n)
 !
-character(len=*),parameter::ident="@(#)M_matrix::mat_magic(3fp): Algorithms for magic squares"
+character(len=*),parameter::ident_19="@(#)M_matrix::mat_magic(3fp): Algorithms for magic squares"
 
 !        Algorithims taken from
 !        Mathematical Recreations and Essays, 12th Ed.,
@@ -1925,7 +1931,7 @@ end subroutine mat_wscal
 !==================================================================================================================================!
 subroutine mat_wmul(ar,ai,br,bi,cr,ci)
 
-character(len=*),parameter::ident="@(#)mat_wmul(3fp) [M_matrix] c = a*b"
+character(len=*),parameter::ident_20="@(#)mat_wmul(3fp) [M_matrix] c = a*b"
 
 doubleprecision :: ar
 doubleprecision :: ai
@@ -1945,7 +1951,7 @@ end subroutine mat_wmul
 !==================================================================================================================================!
 subroutine mat_stack1(op)
 
-character(len=*),parameter::ident="@(#)M_matrix::mat_stack1(3f): Unary Operations"
+character(len=*),parameter::ident_21="@(#)M_matrix::mat_stack1(3f): Unary Operations"
 
 integer           :: op
 INTEGER,parameter :: QUOTE=49
@@ -1991,7 +1997,7 @@ end subroutine mat_stack1
 !==================================================================================================================================!
 subroutine mat_rrot(n,dx,incx,dy,incy,c,s)
 
-character(len=*),parameter::ident="@(#)M_matrix::mat_rrot(3f): Applies a plane rotation."
+character(len=*),parameter::ident_22="@(#)M_matrix::mat_rrot(3f): Applies a plane rotation."
 
 integer         :: n
 doubleprecision :: dx(*)
@@ -2025,7 +2031,7 @@ end subroutine mat_rrot
 !==================================================================================================================================!
 subroutine mat_rset(n,dx,dy,incy)
 
-character(len=*),parameter::ident="@(#)M_matrix::mat_rset(3f): copies a scalar, dx, to a scalar, dy."
+character(len=*),parameter::ident_23="@(#)M_matrix::mat_rset(3f): copies a scalar, dx, to a scalar, dy."
 
 integer         :: n
 doubleprecision :: dx,dy(*)
@@ -2047,7 +2053,7 @@ end subroutine mat_rset
 !==================================================================================================================================!
 subroutine mat_prntid(id,argcnt)
 
-character(len=*),parameter::ident="@(#)M_matrix::mat_prntid(3fp): print table of variable id names (up to) eight per line"
+character(len=*),parameter::ident_24="@(#)M_matrix::mat_prntid(3fp): print table of variable id names (up to) eight per line"
 
 !     ID     IS ARRAY OF 4-CHARACTER IDS TO PRINT
 !     ARGCNT IS NUMBER OF IDS TO PRINT
@@ -2100,7 +2106,7 @@ end subroutine mat_prntid
 !==================================================================================================================================!
 subroutine mat_stackp(id)
 
-character(len=*),parameter::ident="@(#)M_matrix::mat_stackp(3fp): put variables into storage"
+character(len=*),parameter::ident_25="@(#)M_matrix::mat_stackp(3fp): put variables into storage"
 
 integer             :: id(4)
 character(len=100)  :: mline
@@ -2370,7 +2376,7 @@ end subroutine mat_wpofa
 !==================================================================================================================================!
 subroutine mat_watan(xr,xi,yr,yi)
 
-character(len=*),parameter::ident="@(#)M_matrix::mat_watan(3fp): y = atan(x) = (i/2)*log((i+x)/(i-x))"
+character(len=*),parameter::ident_26="@(#)M_matrix::mat_watan(3fp): y = atan(x) = (i/2)*log((i+x)/(i-x))"
 
 doubleprecision :: xr
 doubleprecision :: xi
@@ -2397,7 +2403,7 @@ end subroutine mat_watan
 !==================================================================================================================================!
 subroutine mat_rrotg(da,db,c,s)
 
-character(len=*),parameter::ident="@(#)M_matrix::mat_rrotg(3fp): construct Givens plane rotation."
+character(len=*),parameter::ident_27="@(#)M_matrix::mat_rrotg(3fp): construct Givens plane rotation."
 
 doubleprecision :: da
 doubleprecision :: db
@@ -2426,7 +2432,7 @@ end subroutine mat_rrotg
 !==================================================================================================================================!
 subroutine mat_wsign(xr,xi,yr,yi,zr,zi)
 
-character(len=*),parameter::ident="@(#)M_matrix::mat_wsign(3fp): if y .ne. 0, z = x*y/abs(y)"
+character(len=*),parameter::ident_28="@(#)M_matrix::mat_wsign(3fp): if y .ne. 0, z = x*y/abs(y)"
 
 doubleprecision :: xr
 doubleprecision :: xi
@@ -3052,7 +3058,7 @@ end subroutine mat_comand
 !==================================================================================================================================!
 subroutine mat_plot(lplot,x,y,n,p,k)
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_29="&
 &@(#)M_matrix::mat_plot(3fp): Plot X vs. Y on LPLOT.  If K is nonzero, then P(1),...,P(K) are extra parameters"
 
 integer           :: lplot
@@ -3137,7 +3143,7 @@ end subroutine mat_plot
 !==================================================================================================================================!
 subroutine mat_matfn1()
 
-character(len=*),parameter::ident="@(#)M_matrix::mat_matfn1(3fp): evaluate functions involving gaussian elimination"
+character(len=*),parameter::ident_30="@(#)M_matrix::mat_matfn1(3fp): evaluate functions involving gaussian elimination"
 
 doubleprecision   :: dtr(2)
 doubleprecision   :: dti(2)
@@ -3701,7 +3707,7 @@ END SUBROUTINE mat_matfn2
 !==================================================================================================================================!
 subroutine mat_matfn3()
 
-character(len=*),parameter::ident="@(#)M_matrix::mat_matfn3(3fp): evaluate functions involving singular value decomposition"
+character(len=*),parameter::ident_31="@(#)M_matrix::mat_matfn3(3fp): evaluate functions involving singular value decomposition"
 
 integer         :: i
 integer         :: j
@@ -3956,7 +3962,7 @@ end subroutine mat_matfn3
 !==================================================================================================================================!
 SUBROUTINE mat_matfn4()
 
-character(len=*),parameter::ident="@(#)M_matrix::mat_matfn4(3fp): evaluate functions involving qr decomposition (least squares)"
+character(len=*),parameter::ident_32="@(#)M_matrix::mat_matfn4(3fp): evaluate functions involving qr decomposition (least squares)"
 
 integer           :: info
 integer           :: j
@@ -4155,7 +4161,7 @@ END SUBROUTINE mat_matfn4
 !==================================================================================================================================!
 subroutine mat_matfn5()
 
-character(len=*),parameter::ident="@(#)M_matrix::mat_matfn5(3fp):file handling and other I/O"
+character(len=*),parameter::ident_33="@(#)M_matrix::mat_matfn5(3fp):file handling and other I/O"
 
 character(len=256)  :: mline
 character(len=256)  :: errmsg
@@ -4481,7 +4487,7 @@ end subroutine mat_matfn5
 !==================================================================================================================================!
 SUBROUTINE mat_stackg(ID)
 
-character(len=*),parameter::ident="@(#)M_matrix::mat_stackg(3fp): get variables from storage"
+character(len=*),parameter::ident_34="@(#)M_matrix::mat_stackg(3fp): get variables from storage"
 
 integer       :: id(4)
 integer       :: i
@@ -4613,7 +4619,7 @@ END SUBROUTINE mat_stackg
 !==================================================================================================================================!
 SUBROUTINE mat_stack2(OP)
 
-character(len=*),parameter::ident="@(#)M_matrix::ml_stackp(3fp): binary and ternary operations"
+character(len=*),parameter::ident_35="@(#)M_matrix::ml_stackp(3fp): binary and ternary operations"
 
 INTEGER           :: OP
 DOUBLEPRECISION   :: SR,SI,E1,ST,E2
@@ -5247,7 +5253,7 @@ END SUBROUTINE mat_clause
 !==================================================================================================================================!
 subroutine mat_rat(x,len,maxd,a,b,d)
 
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_36="&
 &@(#)M_matrix::mat_rat(3fp): A/B = continued fraction approximation to X using  len  terms each less than MAXD"
 
 integer         :: len,maxd
@@ -5730,7 +5736,8 @@ doubleprecision              :: ximag(*)
 character(len=4)             :: cid
 integer                      :: i,j,k,l
 
-character(len=*),parameter::ident="@(#)M_matrix::mat_savlod(3fp): read next variable from a save file or write next variable to it"
+character(len=*),parameter::ident_37="&
+&@(#)M_matrix::mat_savlod(3fp): read next variable from a save file or write next variable to it"
 
       ! should report I/O errors (disk full, unwritable, ....)
 !
@@ -5992,7 +5999,7 @@ end function mat_wdotci
 !==================================================================================================================================!
 integer function mat_iwamax(n,xr,xi,incx)
 
-character(len=*),parameter::ident="@(#)M_matrix::mat_iwamax(3fp):index of norminf(x)"
+character(len=*),parameter::ident_38="@(#)M_matrix::mat_iwamax(3fp):index of norminf(x)"
 
 integer         :: n
 doubleprecision :: xr(*)
@@ -9378,6 +9385,849 @@ write(io,'(a)')'     publication, 1980.'
 write(io,'(a)')''
 write(io,'(a)')'APPENDIX'
 end subroutine mat_make_manual
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine test_suite_M_matrix()
+
+!! setup
+   call test___copy_REAL_4()
+   call test_mat88()
+   call test_mat_appnum()
+   call test_mat_base()
+   call test_mat_buf2str()
+   call test_mat_clause()
+   call test_mat_comand()
+   call test_mat_eqid()
+   call test_mat_err()
+   call test_mat_expr()
+   call test_mat_factor()
+   call test_mat_files()
+   call test_mat_flop()
+   call test_mat_formz()
+   call test_mat_funs()
+   call test_mat_getch()
+   call test_mat_getlin()
+   call test_mat_getsym()
+   call test_mat_getval()
+   call test_mat_hilber()
+   call test_mat_iwamax()
+   call test_mat_magic()
+   call test_mat_make_help()
+   call test_mat_make_manual()
+   call test_mat_matfn1()
+   call test_mat_matfn2()
+   call test_mat_matfn3()
+   call test_mat_matfn4()
+   call test_mat_matfn5()
+   call test_mat_matfn6()
+   call test_mat_parse()
+   call test_mat_plot()
+   call test_mat_print()
+   call test_mat_prntid()
+   call test_mat_prompt()
+   call test_mat_putid()
+   call test_mat_pythag()
+   call test_mat_rat()
+   call test_mat_round()
+   call test_mat_rref()
+   call test_mat_rrot()
+   call test_mat_rrotg()
+   call test_mat_rset()
+   call test_mat_rswap()
+   call test_mat_savlod()
+   call test_mat_stack1()
+   call test_mat_stack2()
+   call test_mat_stackg()
+   call test_mat_stackp()
+   call test_mat_str2buf()
+   call test_mat_term()
+   call test_mat_urand()
+   call test_mat_wasum()
+   call test_mat_watan()
+   call test_mat_wcopy()
+   call test_mat_wdiv()
+   call test_mat_wdotci()
+   call test_mat_wdotcr()
+   call test_mat_wdotui()
+   call test_mat_wdotur()
+   call test_mat_wlog()
+   call test_mat_wmul()
+   call test_mat_wnrm2()
+   call test_mat_wpofa()
+   call test_mat_wrscal()
+   call test_mat_wscal()
+   call test_mat_wset()
+   call test_mat_wsign()
+   call test_mat_wsqrt()
+   call test_mat_wswap()
+   call test_matx_waxpy()
+   call test_ml_comqr3()
+   call test_ml_corth()
+   call test_ml_htribk()
+   call test_ml_htridi()
+   call test_ml_imtql2()
+   call test_ml_wgeco()
+   call test_ml_wgedi()
+   call test_ml_wgefa()
+   call test_ml_wgesl()
+   call test_ml_wqrdc()
+   call test_ml_wqrsl()
+   call test_ml_wsvdc()
+!! teardown
+contains
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test___copy_REAL_4()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('__copy_REAL_4',msg='')
+   !!call unit_check('__copy_REAL_4', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('__copy_REAL_4',msg='')
+end subroutine test___copy_REAL_4
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat88()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat88',msg='')
+   !!call unit_check('mat88', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat88',msg='')
+end subroutine test_mat88
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_appnum()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_appnum',msg='')
+   !!call unit_check('mat_appnum', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_appnum',msg='')
+end subroutine test_mat_appnum
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_base()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_base',msg='')
+   !!call unit_check('mat_base', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_base',msg='')
+end subroutine test_mat_base
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_buf2str()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_buf2str',msg='')
+   !!call unit_check('mat_buf2str', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_buf2str',msg='')
+end subroutine test_mat_buf2str
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_clause()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_clause',msg='')
+   !!call unit_check('mat_clause', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_clause',msg='')
+end subroutine test_mat_clause
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_comand()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_comand',msg='')
+   !!call unit_check('mat_comand', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_comand',msg='')
+end subroutine test_mat_comand
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_eqid()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_eqid',msg='')
+   !!call unit_check('mat_eqid', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_eqid',msg='')
+end subroutine test_mat_eqid
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_err()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_err',msg='')
+   !!call unit_check('mat_err', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_err',msg='')
+end subroutine test_mat_err
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_expr()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_expr',msg='')
+   !!call unit_check('mat_expr', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_expr',msg='')
+end subroutine test_mat_expr
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_factor()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_factor',msg='')
+   !!call unit_check('mat_factor', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_factor',msg='')
+end subroutine test_mat_factor
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_files()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_files',msg='')
+   !!call unit_check('mat_files', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_files',msg='')
+end subroutine test_mat_files
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_flop()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_flop',msg='')
+   !!call unit_check('mat_flop', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_flop',msg='')
+end subroutine test_mat_flop
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_formz()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_formz',msg='')
+   !!call unit_check('mat_formz', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_formz',msg='')
+end subroutine test_mat_formz
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_funs()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_funs',msg='')
+   !!call unit_check('mat_funs', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_funs',msg='')
+end subroutine test_mat_funs
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_getch()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_getch',msg='')
+   !!call unit_check('mat_getch', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_getch',msg='')
+end subroutine test_mat_getch
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_getlin()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_getlin',msg='')
+   !!call unit_check('mat_getlin', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_getlin',msg='')
+end subroutine test_mat_getlin
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_getsym()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_getsym',msg='')
+   !!call unit_check('mat_getsym', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_getsym',msg='')
+end subroutine test_mat_getsym
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_getval()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_getval',msg='')
+   !!call unit_check('mat_getval', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_getval',msg='')
+end subroutine test_mat_getval
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_hilber()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_hilber',msg='')
+   !!call unit_check('mat_hilber', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_hilber',msg='')
+end subroutine test_mat_hilber
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_iwamax()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_iwamax',msg='')
+   !!call unit_check('mat_iwamax', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_iwamax',msg='')
+end subroutine test_mat_iwamax
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_magic()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_magic',msg='')
+   !!call unit_check('mat_magic', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_magic',msg='')
+end subroutine test_mat_magic
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_make_help()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_make_help',msg='')
+   !!call unit_check('mat_make_help', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_make_help',msg='')
+end subroutine test_mat_make_help
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_make_manual()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_make_manual',msg='')
+   !!call unit_check('mat_make_manual', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_make_manual',msg='')
+end subroutine test_mat_make_manual
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_matfn1()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_matfn1',msg='')
+   !!call unit_check('mat_matfn1', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_matfn1',msg='')
+end subroutine test_mat_matfn1
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_matfn2()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_matfn2',msg='')
+   !!call unit_check('mat_matfn2', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_matfn2',msg='')
+end subroutine test_mat_matfn2
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_matfn3()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_matfn3',msg='')
+   !!call unit_check('mat_matfn3', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_matfn3',msg='')
+end subroutine test_mat_matfn3
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_matfn4()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_matfn4',msg='')
+   !!call unit_check('mat_matfn4', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_matfn4',msg='')
+end subroutine test_mat_matfn4
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_matfn5()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_matfn5',msg='')
+   !!call unit_check('mat_matfn5', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_matfn5',msg='')
+end subroutine test_mat_matfn5
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_matfn6()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_matfn6',msg='')
+   !!call unit_check('mat_matfn6', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_matfn6',msg='')
+end subroutine test_mat_matfn6
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_parse()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_parse',msg='')
+   !!call unit_check('mat_parse', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_parse',msg='')
+end subroutine test_mat_parse
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_plot()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_plot',msg='')
+   !!call unit_check('mat_plot', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_plot',msg='')
+end subroutine test_mat_plot
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_print()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_print',msg='')
+   !!call unit_check('mat_print', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_print',msg='')
+end subroutine test_mat_print
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_prntid()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_prntid',msg='')
+   !!call unit_check('mat_prntid', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_prntid',msg='')
+end subroutine test_mat_prntid
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_prompt()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_prompt',msg='')
+   !!call unit_check('mat_prompt', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_prompt',msg='')
+end subroutine test_mat_prompt
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_putid()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_putid',msg='')
+   !!call unit_check('mat_putid', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_putid',msg='')
+end subroutine test_mat_putid
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_pythag()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_pythag',msg='')
+   !!call unit_check('mat_pythag', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_pythag',msg='')
+end subroutine test_mat_pythag
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_rat()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_rat',msg='')
+   !!call unit_check('mat_rat', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_rat',msg='')
+end subroutine test_mat_rat
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_round()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_round',msg='')
+   !!call unit_check('mat_round', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_round',msg='')
+end subroutine test_mat_round
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_rref()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_rref',msg='')
+   !!call unit_check('mat_rref', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_rref',msg='')
+end subroutine test_mat_rref
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_rrot()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_rrot',msg='')
+   !!call unit_check('mat_rrot', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_rrot',msg='')
+end subroutine test_mat_rrot
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_rrotg()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_rrotg',msg='')
+   !!call unit_check('mat_rrotg', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_rrotg',msg='')
+end subroutine test_mat_rrotg
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_rset()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_rset',msg='')
+   !!call unit_check('mat_rset', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_rset',msg='')
+end subroutine test_mat_rset
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_rswap()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_rswap',msg='')
+   !!call unit_check('mat_rswap', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_rswap',msg='')
+end subroutine test_mat_rswap
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_savlod()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_savlod',msg='')
+   !!call unit_check('mat_savlod', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_savlod',msg='')
+end subroutine test_mat_savlod
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_stack1()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_stack1',msg='')
+   !!call unit_check('mat_stack1', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_stack1',msg='')
+end subroutine test_mat_stack1
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_stack2()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_stack2',msg='')
+   !!call unit_check('mat_stack2', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_stack2',msg='')
+end subroutine test_mat_stack2
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_stackg()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_stackg',msg='')
+   !!call unit_check('mat_stackg', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_stackg',msg='')
+end subroutine test_mat_stackg
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_stackp()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_stackp',msg='')
+   !!call unit_check('mat_stackp', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_stackp',msg='')
+end subroutine test_mat_stackp
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_str2buf()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_str2buf',msg='')
+   !!call unit_check('mat_str2buf', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_str2buf',msg='')
+end subroutine test_mat_str2buf
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_term()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_term',msg='')
+   !!call unit_check('mat_term', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_term',msg='')
+end subroutine test_mat_term
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_urand()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_urand',msg='')
+   !!call unit_check('mat_urand', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_urand',msg='')
+end subroutine test_mat_urand
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_wasum()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_wasum',msg='')
+   !!call unit_check('mat_wasum', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_wasum',msg='')
+end subroutine test_mat_wasum
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_watan()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_watan',msg='')
+   !!call unit_check('mat_watan', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_watan',msg='')
+end subroutine test_mat_watan
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_wcopy()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_wcopy',msg='')
+   !!call unit_check('mat_wcopy', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_wcopy',msg='')
+end subroutine test_mat_wcopy
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_wdiv()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_wdiv',msg='')
+   !!call unit_check('mat_wdiv', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_wdiv',msg='')
+end subroutine test_mat_wdiv
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_wdotci()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_wdotci',msg='')
+   !!call unit_check('mat_wdotci', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_wdotci',msg='')
+end subroutine test_mat_wdotci
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_wdotcr()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_wdotcr',msg='')
+   !!call unit_check('mat_wdotcr', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_wdotcr',msg='')
+end subroutine test_mat_wdotcr
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_wdotui()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_wdotui',msg='')
+   !!call unit_check('mat_wdotui', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_wdotui',msg='')
+end subroutine test_mat_wdotui
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_wdotur()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_wdotur',msg='')
+   !!call unit_check('mat_wdotur', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_wdotur',msg='')
+end subroutine test_mat_wdotur
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_wlog()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_wlog',msg='')
+   !!call unit_check('mat_wlog', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_wlog',msg='')
+end subroutine test_mat_wlog
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_wmul()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_wmul',msg='')
+   !!call unit_check('mat_wmul', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_wmul',msg='')
+end subroutine test_mat_wmul
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_wnrm2()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_wnrm2',msg='')
+   !!call unit_check('mat_wnrm2', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_wnrm2',msg='')
+end subroutine test_mat_wnrm2
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_wpofa()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_wpofa',msg='')
+   !!call unit_check('mat_wpofa', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_wpofa',msg='')
+end subroutine test_mat_wpofa
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_wrscal()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_wrscal',msg='')
+   !!call unit_check('mat_wrscal', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_wrscal',msg='')
+end subroutine test_mat_wrscal
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_wscal()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_wscal',msg='')
+   !!call unit_check('mat_wscal', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_wscal',msg='')
+end subroutine test_mat_wscal
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_wset()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_wset',msg='')
+   !!call unit_check('mat_wset', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_wset',msg='')
+end subroutine test_mat_wset
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_wsign()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_wsign',msg='')
+   !!call unit_check('mat_wsign', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_wsign',msg='')
+end subroutine test_mat_wsign
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_wsqrt()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_wsqrt',msg='')
+   !!call unit_check('mat_wsqrt', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_wsqrt',msg='')
+end subroutine test_mat_wsqrt
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mat_wswap()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('mat_wswap',msg='')
+   !!call unit_check('mat_wswap', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('mat_wswap',msg='')
+end subroutine test_mat_wswap
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_matx_waxpy()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('matx_waxpy',msg='')
+   !!call unit_check('matx_waxpy', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('matx_waxpy',msg='')
+end subroutine test_matx_waxpy
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_ml_comqr3()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('ml_comqr3',msg='')
+   !!call unit_check('ml_comqr3', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('ml_comqr3',msg='')
+end subroutine test_ml_comqr3
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_ml_corth()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('ml_corth',msg='')
+   !!call unit_check('ml_corth', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('ml_corth',msg='')
+end subroutine test_ml_corth
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_ml_htribk()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('ml_htribk',msg='')
+   !!call unit_check('ml_htribk', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('ml_htribk',msg='')
+end subroutine test_ml_htribk
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_ml_htridi()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('ml_htridi',msg='')
+   !!call unit_check('ml_htridi', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('ml_htridi',msg='')
+end subroutine test_ml_htridi
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_ml_imtql2()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('ml_imtql2',msg='')
+   !!call unit_check('ml_imtql2', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('ml_imtql2',msg='')
+end subroutine test_ml_imtql2
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_ml_wgeco()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('ml_wgeco',msg='')
+   !!call unit_check('ml_wgeco', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('ml_wgeco',msg='')
+end subroutine test_ml_wgeco
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_ml_wgedi()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('ml_wgedi',msg='')
+   !!call unit_check('ml_wgedi', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('ml_wgedi',msg='')
+end subroutine test_ml_wgedi
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_ml_wgefa()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('ml_wgefa',msg='')
+   !!call unit_check('ml_wgefa', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('ml_wgefa',msg='')
+end subroutine test_ml_wgefa
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_ml_wgesl()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('ml_wgesl',msg='')
+   !!call unit_check('ml_wgesl', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('ml_wgesl',msg='')
+end subroutine test_ml_wgesl
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_ml_wqrdc()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('ml_wqrdc',msg='')
+   !!call unit_check('ml_wqrdc', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('ml_wqrdc',msg='')
+end subroutine test_ml_wqrdc
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_ml_wqrsl()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('ml_wqrsl',msg='')
+   !!call unit_check('ml_wqrsl', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('ml_wqrsl',msg='')
+end subroutine test_ml_wqrsl
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_ml_wsvdc()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('ml_wsvdc',msg='')
+   !!call unit_check('ml_wsvdc', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('ml_wsvdc',msg='')
+end subroutine test_ml_wsvdc
+!===================================================================================================================================
+end subroutine test_suite_M_matrix
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 end module M_matrix
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!

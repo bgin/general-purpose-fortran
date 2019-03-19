@@ -27,7 +27,10 @@ void C_regcomp(regex_t *preg, const char *pattern,
   *nmatch = preg->re_nsub;
 }
 /* ------------------------------------------------------------------------------------------------------------------------------ */
+/*
 void C_regexec(const regex_t *preg,const char *string,int nmatch,int matches[nmatch][2],const char *flags,int *status_return) {
+*/
+void C_regexec(const regex_t *preg,      char *string,int nmatch,int matches[nmatch][2],const char *flags,int *status_return) {
   int i, eflags=0;
   regmatch_t *pmatch;
   for (i=0;flags[i];i++) {
@@ -54,7 +57,7 @@ void C_regexec(const regex_t *preg,const char *string,int nmatch,int matches[nma
   }
 }
 /* ------------------------------------------------------------------------------------------------------------------------------ */
-size_t my_regerror(const regex_t *preg, size_t errcode, char * restrict string){
+size_t my_regerror(const regex_t *preg, size_t errcode, char * string){
    size_t string_size=1024;
    size_t status;
    status=regerror(errcode,preg,string,string_size);

@@ -251,6 +251,8 @@
 
     public :: write_animated_gif
 
+    public test_suite_M_writegif_animated
+
     contains
 !-----------------------------------------------------------------------------------------------------------------------------------
 !> author: Jacob Williams
@@ -596,6 +598,29 @@ end subroutine flushbuffer
         end subroutine slicewrite
 !-----------------------------------------------------------------------------------------------------------------------------------
     end subroutine write_animated_gif
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine test_suite_M_writegif_animated()
+
+!! setup
+   call test_write_animated_gif()
+!! teardown
+contains
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_write_animated_gif()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('write_animated_gif',msg='')
+   !!call unit_check('write_animated_gif', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('write_animated_gif',msg='')
+end subroutine test_write_animated_gif
+!===================================================================================================================================
+end subroutine test_suite_M_writegif_animated
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
     end module M_writegif_animated
 !-----------------------------------------------------------------------------------------------------------------------------------
