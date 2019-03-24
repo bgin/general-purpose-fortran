@@ -807,62 +807,12 @@ end function parse_longopts
 subroutine test_suite_M_getopt_long()
 
 !! setup
-   call test___copy_m_getopt_long_Getopt_option_type()
-   call test___copy_m_getopt_long_Getopt_string_type()
-   call test___copy_m_getopt_long_Getopt_type()
-   call test___final_m_getopt_long_Getopt_string_type()
-   call test___final_m_getopt_long_Getopt_type()
    call test_getopt()
    call test_getopt_argv()
    call test_getopt_argv_len()
    call test_getopt_new()
 !! teardown
 contains
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___copy_m_getopt_long_Getopt_option_type()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('__copy_m_getopt_long_Getopt_option_type',msg='')
-   !!call unit_check('__copy_m_getopt_long_Getopt_option_type', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__copy_m_getopt_long_Getopt_option_type',msg='')
-end subroutine test___copy_m_getopt_long_Getopt_option_type
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___copy_m_getopt_long_Getopt_string_type()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('__copy_m_getopt_long_Getopt_string_type',msg='')
-   !!call unit_check('__copy_m_getopt_long_Getopt_string_type', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__copy_m_getopt_long_Getopt_string_type',msg='')
-end subroutine test___copy_m_getopt_long_Getopt_string_type
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___copy_m_getopt_long_Getopt_type()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('__copy_m_getopt_long_Getopt_type',msg='')
-   !!call unit_check('__copy_m_getopt_long_Getopt_type', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__copy_m_getopt_long_Getopt_type',msg='')
-end subroutine test___copy_m_getopt_long_Getopt_type
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___final_m_getopt_long_Getopt_string_type()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('__final_m_getopt_long_Getopt_string_type',msg='')
-   !!call unit_check('__final_m_getopt_long_Getopt_string_type', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__final_m_getopt_long_Getopt_string_type',msg='')
-end subroutine test___final_m_getopt_long_Getopt_string_type
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___final_m_getopt_long_Getopt_type()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('__final_m_getopt_long_Getopt_type',msg='')
-   !!call unit_check('__final_m_getopt_long_Getopt_type', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__final_m_getopt_long_Getopt_type',msg='')
-end subroutine test___final_m_getopt_long_Getopt_type
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_getopt()
 

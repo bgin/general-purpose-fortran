@@ -169,6 +169,12 @@ while getopts "chl:wt" arg; do
 done
 shift $((OPTIND-1))
 ################################################################################
+if [ -e "$LOG_FILE" ] 
+then
+   echo "$0 ERROR: $LOG_FILE already exists" 1>&2
+   exit
+fi
+################################################################################
 if [ "$test_suite_w" != '' ]
 then
         TEMPLATE $*|tee $LOG_FILE
@@ -202,10 +208,18 @@ do
    *.F90)SHORTNAME=$(basename $NAME .F90)
    ;;
    *.FF) SHORTNAME=$(basename $NAME .FF)
-         ufpp UFPP_TEST -verbose -system -i $NAME
+	 (
+	    set +x
+	    cd $(dirname $NAME)
+	    ufpp UFPP_TEST -verbose -system -i $(basename $NAME)
+	 )
    ;;
    *.ff) SHORTNAME=$(basename $NAME .ff)
-         ufpp UFPP_TEST -verbose -i $NAME
+	 (
+	    set +x
+	    cd $(dirname $NAME)
+	    ufpp UFPP_TEST -verbose -i $(basename $NAME)
+	 )
    ;;
    *.f)  SHORTNAME=$(basename $NAME .f)
    ;;

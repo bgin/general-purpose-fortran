@@ -1255,7 +1255,6 @@ end function mtprng_rand_real3
 subroutine test_suite_M_random()
 
 !! setup
-   call test___copy_m_random_Mtprng_state()
    call test_init_random_seed()
    call test_init_random_seed_by_dat()
    call test_init_random_seed_by_system_clock()
@@ -1274,15 +1273,6 @@ subroutine test_suite_M_random()
    call test_scramble()
 !! teardown
 contains
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___copy_m_random_Mtprng_state()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('__copy_m_random_Mtprng_state',msg='')
-   !!call unit_check('__copy_m_random_Mtprng_state', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__copy_m_random_Mtprng_state',msg='')
-end subroutine test___copy_m_random_Mtprng_state
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_init_random_seed()
 

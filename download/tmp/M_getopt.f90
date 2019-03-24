@@ -273,22 +273,12 @@ end function process_short
 subroutine test_suite_M_getopt()
 
 !! setup
-   call test___copy_m_getopt_Option_s()
    call test_getopt()
    call test_process_long()
    call test_process_short()
    call test_substr()
 !! teardown
 contains
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___copy_m_getopt_Option_s()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('__copy_m_getopt_Option_s',msg='')
-   !!call unit_check('__copy_m_getopt_Option_s', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__copy_m_getopt_Option_s',msg='')
-end subroutine test___copy_m_getopt_Option_s
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_getopt()
 

@@ -555,7 +555,7 @@ character(len=:),allocatable :: line
        icols=size(s2vs(line))
        allocate(array(irows,icols))
 
-       array=0.0d0
+       array=0.0
        istart=1
        do j=1,irows
           k=0
@@ -1543,17 +1543,20 @@ end function get_tmp
 !!    character(len=:),allocatable,intent(out) :: strout
 !!
 !!##DESCRIPTION
-!!    Ask for string or value from standard input with user-definable prompt up to 20 times
+!!    Ask for string or value from standard input with user-definable prompt
+!!    up to 20 times.  Do not use the function in an I/O statement as not
+!!    all versions of Fortran support this form of recursion. Numeric values
+!!    may be input in standard INTEGER, REAL, and DOUBLEPRECISION formats
+!!    or as whole numbers in base 2 to 36 in the format BASE#VALUE.
 !!
 !!##OPTIONS
 !!    prompt    Prompt string; displayed on same line as input is read from
 !!    default   default answer on carriage-return. The type of the default determines the
 !!              type of the output.
 !!##RETURNS
-!!    strout    returned string or value
-!!              If an end-of-file or system error is encountered the , string "EOF" is returned, or
+!!    strout    returned string or value.
+!!              If an end-of-file or system error is encountered the string "EOF" is returned, or
 !!              a "Nan" numeric value.
-!!              A blank string is not allowed as a return value unless the default is a blank string!
 !!##EXAMPLE
 !!
 !!   Sample program:
@@ -1561,8 +1564,20 @@ end function get_tmp
 !!    program demo_rd
 !!    use M_io, only : rd
 !!    character(len=:),allocatable :: mystring
-!!       mystring=rd('Enter string:',default='Today')
-!!       write(*,*)mystring
+!!    doubleprecision              :: d
+!!    real                         :: r
+!!    integer                      :: i
+!!
+!!    INFINITE: do
+!!       mystring=rd('Enter string or "STOP":',default='Today')
+!!       if(mystring.eq.'STOP')stop
+!!       i=rd('Enter integer:',default=huge(0))
+!!       r=rd('Enter real:',default=huge(0.0))
+!!       d=rd('Enter double:',default=huge(0.0d0))
+!!
+!!       write(*,*)'I=', i, 'R=', r, 'D=',d,  'MYSTRING=', mystring
+!!    enddo INFINITE
+!!
 !!    end program demo_rd
 !===================================================================================================================================
 function rd_character(prompt,default) result(strout)
@@ -1574,22 +1589,19 @@ implicit none
 
 character(len=*),parameter::ident_11="@(#)M_io::rd_character(3fp): ask for string from standard input with user-definable prompt"
 
+character(len=*),intent(in)  :: prompt
+character(len=*),intent(in)  :: default
 character(len=:),allocatable :: strout
-character(len=*)             :: prompt
-character(len=*)             :: default
 
-character(len=:),allocatable :: line
-integer             :: len_default
-integer             :: igot
-integer             :: ierr
-integer             :: icount
-real                :: count
-real                :: what4
+integer                      :: len_default
+integer                      :: igot
+integer                      :: ierr
+integer                      :: icount
 !===================================================================================================================================
    len_default=len(prompt)
 !===================================================================================================================================
    do icount=1,20                                                  ! prevent infinite loop on error or end-of-file
-      if(len_default.gt.0)write(*,'(a,'' '')',advance='no')prompt   ! write prompt
+      if(len_default.gt.0)write(*,'(a,'' '')',advance='no')prompt  ! write prompt
       ierr=read_all(strout,stdin)                                  ! get back string
       igot=len(strout)
       if(ierr.ne.0)then
@@ -1597,6 +1609,7 @@ real                :: what4
          cycle
       elseif(igot.eq.0.and.len_default.gt.0)then
          strout=default
+         exit
       elseif(igot.le.0)then
          call journal('*rd* blank string not allowed')
          cycle
@@ -1607,22 +1620,50 @@ real                :: what4
 end function rd_character
 !===================================================================================================================================
 function rd_doubleprecision(prompt,default) result(dvalue)
-use M_strings, only : s2v
+use M_strings, only : s2v, isnumber, decodebase
 implicit none
 
 character(len=*),parameter::ident_12="&
 &@(#)M_io::rd_doubleprecision(3fp): ask for number from standard input with user-definable prompt"
 
 doubleprecision              :: dvalue
+integer                      :: ivalue
 character(len=*),intent(in)  :: prompt
 doubleprecision,intent(in)   :: default
 character(len=:),allocatable :: strout
-strout=rd_character(prompt,'NaN')
-if(strout.eq.'NaN')then
-   dvalue=default
-else
-   dvalue=s2v(strout)
-endif
+character(len=:),allocatable :: message
+integer                      :: itest
+integer                      :: i
+
+do i=1,20 ! twenty tries max
+   strout=rd_character(prompt,'NaN')
+
+   ! 1 for an integer [-+]NNNNN
+   ! 2 for a whole number [-+]NNNNN.
+   ! 3 for a real value [-+]NNNNN.MMMM
+   ! 4 for a exponential value [-+]NNNNN.MMMM[-+]LLLL [-+]NNNNN.MMMM[ed][-+]LLLL
+   ! values less than 1 represent an error
+   if(strout.eq.'NaN')then
+      dvalue=default
+      exit
+   elseif(index(strout,'#').ne.0)then
+      if( decodebase(strout,0,ivalue))then
+         dvalue=ivalue
+         exit
+      else
+         write(*,*)'ERROR> could not convert ',strout
+      endif
+   else
+      itest=isnumber(strout,message)
+      if(itest.gt.0)then
+         dvalue=s2v(strout)
+         exit
+      else
+         write(*,*)' ERROR> for ',strout,' ',itest,':',trim(message)
+         cycle
+      endif
+   endif
+enddo
 end function rd_doubleprecision
 !===================================================================================================================================
 function rd_real(prompt,default) result(rvalue)
@@ -1633,7 +1674,7 @@ character(len=*),parameter::ident_13="@(#)M_io::rd_real(3fp): ask for number fro
 real                         :: rvalue
 character(len=*),intent(in)  :: prompt
 real,intent(in)              :: default
-rvalue=rd(prompt,dble(rvalue))
+   rvalue=real(rd_doubleprecision(prompt,dble(default)))
 end function rd_real
 !===================================================================================================================================
 function rd_integer(prompt,default) result(ivalue)
@@ -1644,7 +1685,7 @@ character(len=*),parameter::ident_14="@(#)M_io::rd_integer(3fp): ask for number 
 integer                      :: ivalue
 character(len=*),intent(in)  :: prompt
 integer,intent(in)           :: default
-ivalue=rd(prompt,dble(ivalue))
+   ivalue=int(rd_doubleprecision(prompt,dble(default)))
 end function rd_integer
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
@@ -1657,14 +1698,10 @@ subroutine test_suite_M_io()
    call test_isdir()
    call test_notopen()
    call test_print_inquire()
-   call test_rd_character()
-   call test_rd_doubleprecision()
-   call test_rd_integer()
-   call test_rd_real()
+   call test_rd()
    call test_read_all()
    call test_read_line()
-   call test_read_table_doubleprecision()
-   call test_read_table_real()
+   call test_read_table()
    call test_slurp()
    call test_splitpath()
    call test_uniq()
@@ -1716,41 +1753,14 @@ use M_debug, only : unit_check_level
    call unit_check_done('print_inquire',msg='')
 end subroutine test_print_inquire
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_rd_character()
+subroutine test_rd()
 
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
-   call unit_check_start('rd_character',msg='')
+   call unit_check_start('rd',msg='')
    !!call unit_check('rd_character', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('rd_character',msg='')
-end subroutine test_rd_character
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_rd_doubleprecision()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('rd_doubleprecision',msg='')
-   !!call unit_check('rd_doubleprecision', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('rd_doubleprecision',msg='')
-end subroutine test_rd_doubleprecision
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_rd_integer()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('rd_integer',msg='')
-   !!call unit_check('rd_integer', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('rd_integer',msg='')
-end subroutine test_rd_integer
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_rd_real()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('rd_real',msg='')
-   !!call unit_check('rd_real', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('rd_real',msg='')
-end subroutine test_rd_real
+   call unit_check_done('rd',msg='')
+end subroutine test_rd
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_read_all()
 
@@ -1770,23 +1780,14 @@ use M_debug, only : unit_check_level
    call unit_check_done('read_line',msg='')
 end subroutine test_read_line
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_read_table_doubleprecision()
+subroutine test_read_table()
 
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
-   call unit_check_start('read_table_doubleprecision',msg='')
-   !!call unit_check('read_table_doubleprecision', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('read_table_doubleprecision',msg='')
-end subroutine test_read_table_doubleprecision
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_read_table_real()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('read_table_real',msg='')
-   !!call unit_check('read_table_real', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('read_table_real',msg='')
-end subroutine test_read_table_real
+   call unit_check_start('read_table',msg='')
+   !!call unit_check('read_table', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('read_table',msg='')
+end subroutine test_read_table
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_slurp()
 

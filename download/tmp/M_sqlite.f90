@@ -2383,11 +2383,6 @@ end subroutine my_print
 subroutine test_suite_M_sqlite()
 
 !! setup
-   call test___copy_m_sqlite_Sqlite_column()
-   call test___copy_m_sqlite_Sqlite_database()
-   call test___copy_m_sqlite_Sqlite_statement()
-   call test___final_m_sqlite_Sqlite_column()
-   call test___final_m_sqlite_Sqlite_database()
    call test_sqlite3_begin()
    call test_sqlite3_close()
    call test_sqlite3_column_props()
@@ -2421,51 +2416,6 @@ subroutine test_suite_M_sqlite()
    call test_sqlite3_step()
 !! teardown
 contains
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___copy_m_sqlite_Sqlite_column()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('__copy_m_sqlite_Sqlite_column',msg='')
-   !!call unit_check('__copy_m_sqlite_Sqlite_column', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__copy_m_sqlite_Sqlite_column',msg='')
-end subroutine test___copy_m_sqlite_Sqlite_column
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___copy_m_sqlite_Sqlite_database()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('__copy_m_sqlite_Sqlite_database',msg='')
-   !!call unit_check('__copy_m_sqlite_Sqlite_database', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__copy_m_sqlite_Sqlite_database',msg='')
-end subroutine test___copy_m_sqlite_Sqlite_database
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___copy_m_sqlite_Sqlite_statement()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('__copy_m_sqlite_Sqlite_statement',msg='')
-   !!call unit_check('__copy_m_sqlite_Sqlite_statement', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__copy_m_sqlite_Sqlite_statement',msg='')
-end subroutine test___copy_m_sqlite_Sqlite_statement
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___final_m_sqlite_Sqlite_column()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('__final_m_sqlite_Sqlite_column',msg='')
-   !!call unit_check('__final_m_sqlite_Sqlite_column', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__final_m_sqlite_Sqlite_column',msg='')
-end subroutine test___final_m_sqlite_Sqlite_column
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___final_m_sqlite_Sqlite_database()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('__final_m_sqlite_Sqlite_database',msg='')
-   !!call unit_check('__final_m_sqlite_Sqlite_database', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__final_m_sqlite_Sqlite_database',msg='')
-end subroutine test___final_m_sqlite_Sqlite_database
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_sqlite3_begin()
 

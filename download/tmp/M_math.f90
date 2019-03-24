@@ -6340,138 +6340,87 @@ end function complex_invert_4x4
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
-!===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
-!===================================================================================================================================
 subroutine test_suite_M_math()
 
 !! setup
-!  call test_citer              ! determine various geometric properties of circle segment given radius and area of the segment.
-!  call test_envelope           ! Find the vertices (in clockwise order) of a polygon enclosing the points [((x(i), y(i), i=1,n)].
-!  call test_inpolygon          ! Subroutine to determine whether or not a point is in a polygon
-!  call test_locpt              ! find if a point is inside a polygonal path
-!  call test_poly_intercept     ! find points where a line intersects a polygon
-!  call test_polyarea           ! find area of a polygon
-!  call test_polyarea_shoelace  ! find area of a polygon using shoelace algorithm
-!  call test_polyarea_mid_point ! find area of a polygon
+! GEOMETRY
+   call test_citer              ! determine various geometric properties of circle segment given radius and area of the segment.
+   call test_envelope           ! Find the vertices (in clockwise order) of a polygon enclosing the points [((x(i), y(i), i=1,n)].
+   call test_inpolygon          ! Subroutine to determine whether or not a point is in a polygon
+   call test_locpt              ! find if a point is inside a polygonal path
+   call test_poly_intercept     ! find points where a line intersects a polygon
+   call test_polyarea           ! find area of a polygon
+   call test_polyarea_shoelace  ! find area of a polygon using shoelace algorithm
+   call test_polyarea_mid_point ! find area of a polygon
 ! FIT
-!  call test_julfit             ! linear least square fit
-!  call test_julfit1            ! linear least square fit(y=a*x+b)
-!  call test_lowess             ! data smoothing using locally weighted regression
-!  call test_splift             ! fits a spline to the n data points given in x and y
-!  call test_splint             ! interpolates and twice differentiates a cubic spline
-!  call test_linearint          ! linear interpolation
+   call test_julfit             ! linear least square fit
+   call test_julfit1            ! linear least square fit(y=a*x+b)
+   call test_lowess             ! data smoothing using locally weighted regression
+   call test_splift             ! fits a spline to the n data points given in x and y
+   call test_splint             ! interpolates and twice differentiates a cubic spline
+   call test_linearint          ! linear interpolation
 ! FITS
-!  call test_ju_polfit
-!  call test_ju_pvalue
-!  call test_glstsq
+   call test_ju_polfit
+   call test_ju_pvalue
+   call test_glstsq
 !  private gcsgau1
 !  private gcsgau2
 ! INTEGRATE
-!  call test_qhfg
-!  call test_qhsg
-!  call test_qtfg
+   call test_qhfg
+   call test_qhsg
+   call test_qtfg
 ! STATISTICS
-!  call test_extremum       ! find the minimum and maximum value in a real array
-!  call test_bds            ! basic descriptive statistics
-!  call test_ncr            ! number of combinations of size R from N cases
-!  call test_skekurx        ! skew and kurtosis variant
-!  call test_skekur1        ! skew and kurtosis variant
-!  call test_stddev         ! standard deviation
+   call test_extremum       ! find the minimum and maximum value in a real array
+   call test_bds            ! basic descriptive statistics
+   call test_ncr            ! number of combinations of size R from N cases
+   call test_skekurx        ! skew and kurtosis variant
+   call test_skekur1        ! skew and kurtosis variant
+   call test_stddev         ! standard deviation
 ! COMPARING AND ROUNDING FLOATING POINT VALUES
-!  call test_accdig         ! compare two real numbers only up to a specified number of digits
-!  call test_almost         ! function compares two real numbers only up to a specified number of digits
-!  call test_dp_accdig      ! compare two double numbers only up to a specified number of digits
-call test_in_margin      ! check if two reals are approximately equal using a relative margin
-!  call test_round          ! round val to specified number of significant digits
-!  call test_scale1         ! given xmin,xmax,n, find new range xminp xmaxp divisible into ~ n linear intervals of size dist
-!  call test_scale3         ! find nice log range, typically for an axis
+   call test_accdig         ! compare two real numbers only up to a specified number of digits
+   call test_almost         ! function compares two real numbers only up to a specified number of digits
+   call test_dp_accdig      ! compare two double numbers only up to a specified number of digits
+   call test_in_margin      ! check if two reals are approximately equal using a relative margin
+   call test_round          ! round val to specified number of significant digits
+   call test_scale1         ! given xmin,xmax,n, find new range xminp xmaxp divisible into ~ n linear intervals of size dist
+   call test_scale3         ! find nice log range, typically for an axis
 ! MATRIX
-!  call test_invert_2x2     ! directly invert 2x2 matrix
-!  call test_invert_3x3     ! directly invert 3x3 matrix
-!  call test_invert_4x4     ! directly invert 4x4 matrix
-!  call test_magic_square   ! create magic squares
+   call test_invert_2x2     ! directly invert 2x2 matrix
+   call test_invert_3x3     ! directly invert 3x3 matrix
+   call test_invert_4x4     ! directly invert 4x4 matrix
+   call test_magic_square   ! create magic squares
 ! POLYNOMIAL
-!  call test_quadratic      ! return roots of quadratic equation even if complex
-   call test___copy_INTEGER_4()
-   call test___copy_REAL_4()
-   call test___copy_REAL_8()
-   call test_accdig()
-   call test_almost()
-   call test_bds()
-   call test_citer()
-   call test_complex_invert_2x2()
-   call test_complex_invert_3x3()
-   call test_complex_invert_4x4()
-   call test_double_invert_2x2()
-   call test_double_invert_3x3()
-   call test_double_invert_4x4()
-   call test_dp_accdig()
-   call test_envelope()
-   call test_extremum()
-   call test_glstsq()
-   call test_in_margin()
-   call test_inpolygon()
-   call test_integer_invert_2x2()
-   call test_integer_invert_3x3()
-   call test_integer_invert_4x4()
-   call test_ju_polfit()
-   call test_ju_pvalue()
-   call test_julfit()
-   call test_julfit1()
-   call test_linearint()
-   call test_locpt()
-   call test_lowess()
-   call test_magic_square()
-   call test_ncr()
-   call test_poly_intercept()
-   call test_polyarea()
-   call test_polyarea_mid_point()
-   call test_polyarea_shoelace()
-   call test_qhfg()
-   call test_qhsg()
-   call test_qtfg()
-   call test_quadratic()
-   call test_real_invert_2x2()
-   call test_real_invert_3x3()
-   call test_real_invert_4x4()
-   call test_round()
-   call test_scale1()
-   call test_scale3()
-   call test_skekur1()
-   call test_skekurx()
-   call test_splift()
-   call test_splint()
-   call test_stddev()
+   call test_quadratic      ! return roots of quadratic equation even if complex
+
 !! teardown
 contains
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___copy_INTEGER_4()
+subroutine test_invert_2x2()
 
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
-   call unit_check_start('__copy_INTEGER_4',msg='')
-   !!call unit_check('__copy_INTEGER_4', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__copy_INTEGER_4',msg='')
-end subroutine test___copy_INTEGER_4
+   call unit_check_start('invert_2x2',msg='')
+   !!call unit_check('invert_2x2', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('invert_2x2',msg='')
+end subroutine test_invert_2x2
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___copy_REAL_4()
+subroutine test_invert_3x3()
 
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
-   call unit_check_start('__copy_REAL_4',msg='')
-   !!call unit_check('__copy_REAL_4', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__copy_REAL_4',msg='')
-end subroutine test___copy_REAL_4
+   call unit_check_start('invert_3x3',msg='')
+   !!call unit_check('invert_3x3', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('invert_3x3',msg='')
+end subroutine test_invert_3x3
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___copy_REAL_8()
+subroutine test_invert_4x4()
 
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
-   call unit_check_start('__copy_REAL_8',msg='')
-   !!call unit_check('__copy_REAL_8', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__copy_REAL_8',msg='')
-end subroutine test___copy_REAL_8
+   call unit_check_start('invert_4x4',msg='')
+   !!call unit_check('invert_4x4', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('invert_4x4',msg='')
+end subroutine test_invert_4x4
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_accdig()
 

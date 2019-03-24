@@ -986,7 +986,6 @@ end subroutine sha3_auto_test
 subroutine test_suite_M_sha3()
 
 !! setup
-   call test___copy_m_sha3_Sha3_state()
    call test_sha3()
    call test_sha3_auto_test()
    call test_sha3_digest()
@@ -995,15 +994,6 @@ subroutine test_suite_M_sha3()
    call test_sha3_update()
 !! teardown
 contains
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___copy_m_sha3_Sha3_state()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('__copy_m_sha3_Sha3_state',msg='')
-   !!call unit_check('__copy_m_sha3_Sha3_state', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__copy_m_sha3_Sha3_state',msg='')
-end subroutine test___copy_m_sha3_Sha3_state
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_sha3()
 

@@ -8285,16 +8285,16 @@ end subroutine test_base
 !!
 !!##SYNOPSIS
 !!
-!!   logical function decodebase(x,b,y)
+!!   logical function decodebase(string,basein,out10)
 !!
 !!    character(len=*),intent(in)  :: string
-!!    integer,intent(in)           :: base
-!!    integer,intent(out)          :: value
+!!    integer,intent(in)           :: basein
+!!    integer,intent(out)          :: out10
 !!##DESCRIPTION
 !!
-!!    Convert a numeric string from base BASE to base 10. The function returns
-!!    FALSE if BASE is not in the range [2..36] or if string STRING  contains invalid
-!!    characters in base BASE or if result VALUE is too big
+!!    Convert a numeric string representing a whole number in base BASEIN to base 10. The function returns
+!!    FALSE if BASEIN is not in the range [2..36] or if string STRING contains invalid
+!!    characters in base BASEIN or if result OUT10 is too big
 !!
 !!    The letters A,B,...,Z represent 10,11,...,36 in the base > 10.
 !!
@@ -8304,9 +8304,9 @@ end subroutine test_base
 !!
 !!    based on a F90 Version By J-P Moreau (www.jpmoreau.fr)
 !!##OPTIONS
-!!    x   input string
-!!    b   base of input string
-!!    y   output value in base10
+!!    string   input string
+!!    basein   base of input string
+!!    out10    output value in base 10
 !!
 !!##EXAMPLE
 !!
@@ -8356,12 +8356,28 @@ character(len=1)  :: ch
 real,parameter    :: XMAXREAL=real(huge(1))
 integer           :: out_sign
 integer           :: basein_local
+integer           :: ipound
+integer           :: ierr
 
   string_local=trim(adjustl(string))
   decodebase=.false.
-  out_sign=1
+
+  ipound=index(string_local,'#')
+  if(basein.eq.0.and.ipound.gt.1)then
+     call string_to_value(string_local(:ipound-1),basein_local,ierr)
+     string_local=string_local(ipound+1:)
+     if(basein_local.ge.0)then
+        out_sign=1
+     else
+        out_sign=-1
+     endif
+     basein_local=abs(basein_local)
+  else
+     basein_local=abs(basein)
+     out_sign=1
+  endif
+
   out10=0;y=0.0
-  basein_local=abs(basein)
   ALL: if(basein_local<2.or.basein_local>36) then
     print *,'(*decodebase* ERROR: Base must be between 2 and 36. base=',basein_local
   else ALL

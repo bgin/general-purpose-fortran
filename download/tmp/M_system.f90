@@ -4521,10 +4521,6 @@ end subroutine system_stat_print
 subroutine test_suite_M_system()
 
 !! setup
-   call test___copy_INTEGER_4()
-   call test___copy_INTEGER_8()
-   call test___copy_m_system_Dirent_cygwin()
-   call test___copy_m_system_Dirent_systema()
    call test_fileglob()
    call test_set_environment_variable()
    call test_system_access()
@@ -4570,42 +4566,6 @@ subroutine test_suite_M_system()
    call test_system_utime()
 !! teardown
 contains
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___copy_INTEGER_4()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('__copy_INTEGER_4',msg='')
-   !!call unit_check('__copy_INTEGER_4', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__copy_INTEGER_4',msg='')
-end subroutine test___copy_INTEGER_4
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___copy_INTEGER_8()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('__copy_INTEGER_8',msg='')
-   !!call unit_check('__copy_INTEGER_8', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__copy_INTEGER_8',msg='')
-end subroutine test___copy_INTEGER_8
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___copy_m_system_Dirent_cygwin()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('__copy_m_system_Dirent_cygwin',msg='')
-   !!call unit_check('__copy_m_system_Dirent_cygwin', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__copy_m_system_Dirent_cygwin',msg='')
-end subroutine test___copy_m_system_Dirent_cygwin
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___copy_m_system_Dirent_systema()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('__copy_m_system_Dirent_systema',msg='')
-   !!call unit_check('__copy_m_system_Dirent_systema', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__copy_m_system_Dirent_systema',msg='')
-end subroutine test___copy_m_system_Dirent_systema
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_fileglob()
 

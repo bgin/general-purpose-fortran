@@ -9391,7 +9391,6 @@ end subroutine mat_make_manual
 subroutine test_suite_M_matrix()
 
 !! setup
-   call test___copy_REAL_4()
    call test_mat88()
    call test_mat_appnum()
    call test_mat_base()
@@ -9476,15 +9475,6 @@ subroutine test_suite_M_matrix()
    call test_ml_wsvdc()
 !! teardown
 contains
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___copy_REAL_4()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('__copy_REAL_4',msg='')
-   !!call unit_check('__copy_REAL_4', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__copy_REAL_4',msg='')
-end subroutine test___copy_REAL_4
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_mat88()
 

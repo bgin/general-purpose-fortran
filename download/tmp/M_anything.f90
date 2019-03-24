@@ -607,130 +607,16 @@ end function anyinteger_to_128bit
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 subroutine test_suite_M_anything()
-
 !! setup
-   call test___copy_COMPLEX_4()
-   call test___copy_INTEGER_16()
-   call test___copy_INTEGER_1()
-   call test___copy_INTEGER_2()
-   call test___copy_INTEGER_4()
-   call test___copy_INTEGER_8()
-   call test___copy_REAL_16()
-   call test___copy_REAL_4()
-   call test___copy_REAL_8()
-   call test___copy_character_1()
-   call test___copy_m_anything_Empty_t()
-   call test_anyinteger_to_128bit()
    call test_anyinteger_to_64bit()
-   call test_anyscalar_to_double()
+   call test_anyinteger_to_128bit()
    call test_anyscalar_to_real()
-   call test_anything_to_bytes_arr()
-   call test_anything_to_bytes_scalar()
-   call test_doubles_from_empty()
-   call test_ints_from_empty()
-   call test_reals_from_empty()
-   call test_strings_from_empty()
+   call test_anyscalar_to_double()
+   call test_anything_to_bytes()
+
+   call test_empty()
 !!teardown
 contains
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___copy_COMPLEX_4()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('__copy_COMPLEX_4',msg='')
-   !!call unit_check('__copy_COMPLEX_4', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__copy_COMPLEX_4',msg='')
-end subroutine test___copy_COMPLEX_4
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___copy_INTEGER_16()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('__copy_INTEGER_16',msg='')
-   !!call unit_check('__copy_INTEGER_16', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__copy_INTEGER_16',msg='')
-end subroutine test___copy_INTEGER_16
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___copy_INTEGER_1()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('__copy_INTEGER_1',msg='')
-   !!call unit_check('__copy_INTEGER_1', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__copy_INTEGER_1',msg='')
-end subroutine test___copy_INTEGER_1
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___copy_INTEGER_2()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('__copy_INTEGER_2',msg='')
-   !!call unit_check('__copy_INTEGER_2', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__copy_INTEGER_2',msg='')
-end subroutine test___copy_INTEGER_2
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___copy_INTEGER_4()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('__copy_INTEGER_4',msg='')
-   !!call unit_check('__copy_INTEGER_4', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__copy_INTEGER_4',msg='')
-end subroutine test___copy_INTEGER_4
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___copy_INTEGER_8()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('__copy_INTEGER_8',msg='')
-   !!call unit_check('__copy_INTEGER_8', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__copy_INTEGER_8',msg='')
-end subroutine test___copy_INTEGER_8
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___copy_REAL_16()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('__copy_REAL_16',msg='')
-   !!call unit_check('__copy_REAL_16', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__copy_REAL_16',msg='')
-end subroutine test___copy_REAL_16
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___copy_REAL_4()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('__copy_REAL_4',msg='')
-   !!call unit_check('__copy_REAL_4', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__copy_REAL_4',msg='')
-end subroutine test___copy_REAL_4
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___copy_REAL_8()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('__copy_REAL_8',msg='')
-   !!call unit_check('__copy_REAL_8', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__copy_REAL_8',msg='')
-end subroutine test___copy_REAL_8
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___copy_character_1()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('__copy_character_1',msg='')
-   !!call unit_check('__copy_character_1', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__copy_character_1',msg='')
-end subroutine test___copy_character_1
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___copy_m_anything_Empty_t()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('__copy_m_anything_Empty_t',msg='')
-   !!call unit_check('__copy_m_anything_Empty_t', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__copy_m_anything_Empty_t',msg='')
-end subroutine test___copy_m_anything_Empty_t
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_anyinteger_to_128bit()
 
@@ -768,60 +654,94 @@ use M_debug, only : unit_check_level
    call unit_check_done('anyscalar_to_real',msg='')
 end subroutine test_anyscalar_to_real
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_anything_to_bytes_arr()
+subroutine test_anything_to_bytes()
 
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
-   call unit_check_start('anything_to_bytes_arr',msg='')
+   call unit_check_start('anything_to_bytes',msg='')
    !!call unit_check('anything_to_bytes_arr', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('anything_to_bytes_arr',msg='')
-end subroutine test_anything_to_bytes_arr
+   call unit_check_done('anything_to_bytes',msg='')
+end subroutine test_anything_to_bytes
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_anything_to_bytes_scalar()
+subroutine test_empty
+use M_debug, only: unit_check_start, unit_check
+use M_debug, only: unit_check_good, unit_check_bad, unit_check_done, msg
+!!use M_anything, only : empty, assignment(=)
+implicit none
+doubleprecision,allocatable  :: d(:)
+integer,allocatable          :: i(:)
+real,allocatable             :: r(:)
+character(len=:),allocatable :: c(:)
+integer, allocatable         :: ints(:)
+character(:), allocatable    :: strs(:)
+integer                      :: answer
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('anything_to_bytes_scalar',msg='')
-   !!call unit_check('anything_to_bytes_scalar', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('anything_to_bytes_scalar',msg='')
-end subroutine test_anything_to_bytes_scalar
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_doubles_from_empty()
+   call unit_check_start('empty') !  register an entry for specified name in database with status of zero (0)
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('doubles_from_empty',msg='')
-   !!call unit_check('doubles_from_empty', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('doubles_from_empty',msg='')
-end subroutine test_doubles_from_empty
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_ints_from_empty()
+   d=empty
+   r=empty
+   i=empty
+   c=empty
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('ints_from_empty',msg='')
-   !!call unit_check('ints_from_empty', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('ints_from_empty',msg='')
-end subroutine test_ints_from_empty
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_reals_from_empty()
+   call unit_check('empty', size(d).eq.0, msg=msg('checking double'))
+   call unit_check('empty', size(r).eq.0, msg=msg('checking real'))
+   call unit_check('empty', size(i).eq.0, msg=msg('checking integer'))
+   call unit_check('empty', size(c).eq.0, msg=msg('checking character'))
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('reals_from_empty',msg='')
-   !!call unit_check('reals_from_empty', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('reals_from_empty',msg='')
-end subroutine test_reals_from_empty
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_strings_from_empty()
+   ints = empty
+   answer=0
+   call check_ints(answer,ints)
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('strings_from_empty',msg='')
-   !!call unit_check('strings_from_empty', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('strings_from_empty',msg='')
-end subroutine test_strings_from_empty
-!===================================================================================================================================
+   ints = [1,2,3]
+   answer=3
+   call check_ints(answer,ints)
+   call unit_check('empty',all(ints.eq.[1,2,3]),msg='normal allocattion')
+
+   ints = empty
+   answer=0
+   call check_ints(answer,ints)
+
+   strs = empty
+   answer=0
+   call check_strs(answer,strs)
+
+   strs = [ "apple", "orang", "banan" ]
+   answer=3
+   call check_strs(answer,strs)
+   call unit_check('empty',all(strs.eq.["apple","orang","banan"]),msg='normal allocation')
+
+   strs = empty
+   answer=0
+   call check_strs(answer,strs)
+
+   call unit_check_done('empty')
+
+end subroutine test_empty
+!-----------------------------------------------------------------------------------------------------------------------------------
+subroutine check_ints(answer,ints)
+use M_debug, only : unit_check, msg
+integer,intent(in),allocatable :: ints(:)
+integer,intent(in) :: answer
+   !  if mask test fails, change database status for specified entry to -1 and stop program, else continue
+   if(allocated(ints))then
+      call unit_check('empty',size(ints).eq.answer,msg=msg('size is',answer))
+   endif
+end subroutine check_ints
+!-----------------------------------------------------------------------------------------------------------------------------------
+subroutine check_strs(answer,strs)
+use M_debug, only : unit_check, unit_check_level, msg
+integer,intent(in)           :: answer
+character(len=:),allocatable,intent(in)  :: strs(:)
+integer k
+   if ( allocated(strs) ) then
+       if(unit_check_level.gt.0)then
+          print *, "strs: val = ", ( strs( k ) // " ", k=1,size(strs) )
+          print *, "      len_elem = ", len(strs( 1 ))
+       endif
+      call unit_check('empty',size(strs).eq.answer,msg=msg('size is',answer))
+   endif
+end subroutine check_strs
+!-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine test_suite_M_anything
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=

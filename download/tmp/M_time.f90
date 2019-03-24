@@ -2289,7 +2289,8 @@ end subroutine test_guessdate
 !!
 !!             o [ 0] correct
 !!             o [-1] invalid input date
-!!             o [-2] neither day nor weekday return values specified
+!!             o [-2] neither day nor weekday return values were
+!!                    requested.
 !!
 !!             If the error code is not returned and an error occurs,
 !!             the program is stopped.

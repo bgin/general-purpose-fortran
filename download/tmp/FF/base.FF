@@ -34,7 +34,7 @@ OPTIONS
     --version  output version information and exit
 
     Having a pound character (#) in an input line is problematic,
-    as both most shell programs and the M_kracken(3f) command line
+    as most shell programs and the M_kracken(3f) command line
     parser independently treat the character as beginning an in-line
     comment. Avoid using pound characters and use the colon instead when
     using explicit base numbers in values.

@@ -753,7 +753,6 @@ end subroutine process_writeline_array
 subroutine test_suite_M_process()
 
 !! setup
-   call test___copy_m_process_Streampointer()
    call test_process_close()
    call test_process_open_read()
    call test_process_open_write()
@@ -763,15 +762,6 @@ subroutine test_suite_M_process()
    call test_process_writeline_scalar()
 !! teardown
 contains
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___copy_m_process_Streampointer()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('__copy_m_process_Streampointer',msg='')
-   !!call unit_check('__copy_m_process_Streampointer', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__copy_m_process_Streampointer',msg='')
-end subroutine test___copy_m_process_Streampointer
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_process_close()
 

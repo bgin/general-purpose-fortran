@@ -41,7 +41,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '    --version  output version information and exit                              ',&
 '                                                                                ',&
 '    Having a pound character (#) in an input line is problematic,               ',&
-'    as both most shell programs and the M_kracken(3f) command line              ',&
+'    as most shell programs and the M_kracken(3f) command line                   ',&
 '    parser independently treat the character as beginning an in-line            ',&
 '    comment. Avoid using pound characters and use the colon instead when        ',&
 '    using explicit base numbers in values.                                      ',&
@@ -140,7 +140,7 @@ end subroutine help_usage
 !!     --version  output version information and exit
 !!
 !!     Having a pound character (#) in an input line is problematic,
-!!     as both most shell programs and the M_kracken(3f) command line
+!!     as most shell programs and the M_kracken(3f) command line
 !!     parser independently treat the character as beginning an in-line
 !!     comment. Avoid using pound characters and use the colon instead when
 !!     using explicit base numbers in values.
@@ -215,7 +215,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20170916>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
-'@(#)COMPILED:       Sun, Jan 13th, 2019 7:40:32 PM>',&
+'@(#)COMPILED:       Sun, Mar 24th, 2019 9:33:53 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

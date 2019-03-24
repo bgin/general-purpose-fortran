@@ -33,6 +33,10 @@
 !!       subroutine polar_to_cartesian(radius,inclination,x,y)
 !!
 !!##CONSTANTS SYNOPSIS
+!!
+!!       function nan()
+!!       function inf()
+!!
 !!   Simple constants:
 !!
 !!     use M_constants, only : e,gamma,euler,golden_ratio,pi
@@ -205,6 +209,16 @@ private
       public atomnum2symbol ! return element symbol given atomic number
 
       public test_suite_M_units
+!===================================================================================================================================
+      public inf
+      interface inf
+         module procedure inf32, inf64, inf128
+      end interface inf
+
+      public nan
+      interface nan
+         module procedure nan32, nan64, nan128
+      end interface nan
 !===================================================================================================================================
 !  constants
 
@@ -390,24 +404,27 @@ elemental doubleprecision function r2d_i(iradians)
 
 character(len=*),parameter::ident_3="@(#)M_units::r2d_i(3f): Convert radians to degrees"
 
+doubleprecision,parameter :: DEGREE=0.017453292519943d0 ! radians
 integer,intent(in)           :: iradians        ! input radians to convert to degrees
-   r2d_i=dble(iradians) * 180.0d0 / acos(-1.0d0) ! do the conversion
+   r2d_i=dble(iradians)/DEGREE ! do the conversion
 end function r2d_i
 !-----------------------------------------------------------------------------------------------------------------------------------
 elemental doubleprecision function r2d_d(radians)
 
 character(len=*),parameter::ident_4="@(#)M_units::r2d_d(3f): Convert radians to degrees"
 
+doubleprecision,parameter :: DEGREE=0.017453292519943d0 ! radians
 doubleprecision,intent(in)           :: radians        ! input radians to convert to degrees
-   r2d_d=radians * 180.0d0 / acos(-1.0d0) ! do the conversion
+   r2d_d=radians / DEGREE ! do the conversion
 end function r2d_d
 !-----------------------------------------------------------------------------------------------------------------------------------
 elemental real function r2d_r(radians)
 
 character(len=*),parameter::ident_5="@(#)M_units::r2d_r(3f): Convert radians to degrees"
 
+doubleprecision,parameter :: DEGREE=0.017453292519943d0 ! radians
 real,intent(in)           :: radians        ! input radians to convert to degrees
-   r2d_r=radians * 180.0 / acos(-1.0) ! do the conversion
+   r2d_r=radians / DEGREE ! do the conversion
 end function r2d_r
 !***********************************************************************************************************************************
 !>
@@ -449,24 +466,27 @@ elemental real function d2r_r(degrees)
 
 character(len=*),parameter::ident_6="@(#)M_units::d2r_r(3f): Convert degrees to radians"
 
-real,intent(in)           :: degrees        ! input degrees to convert to radians
-   d2r_r=degrees*acos(-1.0)/180.0     ! do the unit conversion
+doubleprecision,parameter :: RADIAN=57.2957795131d0 ! degrees
+real,intent(in)           :: degrees                ! input degrees to convert to radians
+   d2r_r=dble(degrees)/RADIAN                       ! do the unit conversion
 end function d2r_r
 !-----------------------------------------------------------------------------------------------------------------------------------
 elemental doubleprecision function d2r_d(degrees)
 
 character(len=*),parameter::ident_7="@(#)M_units::d2r_d(3f): Convert degrees to radians"
 
-doubleprecision,intent(in) :: degrees        ! input degrees to convert to radians
-   d2r_d=degrees*acos(-1.0d0)/180.d0     ! do the unit conversion
+doubleprecision,parameter :: RADIAN=57.2957795131d0 ! degrees
+doubleprecision,intent(in) :: degrees               ! input degrees to convert to radians
+   d2r_d=degrees/RADIAN                             ! do the unit conversion
 end function d2r_d
 !-----------------------------------------------------------------------------------------------------------------------------------
 elemental doubleprecision function d2r_i(idegrees)
 
 character(len=*),parameter::ident_8="@(#)M_units::d2r_i(3f): Convert degrees to radians"
 
-integer,intent(in) :: idegrees        ! input degrees to convert to radians
-   d2r_i=dble(idegrees)*acos(-1.0d0)/180.d0     ! do the unit conversion
+doubleprecision,parameter :: RADIAN=57.2957795131d0 ! degrees
+integer,intent(in) :: idegrees                      ! input degrees to convert to radians
+   d2r_i=dble(idegrees)/RADIAN                      ! do the unit conversion
 end function d2r_i
 !***********************************************************************************************************************************
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -800,7 +820,7 @@ end function atan2d
 !!    feet_to_meters(3f) - [M_units:LENGTH] converts a measurement in feet to meters
 !!##SYNOPSIS
 !!
-!!    elemental real function feet_to_meters(feet)
+!!    elemental doubleprecision function feet_to_meters(feet)
 !!
 !!     class(*),intent(in) :: feet
 !!##DESCRIPTION
@@ -836,10 +856,12 @@ end function atan2d
 elemental function feet_to_meters(feet)
 character(len=*),parameter::ident_16="@(#)M_units::feet_to_meters(3f): converts a measurement in feet to meters"
 class(*),intent(in)           :: feet                           ! the input length in feet.
-real                          :: feet_to_meters                 ! OUTPUT, the corresponding length in meters.
-   real                       :: feet_local
-   feet_local=anyscalar_to_real(feet)
-   feet_to_meters = 0.0254 * 12.0 * feet_local
+doubleprecision               :: feet_to_meters                 ! OUTPUT, the corresponding length in meters.
+doubleprecision               :: feet_local
+   feet_local=anyscalar_to_double(feet)
+   !!feet_to_meters = 0.0254 * 12.0 * feet_local
+   feet_to_meters = 0.3048d0 * feet_local
+
 end function feet_to_meters
 !***********************************************************************************************************************************
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -880,10 +902,10 @@ end function feet_to_meters
 elemental function meters_to_feet(meters)
 character(len=*),parameter::ident_17="@(#)M_units::meters_to_feet(3f): converts a measurement in meters to feet"
 class(*),intent(in)           :: meters                         ! the input length in meters.
-real                          :: meters_to_feet                 ! OUTPUT, the corresponding length in feet.
-   real                       :: meters_local
-   meters_local=anyscalar_to_real(meters)
-   meters_to_feet = meters_local/12.0/0.0254
+doubleprecision               :: meters_to_feet                 ! OUTPUT, the corresponding length in feet.
+   doubleprecision            :: meters_local
+   meters_local=anyscalar_to_double(meters)
+   meters_to_feet = meters_local/12.0d0/0.0254d0
 end function meters_to_feet
 !***********************************************************************************************************************************
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -1444,7 +1466,7 @@ end subroutine symbol2atomnum
 !!    use M_units, only : pounds_to_kilograms
 !!    implicit none
 !!       write(*,*)'REAL            ', pounds_to_kilograms(1.0)
-!!       write(*,*)'INTEGER array   ', pounds_to_kilograms([ 0.0, 1.0, 100.0, 200.0 ])
+!!       write(*,*)'INTEGER array   ', pounds_to_kilograms([ 0, 1, 100, 200 ])
 !!       write(*,*)'DOUBLEPRECISION ', pounds_to_kilograms(1.0d0)
 !!    end program demo_pounds_to_kilograms
 !!
@@ -1623,7 +1645,222 @@ end function norm_angle_360_integer
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    inf(3f) - [M_units]return an inf (Infinity)
+!!##SYNOPSIS
+!!
+!!    function inf(value)
+!!    use,intrinsic :: iso_fortran_env, only: real32, real64, real128
+!!    real(kind=real32|real64|real128) :: inf
+!!    real(kind=real32|real64|real128) :: value
+!!##DESCRIPTION
+!!    Return an inf (Infinity) value. The type returned will be the same
+!!    kind as the passed value.
+!!##OPTIONS
+!!    value  A real value whose kind is used to define the kind of the
+!!           returned value.
+!!##RETURNS
+!!    inf    returns an inf value ("Infinity") on platforms that support
+!!           inf values. The kind is determined by the kind of the input
+!!           value.
+!!##EXAMPLE
+!!
+!!    Sample program
+!!
+!!      program demo_inf
+!!      use,intrinsic :: iso_fortran_env, only: real32, real64, real128
+!!      use M_units, only : inf
+!!      implicit none
+!!      real(kind=real32)  :: r32
+!!      real(kind=real64)  :: r64
+!!      real(kind=real128) :: r128
+!!      character(len=256) :: message
+!!      integer            :: ios
+!!         r32=inf(0.0_real32)
+!!         r64=inf(0.0_real64)
+!!         r128=inf(0.0_real128)
+!!         write(*,*,iomsg=message,iostat=ios)r32,r64,r128
+!!         if(ios.ne.0)write(*,*)trim(message)
+!!         write(*,'(z0)',iomsg=message,iostat=ios)r32,r64,r128
+!!         if(ios.ne.0)write(*,*)trim(message)
+!!         write(*,'(g0)',iomsg=message,iostat=ios)r32,r64,r128
+!!         if(ios.ne.0)write(*,*)trim(message)
+!!         write(*,'(f3.1)',iomsg=message,iostat=ios)r32,r64,r128
+!!         if(ios.ne.0)write(*,*)trim(message)
+!!         write(*,'(f2.1)',iomsg=message,iostat=ios)r32,r64,r128
+!!         if(ios.ne.0)write(*,*)trim(message)
+!!      end program demo_inf
+!!   Results:
+!!
+!!     Infinity Infinity Infinity
+!!    7F800000
+!!    7FF0000000000000
+!!    7FFF0000000000000000000000000000
+!!    Inf
+!!    Inf
+!!    Inf
+!!    Inf
+!!    Inf
+!!    Inf
+!!    **
+!!    **
+!!    **
+!===================================================================================================================================
+function inf32(value)
+use,intrinsic :: iso_fortran_env, only: real32
+implicit none
+
+character(len=*),parameter::ident_30="@(#)M_units:: inf32(3fp): Returns an inf (Infinity) of type real32"
+
+character(len=3),save :: STRING='inf'
+real(kind=real32) :: inf32,value
+   read(STRING,*)inf32
+end function inf32
+!===================================================================================================================================
+function inf64(value)
+use,intrinsic :: iso_fortran_env, only: real64
+implicit none
+
+character(len=*),parameter::ident_31="@(#)M_units:: inf64(3fp): Returns an inf (Infinity) of type real64"
+
+character(len=3),save :: STRING='inf'
+real(kind=real64) :: inf64,value
+   read(STRING,*)inf64
+end function inf64
+!===================================================================================================================================
+function inf128(value)
+use,intrinsic :: iso_fortran_env, only: real128
+implicit none
+
+character(len=*),parameter::ident_32="@(#)M_units:: inf128(3fp): Returns an inf (Infinity) of type real128"
+
+character(len=3),save :: STRING='inf'
+real(kind=real128) :: inf128,value
+   read(STRING,*)inf128
+end function inf128
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!===================================================================================================================================
+!>
+!!##NAME
+!!    nan(3f) - [M_units]return a NaN (Not a number)
+!!##SYNOPSIS
+!!
+!!    function nan(value)
+!!    use,intrinsic :: iso_fortran_env, only: real32, real64, real128
+!!    real(kind=real32|real64|real128) :: nan
+!!    real(kind=real32|real64|real128) :: value
+!!##DESCRIPTION
+!!    Return a NaN (Not a number) value. The type returned will be the same
+!!    kind as the passed value.
+!!##OPTIONS
+!!    value  A real value whose kind is used to define the kind of the
+!!           returned value.
+!!##RETURNS
+!!    nan    returns a Nan value ("Not a number") on platforms that support
+!!           NaN values. The kind is determined by the kind of the input
+!!           value.
+!!##EXAMPLE
+!!
+!!    Sample program
+!!
+!!      program demo_nan
+!!      use,intrinsic :: iso_fortran_env, only: real32, real64, real128
+!!      use M_units, only : nan
+!!      implicit none
+!!      real(kind=real32)  :: r32
+!!      real(kind=real64)  :: r64
+!!      real(kind=real128) :: r128
+!!      character(len=256) :: message
+!!      integer            :: ios
+!!         r32=nan(0.0_real32)
+!!         r64=nan(0.0_real64)
+!!         r128=nan(0.0_real128)
+!!         ! list directed format
+!!         write(*,*,iomsg=message,iostat=ios)r32,r64,r128
+!!         if(ios.ne.0)write(*,*)trim(message)
+!!         ! hexadecimal format to show different kinds
+!!         write(*,'(z0)',iomsg=message,iostat=ios)r32,r64,r128
+!!         if(ios.ne.0)write(*,*)trim(message)
+!!         ! G0 format
+!!         write(*,'(g0)',iomsg=message,iostat=ios)r32,r64,r128
+!!         if(ios.ne.0)write(*,*)trim(message)
+!!         ! if a specific numeric field is used
+!!         write(*,'(f3.1)',iomsg=message,iostat=ios)r32,r64,r128
+!!         if(ios.ne.0)write(*,*)trim(message)
+!!         ! if format is less than three characters
+!!         write(*,'(f2.1)',iomsg=message,iostat=ios)r32,r64,r128
+!!         if(ios.ne.0)write(*,*)trim(message)
+!!
+!!         ! an option to terminate a program when a NaN is encountered
+!!         ! (if X is NaN the comparison with 0. is always false.)
+!!         if (.not.(r32<=0.0) .and. .not.(r32>=0.0))then
+!!            write(*,*)'found nan'
+!!            stop
+!!         endif
+!!
+!!      end program demo_nan
+!!   Results:
+!===================================================================================================================================
+function nan32(value)
+use,intrinsic :: iso_fortran_env, only: real32
+implicit none
+
+character(len=*),parameter::ident_33="@(#)M_units:: nan32(3fp): Returns a NAN (Not a number) of type real32"
+
+character(len=3),save :: STRING='NaN'
+real(kind=real32) :: nan32,value
+   read(STRING,*)nan32
+   ! (if X is NaN the comparison with 0. is always false.)
+   if ( (nan32<=0.0_real32) .or. (nan32>=0.0_real32) )then
+      write(*,*)'nan(3f) did not produce a nan'
+      stop
+   endif
+end function nan32
+!===================================================================================================================================
+function nan64(value)
+use,intrinsic :: iso_fortran_env, only: real64
+implicit none
+
+character(len=*),parameter::ident_34="@(#)M_units:: nan64(3fp): Returns a NAN (Not a number) of type real64"
+
+character(len=3),save :: STRING='NaN'
+real(kind=real64) :: nan64,value
+   read(STRING,*)nan64
+   ! (if X is NaN the comparison with 0. is always false.)
+   if ( (nan64<=0.0_real64) .or. (nan64>=0.0_real64) )then
+      write(*,*)'nan(3f) did not produce a nan'
+      stop
+   endif
+end function nan64
+!===================================================================================================================================
+function nan128(value)
+use,intrinsic :: iso_fortran_env, only: real128
+implicit none
+
+!$@(#) M_units:: nan128(3fp): Returns a NAN (Not a number) of type real128
+
+character(len=3),save :: STRING='NaN'
+real(kind=real128) :: nan128,value
+   read(STRING,*)nan128
+   ! (if X is NaN the comparison with 0. is always false.)
+   if ( (nan128<=0.0_real128) .or. (nan128>=0.0_real128) )then
+      write(*,*)'nan(3f) did not produce a nan'
+      stop
+   endif
+end function nan128
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 subroutine test_suite_M_units()
+
+!! test constants
+   call testit_p('pi',      real(PI)      ,  real(3.141592653589793238462643383279500d0)  ,message='')
+   call testit_p('e',       real(E)       ,  real(2.718281828459045235360d0)              ,message='')
+   !!call testit_p('radian',  real(RADIAN)  ,  real(57.29577951310d0)                       ,message='')
+   !!call testit_p('degree',  real(DEGREE)  ,  real(0.0174532925199430d0)                   ,message='')
 
 !! setup
    call test_acosd()
@@ -1635,9 +1872,7 @@ subroutine test_suite_M_units()
    call test_cartesian_to_polar()
    call test_cartesian_to_spherical()
    call test_cosd()
-   call test_d2r_d()
-   call test_d2r_i()
-   call test_d2r_r()
+   call test_d2r()
    call test_f2c()
    call test_feet_to_meters()
    call test_meters_to_feet()
@@ -1648,15 +1883,80 @@ subroutine test_suite_M_units()
    call test_norm_angle_rad_real()
    call test_polar_to_cartesian()
    call test_pounds_to_kilograms()
-   call test_r2d_d()
-   call test_r2d_i()
-   call test_r2d_r()
+   call test_r2d()
    call test_sind()
    call test_spherical_to_cartesian()
    call test_symbol2atomnum()
    call test_tand()
+   call test_inf()
+   call test_nan()
 !! teardown
 contains
+!===================================================================================================================================
+subroutine testit_p(label,value1,value2,message)
+use M_anything,only : anyscalar_to_real, anyscalar_to_double
+USE M_Compare_Float_Numbers
+use M_math, only : accdig
+use M_debug, only : unit_check, msg
+class(*),intent(in) :: value1, value2
+real                :: v1, v2
+character(len=*)    :: label
+character(len=*)    :: message
+logical             :: stat
+real                :: significant_digits
+integer             :: ind
+real                :: acurcy
+
+   v1=anyscalar_to_real(value1)
+   v2=anyscalar_to_real(value2)
+   stat=v1 .EqualTo. v2
+
+   if(.not.stat)then
+!     INPUT ...
+!     real,intent(in) :: x           ! First  of two real numbers to be compared.
+!     real,intent(in) :: y           ! Second of two real numbers to be compared.
+!     real,intent(in) :: digi0       ! Number of digits to be satisfied in relative tolerance.
+!     OUTPUT ...
+!     integer,intent(out) :: ind     ! = 0, If tolerance is     satisfied.
+!                                    ! = 1, If tolerance is not satisified.
+!     real,intent(out) :: acurcy     ! = - LOG10 (ABS((X-Y)/Y)))
+      significant_digits=int(log10(2.0**digits(0.0)))     ! MAXIMUM NUMBER OF SIGNIFICANT DIGITS IN A REAL NUMBER.
+      call accdig (v1,v2,significant_digits-2,ACURCY,IND)
+      if(ind.eq.0)stat=.true.
+   endif
+!-----------------------
+   call unit_check(label,stat,msg=msg(label,v1,v2,trim(message),'accuracy=',acurcy,'asked for',int(significant_digits)-2,'digits'))
+end subroutine testit_p
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_nan()
+use,intrinsic :: iso_fortran_env, only: real32, real64, real128
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+real(kind=real32) :: r32
+real(kind=real64) :: r64
+real(kind=real128) :: r128
+   call unit_check_start('nan',msg='')
+   ! (if X is NaN the comparison with 0.0 is always false.)
+   r32=nan(0.0_real32)
+   call unit_check('nan',.not.(r32<=0.0_real32) .and. .not.(r32>=0.0_real32),msg='real32')
+
+   r64=nan(0.0_real64)
+   call unit_check('nan',.not.(r64<=0.0_real64) .and. .not.(r64>=0.0_real64),msg='real64')
+
+   r128=nan(0.0_real128)
+   call unit_check('nan',.not.(r128<=0.0_real128) .and. .not.(r128>=0.0_real128),msg='real128')
+
+   call unit_check_done('nan',msg='')
+end subroutine test_nan
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_inf()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('inf',msg='')
+   !!call unit_check('inf', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('inf',msg='')
+end subroutine test_inf
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_acosd()
 
@@ -1708,7 +2008,9 @@ subroutine test_c2f()
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
    call unit_check_start('c2f',msg='')
-   !!call unit_check('c2f', 0.eq.0. msg=msg('checking',100))
+   call testit_p('c2f',     c2f(0.0)   ,  32.0,message='')
+   call testit_p('c2f',     c2f(100.0) , 212.0,message='')
+   call testit_p('c2f',     c2f(-40.0) , -40.0,message='')
    call unit_check_done('c2f',msg='')
 end subroutine test_c2f
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -1725,71 +2027,116 @@ subroutine test_cartesian_to_spherical()
 
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
+use M_math,  only : accdig
+implicit none
+real    :: x=10.0,y=10.0,z=10.0
+real    :: radius,inclination,azimuth
+real    :: acurcy
+integer :: ind1,ind2,ind3
    call unit_check_start('cartesian_to_spherical',msg='')
-   !!call unit_check('cartesian_to_spherical', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('cartesian_to_spherical',msg='')
+
+   ! 10,10,10 -> 17.32, 0.9553, 0.7854
+   call cartesian_to_spherical(x,y,z,radius,inclination,azimuth)
+   call accdig(radius,      17.3205090,   5.0,acurcy,ind1)
+   call accdig(inclination,  0.955316663 ,5.0,acurcy,ind2)
+   call accdig(azimuth,      0.785398185 ,5.0,acurcy,ind3)
+   call unit_check('cartesian_to_spherical',all([ind1,ind2,ind3].eq.0),msg=msg(x,y,z,'to',radius,inclination,azimuth))
+
+   call unit_check_done('cartesian_to_spherical') ! if got here without being stopped assume passed test
 end subroutine test_cartesian_to_spherical
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_cosd()
 
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
+real, allocatable :: values(:)
+integer           :: i
+values=[0.0, 30.0, 45.0, 60.0, 92.0, 120.0, 135.0, 150.0, 180.0, 210.0, 240.0, 273.0, 300.0, 330.0, 360.0, -45.0]
    call unit_check_start('cosd',msg='')
-   !!call unit_check('cosd', 0.eq.0. msg=msg('checking',100))
+   do i=1,size(values)
+      call testit_p('cosd', cosd(values(i)), cos(d2r(values(i))),message=msg('value=',values(i)) )
+   enddo
    call unit_check_done('cosd',msg='')
+
+!  unit_check:       cosd  FAILED:cosd 6.12323426E-17 -4.37113883E-08 value= 90.0000000 accuracy= 0.00000000 asked for 6 digits
+!  unit_check:       cosd  FAILED:cosd -1.83697015E-16 1.19248806E-08 value= 270.000000 accuracy= 0.00000000 asked for 6 digits
 end subroutine test_cosd
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_d2r_d()
+subroutine test_d2r()
 
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
-   call unit_check_start('d2r_d',msg='')
-   !!call unit_check('d2r_d', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('d2r_d',msg='')
-end subroutine test_d2r_d
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_d2r_i()
+   call unit_check_start('d2r',msg='')
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('d2r_i',msg='')
-   !!call unit_check('d2r_i', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('d2r_i',msg='')
-end subroutine test_d2r_i
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_d2r_r()
+   call testit_p('d2r', d2r(    0.0)    , 0.0       ,message='real for 0')
+   call testit_p('d2r', d2r(   45.0)    , PI/4.0    ,message='real for 45')
+   call testit_p('d2r', d2r(  -45.0)    , -PI/4.0   ,message='real for -45')
+   call testit_p('d2r', d2r(   90.0)    , PI/2      ,message='real for 90')
+   call testit_p('d2r', d2r(  180.0)    , PI        ,message='real for 180')
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('d2r_r',msg='')
-   !!call unit_check('d2r_r', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('d2r_r',msg='')
-end subroutine test_d2r_r
+   call testit_p('d2r', d2r(  0.0d0)    , 0.0d0     ,message='double for 0')
+   call testit_p('d2r', d2r(  45.0d0)   , PI/4.0d0  ,message='double for 45')
+   call testit_p('d2r', d2r(  -45.0d0)  , -PI/4.0d0 ,message='double for -45')
+   call testit_p('d2r', d2r(  90.0d0)   , PI/2d0    ,message='double for 90')
+   call testit_p('d2r', d2r(  180.0d0)  , PI        ,message='double for 180')
+
+   call testit_p('d2r', d2r(    0)      , 0.0       ,message='integer for 0')
+   call testit_p('d2r', d2r(   45)      , PI/4.0    ,message='integer for 45')
+   call testit_p('d2r', d2r(  -45)      , -PI/4.0   ,message='integer for -45')
+   call testit_p('d2r', d2r(   90)      , PI/2      ,message='integer for 90')
+   call testit_p('d2r', d2r(  180)      , PI        ,message='integer for 180')
+
+   call unit_check_done('d2r',msg='')
+
+end subroutine test_d2r
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_f2c()
 
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
    call unit_check_start('f2c',msg='')
-   !!call unit_check('f2c', 0.eq.0. msg=msg('checking',100))
+   call testit_p('f2c',     f2c(32.0)  ,   0.0,message='')
+   call testit_p('f2c',     f2c(212.0) , 100.0,message='')
+   call testit_p('f2c',     f2c(-40.0) , -40.0,message='')
    call unit_check_done('f2c',msg='')
 end subroutine test_f2c
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_feet_to_meters()
-
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
-   call unit_check_start('feet_to_meters',msg='')
-   !!call unit_check('feet_to_meters', 0.eq.0. msg=msg('checking',100))
+doubleprecision, parameter :: f2m=0.3048d0
+   call unit_check_start('feet_to_meters',msg=' 0.3048')
+
+      write(*,*)[ -1.0, 0.0, 1.0 ,1.0/12.0]
+      write(*,*)feet_to_meters([ -1.0, 0.0, 1.0 ,1.0/12.0])
+      write(*,*)feet_to_meters([ -1.0, 0.0, 1.0 ,1.0/12.0])- [-f2m, 0.0d0, f2m, 0.0254d0]
+      write(*,*)abs(feet_to_meters([ -1.0, 0.0, 1.0 ,1.0/12.0])- [-f2m, 0.0d0, f2m, 0.0254d0])
+      write(*,*)abs(feet_to_meters([ -1.0, 0.0, 1.0 ,1.0/12.0])- [-f2m, 0.0d0, f2m, 0.0254d0]).lt.0.00001
+   call unit_check('feet_to_meters', &
+      & all(abs(feet_to_meters([ -1.0, 0.0, 1.0 ,1.0/12.0])- [-f2m, 0.0d0, f2m, 0.0254d0]).lt.0.00001),'real')
+   call unit_check('feet_to_meters', &
+      & all(abs(feet_to_meters([ -1,   0,   1   ])- [-f2m, 0.0d0, f2m]).lt.0.00001),'integer')
+   call unit_check('feet_to_meters', &
+      & all(abs([feet_to_meters(-1.0d0),feet_to_meters(0.0d0),feet_to_meters(1.0d0)]-[-f2m, 0.0d0, f2m]).lt.0.00001),'double')
+
    call unit_check_done('feet_to_meters',msg='')
 end subroutine test_feet_to_meters
+
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_meters_to_feet()
-
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
-   call unit_check_start('meters_to_feet',msg='')
-   !!call unit_check('meters_to_feet', 0.eq.0. msg=msg('checking',100))
+   doubleprecision, parameter :: m2f=3.2808398950131233595d0
+
+   call unit_check_start('meters_to_feet',msg='3.2808398950131233595')
+
+   call unit_check('meters_to_feet', &
+     & all(abs(meters_to_feet([ -1.0, 0.0, 1.0 ])-[-m2f,0.0d0,m2f]).lt.0.00001d0),msg='real')
+   call unit_check('meters_to_feet', &
+     & all(abs(meters_to_feet([ -1,   0,   1   ])-[-m2f,0.0d0,m2f]).lt.0.00001d0) ,msg='integer')
+   call unit_check('meters_to_feet', &
+     & all(abs([meters_to_feet(-1d0),meters_to_feet(0.0d0),meters_to_feet(1.0d0)]-[-m2f,0.0d0,m2f]).lt.0.00001d0),msg='double')
+
    call unit_check_done('meters_to_feet',msg='')
 end subroutine test_meters_to_feet
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -1852,52 +2199,76 @@ subroutine test_pounds_to_kilograms()
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
    call unit_check_start('pounds_to_kilograms',msg='')
-   !!call unit_check('pounds_to_kilograms', 0.eq.0. msg=msg('checking',100))
+   call unit_check('pounds_to_kilograms',abs(pounds_to_kilograms(1.0)-0.45359237).lt.0.00001,'real')
+   call unit_check('pounds_to_kilograms',any(abs(pounds_to_kilograms([ 0, 1, 100, 200 ])-&
+      &[0.0, 0.45359237, 45.359237,90.718474]).lt.0.00001),'integer')
+   call unit_check('pounds_to_kilograms',abs(pounds_to_kilograms(1.0d0)-0.45359237).lt.0.00001,'double')
    call unit_check_done('pounds_to_kilograms',msg='')
 end subroutine test_pounds_to_kilograms
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_r2d_d()
+subroutine test_r2d()
 
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
-   call unit_check_start('r2d_d',msg='')
-   !!call unit_check('r2d_d', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('r2d_d',msg='')
-end subroutine test_r2d_d
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_r2d_i()
+real              :: x=real(PI)
+doubleprecision   :: d=PI
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('r2d_i',msg='')
-   !!call unit_check('r2d_i', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('r2d_i',msg='')
-end subroutine test_r2d_i
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_r2d_r()
+   call unit_check_start('r2d',msg='')
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('r2d_r',msg='')
-   !!call unit_check('r2d_r', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('r2d_r',msg='')
-end subroutine test_r2d_r
+   call testit_p('r2d', r2d(  0.0)      ,   0.0    ,message='real')
+   call testit_p('r2d', r2d(  x/4)      ,  45.0    ,message='real')
+   call testit_p('r2d', r2d( -x/4)      , -45.0    ,message='real')
+   call testit_p('r2d', r2d(  x/2)      ,  90.0    ,message='real')
+   call testit_p('r2d', r2d(  x)        , 180.0    ,message='real')
+
+   call testit_p('r2d', r2d(  0.0d0)    ,   0.0d0  ,message='double')
+   call testit_p('r2d', r2d(  d/4.0d0)  ,  45.0d0  ,message='double')
+   call testit_p('r2d', r2d( -d/4.0d0)  , -45.0d0  ,message='double')
+   call testit_p('r2d', r2d(  d/2.0d0)  ,  90.0d0  ,message='double')
+   call testit_p('r2d', r2d(  d)        , 180.0d0  ,message='double')
+
+   call testit_p('r2d', r2d(  0)        ,   0.0    ,message='integer')
+
+   call unit_check_done('r2d',msg='')
+end subroutine test_r2d
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_sind()
 
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
+real, allocatable :: values(:)
+integer           :: i
+   values=[0.0, 30.0, 45.0, 60.0, 90.0, 120.0, 135.0, 150.0, 181.0, 210.0, 240.0, 270.0, 300.0, 330.0, 362.0, -45.0]
    call unit_check_start('sind',msg='')
-   !!call unit_check('sind', 0.eq.0. msg=msg('checking',100))
+   do i=1,size(values)
+      call testit_p('sind',   sind(values(i))             ,  sin(d2r(values(i))),message=msg('value=',values(i))  )
+   enddo
    call unit_check_done('sind',msg='')
+! unit_check:       sind  FAILED:sind 1.22464685E-16 -8.74227766E-08 value= 180.000000 accuracy= 0.00000000 asked for 6 digits
+! unit_check:       sind  FAILED:sind -2.44929371E-16 1.74845553E-07 value= 360.000000 accuracy= 0.00000000 asked for 6 digits
 end subroutine test_sind
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_spherical_to_cartesian()
-
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
+use M_math,  only : accdig
+implicit none
+real    :: x,y,z
+real    :: radius,inclination,azimuth
+real    :: acurcy
+integer :: ind1,ind2,ind3
    call unit_check_start('spherical_to_cartesian',msg='')
-   !!call unit_check('spherical_to_cartesian', 0.eq.0. msg=msg('checking',100))
+
+   radius=17.32; inclination=0.9553; azimuth=0.7854
+   x=-9999; y=-9999; z=-9999;
+   call spherical_to_cartesian(radius,inclination,azimuth,x,y,z)
+
+   call accdig(x,10.0,4.0,acurcy,ind1)
+   call accdig(y,10.0,4.0,acurcy,ind2)
+   call accdig(z,10.0,4.0,acurcy,ind3)
+
+   call unit_check('spherical_to_cartesian',all([ind1,ind2,ind3].eq.0),msg=msg(radius,inclination,azimuth,'to',x,y,z))
+
    call unit_check_done('spherical_to_cartesian',msg='')
 end subroutine test_spherical_to_cartesian
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -1911,18 +2282,23 @@ use M_debug, only : unit_check_level
 end subroutine test_symbol2atomnum
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_tand()
-
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
+real, allocatable :: values(:)
+integer                      :: i
+   values=[0.0,30.0,45.0,60.0,92.0,120.0,135.0,150.0,183.0,210.0,240.0,273.0,300.0, 330.0, 362.0, -45.0]
    call unit_check_start('tand',msg='')
-   !!call unit_check('tand', 0.eq.0. msg=msg('checking',100))
+   do i=1,size(values)
+      call testit_p('tand', tand(values(i)), tan(d2r(values(i))),message=msg('value=',values(i)))
+   enddo
    call unit_check_done('tand',msg='')
+! unit_check:       tand  FAILED:tand 1.63312395E+16 -22877332.0 value= 90.0000000 accuracy= -8.85361290 asked for 6 digits
+! unit_check:       tand  FAILED:tand -1.22464685E-16 8.74227766E-08 value= 180.000000 accuracy= 0.00000000 asked for 6 digits
+! unit_check:       tand  FAILED:tand 5.44374649E+15 -83858280.0 value= 270.000000 accuracy= -7.81235218 asked for 6 digits
+! unit_check:       tand  FAILED:tand -2.44929371E-16 1.74845553E-07 value= 360.000000 accuracy= 0.00000000 asked for 6 digits
 end subroutine test_tand
 !===================================================================================================================================
 end subroutine test_suite_M_units
-!===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
-!===================================================================================================================================
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================

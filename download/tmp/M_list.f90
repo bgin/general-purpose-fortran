@@ -148,6 +148,7 @@ end function binary_search
 !!
 !!    DICTIONARY    is the dictionary array.
 !!
+!!##RETURNS
 !!    PLACE         is the subscript that the entry was found at if it is
 !!                  greater than zero(0).
 !!
@@ -777,8 +778,9 @@ end subroutine add
 subroutine test_suite_m_list
 use M_debug, only : unit_check, unit_check_start, unit_check_good, unit_check_bad, unit_check_done, unit_check_level, msg
 !!use M_list, only : locate, add, delete, insert, remove
-character(len=*),parameter ::  share=' -library libGPF -filename `pwd`/M_list.FF -documentation y -ufpp y -ccall n -archive GPF.a'
+character(len=*),parameter    :: share=' -library libGPF -filename `pwd`/M_list.FF -documentation y -ufpp y -ccall n -archive GPF.a'
 character(len=20),allocatable :: dict(:)
+integer                       :: place
    call test_add()
    call test_delete()
    call test_locate()
@@ -786,67 +788,66 @@ character(len=20),allocatable :: dict(:)
    call test_remove()
    call test_binary_search()
 contains
-!===================================================================================================================================
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_add
-   call unit_check_start('M_list::add',   &
+   call unit_check_start('add',   &
    & ' -description "add string into allocatable string array by name" '//share)
    call add('A',dict)
-   write(*,*)'ARRAY=',dict !  ARRAY=A
-   write(*,*) all(dict.eq.[character(len=20) :: 'A'])
-   call unit_check('M_list::add',all(dict.eq.[character(len=20) :: 'A']),'string adds (checkpoint 1)')
+
+   call unit_check('add',all(dict.eq.[character(len=20) :: 'A']),msg='array should be A')
 
    call add('b',dict)
    call add('c',dict)
    call add('z',dict)
-   write(*,*)'ARRAY=',dict ! ARRAY=z c b A
-   write(*,*) all(dict.eq.[character(len=20) :: 'z','c','b','A'])
-   call unit_check('M_list::add',all(dict.eq.[character(len=20) :: 'z','c','b','A']),'string adds (checkpoint 2)')
+   call unit_check('add',all(dict.eq.[character(len=20) :: 'z','c','b','A']),'array should be z c b A')
 
    call add('ZZ',dict)
    call add('not this one',dict)
    call add('ZZZ',dict)
    call add('Z',dict)
-   write(*,*)'ARRAY=',dict ! ARRAY=z not this one c b ZZZ ZZ Z A
-   call unit_check('M_list::add',all(dict.eq.[character(len=20) :: 'z','not this one','c','b','ZZZ','ZZ','Z','A']),'string adds ')
+   call unit_check('add',all(dict.eq.[character(len=20) :: 'z','not this one','c','b','ZZZ','ZZ','Z','A']),'string adds ')
 
-   call unit_check_done('M_list::add')     ! if got here everthing passed so put in good status code
+   call unit_check_done('add')
 end subroutine test_add
-!===================================================================================================================================
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_delete
-   call unit_check_start('M_list::delete',&
+   call unit_check_start('delete',&
    & ' -description "delete string by name from allocatable string array" '//share)
 
    call delete('not this one',dict)
    call delete('Z',dict)
    call delete('X',dict)
-   write(*,*)'ARRAY=',dict ! ARRAY=z c b ZZZ ZZ A
-   call unit_check('M_list::delete',all(dict.eq.[character(len=20) :: 'z','c','b','ZZZ','ZZ','A']),'string deletes ')
+   call unit_check('delete',all(dict.eq.[character(len=20) :: 'z','c','b','ZZZ','ZZ','A']),'string deletes ')
 
-   call unit_check_done('M_list::delete')
+   call unit_check_done('delete')
 end subroutine test_delete
-!===================================================================================================================================
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_locate
-   call unit_check_start('M_list::locate',&
+   call unit_check_start('locate',&
    & ' -description "locate string in allocatable string array sorted in descending order" '//share)
-   call unit_check_done('M_list::locate')
+   call locate('ZZZ',dict,place)
+   call unit_check('locate',place.eq.4,msg='ZZZ')
+   call locate('zqj',dict,place)
+   call unit_check('locate',place.eq.-1,msg='zqj')
+   call unit_check_done('locate')
 end subroutine test_locate
-!===================================================================================================================================
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_insert
-   call unit_check_start('M_list::insert',&
+   call unit_check_start('insert',&
    & ' -description "insert value into allocatable array by index"  '//share)
-   call unit_check_done('M_list::insert')
+   call unit_check_done('insert')
 end subroutine test_insert
-!===================================================================================================================================
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_remove
-   call unit_check_start('M_list::remove',&
+   call unit_check_start('remove',&
    & ' -description "remove value from allocatable array by index"  '//share)
-   call unit_check_done('M_list::remove')
+   call unit_check_done('remove')
 end subroutine test_remove
 !===================================================================================================================================
 subroutine test_binary_search
-   call unit_check_start('M_list::binary_search',&
+   call unit_check_start('binary_search',&
    & ' -description "binary search of a sorted array"  '//share)
-   call unit_check_done('M_list::binary_search')
+   call unit_check_done(':binary_search')
 end subroutine test_binary_search
 !===================================================================================================================================
 end subroutine test_suite_m_list

@@ -3340,8 +3340,6 @@ end subroutine err_handler_watch
 subroutine test_suite_M_stopwatch()
 
 !! setup
-   call test___copy_m_stopwatch_Watchgroup()
-   call test___copy_m_stopwatch_Watchtype()
    call test_create_watch_aa()
    call test_create_watch_as()
    call test_create_watch_sa()
@@ -3404,24 +3402,6 @@ subroutine test_suite_M_stopwatch()
    call test_stop_watch_ss()
 !! teardown
 contains
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___copy_m_stopwatch_Watchgroup()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('__copy_m_stopwatch_Watchgroup',msg='')
-   !!call unit_check('__copy_m_stopwatch_Watchgroup', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__copy_m_stopwatch_Watchgroup',msg='')
-end subroutine test___copy_m_stopwatch_Watchgroup
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___copy_m_stopwatch_Watchtype()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('__copy_m_stopwatch_Watchtype',msg='')
-   !!call unit_check('__copy_m_stopwatch_Watchtype', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__copy_m_stopwatch_Watchtype',msg='')
-end subroutine test___copy_m_stopwatch_Watchtype
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_create_watch_aa()
 

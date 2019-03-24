@@ -1316,7 +1316,6 @@ end subroutine random_number_big
 subroutine test_suite_M_big_integer()
 
 !! setup
-   call test___copy_m_big_integer_Big_integer()
    call test_big_char()
    call test_big_div_big()
    call test_big_div_int()
@@ -1368,15 +1367,6 @@ subroutine test_suite_M_big_integer()
    call test_sqrt_big()
 !! teardown
 contains
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___copy_m_big_integer_Big_integer()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('__copy_m_big_integer_Big_integer',msg='')
-   !!call unit_check('__copy_m_big_integer_Big_integer', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__copy_m_big_integer_Big_integer',msg='')
-end subroutine test___copy_m_big_integer_Big_integer
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_big_char()
 

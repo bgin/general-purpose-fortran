@@ -3789,13 +3789,6 @@ implicit none
    call test_tostring_sf_dlog()
    call test_tostring_sf_sngl()
    call test_tostring_sngl()
-   call test___copy_m_display_util_Boxlist()
-   call test___copy_m_display_util_Boxnode()
-   call test___copy_m_display_util_Disp_settings()
-   call test___copy_m_display_util_Settings()
-   call test___copy_m_display_util_Tostring_settings()
-   call test___deallocate_m_display_util_Boxlist()
-   call test___deallocate_m_display_util_Boxnode()
    call test_check_settings()
    call test_copyseptobox()
    call test_copytobox()
@@ -4529,69 +4522,6 @@ use M_debug, only : unit_check_level
    !!call unit_check('tostring_sngl', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('tostring_sngl',msg='')
 end subroutine test_tostring_sngl
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___copy_m_display_util_Boxlist()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('__copy_m_display_util_Boxlist',msg='')
-   !!call unit_check('__copy_m_display_util_Boxlist', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__copy_m_display_util_Boxlist',msg='')
-end subroutine test___copy_m_display_util_Boxlist
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___copy_m_display_util_Boxnode()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('__copy_m_display_util_Boxnode',msg='')
-   !!call unit_check('__copy_m_display_util_Boxnode', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__copy_m_display_util_Boxnode',msg='')
-end subroutine test___copy_m_display_util_Boxnode
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___copy_m_display_util_Disp_settings()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('__copy_m_display_util_Disp_settings',msg='')
-   !!call unit_check('__copy_m_display_util_Disp_settings', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__copy_m_display_util_Disp_settings',msg='')
-end subroutine test___copy_m_display_util_Disp_settings
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___copy_m_display_util_Settings()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('__copy_m_display_util_Settings',msg='')
-   !!call unit_check('__copy_m_display_util_Settings', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__copy_m_display_util_Settings',msg='')
-end subroutine test___copy_m_display_util_Settings
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___copy_m_display_util_Tostring_settings()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('__copy_m_display_util_Tostring_settings',msg='')
-   !!call unit_check('__copy_m_display_util_Tostring_settings', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__copy_m_display_util_Tostring_settings',msg='')
-end subroutine test___copy_m_display_util_Tostring_settings
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___deallocate_m_display_util_Boxlist()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('__deallocate_m_display_util_Boxlist',msg='')
-   !!call unit_check('__deallocate_m_display_util_Boxlist', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__deallocate_m_display_util_Boxlist',msg='')
-end subroutine test___deallocate_m_display_util_Boxlist
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test___deallocate_m_display_util_Boxnode()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('__deallocate_m_display_util_Boxnode',msg='')
-   !!call unit_check('__deallocate_m_display_util_Boxnode', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('__deallocate_m_display_util_Boxnode',msg='')
-end subroutine test___deallocate_m_display_util_Boxnode
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_check_settings()
 
