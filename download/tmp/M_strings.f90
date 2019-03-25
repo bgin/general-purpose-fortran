@@ -8304,8 +8304,12 @@ end subroutine test_base
 !!
 !!    based on a F90 Version By J-P Moreau (www.jpmoreau.fr)
 !!##OPTIONS
-!!    string   input string
-!!    basein   base of input string
+!!    string   input string. It represents a whole number in
+!!             the base specified by BASEIN unless BASEIN is set
+!!             to zero. When BASEIN is zero STRING is assumed to
+!!             be of the form BASE#VALUE where BASE represents
+!!             the function normally provided by BASEIN.
+!!    basein   base of input string either 0 or from 2 to 36.
 !!    out10    output value in base 10
 !!
 !!##EXAMPLE

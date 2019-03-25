@@ -168,7 +168,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    create Makefile for current directory>',&
 '@(#)VERSION:        1.0, 2017-12-09>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Mon, Mar 18th, 2019 2:59:23 AM>',&
+'@(#)COMPILED:       Sun, Mar 24th, 2019 7:45:35 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -398,7 +398,8 @@ character(len=maxlen)           :: ext
    else
       write(io,'(a)')'all: $(PROG) $(CPROG)'
    endif
-   write(io,'(a)')expand('\tenv PATH="$$PATH:`pwd`/scripts" which test_suite && test_suite -l test_suite_log.txt')
+   write(io,'(a)')expand('\ttest -e scripts/test_suite && chmod u+xr scripts/test_suite')
+   write(io,'(a)')expand('\tenv PATH="`pwd`/scripts:$$PATH" which test_suite && test_suite -l test_suite_log.txt')
 !----------------------------------------------------------------------------------------------------------------------------------
    if(libname.eq.'')then
    fixed=[character(len=132) :: &

@@ -1,17 +1,23 @@
 # General-Purpose Fortran Repository
 
+### Cloning the repository
+    git clone https://github.com/urbanjost/general-purpose-fortran
+    cd general_purpose-fortran/download/tmp
+    make
+
 The GPF (General-Purpose Fortran) repository consists of  Fortran modules
 and libraries (and in some cases their associated C support routines)
 providing
 
-*  __string operations__
-*  simple __numeric expression parsing__
 *  __command line parsing__
-*  __command line history__ editing
+*  __string operations__
 *  a __date and time__ module
+*  a module that supports basic integrated __unit testing__ 
+*  simple __numeric expression parsing__
+*  __command line history__ editing
 *  The low-level __M_draw__ graphics library, and the beginnings of a
-   __pixel graphics module__ similar to the VOGLE graphics library interface
-*  libraries for __message handling__, __unit testing__, and __debugging__
+   __pixel graphics module__ -- both similar to the VOGLE graphics library interface
+*  libraries for __message handling__ and __debugging__
 *  a growing number of Fortran interfaces to common C routines, including
    +  many __POSIX system routines__
    +  a module for reading and writing lines to a process (a __popen(3c)__ interface)
@@ -22,13 +28,12 @@ providing
       including the program __setxt__(1)
 
 The majority of these routines come with a man(1) page in *roff and HTML format.
-An index into the documentation is contained in the
-[[overview]](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/download.html)
-
-A [collection of programs](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/man_1k.html) that use the
-repository code are included. These range from useful utilities (a __pre-processor__, an
-__SCCS-style meta-data reader__, __regression testing utilities__, ...) to simple
-example programs that exercise the modules.
+An index into the documentation is contained in this distribution and available on the home page
+   + [[overview]](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/download.html)
+   + A [collection of programs](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/man_1k.html) that use the
+     repository code are included. These range from useful utilities (a __pre-processor__, an
+     __SCCS-style meta-data reader__, __regression testing utilities__, ...) to simple
+     example programs that exercise the modules.
 
 Code additions are strongly encouraged (This is intended to be a development of
 the Fortran community).
@@ -37,8 +42,8 @@ the Fortran community).
 This repository concentrates on those "other" Fortran procedures
 that solve the day-to-day non-numeric(mostly) issues in programming. Large
 repositories of numeric algorithms written in Fortran exist at such sites as
-the [ netlib ](http://www.netlib.org) repository. The Fortran Wiki [
-fortranwiki.org ](http://fortranwiki.org) contains information on many Fortran
+the [ netlib ](http://www.netlib.org) repository. 
+The Fortran Wiki [fortranwiki.org ](http://fortranwiki.org) contains information on many Fortran
 resources (If you do not see a link there to your favorites please add them.)
 
 A modern Fortran compiler is assumed. This code has
