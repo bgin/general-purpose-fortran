@@ -71,7 +71,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20170224>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Sun, Jan 13th, 2019 7:14:26 PM>',&
+'@(#)COMPILED:       Sun, Mar 24th, 2019 11:56:11 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -84,7 +84,7 @@ use M_kracken, only : IPvalue
 use M_strings, only : split
 implicit none
 
-character(len=*),parameter::ident="@(#)cprint(1f): filter to specified columns"
+character(len=*),parameter::ident_1="@(#)cprint(1f): filter to specified columns"
 
 character(len=IPvalue)             :: line
 character(len=:),allocatable       :: delimiters ! characters used to delimit columns

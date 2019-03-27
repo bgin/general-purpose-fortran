@@ -92,7 +92,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    find long lines>',&
 '@(#)VERSION:        23.1 20160618>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sun, Jan 13th, 2019 7:23:51 PM>',&
+'@(#)COMPILED:       Mon, Mar 25th, 2019 12:00:42 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -106,7 +106,7 @@ use M_strings, only : v2s, switch
 use ISO_FORTRAN_ENV, only: error_unit ! compiler_options,compiler_version,input_unit,output_unit
 implicit none
 
-character(len=*),parameter::ident="@(#)findll(1f): find long lines"
+character(len=*),parameter::ident_1="@(#)findll(1f): find long lines"
 
 character(len=:),allocatable :: line
 character(len=:),allocatable :: filenames(:)

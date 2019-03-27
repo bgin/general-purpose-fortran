@@ -64,7 +64,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20150312>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Sun, Jan 13th, 2019 7:42:07 PM>',&
+'@(#)COMPILED:       Mon, Mar 25th, 2019 12:14:08 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -76,7 +76,7 @@ use M_kracken, only : kracken, lget, sget
 use M_ncurses
 implicit none
 
-character(len=*),parameter::ident="@(#)print an ncurses(3c) window dump as HTML"
+character(len=*),parameter::ident_1="@(#)print an ncurses(3c) window dump as HTML"
 
 integer :: ierr
 type(C_PTR) :: win

@@ -12,23 +12,44 @@ help_text=[ CHARACTER(LEN=128) :: &
 '    slice(1f) - [M_slices] display a grid of Z values with a 3D view            ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
-'    slice -f FILENAME -d DEVICE                                                 ',&
+'    slice -f FILENAME -d X11 -w 20 -x 680 -y 680 -a 30 -b 40                    ',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
 '   Given a file that defines a grid of Z values display each row as a           ',&
 '   curve with the DL_SLICES(3f) routine with a 3D view.                         ',&
 '                                                                                ',&
-'   Enter "h" in graphics window for help on controlling the displayed           ',&
-'   curves''                                                                     ',&
+'   On interactive devices the viewing angles may be adjusted by entering        ',&
+'   from the set of letters "lrup".                                              ',&
+'                                                                                ',&
+'   Enter "h" in graphics window for further help on controlling the             ',&
+'   displayed curves''                                                           ',&
+'                                                                                ',&
+'   On batch devices the output is placed in filename                            ',&
+'                                                                                ',&
+'      "FILENAME_AxB.DEVICE"                                                     ',&
 '                                                                                ',&
 'OPTIONS                                                                         ',&
-'   -d DEVICE    device type. Defaults to "X11".                                 ',&
-'   -f FILENAME  filename with contents of form                                  ',&
+'   -f FILENAME   filename with contents of form                                 ',&
 '                                                                                ',&
-'                   z1 z2 z3 z4 z5 ...                                           ',&
-'                   z1 z2 z3 z4 z5 ...                                           ',&
-'                   z1 z2 z3 z4 z5 ...                                           ',&
-'                   z1 z2 z3 z4 z5 ...                                           ',&
+'                  z1 z2 z3 z4 z5 ...                                            ',&
+'                  z1 z2 z3 z4 z5 ...                                            ',&
+'                  z1 z2 z3 z4 z5 ...                                            ',&
+'                  z1 z2 z3 z4 z5 ...                                            ',&
+'   -a XANGLE     angle (in degrees) of x axis (NX) from horizontal              ',&
+'   -b YANGLE     angle (in degrees) of z axis (NZ) from horizontal              ',&
+'                                                                                ',&
+'   -d DEVICE     device type. Defaults to "X11". Enter an invalid               ',&
+'                 device name such as "help" to see a list of                    ',&
+'                 available devices.                                             ',&
+'   -w LINEWIDTH  line width in 1/10 000, of x-axis                              ',&
+'   -x XSIZE      X size in device units of output                               ',&
+'   -y YSIZE      Y size in device units of output                               ',&
+'EXAMPLES                                                                        ',&
+'                                                                                ',&
+'   $ slice -f in1                                                               ',&
+'                                                                                ',&
+'   # you can adjust line width and size for different devices                   ',&
+'   $ slice -f in1 -d svg -w 20 -x 14000 -y 14000                                ',&
 '                                                                                ',&
 'END $DOCUMENT                                                                   ',&
 '']
@@ -43,23 +64,45 @@ end subroutine help_usage
 !!
 !!##SYNOPSIS
 !!
-!!     slice -f FILENAME -d DEVICE
+!!     slice -f FILENAME -d X11 -w 20 -x 680 -y 680 -a 30 -b 40
 !!
 !!##DESCRIPTION
 !!    Given a file that defines a grid of Z values display each row as a
 !!    curve with the DL_SLICES(3f) routine with a 3D view.
 !!
-!!    Enter "h" in graphics window for help on controlling the displayed
-!!    curves'
+!!    On interactive devices the viewing angles may be adjusted by entering
+!!    from the set of letters "lrup".
+!!
+!!    Enter "h" in graphics window for further help on controlling the
+!!    displayed curves'
+!!
+!!    On batch devices the output is placed in filename
+!!
+!!       "FILENAME_AxB.DEVICE"
 !!
 !!##OPTIONS
-!!    -d DEVICE    device type. Defaults to "X11".
-!!    -f FILENAME  filename with contents of form
+!!    -f FILENAME   filename with contents of form
 !!
-!!                    z1 z2 z3 z4 z5 ...
-!!                    z1 z2 z3 z4 z5 ...
-!!                    z1 z2 z3 z4 z5 ...
-!!                    z1 z2 z3 z4 z5 ...
+!!                   z1 z2 z3 z4 z5 ...
+!!                   z1 z2 z3 z4 z5 ...
+!!                   z1 z2 z3 z4 z5 ...
+!!                   z1 z2 z3 z4 z5 ...
+!!    -a XANGLE     angle (in degrees) of x axis (NX) from horizontal
+!!    -b YANGLE     angle (in degrees) of z axis (NZ) from horizontal
+!!
+!!    -d DEVICE     device type. Defaults to "X11". Enter an invalid
+!!                  device name such as "help" to see a list of
+!!                  available devices.
+!!    -w LINEWIDTH  line width in 1/10 000, of x-axis
+!!    -x XSIZE      X size in device units of output
+!!    -y YSIZE      Y size in device units of output
+!!##EXAMPLES
+!!
+!!
+!!    $ slice -f in1
+!!
+!!    # you can adjust line width and size for different devices
+!!    $ slice -f in1 -d svg -w 20 -x 14000 -y 14000
 !!
 !!##END $DOCUMENT
 !===================================================================================================================================
@@ -76,10 +119,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)PRODUCT:        GPF library utilities and examples>',&
 '@(#)PROGRAM:        slice(1)>',&
 '@(#)DESCRIPTION:    display a set of curves as slices with a 3D view>',&
-'@(#)VERSION:        1.0, 20180617>',&
+'@(#)VERSION:        1.1, 20190326>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Sun, Jan 13th, 2019 7:21:53 PM>',&
+'@(#)COMPILED:       Tue, Mar 26th, 2019 10:59:09 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -88,7 +131,7 @@ end subroutine help_version
 !-----------------------------------------------------------------------------------------------------------------------------------
 program slice
 use M_io, only      : slurp
-use M_strings, only : s2vs
+use M_strings, only : s2vs,msg,nospace
 use M_draw
 use M_kracken, only : kracken,iget,lget,rget,sget
 implicit none
@@ -112,81 +155,114 @@ character(len=20)            :: device
 
 real                         :: a
 real                         :: b
+integer                      :: ixsize,iysize
+integer                      :: w
 !-----------------------------------------------------------------------------------------------------------------------------------
 !  define command arguments, default values and crack command line
-   call kracken('slice',' -f -help .f. -version .f. -d x11 ')
+   call kracken('slice',' -f -help .f. -version .f. -d x11 -a 30 -b 40 -x 680 -y 680 -w 20')
+   call help_usage(lget('slice_help'))                                ! if -help option is present, display help text and exit
+   call help_version(lget('slice_version'))                           ! if -version option is present, display version text and exit
 !  get values
    filename=sget('slice_f') ! get ‐f FILENAME
    filename=filename//' '//sget('slice_oo') ! get FILENAME
    filename=trim(adjustl(filename))
-   write(*,*)'FILENAME=',filename
+   write(*,*)'FILENAME=['//filename//']'
    device=sget('slice_d')   ! get ‐d DEVICE
+   a=rget('slice_a')
+   b=rget('slice_b')
+   w=iget('slice_w')
+   ixsize=iget('slice_x')
+   iysize=iget('slice_y')
 !-----------------------------------------------------------------------------------------------------------------------------------
-   device='x11'
    if(device.eq.'x11')then
       call prefposition(0,0)
-      call prefsize(680,680)
+      call prefsize(ixsize,iysize)
+   else
+      call prefsize(ixsize,iysize)
+      call voutput(nospace(msg(filename,'_',int(a),'x',int(b),'.',device)))
    endif
    call vinit(device)
    call vsetflush(.false.)
    call vflush()
+   call linewidth(w)
 !-----------------------------------------------------------------------------------------------------------------------------------
-   call slurp(FILENAME,text,lines=irows,length=length) ! allocate character array and copy file into it
-   nchars=size(text)
+   if(FILENAME.ne.' ')then
+      call slurp(FILENAME,text,lines=irows,length=length) ! allocate character array and copy file into it
+      nchars=size(text)
 
-   if(.not.allocated(text))then
-       write(*,*)'*slice* failed to load file '//FILENAME
-   else
-      allocate(character(len=length) :: line)
-      ! find number of values on first line and assume this is constant
-      line(:)=''
-      do i=1,nchars
-         if(text(i).eq.NEW_LINE('A'))then
-            exit
-         endif
-         line(i:i)=text(i)
-      enddo
-      !!write(*,*)'FIRST LINE=',trim(line)
-      icols=size(s2vs(line))
-      !!write(*,*)'COLUMNS=',icols
-      allocate(array(irows,icols))
-
-      array=0.0
-      istart=1
-      do j=1,irows
-         k=0
-         !!write(*,*)'ISTART=',istart
+      if(.not.allocated(text).or.irows.eq.0)then
+         write(*,*)'*slice* failed to load file '//FILENAME
+      else
+         allocate(character(len=length) :: line)
+         ! find number of values on first line and assume this is constant
          line(:)=''
-         do i=istart,nchars
-            if(text(i).eq.NEW_LINE('A').or.i.eq.nchars)then
+         do i=1,nchars
+            if(text(i).eq.NEW_LINE('A'))then
                exit
             endif
-            k=k+1
-            !!write(*,*)'I=',i
-            !!write(*,*)'K=',k
-            !!write(*,*)'T=',text(i)
-            line(k:k)=text(i)
+            line(i:i)=text(i)
          enddo
-         istart=i+1
-         array(j,:)=s2vs(line)
-      enddo
+         !!write(*,*)'FIRST LINE=',trim(line)
+         icols=size(s2vs(line))
+         !!write(*,*)'COLUMNS=',icols
+         allocate(array(irows,icols))
 
-      !!do i=1,size(array,dim=1)
-      !!   write(*,'(*(g0,1x))')array(i,:)
-      !!enddo
+         array=0.0
+         istart=1
+         do j=1,irows
+            k=0
+            !!write(*,*)'ISTART=',istart
+            line(:)=''
+            do i=istart,nchars
+               if(text(i).eq.NEW_LINE('A').or.i.eq.nchars)then
+                  exit
+               endif
+               k=k+1
+               !!write(*,*)'I=',i
+               !!write(*,*)'K=',k
+               !!write(*,*)'T=',text(i)
+               line(k:k)=text(i)
+            enddo
+            istart=i+1
+            array(j,:)=s2vs(line)
+         enddo
 
-      deallocate(text)  ! release memory
-      a=30.0
-      b=40.0
-      write(*,*)'ARRAY SIZE=',size(array), 'where ROWS=',irows, ' and COLS=',icols
-      irows2=irows
-      icols2=icols
-      call slices(array,irows,icols,irows2,icols2,a,b,filename)
-      write(*,*)'last axis angles were ',a,b
-      CALL VFLUSH()              ! flush graphics buffers
-      CALL VEXIT()               ! close up plot package
+         !!do i=1,size(array,dim=1)
+         !!   write(*,'(*(g0,1x))')array(i,:)
+         !!enddo
 
+         deallocate(text)  ! release memory
+         a=30.0
+         b=40.0
+         write(*,'(a,i0,a,i0,a,i0)')'ARRAY SIZE=',size(array), ' where ROWS=',irows, ' and COLS=',icols
+         if(irows.gt.0.and.icols.gt.0)then
+            irows2=irows
+            icols2=icols
+            call slices(array,irows,icols,irows2,icols2,a,b,filename)
+            write(*,*)'last axis angles were ',a,b
+         endif
+      endif
+   else
+      DEMO: block
+         integer,parameter  :: ix=35
+         integer,parameter  :: iz=45
+         real               :: surfdat(ix,iz) ! array of y values
+         real,parameter     :: pi=3.141592654
+         integer :: i
+         integer :: j
+         write(*,*)'WARNING: NO FILENAME GIVEN. Using demonstration data'
+         write(*,*)'         enter "h" in the graphics area for help'
+         ! fill some arrays with data we can plot
+         do j=1,ix
+            do i=1,iz
+               surfdat(j,i)=cos(pi*real(j-1)/12.0)*cos(pi*real(i-1)/12.0)
+            enddo
+         enddo
+         call slices(surfdat,ix,iz,ix,iz,a,b,'DEMO')
+      endblock DEMO
    endif
+   CALL VFLUSH()              ! flush graphics buffers
+   CALL VEXIT()               ! close up plot package
 !-----------------------------------------------------------------------------------------------------------------------------------
 end program slice
 !==================================================================================================================================!
@@ -337,9 +413,9 @@ NZT=len_trim(zt)       ! nzt   (i): number of characters in xt ;nzt = 0 : no axi
    DRAWPLOT: DO
       IBUF=BACKBUFFER()
       CALL VFLUSH()              ! flush graphics buffers
-      CALL COLOR(7)
-      CALL CLEAR()
       CALL COLOR(0)
+      CALL CLEAR()
+      CALL COLOR(7)
       CALL VFLUSH()              ! flush graphics buffers
       if(A_OLD.ne.A.or.B_OLD.ne.B)then
          CALL dl_slices(SURFDAT,IX,IZ,NX,NZ,A,B,XH,YH,ZH,IFLAG,IAX, &
@@ -351,7 +427,7 @@ NZT=len_trim(zt)       ! nzt   (i): number of characters in xt ;nzt = 0 : no axi
      &    ZS,ZE,NMZ,NNZ,MLZ,TSZ,NDZ,SMZ,                            &
      &    DM,DX,ICOL)
 !        add a label after master routine call
-         CALL LINEWIDTH(3)
+         CALL LINEWIDTH(30)
          CALL COLOR(4)
          CALL DL_SYMBOL(0.0,0.0,0.25,trim(title),0.0,len_trim(title),-1)
          call swapbuffers()
@@ -363,24 +439,27 @@ NZT=len_trim(zt)       ! nzt   (i): number of characters in xt ;nzt = 0 : no axi
       B_OLD=B
       !IF(CHECKKEY().EQ.0)GOTO 111
       IVALUE=GETKEY()     ! wait till keypress is read in graphic window
+      if(ivalue.eq.-1)then
+         exit
+      endif
       KEY=char(ivalue)
       SELECTCASE (KEY)
       CASE ('l')
          a=a-1
          a=max(0.0,a)
-         write(*,*)'l: a=',a
+         !!write(*,*)'l: a=',a
       CASE ('r')
          a=a+1
          a=min(80.0,a)
-         write(*,*)'r: a=',a
+         !!write(*,*)'r: a=',a
       CASE ('u')
          b=b+1.0
          b=min(80.0,b)
-         write(*,*)'u: b=',b
+         !!write(*,*)'u: b=',b
       CASE ('d')
          b=b-1
          b=max(5.0,b)
-         write(*,*)'d: b=',b
+         !!write(*,*)'d: b=',b
       CASE ('h')
          write(*,*)'================================================================================'
          write(*,*)' l,r -- change viewing angle of x axis from horizontal (0 - 85 degrees'
@@ -398,8 +477,12 @@ NZT=len_trim(zt)       ! nzt   (i): number of characters in xt ;nzt = 0 : no axi
          write(*,*)' x-axis angle=',A,' y-axis angle=',B
          exit
       CASE DEFAULT
+         write(*,*)'================================================================================'
+         write(*,*)'unknown key. ADE=',ivalue,merge(key,' ',ivalue>31.and.ivalue<127)
          write(*,*)'x-axis angle=',A,' from 0 to 80'
          write(*,*)'z-axis angle=',B,' from 5 to 80'
+         write(*,*)'enter "h" for additional help'
+         write(*,*)'================================================================================'
       END SELECT
       write(*,*)' x-axis angle=',A,' z-axis angle=',B
 !-----------------------------------------------------------------------------------------------------------------------------------

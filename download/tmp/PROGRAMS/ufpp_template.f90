@@ -14,6 +14,9 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   ufpp_template [--version|--help]                                             ',&
 'DESCRIPTION                                                                     ',&
 '   A simple program that writes an example input file for ufpp(1).              ',&
+'OPTIONS                                                                         ',&
+'  --version  display version and quit                                           ',&
+'  --help     display help text and quit                                         ',&
 'EXAMPLE                                                                         ',&
 '   ufpp_template                                                                ',&
 '']
@@ -39,7 +42,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20180223>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Sun, Jan 13th, 2019 7:51:48 PM>',&
+'@(#)COMPILED:       Mon, Mar 25th, 2019 12:19:30 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -50,7 +53,7 @@ program ufpp_template
 use M_kracken, only : kracken, lget
 implicit none
 
-character(len=*),parameter::ident="@(#)UFPP::ufpp_template(1f) write a template of a ufpp source file"
+character(len=*),parameter::ident_1="@(#)UFPP::ufpp_template(1f) write a template of a ufpp source file"
 
 integer :: i
 character(len=:),allocatable :: example_text(:) ! this variable will be defined by $DOCUMENT VARIABLE directive

@@ -29,7 +29,7 @@ use M_regex,   only : regex_type, regcomp, regexec, regmatch, regfree
 use M_strings,only : upper
 implicit none
 
-character(len=*),parameter::ident="@(#)helpg(3f): a simple help utility"
+character(len=*),parameter::ident_1="@(#)helpg(3f): a simple help utility"
 
 character(len=*),intent(in)   :: topic0      ! topic name to location
 character(len=*),intent(in)   :: search0     ! search body of text for this string
@@ -291,22 +291,19 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   format of file is                                                            ',&
 '                                                                                ',&
 '      TOPIC:topic                                                               ',&
-'      TOPIC:another topic line(s)                                               ',&
-'      syntax line(s)                                                            ',&
+'      TOPIC:other optional topic line(s)                                        ',&
 '      syntax line(s) (assumed not to exist if first letter of topic is uppercase)',&
 '                                                                                ',&
-'      detailed topic lines for commands (assumed not to exist if                ',&
-'      first letter of topic is uppercase)                                       ',&
-'                                                                                ',&
-'      topic description                                                         ',&
+'      detailed topic description for commands displayed as-is until a new TOPIC:',&
+'      line is encountered.                                                      ',&
 '                                                                                ',&
 '      and then repeat starting with TOPIC: line                                 ',&
 '         :                                                                      ',&
 '         :                                                                      ',&
 '         :                                                                      ',&
 '                                                                                ',&
-'                                                                                ',&
 '   EXAMPLE FILE:                                                                ',&
+'                                                                                ',&
 '      TOPIC:COLORS                                                              ',&
 '                                                                                ',&
 '      The color-related commands background(1) and foreground(1) are            ',&
@@ -325,30 +322,31 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                                                                                ',&
 'OPTIONS                                                                         ',&
 ' TOPIC  The name of the topic to get help for                                   ',&
+'                                                                                ',&
 '        * if topic is ? show all topic lines                                    ',&
 '          topics all in caps go on new line                                     ',&
 '          display other topics three to a line in a table, like:                ',&
 '                                                                                ',&
-'          *--------------------------------------------------------------------*',&
-'          | INTRO                                                              |',&
-'          *--------------------------------------------------------------------*',&
-'          | STARTING UP USH                                                    |',&
-'          | SUMMARY of basic USH |                                             |',&
-'          *--------------------------------------------------------------------*',&
-'          | COMMANDS                                                           |',&
-'          | novice               | aspect               | attach               |',&
-'          | dirf                 | exact                | f                    |',&
-'          *--------------------------------------------------------------------*',&
-'          | CALCULATOR                                                         |',&
-'          | ANSI functions       | String functions     | Bessel functions     |',&
-'          | Operators            | intg()               | dif()                |',&
-'          | convert()            |                                             |',&
-'          *--------------------------------------------------------------------*',&
-'          | CHANGE REQUEST                                                     |',&
-'          | version2 changes     | version3 changes     | version3.02 changes  |',&
-'          | version4 changes     | V4 Obsolete Usage    | version5 changes     |',&
-'          |                      |                                             |',&
-'          *--------------------------------------------------------------------*',&
+'           #--------------------------------------------------------------------#',&
+'           | INTRO                                                              |',&
+'           #--------------------------------------------------------------------#',&
+'           | STARTING UP USH                                                    |',&
+'           | SUMMARY of basic USH |                                             |',&
+'           #--------------------------------------------------------------------#',&
+'           | COMMANDS                                                           |',&
+'           | novice               | aspect               | attach               |',&
+'           | dirf                 | exact                | f                    |',&
+'           #--------------------------------------------------------------------#',&
+'           | CALCULATOR                                                         |',&
+'           | ANSI functions       | String functions     | Bessel functions     |',&
+'           | Operators            | intg()               | dif()                |',&
+'           | convert()            |                                             |',&
+'           #--------------------------------------------------------------------#',&
+'           | CHANGE REQUEST                                                     |',&
+'           | version2 changes     | version3 changes     | version3.02 changes  |',&
+'           | version4 changes     | V4 Obsolete Usage    | version5 changes     |',&
+'           |                      |                                             |',&
+'           #--------------------------------------------------------------------#',&
 '                                                                                ',&
 '        * if topic is ?? show all topic lines and syntax lines                  ',&
 '        * if topic is ??? show all lines                                        ',&
@@ -395,22 +393,19 @@ end subroutine help_usage
 !!    format of file is
 !!
 !!       TOPIC:topic
-!!       TOPIC:another topic line(s)
-!!       syntax line(s)
+!!       TOPIC:other optional topic line(s)
 !!       syntax line(s) (assumed not to exist if first letter of topic is uppercase)
 !!
-!!       detailed topic lines for commands (assumed not to exist if
-!!       first letter of topic is uppercase)
-!!
-!!       topic description
+!!       detailed topic description for commands displayed as-is until a new TOPIC:
+!!       line is encountered.
 !!
 !!       and then repeat starting with TOPIC: line
 !!          :
 !!          :
 !!          :
 !!
-!!
 !!    EXAMPLE FILE:
+!!
 !!       TOPIC:COLORS
 !!
 !!       The color-related commands background(1) and foreground(1) are
@@ -429,30 +424,31 @@ end subroutine help_usage
 !!
 !!##OPTIONS
 !!  TOPIC  The name of the topic to get help for
+!!
 !!         * if topic is ? show all topic lines
 !!           topics all in caps go on new line
 !!           display other topics three to a line in a table, like:
 !!
-!!           *--------------------------------------------------------------------*
-!!           | INTRO                                                              |
-!!           *--------------------------------------------------------------------*
-!!           | STARTING UP USH                                                    |
-!!           | SUMMARY of basic USH |                                             |
-!!           *--------------------------------------------------------------------*
-!!           | COMMANDS                                                           |
-!!           | novice               | aspect               | attach               |
-!!           | dirf                 | exact                | f                    |
-!!           *--------------------------------------------------------------------*
-!!           | CALCULATOR                                                         |
-!!           | ANSI functions       | String functions     | Bessel functions     |
-!!           | Operators            | intg()               | dif()                |
-!!           | convert()            |                                             |
-!!           *--------------------------------------------------------------------*
-!!           | CHANGE REQUEST                                                     |
-!!           | version2 changes     | version3 changes     | version3.02 changes  |
-!!           | version4 changes     | V4 Obsolete Usage    | version5 changes     |
-!!           |                      |                                             |
-!!           *--------------------------------------------------------------------*
+!!            #--------------------------------------------------------------------#
+!!            | INTRO                                                              |
+!!            #--------------------------------------------------------------------#
+!!            | STARTING UP USH                                                    |
+!!            | SUMMARY of basic USH |                                             |
+!!            #--------------------------------------------------------------------#
+!!            | COMMANDS                                                           |
+!!            | novice               | aspect               | attach               |
+!!            | dirf                 | exact                | f                    |
+!!            #--------------------------------------------------------------------#
+!!            | CALCULATOR                                                         |
+!!            | ANSI functions       | String functions     | Bessel functions     |
+!!            | Operators            | intg()               | dif()                |
+!!            | convert()            |                                             |
+!!            #--------------------------------------------------------------------#
+!!            | CHANGE REQUEST                                                     |
+!!            | version2 changes     | version3 changes     | version3.02 changes  |
+!!            | version4 changes     | V4 Obsolete Usage    | version5 changes     |
+!!            |                      |                                             |
+!!            #--------------------------------------------------------------------#
 !!
 !!         * if topic is ?? show all topic lines and syntax lines
 !!         * if topic is ??? show all lines
@@ -498,7 +494,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        2.5, 20130818  Updated and made a seperate program instead of a subroutine>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Mon, Jan 28th, 2019 8:48:17 PM>',&
+'@(#)COMPILED:       Mon, Mar 25th, 2019 8:22:45 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

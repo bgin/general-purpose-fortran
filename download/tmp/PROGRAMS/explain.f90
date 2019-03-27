@@ -130,7 +130,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)AUTHOR:         John Burkardt>',&
 '@(#)VERSION:        1.07, 20190125>',&
 '@(#)MODIFIED:       John S. Urban>',&
-'@(#)COMPILED:       Fri, Jan 25th, 2019 11:22:51 PM>',&
+'@(#)COMPILED:       Mon, Mar 25th, 2019 8:22:59 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -169,7 +169,7 @@ use M_strings, only : upper, isdigit, compact
 use M_io,      only : notopen
   implicit none
 
-character(len=*),parameter::ident="@(#)HLPVMS(3f): provides extensive help from a VMS help file."
+character(len=*),parameter::ident_1="@(#)HLPVMS(3f): provides extensive help from a VMS help file."
 
 !  LICENSING:    This code is distributed under the GNU LGPL license.
 !  MODIFIED:     06 March 2001
@@ -244,12 +244,10 @@ character(len=*),parameter::ident="@(#)HLPVMS(3f): provides extensive help from 
     endif
     write ( *, '(/,a,/)' ) trim ( inline )
     nline = 3
-!
 !  o  If 'going down' or redisplaying, (as opposed to backing up), display information available under the current topic.
 !  o  We stop printing when we hit a numeric label.
 !  o  If this label is less than or equal to current level, there are no subtopics.
 !  o  Otherwise, we now move ahead to print out the list of subtopics available for this topic.
-!
     if ( level >= levelo ) then
       ntop = -1
       do
@@ -275,7 +273,6 @@ character(len=*),parameter::ident="@(#)HLPVMS(3f): provides extensive help from 
       inline = ' '
       lab = ' '
     endif
-!
 !  Locate each subtopic by examining column 1, searching for integer label.
 !
 !  Assuming we are at level LEVEL, we are searching for labels equal to LEVEL+1.

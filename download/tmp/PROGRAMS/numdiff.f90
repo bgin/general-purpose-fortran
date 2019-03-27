@@ -427,7 +427,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)COPYRIGHT:      1985, 1986, 1989, 1990, 20090501, 20131129 John. S. Urban>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sun, Jan 13th, 2019 7:43:41 PM>',&
+'@(#)COMPILED:       Mon, Mar 25th, 2019 12:15:22 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -536,7 +536,7 @@ subroutine num_diff(file_old,file_new,percent_tolerance,idigits,margin)
 !     when one of the values is at or near 0.
 !
 implicit none
-character(len=*),parameter::ident="@(#)num_diff(3f): compare numbers in otherwise identical files"
+character(len=*),parameter::ident_1="@(#)num_diff(3f): compare numbers in otherwise identical files"
 !-----------------------------------------------------------------------------------------------------------------------------------
       character(len=*),intent(in)    :: file_old
       character(len=*),intent(in)    :: file_new
@@ -1054,7 +1054,7 @@ subroutine getnum(chars,value,iflag)
 !  o  prints an error message to output and returns a value of zero if an error occurs.
 !-----------------------------------------------------------------------------------------------------------------------------------
 implicit none
-character(len=*),parameter::ident="@(#)getnum(3f): returns a real value from a numeric character string"
+character(len=*),parameter::ident_2="@(#)getnum(3f): returns a real value from a numeric character string"
       character(len=*),intent(in)    ::  chars
       doubleprecision,intent(out)    ::  value
       integer,intent(out)            ::  iflag
@@ -1080,7 +1080,7 @@ end subroutine getnum
 subroutine remark(string)
 use iso_fortran_env, only : error_unit ! access computing environment
 implicit none
-character(len=*),parameter::ident="@(#)remark(3f): writes a message to standard error using a standard f2003 method"
+character(len=*),parameter::ident_3="@(#)remark(3f): writes a message to standard error using a standard f2003 method"
 character(len=*),intent(in) :: string
       write(error_unit,*)trim(string)
 end subroutine remark
@@ -1113,7 +1113,7 @@ SUBROUTINE same8(X,Y,IDIGIT,ACURCY,IND)
 !           CURRENT VERSION  - FEBRUARY, 2013. JSU
 !-----------------------------------------------------------------------------------------------------------------------------------
 implicit none
-character(len=*),parameter::ident="@(#)same8(3f): compare two double numbers only up to a specified number of digits"
+character(len=*),parameter::ident_4="@(#)same8(3f): compare two double numbers only up to a specified number of digits"
 !-----------------------------------------------------------------------------------------------------------------------------------
 !     INPUT ...
       doubleprecision,intent(in)  :: x                         ! FIRST  OF TWO DOUBLE NUMBERS TO BE COMPARED.

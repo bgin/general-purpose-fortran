@@ -7453,7 +7453,7 @@ class(*),intent(in),optional :: generic
       !type is (doubleprecision);        write(line(istart:),'(1pg0)') generic
       type is (logical);                write(line(istart:),'(1l)') generic
       type is (character(len=*));       write(line(istart:),'(a)') generic
-      type is (complex);                write(line(istart:),'("("1pg0,",",1pg0,")")') generic
+      type is (complex);                write(line(istart:),'("(",1pg0,",",1pg0,")")') generic
    end select
    istart=len_trim(line)+2
 end subroutine print_generic

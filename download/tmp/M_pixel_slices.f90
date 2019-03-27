@@ -42,18 +42,19 @@ module M_pixel_slices
 !!
 !!
 !!##OPTIONS
-!!     d        (R): array of y values dimensioned d(ndx,ndz)
-!!     ndx,ndz  (i): x and z dimensions of d array
-!!     nx,nz    (i): x and z sizes of surface to plot d array
-!!     a        (R): angle of x axis from horizontal 0-85 degrees
-!!     b        (R): angle of z axis from horizontal 0-90 degrees
-!!                   note: origin (1,1) is in lower-left corner
-!!                         x axis runs left to right on screen
-!!                         y axis runs up to down on screen
-!!                         z axis appears to run into the screen but
-!!                           is angled to the right
-!!     xh,yh,zh (R): length of each axis
-!!     iflag    (i): option flag
+!!     d         (R): array of y values dimensioned d(ndx,ndz)
+!!     ndx,ndz   (i): x and z dimensions of d array
+!!     nx,nz     (i): x and z sizes of surface to plot d array
+!!     a         (R): angle of x axis from horizontal 0-85 degrees
+!!     b         (R): angle of z axis from horizontal 0-90 degrees
+!!                    note: origin (1,1) is in lower-left corner
+!!
+!!                      x  axis runs left to right on screen
+!!                      y  axis runs up to down on screen
+!!                      z  axis appears to run into the screen but
+!!                         is angled to the right
+!!     xh,yh,zh  (R): length of each axis
+!!     iflag     (i): option flag
 !!                   (1's digit) =2: use color array (need all parameters)
 !!                               =1: do not use color array
 !!                   (10's digit)=0: Plot sides
@@ -74,59 +75,69 @@ module M_pixel_slices
 !!            or mod(iflag,10)=1)
 !!
 !!     X-AXIS
-!!        xt    (C): title of x axis (width)
-!!        nxt   (i): number of characters in xt
+!!        xt     (C): title of x axis (width)
+!!        nxt    (i): number of characters in xt
 !!                   = 0 : no axis plotted
 !!                   > 0 : normal
-!!        xs,xe (R): starting and ending values displayed on x axis
+!!        xs,xe  (R): starting and ending values displayed on x axis
+!!
 !!        (see DL_AXISB for detailed description of axis parameters)
-!!        nmx   (i): number of minor ticks between major ticks on x axis
-!!        nnx   (i): highlight length of nnx-th minor tick on x axis
-!!        mlx   (i): number of major tick marks on x axis
-!!        tsx   (R): size of title and numbers on x axis
+!!
+!!        nmx    (i): number of minor ticks between major ticks on x axis
+!!        nnx    (i): highlight length of nnx-th minor tick on x axis
+!!        mlx    (i): number of major tick marks on x axis
+!!        tsx    (R): size of title and numbers on x axis
 !!                   < 0 auto exponent scaling (x10 to power) disabled
 !!                   > 0 auto exponent scaling (x10 to power) enabled
-!!        ndx   (i): number of digits to right of decimal point on x axis
-!!        smx   (R): major tick length on x axis
+!!        ndx    (i): number of digits to right of decimal point on x axis
+!!        smx    (R): major tick length on x axis
 !!     Y-AXIS
-!!        yt    (C): title of y axis (depth)
-!!        nyt   (i): number of characters in yt
+!!        yt     (C): title of y axis (depth)
+!!        nyt    (i): number of characters in yt
+!!
 !!                   = 0 : no y axis plotted
 !!                   > 0 : normal
-!!        nmy   (i): number of minor ticks between major ticks on y axis
-!!        nny   (i): highlight length of nny-th minor tick on y axis
-!!        mly   (i): number of major tick marks on y axis
-!!        tsy   (R): size of title and numbers on y axis
-!!                   < 0 auto exponent scaling (x10 to power) disabled
-!!                   > 0 auto exponent scaling (x10 to power) enabled
-!!        ndy   (i): number of digits to right of decimal point on y axis
-!!        smy   (R): major tick length on y axis
+!!        nmy    (i): number of minor ticks between major ticks on y axis
+!!        nny    (i): highlight length of nny-th minor tick on y axis
+!!        mly    (i): number of major tick marks on y axis
+!!        tsy    (R): size of title and numbers on y axis
+!!
+!!                    < 0 auto exponent scaling (x10 to power) disabled
+!!                    > 0 auto exponent scaling (x10 to power) enabled
+!!        ndy    (i): number of digits to right of decimal point on y axis
+!!        smy    (R): major tick length on y axis
 !!     Z-AXIS
-!!        zt    (C): title of z axis (height)
-!!        nzt   (i): number of characters in zt
+!!        zt     (C): title of z axis (height)
+!!        nzt    (i): number of characters in zt
+!!
 !!                   = 0 : no z axis plotted
 !!                   > 0 : normal
-!!        zs,ze (R): starting and ending value displayed on z axis
-!!        nmz   (i): number of minor ticks between major ticks on z axis
-!!        nnz   (i): highlight length of nnz-th minor tick on z axis
-!!        mlz   (i): number of major tick marks on z axis
-!!        tsz   (R): size of title and numbers on z axis
+!!        zs,ze  (R): starting and ending value displayed on z axis
+!!        nmz    (i): number of minor ticks between major ticks on z axis
+!!        nnz    (i): highlight length of nnz-th minor tick on z axis
+!!        mlz    (i): number of major tick marks on z axis
+!!        tsz    (R): size of title and numbers on z axis
+!!
 !!                   < 0 auto exponent scaling (x10 to power) disabled
 !!                   > 0 auto exponent scaling (x10 to power) enabled
-!!        ndz   (i): number of digits to right of decimal point on z axis
-!!        smz   (R): major tick length on z axis
+!!        ndz    (i): number of digits to right of decimal point on z axis
+!!        smz    (R): major tick length on z axis
 !!
 !!     (NOTE: the following optional parameters are accessed only if
 !!            iax < 0 or mod(iflag,10)=1)
-!!        dm,dx (R): minimum and maximum values of d array
+!!
+!!        dm,dx  (R): minimum and maximum values of d array
+!!
 !!        (NOTE: color array accessed only if mod(iflag,10)=1)
-!!        ic    (i): color list
-!!                   ic(1) : color for axis lines
-!!                   ic(2) : color for axis numbers
-!!                   ic(3) : color for axis titles
-!!                   ic(4) : color for axis exponents
-!!                   ic(5) : color index for lower plot surface (return)
-!!                   ic(6) : color index for upper plot surface (return)
+!!
+!!        ic     (i): color list
+!!
+!!                    ic(1):  color for axis lines
+!!                    ic(2):  color for axis numbers
+!!                    ic(3):  color for axis titles
+!!                    ic(4):  color for axis exponents
+!!                    ic(5):  color index for lower plot surface (return)
+!!                    ic(6):  color index for upper plot surface (return)
 !!
 !!##EXAMPLE
 !!

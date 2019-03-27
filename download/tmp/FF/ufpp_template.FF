@@ -6,6 +6,9 @@ SYNOPSIS
    ufpp_template [--version|--help]
 DESCRIPTION
    A simple program that writes an example input file for ufpp(1).
+OPTIONS
+  --version  display version and quit
+  --help     display help text and quit
 EXAMPLE
    ufpp_template
 $DOCUMENT END

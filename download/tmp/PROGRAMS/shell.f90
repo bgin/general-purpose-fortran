@@ -34,7 +34,7 @@ use M_calculator_plus, only : dnum0
 use m_readline, only : system_readline
 !-----------------------------------------------------------------------------------------------------------------------------------
    implicit NONE
-character(len=*),parameter::ident="&
+character(len=*),parameter::ident_1="&
 &@(#)line mode calculator program (that calls jucalc(3f),cond(3f),M_history(3f),M_kracken(3f),M_pixel(3f))"
 
    integer,parameter             :: dp=kind(0.0d0)         ! calculator returns double precision values
@@ -279,7 +279,7 @@ use :: M_pixel, only : polyline2       ! [M_pixel] connect points with lines
 
 use :: M_writegif,        only : writegif
 !-----------------------------------------------------------------------------------------------------------------------------------
-character(len=*),parameter::ident="@(#)pixel(3fp):parse M_pixel(3fm) module routines in shell(1)"
+character(len=*),parameter::ident_2="@(#)pixel(3fp):parse M_pixel(3fm) module routines in shell(1)"
 integer :: ifound
 !-----------------------------------------------------------------------------------------------------------------------------------
       select case(linet(:ii))                               ! using verb (first word) select an action
@@ -908,7 +908,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sun, Jan 13th, 2019 7:47:24 PM>',&
+'@(#)COMPILED:       Mon, Mar 25th, 2019 12:17:13 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

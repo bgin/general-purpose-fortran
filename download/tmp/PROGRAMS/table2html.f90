@@ -115,7 +115,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sun, Jan 13th, 2019 7:49:45 PM>',&
+'@(#)COMPILED:       Mon, Mar 25th, 2019 12:18:27 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -126,7 +126,7 @@ program table2html
 use M_kracken, only : kracken, iget, sgets, sget, lget, IPvalue
 use M_strings, only : substitute, split
 implicit none
-character(len=*),parameter::ident="@(#)table2html(1f): filter to format input into an HTML table form"
+character(len=*),parameter::ident_1="@(#)table2html(1f): filter to format input into an HTML table form"
 
 character(len=IPvalue)             :: line
 character(len=IPvalue),allocatable :: listof_classes(:)

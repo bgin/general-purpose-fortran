@@ -35,7 +35,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    output current time for uses such as file suffixes.>',&
 '@(#)VERSION:        1.0, 2009>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sun, Jan 13th, 2019 7:50:35 PM>',&
+'@(#)COMPILED:       Mon, Mar 25th, 2019 12:18:52 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -46,7 +46,7 @@ program today
 use M_time, only : now, fmtdate_usage
 implicit none
 
-character(len=*),parameter::ident="@(#)today(1f): output current time for uses such as file suffixes."
+character(len=*),parameter::ident_1="@(#)today(1f): output current time for uses such as file suffixes."
 
 character(len=:),allocatable :: arguments
 character(len=:),allocatable :: options

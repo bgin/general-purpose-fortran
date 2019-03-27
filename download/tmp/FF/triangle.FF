@@ -13,6 +13,7 @@ DESCRIPTION
    surface. The not-given elements must be put to zero.
 AUTHOR
    Based on an example F90 version by J-P Moreau (www.jpmoreau.fr).
+
    Ref.: "Mathématiques en Turbo-Pascal By M. Ducamp 
    and A. Reverchon (vol 2), Eyrolles, Paris, 1988"
    [BIBLI 05].

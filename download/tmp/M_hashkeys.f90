@@ -699,7 +699,8 @@ end function sha256b
 ! Author: Mikael Leetmaa
 ! Date:   05 Jan 2014
 subroutine test_suite_sha256()
-use M_debug, only : unit_check
+use M_debug, only : unit_check, unit_check_start, unit_check_done
+use M_debug, only : unit_check_level
 
 implicit none
 
@@ -755,26 +756,32 @@ integer(kind=int32),parameter :: ca_one_zero_flip   =transfer(b'0110001101100001
 contains
 ! Test the swap function.
    subroutine test_swap32
+      call unit_check_start('swap32')
       call unit_check('swap32',swap32(abc_bin)==abc_bin_swap,'test swap32 function')
       call unit_check('swap32',abc_bin==abc_bin_ref,'test swap value')
+      call unit_check_done('swap32')
    end subroutine test_swap32
 
    subroutine test_ishftc
 ! Make sure the intrinsic ishftc function does what we think.
       integer(kind=int32) :: a
+      call unit_check_start('ishftc')
       a = ishftc(ipad4, -2)
       call unit_check('ishftc',a==shftc4_r2,'verify ishftc A')
       a = ishftc(ipad4, 12)
       call unit_check('ishftc',a==shftc4_l12,'verify ishftc B')
+      call unit_check_done('ishftc')
    end subroutine test_ishftc
 
 ! Make sure the intrinsic ishft function does what we think.
    subroutine test_ishft
       integer(kind=int32) :: a
+      call unit_check_start('ishft')
       a = ishft(ipad5, -8)
       call unit_check('ishft',a==shft5_r8,'verify ishft A')
       a = ishft(ipad5, 11)
       call unit_check('ishft',a==shft5_l11,'verify ishft B')
+      call unit_check_done('ishft')
    end subroutine test_ishft
 
 ! Test the message padding.
@@ -785,6 +792,7 @@ contains
       integer :: pos0, break
       integer :: swap = 1
 
+      call unit_check_start('pad_message1')
       ! Set the message to "".
       str = ""
       pos0   = 1
@@ -815,6 +823,7 @@ contains
       ! Check the first word.
       call unit_check('pad_message1',inp(1)==a_bin_flip,'message padding C')
 
+      call unit_check_done('pad_message1')
    end subroutine pad_message1
 
 ! Test the message padding.
@@ -834,6 +843,7 @@ contains
       call consume_chunk(str, length, inp, pos0, break, swap)
 
       ! Check the whole message.
+      call unit_check_start('pad_message2')
       call unit_check('pad_message2',inp(1)== abca_bin_flip,'message padding 2')
       call unit_check('pad_message2',inp(2)== bcab_bin_flip,'message padding 2')
       call unit_check('pad_message2',inp(3)== cabc_bin_flip,'message padding 2')
@@ -869,6 +879,9 @@ contains
       call unit_check('pad_message2',inp(14)==empty_bin,'message padding 2')
       call unit_check('pad_message2',inp(15)==empty_bin,'message padding 2')
       call unit_check('pad_message2',inp(16)==little_endian_464,'message padding 2')
+
+      call unit_check_done('pad_message2')
+
    end subroutine pad_message2
 ! Test the ch function.
    subroutine test_ch
@@ -879,7 +892,9 @@ contains
       g = ipad3
       aa = iand(not(e),g)
       bb = iand(e,f)
+      call unit_check_start('test_ch')
       call unit_check('test_ch',ieor(aa,bb)==maj(e,f,g),'test the ch function')
+      call unit_check_done('test_ch')
    end subroutine test_ch
 
 ! Test the maj function.
@@ -887,6 +902,7 @@ contains
       integer(kind=int32) :: a, b, c
       integer(kind=int32) :: aa, bb, cc
 
+      call unit_check_start('test_maj')
       a = ipad1
       b = ipad2
       c = ipad3
@@ -919,11 +935,14 @@ contains
       cc = iand(b,c)
       call unit_check('test_maj',ieor(aa,ieor(bb,cc))==maj(a,b,c),'test the maj function')
 
+      call unit_check_done('test_maj')
+
    end subroutine test_maj
 
 ! Test the major sigma-0 function.
    subroutine test_cs0
       integer(kind=int32) :: a, b, c
+      call unit_check_start('test_cs0')
       a   = ishftc(ipad1, -2)
       b   = ishftc(ipad1, -13)
       c   = ishftc(ipad1, -22)
@@ -953,11 +972,14 @@ contains
       b   = ishftc(ipad6, -13)
       c   = ishftc(ipad6, -22)
       call unit_check('test_cs0',ieor(a,ieor(b,c))==cs0(ipad6),'test the major sigma-9 function')
+
+      call unit_check_done('test_cs0')
    end subroutine test_cs0
 
 ! Test the major sigma-1 function.
    subroutine test_cs1
       integer(kind=int32) :: a, b, c
+      call unit_check_start('test_cs1')
       a   = ishftc(ipad1, -6)
       b   = ishftc(ipad1, -11)
       c   = ishftc(ipad1, -25)
@@ -988,12 +1010,15 @@ contains
       c   = ishftc(ipad6, -25)
       call unit_check('test_cs1',ieor(a,ieor(b,c))==cs1(ipad6),'test the major sigma-9 function')
 
+      call unit_check_done('test_cs1')
+
    end subroutine test_cs1
 
 ! Test the minor sigma-0 function.
    subroutine test_ms0
       integer(kind=int32) :: a, b, c
 
+      call unit_check_start('test_ms0')
       a   = ishftc(ipad1, -7)
       b   = ishftc(ipad1, -18)
       c   =  ishft(ipad1, -3)
@@ -1024,11 +1049,14 @@ contains
       c   =  ishft(ipad6, -3)
       call unit_check('test_ms0',ieor(a,ieor(b,c))==ms0(ipad6),'test the minor sigma-0 function')
 
+      call unit_check_done('test_ms0')
+
    end subroutine test_ms0
 
 ! Test the minor sigma-1 function.
    subroutine test_ms1
       integer(kind=int32) :: a, b, c
+      call unit_check_start('test_ms1')
 
       a   = ishftc(ipad1, -17)
       b   = ishftc(ipad1, -19)
@@ -1060,11 +1088,14 @@ contains
       c   =  ishft(ipad6, -10)
       call unit_check('test_ms1',ieor(a,ieor(b,c))==ms1(ipad6),'test the minor sigma-1 function')
 
+      call unit_check_done('test_ms1')
+
    end subroutine test_ms1
 
 ! Test the sha256 function with a set of reference strings.
    subroutine test_sha256_1
       character(len=1000000) :: str
+      call unit_check_start('test_sha256_1')
       str = ""
       call unit_check('test_sha256_1',sha256(str)=="E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",'sha256 1')
       str = "abc"
@@ -1073,12 +1104,15 @@ contains
       call unit_check('test_sha256_1',sha256(str)=="248D6A61D20638B8E5C026930C3E6039A33CE45964FF2167F6ECEDD419DB06C1",'sha256 3')
       str = "abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmnoijklmnopjklmnopqklmnopqrlmnopqrsmnopqrstnopqrstu"
       call unit_check('test_sha256_1',sha256(str)=="CF5B16A778AF8380036CE59E7B0492370B249B11E8F07A51AFAC45037AFEE9D1",'sha256 4')
+
+      call unit_check_done('test_sha256_1')
    end subroutine test_sha256_1
 
    subroutine test_sha256_5
       character(len=1000000) :: str
       character(len=64)      :: ref
       integer :: i
+      call unit_check_start('test_sha356_5')
       do i=1,1000000
          str(i:i) = "a"
       enddo
@@ -1086,10 +1120,13 @@ contains
       ! Check the quick and dirty implementation as well.
       ref = "69E3FACD5F08321F78117BD53476E5321845433356F106E7013E68EC367F3017"
       call unit_check('test_sha356_5',dirty_sha256(str)==ref,'test sha256 6')
+
+      call unit_check_done('test_sha356_5')
    end subroutine test_sha256_5
 
    subroutine test_sha256_6
       character(len=1000000) :: str
+      call unit_check_start('test_sha256_6')
       str = "message digest"
       call unit_check('test_sha256_6',sha256(str)=="F7846F55CF23E14EEBEAB5B4E1550CAD5B509E3348FBC4EFA3A1413D393CB650",'sha256 6')
       str = "secure hash algorithm"
@@ -1100,17 +1137,20 @@ contains
       call unit_check('test_sha256_6',sha256(str)=="F08A78CBBAEE082B052AE0708F32FA1E50C5C421AA772BA5DBB406A2EA6BE342",'sha256 9 ')
       str = "This is exactly 64 bytes long, not counting the terminating byte"
       call unit_check('test_sha256_6',sha256(str)=="AB64EFF7E88E2E46165E29F2BCE41826BD4C7B3552F6B382A9E7D3AF47C245F8",'sha256 10 ')
+      call unit_check_done('test_sha256_6')
    end subroutine test_sha256_6
 
    subroutine test_sha256_11
       integer,parameter     :: big=16777216
       character(len=big*64) :: str
       integer :: i
+      call unit_check_start('test_sha256_11')
       write(*,*)'A long test'
       do i=1,big
          str(1+(i-1)*64:i*64) = "abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmno"
       enddo
       call unit_check('test_sha256_11',sha256(str)=="50E72A0E26442FE2552DC3938AC58658228C0CBFB1D2CA872AE435266FCD055E",'sha256 11 ')
+      call unit_check_done('test_sha256_11')
    end subroutine test_sha256_11
 
 end subroutine test_suite_sha256

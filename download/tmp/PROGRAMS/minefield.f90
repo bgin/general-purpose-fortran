@@ -4,7 +4,7 @@ use M_time, only : system_sleep
 use M_kracken, only: kracken, iget, sget, lget
 implicit none
 
-character(len=*),parameter::ident="@(#)minefield(1f) [M_draw] minesweeper game"
+character(len=*),parameter::ident_1="@(#)minefield(1f) [M_draw] minesweeper game"
 
 logical :: switch
 integer :: irows
@@ -132,7 +132,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    minefield game>',&
 '@(#)VERSION:        4.0, 20180616>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sat, Feb 2nd, 2019 12:11:12 PM>',&
+'@(#)COMPILED:       Mon, Mar 25th, 2019 8:33:25 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -146,7 +146,7 @@ subroutine minefield(irows0,icols0,switch) ! draw a minesweep program
 ! Created: 19971231
 use M_draw
 use M_drawplus, only : page
-character(len=*),parameter::ident="@(#)draw a minesweep game that quits on 'q'"
+character(len=*),parameter::ident_2="@(#)draw a minesweep game that quits on 'q'"
 !      storage
 !        -1 to -9 for unexposed and 0 to 8 adjacent bombs
 !        -10 for unexposed and a bomb

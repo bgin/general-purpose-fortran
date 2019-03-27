@@ -3,7 +3,7 @@
 !===================================================================================================================================
 program demo_read_table
 implicit none
-character(len=*),parameter::ident="@(#)area_of_simple_polygon(1f): determine area of simple (non-intersecting) polygon"
+character(len=*),parameter::ident_1="@(#)area_of_simple_polygon(1f): determine area of simple (non-intersecting) polygon"
 call main()
 contains
 !===================================================================================================================================
@@ -36,6 +36,25 @@ help_text=[ CHARACTER(LEN=128) :: &
 '     --help     display this help and exit                                      ',&
 '     --version   output version information and exit                            ',&
 'EXAMPLE                                                                         ',&
+'  Given file in.1 with the following contents:                                  ',&
+'                                                                                ',&
+'   -5 -5                                                                        ',&
+'   0 0                                                                          ',&
+'   -5 5                                                                         ',&
+'   5 5                                                                          ',&
+'   0 0                                                                          ',&
+'   5 -5                                                                         ',&
+'                                                                                ',&
+'  Expected output:                                                              ',&
+'                                                                                ',&
+'             14           7           2                                         ',&
+'   -5.0000000000000000 -5.0000000000000000                                      ',&
+'   0.0000000000000000 0.0000000000000000                                        ',&
+'   -5.0000000000000000 5.0000000000000000                                       ',&
+'   5.0000000000000000 5.0000000000000000                                        ',&
+'   0.0000000000000000 0.0000000000000000                                        ',&
+'   5.0000000000000000 -5.0000000000000000                                       ',&
+'    area=  -50.000000000000000                                                  ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -62,7 +81,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20181231>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Mon, Dec 31st, 2018 3:22:31 PM>',&
+'@(#)COMPILED:       Mon, Mar 25th, 2019 12:09:22 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

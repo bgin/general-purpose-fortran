@@ -115,7 +115,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sun, Jan 13th, 2019 7:15:49 PM>',&
+'@(#)COMPILED:       Sun, Mar 24th, 2019 11:56:36 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -126,7 +126,7 @@ program degrees
 use M_kracken, only : kracken, rgets, lget, sget
 use M_strings, only : upper, compact, replace, split, s2v
 implicit none
-character(len=*),parameter::ident="@(#)degrees(1f): convert multiple values between Celsius and Fahrenheit"
+character(len=*),parameter::ident_1="@(#)degrees(1f): convert multiple values between Celsius and Fahrenheit"
 real,allocatable                :: val(:)
 integer                         :: i, isum=0, ivals, last
 real                            :: sval

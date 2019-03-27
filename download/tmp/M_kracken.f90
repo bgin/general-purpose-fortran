@@ -47,8 +47,8 @@ character(len=*),parameter::ident_1="@(#)M_kracken(3fm): parse command line opti
 ! NOTE:   many parameters may be  reduced in size so as to just accommodate being used as a command line parser.
 !         In particular, some might want to change:
    logical,public            :: stop_command=.false.               ! indication to return stop_command as false in interactive mode
-   integer, parameter,public :: IPvalue=4096*4                     ! length of keyword value
-   integer, parameter,public :: IPcmd=32768                        ! length of command
+   integer, parameter,public :: IPvalue=4096*16                    ! length of keyword value
+   integer, parameter,public :: IPcmd=12*IPvalue                   ! length of command
    integer, parameter,public :: IPverb=20                          ! length of verb
 !-----------------------------------------------------------------------------------------------------------------------------------
    integer, parameter        :: dp = kind(0.d0)

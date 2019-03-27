@@ -90,7 +90,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    draw a clock>',&
 '@(#)VERSION:        1.0, 20180616>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sun, Jan 13th, 2019 7:16:29 PM>',&
+'@(#)COMPILED:       Mon, Mar 25th, 2019 8:32:34 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -99,7 +99,7 @@ end subroutine help_version
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine clockit_main()
 
-character(len=*),parameter::ident="@(#)M_DRAW-based clock"
+character(len=*),parameter::ident_1="@(#)M_DRAW-based clock"
 
 character(len=20) :: device
 integer           :: ix, iy

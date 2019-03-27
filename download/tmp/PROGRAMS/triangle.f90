@@ -21,6 +21,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   surface. The not-given elements must be put to zero.                         ',&
 'AUTHOR                                                                          ',&
 '   Based on an example F90 version by J-P Moreau (www.jpmoreau.fr).             ',&
+'                                                                                ',&
 '   Ref.: "Mathématiques en Turbo-Pascal By M. Ducamp                            ',&
 '   and A. Reverchon (vol 2), Eyrolles, Paris, 1988"                             ',&
 '   [BIBLI 05].                                                                  ',&
@@ -65,6 +66,7 @@ end subroutine help_usage
 !!    surface. The not-given elements must be put to zero.
 !!##AUTHOR
 !!    Based on an example F90 version by J-P Moreau (www.jpmoreau.fr).
+!!
 !!    Ref.: "Mathématiques en Turbo-Pascal By M. Ducamp
 !!    and A. Reverchon (vol 2), Eyrolles, Paris, 1988"
 !!    [BIBLI 05].
@@ -108,7 +110,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    resolution of a triangle>',&
 '@(#)VERSION:        1.0, 20190315>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Fri, Mar 15th, 2019 8:18:35 PM>',&
+'@(#)COMPILED:       Mon, Mar 25th, 2019 12:09:45 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

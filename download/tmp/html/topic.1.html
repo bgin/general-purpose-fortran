@@ -89,36 +89,33 @@ format of file is
 <P>
 <PRE>
       TOPIC:topic
-      TOPIC:another topic line(s)
-      syntax line(s)
+      TOPIC:other optional topic line(s)
       syntax line(s) (assumed not to exist if first letter of topic is uppercase)
 <P>
-      detailed topic lines for commands (assumed not to exist if
-      first letter of topic is uppercase)
-<P>
-      topic description
+      detailed topic description for commands displayed as-is until a new TOPIC:
+      line is encountered.
 <P>
       and then repeat starting with TOPIC: line
          :
          :
          :
 <P>
-<P>
 </PRE>
 EXAMPLE FILE:
-<I>TOPIC</I>:COLORS
-<BLOCKQUOTE>
-<P>
-The color-related commands <B>background</B>(1) and <B>foreground</B>(1) are
-used to define plot page colors
-<P>
-<I>TOPIC</I>: background
-background <B>-name</B> color
 <P>
 <PRE>
+      TOPIC:COLORS
+<P>
+      The color-related commands background(1) and foreground(1) are
+      used to define plot page colors
+<P>
+      TOPIC: background
+      background -name color
+<P>
          This command sets the background color
 <P>
 </PRE>
+<BLOCKQUOTE>
 <I>TOPIC</I>: foreground
 foreground <B>-name</B> color
 <P>
@@ -148,99 +145,67 @@ o
 if <B>topic</B> is ? show all <B>topic</B> lines
 topics all in caps go on new line
 display other topics three to a line in a table, like:
+</TD></TR>
+<TR></TR></TABLE><!-- .nf -->
+<PRE>
+           #--------------------------------------------------------------------#
+           | INTRO                                                              |
+           #--------------------------------------------------------------------#
+           | STARTING UP USH                                                    |
+           | SUMMARY of basic USH |                                             |
+           #--------------------------------------------------------------------#
+           | COMMANDS                                                           |
+           | novice               | aspect               | attach               |
+           | dirf                 | exact                | f                    |
+           #--------------------------------------------------------------------#
+           | CALCULATOR                                                         |
+           | ANSI functions       | String functions     | Bessel functions     |
+           | Operators            | intg()               | dif()                |
+           | convert()            |                                             |
+           #--------------------------------------------------------------------#
+           | CHANGE REQUEST                                                     |
+           | version2 changes     | version3 changes     | version3.02 changes  |
+           | version4 changes     | V4 Obsolete Usage    | version5 changes     |
+           |                      |                                             |
+           #--------------------------------------------------------------------#
 <P>
-*--------------------------------------------------------------------*
-<TABLE width=100% cellpadding=3><!-- tsb: *--------------------------------------------------------------------*
- -->
-<TR></TR><TR></TR>
-<TR valign=top><TD width=6% nowrap>
-<B>| INTRO</B> </TD><TD valign=bottom>
-*--------------------------------------------------------------------*
-</TD></TR>
-<TR valign=top><TD colspan=2>
-<B>| STARTING UP USH</B> <!-- Consumed .TP -->
-<BR>
-<B>| SUMMARY of basic USH |</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
-*--------------------------------------------------------------------*
-</TD></TR>
-<TR valign=top><TD colspan=2>
-<B>| COMMANDS</B> <!-- Consumed .TP -->
-<BR>
-<B>| novice</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
-| aspect               | attach               |
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B>| dirf</B> </TD><TD valign=bottom>
-| exact                | f                    |
-*--------------------------------------------------------------------*
-</TD></TR>
-<TR valign=top><TD colspan=2>
-<B>| CALCULATOR</B> <!-- Consumed .TP -->
-<BR>
-<B>| ANSI functions</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
-| String functions     | Bessel functions     |
-</TD></TR>
-<TR valign=top><TD colspan=2>
-<B>| Operators</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
-| <B>intg</B>()               | <B>dif</B>()                |
-</TD></TR>
-<TR valign=top><TD colspan=2>
-<B>| </B><B>convert</B>() </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
-|                                             |
-*--------------------------------------------------------------------*
-</TD></TR>
-<TR valign=top><TD colspan=2>
-<B>| CHANGE REQUEST</B> <!-- Consumed .TP -->
-<BR>
-<B>| version2 changes</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
-| version3 changes     | version3.02 changes  |
-</TD></TR>
-<TR valign=top><TD colspan=2>
-<B>| version4 changes</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
-| V4 Obsolete Usage    | version5 changes     |
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B>|</B> </TD><TD valign=bottom>
-|                                             |
-*--------------------------------------------------------------------*
-</TD></TR>
-<TR></TR></TABLE><!-- .IP \(bu 3 -->
-</TD></TR>
-<TR valign=top><TD width=6%>
+</PRE>
+<TABLE width=100% cellpadding=3>
+<TR valign=top><TD width=3%>
 o
 </TD><TD>
 if <B>topic</B> is ?? show all <B>topic</B> lines and syntax lines
 </TD></TR>
-<TR valign=top><TD width=6%>
+<TR valign=top><TD width=3%>
 o
 </TD><TD>
 if <B>topic</B> is ??? show all lines
 </TD></TR>
 <TR></TR></TABLE><!-- .TP -->
 </TD></TR>
-<TR valign=top><TD width=6% nowrap>
+<TR valign=top><TD width=3% nowrap>
 <B></B><B>-all</B> </TD><TD valign=bottom>
 list entire help file
 </TD></TR>
 <TR valign=top><TD colspan=2>
-<B></B><B>-topics</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+<B></B><B>-topics</B> </TD></TR><TR valign=top><TD width=3%>&nbsp;</TD><TD>
 list topics found in help file
 </TD></TR>
 <TR valign=top><TD colspan=2>
-<B></B><B>-summaries</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+<B></B><B>-summaries</B> </TD></TR><TR valign=top><TD width=3%>&nbsp;</TD><TD>
 list summaries for each <B>topic</B>
 </TD></TR>
 <TR valign=top><TD colspan=2>
-<B></B><B>-t</B> <I>SEARCH_STRING</I> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+<B></B><B>-t</B> <I>SEARCH_STRING</I> </TD></TR><TR valign=top><TD width=3%>&nbsp;</TD><TD>
 find topics that contain the specified string.
 </TD></TR>
 <TR valign=top><TD colspan=2>
-<B></B><B>-e</B> REGULAR_EXPRESSION </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+<B></B><B>-e</B> REGULAR_EXPRESSION </TD></TR><TR valign=top><TD width=3%>&nbsp;</TD><TD>
 find topics that contain the specified
 regular expression
 </TD></TR>
 <TR valign=top><TD colspan=2>
-<B></B><B>-f</B> INPUT_FILE </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+<B></B><B>-f</B> INPUT_FILE </TD></TR><TR valign=top><TD width=3%>&nbsp;</TD><TD>
 Set the filename to read descriptions from. The
 default input file is the value of the environment
 variable $USHHELP if it is set. The built-in
@@ -291,7 +256,7 @@ o
 </TD></TR>
 <TR></TR></TABLE></BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>topic (1)</TD> <TD align=right width=33%><I>March 24, 2019</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 1ea28631-935d-4c9e-bffd-fee68ed136a8 using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>topic (1)</TD> <TD align=right width=33%><I>March 26, 2019</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from f41952dc-53bd-451d-a1d5-595fcd050cc0 using man macros.</FONT>
 <br><br><center><img src="images/topic.1.gif"></center>
 </div>
 </div>

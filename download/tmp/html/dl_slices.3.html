@@ -135,11 +135,18 @@ the terminal and the routine terminated.
 <B>b</B> </TD><TD valign=bottom>
 (R): angle of z axis from horizontal 0-90 degrees
 note: origin (1,1) is in lower-left corner
-x axis runs left to right on screen
-y axis runs up to down on screen
-z axis appears to run into the screen but
-is angled to the right
-xh,yh,zh (R): length of each axis
+</TD></TR>
+<TR><TD colspan=2>
+<PRE>
+                     x  axis runs left to right on screen
+                     y  axis runs up to down on screen
+                     z  axis appears to run into the screen but
+                        is angled to the right
+</PRE>
+</TD></TR>
+<TR valign=top><TD colspan=2>
+<B>xh,yh,zh</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+(R): length of each axis
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B>iflag</B> </TD><TD valign=bottom>
@@ -188,7 +195,12 @@ X-AXIS
 (i): number of characters in xt
 = 0 : no axis plotted
 &gt; 0 : normal
-xs,xe (R): starting and ending values displayed on x axis
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B>xs,xe</B> </TD><TD valign=bottom>
+(R): starting and ending values displayed on x axis
+</TD></TR>
+<TR><TD colspan=2>
 (see DL_AXISB for detailed description of axis parameters)
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
@@ -225,8 +237,12 @@ Y-AXIS
 <TR valign=top><TD width=6% nowrap>
 <B>nyt</B> </TD><TD valign=bottom>
 (i): number of characters in yt
-= 0 : no y axis plotted
-&gt; 0 : normal
+</TD></TR>
+<TR><TD colspan=2>
+<PRE>
+                  = 0 : no y axis plotted
+                  &gt; 0 : normal
+</PRE>
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B>nmy</B> </TD><TD valign=bottom>
@@ -243,8 +259,12 @@ Y-AXIS
 <TR valign=top><TD width=6% nowrap>
 <B>tsy</B> </TD><TD valign=bottom>
 (R): size of title and numbers on y axis
-&lt; 0 auto exponent scaling (x10 to power) disabled
-&gt; 0 auto exponent scaling (x10 to power) enabled
+</TD></TR>
+<TR><TD colspan=2>
+<PRE>
+                   &lt; 0 auto exponent scaling (x10 to power) disabled
+                   &gt; 0 auto exponent scaling (x10 to power) enabled
+</PRE>
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B>ndy</B> </TD><TD valign=bottom>
@@ -262,9 +282,16 @@ Z-AXIS
 <TR valign=top><TD width=6% nowrap>
 <B>nzt</B> </TD><TD valign=bottom>
 (i): number of characters in zt
-= 0 : no z axis plotted
-&gt; 0 : normal
-zs,ze (R): starting and ending value displayed on z axis
+</TD></TR>
+<TR><TD colspan=2>
+<PRE>
+                  = 0 : no z axis plotted
+                  &gt; 0 : normal
+</PRE>
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B>zs,ze</B> </TD><TD valign=bottom>
+(R): starting and ending value displayed on z axis
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B>nmz</B> </TD><TD valign=bottom>
@@ -281,8 +308,12 @@ zs,ze (R): starting and ending value displayed on z axis
 <TR valign=top><TD width=6% nowrap>
 <B>tsz</B> </TD><TD valign=bottom>
 (R): size of title and numbers on z axis
-&lt; 0 auto exponent scaling (x10 to power) disabled
-&gt; 0 auto exponent scaling (x10 to power) enabled
+</TD></TR>
+<TR><TD colspan=2>
+<PRE>
+                  &lt; 0 auto exponent scaling (x10 to power) disabled
+                  &gt; 0 auto exponent scaling (x10 to power) enabled
+</PRE>
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B>ndz</B> </TD><TD valign=bottom>
@@ -297,22 +328,31 @@ zs,ze (R): starting and ending value displayed on z axis
 <TR><TD colspan=2>
 (NOTE: the following optional parameters are accessed only if
 iax &lt; 0 or <B>mod</B>(iflag,10)=1)
-dm,dx (R): minimum and maximum values of d array
-(NOTE: color array accessed only if <B>mod</B>(iflag,10)=1)
 </TD></TR>
 <TR><TD width=6%>&nbsp;</TD><TD>
 <TABLE width=100% cellpadding=3>
 <TR valign=top><TD width=6% nowrap>
+<B>dm,dx</B> </TD><TD valign=bottom>
+(R): minimum and maximum values of d array
+</TD></TR>
+<TR><TD colspan=2>
+(NOTE: color array accessed only if <B>mod</B>(iflag,10)=1)
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
 <B>ic</B> </TD><TD valign=bottom>
 (i): color list
-<B>ic</B>(1) : color for axis lines
-<B>ic</B>(2) : color for axis numbers
-<B>ic</B>(3) : color for axis titles
-<B>ic</B>(4) : color for axis exponents
-<B>ic</B>(5) : color index for lower plot surface (return)
-<B>ic</B>(6) : color index for upper plot surface (return)
 </TD></TR>
-<TR></TR></TABLE></TD></TR>
+<TR></TR></TABLE><!-- .nf -->
+<PRE>
+                   ic(1):  color for axis lines
+                   ic(2):  color for axis numbers
+                   ic(3):  color for axis titles
+                   ic(4):  color for axis exponents
+                   ic(5):  color index for lower plot surface (return)
+                   ic(6):  color index for upper plot surface (return)
+<P>
+</PRE>
+</TD></TR>
 <TR></TR></TABLE></BLOCKQUOTE>
 <A name=4>
 
@@ -868,7 +908,7 @@ END PROGRAM demo_dl_slices
 <TR></TR></TABLE></BLOCKQUOTE>
 </BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>dl_slices (3)</TD> <TD align=right width=33%><I>March 24, 2019</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 7614a376-9897-4194-83cd-9ab48a434d33 using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>dl_slices (3)</TD> <TD align=right width=33%><I>March 26, 2019</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 11e46710-b8b7-4a76-8b80-7f77883b3598 using man macros.</FONT>
 <br><br><center><img src="images/dl_slices.3.gif"></center>
 </div>
 </div>

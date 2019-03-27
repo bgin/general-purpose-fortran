@@ -1238,7 +1238,7 @@ end subroutine pdec
 !===================================================================================================================================
 function atleast(line,length) result(strout)
 
-character(len=*),parameter::ident_11="@(#)M_strings::atleast(3f): return string padded to at least specified length"
+character(len=*),parameter::ident_11="@(#)M_debug::atleast(3fp): return string padded to at least specified length"
 
 character(len=*),intent(in)  ::  line
 integer,intent(in)           ::  length
