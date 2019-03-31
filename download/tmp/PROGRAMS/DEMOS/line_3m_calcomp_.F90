@@ -9,9 +9,9 @@
           call plot(0.0,0.0,999)
           contains
           subroutine drawplot(linetype)
-          character * 28 ichr1
-          character * 26 ichr2
-          character * 10 lbcd1,lbcd2
+          character(len=28) :: ichr1
+          character(len=26) :: ichr2
+          character(len=10) :: lbcd1,lbcd2
           dimension xarray(62),yarray(62)
           ICHR1='PLOTTED ON A CALCOMP PLOTTER'
           ICHR2='USING  Y = X -0.7*X +0.1*X'

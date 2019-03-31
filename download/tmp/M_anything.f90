@@ -14,7 +14,6 @@ integer                  :: i
 ! on this platform, (select_int_kind(i),i=1,100) returns
 ! 1:2=1 ,3:4=2 ,5:9=4 ,10:18= 8 ,19:38=16 ,39:=-1
 integer,parameter        :: k(38)=[(selected_int_kind(i),i=1,38)]
-integer,public,parameter :: int128=k(38)
 
 ! on this platform, (select_real_kind(i),i=1,100) returns
 ! 1:6=   4, 7:15 = 8, 16:18= 10, 19:33= 16, 34:  = -1
@@ -22,7 +21,6 @@ integer,parameter        :: r(34)=[(selected_int_kind(i),i=1,34)]
 integer,public,parameter :: real256=r(34)
 
 public anyinteger_to_64bit  ! convert integer parameter of any kind to 64-bit integer
-public anyinteger_to_128bit ! convert integer parameter of any kind to 128-bit integer
 public anyscalar_to_real    ! convert integer or real parameter of any kind to real
 public anyscalar_to_double  ! convert integer or real parameter of any kind to doubleprecision
 public test_suite_M_anything
@@ -165,7 +163,7 @@ contains
 !!    VALUEIN  input array or scalar to convert to type CHARACTER(LEN=1).
 !!             May be of KIND INTEGER(kind=int8), INTEGER(kind=int16),
 !!             INTEGER(kind=int32), INTEGER(kind=int64),
-!!             INTEGER(kind=int128), REAL(kind=real32, REAL(kind=real64),
+!!             REAL(kind=real32, REAL(kind=real64),
 !!             REAL(kind=real128), complex, or CHARACTER(len=*)
 !!##RETURN
 !!
@@ -178,7 +176,6 @@ contains
 !!
 !!    program demo_anything_to_bytes
 !!    use M_anything,      only : anything_to_bytes
-!!    !!use M_anything,      only : int128, real256
 !!    !!use iso_fortran_env, only : int8, int16, int32, int64
 !!    !!use iso_fortran_env, only : real32, real64, real128
 !!    implicit none
@@ -225,7 +222,6 @@ character(len=1),allocatable :: chars(:)
     type is (integer(kind=int16));  chars=transfer(anything,chars)
     type is (integer(kind=int32));  chars=transfer(anything,chars)
     type is (integer(kind=int64));  chars=transfer(anything,chars)
-    type is (integer(kind=int128)); chars=transfer(anything,chars)
     type is (real(kind=real32));    chars=transfer(anything,chars)
     type is (real(kind=real64));    chars=transfer(anything,chars)
     type is (real(kind=real128));   chars=transfer(anything,chars)
@@ -248,7 +244,6 @@ character(len=1),allocatable :: chars(:)
     type is (integer(kind=int16));  chars=transfer(anything,chars)
     type is (integer(kind=int32));  chars=transfer(anything,chars)
     type is (integer(kind=int64));  chars=transfer(anything,chars)
-    type is (integer(kind=int128)); chars=transfer(anything,chars)
     type is (real(kind=real32));    chars=transfer(anything,chars)
     type is (real(kind=real64));    chars=transfer(anything,chars)
     type is (real(kind=real128));   chars=transfer(anything,chars)
@@ -279,7 +274,7 @@ end function  anything_to_bytes_scalar
 !!
 !!    VALUEIN  input argument of a procedure to convert to type DOUBLEPRECISION.
 !!             May be of KIND kind=int8, kind=int16, kind=int32, kind=int64,
-!!             kind=int128, kind=real32, kind=real64, kind=real128,
+!!             kind=real32, kind=real64, kind=real128,
 !!             or kind=real256
 !!##RESULTS
 !!
@@ -292,7 +287,7 @@ end function  anything_to_bytes_scalar
 !!   Sample program
 !!
 !!     program demo_anyscalar_to_double
-!!     use M_anything,      only : int128, real256
+!!     use M_anything,      only : real256
 !!     use iso_fortran_env, only : int8, int16, int32, int64
 !!     use iso_fortran_env, only : real32, real64, real128
 !!     implicit none
@@ -301,7 +296,6 @@ end function  anything_to_bytes_scalar
 !!        write(*,*)squarei(2_int16)
 !!        write(*,*)squarei(2_int32)
 !!        write(*,*)squarei(2_int64)
-!!        write(*,*)squarei(2_int128)
 !!        write(*,*)squarei(2_real32)
 !!        write(*,*)squarei(2_real64)
 !!        write(*,*)squarei(2_real128)
@@ -333,7 +327,6 @@ doubleprecision      :: d_out
    type is (integer(kind=int16));  d_out=real(valuein)
    type is (integer(kind=int32));  d_out=real(valuein)
    type is (integer(kind=int64));  d_out=real(valuein)
-   type is (integer(kind=int128)); d_out=real(valuein)
    type is (real(kind=real32));    d_out=real(valuein)
    type is (real(kind=real64));    d_out=real(valuein)
    type is (real(kind=real128));   d_out=real(valuein)
@@ -367,7 +360,7 @@ end function anyscalar_to_double
 !!
 !!    VALUEIN  input argument of a procedure to convert to type REAL.
 !!             May be of KIND kind=int8, kind=int16, kind=int32, kind=int64,
-!!             kind=int128, kind=real32, kind=real64, kind=real128,
+!!             kind=real32, kind=real64, kind=real128,
 !!             or kind=real256
 !!##RESULTS
 !!
@@ -379,7 +372,7 @@ end function anyscalar_to_double
 !!   Sample program
 !!
 !!     program demo_anyscalar_to_real
-!!     use M_anything,     only : int128, real256
+!!     use M_anything,     only : real256
 !!     use iso_fortran_env, only : int8, int16, int32, int64
 !!     use iso_fortran_env, only : real32, real64, real128
 !!     implicit none
@@ -388,7 +381,6 @@ end function anyscalar_to_double
 !!        write(*,*)squarei(2_int16)
 !!        write(*,*)squarei(2_int32)
 !!        write(*,*)squarei(2_int64)
-!!        write(*,*)squarei(2_int128)
 !!        write(*,*)squarei(2_real32)
 !!        write(*,*)squarei(2_real64)
 !!        !!write(*,*)squarei(2_real128)
@@ -419,7 +411,6 @@ class(*),intent(in)     :: valuein
    type is (integer(kind=int16));  r_out=real(valuein)
    type is (integer(kind=int32));  r_out=real(valuein)
    type is (integer(kind=int64));  r_out=real(valuein)
-   type is (integer(kind=int128)); r_out=real(valuein)
    type is (real(kind=real32));    r_out=real(valuein)
    type is (real(kind=real64));    r_out=real(valuein)
    type is (real(kind=real128));   r_out=real(valuein)
@@ -514,97 +505,6 @@ end function anyinteger_to_64bit
 !===================================================================================================================================
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!===================================================================================================================================
-!>
-!!##NAME
-!!
-!!    anyinteger_to_128bit(3f) - [M_anything] convert integer of any kind to integer(kind=128)
-!!
-!!##SYNOPSIS
-!!
-!!
-!!    pure elemental function anyinteger_to_128bit(intin) result(ii38)
-!!
-!!     integer(kind=int128) function anyinteger_to_128bit(value)
-!!     class(*),intent(in)     :: intin
-!!     integer(kind=int8|int16|int32|int64|int128) :: value
-!!
-!!##DESCRIPTION
-!!
-!!    This function uses polymorphism to allow arguments of different types
-!!    generically. It is used to create other procedures that can take
-!!    many scalar arguments as input options, equivalent to passing the
-!!    parameter VALUE as int(VALUE,0_int128).
-!!
-!!##OPTIONS
-!!
-!!    VALUEIN  input argument of a procedure to convert to type INTEGER(KIND=128).
-!!             May be of KIND kind=int8, kind=int16, kind=int32, kind=int64,
-!!             kind=int128.
-!!##RESULTS
-!!             The value of VALUIN converted to INTEGER(KIND=INT128).
-!!##EXAMPLE
-!!
-!!    Sample program
-!!
-!!     program demo_anyinteger_to_128bit
-!!     use M_anything,     only : int128
-!!     use iso_fortran_env, only : int8, int16, int32, int64
-!!     implicit none
-!!        ! call same function with many scalar input types
-!!        write(*,*)squarei(huge(0_int8)),huge(0_int8) , &
-!!        & '16129'
-!!        write(*,*)squarei(huge(0_int16)),huge(0_int16) , &
-!!        & '1073676289'
-!!        write(*,*)squarei(huge(0_int32)),huge(0_int32) , &
-!!        & '4611686014132420609'
-!!        write(*,*)squarei(huge(0_int64)),huge(0_int64) , &
-!!        & '85070591730234615847396907784232501249'
-!!        write(*,*)squarei(huge(0_int128)),huge(0_int128) , &
-!!        & '28948022309329048855892746252171976962977213799489202546401021394546514198529'
-!!     contains
-!!     !
-!!     function squarei(invalue)
-!!     use M_anything, only : anyinteger_to_128bit, int128
-!!     class(*),intent(in)  :: invalue
-!!     doubleprecision      :: invalue_local
-!!     doubleprecision      :: squarei
-!!        invalue_local=anyinteger_to_128bit(invalue)
-!!        squarei=invalue_local*invalue_local
-!!     end function squarei
-!!     !
-!!     end program demo_anyinteger_to_128bit
-!!
-!!   Results
-!!
-!!    16129.000000000000       127 !!    16129
-!!    1073676289.0000000       32767 !!    1073676289
-!!    4.6116860141324206E+018  2147483647 !!    4611686014132420609
-!!    8.5070591730234616E+037  9223372036854775807 !!    85070591730234615847396907784232501249
-!!    2.8948022309329049E+076 170141183460469231731687303715884105727 !!    28948022309329048855892746252171976962977213799489202546401021394546514198529
-!===================================================================================================================================
-pure elemental function anyinteger_to_128bit(intin) result(ii38)
-use iso_fortran_env, only : error_unit !! ,input_unit,output_unit
-implicit none
-
-character(len=*),parameter::ident_6="&
-&@(#)M_anything::anyinteger_to_128(3f): convert integer parameter of any kind to 128-bit integer"
-
-class(*),intent(in)     :: intin
-   integer(kind=int128) :: ii38
-   select type(intin)
-   type is (integer(kind=int8));   ii38=int(intin,kind=int128)
-   type is (integer(kind=int16));  ii38=int(intin,kind=int128)
-   type is (integer(kind=int32));  ii38=intin
-   type is (integer(kind=int64));  ii38=intin
-   type is (integer(kind=int128)); ii38=intin
-   !class default
-      !write(error_unit,*)'ERROR: unknown integer type'
-      !stop 'ERROR: *anyinteger_to_128* unknown integer type'
-   end select
-end function anyinteger_to_128bit
-!===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 subroutine test_suite_M_anything()
 !! setup

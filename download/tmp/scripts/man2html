@@ -42,6 +42,7 @@ h1 { font-size:150%; page-break-before:auto;background-color: #aaaaff}\
 h2 { font-size:143%;color:teal; }\
 h3 { font-size:134%;color:blue; }\
 h4 { font-size:120%;color:gray; }\
+img { max-width: 55em}\
 p{ padding: 0;margin:0; }\
 p{ padding-right:1.4em; }\
 p{ padding-bottom:1em; }\

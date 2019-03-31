@@ -145,15 +145,13 @@ contains
 !                         =4, NEGATIVE ARGUMENTS FOR Y(X) OR K(X)           ! BES.130   
 !                         =5, INCORRECT PARAMETER KODE                      ! BES.131   
 !                                                                           ! BES.132   
-!     BES IS DOCUMENTED FOR THE ORIGINAL VERSION IN SC-M-69-336             ! BES.133   
+!     BS IS DOCUMENTED FOR THE ORIGINAL VERSION IN SC-M-69-336             ! BES.133   
 !                                                                           ! BES.134   
-      implicit real*8 (a-h, o-z)
+      implicit doubleprecision (a-h, o-z)
 !      DOUBLE PRECISION DX,DXX,DX2,TEMP,DCHK,PI,EULER,A0,A,B,C               ! BES.135   
 !      DOUBLE PRECISION SUMJIN,DXORD,DXK                                     ! BES.136   
-!      real*16 DX,DXX,DX2,TEMP,DCHK,PI,EULER,A0,A,B,C            
-!      real*16 SUMJIN,DXORD,DXK                                 
-      real*8 DX,DXX,DX2,TEMP,DCHK,PI,EULER,A0,A,B,C            
-      real*8  SUMJIN,DXORD,DXK                                 
+      doubleprecision DX,DXX,DX2,TEMP,DCHK,PI,EULER,A0,A,B,C            
+      doubleprecision  SUMJIN,DXORD,DXK                                 
       DIMENSION  T1(*),T2(*),A(18),B(21),C(19)                              ! BES.137   
       DATA  PI/3.1415926535897932384626434D00/,                            &! BES.138   
      &      EULER/0.57721566490153286060651209D00/                          ! BES.139   
@@ -609,7 +607,7 @@ contains
 !                                                                          ! BESI.37    
 !     CHECK FOR ERRORS IN N AND X AND EXIT IF ANY ARE PRESENT              ! BESI.38    
 !                                                                          ! BESI.39    
-      implicit real*8 (a-h, o-z)
+   implicit doubleprecision (a-h, o-z)
       IER=0                                                                ! BESI.40    
       BI=1.0                                                               ! BESI.41    
       IF(N)150,15,10                                                       ! BESI.42    
@@ -724,7 +722,7 @@ contains
 !     ..................................................................   ! BESJ.42    
 !                                                                          ! BESJ.43    
 !                                                                          ! BESJ.44    
-      implicit real*8 (a-h, o-z)
+   implicit doubleprecision (a-h, o-z)
       BJ=.0                                                                ! BESJ.45    
       IF(N)10,20,20                                                        ! BESJ.46    
    10 IER=1                                                                ! BESJ.47    
@@ -815,7 +813,7 @@ contains
 !                                                                         ! BESJ0.26
 !         X MAY BE ANY REAL ARGUMENT.                                     ! BESJ0.27
 !                                                                         ! BESJ0.28
-      implicit real*8 (a-h, o-z)
+      implicit doubleprecision (a-h, o-z)
       DIMENSION T1(101)                                                   ! BESJ0.29
       DIMENSION T2(101) ! for bug in Intel 11.1.046 compiler Sun Aug 23 15:27:46 EDT 2009
       DATA TWOVPI/0.63661977236758/,PIOV4/0.78539816339745/               ! BESJ0.30
@@ -864,7 +862,7 @@ contains
 !                                                                         ! BESJ1.26
 !         X MAY BE ANY REAL ARGUMENT                                      ! BESJ1.27
 !                                                                         ! BESJ1.28
-      implicit real*8 (a-h, o-z)
+      implicit doubleprecision (a-h, o-z)
       DIMENSION T1(101)                                                   ! BESJ1.29
       DIMENSION T2(101) ! for Intel compiler bug 11.1.046 Sun Aug 23 2009
       DATA  PI/3.1415926535898/,TWOVPI/0.63661977236758/                  ! BESJ1.30
@@ -929,7 +927,7 @@ contains
 !                                                                          ! BESK.40    
 !     ..................................................................   ! BESK.41    
 !                                                                          ! BESK.42    
-      implicit real*8 (a-h, o-z)
+      implicit doubleprecision (a-h, o-z)
       DIMENSION T(12)                                                      ! BESK.43    
       BK=.0                                                                ! BESK.44    
       IF(N)10,11,11                                                        ! BESK.45    
@@ -1064,7 +1062,7 @@ contains
 !                                                                          ! BESY.43    
 !     CHECK FOR ERRORS IN N AND X                                          ! BESY.44    
 !                                                                          ! BESY.45    
-      implicit real*8 (a-h, o-z)
+      implicit doubleprecision (a-h, o-z)
       IF(N)180,10,10                                                       ! BESY.46    
    10 IER=0                                                                ! BESY.47    
       IF(X)190,190,20                                                      ! BESY.48    

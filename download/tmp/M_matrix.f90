@@ -628,8 +628,8 @@ character(len=*),parameter::ident_3="@(#)M_matrix::mat_str2buf(3fp) :: convert s
 ! g95 compiler does not support Hollerith, this is a KLUDGE to give time to think about it
 
 character(len=*),intent(in) ::  string
-integer,intent(out)         :: buf(lrecl)
 integer,intent(in)          :: lrecl
+integer,intent(out)         :: buf(lrecl)
 integer                     :: i10
 
    do i10=1,lrecl
@@ -670,17 +670,17 @@ integer         :: i
 integer         :: j
 integer         :: ip1
 
-   p = dfloat(n)
+   p = dble(n)
 
    do i = 1, n
-      if (i.ne.1) p = (dfloat(n-i+1)*p*dfloat(n+i-1))/dfloat(i-1)**2
+      if (i.ne.1) p = (dble(n-i+1)*p*dble(n+i-1))/dble(i-1)**2
       r = p*p
-      a(i,i) = r/dfloat(2*i-1)
+      a(i,i) = r/dble(2*i-1)
       if (i.eq.n) cycle
       ip1 = i+1
       do j = ip1, n
-         r = (-1)*(dfloat(n-j+1)*r*(n+j-1))/dfloat(j-1)**2
-         a(i,j) = r/dfloat(i+j-1)
+         r = (-1)*(dble(n-j+1)*r*(n+j-1))/dble(j-1)**2
+         a(i,j) = r/dble(i+j-1)
          a(j,i) = a(i,j)
       enddo
    enddo
@@ -1289,19 +1289,19 @@ integer      :: m
    do l = 4, m
       x = b*x
       j = idint(x)
-      s(l) = dfloat(j)
+      s(l) = dble(j)
       x = x - s(l)
    enddo
    s(m+1) = comma
    if (k .ge. 0) s(m+2) = plus
    if (k .lt. 0) s(m+2) = minus
-   t = dabs(dfloat(k))
+   t = dabs(dble(k))
    n = m + 3
    if (t .ge. b) n = n + idint(dlog(t)/dlog(b))
    l = n
 20 continue
    j = idint(dmod(t,b))
-   s(l) = dfloat(j)
+   s(l) = dble(j)
    l = l - 1
    t = t/b
    if (l .ge. m+3) goto 20
@@ -1859,7 +1859,7 @@ integer            :: i, j, k, l
    do j = 1, n
       tol = dmax1(tol,mat_wasum(m,ar(1,j),ai(1,j),1))
    enddo
-   tol = eps*dfloat(2*max0(m,n))*tol
+   tol = eps*dble(2*max0(m,n))*tol
    k = 1
    l = 1
    INFINITE: do
@@ -2709,8 +2709,8 @@ integer            :: n
 !     UPDATE AND POSSIBLY PRINT OPERATION COUNTS
    70 CONTINUE
       K = FLP(1)
-      IF (K .NE. 0) STKR(VSIZE-3) = DFLOAT(K)
-      STKR(VSIZE-2) = STKR(VSIZE-2) + DFLOAT(K)
+      IF (K .NE. 0) STKR(VSIZE-3) = dble(K)
+      STKR(VSIZE-2) = STKR(VSIZE-2) + dble(K)
       FLP(1) = 0
       IF (.NOT.(CHRA.EQ.COMMA .OR. (SYM.EQ.COMMA .AND. CHRA.EQ.EOL)))GOTO 80
       CALL mat_getsym()
@@ -3062,6 +3062,7 @@ character(len=*),parameter::ident_29="&
 &@(#)M_matrix::mat_plot(3fp): Plot X vs. Y on LPLOT.  If K is nonzero, then P(1),...,P(K) are extra parameters"
 
 integer           :: lplot
+integer           :: n
 doubleprecision   :: x(n)
 doubleprecision   :: y(n)
 doubleprecision   :: p(*)
@@ -3075,7 +3076,6 @@ integer,parameter :: h=20,w=79                        ! h = height, w = width
 integer           :: tlun
 integer           :: ios
 integer           :: ch
-integer           :: n
 integer           :: i
 integer           :: j
 integer           :: jmax
@@ -3296,7 +3296,7 @@ integer           :: nn
          do i = 1, n
             ls = l+i-1+(j-1)*n
             t0 = stkr(ls)
-            t1 = mat_flop(1.0d0/(dfloat(i+j-1)))
+            t1 = mat_flop(1.0d0/(dble(i+j-1)))
             if (t0 .ne. t1) goto 32
          enddo
       enddo
@@ -3924,7 +3924,7 @@ doubleprecision :: p,s,t,tol,eps
       IF (ERR .NE. 0) CALL mat_err(24)
       IF (ERR .GT. 0) RETURN
       EPS = STKR(VSIZE-4)
-      IF (TOL .LT. 0.0D0) TOL = mat_flop(DFLOAT(MAX0(M,N))*EPS*STKR(LD))
+      IF (TOL .LT. 0.0D0) TOL = mat_flop(dble(MAX0(M,N))*EPS*STKR(LD))
       MN = MIN0(M,N)
       K = 0
       DO J = 1, MN
@@ -3948,7 +3948,7 @@ doubleprecision :: p,s,t,tol,eps
          mstk(top) = n
          nstk(top) = m
       else
-         stkr(l) = dfloat(k)
+         stkr(l) = dble(k)
          stki(l) = 0.0d0
          mstk(top) = 1
          nstk(top) = 1
@@ -4055,7 +4055,7 @@ INTEGER,parameter :: QUOTE= 49
       K = 0
       EPS = STKR(VSIZE-4)
       T = DABS(STKR(L))+DABS(STKI(L))
-      TOL = mat_flop(DFLOAT(MAX0(M,N))*EPS*T)
+      TOL = mat_flop(dble(MAX0(M,N))*EPS*T)
       MN = MIN0(M,N)
       DO J = 1, MN
         LS = L+J-1+(J-1)*M
@@ -4388,7 +4388,7 @@ integer             :: n
         LS = L+I-1
         CH = IDINT(STKR(LS))
         TEXT = TEXT .AND. (CH.GE.0) .AND. (CH.LT.alflq)
-        TEXT = TEXT .AND. (DFLOAT(CH).EQ.STKR(LS))
+        TEXT = TEXT .AND. (dble(CH).EQ.STKR(LS))
       enddo
 
       DO I = 1, M
@@ -4440,7 +4440,7 @@ integer             :: n
       N = M*N
       DO I = 1, N
          LL = L+I-1
-         STKI(LL) = DFLOAT(I)
+         STKI(LL) = dble(I)
       enddo
       CALL mat_plot(WTE,STKI(L),STKR(L),N,TDUM,0)
       MSTK(TOP) = 0
@@ -4781,7 +4781,7 @@ integer           ::  nexp
    IF (M .NE. N) CALL mat_err(20)
    IF (ERR .GT. 0) RETURN
    NEXP = IDINT(STKR(L2))
-   IF (STKR(L2) .NE. DFLOAT(NEXP)) GOTO 39
+   IF (STKR(L2) .NE. dble(NEXP)) GOTO 39
    IF (STKI(L2) .NE. 0.0D0) GOTO 39
    IF (NEXP .LT. 2) GOTO 39
    MN = M*N
@@ -4876,7 +4876,7 @@ integer           ::  nexp
    IF (ST .LT. 0.0D0 .AND. STKR(L) .LT. E2) GOTO 63
    N = N+1
    L = L+1
-   STKR(L) = E1 + DFLOAT(N)*ST
+   STKR(L) = E1 + dble(N)*ST
    STKI(L) = 0.0D0
    GOTO 62
 63 continue
@@ -5120,7 +5120,7 @@ integer            :: n
    IF (M .NE. -3) GOTO 12
    LJ = L+3
    L2 = LJ
-   STKR(LJ) = STKR(L) + DFLOAT(J-1)*STKR(L+1)
+   STKR(LJ) = STKR(L) + dble(J-1)*STKR(L+1)
    STKI(LJ) = 0.0d0
    IF (STKR(L+1).GT.0.0D0 .AND. STKR(LJ).GT.STKR(L+2)) GOTO 20
    IF (STKR(L+1).LT.0.0D0 .AND. STKR(LJ).LT.STKR(L+2)) GOTO 20
@@ -5272,7 +5272,7 @@ integer         :: k
       k = i
       d(k) = mat_round(z)
       z = z - d(k)
-      if (dabs(z)*dfloat(maxd) .le. 1.0d0) exit
+      if (dabs(z)*dble(maxd) .le. 1.0d0) exit
       z = 1.0d0/z
    enddo
    t = d(k)
@@ -5453,7 +5453,7 @@ integer           :: n
    LN = L+N
    IF (CHRA .EQ. EOL) CALL mat_err(31)
    IF (ERR .GT. 0) RETURN
-   STKR(LN) = DFLOAT(CHRA)
+   STKR(LN) = dble(CHRA)
    STKI(LN) = 0.0D0
    N = N+1
    CALL mat_getch()  ! get next character
@@ -5849,7 +5849,7 @@ doubleprecision      :: dsqrt
    if (iy/2 .gt. m2) iy = (iy - m2) - m2
 !  THE FOLLOWING STATEMENT IS FOR COMPUTERS WHERE INTEGER OVERFLOW AFFECTS THE SIGN BIT
    if (iy .lt. 0) iy = (iy + m2) + m2
-   mat_urand = dfloat(iy)*s
+   mat_urand = dble(iy)*s
 end function mat_urand
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!

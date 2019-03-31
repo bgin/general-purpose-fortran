@@ -291,7 +291,6 @@ integer                      :: ios
       type is (integer(kind=int16));    write(line(istart:),'(i0)',iostat=ios,iomsg=message) generic
       type is (integer(kind=int32));    write(line(istart:),'(i0)',iostat=ios,iomsg=message) generic
       type is (integer(kind=int64));    write(line(istart:),'(i0)',iostat=ios,iomsg=message) generic
-      !type is (integer(kind=int128));   write(line(istart:),'(i0)',iostat=ios,iomsg=message) generic
       type is (real(kind=real32));      write(line(istart:),'(1pg0)',iostat=ios,iomsg=message) generic
       type is (real(kind=real64));      write(line(istart:),'(1pg0)',iostat=ios,iomsg=message) generic
       type is (real(kind=real128));     write(line(istart:),'(1pg0)',iostat=ios,iomsg=message) generic
@@ -396,7 +395,6 @@ integer                      :: ios
       type is (integer(kind=int16));    write(line(istart:),'(i0)',iostat=ios,iomsg=message) generic
       type is (integer(kind=int32));    write(line(istart:),'(i0)',iostat=ios,iomsg=message) generic
       type is (integer(kind=int64));    write(line(istart:),'(i0)',iostat=ios,iomsg=message) generic
-      !type is (integer(kind=int128));   write(line(istart:),'(i0)',iostat=ios,iomsg=message) generic
       type is (real(kind=real32));      write(line(istart:),'(1pg0)',iostat=ios,iomsg=message) generic
       type is (real(kind=real64));      write(line(istart:),'(1pg0)',iostat=ios,iomsg=message) generic
       type is (real(kind=real128));     write(line(istart:),'(1pg0)',iostat=ios,iomsg=message) generic
@@ -529,7 +527,6 @@ class(*),intent(in) :: generic
       type is (integer(kind=int16));    write(error_unit,'(i0)',advance='no') generic
       type is (integer(kind=int32));    write(error_unit,'(i0)',advance='no') generic
       type is (integer(kind=int64));    write(error_unit,'(i0)',advance='no') generic
-      !type is (integer(kind=int128));   write(error_unit,'(i0)',advance='no') generic
       type is (real(kind=real32));      write(error_unit,'(1pg0)',advance='no') generic
       type is (real(kind=real64));      write(error_unit,'(1pg0)',advance='no') generic
       type is (real(kind=real128));     write(error_unit,'(1pg0)',advance='no') generic

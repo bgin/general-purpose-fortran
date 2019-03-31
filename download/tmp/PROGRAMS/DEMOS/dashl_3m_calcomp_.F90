@@ -1,8 +1,8 @@
           program demo_dashl
           use M_calcomp
-          character * 28 ichr1
-          character * 26 ichr2
-          character * 10 lbcd1,lbcd2
+          character(len=28) :: ichr1
+          character(len=26) :: ichr2
+          character(len=10) :: lbcd1,lbcd2
           dimension xarray(62),yarray(62)
           ICHR1='PLOTTED ON A CALCOMP PLOTTER'
           ICHR2='USING  Y = X -0.7*X +0.1*X'
@@ -28,7 +28,7 @@
           call scale(yarray(1),10.0,60,1)
           call axis(0.0,0.0,lbcd1,-10, 6.5, 0.0,xarray(61),xarray(62))
           call axis(0.0,0.0,lbcd2, 10,10.0,90.0,yarray(61),yarray(62))
-          call width(40)
+          call width(20)
           !!call newpen(RED)
           !!linetype=-1
           !!inteq=4

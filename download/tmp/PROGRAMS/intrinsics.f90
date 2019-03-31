@@ -17,7 +17,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Mon, Mar 25th, 2019 12:11:29 AM>',&
+'@(#)COMPILED:       Sat, Mar 30th, 2019 11:11:42 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -1017,7 +1017,7 @@ write(io,'(a)')'            select case (c)'
 write(io,'(a)')'             CASE (''a'' : ''j'');            WRITE(*,*)c, '' :One of the first ten letters'''
 write(io,'(a)')'             CASE (''l'' : ''p'', ''u'' : ''y''); WRITE(*,*)c, '' :One of l, m, n, o, p, u, v, w, x, y'''
 write(io,'(a)')'             CASE (''z'', ''q'' : ''t'');       WRITE(*,*)c, '' :One of z, q, r, s, t'''
-write(io,'(a)')'             CASE DEFAULT'
+write(io,'(a)')'             CASE default'
 write(io,'(a)')'               WRITE(ERROR_UNIT,*)c, '' :Other characters, which may not be letters'''
 write(io,'(a)')'            end select'
 write(io,'(a)')'         enddo'
@@ -14188,7 +14188,8 @@ write(io,'(a)')'NAME'
 write(io,'(a)')'    REWIND(7f) - [FORTRAN:FILE_POSITIONING] rewind specified sequential access I/O unit'
 write(io,'(a)')'SYNOPSIS'
 write(io,'(a)')'   REWIND file-unit-number'
-write(io,'(a)')'   REWIND( [UNIT=]file-unit-number][,IOMSG=iomsg-variable][,IOSTAT=scalar-int-variable][,ERR=label] )'
+write(io,'(a)')''
+write(io,'(a)')'    REWIND ( [UNIT=]file-unit-number][,IOMSG=iomsg-variable][,IOSTAT=scalar-int-variable][,ERR=label] )'
 write(io,'(a)')'DESCRIPTION'
 write(io,'(a)')'   Execution of a REWIND statement causes the file connected to the'
 write(io,'(a)')'   specified unit to be positioned at the beginning of the file.'

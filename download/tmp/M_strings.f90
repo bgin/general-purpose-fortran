@@ -1,6 +1,21 @@
 !>
 !!##NAME
 !!    M_strings(3f) - [M_strings:INTRO] Fortran string module
+!!##DESCRIPTION
+!!
+!!    The M_strings(3fm) module is a collection of Fortran procedures that
+!!    supplement the built-in routines. Routines for parsing, tokenizing,
+!!    changing case, substituting new strings for substrings, locating
+!!    strings with simple wildcard expressions, removing tabs and line
+!!    terminators and other string manipulations are included.
+!!
+!!    M_strings_oop(3fm) is a companion module that provides an OOP interface
+!!    to the M_strings module.
+!!
+!!    As newer Fortran features become more widely available a significant
+!!    amount of the code (much of which originated as pre-Fortran90 routines)
+!!    is subject to updating so new versions of this module are not expected
+!!    to be compatible with older versions.
 !!##SYNOPSIS
 !!
 !!  public entities:
@@ -119,15 +134,17 @@
 !!    MISCELLANEOUS
 !!
 !!    describe   returns a string describing the name of a single character
-!!##OVERVIEW
 !!
+!!
+!!    INTRINSICS
+!!
+!!    The M_strings(3fm) module supplements and works in combination with
+!!    the Fortran built-in intrinsics. Stand-alone
 !!    Fortran lets you access the characters in a string using ranges
 !!    much like they are character arrays, assignment, comparisons with
 !!    standard operators, supports dynamically allocatable strings and
 !!    supports concatentation using the // operator, as well as a number
-!!    of intrinsic string routines
-!!
-!!    INTRINSICS
+!!    of intrinsic string routines:
 !!
 !!        adjustl   Left adjust a string
 !!        adjustr   Right adjust a string
@@ -148,21 +165,6 @@
 !!        llt       Lexical less than
 !!
 !!
-!!##DESCRIPTION
-!!
-!!    The M_strings module is a collection of Fortran procedures that
-!!    supplement the built in routines. Routines for parsing, tokenizing,
-!!    changing case, substituting new strings for substrings, locating
-!!    strings with simple wildcard expressions, removing tabs and line
-!!    terminators and other string manipulations are included.
-!!
-!!    M_strings_oop is a companion module that provides an OOP interface
-!!    to the M_strings module.
-!!
-!!    As newer Fortran features become more widely available a significant
-!!    amount of the code (much of which originated as pre-Fortran90 routines)
-!!    is subject to updating so new versions of this module are not expected
-!!    to be compatible with older versions.
 !!
 !!    OOPS INTERFACE
 !!
@@ -7372,9 +7374,10 @@ end subroutine test_isprint
 !!    msg(3f) - [M_strings] converts any standard scalar type to a string
 !!##SYNOPSIS
 !!
-!!    function msg(g1,g2g3,g4,g5,g6,g7,g8,g9)
+!!    function msg(g1,g2g3,g4,g5,g6,g7,g8,g9,nospace)
 !!
-!!     class(*),intent(in),optional :: g1,g2,g3,g4,g5,g6,g7,g8,g9
+!!     class(*),intent(in),optional  :: g1,g2,g3,g4,g5,g6,g7,g8,g9
+!!     logical,intent(in),optional   :: nospace
 !!     character,len=(:),allocatable :: msg
 !!
 !!##DESCRIPTION
@@ -7384,6 +7387,7 @@ end subroutine test_isprint
 !!    g[1-9]  optional value to print the value of after the message. May
 !!            be of type INTEGER, LOGICAL, REAL, DOUBLEPRECISION, COMPLEX,
 !!            or CHARACTER.
+!!    nospace  if nospace=.true., then no spaces are added between values
 !!##RETURNS
 !!    msg     description to print
 !!
@@ -7410,17 +7414,28 @@ end subroutine test_isprint
 !!
 !!    end program demo_msg
 !===================================================================================================================================
-function msg(generic1, generic2, generic3, generic4, generic5, generic6, generic7, generic8, generic9)
+function msg(generic1, generic2, generic3, generic4, generic5, generic6, generic7, generic8, generic9,nospace)
 implicit none
 
 character(len=*),parameter::ident_53="@(#)M_debug::msg(3f): writes a message to a string composed of any standard scalar types"
 
 class(*),intent(in),optional  :: generic1 ,generic2 ,generic3 ,generic4 ,generic5
 class(*),intent(in),optional  :: generic6 ,generic7 ,generic8 ,generic9
+logical,intent(in),optional   :: nospace
 character(len=:), allocatable :: msg
    character(len=4096)        :: line
    integer                    :: ios
    integer                    :: istart
+   integer                    :: increment
+   if(present(nospace))then
+      if(nospace)then
+         increment=1
+      else
+         increment=2
+      endif
+   else
+      increment=2
+   endif
 
    istart=1
    if(present(generic1))call print_generic(generic1)
@@ -7444,7 +7459,6 @@ class(*),intent(in),optional :: generic
       type is (integer(kind=int16));    write(line(istart:),'(i0)') generic
       type is (integer(kind=int32));    write(line(istart:),'(i0)') generic
       type is (integer(kind=int64));    write(line(istart:),'(i0)') generic
-      !type is (integer(kind=int128));   write(line(istart:),'(i0)') generic
       type is (real(kind=real32));      write(line(istart:),'(1pg0)') generic
       type is (real(kind=real64));      write(line(istart:),'(1pg0)') generic
       type is (real(kind=real128));     write(line(istart:),'(1pg0)') generic
@@ -7455,7 +7469,7 @@ class(*),intent(in),optional :: generic
       type is (character(len=*));       write(line(istart:),'(a)') generic
       type is (complex);                write(line(istart:),'("(",1pg0,",",1pg0,")")') generic
    end select
-   istart=len_trim(line)+2
+   istart=len_trim(line)+increment
 end subroutine print_generic
 !===================================================================================================================================
 end function msg

@@ -4386,6 +4386,7 @@ implicit none
 character(len=*),parameter::ident_32="@(#)M_xyplot::xy_jutitlX(3fp): draw plot titling information (titles and legend block)"
 
 character(len=80)  :: l
+integer            :: isize
 character(len=80)  :: ftitle(isize)                ! hold title lines from the file
 character(len=1)   :: cwhere
 real               :: centr
@@ -4395,7 +4396,6 @@ integer            :: ichars
 integer            :: icols
 integer            :: icount
 integer            :: idonly
-integer            :: isize
 integer            :: itchars
 real               :: r10
 real               :: tallest
@@ -5663,6 +5663,7 @@ implicit none
 character(len=*),parameter::ident_44="@(#)M_xyplot::xy_loadtl(3fp): load title xy_array"
 
 character name*20, ztitle*(IZSZQ), ctemp*255
+integer                  :: isize
 character(len=80)        :: ftitle(isize)     ! hold title lines from the file
 integer,parameter        :: isizeX=20
 character(len=80)        :: ftitleX(isizeX)   ! scratch hold of title lines from the file
@@ -5682,7 +5683,6 @@ integer     :: ilen1
 integer     :: imax
 integer     :: ios
 integer     :: irec
-integer     :: isize
 integer     :: isub
 integer     :: ititles
 !-----------------------------------------------------------------------
@@ -6305,6 +6305,7 @@ character(len=*),parameter::ident_47="&
 !     so
 !     1 -10  20 30 40   becomes 1,2,3,4,5,6,7,8,9,10,20,30,40 in column 1
 !
+integer               :: iszin
 real,intent(in)       :: rcurve_in(iszin,4)   ! rcurve_in is input xy_array
                                               ! row 1 is curve numbers
                                               ! row 2 is file numbers
@@ -6314,7 +6315,6 @@ real,intent(in)       :: rcurve_in(iszin,4)   ! rcurve_in is input xy_array
 real,intent(out)      :: rcurve_out(iszout,4) ! rcurve_out is output xy_array
 integer,intent(in)    :: isize                ! isize is maximum numbers to put into rcurve_out
 integer,intent(inout) :: inums          ! inums is number of rcurve_in values on input, number of rcurve_out numbers on output
-integer               :: iszin
 integer               :: iszout
 integer               :: icurve
 integer               :: idec
@@ -9845,8 +9845,8 @@ character(len=*),intent(in) :: parms   ! action keyword
 !         o something else: store a pattern
 
 integer,intent(in)  :: iwhich         ! which pattern number to work on.  if iwhich is 0, a solid line pattern is returned
-real,intent(out)    :: patout(isize)  ! xy_array to return a pattern, of size isize (assumed big enough to hold a pattern!!!)
 integer,intent(in)  :: isize          ! size of patout
+real,intent(out)    :: patout(isize)  ! xy_array to return a pattern, of size isize (assumed big enough to hold a pattern!!!)
 integer,intent(out) :: ipatout        ! number of elements in pattern
 integer          :: i10, i20, i30, i33, i40, i44, i444, i50, i70, i72, i90, i95, i97
 integer          :: iend
@@ -11180,8 +11180,10 @@ character(len=*),parameter::ident_104="@(#)M_xyplot::priv_judash(3fp): draw dash
 
 !  primitive dashed code generator. assumes a simple cartesian
 !  coordinate system where x-units and y-units are the same length.
+integer          :: n
 real             :: x(n)
 real             :: y(n)
+integer          :: ipat
 real             :: pat(ipat)
 real,save        :: seglen
 integer,save     :: index
@@ -11199,8 +11201,6 @@ integer          :: i10
 integer          :: i20
 integer          :: i30
 integer          :: imark
-integer          :: ipat
-integer          :: n
 real             :: offset
 real             :: offtemp
 real             :: sumlen
@@ -11325,6 +11325,7 @@ character(len=*),parameter::ident_105="@(#)M_xyplot::priv_jufill(3fp): fill or d
 !     5 line from point down every istep points
 !     6 line from point up every istep points
 
+integer         :: n
 real            :: x(n),y(n)
 real            :: bottom
 integer         :: i10
@@ -11337,7 +11338,6 @@ integer         :: i70
 integer         :: i80
 integer         :: ifill
 integer         :: istep
-integer         :: n
 real            :: radius
 real            :: top
 

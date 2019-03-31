@@ -3,7 +3,8 @@
 !===================================================================================================================================
 module M_hashkeys
 use,intrinsic :: ISO_FORTRAN_ENV, only : int8,int16,int32,int64,real32,real64,real128
-use,intrinsic ::  iso_c_binding
+use,intrinsic :: iso_c_binding
+!!use,intrinisc :: iso_c_binding,   only : c_int32_t
 use M_anything,                   only : anything_to_bytes
 use M_debug,                      only : debug
 implicit none
@@ -60,7 +61,6 @@ private swap32
 private swap64
 private swap64a
 private consume_chunk
-
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -606,9 +606,10 @@ end function sha256b
       integer(kind=c_int32_t) :: to_pad
       integer(kind=c_int32_t) :: leftover
       integer(kind=c_int32_t) :: space_left
-      integer(kind=c_int32_t),parameter :: zero= b'00000000000000000000000000000000'
-      integer(kind=c_int8_t),parameter  :: ipad0=transfer( b'00000000', 0_c_int8_t)
-      integer(kind=c_int8_t),parameter  :: ipad1=transfer( b'10000000', 0_c_int8_t)
+      ! KLUDGE SYNTAX NOT STANDARD BUT WORKS EVERYWHERE
+      integer(kind=c_int32_t),parameter :: zero= transfer(b'00000000000000000000000000000000',0_c_int32_t)
+      integer(kind=c_int8_t),parameter  :: ipad0=transfer(b'00000000'*1_c_int8_t, 0_c_int8_t)
+      integer(kind=c_int8_t),parameter  :: ipad1=transfer(b'10000000'*1_c_int8_t, 0_c_int8_t)
       integer(kind=c_int8_t)  :: i
 
       ! Calculate the rest.
@@ -1154,7 +1155,6 @@ contains
    end subroutine test_sha256_11
 
 end subroutine test_suite_sha256
-
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================

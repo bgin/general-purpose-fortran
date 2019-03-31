@@ -40,7 +40,7 @@
 !!##OPTIONS
 !!      inputline    line to record into history buffer file or to edit.
 !!
-!!      r            Optional letter to use as command to invoke editing.
+!!      r            Optional character to use as command to invoke editing.
 !!                   Defaults to 'r'.
 !!
 !!##USAGE
@@ -611,7 +611,26 @@ subroutine test_redo()
 
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
+character(len=256),parameter  :: infile(*)= [ character(len=256) :: &
+   'this is test line 1',&
+   'this is test line 2',&
+   'this is test line 3',&
+   'r c/test/TEST/',&
+   '#####',&
+   '^THIS #',&
+   '',&
+   '',&
+   '',&
+   'quit']
    call unit_check_start('redo',msg='')
+   open(unit=10,file='__scratch__')
+   write(10,'(a)')infile
+   close(10)
+   call execute_command_line('redo <__scratch__>__out__')
+   open(unit=10,file='__scratch__')
+   open(unit=11,file='__out__')
+   close(unit=10,status='delete')
+   close(unit=11,status='delete')
    !!call unit_check('redo', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('redo',msg='')
 end subroutine test_redo

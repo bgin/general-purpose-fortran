@@ -13,6 +13,7 @@ h1 { font-size:150%; page-break-before:auto;background-color: #aaaaff}
 h2 { font-size:143%;color:teal; }
 h3 { font-size:134%;color:blue; }
 h4 { font-size:120%;color:gray; }
+img { max-width: 55em}
 p{ padding: 0;margin:0; }
 p{ padding-right:1.4em; }
 p{ padding-bottom:1em; }
@@ -57,13 +58,33 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 </BLOCKQUOTE>
 <A name=contents></A><H3>CONTENTS</H3></A>
 <BLOCKQUOTE>
-<A HREF=#1>Synopsis</A><BR>
-<A HREF=#2>Overview</A><BR>
-<A HREF=#3>Description</A><BR>
-<A HREF=#4>See Also</A><BR>
-<A HREF=#5>Examples</A><BR>
+<A HREF=#1>Description</A><BR>
+<A HREF=#2>Synopsis</A><BR>
+<A HREF=#3>See Also</A><BR>
+<A HREF=#4>Examples</A><BR>
 </BLOCKQUOTE>
-<A name=6>
+<A name=5>
+
+     <H3>DESCRIPTION</H3>
+
+</A>
+<BLOCKQUOTE>
+<P>
+The <B>M_strings</B>(3fm) module is a collection of Fortran procedures that
+supplement the built-in routines. Routines for parsing, tokenizing,
+changing case, substituting new strings for substrings, locating
+strings with simple wildcard expressions, removing tabs and line
+terminators and other string manipulations are included.
+<P>
+<B>M_strings_oop</B>(3fm) is a companion module that provides an OOP interface
+to the M_strings module.
+<P>
+As newer Fortran features become more widely available a significant
+amount of the code (much of which originated as pre-Fortran90 routines)
+is subject to updating so new versions of this module are not expected
+to be compatible with older versions.
+</BLOCKQUOTE>
+<A name=2>
 
      <H3>SYNOPSIS</H3>
 
@@ -418,117 +439,44 @@ decodebase convert whole number in base 10 to string in base [2-36]
 returns a string describing the name of a single character
 </TD></TR>
 <TR></TR></TABLE></BLOCKQUOTE>
-<A name=2>
-
-     <H3>OVERVIEW</H3>
-
-</A>
-<BLOCKQUOTE>
 <P>
-Fortran lets you access the characters in a string using ranges
-much like they are character arrays, assignment, comparisons with
-standard operators, supports dynamically allocatable strings and
-supports concatentation using the // operator, as well as a number
-of intrinsic string routines
-</BLOCKQUOTE>
+<P>
 <A name=>
 
     <H4>&nbsp; &nbsp; INTRINSICS</H4>
 </A>
 <BLOCKQUOTE>
 <P>
-<TABLE cellpadding=3>
-<TR valign=top><TD colspan=2>
-<B>adjustl</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
-Left adjust a string
-</TD></TR>
-<TR valign=top><TD colspan=2>
-<B>adjustr</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
-Right adjust a string
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B>index</B> </TD><TD valign=bottom>
-Position of a substring within a string
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B>repeat</B> </TD><TD valign=bottom>
-Repeated string concatenation
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B>scan</B> </TD><TD valign=bottom>
-Scan a string for the presence of a set of characters
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B>trim</B> </TD><TD valign=bottom>
-Remove trailing blank characters of a string
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B>verify</B> </TD><TD valign=bottom>
-Scan a string for the absence of a set of characters
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B>len</B> </TD><TD valign=bottom>
-It returns the length of a character string
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B>achar</B> </TD><TD valign=bottom>
-converts an integer into a character
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B>iachar</B> </TD><TD valign=bottom>
-converts a character into an integer
-</TD></TR>
-<TR valign=top><TD colspan=2>
-<B>len_trim</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
-finds length of string with trailing spaces ignored
-</TD></TR>
-<TR valign=top><TD colspan=2>
-<B>new_line</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
-Newline character
-</TD></TR>
-<TR valign=top><TD colspan=2>
-<B>selected_char_kind</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
-Choose character kind
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B>lge</B> </TD><TD valign=bottom>
-Lexical greater than or equal
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B>lgt</B> </TD><TD valign=bottom>
-Lexical greater than
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B>lle</B> </TD><TD valign=bottom>
-Lexical less than or equal
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B>llt</B> </TD><TD valign=bottom>
-Lexical less than
-</TD></TR>
-<TR></TR></TABLE></BLOCKQUOTE>
+The <B>M_strings</B>(3fm) module supplements and works in combination with
+the Fortran built-in intrinsics. Stand-alone
+Fortran lets you access the characters in a string using ranges
+much like they are character arrays, assignment, comparisons with
+standard operators, supports dynamically allocatable strings and
+supports concatentation using the // operator, as well as a number
+of intrinsic string routines:
+<P>
+<PRE>
+       adjustl   Left adjust a string
+       adjustr   Right adjust a string
+       index     Position of a substring within a string
+       repeat    Repeated string concatenation
+       scan      Scan a string for the presence of a set of characters
+       trim      Remove trailing blank characters of a string
+       verify    Scan a string for the absence of a set of characters
+       len       It returns the length of a character string
+       achar     converts an integer into a character
+       iachar    converts a character into an integer
+       len_trim  finds length of string with trailing spaces ignored
+       new_line  Newline character
+       selected_char_kind  Choose character kind
+       lge       Lexical greater than or equal
+       lgt       Lexical greater than
+       lle       Lexical less than or equal
+       llt       Lexical less than
 <P>
 <P>
-<A name=3>
-
-     <H3>DESCRIPTION</H3>
-
-</A>
-<BLOCKQUOTE>
 <P>
-The M_strings module is a collection of Fortran procedures that
-supplement the built in routines. Routines for parsing, tokenizing,
-changing case, substituting new strings for substrings, locating
-strings with simple wildcard expressions, removing tabs and line
-terminators and other string manipulations are included.
-<P>
-M_strings_oop is a companion module that provides an OOP interface
-to the M_strings module.
-<P>
-As newer Fortran features become more widely available a significant
-amount of the code (much of which originated as pre-Fortran90 routines)
-is subject to updating so new versions of this module are not expected
-to be compatible with older versions.
+</PRE>
 </BLOCKQUOTE>
 <A name=>
 
@@ -541,7 +489,7 @@ module) provides an OOP (Object-Oriented Programming) interface
 to the <B>M_strings</B>(3fm) module; as described in the example program
 OBJECT_ORIENTED shown below&#46;&#46;&#46;
 </BLOCKQUOTE>
-<A name=4>
+<A name=3>
 
      <H3>SEE ALSO</H3>
 
@@ -553,7 +501,7 @@ expressions (M_calculator), time strings (M_time), random strings
 (M_random, M_uuid), lists (M_list), and interfacing with the C regular
 expression library (M_regex).
 </BLOCKQUOTE>
-<A name=5>
+<A name=4>
 
      <H3>EXAMPLES</H3>
 
@@ -798,7 +746,7 @@ example program:
 </PRE>
 </BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>M_strings (3)</TD> <TD align=right width=33%><I>March 26, 2019</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from f2086212-1d36-425c-94a5-b42d90bfe5bf using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>M_strings (3)</TD> <TD align=right width=33%><I>March 31, 2019</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 6b387cf3-9b0a-43a2-bba9-31120e235962 using man macros.</FONT>
 <br><br><center><img src="images/M_strings.3.gif"></center>
 </div>
 </div>

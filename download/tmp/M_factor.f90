@@ -104,10 +104,11 @@ contains
 !!                                or vector m(:), matrix m(:,:) or cuboid m(:,:,:)
 !!##SYNOPSIS
 !!
-!!    integer function least_common_multiple(i,j)
+!!    use, intrinsic :: iso_fortran_env, only : int64
+!!     integer function least_common_multiple(i,j)
 !!     integer,intent(in):: i,j
 !!      or
-!!    integer function least_common_multiple(m)
+!!    integer function(kind=int32) least_common_multiple(m)
 !!     integer,intent(in):: m(:)
 !!      or
 !!     integer,intent(in):: m(:,:)
@@ -221,20 +222,20 @@ contains
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 integer function lcm(i,j)
-use M_anything,     only : int128
+use, intrinsic :: iso_fortran_env, only : int64
 implicit none
 
 character(len=*),parameter::ident_1="@(#)M_factor::lcm(3fp): least common multiple of two integers"
 
 integer,intent(in)   :: i,j
-integer(kind=int128) :: lcm_big
+integer(kind=int64) :: lcm_big
 
    if(i.eq.0.and.j.eq.0)then
       lcm=0
    else
       ! if default integer is 32-bit integer
       ! would be limited to input values < sqrt((2**31)-1) if did not increase from default kind, assuming default <= int64
-      lcm_big=abs(int(i,kind=int128)*int(j,kind=int128) )/gcd(i,j)
+      lcm_big=abs(int(i,kind=int64)*int(j,kind=int64) )/gcd(i,j)
       if(lcm_big.gt.huge(0))then
          write(*,*)'*lcm* result larger than a standard integer =',lcm_big
          stop 1

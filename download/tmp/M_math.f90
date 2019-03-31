@@ -1,3 +1,6 @@
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 module M_math
 implicit none
 private
@@ -1375,6 +1378,8 @@ END SUBROUTINE linearint
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 subroutine gcsgau1(n,a,b)
+use M_journal, only : journal
+implicit none
 !********************************************************************
 !****                GRAPHICS COMPATIBILITY SYSTEM               ****
 !****                    3-D DEVICE-DEPENDENT                    ****
@@ -1382,7 +1387,9 @@ subroutine gcsgau1(n,a,b)
 !****                           LEVEL 7                          ****
 !****               WRITTEN BY       FRED TAYLOR                 ****
 !********************************************************************
+
 !@(#) SOLVE A SYSTEM OF SIMULTANEOUS LINEAR EQUATIONS OF THE FORM
+
 !
 !     **                           **  **    **   **    **
 !     * A(1,1)  A(1,2)  ...  A(1,N) *  * X(1) *   * B(1) *
@@ -1401,11 +1408,7 @@ subroutine gcsgau1(n,a,b)
 !
 !     F. T. TRACY, COMPUTER ANALYSIS BRANCH USAEWES, VICKSBURG, MS. 39180
 !-----------------------------------------------------------------------------------------------------------------------------------
-use M_journal, only : journal
-implicit none
-!!implicit real*8(a-h,o-z)
 integer,parameter  :: dp=kind(0.0d0)
-
 integer,intent(in) :: n
 real(kind=dp)      :: a(11,11)
 real(kind=dp)      :: b(*)
@@ -1509,7 +1512,11 @@ end subroutine gcsgau1
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 subroutine glstsq(ideg,x,y,n0,d)
+use M_journal, only : journal
+implicit doubleprecision(a-h,o-z)
+
 !@(#) least squares fit to a polynomial expression
+
 !********************************************************************
 !****                graphics compatibility system               ****
 !****                            basic                           ****
@@ -1521,16 +1528,14 @@ subroutine glstsq(ideg,x,y,n0,d)
 !********************************************************************
 !**** needs rewritten to normalize data
 !**** so large numbers causing overflow are not generated.
-!********************************************************************
-use M_journal, only : journal
-implicit real*8(a-h,o-z)
+!************************************************************************************************************************************
 integer             :: ideg       !* ideg is  desired degree of least square fit and test
 real                   x(*)
 real                   y(*)
 integer             :: n0         !* n0   is  number of points in curve arrays (x, y)
-real*8                 d(*)       !* d    is  returned coefficient array
+doubleprecision        d(*)       !* d    is  returned coefficient array
 
-real*8                 a(11,11)
+doubleprecision        a(11,11)
 integer             :: i, j, k
 integer             :: n
 integer             :: nppl1
@@ -1538,21 +1543,21 @@ integer             :: nppl2
 integer             :: jm1
 integer             :: iz
 integer             :: iexp
-!-----------------------------------------------------------------------
+!------------------------------------------------------------------------------------------------------------------------------------
    n=n0
-!-----------------------------------------------------------------------
+!------------------------------------------------------------------------------------------------------------------------------------
    if((ideg.lt.1).or.(ideg.gt.10))then
       call journal('*fit* invalid polynomial degree for polynomial fit')
    elseif(n.le.ideg)then ! test if enough points to do desired fit
       call journal('*fit* insufficient points for desired fit')
    else
-!-----------------------------------------------------------------------
+!------------------------------------------------------------------------------------------------------------------------------------
       nppl1=ideg+1
       nppl2=ideg+2
       do j=1,nppl1
 !          calculate  (d)  matrix.
          jm1=j-1
-!-----------------------------------------------------------------------
+!------------------------------------------------------------------------------------------------------------------------------------
          if (jm1 .le. 0)then
             iz=1
             add=0.0d0
@@ -1560,41 +1565,41 @@ integer             :: iexp
                add=y(i)+add
             enddo
          else
-!-----------------------------------------------------------------------
+!------------------------------------------------------------------------------------------------------------------------------------
             add=0.0d0
             do i=1,n
                add=x(i)**jm1*y(i)+add
             enddo
          endif
-!-----------------------------------------------------------------------
+!------------------------------------------------------------------------------------------------------------------------------------
          d(j)=add
-!-----------------------------------------------------------------------
+!------------------------------------------------------------------------------------------------------------------------------------
 !     calculate ((a)) matrix.
          do k=j,nppl1
             iexp=jm1+k-1
-!-----------------------------------------------------------------------
+!------------------------------------------------------------------------------------------------------------------------------------
             if(iz.ne.2)then
                add=n
                iz=2
             else
-!-----------------------------------------------------------------------
+!------------------------------------------------------------------------------------------------------------------------------------
                add=0.
                do i=1,n
                   add=x(i)**iexp+add
                enddo
             endif
-!-----------------------------------------------------------------------
+!------------------------------------------------------------------------------------------------------------------------------------
             a(j,k)=add
             a(k,j)=add
          enddo
       enddo
-!-----------------------------------------------------------------------
+!------------------------------------------------------------------------------------------------------------------------------------
 !          solve system of equations
 !              ((a)) * (c) = (d)
 !          for (c).
 !      coefficients will be in array d
       n = nppl1
-      call gcsgau1(n,a,d) ! note that d is real*8, a is real*8
+      call gcsgau1(n,a,d) ! note that d is doubleprecision, a is doubleprecision
    endif
 end subroutine glstsq
 !===================================================================================================================================
@@ -1639,7 +1644,7 @@ SUBROUTINE GCSGAU2(N,A,B)
 !     F. T. TRACY, COMPUTER ANALYSIS BRANCH USAEWES, VICKSBURG, MS. 39180
 !-----------------------------------------------------------------------
    use M_journal, only : journal
-   implicit real*8(a-h,o-z)
+   implicit doubleprecision(a-h,o-z)
    integer      :: i
    integer      :: j
    integer      :: k
@@ -3965,12 +3970,13 @@ doubleprecision function polyarea_mid_point(N,P)     !Calculates the area enclos
 ! The point sequence can wobble as it wishes and can meet the other side, but it must not cross itself
 ! as would be done in a figure 8 drawn with a crossover instead of a meeting.
 ! A clockwise traversal (as for an island) gives a positive area; use anti-clockwise for a lake.
-INTEGER N                               ! The number of points.
-DOUBLE COMPLEX P(N)                     ! The points.
-DOUBLE COMPLEX PP,PC                    ! Point Previous and Point Current.
-DOUBLE COMPLEX W                        ! Polygon centre. Map coordinates usually have large offsets.
-DOUBLE PRECISION A                      ! The area accumulator.
-INTEGER I                               ! A stepper.
+integer, parameter :: dc = kind(0d0)    ! double precision
+INTEGER            :: N                 ! The number of points.
+COMPLEX(kind=dc)   :: P(N)              ! The points.
+COMPLEX(kind=dc)   :: PP,PC             ! Point Previous and Point Current.
+COMPLEX(kind=dc)   :: W                 ! Polygon centre. Map coordinates usually have large offsets.
+DOUBLEPRECISION    :: A                 ! The area accumulator.
+INTEGER            :: I                 ! A stepper.
    IF (N.LT.3) STOP "*polyarea_mid_point* ERROR: at least three points are needed! "        !Good grief.
    W = (P(1) + P(N/3) + P(2*N/3))/3     ! An initial working average.
    W = SUM(P(1:N) - W)/N + W            ! A good working average is the average itself.
@@ -3979,7 +3985,7 @@ INTEGER I                               ! A stepper.
    DO I = 1,N                           ! Step through the positions.
       PP = PC                           ! Previous position.
       PC = P(I) - W                     ! Current position.
-      A = (DIMAG(PC) + DIMAG(PP))*(DBLE(PC) - DBLE(PP)) + A  ! Area integral component.
+      A = (AIMAG(PC) + AIMAG(PP))*(DBLE(PC) - DBLE(PP)) + A  ! Area integral component.
    END DO                               ! On to the next position.
    polyarea_mid_point = A/2             ! Divide by two once.
 END FUNCTION polyarea_mid_point         ! The units are those of the points.
@@ -6849,7 +6855,7 @@ end subroutine test_suite_M_math
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+end module M_math
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
-end module M_math

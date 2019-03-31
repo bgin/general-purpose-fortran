@@ -481,8 +481,7 @@
 !!  of the following primary example program can be used as a guide as to
 !!  how to nullify the affects of these differences.
 !!
-!!         II. DIFFERENCES FROM 7600 CALCOMP LIBRARIES
-!!         -------------------------------------------
+!!   DIFFERENCES FROM 7600 CALCOMP LIBRARIES
 !!
 !!   1. For subroutines SYMBOL, AXIS, and LGAXS, the parameter used to
 !!      specify text or title information (IBCD) has been changed to be
@@ -937,7 +936,7 @@ INTEGER,save :: HXSZ_Q,HYSZ_Q
 !
 !  TABLE CHANGED FROM 596 TO 700 PER REQUEST OF R. LINCOLN, ORLANDO
    INTEGER TABLE_Q(700)
-   CHARACTER*1 ALPHA_Q(63)
+   CHARACTER(len=1) :: ALPHA_Q(63)
    REAL,SAVE :: XSPC_Q=7.0,YSPC_Q=7.0
 
    DATA ALPHA_Q/'A','B','C','D','E','F','G','H','I','J','K','L',           &
@@ -1266,9 +1265,9 @@ end subroutine circl
 !!
 !!    program demo_dashl
 !!    use M_calcomp
-!!    character * 28 ichr1
-!!    character * 26 ichr2
-!!    character * 10 lbcd1,lbcd2
+!!    character(len=28) :: ichr1
+!!    character(len=26) :: ichr2
+!!    character(len=10) :: lbcd1,lbcd2
 !!    dimension xarray(62),yarray(62)
 !!    ICHR1='PLOTTED ON A CALCOMP PLOTTER'
 !!    ICHR2='USING  Y = X -0.7*X +0.1*X'
@@ -1294,7 +1293,7 @@ end subroutine circl
 !!    call scale(yarray(1),10.0,60,1)
 !!    call axis(0.0,0.0,lbcd1,-10, 6.5, 0.0,xarray(61),xarray(62))
 !!    call axis(0.0,0.0,lbcd2, 10,10.0,90.0,yarray(61),yarray(62))
-!!    call width(40)
+!!    call width(20)
 !!    !!call newpen(RED)
 !!    !!linetype=-1
 !!    !!inteq=4
@@ -2532,7 +2531,7 @@ character(len=*),parameter::ident_11="@(#)M_calcomp::fline(3f): plot a polyline 
 !  VARIABLE AS THE CRAY VERSION OF THE 'SYMBOL' ROUTINE EXPECTS A
 !  SIMPLE INTEGER VALUE FOR THIS ARGUMENT.
 !
-      CHARACTER *8 IBCD
+      CHARACTER(len=8) :: IBCD
       INTEQ = L
       N=ABS(NN)
       KK=K
@@ -2816,7 +2815,7 @@ character(len=*),parameter::ident_12="@(#)M_calcomp::lgaxs(3f): draw logarithmic
 !  THIS FROM HAPPENING IN THIS SUBROUTINE, 'INTEQ' IS INITIALIZED
 !  TO THE VALUE 999 (WHICH HAS NO SIGNIFICANCE FOR 'SYMBOL').
 !
-      CHARACTER*(*)IBCD
+      CHARACTER(len=*) :: IBCD
       SAVE INTEQ,SONT,CIST,D1,D2,D3,D4,D5,D6
       DATA INTEQ/999/,SONT,CIST,D1,D2,D3,D4,D5,D6/8*0.0/
 !
@@ -3143,7 +3142,7 @@ character(len=*),parameter::ident_13="@(#)M_calcomp::lglin(3f): draw polyline in
 !  VARIABLE AS THE CRAY VERSION OF THE 'SYMBOL' ROUTINE EXPECTS A
 !  SIMPLE INTEGER VALUE FOR THIS ARGUMENT.
 !
-      CHARACTER*8 IBCD
+      CHARACTER(len=8) :: IBCD
       INTEQ = NSY
       ETO10 = 0.4342945
       LMN = NV*K+1
@@ -3445,7 +3444,7 @@ character(len=*),parameter::ident_14="@(#)M_calcomp::polar(3f): plot radial valu
 !  VARIABLE AS THE CRAY VERSION OF THE 'SYMBOL' ROUTINE EXPECTS A
 !  SIMPLE INTEGER VALUE FOR THIS ARGUMENT.
 !
-      CHARACTER*8 IBCD
+      character(len=8) :: IBCD
       INTE = INTEQ
       K = INC
       IND1 = NPTS*K + 1
@@ -4165,9 +4164,9 @@ END SUBROUTINE SMOOT
 !!
 !!    program demo_axis
 !!    use M_calcomp
-!!    character * 28 ichr1
-!!    character * 26 ichr2
-!!    character * 10 lbcd1,lbcd2
+!!    character(len=28) :: ichr1
+!!    character(len=26) :: ichr2
+!!    character(len=10) :: lbcd1,lbcd2
 !!    dimension xarray(62),yarray(62)
 !!    ICHR1='PLOTTED ON A CALCOMP PLOTTER'
 !!    ICHR2='USING  Y = X -0.7*X +0.1*X'
@@ -4214,8 +4213,8 @@ character(len=*),parameter::ident_17="@(#)M_calcomp::axis(3f): Draw linear axis 
 !.....     ANGLE        ANGLE OF AXIS FROM THE X-DIRECTION, IN DEGREES.
 !.....     FIRSTV       SCALE VALUE AT THE FIRST TIC MARK.
 !.....     DELTAV       CHANGE IN SCALE BETWEEN TIC MARKS ONE INCH APART
-      CHARACTER * (*) IBCD
-      CHARACTER * 3 NBCD
+      CHARACTER(len=*) :: IBCD
+      CHARACTER(len=3) :: NBCD
       NBCD ='*10'
       KN=NCHAR
       A=1.0
@@ -4353,9 +4352,9 @@ END SUBROUTINE AXIS
 !!    call plot(0.0,0.0,end)
 !!    contains
 !!    subroutine draw_car_prices()
-!!       character * 21 ichr6
-!!       character * 19 ichr7
-!!       character * 17 ichr8
+!!       character(len=21) :: ichr6
+!!       character(len=19) :: ichr7
+!!       character(len=17) :: ichr8
 !!       ichr6='CAR MODEL AGE (YEARS)'
 !!       ichr7='CAR VALUE (DOLLARS)'
 !!       ichr8='AVERAGE CAR VALUE'
@@ -4453,7 +4452,7 @@ SUBROUTINE mpset(MODE,VALUE)
 !           VALUE IN COMMON WMODEP ACCORDINGLY.
 !
    CHARACTER(LEN=*),INTENT(IN) :: MODE
-   CHARACTER*8 L_MODE
+   character(len=8) :: L_MODE
    REAL VALUE
 !
 ! SET THE CHARACTER SIZE VALUE
@@ -4557,9 +4556,9 @@ END SUBROUTINE mpset
 !!    call plot(0.0,0.0,999)
 !!    contains
 !!    subroutine drawplot(linetype)
-!!    character * 28 ichr1
-!!    character * 26 ichr2
-!!    character * 10 lbcd1,lbcd2
+!!    character(len=28) :: ichr1
+!!    character(len=26) :: ichr2
+!!    character(len=10) :: lbcd1,lbcd2
 !!    dimension xarray(62),yarray(62)
 !!    ICHR1='PLOTTED ON A CALCOMP PLOTTER'
 !!    ICHR2='USING  Y = X -0.7*X +0.1*X'
@@ -5003,8 +5002,8 @@ character(len=*),parameter::ident_24="@(#)M_calcomp::number(3f): plots a floatin
 !.....     NDEC     NUMBER OF DECIMAL PLACES TO BE DRAWN.
 !.....     THIS VERSION OF NUMBER REQUIRES THE SYMBOL VERSION WITH
 !.....     999. X, Y FEATURE, AND  NC = 0 FEATURE.
-      CHARACTER *(20) NUM
-      CHARACTER * 1 MINUS,IZERO,IPOINT
+      CHARACTER(len=20) :: NUM
+      CHARACTER(len=1)  :: MINUS,IZERO,IPOINT
       SAVE MINUS,IZERO,IPOINT
       DATA MINUS /'-'/,IZERO/'0'/,IPOINT/'.'/
 !     IZERO='0'
@@ -5813,7 +5812,7 @@ END SUBROUTINE SCALE
 !!
 !!  It is recommended that 999 be used for INTEQ when NCHAR is greater
 !!  than or equal to zero, and either a dummy character variable (e.g.
-!!  CHARACTER*1 DUMMY) or a literal character string (e.g. ' ') be used
+!!  CHARACTER(len=1) :: DUMMY) or a literal character string (e.g. ' ') be used
 !!  for IBCD when NCHAR is less than zero (not just a plain word as a
 !!  dummy variable)!
 !!
@@ -6699,7 +6698,8 @@ SUBROUTINE primitive__TRACER (AM,TOTX,TOTY,NYDIM)
    DIY=IYD_Q(S)
    CIX=TIX+DIX
    CIY=TIY+DIY
-10 TEM=AM(TIX,TIY)
+10 continue
+   TEM=AM(TIX,TIY)
    AMC=AM(CIX,CIY)
    if(DIX.NE.0) GOTO 20
    SUB=TIY
@@ -6707,21 +6707,26 @@ SUBROUTINE primitive__TRACER (AM,TOTX,TOTY,NYDIM)
    PLOTX=TOTX(TIX)
    PLOTY=TOTY(TIY)+DIY*(TEM-CVV_Q)*HY_Q(SUB)/(TEM-AMC)
    GOTO 30
-20 SUB=TIX
+20 continue
+   SUB=TIX
    if(DIX.LT.0) SUB=SUB-1
    PLOTY=TOTY(TIY)
    PLOTX=TOTX(TIX)+DIX*(TEM-CVV_Q)*HX_Q(SUB)/(TEM-AMC)
-30 if(FIRST) GOTO 40
+30 continue
+   if(FIRST) GOTO 40
    CALL PLOT(PLOTX*RATIO_Q,PLOTY*RATIO_Q,2)
    GOTO 50
-40 FPLOTX=PLOTX*RATIO_Q
+40 continue
+   FPLOTX=PLOTX*RATIO_Q
    FPLOTY=PLOTY*RATIO_Q
    CALL NUMBER(FPLOTX+.02, FPLOTY-.15, 0.14, FLOAT(II_Q), 0.0, -1)
    CALL PLOT(FPLOTX,FPLOTY,3)
    FIRST=.FALSE.
-50 if(.NOT.(EDGE_Q)) GOTO 60
+50 continue
+   if(.NOT.(EDGE_Q)) GOTO 60
    if(TIY.EQ.NY_Q.AND.S.EQ.4.OR.TIX.EQ.1.AND.S.EQ.1.OR.TIX.EQ.NX_Q.AND.S .EQ.3.OR.TIY.EQ.1.AND.S.EQ.2) GOTO 260
-60 AMM=(TEM+AMC)/2.0
+60 continue
+   AMM=(TEM+AMC)/2.0
    Z=S+1
    if(Z.GT.4) Z=Z-4
    PIX=IXD_Q(Z)
@@ -6737,92 +6742,118 @@ SUBROUTINE primitive__TRACER (AM,TOTX,TOTY,NYDIM)
    if(AMP.GE.CVV_Q) GOTO 90
    ASSIGN 70 TO SWSD
    GOTO 190
-70 if(AMW.LT.CVV_Q) GOTO 260
+70 continue
+   if(AMW.LT.CVV_Q) GOTO 260
    if(AMQ.LT.CVV_Q) GOTO 220
    ASSIGN 80 TO SWMQ
    GOTO 160
-80 if(AMZ.LT.CVV_Q) GOTO 220
+80 continue
+   if(AMZ.LT.CVV_Q) GOTO 220
    GOTO 240
-90 ASSIGN 100 TO SWMQ
+90 continue
+   ASSIGN 100 TO SWMQ
    GOTO 160
-100 if(AMD.GE.CVV_Q) GOTO 240
+100 continue
+   if(AMD.GE.CVV_Q) GOTO 240
    ASSIGN 80 TO SWSD
    GOTO 190
-110 if(AMP.GE.CVV_Q) GOTO 140
+110 continue
+   if(AMP.GE.CVV_Q) GOTO 140
    ASSIGN 120 TO SWMQ
    GOTO 160
-120 if(AMS.LT.CVV_Q) GOTO 260
+120 continue
+   if(AMS.LT.CVV_Q) GOTO 260
    ASSIGN 130 TO SWSD
    GOTO 190
-130 if(AMW.LT.CVV_Q) GOTO 260
+130 continue
+   if(AMW.LT.CVV_Q) GOTO 260
    GOTO 220
-140 if(AMD.GE.CVV_Q) GOTO 240
+140 continue
+   if(AMD.GE.CVV_Q) GOTO 240
    ASSIGN 150 TO SWSD
    GOTO 190
-150 if(AMQ.GE.CVV_Q) GOTO 80
+150 continue
+   if(AMQ.GE.CVV_Q) GOTO 80
    ASSIGN 130 TO SWMQ
 !      INTERPOLATE MQ
-160 if(PIX.NE.0) GOTO 170
+160 continue
+   if(PIX.NE.0) GOTO 170
    SUB=TIY
    if(PIY.LT.0) SUB=SUB-1
    PLOTX=(TOTX(TIX)+TOTX(CIX))/2.0
    PLOTY=TOTY(TIY)+PIY*(AMM-CVV_Q)*HY_Q(SUB)/(AMM-AMQ)
    GOTO 180
-170 SUB=TIX
+170 continue
+   SUB=TIX
    if(PIX.LT.0) SUB=SUB-1
    PLOTY=(TOTY(TIY)+TOTY(CIY))/2.0
    PLOTX=TOTX(TIX)+PIX*(AMM-CVV_Q)*HX_Q(SUB)/(AMM-AMQ)
-180 CALL PLOT(PLOTX*RATIO_Q,PLOTY*RATIO_Q,2)
+180 continue
+   CALL PLOT(PLOTX*RATIO_Q,PLOTY*RATIO_Q,2)
    GOTO SWMQ, (80,100,120,130)
 !      INTERPOLATE SD
-190 if(DIX.NE.0) GOTO 200
+190 continue
+   if(DIX.NE.0) GOTO 200
    SUB=TIY
    if(DIY.LT.0) SUB=SUB-1
    PLOTX=(TOTX(TIX)+TOTX(TIX+PIX))/2.0
    PLOTY=TOTY(TIY)+DIY*(AMS-CVV_Q)*HY_Q(SUB)/(AMS-AMD)
    GOTO 210
-200 SUB=TIX
+200 continue
+   SUB=TIX
    if(DIX.LT.0) SUB=SUB-1
    PLOTY=(TOTY(TIY)+TOTY(TIY+PIY))/2.0
    PLOTX=TOTX(TIX)+DIX*(AMS-CVV_Q)*HX_Q(SUB)/(AMS-AMD)
-210 CALL PLOT(PLOTX*RATIO_Q,PLOTY*RATIO_Q,2)
+210 continue
+   CALL PLOT(PLOTX*RATIO_Q,PLOTY*RATIO_Q,2)
    GOTO SWSD (70,80,130,150)
 !      TRANSFER TO W
-220 if(TIX.EQ.1) GOTO 230
+220 continue
+   if(TIX.EQ.1) GOTO 230
    if(AM(TIX-1,TIY).LT.CVV_Q) CALL primitive__ADDREC(TIX+(TIY-1)*NX_Q)
-230 TIX=TIX+PIX
+230 continue
+   TIX=TIX+PIX
    TIY=TIY+PIY
    GOTO 280
 !      TRANSFER TO Z
-240 if(TIX.EQ.1) GOTO 250
+240 continue
+   if(TIX.EQ.1) GOTO 250
    if(AM(TIX-1,TIY).LT.CVV_Q) CALL primitive__ADDREC(TIX+(TIY-1)*NX_Q)
-250 S=S+3
+250 continue
+   S=S+3
    TIX=CIX+PIX
    TIY=CIY+PIY
    GOTO 270
 !      ROTATE
-260 S=S+1
-270 if(S.GT.4) S=S-4
+260 continue
+   S=S+1
+270 continue
+   if(S.GT.4) S=S-4
    DIX=IXD_Q(S)
    DIY=IYD_Q(S)
-280 CIX=TIX+DIX
+280 continue
+   CIX=TIX+DIX
    CIY=TIY+DIY
    if(EDGE_Q) GOTO 290
    if((TIX.NE.IX_Q).OR.(TIY.NE.IY_Q).OR.(DIREC_Q.NE.S)) GOTO 300
    CALL PLOT(FPLOTX,FPLOTY,2)
    GOTO 330
-290 if((CIX.LT.1).OR.(CIY.LT.1).OR.(CIX.GT.NX_Q).OR.(CIY.GT.NY_Q)) GOTO 320
-300 if(AM(CIX,CIY).LT.CVV_Q) GOTO 10
+290 continue
+   if((CIX.LT.1).OR.(CIY.LT.1).OR.(CIX.GT.NX_Q).OR.(CIY.GT.NY_Q)) GOTO 320
+300 continue
+   if(AM(CIX,CIY).LT.CVV_Q) GOTO 10
    if(TIX.EQ.1) GOTO 310
    if(AM(TIX-1,TIY).LT.CVV_Q) CALL primitive__ADDREC(TIX+(TIY-1)*NX_Q)
-310 S=S+3
+310 continue
+   S=S+3
    TIX=CIX
    TIY=CIY
    GOTO 270
-320 if(TIX.EQ.1) GOTO 330
+320 continue
+   if(TIX.EQ.1) GOTO 330
    if(AM(TIX-1,TIY).LT.CVV_Q) CALL primitive__ADDREC(TIX+(TIY-1)*NX_Q)
-330 CALL primitive__RECORX
-   RETURN
+330 continue
+   CALL primitive__RECORX
 !
 END SUBROUTINE primitive__TRACER
 !===================================================================================================================================
@@ -7322,9 +7353,9 @@ end subroutine primitive__wpen
 !===================================================================================================================================
 subroutine primitive__frend(next8) ! end graphics frame
 use M_draw
-integer :: next8  ! INTEGER4/INTEGER8
-integer*4 next
-character cjunk*1
+integer          :: next8  ! INTEGER4/INTEGER8
+integer          :: next
+character(len=1) :: cjunk
    next=next8
    call vflush()             ! flush graphics buffers
    ivalue=getkey()           ! wait till a keypress is read in graphics window

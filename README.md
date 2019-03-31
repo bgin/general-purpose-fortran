@@ -1,9 +1,27 @@
 # General-Purpose Fortran Repository
 
 ### Cloning the repository
+
     git clone https://github.com/urbanjost/general-purpose-fortran
     cd general_purpose-fortran/download/tmp
     make
+
+you might want to edit hershey.sh to select where hershey
+font files will be installed (default is /usr/share/hershey), 
+and then enter ...
+
+    bash hershey.sh
+
+if you do not have bash(1) or a Posix shell you will have to run
+the h2v program for each font, as illustrated by the simple
+hershey.sh script.
+
+By default, the graphics routines require X11, the ncurses interface
+assumes libncurses is installed, the SQLite3 interface needs the
+libsqlite3 library, and the readline interface needs libreadline.
+These libraries are commonly available on many platforms but you may
+have to remove some of the files from the makefile and the compile
+if you do not want to build those interfaces.
 
 The GPF (General-Purpose Fortran) repository consists of  Fortran modules
 and libraries (and in some cases their associated C support routines)

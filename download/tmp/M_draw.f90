@@ -501,7 +501,7 @@
 !!       ipaws=getkey()
 !!       call vexit()
 !!
-!!    contains
+!!       contains
 !!
 !!       subroutine target(xc,yc,rc)
 !!       use M_units,    only : cosd, sind
@@ -678,18 +678,18 @@
 !!    Initialise the device.
 !!
 !!
-!!  Note 1 :- Currently available devices are:
+!!  Note 1 : Currently available devices are:
 !!
-!!        INTERACTIVE DEVICES:
-!!        --------------------
+!!        INTERACTIVE DEVICES
+!!
 !!        PC   - native MSW PC driver; only tested from CygWin
 !!        X11  - X11 windows (Black background)
 !!        x11  - X11 windows (White background)
 !!        tek  - tektronix 4010 and compatibles
 !!        xtek - X11 xterm Tektronix 4010 emulator
 !!
-!!        PRINTERS and PLOTTERS:
-!!        ----------------------
+!!        PRINTERS AND PLOTTERS
+!!
 !!           PostScript:
 !!              [p]psm or [p]postscript - monochrome PostScript
 !!              [p]psg - grayscale PostScript
@@ -703,52 +703,52 @@
 !!              pcl5land (color PCL5 landscape)
 !!              pcl5port (color PCL5 portrait)
 !!
-!!        PIXMAPS (color) and BITMAPS (monochrome)
-!!        -----------------------------------------
-!!        char   - An ASCII file that can be displayed to most
+!!        PIXMAPS (COLOR) AND BITMAPS (MONOCHROME)
+!!
+!!        char     An ASCII file that can be displayed to most
 !!                 xterm(1) terminal emulators that support
 !!                 color
-!!        p1/pbm - Poskanzer (pbmplus/netplus) portable
+!!        p1/pbm   Poskanzer (pbmplus/netplus) portable
 !!                 ASCII bitmap file
-!!        p3/ppm - Poskanzer portable ASCII pixmap file
-!!        p4     - Poskanzer portable binary bitmap file
-!!        p6     - Poskanzer portable binary pixmap file
-!!        xbm    - X11 bitmap file
-!!        bm     - bitmap format for atobm(1)
+!!        p3/ppm   Poskanzer portable ASCII pixmap file
+!!        p4       Poskanzer portable binary bitmap file
+!!        p6       Poskanzer portable binary pixmap file
+!!        xbm      X11 bitmap file
+!!        bm       bitmap format for atobm(1)
 !!
-!!        METAFILES
-!!        ---------
-!!        PRODUCT INPUT FILES:
-!!        mif      - FrameMaker Interchange Format 3.0 (MIF) files
+!!        PRODUCT INPUT FILES
+!!
+!!        mif        FrameMaker Interchange Format 3.0 (MIF) files
 !!                   (16 colors)
-!!        mif4     - FrameMaker Interchange Format 4.0 (MIF) files
+!!        mif4       FrameMaker Interchange Format 4.0 (MIF) files
 !!                   (user-definable colors, but breaks a MIF rule)
-!!        xfig     - X11 xfig(1) figure utility
+!!        xfig       X11 xfig(1) figure utility
 !!
-!!        METAFILES WITH POST_PROCESSORS/CONVERTERS:
-!!        cgmt     - a clear-text CGM (Computer Graphics Metatfile)
-!!        gnu      - GNU plot(1) metafile
-!!        pdf      - Adobe Public Document Format
-!!        unixplot - Unix plot(1) metafile
+!!        METAFILES WITH POST_PROCESSORS/CONVERTERS
 !!
-!!        BROWSER FILES:
-!!        canvas   - HTML5 CANVAS graphics element file
-!!        svg      - Scalable Vector Graphics
-!!        usemap   - HTML image map
-!!        vml      - Microsoft Vector Markup Language
+!!        cgmt      a clear-text CGM (Computer Graphics Metatfile)
+!!        gnu       GNU plot(1) metafile
+!!        pdf       Adobe Public Document Format
+!!        unixplot  Unix plot(1) metafile
 !!
-!!        FILES:
-!!        vog      - M_draw low level call record (debug)
+!!        BROWSER FILES
 !!
-!!        OTHER:
-!!        ------
-!!        fti   - SGI vector-based icons
-!!        null  - no output
+!!        canvas    HTML5 CANVAS graphics element file
+!!        svg       Scalable Vector Graphics
+!!        usemap    HTML image map
+!!        vml       Microsoft Vector Markup Language
+!!
+!!        FILES
+!!        vog       M_draw low level call record (debug)
+!!
+!!        OTHER
+!!        fti       SGI vector-based icons
+!!        null      no output
 !!
 !!      :- Drivers I've dropped but code is there for
 !!      ---------------------------------------------
 !!
-!!        grwin (minGW GRwin PC interface)
+!!        grwin - (minGW GRwin PC interface)
 !!        decX11 - the decstation window manager
 !!        dxy - roland DXY plotter language
 !!        sun - Sun workstations running sunview
@@ -765,7 +765,7 @@
 !!        sigma - IBM PC sigma graphics card.
 !!        mswin - IBM PC Microsoft Windows.
 !!
-!!     Note 2 :- If device is a NULL or a null string the value
+!!     Note 2 : If device is a NULL or a null string the value
 !!          of the environment variable "M_draw_DEVICE" is taken as the
 !!          device type to be opened. The format of the variable is
 !!
@@ -775,16 +775,13 @@
 !!          in a call to prefsize(3c), and xoffset and yoffset will
 !!          be used in a call to preposition(3c).
 !!
-!!     Note 3 :- after vinit() it is wise to explicitly clear the screen.
+!!     Note 3 : after vinit() it is wise to explicitly clear the screen.
 !!     e.g.:
+!!
 !!          call color(D_BLACK)
 !!          call clear()
 !!
-!!     Note 4 :  Sun, X11, decX11, apollo, hercules, cga and ega support
-!!               double buffering.
-!!
-!!
-!!##NOTES:
+!!##NOTES
 !!
 !! gnu
 !!
@@ -832,7 +829,7 @@
 !!    ..... Other popular pixmap products such as ImageMagick, gv, ... can
 !!    read PPM files, convert them, and often edit them.
 !!
-!!##HTML
+!!##HTML:
 !!
 !!    The vml, canvas, svg, and usemap drivers are primarily used to generate
 !!    graphics for inclusion in HTML documents. Browsers such as Opera, Safari,

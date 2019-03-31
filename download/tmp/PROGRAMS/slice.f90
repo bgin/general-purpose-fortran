@@ -36,8 +36,9 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                  z1 z2 z3 z4 z5 ...                                            ',&
 '                  z1 z2 z3 z4 z5 ...                                            ',&
 '   -a XANGLE     angle (in degrees) of x axis (NX) from horizontal              ',&
+'                 from 0 to 80.                                                  ',&
 '   -b YANGLE     angle (in degrees) of z axis (NZ) from horizontal              ',&
-'                                                                                ',&
+'                 from 5 to 80.                                                  ',&
 '   -d DEVICE     device type. Defaults to "X11". Enter an invalid               ',&
 '                 device name such as "help" to see a list of                    ',&
 '                 available devices.                                             ',&
@@ -88,8 +89,9 @@ end subroutine help_usage
 !!                   z1 z2 z3 z4 z5 ...
 !!                   z1 z2 z3 z4 z5 ...
 !!    -a XANGLE     angle (in degrees) of x axis (NX) from horizontal
+!!                  from 0 to 80.
 !!    -b YANGLE     angle (in degrees) of z axis (NZ) from horizontal
-!!
+!!                  from 5 to 80.
 !!    -d DEVICE     device type. Defaults to "X11". Enter an invalid
 !!                  device name such as "help" to see a list of
 !!                  available devices.
@@ -122,7 +124,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.1, 20190326>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Tue, Mar 26th, 2019 10:59:09 PM>',&
+'@(#)COMPILED:       Wed, Mar 27th, 2019 10:14:16 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -131,7 +133,7 @@ end subroutine help_version
 !-----------------------------------------------------------------------------------------------------------------------------------
 program slice
 use M_io, only      : slurp
-use M_strings, only : s2vs,msg,nospace
+use M_strings, only : s2vs,msg
 use M_draw
 use M_kracken, only : kracken,iget,lget,rget,sget
 implicit none
@@ -179,7 +181,7 @@ integer                      :: w
       call prefsize(ixsize,iysize)
    else
       call prefsize(ixsize,iysize)
-      call voutput(nospace(msg(filename,'_',int(a),'x',int(b),'.',device)))
+      call voutput(msg(filename,'_',int(a),'x',int(b),'.',device,nospace=.true.))
    endif
    call vinit(device)
    call vsetflush(.false.)

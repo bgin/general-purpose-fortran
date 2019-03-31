@@ -2107,11 +2107,6 @@ use M_debug, only : unit_check_level
 doubleprecision, parameter :: f2m=0.3048d0
    call unit_check_start('feet_to_meters',msg=' 0.3048')
 
-      write(*,*)[ -1.0, 0.0, 1.0 ,1.0/12.0]
-      write(*,*)feet_to_meters([ -1.0, 0.0, 1.0 ,1.0/12.0])
-      write(*,*)feet_to_meters([ -1.0, 0.0, 1.0 ,1.0/12.0])- [-f2m, 0.0d0, f2m, 0.0254d0]
-      write(*,*)abs(feet_to_meters([ -1.0, 0.0, 1.0 ,1.0/12.0])- [-f2m, 0.0d0, f2m, 0.0254d0])
-      write(*,*)abs(feet_to_meters([ -1.0, 0.0, 1.0 ,1.0/12.0])- [-f2m, 0.0d0, f2m, 0.0254d0]).lt.0.00001
    call unit_check('feet_to_meters', &
       & all(abs(feet_to_meters([ -1.0, 0.0, 1.0 ,1.0/12.0])- [-f2m, 0.0d0, f2m, 0.0254d0]).lt.0.00001),'real')
    call unit_check('feet_to_meters', &

@@ -3350,22 +3350,21 @@ end function get_timezone
 !===================================================================================================================================
 function sec2days(seconds,crop) result(dhms)
 use M_strings, only: split, compact, s2v, transliterate
+use iso_fortran_env, only : int64
 
 character(len=*),parameter::ident_23="&
 &@(#)M_time::sec2days(3f): converts seconds or string of form IId JJh KKm LLs to string showing days of form D-HH:MM:SS"
 
-!use iso_fortran_env, only : int64
 ! on this platform, (select_int_kind(i),i=1,100) returns
 ! 1:2=1 ,3:4=2 ,5:9=4 ,10:18= 8 ,19:38=16 ,39:=-1
 integer                  :: i
 integer,parameter        :: k(38)=[(selected_int_kind(i),i=1,38)]
-integer,parameter        :: int128=k(38)
 class(*),intent(in)               :: seconds
 logical,intent(in),optional       :: crop
 character(len=:),allocatable      :: dhms
    real(kind=realtime), parameter :: units_hl(4)=[ 86400.0d0, 3600.0d0, 60.0d0, 1.0d0 ]
    character(len=40)              :: scratch
-   integer(kind=int128)           :: days, hours, minutes, secsleft
+   integer(kind=int64)            :: days, hours, minutes, secsleft
    integer,parameter              :: one_day=86400
    integer,parameter              :: one_hour=3600
    integer,parameter              :: one_minute=60

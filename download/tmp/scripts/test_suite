@@ -46,7 +46,6 @@ export UUID=tmp/${SUBNAME}_$(uuidgen)
 case "$SHORTNAME" in
 #-------------------------------------------
 M_*)
-echo "UUID IS $UUID"
 cat >$UUID.f90 <<EOF
 program runtest
 use $SHORTNAME
@@ -169,7 +168,7 @@ while getopts "chl:wt" arg; do
 done
 shift $((OPTIND-1))
 ################################################################################
-if [ -e "$LOG_FILE" ] 
+if [ -e "$LOG_FILE" -a "$LOG_FILE" != '/dev/null' ] 
 then
    echo "$0 ERROR: $LOG_FILE already exists" 1>&2
    exit

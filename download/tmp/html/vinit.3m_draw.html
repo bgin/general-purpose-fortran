@@ -13,6 +13,7 @@ h1 { font-size:150%; page-break-before:auto;background-color: #aaaaff}
 h2 { font-size:143%;color:teal; }
 h3 { font-size:134%;color:blue; }
 h4 { font-size:120%;color:gray; }
+img { max-width: 55em}
 p{ padding: 0;margin:0; }
 p{ padding-right:1.4em; }
 p{ padding-bottom:1em; }
@@ -60,7 +61,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <BLOCKQUOTE>
 <A HREF=#1>Synopsis</A><BR>
 <A HREF=#2>Description</A><BR>
-<A HREF=#3>Html</A><BR>
+<A HREF=#3>Notes</A><BR>
 <A HREF=#4>Example</A><BR>
 </BLOCKQUOTE>
 <A name=5>
@@ -85,124 +86,190 @@ Initialise the <I>device</I>.
 <P>
 <P>
 <BLOCKQUOTE>
-Note 1 :- Currently available devices are:
-<P>
-<PRE>
-       INTERACTIVE DEVICES:
-       --------------------
-       PC   - native MSW PC driver; only tested from CygWin
-       X11  - X11 windows (Black background)
-       x11  - X11 windows (White background)
-       tek  - tektronix 4010 and compatibles
-       xtek - X11 xterm Tektronix 4010 emulator
-<P>
-       PRINTERS and PLOTTERS:
-       ----------------------
-          PostScript:
-             [p]psm or [p]postscript - monochrome PostScript
-             [p]psg - grayscale PostScript
-             [p]psc - color PostScript
-          HPGL:
-             hpgl - HP Graphics language and compatibles
-             [p]hpgl2 - HPGL level 2 (obeys prefsize calls)
-          PCL:
-             [p]pclland  - monochrome PCL5 (obeys prefsize calls)
-             [p]pclport  - monochrome PCL5 (obeys prefsize calls)
-             pcl5land (color PCL5 landscape)
-             pcl5port (color PCL5 portrait)
-<P>
-       PIXMAPS (color) and BITMAPS (monochrome)
-       -----------------------------------------
-       char   - An ASCII file that can be displayed to most
-                xterm(1) terminal emulators that support
-                color
-       p1/pbm - Poskanzer (pbmplus/netplus) portable
-                ASCII bitmap file
-       p3/ppm - Poskanzer portable ASCII pixmap file
-       p4     - Poskanzer portable binary bitmap file
-       p6     - Poskanzer portable binary pixmap file
-       xbm    - X11 bitmap file
-       bm     - bitmap format for atobm(1)
-<P>
-</PRE>
+Note 1 : Currently available devices are:
 </BLOCKQUOTE>
 <A name=>
 
-    <H4>&nbsp; &nbsp; METAFILES</H4>
+    <H4>&nbsp; &nbsp; INTERACTIVE DEVICES</H4>
 </A>
 <BLOCKQUOTE>
----------
-PRODUCT INPUT FILES:
-<TABLE cellpadding=3><!-- tsb: ---------
+<P>
+<TABLE cellpadding=3>
+<TR valign=top><TD width=6% nowrap>
+<B>PC</B> </TD><TD valign=bottom>
+- native MSW PC driver; only tested from CygWin
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B>X11</B> </TD><TD valign=bottom>
+- X11 windows (Black background)
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B>x11</B> </TD><TD valign=bottom>
+- X11 windows (White background)
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B>tek</B> </TD><TD valign=bottom>
+- tektronix 4010 and compatibles
+xtek - X11 xterm Tektronix 4010 emulator
+</TD></TR>
+<TR></TR></TABLE></BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; PRINTERS AND PLOTTERS</H4>
+</A>
+<BLOCKQUOTE>
+<P>
+PostScript:
+[p]psm or [p]postscript - monochrome PostScript
+[p]psg - grayscale PostScript
+[p]psc - color PostScript
+HPGL:
+hpgl - HP Graphics language and compatibles
+[p]hpgl2 - HPGL level 2 (obeys prefsize calls)
+PCL:
+<BLOCKQUOTE>
+<TABLE cellpadding=3><!-- tsb: PostScript:
+ -->
+<TR></TR><TR></TR>
+<TR valign=top><TD colspan=2>
+<B>[p]pclland</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+- monochrome PCL5 (obeys prefsize calls)
+</TD></TR>
+<TR valign=top><TD colspan=2>
+<B>[p]pclport</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+- monochrome PCL5 (obeys prefsize calls)
+pcl5land (color PCL5 landscape)
+pcl5port (color PCL5 portrait)
+</TD></TR>
+<TR></TR></TABLE></BLOCKQUOTE>
+</BLOCKQUOTE>
+<P>
+PIXMAPS (COLOR) AND BITMAPS (MONOCHROME)
+<BLOCKQUOTE>
+<TABLE cellpadding=3><!-- tsb: PIXMAPS (COLOR) AND BITMAPS (MONOCHROME)
  -->
 <TR></TR><TR></TR>
 <TR valign=top><TD width=6% nowrap>
+<B>char</B> </TD><TD valign=bottom>
+An ASCII file that can be displayed to most
+<B>xterm</B>(1) terminal emulators that support
+color
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B>p1/pbm</B> </TD><TD valign=bottom>
+Poskanzer (pbmplus/netplus) portable
+ASCII bitmap file
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B>p3/ppm</B> </TD><TD valign=bottom>
+Poskanzer portable ASCII pixmap file
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B>p4</B> </TD><TD valign=bottom>
+Poskanzer portable binary bitmap file
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B>p6</B> </TD><TD valign=bottom>
+Poskanzer portable binary pixmap file
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B>xbm</B> </TD><TD valign=bottom>
+X11 bitmap file
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B>bm</B> </TD><TD valign=bottom>
+bitmap format for <B>atobm</B>(1)
+</TD></TR>
+<TR></TR></TABLE></BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; PRODUCT INPUT FILES</H4>
+</A>
+<BLOCKQUOTE>
+<P>
+<TABLE cellpadding=3>
+<TR valign=top><TD width=6% nowrap>
 <B>mif</B> </TD><TD valign=bottom>
-- FrameMaker Interchange Format 3.0 (MIF) files
+FrameMaker Interchange Format 3.0 (MIF) files
 (16 colors)
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B>mif4</B> </TD><TD valign=bottom>
-- FrameMaker Interchange Format 4.0 (MIF) files
+FrameMaker Interchange Format 4.0 (MIF) files
 (user-definable colors, but breaks a MIF rule)
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B>xfig</B> </TD><TD valign=bottom>
-- X11 <B>xfig</B>(1) figure utility
+X11 <B>xfig</B>(1) figure utility
 </TD></TR>
 <TR><TD colspan=2>
-METAFILES WITH POST_PROCESSORS/CONVERTERS:
+METAFILES WITH POST_PROCESSORS/CONVERTERS
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B>cgmt</B> </TD><TD valign=bottom>
-- a clear-text CGM (Computer Graphics Metatfile)
+a clear-text CGM (Computer Graphics Metatfile)
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B>gnu</B> </TD><TD valign=bottom>
-- GNU <B>plot</B>(1) metafile
+GNU <B>plot</B>(1) metafile
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B>pdf</B> </TD><TD valign=bottom>
-- Adobe Public Document Format
-unixplot - Unix <B>plot</B>(1) metafile
+Adobe Public Document Format
 </TD></TR>
-<TR><TD colspan=2>
-BROWSER FILES:
+<TR valign=top><TD colspan=2>
+<B>unixplot</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+Unix <B>plot</B>(1) metafile
 </TD></TR>
+<TR></TR></TABLE></BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; BROWSER FILES</H4>
+</A>
+<BLOCKQUOTE>
+<P>
+<TABLE cellpadding=3>
 <TR valign=top><TD width=6% nowrap>
 <B>canvas</B> </TD><TD valign=bottom>
-- HTML5 CANVAS graphics element file
+HTML5 CANVAS graphics element file
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B>svg</B> </TD><TD valign=bottom>
-- Scalable Vector Graphics
+Scalable Vector Graphics
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B>usemap</B> </TD><TD valign=bottom>
-- HTML image map
+HTML image map
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B>vml</B> </TD><TD valign=bottom>
-- Microsoft Vector Markup Language
+Microsoft Vector Markup Language
 </TD></TR>
-<TR><TD colspan=2>
-FILES:
-</TD></TR>
+<TR></TR></TABLE></BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; FILES</H4>
+</A>
+<BLOCKQUOTE>
+<TABLE cellpadding=3>
 <TR valign=top><TD width=6% nowrap>
 <B>vog</B> </TD><TD valign=bottom>
-- M_draw low level call record (debug)
+M_draw low level call record (debug)
 </TD></TR>
-<TR><TD colspan=2>
-OTHER:
-------
-</TD></TR>
+<TR></TR></TABLE></BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; OTHER</H4>
+</A>
+<BLOCKQUOTE>
+<TABLE cellpadding=3>
 <TR valign=top><TD width=6% nowrap>
 <B>fti</B> </TD><TD valign=bottom>
-- SGI vector-based icons
+SGI vector-based icons
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B>null</B> </TD><TD valign=bottom>
-- no output
+no output
 </TD></TR>
 <TR></TR></TABLE></BLOCKQUOTE>
 <P>
@@ -210,7 +277,7 @@ OTHER:
 ---------------------------------------------
 <P>
 <PRE>
-       grwin (minGW GRwin PC interface)
+       grwin - (minGW GRwin PC interface)
        decX11 - the decstation window manager
        dxy - roland DXY plotter language
        sun - Sun workstations running sunview
@@ -232,7 +299,7 @@ OTHER:
 <P>
 </PRE>
 </BLOCKQUOTE>
-Note 2 :- If <I>device</I> is a NULL or a null string the value
+Note 2 : If <I>device</I> is a NULL or a null string the value
 of the environment variable "M_draw_DEVICE" is taken as the
 <I>device</I> type to be opened. The format of the variable is
 <P>
@@ -246,24 +313,20 @@ That is, if present xsize and ysize will be used
 be used <I>in</I> a call to <B>preposition</B>(3c).
 </BLOCKQUOTE>
 <P>
-Note 3 :- after <B>vinit</B>() it is wise to explicitly clear the screen.
+Note 3 : after <B>vinit</B>() it is wise to explicitly clear the screen.
 e.g.:
-call <B>color</B>(D_BLACK)
-call <B>clear</B>()
-<BLOCKQUOTE>
-<TABLE cellpadding=3><!-- tsb: Note 3 :- after <B>vinit</B>() it is wise to explicitly clear the screen.
- -->
-<TR></TR><TR></TR>
-<TR valign=top><TD colspan=2>
-<B>Note 4 :</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
-Sun, X11, decX11, apollo, hercules, cga and ega support
-double buffering.
-</TD></TR>
-<TR></TR></TABLE></BLOCKQUOTE>
 <P>
+<PRE>
+         call color(D_BLACK)
+         call clear()
 <P>
+</PRE>
+<A name=3>
+
+     <H3>NOTES</H3>
+
+</A>
 <BLOCKQUOTE>
-NOTES:
 <P>
 gnu
 <P>
@@ -319,20 +382,15 @@ cgmt
    read PPM files, convert them, and often edit them.
 <P>
 </PRE>
-</BLOCKQUOTE>
-<A name=3>
-
-     <H3>HTML</H3>
-
-</A>
-<BLOCKQUOTE>
+HTML:
 <P>
-The vml, canvas, svg, and usemap drivers are primarily used to generate
-graphics for inclusion <I>in</I> HTML documents. Browsers such as Opera, Safari,
-Foxfire, and Chrome can easily incorporate graphics generated using the
-SVG (Scalable Vector Graphics) format or the HTML5 CANVAS element.
-</BLOCKQUOTE>
+<PRE>
+   The vml, canvas, svg, and usemap drivers are primarily used to generate
+   graphics for inclusion in HTML documents. Browsers such as Opera, Safari,
+   Foxfire, and Chrome can easily incorporate graphics generated using the
+   SVG (Scalable Vector Graphics) format or the HTML5 CANVAS element.
 <P>
+</PRE>
 usemap
 <P>
 <PRE>
@@ -346,7 +404,6 @@ usemap
    should help.
 <P>
 </PRE>
-<BLOCKQUOTE>
 vml
 <P>
 <PRE>
@@ -459,7 +516,7 @@ Sample program:
 </PRE>
 </BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>vinit (3)</TD> <TD align=right width=33%><I>March 26, 2019</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 05a90d7f-8bed-425b-b7cd-1f51f05af945 using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>vinit (3)</TD> <TD align=right width=33%><I>March 31, 2019</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 5aba2872-3977-45f1-b4d9-cb850c0de3ae using man macros.</FONT>
 <br><br><center><img src="images/vinit.3m_draw.gif"></center>
 </div>
 </div>

@@ -110,10 +110,10 @@ module M_sha3
   integer, parameter :: W    = 64
   integer, parameter :: ELL  = 6
 
-  integer(LANE), dimension(5,5) :: sbuf
+  integer(kind=int64), dimension(5,5) :: sbuf
 
   ! pre-computed values of the RC parameter in function iota
-  integer(LANE),parameter,dimension(24) :: RC_C = [ &
+  integer(kind=int64),parameter,dimension(24) :: RC_C = [ &
    transfer(z'8000000000000000'*1_int64,0_int64), &
    transfer(z'4101000000000000'*1_int64,0_int64), &
    transfer(z'5101000000000001'*1_int64,0_int64), &
@@ -143,7 +143,7 @@ module M_sha3
      integer :: d ! size of digest in bits
      integer :: c ! capacity in bits
      integer :: r ! rate, in bits
-     integer(LANE), dimension(5,5) :: S ! state
+     integer(kind=int64), dimension(5,5) :: S ! state
      integer(1), dimension(:), pointer :: buffer
      integer                           :: bufsize = -1 ! the number of bytes actually usable in buffer
   end type sha3_state
@@ -268,7 +268,7 @@ subroutine sha3_update( state, buffer, d )
      endif
      state%r = 25*W - state%c
      ! initialize state
-     state%S = 0_LANE
+     state%S = 0_int64
      allocate( state%buffer(state%r / 4 ) )
      state%bufsize = 0 ! buffer allocated, but empty
      r8 = state%r / 8
@@ -334,7 +334,7 @@ subroutine sha3_block( S, buffer, r8 )
 ! given a state matrix S, a full buffer of bytes (i.e., r8 bytes), this routine
 ! absorbs the content of buffer into the sponge.
 
-  integer(LANE), dimension(5,5), intent(inout) :: S
+  integer(kind=int64), dimension(5,5), intent(inout) :: S
   integer(1),    dimension(:),   intent(in)    :: buffer
   integer,                       intent(in)    :: r8
 
@@ -581,7 +581,7 @@ function sha3_keccak_p( S, b, nr )
   integer,                  intent(in) :: nr ! number of rounds
   integer(1), dimension(b/8) :: sha3_keccak_p
 
-  integer(LANE), dimension(5,5) :: state
+  integer(kind=int64), dimension(5,5) :: state
   integer :: ir
 
   ! convert S to state
@@ -601,7 +601,7 @@ end function sha3_keccak_p
 !===================================================================================================================================
 subroutine sha3_round( state, round_index )
 
-  integer(LANE), dimension(5,5), intent(inout) :: state
+  integer(kind=int64), dimension(5,5), intent(inout) :: state
   integer,                       intent(in)    :: round_index
 
   ! the five steps of a round are made of the theta, rho, pi, khi and iota steps
@@ -619,9 +619,9 @@ end subroutine sha3_round
 !===================================================================================================================================
 subroutine sha3_theta( A )
 
-  integer(LANE), dimension(5,5), intent(inout)  :: A
+  integer(kind=int64), dimension(5,5), intent(inout)  :: A
 
-  integer(LANE), dimension(5) :: C, D
+  integer(kind=int64), dimension(5) :: C, D
   integer :: x, y
 
   do x = 1, 5
@@ -646,7 +646,7 @@ end subroutine sha3_theta
 !===================================================================================================================================
 subroutine sha3_rho( A )
 
-  integer(LANE), dimension(5,5), intent(inout)  :: A
+  integer(kind=int64), dimension(5,5), intent(inout)  :: A
 
   integer :: x, y, z, t
 
@@ -665,9 +665,9 @@ end subroutine sha3_rho
 !===================================================================================================================================
 subroutine sha3_pi( A )
 
-  integer(LANE), dimension(5,5), intent(inout)  :: A
+  integer(kind=int64), dimension(5,5), intent(inout)  :: A
 
-  integer(LANE) :: t
+  integer(kind=int64) :: t
 
   t = A(4,4)
   A(4,4) = A(3,4)
@@ -701,7 +701,7 @@ end subroutine sha3_pi
 !===================================================================================================================================
 subroutine sha3_khi( A )
 
-  integer(LANE), dimension(5,5), intent(inout)  :: A
+  integer(kind=int64), dimension(5,5), intent(inout)  :: A
 
   integer :: x, y, x1, x2
 
@@ -750,7 +750,7 @@ function sha3_string2state( S )
 ! in the order  A(1,1)  A(2,1)  A(3,1)  A(4,1)  A(5,1)   A(1,2) ... A(5,5)
 
   integer(1), dimension(:), intent(in) :: S  ! input "string" as a list of bytes
-  integer(LANE), dimension(5,5) :: sha3_string2state
+  integer(kind=int64), dimension(5,5) :: sha3_string2state
 
   integer(1), dimension(8) :: reve
   integer :: x, y, z, i
@@ -775,7 +775,7 @@ function sha3_state2string2( S, sz )
 ! convert a state S to a string (array) of sz bytes
 
   integer,                       intent(in) :: sz
-  integer(LANE), dimension(5,5), intent(in) :: S
+  integer(kind=int64), dimension(5,5), intent(in) :: S
   integer(1), dimension(sz) :: sha3_state2string2  ! input "string" as a list of bytes
 
   integer(1), dimension(8) :: bytes

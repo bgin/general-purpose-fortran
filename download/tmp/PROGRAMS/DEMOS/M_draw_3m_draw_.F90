@@ -102,38 +102,38 @@
              ipaws=getkey()
              call vexit()
 
-              contains
+             contains
 
-                    subroutine target(xc,yc,rc)
-                    use M_units,    only : cosd, sind
-                    real     :: xc,yc,rc
-                    integer  :: i
-                    real     :: x,y
-                       do i=0,360,10
-                          x=rc*cosd(i)
-                          y=rc*sind(i)
-                          call line(xc,yc,xc+x,yc+y)
-                       enddo
-                       do i=1,int(rc),10
-                          call circle(xc,yc,real(i))
-                       enddo
-                    end subroutine target
+             subroutine target(xc,yc,rc)
+             use M_units,    only : cosd, sind
+             real     :: xc,yc,rc
+             integer  :: i
+             real     :: x,y
+                do i=0,360,10
+                   x=rc*cosd(i)
+                   y=rc*sind(i)
+                   call line(xc,yc,xc+x,yc+y)
+                enddo
+                do i=1,int(rc),10
+                   call circle(xc,yc,real(i))
+                enddo
+             end subroutine target
 
-                    subroutine line(x1,y1,x2,y2)
-                    real,intent(in) :: x1,y1,x2,y2
-                    call move2(x1,y1)
-                    call draw2(x2,y2)
-                    end subroutine line
+             subroutine line(x1,y1,x2,y2)
+             real,intent(in) :: x1,y1,x2,y2
+             call move2(x1,y1)
+             call draw2(x2,y2)
+             end subroutine line
 
-                    subroutine hershey(x,y,height,itext,theta)
-                    real,intent(in)               :: x,y
-                    real,intent(in)               :: height
-                    character(len=*),intent(in)   :: itext
-                    real,intent(in)               :: theta
-                    call move2(x,y)
-                    call textang(theta)
-                    call textsize(height,height)
-                    call drawstr(itext)
-                    end subroutine hershey
+             subroutine hershey(x,y,height,itext,theta)
+             real,intent(in)               :: x,y
+             real,intent(in)               :: height
+             character(len=*),intent(in)   :: itext
+             real,intent(in)               :: theta
+             call move2(x,y)
+             call textang(theta)
+             call textsize(height,height)
+             call drawstr(itext)
+             end subroutine hershey
 
               end program demo_M_draw

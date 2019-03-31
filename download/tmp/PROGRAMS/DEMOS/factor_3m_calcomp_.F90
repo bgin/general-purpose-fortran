@@ -13,9 +13,9 @@
           call plot(0.0,0.0,end)
           contains
           subroutine draw_car_prices()
-             character * 21 ichr6
-             character * 19 ichr7
-             character * 17 ichr8
+             character(len=21) :: ichr6
+             character(len=19) :: ichr7
+             character(len=17) :: ichr8
              ichr6='CAR MODEL AGE (YEARS)'
              ichr7='CAR VALUE (DOLLARS)'
              ichr8='AVERAGE CAR VALUE'
