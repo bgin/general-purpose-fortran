@@ -19,6 +19,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                   Defaults to current directory.                               ',&
 '       -a          show hidden files (files beginning with ".").                ',&
 '       -l          long listing                                                 ',&
+'       -fmt        alternate format for date and time. Calls fmtdate(3f).       ',&
 '       -csv        generate output as a CSV file. Filenames should not have     ',&
 '                   ,"'' characters in them. Very useful for use with sqlite3(1) ',&
 '                   and making a file that can be read into most spreadsheets,   ',&
@@ -29,6 +30,12 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                                                                                ',&
 '        _ls                                                                     ',&
 '        _ls . /tmp -l                                                           ',&
+'                                                                                ',&
+'        # add Unix Epoch date                                                   ',&
+'        _ls -l -fmt year-month-day hour:minute:second epoch                     ',&
+'                                                                                ',&
+'        # use the phase of the moon for the date                                ',&
+'        # _ls -l -fmt %p %P                                                     ',&
 '                                                                                ',&
 'EXTENDED SQLITE EXAMPLE                                                         ',&
 '                                                                                ',&
@@ -89,6 +96,7 @@ end subroutine help_usage
 !!                    Defaults to current directory.
 !!        -a          show hidden files (files beginning with ".").
 !!        -l          long listing
+!!        -fmt        alternate format for date and time. Calls fmtdate(3f).
 !!        -csv        generate output as a CSV file. Filenames should not have
 !!                    ,"' characters in them. Very useful for use with sqlite3(1)
 !!                    and making a file that can be read into most spreadsheets,
@@ -100,6 +108,12 @@ end subroutine help_usage
 !!
 !!         _ls
 !!         _ls . /tmp -l
+!!
+!!         # add Unix Epoch date
+!!         _ls -l -fmt year-month-day hour:minute:second epoch
+!!
+!!         # use the phase of the moon for the date
+!!         # _ls -l -fmt %p %P
 !!
 !!##EXTENDED SQLITE EXAMPLE
 !!
@@ -157,7 +171,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    list files in a directory>',&
 '@(#)VERSION:        1.0, 2016-11-20>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Mon, Mar 25th, 2019 12:03:43 AM>',&
+'@(#)COMPILED:       Tue, Apr 9th, 2019 8:45:04 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -166,7 +180,7 @@ end subroutine help_version
 !-----------------------------------------------------------------------------------------------------------------------------------
 !----------------------------------------------------------------------------------------------------------------------------------
 program demo_system_readdir
-use M_kracken, only  : kracken, rget, lget, sgets
+use M_kracken, only  : kracken, rget, lget, sgets, sget
 use M_system, only : system_opendir,system_readdir, system_closedir, system_stat, system_isdir
 use iso_c_binding, only : c_ptr
 implicit none
@@ -179,15 +193,17 @@ logical                      :: ls_l
 logical                      :: ls_csv
 integer                      :: i
 integer                      :: ierr
-character(len=*),parameter   :: dfmt='year-month-dayThour:minute:second'
+character(len=*),parameter   :: default_dfmt='year-month-dayThour:minute:second'
+character(len=:),allocatable :: dfmt
 !----------------------------------------------------------------------------------------------------------------------------------
-   call kracken('ls','. -help F -version F -a .F. -l .F. -csv .F.')
+   call kracken('ls','. -help F -version F -a .F. -fmt -l .F. -csv .F.')
    call help_usage(lget('ls_help'))
    call help_version(lget('ls_version'))
    ls_l=lget('ls_l')
    ls_csv=lget('ls_csv')
    listall=lget('ls_a')
-
+   dfmt=sget('ls_fmt')
+   if(dfmt.eq.'')dfmt=default_dfmt
    directories=sgets('ls_oo')
    if(size(directories).eq.0)then
       directories=['.']

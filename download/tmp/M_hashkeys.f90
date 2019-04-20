@@ -10,7 +10,6 @@ use M_debug,                      only : debug
 implicit none
 integer,parameter :: int128 = selected_real_kind(2*precision(1.0_int64))
 private
-
 ! key hash
 public b3hs_hash_key_jenkins
 
@@ -43,13 +42,15 @@ end interface sdbm_hash
 
 ! WARNING: because there is currently no unsigned INTEGER in standard Fortran, use 128-bit INTEGER, which is not always available
 ! WARNING: not tested, but almost certainly get different results with different Endians
-
+!-----------------------------------------------------------------------------------------------------------------------------------
+public luhn_checksum
 !-----------------------------------------------------------------------------------------------------------------------------------
 ! Defines the public interface for sha256
 public sha256
 public dirty_sha256
 ! Public for the sake of unit-testing.
 public test_suite_sha256
+public test_suite_M_hashkeys
 private sha256b
 private ms0
 private ms1
@@ -1156,6 +1157,252 @@ contains
 
 end subroutine test_suite_sha256
 !===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!    luhn_checksum(3f) - [M_hashkeys] Luhn checksum algorithm applied to a string of numeric values
+!!
+!!##DESCRIPTION
+!!
+!!    The Luhn algorithm or Luhn formula, also known as the "modulus 10" or
+!!    "mod 10" algorithm, named after IBM scientist Hans Peter Luhn, is a simple
+!!    checksum formula used to validate a variety of identification numbers
+!!    such as credit card numbers, IMEI numbers, National Provider Identifier
+!!    numbers in the United States, Canadian Social Insurance Numbers, Israel
+!!    ID Numbers, Greek Social Security Numbers, and survey codes appearing on
+!!    McDonald's, Taco Bell, and Tractor Supply Co. receipts. It was created by
+!!    IBM scientist Hans Peter Luhn and described in U.S. Patent No. 2,950,048,
+!!    filed on January 6, 1954, and granted on August 23, 1960.
+!!
+!!    The algorithm is in the public domain and is in wide use today. It
+!!    is specified in ISO/IEC 7812-1.[1] It is not intended to be a
+!!    cryptographically secure hash function; it was designed to protect against
+!!    accidental errors, not malicious attacks. Most credit cards and many
+!!    government identification numbers use the algorithm as a simple method of
+!!    distinguishing valid numbers from mistyped or otherwise incorrect numbers.
+!!
+!!    The formula verifies a number against its included check digit, which
+!!    is usually appended to a partial account number to generate the full
+!!    account number. This number must pass the following test:
+!!
+!!    1. From the rightmost digit, which is the check digit, and moving left,
+!!       double the value of every second digit. The check digit is not doubled;
+!!       the first digit doubled is immediately to the left of the check digit. If
+!!       the result of this doubling operation is greater than 9 (e.g., 8 × 2 =
+!!       16), then add the digits of the result (e.g., 16: 1 + 6 = 7, 18: 1 + 8 =
+!!       9) or, alternatively, the same final result can be found by subtracting
+!!       9 from that result (e.g., 16: 16 − 9 = 7, 18: 18 − 9 = 9).
+!!
+!!    2. Take the sum of all the digits.
+!!
+!!    3. If the total modulo 10 is equal to 0 (if the total ends in zero) then
+!!       the number is valid according to the Luhn formula; else it is not valid.
+!!
+!!    Assume an example of an account number "7992739871" that will have a
+!!    check digit added, making it of the form 7992739871x:
+!!
+!!    Account number
+!!
+!!        7  9  9  2  7  3  9  8  7  1  x
+!!
+!!    Double every other
+!!
+!!        7  18  9  4  7  6  9  16  7  2  x
+!!
+!!    Sum digits
+!!
+!!        7  9  9  4  7  6  9  7  7  2  x
+!!
+!!    The sum of all the digits in the third row is 67+x.
+!!
+!!    The check digit (x) is obtained by computing the sum of the non-check
+!!    digits then computing 9 times that value modulo 10 (in equation form,
+!!    ((67 × 9) mod 10)). In algorithm form:
+!!
+!!     1. Compute the sum of the non-check digits (67).
+!!     2. Multiply by 9 (603).
+!!     3. The units digit (3) is the check digit. Thus, x=3.
+!!
+!!    (Alternative method) The check digit (x) is obtained by computing the sum
+!!    of the other digits (third row) then subtracting the units digit from 10
+!!    (67 => Units digit 7; 10 − 7 = check digit 3). In algorithm form:
+!!
+!!     1. Compute the sum of the non-check digits (67).
+!!     2. Take the units digit (7).
+!!     3. Subtract the units digit from 10.
+!!     4. The result (3) is the check digit. In case the sum of digits ends in
+!!        0 then 0 is the check digit.
+!!
+!!    This makes the full account number read 79927398713.
+!!
+!!    Each of the numbers 79927398710, 79927398711, 79927398712, 79927398713,
+!!    79927398714, 79927398715, 79927398716, 79927398717, 79927398718,
+!!    79927398719 can be validated as follows.
+!!
+!!     1. Double every second digit, from the rightmost: (1×2) = 2, (8×2) = 16,
+!!        (3×2) = 6, (2×2) = 4, (9×2) = 18
+!!     2. Sum all the individual digits (digits in parentheses are the products
+!!        from Step 1): x (the check digit) + (2) + 7 + (1+6) + 9 + (6) + 7 +
+!!        (4) + 9 + (1+8) + 7 = x + 67.
+!!     3. If the sum is a multiple of 10, the account number is possibly
+!!        valid. Note that 3 is the only valid digit that produces a sum (70)
+!!        that is a multiple of 10.
+!!     4. Thus these account numbers are all invalid except possibly 79927398713
+!!        which has the correct check digit.
+!!
+!!    Alternately, you can use the same checksum creation algorithm, ignoring
+!!    the checksum already in place as if it had not yet been calculated. Then
+!!    calculate the checksum and compare this calculated checksum to the
+!!    original checksum included with the credit card number. If the included
+!!    checksum matches the calculated checksum, then the number is valid.
+!!
+!!##STRENGTHS AND WEAKNESSES
+!!
+!!    The Luhn algorithm will detect any single-digit error, as well as almost
+!!    all transpositions of adjacent digits. It will not, however, detect
+!!    transposition of the two-digit sequence 09 to 90 (or vice versa). It will
+!!    detect 7 of the 10 possible twin errors (it will not detect 22 ↔ 55,
+!!    33 ↔ 66 or 44 ↔ 77).
+!!
+!!    Other, more complex check-digit algorithms (such as the Verhoeff algorithm
+!!    and the Damm algorithm) can detect more transcription errors. The Luhn
+!!    mod N algorithm is an extension that supports non-numerical strings.
+!!
+!!    Because the algorithm operates on the digits in a right-to-left manner
+!!    and zero digits affect the result only if they cause shift in position,
+!!    zero-padding the beginning of a string of numbers does not affect the
+!!    calculation. Therefore, systems that pad to a specific number of digits
+!!    (by converting 1234 to 0001234 for instance) can perform Luhn validation
+!!    before or after the padding and achieve the same result.
+!!
+!!    Prepending a 0 to odd-length numbers makes it possible to process
+!!    the number from left to right rather than right to left, doubling the
+!!    odd-place digits.
+!!
+!!    The algorithm appeared in a US Patent[2] for a hand-held, mechanical
+!!    device for computing the checksum. It was therefore required to be
+!!    rather simple. The device took the mod 10 sum by mechanical means. The
+!!    substitution digits, that is, the results of the double and reduce
+!!    procedure, were not produced mechanically. Rather, the digits were marked
+!!    in their permuted order on the body of the machine.
+!!##OPTIONS
+!!
+!!      S                 the string of digits to be checked. Spaces and dashes
+!!                        are ignored.
+!!
+!!##RESULT
+!!
+!!      LUHN_CHECKSUM     the Luhn checksum of the string; which is the digits in the
+!!                        input string with the checksum digit appended.
+!!
+!!##REFERENCES
+!!    From Wikipedia, the free encyclopedia
+!!
+!!        (https://en.wikipedia.org/wiki/Luhn_algorithm)
+!!##EXAMPLES
+!!
+!!  Sample program
+!!
+!!    program demo_luhn_checksum
+!!    use M_hashkeys, only : luhn_checksum
+!!    implicit none
+!!    character(len=:),allocatable :: ccards(:), string
+!!    integer :: i, j
+!!    write(*,*)'GOOD VALUES'
+!!    ccards=[ character(len=20) :: '79927398713', '49927398716', '1234567812345670' ]
+!!    call checkem()
+!!    write(*,*)'BAD VALUES'
+!!    ccards=[ character(len=20) :: &
+!!       '79927398710','79927398711','79927398712','79927398714', &
+!!       '79927398715','79927398716','79927398717','79927398718','79927398719', &
+!!       '49927398717', '1234567812345678' ]
+!!    call checkem()
+!!    contains
+!!    subroutine checkem
+!!       ! validate these numbers
+!!       do i=1,size(ccards)
+!!          j=len(trim(ccards(i)))
+!!          string=luhn_checksum(ccards(i)(:j-1))
+!!          write(*,'(a,1x,a,1x,l0)')ccards(i),string,ccards(i).eq.string
+!!       enddo
+!!
+!!       string='123456 781-234-567'
+!!       write(*,*)'from ',string,' got ',luhn_checksum(string),' which should be 1234567812345670'
+!!    end subroutine checkem
+!!    end program demo_luhn_checksum
+!===================================================================================================================================
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+function luhn_checksum(string)
+use M_strings, only : transliterate
+
+character(len=*),parameter::ident_3="@(#)LUHN_CHECKSUM determines the Luhn checksum of a string composed of digits"
+
+character(len=*),intent(in)  :: string
+character(len=:),allocatable :: luhn_checksum, string_local
+integer,allocatable          :: dgts(:)
+integer                      :: n
+integer                      :: i
+integer                      :: value
+integer                      :: d2
+integer                      :: ios
+  string_local=transliterate(string,' -','')     ! delete spaces and dashes
+  n = len(trim(string_local))                    ! Count the digits in string_local assuming the string_local is all digits.
+  allocate(dgts(n))
+  read(string_local,'(*(i1))',iostat=ios)(dgts(i),i=1,n) ! Extract the digits from S.
+  if(ios.ne.0)then
+     stop '*luhn_checksum* error reading digits'
+  endif
+  value=0
+  do i=n,1,-2            ! starting from the right double every other value and subtract 9 if the value is .gt. 9 and sum them
+    d2=dgts(i)*2
+    value = value + merge(d2-9,d2,d2.gt.9)
+  enddo
+  do i=n-1,1,-2          ! add in the other values
+    value = value + dgts(i)
+  enddo
+  value = mod(value*9,10)
+  allocate(character(len=n+1):: luhn_checksum)
+  write(luhn_checksum,'(a,i1)')string_local(:n),value
+end function luhn_checksum
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_luhn_checksum()
+use M_strings, only : transliterate
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   character(len=:),allocatable :: ccards(:), string
+   call unit_check_start('luhn_checksum',msg='')
+   ! good values
+   ccards=[ character(len=20) :: '79927398713', '49927398716', '123456-781234567-0', '4578 4230 1376 9219' ]
+   call checkem(.true.)
+   ! bad values
+   ccards=[ character(len=20) :: &
+      '79927398710','79927398711','79927398712','79927398714', &
+      '79927398715','79927398716','79927398717','79927398718','79927398719', &
+      '49927398717', '1234567812345678' ]
+   call checkem(.false.)
+   call unit_check_done('luhn_checksum',msg='')
+   contains
+   subroutine checkem(goodbad)
+   logical,intent(in) :: goodbad
+   integer :: i, j
+      ! validate these numbers
+      do i=1,size(ccards)
+         j=len(trim(ccards(i)))
+         string=luhn_checksum(ccards(i)(:j-1))
+         call unit_check('luhn_checksum', &
+           (transliterate(ccards(i),' -','').eq.string).eqv.goodbad, &
+           msg=msg('input',ccards(i)(:j-1),'output',string))
+      enddo
+   end subroutine checkem
+end subroutine test_luhn_checksum
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
@@ -1241,7 +1488,7 @@ end subroutine test_suite_sha256
 function djb2_hash_arr(anything,continue) result(hash_128)
 implicit none
 
-character(len=*),parameter::ident_3="@(#)djb2_hash(3fp): DJB2 hash of array (algorithm by Daniel J. Bernstein )"
+character(len=*),parameter::ident_4="@(#)djb2_hash(3fp): DJB2 hash of array (algorithm by Daniel J. Bernstein )"
 
 class(*),intent(in)          :: anything(:)
 logical,intent(in),optional  :: continue
@@ -1277,7 +1524,7 @@ end function djb2_hash_arr
 function djb2_hash_scalar(anything,continue) result(hash_128)
 implicit none
 
-character(len=*),parameter::ident_4="@(#)djb2_hash(3fp): djb2 hash of scalar"
+character(len=*),parameter::ident_5="@(#)djb2_hash(3fp): djb2 hash of scalar"
 
 class(*),intent(in)          :: anything
 logical,intent(in),optional  :: continue
@@ -1381,7 +1628,7 @@ function crc32_hash_arr(anything,continue) result (crc_64)
 use,intrinsic :: ISO_FORTRAN_ENV, only : int8,int16,int32,int64,real32,real64,real128
 implicit none
 
-character(len=*),parameter::ident_5="@(#)M_hashkeys::crc32_hash_arr: CRC (Cyclic Redundancy Check) calculation"
+character(len=*),parameter::ident_6="@(#)M_hashkeys::crc32_hash_arr: CRC (Cyclic Redundancy Check) calculation"
 
 class(*),intent(in)          :: anything(:)
 logical,intent(in),optional  :: continue
@@ -1440,7 +1687,7 @@ end function crc32_hash_arr
 function crc32_hash_scalar(anything,continue) result(hash_64)
 implicit none
 
-character(len=*),parameter::ident_6="@(#)crc32_hash_scalar(3fp): crc32 hash of scalar"
+character(len=*),parameter::ident_7="@(#)crc32_hash_scalar(3fp): crc32 hash of scalar"
 
 class(*),intent(in)          :: anything
 logical,intent(in),optional  :: continue
@@ -1557,7 +1804,7 @@ function sdbm_hash_arr(anything,continue) result(hash_128)
 use,intrinsic :: ISO_FORTRAN_ENV, only : int8,int16,int32,int64,real32,real64,real128
 implicit none
 
-character(len=*),parameter::ident_7="@(#)sdbm_hash_arr(3fp): sdbm hash of array"
+character(len=*),parameter::ident_8="@(#)sdbm_hash_arr(3fp): sdbm hash of array"
 
 class(*),intent(in)          :: anything(:)
 logical,intent(in),optional  :: continue
@@ -1593,7 +1840,7 @@ end function sdbm_hash_arr
 function sdbm_hash_scalar(anything,continue) result(hash_128)
 implicit none
 
-character(len=*),parameter::ident_8="@(#)sdbm_hash_scalar(3fp): sdbm hash of scalar"
+character(len=*),parameter::ident_9="@(#)sdbm_hash_scalar(3fp): sdbm hash of scalar"
 
 class(*),intent(in)          :: anything
 logical,intent(in),optional  :: continue
@@ -1626,7 +1873,7 @@ end function sdbm_hash_scalar
 function djb2(anything)
 implicit none
 
-character(len=*),parameter::ident_9="@(#)djb2(3f): call C routine djb2(3c) with a Fortran CHARACTER variable"
+character(len=*),parameter::ident_10="@(#)djb2(3f): call C routine djb2(3c) with a Fortran CHARACTER variable"
 
 ! extern int djb2(char *s);
 interface
@@ -1813,6 +2060,12 @@ contains
    end subroutine b3hs_hash_key_jenkins_mix_
 
 end function b3hs_hash_key_jenkins
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+subroutine test_suite_M_hashkeys
+call test_luhn_checksum()
+end subroutine test_suite_M_hashkeys
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================

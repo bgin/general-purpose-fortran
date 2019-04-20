@@ -11,6 +11,7 @@ OPTIONS
                    Defaults to current directory.
        -a          show hidden files (files beginning with ".").
        -l          long listing
+       -fmt        alternate format for date and time. Calls fmtdate(3f).
        -csv        generate output as a CSV file. Filenames should not have
                    ,"' characters in them. Very useful for use with sqlite3(1)
                    and making a file that can be read into most spreadsheets,
@@ -21,6 +22,12 @@ EXAMPLES
 
         _ls
         _ls . /tmp -l
+
+        # add Unix Epoch date 
+        _ls -l -fmt year-month-day hour:minute:second epoch
+
+	# use the phase of the moon for the date
+	# _ls -l -fmt %p %P
 
 EXTENDED SQLITE EXAMPLE
 
@@ -75,7 +82,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $IFDEF TESTPRG90
 !----------------------------------------------------------------------------------------------------------------------------------
 program demo_system_readdir
-use M_kracken, only  : kracken, rget, lget, sgets
+use M_kracken, only  : kracken, rget, lget, sgets, sget
 use M_system, only : system_opendir,system_readdir, system_closedir, system_stat, system_isdir
 use iso_c_binding, only : c_ptr
 implicit none
@@ -88,15 +95,17 @@ logical                      :: ls_l
 logical                      :: ls_csv
 integer                      :: i
 integer                      :: ierr
-character(len=*),parameter   :: dfmt='year-month-dayThour:minute:second'
+character(len=*),parameter   :: default_dfmt='year-month-dayThour:minute:second'
+character(len=:),allocatable :: dfmt
 !----------------------------------------------------------------------------------------------------------------------------------
-   call kracken('ls','. -help F -version F -a .F. -l .F. -csv .F.')
+   call kracken('ls','. -help F -version F -a .F. -fmt -l .F. -csv .F.')
    call help_usage(lget('ls_help'))
    call help_version(lget('ls_version'))
    ls_l=lget('ls_l')
    ls_csv=lget('ls_csv')
    listall=lget('ls_a')
-
+   dfmt=sget('ls_fmt')
+   if(dfmt.eq.'')dfmt=default_dfmt
    directories=sgets('ls_oo')
    if(size(directories).eq.0)then
       directories=['.']

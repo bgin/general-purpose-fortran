@@ -4,13 +4,14 @@
 !!
 !!##SYNOPSIS
 !!
-!!    use M_html, only : h_hopen, h_close
+!!    use M_html, only : h_open, h_close
 !!    use M_html, only : h_array
 !!
 !!##DESCRIPTION
-!!     o m_array(lun,array)   Open HTML file and create simple header
-!!     o m_open(lun)          Write array as table
-!!     o m_close(lun)         Close HTML file
+!!
+!!     o h_open(lun)          open HTML file and create simple header
+!!     o h_close(lun)         close HTML file
+!!     o h_array(lun,array)   print a numeric array as an HTML table
 !===================================================================================================================================
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!

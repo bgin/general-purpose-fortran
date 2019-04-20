@@ -12,7 +12,7 @@ OPTIONS
      The following options are supported:
 
      file1,file2  names of files to compare
-     -quiet       surpress normal output
+     -quiet       suppress normal output
      -show        show all bytes that are different until an end of
                   file is encountered on both files
      -help        Print description of this program.

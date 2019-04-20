@@ -19,7 +19,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '     The following options are supported:                                       ',&
 '                                                                                ',&
 '     file1,file2  names of files to compare                                     ',&
-'     -quiet       surpress normal output                                        ',&
+'     -quiet       suppress normal output                                        ',&
 '     -show        show all bytes that are different until an end of             ',&
 '                  file is encountered on both files                             ',&
 '     -help        Print description of this program.                            ',&
@@ -91,7 +91,7 @@ end subroutine help_usage
 !!      The following options are supported:
 !!
 !!      file1,file2  names of files to compare
-!!      -quiet       surpress normal output
+!!      -quiet       suppress normal output
 !!      -show        show all bytes that are different until an end of
 !!                   file is encountered on both files
 !!      -help        Print description of this program.
@@ -161,7 +161,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    compare two files byte by byte>',&
 '@(#)VERSION:        1.0-20171126>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Mon, Mar 25th, 2019 12:01:43 AM>',&
+'@(#)COMPILED:       Fri, Apr 19th, 2019 2:40:33 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

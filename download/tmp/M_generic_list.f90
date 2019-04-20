@@ -35,7 +35,7 @@
 !!   public :: list_insert, list_put, list_get, list_next
 !!##DESCRIPTION
 !!
-!!    A linked list, or more specically a singly-linked list, is a list
+!!    A linked list, or more specifically a singly-linked list, is a list
 !!    consisting of a series of individual node elements where each
 !!    node contains a data member and a pointer that points to the next
 !!    node in the list. M_generic_list(3fm) defines a generic linked list

@@ -13,6 +13,7 @@ private
   public polyarea           ! find area of a polygon
   public polyarea_shoelace  ! find area of a polygon using shoelace algorithm
   public polyarea_mid_point ! find area of a polygon
+  public closest            ! find point in <X,Y> arrays closest to target point
   ! FIT
   public julfit             ! linear least square fit
   public julfit1            ! linear least square fit(y=a*x+b)
@@ -4108,6 +4109,73 @@ END FUNCTION polyarea_shoelace       ! Negative for clockwise, positive for coun
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!    closest(3f) - [M_math:geometry] find the data point that is closest to the target point
+!!##SYNOPSIS
+!!
+!!   function closest(xtarget,ytarget,x,y) result(location)
+!!
+!!    real, dimension(:), intent(in)  :: x, y
+!!    real                            :: xtarget, ytarget
+!!    integer                         :: location
+!!
+!!##DESCRIPTION
+!!    Given a set of X and Y values and a target point, find the index of the closest point to the target
+!!    from the points described by the <X,Y> values. The X and Y arrays are assumed to be the same size.
+!!##OPTIONS
+!!    XTARGET   X coordinate of target point
+!!    YTARGET   Y coordinate of target point
+!!    X         array of X values that defines a set of points
+!!    Y         array of Y values that defines a set of points
+!!##RETURNS
+!!   Sample program
+!!
+!!    program demo_closest
+!!    implicit none
+!!    real,allocatable :: x(:),y(:)
+!!    real             :: x1, y1
+!!    integer          :: id
+!!    x=[ 11.0,  100.0, -22.34, 26.4, -50.66 ]
+!!    y=[-21.0,  150.0, -82.00, 40.0, 350.00 ]
+!!    x1=30.0
+!!    y1=44.0
+!!    id=closest(x1,y1,x,y)
+!!    write(*,*)'Closest point: ', x(id), y(id), ' at index ',id
+!!    end program demo_closest
+!!##EXAMPLE
+!!
+!===================================================================================================================================
+function closest(xtarget,ytarget,x,y) result(location)
+
+character(len=*),parameter::ident_14="@(#)find the index of the data point in the <X,Y> arrays that is closest to the target point"
+
+real, dimension(:), intent(in)  :: x, y
+real                            :: xtarget, ytarget
+integer                         :: location
+integer                         :: ind(1)
+   if(size(x).eq.0.or.size(y).eq.0)then
+      stop '*closest* input array has no values'
+   endif
+   ! probably creates a scratch array of the size of an input array
+   ind = minloc( (x - xtarget) ** 2 + (y -ytarget) ** 2 )
+   location=ind(1)
+   !! 'Closest point: ', x(location(1)), y(location(1))
+end function closest
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_closest()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('closest',msg='')
+   !!call unit_check('closest', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('closest',msg='')
+end subroutine test_closest
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 
 !>
 !!##NAME
@@ -4159,7 +4227,7 @@ END FUNCTION polyarea_shoelace       ! Negative for clockwise, positive for coun
 !===================================================================================================================================
 subroutine extremum(array,small,big)
 implicit none
-character(len=*),parameter::ident_14="@(#)M_math::extremum(3f):Find the minimum and maximum value in a REAL array"
+character(len=*),parameter::ident_15="@(#)M_math::extremum(3f):Find the minimum and maximum value in a REAL array"
 
 real,intent(in)            :: array(:)
 real,intent(out),optional  :: small
@@ -4338,7 +4406,7 @@ end subroutine extremum
 !!
 !===================================================================================================================================
 SUBROUTINE BDS (X,N,STAT)
-character(len=*),parameter::ident_15="&
+character(len=*),parameter::ident_16="&
 &@(#)M_math::bds(3f): Basic Descriptive Statistics (based on a routine from the IBM collection)"
 !  RETURN WITH M,U2,U3,U4,V,S,G1,G2,BIG,SMALL,IB,IS IN THAT ORDER IN LOCATIONS STAT(1) THROUGH STAT(13)
 !-----------------------------------------------------------------------
@@ -4446,7 +4514,7 @@ END SUBROUTINE BDS
 !!    Written by Charles P. Reeve
 !===================================================================================================================================
 SUBROUTINE SKEKUR1(Y,NHI,YSKEW,YKURT,IOPT)
-character(len=*),parameter::ident_16="@(#)M_math::skekur1(3f): variant on calculating skewness and kurtosis of an array"
+character(len=*),parameter::ident_17="@(#)M_math::skekur1(3f): variant on calculating skewness and kurtosis of an array"
 REAL,INTENT(IN)    ::  Y(*)
 INTEGER,INTENT(IN) :: NHI
 REAL,INTENT(OUT)   :: YSKEW
@@ -4520,7 +4588,7 @@ END SUBROUTINE SKEKUR1
 !!
 !===================================================================================================================================
 SUBROUTINE SKEKURX(Y,N,YSKEW,YKURT)
-character(len=*),parameter::ident_17="@(#)M_math::skekurx(3f): COMPUTE UNBIASED ESTIMATOR OF THE POPULATION SKEWNESS AND KURTOSIS"
+character(len=*),parameter::ident_18="@(#)M_math::skekurx(3f): COMPUTE UNBIASED ESTIMATOR OF THE POPULATION SKEWNESS AND KURTOSIS"
       integer,intent(in) :: n
       REAL,intent(in)    :: Y(*)
       REAL,intent(out)   :: YSKEW
@@ -4792,7 +4860,7 @@ END FUNCTION lngamma
 !===================================================================================================================================
 function stddev(vector,n,avg)
 implicit none
-character(len=*),parameter::ident_18="@(#)M_math::stddev(3f): find standard deviation of a real array"
+character(len=*),parameter::ident_19="@(#)M_math::stddev(3f): find standard deviation of a real array"
 integer,intent(in) :: n            ! number of elements in input array (vector)
 real,intent(in)    :: vector(n)    ! input vector
 real,intent(in)    :: avg          ! average of array
@@ -4868,7 +4936,7 @@ end function stddev
 !!            8   F
 !===================================================================================================================================
 function almost(x,y,digits,verbose)
-character(len=*),parameter::ident_19="&
+character(len=*),parameter::ident_20="&
 &@(#)M_math::almost(3f): function to compare two real numbers only up to a specified number of digits by calling ACCDIG(3f)"
 real,intent(in)             :: x,y
 real,intent(in)             :: digits
@@ -5044,7 +5112,7 @@ end function almost
 SUBROUTINE accdig(X,Y,digi0,ACURCY,IND)
 use M_journal, only : journal
 implicit none
-character(len=*),parameter::ident_20="@(#)M_math::accdig(3f): compare two real numbers only up to a specified number of digits"
+character(len=*),parameter::ident_21="@(#)M_math::accdig(3f): compare two real numbers only up to a specified number of digits"
 !     INPUT ...
       real,intent(in) :: x           ! First  of two real numbers to be compared.
       real,intent(in) :: y           ! Second of two real numbers to be compared.
@@ -5232,7 +5300,7 @@ use M_journal, only  : journal
 use M_anything, only : anyscalar_to_double
 implicit none
 
-character(len=*),parameter::ident_21="@(#)M_math::dp_accdig(3f): compare two double values only up to a specified number of digits"
+character(len=*),parameter::ident_22="@(#)M_math::dp_accdig(3f): compare two double values only up to a specified number of digits"
 
 !  INPUT ...
    class(*),intent(in)         :: x           ! FIRST  OF TWO DOUBLE NUMBERS TO BE COMPARED.
@@ -5349,7 +5417,7 @@ elemental pure function in_margin(expected_value, measured_value, allowed_margin
 use :: M_anything, only : anyscalar_to_double
 implicit none
 
-character(len=*),parameter::ident_22="@(#)M_math::in_margin(3f): check if two reals are approximately equal using a relative margin"
+character(len=*),parameter::ident_23="@(#)M_math::in_margin(3f): check if two reals are approximately equal using a relative margin"
 
 class(*),intent(in) :: expected_value, measured_value, allowed_margin
 logical             :: in_margin
@@ -5457,7 +5525,7 @@ subroutine scale1(xmin0, xmax0, n0, xminp, xmaxp, dist)
 !-----------------------------------------------------------------------------------------------------------------------------------
 use M_journal, only : journal
 implicit none
-character(len=*),parameter::ident_23="&
+character(len=*),parameter::ident_24="&
 &@(#)M_math::scale1(3f):given xmin,xmax,n, find new range xminp xmaxp divisible into approximately n linear intervals of size dist"
 !-----------------------------------------------------------------------------------------------------------------------------------
    real,intent(in)      :: xmin0, xmax0
@@ -5626,7 +5694,7 @@ subroutine scale3(xmin0, xmax0, n0 , xminp, xmaxp, dist)
 !-----------------------------------------------------------------------------------------------------------------------------------
 use M_journal, only : journal
 implicit none
-character(len=*),parameter::ident_24="@(#)M_math::scale3(3f):find nice log range."
+character(len=*),parameter::ident_25="@(#)M_math::scale3(3f):find nice log range."
 
 real,intent(in)               :: xmin0, xmax0
 integer,intent(in)            :: n0
@@ -5798,7 +5866,7 @@ end subroutine scale3
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine quadratic(a,b,c,z1,z2,discriminant)
 implicit none
-character(len=*),parameter::ident_25="&
+character(len=*),parameter::ident_26="&
 &@(#)M_math::quadratic(3f): calculate the roots of a quadratic formula even if they are complex"
 real,intent(in)     :: a, b, c         ! coefficients
 complex,intent(out) :: z1, z2          ! roots
@@ -6000,7 +6068,7 @@ end subroutine magic_square
 !==================================================================================================================================!
 subroutine iswap(n,x,y)
 
-character(len=*),parameter::ident_26="@(#)m_matrix::iswap(3f): swap two integer arrays"
+character(len=*),parameter::ident_27="@(#)m_matrix::iswap(3f): swap two integer arrays"
 
 integer,intent(in) :: n
 integer            :: x(:),y(:)
@@ -6024,7 +6092,7 @@ end subroutine iswap
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
 pure function double_invert_2x2(A) result(B)
-character(len=*),parameter::ident_27="@(#)M_math::invert_2x2(3f): performs a direct calculation of the inverse of a 2x2 matrix"
+character(len=*),parameter::ident_28="@(#)M_math::invert_2x2(3f): performs a direct calculation of the inverse of a 2x2 matrix"
    integer,parameter         :: wp=kind(0.0d0)
    real(kind=wp), intent(in) :: A(2,2)   !! Matrix
    real(kind=wp)             :: B(2,2)   !! Inverse matrix
@@ -6043,7 +6111,7 @@ end function double_invert_2x2
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
 pure function double_invert_3x3(A) result(B)
-character(len=*),parameter::ident_28="@(#)M_math::invert_3x3(3f): performs a direct calculation of the inverse of a 3x3 matrix"
+character(len=*),parameter::ident_29="@(#)M_math::invert_3x3(3f): performs a direct calculation of the inverse of a 3x3 matrix"
    integer,parameter         :: wp=kind(0.0d0)
    real(kind=wp), intent(in) :: A(3,3)   !! Matrix
    real(kind=wp)             :: B(3,3)   !! Inverse matrix
@@ -6069,7 +6137,7 @@ end function double_invert_3x3
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
 pure function double_invert_4x4(A) result(B)
-character(len=*),parameter::ident_29="@(#)M_math::invert_4x4(3f): performs a direct calculation of the inverse of a 4x4 matrix"
+character(len=*),parameter::ident_30="@(#)M_math::invert_4x4(3f): performs a direct calculation of the inverse of a 4x4 matrix"
    integer,parameter            :: wp=kind(0.0d0)
    real(kind=wp), intent(in) :: A(4,4)   !! Matrix
    real(kind=wp)             :: B(4,4)   !! Inverse matrix
@@ -6358,6 +6426,7 @@ subroutine test_suite_M_math()
    call test_polyarea           ! find area of a polygon
    call test_polyarea_shoelace  ! find area of a polygon using shoelace algorithm
    call test_polyarea_mid_point ! find area of a polygon
+   call test_closest            ! find point closest to target
 ! FIT
    call test_julfit             ! linear least square fit
    call test_julfit1            ! linear least square fit(y=a*x+b)

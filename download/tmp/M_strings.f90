@@ -3134,7 +3134,7 @@ character(len=:),allocatable  :: s(:)
    call testit( join(s,sep=';',left='[',right=']'), '[United];[ we];[ stand,];[ divided];[ we fall.];')
    call testit( join(s,left='[',right=']'),         '[United][ we][ stand,][ divided][ we fall.]')
    call testit( join(s,left='>>'),                  '>>United>> we>> stand,>> divided>> we fall.')
-   call unit_check_done('join',msg='join array of strings into a single string controlling seperators and white space')
+   call unit_check_done('join',msg='join array of strings into a single string controlling separators and white space')
 contains
 subroutine testit(generated,expected)
 character(len=*),intent(in) :: generated
@@ -7381,7 +7381,7 @@ end subroutine test_isprint
 !!     character,len=(:),allocatable :: msg
 !!
 !!##DESCRIPTION
-!!    msg(3f) builds a space-seperated string from up to nine scalar values.
+!!    msg(3f) builds a space-separated string from up to nine scalar values.
 !!
 !!##OPTIONS
 !!    g[1-9]  optional value to print the value of after the message. May

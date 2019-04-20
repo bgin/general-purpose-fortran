@@ -604,7 +604,7 @@ end subroutine read_table_real
 !!       lines      number of lines read(Optional).
 !!##EXAMPLES
 !!
-!!    Sample program, assuming the input file "inputfile" exists:
+!!    Sample program, which  creates test input file "inputfile":
 !!
 !!     program demo_slurp
 !!     use M_io, only      : slurp
@@ -655,6 +655,7 @@ integer,intent(out),optional             :: lines       ! number of lines
    integer :: lines_local
    integer :: i
    integer :: icount
+   character(len=256) :: message
 !-----------------------------------------------------------------------------------------------------------------------------------
    length_local=0
    lines_local=0
@@ -663,23 +664,31 @@ integer,intent(out),optional             :: lines       ! number of lines
       call stderr_local('*slurp* could not find unused file unit number')
       return
    endif
-   ! open named file in stream mode positioned to append
-   open (unit=igetunit,            &
-   & file=trim(filename),          &
-  !----------------------------
-  !& form='UNFORMATTED',           &
-  !----------------------------
-   & access='stream',              &
-   & status='old',                 &
-   & position='append',iostat=ios)
+!-------------------------------------------
+   message=''
+!!  ! open named file in stream mode positioned to append
+!!   open (unit=igetunit,            &
+!!   & file=trim(filename),          &
+!!  !----------------------------
+!!  !& form='UNFORMATTED',           &
+!!  !----------------------------
+!!   & access='stream',              &
+!!   & status='old',                 &
+!!   & position='append',iostat=ios)
+    open(unit=igetunit, file=trim(filename), action="read", iomsg=message,&
+         form="unformatted", access="stream",status='old',iostat=ios)
+!-------------------------------------------
    if(ios.eq.0)then  ! if file was successfully opened
-      !
-      ! get file size in bytes and position file to beginning of file
-      !
-      inquire(unit=igetunit,pos=nchars)   ! get number of bytes in file plus one
-      !   inquire(file=filename, size=filesize)            ! how many characters are in the file:
-      rewind(igetunit)                    ! get back to beginning of file
-      nchars=nchars-1 ! opened for append, so subtract one to get current length
+!-------------------------------------------
+!!      !
+!!      ! get file size in bytes and position file to beginning of file
+!!      !
+!!      inquire(unit=igetunit,pos=nchars)   ! get number of bytes in file plus one
+!!      !   inquire(file=filename, size=filesize)            ! how many characters are in the file:
+!!      rewind(igetunit)                    ! get back to beginning of file
+!!      nchars=nchars-1 ! opened for append, so subtract one to get current length
+      inquire(unit=igetunit, size=nchars)
+!-------------------------------------------
       if(nchars.le.0)then
          call stderr_local( '*slurp* empty file '//trim(filename) )
          return
@@ -693,6 +702,7 @@ integer,intent(out),optional             :: lines       ! number of lines
          call stderr_local( '*slurp* bad read of '//trim(filename) )
       endif
    else
+      call stderr_local('*slurp*'//message)
       allocate ( text(0) )           ! make enough storage to hold file
    endif
 

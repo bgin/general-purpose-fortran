@@ -297,7 +297,7 @@ end subroutine random_permutation
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    scramble(3f) - [M_random] return an integer array peopulated with the values 1 to size(array)
+!!    scramble(3f) - [M_random] return an integer array prepopulated with the values 1 to size(array)
 !!
 !!##SYNOPSIS
 !!

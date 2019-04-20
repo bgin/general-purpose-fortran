@@ -168,7 +168,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    create Makefile for current directory>',&
 '@(#)VERSION:        1.0, 2017-12-09>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sat, Mar 30th, 2019 6:07:28 PM>',&
+'@(#)COMPILED:       Sat, Apr 20th, 2019 11:33:35 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -398,7 +398,7 @@ character(len=maxlen)           :: ext
    else
       write(io,'(a)')'all: $(PROG) $(CPROG)'
    endif
-   write(io,'(a)')expand('\ttest -e scripts/test_suite && chmod u+xr scripts/test_suite||echo "test_suite not found')
+   write(io,'(a)')expand('\ttest -e scripts/test_suite && chmod u+xr scripts/test_suite||echo "test_suite not found"')
    write(io,'(a)')expand('\tenv PATH="`pwd`/scripts:$$PATH" which test_suite && test_suite -l test_suite_log.txt')
 !----------------------------------------------------------------------------------------------------------------------------------
    if(libname.eq.'')then
@@ -437,26 +437,18 @@ character(len=maxlen)           :: ext
       &'# Fortran free format file known to have ufpp(1) preprocessor directives          ',&
       &'# run thru ufpp(1) preprocessor with system commands allowed, variable F90 defined',&
       &'# Assumes .F90 file does not exist previously, as it will overwrite it.           ',&
-      &'.FF.o:                                                                            ',&
+      &'.FF.F90:                                                                            ',&
       &'\t@# run thru ufpp(1) preprocessor with system commands allowed                   ',&
-      &'\t@[ -x $(*F).F90 ] || echo "error: $(*F).F90 exists"                             ',&
       &'\tufpp -D F90 `uname -o` -verbose -system .true. -i $(<) -o $(*F).F90             ',&
       &'\t@[ -s $(*F).F90 ] || echo "error: $(*F).F90 is empty"                           ',&
-      &'\t$(F90) $(F90FLAGS) -c $(*F).F90                                                 ',&
-      &'# clean up scratch files                                                          ',&
-      &'\t@rm -f $(*F).F90 # ${?F:.FF=.o}                                                 ',&
       &'#=================================================================================',&
       &'# Fortran free format file known to have ufpp(1) preprocessor directives          ',&
       &'# run thru ufpp(1) preprocessor with no system commands allowed, variable F90     ',&
       &'# defined. Assumes .F90 file does not exist previously, as it will overwrite it.  ',&
-      &'.ff.o:                                                                            ',&
+      &'.ff.f90:                                                                            ',&
       &'\t@# run thru ufpp(1) preprocessor with system commands allowed                   ',&
-      &'\t@[ -x $(*F).F90 ] || echo "error: $(*F).F90 exists"                             ',&
       &'\tufpp -D F90 `uname -o` -verbose -i $(<) -o $(*F).F90                            ',&
       &'\t@[ -s $(*F).F90 ] || echo "error: $(*F).F90 is empty"                           ',&
-      &'\t$(F90) $(F90FLAGS) -c $(*F).F90                                                 ',&
-      &'# clean up scratch files                                                          ',&
-      &'\t@rm -f $(*F).F90 # ${?F:.ff=.o}                                                 ',&
       &'#=================================================================================',&
       &'']
    else
@@ -498,26 +490,18 @@ character(len=maxlen)           :: ext
       &'# Fortran free format file known to have ufpp(1) preprocessor directives          ',&
       &'# run thru ufpp(1) preprocessor with system commands allowed, variable F90 defined',&
       &'# Assumes .F90 file does not exist previously, as it will overwrite it.           ',&
-      &'.FF.o:                                                                            ',&
+      &'.FF.F90:                                                                            ',&
       &'\t@# run thru ufpp(1) preprocessor with system commands allowed                   ',&
-      &'\t@[ -x $(*F).F90 ] || echo "error: $(*F).F90 exists"                             ',&
       &'\tufpp -D F90 `uname -o` -verbose -system .true. -i $(<) -o $(*F).F90             ',&
       &'\t@[ -s $(*F).F90 ] || echo "error: $(*F).F90 is empty"                           ',&
-      &'\t$(F90) $(F90FLAGS) -c $(*F).F90                                                 ',&
-      &'# clean up scratch files                                                          ',&
-      &'\t@rm -f $(*F).F90 # ${?F:.FF=.o}                                                 ',&
       &'#=================================================================================',&
       &'# Fortran free format file known to have ufpp(1) preprocessor directives          ',&
       &'# run thru ufpp(1) preprocessor with no system commands allowed, variable F90     ',&
       &'# defined. Assumes .F90 file does not exist previously, as it will overwrite it.  ',&
-      &'.ff.o:                                                                            ',&
+      &'.ff.f90:                                                                            ',&
       &'\t@# run thru ufpp(1) preprocessor with system commands allowed                   ',&
-      &'\t@[ -x $(*F).F90 ] || echo "error: $(*F).F90 exists"                             ',&
       &'\tufpp -D F90 `uname -o` -verbose -i $(<) -o $(*F).F90                            ',&
       &'\t@[ -s $(*F).F90 ] || echo "error: $(*F).F90 is empty"                           ',&
-      &'\t$(F90) $(F90FLAGS) -c $(*F).F90                                                 ',&
-      &'# clean up scratch files                                                          ',&
-      &'\t@rm -f $(*F).F90 # ${?F:.ff=.o}                                                 ',&
       &'#=================================================================================',&
       &'']
    endif

@@ -43,7 +43,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   -ylabel    Y-axis label. Default is "Y"                                      ',&
 '   -title     plot title. Defaults to input filename                            ',&
 '   -m NNN     marker frequency.  Place a marker at every nth point.             ',&
-'              The default is zero. Negative values surpress drawing             ',&
+'              The default is zero. Negative values suppress drawing             ',&
 '              the interconnecting lines.                                        ',&
 '   -sz        marker size as a percent of display width. Default is 2.0 .       ',&
 '                                                                                ',&
@@ -112,7 +112,7 @@ end subroutine help_usage
 !!    -ylabel    Y-axis label. Default is "Y"
 !!    -title     plot title. Defaults to input filename
 !!    -m NNN     marker frequency.  Place a marker at every nth point.
-!!               The default is zero. Negative values surpress drawing
+!!               The default is zero. Negative values suppress drawing
 !!               the interconnecting lines.
 !!    -sz        marker size as a percent of display width. Default is 2.0 .
 !!
@@ -155,7 +155,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20180706>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Mon, Mar 25th, 2019 8:35:06 AM>',&
+'@(#)COMPILED:       Fri, Apr 19th, 2019 2:41:02 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

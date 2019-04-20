@@ -1,4 +1,4 @@
-#@(#) Makefile started by makeout(1) 2019-03-31 10:42:28
+#@(#) Makefile started by makeout(1) 2019-04-19 21:00:08
 
 PROGFILES = PROGRAMS/alphabet.f90 PROGRAMS/area_of_simple_polygon.f90 PROGRAMS/asa2pdf.f90 PROGRAMS/base.f90 PROGRAMS/change.f90 \
         PROGRAMS/choose.f90 PROGRAMS/clock.f90 PROGRAMS/cn.f90 PROGRAMS/colors.f90 PROGRAMS/color_wheel.f90 \
@@ -95,7 +95,7 @@ F90FLAGS = -Wall -Wuninitialized -fbounds-check -fno-range-check -g -I. -J.
 LDFLAGS = -Wl,--allow-multiple-definition -fno-range-check -Wall -fbounds-check -g -I. -J.
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 all: $(PROG) $(CPROG)
-	test -e scripts/test_suite && chmod u+xr scripts/test_suite
+	test -e scripts/test_suite && chmod u+xr scripts/test_suite||echo "test_suite not found
 	env PATH="`pwd`/scripts:$$PATH" which test_suite && test_suite -l test_suite_log.txt
 
 $(PROG): $(LIBRARY)
@@ -134,26 +134,18 @@ clean:
 # Fortran free format file known to have ufpp(1) preprocessor directives
 # run thru ufpp(1) preprocessor with system commands allowed, variable F90 defined
 # Assumes .F90 file does not exist previously, as it will overwrite it.
-.FF.o:
+.FF.F90:
 	@# run thru ufpp(1) preprocessor with system commands allowed
-	@[ -x $(*F).F90 ] || echo "error: $(*F).F90 exists"
 	ufpp -D F90 `uname -o` -verbose -system .true. -i $(<) -o $(*F).F90
 	@[ -s $(*F).F90 ] || echo "error: $(*F).F90 is empty"
-	$(F90) $(F90FLAGS) -c $(*F).F90
-# clean up scratch files
-	@rm -f $(*F).F90 # ${?F:.FF=.o}
 #=================================================================================
 # Fortran free format file known to have ufpp(1) preprocessor directives
 # run thru ufpp(1) preprocessor with no system commands allowed, variable F90
 # defined. Assumes .F90 file does not exist previously, as it will overwrite it.
-.ff.o:
+.ff.f90:
 	@# run thru ufpp(1) preprocessor with system commands allowed
-	@[ -x $(*F).F90 ] || echo "error: $(*F).F90 exists"
 	ufpp -D F90 `uname -o` -verbose -i $(<) -o $(*F).F90
 	@[ -s $(*F).F90 ] || echo "error: $(*F).F90 is empty"
-	$(F90) $(F90FLAGS) -c $(*F).F90
-# clean up scratch files
-	@rm -f $(*F).F90 # ${?F:.ff=.o}
 #=================================================================================
 
 C-arcs.o: draw.h 
@@ -230,7 +222,7 @@ M_geography.o: M_debug.o
 M_getkey.o: M_debug.o 
 M_getopt.o: M_debug.o 
 M_getopt_long.o: M_debug.o 
-M_hashkeys.o: M_anything.o M_debug.o 
+M_hashkeys.o: M_anything.o M_debug.o M_strings.o 
 M_history.o: M_debug.o M_journal.o M_strings.o 
 M_html.o: M_debug.o M_journal.o 
 M_io.o: M_debug.o M_journal.o M_strings.o 

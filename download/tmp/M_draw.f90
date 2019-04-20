@@ -6524,7 +6524,7 @@
 !!    angle  Angle in degrees to rotate coordinate system, with clockwise
 !!           angles being positive.
 !!
-!!    axis   Which axis to performat rotation about. Allowed values are 'x',
+!!    axis   Which axis to perform rotation about. Allowed values are 'x',
 !!           'y', and 'z'.
 !!
 !!##EXAMPLE

@@ -12,7 +12,7 @@ HELP(){
 NAME
    test_suite(1bash) - [DEVELOPER] find and execute test_suite_* procedures
 SYNOPSIS
-   test_suite [*.f90|*.o][-l logfile][-w]|[--help]
+   test_suite [-l logfile][-w]|[--help] [*.f90|*.o]
 
 DESCRIPTION
    Generate and execute a program to call the test_suite_* Fortran procedures
@@ -26,6 +26,17 @@ DESCRIPTION
       unit_check_level=0
          call test_suite_M_xxxx()
       end program runtest
+   SAMPLE TEST PROCEDURE
+      !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+      subroutine test_xxx()
+      use M_debug, only : unit_check_start,unit_check, unit_check_msg, msg
+      use M_debug, only : unit_check_done,unit_check_good,unit_check_bad
+      use M_debug, only : unit_check_level
+      implicit none
+         call unit_check_start('xxx',msg='')
+         !!call unit_check('xxx', 0.eq.0. msg=msg('checking',100))
+         call unit_check_done('xxx',msg='')
+      end subroutine test_xxx
 OPTIONS
    -l  logfile
    -w  given a *.o as the input file try to build a test_suite_M_xxx
@@ -205,6 +216,20 @@ do
    *.f90)SHORTNAME=$(basename $NAME .f90)
    ;;
    *.F90)SHORTNAME=$(basename $NAME .F90)
+   ;;
+   *.inc)SHORTNAME=$(basename $NAME .inc)
+	 (
+	    set +x
+	    cd $(dirname $NAME)
+	    ufpp UFPP_TEST -verbose -i $(basename $NAME)
+	 )
+   ;;
+   *.INC)SHORTNAME=$(basename $NAME .INC)
+	 (
+	    set +x
+	    cd $(dirname $NAME)
+	    ufpp UFPP_TEST -verbose -system -i $(basename $NAME)
+	 )
    ;;
    *.FF) SHORTNAME=$(basename $NAME .FF)
 	 (
