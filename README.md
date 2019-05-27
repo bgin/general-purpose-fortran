@@ -4,6 +4,7 @@
 
     git clone https://github.com/urbanjost/general-purpose-fortran
     cd general_purpose-fortran/download/tmp
+    # the make file is set up for GNU Fortran (GCC) 7.4.0
     make
 
 you might want to edit hershey.sh to select where hershey
