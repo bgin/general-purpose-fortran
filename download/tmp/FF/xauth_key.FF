@@ -12,7 +12,8 @@ DESCRIPTION
 OPTIONS
    characters  Set of letters to compose string from.
                Defaults to '0123456789abcdef'.
-   -n          Number of digits. Defaults to 128
+   -n N        Number of digits. Defaults to 128
+   -r N        Number of cookies to generate
    --version   Display version information and exit.
    --help      Display help text and exit.
 EXAMPLE
@@ -31,18 +32,23 @@ intrinsic random_number
 integer :: length
 character(len=:),allocatable :: out
 character(len=:),allocatable :: chars
-   call kracken('key','-n 128 -help .false. -version .false.') ! define command arguments, default values and crack command line
+integer                      :: i
+integer                      :: r
+   call kracken('key','-n 128 -r 1 -help .false. -version .false.') ! define command arguments, default values; crack command line
    call help_usage(lget('key_help'))                           ! if -help option is present, display help text and exit
    call help_version(lget('key_version'))                      ! if -version option is present, display version text and exit
    length=iget('key_n')
+   r=iget('key_r')
    chars=trim(sget('key_oo'))
    if(chars.eq.'')then
       chars='0123456789abcdef'
    endif
 
    call init_random_seed_by_dat()
-   out=random_string(chars,length)
-   write(*,'(a)')out
+   do i=1,r
+      out=random_string(chars,length)
+      write(*,'(a)')out
+   enddo
 !-----------------------------------------------------------------------------------------------------------------------------------
 contains
 !-----------------------------------------------------------------------------------------------------------------------------------

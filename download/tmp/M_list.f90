@@ -1,3 +1,84 @@
+!>
+!!##NAME
+!!    M_list(3f) - [M_list] maintain a simple keyword and value list
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!    BASIC LIST AND DICTIONARY
+!!
+!!    locate   finds the index where a string is found or should be in a sorted array
+!!
+!!    remove   remove entry from an allocatable array at specified position
+!!    insert   insert entry into a string array at specified position
+!!
+!!
+!!    get      get value given an existing key
+!!    add      insert entry by name into an allocatable sorted string array if it is not present
+!!    delete   delete entry by name from an allocatable sorted string array if it is present
+!!    MISCELLANEOUS
+!!    binary_search  binary search of a sorted integer array.
+!!##EXAMPLE
+!!
+!!   Sample program
+!!
+!!    program demo_M_list
+!!    use M_list, only : insert, locate
+!!    ! Find if a string is in a sorted array,
+!!    ! and insert the string into the dictionary
+!!    ! if it is not present ...
+!!
+!!     use M_list, only : locate, insert
+!!     implicit none
+!!     character(len=20),allocatable :: keyword(:)
+!!     character(len=20)             :: key
+!!     character(len=100),allocatable :: value(:)
+!!     character(len=100)             :: val
+!!     integer                       :: i
+!!
+!!     keyword=[character(len=20) ::] ! initialize dictionary
+!!     value=[character(len=100)::]   ! initialize dictionary
+!!
+!!     key='b';val='value of b'
+!!     call update(key,val)
+!!     key='a';val='value of a'
+!!     call update(key,val)
+!!     key='c';val='value of c'
+!!     call update(key,val)
+!!     key='c';val='value of c again'
+!!     call update(key,val)
+!!     key='d';val='value of d'
+!!     call update(key,val)
+!!     key='a';val='value of a again'
+!!     call update(key,val)
+!!     ! show array
+!!     write(*,'(*(a,"==>",a,/))')(trim(keyword(i)),trim(value(i)),i=1,size(keyword))
+!!
+!!     contains
+!!     subroutine update(key,val)
+!!     character(len=*),intent(in)  :: key
+!!     character(len=*),intent(in)  :: val
+!!     integer                      :: place
+!!
+!!     ! find where string is or should be
+!!     call locate(key,keyword,place)
+!!     ! if string was not found insert it
+!!     if(place.lt.1)then
+!!        call insert(key,keyword,abs(place))
+!!        call insert(val,value,abs(place))
+!!     else
+!!        value(place)=val
+!!     endif
+!!
+!!     end subroutine update
+!!    end program demo_M_list
+!!
+!!   Expected output:
+!!
+!!    d==>value of d
+!!    c==>value of c again
+!!    b==>value of b
+!!    a==>value of a again
+!===================================================================================================================================
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
@@ -33,10 +114,30 @@ interface remove
 end interface
 
 public test_suite_m_list
+type dictionary
+   character(len=:),allocatable :: key(:)
+   character(len=:),allocatable :: value(:)
+end type dictionary
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 contains
+subroutine erase(key,value,dic)
+character(len=*),intent(in) :: key
+character(len=*),intent(in) :: value
+character(len=*),intent(in) :: dic(:)
+end subroutine erase
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine update(key,value,dic)
+character(len=*),intent(in) :: key
+character(len=*),intent(in) :: value
+character(len=*),intent(in) :: dic(:)
+end subroutine update
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
@@ -126,7 +227,7 @@ end function binary_search
 !!
 !!##SYNOPSIS
 !!
-!!   subroutine locate(varname,dictionary,place,ier,mssg)
+!!   subroutine locate(varname,dictionary,place,ier,errmsg)
 !!
 !!    character(len=*),intent=(in)          :: VARNAME
 !!    character(len=*),allocatable          :: DICTIONARY(:)
@@ -787,7 +888,15 @@ integer                       :: place
    call test_insert()
    call test_remove()
    call test_binary_search()
+   call test_update()
+   call test_erase()
 contains
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_erase()
+end subroutine test_erase
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_update()
+end subroutine test_update
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_add
    call unit_check_start('add',   &

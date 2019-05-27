@@ -16,21 +16,17 @@ integer          :: dat(8)
    call date_and_time(values=dat)  ! get current year
    year=iget('easter_oo')          ! get year off command line
    if(year.eq.0)then               ! if year from command line is 0, use current year
-        year=dat(1)
+        year=dat(1)                
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(year.lt.0)then
       do year = 1980, 2200
-        call easter(year, month, day)
-        write(*,*)fmtdate([year,month,day,dat(4),12,0,0,0],"Easter day: the %d day of %L in the year of our Lord %Y")
+        call easter(year, dat)
+        write(*,*)fmtdate(dat,"Easter day: the %d day of %L in the year of our Lord %Y")
       end do
    else
 !-----------------------------------------------------------------------------------------------------------------------------------
-      call easter(year, month, day)   ! given year get month and day Easter falls on
-!-----------------------------------------------------------------------------------------------------------------------------------
-      ! fill out a date_and_time array with information for Easter so can print the date using fmtdate(3f)
-      dat=[year,month,day,dat(4),12,0,0,0] ! year,month,day,tz,hour,minute,second,millisecond
-!-----------------------------------------------------------------------------------------------------------------------------------
+      call easter(year, dat)   ! given year get month and day Easter falls on
       write(*,*)fmtdate(dat,"Easter day: the %d day of %L in the year of our Lord %Y")
 !-----------------------------------------------------------------------------------------------------------------------------------
    endif

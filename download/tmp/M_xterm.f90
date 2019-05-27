@@ -599,9 +599,10 @@ character(len=*),parameter::ident_6="@(#)M_xterm::xterm_colors(3f): set various 
 ! specification can be given in one control sequence, xterm
 ! can make more than one reply.
 !
-character(len=*),intent(in) :: type
-character(len=*),intent(in) :: color
-integer code
+character(len=*),intent(in)  :: type
+character(len=*),intent(in)  :: color
+character(len=1),allocatable :: kolr(:)
+integer                      :: code
 
    select case(type)
    case('bg','background')            ; code=11
@@ -617,7 +618,8 @@ integer code
       write(*,*)'*xterm_color* unknown type ',trim(type)
       return
    end select
-   if(all(isdigit(switch(color)).or.isspace(switch(color))))then ! a number, not a string
+   kolr=switch(color)
+   if(all(isdigit(kolr).or.isspace(kolr)))then ! a number, not a string
       write(*,'(a)',advance='no')esc//'[48;5;'//trim(color)//'m'
    else
       write(*,'(a,i0,a)',advance='no')esc//']',code,';'//trim(color)//bel

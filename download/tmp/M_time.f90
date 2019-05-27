@@ -42,9 +42,9 @@ private upper
 ! MONTH NAME
    public mo2v           !(month_name) result (MONTH_NUMBER)  ! given month name return month number
    public v2mo           !(month_number) result (MONTH_NAME)  ! given month number return month name
-   public mo2d           !(month_name) result (DAT)           ! return date array for first day of given month name in current year
+   public mo2d           !(month_name) result (DAT)           ! given month name and year return date array for 1st day of month
 ! ASTROLOGICAL
-   public easter         !(year,month,day)                    ! calculate month and day Easter falls on for given year
+   public easter         !(year,dat)                          ! calculate month and day Easter falls on for given year
    public moon_fullness  !(datin) result(FULLNESS)            ! percentage of moon phase from new to full
    public phase_of_moon  !(datin) result(PHASE)               ! return name for phase of moon for given date
    public ephemeris      !(dat,planet,DD,DM,DC,AH,AM)         ! ephemeris position of planets for adjusting an equatorial telescope
@@ -193,7 +193,7 @@ integer             :: ierr
    call unit_check_start('date_to_julian',msg='Checking Julian Date') ! assume if got here passed checks
 
    call date_to_julian( [1970, 1, 1,0, 0,0,0,0] ,julian,ierr)
-   call unit_check('date_to_julian',abs(julian-2440587.5).lt.0.00001 ,msg="Dec 31st, 1969  8:00(2440587.5)")
+   call unit_check('date_to_julian',abs(julian-2440587.5d0).lt.0.00001 ,msg="Dec 31st, 1969  8:00(2440587.5)")
 
    call date_to_julian( [1995, 1, 1,0,12,0,0,0] ,julian,ierr)
    call unit_check('date_to_julian',int(julian).eq.2449719 ,msg="Jan  1st, 1995 12:00(2449719)")
@@ -313,8 +313,8 @@ integer,intent(out)              :: ierr              ! 0 for successful executi
       second=second-secday
    endif
 
-   minute=int(second/60.0)                      ! Integral minutes from beginning of day
-   second=second-float(minute*60)               ! Seconds from beginning of minute
+   minute=int(second/60.0d0)                    ! Integral minutes from beginning of day
+   second=second-dble(minute*60)                ! Seconds from beginning of minute
    hour=minute/60                               ! Integral hours from beginning of day
    minute=minute-hour*60                        ! Integral minutes from beginning of hour
 
@@ -361,18 +361,14 @@ use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,uni
 
    juliandate=2457589.129d0                 ! set sample Julian Date
    call julian_to_date(juliandate,dat,ierr) ! create DAT array for this date
-   expected='Tuesday, July 19th, 2016 11:05:45 AM'
    expected='2016-07-19 11:05:45'
-   write(*,*)fmtdate(dat,'year-month-day hour:minute:second')
    call unit_check('julian_to_date',fmtdate(dat,'year-month-day hour:minute:second').eq.expected,msg=msg(juliandate,'==>',expected))
 
    call julian_to_date(juliandate-1.0d0,dat,ierr) ! go back one day
-   expected='Monday, July 18th, 2016 11:05:45 AM'
    expected='2016-07-18 11:05:45'
    call unit_check('julian_to_date',fmtdate(dat,'year-month-day hour:minute:second').eq.expected,msg=msg(juliandate,'==>',expected))
 
    call julian_to_date(juliandate+1.0d0,dat,ierr) ! go forward one day
-   expected='Wednesday, July 20th, 2016 11:05:45 AM'
    expected='2016-07-20 11:05:45'
    call unit_check('julian_to_date',fmtdate(dat,'year-month-day hour:minute:second').eq.expected,msg=msg(juliandate,'==>',expected))
 
@@ -557,6 +553,7 @@ end subroutine unix_to_date
 subroutine test_unix_to_date
 use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
 call unit_check_start('unix_to_date')
+call unit_check('unix_to_date',all([2017,03,29,-240,01,46,47,0].eq.u2d(1490766407)),msg=msg(d2u([2017,03,29,-240,01,46,47,0]) ))
 call unit_check_done('unix_to_date')
 end subroutine test_unix_to_date
 !===================================================================================================================================
@@ -591,7 +588,7 @@ end subroutine test_unix_to_date
 !!    Sample program:
 !!
 !!     program demo_d2o
-!!     use M_time, only : d2o, mo2d
+!!     use M_time, only : d2o
 !!     implicit none
 !!     integer :: dat(8)
 !!        call date_and_time(values=dat)
@@ -773,7 +770,7 @@ subroutine test_ordinal_to_date()
 use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
 !!use M_time, only : o2d, ordinal_to_date, d2o
 implicit none
-integer                      :: iday,iyear,omonth,oday,rday
+integer                      :: iday,iyear,omonth,oday
 integer                      :: i,dat(8)
 character(len=40),parameter  :: tests(*)=[ &
    'ordinal  year  month  month_day  ',  &
@@ -878,7 +875,7 @@ subroutine test_o2d()
 use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
 !!use M_time, only : o2d, ordinal_to_date, d2o
 implicit none
-integer                      :: iday,iyear,omonth,oday,rday
+integer                      :: iday,iyear,omonth,oday
 integer                      :: i,dat(8)
 character(len=40),parameter  :: tests(*)=[ &
    'ordinal  year  month  month_day  ',  &
@@ -974,6 +971,18 @@ end function v2mo
 subroutine test_v2mo
 use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
 call unit_check_start('v2mo')
+call unit_check('v2mo',v2mo(1).eq.'January',    msg='January')
+call unit_check('v2mo',v2mo(2).eq.'February',   msg='Febuary')
+call unit_check('v2mo',v2mo(3).eq.'March',      msg='March')
+call unit_check('v2mo',v2mo(4).eq.'April',      msg='April')
+call unit_check('v2mo',v2mo(5).eq.'May',        msg='May')
+call unit_check('v2mo',v2mo(6).eq.'June',       msg='June')
+call unit_check('v2mo',v2mo(7).eq.'July',       msg='July')
+call unit_check('v2mo',v2mo(8).eq.'August',     msg='August')
+call unit_check('v2mo',v2mo(9).eq.'September',  msg='September')
+call unit_check('v2mo',v2mo(10).eq.'October',   msg='October')
+call unit_check('v2mo',v2mo(11).eq.'November',  msg='November')
+call unit_check('v2mo',v2mo(12).eq.'December',  msg='December')
 call unit_check_done('v2mo')
 end subroutine test_v2mo
 !===================================================================================================================================
@@ -981,7 +990,7 @@ end subroutine test_v2mo
 !===================================================================================================================================
 !>
 !!##NAME
-!!    mo2d(3f) - [M_time] given month name return DAT date-time array for beginning of that month in current year
+!!    mo2d(3f) - [M_time] given month name return DAT date-time array for beginning of that month in specified year
 !!
 !!##SYNOPSIS
 !!
@@ -992,10 +1001,12 @@ end subroutine test_v2mo
 !!
 !!##DESCRIPTION
 !!    Given a Common Calendar month name, return the date as a "DAT" array
-!!    in the current year, for the 1st day of the month.
+!!    for the 1st day of the month. An optional year may be specified. The
+!!    year defaults to the current year.
 !!
 !!##OPTIONS
 !!    month_name  A string representing a Common Calendar month name.
+!!    year        Optional year. Defaults to current year
 !!##RETURNS
 !!    dat         An integer array that has the same structure as the array
 !!                returned by the Fortran intrinsic DATE_AND_TIME(3f).
@@ -1014,28 +1025,47 @@ end subroutine test_v2mo
 !!
 !!       2016:3:1:-240:0:0:0:0
 !===================================================================================================================================
-function mo2d(month_name) result (dat)
+function mo2d(month_name,year) result (dat)
 
-character(len=*),parameter::ident_9="@(#)M_time::mo2d(3f): month name to DAT date-time array for 1st of that month in current year"
+character(len=*),parameter::ident_9="&
+&@(#)M_time::mo2d(3f): month name to DAT date-time array for 1st of that month in specified year"
 
-integer                     :: dat(8)
 character(len=*),intent(in) :: month_name
+integer,intent(in),optional :: year
+integer                     :: dat(8)
    call date_and_time(values=dat)
+   if(present(year))then
+      dat(1)=year
+   endif
    dat(2)=mo2v(month_name) ! convert given month name to a number
    if(dat(2).le.0)then
       call stderr('*mo2d* bad month name '//trim(month_name))
       dat(2)=1
    endif
-   dat(3)=1 ! set day to first of month
-   dat(5)=0 ! set hour to zero
-   dat(6)=0 ! set minutes to zero
-   dat(7)=0 ! set seconds to zero
-   dat(8)=0 ! set milliseconds to zero
+   dat(3)=1  ! set day to first of month
+   dat(5)=0  ! set hour to zero
+   dat(6)=0  ! set minutes to zero
+   dat(7)=0  ! set seconds to zero
+   dat(8)=0  ! set milliseconds to zero
 end function mo2d
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_mo2d
 use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
+integer :: dat(8)
 call unit_check_start('mo2d')
+call date_and_time(values=dat)
+call  unit_check('mo2d',all(mo2d('january',    2019).eq.[2019,01,01,dat(4),0,0,0,0]),msg='January    2019')
+call  unit_check('mo2d',all(mo2d('febuary',    2019).eq.[2019,02,01,dat(4),0,0,0,0]),msg='Febuary    2019')
+call  unit_check('mo2d',all(mo2d('march',      2019).eq.[2019,03,01,dat(4),0,0,0,0]),msg='March      2019')
+call  unit_check('mo2d',all(mo2d('april',      2019).eq.[2019,04,01,dat(4),0,0,0,0]),msg='April      2019')
+call  unit_check('mo2d',all(mo2d('may',        2019).eq.[2019,05,01,dat(4),0,0,0,0]),msg='May        2019')
+call  unit_check('mo2d',all(mo2d('june',       2019).eq.[2019,06,01,dat(4),0,0,0,0]),msg='June       2019')
+call  unit_check('mo2d',all(mo2d('july',       2019).eq.[2019,07,01,dat(4),0,0,0,0]),msg='July       2019')
+call  unit_check('mo2d',all(mo2d('august',     2019).eq.[2019,08,01,dat(4),0,0,0,0]),msg='August     2019')
+call  unit_check('mo2d',all(mo2d('september',  2019).eq.[2019,09,01,dat(4),0,0,0,0]),msg='September  2019')
+call  unit_check('mo2d',all(mo2d('october',    2019).eq.[2019,10,01,dat(4),0,0,0,0]),msg='October    2019')
+call  unit_check('mo2d',all(mo2d('november',   2019).eq.[2019,11,01,dat(4),0,0,0,0]),msg='November   2019')
+call  unit_check('mo2d',all(mo2d('december',   2019).eq.[2019,12,01,dat(4),0,0,0,0]),msg='December   2019')
 call unit_check_done('mo2d')
 end subroutine test_mo2d
 !===================================================================================================================================
@@ -1336,9 +1366,7 @@ character(len=:),allocatable         :: timestr
    case('formal')    ; local_format='The %d of %L %Y'                 ! The 9th of November 2014
    case('lord')  ; local_format='the %d day of %L in the year of our Lord %Y' ! the 9th day of November in the year of our Lord 2014
    case('easter')
-      call easter(values(1), valloc(2), valloc(3))                    ! given year get month and day Easter falls on
-      ! fill out a date_and_time array with information for Easter so can print the date using fmtdate(3f)
-      valloc(5:8)=[12,0,0,0]                                          ! year,month,day,tz, hour,minute,second,millisecond
+      call easter(values(1), valloc)                                  ! given year get month and day Easter falls on
       local_format="Easter day: the %d day of %L in the year of our Lord %Y"
    case('all')
      local_format='&
@@ -2211,14 +2239,8 @@ character(len=80)  :: date1
 character(len=80)  :: date2
 character(len=80)  :: iso_week_date
 character(len=132) :: comment
-character(len=10)  :: iso_name
-character(len=10)  :: status
 character(len=372),allocatable :: line(:)
 integer            :: dat(8)
-integer            :: dat2(8)
-integer            :: iso_year
-integer            :: iso_week
-integer            :: iso_weekday
 integer            :: i
 
 call unit_check_start('guessdate')
@@ -2384,14 +2406,10 @@ integer          :: weekday
 character(len=9) :: day
 integer          :: ierr
 call unit_check_start('dow')
-
-   call dow(dat, weekday, day, ierr)
-   write(*,'(a,i0)')'weekday=',weekday
-   write(*,'(a,a)')'day=',trim(day)
-   write(*,'(a,i0)')'ierr=',ierr
-
+call date_and_time(values=dat)
+call dow([1957,3,2,dat(4),12,0,0,0], weekday, day, ierr)
+call unit_check('dow',day.eq.'Saturday'.and.weekday.eq.6,msg='Saturday')
 call unit_check_done('dow')
-
 end subroutine test_dow
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -2919,7 +2937,26 @@ end subroutine box_month
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_box_month
 use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
+integer           :: dat(8)
+character(len=21) :: calendar(8)
+character(len=21) :: mnth(8)
+dat=[2016,07,01,-240,12,0,0,0]
+mnth=[ &
+'      July 2016      ', &
+'Mo Tu We Th Fr Sa Su ', &
+'             1  2  3 ', &
+' 4  5  6  7  8  9 10 ', &
+'11 12 13 14 15 16 17 ', &
+'18 19 20 21 22 23 24 ', &
+'25 26 27 28 29 30 31 ', &
+'                     ']
 call unit_check_start('box_month')
+call box_month(dat,calendar)
+if(unit_check_level.gt.0)then
+   write(*,'(a)')calendar
+   write(*,'(a)')mnth
+endif
+call unit_check('box_month',all(calendar.eq.mnth),msg='July 2016')
 call unit_check_done('box_month')
 end subroutine test_box_month
 !===================================================================================================================================
@@ -2992,7 +3029,7 @@ call unit_check_start('d2j')
    call unit_check_start('d2j',msg='Checking Julian Date') ! assume if got here passed checks
 
    julian=d2j( [1970, 1, 1,0, 0,0,0,0])
-   call unit_check('d2j',abs(julian-2440587.5).lt.0.00001 ,msg="Dec 31st, 1969  8:00(2440587.5)")
+   call unit_check('d2j',abs(julian-2440587.5d0).lt.0.00001 ,msg="Dec 31st, 1969  8:00(2440587.5)")
 
    julian=d2j( [1995, 1, 1,0,12,0,0,0])
    call unit_check('d2j',int(julian).eq.2449719 ,msg="Jan  1st, 1995 12:00(2449719)")
@@ -3077,8 +3114,6 @@ end function j2d
 subroutine test_j2d
 use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
 real(kind=realtime)          :: juliandate
-integer                      :: dat(8)
-integer                      :: ierr
 character(len=:),allocatable :: expected
 
 call unit_check_start('j2d')
@@ -3267,6 +3302,7 @@ end function u2d
 subroutine test_u2d
 use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
 call unit_check_start('u2d')
+call unit_check('u2d',all([2017,03,29,-240,01,46,47,0].eq.u2d(1490766407)),msg=msg(d2u([2017,03,29,-240,01,46,47,0]) ))
 call unit_check_done('u2d')
 end subroutine test_u2d
 !===================================================================================================================================
@@ -3805,7 +3841,7 @@ integer                       :: phase
 real(kind=realtime)           :: days
 
 days= d2j(datin)-d2j(reference)                               ! days between reference date and input date
-days = mod(days + phase_length/2.0, syndonic_month)           ! modulo calculation of which phase rounding up
+days = mod(days + phase_length/2.0d0, syndonic_month)         ! modulo calculation of which phase rounding up
 if(days.lt.0)days=days+syndonic_month                         ! correct for days before reference date
 phase = int( days * ( size(phase_names) / syndonic_month ))+1 ! index into phase names
 phase_of_moon=phase_names(phase)
@@ -3814,7 +3850,9 @@ end function phase_of_moon
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_phase_of_moon
 use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
+integer  :: dat(8)=[2018,11,3,-240,20,18,44,245]
 call unit_check_start('phase_of_moon')
+call unit_check('phase_of_moon',phase_of_moon(dat).eq.'Waning crescent')
 call unit_check_done('phase_of_moon')
 end subroutine test_phase_of_moon
 !===================================================================================================================================
@@ -3900,7 +3938,9 @@ end function moon_fullness
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_moon_fullness
 use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
+integer  :: dat(8)=[2018,11,3,-240,20,18,44,245]
 call unit_check_start('moon_fullness')
+call unit_check('moon_fullness', moon_fullness(dat).eq.-30)
 call unit_check_done('moon_fullness')
 end subroutine test_moon_fullness
 !===================================================================================================================================
@@ -3913,10 +3953,10 @@ end subroutine test_moon_fullness
 !!##SYNOPSIS
 !!
 !!
-!!   subroutine easter(year,month,day)
+!!   subroutine easter(year,dat)
 !!
 !!     integer, intent(in)   :: year
-!!     integer, intent(out)  :: day, month
+!!     integer, intent(out)  :: dat
 !!
 !!##DESCRIPTION
 !!     The Date of Easter (Sunday)
@@ -3948,8 +3988,7 @@ end subroutine test_moon_fullness
 !!##OPTIONS
 !!      year    Year for which to calculate day that Easter falls on
 !!##RESULTS
-!!      month   Month on which Easter falls for a given year
-!!      day     Day of month on which Easter falls for a given year
+!!      dat     Date array for noon on Easter for the specified year
 !!
 !!##EXAMPLE
 !!
@@ -3959,13 +3998,11 @@ end subroutine test_moon_fullness
 !!    program demo_easter
 !!    use m_time, only : easter, fmtdate
 !!    implicit none
-!!    integer :: year, month, day
+!!    integer :: year
 !!    integer :: dat(8) ! year,month,day,tz,hour,minute,second,millisecond
 !!      call date_and_time(values=dat)  ! get current year
 !!      year=dat(1)
-!!      call easter(year, month, day)
-!!      ! fill out a date_and_time array
-!!      dat=[dat(1),month,day,dat(4),12,0,0,0]
+!!      call easter(year, dat)
 !!      write(*,*)fmtdate(dat,&
 !!      "Easter day: the %d day of %L in the year of our Lord %Y")
 !!    end program demo_easter
@@ -3982,15 +4019,15 @@ end subroutine test_moon_fullness
 !!   http://aa.usno.navy.mil/faq/docs/easter.html
 !!   Latest revision 8 April 2002
 !===================================================================================================================================
-SUBROUTINE Easter(year, month, day)
+SUBROUTINE Easter(year, dat)
 implicit none
 
 character(len=*),parameter::ident_27="@(#)M_time::easter(3f): calculate date for Easter given a year"
 
-integer, intent(in)   :: year
-integer, intent(out)  :: day, month
-
-   integer  :: c, i, j, k, l, n
+integer,intent(in)    :: year
+integer,intent(out)   :: dat(8) ! year,month,day,tz,hour,minute,second,millisecond
+   integer            :: day, month
+   integer            :: c, i, j, k, l, n
 
    c = year / 100
    n = year - 19 * ( year / 19 )
@@ -4003,6 +4040,10 @@ integer, intent(out)  :: day, month
    l = i - j
    month = 3 + ( l + 40 ) / 44
    day = l + 28 - 31 * ( month / 4 )
+
+   ! fill out a date_and_time array
+   call date_and_time(values=dat)  ! get current year
+   dat=[year,month,day,dat(4),12,0,0,0]
 
 end subroutine Easter
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -4060,13 +4101,16 @@ character(len=20),parameter  :: tests(*)=[ &
 integer :: tmonth, tday
 integer :: inyear, outmonth, outday
 integer :: ii
+integer :: dat(8)
 character (len=5)  :: mon(3:4) = (/ 'march', 'april' /)
 
 call unit_check_start('easter') ! assume if got here passed checks
 
 do ii=1,size(tests)
    read(tests(ii),*)inyear,tmonth,tday
-   call easter(inyear,outmonth,outday)
+   call easter(inyear,dat)
+   outmonth=dat(2)
+   outday=dat(3)
    call unit_check('easter', tmonth.eq.outmonth.and.tday.eq.outday ,msg=msg(tests(ii),'month=',mon(outmonth)))
 enddo
 
@@ -4455,9 +4499,9 @@ character(len=*),parameter::ident_29="@(#)M_time::system_sleep(3f): call sleep(3
 class(*),intent(in)           :: seconds
 integer(kind=c_int)           :: cint
    select type(seconds)
-   type is (integer);             cint=seconds                  ; call call_sleep(cint)
-   type is (real);                cint=nint(seconds*1000000.0)  ; call call_usleep(cint)
-   type is (real(kind=realtime)); cint=nint(seconds*1000000.0)  ; call call_usleep(cint)
+   type is (integer);             cint=seconds                    ; call call_sleep(cint)
+   type is (real);                cint=nint(seconds*1000000.0d0)  ; call call_usleep(cint)
+   type is (real(kind=realtime)); cint=nint(seconds*1000000.0d0)  ; call call_usleep(cint)
    end select
 end subroutine system_sleep
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -4571,7 +4615,7 @@ call unit_check_start('j2d            ',SAME//' "Convert Julian Date to date arr
 call test_j2d()
 call unit_check_start('julian_to_date ',SAME//' "Converts Julian Date to (year, month, day, hour, minute, second)" ')
 call test_julian_to_date()
-call unit_check_start('mo2d           ',SAME//' "given month name return date array for beginning of that month in current year" ')
+call unit_check_start('mo2d           ',SAME//' "return date array for beginning of given month name in specified year" ')
 call test_mo2d()
 call unit_check_start('mo2v           ',SAME//' "given month as name return month number (1-12) of that month" ')
 call test_mo2v()

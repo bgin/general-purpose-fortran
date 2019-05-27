@@ -20,7 +20,8 @@ help_text=[ CHARACTER(LEN=128) :: &
 'OPTIONS                                                                         ',&
 '   characters  Set of letters to compose string from.                           ',&
 '               Defaults to ''0123456789abcdef''.                                ',&
-'   -n          Number of digits. Defaults to 128                                ',&
+'   -n N        Number of digits. Defaults to 128                                ',&
+'   -r N        Number of cookies to generate                                    ',&
 '   --version   Display version information and exit.                            ',&
 '   --help      Display help text and exit.                                      ',&
 'EXAMPLE                                                                         ',&
@@ -45,7 +46,8 @@ end subroutine help_usage
 !!##OPTIONS
 !!    characters  Set of letters to compose string from.
 !!                Defaults to '0123456789abcdef'.
-!!    -n          Number of digits. Defaults to 128
+!!    -n N        Number of digits. Defaults to 128
+!!    -r N        Number of cookies to generate
 !!    --version   Display version information and exit.
 !!    --help      Display help text and exit.
 !!##EXAMPLE
@@ -64,18 +66,23 @@ intrinsic random_number
 integer :: length
 character(len=:),allocatable :: out
 character(len=:),allocatable :: chars
-   call kracken('key','-n 128 -help .false. -version .false.') ! define command arguments, default values and crack command line
+integer                      :: i
+integer                      :: r
+   call kracken('key','-n 128 -r 1 -help .false. -version .false.') ! define command arguments, default values; crack command line
    call help_usage(lget('key_help'))                           ! if -help option is present, display help text and exit
    call help_version(lget('key_version'))                      ! if -version option is present, display version text and exit
    length=iget('key_n')
+   r=iget('key_r')
    chars=trim(sget('key_oo'))
    if(chars.eq.'')then
       chars='0123456789abcdef'
    endif
 
    call init_random_seed_by_dat()
-   out=random_string(chars,length)
-   write(*,'(a)')out
+   do i=1,r
+      out=random_string(chars,length)
+      write(*,'(a)')out
+   enddo
 !-----------------------------------------------------------------------------------------------------------------------------------
 contains
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -95,7 +102,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20171219>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Mon, Mar 25th, 2019 12:23:26 AM>',&
+'@(#)COMPILED:       Sat, May 25th, 2019 6:44:45 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

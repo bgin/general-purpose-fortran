@@ -19,9 +19,6 @@ DESCRIPTION
        Do not change binary files with this program, which uses sequential
        access to read and write the files. It can corrupt binary files.
 
-       It does not yet create unique scratch filenames in a way that will work
-       if more than one instance of the command is running and file leaves are
-       the same.
 OPTIONS
        -c /from/to/  "from" represents a string to look for and "to" represents
                      its replacement.
@@ -52,6 +49,7 @@ use M_strings, only : replace
 use M_kracken, only : kracken, lget, sget, sgets
 use M_kracken, only : IPvalue ! length of keyword value
 use M_kracken, only : kracken_comment
+use M_io,      only : scratch
 implicit none
 logical                            :: verbose
 logical                            :: dryrun
@@ -111,7 +109,7 @@ logical                      :: exists, open
       exit OKBLOCK
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
-   scratch_file='_@(#)'//filenames(i)
+   scratch_file=scratch()
    open(newunit=lun_out,      &
       & file=scratch_file,    &
       & iostat=ios,           &

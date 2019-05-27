@@ -31,6 +31,17 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                                                                                ',&
 '        $ compute funcs # list available functions                              ',&
 '                                                                                ',&
+'        compute                                                                 ',&
+'        a=10                                                                    ',&
+'        # M_history::redo is used for command recall and history                ',&
+'        b=sin(a)**2+3.4e2+100-11*2/55.6                                         ',&
+'        ! c/sin/cos                                                             ',&
+'                                                                                ',&
+'        # system commands can be called                                         ',&
+'        !ls                                                                     ',&
+'        # exit                                                                  ',&
+'        .                                                                       ',&
+'                                                                                ',&
 'SEE ALSO                                                                        ',&
 '       M_calculator(3fm)                                                        ',&
 '']
@@ -65,6 +76,17 @@ end subroutine help_usage
 !!
 !!         $ compute funcs # list available functions
 !!
+!!         compute
+!!         a=10
+!!         # M_history::redo is used for command recall and history
+!!         b=sin(a)**2+3.4e2+100-11*2/55.6
+!!         ! c/sin/cos
+!!
+!!         # system commands can be called
+!!         !ls
+!!         # exit
+!!         .
+!!
 !!##SEE ALSO
 !!        M_calculator(3fm)
 !===================================================================================================================================
@@ -87,7 +109,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Mon, Mar 25th, 2019 8:24:07 AM>',&
+'@(#)COMPILED:       Sat, May 25th, 2019 6:23:36 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -95,15 +117,18 @@ endif
 end subroutine help_version
 !-----------------------------------------------------------------------------------------------------------------------------------
 program compute
-use M_kracken, only : kracken, sget, lget
-use m_calculator, only : jucalc,iclen_calc
-use M_io, only :  read_line
+use M_kracken,    only : kracken, sget, lget
+use M_calculator, only : jucalc,iclen_calc
+use M_history,    only : redo
+use M_io,         only : read_line
 !use M_noown, only     : juown1, c
 implicit real(kind=selected_real_kind(15,300)) (a-h, o-z)
-character(len=iclen_calc) :: line
-character(len=iclen_calc) :: outlin
-character(len=iclen_calc) :: event
+character(len=iclen_calc)    :: line
+character(len=iclen_calc)    :: outlin
+character(len=iclen_calc)    :: event
 character(len=:),allocatable :: readin
+character(len=256)           :: csys
+integer                      :: isys, esys
 doubleprecision           :: rvalue
 integer                   :: ierr=0
 logical                   :: verbose
@@ -119,7 +144,13 @@ logical                   :: verbose
       INFINITE: do while (read_line(readin)==0)        ! no expressions on command line to read expressions from stdin
          if(readin.eq.'.')exit INFINITE                ! quit if user enters command "."
          line=readin
-         call processit()
+         call redo(line,r='!')                         ! command history
+         if(line(1:1).eq.'!')then                      ! system command
+            call execute_command_line(line(2:),exitstat=esys,cmdstat=isys,cmdmsg=csys)   ! try as system command
+         elseif(adjustl(line(1:1)).eq.'#')then         ! comment
+         else                                          ! expression
+            call processit()
+         endif
       enddo INFINITE
    endif
 contains

@@ -9,7 +9,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'   change(1f) - [FILE EDIT] replace old fixed string with new fixed string in filenames',&
+'   change(1f) - [FILE EDIT] replace old fixed string with new fixed string in names of files',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   change c/old/new/ FILENAMES [-dryrun][-cmd COMMAND]| --version| --help       ',&
@@ -45,7 +45,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    change(1f) - [FILE EDIT] replace old fixed string with new fixed string in filenames
+!!    change(1f) - [FILE EDIT] replace old fixed string with new fixed string in names of files
 !!
 !!##SYNOPSIS
 !!
@@ -90,7 +90,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    rename files by changing old fixed string to new string>',&
 '@(#)VERSION:        1.0, 2017-06-29>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sun, Mar 24th, 2019 11:55:21 PM>',&
+'@(#)COMPILED:       Sat, May 25th, 2019 6:19:33 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

@@ -24,7 +24,6 @@ public anyinteger_to_64bit  ! convert integer parameter of any kind to 64-bit in
 public anyscalar_to_real    ! convert integer or real parameter of any kind to real
 public anyscalar_to_double  ! convert integer or real parameter of any kind to doubleprecision
 public test_suite_M_anything
-
 public anything_to_bytes
 interface anything_to_bytes
    module procedure anything_to_bytes_arr
@@ -320,17 +319,26 @@ implicit none
 character(len=*),parameter::ident_3="&
 &@(#)M_anything::anyscalar_to_double(3f): convert integer or real parameter of any kind to doubleprecision"
 
-class(*),intent(in)     :: valuein
-doubleprecision      :: d_out
+class(*),intent(in)       :: valuein
+doubleprecision           :: d_out
+doubleprecision,parameter :: big=huge(0.0d0)
    select type(valuein)
-   type is (integer(kind=int8));   d_out=real(valuein)
-   type is (integer(kind=int16));  d_out=real(valuein)
-   type is (integer(kind=int32));  d_out=real(valuein)
-   type is (integer(kind=int64));  d_out=real(valuein)
-   type is (real(kind=real32));    d_out=real(valuein)
-   type is (real(kind=real64));    d_out=real(valuein)
-   type is (real(kind=real128));   d_out=real(valuein)
-!   type is (real(kind=real256));   d_out=real(valuein)
+   type is (integer(kind=int8));   d_out=dble(valuein)
+   type is (integer(kind=int16));  d_out=dble(valuein)
+   type is (integer(kind=int32));  d_out=dble(valuein)
+   type is (integer(kind=int64));  d_out=dble(valuein)
+   type is (real(kind=real32));    d_out=dble(valuein)
+   type is (real(kind=real64));    d_out=dble(valuein)
+   type is (real(kind=real128))
+      !!if(valuein.gt.big)then
+      !!   write(error_unit,*)'*anyscalar_to_double* value too large ',valuein
+      !!endif
+      d_out=dble(valuein)
+   !type is (real(kind=real256))
+   !   if(valuein.gt.big)then
+   !      write(error_unit,*)'*anyscalar_to_double* value too large ',valuein
+   !   endif
+   !   d_out=dble(valuein)
    class default
      d_out=0.0d0
      !!stop '*M_anything::anyscalar_to_double: unknown type'
@@ -383,7 +391,7 @@ end function anyscalar_to_double
 !!        write(*,*)squarei(2_int64)
 !!        write(*,*)squarei(2_real32)
 !!        write(*,*)squarei(2_real64)
-!!        !!write(*,*)squarei(2_real128)
+!!        write(*,*)squarei(2_real128)
 !!        write(*,*)squarei(2_real256)
 !!     contains
 !!
@@ -404,17 +412,26 @@ implicit none
 
 character(len=*),parameter::ident_4="@(#)M_anything::anyscalar_to_real(3f): convert integer or real parameter of any kind to real"
 
-class(*),intent(in)     :: valuein
-   real              :: r_out
+class(*),intent(in) :: valuein
+real                :: r_out
+real,parameter      :: big=huge(0.0)
    select type(valuein)
    type is (integer(kind=int8));   r_out=real(valuein)
    type is (integer(kind=int16));  r_out=real(valuein)
    type is (integer(kind=int32));  r_out=real(valuein)
    type is (integer(kind=int64));  r_out=real(valuein)
    type is (real(kind=real32));    r_out=real(valuein)
-   type is (real(kind=real64));    r_out=real(valuein)
-   type is (real(kind=real128));   r_out=real(valuein)
-!   type is (real(kind=real256));   r_out=real(valuein)
+   type is (real(kind=real64))
+      !!if(valuein.gt.big)then
+      !!   write(error_unit,*)'*anyscalar_to_real* value too large ',valuein
+      !!endif
+      r_out=real(valuein)
+   type is (real(kind=real128))
+      !!if(valuein.gt.big)then
+      !!   write(error_unit,*)'*anyscalar_to_real* value too large ',valuein
+      !!endif
+      r_out=real(valuein)
+   !type is (real(kind=real256));   r_out=real(valuein)
    end select
 end function anyscalar_to_real
 !===================================================================================================================================
@@ -503,13 +520,11 @@ class(*),intent(in)     :: intin
    end select
 end function anyinteger_to_64bit
 !===================================================================================================================================
-!===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 subroutine test_suite_M_anything()
 !! setup
    call test_anyinteger_to_64bit()
-   call test_anyinteger_to_128bit()
    call test_anyscalar_to_real()
    call test_anyscalar_to_double()
    call test_anything_to_bytes()
@@ -518,49 +533,74 @@ subroutine test_suite_M_anything()
 !!teardown
 contains
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_anyinteger_to_128bit()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('anyinteger_to_128bit',msg='')
-   !!call unit_check('anyinteger_to_128bit', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('anyinteger_to_128bit',msg='')
-end subroutine test_anyinteger_to_128bit
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_anyinteger_to_64bit()
 
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
-   call unit_check_start('anyinteger_to_64bit',msg='')
-   !!call unit_check('anyinteger_to_64bit', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('anyinteger_to_64bit',msg='')
+call unit_check_start('anyinteger_to_64bit',msg='')
+call unit_check('anyinteger_to_64bit',anyinteger_to_64bit(huge(0_int8)) .eq.127_int64, msg=msg(huge(0_int8)))
+call unit_check('anyinteger_to_64bit',anyinteger_to_64bit(huge(0_int16)).eq.32767_int64, msg=msg(huge(0_int16)))
+call unit_check('anyinteger_to_64bit',anyinteger_to_64bit(huge(0_int32)).eq.2147483647_int64, msg=msg(huge(0_int32)))
+call unit_check('anyinteger_to_64bit',anyinteger_to_64bit(huge(0_int64)).eq.9223372036854775807_int64, msg=msg(huge(0_int64)))
+call unit_check_done('anyinteger_to_64bit',msg='')
 end subroutine test_anyinteger_to_64bit
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_anyscalar_to_double()
 
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
-   call unit_check_start('anyscalar_to_double',msg='')
-   !!call unit_check('anyscalar_to_double', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('anyscalar_to_double',msg='')
+real :: infinity
+!!character(len=*),parameter :: line='infinity'
+character(len=8)           :: line='infinity'
+read(line,*)infinity
+call unit_check_start('anyscalar_to_double',msg='')
+call unit_check('anyscalar_to_double',anyscalar_to_double(huge(0_int8))     .eq. huge(0_int8),     msg=msg(huge(0_int8)))
+call unit_check('anyscalar_to_double',anyscalar_to_double(huge(0_int16))    .eq. huge(0_int16),    msg=msg(huge(0_int16)))
+call unit_check('anyscalar_to_double',anyscalar_to_double(huge(0_int32))    .eq. huge(0_int32),    msg=msg(huge(0_int32)))
+call unit_check('anyscalar_to_double',anyscalar_to_double(huge(0_int64))    .eq. huge(0_int64),    msg=msg(huge(0_int64)))
+call unit_check('anyscalar_to_double',anyscalar_to_double(huge(0.0_real32)) .eq. huge(0.0_real32), msg=msg(huge(0.0_real32)))
+call unit_check('anyscalar_to_double',anyscalar_to_double(huge(0.0_real64)) .eq. huge(0.0_real64), msg=msg(huge(0.0_real64)))
+
+call unit_check('anyscalar_to_double',anyscalar_to_double(huge(0.0_real128))  .eq.  infinity,      msg=msg(huge(0.0_real128)))
+call unit_check('anyscalar_to_double',anyscalar_to_double(1234.0_real128)  .eq.  1234.0_real128,   msg=msg(1234.0_real128))
+call unit_check_done('anyscalar_to_double',msg='')
 end subroutine test_anyscalar_to_double
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_anyscalar_to_real()
 
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
-   call unit_check_start('anyscalar_to_real',msg='')
-   !!call unit_check('anyscalar_to_real', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('anyscalar_to_real',msg='')
+real :: infinity
+!!character(len=*),parameter :: line='infinity'
+character(len=8)           :: line='infinity'
+read(line,*)infinity
+call unit_check_start('anyscalar_to_real',msg='')
+call  unit_check('anyscalar_to_real',anyscalar_to_real(huge(0_int8))       .eq.  real(huge(0_int8)),     msg=msg(huge(0_int8)))
+call  unit_check('anyscalar_to_real',anyscalar_to_real(huge(0_int16))      .eq.  real(huge(0_int16)),    msg=msg(huge(0_int16)))
+call  unit_check('anyscalar_to_real',anyscalar_to_real(huge(0_int32))      .eq.  real(huge(0_int32)),    msg=msg(huge(0_int32)))
+call  unit_check('anyscalar_to_real',anyscalar_to_real(huge(0_int64))      .eq.  real(huge(0_int64)),    msg=msg(huge(0_int64)))
+call  unit_check('anyscalar_to_real',anyscalar_to_real(huge(0.0_real32))   .eq.  real(huge(0.0_real32)), msg=msg(huge(0.0_real32)))
+
+call  unit_check('anyscalar_to_real',anyscalar_to_real(huge(0.0_real64))   .eq.  infinity,               msg=msg(huge(0.0_real64)))
+call  unit_check('anyscalar_to_real',anyscalar_to_real(huge(0.0_real128))  .eq.  infinity,               msg=msg(huge(0.0_real128)))
+call  unit_check('anyscalar_to_real',anyscalar_to_real(1234.0_real64)   .eq.  1234.0_real64,   msg=msg(1234.0_real64))
+call  unit_check('anyscalar_to_real',anyscalar_to_real(1234.0_real128)  .eq.  1234.0_real128,  msg=msg(1234.0_real128))
+call unit_check_done('anyscalar_to_real',msg='')
 end subroutine test_anyscalar_to_real
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_anything_to_bytes()
 
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
-   call unit_check_start('anything_to_bytes',msg='')
-   !!call unit_check('anything_to_bytes_arr', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('anything_to_bytes',msg='')
+call unit_check_start('anything_to_bytes',msg='')
+call  unit_check('anything_to_bytes',any(anything_to_bytes(huge(0_int8))      .eq. transfer(huge(0_int8),'A')),  msg=msg(''))
+call  unit_check('anything_to_bytes',any(anything_to_bytes(huge(0_int16))     .eq. transfer(huge(0_int16),'A')),  msg=msg(''))
+call  unit_check('anything_to_bytes',any(anything_to_bytes(huge(0_int32))     .eq. transfer(huge(0_int32),'A')),  msg=msg(''))
+call  unit_check('anything_to_bytes',any(anything_to_bytes(huge(0_int64))     .eq. transfer(huge(0_int64),'A')),  msg=msg(''))
+call  unit_check('anything_to_bytes',any(anything_to_bytes(huge(0.0_real32))  .eq. transfer(huge(0.0_real32),'A')),  msg=msg(''))
+call  unit_check('anything_to_bytes',any(anything_to_bytes(huge(0.0_real64))  .eq. transfer(huge(0.0_real64),'A')),  msg=msg(''))
+call  unit_check('anything_to_bytes',any(anything_to_bytes(huge(0.0_real128)) .eq. transfer(huge(0.0_real128),'A')),  msg=msg(''))
+call unit_check_done('anything_to_bytes',msg='')
 end subroutine test_anything_to_bytes
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_empty

@@ -194,7 +194,7 @@ do i=1,size(array)
    endif
 enddo
 
-do i=size(array),items-1
+do i=size(array)+1,items
    write(*,'(" <td> &nbsp; </td>")')
 enddo
 

@@ -13,6 +13,7 @@ append("decodebase.3.html");
 append("delim.3.html");
 append("describe.3.html");
 append("expand.3.html");
+append("fmt.3.html");
 append("getvals.3.html");
 append("indent.3.html");
 append("isalnum.3.html");

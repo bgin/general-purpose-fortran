@@ -86,6 +86,9 @@ use M_kracken, only  : kracken, rget, lget, sgets, sget
 use M_system, only : system_opendir,system_readdir, system_closedir, system_stat, system_isdir
 use iso_c_binding, only : c_ptr
 implicit none
+
+$@(#) _ls(1f): list files in a directory
+
 character(len=:),allocatable :: directories(:)
 character(len=:),allocatable :: directory
 type(c_ptr)                  :: dir

@@ -281,22 +281,24 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 </td>
 <tr><td><a href="M_io.f90">M_io.f90</a></td>
 <td>
-	M_io::read_table(3f): read file containing a table of numeric values <br/>
-	M_io::rd(3f): ask for string or number  from standard input with user-definable prompt<br/>
-	M_io::uniq(3f):append a number to the end of filename to make a unique name if name exists<br/>
+	M_io::read_table(3f): read file containing a table of numeric values<br/>
+	M_io::rd(3f): ask for string or number from standard input with user-definable prompt<br/>
+	M_io::uniq(3f): append a number to the end of filename to make a unique name if name exists<br/>
 	M_io::print_inquire(3f): Do INQUIRE on file by name/number and print results<br/>
-	M_io::slurp(3f):allocate text array and read file filename into it<br/>
+	M_io::slurp(3f): allocate text array and read file filename into it<br/>
 	M_io::notopen(3f): find free FORTRAN unit number to OPEN() a file<br/>
-	M_io::dirname(3f):strip last component from filename<br/>
-	M_io::splitpath(3f):split Unix pathname into components (dir,name,basename,extension)<br/>
+	M_io::dirname(3f): strip last component from filename<br/>
+	M_io::splitpath(3f): split Unix pathname into components (dir,name,basename,extension)<br/>
 	M_io::isdir(3f): determine if DIRNAME is a directory name ON UNIX-COMPATIBLE file systems<br/>
 	M_io::read_all(3f): read a line from specified LUN into allocatable string up to line length limit<br/>
 	M_io::read_line(3f): read a line from specified LUN into allocatable string up to line length limit<br/>
 	M_io::get_tmp(3f): Return the name of the scratch directory<br/>
+	M_io::scratch(3f): Return the name of a scratch file<br/>
 </td>
 <tr><td><a href="M_journal.f90">M_journal.f90</a></td>
 <td>
 	M_journal::journal(3fg): provides public message routine, no paging or graphic mode change<br/>
+	M_debug::wm_all(3f): writes a message to a string composed of any standard scalar types<br/>
 </td>
 <tr><td><a href="M_kracken.f90">M_kracken.f90</a></td>
 <td>
@@ -368,6 +370,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_math::scale1(3f):given xmin,xmax,n, find new range xminp xmaxp divisible into approximately n linear intervals of size dist<br/>
 	M_math::scale3(3f):find nice log range.<br/>
 	M_math::quadratic(3f): calculate the roots of a quadratic formula even if they are complex<br/>
+	m_matrix::magic_square(3f): create a magic square<br/>
 	m_matrix::iswap(3f): swap two integer arrays<br/>
 	M_math::invert_2x2(3f): performs a direct calculation of the inverse of a 2x2 matrix<br/>
 	M_math::invert_3x3(3f): performs a direct calculation of the inverse of a 3x3 matrix<br/>
@@ -566,6 +569,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_strings::replace(3f): Globally replace one substring for another in string<br/>
 	M_strings::substitute(3f): Globally substitute one substring for another in string<br/>
 	M_strings::change(3f): change a character string like a line editor<br/>
+	M_strings::strtok(3f): Tokenize a string<br/>
 	 M_strings::modif(3f): Emulate the MODIFY command from the line editor XEDIT<br/>
 	M_strings::len_white(3f): return position of last non-blank/non-null character in string<br/>
 	M_strings::crop(3f): trim leading and trailings blanks from string<br/>
@@ -613,6 +617,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_strings::base(3f): convert whole number string in base [2-36] to string in alternate base [2-36]<br/>
 	M_strings::decodebase(3f): convert whole number string in base [2-36] to base 10 number<br/>
 	M_strings::codebase(3f): convert whole number in base 10 to string in base [2-36]<br/>
+	M_strings::fmt(3f): wrap a long string into a paragraph<br/>
 	M_strings::construct_from_fill(3f): construct TYPE(STRING)<br/>
 	M_strings::oop_len(3f): length of string<br/>
 	M_strings::oop_len_trim(3f): trimmed length of string<br/>
@@ -704,7 +709,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_time::ordinal_to_date(3f): when given a valid year and day of the year returns the DAT array for the date<br/>
 	M_time::o2d(3f): Converts ordinal day to DAT date-time array<br/>
 	M_time::v2mo(3f): returns the month name of a Common month number<br/>
-	M_time::mo2d(3f): month name to DAT date-time array for 1st of that month in current year<br/>
+	M_time::mo2d(3f): month name to DAT date-time array for 1st of that month in specified year<br/>
 	M_time::mo2v(3f): given month name return month number (1-12) of that month<br/>
 	M_time::now(3f): return string representing current time given format<br/>
 	M_time::fmtdate(3f): given DAT date-time array return date as string using format<br/>
@@ -773,6 +778,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_units::atomnum2symbol(3f): return element symbol given atomic number<br/>
 	M_units::symbol2atomnum(3f): return atomic number given element symbol name<br/>
 	M_units::pounds_to_kilograms(3f): converts a measurement in pounds to kilograms.<br/>
+	M_units::isnan(3f): determine if value is  IEEE Not-a-Number<br/>
 </td>
 <tr><td><a href="M_uuid.f90">M_uuid.f90</a></td>
 <td>

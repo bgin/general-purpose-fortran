@@ -36,6 +36,7 @@
 !!
 !!       function nan()
 !!       function inf()
+!!       function isnan()
 !!
 !!   Simple constants:
 !!
@@ -1851,6 +1852,27 @@ real(kind=real128) :: nan128,value
       stop
    endif
 end function nan128
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!===================================================================================================================================
+function isnan(x)
+!!use IEEE_EXCEPTIONS, only : ieee_support_nan ! is IEEE NaNs supported?
+use IEEE_ARITHMETIC, only : IEEE_IS_NAN       ! Determine if value is IEEE Not-a-Number.
+use,intrinsic :: iso_fortran_env, only : int8, int16, int32, int64, real32, real64, real128
+
+character(len=*),parameter::ident_35="@(#)M_units::isnan(3f): determine if value is  IEEE Not-a-Number"
+
+class(*),intent(in) :: x
+logical             :: isnan
+   select type(x)
+      type is (real(kind=real32));      isnan=ieee_is_nan(x)
+      type is (real(kind=real64));      isnan=ieee_is_nan(x)
+      type is (real(kind=real128));     isnan=ieee_is_nan(x)
+      type is (complex);                isnan=ieee_is_nan(real(x)).and.ieee_is_nan(aimag(x))
+      !!type is (complex);                isnan=ieee_is_nan(x%re).and.ieee_is_nan(x%im)
+   end select
+end function isnan
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================

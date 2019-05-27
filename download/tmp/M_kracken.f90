@@ -377,7 +377,9 @@ end function iget
 !!##RETURNS
 !!     lval       logical value returned by function. The input value should be
 !!                from the case-insensitive list of the words "true, false,
-!!                t, f, yes, no, y, n, .false., .true., .f., .t".
+!!                t, f, yes, no, y, n, .false., .true., .f., .t.,''". .TRUE. is returned
+!!                if the corresponding string in the dictionary for KEYWORD is blank.
+!!                .FALSE. is returned if a string not in the list is found.
 !!
 !!##EXAMPLE
 !!
@@ -416,29 +418,33 @@ function lget(keyword)
 character(len=*),parameter::ident_6="@(#)M_kracken::lget(3f): given keyword fetch logical value from lang. dictionary (.f. on err)"
 
 !-----------------------------------------------------------------------------------------------------------------------------------
-logical                      :: lget               ! procedure type
-character(len=*),intent(in)  :: keyword            ! the dictionary keyword (in form VERB_KEYWORD) to retrieve
+logical                      :: lget                  ! procedure type
+character(len=*),intent(in)  :: keyword               ! the dictionary keyword (in form VERB_KEYWORD) to retrieve
 !-----------------------------------------------------------------------------------------------------------------------------------
-   character(len=:),allocatable :: value           ! value corresponding to the requested keyword
+   character(len=:),allocatable :: value              ! value corresponding to the requested keyword
 !-----------------------------------------------------------------------------------------------------------------------------------
 !  ignore a leading dot character. Then, any word starting in "T" or "Y" is true, any word starting in "F" or "N" is false.
-   value=trim(adjustl(upper(sget(keyword))))//' '  ! get value as uppercase, spaces trimmed, then add trailing space
-   lget=.false.                                    ! initialize return value to .false.
-   if(value.ne."#N#".and.value.ne.'"#N#"')then
-      select case(value(1:1))                      ! check first letter
-      case('T','Y',' ') ; lget=.true.              ! anything starting with "T" or "Y" or a blank is TRUE (true,t,yes,y,...)
-      case('F','N')     ; lget=.false.             ! assume this is false or no
-      case('.')                                    ! looking for fortran logical syntax .STRING.
-         select case(value(2:2))
-         case('T')      ; lget=.true.              ! assume this is .t. or .true.
-         case('F')      ; lget=.false.             ! assume this is .f. or .false.
+   if(len(sget(keyword)).ne.0)then
+      value=trim(adjustl(upper(sget(keyword))))//' '  ! get value as uppercase, spaces trimmed, then add trailing space
+      lget=.false.                                    ! initialize return value to .false.
+      if(value.ne."#N#".and.value.ne.'"#N#"')then
+         select case(value(1:1))                      ! check first letter
+         case('T','Y',' ') ; lget=.true.              ! anything starting with "T" or "Y" or a blank is TRUE (true,t,yes,y,...)
+         case('F','N')     ; lget=.false.             ! assume this is false or no
+         case('.')                                    ! looking for fortran logical syntax .STRING.
+            select case(value(2:2))
+            case('T')      ; lget=.true.              ! assume this is .t. or .true.
+            case('F')      ; lget=.false.             ! assume this is .f. or .false.
+            case default
+               call journal("*lget* bad logical expression for "//trim(keyword)//'='//value)
+            end select
          case default
-            call journal("*lget* bad logical expression for "//trim(keyword)//'='//value)
+               call journal("*lget* bad logical expression for "//trim(keyword)//'='//value)
          end select
-      case default
-            call journal("*lget* bad logical expression for "//trim(keyword)//'='//value)
-      end select
-   else                                            ! special value "#N#" is assumed FALSE
+      else                                            ! special value "#N#" is assumed FALSE
+         lget=.false.
+      endif
+   else
       lget=.false.
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -467,10 +473,10 @@ end function lget
 !!             KRACKEN(3f) call. The KEYWORD is a keyword from the second
 !!             argument to the KRACKEN(3f) call.
 !!             This routine trusts that the desired name exists.
-!!             A blank is returned if the name is not in the dictionary
 !!
 !!##RETURNS
-!!     string  returned string
+!!     string  returned string. If LEN(STRING).EQ.0 an error occurred, such
+!!             as NAME not being in the dictionary.
 !!     ilen    optional length of returned output string
 !!
 !!##EXAMPLE
@@ -525,9 +531,10 @@ integer,intent(out),optional  :: ilen        ! length of returned output string
    isub=subscript(name)                      ! given name return index name is stored at
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(isub > 0)then                          ! if index is valid return string
-      string=dict_vals(isub)
+      string=trim(dict_vals(isub))
+      if(len(string).eq.0)string=" "
    else                                      ! if index is not valid return blank string
-      string=" "
+      string=""
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(present(ilen))then                     ! if ILEN is present on call, return the value
@@ -553,13 +560,14 @@ end function sget
 !!     doubleprecision values from a string that is the value for a command
 !!     line option. It is part of the M_kracken(3fp) module.
 !!
-!!     Values that cannot be read as a numeric value are returned as a zero (0).
+!!     Values that cannot be read as a numeric value are returned as a NaN.
 !!##OPTIONS
 !!     keyword  dictionary name to retrieve, of form VERB_NAME where VERB
 !!              is taken from the first parameter of the call to KRACKEN(3f)
 !!              or DISSECT(3f).
 !!##RETURNS
-!!     darray   double precision numeric array returned by function
+!!     darray   double precision numeric array returned by function. The array
+!!              will have zero size if the parsed dictionary entry is blank.
 !!##EXAMPLE
 !!
 !!   Sample program
@@ -603,7 +611,11 @@ real(kind=dp),allocatable   :: darray(:)                    ! function type
    integer                            :: i
    integer                            :: ier
 !-----------------------------------------------------------------------------------------------------------------------------------
-   call split(sget(keyword),carray)                         ! find value associated with keyword and split it into an array
+   if(sget(keyword).ne.' ')then
+      call split(sget(keyword),carray)                      ! find value associated with keyword and split it into an array
+   else
+      allocate(carray(0))
+   endif
    allocate(darray(size(carray)))                           ! create the output array
    do i=1,size(carray)
       call string_to_value(carray(i), darray(i), ier)       ! convert the string to a numeric value
@@ -627,7 +639,7 @@ end function dgets
 !!     from a string that is the value for a command line option. It is part of
 !!     the M_kracken(3fp) module.
 !!
-!!     Values that cannot be read as an integer value are returned as a zero (0).
+!!     Values that cannot be read as an integer value are returned as a NaN.
 !!
 !!##OPTIONS
 !!     KEYWORD    the dictionary keyword (in form VERB_KEYWORD) to retrieve.
@@ -638,6 +650,8 @@ end function dgets
 !!
 !!##RETURNS
 !!     IARRAY     INTEGER array returned by function
+!!                The array will have zero size if the parsed dictionary
+!!                entry is blank.
 !!
 !!##EXAMPLE
 !!
@@ -698,7 +712,7 @@ end function igets
 !!     from a string that is the value for a command line option. It is part of
 !!     the M_kracken(3fp) module.
 !!
-!!     Values that cannot be read as a numeric value are returned as a zero (0).
+!!     Values that cannot be read as a numeric value are returned as a NaN.
 !!
 !!##OPTIONS
 !!     KEYWORD    the dictionary keyword (in form VERB_KEYWORD) to retrieve.
@@ -707,7 +721,9 @@ end function igets
 !!                should be interpreted as a list of REAL values.
 !!
 !!##RETURNS
-!!     RARRAY     real array returned by function
+!!     RARRAY     real array returned by function.
+!!                The array will have zero size if the parsed dictionary
+!!                entry is blank.
 !!
 !!##EXAMPLE
 !!
@@ -841,6 +857,7 @@ logical,allocatable          :: larray(:)                  ! convert value to an
    integer                            :: i
    integer                            :: ichar             ! point to first character of word unless first character is "."
 !-----------------------------------------------------------------------------------------------------------------------------------
+   if(len(sget(keyword)).ne.0)then
    call split(adjustl(upper(sget(keyword))),carray)        ! convert value to uppercase, left spaces trimmed; then parse into array
    if(size(carray).gt.0)then                                  ! if not a null string
       allocate(larray(size(carray)))                          ! allocate output array
@@ -865,6 +882,10 @@ logical,allocatable          :: larray(:)                  ! convert value to an
    else                                                       ! for a blank string return one T
       allocate(larray(1))                                     ! allocate output array
       larray(1)=.true.
+   endif
+   else
+      allocate(larray(1))                                     ! allocate output array
+      larray(1)=.false.
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
 end function lgets
@@ -892,7 +913,8 @@ end function lgets
 !!              KRACKEN(3f) or DISSECT(3f) call. The KEYWORD is a keyword from the second
 !!              argument to the KRACKEN(3f) or DISSECT(3f) call.
 !!              This routine trusts that the desired name exists.
-!!              A blank is returned if the name is not in the dictionary.
+!!              If the name does not exist the array [char(0)] is returned.
+!!              An array of zero size is returned if the string is blank.
 !!     delim    characters to split the string at into elements
 !!
 !!##RETURNS
@@ -929,8 +951,8 @@ function sgets(name,delim) result(strings)
 character(len=*),parameter::ident_12="@(#)M_kracken::sgets(3f): Fetch strings value for specified NAME from the lang. dictionary"
 
 ! This routine trusts that the desired name exists. A blank is returned if the name is not in the dictionary
-character(len=IPvalue),allocatable  :: strings(:)
-character(len=*),intent(in)         :: name                       ! name to look up in dictionary
+character(len=IPvalue),allocatable   :: strings(:)
+character(len=*),intent(in)          :: name                       ! name to look up in dictionary
 character(len=*),intent(in),optional :: delim
 !-----------------------------------------------------------------------------------------------------------------------------------
    integer                          :: isub                       ! index where verb_oo is stored or -1 if this is an unknown name
@@ -945,7 +967,7 @@ character(len=*),intent(in),optional :: delim
       endif
    else                                                           ! if index is not valid return blank string
       allocate(character(len=IPvalue) :: strings(1))
-      strings(1)=" "
+      strings(1)=char(0)
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
 end function sgets
@@ -1181,6 +1203,20 @@ end subroutine setprompts
 !!    ERROR_RETURN  error code. If zero no error occurred.
 !!
 !!##EXAMPLE
+!!
+!!   Sample program:
+!!
+!!     program demo_dissect
+!!     use M_kracken, only : kracken,iget,rget,sget,dissect
+!!     integer :: ierr
+!!     implicit none
+!!
+!!     call dissect('demo',' -int 1000 -float 1234.567 -str CHARACTER value','-int 456 -float 50.00 ',ierr)
+!!     write(*,'(a,i0)')'INTEGER IS ',iget('demo_int')
+!!     write(*,'(a,g0)')'REAL IS ',rget('demo_float')
+!!     write(*,'(a,a)')'STRING IS '//trim(sget('demo_str'))
+!!
+!!     end program demo_dissect
 !!
 !!##SEE ALSO
 !!    M_kracken, kracken
@@ -2399,43 +2435,63 @@ end subroutine initd
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 subroutine test_suite_M_kracken()
+use IEEE_ARITHMETIC, only : IEEE_IS_NAN       ! Determine if value is IEEE Not-a-Number.
+!!use,intrinsic :: iso_fortran_env, only : int8, int16, int32, int64, real32, real64, real128
 
 !! setup
-   call test_dget()
-   call test_dgets()
-   call test_dissect()
-   call test_iget()
-   call test_igets()
+call test_dget()
+call test_dgets()
+call test_iget()
+call test_igets()
+call test_lget()
+call test_lgets()
+call test_rget()
+call test_rgets()
+call test_sget()
+call test_sgets()
+call test_store()
+call test_retrev()
+call test_parse()
+call test_dissect()
    call test_kracken()
-   call test_lget()
-   call test_lgets()
-   call test_parse()
-   call test_retrev()
-   call test_rget()
-   call test_rgets()
    call test_setprompts()
-   call test_sget()
-   call test_sgets()
    call test_show()
-   call test_store()
 !! teardown
 contains
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_dget()
-
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
-   call unit_check_start('dget',msg='')
-   !!call unit_check('dget', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('dget',msg='')
+integer        :: ier
+   call unit_check_start('dget',msg=' direct tests of dget(3f)')
+   call store('MY_DOUBLE1',huge(0.0d0),'define',ier)
+   call store('MY_DOUBLE2',-1234.0d-20,'define',ier)
+   call store('BAD','nN3.3','define',ier)
+   call store('BLANK',' ','define',ier)
+   call unit_check('dget', dget('MY_DOUBLE1').eq.huge(0.0d0), msg=msg('MY_DOUBLE1',dget('MY_DOUBLE1')))
+   call unit_check('dget', dget('MY_DOUBLE2').eq.-1234.0d-20, msg=msg('MY_DOUBLE2',dget('MY_DOUBLE2')))
+   call unit_check('dget', dget('NOTTHERE').eq.0,             msg=msg('NOTTHERE',dget('NOTTHERE')))
+   call unit_check('dget', ieee_is_nan(dget('BAD')),          msg=msg('BAD',dget('BAD')))
+   call unit_check('dget', dget('BLANK').eq.0,                msg=msg('BLANK',dget('BLANK')))
+   call unit_check_done('dgets',msg='')
 end subroutine test_dget
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_dgets()
-
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
-   call unit_check_start('dgets',msg='')
-   !!call unit_check('dgets', 0.eq.0. msg=msg('checking',100))
+integer                     :: ier
+doubleprecision,allocatable :: d(:)
+   call unit_check_start('dgets',msg=' direct tests of dgets(3f)')
+   call store('MY_DOUBLE1','100.0d0 0.0d0 300.33333d2','define',ier)
+   call store('MY_DOUBLE2',-1234.0d-20,'define',ier)
+   call store('BAD','sfs','define',ier)
+   call store('BLANK',' ','define',ier)
+   call unit_check('dgets', all(dgets('MY_DOUBLE1').eq.[100.0d0,0.0d0,300.33333d2]),msg=msg('MY_DOUBLE1'))
+   call unit_check('dgets', all(dgets('MY_DOUBLE2').eq.[-1234.0d-20]),              msg=msg('MY_DOUBLE2'))
+   call unit_check('dgets', size(dgets('NOTTHERE')).eq.0,                           msg=msg('NOTTHERE'))
+   d=dgets('BAD')
+   call unit_check('dgets', size(d).eq.1.and.ieee_is_nan(d(1)),                     msg=msg('BAD'))
+   call unit_check('dgets', size(dgets('BLANK')).eq.0,                              msg=msg('BLANK'))
    call unit_check_done('dgets',msg='')
 end subroutine test_dgets
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -2443,26 +2499,47 @@ subroutine test_dissect()
 
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
+integer :: ierr
+   call dissect('demo',' -int 1000 -float 1234.567 -str CHARACTER value','-int 456 -float 50.00 ',ierr)
    call unit_check_start('dissect',msg='')
-   !!call unit_check('dissect', 0.eq.0. msg=msg('checking',100))
+   call unit_check('dissect', iget('demo_int').eq.456, msg=msg('demo_int',iget('demo_int')))
+   call unit_check('dissect', rget('demo_float').eq.50.0, msg=msg('demo_float',rget('demo_float')))
+   call unit_check('dissect', sget('demo_str').eq.'CHARACTER value', msg=msg('demo_str',sget('demo_str')))
    call unit_check_done('dissect',msg='')
 end subroutine test_dissect
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_iget()
-
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
-   call unit_check_start('iget',msg='')
-   !!call unit_check('iget', 0.eq.0. msg=msg('checking',100))
+integer        :: ier
+   call unit_check_start('iget',msg=' direct tests of iget(3f)')
+   call store('MY_INTEGER1',1234,'define',ier)
+   call store('MY_INTEGER2',-1234,'define',ier)
+   call store('BAD','3z4j','define',ier)
+   call store('BLANK',' ','define',ier)
+   call unit_check('iget', iget('MY_INTEGER1').eq.1234,  msg=msg('MY_INTEGER1',iget('MY_INTEGER1')))
+   call unit_check('iget', iget('MY_INTEGER2').eq.-1234, msg=msg('MY_INTEGER2',iget('MY_INTEGER2')))
+   call unit_check('iget', iget('NOTTHERE').eq.0,        msg=msg('NOTTHERE',iget('NOTTHERE')))
+   call unit_check('iget', iget('BLANK').eq.0,           msg=msg('BLANK',iget('BLANK')))
    call unit_check_done('iget',msg='')
 end subroutine test_iget
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_igets()
-
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
-   call unit_check_start('igets',msg='')
-   !!call unit_check('igets', 0.eq.0. msg=msg('checking',100))
+integer        :: ier
+real,allocatable :: i(:)
+   call unit_check_start('igets',msg=' direct tests of igets(3f)')
+   call store('MY_INTEGER1','100 0 -321','define',ier)
+   call store('MY_INTEGER2',-1234,'define',ier)
+   call store('BAD','sfs','define',ier)
+   call store('BLANK',' ','define',ier)
+   call unit_check('igets', all(igets('MY_INTEGER1').eq.[100,0,-321]), msg=msg('MY_INTEGER1'))
+   call unit_check('igets', all(igets('MY_INTEGER2').eq.[-1234]),      msg=msg('MY_INTEGER2'))
+   call unit_check('igets', size(igets('NOTTHERE')).eq.0,              msg=msg('NOTTHERE'))
+   i=igets('BAD')
+   call unit_check('igets', size(i).eq.1.and.i(1).eq.-huge(0),         msg=msg('BAD'))
+   call unit_check('igets', size(igets('BLANK')).eq.0,                 msg=msg('BLANK'))
    call unit_check_done('igets',msg='')
 end subroutine test_igets
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -2476,47 +2553,106 @@ use M_debug, only : unit_check_level
 end subroutine test_kracken
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_lget()
-
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
-   call unit_check_start('lget',msg='')
-   !!call unit_check('lget', 0.eq.0. msg=msg('checking',100))
+integer        :: ier
+   call unit_check_start('lget',msg=' direct tests of LGET(3f)')
+   call store('MY_LOGICAL_TRUE',.true.,'define',ier)
+   call store('MY_LOGICAL_FALSE',.false.,'define',ier)
+   call store('BAD','.bad.','define',ier)
+   call store('BLANK',' ','define',ier)
+   call unit_check('lget', lget('MY_LOGICAL_TRUE'),       msg=msg('MY_LOGICAL_TRUE',lget('MY_LOGICAL_TRUE')))
+   call unit_check('lget', .not.lget('MY_LOGICAL_FALSE'), msg=msg('MY_LOGICAL_FALSE',lget('MY_LOGICAL_FALSE')))
+   call unit_check('lget', .not.lget('NOTTHERE'),         msg=msg('NOTTHERE',lget('NOTTHERE')))
+   call unit_check('lget', .not.lget('BAD'),              msg=msg('BAD',lget('BAD')))
+   call unit_check('lget', lget('BLANK'),                 msg=msg('BLANK',lget('BLANK')))
    call unit_check_done('lget',msg='')
 end subroutine test_lget
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_lgets()
-
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
-   call unit_check_start('lgets',msg='')
-   !!call unit_check('lgets', 0.eq.0. msg=msg('checking',100))
+integer        :: ier
+   call unit_check_start('lgets',msg=' direct tests of lgets(3f)')
+   call store('MY_LOGICAL_TRUE','.true. .true.','define',ier)
+   call store('MY_LOGICAL_FALSE','.false.','define',ier)
+   call store('MY_LOGICAL3','.true. .false. .false. .true.','define',ier)
+   call store('BAD','.bad.','define',ier)
+   call store('BLANK',' ','define',ier)
+   call unit_check('lgets',all(lgets('MY_LOGICAL_TRUE').eqv.[.true.]),      msg=msg('MY_LOGICAL_TRUE'))
+   call unit_check('lgets',all(lgets('MY_LOGICAL_FALSE').eqv.[.false.]),    msg=msg('MY_LOGICAL_FALSE'))
+   call unit_check('lgets',all(lgets('MY_LOGICAL3').eqv.[.true.,.false.,.false.,.true.]), msg=msg('MY_LOGICAL3'))
+   call unit_check('lgets',all(lgets('NOTTHERE').eqv.[.false.]),            msg=msg('NOTTHERE'))
+   call unit_check('lgets',all(lgets('BAD').eqv.[.false.]),                 msg=msg('BAD'))
+   call unit_check('lgets',all(lgets('BLANK').eqv.[.true.]),                msg=msg('BLANK'))
    call unit_check_done('lgets',msg='')
 end subroutine test_lgets
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_parse()
-
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
+character(len=:),allocatable  :: verb
+character(len=*),parameter    :: delimiters=' ;,'
+integer     :: i
+integer     :: ierr
+character(len=132) :: line
+character(len=132), parameter :: commands(5,2)= reshape([character(len=132) :: &
+  'start', ' -i 10 -message this is a message', &
+  'end'  , ' -i 20 -j 30 -k 55.55 -l .false.', &
+  'list' , ' ', &
+  'help' , ' -oo', &
+  'where', ' -i 44.44 '],shape(commands),order=[2,1])
    call unit_check_start('parse',msg='')
-   !!call unit_check('parse', 0.eq.0. msg=msg('checking',100))
+   do i=1,size(commands,dim=1)
+      line=commands(i,2) ! need mutable line
+      verb=commands(i,1)
+      call parse(verb,line,'define',ierr)
+      select case(verb)
+      case('start')
+         call unit_check('parse',sget('start_i').eq.'10',msg=msg('start_i'))
+         call unit_check('parse',sget('start_message').eq.'this is a message',msg=msg('start_message'))
+      case('end')
+         call unit_check('parse',iget('end_i').eq.20,msg=msg('end_i'))
+         call unit_check('parse',iget('end_j').eq.30,msg=msg('end_j'))
+         call unit_check('parse',rget('end_k').eq.55.55,msg=msg('end_k'))
+      case('list')
+         call unit_check('parse',sget('list_oo').eq.'',msg=msg('list_oo'))
+      case('help')
+         call unit_check('parse',sget('help_oo').eq.'',msg=msg('help_oo'))
+      endselect
+   enddo
    call unit_check_done('parse',msg='')
 end subroutine test_parse
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_retrev()
-
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
+character(len=IPvalue) :: val
+integer                :: len, ier
    call unit_check_start('retrev',msg='')
-   !!call unit_check('retrev', 0.eq.0. msg=msg('checking',100))
+   call kracken('demo', ' -value my default string -x one -x two -A 12345')
+   call retrev('demo_value',val,len,ier)
+   call unit_check('retrev', val.eq.'my default string', msg=msg('value',val))
+   call retrev('demo_x',val,len,ier)
+   call unit_check('retrev', val.eq.'one two', msg=msg('x',val))
+   call retrev('demo_A',val,len,ier)
+   call unit_check('retrev', val.eq.'12345', msg=msg('A',val))
    call unit_check_done('retrev',msg='')
 end subroutine test_retrev
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_rget()
-
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
-   call unit_check_start('rget',msg='')
-   !!call unit_check('rget', 0.eq.0. msg=msg('checking',100))
+integer        :: ier
+   call unit_check_start('rget',msg=' direct tests of rget(3f)')
+   call store('MY_REAL1',1234.567,'define',ier)
+   call store('MY_REAL2',-1234.567e3,'define',ier)
+   call store('BLANK',' ','define',ier)
+   call unit_check('rget', rget('MY_REAL1').eq.1234.567,    msg=msg('MY_REAL1',rget('MY_REAL1')))
+   call unit_check('rget', rget('MY_REAL2').eq.-1234.567e3, msg=msg('MY_REAL2',rget('MY_REAL2')))
+   call unit_check('rget', rget('NOTTHERE').eq.0,           msg=msg('NOTTHERE',rget('NOTTHERE')))
+   call unit_check('dget', ieee_is_nan(dget('BAD')),        msg=msg('BAD',dget('BAD')))
+   call unit_check('rget', rget('BLANK').eq.0,              msg=msg('BLANK',rget('BLANK')))
    call unit_check_done('rget',msg='')
 end subroutine test_rget
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -2524,8 +2660,19 @@ subroutine test_rgets()
 
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
-   call unit_check_start('rgets',msg='')
-   !!call unit_check('rgets', 0.eq.0. msg=msg('checking',100))
+integer        :: ier
+real,allocatable :: r(:)
+   call unit_check_start('rgets',msg=' direct tests of rgets(3f)')
+   call store('MY_REAL1','100.0e0 0.0e0 300.33333e2','define',ier)
+   call store('MY_REAL2',-1234.0e-20,'define',ier)
+   call store('BAD','sfs','define',ier)
+   call store('BLANK',' ','define',ier)
+   call unit_check('rgets', all(rgets('MY_REAL1').eq.[100.0e0,0.0e0,300.33333e2]),msg=msg('MY_REAL1'))
+   call unit_check('rgets', all(rgets('MY_REAL2').eq.[-1234.0e-20]),              msg=msg('MY_REAL2'))
+   call unit_check('rgets', size(rgets('NOTTHERE')).eq.0,                         msg=msg('NOTTHERE'))
+   r=rgets('BAD')
+   call unit_check('rgets', size(r).eq.1.and.ieee_is_nan(r(1)),                   msg=msg('BAD'))
+   call unit_check('rgets', size(rgets('BLANK')).eq.0,                            msg=msg('BLANK'))
    call unit_check_done('rgets',msg='')
 end subroutine test_rgets
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -2539,20 +2686,34 @@ use M_debug, only : unit_check_level
 end subroutine test_setprompts
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_sget()
-
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
-   call unit_check_start('sget',msg='')
-   !!call unit_check('sget', 0.eq.0. msg=msg('checking',100))
+integer        :: ier
+   call unit_check_start('sget',msg=' direct tests of sget(3f)')
+   call store('MY_STRING1','100 0 -321','define',ier)
+   call store('MY_STRING2',-1234,'define',ier)
+   call store('BLANK',' ','define',ier)
+   call unit_check('sget', sget('MY_STRING1').eq.'100 0 -321',               msg=msg('MY_STRING1'))
+   call unit_check('sget', sget('MY_STRING2').eq.'-1234',                    msg=msg('MY_STRING2'))
+   call unit_check('sget', len(sget('NOTTHERE')).eq.0,                       msg=msg('NOTTHERE'))
+   call unit_check('sget', len(sget('BLANK')).ne.0.and.sget('BLANK').eq.' ', msg=msg('BLANK'))
    call unit_check_done('sget',msg='')
 end subroutine test_sget
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_sgets()
-
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
-   call unit_check_start('sgets',msg='')
-   !!call unit_check('sgets', 0.eq.0. msg=msg('checking',100))
+integer        :: ier
+character(len=:),allocatable :: c(:)
+integer        :: i
+   call unit_check_start('sgets',msg=' direct tests of sgets(3f)')
+   call store('MY_STRING1','100 0 -321','define',ier)
+   call store('MY_STRING2',-1234,'define',ier)
+   call store('BLANK',' ','define',ier)
+   call unit_check('sgets', all(sgets('MY_STRING1').eq. ['100 ','0   ','-321']),      msg=msg('MY_STRING1'))
+   call unit_check('sgets', all(sgets('MY_STRING2').eq.['-1234']),                    msg=msg('MY_STRING2'))
+   call unit_check('sgets', all(sgets('NOTTHERE').eq.[char(0)]),                      msg=msg('NOTTHERE'))
+   call unit_check('sgets', size(sgets('BLANK')).eq.0.and.len(sgets('BLANK')).ne.0,   msg=msg('BLANK'))
    call unit_check_done('sgets',msg='')
 end subroutine test_sgets
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -2566,18 +2727,31 @@ use M_debug, only : unit_check_level
 end subroutine test_show
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_store()
-
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
+integer :: ier
    call unit_check_start('store',msg='')
-   !!call unit_check('store', 0.eq.0. msg=msg('checking',100))
+
+   call store('MY_STRING','My string value','add',ier)
+   if(ier.ne.0)write(*,*)'ERROR: could not store MY_STRING ier=',ier
+   call store('MY_INTEGER',12345678,'no_add',ier)    ! this will be an error because MY does not have the -INTEGER keyword defined
+   call store('MY_INTEGER',1234,'add',ier)           ! now define MY_INTEGER
+   call store('MY_INTEGER',987654321,'add',ier)      ! if 'no_add' it will APPEND to current string
+   call store('MY_REAL',1234.5678,'add',ier)
+   call store('MY_DOUBLE',123.4567d8,'add',ier)
+   call store('MY_LOGICAL',.true.,'add',ier)
+   call store('MY_INTEGER',987654321,'replace',ier)  ! if 'replace' is used REPLACE instead of APPEND to current value
+   call store('MY_UNKNOWN',987654321,'replace',ier)  ! 'replace' can only replace an existing entry, not add one
+
+   call unit_check('store',sget('MY_STRING')  == 'My string value',    msg=msg('MY_STRING'))
+   call unit_check('store',rget('MY_REAL')    == 1234.5677,            msg=msg('MY_REAL'))
+   call unit_check('store',lget('MY_LOGICAL'),                         msg=msg('MY_LOGICAL'))
+   call unit_check('store',iget('MY_INTEGER') == 987654321,            msg=msg('MY_INTEGER'))
+   call unit_check('store',dget('MY_DOUBLE')  == 12345670000.000000d0, msg=msg('MY_DOUBLE'))
+
    call unit_check_done('store',msg='')
 end subroutine test_store
-!===================================================================================================================================
 end subroutine test_suite_M_kracken
-!===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
-!===================================================================================================================================
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================

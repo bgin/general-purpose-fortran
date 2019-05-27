@@ -44,11 +44,11 @@
 !!                   Defaults to 'r'.
 !!
 !!##USAGE
-!!    When prompted for an input line by your program you may at any
-!!    timeenter "r" on a line by itself, or a line beginning with "r
-!!    r_command" and you will enter the command history edit mode. Now you
-!!    can recall and edit previous input or compose an input line using
-!!    the editor commands.
+!!    When prompted for an input line by your program you may at any time
+!!    enter "r" on a line by itself, or a line beginning with "r r_command"
+!!    and you will enter the command history edit mode. Now you can recall
+!!    and edit previous input or compose an input line using the editor
+!!    commands.
 !!
 !!    By default, you will be editing the last line you entered, shifted
 !!    one character to the right by an exclamation character.
@@ -208,7 +208,7 @@ module M_history
    private
 
    public  :: redo                  !  copy a line into history file or edit history if command is "r" and return line
-   public  ::  test_suite_M_history
+   public  :: test_suite_M_history
 
    private :: open_history          !  open history file
    private :: redol                 !  edit history
@@ -221,7 +221,7 @@ module M_history
 
 contains
 !===================================================================================================================================
-subroutine redo(inputline,rin)
+subroutine redo(inputline,r)
 !      if line starts with r word call redol()
 !      uses unit 1071
 !       r
@@ -229,17 +229,17 @@ subroutine redo(inputline,rin)
 !
 character(len=*),parameter     :: ident="@(#)M_history::redo(3f): open binary direct access file for keeping history"
 character(len=*),intent(inout) :: inputline                ! user string
-character(len=1),intent(in),optional :: rin                ! character to use to trigger editing
-character(len=1)                     :: r                  ! character to use to trigger editing
+character(len=1),intent(in),optional :: r                  ! character to use to trigger editing
+character(len=1)                     :: r_local            ! character to use to trigger editing
 integer,save                         :: iobuf=1071         ! unit number to use for redo history buffer
 integer,save                         :: iredo              ! number of lines read from standard input into redo file
 logical,save                         :: lcalled=.false.    ! flag whether first time this routine called or not
 character(len=READLEN)               :: onerecord
 !-----------------------------------------------------------------------------------------------------------------------------------
-if(present(rin))then
-   r=rin
+if(present(r))then
+   r_local=r
 else
-   r='r'
+   r_local='r'
 endif
 !-----------------------------------------------------------------------------------------------------------------------------------
 !  open history file and initialize
@@ -255,15 +255,15 @@ endif
 !-----------------------------------------------------------------------------------------------------------------------------------
    ilast=len_trim(inputline)
 
-   if(ilast.eq.1.and.inputline(1:1).eq.r)then                             ! redo command
+   if(ilast.eq.1.and.inputline(1:1).eq.r_local)then                             ! redo command
       call redol(inputline,iobuf,iredo,READLEN,' ')
       ilast=len_trim(inputline)
-   elseif(inputline(1:min(2,len(inputline))).eq.r//' ')then                   ! redo command with a string following
+   elseif(inputline(1:min(2,len(inputline))).eq.r_local//' ')then               ! redo command with a string following
       call redol(inputline,iobuf,iredo,READLEN,inputline(3:max(3,ilast)))
       ilast=len_trim(inputline)
    endif
 
-   if(ilast.ne.0)then                                                       ! put command into redo buffer
+   if(ilast.ne.0)then                                                           ! put command into redo buffer
       iredo=iredo+1
       onerecord=inputline                ! make string the correct length; ASSUMING inputline IS NOT LONGER THAN onerecord
       write(iobuf,rec=iredo)onerecord
@@ -611,29 +611,36 @@ subroutine test_redo()
 
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
+character(len=256)            :: line
 character(len=256),parameter  :: infile(*)= [ character(len=256) :: &
-   'this is test line 1',&
-   'this is test line 2',&
-   'this is test line 3',&
-   'r c/test/TEST/',&
-   '#####',&
-   '^THIS #',&
-   '',&
-   '',&
-   '',&
-   'quit']
+    'echo This is test line 1.',&
+    'echo This is test line 2.',&
+    'echo This is test line 3.',&
+    'r c/test/TEST/           ',&
+    ' ##########              ',&
+    ' ^THIS #                 ',&
+    '      &&                 ',&
+    'c/TEST/IS STILL TEST/    ',&
+    'c/    / /                ',&
+    ' ^echo #                 ',&
+    'c/3./3. >__out__/        ',&
+    '                         ',&
+    'quit']
    call unit_check_start('redo',msg='')
    open(unit=10,file='__scratch__')
    write(10,'(a)')infile
    close(10)
-   call execute_command_line('redo <__scratch__>__out__')
+   call execute_command_line('env PATH=`pwd`/PROGRAMS:$PATH redo <__scratch__>/dev/null')
    open(unit=10,file='__scratch__')
-   open(unit=11,file='__out__')
    close(unit=10,status='delete')
+   open(unit=11,file='__out__')
+   read(11,'(a)')line
    close(unit=11,status='delete')
-   !!call unit_check('redo', 0.eq.0. msg=msg('checking',100))
+   call unit_check('redo',line.eq.'THIS IS STILL TEST line 3.', msg=msg('checking ',trim(line)))
    call unit_check_done('redo',msg='')
 end subroutine test_redo
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 end subroutine test_suite_M_history
 !===================================================================================================================================

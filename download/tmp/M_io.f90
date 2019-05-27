@@ -5,22 +5,25 @@ public uniq
 public print_inquire
 public notopen
 public slurp
+public swallow
 public dirname
 public splitpath
 public isdir
 public get_tmp
+public scratch
 public read_line
 public read_all
 public read_table
 public rd
 public test_suite_M_io
 
-character(len=*),parameter :: ident_read_table="@(#)M_io::read_table(3f): read file containing a table of numeric values "
+character(len=*),parameter::ident_1="@(#)M_io::read_table(3f): read file containing a table of numeric values"
+
 interface read_table
    module procedure read_table_real, read_table_doubleprecision
 end interface
 
-character(len=*),parameter :: ident_rd="@(#)M_io::rd(3f): ask for string or number  from standard input with user-definable prompt"
+character(len=*),parameter::ident_2="@(#)M_io::rd(3f): ask for string or number from standard input with user-definable prompt"
 interface rd
    module procedure rd_character
    module procedure rd_integer
@@ -112,8 +115,8 @@ function uniq(name,istart,verbose,create)
 use M_journal, only : journal
 implicit none
 
-character(len=*),parameter::ident_1="&
-&@(#)M_io::uniq(3f):append a number to the end of filename to make a unique name if name exists"
+character(len=*),parameter::ident_3="&
+&@(#)M_io::uniq(3f): append a number to the end of filename to make a unique name if name exists"
 
 !-----------------------------------------------------------------------------------------------------------------------------------
 character(len=*),intent(in)  :: name
@@ -218,12 +221,15 @@ end function uniq
 !!    subroutine print_inquire(iunit,name)
 !!    integer,intent(in)          :: iunit
 !!    character(len=*),intent(in) :: name
+!!
 !!##DESCRIPTION
 !!    Given either a Fortran file-unit-number or filename, call the INQUIRE(3f)
 !!    intrinsic and print typical status information.
+!!
 !!##OPTIONS
 !!    iunit  if >=0 then query by number and ignore filename
 !!    name   if IUNIT < 0 then query by this filename
+!!
 !!##EXAMPLE
 !!
 !!    Sample program:
@@ -275,7 +281,7 @@ end function uniq
 subroutine print_inquire(iunit,name) ! Version: JSU-1997-12-31
 use M_journal, only : journal
 
-character(len=*),parameter::ident_2="@(#)M_io::print_inquire(3f): Do INQUIRE on file by name/number and print results"
+character(len=*),parameter::ident_4="@(#)M_io::print_inquire(3f): Do INQUIRE on file by name/number and print results"
 
 integer,intent(in)          :: iunit         ! if iunit >= 0 then query by unit number, else by name
 character(len=*),intent(in) :: name
@@ -381,14 +387,15 @@ end subroutine print_inquire
 !!
 !!##SYNOPSIS
 !!
-!!       subroutine read_table(filename,array,ierr)
-!!       character(len=*),intent(in)             :: filename
+!!   subroutine read_table(filename,array,ierr)
 !!
-!!       doubleprecision,allocatable,intent(out) :: array(:,:)
-!!          or
-!!       real,allocatable,intent(out)            :: array(:,:)
+!!    character(len=*),intent(in)             :: filename
 !!
-!!       integer,intent(out)                     :: ierr
+!!    doubleprecision,allocatable,intent(out) :: array(:,:)
+!!    ! or
+!!    real           ,allocatable,intent(out) :: array(:,:)
+!!
+!!    integer,intent(out)                     :: ierr
 !!
 !!##DESCRIPTION
 !!     Read a table from a file that is assumed to be columns of
@@ -580,12 +587,160 @@ end subroutine read_table_real
 !===================================================================================================================================
 !>
 !!##NAME
+!!    swallow(3f) - [M_io] read a file into a character array line by line
+!!##SYNOPSIS
+!!
+!!   subroutine swallow(filename,pageout)
+!!
+!!    character(len=*),intent(in) :: filename
+!!    character(len=1),allocatable,intent(out) :: pageout(:)
+!!##DESCRIPTION
+!!    Read an entire file into memory as a character array, one character variable per line.
+!!
+!!    NOTE:
+!!
+!!    Never casually read an entire file into memory if you can process it
+!!    per line or in smaller units; as large files can consume unreasonable
+!!    amounts of memory.
+!!
+!!##OPTIONS
+!!       filename   filename to read into memory, or LUN (Fortran Logical Unit Number)
+!!       pageout    array of characters to hold file
+!!
+!!##EXAMPLES
+!!
+!!   Sample program
+!!
+!!    program demo_swallow
+!!    use M_io,      only : swallow
+!!    use M_strings, only : notabs
+!!    implicit none
+!!    character(len=4096)          :: FILENAME   ! file to read
+!!    character(len=:),allocatable :: pageout(:) ! array to hold file in memory
+!!    integer                      :: longest, lines, i, ilen
+!!    character(len=:),allocatable :: line
+!!       ! get a filename
+!!       call get_command_argument(1, FILENAME)
+!!       ! allocate character array and copy file into it
+!!       call swallow(FILENAME,pageout)
+!!       if(.not.allocated(pageout))then
+!!          write(*,*)'*demo_swallow* failed to load file '//FILENAME
+!!       else
+!!          ! write file from last line to first line
+!!          longest=len(pageout)
+!!          lines=size(pageout)
+!!          allocate(character(len=longest)::line)
+!!          write(*,*)'number of lines is ',lines
+!!          write(*,*)'and length of lines is ',longest
+!!          write(*,'(a)')repeat('%',longest+2)
+!!          do i=lines,1,-1
+!!             call notabs(pageout(i),line,ilen)
+!!             write(*,'("%",a,"%")')line
+!!          enddo
+!!          write(*,'(a)')repeat('%',longest+2)
+!!          deallocate(pageout)  ! release memory
+!!       endif
+!!    end program demo_swallow
+!!
+!!   Given
+!!
+!!    first line
+!!    second line
+!!    third line
+!!
+!!   Expected output
+!!
+!!     number of lines is 3
+!!     and length of lines is 11
+!!    %%%%%%%%%%%%%
+!!    %third line %
+!!    %second line%
+!!    %first line %
+!!    %%%%%%%%%%%%%
+!===================================================================================================================================
+subroutine swallow(FILENAME,pageout)
+implicit none
+class(*),intent(in)                      :: FILENAME   ! file to read
+character(len=:),allocatable,intent(out) :: pageout(:) ! page to hold file in memory
+character(len=1),allocatable             :: text(:)    ! array to hold file in memory
+
+   call slurp(FILENAME,text) ! allocate character array and copy file into it
+
+   if(.not.allocated(text))then
+      select type(FILENAME)
+       type is (character(len=*)); write(*,*)'*swallow* failed to load file '//FILENAME
+       type is (integer);          write(*,'(a,i0)')'*swallow* failed to load file unit ',FILENAME
+      end select
+   else  ! convert array of characters to array of lines
+      pageout=page(text)
+      deallocate(text)     ! release memory
+   endif
+
+contains
+function page(array)  result (table)
+
+character(len=*),parameter::ident_5="@(#)M_strings::page(3fp): function to copy char array to page of text"
+
+character(len=1),intent(in)  :: array(:)
+character(len=:),allocatable :: table(:)
+integer                      :: i
+integer                      :: linelength
+integer                      :: length
+integer                      :: lines
+integer                      :: linecount
+integer                      :: position
+integer                      :: sz
+!!character(len=1),parameter   :: nl=new_line('A')
+character(len=1),parameter   :: nl=char(10)
+   lines=0
+   linelength=0
+   length=0
+   sz=size(array)
+   do i=1,sz
+      if(array(i).eq.nl)then
+         linelength=max(linelength,length)
+         lines=lines+1
+         length=0
+      else
+         length=length+1
+      endif
+   enddo
+   if(sz.gt.0)then
+      if(array(sz).ne.nl)then
+         lines=lines+1
+      endif
+   endif
+
+   allocate(character(len=linelength) :: table(lines))
+   table=' '
+
+   linecount=1
+   position=1
+   do i=1,sz
+      if(array(i).eq.nl)then
+         linecount=linecount+1
+         position=1
+      else
+         table(linecount)(position:position)=array(i)
+         position=position+1
+      endif
+   enddo
+end function page
+end subroutine swallow
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+!>
+!!##NAME
 !!    SLURP(3f) - [M_io] read a file into a character array
 !!##SYNOPSIS
 !!
 !!   subroutine slurp(filename,text)
 !!
 !!    character(len=*),intent(in) :: filename
+!!     or
+!!    integer,intent(in)          :: filenumber
+!!
 !!    character(len=1),allocatable,intent(out) :: text(:)
 !!    integer,intent(out),optional :: length
 !!    integer,intent(out),optional :: lines
@@ -594,14 +749,17 @@ end subroutine read_table_real
 !!    terminators.
 !!
 !!    NOTE:
+!!
 !!    Never casually read an entire file into memory if you can process it
 !!    per line or in smaller units; as large files can consume unreasonable
 !!    amounts of memory.
+!!
 !!##OPTIONS
-!!       filename   filename to read into memory
+!!       filename   filename to read into memory or LUN (Fortran Logical Unit Number)
 !!       text       array of characters to hold file
 !!       length     length of longest line read(Optional).
 !!       lines      number of lines read(Optional).
+!!
 !!##EXAMPLES
 !!
 !!    Sample program, which  creates test input file "inputfile":
@@ -641,9 +799,9 @@ subroutine slurp(filename,text,length,lines)
 !-----------------------------------------------------------------------------------------------------------------------------------
 implicit none
 
-character(len=*),parameter::ident_3="@(#)M_io::slurp(3f):allocate text array and read file filename into it"
+character(len=*),parameter::ident_6="@(#)M_io::slurp(3f): allocate text array and read file filename into it"
 
-character(len=*),intent(in)              :: filename    ! filename to shlep
+class(*),intent(in)                      :: filename    ! filename to shlep
 character(len=1),allocatable,intent(out) :: text(:)     ! array to hold file
 integer,intent(out),optional             :: length      ! length of longest line
 integer,intent(out),optional             :: lines       ! number of lines
@@ -655,7 +813,8 @@ integer,intent(out),optional             :: lines       ! number of lines
    integer :: lines_local
    integer :: i
    integer :: icount
-   character(len=256) :: message
+   character(len=256)  :: message
+   character(len=4096) :: local_filename
 !-----------------------------------------------------------------------------------------------------------------------------------
    length_local=0
    lines_local=0
@@ -666,31 +825,22 @@ integer,intent(out),optional             :: lines       ! number of lines
    endif
 !-------------------------------------------
    message=''
-!!  ! open named file in stream mode positioned to append
-!!   open (unit=igetunit,            &
-!!   & file=trim(filename),          &
-!!  !----------------------------
-!!  !& form='UNFORMATTED',           &
-!!  !----------------------------
-!!   & access='stream',              &
-!!   & status='old',                 &
-!!   & position='append',iostat=ios)
-    open(unit=igetunit, file=trim(filename), action="read", iomsg=message,&
-         form="unformatted", access="stream",status='old',iostat=ios)
+      select type(FILENAME)
+       type is (character(len=*))
+          open(unit=igetunit, file=trim(filename), action="read", iomsg=message,&
+           form="unformatted", access="stream",status='old',iostat=ios)
+          local_filename=filename
+       type is (integer)
+          rewind(unit=filename,iostat=ios,iomsg=message)
+          write(local_filename,'("unit ",i0)')filename
+      end select
 !-------------------------------------------
    if(ios.eq.0)then  ! if file was successfully opened
 !-------------------------------------------
-!!      !
-!!      ! get file size in bytes and position file to beginning of file
-!!      !
-!!      inquire(unit=igetunit,pos=nchars)   ! get number of bytes in file plus one
-!!      !   inquire(file=filename, size=filesize)            ! how many characters are in the file:
-!!      rewind(igetunit)                    ! get back to beginning of file
-!!      nchars=nchars-1 ! opened for append, so subtract one to get current length
       inquire(unit=igetunit, size=nchars)
 !-------------------------------------------
       if(nchars.le.0)then
-         call stderr_local( '*slurp* empty file '//trim(filename) )
+         call stderr_local( '*slurp* empty file '//trim(local_filename) )
          return
       endif
       ! read file into text array
@@ -699,7 +849,7 @@ integer,intent(out),optional             :: lines       ! number of lines
       allocate ( text(nchars) )           ! make enough storage to hold file
       read(igetunit,iostat=ios) text      ! load input file -> text array
       if(ios.ne.0)then
-         call stderr_local( '*slurp* bad read of '//trim(filename) )
+         call stderr_local( '*slurp* bad read of '//trim(local_filename) )
       endif
    else
       call stderr_local('*slurp*'//message)
@@ -874,7 +1024,7 @@ integer function notopen(start,end,err)
 use iso_fortran_env, only : error_unit,input_unit,output_unit
 implicit none
 
-character(len=*),parameter::ident_4="@(#)M_io::notopen(3f): find free FORTRAN unit number to OPEN() a file"
+character(len=*),parameter::ident_7="@(#)M_io::notopen(3f): find free FORTRAN unit number to OPEN() a file"
 
 integer,optional,intent(in)    :: start                           ! unit number to start looking at
 integer,optional,intent(in)    :: end                             ! last unit number to look at
@@ -937,7 +1087,7 @@ end function notopen
 !!
 !!##DESCRIPTION
 !!    Output FILENAME with its last non-slash component and trailing slashes removed.
-!!    if FILENAME contains no /'s, output '.' (meaning the current directory).
+!!    if FILENAME contains no '/' character, output '.' (meaning the current directory).
 !!
 !!    Assumes leaf separator is a slash ('/') and that filename does not contain
 !!    trailing spaces.
@@ -992,7 +1142,7 @@ end function notopen
 function dirname(filename) result (directory)
 implicit none
 
-character(len=*),parameter::ident_5="@(#)M_io::dirname(3f):strip last component from filename"
+character(len=*),parameter::ident_8="@(#)M_io::dirname(3f): strip last component from filename"
 
 character(len=*),intent(in)      :: filename
 character(len=:),allocatable     :: directory
@@ -1034,10 +1184,10 @@ end function dirname
 !!
 !!    integer,parameter :: maxlen=4096
 !!    character(len=maxlen),intent(in)  :: path
-!!    character(len=maxlen),intent(out) :: dir
-!!    character(len=maxlen),intent(out) :: name
-!!    character(len=maxlen),intent(out) :: basename
-!!    character(len=maxlen),intent(out) :: ext
+!!    character(len=maxlen),intent(out),optional :: dir
+!!    character(len=maxlen),intent(out),optional :: name
+!!    character(len=maxlen),intent(out),optional :: basename
+!!    character(len=maxlen),intent(out),optional :: ext
 !!
 !!##DESCRIPTION
 !!    splitpath(3f) splits given pathname assuming a forward slash separates
@@ -1049,6 +1199,8 @@ end function dirname
 !!    This routine does not check the system for the existence or type of the
 !!    filename components; it merely parses a string.
 !!
+!!    Assumes leaf separator is a slash ('/') and that filename does not
+!!    contain trailing spaces.
 !!
 !!##OPTIONS
 !!    path      Path to be broken into components.
@@ -1148,39 +1300,44 @@ subroutine splitpath(path,dir,name,basename,ext)
 use M_strings, only : split
 implicit none
 
-character(len=*),parameter::ident_6="@(#)M_io::splitpath(3f):split Unix pathname into components (dir,name,basename,extension)"
+character(len=*),parameter::ident_9="@(#)M_io::splitpath(3f): split Unix pathname into components (dir,name,basename,extension)"
 
 !===================================================================================================================================
-character(len=*),intent(in)     :: path
-character(len=*),intent(out)    :: dir
-character(len=*),intent(out)    :: name
-character(len=*),intent(out)    :: basename
-character(len=*),intent(out)    :: ext
-!===================================================================================================================================
-   character(len=len(path)+1)   :: path_local
-   integer                      :: where
-   integer                      :: i
-   integer                      :: iend
+character(len=*),intent(in)           :: path
+character(len=*),intent(out),optional :: dir
+character(len=*),intent(out),optional :: name
+character(len=*),intent(out),optional :: basename
+character(len=*),intent(out),optional :: ext
+integer,parameter                     :: maxlen=4096
+character(len=maxlen)                 :: dir_local
+character(len=maxlen)                 :: name_local
+character(len=maxlen)                 :: basename_local
+character(len=maxlen)                 :: ext_local
+character(len=len(path)+1)            :: path_local
+integer                               :: where
+integer                               :: i
+integer                               :: iend
 !===================================================================================================================================
    path_local=path                           ! initialize variables
-   dir=' '
-   name=' '
-   basename=' '
-   ext=' '
+   dir_local=''
+   name_local=''
+   basename_local=''
+   ext_local=''
    iend=len_trim(path_local)
+   LOCAL : block
 !===================================================================================================================================
    if(iend.eq.0)then                         ! blank input path
-      dir='.'
-      return
+      dir_local='.'
+      exit LOCAL
    endif
 !===================================================================================================================================
    if(path_local(iend:iend).eq.'/')then      ! assume entire name is a directory if it ends in a slash
       if(iend.gt.1)then
-         dir=path_local(:iend-1)
+         dir_local=path_local(:iend-1)
       else                                   ! if just a slash it means root directory so leave it as slash
-         dir=path_local
+         dir_local=path_local
       endif
-      return
+      exit LOCAL
    endif
 !===================================================================================================================================
    TRIMSLASHES: do i=iend,1,-1               ! trim off trailing slashes even if duplicates
@@ -1194,47 +1351,52 @@ character(len=*),intent(out)    :: ext
    enddo TRIMSLASHES
 
    if(iend.eq.0)then                         ! path composed entirely of slashes.
-      dir='/'
-      return
+      dir_local='/'
+      exit LOCAL
    endif
 !===================================================================================================================================
-   where=INDEX(path_local,'/',BACK=.true.)   ! find any right-most slash in remaining non-null name after trimming trailing slashes
-   if(where.le.0)then                        ! no slash in path so everything left is name
-      name=path_local(:iend)                 ! this is name unless '.' or '..'
+   where=INDEX(path_local,'/',BACK=.true.)   ! find any right-most slash in remaining non-null name_local after trimming trailing slashes
+   if(where.le.0)then                        ! no slash in path so everything left is name_local
+      name_local=path_local(:iend)                 ! this is name_local unless '.' or '..'
    else                                      ! last slash found
-      dir=path_local(:where-1)               ! split into directory
-      name=path_local(where+1:iend)          ! this is name unless '.' or '..'
+      dir_local=path_local(:where-1)               ! split into directory
+      name_local=path_local(where+1:iend)          ! this is name_local unless '.' or '..'
    endif
 !===================================================================================================================================
-   select case (name(1:3))                   ! special cases where name is a relative directory name '.' or '..'
+   select case (name_local(1:3))                   ! special cases where name_local is a relative directory name_local '.' or '..'
    case('.  ')
-      dir=path_local
-      name=''
+      dir_local=path_local
+      name_local=''
    case('.. ')
-      if(dir.eq.'')then
+      if(dir_local.eq.'')then
          if(path_local(1:1).eq.'/')then
-            dir='/'
+            dir_local='/'
          endif
       else
-         dir=path_local
+         dir_local=path_local
       endif
-      name=''
+      name_local=''
    case default
    end select
 !===================================================================================================================================
-   if(name.eq.'.')then
-      name=''
+   if(name_local.eq.'.')then
+      name_local=''
    endif
 !===================================================================================================================================
-   iend=len_trim(name)
-   where=INDEX(name,'.',BACK=.true.)         ! find any extension
-   if(where.gt.0.and.where.ne.1)then         ! only consider a non-blank extension name
-      ext=name(where:)
-      basename=name(:where-1)
+   iend=len_trim(name_local)
+   where=INDEX(name_local,'.',BACK=.true.)         ! find any extension
+   if(where.gt.0.and.where.ne.1)then         ! only consider a non-blank extension name_local
+      ext_local=name_local(where:)
+      basename_local=name_local(:where-1)
    else
-      basename=name
+      basename_local=name_local
    endif
 !===================================================================================================================================
+   endblock LOCAL
+   if(present(dir))dir=dir_local
+   if(present(name))name=name_local
+   if(present(basename))basename=basename_local
+   if(present(ext))ext=ext_local
 end subroutine splitpath
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -1243,12 +1405,24 @@ end subroutine splitpath
 !!##NAME
 !!    isdir(3f) - [M_io] checks if argument is a directory path
 !!##SYNTAX
-!!    logical function isdir(path)
+!!
+!!   logical function isdir(path)
+!!
+!!    character(len=*),intent(in) :: path
+!!    logical                     :: isdir
+!!
 !!##DESCRIPTION
-!!    isdir(3f) checks if path is a path to a directory.
+!!
+!!    isdir(3f) checks if path is a path to a directory on Unix-compatible file systems
+!!
 !!##OPTIONS
+!!
 !!    path    a character string representing a directory pathname.
 !!            Trailing spaces are ignored.
+!!
+!!##RETURNS
+!!    isdir   TRUE if the path is currently a directory
+!!
 !!##EXAMPLES
 !!
 !!   Sample program:
@@ -1279,7 +1453,7 @@ end subroutine splitpath
 function isdir(dirname)
 implicit none
 
-character(len=*),parameter::ident_7="@(#)M_io::isdir(3f): determine if DIRNAME is a directory name ON UNIX-COMPATIBLE file systems"
+character(len=*),parameter::ident_10="@(#)M_io::isdir(3f): determine if DIRNAME is a directory name ON UNIX-COMPATIBLE file systems"
 
 logical                     :: isdir
 character(len=*),intent(in) :: dirname
@@ -1303,8 +1477,8 @@ end function isdir
 !!   function read_all(line,lun) result(ier)
 !!
 !!    character(len=:),allocatable,intent(out) :: line
-!!    integer,intent(in) :: lun
-!!    integer,intent(out) :: ier
+!!    integer,intent(in),optional              :: lun
+!!    integer,intent(out)                      :: ier
 !!
 !!##DESCRIPTION
 !!
@@ -1319,6 +1493,16 @@ end function isdir
 !!    time could (depending on the programming environment used) be
 !!    inefficient, as it could reallocate and allocate memory used for
 !!    the output string with each buffer read.
+!!
+!!##OPTIONS
+!!
+!!    LINE   line read
+!!    LUN    optional LUN (Fortran logical I/O unit) number. Defaults
+!!           to stdin.
+!!##RETURNS
+!!
+!!    IER    zero unless an error occurred. If not zero, LINE returns the
+!!           I/O error message.
 !!
 !!##EXAMPLE
 !!
@@ -1337,12 +1521,13 @@ function read_all(line,lun) result(ier)
 use iso_fortran_env, only : INPUT_UNIT
 implicit none
 
-character(len=*),parameter::ident_8="&
+character(len=*),parameter::ident_11="&
 &@(#)M_io::read_all(3f): read a line from specified LUN into allocatable string up to line length limit"
 
 character(len=:),allocatable,intent(out) :: line
 integer,intent(in),optional              :: lun
 integer                                  :: ier
+character(len=4096)                      :: message
 
    integer,parameter                     :: buflen=1024
    character(len=:),allocatable          :: line_local
@@ -1358,14 +1543,15 @@ integer                                  :: ier
       lun_local=INPUT_UNIT
    endif
 
-   INFINITE: do                                                           ! read characters from line and append to result
-      read(lun_local,iostat=ier,fmt='(a)',advance='no',size=isize) buffer ! read next buffer (might use stream I/O for files
-                                                                          ! other than stdin so system line limit is not limiting
+   INFINITE: do                                                      ! read characters from line and append to result
+      read(lun_local,iostat=ier,fmt='(a)',advance='no',size=isize,iomsg=message) buffer ! read next buffer (might use stream I/O for files
+                                                                     ! other than stdin so system line limit is not limiting
       if(isize.gt.0)line_local=line_local//buffer(:isize)            ! append what was read to result
       if(is_iostat_eor(ier))then                                     ! if hit EOR reading is complete unless backslash ends the line
          ier=0                                                       ! hitting end of record is not an error for this routine
          exit INFINITE                                               ! end of reading line
      elseif(ier.ne.0)then                                            ! end of file or error
+        line=trim(message)
         exit INFINITE
      endif
    enddo INFINITE
@@ -1376,14 +1562,14 @@ end function read_all
 !===================================================================================================================================
 !>
 !!##NAME
-!!     read_line(3f) - [M_io] read a line from specified LUN into allocatable string up to line length limit
+!!     read_line(3f) - [M_io] read a line from specified LUN into allocatable string up to line length limit cleaning up input line
 !!
 !!##SYNTAX
 !!   function read_line(line,lun) result(ier)
 !!
 !!    character(len=:),allocatable,intent(out) :: line
-!!    integer,intent(in) :: lun
-!!    integer,intent(out) :: ier
+!!    integer,intent(in)                       :: lun
+!!    integer,intent(out)                      :: ier
 !!
 !!##DESCRIPTION
 !!
@@ -1422,7 +1608,7 @@ use iso_fortran_env, only : INPUT_UNIT
 use M_strings,only : notabs
 implicit none
 
-character(len=*),parameter::ident_9="&
+character(len=*),parameter::ident_12="&
 &@(#)M_io::read_line(3f): read a line from specified LUN into allocatable string up to line length limit"
 
 character(len=:),allocatable,intent(out) :: line
@@ -1507,7 +1693,7 @@ end function read_line
 !===================================================================================================================================
 function get_tmp() result(tname)
 
-character(len=*),parameter::ident_10="@(#)M_io::get_tmp(3f): Return the name of the scratch directory"
+character(len=*),parameter::ident_13="@(#)M_io::get_tmp(3f): Return the name of the scratch directory"
 
 character(len=:),allocatable :: tname
    integer :: lngth
@@ -1535,6 +1721,82 @@ end function get_tmp
 !===================================================================================================================================
 !>
 !!##NAME
+!!      scratch(3f) - [M_io] Return the name of a scratch file
+!!##SYNOPSIS
+!!
+!!     function scratch(prefix) result(tname)
+!!
+!!      character(len=:),allocatable         :: tname
+!!      character(len=*),intent(in),optional :: prefix
+!!##DESCRIPTION
+!!
+!!    Fortran supports non-retainable scratch files via OPEN(STATUS='SCRATCH',... .
+!!    There are circumstances where a file with a unique name is required
+!!    instead. Specifying the pathname of a file can be required for performance
+!!    reasons, file space limitations, or to support the ability for other
+!!    processes or subprocesses to access the file.
+!!
+!!    SCRATCH(3f) Return the name of a scratch file in the scratch directory set
+!!    by the most common environment variables used to designate a scratch
+!!    directory.
+!!
+!!    $TMPDIR is the canonical environment variable in Unix and POSIX[1] used to
+!!    specify a temporary directory for scratch space. If $TMPDIR is not set,
+!!    $TEMP, $TEMPDIR, and $TMP are examined in that order. If nothing is set
+!!    "/tmp/" is used.
+!!
+!!##OPTIONS
+!!    prefix  an optional prefix for the leaf of the filename. A suffix created
+!!            by genuuid(3) is used to make the name unique.
+!!
+!!            The default prefix is the basename of the program that called the
+!!            procedure (the name trimmed of anything from the right-most period
+!!            in the name to the end of the name)..
+!!##EXAMPLE
+!!
+!!
+!!   Sample:
+!!
+!!     program demo_scratch
+!!     use M_io, only : scratch
+!!     implicit none
+!!     write(*,*)'find good scratch file name candidates; one should test if writable'
+!!     write(*,*)scratch('JUNK:')
+!!     write(*,*)scratch('')
+!!     write(*,*)scratch()
+!!     end program demo_scratch
+!!   Results:
+!!
+!!     find good scratch file name candidates; one should test if writable
+!!     /cygdrive/c/Users/JSU/AppData/Local/Temp/JUNK:8462159a-2ca8-4961-7ff1-2ff4f9ebaca4
+!!     /cygdrive/c/Users/JSU/AppData/Local/Temp/f7585e37-8557-4f25-777d-29abb6ffb981
+!!     /cygdrive/c/Users/JSU/AppData/Local/Temp/demo_scratch-ec470965-42be-4ba6-4193-0f25cf2fa26c
+!===================================================================================================================================
+function scratch(prefix) result(tname)
+use M_uuid, only : generate_uuid
+
+character(len=*),parameter::ident_14="@(#)M_io::scratch(3f): Return the name of a scratch file"
+
+character(len=*),intent(in),optional :: prefix
+character(len=:),allocatable :: tname
+
+integer,parameter     :: maxlen=4096
+character(len=maxlen) :: path
+character(len=maxlen) :: bname
+
+if(present(prefix))then
+   tname=get_tmp()//trim(prefix)//generate_uuid()
+else
+   call get_command_argument(number=0,value=path)
+   call splitpath(path,basename=bname)
+   tname=get_tmp()//trim(bname)//'-'//generate_uuid()
+endif
+end function scratch
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+!>
+!!##NAME
 !! rd(3f) - [M_io] ask for string from standard input with user-definable prompt
 !!##SYNOPSIS
 !!
@@ -1553,11 +1815,13 @@ end function get_tmp
 !!    character(len=:),allocatable,intent(out) :: strout
 !!
 !!##DESCRIPTION
-!!    Ask for string or value from standard input with user-definable prompt
-!!    up to 20 times.  Do not use the function in an I/O statement as not
-!!    all versions of Fortran support this form of recursion. Numeric values
-!!    may be input in standard INTEGER, REAL, and DOUBLEPRECISION formats
-!!    or as whole numbers in base 2 to 36 in the format BASE#VALUE.
+!!    Ask for string or value from standard input with user-definable prompt up
+!!    to 20 times.
+!!
+!!    Do not use the function in an I/O statement as not all versions of Fortran
+!!    support this form of recursion. Numeric values may be input in standard
+!!    INTEGER, REAL, and DOUBLEPRECISION formats or as whole numbers in base 2 to
+!!    36 in the format BASE#VALUE.
 !!
 !!##OPTIONS
 !!    prompt    Prompt string; displayed on same line as input is read from
@@ -1597,7 +1861,7 @@ use,intrinsic :: iso_fortran_env, only : stdin=>input_unit !!, stdout=>output_un
 use M_journal,                    only : journal
 implicit none
 
-character(len=*),parameter::ident_11="@(#)M_io::rd_character(3fp): ask for string from standard input with user-definable prompt"
+character(len=*),parameter::ident_15="@(#)M_io::rd_character(3fp): ask for string from standard input with user-definable prompt"
 
 character(len=*),intent(in)  :: prompt
 character(len=*),intent(in)  :: default
@@ -1633,7 +1897,7 @@ function rd_doubleprecision(prompt,default) result(dvalue)
 use M_strings, only : s2v, isnumber, decodebase
 implicit none
 
-character(len=*),parameter::ident_12="&
+character(len=*),parameter::ident_16="&
 &@(#)M_io::rd_doubleprecision(3fp): ask for number from standard input with user-definable prompt"
 
 doubleprecision              :: dvalue
@@ -1679,7 +1943,7 @@ end function rd_doubleprecision
 function rd_real(prompt,default) result(rvalue)
 implicit none
 
-character(len=*),parameter::ident_13="@(#)M_io::rd_real(3fp): ask for number from standard input with user-definable prompt"
+character(len=*),parameter::ident_17="@(#)M_io::rd_real(3fp): ask for number from standard input with user-definable prompt"
 
 real                         :: rvalue
 character(len=*),intent(in)  :: prompt
@@ -1690,7 +1954,7 @@ end function rd_real
 function rd_integer(prompt,default) result(ivalue)
 implicit none
 
-character(len=*),parameter::ident_14="@(#)M_io::rd_integer(3fp): ask for number from standard input with user-definable prompt"
+character(len=*),parameter::ident_18="@(#)M_io::rd_integer(3fp): ask for number from standard input with user-definable prompt"
 
 integer                      :: ivalue
 character(len=*),intent(in)  :: prompt
@@ -1722,9 +1986,11 @@ subroutine test_dirname()
 
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
-   call unit_check_start('dirname',msg='')
-   !!call unit_check('dirname', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('dirname',msg='')
+call unit_check_start('dirname',msg='')
+call unit_check('dirname',  dirname('/usr/bin/') .eq. '/usr', msg=msg('/usr/bin ==>',dirname('/usr/bin'))  )
+call unit_check('dirname',  dirname('dir1/str/') .eq. 'dir1', msg=msg('dir1/str ==>',dirname('dir1/str/')) )
+call unit_check('dirname',  dirname('stdio.h')   .eq. '.',    msg=msg('/stdio.h ==>',dirname('stdio.h'))  )
+call unit_check_done('dirname',msg='')
 end subroutine test_dirname
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_get_tmp()
@@ -1749,9 +2015,33 @@ subroutine test_notopen()
 
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
+integer :: i, ierr, ierr2
+
    call unit_check_start('notopen',msg='')
-   !!call unit_check('notopen', 0.eq.0. msg=msg('checking',100))
+   call unit_check_msg('notopen','check for preassigned files from unit 0 to unit 1000')
+   call unit_check_msg('notopen','assume 5 and 6 always return -1')
+
+   do i=0,1000
+      if(notopen(i,i,ierr) .ne. i)then
+         call unit_check_msg('notopen','INUSE:',i,ierr, notopen(i,i,ierr2) )
+      endif
+   enddo
+   call unit_check('notopen', notopen(5,6)           .eq. -1 ,msg=msg('preassigned'))
+
+   do i=10,30,1
+     open(unit=i,status="scratch")
+   enddo
+
+   close(25)
+   close(28)
+   call unit_check('notopen', notopen(10,30)           .eq. 25 ,msg=msg(''))
+   call unit_check('notopen', notopen()                .eq. 25 ,msg=msg(''))
+   call unit_check('notopen', notopen(start=12,end=30) .eq. 25 ,msg=msg(''))
+   call unit_check('notopen', notopen(26)              .eq. 28 ,msg=msg(''))
+   call unit_check('notopen', notopen(26,99)           .eq. 28 ,msg=msg(''))
+
    call unit_check_done('notopen',msg='')
+
 end subroutine test_notopen
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_print_inquire()
@@ -1812,9 +2102,26 @@ subroutine test_splitpath()
 
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
+integer,parameter      :: maxlen=4096
+character(len=maxlen)  :: dir
+character(len=maxlen)  :: name
+character(len=maxlen)  :: basename
+character(len=maxlen)  :: ext
    call unit_check_start('splitpath',msg='')
-   !!call unit_check('splitpath', 0.eq.0. msg=msg('checking',100))
+   call splitpath('/usr/local/bin/test.exe', dir, name, basename, ext)
+   call unit_check('splitpath', dir=='/usr/local/bin/', msg=msg('directory'))
+   call unit_check('splitpath', name=='test.exe', msg=msg('name'))
+   call unit_check('splitpath', basename=='test', msg=msg('basename'))
+   call unit_check('splitpath', ext=='ext', msg=msg('ext'))
    call unit_check_done('splitpath',msg='')
+   call splitpath('/usr/local/bin/test.exe', dir=dir)
+   call unit_check('splitpath', dir=='/usr/local/bin/', msg=msg('directory'))
+   call splitpath('/usr/local/bin/test.exe', name=name)
+   call unit_check('splitpath', name=='test.exe', msg=msg('name'))
+   call splitpath('/usr/local/bin/test.exe', ext=ext)
+   call unit_check('splitpath', ext=='test.exe', msg=msg('ext'))
+   call splitpath('/usr/local/bin/test', basename=basename)
+   call unit_check('splitpath', basename=='exe', msg=msg('basename'))
 end subroutine test_splitpath
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_uniq()
@@ -1826,10 +2133,9 @@ use M_debug, only : unit_check_level
    call unit_check_done('uniq',msg='')
 end subroutine test_uniq
 !===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
 end subroutine test_suite_M_io
-!===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
-!===================================================================================================================================
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================

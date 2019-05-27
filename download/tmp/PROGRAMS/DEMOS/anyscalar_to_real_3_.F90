@@ -10,7 +10,7 @@
               write(*,*)squarei(2_int64)
               write(*,*)squarei(2_real32)
               write(*,*)squarei(2_real64)
-              !!write(*,*)squarei(2_real128)
+              write(*,*)squarei(2_real128)
               write(*,*)squarei(2_real256)
            contains
 

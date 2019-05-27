@@ -171,7 +171,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    list files in a directory>',&
 '@(#)VERSION:        1.0, 2016-11-20>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Tue, Apr 9th, 2019 8:45:04 AM>',&
+'@(#)COMPILED:       Sat, May 25th, 2019 6:34:25 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -184,6 +184,9 @@ use M_kracken, only  : kracken, rget, lget, sgets, sget
 use M_system, only : system_opendir,system_readdir, system_closedir, system_stat, system_isdir
 use iso_c_binding, only : c_ptr
 implicit none
+
+character(len=*),parameter::ident_1="@(#)_ls(1f): list files in a directory"
+
 character(len=:),allocatable :: directories(:)
 character(len=:),allocatable :: directory
 type(c_ptr)                  :: dir

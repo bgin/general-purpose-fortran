@@ -11,17 +11,17 @@ use iso_fortran_env
       call trimit('@(#)Compiler Version .... '//trim(compiler_version())//'>')
 !     call trimit('@(#)Compiler Options .... '//trim(compiler_options())//'>')
       call trimit('@(#)Compile Date ........ '//&
-     &'Fri Apr 19 15:11:41 EDT 2019>')
+     &'Mon May 27 02:07:03 EDT 2019>')
      call trimit('@(#)Compiled on node:>')
       call trimit('@(#) Nodename ........... '// &
      &'buzz>')
       call trimit('@(#) System Type ........ '// &
      &'CYGWIN_NT-10.0>')
       call trimit('@(#) O.S. Release ....... '// &
-     &'2.10.0(0.325/5/3)>')
+     &'3.0.7(0.338/5/3)>')
       call trimit('@(#) O.S. Version ....... ' &
-     &//'2018-02-02 ' &
-     &//'15:16 ' &
+     &//'2019-04-30 ' &
+     &//'18:08 ' &
      &//'>')
       call trimit('@(#) Hardware Name ...... '//&
      &'x86_64>')

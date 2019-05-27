@@ -255,62 +255,19 @@ contains
 !!
 !!    end program demo_unit_check_msg
 !===================================================================================================================================
-subroutine unit_check_msg(name,generic1, generic2, generic3, generic4, generic5, generic6, generic7, generic8, generic9)
+subroutine unit_check_msg(name,g1, g2, g3, g4, g5, g6, g7, g8, g9)
 implicit none
 
 character(len=*),parameter::ident_1="&
 &@(#)M_debug::unit_check_msg(3f): writes a message to a string composed of any standard scalar types"
 
 character(len=*),intent(in)   :: name
-class(*),intent(in),optional  :: generic1 ,generic2 ,generic3 ,generic4 ,generic5
-class(*),intent(in),optional  :: generic6 ,generic7 ,generic8 ,generic9
-   character(len=4096)        :: line
-   integer                    :: istart
+class(*),intent(in),optional  :: g1 ,g2 ,g3 ,g4 ,g5
+class(*),intent(in),optional  :: g6 ,g7 ,g8 ,g9
 
-   istart=1
-   if(present(generic1))call append_generic(generic1)
-   if(present(generic2))call append_generic(generic2)
-   if(present(generic3))call append_generic(generic3)
-   if(present(generic4))call append_generic(generic4)
-   if(present(generic5))call append_generic(generic5)
-   if(present(generic6))call append_generic(generic6)
-   if(present(generic7))call append_generic(generic7)
-   if(present(generic8))call append_generic(generic8)
-   if(present(generic9))call append_generic(generic9)
-   call stderr('unit_check_msg:   '//atleast(name,20)//' MESSAGE:'//trim(line))  ! write message to standard error
-contains
-!===================================================================================================================================
-subroutine append_generic(generic)
-!use, intrinsic :: iso_fortran_env, only : int8, int16, int32, biggest=>int64, real32, real64, dp=>real128
-use,intrinsic :: iso_fortran_env, only : int8, int16, int32, int64, real32, real64, real128
-class(*),intent(in),optional :: generic
-character(len=1024)          :: message
-integer                      :: ios
-   select type(generic)
-      type is (integer(kind=int8));     write(line(istart:),'(i0)',iostat=ios,iomsg=message) generic
-      type is (integer(kind=int16));    write(line(istart:),'(i0)',iostat=ios,iomsg=message) generic
-      type is (integer(kind=int32));    write(line(istart:),'(i0)',iostat=ios,iomsg=message) generic
-      type is (integer(kind=int64));    write(line(istart:),'(i0)',iostat=ios,iomsg=message) generic
-      type is (real(kind=real32));      write(line(istart:),'(1pg0)',iostat=ios,iomsg=message) generic
-      type is (real(kind=real64));      write(line(istart:),'(1pg0)',iostat=ios,iomsg=message) generic
-      type is (real(kind=real128));     write(line(istart:),'(1pg0)',iostat=ios,iomsg=message) generic
-      !type is (real(kind=real256));     write(line(istart:),'(1pg0)',iostat=ios,iomsg=message) generic
-      !type is (real);                   write(line(istart:),'(1pg0)',iostat=ios,iomsg=message) generic
-      !type is (doubleprecision);        write(line(istart:),'(1pg0)',iostat=ios,iomsg=message) generic
-      type is (logical);                write(line(istart:),'(1l)',iostat=ios,iomsg=message) generic
-      type is (character(len=*));       write(line(istart:),'(a)',iostat=ios,iomsg=message) generic
-      type is (complex);                write(line(istart:),'("(",1pg0,",",1pg0,")")',iostat=ios,iomsg=message) generic
-      class default
-         stop 'unknown type in *append_generic*'
-   end select
-   istart=len_trim(line)+2
-   if(ios.ne.0)then
-      !!line(istart:)=message
-      call stderr(message)
-      stop '*unit_check_msg* error in converting to string'
-   endif
-end subroutine append_generic
-!===================================================================================================================================
+   ! write message to standard error
+   call stderr('unit_check_msg:   '//atleast(name,20)//' INFO    :'//msg(g1,g2,g3,g4,g5,g6,g7,g8,g9))
+
 end subroutine unit_check_msg
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -372,6 +329,7 @@ character(len=:), allocatable :: msg
    integer                    :: istart
 
    istart=1
+   line=' '
    if(present(generic1))call append_generic(generic1)
    if(present(generic2))call append_generic(generic2)
    if(present(generic3))call append_generic(generic3)
@@ -388,7 +346,7 @@ subroutine append_generic(generic)
 !use, intrinsic :: iso_fortran_env, only : int8, int16, int32, biggest=>int64, real32, real64, dp=>real128
 use,intrinsic :: iso_fortran_env, only : int8, int16, int32, int64, real32, real64, real128
 class(*),intent(in),optional :: generic
-character(len=1024)          :: message
+character(len=4096)          :: message
 integer                      :: ios
    select type(generic)
       type is (integer(kind=int8));     write(line(istart:),'(i0)',iostat=ios,iomsg=message) generic
@@ -402,16 +360,17 @@ integer                      :: ios
       !type is (real);                   write(line(istart:),'(1pg0)',iostat=ios,iomsg=message) generic
       !type is (doubleprecision);        write(line(istart:),'(1pg0)',iostat=ios,iomsg=message) generic
       type is (logical);                write(line(istart:),'(1l)',iostat=ios,iomsg=message) generic
-      type is (character(len=*));       write(line(istart:),'(a)',iostat=ios,iomsg=message) generic
+      type is (character(len=*));       write(line(istart:),'(a)',iostat=ios,iomsg=message) trim(generic)
       type is (complex);                write(line(istart:),'("(",1pg0,",",1pg0,")")',iostat=ios,iomsg=message) generic
       class default
-         stop 'unknown type in *append_generic*'
+         write(line(istart:),'(a)',iostat=ios,iomsg=message) '????UNKNOWN_TYPE????'
+         !!stop 'unknown type in *append_generic*'
    end select
    istart=len_trim(line)+2
    if(ios.ne.0)then
       !!line(istart:)=message
-      call stderr(message)
-      stop '*msg* error in converting to string'
+      call stderr('*msg* '//message)
+      !!stop '*msg* error in converting to string'
    endif
 end subroutine append_generic
 !===================================================================================================================================
@@ -796,7 +755,7 @@ character(len=:),allocatable         :: msg_local
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(.not.logical_expression)then
-      call stderr('unit_check:       '//atleast(name,20)//' FAILED:'//trim(msg))  ! write message to standard error
+      call stderr('unit_check:       '//atleast(name,20)//' FAILURE : '//trim(msg))  ! write message to standard error
       if(unit_check_command.ne.'')then
          call execute_command_line(unit_check_command//' '//trim(name)//' bad')
       endif
@@ -806,7 +765,7 @@ character(len=:),allocatable         :: msg_local
       endif
       IFAILED_G=IFAILED_G+1
    else
-      call stderr('unit_check:       '//atleast(name,20)//' SUCCESS:'//trim(msg))  ! write message to standard error
+      call stderr('unit_check:       '//atleast(name,20)//' SUCCESS : '//trim(msg))  ! write message to standard error
       IPASSED_G=IPASSED_G+1
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -906,7 +865,9 @@ character(len=4096)                  :: var
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(present(msg))then
-     call stderr('unit_check_start: '//name//' '//trim(msg))
+     if(msg.ne.'')then
+        call stderr('unit_check_start: '//atleast(name,20)//' START   :'//trim(msg)) ! write message to standard error
+     endif
    endif
    call get_environment_variable('M_DEBUG_STOP',var)
    select case(var)
@@ -984,7 +945,7 @@ character(len=*),intent(in),optional :: msg
    character(len=:),allocatable      :: msg_local
    character(len=:),allocatable      :: opts_local
    character(len=4096)               :: out
-   character(len=8)                  :: pf
+   character(len=9)                  :: pf
    if(present(msg))then
       msg_local=msg
    else
@@ -1005,17 +966,17 @@ character(len=*),intent(in),optional :: msg
       endif
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
-   PF=merge('PASSED','FAILED',ifailed_G.eq.0)
-   if(PF.eq.'PASSED'.and.ipassed_G.eq.0)then
-      PF='UNTESTED'
+   PF=merge('PASSED  :','FAILED  :',ifailed_G.eq.0)
+   if(PF.eq.'PASSED  :'.and.ipassed_G.eq.0)then
+      PF='UNTESTED:'
    endif
    write(out,'("unit_check_done:  ",a,1x,a," GOOD:",i0,1x," BAD:",i0)') atleast(name,20),PF,IPASSED_G,IFAILED_G
    if(present(msg))then
       call stderr(trim(out)//': '//trim(msg))
+      call stderr('')
    else
       call stderr(trim(out))
    endif
-   call stderr('')
 !-----------------------------------------------------------------------------------------------------------------------------------
    IPASSED_G=0
    IFAILED_G=0

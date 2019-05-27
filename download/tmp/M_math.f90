@@ -4135,6 +4135,7 @@ END FUNCTION polyarea_shoelace       ! Negative for clockwise, positive for coun
 !!   Sample program
 !!
 !!    program demo_closest
+!!    use M_math, only : closest
 !!    implicit none
 !!    real,allocatable :: x(:),y(:)
 !!    real             :: x1, y1
@@ -4146,6 +4147,7 @@ END FUNCTION polyarea_shoelace       ! Negative for clockwise, positive for coun
 !!    id=closest(x1,y1,x,y)
 !!    write(*,*)'Closest point: ', x(id), y(id), ' at index ',id
 !!    end program demo_closest
+!!
 !!##EXAMPLE
 !!
 !===================================================================================================================================
@@ -5914,13 +5916,13 @@ end subroutine quadratic
 !!
 !!##DESCRIPTION
 !!    This procedure returns  a magic squares array, an n by n matrix in
-!!    which each integer 1, 2, ..., n*n appears exactly once and all columns,
+!!    which each integer 1, 2, ..., n*n appears exactly once; and all columns,
 !!    rows, and diagonals sum to the same number.
 !!
 !!##OPTIONS
 !!    array  An array to fill with the magic square values. The
 !!           smallest dimension should be >= 3. Since a square is required
-!!           only the values only array(1:n,1:n) will be filled, where
+!!           only the values array(1:n,1:n) will be filled, where
 !!           n=min(rows,columns).
 !!
 !!           The array may be INTEGER, REAL, or DOUBLEPRECISION.
@@ -5956,6 +5958,9 @@ end subroutine quadratic
 !===================================================================================================================================
 subroutine magic_square(array)
 implicit none
+
+character(len=*),parameter::ident_27="@(#)m_matrix::magic_square(3f): create a magic square"
+
 class(*)            :: array(:,:)
 integer,allocatable :: iarray(:,:)
 integer             :: cols
@@ -6068,7 +6073,7 @@ end subroutine magic_square
 !==================================================================================================================================!
 subroutine iswap(n,x,y)
 
-character(len=*),parameter::ident_27="@(#)m_matrix::iswap(3f): swap two integer arrays"
+character(len=*),parameter::ident_28="@(#)m_matrix::iswap(3f): swap two integer arrays"
 
 integer,intent(in) :: n
 integer            :: x(:),y(:)
@@ -6092,7 +6097,7 @@ end subroutine iswap
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
 pure function double_invert_2x2(A) result(B)
-character(len=*),parameter::ident_28="@(#)M_math::invert_2x2(3f): performs a direct calculation of the inverse of a 2x2 matrix"
+character(len=*),parameter::ident_29="@(#)M_math::invert_2x2(3f): performs a direct calculation of the inverse of a 2x2 matrix"
    integer,parameter         :: wp=kind(0.0d0)
    real(kind=wp), intent(in) :: A(2,2)   !! Matrix
    real(kind=wp)             :: B(2,2)   !! Inverse matrix
@@ -6111,7 +6116,7 @@ end function double_invert_2x2
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
 pure function double_invert_3x3(A) result(B)
-character(len=*),parameter::ident_29="@(#)M_math::invert_3x3(3f): performs a direct calculation of the inverse of a 3x3 matrix"
+character(len=*),parameter::ident_30="@(#)M_math::invert_3x3(3f): performs a direct calculation of the inverse of a 3x3 matrix"
    integer,parameter         :: wp=kind(0.0d0)
    real(kind=wp), intent(in) :: A(3,3)   !! Matrix
    real(kind=wp)             :: B(3,3)   !! Inverse matrix
@@ -6137,7 +6142,7 @@ end function double_invert_3x3
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
 pure function double_invert_4x4(A) result(B)
-character(len=*),parameter::ident_30="@(#)M_math::invert_4x4(3f): performs a direct calculation of the inverse of a 4x4 matrix"
+character(len=*),parameter::ident_31="@(#)M_math::invert_4x4(3f): performs a direct calculation of the inverse of a 4x4 matrix"
    integer,parameter            :: wp=kind(0.0d0)
    real(kind=wp), intent(in) :: A(4,4)   !! Matrix
    real(kind=wp)             :: B(4,4)   !! Inverse matrix

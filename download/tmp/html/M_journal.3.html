@@ -92,16 +92,16 @@
 program testit
 use M_journal,only : journal
 implicit none
-   call journal('a single string A -should be in S')
+   call journal('a single string A -should be on S')
 
    ! add time prefix to output
    ! turn on time prefix
    call journal('%','%Y-%M-%DT%h:%m:%s.%x%u:%b')
-   call journal('a single string B -should be in S with prefix')
+   call journal('a single string B -should be on S with prefix')
    call journal('%','CPU_TIME: %c:CALLS: %C: %b')  ! change time prefix
-   call journal('a single string B-1 -should be in S with prefix')
-   call journal('a single string B-2 -should be in S with prefix')
-   call journal('a single string B-3 -should be in S with prefix')
+   call journal('a single string B-1 -should be on S with prefix')
+   call journal('a single string B-2 -should be on S with prefix')
+   call journal('a single string B-3 -should be on S with prefix')
    !  Other useful time formats:
    !     %E -- Unix Epoch time
    !     %e -- integer value of Unix Epoch time
@@ -111,17 +111,17 @@ implicit none
    !     %k -- CPU time in seconds from system_clock
    call journal('%','') ! turn off time prefix
 
-   call journal('a single string C -should be in S')
+   call journal('a single string C -should be on S')
 
    call journal('O','aaa.out') ! turn on trail file
-   call journal('a single string D -should be in SC')
-   call journal('a single string E -should be in SC')
-   call journal('a single string F -should be in SC')
+   call journal('a single string D -should be on SC')
+   call journal('a single string E -should be on SC')
+   call journal('a single string F -should be on SC')
    call journal('O','') ! turn off trail file
 
-   call journal('a single string G -should be in S')
-   call journal('a single string H -should be in S')
-   call journal('a single string I -should be in S')
+   call journal('a single string G -should be on S')
+   call journal('a single string H -should be on S')
+   call journal('a single string I -should be on S')
 
    ! build one line of output with intrinsic scalar values added
    call journal('+sc','APPEND:')

@@ -262,7 +262,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 19910403>',&
 '@(#)AUTHOR:         John S. Urban; heavily based on the original by Cleve Moler>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Mon, Mar 25th, 2019 8:23:13 AM>',&
+'@(#)COMPILED:       Sat, May 25th, 2019 6:17:07 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

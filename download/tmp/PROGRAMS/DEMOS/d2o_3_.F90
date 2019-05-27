@@ -1,5 +1,5 @@
            program demo_d2o
-           use M_time, only : d2o, mo2d
+           use M_time, only : d2o
            implicit none
            integer :: dat(8)
               call date_and_time(values=dat)

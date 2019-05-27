@@ -26,9 +26,6 @@ help_text=[ CHARACTER(LEN=128) :: &
 '       Do not change binary files with this program, which uses sequential      ',&
 '       access to read and write the files. It can corrupt binary files.         ',&
 '                                                                                ',&
-'       It does not yet create unique scratch filenames in a way that will work  ',&
-'       if more than one instance of the command is running and file leaves are  ',&
-'       the same.                                                                ',&
 'OPTIONS                                                                         ',&
 '       -c /from/to/  "from" represents a string to look for and "to" represents ',&
 '                     its replacement.                                           ',&
@@ -63,9 +60,6 @@ end subroutine help_usage
 !!        Do not change binary files with this program, which uses sequential
 !!        access to read and write the files. It can corrupt binary files.
 !!
-!!        It does not yet create unique scratch filenames in a way that will work
-!!        if more than one instance of the command is running and file leaves are
-!!        the same.
 !!##OPTIONS
 !!        -c /from/to/  "from" represents a string to look for and "to" represents
 !!                      its replacement.
@@ -94,7 +88,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Mon, Mar 25th, 2019 12:16:48 AM>',&
+'@(#)COMPILED:       Sun, May 12th, 2019 11:40:21 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -109,6 +103,7 @@ use M_strings, only : replace
 use M_kracken, only : kracken, lget, sget, sgets
 use M_kracken, only : IPvalue ! length of keyword value
 use M_kracken, only : kracken_comment
+use M_io,      only : scratch
 implicit none
 logical                            :: verbose
 logical                            :: dryrun
@@ -168,7 +163,7 @@ logical                      :: exists, open
       exit OKBLOCK
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
-   scratch_file='_@(#)'//filenames(i)
+   scratch_file=scratch()
    open(newunit=lun_out,      &
       & file=scratch_file,    &
       & iostat=ios,           &

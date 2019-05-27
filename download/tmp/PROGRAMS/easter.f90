@@ -20,16 +20,12 @@ integer          :: dat(8)
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(year.lt.0)then
       do year = 1980, 2200
-        call easter(year, month, day)
-        write(*,*)fmtdate([year,month,day,dat(4),12,0,0,0],"Easter day: the %d day of %L in the year of our Lord %Y")
+        call easter(year, dat)
+        write(*,*)fmtdate(dat,"Easter day: the %d day of %L in the year of our Lord %Y")
       end do
    else
 !-----------------------------------------------------------------------------------------------------------------------------------
-      call easter(year, month, day)   ! given year get month and day Easter falls on
-!-----------------------------------------------------------------------------------------------------------------------------------
-      ! fill out a date_and_time array with information for Easter so can print the date using fmtdate(3f)
-      dat=[year,month,day,dat(4),12,0,0,0] ! year,month,day,tz,hour,minute,second,millisecond
-!-----------------------------------------------------------------------------------------------------------------------------------
+      call easter(year, dat)   ! given year get month and day Easter falls on
       write(*,*)fmtdate(dat,"Easter day: the %d day of %L in the year of our Lord %Y")
 !-----------------------------------------------------------------------------------------------------------------------------------
    endif
@@ -49,7 +45,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    output the month and day Easter falls on for a particular year>',&
 '@(#)VERSION:        1.0, 20170223>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Mon, Mar 25th, 2019 12:08:44 AM>',&
+'@(#)COMPILED:       Sat, May 25th, 2019 6:41:01 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

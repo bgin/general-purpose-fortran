@@ -12,7 +12,7 @@ HELP(){
 NAME
    test_suite(1bash) - [DEVELOPER] find and execute test_suite_* procedures
 SYNOPSIS
-   test_suite [-l logfile][-w]|[--help] [*.f90|*.o]
+   test_suite [-l logfile][-w]|[-h][-v] [*.f90|*.o]
 
 DESCRIPTION
    Generate and execute a program to call the test_suite_* Fortran procedures
@@ -26,7 +26,7 @@ DESCRIPTION
       unit_check_level=0
          call test_suite_M_xxxx()
       end program runtest
-   SAMPLE TEST PROCEDURE
+      ! SAMPLE TEST PROCEDURE
       !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
       subroutine test_xxx()
       use M_debug, only : unit_check_start,unit_check, unit_check_msg, msg
@@ -43,6 +43,7 @@ OPTIONS
        procedure, making a lot of assumptions about the format of the
        output of the nm(1) command and the compiler being used. Probably
        will only work with gfortran(1) on a Linux platform.
+   -v  verbose mode
 
 EXAMPLE
 
@@ -83,7 +84,7 @@ EOF
 #-------------------------------------------
 esac
 #-------------------------------------------
-[ "$*" = '' ] && cat $UUID.f90
+[ "$VERBOSE" = 'TRUE' ] && cat $UUID.f90
 LIBS='-lncurses -lsqlite3 -lreadline -lX11'
 echo "TEST SUITE FOR $SUBNAME"
 (
@@ -175,6 +176,7 @@ while getopts "chl:wt" arg; do
     l) LOG_FILE="$OPTARG" ;;
     w) test_suite_w=yes;;
     t) TIMESTAMP=1 ;;
+    v) VERBOSE=0 ;;
   esac
 done
 shift $((OPTIND-1))
@@ -263,6 +265,4 @@ do
     fi
 done
 ) |tee $LOG_FILE
-################################################################################
-exit
 ################################################################################

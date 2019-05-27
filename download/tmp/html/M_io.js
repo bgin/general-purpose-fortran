@@ -9,7 +9,9 @@ append("rd.3.html");
 append("read_all.3.html");
 append("read_line.3.html");
 append("read_table.3.html");
+append("scratch.3.html");
 append("slurp.3.html");
 append("splitpath.3.html");
+append("swallow.3.html");
 append("uniq.3.html");
 }

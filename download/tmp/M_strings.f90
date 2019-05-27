@@ -30,6 +30,7 @@
 !!    use M_strings, only : string_to_value,string_to_values,s2v,s2vs,value_to_string,v2s,msg
 !!    use M_strings, only : listout,getvals
 !!    use M_strings, only : matchw
+!!    use M_strings, only : fmt
 !!    use M_strings, only : base, decodebase, codebase
 !!    use M_strings, only : isalnum, isalpha, iscntrl, isdigit, isgraph, islower,
 !!                          isprint, ispunct, isspace, isupper, isascii, isblank, isxdigit
@@ -39,6 +40,7 @@
 !!    split  subroutine parses string using specified delimiter characters and stores tokens into an array
 !!    delim  subroutine parses string using specified delimiter characters and store tokens into an array
 !!    chomp  function consumes input line as it returns next token in a string using specified delimiters
+!!    fmt    convert a string into a paragraph
 !!
 !!    EDITING
 !!
@@ -437,7 +439,8 @@ PRIVATE
 PUBLIC split           !  subroutine parses a string using specified delimiter characters and store tokens into an allocatable array
 PUBLIC chomp           !  function consumes input line as it returns next token in a string using specified delimiters
 PUBLIC delim           !  subroutine parses a string using specified delimiter characters and store tokens into an array
-PRIVATE strtok          !  gets next token. Used by change(3f)
+PUBLIC strtok          !  gets next token. Used by change(3f)
+PUBLIC fmt             !  convert a long string into a paragraph
 !----------------------# EDITING
 PUBLIC substitute      !  subroutine non-recursively globally replaces old substring with new substring in string
 PUBLIC replace         !  function non-recursively globally replaces old substring with new substring in string
@@ -2436,8 +2439,9 @@ end subroutine test_change
 !!     9  TOKEN=[C]       35  35
 !===================================================================================================================================
 FUNCTION strtok(source_string,itoken,token_start,token_end,delimiters) result(strtok_status)
+! JSU- 20151030
 
-character(len=*),parameter::ident_12="@(#)M_strings::strtok(3fp): Tokenize a string : JSU- 20151030"
+character(len=*),parameter::ident_12="@(#)M_strings::strtok(3f): Tokenize a string"
 
 character(len=*),intent(in)  :: source_string    ! Source string to tokenize.
 character(len=*),intent(in)  :: delimiters       ! list of separator characters. May change between calls
@@ -3012,8 +3016,6 @@ subroutine test_transliterate
 implicit none
 character(len=36),parameter :: lc='abcdefghijklmnopqrstuvwxyz0123456789'
 character(len=36),parameter :: uc='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-character(len=1)            :: chars(36)
-integer :: i
    call unit_check_start('transliterate',' &
       & -section 3  &
       & -library libGPF  &
@@ -3203,7 +3205,6 @@ subroutine test_reverse
 !!use M_strings, only: reverse
 implicit none
 character(len=36),parameter :: lc='abcdefghijklmnopqrstuvwxyz0123456789'
-integer :: i
 !-----------------------------------------------------------------------------------------------------------------------------------
    call unit_check_start('reverse',' &
       & -section 3  &
@@ -3324,7 +3325,6 @@ subroutine test_upper
 implicit none
 character(len=36),parameter :: lc='abcdefghijklmnopqrstuvwxyz0123456789'
 character(len=36),parameter :: uc='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-integer :: i
 !-----------------------------------------------------------------------------------------------------------------------------------
    call unit_check_start('upper',' &
       & -section 3  &
@@ -3423,7 +3423,6 @@ subroutine test_lower
 implicit none
 character(len=36),parameter :: lc='abcdefghijklmnopqrstuvwxyz0123456789'
 character(len=36),parameter :: uc='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-integer :: i
 !-----------------------------------------------------------------------------------------------------------------------------------
    call unit_check_start('lower',' &
       & -section 3  &
@@ -4061,7 +4060,7 @@ character(len=1),intent(in),optional  :: escape ! escape character. Default is b
             case('e','E');lineout=lineout//char( 27)         ! %e     escape
             case('f','F');lineout=lineout//char( 12)         ! %f     form feed
             case('n','N');lineout=lineout//char( 10)         ! %n     new line
-          !!case('n','N');lineout=lineout//new_line()        ! %n     new line
+          !!case('n','N');lineout=lineout//new_line('A')     ! %n     new line
             case('o','O')
                       thr=line(i+1:)
                    read(thr,'(o3)',iostat=ios)xxx
@@ -4138,18 +4137,17 @@ end subroutine test_expand
 !!     integer,intent=(out)          :: ILEN
 !!##DESCRIPTION
 !!     NOTABS() converts tabs in INSTR to spaces in OUTSTR while maintaining
-!!     columns. It assumes a tab is set every 8 characters.  Trailing spaces,
-!!     carriage returns, and line feeds are removed.
+!!     columns. It assumes a tab is set every 8 characters. Trailing spaces
+!!     are removed.
 !!
-!!     It is often useful to expand tabs in input files to simplify further
-!!     processing such as tokenizing an input line.
+!!     In addition, trailing carriage returns and line feeds are removed
+!!     (they are usually a problem created by going to and from MSWindows).
 !!
-!!     Also, trailing carriage returns and line feed characters are removed,
-!!     as they are usually a problem created by going to and from MSWindows.
-!!
-!!     Sometimes tabs in files cause problems. For example: Some FORTRAN
-!!     compilers hate tabs; some printers; some editors will have problems
-!!     with tabs.
+!!     What are some reasons for removing tab characters from an input line?
+!!     Some Fortran compilers have problems with tabs, as tabs are not
+!!     part of the Fortran character set.  Some editors and printers will
+!!     have problems with tabs.  It is often useful to expand tabs in input
+!!     files to simplify further processing such as tokenizing an input line.
 !!
 !!##OPTIONS
 !!     instr     Input line to remove tabs from
@@ -4615,7 +4613,6 @@ end function lenset
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_lenset()
 character(len=10)            :: string='abcdefghij'
-character(len=:),allocatable :: answer
    call unit_check_start('lenset',' &
       & -section 3  &
       & -library libGPF  &
@@ -5092,6 +5089,7 @@ character(len=*),parameter::ident_38="@(#)M_strings::a2d(3fp): subroutine return
    integer                      :: intg
    integer                      :: pnd
    integer                      :: basevalue, ivalu
+   character(len=3),save        :: nan_string='NaN'
 !----------------------------------------------------------------------------------------------------------------------------------
    ierr=0                                                       ! initialize error flag to zero
    local_chars=chars
@@ -5129,6 +5127,7 @@ character(len=*),parameter::ident_38="@(#)M_strings::a2d(3fp): subroutine return
    endif
    if(ierr.ne.0)then                                            ! if an error occurred ierr will be non-zero.
       valu=0.0d0                                                ! set returned value to zero on error
+      read(nan_string,'(g3.3)')valu
          if(local_chars.ne.'eod')then                           ! print warning message
             call journal('sc','*a2d* - cannot produce number from string ['//trim(chars)//']')
             if(msg.ne.'')then
@@ -6082,9 +6081,6 @@ end function isNumber
 subroutine test_isnumber
 !!use M_strings, only: isnumber
 implicit none
-integer,parameter             :: number_of_chars=128
-character(len=1)              :: char
-integer                       :: i
    call unit_check_start('isnumber',' &
       & -section 3  &
       & -library libGPF  &
@@ -6342,14 +6338,14 @@ end subroutine test_listout
 !!    character(len=:),allocatable         :: unquoted_str
 !!##DESCRIPTION
 !!    Remove quotes from a CHARACTER variable as if it was read using
-!!    list-directed input.  This is particularly useful for processing
+!!    list-directed input. This is particularly useful for processing
 !!    tokens read from input such as CSV files.
 !!
 !!    Fortran can now read using list-directed input from an internal file,
 !!    which should handle quoted strings, but list-directed input does not
 !!    support escape characters, which UNQUOTE(3f) does.
 !!##OPTIONS
-!!    quoted_str  input string to remove quotes from using the rules of
+!!    quoted_str  input string to remove quotes from, using the rules of
 !!                list-directed input (two adjacent quotes inside a quoted
 !!                region are replaced by a single quote, a single quote or
 !!                double quote is selected as the delimiter based on which
@@ -7424,7 +7420,6 @@ class(*),intent(in),optional  :: generic6 ,generic7 ,generic8 ,generic9
 logical,intent(in),optional   :: nospace
 character(len=:), allocatable :: msg
    character(len=4096)        :: line
-   integer                    :: ios
    integer                    :: istart
    integer                    :: increment
    if(present(nospace))then
@@ -7438,6 +7433,7 @@ character(len=:), allocatable :: msg
    endif
 
    istart=1
+   line=' '
    if(present(generic1))call print_generic(generic1)
    if(present(generic2))call print_generic(generic2)
    if(present(generic3))call print_generic(generic3)
@@ -8606,6 +8602,135 @@ end subroutine test_codebase
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
+!>
+!!##NAME
+!!    fmt(3f) - [M_strings:TOKENS] Tokenize a string, consuming it one token per call
+!!
+!!##SYNOPSIS
+!!
+!!   function fmt(source_string,length)
+!!
+!!    character(len=*),intent(in)       :: source_string
+!!    integer,intent(in)                :: length
+!!    character(allocatable(len=length)    :: fmt(:)
+!!##DESCRIPTION
+!!    fmt(3f) breaks a long line into a simple paragraph of specified line length.
+!!
+!!    Given a long string break it on spaces into an array such that no variable is
+!!    longer than the specified length. Individual words longer than LENGTH will be
+!!    placed in variables by themselves.
+!!##OPTIONS
+!!     SOURCE_STRING  input string to break into an array of shorter strings on blank delimiters
+!!     LENGTH         length of lines to break the string into.
+!!##RETURNS
+!!     FMT  character array filled with data from source_string broken at spaces into
+!!          variables of length LENGTH.
+!!##EXAMPLE
+!!
+!!  sample program
+!!
+!!    program demo_fmt
+!!    use M_strings, only : fmt
+!!    character(len=80),allocatable :: paragraph(:)
+!!    character(len=*),parameter    :: string= '&
+!!     &one two three four five &
+!!     &six seven eight &
+!!     &nine ten eleven twelve &
+!!     &thirteen fourteen fifteen sixteen &
+!!     &seventeen'
+!!
+!!    paragraph=fmt(string,40)
+!!    write(*,'(a)')paragraph
+!!
+!!    write(*,'(a)')fmt(string,0)
+!!    write(*,'(3x,a)')fmt(string,77)
+!!
+!!    end program demo_fmt
+!!
+!!   Results:
+!!
+!!    one two three four five six seven eight
+!!    nine ten eleven twelve thirteen fourteen
+!!    fifteen sixteen seventeen
+!!    one
+!!    two
+!!    three
+!!    four
+!!    five
+!!    six
+!!    seven
+!!    eight
+!!    nine
+!!    ten
+!!    eleven
+!!    twelve
+!!    thirteen
+!!    fourteen
+!!    fifteen
+!!    sixteen
+!!    seventeen
+!!       one two three four five six seven eight nine ten eleven twelve thirteen
+!!       fourteen fifteen sixteen seventeen
+!! ================================================================================
+!===================================================================================================================================
+function fmt(source_string,length)
+
+character(len=*),parameter::ident_69="@(#)M_strings::fmt(3f): wrap a long string into a paragraph"
+
+character(len=*),intent(in)       :: source_string
+integer,intent(in)                :: length
+integer                           :: itoken
+integer                           :: istart
+integer                           :: iend
+character(len=*),parameter        :: delimiters=' '
+character(len=:),allocatable      :: fmt(:)
+integer                           :: ilines
+integer                           :: ilength
+integer                           :: iword, iword_max
+integer                           :: i
+!-----------------------------------------------------------------------------------------------------------------------------------
+!  parse string once to find out how big to make the returned array, then redo everything but store the data
+!  could store array of endpoints and leave original whitespace alone or many other options
+   do i=1,2
+      iword_max=0                                  ! length of longest token
+      ilines=1                                     ! number of output line output will go on
+      ilength=0                                    ! length of output line so far
+      itoken=0                                     ! must set ITOKEN=0 before looping on strtok(3f) on a new string.
+      do while ( strtok(source_string,itoken,istart,iend,delimiters) )
+         iword=iend-istart+1
+         iword_max=max(iword_max,iword)
+         if(iword.gt.length)then                   ! this token is longer than the desired line length so put it on a line by itself
+            if(ilength.ne.0)then
+               ilines=ilines+1
+            endif
+            if(i.eq.2)then                 ! if fmt has been allocated store data, else just gathering data to determine size of fmt
+               fmt(ilines)=source_string(istart:iend)//' '
+            endif
+            ilength=iword+1
+         elseif(ilength+iword.le.length)then       ! this word will fit on current line
+            if(i.eq.2)then
+               fmt(ilines)=fmt(ilines)(:ilength)//source_string(istart:iend)//' '
+            endif
+            ilength=ilength+iword+1
+         else                                      ! adding this word would make line too long so start new line
+            ilines=ilines+1
+            ilength=0
+            if(i.eq.2)then
+               fmt(ilines)=fmt(ilines)(:ilength)//source_string(istart:iend)//' '
+            endif
+            ilength=iword+1
+         endif
+      enddo
+      if(i==1)then                                 ! determined number of lines needed so allocate output array
+         allocate(character(len=max(length,iword_max)) :: fmt(ilines))
+         fmt=' '
+      endif
+   enddo
+   fmt=fmt(:ilines)
+end function fmt
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
 subroutine test_m_strings
 !!use M_strings, only: reverse
 !!use M_strings, only: lower
@@ -8615,7 +8740,6 @@ implicit none
 character(len=36),parameter :: lc='abcdefghijklmnopqrstuvwxyz0123456789'
 character(len=36),parameter :: uc='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
 character(len=1)            :: chars(36)
-integer :: i
 call unit_check_start('combined')
 !-----------------------------------------------------------------------------------------------------------------------------------
 ! COMBINED TESTS
@@ -8881,7 +9005,7 @@ contains
 !
 function construct_from_fill(chars,len)
 
-character(len=*),parameter::ident_69="@(#)M_strings::construct_from_fill(3f): construct TYPE(STRING)"
+character(len=*),parameter::ident_70="@(#)M_strings::construct_from_fill(3f): construct TYPE(STRING)"
 
 character(len=*),intent(in),optional :: chars
 integer,intent(in),optional          :: len
@@ -8905,7 +9029,7 @@ end function construct_from_fill
 !===================================================================================================================================
 function oop_len(self) result (length)
 
-character(len=*),parameter::ident_70="@(#)M_strings::oop_len(3f): length of string"
+character(len=*),parameter::ident_71="@(#)M_strings::oop_len(3f): length of string"
 
 class(string),intent(in)    :: self
 integer                     :: length
@@ -8916,7 +9040,7 @@ end function oop_len
 !===================================================================================================================================
 function oop_len_trim(self) result (length)
 
-character(len=*),parameter::ident_71="@(#)M_strings::oop_len_trim(3f): trimmed length of string"
+character(len=*),parameter::ident_72="@(#)M_strings::oop_len_trim(3f): trimmed length of string"
 
 class(string),intent(in)    :: self
 integer                     :: length
@@ -8927,7 +9051,7 @@ end function oop_len_trim
 !===================================================================================================================================
 function oop_switch(self) result (array)
 
-character(len=*),parameter::ident_72="@(#)M_strings::oop_switch(3f): convert string to array of single characters"
+character(len=*),parameter::ident_73="@(#)M_strings::oop_switch(3f): convert string to array of single characters"
 
 class(string),intent(in)    :: self
 character(len=1)            :: array(len(self%str))
@@ -8938,7 +9062,7 @@ end function oop_switch
 !===================================================================================================================================
 function oop_index(self,substring,back) result (location)
 
-character(len=*),parameter::ident_73="@(#)M_strings::oop_index(3f): find starting position of a substring in a string"
+character(len=*),parameter::ident_74="@(#)M_strings::oop_index(3f): find starting position of a substring in a string"
 
 class(string),intent(in)    :: self
 character(len=*),intent(in) :: substring
@@ -8955,7 +9079,7 @@ end function oop_index
 !===================================================================================================================================
 function oop_upper(self) result (string_out)
 
-character(len=*),parameter::ident_74="@(#)M_strings::oop_upper(3f): convert string to uppercase"
+character(len=*),parameter::ident_75="@(#)M_strings::oop_upper(3f): convert string to uppercase"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -8966,7 +9090,7 @@ end function oop_upper
 !===================================================================================================================================
 function oop_lower(self) result (string_out)
 
-character(len=*),parameter::ident_75="@(#)M_strings::oop_lower(3f): convert string to miniscule"
+character(len=*),parameter::ident_76="@(#)M_strings::oop_lower(3f): convert string to miniscule"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -8977,7 +9101,7 @@ end function oop_lower
 !===================================================================================================================================
 function oop_expand(self,escape_char) result (string_out)
 
-character(len=*),parameter::ident_76="@(#)M_strings::oop_expand(3f): expand common escape sequences by calling expand(3f)"
+character(len=*),parameter::ident_77="@(#)M_strings::oop_expand(3f): expand common escape sequences by calling expand(3f)"
 
 class(string),intent(in)      :: self
 character,intent(in),optional :: escape_char
@@ -8993,7 +9117,7 @@ end function oop_expand
 !===================================================================================================================================
 function oop_trim(self) result (string_out)
 
-character(len=*),parameter::ident_77="@(#)M_strings::oop_trim(3f): trim trailing spaces"
+character(len=*),parameter::ident_78="@(#)M_strings::oop_trim(3f): trim trailing spaces"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -9004,7 +9128,7 @@ end function oop_trim
 !===================================================================================================================================
 function oop_crop(self) result (string_out)
 
-character(len=*),parameter::ident_78="@(#)M_strings::oop_crop(3f): crop leading and trailing spaces"
+character(len=*),parameter::ident_79="@(#)M_strings::oop_crop(3f): crop leading and trailing spaces"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -9015,7 +9139,7 @@ end function oop_crop
 !===================================================================================================================================
 function oop_reverse(self) result (string_out)
 
-character(len=*),parameter::ident_79="@(#)M_strings::oop_reverse(3f): reverse string"
+character(len=*),parameter::ident_80="@(#)M_strings::oop_reverse(3f): reverse string"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -9026,7 +9150,7 @@ end function oop_reverse
 !===================================================================================================================================
 function oop_adjustl(self) result (string_out)
 
-character(len=*),parameter::ident_80="@(#)M_strings::oop_adjustl(3f): adjust string to left"
+character(len=*),parameter::ident_81="@(#)M_strings::oop_adjustl(3f): adjust string to left"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -9037,7 +9161,7 @@ end function oop_adjustl
 !===================================================================================================================================
 function oop_adjustr(self) result (string_out)
 
-character(len=*),parameter::ident_81="@(#)M_strings::oop_adjustr(3f): adjust string to right"
+character(len=*),parameter::ident_82="@(#)M_strings::oop_adjustr(3f): adjust string to right"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -9048,7 +9172,7 @@ end function oop_adjustr
 !===================================================================================================================================
 function oop_adjustc(self,length) result (string_out)
 
-character(len=*),parameter::ident_82="@(#)M_strings::oop_adjustc(3f): adjust string to center"
+character(len=*),parameter::ident_83="@(#)M_strings::oop_adjustc(3f): adjust string to center"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -9064,7 +9188,7 @@ end function oop_adjustc
 !===================================================================================================================================
 function oop_int(self) result (value)
 
-character(len=*),parameter::ident_83="@(#)M_strings::oop_int(3f): string to integer"
+character(len=*),parameter::ident_84="@(#)M_strings::oop_int(3f): string to integer"
 
 class(string),intent(in)     :: self
 integer                      :: value
@@ -9076,7 +9200,7 @@ end function oop_int
 !===================================================================================================================================
 function oop_real(self) result (value)
 
-character(len=*),parameter::ident_84="@(#)M_strings::oop_real(3f): string to real"
+character(len=*),parameter::ident_85="@(#)M_strings::oop_real(3f): string to real"
 
 class(string),intent(in)     :: self
 real                         :: value
@@ -9088,7 +9212,7 @@ end function oop_real
 !===================================================================================================================================
 function oop_dble(self) result (value)
 
-character(len=*),parameter::ident_85="@(#)M_strings::oop_dble(3f): string to double"
+character(len=*),parameter::ident_86="@(#)M_strings::oop_dble(3f): string to double"
 
 class(string),intent(in)     :: self
 doubleprecision              :: value
@@ -9100,7 +9224,7 @@ end function oop_dble
 !===================================================================================================================================
 function oop_compact(self,char) result (string_out)
 
-character(len=*),parameter::ident_86="@(#)M_strings::oop_compact(3f): adjust string to center"
+character(len=*),parameter::ident_87="@(#)M_strings::oop_compact(3f): adjust string to center"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -9117,7 +9241,7 @@ end function oop_compact
 !===================================================================================================================================
 function oop_substitute(self,old,new) result (string_out)
 
-character(len=*),parameter::ident_87="&
+character(len=*),parameter::ident_88="&
 &@(#)M_strings::oop_substitute(3f): change all occurrences of oldstring to newstring non-recursively"
 
 class(string),intent(in)     :: self
@@ -9132,7 +9256,7 @@ end function oop_substitute
 !===================================================================================================================================
 function oop_transliterate(self,old,new) result (string_out)
 
-character(len=*),parameter::ident_88="&
+character(len=*),parameter::ident_89="&
 &@(#)M_strings::oop_transliterate(3f): change all occurrences of oldstring to newstring non-recursively"
 
 class(string),intent(in)     :: self
@@ -9146,7 +9270,7 @@ end function oop_transliterate
 !===================================================================================================================================
 function oop_atleast(self,length) result (string_out)
 
-character(len=*),parameter::ident_89="@(#)M_strings::oop_atleast(3f): set string to at least specified length"
+character(len=*),parameter::ident_90="@(#)M_strings::oop_atleast(3f): set string to at least specified length"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -9158,7 +9282,7 @@ end function oop_atleast
 !===================================================================================================================================
 function oop_lenset(self,length) result (string_out)
 
-character(len=*),parameter::ident_90="@(#)M_strings::oop_lenset(3f): set string to specific length"
+character(len=*),parameter::ident_91="@(#)M_strings::oop_lenset(3f): set string to specific length"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -9170,7 +9294,7 @@ end function oop_lenset
 !===================================================================================================================================
 function oop_matchw(self,pattern) result (answer)
 
-character(len=*),parameter::ident_91="@(#)M_strings::oop_matchw(3f): test if wildcard pattern matches string"
+character(len=*),parameter::ident_92="@(#)M_strings::oop_matchw(3f): test if wildcard pattern matches string"
 
 class(string),intent(in)     :: self
 character(len=*),intent(in)  :: pattern
@@ -9182,7 +9306,7 @@ end function oop_matchw
 !===================================================================================================================================
 function oop_notabs(self) result (string_out)
 
-character(len=*),parameter::ident_92="&
+character(len=*),parameter::ident_93="&
 &@(#)M_strings::oop_notabs(3f): expand tab characters assuming tab stops every eight(8) characters"
 
 class(string),intent(in)     :: self
@@ -9197,7 +9321,7 @@ end function oop_notabs
 !===================================================================================================================================
 function oop_noesc(self) result (string_out)
 
-character(len=*),parameter::ident_93="@(#)M_strings::oop_noesc(3f): replace non-printable characters with spaces"
+character(len=*),parameter::ident_94="@(#)M_strings::oop_noesc(3f): replace non-printable characters with spaces"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -9208,7 +9332,7 @@ end function oop_noesc
 !===================================================================================================================================
 function p(self) result (string_out)
 
-character(len=*),parameter::ident_94="@(#)M_strings::oop_p(3f): return CHARACTER string from TYPE(STRING)"
+character(len=*),parameter::ident_95="@(#)M_strings::oop_p(3f): return CHARACTER string from TYPE(STRING)"
 
 class(string),intent(in)     :: self
 character(len=len(self%str)) :: string_out
@@ -9222,7 +9346,7 @@ subroutine init_string(self)
 ! allow for TYPE(STRING) object to be initialized.
 !
 
-character(len=*),parameter::ident_95="@(#)M_strings::init_dt(3f): initialize TYPE(STRING)"
+character(len=*),parameter::ident_96="@(#)M_strings::init_dt(3f): initialize TYPE(STRING)"
 
 class(string)                        :: self
    self%str=''
@@ -9234,7 +9358,7 @@ end subroutine init_string
 !===================================================================================================================================
 function string_plus_value(self,value) result (other)
 
-character(len=*),parameter::ident_96="@(#)M_strings::string_plus_value(3f): add value to TYPE(STRING)"
+character(len=*),parameter::ident_97="@(#)M_strings::string_plus_value(3f): add value to TYPE(STRING)"
 
 class(string),intent(in)      :: self
 type(string)                  :: other
@@ -9252,7 +9376,7 @@ end function string_plus_value
 !===================================================================================================================================
 function string_minus_value(self,value) result (other)
 
-character(len=*),parameter::ident_97="@(#)M_strings::string_minus_value(3f): subtract value from TYPE(STRING)"
+character(len=*),parameter::ident_98="@(#)M_strings::string_minus_value(3f): subtract value from TYPE(STRING)"
 
 class(string),intent(in)      :: self
 type(string)                  :: other
@@ -9274,7 +9398,7 @@ end function string_minus_value
 !===================================================================================================================================
 function string_append_value(self,value) result (other)
 
-character(len=*),parameter::ident_98="@(#)M_strings::string_append_value(3f): append value to TYPE(STRING)"
+character(len=*),parameter::ident_99="@(#)M_strings::string_append_value(3f): append value to TYPE(STRING)"
 
 class(string),intent(in)      :: self
 type(string)                  :: other
@@ -9292,7 +9416,7 @@ end function string_append_value
 !===================================================================================================================================
 function string_multiply_value(self,value) result (other)
 
-character(len=*),parameter::ident_99="@(#)M_strings::string_multiply_value(3f): multiply TYPE(STRING) value times"
+character(len=*),parameter::ident_100="@(#)M_strings::string_multiply_value(3f): multiply TYPE(STRING) value times"
 
 class(string),intent(in)      :: self
 type(string)                  :: other
@@ -9308,7 +9432,7 @@ end function string_multiply_value
 !===================================================================================================================================
 logical function eq(self,other)
 
-character(len=*),parameter::ident_100="@(#)M_strings::eq(3f): compare derived type string objects (eq,lt,gt,le,ge,ne)"
+character(len=*),parameter::ident_101="@(#)M_strings::eq(3f): compare derived type string objects (eq,lt,gt,le,ge,ne)"
 
    class(string),intent(in) :: self
    type(string),intent(in)  :: other

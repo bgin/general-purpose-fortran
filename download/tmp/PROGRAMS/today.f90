@@ -35,7 +35,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    output current time for uses such as file suffixes.>',&
 '@(#)VERSION:        1.0, 2009>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Mon, Mar 25th, 2019 12:18:52 AM>',&
+'@(#)COMPILED:       Sat, May 25th, 2019 6:27:31 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

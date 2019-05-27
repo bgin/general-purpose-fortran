@@ -8,44 +8,85 @@ character(len=4096),allocatable  :: array(:)
 character(len=4096)              :: dir,name,basename,ext,input_name
 integer                          :: i, ios
 logical                          :: stdin=.false.
+logical                          :: d, b, l, e
 !-----------------------------------------------------------------------------------------------------------------------------------
 !  define command arguments, default values and crack command line
-   call kracken('splitname','-help .false. -version .false. -zero .false. -stdin .false.')
+   call kracken('splitname','-d .f. -l .f. -b .f. -e .f. -help .false. -version .false. -zero .false. -stdin .false.')
    call help_usage(lget('splitname_help'))        ! process -help switch
    call help_version(lget('splitname_version'))   ! process -version switch
    zero=lget('splitname_zero')                    ! get -zero option
    array=sgets('splitname_oo')                    ! get -oo STRING, split on space character into array
    stdin=lget('splitname_stdin')                  ! read names from stdin
+   d=lget('splitname_d')                          ! get -d option
+   b=lget('splitname_b')                          ! get -b option
+   l=lget('splitname_l')                          ! get -l option
+   e=lget('splitname_e')                          ! get -e option
 !----------------------------------------------------------------------------------------------------------------------------------
-   do i=1,size(array)                           ! loop thru file-or-directory names
+   do i=1,size(array)                             ! loop thru file-or-directory names
       call splitpath(array(i),dir,name,basename,ext)
-      write(*,'(4(''"'',a,''" ''))')trim(dir),trim(name),trim(basename),trim(ext)
+      call printit()
    enddo
    if(stdin)then
       INFINITE: do
          read(*,'(a)',iostat=ios)input_name
          if(ios.ne.0)exit INFINITE
          call splitpath(input_name,dir,name,basename,ext)
-         write(*,'(4(''"'',a,''" ''))')trim(dir),trim(name),trim(basename),trim(ext)
+         call printit()
       enddo INFINITE
    endif
 !----------------------------------------------------------------------------------------------------------------------------------
 contains
+$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+subroutine printit()
+logical :: printed
+   printed=.false.
+   if(d) then
+      write(*,101,advance='no')trim(dir)
+      printed=.true.
+   endif
+   if(l) then
+      write(*,101,advance='no')trim(name)
+      printed=.true.
+   endif
+   if(b) then
+      write(*,101,advance='no')trim(basename)
+      printed=.true.
+   endif
+   if(e) then
+      write(*,101,advance='no')trim(ext)
+      printed=.true.
+   endif
+   if(.not.printed)then
+      write(*,101)trim(dir),trim(name),trim(basename),trim(ext)
+   else
+      write(*,*)
+   endif
+   101 format(*('"',a,'" ':))
+end subroutine printit
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file splitname.1.man
 NAME
    splitname(1f) - [FUNIX] strip pathname into components {dir,name,basename,extension}
 
 SYNOPSIS
-   splitname [NAME1 NAME2 ... |-help|-version]
+   splitname [NAME1 NAME2 ... |[-d -b -l -e]|-help|-version]
 
 DESCRIPTION
-   Output each pathname broken into components dir, name, basename, extension
+   Output each pathname broken into components directory, leaf name, basename, extension
+
+   Output is always in the form and order
+
+      "dir" "name" "basename" "ext" 
 
 OPTIONS
-   NAMES     pathnames to split
-   -help     display this help and exit
-   -version  output version information and exit
+   NAMES      pathnames to split
+   -d         print director name
+   -l         print leaf name
+   -b         print base name sans any suffix
+   -e         print suffix extension
+   --stdin    flag to read pathnames from stdin instead of command line
+   --help     display this help and exit
+   --version  output version information and exit
 
 EXAMPLES
    Sample program executions:
@@ -55,7 +96,7 @@ EXAMPLES
      splitname stdio.h            -> "" "studio.h" "studio" ".h"
 
 SEE ALSO
-   splitname(1), basename(1), readlink(1), realpath(1)
+   dirname(1), basename(1), readlink(1), realpath(1)
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION

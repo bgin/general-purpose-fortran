@@ -46,26 +46,47 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
    <dt> NAME </dt>
    <dd> M_io(3f) - [M_io] Fortran I/O module</dd>
    <dt> SYNOPSIS </dt><dd>
-      use M_io, only : slurp, notopen, print_inquire, uniq, read_table
-      use M_io, only : dirname, splitpath, isdir, get_tmp
+      <pre>
+      use M_io, only : slurp, swallow, notopen, print_inquire, uniq, read_table
+      use M_io, only : dirname, splitpath, isdir, get_tmp, scratch
       use M_io, only : read_line, read_all
+      </pre>
    </dd>
    <dt> DESCRIPTION </dt><dd>
       The M_io module is a collection of routines related to basic I/O
       (input/output) operations.
       <ul>
-         <li><a href="slurp.3.html">         SLURP </a> - read a file into a character array </li>
-         <li><a href="read_table.3.html">    READ_TABLE </a> - read a file into a numeric array </li>
          <li><a href="notopen.3.html">       NOTOPEN </a> - find unused FUN/LUN file-unit-number</li>
          <li><a href="print_inquire.3.html"> PRINT_INQUIRE </a> - run INQUIRE(3f) on a file by name or number and print results</li>
-         <li><a href="uniq.3.html">          UNIQ </a> - add numeric suffix to filename if needed till filename does not exist</li>
+         <li><a href="isdir.3.html">         ISDIR </a> - tell if a path is an existing directory on Unix-compatible systems</li>
+
+         <li> SPLITTING PATHNAMES
+         <ul>
          <li><a href="dirname.3.html">       DIRNAME </a> - return the directory portion of a pathname </li>
          <li><a href="splitpath.3.html">     SPLITPATH </a> - split Unix pathname into directory, name, basename and extension</li>
-         <li><a href="isdir.3.html">         ISDIR </a> - tell if a path is an existing directory on Unix-compatible systems</li>
-         <li><a href="read_line.3.html">     READ_LINE </a> - read line as long as programming environment line length limit</li>
+         </ul>
+         </li>
+
+         <li> READING DATA
+         <ul>
+         <li><a href="read_line.3.html">     READ_LINE </a> - read line as long as programming environment line length limit
+                                                              cleaning up input line</li>
          <li><a href="read_all.3.html">      READ_ALL </a> - read line as long as programming environment line length limit</li>
-         <li><a href="get_tmp.3.html">       GET_TMP </a> - get name for system scratch directory from environment variables</li>
          <li><a href="rd.3.html">            RD </a> - ask for string from standard input with user-definable prompt </li>
+         <li><a href="read_table.3.html">    READ_TABLE </a> - read a file into a numeric array </li>
+         <li><a href="slurp.3.html">         SLURP </a> - read a file into a single-character array </li>
+         <li><a href="swallow.3.html">         SWALLOW </a> - read a file into a character array of text lines</li>
+         </ul>
+         </li>
+
+         <li> SCRATCH FILES
+         <ul>
+         <li><a href="get_tmp.3.html">       GET_TMP </a> - get name for system scratch directory from environment variables</li>
+         <li><a href="scratch.3.html">       SCRATCH </a> - get name of scratch file</li>
+         <li><a href="uniq.3.html">          UNIQ </a> - add numeric suffix to filename if needed till filename does not exist</li>
+         </ul>
+         </li>
+
       </ul>
    </dd>
 </dl>

@@ -15,6 +15,12 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   manup FILE -cmd title -section N --product "product name" -help .F. --version .F.',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
+'  This program is being extended. It currently essentially                      ',&
+'     o converts uppercase lines title sections                                  ',&
+'     o leaves lines indented more than four characters as-is                    ',&
+'     o takes other text and builds it into paragraphs delimited by              ',&
+'       blank lines in the input file.                                           ',&
+'OPTIONS                                                                         ',&
 '     FILE                                                                       ',&
 '        The input filename                                                      ',&
 '                                                                                ',&
@@ -39,6 +45,64 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                                                                                ',&
 '     -help       display help and exit                                          ',&
 '     -version    display version information and exit                           ',&
+'EXAMPLE                                                                         ',&
+' Given an input file such as                                                    ',&
+'                                                                                ',&
+'   >NAME                                                                        ',&
+'   >        yes(1f) - [FUNIX] output a string repeatedly until killed or limit is reached',&
+'   >                                                                            ',&
+'   >SYNOPSIS                                                                    ',&
+'   >       yes [STRING] -help -version [-repeat N]                              ',&
+'   >                                                                            ',&
+'   >DESCRIPTION                                                                 ',&
+'   >       yes(1) prints the command line arguments, separated by spaces        ',&
+'   >       and followed by a newline until the repeat count is reached or       ',&
+'   >       endlessly until it is killed. If no arguments are given, it prints   ',&
+'   >       ''''y'''' followed by a newline endlessly until killed. Upon a write ',&
+'   >       error, yes(1) exits with status "1".                                 ',&
+'   >                                                                            ',&
+'   >              -repeat N  specify number of times to display string          ',&
+'   >              --help     display this help and exit                         ',&
+'   >              --version  output version information and exit                ',&
+'   >                                                                            ',&
+'   >       To output an argument that begins with -, precede it with --, e.g.,  ',&
+'   >                                                                            ',&
+'   >              yes -- --help.                                                ',&
+'   >                                                                            ',&
+'   >EXAMPLES                                                                    ',&
+'   >       Sample commands                                                      ',&
+'   >                                                                            ',&
+'   >              # repeat a command 20 times, pausing and clearing:            ',&
+'   >              yes  date --repeat 20  |xargs -iXX  sh -c ''''XX;sleep 2;clear''''',&
+'   >                                                                            ',&
+'   >REPORTING BUGS                                                              ',&
+'   >       Report yes bugs to <http://www.urbanjost.altervista.org/index.html>  ',&
+'   >                                                                            ',&
+'   >SEE ALSO                                                                    ',&
+'   >       yes(1), repeat(1), xargs(1)                                          ',&
+'                                                                                ',&
+' run it through manup(1):                                                       ',&
+'                                                                                ',&
+'    A short example of usage                                                    ',&
+'                                                                                ',&
+'     # use help txt as input to t2m to make man(1) page                         ',&
+'     # generate new man(1) page                                                 ',&
+'     manup yes.1.txt >yes.1                                                     ',&
+'                                                                                ',&
+'     # install man page in a common location (location varies)                  ',&
+'        # man pages are commonly kept as compressed files                       ',&
+'        gzip yes.1                                                              ',&
+'        # place file in a directory read by man(1) command.                     ',&
+'        # can be changed with environment variable MANPATH                      ',&
+'        # or by adding a directory to the default manpath.                      ',&
+'        # varies from system to system                                          ',&
+'        mv -i yes.1.gz /usr/share/man/man1/                                     ',&
+'        # make sure file is readable by all users                               ',&
+'        chmod a=r,u+w /usr/share/man/man1/yes.1.gz                              ',&
+'                                                                                ',&
+'     # test man page                                                            ',&
+'     man 1 yes|more                                                             ',&
+'                                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -54,6 +118,12 @@ end subroutine help_usage
 !!    manup FILE -cmd title -section N --product "product name" -help .F. --version .F.
 !!
 !!##DESCRIPTION
+!!   This program is being extended. It currently essentially
+!!      o converts uppercase lines title sections
+!!      o leaves lines indented more than four characters as-is
+!!      o takes other text and builds it into paragraphs delimited by
+!!        blank lines in the input file.
+!!##OPTIONS
 !!      FILE
 !!         The input filename
 !!
@@ -78,6 +148,64 @@ end subroutine help_usage
 !!
 !!      -help       display help and exit
 !!      -version    display version information and exit
+!!##EXAMPLE
+!!
+!!  Given an input file such as
+!!
+!!    >NAME
+!!    >        yes(1f) - [FUNIX] output a string repeatedly until killed or limit is reached
+!!    >
+!!    >SYNOPSIS
+!!    >       yes [STRING] -help -version [-repeat N]
+!!    >
+!!    >DESCRIPTION
+!!    >       yes(1) prints the command line arguments, separated by spaces
+!!    >       and followed by a newline until the repeat count is reached or
+!!    >       endlessly until it is killed. If no arguments are given, it prints
+!!    >       ''y'' followed by a newline endlessly until killed. Upon a write
+!!    >       error, yes(1) exits with status "1".
+!!    >
+!!    >              -repeat N  specify number of times to display string
+!!    >              --help     display this help and exit
+!!    >              --version  output version information and exit
+!!    >
+!!    >       To output an argument that begins with -, precede it with --, e.g.,
+!!    >
+!!    >              yes -- --help.
+!!    >
+!!    >EXAMPLES
+!!    >       Sample commands
+!!    >
+!!    >              # repeat a command 20 times, pausing and clearing:
+!!    >              yes  date --repeat 20  |xargs -iXX  sh -c ''XX;sleep 2;clear''
+!!    >
+!!    >REPORTING BUGS
+!!    >       Report yes bugs to <http://www.urbanjost.altervista.org/index.html>
+!!    >
+!!    >SEE ALSO
+!!    >       yes(1), repeat(1), xargs(1)
+!!
+!!  run it through manup(1):
+!!
+!!     A short example of usage
+!!
+!!      # use help txt as input to t2m to make man(1) page
+!!      # generate new man(1) page
+!!      manup yes.1.txt >yes.1
+!!
+!!      # install man page in a common location (location varies)
+!!         # man pages are commonly kept as compressed files
+!!         gzip yes.1
+!!         # place file in a directory read by man(1) command.
+!!         # can be changed with environment variable MANPATH
+!!         # or by adding a directory to the default manpath.
+!!         # varies from system to system
+!!         mv -i yes.1.gz /usr/share/man/man1/
+!!         # make sure file is readable by all users
+!!         chmod a=r,u+w /usr/share/man/man1/yes.1.gz
+!!
+!!      # test man page
+!!      man 1 yes|more
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -97,7 +225,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Mon, Mar 25th, 2019 12:12:06 AM>',&
+'@(#)COMPILED:       Sat, May 25th, 2019 6:18:32 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -436,44 +564,6 @@ end program test_manup
 !----------------------------------------------------------------------------------------------------------------------------------!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
-!----------------------------------------------------------------------------------------------------------------------------------!
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!-----------------------------------------------------------------------------------------------------------------------------------
-! REFERENCE AND EXAMPLE MATERIALS
-!-----------------------------------------------------------------------------------------------------------------------------------
-!YES(1)                      User Commands                                 YES(1)
-!
-!NAME
-!       yes - output a string repeatedly until killed
-!
-!SYNOPSIS
-!       yes [STRING]...
-!       yes OPTION
-!
-!DESCRIPTION
-!       Repeatedly output a line with all specified STRING(s), or 'y'.
-!
-!       --help display this help and exit
-!
-!       --version
-!              output version information and exit
-!
-!AUTHOR
-!       Written by David MacKenzie.
-!
-!REPORTING BUGS
-!       GNU coreutils online help: <http://www.gnu.org/software/coreutils/>
-!       Report yes translation bugs to <http://translationproject.org/team/>
-!
-!SEE ALSO
-!       Full documentation at: <http://www.gnu.org/software/coreutils/yes>
-!       or available locally via: info '(coreutils) yes invocation'
-!
-!       Packaged by Cygwin (8.24-3)
-!       Copyright    2015 Free Software Foundation, Inc.
-!       License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
-!       This is free software: you are free to change and redistribute it.
-!       There is NO WARRANTY, to the extent permitted by law.
 !
 !GNU coreutils 8.24                                         August 2015                                                    YES(1)
 !

@@ -499,9 +499,9 @@ help_text=[ &
 &'|ju() : day of year    |$now(format)          |$fmtdate(dat(8),format)          ',&
 &'--------------------------------------------------------------------------------',&
 &'TRIGONOMETRIC:                                                                  ',&
-&'|cos(radians):cosine   |acos(x/r)             |cosh()                           ',&
-&'|sin(radians):sine     |asin(y/r)             |sinh()                           ',&
-&'|tan(radians):tangent  |atan(y/x)             |tanh()                           ',&
+&'|cos(radians):cosine   |acos(x/r)             |cosh()  | cosd(degrees)          ',&
+&'|sin(radians):sine     |asin(y/r)             |sinh()  | sind(degrees)          ',&
+&'|tan(radians):tangent  |atan(y/x)             |tanh()  | tand(degrees)          ',&
 &'|                      |atan2(x,y)            |                                 ',&
 &'--------------------------------------------------------------------------------',&
 &'UNIT CONVERSION:                                                                ',&

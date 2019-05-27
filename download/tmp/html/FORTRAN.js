@@ -198,6 +198,7 @@ append("trim.3fortran.html");
 append("ubound.3fortran.html");
 append("unpack.3fortran.html");
 append("verify.3fortran.html");
+append("allocate.7fortran.html");
 append("array_constructors.7fortran.html");
 append("associate.7fortran.html");
 append("backspace.7fortran.html");
@@ -233,4 +234,5 @@ append("stop.7fortran.html");
 append("use.7fortran.html");
 append("where.7fortran.html");
 append("model.1.html");
+append("unicode_example1.1.html");
 }

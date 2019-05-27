@@ -3,7 +3,7 @@ $IF DEFINED(TESTPRG90) ! Place test program source here
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file change.1.man
 NAME
-   change(1f) - [FILE EDIT] replace old fixed string with new fixed string in filenames
+   change(1f) - [FILE EDIT] replace old fixed string with new fixed string in names of files
 
 SYNOPSIS
    change c/old/new/ FILENAMES [-dryrun][-cmd COMMAND]| --version| --help

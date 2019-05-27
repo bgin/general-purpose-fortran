@@ -12,7 +12,7 @@ private
 !!##SYNOPSIS
 !!
 !!
-!!    subroutine journal([where,]message,[VALUE])
+!!    subroutine journal([where,]message,[VALUE(s)])
 !!
 !!     character(len=*),intent(in) :: where
 !!     character(len=*),intent(in) :: msg
@@ -21,7 +21,7 @@ private
 !!
 !!       call journal(where,message,[VALUE])
 !!
-!!    shortcut for "call journal('sc',message)"
+!!    or a shortcut for "call journal('sc',message)"
 !!
 !!       call journal(message)
 !!
@@ -96,14 +96,14 @@ private
 !!          trail file if no filename or a blank filename.
 !!      %   set prefix to run thru now(3f) to generate time prefix strings
 !!
-!!   MESSAGE   message to write to stdout, stderr, and the trail file when
-!!             writing message.
+!!   MESSAGE   message to write to stdout, stderr, and the trail file.
 !!   FILENAME  when WHERE="O" to turn the trail file on or off, the "message"
 !!             field becomes the trail filename to open. If blank, writing
 !!             to the trail file is turned off.
 !!   TFORMAT   when WHERE="%" the message is treated as a time format
 !!             specification as described under now(3f).
-!!   VALUE     a numeric value to optionally be appended to the message
+!!   VALUE     a numeric or character value to optionally be appended to the message.
+!!             Up to nine values are allowed. The WHERE field is required if values are added.
 !!
 !!##EXAMPLE
 !!
@@ -131,10 +131,15 @@ private
 !!    end program demo_journal
 !===================================================================================================================================
 public journal
+public journal_
 
 interface journal
-   module procedure write_msg, wm_i, wm_r, wm_c, wm_l, wm_d, wm, set_stdout, change_model
+   module procedure wm, set_stdout, change_model, wm_all
 end interface journal
+
+interface journal_
+   module procedure write_msg, wm_i, wm_r, wm_c, wm_l, wm_d, wm, set_stdout, change_model
+end interface journal_
 
 public test_suite_M_journal
 
@@ -299,6 +304,105 @@ end subroutine change_model
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
+!>
+!!##NAME
+!!    wm_all(3f) - [M_journal] converts any standard scalar type to a string
+!!##SYNOPSIS
+!!
+!!   subroutine  wm_all(where,message,g1,g2g3,g4,g5,g6,g7,g8,g9,nospace)
+!!
+!!     character(len=*),intent(in)   :: where
+!!     character(len=*),intent(in)   :: message
+!!     class(*),intent(in),optional  :: g1,g2,g3,g4,g5,g6,g7,g8,g9
+!!     logical,intent(in),optional   :: nospace
+!!
+!!##DESCRIPTION
+!!    wm_all(3f) builds and writes a space-separated string from up to nine scalar values.
+!!
+!!##OPTIONS
+!!
+!!    where    string designating where to write message
+!!    message  initial message string
+!!    g[1-9]   optional values to print the value of after the message. May
+!!             be of type INTEGER, LOGICAL, REAL, DOUBLEPRECISION, COMPLEX,
+!!             or CHARACTER.
+!!    nospace  if nospace=.true., then no spaces are added between values
+!!##RETURNS
+!!    wm_all   description to print
+!!
+!!##EXAMPLES
+!!
+!!   Sample program:
+!!
+!!    program demo_wm_all
+!!    use M_journal, only : wm_all
+!!    implicit none
+!!    end program program demo_wm_all
+!===================================================================================================================================
+subroutine wm_all(where,message,generic1, generic2, generic3, generic4, generic5, generic6, generic7, generic8, generic9,nospace)
+implicit none
+
+character(len=*),parameter::ident_1="@(#)M_debug::wm_all(3f): writes a message to a string composed of any standard scalar types"
+
+character(len=*),intent(in)   :: where
+character(len=*),intent(in)   :: message
+class(*),intent(in),optional  :: generic1 ,generic2 ,generic3 ,generic4 ,generic5
+class(*),intent(in),optional  :: generic6 ,generic7 ,generic8 ,generic9
+logical,intent(in),optional   :: nospace
+   character(len=4096)        :: line
+   integer                    :: istart
+   integer                    :: increment
+   if(present(nospace))then
+      if(nospace)then
+         increment=1
+      else
+         increment=2
+      endif
+   else
+      increment=2
+   endif
+
+   istart=1
+   line=trim(message)
+   istart=len_trim(message)+increment
+   if(present(generic1))call print_generic(generic1)
+   if(present(generic2))call print_generic(generic2)
+   if(present(generic3))call print_generic(generic3)
+   if(present(generic4))call print_generic(generic4)
+   if(present(generic5))call print_generic(generic5)
+   if(present(generic6))call print_generic(generic6)
+   if(present(generic7))call print_generic(generic7)
+   if(present(generic8))call print_generic(generic8)
+   if(present(generic9))call print_generic(generic9)
+   call write_msg(where,trim(line))
+contains
+!===================================================================================================================================
+subroutine print_generic(generic)
+!use, intrinsic :: iso_fortran_env, only : int8, int16, int32, biggest=>int64, real32, real64, dp=>real128
+use,intrinsic :: iso_fortran_env, only : int8, int16, int32, int64, real32, real64, real128
+class(*),intent(in),optional :: generic
+   select type(generic)
+      type is (integer(kind=int8));     write(line(istart:),'(i0)') generic
+      type is (integer(kind=int16));    write(line(istart:),'(i0)') generic
+      type is (integer(kind=int32));    write(line(istart:),'(i0)') generic
+      type is (integer(kind=int64));    write(line(istart:),'(i0)') generic
+      type is (real(kind=real32));      write(line(istart:),'(1pg0)') generic
+      type is (real(kind=real64));      write(line(istart:),'(1pg0)') generic
+      type is (real(kind=real128));     write(line(istart:),'(1pg0)') generic
+      !type is (real(kind=real256));     write(line(istart:),'(1pg0)') generic
+      !type is (real);                   write(line(istart:),'(1pg0)') generic
+      !type is (doubleprecision);        write(line(istart:),'(1pg0)') generic
+      type is (logical);                write(line(istart:),'(1l)') generic
+      type is (character(len=*));       write(line(istart:),'(a)') generic
+      type is (complex);                write(line(istart:),'("(",1pg0,",",1pg0,")")') generic
+   end select
+   istart=len_trim(line)+increment
+end subroutine print_generic
+!===================================================================================================================================
+end subroutine wm_all
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
 subroutine wm(message)
 character(len=*),parameter :: ident="@(#)M_journal::wm(3fp): calls JOURNAL('sc',message)"
 character(len=*),intent(in)          :: message
@@ -314,7 +418,7 @@ character(len=*),parameter :: ident="@(#)M_journal::wm_c(3fp): append character 
 character(len=*),intent(in)          :: where
 character(len=*),intent(in)          :: message
 character(len=*),intent(in)          :: value
-   call write_msg(where,trim(value))
+   call write_msg(where,trim(message)//' '//trim(value))
 !-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine wm_c
 !===================================================================================================================================
