@@ -51,7 +51,7 @@ integer                          :: ios          ! error flag from read
 integer                          :: iout
 integer                          :: i,ii
 integer                          :: ierror=0
-character(len=1024),allocatable  :: array(:)     ! split name of filenames
+character(len=:),allocatable     :: array(:)     ! split name of filenames
 !-----------------------------------------------------------------------------------------------------------------------------------
    call kracken('notabs','-help .F. -version .F. ',ierror) !  define command arguments, default values and crack command line
    call help_usage(lget('notabs_help'))                    ! check if -help was specified

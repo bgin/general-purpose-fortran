@@ -1,6 +1,6 @@
 !>
 !!##NAME
-!!   M_getopt(3fm) - [ARGUMENTS:M_getopt] parse command line arguments. similar to those in standard C library.
+!!   M_getopt(3fm) - [ARGUMENTS:M_getopt] parse command line arguments. similar to those in standard C library. (GPL)
 !!
 !!##SYNOPSIS
 !!
@@ -102,7 +102,8 @@
 !!   If you wish to incorporate this into non-GPL software, please contact
 !!   me regarding licensing terms.
 !!
-!!   Slightly modified from original -JSU
+!!   Slightly modified from original to integrate it into the GPF (General Purpose
+!!   Fortran) format and create a man(1) page - JSU
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 module M_getopt

@@ -36,7 +36,8 @@
 !!
 !!       function nan()
 !!       function inf()
-!!       function isnan()
+!!       function is_nan()
+!!       function is_even()
 !!
 !!   Simple constants:
 !!
@@ -211,6 +212,8 @@ private
 
       public test_suite_M_units
 !===================================================================================================================================
+      public is_even
+      public is_nan
       public inf
       interface inf
          module procedure inf32, inf64, inf128
@@ -1741,9 +1744,6 @@ real(kind=real128) :: inf128,value
    read(STRING,*)inf128
 end function inf128
 !===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
-!===================================================================================================================================
-!===================================================================================================================================
 !>
 !!##NAME
 !!    nan(3f) - [M_units]return a NaN (Not a number)
@@ -1855,24 +1855,120 @@ end function nan128
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    is_even(3f) - [M_units] determine if integer is even
+!!##SYNOPSIS
+!!
+!!    elemental pure logical is_even(int)
+!!
+!!     integer(kind=int8|int16|int32|int64) :: int
+!!##DESCRIPTION
+!!     Determine if an integer is even or not.
+!!##OPTIONS
+!!     int   The integer to test
+!!##EXAMPLE
+!!
+!!   simple example
+!!
+!!     program demo_is_even
+!!     use M_units, only : is_even
+!!        write(*,*)is_even(0)
+!!        write(*,*)is_even(-1)
+!!        write(*,*)is_even(-2)
+!!        write(*,*)is_even(+1)
+!!        write(*,*)is_even(+2)
+!!        write(*,*)is_even([10,11,17,19,22])
+!!        write(*,*)(is_even(i),i=-10,10)
+!!     end program demo_is_even
+!!   Expected output
+!!     T
+!!     F
+!!     T
+!!     F
+!!     T
+!!     T F F F T
+!!     T F T F T F T F T F T F T F T F T F T F T
 !===================================================================================================================================
-function isnan(x)
+elemental pure function is_even(ival)
+use,intrinsic :: iso_fortran_env, only : int8, int16, int32, int64
+
+character(len=*),parameter::ident_35="@(#)M_units::is_even(3f): determine if integer is  even"
+
+class(*),intent(in) :: ival
+logical             :: is_even
+select type(ival)
+   type is (integer(kind=int8))
+     is_even = mod(ival, 2_int8) == 0_int8 ! This can be reduced to one line:
+   type is (integer(kind=int16))
+     is_even = iand(ival, 1_int16) == 0_int16 ! Quicker will be:
+   type is (integer(kind=int32))
+     is_even = iand(ival, 1_int32) == 0_int32  ! Quicker will be:
+   type is (integer(kind=int64))
+     if (mod(ival, 2_int64) == 0_int64) then
+        is_even = .true.
+     else
+        is_even = .false.
+     endif
+   end select
+end function is_even
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!    is_nan(3f) - [M_units] determine if integer is a Nan (Not a Number) value
+!!##SYNOPSIS
+!!
+!!    elemental pure logical is_nan(value)
+!!
+!!     integer(kind=real32|real64|real128|complex) :: value
+!!##DESCRIPTION
+!!     Determine if a real or complex value is a NaN (Not a Number) value
+!!##OPTIONS
+!!     value   The value to test
+!!##EXAMPLE
+!!
+!!   simple example
+!!
+!!     program demo_is_nan
+!!     use M_units, only : is_nan
+!!     real :: x=huge(0.0d0)
+!!     character(len=3) :: line='NaN'
+!!     real,parameter :: arr(*)=[-100.0,100.0,huge(0.0)]
+!!        write(*,*)is_nan(x),x   ! note Infinity is not a Nan
+!!        write(*,*)is_nan(-x),-x
+!!        read(line,*)x
+!!        write(*,*)is_nan(x),x
+!!        write(*,*)x==x,x  ! note Nan is never equal to another value
+!!        write(*,*)is_nan(arr),arr
+!!     end program demo_is_nan
+!!
+!!   Expected results
+!!
+!!     F         Infinity
+!!     F        -Infinity
+!!     T              NaN
+!!     F              NaN
+!!     F F F  -100.000000       100.000000       3.40282347E+38
+!===================================================================================================================================
+elemental pure function is_nan(x)
 !!use IEEE_EXCEPTIONS, only : ieee_support_nan ! is IEEE NaNs supported?
 use IEEE_ARITHMETIC, only : IEEE_IS_NAN       ! Determine if value is IEEE Not-a-Number.
 use,intrinsic :: iso_fortran_env, only : int8, int16, int32, int64, real32, real64, real128
 
-character(len=*),parameter::ident_35="@(#)M_units::isnan(3f): determine if value is  IEEE Not-a-Number"
+character(len=*),parameter::ident_36="@(#)M_units::is_nan(3f): determine if value is  IEEE Not-a-Number"
 
 class(*),intent(in) :: x
-logical             :: isnan
+logical             :: is_nan
    select type(x)
-      type is (real(kind=real32));      isnan=ieee_is_nan(x)
-      type is (real(kind=real64));      isnan=ieee_is_nan(x)
-      type is (real(kind=real128));     isnan=ieee_is_nan(x)
-      type is (complex);                isnan=ieee_is_nan(real(x)).and.ieee_is_nan(aimag(x))
-      !!type is (complex);                isnan=ieee_is_nan(x%re).and.ieee_is_nan(x%im)
+      type is (real(kind=real32));      is_nan=ieee_is_nan(x)
+      type is (real(kind=real64));      is_nan=ieee_is_nan(x)
+      type is (real(kind=real128));     is_nan=ieee_is_nan(x)
+      type is (complex);                is_nan=ieee_is_nan(real(x)).and.ieee_is_nan(aimag(x))
+      !!type is (complex);                is_nan=ieee_is_nan(x%re).and.ieee_is_nan(x%im)
    end select
-end function isnan
+end function is_nan
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
@@ -1912,6 +2008,8 @@ subroutine test_suite_M_units()
    call test_tand()
    call test_inf()
    call test_nan()
+   call test_is_nan()
+   call test_is_even()
 !! teardown
 contains
 !===================================================================================================================================
@@ -1970,6 +2068,30 @@ real(kind=real128) :: r128
 
    call unit_check_done('nan',msg='')
 end subroutine test_nan
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_is_even()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+logical,parameter     :: t=.true.
+logical,parameter     :: f=.false.
+   call unit_check_start('is_even',msg='')
+   call unit_check('is_even', all(is_even([-10, 0, 1, 2, 3]).eqv.[t,t,f,t,f]), msg=msg('-10, 0, 1, 2, 3'))
+   call unit_check_done('is_even',msg='')
+end subroutine test_is_even
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_is_nan()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+character(len=3),save :: line='NaN'
+real                  :: x
+logical,parameter     :: t=.true.
+logical,parameter     :: f=.false.
+   call unit_check_start('is_nan',msg='')
+   read(line,*)x
+call unit_check('is_nan', all(is_nan([x, 0.0,-0.0,-x,-100.0,100.0,huge(0.0)]).eqv.[t,f,f,t,f,f,f]),  &
+        & msg=msg('checking',x,0,-x,-100.0,100.0,huge(0.0)))
+   call unit_check_done('is_nan',msg='')
+end subroutine test_is_nan
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_inf()
 

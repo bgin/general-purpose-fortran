@@ -7,7 +7,7 @@ implicit none
 
 character(len=*),parameter :: ident="@(#) what(1f): extract SCCS-style identification strings from a file"
 
-character(len=409600),allocatable :: filename(:) ! array of filenames to read
+character(len=:),allocatable :: filename(:)    ! array of filenames to read
 character(len=256)              :: message     ! message field for returned messages
 logical             :: stop_on_first = .FALSE. ! switch to show only first string found or all
 logical             :: html          = .FALSE. ! switch to output as an HTML document with a table
@@ -126,7 +126,7 @@ subroutine what__print_version()  ! automatically generated QA routine; may be r
 !-----------------------------------------------------------------------------------------------------------------------------------
 !  strings contain prefix @(#) and suffix " so strings should show up via what(1) command; trimmed when printed by this procedure
 !-----------------------------------------------------------------------------------------------------------------------------------
-   character(len=4096),allocatable :: options(:)                           ! array to hold tokenized compiler options
+   character(len=:),allocatable :: options(:)                           ! array to hold tokenized compiler options
 !-----------------------------------------------------------------------------------------------------------------------------------
    write(io,'(80("="))')
 !-----------------------------------------------------------------------------------------------------------------------------------

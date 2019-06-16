@@ -54,7 +54,7 @@
            "   '' using 3:xtic(1) title ""mobility""                                              ", &
            "quit                                                                                  ", &
            "EOF                                                                                   ", &
-           ""]
+           " "]
 
               !!write(*,'(a)')text
               call process_writeline(text,fp,ierr)

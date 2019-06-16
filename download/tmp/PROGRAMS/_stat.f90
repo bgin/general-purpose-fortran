@@ -62,7 +62,7 @@ end subroutine help_usage
 !!   Results
 !!
 !!    Pathname:                    _stat.ff
-!!    Residence:                   Inode:18295873486224096  Device ID(hex/decimal):3E6BE045h/1047257157d  Device where located:0
+!!    Residence:                   Inode:18295873486224096  Device ID(hex/decimal):3E6BE045h/1047257157d  Device where located:
 !!    Size:                        File size(bytes):4267  No. of blocks allocated:8  Preferred block size(bytes):65536
 !!    File mode octal/decimal/str: 100744o/33252d/-rwxr--r-- ---
 !!    Number of links:             1
@@ -87,7 +87,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    list pathname properties>',&
 '@(#)VERSION:        1.0, 2017-10-00>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 6:35:15 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 12:34:12 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

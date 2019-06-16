@@ -26,7 +26,7 @@
 !!##AUTHOR
 !!   Based on an article on "ISO 10646 support", Dr. Dobbs
 !!
-!!   Malcolm is a principal technical consultant for the Numerical Algorithms
+!!   Malcolm is a principal technical consultant for the Numerical Algorithm
 !!   Group, and an active member of the J3 and WG5 Fortran standardization
 !!   committees. He can be contacted at malcolmnag.co.uk.
 !!

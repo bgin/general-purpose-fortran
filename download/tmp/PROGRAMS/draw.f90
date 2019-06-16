@@ -9,7 +9,7 @@ use M_kracken, only : kracken, lget, sget, iget                  ! add command-l
 use M_strings, only: split
 implicit none
 character(len=:),allocatable   :: line
-character(len=256),allocatable :: cmds(:) ! output array of tokens
+character(len=:),allocatable   :: cmds(:) ! output array of tokens
 logical                        :: found
 integer                        :: iend
 integer                        :: i
@@ -56,7 +56,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20180722>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 7:14:37 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 12:12:12 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -118,7 +118,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!     draw(1f) - [M_drawplus] basic interpreter for testing M_draw(3fm) routines
+!!     draw(1f) - [M_drawplus] basic interpreter for testing M_draw(3fm) routine
 !!
 !!##SYNOPSIS
 !!

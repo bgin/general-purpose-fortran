@@ -1,5 +1,5 @@
           program demo_system_getenv
-          use M_system, only: system_getenv
+          use M_system, only : system_getenv
           implicit none
           integer :: ierr
 

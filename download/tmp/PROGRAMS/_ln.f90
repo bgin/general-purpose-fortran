@@ -53,7 +53,7 @@ end subroutine help_usage
 !!##OPTIONS
 !!       TARGET     name of existing file
 !!       LINK_NAME  if LINK_NAME follows TARGET create a link called LINK_NAME that points to TARGET
-!!       DIRECTORY  if last option is a directory previous filenames on command  are linked into DIRECTORY
+!!       DIRECTORY  if last option is a directory previous filenames on command  are linked into DIRECTOR
 !!       --help     display this help and exit
 !!       --version  output version information and exit
 !===================================================================================================================================
@@ -77,7 +77,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
 '@(#)COMPILED:       Sun, Nov 27th, 2016 10:47:13 PM>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 6:33:16 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 12:27:54 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

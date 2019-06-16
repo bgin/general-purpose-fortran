@@ -153,7 +153,7 @@ subroutine setxt
 implicit none
 character(len=:),allocatable   :: answers
 character(len=:),allocatable   :: fn
-character(len=132),allocatable :: array(:) ! output array of tokens
+character(len=:),allocatable   :: array(:) ! output array of tokens
 character(len=30)              :: fontname
 character(len=:),allocatable   :: background
 character(len=:),allocatable   :: foreground

@@ -74,7 +74,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20180427>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 6:39:43 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 12:37:05 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -142,9 +142,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   urn:uuid:e9fd7cab-69f2-4cd6-4b5e-d54b9fbf617a                                ',&
 '                                                                                ',&
 '   _uuidgen -method time -repeat 4                                              ',&
-'   3d684844-4b33-11e8-465d-426c6bd7f9d4                                         ',&
-'   3d686f8e-4b33-11e8-465d-3251f8fa45ae                                         ',&
-'   3d686f8e-4b33-11e8-465d-46ec7c7b05e1                                         ',&
+'   f2a2faf0-833a-11e9-7373-5eb4cfd7e237                                         ',&
+'   f2a2faf0-833a-11e9-7373-afbb9f7b9100                                         ',&
+'   f2a2faf0-833a-11e9-7373-cde3ffff3681                                         ',&
+'   f2a2faf0-833a-11e9-7373-271cfbfd42bc                                         ',&
 '                                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
@@ -154,7 +155,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!     _uuidgen(1f) - [FUNIX] generate a UUID (Universally Unique ID) string per RFC 4122
+!!     _uuidgen(1f) - [FUNIX] generate a UUID (Universally Unique ID) string per RFC 412
 !!
 !!##SYNOPSIS
 !!
@@ -206,8 +207,9 @@ end subroutine help_usage
 !!    urn:uuid:e9fd7cab-69f2-4cd6-4b5e-d54b9fbf617a
 !!
 !!    _uuidgen -method time -repeat 4
-!!    3d684844-4b33-11e8-465d-426c6bd7f9d4
-!!    3d686f8e-4b33-11e8-465d-3251f8fa45ae
-!!    3d686f8e-4b33-11e8-465d-46ec7c7b05e1
+!!    f2a2faf0-833a-11e9-7373-5eb4cfd7e237
+!!    f2a2faf0-833a-11e9-7373-afbb9f7b9100
+!!    f2a2faf0-833a-11e9-7373-cde3ffff3681
+!!    f2a2faf0-833a-11e9-7373-271cfbfd42bc
 !===================================================================================================================================
 end program uuidgen

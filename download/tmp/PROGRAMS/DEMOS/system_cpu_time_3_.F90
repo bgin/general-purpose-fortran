@@ -6,17 +6,18 @@
           real    :: user_start, system_start, total_start
           real    :: user_finish, system_finish, total_finish
           integer :: i
+          integer :: itimes=1000000
           real    :: value
 
              call system_cpu_time(total_start,user_start,system_start)
 
              value=0.0
-             do i=1,1000000
+             do i=1,itimes
                 value=sqrt(real(i)+value)
-                write(10,*)value
              enddo
+             write(10,*)value
              flush(10)
-             write(*,*)'average sqrt value=',value/10000.0
+             write(*,*)'average sqrt value=',value/itimes
              call system_cpu_time(total_finish,user_finish,system_finish)
              write(*,*)'USER ......',user_finish-user_start
              write(*,*)'SYSTEM ....',system_finish-system_start

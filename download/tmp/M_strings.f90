@@ -192,7 +192,7 @@
 !!  program demo_M_strings
 !!  !
 !!  ! This is an example using the object-oriented class/type model defined in M_strings_oop
-!!  ! This is essentially the same functionality as the procedures combined with several Fortran intrinsics and overloaded operators
+!!  ! This is essentially the same functionality as the procedures combined with several Fortran intrinsics and overloaded operator
 !!  !
 !!  use M_strings_oop,only : string, p
 !!  implicit none
@@ -454,7 +454,7 @@ PUBLIC switch          !  generic switch between a string and an array of single
 PRIVATE a2s            !  function to copy char array to string
 PRIVATE s2a            !  function to copy string(1:Clen(string)) to char array
 PUBLIC s2c             !  convert character variable to array of character(len=1) with null terminator for C compatibility
-PUBLIC c2s             !  convert null-terminate array of character(len=1) to string for strings returned by C
+PUBLIC c2s             !  convert null-terminated array of character(len=1) to string for strings returned by C
 !----------------------# CASE
 PUBLIC upper           !  elemental function converts string to uppercase
 PUBLIC lower           !  elemental function converts string to miniscule
@@ -580,7 +580,7 @@ CONTAINS
 !===================================================================================================================================
 !>
 !!##NAME
-!!    matchw(3f) - [M_strings:COMPARE] compare given string for match to pattern which may contain wildcard characters
+!!    matchw(3f) - [M_strings:COMPARE] compare given string for match to pattern which may contain wildcard character
 !!
 !!##SYNOPSIS
 !!
@@ -787,13 +787,14 @@ expected=[ character(len=132) :: &
 'abra          T     F     F     T     T     T     F     F     F     F     F     F     T     F     T     T     F     F     F' ]
 out=' '
    call unit_check_start('matchw',' &
+      & -description ''compares string for match to pattern which may contain wildcard characters'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
 
    iout=1
@@ -828,14 +829,14 @@ end subroutine test_matchw
 !===================================================================================================================================
 !>
 !!##NAME
-!!    split(3f) - [M_strings:TOKENS] parse string into an array using specified delimiters
+!!    split(3f) - [M_strings:TOKENS] parse string into an array using specified delimiter
 !!
 !!##SYNOPSIS
 !!
 !!    subroutine split(input_line,array,delimiters,order,nulls)
 !!
 !!     character(len=*),intent(in)              :: input_line
-!!     character(len=*),allocatable,intent(out) :: array(:)
+!!     character(len=:),allocatable,intent(out) :: array(:)
 !!     character(len=*),optional,intent(in)     :: delimiters
 !!     character(len=*),optional,intent(in)     :: order
 !!     character(len=*),optional,intent(in)     :: nulls
@@ -881,25 +882,25 @@ end subroutine test_matchw
 !!    use M_strings, only: split
 !!    character(len=*),parameter     :: &
 !!    & line='  aBcdef   ghijklmnop qrstuvwxyz  1:|:2     333|333 a B cc    '
-!!    character(len=256),allocatable :: array(:) ! output array of tokens
+!!    character(len=:),allocatable :: array(:) ! output array of tokens
 !!       write(*,*)'INPUT LINE:['//LINE//']'
-!!    write(*,'(80("="))')
+!!       write(*,'(80("="))')
 !!       write(*,*)'typical call:'
 !!       CALL split(line,array)
 !!       write(*,'(i0," ==> ",a)')(i,trim(array(i)),i=1,size(array))
 !!       write(*,*)'SIZE:',SIZE(array)
-!!    write(*,'(80("-"))')
-!!     write(*,*)'custom list of delimiters (colon and vertical line):'
-!!     CALL split(line,array,delimiters=':|',order='sequential',nulls='ignore')
-!!     write(*,'(i0," ==> ",a)')(i,trim(array(i)),i=1,size(array))
-!!     write(*,*)'SIZE:',SIZE(array)
-!!    write(*,'(80("-"))')
-!!     write(*,*)&
+!!       write(*,'(80("-"))')
+!!       write(*,*)'custom list of delimiters (colon and vertical line):'
+!!       CALL split(line,array,delimiters=':|',order='sequential',nulls='ignore')
+!!       write(*,'(i0," ==> ",a)')(i,trim(array(i)),i=1,size(array))
+!!       write(*,*)'SIZE:',SIZE(array)
+!!       write(*,'(80("-"))')
+!!       write(*,*)&
 !!     &'custom list of delimiters, reverse array order and count null fields:'
 !!       CALL split(line,array,delimiters=':|',order='reverse',nulls='return')
 !!       write(*,'(i0," ==> ",a)')(i,trim(array(i)),i=1,size(array))
 !!       write(*,*)'SIZE:',SIZE(array)
-!!    write(*,'(80("-"))')
+!!       write(*,'(80("-"))')
 !!       write(*,*)'INPUT LINE:['//LINE//']'
 !!       write(*,*)&
 !!       &'default delimiters and reverse array order and return null fields:'
@@ -978,7 +979,7 @@ character(len=*),parameter::ident_6="&
    character(len=*),optional,intent(in)     :: delimiters  ! list of delimiter characters
    character(len=*),optional,intent(in)     :: order       ! order of output array sequential|[reverse|right]
    character(len=*),optional,intent(in)     :: nulls       ! return strings composed of delimiters or not ignore|return|ignoreend
-   character(len=*),allocatable,intent(out) :: array(:)    ! output array of tokens
+   character(len=:),allocatable,intent(out) :: array(:)    ! output array of tokens
 !-----------------------------------------------------------------------------------------------------------------------------------
    integer                       :: n                      ! max number of strings INPUT_LINE could split into if all delimiter
    integer,allocatable           :: ibegin(:)              ! positions in input string where tokens start
@@ -1060,8 +1061,8 @@ character(len=*),parameter::ident_6="&
    case default
       ireturn=icount
    end select
-   !X!allocate(character(len=imax) :: array(ireturn))                ! allocate the array to return
-   allocate(array(ireturn))                                      ! allocate the array to turn
+   allocate(character(len=imax) :: array(ireturn))                ! allocate the array to return
+   !allocate(array(ireturn))                                       ! allocate the array to turn
 !-----------------------------------------------------------------------------------------------------------------------------------
    select case (trim(adjustl(ordr)))                              ! decide which order to store tokens
    case ('reverse','right') ; ii=ireturn ; iiii=-1                ! last to first
@@ -1092,20 +1093,20 @@ subroutine test_split
    CHARACTER(LEN=:),ALLOCATABLE    :: line
    CHARACTER(LEN=:),ALLOCATABLE    :: order
    CHARACTER(LEN=:),ALLOCATABLE    :: dlm
-!! CHARACTER(LEN=:),ALLOCATABLE    :: array(:)
-   CHARACTER(LEN=256),ALLOCATABLE  :: array(:)
+   CHARACTER(LEN=:),ALLOCATABLE    :: array(:)
    character(len=10)               :: orders(3)=['sequential', '          ', 'reverse   ' ]
    ! return strings composed of delimiters or not IGNORE|RETURN|IGNOREEND
    character(len=10)               :: nulls(3)=['ignore    ', 'return    ', 'ignoreend ' ]
 !-----------------------------------------------------------------------------------------------------------------------------------
    call unit_check_start('split',' &
+      & -description ''subroutine parses string on delimiters and store tokens into an array'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
 
    dlm=''
@@ -1183,7 +1184,7 @@ end subroutine test_split
 !===================================================================================================================================
 !>
 !!##NAME
-!!    chomp(3f) - [M_strings:TOKENS] Tokenize a string, consuming it one token per call
+!!    chomp(3f) - [M_strings:TOKENS] Tokenize a string, consuming it one token per cal
 !!
 !!##SYNOPSIS
 !!
@@ -1313,13 +1314,14 @@ character(len=:),allocatable  :: token
 character(len=66),allocatable :: delimiters
 integer                       :: ipass
    call unit_check_start('chomp',' &
+      & -description ''function consumes input line and returns next token using delimiters'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
 
    str = 'a b ccc ddd x12#$)$*#@Z1!( ab cd ef'
@@ -1350,7 +1352,7 @@ end subroutine test_chomp
 !===================================================================================================================================
 !>
 !!##NAME
-!!      delim(3f) - [M_strings:TOKENS] parse a string and store tokens into an array
+!!      delim(3f) - [M_strings:TOKENS] parse a string and store tokens into an arra
 !!##SYNOPSIS
 !!
 !!    subroutine delim(line,array,n,icount,ibegin,iterm,ilen,dlim)
@@ -1558,21 +1560,22 @@ character(len=*),parameter::ident_8="@(#)M_strings::delim(3f): parse a string an
 end subroutine delim
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_delim()
-   character(len=80) :: line
-   character(len=80) :: dlm
-   integer,parameter :: n=10
-   character(len=20) :: array(n)=' '
-   integer           :: ibegin(n),iterm(n)
-   integer           :: icount
-   integer           :: ilen
+character(len=80) :: line
+character(len=80) :: dlm
+integer,parameter :: n=10
+character(len=20) :: array(n)=' '
+integer           :: ibegin(n),iterm(n)
+integer           :: icount
+integer           :: ilen
    call unit_check_start('delim',' &
+      & -description ''subroutine parses string using delimiters and stores tokens into array'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    line=' first  second 10.3 words_of_stuff  '
    dlm=' '
@@ -1627,7 +1630,7 @@ end subroutine test_delim
 !===================================================================================================================================
 !>
 !!##NAME
-!!    replace(3f) - [M_strings:EDITING] Globally replace one substring for another in string
+!!    replace(3f) - [M_strings:EDITING] Globally replace one substring for another in strin
 !!
 !!##SYNOPSIS
 !!
@@ -1653,7 +1656,7 @@ end subroutine test_delim
 !!                 not in "old" or "new"
 !!     ierr        error code. iF ier = -1 bad directive, >= 0 then
 !!                 count of changes made
-!!     range       if present, only change range(1) to range(2) of occurrences of old string
+!!     range       if present, only change range(1) to range(2) of occurrences of old strin
 !!##RETURNS
 !!     newline     allocatable string returned
 !!
@@ -1895,9 +1898,9 @@ character(len=:),allocatable :: targetline
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    targetline='this is the input string'
 
@@ -1938,7 +1941,7 @@ end subroutine test_replace
 !===================================================================================================================================
 !>
 !!##NAME
-!!    substitute(3f) - [M_strings:EDITING] Globally substitute one substring for another in string
+!!    substitute(3f) - [M_strings:EDITING] Globally substitute one substring for another in strin
 !!
 !!##SYNOPSIS
 !!
@@ -2135,6 +2138,7 @@ integer                         :: ml           ! ml sets the left  margin
 integer                         :: mr           ! mr sets the right margin
 integer                         :: ier          ! error code. if ier = -1 bad directive, >= 0then ier changes made
 !-----------------------------------------------------------------------------------------------------------------------------------
+   call unit_check_start('substitute','-description ''subroutine globally replaces old substring with new string'' ')
    targetline='This an that and any other '
    old='an'
    new='##'
@@ -2205,7 +2209,7 @@ end subroutine test_substitute
 !===================================================================================================================================
 !>
 !!##NAME
-!!    change(3f) - [M_strings:EDITING] change old string to new string with a directive like a line editor
+!!    change(3f) - [M_strings:EDITING] change old string to new string with a directive like a line edito
 !!
 !!##SYNOPSIS
 !!
@@ -2328,13 +2332,14 @@ integer             :: ier
    endif
    ! indicate test of change(3f) has begun
    call unit_check_start('change',' &
+      & -description ''replace substring with new string with a directive like line editor'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    call change(line, 'c/ain/AIN'     ,ier)
    if(unit_check_level.gt.0)then
@@ -2386,7 +2391,7 @@ end subroutine test_change
 !!        integer,intent(inout)        :: itoken           ! token count since started
 !!        integer,intent(out)          :: token_start      ! beginning of token
 !!        integer,intent(out)          :: token_end        ! end of token
-!!        character(len=*),intent(in)  :: delimiters       ! list of separator characters
+!!        character(len=*),intent(in)  :: delimiters       ! list of separator character
 !!
 !!
 !!##DESCRIPTION
@@ -2508,9 +2513,9 @@ subroutine test_strtok()
    & -library libGPF  &
    & -filename `pwd`/M_strings.FF &
    & -documentation y &
-   &  -ufpp         y &
-   &  -ccall        n &
-   &  -archive      GPF.a &
+   & -ufpp         y &
+   & -ccall        n &
+   & -archive      GPF.a &
    & ')
    istart_expected=[ 2,  7,  10,  12,  17,  20,  28,  32,  35 ]
    iend_expected=[ 5,  8,  10,  15,  18,  25,  30,  32,  35 ]
@@ -2539,7 +2544,7 @@ end subroutine test_strtok
 !===================================================================================================================================
 !>
 !!##NAME
-!!    modif(3f) - [M_strings:EDITING] emulate the MODIFY command from the line editor XEDIT
+!!    modif(3f) - [M_strings:EDITING] emulate the MODIFY command from the line editor XEDI
 !!
 !!##SYNOPSIS
 !!
@@ -2723,13 +2728,14 @@ subroutine test_modif()
 character(len=256)           :: line
 character(len=:),allocatable :: COMMAND_LINE
    call unit_check_start('modif',' &
+      & -description ''change string using a directive similar to XEDIT editor MODIFY command'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    line='ABCDEFGHIJKLMNOPQRSTUVWXYZ'
    command_line='###%aaaa# 1 2 3&  ^up'
@@ -2745,7 +2751,7 @@ end subroutine test_modif
 !===================================================================================================================================
 !>
 !!##NAME
-!!      len_white(3f) - [M_strings:LENGTH] get length of string trimmed of whitespace.
+!!      len_white(3f) - [M_strings:LENGTH] get length of string trimmed of whitespace
 !!
 !!##SYNOPSIS
 !!
@@ -2847,13 +2853,14 @@ end function len_white
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_len_white()
    call unit_check_start('len_white',' &
+      & -description ''find location of last non-whitespace character'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    call unit_check('len_white',len_white('A b c  '//char(9)//char(10)//char(11)//char(12)//char(13)).eq.5,msg='')
    call unit_check_done('len_white',msg='len_white(3f) tests completed')
@@ -2863,7 +2870,7 @@ end subroutine test_len_white
 !===================================================================================================================================
 !>
 !!##NAME
-!!    crop(3f) - [M_strings:WHITESPACE] trim leading blanks and trailing blanks from a string
+!!    crop(3f) - [M_strings:WHITESPACE] trim leading blanks and trailing blanks from a strin
 !!
 !!##SYNOPSIS
 !!
@@ -2903,13 +2910,14 @@ end function crop
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_crop()
    call unit_check_start('crop',' &
+      & -description ''function trims leading and trailing spaces'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    call unit_check('crop',crop('    A B CC D      ').eq.'A B CC D',msg='crop string test 1')
    call unit_check('crop',crop('A B CC D').eq.'A B CC D',msg='crop string test 2')
@@ -2955,7 +2963,7 @@ end subroutine test_crop
 !!     write(*,'(a)') STRING
 !!
 !!     ! convert a string to uppercase:
-!!     write(*,*) TRANSLITERATE(STRING,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+!!     write(*,*) TRANSLITERATE(STRING,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 !!
 !!     ! change all miniscule letters to a colon (":"):
 !!     write(*,*) TRANSLITERATE(STRING,'abcdefghijklmnopqrstuvwxyz',':')
@@ -3017,13 +3025,14 @@ implicit none
 character(len=36),parameter :: lc='abcdefghijklmnopqrstuvwxyz0123456789'
 character(len=36),parameter :: uc='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
    call unit_check_start('transliterate',' &
+      & -description ''when characters in set one are found replace them with characters from set two'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
 call unit_check('transliterate',transliterate('AbCDefgHiJklmnoPQRStUvwxyZ',lc,uc).eq.uc(1:26),msg='transliterate to uppercase')
 call unit_check('transliterate',transliterate('AbCDefgHiJklmnoPQRStUvwxyZ',uc,lc).eq.lc(1:26),msg='transliterate to lowercase')
@@ -3034,7 +3043,7 @@ end subroutine test_transliterate
 !===================================================================================================================================
 !>
 !!##NAME
-!!      join(3f) - [M_strings:EDITING] append CHARACTER variable array into a single CHARACTER variable with specified separator
+!!      join(3f) - [M_strings:EDITING] append CHARACTER variable array into a single CHARACTER variable with specified separato
 !!
 !!##SYNOPSIS
 !!
@@ -3119,13 +3128,14 @@ end function join
 subroutine test_join()
 character(len=:),allocatable  :: s(:)
    call unit_check_start('join',' &
+      & -description ''append an array of character variables with specified separator into a single CHARACTER variable'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
-     & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -documentation y &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    s=[character(len=10) :: 'United',' we',' stand,',' divided',' we fall.']
 
@@ -3175,7 +3185,7 @@ end subroutine test_join
 !!       use M_strings, only: reverse
 !!       implicit none
 !!       character(len=:),allocatable  :: s
-!!          write(*,*)'REVERSE STRINGS:',reverse('Madam, I''m Adam')
+!!          write(*,*)'REVERSE STRINGS:',reverse('Madam, I''m Adam'
 !!          s='abcdefghijklmnopqrstuvwxyz'
 !!          write(*,*) 'original input string is ....',s
 !!          write(*,*) 'reversed output string is ...',reverse(s)
@@ -3207,13 +3217,14 @@ implicit none
 character(len=36),parameter :: lc='abcdefghijklmnopqrstuvwxyz0123456789'
 !-----------------------------------------------------------------------------------------------------------------------------------
    call unit_check_start('reverse',' &
+      & -description ''elemental function reverses character order in a string'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
 if(reverse(lc).eq.'9876543210zyxwvutsrqponmlkjihgfedcba')then
    call unit_check_good('reverse')
@@ -3268,7 +3279,7 @@ end subroutine test_reverse
 !!        write(*,*) 'mixed-case input string is ....',s
 !!        write(*,*) 'upper-case output string is ...',upper(s)
 !!        write(*,*) 'make first character uppercase  ... ',upper('this is a sentence.',1,1)
-!!        write(*,'(1x,a,*(a:,"+"))') 'UPPER(3f) is elemental ==>',upper(["abc","def","ghi"])
+!!        write(*,'(1x,a,*(a:,"+"))') 'UPPER(3f) is elemental ==>',upper(["abc","def","ghi"]
 !!     end program demo_upper
 !!
 !!    Expected output
@@ -3327,13 +3338,14 @@ character(len=36),parameter :: lc='abcdefghijklmnopqrstuvwxyz0123456789'
 character(len=36),parameter :: uc='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
 !-----------------------------------------------------------------------------------------------------------------------------------
    call unit_check_start('upper',' &
+      & -description ''elemental function converts string to uppercase'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    call unit_check_start('upper')
    call unit_check('upper',upper(lc).eq.uc)
@@ -3345,7 +3357,7 @@ end subroutine test_upper
 !===================================================================================================================================
 !>
 !!##NAME
-!!    lower(3f) - [M_strings:CASE] changes a string to lowercase over specified range
+!!    lower(3f) - [M_strings:CASE] changes a string to lowercase over specified rang
 !!
 !!##SYNOPSIS
 !!
@@ -3425,13 +3437,14 @@ character(len=36),parameter :: lc='abcdefghijklmnopqrstuvwxyz0123456789'
 character(len=36),parameter :: uc='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
 !-----------------------------------------------------------------------------------------------------------------------------------
    call unit_check_start('lower',' &
+      & -description ''elemental function converts string to miniscule'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    call unit_check_start('lower')
    call unit_check('lower',lower(uc).eq.lc,'lower')
@@ -3444,7 +3457,7 @@ end subroutine test_lower
 !>
 !!##NAME
 !!
-!!    switch(3f) - [M_strings:ARRAY] converts between CHARACTER scalar and array of single characters
+!!    switch(3f) - [M_strings:ARRAY] converts between CHARACTER scalar and array of single character
 !!
 !!##SYNOPSIS
 !!
@@ -3571,13 +3584,14 @@ if(unit_check_level.gt.0)then
    write(*,'(i0,1x,*(a,1x))') size(switch(uc)),switch(uc)
 endif
    call unit_check_start('switch',' &
+      & -description ''generic switch between a string and an array of single characters (a2s,s2a)'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_switch.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
 if(size(switch(uc)).ne.36)then
    call unit_check_bad('switch')
@@ -3614,7 +3628,7 @@ end subroutine test_switch
 !===================================================================================================================================
 !>
 !!##NAME
-!!      s2c(3f) - [M_strings:ARRAY] convert character variable to array of characters with last element set to null
+!!      s2c(3f) - [M_strings:ARRAY] convert character variable to array of characters with last element set to nul
 !!
 !!##SYNOPSIS
 !!
@@ -3671,13 +3685,14 @@ end function s2c
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_s2c()
    call unit_check_start('s2c',' &
+      & -description ''convert character variable to array of character(len=1) with null terminator for C compatibility'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    call unit_check_done('s2c',msg='UNTESTED')
 end subroutine test_s2c
@@ -3686,7 +3701,7 @@ end subroutine test_s2c
 !===================================================================================================================================
 !>
 !!##NAME
-!!      c2s(3f) - [M_strings:ARRAY] convert C string pointer to Fortran character string
+!!      c2s(3f) - [M_strings:ARRAY] convert C string pointer to Fortran character strin
 !!
 !!##SYNOPSIS
 !!
@@ -3739,13 +3754,14 @@ end function c2s
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_c2s()
    call unit_check_start('c2s',' &
+      & -description ''convert null-terminated array of character(len=1) to string for strings returned by C '' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    call unit_check_done('c2s',msg='UNTESTED')
 end subroutine test_c2s
@@ -3754,7 +3770,7 @@ end subroutine test_c2s
 !===================================================================================================================================
 !>
 !!##NAME
-!!      indent(3f) - [M_strings:WHITESPACE] count number of leading spaces in a string
+!!      indent(3f) - [M_strings:WHITESPACE] count number of leading spaces in a strin
 !!
 !!##SYNOPSIS
 !!
@@ -3806,13 +3822,14 @@ end function indent
 subroutine test_indent()
 character(len=1024) :: in
    call unit_check_start('indent',' &
+      & -description ''count number of leading spaces'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
 
    in='    should be four'
@@ -3831,7 +3848,7 @@ end subroutine test_indent
 !===================================================================================================================================
 !>
 !!##NAME
-!!    visible(3f) - [M_strings:NONALPHA] expand a string to control and meta-control representations
+!!    visible(3f) - [M_strings:NONALPHA] expand a string to control and meta-control representation
 !!
 !!##SYNOPSIS
 !!
@@ -3915,9 +3932,9 @@ character(len=2) :: controls(0:31)
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    do i=32,126
       call unit_check('visible',visible(char(i)).eq.char(i))
@@ -3974,7 +3991,7 @@ end subroutine test_visible
 !!       \dNNN  byte with decimal value NNN (3 digits)
 !!       \xHH   byte with hexadecimal value HH (2 digits) -- h is an alias for x
 !!
-!!     The default escape character is the backslash, but this may be changed using
+!!     The default escape character is the backslash, but this may be changed usin
 !!     the optional parameter ESCAPE.
 !!
 !!##EXAMPLES
@@ -4094,13 +4111,14 @@ character(len=*),parameter::ident_27="@(#)M_strings::test_expand(3f): test filte
 integer :: i
 character(len=80) :: line
    call unit_check_start('expand',' &
+      & -description ''expand escape sequences in a string'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    call unit_check('expand',expand('\e\d0912J').eq.char(27)//'[2J','a vt102 sequence to clear the screen')
    call unit_check('expand',expand('this is a test').eq.'this is a test',msg='test plain text')
@@ -4147,7 +4165,7 @@ end subroutine test_expand
 !!     Some Fortran compilers have problems with tabs, as tabs are not
 !!     part of the Fortran character set.  Some editors and printers will
 !!     have problems with tabs.  It is often useful to expand tabs in input
-!!     files to simplify further processing such as tokenizing an input line.
+!!     files to simplify further processing such as tokenizing an input line
 !!
 !!##OPTIONS
 !!     instr     Input line to remove tabs from
@@ -4236,13 +4254,14 @@ character(len=:),allocatable :: expected
 character(len=1024)          :: outline
 integer                      :: iout
    call unit_check_start('notabs',' &
+      & -description ''convert tabs to spaces in output while maintaining columns, assuming a tab is set every 8 characters'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    inline= 'one '//char(9)//'and'//repeat(char(9),3)//'two'
    expected='one     and                     two'
@@ -4270,8 +4289,8 @@ end subroutine test_notabs
 !!    integer,intent(in),optional  :: length
 !!    character(len=:),allocatable :: adjustc
 !!##DESCRIPTION
-!!     Centers input text in a string of the length specified. Returns a
-!!     string of length LENGTH if LENGTH is present. Otherwise returns a
+!!     Centers input text in a string of the length specified. Returns
+!!     string of length LENGTH if LENGTH is present. Otherwise returns
 !!     string of the length of the input string.
 !!##OPTIONS
 !!     string  input string to trim and center
@@ -4312,7 +4331,7 @@ character(len=*),parameter::ident_29="@(#)M_strings::adjustc(3f): center text"
 
 !>
 !! PROCEDURE   adjustc(3f)
-!! DESCRIPTION center text using implicit or explicit length
+!! DESCRIPTION center text using implicit or explicit lengt
 !!##VERSION     2.0, 20160711
 !! AUTHOR      John S. Urban
 !===================================================================================================================================
@@ -4348,13 +4367,14 @@ character(len=80),allocatable :: left(:)
 character(len=80),allocatable :: input(:)
 integer                       :: i
    call unit_check_start('adjustc',' &
+      & -description ''elemental function centers string within the length of the input string'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    expected=[ character(len=80) ::                                                     &
    '12345678901234567890123456789012345678901234567890123456789012345678901234567890', &
@@ -4407,7 +4427,7 @@ end subroutine test_adjustc
 !===================================================================================================================================
 !>
 !!##NAME
-!!    nospace(3f) - [M_strings:WHITESPACE] remove all whitespace from input string
+!!    nospace(3f) - [M_strings:WHITESPACE] remove all whitespace from input strin
 !!
 !!##SYNOPSIS
 !!
@@ -4472,13 +4492,14 @@ implicit none
    string='  This     is      a     test  '
    string=nospace(string)
    call unit_check_start('nospace',' &
+      & -description ''function replaces whitespace with nothing'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    if (string .ne. 'Thisisatest')then
       call unit_check_bad('nospace')
@@ -4490,7 +4511,7 @@ end subroutine test_nospace
 !===================================================================================================================================
 !>
 !!##NAME
-!!    atleast(3f) - [M_strings:LENGTH] return string padded to at least specified length
+!!    atleast(3f) - [M_strings:LENGTH] return string padded to at least specified lengt
 !!
 !!##SYNOPSIS
 !!
@@ -4544,13 +4565,14 @@ end function atleast
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_atleast()
    call unit_check_start('atleast',' &
+      & -description ''return a string of at least specified length'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    call unit_check('atleast',atleast('Hello World',20)//'!'.eq.'Hello World         !',msg='check if padded')
    call unit_check('atleast',len(atleast('Hello World',20)).eq.20,msg='check padded length')
@@ -4564,7 +4586,7 @@ end subroutine test_atleast
 !===================================================================================================================================
 !>
 !!##NAME
-!!    lenset(3f) - [M_strings:LENGTH] return string trimmed or padded to specified length
+!!    lenset(3f) - [M_strings:LENGTH] return string trimmed or padded to specified lengt
 !!
 !!##SYNOPSIS
 !!
@@ -4614,13 +4636,14 @@ end function lenset
 subroutine test_lenset()
 character(len=10)            :: string='abcdefghij'
    call unit_check_start('lenset',' &
+      & -description ''return a string as specified length'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
 
         call unit_check('lenset',len(lenset(string, 5)).eq.5)
@@ -4634,7 +4657,7 @@ end subroutine test_lenset
 !===================================================================================================================================
 !>
 !!##NAME
-!!    merge_str(3f) - [M_strings:LENGTH] pads strings to same length and then calls MERGE(3f)
+!!    merge_str(3f) - [M_strings:LENGTH] pads strings to same length and then calls MERGE(3f
 !!
 !!##SYNOPSIS
 !!
@@ -4688,13 +4711,14 @@ end function merge_str
 subroutine test_merge_str()
 character(len=:), allocatable :: answer
    call unit_check_start('merge_str',' &
+      & -description ''make strings of equal length and then call MERGE(3f) intrinsic'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
 
    answer=merge_str('first string', 'second string is longer',10.eq.10)
@@ -4716,7 +4740,7 @@ end subroutine test_merge_str
 !===================================================================================================================================
 !>
 !!##NAME
-!!    compact(3f) - [M_strings:WHITESPACE] converts contiguous whitespace to a single character (or nothing)
+!!    compact(3f) - [M_strings:WHITESPACE] converts contiguous whitespace to a single character (or nothing
 !!
 !!##SYNOPSIS
 !!
@@ -4822,13 +4846,14 @@ subroutine test_compact
 !!use M_strings, only: compact
 implicit none
    call unit_check_start('compact',' &
+      & -description ''left justify string and replace duplicate whitespace with single characters or nothing'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    if (compact('  This  is     a    test  ') .ne. 'This is a test')then
       call unit_check_bad('compact')
@@ -4928,9 +4953,9 @@ end subroutine test_compact
 !!   characters and their ADE (ASCII Decimal Equivalent)
 !!
 !!    >                                 !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~
-!!    >00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001111111111111111111111111111
-!!    >00000000001111111111222222222233333333334444444444555555555566666666667777777777888888888899999999990000000000111111111122222222
-!!    >01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567
+!!    >0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000111111111111111111111111111
+!!    >0000000000111111111122222222223333333333444444444455555555556666666666777777777788888888889999999999000000000011111111112222222
+!!    >0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456
 !!
 !!   Cleared of non-printable characters
 !!
@@ -4940,7 +4965,7 @@ end subroutine test_compact
 !!    >2222222222222222222222222222222223456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456
 !!
 !!   Cleared string:
-!!    >                                  !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~
+!!    >                                  !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}
 !===================================================================================================================================
 elemental function noesc(INSTR)
 
@@ -4971,9 +4996,9 @@ subroutine test_noesc  ! test noesc
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    do i10=0,127
       write(in, '(i3.3,1x,4a)')i10,char(i10),char(i10),char(i10),' eol'
@@ -5003,7 +5028,7 @@ end subroutine test_noesc
 !===================================================================================================================================
 !>
 !!##NAME
-!!      string_to_value(3f) - [M_strings:NUMERIC] subroutine returns real value from string
+!!      string_to_value(3f) - [M_strings:NUMERIC] subroutine returns real value from strin
 !!
 !!##SYNOPSIS
 !!
@@ -5140,21 +5165,22 @@ end subroutine a2d
 subroutine test_string_to_value
 !!use M_strings, only: string_to_value, s2v, v2s
 CHARACTER(len=80) :: STRING
-real RVALUE
-doubleprecision DVALUE
-doubleprecision SUM, SUM2, DELTA
-integer IVALUE
-integer GOOD
-integer :: ierr
+real              :: RVALUE
+doubleprecision   :: DVALUE
+doubleprecision   :: SUM, SUM2, DELTA
+integer           :: IVALUE
+integer           :: GOOD
+integer           :: ierr
 !===================================================================================================================================
    call unit_check_start('string_to_value',' &
+      & -description ''generic subroutine returns REAL|DOUBLEPRECISION|INTEGER value from string (a2d,a2r,a2i)'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
 !===================================================================================================================================
    STRING=' -40.5e-2 '
@@ -5234,7 +5260,7 @@ end subroutine test_string_to_value
 !===================================================================================================================================
 !>
 !!##NAME
-!!      s2v(3f) - [M_strings:NUMERIC] function returns doubleprecision numeric value from a string
+!!      s2v(3f) - [M_strings:NUMERIC] function returns doubleprecision numeric value from a strin
 !!
 !!##SYNOPSIS
 !!
@@ -5326,7 +5352,7 @@ end subroutine test_string_to_value
 !===================================================================================================================================
 !>
 !!##PROCEDURE:
-!! DESCRIPTION: s2v(3f): function returns doubleprecision number from string;zero if error occurs
+!! DESCRIPTION: s2v(3f): function returns doubleprecision number from string;zero if error occur
 !!##VERSION:     2.0, 20160704
 !! AUTHOR:      John S. Urban
 !===================================================================================================================================
@@ -5408,13 +5434,14 @@ doubleprecision SUM, SUM2, DELTA
    DELTA=spacing(0.0d0)+spacing(0.0)
 
    call unit_check_start('s2v',' &
+      & -description ''function returns doubleprecision value from string'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
 
    SUM=s2v('5.55555555555555555555555555e0')+REAL(s2v('5.55555555555555555555555555d0'))+INT(s2v('5.55555555555555555555555555'))
@@ -5431,7 +5458,7 @@ end subroutine test_s2v
 !===================================================================================================================================
 !>
 !!##NAME
-!!      value_to_string(3f) - [M_strings:NUMERIC] return numeric string from a numeric value
+!!      value_to_string(3f) - [M_strings:NUMERIC] return numeric string from a numeric valu
 !!
 !!##SYNOPSIS
 !!
@@ -5581,13 +5608,14 @@ integer           :: IERR
 integer           :: IERRSUM=0
 !===================================================================================================================================
    call unit_check_start('value_to_string',' &
+      & -description ''generic subroutine returns string given numeric REAL|DOUBLEPRECISION|INTEGER value'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    DVALUE=5.5555555555555555555555d0
    call value_to_string(DVALUE,STRING,ILEN,IERR)
@@ -5645,7 +5673,7 @@ end subroutine test_value_to_string
 !===================================================================================================================================
 !>
 !!##NAME
-!!      v2s(3f) - [M_strings:NUMERIC] return numeric string from a numeric value
+!!      v2s(3f) - [M_strings:NUMERIC] return numeric string from a numeric valu
 !!
 !!##SYNOPSIS
 !!
@@ -5726,13 +5754,14 @@ doubleprecision SUM, SUM2, DELTA
    SUM2=5.555555555555555555555555555555555d0+5.555555555555555555555555555555555e0+INT(5.555555555555555555555555555555555)
    DELTA=spacing(0.0d0)+spacing(0.0)
    call unit_check_start('v2s_bug',' &
+      & -description ''generic function returns string given numeric REAL|DOUBLEPRECISION|INTEGER value'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    SUM=s2v(v2s_bug(5.55555555555555555555555555d0))
    SUM=SUM+REAL(s2v(v2s_bug(5.55555555555555555555555555e0)))
@@ -5813,13 +5842,14 @@ end function l2s
 subroutine test_v2s()
 doubleprecision SUM, SUM2, DELTA
    call unit_check_start('v2s',' &
+      & -description ''generic function returns string given numeric REAL|DOUBLEPRECISION|INTEGER value'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    SUM2=5.555555555555555555555555555555555d0+5.555555555555555555555555555555555e0+INT(5.555555555555555555555555555555555)
    DELTA=spacing(0.0d0)+spacing(0.0)
@@ -5842,7 +5872,7 @@ end subroutine test_v2s
 !===================================================================================================================================
 !>
 !!##NAME
-!!    isnumber(3f) - [M_strings:NUMERIC] determine if a string represents a number
+!!    isnumber(3f) - [M_strings:NUMERIC] determine if a string represents a numbe
 !!##SYNOPSIS
 !!
 !!    function isnumber(str,msg)
@@ -5870,7 +5900,7 @@ end subroutine test_v2s
 !!
 !!##EXAMPLES
 !!
-!!   As the example shows, you can use an internal READ(3f) along with the IOSTAT=
+!!   As the example shows, you can use an internal READ(3f) along with the IOSTAT
 !!   parameter to check (and read) a string as well.
 !!
 !!     program demo_isnumber
@@ -6086,9 +6116,9 @@ implicit none
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    call unit_check('isnumber',isnumber(' 123 ')                                           .eq. 1,  'integer string')
    call unit_check('isnumber',isnumber(' -123. ')                                         .eq. 2,  'whole number string')
@@ -6103,7 +6133,7 @@ end subroutine test_isnumber
 !===================================================================================================================================
 !>
 !!##NAME
-!!    trimzeros(3fp) - [M_strings:NUMERIC] Delete trailing zeros from numeric decimal string
+!!    trimzeros(3fp) - [M_strings:NUMERIC] Delete trailing zeros from numeric decimal strin
 !!##SYNOPSIS
 !!
 !!    subroutine trimzeros(str)
@@ -6178,9 +6208,9 @@ subroutine test_trimzeros()
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    call unit_check_done('trimzeros',msg='UNTESTED')
 end subroutine test_trimzeros
@@ -6189,7 +6219,7 @@ end subroutine test_trimzeros
 !===================================================================================================================================
 !>
 !!##NAME
-!! listout(3f) - [M_strings:NUMERIC] expand a list of numbers where negative numbers denote range ends (1 -10 means 1 thru 10)
+!! listout(3f) - [M_strings:NUMERIC] expand a list of numbers where negative numbers denote range ends (1 -10 means 1 thru 10
 !!
 !!##SYNOPSIS
 !!
@@ -6218,7 +6248,7 @@ end subroutine test_trimzeros
 !!     implicit none
 !!     integer,allocatable :: icurve_lists(:)        ! icurve_lists is input array
 !!     integer :: icurve_expanded(1000)  ! icurve_expanded is output array
-!!     integer :: inums                  ! number of icurve_lists values on input, number of icurve_expanded numbers on output
+!!     integer :: inums                  ! number of icurve_lists values on input, number of icurve_expanded numbers on outpu
 !!     integer :: i
 !!     integer :: ierr
 !!        icurve_lists=[1, 20, -30, 101, 100, 99, 100, -120, 222, -200]
@@ -6308,13 +6338,14 @@ subroutine test_listout()
    integer :: i
    integer :: ierr
    call unit_check_start('listout',' &
+      & -description ''copy ICURVE() to ICURVE_EXPANDED() expanding negative numbers to ranges (1-10 means 1 thru 10)'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    icurve_lists=[1, 20, -30, 101, 100, 99, 100, -120, 222, -200]
    inums=size(icurve_lists)
@@ -6328,7 +6359,7 @@ end subroutine test_listout
 !===================================================================================================================================
 !>
 !!##NAME
-!!     unquote(3f) - [M_strings:QUOTES] remove quotes from string as if read with list-directed input
+!!     unquote(3f) - [M_strings:QUOTES] remove quotes from string as if read with list-directed inpu
 !!##SYNOPSIS
 !!
 !!   function unquote(quoted_str,esc) result (unquoted_str)
@@ -6479,9 +6510,9 @@ character(len=:),allocatable :: tests(:)
    & -library libGPF  &
    & -filename `pwd`/M_strings.FF &
    & -documentation y &
-   &  -ufpp         y &
-   &  -ccall        n &
-   &  -archive      GPF.a &
+   & -ufpp         y &
+   & -ccall        n &
+   & -archive      GPF.a &
    & ')
 
    do i=1,size(tests)
@@ -6510,7 +6541,7 @@ end subroutine test_unquote
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    describe(3f) - [M_strings] returns a string describing the name of a single character
+!!    describe(3f) - [M_strings] returns a string describing the name of a single characte
 !!
 !!##SYNOPSIS
 !!
@@ -6816,6 +6847,7 @@ integer                       :: i
 !-----------------------------------------------------------------------------------------------------------------------------------
 ! initialize database description of routine
    call unit_check_start('describe',' &
+      & -description ''returns a string describing character'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
@@ -6851,7 +6883,7 @@ end subroutine test_describe
 !===================================================================================================================================
 !>
 !!##NAME
-!!    getvals(3f) - [M_strings:NUMERIC] read arbitrary number of REAL values from a character variable up to size of VALUES() array
+!!    getvals(3f) - [M_strings:NUMERIC] read arbitrary number of REAL values from a character variable up to size of VALUES() arra
 !!
 !!##SYNOPSIS
 !!
@@ -7012,9 +7044,9 @@ integer            :: icount,ierr
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
 
    call getvals('11,,,22,33,-44, 55 , ,66  ',ivalues,icount,ierr)
@@ -7037,7 +7069,7 @@ end subroutine test_getvals
 !===================================================================================================================================
 !>
 !!##NAME
-!!      string_to_values(3f) - [M_strings:NUMERIC] read a string representing numbers into a numeric array
+!!      string_to_values(3f) - [M_strings:NUMERIC] read a string representing numbers into a numeric arra
 !!
 !!##SYNOPSIS
 !!
@@ -7099,7 +7131,7 @@ end subroutine test_getvals
 !!     string_to_values:
 !!     input string............. 10 20e3;3.45 -400.3e-2;1234; 5678
 !!     number of values found...           6
-!!     values...................   10.0000000  20000.0000  3.45000005  -4.00299978  1234.00000  5678.00000
+!!     values...................   10.0000000  20000.0000  3.45000005  -4.00299978  1234.00000  5678.0000
 !!     string_to_values:
 !!     input string............. 10 20e3;3.45 -400.3e-2;1234; 5678
 !!     number of values found...           3
@@ -7196,23 +7228,35 @@ integer,intent(out)          :: ierr          ! 0 if no error, else column numbe
 end subroutine string_to_values
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_string_to_values()
+character(len=80)  :: s=' 10 20e3;3.45 -400.3e-2;1234; 5678 '
+integer,parameter  :: isz=10
+real               :: array(isz)
+integer            :: ierr
+integer            :: inums
    call unit_check_start('string_to_values',' &
+      & -description ''subroutine returns values from a string'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
-   call unit_check_done('string_to_values',msg='UNTESTED')
+
+   call string_to_values(s,10,array,inums,' ;',ierr)
+   call unit_check('string_to_values',all(array(:inums).eq.[10.0,20e3,3.45,-400.3e-2,1234.0,5678.0]),msg=msg(s))
+   call string_to_values('10;2.3;3.1416',isz,array,inums,' ;',ierr)
+   call unit_check('string_to_values',all(array(:inums).eq.[10.0,2.3,3.1416]),msg=msg(array(1),array(2),array(3)))
+   call unit_check('string_to_values',inums.eq.3,msg=msg('number of values is',inums))
+   call unit_check_done('string_to_values',msg='')
 end subroutine test_string_to_values
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
 !!##NAME
-!!      s2vs(3f) - [M_strings:NUMERIC] given a string representing numbers return a numeric array
+!!      s2vs(3f) - [M_strings:NUMERIC] given a string representing numbers return a numeric arra
 !!
 !!##SYNOPSIS
 !!
@@ -7277,7 +7321,7 @@ character(len=*),optional          :: delim                        ! delimiter c
 character(len=:),allocatable       :: delim_local
 doubleprecision,allocatable        :: darray(:)                    ! function type
 
-   character(len=132),allocatable  :: carray(:)          ! convert value to an array using split(3f)
+   character(len=:),allocatable    :: carray(:)          ! convert value to an array using split(3f)
    integer                         :: i
    integer                         :: ier
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -7300,13 +7344,14 @@ character(len=80)           :: s=' 10 20e3;3.45 -400.3e-2;1234; 5678 '
 doubleprecision,allocatable :: values(:)
 integer,allocatable         :: ivalues(:)
    call unit_check_start('s2vs',' &
+      & -description ''function returns a doubleprecision array of numbers from a string'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
 
    values=s2vs(s)
@@ -7336,13 +7381,14 @@ subroutine test_isprint
 implicit none
 integer :: i
    call unit_check_start('isprint',' &
+      & -description ''elemental function determines if CHR is an ASCII printable character'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    do i=1,255
       SELECT CASE (i)
@@ -7405,7 +7451,7 @@ end subroutine test_isprint
 !!    pr=msg('complex         :',cmplx(huge(0.0),tiny(0.0)) )
 !!    write(*,'(a)')pr
 !!
-!!    ! although it will often work, using msg(3f) in an I/O statement is not recommended
+!!    ! although it will often work, using msg(3f) in an I/O statement is not recommende
 !!    write(*,*)msg('program will now stop')
 !!
 !!    end program demo_msg
@@ -7462,7 +7508,7 @@ class(*),intent(in),optional :: generic
       !type is (real);                   write(line(istart:),'(1pg0)') generic
       !type is (doubleprecision);        write(line(istart:),'(1pg0)') generic
       type is (logical);                write(line(istart:),'(1l)') generic
-      type is (character(len=*));       write(line(istart:),'(a)') generic
+      type is (character(len=*));       write(line(istart:),'(a)') trim(generic)
       type is (complex);                write(line(istart:),'("(",1pg0,",",1pg0,")")') generic
    end select
    istart=len_trim(line)+increment
@@ -7492,13 +7538,14 @@ subroutine test_isgraph
 implicit none
 integer :: i
    call unit_check_start('isgraph',' &
+      & -description ''elemental function true if CHR is an ASCII printable character except considers a space non-printable'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    do i=1,255
       SELECT CASE (i)
@@ -7542,13 +7589,14 @@ integer,parameter             :: number_of_chars=128
 character(len=1)              :: ch
 integer                       :: i
    call unit_check_start('isalpha',' &
+      & -description ''elemental function returns .true. if CHR is a letter and .false. otherwise'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    do i=0,number_of_chars-1
       ch=char(i)
@@ -7594,13 +7642,14 @@ character(len=1)              :: ch
 integer                       :: i
 !-----------------------------------------------------------------------------------------------------------------------------------
    call unit_check_start('isxdigit',' &
+      & -description ''elemental function returns .true. if CHR is a hexadecimal digit (0-9, a-f, or A-F).'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    do i=0,number_of_chars-1
       ch=char(i)
@@ -7645,13 +7694,14 @@ integer,parameter             :: number_of_chars=128
 character(len=1)              :: char
 integer                       :: i
    call unit_check_start('isdigit',' &
+      & -description ''elemental function returns .true. if CHR is a digit (0,1,...,9) and .false. otherwise'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    do i=0,number_of_chars-1
       SELECT CASE (i)
@@ -7695,13 +7745,14 @@ integer,parameter             :: number_of_chars=128
 character(len=1)              :: char
 integer                       :: i
    call unit_check_start('isblank',' &
+      & -description ''elemental function returns .true. if CHR is a blank character (space or horizontal tab.'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    do i=0,number_of_chars-1
       select case (i)
@@ -7745,13 +7796,14 @@ integer,parameter             :: number_of_chars=128
 character(len=1)              :: char
 integer                       :: i
    call unit_check_start('isascii',' &
+      & -description ''elemental function returns .true. if the low order byte of c is in the range char(0) to char(127)'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    do i=0,number_of_chars-1
       SELECT CASE (i)
@@ -7800,13 +7852,14 @@ character(len=1)              :: char
 integer                       :: i
 !-----------------------------------------------------------------------------------------------------------------------------------
    call unit_check_start('isspace',' &
+      & -description ''elemental function true if CHR is null, space, tab, carriage return, new line, vertical tab, or formfeed'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    do i=0,number_of_chars-1
       SELECT CASE (i)
@@ -7851,13 +7904,14 @@ character(len=1)              :: char
 integer                       :: i
 !-----------------------------------------------------------------------------------------------------------------------------------
    call unit_check_start('iscntrl',' &
+      & -description ''elemental function returns .true. if CHR is a delete character or ordinary control character'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    do i=0,number_of_chars-1
       SELECT CASE (i)
@@ -7906,13 +7960,14 @@ character(len=1)              :: char
 integer                       :: i
 !-----------------------------------------------------------------------------------------------------------------------------------
    call unit_check_start('ispunct',' &
+      & -description ''elemental function returns .true. if CHR is a printable punctuation character'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    do i=0,number_of_chars-1
       SELECT CASE (i)
@@ -7957,13 +8012,14 @@ character(len=1)              :: ch
 integer                       :: i
 !-----------------------------------------------------------------------------------------------------------------------------------
    call unit_check_start('isupper',' &
+      & -description ''elemental function returns .true. if CHR is an uppercase letter (A-Z)'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    do i=0,number_of_chars-1
       ch=char(i)
@@ -8009,13 +8065,14 @@ character(len=1)              :: ch
 integer                       :: i
 !-----------------------------------------------------------------------------------------------------------------------------------
    call unit_check_start('islower',' &
+      & -description ''elemental function returns .true. if CHR is a miniscule letter (a-z)'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    do i=0,number_of_chars-1
       ch=char(i)
@@ -8042,7 +8099,7 @@ end subroutine test_islower
 !>
 !!##NAME
 !!    isalnum,isalpha,iscntrl,isdigit,isgraph,islower,
-!!    isprint,ispunct,isspace,isupper,isascii,isblank,isxdigit(3f) - [M_strings:COMPARE] test membership in subsets of ASCII set
+!!    isprint,ispunct,isspace,isupper,isascii,isblank,isxdigit(3f) - [M_strings:COMPARE] test membership in subsets of ASCII se
 !!
 !!##SYNOPSIS
 !!
@@ -8122,13 +8179,14 @@ character(len=1)              :: ch
 integer                       :: i
 !-----------------------------------------------------------------------------------------------------------------------------------
    call unit_check_start('isalnum',' &
+      & -description ''elemental function returns .true. if CHR is a letter or digit'' &
       & -section 3  &
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    do i=0,number_of_chars-1
       ch=char(i)
@@ -8154,7 +8212,7 @@ end subroutine test_isalnum
 !===================================================================================================================================
 !>
 !!##NAME
-!!    base(3f) - [M_strings:BASE] convert whole number string in base [2-36] to string in alternate base [2-36]
+!!    base(3f) - [M_strings:BASE] convert whole number string in base [2-36] to string in alternate base [2-36
 !!
 !!##SYNOPSIS
 !!
@@ -8234,9 +8292,9 @@ subroutine test_base()
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
 
    ! convert base2 values to base10 in brief mode
@@ -8302,7 +8360,7 @@ end subroutine test_base
 !!    integer,intent(out)          :: out10
 !!##DESCRIPTION
 !!
-!!    Convert a numeric string representing a whole number in base BASEIN to base 10. The function returns
+!!    Convert a numeric string representing a whole number in base BASEIN to base 10. The function return
 !!    FALSE if BASEIN is not in the range [2..36] or if string STRING contains invalid
 !!    characters in base BASEIN or if result OUT10 is too big
 !!
@@ -8435,9 +8493,9 @@ subroutine test_decodebase()
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
 
    ! convert base2 values to base10 in brief mode
@@ -8476,7 +8534,7 @@ end subroutine test_decodebase
 !>
 !!##NAME
 !!
-!!    codebase(3f) - [M_strings:BASE] convert whole number in base 10 to string in base [2-36]
+!!    codebase(3f) - [M_strings:BASE] convert whole number in base 10 to string in base [2-36
 !!
 !!##SYNOPSIS
 !!
@@ -8564,9 +8622,9 @@ integer,allocatable          :: expected(:)
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
 
    ! convert base10 values to base2 strings
@@ -8620,7 +8678,7 @@ end subroutine test_codebase
 !!    longer than the specified length. Individual words longer than LENGTH will be
 !!    placed in variables by themselves.
 !!##OPTIONS
-!!     SOURCE_STRING  input string to break into an array of shorter strings on blank delimiters
+!!     SOURCE_STRING  input string to break into an array of shorter strings on blank delimiter
 !!     LENGTH         length of lines to break the string into.
 !!##RETURNS
 !!     FMT  character array filled with data from source_string broken at spaces into
@@ -8777,9 +8835,9 @@ subroutine test_int()
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    call unit_check('int',int('1234').eq.1234,msg='test string to integer for overloaded INT()')
    call unit_check_done('int',msg=' overload of INT()')
@@ -8794,9 +8852,9 @@ subroutine test_real()
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    call unit_check('real', real('3.0d0').eq.3.0d0,msg='test string to real for overloaded REAL()')
    call unit_check_done('real',msg='overload of REAL(3f)')
@@ -8811,9 +8869,9 @@ subroutine test_dble()
       & -library libGPF  &
       & -filename `pwd`/M_strings.FF &
       & -documentation y &
-      &  -ufpp         y &
-      &  -ccall        n &
-      &  -archive      GPF.a &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
       & ')
    call unit_check('dble', dble('3.0d0').eq.3.0d0,msg='test string to double for overloaded DBLE()')
    call unit_check_done('dble',msg='overload of DBLE(3f)')

@@ -1,7 +1,7 @@
           program demo_sget
-          use M_kracken, only: kracken, sget, IPvalue
+          use M_kracken, only: kracken, sget
           implicit none
-          character(len=IPvalue) :: string, a, b
+          character(len=:),allocatable :: string, a, b
             ! define command arguments and parse user command
             call kracken('demo','-string This is the default -a A default -b B default' )
             ! get any values specified on command line for -truth

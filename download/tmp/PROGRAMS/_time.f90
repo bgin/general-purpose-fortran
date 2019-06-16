@@ -22,7 +22,7 @@
 !!    Sun Nov  4 22:11:09 EST 2018
 !!    COMMAND:hostname;sleep 3;pwd;date
 !!      times:
-!!            cpu=    0.03 user=    0.00  sys=    0.03 wall=    3.55
+!!            cpu=    0.03 user=    0.00  sys=    0.03 wall=    3.5
 !===================================================================================================================================
 program demo_print_watch
 ! example program starts a watch W1, stops it, and prints the results

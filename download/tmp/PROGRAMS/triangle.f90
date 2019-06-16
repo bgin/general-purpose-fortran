@@ -62,7 +62,7 @@ end subroutine help_usage
 !!    triangle -a NN -b NN -c NN -ta NN -tb NN -tc NN -radians -degrees
 !!##DESCRIPTION
 !!    Given three side or angle elements of a triangle out of six,
-!!    this program will determine the missing elements and calculate the
+!!    this program will determine the missing elements and calculate th
 !!    surface. The not-given elements must be put to zero.
 !!##AUTHOR
 !!    Based on an example F90 version by J-P Moreau (www.jpmoreau.fr).
@@ -110,7 +110,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    resolution of a triangle>',&
 '@(#)VERSION:        1.0, 20190315>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Mon, May 13th, 2019 12:06:49 AM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 12:45:36 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

@@ -209,7 +209,7 @@ end subroutine help_usage
 !!
 !!     total flops        34
 !!     ADIOS
-!!    // ----------------------------------------------------------------------------
+!!    // ---------------------------------------------------------------------------
 !!
 !!  Example 2: Simple looping and conditionals are also available
 !!
@@ -235,7 +235,7 @@ end subroutine help_usage
 !!    A+t*e,  eig(A+t*E)
 !!    <X,D> = eig(A+t*E);  X = X/diag(X(3,:))
 !!    short,  cond(X)
-!!    // ----------------------------------------------------------------------------
+!!    // ---------------------------------------------------------------------------
 !!
 !!    Use the HELP command and the DOC command for further information.
 !!    For example:
@@ -262,7 +262,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 19910403>',&
 '@(#)AUTHOR:         John S. Urban; heavily based on the original by Cleve Moler>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 6:17:07 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 12:53:07 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

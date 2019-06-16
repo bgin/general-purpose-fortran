@@ -5,8 +5,7 @@
           integer                      :: ierr
           integer                      :: i
           character(len=:),allocatable :: string
-          !character(len=:),allocatable :: array(:)
-          character(len=256),allocatable :: array(:)
+          character(len=:),allocatable :: array(:)
              string=process_readall('ls',delim=NEW_LINE("A"),ierr=ierr)
              call split(string,array,delimiters=NEW_LINE("A"))
              do i=1,size(array)

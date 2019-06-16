@@ -77,7 +77,7 @@ use M_debug,   only: stderr
 implicit none
 character(len=*),parameter    :: ident="@(#)ccall_M_color(3f): call HUE(3f) by providing parameters on command line"
 character(len=IPvalue)        :: list
-character(len=80),allocatable :: token(:)          ! output array of tokens
+character(len=:),allocatable  :: token(:)          ! output array of tokens
 character(len=20)             :: closestname
 real                          :: valo1,valo2,valo3
 integer                       :: status

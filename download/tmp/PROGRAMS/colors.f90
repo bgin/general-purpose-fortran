@@ -59,7 +59,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    colors(1f) - [CONVERT] list colors and their values using common color models
+!!    colors(1f) - [CONVERT] list colors and their values using common color model
 !!
 !!##SYNOPSIS
 !!
@@ -123,7 +123,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 6:19:48 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 12:07:39 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -138,7 +138,7 @@ use M_debug,   only: stderr
 implicit none
 character(len=*),parameter    :: ident="@(#)ccall_M_color(3f): call HUE(3f) by providing parameters on command line"
 character(len=IPvalue)        :: list
-character(len=80),allocatable :: token(:)          ! output array of tokens
+character(len=:),allocatable  :: token(:)          ! output array of tokens
 character(len=20)             :: closestname
 real                          :: valo1,valo2,valo3
 integer                       :: status

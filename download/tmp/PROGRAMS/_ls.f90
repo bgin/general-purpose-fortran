@@ -148,7 +148,7 @@ end subroutine help_usage
 !!    -- .schema
 !!    .mode column
 !!    .header on
-!!    SELECT Pathname, File_mode, Owner, Groupname, File_size, strftime('%Y-%m-%d %H:%M:%S', Last_access) as "Last_Access"
+!!    SELECT Pathname, File_mode, Owner, Groupname, File_size, strftime('%Y-%m-%d %H:%M:%S', Last_access) as "Last_Access
 !!       FROM directory
 !!       WHERE DATE('now', 'start of day') < Last_access
 !!       ORDER BY Pathname ASC;
@@ -171,7 +171,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    list files in a directory>',&
 '@(#)VERSION:        1.0, 2016-11-20>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 6:34:25 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 12:28:45 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

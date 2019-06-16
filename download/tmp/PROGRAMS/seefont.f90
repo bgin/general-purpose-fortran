@@ -81,7 +81,7 @@ end subroutine help_usage
 !!##DESCRIPTION
 !!    seefont(1) displays fonts
 !!##OPTIONS
-!!     fontname   fontname to display. Defaults to interactive mode, where "n" means "next",
+!!     fontname   fontname to display. Defaults to interactive mode, where "n" means "next"
 !!                "p" for "previous", and "q" for quit.
 !!     -x         display surface width in device units (typically rasters)
 !!     -y         display surface height in device units (typically rasters)
@@ -120,7 +120,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20181109>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 7:13:24 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 12:15:34 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

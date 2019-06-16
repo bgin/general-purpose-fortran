@@ -136,7 +136,7 @@ end subroutine help_usage
 !!                  Special Files(4)      Special files (usually found in /dev)
 !!                  File Formats(5)       File formats and conventions (eg. /etc/passwd)
 !!                  Games(6)  Games
-!!                  Miscellaneous(7)      Miscellaneous (including macro packages and conventions), e.g. man(7), groff(7)
+!!                  Miscellaneous(7)      Miscellaneous (including macro packages and conventions), e.g. man(7), groff(7
 !!                  System Admin.(8)      System administration commands (usually only for root)
 !!                  Kernel Extensions(9)  Kernel routines [Non standard]
 !!
@@ -225,7 +225,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 6:18:32 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 12:51:01 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

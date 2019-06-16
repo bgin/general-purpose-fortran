@@ -1,5 +1,5 @@
           program demo_system_errno
-          use M_system, only: system_errno, system_unlink, system_perror
+          use M_system, only : system_errno, system_unlink, system_perror
           implicit none
           integer :: stat
           stat=system_unlink('not there/OR/anywhere')

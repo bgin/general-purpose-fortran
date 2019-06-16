@@ -766,7 +766,7 @@ end subroutine help_usage
 !!   |linewidth:       set line width for lines drawn in pixel image
 !!   |color:           set current color for lines drawn in pixel image
 !!   |textsize:        set text size in world units
-!!   |ycentertext:     set text centering mode on for drawstr(3f) and drawc(3f) in Y direction
+!!   |ycentertext:     set text centering mode on for drawstr(3f) and drawc(3f) in Y directio
 !!   |xcentertext:     set text centering mode for drawstr(3f) and drawc(3f) in X direction
 !!   |centertext:      set text centering mode for drawstr(3f) and drawc(3f)
 !!   |textang:         set angle in degrees to draw text at using drawstr(3f)
@@ -780,7 +780,7 @@ end subroutine help_usage
 !!   |getgp2:          get current graphics position
 !!   |
 !!   |viewport:        Specify which part of the screen to draw in.
-!!   |ortho2:          define the area of the virtual world coordinates to map to the viewport
+!!   |ortho2:          define the area of the virtual world coordinates to map to the viewpor
 !!   |ortho2_biggest:  given a window size, find and set to largest accommodating viewport
 !!   |
 !!   |print_ppm:       print pixel array as a P3 PPM file
@@ -908,7 +908,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 6:45:00 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 1:14:13 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

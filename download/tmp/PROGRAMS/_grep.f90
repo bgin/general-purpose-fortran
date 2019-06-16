@@ -74,7 +74,7 @@ end subroutine help_usage
 !!    MATCHER SELECTION
 !!
 !!     -E       Interpret PATTERN as an ERE(extended regular expression).
-!!     -G       Interpret PATTERN as a BRE(basic regular expression). This is the default.
+!!     -G       Interpret PATTERN as a BRE(basic regular expression). This is the default
 !!              If present, it takes precedence over -E.
 !!
 !!    BASIC VS EXTENDED REGULAR EXPRESSIONS
@@ -115,7 +115,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20180120>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 6:32:27 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 12:26:38 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

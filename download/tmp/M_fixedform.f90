@@ -23,7 +23,7 @@
 !!    character(len=5),parameter :: &
 !!    & names(10)=[character(len=5) :: "RED","WHITE","BLUE","NAME","DATE","VALUE","EAST","WEST","NORTH","SOUTH"]
 !!    character(len=:),allocatable   :: tabs
-!!    character(len=132),allocatable :: answers(:) ! output array of tokens
+!!    character(len=:),allocatable   :: answers(:) ! output array of tokens
 !!    logical                        :: lanswer
 !!    real                           :: ranswer
 !!    integer                        :: i
@@ -134,7 +134,7 @@
 !!
 !!    > The field values are returned left to right, top to bottom
 !!    > as a tab-delimited string. The returned string is ...
-!!    > F  F       T       John S. Urban           2018-09-20              13.97                   F       T       F       F
+!!    > F  F       T       John S. Urban           2018-09-20              13.97                   F       T       F
 !!    >============================================================================
 !!    > The strings can be read from the string, reformatted as a
 !!    > NAMELIST string, or parsed.

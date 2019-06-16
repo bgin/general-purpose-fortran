@@ -34,7 +34,7 @@ DESCRIPTION
       use M_debug, only : unit_check_level
       implicit none
          call unit_check_start('xxx',msg='')
-         !!call unit_check('xxx', 0.eq.0. msg=msg('checking',100))
+         !!call unit_check('xxx', 0 .eq. 0, msg=msg('checking',100))
          call unit_check_done('xxx',msg='')
       end subroutine test_xxx
 OPTIONS
@@ -180,6 +180,7 @@ while getopts "chl:wt" arg; do
   esac
 done
 shift $((OPTIND-1))
+LEFTOVER="$*"
 ################################################################################
 if [ -e "$LOG_FILE" -a "$LOG_FILE" != '/dev/null' ] 
 then

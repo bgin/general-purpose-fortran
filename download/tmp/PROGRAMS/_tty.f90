@@ -72,7 +72,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!        _tty(1f) - [FUNIX:FILESYSTEM] print information about the file/terminal connected to standard input
+!!        _tty(1f) - [FUNIX:FILESYSTEM] print information about the file/terminal connected to standard inpu
 !!
 !!##SYNOPSIS
 !!
@@ -145,7 +145,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20170202>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 6:38:40 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 12:35:50 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

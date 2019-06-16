@@ -46,7 +46,7 @@ end subroutine help_usage
 !!        notabs FILENAME(S)| --help| --version
 !!
 !!##DESCRIPTION
-!!        Convert tabs in each FILE to spaces, writing to standard output.
+!!        Convert tabs in each FILE to spaces, writing to standard output
 !!        If no filename is specified standard input is read. Tab stops
 !!        are assumed to be every eight (8) columns. Trailing spaces,
 !!        carriage returns, and newlines are removed
@@ -82,7 +82,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sun, May 12th, 2019 11:43:34 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 1:08:22 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -100,7 +100,7 @@ integer                          :: ios          ! error flag from read
 integer                          :: iout
 integer                          :: i,ii
 integer                          :: ierror=0
-character(len=1024),allocatable  :: array(:)     ! split name of filenames
+character(len=:),allocatable     :: array(:)     ! split name of filenames
 !-----------------------------------------------------------------------------------------------------------------------------------
    call kracken('notabs','-help .F. -version .F. ',ierror) !  define command arguments, default values and crack command line
    call help_usage(lget('notabs_help'))                    ! check if -help was specified

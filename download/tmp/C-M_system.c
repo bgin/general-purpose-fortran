@@ -56,6 +56,37 @@ extern long int longest_env_variable;
        long int longest_env_variable=0L;
 /*--------------------------------------------------------------------------------------------------------------------------------*/
 /*
+   wrapper around access(3c) for a call from Fortran
+*/
+int my_access(const char *pathname, int which) {
+   int n;
+   /*fprintf(stdout," which values = %d %d %d %d %d\n",F_OK,R_OK,W_OK,X_OK,which);*/
+   n = access (pathname, which);
+   return (n);
+}
+/*--------------------------------------------------------------------------------------------------------------------------------*/
+/* does a recursive mkdir(3c) for a POSIX pathname */
+void my_mkdir (char *dir, int mode, int *ier) {
+   char *p = NULL;
+   char buf[4096];
+   size_t len;
+
+   snprintf(buf, sizeof(buf), "%s", dir);
+   len = strlen (buf);
+   if (buf[len - 1] == '/') {
+      buf[len - 1] = 0;
+   }
+   for (p = buf + 1; *p; p++) {
+      if(*p == '/') {
+         *p = 0;
+         mkdir (buf, mode);
+         *p = '/';
+      }
+   }
+   *ier=mkdir(buf, mode);
+}
+/*--------------------------------------------------------------------------------------------------------------------------------*/
+/*
    wrapper around utime(3c) for a call from Fortran
 */
 int my_utime(const char *file, int times[2]) {
@@ -108,6 +139,26 @@ void my_flush(void){
    /* For good measure */
    fflush(stdin);
    fflush(stdout);
+}
+/*--------------------------------------------------------------------------------------------------------------------------------*/
+int my_realpath (char *symlinkpath, char *actualpath) {
+   int length;
+   int ierr;
+   char *gotpath;
+   gotpath = realpath (symlinkpath, NULL);
+   if (gotpath != NULL) {
+      /* ... use gotpath ... */
+      length = (int) strlen (actualpath);
+      actualpath = malloc(sizeof (gotpath));
+      strncpy (actualpath, gotpath, length);
+      free (gotpath);
+      return (0);
+   } else {
+      /* ... handle error ... */
+      length = (int) strlen (symlinkpath);
+      strncpy (actualpath, symlinkpath, length);
+      return (-1);
+   }
 }
 /*--------------------------------------------------------------------------------------------------------------------------------*/
 /*
@@ -349,7 +400,7 @@ int my_file_exists(const char *fname) {
 
 void my_stat(char *file,long int *values, int *ierr, int debug){
 long long size;                                                           /* st_size can be a 64-bit int.         */
-struct stat *buf = malloc (sizeof (struct stat));                         /* allocates memory for stat structure. */
+struct stat *buf = malloc(sizeof (struct stat));                          /* allocates memory for stat structure. */
 struct passwd *pwd;
 struct group *grp;
 struct tm *tm;
@@ -359,7 +410,7 @@ int i;
 
    errno = 0;                                                              /* always set errno to zero first.      */
    if (stat (file, buf) != 0) {
-      perror (file);                                                       /* if stat fails, print a diagnostic. */
+   perror (file);                                                          /* if stat does not work, print a diagnostic. */
       *ierr=1;
       return;
    }

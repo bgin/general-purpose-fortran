@@ -107,7 +107,7 @@ end subroutine help_usage
 !!      x1 x2  are identical
 !!
 !!    $ _cmp x1 x3
-!!      x1 x3 differ: byte 03814,  line 00086, ADE= 99 c miniscule c ADE= 67 C majuscule C
+!!      x1 x3 differ: byte 03814,  line 00086, ADE= 99 c miniscule c ADE= 67 C majuscule
 !!      STOP 3
 !!
 !!    $ _cmp x1 x3 -show
@@ -161,7 +161,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    compare two files byte by byte>',&
 '@(#)VERSION:        1.0-20171126>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 6:42:11 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 12:24:12 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

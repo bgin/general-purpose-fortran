@@ -43,7 +43,7 @@ end subroutine help_usage
 !!          -i INPUT_FILE    Name of ncurses(3c) window dump file generated
 !!                           by putwin(3c).
 !!          -o OUTPUT_FILE   Name of HTML file to generate.
-!!          -pg              Optionally display the ncurses(3c) window dump file
+!!          -pg              Optionally display the ncurses(3c) window dump fil
 !!                           and pause
 !!##EXAMPLE
 !!
@@ -64,7 +64,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20150312>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 6:47:19 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 1:07:02 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

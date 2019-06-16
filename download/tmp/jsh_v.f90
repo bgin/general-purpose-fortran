@@ -11,7 +11,7 @@ use iso_fortran_env
       call trimit('@(#)Compiler Version .... '//trim(compiler_version())//'>')
 !     call trimit('@(#)Compiler Options .... '//trim(compiler_options())//'>')
       call trimit('@(#)Compile Date ........ '//&
-     &'Mon May 27 02:07:03 EDT 2019>')
+     &'Sun, Jun 16, 2019  3:41:53 PM>')
      call trimit('@(#)Compiled on node:>')
       call trimit('@(#) Nodename ........... '// &
      &'buzz>')

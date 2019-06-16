@@ -46,7 +46,7 @@ end subroutine help_usage
 !!        Create the DIRECTORY(ies), if they do not already exist.
 !!        The file permission mode by default is "a=rxw-umask".
 !!##OPTIONS
-!!    DIRECTORY  directory pathnames. Limited to 4096 characters per pathname.
+!!    DIRECTORY  directory pathnames. Limited to 4096 characters per pathname
 !!    --parents  no error if existing, make parent directories as needed
 !!    --verbose  print a message for each created directory
 !!    --help     display this help and exit
@@ -78,7 +78,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 6:35:33 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 12:29:10 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

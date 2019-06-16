@@ -41,7 +41,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!        _which(1f) - [FUNIX:FILESYSTEM] shows the full path of (shell) commands.
+!!        _which(1f) - [FUNIX:FILESYSTEM] shows the full path of (shell) commands
 !!
 !!##SYNOPSIS
 !!
@@ -83,7 +83,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    list pathnames of leaf names that are executable and can be found using the $PATH variable>',&
 '@(#)VERSION:        1.0, 2017-10-15>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 6:34:41 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 12:37:31 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -97,7 +97,7 @@ use M_system, only  : system_access, R_OK, W_OK, X_OK, F_OK
 
 implicit none
 character(len=:),allocatable    :: searchpath
-character(len=4096),allocatable :: directories(:)
+character(len=:),allocatable    :: directories(:)
 character(len=:),allocatable    :: pathname
 integer                         :: path_line_length
 character(len=:),allocatable    :: names(:)

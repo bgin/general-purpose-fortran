@@ -41,7 +41,7 @@ $@(#) cprint(1f): filter to specified columns
 
 character(len=IPvalue)             :: line
 character(len=:),allocatable       :: delimiters ! characters used to delimit columns
-character(len=4096),allocatable    :: array(:)
+character(len=:),allocatable       :: array(:)
 integer,allocatable                :: icols(:)
 character(len=4096),allocatable    :: acols(:)
 integer                            :: ios
@@ -69,7 +69,6 @@ INFINITE: do
    read(*,'(a)',iostat=ios) line
    if(ios.ne.0)exit INFINITE
    call split(line,array,delimiters)             ! split line into columns
-   !write(*,'("ARRAY=",*("[",a,"]":","))')(trim(array(i)),i=1,size(array))
    isize=size(array)
    do i=1,size(icols)
       if( icols(i).gt.0 .and. icols(i).le.isize )then

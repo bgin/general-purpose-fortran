@@ -1203,15 +1203,15 @@ end function dirname
 !!    contain trailing spaces.
 !!
 !!##OPTIONS
-!!    path      Path to be broken into components.
+!!    path      Path to be broken into components. It is assumed
 !!
-!!              o Forward slashes (/) are assumed to separate pathname components.
-!!              o the name '.' is assumed to mean "current directory"
-!!              o the name '..' is assumed to mean "up one directory
-!!              o a pathname ending in a slash is assumed to be a directory name
-!!              o a slash starting the pathname is assumed to represent the root
+!!              o Forward slashes (/) separate pathname components.
+!!              o the name '.' means "current directory"
+!!              o the name '..' means "up one directory"
+!!              o a pathname ending in a slash is a directory name
+!!              o a slash starting the pathname represents the root
 !!                directory.
-!!              o trailing spaces are assumed insignificant.
+!!              o trailing spaces are insignificant.
 !!
 !!    Using these rules helps to reduce incorrect parsing, but the
 !!    routine is only intended for simple parsing of names of the form

@@ -94,7 +94,7 @@ end subroutine help_usage
 !!   Sample usage:
 !!
 !!    # list month as a table
-!!    cal|tail -n +2|table2html -caption $(cal|head -n 1) -document |w3m -dump -T text/html|more
+!!    cal|tail -n +2|table2html -caption $(cal|head -n 1) -document |w3m -dump -T text/html|mor
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -115,7 +115,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 6:26:29 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 1:16:43 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -220,7 +220,7 @@ subroutine writeline()
 ! </tr>
 ! assuming the list of classes is not empty
 !
-character(len=4096),allocatable :: array(:)
+character(len=:),allocatable    :: array(:)
 integer                         :: classi
 integer                         :: i,isize
 integer,save                    :: items=0 ! man number in a line assuming called once per program execution

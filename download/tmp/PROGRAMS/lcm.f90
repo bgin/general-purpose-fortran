@@ -99,7 +99,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!        lcm(1f) - [NUMBERS] display least common multiple of a list of whole numbers
+!!        lcm(1f) - [NUMBERS] display least common multiple of a list of whole number
 !!
 !!##SYNOPSIS
 !!
@@ -154,7 +154,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)UUID:           8f39b1e5-592f-4a22-946f-b8da2aa49633>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 6:22:47 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 12:21:11 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

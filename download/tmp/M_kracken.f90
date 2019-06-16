@@ -6,6 +6,7 @@ use M_debug,   only: debug, io_debug
 use M_journal, only: journal
 use M_strings, only: upper, string_to_value, split, s2v
 use M_list,    only: locate, insert
+use M_args,    only: get_command_arguments_string
 implicit none
 
 character(len=*),parameter::ident_1="@(#)M_kracken(3fm): parse command line options of Fortran programs using Unix-like syntax"
@@ -39,7 +40,6 @@ character(len=*),parameter::ident_1="@(#)M_kracken(3fm): parse command line opti
 !-----------------------------------------------------------------------------------------------------------------------------------
    private :: subscript             ! return the subscript value of a string when given it's name
    private :: menu                  ! generate an interactive menu when -? option is used
-   private :: get_command_arguments ! get_command_arguments: return all command arguments as a string
 !-----------------------------------------------------------------------------------------------------------------------------------
    public test_suite_M_kracken
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -70,7 +70,7 @@ contains
 !===================================================================================================================================
 !>
 !!##NAME
-!!    RETREV(3f) - [ARGUMENTS:M_kracken] get keyword value as a string from a command's argument list processed by kracken(3f)
+!!    RETREV(3f) - [ARGUMENTS:M_kracken] get keyword value as a string from a command's argument list processed by kracken(3f
 !!
 !!##SYNOPSIS
 !!
@@ -155,7 +155,7 @@ end subroutine retrev
 !===================================================================================================================================
 !>
 !!##NAME
-!!          dget(3f) - [ARGUMENTS:M_kracken] given keyword fetch doubleprecision value from command argument
+!!          dget(3f) - [ARGUMENTS:M_kracken] given keyword fetch doubleprecision value from command argumen
 !!##SYNOPSIS
 !!
 !!    function dget(keyword) result(value)
@@ -221,7 +221,7 @@ end function dget
 !===================================================================================================================================
 !>
 !!##NAME
-!!          rget(3f) - [ARGUMENTS:M_kracken] given keyword fetch real value from command argument
+!!          rget(3f) - [ARGUMENTS:M_kracken] given keyword fetch real value from command argumen
 !!##SYNOPSIS
 !!
 !!    function rget(keyword) result(value)
@@ -286,7 +286,7 @@ end function rget
 !===================================================================================================================================
 !>
 !!##NAME
-!!          iget(3f) - [ARGUMENTS:M_kracken] given keyword fetch integer value from command argument
+!!          iget(3f) - [ARGUMENTS:M_kracken] given keyword fetch integer value from command argumen
 !!
 !!##SYNOPSIS
 !!
@@ -357,7 +357,7 @@ end function iget
 !===================================================================================================================================
 !>
 !!##NAME
-!!          lget(3f) - [ARGUMENTS:M_kracken] given keyword fetch logical value from command arguments
+!!          lget(3f) - [ARGUMENTS:M_kracken] given keyword fetch logical value from command argument
 !!##SYNOPSIS
 !!
 !!    function lget(keyword) result(lval)
@@ -454,7 +454,7 @@ end function lget
 !===================================================================================================================================
 !>
 !!##NAME
-!!          sget(3f) - [ARGUMENTS:M_kracken] given keyword fetch string value and length from command arguments
+!!          sget(3f) - [ARGUMENTS:M_kracken] given keyword fetch string value and length from command argument
 !!##SYNOPSIS
 !!
 !!   function sget(name,ilen) result(string)
@@ -484,9 +484,9 @@ end function lget
 !!   Sample program:
 !!
 !!    program demo_sget
-!!    use M_kracken, only: kracken, sget, IPvalue
+!!    use M_kracken, only: kracken, sget
 !!    implicit none
-!!    character(len=IPvalue) :: string, a, b
+!!    character(len=:),allocatable :: string, a, b
 !!      ! define command arguments and parse user command
 !!      call kracken('demo','-string This is the default -a A default -b B default' )
 !!      ! get any values specified on command line for -truth
@@ -547,7 +547,7 @@ end function sget
 !===================================================================================================================================
 !>
 !!##NAME
-!!          dgets(3f) - [ARGUMENTS:M_kracken] given keyword fetch doubleprecision array from command arguments
+!!          dgets(3f) - [ARGUMENTS:M_kracken] given keyword fetch doubleprecision array from command argument
 !!##SYNOPSIS
 !!
 !!    function dgets(keyword) result(darray)
@@ -607,14 +607,14 @@ character(len=*),parameter::ident_8="@(#)M_kracken::dgets(3f): given keyword fet
 character(len=*),intent(in) :: keyword                      ! keyword to retrieve value for from dictionary
 real(kind=dp),allocatable   :: darray(:)                    ! function type
 
-   character(len=IPvalue),allocatable :: carray(:)          ! convert value to an array using split(3f)
-   integer                            :: i
-   integer                            :: ier
+   character(len=:),allocatable  :: carray(:)          ! convert value to an array using split(3f)
+   integer                       :: i
+   integer                       :: ier
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(sget(keyword).ne.' ')then
       call split(sget(keyword),carray)                      ! find value associated with keyword and split it into an array
    else
-      allocate(carray(0))
+      allocate(character(len=0) :: carray(0))
    endif
    allocate(darray(size(carray)))                           ! create the output array
    do i=1,size(carray)
@@ -627,7 +627,7 @@ end function dgets
 !===================================================================================================================================
 !>
 !!##NAME
-!!          igets(3f) - [ARGUMENTS:M_kracken] given keyword fetch integer array from command arguments
+!!          igets(3f) - [ARGUMENTS:M_kracken] given keyword fetch integer array from command argument
 !!##SYNOPSIS
 !!
 !!    function igets(keyword) result(iarray)
@@ -700,7 +700,7 @@ end function igets
 !===================================================================================================================================
 !>
 !!##NAME
-!!          rgets(3f) - [ARGUMENTS:M_kracken] given keyword fetch real array from command arguments
+!!          rgets(3f) - [ARGUMENTS:M_kracken] given keyword fetch real array from command argument
 !!##SYNOPSIS
 !!
 !!    function rgets(keyword) result(rarray)
@@ -791,7 +791,7 @@ end function rgets
 !===================================================================================================================================
 !>
 !!##NAME
-!!          lget(3f) - [ARGUMENTS:M_kracken] given keyword fetch logical array from command argument
+!!          lget(3f) - [ARGUMENTS:M_kracken] given keyword fetch logical array from command argumen
 !!##SYNOPSIS
 !!
 !!    function lgets(keyword) result(lvals)
@@ -853,7 +853,7 @@ character(len=*),parameter::ident_11="&
 character(len=*),intent(in)  :: keyword                    ! the dictionary keyword (in form VERB_KEYWORD) to retrieve
 logical,allocatable          :: larray(:)                  ! convert value to an array
 !-----------------------------------------------------------------------------------------------------------------------------------
-   character(len=IPvalue),allocatable :: carray(:)         ! convert value to an array
+   character(len=:),allocatable       :: carray(:)         ! convert value to an array
    integer                            :: i
    integer                            :: ichar             ! point to first character of word unless first character is "."
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -894,14 +894,14 @@ end function lgets
 !===================================================================================================================================
 !>
 !!##NAME
-!!          sgets(3f) - [ARGUMENTS:M_kracken] given keyword fetch string value parsed on whitespace into an array
+!!          sgets(3f) - [ARGUMENTS:M_kracken] given keyword fetch string value parsed on whitespace into an arra
 !!##SYNOPSIS
 !!
 !!   function sgets(name,delim) result(strings)
 !!
 !!    character(len=*),intent(in) :: name
 !!    character(len=*),intent(in),optional :: delim
-!!    character(len=IPvalue),allocatable :: strings(:)
+!!    character(len=:),allocatable :: strings(:)
 !!
 !!##DESCRIPTION
 !!     The sgets(3f) function returns a dynamically allocated array of character values
@@ -925,24 +925,31 @@ end function lgets
 !!   Sample program:
 !!
 !!    program demo_sgets
-!!    use M_kracken, only : kracken, sgets, IPvalue
-!!    character(len=IPvalue),allocatable :: strings(:)
+!!    use M_kracken, only : kracken, sgets
+!!    character(len=:),allocatable :: strings(:)
 !!       call kracken('cmd',' -string    This   is  a sentence ')
 !!       strings= sgets("cmd_string")            ! get -strings words
 !!       print *, "string=",('['//trim(strings(i))//']',i=1,size(strings))
+!!       print *, "len= ",len(strings)
+!!       print *, "size=",size(strings)
 !!    end program demo_sgets
 !!
 !!   Example program execution:
-!!    $ xxx
-!!     string=[This][is][a][sentence]
 !!
-!!    $ xxx -string parse this into words
-!!     string=[parse][this][into][words]
+!!    $ demo_sgets
+!!     string=[This][is][a][sentence]
+!!     len=            8
+!!     size=           4
+!!
+!!    $ demo_sgets -string a b c d e f g
+!!     string=[a][b][c][d][e][f][g]
+!!     len=            1
+!!     size=           7
 !!
 !!##SEE ALSO
 !!    M_kracken, kracken
 !!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,retrev
 !!
 !!    parse,dissect,store,setprompts,show
 !===================================================================================================================================
@@ -951,11 +958,11 @@ function sgets(name,delim) result(strings)
 character(len=*),parameter::ident_12="@(#)M_kracken::sgets(3f): Fetch strings value for specified NAME from the lang. dictionary"
 
 ! This routine trusts that the desired name exists. A blank is returned if the name is not in the dictionary
-character(len=IPvalue),allocatable   :: strings(:)
+character(len=:),allocatable         :: strings(:)
 character(len=*),intent(in)          :: name                       ! name to look up in dictionary
 character(len=*),intent(in),optional :: delim
-!-----------------------------------------------------------------------------------------------------------------------------------
-   integer                          :: isub                       ! index where verb_oo is stored or -1 if this is an unknown name
+
+integer                              :: isub                      ! index where verb_oo is stored or -1 if this is an unknown name
 !-----------------------------------------------------------------------------------------------------------------------------------
    isub=subscript(name)                                           ! given name return index name is stored at
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -965,8 +972,8 @@ character(len=*),intent(in),optional :: delim
       else
          call split(dict_vals(isub),strings)
       endif
-   else                                                           ! if index is not valid return blank string
-      allocate(character(len=IPvalue) :: strings(1))
+   else                                                           ! if index is not valid return NULL string
+      allocate(character(len=1) :: strings(1))
       strings(1)=char(0)
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -976,7 +983,7 @@ end function sgets
 !===================================================================================================================================
 !>
 !!##NAME
-!!          kracken(3f) - [ARGUMENTS:M_kracken] crack command line options on Fortran programs, using "-KEYWORD VALUE" syntax
+!!          kracken(3f) - [ARGUMENTS:M_kracken] crack command line options on Fortran programs, using "-KEYWORD VALUE" synta
 !!##SYNOPSIS
 !!
 !!     subroutine kracken(verb, string[,ierror])
@@ -1098,7 +1105,7 @@ integer,intent(out),optional   :: error_return
       error_return=0
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
-   call get_command_arguments(command,ier)
+   call get_command_arguments_string(command,ier)
    if(debug) write(*,*)'KRACKEN ',trim(command)
    if(ier.ne.0)then
       call journal("*kracken* could not get command line arguments")
@@ -1118,7 +1125,7 @@ end subroutine kracken
 !===================================================================================================================================
 !>
 !!##NAME
-!!          setprompts(3f) - [ARGUMENTS:M_kracken] set explicit prompts for keywords in interactive mode
+!!          setprompts(3f) - [ARGUMENTS:M_kracken] set explicit prompts for keywords in interactive mod
 !!##SYNOPSIS
 !!
 !!   subroutine setprompts(verb,init)
@@ -1182,7 +1189,7 @@ end subroutine setprompts
 !===================================================================================================================================
 !>
 !!##NAME
-!!          dissect(3f) - [ARGUMENTS:M_kracken] convenient call to parse() -- define defaults, then process
+!!          dissect(3f) - [ARGUMENTS:M_kracken] convenient call to parse() -- define defaults, then proces
 !!
 !!##SYNOPSIS
 !!
@@ -1211,7 +1218,7 @@ end subroutine setprompts
 !!     integer :: ierr
 !!     implicit none
 !!
-!!     call dissect('demo',' -int 1000 -float 1234.567 -str CHARACTER value','-int 456 -float 50.00 ',ierr)
+!!     call dissect('demo',' -int 1000 -float 1234.567 -str CHARACTER value','-int 456 -float 50.00 ',ierr
 !!     write(*,'(a,i0)')'INTEGER IS ',iget('demo_int')
 !!     write(*,'(a,g0)')'REAL IS ',rget('demo_float')
 !!     write(*,'(a,a)')'STRING IS '//trim(sget('demo_str'))
@@ -1255,7 +1262,7 @@ end subroutine dissect
 !===================================================================================================================================
 !>
 !!##NAME
-!!          parse(3f) - [ARGUMENTS:M_kracken] parse user command and store tokens into Language Dictionary
+!!          parse(3f) - [ARGUMENTS:M_kracken] parse user command and store tokens into Language Dictionar
 !!
 !!##SYNOPSIS
 !!
@@ -1606,7 +1613,7 @@ end subroutine parse
 !===================================================================================================================================
 !>
 !!##NAME
-!!          store(3fp) - [ARGUMENTS:M_kracken] add or replace value for specified name in dictionary(if allow='add' add name if needed)
+!!          store(3fp) - [ARGUMENTS:M_kracken] add or replace value for specified name in dictionary(if allow='add' add name if needed
 !!##SYNOPSIS
 !!
 !!   subroutine store(name1,value1,allow1,ier)
@@ -1891,7 +1898,7 @@ end subroutine store
 !===================================================================================================================================
 !>
 !!##NAME
-!!          subscript(3fp) - [ARGUMENTS:M_kracken] return the subscript value of a string when given it's name
+!!          subscript(3fp) - [ARGUMENTS:M_kracken] return the subscript value of a string when given it's nam
 !!##SYNOPSIS
 !!
 !!   function subscript(chars0)
@@ -1941,106 +1948,7 @@ end function subscript
 !===================================================================================================================================
 !>
 !!##NAME
-!!          get_command_arguments(3fp) - [ARGUMENTS:M_kracken] return all command arguments as an allocated string
-!!
-!!##SYNOPSIS
-!!
-!!   subroutine get_command_arguments(string,istatus)
-!!
-!!    character(len=:),allocatable,intent(out) :: string
-!!    integer,intent(out)                      :: istatus
-!!##DESCRIPTION
-!!
-!!##RETURNS
-!!    STRING  composed of all command arguments concatenated into a string
-!!    ISTATUS status (non-zero means error)
-!!
-!!##EXAMPLE
-!!
-!!
-!!   Sample usage if procedure is made public for debugging:
-!!
-!!    program demo_get_command_arguments
-!!    use M_journal, only : journal
-!!    implicit none
-!!    integer :: ier
-!!    character(len=:),allocatable :: cmd
-!!    call get_command_arguments(cmd,ier)
-!!    write(*,*)'CMD=',trim(cmd)
-!!    write(*,*)'LEN(CMD)=',len(cmd)
-!!    write(*,*)'IER=',ier
-!!    end program demo_get_command_arguments
-!!##SEE ALSO
-!!    M_kracken, kracken
-!!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
-!!
-!!    parse,dissect,store,setprompts,show
-!===================================================================================================================================
-subroutine get_command_arguments(string,istatus)
-
-character(len=*),parameter::ident_19="&
-&@(#)M_kracken::get_command_arguments(3fp): return all command arguments as an allocated string"
-
-!  try to guess original quoting and reintroduce quotes
-!-----------------------------------------------------------------------------------------------------------------------------------
-character(len=:),allocatable,intent(out) :: string            ! string of all arguments to create
-integer,intent(out)                      :: istatus           ! status (non-zero means error)
-!-----------------------------------------------------------------------------------------------------------------------------------
-   integer                      :: max_string_len             ! allowed length of output string
-   integer                      :: i                          ! loop count
-   character(len=:),allocatable :: value                      ! store individual arguments one at a time
-   integer                      :: ilength                    ! length of individual arguments
-   character(len=1024)          :: deallocate_error_message
-   integer                      :: deallocate_status
-!-----------------------------------------------------------------------------------------------------------------------------------
-   call get_command(LENGTH=max_string_len, STATUS=istatus)
-   if(istatus > 0)then
-     STOP "*get_command_arguments* error: could not retrieve command line"
-   elseif (max_string_len == 0) then
-     STOP "*get_command_arguments* error: could not determine command length"
-   endif
-   max_string_len=max_string_len+2*command_argument_count()   ! leave room for adding double quotes to each argument
-!-----------------------------------------------------------------------------------------------------------------------------------
-   allocate(character(len=max_string_len) :: value)           ! no single argument should be longer than entire command length
-   istatus=0                                                  ! initialize returned error code
-   string=""                                                  ! initialize returned output string
-!-----------------------------------------------------------------------------------------------------------------------------------
-   APPEND_ARGS: do i=1,command_argument_count()               ! append any arguments together
-      call get_command_argument(i,value,ilength,istatus)      ! get next argument
-      if(istatus /= 0) then                                   ! stop program on error
-         call journal('sc','*get_command_arguments* error obtaining argument ',i)
-         exit APPEND_ARGS
-      elseif(ilength.gt.0)then
-         !---------------------
-         ! BEGIN GUESS AT RE-QUOTING STRING
-         ! if argument contains a space and does not contain a double-quote and is short enough to have double quotes added
-         ! assume this argument was quoted but that the shell stripped the quotes and add double quotes. This is an optional
-         ! behavior and assumes an operating system that strips the quotes from quoted strings on the command line. If the
-         ! operating system is smarter than that remove this section
-         if(index(value(:ilength),' ').ne.0.and.index(value(:ilength),'"').eq.0)then
-            if((ilength+2).le.len(value))then
-               string=string//' "'//value(:ilength)//'"'
-            endif
-         ! END GUESS AT RE-QUOTING STRING
-         !---------------------
-         else
-            string=string//' '//value(:ilength) ! append strings together
-         endif
-      endif
-   enddo APPEND_ARGS
-!-----------------------------------------------------------------------------------------------------------------------------------
-   deallocate(value,stat=deallocate_status,errmsg=deallocate_error_message) ! should be automatically removed in newer compilers
-   if(deallocate_status.ne.0)then
-      call journal('*get_command_arguments *'//trim(deallocate_error_message))
-   endif
-end subroutine get_command_arguments
-!===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!===================================================================================================================================
-!>
-!!##NAME
-!!          menu(3fp) - [ARGUMENTS:M_kracken] prompt for values using a menu interface
+!!          menu(3fp) - [ARGUMENTS:M_kracken] prompt for values using a menu interfac
 !!##SYNOPSIS
 !!
 !!   subroutine menu(verb)
@@ -2060,7 +1968,7 @@ end subroutine get_command_arguments
 !===================================================================================================================================
 subroutine menu(verb)
 
-character(len=*),parameter::ident_20="@(#)M_kracken::menu(3fp): prompt for values using a menu interface"
+character(len=*),parameter::ident_19="@(#)M_kracken::menu(3fp): prompt for values using a menu interface"
 
 !-----------------------------------------------------------------------------------------------------------------------------------
 character(len=*),intent(in)  :: verb
@@ -2311,7 +2219,7 @@ end subroutine menu
 !!     use M_kracken, only : kracken, show
 !!     implicit none
 !!
-!!     call kracken('demo', ' default keyword -i 10 -j 20.20 -value my default string')
+!!     call kracken('demo', ' default keyword -i 10 -j 20.20 -value my default string'
 !!     call show('demo',.false.,0)
 !!
 !!     end program demo_show
@@ -2333,7 +2241,7 @@ end subroutine menu
 !===================================================================================================================================
 subroutine show(VERB_NAME0,VERBS_ONLY,IWIDE0)
 
-character(len=*),parameter::ident_21="@(#)M_kracken::show(3f): dump dictionary entries"
+character(len=*),parameter::ident_20="@(#)M_kracken::show(3f): dump dictionary entries"
 
 character(len=*),intent(in)   :: VERB_NAME0     ! verb prefix to display. Default is all
 logical,intent(in)            :: VERBS_ONLY     ! flag to show verbs only
@@ -2708,12 +2616,12 @@ character(len=:),allocatable :: c(:)
 integer        :: i
    call unit_check_start('sgets',msg=' direct tests of sgets(3f)')
    call store('MY_STRING1','100 0 -321','define',ier)
-   call store('MY_STRING2',-1234,'define',ier)
-   call store('BLANK',' ','define',ier)
+   call store('MY_STRING2',-1234,       'define',ier)
+   call store('BLANK',' ',              'define',ier)
    call unit_check('sgets', all(sgets('MY_STRING1').eq. ['100 ','0   ','-321']),      msg=msg('MY_STRING1'))
    call unit_check('sgets', all(sgets('MY_STRING2').eq.['-1234']),                    msg=msg('MY_STRING2'))
-   call unit_check('sgets', all(sgets('NOTTHERE').eq.[char(0)]),                      msg=msg('NOTTHERE'))
-   call unit_check('sgets', size(sgets('BLANK')).eq.0.and.len(sgets('BLANK')).ne.0,   msg=msg('BLANK'))
+   call unit_check('sgets', all(sgets('NOTTHERE_SGETS').eq.[char(0)]),                msg=msg('NOTTHERE_SGETS'))
+   call unit_check('sgets', size(sgets('BLANK')).eq.0.and.len(sgets('BLANK')).eq.0,   msg=msg('BLANK'))
    call unit_check_done('sgets',msg='')
 end subroutine test_sgets
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT

@@ -84,11 +84,11 @@ use M_kracken, only : kracken, rgets, lget, sget
 use M_strings, only : upper, compact, replace, split, s2v
 implicit none
 $@(#) degrees(1f): convert multiple values between Celsius and Fahrenheit
-real,allocatable                :: val(:)
-integer                         :: i, isum=0, ivals, last
-real                            :: sval
-character(len=:),allocatable    :: values 
-character(len=128),allocatable  :: values_split(:)
+real,allocatable              :: val(:)
+integer                       :: i, isum=0, ivals, last
+real                          :: sval
+character(len=:),allocatable  :: values 
+character(len=:),allocatable  :: values_split(:)
   call kracken('degrees','-F -C -K -help .F. -version .F.' )
   call help_usage(lget('degrees_help'))                                  ! display help information and stop  if true
   call help_version(lget('degrees_version'))                             ! display version information and stop if true

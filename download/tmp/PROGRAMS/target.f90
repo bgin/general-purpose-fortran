@@ -236,7 +236,7 @@ end subroutine help_usage
 !!    target [--help|--version]
 !!##DESCRIPTION
 !!    Use the M_draw(3fm) and M_drawplus(3fm) modules to create various
-!!    targets. Requires large paper (at least 12x10.5 inches) to be printed
+!!    targets. Requires large paper (at least 12x10.5 inches) to be printe
 !!    to scale.
 !!##OPTIONS
 !!    --help     display this help and exit
@@ -268,7 +268,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    create printable targets>',&
 '@(#)VERSION:        1.0, 20190108>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 7:15:00 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 12:12:51 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

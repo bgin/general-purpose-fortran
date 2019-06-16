@@ -103,7 +103,7 @@ end subroutine help_usage
 !!
 !!    quadratic A=9 B=12 C=4
 !!     for 9*x**2 + 12*x + 4 = 0
-!!     the roots (ie. "x intercepts") are repeated (real and equal) so the parabola just touches the x-axis at:
+!!     the roots (ie. "x intercepts") are repeated (real and equal) so the parabola just touches the x-axis at
 !!     z1 = z2 =-0.666666687
 !!     discriminant =0
 !===================================================================================================================================
@@ -122,7 +122,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    Calculate and print the roots of a quadratic formula even if they are complex>',&
 '@(#)VERSION:        2.0, 20180825>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 6:45:59 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 12:52:40 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

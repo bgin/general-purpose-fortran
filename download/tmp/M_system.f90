@@ -5,32 +5,35 @@
 !!
 !!   Public objects:
 !!
+!!    ! ENVIRONMENT
 !!    use m_system, only : set_environment_variable, system_unsetenv, &
 !!    system_putenv, system_getenv
 !!
 !!    use m_system, only :  system_intenv, system_readenv, system_clearenv
-!!
+!!    ! FILE SYSTEM
 !!    use M_system, only : system_getcwd, system_link,       &
 !!    system_mkfifo, system_remove, system_rename,           &
 !!    system_umask, system_unlink, fileglob,                 &
 !!    system_rmdir, system_chdir, system_mkdir,              &
 !!    system_stat, system_isdir, system_islnk, system_isreg, &
 !!    system_isblk, system_ischr, system_isfifo,             &
+!!    system_realpath,                                       &
 !!    system_access,                                         &
 !!    system_utime,                                          &
 !!    system_issock, system_perm, system_stat_print
 !!
 !!    !!use M_system, only : system_getc, system_putc
+!!    ! ERROR PROCESSING
 !!    use M_system, only : system_errno, system_perror
-!!
+!!    ! INFO
 !!    use M_system, only : system_getegid, system_geteuid, system_getgid, &
-!!    system_gethostname, system_getpid, system_getppid, system_getsid, &
-!!    system_getuid, system_uname
-!!
+!!    system_gethostname, system_getpid, system_getppid, system_setsid, &
+!!    system_getsid, system_getuid, system_uname
+!!    ! SIGNALS
 !!    use M_system, only : system_kill
-!!
+!!    ! RANDOM NUMBERS
 !!    use M_system, only : system_rand, system_srand
-!!
+!!    ! PROCESS INFORMATION
 !!    use M_system, only : system_cpu_time
 !!
 !!##DESCRIPTION
@@ -58,7 +61,7 @@
 !!        o  system_clearenv(3f):   emulate clearenv(3c) to clear environment
 !!##FILE SYSTEM
 !!        o  system_chdir(3f):      call chdir(3c) to change current directory of a process
-!!        o  system_getcwd(3f):     call getcwd(3c) to get pathname of current working directory
+!!        o  system_getcwd(3f):     call getcwd(3c) to get pathname of current working director
 !!
 !!        o  system_stat(3f):       determine system information of file by name
 !!        o  system_stat_print(3f): determine system information of file by name
@@ -71,6 +74,7 @@
 !!        o  system_ischr(3f):      determine if filename is a character device
 !!        o  system_isfifo(3f):     determine if filename is a fifo - named pipe
 !!        o  system_issock(3f):     determine if filename is a socket
+!!        o  system_realpath(3f):   resolve a pathname
 !!
 !!        o  system_chmod(3f):      call chmod(3c) to set file permission mode
 !!        o  system_chown(3f):      call chown(3c) to set file owner
@@ -136,8 +140,8 @@
 !!          o fortranposix.
 !===================================================================================================================================
 module M_system
-use,intrinsic     :: iso_c_binding, only: c_float, c_int, c_char
-use,intrinsic     :: iso_c_binding, only: c_ptr, c_f_pointer, c_null_char, c_null_ptr
+use,intrinsic     :: iso_c_binding, only : c_float, c_int, c_char
+use,intrinsic     :: iso_c_binding, only : c_ptr, c_f_pointer, c_null_char, c_null_ptr
 use,intrinsic     :: iso_c_binding
 use iso_fortran_env, only : int8, int16, int32, int64
 
@@ -156,6 +160,7 @@ public :: system_getpid                  ! return process ID
 public :: system_getppid                 ! return parent process ID
 public :: system_getuid, system_geteuid  ! return user ID
 public :: system_getgid, system_getegid  ! return group ID
+public :: system_setsid
 public :: system_getsid
 public :: system_kill                    ! (pid, signal) kill process (defaults: pid=0, signal=SIGTERM)
 
@@ -182,6 +187,7 @@ public :: system_isblk                   ! determine if filename is a block devi
 public :: system_ischr                   ! determine if filename is a character device
 public :: system_isfifo                  ! determine if filename is a fifo - named pipe
 public :: system_issock                  ! determine if filename is a socket
+public :: system_realpath                ! resolve pathname
 
 public :: system_chdir
 public :: system_rmdir
@@ -245,7 +251,7 @@ end type
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_srand(3f) - [M_system] set seed for pseudo-random number generator system_rand(3f)
+!!    system_srand(3f) - [M_system] set seed for pseudo-random number generator system_rand(3f
 !!
 !!##SYNOPSIS
 !!
@@ -316,7 +322,7 @@ end interface
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_kill(3f) - [M_system] send a signal to a process or a group of processes
+!!    system_kill(3f) - [M_system] send a signal to a process or a group of processe
 !!
 !!##SYNOPSIS
 !!
@@ -446,7 +452,7 @@ end interface
 !!##DESCRIPTION
 !!    Many C routines return an error code which can be queried by errno.
 !!    The M_system(3fm) is primarily composed of Fortran routines that call
-!!    C routines. In the cases where an error code is returned vi system_errno(3f)
+!!    C routines. In the cases where an error code is returned vi system_errno(3f
 !!    these routines will indicate it.
 !!
 !!##EXAMPLE
@@ -454,7 +460,7 @@ end interface
 !!   Sample program:
 !!
 !!    program demo_system_errno
-!!    use M_system, only: system_errno, system_unlink, system_perror
+!!    use M_system, only : system_errno, system_unlink, system_perror
 !!    implicit none
 !!    integer :: stat
 !!    stat=system_unlink('not there/OR/anywhere')
@@ -481,7 +487,7 @@ end interface
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_geteuid(3f) - [M_system:QUERY] get effective UID of current process from Fortran by calling geteuid(3c)
+!!    system_geteuid(3f) - [M_system:QUERY] get effective UID of current process from Fortran by calling geteuid(3c
 !!##SYNOPSIS
 !!
 !!    integer(kind=c_int) function system_geteuid()
@@ -495,7 +501,7 @@ end interface
 !!   Get group ID from Fortran:
 !!
 !!    program demo_system_geteuid
-!!    use M_system, only: system_geteuid
+!!    use M_system, only : system_geteuid
 !!    implicit none
 !!       write(*,*)'EFFECTIVE UID=',system_geteuid()
 !!    end program demo_system_geteuid
@@ -511,7 +517,7 @@ end interface
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_getuid(3f) - [M_system:QUERY] get real UID of current process from Fortran by calling getuid(3c)
+!!    system_getuid(3f) - [M_system:QUERY] get real UID of current process from Fortran by calling getuid(3c
 !!##SYNOPSIS
 !!
 !!    integer(kind=c_int) function system_getuid()
@@ -525,7 +531,7 @@ end interface
 !!   Get group ID from Fortran:
 !!
 !!    program demo_system_getuid
-!!    use M_system, only: system_getuid
+!!    use M_system, only : system_getuid
 !!    implicit none
 !!       write(*,*)'UID=',system_getuid()
 !!    end program demo_system_getuid
@@ -545,7 +551,7 @@ end interface
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_getegid(3f) - [M_system:QUERY] get the effective group ID (GID) of current process from Fortran by calling getegid(3c)
+!!    system_getegid(3f) - [M_system:QUERY] get the effective group ID (GID) of current process from Fortran by calling getegid(3c
 !!##SYNOPSIS
 !!
 !!    integer(kind=c_int) function system_getegid()
@@ -569,7 +575,7 @@ end interface
 !!   Get group ID from Fortran
 !!
 !!    program demo_system_getegid
-!!    use M_system, only: system_getegid
+!!    use M_system, only : system_getegid
 !!    implicit none
 !!       write(*,*)'GID=',system_getegid()
 !!    end program demo_system_getegid
@@ -585,7 +591,7 @@ end interface
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_getgid(3f) - [M_system:QUERY] get the real group ID (GID) of current process from Fortran by calling getgid(3c)
+!!    system_getgid(3f) - [M_system:QUERY] get the real group ID (GID) of current process from Fortran by calling getgid(3c
 !!##SYNOPSIS
 !!
 !!    integer(kind=c_int) function system_getgid()
@@ -608,7 +614,7 @@ end interface
 !!   Get group ID from Fortran
 !!
 !!    program demo_system_getgid
-!!    use M_system, only: system_getgid
+!!    use M_system, only : system_getgid
 !!    implicit none
 !!       write(*,*)'GID=',system_getgid()
 !!    end program demo_system_getgid
@@ -624,7 +630,48 @@ end interface
 !===================================================================================================================================
 !>
 !!##NAME
-!!        system_getsid(3f) - [M_system:QUERY] get the process group ID of a session leader
+!!        system_setsid(3f) - [M_system:QUERY] create session and set the process group ID of a session leader
+!!##SYNOPSIS
+!!
+!!        integer(kind=c_int) function system_setsid(pid)
+!!        integer(kind=c_int) :: pid
+!!##DESCRIPTION
+!!        The  setsid()  function creates a new session, if the calling process is not a process group leader. Upon return the
+!!        calling process shall be the session leader of this new session, shall be the process  group  leader  of  a  new  process
+!!        group,  and  shall  have  no  controlling terminal. The process group ID of the calling process shall be set equal to the
+!!        process ID of the calling process. The calling process shall be the only process in the new process group  and  the  only
+!!        process in the new session.
+!!
+!!##RETURN VALUE
+!!        Upon  successful  completion,  setsid() shall return the value of the new process group ID of the calling process. Otherâ€
+!!        wise, it shall return âˆ’1 and set errno to indicate the error.
+!!##ERRORS
+!!        The setsid() function shall fail if:
+!!
+!!         o The calling process is already a process group leader
+!!         o the process group ID of a process other than the calling process matches the process ID of the calling process.
+!!##EXAMPLE
+!!
+!!   Set SID from Fortran
+!!
+!!    program demo_system_setsid
+!!    use M_system,      only : system_setsid
+!!    implicit none
+!!       write(*,*)'SID=',system_setsid()
+!!    end program demo_system_setsid
+!===================================================================================================================================
+character(len=*),parameter :: ident_setsid="@(#) M_system::system_setsid(3f): call setsid(3c) to set session leader for given pid"
+interface
+   integer(kind=c_int) function system_setsid() bind (C,name="setsid")
+      import c_int
+   end function system_setsid
+end interface
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+!>
+!!##NAME
+!!        system_getsid(3f) - [M_system:QUERY] get the process group ID of a session leade
 !!##SYNOPSIS
 !!
 !!        integer(kind=c_int) function system_getsid(pid)
@@ -660,7 +707,7 @@ end interface
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_getpid(3f) - [M_system:QUERY] get PID (process ID) of current process from Fortran by calling getpid(3c)
+!!    system_getpid(3f) - [M_system:QUERY] get PID (process ID) of current process from Fortran by calling getpid(3c
 !!##SYNOPSIS
 !!
 !!    integer function system_getpid()
@@ -676,7 +723,7 @@ end interface
 !!   Get process PID from Fortran
 !!
 !!    program demo_system_getpid
-!!    use M_system, only: system_getpid
+!!    use M_system, only : system_getpid
 !!    implicit none
 !!       write(*,*)'PID=',system_getpid()
 !!    end program demo_system_getpid
@@ -693,7 +740,7 @@ end interface
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_getppid(3f) - [M_system:QUERY] get parent process ID (PPID) of current process from Fortran by calling getppid(3c)
+!!    system_getppid(3f) - [M_system:QUERY] get parent process ID (PPID) of current process from Fortran by calling getppid(3c
 !!##SYNOPSIS
 !!
 !!    integer(kind=c_int) function system_getppid()
@@ -717,7 +764,7 @@ end interface
 !!   Get parent process PID (PPID) from Fortran
 !!
 !!    program demo_system_getppid
-!!    use M_system, only: system_getppid
+!!    use M_system, only : system_getppid
 !!    implicit none
 !!
 !!    write(*,*)'PPID=',system_getppid()
@@ -741,7 +788,7 @@ end interface
 !!    integer(kind=c_int) function system_umask(umask_value)
 !!
 !!##DESCRIPTION
-!!        The umask() function shall set the file mode creation mask of the
+!!        The system_umask() function shall set the file mode creation mask of the
 !!        process to cmask and return the previous value of the mask. Only
 !!        the file permission bits of cmask (see <sys/stat.h>) are used;
 !!        the meaning of the other bits is implementation-defined.
@@ -755,7 +802,7 @@ end interface
 !!         *  mq_open()
 !!         *  sem_open()
 !!
-!!        Bit positions that are set in cmask are cleared in the mode of the created file.
+!!        Bit positions that are set in cmask are cleared in the mode of the created file
 !!
 !!##RETURN VALUE
 !!        The file permission bits in the value returned by umask() shall be
@@ -770,14 +817,23 @@ end interface
 !!   Sample program:
 !!
 !!    program demo_system_umask
-!!    use M_system, only: system_getumask, system_setumask
+!!    use M_system, only : system_getumask, system_setumask
 !!    implicit none
 !!    integer value
-!!    value=system_getumask(002)
-!!    write(*,*)'VALUE=',value
-!!    value=system_setumask(value)
-!!    write(*,*)'VALUE=',value
+!!    integer mask
+!!    mask=O'002'
+!!    value=system_setumask(mask)
+!!    write(*,'(a,"octal=",O4.4," decimal=",i0)')'OLD VALUE=',value,value
+!!    value=system_getumask()
+!!    write(*,'(a,"octal=",O4.4," decimal=",i0)')'MASK=',mask,mask
+!!    write(*,'(a,"octal=",O4.4," decimal=",i0)')'NEW VALUE=',value,value
 !!    end program demo_system_umask
+!!
+!!   Expected results:
+!!
+!!    OLD VALUE=octal=0022 decimal=18
+!!    MASK=octal=0002 decimal=2
+!!    NEW VALUE=octal=0002 decimal=2
 !===================================================================================================================================
 character(len=*),parameter :: ident_umask="@(#) M_system::system_umask(3f): call umask(3c)"
 interface
@@ -791,7 +847,7 @@ end interface
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_rand(3f) - [M_system] call pseudo-random number generator rand(3c)
+!!    system_rand(3f) - [M_system] call pseudo-random number generator rand(3c
 !!##SYNOPSIS
 !!
 !!    integer(kind=c_int) :: function system_rand()
@@ -802,7 +858,7 @@ end interface
 !!
 !!    Sample program:
 !!
-!!       program demo_system_srand
+!!       program demo_system_rand
 !!       use M_system, only : system_srand, system_rand
 !!       implicit none
 !!       integer :: i
@@ -813,7 +869,7 @@ end interface
 !!       enddo
 !!       write(*,*)
 !!
-!!       end program demo_system_srand
+!!       end program demo_system_rand
 !!   expected results:
 !!
 !!      1512084687
@@ -856,7 +912,7 @@ end interface
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_initenv(3f) - [M_system:ENVIRONMENT] initialize environment table pointer and size so table can be read by readenv(3f)
+!!    system_initenv(3f) - [M_system:ENVIRONMENT] initialize environment table pointer and size so table can be read by readenv(3f
 !!##SYNOPSIS
 !!
 !!       subroutine system_initenv()
@@ -938,11 +994,15 @@ integer(kind=mode_t),bind(c,name="FHOST_NAME_MAX") :: HOST_NAME_MAX
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 ! for system_access(3f)
-integer(kind=c_int),bind(c,name="R_OK") :: R_OK
-integer(kind=c_int),bind(c,name="W_OK") :: W_OK
-integer(kind=c_int),bind(c,name="X_OK") :: X_OK
-integer(kind=c_int),bind(c,name="F_OK") :: F_OK
-
+!integer(kind=c_int),bind(c,name="F_OK") :: F_OK
+!integer(kind=c_int),bind(c,name="R_OK") :: R_OK
+!integer(kind=c_int),bind(c,name="W_OK") :: W_OK
+!integer(kind=c_int),bind(c,name="X_OK") :: X_OK
+! not sure these will be the same on all systems, but above did not work
+integer(kind=c_int),parameter           :: F_OK=0
+integer(kind=c_int),parameter           :: R_OK=4
+integer(kind=c_int),parameter           :: W_OK=2
+integer(kind=c_int),parameter           :: X_OK=1
 !===================================================================================================================================
 contains
 !===================================================================================================================================
@@ -971,7 +1031,7 @@ contains
 !!    permissions to be checked (R_OK, W_OK, X_OK) or the existence test (F_OK).
 !!
 !!##OPTIONS
-!!        pathname   a character string representing a directory pathname. Trailing spaces are ignored.
+!!        pathname   a character string representing a directory pathname. Trailing spaces are ignored
 !!        amode      bitwise-inclusive OR of the values R_OK, W_OK, X_OK, or F_OK.
 !!
 !!##RETURN VALUE
@@ -979,9 +1039,8 @@ contains
 !!
 !!##EXAMPLE
 !!
-!!   check if filename is a directory
+!!   check if filename is accessible
 !!
-!!    end program demo_system_access
 !!        Sample program:
 !!
 !!           program demo_system_access
@@ -1002,9 +1061,6 @@ contains
 !!           enddo
 !!           end program demo_system_access
 !===================================================================================================================================
-!! int my_access(const char *path, int amode){
-!!        R_OK, W_OK, X_OK, F_OK
-!! }
 function system_access(pathname,amode)
 implicit none
 
@@ -1015,7 +1071,7 @@ integer,intent(in)          :: amode
 logical                     :: system_access
 
 interface
-  function c_access(c_pathname,c_amode) bind (C,name="access") result (c_ierr)
+  function c_access(c_pathname,c_amode) bind (C,name="my_access") result (c_ierr)
   import c_char,c_int
   character(kind=c_char,len=1),intent(in) :: c_pathname(*)
   integer(kind=c_int),value               :: c_amode
@@ -1038,7 +1094,7 @@ end function system_access
 !===================================================================================================================================
 !>
 !!##NAME
-!!        system_utime(3f) - [M_system] set file access and modification times
+!!        system_utime(3f) - [M_system] set file access and modification time
 !!
 !!##SYNOPSIS
 !!
@@ -1158,7 +1214,7 @@ end interface
    if(present(times))then
       times_local=times
    else
-      times_local=d2u()
+      times_local=int(d2u())
    endif
    if(c_utime(str2arr(trim(pathname)),int(times_local,kind=c_int)).eq.0)then
       system_utime=.true.
@@ -1170,6 +1226,106 @@ end interface
    endif
 
 end function system_utime
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+!>
+!!##NAME
+!!       system_realpath(3f) - [M_system] call realpath(3c) to resolve a pathname
+!!##SYNOPSIS
+!!
+!!       subroutine system_realpath(input,output,ierr)
+!!
+!!        character(len=*),intent(in)              :: input
+!!        character(len=:),allocatable,intent(out) :: output
+!!        integer,intent(out)                      :: ierr
+!!##DESCRIPTION
+!!        system_realpath(3f) calls the C routine realpath(3c) to obtain the absolute pathname of given pat
+!!##OPTIONS
+!!
+!!        INPUT     pathname to resolve
+!!##RETURN VALUE
+!!        OUTPUT    The absolute pathname of the given input pathname.
+!!                  The pathname shall contain no components that are dot or dot-dot,
+!!                  or are symbolic links.
+!!        IERR      is not zero if an error occurs.
+!!
+!!##EXAMPLE
+!!
+!!   Sample program:
+!!
+!!    program demo_system_realpath
+!!    use M_system, only : system_realpath, system_perror
+!!    implicit none
+!!    ! resolve each pathname given on command line
+!!    character(len=:),allocatable :: pathi,patho
+!!    integer                      :: i
+!!    integer                      :: filename_length
+!!    integer                      :: ierr
+!!       do i = 1, command_argument_count()
+!!          ! get pathname from command line arguments
+!!          call get_command_argument (i , length=filename_length)
+!!          allocate(character(len=filename_length) :: pathi)
+!!          call get_command_argument (i , value=pathi)
+!!          !
+!!          ! resolve each pathname
+!!          call system_realpath(pathi,patho,ierr)
+!!          if(ierr.eq.0)then
+!!             write(*,*)trim(pathi),'=>',trim(patho)
+!!          else
+!!             call system_perror('*system_realpath* error for pathname '//trim(pathi)//':')
+!!             write(*,*)trim(pathi),'=>',trim(patho)
+!!          endif
+!!          deallocate(pathi)
+!!       enddo
+!!       ! if there were no pathnames give resolve the pathname "."
+!!       if(i.eq.1)then
+!!          call system_realpath('.',patho,ierr)
+!!          write(*,*)'.=>',trim(patho)
+!!       endif
+!!    end program demo_system_realpath
+!!
+!!  Example usage:
+!!
+!!   demo_system_realpath
+!!   .=>/home/urbanjs/V600
+!!
+!!   cd /usr/share/man
+!!   demo_system_realpath . .. NotThere
+!!   .=>/usr/share/man
+!!   ..=>/usr/share
+!!   *system_realpath* error for pathname NotThere:: No such file or directory
+!!   NotThere=>NotThere
+!===================================================================================================================================
+subroutine system_realpath(input,output,ierr)
+
+character(len=*),parameter::ident_3="&
+&@(#)M_system::system_realpath(3f):call realpath(3c) to get pathname of current working directory"
+
+character(len=*),intent(in)              :: input
+character(len=:),allocatable,intent(out) :: output
+integer,intent(out)                      :: ierr
+integer(kind=c_long),parameter           :: length=4097_c_long
+character(kind=c_char,len=1)             :: buffer(length)
+interface
+   function c_realpath(c_input,c_output) bind(c,name="my_realpath") result(ierr)
+      import c_char, c_size_t, c_ptr, c_int
+      character(kind=c_char) ,intent(in)  :: c_input(*)
+      character(kind=c_char) ,intent(out) :: c_output(*)
+      integer(c_int)                      :: ierr
+   end function
+end interface
+!-----------------------------------------------------------------------------------------------------------------------------------
+   buffer=' '
+   ierr=c_realpath(str2arr(trim(input)),buffer)
+   if(ierr.ne.0)then
+      output=input
+      ierr=-1
+   else
+      output=trim(arr2str(buffer))
+      ierr=0
+   endif
+end subroutine system_realpath
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -1188,7 +1344,7 @@ end function system_utime
 !!        The issock(3f) function checks if path is a path to a socket
 !!
 !!##OPTIONS
-!!        path   a character string representing a socket pathname. Trailing spaces are ignored.
+!!        path   a character string representing a socket pathname. Trailing spaces are ignored
 !!
 !!##RETURN VALUE
 !!        The system_issock() function should always be successful and no
@@ -1223,7 +1379,7 @@ end function system_utime
 function system_issock(pathname)
 implicit none
 
-character(len=*),parameter::ident_3="@(#)M_system::system_issock(3f): determine if pathname is a socket"
+character(len=*),parameter::ident_4="@(#)M_system::system_issock(3f): determine if pathname is a socket"
 
 character(len=*),intent(in) :: pathname
 logical                     :: system_issock
@@ -1255,13 +1411,13 @@ end function system_issock
 !!   logical function system_isfifo(pathname)
 !!
 !!    character(len=*),intent(in) :: pathname
-!!    logical                     :: system_issock
+!!    logical                     :: system_isfifo
 !!
 !!##DESCRIPTION
 !!        The isfifo(3f) function checks if path is a path to a fifo - named pipe.
 !!
 !!##OPTIONS
-!!        path   a character string representing a fifo - named pipe pathname. Trailing spaces are ignored.
+!!        path   a character string representing a fifo - named pipe pathname. Trailing spaces are ignored
 !!
 !!##RETURN VALUE
 !!        The system_isfifo() function should always be successful and no
@@ -1296,7 +1452,7 @@ end function system_issock
 function system_isfifo(pathname)
 implicit none
 
-character(len=*),parameter::ident_4="@(#)M_system::system_isfifo(3f): determine if pathname is a fifo(named pipe)"
+character(len=*),parameter::ident_5="@(#)M_system::system_isfifo(3f): determine if pathname is a fifo(named pipe)"
 
 character(len=*),intent(in) :: pathname
 logical                     :: system_isfifo
@@ -1328,13 +1484,13 @@ end function system_isfifo
 !!   logical function system_ischr(pathname)
 !!
 !!    character(len=*),intent(in) :: pathname
-!!    logical                     :: system_issock
+!!    logical                     :: system_ischr
 !!
 !!##DESCRIPTION
 !!        The ischr(3f) function checks if path is a path to a character device.
 !!
 !!##OPTIONS
-!!        path   a character string representing a character device pathname. Trailing spaces are ignored.
+!!        path   a character string representing a character device pathname. Trailing spaces are ignored
 !!
 !!##RETURN VALUE
 !!        The system_ischr() function should always be successful and no
@@ -1371,7 +1527,7 @@ end function system_isfifo
 function system_ischr(pathname)
 implicit none
 
-character(len=*),parameter::ident_5="@(#)M_system::system_ischr(3f): determine if pathname is a link"
+character(len=*),parameter::ident_6="@(#)M_system::system_ischr(3f): determine if pathname is a link"
 
 character(len=*),intent(in) :: pathname
 logical                     :: system_ischr
@@ -1409,7 +1565,7 @@ end function system_ischr
 !!        The isreg(3f) function checks if path is a regular file
 !!
 !!##OPTIONS
-!!        path   a character string representing a pathname. Trailing spaces are ignored.
+!!        path   a character string representing a pathname. Trailing spaces are ignored
 !!
 !!##RETURN VALUE
 !!        The system_isreg() function should always be successful and no
@@ -1441,7 +1597,7 @@ end function system_ischr
 function system_isreg(pathname)
 implicit none
 
-character(len=*),parameter::ident_6="@(#)M_system::system_isreg(3f): determine if pathname is a regular file"
+character(len=*),parameter::ident_7="@(#)M_system::system_isreg(3f): determine if pathname is a regular file"
 
 character(len=*),intent(in) :: pathname
 logical                     :: system_isreg
@@ -1479,7 +1635,7 @@ end function system_isreg
 !!        The islnk(3f) function checks if path is a path to a link.
 !!
 !!##OPTIONS
-!!        path   a character string representing a link pathname. Trailing spaces are ignored.
+!!        path   a character string representing a link pathname. Trailing spaces are ignored
 !!
 !!##RETURN VALUE
 !!        The system_islnk() function should always be successful and no
@@ -1517,7 +1673,7 @@ end function system_isreg
 function system_islnk(pathname)
 implicit none
 
-character(len=*),parameter::ident_7="@(#)M_system::system_islnk(3f): determine if pathname is a link"
+character(len=*),parameter::ident_8="@(#)M_system::system_islnk(3f): determine if pathname is a link"
 
 character(len=*),intent(in) :: pathname
 logical                     :: system_islnk
@@ -1555,7 +1711,7 @@ end function system_islnk
 !! The isblk(3f) function checks if path is a path to a block device.
 !!
 !!##OPTIONS
-!! path   a character string representing a block device pathname. Trailing spaces are ignored.
+!! path   a character string representing a block device pathname. Trailing spaces are ignored
 !!
 !!##RETURN VALUE
 !!        The system_isblk() function should always be successful and no
@@ -1592,7 +1748,7 @@ end function system_islnk
 function system_isblk(pathname)
 implicit none
 
-character(len=*),parameter::ident_8="@(#)M_system::system_isblk(3f): determine if pathname is a block device"
+character(len=*),parameter::ident_9="@(#)M_system::system_isblk(3f): determine if pathname is a block device"
 
 character(len=*),intent(in) :: pathname
 logical                     :: system_isblk
@@ -1662,7 +1818,7 @@ end function system_isblk
 !!    use M_system, only : system_perror
 !!    implicit none
 !!    integer                     :: i
-!!    character(len=80),parameter :: names(*)=[character(len=80) :: 'myfile1','/usr/local']
+!!    character(len=80),parameter :: names(*)=[character(len=80) :: 'myfile1','/usr/local'
 !!    do i=1,size(names)
 !!       if(.not.  system_chown(&
 !!       & trim(names(i)),  &
@@ -1678,7 +1834,7 @@ end function system_isblk
 function system_chown(dirname,owner,group)
 implicit none
 
-character(len=*),parameter::ident_9="&
+character(len=*),parameter::ident_10="&
 &@(#)M_system::system_chown(3f): change owner and group of a file relative to directory file descriptor"
 
 character(len=*),intent(in) :: dirname
@@ -1716,13 +1872,13 @@ end function system_chown
 !!   logical function system_isdir(pathname)
 !!
 !!    character(len=*),intent(in) :: pathname
-!!    logical                     :: system_issock
+!!    logical                     :: system_isdir
 !!
 !!##DESCRIPTION
 !!        The isdir(3f) function checks if path is a path to a directory.
 !!
 !!##OPTIONS
-!!        path   a character string representing a directory pathname. Trailing spaces are ignored.
+!!        path   a character string representing a directory pathname. Trailing spaces are ignored
 !!
 !!##RETURN VALUE
 !!        The system_isdir() function should always be successful and no
@@ -1764,7 +1920,7 @@ end function system_chown
 function system_isdir(dirname)
 implicit none
 
-character(len=*),parameter::ident_10="@(#)M_system::system_isdir(3f): determine if DIRNAME is a directory name"
+character(len=*),parameter::ident_11="@(#)M_system::system_isdir(3f): determine if DIRNAME is a directory name"
 
 character(len=*),intent(in) :: dirname
 logical                     :: system_isdir
@@ -1789,7 +1945,7 @@ end function system_isdir
 !===================================================================================================================================
 !>
 !!##NAME
-!!        system_cpu_time(3f) - [M_system] get processor time by calling times(3c)
+!!        system_cpu_time(3f) - [M_system] get processor time by calling times(3c
 !!
 !!##SYNOPSIS
 !!
@@ -1822,17 +1978,18 @@ end function system_isdir
 !!    real    :: user_start, system_start, total_start
 !!    real    :: user_finish, system_finish, total_finish
 !!    integer :: i
+!!    integer :: itimes=1000000
 !!    real    :: value
 !!
 !!       call system_cpu_time(total_start,user_start,system_start)
 !!
 !!       value=0.0
-!!       do i=1,1000000
+!!       do i=1,itimes
 !!          value=sqrt(real(i)+value)
-!!          write(10,*)value
 !!       enddo
+!!       write(10,*)value
 !!       flush(10)
-!!       write(*,*)'average sqrt value=',value/10000.0
+!!       write(*,*)'average sqrt value=',value/itimes
 !!       call system_cpu_time(total_finish,user_finish,system_finish)
 !!       write(*,*)'USER ......',user_finish-user_start
 !!       write(*,*)'SYSTEM ....',system_finish-system_start
@@ -1905,12 +2062,12 @@ end subroutine system_cpu_time
 !!
 !!        The implementation may require that the calling process has permission to access the existing file.
 !!
-!!        The linkat() function shall be equivalent to the link() function except that symbolic links shall be handled as specified
+!!        The linkat() function shall be equivalent to the link() function except that symbolic links shall be handled as specifie
 !!        by the value of flag (see below) and except in the case where either path1 or path2 or both are relative paths. In this
 !!        case a relative path path1 is interpreted relative to the directory associated with the file descriptor fd1 instead of
 !!        the current working directory and similarly for path2 and the file descriptor fd2. If the file descriptor was opened
 !!        without O_SEARCH, the function shall check whether directory searches are permitted using the current permissions of the
-!!        directory underlying the file descriptor. If the file descriptor was opened with O_SEARCH, the function shall not perform
+!!        directory underlying the file descriptor. If the file descriptor was opened with O_SEARCH, the function shall not perfor
 !!        the check.
 !!
 !!        Values for flag are constructed by a bitwise-inclusive OR of flags from the following list, defined in <fcntl.h>:
@@ -1918,7 +2075,7 @@ end subroutine system_cpu_time
 !!        AT_SYMLINK_FOLLOW
 !!              If path1 names a symbolic link, a new link for the target of the symbolic link is created.
 !!
-!!        If linkat() is passed the special value AT_FDCWD in the fd1 or fd2 parameter, the current working directory shall be used
+!!        If linkat() is passed the special value AT_FDCWD in the fd1 or fd2 parameter, the current working directory shall be use
 !!        for the respective path argument. If both fd1 and fd2 have value AT_FDCWD, the behavior shall be identical to a call to
 !!        link(), except that symbolic links shall be handled as specified by the value of flag.
 !!
@@ -1940,6 +2097,7 @@ end subroutine system_cpu_time
 !!
 !!    program demo_system_link
 !!    use M_system, only : system_link, system_perror
+!!    integer :: ierr
 !!    ierr = system_link('myfile1','myfile2')
 !!    if(ierr.ne.0)then
 !!       call system_perror('*demo_system_link*')
@@ -1948,7 +2106,7 @@ end subroutine system_cpu_time
 !===================================================================================================================================
 function system_link(oldname,newname) result(ierr)
 
-character(len=*),parameter::ident_11="@(#)M_system::system_link(3f): call link(3c) to create a file link"
+character(len=*),parameter::ident_12="@(#)M_system::system_link(3f): call link(3c) to create a file link"
 
 character(len=*),intent(in) :: oldname
 character(len=*),intent(in) :: newname
@@ -1973,7 +2131,7 @@ end function system_link
 !===================================================================================================================================
 !>
 !!##NAME
-!!        system_unlink(3f) - [M_system] remove a directory entry relative to directory file descriptor
+!!        system_unlink(3f) - [M_system] remove a directory entry relative to directory file descripto
 !!
 !!##SYNOPSIS
 !!
@@ -2025,6 +2183,7 @@ end function system_link
 !!
 !!    program demo_system_unlink
 !!    use M_system, only : system_unlink, system_perror
+!!    integer :: ierr
 !!    ierr = system_unlink('myfile1')
 !!    if(ierr.ne.0)then
 !!       call system_perror('*demo_system_unlink*')
@@ -2033,7 +2192,7 @@ end function system_link
 !===================================================================================================================================
 function system_unlink(fname) result (ierr)
 
-character(len=*),parameter::ident_12="@(#)M_system::system_unlink(3f): call unlink(3c) to rm file link"
+character(len=*),parameter::ident_13="@(#)M_system::system_unlink(3f): call unlink(3c) to rm file link"
 
 character(len=*),intent(in) :: fname
 integer                     :: ierr
@@ -2070,7 +2229,7 @@ end function system_unlink
 !!        permission bits in the mode argument supplied during calls to
 !!        the following functions:
 !!
-!!         *  open(), openat(), creat(), mkdir(), mkdirat(), mkfifo(), and mkfifoat()
+!!         *  open(), openat(), creat(), mkdir(), mkdirat(), mkfifo(), and mkfifoat(
 !!         *  mknod(), mknodat()
 !!         *  mq_open()
 !!         *  sem_open()
@@ -2096,6 +2255,8 @@ end function system_unlink
 !!    program demo_setumask
 !!    use M_system, only : system_getumask, system_setumask
 !!    integer :: newmask
+!!    integer :: i
+!!    integer :: old_umask
 !!    write(*,101)(system_getumask(),i=1,4)
 !!    101 format(1x,i0,1x,"O'",o4.4,"'",1x,'Z"',z0,"'",1x,"B'",b12.12,"'")
 !!    newmask=63
@@ -2136,9 +2297,9 @@ end function system_setumask
 !!
 !!    program demo_getumask
 !!    use M_system, only : system_getumask, system_setumask
-!!    integer :: newmask
+!!    integer :: i
 !!    write(*,101)(system_getumask(),i=1,4)
-!!    101 format(1x,i0,1x,"O'",o4.4,"'",1x,'Z"',z0,"'",1x,"B'",b12.12,"'")
+!!    101 format(1x,i0,1x,"O'",o4.4,"'",1x,'Z"',z0,"'",1x,"B'",b12.12,"'"
 !!    end program demo_getumask
 !!
 !!   Expected output
@@ -2156,7 +2317,7 @@ integer function system_getumask() result (umask_value)
 integer             :: idum
 integer(kind=c_int) :: old_umask
    old_umask=system_umask(0_c_int) ! get current umask but by setting umask to 0 (a conservative mask so no vulnerability is open)
-   idum=system_umask(old_umask)      ! set back to original mask
+   idum=system_umask(old_umask)    ! set back to original mask
    umask_value=old_umask
 end function system_getumask
 !===================================================================================================================================
@@ -2164,7 +2325,7 @@ end function system_getumask
 !===================================================================================================================================
 !>
 !!##NAME
-!!      perror(3f) - [M_system] print error message for last C error on stderr
+!!      perror(3f) - [M_system] print error message for last C error on stder
 !!##SYNOPSIS
 !!
 !!      subroutine system_perror(prefix)
@@ -2203,7 +2364,7 @@ end function system_getumask
 subroutine system_perror(prefix)
 use iso_fortran_env, only : ERROR_UNIT, INPUT_UNIT, OUTPUT_UNIT     ! access computing environment
 
-character(len=*),parameter::ident_13="@(#)M_system::system_perror(3f): call perror(3c) to display error message"
+character(len=*),parameter::ident_14="@(#)M_system::system_perror(3f): call perror(3c) to display error message"
 
 character(len=*),intent(in) :: prefix
    integer                  :: ios
@@ -2227,7 +2388,7 @@ end subroutine system_perror
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_chdir(3f) - [M_system] call chdir(3c) from Fortran to change working directory
+!!    system_chdir(3f) - [M_system] call chdir(3c) from Fortran to change working director
 !!##SYNOPSIS
 !!
 !!    subroutine system_chdir(path, err)
@@ -2291,7 +2452,7 @@ end subroutine system_perror
 !===================================================================================================================================
 subroutine system_chdir(path, err)
 
-character(len=*),parameter::ident_14="@(#)M_system::system_chdir(3f): call chdir(3c)"
+character(len=*),parameter::ident_15="@(#)M_system::system_chdir(3f): call chdir(3c)"
 
 character(len=*)               :: path
 integer, optional, intent(out) :: err
@@ -2324,7 +2485,7 @@ end subroutine system_chdir
 !!
 !!##DESCRIPTION
 !!    Fortran supports scratch files via the OPEN(3c) command; but does
-!!    not otherwise allow for removing files. The system_remove(3f) command
+!!    not otherwise allow for removing files. The system_remove(3f) comman
 !!    allows for removing files by name that the user has the authority to
 !!    remove by calling the C remove(3c) function.
 !!
@@ -2335,6 +2496,7 @@ end subroutine system_chdir
 !!    program demo_system_remove
 !!    use M_system, only : system_remove
 !!    character(len=*),parameter :: FILE='MyJunkFile.txt'
+!!    integer :: ierr
 !!    write(*,*)'BEFORE CREATED '//FILE
 !!    call execute_command_line('ls -l '//FILE)
 !!    write(*,*)
@@ -2375,7 +2537,7 @@ end subroutine system_chdir
 !===================================================================================================================================
 function system_remove(path) result(err)
 
-character(len=*),parameter::ident_15="@(#)M_system::system_remove(3f): call remove(3c) to remove file"
+character(len=*),parameter::ident_16="@(#)M_system::system_remove(3f): call remove(3c) to remove file"
 
 character(*),intent(in) :: path
 integer(c_int)          :: err
@@ -2435,7 +2597,7 @@ end function system_remove
 !!
 !!      ! create scratch file to rename
 !!      open(unit=10,file='_scratch_file_',status='new')
-!!      write(10,'(a)') 'Test by renaming "_scratch_file_" to "_renamed_scratch_file_"'
+!!      write(10,'(a)') 'Test by renaming "_scratch_file_" to "_renamed_scratch_file_"
 !!      write(10,'(a)') 'IF YOU SEE THIS ON OUTPUT THE RENAME WORKED'
 !!      close(10)
 !!      ! rename scratch file
@@ -2473,7 +2635,7 @@ end function system_remove
 !===================================================================================================================================
 function system_rename(input,output) result(ierr)
 
-character(len=*),parameter::ident_16="@(#)M_system::system_rename(3f): call rename(3c) to change filename"
+character(len=*),parameter::ident_17="@(#)M_system::system_rename(3f): call rename(3c) to change filename"
 
 character(*),intent(in)    :: input,output
 integer                    :: ierr
@@ -2560,7 +2722,7 @@ end function system_rename
 !!       ierr=system_chmod('_test1', IANY([R_USR,R_GRP,R_OTH]))
 !!
 !!       !Setting Read, Write, and Execute Permissions for the Owner Only
-!!       ! The following example sets read, write, and execute permissions for the owner, and no permissions for group and others.
+!!       ! The following example sets read, write, and execute permissions for the owner, and no permissions for group and others
 !!       open(file='_test2',unit=10)
 !!       write(10,*)'TEST FILE 2'
 !!       close(unit=10)
@@ -2619,13 +2781,13 @@ end function system_chmod
 !!        character(len=:),allocatable,intent(out) :: output
 !!        integer,intent(out)                      :: ierr
 !!##DESCRIPTION
-!!        system_getcwd(3f) calls the C routine getcwd(3c) to obtain the absolute pathname of the current working directory.
+!!        system_getcwd(3f) calls the C routine getcwd(3c) to obtain the absolute pathname of the current working directory
 !!
 !!##RETURN VALUE
-!!        FILENAME  The absolute pathname of the current working directory
-!!                  The pathname shall contain no components that are dot or dot-dot,
-!!                  or are symbolic links.
-!!        IERR      is not zero if an error occurs.
+!!        OUTPUT   The absolute pathname of the current working directory
+!!                 The pathname shall contain no components that are dot or dot-dot,
+!!                 or are symbolic links.
+!!        IERR     is not zero if an error occurs.
 !!
 !!##EXAMPLE
 !!
@@ -2646,7 +2808,7 @@ end function system_chmod
 !===================================================================================================================================
 subroutine system_getcwd(output,ierr)
 
-character(len=*),parameter::ident_17="@(#)M_system::system_getcwd(3f):call getcwd(3c) to get pathname of current working directory"
+character(len=*),parameter::ident_18="@(#)M_system::system_getcwd(3f):call getcwd(3c) to get pathname of current working directory"
 
 character(len=:),allocatable,intent(out) :: output
 integer,intent(out)                      :: ierr
@@ -2677,7 +2839,7 @@ end subroutine system_getcwd
 !===================================================================================================================================
 !>
 !!##NAME
-!!       system_rmdir(3f) - [M_system] call rmdir(3c) to remove empty directories
+!!       system_rmdir(3f) - [M_system] call rmdir(3c) to remove empty directorie
 !!
 !!##SYNOPSIS
 !!
@@ -2724,7 +2886,7 @@ end subroutine system_getcwd
 !===================================================================================================================================
 function system_rmdir(dirname) result(err)
 
-character(len=*),parameter::ident_18="@(#)M_system::system_rmdir(3f): call rmdir(3c) to remove empty directory"
+character(len=*),parameter::ident_19="@(#)M_system::system_rmdir(3f): call rmdir(3c) to remove empty directory"
 
 character(*),intent(in) :: dirname
 integer(c_int) :: err
@@ -2745,7 +2907,7 @@ end function system_rmdir
 !===================================================================================================================================
 !>
 !!##NAME
-!!        system_mkfifo(3f)  - [M_system] make a FIFO special file relative to directory file descriptor
+!!        system_mkfifo(3f)  - [M_system] make a FIFO special file relative to directory file descripto
 !!##SYNOPSIS
 !!
 !!   function system_mkfifo(pathname,mode) result(ierr)
@@ -2844,7 +3006,7 @@ end function system_rmdir
 !===================================================================================================================================
 function system_mkfifo(pathname,mode) result(err)
 
-character(len=*),parameter::ident_19="@(#)M_system::system_mkfifo(3f): call mkfifo(3c) to create a new FIFO special file"
+character(len=*),parameter::ident_20="@(#)M_system::system_mkfifo(3f): call mkfifo(3c) to create a new FIFO special file"
 
 character(len=*),intent(in)       :: pathname
 integer,intent(in)                :: mode
@@ -2881,7 +3043,7 @@ end function system_mkfifo
 !!     Group:   R_GRP  (read),  W_GRP  (write),  X_GRP(execute)
 !!     Others:  R_OTH  (read),  W_OTH  (write),  X_OTH(execute)
 !!
-!!    Additionally, some shortcuts are provided (basically a bitwise-OR combination of the above):
+!!    Additionally, some shortcuts are provided (basically a bitwise-OR combination of the above)
 !!
 !!      Read + Write + Execute: R_WXU (User), R_WXG (Group), R_WXO (Others)
 !!      DEFFILEMODE: Equivalent of 0666 =rw-rw-rw-
@@ -2916,14 +3078,15 @@ end function system_mkfifo
 !!    ierr=system_mkdir('_scratch',IANY([R_USR,W_USR,X_USR]))
 !!    end program demo_system_mkdir
 !===================================================================================================================================
-function system_mkdir(dirname,mode) result(err)
+function system_mkdir(dirname,mode) result(ierr)
 
-character(len=*),parameter::ident_20="@(#)M_system::system_mkdir(3f): call mkdir(3c) to create empty directory"
+character(len=*),parameter::ident_21="@(#)M_system::system_mkdir(3f): call mkdir(3c) to create empty directory"
 
 character(len=*),intent(in)       :: dirname
 integer,intent(in)                :: mode
    integer                        :: c_mode
-   integer                        :: err
+   integer(kind=c_int)            :: err
+   integer                        :: ierr
 
 interface
    function c_mkdir(c_path,c_mode) bind(c,name="mkdir") result(c_err)
@@ -2933,9 +3096,22 @@ interface
       integer(c_int)                          :: c_err
    end function c_mkdir
 end interface
+interface
+    subroutine my_mkdir(string,c_mode,c_err) bind(C, name="my_mkdir")
+      use iso_c_binding, only : c_char, c_int
+      character(kind=c_char) :: string(*)
+      integer(c_int),intent(in),value         :: c_mode
+      integer(c_int)                          :: c_err
+    end subroutine my_mkdir
+end interface
 !-----------------------------------------------------------------------------------------------------------------------------------
    c_mode=mode
-   err= c_mkdir(str2arr(trim(dirname)),c_mode)
+   if(index(dirname,'/').ne.0)then
+      call my_mkdir(str2arr(trim(dirname)),c_mode,err)
+   else
+      err= c_mkdir(str2arr(trim(dirname)),c_mode)
+   endif
+   ierr=err                                          ! c_int to default integer kind
 end function system_mkdir
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -2976,7 +3152,7 @@ end function system_mkdir
 !!
 !!        ENOENT        A component of dirname does not name an existing directory or dirname is an empty string.
 !!
-!!        ENOTDIR       A component of dirname names an existing file that is neither a directory nor a symbolic link to a directory.
+!!        ENOTDIR       A component of dirname names an existing file that is neither a directory nor a symbolic link to a directory
 !!
 !!        ELOOP         More than {SYMLOOP_MAX} symbolic links were encountered during resolution of the dirname argument.
 !!
@@ -3063,7 +3239,7 @@ end subroutine system_opendir
 !!    a null name upon reaching the end of the directory stream.
 !!
 !!    The readdir() function does not return directory entries containing
-!!    empty names. If entries for dot or dot-dot exist, one entry is returned
+!!    empty names. If entries for dot or dot-dot exist, one entry is returne
 !!    for dot and one entry is returned for dot-dot.
 !!
 !!    The entry is marked for update of the last data access timestamp each
@@ -3143,7 +3319,7 @@ end subroutine system_readdir
 !!     type(c_ptr),value :: dir
 !!
 !!##DESCRIPTION
-!!     Return to pointer to the beginning of the list for a currently open directory list.
+!!     Return to pointer to the beginning of the list for a currently open directory list
 !!
 !!##OPTIONS
 !!     DIR  A C_pointer assumed to have been allocated by a call to SYSTEM_OPENDIR(3f).
@@ -3205,7 +3381,7 @@ end subroutine system_rewinddir
 !!         type(c_ptr)         :: dir
 !!         integer,intent(out) :: ierr
 !!##DESCRIPTION
-!!        The SYSTEM_CLOSEDIR(3f) function closes the directory stream referred to by the argument DIR.
+!!        The SYSTEM_CLOSEDIR(3f) function closes the directory stream referred to by the argument DIR
 !!        Upon return, the value of DIR may no longer point to an accessible object.
 !!##OPTIONS
 !!        dir     directory stream pointer opened by SYSTEM_OPENDIR(3f).
@@ -3271,7 +3447,7 @@ end subroutine system_closedir
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_putenv(3f) - [M_system:ENVIRONMENT] set environment variable from Fortran by calling putenv(3c)
+!!    system_putenv(3f) - [M_system:ENVIRONMENT] set environment variable from Fortran by calling putenv(3c
 !!
 !!##SYNOPSIS
 !!
@@ -3299,7 +3475,7 @@ end subroutine system_closedir
 !!   Sample setting an environment variable from Fortran:
 !!
 !!     program demo_system_putenv
-!!     use M_system, only: system_putenv
+!!     use M_system, only : system_putenv
 !!     use iso_c_binding
 !!     implicit none
 !!     integer :: ierr
@@ -3336,7 +3512,7 @@ end subroutine system_closedir
 !===================================================================================================================================
 subroutine system_putenv(string, err)
 
-character(len=*),parameter::ident_21="@(#)M_system::system_putenv(3f): call putenv(3c)"
+character(len=*),parameter::ident_22="@(#)M_system::system_putenv(3f): call putenv(3c)"
 
 interface
    integer(kind=c_int)  function c_putenv(c_string) bind(C,name="putenv")
@@ -3368,7 +3544,7 @@ end subroutine system_putenv
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_getenv(3f) - [M_system:ENVIRONMENT] get environment variable from Fortran by calling get_environment_variable(3f)
+!!    system_getenv(3f) - [M_system:ENVIRONMENT] get environment variable from Fortran by calling get_environment_variable(3f
 !!
 !!##SYNOPSIS
 !!
@@ -3389,7 +3565,7 @@ end subroutine system_putenv
 !!   Sample setting an environment variable from Fortran:
 !!
 !!    program demo_system_getenv
-!!    use M_system, only: system_getenv
+!!    use M_system, only : system_getenv
 !!    implicit none
 !!    integer :: ierr
 !!
@@ -3401,7 +3577,7 @@ end subroutine system_putenv
 !===================================================================================================================================
 function system_getenv(name) result(var)
 
-character(len=*),parameter::ident_22="@(#)M_system::system_getenv(3f): call get_environment_variable(3f)"
+character(len=*),parameter::ident_23="@(#)M_system::system_getenv(3f): call get_environment_variable(3f)"
 
 character(len=*),intent(in)  :: name
 integer                      :: howbig
@@ -3436,7 +3612,7 @@ end function system_getenv
 !!    The set_environment_variable() procedure adds or changes the value of environment variables.
 !!
 !!##OPTIONS
-!!    NAME    If name does not already exist in the environment, then string is added to the environment.
+!!    NAME    If name does not already exist in the environment, then string is added to the environment
 !!            If name does exist, then the value of name in the environment is changed to value.
 !!    VALUE   Value to assign to environment variable NAME
 !!    STATUS  returns zero on success, or nonzero if an error occurs.
@@ -3448,7 +3624,7 @@ end function system_getenv
 !!   Sample setting an environment variable from Fortran:
 !!
 !!    program demo_set_environment_variable
-!!    use M_system, only: set_environment_variable
+!!    use M_system, only : set_environment_variable
 !!    use iso_c_binding
 !!    implicit none
 !!    integer :: ierr
@@ -3477,7 +3653,7 @@ end function system_getenv
 !===================================================================================================================================
 subroutine set_environment_variable(NAME, VALUE, STATUS)
 
-character(len=*),parameter::ident_23="@(#)M_system::set_environment_variable(3f): call setenv(3c) to set environment variable"
+character(len=*),parameter::ident_24="@(#)M_system::set_environment_variable(3f): call setenv(3c) to set environment variable"
 
    character(len=*)               :: NAME
    character(len=*)               :: VALUE
@@ -3500,7 +3676,7 @@ end subroutine set_environment_variable
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_clearenv(3f) - [M_system:ENVIRONMENT] clear environment by calling clearenv(3c)
+!!    system_clearenv(3f) - [M_system:ENVIRONMENT] clear environment by calling clearenv(3c
 !!
 !!
 !!##SYNOPSIS
@@ -3510,9 +3686,9 @@ end subroutine set_environment_variable
 !!     integer,intent(out),optional :: ierr
 !!
 !!##DESCRIPTION
-!!    The clearenv() procedure clears the environment of all name-value pairs.
-!!    Typically used in security-conscious applications or ones where configuration
-!!    control requires ensuring specific variables are set.
+!!    The clearenv() procedure clears the environment of all name-value
+!!    pairs.  Typically used in security-conscious applications or ones where
+!!    configuration control requires ensuring specific variables are set.
 !!
 !!##RETURN VALUES
 !!    ierr  returns zero on success, and a nonzero value on failure. Optional.
@@ -3542,7 +3718,7 @@ end subroutine set_environment_variable
 subroutine system_clearenv(ierr)
 !  emulating because not available on some platforms
 
-character(len=*),parameter::ident_24="@(#)M_system::system_clearenv(3f): emulate clearenv(3c) to clear environment"
+character(len=*),parameter::ident_25="@(#)M_system::system_clearenv(3f): emulate clearenv(3c) to clear environment"
 
 integer,intent(out),optional    :: ierr
    character(len=:),allocatable :: string
@@ -3589,7 +3765,7 @@ end subroutine system_clearenv
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_unsetenv(3f) - [M_system:ENVIRONMENT] delete an environment variable by calling unsetenv(3c)
+!!    system_unsetenv(3f) - [M_system:ENVIRONMENT] delete an environment variable by calling unsetenv(3c
 !!##SYNOPSIS
 !!
 !!   subroutine system_unsetenv(name,ierr)
@@ -3628,7 +3804,7 @@ end subroutine system_clearenv
 !===================================================================================================================================
 subroutine system_unsetenv(name,ierr)
 
-character(len=*),parameter::ident_25="@(#)M_system::system_unsetenv(3f): call unsetenv(3c) to remove variable from environment"
+character(len=*),parameter::ident_26="@(#)M_system::system_unsetenv(3f): call unsetenv(3c) to remove variable from environment"
 
 character(len=*),intent(in)  :: name
 integer,intent(out),optional :: ierr
@@ -3665,7 +3841,7 @@ end subroutine system_unsetenv
 !!        character(len=:),allocatable  :: string
 !!##DESCRIPTION
 !!    A simple interface allows reading the environment variable table of the process. Call
-!!    system_initenv(3f) to initialize reading the environment table, then call system_readenv(3f) can
+!!    system_initenv(3f) to initialize reading the environment table, then call system_readenv(3f) ca
 !!    be called until a blank line is returned. If more than one thread
 !!    reads the environment or the environment is changed while being read the results are undefined.
 !!##OPTIONS
@@ -3707,7 +3883,7 @@ end subroutine system_unsetenv
 !===================================================================================================================================
 function system_readenv() result(string)
 
-character(len=*),parameter::ident_26="@(#)M_system::system_readenv(3f): read next entry from environment table"
+character(len=*),parameter::ident_27="@(#)M_system::system_readenv(3f): read next entry from environment table"
 
 character(len=:),allocatable  :: string
 character(kind=c_char)        :: c_buff(longest_env_variable+1)
@@ -3740,7 +3916,7 @@ end function system_readenv
 !!    character(len=*),pointer      :: list(:)
 !!
 !!##DESCRIPTION
-!!    Non-portable procedure uses the shell and the ls(1) command to expand a filename
+!!    Non-portable procedure uses the shell and the ls(1) command to expand a filenam
 !!    and returns a pointer to a list of expanded filenames.
 !!
 !!##OPTIONS
@@ -3771,11 +3947,11 @@ end function system_readenv
 subroutine fileglob(glob, list) ! NON-PORTABLE AT THIS POINT. REQUIRES ls(1) command, assumes 1 line per file
 !  The length of the character strings in list() must be long enough for the filenames.
 !  The list can be zero names long, it is still allocated.
-use M_io,only: notopen,uniq                             ! notopen: needed to open unique scratch file for holding file list
+use M_io,only : notopen,uniq                             ! notopen: needed to open unique scratch file for holding file list
                                                         ! uniq:    adds number suffixs to a filename to make it uniq
 implicit none
 
-character(len=*),parameter::ident_27="@(#)M_system::fileglob(3f): Returns list of files using a file globbing pattern"
+character(len=*),parameter::ident_28="@(#)M_system::fileglob(3f): Returns list of files using a file globbing pattern"
 
 !-----------------------------------------------------------------------------------------------------------------------------------
 character(len=*),intent(in)   :: glob                   ! Pattern for the filenames (like: *.txt)
@@ -3810,7 +3986,7 @@ end subroutine fileglob
 !===================================================================================================================================
 !>
 !!##NAME
-!!   system_uname(3f) - [M_system] call a C wrapper that calls uname(3c) to get current system information from Fortran
+!!   system_uname(3f) - [M_system] call a C wrapper that calls uname(3c) to get current system information from Fortra
 !!##SYNOPSIS
 !!
 !!    subroutine system_uname(WHICH,NAMEOUT)
@@ -3833,7 +4009,7 @@ end subroutine fileglob
 !!   Call uname(3c) from Fortran
 !!
 !!    program demo_system_uname
-!!       use M_system, only: system_uname
+!!       use M_system, only : system_uname
 !!       implicit none
 !!       integer,parameter          :: is=100
 !!       integer                    :: i
@@ -3851,7 +4027,7 @@ end subroutine fileglob
 subroutine system_uname(WHICH,NAMEOUT)
 implicit none
 
-character(len=*),parameter::ident_28="@(#)M_system::system_uname(3f): call my_uname(3c) which calls uname(3c)"
+character(len=*),parameter::ident_29="@(#)M_system::system_uname(3f): call my_uname(3c) which calls uname(3c)"
 
 character(KIND=C_CHAR),intent(in) :: WHICH
 character(len=*),intent(out)      :: NAMEOUT
@@ -3889,7 +4065,7 @@ end subroutine system_uname
 !!        name for the current machine.
 !!
 !!##OPTIONS
-!!        string  returns the hostname. Must be an allocatable CHARACTER variable.
+!!        string  returns the hostname. Must be an allocatable CHARACTER variable
 !!        ierr    Upon successful completion, 0 shall be returned; otherwise, -1
 !!                shall be returned.
 !!##EXAMPLE
@@ -3915,7 +4091,7 @@ end subroutine system_uname
 subroutine system_gethostname(NAME,IERR)
 implicit none
 
-character(len=*),parameter::ident_29="@(#)M_system::system_gethostname(3f): get name of current host by calling gethostname(3c)"
+character(len=*),parameter::ident_30="@(#)M_system::system_gethostname(3f): get name of current host by calling gethostname(3c)"
 
 character(len=:),allocatable,intent(out) :: NAME
 integer,intent(out)                      :: IERR
@@ -3960,7 +4136,7 @@ end subroutine system_gethostname
 !!
 !!    Three names associated with the current process can be determined:
 !!       o system_getpwuid(system_getuid()) returns the name associated with the real user ID of the process.
-!!       o system_getpwuid(system_geteuid()) returns the name associated with the effective user ID of the process
+!!       o system_getpwuid(system_geteuid()) returns the name associated with the effective user ID of the proces
 !!       o system_getlogin() returns the name associated with the current login activity
 !!
 !!##RETURN VALUE
@@ -4052,7 +4228,7 @@ end function system_getlogin
 !!       call get_command_argument(1, string)  ! get pathname from command line
 !!       call system_stat(string,values,ierr)  ! get pathname information
 !!       if(ierr.eq.0)then
-!!          perms=system_perm(values(3))       ! convert permit mode to a string
+!!          perms=system_perm(values(3))       ! convert permit mode to a strin
 !!          ! print permits as a string, decimal value, and octal value
 !!          write(*,'("for ",a," permits[",a,"]",1x,i0,1x,o0)') &
 !!                  trim(string),perms,values(3),values(3)
@@ -4094,7 +4270,7 @@ end function system_perm
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_getgrgid(3f) - [M_system:QUERY] get groupd name associated with a GID
+!!    system_getgrgid(3f) - [M_system:QUERY] get groupd name associated with a GI
 !!##SYNOPSIS
 !!
 !!   function system_getgrgid(gid) result (gname)
@@ -4121,7 +4297,7 @@ end function system_perm
 !!
 !!    program demo_system_getgrgid
 !!    use M_system, only : system_getgrgid
-!!    use M_system, only: system_getgid
+!!    use M_system, only : system_getgid
 !!    implicit none
 !!    character(len=:),allocatable :: name
 !!    name=system_getgrgid( system_getgid() )
@@ -4163,19 +4339,19 @@ end function system_getgrgid
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_getpwuid(3f) - [M_system:QUERY] get login name associated with a UID
+!!    system_getpwuid(3f) - [M_system:QUERY] get login name associated with a UI
 !!##SYNOPSIS
 !!
 !!   function system_getpwuid(uid) result (uname)
 !!
-!!    class(*),intent(in)          :: id    ! any INTEGER type
+!!    class(*),intent(in)          :: uid    ! any INTEGER type
 !!    character(len=:),allocatable :: uname
 !!
 !!##DESCRIPTION
 !!
-!!    The system_getlogin() function returns a string containing the user
-!!    name associated with the given UID. If no match is found
-!!    it returns a null string and sets errno to indicate the error.
+!!    The system_getpwuid() function returns a string containing the user
+!!    name associated with the given UID. If no match is found it returns
+!!    a null string and sets errno to indicate the error.
 !!
 !!##OPTION
 !!    uid    UID to try to look up associated username for. Can be of any
@@ -4190,10 +4366,10 @@ end function system_getgrgid
 !!
 !!    program demo_system_getpwuid
 !!    use M_system, only : system_getpwuid
-!!    use M_system, only: system_getuid
+!!    use M_system, only : system_getuid
 !!    implicit none
 !!    character(len=:),allocatable :: name
-!!    integer                      :: uid
+!!    integer(kind=8)              :: uid
 !!       uid=system_getuid()
 !!       name=system_getpwuid(uid)
 !!       write(*,'("login[",a,"] has UID ",i0)')name,uid
@@ -4230,7 +4406,7 @@ end function system_getpwuid
 !===================================================================================================================================
 pure function arr2str(array)  result (string)
 
-character(len=*),parameter::ident_30="@(#)M_system::arr2str(3fp): function copies null-terminated char array to string"
+character(len=*),parameter::ident_31="@(#)M_system::arr2str(3fp): function copies null-terminated char array to string"
 
 character(len=1),intent(in)  :: array(:)
 character(len=size(array))   :: string
@@ -4251,7 +4427,7 @@ end function arr2str
 !===================================================================================================================================
 pure function str2arr(string) result (array)
 
-character(len=*),parameter::ident_31="@(#)M_system::str2arr(3fp): function copies string to null terminated char array"
+character(len=*),parameter::ident_32="@(#)M_system::str2arr(3fp): function copies string to null terminated char array"
 
 character(len=*),intent(in)     :: string
 character(len=1,kind=c_char)    :: array(len(string)+1)
@@ -4260,7 +4436,7 @@ character(len=1,kind=c_char)    :: array(len(string)+1)
    do i = 1,len_trim(string)
       array(i) = string(i:i)
    enddo
-   array(size(array))=c_null_char
+   array(i:i)=c_null_char
 
 end function str2arr
 !===================================================================================================================================
@@ -4362,8 +4538,8 @@ end function C2F_string
 !!    character(len=*),parameter :: fmt_date='year-month-day hour:minute:second'
 !!
 !!    integer(kind=8) :: &
-!!       Device_ID,           Inode_number,          File_mode,                  Number_of_links,  Owner_uid,         &
-!!       Owner_gid,           Directory_device,      File_size,                  Last_access,      Last_modification, &
+!!       Device_ID,           Inode_number,          File_mode,                  Number_of_links,  Owner_uid,
+!!       Owner_gid,           Directory_device,      File_size,                  Last_access,      Last_modification,
 !!       Last_status_change,  Preferred_block_size,  Number_of_blocks_allocated
 !!    equivalence                                    &
 !!       ( buff(1)  , Device_ID                  ) , &
@@ -4392,8 +4568,8 @@ end function C2F_string
 !!       write (*, FMT="('Device where located:',        T30, I0)") buff(7)
 !!       write (*, FMT="('File size(bytes):',            T30, I0)") buff(8)
 !!       write (*, FMT="('Last access time:',            T30, I0,1x, A)") buff(9), fmtdate(u2d(int(buff(9))),fmt_date)
-!!       write (*, FMT="('Last modification time',       T30, I0,1x, A)") buff(10),fmtdate(u2d(int(buff(10))),fmt_date)
-!!       write (*, FMT="('Last status change time:',     T30, I0,1x, A)") buff(11),fmtdate(u2d(int(buff(11))),fmt_date)
+!!       write (*, FMT="('Last modification time:',      T30, I0,1x, A)") buff(10),fmtdate(u2d(int(buff(10))),fmt_date
+!!       write (*, FMT="('Last status change time:',     T30, I0,1x, A)") buff(11),fmtdate(u2d(int(buff(11))),fmt_date
 !!       write (*, FMT="('Preferred block size(bytes):', T30, I0)") buff(12)
 !!       write (*, FMT="('No. of blocks allocated:',     T30, I0)") buff(13)
 !!    endif
@@ -4401,11 +4577,25 @@ end function C2F_string
 !!    end program demo_system_stat
 !!
 !!   Results:
+!!
+!!    Device ID(hex/decimal):      3E6BE045h/1047257157d
+!!    Inode number:                1407374886070599
+!!    File mode (octal):                        100750
+!!    Number of links:             1
+!!    Owner's uid/username:        18 SYSTEM
+!!    Owner's gid/group:           18 SYSTEM
+!!    Device where located:        0
+!!    File size(bytes):            824
+!!    Last access time:            1557983191 2019-05-16 01:06:31
+!!    Last modification time:      1557983191 2019-05-16 01:06:31
+!!    Last status change time:     1557983532 2019-05-16 01:12:12
+!!    Preferred block size(bytes): 65536
+!!    No. of blocks allocated:     4
 !===================================================================================================================================
 subroutine system_stat(pathname,values,ierr)
 implicit none
 
-character(len=*),parameter::ident_32="@(#)M_system::system_stat(3f): call stat(3c) to get pathname information"
+character(len=*),parameter::ident_33="@(#)M_system::system_stat(3f): call stat(3c) to get pathname information"
 
 character(len=*),intent(in)          :: pathname
 
@@ -4436,7 +4626,7 @@ end subroutine system_stat
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_stat_print(3f) - [M_system] print the principal info obtained for a pathname from system_stat(3f)
+!!    system_stat_print(3f) - [M_system] print the principal info obtained for a pathname from system_stat(3f
 !!##SYNOPSIS
 !!
 !!   subroutine system_stat_print(filename)
@@ -4519,123 +4709,526 @@ end subroutine system_stat_print
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 subroutine test_suite_M_system()
-
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+use M_process ,only: process_readall
 !! setup
-   call test_fileglob()
-   call test_set_environment_variable()
+call unit_check_msg('test_M_system','try to test OS interface routines, given difficulty of trying to test')
+call unit_check_msg('test_M_system','functions not intrinsically part of Fortran and system-dependent.')
+call unit_check_msg('test_M_system','Many assumptions are made, including assuming a GNU Linux/Unix system')
+call unit_check_msg('test_M_system','Examine the tests on other platforms, as it may well be the assumptions made')
+call unit_check_msg('test_M_system','about the system and not the routines that are generating an error.')
+call test_set_environment_variable()
+call test_system_rename()
+call test_system_getlogin()
+call test_system_geteuid()
+call test_system_getegid()
+call test_system_getgid()
+call test_system_getuid()
+call test_system_getpid()
+call test_system_getppid()
+call test_system_isdir()
+call test_system_chdir()
+call test_system_rmdir()
+call test_system_mkdir()
+call test_system_opendir()
+call test_system_readdir()
+call test_system_rewinddir()
+call test_system_closedir()
+call test_system_putenv()
+call test_system_unsetenv()
+call test_system_getenv()
+call test_system_initenv()
+call test_system_readenv()
+
+   call test_system_clearenv()
    call test_system_access()
-   call test_system_chdir()
    call test_system_chmod()
    call test_system_chown()
-   call test_system_clearenv()
-   call test_system_closedir()
    call test_system_cpu_time()
+   call test_system_errno()
    call test_system_getcwd()
-   call test_system_getenv()
    call test_system_getgrgid()
    call test_system_gethostname()
-   call test_system_getlogin()
+   call test_fileglob()
+
    call test_system_getpwuid()
+   call test_system_getsid()
+   call test_system_setsid()
    call test_system_getumask()
    call test_system_isblk()
    call test_system_ischr()
-   call test_system_isdir()
    call test_system_isfifo()
    call test_system_islnk()
    call test_system_isreg()
    call test_system_issock()
+   call test_system_kill()
    call test_system_link()
-   call test_system_mkdir()
    call test_system_mkfifo()
-   call test_system_opendir()
    call test_system_perm()
    call test_system_perror()
-   call test_system_putenv()
-   call test_system_readdir()
-   call test_system_readenv()
+   call test_system_rand()
+   call test_system_realpath()
    call test_system_remove()
-   call test_system_rename()
-   call test_system_rewinddir()
-   call test_system_rmdir()
    call test_system_setumask()
+   call test_system_srand()
    call test_system_stat()
    call test_system_stat_print()
    call test_system_uname()
    call test_system_unlink()
-   call test_system_unsetenv()
    call test_system_utime()
 !! teardown
 contains
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_fileglob()
+subroutine test_system_stat_print()
+      call system_stat_print('/tmp')
+      call system_stat_print('/etc/hosts')
+   call unit_check_start('system_stat_print',msg='')
+   !!call unit_check('system_stat_print', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('system_stat_print',msg='')
+end subroutine test_system_stat_print
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_srand()
+integer :: i,j
+   do j=1,2
+      call system_srand(1001)
+      do i=1,10
+         write(*,*)system_rand()
+      enddo
+      write(*,*)
+   enddo
+   call unit_check_start('system_srand',msg='')
+   !!call unit_check('system_srand', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('system_srand',msg='')
+end subroutine test_system_srand
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_kill()
+integer           :: i,pid,ios,ierr,signal=9
+character(len=80) :: argument
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
+   do i=1,command_argument_count()
+! get arguments from command line
+      call get_command_argument(i, argument)
+! convert arguments to integers assuming they are PID numbers
+      read(argument,'(i80)',iostat=ios) pid
+      if(ios.ne.0)then
+         write(*,*)'bad PID=',trim(argument)
+      else
+         write(*,*)'kill SIGNAL=',signal,' PID=',pid
+! send signal SIGNAL to pid PID
+         ierr=system_kill(pid,signal)
+! write message if an error was detected
+         if(ierr.ne.0)then
+            call system_perror('*test_system_kill*')
+         endif
+      endif
+   enddo
+   call unit_check_start('system_kill',msg='')
+   !!call unit_check('system_kill', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('system_kill',msg='')
+end subroutine test_system_kill
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_errno()
+integer :: stat
+   stat=system_unlink('not there/OR/anywhere')
+   if(stat.ne.0)then
+      write(*,*)'err=',system_errno()
+      call system_perror('*test_system_errno*')
+   endif
+   call unit_check_start('system_errno',msg='')
+   !!call unit_check('system_errno', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('system_errno',msg='')
+end subroutine test_system_errno
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_geteuid()
+                     integer :: ierr
+character(len=:),allocatable :: string
+integer                      :: uid_command
+integer                      :: uid
+   call unit_check_start('system_geteuid',msg='check using command "id -u"')
+   string=process_readall('id -u',ierr=ierr)
+   !!call unit_check('system_geteuid', ierr.eq.0, msg=msg('using command "id -u" ierr=',ierr,'effective UID=',string))
+   call unit_check('system_geteuid', string.ne.' ', msg=msg('using command "id -u" ierr=',ierr,'effective UID=',string))
+   uid=system_geteuid();
+   if(string.ne.'')then
+      read(string,*)uid_command
+      call unit_check('system_geteuid', uid.eq.uid_command, msg=msg('uid=',uid))
+      call unit_check_done('system_geteuid',msg='')
+   else
+      call unit_check_bad('system_geteuid', msg=msg(' assuming bad because system command did not work. uid=',uid))
+   endif
+end subroutine test_system_geteuid
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_getuid()
+integer                      :: ierr
+character(len=:),allocatable :: string
+integer                      :: uid_command
+integer                      :: uid
+integer                      :: ios
+   call unit_check_start('system_getuid',msg='check using command "id -u -r"')
+   string=process_readall('id -u -r',ierr=ierr)
+   !!call unit_check('system_getuid', ierr.eq.0, msg=msg('using command "id -u -r" ierr=',ierr,'UID=',string))
+   call unit_check('system_getuid', string.ne.' ', msg=msg('using command "id -u -r" ierr=',ierr,'UID=',string))
+   uid=system_getuid();
+   if(string.ne.' ')then
+      read(string,*,iostat=ios)uid_command
+      call unit_check('system_getuid', ios.eq.0, msg=msg('read uid=',uid_command))
+      call unit_check('system_getuid', uid.eq.uid_command, msg=msg('uid=',uid))
+      call unit_check_done('system_getuid',msg='')
+   else
+      call unit_check_bad('system_getuid', msg=msg(' assuming bad because system command did not work. uid=',uid))
+   endif
+end subroutine test_system_getuid
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_getegid()
+integer                      :: ierr
+character(len=:),allocatable :: string
+integer                      :: gid_command
+integer                      :: gid
+character(len=*),parameter   :: cmd='id -g'
+   call unit_check_start('system_getegid',msg=msg('check using command',cmd))
+   string=process_readall(cmd,ierr=ierr)
+   !!call unit_check('system_getegid', string.ne.' ', msg=msg('using command "',cmd,'" ierr=',ierr,'GID=',string))
+   gid=system_getegid();
+   if(string.ne.' ')then
+      read(string,*)gid_command
+      call unit_check('system_getegid', gid.eq.gid_command, msg=msg('gid=',gid))
+      call unit_check_done('system_getegid',msg='')
+   else
+      call unit_check_bad('system_getegid', msg=msg(' assuming bad because system command did not work. gid=',gid))
+   endif
+end subroutine test_system_getegid
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_getgid()
+integer                      :: ierr
+character(len=:),allocatable :: string
+integer                      :: gid_command
+integer                      :: gid
+character(len=*),parameter   :: cmd='id -g -r'
+   call unit_check_start('system_getgid',msg=msg('check using command',cmd))
+   string=process_readall(cmd,ierr=ierr)
+   !!call unit_check('system_getgid', ierr.eq.0, msg=msg('using command "',cmd,'" ierr=',ierr,'GID=',string))
+   call unit_check('system_getgid', string.ne.' ', msg=msg('using command "',cmd,'" ierr=',ierr,'GID=',string))
+   gid=system_getgid();
+   if(string.ne.' ')then
+      read(string,*)gid_command
+      call unit_check('system_getgid', gid.eq.gid_command, msg=msg('gid=',gid))
+      call unit_check_done('system_getgid',msg='')
+   else
+      call unit_check_bad('system_getgid', msg=msg(' assuming bad because system command did not work. gid=',gid))
+   endif
+end subroutine test_system_getgid
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_getsid()
+integer                      :: ierr
+character(len=:),allocatable :: string
+integer                      :: sid_command
+integer                      :: sid
+character(len=*),parameter   :: cmd='UNKNOWN'
+   call unit_check_start('system_getsid',msg=msg('check using command',cmd))
+!!   string=process_readall(cmd,ierr=ierr)
+!!   call unit_check('system_getsid', ierr.eq.0, msg=msg('using command "',cmd,'" ierr=',ierr,'sid=',string))
+   sid=system_getsid(0_c_int);
+!!   if(string.ne.' ')then
+!!      read(string,*)sid_command
+!!      call unit_check('system_getsid', sid.eq.sid_command, msg=msg('sid=',sid))
+      call unit_check_done('system_getsid',msg='')
+!!   else
+!!      call unit_check_bad('system_getsid', msg=msg(' assuming bad because system command did not work. sid=',sid))
+!!   endif
+end subroutine test_system_getsid
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_setsid()
+integer                      :: ierr
+integer                      :: pid
+   call unit_check_start('system_setsid',msg=msg(''))
+   pid=system_setsid();
+   !!call unit_check('system_setsid', pid.ge.0, msg=msg('just checking PID>0 pid=',pid))
+   call unit_check_done('system_setsid',msg='')
+end subroutine test_system_setsid
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_getpid()
+integer                      :: ierr
+integer                      :: pid
+   call unit_check_start('system_getpid',msg=msg('PID (process ID) of current process'))
+   pid=system_getpid();
+   call unit_check('system_getpid', pid.ge.0, msg=msg('just checking PID>0 pid=',pid))
+   call unit_check_done('system_getpid',msg='')
+end subroutine test_system_getpid
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_getppid()
+integer                      :: ierr
+integer                      :: ppid
+call unit_check_start('system_getppid',msg=msg('only make sure call does not work and returns value >0'))
+   ppid=system_getppid();
+   call unit_check('system_getppid', ppid.ge.0, msg=msg('ppid=',ppid))
+   call unit_check_done('system_getppid',msg='')
+end subroutine test_system_getppid
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_rand()
+integer :: i
+
+   call system_srand(1001)
+   do i=1,10
+      write(*,*)system_rand()
+   enddo
+   write(*,*)
+
+   call unit_check_start('system_rand',msg='')
+   !!call unit_check('system_rand', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('system_rand',msg='')
+end subroutine test_system_rand
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_initenv()
+character(len=:),allocatable :: string
+integer                      :: i
+integer                      :: ierr
+character(len=:),allocatable :: home
+character(len=4096)          :: envname
+   call unit_check_start('system_initenv',msg='assuming system always has environment variable HOME set')
+   i=0
+   home=''
+   ! read environment table and look for HOME= at beginning of line
+   call system_initenv()
+   do
+      string=system_readenv()
+      if(index(string,'HOME=').eq.1)then
+        home=string
+      endif
+      if(string.eq.'')then
+         exit
+      else
+         i=i+1
+      endif
+   enddo
+   call get_environment_variable("HOME",value=envname, status=ierr)
+   envname='HOME='//trim(envname)
+   call unit_check('system_initenv',home.eq.envname, msg=msg('HOME',home,envname))
+   call unit_check_done('system_initenv',msg='')
+end subroutine test_system_initenv
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_realpath()
+! resolve each pathname given on command line
+character(len=:),allocatable :: pathi,patho
+integer                      :: i
+integer                      :: filename_length
+integer                      :: ierr
+   do i = 1, command_argument_count()
+! get pathname from command line arguments
+      call get_command_argument (i , length=filename_length)
+      allocate(character(len=filename_length) :: pathi)
+      call get_command_argument (i , value=pathi)
+!
+! resolve each pathname
+      call system_realpath(pathi,patho,ierr)
+      if(ierr.eq.0)then
+         write(*,*)trim(pathi),'=>',trim(patho)
+      else
+         call system_perror('*system_realpath* error for pathname '//trim(pathi)//':')
+         write(*,*)trim(pathi),'=>',trim(patho)
+      endif
+      deallocate(pathi)
+   enddo
+! if there were no pathnames give resolve the pathname "."
+   if(i.eq.1)then
+      call system_realpath('.',patho,ierr)
+      write(*,*)'.=>',trim(patho)
+   endif
+   call unit_check_start('system_realpath',msg='')
+   !!call unit_check('system_realpath', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('system_realpath',msg='')
+end subroutine test_system_realpath
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_fileglob()
    call unit_check_start('fileglob',msg='')
-   !!call unit_check('fileglob', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('fileglob', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('fileglob',msg='')
 end subroutine test_fileglob
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_set_environment_variable()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
+integer :: ierr
+character(len=4096) :: value
    call unit_check_start('set_environment_variable',msg='')
-   !!call unit_check('set_environment_variable', 0.eq.0. msg=msg('checking',100))
+!! CHECK NOT_THERE_S_E_V IS NOT THERE FOR TEST
+   call get_environment_variable("NOT_THERE_S_E_V", status=ierr)
+   call unit_check('set_environment_variable',ierr.eq.1,msg=msg('make sure variable does not exist,status=',ierr))
+!! SET THE VARIABLE NOT_THERE_S_E_V
+   call set_environment_variable('NOT_THERE_S_E_V','this is the value',ierr)
+!! CHECK VARIABLE IS NOW SET
+   call unit_check('set_environment_variable',ierr.eq.0,msg=msg('setting, status should be zero when setting=',ierr))
+   call get_environment_variable("NOT_THERE_S_E_V", value=value,status=ierr)
+   call unit_check('set_environment_variable',ierr.eq.0,msg=msg('status should be zero when getting=',ierr))
+   call unit_check('set_environment_variable',value.eq.'this is the value',msg=msg('value is set to:',value))
+!! REPLACE VALUE
+   call set_environment_variable('NOT_THERE_S_E_V','this is the new value',ierr)
+   call unit_check('set_environment_variable',ierr.eq.0,msg=msg('setting, status should be zero when setting=',ierr))
+   call get_environment_variable("NOT_THERE_S_E_V", value=value,status=ierr)
+   call unit_check('set_environment_variable',ierr.eq.0,msg=msg('status should be zero when getting=',ierr))
+   call unit_check('set_environment_variable',value.eq.'this is the new value',msg=msg('value is set to:',value))
+
    call unit_check_done('set_environment_variable',msg='')
 end subroutine test_set_environment_variable
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_access()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
+integer                     :: i
+character(len=80),parameter :: names(*)=[ &
+      '/usr/bin/bash   ', &
+      '/tmp/NOTTHERE   ', &
+      '/usr/local      ', &
+      '.               ', &
+      'PROBABLY_NOT    ']
+   do i=1,size(names)
+      write(*,*)' does ',trim(names(i)),' exist?    ', system_access(names(i),F_OK)
+      write(*,*)' is ',trim(names(i)),' readable?     ', system_access(names(i),R_OK)
+      write(*,*)' is ',trim(names(i)),' writeable?    ', system_access(names(i),W_OK)
+      write(*,*)' is ',trim(names(i)),' executable?   ', system_access(names(i),X_OK)
+   enddo
    call unit_check_start('system_access',msg='')
-   !!call unit_check('system_access', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('system_access', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('system_access',msg='')
 end subroutine test_system_access
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_chdir()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('system_chdir',msg='')
-   !!call unit_check('system_chdir', 0.eq.0. msg=msg('checking',100))
+character(len=:),allocatable :: dirname
+character(len=:),allocatable :: hold
+integer             :: ierr
+   call unit_check_start('system_chdir',msg='test system_chdir(3f) assuming Unix-like file system and system_getwd(3f) works')
+   call system_getcwd(hold,ierr)
+
+   call system_chdir('/tmp',ierr)
+   call system_getcwd(dirname,ierr)
+   call unit_check('system_chdir', dirname.eq.'/tmp', msg=msg('checking /tmp to',trim(dirname)))
+
+   call system_chdir('/',ierr)
+   call system_getcwd(dirname,ierr)
+   call unit_check('system_chdir', dirname.eq.'/', msg=msg('checking / to',dirname))
+
+   call system_chdir(hold,ierr)
+   call system_getcwd(dirname,ierr)
+   call unit_check('system_chdir', dirname.eq.hold, msg=msg('checking ',hold,' to',dirname))
+
    call unit_check_done('system_chdir',msg='')
 end subroutine test_system_chdir
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_chmod()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
+integer         :: ierr
+integer         :: status
+integer(kind=8) :: buffer(13)
+integer         :: ios
+character(len=4096) :: message
+
+!Setting Read Permissions for User, Group, and Others
+! The following example sets read permissions for the owner, group, and others.
+   open(file='_test1',unit=10)
+   write(10,*,iostat=ios,iomsg=message)'TEST FILE 1'
+   if(ios.ne.0)then
+      write(*,*)trim(message)
+   endif
+
+   flush(unit=10,iostat=ios,iomsg=message)
+   if(ios.ne.0)then
+      write(*,*)trim(message)
+   endif
+
+   close(unit=10,iostat=ios,iomsg=message)
+   if(ios.ne.0)then
+      write(*,*)trim(message)
+   endif
+
+   ierr=system_chmod('_test1', IANY([R_USR,R_GRP,R_OTH]))
+
+   open(file='_test1',unit=10)
+   close(unit=10,status='delete',iostat=ios,iomsg=message)
+   if(ios.ne.0)then
+      write(*,*)trim(message)
+   endif
+
+!Setting Read, Write, and Execute Permissions for the Owner Only
+! The following example sets read, write, and execute permissions for the owner, and no permissions for group and others.
+   open(file='_test2',unit=10)
+   write(10,*)'TEST FILE 2'
+   close(unit=10)
+   ierr=system_chmod('_test2', R_WXU)
+   open(file='_test2',unit=10)
+   close(unit=10,status='delete')
+
+!Setting Different Permissions for Owner, Group, and Other
+! The following example sets owner permissions for CHANGEFILE to read, write, and execute, group permissions to read and
+! execute, and other permissions to read.
+   open(file='_test3',unit=10)
+   write(10,*)'TEST FILE 3'
+   close(unit=10)
+   ierr=system_chmod('_test3', IANY([R_WXU,R_GRP,X_GRP,R_OTH]));
+   open(file='_test3',unit=10)
+   close(unit=10,status='delete')
+
+!Setting and Checking File Permissions
+! The following example sets the file permission bits for a file named /home/cnd/mod1, then calls the stat() function to
+! verify the permissions.
+
+   ierr=system_chmod("home/cnd/mod1", IANY([R_WXU,R_WXG,R_OTH,W_OTH]))
+   call system_stat("home/cnd/mod1", buffer,status)
+
+! In order to ensure that the S_ISUID and S_ISGID bits are set, an application requiring this should use stat() after a
+! successful chmod() to verify this.
+
+!    Any files currently open could possibly become invalid if the mode
+!    of the file is changed to a value which would deny access to
+!    that process.
+
    call unit_check_start('system_chmod',msg='')
-   !!call unit_check('system_chmod', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('system_chmod', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('system_chmod',msg='')
 end subroutine test_system_chmod
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_chown()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
+integer                     :: i
+character(len=80),parameter :: names(*)=[character(len=80) :: 'myfile1','/usr/local']
+   do i=1,size(names)
+      if(.not.  system_chown(&
+      & trim(names(i)),  &
+      & system_getuid(), &
+      & system_getgid()) &
+         )then
+         call system_perror('*test_system_chown* '//trim(names(i)))
+      endif
+   enddo
    call unit_check_start('system_chown',msg='')
-   !!call unit_check('system_chown', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('system_chown', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('system_chown',msg='')
 end subroutine test_system_chown
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_clearenv()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
+! environment before clearing
+   call execute_command_line('env|wc -l')
+! environment after clearing (not necessarily blank!!)
+   call system_clearenv()
+   call execute_command_line('env')
    call unit_check_start('system_clearenv',msg='')
-   !!call unit_check('system_clearenv', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('system_clearenv', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('system_clearenv',msg='')
 end subroutine test_system_clearenv
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_closedir()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('system_closedir',msg='')
-   !!call unit_check('system_closedir', 0.eq.0. msg=msg('checking',100))
+character(len=4096) :: envname
+type(c_ptr)                  :: dir
+character(len=:),allocatable :: filename
+integer                      :: ierr
+call unit_check_start('system_closedir',msg='test if can read from current directory, assumed non-empty and close and retry')
+   call system_opendir('.',dir,ierr)      !--- open directory stream to read from
+   call system_readdir(dir,filename,ierr) !--- read directory stream
+   call unit_check('system_closedir', filename.ne.'', msg=msg('found a file named',filename))
+   call system_closedir(dir,ierr)         !--- close directory stream
+   call unit_check('system_closedir', ierr.eq.0, msg=msg('closing gave ierr=',ierr))
+   call system_readdir(dir,filename,ierr)
+   !!call unit_check('system_closedir', ierr.ne.0, msg=msg('try reading now should give error ierr=',ierr))
    call unit_check_done('system_closedir',msg='')
 end subroutine test_system_closedir
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -4643,314 +5236,711 @@ subroutine test_system_cpu_time()
 
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
+
+real    :: user_start, system_start, total_start
+real    :: user_finish, system_finish, total_finish
+integer :: i
+real    :: value
+
+   call system_cpu_time(total_start,user_start,system_start)
+
+   value=0.0
+   do i=1,1000000
+      value=sqrt(real(i)+value)
+   enddo
+   write(*,*)'average sqrt value=',value/1000000.0
+   call system_cpu_time(total_finish,user_finish,system_finish)
+   write(*,*)'USER ......',user_finish-user_start
+   write(*,*)'SYSTEM ....',system_finish-system_start
+   write(*,*)'TOTAL .....',total_finish-total_start
+
    call unit_check_start('system_cpu_time',msg='')
-   !!call unit_check('system_cpu_time', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('system_cpu_time', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('system_cpu_time',msg='')
 end subroutine test_system_cpu_time
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_getcwd()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
+character(len=:),allocatable :: dirname
+integer                      :: ierr
+   call system_getcwd(dirname,ierr)
+   if(ierr.eq.0)then
+      write(*,*)'CURRENT DIRECTORY ',trim(dirname)
+   else
+      write(*,*)'ERROR OBTAINING CURRENT DIRECTORY NAME'
+   endif
    call unit_check_start('system_getcwd',msg='')
-   !!call unit_check('system_getcwd', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('system_getcwd', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('system_getcwd',msg='')
 end subroutine test_system_getcwd
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_getenv()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
+character(len=256)           :: var
+character(len=256)           :: envname
+character(len=:),allocatable :: name
+character(len=*),parameter   :: names(*)=[character(len=10)::'USER','HOME','LOGNAME','USERNAME']
+integer                      :: i
+integer                      :: ierr
    call unit_check_start('system_getenv',msg='')
-   !!call unit_check('system_getenv', 0.eq.0. msg=msg('checking',100))
+   do i=1,size(names)
+      var=system_getenv(names(i))
+      call get_environment_variable(names(i),value=envname, status=ierr)
+      call unit_check('system_getenv', envname.eq.var, msg=msg(names(i),var,envname))
+   enddo
    call unit_check_done('system_getenv',msg='')
 end subroutine test_system_getenv
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_getgrgid()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
+integer(kind=8) :: gid
+character(len=:),allocatable :: name
+   gid=system_getgid()
+   name=system_getgrgid( gid )
+   write(*,'("group[",a,"] for ",i0)')name,system_getgid()
    call unit_check_start('system_getgrgid',msg='')
-   !!call unit_check('system_getgrgid', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('system_getgrgid', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('system_getgrgid',msg='')
 end subroutine test_system_getgrgid
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_gethostname()
+character(len=:),allocatable :: name
+integer                      :: ierr
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
+   call system_gethostname(name,ierr)
+   if(ierr.eq.0)then
+      write(*,'("hostname[",a,"]")')name
+   else
+      write(*,'(a)')'ERROR: could not get hostname'
+   endif
+
    call unit_check_start('system_gethostname',msg='')
-   !!call unit_check('system_gethostname', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('system_gethostname', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('system_gethostname',msg='')
 end subroutine test_system_gethostname
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_getlogin()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('system_getlogin',msg='')
-   !!call unit_check('system_getlogin', 0.eq.0. msg=msg('checking',100))
+character(len=80) :: envname
+character(len=:),allocatable :: name
+integer                      :: ierr
+   call unit_check_start('system_getlogin',msg=' test system_getlogin(3f) against environment variable')
+   call get_environment_variable("USER",value=envname, status=ierr)
+   if(envname.eq.'')then
+      call get_environment_variable("LOGNAME",value=envname, status=ierr)
+   endif
+   if(envname.eq.'')then
+      call get_environment_variable("USERNAME",value=envname, status=ierr)
+   endif
+   if(envname.eq.'')then
+      call unit_check_msg('system_getlogin',' did not find username in environment, test invalid')
+   else
+      name=system_getlogin()
+      call unit_check('system_getlogin', name.eq.envname, msg=msg('checking',envname,'versus',name))
+   endif
    call unit_check_done('system_getlogin',msg='')
 end subroutine test_system_getlogin
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_getpwuid()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
+character(len=:),allocatable :: name
+integer(kind=8)              :: uid
+   uid=system_getuid()
+   name=system_getpwuid(uid)
+   write(*,'("login[",a,"] has UID ",i0)')name,uid
    call unit_check_start('system_getpwuid',msg='')
-   !!call unit_check('system_getpwuid', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('system_getpwuid', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('system_getpwuid',msg='')
 end subroutine test_system_getpwuid
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_getumask()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
+integer :: i
+   write(*,101)(system_getumask(),i=1,4)
+101 format(1x,i0,1x,"O'",o4.4,"'",1x,'Z"',z0,"'",1x,"B'",b12.12,"'")
    call unit_check_start('system_getumask',msg='')
-   !!call unit_check('system_getumask', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('system_getumask', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('system_getumask',msg='')
 end subroutine test_system_getumask
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_isblk()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
+integer                     :: i
+character(len=80),parameter :: names(*)=[ &
+      '/tmp            ', &
+      '/tmp/NOTTHERE   ', &
+      '/usr/local      ', &
+      '.               ', &
+      'block_device.tst', &
+      'PROBABLY_NOT    ']
+   do i=1,size(names)
+      write(*,*)' is ',trim(names(i)),' a block device? ', system_isblk(names(i))
+   enddo
    call unit_check_start('system_isblk',msg='')
-   !!call unit_check('system_isblk', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('system_isblk', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('system_isblk',msg='')
 end subroutine test_system_isblk
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_ischr()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
+integer                     :: i
+character(len=80),parameter :: names(*)=[ &
+      '/tmp            ', &
+      '/tmp/NOTTHERE   ', &
+      '/usr/local      ', &
+      '.               ', &
+      'char_dev.test   ', &
+      'PROBABLY_NOT    ']
+   do i=1,size(names)
+      write(*,*)' is ',trim(names(i)),' a character device? ', system_ischr(names(i))
+   enddo
    call unit_check_start('system_ischr',msg='')
-   !!call unit_check('system_ischr', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('system_ischr', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('system_ischr',msg='')
 end subroutine test_system_ischr
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_isdir()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
+integer                     :: i
+character(len=80),parameter :: names(*)=[ &
+      '/tmp            ', &
+      '/tmp/NOTTHERE   ', &
+      '/bin/           ', &
+      '.               ', &
+      'PROBABLY_NOT    ']
+logical,parameter           :: expected(*)=[.true., .false., .true., .true., .false.]
+logical                     :: answer
    call unit_check_start('system_isdir',msg='')
-   !!call unit_check('system_isdir', 0.eq.0. msg=msg('checking',100))
+   do i=1,size(names)
+      answer=system_isdir(names(i))
+      call unit_check('system_isdir', answer.eqv.expected(i), msg=msg(names(i)))
+   enddo
    call unit_check_done('system_isdir',msg='')
 end subroutine test_system_isdir
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_isfifo()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
+integer                     :: i
+character(len=80),parameter :: names(*)=[ &
+      '/tmp            ', &
+      '/tmp/NOTTHERE   ', &
+      '/usr/local      ', &
+      '.               ', &
+      'fifo.test       ', &
+      'PROBABLY_NOT    ']
+   do i=1,size(names)
+      write(*,*)' is ',trim(names(i)),' a fifo(named pipe)? ', system_isfifo(names(i))
+   enddo
    call unit_check_start('system_isfifo',msg='')
-   !!call unit_check('system_isfifo', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('system_isfifo', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('system_isfifo',msg='')
 end subroutine test_system_isfifo
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_islnk()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
+integer                     :: i
+character(len=80),parameter :: names(*)=[ &
+      '/tmp            ', &
+      '/tmp/NOTTHERE   ', &
+      '/usr/local      ', &
+      '.               ', &
+      'link.test       ', &
+      'PROBABLY_NOT    ']
+   do i=1,size(names)
+      write(*,*)' is ',trim(names(i)),' a link? ', system_islnk(names(i))
+   enddo
    call unit_check_start('system_islnk',msg='')
-   !!call unit_check('system_islnk', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('system_islnk', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('system_islnk',msg='')
 end subroutine test_system_islnk
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_isreg()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
+integer                     :: i
+character(len=80),parameter :: names(*)=[ &
+      '/tmp            ', &
+      'test.txt        ', &
+      '.               ']
+   do i=1,size(names)
+      write(*,*)' is ',trim(names(i)),' a regular file? ', system_isreg(names(i))
+   enddo
    call unit_check_start('system_isreg',msg='')
-   !!call unit_check('system_isreg', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('system_isreg', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('system_isreg',msg='')
 end subroutine test_system_isreg
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_issock()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
+integer                     :: i
+character(len=80),parameter :: names(*)=[ &
+      '/tmp            ', &
+      '/tmp/NOTTHERE   ', &
+      '/usr/local      ', &
+      '.               ', &
+      'sock.test       ', &
+      'PROBABLY_NOT    ']
+   do i=1,size(names)
+      write(*,*)' is ',trim(names(i)),' a socket? ', system_issock(names(i))
+   enddo
    call unit_check_start('system_issock',msg='')
-   !!call unit_check('system_issock', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('system_issock', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('system_issock',msg='')
 end subroutine test_system_issock
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_link()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
+integer :: ierr
+   ierr = system_link('myfile1','myfile2')
+   if(ierr.ne.0)then
+      call system_perror('*test_system_link*')
+   endif
    call unit_check_start('system_link',msg='')
-   !!call unit_check('system_link', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('system_link', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('system_link',msg='')
 end subroutine test_system_link
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_mkdir()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('system_mkdir',msg='')
-   !!call unit_check('system_mkdir', 0.eq.0. msg=msg('checking',100))
+integer :: ierr
+   call unit_check_start('system_mkdir',msg='make and remove _scratch/')
+   ierr=system_mkdir('_scratch',IANY([R_USR,W_USR,X_USR]))
+   call unit_check('system_mkdir', ierr.eq.0, msg=msg('make _scratch/, ierr=',ierr))
+   call unit_check_msg('test_system_mkdir',isdir('_scratch'),'looks like the directory was made')
+   call system_chdir('_scratch',ierr)
+   call system_chdir('..',ierr)
+   call unit_check_msg('test_system_mkdir',ierr.eq.0,'looks like it can be entered')
+   ierr=system_rmdir('_scratch')
+   call unit_check('system_mkdir', ierr.eq.0, msg=msg('remove _scratch/, ierr=',ierr))
    call unit_check_done('system_mkdir',msg='')
 end subroutine test_system_mkdir
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_mkfifo()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
+integer :: status
+   status = system_mkfifo("/home/cnd/mod_done", IANY([W_USR, R_USR, R_GRP, R_OTH]))
+   if(status.ne.0)then
+      call system_perror('*mkfifo* error:')
+   endif
    call unit_check_start('system_mkfifo',msg='')
-   !!call unit_check('system_mkfifo', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('system_mkfifo', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('system_mkfifo',msg='')
 end subroutine test_system_mkfifo
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_opendir()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
+type(c_ptr)                  :: dir
+character(len=:),allocatable :: filename
+integer                      :: i
+integer                      :: ierr
    call unit_check_start('system_opendir',msg='')
-   !!call unit_check('system_opendir', 0.eq.0. msg=msg('checking',100))
+   call system_opendir('.',dir,ierr)                                              !--- open directory stream to read from
+   call unit_check('system_opendir', ierr.eq.0, msg=msg('checking ierr=',ierr))
+   i=0
+   do                                                                             !--- read directory stream
+      call system_readdir(dir,filename,ierr)
+      if(filename.eq.' ')exit
+      i=i+1
+   enddo
+   call system_closedir(dir,ierr)                                                 !--- close directory stream
    call unit_check_done('system_opendir',msg='')
 end subroutine test_system_opendir
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_perm()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
+character(len=4096) :: string
+integer(kind=8)     :: values(13)
+integer             :: ierr
+character(len=:),allocatable :: perms
+   values=0
+   call get_command_argument(1, string)  ! get pathname from command line
+   call system_stat(string,values,ierr)  ! get pathname information
+   if(ierr.eq.0)then
+      perms=system_perm(values(3))       ! convert permit mode to a string
+! print permits as a string, decimal value, and octal value
+      write(*,'("for ",a," permits[",a,"]",1x,i0,1x,o0)') &
+         trim(string),perms,values(3),values(3)
+   endif
    call unit_check_start('system_perm',msg='')
-   !!call unit_check('system_perm', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('system_perm', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('system_perm',msg='')
 end subroutine test_system_perm
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_perror()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
+character(len=:),allocatable :: DIRNAME
+   DIRNAME='/NOT/THERE/OR/ANYWHERE'
+! generate an error with a routine that supports errno and perror(3c)
+   if(system_rmdir(DIRNAME).ne.0)then
+      call system_perror('*test_system_perror*:'//DIRNAME)
+   endif
+   write(*,'(a)')"That's all Folks!"
    call unit_check_start('system_perror',msg='')
-   !!call unit_check('system_perror', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('system_perror', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('system_perror',msg='')
 end subroutine test_system_perror
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_putenv()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
+character(len=4096) :: value
+integer             :: ierr
    call unit_check_start('system_putenv',msg='')
-   !!call unit_check('system_putenv', 0.eq.0. msg=msg('checking',100))
+!! CHECK NOT_THERE_S_P IS NOT THERE FOR TEST
+   call get_environment_variable("NOT_THERE_S_P", status=ierr)
+   call unit_check('system_putenv',ierr.eq.1,msg=msg('make sure variable does not exist,status=',ierr))
+!! SET THE VARIABLE NOT_THERE_S_P
+   call system_putenv('NOT_THERE_S_P=this is the value',ierr)
+!! CHECK VARIABLE IS NOW SET
+   call unit_check('system_putenv',ierr.eq.0,msg=msg('setting, status should be zero when setting=',ierr))
+   call get_environment_variable("NOT_THERE_S_P", value=value,status=ierr)
+   call unit_check('system_putenv',ierr.eq.0,msg=msg('status should be zero when getting=',ierr))
+   call unit_check('system_putenv',value.eq.'this is the value',msg=msg('value is set to:',value))
+!! REPLACE VALUE
+   call system_putenv('NOT_THERE_S_P=this is the new value',ierr)
+   call unit_check('system_putenv',ierr.eq.0,msg=msg('setting, status should be zero when setting=',ierr))
+   call get_environment_variable("NOT_THERE_S_P", value=value,status=ierr)
+   call unit_check('system_putenv',ierr.eq.0,msg=msg('status should be zero when getting=',ierr))
+   call unit_check('system_putenv',value.eq.'this is the new value',msg=msg('value is set to:',value))
+!! DELETE VALUE
+   call system_putenv('NOT_THERE_S_P',ierr)
+   call get_environment_variable("NOT_THERE_S_P", status=ierr)
+   call unit_check('system_putenv',ierr.eq.1,msg=msg('should be gone, varies with different putenv(3c)',ierr))
+   call unit_check_msg('system_putenv','system_unsetenv(3f) is a better way to remove variables')
+!!
    call unit_check_done('system_putenv',msg='')
 end subroutine test_system_putenv
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_readdir()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('system_readdir',msg='')
-   !!call unit_check('system_readdir', 0.eq.0. msg=msg('checking',100))
+type(c_ptr)                  :: dir
+character(len=:),allocatable :: filename
+integer                      :: i
+integer                      :: ierr
+character(len=256)           :: message
+integer                      :: ios
+integer                      :: lun
+logical                      :: found1,found2
+   call unit_check_start('system_readdir',msg='make some scratch files and look for their name in current directory')
+   found1=.false.
+   found2=.false.
+!--- create two scratch files of known names
+   open(newunit=lun,file='__scratch_1__',iostat=ios,iomsg=message)
+   if(ios.eq.0)then
+      write(lun,*)'SCRATCH FILE 1'
+   else
+      call unit_check_msg('system_readdir','error:',message)
+   endif
+   close(unit=lun,iostat=ios,iomsg=message)
+   open(newunit=lun,file='__scratch_2__',iostat=ios,iomsg=message)
+   if(ios.eq.0)then
+      write(lun,*)'SCRATCH FILE 2'
+   else
+      call unit_check_msg('system_readdir','error:',message)
+   endif
+   close(unit=lun,iostat=ios,iomsg=message)
+
+!--- open directory stream to read from
+   call system_opendir('.',dir,ierr)
+!--- read directory stream and look for scratch file names
+      do
+         call system_readdir(dir,filename,ierr)
+         if(filename.eq.' ') exit
+         if(ierr.ne.0) exit
+         if(filename.eq.'__scratch_1__')found1=.true.
+         if(filename.eq.'__scratch_2__')found2=.true.
+      enddo
+!--- close directory stream
+   call system_closedir(dir,ierr)
+
+!--- remove scratch files
+   open(newunit=lun,file='__scratch_1__',iostat=ios,iomsg=message)
+   close(unit=lun,iostat=ios,iomsg=message,status='delete')
+   open(newunit=lun,file='__scratch_2__',iostat=ios,iomsg=message)
+   close(unit=lun,iostat=ios,iomsg=message,status='delete')
+
+   call unit_check('system_readdir', found1, msg=msg('__scratch__1',found1))
+   call unit_check('system_readdir', found2, msg=msg('__scratch__2',found2))
    call unit_check_done('system_readdir',msg='')
 end subroutine test_system_readdir
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_readenv()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('system_readenv',msg='')
-   !!call unit_check('system_readenv', 0.eq.0. msg=msg('checking',100))
+character(len=:),allocatable :: string
+integer                      :: i
+integer                      :: ierr
+character(len=:),allocatable :: home
+character(len=4096)          :: envname
+   call unit_check_start('system_readenv',msg='assuming system always has environment variable HOME set')
+   i=0
+   home=''
+   ! read environment table and look for HOME= at beginning of line
+   call system_initenv()
+   do
+      string=system_readenv()
+      if(index(string,'HOME=').eq.1)then
+        home=string
+      endif
+      if(string.eq.'')then
+         exit
+      else
+         i=i+1
+      endif
+   enddo
+   call get_environment_variable("HOME",value=envname, status=ierr)
+   envname='HOME='//trim(envname)
+   call unit_check('system_readenv',home.eq.envname, msg=msg('HOME',home,envname))
    call unit_check_done('system_readenv',msg='')
 end subroutine test_system_readenv
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_remove()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
+integer :: ierr
+character(len=*),parameter :: FILE='MyJunkFile.txt'
+   write(*,*)'BEFORE CREATED '//FILE
+   call execute_command_line('ls -l '//FILE)
+   write(*,*)
+
+! note intentionally causes error if file exists
+   open(unit=10,file=FILE,status='NEW')
+   write(*,*)'AFTER OPENED '//FILE
+   call execute_command_line('ls -l '//FILE)
+   write(*,*)
+
+   write(10,'(a)') 'This is a file I want to delete'
+   close(unit=10)
+   write(*,*)'AFTER CLOSED '
+   call execute_command_line('ls -l '//FILE)
+   write(*,*)
+
+   ierr=system_remove(FILE)
+   write(*,*)'AFTER REMOVED',IERR
+   call execute_command_line('ls -l '//FILE)
+   write(*,*)
+   close(unit=10)
+
    call unit_check_start('system_remove',msg='')
-   !!call unit_check('system_remove', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('system_remove', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('system_remove',msg='')
 end subroutine test_system_remove
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_rename()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('system_rename',msg='')
-   !!call unit_check('system_rename', 0.eq.0. msg=msg('checking',100))
+character(len=256) :: string
+character(len=256) :: message
+integer            :: ios
+integer            :: ierr
+   call unit_check_start('system_rename',msg='check system_rename(3f) renaming "_scratch_file_" to "_renamed_scratch_file_"')
+   message=''
+! try to remove junk files just in case
+   ierr=system_remove('_scratch_file_')
+   ierr=system_remove('_renamed_scratch_file_')
+! create scratch file to rename
+   open(unit=10,file='_scratch_file_',status='new',iostat=ios)
+   call unit_check('system_rename', ios.eq.0, msg=msg('message from OPEN(3f) is:',message,' ios is',ios))
+   write(10,'(a)',iostat=ios,iomsg=message) 'IF YOU SEE THIS RENAME WORKED'
+   close(unit=10)
+! rename scratch file
+   ierr=system_rename('_scratch_file_','_renamed_scratch_file_')
+   call unit_check('system_rename', ierr.eq.0, msg=msg('ierr',ierr))
+! read renamed file
+   open(unit=11,file='_renamed_scratch_file_',status='old')
+   read(11,'(a)',iostat=ios)string
+   call unit_check('system_rename', ios.eq.0, msg=msg('ios',ierr))
+   call unit_check('system_rename', string.eq.'IF YOU SEE THIS RENAME WORKED', msg=msg(string))
+   close(unit=11)
+! clean up
+   ierr=system_remove('_scratch_file_')
+   call unit_check('system_rename', ierr.ne.0, msg=msg('cleanup',ierr))
+   ierr=system_remove('_renamed_scratch_file_')
+   call unit_check('system_rename', ierr.eq.0, msg=msg('cleanup',ierr))
    call unit_check_done('system_rename',msg='')
 end subroutine test_system_rename
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_rewinddir()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
+type(c_ptr)                  :: dir
+character(len=:),allocatable :: filename
+integer                      :: sum(2)
+integer                      :: i
+integer                      :: j
+integer                      :: ierr
    call unit_check_start('system_rewinddir',msg='')
-   !!call unit_check('system_rewinddir', 0.eq.0. msg=msg('checking',100))
+   call system_opendir('.',dir,ierr)                   !>>> open directory stream to read from
+   do i=1,2                                            !>>> read directory stream twice
+      j=0
+      do
+         call system_readdir(dir,filename,ierr)
+         if(filename.eq.' ')exit
+         j=j+1
+      enddo
+      sum(i)=j
+      call system_rewinddir(dir)                       !>>> rewind directory stream
+   enddo
+   call system_closedir(dir,ierr)                      !>>> close directory stream
+   call unit_check('system_rewinddir', sum(1).eq.sum(2), msg=msg('number of files','PASS 1:',sum(1),'PASS 2:',sum(2)))
    call unit_check_done('system_rewinddir',msg='')
 end subroutine test_system_rewinddir
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_rmdir()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
+   integer :: ierr
+   character(len=*),parameter :: dirname='_scratch_rmdir'
+!! setup
    call unit_check_start('system_rmdir',msg='')
-   !!call unit_check('system_rmdir', 0.eq.0. msg=msg('checking',100))
+   if(isdir(dirname))then ! TRY TO CREATE
+      call unit_check_msg('system_rmdir',dirname,'directory existed')
+   endif
+   ierr=system_mkdir(dirname,0+8*0+7)
+   call unit_check('est_system_rmdir',ierr.eq.0,msg=msg('try to create',dirname))
+   call unit_check('system_rmdir',isdir(dirname),msg=msg('check if',dirname,'exists and is a directory'))
+!! test
+   ierr=system_rmdir(dirname) ! TRY TO REMOVE
+   call unit_check('system_rmdir',ierr.eq.0,msg=msg('check ierr',ierr))
+   call unit_check('system_rmdir',.not.isdir(dirname),msg=msg('check if',dirname,'is still a directory'))
+
+   if(isdir(dirname))then
+      call unit_check_bad('system_rmdir',msg=msg('testing went bad,',dirname,'is still a directory'))
+   else
+      ierr=system_rmdir(dirname) ! TRY TO REMOVE scratch directory when it should be gone
+      call unit_check('system_rmdir',ierr.ne.0,msg=msg('check ierr',ierr))
+      call system_perror('*test of system_rmdir*')
+   endif
+
    call unit_check_done('system_rmdir',msg='')
 end subroutine test_system_rmdir
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+function isdir(dirname)
+character(len=*) :: dirname
+! a trick to be sure DIRNAME is a dir on systems supporting Unix-compatible pathnames
+logical :: isdir
+if(dirname.ne.'')then
+   inquire( file=trim(dirname)//"/.", exist=isdir )
+else
+   isdir=.false.
+endif
+end function isdir
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_setumask()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
+integer :: newmask
+integer :: old_umask
+integer :: i
+   write(*,101)(system_getumask(),i=1,4)
+101 format(1x,i0,1x,"O'",o4.4,"'",1x,'Z"',z0,"'",1x,"B'",b12.12,"'")
+   newmask=63
+   old_umask=system_setumask(newmask)
+   write(*,*)'NEW'
+   write(*,101)(system_getumask(),i=1,4)
    call unit_check_start('system_setumask',msg='')
-   !!call unit_check('system_setumask', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('system_setumask', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('system_setumask',msg='')
 end subroutine test_system_setumask
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_stat()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
+use M_time, only :   fmtdate, u2d
+
+integer(kind=8)  :: buff(13)
+integer(kind=4)  :: status
+character(len=*),parameter :: fmt_date='year-month-day hour:minute:second'
+integer(kind=8) :: &
+   Device_ID,           Inode_number,          File_mode,                  Number_of_links,  Owner_uid,         &
+   Owner_gid,           Directory_device,      File_size,                  Last_access,      Last_modification, &
+   Last_status_change,  Preferred_block_size,  Number_of_blocks_allocated
+equivalence                                    &
+   ( buff(1)  , Device_ID                  ) , &
+   ( buff(2)  , Inode_number               ) , &
+   ( buff(3)  , File_mode                  ) , &
+   ( buff(4)  , Number_of_links            ) , &
+   ( buff(5)  , Owner_uid                  ) , &
+   ( buff(6)  , Owner_gid                  ) , &
+   ( buff(7)  , Directory_device           ) , &
+   ( buff(8)  , File_size                  ) , &
+   ( buff(9)  , Last_access                ) , &
+   ( buff(10) , Last_modification          ) , &
+   ( buff(11) , Last_status_change         ) , &
+   ( buff(12) , Preferred_block_size       ) , &
+   ( buff(13) , Number_of_blocks_allocated )
+
+   CALL SYSTEM_STAT("/etc/hosts", buff, status)
+
+   if (status == 0) then
+      write (*, FMT="('Device ID(hex/decimal):',      T30, Z0,'h/',I0,'d')") buff(1),buff(1)
+      write (*, FMT="('Inode number:',                T30, I0)") buff(2)
+      write (*, FMT="('File mode (octal):',           T30, O19)") buff(3)
+      write (*, FMT="('Number of links:',             T30, I0)") buff(4)
+      write (*, FMT="('Owner''s uid/username:',       T30, I0,1x, A)") buff(5), system_getpwuid(buff(5))
+      write (*, FMT="('Owner''s gid/group:',          T30, I0,1x, A)") buff(6), system_getgrgid(buff(6))
+      write (*, FMT="('Device where located:',        T30, I0)") buff(7)
+      write (*, FMT="('File size(bytes):',            T30, I0)") buff(8)
+      write (*, FMT="('Last access time:',            T30, I0,1x, A)") buff(9), fmtdate(u2d(int(buff(9))),fmt_date)
+      write (*, FMT="('Last modification time:',      T30, I0,1x, A)") buff(10),fmtdate(u2d(int(buff(10))),fmt_date)
+      write (*, FMT="('Last status change time:',     T30, I0,1x, A)") buff(11),fmtdate(u2d(int(buff(11))),fmt_date)
+      write (*, FMT="('Preferred block size(bytes):', T30, I0)") buff(12)
+      write (*, FMT="('No. of blocks allocated:',     T30, I0)") buff(13)
+   endif
+
    call unit_check_start('system_stat',msg='')
-   !!call unit_check('system_stat', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('system_stat', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('system_stat',msg='')
 end subroutine test_system_stat
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_system_stat_print()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('system_stat_print',msg='')
-   !!call unit_check('system_stat_print', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('system_stat_print',msg='')
-end subroutine test_system_stat_print
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_uname()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
+integer,parameter          :: is=100
+integer                    :: i
+character(len=*),parameter :: letters='srvnmxT'
+character(len=is)          :: string=' '
+
+   write(*,'(80("="))')
+   do i=1,len(letters)
+      call system_uname(letters(i:i),string)
+      write(*,*)'=====> TESTING system_uname('//letters(i:i)//')--->'//trim(string)
+   enddo
+   write(*,'(80("="))')
    call unit_check_start('system_uname',msg='')
-   !!call unit_check('system_uname', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('system_uname', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('system_uname',msg='')
 end subroutine test_system_uname
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_unlink()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
+integer :: ierr
+   ierr = system_unlink('myfile1')
+   if(ierr.ne.0)then
+      call system_perror('*test_system_unlink*')
+   endif
    call unit_check_start('system_unlink',msg='')
-   !!call unit_check('system_unlink', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('system_unlink', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('system_unlink',msg='')
 end subroutine test_system_unlink
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_unsetenv()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
+integer :: ierr
+character(len=4096) :: value
+
+   call system_unsetenv('GRU')
+
    call unit_check_start('system_unsetenv',msg='')
-   !!call unit_check('system_unsetenv', 0.eq.0. msg=msg('checking',100))
+
+!! SET THE VARIABLE NOT_THERE_S_U
+   call set_environment_variable('NOT_THERE_S_U','this is the value',ierr)
+!! CHECK VARIABLE IS NOW SET
+   call get_environment_variable("NOT_THERE_S_U", value=value,status=ierr)
+   call unit_check('system_unsetenv',ierr.eq.0,msg=msg('status should be zero when getting=',ierr))
+   call unit_check('system_unsetenv',value.eq.'this is the value',msg=msg('value is set to:',value))
+   !! REMOVE
+   call system_unsetenv('NOT_THERE_S_U',ierr)
+   call unit_check('system_unsetenv',ierr.eq.0,msg=msg('should be zero ierr=',ierr))
+   !! CHECK IF GONE
+   call get_environment_variable("NOT_THERE_S_U", value=value,status=ierr)
+   call unit_check('system_unsetenv',ierr.eq.1,msg=msg('should be zero ierr=',ierr))
+   call unit_check('system_unsetenv',value.eq.' ',msg=msg('value should be blank=',value))
+
    call unit_check_done('system_unsetenv',msg='')
+
 end subroutine test_system_unsetenv
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_utime()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
+use M_time, only  : d2u
+character(len=4096) :: pathname
+integer             :: times(2)
+integer             :: i
    call unit_check_start('system_utime',msg='')
-   !!call unit_check('system_utime', 0.eq.0. msg=msg('checking',100))
+   do i=1,command_argument_count()
+      call get_command_argument(i, pathname)
+      if(.not.system_utime(pathname,times))then
+         call system_perror('*test_system_utime*')
+      endif
+   enddo
+   !!call unit_check('system_utime', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('system_utime',msg='')
 end subroutine test_system_utime
 !===================================================================================================================================

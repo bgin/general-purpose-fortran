@@ -5,7 +5,7 @@
           character(len=5),parameter :: &
           & names(10)=[character(len=5) :: "RED","WHITE","BLUE","NAME","DATE","VALUE","EAST","WEST","NORTH","SOUTH"]
           character(len=:),allocatable   :: tabs
-          character(len=132),allocatable :: answers(:) ! output array of tokens
+          character(len=:),allocatable   :: answers(:) ! output array of tokens
           logical                        :: lanswer
           real                           :: ranswer
           integer                        :: i

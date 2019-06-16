@@ -42,7 +42,7 @@ end subroutine help_usage
 !!##DESCRIPTION
 !!        Exit with a status code indicating failure.
 !!
-!!        --verbose  display an ASCII graphic of a shining sun
+!!        --verbose  display an ASCII graphic of a shining su
 !!        --help     display this help and exit
 !!        --version  output version information and exit
 !!
@@ -67,7 +67,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    do nothing, successfully>',&
 '@(#)VERSION:        1.0, 20170125>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 6:38:22 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 12:35:26 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

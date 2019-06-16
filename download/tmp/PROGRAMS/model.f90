@@ -25,7 +25,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    model(1f) - [FORTRAN:iso_fortran_env] fortran numeric model information
+!!    model(1f) - [FORTRAN:iso_fortran_env] fortran numeric model informatio
 !!
 !!##SYNOPSIS
 !!

@@ -232,7 +232,7 @@ end subroutine help_usage
 !!
 !!    --xrdb NAME      print out current terminal settings as a set of X11 resources
 !!                     that can be added to your ~/.Xresources file so that you can
-!!                     launch terminals with those attributes with "xterm -name NAME"
+!!                     launch terminals with those attributes with "xterm -name NAME
 !!                     For example:
 !!
 !!                        setxt -xrdb EDIT|xrdb -merge
@@ -285,7 +285,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20180408>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 6:47:51 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 1:07:28 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -299,7 +299,7 @@ subroutine setxt
 implicit none
 character(len=:),allocatable   :: answers
 character(len=:),allocatable   :: fn
-character(len=132),allocatable :: array(:) ! output array of tokens
+character(len=:),allocatable   :: array(:) ! output array of tokens
 character(len=30)              :: fontname
 character(len=:),allocatable   :: background
 character(len=:),allocatable   :: foreground

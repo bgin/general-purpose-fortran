@@ -35,7 +35,7 @@ end subroutine help_usage
 !!##SYNTAX
 !!     _hostname [-help|-version]
 !!##DESCRIPTION
-!!     Calls system_gethostname(3f), which calls get_hostname(3c) to determine
+!!     Calls system_gethostname(3f), which calls get_hostname(3c) to determin
 !!     the current host name.
 !!##OPTIONS
 !!        --help     display this help and exit
@@ -67,7 +67,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
 '@(#)COMPILED:       Sun, Nov 27th, 2016 10:47:13 PM>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 6:32:44 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 12:27:02 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

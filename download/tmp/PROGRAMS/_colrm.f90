@@ -58,7 +58,7 @@ end subroutine help_usage
 !!
 !!        If called with one parameter the columns of each line will
 !!        be removed starting with the specified first column. If called
-!!        with two parameters the columns from the first column to the last
+!!        with two parameters the columns from the first column to the las
 !!        column will be removed.
 !!
 !!        Column numbering starts with column 1. Tabs are NOT expanded.
@@ -94,7 +94,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20180324>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Sun, May 12th, 2019 11:57:01 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 12:24:37 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

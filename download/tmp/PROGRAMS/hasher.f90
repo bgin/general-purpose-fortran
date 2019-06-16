@@ -43,7 +43,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    hasher(1f) - [M_hashkeys] exercise the string hash methods in the M_hashkey(3fm) module
+!!    hasher(1f) - [M_hashkeys] exercise the string hash methods in the M_hashkey(3fm) modul
 !!
 !!##SYNOPSIS
 !!
@@ -90,7 +90,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)                change and redistribute it.  There is NO WARRANTY;>',&
 '@(#)                without even the implied warranty of MERCHANTABILITY or>',&
 '@(#)                FITNESS FOR A PARTICULAR PURPOSE.>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 6:29:08 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 12:46:33 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

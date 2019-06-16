@@ -55,7 +55,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    degrees(1f) - [CONVERT] Convert between Fahrenheit and Celsius temperature values
+!!    degrees(1f) - [CONVERT] Convert between Fahrenheit and Celsius temperature value
 !!
 !!##SYNOPSIS
 !!
@@ -115,7 +115,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 6:27:01 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 12:10:13 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -127,11 +127,11 @@ use M_kracken, only : kracken, rgets, lget, sget
 use M_strings, only : upper, compact, replace, split, s2v
 implicit none
 character(len=*),parameter::ident_1="@(#)degrees(1f): convert multiple values between Celsius and Fahrenheit"
-real,allocatable                :: val(:)
-integer                         :: i, isum=0, ivals, last
-real                            :: sval
-character(len=:),allocatable    :: values
-character(len=128),allocatable  :: values_split(:)
+real,allocatable              :: val(:)
+integer                       :: i, isum=0, ivals, last
+real                          :: sval
+character(len=:),allocatable  :: values
+character(len=:),allocatable  :: values_split(:)
   call kracken('degrees','-F -C -K -help .F. -version .F.' )
   call help_usage(lget('degrees_help'))                                  ! display help information and stop  if true
   call help_version(lget('degrees_version'))                             ! display version information and stop if true

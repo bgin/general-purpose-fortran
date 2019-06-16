@@ -1,5 +1,5 @@
           program demo_system_uname
-             use M_system, only: system_uname
+             use M_system, only : system_uname
              implicit none
              integer,parameter          :: is=100
              integer                    :: i

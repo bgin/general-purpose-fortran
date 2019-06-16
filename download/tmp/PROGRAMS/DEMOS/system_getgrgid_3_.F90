@@ -1,6 +1,6 @@
           program demo_system_getgrgid
           use M_system, only : system_getgrgid
-          use M_system, only: system_getgid
+          use M_system, only : system_getgid
           implicit none
           character(len=:),allocatable :: name
           name=system_getgrgid( system_getgid() )

@@ -1,6 +1,7 @@
           program demo_system_remove
           use M_system, only : system_remove
           character(len=*),parameter :: FILE='MyJunkFile.txt'
+          integer :: ierr
           write(*,*)'BEFORE CREATED '//FILE
           call execute_command_line('ls -l '//FILE)
           write(*,*)

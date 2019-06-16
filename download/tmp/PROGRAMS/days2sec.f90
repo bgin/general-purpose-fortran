@@ -108,7 +108,7 @@ end subroutine help_usage
 !!
 !!     NNdNNhNNmNNs  Simple numeric values may also be used with unit suffixes;
 !!                   where s,m,h, or d represents seconds, minutes, hours
-!!                   or days and w represents weeks. Allowed aliases for w,d,h,m, and s units are
+!!                   or days and w represents weeks. Allowed aliases for w,d,h,m, and s units ar
 !!
 !!                    w -  weeks,week,wk,wks
 !!                    d -  days,day
@@ -159,7 +159,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 6:21:28 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 12:09:42 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

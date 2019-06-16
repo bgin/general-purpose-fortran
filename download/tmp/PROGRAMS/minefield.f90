@@ -94,8 +94,8 @@ end subroutine help_usage
 !!    minefield(1f) is a minesweeper game. The game tests many M_DRAW
 !!    functions.
 !!
-!!    The object of the game is to mark all the mines with mouse 2 and expose
-!!    all the squares that are not mines with mouse 1 as quickly as possible.
+!!    The object of the game is to mark all the mines with mouse 2 and expos
+!!    all the squares that are not mines with mouse 1 as quickly as possible
 !!    The number in a square indicates how many mines are adjacent to it.
 !!
 !!    The game can go up to 99 rows or columns.
@@ -132,7 +132,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    minefield game>',&
 '@(#)VERSION:        4.0, 20180616>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 7:13:50 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 12:13:33 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

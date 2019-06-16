@@ -266,7 +266,7 @@ end subroutine help_usage
 !!    Generates color wheels using the HLS (Hue Lightness, Saturation)
 !!    model.
 !!
-!!    Note that if the output device does not support at least 1200 colors
+!!    Note that if the output device does not support at least 1200 color
 !!    in the color table that output will appear incorrect.
 !!
 !!##OPTIONS
@@ -300,7 +300,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0 20181013>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 7:32:42 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 12:17:40 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

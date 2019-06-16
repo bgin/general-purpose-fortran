@@ -37,7 +37,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    xauth_key(1f) - [M_random] generate magic cookies for xauth
+!!    xauth_key(1f) - [M_random] generate magic cookies for xaut
 !!##SYNOPSIS
 !!
 !!    xauth_key [characters] [-n number_of_characters]
@@ -102,7 +102,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20171219>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 6:44:45 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 1:30:26 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

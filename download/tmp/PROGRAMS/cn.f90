@@ -100,7 +100,7 @@ end subroutine help_usage
 !!               device name "list" for a list of available devices on
 !!               an otherwise valid command.
 !!    -f         filename of format "X Y Z"
-!!    -fn FNAME  For file output, the default output name is cn.$DEVICE.
+!!    -fn FNAME  For file output, the default output name is cn.$DEVICE
 !!               If a name is specified containing a period it is used
 !!               as-is. Otherwise the output file will be FNAME.$DEVICE
 !!
@@ -169,7 +169,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20180706>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 7:12:29 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 12:11:26 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

@@ -45,7 +45,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    output the month and day Easter falls on for a particular year>',&
 '@(#)VERSION:        1.0, 20170223>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 6:41:01 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 12:40:09 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -100,7 +100,7 @@ end subroutine help_usage
 !!    Prints day Easter falls on
 !!
 !!##OPTIONS
-!!    year       year for which to calculate Easter day. Defaults to current year
+!!    year       year for which to calculate Easter day. Defaults to current yea
 !!    --help     display this help and exit
 !!    --version  output version information and exit
 !!

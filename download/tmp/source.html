@@ -6,7 +6,6 @@
 <meta name="keywords" content="Fortran Repository" />
 <meta name="keywords" content="Fortran Collection" />
 <style>
-body {xfont-style: italic}
 body { background-color:#FFF; color:#333; font-family:Verdana, Arial, Helvetica, sans-serif; font-size:1em; line-height:1.3em; }
 
 a,li span { color:#000; }
@@ -24,7 +23,7 @@ table { border:double #000; border-collapse:collapse; }
 td { border:thin solid #888; margin: auto; padding: auto; border: auto;}
 td { padding-left: 1em; padding-right: 1em;}
 li { margin-bottom:0.5em; }
-blockquote { display:block; font-size:90%; font-style:italic; line-height:1.5em; margin:0 0 1.5em; padding:0 2.5em; }
+blockquote { display:block; font-size:90%; line-height:1.5em; margin:0 0 1.5em; padding:0 2.5em; }
 pre { background-color:#DDD; font-size:90%; overflow:auto; padding:1em; }
 xmp { background-color:#DCC; font-size:80%; display: block; font-family: monospace; white-space: pre; margin: 1em 0; }
 
@@ -85,6 +84,10 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_anything::anyscalar_to_double(3f): convert integer or real parameter of any kind to doubleprecision<br/>
 	M_anything::anyscalar_to_real(3f): convert integer or real parameter of any kind to real<br/>
 	M_anything::anyinteger_to_64(3f): convert integer parameter of any kind to 64-bit integer<br/>
+</td>
+<tr><td><a href="M_args.f90">M_args.f90</a></td>
+<td>
+	M_kracken::get_command_arguments_string(3f): return all command arguments as an allocated string<br/>
 </td>
 <tr><td><a href="M_bessel.f90">M_bessel.f90</a></td>
 <td>
@@ -334,6 +337,9 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_logic(3fm): Allows if/else/elseif/endif logic to be applied to input files<br/>
 	M_logic::cond(3f): process if/else/elseif/endif directives passed from input files<br/>
 </td>
+<tr><td><a href="M_lua.f90">M_lua.f90</a></td>
+<td>
+</td>
 <tr><td><a href="M_math.f90">M_math.f90</a></td>
 <td>
 	M_math::julfit(3f): linear least squares curve fits, destroys input arrays<br/>
@@ -409,6 +415,11 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <tr><td><a href="M_overload.f90">M_overload.f90</a></td>
 <td>
 	M_overload(3fm): overloads of standard operators and intrinsic procedures<br/>
+</td>
+<tr><td><a href="M_path.f90">M_path.f90</a></td>
+<td>
+	M_io::construct_from_dat(3f): construct TYPE(path) with DAT date-time array<br/>
+	M_io::eq(3f): compare derived type path objects (eq,lt,gt,le,ge,ne)<br/>
 </td>
 <tr><td><a href="M_pixel.f90">M_pixel.f90</a></td>
 <td>
@@ -660,6 +671,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	 M_system::system_getuid(3f): call getuid(3c)<br/>
 	 M_system::system_getegid(3f): call getegid(3c)<br/>
 	 M_system::system_getgid(3f): call getgid(3c)<br/>
+	 M_system::system_setsid(3f): call setsid(3c) to set session leader for given pid<br/>
 	 M_system::system_getsid(3f): call getsid(3c) to get session leader for given pid<br/>
 	 M_system::system_getpid(3f): call getpid(3c)<br/>
 	 M_system::system_getppid(3f): call getppid(3c)<br/>
@@ -668,6 +680,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	 M_system::system_initenv(3f): initialize environment table for reading<br/>
 	M_system::system_access(3f): checks accessibility or existence of a pathname<br/>
 	M_system::system_utime(3f): set access and modification times of a pathname<br/>
+	M_system::system_realpath(3f):call realpath(3c) to get pathname of current working directory<br/>
 	M_system::system_issock(3f): determine if pathname is a socket<br/>
 	M_system::system_isfifo(3f): determine if pathname is a fifo(named pipe)<br/>
 	M_system::system_ischr(3f): determine if pathname is a link<br/>
@@ -778,7 +791,8 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_units::atomnum2symbol(3f): return element symbol given atomic number<br/>
 	M_units::symbol2atomnum(3f): return atomic number given element symbol name<br/>
 	M_units::pounds_to_kilograms(3f): converts a measurement in pounds to kilograms.<br/>
-	M_units::isnan(3f): determine if value is  IEEE Not-a-Number<br/>
+	M_units::is_even(3f): determine if integer is  even<br/>
+	M_units::is_nan(3f): determine if value is  IEEE Not-a-Number<br/>
 </td>
 <tr><td><a href="M_uuid.f90">M_uuid.f90</a></td>
 <td>

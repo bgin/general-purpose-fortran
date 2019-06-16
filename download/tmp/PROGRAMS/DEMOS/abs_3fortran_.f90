@@ -16,4 +16,4 @@
                write(*,*)'The abs() of (3.0,4.0) should be 5.0',abs((3.0,4.0))
 
                write(*,*)'abs is ELEMENTAL: ',abs([-10, 20, 0, -1, -3, 100])
-       end program demo_abs Results:
+       end program demo_abs

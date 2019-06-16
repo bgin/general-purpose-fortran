@@ -39,7 +39,7 @@
              write (*, FMT="('Device where located:',        T30, I0)") buff(7)
              write (*, FMT="('File size(bytes):',            T30, I0)") buff(8)
              write (*, FMT="('Last access time:',            T30, I0,1x, A)") buff(9), fmtdate(u2d(int(buff(9))),fmt_date)
-             write (*, FMT="('Last modification time',       T30, I0,1x, A)") buff(10),fmtdate(u2d(int(buff(10))),fmt_date)
+             write (*, FMT="('Last modification time:',      T30, I0,1x, A)") buff(10),fmtdate(u2d(int(buff(10))),fmt_date)
              write (*, FMT="('Last status change time:',     T30, I0,1x, A)") buff(11),fmtdate(u2d(int(buff(11))),fmt_date)
              write (*, FMT="('Preferred block size(bytes):', T30, I0)") buff(12)
              write (*, FMT="('No. of blocks allocated:',     T30, I0)") buff(13)

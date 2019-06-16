@@ -17,7 +17,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 6:17:23 PM>',&
+'@(#)COMPILED:       Sun, Jun 16th, 2019 5:54:15 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -67,7 +67,7 @@ end subroutine help_usage
 !!     intrinsics [--help|--version]
 !!
 !!##DESCRIPTION
-!!     This program outputs all the source of the man(1) pages of the Fortran intrinsics procedures.
+!!     This program outputs all the source of the man(1) pages of the Fortran intrinsics procedures
 !!
 !!##OPTIONS
 !!     --help     display this help and exit
@@ -415,6 +415,7 @@ write(io,'(a)')'        write(*,*)''The abs() of (3.0,4.0) should be 5.0'',abs((
 write(io,'(a)')''
 write(io,'(a)')'        write(*,*)''abs is ELEMENTAL: '',abs([-10, 20, 0, -1, -3, 100])'
 write(io,'(a)')'     end program demo_abs'
+write(io,'(a)')''
 write(io,'(a)')'  Results:'
 write(io,'(a)')''
 write(io,'(a)')'    INPUTS:   -1  -1.00000000    (-3.00000000,4.00000000)'
@@ -14368,7 +14369,14 @@ write(io,'(a)')''
 write(io,'(a)')'    REWIND ( [UNIT=]file-unit-number][,IOMSG=iomsg-variable][,IOSTAT=scalar-int-variable][,ERR=label] )'
 write(io,'(a)')'DESCRIPTION'
 write(io,'(a)')'   Execution of a REWIND statement causes the file connected to the'
-write(io,'(a)')'   specified unit to be positioned at the beginning of the file.'
+write(io,'(a)')'   specified unit to be positioned at the beginning of the file (its'
+write(io,'(a)')'   initial point).'
+write(io,'(a)')''
+write(io,'(a)')'   If the file is already positioned at its initial point, execution of'
+write(io,'(a)')'   this statement has no effect on the position of the file.'
+write(io,'(a)')''
+write(io,'(a)')'   Execution of a REWIND statement for a file that is connected but does'
+write(io,'(a)')'   not exist is permitted and has no effect on any file.'
 write(io,'(a)')''
 write(io,'(a)')'OPTIONS'
 write(io,'(a)')'   UNIT     unit number of file to rewound.'
@@ -14395,6 +14403,7 @@ write(io,'(a)')'      enddo'
 write(io,'(a)')'      rewind(10, iostat=ios,iomsg=mssge)'
 write(io,'(a)')'      if(ios.ne.0)then'
 write(io,'(a)')'         write(*,*)''*error* '',trim(mssge)'
+write(io,'(a)')'         stop'
 write(io,'(a)')'      endif'
 write(io,'(a)')'      write(*,*)''wrote 100 lines, but now at line ...'''
 write(io,'(a)')'      read(10,''(a)'')line'
@@ -14406,7 +14415,7 @@ write(io,'(a)')'      write(*,*)''skipped a few lines, now at ...'''
 write(io,'(a)')'      read(10,''(a)'')line'
 write(io,'(a)')'      write(*,''(a)''line'
 write(io,'(a)')'      close(10,=''delete'')'
-write(io,'(a)')'   end program demo_backspace'
+write(io,'(a)')'   end program demo_rewind'
 write(io,'(a)')''
 write(io,'(a)')'NAME'
 write(io,'(a)')'   BACKSPACE(7f) - [FORTRAN:FILE_POSITIONING] - backspace one record on specified I/O unit'

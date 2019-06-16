@@ -1,4 +1,4 @@
-             program demo_system_srand
+             program demo_system_rand
              use M_system, only : system_srand, system_rand
              implicit none
              integer :: i
@@ -9,4 +9,4 @@
              enddo
              write(*,*)
 
-             end program demo_system_srand
+             end program demo_system_rand

@@ -118,7 +118,7 @@ end subroutine help_usage
 !!   Sample program executions:
 !!
 !!    lsup
-!!     40755 drwxr-xr-x --- 1  JSU      Users    0        2017-10-12T21:46:51 /home/urbanjs/V600/LIBRARY/libGPF/EXE
+!!     40755 drwxr-xr-x --- 1  JSU      Users    0        2017-10-12T21:46:51 /home/urbanjs/V600/LIBRARY/libGPF/EX
 !!     40755 drwxr-xr-x --- 1  JSU      None     0        2017-10-08T14:50:41 /home/urbanjs/V600/LIBRARY/libGPF
 !!     40700 drwx------ --- 1  JSU      Users    0        2017-10-12T22:38:14 /home/urbanjs/V600/LIBRARY
 !!     40700 drwx------ --- 1  JSU      None     0        2017-10-12T22:35:00 /home/urbanjs/V600
@@ -152,7 +152,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0.0>',&
 '@(#)DATE:           2017-10-12>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 6:42:29 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 12:48:39 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

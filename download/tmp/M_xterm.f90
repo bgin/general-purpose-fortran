@@ -3,7 +3,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!     M_xterm(3fm) - [M_xterm] send escape sequences to an xterm(1) window that control VT102 emulator attributes
+!!     M_xterm(3fm) - [M_xterm] send escape sequences to an xterm(1) window that control VT102 emulator attribute
 !!##SYNOPSIS
 !!
 !!     use M_xterm, only : xterm_font
@@ -139,7 +139,7 @@ contains
 !===================================================================================================================================
 !>
 !!##NAME
-!!    xterm_xrdb(3f) - [M_xterm] write current xterm(1) window attributes as X11 Windows resources
+!!    xterm_xrdb(3f) - [M_xterm] write current xterm(1) window attributes as X11 Windows resource
 !!##SYNOPSIS
 !!
 !!    subroutine xterm_xrdb(name)
@@ -247,7 +247,7 @@ end subroutine xterm_xrdb
 !===================================================================================================================================
 !>
 !!##NAME
-!!    xterm_occupancy(3f) - [M_xterm] try to move xterm(1) to specified virtual display
+!!    xterm_occupancy(3f) - [M_xterm] try to move xterm(1) to specified virtual displa
 !!
 !!##SYNOPSIS
 !!
@@ -308,7 +308,7 @@ end subroutine xterm_occupancy
 !===================================================================================================================================
 !>
 !!##NAME
-!!    xterm_get_pencolor(3f) - [M_xterm] query xterm(1) color by number
+!!    xterm_get_pencolor(3f) - [M_xterm] query xterm(1) color by numbe
 !!##SYNOPSIS
 !!
 !!    function xterm_get_pencolor(pennum) result(color)
@@ -353,7 +353,7 @@ integer,intent(in)                :: pennum
 character(len=:),allocatable      :: color
 
    character(len=:),allocatable   :: string
-   character(len=256),allocatable :: array(:)
+   character(len=:),allocatable :: array(:)
 
    string=RAWGET(esc//']4;'//v2s(pennum)//';?'//bel)
    CALL split(string,array,delimiters=' ;'//bel)
@@ -369,7 +369,7 @@ end function xterm_get_pencolor
 !===================================================================================================================================
 !>
 !!##NAME
-!!    xterm_get_colors(3f) - [M_xterm] query xterm(1) colors
+!!    xterm_get_colors(3f) - [M_xterm] query xterm(1) color
 !!##SYNOPSIS
 !!
 !!    function xterm_get_colors(type) result(color)
@@ -456,7 +456,7 @@ character(len=*),intent(in)    :: type
 character(len=:),allocatable   :: color
 character(len=2)               :: code
 character(len=:),allocatable   :: string
-character(len=256),allocatable :: array(:)
+character(len=:),allocatable   :: array(:)
 
    select case(type)
    case('bg','background')            ;  code='11'
@@ -486,7 +486,7 @@ end function xterm_get_colors
 !===================================================================================================================================
 !>
 !!##NAME
-!!    xterm_pencolor(3f) - [M_xterm] set xterm(1) color by number using escape sequences
+!!    xterm_pencolor(3f) - [M_xterm] set xterm(1) color by number using escape sequence
 !!##SYNOPSIS
 !!
 !!    subroutine xterm_pencolor(pennum,color)
@@ -543,7 +543,7 @@ end subroutine xterm_pencolor
 !!
 !!##DESCRIPTION
 !!
-!!    Set the color of various xterm(1) window attributes.
+!!    Set the color of various xterm(1) window attributes
 !!
 !!##OPTIONS
 !!    type   which type of color to set
@@ -641,7 +641,7 @@ end subroutine xterm_colors
 !!    Sets the font for an xterm(1) window.
 !!
 !!##OPTIONS
-!!    fontname   X11 windows font name. Note you should always pick a
+!!    fontname   X11 windows font name. Note you should always pick
 !!               fixed-space font. Allowed formats are
 !!
 !!           fontname       a fixed-space font name. Wildcards
@@ -731,7 +731,7 @@ end subroutine xterm_font
 !===================================================================================================================================
 !>
 !!##NAME
-!! xterm_keywords(3f) - [M_xterm] sent hints to X11 Window manager and select modes
+!! xterm_keywords(3f) - [M_xterm] sent hints to X11 Window manager and select mode
 !!##SYNOPSIS
 !!
 !!    subroutine xterm_keywords(keyword)
@@ -801,7 +801,7 @@ end subroutine xterm_keywords
 !===================================================================================================================================
 !>
 !!##NAME
-!!    xterm_position(3f) - [M_xterm] set xterm(1) window position using escape sequences
+!!    xterm_position(3f) - [M_xterm] set xterm(1) window position using escape sequence
 !!##SYNOPSIS
 !!
 !!    subroutine xterm_position(right,down)
@@ -853,7 +853,7 @@ end subroutine xterm_position
 !===================================================================================================================================
 !>
 !!##NAME
-!!    xterm_geometry(3f) - [M_xterm] set xterm(1) size using escape sequences
+!!    xterm_geometry(3f) - [M_xterm] set xterm(1) size using escape sequence
 !!##SYNOPSIS
 !!
 !!    subroutine xterm_geometry(rows,cols)
@@ -902,7 +902,7 @@ end subroutine xterm_geometry
 !===================================================================================================================================
 !>
 !!##NAME
-!!    xterm_width(3f) - [M_xterm] set xterm(1) width to 80 or 132 characters
+!!    xterm_width(3f) - [M_xterm] set xterm(1) width to 80 or 132 character
 !!##SYNOPSIS
 !!
 !!    subroutine xterm_width(iwidth)
@@ -958,7 +958,7 @@ end subroutine xterm_width
 !===================================================================================================================================
 !>
 !!##NAME
-!!    xterm_labels(3f) - [M_xterm] set xterm(1) X11 WIndow labels using escape sequences
+!!    xterm_labels(3f) - [M_xterm] set xterm(1) X11 WIndow labels using escape sequence
 !!##SYNOPSIS
 !!
 !!    subroutine xterm_labels(string)
@@ -1006,7 +1006,7 @@ end subroutine xterm_labels
 !===================================================================================================================================
 !>
 !!##NAME
-!!    xterm_clear(3f) - [M_xterm] clear xterm(1) screen using escape sequences
+!!    xterm_clear(3f) - [M_xterm] clear xterm(1) screen using escape sequence
 !!##SYNOPSIS
 !!
 !!    subroutine xterm_clear()
@@ -1096,7 +1096,7 @@ end function RAWGET
 !!    character(len=:),allocatable :: fontname
 !!
 !!##DESCRIPTION
-!!    Sends an escape sequence to stdout to query the fontname of an xterm(1) window.
+!!    Sends an escape sequence to stdout to query the fontname of an xterm(1) window
 !!
 !!    For this to work stdout must be your terminal device; so this may not be used
 !!    effectively in a pipe or when redirection is used, depending on your system.
@@ -1121,7 +1121,7 @@ character(len=*),parameter::ident_14="&
 
 character(len=:),allocatable  :: fontname
 character(len=:),allocatable  :: string
-character(len=256),allocatable :: array(:)
+character(len=:),allocatable  :: array(:)
    string=rawget(esc//']50;?'//bel)
    ! string=rawget(esc//']50;?$'//bel)
    ! STRING=]50;#0 *-cronyx-courier-medium-r-normal--17-120-100-100-m-90-koi8-r
@@ -1140,7 +1140,7 @@ end function xterm_get_font
 !===================================================================================================================================
 !>
 !!##NAME
-!!    xterm_get_iconstate(3f) - [M_xterm] obtain xterm(1) icon state using escape sequences
+!!    xterm_get_iconstate(3f) - [M_xterm] obtain xterm(1) icon state using escape sequence
 !!##SYNOPSIS
 !!
 !!    function xterm_get_iconstate() result(state)
@@ -1193,7 +1193,7 @@ end function xterm_get_iconstate
 !===================================================================================================================================
 !>
 !!##NAME
-!!    xterm_get_geometry(3f) - [M_xterm] obtain xterm(1) screen size in character units
+!!    xterm_get_geometry(3f) - [M_xterm] obtain xterm(1) screen size in character unit
 !!##SYNOPSIS
 !!
 !!    subroutine xterm_get_geometry(rows,cols)
@@ -1232,7 +1232,7 @@ character(len=*),parameter::ident_16="&
 integer,intent(out)           :: rows
 integer,intent(out)           :: cols
 character(len=:),allocatable  :: string
-character(len=32),allocatable :: array(:)
+character(len=:),allocatable  :: array(:)
 integer                       :: isize
    string=rawget(esc//'[18t')
    CALL split(string,array,delimiters=';t')
@@ -1253,7 +1253,7 @@ end subroutine xterm_get_geometry
 !!    integer,intent(out) :: down
 !!
 !!##DESCRIPTION
-!!    Sends an escape sequence to stdout to query the position of an xterm(1) window.
+!!    Sends an escape sequence to stdout to query the position of an xterm(1) window
 !!    The position of the upper left corner of the xterm window is returned relative
 !!    to the upper left corner of the display
 !!
@@ -1286,7 +1286,7 @@ integer,intent(out)           :: right
 integer,intent(out)           :: down
 integer(kind=int64)           :: r,d
 character(len=:),allocatable  :: string
-character(len=32),allocatable :: array(:)
+character(len=:),allocatable  :: array(:)
 integer                       :: isize
    string=rawget(esc//'[13t')
    CALL split(string,array,delimiters=';t')

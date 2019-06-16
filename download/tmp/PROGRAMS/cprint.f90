@@ -45,7 +45,7 @@ end subroutine help_usage
 !!
 !!##OPTIONS
 !!     columns      numbers indicating which columns to print
-!!     -delimiters  input column delimiter character(s) (default: whitespace)
+!!     -delimiters  input column delimiter character(s) (default: whitespace
 !!     -help        display command help and exit
 !!     -version     display command metadata and exit
 !!##EXAMPLES
@@ -71,7 +71,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20170224>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 6:20:58 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 1:17:56 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -88,7 +88,7 @@ character(len=*),parameter::ident_1="@(#)cprint(1f): filter to specified columns
 
 character(len=IPvalue)             :: line
 character(len=:),allocatable       :: delimiters ! characters used to delimit columns
-character(len=4096),allocatable    :: array(:)
+character(len=:),allocatable       :: array(:)
 integer,allocatable                :: icols(:)
 character(len=4096),allocatable    :: acols(:)
 integer                            :: ios
@@ -116,7 +116,6 @@ INFINITE: do
    read(*,'(a)',iostat=ios) line
    if(ios.ne.0)exit INFINITE
    call split(line,array,delimiters)             ! split line into columns
-   !write(*,'("ARRAY=",*("[",a,"]":","))')(trim(array(i)),i=1,size(array))
    isize=size(array)
    do i=1,size(icols)
       if( icols(i).gt.0 .and. icols(i).le.isize )then

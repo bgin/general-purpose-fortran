@@ -158,7 +158,7 @@ subroutine writeline()
 ! </tr>
 ! assuming the list of classes is not empty
 !
-character(len=4096),allocatable :: array(:)
+character(len=:),allocatable    :: array(:)
 integer                         :: classi
 integer                         :: i,isize
 integer,save                    :: items=0 ! man number in a line assuming called once per program execution

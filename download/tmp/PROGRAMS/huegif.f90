@@ -66,7 +66,7 @@ end subroutine help_usage
 !!     Generates color wheels using the HSL (Hue Lightness, Saturation)
 !!     model as GIF pixel files.
 !!
-!!     The following files will be generated, of the name hue.3_NNN.gif,
+!!     The following files will be generated, of the name hue.3_NNN.gif
 !!     where NNN is the lightness for the particular plot:
 !!
 !!       hue.3_100.gif
@@ -110,7 +110,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0 20170604>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 6:20:19 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 12:08:07 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

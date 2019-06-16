@@ -59,7 +59,7 @@ end subroutine help_usage
 !!##DESCRIPTION
 !!        Given any expression call the JUCALC(3f) calculator function
 !!        and evaluate it. If no expression is present, read expressions
-!!        from stdin until a line composed of a period(".") or end of data
+!!        from stdin until a line composed of a period(".") or end of dat
 !!        is encountered.
 !!
 !!        Expressions are similar to Fortran77 syntax except powers are
@@ -109,7 +109,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 6:23:36 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 12:08:36 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

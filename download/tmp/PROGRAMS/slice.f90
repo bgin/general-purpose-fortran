@@ -71,7 +71,7 @@ end subroutine help_usage
 !!    Given a file that defines a grid of Z values display each row as a
 !!    curve with the DL_SLICES(3f) routine with a 3D view.
 !!
-!!    On interactive devices the viewing angles may be adjusted by entering
+!!    On interactive devices the viewing angles may be adjusted by enterin
 !!    from the set of letters "lrup".
 !!
 !!    Enter "h" in graphics window for further help on controlling the
@@ -124,7 +124,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.1, 20190326>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 7:12:01 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 12:16:58 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

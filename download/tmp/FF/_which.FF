@@ -40,7 +40,7 @@ use M_system, only  : system_access, R_OK, W_OK, X_OK, F_OK
 
 implicit none
 character(len=:),allocatable    :: searchpath
-character(len=4096),allocatable :: directories(:)
+character(len=:),allocatable    :: directories(:)
 character(len=:),allocatable    :: pathname
 integer                         :: path_line_length
 character(len=:),allocatable    :: names(:)

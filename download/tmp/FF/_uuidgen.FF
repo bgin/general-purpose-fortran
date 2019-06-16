@@ -121,9 +121,10 @@ EXAMPLES
    urn:uuid:e9fd7cab-69f2-4cd6-4b5e-d54b9fbf617a
 
    _uuidgen -method time -repeat 4
-   3d684844-4b33-11e8-465d-426c6bd7f9d4
-   3d686f8e-4b33-11e8-465d-3251f8fa45ae
-   3d686f8e-4b33-11e8-465d-46ec7c7b05e1
+   f2a2faf0-833a-11e9-7373-5eb4cfd7e237
+   f2a2faf0-833a-11e9-7373-afbb9f7b9100
+   f2a2faf0-833a-11e9-7373-cde3ffff3681
+   f2a2faf0-833a-11e9-7373-271cfbfd42bc
 
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

@@ -52,7 +52,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!        _false(1f) - [FUNIX] do nothing, unsuccessfully
+!!        _false(1f) - [FUNIX] do nothing, unsuccessfull
 !!
 !!##SYNOPSIS
 !!
@@ -105,7 +105,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    do nothing, unsuccessfully>',&
 '@(#)VERSION:        1.0, 20170125>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sun, May 12th, 2019 11:50:51 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 12:25:50 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

@@ -356,7 +356,7 @@
 !!       stop ! if -help was specified, stop
 !!    endif
 !!    end subroutine help_usage
-!!    !-----------------------------------------------------------------------------------------------------------------------------------
+!!    !----------------------------------------------------------------------------------------------------------------------------------
 !!    subroutine help_version(l_version)
 !!    implicit none
 !!    character(len=*),parameter     :: ident="@(#)help_version(3f): prints version information"
@@ -383,7 +383,7 @@
 !!       stop ! if -version was specified, stop
 !!    endif
 !!    end subroutine help_version
-!!    !-----------------------------------------------------------------------------------------------------------------------------------
+!!    !----------------------------------------------------------------------------------------------------------------------------------
 !!    !! date ....... Mon, Dec 18, 2017  2:55:25 AM
 !!    !! userid ..... JSU
 !!    !! hostname ... buzz
@@ -391,7 +391,7 @@
 !!    !    placed in front of each line, but is otherwise left as-is.
 !!    !
 !!    !    The next section is just as-is Fortran
-!!    !===================================================================================================================================
+!!    !==================================================================================================================================
 !!    program cf
 !!    use M_kracken, only: kracken, rgets, lget
 !!    implicit none
@@ -456,7 +456,7 @@
 !!     &lt;html&gt;
 !!     &lt;head&gt;
 !!        &lt;title&gt; Simple HTML template for use with ufpp(1) &lt;/title&gt;
-!!        &lt;link rel=&quot;stylesheet&quot; href=&quot;http://www.w3.org/StyleSheets/Core/OldStyle&quot; type=&quot;text/css&quot; /&gt;
+!!        &lt;link rel=&quot;stylesheet&quot; href=&quot;http://www.w3.org/StyleSheets/Core/OldStyle&quot; type=&quot;text/css&quot; /&gt
 !!        &lt;!-- Chocolate Midnight Modernist Oldstyle Steely Swiss Traditional Ultramarine --&gt;
 !!     &lt;/head&gt;
 !!     &lt;body&gt;
@@ -2268,7 +2268,7 @@ end subroutine print_comment_block
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 subroutine format_g_man()
-   character(len=256),allocatable :: array(:) ! output array of tokens
+   character(len=:),allocatable   :: array(:) ! output array of tokens
    integer                        :: ios
    integer                        :: i
    ALL: block
@@ -3377,7 +3377,7 @@ end subroutine help_usage
 !!
 !!      write(io,'(a)')'/home/urbanjs/V600'
 !!
-!!    $FILTER [comment|write|help|version|shell[ -cmd COMMAND]] [-file NAME][! comment]
+!!    $FILTER [comment|write|help|version|shell[ -cmd COMMAND]] [-file NAME][! comment
 !!    $FILTER VARIABLE -varname NAME
 !!
 !!       COMMENT:  write text prefixed by an exclamation and a space
@@ -3637,7 +3637,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        4.0: 20170502>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 6:27:48 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 1:18:38 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

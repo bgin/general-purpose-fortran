@@ -34,7 +34,7 @@ end subroutine help_usage
 !!        rever INPUT_FILE [OUTPUT_FILE] [-help][-version]
 !!
 !!##DESCRIPTION
-!!        Read entire file into memory as a stream and write it in reverse
+!!        Read entire file into memory as a stream and write it in revers
 !!        byte order
 !!##SEE ALSO
 !!        tac(1), rev(1)
@@ -59,7 +59,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)COPYRIGHT:      (C) 2009 John S. Urban>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Mon, May 13th, 2019 12:04:38 AM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 12:22:35 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

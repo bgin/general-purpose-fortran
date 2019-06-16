@@ -1,5 +1,5 @@
            program demo_system_putenv
-           use M_system, only: system_putenv
+           use M_system, only : system_putenv
            use iso_c_binding
            implicit none
            integer :: ierr

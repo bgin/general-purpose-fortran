@@ -8,13 +8,16 @@ program yes                                                         ! combine ye
    !!use M_kracken, only : show
    use M_debug,   only : debug
    implicit none
-   character(len=1024) :: string
-   integer             :: ios
-   integer             :: repeat
-   integer             :: i
+   character(len=:),allocatable :: string
+   logical                      :: fmt
+   integer                      :: ios
+   integer                      :: repeat
+   integer                      :: i
+   integer                      :: istart
+   character(len=1024)          :: message
 !-----------------------------------------------------------------------------------------------------------------------------------
    !!debug=.true.
-   call kracken('yes','-help .false. -version .false. -repeat -1 ') ! define command arguments,default values and crack command line
+   call kracken('yes','-help .F. -version .F. -repeat -1 -fmt .F.') ! define command arguments,default values and crack command line
 !-----------------------------------------------------------------------------------------------------------------------------------
    !!call show('',.false.,0)
    call help_usage(lget('yes_help'))                                ! if -help option is present, display help text and exit
@@ -24,20 +27,33 @@ program yes                                                         ! combine ye
    if(string.eq.' ')then                                            ! if string is blank use default
       string='y'
    endif
-!-----------------------------------------------------------------------------------------------------------------------------------
+   fmt = lget('yes_fmt')                                            ! get -fmt
    repeat=iget('yes_repeat')
 !-----------------------------------------------------------------------------------------------------------------------------------
+   istart=0
    if(repeat.eq.-1)then
       INFINITE: do                                                  ! print string in a loop until an error occurs
-         write(*,'(a)',iostat=ios) trim(string)
+         call printme()
       enddo INFINITE
    else
       REP: do i=1,repeat
-         write(*,'(a)',iostat=ios) trim(string)
+         call printme()
       enddo REP
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
 contains
+   subroutine printme  ! print as a string or print string as a format with line count as a parameter
+         istart=istart+1
+         if(fmt)then
+            write(*,string,iostat=ios,iomsg=message) istart
+         else
+            write(*,'(a)',iostat=ios) trim(string)
+         endif
+         if(ios.ne.0)then
+            write(*,*)'*yes* error:',trim(message)
+            stop
+         endif
+   end subroutine printme
 subroutine help_version(l_version)
 implicit none
 character(len=*),parameter     :: ident="@(#)help_version(3f): prints version information"
@@ -57,7 +73,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 6:40:08 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 12:38:38 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -110,7 +126,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!     _yes(1f) - [FUNIX] output a string repeatedly until killed or limit is reached
+!!     _yes(1f) - [FUNIX] output a string repeatedly until killed or limit is reache
 !!
 !!##SYNOPSIS
 !!

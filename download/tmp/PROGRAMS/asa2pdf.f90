@@ -463,7 +463,7 @@ end subroutine help_usage
 !!   > The numbers are plain underlined double-struck over-struck
 !!   >+                      __________ double-struck ///////////
 !!   >R                                               ///////////
-!!   > abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-=_+()*&^%$#@!\|[]{};':",.<>/?`~
+!!   > abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-=_+()*&^%$#@!\|[]{};':",.<>/?`
 !!   >
 !!   >r red
 !!   >g     green
@@ -572,7 +572,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    convert text files with ASA carriage return to Adobe PDF files>',&
 '@(#)VERSION:        2.0, 20170210>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 6:30:09 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 11:55:35 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -796,7 +796,7 @@ end subroutine showhelp
 !!##REFERENCE
 !!    8.4.3.6       Line Dash Pattern
 !!
-!!    The line dash pattern shall control the pattern of dashes and gaps used to stroke paths. It shall be specified by
+!!    The line dash pattern shall control the pattern of dashes and gaps used to stroke paths. It shall be specified b
 !!    a dash array and a dash phase. The dash array's elements shall be numbers that specify the lengths of
 !!    alternating dashes and gaps; the numbers shall be nonnegative and not all zero. The dash phase shall specify
 !!    the distance into the dash pattern at which to start the dash. The elements of both the dash array and the dash
@@ -826,12 +826,12 @@ end subroutine showhelp
 !!      [ 2 3 ] 11                                    1 on, 3 off, 2 on, 3 off, 2 on, ...
 !!
 !!    Dashed lines shall wrap around curves and corners just as solid stroked lines do. The ends of each dash shall
-!!    be treated with the current line cap style, and corners within dashes shall be treated with the current line join
+!!    be treated with the current line cap style, and corners within dashes shall be treated with the current line joi
 !!    style. A stroking operation shall take no measures to coordinate the dash pattern with features of the path; it
 !!    simply shall dispense dashes and gaps along the path in the pattern defined by the dash array.
 !!
 !!    When a path consisting of several subpaths is stroked, each subpath shall be treated independently--that is,
-!!    the dash pattern shall be restarted and the dash phase shall be reapplied to it at the beginning of each subpath.
+!!    the dash pattern shall be restarted and the dash phase shall be reapplied to it at the beginning of each subpath
 !===================================================================================================================================
 subroutine print_bars()
 real :: x1

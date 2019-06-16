@@ -1,5 +1,5 @@
           program demo_set_environment_variable
-          use M_system, only: set_environment_variable
+          use M_system, only : set_environment_variable
           use iso_c_binding
           implicit none
           integer :: ierr

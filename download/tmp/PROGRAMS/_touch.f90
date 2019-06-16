@@ -38,7 +38,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    _touch(1f) - [FUNIX:FILESYSTEM] change file access and modify timestamps to current time, creating file is necessary
+!!    _touch(1f) - [FUNIX:FILESYSTEM] change file access and modify timestamps to current time, creating file is necessar
 !!
 !!##SYNOPSIS
 !!
@@ -77,7 +77,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    change file access timestamp to current time, creating file is necessary>',&
 '@(#)VERSION:        1.0, 20180217>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 6:38:07 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 12:35:01 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

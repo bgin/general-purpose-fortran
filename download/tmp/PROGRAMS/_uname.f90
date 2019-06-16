@@ -74,7 +74,7 @@ end subroutine help_usage
 !!        -m, --machine            print the machine hardware name
 !!
 !!        --help                   display this help and exit
-!!        --version                output version information and exit
+!!        --version                output version information and exi
 !!##EXAMPLE
 !!
 !!
@@ -88,7 +88,7 @@ end subroutine help_usage
 !!       >machine        : x86_64
 !!
 !!       >_uname --all
-!!       >CYGWIN_NT-10.0 buzz 2.6.0(0.304/5/3) 2016-08-31 14:32 x86_64
+!!       >CYGWIN_NT-10.0 buzz 2.6.0(0.304/5/3) 2016-08-31 14:32 x86_6
 !!
 !!       >_uname -machine
 !!       >x86_64
@@ -107,7 +107,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    print system information>',&
 '@(#)VERSION:        1.0, 20161107>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sat, May 25th, 2019 6:38:55 PM>',&
+'@(#)COMPILED:       Fri, Jun 14th, 2019 12:36:15 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
