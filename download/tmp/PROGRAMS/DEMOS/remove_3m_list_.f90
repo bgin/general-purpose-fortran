@@ -2,7 +2,7 @@
            use M_sort, only : sort_shell
            use M_list, only : locate, remove
            implicit none
-           character(len=20),allocatable :: arr(:)
+           character(len=:),allocatable :: arr(:)
            integer                       :: i
            integer                       :: end
 

@@ -27,7 +27,7 @@
 ! Michael Quinlan.
 !>
 !!##NAME
-!!    M_generic_list(3f) - [M_generic_list] A Generic Linked List Implementation in Fortran 95
+!!    M_generic_list(3f) - [M_generic_list] A Generic Linked List Implementation in Fortran 9
 !!##SYNOPSIS
 !!
 !!   public :: list_node_t, list_data
@@ -141,7 +141,7 @@ contains
 !===================================================================================================================================
 !>
 !!##NAME
-!!    list_init(3f) - [M_generic_list] Initialize a head node SELF and optionally store the provided DATA.
+!!    list_init(3f) - [M_generic_list] Initialize a head node SELF and optionally store the provided DATA
 !!##SYNOPSIS
 !!
 !!    subroutine list_init(self, data)
@@ -245,7 +245,7 @@ end subroutine list_init
 !===================================================================================================================================
 !>
 !!##NAME
-!!    list_free(3f) - [M_generic_list] Free the entire list and all data, beginning at SELF
+!!    list_free(3f) - [M_generic_list] Free the entire list and all data, beginning at SEL
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -353,7 +353,7 @@ end subroutine list_free
 !===================================================================================================================================
 !>
 !!##NAME
-!!    list_insert(3f) - [M_generic_list] Insert a list node after SELF containing DATA (optional)
+!!    list_insert(3f) - [M_generic_list] Insert a list node after SELF containing DATA (optional
 !!##SYNOPSIS
 !!
 !!    subroutine list_insert(self, data)
@@ -467,7 +467,7 @@ end subroutine list_insert
 !===================================================================================================================================
 !>
 !!##NAME
-!!    list_put(3f) - [M_generic_list] Store the encoded DATA in list node SELF
+!!    list_put(3f) - [M_generic_list] Store the encoded DATA in list node SEL
 !!##SYNOPSIS
 !!
 !!    subroutine list_put(self, data)
@@ -572,7 +572,7 @@ end subroutine list_put
 !===================================================================================================================================
 !>
 !!##NAME
-!!    list_get(3f) - [M_generic_list] Return the DATA stored in the node SELF
+!!    list_get(3f) - [M_generic_list] Return the DATA stored in the node SEL
 !!##SYNOPSIS
 !!
 !!    function list_get(self) result(data)
@@ -675,7 +675,7 @@ end function list_get
 !===================================================================================================================================
 !>
 !!##NAME
-!!    list_next(3f) - [M_generic_list] Return the next node after SELF
+!!    list_next(3f) - [M_generic_list] Return the next node after SEL
 !!##SYNOPSIS
 !!
 !!    function list_next(self)

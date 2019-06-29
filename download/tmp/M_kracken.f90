@@ -5,8 +5,9 @@ module M_kracken
 use M_debug,   only: debug, io_debug
 use M_journal, only: journal
 use M_strings, only: upper, string_to_value, split, s2v
-use M_list,    only: locate, insert
+use M_list,    only: locate, insert, replace
 use M_args,    only: get_command_arguments_string
+use M_time,    only: now
 implicit none
 
 character(len=*),parameter::ident_1="@(#)M_kracken(3fm): parse command line options of Fortran programs using Unix-like syntax"
@@ -56,8 +57,8 @@ character(len=*),parameter::ident_1="@(#)M_kracken(3fm): parse command line opti
    integer, parameter        :: k_dbl = SELECTED_REAL_KIND(15,300) ! real*8
 !-----------------------------------------------------------------------------------------------------------------------------------
    ! dictionary for Language routines
-   character(len=IPvalue),allocatable         :: dict_vals(:)      ! contains the values of string variables
-   character(len=IPverb),allocatable          :: dict_verbs(:)     ! string variable names
+   character(len=:),allocatable               :: dict_vals(:)      ! contains the values of string variables
+   character(len=:),allocatable               :: dict_verbs(:)     ! string variable names
    integer(kind=k_int),allocatable            :: dict_lens(:)      ! significant lengths of string variable values
    integer(kind=k_int),allocatable            :: dict_calls(:)     ! number of times this keyword stored on a call to parse
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -155,7 +156,7 @@ end subroutine retrev
 !===================================================================================================================================
 !>
 !!##NAME
-!!          dget(3f) - [ARGUMENTS:M_kracken] given keyword fetch doubleprecision value from command argumen
+!!      dget(3f) - [ARGUMENTS:M_kracken] given keyword fetch doubleprecision value from command argumen
 !!##SYNOPSIS
 !!
 !!    function dget(keyword) result(value)
@@ -1215,8 +1216,8 @@ end subroutine setprompts
 !!
 !!     program demo_dissect
 !!     use M_kracken, only : kracken,iget,rget,sget,dissect
-!!     integer :: ierr
 !!     implicit none
+!!     integer :: ierr
 !!
 !!     call dissect('demo',' -int 1000 -float 1234.567 -str CHARACTER value','-int 456 -float 50.00 ',ierr
 !!     write(*,'(a,i0)')'INTEGER IS ',iget('demo_int')
@@ -1224,6 +1225,12 @@ end subroutine setprompts
 !!     write(*,'(a,a)')'STRING IS '//trim(sget('demo_str'))
 !!
 !!     end program demo_dissect
+!!
+!!   Results:
+!!
+!!    INTEGER IS 456
+!!    REAL IS 50.0000000
+!!    STRING IS CHARACTER value
 !!
 !!##SEE ALSO
 !!    M_kracken, kracken
@@ -1798,7 +1805,7 @@ integer                            :: inew
    nlen=len(name1)
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(.not.allocated(dict_verbs)) call initd()
-   call locate(name,dict_verbs,indx,ier,mssge)       ! determine storage placement of the variable and whether it is new
+   call locate(dict_verbs,name,indx,ier,mssge)       ! determine storage placement of the variable and whether it is new
    if(ier  ==  -1)then                               ! an error occurred in determining the storage location
       call journal("error occurred in *store*")
       call journal(mssge)
@@ -1809,10 +1816,10 @@ integer                            :: inew
       new=1
    elseif(indx <= 0.and.(allow  ==  'add'.or. allow == 'define'))then        ! check if the name needs added and allow to add
       inew=iabs(indx)                                ! adding the new variable name in the variable name array
-      call insert(name,dict_verbs,inew)              ! pull down the dictionary arrays to make room for new value
-      call insert(" ",dict_vals,inew)
-      call insert(0,dict_calls,inew)
-      call insert(0,dict_lens,inew)
+      call insert(dict_verbs,name,inew)              ! pull down the dictionary arrays to make room for new value
+      call insert(dict_vals," ",inew)
+      call insert(dict_calls,0,inew)
+      call insert(dict_lens,0,inew)
 
       if(ier  ==  -1)then
          call journal("*store* could not add "//name(:nlen))
@@ -1844,34 +1851,35 @@ integer                            :: inew
 !-----------------------------------------------------------------------------------------------------------------------------------
    ! ignore special value that means leave alone, used by 'set up' calls to leave a value alone
    ! note that this will prevent the keyword from being defined.
+   indx=iabs(indx)  ! entry existed or was added
    if(indx.eq.0)then
       write(*,*)'*store* error occurred. INDEX=0'
    else if(value(1:4)  ==  "@LV@")then
       ! a leave-alone flag (for use by a 'defining' call)
       if(new  ==  0) then
-         value=value(5:)                                                              ! trim off the leading @LV@
-         if(dict_calls(iabs(indx)).eq.0.or.dict_vals(iabs(indx)).eq.' ')then
-            dict_vals(iabs(indx))=value                                               ! store a defined variable's value
+         value=value(5:)                                                  ! trim off the leading @LV@
+         if(dict_calls(INDX).eq.0.or.dict_vals(INDX).eq.' ')then
+            call replace(dict_vals,value,INDX)
          else
             if(allow.eq.'define')then
-               dict_vals(iabs(indx))= value                                           ! set a defined variable's value
+               call replace(dict_vals,value,INDX)                             ! set a defined variable's value
             else
-               dict_vals(iabs(indx))= trim(dict_vals(iabs(indx)))//' '//value         ! append a defined variable's value
+               call replace(dict_vals,trim(dict_vals(INDX))//' '//value,INDX) ! append a defined variable's value
             endif
          endif
-         dict_lens(iabs(indx))= len_trim(dict_vals(iabs(indx)))                       ! store length of string
-         dict_calls(iabs(indx))=dict_calls(iabs(indx))+1                              ! detect duplicate use of a keyword
+         dict_lens(INDX)= len_trim(dict_vals(INDX))                       ! store length of string
+         dict_calls(INDX)=dict_calls(INDX)+1                              ! detect duplicate use of a keyword
       endif
    else
-      if(dict_calls(iabs(indx)).eq.0.or.dict_vals(iabs(indx)).eq.' ')then             ! if first time given a value or value blank
-         dict_vals(iabs(indx))=value                                                  ! store a defined variable's value
+      if(dict_calls(INDX).eq.0.or.dict_vals(INDX).eq.' ')then             ! if first time given a value or value blank
+         call replace(dict_vals,value,indx)                               ! store a defined variable's value
       elseif(allow.eq.'replace'.or.allow.eq.'define')then
-         dict_vals(iabs(indx))= value                                                 ! set a defined variable's value
+         call replace(dict_vals,value,indx)                               ! set a defined variable's value
       else
-         dict_vals(iabs(indx))= trim(dict_vals(iabs(indx)))//' '//value               ! append a defined variable's value
+         call replace(dict_vals,trim(dict_vals(INDX))//' '//value,indx)   ! set a defined variable's value
       endif
-      dict_lens(iabs(indx))= len_trim(dict_vals(iabs(indx)))                          ! store length of string
-      dict_calls(iabs(indx))=dict_calls(iabs(indx))+1                                 ! detect duplicate use of a keyword
+      dict_lens(INDX)= len_trim(dict_vals(INDX))                          ! store length of string
+      dict_calls(INDX)=dict_calls(INDX)+1                                 ! detect duplicate use of a keyword
    endif
    !---------------------------------------------------!
    !()()()()()()()()()()-                              !
@@ -1933,7 +1941,7 @@ character(len=*),parameter::ident_18="@(#)M_kracken::subscript(3fp): return the 
    chars=chars0
    indx=0
    ierr=0
-   call locate(chars,dict_verbs,indx,ierr,mssge)                        ! look up position
+   call locate(dict_verbs,chars,indx,ierr,mssge)                        ! look up position
 !-----------------------------------------------------------------------------------------------------------------------------------
    if((ierr  ==  -1).or.(indx <= 0))then
       !call journal("*subscript* variable "//trim(chars)//" undefined")
@@ -2019,7 +2027,7 @@ character(len=*),intent(in)  :: verb
             if(dict_verbs(i10).eq.verb(:ii)//'_?')then        ! do not show the keyword VERB_?
                cycle MAKEMENU
             endif
-            call locate('?'//dict_verbs(i10),dict_verbs,indx,ierr,mssge) ! if ?VERB is defined assume it is a prompt
+            call locate(dict_verbs,'?'//dict_verbs(i10),indx,ierr,mssge) ! if ?VERB is defined assume it is a prompt
             if(indx.gt.0)then
                prompt=dict_vals(indx)
             else
@@ -2166,7 +2174,7 @@ character(len=*),intent(in)  :: verb
          if(dict_verbs(ifound).eq.verb(:ii)//'_?')then                    ! replaced this with FINISHED so exit
             exit INFINITE
          endif
-         call locate('?'//dict_verbs(ifound),dict_verbs,indx,ierr,mssge) ! if ?VERB is defined assume it is a prompt
+         call locate(dict_verbs,'?'//dict_verbs(ifound),indx,ierr,mssge) ! if ?VERB is defined assume it is a prompt
          if(indx.gt.0)then
             prompt=dict_vals(indx)
          else
@@ -2253,8 +2261,6 @@ integer,intent(in)            :: iwide0         ! if .ge. zero, how many columns
    integer                    :: i
    integer                    :: ii
    integer                    :: ich
-   integer                    :: ii71b
-   integer                    :: ilens
    integer                    :: istart
    integer                    :: iwide
    integer                    :: verb_length
@@ -2262,7 +2268,7 @@ integer,intent(in)            :: iwide0         ! if .ge. zero, how many columns
    if(.not.allocated(dict_verbs)) call initd()
 !-----------------------------------------------------------------------------------------------------------------------------------
    keyword_length=len(dict_verbs(1))                       ! get the length of dictionary keyword names
-   ii71b=len(message)-keyword_length-4                     ! assuming DICT_VERBS(ii) can fit into message
+   keyword_length=len(dict_verbs(1))                       ! get the length of dictionary keyword names
    iwide=iwide0
    if(iwide.le.0)iwide=80
    VERB_NAME=VERB_NAME0
@@ -2292,17 +2298,7 @@ integer,intent(in)            :: iwide0         ! if .ge. zero, how many columns
      do i=1,size(dict_verbs)
         if(DICT_VERBS(i).ne.' ')then
            ii=max(1,dict_lens(i))                                 ! number of characters in corresponding dictionary VALUE
-           if(ii.gt.ii71b)then                                    ! getting a little long, break it into two lines
-              ilens=1+keyword_length+3
-              write(message,'(3a)')' ',DICT_VERBS(i),' = '
-              call journal(message(:ilens))
-              ilens=ii
-              write(message,'(a)')dict_vals(i)(:ii)
-           else
-              ilens=1+keyword_length+3+ii
-              write(message,'(4a)')' ',DICT_VERBS(i),' = ', dict_vals(i)(:ii)
-           endif
-           call journal(message(:ilens))
+           call journal('sc',' ',DICT_VERBS(i),'-',dict_vals(i))
         endif
      enddo
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -2312,32 +2308,24 @@ integer,intent(in)            :: iwide0         ! if .ge. zero, how many columns
       SCAN_DICTIONARY: do i=1,size(dict_verbs)
          if(DICT_VERBS(i).eq.' ')cycle SCAN_DICTIONARY
          if(VERB_NAME(:ich).eq.DICT_VERBS(i)(:ich))then
-            ii=max(1,dict_lens(i))                          ! number of characters in corresponding dictionary VALUE
-            if(ii.gt.ii71b)then                             ! getting a little long, break it into two lines
-               ilens=1+keyword_length+3
-               write(message,'(3a)')' ',DICT_VERBS(i),' = '
-               call journal(message(:ilens))
-               ilens=ii
-               write(message,'(a)')dict_vals(i)(:ii)
-            else
-               ilens=1+keyword_length+3+ii
-               write(message,'(4a)')' ',DICT_VERBS(i),' = ', dict_vals(i)(:ii)
-            endif
-            call journal(message(:ilens))
+           ii=max(1,dict_lens(i))                          ! number of characters in corresponding dictionary VALUE
+           call journal('+sc',' ',DICT_VERBS(i),'=')
+           call journal(dict_vals(i)(:ii))
          endif
       enddo SCAN_DICTIONARY
 !-----------------------------------------------------------------------------------------------------------------------------------
    endif
+   call journal('sc',' dictionary size=',size(DICT_VERBS),'verb length=',len(DICT_VERBS),'value length=',len(DICT_VALS))
 !-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine show
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 subroutine initd()
-   dict_verbs=[character(len=IPverb) ::] ! string variable names
-   dict_vals=[character(len=IPvalue) ::] ! contains the values of string variables
-   dict_calls=[integer ::]               ! number of times this keyword stored on a call to parse
-   dict_lens=[integer ::]                ! significant lengths of string variable values
+   dict_verbs=[character(len=0) ::]  ! string variable names
+   dict_vals=[character(len=0)  ::]  ! contains the values of string variables
+   dict_calls=[integer ::]           ! number of times this keyword stored on a call to parse
+   dict_lens=[integer ::]            ! significant lengths of string variable values
 end subroutine initd
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
@@ -2398,7 +2386,11 @@ doubleprecision,allocatable :: d(:)
    call unit_check('dgets', all(dgets('MY_DOUBLE2').eq.[-1234.0d-20]),              msg=msg('MY_DOUBLE2'))
    call unit_check('dgets', size(dgets('NOTTHERE')).eq.0,                           msg=msg('NOTTHERE'))
    d=dgets('BAD')
-   call unit_check('dgets', size(d).eq.1.and.ieee_is_nan(d(1)),                     msg=msg('BAD'))
+   if(size(d).gt.0)then
+      call unit_check('dgets', size(d).eq.1.and.ieee_is_nan(d(1)),                  msg=msg('BAD'))
+   else
+      call unit_check('dgets', size(d).eq.1,                                        msg=msg('BAD'))
+   endif
    call unit_check('dgets', size(dgets('BLANK')).eq.0,                              msg=msg('BLANK'))
    call unit_check_done('dgets',msg='')
 end subroutine test_dgets
@@ -2579,7 +2571,11 @@ real,allocatable :: r(:)
    call unit_check('rgets', all(rgets('MY_REAL2').eq.[-1234.0e-20]),              msg=msg('MY_REAL2'))
    call unit_check('rgets', size(rgets('NOTTHERE')).eq.0,                         msg=msg('NOTTHERE'))
    r=rgets('BAD')
-   call unit_check('rgets', size(r).eq.1.and.ieee_is_nan(r(1)),                   msg=msg('BAD'))
+   if(size(r).gt.0)then
+      call unit_check('rgets', size(r).eq.1.and.ieee_is_nan(r(1)),                msg=msg('BAD'))
+   else
+      call unit_check('rgets', size(r).eq.1,                                      msg=msg('BAD'))
+   endif
    call unit_check('rgets', size(rgets('BLANK')).eq.0,                            msg=msg('BLANK'))
    call unit_check_done('rgets',msg='')
 end subroutine test_rgets
@@ -2651,11 +2647,11 @@ integer :: ier
    call store('MY_INTEGER',987654321,'replace',ier)  ! if 'replace' is used REPLACE instead of APPEND to current value
    call store('MY_UNKNOWN',987654321,'replace',ier)  ! 'replace' can only replace an existing entry, not add one
 
-   call unit_check('store',sget('MY_STRING')  == 'My string value',    msg=msg('MY_STRING'))
-   call unit_check('store',rget('MY_REAL')    == 1234.5677,            msg=msg('MY_REAL'))
-   call unit_check('store',lget('MY_LOGICAL'),                         msg=msg('MY_LOGICAL'))
-   call unit_check('store',iget('MY_INTEGER') == 987654321,            msg=msg('MY_INTEGER'))
-   call unit_check('store',dget('MY_DOUBLE')  == 12345670000.000000d0, msg=msg('MY_DOUBLE'))
+   call unit_check('store',sget('MY_STRING')  == 'My string value',    msg=msg('MY_STRING',sget('MY_STRING'),'My string value'))
+   call unit_check('store',rget('MY_REAL')    == 1234.5677,            msg=msg('MY_REAL',rget('MY_REAL'),1234.5677))
+   call unit_check('store',lget('MY_LOGICAL'),                         msg=msg('MY_LOGICAL',lget('MY_LOGICAL'),.true.))
+   call unit_check('store',iget('MY_INTEGER') == 987654321,            msg=msg('MY_INTEGER',iget('MY_INTEGER'),987654321))
+   call unit_check('store',dget('MY_DOUBLE')  == 12345670000.000000d0, msg=msg('MY_DOUBLE',dget('MY_DOUBLE'),12345670000.000000d0))
 
    call unit_check_done('store',msg='')
 end subroutine test_store

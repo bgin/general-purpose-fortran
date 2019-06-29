@@ -89,11 +89,11 @@ private
 !!
 !!##DESCRIPTION
 !!
-!!    Directly invert 2x2 matrix for speed (versus using, e.g. LAPACK)
+!!    Directly invert 2x2 matrix for speed (versus using, e.g. LAPACK
 !!
 !!##OPTIONS
 !!
-!!    A  original 2x2 matrix, may be INTEGER, REAL, DOUBLE, or COMPLEX
+!!    A  original 2x2 matrix, may be INTEGER, REAL, DOUBLE, or COMPLE
 !!    B  inverted 2x2 matrix, of same type as input matrix A
 !!
 !!##EXAMPLE
@@ -121,10 +121,10 @@ end interface invert_2x2
 !!    NNNNNN may be INTEGER,REAL,DOUBLEPRECISION,COMPLEX
 !!
 !!##DESCRIPTION
-!!    Directly invert 3x3 matrix for speed (versus using, e.g. LAPACK)
+!!    Directly invert 3x3 matrix for speed (versus using, e.g. LAPACK
 !!
 !!##OPTIONS
-!!    A  original 3x3 matrix, may be INTEGER, REAL, DOUBLE, or COMPLEX
+!!    A  original 3x3 matrix, may be INTEGER, REAL, DOUBLE, or COMPLE
 !!    B  inverted 3x3 matrix, of same type as input matrix A
 !!
 !!##EXAMPLE
@@ -150,10 +150,10 @@ end interface invert_3x3
 !!    NNNNNN may be INTEGER,REAL,DOUBLEPRECISION,COMPLEX
 !!
 !!##DESCRIPTION
-!!    Directly invert 4x4 matrix for speed (versus using, e.g. LAPACK)
+!!    Directly invert 4x4 matrix for speed (versus using, e.g. LAPACK
 !!
 !!##OPTIONS
-!!    A  original 4x4 matrix, may be INTEGER, REAL, DOUBLE, or COMPLEX
+!!    A  original 4x4 matrix, may be INTEGER, REAL, DOUBLE, or COMPLE
 !!    B  inverted 4x4 matrix, of same type as input matrix A
 !!
 !!##EXAMPLE
@@ -167,7 +167,7 @@ contains
 
 !>
 !!##NAME
-!!     julfit(3f) - [M_math:fit] linear least squares curve fits, destroys input arrays
+!!     julfit(3f) - [M_math:fit] linear least squares curve fits, destroys input array
 !!
 !!##SYNOPSIS
 !!
@@ -223,7 +223,7 @@ contains
 !>
 !! PRODUCT:        CLI library utilities and examples
 !! PROGRAM:        julfit(3f)
-!! DESCRIPTION:    linear least squares curve fits, destroys input arrays
+!! DESCRIPTION:    linear least squares curve fits, destroys input array
 !! AUTHOR:         John S. Urban
 !! HOME PAGE:      http://www.urbanjost.altervista.org/index.html
 !===================================================================================================================================
@@ -324,7 +324,7 @@ end subroutine julfit
 !===================================================================================================================================
 !>
 !!##NAME
-!!      julfit1(3f) - [M_math:fit] internal routine for linear least square fit(y=a*x+b), changes the y array
+!!      julfit1(3f) - [M_math:fit] internal routine for linear least square fit(y=a*x+b), changes the y arra
 !!##SYNOPSIS
 !!
 !!
@@ -411,7 +411,7 @@ end subroutine julfit
 !! REPORTING BUGS: http://www.urbanjost.altervista.org/
 !! HOME PAGE:      http://www.urbanjost.altervista.org/index.html
 !! COPYRIGHT:      Copyright (C) 1980 John S. Urban
-!! LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.
+!! LICENSE:        Public Domain. This is free software: you are free to change and redistribute it
 !!                 There is NO WARRANTY, to the extent permitted by law.
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -581,7 +581,7 @@ end subroutine julfit1
 !!        The first locally weighted regression (LWR) computation is carried out at X(1) and the last is carried out at X(N).
 !!        Suppose the LWR computation is carried out at X(I).
 !!        If X(I+1) is greater than or equal to X(I)+DELTA, the next LWR computation is carried out at X(I+1).
-!!        If X(I+1) is less than X(I)+DELTA, the next LWR computation is carried out at the largest X(J) which is greater than
+!!        If X(I+1) is less than X(I)+DELTA, the next LWR computation is carried out at the largest X(J) which is greater tha
 !!        or equal to X(I) but is not greater than X(I)+DELTA.
 !!        Then the fitted values for X(K) between X(I) and X(J), if there are any, are computed by linear interpolation
 !!        of the fitted values at X(I) and X(J).
@@ -745,7 +745,7 @@ end subroutine julfit1
 !!     Murray Hill NJ 07974
 !===================================================================================================================================
 !>
-!! AUTHOR:     Bill Cleveland
+!! AUTHOR:     Bill Clevelan
 !===================================================================================================================================
 subroutine lowess(x, y, n, f, nsteps, delta, ys, rw, res)
 use M_sort, only : sort_shell
@@ -925,7 +925,7 @@ real h1, sqrt, h9, amax1, range
 end subroutine lowest
 !>
 !!##NAME
-!!    splift(3f) - [M_math:fit] fits a spline to the n data points given in x and y
+!!    splift(3f) - [M_math:fit] fits a spline to the n data points given in x and
 !!                 and also returns first and second derivatives
 !!##SYNOPSIS
 !!
@@ -1001,7 +1001,7 @@ end subroutine lowest
 !>
 !! PRODUCT:        CLI library utilities and examples
 !! PROGRAM:        splift(3f)
-!! DESCRIPTION:    fits a spline to the n data points given in x and y
+!! DESCRIPTION:    fits a spline to the n data points given in x and
 !!##VERSION:        5.0: 20170129
 !! AUTHOR:         John S. Urban
 !! REPORTING BUGS: http://www.urbanjost.altervista.org/
@@ -1109,7 +1109,7 @@ end subroutine splift
 !===================================================================================================================================
 !>
 !!##NAME
-!!    splint(3f) - [M_math:fit] interpolates and twice differentiates a cubic spline
+!!    splint(3f) - [M_math:fit] interpolates and twice differentiates a cubic splin
 !!##SYNOPSIS
 !!
 !!   subroutine splint (x,y,ypp,n,xi,yi,ypi,yppi,ni,kerr)
@@ -1165,7 +1165,7 @@ end subroutine splift
 !>
 !! PRODUCT:        CLI library utilities and examples
 !! PROGRAM:        splint(3f)
-!! DESCRIPTION:    interpolates and twice differentiates a cubic spline
+!! DESCRIPTION:    interpolates and twice differentiates a cubic splin
 !!##VERSION:        5.0: 20170129
 !! AUTHOR:         John S. Urban
 !! REPORTING BUGS: http://www.urbanjost.altervista.org/
@@ -1255,7 +1255,7 @@ real               :: xr, xr2, xr3, xl, xl2, xl3
 END SUBROUTINE SPLINT
 !>
 !!##NAME
-!!      linearint(3f) - [M_math:fit] interpolates a curve defined by X(i),Y(i) using linear interpolation at given XI(j) values
+!!      linearint(3f) - [M_math:fit] interpolates a curve defined by X(i),Y(i) using linear interpolation at given XI(j) value
 !!##SYNOPSIS
 !!
 !!      SUBROUTINE linearint(X,Y,N,XI,YI,NI,KERR)
@@ -1285,7 +1285,7 @@ END SUBROUTINE SPLINT
 !>
 !! PRODUCT:        CLI library utilities and examples
 !! PROGRAM:        linearint(1)
-!! DESCRIPTION:    interpolates a curve <X(i),Y(i)> using linear interpolation at given XI(j) values
+!! DESCRIPTION:    interpolates a curve <X(i),Y(i)> using linear interpolation at given XI(j) value
 !!##VERSION:        1.0, 20031123
 !! AUTHOR:         John S. Urban (hacked from splint)
 !! HOME PAGE:      http://www.urbanjost.altervista.org/index.html
@@ -2739,7 +2739,7 @@ end SUBROUTINE QTFG
 
 !>
 !!##NAME
-!!    citer(3f) - [M_math:geometry] determine various geometric properties of circle segment
+!!    citer(3f) - [M_math:geometry] determine various geometric properties of circle segmen
 !!            given radius and area of the segment.
 !!##SYNOPSIS
 !!
@@ -2929,7 +2929,7 @@ character(len=*),parameter::ident_7="&
 END SUBROUTINE CITER
 !>
 !!##NAME
-!!   envelope(3f) - [M_math:geometry] Find vertices (in clockwise order) of a polygon enclosing the points (x(i), y(i), i=1, ..., n.
+!!   envelope(3f) - [M_math:geometry] Find vertices (in clockwise order) of a polygon enclosing the points (x(i), y(i), i=1, ..., n
 !!##SYNOPSIS
 !!
 !!    subroutine envelope(x, y, n, vertex, nvert)
@@ -3033,7 +3033,7 @@ END SUBROUTINE CITER
 !===================================================================================================================================
 !>
 !! Programmer: Alan Miller
-!! VERSION:    Latest revision - 12 September 1987
+!! VERSION:    Latest revision - 12 September 198
 !! VERSION:    Fortran 90 version - 8 August 1996
 !===================================================================================================================================
 SUBROUTINE envelope(x, y, n, vertex, nvert) !-- saved from url=(0048)http://users.bigpond.net.au/amiller/envelope.f90
@@ -3282,7 +3282,7 @@ END SUBROUTINE envelope
 !!    program demo_inpolygon
 !!    use M_draw
 !!    use M_drawplus, only : page
-!!    use M_math,     only : envelope        ! Find vertices (in clockwise order) of a polygon enclosing the points
+!!    use M_math,     only : envelope        ! Find vertices (in clockwise order) of a polygon enclosing the point
 !!    use M_math,     only : inpolygon       ! find if a point is inside a polygonal path
 !!    use M_math,     only : polyarea        ! compute the area bounded by a closed polygonal curve
 !!    implicit none
@@ -3447,7 +3447,7 @@ integer             :: i, j, m
 !!    program demo_envelope
 !!    use M_draw
 !!    use M_drawplus, only : page
-!!    use M_math,     only : envelope        ! Find vertices (in clockwise order) of a polygon enclosing the points
+!!    use M_math,     only : envelope        ! Find vertices (in clockwise order) of a polygon enclosing the point
 !!    use M_math,     only : locpt           ! find if a point is inside a polygonal path
 !!    use M_math,     only : polyarea        ! compute the area bounded by a closed polygonal curve
 !!    implicit none
@@ -3603,7 +3603,7 @@ END SUBROUTINE locpt
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!      poly_intercept(3f) - [M_math:geometry] intersection of a straight line and polygonal path
+!!      poly_intercept(3f) - [M_math:geometry] intersection of a straight line and polygonal pat
 !!##SYNOPSIS
 !!
 !!
@@ -3654,7 +3654,7 @@ END SUBROUTINE locpt
 !===================================================================================================================================
 !>
 !! PROCEDURE:    poly_intercept(3f)
-!! DESCRIPTION:  intersections of a straight line and polygonal path
+!! DESCRIPTION:  intersections of a straight line and polygonal pat
 !! AUTHOR:       Code converted using TO_F90 by Alan Miller
 !! VERSION:      Date: 2000-07-04  Time: 12:24:01
 !===================================================================================================================================
@@ -3839,7 +3839,7 @@ END SUBROUTINE Poly_Intercept
 !===================================================================================================================================
 !>
 !!##NAME
-!!        polyarea(3f) - [M_math:geometry] compute the area bounded by a simple closed polygonal curve
+!!        polyarea(3f) - [M_math:geometry] compute the area bounded by a simple closed polygonal curv
 !!
 !!##SYNOPSIS
 !!
@@ -3918,7 +3918,7 @@ END SUBROUTINE Poly_Intercept
 !===================================================================================================================================
 !>
 !! PROCEDURE:    polyarea(3f)
-!! DESCRIPTION:  compute the area bounded by a closed polygonal curve
+!! DESCRIPTION:  compute the area bounded by a closed polygonal curv
 !! AUTHOR:       Code converted using TO_F90 by Alan Miller
 !! VERSION:      2000-07-04  Time: 12:24:06
 !===================================================================================================================================
@@ -3995,7 +3995,7 @@ END FUNCTION polyarea_mid_point         ! The units are those of the points.
 !===================================================================================================================================
 !>
 !!##NAME
-!!        polyarea_shoelace(3f) - [M_math:geometry] compute area bounded by a simple closed polygon using the shoelace algorithm
+!!        polyarea_shoelace(3f) - [M_math:geometry] compute area bounded by a simple closed polygon using the shoelace algorith
 !!
 !!##SYNOPSIS
 !!
@@ -4124,7 +4124,7 @@ END FUNCTION polyarea_shoelace       ! Negative for clockwise, positive for coun
 !!    integer                         :: location
 !!
 !!##DESCRIPTION
-!!    Given a set of X and Y values and a target point, find the index of the closest point to the target
+!!    Given a set of X and Y values and a target point, find the index of the closest point to the targe
 !!    from the points described by the <X,Y> values. The X and Y arrays are assumed to be the same size.
 !!##OPTIONS
 !!    XTARGET   X coordinate of target point
@@ -4181,7 +4181,7 @@ end subroutine test_closest
 
 !>
 !!##NAME
-!!      extremum(3f) - [M_math:statistics] Finds the minimum and maximum value in a REAL array.
+!!      extremum(3f) - [M_math:statistics] Finds the minimum and maximum value in a REAL array
 !!##SYNOPSIS
 !!
 !!   subroutine extremum(array,small,big)
@@ -4282,7 +4282,7 @@ end subroutine extremum
 !!     real,intent(out)   :: STAT(13)
 !!##DESCRIPTION
 !!
-!!     Given a vector of real values calculate common basic statistical measures for
+!!     Given a vector of real values calculate common basic statistical measures fo
 !!     the array.
 !!
 !!##OPTIONS
@@ -4488,7 +4488,7 @@ END SUBROUTINE BDS
 !===================================================================================================================================
 !>
 !!##NAME
-!!    skekur1(3f) - [M_math:statistics] variant on calculating skewness and kurtosis of an array
+!!    skekur1(3f) - [M_math:statistics] variant on calculating skewness and kurtosis of an arra
 !!
 !!##SYNOPSIS
 !!
@@ -4554,7 +4554,7 @@ END SUBROUTINE SKEKUR1
 !===================================================================================================================================
 !>
 !!##NAME
-!!    skekurx(3f) - [M_math:statistics] Compute unbiased estimator of the population SKEWNESS and KURTOSIS
+!!    skekurx(3f) - [M_math:statistics] Compute unbiased estimator of the population SKEWNESS and KURTOSI
 !!##SYNOPSIS
 !!
 !!    SUBROUTINE SKEKURX(Y,N,YSKEW,YKURT)
@@ -4638,7 +4638,7 @@ END SUBROUTINE SKEKURX
 !===================================================================================================================================
 !>
 !!##NAME
-!!      ncr(3f) - [M_math] Calculate the number of unique combinations of r objects out of n.
+!!      ncr(3f) - [M_math] Calculate the number of unique combinations of r objects out of n
 !!
 !!##SYNOPSIS
 !!
@@ -4798,7 +4798,7 @@ END FUNCTION lngamma
 !===================================================================================================================================
 !>
 !!##NAME
-!!    stddev(3f) - [M_math:statistics] given a real vector and the vector average calculate the standard deviation
+!!    stddev(3f) - [M_math:statistics] given a real vector and the vector average calculate the standard deviatio
 !!
 !!##SYNTAX
 !!    function stddev(vector,n,avg)
@@ -4883,7 +4883,7 @@ end function stddev
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    almost(3f) - [M_math] return true or false if two numbers agree up to specified number of digits
+!!    almost(3f) - [M_math] return true or false if two numbers agree up to specified number of digit
 !!##SYNOPSIS
 !!
 !!    function almost(x,y,digits)
@@ -4973,7 +4973,7 @@ end function almost
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!      accdig(3f) - [M_math] compare two real numbers only up to a specified number of digits
+!!      accdig(3f) - [M_math] compare two real numbers only up to a specified number of digit
 !!
 !!##SYNOPSIS
 !!
@@ -5159,7 +5159,7 @@ END SUBROUTINE accdig
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!      dp_accdig(3f) - [M_math] compare two DOUBLEPRECISION numbers only up to a specified number of digits
+!!      dp_accdig(3f) - [M_math] compare two DOUBLEPRECISION numbers only up to a specified number of digit
 !!
 !!##SYNOPSIS
 !!
@@ -5391,7 +5391,7 @@ end subroutine dp_accdig
 !!    write(*,*) in_margin(4.00000,3.99999,0.0000001)
 !!    write(*,*) in_margin(4.00000,3.99999,0.000001)
 !!
-!!    write(*,*) in_margin([4.0,40.0,400.0,4000.0,40000.0], [3.9,39.9,399.9,3999.9,39999.9] ,0.000001)
+!!    write(*,*) in_margin([4.0,40.0,400.0,4000.0,40000.0], [3.9,39.9,399.9,3999.9,39999.9] ,0.000001
 !!    write(*,*) in_margin([4.0,40.0,400.0,4000.0,40000.0], [3.9,39.9,399.9,3999.9,39999.9] ,0.00001)
 !!
 !!    write(*,*) in_margin(4.00000,3.99999,0.00001)
@@ -5474,7 +5474,7 @@ integer,intent(in)         :: idigits0
 end function round
 !>
 !!##NAME
-!!     scale1(3f) - [M_math] find new range xMINP XMAXP divisible into approximately N linear intervals of size DIST
+!!     scale1(3f) - [M_math] find new range xMINP XMAXP divisible into approximately N linear intervals of size DIS
 !!
 !!##SYNOPSIS
 !!
@@ -5685,7 +5685,7 @@ end subroutine scale1
 !!       ! treme(2)=ceiling(treme(2))
 !!       ! if(treme(2).eq.treme(1))treme(2)=treme(2)+1
 !!       write(*,'(a,g0,a,g0,a,i0,a,g0)') &
-!!               & 'nice range is 10**',log10(xminp),' to 10**',log10(xmaxp),' by ', &
+!!               & 'nice range is 10**',log10(xminp),' to 10**',log10(xmaxp),' by ',
 !!               & nint((log10(xmaxp)-log10(xminp))/dist),' intervals of ',dist
 !!     enddo
 !!     end program demo_scale3
@@ -5812,7 +5812,7 @@ end subroutine scale3
 
 !>
 !!##NAME
-!!    quadratic(3f) - [M_math] calculate the roots of a quadratic formula even if they are complex
+!!    quadratic(3f) - [M_math] calculate the roots of a quadratic formula even if they are comple
 !!
 !!##SYNOPSIS
 !!
@@ -5951,7 +5951,7 @@ end subroutine quadratic
 !!          write(*,*)'K=',k
 !!          call magic_square(arr(:k,:k))
 !!          do i=1,k
-!!             write(*,'(i2,":",*(i5):)')i,(int(arr(i,j)),j=1,k),sum(arr(k,:k))
+!!             write(*,'(i2,":",*(i5):)')i,(int(arr(i,j)),j=1,k),sum(arr(k,:k)
 !!          enddo
 !!       enddo
 !!    end program demo_magic_square

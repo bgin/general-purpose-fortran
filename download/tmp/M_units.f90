@@ -110,7 +110,7 @@
 !!                    a lower-case Gamma.
 !!   "golden_ratio"
 !!
-!!   "pi"             The ratio of the circumference of a circle to the diameter of the circle
+!!   "pi"             The ratio of the circumference of a circle to the diameter of the circl
 !!
 !!##NOTES
 !!
@@ -308,7 +308,7 @@ contains
 !!    implicit none
 !!       write(*,*)'With REAL array input    ', c2f([ -40.0, 0.0, 100.0 ])
 !!       write(*,*)'With INTEGER array input ', c2f([ -40,   0,   100   ])
-!!       write(*,*)'With DOUBLEPRECISION     ', c2f(-40.0d0),c2f(0.0d0),c2f(100.0d0)
+!!       write(*,*)'With DOUBLEPRECISION     ', c2f(-40.0d0),c2f(0.0d0),c2f(100.0d0
 !!    end program demo_c2f
 !!
 !!   Results
@@ -349,7 +349,7 @@ end function c2f
 !!    implicit none
 !!       write(*,*)'With REAL array input    ', f2c([ -40.0,32.0, 212.0 ])
 !!       write(*,*)'With INTEGER array input ', f2c([ -40,  32,   212   ])
-!!       write(*,*)'With DOUBLEPRECISION     ', f2c(-40.0d0),f2c(32.0d0),f2c(212.0d0)
+!!       write(*,*)'With DOUBLEPRECISION     ', f2c(-40.0d0),f2c(32.0d0),f2c(212.0d0
 !!    end program demo_f2c
 !!
 !!   Results
@@ -394,7 +394,7 @@ end function f2c
 !!    real :: pi=real(pi8)
 !!       write(*,*)'With REAL array input    ', r2d([ 0.0, PI/4.0, PI/2.0, 3.0*PI/2.0, PI ])
 !!       write(*,*)'With INTEGER array input ', r2d([0,1,2,3,4])
-!!       write(*,*)'With DOUBLEPRECISION     ', r2d(0.0d0),r2d(PI/4.0d0),r2d(PI/2.0d0),r2d(3.0d0*PI/2.0d0),r2d(PI)
+!!       write(*,*)'With DOUBLEPRECISION     ', r2d(0.0d0),r2d(PI/4.0d0),r2d(PI/2.0d0),r2d(3.0d0*PI/2.0d0),r2d(PI
 !!    end program demo_r2d
 !!
 !!   Results
@@ -461,9 +461,9 @@ end function r2d_r
 !!
 !!   Results
 !!
-!!    With REAL array input    0.00000 0.785398185 1.57079637 2.35619450 3.14159274
-!!    With INTEGER array input 0.00000 0.785398185 1.57079637 2.35619450 3.14159274
-!!    With DOUBLEPRECISION     0.00000 0.785398185 1.57079637 2.35619450 3.14159274
+!!    With REAL array input    0.00000 0.785398185 1.57079637 2.35619450 3.1415927
+!!    With INTEGER array input 0.00000 0.785398185 1.57079637 2.35619450 3.1415927
+!!    With DOUBLEPRECISION     0.00000 0.785398185 1.57079637 2.35619450 3.1415927
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 elemental real function d2r_r(degrees)
@@ -518,7 +518,7 @@ end function d2r_i
 !!    implicit none
 !!       write(*,*)'With REAL array input    ', sind([ 0.0, 15.0, 30.0, 45.0, &
 !!                                            & 60.0, 75.0, 90.0, 180.0, 270.0 ])
-!!       write(*,*)'With INTEGER array input ', sind([0,15,30,45,60,75,90,180,270])
+!!       write(*,*)'With INTEGER array input ', sind([0,15,30,45,60,75,90,180,270]
 !!       write(*,*)'With DOUBLEPRECISION     ',           &
 !!          & sind(0.0d0),sind(15.0d0),sind(90.0/3.0d0),  &
 !!          & sind(90.0/2.0d0),sind(60.0d0),sind(75.0d0), &
@@ -582,13 +582,13 @@ end function sind
 !!
 !!     With REAL array input      1.00000000       0.965925813   0.866025448
 !!                                0.707106769      0.499999970   0.258819073
-!!                               -4.37113883E-08  -1.00000000    1.19248806E-08
+!!                               -4.37113883E-08  -1.00000000    1.19248806E-0
 !!     With INTEGER array input   1.00000000       0.965925813   0.866025448
 !!                                0.707106769      0.499999970   0.258819073
-!!                               -4.37113883E-08  -1.00000000    1.19248806E-08
+!!                               -4.37113883E-08  -1.00000000    1.19248806E-0
 !!     With DOUBLEPRECISION       1.00000000       0.965925813   0.866025448
 !!                                0.707106769      0.499999970   0.258819073
-!!                               -4.37113883E-08  -1.00000000    1.19248806E-08
+!!                               -4.37113883E-08  -1.00000000    1.19248806E-0
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 elemental real function cosd(angle_in_degrees)
@@ -613,7 +613,7 @@ end function cosd
 !!    Calculate tangent of input value in degrees
 !!
 !!##OPTIONS
-!!    degrees    any standard scalar value supported by anyscalar_to_real(3f).
+!!    degrees    any standard scalar value supported by anyscalar_to_real(3f)
 !!##EXAMPLE
 !!
 !!   Sample program
@@ -666,7 +666,7 @@ end function tand
 !!    program demo_asind
 !!    use M_units, only :  asind
 !!    implicit none
-!!       write(*, *)asind([ 0.0, 0.258819044, 0.5, 0.707106829, 0.866025448,  &
+!!       write(*, *)asind([ 0.0, 0.258819044, 0.5, 0.707106829, 0.866025448,
 !!                       & 0.965925813, 1.0, -8.74227766E-08, -1.0 ])
 !!    end program demo_asind
 !!
@@ -713,8 +713,8 @@ end function asind
 !!
 !!   Results
 !!
-!!       1.00000000      0.707106769     -0.500000000      -1.00000000       1.00000000
-!!       0.00000000       45.0000000       120.000000       180.000000       0.00000000
+!!       1.00000000      0.707106769     -0.500000000      -1.00000000       1.0000000
+!!       0.00000000       45.0000000       120.000000       180.000000       0.0000000
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 elemental real function acosd(x)
@@ -756,8 +756,8 @@ end function acosd
 !!
 !!   Results:
 !!
-!!       0.00000000       1.00000000      -1.73205078      -1.22464685E-16  -4.89858741E-16
-!!       0.00000000       45.0000000      -60.0000000      -7.01670955E-15  -2.80668382E-14
+!!       0.00000000       1.00000000      -1.73205078      -1.22464685E-16  -4.89858741E-1
+!!       0.00000000       45.0000000      -60.0000000      -7.01670955E-15  -2.80668382E-1
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 elemental real function atand(x)
@@ -772,7 +772,7 @@ end function atand
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!    atan2d(3f) - [M_units:TRIGONOMETRY] calculate arctangent of the complex number X + i Y
+!!    atan2d(3f) - [M_units:TRIGONOMETRY] calculate arctangent of the complex number X + i
 !!##SYNOPSIS
 !!
 !!    elemental real function atan2d(x,y)
@@ -853,7 +853,7 @@ end function atan2d
 !!
 !!   Results
 !!
-!!     With REAL array input     -0.304800004   0.00000000  0.304800004  2.54000016E-02
+!!     With REAL array input     -0.304800004   0.00000000  0.304800004  2.54000016E-0
 !!     With INTEGER array input  -0.304800004   0.00000000  0.304800004
 !!     With DOUBLEPRECISION      -0.304800004   0.00000000  0.304800004
 !===================================================================================================================================
@@ -894,7 +894,7 @@ end function feet_to_meters
 !!    implicit none
 !!       write(*,*)'With REAL array input    ', meters_to_feet([ -1.0, 0.0, 1.0 ])
 !!       write(*,*)'With INTEGER array input ', meters_to_feet([ -1,   0,   1   ])
-!!       write(*,*)'With DOUBLEPRECISION     ', meters_to_feet(-1.0d0),meters_to_feet(0.0d0),meters_to_feet(1.0d0)
+!!       write(*,*)'With DOUBLEPRECISION     ', meters_to_feet(-1.0d0),meters_to_feet(0.0d0),meters_to_feet(1.0d0
 !!    end program demo_meters_to_feet
 !!
 !!   Results
@@ -916,7 +916,7 @@ end function meters_to_feet
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!     cartesian_to_spherical(3f) - [M_units:TRIGONOMETRY] convert Cartesian coordinates to ISO polar coordinates
+!!     cartesian_to_spherical(3f) - [M_units:TRIGONOMETRY] convert Cartesian coordinates to ISO polar coordinate
 !!##SYNOPSIS
 !!
 !!    subroutine cartesian_to_spherical(x,y,z,radius,inclination,azimuth)
@@ -985,7 +985,7 @@ end subroutine cartesian_to_spherical
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!     spherical_to_cartesian(3f) - [M_units:TRIGONOMETRY] convert ISO polar coordinates to Cartesian coordinates
+!!     spherical_to_cartesian(3f) - [M_units:TRIGONOMETRY] convert ISO polar coordinates to Cartesian coordinate
 !!##SYNOPSIS
 !!
 !!    subroutine spherical_to_cartesian(radius,inclination,azimuth,x,y,z)
@@ -1056,7 +1056,7 @@ end subroutine spherical_to_cartesian
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!     cartesian_to_polar(3f) - [M_units:TRIGONOMETRY] convert Cartesian coordinates to polar coordinates
+!!     cartesian_to_polar(3f) - [M_units:TRIGONOMETRY] convert Cartesian coordinates to polar coordinate
 !!##SYNOPSIS
 !!
 !!    subroutine cartesian_to_polar(x,y,radius,inclination)
@@ -1118,7 +1118,7 @@ end subroutine cartesian_to_polar
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!     polar_to_cartesian(3f) - [M_units:TRIGONOMETRY] convert polar coordinates to Cartesian coordinates
+!!     polar_to_cartesian(3f) - [M_units:TRIGONOMETRY] convert polar coordinates to Cartesian coordinate
 !!##SYNOPSIS
 !!
 !!    subroutine polar_to_cartesian(radius,inclination,x,y)
@@ -1191,7 +1191,7 @@ end subroutine polar_to_cartesian
 !!    character(len=2),intent(out) :: symbol
 !!
 !!##DESCRIPTION
-!!    Given an atomic number in the range of 1 to 109 return the corresponding element symbol name
+!!    Given an atomic number in the range of 1 to 109 return the corresponding element symbol nam
 !!
 !!##OPTIONS
 !!    atomnum    an atomic number from 1 to 109
@@ -1360,7 +1360,7 @@ end subroutine atomnum2symbol
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!    symbol2atomnum(3f) - [M_units:SYMBOLS] return atomic number given element symbol name
+!!    symbol2atomnum(3f) - [M_units:SYMBOLS] return atomic number given element symbol nam
 !!##SYNOPSIS
 !!
 !!   subroutine symbol2atomnum(symbol,atomnum)
@@ -1434,7 +1434,7 @@ end subroutine symbol2atomnum
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!    pounds_to_kilograms(3f) - [M_units:MASS] - converts a measurement in pounds-mass to kilograms.
+!!    pounds_to_kilograms(3f) - [M_units:MASS] - converts a measurement in pounds-mass to kilograms
 !!
 !!##SYNOPSIS
 !!
@@ -1494,7 +1494,7 @@ end function pounds_to_kilograms
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    norm_angle_rad(3f) - [M_units:TRIGONOMETRY] Return input angle given in radians as angle between 0 and 2pi
+!!    norm_angle_rad(3f) - [M_units:TRIGONOMETRY] Return input angle given in radians as angle between 0 and 2p
 !!##SYNOPSIS
 !!
 !!    elemental function norm_angle_rad(ang) result(rev)
@@ -1554,7 +1554,7 @@ end function norm_angle_rad_real
 !===================================================================================================================================
 !>
 !!##NAME
-!!    norm_angle_360(3f) - [M_units:TRIGONOMETRY] Return input angle given in degrees as angle between 0 and 360
+!!    norm_angle_360(3f) - [M_units:TRIGONOMETRY] Return input angle given in degrees as angle between 0 and 36
 !!
 !!##SYNOPSIS
 !!
@@ -1659,14 +1659,14 @@ end function norm_angle_360_integer
 !!    real(kind=real32|real64|real128) :: inf
 !!    real(kind=real32|real64|real128) :: value
 !!##DESCRIPTION
-!!    Return an inf (Infinity) value. The type returned will be the same
+!!    Return an inf (Infinity) value. The type returned will be the sam
 !!    kind as the passed value.
 !!##OPTIONS
 !!    value  A real value whose kind is used to define the kind of the
 !!           returned value.
 !!##RETURNS
-!!    inf    returns an inf value ("Infinity") on platforms that support
-!!           inf values. The kind is determined by the kind of the input
+!!    inf    returns an inf value ("Infinity") on platforms that suppor
+!!           inf values. The kind is determined by the kind of the inpu
 !!           value.
 !!##EXAMPLE
 !!
@@ -1754,13 +1754,13 @@ end function inf128
 !!    real(kind=real32|real64|real128) :: nan
 !!    real(kind=real32|real64|real128) :: value
 !!##DESCRIPTION
-!!    Return a NaN (Not a number) value. The type returned will be the same
+!!    Return a NaN (Not a number) value. The type returned will be the sam
 !!    kind as the passed value.
 !!##OPTIONS
 !!    value  A real value whose kind is used to define the kind of the
 !!           returned value.
 !!##RETURNS
-!!    nan    returns a Nan value ("Not a number") on platforms that support
+!!    nan    returns a Nan value ("Not a number") on platforms that suppor
 !!           NaN values. The kind is determined by the kind of the input
 !!           value.
 !!##EXAMPLE
@@ -1857,7 +1857,7 @@ end function nan128
 !===================================================================================================================================
 !>
 !!##NAME
-!!    is_even(3f) - [M_units] determine if integer is even
+!!    is_even(3f) - [M_units] determine if integer is eve
 !!##SYNOPSIS
 !!
 !!    elemental pure logical is_even(int)
@@ -1917,7 +1917,7 @@ end function is_even
 !===================================================================================================================================
 !>
 !!##NAME
-!!    is_nan(3f) - [M_units] determine if integer is a Nan (Not a Number) value
+!!    is_nan(3f) - [M_units] determine if integer is a Nan (Not a Number) valu
 !!##SYNOPSIS
 !!
 !!    elemental pure logical is_nan(value)

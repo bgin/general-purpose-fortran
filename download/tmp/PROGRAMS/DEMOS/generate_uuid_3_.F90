@@ -12,6 +12,6 @@
              write(*,'("urn:uuid:",a36)')uuid
              !
              ! a good scratch file name
-             open(file=''/tmp/scratch_'//uuid,unit=10)
+             open(file='/tmp/scratch_'//uuid,unit=10)
              !
           end program demo_generate_uuid

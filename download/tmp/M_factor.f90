@@ -1,6 +1,6 @@
 !>
 !!##NAME
-!!      M_factor(3fm) - [M_factor] module for least common multiple, greatest common divisor, and prime factors
+!!      M_factor(3fm) - [M_factor] module for least common multiple, greatest common divisor, and prime factor
 !!##SYNOPSIS
 !!
 !!
@@ -168,7 +168,7 @@ contains
 !!       subroutine writeit(ii,jj,answer)
 !!       integer,intent(in) :: ii,jj
 !!       integer,intent(in) :: answer
-!!          write(*,'("  For lcm(",I0,",",I0,") the value is ",I0," which is ",L1)')&
+!!          write(*,'("  For lcm(",I0,",",I0,") the value is ",I0," which is ",L1)')
 !!             & ii,jj,lcm(ii,jj),lcm(ii,jj).eq.answer
 !!       end subroutine writeit
 !!
@@ -250,7 +250,7 @@ end function lcm
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    lcm_vector(3fp) - least common multiple of integer vector m(:)
+!!    lcm_vector(3fp) - least common multiple of integer vector m(:
 !!
 !!##SYNOPSIS
 !!
@@ -288,7 +288,7 @@ end function lcm_vector
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    lcm_matrix(3fp) - least common multiple of integer array m(:,:)
+!!    lcm_matrix(3fp) - least common multiple of integer array m(:,:
 !!
 !!##SYNOPSIS
 !!
@@ -313,7 +313,7 @@ end function lcm_matrix
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    lcm_cuboid(3fp) - least common multiple of integer cuboid m(:,:,:)
+!!    lcm_cuboid(3fp) - least common multiple of integer cuboid m(:,:,:
 !!
 !!##SYNOPSIS
 !!
@@ -391,7 +391,7 @@ end subroutine test_least_common_multiple
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    greatest_common_divisor(3f) - [M_factor] calculate greatest common divisor of
+!!    greatest_common_divisor(3f) - [M_factor] calculate greatest common divisor o
 !!                                  two integers or vector m(:),
 !!                                  matrix m(:,:) or cuboid m(:,:,:)
 !!
@@ -525,7 +525,7 @@ end subroutine test_least_common_multiple
 !! MODIFIED BY: John S. Urban
 !! PURPOSE:     Computes the Greatest Common Divisor of two integers.
 !!              If M=N=0 then the GCD is defined to be zero.
-!!              IE. GCD is a factor of M and N and GCD is the largest such factor.
+!!              IE. GCD is a factor of M and N and GCD is the largest such factor
 !! REFERENCES:  Euler algorithm (slow)
 !! UUID:        UUID=de642070-4ecd-414b-895c-578ea7547948
 !===================================================================================================================================
@@ -702,7 +702,7 @@ end subroutine test_greatest_common_divisor
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    i_is_prime(3f) - [M_factor] Determine if a number is prime using Sieve of Erasthosthenes
+!!    i_is_prime(3f) - [M_factor] Determine if a number is prime using Sieve of Erasthosthene
 !!##SYNOPSIS
 !!
 !!    function i_is_prime ( n )
@@ -828,7 +828,7 @@ end subroutine test_i_is_prime
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    prime_factors(3f) - [M_factor] decompose a number into its prime factors
+!!    prime_factors(3f) - [M_factor] decompose a number into its prime factor
 !!##SYNOPSIS
 !!
 !!    call prime_factors(number,nprm,iprm,iexp[,verbose])

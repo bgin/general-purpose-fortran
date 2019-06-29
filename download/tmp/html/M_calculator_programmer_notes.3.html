@@ -50,20 +50,17 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <h2>Internal routines:</h2>
 
 <ul>
-   <li><em>JUPARS</em> crack out the parenthesis and pass each subexpression to JFUNS or JUARGS
-   <li><em>JUFUNS</em> processes function call strings of form "fun(a1,a2,a3,...pi)"
-   <li><em>STUFFTOK</em> stores a string being returned by a function into the string dictionary
-   <li><em>JUARGS</em> separates a list of expressions that do not contain parenthesis and passes them to JUCALS
-   <li><em>JUCALS</em> resolve a single expression into a value and restring it
-   <li><em>JUPOWS</em> process power expressions "a**b" in expressions from JUCALS
-   <li><em>JUFACS</em> process multiplies and divides in expressions from JUCALS
-   <li><em>JURTOA</em> return a numeric string from a REAL value
-   <li><em>JUSQES</em> removes spaces and tokenizes strings before the calculator starts to crack the input expression.
-   <li><em>JUBOUS</em> find where a new variable name should be stored or where an old name and thus it's associated value
-   <li><em>JUADDR</em> Add a new variable name and it's value to the dictionary.
-   <li><em>JUADDS</em> add a new string variable and it's value to the string dictionary
-   <li><em>JUATOA</em> given a string variable name return it's value
-   <li><em>JUFIND</em> given a function name find the line JUFUNS() should go to
+   <li><em>parens_   </em> crack out the parenthesis and pass each subexpression to JFUNS or args_
+   <li><em>funcs_   </em> processes function call strings of form "fun(a1,a2,a3,...pi)"
+   <li><em>stufftok_ </em> stores a string being returned by a function into the string dictionary
+   <li><em>args_   </em> separates a list of expressions that do not contain parenthesis and passes them to expressions_
+   <li><em>expressions_   </em> resolve a single expression into a value and restring it
+   <li><em>pows_   </em> process power expressions "a**b" in expressions from expressions_
+   <li><em>factors_   </em> process multiplies and divides in expressions from expressions_
+   <li><em>r_to_a_  </em> return a numeric string from a REAL value
+   <li><em>squeeze_ </em> removes spaces and tokenizes strings before the calculator starts to crack the input expression.
+   <li><em>a_to_a_  </em> given a string variable name return it's value
+   <li><em>JUFIND   </em> given a function name find the line funcs_() should go to
 </ul>
 
 <h2>public convenience routines in M_calculator_plus(3f) module</h2>
@@ -134,15 +131,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <h2> <a name="number_of_variables"> Changing number of variable names </a> </h2>
 
 <p>
-   The number of variable names permitted is controlled by the line
-</p>
-
-<pre>
-      parameter(ic_calc=2345)
-</pre>
-
-<p>
-   The number of values in the X() and Y() arrays is similarly controlled by
+   The number of values in the X() and Y() arrays is controlled by
 </p>
 
 <pre>
@@ -170,7 +159,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <h2> <a name="new_function"> Adding a new function directly to the calculator </a> </h2>
 
 <p>
-   To add a new function directly to the calculator go into JUFUNS()
+   To add a new function directly to the calculator go into funcs_()
    and add a new case to the SELECT. See the many existing case statements
    for examples on how to pass and return arguments.
 </p>
@@ -191,7 +180,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
           ii=args(1)   ! assume argument 1 is a string, then this is
                        ! pointer to where the string is
           ctmp=values(ii) ! get the string argument
-          iend=valuer(ii) ! get the length of string
+          iend=values_len(ii) ! get the length of string
 
           ! RETURNING A STRING
           ctmp=newchar(ctmp(:iend)) ! set returned value
@@ -203,7 +192,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 
 <p>
    Exactly how to extract and return character strings may seem a little
-   confusing. Remember there are over 70 examples in <a >JUFUNS()</a>.
+   confusing. Remember there are over 70 examples in <a >funcs_()</a>.
 </p>
 
 <hr><!-- =================================================================== -->
@@ -222,13 +211,13 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 </p>
 
 <p>
-   At first any unknown function name causes an error in JUFUNS().
+   At first any unknown function name causes an error in funcs_().
 </p>
 
 
 <pre>
     aa(10)
-    error===>*jufuns* function not found: aa
+    error===>*funcs_* function not found: aa
 </pre>
 
 <p>

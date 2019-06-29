@@ -50,4 +50,4 @@ SEE ALSO
        Nonelemental:
               REPEAT, TRIM
 
-                                                          June 16, 2019                                                verify(3)
+                                                             June 29, 2019                                                    verify(3)

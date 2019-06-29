@@ -996,7 +996,7 @@ uq(471:NUNITSQ)='                            '
 !!  Dnb Ratio                              DNB Ratio
 !!  Voltage  (MV)                          Voltage  (mV)
 !!  Zro2 Total Mass  (%)                   ZrO2 Total Mass  (%)
-!!  Reactivity Insertion  (pcm/s)          Reactivity Insertion Rate (pcm/s)
+!!  Reactivity Insertion  (pcm/s)          Reactivity Insertion Rate (pcm/s
 !!  Internal Energy  (Btu/lbm-s)           Internal Energy  (Btu/lbm)
 !===================================================================================================================================
 
@@ -1328,15 +1328,15 @@ real              :: rtemp
    call stuff('VFALSE',0.0d0,'')        ! a handy mnemonic for VOGLE logicals
    call stuff('VTRUE',1.0d0,'')         ! a handy mnemonic for VOGLE logicals
    call stuff('PLTOBJECT',-1.0d0,'')    ! number of object hcopy command should copy if positive
-   call stuffa('$PAUSE',' ',idum,'')    ! set by p command;
+   call stuffa('$PAUSE',' ','')    ! set by p command;
    call stuff('DETACH',ifnq,'')          ! unit number to detach if run out of room
    call stuff('LABELPLACES',0.0d0,'')   ! calculator variable that really sets ilongq2
    call stuff('PAUSE',1.0d0,'')         ! set by p command; can be used to except parcel loops
    call stuff('STATUS',0.0d0,'')        ! sometimes set by a command to say it went OK
    call stuff('ZOOM_FACTOR',10.0d0,'')  ! what percent to translate/pan when in zoom mode
    call stuff('SCALE_CHARS',0.0d0,'')   ! how many characters wide total output of $scale should be
-   call stuffa('$COL_SAVE_FORMAT','(10000(g14.7,1x):)',idum,'')  ! format statement for save -type col
-   call stuffa('$HDEVICE','ppsc',idum,'')  ! calculator variable for hcopy device
+   call stuffa('$COL_SAVE_FORMAT','(10000(g14.7,1x):)','')  ! format statement for save -type col
+   call stuffa('$HDEVICE','ppsc','')  ! calculator variable for hcopy device
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
    ! multiplier and constant for a top x axis scaled from the bottom axis
    axmulq=0
@@ -1358,18 +1358,18 @@ real              :: rtemp
    do iii=1,24,2
       bname='$PLT'//bannames(iii:iii+1)
       call get_environment_variable(bname(2:6),temp1q)        ! get default string for ban command from environment variable
-      call stuffa(bname,temp1q,idum,'')
+      call stuffa(bname,temp1q,'')
    enddo
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-   call stuffa('$VERSION','6.0.0',idum,'')      ! might be handy
+   call stuffa('$VERSION','6.0.0','')      ! might be handy
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 !  Allow abbreviation of commonly used Font control such as
-   call stuffa('$sup','v=0.5 s=0.5',idum,'')  ! Superscript
-   call stuffa('$sub','v=-0.5 s=0.5',idum,'') ! Subscript
-   call stuffa('$rp','b=0 S=1',idum,'')       ! Return position/size
-   call stuffa('$g','f=9',idum,'')            ! Greek
-   call stuffa('$y','f=16',idum,'')           ! Symbol
-   call stuffa('$rf','f=0',idum,'')           ! Return font
+   call stuffa('$sup','v=0.5 s=0.5','')  ! Superscript
+   call stuffa('$sub','v=-0.5 s=0.5','') ! Subscript
+   call stuffa('$rp','b=0 S=1','')       ! Return position/size
+   call stuffa('$g','f=9','')            ! Greek
+   call stuffa('$y','f=16','')           ! Symbol
+   call stuffa('$rf','f=0','')           ! Return font
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
    call stuff('smoothmode',0.0d0,'')
    call stuff('smoothpts',10.0d0,'')
@@ -1495,7 +1495,7 @@ integer                     :: idum
       SVD_hcopy_OO=temp_dev                         ! store value specified on command  as new default
       hcopy_OO=temp_dev
    endif
-   call stuffa('$HDEVICE',hcopy_OO,idum,'')         ! let calculator know last hcopy device used to use as default
+   call stuffa('$HDEVICE',hcopy_OO,'')         ! let calculator know last hcopy device used to use as default
 END BLOCK DEVICE
 !-----------------------------------------------------------------------------------------------------------------------------------
 SIZE: BLOCK
@@ -3508,7 +3508,7 @@ real               :: yy
    call vinit(value)
 !-----------------------------------------------------------------------========----------------------------------------------------
    call vflush()                                ! forces a flush
-   call stuffa('$DEVICE',value,idum,'')         ! set calculator variable so user can know what device is
+   call stuffa('$DEVICE',value,'')         ! set calculator variable so user can know what device is
    call getdisplaysize(xx,yy)                   ! get screen size in terms of raster units
    shape=xx/yy                                  ! determine initial aspect ratio of drawing surface and set drawing area accordingly
    call xy_aspct(0.0,shape,0.0,1.0)
@@ -4344,10 +4344,10 @@ integer                :: ivalue
       else  ! flag to quit
          call stuff('PAUSE',0.0d0,'')
       endif
-      call stuffa('$PAUSE',cjunk,idum,'')
+      call stuffa('$PAUSE',cjunk,'')
       return
 999   continue
-      call stuffa('$PAUSE',cjunk,idum,'')
+      call stuffa('$PAUSE',cjunk,'')
       call stuff('PAUSE',1.0d0,'')
 end subroutine xy_pause
 !===================================================================================================================================

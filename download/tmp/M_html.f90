@@ -1,6 +1,6 @@
 !>
 !!##NAME
-!!    M_html(3fm) - [M_html] a module of routines to help write output as HTML documents
+!!    M_html(3fm) - [M_html] a module of routines to help write output as HTML document
 !!
 !!##SYNOPSIS
 !!
@@ -28,7 +28,7 @@ CONTAINS
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    h_array(3f) - [M_html] print a numeric array as an HTML table
+!!    h_array(3f) - [M_html] print a numeric array as an HTML tabl
 !!
 !!##SYNOPSIS
 !!
@@ -86,7 +86,7 @@ end subroutine h_array
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    h_close(3f) - [M_html] close an HTML file
+!!    h_close(3f) - [M_html] close an HTML fil
 !!##SYNOPSIS
 !!
 !!   subroutine h_close(iounit)
@@ -136,7 +136,7 @@ end subroutine h_close
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    h_open(3f) - [M_html] close an HTML file
+!!    h_open(3f) - [M_html] close an HTML fil
 !!##SYNOPSIS
 !!
 !!   subroutine h_open(iounit)

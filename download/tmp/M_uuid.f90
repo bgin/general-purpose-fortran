@@ -1,7 +1,7 @@
 module M_uuid
 !>
 !!##NAME
-!!    M_uuid(3f) - [M_uuid] a module of UUID (Universally Unique IDentifier) procedures
+!!    M_uuid(3f) - [M_uuid] a module of UUID (Universally Unique IDentifier) procedure
 !!
 !!##SYNOPSIS
 !!
@@ -69,7 +69,7 @@ contains
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
 !>
-!! ! generate_uuid(3f) was originally derived from the xmlf90 codebase, (c) Alberto Garcia & Jon Wakelin, 2003-2004.
+!! ! generate_uuid(3f) was originally derived from the xmlf90 codebase, (c) Alberto Garcia & Jon Wakelin, 2003-2004
 !! ! It also calls RNG routines from Scott Ladd <scott.ladd@coyotegulch.com>, and the libFoX modules. Although
 !! ! some sections have been replaced, generate_uuid(3f) was originally based on the libFoX version, with
 !! ! licensing as follows:
@@ -110,7 +110,7 @@ contains
 !===================================================================================================================================
 !>
 !!##NAME
-!!    generate_uuid(3f) - [M_uuid] generate(approximately) a UUID (Universally Unique IDentifier) string per RFC 4122
+!!    generate_uuid(3f) - [M_uuid] generate(approximately) a UUID (Universally Unique IDentifier) string per RFC 412
 !!
 !!##SYNOPSIS
 !!
@@ -160,7 +160,7 @@ contains
 !!       write(*,'("urn:uuid:",a36)')uuid
 !!       !
 !!       ! a good scratch file name
-!!       open(file=''/tmp/scratch_'//uuid,unit=10)
+!!       open(file='/tmp/scratch_'//uuid,unit=10)
 !!       !
 !!    end program demo_generate_uuid
 !!
@@ -336,7 +336,7 @@ use M_debug, only : unit_check, unit_check_start, unit_check_good, unit_check_ba
 !!
 !!    This just checks that we can generate the various types of UUID
 !!    (without crashing) and checks that they have the correct syntax. We
-!!    could also check that the UUID changes for each call and I think there
+!!    could also check that the UUID changes for each call and I think ther
 !!    is an additional check we could make within the UUID itself. But for
 !!    now this is enough.
 !===================================================================================================================================
@@ -724,7 +724,7 @@ end module M_uuid
 !!    generated in order to have a 50% probability of at least one collision
 !!    is 2.71 quintillion, computed as follows:
 !!
-!!    n ≈ 1 2   + 1 4   + 2 × ln ⁡ ( 2 ) × 2 122     ≈ 2.71 × 10 18     {\displaystyle n\approx {\frac {1}{2}}+{\sqrt {{\frac {1}{4}}+2\times \ln(2)\times 2^{122}}}\approx 2.71\times 10^{18}}  {\displaystyle n\approx {\frac {1}{2}}+{\sqrt {{\frac {1
+!!    n ≈ 1 2   + 1 4   + 2 × ln ⁡ ( 2 ) × 2 122     ≈ 2.71 × 10 18     {\displaystyle n\approx {\frac {1}{2}}+{\sqrt {{\frac {1}{4}}+2\times \ln(2)\times 2^{122}}}\approx 2.71\times 10^{18}}  {\displaystyle n\approx {\frac {1}{2}}+{\sqrt {{\frac {1}{4}}+2\times \ln(2)\times 2^{122}}}\approx 2.71\times 10^{18}}[14
 !!
 !!    This number is equivalent to generating 1 billion UUIDs per second
 !!    for about 85 years, and a file containing this many UUIDs, at 16

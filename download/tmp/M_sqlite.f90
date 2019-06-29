@@ -13,7 +13,7 @@
 !!
 !!##IMPLEMENTATION NOTES
 !!
-!!     The handles to the database or prepared statements are stored in an array of two integers to take care of 64-bit platforms.
+!!     The handles to the database or prepared statements are stored in an array of two integers to take care of 64-bit platforms
 !!
 !!     With the appropriate compilation options (if needed) the code should be thread-safe except for
 !!     sqlite3_get_table(1), as no data are shared or saved in other routines.
@@ -101,7 +101,7 @@
 !!    type(SQLITE_DATABASE)   Variables of this type are used to hold the connection to the database or
 !!                            databases. They are created by the subroutine sqlite3_open(3f)
 !!
-!!                            The contents are valid until the database is closed (via sqlite3_close(3f)).
+!!                            The contents are valid until the database is closed (via sqlite3_close(3f))
 !!
 !!    type(SQLITE_STATEMENT)  Variables of this type hold prepared statements, the common method for
 !!                            database management systems to efficiently execute SQL statements.
@@ -549,7 +549,7 @@ public sqlite3_libversion_number
 !!  Typical Results:
 !!
 !!    SQLITE3 LIBRARY VERSION=3.21.0
-!!    SQLITE3 SOURCEID=2017-10-24 18:55:49 1a584e499906b5c87ec7d43d4abce641fdf017c42125b083109bc77c4de48827
+!!    SQLITE3 SOURCEID=2017-10-24 18:55:49 1a584e499906b5c87ec7d43d4abce641fdf017c42125b083109bc77c4de4882
 !!    SQLITE3 VERSION NUMBER=     3021000
 !===================================================================================================================================
 interface
@@ -644,7 +644,7 @@ end function column_func
 !===================================================================================================================================
 !>
 !!##NAME
-!!   sqlite3_column_props(3f) - [M_sqlite] Convenience routine to set the properties of a column
+!!   sqlite3_column_props(3f) - [M_sqlite] Convenience routine to set the properties of a colum
 !!
 !!##SYNOPSIS
 !!
@@ -713,7 +713,7 @@ end subroutine sqlite3_column_props
 !===================================================================================================================================
 !>
 !!##NAME
-!!    sqlite3_column_query - [M_sqlite] Convenience routine to query a column or a function of that column
+!!    sqlite3_column_query - [M_sqlite] Convenience routine to query a column or a function of that colum
 !!
 !!##SYNOPSIS
 !!
@@ -777,7 +777,7 @@ end subroutine sqlite3_column_query
 
 !>
 !!##NAME
-!!    sqlite3_set_column(3f)  - [M_sqlite] Convenience routines to set the value of a column
+!!    sqlite3_set_column(3f)  - [M_sqlite] Convenience routines to set the value of a colum
 !!
 !!##SYNOPSIS
 !!
@@ -868,7 +868,7 @@ end subroutine sqlite3_set_column_char
 
 !>
 !!##NAME
-!!    sqlite3_get_column(3f) - [M_sqlite] Convenience routine to get the value of a column
+!!    sqlite3_get_column(3f) - [M_sqlite] Convenience routine to get the value of a colum
 !!
 !!##SYNOPSIS
 !!
@@ -964,7 +964,7 @@ end subroutine sqlite3_get_column_char
 !!      db   Structure variable identifying the database connection
 !!
 !!##RETURNS
-!!      err  Retrieve whether the previous SQLite command resulted in an error or not. Returns
+!!      err  Retrieve whether the previous SQLite command resulted in an error or not. Return
 !!           true if so, otherwise false.
 !===================================================================================================================================
 logical function sqlite3_error(db)
@@ -978,7 +978,7 @@ end function sqlite3_error
 !===================================================================================================================================
 !>
 !!##NAME
-!!   sqlite3_errmsg - [M_sqlite] Return the last error message
+!!   sqlite3_errmsg - [M_sqlite] Return the last error messag
 !!##SYNOPSIS
 !!
 !!   errmsg = sqlite3_errmsg(db)
@@ -1025,7 +1025,7 @@ end function sqlite3_errmsg
 !!           The database file is opened and can be used via the db argument
 !!
 !!##OPTIONS
-!!        filename  The name of the database file (it may also be ":mem" to get a
+!!        filename  The name of the database file (it may also be ":mem" to get
 !!                  memory-based database instead of a file on disk)
 !!
 !!        db        Structure variable to identify the database connection
@@ -1069,7 +1069,7 @@ end subroutine sqlite3_open
 !!
 !!##DESCRIPTION
 !!
-!!    Close the database connection. Simply an interface to the corresponding C
+!!    Close the database connection. Simply an interface to the corresponding
 !!    function.
 !!
 !!    Side effects:
@@ -1123,7 +1123,7 @@ end subroutine sqlite3_close
 !!      messages if any).
 !!
 !!##OPTIONS
-!!     db       Variable identifying the database connection
+!!     db       Variable identifying the database connectio
 !!     command  String holding a complete SQL command
 !===================================================================================================================================
 subroutine sqlite3_do(db, command)
@@ -1158,7 +1158,7 @@ end subroutine sqlite3_do
 !===================================================================================================================================
 !>
 !!##NAME
-!!    sqlite3_begin(3f) - [M_sqlite] Start a transaction on the given database
+!!    sqlite3_begin(3f) - [M_sqlite] Start a transaction on the given databas
 !!
 !!##SYNOPSIS
 !!
@@ -1195,7 +1195,7 @@ end subroutine sqlite3_begin
 !===================================================================================================================================
 !>
 !!##NAME
-!!   sqlite3_commit(3f) - [M_sqlite] Commits a transaction on the given database
+!!   sqlite3_commit(3f) - [M_sqlite] Commits a transaction on the given databas
 !!##SYNOPSIS
 !!
 !!    subroutine sqlite3_commit(db)
@@ -1227,7 +1227,7 @@ end subroutine sqlite3_commit
 !===================================================================================================================================
 !>
 !!##NAME
-!!    sqlite3_rollback(3f) - [M_sqlite] Rolls back any changes to the database since the last commit
+!!    sqlite3_rollback(3f) - [M_sqlite] Rolls back any changes to the database since the last commi
 !!
 !!##SYNOPSIS
 !!
@@ -1272,12 +1272,12 @@ end subroutine sqlite3_rollback
 !!     character(len=*) tablename
 !!
 !!##DESCRIPTION
-!!    Delete an existing table by name. Convenience routine that constructs
+!!    Delete an existing table by name. Convenience routine that construct
 !!    an SQL statement to do the actual job.
 !!
 !!    Note:
 !!
-!!     The table can not be recovered, unless this is part of a transaction
+!!     The table can not be recovered, unless this is part of a transactio
 !!
 !!##OPTIONS
 !!    db            Structure for the database
@@ -1313,7 +1313,7 @@ end subroutine sqlite3_delete_table
 !!     character(len=*), optional :: primary
 !!
 !!##DESCRIPTION
-!!    Create a new table, based on the properties of the columns. Convenience
+!!    Create a new table, based on the properties of the columns. Convenienc
 !!    routine that constructs an SQL statement to do the actual job.
 !!
 !!    Side effects:
@@ -1324,7 +1324,7 @@ end subroutine sqlite3_delete_table
 !!      tablename   Name of the table to be created
 !!      columns     An array of the properties of the columns in the tables
 !!                  name, type, ...)
-!!      primary     Name of the column that acts as the primary key (if any).
+!!      primary     Name of the column that acts as the primary key (if any)
 !!                  This gets the SQL "UNIQUE" constraint.
 !===================================================================================================================================
 subroutine sqlite3_create_table(db, tablename, columns, primary)
@@ -1369,7 +1369,7 @@ end subroutine sqlite3_create_table
 !===================================================================================================================================
 !>
 !!##NAME
-!!    sqlite3_prepare_select(3f) - [M_sqlite] Prepare a selection of data from the database
+!!    sqlite3_prepare_select(3f) - [M_sqlite] Prepare a selection of data from the databas
 !!
 !!##SYNOPSIS
 !!
@@ -1439,7 +1439,7 @@ end subroutine sqlite3_prepare_select
 !
 !>
 !!##NAME
-!!    sqlite3_insert(3f) - [M_sqlite] Insert a complete row into the given table
+!!    sqlite3_insert(3f) - [M_sqlite] Insert a complete row into the given tabl
 !!
 !!##SYNOPSIS
 !!
@@ -1547,7 +1547,7 @@ end subroutine sqlite3_insert
 !===================================================================================================================================
 !>
 !!##NAME
-!!    sqlite3_next_row(3f) - [M_sqlite] Gets the next row of data from a selection
+!!    sqlite3_next_row(3f) - [M_sqlite] Gets the next row of data from a selectio
 !!
 !!##SYNOPSIS
 !!
@@ -1635,7 +1635,7 @@ end subroutine sqlite3_next_row
 !===================================================================================================================================
 !>
 !!##NAME
-!!    sqlite3_query_table(3f) - [M_sqlite] Retrieve the column names and types from a table
+!!    sqlite3_query_table(3f) - [M_sqlite] Retrieve the column names and types from a tabl
 !!
 !!##SYNOPSIS
 !!
@@ -1691,7 +1691,7 @@ end subroutine sqlite3_query_table
 !===================================================================================================================================
 !>
 !!##NAME
-!!    sqlite3_finalize(3f) - [M_sqlite] Finalize the prepared SQL statement
+!!    sqlite3_finalize(3f) - [M_sqlite] Finalize the prepared SQL statemen
 !!
 !!##SYNOPSIS
 !!
@@ -1727,7 +1727,7 @@ end subroutine sqlite3_finalize
 !===================================================================================================================================
 !>
 !!##NAME
-!!    sqlite3_reset(3f) - [M_sqlite] Reset the prepared SQL statement so that it can be used again
+!!    sqlite3_reset(3f) - [M_sqlite] Reset the prepared SQL statement so that it can be used agai
 !!
 !!##SYNOPSIS
 !!
@@ -1779,7 +1779,7 @@ end subroutine sqlite3_reset
 !!##OPTIONS
 !!    stmt        A derived type used as a handle to the prepared statement
 !!    completion  Return code, indicating if the command is complete or
-!!                not (SQLITE_DONE (success), SQLITE_MISUSE or SQLITE_ERROR)
+!!                not (SQLITE_DONE (success), SQLITE_MISUSE or SQLITE_ERROR
 !===================================================================================================================================
 subroutine sqlite3_step(stmt, completion)
 implicit none
@@ -1807,7 +1807,7 @@ end subroutine sqlite3_step
 !===================================================================================================================================
 !>
 !!##NAME
-!!    sqlite3_prepare(3f) - [M_sqlite] Reset the prepared SQL statement so that it can be used again
+!!    sqlite3_prepare(3f) - [M_sqlite] Reset the prepared SQL statement so that it can be used agai
 !!
 !!##SYNOPSIS
 !!
@@ -1919,7 +1919,7 @@ end subroutine sqlite3_prepare
 !===================================================================================================================================
 !>
 !!##NAME
-!! sqlite3_get_table(3f) - [M_sqlite] Call sqlite3_exec() and return the result in an array of strings
+!! sqlite3_get_table(3f) - [M_sqlite] Call sqlite3_exec() and return the result in an array of string
 !!
 !!##SYNOPSIS
 !!
@@ -2185,7 +2185,7 @@ end function Fs2Ca
 !===================================================================================================================================
 !>
 !!##NAME
-!!    egress(3f) - [M_sqlite] write message indicating nesting level of routines
+!!    egress(3f) - [M_sqlite] write message indicating nesting level of routine
 !!##SYNOPSIS
 !!
 !!    subroutine egress(name,status)
@@ -2264,7 +2264,7 @@ end subroutine egress
 !!  Typical Results:
 !!
 !!    SQLITE3 LIBRARY VERSION=3.21.0
-!!    SQLITE3 SOURCEID=2017-10-24 18:55:49 1a584e499906b5c87ec7d43d4abce641fdf017c42125b083109bc77c4de48827
+!!    SQLITE3 SOURCEID=2017-10-24 18:55:49 1a584e499906b5c87ec7d43d4abce641fdf017c42125b083109bc77c4de4882
 !!    SQLITE3 VERSION NUMBER=     3021000
 !===================================================================================================================================
 function sqlite3_libversion() result(string__OUT)
@@ -2321,7 +2321,7 @@ end function sqlite3_libversion
 !!  Typical Results:
 !!
 !!    SQLITE3 LIBRARY VERSION=3.21.0
-!!    SQLITE3 SOURCEID=2017-10-24 18:55:49 1a584e499906b5c87ec7d43d4abce641fdf017c42125b083109bc77c4de48827
+!!    SQLITE3 SOURCEID=2017-10-24 18:55:49 1a584e499906b5c87ec7d43d4abce641fdf017c42125b083109bc77c4de4882
 !!    SQLITE3 VERSION NUMBER=     3021000
 !===================================================================================================================================
 function sqlite3_sourceid() result(string__OUT)

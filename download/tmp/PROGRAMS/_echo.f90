@@ -41,9 +41,9 @@ help_text=[ CHARACTER(LEN=128) :: &
 '    Example invocations:                                                        ',&
 '                                                                                ',&
 '         _echo Echo this text to stderr -E                                      ',&
-'         _echo y -r 0  # repeat "y" until interrupted                           ',&
+'         _echo y -r             # repeat "y" until interrupted                  ',&
 '         _echo ''''"#"'''' -r 80 -n # create 80-character break line            ',&
-'         _echo %e[2J  # clear screen on vt102-compatible terminal or emulator   ',&
+'         _echo %e[2J   # clear screen on vt102-compatible terminal or emulator  ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -86,9 +86,9 @@ end subroutine help_usage
 !!     Example invocations:
 !!
 !!          _echo Echo this text to stderr -E
-!!          _echo y -r 0  # repeat "y" until interrupted
+!!          _echo y -r             # repeat "y" until interrupted
 !!          _echo ''"#"'' -r 80 -n # create 80-character break line
-!!          _echo %e[2J  # clear screen on vt102-compatible terminal or emulato
+!!          _echo %e[2J   # clear screen on vt102-compatible terminal or emulato
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -109,7 +109,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Fri, Jun 14th, 2019 12:25:25 PM>',&
+'@(#)COMPILED:       Sat, Jun 22nd, 2019 10:27:41 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -117,7 +117,7 @@ endif
 end subroutine help_version
 !-----------------------------------------------------------------------------------------------------------------------------------
 program echo
-use m_kracken, only       : kracken, sget, IPvalue, lget, iget
+use m_kracken, only       : kracken, sget, lget, iget
 use m_strings, only       : expand
 use iso_fortran_env, only : ERROR_UNIT,OUTPUT_UNIT        ! access computing environment
 implicit none

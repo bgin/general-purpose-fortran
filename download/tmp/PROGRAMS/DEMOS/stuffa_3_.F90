@@ -1,7 +1,10 @@
           program demo_stuffa
-          use M_calculator, only : stuffa
+          use M_calculator,      only : stuffa
+          use M_calculator_plus, only : snum0
           implicit none
-          integer :: ii
-             call stuffa('$A','',ii,'')
-             call stuffa('$mystring','this is the value of the string',ii,'')
+             call stuffa('$A','')
+             call stuffa('$mystring','this is the value of the string')
+             write(*,*)snum0('$mystring')
+             call stuffa('$mystring','this is the new value of the string')
+             write(*,*)snum0('$mystring')
           end program demo_stuffa

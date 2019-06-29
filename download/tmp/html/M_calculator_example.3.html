@@ -158,9 +158,9 @@ M_calculator_Example(5f) - [M_calculator] Example program for module M_calculato
       !      set to  0 if a number is returned
       !      set to  2 if a string is returned
       !
-      use M_calculator, only: x,y,values,valuer,iclen_calc
+      use M_calculator, only: x,y,values,values_len,iclen_calc
       ! values: the values of string variables
-      ! valuer: the lengths of the string variable values
+      ! values_len: the lengths of the string variable values
       character(len=*)          :: func
 
       character(len=*)          :: ctmp
@@ -180,7 +180,7 @@ M_calculator_Example(5f) - [M_calculator] Example program for module M_calculato
                write(*,*)i10,' VALUE=',args(i10)
             elseif(iargstp(i10).eq.2)then
                iwhich=int(args(i10))
-               ilen=valuer(iwhich)
+               ilen=values_len(iwhich)
                write(*,*)i10,' STRING='//values(iwhich)(:ilen)
             else
                write(*,*)'unknown parameter type is ',iargstp(i10)

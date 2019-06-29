@@ -49,7 +49,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <dt><b>SYNOPSIS</b></dt><dd>
 <pre>
     use M_calculator, only : jucalc, getvalue, igetvalue, rgetvalue, stuff, stuffa
-    use M_calculator, only : iclen_calc, ixy_calc, icname_calc, x, y, valuer, values
+    use M_calculator, only : iclen_calc, ixy_calc, icname_calc, x, y, values_len, values
 </pre>
 </dd>
 <!-- =========================================================================================================================== -->
@@ -103,10 +103,10 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
    <li> integer,parameter,public  :: iclen_calc=512     ! max length of expression or variable value as a string
    <li> integer,parameter,public  :: ixy_calc=55555     ! number of variables in X() and Y() array
    <li> integer,parameter,public  :: icname_calc=20     ! max length of a variable name
-   <li> real(kind=dp),save,public :: x(ixy_calc)=0.0_dp ! x array for procedure jufuns
-   <li> real(kind=dp),save,public :: y(ixy_calc)=0.0_dp ! y array for procedure jufuns
-   <li> integer,save,public       :: valuer(ic_calc)=0  ! lengths of the string variable values
-   <li> character(len=iclen_calc),save,public  :: values(ic_calc)=' '         ! string variable values
+   <li> real(kind=dp),save,public :: x(ixy_calc)=0.0_dp ! x array for procedure funcs_
+   <li> real(kind=dp),save,public :: y(ixy_calc)=0.0_dp ! y array for procedure funcs_
+   <li> integer,save,public,allocatable           :: values_len(:)  ! lengths of the string variable values
+   <li> character(len=:),save,public,allocatable  :: values(:)      ! string variable values
 </ul>
 </blockquote>
 </pre>

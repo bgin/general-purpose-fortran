@@ -1,6 +1,6 @@
 !>
 !!##NAME
-!!   jucalc - [M_calculator] parse calculator expression and return numeric or string value
+!!   jucalc - [M_calculator] parse calculator expression and return numeric or string valu
 !!##SYNOPSIS
 !!
 !!   subroutine jucalc(inline,outlin,mssg,slast,ierr)
@@ -94,40 +94,47 @@
 !===================================================================================================================================
 !>
 !! AUTHOR   John S. Urban
-!!##VERSION  1.0 19971123,20161218
+!!##VERSION  1.0 19971123,201612
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
 module M_calculator
 
-   use M_journal, only : journal
-   use M_IO, only : print_inquire
-   use M_strings, only : upper, lower
-   implicit doubleprecision (a-h,o-z)
-   integer,parameter                      :: dp=kind(0.0d0)
-   private
+use M_journal, only : journal
+use M_IO, only : print_inquire
+use M_strings, only : upper, lower
+use M_list, only : locate, insert, replace
+!!implicit doubleprecision (a-h,o-z)
+implicit none
 
-   integer,parameter                      :: ic_calc=25000               ! number of variable names allowed
+integer,parameter                      :: dp=kind(0.0d0)
+private
 
-   integer,parameter,public               :: iclen_calc=512              ! max length of expression or variable value as a string
-   integer,parameter,public               :: ixy_calc=55555              ! number of variables in X() and Y() array
-   integer,parameter,public               :: icname_calc=20              ! max length of a variable name
-   real(kind=dp),save,public              :: x(ixy_calc)=0.0_dp          ! x array for procedure jufuns
-   real(kind=dp),save,public              :: y(ixy_calc)=0.0_dp          ! y array for procedure jufuns
-   integer,save,public                    :: valuer(ic_calc)=0           ! lengths of the string variable values
-   character(len=iclen_calc),save,public  :: values(ic_calc)=' '         ! string variable values
+integer,parameter,public               :: iclen_calc=512              ! max length of expression or variable value as a string
+integer,parameter,public               :: ixy_calc=55555              ! number of variables in X() and Y() array
+real(kind=dp),save,public              :: x(ixy_calc)=0.0_dp          ! x array for procedure funcs_
+real(kind=dp),save,public              :: y(ixy_calc)=0.0_dp          ! y array for procedure funcs_
 
-   public :: jucalc
-   public :: getvalue
-   public :: igetvalue
-   public :: rgetvalue
-   public :: stuff
-   public :: stuffa
-   public :: test_suite_M_calculator
+integer,parameter,public                  :: icname_calc=20        ! max length of a variable name
 
-   integer,parameter                      :: ixyc_calc=50                ! number of variables in $X() and $(Y) array
-   integer,parameter                      :: icbuf_calc=20*(iclen_calc/2+1) ! buffer for string as it is expanded
+character(len=:),allocatable,save         :: keys_q(:)             ! contains the names of string variables
+character(len=:),allocatable,save,public  :: values(:)             ! string variable values
+integer,save,public,allocatable           :: values_len(:)             ! lengths of the string variable values
+
+character(len=:),allocatable,save         :: keyr_q(:)             ! contains the names of numeric variables
+real(kind=dp),save,allocatable            :: values_d(:)              ! numeric variable values
+
+public :: jucalc
+public :: getvalue
+public :: igetvalue
+public :: rgetvalue
+public :: stuff
+public :: stuffa
+public :: test_suite_M_calculator
+
+integer,parameter                      :: ixyc_calc=50                   ! number of variables in $X() and $(Y) array
+integer,parameter                      :: icbuf_calc=20*(iclen_calc/2+1) ! buffer for string as it is expanded
 
 
 !  no check on whether line expansion ever causes line length to
@@ -137,90 +144,32 @@ module M_calculator
 !  input=80 --> 820 character buffer
 !  input=256 ==> 2580
 
-   character(len=iclen_calc) :: mssge   ! for error message/messages /returning string value
+character(len=iclen_calc)       :: mssge   ! for error message/messages /returning string value
 
-   character(len=iclen_calc),save  :: xc(ixyc_calc)=' '        ! $x array for procedure jufuns
-   character(len=iclen_calc),save  :: yc(ixyc_calc)=' '        ! $y array for procedure jufuns
-   character(len=iclen_calc),save  :: nc(ixyc_calc)=' '        ! $n array for procedure jufuns
+character(len=iclen_calc),save  :: xc(ixyc_calc)=' '        ! $x array for procedure funcs_
+character(len=iclen_calc),save  :: yc(ixyc_calc)=' '        ! $y array for procedure funcs_
+character(len=iclen_calc),save  :: nc(ixyc_calc)=' '        ! $n array for procedure funcs_
 
-   character(len=icname_calc),save :: ix2(ic_calc)=' '         ! contains the names of string variables
 
-   character(len=icname_calc),save :: ix(ic_calc)=' '          ! contains the names of numeric variables
-   real(kind=dp),save              :: value(ic_calc)=0.0_dp    ! numeric variable values
+character(len=iclen_calc),save  :: last='0.0'               ! string containing last answer (i.e. current value)
+logical,save                    :: ownon=.false.            ! flag for whether to look for juown1
 
-   character(len=iclen_calc),save  :: last='0.0'               ! string containing last answer (i.e. current value)
-   logical,save                    :: ownon=.false.            ! flag for whether to look for juown1
-
-   integer,save                    :: ktoken                   ! count of number of token strings assembled
+integer,save                    :: ktoken                   ! count of number of token strings assembled
 !
 ! requires
 !  change, rand, date_to_unix, unix_to_date, fmtdate, fmtdate_usage
 !
-   private :: juator                       ! returns a real value rval from a numeric character string chars.
-   private :: given_name_get_stringvalue
-   private :: jurtoa
-
-   private :: jupars
-   private :: jufuns
-   private :: stufftok
-   private :: juargs
-   private :: jucals
-   private :: jupows
-   private :: jufacs
-   private :: jusqes
-   private :: jubous
-   private :: juaddr
-   private :: juadds
-
-!>
-!!##NAME
-!!    stuff(3f) - [M_calculator] directly store value into calculator dictionary for efficiency
-!!
-!!##SYNOPSIS
-!!
-!!   subroutine stuff(varnam0,value,ioflag)
-!!
-!!    character(len=*),intent(in)             :: varnam0
-!!    integer|real|doubleprecision,intent(in) :: value
-!!    character(len=*),intent(in),optional    :: ioflag
-!!
-!!##DEFINITION
-!!
-!!    Normally values are stored or defined in the calculator module
-!!    M_calculator(3fm) using the jucalc(3f) routine or the convenience
-!!    routines in the module M_calculator_plus(3fm). For efficiency when
-!!    large numbers of values require being stored the stuff(3f) procedure
-!!    can be used to store numeric values by name in the calculator
-!!    dictionary.
-!!
-!!    breaking the rule of only accessing the calculator thru jucalc:
-!!
-!!    stuff(3f) is assumed to only be used when needed for efficiency and to
-!!    avoid problems with recursion if a routine called by the calculator
-!!    in JUOWN1(3f) wants to store something back into the calculator
-!!    variable table.
-!!
-!!##OPTIONS
-!!    varnam0   name of calculator variable to define or replace
-!!    value     numeric value to associate with the name varnam0. May be integer, real, or doubleprecision.
-!!    ioflag    optional flag to use journal logging. This string is passed directly to M_journal::journal(3f)
-!!              as the first parameter. The default is to not log the definitions to the journal(3f) command.
-!!
-!!##EXAMPLE
-!!
-!!   Sample program:
-!!
-!!    program demo_stuff
-!!    use M_calculator, only : stuff
-!!    implicit none
-!!    call stuff('A',10.0)
-!!    call stuff('PI',3.141592653589793238462643383279502884197169399375105820974944592307d0)
-!!    end program demo_stuff
-!===================================================================================================================================
-   INTERFACE STUFF
-   module procedure integer_stuff,real_stuff,double_stuff
-   END INTERFACE STUFF
-
+private :: a_to_d_                       ! returns a real value rval from a numeric character string chars.
+private :: r_to_a_
+private :: squeeze_
+private :: stufftok_
+private :: funcs_
+private :: pows_
+private :: given_name_get_stringvalue_
+private :: parens_
+private :: args_
+private :: factors_
+private :: expressions_
 contains
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -254,7 +203,7 @@ recursive subroutine jucalc(inline,outlin,mssg,slast,ierr)
 !  4. make a function to fill x and y arrays, or to read values into them
 !     from a file; and make some statistical functions that work on the
 !     arrays.
-!  6. allow user-written functions to be called from jufuns routine.
+!  6. allow user-written functions to be called from funcs_ routine.
 !  7. allow for user-defined arrays and array operations.
 !===========================================================================--------------------------------------------------------
 !  12/07/87 --- put in an implicit real (a-h,o-z) statement in each
@@ -269,7 +218,7 @@ recursive subroutine jucalc(inline,outlin,mssg,slast,ierr)
 !              not allow real*8 in ifix calls
 ! 12/11/87  --- moving all prints out of column 1 so it is not picked
 !              out by vax as carriage control.
-! 12/28/87  --- put bn format specifier into juator routine because
+! 12/28/87  --- put bn format specifier into a_to_d_ routine because
 !              vax assumes zero fill
 ! 06/23/88  --- making a first cut at allowing string variables.
 !               1. string variable names must start with a dollar-sign
@@ -283,124 +232,131 @@ recursive subroutine jucalc(inline,outlin,mssg,slast,ierr)
 !                  and numeric output?
 !#----------------------------------------------------------------------------------------------------------------------------------
 !subroutine jucalc(inline,outlin,mssg,slast,ierr)
-implicit doubleprecision (a-h,o-z)
-character(len=*),parameter :: ident=&
-&"@(#)M_calculator::jucalc(3f): The procedure JUCALC acts like a calculator"
-integer,parameter                      :: dp=kind(0.0d0)
+
+character(len=*),parameter::ident_1="@(#)M_calculator::jucalc(3f): The procedure JUCALC acts like a calculator"
+
 !-----------------------------------------------------------------------------------------------------------------------------------
 character(len=*),intent(in)            :: inline
 character(len=iclen_calc),intent(out)  :: outlin
 character(len=iclen_calc),intent(out)  :: mssg
-doubleprecision,intent(out)            :: slast
+real(kind=dp),intent(out)              :: slast
 integer,intent(out)                    :: ierr
 !-----------------------------------------------------------------------------------------------------------------------------------
 character(len=icbuf_calc)              :: line
 character(len=iclen_calc)              :: varnam
 character(len=iclen_calc)              :: junout
 real(kind=dp),save                     :: rlast=0.0_dp
+integer                                :: i10
+integer                                :: i20
+integer                                :: idum
+integer                                :: imax
+integer                                :: indx
+integer                                :: iplace
+integer                                :: istart
+integer                                :: nchar2
+integer                                :: nchard
 !-----------------------------------------------------------------------------------------------------------------------------------
-      line=inline                                      ! set working string to initial input line
-      imax=len(inline)                                 ! determine the length of the input line
-      mssg=' '                                         ! set returned message/error/string value string to a blank
-      outlin=' '
-      BIG: do                                          ! for $A=numeric and A=string
-         ierr=1                                           ! set status flag to message mode
-         mssge=' '                                        ! set message/error/string value in GLOBAL to a blank
-         call jusqes(line,imax,nchard,varnam,nchar2,ierr) ! preprocess the string: remove blanks and process special characters
-                                                          ! also remove all quoted strings and replace them with a token
-   !--------------------------------------------------------------------------------------------------------------------------------
-         if(ierr.eq.-1)then                ! if an error occurred during preprocessing of the string, set returned message and quit
-            slast=rlast                    ! set returned real value to last good calculated value
-            mssg=mssge                     ! place internal message from GLOBAL into message returned to user
-            return
-         elseif(nchard.eq.0)then  ! if a blank input string was entered report it as an error and quit
-            ierr=-1
-            mssg='*jucalc* input line was empty'
-         elseif(line(1:nchard).eq.'dump')then ! process dump command
-            call journal(line(1:nchard))
-            call journal('current value= '//last)
-            call journal(' variable name       variable value     ')
-            do i10=1,ic_calc
-               if(ix(i10).ne.' ')then
-                  write(junout,'('' '',2a,g20.13e3)')ix(i10),' ',value(i10)
+   line=inline                                      ! set working string to initial input line
+   imax=len(inline)                                 ! determine the length of the input line
+   mssg=' '                                         ! set returned message/error/string value string to a blank
+   outlin=' '
+   BIG: do                                          ! for $A=numeric and A=string
+      ierr=1                                           ! set status flag to message mode
+      mssge=' '                                        ! set message/error/string value in GLOBAL to a blank
+      varnam=' '
+      call squeeze_(line,imax,nchard,varnam,nchar2,ierr) ! preprocess the string: remove blanks and process special characters
+                                                       ! also remove all quoted strings and replace them with a token
+!-----------------------------------------------------------------------------------------------------------------------------------
+      if(ierr.eq.-1)then                ! if an error occurred during preprocessing of the string, set returned message and quit
+         slast=rlast                    ! set returned real value to last good calculated value
+         mssg=mssge                     ! place internal message from GLOBAL into message returned to user
+         return
+      elseif(nchard.eq.0)then  ! if a blank input string was entered report it as an error and quit
+         ierr=-1
+         mssg='*jucalc* input line was empty'
+      elseif(line(1:nchard).eq.'dump')then ! process dump command
+         call journal(line(1:nchard))
+         call journal('current value= '//last)
+         call journal(' variable name       variable value     ')
+         if(allocated(keyr_q))then
+            do i10=1,size(keyr_q)
+               if(keyr_q(i10).ne.' ')then
+                  write(junout,'('' '',2a,g20.13e3)')keyr_q(i10),' ',values_d(i10)
                   call journal(trim(junout))
                endif
             enddo
-            do i20=1,ic_calc
-               i20x=max(1,valuer(i20))
-               if(ix2(i20).ne.' ')then
-                  write(junout,'('' '',3a)')ix2(i20),' ',values(i20)(:i20x)
-                  call journal(trim(junout))
-               endif
-            enddo
-            mssg='*jucalc* variable listing complete'
-         elseif(line(1:nchard).eq.'funcs') then     ! process funcs command
-            call help_funcs()
-   !--------------------------------------------------------------------------------------------------------------------------------
-         else                                               ! this is an input line to process
-            call jupars(line,nchard,ierr)                   ! process the command
-            if(ierr.eq.0)then                 ! if no errors occurred set output string, store the value as last, store any variable
-                                              ! numeric value with no errors, assume nchard is 20 or less
-               outlin=line(1:nchard)                        ! set string output value
-               last=line(1:nchard)                          ! store last value (for use with question-mark token)
-               call juator(last(1:nchard),rlast,idum)       ! set real number output value
-               if(nchar2.ne.0.and.varnam(1:1).ne.'$')then   ! if the statement defines a variable make sure variable name is stored
-                  call jubous(varnam,index,ix,ierr)         ! determine storage placement of the variable and whether it is new
-                  if(ierr.eq.-1)then
-                     slast=rlast                            !set returned real value to last good calculated value
-                     mssg=mssge                             !place internal message from GLOBAL into message returned to user
-                     return
-                  endif
-                  if(index.le.0)then                        ! if the variable needs added, add it
-                     call juaddr(varnam,nchar2,index,ierr)  ! adding the new variable name to the variable name array
-                     if(ierr.eq.-1)then
-                        slast=rlast                         ! set returned real value to last good calculated value
-                        mssg=mssge                          ! place internal message from GLOBAL into message returned to user
-                        return                              ! report error
-                     endif
-                  endif
-                  call juator(last(1:nchard),value(iabs(index)),ierr)  ! store a defined variable's value
-               elseif(nchar2.ne.0)then                      ! numeric value to string
-                  line(:)=' '
-                  line=varnam(1:nchar2)//'="'//last(1:nchard)//'"'
-                  imax=len_trim(line)                       ! determine the length of the input line
-                  cycle BIG
-               endif
-            elseif(ierr.eq.2)then ! returned output is not numeric, but alphanumeric (it is a string)
-   !!!!!!!  could return string values directly instead of thru message field
-   !!!!!!!  make sure normal output values are not left indeterminate
-               mssg=mssge                                   ! set returned string value to returned string value
-               if(nchar2.ne.0.and.varnam(1:1).eq.'$')then   ! if the statement defines a variable make sure variable name is stored
-                  call jubous(varnam,index,ix2,ierr)        ! determine storage placement of the variable and whether it is new
-                  if(ierr.eq.-1)then
-                     slast=rlast                            ! set returned real value to last good calculated value
-                     mssg=mssge                             ! place internal message from GLOBAL into message returned to user
-                     return
-                  endif
-                  if(index.le.0)then                        ! if the variable needs added, add it
-                     call juadds(varnam,nchar2,index,ierr)  ! adding the new variable name to the variable name array
-                     if(ierr.eq.-1)then
-                        slast=rlast                         ! set returned real value to last good calculated value
-                        mssg=mssge                          ! place internal message from GLOBAL into message returned to user
-                        return
-                     endif
-                  endif
-                  values(iabs(index))=mssg
-                  valuer(iabs(index))=len_trim(mssg)
-                  rlast=dble(valuer(iabs(index)))           ! returned value is length of string when string is returned
-               elseif(nchar2.ne.0)then                      ! string but being stored to numeric variable
-                   line=varnam(1:nchar2)//'='//mssg
-                   imax=len_trim(line)                      ! determine the length of the input line
-                   cycle BIG
-               else                                         ! a string function with an assignment to it (for example "Hello"
-                  rlast=len_trim(mssg)                      ! probably should pass message length up from someplace
-               endif
-            endif
-            mssg=mssge
          endif
-         exit BIG
-      enddo BIG
-      slast=rlast                                           ! set returned value to last successfully calculated real value
+         if(allocated(keys_q))then
+            do i20=1,size(keys_q)
+               if(keys_q(i20).ne.' ')then
+                  write(junout,'('' '',3a)')keys_q(i20),' ',values(i20)(:values_len(i20))
+                  call journal(trim(junout))
+               endif
+            enddo
+         endif
+         mssg='*jucalc* variable listing complete'
+      elseif(line(1:nchard).eq.'funcs') then     ! process funcs command
+         call help_funcs()
+!-----------------------------------------------------------------------------------------------------------------------------------
+      else                                               ! this is an input line to process
+         call parens_(line,nchard,ierr)                   ! process the command
+         if(ierr.eq.0)then                 ! if no errors occurred set output string, store the value as last, store any variable
+                                           ! numeric value with no errors, assume nchard is 20 or less
+            outlin=line(1:nchard)                         ! set string output value
+            last=line(1:nchard)                           ! store last value (for use with question-mark token)
+            call a_to_d_(last(1:nchard),rlast,idum)        ! set real number output value
+            if(nchar2.ne.0.and.varnam(1:1).ne.'$')then    ! if the statement defines a variable make sure variable name is stored
+               call locate(keyr_q,varnam(:nchar2),indx,ierr) ! determine placement of the variable and whether it is new
+               if(ierr.eq.-1)then
+                  slast=rlast                             ! set returned real value to last good calculated value
+                  mssg=mssge                              ! place internal message from GLOBAL into message returned to user
+                  return
+               endif
+               if(indx.le.0)then                         ! if the variable needs added, add it
+                  istart=iabs(indx)
+                  call insert(keyr_q,varnam(:nchar2),istart)
+                  call insert(values_d,0.0d0,istart)
+               endif
+               call a_to_d_(last(1:nchard),values_d(iabs(indx)),ierr)  ! store a defined variable's value
+            elseif(nchar2.ne.0)then                       ! numeric value to string
+               line(:)=' '
+               line=varnam(:nchar2)//'="'//last(1:nchard)//'"'
+               imax=len_trim(line)                        ! determine the length of the input line
+               cycle BIG
+            endif
+         elseif(ierr.eq.2)then ! returned output is not numeric, but alphanumeric (it is a string)
+!!!!!!!  could return string values directly instead of thru message field
+!!!!!!!  make sure normal output values are not left indeterminate
+            mssg=mssge                                    ! set returned string value to returned string value
+            if(nchar2.ne.0.and.varnam(1:1).eq.'$')then    ! if the statement defines a variable make sure variable name is stored
+               call locate(keys_q,varnam(:nchar2),indx,ierr) ! determine placement of the variable and whether it is new
+               if(ierr.eq.-1)then
+                  slast=rlast                             ! set returned real value to last good calculated value
+                  mssg=mssge                              ! place internal message from GLOBAL into message returned to user
+                  return
+               endif
+               iplace=iabs(indx)
+               if(indx.le.0)then                                 ! if the variable needs added, add it
+                  call insert(keys_q,varnam(:nchar2),iplace) ! adding the new variable name to the variable name array
+                  call insert(values,' '            ,iplace)
+                  call insert(values_len,0              ,iplace)
+               endif
+               call replace(values,mssg,iplace)
+               call replace(values_len,len_trim(mssg),iplace)
+               rlast=dble(values_len(iplace))            ! returned value is length of string when string is returned
+            elseif(nchar2.ne.0)then                       ! string but being stored to numeric variable
+                line=varnam(:nchar2)//'='//mssg
+                imax=len_trim(line)                       ! determine the length of the input line
+                cycle BIG
+            else                                          ! a string function with an assignment to it (for example "Hello"
+               rlast=len_trim(mssg)                       ! probably should pass message length up from someplace
+            endif
+         endif
+         mssg=mssge
+      endif
+      exit BIG
+   enddo BIG
+   slast=rlast                                            ! set returned value to last successfully calculated real value
 end subroutine jucalc
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -409,17 +365,17 @@ end subroutine jucalc
 !>
 !!##NAME
 !!##SYNOPSIS
-!!
-!!##DESCRIPTION
+
+!!##DESCRIPTI
 !!##OPTIONS
 !!##RETURNS
 !!##EXAMPLE
-!!
+!
 !===================================================================================================================================
 subroutine help_funcs()
-implicit none
-character(len=*),parameter    :: ident=&
-&"@(#)M_calculator::help_funcs(3fp): prints help for calculator functions"
+
+character(len=*),parameter::ident_2="@(#)M_calculator::help_funcs(3fp): prints help for calculator functions"
+
 character(len=80),allocatable :: help_text(:)
 integer                       :: i
 help_text=[ &
@@ -533,33 +489,34 @@ end subroutine help_funcs
 !>
 !!##NAME
 !!##SYNOPSIS
-!!
-!!##DESCRIPTION
+
+!!##DESCRIPTI
 !!##OPTIONS
 !!##RETURNS
 !!##EXAMPLE
-!!
+!
 !===================================================================================================================================
-recursive subroutine jupars(string,nchar,ier)
+recursive subroutine parens_(string,nchar,ier)
 !  sets and returns ier
 !   0=good numeric return
 !   2=good alphameric return
 !  -1=error occurred, message is in mssge
-implicit doubleprecision (a-h,o-z)
-character(len=*),parameter :: ident=&
-&"@(#)M_calculator::jupars(3fp): crack out the parenthesis and solve"
+
+character(len=*),parameter::ident_3="@(#)M_calculator::parens_(3fp): crack out the parenthesis and solve"
+
 character(len=*)             :: string
 integer,intent(inout)        :: nchar
 integer,intent(out)          :: ier
 
-character(len=icbuf_calc) :: wstrng
-character(len=icbuf_calc) :: dummy
-integer                   :: imax
-integer                   :: ileft
-integer                   :: iright
-integer                   :: i
-integer                   :: iz
-integer                   :: iwnchr
+character(len=icbuf_calc)    :: wstrng
+character(len=:),allocatable :: dummy
+integer                      :: imax
+integer                      :: ileft
+integer                      :: iright
+integer                      :: i
+integer                      :: iz
+integer                      :: iwnchr
+real(kind=dp)                :: rdum
 !#----------------------------------------------------------------------------------------------------------------------------------
    imax=nchar
    ier=0
@@ -576,11 +533,11 @@ integer                   :: iwnchr
       if(ileft.eq.0)then                          ! no left parenthesis was found; finish up
          if(index(string(:nchar),')').ne.0) then  ! if here there are no left paren. check for an (unmatched) right paren
             ier=-1
-            mssge='*jupars* extraneous right parenthesis found'
+            mssge='*parens_* extraneous right parenthesis found'
          else
    !        no parenthesis left, reduce possible expression to a single value primitive and quit
    !        a potential problem is that a blank string or () would end up here too.
-            call jucals(string,nchar,rdum,ier)
+            call expressions_(string,nchar,rdum,ier)
          endif
          return
       endif
@@ -588,7 +545,7 @@ integer                   :: iwnchr
       iright=index(string(ileft:nchar),')') ! left parenthesis was found; find matching right paren
       if(iright.eq.0) then
          ier=-1
-         mssge='*jupars* right parenthesis missing'
+         mssge='*parens_* right parenthesis missing'
          return
       endif
 !#----------------------------------------------------------------------------------------------------------------------------------
@@ -613,13 +570,13 @@ integer                   :: iwnchr
       if(iz.eq.ileft)then  ! if ileft eq iz then a parenthesized expression, not a function call
          wstrng=string(ileft+1:iright-1)
          iwnchr=iright-1-(ileft+1)+1
-         call jucals(wstrng,iwnchr,rdum,ier)
+         call expressions_(wstrng,iwnchr,rdum,ier)
       else
          wstrng=string(iz:iright)
          iwnchr=iright-iz+1
-         call jufuns(wstrng,iwnchr,ier)
+         call funcs_(wstrng,iwnchr,ier)
       endif
-      if(ier.eq.-1)return !     if an error occurred in jucals or jufuns, then return
+      if(ier.eq.-1)return !     if an error occurred in expressions_ or funcs_, then return
       ! restring the evaluated primitive back into the main string
       ! remember that if an expression, iz=ileft
       ! last set of -matched- parentheses, and entire string was evaluated
@@ -646,7 +603,7 @@ integer                   :: iwnchr
       imax=max(iz-1,1)
       string=dummy
    enddo INFINITE
-end subroutine jupars
+end subroutine parens_
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -654,54 +611,112 @@ end subroutine jupars
 !>
 !!##NAME
 !!##SYNOPSIS
-!!
-!!##DESCRIPTION
+
+!!##DESCRIPTI
 !!##OPTIONS
 !!##RETURNS
 !!##EXAMPLE
-!!
+!
 !===================================================================================================================================
-subroutine jufuns(wstrng,nchars,ier)
+subroutine funcs_(wstrng,nchars,ier)
 use M_time,    only : date_to_unix , unix_to_date, fmtdate, now, fmtdate_usage, realtime
 use M_strings, only : matchw, change, modif, delim
 use M_time,    only : date_to_julian,day_of_week=>dow, d2o, now
 use M_math,    only : round, dp_accdig, ncr
 use M_random,  only : init_random_seed
-implicit doubleprecision (a-h,o-z)
-character(len=*),parameter :: ident=&
-&"@(#)M_calculator::jufuns(3fp):reduce name(p1,p2,...) (p(i) are non-parenthesized expressions)"
+
+character(len=*),parameter::ident_4="@(#)M_calculator::funcs_(3fp):reduce name(p1,p2,...) (p(i) are non-parenthesized expressions)"
+
 !  and call the procedure "name" with those values passed as the parameters.
-   external juown1
-   real,external                       :: c
-   doubleprecision                     :: fval
-   real(kind=realtime)                 :: uepoch
-   integer          :: ierr
-   integer          :: idat(8)
-   integer          :: iweekday
-   character(len=9) :: day
+external juown1
+integer,parameter                   :: iargs=100
 
-   integer,save                        :: ikeepran=22
-   doubleprecision,external            :: ran_mod
+character(len=*)                    :: wstrng
+character(len=10),save              :: days(7)
+character(len=10),save              :: months(12)
+character(len=9) :: day
+character(len=iclen_calc)           :: ctmp
+character(len=iclen_calc)           :: ctmp2
+character(len=iclen_calc)           :: junout
+character(len=icname_calc)          :: cnum
+character(len=icname_calc)          :: wstrng2
 
-   intrinsic                           :: acos,asin,atan,cos,cosh,sin,sinh,tan,tanh
-   intrinsic                           :: abs,aint,anint,exp,nint,int,log,log10
-   intrinsic                           :: sqrt,atan2,dim,mod,sign,max,min
-   character(len=icname_calc)          :: wstrng2
-   character(len=iclen_calc)           :: ctmp
-   character(len=iclen_calc)           :: ctmp2
-   character(len=*)                    :: wstrng
-   character(len=icname_calc)          :: cnum
-   character(len=iclen_calc)           :: junout
-   integer,parameter                   :: iargs=100
-   integer                             :: ifail
-   integer                             :: itime(8)
-   doubleprecision,target              :: args(iargs)
-   integer                             :: iargs_type(iargs)
-   integer                             :: ibegin(ixyc_calc),iterm(ixyc_calc)
-   integer                             :: idarray(8)
-   integer                             :: itype
-   character(len=10),save              :: months(12)
-   character(len=10),save              :: days(7)
+doubleprecision,external            :: ran_mod
+
+real(kind=dp),target                :: args(iargs)
+
+real(kind=dp)                       :: acurcy
+real(kind=dp)                       :: arg1
+real(kind=dp)                       :: arg2
+real(kind=dp)                       :: bottom
+real(kind=dp)                       :: false
+real(kind=dp)                       :: fval
+real(kind=dp)                       :: top
+real(kind=dp)                       :: true
+real(kind=dp)                       :: val
+
+real(kind=realtime)                 :: uepoch
+real,external                       :: c
+
+integer,save                        :: ikeepran=22
+integer                             :: i
+integer                             :: i1
+integer                             :: i1010
+integer                             :: i1033
+integer                             :: i1060
+integer                             :: i1066
+integer                             :: i2
+integer                             :: i2020
+integer                             :: i3030
+integer                             :: i410
+integer                             :: i440
+integer                             :: i520
+integer                             :: i852
+integer                             :: iargs_type(iargs)
+integer                             :: ibegin(ixyc_calc),iterm(ixyc_calc)
+integer                             :: icalen
+integer                             :: icount
+integer                             :: idarray(8)
+integer                             :: idig
+integer                             :: idum
+integer                             :: iend
+integer                             :: iend1
+integer                             :: iend2
+integer                             :: ier
+integer                             :: ifail
+integer                             :: iflen
+integer                             :: ii
+integer                             :: iie
+integer                             :: iii
+integer                             :: iiie
+integer                             :: ileft
+integer                             :: ilen
+integer                             :: in
+integer                             :: ind
+integer                             :: indexout
+integer                             :: ios
+integer                             :: iright
+integer                             :: istart
+integer                             :: istat
+integer                             :: istore
+integer                             :: istoreat
+integer                             :: isub
+integer                             :: itime(8)
+integer                             :: itype
+integer                             :: iunit
+integer                             :: ival
+integer                             :: ivalue
+integer                             :: jend
+integer                             :: jj
+integer                             :: n
+integer                             :: nchars
+integer                             :: idat(8)
+integer                             :: ierr
+integer                             :: iweekday
+
+intrinsic                           :: abs,aint,anint,exp,nint,int,log,log10
+intrinsic                           :: acos,asin,atan,cos,cosh,sin,sinh,tan,tanh
+intrinsic                           :: sqrt,atan2,dim,mod,sign,max,min
 !-----------------------------------------------------------------------------------------------------------------------------------
    data months/'January','February','March','April','May','June','July','August','September','October','November','December'/
    data days/'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'/
@@ -734,11 +749,11 @@ character(len=*),parameter :: ident=&
    if(iright-ileft.lt.0)then ! if call such as fx() expression string is null
       n=0
    else ! take string of expressions separated by commas and place values into an array and return how many values were found
-      call juargs(wstrng(ileft:iright),iflen,args,iargs_type,n,ier,100)
+      call args_(wstrng(ileft:iright),iflen,args,iargs_type,n,ier,100)
       if(ier.eq.-1)then
          goto 999
       else
-         ier=0 ! ier could be 2 from juargs()
+         ier=0 ! ier could be 2 from args_()
       endif
    endif
    wstrng2=' '
@@ -765,10 +780,10 @@ case("abs","aint","anint","ceil","ceiling","floor","frac","int","nint",&
     &"exponent","fraction",&
     &"real","sqrt")
       if(n.ne.1)then                                                    ! check number of parameters
-        mssge='*jufuns* incorrect number of parameters in '//wstrng2(:iend)
+        mssge='*funcs_* incorrect number of parameters in '//wstrng2(:iend)
         ier=-1
       elseif(iargs_type(1).ne.0)then                                    ! check type of parameters
-        mssge='*jufuns* parameter not numeric in '//wstrng2(:iend)
+        mssge='*funcs_* parameter not numeric in '//wstrng2(:iend)
         ier=-1
       else                                                              ! single numeric argument
          select case (wstrng2(:iend))
@@ -852,10 +867,10 @@ case("abs","aint","anint","ceil","ceiling","floor","frac","int","nint",&
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=------------------------------------------------------------
 case("atan2","dim","mod","bessel_jn","bessel_yn","sign","hypot","modulo","scale","ncr")
       if(n.ne.2)then                                                           ! check number of parameters
-        mssge='*jufuns* incorrect number of parameters in '//wstrng2(:iend)
+        mssge='*funcs_* incorrect number of parameters in '//wstrng2(:iend)
         ier=-1
       elseif(.not.all(iargs_type(1:2).eq.0))then                                ! check type of parameters
-        mssge='*jufuns* parameters not all numeric in '//wstrng2(:iend)
+        mssge='*funcs_* parameters not all numeric in '//wstrng2(:iend)
         ier=-1
       else                                                                     ! single numeric argument
          select case (wstrng2(:iend))
@@ -881,19 +896,19 @@ case("huge")
       fval=huge(0.d0)
 !=======================================================================------------------------------------------------------------
 case("x");
-      ivalue=int(args(1)+0.5)
+      ivalue=int(args(1)+0.5d0)
       if(ivalue.lt.1.or.ivalue.gt.ixy_calc)then              ! if value not at least 1, or if not less than ixy_calc, report it
-        mssge='*jufuns* illegal subscript value for x array'
+        mssge='*funcs_* illegal subscript value for x array'
         ier=-1
       else
         fval= x(ivalue)
       endif
 !=======================================================================------------------------------------------------------------
 case("y")
-      ivalue=int(args(1)+0.5)
+      ivalue=int(args(1)+0.5d0)
 !     if value not at least 1, make it 1. if not less than ixy_calc, make it ixy_calc
       if(ivalue.lt.1.or.ivalue.gt.ixy_calc)then
-         mssge='*jufuns* illegal subscript value for y array'
+         mssge='*funcs_* illegal subscript value for y array'
          ier=-1
       else
          fval= y(ivalue)
@@ -935,7 +950,7 @@ case("xstore","ystore")                                        ! xstore function
       else                                                     ! at least two values so something can be stored
          istoreat=int(args(1)+0.50d0)                          ! array subscript to start storing values at
          if(istoreat.lt.1.or.istoreat+n-2.gt.ixy_calc)then     ! ignore -entire- function call if a bad subscript reference was made
-            mssge='*jufuns* illegal subscript value for array in '//wstrng(:iend)
+            mssge='*funcs_* illegal subscript value for array in '//wstrng(:iend)
             ier=-1
             fval=0.0d0
          else                                                  ! legitimate subscripts to store at
@@ -953,7 +968,7 @@ case("xstore","ystore")                                        ! xstore function
 case("lle","llt","leq","lge","lgt","lne")
       if(iargs_type(1).eq.2.and.iargs_type(2).eq.2)then
          do i2020=1,n
-            if(args(i2020).le.0.or.args(i2020).gt.ic_calc)then
+            if(args(i2020).le.0.or.args(i2020).gt.size(values))then
                ier=-1
                mssge='unacceptable locations for strings encountered'
                goto 999
@@ -973,7 +988,7 @@ case("lle","llt","leq","lge","lgt","lne")
                if(iargs_type(i410).ne.2)then     ! all parameters should be a string
                   ier=-1
                   mssge='non-string value encountered'
-               elseif(values(i1).eq.values(int(args(i410)+.5)))then
+               elseif(values(i1).eq.values(int(args(i410)+0.5d0)))then
                   fval=TRUE
                endif
             enddo
@@ -987,13 +1002,13 @@ case("lle","llt","leq","lge","lgt","lne")
                if(iargs_type(i440).ne.2)then     ! all parameters should be a string
                   ier=-1
                   mssge='non-string value encountered'
-               elseif(values(i1).eq.values(int(args(i440)+0.5)))then
+               elseif(values(i1).eq.values(int(args(i440)+0.5d0)))then
                   fval=FALSE
                endif
             enddo
          case default
             ier=-1
-            mssge='internal error in jufuns in lexical functions'
+            mssge='internal error in funcs_ in lexical functions'
          end select
       else
          ier=-1
@@ -1039,7 +1054,7 @@ case("le","lt","eq","ge","gt","ne")
          case("ne"); if(arg1.ne.arg2)fval=TRUE
          case default
             ier=-1
-            mssge='*logical* internal error in jufuns'
+            mssge='*logical* internal error in funcs_'
          end select
       else
          ier=-1
@@ -1159,7 +1174,7 @@ case("$if")                                      ! $if function
         ii=int(args(3))
       endif
       ctmp=values(ii)
-      iend=valuer(ii)
+      iend=values_len(ii)
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=------------------------------------------------------------
 case("in")                                                            ! in(lower_value,value,upper_value)
       fval=FALSE
@@ -1200,15 +1215,15 @@ case("index")
       ii=int(args(1))
       iii=int(args(2))
       if(iargs_type(1).eq.2.and.iargs_type(2).eq.2)then ! if parameter was a string leave it alone
-         iend1=valuer(ii)
-         iend2=valuer(iii)
+         iend1=values_len(ii)
+         iend2=values_len(iii)
          fval=index(values(ii)(:iend1),values(iii)(:iend2))
       endif
       ier=0   ! flag that returning a number, not a string
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=------------------------------------------------------------
 case("len","len_trim")
       ii=int(args(1))
-      iend1=valuer(ii)
+      iend1=values_len(ii)
       fval=len_trim(values(ii)(:iend1))
       ier=0   ! flag that returning a number, not a string
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=------------------------------------------------------------
@@ -1217,7 +1232,7 @@ case("rand")                                                            ! random
       case (0)                                                          ! use default method
          itype=3
       case (1)                                                          ! determine user-specified method
-         itype=int(args(1)+0.5)
+         itype=int(args(1)+0.5d0)
          if(itype.lt.1.or.itype.gt.3)then
             itype=3
          endif
@@ -1240,13 +1255,13 @@ case("srand")                                                           ! seed r
       case (1)                                                          ! no user-specified type
          itype=3                                                        ! use default method
       case (2)                                                          ! determine user-specified method
-         itype=int(args(2)+0.5)                                         ! user-specified type
+         itype=int(args(2)+0.5d0)                                         ! user-specified type
       case default                                                      ! call syntax error
          mssge='illegal number of arguments for srand()'
          ier=-1
       end select
       if(ier.eq.0)then
-         ivalue=int(args(1)+0.5)                                           ! determine seed value
+         ivalue=int(args(1)+0.5d0)                                           ! determine seed value
          select case (itype)                                               ! select various methods
          case (2)                                                          ! standard Fortran method
             call init_random_seed(ivalue)
@@ -1273,9 +1288,9 @@ case("open")
          fval=-1
       else
          iunit=int(args(1))
-         ii= int(args(2)+0.5)
+         ii= int(args(2)+0.5d0)
          ctmp=values(ii)
-         iend=valuer(ii)
+         iend=values_len(ii)
          open(unit=iunit,file=ctmp(:iend),iostat=ios, status='unknown',form='formatted')
       endif
       fval=ios
@@ -1296,9 +1311,9 @@ case("write")
          iunit=int(args(1))
          ios=0
          ctmp=' '
-         ii= int(args(2)+0.5)
+         ii= int(args(2)+0.5d0)
          ctmp=values(ii)
-         iend=valuer(ii)
+         iend=values_len(ii)
          if(iunit.le.0)then
             write(*,'(a)',iostat=ios)values(ii)(:iend)
          else
@@ -1333,7 +1348,7 @@ case("$f")                              ! $f(format,value) Using single format s
          ctmp=' '
          if(iargs_type(1).eq.2)then     ! if first field is a string
             ii=int(args(1))             ! get index into values() array
-            iend1=valuer(ii)            ! maximum end is at end of string
+            iend1=values_len(ii)            ! maximum end is at end of string
             if(n.gt.1)fval=args(n)      ! get the real value
             write(ctmp,'('// values(ii)(:iend1)//')',iostat=ios)args(2:n)
             if(ios.ne.0)then
@@ -1355,7 +1370,7 @@ case("$char")
          do i3030=1,n                            ! unlike FORTRAN, can take multiple characters and mix strings and numbers
             ii=int(args(i3030))
             if(iargs_type(i3030).eq.2)then       ! if parameter was a string leave it alone
-               iend2=iend+valuer(ii)
+               iend2=iend+values_len(ii)
                ctmp(iend+1:iend2)=values(ii)
                iend=iend2
             else                                 ! convert numeric ADE to a character
@@ -1372,7 +1387,7 @@ case("$substr")                                  ! $substr(string,start,end)
       else
          ii=int(args(1))
          istart=1
-         iend1=valuer(ii)                        ! maximum end is at end of string
+         iend1=values_len(ii)                        ! maximum end is at end of string
          ctmp=' '
          if(iargs_type(1).eq.2)then
             if(n.gt.1)istart=min(max(1,int(args(2))),iend1)
@@ -1388,7 +1403,7 @@ case("$nstore","$xstore","$ystore")
          ier=-1
          mssge='incorrect number of parameters for '//wstrng(:iend)
       else
-         ivalue=int(args(1)+0.5)
+         ivalue=int(args(1)+0.5d0)
 !        $nstore function===>store $n(where_to_start,value1,value2,value3...)
 !        ignore -entire- function call if a bad subscript reference was made
          if(ivalue.lt.1.or.ivalue+n-2.gt.ixyc_calc)then
@@ -1416,18 +1431,18 @@ case("str","$str","$") ! "$str" appends numbers and strings into a new string
          istart=jend+1                                     ! where to start appended argument in output string
          if(iargs_type(i1010).eq.2)then                    ! this parameter was a string
             in=int(args(i1010))                            ! the value of a string argument is the subscript for where the string is
-            jend=istart+valuer(in)-1                       ! where appended argument ends in output string
-            ctmp(istart:jend)=values(in)(:valuer(in))
+            jend=istart+values_len(in)-1                       ! where appended argument ends in output string
+            ctmp(istart:jend)=values(in)(:values_len(in))
          elseif(iargs_type(i1010).eq.0)then                ! this parameter was a number
             if(args(i1010).ne.0)then
-               call jurtoa(args(i1010),cnum,ilen,ier)
+               call r_to_a_(args(i1010),cnum,ilen,ier)
                if(ier.ne.-1)then
                   ilen=max(ilen,1)
                   jend=istart+ilen-1
                   if(cnum(ilen:ilen).eq.'.')jend=jend-1    ! this number ends in a decimal
                   jend=max(jend,istart)
                   if(jend.gt.len(ctmp))then
-                     call journal('*jufuns* $str output string truncated')
+                     call journal('*funcs_* $str output string truncated')
                      jend=len(ctmp)
                   endif
                   ctmp(istart:jend)=cnum(:ilen)
@@ -1437,7 +1452,7 @@ case("str","$str","$") ! "$str" appends numbers and strings into a new string
                jend=jend+1
             endif
          else
-            mssge='*jufuns* parameter to function $str not interpretable'
+            mssge='*funcs_* parameter to function $str not interpretable'
             ier=-1
          endif
       enddo
@@ -1447,9 +1462,9 @@ case("str","$str","$") ! "$str" appends numbers and strings into a new string
              ier=2
          case("str")
              ier=0
-             call juator(ctmp,fval,ier)                    ! str function
+             call a_to_d_(ctmp,fval,ier)                    ! str function
          case default
-            mssge='*jufuns* internal error: should not get here'
+            mssge='*funcs_* internal error: should not get here'
             ier=-1
          end select
       endif
@@ -1457,7 +1472,7 @@ case("str","$str","$") ! "$str" appends numbers and strings into a new string
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=------------------------------------------------------------
 case("$x","$y","$n")
       ier=2                                                  ! returning string
-      ivalue=int(args(1)+0.5)
+      ivalue=int(args(1)+0.5d0)
       if(ivalue.lt.1.or.ivalue.gt.ixyc_calc)then             ! if value not at least 1, or if not less than ixyc_calc, report it
         mssge='illegal subscript value for $x array'
         ier=-1
@@ -1480,7 +1495,7 @@ case("$l") ! $l lower(string)
          ier=-1
          mssge='*$l* must have one parameter'
       else
-         ctmp=lower(values(int(args(1)+0.5)))
+         ctmp=lower(values(int(args(1)+0.5d0)))
          iend=len_trim(ctmp) ! very inefficient
       endif
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=------------------------------------------------------------
@@ -1491,7 +1506,7 @@ case("$u")! $u upper(string)
          ier=-1
          mssge='*$u* must have one parameter'
       else
-         ctmp=upper(values(int(args(1)+0.5)))
+         ctmp=upper(values(int(args(1)+0.5d0)))
          iend=len_trim(ctmp) ! very inefficient
       endif
 !=======================================================================------------------------------------------------------------
@@ -1507,8 +1522,8 @@ case("$modif")
          ier=-1
          mssge='*modif* parameter(s) not a string'
       else
-         ctmp=values(int(args(1)+0.5)) ! string to modify
-         call modif(ctmp,values(int(args(2)+0.5)))
+         ctmp=values(int(args(1)+0.5d0)) ! string to modify
+         call modif(ctmp,values(int(args(2)+0.5d0)))
          iend=len_trim(ctmp) ! very inefficient
       endif
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=------------------------------------------------------------
@@ -1523,8 +1538,8 @@ case("matchw")
        elseif(iargs_type(1).eq.2.and.iargs_type(2).eq.2)then ! parameters are strings
           ii=int(args(1))                              ! index of first string
           iii=int(args(2))                             ! index of second string
-          iie=valuer(ii)                               ! last non-blank character
-          iiie=valuer(iii)                             ! last non-blank character
+          iie=values_len(ii)                               ! last non-blank character
+          iiie=values_len(iii)                             ! last non-blank character
           if(matchw(values(iii)(:iiie),values(ii)(:iie)))then ! see if match
              fval=TRUE                                 ! string matched wild-card expression
           else
@@ -1560,17 +1575,17 @@ case("delimx")                ! 'delimx(istore,line,delimiters)  parse a string 
             mssge='*delimx* second parameter not a string'
            ier=-1
          else
-            ctmp=values(int(args(2)+0.5))                                                ! string to parse
+            ctmp=values(int(args(2)+0.5d0))                                                ! string to parse
             if(iargs_type(3).ne.2)then
                mssge='*delimx* delimiter parameter not a string'
               ier=-1
             else
-               ctmp2=values(int(args(3)+0.5))                                            ! delimiters
+               ctmp2=values(int(args(3)+0.5d0))                                            ! delimiters
                if(iargs_type(1).ne.0)then
                   mssge='*delimx* first parameter not an index number'
                  ier=-1
                else
-                  istore=int(args(1)+0.5)                                                ! where to start storing into $n array at
+                  istore=int(args(1)+0.5d0)                                                ! where to start storing into $n array at
                   call delim(ctmp,['#NULL#'],ixyc_calc,icount,ibegin,iterm,ilen,ctmp2)
                   if(istore.lt.1.or.istore+n-2.gt.ixyc_calc)then  ! ignore entire function call if bad subscript reference was made
                      mssge='illegal subscript value for array in delim'
@@ -1599,8 +1614,8 @@ case("$change")                                                         ! $chang
          ier=-1
          mssge='*$change* parameter(s) not a string'
       else                                                              ! correct numer of type of parameters
-         ii=int(args(1)+0.5)                                            ! where directive is stored in values()
-         jj=int(args(2)+0.5)                                            ! where directive is stored in values()
+         ii=int(args(1)+0.5d0)                                            ! where directive is stored in values()
+         jj=int(args(2)+0.5d0)                                            ! where directive is stored in values()
          ctmp=values(ii)                                                ! string to change
          call change(ctmp,values(jj),istat)                             ! apply change
          if(istat.lt.0)then                                             ! error occurred
@@ -1613,10 +1628,10 @@ case("$change")                                                         ! $chang
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=------------------------------------------------------------
 case("round")
       if(n.ne.2)then                                                           ! check number of parameters
-        mssge='*jufuns* incorrect number of parameters in '//wstrng2(:iend)
+        mssge='*funcs_* incorrect number of parameters in '//wstrng2(:iend)
         ier=-1
       elseif(.not.all(iargs_type(1:2).eq.0))then                                ! check type of parameters
-        mssge='*jufuns* parameters not all numeric in '//wstrng2(:iend)
+        mssge='*funcs_* parameters not all numeric in '//wstrng2(:iend)
         ier=-1
       else                                                                      ! single numeric argument
          fval=round(args(1),int(args(2)))
@@ -1624,25 +1639,25 @@ case("round")
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=------------------------------------------------------------
 case("ifdef")
       fval=-1
-      if(n.ne.1)then                                            ! check number of parameters
+      if(n.ne.1)then                                             ! check number of parameters
          mssge='*ifdef* incorrect number of parameters in '//wstrng(:iend)
          ier=-1
-      elseif(iargs_type(1).ne.2)then                            ! the parameter should be a name of a variable
+      elseif(iargs_type(1).ne.2)then                             ! the parameter should be a name of a variable
          mssge='*ifdef* name not a string:'//wstrng(:iend)
          ier=-1
       else
-         ii=int(args(1))                                        ! get index into values() array
-         iend1=valuer(ii)                                       ! maximum end is at end of string
+         ii=int(args(1))                                         ! get index into values() array
+         iend1=values_len(ii)                                        ! maximum end is at end of string
          if(values(ii)(1:1).eq.'$')then
-            call jubous(values(ii)(:iend1),indexout,ix2,ierr)   ! determine if the string variable name exists
+            call locate(keys_q,values(ii)(:iend1),indexout,ierr) ! determine if the string variable name exists
          else
-            call jubous(values(ii)(:iend1),indexout,ix,ierr)    ! determine f the numeric variable name exists
+            call locate(keyr_q,values(ii)(:iend1),indexout,ierr) ! determine if the numeric variable name exists
          endif
-         if(ierr.ne.0)then                                      ! unexpected error
+         if(ierr.ne.0)then                                       ! unexpected error
             ier=-1
-         elseif(indexout.gt.0)then                              ! found variable name
+         elseif(indexout.gt.0)then                               ! found variable name
             fval=0
-         else                                                   ! did not find variable name
+         else                                                    ! did not find variable name
             fval=-1
          endif
       endif
@@ -1733,7 +1748,7 @@ case("$now")                                          ! $now(format)
       case(1)                                         ! one parameter
          if(iargs_type(1).eq.2)then                   ! a string is assumed to be a format
             ii=int(args(1))                           ! index of first string
-            ctmp=now(values(ii)(:valuer(ii)))
+            ctmp=now(values(ii)(:values_len(ii)))
          else
             ctmp=''
             mssge='*$now* first parameter is numeric'
@@ -1765,14 +1780,14 @@ case default
          elseif(ier.eq.2)then
             iend=int(fval) ! string functions should return string length in fval
             if(fval.le.0)then
-               mssge='*jufuns* bad length for returned string'
+               mssge='*funcs_* bad length for returned string'
                ier=-1
             endif
          else
             ier=0
          endif
       else
-        mssge='*jufuns* function not found: '//wstrng(:iend)
+        mssge='*funcs_* function not found: '//wstrng(:iend)
         ier=-1                           ! ya done blown it if you get here
       endif
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -1781,15 +1796,15 @@ end select
 999   continue             ! return based on value of ier
       select case(ier)
       case(2)   ! return string value
-        call stufftok(fval,wstrng,nchars,ctmp(:iend),iend,ier) ! add a new token variable and assign string to it
+        call stufftok_(fval,wstrng,nchars,ctmp(:iend),iend,ier) ! add a new token variable and assign string to it
       case(0)   ! return numeric value
-        call jurtoa(fval,wstrng,nchars,idum)
+        call r_to_a_(fval,wstrng,nchars,idum)
       case(-1)  ! return error
       case default
-         call journal('sc','*jufuns* unknown closing value ',ier)
+         call journal('sc','*funcs_* unknown closing value ',ier)
          ier=-1
       end select
-end subroutine jufuns
+end subroutine funcs_
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -1797,35 +1812,35 @@ end subroutine jufuns
 !>
 !!##NAME
 !!##SYNOPSIS
-!!
-!!##DESCRIPTION
+
+!!##DESCRIPTI
 !!##OPTIONS
 !!##RETURNS
 !!##EXAMPLE
-!!
+!
 !===================================================================================================================================
-subroutine stufftok(fval,wstrng,nchars,string,iend,ier)
-implicit doubleprecision (a-h,o-z)
-character(len=*),parameter :: ident=&
-&"@(#)M_calculator::stufftok(3fp): add a new token variable and assign string to it"
-      character(len=5) :: toknam
-      character(len=*) :: string
-      character(len=*) :: wstrng
+subroutine stufftok_(fval,wstrng,nchars,string,iend,ier)
+
+character(len=*),parameter::ident_5="@(#)M_calculator::stufftok_(3fp): add a new token variable and assign string to it"
+
+real(kind=dp)          :: fval
+character(len=*)       :: wstrng
+integer                :: nchars
+character(len=*)       :: string
+integer                :: iend
+integer                :: ier
+
+character(len=5)       :: toknam
 !-----------------------------------------------------------------------------------------------------------------------------------
-      ktoken=ktoken+1                           ! increment the counter of strings found to get a place to store into
-      nchars=5
-      write(toknam,'(''$_'',i3.3)')ktoken       ! build a unique name for the token string found for this output string
-      wstrng=toknam
-      call stuffa(toknam,string(:iend),ival,'')  ! cannot do this earlier or indexs from call that defined args could be wrong
-      if(ival.gt.0)then
-         fval=ival
-         ier=2
-         mssge=string(:iend)
-      else
-         mssge='*stufftok* could not store concatenated string'
-         ier=-1
-      endif
-end subroutine stufftok
+   ktoken=ktoken+1                            ! increment the counter of strings found to get a place to store into
+   nchars=5
+   write(toknam,'(''$_'',i3.3)')ktoken        ! build a unique name for the token string found for this output string
+   wstrng=toknam
+   call stuffa(toknam,string(:iend),'')       ! cannot do this earlier or indexs from call that defined args could be wrong
+   fval=0.0d0
+   ier=2
+   mssge=string(:iend)
+end subroutine stufftok_
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -1833,31 +1848,37 @@ end subroutine stufftok
 !>
 !!##NAME
 !!##SYNOPSIS
-!!
-!!##DESCRIPTION
+
+!!##DESCRIPTI
 !!##OPTIONS
 !!##RETURNS
 !!##EXAMPLE
-!!
+!
 !===================================================================================================================================
-subroutine juargs(line,ilen,array,itype,iarray,ier,mx)
-!-----------------------------------------------------------------------------------------------------------------------------------
-implicit doubleprecision (a-h,o-z)
-character(len=*),parameter :: ident=&
-&"@(#)M_calculator::juargs(3fp):given 'par1,par2,...' store non-parenthesized expression par(n) into a real or string array"
+subroutine args_(line,ilen,array,itype,iarray,ier,mx)
+
+character(len=*),parameter::ident_6="&
+&@(#)M_calculator::args_(3fp):given 'par1,par2,...' store non-parenthesized expression par(n) into a real or string array"
+
 !@ (#) record type of par(n) into itype()"
 !@ (#) Commas are only legal delimiters. extra or redundant delimiters are ignored.
+
 !-----------------------------------------------------------------------------------------------------------------------------------
 character(len=*),intent(in)           :: line      ! input string
 integer,intent(in)                    :: ilen      ! length of input string
-doubleprecision,intent(out)           :: array(mx)
+real(kind=dp),intent(out)             :: array(mx)
 integer,intent(out)                   :: itype(mx) ! itype=0 for number, itype=2 for string
 integer,intent(out)                   :: iarray    ! number of parameters found
 integer                               :: ier       ! ier=-1 if error occurs, ier undefined (not changed) if no error.
 integer,intent(in)                    :: mx        ! up to mx par(i) will be extracted. if more found an error is generated.
 !-----------------------------------------------------------------------------------------------------------------------------------
-   character(len=1),parameter :: delimc=','
-   character(len=icbuf_calc)  :: wstrng
+integer :: icalc
+integer :: icol
+integer :: iend
+integer :: ilook
+integer :: istart
+character(len=1),parameter :: delimc=','
+character(len=icbuf_calc)  :: wstrng
 !-----------------------------------------------------------------------------------------------------------------------------------
    iarray=0
    if(ilen.eq.0)then  ! check if input line (line) was totally blank
@@ -1877,7 +1898,7 @@ integer,intent(in)                    :: mx        ! up to mx par(i) will be ext
               icalc=ilen-istart+1
               wstrng=line(istart:ilen)
               ier=0
-              call jucals(wstrng,icalc,array(iarray),ier)
+              call expressions_(wstrng,icalc,array(iarray),ier)
               itype(iarray)=ier
               return
            else
@@ -1885,7 +1906,7 @@ integer,intent(in)                    :: mx        ! up to mx par(i) will be ext
               icalc=iend-istart+1
               wstrng=line(istart:iend)
               ier=0
-              call jucals(wstrng,icalc,array(iarray),ier)
+              call expressions_(wstrng,icalc,array(iarray),ier)
               itype(iarray)=ier
               if(ier.eq.-1)return
            endif
@@ -1900,7 +1921,7 @@ integer,intent(in)                    :: mx        ! up to mx par(i) will be ext
    enddo
    write(mssge,'(a,i4,a)')'more than ',mx,' arguments not allowed'
    ier=-1
-end subroutine juargs
+end subroutine args_
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -1908,19 +1929,30 @@ end subroutine juargs
 !>
 !!##NAME
 !!##SYNOPSIS
-!!
-!!##DESCRIPTION
+
+!!##DESCRIPTI
 !!##OPTIONS
 !!##RETURNS
 !!##EXAMPLE
-!!
+!
 !===================================================================================================================================
-subroutine jucals(string,nchar,value,ier)
-implicit doubleprecision (a-h,o-z)
-character(len=*),parameter :: ident=&
-&"@(#)M_calculator::jucals(3fp): resolve a series of terms into a single value and restring"
-      character(len=*)          :: string
-      character(len=icbuf_calc) :: dummy            ! no single term may be over (icbuf_calc) characters
+subroutine expressions_(string,nchar,value,ier)
+
+character(len=*),parameter::ident_7="&
+&@(#)M_calculator::expressions_(3fp): resolve a series of terms into a single value and restring"
+
+character(len=*)          :: string
+character(len=icbuf_calc) :: dummy            ! no single term may be over (icbuf_calc) characters
+integer :: iend
+integer :: iendm
+integer :: iendp
+integer :: ier
+integer :: ista
+integer :: istat
+integer :: nchar
+integer :: nchar2
+real(kind=dp) :: temp
+real(kind=dp) :: value
 !-----------------------------------------------------------------------------------------------------------------------------------
                                !!!!! what happens if the returned string is longer than the input string?
       value=0.0d0              ! initialize sum value to be returned to 0
@@ -1930,7 +1962,7 @@ character(len=*),parameter :: ident=&
                  ! and that the error flag should be set to the value 2 to indicate that a string, not a number, is being returned
                  ! for the 2 to get back, it must not be changed by this routine or anything it calls
       if(string(1:1).eq.'$')then
-         call given_name_get_stringvalue(string,ier)
+         call given_name_get_stringvalue_(string,ier)
          if(ier.eq.-1)return
          ier=2                 ! flag that a character string is being returned
 !x       return
@@ -1956,9 +1988,9 @@ character(len=*),parameter :: ident=&
          nchar2=iend-istat+1                      ! calculate number of characters in current term
 !        given that the current term ( dummy) is an optionally signed string containing only the operators **, * an / and no
 !        parenthesis, reduce the string to a single value and add it to the sum of terms (value). do not change the input string.
-         call jupows(dummy,nchar2,ier)            ! evaluate and remove ** operators and return the altered string (dummy)
+         call pows_(dummy,nchar2,ier)            ! evaluate and remove ** operators and return the altered string (dummy)
          if(ier.eq.-1) return                     ! if an error occurred, return
-         call jufacs(dummy,nchar2,temp,ier)       ! evaluate and remove * and / operators, return the evaluated -value- temp
+         call factors_(dummy,nchar2,temp,ier)       ! evaluate and remove * and / operators, return the evaluated -value- temp
          if(ier.eq.-1)return                      ! if an error occurred, return
          if(string(ista:ista).eq.'=')then         ! if term operator was a subtraction, subtract temp from value
             value=value-temp
@@ -1979,8 +2011,8 @@ character(len=*),parameter :: ident=&
             exit
          endif
       enddo
-      call jurtoa(value,string,nchar,ier) ! successfully completed. convert sum of terms (value) to a string and return
-end subroutine jucals
+      call r_to_a_(value,string,nchar,ier) ! successfully completed. convert sum of terms (value) to a string and return
+end subroutine expressions_
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -1988,18 +2020,17 @@ end subroutine jucals
 !>
 !!##NAME
 !!##SYNOPSIS
-!!
-!!##DESCRIPTION
+
+!!##DESCRIPTI
 !!##OPTIONS
 !!##RETURNS
 !!##EXAMPLE
-!!
-!===================================================================================================================================
-subroutine jupows(wstrng,nchar,ier)
-implicit doubleprecision (a-h,o-z)
-character(len=*),parameter :: ident=&
-&"@(#)M_calculator::jupows(3fp): expand power functions in a string, working from left to right"
 !
+!===================================================================================================================================
+subroutine pows_(wstrng,nchar,ier)
+
+character(len=*),parameter::ident_8="@(#)M_calculator::pows_(3fp): expand power functions in a string, working from left to right"
+
 !     given an unparenthesized string of form:
 !        stringo opo fval1 ** fval2 opo2 stringo2
 !     where opo is a preceding optional operator from set /,* and
@@ -2017,10 +2048,23 @@ character(len=*),parameter :: ident=&
 !     nchar  =input length of wstrng, returned corrected for new
 !             wstrng returned.
 !
-      character(len=icname_calc) :: tempch
-      character(len=icbuf_calc)  :: dummy
-      character(len=1)           :: z
-      character(len=*)           :: wstrng
+character(len=icname_calc) :: tempch
+character(len=icbuf_calc)  :: dummy
+character(len=1)           :: z
+character(len=*)           :: wstrng
+real(kind=dp)              :: fval1
+real(kind=dp)              :: fval2
+integer                    :: i
+integer                    :: id2
+integer                    :: idum
+integer                    :: ier
+integer                    :: im2
+integer                    :: ip
+integer                    :: ip2
+integer                    :: iright
+integer                    :: iz
+integer                    :: nchar
+integer                    :: nchart
 !-----------------------------------------------------------------------------------------------------------------------------------
       INFINITE: do
 !        find first occurrence of operator, starting at left and moving right
@@ -2072,11 +2116,11 @@ character(len=*),parameter :: ident=&
          else
            iright=ip2+ip
          endif
-         call juator(wstrng(iz:ip-1),fval1,ier)
+         call a_to_d_(wstrng(iz:ip-1),fval1,ier)
          if(ier.eq.-1)then
             exit INFINITE
          endif
-         call juator(wstrng(ip+2:iright),fval2,ier)
+         call a_to_d_(wstrng(ip+2:iright),fval2,ier)
          if(ier.eq.-1)then
             exit INFINITE
          endif
@@ -2092,7 +2136,7 @@ character(len=*),parameter :: ident=&
          else
             fval1=fval1**fval2
          endif
-         call jurtoa(fval1,tempch,nchart,idum)
+         call r_to_a_(fval1,tempch,nchart,idum)
 !        place new value back into string and correct nchar.
 !        note that not checking for nchar greater than (icbuf_calc)
 !        in dummy or greater than len(wstrng).
@@ -2111,7 +2155,7 @@ character(len=*),parameter :: ident=&
          endif
          wstrng=dummy
       enddo INFINITE
-end subroutine jupows
+end subroutine pows_
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -2119,17 +2163,18 @@ end subroutine jupows
 !>
 !!##NAME
 !!##SYNOPSIS
-!!
-!!##DESCRIPTION
+
+!!##DESCRIPTI
 !!##OPTIONS
 !!##RETURNS
 !!##EXAMPLE
-!!
+!
 !===================================================================================================================================
-subroutine jufacs(wstrng,nchr,fval1,ier)
-implicit doubleprecision (a-h,o-z)
-character(len=*),parameter :: ident=&
-&"@(#)M_calculator::jufacs(3fp):reduce unparenthesized string with only * and / operators to val"
+subroutine factors_(wstrng,nchr,fval1,ier)
+
+character(len=*),parameter::ident_9="&
+&@(#)M_calculator::factors_(3fp):reduce unparenthesized string with only * and / operators to val"
+
 !
 !     The input string is unaltered. for any single pass thru the routine, the string structure is assumed to be:
 !         fval1 op fval2 op fval op fval op fval op fval
@@ -2149,7 +2194,18 @@ character(len=*),parameter :: ident=&
 !     wstrng = the input string to be interpreted.
 !       ier  = is a flag indicating whether an error has occurred
 !-----------------------------------------------------------------------------------------------------------------------------------
-      character(len=*) :: wstrng
+character(len=*) :: wstrng
+real(kind=dp)    :: fval1
+real(kind=dp)    :: fval2
+integer          :: id
+integer          :: id2
+integer          :: ier
+integer          :: im
+integer          :: im2
+integer          :: ip
+integer          :: ip2
+integer          :: iright
+integer          :: nchr
 !-----------------------------------------------------------------------------------------------------------------------------------
       if((nchr).eq.0)then
          ier=-1
@@ -2167,7 +2223,7 @@ character(len=*),parameter :: ident=&
       if(ip.eq.0) ip=max0(im,id)
       if( ip.eq.0 )then
 !        no operator character (/ or *) left
-         call juator(wstrng(1:nchr),fval1,ier)
+         call a_to_d_(wstrng(1:nchr),fval1,ier)
          return
       elseif (ip.eq.1)then
 !        if no string to left of operator, have a bad input string
@@ -2176,7 +2232,7 @@ character(len=*),parameter :: ident=&
          return
       endif
 !     convert located string for fval1 into real variable fval1
-      call juator(wstrng(1:ip-1),fval1,ier)
+      call a_to_d_(wstrng(1:ip-1),fval1,ier)
       if(ier.eq.-1)return
       do
          if(ip.eq.nchr)then
@@ -2201,7 +2257,7 @@ character(len=*),parameter :: ident=&
             iright=ip2+ip-1
          endif
 !        place located string for fval2 into real variable fval2
-         call juator(wstrng(ip+1:iright),fval2,ier)
+         call a_to_d_(wstrng(ip+1:iright),fval2,ier)
          if(ier.eq.-1)return
 !        do specified operation between fval1 and fval2
          if(wstrng(ip:ip).eq.'*') then
@@ -2216,17 +2272,17 @@ character(len=*),parameter :: ident=&
          if(iright.eq.nchr)return
          ip=iright+1
       enddo
-end subroutine jufacs
+end subroutine factors_
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!     juator(3f) - [M_calculator] returns a double precision value from a numeric character string specifically for M_calculator(3fm)
+!!     a_to_d_(3f) - [M_calculator] returns a double precision value from a numeric character string specifically for M_calculator(3fm
 !!##SYNOPSIS
 !!
-!!   subroutine juator(chars,rval,ierr)
+!!   subroutine a_to_d_(chars,rval,ierr)
 !!
 !!    character(len=*),intent(in) :: chars
 !!    doubleprecision,intent(out) :: rval
@@ -2261,25 +2317,29 @@ end subroutine jufacs
 !!                    defaults to zero-fill on internal files.
 !!       o 12/22/2016  Changed to generate man(1) pages via ufpp(1).
 !===================================================================================================================================
-subroutine juator(chars,rval8,ierr)
-implicit doubleprecision (a-h,o-z)
-character(len=*),parameter  :: ident=&
-&"@(#)M_calculator::juator(3f):returns a real value rval8 from a numeric character string chars."
+subroutine a_to_d_(chars,rval8,ierr)
+
+character(len=*),parameter::ident_10="&
+&@(#)M_calculator::a_to_d_(3f):returns a real value rval8 from a numeric character string chars."
+
 ! CAREFUL: LAST is in GLOBAL, but can be read from when passed to this routine as CHARS. DO NOT CHANGE CHARS.
 character(len=*),intent(in) :: chars
-doubleprecision,intent(out) :: rval8
+real(kind=dp),intent(out)   :: rval8
 integer,intent(out)         :: ierr
 !-----------------------------------------------------------------------------------------------------------------------------------
-   character(len=13)        :: frmt
+character(len=13)           :: frmt
+integer                     :: ier
+integer                     :: indx
+integer                     :: ioerr
 !-----------------------------------------------------------------------------------------------------------------------------------
    ioerr=0
    if(chars.eq.'?')then       ! if string is a (unsigned) question mark, use value returned from last completed calculation
      read(last,'(bn,g20.0)',iostat=ioerr,err=9991)rval8                ! assuming cannot get a read error out of reading last
    elseif('$'.eq.chars(1:1))then                ! string is a string variable name
-      call jubous(chars,indx,ix2,ier)           ! try to find the index in the character array for the string variable
+      call locate(keys_q,chars,indx,ier)        ! try to find the index in the character array for the string variable
       if(indx.le.0)then                         ! if indx is not .gt. 0 string was not a variable name
          ierr=-1
-      mssge='undeclared string variable '//chars(:min(len(chars),(icname_calc)))
+      mssge='undeclared string variable '//trim(chars)
       else
          rval8=real(indx)   ! set value to position of string in the string array
          !!!! flag via a value for ierr that a string, not a number, has been found
@@ -2287,12 +2347,12 @@ integer,intent(out)         :: ierr
       return
    ! no error on read on Sun on character string as a number, so make sure first character not numeric and try as variable name
    elseif(index('0123456789.-+',chars(1:1)).eq.0)then   ! does not start with a numeric character. try as a variable name
-      call jubous(chars,indx,ix,ier)
+      call locate(keyr_q,chars,indx,ier)
       if(indx.le.0)then                                 ! if indx is not .gt. 0 string was not a variable name
          ierr=-1
-       mssge='undeclared variable '//chars(:min(len(chars),(icname_calc)))
+       mssge='undeclared variable '//trim(chars)
       else
-         rval8=value(indx)
+         rval8=values_d(indx)
       endif
       return
    else                            ! string is a number or a numeric variable name that starts with a numeric character
@@ -2308,14 +2368,14 @@ integer,intent(out)         :: ierr
    !  either here because of a read error (too big, too small, bad characters in string) or this is a variable name
    !  or otherwise unreadable.
    !!!!! look carefully at what happens with a possible null string
-   call jubous(chars,indx,ix,ier)
+   call locate(keyr_q,chars,indx,ier)
    if(indx.le.0)then                             ! if indx is not .gt. 0 string was not a variable name
       mssge='bad variable name or unusable value = '//chars
       ierr=-1
    else
-      rval8=value(indx)
+      rval8=values_d(indx)
    endif
-end subroutine juator
+end subroutine a_to_d_
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -2323,17 +2383,17 @@ end subroutine juator
 !>
 !!##NAME
 !!##SYNOPSIS
-!!
-!!##DESCRIPTION
+
+!!##DESCRIPTI
 !!##OPTIONS
 !!##RETURNS
 !!##EXAMPLE
-!!
+!
 !===================================================================================================================================
-subroutine jurtoa(rval,chars,ilen,ierr)
-implicit doubleprecision (a-h,o-z)
-character(len=*),parameter :: ident=&
-&"@(#)M_calculator::jurtoa(3fp): returns a numeric character string from a real value."
+subroutine r_to_a_(rval,chars,ilen,ierr)
+
+character(len=*),parameter::ident_11="@(#)M_calculator::r_to_a_(3fp): returns a numeric character string from a real value."
+
 !
 !  o  left-justified with number of characters counted
 !  o  trailing zeros removed
@@ -2349,8 +2409,22 @@ character(len=*),parameter :: ident=&
 !
 !     03/16/87 J. S. Urban
 !
-      character(len=*)    :: chars
-      character(len=20)   :: dummy
+character(len=*)    :: chars
+character(len=20)   :: dummy
+integer             :: i10
+integer             :: i20
+integer             :: i30
+integer             :: i40
+integer             :: i50
+integer             :: iend
+integer             :: iende
+integer             :: iepos
+integer             :: iepos2
+integer             :: ierr
+integer             :: ilen
+integer             :: ioerr
+integer             :: istart
+real(kind=dp)       :: rval
 !-----------------------------------------------------------------------------------------------------------------------------------
       ioerr=0
       chars=' '
@@ -2425,20 +2499,20 @@ character(len=*),parameter :: ident=&
       chars='0.0'
       mssge='cannot represent value using (g20.13e3) format '
       ierr=-1
-end subroutine jurtoa
+end subroutine r_to_a_
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    jusqes - [M_calculator] change +-[] to #=(),replace strings with placeholders,delete comments
+!!    squeeze_ - [M_calculator] change +-[] to #=(),replace strings with placeholders,delete comments
 !!
 !!##DESCRIPTION
 !!    remove all blanks from input string and return position of last non-blank character in nchars using imax as the highest
 !!    column number to search in.  return a zero in nchars if the string is blank.
 !!
-!!    replace all + and - characters with the # and = characters which will be used to designate + and - operators, as opposed to
+!!    replace all + and - characters with the # and = characters which will be used to designate + and - operators, as opposed t
 !!    value signs.
 !!
 !!    replace [] with ()
@@ -2478,26 +2552,36 @@ end subroutine jurtoa
 !!
 !!  !!!!make sure variable called e and numbers like e+3 or .e+3 are handled satisfactorily
 !===================================================================================================================================
-subroutine jusqes(string,imax,nchars,varnam,nchar2,ier)
-implicit doubleprecision (a-h,o-z)
+subroutine squeeze_(string,imax,nchars,varnam,nchar2,ier)
 
-character(len=*),parameter :: ident=&
-&"@(#)M_calculator::jusqes(3fp):change +-[] to #=(),replace strings with placeholders,delete comments"
+character(len=*),parameter::ident_12="&
+&@(#)M_calculator::squeeze_(3fp):change +-[] to #=(),replace strings with placeholders,delete comments"
 
-   integer, parameter          :: ilen=(icbuf_calc)+2
-
-   character(len=*)            :: string
-   character(len=ilen)         :: dummy
-   character(len=1)            :: back1
-   character(len=1)            :: back2
-
-   character(len=1)            :: currnt
-   character(len=icname_calc)  :: varnam
-   character(len=iclen_calc)   :: ctoken
-
-   character(len=10),parameter :: list  =' +-="#[]{}'  ! list of special characters
- !!character(len=10),parameter :: list2 =' #=&  ()()'  ! list of what to convert special characters too when appropriate
-   character(len=5)            :: toknam
+integer, parameter                      :: ilen=(icbuf_calc)+2
+character(len=*)                        :: string
+integer                                 :: imax
+integer,intent(out)                     :: nchars
+character(len=icname_calc),intent(out)  :: varnam
+integer,intent(out)                     :: nchar2
+integer,intent(out)                     :: ier
+character(len=ilen)                     :: dummy
+character(len=1)                        :: back1
+character(len=1)                        :: back2
+integer                                 :: iplace
+character(len=1)                        :: currnt
+character(len=iclen_calc)               :: ctoken
+!!character(len=10),parameter             :: list  =' +-="#[]{}'  ! list of special characters
+!!character(len=10),parameter             :: list2 =' #=&  ()()'  ! list of what to convert special characters too when appropriate
+character(len=5)                        :: toknam
+integer                                 :: i10
+integer                                 :: i20
+integer                                 :: idum
+integer                                 :: ilook
+integer                                 :: indx
+integer                                 :: instring
+integer                                 :: ipoint
+integer                                 :: ivar
+integer                                 :: kstrln
 !-----------------------------------------------------------------------------------------------------------------------------------
 !  keep track of previous 2 non-blank characters in dummy for when trying to distinguish between e-format numbers
 !  and variables ending in e.
@@ -2511,6 +2595,7 @@ character(len=*),parameter :: ident=&
 !-----------------------------------------------------------------------------------------------------------------------------------
 !  instead of just copy string to buffer, cut out rows of sign operators
 !  dummy(3:)=string
+   dummy=' '
    idum=3
    instring=0
    do i10=1,len(string)
@@ -2623,14 +2708,16 @@ character(len=*),parameter :: ident=&
       string(nchars:nchars+4)=toknam              ! replace original delimited string with its token
       nchars=nchars+4
 !                                                    store the token name and value in the string variable arrays
-      call jubous(toknam,indx,ix2,ier)            ! determine storage placement of the variable and whether it is new
+      call locate(keys_q,toknam,indx,ier)         ! determine storage placement of the variable and whether it is new
       if(ier.eq.-1)return
+      iplace=iabs(indx)
       if(indx.le.0)then                           ! check if the token name needs added or is already defined
-         call juadds(toknam,5,indx,ier)           ! adding the new variable name in the variable name array
-         if(ier.eq.-1)return
+         call insert(keys_q,toknam, iplace)   ! adding the new variable name to the variable name array
+         call insert(values,' '   , iplace)
+         call insert(values_len,0     , iplace)
       endif
-      values(iabs(indx))=ctoken(1:max(1,kstrln))  ! store a defined variable's value
-      valuer(iabs(indx))=kstrln                   ! store length of string
+      call replace(values,ctoken(:kstrln),iplace)          ! store a defined variable's value
+      call replace(values_len,kstrln,iplace)                   ! store length of string
 !!!!! note that reserving variable names starting with $_ for storing character token strings
       cycle BIG
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -2675,211 +2762,17 @@ character(len=*),parameter :: ident=&
         nchars=nchars-ivar
      endif
    endif
-end subroutine jusqes
+end subroutine squeeze_
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
+!!       [M_calculator] given_name_get_stringvalue_(3fp) - return associated value for variable name
 !!##SYNOPSIS
 !!
-!!   subroutine jubous(varnam0,index,ixn,ier)
-!!
-!!    character(len=*),intent(in)           :: varnam0
-!!    integer                               :: index
-!!    character(len=icname_calc)            :: ixn(ic_calc)
-!!    integer,intent(out)                   :: ier
-!!##DESCRIPTION
-!!    assuming an alphabetized array of character strings, find the location (index) where that name can be found, unless it is not
-!!    found -- in which case report where it should be placed as a negative index number.  it is assumed all variable names are
-!!    lexically greater than a blank string.
-!!
-!!    finds the index assigned to a specific variable name.  assumes that the user index array is sorted in descending order
-!!    (highest at top).  if varnam is not found; return line number it should be placed at ; with a negative sign.
-!!##OPTIONS
-!!    VARNAME0  variable name to find the location for
-!!    IXN       sorted array of character strings of standard dictionary size
-!!##RETURNS
-!!    INDEX     location variable name found at (if positive) or location it should be placed at (if negative)
-!!    IER       zero if no error occurred
-!!##EXAMPLE
-!!
-!===================================================================================================================================
-subroutine jubous(varnam0,index,ixn,ier)
-implicit none
-character(len=*),parameter :: ident=&
-&"@(#)M_calculator::jubous(3fp):locate where entry is/should go in sorted dictionary"
-!-----------------------------------------------------------------------------------------------------------------------------------
-character(len=*),intent(in)      :: varnam0
-integer                          :: index
-character(len=icname_calc)       :: ixn(ic_calc)
-integer,intent(out)              :: ier
-!-----------------------------------------------------------------------------------------------------------------------------------
-   character(len=icname_calc) :: varnam
-   integer                    :: maxtry
-   integer                    :: i10
-   integer                    :: imin
-   integer                    :: imax
-!-----------------------------------------------------------------------------------------------------------------------------------
-   ier=0
-   varnam=varnam0(:)
-   maxtry=int(log(float(ic_calc))/log(2.0d0)+1.0d0)
-   index=(ic_calc+1)/2
-   imin=1
-   imax=ic_calc
-   do i10=1,maxtry
-      if(varnam.eq.ixn(index))then
-         return
-      else if(varnam.gt.ixn(index))then
-         imax=index-1
-      else
-         imin=index+1
-      endif
-      if(imin.gt.imax)then
-         index=-imin
-         if(iabs(index).gt.ic_calc)then
-            mssge='error 03 in jubous'
-            ier=-1
-            return
-         endif
-         return
-      endif
-      index=(imax+imin)/2
-      if(index.gt.ic_calc.or.index.le.0)then
-         mssge='error 01 in jubous'
-         ier=-1
-         return
-      endif
-   enddo
-   mssge='error 02 in jubous'
-end subroutine jubous
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-!-----------------------------------------------------------------------------------------------------------------------------------
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!-----------------------------------------------------------------------------------------------------------------------------------
-!>
-!!##NAME
-!!     juaddr(3fp) - add new variable to numeric value dictionary at specified location
-!!
-!!##SYNOPSIS
-!!
-!!   subroutine juaddr(newnam,nchars,index,ier)
-!!
-!!    character(len=*),intent(in)  :: newnam
-!!    integer,intent(in)           :: nchars
-!!    integer,intent(in)           :: index
-!!    integer                      :: ier
-!!
-!!##DESCRIPTION
-!!    given a new variable name and place to put it, pull down the character and value arrays and initialize the new
-!!    variable's value to zero.  variable names only up to (icname_calc) characters maximum.
-!===================================================================================================================================
-subroutine juaddr(newnam,nchars,index,ier)
-implicit none
-character(len=*),parameter :: ident=&
-&"@(#)M_calculator::juaddr(3fp): add new variable to numeric value dictionary at specified location"
-!-----------------------------------------------------------------------------------------------------------------------------------
-character(len=*),intent(in)  :: newnam
-integer,intent(in)           :: nchars
-integer,intent(in)           :: index
-integer                      :: ier
-!-----------------------------------------------------------------------------------------------------------------------------------
-   integer                      :: istart
-   integer                      :: i70
-!-----------------------------------------------------------------------------------------------------------------------------------
-   if(ix(ic_calc).ne.' ')then
-     mssge='*juaddr* no room left on file to add more variable names'
-     ier=-1
-   elseif(newnam(1:1).eq.'$')then
-     mssge='*juaddr* numeric variable names must not start with a $'
-     ier=-1
-   else
-      istart=iabs(index)
-      ! watch out when ic_calc approaches istart that logic is correct.
-      do i70=ic_calc-1,istart,-1 ! pull down the array to make room for new value
-         value(i70+1)=value(i70)
-         ix(i70+1)=ix(i70)
-      enddo
-      value(istart)=0.0d0
-      ix(istart)=newnam(1:nchars)
-   endif
-end subroutine juaddr
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-!-----------------------------------------------------------------------------------------------------------------------------------
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!-----------------------------------------------------------------------------------------------------------------------------------
-!>
-!!##NAME
-!!##SYNOPSIS
-!!
-!!##DESCRIPTION
-!!       given a new string variable name and place to put it, pull down
-!!       the character and value arrays and initialize the new
-!!       variable's value to a blank string. variable names only up to (icname_calc)
-!!       characters maximum. stored strings up to only (iclen_calc) characters long.
-!!##OPTIONS
-!!##RETURNS
-!!##EXAMPLE
-!!
-!===================================================================================================================================
-subroutine juadds(newnam,nchars,index,ier)
-!-----------------------------------------------------------------------------------------------------------------------------------
-!implicit doubleprecision (a-h,o-z)
-implicit none
-character(len=*),parameter :: ident=&
-&"@(#)M_calculator::juadds(3fp): insert new variable name into string dictionary at specified location"
-!-----------------------------------------------------------------------------------------------------------------------------------
-      character(len=*),intent(in) :: newnam  ! new variable name
-      integer,intent(in)          :: nchars  ! last non-blank character position in newnam
-      integer,intent(in)          :: index   ! position in array to place newnam, calculated by jubous.
-      integer                     :: ier     ! error flag set to -1 if an error occurs; otherwise it is left undefined.
-!-----------------------------------------------------------------------------------------------------------------------------------
-      integer                     :: istart
-      integer                     :: i70
-!-----------------------------------------------------------------------------------------------------------------------------------
-!     GLOBALS
-!     ix2    - storage for variable names
-!     values - storage for variable string values
-!     mssge  - message associated with error flag
-!
-!     this routine is very similar to juaddr except that the values
-!     to be stored are strings instead of real numbers.
-!     it is essentially trusting of its input, and does very little
-!     checking of input parameters.
-!-----------------------------------------------------------------------------------------------------------------------------------
-!     if last position in the name array has already been used, then
-!     report that no room is left and set error flag and error message.
-      if(ix2(ic_calc).ne.' ')then
-        mssge='*juadds* no room left to add more string variable names'
-        ier=-1
-      elseif(newnam(1:1).ne.'$')then
-        mssge='*juadds* string variable names must start with a $'
-        ier=-1
-      else
-!=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=------------------------------------------------------------
-         istart=iabs(index)
-!        watch out when ic_calc approaches istart that logic is correct.
-         do i70=ic_calc-1,istart,-1 ! pull down the array to make room for new value
-            values(i70+1)=values(i70)
-            valuer(i70+1)=valuer(i70)
-            ix2(i70+1)=ix2(i70)
-         enddo
-         values(istart)=' '
-         valuer(istart)=0
-         ix2(istart)=newnam(1:nchars)
-      endif
-end subroutine juadds
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-!-----------------------------------------------------------------------------------------------------------------------------------
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!-----------------------------------------------------------------------------------------------------------------------------------
-!>
-!!##NAME
-!!       [M_calculator] given_name_get_stringvalue(3fp) - return associated value for variable name"
-!!##SYNOPSIS
-!!
-!!   subroutine given_name_get_stringvalue(chars,ierr)
+!!   subroutine given_name_get_stringvalue_(chars,ierr)
 !!
 !!    character(len=*),intent(in)  :: chars
 !!    integer,intent(out)          :: ierr
@@ -2898,10 +2791,10 @@ end subroutine juadds
 !!##EXAMPLE
 !!
 !===================================================================================================================================
-subroutine given_name_get_stringvalue(chars,ierr)
-implicit none
-character(len=*),parameter :: ident=&
-&"@(#)M_calculator::given_name_get_stringvalue(3fp): return associated value for variable name"
+subroutine given_name_get_stringvalue_(chars,ierr)
+
+character(len=*),parameter::ident_13="@(#)M_calculator::given_name_get_stringvalue_(3fp): return associated value for variable name"
+
 !-----------------------------------------------------------------------------------------------------------------------------------
 character(len=*),intent(in)  :: chars
 integer,intent(out)          :: ierr
@@ -2910,24 +2803,24 @@ integer,intent(out)          :: ierr
 !-----------------------------------------------------------------------------------------------------------------------------------
    ierr=0
    index=0
-   call jubous(chars,index,ix2,ierr)
+   call locate(keys_q,chars,index,ierr)
    if(ierr.eq.-1) then
    elseif(index.le.0)then
       ierr=-1
 !!!!  what if len(chars) is 0? look carefully at what happens with a possible null string
-      mssge=' variable '//chars(:min(icname_calc,len(chars)))//' is undefined'
+      mssge=' variable '//trim(chars)//' is undefined'
    else
       ierr=2
       mssge=values(index)
    endif
-end subroutine given_name_get_stringvalue
+end subroutine given_name_get_stringvalue_
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    getvalue(3f) - [M_calculator] given numeric variable name return doubleprecision value directly from calculator
+!!    getvalue(3f) - [M_calculator] given numeric variable name return doubleprecision value directly from calculato
 !!                   dictionary for efficiency
 !!##SYNOPSIS
 !!
@@ -2957,22 +2850,22 @@ end subroutine given_name_get_stringvalue
 !!
 !!    50.0000000       50.000000000000000
 !===================================================================================================================================
-doubleprecision function getvalue(varnam)
-implicit none
-character(len=*),parameter :: ident=&
-&"@(#)M_calculator::getvalue(3f): given numeric variable name return value"
+real(kind=dp) function getvalue(varnam)
+
+character(len=*),parameter::ident_14="@(#)M_calculator::getvalue(3f): given numeric variable name return value"
+
 character(len=*),intent(in) :: varnam
 !-----------------------------------------------------------------------------------------------------------------------------------
    integer          :: index
    integer          :: ierr
 !-----------------------------------------------------------------------------------------------------------------------------------
-   call jubous(varnam,index,ix,ierr)
+   call locate(keyr_q,varnam,index,ierr)
    if(index.le.0)then
       ! need option to turn this on and off
       !call journal('*getvalue* error in getvalue')
       getvalue=0.0d0
    else
-      getvalue=value(index)
+      getvalue=values_d(index)
    endif
 end function getvalue
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -2981,7 +2874,7 @@ end function getvalue
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    igetvalue(3f) - [M_calculator] given numeric variable name return integer value directly from calculator
+!!    igetvalue(3f) - [M_calculator] given numeric variable name return integer value directly from calculato
 !!                    dictionary for efficiency
 !!##SYNOPSIS
 !!
@@ -3015,7 +2908,6 @@ end function getvalue
 !!    50.0000000       50
 !===================================================================================================================================
 integer function igetvalue(varnam)
-implicit none
 character(len=*),intent(in) :: varnam
    igetvalue=int(getvalue(varnam))
 end function igetvalue
@@ -3025,7 +2917,7 @@ end function igetvalue
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    rgetvalue(3f) - [M_calculator] given numeric variable name return real value directly from calculator dictionary for efficiency
+!!    rgetvalue(3f) - [M_calculator] given numeric variable name return real value directly from calculator dictionary for efficienc
 !!
 !!##SYNOPSIS
 !!
@@ -3059,7 +2951,6 @@ end function igetvalue
 !!    50.0000000       50.0000000
 !===================================================================================================================================
 real function rgetvalue(varnam)
-implicit none
 character(len=*),intent(in) :: varnam
    rgetvalue=real(getvalue(varnam))
 end function rgetvalue
@@ -3069,132 +2960,116 @@ end function rgetvalue
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
+!!    stuff(3f) - [M_calculator] directly store value into calculator dictionary for efficienc
+!!
 !!##SYNOPSIS
 !!
-!!##DESCRIPTION
+!!   subroutine stuff(varnam,val,ioflag)
+!!
+!!    class(*),intent(in)         :: varnam
+!!    character(len=*),intent(in) :: val
+!!    integer,intent(in),optional :: ioflag
+!!
+!!##DEFINITION
+!!    breaking the rule of only accessing the calculator thru jucalc:
+!!
+!!    a direct deposit of a value into the calculator assumed to
+!!    be used only by friendly calls, for efficiency and to avoid
+!!    problems with recursion if a routine called by the calculator
+!!    in JUOWN1(3f) wants to store something back into the calculator
+!!    variable table
+!!
+!!    Normally values are stored or defined in the calculator module
+!!    M_calculator(3fm) using the jucalc(3f) routine or the convenience
+!!    routines in the module M_calculator_plus(3fm). For efficiency when
+!!    large numbers of values require being stored the stuff(3f) procedure
+!!    can be used to store numeric values by name in the calculator
+!!    dictionary.
+!!
+!!    breaking the rule of only accessing the calculator thru jucalc:
+!!
+!!    stuff(3f) is assumed to only be used when needed for efficiency and to
+!!    avoid problems with recursion if a routine called by the calculator
+!!    in JUOWN1(3f) wants to store something back into the calculator
+!!    variable table.
+!!
 !!##OPTIONS
-!!##RETURNS
+!!    varnam  name of calculator variable to define or replace
+!!    val     numeric value to associate with the name VARNAME. May be
+!!            integer, real, or doubleprecision.
+!!    ioflag  optional flag to use with journal logging. This string is
+!!    passed directly to M_journal::journal(3f)
+!!            as the first parameter. The default is to not log the
+!!            definitions to the journal(3f) command if this parameter is
+!!            blank or not present.
+!!
 !!##EXAMPLE
 !!
+!!   Sample program:
+!!
+!!    program demo_stuff
+!!    use M_calculator, only : stuff
+!!    implicit none
+!!    call stuff('A',10.0)
+!!    call stuff('PI',3.141592653589793238462643383279502884197169399375105820974944592307d0)
+!!    end program demo_stuff
 !===================================================================================================================================
-subroutine integer_stuff(varnam0,int4,ioflag)
-implicit none
-character(len=*),parameter :: ident=&
-&"@(#)M_calculator::integer_stuff(3fp): pass INTEGER value to STUFF(3f)"
-   character(len=*),intent(in)      :: varnam0     ! assuming varnam is left justified
-   integer,intent(in)               :: int4        ! input value to store
-   character(len=*),intent(in),optional      :: ioflag
-!#----------------------------------------------------------------------------------------------------------------------------------
-   if(.not.present(ioflag))then
-      call double_stuff(varnam0,dble(int4))
-   else
-      call double_stuff(varnam0,dble(int4),ioflag)
-   endif
-end subroutine integer_stuff
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-!#----------------------------------------------------------------------------------------------------------------------------------
-!#()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
-!#----------------------------------------------------------------------------------------------------------------------------------
-!>
-!!##NAME
-!!##SYNOPSIS
-!!
-!!##DESCRIPTION
-!!##OPTIONS
-!!##RETURNS
-!!##EXAMPLE
-!!
-!===================================================================================================================================
-subroutine real_stuff(varnam0,val4,ioflag)
-implicit none
-character(len=*),parameter :: ident=&
-&"@(#)M_calculator::real_stuff(3fp): pass REAL value to STUFF(3f)"
-   character(len=*),intent(in)      :: varnam0     ! assuming varnam is left justified
-   real,intent(in)                  :: val4        ! input value to store
-   character(len=*),intent(in),optional      :: ioflag
-!#----------------------------------------------------------------------------------------------------------------------------------
-   if(.not.present(ioflag))then
-      call double_stuff(varnam0,dble(val4))
-   else
-      call double_stuff(varnam0,dble(val4),ioflag)
-   endif
-end subroutine real_stuff
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-!#----------------------------------------------------------------------------------------------------------------------------------
-!#()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
-!#----------------------------------------------------------------------------------------------------------------------------------
-!>
-!!##NAME
-!!##SYNOPSIS
-!!
-!!##DESCRIPTION
-!!##OPTIONS
-!!##RETURNS
-!!##EXAMPLE
-!!
-!===================================================================================================================================
-subroutine double_stuff(varnam0,val8,ioflag)
-!     directly store a number into calculator variable name table
-!
-!     breaking the rule of only accessing the calculator thru jucalc:
-!
-!     a direct deposit of a value into the calculator assumed to
-!     be used only by friendly calls, for efficiency and to avoid
-!     problems with recursion if a routine called by the calculator
-!     in JUOWN1(3f) wants to store something back into the calculator
-!     variable table
-!#----------------------------------------------------------------------------------------------------------------------------------
-implicit none
-character(len=*),parameter :: ident=&
-&"@(#)M_calculator::real_stuff(3fp): pass DOUBLEPRECISION value to STUFF(3f)"
-character(len=*),intent(in)             :: varnam0     ! assuming varnam is left justified
-real(kind=dp),intent(in)                :: val8        ! input value to store
-character(len=*),intent(in),optional    :: ioflag
-!#----------------------------------------------------------------------------------------------------------------------------------
-   character(len=icname_calc)              :: varnam      ! some trouble with variable length character strings on some machines
-   character(len=icname_calc+20+1)         :: pass
-   integer                                 :: ilen
-   integer                                 :: ierr
-   integer                                 :: index
+subroutine stuff(varnam,value,ioflag)
+
+character(len=*),parameter::ident_15="&
+&@(#)M_calculator::stuff(3fp): pass key value and integer|real|doubleprecision value to dictionary(3f) as doubleprecision"
+
+character(len=*),intent(in)           :: varnam        ! variable name to add or replace value of
+class(*),intent(in)                   :: value
+character(len=*),intent(in),optional  :: ioflag
+
+real(kind=dp)                         :: val8          ! input value to store
+character(len=:),allocatable          :: varnam_local  ! some trouble with variable length character strings on some machines
+integer                               :: ierr
+integer                               :: index
+integer                               :: istart
 !-----------------------------------------------------------------------------------------------------------------------------------
-!  assuming friendly, not checking for null or too long varnam0
-   varnam=adjustl(varnam0)          ! remove leading spaces
-   ilen=len_trim(varnam)            ! get length of trimmed string
+   varnam_local=adjustl(trim(varnam))          ! remove leading spaces
+   if(varnam_local(1:1).eq.'$')then                             ! add new variable to numeric value dictionary at specified location
+      mssge='*stuff* numeric variable names must not start with a $'
+      ierr=-1
+      return
+   endif
 !-----------------------------------------------------------------------------------------------------------------------------------
    ierr=0
-   call jubous(varnam,index,ix,ierr)
-!-----------------------------------------------------------------------------------------------------------------------------------
-   if(index.le.0)then
-     call juaddr(varnam,ilen,index,ierr)
-     if(ierr.eq.-1)then
-        call journal('*stuff* error in juaddr')
-        return
-     endif
+   call locate(keyr_q,varnam_local,index,ierr)
+   istart=iabs(index)
+   if(index.le.0)then   ! add entry to dictionary
+      call insert(keyr_q,varnam_local,istart)
+      call insert(values_d,0.0d0,istart)
    endif
-!-----------------------------------------------------------------------------------------------------------------------------------
-   value(iabs(index))=val8
+
+   select type(value)
+    type is (integer);         val8=dble(value)
+    type is (real);            val8=dble(value)
+    type is (doubleprecision); val8=value
+   end select
+   call replace(values_d,val8,istart)
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(present(ioflag))then
-      write(pass,'(a,''='',g20.13e3)')varnam(:ilen),val8
-      call journal(ioflag,pass)
+      call journal(ioflag,varnam_local,'=',val8)
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
-end subroutine double_stuff
+end subroutine stuff
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!     stuffa(3f) - [M_calculator] stuffa(3f): directly store a string into calculator variable name table
+!!     stuffa(3f) - [M_calculator] stuffa(3f): directly store a string into calculator variable name tabl
 !!##SYNOPSIS
 !!
-!!   subroutine stuffa(varnam0,string,index,ioflag)
+!!   subroutine stuffa(varnam,string,ioflag)
 !!
-!!    character(len=*),intent(in)  :: varnam0
-!!    character(len=*),intent(in)  :: string
-!!    integer                      :: index
-!!    character(len=*),intent(in)  :: ioflag
+!!    character(len=*),intent(in)          :: varnam
+!!    character(len=*),intent(in)          :: string
+!!    character(len=*),intent(in),optional :: ioflag
 !!
 !!##DEFINITION
 !!    Breaking the rule of only accessing the calculator thru jucalc:
@@ -3206,63 +3081,57 @@ end subroutine double_stuff
 !!    variable table.
 !!
 !!##OPTIONS
-!!    varnam0   variable name to create or replace in calculator module
-!!    string    string to associate with the calculator variable name varnam0
-!!    index     if less
+!!    varnam    variable name to create or replace in calculator module
+!!    string    string to associate with the calculator variable name varnam
 !!    ioflag    journal logging type passed on to journal(3f) procedure. If it
-!!              is blank, the journal(3f) routine is not evoked.
+!!              is not present or blank, the journal(3f) routine is not evoked.
 !!##EXAMPLE
 !!
 !!   Sample program:
 !!
 !!    program demo_stuffa
-!!    use M_calculator, only : stuffa
+!!    use M_calculator,      only : stuffa
+!!    use M_calculator_plus, only : snum0
 !!    implicit none
-!!    integer :: ii
-!!       call stuffa('$A','',ii,'')
-!!       call stuffa('$mystring','this is the value of the string',ii,'')
+!!       call stuffa('$A','')
+!!       call stuffa('$mystring','this is the value of the string')
+!!       write(*,*)snum0('$mystring')
+!!       call stuffa('$mystring','this is the new value of the string')
+!!       write(*,*)snum0('$mystring')
 !!    end program demo_stuffa
 !===================================================================================================================================
-subroutine stuffa(varnam0,string,index,ioflag)
-character(len=*),parameter :: ident=&
-&"@(#)M_calculator::stuffa(3f): directly store a string into calculator variable name table"
-character(len=*),intent(in)  :: varnam0
-character(len=*),intent(in)  :: string
-integer,intent(out)          :: index
-character(len=*),intent(in)  :: ioflag
+subroutine stuffa(varnam,string,ioflag)
+
+character(len=*),parameter::ident_16="@(#)M_calculator::stuffa(3f): directly store a string into calculator variable name table"
+
+character(len=*),intent(in)           :: varnam    !  assuming friendly, not checking for null or too long varnam0
+character(len=:),allocatable          :: varnam_local
+character(len=*),intent(in)           :: string
+character(len=*),intent(in),optional  :: ioflag
+character(len=:),allocatable          :: ioflag_local
+integer                               :: indx
+integer                               :: ierr
 !-----------------------------------------------------------------------------------------------------------------------------------
-   character(len=icname_calc)   :: varnam ! assuming varnam left justified, some machines have trouble
-   character(len=101)           :: pass
-   integer                      :: ilen
-   integer                      :: ierr
-   integer                      :: ibig
-!-----------------------------------------------------------------------------------------------------------------------------------
-!  assuming friendly, not checking for null or too long varnam0
-   varnam=adjustl(varnam0)
-   ilen=len_trim(varnam)
-!-----------------------------------------------------------------------------------------------------------------------------------
+   if(present(ioflag))then
+      ioflag_local=trim(ioflag)
+   else
+      ioflag_local=' '
+   endif
+   varnam_local=adjustl(trim(varnam))
    ierr=0
-   call jubous(varnam,index,ix2,ierr)
 !-----------------------------------------------------------------------------------------------------------------------------------
-   if(index.le.0)then
-     call juadds(varnam,ilen,index,ierr)
-     if(ierr.eq.-1)then
-        call journal('*stuffa* error in juadds')
-        return
-     endif
+   call locate(keys_q,varnam_local,indx,ierr)
+   if(indx.le.0)then                                        ! variable name not in dictionary
+      indx=iabs(indx)
+      call insert(keys_q,varnam_local,indx)                 ! adding the new variable name to the variable name array
+      call insert(values,' '         ,indx)
+      call insert(values_len,0           ,indx)
+   elseif(ioflag_local.ne.'')then                           ! display variable string to trail and output as indicated by ioflag
+      call journal(ioflag_local,varnam_local,'=',string)
    endif
-!-----------------------------------------------------------------------------------------------------------------------------------
-   if(ioflag.ne.'')then          ! display variable string to trail and output as indicated by ioflag
-      ibig=min(len(string),iclen_calc)  ! make sure pass string is not too long
-      write(pass,'(a,''='',a)')varnam(:ilen),string(1:ibig)
-      call journal(ioflag,pass)
-   endif
-!-----------------------------------------------------------------------------------------------------------------------------------
-   index=iabs(index)
-   values(index)=string
-   ilen=len(string)
-   ilen=len_trim(string(:ilen))
-   valuer(index)=max(ilen,1)
+   ! found variable name in dictionary
+   call replace(values,string,indx)
+   call replace(values_len,len_trim(string),indx)
 !-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine stuffa
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -3270,60 +3139,33 @@ end subroutine stuffa
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine test_suite_M_calculator
-
-!!call test_jucalc()
-!!call test_juaddr()
-!!call test_juadds()
-!!call test_jubous()
+call test_jucalc()
 !!call test_jucals()
-!!call test_jusqes()
+!!call test_squeeze_()
 
-!!call test_juator()
-!!call test_jurtoa()
+!!call test_a_to_d_()
+!!call test_r_to_a_()
 
-!!call test_getvalue()
-!!call test_igetvalue()
-!!call test_rgetvalue()
+call test_getvalue()
+call test_igetvalue()
+call test_rgetvalue()
 
-!!call test_stuffa()
-!!call test_integer_stuff()
-!!call test_real_stuff()
-!!call test_double_stuff()
+call test_stuffa()
+call test_stuff()
 
 !!call test_c()
 !!call test_juown1()
 
-end subroutine test_suite_M_calculator
-!-----------------------------------------------------------------------------------------------------------------------------------
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!-----------------------------------------------------------------------------------------------------------------------------------
-end module M_calculator
-!===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
-!===================================================================================================================================
-subroutine test_suite_M_calculator()
-
-!! setup
-   call test_double_stuff()
-   call test_getvalue()
-   call test_igetvalue()
-   call test_integer_stuff()
-   call test_jucalc()
-   call test_real_stuff()
-   call test_rgetvalue()
-   call test_stuffa()
-   call test_c()
-   call test_juown1()
 contains
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_double_stuff()
+subroutine test_stuff()
 
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
-   call unit_check_start('double_stuff',msg='')
-   !!call unit_check('double_stuff', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('double_stuff',msg='')
-end subroutine test_double_stuff
+   call unit_check_start('stuff',msg='')
+   !!call unit_check('stuff', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('stuff',msg='')
+end subroutine test_stuff
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_getvalue()
 
@@ -3343,15 +3185,6 @@ use M_debug, only : unit_check_level
    call unit_check_done('igetvalue',msg='')
 end subroutine test_igetvalue
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_integer_stuff()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('integer_stuff',msg='')
-   !!call unit_check('integer_stuff', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('integer_stuff',msg='')
-end subroutine test_integer_stuff
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_jucalc()
 
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
@@ -3360,15 +3193,6 @@ use M_debug, only : unit_check_level
    !!call unit_check('jucalc', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('jucalc',msg='')
 end subroutine test_jucalc
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_real_stuff()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('real_stuff',msg='')
-   !!call unit_check('real_stuff', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('real_stuff',msg='')
-end subroutine test_real_stuff
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_rgetvalue()
 
@@ -3383,6 +3207,13 @@ subroutine test_stuffa()
 
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
+use M_calculator_plus, only : snum0
+      call stuffa('$A','')
+      call stuffa('$mystring','this is the value of the string')
+      write(*,*)snum0('$mystring')
+      call stuffa('$mystring','this is the new value of the string')
+      write(*,*)snum0('$mystring')
+
    call unit_check_start('stuffa',msg='')
    !!call unit_check('stuffa', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('stuffa',msg='')
@@ -3410,14 +3241,17 @@ end subroutine test_suite_M_calculator
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
-!-----------------------------------------------------------------------------------------------------------------------------------
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!-----------------------------------------------------------------------------------------------------------------------------------
+end module M_calculator
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 module M_noown
 ! this module contains routines that are used to customize the
 ! M_calculator module. Since M_calculator requires them if you do
 ! not wish to create your own; use these dummy routines
+implicit none
 private
+integer, parameter          :: k_dbl = SELECTED_REAL_KIND(15,300) ! real*8
 public juown1
 public c
 contains
@@ -3442,41 +3276,51 @@ subroutine juown1(func,iflen,args,iargstp,n,fval,ctmp,ier)
 !         set to  0 if a number is returned
 !         set to  2 if a string is returned
 !
-      use M_calculator, only : x, y, values, valuer
-      character(len=*) func
-      character(len=*) ctmp
+use M_calculator, only : x, y, values, values_len
+character(len=*)          :: func
+integer                   :: iflen
+real(kind=k_dbl)          :: args(100)
+integer                   :: iargstp(100)
+integer                   :: n
+real(kind=k_dbl)          :: fval
+character(len=*)          :: ctmp
+integer                   :: ier
+integer                   :: i10
 
-      integer iflen ,n, ier, iargstp(100)
-      integer, parameter        :: k_dbl = SELECTED_REAL_KIND(15,300) ! real*8
-      real(kind=k_dbl) ::  fval
-      fval=0
+integer                   :: iwhich
+integer                   :: ilen
 !-----------------------------------------------------------------------
-      write(*,*)'*juown1* unknown function ', func(1:iflen)
-      write(*,*)'function name length is..',iflen
-      write(*,*)'number of arguments .....',n
-      do i10=1,n
-         if(iargstp(i10).eq.0)then
-            write(*,*)i10,' VALUE=',args(i10)
-         elseif(iargstp(i10).eq.2)then
-            iwhich=int(args(i10)+0.5)
-            ilen=valuer(iwhich)
-            write(*,*)i10,' STRING='//values(iwhich)(:ilen)
-         else
-            write(*,*)'unknown parameter type is ',iargstp(i10)
-         endif
-      enddo
+   fval=0.0d0
+!-----------------------------------------------------------------------
+   write(*,*)'*juown1* unknown function ', func(1:iflen)
+   write(*,*)'function name length is..',iflen
+   write(*,*)'number of arguments .....',n
+   do i10=1,n
+      if(iargstp(i10).eq.0)then
+         write(*,*)i10,' VALUE=',args(i10)
+      elseif(iargstp(i10).eq.2)then
+         iwhich=int(args(i10)+0.5d0)
+         ilen=values_len(iwhich)
+         write(*,*)i10,' STRING='//values(iwhich)(:ilen)
+      else
+         write(*,*)'unknown parameter type is ',iargstp(i10)
+      endif
+   enddo
 end subroutine juown1
-
-!ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+!----------------------------------------------------------------------------------------------------------------------------------!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!----------------------------k-----------------------------------------------------------------------------------------------------!
 real function c(fval,n)
 !     a built-in calculator function called c must be satisfied.
 !     write whatever you want here as a function
-      integer, parameter        :: k_dbl = SELECTED_REAL_KIND(15,300) ! real*8
-      real(kind=k_dbl) ::  fval
+      real(kind=k_dbl) :: fval
+      integer          :: n
       c=0.0
 end function c
-!ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
-end module M_noown
-!-----------------------------------------------------------------------------------------------------------------------------------
+!----------------------------------------------------------------------------------------------------------------------------------!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!-----------------------------k------------------------------------------------------------------------------------------------------
+!----------------------------k-----------------------------------------------------------------------------------------------------!
+end module M_noown
+!----------------------------------------------------------------------------------------------------------------------------------!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!----------------------------k-----------------------------------------------------------------------------------------------------!

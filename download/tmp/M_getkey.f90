@@ -1,10 +1,10 @@
 !>
 !!##NAME
-!!      system_getkey(3f) - read single character from keyboard in hot (raw I/O) mode
+!!      system_getkey(3f) - read single character from keyboard in hot (raw I/O) mod
 !!##SYNTAX
 !!
 !!##DESCRIPTION
-!!    SYSTEM_GETKEY(3F) is a C/Fortran combination that (hopefully) lets Fortran read
+!!    SYSTEM_GETKEY(3F) is a C/Fortran combination that (hopefully) lets Fortran rea
 !!    one character at a time in raw I/O mode on most platforms.
 !!
 !!    Unfortunately (as of this writing), there is no universal standard method

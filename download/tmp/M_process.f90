@@ -319,7 +319,6 @@ end type streampointer
 interface process_writeline
    module procedure process_writeline_scalar, process_writeline_array
 end interface
-
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()-
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -335,22 +334,21 @@ end interface
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()-
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
-!!##NAME
+!!    NAME
 !!    fgets(3fp) - get character string from a file or stream by calling fgets(3c
-!!##SYNOPSIS
-!!
-!!    #include <stdio.h>
+!!    SYNOPSIS
+!! #include <stdio.h>
 !!    char *fgets(char *BUF, int N, FILE *FP);
-!!##DESCRIPTION
+!!    DESCRIPTION
 !!    Reads at most N-1 characters from FP until a newline is found. The
 !!    characters including to the newline are stored in BUF. The buffer
 !!    is terminated with a 0.
-!!##RETURNS
+!!    RETURNS
 !!    fgets(3c) returns the buffer passed to it, with the data filled
 !!    in. If end of file occurs with some data already accumulated, the
 !!    data is returned with no other indication. If no data are read,
 !!    NULL is returned instead.
-!!##PORTABILITY
+!!    PORTABILITY
 !!    Note that fgets(3c) returns all of the data, including the newline.
 !===================================================================================================================================
 ! fgets
@@ -378,24 +376,23 @@ end interface
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()-
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
-!!##NAME
-!!        fputs(3fp) - write a character string in a file or stream
-!!##SYNOPSIS
-!!
-!!        #include <stdio.h>
-!!        int fputs(const char *S, FILE *FP);
-!!##DESCRIPTION
-!!        `fputs'  writes  the string at S (but without the trailing null) to th
-!!        file or stream identified by FP.
-!!##RETURNS
-!!        If successful, the result is `0'; otherwise, the result is `EOF'.
-!!##PORTABILITY
-!!        ANSI  C  requires `fputs', but does not specify that the result on
-!!        success must be `0'; any non-negative value is permitted.
+!!    NAME
+!!    fputs(3fp) - write a character string in a file or stream
+!!    SYNOPSIS
+!! #include <stdio.h>
+!!    int fputs(const char *S, FILE *FP);
+!!    DESCRIPTION
+!!    `fputs'  writes  the string at S (but without the trailing null) to th
+!!    file or stream identified by FP.
+!!    RETURNS
+!!    If successful, the result is `0'; otherwise, the result is `EOF'.
+!!    PORTABILITY
+!!    ANSI  C  requires `fputs', but does not specify that the result on
+!!    success must be `0'; any non-negative value is permitted.
 !===================================================================================================================================
 interface
    function system_fputs(buf, handle) bind(C, name='fputs')
-   use, intrinsic :: ISO_C_BINDING
+      use, intrinsic :: ISO_C_BINDING
       integer(c_int) :: system_fputs
       character(kind=c_char), dimension(*) :: buf
       type (c_ptr), value :: handle
@@ -406,39 +403,39 @@ end interface
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!        fflush(3fp) - flush buffered file output
+!!    fflush(3fp) - flush buffered file output
 !!##SYNOPSIS
 !!
-!!      Syntax:
+!!    Syntax:
 !!
-!!       #include <stdio.h>
-!!       int fflush(FILE *FP);
+!!     #include <stdio.h>
+!!     int fflush(FILE *FP);
 !!##DESCRIPTION
-!!      The `stdio' output functions can buffer output before delivering it t
-!!      the host system, in order to minimize the overhead of system calls.
+!!    The `stdio' output functions can buffer output before delivering it t
+!!    the host system, in order to minimize the overhead of system calls.
 !!
-!!      Use `fflush' to deliver any such pending output (for the file or
-!!      stream identified by FP) to the host system.
+!!    Use `fflush' to deliver any such pending output (for the file or
+!!    stream identified by FP) to the host system.
 !!
-!!      If FP is `NULL', `fflush' delivers pending output from all open
-!!      files.
+!!    If FP is `NULL', `fflush' delivers pending output from all open
+!!    files.
 !!
-!!      Additionally, if FP is a seekable input stream visiting a
-!!      file descriptor, set the position of the file descriptor to
-!!      match next unread byte, useful for obeying POSIX semantics when
-!!      ending a process without consuming all input from the stream.
-!!##RETURNS
-!!        fflush returns '0' unless it encounters a write error; in that
-!!        situation, it returns `EOF'.
-!!##PORTABILITY
-!!        ANSI C requires `fflush'.  The behavior on input streams is only
-!!        specified by POSIX, and not all implementations follow POSIX rules.
+!!    Additionally, if FP is a seekable input stream visiting a
+!!    file descriptor, set the position of the file descriptor to
+!!    match next unread byte, useful for obeying POSIX semantics when
+!!    ending a process without consuming all input from the stream.
+!!    RETURNS
+!!    fflush returns '0' unless it encounters a write error; in that
+!!    situation, it returns `EOF'.
+!!    PORTABILITY
+!!    ANSI C requires `fflush'.  The behavior on input streams is only
+!!    specified by POSIX, and not all implementations follow POSIX rules.
 !!
-!!        No supporting OS subroutines are required.
+!!    No supporting OS subroutines are required.
 !===================================================================================================================================
 interface
    function fflush(handle) bind(C, name='fflush')
-   use, intrinsic :: ISO_C_BINDING
+      use, intrinsic :: ISO_C_BINDING
       integer(c_int) :: fflush
       type (c_ptr), value :: handle
    end function
@@ -451,301 +448,287 @@ contains
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()-
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
-!!##NAME
-!!##SYNOPSIS
-
-!!##DESCRIPTI
-!!##EXAMPLE
-!
+!!    NAME
+!!    SYNOPSIS
+!!    DESCRIPTIO
+!!    EXAMPLE
 !===================================================================================================================================
-subroutine process_open_read(cmd,fp,ierr)
+   subroutine process_open_read(cmd,fp,ierr)
 character(len=*),parameter::ident_2="@(#)M_process::process_open_read(3f): open process to read from"
 
-   character(len=*),intent(in)     :: cmd  ! shell command to start process with
-   type(streampointer),intent(out) :: fp           ! file pointer returned for process
-   integer,intent(out)             :: ierr         ! status for attempt to open process (0= no error)
+      character(len=*),intent(in)     :: cmd  ! shell command to start process with
+      type(streampointer),intent(out) :: fp           ! file pointer returned for process
+      integer,intent(out)             :: ierr         ! status for attempt to open process (0= no error)
 
-   character(len=3),parameter      :: mode='r'     ! read/write mode parameter to pass to popen(3c)
+      character(len=3),parameter      :: mode='r'     ! read/write mode parameter to pass to popen(3c)
 !-----------------------------------------------------------------------------------------------------------------------------------
-   ierr=0
-   call process_open(cmd,mode,fp,ierr)
+      ierr=0
+      call process_open(cmd,mode,fp,ierr)
 
-end subroutine process_open_read
+   end subroutine process_open_read
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()-
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
-!!##NAME
-!!##SYNOPSIS
-
-!!##DESCRIPTI
-!!##EXAMPLE
-!
+!!    NAME
+!!    SYNOPSIS
+!!    DESCRIPTIO
+!!    EXAMPLE
 !===================================================================================================================================
-subroutine process_open_write(cmd,fp,ierr)
+   subroutine process_open_write(cmd,fp,ierr)
 character(len=*),parameter::ident_3="@(#)M_process::process_open_write(3f): open process to write to"
 
-   character(len=*),intent(in)     :: cmd  ! shell command to start process with
-   type(streampointer),intent(out) :: fp           ! file pointer returned for process
-   integer,intent(out)             :: ierr         ! status for attempt to open process (0= no error)
-   character(len=3),parameter      :: mode='w'     ! read/write mode parameter to pass to popen(3c)
+      character(len=*),intent(in)     :: cmd  ! shell command to start process with
+      type(streampointer),intent(out) :: fp           ! file pointer returned for process
+      integer,intent(out)             :: ierr         ! status for attempt to open process (0= no error)
+      character(len=3),parameter      :: mode='w'     ! read/write mode parameter to pass to popen(3c)
 !-----------------------------------------------------------------------------------------------------------------------------------
-   ierr=0
-   call process_open(cmd,mode,fp,ierr)
+      ierr=0
+      call process_open(cmd,mode,fp,ierr)
 
-end subroutine process_open_write
+   end subroutine process_open_write
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()-
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
-!!##NAME
-!!##SYNOPSIS
-
-!!##DESCRIPTI
-!!##EXAMPLE
-!
+!!    NAME
+!!    SYNOPSIS
+!!    DESCRIPTIO
+!!    EXAMPLE
 !===================================================================================================================================
-subroutine process_open(cmd,mode,fp,ierr)
+   subroutine process_open(cmd,mode,fp,ierr)
 character(len=*),parameter::ident_4="@(#)M_process::process_open(3fp): open process"
 
-   character(len=*),intent(in)     :: cmd  ! shell command to start process with
-   character(len=*),intent(in)     :: mode         ! read/write/mode parameter to pass to popen(3c)
-   type(streampointer),intent(out) :: fp           ! file pointer returned for process
-   integer,intent(out)             :: ierr         ! status for attempt to open process (0= no error)
+      character(len=*),intent(in)     :: cmd  ! shell command to start process with
+      character(len=*),intent(in)     :: mode         ! read/write/mode parameter to pass to popen(3c)
+      type(streampointer),intent(out) :: fp           ! file pointer returned for process
+      integer,intent(out)             :: ierr         ! status for attempt to open process (0= no error)
 !-----------------------------------------------------------------------------------------------------------------------------------
-   ierr=0
-   fp%handle = system_popen(trim(cmd) // C_NULL_CHAR, trim(mode) // C_NULL_CHAR)
+      ierr=0
+      fp%handle = system_popen(trim(cmd) // C_NULL_CHAR, trim(mode) // C_NULL_CHAR)
 
-   if (.not.c_associated(fp%handle)) then
-      write(*,*) '*process_open_write* ERROR: Could not open pipe!'
-      ierr=-1
-   else
-      if(process_debug)then
-         write(*,*) '*process_open_write* Opened pipe successfully'
-      endif
-   end if
+      if (.not.c_associated(fp%handle)) then
+         write(*,*) '*process_open_write* ERROR: Could not open pipe!'
+         ierr=-1
+      else
+         if(process_debug)then
+            write(*,*) '*process_open_write* Opened pipe successfully'
+         endif
+      end if
 
-end subroutine process_open
+   end subroutine process_open
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()-
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
-!!##NAME
-!!##SYNOPSIS
-
-!!##DESCRIPTI
-!!##EXAMPLE
-!
+!!    NAME
+!!    SYNOPSIS
+!!    DESCRIPTIO
+!!    EXAMPLE
 !===================================================================================================================================
-subroutine process_close(fp,ierr)
+   subroutine process_close(fp,ierr)
 character(len=*),parameter::ident_5="@(#)M_process::process_close(3f): close process"
-   ! DO NOT MAKE fp INTENT(IN)
-   type(streampointer) :: fp           ! file pointer returned for process
-   integer(c_int) ::  ios
-   integer :: ierr
+      ! DO NOT MAKE fp INTENT(IN)
+      type(streampointer) :: fp           ! file pointer returned for process
+      integer(c_int) ::  ios
+      integer :: ierr
 !-----------------------------------------------------------------------------------------------------------------------------------
-   ierr=fflush(fp%handle)
-   ios=0
+      ierr=fflush(fp%handle)
+      ios=0
 
-   if (.not.c_associated(fp%handle)) then
-      write(*,*)'*process_close* process not found'
-   else
-      ios=system_pclose(fp%handle)
-   endif
+      if (.not.c_associated(fp%handle)) then
+         write(*,*)'*process_close* process not found'
+      else
+         ios=system_pclose(fp%handle)
+      endif
 
-   if(process_debug)then
-      write(*,*) '*process_close* Closed pipe with status ',ios
-   endif
+      if(process_debug)then
+         write(*,*) '*process_close* Closed pipe with status ',ios
+      endif
 
-   ierr=min(-1_c_int,ios)
+      ierr=min(-1_c_int,ios)
 
-end subroutine process_close
+   end subroutine process_close
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()-
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
-!!##NAME
-!!##SYNOPSIS
-
-!!##DESCRIPTI
-!!##EXAMPLE
-!
+!!    NAME
+!!    SYNOPSIS
+!!    DESCRIPTIO
+!!    EXAMPLE
 !===================================================================================================================================
-subroutine process_readline(readfrom,fp,ierr)
+   subroutine process_readline(readfrom,fp,ierr)
 
 character(len=*),parameter::ident_6="@(#)M_process::process_readline(3f): read line from process"
 
 ! readfrom length must be at least two
-character(len=*),intent(out)   :: readfrom
-type(streampointer),intent(in) :: fp
-integer,intent(out)            :: ierr
+      character(len=*),intent(out)   :: readfrom
+      type(streampointer),intent(in) :: fp
+      integer,intent(out)            :: ierr
 
-integer (kind=c_int) :: clen
-integer :: eos, i
-integer :: ios
-   clen=len(readfrom)-1
-   readfrom=' '
+      integer (kind=c_int) :: clen
+      integer :: eos, i
+      integer :: ios
+      clen=len(readfrom)-1
+      readfrom=' '
 
-   do while (c_associated(system_fgets(readfrom, clen, fp%handle)))
-      eos=2
-      do i=1, clen
-         if (readfrom(i:i) == C_NULL_CHAR) then
-            eos=i-2  ! assuming line terminator character and line string terminator should not be printed
-            readfrom(eos+1:)=' '
-            exit
+      do while (c_associated(system_fgets(readfrom, clen, fp%handle)))
+         eos=2
+         do i=1, clen
+            if (readfrom(i:i) == C_NULL_CHAR) then
+               eos=i-2  ! assuming line terminator character and line string terminator should not be printed
+               readfrom(eos+1:)=' '
+               exit
+            endif
+         enddo
+         if(process_debug)then
+            write(*,*) eos, ': "', trim(readfrom(1:eos)), '"'
          endif
-      enddo
-      if(process_debug)then
-         write(*,*) eos, ': "', trim(readfrom(1:eos)), '"'
-      endif
-      ierr=0
-      return
-   end do
-   ! an error occurred
-   ios=0
-   !!ios = system_pclose(fp%handle)
-   !!if(process_debug)then
-   !!   write(*,*) '*process_readline* Closed pipe with status ',ios
-   !!endif
-   ierr=min(-1,ios)
+         ierr=0
+         return
+      end do
+      ! an error occurred
+      ios=0
+      !!ios = system_pclose(fp%handle)
+      !!if(process_debug)then
+      !!   write(*,*) '*process_readline* Closed pipe with status ',ios
+      !!endif
+      ierr=min(-1,ios)
 
-end subroutine process_readline
+   end subroutine process_readline
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()-
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
-!!##NAME
-!!       process_readall(3f) - [M_process] read all lines from process into single strin
-!!##SYNOPSIS
+!!    NAME
+!!    process_readall(3f) - [M_process] read all lines from process into single string
+!!    SYNOPSIS
+!!    syntax:
 !!
-!!       syntax:
-!!
-!!        function process_readall(cmd,delim,ierr)  result(string)
-!!        character(len=*),intent(in)              :: cmd
-!!        character(len=*),intent(in),optional     :: delim
-!!        integer,intent(out),optional             :: ierr
-!!        character(len=:),allocatable             :: string
-!!##OPTIONS
+!!    function process_readall(cmd,delim,ierr)  result(string)
+!!       character(len=*),intent(in)              :: cmd
+!!       character(len=*),intent(in),optional     :: delim
+!!       integer,intent(out),optional             :: ierr
+!!       character(len=:),allocatable             :: string
+!!       OPTIONS
 !!       cmd               command to pass to system
 !!       delim             delimiter to place between output lines when they
-!!                         are concatenated. Defaults to a space
+!!       are concatenated. Defaults to a space
 !!       ierr              check status of call.
-!!##RESULTS
-!!       process_readall   Assuming sufficient memory is available all the output of the
-!!                         system command are concatenated into a string with
-!!                         spaces added between the output lines of the command.
-!!##EXAMPLE
+!!       RESULTS
+!!       process_readall   Assuming sufficient memory is available all the output of th
+!!       system command are concatenated into a string with
+!!       spaces added between the output lines of the command.
+!!       EXAMPLE
 !!
+!!       Read all output of a command to a single string
 !!
-!!  Read all output of a command to a single string
+!!       program test_process_readall
+!!          use M_process ,only: process_readall
+!!          implicit none
+!!          integer :: ierr
+!!          character(len=:),allocatable :: string
+!!          string=process_readall('ls',ierr=ierr)
+!!          write(*,*)ierr,string
+!!       end program test_process_readall
 !!
-!!   program test_process_readall
-!!   use M_process ,only: process_readall
-!!   implicit none
-!!   integer :: ierr
-!!   character(len=:),allocatable :: string
-!!   string=process_readall('ls',ierr=ierr)
-!!   write(*,*)ierr,string
-!!   end program test_process_readall
+!!       Read all output of a command to an array using split(3f)
 !!
-!!  Read all output of a command to an array using split(3f)
+!!       program demo_process_readall
+!!          use M_process ,only: process_readall
+!!          use M_strings ,only: split
+!!          implicit none
+!!          integer                      :: ierr
+!!          integer                      :: i
+!!          character(len=:),allocatable :: string
+!!          character(len=:),allocatable :: array(:)
+!!          string=process_readall('ls',delim=NEW_LINE("A"),ierr=ierr)
+!!          call split(string,array,delimiters=NEW_LINE("A"))
+!!          do i=1,size(array)
+!!             write(*,'(i0,t10,"[",a,"]")')i,trim(array(i))
+!!          enddo
+!!       end program demo_process_readall
 !!
-!!    program demo_process_readall
-!!    use M_process ,only: process_readall
-!!    use M_strings ,only: split
-!!    implicit none
-!!    integer                      :: ierr
-!!    integer                      :: i
-!!    character(len=:),allocatable :: string
-!!    character(len=:),allocatable :: array(:)
-!!       string=process_readall('ls',delim=NEW_LINE("A"),ierr=ierr)
-!!       call split(string,array,delimiters=NEW_LINE("A"))
-!!       do i=1,size(array)
-!!          write(*,'(i0,t10,"[",a,"]")')i,trim(array(i))
-!!       enddo
-!!    end program demo_process_readall
+!!       Results:
 !!
-!!   Results:
+!! 1     [Articles]
+!! 2     [LIBRARY]
+!! 3     [PC]
+!! 4     [SHIP]
+!! 5     [SPEC]
+!! 6     [crib.dat]
+!! 7     [doc]
+!! 8     [html]
+!! 9     [index.html]
+!! 10    [plan.txt]
+!! 11    [questions]
+!! 12    [scripts]
+!! 13    [tmp]
 !!
-!!    1   [Articles]
-!!    2   [LIBRARY]
-!!    3   [PC]
-!!    4   [SHIP]
-!!    5   [SPEC]
-!!    6   [crib.dat]
-!!    7   [doc]
-!!    8   [html]
-!!    9   [index.html]
-!!    10  [plan.txt]
-!!    11  [questions]
-!!    12  [scripts]
-!!    13  [tmp]
-!!
-!!##SEE ALSO
+!!       SEE ALSO
 !!       M_process(3fm)
 !===================================================================================================================================
-function process_readall(cmd,delim,ierr)  result(string)      !! not hardened
+      function process_readall(cmd,delim,ierr)  result(string)      !! not hardened
 
 character(len=*),parameter::ident_7="@(#)M_process::process_readall(3f): read all lines from process"
 
-character(len=*),intent(in)           :: cmd
-character(len=:),allocatable          :: string      !! assume will not run out of memory
-character(len=*),intent(in),optional  :: delim
-integer,intent(out),optional          :: ierr
+         character(len=*),intent(in)           :: cmd
+         character(len=:),allocatable          :: string      !! assume will not run out of memory
+         character(len=*),intent(in),optional  :: delim
+         integer,intent(out),optional          :: ierr
 
-character(len=:),allocatable          :: delim_local
-integer                               :: ierr_local(3), ierr_read
-integer                               :: i
-type(streampointer)                   :: fp
-character(len=4096)                   :: line        !! assumed long enough
+         character(len=:),allocatable          :: delim_local
+         integer                               :: ierr_local(3), ierr_read
+         integer                               :: i
+         type(streampointer)                   :: fp
+         character(len=4096)                   :: line        !! assumed long enough
 !-----------------------------------------------------------------------------------------------------------------------------------
-   if(present(delim))then
-      delim_local=delim
-   else
-      delim_local=' '
-   endif
-
-   !! change to stream I/O so do not have to have arbitrary line length limit, or at least make length an option
-   string=''
-   ierr_local(:)=0
-   call process_open_read(cmd,fp,ierr_local(1))  ! start command
-
-   if(ierr_local(1).eq.0)then
-      do
-         call process_readline(line,fp,ierr_read)  ! read line from command output
-         if(ierr_read.ne.0)then
-            exit
+         if(present(delim))then
+            delim_local=delim
+         else
+            delim_local=' '
          endif
-         string=string//trim(line)//delim_local
-      enddo
-      string=trim(string)
-   endif
 
-   call process_close(fp,ierr_local(3)) ! Wrap up
+         !! change to stream I/O so do not have to have arbitrary line length limit, or at least make length an option
+         string=''
+         ierr_local(:)=0
+         call process_open_read(cmd,fp,ierr_local(1))  ! start command
 
-   if(present(ierr))then
-      do i=1,size(ierr_local)
-         if(ierr_local(i).ne.0)then
-            ierr=ierr_local(i)
-            exit
+         if(ierr_local(1).eq.0)then
+            do
+               call process_readline(line,fp,ierr_read)  ! read line from command output
+               if(ierr_read.ne.0)then
+                  exit
+               endif
+               string=string//trim(line)//delim_local
+            enddo
+            string=trim(string)
          endif
-      enddo
-   elseif(any(ierr_local.ne.0))then
-      !!write(*,*)'*M_process::process_readall(3f)* error values=',ierr_local
-      stop "*M_process::process_readall(3f)* error"
-   endif
 
-end function process_readall
+         call process_close(fp,ierr_local(3)) ! Wrap up
+
+         if(present(ierr))then
+            do i=1,size(ierr_local)
+               if(ierr_local(i).ne.0)then
+                  ierr=ierr_local(i)
+                  exit
+               endif
+            enddo
+         elseif(any(ierr_local.ne.0))then
+            !!write(*,*)'*M_process::process_readall(3f)* error values=',ierr_local
+            stop "*M_process::process_readall(3f)* error"
+         endif
+
+      end function process_readall
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()-
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
-!!##NAME
-!!##SYNOPSIS
-
-!!##DESCRIPTI
-!!##EXAMPLE
-!
+!!       NAME
+!!       SYNOPSIS
+!!       DESCRIPTIO
+!!       EXAMPLE
 !===================================================================================================================================
 subroutine process_writeline_scalar(writefrom,fp,ierr,trm)
 character(len=*),parameter::ident_8="@(#)M_process::process_writeline_scalar(3fp): write line to process"
@@ -753,8 +736,8 @@ character(len=*),intent(in)    :: writefrom
 type(streampointer),intent(in) :: fp
 integer,intent(out)            :: ierr
 logical,intent(in),optional    :: trm
-   integer                     :: ios
-   logical                     :: trm_local
+integer                     :: ios
+logical                     :: trm_local
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(present(trm))then
       trm_local=trm
@@ -788,9 +771,8 @@ character(len=*),parameter::ident_9="@(#)M_process::process_writeline_array(3fp)
 character(len=*),intent(in)    :: writefrom(:)
 type(streampointer),intent(in) :: fp
 integer,intent(out)            :: ierr
-   integer                     :: i
+integer                        :: i
 !-----------------------------------------------------------------------------------------------------------------------------------
-
    ierr=0
    do i=1,size(writefrom,dim=1)
       call process_writeline_scalar(writefrom(i),fp,ierr)
@@ -806,13 +788,13 @@ use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,
 use M_debug, only : unit_check_level
 
 !! setup
-call test_process_open_read()
-call test_process_open_write()
-call test_process_readall()
-call test_process_readline()
-call test_process_writeline_array()
-call test_process_writeline_scalar()
-call test_process_close()
+   call test_process_open_read()
+   call test_process_open_write()
+   call test_process_readall()
+   call test_process_readline()
+   call test_process_writeline_array()
+   call test_process_writeline_scalar()
+   call test_process_close()
 !! teardown
 contains
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -842,25 +824,25 @@ character(len=4096) :: line            ! long enough to hold any expected line
 end subroutine test_process_close
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_process_open_read()
-type(streampointer) :: fp                                                   ! C file pointer returned by process_open()
-integer :: ierr                                                             ! check status of calls to process module routines
-character(len=:),allocatable :: string                                      ! hold results, assuming sufficient memory is available
-character(len=4096) :: line                                                 ! long enough to hold any expected line
-   call unit_check_start('process_open_read',msg='')
-   string=''
-   call process_open_read('echo a;echo b;echo c',fp,ierr)                   ! open process to read from
-   call unit_check('process_open_read', ierr.eq.0, msg=msg('open ierr=',ierr))
-   do                                                                       ! read output of process till end
-      call process_readline(line,fp,ierr)
-      if(ierr.ne.0)exit
-      string=string//trim(line)//'+'                                        ! append output lines together
-   enddo
-   call unit_check('process_open_read', string.eq.'a+b+c+', msg=msg(string))
-   call process_open_read('echo a;echo b;echo c',fp,ierr)                   ! open process to read from
-   call unit_check('process_open_read', string.eq.'a+b+c+', msg=msg('openn already open process,ierr=',ierr))
-   call process_close(fp,ierr)                                              ! Wrap up
-   !!call unit_check('process_open_read', ierr.eq.0, msg=msg('close ierr=',ierr))
-   call unit_check_done('process_open_read',msg='')
+type(streampointer) :: fp                                                  ! C file pointer returned by process_open()
+integer :: ierr                                                            ! check status of calls to process module routines
+character(len=:),allocatable :: string                                     ! hold results, assuming sufficient memory is available
+character(len=4096) :: line                                                ! long enough to hold any expected line
+  call unit_check_start('process_open_read',msg='')
+  string=''
+  call process_open_read('echo a;echo b;echo c',fp,ierr)                   ! open process to read from
+  call unit_check('process_open_read', ierr.eq.0, msg=msg('open ierr=',ierr))
+  do                                                                       ! read output of process till end
+     call process_readline(line,fp,ierr)
+     if(ierr.ne.0)exit
+     string=string//trim(line)//'+'                                        ! append output lines together
+  enddo
+  call unit_check('process_open_read', string.eq.'a+b+c+', msg=msg(string))
+  call process_open_read('echo a;echo b;echo c',fp,ierr)                   ! open process to read from
+  call unit_check('process_open_read', string.eq.'a+b+c+', msg=msg('openn already open process,ierr=',ierr))
+  call process_close(fp,ierr)                                              ! Wrap up
+  !!call unit_check('process_open_read', ierr.eq.0, msg=msg('close ierr=',ierr))
+  call unit_check_done('process_open_read',msg='')
 end subroutine test_process_open_read
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_process_open_write()
@@ -954,10 +936,10 @@ character(len=256)           :: line
    call process_open_write('bash||cmd',fp,ierr)    ! open process to write to (ie. start gnuplot(1) program)
    ! feed commands to shell that redirect output to _scratch_.txt file
    text=[character(len=128) :: &
-    "echo one   >_scratch_.txt", &
-    "echo two   >>_scratch_.txt", &
-    "echo three >>_scratch_.txt", &
-    "echo four  >>_scratch_.txt"]
+      "echo one   >_scratch_.txt", &
+      "echo two   >>_scratch_.txt", &
+      "echo three >>_scratch_.txt", &
+      "echo four  >>_scratch_.txt"]
    call process_writeline(text,fp,ierr)       ! multiple lines
    call process_close(fp,ierr)
    ! check expected file
@@ -1005,11 +987,11 @@ character(len=256)           :: line
    call unit_check_done('process_writeline_scalar',msg='')
 end subroutine test_process_writeline_scalar
 !===================================================================================================================================
-end subroutine test_suite_M_process
+      end subroutine test_suite_M_process
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
-end module M_process
+   end module M_process
 !-==================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-==================================================================================================================================

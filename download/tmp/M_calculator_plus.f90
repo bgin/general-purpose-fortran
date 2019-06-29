@@ -13,7 +13,7 @@ public :: test_suite_M_calculator_plus
 contains
 !>
 !!##NAME
-!!      inum0(3f) - [M_calculator_plus] return integer value from calculator expression
+!!      inum0(3f) - [M_calculator_plus] return integer value from calculator expressio
 !!##SYNOPSIS
 !!
 !!   integer function inum0(inline,ierr)
@@ -78,7 +78,7 @@ contains
 !!##NONE.
 !===================================================================================================================================
 !>
-!! AUTHOR:  John S. Urban
+!! AUTHOR:  John S. Urba
 !!##VERSION: 19971123
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -127,7 +127,7 @@ end function inum0
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!       rnum0(3f) - [M_calculator_plus] returns real number from string expression using JUCALC(3f)
+!!       rnum0(3f) - [M_calculator_plus] returns real number from string expression using JUCALC(3f
 !!##SYNOPSIS
 !!
 !!    real function rnum0(inline)
@@ -173,8 +173,8 @@ end function inum0
 !!       o NONE.
 !===================================================================================================================================
 !>
-!! AUTHOR    John S. Urban
-!!##VERSION   1.0,19971123
+!! AUTHOR    John S. Urba
+!!##VERSION   1.0,1997112
 !===================================================================================================================================
 real function rnum0(inline,ierr)
 character(len=*),parameter :: ident="@(#)M_calculator_plus::rnum0(3f):resolve a calculator string into a real number"
@@ -249,15 +249,15 @@ end function rnum0
 !!
 !!##SEE ALSO
 !!
-!!       o The syntax of an expression is as described in the main documentation of the Calculator Library.
+!!       o The syntax of an expression is as described in the main documentation of the Calculator Library
 !!       o See JUCALCX(), JUCALC(), STRGAR2(), RNUM0(), SNUM0().
 !!
 !!##REFERENCES
 !!       o NONE.
 !===================================================================================================================================
 !>
-!! AUTHOR + John S. Urban
-!!##VERSION 1.0, 19971123
+!! AUTHOR + John S. Urba
+!!##VERSION 1.0, 1997112
 !===================================================================================================================================
 doubleprecision function dnum0(inline,ierr)
 character(len=*),parameter :: ident="@(#)M_calculator_plus::dnum0(3f):resolve a calculator string into a doubleprecision number"
@@ -287,7 +287,7 @@ integer                     :: ilen
 end function dnum0
 !>
 !!##NAME
-!!     snum0(3f) - [M_calculator_plus] resolve a calculator expression into a string(return blank on errors)
+!!     snum0(3f) - [M_calculator_plus] resolve a calculator expression into a string(return blank on errors
 !!
 !!##SYNOPSIS
 !!
@@ -350,8 +350,8 @@ end function dnum0
 !!       o NONE.
 !===================================================================================================================================
 !>
-!! AUTHOR    John S. Urban
-!!##VERSION   1.0, 19971123
+!! AUTHOR    John S. Urba
+!!##VERSION   1.0, 199711
 !===================================================================================================================================
 !===================================================================================================================================
 function snum0(inline0,ierr)
@@ -394,7 +394,7 @@ end function snum0
 !===================================================================================================================================
 !>
 !!##NAME
-!!     jucalcx(3f) - [M_calculator_plus] return value from a string expression processing messages to simplify call to JUCALC(3f)
+!!     jucalcx(3f) - [M_calculator_plus] return value from a string expression processing messages to simplify call to JUCALC(3f
 !!##SYNOPSIS
 !!
 !!    subroutine jucalcx(inlin0,outval,outlin0,ierr,ilen)
@@ -475,7 +475,6 @@ end function snum0
 !!     string representation of value is 454.35424
 !!     error flag value is            0
 !!     length of expression is            8
-!! ================================================================================
 !!
 !!##SEE ALSO
 !!     See also: STRGAR(),RNUM0(),JUCALC(),INUM0(),SNUM0()
@@ -484,7 +483,7 @@ end function snum0
 !===================================================================================================================================
 !>
 !! AUTHOR   John S. Urban
-!!##VERSION  V1.0, 19971123
+!!##VERSION  V1.0, 199711
 !===================================================================================================================================
 recursive subroutine jucalcx(inlin0,outval,outlin0,ierr,ilen)
 use M_journal, only : journal
@@ -526,10 +525,10 @@ character(len=iclen_calc)   :: event
 !-----------------------------------------------------------------------------------------------------------------------------------
       select case(ierr)
       case(-1)                                    ! trapped error, display error message
-        call journal('sc','*jucalcx* error===>'//trim(event))
+        call journal('sc','*jucalcx* error===>',event)
         !call pdec(line(:ilen))                   ! echo input string as is and in ASCII decimal
       case(1)                                     ! general message, display message
-        call journal('sc','*jucalcx* message===>'//trim(event))
+        call journal('sc','*jucalcx* message===>',event)
       case(0)                                     ! numeric output
          outlin0=outlin
       case(2)                                     ! string output
@@ -546,7 +545,7 @@ end subroutine jucalcx
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!       strgarr(3f) - [M_calculator_plus] read a string into an array using jucalc(3f) calculator
+!!       strgarr(3f) - [M_calculator_plus] read a string into an array using jucalc(3f) calculato
 !!##SYNOPSIS
 !!
 !!   subroutine strgarr(line,ivals,vals,ifound,delims,ierr)
@@ -685,8 +684,8 @@ end subroutine jucalcx
 !!    none.
 !===================================================================================================================================
 !>
-!! AUTHOR  John S. Urban
-!!##VERSION 1.0, 19971123
+!! AUTHOR  John S. Urba
+!!##VERSION 1.0, 199711
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 SUBROUTINE strgarr(line,ivals,vals,ifound,delims0,ierr)
@@ -782,7 +781,7 @@ CHARACTER(LEN=*),PARAMETER :: ident="@(#)M_calculator_plus::strgarr(3f):read num
 END SUBROUTINE strgarr
 !>
 !!##NAME
-!!       strgar2(3f) - [M_calculator_plus] read a string into a real array USING CALCULATOR, allowing quoted strings in arguments,
+!!       strgar2(3f) - [M_calculator_plus] read a string into a real array USING CALCULATOR, allowing quoted strings in arguments
 !!
 !!##SYNOPSIS
 !!
@@ -906,8 +905,8 @@ END SUBROUTINE strgarr
 !!     NONE.
 !===================================================================================================================================
 !>
-!! AUTHOR   John S. Urban
-!!##VERSION  1.0 19971123
+!! AUTHOR   John S. Urba
+!!##VERSION  1.0 1997112
 !===================================================================================================================================
 subroutine strgar2(line,iread,numbrs,inums,delims0,ierr)
 use M_journal, only : journal

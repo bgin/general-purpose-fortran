@@ -89,7 +89,7 @@ contains
 !!          in a product, an acknowledgment in the product documentation would be
 !!          appreciated but is not required.
 !!
-!!       2. Altered source versions must be plainly marked as such, and must not be
+!!       2. Altered source versions must be plainly marked as such, and must not b
 !!          misrepresented as being the original software.
 !!
 !!       3. This notice may not be removed or altered from any source
@@ -192,7 +192,7 @@ contains
 !!    ref="69E3FACD5F08321F78117BD53476E5321845433356F106E7013E68EC367F3017"
 !!    call unit_check('sha256',dirty_sha256(str)==ref,'test dirtysha256 1')
 !!
-!!    !!str=repeat("abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmno",16777216)
+!!    !!str=repeat("abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmno",16777216
 !!    !!ref="50E72A0E26442FE2552DC3938AC58658228C0CBFB1D2CA872AE435266FCD055E"
 !!    !!call unit_check('sha256',sha256(str)==ref,'test sha256 11 -- long test')
 !!
@@ -309,7 +309,7 @@ end function sha256
 !!
 !!   Sample output:
 !!
-!!     FA9D11011034F1081A367D4F2F1EB909AC0849FF090A9320B6824156C5628DFD        2011 dynamic_dummy_arrays.f90
+!!     FA9D11011034F1081A367D4F2F1EB909AC0849FF090A9320B6824156C5628DFD        2011 dynamic_dummy_arrays.f9
 !!     FE48473BC7B9C13067EC2C108CB8A650A186605D5F905736D9CB9DE76E9A1A21        5444 fspiro.f90
 !!     306CDB5BB2A8C30C711FA5D35A6A12F4FDB4F003ED77438E922B56BBA1024F49       27108 pprint.f90
 !===================================================================================================================================
@@ -1161,7 +1161,7 @@ end subroutine test_suite_sha256
 !===================================================================================================================================
 !>
 !!##NAME
-!!    luhn_checksum(3f) - [M_hashkeys] Luhn checksum algorithm applied to a string of numeric values
+!!    luhn_checksum(3f) - [M_hashkeys] Luhn checksum algorithm applied to a string of numeric value
 !!
 !!##DESCRIPTION
 !!
@@ -1407,7 +1407,7 @@ end subroutine test_luhn_checksum
 !===================================================================================================================================
 !>
 !!##NAME
-!!    djb2_hash(3f) - [M_hashkeys:bucket_hash] djb2 string hash (algorithm by Daniel J. Bernstein)
+!!    djb2_hash(3f) - [M_hashkeys:bucket_hash] djb2 string hash (algorithm by Daniel J. Bernstein
 !!
 !!##SYNOPSIS
 !!
@@ -1594,7 +1594,7 @@ end function djb2_hash_scalar
 !!    implicit none
 !!    integer :: i
 !!    integer(int64) :: crc
-!!    character(*), parameter :: s = "The quick brown fox jumps over the lazy dog"
+!!    character(*), parameter :: s = "The quick brown fox jumps over the lazy dog
 !!       ! string
 !!       crc=crc32_hash(s)
 !!       print "(Z8)", crc
@@ -1717,7 +1717,7 @@ end function crc32_hash_scalar
 !!
 !!     class(*),intent(in)          :: anything(:)
 !!     logical,intent(in),optional  :: continue
-!!     integer,parameter            :: int128 = selected_real_kind(2*precision(1.0_int64))
+!!     integer,parameter            :: int128 = selected_real_kind(2*precision(1.0_int64)
 !!     integer(kind=int128)         :: hash_128
 !!
 !!##DESCRIPTION
@@ -1927,7 +1927,7 @@ end function djb2
 !!
 !!##OPTIONS
 !!   KEY    string to generate a hash key for
-!!   RANGE  range should be a power of 2. Note that the 32-bit algorithm is used
+!!   RANGE  range should be a power of 2. Note that the 32-bit algorithm is use
 !!
 !!##RETURNS
 !!   CODE   returned hash value in range specified by RANGE

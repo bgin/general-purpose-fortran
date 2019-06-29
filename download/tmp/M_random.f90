@@ -27,7 +27,7 @@
 !!   SUPPLEMENTING INTRINSIC RANDOM_SEED
 !!    o init_random_seed_by_system_clock(3f): initialize random_number(3f) to return a single value with system clock
 !!    o init_random_seed_by_dat(3f): initialize random_number(3f) to return a single value using date_and_time(3f)
-!!    o init_random_seed(3f): initialize random_number(3f) to return a single value with single integer seed like srand(3c)
+!!    o init_random_seed(3f): initialize random_number(3f) to return a single value with single integer seed like srand(3c
 !!
 !!    o random_string(3f): create random string composed of provided characters of specified length
 !!    o random_hex(3f): create random hexadecimal string of specified length
@@ -87,7 +87,7 @@ contains
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    random_string(3f) - [M_random] create random string composed of provided characters of specified length
+!!    random_string(3f) - [M_random] create random string composed of provided characters of specified lengt
 !!
 !!##SYNOPSIS
 !!
@@ -154,7 +154,7 @@ end function random_string
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    random_hex(3f) - [M_random] create random string composed of provided characters of specified length
+!!    random_hex(3f) - [M_random] create random string composed of provided characters of specified lengt
 !!
 !!##SYNOPSIS
 !!
@@ -208,7 +208,7 @@ end function random_hex
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    random_permutation(3f) - [M_random] Populate an integer array with the values 1 to size(array)
+!!    random_permutation(3f) - [M_random] Populate an integer array with the values 1 to size(array
 !!
 !!##SYNOPSIS
 !!
@@ -297,7 +297,7 @@ end subroutine random_permutation
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    scramble(3f) - [M_random] return an integer array prepopulated with the values 1 to size(array)
+!!    scramble(3f) - [M_random] return an integer array prepopulated with the values 1 to size(array
 !!
 !!##SYNOPSIS
 !!
@@ -379,7 +379,7 @@ end function scramble
 !==================================================================================================================================!
 !>
 !!##NAME
-!!       random_kiss64 - [M_random] A 64-bit KISS random number generator by George Margaglia.
+!!       random_kiss64 - [M_random] A 64-bit KISS random number generator by George Margaglia
 !!##SYNOPSIS
 !!
 !!    function random_kiss64()
@@ -461,7 +461,7 @@ end function random_kiss64
 !!    subroutine init_random_seed_by_system_clock()
 !!
 !!##DESCRIPTION
-!!    A simple wrapper around random_seed(3f) that uses the system clock to initialize the seed so you can
+!!    A simple wrapper around random_seed(3f) that uses the system clock to initialize the seed so you ca
 !!    easily call random_number(3f) with varying pseudo-random real number sequences
 !!
 !!##EXAMPLE
@@ -515,7 +515,7 @@ end subroutine init_random_seed_by_system_clock
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    init_random_seed_by_dat(3f) - [M_random] seed random_number(3f) with values from date_and_time(3f)
+!!    init_random_seed_by_dat(3f) - [M_random] seed random_number(3f) with values from date_and_time(3f
 !!
 !!##SYNOPSIS
 !!
@@ -583,7 +583,7 @@ end subroutine init_random_seed_by_dat
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    init_random_seed(3f) - [M_random] seed random_number(3f) with single value like srand(3c) usage
+!!    init_random_seed(3f) - [M_random] seed random_number(3f) with single value like srand(3c) usag
 !!
 !!##SYNOPSIS
 !!
@@ -746,7 +746,7 @@ end subroutine init_random_seed
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    mtprng_init(3f) - [M_random:MERSENNE TWISTER] Initialize the Mersenne Twister random number generator with "seed"
+!!    mtprng_init(3f) - [M_random:MERSENNE TWISTER] Initialize the Mersenne Twister random number generator with "seed
 !!
 !!##SYNOPSIS
 !!
@@ -808,7 +808,7 @@ end subroutine mtprng_init
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    mtprng_init_by_array(3f) - [M_random:MERSENNE TWISTER] Initialize the Mersenne Twister random number generator with "seed" array
+!!    mtprng_init_by_array(3f) - [M_random:MERSENNE TWISTER] Initialize the Mersenne Twister random number generator with "seed" arra
 !!
 !!##SYNOPSIS
 !!
@@ -896,7 +896,7 @@ end subroutine mtprng_init_by_array
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    mtprng_rand64(3f) - [M_random:MERSENNE TWISTER] Obtain the next 64-bit integer in the pseudo-random sequence
+!!    mtprng_rand64(3f) - [M_random:MERSENNE TWISTER] Obtain the next 64-bit integer in the pseudo-random sequenc
 !!
 !!##SYNOPSIS
 !!
@@ -995,7 +995,7 @@ end function mtprng_rand64
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    mtprng_rand(3f) - [M_random:MERSENNE TWISTER] Obtain the next 32-bit integer in the pseudo-random sequence
+!!    mtprng_rand(3f) - [M_random:MERSENNE TWISTER] Obtain the next 32-bit integer in the pseudo-random sequenc
 !!
 !!##SYNOPSIS
 !!
@@ -1055,7 +1055,7 @@ end function mtprng_rand
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    mtprng_rand_range(3f) - [M_random:MERSENNE TWISTER] Obtain a pseudo-random integer in the range [lo,hi]
+!!    mtprng_rand_range(3f) - [M_random:MERSENNE TWISTER] Obtain a pseudo-random integer in the range [lo,hi
 !!##SYNOPSIS
 !!
 !!    function mtprng_rand_range(state, lo, hi) result(r)
@@ -1110,7 +1110,7 @@ end function mtprng_rand_range
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    mtprng_rand_real1(3f) - [M_random:MERSENNE TWISTER] Obtain a pseudo-random real number in the range [0.0,1.0]
+!!    mtprng_rand_real1(3f) - [M_random:MERSENNE TWISTER] Obtain a pseudo-random real number in the range [0.0,1.0
 !!
 !!##SYNOPSIS
 !!
@@ -1162,7 +1162,7 @@ end function mtprng_rand_real1
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    mtprng_rand_real2(3f) - [M_random:MERSENNE TWISTER] Obtain a pseudo-random real number in the range [0,<1)
+!!    mtprng_rand_real2(3f) - [M_random:MERSENNE TWISTER] Obtain a pseudo-random real number in the range [0,<1
 !!
 !!##SYNOPSIS
 !!
@@ -1203,7 +1203,7 @@ end function mtprng_rand_real2
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    mtprng_rand_real3(3f) - [M_random:MERSENNE TWISTER] Obtain a pseudo-random real number in the range (0< XXX <1)
+!!    mtprng_rand_real3(3f) - [M_random:MERSENNE TWISTER] Obtain a pseudo-random real number in the range (0< XXX <1
 !!
 !!##SYNOPSIS
 !!

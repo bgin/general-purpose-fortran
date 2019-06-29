@@ -1,6 +1,6 @@
 !>
 !!##NAME
-!!    write_animated_gif(3f) - [M_writegif_animated] Codes pixel-maps with palette into animated GIF format. Optional transparent color
+!!    write_animated_gif(3f) - [M_writegif_animated] Codes pixel-maps with palette into animated GIF format. Optional transparent colo
 !!
 !!##SYNOPSIS
 !!

@@ -5,8 +5,8 @@
 !!  All copies of the software package should include this notice  and  any
 !!  documentation,  advertising  materials,  and  other materials  related
 !!  to such  distribution  and use should  acknowledge that the software was
-!!  developed by  Westinghouse  Corporate  Computer Services.  THIS  SOFTWARE
-!!  IS  PROVIDED  ``AS  IS'' AND  WITHOUT  ANY EXPRESS OR IMPLIED  WARRANTIES
+!!  developed by  Westinghouse  Corporate  Computer Services.  THIS  SOFTWAR
+!!  IS  PROVIDED  ``AS  IS'' AND  WITHOUT  ANY EXPRESS OR IMPLIED  WARRANTIE
 !!  OF  MERCHANTABILITY  AND FITNESS FOR A PARTICULAR PURPOSE.
 !===================================================================================================================================
 module M_steam67
@@ -84,7 +84,7 @@ contains
 !===================================================================================================================================
 !>
 !!##NAME
-!!     condv67(3f) - [M_steam67] compute thermal conductivity of water at pressure P and temperature T
+!!     condv67(3f) - [M_steam67] compute thermal conductivity of water at pressure P and temperature
 !!
 !!##SYNOPSIS
 !!
@@ -236,7 +236,7 @@ integer         :: i
 !!
 !!     CALLING SEQUENCE:
 !!         K = CONDL(P,T)
-!!         (Note that this statement should not be used in FORTRAN, unless K is
+!!         (Note that this statement should not be used in FORTRAN, unless K i
 !!         declared to be REAL.)
 !!
 !!##OPTIONS
@@ -324,7 +324,7 @@ character(len=*),parameter::ident_3="@(#)M_steam67::do67(3f)L summation of a pol
 !===================================================================================================================================
 !>
 !!##NAME
-!!     cpl67(3f) - [M_steam67] CPL67 calculates specific isobaric head capacity of water at pressure P and temperature T
+!!     cpl67(3f) - [M_steam67] CPL67 calculates specific isobaric head capacity of water at pressure P and temperature
 !!
 !!##SYNOPSIS
 !!
@@ -402,7 +402,7 @@ DIMENSION C(2)
 !==================================================================================================================================!
 !>
 !!##NAME
-!!     cpv67(3f) - [M_steam67] calculates specific isobaric heat capacity and specific volume of water at pressure P and temperature T
+!!     cpv67(3f) - [M_steam67] calculates specific isobaric heat capacity and specific volume of water at pressure P and temperature
 !!##SYNOPSIS
 !!
 !!   FUNCTION cpv67(PF, TF, VF)
@@ -460,7 +460,7 @@ END FUNCTION cpv67
 !==================================================================================================================================!
 !>
 !!##NAME
-!!     crflo67(3f) - [M_steam67] critical flow and degrees superheat of wet/superheated steam at PRES,ENTH
+!!     crflo67(3f) - [M_steam67] critical flow and degrees superheat of wet/superheated steam at PRES,ENT
 !!
 !!##SYNOPSIS
 !!
@@ -803,7 +803,7 @@ character(len=*),parameter::ident_6="&
 !==================================================================================================================================!
 !>
 !!##NAME
-!!     critvs67(3f) - [M_steam67] function critvs67(press, enth, gamma)
+!!     critvs67(3f) - [M_steam67] function critvs67(press, enth, gamma
 !!
 !!##SYNOPSIS
 !!
@@ -925,7 +925,7 @@ character(len=*),parameter::ident_8="@(#)M_steam67::entry critvw67(press, enth, 
 !!
 !!##SYNOPSIS
 !!
-!!       entry critvw67(press, enth, gamma)
+!!       entry critvw67(press, enth, gamma
 !!
 !!##DESCRIPTION
 !!
@@ -966,7 +966,7 @@ character(len=*),parameter::ident_8="@(#)M_steam67::entry critvw67(press, enth, 
 !==================================================================================================================================!
 !>
 !!##NAME
-!!     crvel67(3f) - [M_steam67] critical flow velocity and isentropic exponent of wet/superheated steam
+!!     crvel67(3f) - [M_steam67] critical flow velocity and isentropic exponent of wet/superheated stea
 !!##SYNOPSIS
 !!
 !!   function crvel67(p, h, ga)
@@ -1101,7 +1101,7 @@ character(len=*),parameter::ident_9="@(#)M_steam67::critical flow(3f): velocity 
 !==================================================================================================================================!
 !>
 !!##NAME
-!!     hcsl67(3f) - [M_steam67] calculate specific enthalpy/volume and entropy of liquid(P,T)
+!!     hcsl67(3f) - [M_steam67] calculate specific enthalpy/volume and entropy of liquid(P,T
 !!##SYNOPSIS
 !!
 !!   function hcsl67 (p,t,v,s,igo)
@@ -1288,7 +1288,7 @@ DATA (A(I),I=1,23) /          &
 !==================================================================================================================================!
 !>
 !!##NAME
-!!     hcslvl67(3f) - [M_steam67] calculate V,S,specific enthalpy for liquid given (P,T)
+!!     hcslvl67(3f) - [M_steam67] calculate V,S,specific enthalpy for liquid given (P,T
 !!##SYNOPSIS
 !!
 !!   function hcslv167(p, t, v, s, igo)
@@ -1447,7 +1447,7 @@ character(len=*),parameter::ident_12="&
 !==================================================================================================================================!
 !>
 !!##NAME
-!!     hcslv267(3f) - [M_steam67] calculate specific enthalpy, specific volume, and entropy of the liquid at P and T
+!!     hcslv267(3f) - [M_steam67] calculate specific enthalpy, specific volume, and entropy of the liquid at P and
 !!
 !!##SYNOPSIS
 !!
@@ -1640,8 +1640,8 @@ character(len=*),parameter::ident_12="&
 !!      SUBROUTINE vest67 WILL CALCULATE
 !!
 !!##OPTIONS
-!!     PBARS    water pressure, in atmospheres.  **
-!!     TC       water temperature, in degrees C. **
+!!     PBARS    water pressure, in atmospheres.  *
+!!     TC       water temperature, in degrees C. *
 !!
 !!##RETURN VALUES
 !!     VOUT     output
@@ -1709,7 +1709,7 @@ DATA(A(I), I = 1, 10)/    &
 !!             volume.
 !!
 !!     REGION OF APPLICATION:
-!!         Region 2 with P[max] = 1000 bars = 14503.7738 psia T[max] = 800 C =
+!!         Region 2 with P[max] = 1000 bars = 14503.7738 psia T[max] = 800 C
 !!         1472 F
 !!
 !!     CALLING SEQUENCE:
@@ -1805,7 +1805,7 @@ DATA ((IX6(I,J),I=1,3),J=1,2) /14,19,54,0,0,27/
 !===================================================================================================================================
 !>
 !!##NAME
-!!     hss167(3f) - [M_steam67]
+!!     hss167(3f) - [M_steam67
 !!##SYNOPSIS
 !!
 !!   entry hss167(p,t,s,v)
@@ -1913,7 +1913,7 @@ ENTRY HSS167(P,T,S,V)
 !==================================================================================================================================!
 !>
 !!##NAME
-!!     psl67(3f) - [M_steam67] calculate saturation pressure of the saturated liquid at temperature T
+!!     psl67(3f) - [M_steam67] calculate saturation pressure of the saturated liquid at temperature
 !!
 !!##SYNOPSIS
 !!
@@ -1969,7 +1969,7 @@ character(len=*),parameter::ident_16="&
 !===================================================================================================================================
 !>
 !!##NAME
-!!     psl167(3f) - [M_steam67] calculate saturation pressure of the saturated liquid at temperature T.
+!!     psl167(3f) - [M_steam67] calculate saturation pressure of the saturated liquid at temperature T
 !!
 !!##SYNOPSIS
 !!
@@ -2019,7 +2019,7 @@ END FUNCTION PSL67
 !==================================================================================================================================!
 !>
 !!##NAME
-!!     psv67(3f) - [M_steam67] calculate saturation pressure of the saturated liquid at entropy SS in psia
+!!     psv67(3f) - [M_steam67] calculate saturation pressure of the saturated liquid at entropy SS in psi
 !!
 !!##SYNOPSIS
 !!
@@ -2105,7 +2105,7 @@ DIMENSION A(34), X(4)
 !==================================================================================================================================!
 !>
 !!##NAME
-!!     psv167(3f) - [M_steam67] calculate saturation pressure in psia of the saturated liquid at entropy SS.
+!!     psv167(3f) - [M_steam67] calculate saturation pressure in psia of the saturated liquid at entropy SS
 !!
 !!##SYNOPSIS
 !!
@@ -2129,7 +2129,7 @@ DIMENSION A(34), X(4)
 !==================================================================================================================================!
 !>
 !!##NAME
-!!     psv267(3f) - [M_steam67] calculate saturation pressure in psia of the saturated liquid at entropy SS.
+!!     psv267(3f) - [M_steam67] calculate saturation pressure in psia of the saturated liquid at entropy SS
 !!
 !!##SYNOPSIS
 !!
@@ -2153,7 +2153,7 @@ GOTO 1
 !==================================================================================================================================!
 !>
 !!##NAME
-!!     pls67(3f) - [M_steam67] saturation pressure of the saturated liquid at entropy SS.
+!!     pls67(3f) - [M_steam67] saturation pressure of the saturated liquid at entropy SS
 !!
 !!##SYNOPSIS
 !!
@@ -2262,7 +2262,7 @@ END FUNCTION PSV67
 !==================================================================================================================================!
 !>
 !!##NAME
-!!     sssiss67(3f) - [M_steam67] calculate specific entropy, temperature, specific volume, and steam quality of the liquid
+!!     sssiss67(3f) - [M_steam67] calculate specific entropy, temperature, specific volume, and steam quality of the liqui
 !!                    at pressure P and enthalpy H.
 !!##SYNOPSIS
 !!
@@ -2330,7 +2330,7 @@ character(len=*),parameter::ident_22="&
 !==================================================================================================================================!
 !>
 !!##NAME
-!!     sisiss67(3f) - [M_steam67] calculate specific entropy, temperature, specific volume, and steam quality of the liquid
+!!     sisiss67(3f) - [M_steam67] calculate specific entropy, temperature, specific volume, and steam quality of the liqui
 !!                  at pressure P and enthalpy H.
 !!
 !!##SYNOPSIS
@@ -2360,7 +2360,7 @@ ENTRY sisiss67(PRES, ENTH, TEMP, V, X)
 !==================================================================================================================================!
 !>
 !!##NAME
-!!     hisiss67(3f) - [M_steam67] calculate specific enthalpy, temperature, specific volume, and steam quality of water at P and S.
+!!     hisiss67(3f) - [M_steam67] calculate specific enthalpy, temperature, specific volume, and steam quality of water at P and S
 !!
 !!##SYNOPSIS
 !!
@@ -2407,7 +2407,7 @@ ENTRY hisiss67(PRES, ENTH, TEMP, V, X)
 !!             quality.
 !!
 !!     REGION OF APPLICATION:
-!!         Region 2 with P[max] = 1000 bars = 14,503.7738 psia T[max] = 800 C =
+!!         Region 2 with P[max] = 1000 bars = 14,503.7738 psia T[max] = 800 C
 !!         1472 F
 !!         See Section 4.6 for limits on S.
 !!
@@ -2522,7 +2522,7 @@ ENTRY hssiss67(PRES, ENTH, TEMP, V, X)
 !!
 !!##SYNOPSIS
 !!
-!!   ENTRY spsiss67(PRES, ENTH, TEMP, V, X)
+!!   ENTRY spsiss67(PRES, ENTH, TEMP, V, X
 !!
 !!##DESCRIPTION
 !!
@@ -2543,7 +2543,7 @@ ENTRY hssiss67(PRES, ENTH, TEMP, V, X)
 !!
 !!##SYNOPSIS
 !!
-!!   ENTRY hpsiss67(PRES, ENTH, TEMP, V, X)
+!!   ENTRY hpsiss67(PRES, ENTH, TEMP, V, X
 !!
 !!##DESCRIPTION
 !!
@@ -2572,8 +2572,8 @@ END FUNCTION sssiss67
 !!
 !!
 !!##DESCRIPTION
-!!    function tps67 will calculate the temperature of
-!!    the liquid that is at pressure P, and entropy S.
+!!    function tps67 will calculate the temperature o
+!!    the liquid that is at pressure P, and entropy S
 !!
 !!##OPTIONS
 !!     P       water pressure, in PSIA.
@@ -2851,7 +2851,7 @@ IMPLICIT double precision(A-H,O-Z)
 !==================================================================================================================================!
 !>
 !!##NAME
-!!     tph67(3f) - [M_steam67]
+!!     tph67(3f) - [M_steam67
 !!
 !!##SYNOPSIS
 !!
@@ -3043,7 +3043,7 @@ IMPLICIT double precision(A-H,O-Z)
 !!    FUNCTION tpsl67 (PRES,S)
 !!
 !!##DESCRIPTION
-!!    function TPSL67 will calculate the temperature of
+!!    function TPSL67 will calculate the temperature o
 !!    the liquid that is at pressure P, and entropy S.
 !!
 !!##OPTIONS
@@ -3157,7 +3157,7 @@ DATA (TOL(I),I=1,2) / 0.00004d0,0.04d0/
 !==================================================================================================================================!
 !>
 !!##NAME
-!!     tphl67(3f) - [M_steam67]
+!!     tphl67(3f) - [M_steam67
 !!
 !!##SYNOPSIS
 !!
@@ -3301,7 +3301,7 @@ ENTRY TPHL67(PRES,S)
 !!   function tsl67(pin)
 !!
 !!##DESCRIPTION
-!!    function tsl67 will calculate the saturation temperature
+!!    function tsl67 will calculate the saturation temperatur
 !!    of the saturated liquid at pressure p.
 !!
 !!     DEFINITION AND PURPOSE:
@@ -3354,7 +3354,7 @@ implicit double precision(A-H, O-Z)
 !!       ENTRY tsl167(PIN)
 !!
 !!##DESCRIPTION
-!!    function TSL167 will calculate the saturation
+!!    function TSL167 will calculate the saturatio
 !!    temperature of the liquid at pressure P.
 !!
 !!##OPTIONS
@@ -3432,7 +3432,7 @@ implicit double precision(A-H, O-Z)
 !!       o Calculates saturation temperature
 !!
 !!     REGION OF APPLICATION:
-!!         Liquid side of Region 3. Approximate limits are 0 .le. H .le. 906 BTU/lb
+!!         Liquid side of Region 3. Approximate limits are 0 .le. H .le. 906 BTU/l
 !!
 !!     CALLING SEQUENCE:
 !!         T=TSLH(H)
@@ -3546,7 +3546,7 @@ implicit double precision(A-H, O-Z)
 !!       o Calculates viscosity
 !!
 !!     REGION OF APPLICATION:
-!!         Region 1 with P[max] = 800 bars = 11,603.01904 psia
+!!         Region 1 with P[max] = 800 bars = 11,603.01904 psi
 !!
 !!     CALLING SEQUENCE:
 !!         VISC = VISL(P,T)
@@ -3617,7 +3617,7 @@ implicit double precision(A-H, O-Z)
 !!           o Calculates viscosity
 !!
 !!     REGION OF APPLICATION:
-!!         Region 2 with P[max] = 800 bars = 11,603.01904 psia T[max] = 700 C =
+!!         Region 2 with P[max] = 800 bars = 11,603.01904 psia T[max] = 700 C
 !!         1292 F
 !!
 !!     CALLING SEQUENCE:
@@ -3667,7 +3667,7 @@ implicit double precision(A-H, O-Z)
 !==================================================================================================================================!
 !>
 !!##NAME
-!!     hcl67(3f) - [M_steam67] calculate specific enthalpy and entropy of water at pressure P and temp T
+!!     hcl67(3f) - [M_steam67] calculate specific enthalpy and entropy of water at pressure P and temp
 !!
 !!##SYNOPSIS
 !!
@@ -3714,7 +3714,7 @@ END FUNCTION hcl67
 !==================================================================================================================================!
 !>
 !!##NAME
-!!     hsl67(3f) - [M_steam67] calculate specific enthalpy of the saturated liquid at temperature T
+!!     hsl67(3f) - [M_steam67] calculate specific enthalpy of the saturated liquid at temperature
 !!
 !!##SYNOPSIS
 !!
@@ -3757,7 +3757,7 @@ END FUNCTION hcl67
 !!
 !!##SYNOPSIS
 !!
-!!    ENTRY ssl67(T) calculate the specific entropy of the saturated liquid at temperature T
+!!    ENTRY ssl67(T) calculate the specific entropy of the saturated liquid at temperature
 !!
 !!##DESCRIPTION
 !!    function ssl67 will calculate the specific entropy
@@ -3789,7 +3789,7 @@ END FUNCTION hcl67
 !!
 !!##SYNOPSIS
 !!
-!!    ENTRY vsl67(T) calculate specific volume on the liquid side of the saturation line of the liquid at temperature T
+!!    ENTRY vsl67(T) calculate specific volume on the liquid side of the saturation line of the liquid at temperature
 !!
 !!##DESCRIPTION
 !!    function VSL67 will calculate the specific volume
@@ -3823,7 +3823,7 @@ END FUNCTION hsl67
 !==================================================================================================================================!
 !>
 !!##NAME
-!!     hsv67(3f) - [M_steam67] specific enthalpy, temperature, specific entropy, and specific volume of saturated vapor at pressure P.
+!!     hsv67(3f) - [M_steam67] specific enthalpy, temperature, specific entropy, and specific volume of saturated vapor at pressure P
 !!
 !!##SYNOPSIS
 !!
@@ -3870,7 +3870,7 @@ END FUNCTION hsl67
 !==================================================================================================================================!
 !>
 !!##NAME
-!!     prliq67(3f) - [M_steam67] compute the Prandtl number of the liquid at pressure P and temperature T in regsion 1
+!!     prliq67(3f) - [M_steam67] compute the Prandtl number of the liquid at pressure P and temperature T in regsion
 !!
 !!##SYNOPSIS
 !!
@@ -3907,7 +3907,7 @@ implicit doubleprecision(A-H, O-Z)
 !==================================================================================================================================!
 !>
 !!##NAME
-!!     prstm67(3f) - [M_steam67] compute the Prandtl number of the liquid at pressure P and temperature T. in Region 2
+!!     prstm67(3f) - [M_steam67] compute the Prandtl number of the liquid at pressure P and temperature T. in Region
 !!
 !!##SYNOPSIS
 !!
@@ -3944,7 +3944,7 @@ implicit doubleprecision(A-H, O-Z)
 !==================================================================================================================================!
 !>
 !!##NAME
-!!     sssicl67(3f) - [M_steam67] calculate specific entropy and temperature of the liquid at pressure P and enthalpy H.
+!!     sssicl67(3f) - [M_steam67] calculate specific entropy and temperature of the liquid at pressure P and enthalpy H
 !!
 !!##SYNOPSIS
 !!
@@ -3989,7 +3989,7 @@ GOTO 1
 !==================================================================================================================================!
 !>
 !!##NAME
-!!     hssicl67(3f) - [M_steam67] compute specific enthalpy and temperature of water at pressure P and entropy S
+!!     hssicl67(3f) - [M_steam67] compute specific enthalpy and temperature of water at pressure P and entropy
 !!
 !!##SYNOPSIS
 !!
@@ -4032,7 +4032,7 @@ END FUNCTION sssicl67
 !==================================================================================================================================!
 !>
 !!##NAME
-!!     vcl67(3f) - [M_steam67] compute the specific volume of the liquid at pressure P and temperature T
+!!     vcl67(3f) - [M_steam67] compute the specific volume of the liquid at pressure P and temperature
 !!
 !!##SYNOPSIS
 !!
@@ -4082,7 +4082,7 @@ END FUNCTION vcl67
 !!
 !!##SYNOPSIS
 !!
-!!       FUNCTION GR167(T, X, N)
+!!       FUNCTION GR167(T, X, N
 !!
 !!##DESCRIPTION
 !!      function gr167
@@ -4119,7 +4119,7 @@ end function gr167
 !==================================================================================================================================!
 !>
 !!##NAME
-!!     grs67(3f) - [M_steam67]
+!!     grs67(3f) - [M_steam67
 !!
 !!##SYNOPSIS
 !!
@@ -4195,7 +4195,7 @@ end function gr167
 !==================================================================================================================================!
 !>
 !!##NAME
-!!     p23t67(3f) - [M_steam67] calculate the pressure at the boundary of regions 2 and 3, given temperature T.
+!!     p23t67(3f) - [M_steam67] calculate the pressure at the boundary of regions 2 and 3, given temperature T
 !!
 !!##SYNOPSIS
 !!
@@ -4245,7 +4245,7 @@ character(len=*),parameter::ident_24="&
 !!
 !!##OPTIONS
 !!     PIN       water pressure, in ATMOSPHERES.
-!!     TIN       water temperature, in DEGREES C.
+!!     TIN       water temperature, in DEGREES C
 !!
 !!##RETURN VALUES
 !!     VMIN      output
@@ -4340,7 +4340,7 @@ implicit double precision(A-H, O-Z)
 !!
 !!##SYNOPSIS
 !!
-!!       FUNCTION ZSDH67(P1, P2, H1, S, T1, T2, X1, X2, V1, V2)
+!!       FUNCTION ZSDH67(P1, P2, H1, S, T1, T2, X1, X2, V1, V2
 !!
 !!##DESCRIPTION
 !!
@@ -4380,7 +4380,7 @@ end function zsdh67
 !!
 !!##SYNOPSIS
 !!
-!!   FUNCTION zsdt67(P1, P2, T1, S, H1, T2, X1, X2, V1, V2)
+!!   FUNCTION zsdt67(P1, P2, T1, S, H1, T2, X1, X2, V1, V2
 !!
 !!##DESCRIPTION
 !!
@@ -4417,7 +4417,7 @@ end function zsdt67
 !==================================================================================================================================!
 !>
 !!##NAME
-!!     zsrh67(3f) - [M_steam67] calculate remaining variables at extremities of isentropic process
+!!     zsrh67(3f) - [M_steam67] calculate remaining variables at extremities of isentropic proces
 !!                  given inlet,exit P, inlet enthalpy in compressed liquid region.
 !!
 !!##SYNOPSIS
@@ -4467,7 +4467,7 @@ end function zsrh67
 !!   FUNCTION zsrt67(P1, P2, T1, S, H1, T2)
 !!
 !!##DESCRIPTION
-!!    function zsrt67 will calculate remaining variables
+!!    function zsrt67 will calculate remaining variable
 !!    at the extremities of an isentropic process given
 !!    inlet and exit pressures, and inlet temperature
 !!    in the compressed liquid region.
@@ -4511,7 +4511,7 @@ end function zsrh67
 !==================================================================================================================================!
 !>
 !!##NAME
-!!     gotoer67(3f) - [M_steam67] print error message and stop program
+!!     gotoer67(3f) - [M_steam67] print error message and stop progra
 !!
 !!##SYNOPSIS
 !!
@@ -4556,7 +4556,7 @@ END SUBROUTINE GOTOER67
 !!##DESCRIPTION
 !!      subroutine ster67 is called from throughout the
 !!      steam table routines to print error messages
-!!      associated with steam table problems. ster67 will
+!!      associated with steam table problems. ster67 wil
 !!      terminate execution of the executing program.
 !!
 !!##OPTIONS
@@ -4593,7 +4593,7 @@ END SUBROUTINE STER67
 !==================================================================================================================================!
 !>
 !!##NAME
-!!     zqjrem67(3f) - [M_steam67] write an error message to stdout
+!!     zqjrem67(3f) - [M_steam67] write an error message to stdou
 !!
 !!##SYNOPSIS
 !!
@@ -4616,7 +4616,7 @@ end subroutine zqjrem67
 !==================================================================================================================================!
 !>
 !!##NAME
-!!     steamv67(3f) - [M_steam67] print version information to unit and return version string
+!!     steamv67(3f) - [M_steam67] print version information to unit and return version strin
 !!
 !!##SYNOPSIS
 !!
@@ -4695,7 +4695,7 @@ character(len=*),intent(out) :: version
      &//'18:08 ' &
      &//' ' 
       write(io,*)' Hardware Name...x86_64'
-   write(io,*)'Compile Date:Sun, May 26, 2019  5:32:45 PM'
+   write(io,*)'Compile Date:Fri Jun 28 21:20:38 EDT 2019'
    write(io,*)'******************************************************'
    endif
    END subroutine steamv67

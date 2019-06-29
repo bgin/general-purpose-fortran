@@ -1,6 +1,7 @@
           program demo_unit_check
           use M_debug, only: unit_check
-          use M_debug, only: unit_check_start, unit_check_good
+          use M_debug, only: unit_check_start
+          use M_debug, only: unit_check_done
           use M_math,  only: almost
 
           !!use M_debug, only: unit_check_keep_going         ! default is unit_check_keep_going=.false.

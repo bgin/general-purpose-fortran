@@ -5,7 +5,7 @@ subroutine calc_NC(name,args,iargs_type,n,fval,i,ier) ! look this name up to see
 !
 !-----------------------------------------------------------------------------------------------------------------------------------
 use M_journal, only : journal
-use M_calculator, only : x, y, valuer, values, iclen_calc, icname_calc, stuff, getvalue, stuffa
+use M_calculator, only : x, y, values_len, values, iclen_calc, icname_calc, stuff, getvalue, stuffa
 use M_ncurses                                           ! load the Fortran module to interface to the ncurses(3c) C library
 implicit none
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -70,7 +70,7 @@ implicit none
                   if(iargs(1).lt.0.or.iargs(1).gt.size(values))then
                      call journal('sc','error in addstr, index out of range=',iargs(1))
                   else
-                  string=values(iargs(1))(:valuer(iargs(1)))
+                  string=values(iargs(1))(:values_len(iargs(1)))
                   ierr=addstr(string//C_NULL_CHAR)   ! Print string
                                                                ! NOTE THAT
                                                                !    A NULL IS APPENDED TO THE STRING FOR C
@@ -90,15 +90,15 @@ implicit none
                CASE ("hline"); fval=hline(iargs8(1),iargs(2) )    ! horizontal line
                CASE ("getyx")                                     ! getyx(STDSCR,"name1","name2")
                   call getyx(stdscr,i1,i2)
-                  len1=valuer(iargs(1))
+                  len1=values_len(iargs(1))
                   call stuff(values(iargs(1))(:len1),dble(i1),'')
-                  len2=valuer(iargs(2))
+                  len2=values_len(iargs(2))
                   call stuff(values(iargs(2))(:len2),dble(i2),'')
                CASE ("getmaxyx")                                  ! getmaxyx(STDSCR,"name1","name2")
                   call getmaxyx(stdscr,i1,i2)
-                  len1=valuer(iargs(1))
+                  len1=values_len(iargs(1))
                   call stuff(values(iargs(1))(:len1),dble(i1),'')
-                  len2=valuer(iargs(2))
+                  len2=values_len(iargs(2))
                   call stuff(values(iargs(2))(:len2),dble(i2),'')
             END SELECT BASE2
          endif

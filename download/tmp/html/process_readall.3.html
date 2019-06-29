@@ -48,122 +48,137 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <H1><HR><I>Manual Reference Pages &nbsp;-&nbsp;</I><NOBR>process_readall (3)</NOBR><HR></H1>
 </CENTER>
 <P>
-<A name=0>
+<A name=>
 
-     <H3>NAME</H3>
-
+    <H4>&nbsp; &nbsp; NAME</H4>
 </A>
 <BLOCKQUOTE>
 <B>process_readall(3f) </B>- [M_process] read all lines from process into single string
 </BLOCKQUOTE>
-<A name=contents></A><H3>CONTENTS</H3></A>
-<BLOCKQUOTE>
-<A HREF=#1>Synopsis</A><BR>
-<A HREF=#2>Options</A><BR>
-<A HREF=#3>Results</A><BR>
-<A HREF=#4>Example</A><BR>
-<A HREF=#5>See Also</A><BR>
-</BLOCKQUOTE>
-<A name=6>
+<A name=>
 
-     <H3>SYNOPSIS</H3>
-
+    <H4>&nbsp; &nbsp; SYNOPSIS</H4>
 </A>
 <BLOCKQUOTE>
 <PRE>
 syntax:
-<P>
-       function process_readall(cmd,delim,ierr)  result(string)
-       character(len=*),intent(in)              :: cmd
-       character(len=*),intent(in),optional     :: delim
-       integer,intent(out),optional             :: ierr
-       character(len=:),allocatable             :: string
 </PRE>
-</BLOCKQUOTE>
-<A name=2>
+<TABLE cellpadding=3><!-- tsb: syntax:
+ -->
+<TR></TR><TR></TR>
+<TR valign=top><TD colspan=2>
+<B></B><B>function</B> <B>process_readall</B>(cmd,delim,ierr) </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+<B>result</B>(string)
+<TABLE width=100% cellpadding=3><!-- tsb: <B>result</B>(string)
+ -->
+<TR></TR><TR></TR>
+<TR valign=top><TD colspan=2>
+<B></B><B>character</B>(len=*),intent(in) </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+:: <I>cmd</I>
+</TD></TR>
+<TR valign=top><TD colspan=2>
+<B></B><B>character</B>(len=*),intent(in),optional </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+:: <I>delim</I>
+</TD></TR>
+<TR valign=top><TD colspan=2>
+<B></B><B>integer,intent</B>(out),optional </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+:: <I>ierr</I>
+</TD></TR>
+<TR valign=top><TD colspan=2>
+<B></B><B>character</B>(len=:),allocatable </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+:: <I>string</I>
+</TD></TR>
+<TR></TR></TABLE></TD></TR>
+<TR></TR></TABLE></BLOCKQUOTE>
+<A name=>
 
-     <H3>OPTIONS</H3>
-
+    <H4>&nbsp; &nbsp; OPTIONS</H4>
 </A>
 <BLOCKQUOTE>
 <TABLE cellpadding=3>
 <TR valign=top><TD width=6% nowrap>
-<B>cmd</B> </TD><TD valign=bottom>
+<B></B><I>cmd</I> </TD><TD valign=bottom>
 command to pass to system
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
-<B>delim</B> </TD><TD valign=bottom>
+<B></B><I>delim</I> </TD><TD valign=bottom>
 delimiter to place between output lines when they
 are concatenated. Defaults to a space
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
-<B>ierr</B> </TD><TD valign=bottom>
+<B></B><I>ierr</I> </TD><TD valign=bottom>
 check status of call.
 </TD></TR>
 <TR></TR></TABLE></BLOCKQUOTE>
-<A name=3>
+<A name=>
 
-     <H3>RESULTS</H3>
-
+    <H4>&nbsp; &nbsp; RESULTS</H4>
 </A>
 <BLOCKQUOTE>
 <TABLE cellpadding=3>
 <TR valign=top><TD colspan=2>
 <B>process_readall</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
 Assuming sufficient memory is available all the output of the
-system command are concatenated into a string with
+system command are concatenated into a <I>string</I> with
 spaces added between the output lines of the command.
 </TD></TR>
 <TR></TR></TABLE></BLOCKQUOTE>
-<A name=4>
+<A name=>
 
-     <H3>EXAMPLE</H3>
-
+    <H4>&nbsp; &nbsp; EXAMPLE</H4>
 </A>
 <BLOCKQUOTE>
 <P>
-Read all output of a command to a single string
+Read all output of a command to a single <I>string</I>
 <P>
-<PRE>
-  program test_process_readall
-  use M_process ,only: process_readall
-  implicit none
-  integer :: ierr
-  character(len=:),allocatable :: string
-  string=process_readall(&#146;ls&#146;,ierr=ierr)
-  write(*,*)ierr,string
-  end program test_process_readall
+program test_process_readall
+use M_process ,only: process_readall
+implicit none
+integer :: <I>ierr</I>
+<B>character</B>(len=:),allocatable :: <I>string</I>
+<B>string=process_readall</B>(&#146;ls&#146;,<I>ierr</I>=<I>ierr</I>)
+<B>write</B>(*,*)<I>ierr</I>,<I>string</I>
+end program test_process_readall
 <P>
-</PRE>
 Read all output of a command to an array using <B>split</B>(3f)
 <P>
-<PRE>
-   program demo_process_readall
-   use M_process ,only: process_readall
-   use M_strings ,only: split
-   implicit none
-   integer                      :: ierr
-   integer                      :: i
-   character(len=:),allocatable :: string
-   character(len=:),allocatable :: array(:)
-      string=process_readall(&#146;ls&#146;,delim=NEW_LINE("A"),ierr=ierr)
-      call split(string,array,delimiters=NEW_LINE("A"))
-      do i=1,size(array)
-         write(*,&#146;(i0,t10,"[",a,"]")&#146;)i,trim(array(i))
-      enddo
-   end program demo_process_readall
+program demo_process_readall
+use M_process ,only: process_readall
+use M_strings ,only: split
+implicit none
+<BLOCKQUOTE>
+<TABLE cellpadding=3><!-- tsb: program demo_process_readall
+ -->
+<TR></TR><TR></TR>
+<TR valign=top><TD colspan=2>
+<B>integer</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+:: <I>ierr</I>
+</TD></TR>
+<TR valign=top><TD colspan=2>
+<B>integer</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+:: i
+<B>character</B>(len=:),allocatable :: <I>string</I>
+<B>character</B>(len=:),allocatable :: <B>array</B>(:)
+<B>string=process_readall</B>(&#146;ls&#146;,<I>delim</I>=NEW_LINE("A"),<I>ierr</I>=<I>ierr</I>)
+call <B>split</B>(<I>string</I>,array,delimiters=NEW_LINE("A"))
+do <B>i=1,size</B>(array)
+<B>write</B>(*,&#146;(i0,t10,"[",a,"]")&#146;)i,trim(<B>array</B>(i))
+enddo
+end program demo_process_readall
+</TD></TR>
+<TR></TR></TABLE></BLOCKQUOTE>
 <P>
-</PRE>
-<BLOCKQUOTE>
 Results:
-<BLOCKQUOTE>
+</BLOCKQUOTE>
 <TABLE cellpadding=3><!-- tsb: Results:
  -->
 <TR></TR><TR></TR>
 <TR valign=top><TD width=6% nowrap>
 <B>1</B> </TD><TD valign=bottom>
 [Articles]
-</TD></TR>
+<TABLE width=100% cellpadding=3><!-- tsb: [Articles]
+ -->
+<TR></TR><TR></TR>
 <TR valign=top><TD width=6% nowrap>
 <B>2</B> </TD><TD valign=bottom>
 [LIBRARY]
@@ -212,19 +227,16 @@ Results:
 <B>13</B> </TD><TD valign=bottom>
 [tmp]
 </TD></TR>
-<TR></TR></TABLE></BLOCKQUOTE>
-</BLOCKQUOTE>
-</BLOCKQUOTE>
-<A name=5>
+<TR></TR></TABLE></TD></TR>
+<TR></TR></TABLE><A name=>
 
-     <H3>SEE ALSO</H3>
-
+    <H4>&nbsp; &nbsp; SEE ALSO</H4>
 </A>
 <BLOCKQUOTE>
 <B>M_process</B>(3fm)
 </BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>process_readall (3)</TD> <TD align=right width=33%><I>June 16, 2019</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 58b3eec0-4d6b-4577-a4ae-35c71636979b using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>process_readall (3)</TD> <TD align=right width=33%><I>June 29, 2019</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 2ba1a654-0ed2-4cda-8a81-c389a054f2cf using man macros.</FONT>
 <br><br><center><img src="images/process_readall.3.gif"></center>
 </div>
 </div>

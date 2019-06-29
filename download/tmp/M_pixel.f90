@@ -1,6 +1,6 @@
 !>
 !!##NAME
-!!    M_pixel(3f) - [M_pixel] module for drawing into a pixel array with 2D vector operations
+!!    M_pixel(3f) - [M_pixel] module for drawing into a pixel array with 2D vector operation
 !!
 !!##SYNOPSIS
 !!
@@ -1418,7 +1418,7 @@ contains
 !!    !! set up graphics area
 !!    call prefsize(400,400)
 !!    call vinit()
-!!    call ortho2(left=-100.0, right=100.0, bottom=-100.0, top=100.0)
+!!    call ortho2(left=-100.0, right=100.0, bottom=-100.0, top=100.0
 !!
 !!    !! draw some filled rectangles
 !!    do i=95,5,-10
@@ -1482,7 +1482,7 @@ end subroutine rect
 !!    real,intent(in)            :: x1,y1,x2,y2
 !!
 !!##DESCRIPTION
-!!    Draw line between two points using current line width and color
+!!    Draw line between two points using current line width and colo
 !!
 !!##OPTIONS
 !!    X1,Y1  starting point for line segment
@@ -1588,8 +1588,8 @@ end subroutine swapcoord
 !! Through a minor expansion, the original algorithm for lines can also be used to draw circles. Also this can be done with simple
 !! arithmetic operations; quadratic or trigonometric expressions can be avoided or recursively dissolved into simpler steps.
 !!
-!! The mentioned properties make it still an important algorithm, and it is used among others in plotters, in graphics chips of modern
-!! graphics cards, and in many graphics libraries. As it is so simple, it is not only implemented in the firmware of such devices, but
+!! The mentioned properties make it still an important algorithm, and it is used among others in plotters, in graphics chips of moder
+!! graphics cards, and in many graphics libraries. As it is so simple, it is not only implemented in the firmware of such devices, bu
 !! is also cast into hardware of those graphics chips.
 !!
 !! To be precise, the label "Bresenham" is today often used for a whole family of algorithms, which have actually been developed by
@@ -1615,7 +1615,7 @@ end subroutine swapcoord
 !! coordinates will be used. The endpoints of the line are the pixels at (x[0], y[0]) and (x[1], y[1]), where the first coordinate of
 !! the pair is the column and the second is the row.
 !!
-!! The algorithm will be initially presented only for the octant in which the segment goes down and to the right (x[0]?x[1] and y[0]?y
+!! The algorithm will be initially presented only for the octant in which the segment goes down and to the right (x[0]?x[1] and y[0]?
 !! [1] ) , and its horizontal projection x[1] ? x[0] is longer than the vertical projection y[1] ? y[0] (in other words, the line has
 !! a slope less than 1 and greater than 0.) In this octant, for each column x between x[0] and x[1], there is exactly one row y
 !! (computed by the algorithm) containing a pixel of the line, while each row between y[0] and y[1] contains multiple rasterized
@@ -1660,7 +1660,7 @@ end subroutine swapcoord
 !! This first version only handles lines that descend to the right. We would of course like to be able to draw all lines. The first
 !! case is allowing us to draw lines that still slope downwards but head in the opposite direction. This is a simple matter of
 !! swapping the initial points if x0 > x1. Trickier is determining how to draw lines that go up. To do this, we check if y[0] ? y[1];
-!! if so, we step y by -1 instead of 1. Lastly, We still need to generalize the algorithm to drawing lines in all directions. Up until
+!! if so, we step y by -1 instead of 1. Lastly, We still need to generalize the algorithm to drawing lines in all directions. Up unti
 !! now we have only been able to draw lines with a slope less than one. To be able to draw lines with a steeper slope, we take
 !! advantage of the fact that a steep line can be reflected across the line y=x to obtain a line with a small slope. The effect is to
 !! switch the x and y variables throughout, including switching the parameters to plot. The code looks like this:
@@ -1734,8 +1734,8 @@ end subroutine swapcoord
 !!
 !!##OPTIMIZATION
 !!
-!! The problem with this approach is that computers operate relatively slowly on fractional numbers like error and deltaerr; moreover,
-!! errors can accumulate over many floating-point additions. Working with integers will be both faster and more accurate. The trick we
+!! The problem with this approach is that computers operate relatively slowly on fractional numbers like error and deltaerr; moreover
+!! errors can accumulate over many floating-point additions. Working with integers will be both faster and more accurate. The trick w
 !! use is to multiply all the fractional numbers above by deltax, which enables us to express them as integers. The only problem
 !! remaining is the constant 0.5?to deal with this, we change the initialization of the variable error. The new program looks like
 !! this:
@@ -1763,7 +1763,7 @@ end subroutine swapcoord
 !!
 !!##DIFFERENT APPROACH TO THE ALGORITHM
 !!
-!! A different approach to the Bresenham algorithm works more from the practical side. It was published by Pitteway ^[1] and confirmed
+!! A different approach to the Bresenham algorithm works more from the practical side. It was published by Pitteway ^[1] and confirme
 !! by van Aken ^[2]. Again we first consider a line in the first octant, which means a slope between 0 and 1. Mathematically spoken,
 !! we want to draw a line from point (x[1],y[1]) to (x[2],y[2]). The intervals in the two directions are dx=x[2]-x[1] and dy=y[2]-y
 !! [1], and the slope is dy/dx. The line equation can be written as y=y[1]+(x-x[1])*dy/dx. In this first octant, we have 0<dy<=dx.
@@ -1782,14 +1782,14 @@ end subroutine swapcoord
 !! division dy/dx for the slope is dissolved into a number of more elementary operations.
 !!
 !! A critical issue is the initialisation of the error term. In this approach here, we simply consider a line with dy=1, so with only
-!! one single step in the y direction along the whole line. Of course for the best look of the line, we want this step to happen right
+!! one single step in the y direction along the whole line. Of course for the best look of the line, we want this step to happen righ
 !! in the middle of the line. This leads to initialising the error term to dx/2. (Rounding this term to integers in case of odd dx is
 !! no problem.)
 !!
 !! This approach comes out a little different from the original, as it avoids the additional factor of 2 on both sides, which has to
 !! do with the initialisation.
 !!
-!! To generalize this algorithm for all octants, you will again have to do role changes of x and y and consider the different signs of
+!! To generalize this algorithm for all octants, you will again have to do role changes of x and y and consider the different signs o
 !! dx and dy.
 !!
 !! A simple implementation of this approach is not very elegant, but demonstrates the principle of the algorithm fairly well.
@@ -1822,11 +1822,11 @@ end subroutine swapcoord
 !!
 !! This generalized version in BASIC shall be valid for all octants. For this, all signs of the coordinate distances have to be
 !! considered, as well as the possible role change of x and y. If these if clauses would all be put into the innermost loop, which
-!! would mean a high number of executions, it would considerably increase the time consumption. A more efficient solution tries to put
+!! would mean a high number of executions, it would considerably increase the time consumption. A more efficient solution tries to pu
 !! all these case differentiations into the initialisation phase of the procedure before the start of the inner main loop. Then the
 !! inner loop will still contain a single if clause for the Bresenham error term.
 !!
-!! This version in BASIC introduces a number of abstractions: First the step in the "fast" direction is now considered a parallel step
+!! This version in BASIC introduces a number of abstractions: First the step in the "fast" direction is now considered a parallel ste
 !! (parallel to one of the coordinate axis), and if additionally a step in the "slow" direction becomes necessary, it becomes a
 !! diagonal step. For these cases we can compute variable values during initialisation, in advance, which contain the step widths
 !! (including signs) in the coordinate directions and thus achieve the generalization for the eight octants. For example the step
@@ -1877,7 +1877,7 @@ end subroutine swapcoord
 !!
 !!##RASTERISATION OF A CIRCLE BY THE BRESENHAM ALGORITHM
 !!
-!! The approach for the Circle Variant shown here is also not originally from Bresenham, see again references to Pitteway and van Aken
+!! The approach for the Circle Variant shown here is also not originally from Bresenham, see again references to Pitteway and van Ake
 !! below. The algorithm starts accordingly with the circle equation x?+y?=r?. Again we consider first only the first octant. Here you
 !! want to draw a curve which starts at point (r,0) and then proceeds to the top left, up to reaching the angle of 45?.
 !!
@@ -1934,7 +1934,7 @@ end subroutine swapcoord
 !!       REM SETPIXEL xmid+y, ymid-x
 !!       WEND
 !!
-!! A possible implementation of the Bresenham Algorithm for a full circle in C. Here another variable for recursive computation of the
+!! A possible implementation of the Bresenham Algorithm for a full circle in C. Here another variable for recursive computation of th
 !! quadratic terms is used, which corresponds with the term 2*n+1 above. It just has to be increased by 2 from one step to the next:
 !!
 !!  void rasterCircle(int x0, int y0, int radius)
@@ -2014,7 +2014,7 @@ end subroutine swapcoord
 !!
 !! The algorithm was developed by Jack E. Bresenham in 1962 at IBM. In 2001 Bresenham wrote:
 !!
-!!     "I was working in the computation lab at IBM's San Jose development lab. A Calcomp plotter had been attached to an IBM 1401 via
+!!     "I was working in the computation lab at IBM's San Jose development lab. A Calcomp plotter had been attached to an IBM 1401 vi
 !!     the 1407 typewriter console. [The algorithm] was in production use by summer 1962, possibly a month or so earlier. Programs in
 !!     those days were freely exchanged among corporations so Calcomp (Jim Newland and Calvin Hefte) had copies. When I returned to
 !!     Stanford in Fall 1962, I put a copy in the Stanford comp center library.
@@ -2038,7 +2038,7 @@ end subroutine swapcoord
 !!
 !! Bresenham also published a Run-Slice (as opposed to the Run-Length) computational algorithm.
 !!
-!!  1. ^ Pitteway, M.L.V., "Algorithm for Drawing Ellipses or Hyperbolae with a Digital Plotter", Computer J., 10(3) November 1967, pp
+!!  1. ^ Pitteway, M.L.V., "Algorithm for Drawing Ellipses or Hyperbolae with a Digital Plotter", Computer J., 10(3) November 1967, p
 !!     282-289
 !!  2. ^ Van Aken, J.R., "An Efficient Ellipse Drawing Algorithm", CG&A, 4(9), September 1984, pp 24-35
 !!
@@ -2209,7 +2209,7 @@ end subroutine draw_line_single
 !!    by \BS\. This is useful, for example, in writing integral signs with
 !!    limits above and below them.
 !!
-!!    Symbol parameters taken from N.M.Wolcott, FORTRAN IV Enhanced Character Graphics, NBS
+!!    Symbol parameters taken from N.M.Wolcott, FORTRAN IV Enhanced Character Graphics, NB
 !!
 !!    A.CHAVE IGPP/UCSD Aug 1981, Modified Feb 1982 by A. Chave, R.L. Parker, and L. Shure
 !!
@@ -2811,7 +2811,7 @@ END SUBROUTINE CHRCOD
 !!    real :: xx
 !!    !! reduce some duplicate code; very specific to this example
 !!       call color(icolor)
-!!       baseline=baseline-texth*1.5    ! move down before drawing line
+!!       baseline=baseline-texth*1.5    ! move down before drawing lin
 !!       call makepoly()
 !!       xx=strlength(string)
 !!       call rect(left,baseline-texth*0.3,left+xx,baseline+texth)
@@ -2850,7 +2850,7 @@ end function strlength
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    justfy(3f) - [M_pixel] return lengths used to justify a string when calling hershey
+!!    justfy(3f) - [M_pixel] return lengths used to justify a string when calling hershe
 !!
 !!##SYNOPSIS
 !!
@@ -2983,7 +2983,7 @@ end subroutine justfy
 !!    call polyline2( [-1,-1,+1,+1,-1] , &  ! X values
 !!    & [-1,+1,+1,-1,-1] )    ! Y values
 !!     ! write gif with a transparent background
-!!    call writegif('polyline2.3m_pixel.gif',P_pixel,P_ColorMap,transparent)
+!!    call writegif('polyline2.3m_pixel.gif',P_pixel,P_ColorMap,transparent
 !!    call vexit()
 !!    end program demo_polyline2
 !===================================================================================================================================
@@ -3028,7 +3028,7 @@ end subroutine polyline2
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    clear(3f) - [M_pixel] clear background to current color or specified color index
+!!    clear(3f) - [M_pixel] clear background to current color or specified color inde
 !!
 !!##SYNOPSIS
 !!
@@ -3075,7 +3075,7 @@ end subroutine if_init
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    arc(3f) - [M_pixel] draw an arc using current line width and color
+!!    arc(3f) - [M_pixel] draw an arc using current line width and colo
 !!
 !!##SYNOPSIS
 !!
@@ -3092,8 +3092,8 @@ end subroutine if_init
 !!
 !!    Draw an arc. x, y, and radius are values in world units.
 !!
-!!    Angles are in degrees, positive measured counterclockwise from the
-!!    +X axis. The current position after the arc is drawn is at the end
+!!    Angles are in degrees, positive measured counterclockwise from th
+!!    +X axis. The current position after the arc is drawn is at the en
 !!    of the arc.
 !!
 !!##OPTIONS
@@ -3173,7 +3173,7 @@ end subroutine arc
 !!    real,intent(in) :: radius
 !!
 !!##DESCRIPTION
-!!    Draw a circle using the current line width and color into the pixel array.
+!!    Draw a circle using the current line width and color into the pixel array
 !!    Units are in world coordinates.
 !!
 !!##OPTIONS
@@ -3256,7 +3256,7 @@ end subroutine circle
 !!    integer iwidth
 !!
 !!##DESCRIPTION
-!!    Set the current line width in units of 1/10,000 of the X size of the display surface
+!!    Set the current line width in units of 1/10,000 of the X size of the display surfac
 !!##EXAMPLE
 !!
 !!   Sample program:
@@ -3363,7 +3363,7 @@ end subroutine linewidth
 !!           call closepoly()
 !!           call color(i+1)
 !!           call move2((x1+x2)/2.0,ym)
-!!           call drawstr((v2s(i)))     ! convert number to string and draw it
+!!           call drawstr((v2s(i)))     ! convert number to string and draw i
 !!           call circle((x1+x2)/2.0, ym, (x2-x1)/2.10)
 !!           x1=x1+width
 !!        enddo
@@ -3521,7 +3521,7 @@ end subroutine color
 !!       ! draw a chunk in a slice
 !!       MAXCOLORS=(256)-buffer
 !!       do icount=RINGS+1,2,-1
-!!          CURRENT_COLOR=MOD(color_count,MAXCOLORS)+buffer  ! add buffer to leave base colors alone
+!!          CURRENT_COLOR=MOD(color_count,MAXCOLORS)+buffer  ! add buffer to leave base colors alon
 !!          color_count=color_count+1
 !!          ! fancy mapcolor
 !!          call hue("hls",hue_val,LIGHTNESS,saturation,"rgb",r,g,b,status)
@@ -3582,7 +3582,7 @@ end subroutine mapcolor
 !==================================================================================================================================!
 !>
 !!##NAME
-!!     circleprecision(3f) - [M_pixel] set number of line segments used to approximate a circle
+!!     circleprecision(3f) - [M_pixel] set number of line segments used to approximate a circl
 !!
 !!##SYNOPSIS
 !!
@@ -3654,7 +3654,7 @@ end subroutine circleprecision
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    getviewport(3f) - [M_pixel] return viewport in screen pixel coordinates
+!!    getviewport(3f) - [M_pixel] return viewport in screen pixel coordinate
 !!
 !!##SYNOPSIS
 !!
@@ -3711,7 +3711,7 @@ end subroutine getviewport
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    viewport(3f) - [M_pixel] Specify which part of the screen to draw in.
+!!    viewport(3f) - [M_pixel] Specify which part of the screen to draw in
 !!
 !!##SYNOPSIS
 !!
@@ -3755,11 +3755,11 @@ end subroutine viewport
 !!##NAME
 !!
 !!##SYNOPSIS
+!
+!!  definition
 !!
-!!  definition:
 !!
-!!
-!!##DESCRIPTION
+!!##DESCRIPTIO
 !!
 !!##EXAMPLE
 !!
@@ -3820,7 +3820,7 @@ end subroutine viewport2world
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    ortho2(3f) - [M_pixel] define the area of the virtual world coordinates to map to the viewport
+!!    ortho2(3f) - [M_pixel] define the area of the virtual world coordinates to map to the viewpor
 !!
 !!##SYNOPSIS
 !!
@@ -3868,7 +3868,7 @@ end subroutine ortho2
 !!
 !!##DESCRIPTION
 !!    Defines the section of the virtual world coordinates to map to the
-!!    viewport. Automatically use the largest viewport that provides one-to-one correspondence between
+!!    viewport. Automatically use the largest viewport that provides one-to-one correspondence betwee
 !!    the window and the viewport.
 !!
 !!##EXAMPLE
@@ -3992,7 +3992,7 @@ end subroutine page
 !!
 !!##DESCRIPTION
 !!    Update current position.
-!!    Relative move2. deltax and deltay are offsets in world units.
+!!    Relative move2. deltax and deltay are offsets in world units
 !!##OPTIONS
 !!    X  new X position
 !!    Y  new Y position
@@ -4069,7 +4069,7 @@ end subroutine rmove2
 !!      call draw2(300.0,200.0)
 !!      call move2(300.0,-200.0)
 !!      call draw2(-300.0,200.0)
-!!      call writegif('move2.3m_pixel.gif',P_pixel,P_colormap)
+!!      call writegif('move2.3m_pixel.gif',P_pixel,P_colormap
 !!      call vexit()
 !!      end program demo_move2
 !===================================================================================================================================
@@ -4098,7 +4098,7 @@ end subroutine move2
 !!    real,intent(in) :: x, y
 !!
 !!##DESCRIPTION
-!!    Relative draw from current position to specified point using current
+!!    Relative draw from current position to specified point using curren
 !!    color and line width. Updates current position to new point.
 !!    (x, y) is a point in world coordinates.
 !!
@@ -4166,7 +4166,7 @@ end subroutine rdraw2
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    draw2(3f) - [M_pixel] draw from current position to given point
+!!    draw2(3f) - [M_pixel] draw from current position to given poin
 !!
 !!##SYNOPSIS
 !!
@@ -4258,7 +4258,7 @@ end subroutine draw2
 !!    integer width, height
 !!
 !!##DESCRIPTION
-!!    Specify the preferred width and height of the pixel array opened by the *next* vinit(3f).
+!!    Specify the preferred width and height of the pixel array opened by the *next* vinit(3f)
 !!    The pixel array is then available via the M_pixel(3fm) module as variable P_pixel. Note
 !!    that the width corresponds to the number of rows in the array, and height to the number
 !!    of columns.
@@ -4326,8 +4326,8 @@ end subroutine prefsize
 !!    subroutine vexit()
 !!
 !!##DESCRIPTION
-!!    Used to terminate pixel graphics mode. Does any actions required to terminate
-!!    graphics mode including unallocating the module pixel array P_pixel. Required
+!!    Used to terminate pixel graphics mode. Does any actions required to terminat
+!!    graphics mode including unallocating the module pixel array P_pixel. Require
 !!    before calling vinit(3f) more than once.
 !!
 !!    Resets the window/terminal (must be the last M_PIXEL routine called).
@@ -4380,8 +4380,8 @@ end subroutine vexit
 !!   subroutine vinit()
 !!
 !!##DESCRIPTION
-!!    Initialize the pixel graphics module. The pixel array P_pixel and the colormap
-!!    P_ColorMap are directly accessible after the call to allow display or printing
+!!    Initialize the pixel graphics module. The pixel array P_pixel and the colorma
+!!    P_ColorMap are directly accessible after the call to allow display or printin
 !!
 !!##OPTIONS
 !!
@@ -4466,7 +4466,7 @@ end subroutine vinit
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    makepoly(3f) - [M_pixel] opens polygon constructed by a series of move-draws and closed by closepoly                  |
+!!    makepoly(3f) - [M_pixel] opens polygon constructed by a series of move-draws and closed by closepoly
 !!
 !!##SYNOPSIS
 !!
@@ -4609,7 +4609,7 @@ end subroutine makepoly
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    closepoly(3f) - [M_pixel] Terminates a polygon opened by makepoly(3f)
+!!    closepoly(3f) - [M_pixel] Terminates a polygon opened by makepoly(3f
 !!
 !!##SYNOPSIS
 !!
@@ -4632,7 +4632,7 @@ end subroutine closepoly
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    print_ppm(3f) - [M_pixel] print pixel array as a ppm p3 file
+!!    print_ppm(3f) - [M_pixel] print pixel array as a ppm p3 fil
 !!
 !!##SYNOPSIS
 !!
@@ -4732,30 +4732,30 @@ end subroutine print_ppm
 !!
 !!   Results:
 !!
-!!    00000000000000000000000000000000000000000000000000000000000000000000000000000000
-!!    00000000000000000000000000000000000000000000000000000000000000000000000000000000
-!!    00000000000000000000000000000000000000000000000000000000000000000000000000000000
-!!    00000000000000000000000000000000000000000000000000000000000000000000000000000000
-!!    00000000000111000000000000000000000000000000000000000000000000000000000000000000
-!!    00000000111111110000000000000000000000000000000000000000000000000000022222000000
-!!    00000001111111111000000000000000000000000000000000000000000000000002222222220000
-!!    00000001111001111100000000000000000000000000000000000000000000000022222222222000
-!!    00000011100000011110000000000000000000000000000000000000000000000222200000222200
-!!    00000111100000001111000000000000000000000000000000000000000000000222000000022200
-!!    00000111000000000111000000000000000000000000000000000000000000002220000000002220
-!!    00000111000000000111000000000000000000000000000000000000000000002220000000002220
-!!    00000111000000000111000000000000000000000000000000000000000000002220000000002220
-!!    00000111000000000111000000000000000000000000000000000000000000002220000000002220
-!!    00000111100000001110000000000000000000000000000000000000000000002222000000022220
-!!    00000011110000011110000000000000000000000000000000000000000000000222000000022200
-!!    00000001111111111100000000000000000000000000000000000000000000000020220002202000
-!!    00000000111111111000000000000000000000000000000000000000000000000002222222220000
-!!    00000000011111100000000000000000000000000000000000000000000000000000222222200000
-!!    00000000000000000000000000000000000000000000000000000000000000000000002220000000
-!!    00000000000000000000000000000000000000000000000000000000000000000000000000000000
-!!    00000000000000000000000000000000000000000000000000000000000000000000000000000000
-!!    00000000000000000000000000000000000000000000000000000000000000000000000000000000
-!!    00000000000000000000000000000000000000000000000000000000000000000000000000000000
+!!    0000000000000000000000000000000000000000000000000000000000000000000000000000000
+!!    0000000000000000000000000000000000000000000000000000000000000000000000000000000
+!!    0000000000000000000000000000000000000000000000000000000000000000000000000000000
+!!    0000000000000000000000000000000000000000000000000000000000000000000000000000000
+!!    0000000000011100000000000000000000000000000000000000000000000000000000000000000
+!!    0000000011111111000000000000000000000000000000000000000000000000000002222200000
+!!    0000000111111111100000000000000000000000000000000000000000000000000222222222000
+!!    0000000111100111110000000000000000000000000000000000000000000000002222222222200
+!!    0000001110000001111000000000000000000000000000000000000000000000022220000022220
+!!    0000011110000000111100000000000000000000000000000000000000000000022200000002220
+!!    0000011100000000011100000000000000000000000000000000000000000000222000000000222
+!!    0000011100000000011100000000000000000000000000000000000000000000222000000000222
+!!    0000011100000000011100000000000000000000000000000000000000000000222000000000222
+!!    0000011100000000011100000000000000000000000000000000000000000000222000000000222
+!!    0000011110000000111000000000000000000000000000000000000000000000222200000002222
+!!    0000001111000001111000000000000000000000000000000000000000000000022200000002220
+!!    0000000111111111110000000000000000000000000000000000000000000000002022000220200
+!!    0000000011111111100000000000000000000000000000000000000000000000000222222222000
+!!    0000000001111110000000000000000000000000000000000000000000000000000022222220000
+!!    0000000000000000000000000000000000000000000000000000000000000000000000222000000
+!!    0000000000000000000000000000000000000000000000000000000000000000000000000000000
+!!    0000000000000000000000000000000000000000000000000000000000000000000000000000000
+!!    0000000000000000000000000000000000000000000000000000000000000000000000000000000
+!!    0000000000000000000000000000000000000000000000000000000000000000000000000000000
 !===================================================================================================================================
 subroutine print_ascii(filename)
 use,intrinsic :: iso_fortran_env, only : ERROR_UNIT, INPUT_UNIT, OUTPUT_UNIT
@@ -4849,7 +4849,7 @@ end subroutine print_ascii
 !!       0  0  0    0  0  0    0 15  7    0  0  0
 !!      15  0 15    0  0  0    0  0  0    0  0  0
 !!
-!!      Programs that read this format should be as lenient as possible,
+!!      Programs that read this format should be as lenient as possible
 !!      accepting anything that looks remotely like a pixmap.
 !!
 !!      There is also a variant on the format, available by setting
@@ -4895,7 +4895,7 @@ end subroutine print_ascii
 !!
 !!##DESCRIPTION
 !!
-!!    Set the maximum size of a character in the current font. Width and height
+!!    Set the maximum size of a character in the current font. Width and heigh
 !!    are values in world units. This only applies to software text. This must
 !!    be done after the font being scaled is loaded. To keep text of different
 !!    sizes aligned along the same baseline note that you typically need to
@@ -4951,7 +4951,7 @@ end subroutine textsize
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    ycentertext(3f) - [M_pixel] set text centering mode on for drawstr(3f) and drawc(3f) in Y direction
+!!    ycentertext(3f) - [M_pixel] set text centering mode on for drawstr(3f) and drawc(3f) in Y directio
 !!
 !!##SYNOPSIS
 !!
@@ -4981,7 +4981,7 @@ end subroutine ycentertext
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    xcentertext(3f) - [M_pixel] set text centering mode on for drawstr(3f) and drawc(3f) in X direction
+!!    xcentertext(3f) - [M_pixel] set text centering mode on for drawstr(3f) and drawc(3f) in X directio
 !!
 !!##SYNOPSIS
 !!
@@ -5015,7 +5015,7 @@ end subroutine xcentertext
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    centertext(3f) - [M_pixel] set text centering mode for drawstr(3f) and drawc(3f)
+!!    centertext(3f) - [M_pixel] set text centering mode for drawstr(3f) and drawc(3f
 !!
 !!##SYNOPSIS
 !!
@@ -5111,7 +5111,7 @@ end subroutine centertext
 !!
 !!##OPTIONS
 !!    ANG   The angle in degrees to draw text with when using drawstr(3f).
-!!          Angles are measured counterclockwise with zero degrees at the horizontal
+!!          Angles are measured counterclockwise with zero degrees at the horizonta
 !!          line to the right of the original.
 !!
 !!##EXAMPLE
@@ -5228,7 +5228,7 @@ end subroutine textang
 !!    character(len=*) :: string
 !!    !! reduce some duplicate code; very specific to this example
 !!       integer :: iend
-!!       iend=index(string,',')  ! if comma, assume font name found
+!!       iend=index(string,',')  ! if comma, assume font name foun
 !!       if(iend.ne.0)call font(string(:iend-1)) ! change font
 !!       icolor=icolor+1         ! set pen color
 !!       call color(icolor)
@@ -5272,7 +5272,7 @@ end subroutine font
 !!    character(len=1),intent(in) :: ch
 !!
 !!##DESCRIPTION
-!!    Draw a character at the current position. Uses current line color and thickness and text justification mode.
+!!    Draw a character at the current position. Uses current line color and thickness and text justification mode
 !!
 !!##EXAMPLE
 !!
@@ -5386,45 +5386,45 @@ end subroutine drawchar
 !!
 !!       end program demo_drawstr
 !!   Results:
-!! ================================================================================
+!! ===============================================================================
 !! *ccall*: MAKING TEMPORARY DIRECTORY /tmp/CCALL_CYGWIN64_GFORTRAN_34908
 !! r - /tmp/_JSU.ff
 !! a - /tmp/CCALL_CYGWIN64_GFORTRAN_34908/_JSU.34908.f90
 !! /home/urbanjs/.twm/scripts_regression/goodbad: _JSU.1 0 _JSU start --section 1
 !! *ccall*: REMOVING /tmp/CCALL_CYGWIN64_GFORTRAN_34908
-!! ================================================================================
+!! ===============================================================================
 !!               0           2           1
-!! ================================================================================
+!! ===============================================================================
 !!   Results:
-!! ================================================================================
+!! ===============================================================================
 !! *ccall*: MAKING TEMPORARY DIRECTORY /tmp/CCALL_CYGWIN64_GFORTRAN_11392
 !! r - /tmp/_JSU.ff
 !! a - /tmp/CCALL_CYGWIN64_GFORTRAN_11392/_JSU.11392.f90
 !! /home/urbanjs/.twm/scripts_regression/goodbad: _JSU.1 0 _JSU start --section 1
 !! *ccall*: REMOVING /tmp/CCALL_CYGWIN64_GFORTRAN_11392
-!! ================================================================================
+!! ===============================================================================
 !!               0           2           1
-!! ================================================================================
+!! ===============================================================================
 !!   Results:
-!! ================================================================================
+!! ===============================================================================
 !! *ccall*: MAKING TEMPORARY DIRECTORY /tmp/CCALL_CYGWIN64_GFORTRAN_36436
 !! r - /tmp/_JSU.ff
 !! a - /tmp/CCALL_CYGWIN64_GFORTRAN_36436/_JSU.36436.f90
 !! /home/urbanjs/.twm/scripts_regression/goodbad: _JSU.1 0 _JSU start --section 1
 !! *ccall*: REMOVING /tmp/CCALL_CYGWIN64_GFORTRAN_36436
-!! ================================================================================
+!! ===============================================================================
 !!               0           2           1
-!! ================================================================================
+!! ===============================================================================
 !!   Results:
-!! ================================================================================
+!! ===============================================================================
 !! *ccall*: MAKING TEMPORARY DIRECTORY /tmp/CCALL_CYGWIN64_GFORTRAN_13432
 !! r - /tmp/_JSU.ff
 !! a - /tmp/CCALL_CYGWIN64_GFORTRAN_13432/_JSU.13432.f90
 !! /home/urbanjs/.twm/scripts_regression/goodbad: _JSU.1 0 _JSU start --section 1
 !! *ccall*: REMOVING /tmp/CCALL_CYGWIN64_GFORTRAN_13432
-!! ================================================================================
+!! ===============================================================================
 !!               0           2           1
-!! ================================================================================
+!! ===============================================================================
 !!
 !!   Results:
 !===================================================================================================================================
@@ -5512,7 +5512,7 @@ end subroutine drawstr
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    getgp2(3f) - [M_pixel] Gets the current graphics position in world coords.
+!!    getgp2(3f) - [M_pixel] Gets the current graphics position in world coords
 !!
 !!##SYNOPSIS
 !!
@@ -5567,7 +5567,7 @@ end subroutine getgp2
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    getdisplaysize(3f) - [M_pixel] Returns the width and height of the device in pixels
+!!    getdisplaysize(3f) - [M_pixel] Returns the width and height of the device in pixel
 !!
 !!##SYNOPSIS
 !!
@@ -5604,7 +5604,7 @@ end subroutine getdisplaysize
 !!    real,intent(in) :: x, y
 !!
 !!##DESCRIPTION
-!!    Draw a point at x, y. Points are drawn with the current color as
+!!    Draw a point at x, y. Points are drawn with the current color a
 !!    a circle with a diameter equal to the current linewidth.
 !!
 !!##EXAMPLE
@@ -5681,8 +5681,8 @@ end subroutine point2
 !!    CIRCLE PRECISION:             60
 !!    TEXT:               HEIGHT=   10.0000000     WIDTH=   7.00000000     ANGLE=   0.00000000
 !!    TEXT JUSTIFICATION: X_CENTER= F Y_CENTER= F
-!!    VIEWPORT:           LEFT=   0.00000000     RIGHT=   639.000000     BOTTOM=   399.000000     TOP=   0.00000000
-!!    WINDOW:             LEFT=   0.00000000     RIGHT=   640.000000     BOTTOM=   0.00000000     TOP=   400.000000
+!!    VIEWPORT:           LEFT=   0.00000000     RIGHT=   639.000000     BOTTOM=   399.000000     TOP=   0.0000000
+!!    WINDOW:             LEFT=   0.00000000     RIGHT=   640.000000     BOTTOM=   0.00000000     TOP=   400.00000
 !===================================================================================================================================
 recursive subroutine state(string)
 
@@ -5788,7 +5788,7 @@ end subroutine state
 !!    call color_name2rgb(v2s(icolor),red,green,blue,echoname)
 !!    if(echoname.eq.'Unknown') return
 !!    ! set a color number to the new RGB values
-!!    write(*,*)icolor, nint(red*2.55), nint(green*2.55), nint(blue*2.55),trim(echoname)
+!!    write(*,*)icolor, nint(red*2.55), nint(green*2.55), nint(blue*2.55),trim(echoname
 !!    call mapcolor(icolor, nint(red*2.55), nint(green*2.55), nint(blue*2.55))
 !!    ! set to the new color
 !!    call color(icolor)

@@ -24,9 +24,9 @@
 !!##DESCRIPTION
 !!
 !!     Many programs read input files where input lines are conditionally skipped over. It may make sense that the data file itself
-!!     contains the conditionals (think of pre-processors like cpp(1), shell programs (ie. interpreted languages), and configuration
+!!     contains the conditionals (think of pre-processors like cpp(1), shell programs (ie. interpreted languages), and configuratio
 !!     files that are read from multiple programs and from different environments). Instead of having many code-specific ways of
-!!     specifying which lines will be processed, this module allows you to embed if/else/elseif/endif directives in the input files.
+!!     specifying which lines will be processed, this module allows you to embed if/else/elseif/endif directives in the input files
 !!
 !!     If you pass the conditional lines to cond(3f) it sets the logical variable "WRITE" to indicate when non-conditional lines
 !!     (blocks of lines between those logical conditions) should be skipped.
@@ -38,7 +38,7 @@
 !!##EXAMPLES
 !!
 !!
-!!   The example program uses cond(3f) and the calculator module to let you have input files that the program or the input file (via
+!!   The example program uses cond(3f) and the calculator module to let you have input files that the program or the input file (vi
 !!   the #define command) can set values for. Note that expressions on the #if and #elseif input lines are truncated to whole
 !!   numbers. You need to see the calculator documentation to see all the expressions available (date and time functions, most
 !!   FORTRAN 77 intrinsic functions, ...)

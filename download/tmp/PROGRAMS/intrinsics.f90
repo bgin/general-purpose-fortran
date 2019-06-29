@@ -17,7 +17,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sun, Jun 16th, 2019 5:54:15 AM>',&
+'@(#)COMPILED:       Sun, Jun 16th, 2019 9:02:55 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -371,6 +371,37 @@ write(io,'(a)')'    X     X  XX     X     X  X      X     X  XX        X    X   
 write(io,'(a)')'    X     X   X     X     X   X     X     X   X  X     X    X     X    X X     X'
 write(io,'(a)')'  XXXXX  XXX  X    XXX   XXX  XX  XXXXX  XXX  X   XXXXX   XXXXX    XXXX   XXXXX'
 write(io,'(a)')''
+write(io,'(a)')'NAME'
+write(io,'(a)')'     FORMAT(3f) - [FORTRAN:INTRINSIC:I/O] Format statement'
+write(io,'(a)')'SYNOPSIS'
+write(io,'(a)')' Format Statements'
+write(io,'(a)')''
+write(io,'(a)')'    fmt = "(F10.3,A,ES14.7)"        format string'
+write(io,'(a)')'    101 format(f10.3,a,es14.7))     format statement'
+write(io,'(a)')'    Iw Iw.m                         integer form'
+write(io,'(a)')'    Bw.m Ow.m Zw.m                  binary, octal, hex integer form'
+write(io,'(a)')'    Fw.d                            decimal form real format'
+write(io,'(a)')'    Ew.d                            exponential form (0.12E-11)'
+write(io,'(a)')'    Ew.dEe                          specified exponent length'
+write(io,'(a)')'    ESw.d ESw.dEe                   scientific form (1.2E-10)'
+write(io,'(a)')'    ENw.d ENw.dEe                   engineer. form (123.4E-12)'
+write(io,'(a)')'    Gw.d                            generalized form'
+write(io,'(a)')'    Gw.dEe                          generalized exponent form'
+write(io,'(a)')'    Lw                              logical format (T, F)'
+write(io,'(a)')'    A Aw                            characters format'
+write(io,'(a)')'    nX                              horizontal positioning (skip)'
+write(io,'(a)')'    Tc TLc TRc                      move (absolute, left, right)'
+write(io,'(a)')'    r/                              vert. positioning (skip lines)'
+write(io,'(a)')'    r(...)                          grouping / repetition'
+write(io,'(a)')'    :                               format scanning control'
+write(io,'(a)')'    S SP SS                         sign control'
+write(io,'(a)')'    BN BZ                           blank control (blanks as zeros)'
+write(io,'(a)')''
+write(io,'(a)')' w full length, m minimum digits, d dec. places, e exponent'
+write(io,'(a)')' length, n positions to skip, c positions to move, r repetitions'
+write(io,'(a)')'DESCRIPTION'
+write(io,'(a)')'EXAMPLE'
+write(io,'(a)')' $DOCUMENT END'
 write(io,'(a)')'NAME'
 write(io,'(a)')'     ABS(3f) - [FORTRAN:INTRINSIC:NUMERIC] Absolute value'
 write(io,'(a)')''

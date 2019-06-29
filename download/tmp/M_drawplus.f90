@@ -1989,9 +1989,9 @@ real                         :: value4
    case('vgetdev')
      call vgetdev(ctemp1)
      if(x1.ne.' ')then
-        call stuffa(x1,ctemp1,idum,'')
+        call stuffa(x1,ctemp1,'')
      else
-        call stuffa('$VFUNCTION',ctemp1,idum,'')
+        call stuffa('$VFUNCTION',ctemp1,'')
      endif
 !-----------------------------------------------------------------------------------------------------------------------------------
    case('getdepth')
@@ -2019,9 +2019,9 @@ real                         :: value4
      value1=getstring(inum0(x1),ctemp1)
      call stuff('VFUNCTION',value1,'')  ! use VFUNCTION to return M_draw(3fm) function values (not generic, causes nesting problems)
      if(icount.ge.2)then
-        call stuffa(x2,ctemp1,idum,'')
+        call stuffa(x2,ctemp1,'')
      else
-        call stuffa('$VFUNCTION',ctemp1,idum,'')
+        call stuffa('$VFUNCTION',ctemp1,'')
      endif
 !-----------------------------------------------------------------------------------------------------------------------------------
    case('set')

@@ -16,7 +16,7 @@
 !!   and the precision of those clocks.
 !!
 !!   M_StopWatch is used by instrumenting your code with subroutine calls
-!!   that mimic the operation of a stop watch.  M_StopWatch supports multiple
+!!   that mimic the operation of a stop watch.  M_StopWatch supports multipl
 !!   watches, and provides the concept of watch groups to allow functions
 !!   to operate on multiple watches simultaneously.
 !!
@@ -44,7 +44,7 @@
 !! acknowledge the National Institute of Standards and Technology as the source of
 !! the software.
 !!
-!! The software is expressly provided “AS IS.” NIST MAKES NO WARRANTY OF ANY KIND,
+!! The software is expressly provided “AS IS.” NIST MAKES NO WARRANTY OF ANY KIND
 !!##EXPRESS, IMPLIED, IN FACT OR ARISING BY OPERATION OF LAW, INCLUDING, WITHOUT
 !!##LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
 !!##PURPOSE, NON-INFRINGEMENT AND DATA ACCURACY. NIST NEITHER REPRESENTS NOR

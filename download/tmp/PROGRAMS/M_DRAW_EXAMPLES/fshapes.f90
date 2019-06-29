@@ -3,11 +3,20 @@ program fshapes
 !@(#)  This program shows some of the simple primitives.
 !
 use M_draw
+implicit none
+integer :: ix
+integer :: iy
+integer :: idum
 character(len=50) :: device
 
    print*,'Enter output device:'
    read(*,'(a)')device
-
+   if(device.eq.'x11')then
+      write(*,*)'enter position'
+      read(*,*)ix,iy
+      call prefposition(ix,iy)
+      call prefsize(500,500)
+   endif
    call vinit(device)
 !
 ! the two lines below clear the screen to white if we have

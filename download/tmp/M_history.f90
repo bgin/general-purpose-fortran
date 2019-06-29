@@ -70,7 +70,7 @@
 !!        o A # under a character will delete a character.
 !!        o An "&" (ampersand) will cause the character above it to be replaced with a space.
 !!        o  To insert a string enter ^string#.
-!!        o Otherwise, enter a character under one in the currently displayed command and it will replace it.
+!!        o Otherwise, enter a character under one in the currently displayed command and it will replace it
 !!        o hit RETURN to start another edit of the line
 !!    o Once the change is executed you will be prompted for another edit
 !!      directive
@@ -300,22 +300,23 @@ subroutine redol(redoline,iobuf,iredo,ibuf0,init)
 !  maybe make .NAME stick into variable $NAME in the calculator
 !  allow changing the edit characters in a modify
 
-character(len=*),parameter        :: ident="@(#)M_history::redoline(3fp): redo a previous input line"
-character(len=*),intent(out)      :: redoline    ! edited command line to be returned
-   integer,intent(in)             :: iobuf       ! history file unit to read old commands from
-   integer                        :: iredo       !iredo ......  (i) number of lines in history file
-   character(len=*),intent(in)    :: init        ! initial command string
-   integer,intent(in)             :: ibuf0       ! the width of the history file in characters; <= len(redoline)
+character(len=*),parameter     :: ident="@(#)M_history::redoline(3fp): redo a previous input line"
+character(len=*),intent(out)   :: redoline    ! edited command line to be returned
+integer,intent(in)             :: iobuf       ! history file unit to read old commands from
+integer                        :: iredo       !iredo ......  (i) number of lines in history file
+character(len=*),intent(in)    :: init        ! initial command string
+integer,intent(in)             :: ibuf0       ! the width of the history file in characters; <= len(redoline)
 
-   integer                        :: cstat
-   character(len=256)             :: sstat
-   character                      :: cmd
-   character(len=len(redoline)+1) :: cin, cinbuf ! 1 greater than length of redoline
-   character(len=1024),save       :: numbers
-   integer,allocatable            :: ivals(:)
-   integer                        :: iend
-   integer                        :: i
-   integer                        :: ierr
+doubleprecision                :: val8
+integer                        :: cstat
+character(len=256)             :: sstat
+character                      :: cmd
+character(len=len(redoline)+1) :: cin, cinbuf ! 1 greater than length of redoline
+character(len=1024),save       :: numbers
+integer,allocatable            :: ivals(:)
+integer                        :: iend
+integer                        :: i
+integer                        :: ierr
    data numbers/'123456789012345678901234567890123456789012345678901234567890&
   &12345678901234567890123456789012345678901234567890123456789012345678901234&
   &56789012345678901234567890123456789012345678901234567890123456789012345678&
@@ -545,10 +546,15 @@ character(len=*),intent(out)      :: redoline    ! edited command line to be ret
       exit
 !-----------------------------------------------------------------------------------------------------------------------------------
    case default                                                           ! assume anything else is a number
-      iread=int( s2v(cin,ierr ))
+      val8=s2v(cin,ierr)
+      if(ierr.eq.0)then
+         iread=int(val8)
+      else
+         iread=0
+      endif
       if(iread.gt.0.and.iread.le.iredo)then
-          read(iobuf,rec=iread,err=999,iostat=ios)redoline(1:ibuf)
-          ipoint=iread
+         read(iobuf,rec=iread,err=999,iostat=ios)redoline(1:ibuf)
+         ipoint=iread
       endif
 !-----------------------------------------------------------------------------------------------------------------------------------
    end select

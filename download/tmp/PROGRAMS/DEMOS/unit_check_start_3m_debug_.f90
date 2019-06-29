@@ -1,7 +1,7 @@
            program demo_unit_check_start
            use M_debug, only: unit_check_start
            use M_debug, only: unit_check
-           use M_debug, only: unit_check_good, unit_check_bad
+           use M_debug, only: unit_check_done
 
            implicit none
            integer :: ival

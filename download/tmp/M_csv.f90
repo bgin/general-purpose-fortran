@@ -61,7 +61,7 @@ public test_suite_M_csv
 contains
 !>
 !!##NAME
-!!      csv_write_scalar(3fp) - Write a single integer/real/double precision real to the CSV-file
+!!      csv_write_scalar(3fp) - Write a single integer/real/double precision real to the CSV-fil
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -121,7 +121,7 @@ integer,intent(in),optional     :: lun
 end subroutine csv_write_scalar
 !>
 !!##NAME
-!!   csv_write_row(3f) - [M_csv] Write a one-dimensional array of items to the CSV-file
+!!   csv_write_row(3f) - [M_csv] Write a one-dimensional array of items to the CSV-fil
 !!##SYNOPSIS
 !!
 !!##OPTIONS
@@ -157,7 +157,7 @@ integer,intent(in),optional    :: lun
 end subroutine csv_write_row
 !>
 !!##NAME
-!!   csv_write_table(3f) - [M_csv]Write a two-dimensional array of items to the CSV-file
+!!   csv_write_table(3f) - [M_csv]Write a two-dimensional array of items to the CSV-fil
 !!##SYNOPSIS
 !!
 !!##OPTIONS

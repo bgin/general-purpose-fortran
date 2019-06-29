@@ -5,7 +5,7 @@ module M_big_integer
 
 !>
 !!##NAME
-!!    M_big_integer(3fm) - [M_big_integer] define new data type BIG_INTEGER and operators
+!!    M_big_integer(3fm) - [M_big_integer] define new data type BIG_INTEGER and operator
 !!##SYNOPSIS
 !!
 !!   use M_big_integer

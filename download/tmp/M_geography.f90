@@ -5,7 +5,7 @@ public test_suite_M_geography
 contains
 !>
 !!##NAME
-!!    geographical_distance - [M_geography] Compute the distance between two points over the Earth's surface.
+!!    geographical_distance - [M_geography] Compute the distance between two points over the Earth's surface
 !!
 !!##SYNOPSIS
 !!

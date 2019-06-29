@@ -35,7 +35,7 @@ module M_matrix
 !!    (except the file handler and some minor error handling) on an Amiga
 !!    1000 using ABSoft Fortran v2.2.  It will run in 512K environment.
 !!    I have seen it on IBM mainframes and IBM PCs.
-!! ================================================================================
+!! ===============================================================================
 !!    Changes per John S. Urban:
 !!
 !!    Converted to do most I/O via journal() so can be used with my codes
@@ -106,7 +106,7 @@ contains
 !==================================================================================================================================!
 !>
 !!##NAME
-!!     MAT88(3f) - [M_matrix] initialize and/or pass commands to matrix laboratory interpreter
+!!     MAT88(3f) - [M_matrix] initialize and/or pass commands to matrix laboratory interprete
 !!##SYNOPSIS
 !!
 !!   subroutine MAT88(init,cmd)
@@ -5804,7 +5804,7 @@ character(len=*),parameter::ident_37="&
 !!    suggestions given in D.E. Knuth (1969), Vol 2. The integer IY should
 !!    be initialized to an arbitrary integer prior to the first call to
 !!    mat_urand(3f). The calling program should not alter the value of IY
-!!    between subsequent calls to mat_urand(3f). Values of mat_urand(3f) will
+!!    between subsequent calls to mat_urand(3f). Values of mat_urand(3f) wil
 !!    be returned in the interval (0,1).
 !!
 !!##OPTIONS
@@ -6029,7 +6029,7 @@ end function mat_iwamax
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    mat_flop(3fp) - [M_matrix] count and possibly chop each floating point operation
+!!    mat_flop(3fp) - [M_matrix] count and possibly chop each floating point operatio
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION

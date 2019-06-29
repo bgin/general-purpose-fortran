@@ -139,7 +139,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <tr><td><a href="M_calculator.f90">M_calculator.f90</a></td>
 <td>
 	M_calculator::jucalc(3f): The procedure JUCALC acts like a calculator<br/>
-	M_calculator::juator(3f):returns a real value rval8 from a numeric character string chars.<br/>
+	M_calculator::a_to_d_(3f):returns a real value rval8 from a numeric character string chars.<br/>
 	M_calculator::getvalue(3f): given numeric variable name return value<br/>
 	M_calculator::stuffa(3f): directly store a string into calculator variable name table<br/>
 </td>
@@ -325,12 +325,18 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 </td>
 <tr><td><a href="M_list.f90">M_list.f90</a></td>
 <td>
+	M_list::locate(3f): Generic subroutine locates where element is or should be in sorted allocatable array<br/>
 	M_list::insert(3f): Generic subroutine inserts element into allocatable array at specified position<br/>
-	M_list::insert(3f): Generic subroutine deletes element from allocatable array at specified position<br/>
+	M_list::replace(3f): Generic subroutine replaces element from allocatable array at specified position<br/>
+	M_list::remove(3f): Generic subroutine deletes element from allocatable array at specified position<br/>
 	M_list::binary_search(3f): binary search of a sorted integer array.<br/>
-	M_list::locate(3f): find PLACE in sorted character array where VARNAME can be found or should be placed<br/>
-	M_list::delete(3f): remove string from sorted allocatable string array if present<br/>
-	M_list::add(3f): place string into sorted allocatable string array if not present<br/>
+	M_list::locate_c(3f): find PLACE in sorted character array where VALUE can be found or should be placed<br/>
+	M_list::locate_d(3f): find PLACE in sorted doubleprecision array where VALUE can be found or should be placed<br/>
+	M_list::locate_r(3f): find PLACE in sorted real array where VALUE can be found or should be placed<br/>
+	M_list::locate_i(3f): find PLACE in sorted integer array where VALUE can be found or should be placed<br/>
+	M_list::dict_delete(3f): remove string from sorted allocatable string array if present<br/>
+	M_list::dict_get(3f): get value of key-value pair in dictionary, given key<br/>
+	M_list::dict_add(3f): place key-value pair into dictionary, adding the key if required<br/>
 </td>
 <tr><td><a href="M_logic.f90">M_logic.f90</a></td>
 <td>

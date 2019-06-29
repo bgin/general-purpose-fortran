@@ -13,6 +13,7 @@ append("./BOOK_M_drawplus.html");
 append("./BOOK_M_factor.html");
 append("./BOOK_M_io.html");
 append("./BOOK_M_journal.html");
+append("./BOOK_M_list.html");
 append("./BOOK_M_logic.html");
 append("./BOOK_M_math.html");
 append("./BOOK_M_messages.html");

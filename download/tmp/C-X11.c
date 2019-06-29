@@ -244,8 +244,9 @@ static int X11_init(void) { /* X11_init -- initialises X11 display.  */
       h = prefys;
    }
 
-   if (bw == 0)
+   if (bw == 0){
       bw = 4;
+   }
 
    x -= bw;
    y -= bw;

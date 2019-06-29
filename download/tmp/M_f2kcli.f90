@@ -5,7 +5,7 @@ module M_f2kcli
 !>
 !!
 !!##NAME
-!!   M_F2KCLI(3f) - [M_f2kcli]Fortran 200x Command Line Interface for Programming Environments without it
+!!   M_F2KCLI(3f) - [M_f2kcli]Fortran 200x Command Line Interface for Programming Environments without i
 !!##SYNOPSIS
 !!
 !!   use M_f2kcli, only: command_argument_count

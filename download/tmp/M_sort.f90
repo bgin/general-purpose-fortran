@@ -26,7 +26,7 @@ character(len=*),parameter::ident_2="&
 &@(#)M_sort::unique(3f): assuming an array is sorted, return array with duplicate values removed"
 
 interface unique
-   module procedure unique_integers, unique_reals, unique_strings_allocatable_len
+   module procedure unique_integers, unique_reals, unique_strings_allocatable_len !!, unique_strings
    module procedure unique_complex, unique_doubles, unique_complex_double
 end interface
 !===================================================================================================================================

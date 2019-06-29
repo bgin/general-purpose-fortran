@@ -13,7 +13,7 @@
 !! <dl>
 !! <!-- ======================================================================= -->
 !! <dt> <a name="M_COLOR">NAME</a></dt> <dd>
-!! <em>M_COLOR(3f)</em>&nbsp;-&nbsp;[M_color]&nbsp;a&nbsp;Fortran&nbsp;module&nbsp;that&nbsp;lets&nbsp;you&nbsp;convert&nbsp;between&nbsp;common&nbsp;color&nbsp;models
+!! <em>M_COLOR(3f)</em>&nbsp;-&nbsp;[M_color]&nbsp;a&nbsp;Fortran&nbsp;module&nbsp;that&nbsp;lets&nbsp;you&nbsp;convert&nbsp;between&nbsp;common&nbsp;color&nbsp;model
 !! </dd>
 !! <!-- ======================================================================= -->
 !! <dt> SYNOPSIS </dt><dd>
@@ -211,14 +211,14 @@ contains
 !!      valid values for modei and modeo as well as the corresponding
 !!      meanings for clr1*, clr2*, and clr3*  are:
 !!    </b></caption>
-!!    <tr> <th> model </th> <th> clr1             </th> <th> clr2                    </th> <th> clr3                     </th> </tr>
-!!    <tr> <td> hls   </td> <td> hue              </td> <td> lightness               </td> <td> saturation               </td> </tr>
-!!    <tr> <td> hsl   </td> <td> hue              </td> <td> saturation              </td> <td> lightness                </td> </tr>
-!!    <tr> <td> hvs   </td> <td> hue              </td> <td> value                   </td> <td> saturation               </td> </tr>
-!!    <tr> <td> hsv   </td> <td> hue              </td> <td> saturation              </td> <td> value                    </td> </tr>
-!!    <tr> <td> rgb   </td> <td> red              </td> <td> green                   </td> <td> blue                     </td> </tr>
-!!    <tr> <td> cmy   </td> <td> cyan             </td> <td> magenta                 </td> <td> yellow                   </td> </tr>
-!!    <tr> <td> yiq   </td> <td> luma(gray scale) </td> <td> orange-blue chrominance </td> <td> purple-green chrominance </td> </tr>
+!!    <tr> <th> model </th> <th> clr1             </th> <th> clr2                    </th> <th> clr3                     </th> </tr
+!!    <tr> <td> hls   </td> <td> hue              </td> <td> lightness               </td> <td> saturation               </td> </tr
+!!    <tr> <td> hsl   </td> <td> hue              </td> <td> saturation              </td> <td> lightness                </td> </tr
+!!    <tr> <td> hvs   </td> <td> hue              </td> <td> value                   </td> <td> saturation               </td> </tr
+!!    <tr> <td> hsv   </td> <td> hue              </td> <td> saturation              </td> <td> value                    </td> </tr
+!!    <tr> <td> rgb   </td> <td> red              </td> <td> green                   </td> <td> blue                     </td> </tr
+!!    <tr> <td> cmy   </td> <td> cyan             </td> <td> magenta                 </td> <td> yellow                   </td> </tr
+!!    <tr> <td> yiq   </td> <td> luma(gray scale) </td> <td> orange-blue chrominance </td> <td> purple-green chrominance </td> </tr
 !! </table>
 !! </blockquote>
 !!
@@ -667,7 +667,7 @@ end subroutine test_hue
 !! <blockquote>
 !! <table border="1" >
 !! <tr><TH>Color</TH><TH COLSPAN="3">RGB</TH><TH COLSPAN="3">HLS</TH><TH>Sample</TH></tr>
-!! <tr ALIGN="right"><td ALIGN="left">Red</td><td WIDTH="30">100.0</td><td WIDTH="30">0.0</td><td WIDTH="30">0.0</td><td WIDTH="30">0</td><td WIDTH="30">50.0</td><td WIDTH="30">100.0</td><td style="background-color:#FF0000">&nbsp;</td></tr>
+!! <tr ALIGN="right"><td ALIGN="left">Red</td><td WIDTH="30">100.0</td><td WIDTH="30">0.0</td><td WIDTH="30">0.0</td><td WIDTH="30">0</td><td WIDTH="30">50.0</td><td WIDTH="30">100.0</td><td style="background-color:#FF0000">&nbsp;</td></tr
 !! <tr ALIGN="right"><td ALIGN="left">Yellow</td><td>100.0</td><td>100.0</td><td>0.0</td><td>60</td><td>50.0</td><td>100.0</td><td style="background-color:#FFFF00">&nbsp;</td></tr>
 !! <tr ALIGN="right"><td ALIGN="left">Green</td><td>0.0</td><td>100.0</td><td>0.0</td><td>120</td><td>50.0</td><td>100.0</td><td style="background-color:#00FF00">&nbsp;</td></tr>
 !! <tr ALIGN="right"><td ALIGN="left">Cyan</td><td>0.0</td><td>100.0</td><td>100.0</td><td>180</td><td>50.0</td><td>100.0</td><td style="background-color:#00FFFF">&nbsp;</td></tr>
@@ -770,7 +770,7 @@ end subroutine rgbhls
 !!
 !! <blockquote>
 !! <table border="1" class="dtable" >
-!! <tr>      <th>                                               Color</th>  <th>Color<br>name</th> <th>Hex    </th>  <th>(R,G,B)</th>        <th>(H,S,V)</th>                  </tr>
+!! <tr>      <th>                                               Color</th>  <th>Color<br>name</th> <th>Hex    </th>  <th>(R,G,B)</th>        <th>(H,S,V)</th>                  </tr
 !! <tr>      <td              style="background-color:#000000">&nbsp;</td>  <td>Black</td>         <td>#000000</td>  <td>(0,0,0)</td>        <td>(0&ordm;,0%,0%)</td>        </tr>
 !! <tr>      <td              style="background-color:#FFFFFF">&nbsp;</td>  <td>White</td>         <td>#FFFFFF</td>  <td>(100,100,100)</td>  <td>(0&ordm;,0%,100%)</td>      </tr>
 !! <tr>      <td              style="background-color:#FF0000">&nbsp;</td>  <td>Red</td>           <td>#FF0000</td>  <td>(100,0,0)</td>      <td>(0&ordm;,100%,100%)</td>    </tr>
@@ -786,7 +786,7 @@ end subroutine rgbhls
 !! <tr>      <td              style="background-color:#008000">&nbsp;</td>  <td>Green</td>         <td>#008000</td>  <td>(0,50,0)</td>       <td>(120&ordm;,100%,50%)</td>   </tr>
 !! <tr>      <td              style="background-color:#800080">&nbsp;</td>  <td>Purple</td>        <td>#800080</td>  <td>(50,0,50)</td>      <td>(300&ordm;,100%,50%)</td>   </tr>
 !! <tr>      <td              style="background-color:#008080">&nbsp;</td>  <td>Teal</td>          <td>#008080</td>  <td>(0,50,50)</td>      <td>(180&ordm;,100%,50%)</td>   </tr>
-!! <tr>      <td              style="background-color:#000080">&nbsp;</td>  <td>Navy</td>          <td>#000080</td>  <td>(0,0,50)</td>       <td>(240&ordm;,100%,50%)</td>     </tr>
+!! <tr>      <td              style="background-color:#000080">&nbsp;</td>  <td>Navy</td>          <td>#000080</td>  <td>(0,0,50)</td>       <td>(240&ordm;,100%,50%)</td>     </tr
 !! </table>
 !! </blockquote>
 !! </dd>
@@ -866,7 +866,7 @@ end subroutine rgbhvs
 !!    subroutine cmyrgb(c,m,y,r,g,b,status)
 !!
 !!     real, intent(in)  :: c ! the cyan component as a value in the range of 0 to 100
-!!     real, intent(in)  :: m ! the magenta component as a value in the range of 0 to 100
+!!     real, intent(in)  :: m ! the magenta component as a value in the range of 0 to 10
 !!     real, intent(in)  :: y ! the yellow component as a value in the range of 0 to 100
 !!     real, intent(out) :: r ! the red component as a value in the range of 0 to 100
 !!     real, intent(out) :: g ! the green component as a value in the range of 0 to 100
@@ -927,7 +927,7 @@ end subroutine cmyrgb
 !!
 !! <blockquote>
 !! <table border="1" >
-!! <tr> <th>Color      </th>                                              <th>Color<p>name </th> <th>(C,M,Y)</th>        <th>(  R,  G,  B)</th>  <th>Hex</th>      </tr>
+!! <tr> <th>Color      </th>                                              <th>Color<p>name </th> <th>(C,M,Y)</th>        <th>(  R,  G,  B)</th>  <th>Hex</th>      </tr
 !! <tr> <td style="background-color:#000000">&nbsp;</td> <td>Black</td>   <td>(100,100,100)</td> <td>(  0,  0,  0)</td>  <td>#000000</td>  </tr>
 !! <tr> <td style="background-color:#FFFFFF">&nbsp;</td> <td>White</td>   <td>(  0,  0,  0)</td> <td>(100,100,100)</td>  <td>#FFFFFF</td>  </tr>
 !! <tr> <td style="background-color:#FF0000">&nbsp;</td> <td>Red</td>     <td>(  0,100,100)</td> <td>(100,  0,  0)</td>  <td>#FF0000</td>  </tr>
@@ -962,7 +962,7 @@ end subroutine rgbcmy
 !===================================================================================================================================
 !>
 !!##NAME
-!!    RGBMONO(3f) - [M_color] converts RGB colors to a reasonable grayscale intensity.
+!!    RGBMONO(3f) - [M_color] converts RGB colors to a reasonable grayscale intensity
 !!
 !!##SYNOPSIS
 !!
@@ -1063,11 +1063,11 @@ end subroutine test_rgbmono
 !===================================================================================================================================
 !>
 !! <dl>
-!! <!-- ======================================================================= -->
+!! <!-- ======================================================================= --
 !! <dt> <a name="RGBVAL">NAME</a> </dt><dd>
 !!    RGBVAL(3fp) - [M_color] is an internal private function used by hlsrgb(3fp).
 !! </dd>
-!! <!-- ======================================================================= -->
+!! <!-- ======================================================================= --
 !! <dt> SYNOPSIS</dt><dd>
 !!    <pre>
 !!    subroutine rgbval</a>(clr1,clr2,h)
@@ -1077,14 +1077,14 @@ end subroutine test_rgbmono
 !!     real, intent(in) :: clr2 !
 !!    </pre>
 !! </dd>
-!! <!-- ======================================================================= -->
+!! <!-- ======================================================================= --
 !! <dt> DESCRIPTION</dt>  <dd>
 !!    Function RGBVAL(3f) is an internal private function used by hlsrgb().
 !!
 !! </dd>
-!! <!-- ======================================================================= -->
+!! <!-- ======================================================================= --
 !! </dl>
-!! <!-- ======================================================================= -->
+!! <!-- ======================================================================= --
 !===================================================================================================================================
 real function rgbval(clr1,clr2,h)
 character(len=*),parameter :: ident="@(#)M_color::rgbval(3fp): ensure a value is in the appropriate range and quadrant"
@@ -1126,7 +1126,7 @@ end function rgbval
 !! <dl>
 !! <!-- ======================================================================= -->
 !! <dt> <a name="HLSRGB">NAME</a> </dt><dd>
-!!     HLSRGB(3fp) - [M_color] calculates the red, green, &amp; blue components for a
+!!     HLSRGB(3fp) - [M_color] calculates the red, green, &amp; blue components for
 !!     color given in hue, lightness, &amp; saturation values.
 !! </dd>
 !! <!-- ======================================================================= -->
@@ -1192,7 +1192,7 @@ end subroutine hlsrgb
 !! <dl>
 !! <!-- ======================================================================= -->
 !! <dt> <a name="HVSRGB">NAME</a> </dt><dd>
-!!     HVSRGB(3fp) - [M_color] calculates the red, green, &amp; blue components for a
+!!     HVSRGB(3fp) - [M_color] calculates the red, green, &amp; blue components for
 !!      color given in hue, value, &amp; saturation values.
 !! </dd>
 !! <!-- ======================================================================= -->
@@ -1273,7 +1273,7 @@ end subroutine hvsrgb
 !! <dl>
 !! <!-- ======================================================================= -->
 !! <dt> <a name="YIQRGB">NAME</a> </dt><dd>
-!!    YIQRGB(3fp) - [M_color] Convert luma, orange-blue chrominance, and  purple-green chrominance
+!!    YIQRGB(3fp) - [M_color] Convert luma, orange-blue chrominance, and  purple-green chrominanc
 !!    to RGB values.
 !! </dd>
 !! <!-- ======================================================================= -->
@@ -1334,7 +1334,7 @@ end subroutine yiqrgb
 !! <dl>
 !! <!-- ======================================================================= -->
 !! <dt> <a name="RGBYIQ">NAME</a> </dt><dd>
-!!    RGBYIQ(3fp) - [M_color] Convert RGB values to luma, orange-blue chrominance, and  purple-green chrominance.
+!!    RGBYIQ(3fp) - [M_color] Convert RGB values to luma, orange-blue chrominance, and  purple-green chrominance
 !! </dd>
 !! <!-- ======================================================================= -->
 !! <dt> SYNOPSIS  </dt><dd>
@@ -1377,7 +1377,7 @@ end subroutine rgbyiq
 !===================================================================================================================================
 !>
 !!##NAME
-!!     closest_color_name(3f) - [M_color] returns the closest name for the given RGB values.
+!!     closest_color_name(3f) - [M_color] returns the closest name for the given RGB values
 !!##SYNOPSIS
 !!
 !!    subroutine closest_color_name(r,g,b,closestname)
@@ -1517,7 +1517,7 @@ end subroutine test_closest_color_name
 !===================================================================================================================================
 !>
 !!##NAME
-!!     COLOR_NAME2RGB(3f) - [M_color] returns the RGB values in the range 0 to 100 for a given known color name.
+!!     COLOR_NAME2RGB(3f) - [M_color] returns the RGB values in the range 0 to 100 for a given known color name
 !!##SYNOPSIS
 !!
 !!

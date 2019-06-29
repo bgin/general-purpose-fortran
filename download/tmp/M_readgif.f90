@@ -14,7 +14,7 @@
 !!    logical, intent(in), optional :: verbose
 !!
 !!##DESCRIPTION
-!!    read the num_image'th gif image from filename into arrays image and color_map
+!!    read the num_image'th gif image from filename into arrays image and color_ma
 !!
 !!##OPTIONS
 !!    filename    input file

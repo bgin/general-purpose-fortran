@@ -2,7 +2,7 @@
            use M_sort, only : sort_shell
            use M_list, only : locate
            implicit none
-           character(len=20),allocatable :: arr(:)
+           character(len=:),allocatable  :: arr(:)
            integer                       :: i
 
            arr=[character(len=20) :: '', 'ZZZ', 'aaa', 'b', 'xxx' ]
@@ -18,11 +18,11 @@
 
            contains
            subroutine update(arr,string)
-           character(len=*),allocatable :: arr(:)
+           character(len=:),allocatable :: arr(:)
            character(len=*)             :: string
            integer                      :: place, plus, ii, end
            ! find where string is or should be
-           call locate(string,arr,place)
+           call locate(arr,string,place)
            write(*,*)'for "'//string//'" index is ',place, size(arr)
            ! if string was not found insert it
            if(place.lt.1)then

@@ -1,6 +1,6 @@
 !>
 !!##NAME
-!!    writegif(3f) - [M_writegif] Codes pixel-map with palette into GIF format. Optional transparent color
+!!    writegif(3f) - [M_writegif] Codes pixel-map with palette into GIF format. Optional transparent colo
 !!##SYNOPSIS
 !!
 !!   subroutine writegif (FileName, Pixel, ColorMap, Transparent)
@@ -67,7 +67,7 @@
 !! AUTHOR:         version by [[Clive Page]] makes use of Fortran stream I/O, array as colourmap
 !!##VERSION:        3.00, 20170706
 !! AUTHOR:         Modified by John Urban to make it easier to use with M_PIXEL(3f) module.
-!! LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.
+!! LICENSE:        Public Domain. This is free software: you are free to change and redistribute it
 !!                 There is NO WARRANTY, to the extent permitted by law.
 !===================================================================================================================================
 module M_writegif
