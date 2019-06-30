@@ -13,7 +13,9 @@
            call update(arr,'[')
            call update(arr,'c')
            call update(arr,'ZZ')
+           call update(arr,'ZZZ')
            call update(arr,'ZZZZ')
+           call update(arr,'')
            call update(arr,'z')
 
            contains

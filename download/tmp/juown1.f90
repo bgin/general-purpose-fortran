@@ -2,7 +2,7 @@
 subroutine juown1(func,iflen,args,iargstp,n,fval,ctmp,ier)
 ! if the function owncode(1) is called this subroutine can be accessed to do user-written functions.
    use M_journal, only     : journal
-   use m_calculator, only  : x, y, icname_calc, valuer, values
+   use m_calculator, only  : x, y, icname_calc, values_len, values
 !use m_calculator, only : iclen_calc, stuff, getvalue
    use M_strings, only     : lower
    use M_process, only     : process_readall
@@ -45,7 +45,7 @@ subroutine juown1(func,iflen,args,iargstp,n,fval,ctmp,ier)
       ctmp=' '
       if(n.gt.0)then
          ii=int(args(1)+0.5)
-         ilen=valuer(ii)
+         ilen=values_len(ii)
          ctmp=process_readall( values(ii)(:ilen),ierr=ier)
       else
          ilen=0

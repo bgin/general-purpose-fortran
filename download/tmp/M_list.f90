@@ -20,10 +20,10 @@
 !!                                                    be in a sorted array and
 !!                                                    flag if the value exists
 !!                                                    already
-!!    subroutine insert(list,value,place)     insert entry into a array at
-!!                                            specified position
-!!    subroutine replace(list,value,place)    replace entry in an array at
-!!                                            specified position
+!!    subroutine insert(list,value,place)     insert entry into an allocatable
+!!                                            array at specified position
+!!    subroutine replace(list,value,place)    replace entry in an allocatable
+!!                                            array at specified position
 !!    subroutine remove(list,place)           remove entry from an allocatable
 !!                                            array at specified position
 !!
@@ -42,9 +42,6 @@
 !!    %set      set or replace value for type(dictionary) given a key
 !!    %del      delete an existing key from type(dictionary)
 !!    %clr      empty a type(dictionary)
-!!
-!!    MISCELLANEOUS
-!!    binary_search  binary search of a sorted integer array.
 !!
 !!##EXAMPLE
 !!
@@ -145,8 +142,6 @@ use M_debug, only : debug
 implicit none
 private
 
-public binary_search ! [M_list] binary search of a sorted array.
-
 public locate        ! [M_list] find PLACE in sorted character array where value can be found or should be placed
    private locate_c
    private locate_d
@@ -209,86 +204,6 @@ end type dictionary
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
 contains
-!===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
-!===================================================================================================================================
-!>
-!!##NAME
-!!    binary_search(3f) - [M_list] binary search of a sorted integer array.
-!!##SYNTAX
-!!   pure function binary_search(id,arr) result(jloc)
-!!
-!!    integer,intent(in)              :: id
-!!    integer,dimension(:),intent(in) :: arr
-!!    integer                         :: jloc
-!!
-!!##DESCRIPTION
-!!    Binary search is a search algorithm that finds the position of a targe
-!!    value within an integer sorted array.
-!!
-!!##OPTIONS
-!!      ID    Keyword to match in ARR.
-!!      ARR   Array to search.
-!!
-!!##RESULT
-!!      JLOC  If found, 'JLOC' is the matched position in 'ARR'.
-!!            If not found, returns zero (0).
-!===================================================================================================================================
-pure function binary_search(id,arr) result(jloc)
-implicit none
-
-character(len=*),parameter::ident_5="@(#)M_list::binary_search(3f): binary search of a sorted integer array."
-
-integer,intent(in)              :: id        !! key word to match in `arr`
-integer,dimension(:),intent(in) :: arr       !! array to search (it is assumed to be sorted)
-integer                         :: jloc      !! the first matched index in 'arr' (if not found, 0 is returned)
-
-integer           :: j,k,khi,klo,n
-integer,parameter :: iswtch = 16
-
-   n = size(arr)
-   jloc = 0
-
-   if ( n<iswtch ) then                         ! sequential search more efficient
-      do j = 1 , n
-         if ( arr(j)==id ) then
-            jloc = j
-            return
-         elseif (arr(j)>id) then
-            return ! error
-         endif
-      enddo
-      return ! error
-   else
-      klo = 1
-      khi = n
-      k = (klo+khi+1)/2
-      do
-         j = k
-         if ( id<arr(j) ) then
-            khi = k
-         elseif ( id==arr(j) ) then
-            jloc = j
-            return
-         else
-            klo = k
-         endif
-         if ( khi-klo<1 ) then
-            return ! error
-         elseif ( khi-klo==1 ) then
-            if ( k==klo ) then
-               k = khi
-            else
-               k = klo
-            endif
-            klo = khi
-         else
-            k = (klo+khi+1)/2
-         endif
-      enddo
-   endif
-
-end function binary_search
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
@@ -412,7 +327,7 @@ end function binary_search
 !===================================================================================================================================
 subroutine locate_c(list,value,place,ier,errmsg)
 
-character(len=*),parameter::ident_6="&
+character(len=*),parameter::ident_5="&
 &@(#)M_list::locate_c(3f): find PLACE in sorted character array where VALUE can be found or should be placed"
 
 ! Assuming an alphabetized array of character strings where it is
@@ -493,7 +408,7 @@ character(len=*),intent(out),optional   :: errmsg
 end subroutine locate_c
 subroutine locate_d(list,value,place,ier,errmsg)
 
-character(len=*),parameter::ident_7="&
+character(len=*),parameter::ident_6="&
 &@(#)M_list::locate_d(3f): find PLACE in sorted doubleprecision array where VALUE can be found or should be placed"
 
 ! Assuming an array sorted in descending order
@@ -574,7 +489,7 @@ integer                                :: error
 end subroutine locate_d
 subroutine locate_r(list,value,place,ier,errmsg)
 
-character(len=*),parameter::ident_8="&
+character(len=*),parameter::ident_7="&
 &@(#)M_list::locate_r(3f): find PLACE in sorted real array where VALUE can be found or should be placed"
 
 ! Assuming an array sorted in descending order
@@ -655,7 +570,7 @@ integer                                :: error
 end subroutine locate_r
 subroutine locate_i(list,value,place,ier,errmsg)
 
-character(len=*),parameter::ident_9="&
+character(len=*),parameter::ident_8="&
 &@(#)M_list::locate_i(3f): find PLACE in sorted integer array where VALUE can be found or should be placed"
 
 ! Assuming an array sorted in descending order
@@ -800,7 +715,7 @@ end subroutine locate_i
 !===================================================================================================================================
 subroutine remove_c(list,place)
 
-character(len=*),parameter::ident_10="@(#)M_list::remove_c(3fp): remove string from allocatable string array at specified position"
+character(len=*),parameter::ident_9="@(#)M_list::remove_c(3fp): remove string from allocatable string array at specified position"
 
 character(len=:),allocatable :: list(:)
 integer,intent(in)           :: place
@@ -821,7 +736,7 @@ integer                      :: ii, end
 end subroutine remove_c
 subroutine remove_d(list,place)
 
-character(len=*),parameter::ident_11="&
+character(len=*),parameter::ident_10="&
 &@(#)M_list::remove_d(3fp): remove doubleprecision value from allocatable array at specified position"
 
 doubleprecision,allocatable  :: list(:)
@@ -843,7 +758,7 @@ integer                      :: end
 end subroutine remove_d
 subroutine remove_r(list,place)
 
-character(len=*),parameter::ident_12="@(#)M_list::remove_r(3fp): remove value from allocatable array at specified position"
+character(len=*),parameter::ident_11="@(#)M_list::remove_r(3fp): remove value from allocatable array at specified position"
 
 real,allocatable    :: list(:)
 integer,intent(in)  :: place
@@ -864,7 +779,7 @@ integer             :: end
 end subroutine remove_r
 subroutine remove_i(list,place)
 
-character(len=*),parameter::ident_13="@(#)M_list::remove_i(3fp): remove value from allocatable array at specified position"
+character(len=*),parameter::ident_12="@(#)M_list::remove_i(3fp): remove value from allocatable array at specified position"
 integer,allocatable    :: list(:)
 integer,intent(in)     :: place
 integer                :: end
@@ -980,7 +895,7 @@ end subroutine remove_i
 subroutine replace_c(list,value,place)
 use M_time, only : now
 
-character(len=*),parameter::ident_14="@(#)M_list::replace_c(3fp): replace string in allocatable string array at specified position"
+character(len=*),parameter::ident_13="@(#)M_list::replace_c(3fp): replace string in allocatable string array at specified position"
 
 character(len=*),intent(in)  :: value
 character(len=:),allocatable :: list(:)
@@ -1009,7 +924,7 @@ integer                      :: end
 end subroutine replace_c
 subroutine replace_d(list,value,place)
 
-character(len=*),parameter::ident_15="&
+character(len=*),parameter::ident_14="&
 &@(#)M_list::replace_d(3fp): place doubleprecision value into allocatable array at specified position"
 
 doubleprecision,intent(in)   :: value
@@ -1032,7 +947,7 @@ integer                      :: end
 end subroutine replace_d
 subroutine replace_r(list,value,place)
 
-character(len=*),parameter::ident_16="@(#)M_list::replace_r(3fp): place value into allocatable array at specified position"
+character(len=*),parameter::ident_15="@(#)M_list::replace_r(3fp): place value into allocatable array at specified position"
 
 real,intent(in)       :: value
 real,allocatable      :: list(:)
@@ -1054,7 +969,7 @@ integer               :: end
 end subroutine replace_r
 subroutine replace_i(list,value,place)
 
-character(len=*),parameter::ident_17="@(#)M_list::replace_i(3fp): place value into allocatable array at specified position"
+character(len=*),parameter::ident_16="@(#)M_list::replace_i(3fp): place value into allocatable array at specified position"
 
 integer,intent(in)    :: value
 integer,allocatable   :: list(:)
@@ -1104,9 +1019,8 @@ end subroutine replace_i
 !!##EXAMPLES
 !!
 !!
-!!    Find if a string is in a sorted array,
-!!    and insert the string into the list
-!!    if it is not present ...
+!!    Find if a string is in a sorted array, and insert the string into
+!!    the list if it is not present ...
 !!
 !!     program demo_insert
 !!     use M_sort, only : sort_shell
@@ -1123,7 +1037,9 @@ end subroutine replace_i
 !!     call update(arr,'[')
 !!     call update(arr,'c')
 !!     call update(arr,'ZZ')
+!!     call update(arr,'ZZZ')
 !!     call update(arr,'ZZZZ')
+!!     call update(arr,'')
 !!     call update(arr,'z')
 !!
 !!     contains
@@ -1161,7 +1077,7 @@ end subroutine replace_i
 subroutine insert_c(list,value,place)
 use M_time, only : now
 
-character(len=*),parameter::ident_18="@(#)M_list::insert_c(3fp): place string into allocatable string array at specified position"
+character(len=*),parameter::ident_17="@(#)M_list::insert_c(3fp): place string into allocatable string array at specified position"
 
 character(len=*),intent(in)  :: value
 character(len=:),allocatable :: list(:)
@@ -1197,7 +1113,7 @@ integer                      :: end
 end subroutine insert_c
 subroutine insert_r(list,value,place)
 
-character(len=*),parameter::ident_19="@(#)M_list::insert_r(3fp): place real value into allocatable array at specified position"
+character(len=*),parameter::ident_18="@(#)M_list::insert_r(3fp): place real value into allocatable array at specified position"
 
 real,intent(in)       :: value
 real,allocatable      :: list(:)
@@ -1226,7 +1142,7 @@ integer               :: end
 end subroutine insert_r
 subroutine insert_d(list,value,place)
 
-character(len=*),parameter::ident_20="&
+character(len=*),parameter::ident_19="&
 &@(#)M_list::insert_d(3fp): place doubleprecision value into allocatable array at specified position"
 
 doubleprecision,intent(in)       :: value
@@ -1253,7 +1169,7 @@ integer                          :: end
 end subroutine insert_d
 subroutine insert_i(list,value,place)
 
-character(len=*),parameter::ident_21="@(#)M_list::insert_i(3fp): place value into allocatable array at specified position"
+character(len=*),parameter::ident_20="@(#)M_list::insert_i(3fp): place value into allocatable array at specified position"
 
 integer,allocatable   :: list(:)
 integer,intent(in)    :: value
@@ -1338,7 +1254,7 @@ end subroutine insert_i
 !===================================================================================================================================
 subroutine dict_delete(self,key)
 
-character(len=*),parameter::ident_22="@(#)M_list::dict_delete(3f): remove string from sorted allocatable string array if present"
+character(len=*),parameter::ident_21="@(#)M_list::dict_delete(3f): remove string from sorted allocatable string array if present"
 
 class(dictionary),intent(inout) :: self
 character(len=*),intent(in)     :: key
@@ -1410,7 +1326,7 @@ end subroutine dict_delete
 !===================================================================================================================================
 function dict_get(self,key) result(value)
 
-character(len=*),parameter::ident_23="@(#)M_list::dict_get(3f): get value of key-value pair in dictionary, given key"
+character(len=*),parameter::ident_22="@(#)M_list::dict_get(3f): get value of key-value pair in dictionary, given key"
 
 !!class(dictionary),intent(inout) :: self
 class(dictionary)               :: self
@@ -1472,7 +1388,7 @@ end function dict_get
 !===================================================================================================================================
 subroutine dict_add(self,key,value)
 
-character(len=*),parameter::ident_24="@(#)M_list::dict_add(3f): place key-value pair into dictionary, adding the key if required"
+character(len=*),parameter::ident_23="@(#)M_list::dict_add(3f): place key-value pair into dictionary, adding the key if required"
 
 class(dictionary),intent(inout) :: self
 character(len=*),intent(in)     :: key
@@ -1509,7 +1425,6 @@ integer                      :: place
    call test_dict_delete()
    call test_dict_get()
    !
-   call test_binary_search()
 contains
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_dict_set
@@ -1536,28 +1451,28 @@ end subroutine test_dict_set
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_dict_delete
 type(dictionary) :: dict
-   call unit_check_start('dict_delete',&
+   call unit_check_start('dict%delete',&
    & ' -description "delete string by name from allocatable string array" '//share)
 
    call dict%del('A')
    call dict%del('Z')
    call dict%del('X')
-   !!call unit_check('dict_delete',all(dict.eq.[character(len=20) :: 'z','c','b','ZZZ','ZZ','A']),'string deletes ')
+   !!call unit_check('dict%delete',all(dict.eq.[character(len=20) :: 'z','c','b','ZZZ','ZZ','A']),'string deletes ')
 
-   call unit_check_done('dict_delete')
+   call unit_check_done('dict%delete')
 end subroutine test_dict_delete
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_dict_get
 type(dictionary)             :: dict
 character(len=:),allocatable :: val
-   call unit_check_start('dict_get',&
+   call unit_check_start('dict%get',&
    & ' -description "locate and get value from key-value pair by key name from dictionary" '//share)
    val=dict%get('A')
    val=dict%get('Z')
    val=dict%get('X')
    !!call unit_check('dict%get',all(dict.eq.[character(len=20) :: 'z','c','b','ZZZ','ZZ','A']),'string deletes ')
 
-   call unit_check_done('dict_get')
+   call unit_check_done('dict%get')
 end subroutine test_dict_get
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_locate
@@ -1650,12 +1565,6 @@ integer                       :: isize
    endif
    call unit_check_done('replace')
 end subroutine test_replace
-!===================================================================================================================================
-subroutine test_binary_search
-   call unit_check_start('binary_search',&
-   & ' -description "binary search of a sorted array"  '//share)
-   call unit_check_done('binary_search')
-end subroutine test_binary_search
 !===================================================================================================================================
 end subroutine test_suite_m_list
 !===================================================================================================================================

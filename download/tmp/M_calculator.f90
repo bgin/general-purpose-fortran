@@ -382,17 +382,17 @@ help_text=[ &
 &'--------------------------------------------------------------------------------',&
 &'standard functions available:                                                   ',&
 &'--------------------------------------------------------------------------------',&
-&'I/O: DEVELOPMENTAL                                                              ',&
-&' open(unit,$filename)                                                           ',&
-&' write(unit,values)                                                             ',&
-&' $read(unit,name)                                                               ',&
-&' $inquire(                                                                      ',&
-&' rewind(unit)                                                                   ',&
-&' flush(                                                                         ',&
-&' close(                                                                         ',&
-&'--------------------------------------------------------------------------------',&
-&' c(                   : user-defined function                                   ',&
-&' ownmode(             : call user-defined procedures                            ',&
+!&'I/O: DEVELOPMENTAL                                                              ',&
+!&' open(unit,$filename)                                                           ',&
+!&' write(unit,values)                                                             ',&
+!&' $read(unit,name)                                                               ',&
+!&' $inquire(                                                                      ',&
+!&' rewind(unit)                                                                   ',&
+!&' flush(                                                                         ',&
+!&' close(                                                                         ',&
+!&'--------------------------------------------------------------------------------',&
+!&' c(                   : user-defined function                                   ',&
+!&' ownmode(             : call user-defined procedures                            ',&
 &'--------------------------------------------------------------------------------',&
 &' len_trim($value)     : number of characters trimming trailing spaces           ',&
 &' index($value,$match) : return position $match occurs in $value or zero         ',&
@@ -3207,12 +3207,11 @@ subroutine test_stuffa()
 
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
-use M_calculator_plus, only : snum0
       call stuffa('$A','')
       call stuffa('$mystring','this is the value of the string')
-      write(*,*)snum0('$mystring')
+      !!write(*,*)snum0('$mystring')
       call stuffa('$mystring','this is the new value of the string')
-      write(*,*)snum0('$mystring')
+      !!write(*,*)snum0('$mystring')
 
    call unit_check_start('stuffa',msg='')
    !!call unit_check('stuffa', 0.eq.0. msg=msg('checking',100))

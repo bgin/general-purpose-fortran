@@ -1,7 +1,7 @@
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-program testCLI
+program testGPF
 !
 ! Exercise libGPF and libscreen
 !
@@ -54,7 +54,6 @@ $@(#) line mode calculator program (that calls jucalc(3f),cond(3f),M_history(3f)
    integer                       :: numbers(number_of_args)
    integer                       :: igot
    real                          :: x,y
-   real,allocatable                   :: realsa(:)
    character(len=IPvalue),allocatable :: stringsa(:)
    character(len=IPvalue),allocatable :: oldread
    integer                       :: ifound
@@ -88,7 +87,7 @@ $@(#) line mode calculator program (that calls jucalc(3f),cond(3f),M_history(3f)
       if(iin.eq.5)then                                     ! only show the prompt when reading from stdin
          write(*,'(i0,a)',advance='no')nest_level,'>'      ! write prompt showing nesting level in if/else/endif
       elseif(iin.lt.5)then
-         call journal('sc','*testCLI* error: internal value for input unit is ',iin)
+         call journal('sc','*testGPF* error: internal value for input unit is ',iin)
          stop
       endif
       if(iin.eq.5)then
@@ -147,7 +146,7 @@ $@(#) line mode calculator program (that calls jucalc(3f),cond(3f),M_history(3f)
 !-----------------------------------------------------------------------------------------------------------------------------------
          select case(linet(:ii))                            ! handle all the other verbs
          case('.','quit')                                  ! COMMAND: quit program
-            call journal('*testCLI*: that''s all folks ...')
+            call journal('*testGPF*: that''s all folks ...')
             stop
 !-----------------------------------------------------------------------------------------------------------------------------------
          case(' ')                                         ! ignore blank lines
@@ -229,7 +228,7 @@ $@(#) line mode calculator program (that calls jucalc(3f),cond(3f),M_history(3f)
       call journal('sc','*logic* error - IF block not closed.')
       stop
    endif
-   call journal('*testCLI* exiting')
+   call journal('*testGPF* exiting')
 !-----------------------------------------------------------------------------------------------------------------------------------
 contains
 !==================================================================================================================================!
@@ -478,7 +477,7 @@ integer                       :: ierr
       end select
    endif
 end subroutine expression
-end program testCLI
+end program testGPF
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!

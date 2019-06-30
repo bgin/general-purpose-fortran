@@ -1,7 +1,7 @@
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-program testCLI
+program testGPF
 !
 ! Exercise libGPF and libscreen
 !
@@ -55,7 +55,6 @@ character(len=*),parameter::ident_1="&
    integer                       :: numbers(number_of_args)
    integer                       :: igot
    real                          :: x,y
-   real,allocatable                   :: realsa(:)
    character(len=IPvalue),allocatable :: stringsa(:)
    character(len=IPvalue),allocatable :: oldread
    integer                       :: ifound
@@ -89,7 +88,7 @@ character(len=*),parameter::ident_1="&
       if(iin.eq.5)then                                     ! only show the prompt when reading from stdin
          write(*,'(i0,a)',advance='no')nest_level,'>'      ! write prompt showing nesting level in if/else/endif
       elseif(iin.lt.5)then
-         call journal('sc','*testCLI* error: internal value for input unit is ',iin)
+         call journal('sc','*testGPF* error: internal value for input unit is ',iin)
          stop
       endif
       if(iin.eq.5)then
@@ -148,7 +147,7 @@ character(len=*),parameter::ident_1="&
 !-----------------------------------------------------------------------------------------------------------------------------------
          select case(linet(:ii))                            ! handle all the other verbs
          case('.','quit')                                  ! COMMAND: quit program
-            call journal('*testCLI*: that''s all folks ...')
+            call journal('*testGPF*: that''s all folks ...')
             stop
 !-----------------------------------------------------------------------------------------------------------------------------------
          case(' ')                                         ! ignore blank lines
@@ -230,7 +229,7 @@ character(len=*),parameter::ident_1="&
       call journal('sc','*logic* error - IF block not closed.')
       stop
    endif
-   call journal('*testCLI* exiting')
+   call journal('*testGPF* exiting')
 !-----------------------------------------------------------------------------------------------------------------------------------
 contains
 !==================================================================================================================================!
@@ -479,7 +478,7 @@ integer                       :: ierr
       end select
    endif
 end subroutine expression
-end program testCLI
+end program testGPF
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
@@ -908,7 +907,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Fri, Jun 14th, 2019 1:14:13 PM>',&
+'@(#)COMPILED:       Sun, Jun 30th, 2019 5:32:35 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
