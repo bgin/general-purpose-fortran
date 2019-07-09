@@ -38,7 +38,9 @@ DESCRIPTION
          call unit_check_done('xxx',msg='')
       end subroutine test_xxx
 OPTIONS
+
    -l  logfile
+
    -w  given a *.o as the input file try to build a test_suite_M_xxx
        procedure, making a lot of assumptions about the format of the
        output of the nm(1) command and the compiler being used. Probably
@@ -46,6 +48,8 @@ OPTIONS
    -v  verbose mode
 
 EXAMPLE
+      test_suite -l log.txt    M_list.f90  # build and run test program
+      test_suite -l log.txt -w m_list.o    # make example test procedure
 
 EOF
 exit

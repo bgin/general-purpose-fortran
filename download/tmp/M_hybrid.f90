@@ -1,3 +1,106 @@
+module M_hybrid
+private
+public fetch             ! ftch2
+public strgar3
+public errc
+!-----------------------------------------------------------------------------------------------------------------------------------
+contains
+!-----------------------------------------------------------------------------------------------------------------------------------
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()(
+!-----------------------------------------------------------------------------------------------------------------------------------
+!>
+!!##NAME
+!!    strgar3(3f) - [M_hybrid] fetch a value from language dictionary but process via calculator too
+!!
+!!##SYNOPSIS
+!!
+!!   subroutine strgar3(line,iread,default,numbrs,inums,delims,delimc,ierr)
+!!
+!!    character(len=*),intent(in)  :: line
+!!    integer,intent(in)           :: iread
+!!    real,intent(in)              :: default
+!!    real,intent(out)             :: numbrs(iread,4)
+!!    integer,intent(out)          :: inums
+!!    character(len=1),intent(in)  :: delims
+!!    character(len=1),intent(in)  :: delimc
+!!    integer,intent(out)          :: ierr
+!!
+!!##DESCRIPTION
+!! This is a special-purpose clone of strgar2 that expects each string to return
+!! two values with a : character splitting the values. If the second string does
+!! not exist, the current file value is unchanged. For example, the string
+!!
+!!     "10:20 30 40 50:60" with a default of -1 would return
+!!     +--+--+--+--+
+!!     |10|30|40|50| curve numbers (or curve ranges)
+!!     +--+--+--+--+
+!!     |20|-1|-1|60| file numbers
+!!     +--+--+--+--+
+!!     |-1|-1|-1|-1| top error curve numbers possibly set by e()
+!!     +--+--+--+--+
+!!     |-1|-1|-1|-1| bottom error curve numbers possibly set by e()
+!!     +--+--+--+--+
+!!
+!!
+!! The number on the left of the colon is assumed to exist. This if for the
+!! purpose of letting USH use the syntax curvenumber:filename and has no other
+!! purpose. It is not really part of the calculator.
+!!
+!!##EXAMPLE
+!!
+!!   Sample program
+!!
+!!       program demo_strgar3
+!!       character(len=90) :: string
+!!       real              :: values(10,4)
+!!       rdum1=rnum0('ownmode(1)') ! allow user-define procedure calls from juown1
+!!       do
+!!          values(:,:)=-123
+!!          write(*,*)'*strgar3* Enter string like 10:1 20 30 40:50'
+!!          read(*,'(a)',iostat=ios)string
+!!          if(ios.ne.0)stop
+!!          call strgar3(string,10,-1.0,values,inums,' ',' ',ierr)
+!!          write(*,*)'inums=',inums
+!!          write(*,*)'ierr=',ierr
+!!          write(*,*)'values(:,1)=',values(:inums,1)
+!!          write(*,*)'values(:,2)=',values(:inums,2)
+!!          write(*,*)'values(:,3)=',values(:inums,3)
+!!          write(*,*)'values(:,4)=',values(:inums,4)
+!!       enddo
+!!       end program demo_strgar3
+!!       subroutine juown1(func,iflen,args,iargstp,n,x,y,fval,ctmp,ier) ! extend functions available to the calculator routine
+!!       ! if the function owncode(1) is called this subroutine can be accessed to do user-written functions.
+!!       use M_journal, only : journal
+!!       use m_calculator, only : x, y
+!!       integer,parameter :: dp=kind(0.0d0)
+!!       character(len=*)  :: func
+!!       integer           :: iflen
+!!       real(kind=dp)     :: args(100)
+!!       integer           :: iargstp(100)
+!!       integer           :: n
+!!       real(kind=dp)     :: fval
+!!       character(len=*)  :: ctmp
+!!       integer           :: ier
+!!       integer           :: i10
+!!       character(len=80) :: temp1
+!!       fval=0
+!!       select case (func)
+!!       case('e')
+!!          fval=errc(args(1),args(2),args(3))
+!!       case default
+!!          fval=errc(args(1),args(2),args(3))
+!!          call journal('sc', '*juown1* unknown function')
+!!          temp1='function name is ........'//func(1:iflen) ! some machines cannot concatenate a string being passed as an argumen
+!!          call journal('sc',temp1)
+!!          call journal('sc','function name length is..',iflen)
+!!          call journal('sc','number of arguments .....',n)
+!!          write(*,*)(args(i10),i10=1,n,1)
+!!       end select
+!!       end subroutine juown1
+!===================================================================================================================================
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
 subroutine strgar3(line,iread,default,numbrs,inums,delims,delimc,ierr)
 !  read a string into an array USING CALCULATOR and passing "
 !  1989 John S. Urban
@@ -7,8 +110,8 @@ subroutine strgar3(line,iread,default,numbrs,inums,delims,delimc,ierr)
 !  quits if encounters any errors in read.
 
    use M_journal,    only : journal
-   use m_calculator, only : iclen_calc
-  use M_calculator_plus, only : jucalcx
+   use M_calculator, only : iclen_calc
+   use M_calculator, only : jucalcx
    implicit none
    character(len=*),parameter :: ident="@(#)strgar3(3f):read a string into an array USING CALCULATOR passing double-quoted strings"
 !===================================================================================================================================
@@ -187,7 +290,9 @@ contains
 end subroutine COMMON
 !-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine strgar3
-!-----------------------------------------------------------------------------------------------------------------------------------
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
 doubleprecision function errc(curve,top,bottom)
 implicit none
 character(len=*),parameter  :: ident="@(#)errc(3f): function for specifying error curve numbers"
@@ -201,4 +306,103 @@ integer,parameter           :: dp=kind(0.0d0)
    ierrcurves(3)=int(bottom)
    errc=curve
 end function errc
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
+!>
+!!##NAME
+!!    fetch(3f) - [M_hybrid] call sget(3f) (and calculator if fetched string starts with $ or double-quote
+!!
+!!##SYNOPSIS
+!!
+!!   function fetch(dicname)
+!!
+!!    character(len=:),allocatable  :: fetch
+!!    character, intent=(in)        :: dicname*(*)
+!!
+!!##DESCRIPTION
+!!    fetch() is a special version of sget(3f) that integrates the
+!!    Calculator library with the Language library.
+!!
+!!    o sget(3f) is called to look up the value of the specified name in the
+!!      language dictionary.
+!!
+!!    o If the returned value is a string expression (ie. starts with a $ or "
+!!      character) then evaluate the expression using the calculator library
+!!      and return the calculated value.
+!!
+!!    o If the name does not appear in the dictionary a blank string is
+!!      returned.
+!!
+!!    If the evaluation works return the expanded expression's value
+!!    else return a blank string (could return the expression itself).
+!!
+!!##OPTIONS
+!!    DICNAME is the name of a variable stored in the language dictionary.
+!!
+!!##DEPENDENCIES
+!!       o sget
+!!       o jucalcx
+!!
+!!##EXAMPLES
+!!
+!!
+!!   Sample program
+!!
+!!       program T_fetch
+!!       use M_kracken, only : store
+!!       use M_hybrid,  only : fetch
+!!       call store('VERB_KEYWORD','This is a value','define',ierr)
+!!       write(*,*)'VALUE is ',fetch('VERB_KEYWORD')
+!!       end program T_fetch
+!!
+!!##SEE ALSO
+!!     see sget(3f).
+!!##REFERENCES
+!!    + NONE.
+!!##AUTHOR
+!!    + John S. Urban, 1994
+!===================================================================================================================================
+function fetch(dicname)
+! 1994 John S. Urban
+use M_kracken,         only : sget
+use M_calculator,      only : iclen_calc
+use M_calculator,      only : jucalcx
+use M_journal,         only : journal
+implicit none
+
+character(len=*),parameter::ident_1="&
+&@(#)M_xyplot::fetch(3f): call sget(3f) (and calculator if fetched string starts with $ or double-quote)"
+
+character(len=:),allocatable :: fetch
+character(len=*),intent(in)  :: dicname
+character(len=iclen_calc)    :: outlin0
+doubleprecision              :: dvalue2
+integer                      :: ierr
+integer                      :: ilen
 !-----------------------------------------------------------------------------------------------------------------------------------
+   fetch=sget(dicname)                                         ! get string value from dictionary
+   if(len(fetch).eq.0)then
+      call journal('sc','*fetch* name [',trim(dicname),'] not found')
+      fetch=' '
+   else
+      fetch=fetch//' '                                         ! make sure at least one character long for substring tests
+      if(fetch(1:1).eq.'$'.or.fetch(1:1).eq.'"')then           ! get string value from calculator
+         ierr=0
+         call jucalcx(fetch,dvalue2,outlin0,ierr,ilen)         ! convert a calculator expression into a numeric value
+         if(ierr.eq.2) then                                    ! if a string was successfully returned set fetch to it
+            fetch=outlin0
+         else
+            fetch=' '                                          ! somewhat arbitrary as to leave the expression or return a blank
+         endif
+      endif
+      fetch=trim(fetch)
+   endif
+end function fetch
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
+end module M_hybrid
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!

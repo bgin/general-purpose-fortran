@@ -51,7 +51,7 @@
 !!    use M_logic, only : cond
 !!    use M_logic, only : write ! flag whether current data lines should be written
 !!    use M_logic, only : nest_level   ! nesting level for #IF/#ELSEIF/#ELSE/#ENDIF
-!!    use M_calculator_plus, only : rnum0
+!!    use M_calculator, only : rnum0
 !!    character(len=1)    :: prefix              ! directive prefix character
 !!    character(len=1024) :: line                ! input line
 !!    integer,parameter   :: max_words=2  ! maximum number of words allowed on line
@@ -136,7 +136,7 @@ module M_logic
 ! if ierr not equal=0, suggest stopping the calling program from processing input
 !===================================================================================================================================
 use M_journal, only : journal
-use M_calculator_plus, only : inum0
+use M_calculator, only : inum0
 implicit none
 private
 character(len=*),parameter :: ident="@(#)M_logic(3fm): Allows if/else/elseif/endif logic to be applied to input files"

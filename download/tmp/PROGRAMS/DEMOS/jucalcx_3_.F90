@@ -1,7 +1,7 @@
            program demo_jucalcx
            !     NOTE: user must supply the JUOWN1 and C procedures.
            use M_calculator,      only : iclen_calc
-           use M_calculator_plus, only : jucalcx
+           use M_calculator, only : jucalcx
            character(len=iclen_calc) ::  outlin0
            doubleprecision :: outval
            call jucalcx('A=3.4**5    ',outval,outlin0,ierr,ilen)

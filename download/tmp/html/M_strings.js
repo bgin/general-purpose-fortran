@@ -48,6 +48,7 @@ append("s2c.3.html");
 append("s2v.3.html");
 append("s2vs.3.html");
 append("split.3.html");
+append("stretch.3.html");
 append("string_to_value.3.html");
 append("string_to_values.3.html");
 append("substitute.3.html");

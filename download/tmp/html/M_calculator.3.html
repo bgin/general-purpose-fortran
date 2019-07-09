@@ -50,6 +50,8 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <pre>
     use M_calculator, only : jucalc, getvalue, igetvalue, rgetvalue, stuff, stuffa
     use M_calculator, only : iclen_calc, ixy_calc, icname_calc, x, y, values_len, values
+    ! convenience routines
+    use M_calculator, only : inum0, rnum0, dnum0, snum0, jucalcx, strgarr, strgar2
 </pre>
 </dd>
 <!-- =========================================================================================================================== -->
@@ -89,6 +91,17 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
    <li> <a href="rgetvalue.3.html">rgetvalue</a>  given numeric variable name return real value directly
    <li> <a href="stuff.3.html">stuff</a>          pass INTEGER|REAL|DOUBLEPRECISION value directly to calculator dictionary
    <li> <a href="stuffa.3.html">stuffa</a>        directly store a string into calculator variable name table
+   <li>
+   <ul> Convenience routines
+   <li> <a href="inum0">inum0</a>                 resolve a calculator string into a whole integer number
+   <li> <a href="rnum0">rnum0</a>                 resolve a calculator string into a real number (return 0 on errors)
+   <li> <a href="dnum0">dnum0</a>                 resolve a calculator string into a doubleprecision number (return 0 on error s)
+   <li> <a href="snum0">snum0</a>                 resolve a calculator expression into a string(return blank on errors)
+   <li> <a href="jucalcx">jucalcx</a>             call jucalc() calculator and display messages
+   <li> <a href="strgarr">strgarr</a>             read a string into an array USING CALCULATOR
+   <li> <a href="strgar2">strgr2</a>              read a string into an array USING CALCULATOR
+   </ul>
+   </li>
    </ul>
 </dd>
 <!-- =========================================================================================================================== -->
@@ -125,7 +138,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <dt><b> SEE ALSO</b></dt> <dd>
    <ul>
    <li> module M_noown
-   <li> module M_calculator_plus
+   <li> module M_calculator
    </ul>
 </dd>
 <!-- =========================================================================================================================== -->
@@ -182,11 +195,12 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
    <!-- ======================================================================= -->
    <dt><b> VARIABLE NAMES</b></dt><dd>
 
-    Names must be 1 to 20 characters long, and are
-    case-sensitive. Up to 2345 names are permitted. Numeric variable names
-   should be composed of the letters a-z and underscores and numbers.
-   String variables are similar but start with a dollar sign($).
-   Names must not end in a "digit-E" combination. For example:
+    Names must be 1 to 20 characters long, and are case-sensitive. The
+    numbr of names permitted is only limited by the available
+    memory. Numeric variable names should be composed of the letters
+    a-z and underscores and numbers.  String variables are similar but
+    start with a dollar sign($).  Names must not end in a "digit-E"
+    combination. For example:
    <pre>
       A=sin(3.1416/2)
       big=200.333E200

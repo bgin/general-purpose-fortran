@@ -1,5 +1,5 @@
            program demo_snum0
-           use m_calculator_plus, only: rnum0, snum0
+           use m_calculator, only: rnum0, snum0
            character(len=80)  :: ic,jc,kc
 
            rdum=rnum0('A=83/2') ! set a variable in the calculator

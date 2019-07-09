@@ -1,4 +1,4 @@
-          program demo_verify
+           program demo_verify
 
            write(*,*) verify("fortran", "ao")           ! 1, found 'f'
            write(*,*) verify("fortran", "fo")           ! 3, found 'r'
@@ -25,29 +25,6 @@
            write(*,*)'nonblank ',verify(chars, ' ') ! loc. of first nonblank
            write(*,*)'length ',verify(chars, ' ', back = .true.)  ! == len_trim
 
-              endblock check !======================================================= end program demo_verify
-
-       Results:
-
-              1 3 1 7 0 32-af43d passed
-
-       nonblank
-
-              length
-
-STANDARD
-       [[Fortran 95]] and later, with KIND argument [[Fortran 2003]] and later
-
-CLASS
-       Elemental function
-
-SEE ALSO
-       Functions that perform operations on character strings, return lengths of arguments, and search for certain arguments:
-
-       Elemental:
-              ADJUSTL, ADJUSTR, INDEX, LEN_TRIM, SCAN, VERIFY;
-
-       Nonelemental:
-              REPEAT, TRIM
-
-                                                             June 30, 2019                                                    verify(3)
+           endblock check
+           !=======================================================
+           end program demo_verify

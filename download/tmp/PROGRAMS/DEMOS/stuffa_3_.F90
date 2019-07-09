@@ -1,6 +1,6 @@
           program demo_stuffa
-          use M_calculator,      only : stuffa
-          use M_calculator_plus, only : snum0
+          use M_calculator, only : stuffa
+          use M_calculator, only : snum0
           implicit none
              call stuffa('$A','')
              call stuffa('$mystring','this is the value of the string')

@@ -9,7 +9,7 @@
 
 #include "draw.h"
 
-static  char    *me = "draw";
+static  char      *me = "M_draw";
 #define LARGEFONT       "fixed"
 #define SMALLFONT       "fixed"
 

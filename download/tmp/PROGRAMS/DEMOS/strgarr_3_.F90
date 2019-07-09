@@ -1,6 +1,6 @@
           program demo_strgarr
           use M_kracken, only: sget, kracken, lget
-          use M_calculator_plus, only : strgarr
+          use M_calculator, only : strgarr
           real vals(41)
           character(len=80) :: line=' '
           character(len=10) :: delims=' ;'

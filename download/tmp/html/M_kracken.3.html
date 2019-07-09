@@ -199,7 +199,6 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <pre>
    logical,public            :: stop_command=.false. ! indication to return stop_command as false in interactive mode
    integer, parameter,public :: IPvalue=4096*16      ! length of keyword value
-   integer, parameter,public :: IPcmd=12*IPvalue     ! length of command
    integer, parameter,public :: IPverb=20            ! length of verb
    character(len=1),save,public         :: kracken_comment='#'
    character(len=:),allocatable,public  :: leftover                 ! remaining command(s) on line

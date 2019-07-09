@@ -10,7 +10,7 @@ use :: M_journal,         only : journal
 
 use :: M_calculator,      only : jucalc,iclen_calc
 use :: M_calculator,      only : stuff    ! [M_calculator] directly store value into calculator directory for efficiency
-use :: M_calculator_plus, only : strgar2
+use :: M_calculator,      only : strgar2
 
 use :: M_history,         only : redo
 
@@ -29,9 +29,9 @@ use :: M_logic,           only : &
    & write,              &
    ! integer value of nesting level for IF/ELSEIF/ELSE/ENDIF
    & nest_level
-use M_time, only            : now, fmtdate_usage
-use M_calculator_plus, only : dnum0
-use m_readline, only : system_readline
+use M_time,       only : now, fmtdate_usage
+use M_calculator, only : dnum0
+use m_readline,   only : system_readline
 !-----------------------------------------------------------------------------------------------------------------------------------
    implicit NONE
 character(len=*),parameter::ident_1="&
@@ -907,7 +907,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sun, Jun 30th, 2019 5:32:35 AM>',&
+'@(#)COMPILED:       Wed, Jul 3rd, 2019 11:02:45 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

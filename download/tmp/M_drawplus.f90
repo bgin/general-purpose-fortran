@@ -1805,7 +1805,7 @@ end subroutine draw_interpret
 subroutine call_draw(verb,parameters,found)
 use iso_fortran_env
 use M_calculator,      only : stuffa, stuff, iclen_calc
-use M_calculator_plus, only : snum0, inum0, rnum0, strgar2
+use M_calculator,      only : snum0, inum0, rnum0, strgar2
 use M_debug,           only : debug, io_debug
 use M_strings,         only : delim
 use M_draw
@@ -2249,8 +2249,8 @@ end subroutine call_draw
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !----------------------------------------------------------------------------------------------------------------------------------!
 logical function iflogic(string)
-use M_calculator_plus, only : inum0
-use M_strings, only         : lower
+use M_calculator, only : inum0
+use M_strings,    only : lower
 
 character(len=*),parameter::ident_13="@(#)M_drawplus::iflogic(3fp): evaluate string in calculator and return false if value is zero"
 
@@ -3076,8 +3076,8 @@ end subroutine rdpnt
 !===================================================================================================================================
 subroutine seefont(fontin)
 use M_journal, only : journal
-use m_calculator,      only: stuff
-use m_calculator_plus, only: dnum0
+use m_calculator,      only : stuff
+use m_calculator,      only : dnum0
 use M_draw
 implicit none
 

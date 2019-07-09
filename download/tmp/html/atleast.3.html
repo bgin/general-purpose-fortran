@@ -55,7 +55,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 </A>
 <BLOCKQUOTE>
 <B>atleast(3f) </B>- [M_strings:LENGTH] return string padded to at least specified length
-<B>
+<B>!!
 </B></BLOCKQUOTE>
 <A name=contents></A><H3>CONTENTS</H3></A>
 <BLOCKQUOTE>
@@ -72,12 +72,31 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 </A>
 <BLOCKQUOTE>
 <PRE>
-function <B>atleast</B>(str,length) <B>result</B>(<I>strout</I>)
-<P>
-    character(len=*)                           :: str
-    integer,intent(in)                         :: length
-    character(len=max(length,len(trim(line)))) ::  strout
+!!
+<B>function</B> <B>atleast</B>(str,length,pattern) <B>result</B>(strout)
+!!
+<BLOCKQUOTE>
 </PRE>
+<TABLE cellpadding=3><!-- tsb: !!
+ -->
+<TR></TR><TR></TR>
+<TR valign=top><TD colspan=2>
+<B></B><B>character</B>(len=*) </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+:: <I>str</I>
+</TD></TR>
+<TR valign=top><TD colspan=2>
+<B></B><B>integer,intent</B>(in) </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+:: <I>length</I>
+</TD></TR>
+<TR valign=top><TD colspan=2>
+<B></B><B>character</B>(len=max(<I>length</I>,len(trim(line)))) :: </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+<I>strout</I>
+</TD></TR>
+<TR valign=top><TD colspan=2>
+<B></B><B>character</B>(len=*),optional </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+::  <I>pattern</I>
+</TD></TR>
+<TR></TR></TABLE></BLOCKQUOTE>
 </BLOCKQUOTE>
 <A name=2>
 
@@ -86,8 +105,8 @@ function <B>atleast</B>(str,length) <B>result</B>(<I>strout</I>)
 </A>
 <BLOCKQUOTE>
 <B>atleast</B>(3f) pads a string with spaces to at least the specified
-length. If the trimmed input string is longer than the requested
-length the trimmed string is returned.
+<I>length</I>. If the trimmed input string is longer than the requested
+<I>length</I> the trimmed string is returned.
 </BLOCKQUOTE>
 <A name=3>
 
@@ -97,13 +116,17 @@ length the trimmed string is returned.
 <BLOCKQUOTE>
 <TABLE cellpadding=3>
 <TR valign=top><TD width=6% nowrap>
-<B>str</B> </TD><TD valign=bottom>
+<B></B><I>str</I> </TD><TD valign=bottom>
 the input string to return trimmed, but then padded to
-the specified length if shorter than length
+the specified <I>length</I> if shorter than <I>length</I>
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
-<B>length</B> </TD><TD valign=bottom>
-The minimum string length to return
+<B></B><I>length</I> </TD><TD valign=bottom>
+The minimum string <I>length</I> to return
+</TD></TR>
+<TR valign=top><TD colspan=2>
+<B></B><I>pattern</I> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+optional string to use as padding. Defaults to a space.
 </TD></TR>
 <TR></TR></TABLE></BLOCKQUOTE>
 <A name=4>
@@ -115,9 +138,10 @@ The minimum string length to return
 <TABLE cellpadding=3>
 <TR valign=top><TD width=6% nowrap>
 <B></B><I>strout</I> </TD><TD valign=bottom>
-The input string padded to the requested length or
+The input string padded to the requested <I>length</I> or
 the trimmed input string if the input string is
-longer than the requested length.
+longer than the requested <I>length</I>.
+!!
 </TD></TR>
 <TR></TR></TABLE></BLOCKQUOTE>
 <A name=5>
@@ -126,31 +150,74 @@ longer than the requested length.
 
 </A>
 <BLOCKQUOTE>
+!!
 Sample Program:
+!!
+program demo_atleast
+use M_strings, only : atleast
+implicit none
+<BLOCKQUOTE>
+<TABLE cellpadding=3><!-- tsb: !!
+ -->
+<TR></TR><TR></TR>
+<TR valign=top><TD colspan=2>
+<B></B><B>character</B>(len=10) </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+:: string=&#146;abcdefghij&#146;
+<B>character</B>(len=:),allocatable :: answer
+</TD></TR>
+<TR valign=top><TD colspan=2>
+<B>integer</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+:: i
+answer=<B>atleast</B>(string,5)
+<B>write</B>(*,&#146;("[",a,"]")&#146;) answer
+answer=<B>atleast</B>(string,20)
+<B>write</B>(*,&#146;("[",a,"]")&#146;) answer
+i=30
+<B>write</B>(*,*)
+<B>write</B>(*,&#146;(1x,a,i0)&#146;) <B>atleast</B>(&#146;CHAPTER 1 : The beginning &#146;,i,&#146;.&#146;), 1
+<TABLE width=100% cellpadding=3><!-- tsb: :: i
+ -->
+<TR></TR><TR></TR>
+<TR valign=top><TD colspan=2>
+<B></B><B>write</B>(*,&#146;(1x,a,i0)&#146;) <B>atleast</B>(&#146;CHAPTER 2 : The end &#146;,i,&#146;.&#146;), </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+1234
+</TD></TR>
+<TR valign=top><TD colspan=2>
+<B></B><B>write</B>(*,&#146;(1x,a,i0)&#146;) <B>atleast</B>(&#146;APPENDIX &#146;,i,&#146;.&#146;), </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+1235
+<B>write</B>(*,*)
+<B>write</B>(*,&#146;(1x,a,i7)&#146;) <B>atleast</B>(&#146;CHAPTER 1 : The beginning &#146;,i,&#146;.&#146;), 1
+</TD></TR>
+<TR valign=top><TD colspan=2>
+<B></B><B>write</B>(*,&#146;(1x,a,i7)&#146;) <B>atleast</B>(&#146;CHAPTER 2 : The end &#146;,i,&#146;.&#146;), </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+1234
+</TD></TR>
+<TR valign=top><TD colspan=2>
+<B></B><B>write</B>(*,&#146;(1x,a,i7)&#146;) <B>atleast</B>(&#146;APPENDIX &#146;,i,&#146;.&#146;), </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+1235
+end program demo_atleast
+</TD></TR>
+<TR></TR></TABLE><!-- .RE -->
+</TD></TR>
+<TR></TR></TABLE></BLOCKQUOTE>
+<P>
+Results:
 <P>
 <PRE>
-    program demo_atleast
-     use M_strings, only : atleast
-     implicit none
-     character(len=10)            :: string=&#146;abcdefghij&#146;
-     character(len=:),allocatable :: answer
-        answer=atleast(string,5)
-        write(*,&#146;("[",a,"]")&#146;) answer
-        answer=atleast(string,20)
-        write(*,&#146;("[",a,"]")&#146;) answer
-    end program demo_atleast
+  [abcdefghij]
+  [abcdefghij          ]
 <P>
-</PRE>
-Expected output:
+   CHAPTER 1 : The beginning &#46;&#46;&#46;.1
+   CHAPTER 2 : The end &#46;&#46;&#46;.......1234
+   APPENDIX &#46;&#46;&#46;..................1235
 <P>
-<PRE>
-    [abcdefghij]
-    [abcdefghij          ]
-<P>
+   CHAPTER 1 : The beginning &#46;&#46;&#46;.      1
+   CHAPTER 2 : The end &#46;&#46;&#46;.......   1234
+   APPENDIX &#46;&#46;&#46;..................   1235
 </PRE>
 </BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>atleast (3)</TD> <TD align=right width=33%><I>June 30, 2019</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from c7ea18d5-17cb-4fbd-9975-be54f12fd851 using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>atleast (3)</TD> <TD align=right width=33%><I>July 09, 2019</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 523055dc-2f76-488c-ae25-ee6e8e2ae90f using man macros.</FONT>
 <br><br><center><img src="images/atleast.3.gif"></center>
 </div>
 </div>

@@ -24,7 +24,7 @@
 !!    use M_strings, only : substitute,change,modif,transliterate,reverse,replace,join
 !!    use M_strings, only : upper,lower
 !!    use M_strings, only : adjustc,compact,nospace,indent,crop,unquote
-!!    use M_strings, only : len_white,atleast,lenset,merge_str
+!!    use M_strings, only : len_white,atleast,stretch,lenset,merge_str
 !!    use M_strings, only : switch,s2c,c2s
 !!    use M_strings, only : noesc,notabs,expand,visible
 !!    use M_strings, only : string_to_value,string_to_values,s2v,s2vs,value_to_string,v2s,msg
@@ -79,6 +79,7 @@
 !!    len_white  find location of last non-whitespace character
 !!    lenset     return a string of specified length
 !!    atleast    return a string of at least specified length
+!!    stretch    return a string of at least specified length with suffix
 !!    merge_str  make strings of equal length and then call MERGE(3f) intrinsic
 !!
 !!    CHARACTER ARRAY VERSUS STRING
@@ -469,6 +470,7 @@ PUBLIC unquote         !  remove quotes from string as if read with list-directe
 !----------------------# STRING LENGTH
 PUBLIC lenset          !  return a string as specified length
 PUBLIC atleast         !  return a string of at least specified length
+PUBLIC stretch         !  return a string of at least specified length with suffix
 PUBLIC merge_str       !  make strings of equal length and then call MERGE(3f) intrinsic
 PUBLIC len_white       !  find location of last non-whitespace character
 !----------------------# NONALPHA
@@ -561,8 +563,6 @@ character(len=*),parameter::ident_4="&
 interface v2s
    module procedure d2s, r2s, i2s, l2s
 end interface
-!-----------------------------------------------------------------------------------------------------------------------------------
-integer, parameter,public :: IPcmd=32768                        ! length of command
 !-----------------------------------------------------------------------------------------------------------------------------------
 ! ASCII character constants
 character, public, parameter :: ascii_nul = char(0)   ! null
@@ -1466,30 +1466,27 @@ character(len=*),parameter::ident_8="@(#)M_strings::delim(3f): parse a string an
 !     no quoting of delimiter is allowed
 !     no checking for more than n parameters, if any more they are ignored
 !
-      character(len=*),intent(in)    :: line
-      integer,intent(in)             :: n
-      character(len=*)               :: array(n)
-      integer,intent(out)            :: icount
-      integer,intent(out)            :: ibegin(n)
-      integer,intent(out)            :: iterm(n)
-      integer,intent(out)            :: ilen
-      character(len=*),intent(in)    :: dlim
+character(len=*),intent(in)    :: line
+integer,intent(in)             :: n
+character(len=*)               :: array(n)
+integer,intent(out)            :: icount
+integer,intent(out)            :: ibegin(n)
+integer,intent(out)            :: iterm(n)
+integer,intent(out)            :: ilen
+character(len=*),intent(in)    :: dlim
 !-----------------------------------------------------------------------------------------------------------------------------------
-      character(len=IPcmd):: line_local
-      logical             :: lstore
-      integer             :: i10
-      integer             :: iarray
-      integer             :: icol
-      integer             :: idlim
-      integer             :: iend
-      integer             :: ifound
-      integer             :: istart
+character(len=len(line)):: line_local
+logical             :: lstore
+integer             :: i10
+integer             :: iarray
+integer             :: icol
+integer             :: idlim
+integer             :: iend
+integer             :: ifound
+integer             :: istart
 !-----------------------------------------------------------------------------------------------------------------------------------
       icount=0
       ilen=len_trim(line)
-      if(ilen > IPcmd)then
-         call journal('*delim* input line too long')
-      endif
       line_local=line
 
       idlim=len(dlim)
@@ -4511,23 +4508,27 @@ end subroutine test_nospace
 !===================================================================================================================================
 !>
 !!##NAME
-!!    atleast(3f) - [M_strings:LENGTH] return string padded to at least specified lengt
+!!    stretch(3f) - [M_strings:LENGTH] return string padded to at least specified lengt
 !!
 !!##SYNOPSIS
 !!
-!!    function atleast(str,length) result(strout)
+!!    function stretch(str,length,pattern,suffix) result(strout)
 !!
-!!     character(len=*)                           :: str
-!!     integer,intent(in)                         :: length
-!!     character(len=max(length,len(trim(line)))) ::  strout
+!!     character(len=*),intent(in)         :: str
+!!     integer,intent(in)                  :: length
+!!     character(len=*)intent(in),optional ::  pattern
+!!     character(len=*)intent(in),optional ::  suffix
+!!     character(len=:),allocatable        ::  strout
 !!##DESCRIPTION
-!!    atleast(3f) pads a string with spaces to at least the specified
+!!    stretch(3f) pads a string with spaces to at least the specified
 !!    length. If the trimmed input string is longer than the requested
 !!    length the trimmed string is returned.
 !!##OPTIONS
-!!    str     the input string to return trimmed, but then padded to
-!!            the specified length if shorter than length
-!!    length  The minimum string length to return
+!!    str      the input string to return trimmed, but then padded to
+!!             the specified length if shorter than length
+!!    length   The minimum string length to return
+!!    pattern  optional string to use as padding. Defaults to a space.
+!!    suffix   optional string to append to output string
 !!##RETURNS
 !!    strout  The input string padded to the requested length or
 !!            the trimmed input string if the input string is
@@ -4537,30 +4538,166 @@ end subroutine test_nospace
 !!
 !!    Sample Program:
 !!
-!!     program demo_atleast
-!!      use M_strings, only : atleast
+!!     program demo_stretch
+!!      use M_strings, only : stretch
 !!      implicit none
 !!      character(len=10)            :: string='abcdefghij'
 !!      character(len=:),allocatable :: answer
-!!         answer=atleast(string,5)
+!!      integer                      :: i
+!!         answer=stretch(string,5)
 !!         write(*,'("[",a,"]")') answer
-!!         answer=atleast(string,20)
+!!         answer=stretch(string,20)
 !!         write(*,'("[",a,"]")') answer
-!!     end program demo_atleast
+!!         i=30
+!!         write(*,*)
+!!         write(*,'(1x,a,i0)') stretch('CHAPTER 1 : The beginning ',i,'.'), 1
+!!         write(*,'(1x,a,i0)') stretch('CHAPTER 2 : The end ',i,'.'),       1234
+!!         write(*,'(1x,a,i0)') stretch('APPENDIX ',i,'.'),                  1235
+!!         write(*,*)
+!!         write(*,'(1x,a,i7)') stretch('CHAPTER 1 : The beginning ',i,'.'), 1
+!!         write(*,'(1x,a,i7)') stretch('CHAPTER 2 : The end ',i,'.'),       1234
+!!         write(*,'(1x,a,i7)') stretch('APPENDIX ',i,'.'),                  1235
+!!         write(*,*)
+!!         write(*,*) stretch('CHAPTER 1 : The beginning ',i,suffix=': '), 1
+!!         write(*,*) stretch('CHAPTER 2 : The end ',i,suffix=': '),       1234
+!!         write(*,*) stretch('APPENDIX ',i,suffix=': '),                  1235
+!!     end program demo_stretch
 !!
-!!    Expected output:
+!!   Results:
 !!
-!!     [abcdefghij]
-!!     [abcdefghij          ]
+!!    [abcdefghij]
+!!    [abcdefghij          ]
+!!
+!!     CHAPTER 1 : The beginning ....1
+!!     CHAPTER 2 : The end ..........1234
+!!     APPENDIX .....................1235
+!!
+!!     CHAPTER 1 : The beginning ....      1
+!!     CHAPTER 2 : The end ..........   1234
+!!     APPENDIX .....................   1235
 !===================================================================================================================================
-function atleast(line,length) result(strout)
+function stretch(line,length,pattern,suffix) result(strout)
 
-character(len=*),parameter::ident_31="@(#)M_strings::atleast(3f): return string padded to at least specified length"
+character(len=*),parameter::ident_31="@(#)M_strings::stretch(3f): return string padded to at least specified length"
 
-character(len=*),intent(in)  ::  line
-integer,intent(in)           ::  length
-character(len=max(length,len(trim(line)))) ::  strout
+character(len=*),intent(in)                  :: line
+integer,intent(in)                           :: length
+character(len=*),intent(in),optional         :: pattern
+character(len=*),intent(in),optional         :: suffix
+!!character(len=max(length,len(trim(line)))) :: strout
+character(len=:),allocatable                 :: strout
+integer                                      :: imax
+   if(present(pattern))then
+      strout=atleast(line,length,pattern)
+   else
+      strout=atleast(line,length)
+   endif
+   if(present(suffix))then
+      strout=strout//suffix
+   endif
+end function stretch
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_stretch()
+   call unit_check_start('stretch',' &
+      & -description ''return a string of at least specified length'' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
+      & ')
+   call unit_check('stretch',stretch('Hello World',20)//'!'.eq.'Hello World         !',msg='check if padded')
+   call unit_check('stretch',len(stretch('Hello World',20)).eq.20,msg='check padded length')
+   call unit_check('stretch',len(stretch('Hello World',2)).eq.11 &
+           .and.stretch('Hello World',2).eq.'Hello World', &
+           msg='check not truncated')
+   call unit_check_done('stretch',msg='tests completed')
+end subroutine test_stretch
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+!>
+!!##NAME
+!!   atleast(3f) - [M_strings:LENGTH] return string padded to at least specified lengt
+!! !!
+!!##SYNOPSIS
+!!
+!! !!
+!!   function atleast(str,length,pattern) result(strout)
+!! !!
+!!    character(len=*)                           :: str
+!!    integer,intent(in)                         :: length
+!!    character(len=max(length,len(trim(line)))) ::  strout
+!!    character(len=*),optional                  ::  pattern
+!!##DESCRIPTION
+!!   atleast(3f) pads a string with spaces to at least the specified
+!!   length. If the trimmed input string is longer than the requested
+!!   length the trimmed string is returned.
+!!##OPTIONS
+!!   str      the input string to return trimmed, but then padded to
+!!            the specified length if shorter than length
+!!   length   The minimum string length to return
+!!   pattern  optional string to use as padding. Defaults to a space.
+!!##RETURNS
+!!   strout  The input string padded to the requested length or
+!!           the trimmed input string if the input string is
+!!           longer than the requested length.
+!! !!
+!!##EXAMPLE
+!!
+!! !!
+!!   Sample Program:
+!! !!
+!!    program demo_atleast
+!!     use M_strings, only : atleast
+!!     implicit none
+!!     character(len=10)            :: string='abcdefghij'
+!!     character(len=:),allocatable :: answer
+!!     integer                      :: i
+!!        answer=atleast(string,5)
+!!        write(*,'("[",a,"]")') answer
+!!        answer=atleast(string,20)
+!!        write(*,'("[",a,"]")') answer
+!!        i=30
+!!        write(*,*)
+!!        write(*,'(1x,a,i0)') atleast('CHAPTER 1 : The beginning ',i,'.'), 1
+!!        write(*,'(1x,a,i0)') atleast('CHAPTER 2 : The end ',i,'.'),       1234
+!!        write(*,'(1x,a,i0)') atleast('APPENDIX ',i,'.'),                  1235
+!!        write(*,*)
+!!        write(*,'(1x,a,i7)') atleast('CHAPTER 1 : The beginning ',i,'.'), 1
+!!        write(*,'(1x,a,i7)') atleast('CHAPTER 2 : The end ',i,'.'),       1234
+!!        write(*,'(1x,a,i7)') atleast('APPENDIX ',i,'.'),                  1235
+!!    end program demo_atleast
+!!
+!!  Results:
+!!
+!!   [abcdefghij]
+!!   [abcdefghij          ]
+!!
+!!    CHAPTER 1 : The beginning ....1
+!!    CHAPTER 2 : The end ..........1234
+!!    APPENDIX .....................1235
+!!
+!!    CHAPTER 1 : The beginning ....      1
+!!    CHAPTER 2 : The end ..........   1234
+!!    APPENDIX .....................   1235
+!===================================================================================================================================
+!===================================================================================================================================
+function atleast(line,length,pattern) result(strout)
+
+character(len=*),parameter::ident_32="@(#)M_strings::atleast(3f): return string padded to at least specified length"
+
+character(len=*),intent(in)                :: line
+integer,intent(in)                         :: length
+character(len=*),intent(in),optional       :: pattern
+character(len=max(length,len(trim(line)))) :: strout
+if(present(pattern))then
+   strout=line//repeat(pattern,len(strout)/len(pattern)+1)
+else
    strout=line
+endif
 end function atleast
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_atleast()
@@ -4625,7 +4762,7 @@ end subroutine test_atleast
 !===================================================================================================================================
 function lenset(line,length) result(strout)
 
-character(len=*),parameter::ident_32="@(#)M_strings::lenset(3f): return string trimmed or padded to specified length"
+character(len=*),parameter::ident_33="@(#)M_strings::lenset(3f): return string trimmed or padded to specified length"
 
 character(len=*),intent(in)  ::  line
 integer,intent(in)           ::  length
@@ -4697,7 +4834,7 @@ function merge_str(str1,str2,expr) result(strout)
 ! for some reason the MERGE(3f) intrinsic requires the strings it compares to be of equal length
 ! make an alias for MERGE(3f) that makes the lengths the same before doing the comparison by padding the shorter one with spaces
 
-character(len=*),parameter::ident_33="@(#)M_strings::merge_str(3f): pads first and second arguments to MERGE(3f) to same length"
+character(len=*),parameter::ident_34="@(#)M_strings::merge_str(3f): pads first and second arguments to MERGE(3f) to same length"
 
 character(len=*),intent(in)     :: str1
 character(len=*),intent(in)     :: str2
@@ -4794,7 +4931,7 @@ end subroutine test_merge_str
 !elemental pure function compact(str,char) result (outstr)
 function compact(str,char) result (outstr)
 
-character(len=*),parameter::ident_34="@(#)M_strings::compact(3f): Converts white-space to single spaces"
+character(len=*),parameter::ident_35="@(#)M_strings::compact(3f): Converts white-space to single spaces"
 
 character(len=*),intent(in)          :: str
 character(len=*),intent(in),optional :: char
@@ -4969,7 +5106,7 @@ end subroutine test_compact
 !===================================================================================================================================
 elemental function noesc(INSTR)
 
-character(len=*),parameter::ident_35="@(#)M_strings::noesc(3f): convert non-printable characters to a space"
+character(len=*),parameter::ident_36="@(#)M_strings::noesc(3f): convert non-printable characters to a space"
 
    character(len=*),intent(in) :: INSTR   ! string that might contain nonprintable characters
    character(len=len(instr))   :: noesc
@@ -5034,9 +5171,9 @@ end subroutine test_noesc
 !!
 !!    subroutine string_to_value(chars,valu,ierr)
 !!
-!!     character(len=*),intent(in) :: chars   ! input string
-!!     integer|real|doubleprecision,intent(out)         :: valu
-!!     integer,intent(out)         :: ierr
+!!     character(len=*),intent(in)              :: chars   ! input string
+!!     integer|real|doubleprecision,intent(out) :: valu
+!!     integer,intent(out)                      :: ierr
 !!##DESCRIPTION
 !!       returns a real value from a numeric character string.
 !!
@@ -5044,8 +5181,8 @@ end subroutine test_noesc
 !!       exponential. If the input string begins with "B", "Z", or "O"
 !!       and otherwise represents a positive whole number it is assumed to
 !!       be a binary, hexadecimal, or octal value. If the string contains
-!!       commas they are removed. If string is of the form NN:MMM... or
-!!       NN#MMM NN is assumed to be the base of the whole number.
+!!       commas they are removed. If the string is of the form NN:MMM... or
+!!       NN#MMM then NN is assumed to be the base of the whole number.
 !!
 !!       if an error occurs in the READ, IOSTAT is returned in IERR and
 !!       value is set to zero. if no error occurs, IERR=0.
@@ -5068,7 +5205,7 @@ end subroutine test_noesc
 !===================================================================================================================================
 subroutine a2r(chars,valu,ierr)
 
-character(len=*),parameter::ident_36="@(#)M_strings::a2r(3fp): subroutine returns real value from string"
+character(len=*),parameter::ident_37="@(#)M_strings::a2r(3fp): subroutine returns real value from string"
 
    character(len=*),intent(in) :: chars                      ! input string
    real,intent(out)            :: valu                       ! value read from input string
@@ -5081,7 +5218,7 @@ end subroutine a2r
 !----------------------------------------------------------------------------------------------------------------------------------
 subroutine a2i(chars,valu,ierr)
 
-character(len=*),parameter::ident_37="@(#)M_strings::a2i(3fp): subroutine returns integer value from string"
+character(len=*),parameter::ident_38="@(#)M_strings::a2i(3fp): subroutine returns integer value from string"
 
    character(len=*),intent(in) :: chars                      ! input string
    integer,intent(out)         :: valu                       ! value read from input string
@@ -5094,7 +5231,7 @@ end subroutine a2i
 !----------------------------------------------------------------------------------------------------------------------------------
 subroutine a2d(chars,valu,ierr)
 
-character(len=*),parameter::ident_38="@(#)M_strings::a2d(3fp): subroutine returns double value from string"
+character(len=*),parameter::ident_39="@(#)M_strings::a2d(3fp): subroutine returns double value from string"
 
 !     1989,2016 John S. Urban.
 !
@@ -5359,7 +5496,7 @@ end subroutine test_string_to_value
 doubleprecision function s2v(chars,ierr)
 !  1989 John S. Urban
 
-character(len=*),parameter::ident_39="@(#)M_strings::s2v(3f): returns doubleprecision number from string"
+character(len=*),parameter::ident_40="@(#)M_strings::s2v(3f): returns doubleprecision number from string"
 
 
 character(len=*),intent(in) :: chars
@@ -5462,7 +5599,7 @@ end subroutine test_s2v
 !!
 !!##SYNOPSIS
 !!
-!!    subroutine value_to_string(value,chars[,ilen,ierr,fmt])
+!!    subroutine value_to_string(value,chars[,ilen,ierr,fmt,trimz])
 !!
 !!     character(len=*) :: chars  ! minimum of 23 characters required
 !!     !--------
@@ -5476,17 +5613,22 @@ end subroutine test_s2v
 !!     integer,intent(out),optional             :: ilen
 !!     integer,optional                         :: ierr
 !!     character(len=*),intent(in),optional     :: fmt
+!!     logical,intent(in)                       :: trimz
 !!##DESCRIPTION
 !!
-!!    value_to_string(3f) returns a numeric representation in a string given
-!!    a numeric value of type REAL, DOUBLEPRECISION, INTEGER or LOGICAL. It
-!!    creates the string using internal writes. It then removes trailing
-!!    zeros from non-zero values, and left-justifies the string.
+!!    value_to_string(3f) returns a numeric representation of a numeric
+!!    value in a string given a numeric value of type REAL, DOUBLEPRECISION,
+!!    INTEGER or LOGICAL. It creates the string using internal writes. It
+!!    then removes trailing zeros from non-zero values, and left-justifies
+!!    the string.
 !!
 !!##OPTIONS
 !!       VALUE   input value to be converted to a string
 !!       FMT     You may specify a specific format that produces a string
 !!               up to the length of CHARS; optional.
+!!       TRIMZ   If a format is supplied the default is not to try to trim
+!!               trailing zeros. Set TRIMZ to .true. to trim zeros from a
+!!               string assumed to represent a simple numeric value.
 !!
 !!##RETURNS
 !!       CHARS   returned string representing input value, must be at least
@@ -5528,7 +5670,7 @@ end subroutine test_s2v
 !!     The value is [0.33333333333333331]
 !===================================================================================================================================
 !===================================================================================================================================
-subroutine value_to_string(gval,chars,length,err,fmt)
+subroutine value_to_string(gval,chars,length,err,fmt,trimz)
 
 character(len=*),parameter::ident_40="@(#)M_strings::value_to_string(3fp): subroutine returns a string from a value"
 
@@ -5538,6 +5680,7 @@ integer,intent(out),optional             :: length
 integer,optional                         :: err
 integer                                  :: err_local
 character(len=*),optional,intent(in)     :: fmt         ! format to write value with
+logical,intent(in),optional              :: trimz
 character(len=:),allocatable             :: fmt_local
 character(len=1024)                      :: msg
 
@@ -5562,12 +5705,16 @@ character(len=1024)                      :: msg
          fmt_local='(l1)'
          if(fmt.ne.'') fmt_local=fmt
          write(chars,fmt_local,iostat=err_local,iomsg=msg)gval
+      class default
+         call journal('*value_to_string* UNKNOWN TYPE')
+         chars=' '
       end select
       if(fmt.eq.'') then
          chars=adjustl(chars)
          call trimzeros(chars)
       endif
    else                                                  ! no explicit format option present
+      err_local=-1
       select type(gval)
       type is (integer)
          write(chars,*,iostat=err_local,iomsg=msg)gval
@@ -5577,9 +5724,17 @@ character(len=1024)                      :: msg
          write(chars,*,iostat=err_local,iomsg=msg)gval
       type is (logical)
          write(chars,*,iostat=err_local,iomsg=msg)gval
+      class default
+         chars=''
       end select
       chars=adjustl(chars)
       if(index(chars,'.').ne.0) call trimzeros(chars)
+   endif
+   if(present(trimz))then
+      if(trimz)then
+         chars=adjustl(chars)
+         call trimzeros(chars)
+      endif
    endif
 
    if(present(length)) then
@@ -5731,7 +5886,7 @@ end subroutine test_value_to_string
 ! very odd compiler problems in many (but not all) programs using this routine; GNU Fortran (GCC) 5.4.0; 20161030
 function v2s_bug(gval) result(outstr)
 
-character(len=*),parameter::ident_40="@(#)M_strings::v2s_bug(3f): function returns string given numeric value"
+character(len=*),parameter::ident_41="@(#)M_strings::v2s_bug(3f): function returns string given numeric value"
 
 class(*),intent(in)          :: gval                         ! input value to convert to a string
 character(len=:),allocatable :: outstr                       ! output string to generate
@@ -5777,7 +5932,7 @@ end subroutine test_v2s_bug
 !===================================================================================================================================
 function d2s(dvalue,fmt) result(outstr)
 
-character(len=*),parameter::ident_41="@(#)M_strings::d2s(3fp): private function returns string given doubleprecision value"
+character(len=*),parameter::ident_42="@(#)M_strings::d2s(3fp): private function returns string given doubleprecision value"
 
 doubleprecision,intent(in)   :: dvalue                         ! input value to convert to a string
 character(len=*),intent(in),optional :: fmt
@@ -5793,7 +5948,7 @@ end function d2s
 !===================================================================================================================================
 function r2s(rvalue,fmt) result(outstr)
 
-character(len=*),parameter::ident_42="@(#)M_strings::r2s(3fp): private function returns string given real value"
+character(len=*),parameter::ident_43="@(#)M_strings::r2s(3fp): private function returns string given real value"
 
 real,intent(in)              :: rvalue                         ! input value to convert to a string
 character(len=*),intent(in),optional :: fmt
@@ -5809,7 +5964,7 @@ end function r2s
 !===================================================================================================================================
 function i2s(ivalue,fmt) result(outstr)
 
-character(len=*),parameter::ident_43="@(#)M_strings::i2s(3fp): private function returns string given integer value"
+character(len=*),parameter::ident_44="@(#)M_strings::i2s(3fp): private function returns string given integer value"
 
 integer,intent(in)           :: ivalue                         ! input value to convert to a string
 character(len=*),intent(in),optional :: fmt
@@ -5825,7 +5980,7 @@ end function i2s
 !===================================================================================================================================
 function l2s(lvalue,fmt) result(outstr)
 
-character(len=*),parameter::ident_44="@(#)M_strings::l2s(3fp): private function returns string given logical value"
+character(len=*),parameter::ident_45="@(#)M_strings::l2s(3fp): private function returns string given logical value"
 
 logical,intent(in)           :: lvalue                         ! input value to convert to a string
 character(len=*),intent(in),optional :: fmt
@@ -5984,7 +6139,7 @@ end subroutine test_v2s
 function isNumber(string,msg,verbose)
 implicit none
 
-character(len=*),parameter::ident_45="@(#)M_strings::isnumber(3f): Determines if a string is a number of not."
+character(len=*),parameter::ident_46="@(#)M_strings::isnumber(3f): Determines if a string is a number of not."
 
 character(len=*),intent(in)    :: string
 character(len=:),intent(out),allocatable,optional :: msg
@@ -6161,7 +6316,7 @@ end subroutine test_isnumber
 !===================================================================================================================================
 subroutine trimzeros(string)
 
-character(len=*),parameter::ident_46="@(#)M_strings::trimzeros(3fp): Delete trailing zeros from numeric decimal string"
+character(len=*),parameter::ident_47="@(#)M_strings::trimzeros(3fp): Delete trailing zeros from numeric decimal string"
 
 ! if zero needs added at end assumes input string has room
 character(len=*)             :: string
@@ -6266,7 +6421,7 @@ subroutine listout(icurve_lists,icurve_expanded,inums_out,ierr)
 use M_journal, only : journal
 implicit none
 
-character(len=*),parameter::ident_47="&
+character(len=*),parameter::ident_48="&
 &@(#)M_strings::listout(3f): copy icurve_lists to icurve_expanded expanding negative numbers to ranges (1 -10 means 1 thru 10)"
 
 !   Created: 19971231
@@ -6698,7 +6853,7 @@ end subroutine test_unquote
 !===================================================================================================================================
 function describe(ch) result (string)
 
-character(len=*),parameter::ident_48="@(#)M_strings::describe(3f): return string describing long name of a single character"
+character(len=*),parameter::ident_49="@(#)M_strings::describe(3f): return string describing long name of a single character"
 
 character(len=1),intent(in)   :: ch
 character(len=:),allocatable  :: string
@@ -6980,7 +7135,7 @@ end subroutine test_describe
 subroutine getvals(line,values,icount,ierr)
 implicit none
 
-character(len=*),parameter::ident_49="@(#)M_strings::getvals(3f): read arbitrary number of values from a character variable"
+character(len=*),parameter::ident_50="@(#)M_strings::getvals(3f): read arbitrary number of values from a character variable"
 
 ! JSU 20170831
 
@@ -7150,7 +7305,7 @@ implicit none
 !   Quits if encounters any errors in read.
 !----------------------------------------------------------------------------------------------------------------------------------
 
-character(len=*),parameter::ident_50="@(#)M_strings::string_to_values(3f): reads an array of numbers from a numeric string"
+character(len=*),parameter::ident_51="@(#)M_strings::string_to_values(3f): reads an array of numbers from a numeric string"
 
 character(len=*),intent(in)  :: line          ! input string
 integer,intent(in)           :: iread         ! maximum number of values to try to read into values
@@ -7314,7 +7469,7 @@ end subroutine test_string_to_values
 !===================================================================================================================================
 function s2vs(string,delim) result(darray)
 
-character(len=*),parameter::ident_51="@(#)M_strings::s2vs(3f): function returns array of values from a string"
+character(len=*),parameter::ident_52="@(#)M_strings::s2vs(3f): function returns array of values from a string"
 
 character(len=*),intent(in)        :: string                       ! keyword to retrieve value for from dictionary
 character(len=*),optional          :: delim                        ! delimiter characters
@@ -7366,7 +7521,7 @@ end subroutine test_s2vs
 !===================================================================================================================================
 elemental function isprint(onechar)
 
-character(len=*),parameter::ident_52="@(#)M_strings::isprint(3f): indicates if input character is a printable ASCII character"
+character(len=*),parameter::ident_53="@(#)M_strings::isprint(3f): indicates if input character is a printable ASCII character"
 
 character,intent(in) :: onechar
 logical              :: isprint
@@ -7459,7 +7614,7 @@ end subroutine test_isprint
 function msg(generic1, generic2, generic3, generic4, generic5, generic6, generic7, generic8, generic9,nospace)
 implicit none
 
-character(len=*),parameter::ident_53="@(#)M_debug::msg(3f): writes a message to a string composed of any standard scalar types"
+character(len=*),parameter::ident_54="@(#)M_debug::msg(3f): writes a message to a string composed of any standard scalar types"
 
 class(*),intent(in),optional  :: generic1 ,generic2 ,generic3 ,generic4 ,generic5
 class(*),intent(in),optional  :: generic6 ,generic7 ,generic8 ,generic9
@@ -7520,7 +7675,7 @@ end function msg
 !===================================================================================================================================
 elemental function isgraph(onechar)
 
-character(len=*),parameter::ident_54="&
+character(len=*),parameter::ident_55="&
 &@(#)M_strings::isgraph(3f) :indicates if character is printable ASCII character excluding space"
 
 character,intent(in) :: onechar
@@ -7570,7 +7725,7 @@ end subroutine test_isgraph
 !===================================================================================================================================
 elemental function isalpha(ch) result(res)
 
-character(len=*),parameter::ident_55="@(#)M_strings::isalpha(3f): Return .true. if character is a letter and .false. otherwise"
+character(len=*),parameter::ident_56="@(#)M_strings::isalpha(3f): Return .true. if character is a letter and .false. otherwise"
 
 character,intent(in) :: ch
 logical              :: res
@@ -7622,7 +7777,7 @@ end subroutine test_isalpha
 !===================================================================================================================================
 elemental function isxdigit(ch) result(res)
 
-character(len=*),parameter::ident_56="@(#)M_strings::isxdigit(3f): returns .true. if c is a hexadecimal digit (0-9,a-f, or A-F)"
+character(len=*),parameter::ident_57="@(#)M_strings::isxdigit(3f): returns .true. if c is a hexadecimal digit (0-9,a-f, or A-F)"
 
 character,intent(in) :: ch
 logical              :: res
@@ -7675,7 +7830,7 @@ end subroutine test_isxdigit
 !===================================================================================================================================
 elemental function isdigit(ch) result(res)
 
-character(len=*),parameter::ident_57="@(#)M_strings::isdigit(3f): Returns .true. if ch is a digit (0-9) and .false. otherwise"
+character(len=*),parameter::ident_58="@(#)M_strings::isdigit(3f): Returns .true. if ch is a digit (0-9) and .false. otherwise"
 
 character,intent(in) :: ch
 logical              :: res
@@ -7726,7 +7881,7 @@ end subroutine test_isdigit
 !===================================================================================================================================
 elemental function isblank(ch) result(res)
 
-character(len=*),parameter::ident_58="@(#)M_strings::isblank(3f): returns .true. if character is a blank (space or horizontal tab)"
+character(len=*),parameter::ident_59="@(#)M_strings::isblank(3f): returns .true. if character is a blank (space or horizontal tab)"
 
 character,intent(in) :: ch
 logical              :: res
@@ -7777,7 +7932,7 @@ end subroutine test_isblank
 !===================================================================================================================================
 elemental function isascii(ch) result(res)
 
-character(len=*),parameter::ident_59="@(#)M_strings::isascii(3f): returns .true. if character is in the range char(0) to char(127)"
+character(len=*),parameter::ident_60="@(#)M_strings::isascii(3f): returns .true. if character is in the range char(0) to char(127)"
 
 character,intent(in) :: ch
 logical              :: res
@@ -7828,7 +7983,7 @@ end subroutine test_isascii
 !===================================================================================================================================
 elemental function isspace(ch) result(res)
 
-character(len=*),parameter::ident_60="@(#)M_strings::isspace(3f): true if null,space,tab,return,new line,vertical tab, or formfeed"
+character(len=*),parameter::ident_61="@(#)M_strings::isspace(3f): true if null,space,tab,return,new line,vertical tab, or formfeed"
 
 character,intent(in) :: ch
 logical              :: res
@@ -7884,7 +8039,7 @@ end subroutine test_isspace
 !===================================================================================================================================
 elemental function iscntrl(ch) result(res)
 
-character(len=*),parameter::ident_61="@(#)M_strings::iscntrl(3f): true if a delete or ordinary control character(0x7F or 0x00-0x1F)"
+character(len=*),parameter::ident_62="@(#)M_strings::iscntrl(3f): true if a delete or ordinary control character(0x7F or 0x00-0x1F)"
 
 character,intent(in) :: ch
 logical              :: res
@@ -7936,7 +8091,7 @@ end subroutine test_iscntrl
 !===================================================================================================================================
 elemental function ispunct(ch) result(res)
 
-character(len=*),parameter::ident_62="@(#)M_strings::ispunct(3f): true if a printable punctuation character (isgraph(c)&&"
+character(len=*),parameter::ident_63="@(#)M_strings::ispunct(3f): true if a printable punctuation character (isgraph(c)&&"
 
 character,intent(in) :: ch
 logical              :: res
@@ -7992,7 +8147,7 @@ end subroutine test_ispunct
 !===================================================================================================================================
 pure elemental function isupper(ch) result(res)
 
-character(len=*),parameter::ident_63="@(#)M_strings::isupper(3f): returns true if character is an uppercase letter (A-Z)"
+character(len=*),parameter::ident_64="@(#)M_strings::isupper(3f): returns true if character is an uppercase letter (A-Z)"
 
 character,intent(in) :: ch
 logical              :: res
@@ -8045,7 +8200,7 @@ end subroutine test_isupper
 !===================================================================================================================================
 elemental function islower(ch) result(res)
 
-character(len=*),parameter::ident_64="@(#)M_strings::islower(3f): returns true if character is a miniscule letter (a-z)"
+character(len=*),parameter::ident_65="@(#)M_strings::islower(3f): returns true if character is a miniscule letter (a-z)"
 
 character,intent(in) :: ch
 logical              :: res
@@ -8159,7 +8314,7 @@ end subroutine test_islower
 !===================================================================================================================================
 elemental function isalnum(ch) result(res)
 
-character(len=*),parameter::ident_65="@(#)M_strings::isalnum(3f): returns true if character is a letter (a-z,A-Z) or digit(0-9)"
+character(len=*),parameter::ident_66="@(#)M_strings::isalnum(3f): returns true if character is a letter (a-z,A-Z) or digit(0-9)"
 
 character,intent(in)       :: ch
 logical                    :: res
@@ -8267,7 +8422,7 @@ character(len=*),intent(out) :: y
 integer,intent(in)           :: b,a
 integer                      :: temp
 
-character(len=*),parameter::ident_66="&
+character(len=*),parameter::ident_67="&
 &@(#)M_strings::base(3f): convert whole number string in base [2-36] to string in alternate base [2-36]"
 
 base=.true.
@@ -8414,7 +8569,7 @@ end subroutine test_base
 logical function decodebase(string,basein,out10)
 implicit none
 
-character(len=*),parameter::ident_67="@(#)M_strings::decodebase(3f): convert whole number string in base [2-36] to base 10 number"
+character(len=*),parameter::ident_68="@(#)M_strings::decodebase(3f): convert whole number string in base [2-36] to base 10 number"
 
 character(len=*),intent(in)  :: string
 integer,intent(in)           :: basein
@@ -8578,7 +8733,7 @@ end subroutine test_decodebase
 logical function codebase(inval10,outbase,answer)
 implicit none
 
-character(len=*),parameter::ident_68="@(#)M_strings::codebase(3f): convert whole number in base 10 to string in base [2-36]"
+character(len=*),parameter::ident_69="@(#)M_strings::codebase(3f): convert whole number in base 10 to string in base [2-36]"
 
 integer,intent(in)           :: inval10
 integer,intent(in)           :: outbase
@@ -8733,7 +8888,7 @@ end subroutine test_codebase
 !===================================================================================================================================
 function fmt(source_string,length)
 
-character(len=*),parameter::ident_69="@(#)M_strings::fmt(3f): wrap a long string into a paragraph"
+character(len=*),parameter::ident_70="@(#)M_strings::fmt(3f): wrap a long string into a paragraph"
 
 character(len=*),intent(in)       :: source_string
 integer,intent(in)                :: length
@@ -9063,7 +9218,7 @@ contains
 !
 function construct_from_fill(chars,len)
 
-character(len=*),parameter::ident_70="@(#)M_strings::construct_from_fill(3f): construct TYPE(STRING)"
+character(len=*),parameter::ident_71="@(#)M_strings::construct_from_fill(3f): construct TYPE(STRING)"
 
 character(len=*),intent(in),optional :: chars
 integer,intent(in),optional          :: len
@@ -9087,7 +9242,7 @@ end function construct_from_fill
 !===================================================================================================================================
 function oop_len(self) result (length)
 
-character(len=*),parameter::ident_71="@(#)M_strings::oop_len(3f): length of string"
+character(len=*),parameter::ident_72="@(#)M_strings::oop_len(3f): length of string"
 
 class(string),intent(in)    :: self
 integer                     :: length
@@ -9098,7 +9253,7 @@ end function oop_len
 !===================================================================================================================================
 function oop_len_trim(self) result (length)
 
-character(len=*),parameter::ident_72="@(#)M_strings::oop_len_trim(3f): trimmed length of string"
+character(len=*),parameter::ident_73="@(#)M_strings::oop_len_trim(3f): trimmed length of string"
 
 class(string),intent(in)    :: self
 integer                     :: length
@@ -9109,7 +9264,7 @@ end function oop_len_trim
 !===================================================================================================================================
 function oop_switch(self) result (array)
 
-character(len=*),parameter::ident_73="@(#)M_strings::oop_switch(3f): convert string to array of single characters"
+character(len=*),parameter::ident_74="@(#)M_strings::oop_switch(3f): convert string to array of single characters"
 
 class(string),intent(in)    :: self
 character(len=1)            :: array(len(self%str))
@@ -9120,7 +9275,7 @@ end function oop_switch
 !===================================================================================================================================
 function oop_index(self,substring,back) result (location)
 
-character(len=*),parameter::ident_74="@(#)M_strings::oop_index(3f): find starting position of a substring in a string"
+character(len=*),parameter::ident_75="@(#)M_strings::oop_index(3f): find starting position of a substring in a string"
 
 class(string),intent(in)    :: self
 character(len=*),intent(in) :: substring
@@ -9137,7 +9292,7 @@ end function oop_index
 !===================================================================================================================================
 function oop_upper(self) result (string_out)
 
-character(len=*),parameter::ident_75="@(#)M_strings::oop_upper(3f): convert string to uppercase"
+character(len=*),parameter::ident_76="@(#)M_strings::oop_upper(3f): convert string to uppercase"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -9148,7 +9303,7 @@ end function oop_upper
 !===================================================================================================================================
 function oop_lower(self) result (string_out)
 
-character(len=*),parameter::ident_76="@(#)M_strings::oop_lower(3f): convert string to miniscule"
+character(len=*),parameter::ident_77="@(#)M_strings::oop_lower(3f): convert string to miniscule"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -9159,7 +9314,7 @@ end function oop_lower
 !===================================================================================================================================
 function oop_expand(self,escape_char) result (string_out)
 
-character(len=*),parameter::ident_77="@(#)M_strings::oop_expand(3f): expand common escape sequences by calling expand(3f)"
+character(len=*),parameter::ident_78="@(#)M_strings::oop_expand(3f): expand common escape sequences by calling expand(3f)"
 
 class(string),intent(in)      :: self
 character,intent(in),optional :: escape_char
@@ -9175,7 +9330,7 @@ end function oop_expand
 !===================================================================================================================================
 function oop_trim(self) result (string_out)
 
-character(len=*),parameter::ident_78="@(#)M_strings::oop_trim(3f): trim trailing spaces"
+character(len=*),parameter::ident_79="@(#)M_strings::oop_trim(3f): trim trailing spaces"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -9186,7 +9341,7 @@ end function oop_trim
 !===================================================================================================================================
 function oop_crop(self) result (string_out)
 
-character(len=*),parameter::ident_79="@(#)M_strings::oop_crop(3f): crop leading and trailing spaces"
+character(len=*),parameter::ident_80="@(#)M_strings::oop_crop(3f): crop leading and trailing spaces"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -9197,7 +9352,7 @@ end function oop_crop
 !===================================================================================================================================
 function oop_reverse(self) result (string_out)
 
-character(len=*),parameter::ident_80="@(#)M_strings::oop_reverse(3f): reverse string"
+character(len=*),parameter::ident_81="@(#)M_strings::oop_reverse(3f): reverse string"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -9208,7 +9363,7 @@ end function oop_reverse
 !===================================================================================================================================
 function oop_adjustl(self) result (string_out)
 
-character(len=*),parameter::ident_81="@(#)M_strings::oop_adjustl(3f): adjust string to left"
+character(len=*),parameter::ident_82="@(#)M_strings::oop_adjustl(3f): adjust string to left"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -9219,7 +9374,7 @@ end function oop_adjustl
 !===================================================================================================================================
 function oop_adjustr(self) result (string_out)
 
-character(len=*),parameter::ident_82="@(#)M_strings::oop_adjustr(3f): adjust string to right"
+character(len=*),parameter::ident_83="@(#)M_strings::oop_adjustr(3f): adjust string to right"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -9230,7 +9385,7 @@ end function oop_adjustr
 !===================================================================================================================================
 function oop_adjustc(self,length) result (string_out)
 
-character(len=*),parameter::ident_83="@(#)M_strings::oop_adjustc(3f): adjust string to center"
+character(len=*),parameter::ident_84="@(#)M_strings::oop_adjustc(3f): adjust string to center"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -9246,7 +9401,7 @@ end function oop_adjustc
 !===================================================================================================================================
 function oop_int(self) result (value)
 
-character(len=*),parameter::ident_84="@(#)M_strings::oop_int(3f): string to integer"
+character(len=*),parameter::ident_85="@(#)M_strings::oop_int(3f): string to integer"
 
 class(string),intent(in)     :: self
 integer                      :: value
@@ -9258,7 +9413,7 @@ end function oop_int
 !===================================================================================================================================
 function oop_real(self) result (value)
 
-character(len=*),parameter::ident_85="@(#)M_strings::oop_real(3f): string to real"
+character(len=*),parameter::ident_86="@(#)M_strings::oop_real(3f): string to real"
 
 class(string),intent(in)     :: self
 real                         :: value
@@ -9270,7 +9425,7 @@ end function oop_real
 !===================================================================================================================================
 function oop_dble(self) result (value)
 
-character(len=*),parameter::ident_86="@(#)M_strings::oop_dble(3f): string to double"
+character(len=*),parameter::ident_87="@(#)M_strings::oop_dble(3f): string to double"
 
 class(string),intent(in)     :: self
 doubleprecision              :: value
@@ -9282,7 +9437,7 @@ end function oop_dble
 !===================================================================================================================================
 function oop_compact(self,char) result (string_out)
 
-character(len=*),parameter::ident_87="@(#)M_strings::oop_compact(3f): adjust string to center"
+character(len=*),parameter::ident_88="@(#)M_strings::oop_compact(3f): adjust string to center"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -9299,7 +9454,7 @@ end function oop_compact
 !===================================================================================================================================
 function oop_substitute(self,old,new) result (string_out)
 
-character(len=*),parameter::ident_88="&
+character(len=*),parameter::ident_89="&
 &@(#)M_strings::oop_substitute(3f): change all occurrences of oldstring to newstring non-recursively"
 
 class(string),intent(in)     :: self
@@ -9314,7 +9469,7 @@ end function oop_substitute
 !===================================================================================================================================
 function oop_transliterate(self,old,new) result (string_out)
 
-character(len=*),parameter::ident_89="&
+character(len=*),parameter::ident_90="&
 &@(#)M_strings::oop_transliterate(3f): change all occurrences of oldstring to newstring non-recursively"
 
 class(string),intent(in)     :: self
@@ -9328,7 +9483,7 @@ end function oop_transliterate
 !===================================================================================================================================
 function oop_atleast(self,length) result (string_out)
 
-character(len=*),parameter::ident_90="@(#)M_strings::oop_atleast(3f): set string to at least specified length"
+character(len=*),parameter::ident_91="@(#)M_strings::oop_atleast(3f): set string to at least specified length"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -9340,7 +9495,7 @@ end function oop_atleast
 !===================================================================================================================================
 function oop_lenset(self,length) result (string_out)
 
-character(len=*),parameter::ident_91="@(#)M_strings::oop_lenset(3f): set string to specific length"
+character(len=*),parameter::ident_92="@(#)M_strings::oop_lenset(3f): set string to specific length"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -9352,7 +9507,7 @@ end function oop_lenset
 !===================================================================================================================================
 function oop_matchw(self,pattern) result (answer)
 
-character(len=*),parameter::ident_92="@(#)M_strings::oop_matchw(3f): test if wildcard pattern matches string"
+character(len=*),parameter::ident_93="@(#)M_strings::oop_matchw(3f): test if wildcard pattern matches string"
 
 class(string),intent(in)     :: self
 character(len=*),intent(in)  :: pattern
@@ -9364,7 +9519,7 @@ end function oop_matchw
 !===================================================================================================================================
 function oop_notabs(self) result (string_out)
 
-character(len=*),parameter::ident_93="&
+character(len=*),parameter::ident_94="&
 &@(#)M_strings::oop_notabs(3f): expand tab characters assuming tab stops every eight(8) characters"
 
 class(string),intent(in)     :: self
@@ -9379,7 +9534,7 @@ end function oop_notabs
 !===================================================================================================================================
 function oop_noesc(self) result (string_out)
 
-character(len=*),parameter::ident_94="@(#)M_strings::oop_noesc(3f): replace non-printable characters with spaces"
+character(len=*),parameter::ident_95="@(#)M_strings::oop_noesc(3f): replace non-printable characters with spaces"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -9390,7 +9545,7 @@ end function oop_noesc
 !===================================================================================================================================
 function p(self) result (string_out)
 
-character(len=*),parameter::ident_95="@(#)M_strings::oop_p(3f): return CHARACTER string from TYPE(STRING)"
+character(len=*),parameter::ident_96="@(#)M_strings::oop_p(3f): return CHARACTER string from TYPE(STRING)"
 
 class(string),intent(in)     :: self
 character(len=len(self%str)) :: string_out
@@ -9404,7 +9559,7 @@ subroutine init_string(self)
 ! allow for TYPE(STRING) object to be initialized.
 !
 
-character(len=*),parameter::ident_96="@(#)M_strings::init_dt(3f): initialize TYPE(STRING)"
+character(len=*),parameter::ident_97="@(#)M_strings::init_dt(3f): initialize TYPE(STRING)"
 
 class(string)                        :: self
    self%str=''
@@ -9416,7 +9571,7 @@ end subroutine init_string
 !===================================================================================================================================
 function string_plus_value(self,value) result (other)
 
-character(len=*),parameter::ident_97="@(#)M_strings::string_plus_value(3f): add value to TYPE(STRING)"
+character(len=*),parameter::ident_98="@(#)M_strings::string_plus_value(3f): add value to TYPE(STRING)"
 
 class(string),intent(in)      :: self
 type(string)                  :: other
@@ -9434,7 +9589,7 @@ end function string_plus_value
 !===================================================================================================================================
 function string_minus_value(self,value) result (other)
 
-character(len=*),parameter::ident_98="@(#)M_strings::string_minus_value(3f): subtract value from TYPE(STRING)"
+character(len=*),parameter::ident_99="@(#)M_strings::string_minus_value(3f): subtract value from TYPE(STRING)"
 
 class(string),intent(in)      :: self
 type(string)                  :: other
@@ -9456,7 +9611,7 @@ end function string_minus_value
 !===================================================================================================================================
 function string_append_value(self,value) result (other)
 
-character(len=*),parameter::ident_99="@(#)M_strings::string_append_value(3f): append value to TYPE(STRING)"
+character(len=*),parameter::ident_100="@(#)M_strings::string_append_value(3f): append value to TYPE(STRING)"
 
 class(string),intent(in)      :: self
 type(string)                  :: other
@@ -9474,7 +9629,7 @@ end function string_append_value
 !===================================================================================================================================
 function string_multiply_value(self,value) result (other)
 
-character(len=*),parameter::ident_100="@(#)M_strings::string_multiply_value(3f): multiply TYPE(STRING) value times"
+character(len=*),parameter::ident_101="@(#)M_strings::string_multiply_value(3f): multiply TYPE(STRING) value times"
 
 class(string),intent(in)      :: self
 type(string)                  :: other
@@ -9490,7 +9645,7 @@ end function string_multiply_value
 !===================================================================================================================================
 logical function eq(self,other)
 
-character(len=*),parameter::ident_101="@(#)M_strings::eq(3f): compare derived type string objects (eq,lt,gt,le,ge,ne)"
+character(len=*),parameter::ident_102="@(#)M_strings::eq(3f): compare derived type string objects (eq,lt,gt,le,ge,ne)"
 
    class(string),intent(in) :: self
    type(string),intent(in)  :: other

@@ -1,5 +1,5 @@
            program demo_strgar2
-           use M_calculator_plus, only : strgar2
+           use M_calculator, only : strgar2
            integer             :: ios
            integer             :: i
            integer             :: ifound

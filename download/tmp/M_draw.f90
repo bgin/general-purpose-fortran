@@ -74,13 +74,13 @@
 !!
 !!       xrdb <<\end_of_file
 !!       ! X11 Windows fonts to use for "small" and "large" fonts
-!!       draw*smallfont: fixed
-!!       draw*largefont: 9x15
+!!       M_draw*smallfont: fixed
+!!       M_draw*largefont: 9x15
 !!       ! title on decoration bar for the window
-!!       draw*title: My M_draw program
+!!       M_draw*title: My M_draw program
 !!       ! window geometry and position,
 !!       ! overridden by prefsize(3c) and prefposition(3c)
-!!       draw.Geometry: =500x500-10+20
+!!       M_draw.Geometry: =500x500-10+20
 !!       end_of_file
 !!
 !!    (where you specify your geometry as you please).

@@ -142,16 +142,13 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_calculator::a_to_d_(3f):returns a real value rval8 from a numeric character string chars.<br/>
 	M_calculator::getvalue(3f): given numeric variable name return value<br/>
 	M_calculator::stuffa(3f): directly store a string into calculator variable name table<br/>
-</td>
-<tr><td><a href="M_calculator_plus.f90">M_calculator_plus.f90</a></td>
-<td>
-	M_calculator_plus::inum0(3f):resolve a calculator string into a whole integer number<br/>
-	M_calculator_plus::rnum0(3f):resolve a calculator string into a real number<br/>
-	M_calculator_plus::dnum0(3f):resolve a calculator string into a doubleprecision number<br/>
-	M_calculator_plus::snum0(3f):resolve a calculator expression into a string<br/>
-	M_calculator_plus::jucalcx(3f):call jucalc() calculator and display messages<br/>
-	M_calculator_plus::strgarr(3f):read numeric expressions into an real array<br/>
-	M_calculator_plus::strgar2(3f):read numeric and string calculator expressions into an array USING CALCULATOR<br/>
+	M_calculator::inum0(3f):resolve a calculator string into a whole integer number<br/>
+	M_calculator::rnum0(3f):resolve a calculator string into a real number<br/>
+	M_calculator::dnum0(3f):resolve a calculator string into a doubleprecision number<br/>
+	M_calculator::snum0(3f):resolve a calculator expression into a string<br/>
+	M_calculator::jucalcx(3f):call jucalc() calculator and display messages<br/>
+	M_calculator::strgarr(3f):read numeric expressions into an real array<br/>
+	M_calculator::strgar2(3f):read numeric and string calculator expressions into an array USING CALCULATOR<br/>
 </td>
 <tr><td><a href="M_color.f90">M_color.f90</a></td>
 <td>
@@ -282,6 +279,12 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_html::h_close(3f):close HTML file<br/>
 	M_html::h_open(3f):open HTML file<br/>
 </td>
+<tr><td><a href="M_hybrid.f90">M_hybrid.f90</a></td>
+<td>
+	strgar3(3f):read a string into an array USING CALCULATOR passing double-quoted strings<br/>
+	errc(3f): function for specifying error curve numbers<br/>
+	M_xyplot::fetch(3f): call sget(3f) (and calculator if fetched string starts with $ or double-quote)<br/>
+</td>
 <tr><td><a href="M_io.f90">M_io.f90</a></td>
 <td>
 	M_io::read_table(3f): read file containing a table of numeric values<br/>
@@ -301,7 +304,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <tr><td><a href="M_journal.f90">M_journal.f90</a></td>
 <td>
 	M_journal::journal(3fg): provides public message routine, no paging or graphic mode change<br/>
-	M_debug::wm_all(3f): writes a message to a string composed of any standard scalar types<br/>
+	M_debug::where_write_message_all(3f): writes a message to a string composed of any standard scalar types<br/>
 </td>
 <tr><td><a href="M_kracken.f90">M_kracken.f90</a></td>
 <td>
@@ -603,6 +606,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_strings::notabs(3f): convert tabs to spaces while maintaining columns, remove CRLF chars<br/>
 	M_strings::adjustc(3f): center text<br/>
 	M_strings::nospace(3f): remove all whitespace from input string<br/>
+	M_strings::stretch(3f): return string padded to at least specified length<br/>
 	M_strings::atleast(3f): return string padded to at least specified length<br/>
 	M_strings::lenset(3f): return string trimmed or padded to specified length<br/>
 	M_strings::merge_str(3f): pads first and second arguments to MERGE(3f) to same length<br/>
@@ -835,7 +839,6 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <td>
 	M_xyplot(3fm): XY plot procedures<br/>
 	M_xyplot::plot_setfill(3f): set background, middleground, and foreground colors for plot<br/>
-	M_xyplot::plot_fetch(3f): call fetch (and calculator if fetched string starts with $ or double-quote)<br/>
 	M_xyplot::plot_hcopy(3f): process hcopy command<br/>
 	M_xyplot::plot_noclose(3f): flag whether to keep current device open while switching to alternate device<br/>
 	M_xyplot::plot_set_xmin(3f): set value for xmin/xmax/ymin/... command<br/>
@@ -852,12 +855,11 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_xyplot::plot_jupage(3f): a good try at allowing mixing of PLT commands and vogle commands<br/>
 	M_xyplot::plot_id(3f): allow user to alter legend strings by number<br/>
 	M_xyplot::plot_clear(3f): clear graphics area and ensure in graphics mode<br/>
-	xy_jumapc(3f): map colors using HUE command<br/>
+	M_xyplot::xy_jumapc(3f): map colors using HUE command<br/>
 	M_xyplot::plot_toggle(3f): copy of TOGGLE that uses xy_retrv2 instead of RETREV<br/>
-	M_xyplot::plot_opentrail(3f): set name of trail file and open it or turn off trail on error<br/>
 	M_xyplot::plot_z(3f): Interactive ZOOM mode<br/>
 	M_xyplot::plot_zmode(3f): Interactive ZOOM mode<br/>
-	xy_jufont(3f): check and set font and store it so can query it<br/>
+	M_xyplot::xy_jufont(3f): check and set font and store it so can query it<br/>
 	 FORTRAN interface point for M_DASH functions that return real values<br/>
 	M_xyplot::plot_axes(3f): generically draw linear axis and logarithmic axis<br/>
 	M_xyplot::plot_page(3f): initialize plot page and set up common page-related values<br/>
@@ -867,7 +869,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_xyplot::plot_resetplot(3f): reset plot-related common values<br/>
 	M_xyplot::plot_set_nice_range(3f): determine nice range for creating an axis<br/>
 	M_xyplot::plot_setdash(3f):  allow user to display|alter|retrieve  dash codes by style number<br/>
-	 get marker geometries<br/>
+	 M_xyplot::xy_getmark(3f):get marker geometries<br/>
 </td>
 <tr><td><a href="nc_errmessage.f90">nc_errmessage.f90</a></td>
 <td>
@@ -899,11 +901,6 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <tr><td><a href="sparanoia.f90">sparanoia.f90</a></td>
 <td>
 	sparanoia(3f): test real value operations in programming environment<br/>
-</td>
-<tr><td><a href="strgar3.f90">strgar3.f90</a></td>
-<td>
-	strgar3(3f):read a string into an array USING CALCULATOR passing double-quoted strings<br/>
-	errc(3f): function for specifying error curve numbers<br/>
 </td>
 <tr><td><a href="C-arcs.c">C-arcs.c</a></td>
 <td>

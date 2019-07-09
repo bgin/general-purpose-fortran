@@ -14,6 +14,9 @@
 !!    expense of reallocating the data these routines are best suited for
 !!    maintaining small lists that do not change size frequently.
 !!
+!!    The advantage is that the dictionary components are simple arrays
+!!    which can be easily accessed with standard routines.
+!!
 !!    BASIC LIST
 !!    subroutine locate(list,value,place,ier,errmsg)  finds the index where a
 !!                                                    value is found or should
@@ -1451,16 +1454,29 @@ end subroutine test_dict_set
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_dict_delete
 type(dictionary) :: dict
-   call unit_check_start('dict%delete',&
+   call unit_check_start('dict%del',&
    & ' -description "delete string by name from allocatable string array" '//share)
 
    call dict%del('A')
    call dict%del('Z')
    call dict%del('X')
-   !!call unit_check('dict%delete',all(dict.eq.[character(len=20) :: 'z','c','b','ZZZ','ZZ','A']),'string deletes ')
+   !!call unit_check('dict%del',all(dict.eq.[character(len=20) :: 'z','c','b','ZZZ','ZZ','A']),'string deletes ')
 
-   call unit_check_done('dict%delete')
+   call unit_check_done('dict%del')
 end subroutine test_dict_delete
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_dict_clr
+type(dictionary)             :: dict
+character(len=:),allocatable :: val
+   call unit_check_start('dict%clr',&
+   & ' -description "clr dictionary" '//share)
+   !val=dict%clr('A')
+   !val=dict%clr('Z')
+   !val=dict%clr('X')
+   !!call unit_check('dict%clr',all(dict.eq.[character(len=20) :: 'z','c','b','ZZZ','ZZ','A']),'string deletes ')
+
+   call unit_check_done('dict%clr')
+end subroutine test_dict_clr
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_dict_get
 type(dictionary)             :: dict

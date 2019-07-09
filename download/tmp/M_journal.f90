@@ -16,6 +16,7 @@ private
 !!
 !!     character(len=*),intent(in) :: where
 !!     character(len=*),intent(in) :: msg
+!!     character(len=*)|real|integer|doubleprecision|complex :: g1,g2,g3,g4,g5,g6,g7,g8,g9
 !!
 !!   WRITE MESSAGES
 !!
@@ -94,6 +95,12 @@ private
 !!      <   turn on debug messages
 !!      O   open trail file using value of "message" parameter or close
 !!          trail file if no filename or a blank filename.
+!!      A   Auxiliary programs that also want to write to the current log file
+!!          (a2b, z2a, ...) call this routine to see if there is a trail file
+!!          being generated and then add to it so that a program like ush(1f)
+!!          can call the auxiliary programs and still just generate one log file,
+!!          but if the auxiliary program is used as a stand-alone program no trail
+!!          is generated.
 !!      %   set prefix to run thru now(3f) to generate time prefix strings
 !!
 !!   MESSAGE   message to write to stdout, stderr, and the trail file.
@@ -131,19 +138,19 @@ private
 !!    end program demo_journal
 !===================================================================================================================================
 public journal
-public journal_
 
 interface journal
-   module procedure wm, set_stdout, change_model, wm_all
+   module procedure flush_trail               ! journal()                ! no options
+   module procedure write_message_only        ! journal(c)               ! must have one string
+   module procedure where_write_message_all   ! journal(where,c,[g1-g9]) ! must have two strings
+   module procedure set_stdout_lun            ! journal(i)               ! first is not a string
+   module procedure change_model              ! journal(i,c)             ! first is not a string then string
 end interface journal
-
-interface journal_
-   module procedure write_msg, wm_i, wm_r, wm_c, wm_l, wm_d, wm, set_stdout, change_model
-end interface journal_
 
 public test_suite_M_journal
 
-character(len=*),parameter :: ident="@(#)M_journal::journal(3fg): provides public message routine, no paging or graphic mode change"
+character(len=*),parameter::ident_1="&
+&@(#)M_journal::journal(3fg): provides public message routine, no paging or graphic mode change"
 
 ! global variables
 
@@ -156,8 +163,10 @@ contains
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-subroutine write_msg(where,msg)
-character(len=*),parameter :: ident="@(#)M_journal::write_msg(3fp): basic message routine used for journal files"
+subroutine where_write_message(where,msg)
+
+character(len=*),parameter::ident_2="@(#)M_journal::where_write_message(3fp): basic message routine used for journal files"
+
 character(len=*),intent(in)  :: where
 character(len=*),intent(in)  :: msg
 !
@@ -190,6 +199,7 @@ character(len=*),intent(in)  :: msg
    character(len=:),allocatable,save  :: prefix_template   ! string to run thru now_ex(3f) to make prefix
    character(len=:),allocatable       :: prefix            ! the prefix string to add to output
    logical,save                       :: prefix_it=.false. ! flag whether time prefix mode is on or not
+   character(len=4096)                :: mssge
 !-----------------------------------------------------------------------------------------------------------------------------------
    interface
       function now_ex(format)
@@ -246,19 +256,29 @@ character(len=*),intent(in)  :: msg
       !-----------------------------------------------------------------------------------------------------------------------------
       case('C','c')
          if(trailopen)then
-            write(itrail,'(2a)',advance=adv)comment,prefix//trim(msg)
+            write(itrail,'(3a)',advance=adv)prefix,comment,trim(msg)
          elseif(times.eq.0)then
-            !! write(stdout,'(a)',advance=adv)prefix//trim(msg)
+            !! write(stdout,'(2a)',advance=adv)prefix,trim(msg)
             !! times=times+1
          endif
       case('D','d')
          if(debug)then
             if(trailopen)then
-               write(itrail,'(3a)',advance=adv)comment,'DEBUG: ',prefix//trim(msg)
+               write(itrail,'(3a)',advance=adv)prefix,comment,'DEBUG: ',trim(msg)
             elseif(times.eq.0)then
-               write(stdout,'(2a)',advance=adv)'DEBUG:',prefix//trim(msg)
+               write(stdout,'(3a)',advance=adv)prefix,'DEBUG:',trim(msg)
                times=times+1
             endif
+         endif
+      case('F','f')
+         flush(unit=itrail,iostat=ios,iomsg=mssge)
+         if(ios.ne.0)then
+            write(*,'(a)') trim(mssge)
+         endif
+      case('A','a')
+         if(msg.ne.'')then
+            open(newunit=itrail,status='unknown',access='sequential', file=trim(msg),form='formatted',iostat=ios,position='append')
+            trailopen=.true.
          endif
       case('O','o')
          if(msg.ne.'')then
@@ -266,7 +286,7 @@ character(len=*),intent(in)  :: msg
             trailopen=.true.
          else
             if(trailopen)then
-               write(itrail,'(3a)',advance=adv)comment,'closing trail file:',prefix//trim(msg)
+               write(itrail,'(4a)',advance=adv)prefix,comment,'closing trail file:',trim(msg)
             endif
             close(unit=itrail,iostat=ios)
             trailopen=.false.
@@ -276,20 +296,33 @@ character(len=*),intent(in)  :: msg
       end select
    enddo
 !-----------------------------------------------------------------------------------------------------------------------------------
-end subroutine write_msg
+end subroutine where_write_message
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-subroutine set_stdout(iounit)
-character(len=*),parameter :: ident="@(#)M_journal::set_stdout(3fp): change I/O logical unit value for standard writes"
+subroutine flush_trail()
+
+character(len=*),parameter::ident_3="@(#)M_journal::flush_trail(3fp): flush trail file"
+
+call where_write_message('F','IGNORE THIS STRING')
+end subroutine flush_trail
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+subroutine set_stdout_lun(iounit)
+
+character(len=*),parameter::ident_4="@(#)M_journal::set_stdout_lun(3fp): change I/O logical unit value for standard writes"
+
 integer,intent(in)                   :: iounit
    stdout=iounit
-end subroutine set_stdout
+end subroutine set_stdout_lun
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 subroutine change_model(value,mode)
-character(len=*),parameter :: ident="@(#)M_journal::change_model(3fp): change integer journal(3f) modes"
+
+character(len=*),parameter::ident_5="@(#)M_journal::change_model(3fp): change integer journal(3f) modes"
+
 logical,intent(in)          :: value
 character(len=*),intent(in) :: mode
 
@@ -297,7 +330,7 @@ select case(mode)
 case('debug','DEBUG')
    debug=value
 case default
-   call write_msg('sc','*journal* unknown logical mode '//trim(mode))
+   call where_write_message('sc','*journal* unknown logical mode '//trim(mode))
 end select
 
 end subroutine change_model
@@ -306,10 +339,10 @@ end subroutine change_model
 !===================================================================================================================================
 !>
 !!##NAME
-!!    wm_all(3f) - [M_journal] converts any standard scalar type to a string
+!!    where_write_message_all(3f) - [M_journal] converts any standard scalar type to a string
 !!##SYNOPSIS
 !!
-!!   subroutine  wm_all(where,message,g1,g2g3,g4,g5,g6,g7,g8,g9,nospace)
+!!   subroutine  where_write_message_all(where,message,g1,g2g3,g4,g5,g6,g7,g8,g9,nospace)
 !!
 !!     character(len=*),intent(in)   :: where
 !!     character(len=*),intent(in)   :: message
@@ -317,7 +350,7 @@ end subroutine change_model
 !!     logical,intent(in),optional   :: nospace
 !!
 !!##DESCRIPTION
-!!    wm_all(3f) builds and writes a space-separated string from up to nine scalar values
+!!    where_write_message_all(3f) builds and writes a space-separated string from up to nine scalar values
 !!
 !!##OPTIONS
 !!
@@ -328,26 +361,32 @@ end subroutine change_model
 !!             or CHARACTER.
 !!    nospace  if nospace=.true., then no spaces are added between values
 !!##RETURNS
-!!    wm_all   description to print
+!!    where_write_message_all   description to print
 !!
 !!##EXAMPLES
 !!
 !!   Sample program:
 !!
 !!    program demo_wm_all
-!!    use M_journal, only : wm_all
+!!    use M_journal, only : where_write_message_all
 !!    implicit none
 !!    end program program demo_wm_all
 !===================================================================================================================================
-subroutine wm_all(where,message,generic1, generic2, generic3, generic4, generic5, generic6, generic7, generic8, generic9,nospace)
+subroutine where_write_message_all(where,message, &
+                & generic1, generic2, generic3,   &
+                & generic4, generic5, generic6,   &
+                & generic7, generic8, generic9,   &
+                & nospace)
 implicit none
 
-character(len=*),parameter::ident_1="@(#)M_debug::wm_all(3f): writes a message to a string composed of any standard scalar types"
+character(len=*),parameter::ident_6="&
+&@(#)M_debug::where_write_message_all(3f): writes a message to a string composed of any standard scalar types"
 
 character(len=*),intent(in)   :: where
 character(len=*),intent(in)   :: message
-class(*),intent(in),optional  :: generic1 ,generic2 ,generic3 ,generic4 ,generic5
-class(*),intent(in),optional  :: generic6 ,generic7 ,generic8 ,generic9
+class(*),intent(in),optional  :: generic1, generic2, generic3
+class(*),intent(in),optional  :: generic4, generic5, generic6
+class(*),intent(in),optional  :: generic7, generic8 ,generic9
 logical,intent(in),optional   :: nospace
    character(len=4096)        :: line
    integer                    :: istart
@@ -374,7 +413,7 @@ logical,intent(in),optional   :: nospace
    if(present(generic7))call print_generic(generic7)
    if(present(generic8))call print_generic(generic8)
    if(present(generic9))call print_generic(generic9)
-   call write_msg(where,trim(line))
+   call where_write_message(where,trim(line))
 contains
 !===================================================================================================================================
 subroutine print_generic(generic)
@@ -399,190 +438,86 @@ class(*),intent(in),optional :: generic
    istart=len_trim(line)+increment
 end subroutine print_generic
 !===================================================================================================================================
-end subroutine wm_all
+end subroutine where_write_message_all
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-subroutine wm(message)
-character(len=*),parameter :: ident="@(#)M_journal::wm(3fp): calls JOURNAL('sc',message)"
+subroutine write_message_only(message)
+
+character(len=*),parameter::ident_7="@(#)M_journal::write_message_only(3fp): calls JOURNAL('sc',message)"
+
 character(len=*),intent(in)          :: message
 !-----------------------------------------------------------------------------------------------------------------------------------
-   call write_msg('sc',trim(message))
+   call where_write_message('sc',trim(message))
 !-----------------------------------------------------------------------------------------------------------------------------------
-end subroutine wm
+end subroutine write_message_only
 !===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!===================================================================================================================================
-subroutine wm_c(where,message,value)
-character(len=*),parameter :: ident="@(#)M_journal::wm_c(3fp): append character variable  to message and pass to write_msg()"
-character(len=*),intent(in)          :: where
-character(len=*),intent(in)          :: message
-character(len=*),intent(in)          :: value
-   call write_msg(where,trim(message)//' '//trim(value))
-!-----------------------------------------------------------------------------------------------------------------------------------
-end subroutine wm_c
-!===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!===================================================================================================================================
-subroutine wm_r(where,message,value)
-character(len=*),parameter :: ident="@(#)M_journal::wm_r(3fp): append real to message and pass to write_msg()"
-character(len=*),intent(in)          :: where
-character(len=*),intent(in)          :: message
-real,intent(in)                      :: value
-   character(len=len(message)+21) :: temp1
-!-----------------------------------------------------------------------------------------------------------------------------------
-   write(temp1,'(a,1x,g0)')message,value
-   call write_msg(where,trim(temp1))
-!-----------------------------------------------------------------------------------------------------------------------------------
-end subroutine wm_r
-!===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!===================================================================================================================================
-subroutine wm_l(where,message,truefalse)
-character(len=*),parameter :: ident="@(#)M_journal::wm_l(3fp): append logical to message and pass to write_msg()"
-character(len=*),intent(in)          :: where
-character(len=*),intent(in)          :: message
-logical,intent(in)                   :: truefalse
-   character(len=len(message)+21)    :: temp1
-!-----------------------------------------------------------------------------------------------------------------------------------
-   write(temp1,'(a,L2)')message,truefalse
-   call write_msg(where,trim(temp1))
-!-----------------------------------------------------------------------------------------------------------------------------------
-end subroutine wm_l
-!===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!===================================================================================================================================
-subroutine wm_d(where,message,dvalue)
-character(len=*),parameter :: ident="@(#)M_journal::wm_d(3fp): append doubleprecision to message and pass to write_msg()"
-character(len=*),intent(in)       :: where
-character(len=*),intent(in)       :: message
-doubleprecision,intent(in)        :: dvalue
-   character(len=len(message)+41) :: temp1
-!-----------------------------------------------------------------------------------------------------------------------------------
-   write(temp1,'(a,1x,g0)')message,dvalue
-   call write_msg(where,trim(temp1))
-!-----------------------------------------------------------------------------------------------------------------------------------
-end subroutine wm_d
-!===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!===================================================================================================================================
-subroutine wm_i(where,message,ival)
-character(len=*),parameter :: ident="@(#)M_journal::wm_i(3fp): append integer to string and pass to write_msg()"
-character(len=*),intent(in)       :: where     ! flag to specify to write_msg(3f) where to write
-character(len=*),intent(in)       :: message   ! base message to print
-integer,intent(in)                :: ival      ! integer value to add to message
-   integer                        :: ios       ! error status returned by internal WRITE
-   character(len=len(message)+21) :: temp1     ! working message to create that has the integer appended to the base message
-!-----------------------------------------------------------------------------------------------------------------------------------
-   write(temp1,'(a,1x,i0)',iostat=ios)message,ival ! write integer into message
-   last_int=ival
-   call write_msg(where,trim(temp1))
-!-----------------------------------------------------------------------------------------------------------------------------------
-end subroutine wm_i
-!===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 subroutine test_suite_M_journal()
-
+implicit none
 !! setup
    call test_change_model()
-   call test_set_stdout()
-   call test_wm()
-   call test_wm_c()
-   call test_wm_d()
-   call test_wm_i()
-   call test_wm_l()
-   call test_wm_r()
-   call test_write_msg()
+   call test_flush_trail()
+   call test_set_stdout_lun()
+   call test_where_write_message_all()
+   call test_write_message_only()
 !! teardown
 contains
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_change_model()
-
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
+implicit none
    call unit_check_start('change_model',msg='')
    !!call unit_check('change_model', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('change_model',msg='')
 end subroutine test_change_model
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_set_stdout()
-
+subroutine test_flush_trail()
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
-   call unit_check_start('set_stdout',msg='')
-   !!call unit_check('set_stdout', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('set_stdout',msg='')
-end subroutine test_set_stdout
+implicit none
+   call unit_check_start('flush_trail',msg='')
+   call journal()
+   !!call unit_check('flush_trail', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('flush_trail',msg='')
+end subroutine test_flush_trail
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_wm()
-
+subroutine test_set_stdout_lun()
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
-   call unit_check_start('wm',msg='')
-   !!call unit_check('wm', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('wm',msg='')
-end subroutine test_wm
+implicit none
+   call unit_check_start('set_stdout_lun',msg='')
+   !!call unit_check('set_stdout_lun', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('set_stdout_lun',msg='')
+end subroutine test_set_stdout_lun
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_wm_c()
-
+subroutine test_where_write_message_all()
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
-   call unit_check_start('wm_c',msg='')
-   !!call unit_check('wm_c', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('wm_c',msg='')
-end subroutine test_wm_c
+implicit none
+   call unit_check_start('where_write_message_all',msg='')
+   !!call unit_check('where_write_message_all', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('where_write_message_all',msg='')
+end subroutine test_where_write_message_all
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_wm_d()
-
+subroutine test_write_message_only()
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
-   call unit_check_start('wm_d',msg='')
-   !!call unit_check('wm_d', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('wm_d',msg='')
-end subroutine test_wm_d
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_wm_i()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('wm_i',msg='')
-   !!call unit_check('wm_i', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('wm_i',msg='')
-end subroutine test_wm_i
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_wm_l()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('wm_l',msg='')
-   !!call unit_check('wm_l', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('wm_l',msg='')
-end subroutine test_wm_l
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_wm_r()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('wm_r',msg='')
-   !!call unit_check('wm_r', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('wm_r',msg='')
-end subroutine test_wm_r
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_write_msg()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('write_msg',msg='')
-   !!call unit_check('write_msg', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('write_msg',msg='')
-end subroutine test_write_msg
+implicit none
+   call unit_check_start('write_message_only',msg='')
+   !!call unit_check('write_message_only', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('write_message_only',msg='')
+end subroutine test_write_message_only
 !===================================================================================================================================
 end subroutine test_suite_M_journal
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
-
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 end module M_journal
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!

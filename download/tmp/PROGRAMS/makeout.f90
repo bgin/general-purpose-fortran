@@ -168,7 +168,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    create Makefile for current directory>',&
 '@(#)VERSION:        1.0, 2017-12-09>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sun, Jun 16th, 2019 12:25:00 AM>',&
+'@(#)COMPILED:       Wed, Jul 3rd, 2019 11:48:15 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -580,7 +580,7 @@ implicit none
          endselect PREFIXES
          call substitute(depends,token,'') ! kludge for if file contains multiple modules that reference name
          write(io,'(a,": ",a)')trim(token),depends
-         !! strgar3.o: M_calculator.o M_calculator_plus.o M_journal.o
+         !! strgar3.o: M_calculator.o M_journal.o
       endif
    enddo
 end subroutine find_dependencies

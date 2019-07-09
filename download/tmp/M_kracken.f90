@@ -4,7 +4,7 @@
 module M_kracken
 use M_debug,   only: debug, io_debug
 use M_journal, only: journal
-use M_strings, only: upper, string_to_value, split, s2v
+use M_strings, only: upper, string_to_value, split, s2v, atleast
 use M_list,    only: locate, insert, replace
 use M_args,    only: get_command_arguments_string
 use M_time,    only: now
@@ -49,7 +49,6 @@ character(len=*),parameter::ident_1="@(#)M_kracken(3fm): parse command line opti
 !         In particular, some might want to change:
    logical,public            :: stop_command=.false.               ! indication to return stop_command as false in interactive mode
    integer, parameter,public :: IPvalue=4096*16                    ! length of keyword value
-   integer, parameter,public :: IPcmd=12*IPvalue                   ! length of command
    integer, parameter,public :: IPverb=20                          ! length of verb
 !-----------------------------------------------------------------------------------------------------------------------------------
    integer, parameter        :: dp = kind(0.d0)
@@ -1518,7 +1517,7 @@ integer                              ::  iend
                if(iend  ==  0)then                  ! len_trim returned 0, parameter value is blank
                   iend=ibegin
                   exit
-               else if(var(1)(ibegin:ibegin) == " ")then
+               elseif(var(1)(ibegin:ibegin) == " ")then
                   ibegin=ibegin+1
                else
                   exit
@@ -1854,7 +1853,7 @@ integer                            :: inew
    indx=iabs(indx)  ! entry existed or was added
    if(indx.eq.0)then
       write(*,*)'*store* error occurred. INDEX=0'
-   else if(value(1:4)  ==  "@LV@")then
+   elseif(value(1:4)  ==  "@LV@")then
       ! a leave-alone flag (for use by a 'defining' call)
       if(new  ==  0) then
          value=value(5:)                                                  ! trim off the leading @LV@
@@ -2257,50 +2256,57 @@ integer,intent(in)            :: iwide0         ! if .ge. zero, how many columns
 !-----------------------------------------------------------------------------------------------------------------------------------
    character(len=IPvalue)     :: VERB_NAME      ! verb prefix to display. Default is all
    character(len=IPvalue)     :: message
-   integer                    :: keyword_length
    integer                    :: i
+   integer                    :: j
    integer                    :: ii
    integer                    :: ich
    integer                    :: istart
+   integer                    :: istep
    integer                    :: iwide
    integer                    :: verb_length
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(.not.allocated(dict_verbs)) call initd()
 !-----------------------------------------------------------------------------------------------------------------------------------
-   keyword_length=len(dict_verbs(1))                       ! get the length of dictionary keyword names
-   keyword_length=len(dict_verbs(1))                       ! get the length of dictionary keyword names
    iwide=iwide0
    if(iwide.le.0)iwide=80
    VERB_NAME=VERB_NAME0
 !-----------------------------------------------------------------------------------------------------------------------------------
-   if(VERBS_ONLY)then                                      ! show all verbs
+   if(VERBS_ONLY)then                                        ! show all verbs
       message=' '
       istart=1
-      do i=size(dict_verbs),1,-1                                       ! loop thru entire dictionary
-         verb_length=len_trim(DICT_VERBS(i))
-         if(verb_length.lt.3)cycle
-         if(DICT_VERBS(i)(1:1).eq.'?')cycle                ! remove prompts
-         if(DICT_VERBS(i)(1:1).eq.'_')cycle                ! remove initial values
-         if(DICT_VERBS(i)(verb_length-2:).ne.'_oo') cycle  ! assume all commands have a VERB_oo value
-         if(istart.gt.iwide-IPverb-1)then
-               call journal(message)
-               message=' '
+      !!istep=len(DICT_VERBS)
+      istep=1
+      verb_length=1
+      call journal('+c','')                                   ! start comment line
+      do j=1,2                                                ! to make compact, make 1st pass to get length, 2nd pass to print
+         do i=size(dict_verbs),1,-1                           ! loop thru entire dictionary
+            if(DICT_VERBS(i)(1:1).eq.'?')cycle                ! remove prompts
+            if(DICT_VERBS(i)(1:1).eq.'_')cycle                ! remove initial values
+            verb_length=len_trim(DICT_VERBS(i))               ! find longest verb
+            if(DICT_VERBS(i)(verb_length-2:).ne.'_oo') cycle  ! assume all commands have a VERB_oo value
+            if(verb_length.lt.3)cycle                         ! looking for VERB_oo
+            if(j.eq.1)then
+               istep=max(istep,verb_length-3)
+            elseif(istart+verb_length-1.gt.iwide)then
+               call journal('')
+               call journal('+c','')                          ! start next comment line
                istart=1
-         endif
-         write(message(istart:istart+20),'(1x,a20)')DICT_VERBS(i)(:verb_length-3)
-         istart=istart+21
+            elseif(verb_length-3.gt.0.and.j.eq.2)then
+               call journal('+st',adjustr(atleast(DICT_VERBS(i)(:verb_length-3),istep)))
+               istart=istart+istep
+            endif
+         enddo
       enddo
-      if(istart.gt.1)then
-         call journal(message)
-      endif
+      call journal('st','')
 !-----------------------------------------------------------------------------------------------------------------------------------
    elseif(VERB_NAME.eq.' ')then                                   ! show all variables
-     do i=1,size(dict_verbs)
-        if(DICT_VERBS(i).ne.' ')then
-           ii=max(1,dict_lens(i))                                 ! number of characters in corresponding dictionary VALUE
-           call journal('sc',' ',DICT_VERBS(i),'-',dict_vals(i))
-        endif
-     enddo
+      do i=1,size(dict_verbs)
+         if(DICT_VERBS(i).ne.' ')then
+            ii=max(1,dict_lens(i))                                 ! number of characters in corresponding dictionary VALUE
+            call journal('sc',' ',atleast(DICT_VERBS(i),20)//'=',dict_vals(i))
+         endif
+      enddo
+      call journal('sc',' dictionary size=',size(DICT_VERBS),'verb length=',len(DICT_VERBS),'value length=',len(DICT_VALS))
 !-----------------------------------------------------------------------------------------------------------------------------------
    else                                                        ! show only verb_ variables
       ich=index(VERB_NAME,' ')                                 ! VERB_NAME assumed longer than any verb name, so at least one space
@@ -2309,13 +2315,12 @@ integer,intent(in)            :: iwide0         ! if .ge. zero, how many columns
          if(DICT_VERBS(i).eq.' ')cycle SCAN_DICTIONARY
          if(VERB_NAME(:ich).eq.DICT_VERBS(i)(:ich))then
            ii=max(1,dict_lens(i))                          ! number of characters in corresponding dictionary VALUE
-           call journal('+sc',' ',DICT_VERBS(i),'=')
+           call journal('+sc',' ',atleast(DICT_VERBS(i),20)//'=')
            call journal(dict_vals(i)(:ii))
          endif
       enddo SCAN_DICTIONARY
 !-----------------------------------------------------------------------------------------------------------------------------------
    endif
-   call journal('sc',' dictionary size=',size(DICT_VERBS),'verb length=',len(DICT_VERBS),'value length=',len(DICT_VALS))
 !-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine show
 !===================================================================================================================================

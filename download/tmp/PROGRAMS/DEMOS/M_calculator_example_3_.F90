@@ -3,6 +3,7 @@
              !     line mode calculator that calls jucalc
              !
              use M_calculator, only: jucalc,iclen_calc
+             use M_calculator, only : rnum0
              implicit none
              integer, parameter        :: k_dbl = SELECTED_REAL_KIND(15,300) ! real*8
              character(len=iclen_calc) :: event, line
@@ -10,6 +11,7 @@
              integer                   :: ios
              integer                   :: ierr
              real(kind=k_dbl)          :: rvalue
+             character(len=80)         :: string
              INFINITE: do
                 read(*,'(a)',iostat=ios)line
                 if(ios.ne.0)exit INFINITE
@@ -35,4 +37,15 @@
                   write(6,'(a)')'warning===> unexpected ierr value from jucalc'
                 end select
              enddo INFINITE
+
+             string='A=sind(30)'
+             rvalue=rnum0(string,ierr)
+             if(ierr.eq.0)then
+                write(*,*) rvalue
+             else
+                write(*,*) 'error evaluating '//trim(string)
+             endif
+             rvalue=rnum0('A',ierr)
+             write(*,*) rvalue
+
              end program demo_M_calculator
