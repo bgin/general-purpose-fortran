@@ -176,6 +176,7 @@ private :: parens_
 private :: args_
 private :: factors_
 private :: expressions_
+private :: help_funcs_
 contains
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -302,7 +303,7 @@ integer                                :: nchard
          endif
          mssg='variable listing complete'
       elseif(line(1:nchard).eq.'funcs') then     ! process funcs command
-         call help_funcs()
+         call help_funcs_()
          mssg='function listing complete'
 !-----------------------------------------------------------------------------------------------------------------------------------
       else                                                ! this is an input line to process
@@ -379,9 +380,9 @@ end subroutine jucalc
 !!##EXAMPLE
 !
 !===================================================================================================================================
-subroutine help_funcs()
+subroutine help_funcs_()
 
-character(len=*),parameter::ident_2="@(#)M_calculator::help_funcs(3fp): prints help for calculator functions"
+character(len=*),parameter::ident_2="@(#)M_calculator::help_funcs_(3fp): prints help for calculator functions"
 
 character(len=80),allocatable :: help_text(:)
 integer                       :: i
@@ -490,7 +491,7 @@ help_text=[ &
    do i=1,size(help_text)
       call journal(help_text(i))
    enddo
-end subroutine help_funcs
+end subroutine help_funcs_
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -1875,11 +1876,11 @@ character(len=*),parameter::ident_6="&
 !-----------------------------------------------------------------------------------------------------------------------------------
 character(len=*),intent(in)           :: line      ! input string
 integer,intent(in)                    :: ilen      ! length of input string
+integer,intent(in)                    :: mx        ! up to mx par(i) will be extracted. if more found an error is generated.
 real(kind=dp),intent(out)             :: array(mx)
 integer,intent(out)                   :: itype(mx) ! itype=0 for number, itype=2 for string
 integer,intent(out)                   :: iarray    ! number of parameters found
 integer                               :: ier       ! ier=-1 if error occurs, ier undefined (not changed) if no error.
-integer,intent(in)                    :: mx        ! up to mx par(i) will be extracted. if more found an error is generated.
 !-----------------------------------------------------------------------------------------------------------------------------------
 integer :: icalc
 integer :: icol
@@ -2489,7 +2490,7 @@ integer                                 :: kstrln
    dummy=' '
    idum=3
    instring=0
-   do i10=1,len(string)
+   do i10=1,len_trim(string)
       ! if adjacent sign characters skip new character and maybe change sign of previous character
       if(string(i10:i10).eq.'"'.and.instring.eq.0 )then   ! starting a string
          instring=1
@@ -2920,7 +2921,7 @@ integer                               :: ierr
 integer                               :: index
 integer                               :: istart
 !-----------------------------------------------------------------------------------------------------------------------------------
-   varnam_local=adjustl(trim(varnam))          ! remove leading spaces
+   varnam_local=adjustl(trim(varnam))//' '                      ! remove leading spaces but make sure at least one character long
    if(varnam_local(1:1).eq.'$')then                             ! add new variable to numeric value dictionary at specified location
       mssge='*stuff* numeric variable names must not start with a $'
       ierr=-1
@@ -2942,7 +2943,7 @@ integer                               :: istart
    end select
    call replace(values_d,val8,istart)
 !-----------------------------------------------------------------------------------------------------------------------------------
-   if(present(ioflag))then
+   if(present(ioflag))then                    ! display values with an assumed variable length of 20 characters so get neat columns
       call journal(ioflag,atleast(varnam_local,20)//'=',val8)
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -3526,7 +3527,7 @@ use M_journal, only : journal
 character(len=*),parameter::ident_20="@(#)M_calculator::jucalcx(3f):call jucalc() calculator and display messages"
 
 ! evaluate a FORTRAN-like string expression and return a numeric
-! value and it's character equivalent or a string value as appropriate
+! value and its character equivalent or a string value as appropriate
 character(len=*),intent(in) :: inlin0
 doubleprecision             :: outval
 character(len=*)            :: outlin0

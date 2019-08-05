@@ -34,7 +34,7 @@ usage="$0 basename [ -keyword1 [value1] -keyword2 [value2] [ -keyword3 [value3] 
 #        a default value is not blank, or can use a case statement with all
 #        $BASENAME_* variables looked at
 #
-#        eval can have it's risks if used with a SETUID command. So, do not use
+#        eval can have its risks if used with a SETUID command. So, do not use
 #        this script with one.
 #
 #  Also useful with env(1) and when calling scripts with keywords first.

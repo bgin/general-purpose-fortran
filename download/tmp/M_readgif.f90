@@ -213,7 +213,7 @@ end function bcint2b
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
 subroutine do_extension (filename, iostat, verbose )
-character(len=*),intent(in) :: filename             ! in case it's needed in a message
+character(len=*),intent(in) :: filename             ! in case it is needed in a message
 integer, intent(out)        :: iostat
 logical, intent(in)         :: verbose
 !
@@ -279,7 +279,7 @@ subroutine get_code ( result,code_size, flag, filename, iostat )
 integer, intent(out) :: result
 integer, intent(in) :: code_size
 logical, intent(in) :: flag          ! first-time flag
-character (len=*), intent(in) :: filename        ! in case it's needed in a message
+character (len=*), intent(in) :: filename        ! in case it is needed in a message
 integer, intent(out) :: iostat
 !
     integer :: bint                      ! bit an integer (not logical)
@@ -337,7 +337,7 @@ integer, intent(out) :: iostat
 !==================================================================================================================================!
 subroutine get_data_block (buf, filename, countx, iostat )
 character(len=*), intent(out) :: buf
-character(len=*), intent(in):: filename ! in case it's needed in a message
+character(len=*), intent(in):: filename ! in case it is needed in a message
 integer, intent(out) :: countx        ! size of data block
 integer, intent(out) :: iostat
 !
@@ -388,7 +388,7 @@ subroutine lzw_read_byte ( result, input_code_size, flag, filename, iostat )
 integer, intent (out) :: result
 integer, intent(in) :: input_code_size
 logical, intent(in) :: flag          ! first-time flag
-character(len=*), intent(in) :: filename             ! in case it's needed in a message
+character(len=*), intent(in) :: filename             ! in case it is needed in a message
 integer, intent(out) :: iostat
 !
     character(len=260) :: buf
@@ -528,7 +528,7 @@ integer, intent(out) :: iostat
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
 subroutine open_gif (filename, iostat, verbose, color_map)
-! open a gif file, verify it's either gif87a or gif89a
+! open a gif file, verify it is either gif87a or gif89a
 ! fill the gif_screen structure, including reading the color map if
 ! necessary.
 ! iostat > 0 is status from open or read, iostat = -1 means wrong format.

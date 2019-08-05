@@ -39,7 +39,7 @@ character(len=*),parameter::ident_1="@(#)M_kracken(3fm): parse command line opti
    public :: store                  ! replace dictionary name's value (if allow=add add name if necessary)
    public :: show                   ! display dictionary contents for information
 !-----------------------------------------------------------------------------------------------------------------------------------
-   private :: subscript             ! return the subscript value of a string when given it's name
+   private :: subscript_            ! return the subscript value of a string when given its name
    private :: menu                  ! generate an interactive menu when -? option is used
 !-----------------------------------------------------------------------------------------------------------------------------------
    public test_suite_M_kracken
@@ -82,7 +82,7 @@ contains
 !!    INTEGER,intent(out)          :: ier
 !!
 !!##DESCRIPTION
-!!    When a command has had it's command argument list parsed using the
+!!    When a command has had its command argument list parsed using the
 !!    kracken(3f) routine the value associated with any keyword can be retrieved
 !!    as a string.
 !!
@@ -137,7 +137,7 @@ character(len=*),intent(out)    :: val         ! value for requested variable
 !-----------------------------------------------------------------------------------------------------------------------------------
    integer                      :: isub        ! subscript in dictionary where requested entry and corresponding value are found
 !-----------------------------------------------------------------------------------------------------------------------------------
-   isub=subscript(name)                        ! get index entry is stored at
+   isub=subscript_(name)                       ! get index entry is stored at
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(isub > 0)then                            ! entry was in dictionary
       val=dict_vals(isub)                      ! retrieve corresponding value for requested entry
@@ -528,7 +528,7 @@ integer,intent(out),optional  :: ilen        ! length of returned output string
 !-----------------------------------------------------------------------------------------------------------------------------------
    integer                    :: isub        ! index where verb_oo is stored or -1 if this is an unknown name
 !-----------------------------------------------------------------------------------------------------------------------------------
-   isub=subscript(name)                      ! given name return index name is stored at
+   isub=subscript_(name)                     ! given name return index name is stored at
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(isub > 0)then                          ! if index is valid return string
       string=trim(dict_vals(isub))
@@ -964,7 +964,7 @@ character(len=*),intent(in),optional :: delim
 
 integer                              :: isub                      ! index where verb_oo is stored or -1 if this is an unknown name
 !-----------------------------------------------------------------------------------------------------------------------------------
-   isub=subscript(name)                                           ! given name return index name is stored at
+   isub=subscript_(name)                                          ! given name return index name is stored at
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(isub > 0)then                                               ! if index is valid return strings
       if(present(delim))then
@@ -1459,13 +1459,13 @@ integer                              ::  iend
                                    ! should more efficiently only do this for current VERB instead of entire array in dictionary
    endif
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-   if(subscript(trim(verb)//'_?') .le. 0 )then          ! assuming if adding this is initial call
+   if(subscript_(trim(verb)//'_?') .le. 0 )then         ! assuming if adding this is initial call
       call store(trim(verb)//'_?','.false.','add',ier)  ! all commands have the option -? to invoke prompt mode
    elseif(allow.eq.'add')then
       call store(trim(verb)//'_?','.false.','add',ier)  ! all commands have the option -? to invoke prompt mode
    endif
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-   if(subscript(trim(verb)//'_>') .le. 0 )then          ! assuming if adding this is initial call
+   if(subscript_(trim(verb)//'_>') .le. 0 )then         ! assuming if adding this is initial call
       call store(trim(verb)//'_>','#N#','add',ier)      ! all commands have the option -> to write journal(3f) output
    elseif(allow.eq.'add')then
       call store(trim(verb)//'_>','#N#','add',ier)      ! all commands have the option -> to write journal(3f) output
@@ -1528,11 +1528,11 @@ integer                              ::  iend
             ! #R# means retain previous value if any
             val=var(1)(ibegin:iend)
             if(val.eq.'"#R#"')then               ! special value saying to retain previous value so commands can remember last value
-               if(subscript(name).le.0)then
+               if(subscript_(name).le.0)then
                   call store(name,' ',allow,ier) ! store name and blank value
                endif
             else
-               call store(name,val,allow,ier)    ! store name and it's value
+               call store(name,val,allow,ier)    ! store name and its value
             endif
             if(present(error_return).and.ier.ne.0)error_return=ier
          else
@@ -1905,10 +1905,10 @@ end subroutine store
 !===================================================================================================================================
 !>
 !!##NAME
-!!          subscript(3fp) - [ARGUMENTS:M_kracken] return the subscript value of a string when given it's nam
+!!          subscript_(3fp) - [ARGUMENTS:M_kracken] return the subscript value of a string when given its nam
 !!##SYNOPSIS
 !!
-!!   function subscript(chars0)
+!!   function subscript_(chars0)
 !!
 !!    character(len=*),intent(in) :: chars0
 !!##DESCRIPTION
@@ -1923,9 +1923,9 @@ end subroutine store
 !!
 !!    parse,dissect,store,setprompts,show
 !===================================================================================================================================
-function subscript(chars0)
+function subscript_(chars0)
 
-character(len=*),parameter::ident_18="@(#)M_kracken::subscript(3fp): return the subscript value of a string when given it's name"
+character(len=*),parameter::ident_18="@(#)M_kracken::subscript_(3fp): return the subscript value of a string when given its name"
 
 !  WARNING: only request value of names known to exist
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -1935,7 +1935,7 @@ character(len=*),parameter::ident_18="@(#)M_kracken::subscript(3fp): return the 
    character(len=IPvalue)             :: mssge
    integer                            :: ierr
    integer                            :: indx
-   integer                            :: subscript
+   integer                            :: subscript_
 !-----------------------------------------------------------------------------------------------------------------------------------
    chars=chars0
    indx=0
@@ -1943,13 +1943,13 @@ character(len=*),parameter::ident_18="@(#)M_kracken::subscript(3fp): return the 
    call locate(dict_verbs,chars,indx,ierr,mssge)                        ! look up position
 !-----------------------------------------------------------------------------------------------------------------------------------
    if((ierr  ==  -1).or.(indx <= 0))then
-      !call journal("*subscript* variable "//trim(chars)//" undefined")
-      subscript=-1                                                       ! very unfriendly subscript value
+      !call journal("*subscript_* variable "//trim(chars)//" undefined")
+      subscript_=-1                                                       ! very unfriendly subscript value
    else
-      subscript=indx
+      subscript_=indx
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
-end function subscript
+end function subscript_
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -2204,11 +2204,11 @@ end subroutine menu
 !!
 !!##SYNOPSIS
 !!
-!!   subroutine show(VERB_NAME0,VERBS_ONLY,IWIDE0)
+!!   subroutine show(VERB_NAME0,VERBS_ONLY,IWIDE)
 !!
 !!    character(len=*),intent(in)   :: VERB_NAME0
 !!    logical,intent(in)            :: VERBS_ONLY
-!!    integer,intent(in)            :: iwide0
+!!    integer,intent(in)            :: iwide
 !!##DESCRIPTION
 !!    Write information about a command from the command dictionary or list all the
 !!    command verbs in the dictionary
@@ -2216,7 +2216,7 @@ end subroutine menu
 !!##OPTIONS
 !!    VERB_NAME0   verb prefix to display. Default is all
 !!    VERBS_ONLY   flag to show verbs only
-!!    IWIDE0       if .ge. zero, how many columns wide to show just verbs
+!!    IWIDE        if .ge. zero, how many columns wide to show just verbs
 !!
 !!##EXAMPLE
 !!
@@ -2246,32 +2246,32 @@ end subroutine menu
 !!
 !!    parse,dissect,store,setprompts,show
 !===================================================================================================================================
-subroutine show(VERB_NAME0,VERBS_ONLY,IWIDE0)
+subroutine show(VERB_NAME0,VERBS_ONLY,IWIDE)
 
 character(len=*),parameter::ident_20="@(#)M_kracken::show(3f): dump dictionary entries"
 
 character(len=*),intent(in)   :: VERB_NAME0     ! verb prefix to display. Default is all
 logical,intent(in)            :: VERBS_ONLY     ! flag to show verbs only
-integer,intent(in)            :: iwide0         ! if .ge. zero, how many columns wide to show just verbs
+integer,intent(in)            :: iwide          ! if .ge. zero, how many columns wide to show just verbs
 !-----------------------------------------------------------------------------------------------------------------------------------
-   character(len=IPvalue)     :: VERB_NAME      ! verb prefix to display. Default is all
-   character(len=IPvalue)     :: message
-   integer                    :: i
-   integer                    :: j
-   integer                    :: ii
-   integer                    :: ich
-   integer                    :: istart
-   integer                    :: istep
-   integer                    :: iwide
-   integer                    :: verb_length
+character(len=IPvalue)        :: VERB_NAME      ! verb prefix to display. Default is all
+character(len=IPvalue)        :: message
+integer                       :: i
+integer                       :: j
+integer                       :: ii
+integer                       :: ich
+integer                       :: istart
+integer                       :: istep
+integer                       :: iwide_local
+integer                       :: verb_length
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(.not.allocated(dict_verbs)) call initd()
 !-----------------------------------------------------------------------------------------------------------------------------------
-   iwide=iwide0
-   if(iwide.le.0)iwide=80
+   iwide_local=iwide
+   if(iwide_local.le.0)iwide_local=80
    VERB_NAME=VERB_NAME0
 !-----------------------------------------------------------------------------------------------------------------------------------
-   if(VERBS_ONLY)then                                        ! show all verbs
+   if(VERBS_ONLY)then                                         ! show just verbs
       message=' '
       istart=1
       !!istep=len(DICT_VERBS)
@@ -2286,11 +2286,13 @@ integer,intent(in)            :: iwide0         ! if .ge. zero, how many columns
             if(DICT_VERBS(i)(verb_length-2:).ne.'_oo') cycle  ! assume all commands have a VERB_oo value
             if(verb_length.lt.3)cycle                         ! looking for VERB_oo
             if(j.eq.1)then
-               istep=max(istep,verb_length-3)
-            elseif(istart+verb_length-1.gt.iwide)then
-               call journal('')
-               call journal('+c','')                          ! start next comment line
+               istep=max(istep,verb_length-3+1)
+            elseif(istart+istep+1.gt.iwide_local)then
+               call journal('ts','')                          ! end line
+               call journal('+c','')                          ! start next comment line in trail so get pound character
                istart=1
+               call journal('+st',adjustr(atleast(DICT_VERBS(i)(:verb_length-3),istep)))
+               istart=istart+istep
             elseif(verb_length-3.gt.0.and.j.eq.2)then
                call journal('+st',adjustr(atleast(DICT_VERBS(i)(:verb_length-3),istep)))
                istart=istart+istep

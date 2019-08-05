@@ -58,7 +58,7 @@
 !!    o If you enter "?" while in command edit mode, help is displayed.
 !!
 !!    o If the last input line is not the desired line to edit,
-!!      select the line to edit by entering it's line number or by
+!!      select the line to edit by entering its line number or by
 !!      using the /,l,u, and d commands (see below for details) to find the desired input line.
 !!    o Next enter an editing directive (c,m) to edit the selected line. The
 !!      "change" command will change all occurrences of an old string to a
@@ -205,6 +205,7 @@ module M_history
 !
    use M_journal, only : journal
    use M_strings, only : change, modif, notabs, s2v, v2s, s2vs
+   implicit none
    private
 
    public  :: redo                  !  copy a line into history file or edit history if command is "r" and return line
@@ -235,6 +236,8 @@ integer,save                         :: iobuf=1071         ! unit number to use 
 integer,save                         :: iredo              ! number of lines read from standard input into redo file
 logical,save                         :: lcalled=.false.    ! flag whether first time this routine called or not
 character(len=READLEN)               :: onerecord
+integer                              :: ioparc
+integer                              :: ilast
 !-----------------------------------------------------------------------------------------------------------------------------------
 if(present(r))then
    r_local=r
@@ -301,6 +304,7 @@ subroutine redol(redoline,iobuf,iredo,ibuf0,init)
 !  allow changing the edit characters in a modify
 
 character(len=*),parameter     :: ident="@(#)M_history::redoline(3fp): redo a previous input line"
+
 character(len=*),intent(out)   :: redoline    ! edited command line to be returned
 integer,intent(in)             :: iobuf       ! history file unit to read old commands from
 integer                        :: iredo       !iredo ......  (i) number of lines in history file
@@ -308,6 +312,20 @@ character(len=*),intent(in)    :: init        ! initial command string
 integer,intent(in)             :: ibuf0       ! the width of the history file in characters; <= len(redoline)
 
 doubleprecision                :: val8
+integer                        :: i10, i15, i20, i30
+integer                        :: idump
+integer                        :: idown
+integer                        :: ipoint
+integer                        :: iread
+integer                        :: istart
+integer                        :: ios
+integer                        :: ii
+integer                        :: ilen
+integer                        :: icall
+integer                        :: iup
+integer                        :: ix
+integer                        :: ibuf
+integer                        :: ilast
 integer                        :: cstat
 character(len=256)             :: sstat
 character                      :: cmd
@@ -317,6 +335,7 @@ integer,allocatable            :: ivals(:)
 integer                        :: iend
 integer                        :: i
 integer                        :: ierr
+integer                        :: ier
    data numbers/'123456789012345678901234567890123456789012345678901234567890&
   &12345678901234567890123456789012345678901234567890123456789012345678901234&
   &56789012345678901234567890123456789012345678901234567890123456789012345678&

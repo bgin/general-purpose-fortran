@@ -14,6 +14,7 @@ private
   public polyarea_shoelace  ! find area of a polygon using shoelace algorithm
   public polyarea_mid_point ! find area of a polygon
   public closest            ! find point in <X,Y> arrays closest to target point
+  public hypot              ! Euclidean distance
   ! FIT
   public julfit             ! linear least square fit
   public julfit1            ! linear least square fit(y=a*x+b)
@@ -4178,6 +4179,55 @@ end subroutine test_closest
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!    hypot(3f) - [M_math:geometry] Euclidean distance function
+!!##SYNOPSIS
+!!
+!!    pure function hypot(x,y) result(z)
+!!    real,intent(in):: x,y
+!!    real:: z
+!!##DESCRIPTION
+!!    hypot(x,y) is the Euclidean distance function. It is equal to
+!!    sqrt{X**2 + Y**2}, without undue underflow or overflow.
+!!
+!!    That is, solve for SQRT(x*x+y*y) carefully to avoid overflow
+!!    (will be an intrinsic in Fortran 2008).
+!!##OPTIONS
+!!    X   The type shall be REAL.
+!!    Y   The type and kind type parameter shall be the same as X.
+!!##RESULT
+!!    HYPOT  The return value has the same type and kind type parameter as X
+!!##STANDARD
+!!        [[Fortran 2008]] and later
+!!##EXAMPLE
+!!
+!!   Sample program:
+!!
+!!    program demo_hypot
+!!    real(4) :: x = 1.e0_4, y = 0.5e0_4
+!!       x = hypot(x,y)
+!!    end program demo_hypot
+!===================================================================================================================================
+pure function hypot(x,y) result(z)
+real,intent(in):: x,y
+real  :: z
+real  :: a,b
+   a=ABS(x)
+   b=ABS(y)
+
+   if(a > b)then
+      z=a*sqrt(1.0+(b/a)**2)
+   elseif (b==0) then
+      z=0.0
+   else
+      z=b*sqrt(1.0+(a/b)**2)
+   endif
+
+end function hypot
 
 !>
 !!##NAME
@@ -4277,8 +4327,8 @@ end subroutine extremum
 !!
 !!    subroutine bds(x,n,stat)
 !!
-!!     integer,intent(in) :: n
 !!     real,intent(in)    :: x(n)
+!!     integer,intent(in) :: n
 !!     real,intent(out)   :: STAT(13)
 !!##DESCRIPTION
 !!
@@ -4436,6 +4486,8 @@ character(len=*),parameter::ident_16="&
    real               :: fln
    integer            :: i, i20, i30
 !-----------------------------------------------------------------------
+write(*,*)'*bds* got here A',N
+write(*,*)'*bds* got here A 1',X
       FLN=N
 !-----------------------------------------------------------------------
 !  SUM AND MEAN AND LARGEST AND SMALLEST AND LOCATION OF EXTREMES
@@ -4444,6 +4496,7 @@ character(len=*),parameter::ident_16="&
       STAT(IS)=1                       ! location of smallest
       STAT(IB)=1                       ! location of biggest
       STAT(SUM) =0.0                   ! sum of all values
+write(*,*)'*bds* got here B'
       DO I=1,N
          STAT(SUM)= STAT(SUM) +X(I)    ! add all values into SUM
          IF(X(I).LT.STAT(SMALL))THEN   ! find smallest value
@@ -4455,12 +4508,15 @@ character(len=*),parameter::ident_16="&
             STAT(IB)=I
          ENDIF
       enddo
+write(*,*)'*bds* got here C'
       STAT(MEAN)= STAT(SUM)/FLN
+write(*,*)'*bds* got here D'
 !-----------------------------------------------------------------------
 !  SECOND, THIRD, FOURTH MOMENTS ABOUT THE MEAN
       STAT(u2) = 0.0
       STAT(u3) = 0.0
       STAT(u4) = 0.0
+write(*,*)'*bds* got here E'
       DO I20=1,N
          deltafixed = (X(I20) - STAT(mean))
          deltasum = deltafixed
@@ -4469,17 +4525,24 @@ character(len=*),parameter::ident_16="&
             STAT(I30) = STAT(I30) + deltasum
          enddo
       enddo
+write(*,*)'*bds* got here F'
 !-----------------------------------------------------------------------
       STAT(u2) = STAT(u2) / FLN
       STAT(u3) = STAT(u3) / FLN
       STAT(u4) = STAT(u4) / FLN
+write(*,*)'*bds* got here G'
 !-----------------------------------------------------------------------
 !  VARIANCE, STANDARD DEVIATION
+write(*,*)'*bds* got here H'
       STAT(varnce) = FLN * STAT(u2) / (FLN-1.0)
+write(*,*)'*bds* got here I'
       STAT(sd) = SQRT(STAT(varnce))
+write(*,*)'*bds* got here J'
 !-----------------------------------------------------------------------
 !  SKEWNESS, KURTOSIS
+write(*,*)'*bds* got here K'
       STAT(skew) = STAT(u3) /(STAT(u2) * SQRT(STAT(u2)))
+write(*,*)'*bds* got here L'
       STAT(kurto) = STAT(u4) / (STAT(u2) * STAT(u2)) - 3.0
 !-----------------------------------------------------------------------
 END SUBROUTINE BDS
@@ -4527,6 +4590,7 @@ INTEGER,INTENT(IN) :: IOPT
    INTEGER         :: I
    REAL            :: T2, T3, T4
    REAL            :: D
+write(*,*)'*bds* got here M'
       RN = REAL(NHI)
       IF (IOPT.EQ.0) THEN
          S = 0.0
@@ -4548,6 +4612,7 @@ INTEGER,INTENT(IN) :: IOPT
       enddo
       YSKEW=SQRT(RN)*T3/T2**1.5
       YKURT=RN*T4/T2**2
+write(*,*)'*skekur1* got here AAA'
 END SUBROUTINE SKEKUR1
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
@@ -4603,6 +4668,7 @@ character(len=*),parameter::ident_18="@(#)M_math::skekurx(3f): COMPUTE UNBIASED 
       doubleprecision    :: stddev
       integer            :: i10,i20,i30
 !-----------------------------------------------------------------------
+write(*,*)'*skekurx* got here A'
       RN = N
 !-----------------------------------------------------------------------
       ! GET AVERAGE
@@ -4618,6 +4684,7 @@ character(len=*),parameter::ident_18="@(#)M_math::skekurx(3f): COMPUTE UNBIASED 
          SUM=SUM+(Y(I30)-XBAR)**2
       enddo
       STDDEV=SQRT(SUM/(RN-1.0d0))
+write(*,*)'*skekurx* got here AA'
 !-----------------------------------------------------------------------
       SUM3=0.0
       SUM4=0.0
@@ -4629,6 +4696,7 @@ character(len=*),parameter::ident_18="@(#)M_math::skekurx(3f): COMPUTE UNBIASED 
       YSKEW=RN/((RN-1.0d0)*(RN-2.0d0))*SUM3
       YKURT= RN*(RN+1.0d0) / ((RN-1.0d0)*(RN-2.0d0)*(RN-3.0d0)) * SUM4 - 3.0d0*(RN-1.0d0)**2/((RN-2.0d0)*(RN-3.0d0))
 !-----------------------------------------------------------------------
+write(*,*)'*skekurx* got here AAA'
 END SUBROUTINE SKEKURX
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
@@ -6432,6 +6500,7 @@ subroutine test_suite_M_math()
    call test_polyarea_shoelace  ! find area of a polygon using shoelace algorithm
    call test_polyarea_mid_point ! find area of a polygon
    call test_closest            ! find point closest to target
+   call test_hypot              ! Euclidean distance
 ! FIT
    call test_julfit             ! linear least square fit
    call test_julfit1            ! linear least square fit(y=a*x+b)
@@ -6789,6 +6858,15 @@ use M_debug, only : unit_check_level
    !!call unit_check('polyarea_shoelace', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('polyarea_shoelace',msg='')
 end subroutine test_polyarea_shoelace
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_hypot()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('hypot',msg='')
+   !!call unit_check('hypot', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('hypot',msg='')
+end subroutine test_hypot
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_qhfg()
 

@@ -1,6 +1,8 @@
 !-----------------------------------------------------------------------
 subroutine jsh_v(i) ! assume long routine names are supported
 use iso_fortran_env
+implicit none
+integer,intent(in) :: i
       ! return version number in character variable version and print
       ! compile information to unit i
       if(i.ge.0)then
@@ -11,7 +13,7 @@ use iso_fortran_env
       call trimit('@(#)Compiler Version .... '//trim(compiler_version())//'>')
 !     call trimit('@(#)Compiler Options .... '//trim(compiler_options())//'>')
       call trimit('@(#)Compile Date ........ '//&
-     &'Tue Jul  9 13:43:56 EDT 2019>')
+     &'Sun Aug  4 12:25:31 EDT 2019>')
      call trimit('@(#)Compiled on node:>')
       call trimit('@(#) Nodename ........... '// &
      &'buzz>')
@@ -28,9 +30,9 @@ use iso_fortran_env
       write(i,'(1x,79("-"))')
       endif
       contains
-         subroutine trimit(string) ! leave off metadata prefix
-         character(len=*) :: string
+      subroutine trimit(string) ! leave off metadata prefix
+      character(len=*) :: string
          write(i,*)trim(string(5:len_trim(string)-1))
-         end subroutine trimit
+      end subroutine trimit
 end subroutine jsh_v
 !-----------------------------------------------------------------------

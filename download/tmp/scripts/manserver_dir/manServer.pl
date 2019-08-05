@@ -630,7 +630,7 @@ sub outputLine
 	s,\b(ftp://[-\w/~:@.%#+$?=]+),<A HREF=\"\1\">\1</A>,g;
 	s,([-_A-Za-z0-9.]+@[A-Za-z][-_A-Za-z0-9]*\.[-_A-Za-z0-9.]+),<A HREF=\"mailto:\1\">\1</A>,g;
 
-	# special case for things like 'perlre' as it's so useful but the
+	# special case for things like 'perlre' as it is so useful but the
 	# pod-generated pages aren't very parser friendly...
 	if ($perlPattern && ! m/<A HREF/i)
 	{

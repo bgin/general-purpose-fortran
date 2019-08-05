@@ -80,7 +80,7 @@ subroutine destroy_win(local_win)
    type (C_PTR), intent(inout) :: local_win
    integer(C_LONG) :: char
     ! box(local_win, ' ', ' '); : This won't produce the desired
-    ! result of erasing the window. It will leave it's four corners
+    ! result of erasing the window. It will leave its four corners
     ! and so an ugly remnant of window.
     !
    char=ichar(" ")

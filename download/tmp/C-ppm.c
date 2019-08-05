@@ -1,10 +1,16 @@
 /*******************************************************************************/
 #ident "@(#)M_DRAW:driver/ppm.c - M_DRAW driver for ppm (Poskanzer pixmap) files"
 #ident "@(#)M_DRAW:author - John S. Urban"
-#ident "@(#)M_DRAW:version - 2.0, Nov 2005"
+#ident "@(#)M_DRAW:version - 3.0, Jul 2019"
 /*
 @(#) Version 1.0, John S. Urban, Feb 1997
 @(#) Version 2.0, John S. Urban, Nov 2005
+@(#) Version 3.0, John S. Urban, Jul 2019
+     The file(1) command assumes no comments in header. Moved comments so
+     proper size is reported. The display(1) command reads a P6 file improperly
+     with comments after max color intensity so very specifically need to do
+       magic number\nsize\comment(s)\max color\pixel data
+     even though Poskanzer pixmap order is supposed to be very flexible.
 
 This driver makes  pbmplus-readable color (P3 and P6  format)  pixmap   files.
 
@@ -600,13 +606,14 @@ static int P3_print_graphics(void) { /* print_graphics -- print the graphics bit
    struct passwd *pw;
 
    (void) fprintf(draw_fp,"P3\n"); /* magic number of a clear text PPM file */
+   (void) fprintf(draw_fp,"%d %d\n",X_SIZE,Y_SIZE); /* size of bitmap */
 #ifndef TRUECOLOR
    (void) fprintf(draw_fp,"# PRINTTIMECOLOR 256 entry colortable version\n");
 #else
    (void) fprintf(draw_fp,"# TRUECOLOR 8192 entry colortable version\n");
 #endif
-   (void) fprintf(draw_fp,"# CREATOR: M_DRAW ppm driver; version 1.0 1997/02/02\n"); /* ppm P3 file can contain comment lines*/
-   (void) fprintf(draw_fp,"# 19970202, John S. Urban\n");
+   (void) fprintf(draw_fp,"# CREATOR: M_DRAW ppm driver; version 3.0 2019/07/10\n"); /* ppm P3 file can contain comment lines*/
+   (void) fprintf(draw_fp,"# AUTHOR:  John S. Urban\n");
 
         time(&tod);
         fprintf(draw_fp,"# CreationDate: %s",ctime(&tod));
@@ -628,9 +635,8 @@ static int P3_print_graphics(void) { /* print_graphics -- print the graphics bit
 #endif
 
    (void) fprintf(draw_fp,"# csplit multiframe file FILE.p3: csplit -f P3 -k FILE.p3 '%%^P3%%' '/^P3/' '{999}'\n");
-   (void) fprintf(draw_fp,"%d %d\n",X_SIZE,Y_SIZE); /* size of bitmap */
-   (void) fprintf(draw_fp,"255\n"); /* maximum value of a color intensity*/
 
+   (void) fprintf(draw_fp,"255\n"); /* maximum value of a color intensity*/
    /* notice going from bottom to top because putting out in a right handed coordinate system, was assuming left-handed */
    for (y = (Y_SIZE-1); y >= 0; y--) { /* Loop for each byte in the array */
       for ( x = 0; x < X_SIZE ; x++){
@@ -680,8 +686,9 @@ static void P6_print_graphics(void) { /* print_graphics -- print the graphics bi
 
 
    (void) fprintf(fpP6,"P6\n"); /* magic number of a ppm file */
+   (void) fprintf(fpP6,"%d %d\n",X_SIZE,Y_SIZE); /* size of bitmap */
    (void) fprintf(fpP6,"# CREATOR: M_DRAW ppm driver; version 1.0 1997/02/02\n"); /*ppm P6 file can contain comment lines*/
-   (void) fprintf(fpP6,"# 19970202, John S. Urban\n");
+   (void) fprintf(fpP6,"# AUTHOR:  John S. Urban\n");
         time(&tod);
         fprintf(fpP6,"# CreationDate: %s",ctime(&tod));
 
@@ -701,9 +708,8 @@ static void P6_print_graphics(void) { /* print_graphics -- print the graphics bi
                 (int)sizeof(un->machine),  un->machine);
 #endif
 
-   (void) fprintf(fpP6,"%d %d\n",X_SIZE,Y_SIZE); /* size of bitmap */
-   (void) fprintf(fpP6,"255\n"); /* maximum value of a color intensity*/
 
+   (void) fprintf(fpP6,"255\n"); /* maximum value of a color intensity*/
    /* notice going from bottom to top because putting out in a right handed coordinate system, was assuming left-handed */
    for (y = (Y_SIZE-1); y >= 0; y--) {
       for ( x = 0; x < X_SIZE ; x++){

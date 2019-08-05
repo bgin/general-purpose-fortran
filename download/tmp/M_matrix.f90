@@ -1496,7 +1496,7 @@ integer,save      :: fnl(11)= [12, 6, 8, 4, 6, 3, 4, 2, 3, 1, 1]
    CALL mat_prntid(ID,-1)
    LCT(1) = LCT(1)+2
    IF (S .NE. 1.0D0)then
-      WRITE(mline,'(''  '',1PD9.1,2H *)') S
+      WRITE(mline,'(''  '',1PD9.1," *")') S
       if(wte.eq.6)then
          call journal(mline)
       else
@@ -1726,8 +1726,8 @@ character(len=*),parameter::ident_19="@(#)M_matrix::mat_magic(3fp): Algorithms f
 !        by W. W. Rouse Ball and H. S. M. Coxeter
 !
 integer         :: lda
-doubleprecision :: a(lda,n)
 integer         :: n
+doubleprecision :: a(lda,n)
 
 doubleprecision :: t
 integer         :: i
@@ -4991,7 +4991,7 @@ integer             :: n
       endif
 !.......................................................................
       DO J = 1, N
-         DO K = 1, alflq  ! make sure this letter is in set of MAT88 characters and get it's MAT88 number
+         DO K = 1, alflq  ! make sure this letter is in set of MAT88 characters and get its MAT88 number
            IF (BUF(J).EQ.ALFA(K) .OR. BUF(J).EQ.ALFB(K)) GOTO 30
          enddo
          call journal('sc','UNKNOWN CHARACTER AT COLUMN ',J) ! this is not a known character
@@ -10218,7 +10218,7 @@ end subroutine test_suite_M_matrix
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
-end module M_matrix
+end module M_matrix !! subroutine
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
@@ -10723,7 +10723,7 @@ end subroutine ml_wgesl
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-      SUBROUTINE ML_WGEDI(AR,AI,LDA,N,IPVT,DETR,DETI,WORKR,WORKI,JOB)
+SUBROUTINE ML_WGEDI(AR,AI,LDA,N,IPVT,DETR,DETI,WORKR,WORKI,JOB)
       use M_matrix
       INTEGER LDA,N,IPVT(*),JOB
       DOUBLEPRECISION AR(LDA,*),AI(LDA,*),DETR(2),DETI(2),WORKR(*),WORKI(*)
@@ -10872,7 +10872,7 @@ end subroutine ml_wgesl
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-      SUBROUTINE ML_HTRIDI(NM,N,AR,AI,D,E,E2,TAU)
+SUBROUTINE ML_HTRIDI(NM,N,AR,AI,D,E,E2,TAU)
       use M_matrix
 !
       INTEGER I,J,K,L,N,II,NM,JP1
@@ -11119,10 +11119,11 @@ END SUBROUTINE ML_HTRIBK
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-      SUBROUTINE ML_IMTQL2(NM,N,D,E,Z,IERR,JOB)
+SUBROUTINE ML_IMTQL2(NM,N,D,E,Z,IERR,JOB)
       use M_matrix
-!
+      IMPLICIT NONE
       INTEGER I,J,K,L,M,N,II,NM,MML,IERR
+      integer :: job
       DOUBLEPRECISION D(N),E(N),Z(NM,N)
       DOUBLEPRECISION B,C,F,G,P,R,S
 !
@@ -11429,7 +11430,6 @@ END SUBROUTINE ML_CORTH
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
 subroutine ml_comqr3(nm,n,low,igh,ortr,orti,hr,hi,wr,wi,zr,zi,ierr ,job)
-use M_matrix
 !*****
 !     MODIFICATION OF EISPACK COMQR2 TO ADD JOB PARAMETER
 !     JOB = 0  OUTPUT H = SCHUR TRIANGULAR FORM, Z NOT USED
@@ -11441,9 +11441,6 @@ use M_matrix
 !     OVERFLOW CONTROL IN EIGENVECTOR BACKSUBSTITUTION, 3/16/82
 !*****
 !
-integer i,j,k,l,m,n,en,ii,jj,ll,nm,nn,igh,ip1,itn,its,low,lp1,enm1,iend,ierr
-doubleprecision hr(nm,n),hi(nm,n),wr(n),wi(n),zr(nm,n),zi(nm,n),ortr(igh),orti(igh)
-doubleprecision si,sr,ti,tr,xi,xr,yi,yr,zzi,zzr,norm
 !
 !     THIS SUBROUTINE IS A TRANSLATION OF A UNITARY ANALOGUE OF THE
 !     ALGOL PROCEDURE  COMLR2, NUM. MATH. 16, 181-204(1970) BY PETERS
@@ -11510,6 +11507,12 @@ doubleprecision si,sr,ti,tr,xi,xr,yi,yr,zzi,zzr,norm
 !     APPLIED MATHEMATICS DIVISION, ARGONNE NATIONAL LABORATORY
 !
 !     ------------------------------------------------------------------
+use M_matrix
+integer i,j,k,l,m,n,en,ii,ll,nm,nn,igh,ip1,itn,its,low,lp1,enm1,iend,ierr
+doubleprecision hr(nm,n),hi(nm,n),wr(n),wi(n),zr(nm,n),zi(nm,n),ortr(igh),orti(igh)
+doubleprecision si,sr,ti,tr,xi,xr,yi,yr,zzi,zzr,norm
+integer :: job
+integer :: jj
    ierr = 0
    !*****
    if (job .eq. 0) goto 150
@@ -11869,7 +11872,7 @@ end subroutine ml_comqr3
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-      SUBROUTINE ML_WSVDC(XR,XI,LDX,N,P,SR,SI,ER,EI,UR,UI,LDU,VR,VI,LDV,WORKR,WORKI,JOB,INFO)
+SUBROUTINE ML_WSVDC(XR,XI,LDX,N,P,SR,SI,ER,EI,UR,UI,LDU,VR,VI,LDV,WORKR,WORKI,JOB,INFO)
       use M_matrix
       INTEGER LDX,N,P,LDU,LDV,JOB,INFO
       DOUBLEPRECISION XR(LDX,*),XI(LDX,*),SR(*),SI(*),ER(*),EI(*), UR(LDU,*),UI(LDU,*),VR(LDV,*),VI(LDV,*), WORKR(*),WORKI(*)
@@ -12420,7 +12423,7 @@ end subroutine ml_comqr3
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-      SUBROUTINE ML_WQRDC(XR,XI,LDX,N,P,QRAUXR,QRAUXI,JPVT,WORKR,WORKI, JOB)
+SUBROUTINE ML_WQRDC(XR,XI,LDX,N,P,QRAUXR,QRAUXI,JPVT,WORKR,WORKI, JOB)
       use M_matrix
       INTEGER LDX,N,P,JOB
       INTEGER JPVT(*)
@@ -12508,6 +12511,7 @@ end subroutine ml_comqr3
 !
 !     INTERNAL VARIABLES
 !
+integer :: jj
       INTEGER J,JP,L,LP1,LUP,MAXJ,PL,PU
       DOUBLEPRECISION MAXNRM,TT
       DOUBLEPRECISION NRMXLR,NRMXLI,TR,TI
@@ -12649,12 +12653,13 @@ end subroutine ml_comqr3
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-      SUBROUTINE ML_WQRSL(XR,XI,LDX,N,K,QRAUXR,QRAUXI,YR,YI,QYR,QYI,QTYR,QTYI,BR,BI,RSDR,RSDI,XBR,XBI,JOB,INFO)
-      use M_matrix
-      INTEGER LDX,N,K,JOB,INFO
-      DOUBLEPRECISION XR(LDX,*),XI(LDX,*),QRAUXR(*),QRAUXI(*),YR(*),     &
-     &                YI(*),QYR(*),QYI(*),QTYR(*),QTYI(*),BR(*),BI(*),   &
-     &                RSDR(*),RSDI(*),XBR(*),XBI(*)
+SUBROUTINE ML_WQRSL(XR,XI,LDX,N,K,QRAUXR,QRAUXI,YR,YI,QYR,QYI,QTYR,QTYI,BR,BI,RSDR,RSDI,XBR,XBI,JOB,INFO)
+use M_matrix
+IMPLICIT NONE
+INTEGER LDX,N,K,JOB,INFO
+DOUBLEPRECISION XR(LDX,*),XI(LDX,*),QRAUXR(*),QRAUXI(*),YR(*),     &
+   &                YI(*),QYR(*),QYI(*),QTYR(*),QTYI(*),BR(*),BI(*),   &
+   &                RSDR(*),RSDI(*),XBR(*),XBI(*)
 !
 !     WQRSL APPLIES THE OUTPUT OF WQRDC TO COMPUTE COORDINATE
 !     TRANSFORMATIONS, PROJECTIONS, AND LEAST SQUARES SOLUTIONS.
@@ -12796,170 +12801,170 @@ end subroutine ml_comqr3
 !
 !     INTERNAL VARIABLES
 !
-      INTEGER I,J,JJ,JU,KP1
-      DOUBLEPRECISION TR,TI,TEMPR,TEMPI
-      LOGICAL CB,CQY,CQTY,CR,CXB
+   INTEGER I,J,JJ,JU,KP1
+   DOUBLEPRECISION TR,TI,TEMPR,TEMPI
+   LOGICAL CB,CQY,CQTY,CR,CXB
 !
-      DOUBLEPRECISION ZDUMR,ZDUMI
-      DOUBLEPRECISION CABS1
-      CABS1(ZDUMR,ZDUMI) = DABS(ZDUMR) + DABS(ZDUMI)
+   DOUBLEPRECISION ZDUMR,ZDUMI
+   DOUBLEPRECISION CABS1
+   CABS1(ZDUMR,ZDUMI) = DABS(ZDUMR) + DABS(ZDUMI)
 !
 !     SET INFO FLAG.
 !
-      INFO = 0
+   INFO = 0
 !
 !     DETERMINE WHAT IS TO BE COMPUTED.
 !
-      CQY = JOB/10000 .NE. 0
-      CQTY = MOD(JOB,10000) .NE. 0
-      CB = MOD(JOB,1000)/100 .NE. 0
-      CR = MOD(JOB,100)/10 .NE. 0
-      CXB = MOD(JOB,10) .NE. 0
-      JU = MIN0(K,N-1)
+   CQY = JOB/10000 .NE. 0
+   CQTY = MOD(JOB,10000) .NE. 0
+   CB = MOD(JOB,1000)/100 .NE. 0
+   CR = MOD(JOB,100)/10 .NE. 0
+   CXB = MOD(JOB,10) .NE. 0
+   JU = MIN0(K,N-1)
 !
 !     SPECIAL ACTION WHEN N=1.
 !
-      IF (JU .NE. 0) GOTO 80
-         IF (.NOT.CQY) GOTO 10
-            QYR(1) = YR(1)
-            QYI(1) = YI(1)
-   10    CONTINUE
-         IF (.NOT.CQTY) GOTO 20
-            QTYR(1) = YR(1)
-            QTYI(1) = YI(1)
-   20    CONTINUE
-         IF (.NOT.CXB) GOTO 30
-            XBR(1) = YR(1)
-            XBI(1) = YI(1)
-   30    CONTINUE
-         IF (.NOT.CB) GOTO 60
-            IF (CABS1(XR(1,1),XI(1,1)) .NE. 0.0D0) GOTO 40
-               INFO = 1
-            GOTO 50
-   40       CONTINUE
-               CALL mat_wdiv(YR(1),YI(1),XR(1,1),XI(1,1),BR(1),BI(1))
-   50       CONTINUE
-   60    CONTINUE
-         IF (.NOT.CR) GOTO 70
-            RSDR(1) = 0.0D0
-            RSDI(1) = 0.0D0
-   70    CONTINUE
-      GOTO 290
-   80 CONTINUE
+   IF (JU .NE. 0) GOTO 80
+   IF (.NOT.CQY) GOTO 10
+   QYR(1) = YR(1)
+   QYI(1) = YI(1)
+10 CONTINUE
+   IF (.NOT.CQTY) GOTO 20
+   QTYR(1) = YR(1)
+   QTYI(1) = YI(1)
+20 CONTINUE
+   IF (.NOT.CXB) GOTO 30
+   XBR(1) = YR(1)
+   XBI(1) = YI(1)
+30 CONTINUE
+   IF (.NOT.CB) GOTO 60
+   IF (CABS1(XR(1,1),XI(1,1)) .NE. 0.0D0) GOTO 40
+   INFO = 1
+   GOTO 50
+40 CONTINUE
+   CALL mat_wdiv(YR(1),YI(1),XR(1,1),XI(1,1),BR(1),BI(1))
+50 CONTINUE
+60 CONTINUE
+   IF (.NOT.CR) GOTO 70
+   RSDR(1) = 0.0D0
+   RSDI(1) = 0.0D0
+70 CONTINUE
+   GOTO 290
+80 CONTINUE
 !
 !        SET UP TO COMPUTE QY OR QTY.
 !
-         IF (CQY) CALL mat_wcopy(N,YR,YI,1,QYR,QYI,1)
-         IF (CQTY) CALL mat_wcopy(N,YR,YI,1,QTYR,QTYI,1)
-         IF (.NOT.CQY) GOTO 110
+   IF (CQY) CALL mat_wcopy(N,YR,YI,1,QYR,QYI,1)
+   IF (CQTY) CALL mat_wcopy(N,YR,YI,1,QTYR,QTYI,1)
+   IF (.NOT.CQY) GOTO 110
 !
 !           COMPUTE QY.
 !
-            DO JJ = 1, JU
-               J = JU - JJ + 1
-               IF (CABS1(QRAUXR(J),QRAUXI(J)) .EQ. 0.0D0) GOTO 90
-                  TEMPR = XR(J,J)
-                  TEMPI = XI(J,J)
-                  XR(J,J) = QRAUXR(J)
-                  XI(J,J) = QRAUXI(J)
-                  TR=-mat_wdotcr(N-J+1,XR(J,J),XI(J,J),1,QYR(J),QYI(J),1)
-                  TI=-mat_wdotci(N-J+1,XR(J,J),XI(J,J),1,QYR(J),QYI(J),1)
-                  CALL mat_wdiv(TR,TI,XR(J,J),XI(J,J),TR,TI)
-                  CALL matX_waxpy(N-J+1,TR,TI,XR(J,J),XI(J,J),1,QYR(J), QYI(J),1)
-                  XR(J,J) = TEMPR
-                  XI(J,J) = TEMPI
-   90          CONTINUE
-            enddo
-  110    CONTINUE
-         IF (.NOT.CQTY) GOTO 140
+   DO JJ = 1, JU
+      J = JU - JJ + 1
+      IF (CABS1(QRAUXR(J),QRAUXI(J)) .EQ. 0.0D0) GOTO 90
+      TEMPR = XR(J,J)
+      TEMPI = XI(J,J)
+      XR(J,J) = QRAUXR(J)
+      XI(J,J) = QRAUXI(J)
+      TR=-mat_wdotcr(N-J+1,XR(J,J),XI(J,J),1,QYR(J),QYI(J),1)
+      TI=-mat_wdotci(N-J+1,XR(J,J),XI(J,J),1,QYR(J),QYI(J),1)
+      CALL mat_wdiv(TR,TI,XR(J,J),XI(J,J),TR,TI)
+      CALL matX_waxpy(N-J+1,TR,TI,XR(J,J),XI(J,J),1,QYR(J), QYI(J),1)
+      XR(J,J) = TEMPR
+      XI(J,J) = TEMPI
+90    CONTINUE
+   enddo
+110 CONTINUE
+   IF (.NOT.CQTY) GOTO 140
 !
 !           COMPUTE CTRANS(Q)*Y.
 !
-            DO J = 1, JU
-               IF (CABS1(QRAUXR(J),QRAUXI(J)) .EQ. 0.0D0) GOTO 120
-                  TEMPR = XR(J,J)
-                  TEMPI = XI(J,J)
-                  XR(J,J) = QRAUXR(J)
-                  XI(J,J) = QRAUXI(J)
-                  TR = -mat_wdotcr(N-J+1,XR(J,J),XI(J,J),1,QTYR(J), QTYI(J),1)
-                  TI = -mat_wdotci(N-J+1,XR(J,J),XI(J,J),1,QTYR(J), QTYI(J),1)
-                  CALL mat_wdiv(TR,TI,XR(J,J),XI(J,J),TR,TI)
-                  CALL matX_waxpy(N-J+1,TR,TI,XR(J,J),XI(J,J),1,QTYR(J), QTYI(J),1)
-                  XR(J,J) = TEMPR
-                  XI(J,J) = TEMPI
-  120          CONTINUE
-            enddo
-  140    CONTINUE
+   DO J = 1, JU
+      IF (CABS1(QRAUXR(J),QRAUXI(J)) .EQ. 0.0D0) GOTO 120
+      TEMPR = XR(J,J)
+      TEMPI = XI(J,J)
+      XR(J,J) = QRAUXR(J)
+      XI(J,J) = QRAUXI(J)
+      TR = -mat_wdotcr(N-J+1,XR(J,J),XI(J,J),1,QTYR(J), QTYI(J),1)
+      TI = -mat_wdotci(N-J+1,XR(J,J),XI(J,J),1,QTYR(J), QTYI(J),1)
+      CALL mat_wdiv(TR,TI,XR(J,J),XI(J,J),TR,TI)
+      CALL matX_waxpy(N-J+1,TR,TI,XR(J,J),XI(J,J),1,QTYR(J), QTYI(J),1)
+      XR(J,J) = TEMPR
+      XI(J,J) = TEMPI
+120   CONTINUE
+   enddo
+140 CONTINUE
 !
 !        SET UP TO COMPUTE B, RSD, OR XB.
 !
-         IF (CB) CALL mat_wcopy(K,QTYR,QTYI,1,BR,BI,1)
-         KP1 = K + 1
-         IF (CXB) CALL mat_wcopy(K,QTYR,QTYI,1,XBR,XBI,1)
-         IF (CR .AND. K .LT. N)CALL mat_wcopy(N-K,QTYR(KP1),QTYI(KP1),1,RSDR(KP1),RSDI(KP1),1)
-         IF (.NOT.CXB .OR. KP1 .GT. N) GOTO 160
-            DO I = KP1, N
-               XBR(I) = 0.0D0
-               XBI(I) = 0.0D0
-            enddo
-  160    CONTINUE
-         IF (.NOT.CR) GOTO 180
-            DO I = 1, K
-               RSDR(I) = 0.0D0
-               RSDI(I) = 0.0D0
-            enddo
-  180    CONTINUE
-         IF (.NOT.CB) GOTO 230
+   IF (CB) CALL mat_wcopy(K,QTYR,QTYI,1,BR,BI,1)
+   KP1 = K + 1
+   IF (CXB) CALL mat_wcopy(K,QTYR,QTYI,1,XBR,XBI,1)
+   IF (CR .AND. K .LT. N)CALL mat_wcopy(N-K,QTYR(KP1),QTYI(KP1),1,RSDR(KP1),RSDI(KP1),1)
+   IF (.NOT.CXB .OR. KP1 .GT. N) GOTO 160
+   DO I = KP1, N
+      XBR(I) = 0.0D0
+      XBI(I) = 0.0D0
+   enddo
+160 CONTINUE
+   IF (.NOT.CR) GOTO 180
+   DO I = 1, K
+      RSDR(I) = 0.0D0
+      RSDI(I) = 0.0D0
+   enddo
+180 CONTINUE
+   IF (.NOT.CB) GOTO 230
 !
 !           COMPUTE B.
 !
-            DO JJ = 1, K
-               J = K - JJ + 1
-               IF (CABS1(XR(J,J),XI(J,J)) .NE. 0.0D0) GOTO 190
-                  INFO = J
+   DO JJ = 1, K
+      J = K - JJ + 1
+      IF (CABS1(XR(J,J),XI(J,J)) .NE. 0.0D0) GOTO 190
+      INFO = J
 !                 ......EXIT
 !           ......EXIT
-                  GOTO 220
-  190          CONTINUE
-               CALL mat_wdiv(BR(J),BI(J),XR(J,J),XI(J,J),BR(J),BI(J))
-               IF (J .EQ. 1) GOTO 200
-                  TR = -BR(J)
-                  TI = -BI(J)
-                  CALL matX_waxpy(J-1,TR,TI,XR(1,J),XI(1,J),1,BR,BI,1)
-  200          CONTINUE
-            enddo
-  220       CONTINUE
-  230    CONTINUE
-         IF (.NOT.CR .AND. .NOT.CXB) GOTO 280
+      GOTO 220
+190   CONTINUE
+      CALL mat_wdiv(BR(J),BI(J),XR(J,J),XI(J,J),BR(J),BI(J))
+      IF (J .EQ. 1) GOTO 200
+      TR = -BR(J)
+      TI = -BI(J)
+      CALL matX_waxpy(J-1,TR,TI,XR(1,J),XI(1,J),1,BR,BI,1)
+200   CONTINUE
+   enddo
+220 CONTINUE
+230 CONTINUE
+   IF (.NOT.CR .AND. .NOT.CXB) GOTO 280
 !
 !           COMPUTE RSD OR XB AS REQUIRED.
 !
-            DO JJ = 1, JU
-               J = JU - JJ + 1
-               IF (CABS1(QRAUXR(J),QRAUXI(J)) .EQ. 0.0D0) GOTO 260
-                  TEMPR = XR(J,J)
-                  TEMPI = XI(J,J)
-                  XR(J,J) = QRAUXR(J)
-                  XI(J,J) = QRAUXI(J)
-                  IF (.NOT.CR) GOTO 240
-                  TR = -mat_wdotcr(N-J+1,XR(J,J),XI(J,J),1,RSDR(J), RSDI(J),1)
-                  TI = -mat_wdotci(N-J+1,XR(J,J),XI(J,J),1,RSDR(J), RSDI(J),1)
-                  CALL mat_wdiv(TR,TI,XR(J,J),XI(J,J),TR,TI)
-                  CALL matX_waxpy(N-J+1,TR,TI,XR(J,J),XI(J,J),1,RSDR(J), RSDI(J),1)
-  240             CONTINUE
-                  IF (.NOT.CXB) GOTO 250
-                   TR = -mat_wdotcr(N-J+1,XR(J,J),XI(J,J),1,XBR(J), XBI(J),1)
-                   TI = -mat_wdotci(N-J+1,XR(J,J),XI(J,J),1,XBR(J), XBI(J),1)
-                   CALL mat_wdiv(TR,TI,XR(J,J),XI(J,J),TR,TI)
-                   CALL matX_waxpy(N-J+1,TR,TI,XR(J,J),XI(J,J),1,XBR(J), XBI(J),1)
-  250             CONTINUE
-                  XR(J,J) = TEMPR
-                  XI(J,J) = TEMPI
-  260          CONTINUE
-            enddo
-  280    CONTINUE
-  290 CONTINUE
-      END SUBROUTINE ML_WQRSL
+   DO JJ = 1, JU
+      J = JU - JJ + 1
+      IF (CABS1(QRAUXR(J),QRAUXI(J)) .EQ. 0.0D0) GOTO 260
+      TEMPR = XR(J,J)
+      TEMPI = XI(J,J)
+      XR(J,J) = QRAUXR(J)
+      XI(J,J) = QRAUXI(J)
+      IF (.NOT.CR) GOTO 240
+      TR = -mat_wdotcr(N-J+1,XR(J,J),XI(J,J),1,RSDR(J), RSDI(J),1)
+      TI = -mat_wdotci(N-J+1,XR(J,J),XI(J,J),1,RSDR(J), RSDI(J),1)
+      CALL mat_wdiv(TR,TI,XR(J,J),XI(J,J),TR,TI)
+      CALL matX_waxpy(N-J+1,TR,TI,XR(J,J),XI(J,J),1,RSDR(J), RSDI(J),1)
+240   CONTINUE
+      IF (.NOT.CXB) GOTO 250
+      TR = -mat_wdotcr(N-J+1,XR(J,J),XI(J,J),1,XBR(J), XBI(J),1)
+      TI = -mat_wdotci(N-J+1,XR(J,J),XI(J,J),1,XBR(J), XBI(J),1)
+      CALL mat_wdiv(TR,TI,XR(J,J),XI(J,J),TR,TI)
+      CALL matX_waxpy(N-J+1,TR,TI,XR(J,J),XI(J,J),1,XBR(J), XBI(J),1)
+250   CONTINUE
+      XR(J,J) = TEMPR
+      XI(J,J) = TEMPI
+260   CONTINUE
+   enddo
+280 CONTINUE
+290 CONTINUE
+END SUBROUTINE ML_WQRSL
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!

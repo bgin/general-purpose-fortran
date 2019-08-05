@@ -171,9 +171,9 @@ void draw_pushattributes(void) {
       draw_copyattributes(&vdevice.attr->a, &nattr->a);
    } else { 
       nattr = (Astack *)draw_vallocate(sizeof(Astack),"from pushattributes");   /* create a new attribute, */
-      nattr->back = vdevice.attr;                    /* point it's back to the current attribute, */
+      nattr->back = vdevice.attr;                                               /* point it back to the current attribute, */
       draw_copyattributes(&nattr->a, &vdevice.attr->a);   /* copy current attribute values to the new attribute */
-      vdevice.attr = nattr;                          /* and point vdevice to this new attribute */
+      vdevice.attr = nattr;                               /* and point vdevice to this new attribute */
    }
 
 }

@@ -34,13 +34,13 @@ integer            :: iu4q(NUNITS0Q:NUNITSQ)      ! true/false to detect whether
 real               :: u2q(NUNITS0Q:NUNITSQ)       ! multiplier for relate command
 real               :: u3q(NUNITS0Q:NUNITSQ)       ! constant for relate command
 !===================================================================================================================================
-integer,parameter  :: ICSQ=500            ! number of text/text box/arrows added with t command , maximum number of curves per plot
+integer,parameter    :: ICSQ=500          ! number of text/text box/arrows added with t command , maximum number of curves per plot
 !! should separate number of curves from number of text boxes
 
-character(len=80)  :: lgndq(-2:ICSQ)                        ! default legend labels
-character(len=80)  :: lgnduq(-2:ICSQ)                       ! user-specified legend labels
+character(len=4096)  :: lgndq(-2:ICSQ)                        ! default legend labels
+character(len=4096)  :: lgnduq(-2:ICSQ)                       ! user-specified legend labels
 
-character(len=80)  :: tuq(ICSQ)                             ! user-specified text strings
+character(len=4096)  :: tuq(ICSQ)                             ! user-specified text strings
 integer            :: itucq(ICSQ)                           ! text color
 real               :: tuaszq(ICSQ)                          ! arrow size
 integer            :: itumaxq                               ! index of highest non-blank text string
@@ -246,7 +246,7 @@ integer icrvs2q2
 integer icrvsq2        ! number of curves in last plot call, used with icrvs2q2 to see if dual axis or not
 !===================================================================================================================================
 !     call plot_set_nice_range to initialize these for a single-axis plot
-!------------------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 integer ixdivq2(4), iydivq2(4)
 ! ixdivq2(1)     ! number of major x tics
 ! ixdivq2(2)     ! number of minor x tics
@@ -291,7 +291,6 @@ integer,parameter         :: ipq2=7
 doubleprecision,parameter :: piq2=3.14159265358979323846264338327950288419716939937510d0 ! 180 degrees
 real,save                 :: shq2(ipensq2,ipq2)
 !===================================================================================================================================
-!===================================================================================================================================
 public plot_init
 public plot_init_globals
 public plot_jupage
@@ -304,7 +303,7 @@ public plot_getdatarange
 public xy_setdatarange        ! setdatarange
 public plot_hcopy
 
-public plot_id
+public plot_id                ! juid
 public plot_jut               ! jut
 public plot_label             ! plotlabel
 public plot_line              ! plotline
@@ -470,7 +469,6 @@ public ipadq
 public frameq
 
 public iseeq
-!jsujsu
 public exitq, ipausq
 public iu1q, u2q, u3q, iftitlq
 public zebraq
@@ -490,6 +488,15 @@ contains
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!##SYNOPSIS
+
+!!##DESCRIPTI
+!!##OPTIONS
+!!##EXAMPLE
+!
+!===================================================================================================================================
 subroutine plot_init_globals()
 implicit none
    call xy_init_labels()
@@ -497,6 +504,15 @@ implicit none
 end subroutine plot_init_globals
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!##SYNOPSIS
+
+!!##DESCRIPTI
+!!##OPTIONS
+!!##EXAMPLE
+!
 !===================================================================================================================================
 subroutine plot_init()
 implicit none
@@ -512,6 +528,15 @@ endif
 end subroutine plot_init
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!##SYNOPSIS
+
+!!##DESCRIPTI
+!!##OPTIONS
+!!##EXAMPLE
+!
 !===================================================================================================================================
 subroutine xy_init_labels()
 implicit none
@@ -1006,6 +1031,15 @@ end subroutine xy_init_labels
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!##SYNOPSIS
+
+!!##DESCRIPTI
+!!##OPTIONS
+!!##EXAMPLE
+!
+!===================================================================================================================================
 subroutine xy_init_markers()
 implicit none
 ! part of plot_axes, used to define default geometric markers
@@ -1045,6 +1079,16 @@ end subroutine xy_init_markers
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()(
 !-----------------------------------------------------------------------------------------------------------------------------------
+!>
+!!##NAME
+!!    plot_setfill(3f) - [M_xyplot] set background, middleground, and foreground colors for plo
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine plot_setfill()
 implicit none
 
@@ -1069,39 +1113,45 @@ end subroutine plot_setfill
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
-!! xy_init_default
+!>
+!!##NAME
+!!    xy_init_default(3f) - [M_xyplot] initialize XY plot routines
+!!##SYNOPSIS
 !!
-!!   This subroutine initializes or resets global values and the
-!!   command  dictionary.  It is used at program startup and when the
-!!   reset(1) command is used.
 !!
-!!   An xy_array of character strings containing the prototype for most commands is
-!!   used as input to the parse routine. On the first call to xy_init_default this defines
-!!   the command dictionary and sets the initial value for most of the dictionary.
-!!   Each command name must be defined in order for the main program to distinguish
-!!   between PLT commands and system commands. The main program tries to look
-!!   up the command name in the dictionary to decide if it is a legitimate command.
+!!##DESCRIPTION
 !!
-!!   In addition, the global logical LLQ() xy_array values are set to their defaults.
-!!   This xy_array holds the switches used to control the many submodes of the program.
+!!    This subroutine initializes or resets global values and the command
+!!    dictionary.  It is used at program startup and when the reset(1)
+!!    command is used.
 !!
-!!   A large addition of global values (almost all of which end in the letter Q)
-!!   are also set as necessary to ensure the program is reset to the proper initial
-!!   modes.
+!!    An xy_array of character strings containing the prototype for most commands is
+!!    used as input to the parse routine. On the first call to xy_init_default this define
+!!    the command dictionary and sets the initial value for most of the dictionary.
+!!    Each command name must be defined in order for the main program to distinguish
+!!    between PLT commands and system commands. The main program tries to look
+!!    up the command name in the dictionary to decide if it is a legitimate command.
 !!
-!!   A few environment UNIX variables are also read to establish the initial
-!!   page length and banner strings and so on.
+!!    In addition, the global logical LLQ() xy_array values are set to their defaults.
+!!    This xy_array holds the switches used to control the many submodes of the program.
 !!
-!!  NOTE: Compaq/Digital Tru64 compiler warned about continued strings
-!!        on lines not padded to column 72 with blanks so added
-!!        line on end of continued lines; no longer required using free-format
+!!    A large addition of global values (almost all of which end in the letter Q)
+!!    are also set as necessary to ensure the program is reset to the proper initial
+!!    modes.
 !!
+!!    A few environment UNIX variables are also read to establish the initial
+!!    page length and banner strings and so on.
+!!
+!!   NOTE: Compaq/Digital Tru64 compiler warned about continued strings
+!!         on lines not padded to column 72 with blanks so added
+!!         line on end of continued lines; no longer required using free-format
+!===================================================================================================================================
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 subroutine xy_init_default()
 use M_kracken,         only: parse, store
 implicit none
 
-character(len=*),parameter::ident_3="@(#)M_xyplot::xy_init_default(3fp): Initialize command dictionary and global values"
+character(len=*),parameter::ident_3="@(#)M_xyplot::xy_init_default(3f): Initialize command dictionary and global values"
 
 !  1989 John S. Urban
 !
@@ -1118,7 +1168,6 @@ integer           :: i100
 integer           :: i15
 integer           :: i80
 integer           :: i90
-integer           :: idum
 integer           :: ier
 integer           :: iii
 real              :: rdum
@@ -1256,8 +1305,8 @@ real              :: rtemp
    ilongq2=0                             ! number of places reserved for numeric y-labels
    call stuff('FALSE',1.0d0,'')         ! a handy mnemonic
    call stuff('TRUE',0.0d0,'')          ! a handy mnemonic
-   call stuff('VFALSE',0.0d0,'')        ! a handy mnemonic for VOGLE logicals
-   call stuff('VTRUE',1.0d0,'')         ! a handy mnemonic for VOGLE logicals
+   call stuff('VFALSE',0.0d0,'')        ! a handy mnemonic for M_plot logicals
+   call stuff('VTRUE',1.0d0,'')         ! a handy mnemonic for M_plot logicals
    call stuff('PLTOBJECT',-1.0d0,'')    ! number of object hcopy command should copy if positive
    call stuffa('$PAUSE',' ','')    ! set by p command;
    call stuff('DETACH',ifnq,'')          ! unit number to detach if run out of room
@@ -1294,8 +1343,7 @@ real              :: rtemp
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
    call stuffa('$VERSION','6.0.0','')      ! might be handy
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-!  Allow abbreviation of commonly used Font control such as
-   call stuffa('$sup','v=0.5 s=0.5','')  ! Superscript
+!  Allow abbreviation of commonly used Font control such as call stuffa('$sup','v=0.5 s=0.5','')  ! Superscript
    call stuffa('$sub','v=-0.5 s=0.5','') ! Subscript
    call stuffa('$rp','b=0 S=1','')       ! Return position/size
    call stuffa('$g','f=9','')            ! Greek
@@ -1352,29 +1400,35 @@ end subroutine xy_init_default
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
-!! plot_hcopy
+!>
+!!##NAME
+!!    plot_hcopy(3f) - [M_xyplot] generate copy of the current plot for XY plot routines
+!!##SYNOPSIS
 !!
-!! This is the routine that generates a copy of the current plot by closing the
-!! current device and opening another, calling the same routine as the PLOT
-!! command, and then closing the new device and opening up one like you started
-!! from.
+!!##DESCRIPTION
 !!
-!! This works best when the current device is an interactive device such as X11 or
-!! tek; as exiting and reinitializing usually does not effect an interactive
-!! device much; but for file oriented devices the output file is restarted (as the
-!! current version of VOGLE is written).
+!!    This is the routine that generates a copy of the current plot by closing the
+!!    current device and opening another, calling the same routine as the PLOT
+!!    command, and then closing the new device and opening up one like you started
+!!    from.
 !!
-!! So, one limitation here is that if you running a batch job that is making
-!! PostScript output and you call the plot_hcopy command to generate a bitmap file, for
-!! example, your current PostScript output file is going to be restarted.
+!!    This works best when the current device is an interactive device such as X11 or
+!!    tek; as exiting and reinitializing usually does not effect an interactive
+!!    device much; but for file oriented devices the output file is restarted (as the
+!!    current version of M_plot is written).
 !!
-!! Consider making VOGLE support concurrent open devices, or a special exit that
-!! is "temporary" and lets you resume output. Actually, I think Bernie's last
-!! version does that?
+!!    So, one limitation here is that if you running a batch job that is making
+!!    PostScript output and you call the plot_hcopy command to generate a bitmap file, fo
+!!    example, your current PostScript output file is going to be restarted.
 !!
-!! Note that if the -obj option is used, instead of calling the equivalent of PLOT
-!! a special object is called. This could be used by a sophisticated user, but is
-!! used to copy what shows on screen from ID, SHOWFONT, ... commands too.
+!!    Consider making M_plot support concurrent open devices, or a special exit that
+!!    is "temporary" and lets you resume output. Actually, I think Bernie's last
+!!    version does that?
+!!
+!!    Note that if the -obj option is used, instead of calling the equivalent of PLOT
+!!    a special object is called. This could be used by a sophisticated user, but is
+!!    used to copy what shows on screen from ID, SHOWFONT, ... commands too.
+!===================================================================================================================================
 subroutine plot_hcopy()
 use M_journal,    only: journal
 use M_strings,    only: change
@@ -1408,7 +1462,6 @@ integer                      :: ii
 !-----------------------------------------------------------------------------------------------------------------------------------
 DEVICE: BLOCK
 character(len=dn)           :: temp_dev
-integer                     :: idum
    hcopy_OO=' '
    hcopy_OO(1:dn)=snum0('$HDEVICE')                 ! ask calculator last hcopy device used (or what user set variable to)
    if(hcopy_OO.ne.' ')then
@@ -1530,6 +1583,16 @@ end subroutine plot_hcopy
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    plot_noclose(3f) - [M_xyplot] flag whether to keep current device open while switching to alternate devic
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 logical function xy_noclose(dev_name)
 implicit none
 
@@ -1548,6 +1611,16 @@ character(len=*),intent(in) ::  dev_name
 end function xy_noclose
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!    plot_set_xmin(3f) - [M_xyplot] set value for xmin/xmax/ymin/... comman
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
 !===================================================================================================================================
 subroutine plot_set_xmin(name,imaxv)
 use M_journal, only : journal
@@ -1576,10 +1649,10 @@ integer                :: imaxv
 integer                :: inums
 integer                :: istart
 integer                :: lennum
-!=======================================================================--------
+!-----------------------------------------------------------------------------------------------------------------------------------
    string='xmin xmax ymin ymax xmin2xmax2ymin2ymax2'
    nooutput=.true.  ! output flag -> assumed not present till found
-!=======================================================================--------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !  sort out which command and set ich to the correct (starting) index into RANGEQ
    ich=index(string,name(:imaxv))/5+1
    !!write(*,*)'keyword key=',ich
@@ -1589,7 +1662,7 @@ integer                :: lennum
    endif
    i3=imaxv+3
    i2=imaxv+2
-!=======================================================================--------
+!-----------------------------------------------------------------------------------------------------------------------------------
 ! process reset switch
    temp2=name(:imaxv)//'_R'
    temp1=fetch(temp2(:i2))
@@ -1605,14 +1678,14 @@ integer                :: lennum
          RANGEQ(mod(i40-1,8)+1)=123.456        ! reset specified number of values
       enddo
    endif
-!=======================================================================--------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !  test if output flag is present so do not reset on command "xmin ->"
    temp1=name(:imaxv)//'_>'
    if(fetch(temp1(:i2)).ne.'#N#')then       ! if output flag present do nothing but show values
       nooutput=.false.
       !!write(*,*)'output flag present'
    endif
-!=======================================================================--------
+!-----------------------------------------------------------------------------------------------------------------------------------
 ! process numeric values
    temp1=name(:imaxv)//'_oo'
    call xy_retrv2(temp1(:i3),temp2,lennum,ier) ! get user values
@@ -1629,7 +1702,7 @@ integer                :: lennum
          RANGEQ(ii)=rcurv1(i10-ich+1)        ! check that all values are valid numbers
       enddo
    endif
-!=======================================================================--------
+!-----------------------------------------------------------------------------------------------------------------------------------
 ! process output flag AFTER any changes
    temp1=name(:imaxv)//'_>'
    if(fetch(temp1(:i2)).ne.'#N#')then       ! if output flag present do nothing but show values
@@ -1644,16 +1717,26 @@ integer                :: lennum
          call journal(temp1)
       enddo
    endif
-!=======================================================================--------
+!-----------------------------------------------------------------------------------------------------------------------------------
    temp1=name(:imaxv)//'_fn'                         ! create xmin_fn so easy to find font
    call store('min_fn',fetch(temp1(:i3)),'replace',ier)
-!=======================================================================--------
+!-----------------------------------------------------------------------------------------------------------------------------------
    temp1=name(:imaxv)//'_w'                          ! create min_w so easy to find width
    call store('min_w',fetch(temp1(:i2)),'replace',ier)
-!=======================================================================--------
+!-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine plot_set_xmin
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!    plot_storage(3f) - [M_xyplot] if on a storage tube, clear the screen to unclutter i
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
 !===================================================================================================================================
 subroutine plot_storage()
 use M_draw, only : vgetdev
@@ -1670,11 +1753,21 @@ end subroutine plot_storage
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    plot_setmark(3f) - [M_xyplot] set or display marker geometrie
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine plot_setmark(parms,pat,ipen)
-!     1992 John S. Urban
-!     parms=' '     # list geometric pen information
-!                   # process a user plot_setmark command and store data for marker ipen
-!           see xy_getmark to retrieve information for a pen
+!  1992 John S. Urban
+!  parms=' '     # list geometric pen information
+!                # process a user plot_setmark command and store data for marker ipen
+!        see xy_getmark to retrieve information for a pen
 !
 use M_journal, only : journal
 use M_strings, only : listout
@@ -1688,7 +1781,6 @@ integer                  :: ipen
 
 real                     :: rpat(ipq2)
 character(len=3),save    :: onoff(0:1) =(/'off',' on'/)
-real                     :: rcurv(ipensq2)
 real                     :: rcurv1(ipensq2)
 integer                  :: icurv(ipensq2)
 integer                  :: ichars
@@ -1710,90 +1802,96 @@ real                     :: xmax0t
 real                     :: xmin0t
 real                     :: ymax0dum
 real                     :: ymin0dum
-!!======================================================================
-      if(parms.eq.' '.or.fetch('setmark_>').ne.'#N#')then ! if no parameters are present list non-default legend labels
-         call plot_storage()
-         call journal('#-------------------------------------------------')
-         call journal('#               (sun  planet  offset  lines turns)')
-         call journal('#-------------------------------------------------')
-         do i10=1,ipensq2
-            ioo=int(shq2(i10,ipq2))
-            write(temp1q,101)i10,(shq2(i10,ii),ii=1,ipq2-1),onoff(ioo)
-101         format('setmark ',i2,' -p ',3(1x,f6.1),2f7.3,' -sz ',f7.3,' -fill ',a)
-            call journal(temp1q)
-         enddo
-         call journal('#-------------------------------------------------')
-         call plot_marks('setmark') ! draw a sample of the plot_marks
-         return
-!!======================================================================
-      elseif(parms.eq.'fetch')then
-!!----------------------------------------------------------------------
-         call priv_getpage(xmin0t,xmax0t,ymin0dum,ymax0dum)
-         if(ipen.le.igeoq2)then ! geometric markers
-            j=max(1,mod(ipen-1,ipensq2)+1)
-            do i20=1,ipq2
-               pat(i20)=shq2(j,i20)
-            enddo
-            pat(5)=2*piq2*shq2(j,5)                    ! convert from fraction of a circle to radians
-            pat(6)=shq2(j,6)*(xmax0t-xmin0t)/100.0   ! convert diameter from percent of full x window to a number
-         endif
-!!----------------------------------------------------------------------
-         return
-      endif
-!!======================================================================
-      temp1q=fetch('setmark_fn')   ! change font used for markers
-      plot_ids%marker_font=temp1q
-!!======================================================================
-      call xy_retrv2('setmark_oo',temp1q,lennum,ier)
-      if(lennum.eq.0)then
-         call journal('*plot_setmark* changing all marker numbers')
-         iend=ipensq2
-         do i40=1,iend
-            icurv(i40)=i40
-         enddo
-      else
-        ierr=0
-        call strgar2(fetch('setmark_oo'),ipensq2,rcurv1,igot,' ',ierr)
-        if(ierr.ne.0.or.igot.le.0)then
-           call journal('*plot_setmark* stopped: undecipherable id number(s)')
-           return
-        endif
-        call listout(int(rcurv1(:igot)),icurv,igot,ierr2) ! read up to ipensq2
-        iend=igot
-      endif
-!!======================================================================
-      do i30=1,iend
-         if(rcurv(i30).le.igeoq2.and.rcurv(i30).ge.1)then ! geometric markers
-            ! get pattern number
-            lnum=min(int(max(1.0,rcurv(i30))),ipensq2) ! get a pattern number to replace, should yell about out-of-range numbers
-            call xy_retrv2('setmark_p',temp1q,ichars  ,ier)  ! get new pattern
-            if(temp1q.ne.' ')then
-               call strgar2(fetch('setmark_p'),ipq2,rpat,igot,' ',ierr)
-               igot=min(5,igot)
-               shq2(lnum,1:igot)=rpat(1:igot) ! store pattern numbers
-            endif
-!!======================================================================
-            call xy_retrv2('setmark_fill',temp1q,ichars  ,ier)  ! fill flag
-            if(temp1q.ne.' ')then
-               if(temp1q.eq.'off')then
-                  shq2(lnum,7)=0 ! set fill off
-               else
-                  shq2(lnum,7)=1 ! set fill on
-               endif
-            endif
-!!======================================================================
-            call xy_retrv2('setmark_sz',temp1q,ichars  ,ier)  ! marker size
-            if(temp1q.ne.' ')then
-               shq2(lnum,6)=rnum0(fetch('setmark_sz'))
-            endif
-!!----------------------------------------------------------------------
-          endif
-!!======================================================================
+character(len=255)       :: temp1
+!===================================================================================================================================
+   if(parms.eq.' '.or.fetch('setmark_>').ne.'#N#')then ! if no parameters are present list non-default legend labels
+      call plot_storage()
+      call journal('#-------------------------------------------------')
+      call journal('#               (sun  planet  offset  lines turns)')
+      call journal('#-------------------------------------------------')
+      do i10=1,ipensq2
+         ioo=int(shq2(i10,ipq2))
+         write(temp1,101)i10,(shq2(i10,ii),ii=1,ipq2-1),onoff(ioo)
+101      format('setmark ',i2,' -p ',3(1x,f6.1),2f7.3,' -sz ',f7.3,' -fill ',a)
+         call journal(temp1)
       enddo
-!!======================================================================
+      call journal('#-------------------------------------------------')
+      call plot_marks('setmark') ! draw a sample of the plot_marks
+      return
+!===================================================================================================================================
+   elseif(parms.eq.'fetch')then
+      call priv_getpage(xmin0t,xmax0t,ymin0dum,ymax0dum)
+      if(ipen.le.igeoq2)then ! geometric markers
+         j=max(1,mod(ipen-1,ipensq2)+1)
+         do i20=1,ipq2
+            pat(i20)=shq2(j,i20)
+         enddo
+         pat(5)=2*piq2*shq2(j,5)                    ! convert from fraction of a circle to radians
+         pat(6)=shq2(j,6)*(xmax0t-xmin0t)/100.0   ! convert diameter from percent of full x window to a number
+      endif
+      return
+   endif
+!===================================================================================================================================
+   temp1=fetch('setmark_fn')   ! change font used for markers
+   plot_ids%marker_font=temp1
+   call xy_retrv2('setmark_oo',temp1,lennum,ier)
+   if(lennum.eq.0)then
+      call journal('*plot_setmark* changing all marker numbers')
+      iend=ipensq2
+      do i40=1,iend
+         icurv(i40)=i40
+      enddo
+   else
+     ierr=0
+     call strgar2(fetch('setmark_oo'),ipensq2,rcurv1,igot,' ',ierr)
+     if(ierr.ne.0.or.igot.le.0)then
+        call journal('*plot_setmark* stopped: undecipherable id number(s)')
+        return
+     endif
+     call listout(int(rcurv1(:igot)),icurv,igot,ierr2) ! read up to ipensq2
+     iend=igot
+   endif
+!===================================================================================================================================
+   do i30=1,iend
+      if(icurv(i30).le.igeoq2.and.icurv(i30).ge.1)then ! geometric markers
+         ! get pattern number
+         lnum=min(max(1,icurv(i30)),ipensq2) ! get a pattern number to replace, should yell about out-of-range numbers
+         call xy_retrv2('setmark_p',temp1,ichars  ,ier)  ! get new pattern
+         if(temp1.ne.' ')then
+            call strgar2(fetch('setmark_p'),ipq2,rpat,igot,' ',ierr)
+            igot=min(5,igot)
+            shq2(lnum,1:igot)=rpat(1:igot) ! store pattern numbers
+         endif
+
+         call xy_retrv2('setmark_fill',temp1,ichars  ,ier)  ! fill flag
+         if(temp1.ne.' ')then
+            if(temp1.eq.'off')then
+               shq2(lnum,7)=0 ! set fill off
+            else
+               shq2(lnum,7)=1 ! set fill on
+            endif
+         endif
+
+         call xy_retrv2('setmark_sz',temp1,ichars  ,ier)  ! marker size
+         if(temp1.ne.' ')then
+            shq2(lnum,6)=rnum0(fetch('setmark_sz'))
+         endif
+      endif
+   enddo
+!===================================================================================================================================
 end subroutine plot_setmark
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!    plot_page_aspect(3f) - [M_xyplot] Get aspect ratio from ASPECT command and call xy_aspc
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
 !===================================================================================================================================
 subroutine plot_page_aspect()
 !     1992 John S. Urban
@@ -1818,30 +1916,38 @@ end subroutine plot_page_aspect
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
-!! plot_marks
+!>
+!!##NAME
+!!    plot_marks(3f) - [M_xyplot] draw examples of dash codes, pen styles and screen markers for XY plots
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
 !!
 !!    Draw examples of dash codes, pen styles, and screen markers for the
-!!    dashes(1), id(1), and markers(1) commands as reserved VOGLE object 12345
+!!    dashes(1), id(1), and markers(1) commands as reserved M_plot object 12345
 !!    so they can not only be displayed, but copied by the hcopy(1) command if
 !!    it is used before any other graphics-generating commands.
 !!
-!! EXAMPLE
-!! program testmarks
-!!       use M_draw
-!!       character(len=*),parameter :: ident="@(#)testmarks(1f): draw examples of dash codes, pen styles, and screen markers"
-!!    call vinit('')
-!!    call plot_marks('setmark')   ! draw screen of current line markers
-!!    idum=getkey()
-!!    call plot_marks('font')      ! draw screen of current font
-!!    idum=getkey()
-!!    call plot_marks('id')        ! draw screen of current pen styles
-!!    idum=getkey()
-!!    call plot_marks('dash')      ! draw screen of current dash codes
-!!    idum=getkey()
-!!    call plot_marks('hue')       ! draw colors
-!!    idum=getkey()
-!!    call vexit()
-!! end program testmarks
+!!##EXAMPLE
+!!
+!!   Sample program
+!!
+!!    program testmarks
+!!          use M_draw
+!!          character(len=*),parameter :: ident="@(#)testmarks(1f): draw examples of dash codes, pen styles, and screen markers
+!!       call vinit('')
+!!       call plot_marks('setmark')   ! draw screen of current line markers
+!!       idum=getkey()
+!!       call plot_marks('font')      ! draw screen of current font
+!!       idum=getkey()
+!!       call plot_marks('id')        ! draw screen of current pen styles
+!!       idum=getkey()
+!!       call plot_marks('dash')      ! draw screen of current dash codes
+!!       idum=getkey()
+!!       call plot_marks('hue')       ! draw colors
+!!       idum=getkey()
+!!       call vexit()
+!!    end program testmarks
 !===================================================================================================================================
 subroutine plot_marks(nameit)
 ! Copyright(C) 1995 John S. Urban. All rights reserved
@@ -1893,7 +1999,7 @@ real               :: y
 real               :: yinc
 real               :: yrange
 real               :: yy
-!=======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
    call push()
    ibuf=0
    if(LLQ(lnormalq))then          ! if called normally, make object for hcopy
@@ -1907,9 +2013,9 @@ real               :: yy
    endif
    call plot_get_plot_area(xsmall,xbig,ysmall,ybig)
    ldummy=xy_ifdrawn()            ! let other routines know something has been drawn
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    CHOOSE_PICTURE: SELECT CASE(nameit)
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
     CASE('setmark')                            ! draw screen of geometric markers
       im=1                                    ! geometric marker counter
       xrange=xbig-xsmall
@@ -2025,9 +2131,9 @@ real               :: yy
       y=ybig-2*yinc                                 ! where to start top line
 
       do ido=1,IDSHS
-         yes(1)=y                                    ! set y values for line ends for xy_line(3fp)
-         yes(2)=y                                    ! set y values for line ends for xy_line(3fp)
-         call xy_line(ido,2,'dash',xes,yes)          ! draw the line with special call to xy_line(3fp) just for this routine
+         yes(1)=y                                    ! set y values for line ends for xy_line(3f)
+         yes(2)=y                                    ! set y values for line ends for xy_line(3f)
+         call xy_line(ido,2,'dash',xes,yes)          ! draw the line with special call to xy_line(3f) just for this routine
          write(cnum,fmt='(1x,i4)')ido                ! create string for line label
          call color(iforeq)                          ! set text color
          call move2(xtext,y-xnum/6.0)                ! move to desired position for label
@@ -2057,55 +2163,76 @@ end subroutine plot_marks
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    plot_title(3f) - [M_xyplot] allow user to add extra title lines by numbe
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!    allow user to add extra title lines by number
+!!    store them in unused part of language dictionary
+!!    NOTE: assume they are stored sequentially when printing
+!!    and stop printing when a blank title line is encountered
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine plot_title()
 !     1992 John S. Urban
-!     allow user to add extra title lines by number
-!     store them in unused part of language dictionary
-!     NOTE: assume they are stored sequentially when printing
-!     and stop printing when a blank title line is encountered
 use M_kracken, only: store,current_command_length
 implicit none
 
 character(len=*),parameter::ident_11="@(#)M_xyplot::plot_title(3f): allow user to add extra title lines by number"
 
-character(len=20) :: name
-integer           :: i10
-integer           :: ier
-integer           :: iline
-integer           :: lennum
-!======================================================================
+character(len=20)   :: name
+integer             :: i10
+integer             :: ier
+integer             :: iline
+integer             :: lennum
+character(len=4096) :: temp1
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     use fetch and retrev instead of fetch and retrev2 so expansion occurs at plot time
 !     an option for both behaviors might be nice
-!======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
       LLQ(ltitlq)=.true.    ! print the title
-!======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     a title line all by itself means to clear title lines
       if(current_command_length.le.0)then ! no parameters were specified, clear titles
-         do 10 i10=1,10  ! assume no more than 10 title lines
+         do i10=1,10  ! assume no more than 10 title lines
             write(name,'(''title_'',i2.2)')i10
             call store(name,' ','define',ier)
-10       continue
-!======================================================================
+         enddo
+!-----------------------------------------------------------------------------------------------------------------------------------
       elseif( fetch('title_off').eq.' ')then   ! flag to no display normal title lines
          LLQ(ltitlq)=.false.   ! do not print the title
                              ! IGNORE OTHER PARAMETERS
-!======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
       else
 !        if command is not blank and -off flag not present
          iline=inum0(fetch('title_l'))
-         call xy_retrv2('title_oo',temp1q,lennum,ier)
+         call xy_retrv2('title_oo',temp1,lennum,ier)
          if(iline.lt.0.and.lennum.le.0)then
             ! no -l and no -oo so store nothing, must be something like title -ch 30
          else
             iline=max(1,iline)
             write(name,'(''title_'',i2.2)')iline
-            call store(name,temp1q,'define',ier)
+            call store(name,trim(temp1),'define',ier)
          endif
-!======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
       endif
 end subroutine plot_title
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!    plot_jut(3f) - [M_xyplot] allow user to place text on scree
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
 !===================================================================================================================================
 subroutine plot_jut(parms)
 ! 1993 John S. Urban
@@ -2139,7 +2266,7 @@ integer                 :: ierr2
 integer                 :: lennum
 real                    :: xpick
 real                    :: ypick
-!!======================================================================
+!------------------------------------------------------------------------------------------------------------------------------------------
       ii=1
       if(parms.eq.' ')then ! if no parameters are present list non-default legend labels
          notnull=0
@@ -2191,7 +2318,7 @@ real                    :: ypick
          endif
          return
       endif
-!!======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
       call xy_retrv2('t_l',temp1q,lennum,ier)                      ! determine which lines to apply command to
       if(lennum.eq.0)then                                       ! if text line not specified, apply to next text line
          iend=1                                                 ! count of lines to change is set to 1
@@ -2209,18 +2336,18 @@ real                    :: ypick
          endif
          inext=0 ! false that this is a "continued" string
       endif
-!!======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
       lastlin=icurv(iend)   ! store index of last line number that will try to change
-!!======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
       do 30 i30=1,iend
       lnum=icurv(i30)
       iset=0 ! flag that have changed something, so know what to do if string is blank (change attributes and leave alone, or clear)
-!!======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
       if((lnum.lt.1).or.(lnum.gt.ICSQ))then
          call journal('*t* text number out of allowable range')
          goto 30
       endif
-!!======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
       call xy_retrv2('t_off',temp1q,ichars  ,ier) ! suppress this text
       if(temp1q.ne.'#N#')then
          itoq(lnum)=2
@@ -2228,7 +2355,7 @@ real                    :: ypick
       elseif(inext.eq.1)then ! this is "continued" text
          itoq(lnum)=itoq(ii)
       endif
-!!======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
       call xy_retrv2('t_on',temp1q,ichars  ,ier)  ! activate this text
       if(temp1q.ne.'#N#')then
          itoq(lnum)=1
@@ -2236,7 +2363,7 @@ real                    :: ypick
       elseif(inext.eq.1)then ! this is "continued" text
          itoq(lnum)=itoq(ii)
       endif
-!!======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
       call xy_retrv2('t_c',temp1q,ichars  ,ier)  ! text color
       if(temp1q.ne.'#N#')then
          itucq(lnum)=inum0(temp1q)
@@ -2244,7 +2371,7 @@ real                    :: ypick
       elseif(inext.eq.1)then ! use previous color because this is "continued" text
          itucq(lnum)=itucq(ii)
       endif
-!!======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
       call xy_retrv2('t_asz',temp1q,ichars  ,ier)  ! arrow size
       if(temp1q.ne.'#N#')then
          tuaszq(lnum)=rnum0(temp1q)
@@ -2252,7 +2379,7 @@ real                    :: ypick
       elseif(inext.eq.1)then ! use previous size because this is "continued" text
          tuaszq(lnum)=tuaszq(ii)
       endif
-!!======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
       call xy_retrv2('t_box',temp1q,ichars  ,ier)  ! text box flag
       if(temp1q.ne.'#N#')then
          itubq(lnum)=inum0(temp1q)
@@ -2261,7 +2388,7 @@ real                    :: ypick
       elseif(inext.eq.1)then ! use previous flag because this is "continued" text
          itubq(lnum)=itubq(ii)
       endif
-!!======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
       call xy_retrv2('t_sz',temp1q,ichars  ,ier)  ! text size
       if(temp1q.ne.'#N#')then
          tusq(lnum)=abs(rnum0(temp1q))
@@ -2270,7 +2397,7 @@ real                    :: ypick
       elseif(inext.eq.1)then ! use previous size because this is "continued" text
          tusq(lnum)=tusq(ii)
       endif
-!!======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
       call xy_retrv2('t_j',temp1q,ichars  ,ier)  ! text justification; non-zero is center
       if(temp1q.ne.'#N#')then
          if(temp1q(1:1).eq.'c')then
@@ -2282,7 +2409,7 @@ real                    :: ypick
       elseif(inext.eq.1)then ! use previous mode because this is "continued" text
          itujq(lnum)=itujq(ii)
       endif
-!!======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
       call xy_retrv2('t_p',temp1q,ichars  ,ier)  ! text position
       if(temp1q.ne.'#N#')then
          if(ichars.gt.0)then  ! values have been specified
@@ -2306,7 +2433,7 @@ real                    :: ypick
            tuxq(lnum)=tuxq(ii)
            tuyq(lnum)=tuyq(ii) !when printed, an identical coordinate to one above it means print below it
       endif
-!!======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
       call xy_retrv2('t_a',temp1q,ichars  ,ier)  ! text arrow
       if(temp1q.ne.'#N#')then
          call strgar2(fetch('t_a'),3,xyz,iend,' ',ierr)
@@ -2329,7 +2456,7 @@ real                    :: ypick
             iset=iset+1
          endif
       endif
-!!======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
       temp1q=' '
       call xy_retrv2('t_fn',temp1q,ichars  ,ier)  ! text font
       if(temp1q(1:3).ne.'#N#')then
@@ -2339,7 +2466,7 @@ real                    :: ypick
       elseif(inext.eq.1)then ! use previous font because this is "continued" text
          tufq(lnum)=tufq(ii)
       endif
-!!======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
       call xy_retrv2('t_oo',temp1q,ichars  ,ier) ! text label
       if(ichars.ne.0)then
          tuq(lnum)=temp1q   ! if text not blank, store it.
@@ -2347,33 +2474,40 @@ real                    :: ypick
          tuq(lnum)=temp1q   ! even with text blank store it to blank it out
          taoq(lnum)=5.0     ! turn arrow off for this text line too
       endif
-!!======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
 30    continue
-!!======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
       itumaxq=0
       do i50=1,ICSQ              ! so things are faster in other places, record highest non-blank subscript
          if(tuq(i50).ne.' ')itumaxq=i50
       enddo
-!!======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine plot_jut
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
-!! plot_sz
+!>
+!!##NAME
+!!    plot_sz(3f) - [M_xyplot] change the size of the display surface
+!!##SYNOPSIS
 !!
-!!     This routine changes the window size. It is typically used with
-!!     the X11 windows driver. The size and position are stored as local
-!!     variables. They are changed by the sz_oo and sz_p strings queried
-!!     from the command language dictionary.
+!!    subroutine plot_sz()
+!!##DESCRIPTION
+!!    This routine changes the device size on devices where this is
+!!    supported. It is typically used with the X11 windows driver. The size
+!!    and position are stored as local variables. They are changed by the
+!!    sz_oo and sz_p strings queried from the command language dictionary.
 !!
-!!     Most devices are left open and just a new aspect area is selected
-!!     based on the ratio of the size parameters. The xy_noclose() function
-!!     flags whether to actually change the display device or not. For
-!!     devices like X11 and PC the device is actually closed and then
-!!     restarted at the new size because the VOGLE graphics library does
-!!     not in general support changing the device size and position except
-!!     when the device is initialized.
+!!    Most devices are left open and just a new aspect area is selected base
+!!    on the ratio of the size parameters. The xy_noclose() function flags
+!!    whether to actually change the display device or not. For devices
+!!    like X11 and PC the device is actually closed and then restarted at
+!!    the new size because the M_plot graphics library does not in general
+!!    support changing the device size and position except when the device
+!!    is initialized.
+!!##EXAMPLE
 !!
+!===================================================================================================================================
 !===================================================================================================================================
 subroutine plot_sz()
 use M_journal,         only : journal
@@ -2393,7 +2527,7 @@ integer                     :: ierr
 integer                     :: lenoo, lenp
 character(len=255)          :: scratch_string
 real                        :: shape
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !  extract preferred size
    call xy_retrv2('sz_oo',scratch_string,lenoo,ierr)
 
@@ -2407,10 +2541,10 @@ real                        :: shape
       iwidth=int(rvals(1))
       iheight=iwidth
    elseif(inums.eq.2)then
-      iwidth=int(rvals(1))
-      iheight=int(rvals(2))
+      iwidth=max(int(rvals(1)),32)
+      iheight=max(int(rvals(2)),32)
    endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !  extract preferred position ( this code requires values >= 0 )
    call xy_retrv2('sz_p',scratch_string,lenp,ierr)
 
@@ -2427,7 +2561,7 @@ real                        :: shape
       ix=int(rvals(1))
       iy=int(rvals(2))
    endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    if(fetch('sz_>').ne.'#N#')then
       call journal('sc','width.......',iwidth)
       call journal('sc','height......',iheight)
@@ -2435,15 +2569,15 @@ real                        :: shape
       call journal('sc','yposition...',iy)
       if(lenp.eq.0.and.lenoo.eq.0)return   ! if no options return
    endif
-!-----------------------------------------------------------------------
-   call vgetdev(dev)                    ! get the name of the current device
+!-----------------------------------------------------------------------------------------------------------------------------------
+   call vgetdev(dev)                       ! get the name of the current device
    if(xy_noclose(dev))then
-      call set_environment_variable('M_DRAW_DEVICE','CLOSE')
+      call set_environment_variable('M_DRAW_DEVICE','CLOSE')  ! set variable so device driver knows this will be reopened
    endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !  should be checking for a valid output device name
    call prefposition(ix, iy)            ! Specify the preferred position of the window opened  by the *next* vinit.
-   if(xy_noclose(dev))then                 ! restart the device now to make the new size active
+   if(xy_noclose(dev))then              ! restart the device now to make the new size active
       iwidth=min(2000,iwidth)
       iheight=min(2000,iheight)
       call prefsize(iwidth, iheight)    ! Specify the preferred width and height  of  the  window opened by the *next* vinit.
@@ -2452,16 +2586,26 @@ real                        :: shape
    else
       call prefsize(iwidth, iheight)    ! Specify the preferred width and height  of  the  window opened by the *next* vinit.
    endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    shape=real(iwidth)/real(iheight)
    call xy_aspct(0.0,shape,0.0,1.0)
    call store('aspect_oo',shape,'replace',ierr)
-   call plot_clear('all')                               ! clear and flush
+   call plot_clear('all')                             ! clear and flush
    call xy_setsize('-1 -1 -1 -1')                     ! reset so X11 and tek device do not set output device sizes for hcopy
    call xy_jumapc('reload')                           ! reload PLT color table
 end subroutine plot_sz
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!    plot_drawplot(3f) - [M_xyplot] draw an xy plo
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
 !===================================================================================================================================
 subroutine plot_drawplot(lclear)
 use M_journal, only : journal
@@ -2712,8 +2856,8 @@ real                       :: ymint
       if(fetch('grid_box').eq.'on')then
          iraz=max(1,inum0(fetch('grid_w')))
          call xy_rasters(iraz)
-         rax=(xmaxt-xmint)/1000.0          ! find a small amount to move in so roundoff does not remove outline in vogle package
-         ray=(ymaxt-ymint)/1000.0          ! find a small amount to move in so roundoff does not remove outline in vogle package
+         rax=(xmaxt-xmint)/1000.0          ! find a small amount to move in so roundoff does not remove outline in M_plot package
+         ray=(ymaxt-ymint)/1000.0          ! find a small amount to move in so roundoff does not remove outline in M_plot package
          call plain_rect(xmint+rax,ymint+ray,xmaxt-rax,ymaxt-ray)  ! overall box around entire plot_area
       endif
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -2779,6 +2923,16 @@ end subroutine plot_drawplot
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    plot_juparea(3f) - [M_xyplot] parse parea comman
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine plot_juparea()
 !      'parea -oo -a 1 -rows 0 -cols 0 -g 0'
 !       this routine is not finished.
@@ -2803,7 +2957,7 @@ integer        :: icolsa
 integer        :: ier
 integer        :: ierr
 integer        :: igot
-!!======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
 ! if batch, want to set to maximum; but if interactive might want to ignore
       irows=inum0(fetch('parea_rows'))
       icols=inum0(fetch('parea_cols'))
@@ -2820,7 +2974,7 @@ integer        :: igot
            ipanesq=irows*icols ! number of panes now this
          return
       endif
-!!======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
       call xy_retrv2('parea_oo',temp1q,ichars  ,ier)
       if(temp1q.ne.' ')then
          call strgar2(temp1q,4,rpat,igot,' ',ierr)
@@ -2832,28 +2986,77 @@ end subroutine plot_juparea
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    plot_jupage(3f) - [M_xyplot] a good try at allowing mixing of PLT commands and M_plot command
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine plot_jupage()
 use M_journal, only : journal
 use M_draw
 implicit none
 
 character(len=*),parameter::ident_16="&
-&@(#)M_xyplot::plot_jupage(3f): a good try at allowing mixing of PLT commands and vogle commands"
+&@(#)M_xyplot::plot_jupage(3f): a good try at allowing mixing of PLT commands and M_plot commands"
 
-real,save :: rpat(4)=[0.0, 8.5, 0.0, 11.0]
-integer   :: ichars
-integer   :: ier
-integer   :: ierr
-integer   :: igot
+real,save          :: rpat(4)=[0.0, 8.5, 0.0, 11.0]
+integer            :: ichars
+integer            :: ier
+integer            :: ierr
+integer            :: igot
+integer            :: icolor
+character(len=255) :: ctemp1
 
-   call xy_retrv2('page_oo',temp1q,ichars  ,ier)  ! text font
-   if(temp1q.eq.' ')then
-      igot=4  ! use statically saved values from last call or initial state
+   call xy_retrv2('page_oo',ctemp1,ichars,ier)
+   if(ctemp1.eq.' ')then
+      igot=4                                                  ! use statically saved values from last call or initial state
    else
-      call strgar2(temp1q,4,rpat,igot,' ',ierr)
+      call strgar2(ctemp1,4,rpat,igot,' ',ierr)
    endif
-   if(igot.eq.4)then
-!     go to special "vogle mode" in way most PLT commands still work.
+
+   select case(igot)
+   case(0)                              ! do something equivalent to a page advance
+   case(1)                              ! return to normal PLT mode
+      LLQ(lnormalq)=.true.
+      call centertext(.false.)          ! do not center text
+      call vsetflush(.false.)
+      call vflush()
+      icolor=rpat(1)
+      if(icolor.ge.0)then
+         if(icolor.eq.0)then
+            call color(ibackq)
+         else
+            call color(icolor)
+         endif
+         call clear()
+         call color(iforeq)
+      else
+         call color(iforeq)
+      endif
+   case(2)                              ! return to normal PLT mode setting background and foreground color
+      LLQ(lnormalq)=.true.
+      call centertext(.false.)          ! do not center text
+      call vsetflush(.false.)
+      call vflush()
+      icolor=rpat(1)
+      if(icolor.ge.0)then
+         call color(icolor)
+      else
+         call color(ibackq)
+      endif
+      call clear()
+      icolor=rpat(2)
+      if(icolor.ge.0)then
+         call color(icolor)
+      else
+         call color(iforeq)
+      endif
+   case(4)                              ! go to special "M_plot mode" in way most PLT commands still work.
       LLQ(lnormalq)=.false.
       call xy_aspct(rpat(1),rpat(2),rpat(3),rpat(4))
       call frontbuffer()
@@ -2861,32 +3064,40 @@ integer   :: igot
       call color(ibackq)
       call clear()
       call color(iforeq)
-   elseif(igot.eq.1)then    ! return to normal PLT mode
-      LLQ(lnormalq)=.true.
-      call centertext(.false.) ! do not center text
-      call vsetflush(.false.)
-      call color(ibackq)
-      call clear()
-      call color(iforeq)
-   else                     ! do something equivalent to a page advance
+   case default
       call journal('*page* insufficient parameters for page command')
-   endif
+   end select
+
 end subroutine plot_jupage
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
-!! plot_id
+!>
+!!##NAME
+!!    plot_id(3f) - [M_xyplot] render the id(1) command for XY plots
 !!
-!! This routine defines the ID command. It is used to change the attributes of the
-!! pens used to draw the user data. Essentially everything that is used to
-!! identify a curve can be changed by this command. Line thickness, color, marker
-!! number, marker frequency, dash code ID, marker size, and curve fill style can
-!! be set. Also, text can be set to override the default legend label, and the
-!! legend entry can be turned off. A full description of the command can be found
-!! in the user manual.
+!!##SYNOPSIS
 !!
-!! If no parameters are given a chart showing curve styles is displayed and the
-!! current pen settings are written out.
+!!   subroutine plot_id(icmdlen)
+!!
+!!    integer,intent(in)          :: icmdlen
+!!##DESCRIPTION
+!!
+!!    This routine implements the line style information set with the ID
+!!    command. It is used to change the attributes of the pens used to draw
+!!    the user data. Essentially everything that is used to identify a curv
+!!    can be changed by this command. Line thickness, color, marker number,
+!!    marker frequency, dash code ID, marker size, and curve fill style can
+!!    be set. Also, text can be set to override the default legend label,
+!!    and the legend entry can be turned off. A full description of the
+!!    command can be found in the user manual.
+!!
+!!    If no parameters are given a chart showing curve styles is displayed
+!!    and the current pen settings are written out.
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine plot_id(icmdlen)
 ! 1992 John S. Urban
 
@@ -2901,6 +3112,7 @@ integer,intent(in)          :: icmdlen
 
 character(len=7),save       :: flag(2) =(/' -on  ',' -off '/)
 character(len=255)          :: ctemp1
+character(len=4096)         :: ctemp2
 
 integer,parameter           :: igrid=3    ! number of special pens for grid style (the pen values from -igrid+1 to 0)
 real                        :: rcurv1(ICS2Q+igrid)
@@ -2927,9 +3139,7 @@ integer                     :: lnum
       call plot_storage()
       do i10=1,ICS2Q
          if(lgnduq(i10).ne.' ')then
-            write(ctemp1,101)i10,lgnduq(i10)(:41)
-            101 format('id ',i0,' -t "',a,'"')
-            call journal(ctemp1(:50))
+            call journal('sc','id',i10,'-t ','"'//trim(lgnduq(i10))//'"')
             if(exitq.eq.'END')goto 999  ! exit on non-null entry at cont... prompt
          endif
       enddo
@@ -3006,8 +3216,8 @@ integer                     :: lnum
          exit CHANGE
       endif
 !===================================================================================================================================
-      call xy_retrv2('id_t',ctemp1,ichars  ,ier)                   ! legend label
-      if(ctemp1.ne.'#N#')lgnduq(lnum)=ctemp1
+      call xy_retrv2('id_t',ctemp2,ichars  ,ier)                   ! legend label
+      if(ctemp2.ne.'#N#')lgnduq(lnum)=ctemp2
 !===================================================================================================================================
       ival=0
       call xy_retrv2('id_off',ctemp1,ichars  ,ier)                 ! suppress this id
@@ -3101,6 +3311,16 @@ end subroutine plot_id
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    plot_clear(3f) - [M_xyplot] clear graphics area and ensure in graphics mod
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine plot_clear(ctype)
 use M_draw
 implicit none
@@ -3134,14 +3354,24 @@ end subroutine plot_clear
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    xy_aspct(3f) - [M_xyplot] Store plot window size in global variables and call plot_page(
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!    Store plot window size in global variables and call BIGGEST_ORTHO2()
+!!    bug occurs if a window edge (at least xsmall) is zero in determining
+!!    length of hardware characters.
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine xy_aspct(xsmall,xlarge,ysmall,ylarge)
-!     Store plot window size in global variables and call BIGGEST_ORTHO2()
-!     bug occurs if a window edge (at least xsmall) is zero in determining
-!     length of hardware characters.
 implicit none
 
 character(len=*),parameter::ident_19="&
-&@(#)M_xyplot::xy_aspct(3fp): Store plot window size in global variables and call BIGGEST_ORTHO2()"
+&@(#)M_xyplot::xy_aspct(3f): Store plot window size in global variables and call BIGGEST_ORTHO2()"
 
 real,intent(in)   :: xsmall
 real,intent(in)   :: xlarge
@@ -3156,11 +3386,21 @@ end subroutine xy_aspct
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    xy_bans(3f) - [M_xyplot] draw banner lines from PLT ban comman
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine xy_bans()
 use M_draw
 implicit none
 
-character(len=*),parameter::ident_20="@(#)M_xyplot::xy_bans(3fp): draw banner lines from PLT ban command"
+character(len=*),parameter::ident_20="@(#)M_xyplot::xy_bans(3f): draw banner lines from PLT ban command"
 
 real               :: bothi
 real               :: centr
@@ -3182,7 +3422,7 @@ real               :: ymint
    call centertext(.false.) ! turn off text centering
    call plot_get_plot_area(xmint,xmaxt,ymint,ymaxt)
    centr=(xmaxt+xmint)/2.0   ! find center of drawing area for centering text
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     add banner line
    call fixedwidth(LLQ(ibafxedq))              ! text is proportionally spaced for banner or not
    ibchars=max(1,inum0(fetch('ban_ch')))     ! get number of characters that must fit across banner line
@@ -3192,13 +3432,13 @@ real               :: ymint
    call textsize(width,height)               ! set font size
    irazt=max(1,inum0(fetch('ban_w')))        ! calculate width of lines to draw software text with
    irazl=max(1,inum0(fetch('grid_w')))       ! calculate width of lines to draw box, lines
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     vertical text
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    call textang(90.0)
    tophi=ymaxt-height*2.0                    ! vertical placement of top text
    bothi=ymint+height*2.0                    ! vertical placement of bottom text
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    iprntl=0                                  ! flag if a string was drawn in left border or not
    xtemp=xmint+height*1.5 ! bad form to pass variable in common to a subroutine
    call xy_rasters(irazt)                       ! set text width
@@ -3211,7 +3451,7 @@ real               :: ymint
       call move2(xmint,tophi)
       call draw2(xmint,bothi)
    endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    iprntr=0                                  ! flag if a string was drawn in right border or not
    xtemp=xmaxt-height*0.5 ! bad form to pass variable in common to a subroutine
    call xy_rasters(irazt)                        ! set text width
@@ -3224,13 +3464,13 @@ real               :: ymint
       call move2(xmaxt,tophi)
       call draw2(xmaxt,bothi)
    endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !  horizontal text
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    call textang(0.0)
    tophi=ymaxt-height*1.5     ! vertical placement of top text
    bothi=ymint+height*0.5     ! vertical placement of bottom text
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    iprntb=0                           ! flag whether a string was drawn at bottom or not
    call xy_rasters(irazt)                        ! set text width
    call xy_printban('ban_bl',xmint+width,bothi, 0.0,iprntb)
@@ -3243,7 +3483,7 @@ real               :: ymint
       call draw2(xmaxt,bothi)
       ymint=ymint+2.0*height
    endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    iprntt=0                           ! flag whether a string was drawn at top or not
    call xy_rasters(irazt)                        ! set text width
    call xy_printban('ban_tl',xmint+width,tophi, 0.0,iprntt)
@@ -3259,19 +3499,29 @@ real               :: ymint
    else
       ymaxt=ymaxt-(ymaxt-ymint)*0.02   ! move title a little down from the top to put space over the title
    endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    call xy_rasters(irazt)                 ! set text width
    call plot_set_plot_area(xmint,xmaxt,ymint,ymaxt)
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine xy_bans
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!    xy_printban(3f) - [M_xyplot] plot horizontal banner string at specified locatio
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
 !===================================================================================================================================
 subroutine xy_printban(name,startx,starty,slenfac,iprinted)
 use M_draw
 implicit none
 
-character(len=*),parameter::ident_21="@(#)M_xyplot::xy_printban(3fp): plot horizontal banner string at specified location"
+character(len=*),parameter::ident_21="@(#)M_xyplot::xy_printban(3f): plot horizontal banner string at specified location"
 
 character(len=*),intent(in)    :: name
 real,intent(in)                :: startx
@@ -3295,11 +3545,21 @@ end subroutine xy_printban
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    xy_printbanv(3f) - [M_xyplot] plot vertical banner strin
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine xy_printbanv(name,startx,starty,slenfac,iprinted)
 use M_draw
 implicit none
 
-character(len=*),parameter::ident_22="@(#)M_xyplot::xy_printbanv(3fp): plot vertical banner string"
+character(len=*),parameter::ident_22="@(#)M_xyplot::xy_printbanv(3f): plot vertical banner string"
 
 character(len=*),intent(in)    :: name
 real,intent(in)                :: startx
@@ -3324,10 +3584,20 @@ end subroutine xy_printbanv
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    xy_fxed(3f) - [M_xyplot] select whether a string is fixed-space or no
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine xy_fxed(string,llisub)
 implicit none
 
-character(len=*),parameter::ident_23="@(#)M_xyplot::xy_fxed(3fp): select whether a string is fixed-space or not"
+character(len=*),parameter::ident_23="@(#)M_xyplot::xy_fxed(3f): select whether a string is fixed-space or not"
 
 character(len=*),intent(in)      :: string
 logical,intent(out)              :: llisub
@@ -3344,6 +3614,16 @@ end subroutine xy_fxed
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    xy_init_graphics(3f) - [M_xyplot] Initialize PLT graphics environmen
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine xy_init_graphics()
 use M_journal,    only : journal
 use M_kracken,    only : iget, sget, store
@@ -3351,13 +3631,12 @@ use M_draw
 use M_drawplus,   only : page
 implicit none
 
-character(len=*),parameter::ident_24="@(#)M_xyplot::xy_init_graphics(3fp): Initialize PLT graphics environment"
+character(len=*),parameter::ident_24="@(#)M_xyplot::xy_init_graphics(3f): Initialize PLT graphics environment"
 
 character(len=256) :: value
 character(len=256) :: cmd_d
 character(len=256) :: hcopyfile
 integer            :: i
-integer            :: i10
 integer            :: idum
 integer            :: ierr
 integer            :: ios
@@ -3418,9 +3697,9 @@ real               :: yy
       call voutput(trim(hcopyfile))             ! open output file for a batch output device run
       call journal('s','batch mode')
    END SELECT CHECK_INTERACTIVE
-!-----------------------------------------------------------------------========----------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    call vinit(value)
-!-----------------------------------------------------------------------========----------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    call vflush()                                ! forces a flush
    call stuffa('$DEVICE',value,'')         ! set calculator variable so user can know what device is
    call getdisplaysize(xx,yy)                   ! get screen size in terms of raster units
@@ -3447,10 +3726,20 @@ end subroutine xy_init_graphics
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    xy_ifdrawn(3f) - [M_xyplot] xy_ifdrawn() is used to see if first page drawn or no
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 logical function xy_ifdrawn()
 implicit none
 
-character(len=*),parameter::ident_25="@(#)M_xyplot::xy_ifdrawn(3fp): xy_ifdrawn() is used to see if first page drawn or not"
+character(len=*),parameter::ident_25="@(#)M_xyplot::xy_ifdrawn(3f): xy_ifdrawn() is used to see if first page drawn or not"
 
 ! if never called before in this program execution return .false. else return .true.
 logical,save :: ifcalled=.false.
@@ -3465,6 +3754,16 @@ end function xy_ifdrawn
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    xy_iftext(3f) - [M_xyplot] Add user-specified text strings to plo
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine xy_iftext()
 use M_journal, only : journal
 use M_draw
@@ -3472,7 +3771,7 @@ use M_drawplus, only : pop, push
 use M_drawplus, only : plain_rect
 implicit none
 
-character(len=*),parameter::ident_26="@(#)M_xyplot::xy_iftext(3fp): Add user-specified text strings to plot"
+character(len=*),parameter::ident_26="@(#)M_xyplot::xy_iftext(3f): Add user-specified text strings to plot"
 
 real        :: asz
 integer     :: i20
@@ -3511,49 +3810,49 @@ real        :: ymint
 !      tufq(ICSQ)                text font name
 !      itubq(ICSQ)               flag if to box text or not and if so, what color
 !      tuaszq(ICSQ)              arrow size
-      if(itumaxq.le.0)return  ! index of highest non-blank text string
-      ! if kept track, could eliminate a lot of redundant calls when color, font name, and such not changing
-!-----------------------------------------------------------------------
-      call push()                               ! Set the view up
-      call centertext(.false.)                        ! do not center text
-      call xy_rasters(plot_ids(0)%width)                   ! set curve width to pen 0
-!-----------------------------------------------------------------------
+   if(itumaxq.le.0)return  ! index of highest non-blank text string
+   ! if kept track, could eliminate a lot of redundant calls when color, font name, and such not changing
+!-----------------------------------------------------------------------------------------------------------------------------------
+   call push()                               ! Set the view up
+   call centertext(.false.)                        ! do not center text
+   call xy_rasters(plot_ids(0)%width)                   ! set curve width to pen 0
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     set up character sizes and marker size
-      call plot_get_plot_area(xmint,xmaxt,ymint,ymaxt)
-      tlong=max(xmaxt-xmint,ymaxt-ymint)
-      TICLEN=0.020*tlong  ! marker size
-!-----------------------------------------------------------------------
-      icount=1
-      rscale=TICLEN*tusq(1)                    ! marker size * user size
-      do 20 i20=1,itumaxq
+   call plot_get_plot_area(xmint,xmaxt,ymint,ymaxt)
+   tlong=max(xmaxt-xmint,ymaxt-ymint)
+   TICLEN=0.020*tlong  ! marker size
+!-----------------------------------------------------------------------------------------------------------------------------------
+   icount=1
+   rscale=TICLEN*tusq(1)                    ! marker size * user size
+   do 20 i20=1,itumaxq
       if(tuq(i20).eq.' ')goto 20                ! skip blank lines
       if(itoq(i20).eq.2)goto 20                 ! this line is off, skip it
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       x1=tuxq(i20)                              ! get text position
       y1=tuyq(i20)
       Ry1=xy_con_y(tuyq(i20))
       if(i20.gt.1)then
-        ! if same coordinates as above, this is a block of text
-        if(x1.eq.tuxq(i20-1).and.y1.eq.tuyq(i20-1).and.tuq(i20-1).ne.' ')then
-           Ry1=Ry1-rscale*icount
-           icount=icount+1
-        else
-           icount=1
-        endif
+         ! if same coordinates as above, this is a block of text
+         if(x1.eq.tuxq(i20-1).and.y1.eq.tuyq(i20-1).and.tuq(i20-1).ne.' ')then
+            Ry1=Ry1-rscale*icount
+            icount=icount+1
+         else
+            icount=1
+         endif
       else
-        icount=1
+         icount=1
       endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       if(tufq(i20).ne.' ')then
          call xy_jufont(tufq(i20))                 ! set font
       else
-        call journal('sc','*xy_iftext* blank font for ',i20)
+         call journal('sc','*xy_iftext* blank font for ',i20)
       endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     size the text
       rscale=TICLEN*tusq(i20)             ! marker size * user size
       call textsize(rscale,rscale)           ! set size after selecting font
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       if(icount.eq.1)then ! first line in this block so save first set of numbers and box color in case boxing the text
          iboxc=itubq(i20)
 !        need the box under text so have to look ahead
@@ -3561,19 +3860,19 @@ real        :: ymint
          xput=tuxq(i20)   ! x position in rscaled units
          xright=0.0       ! length of string in unscaled units to right of xput
          xleft=0.0        ! length of string in unscaled units to left of xput
-         do 30 i30=i20,itumaxq
-         if(tuxq(i30).ne.tuxq(i20).or.tuyq(i30).ne.tuyq(i20))goto 40 ! encountered a line not part of this text block
-         ilines=ilines+1
-         if(tuq(i30).ne.' ')then
-            rlen=xy_ustrlen(tuq(i30))
-            if(itujq(i30).eq.0)then        ! left justify the text
-               xright=max(xright,rlen)
-            else                           ! centered text
-               xright=max(xright,rlen/2.0)
-               xleft=min(xleft,-rlen/2.0)
+         do i30=i20,itumaxq
+            if(tuxq(i30).ne.tuxq(i20).or.tuyq(i30).ne.tuyq(i20))goto 40 ! encountered a line not part of this text block
+            ilines=ilines+1
+            if(tuq(i30).ne.' ')then
+               rlen=xy_ustrlen(tuq(i30))
+               if(itujq(i30).eq.0)then        ! left justify the text
+                  xright=max(xright,rlen)
+               else                           ! centered text
+                  xright=max(xright,rlen/2.0)
+                  xleft=min(xleft,-rlen/2.0)
+               endif
             endif
-         endif
-30       continue
+         enddo
 40       continue
 
          Rytop=xy_con_y(tuyq(i20))+rscale*3.0/2.0
@@ -3594,17 +3893,17 @@ real        :: ymint
             call plain_rect(Rxleft,Rybot,Rxright,Rytop)
          endif
       endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       call color(iforeq)
       where=taoq(i20)
       Rxto=xy_con_x(taxq(i20))
       Ryto=xy_con_y(tayq(i20))
       asz=tuaszq(i20)*tlong/100.0
       call xy_arrow(Rxleft,Rybot,Rxright,Rytop,Rxto,Ryto,where,asz)
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       if(tufq(i20).eq.'markers')then
          call centertext(.true.) ! always turn centering on for markers
-         Ry1=Ry1+(1.0-0.70)/2.0*rscale ! adjust vogle hershey font for middle vertical justification for marker font
+         Ry1=Ry1+(1.0-0.70)/2.0*rscale ! adjust M_plot hershey font for middle vertical justification for marker font
       else
          if(itujq(i20).eq.0)then     ! xy_juprint does not recognize centertext
             !call centertext(.false.)
@@ -3618,24 +3917,34 @@ real        :: ymint
       if(i20.ne.0)then             ! test flag to see if this is an inside legend box
          call xy_juprint(xy_con_x(x1),Ry1,tuq(i20),icenter)
       endif
-!-----------------------------------------------------------------------
-20    continue
-!-----------------------------------------------------------------------
-      call centertext(.false.) ! do not center text
-      call pop()
+!-----------------------------------------------------------------------------------------------------------------------------------
+20 continue
+!-----------------------------------------------------------------------------------------------------------------------------------
+   call centertext(.false.) ! do not center text
+   call pop()
 end subroutine xy_iftext
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    xy_jucurv(3f) - [M_xyplot] find extrema for group of curves and set legend label defaults
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!    find extrema for group of curves to be plotted and set legend label defaults if labels are blan
+!!    set icrvsq and icrvs2q
+!!    note that you have to "skip over" a 0 curve when assigning line attributes and legend labels
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine xy_jucurv(xlowa,xhigha,ylowa,yhigha,iunits,ierr)
-!     find extrema for group of curves to be plotted and set legend label defaults if labels are blank
-!     set icrvsq and icrvs2q
-!     note that you have to "skip over" a 0 curve when assigning line attributes and legend labels
 use M_journal,         only : journal
 use M_draw,            only : vgetdev
 implicit none
 
-character(len=*),parameter::ident_27="@(#)M_xyplot::xy_jucurv(3fp): find extrema for group of curves and set legend label defaults"
+character(len=*),parameter::ident_27="@(#)M_xyplot::xy_jucurv(3f): find extrema for group of curves and set legend label defaults"
 
 real,intent(out)            :: xlowa(2),xhigha(2),ylowa(2),yhigha(2)
 integer,intent(out)         :: iunits(4)
@@ -3892,6 +4201,16 @@ end subroutine xy_jucurv
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    xy_jumapc(3f) - [M_xyplot] map colors using HUE comman
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine xy_jumapc(mode)
 use M_journal, only : journal
 use m_color, only: hue, color_name2rgb
@@ -3964,7 +4283,7 @@ data jb/ 255,   0,   0,   0, 255, 255, 255,   0,   0,   0, 255,   0, 155, 155, 1
 !-----------------------------------------------------------------------------------------------------------------------------------
 ! reload all pens except pens 0 and 7 when drivers change;
 ! M_DRAW does not normally retain color maps between driver changes
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    if(mode.eq.'reload')then
       RELOAD: do i_RELOAD=0,nmax
          if((ir(i_RELOAD).ge.0).and.(ig(i_RELOAD).ge.0).and.(ib(i_RELOAD).ge.0))then
@@ -3972,7 +4291,7 @@ data jb/ 255,   0,   0,   0, 255, 255, 255,   0,   0,   0, 255,   0, 155, 155, 1
          endif
       enddo RELOAD
       return
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    elseif(mode.eq.'reset')then
       RESET: do i_RESET=0,nmax
          ir(i_RESET)=jr(i_RESET)
@@ -4029,7 +4348,7 @@ data jb/ 255,   0,   0,   0, 255, 255, 255,   0,   0,   0, 255,   0, 155, 155, 1
       !-------------------------------------------------------------
       call plot_marks('hue')
       return
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    else  ! some color numbers were specified
       call strgar2(ctemp,imax,rlist,inumbers,' ,',ier)  ! put list of hues selected into ilist(:inumbers)
       call listout(int(rlist(1:inumbers)),ilist,inumbers,ier)
@@ -4037,7 +4356,7 @@ data jb/ 255,   0,   0,   0, 255, 255, 255,   0,   0,   0, 255,   0, 155, 155, 1
 !-----------------------------------------------------------------------------------------------------------------------------------
    ilen2=1
    cnums=' '
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    call xy_retrv2('hue_rgb',ctemp,ilen,ier)
    if(ilen.ne.0)then
       ilen2=ilen
@@ -4045,7 +4364,7 @@ data jb/ 255,   0,   0,   0, 255, 255, 255,   0,   0,   0, 255,   0, 155, 155, 1
       itypes=1
       modl='rgb'
    endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    call xy_retrv2('hue_name',ctemp,ilen,ier)                    ! use color name to get RGB values and proceed as if -rgb used
    if(ctemp.ne.'#N#')then                                    ! try to find RGB values of name
       call color_name2rgb(ctemp,rr,gg,bb,echoname)           ! get the RGB values for the English color name
@@ -4060,7 +4379,7 @@ data jb/ 255,   0,   0,   0, 255, 255, 255,   0,   0,   0, 255,   0, 155, 155, 1
       itypes=1
       modl='rgb'
    endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    call xy_retrv2('hue_hls',ctemp,ilen,ier)
    if(ilen.ne.0)then
       if(itypes.ne.0)then
@@ -4071,7 +4390,7 @@ data jb/ 255,   0,   0,   0, 255, 255, 255,   0,   0,   0, 255,   0, 155, 155, 1
       cnums=ctemp
       modl='hls'
    endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    call xy_retrv2('hue_hsv',ctemp,ilen,ier)
    if(ilen.ne.0)then
       if(itypes.ne.0)then
@@ -4187,32 +4506,46 @@ end subroutine xy_jumapc
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    xy_pause(3f) - [M_xyplot] conditionally  pause until graphic or text-window respons
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!    would prefer to use errin but not all FORTRAN implementations
+!!    support it; even in 1 environments.
+!!
+!!    if a null line is entered, set calculator value PAUSE to 1,
+!!    else set PAUSE to 0. This can be handy for creating break points
+!!
+!!    The calculator variable $PAUSE is set to the character entered, except
+!!    that characters less than ADE 32 are set to a blank.
+!!##OPTIONS
+!!  constants:
+!!
+!!    ipausq=1 beep and pause until carriage return entered from standard input.
+!!    ipausq=2          pause until carriage return entered from standard input.
+!!    ipausq=0 ignore pause request
+!!    ipausq=-1  pause until a character is entered from graphics input.
+!!
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine xy_pause()
-!     ipausq=1 beep and pause until carriage return entered from standard input.
-!     ipausq=2          pause until carriage return entered from standard input.
-!     ipausq=0 ignore pause request
-!     ipausq=-1  pause until a character is entered from graphics input.
-!     would prefer to use errin but not all FORTRAN implementations
-!     support it; even in 1 environments.
-!
-!     if a null line is entered, set calculator value PAUSE to 1,
-!     else set PAUSE to 0. This can be handy for creating break points
-!
-!     The calculator variable $PAUSE is set to the character entered, except
-!     that characters less than ADE 32 are set to a blank.
-!CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCcccccccc
+!-----------------------------------------------------------------------------------------------------------------------------------
 use M_journal,    only : journal
 use M_draw
 implicit none
 
-character(len=*),parameter::ident_29="@(#)M_xyplot::xy_pause(3fp): conditionally  pause until graphic or text-window response"
+character(len=*),parameter::ident_29="@(#)M_xyplot::xy_pause(3f): conditionally  pause until graphic or text-window response"
 
 character(len=1)       :: cjunk
 integer                :: i10
 integer                :: idum
 integer                :: ios
 integer                :: ivalue
-!----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       cjunk=' '
       idum=0
       if(ipausq.eq.0)then
@@ -4223,13 +4556,13 @@ integer                :: ivalue
          call stuff('PAUSE',1.0d0,'')
          return
       endif
-!----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     call point2(XMIN0Q2,YMAX0Q2) ! home cursor - kludge
       call point2(0.0,0.0) ! home cursor - kludge
 !-----
       call vflush()              ! flush graphics buffers
       call journal('s',pausq)          ! send bell character or user string
-!----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       if(ipausq.eq.-1)then
 !       if standard  input is not coming from a terminal then you may want to do
 !       a pause  from the  graphic  display  so that the  user can  still  pause
@@ -4242,14 +4575,14 @@ integer                :: ivalue
         ivalue=max(ivalue,32)     ! convert non-printable characters to a space
                                    ! (including carriage return in particular)
         cjunk=char(ivalue)
-!----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       elseif(ipausq.eq.2)then
          read(*,'(a)',end=999,iostat=ios,err=999)cjunk
-!----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       else
          read(*,'(a)',end=999,iostat=ios,err=999)cjunk
       endif
-!----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       if(cjunk.eq.' ')then
          call stuff('PAUSE',1.0d0,'')
       else  ! flag to quit
@@ -4264,18 +4597,28 @@ end subroutine xy_pause
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    xy_jutitl(3f) - [M_xyplot] add title lines to plo
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine xy_jutitl(ifile,idonly)
 ! making xy_jutitlX PLT-independent to make generic plotting routines
 use M_journal, only : journal
 use M_draw
 implicit none
 
-character(len=*),parameter::ident_30="@(#)M_xyplot::xy_jutitl(3fp): add title lines to plot"
+character(len=*),parameter::ident_30="@(#)M_xyplot::xy_jutitl(3f): add title lines to plot"
 
 integer,intent(in)      :: ifile
 integer,intent(in)      :: idonly
 integer,parameter       :: isize=10
-character(len=80)       :: ftitle(isize)                ! hold title lines from the file
+character(len=4096)     :: ftitle(isize)                ! hold title lines from the file
 integer                 :: ititles
 
 ! grab up to 10 title lines from file to use as title or to use as substitution strings for user-specified title
@@ -4287,61 +4630,71 @@ end subroutine xy_jutitl
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    xy_jutitlX(3f) - [M_xyplot] draw plot titling information (titles and legend block
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine xy_jutitlX(idonly,ftitle,isize)
 ! not printing title lines beginning with #,$ allows comment information to be stored in input files
 use M_journal, only : journal
 use M_draw
 implicit none
 
-character(len=*),parameter::ident_31="@(#)M_xyplot::xy_jutitlX(3fp): draw plot titling information (titles and legend block)"
+character(len=*),parameter::ident_31="@(#)M_xyplot::xy_jutitlX(3f): draw plot titling information (titles and legend block)"
 
-character(len=80)  :: l
-integer            :: isize
-character(len=80)  :: ftitle(isize)                ! hold title lines from the file
-character(len=1)   :: cwhere
-real               :: centr
-real               :: factor
-real               :: height
-integer            :: ichars
-integer            :: icols
-integer            :: icount
-integer            :: idonly
-integer            :: itchars
-real               :: r10
-real               :: tallest
-real               :: width
-real               :: xlong
-real               :: xmaxt
-real               :: xmint
-real               :: ydown
-real               :: ymaxt
-real               :: ymindum
-real               :: ymint
-real               :: ytall
-real               :: yup
+character(len=4096)  :: l
+integer              :: isize
+character(len=4096)  :: ftitle(isize)                ! hold title lines from the file
+character(len=1)     :: cwhere
+real                 :: centr
+real                 :: factor
+real                 :: height
+integer              :: ichars
+integer              :: icols
+integer              :: icount
+integer              :: idonly
+integer              :: itchars
+real                 :: r10
+real                 :: tallest
+real                 :: width
+real                 :: xlong
+real                 :: xmaxt
+real                 :: xmint
+real                 :: ydown
+real                 :: ymaxt
+real                 :: ymindum
+real                 :: ymint
+real                 :: ytall
+real                 :: yup
 
    call centertext(.false.) ! turn off text centering
    call plot_get_plot_area(xmint,xmaxt,YMINDUM,ymaxt)
    centr=(xmaxt+xmint)/2.0  ! find center of drawing area for centering text
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !  initialize title line section EVEN if no title lines
    call xy_rasters(max(1,inum0(fetch('title_w'))))  ! calculate width of lines to draw title software text
    call color(max(0,inum0(fetch('title_c'))))    ! calculate color of title lines
    r10=ymaxt                                     ! vertical position to print the next title line
    call fixedwidth(LLQ(itifxedq))                  ! text is fixed space or not for title
    itchars=max(1,inum0(fetch('title_ch')))       ! get number of characters that must fit across title line
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    ! set up text size, line width, and font in case first title line is a comment or titles are off
    width=(xmaxt-xmint)/itchars                   ! biggest width of characters if fixed space
    width=width*0.95                              ! a little margin
    tallest=width*1.20                            ! max height whether fixed or proportional
    call font(fetch('title_fn'))
    call textsize(width,tallest)                  ! use factor of 1.2 between height and width
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !      if(.not.LLQ(ltitlq))then                        ! if title is off, go to section on legend labels
 !         goto 50
 !      endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     set up first title line, coming up with a size that fits
    if(isize.gt.0)then
       l=ftitle(1)
@@ -4380,7 +4733,7 @@ real               :: yup
       !-----------------------------------
       r10=r10-ydown
    endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     print rest of title lines, making them smaller as required
    do icount=2,isize
       l=ftitle(icount)
@@ -4404,35 +4757,45 @@ real               :: yup
          r10=r10-ydown
       endif
    enddo
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !50    continue
-   call fixedwidth(LLQ(iidfxedq))              ! text is fixed space or not for id labels
+   call fixedwidth(LLQ(iidfxedq))                      ! text is fixed space or not for id labels
    cwhere(1:1)=fetch('idbox_p')
-   if(index('pae',cwhere).gt.0)then          ! use xy_tidybox to draw legend box inside box area later overlaying plot
+   if(index('pae',cwhere).gt.0)then                    ! use xy_tidybox to draw legend box inside box area later overlaying plot
       call plot_get_plot_area(xmint,xmaxt,ymint,ymaxt) ! space down a little so title is not crowded against plot
       ymaxt=r10
       call plot_set_plot_area(xmint,xmaxt,ymint,ymaxt)
    elseif(cwhere.eq.'b')then
       icols=inum0(fetch('idbox_c'))
       icols=max(1,icols)
-      call xy_idbox(r10,icols,idonly)           ! legend below plot
+      call xy_idbox(r10,icols,idonly)                  ! legend below plot
    elseif(cwhere.eq.'d')then
-      call xy_idbox0(r10,idonly)                ! default legend above plot
+      call xy_idbox0(r10,idonly)                       ! default legend above plot
    else
       call journal('*xy_jutitl* unknown xy_idbox location')
    endif
-   call fixedwidth(.false.)                      ! text is not fixed space
-!     call color(max(0,inum0(fetch('title_c'))))    ! reset color after drawing lines to title line color
-   call color(iforeq)                            ! reset color after drawing lines
+   call fixedwidth(.false.)                            ! text is not fixed space
+!     call color(max(0,inum0(fetch('title_c'))))       ! reset color after drawing lines to title line color
+   call color(iforeq)                                  ! reset color after drawing lines
 end subroutine xy_jutitlX
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!    xy_set_bigger(3f) - [M_xyplot] change title line siz
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
 !===================================================================================================================================
 subroutine xy_set_bigger(tallest,width,height,factor)
 use M_draw
 implicit none
 
-character(len=*),parameter::ident_32="@(#)M_xyplot::xy_set_bigger(3fp): change title line size"
+character(len=*),parameter::ident_32="@(#)M_xyplot::xy_set_bigger(3f): change title line size"
 
 real,intent(in)    :: tallest
 real,intent(out)   :: width
@@ -4448,23 +4811,33 @@ end subroutine xy_set_bigger
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    xy_laxis(3f) - [M_xyplot] draw linear axis and logarithmic axis for PL
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine xy_laxis(ixdiv,iydiv) ! draw the axes
 use M_journal, only : journal
 use M_draw
 implicit none
 
-character(len=*),parameter::ident_33="@(#)M_xyplot::xy_laxis(3fp): draw linear axis and logarithmic axis for PLT"
+character(len=*),parameter::ident_33="@(#)M_xyplot::xy_laxis(3f): draw linear axis and logarithmic axis for PLT"
 
-!-------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     ixdiv and iydiv are number of major and minor axis divisions
 integer                     :: ixdiv(4), iydiv(4)
-!-------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 character(len=20)           :: hold1
 character(len=20)           :: hold2
 character(len=20)           :: hold3
 character(len=20)           :: devname
 integer                     :: i10
-!-------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 ! GET DATA FROM COMMONS AND DICTIONARIES
       ORIENTLq2=rnum0(fetch('ylabel_O'))
       ORIENTRq2=rnum0(fetch('ylabel2_O'))
@@ -4479,7 +4852,7 @@ integer                     :: i10
       fontLq2=fetch('label_fn')                           ! get fontname from XLABEL/YLABEL command
       ixlabel_chq2=max(1,inum0(fetch('xlabel_ch')))       ! user-desired height of characters to make axis labels
       ixmin_chq2=inum0(fetch('xmin_ch'))
-!-------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     grid on|off -major on|off|xon|xoff|none -minor on|off|xon|xoff|none
 
       hold1=fetch('grid_oo')
@@ -4551,7 +4924,7 @@ integer                     :: i10
          plot_axis%grid_style(3)=2 !minor x grid
          plot_axis%grid_style(4)=2 !minor y grid
       endif
-!-------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !      if(fetch('grid_oo').eq.'on')then
 !          plot_axis%grid_style(1)=0                       ! major x  grid
 !          plot_axis%grid_style(2)=0                       ! major y grid
@@ -4571,13 +4944,12 @@ integer                     :: i10
 !         plot_axis%grid_style(3)=1                        ! minor x tic
 !         plot_axis%grid_style(4)=1                        ! minor y tic
 !      endif
-!-------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       xlabel_fmtq2=fetch('xlabel_fmt')
       xlabel2_fmtq2=fetch('xlabel2_fmt')
       ylabel_fmtq2=fetch('ylabel_fmt')
       ylabel2_fmtq2=fetch('ylabel2_fmt')
-!-------------------------------------------------------------------------------
-!-------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       call color(plot_ids(-1)%color)        ! set color
       if(ibackq.ne.imidlq)then
          plot_axis%background=imidlq        ! flag to fill grid with middle color
@@ -4607,7 +4979,7 @@ integer                     :: i10
       call plot_axes()
 
       ipenq=ipenq2              ! KLUDGE TILL CLEAN
-!-------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       if(XMINQ2.ge.XMAXQ2)then
          call journal('*xy_laxis* no room for curves -adjust aspect or area')
          XMINQ2=XMIN0Q2   ! an ungraceful way to prevent big problems when set viewport and window to draw user curves
@@ -4618,10 +4990,20 @@ integer                     :: i10
          YMINQ2=YMIN0Q2   ! an ungraceful way to prevent big problems when set viewport and window to draw user curves
          YMAXQ2=YMAX0Q2
       endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine xy_laxis
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!    xy_pickpnt(3f) - [M_xyplot] interactively draw a line to current left scale and store the curve or return poin
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
 !===================================================================================================================================
 subroutine xy_pickpnt(itype,xecho,yecho,ibut)
 use M_journal, only : journal
@@ -4630,7 +5012,7 @@ use M_drawplus, only : pop, push, rdpnt
 implicit none
 
 character(len=*),parameter::ident_34="&
-&@(#)M_xyplot::xy_pickpnt(3fp): interactively draw a line to current left scale and store the curve or return point"
+&@(#)M_xyplot::xy_pickpnt(3f): interactively draw a line to current left scale and store the curve or return point"
 
 !  if itype is 0, store a curve into the pseudo file
 !  if itype is 1, return point in xecho, yecho
@@ -4646,7 +5028,7 @@ integer             :: i20, i30
 real                :: x2, y2
 real                :: xminv, xmaxv, yminv, ymaxv
 
-!  set to scale of left axis and pick a point and return it's coordinates
+!  set to scale of left axis and pick a point and return its coordinates
    call push()
    call frontbuffer()
    call xy_getscale(0,con(1),con(2),con(3),con(4))  ! get scaling factors
@@ -4655,19 +5037,19 @@ real                :: xminv, xmaxv, yminv, ymaxv
    ibut=-1
    call rdpnt(xecho,yecho,x1,y1,ibut)  ! first point
    if(ibut.lt.0.or.ibut.gt.2)goto 999     ! no locator device found if lt 0; asked to quit if greater than 3
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !  establish initial min and max
    xminv=(x1-con(2))/con(1)           ! scale x value
    yminv=(y1-con(4))/con(3)           ! scale y value
    xmaxv=xminv
    ymaxv=yminv
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    if(itype.eq.1)then    ! if just getting one point, you have it so return
          xecho=xminv
          yecho=yminv
          goto 999
    endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    call move2(x1,y1)
    OUTER: do ! continue in a loop
       isize=isize+1
@@ -4700,7 +5082,7 @@ real                :: xminv, xmaxv, yminv, ymaxv
       exit OUTER
    enddo OUTER
 !  any other button exits the draw loop
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !  create a nearly null time curve of specified size that can be changed with header and math
    if(isize.le.0)then
       call journal('*xy_pickpnt* size must be .ge. 1)')
@@ -4737,11 +5119,21 @@ end subroutine xy_pickpnt
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    xy_setlbl(3f) - [M_xyplot] decide axis label string
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine xy_setlbl(ii)
 !     1992 John S. Urban
 implicit none
 
-character(len=*),parameter::ident_35="@(#)M_xyplot::xy_setlbl(3fp): decide axis label strings"
+character(len=*),parameter::ident_35="@(#)M_xyplot::xy_setlbl(3f): decide axis label strings"
 
 !     If axis label string is empty, use units to get default string
 !----- PUT IN CHECKS FOR LABELS THAT ARE TOO LONG
@@ -4756,7 +5148,7 @@ integer                     :: ilag
 integer                     :: ilen
 integer                     :: len1
 data lnames/'xlabel_oo','ylabel_oo','xlabel2_oo','ylabel2_oo'/
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       ilag=inum0(fetch('plot_lag'))
       do i10=1,4
          temp1=' '
@@ -4786,36 +5178,46 @@ data lnames/'xlabel_oo','ylabel_oo','xlabel2_oo','ylabel2_oo'/
          endif
          axlq2(i10)=temp1                 ! save axis label somewhere
       enddo
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       if(ilag.ne.0)then
          axlq2(1)=axlq2(2)
          axlq2(3)=axlq2(4)
       endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     if -off switch is present blank out labels after all
       if(fetch('xlabel_off').ne.'#N#') axlq2(1)=' '
       if(fetch('ylabel_off').ne.'#N#') axlq2(2)=' '
       if(fetch('xlabel2_off').ne.'#N#') axlq2(3)=' '
       if(fetch('ylabel2_off').ne.'#N#') axlq2(4)=' '
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine xy_setlbl
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!    xy_setsize(3f) - [M_xyplot] use values to set size and border on output devic
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
 !===================================================================================================================================
 subroutine xy_setsize(string)
 use M_draw
 use M_debug
 implicit none
 
-character(len=*),parameter::ident_36="@(#)M_xyplot::xy_setsize(3fp): use values to set size and border on output device"
+character(len=*),parameter::ident_36="@(#)M_xyplot::xy_setsize(3f): use values to set size and border on output device"
 
 !     note that a value of '-1 -1 -1 -1' will reset to default driver size
 !     assumes prefsize(3) and prefposition(3) will complain about bad values and take corrective action, as it is hard to say what
 !     values are bad for particular output devices.
-   character(len=*),intent(in) :: string
-   real                        :: vals(4)
-   integer                     :: ier
-   integer                     :: ifound
+character(len=*),intent(in) :: string
+real                        :: vals(4)
+integer                     :: ier
+integer                     :: ifound
    vals=[-1.0,-1.0,-1.0,-1.0]                        ! special values that indicate driver should use build-in defaults
    if(string.ne.' ')then
       vals(3)=0.0                                    ! initial x offset
@@ -4832,13 +5234,23 @@ end subroutine xy_setsize
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    xy_tidybox(3f) - [M_xyplot] draw legend lines inside box specified on cal
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine xy_tidybox()
 use M_journal,         only : journal
 use M_draw
 use M_drawplus,        only : pop, push
 implicit none
 
-character(len=*),parameter::ident_37="@(#)M_xyplot::xy_tidybox(3fp): draw legend lines inside box specified on call"
+character(len=*),parameter::ident_37="@(#)M_xyplot::xy_tidybox(3f): draw legend lines inside box specified on call"
 
 character(len=255) :: corners
 character(len=1)   :: cwhere
@@ -4846,33 +5258,38 @@ real               :: plot_setmark_size
 integer            :: itextc
 integer            :: ichars
 integer            :: iwchar
+integer            :: icchar
 real               :: xmint, xmaxt, ymint, ymaxt
 integer            :: i10
 real               :: xmark
 integer            :: ibox
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     set up legend attributes
-      itextc=max(0,inum0(fetch('title_c')))     ! calculate color of title lines
-      ichars=1+5+1+8+5+(5*3+20)                 ! maximum expected number of characters in the string
-      ichars=max(1,inum0(fetch('id_ch')))       ! get number of characters estimated needed
-      iwchar=max(1,inum0(fetch('id_W')))        ! get character width
-      call push()                               ! Set the view up
+      ichars=1+5+1+8+5+(5*3+20)                           ! maximum expected number of characters in the string
+      ichars=max(1,inum0(fetch('id_ch')))                 ! get number of characters estimated needed
+      iwchar=max(1,inum0(fetch('id_tw')))                 ! get character width
+      itextc=inum0(fetch('id_tc'))                        ! get character color
+      if(itextc.lt.0)then
+         itextc=max(0,inum0(fetch('title_c')))            ! calculate color of title lines to get color for ID labels
+         itextc=iforeq                                    ! calculate color of title lines
+      endif
+      call push()                                         ! Set the view up
       call polyfill(.true.)
-      call xy_jufont(fetch('id_fn'))               ! always call font before textsize
-      ibox=inum0(fetch('idbox_box'))            ! color of box
-      call fixedwidth(LLQ(iidfxedq))  ! text is fixed space or not
+      call xy_jufont(fetch('id_fn'))                      ! always call font before textsize
+      ibox=inum0(fetch('idbox_box'))                      ! color of box
+      call fixedwidth(LLQ(iidfxedq))                      ! text is fixed space or not
       call plot_get_plot_area(xmint,xmaxt,ymint,ymaxt)
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       plot_setmark_size=0.0                               ! max size of markers as percent of x width ASSUMING all fit in 1x1 box
       do i10=1,100
          plot_setmark_size=max(plot_setmark_size,plot_ids(i10)%marker_size)
       enddo
-      xmark=2.0*(xmaxt-xmint)*plot_setmark_size/100.0         ! max size of markers in percent of X display range
+      xmark=2.0*(xmaxt-xmint)*plot_setmark_size/100.0     ! max size of markers in percent of X display range
       plot_setmark_size=xmark
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       corners=fetch('idbox_oo')
       if(corners.eq.'off') goto 999
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       cwhere(1:1)=fetch('idbox_p')
       if(index('pa',cwhere).ne.0)then
          call xy_tidybox2(itextc,ichars,iwchar,ibox,plot_setmark_size,cwhere,xmint,xmaxt,ymint,ymaxt,xmark)
@@ -4882,7 +5299,7 @@ integer            :: ibox
       else
          call journal('*xy_tidybox* unknown positioning keyword')
       endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       call xy_rasters(0)
 999   continue
       call pop()
@@ -4890,11 +5307,21 @@ end subroutine xy_tidybox
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    xy_arrow(3f) - [M_xyplot] Add xy_arrow from T text box to specified poin
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine xy_arrow(xleft,ybot,xright,ytop,xto,yto,where,asz)
 use M_drawplus, only : arrowhead
 implicit none
 
-character(len=*),parameter::ident_38="@(#)M_xyplot::xy_arrow(3fp): Add xy_arrow from T text box to specified point"
+character(len=*),parameter::ident_38="@(#)M_xyplot::xy_arrow(3f): Add xy_arrow from T text box to specified point"
 
 real             :: asz
 real             :: size
@@ -4963,14 +5390,24 @@ end subroutine xy_arrow
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    xy_idbox(3f) - [M_xyplot] Draw ID legend box specified with LEGEND comman
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine xy_idbox(r10a,icolsa,idonly)
 use M_journal, only : journal
 use M_draw
 implicit none
 
-character(len=*),parameter::ident_39="@(#)M_xyplot::xy_idbox(3fp): Draw ID legend box specified with LEGEND command"
+character(len=*),parameter::ident_39="@(#)M_xyplot::xy_idbox(3f): Draw ID legend box specified with LEGEND command"
 
-integer,parameter :: lbllen=255     ! maximum number of characters in a label
+integer,parameter :: lbllen=4096     ! maximum number of characters in a label
 real              :: factor
 real              :: height
 integer           :: i10
@@ -5078,7 +5515,7 @@ real              :: ymint
               width=height/1.2
             endif
          else
-            call journal('*yech* change aspect or use less title lines')
+            call journal('*xy_idbox* yech! change aspect or use less title lines')
          endif
       else                                         ! no id lines are going to be used
          rblock=0.0                                ! height of id block if current text height is used
@@ -5144,10 +5581,7 @@ real              :: ymint
          else
             lgndq(i10)=lgnduq(i10) !user legend supercedes
          endif
-         itemp=min(ichars,lbllen)
-         itemp=max(ialpha,ichars)
-         itemp=min(itemp,len(lgndq(1)))
-         call xy_juprint(xleft,rx+height*space,lgndq(i10)(ialpha:itemp),2)
+         call xy_juprint(xleft,rx+height*space,lgndq(i10)(ialpha:),2)
          call xy_rasters(0)
       endif
 10    continue
@@ -5159,15 +5593,25 @@ end subroutine xy_idbox
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    xy_idbox0(3f) - [M_xyplot] draw legend line
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine xy_idbox0(r10,idonly)
 use M_journal, only : journal
 use M_draw
 implicit none
 
-character(len=*),parameter::ident_40="@(#)M_xyplot::xy_idbox0(3fp): draw legend lines"
+character(len=*),parameter::ident_40="@(#)M_xyplot::xy_idbox0(3f): draw legend lines"
 
-character(len=255)  :: line
-integer,parameter   :: lbllen=255 ! maximum number of characters in a label
+character(len=4096) :: line
+integer,parameter   :: lbllen=4096 ! maximum number of characters in a label
 real                :: plot_setmark_size
 real                :: height
 integer             :: i10
@@ -5177,8 +5621,8 @@ integer             :: idonly
 integer             :: ilines
 integer             :: iprintl
 integer             :: iprintr
-integer             :: itemp
 integer             :: iwchar
+integer             :: icchar
 real                :: r10
 real                :: rblock
 real                :: rlength
@@ -5200,88 +5644,92 @@ real                :: ymaxt
 real                :: ymint
 real                :: ytall
 real                :: yup
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     r10 is bottom of title lines
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     calculate a size for legend labels
 !     offset to beginning of line + length of line + gap + max length of string
-      ichars=max(1,inum0(fetch('id_ch'))) ! get number of characters estimated
-      iwchar=max(1,inum0(fetch('id_W'))) ! get character line width
-      call plot_get_plot_area(xmint,xmaxt,ymint,ymaxt)
-      width=(xmaxt-xmint)/ichars    ! calculate maximum character width
-      xper=(xmaxt-xmint)/100.0      ! one x percent unit
-      height=width*1.2              ! calculate nice character height
-      call fixedwidth(LLQ(iidfxedq))  ! text is fixed space or not
-      call xy_jufont(fetch('id_fn'))   ! always call font before textsize
-!-----------------------------------------------------------------------
-      ! plot_setmark_size=(xmaxt-xmint)*plot_setmark_size/100.0/2.0
-      ! max size of marker/2 in percent of X display range
-!-----------------------------------------------------------------------
+   ichars=max(1,inum0(fetch('id_ch')))       ! get number of characters estimated
+   iwchar=max(1,inum0(fetch('id_tw')))       ! get character line width
+   icchar=inum0(fetch('id_tc'))              ! get character color
+   if(icchar.lt.0)then
+      icchar=max(0,inum0(fetch('title_c')))  ! calculate color as title lines
+   endif
+   call plot_get_plot_area(xmint,xmaxt,ymint,ymaxt)
+   width=(xmaxt-xmint)/ichars                ! calculate maximum character width
+   xper=(xmaxt-xmint)/100.0                  ! one x percent unit
+   height=width*1.2                          ! calculate nice character height
+   call fixedwidth(LLQ(iidfxedq))            ! text is fixed space or not
+   call xy_jufont(fetch('id_fn'))            ! always call font before textsize
+!-----------------------------------------------------------------------------------------------------------------------------------
+   ! plot_setmark_size=(xmaxt-xmint)*plot_setmark_size/100.0/2.0
+   ! max size of marker/2 in percent of X display range
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     put some reasonable restrictions on the area that the id labels take up
 !     should do an overall clean look at title, plot, and id areas
-      ilines=0
-      spacing=0.3*xper ! initial spacing between id lines
-      ! max radius of markers as percent of xwidth ASSUMING all fit in 1x1 box
-      plot_setmark_size=0.0
-      do  i20=1,icrvsq
-         if(plot_ids(i20)%legend.eq.0)then
-           ! get a count of number of legend lines to print + a spacing
-           ilines=ilines+1
-           if(plot_ids(i20)%marker_frequency.gt.0)then
-              ! if marker used, use size for spacing
-              plot_setmark_size=max(plot_setmark_size,xper*plot_ids(i20)%marker_size/2.0)
-           endif
+   ilines=0
+   spacing=0.3*xper ! initial spacing between id lines
+   ! max radius of markers as percent of xwidth ASSUMING all fit in 1x1 box
+   plot_setmark_size=0.0
+   do  i20=1,icrvsq
+      if(plot_ids(i20)%legend.eq.0)then
+         ! get a count of number of legend lines to print + a spacing
+         ilines=ilines+1
+         if(plot_ids(i20)%marker_frequency.gt.0)then
+            ! if marker used, use size for spacing
+            plot_setmark_size=max(plot_setmark_size,xper*plot_ids(i20)%marker_size/2.0)
          endif
-      enddo
-      if(ilines.eq.0)goto 30          ! no id lines are going to be used
-!-----------------------------------------------------------------------
+      endif
+   enddo
+   if(ilines.eq.0)goto 30          ! no id lines are going to be used
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     try to resize height is required
-      rblock=(height*spacing)*ilines
-      ! height of id block if current text height is used
-      rtall=r10-ymint    ! height of remaining area after titles have been drawn
-      if(idonly.ne.0)then
-         rsave=(ymaxt-ymint)*0.40 ! leave at least 40 percent of height for plot
-      else
-         rsave=0.0
-      endif
-      rmax=rtall-rsave                ! max area to use for id block
-      if(rtall.gt.ymint.and.rmax.gt.0)then
+   rblock=(height*spacing)*ilines
+   ! height of id block if current text height is used
+   rtall=r10-ymint    ! height of remaining area after titles have been drawn
+   if(idonly.ne.0)then
+      rsave=(ymaxt-ymint)*0.40 ! leave at least 40 percent of height for plot
+   else
+      rsave=0.0
+   endif
+   rmax=rtall-rsave                ! max area to use for id block
+   if(rtall.gt.ymint.and.rmax.gt.0)then
       ! if titles didn't take up entire plot area and 1/3 of area still left
-         if(rmax.lt.rblock)then
+      if(rmax.lt.rblock)then
          ! first, pack the id lines tighter and see if that helps
-            spacing=spacing/2.0
-            rblock=(height+spacing)*ilines
-         endif
-         if(rmax.lt.rblock)then
-         ! make id text small enough to leave some plot area
-           height=rmax/rmax*height
-           width=height/1.2
-         endif
-      else
-         call journal('*yech* change aspect or use less title lines')
+         spacing=spacing/2.0
+         rblock=(height+spacing)*ilines
       endif
-30    continue
-!-----------------------------------------------------------------------
-      call xy_jufont(fetch('id_fn'))
-      call textsize(width,height)
-      xy_arrayq(IMAXQ2/2)=xmint+5*xper+plot_setmark_size ! set left margin
-      rlength=max(10*xper,plot_setmark_size+3*xper)
-      ! big marker should not cover line, point to point line length
-      xy_arrayq(IMAXQ2/2+1)=xy_arrayq(IMAXQ2/2)+rlength
-!-----------------------------------------------------------------------
-      iprintr=0   ! right print
-      iprintl=0   ! left print
-      call xy_rasters(iwchar)
-      !call color(iforeq)
-      r10=r10-spacing   ! put a little space after the title
-      do  10 i10=1,icrvsq
-      call color(max(0,inum0(fetch('title_c')))) ! calculate color as title lines
+      if(rmax.lt.rblock)then
+         ! make id text small enough to leave some plot area
+         height=rmax/rmax*height
+         width=height/1.2
+      endif
+   else
+      call journal('*xy_idbox0* yech! change aspect or use less title lines')
+   endif
+30 continue
+!-----------------------------------------------------------------------------------------------------------------------------------
+   call xy_jufont(fetch('id_fn'))
+   call textsize(width,height)
+   xy_arrayq(IMAXQ2/2)=xmint+5*xper+plot_setmark_size ! set left margin
+   rlength=max(10*xper,plot_setmark_size+3*xper)
+   ! big marker should not cover line, point to point line length
+   xy_arrayq(IMAXQ2/2+1)=xy_arrayq(IMAXQ2/2)+rlength
+!-----------------------------------------------------------------------------------------------------------------------------------
+   iprintr=0   ! right print
+   iprintl=0   ! left print
+   call xy_rasters(iwchar)
+   !call color(iforeq)
+   r10=r10-spacing   ! put a little space after the title
+   do  i10=1,icrvsq
+      call color(icchar)
       if(plot_ids(i10)%legend.eq.0)then ! only print legend if flag is on
          if(i10.le.icrvs2q.and.iprintl.eq.0.and.icrvsq.ne.icrvs2q)then
-         ! zero curve number was used to label left axis curves
+            ! zero curve number was used to label left axis curves
             iprintl=iprintl+1
             if(plot_ids(-1)%legend.eq.0)then
-            ! use id 0 -off to turn off copying axis labels
+               ! use id 0 -off to turn off copying axis labels
                if(axlq2(2) .ne. ' ')then  ! draw y-axis label if one is present
                   if(lgnduq(-1).ne.' ')then
                      line=lgnduq(-1)
@@ -5299,7 +5747,7 @@ real                :: yup
                endif
             endif
          elseif(i10.gt.icrvs2q.and.iprintr.eq.0)then
-         ! a zero curve number was used to break between left and right axis
+            ! a zero curve number was used to break between left and right axis
             iprintr=iprintr+1
             if(plot_ids(-2)%legend.eq.0)then ! use id 0 -off to turn off axis labels
                if(axlq2(4) .ne. ' ')then   ! draw y-axis label if one is present
@@ -5320,9 +5768,7 @@ real                :: yup
             endif
          endif
          if(lgnduq(i10).ne.' ')lgndq(i10)=lgnduq(i10) !user legend supersedes
-         itemp=min(lbllen,ichars) ! do not print more than length of the string
-         itemp=min(itemp,len(lgndq(1)))
-         call xy_justrlen(lgndq(i10)(:itemp),xlong,ytall,ydown,yup)
+         call xy_justrlen(trim(lgndq(i10)),xlong,ytall,ydown,yup)
          r10=min(r10-yup,r10-plot_setmark_size)
          xy_arrayq(1)=r10+height/2.0
          xy_arrayq(2)=xy_arrayq(1)
@@ -5330,24 +5776,34 @@ real                :: yup
          ! might set color and line width so make sure
          call xy_rasters(iwchar)
          call textsize(width,height) !BUG? NEEDS RESET AFTER xy_line
-         call color(max(0,inum0(fetch('title_c')))) ! same color as title lines
-         call xy_juprint(xy_arrayq(IMAXQ2/2+1)+max(width,plot_setmark_size),r10,lgndq(i10)(:itemp),2)
+         call color(icchar) ! same color as title lines
+         call xy_juprint(xy_arrayq(IMAXQ2/2+1)+max(width,plot_setmark_size),r10,lgndq(i10),2)
          r10=r10-max(ydown,plot_setmark_size)
       endif
-10    continue
-      call xy_rasters(0)
-      ymaxt=r10 ! set YMAXQ to unused portion of window
-      call plot_get_plot_area(x1,x2,y1,y2)
-      call plot_set_plot_area(x1,x2,y1,ymaxt)
+   enddo
+   call xy_rasters(0)
+   ymaxt=r10 ! set YMAXQ to unused portion of window
+   call plot_get_plot_area(x1,x2,y1,y2)
+   call plot_set_plot_area(x1,x2,y1,ymaxt)
 end subroutine xy_idbox0
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!    xy_iflou(3f) - [M_xyplot] set global flag for Leading Edge trimming (see LE command
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
 !===================================================================================================================================
 subroutine xy_iflou(iflag)
 use M_journal, only : journal
 implicit none
 
-character(len=*),parameter::ident_41="@(#)M_xyplot::xy_iflou(3fp): set global flag for Leading Edge trimming (see LE command)"
+character(len=*),parameter::ident_41="@(#)M_xyplot::xy_iflou(3f): set global flag for Leading Edge trimming (see LE command)"
 
 integer,intent(in)  :: iflag
 !     look up in the dictionary whether xy_jucurv and priv_toscale want leading values
@@ -5371,11 +5827,21 @@ end subroutine xy_iflou
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    xy_judraw(3f) - [M_xyplot] draw curves to plot scales using plot_ value
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine xy_judraw(ifile0)
 use M_journal, only : journal
 implicit none
 
-character(len=*),parameter::ident_42="@(#)M_xyplot::xy_judraw(3fp): draw curves to plot scales using plot_ values"
+character(len=*),parameter::ident_42="@(#)M_xyplot::xy_judraw(3f): draw curves to plot scales using plot_ values"
 !-----------------------------------------------------------------------------------------------------------------------------------
 real, dimension(:), allocatable :: holdx3,holdx4
 real, dimension(:), allocatable :: holdy3,holdy4
@@ -5463,7 +5929,7 @@ real                 :: ylow
 
          call getxvals(ierr)
          if(ierr.ne.0)exit
-         !-----------------------------------------------------------------------
+         !-----------------------------------------------------------------------------------------------------------------------------------
          ! to allow multiple curves to share the same time curve data even if they don't use all the values
          ! (that is, if the y values are truncated) per request of Mark Malone
          if(ivalsy.gt.0)then                                     ! use y-count of points to override x-count of points
@@ -5471,7 +5937,7 @@ real                 :: ylow
          else
             ivals=ivalsx
          endif
-         !-----------------------------------------------------------------------
+         !-----------------------------------------------------------------------------------------------------------------------------------
          if(i10.gt.icrvs2q)then
             side='toright'
          else
@@ -5553,6 +6019,16 @@ end subroutine xy_judraw
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    xy_loadtl(3f) - [M_xyplot] load title xy_arra
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine xy_loadtl(ifile,ftitle,isize,ititles)
 !     not printing title lines beginning with #,$ allows comment information to be stored in input files
 
@@ -5562,16 +6038,18 @@ subroutine xy_loadtl(ifile,ftitle,isize,ititles)
 use M_journal, only : journal
 implicit none
 
-character(len=*),parameter::ident_43="@(#)M_xyplot::xy_loadtl(3fp): load title xy_array"
+character(len=*),parameter::ident_43="@(#)M_xyplot::xy_loadtl(3f): load title xy_array"
 
-character name*20, ztitle*(IZSZQ), ctemp*255
-integer                  :: isize
-character(len=80)        :: ftitle(isize)     ! hold title lines from the file
-integer,parameter        :: isizeX=20
-character(len=80)        :: ftitleX(isizeX)   ! scratch hold of title lines from the file
-logical                  :: more
-character(len=255),save  :: savet
-integer,save             :: icalls=0
+character(len=20)         :: name
+character(len=IZSZQ)      :: ztitle
+character(len=4096)       :: ctemp
+integer                   :: isize
+character(len=4096)       :: ftitle(isize)     ! hold title lines from the file
+integer,parameter         :: isizeX=20
+character(len=4096)       :: ftitleX(isizeX)   ! scratch hold of title lines from the file
+logical                   :: more
+character(len=4096),save  :: savet
+integer,save              :: icalls=0
 integer     :: i10
 integer     :: i15
 integer     :: i20
@@ -5587,7 +6065,7 @@ integer     :: ios
 integer     :: irec
 integer     :: isub
 integer     :: ititles
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     if system environment variable PLTTITLE1 is set always use it for first title line
 !     so can force a string like 'UNCONFIGURED VERSION' out via the plt(1) script
       if(icalls.eq.0)then
@@ -5595,25 +6073,25 @@ integer     :: ititles
          call get_environment_variable('PLTTITLE1',savet) ! do this once and store away, it seems to be slow on some systems
          icalls=icalls+1
       endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
          ititles=0    ! how many title lines to return
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     blank out title line xy_array for clarity
-      do 10 i10=1,isize
+      do i10=1,isize
          ftitle(i10)=' '
-10    continue
-!-----------------------------------------------------------------------
-      do 15 i15=1,isizeX        ! for && variables
+      enddo
+!-----------------------------------------------------------------------------------------------------------------------------------
+      do i15=1,isizeX        ! for && variables
          ftitleX(i15)=' '
-15    continue
-!-----------------------------------------------------------------------
+      enddo
+!-----------------------------------------------------------------------------------------------------------------------------------
       if(.not.LLQ(ltitlq))then      ! if title is off, skip except PLT1
         goto 25
       endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     make sure the file ifile is attached to read titles from
       imax=0
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     grab up to isize title lines from file for title or to use as substitution strings for user-specified title
       ios=0        ! I/O error flag
       irec=0       ! record to read from zebra file from
@@ -5621,8 +6099,7 @@ integer     :: ititles
 50    continue
       irec=irec+1  ! move down record pointer into zebra file
       read(ifn_dq+imax,rec=irec,iostat=ios,err=777)ztitle
-      ilen1=min(80,len(ztitle))           ! makes assumption that title strings cannot be more than 80 characters to speed len_trim
-      ilen=len_trim(ztitle(:ilen1))
+      ilen=len_trim(ztitle)
       if(ilen.le.0)then  ! blank title line
          call journal('*xy_loadt* blank title lines not permitted')
          more=.false.
@@ -5643,7 +6120,7 @@ integer     :: ititles
       endif
       if(more) goto 50
 !     file title lines are now stored (note that comment title lines are NOT stored)
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     if user-specified title is present use it instead of file lines.
 !     must have read file though so that $TITLE_xxx variables are set (high overhead)
 !     expand &&N variables
@@ -5674,7 +6151,7 @@ integer     :: ititles
             exit                                  ! if hit a blank quit storing
          endif
       enddo
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 25    continue
       if(savet.ne.' ')then   ! make the first title line PLTTITLE1 if present
          ftitle(1)=savet
@@ -5683,19 +6160,29 @@ integer     :: ititles
       else
          iadd=0
       endif
-!-----------------------------------------------------------------------
-      do 30 i30=1,min(isize-iadd,ititles)              ! watch the subscripts. Assuming > isize+1
+!-----------------------------------------------------------------------------------------------------------------------------------
+      do i30=1,min(isize-iadd,ititles)              ! watch the subscripts. Assuming > isize+1
             ftitle(i30+iadd)=ftitleX(i30)
-30    continue
-!-----------------------------------------------------------------------
+      enddo
+!-----------------------------------------------------------------------------------------------------------------------------------
       return
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 777   continue
       call journal('sc','*xy_loadtl* I/O error reading titles =',ios)
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine xy_loadtl
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!    xy_tidybox1(3f) - [M_xyplot] draw legend lines in box with legend box autosized and positioned by edge numbe
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
 !===================================================================================================================================
 subroutine xy_tidybox1(itextc,ichars,iwchar,ibox,plot_setmark_size,cwhere,xmint0,xmaxt0,ymint0,ymaxt0,xmark)
 use M_journal, only : journal
@@ -5704,7 +6191,7 @@ use M_drawplus, only : plain_rect
 implicit none
 
 character(len=*),parameter::ident_44="&
-&@(#)M_xyplot::xy_tidybox1(3fp):draw legend lines in box with legend box autosized and positioned by edge number"
+&@(#)M_xyplot::xy_tidybox1(3f):draw legend lines in box with legend box autosized and positioned by edge number"
 
 real               :: gap
 real               :: gapx
@@ -5763,213 +6250,223 @@ real yy(2)
 real values(4)
 save values
 data values/0.0,0.0,0.0,0.0/ ! initialize xy_array of numeric values
-!-----------------------------------------------------------------------
-      xmint=xmint0
-      xmaxt=xmaxt0
-      ymint=ymint0
-      ymaxt=ymaxt0
-!-----------------------------------------------------------------------CCCCCCCC
-      corners=fetch('idbox_oo')
-      if(corners.ne.' ')then
-         ierr=0
-         call strgar2(corners,4,values,igot,' ',ierr)
-         if(ierr.ne.0.or.(igot.lt.1.or.igot.gt.2))then
-            call journal('*xy_tidybox1* bad numbers for box area')
-            goto 999
-         endif
-      else      ! reuse last set of values
-         igot=0
+!-----------------------------------------------------------------------------------------------------------------------------------
+   xmint=xmint0
+   xmaxt=xmaxt0
+   ymint=ymint0
+   ymaxt=ymaxt0
+!-----------------------------------------------------------------------------------------------------------------------------------
+   corners=fetch('idbox_oo')
+   if(corners.ne.' ')then
+      ierr=0
+      call strgar2(corners,4,values,igot,' ',ierr)
+      if(ierr.ne.0.or.(igot.lt.1.or.igot.gt.2))then
+         call journal('*xy_tidybox1* bad numbers for box area')
+         goto 999
       endif
-!-----------------------------------------------------------------------CCCCCCCC
+   else      ! reuse last set of values
+      igot=0
+   endif
+!-----------------------------------------------------------------------------------------------------------------------------------
 ! reduce area by a border (or INCREASE if NEGATIVE !!!! )
-      if(igot.ge.2)then                       ! how far to push back from edge
-         !values(2)=min(50.0,values(2))        ! lets not get silly
-         gapx=(xmaxt-xmint)/100.0*values(2)
-         if(igot.gt.2)then
-            gapy=(ymaxt-ymint)/100.0*values(3)
-         else
-            gapy=(ymaxt-ymint)/100.0*values(2)
-         endif
-         xmint=xmint+gapx
-         xmaxt=xmaxt-gapx
-         ymint=ymint+gapy
-         ymaxt=ymaxt-gapy
-      elseif(igot.eq.1)then               ! default border is two character widths
-         gap=(xmaxt-xmint)/ichars*2.0
-         xmint=xmint+gap
-         xmaxt=xmaxt-gap
-         ymint=ymint+gap
-         ymaxt=ymaxt-gap
-      endif
-!-----------------------------------------------------------------------CCCCCCCC
-      ! find maximum box area of same size with upper right corner positioned
-      xdelta0=xmaxt0-xmint0
-      xdelta=xmaxt-xmint
-      ydelta=ymaxt-ymint
-      if(values(1).ge.0.5.and.values(1).le.1.5)then       ! top edge
-         xper=(values(1)-0.5)
-         xleft =xmint+xper*xdelta
-         xright=xleft+xdelta
-         ytop=ymaxt
-         ybot=ymint
-      elseif(values(1).ge.1.5.and.values(1).le.2.5)then       ! left edge
-         yper=values(1)-1.5
-         ytop=ymaxt-yper*ydelta
-         ybot=ytop-ydelta
-         xleft=xmaxt
-         xright=xleft+xdelta
-      elseif(values(1).ge.2.5.and.values(1).le.3.5)then       ! bottom edge
-         xper=3.5-values(1)
-         xleft =xmint+xper*xdelta
-         xright=xleft+xdelta
-         ytop=ymint
-         ybot=ymint-ydelta
-      elseif(values(1).ge.3.5.and.values(1).le.4.5)then       ! right edge
-         yper=(values(1)-3.5)
-         ytop=ymint+yper*ydelta
-         ybot=ytop-ydelta
-         xleft=xmint
-         xright=xleft+xdelta
+   if(igot.ge.2)then                       ! how far to push back from edge
+      !values(2)=min(50.0,values(2))        ! lets not get silly
+      gapx=(xmaxt-xmint)/100.0*values(2)
+      if(igot.gt.2)then
+         gapy=(ymaxt-ymint)/100.0*values(3)
       else
-         call journal('*xy_tidybox1* unknown edge location')
-         xper=0.0
-         xleft =xmint+xper*xdelta
-         xright=xleft+xdelta
-         ytop=ymaxt
-         ybot=ymint
+         gapy=(ymaxt-ymint)/100.0*values(2)
       endif
-!-----------------------------------------------------------------------
+      xmint=xmint+gapx
+      xmaxt=xmaxt-gapx
+      ymint=ymint+gapy
+      ymaxt=ymaxt-gapy
+   elseif(igot.eq.1)then               ! default border is two character widths
+      gap=(xmaxt-xmint)/ichars*2.0
+      xmint=xmint+gap
+      xmaxt=xmaxt-gap
+      ymint=ymint+gap
+      ymaxt=ymaxt-gap
+   endif
+!-----------------------------------------------------------------------------------------------------------------------------------
+   ! find maximum box area of same size with upper right corner positioned
+   xdelta0=xmaxt0-xmint0
+   xdelta=xmaxt-xmint
+   ydelta=ymaxt-ymint
+   if(values(1).ge.0.5.and.values(1).le.1.5)then       ! top edge
+      xper=(values(1)-0.5)
+      xleft =xmint+xper*xdelta
+      xright=xleft+xdelta
+      ytop=ymaxt
+      ybot=ymint
+   elseif(values(1).ge.1.5.and.values(1).le.2.5)then       ! left edge
+      yper=values(1)-1.5
+      ytop=ymaxt-yper*ydelta
+      ybot=ytop-ydelta
+      xleft=xmaxt
+      xright=xleft+xdelta
+   elseif(values(1).ge.2.5.and.values(1).le.3.5)then       ! bottom edge
+      xper=3.5-values(1)
+      xleft =xmint+xper*xdelta
+      xright=xleft+xdelta
+      ytop=ymint
+      ybot=ymint-ydelta
+   elseif(values(1).ge.3.5.and.values(1).le.4.5)then       ! right edge
+      yper=(values(1)-3.5)
+      ytop=ymint+yper*ydelta
+      ybot=ytop-ydelta
+      xleft=xmint
+      xright=xleft+xdelta
+   else
+      call journal('*xy_tidybox1* unknown edge location')
+      xper=0.0
+      xleft =xmint+xper*xdelta
+      xright=xleft+xdelta
+      ytop=ymaxt
+      ybot=ymint
+   endif
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     calculate a first guess size for legend labels and length of sample line
 !     based on ORIGINAL plot area before GAP
 !     offset to beginning of line + length of line + gap + max length of string
-      width=(xdelta0)/ichars   ! calculate maximum character width
-      height=width*1.2              ! calculate nice character height
-      space=height*.05
-      space=0.0
-      xwidest=0.0
-      xx(1)=xleft+1.5*width+xmark/2.0  ! a little margin from left edge before drawing line segment
-      rline=4.0*width
-      rline=max(rline,2*width+xmark) ! draw line 4 characters long or 2 characters+marker size
-      xx(2)=xx(1)+rline  ! sample line is 5 characters
-!-----------------------------------------------------------------------
-      do 20 i20=1,2      ! once to set box size to fit, once to draw
-        call textsize(width,height)  ! odd bug with font sizes
-        call getfontsize(xxx,yyy)    ! odd bug with font sizes
-        call xy_rasters(iwchar)
-        call color(iforeq)
-        r10start=ytop
-        r10=ytop-width*0.80   ! a little margin at the top
-        idid1=0
-        idid2=0
-        do  10 i10=1,icrvsq
-        if(plot_ids(i10)%legend.eq.0)then ! only print legend if flag is on
-         !--------------------------------------------------------------
-         ! PUT AXIS LABELS OUT WHEN DOING MULTI-AXIS PLOTS
-         if(i10.le.icrvs2q.and.icrvsq.ne.icrvs2q.and.idid1.eq.0)then    ! zero curve number was used to label left axis curves
-            idid1=1                                                     ! only do this once
-            if(axlq2(2) .ne. ' ')then                                   !     draw y-axis label if one is present
-               call xy_justrlen(axlq2(2),xlong,ytall,ydown,yup)
-               !YDOWN=max(plot_setmark_size/2.0,ydown)
-               YUP=max(plot_setmark_size/2.0,yup)
-               xwidest=max(xwidest,xlong)
-               r10=r10-YUP
-               if(i20.eq.2)call xy_juprint(xx(1),r10,axlq2(2),2)
-            else
-               call xy_justrlen('LEFT AXIS:',xlong,ytall,ydown,yup)
-               !YDOWN=max(plot_setmark_size/2.0,ydown)
-               YUP=max(plot_setmark_size/2.0,yup)
-               xwidest=max(xwidest,xlong)
-               r10=r10-YUP
-               if(i20.eq.2)call xy_juprint(xx(1),r10,'LEFT AXIS:',2)
+   width=(xdelta0)/ichars   ! calculate maximum character width
+   height=width*1.2              ! calculate nice character height
+   space=height*.05
+   space=0.0
+   xwidest=0.0
+   xx(1)=xleft+1.5*width+xmark/2.0  ! a little margin from left edge before drawing line segment
+   rline=4.0*width
+   rline=max(rline,2*width+xmark) ! draw line 4 characters long or 2 characters+marker size
+   xx(2)=xx(1)+rline  ! sample line is 5 characters
+!-----------------------------------------------------------------------------------------------------------------------------------
+   do i20=1,2      ! once to set box size to fit, once to draw
+      call textsize(width,height)  ! odd bug with font sizes
+      call getfontsize(xxx,yyy)    ! odd bug with font sizes
+      call xy_rasters(iwchar)
+      call color(itextc)
+      r10start=ytop
+      r10=ytop-width*0.80   ! a little margin at the top
+      idid1=0
+      idid2=0
+      do  i10=1,icrvsq
+         if(plot_ids(i10)%legend.eq.0)then ! only print legend if flag is on
+            !--------------------------------------------------------------
+            ! PUT AXIS LABELS OUT WHEN DOING MULTI-AXIS PLOTS
+            if(i10.le.icrvs2q.and.icrvsq.ne.icrvs2q.and.idid1.eq.0)then    ! zero curve number was used to label left axis curves
+               idid1=1                                                     ! only do this once
+               if(axlq2(2) .ne. ' ')then                                   !     draw y-axis label if one is present
+                  call xy_justrlen(axlq2(2),xlong,ytall,ydown,yup)
+                  !YDOWN=max(plot_setmark_size/2.0,ydown)
+                  YUP=max(plot_setmark_size/2.0,yup)
+                  xwidest=max(xwidest,xlong)
+                  r10=r10-YUP
+                  if(i20.eq.2)call xy_juprint(xx(1),r10,axlq2(2),2)
+               else
+                  call xy_justrlen('LEFT AXIS:',xlong,ytall,ydown,yup)
+                  !YDOWN=max(plot_setmark_size/2.0,ydown)
+                  YUP=max(plot_setmark_size/2.0,yup)
+                  xwidest=max(xwidest,xlong)
+                  r10=r10-YUP
+                  if(i20.eq.2)call xy_juprint(xx(1),r10,'LEFT AXIS:',2)
+               endif
+               r10=r10-YDOWN
+               r10=r10-space
+            elseif(i10.gt.icrvs2q.and.idid2.eq.0)then  ! a zero curve number was used to break between left and right axis
+               idid2=1
+               if(axlq2(4) .ne. ' ')then                           !     draw y-axis label if one is present
+                  call xy_justrlen(axlq2(4),xlong,ytall,ydown,yup)
+                  !YDOWN=max(plot_setmark_size/2.0,ydown)
+                  YUP=max(plot_setmark_size/2.0,yup)
+                  xwidest=max(xwidest,xlong)
+                  r10=r10-YUP
+                  if(i20.eq.2)call xy_juprint(xx(1),r10,axlq2(4),2)
+               else
+                  call xy_justrlen('RIGHT AXIS:',xlong,ytall,ydown,yup)
+                  !YDOWN=max(plot_setmark_size/2.0,ydown)
+                  YUP=max(plot_setmark_size/2.0,yup)
+                  xwidest=max(xwidest,xlong)
+                  r10=r10-YUP
+                  if(i20.eq.2)call xy_juprint(xx(1),r10,'RIGHT AXIS:',2)
+               endif
+               r10=r10-YDOWN
+               r10=r10-space
+            endif
+            !--------------------------------------------------------------
+            ! put out individual lines
+            if(lgnduq(i10).ne.' ')lgndq(i10)=lgnduq(i10) !user legend supersedes
+            call xy_justrlen(lgndq(i10),xlong,ytall,ydown,yup)
+            !YDOWN=max(plot_setmark_size/2.0,ydown)
+            YUP=max(plot_setmark_size/2.0,yup)
+            xwidest=max(xwidest,xlong)
+            r10=r10-YUP
+            if(i20.eq.2)then
+               yy(1)=r10-YDOWN+ytall/2.0
+               yy(2)=yy(1)
+               call xy_line(i10,2,'toframe',xx,yy) ! might set color and line width
+               call textsize(width,height) !BUG? NEEDS RESET AFTER xy_line
+               call xy_rasters(iwchar)
+               call color(itextc)
+               xstart=xx(2)+xmark/2.0+width
+               call xy_juprint(xstart,r10,lgndq(i10),2)
             endif
             r10=r10-YDOWN
-            r10=r10-space
-         elseif(i10.gt.icrvs2q.and.idid2.eq.0)then  ! a zero curve number was used to break between left and right axis
-            idid2=1
-            if(axlq2(4) .ne. ' ')then                           !     draw y-axis label if one is present
-               call xy_justrlen(axlq2(4),xlong,ytall,ydown,yup)
-               !YDOWN=max(plot_setmark_size/2.0,ydown)
-               YUP=max(plot_setmark_size/2.0,yup)
-               xwidest=max(xwidest,xlong)
-               r10=r10-YUP
-               if(i20.eq.2)call xy_juprint(xx(1),r10,axlq2(4),2)
-            else
-               call xy_justrlen('RIGHT AXIS:',xlong,ytall,ydown,yup)
-               !YDOWN=max(plot_setmark_size/2.0,ydown)
-               YUP=max(plot_setmark_size/2.0,yup)
-               xwidest=max(xwidest,xlong)
-               r10=r10-YUP
-               if(i20.eq.2)call xy_juprint(xx(1),r10,'RIGHT AXIS:',2)
-            endif
-            r10=r10-YDOWN
-            r10=r10-space
+            !--------------------------------------------------------------
          endif
-         !--------------------------------------------------------------
-         ! put out individual lines
-         if(lgnduq(i10).ne.' ')lgndq(i10)=lgnduq(i10) !user legend supersedes
-         call xy_justrlen(lgndq(i10),xlong,ytall,ydown,yup)
-         !YDOWN=max(plot_setmark_size/2.0,ydown)
-         YUP=max(plot_setmark_size/2.0,yup)
-         xwidest=max(xwidest,xlong)
-         r10=r10-YUP
-         if(i20.eq.2)then
-            yy(1)=r10-YDOWN+ytall/2.0
-            yy(2)=yy(1)
-            call xy_line(i10,2,'toframe',xx,yy) ! might set color and line width
-            call textsize(width,height) !BUG? NEEDS RESET AFTER xy_line
-            call xy_rasters(iwchar)
-            call color(itextc)    ! color of title lines
-            xstart=xx(2)+xmark/2.0+width
-            call xy_juprint(xstart,r10,lgndq(i10),2)
-         endif
-         r10=r10-YDOWN
-         !--------------------------------------------------------------
-        endif
-10      continue
-        r10=r10-1.2*width   ! gap below last legend line
-        !--------------------------------------------------------------
-        ! when using one number use character size of id command and
-        ! place along edge with correct percentage gap if specified
-        ! move boxes into plotting area that went out bottom or right
-        ! DOES NOT CHECK THAT OTHER EDGES WERE FORCED OUT OF PLOT AREA
+      enddo
+      r10=r10-1.2*width   ! gap below last legend line
+      !--------------------------------------------------------------
+      ! when using one number use character size of id command and
+      ! place along edge with correct percentage gap if specified
+      ! move boxes into plotting area that went out bottom or right
+      ! DOES NOT CHECK THAT OTHER EDGES WERE FORCED OUT OF PLOT AREA
 
-        xshift=0.0
-        xfar=xx(2)+width+xwidest+width+xmark/2.0
-        if(xfar.gt.xmaxt)then  ! farthest right drawn out of box
-           xshift=xmaxt-xfar
-           xx(1)=xx(1)+xshift
-           xx(2)=xx(2)+xshift
-        endif
-        yfar=ymint-r10
-        if(r10.lt.ymint)then   ! bottom drawn out of box
-           ytop=ytop+yfar
-        else if(r10start.gt.ymaxt)then   ! bottom drawn out of box
-           ytop=ymaxt
-        endif
-        !--------------------------------------------------------------
-        ! draw box around edge-positioned label box (NOT FACTORED)
-        if(i20.eq.1)then
-           ! find box sides
-           ybot=ytop-(r10start-r10)
-           right2=xshift+xfar
-           if(ibox.ge.0)then                                   ! filled box
-              call color(ibox)
-              call rect(xleft+xshift,ybot,right2,ytop)
-              call color(plot_ids(0)%color)
-              call xy_rasters(plot_ids(0)%width)
-              call plain_rect(xleft+xshift,ybot,right2,ytop)
-           else if(ibox.le.-999) then                          ! no box
-           else                                                ! unfilled box
-              call color(abs(ibox))
-              call plain_rect(xleft+xshift,ybot,right2,ytop)
-           endif
-        endif
-        !---------------------------------------------------------------
-20    continue
-999   continue
+      xshift=0.0
+      xfar=xx(2)+width+xwidest+width+xmark/2.0
+      if(xfar.gt.xmaxt)then  ! farthest right drawn out of box
+         xshift=xmaxt-xfar
+         xx(1)=xx(1)+xshift
+         xx(2)=xx(2)+xshift
+      endif
+      yfar=ymint-r10
+      if(r10.lt.ymint)then   ! bottom drawn out of box
+         ytop=ytop+yfar
+      else if(r10start.gt.ymaxt)then   ! bottom drawn out of box
+         ytop=ymaxt
+      endif
+      !--------------------------------------------------------------
+      ! draw box around edge-positioned label box (NOT FACTORED)
+      if(i20.eq.1)then
+         ! find box sides
+         ybot=ytop-(r10start-r10)
+         right2=xshift+xfar
+         if(ibox.ge.0)then                                   ! filled box
+            call color(ibox)
+            call rect(xleft+xshift,ybot,right2,ytop)
+            call color(plot_ids(0)%color)
+            call xy_rasters(plot_ids(0)%width)
+            call plain_rect(xleft+xshift,ybot,right2,ytop)
+         else if(ibox.le.-999) then                          ! no box
+         else                                                ! unfilled box
+            call color(abs(ibox))
+            call plain_rect(xleft+xshift,ybot,right2,ytop)
+         endif
+      endif
+      !---------------------------------------------------------------
+   enddo
+999 continue
 end subroutine xy_tidybox1
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!    xy_tidybox2(3f) - [M_xyplot] draw legend lines inside box specified on cal
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
 !===================================================================================================================================
 subroutine xy_tidybox2(itextc,ichars,iwchar,ibox,plot_setmark_size,cwhere,xmint,xmaxt,ymint,ymaxt,xmark)
 use M_journal, only : journal
@@ -5978,7 +6475,7 @@ use M_drawplus, only : pop, push
 use M_drawplus, only : plain_rect
 implicit none
 
-character(len=*),parameter::ident_45="@(#)M_xyplot::xy_tidybox2(3fp): draw legend lines inside box specified on call"
+character(len=*),parameter::ident_45="@(#)M_xyplot::xy_tidybox2(3f): draw legend lines inside box specified on call"
 
 real                 :: factor
 real                 :: gap1
@@ -6020,177 +6517,185 @@ real                 :: yshift
 real                 :: ytall
 real                 :: ytop
 real                 :: yup
-character*1 cwhere
-character*255 corners
-real xx(2)
-real yy(2)
-real values(4)
-save values
-data values/0.0,0.0,0.0,0.0/ ! initialize xy_array of numeric values
-!-----------------------------------------------------------------------
-!     set up legend attributes
-      gap1=0
-      corners=fetch('idbox_oo')
-!-----------------------------------------------------------------------
-      if(corners.ne.' ')then
-         ierr=0
-         call strgar2(corners,4,values,igot,' ',ierr)
-         if(ierr.ne.0.or.igot.ne.4)then
-            call journal('*xy_tidybox2* bad numbers for box area')
-            goto 999
-         endif
-      else      ! reuse last set of values
-         igot=0
+character(len=1)     :: cwhere
+character(len=255)   :: corners
+real                 :: xx(2)
+real                 :: yy(2)
+real,save            :: values(4)=[0.0, 0.0, 0.0, 0.0] ! initialize xy_array of numeric values
+!-----------------------------------------------------------------------------------------------------------------------------------
+!  set up legend attributes
+   gap1=0
+   corners=fetch('idbox_oo')
+!-----------------------------------------------------------------------------------------------------------------------------------
+   if(corners.ne.' ')then
+      ierr=0
+      call strgar2(corners,4,values,igot,' ',ierr)
+      if(ierr.ne.0.or.igot.ne.4)then
+         call journal('*xy_tidybox2* bad numbers for box area')
+         goto 999
       endif
-!-----------------------------------------------------------------------
+   else      ! reuse last set of values
+      igot=0
+   endif
+!-----------------------------------------------------------------------------------------------------------------------------------
    ! convert from Axis values to Window values
-      if(cwhere.eq.'a')then     ! relative to axis
-         xleft=xy_con_x(values(1))
-         xright=xy_con_x(values(2))
-         ybottom=xy_con_y(values(3))
-         ytop=xy_con_y(values(4))
-      elseif(cwhere.eq.'p')then  ! relative to percentage of axis
-         xleft =xmint+values(1)/100.0*(xmaxt-xmint)
-         xright=xmint+values(2)/100.0*(xmaxt-xmint)
-         ybottom=ymint+values(3)/100.0*(ymaxt-ymint)
-         ytop=   ymint+values(4)/100.0*(ymaxt-ymint)
-      else
-         call journal('*xy_tidybox2* unknown position request')
-      endif
-!-----------------------------------------------------------------------
-      if(ibox.ge.0)then                                   ! filled box
-         call color(ibox)
-         call rect(xleft,ybottom,xright,ytop)             ! draw fill
-         call xy_rasters(plot_ids(0)%width)
-         call color(plot_ids(0)%color)
-         call plain_rect(xleft,ybottom,xright,ytop)            ! draw border
-      else if(ibox.le.-999) then                          ! no box
-      else                                                ! unfilled box
-         call color(abs(ibox))
-         call plain_rect(xleft,ybottom,xright,ytop)
-      endif
-      ybox=ytop-ybottom
-!-----------------------------------------------------------------------
-!     calculate a first guess size for legend labels and length of sample line
-!     offset to beginning of line + length of line + gap + max length of string
-      width=(xright-xleft)/ichars   ! calculate maximum character width
-      height=width*1.2              ! calculate nice character height
-      space=height*.05
-      space=0.0
-      xwidest=0.0
-      xx(1)=xleft+1.5*width+xmark/2.0  ! a little margin from left edge before drawing line segment
-      rline=4.0*width
-      rline=max(rline,2*width+xmark) ! draw line 4 characters long or 2 characters+marker size
-      xx(2)=xx(1)+rline  ! sample line is 5 characters
-!-----------------------------------------------------------------------
-      do 20 i20=1,2      ! once to set size to fit, once to draw
-        call textsize(width,height)
-        call xy_rasters(iwchar)
-        call color(iforeq)
-        r10start=ytop
-        r10=ytop-width*0.80   ! a little margin at the top
-        idid1=0
-        idid2=0
-        do  10 i10=1,icrvsq
-        if(plot_ids(i10)%legend.eq.0)then ! only print legend if flag is on
-         !--------------------------------------------------------------
-         ! PUT AXIS LABELS OUT WHEN DOING MULTI-AXIS PLOTS
-         if(i10.le.icrvs2q.and.icrvsq.ne.icrvs2q.and.idid1.eq.0)then    ! zero curve number was used to label left axis curves
-            idid1=1                                                     ! only do this once
-            if(axlq2(2) .ne. ' ')then                                   !     draw y-axis label if one is present
-               call xy_justrlen(axlq2(2),xlong,ytall,ydown,yup)
-               xwidest=max(xwidest,xlong)
-               YUP=max(plot_setmark_size/2.0,yup) ! check for big markers
-               !YDOWN=max(plot_setmark_size/2.0,ydown) ! check for big markers
-               r10=r10-YUP
-               if(i20.eq.2)call xy_juprint(xx(1),r10,axlq2(2),2)
-            else
-               call xy_justrlen('LEFT AXIS:',xlong,ytall,ydown,yup)
-               YUP=max(plot_setmark_size/2.0,yup) ! check for big markers
-               !YDOWN=max(plot_setmark_size/2.0,ydown) ! check for big markers
-               xwidest=max(xwidest,xlong)
-               r10=r10-YUP
-               if(i20.eq.2) call xy_juprint(xx(1),r10,'LEFT AXIS:',2)
+   if(cwhere.eq.'a')then     ! relative to axis
+      xleft=xy_con_x(values(1))
+      xright=xy_con_x(values(2))
+      ybottom=xy_con_y(values(3))
+      ytop=xy_con_y(values(4))
+   elseif(cwhere.eq.'p')then  ! relative to percentage of axis
+      xleft =xmint+values(1)/100.0*(xmaxt-xmint)
+      xright=xmint+values(2)/100.0*(xmaxt-xmint)
+      ybottom=ymint+values(3)/100.0*(ymaxt-ymint)
+      ytop=   ymint+values(4)/100.0*(ymaxt-ymint)
+   else
+      call journal('*xy_tidybox2* unknown position request')
+   endif
+!-----------------------------------------------------------------------------------------------------------------------------------
+   if(ibox.ge.0)then                                   ! filled box
+      call color(ibox)
+      call rect(xleft,ybottom,xright,ytop)             ! draw fill
+      call xy_rasters(plot_ids(0)%width)
+      call color(plot_ids(0)%color)
+      call plain_rect(xleft,ybottom,xright,ytop)            ! draw border
+   else if(ibox.le.-999) then                          ! no box
+   else                                                ! unfilled box
+      call color(abs(ibox))
+      call plain_rect(xleft,ybottom,xright,ytop)
+   endif
+   ybox=ytop-ybottom
+!-----------------------------------------------------------------------------------------------------------------------------------
+!  calculate a first guess size for legend labels and length of sample line
+!  offset to beginning of line + length of line + gap + max length of string
+   width=(xright-xleft)/ichars   ! calculate maximum character width
+   height=width*1.2              ! calculate nice character height
+   space=height*.05
+   space=0.0
+   xwidest=0.0
+   xx(1)=xleft+1.5*width+xmark/2.0  ! a little margin from left edge before drawing line segment
+   rline=4.0*width
+   rline=max(rline,2*width+xmark) ! draw line 4 characters long or 2 characters+marker size
+   xx(2)=xx(1)+rline  ! sample line is 5 characters
+!-----------------------------------------------------------------------------------------------------------------------------------
+   do i20=1,2      ! once to set size to fit, once to draw
+      call textsize(width,height)
+      call xy_rasters(iwchar)
+      call color(iforeq)
+      r10start=ytop
+      r10=ytop-width*0.80   ! a little margin at the top
+      idid1=0
+      idid2=0
+      do  i10=1,icrvsq
+         if(plot_ids(i10)%legend.eq.0)then ! only print legend if flag is on
+            !--------------------------------------------------------------
+            ! PUT AXIS LABELS OUT WHEN DOING MULTI-AXIS PLOTS
+            if(i10.le.icrvs2q.and.icrvsq.ne.icrvs2q.and.idid1.eq.0)then    ! zero curve number was used to label left axis curves
+               idid1=1                                                     ! only do this once
+               if(axlq2(2) .ne. ' ')then                                   !     draw y-axis label if one is present
+                  call xy_justrlen(axlq2(2),xlong,ytall,ydown,yup)
+                  xwidest=max(xwidest,xlong)
+                  YUP=max(plot_setmark_size/2.0,yup) ! check for big markers
+                  !YDOWN=max(plot_setmark_size/2.0,ydown) ! check for big markers
+                  r10=r10-YUP
+                  if(i20.eq.2)call xy_juprint(xx(1),r10,axlq2(2),2)
+               else
+                  call xy_justrlen('LEFT AXIS:',xlong,ytall,ydown,yup)
+                  YUP=max(plot_setmark_size/2.0,yup) ! check for big markers
+                  !YDOWN=max(plot_setmark_size/2.0,ydown) ! check for big markers
+                  xwidest=max(xwidest,xlong)
+                  r10=r10-YUP
+                  if(i20.eq.2) call xy_juprint(xx(1),r10,'LEFT AXIS:',2)
+               endif
+               r10=r10-YDOWN
+               r10=r10-space
+            elseif(i10.gt.icrvs2q.and.idid2.eq.0)then  ! a zero curve number was used to break between left and right axis
+               idid2=1
+               if(axlq2(4) .ne. ' ')then                           !     draw y-axis label if one is present
+                  call xy_justrlen(axlq2(4),xlong,ytall,ydown,yup)
+                  YUP=max(plot_setmark_size/2.0,yup) ! check for big markers
+                  !YDOWN=max(plot_setmark_size/2.0,ydown) ! check for big markers
+                  xwidest=max(xwidest,xlong)
+                  r10=r10-YUP
+                  if(i20.eq.2)call xy_juprint(xx(1),r10,axlq2(4),2)
+               else
+                  call xy_justrlen('RIGHT AXIS:',xlong,ytall,ydown,yup)
+                  YUP=max(plot_setmark_size/2.0,yup) ! check for big markers
+                  !YDOWN=max(plot_setmark_size/2.0,ydown) ! check for big markers
+                  xwidest=max(xwidest,xlong)
+                  r10=r10-YUP
+                  if(i20.eq.2) call xy_juprint(xx(1),r10,'RIGHT AXIS:',2)
+               endif
+               r10=r10-YDOWN
+               r10=r10-space
+            endif
+            !--------------------------------------------------------------
+            ! put out individual lines
+            if(lgnduq(i10).ne.' ')lgndq(i10)=lgnduq(i10) !user legend supersedes
+            call xy_justrlen(lgndq(i10),xlong,ytall,ydown,yup)
+            YUP=max(plot_setmark_size/2.0,yup) ! check for big markers
+            !YDOWN=max(plot_setmark_size/2.0,ydown) ! check for big markers
+            xwidest=max(xwidest,xlong)
+            r10=r10-YUP
+            if(i20.eq.2)then
+               yy(1)=r10-YDOWN+ytall/2.0
+               yy(2)=yy(1)
+               call xy_line(i10,2,'toframe',xx,yy) ! might set color and line width
+               call textsize(width,height) !BUG? NEEDS RESET AFTER xy_line
+               call xy_rasters(iwchar)
+               call color(itextc)    ! color of title lines
+               xstart=xx(2)+xmark/2.0+width
+               call xy_juprint(xstart,r10,lgndq(i10),2)
             endif
             r10=r10-YDOWN
-            r10=r10-space
-         elseif(i10.gt.icrvs2q.and.idid2.eq.0)then  ! a zero curve number was used to break between left and right axis
-            idid2=1
-            if(axlq2(4) .ne. ' ')then                           !     draw y-axis label if one is present
-               call xy_justrlen(axlq2(4),xlong,ytall,ydown,yup)
-               YUP=max(plot_setmark_size/2.0,yup) ! check for big markers
-               !YDOWN=max(plot_setmark_size/2.0,ydown) ! check for big markers
-               xwidest=max(xwidest,xlong)
-               r10=r10-YUP
-               if(i20.eq.2)call xy_juprint(xx(1),r10,axlq2(4),2)
-            else
-               call xy_justrlen('RIGHT AXIS:',xlong,ytall,ydown,yup)
-               YUP=max(plot_setmark_size/2.0,yup) ! check for big markers
-               !YDOWN=max(plot_setmark_size/2.0,ydown) ! check for big markers
-               xwidest=max(xwidest,xlong)
-               r10=r10-YUP
-               if(i20.eq.2) call xy_juprint(xx(1),r10,'RIGHT AXIS:',2)
-            endif
-            r10=r10-YDOWN
-            r10=r10-space
+            !--------------------------------------------------------------
          endif
-         !--------------------------------------------------------------
-         ! put out individual lines
-         if(lgnduq(i10).ne.' ')lgndq(i10)=lgnduq(i10) !user legend supersedes
-         call xy_justrlen(lgndq(i10),xlong,ytall,ydown,yup)
-         YUP=max(plot_setmark_size/2.0,yup) ! check for big markers
-         !YDOWN=max(plot_setmark_size/2.0,ydown) ! check for big markers
-         xwidest=max(xwidest,xlong)
-         r10=r10-YUP
-         if(i20.eq.2)then
-            yy(1)=r10-YDOWN+ytall/2.0
-            yy(2)=yy(1)
-            call xy_line(i10,2,'toframe',xx,yy) ! might set color and line width
-            call textsize(width,height) !BUG? NEEDS RESET AFTER xy_line
-            call xy_rasters(iwchar)
-            call color(itextc)    ! color of title lines
-            xstart=xx(2)+xmark/2.0+width
-            call xy_juprint(xstart,r10,lgndq(i10),2)
-         endif
-         r10=r10-YDOWN
-         !--------------------------------------------------------------
-        endif
-10      continue
-        r10=r10-max(1.2*width,xmark/1.5)  ! gap below last legend line
+      enddo
+      r10=r10-max(1.2*width,xmark/1.5)  ! gap below last legend line
 
-        if(ybox.ne.0)then
-           yfactor=(r10start-r10)/ybox
-        else
-           yfactor=1.0
-        endif
-        xtext=xright-xx(2)-2*width-xmark/2.0  ! space left for text (IF ANY)
-        if(xtext.ne.0)then
-           xfactor=(xwidest)/xtext
-        else
-           xfactor=1.0
-        endif
-        factor=max(xfactor,yfactor)
-        !------------------------------------------------------------
-        ! THIS IS WRONG FOR CENTERING SOMEHOW
-        if(xfactor.ne.factor)then ! center in x
-          xshift=xright-xx(2)-xmark/2.0-(width+xwidest)/factor
-          xshift=xshift/2.0
-          xx(1)=xx(1)+xshift
-          xx(2)=xx(2)+xshift
-        endif
-        if(yfactor.ne.factor)then ! center in y
-          yshift=(r10-ybottom)/factor
-          yshift=yshift/2
-          !ytop=ytop-yshift
-        endif
-        !--------------------------------------------------------------
-20    continue
-      call xy_rasters(0)
-999   continue
-      call pop()
+      if(ybox.ne.0)then
+         yfactor=(r10start-r10)/ybox
+      else
+         yfactor=1.0
+      endif
+      xtext=xright-xx(2)-2*width-xmark/2.0  ! space left for text (IF ANY)
+      if(xtext.ne.0)then
+         xfactor=(xwidest)/xtext
+      else
+         xfactor=1.0
+      endif
+      factor=max(xfactor,yfactor)
+      !------------------------------------------------------------
+      ! THIS IS WRONG FOR CENTERING SOMEHOW
+      if(xfactor.ne.factor)then ! center in x
+         xshift=xright-xx(2)-xmark/2.0-(width+xwidest)/factor
+         xshift=xshift/2.0
+         xx(1)=xx(1)+xshift
+         xx(2)=xx(2)+xshift
+      endif
+      if(yfactor.ne.factor)then ! center in y
+         yshift=(r10-ybottom)/factor
+         yshift=yshift/2
+         !ytop=ytop-yshift
+      endif
+      !--------------------------------------------------------------
+   enddo
+   call xy_rasters(0)
+999 continue
+   call pop()
 end subroutine xy_tidybox2
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!    xy_listout3(3f) - [M_xyplot] copy rcurve_in to rcurve_out expanding negative curve numbers to ranges (1 -10 means 1 thru 10
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
 !===================================================================================================================================
 subroutine xy_listout3(rcurve_in,iszin,rcurve_out,iszout,isize,inums)
 !===================================================================================================================================
@@ -6198,7 +6703,7 @@ use M_journal, only : journal
 implicit none
 
 character(len=*),parameter::ident_46="&
-&@(#)M_xyplot::xy_listout3(3fp): copy rcurve_in to rcurve_out expanding negative curve numbers to ranges (1 -10 means 1 thru 10)"
+&@(#)M_xyplot::xy_listout3(3f): copy rcurve_in to rcurve_out expanding negative curve numbers to ranges (1 -10 means 1 thru 10)"
 
 !     use rcurve(:,1) for list of numbers to expand
 !     use rcurve(:,2) expand values in this column only
@@ -6212,10 +6717,10 @@ real,intent(in)       :: rcurve_in(iszin,4)   ! rcurve_in is input xy_array
                                               ! row 3 is top error curve numbers
                                               ! row 4 is bottom error curve numbers
 
+integer               :: iszout
 real,intent(out)      :: rcurve_out(iszout,4) ! rcurve_out is output xy_array
 integer,intent(in)    :: isize                ! isize is maximum numbers to put into rcurve_out
 integer,intent(inout) :: inums          ! inums is number of rcurve_in values on input, number of rcurve_out numbers on output
-integer               :: iszout
 integer               :: icurve
 integer               :: idec
 integer               :: ifile
@@ -6223,7 +6728,6 @@ integer               :: iincounter
 integer               :: imax
 integer               :: imin
 integer               :: ioutcounter
-character(len=80)     :: temp1
 !===================================================================================================================================
       rcurve_out(1,1)=rcurve_in(1,1)
       rcurve_out(1,2)=rcurve_in(1,2)
@@ -6233,8 +6737,7 @@ character(len=80)     :: temp1
       if(inums.ge.2)then
          do iincounter=2,inums
             if(ioutcounter.gt.isize) then
-               write(temp1,'(a,i5,a)')'*xy_listout3* only ',isize,' values allowed'
-               call journal(temp1)
+               call journal('sc','*xy_listout3* only',isize,'values allowed')
                inums=ioutcounter-1
                return
             endif
@@ -6257,8 +6760,7 @@ character(len=80)     :: temp1
                endif
                do icurve=imin,imax,idec
                   if(ioutcounter.gt.isize) then
-                     write(temp1,'(a,i5,a)')'*xy_listout3* only ',isize,' values allowed'
-                     call journal(temp1)
+                     call journal('sc','*xy_listout3* only',isize,'values allowed')
                      inums=ioutcounter-1
                      return
                   endif
@@ -6284,51 +6786,50 @@ end subroutine xy_listout3
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
-!! subroutine xy_retrv2(name,val,ilen,ier)
+!>
+!!##NAME
+!!   xy_retrv2(3f) - [M_xyplot] a special version of RETREV() that integrates the Calculator and Language library for XY plot
+!!##SYNOPSIS
 !!
-!! SYNOPSIS
-!!     xy_retrv2() is a special version of RETREV() that integrates the Calculator
-!!     library with the Language library.
+!!    subroutine xy_retrv2(name,val,ilen,ier)
+!!    character, intent=(in) :: name*(*)
+!!    character, intent=(out) :: val*(*)
+!!    integer, intent=(out) :: ilen
+!!    integer, intent=(out) :: ier
+!!##DESCRIPTION
+!!      + RETREV() is called to look up the value of the specified name in the
+!!        dictionary.
+!!      + If the returned value is a string expression(ie. it starts with a $ or
+!!        " character) then evaluate the expression using the Calculator libray
+!!        and return the expanded value.
+!!      + If the calculator expansion of a string expression fails, the
+!!        expression itself is returned as blank.
+!!      + If the name does not appear in the dictionary a blank string is
+!!        returned.
+!!##OPTIONS
+!!    NAME  is the entry name to look up. From 1 to 20 characters long.
+!!    VAL   is the returned value of the entry that was looked up. From 1 to 255 characters long.
+!!    ILEN  is the significant length of the string VAL.
+!!    IER   is zero(0) if no error occurred.
 !!
-!!       + RETREV() is called to look up the value of the specified name in the
-!!         dictionary.
-!!       + If the returned value is a string expression(ie. it starts with a $ or
-!!         " character) then evaluate the expression using the Calculator libray
-!!         and return the expanded value.
-!!       + If the calculator expansion of a string expression fails, the
-!!         expression itself is returned as blank.
-!!       + If the name does not appear in the dictionary a blank string is
-!!         returned.
-!! DESCRIPTION
+!!##DEPENDENCIES
+!!      + jucalcx
+!!      + len_trim
+!!      + retrev
+!!##SEE ALSO
+!!    see parse(3f), retrev(3f), fetch(3f), store(3f), plot_toggle(3f).
 !!
-!!     character, intent=(in) :: name*(*)
-!!         NAME is the entry name to look up. From 1 to 20 characters long.
-!!     character, intent=(out) :: val*(*)
-!!         VAL is the returned value of the entry that was looked up. From 1 to
-!!         255 characters long.
-!!     integer, intent=(out) :: ilen
-!!         ILEN is the significant length of the string VAL.
-!!     integer, intent=(out) :: ier
-!!         IER is zero(0) if no error occurred.
-!!
-!! DEPENDENCIES
-!!       + jucalcx
-!!       + len_trim
-!!       + retrev
-!! SEE ALSO
-!!
-!!     see PARSE(),RETREV(),FETCH(),STORE(), fetch(),plot_toggle().
-!!
-!! REFERENCES
-!! AUTHOR
-!!       + John S. Urban
+!!##REFERENCES
+!!##AUTHOR
+!!      + John S. Urban
+!===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine xy_retrv2(name,val,ilen,ier)
 ! 1994 John S. Urban
 use M_kracken, only    : retrev
 implicit none
 
-character(len=*),parameter::ident_47="@(#)M_xyplot::xy_retrv2(3fp): Call RETREV and then expand string variables with Calculator"
+character(len=*),parameter::ident_47="@(#)M_xyplot::xy_retrv2(3f): Call RETREV and then expand string variables with Calculator"
 
 character(len=*),intent(in)  :: name
 character(len=*),intent(out) :: val
@@ -6360,20 +6861,24 @@ end subroutine xy_retrv2
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
-!! subroutine plot_toggle(verb,pars)
+!>
+!!##NAME
+!!    plot_toggle(3f) - [M_xyplot] special version of toggle(3f) to integrate calculator and language librarie
+!!##SYNOPSIS
 !!
-!! SYNOPSIS
-!!     plot_toggle() is a copy of the TOGGLE() routine that uses xy_retrv2() instead of
-!!     RETREV() so that the 'on' and 'off' keywords can be specified as Calculator
-!!     string expressions instead of fixed strings.
+!!   subroutine plot_toggle(verb,pars)
 !!
-!! SYNOPSIS
+!!     character, intent=(in) :: verb*(*)
+!!     character, intent=(in) :: pars*(*)
+!!
+!!##DESCRIPTION
+!!
 !!     For users of the Language library TOGGLE() is an example for the common
 !!     problem of commands that have no parameters but are merely 'ON' or 'OFF'.
 !!     This routine helps you to easily create a command of the form:
 !!
-!!          command   # toggle from current state to opposite state.
-!!          command on # explicitly turn this command on
+!!          command     # toggle from current state to opposite state.
+!!          command on  # explicitly turn this command on
 !!          command off # explicitly turn this command off
 !!
 !!     plot_toggle() does the same thing as TOGGLE() except that now an additional
@@ -6386,38 +6891,40 @@ end subroutine xy_retrv2
 !!       + If value is explicitly on or off, set appropriate string.
 !!       + if no value is specified, toggle on/off value.
 !!
-!! DESCRIPTION
+!!     plot_toggle() is a copy of the TOGGLE() routine that uses xy_retrv2() instead of
+!!     RETREV() so that the 'on' and 'off' keywords can be specified as Calculator
+!!     string expressions instead of fixed strings.
+!!
 !!     After this routine is called the RETREV or FETCH procedures can be used to
 !!     query the dictionary entry 'verb_oo'. It will either be the string "on" or
 !!     the string "off".
 !!
-!!     character, intent=(in) :: verb*(*)
-!!         VERB is the command verb name, from 1 to 20 characters.
-!!     character, intent=(in) :: pars*(*)
-!!         PARS is the remaining parameter part of the command.
+!!##OPTIONS
+!!     VERB  is the command verb name, from 1 to 20 characters.
+!!     PARS  is the remaining parameter part of the command.
 !!
-!! DEPENDENCIES
+!!##DEPENDENCIES
 !!       + xy_retrv2
 !!       + parse
 !!       + store
 !!       + len_trim
 !!       + jun
 !!
-!! EXAMPLES
+!!##EXAMPLES
+!!
 !!     See the Programmer's example for a simple code with a call to TOGGLE() in
 !!     it. plot_toggle() is used in much the same way but with the Calculator library
 !!     loaded.
 !!
-!! SEE ALSO
+!!##SEE ALSO
 !!     see PARSE().
 !!
-!! REFERENCES
+!!##REFERENCES
 !!       + NONE.
 !!
-!! AUTHOR
+!!##AUTHOR
 !!       + John S. Urban
-!!
-!! -------------------------------------------------------------------------------
+!===================================================================================================================================
 subroutine plot_toggle(verb,pars)
 use M_journal, only : journal
 use M_kracken, only: parse, store, IPvalue, IPverb
@@ -6470,21 +6977,31 @@ end subroutine plot_toggle
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    xy_getdat(3f) - [M_xyplot] place data from specified file and curve into xy_arrayQ xy_arra
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!   place data from specified file and curve into xy_arrayQ xy_array
+!!
+!!   given a file number (ifile)  and curve number (iff)  to extract, place data into
+!!   xy_arrayq xy_array in common, and return min and max values; number of values; and the
+!!   number of the time xy_array this data is calibrated to.
+!!
+!!    o header data is put into q variables in common
+!!
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine xy_getdat(ifile,iff,ymin,ymax,itime,iread,icurve)
 !     1992 John S. Urban
-!     place data from specified file and curve into xy_arrayQ xy_array
-!
-!     given a file number (ifile)  and curve number (iff)  to extract, place data into
-!     xy_arrayq xy_array in common, and return min and max values; number of values; and the
-!     number of the time xy_array this data is calibrated to.
-!      o header data is put into q variables in common
-!
 use M_journal, only : journal
 use M_math, only    : extremum
 implicit none
 
-character(len=*),parameter::ident_49="&
-&@(#)M_xyplot::xy_getdat(3fp): place data from specified file and curve into xy_arrayQ xy_array"
+character(len=*),parameter::ident_49="@(#)M_xyplot::xy_getdat(3f): place data from specified file and curve into xy_arrayQ xy_array"
 
 !===================================================================================================================================
 integer,intent(in)            :: ifile   ! file number to extract data from
@@ -6530,7 +7047,7 @@ real                   :: ymin2
          call journal('sc', '*xy_getdat* curve number out of range 1 <= n <= ',ifrecsq(ifile))
          goto 999
       endif
-!=======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
       ihead=ifn_hq+ifile
       ! read a header record INTO COMMON
       read(ihead,rec=iff)icodeq,varidq,nodq,isnodq,itnodq,iunitq,alphaq,itimeq,ipadq,rmin,rmax,alpha2q,rpadq
@@ -6539,7 +7056,7 @@ real                   :: ymin2
       else
         iread=isetsq(ifile)
       endif
-!=======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     set default legend label for this curve
       if(icurve.ge.1.and.icurve.le.ICSQ)then
          if(alphaq(KAQ+1:).le.' ')then
@@ -6549,14 +7066,14 @@ real                   :: ymin2
            write(lgndq(icurve),'(a)')alphaq(KAQ+1:)
          endif
       endif
-!=======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
 !      store y data at beginning of xy_array, x data in second half
        if(icurve.eq.-1)then
           istart=IMAXQ2/2
        else
           istart=1
        endif
-!=======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
       idat=ifn_dq+ifile
       itimes=(ipadq(1)+IWZQ-1)/IWZQ  ! number of curves to read
       iwhere=istart                ! where to store the line read from the zebra file
@@ -6566,7 +7083,7 @@ real                   :: ymin2
          iwhere=iwhere+IWZQ
          irec=irec+1
       enddo
-!=======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     store min and max of data if it has not already been calculated
 !     redundantly checking lines of constant value.
       if(rmin.eq.rmax)then
@@ -6575,7 +7092,7 @@ real                   :: ymin2
       endif
       ymin=rmin
       ymax=rmax
-!=======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     collect linear conversion factors based on automatic table set up relate command so only have to call xy_convert once
       ichange=0                         ! flag as to whether any conversions were found
       finalm=1.0                        ! initial multiplication factor
@@ -6606,13 +7123,13 @@ real                   :: ymin2
             endif
          endif
       endif
-!=======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
       if(LLQ(livpq).and.icurve.ne.-1)then              ! if initial value mode requested, subtract first y value from all y values
          ! convert first value to converted units and adjust linear conversion constant
          finalb=finalb-(xy_arrayq(istart)*finalm+finalb)
          ichange=ichange+1                            ! flag that a conversion should be made
       endif
-!=======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
       if(ichange.ne.0)then
          call xy_convert(finalm,finalb,xy_arrayq(istart),iread)
          ymin2=finalm*ymin+finalb  ! because of possible sign change, min and max could have changed order
@@ -6623,7 +7140,7 @@ real                   :: ymin2
            iu4q(i80)=0
          enddo
       endif
-!=======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     if the flag is set, remove leading values .le. 0 when calculating smallest value
 !     this is not generic, intended to find max and mins for autorange of axis
 !     it can cause a lot of overhead by recalculating min many times
@@ -6636,7 +7153,7 @@ real                   :: ymin2
          call extremum(xy_arrayq(i123+istart:istart+iread-1),ymin,dummax)
          call journal('sc','*xy_jucurv* number of leading points trimmed=',i123)
       endif
-!=======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
       if(icurve.eq.-2)then            ! store x values in upper half per special request
          if(itimeq.eq.0)itimeq=iff   ! special case where reading x values in the first place
          ! trusting itimeq record exists
@@ -6656,10 +7173,10 @@ real                   :: ymin2
          ! reset header record data
          read(ihead,rec=iff)icodeq,varidq,nodq,isnodq,itnodq,iunitq,alphaq,itimeq,ipadq,rmin,rmax,alpha2q,rpadq
       endif
-!=======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
       itime=itimeq
       return
-!=======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
 999   continue
       itime=-1
       iread=0
@@ -6669,18 +7186,30 @@ end subroutine xy_getdat
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    xy_juput(3f) - [M_xyplot] write current memory-resident curves in global variables(q) onto pseudo fil
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine xy_juput(ifile,irecord,rmin,rmax,ionend,iquiet)
 use M_journal, only    : journal
 use M_math, only       : extremum
 implicit none
 
 character(len=*),parameter::ident_50="&
-&@(#)M_xyplot::xy_juput(3fp): write current memory-resident curves in global variables(q) onto pseudo file"
+&@(#)M_xyplot::xy_juput(3f): write current memory-resident curves in global variables(q) onto pseudo file"
 
-integer ipadz(5)
-character(len=*) :: iquiet
-real rpadz(9)
-character varidz*8,alphaz*80,alpha2z*80
+integer             :: ipadz(5)
+character(len=*)    :: iquiet
+real                :: rpadz(9)
+character(len=8)    :: varidz
+character(len=80)   :: alphaz
+character(len=80)   :: alpha2z
 integer             :: i100
 integer             :: i40
 integer             :: i80
@@ -6713,10 +7242,10 @@ real                :: rminz
 real                :: zero
 ! adding ionend as a feature to replace a record, 0=add, otherwise record to replace
 ! if replace incompatible record size, would cause error. Should check for this (and append?)
-!=======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
       ihead=ifn_hq                              ! pseudo file for header records
       idat=ifn_dq                               ! pseudo file for actual data
-!=======================================================================--------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     ifrecsq(0)=number of curves on pseudo file and number of lines in pseudo header file
 !     ireg2q=number of lines written to pseudo data file
 !     ireg3q=number of time curves in pseudo file
@@ -6741,36 +7270,36 @@ real                :: zero
           endif
         endif
       endif
-!=======================================================================--------
+!-----------------------------------------------------------------------------------------------------------------------------------
       ipadq(3)=ix2+ceiling(real(ipadq(2)/IWZQ))+1  ! zebra line number where curve data starts
       ipadq(4)=ix2                           ! zebra line number where header data goes
       write(ihead,rec=ix)icodeq,varidq,nodq,isnodq,itnodq,iunitq,alphaq,itimeq,ipadq,rminnew,rmaxnew,alpha2q,rpadq
       write(idat,rec=ix2)icodeq,varidq,nodq,isnodq,itnodq,iunitq,alphaq,itimeq,ipadq,rminnew,rmaxnew,alpha2q,rpadq
-!=======================================================================--------
+!-----------------------------------------------------------------------------------------------------------------------------------
       iloop=(ipadq(1)+IWZQ-1)/IWZQ ! number of lines needed to write out this data curve
       iloop2=ipadq(1)/IWZQ        ! number of completely filled zebra lines that will be filled
       ii1=1
       ix2=ipadq(3)
-      do 100 i100=1,iloop2
+      do i100=1,iloop2
          write(idat,rec=ix2)(xy_arrayq(ii),ii=ii1,ii1+IWZQ-1)
          ix2=ix2+1
          ii1=ii1+IWZQ
-100   continue
-!!======================================================================--------
+      enddo
+!-----------------------------------------------------------------------------------------------------------------------------------
       if(iloop.ne.iloop2)then ! pad out last line to a full line
          nonzero=ipadq(1)-iloop2*IWZQ !number of significant values in this line
          izero=IWZQ-nonzero  ! number of zeros needed to pad out to a full line
          zero=0.0
          write(idat,rec=ix2)(xy_arrayq(i40),i40=ii1,ii1+nonzero-1),(zero,i80=1,izero)
       endif
-!=======================================================================--------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     write a terminating header line to be written over if another curve is added, else to terminate the file
 !     logically easy to put this hear, but would be cleaner to put it on the end if file 0 is every detached, perhaps.
       if(ionend.eq.0)then
          ixe=ix2+1
          write(idat,rec=ixe)0,'END     ',0,0,0,0,alphaq,0,ipadq,0.0,0.0,alpha2q,rpadq
       endif
-!=======================================================================--------
+!-----------------------------------------------------------------------------------------------------------------------------------
       if(ionend.eq.0)then          ! adding to psuedo file
          write(temp1q,101)irecord,ix
 101      format('*put* ',i10,' became record ',i10,' on file 0 ')
@@ -6782,7 +7311,7 @@ real                :: zero
 202      format('*put* replaced record ',i10,' on file 0')
       endif
       call journal(iquiet,temp1q)
-!=======================================================================--------
+!-----------------------------------------------------------------------------------------------------------------------------------
       if(ifile.ne.0.and.itimeq.eq.0.and.ionend.eq.0)then ! this is a time curve not from pseudo file being added, not replaced
          ireg3q=ireg3q+1
          itq(1,ireg3q)=ifile            ! file number original was on
@@ -6790,15 +7319,25 @@ real                :: zero
          itq(3,ireg3q)=0                ! not used
          itq(4,ireg3q)=irecord          ! original file position (for matching get curves to pseudo time curves)
       endif
-!=======================================================================--------
+!-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine xy_juput
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    xy_slide(3f) - [M_xyplot] slide valu
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 real function xy_slide(xmin,xmax,value,bottom)
 implicit none
 
-character(len=*),parameter::ident_51="@(#)M_xyplot::xy_slide(3fp): slide value"
+character(len=*),parameter::ident_51="@(#)M_xyplot::xy_slide(3f): slide value"
 
 real,intent(in) :: xmin
 real,intent(in) :: xmax
@@ -6808,6 +7347,16 @@ real,intent(in) :: bottom
 end function xy_slide
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!    plot_z(3f) - [M_xyplot] Interactive ZOOM mod
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
 !===================================================================================================================================
 subroutine plot_z()
 use M_journal, only : journal
@@ -6820,13 +7369,13 @@ real               :: con(4)
 character(len=10)  :: action
 integer            :: iend
 real               :: xmin, ymin, xmax, ymax
-!#-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       call journal('*plot_z* Interactive ZOOM MODE commencing. MOUSE ACTIONS:')
       call journal('*plot_z*   (1) ZOOM IN......pick a box')
       call journal('*plot_z*   (2) PAN & ZOOM...old box fitted to new box)')
       call journal('*plot_z*   (3) RESET')
       call journal('*plot_z*  double-click without moving mouse to quit')
-!#-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 1     continue
       call frontbuffer()                                ! make sure drawing is visible
       call xy_getscale(0,con(1),con(2),con(3),con(4))      ! get scaling information between window and "axis scale window"
@@ -6834,7 +7383,7 @@ real               :: xmin, ymin, xmax, ymax
       call vflush() ! does this flush letter buffer?
       call xy_zoom(xmin,ymin,xmax,ymax,iend)         ! changes these values with mouse
       ! remember to draw scaled plot back to next viewport/window
-!#-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       action='CSP'
       if(iend.eq.0)then                       !  normal zoom action
          action='CSP'
@@ -6847,43 +7396,53 @@ real               :: xmin, ymin, xmax, ymax
          write(*,*)'unknown iend command ',iend
          action=' '
       endif
-!#-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       if(index(action,'C').ne.0)then  ! convert
          xmin=(xmin-con(2))/con(1)
          xmax=(xmax-con(2))/con(1)
          ymin=(ymin-con(4))/con(3)
          ymax=(ymax-con(4))/con(3)
       endif
-!#-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       if(index(action,'R').ne.0)then  ! reset
             xmin=123.456           ! special flag value of 123.456 resets to auto max-min mode
             xmax=123.456
             ymin=123.456
             ymax=123.456
       endif
-!#-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       if(index(action,'S').ne.0)then  ! store
          RANGEQ(1)=xmin
          RANGEQ(2)=xmax
          RANGEQ(3)=ymin
          RANGEQ(4)=ymax
       endif
-!#-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       if(index(action,'P').ne.0)then  ! plot
          call plot_drawplot(.true.)  ! draw scaled plot to requested viewport/window
       endif
-!#-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       if(index(action,'Q').eq.0)then  ! quit
          goto 1
       endif
-!#-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine plot_z
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    plot_zmode(3f) - [M_xyplot] Interactive ZOOM mode
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!    The plot_zmode() procedure is used to allow you to use the keyboard to zoom i
+!!    and around a plot.
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine plot_zmode(percent0)
-!! The plot_zmode() procedure is used to allow you to use the keyboard to zoom in
-!! and around a plot.
 use M_journal, only : journal
 use M_kracken, only: store
 use M_draw
@@ -6937,10 +7496,10 @@ real              :: yprint
 real              :: yshift
 
 temp=' '
-!#-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    call journal('*plot_zmode* Interactive ZOOM MODE commencing.')
    call journal('*plot_zmode* (enter ? in graphics area for help).')
-!#-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    percent=100.0/percent0
    call plot_drawplot(.true.)  ! draw scaled plot to requested viewport/window
    call frontbuffer()                                ! make sure drawing is visible
@@ -6972,7 +7531,7 @@ temp=' '
    endif
    letter=char(iletter)
    ! remember to draw scaled plot back to next viewport/window
-!#-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    action='SPD'                            ! default action is to STORE,  PLOT, get new DELTA
    if(letter.eq.'p')then                   ! print values
       istatus=locator(x,y)
@@ -6985,7 +7544,7 @@ temp=' '
          call point2(x,y)
          action=' '
       endif
-!-------------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    elseif(letter.eq.'z'.or.letter.eq.'Z'.or.letter.eq.'c')then                   ! center,zoom in,zoom out on mouse location
       istatus=locator(x,y)
       if(istatus.eq.-1)then
@@ -7016,21 +7575,21 @@ temp=' '
          endif
          action='SPD'
       endif
-!-------------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    elseif(letter.eq.'F')then                   ! finer scaling
       action='D'
       percent=percent*1.033333333
       if(percent.lt.1./1000.0)percent=1.0/1000.0
       if(percent.gt.1000.0)percent=1000.0
       write(*,*)'f: percent=',percent
-!-------------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    elseif(letter.eq.'C')then                   ! coarser scaling
       action='D'
       percent=percent/1.03333333
       if(percent.gt.1000.0)percent=1000.0
       if(percent.lt.1./1000.0)percent=1./1000.0
       write(*,*)'c: percent=',percent
-!-------------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    elseif(index('BSLRUD',letter).ne.0)then    ! bigger or smaller window
 
       same=1.0
@@ -7061,7 +7620,7 @@ temp=' '
       !     extract preferred size, no smaller than 64x64, no bigger than 2000x2000
       !     only call getdisplaysize twice. Problem where decorations of window are not
       !     consistently considered between size request and size query. So better just
-      !     to store the numbers to reduce the problem till resolve VOGLE issue.
+      !     to store the numbers to reduce the problem till resolve M_plot issue.
       if(temp.eq.' ')then
          call getdisplaysize(w,t)
          write(*,*)'from ',w,'x',t
@@ -7074,109 +7633,109 @@ temp=' '
       write(temp(1:21),'(i10,1x,i10)') int(w),int(t)
       call store('sz_oo',temp,'replace',ierr)
       call plot_sz()
-!-------------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    elseif(letter.eq.'l')then                   ! pan left
       xmin=xmin+Xdelta
       xmax=xmax+Xdelta
       action='SP'
-!-------------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    elseif(letter.eq.'r'.or.letter.eq.'h')then  ! pan right
       xmin=xmin-Xdelta
       xmax=xmax-Xdelta
       action='SP'
-!-------------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    elseif(letter.eq.'u'.or.letter.eq.'k')then  ! pan up
       ymin=ymin-Ydelta
       ymax=ymax-Ydelta
       action='SP'
-!-------------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    elseif(letter.eq.'d'.or.letter.eq.'j')then  ! pan down
       ymin=ymin+Ydelta
       ymax=ymax+Ydelta
       action='SP'
-!-------------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    elseif(letter.eq.'i')then                   ! zoom in
       xmin=xmin+Xdelta
       xmax=xmax-Xdelta
       ymin=ymin+Ydelta
       ymax=ymax-Ydelta
       action='SPD'
-!-------------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    elseif(letter.eq.'y')then                   ! zoom in on Y axis
       ymin=ymin+Ydelta
       ymax=ymax-Ydelta
       action='SPD'
-!-------------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    elseif(letter.eq.'x')then                   ! zoom in on X axis
       xmin=xmin+Xdelta
       xmax=xmax-Xdelta
       action='SPD'
-!-------------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    elseif(letter.eq.'1')then                   ! zoom in quadrant 1
       xmin=xmin+(xmax-xmin)/2.0
       ymin=ymin+(ymax-ymin)/2.0
       action='SPD'
-!-------------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    elseif(letter.eq.'2')then                   ! zoom in quadrant 2
       xmax=xmax-(xmax-xmin)/2.0
       ymin=ymin+(ymax-ymin)/2.0
       action='SPD'
-!-------------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    elseif(letter.eq.'3')then                   ! zoom in quadrant 3
       xmax=xmax-(xmax-xmin)/2.0
       ymax=ymax-(ymax-ymin)/2.0
       action='SPD'
-!-------------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    elseif(letter.eq.'4')then                   ! zoom in quadrant 4
       xmin=xmin+(xmax-xmin)/2.0
       ymax=ymax-(ymax-ymin)/2.0
       action='SPD'
-!-------------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    elseif(letter.eq.'o')then                   ! zoom out
       xmin=xmin-Xdelta
       xmax=xmax+Xdelta
       ymin=ymin-Ydelta
       ymax=ymax+Ydelta
       action='SPD'
-!-------------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    elseif(letter.eq.'X')then                   ! zoom out
       xmin=xmin-Xdelta
       xmax=xmax+Xdelta
       action='SPD'
-!-------------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    elseif(letter.eq.'Y')then                   ! zoom out
       ymin=ymin-Ydelta
       ymax=ymax+Ydelta
       action='SPD'
-!-------------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    elseif(letter.eq.'?')then                   ! print help text
       action=' '
       goto 111
-!-------------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    elseif(letter.eq.'Q')then                   ! quit with zoomed ranges
       call journal('*plot_zmode* interactive zoom mode concluding.')
       action='SPQ'
-!-------------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    elseif(letter.eq.'q')then                   ! quit with reset ranges
       call journal('*plot_zmode* interactive zoom mode concluding.RESET')
       action='RPQ'
-!-------------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    elseif(letter.eq.'n')then                   ! request to reset back to original values if mouse 3 pressed
       action='RPD'
-!-------------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    else
       write(*,*)'unknown letter command ',letter
       action=' '
       goto 111
    endif
-!#-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    if(index(action,'S').ne.0)then  ! store
       RANGEQ(1)=xmin
       RANGEQ(2)=xmax
       RANGEQ(3)=ymin
       RANGEQ(4)=ymax
    endif
-!#-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    if(index(action,'R').ne.0)then  ! reset
       ! special flag value of 123.456 resets to auto max-min mode
       RANGEQ(1)=123.456
@@ -7190,13 +7749,13 @@ temp=' '
       Xdelta=Xdelta0
       Ydelta=Ydelta0
    endif
-!#-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    if(index(action,'P').ne.0)then  ! plot
       call plot_drawplot(.true.)  ! draw scaled plot to requested viewport/window
       call frontbuffer()                                ! make sure drawing is visible
       call xy_getscale(0,con(1),con(2),con(3),con(4))      ! get scaling information between window and "axis scale window"
    endif
-!#-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    ! new delta movement values because overall range of scale has changed so can move in percent of current
    if(index(action,'D').ne.0)then
       xminP=(xmint-con(2))/con(1)  ! user axis corners (numbers to scale) from last plot command
@@ -7206,12 +7765,12 @@ temp=' '
       Xdelta=(xmaxP-xminP)/percent
       Ydelta=(ymaxP-yminP)/percent
    endif
-!#-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    if(index(action,'Q').eq.0)then  ! quit
       goto 2
    endif
    return
-!#-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 111 continue
    call journal('LETTERS:')
    call journal('-------------------------------------------')
@@ -7243,21 +7802,32 @@ temp=' '
    call journal('  (Q)uits saving current zoom')
    call journal('-------------------------------------------')
    goto 2
-!#-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine plot_zmode
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    xy_getrel(3f) - [M_xyplot] return values to convert one set of units to anothe
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!    return values to convert one set of units to another
+!!    so that a table may be set up to automatically convert one set of
+!!    units to another, the relate command allows a linear translation
+!!    table to be set up.
+!!
+!!    given an input unit, get the output unit, rmultiplier, and constant.
+!!    since unit 0 is blank, assume not to convert if a 0 iunito is found.
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine xy_getrel(iuniti,iunito,rmult,const)
-!     return values to convert one set of units to another
-!     so that a table may be set up to automatically convert one set of
-!     units to another, the relate command allows a linear translation
-!     table to be set up.
-!     given an input unit, get the output unit, rmultiplier, and constant.
-!     since unit 0 is blank, assume not to convert if a 0 iunito is found.
 implicit none
 
-character(len=*),parameter::ident_54="@(#)M_xyplot::xy_getrel(3fp): return values to convert one set of units to another"
+character(len=*),parameter::ident_54="@(#)M_xyplot::xy_getrel(3f): return values to convert one set of units to another"
 
 integer         :: iuniti
 integer         :: iunito
@@ -7278,12 +7848,22 @@ end subroutine xy_getrel
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    xy_units(3f) - [M_xyplot] given unit code return string label optionally converted to uppercas
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine xy_units(n0,eunit)
 use M_strings,only: upper
 implicit none
 
 character(len=*),parameter::ident_55="&
-&@(#)M_xyplot::xy_units(3fp): given unit code return string label optionally converted to uppercase"
+&@(#)M_xyplot::xy_units(3f): given unit code return string label optionally converted to uppercase"
 
 integer,intent(in)  :: n0
 character(len=80)   :: eunit
@@ -7297,11 +7877,21 @@ end subroutine xy_units
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    xy_juprint(3f) - [M_xyplot] print string LINE at position x,y with embedded directive
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine xy_juprint(x,y,line,icenter)
 use M_draw
 implicit none
 
-character(len=*),parameter::ident_56="@(#)M_xyplot::xy_juprint(3fp): print string LINE at position x,y with embedded directives"
+character(len=*),parameter::ident_56="@(#)M_xyplot::xy_juprint(3f): print string LINE at position x,y with embedded directives"
 
 !      icenter=1    centermode
 !      icenter=2    clear centering data, print right justified
@@ -7321,10 +7911,20 @@ end subroutine xy_juprint
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    xy_justrlen(3f) - [M_xyplot] query string size with embedded directive
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine xy_justrlen(line,xlen,ylen,ydown,yup)
 implicit none
 
-character(len=*),parameter::ident_57="@(#)M_xyplot::xy_justrlen(3fp): query string size with embedded directives"
+character(len=*),parameter::ident_57="@(#)M_xyplot::xy_justrlen(3f): query string size with embedded directives"
 
 character(len=*) :: line
 integer          :: ilen
@@ -7336,7 +7936,7 @@ real             :: yl
 real             :: ylen
 real             :: ys
 real             :: yup
-   ilen=len(line)
+   ilen=len_trim(line)
    call xy_justr(0.0,0.0,line(:ilen),1,xs,xl,ys,yl)  ! set size and centering data
    call xy_justr(0.0,0.0,line(:ilen),2,xs,xl,ys,yl)  ! clear centering data
    xlen=xl-xs
@@ -7347,22 +7947,41 @@ end subroutine xy_justrlen
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    xy_justr(3f) - [M_xyplot] print string l0 at position x,y with embedded directives
+!!##SYNOPSIS
+!!
+!!    subroutine xy_justr(x,y,l0,itype,xmin,xmax,ymin,ymax)
+!!    real                :: x
+!!    real                :: y
+!!    character(len=*)    :: l0
+!!    integer             :: itype
+!!    real                :: xmax
+!!    real                :: xmin
+!!    real                :: ymin
+!!    real                :: ynow
+!!##DESCRIPTION
+!! !     string is assumed to be [string]\directive\string\directive\string\directive\..
+!! !     does not allow for escaped backslash in string or null string between directive
+!! !     environment is RESET after each string (MAY CHANGE THIS)
+!!##OPTIONS
+!! !     itype=0    draw the string with centering or size data set (must be second call
+!! !     itype=1    getting string size and centering shift
+!! !     itype=2    blank out centering values
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine xy_justr(x,y,l0,itype,xmin,xmax,ymin,ymax)
 use M_draw
 use M_drawplus,        only : pop, push
 use M_journal,         only : journal
 implicit none
 
-character(len=*),parameter::ident_58="@(#)M_xyplot::xy_justr(3fp): print string l at position x,y with embedded directives"
+character(len=*),parameter::ident_58="@(#)M_xyplot::xy_justr(3f): print string l0 at position x,y with embedded directives"
 
-!     string is assumed to be [string]\directive\string\directive\string\directive\...
-!     does not allow for escaped backslash in string or null string between directives
-!     environment is RESET after each string (MAY CHANGE THIS)
-!     itype=0    draw the string with centering or size data set (must be second call)
-!     itype=1    getting string size and centering shift
-!     itype=2    blank out centering values
 character(len=*)    :: l0
-character(len=2000) :: line
+character(len=4096) :: line
 character(len=256)  :: directive
 logical             :: instring
 integer,parameter   :: ilens=40 ! max number of lines from a single string
@@ -7400,13 +8019,13 @@ data xmins/40*0.0/
 data xmaxs/40*0.0/
 
    !write(*,*)'itype and string=',itype,l0
-   line(1:2000)=' '
+   line(1:)=' '
    line=l0
    if(itype.eq.2)goto 999            ! just blank out centering values
 
    imax=len(l0)                      ! determine length of input string
    if(imax.le.0)goto 999             ! null strings might cause problems
-   ichars=len_trim(line(:imax))         ! number of characters in string
+   ichars=len_trim(line(:imax))      ! number of characters in string
    if(ichars.le.0)goto 999           ! if string is all blanks ignore it (causes current position to not be updated)
    xnow=x                            ! initial x print position
    ynow=y                            ! initial y print position
@@ -7438,22 +8057,22 @@ data xmaxs/40*0.0/
       if(itype.eq.1)then
          xmins(k)=x
       endif
-!-----------------------------------------------------------------------
-      if(line(i10:i10).eq.char(92).or.i10.eq.ichars+1)then  ! found beginning or end of font directives
+!-----------------------------------------------------------------------------------------------------------------------------------
+      if(line(i10:i10).eq.char(92).or.i10.eq.ichars+1)then          ! found beginning or end of font directives
 1000     continue
-         if(instring)then               ! if was in a string now in a directive so print string and start directive
+         if(instring)then                                ! if was in a string now in a directive so print string and start directive
             instring=.false.
-            if(iend-istart.ge.0.or.ione.ne.0)then    ! if string is not null print it
-               if(itype.eq.0)then ! draw the string
+            if(iend-istart.ge.0.or.ione.ne.0)then                    ! if string is not null print it
+               if(itype.eq.0)then                                    ! draw the string
                   call rmove2(-((xmaxs(k)-xmins(k))/2.0),0.0)
                   if(ione.gt.0)then
-                     call xy_jucp2(char(ione),1)  ! draw the special character from P=
-                  elseif(ione.lt.0)then        ! splicing a $string back in
+                     call xy_jucp2(char(ione),1)                     ! draw the special character from P=
+                  elseif(ione.lt.0)then                              ! splicing a $string back in
                   else
-                     call xy_jucp2(line(istart:iend),iend-istart+1)  !draw the string
+                     call xy_jucp2(line(istart:iend),iend-istart+1)  ! draw the string
                   endif
                   call rmove2(((xmaxs(k)-xmins(k))/2.0),0.0)
-               elseif(itype.eq.1)then   ! just building string to get the size
+               elseif(itype.eq.1)then                                ! just building string to get the size
                   xmins(k)=min(xmins(k),xnow)
                   !write(*,*)'building size ione=',ione,xmax
                   if(ione.eq.0)then
@@ -7469,12 +8088,12 @@ data xmaxs/40*0.0/
                call getgp2(xnow,ynow)
                xmax=max(xnow,xmax)
                !write(*,*)'xmax 2 =',xmax
-               if(itype.eq.1)then    ! building length
+               if(itype.eq.1)then                                    ! building length
                   xmaxs(k)=max(xmaxs(k),xnow)
                endif
                call getfontsize(width2,height2)
 
-               !tdec=getfontdec()+height2/2.0  ! descender value
+               !tdec=getfontdec()+height2/2.0                        ! descender value
                call pushattributes()
                call xy_getxy_jufont(lastfont)
                call font(lastfont)
@@ -7488,12 +8107,12 @@ data xmaxs/40*0.0/
                ymin=min(ynow-tdec-height2/2.0,ymin)
                ymax=max(ynow-tdec+height2/2.0,ymax)
             endif
-         else                           ! end of a directive
+         else                                                        ! end of a directive
             instring=.true.
             if(iend-istart.ge.0)then
                if(ichange.eq.0)then
                   ichange=1
-                  call push()           ! save current environment in case change it
+                  call push()                                        ! save current environment in case change it
                endif
                if(ione.eq.0)directive=line(istart:iend)
                ione=0
@@ -7509,23 +8128,23 @@ data xmaxs/40*0.0/
          if(ione.ne.0)then
             goto 1000
          else
-            istart=i10+1                ! beginning of next string or directive
+            istart=i10+1                                             ! beginning of next string or directive
          endif
-      else                           ! not a delimiter
-         iend=i10                    ! this might be the end of the last directive or string
+      else                                                           ! not a delimiter
+         iend=i10                                                    ! this might be the end of the last directive or string
       endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
    enddo
-   if(ichange.ne.0)call pop()        ! so things changed here do not effect other calls
+   if(ichange.ne.0)call pop()                                        ! so things changed here do not effect other calls
    if(itype.eq.0)then
    else if(itype.eq.1)then
       shift=(xmax-xmin)/2.0
    endif
 
-   call move2(xnow,ynow)             ! does pop() loose current position?
+   call move2(xnow,ynow)                                             ! does pop() loose current position?
    call textsize(width1,height1)
 999 continue
-   if(itype.eq.0.or.itype.eq.2)then        ! do not keep length information
+   if(itype.eq.0.or.itype.eq.2)then                                  ! do not keep length information
       do i40=1,ilens
          xmins(i40)=0.0
          xmaxs(i40)=0.0
@@ -7535,6 +8154,15 @@ data xmaxs/40*0.0/
 end subroutine xy_justr
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!##SYNOPSIS
+
+!!##DESCRIPTI
+!!##OPTIONS
+!!##EXAMPLE
+!
 !===================================================================================================================================
 subroutine xy_fontchng(xnow,ynow,width,height,string,x0,y0,ilines,ii,ione)
 !     does not check if STRING is longer than LINE
@@ -7603,13 +8231,13 @@ data fonts/                                                       &
      &'orall_aa', 'orall_ab', 'orall_ac',                               &
      &'orall_ad', 'orall_ae', 'orall_af',                               &
      &'orall_ag', 'orall_ah', 'orall_ai'/
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     M_DRAW BUG
       call getfontsize(widthT,heightT)
       if(widthT.le.0.or.heightT.le.0)then
          call textsize(width,height)
       endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     cache variable names
       XV =rgetvalue('v')
       XH =rgetvalue('h')
@@ -7635,7 +8263,7 @@ data fonts/                                                       &
       call getgp2(XX,YY)
       call stuff('CX',XX,'')
       call stuff('CY',YY,'')
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       if(string.ne.' ')then
          call delim(string,xy_array,NN,icount,ibegin,iterm,ilen,' ') ! parse string into xy_array
          cname(1:1)='$'
@@ -7667,9 +8295,9 @@ data fonts/                                                       &
          enddo
       endif
 40    continue
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       XDnew=rgetvalue('D')
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     restore variable names
       call stuff('v',XV,'')
       call stuff('h',XH,'')
@@ -7691,10 +8319,19 @@ data fonts/                                                       &
       call stuff('y',XY,'')
       call stuff('D',XD,'')
       call stuff('i',XI,'')
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine xy_fontchng
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!##SYNOPSIS
+
+!!##DESCRIPTI
+!!##OPTIONS
+!!##EXAMPLE
+!
 !===================================================================================================================================
 subroutine xy_zqjreset()
 implicit none
@@ -7725,6 +8362,15 @@ call  stuff('i',     -999.0d0,'')
 end subroutine xy_zqjreset
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!##SYNOPSIS
+
+!!##DESCRIPTI
+!!##OPTIONS
+!!##EXAMPLE
+!
 !===================================================================================================================================
 ! too many calls to calculator. Do one pass at end like earlier version?
 subroutine xy_doescape(ii,fonts,width,height,xnow,ynow,ilines,x0,y0,ione)
@@ -7768,7 +8414,7 @@ real                    :: y
 real                    :: y0
 real                    :: ynow
       ! igetvalue faster than inum0?
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     color selection
       if(ii.eq.0)then    ! M_DRAW BUG CHANGES COLOR IN PUSH/POP
          ic=int(igetvalue('c')) ! ic=inum0('c')
@@ -7776,7 +8422,7 @@ real                    :: ynow
             call color(ic)
          endif
       endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     font selection by number
       if=int(igetvalue('f')) !  if=inum0('f')
       if(if.ge.1.and.if.le.ifontnames)then
@@ -7789,11 +8435,11 @@ real                    :: ynow
             call journal('sc',fonts(i10),i10)
          enddo
       endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     line width for software characters
       iw=int(igetvalue('w')) !  iw=inum0('w')
       if(iw.ne.-999)call xy_rasters(iw)
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     vertical movement from current position in scale of original character height
       v=rgetvalue('V') !  v=rnum0('V')
       if(v.ne.-999)then
@@ -7806,7 +8452,7 @@ real                    :: ynow
          call getfontsize(cwidth,cheight)
          ynow=ynow+cheight*v
       endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     horizontal movement from current position in scale of original character width
       h=rgetvalue('H') !  h=rnum0('H')
       if(h.ne.-999)then
@@ -7819,7 +8465,7 @@ real                    :: ynow
          call getfontsize(cwidth,cheight)
          xnow=xnow+cwidth*h
       endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     font size
       s=rgetvalue('S') !  s=rnum0('S')
       if(s.ne.-999)then
@@ -7831,7 +8477,7 @@ real                    :: ynow
          call getfontsize(cwidth,cheight)
          call textsize(cwidth*s,cheight*s)
       endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       sx=rgetvalue('sx') !  sx=rnum0('sx')
       sy=rgetvalue('sy') !  sy=rnum0('sy')
       if(sx.ne.-999.or.sy.ne.-999)then
@@ -7839,43 +8485,43 @@ real                    :: ynow
          if(sy.eq.-999) sy=1.0
          call textsize(width*sx,height*sy)
       endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       ixp=int(igetvalue('P')) !  x=rnum0('x')
       if(ixp.ne.-999)then
            ione=ixp
       endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       x=rgetvalue('x') !  x=rnum0('x')
       if(x.ne.-999)then
          xnow=x
       endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       y=rgetvalue('y') !  y=rnum0('y')
       if(y.ne.-999)then
          ynow=y
       endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       a=rgetvalue('a') !  a=rnum0('a')
       if(a.ne.-999)then
          call textang(a)
       endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       ri=rgetvalue('i') !  ri=rnum0('i')
       if(ri.ne.-999)then
          call textslant(ri)
       endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       b=rgetvalue('b') !  b=rnum0('b')
       if(b.ne.-999)then
          call getfontsize(cwidth,cheight)
          ynow=y0+b*cheight
       endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       B=rgetvalue('B') !  B=rnum0('B')
       if(B.ne.-999)then
          ynow=y0+B*height
       endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     line feed
       rn=rgetvalue('n') !  rn=rnum0('n')
       if(rn.ne.-999)then
@@ -7885,57 +8531,68 @@ real                    :: ynow
          ynow=ynow-rn*cheight
          ilines=ilines+1
       endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       ifixed=igetvalue('Ffix') !  ifixed=inum0('Ffix')
       if(ifixed.eq.0)then
          call fixedwidth(.false.)
       elseif(ifixed.eq.1)then
          call fixedwidth(.true.)
       endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       icen=igetvalue('Fcen') !  icen=inum0('Fcen')
       if(icen.eq.0)then
          call centertext(.false.)
       elseif(icen.eq.1)then
          call centertext(.true.)
       endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       fx=rgetvalue('Fx') !  fx=rnum0('Fx')
       if(fx.ne.1234.5678)then
          xnow=fx
       endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       fy=rgetvalue('Fy') !  fy=rnum0('Fy')
       if(fy.ne.1234.5678)then
          ynow=fy
       endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       icen=igetvalue('Fcen') !  icen=inum0('Fcen')
       if(icen.eq.0)then
          call centertext(.false.)
       elseif(icen.eq.1)then
          call centertext(.true.)
       endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine xy_doescape
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!    xy_jucp2(3f) - [M_xyplot] plot string line at current position
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!    For some packages and machines it is best to put the string into
+!!    a scratch variable and put a null character at the end
+!!
+!!    ignores training blanks
+!!
+!!    uses current text justification modes
+!!
+!!    M_DRAW fonts use the x value for the bottom of the descender for letters like g
+!!    so move the character down about 22% to keep it level if change size so
+!!    THE CURRENT Y-VALUE IS THE HEIGHT OF THE BASE OF LETTERS WITHOUT DESCENDERS
+!!    need to make a lower level option in M_DASH for this
+!!##OPTIONS
+!!##EXAMPLE
+!!
 !===================================================================================================================================
 subroutine xy_jucp2(line,ilen)
 use M_draw
 implicit none
 
-character(len=*),parameter::ident_59="@(#)M_xyplot::xy_jucp2(3fp): plot string line at current position"
-
-!     For some packages and machines it is best to put the string into
-!     a scratch variable and put a null character at the end
-!     IGNORES TRAINING BLANKS
-!     USES CURRENT TEXT JUSTIFICATION MODES
-
-!     M_DRAW fonts use the x value for the bottom of the descender for letters like g,
-!     so move the character down about 22% to keep it level if change size so
-!     THE CURRENT Y-VALUE IS THE HEIGHT OF THE BASE OF LETTERS WITHOUT DESCENDERS
-!     need to make a lower level option in M_DASH for this
+character(len=*),parameter::ident_59="@(#)M_xyplot::xy_jucp2(3f): plot string line at current position"
 
 character(len=*)   :: line
 integer,parameter  :: imx=257
@@ -7999,11 +8656,21 @@ end subroutine xy_jucp2
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    xy_juprints(3f) - [M_xyplot] simple print of string l at position x,
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine xy_juprints(x,y,l)
 use M_draw
 implicit none
 
-character(len=*),parameter::ident_60="@(#)M_xyplot::xy_juprints(3fp): simple print of string l at position x,y"
+character(len=*),parameter::ident_60="@(#)M_xyplot::xy_juprints(3f): simple print of string l at position x,y"
 
 real,intent(in)      :: x
 real,intent(in)      :: y
@@ -8025,22 +8692,32 @@ end subroutine xy_juprints
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    xy_jucp(3f) - [M_xyplot] plot string line at current position
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!    For some packages and machines it is best to put the string into
+!!    a scratch variable and put a null character at the end
+!!
+!!    ignores training blanks
+!!
+!!    uses current text justification modes
+!!
+!!    M_DRAW fonts use the x value for the bottom of the descender for letters like g
+!!    so move the character down about 22% to keep it level if change size so
+!!    THE CURRENT Y-VALUE IS THE HEIGHT OF THE BASE OF LETTERS WITHOUT DESCENDERS
+!!    need to make a lower level option in M_DASH for this
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine xy_jucp(line)
 use M_draw
 implicit none
 
-character(len=*),parameter::ident_61="@(#)M_xyplot::xy_jucp(3fp): plot string line at current position"
-
-
-!     For some packages and machines it is best to put the string into
-!     a scratch variable and put a null character at the end
-!     IGNORES TRAINING BLANKS
-!     USES CURRENT TEXT JUSTIFICATION MODES
-
-!     M_DRAW fonts use the x value for the bottom of the descender for letters like g,
-!     so move the character down about 22% to keep it level if change size so
-!     THE CURRENT Y-VALUE IS THE HEIGHT OF THE BASE OF LETTERS WITHOUT DESCENDERS
-!     need to make a lower level option in M_DASH for this
+character(len=*),parameter::ident_61="@(#)M_xyplot::xy_jucp(3f): plot string line at current position"
 
 character*(*) line
 integer,parameter        :: imx=257
@@ -8073,6 +8750,16 @@ real                     :: ynow
 end subroutine xy_jucp
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!    xy_jufont(3f) - [M_xyplot] check and set font and store it so can query i
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
 !===================================================================================================================================
 subroutine xy_jufont(name)
 use M_journal, only : journal
@@ -8117,10 +8804,20 @@ end subroutine xy_jufont
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    xy_jufont(3f) - [M_xyplot] check and set font and store it so can query i
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine xy_getxy_jufont(name)
 implicit none
 
-character(len=*),parameter::ident_63="@(#)M_xyplot::xy_jufont(3fp): check and set font and store it so can query it"
+character(len=*),parameter::ident_63="@(#)M_xyplot::xy_jufont(3f): check and set font and store it so can query it"
 
 character*(*) name
    name=LASTNAMEQ
@@ -8128,16 +8825,26 @@ end subroutine xy_getxy_jufont
 !----------------------------------------------------------------------------------------------------------------------------------!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !----------------------------------------------------------------------------------------------------------------------------------!
+!>
+!!##NAME
+!!    xy_rasters(3f) - [M_xyplot] set line widt
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine xy_rasters(iwidth)
 use M_draw
 implicit none
 
-character(len=*),parameter::ident_64="@(#)M_xyplot::xy_rasters(3fp): set line width"
+character(len=*),parameter::ident_64="@(#)M_xyplot::xy_rasters(3f): set line width"
 
-integer,intent(in)   :: iwidth
-   character(len=80) :: value
-   integer           :: ivalue
-   real,save         :: factor= -1.0
+integer,intent(in) :: iwidth
+character(len=80)  :: value
+integer            :: ivalue
+real,save          :: factor= -1.0
    if(factor.lt.0)then
       value='5.0'
       call get_environment_variable('VLINEWIDTH',value)
@@ -8161,26 +8868,46 @@ end subroutine xy_rasters
 !----------------------------------------------------------------------------------------------------------------------------------!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !----------------------------------------------------------------------------------------------------------------------------------!
+!>
+!!##NAME
+!!    xy_ustrlen(3f) - [M_xyplot] get software string length including trailing whitespac
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 real function xy_ustrlen(string)
 use M_draw
 implicit none
 
-character(len=*),parameter::ident_65="@(#)M_xyplot::xy_ustrlen(3fp): get software string length including trailing whitespace"
+character(len=*),parameter::ident_65="@(#)M_xyplot::xy_ustrlen(3f): get software string length including trailing whitespace"
 
 character(len=*),intent(in) :: string
-   intrinsic len
-   integer :: ilen
+intrinsic len
+integer :: ilen
    ilen=len(string)
    xy_ustrlen=strlength(string(1:ilen))
 end function xy_ustrlen
 !----------------------------------------------------------------------------------------------------------------------------------!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !----------------------------------------------------------------------------------------------------------------------------------!
+!>
+!!##NAME
+!!    xy_ustrlen2(3f) - [M_xyplot] get software string length up to specified characte
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 real function xy_ustrlen2(string,ichars)
 use M_draw
 implicit none
 
-character(len=*),parameter::ident_66="@(#)M_xyplot::xy_ustrlen2(3fp): get software string length up to specified character"
+character(len=*),parameter::ident_66="@(#)M_xyplot::xy_ustrlen2(3f): get software string length up to specified character"
 
 character(len=*),intent(in) :: string
 integer,intent(in)    :: ichars
@@ -8189,11 +8916,21 @@ end function xy_ustrlen2
 !-----------------------------------------------------------------------------------------------------------------------------------
 ![][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]-
 !-----------------------------------------------------------------------------------------------------------------------------------
+!>
+!!##NAME
+!!    plot_get_plot_area(3f) - [M_xyplot] initialize plot page and set up common page-related value
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine plot_get_plot_area(xsmall,xlarge,ysmall,ylarge)
 implicit none
 
 character(len=*),parameter::ident_67="&
-&@(#)M_xyplot::plot_get_plot_area(3fp): initialize plot page and set up common page-related values"
+&@(#)M_xyplot::plot_get_plot_area(3f): initialize plot page and set up common page-related values"
 
 real,intent(out)  :: xsmall
 real,intent(out)  :: xlarge
@@ -8208,11 +8945,21 @@ end subroutine plot_get_plot_area
 !-----------------------------------------------------------------------------------------------------------------------------------
 ![][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]-
 !-----------------------------------------------------------------------------------------------------------------------------------
+!>
+!!##NAME
+!!    plot_set_plot_area(3f) - [M_xyplot] initialize plot page and set up common page-related value
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine plot_set_plot_area(xsmall,xlarge,ysmall,ylarge)
 implicit none
 
 character(len=*),parameter::ident_68="&
-&@(#)M_xyplot::plot_set_plot_area(3fp): initialize plot page and set up common page-related values"
+&@(#)M_xyplot::plot_set_plot_area(3f): initialize plot page and set up common page-related values"
 
 real,intent(in)  :: xsmall
 real,intent(in)  :: xlarge
@@ -8227,26 +8974,35 @@ end subroutine plot_set_plot_area
 !-----------------------------------------------------------------------------------------------------------------------------------
 ![][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]-
 !----------------------------------------------------------------------------------------------------------------------------------
-!! plot_axis
+!>
+!!##NAME
+!!    plot_axis(3f) - [M_xyplot] draw XY axis for XY plot routines
+!!##SYNOPSIS
 !!
-!! This is a group of routines extracted from the PLT program and being converted
-!! to a generic XY axis routine. It currently has a ridiculous number of
-!! parameters set thru the common block.
+!!    subroutine plot_axes()
+!!##DESCRIPTION
 !!
-!! Using plot_page, plot_set_nice_range, plot_axis and xy_line you can draw simple graphs
-!! quite easily. This will be expanded upon.
+!!    This is a group of routines extracted from the PLT program and being converted
+!!    to a generic XY axis routine. It currently has a ridiculous number of
+!!    parameters set thru the common block.
 !!
-!! plot_set_plot_area can be used if you are laying out other graphics with the plot.
+!!    Using plot_page(3f), plot_set_nice_range(3f), plot_axis(3f) and xy_line(3f) you can draw simple graph
+!!    quite easily. This will be expanded upon.
 !!
-!! These routines will change.
+!!    plot_set_plot_area(3f) can be used if you are laying out other graphics with the plot.
 !!
-!!   1) xy_line destroys the data if a logarithmic plot is drawn
-!!   2) A generic "mode" routine will be made to set most of the values in common
-!!   3) detailed usage information will be written
+!!    These routines will change.
 !!
-!!    V.5.0.2 Error Correction --> DUAL AXIS failure was caused by a missing line in loop 10.
+!!     1. xy_line destroys the data if a logarithmic plot is drawn
+!!     2. A generic "mode" routine will be made to set most of the values in common
+!!     3. detailed usage information will be written
 !!
-!CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCcccccccc
+!!      V.5.0.2 Error Correction --> DUAL AXIS failure was caused by a missing line in loop 10.
+!!
+!!##EXAMPLE
+!!
+!===================================================================================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
 subroutine plot_axes() ! draw the axes
 use M_draw
 implicit none
@@ -8312,9 +9068,9 @@ real            :: yup3
 real            :: yupdum
 real            :: yy
 real            :: yystep
-!-------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       factor=1.05      ! use to add space between text and tic plot_marks
-!-------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 ! GET DATA FROM COMMONS AND DICTIONARIES
       call plot_get_plot_area(XMIN,XMAX,YMIN,YMAX)
       y=valsq2(7)-valsq2(6)                             ! scale height in axis units
@@ -8336,19 +9092,19 @@ real            :: yystep
 
       TXTHIM=TXTWDM/0.7
       TXTHIL=TXTWDL/0.7
-!----------------------------------------------------------------------CCCCCCCCC
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     set tic lengths each call
       tlong=max(XMAX-XMIN,YMAX-YMIN)
       call plot_setticper(0.0,0.0,0.0,0.0,'reset') ! recalculate tic lengths
 
       valsq2(2)=0.020*tlong  ! marker size
-!----------------------------------------------------------------------CCCCCCCCC
+!-----------------------------------------------------------------------------------------------------------------------------------
       if(ixmin_chq2.lt.0)then           ! if negative, ignore autosizing requests
          ifixed=1                       ! do not auto-size characters to shrink to fit
       else
          ifixed=0
       endif
-!----------------------------------------------------------------------CCCCCCCCC
+!-----------------------------------------------------------------------------------------------------------------------------------
 ! SOME NICE BORDERS
       XMIN=XMIN+1.0*TXTHIL    ! give some working room for a border and because hardware text not always the size one expects
       XMAX=XMAX-1.0*TXTHIL
@@ -8362,7 +9118,7 @@ real            :: yystep
       txtmaxw=(YMAX-YMIN)/(ixdivq2(1)+3.0)/3
       txtmaxh=min(TXTWDM,txtmaxw)/0.7
       YMAX=YMAX-txtmaxh       ! lower this down so large numbers do not go up into id strings in upper corners
-!----------------------------------------------------------------------CCCCCCCCC
+!-----------------------------------------------------------------------------------------------------------------------------------
 ! FIND ROOM FOR BOTTOM XAXIS LABEL ASSUMING INITIAL TEXT SIZE IS USED
       ! assuming text is not shunk to fit, find height of x-axis labels so y-axis can be drawn short and text centered
       if(axlq2(1) .ne. ' ')then
@@ -8382,7 +9138,7 @@ real            :: yystep
       else                                              ! logarithmic labels
          YMIN=YMIN+TEXTTICXQ2+yguess1+1.8*factor*1.2*TXTHIM   ! adjust bottom so high enough to print x-axis label
       endif
-!----------------------------------------------------------------------CCCCCCCCC
+!-----------------------------------------------------------------------------------------------------------------------------------
 ! FIND ROOM FOR TOP XAXIS LABEL ASSUMING INITIAL TEXT SIZE IS USED
       idrawtop=0
       if(axmulq2.ne.0.0)then   ! plot_marks for second x axis forced in
@@ -8409,9 +9165,9 @@ real            :: yystep
             YMAX=YMAX-TEXTTICXQ2-yguess3-1.8*factor*TXTHIM ! adjust bottom so high enough to print x-axis label
          endif
       endif
-!-----------------------------------------------------------------------CCCCCCCC
+!-----------------------------------------------------------------------------------------------------------------------------------
       call clipping(.false.)                            ! turn clipping off to give hardware text a chance when window is very small
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 ! DRAW LEFT Y-AXIS TEXT LABEL
       if(axlq2(2) .ne. ' ')then                                ! draw y-axis label if one is present
         ! changes XMIN
@@ -8420,7 +9176,7 @@ real            :: yystep
         call priv_draw_y_label(ifixedlabq2,TXTWDL,TXTHIL,fontLq2,deviceq2,axlq2(2),XMIN,XMAX,YMIN,YMAX,ORIENTLq2,2)
         call color(plot_ids(-2)%color)                         ! M_DRAW bug where pop does not restore color
       endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 ! DRAW RIGHT Y-AXIS TEXT LABEL
       if(icrvs2q2.lt.icrvsq2.or.aymulq2.ne.0)then              ! a right axis is to be drawn
        if(axlq2(4) .ne. ' ')then                               ! draw right y-axis label if one is present
@@ -8430,14 +9186,14 @@ real            :: yystep
        endif
       endif
       call textang(0.0)
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 ! CALCULATE ROOM NEEDED FOR NUMERIC LABELS ALONG Y AXIS
       call fixedwidth(ifixednumq2)                      ! text is fixed space or not for xmin labels
       TXTLHM=TXTHIM                                     ! This is the desired size
       TXTLWM=TXTWDM
       call priv_adjusty(iydivq2(1),valsq2(6),ylabel_fmtq2,ilngl,ystep,TXTLHM,TXTLWM,TEXTTICYQ2,xleft,YMIN,YMAX,plot_axis%ylogmode)
       XMIN=XMIN+xleft                                   ! make enough room for numeric labels
-!-----------------------------------------------------------------------CCCCCCCC
+!-----------------------------------------------------------------------------------------------------------------------------------
       TXTRHM=TXTHIM                                     ! This is the desired size
       TXTRWM=TXTWDM
       if(icrvs2q2.lt.icrvsq2.or.aymulq2.ne.0)then       ! a right axis is to be drawn
@@ -8447,7 +9203,7 @@ real            :: yystep
       else
          xright=0.0
       endif
-!-----------------------------------------------------------------------CCCCCCCC
+!-----------------------------------------------------------------------------------------------------------------------------------
 ! calculate room needed for numeric labels along x axis at right corner,
 ! make sure text size can fit between major tic plot_marks, and resize numeric text if needed.
 !
@@ -8474,18 +9230,18 @@ real            :: yystep
          TXTBWM=TXTWDM*approxx/xlong*around
          TXTBHM=TXTBWM*.05/.045
       endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       bigger=TXTBWM*ilngb/2.0-xright
       if(bigger.gt.0.0)then
          XMAX=XMAX-bigger                               ! adjust for x-axis right numeric label sticking past corner
       endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       xprint=XMIN-TEXTTICYQ2-0.25*TXTLWM                       ! xvalue for label to end at for left labels
       if(-TICLNYQ2.gt.XMAX-XMIN)TICLNYQ2=-(XMAX-XMIN) ! so major tic stops at top if sticks into plot
       call priv_draw_y_nums(TXTLWM,TXTLHM,xprint,iydivq2(1),YMAX,YMIN,-TICLNYQ2,TICLNY2Q2,y,ystep,valsq2(6),1,ilngl,XMIN,imin_wq2, &
      & plot_ids(-1)%width,plot_axis%ylogmode,ylabel_fmtq2,0.0,1.0)
       idrawright=0
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     RIGHT AXIS MAJOR TICS AND NUMERIC LABELS
       if(icrvs2q2.ne.icrvsq2)then                           ! plot_marks for second y axis
          idrawright=1
@@ -8516,7 +9272,7 @@ real            :: yystep
      &    TICLNYQ2,-TICLNY2Q2,yy,yystep,valsq2(10),2,ilngr,XMAX,imin_wq2,plot_ids(-1)%width, &
      &    plot_axis%ylogmode,ylabel2_fmtq2,SHIFT,actor)
       endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       if(-TICLNXQ2.gt.YMAX-YMIN)TICLNXQ2=-(YMAX-YMIN)    ! so major tic stops at top if sticks into plot
       call priv_drawx(TXTBWM,TXTBHM,                          &
      &  xstep,                                           &
@@ -8542,7 +9298,7 @@ real            :: yystep
      &  axlq2)
 
       call color(plot_ids(-2)%color)                               ! M_DRAW bug where pop does not restore color
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       idrawtop=0
       if(axmulq2.ne.0.0)then     ! plot_marks for second x axis forced in
          idrawtop=1
@@ -8572,17 +9328,17 @@ real            :: yystep
      &   axlq2)                           ! axisl -> xy_array with axes labels
          call color(plot_ids(-2)%color)                               ! M_DRAW bug where pop does not restore color
       endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       call priv_jubox(plot_axis%background,XMIN,YMIN,XMAX,YMAX)
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       call plot_set_plot_area(XMIN,XMAX,YMIN,YMAX)  ! grid routine has to know plot area to draw rescaled dash codes in grid lines
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       call priv_jugrid(ixdivq2,iydivq2,plot_axis%grid_style,valsq2, &
       & XMIN,XMAX,YMIN,YMAX,plot_ids%color,plot_ids%width,plot_axis%xlogmode,plot_axis%ylogmode, &
      & TICLNYQ2,TICLNXQ2,TICLNY2Q2,TICLNX2Q2,aymulq2,ayconq2,icrvs2q2,icrvsq2)
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       call clipping(.true.)                             ! turn clipping on
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine plot_axes
 !-----------------------------------------------------------------------------------------------------------------------------------
 ![][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]-
@@ -8924,10 +9680,10 @@ real           :: yup
 !     & ticln,ticlnt,
 !     & vals,ilabel_w,imin_w,iffixed,iffixed2,iup,fontL,fontN,fmt,
 !     & ilogx,axisl
-!-----------------------------------------------------------------------CCCCCCCC
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     draw x axis
 !     should check if idivs less than 1
-!-----------------------------------------------------------------------CCCCCCCC
+!-----------------------------------------------------------------------------------------------------------------------------------
       call fixedwidth(iffixed)                        ! text is fixed space or not for xmin labels
       call xy_jufont(fontN)
       call textsize(TXTBWM, TXTBHM)                   ! set text size for numeric labels
@@ -8936,7 +9692,7 @@ real           :: yup
       else
          sy=ybase-iup*(ticlnt+factor*TXTBHM)-TXTBHM    ! height to print x-axis numeric labels at
       endif
-!----------------------------------------------------------------------CCCCCCCCC
+!-----------------------------------------------------------------------------------------------------------------------------------
       call xy_rasters(idwid)                             ! set curve width
       botmajor=ybase-iup*ticln                        ! yvalue of end of major tic
       botminor=ybase-iup*ticlnminor                   ! yvalue of end of minor tic
@@ -8952,16 +9708,16 @@ real           :: yup
             call draw2(sx, min(botmajor+0.1*TXTBHM,ybase))
          endif
       enddo
-!----------------------------------------------------------------------CCCCCCCCC
+!-----------------------------------------------------------------------------------------------------------------------------------
       call xy_rasters(imin_w)                            ! width of lines to draw software text
       do i20=0,idivs
          sx = i20 * (xlarge-xsmall)/x * xstep + xsmall
          alabel = vals + xstep * i20                  ! calculate the number and convert it to a string
          call priv_labelx(alabel,sx,sy,TXTBWM,TXTBHM,xstep,i20+1,ilogx,fmt,iaxis)
       enddo
-!----------------------------------------------------------------------CCCCCCCCC
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     place label on x-axis
-!----------------------------------------------------------------------CCCCCCCCC
+!-----------------------------------------------------------------------------------------------------------------------------------
       call xy_rasters(imin_w)  ! width of lines to draw software text
       if(axisl(iaxis) .ne. ' ')then
          call fixedwidth(iffixed2)   ! text is fixed space or not for xlabel labels
@@ -8986,7 +9742,7 @@ real           :: yup
          call xy_rasters(ilabel_w)                              ! width of lines to draw software text
          call xy_juprint(xx,xlabely,axisl(iaxis),1)   ! print x-axis label
       endif
-!-----------------------------------------------------------------------CCCCCCCC
+!-----------------------------------------------------------------------------------------------------------------------------------
       call xy_rasters(idwid)
 end subroutine priv_drawx
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -9124,7 +9880,7 @@ use M_time,    only : fmtdate, unix_to_date
 implicit none
 
 character(len=*),parameter::ident_72="&
-&@(#)M_xyplot::xy_toa(3fp): convert number to a nice string (1 to 20 characters) or explicit string for an axis label"
+&@(#)M_xyplot::xy_toa(3f): convert number to a nice string (1 to 20 characters) or explicit string for an axis label"
 
 real,intent(in)                 :: val32   ! number to convert to a string
 character(len=*),intent(out)    :: form    ! return string to hold ASCII representation of number
@@ -9310,7 +10066,7 @@ subroutine xy_setdatarange(x8)
 implicit none
 
 character(len=*),parameter::ident_75="&
-&@(#)M_xyplot::xy_setdatarange(3fp): set plot window extremes, set plot window extremes for dual axis"
+&@(#)M_xyplot::xy_setdatarange(3f): set plot window extremes, set plot window extremes for dual axis"
 
 real       :: x8(8)
 integer    :: i10
@@ -9321,6 +10077,16 @@ integer    :: i10
 end subroutine xy_setdatarange
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!    plot_getdatarange(3f) - [M_xyplot] get plot window extremes, set plot window extremes for dual axi
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
 !===================================================================================================================================
 subroutine plot_getdatarange(X8)
 implicit none
@@ -9341,7 +10107,7 @@ end subroutine plot_getdatarange
 subroutine plot_setticper(TICPRX0,TICPRY0,TICPRX20,TICPRY20,TYPE)
 implicit none
 
-character(len=*),parameter::ident_77="@(#)M_xyplot::plot_setticper(3fp): set tic size"
+character(len=*),parameter::ident_77="@(#)M_xyplot::plot_setticper(3f): set tic size"
 
 character(len=*)        :: type
 real                    :: ticprx0
@@ -9403,7 +10169,7 @@ subroutine xy_getscale(iadd,xslope,xinter,yslope,yinter)
 use M_draw
 implicit none
 
-character(len=*),parameter::ident_78="@(#)M_xyplot::xy_getscale(3fp): set up scaling between graphing area and user-scaled axis"
+character(len=*),parameter::ident_78="@(#)M_xyplot::xy_getscale(3f): set up scaling between graphing area and user-scaled axis"
 
 ! iadd=0 uses left and bottom axis
 real           :: left,right,bottom,top
@@ -9422,7 +10188,7 @@ real           :: ymax0t
 real           :: ymaxt
 real           :: ymin0t
 real           :: ymint
-!CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCcccccccc
+!-----------------------------------------------------------------------------------------------------------------------------------
    call getviewport(left, right, bottom, top)
    call plot_get_plot_area(xmint,xmaxt,ymint,ymaxt)
    call priv_getpage(xmin0t,xmax0t,ymin0t,ymax0t)
@@ -9430,7 +10196,7 @@ real           :: ymint
    xinter=xmaxt-xslope*valsq2(iadd+5)
    yslope=(ymaxt-ymint)/(valsq2(iadd+7)-valsq2(iadd+6)) ! oldy=yslope*newy+yinter
    yinter=ymaxt-yslope*valsq2(iadd+7)
-!CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCcccccccc
+!-----------------------------------------------------------------------------------------------------------------------------------
 !  call a window and viewport just so do not have to do own clipping
    call viewport(                                            &
   & left  +(xmint-xmin0t)/(xmax0t-xmin0t)*(right-left),      &
@@ -9602,7 +10368,7 @@ use M_drawplus, only : pop, push
 implicit none
 
 character(len=*),parameter::ident_83="&
-&@(#)M_xyplot::xy_line(3fp): draw polyline using data in xy_arrayx xy_arrayy, using pen style ipen"
+&@(#)M_xyplot::xy_line(3f): draw polyline using data in xy_arrayx xy_arrayy, using pen style ipen"
 
 !===================================================================================================================================
 integer                       :: iadd
@@ -9656,6 +10422,16 @@ end subroutine xy_line
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    priv_drawseg_using_pen(3fp) - [M_xyplot] draw a line using pen style ipen NOT to axis scale NOT setting colo
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine priv_drawseg_using_pen(ipen,x1,y1,x2,y2)
 implicit none
 
@@ -9683,8 +10459,26 @@ end subroutine priv_drawseg_using_pen
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    plot_setdash(3f) - [M_xyplot] allow user to display|alter|retrieve  dash codes by style numbe
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!   parms can be:
+!!       o null: display current patterns
+!!       o fetch: retrieve a stored pattern
+!!       o scale: resize and retrieve patterns for drawing grid lines
+!!                Make pattern a nice size so it repeats in intervals that
+!!                make nice intersections when used as a grid
+!!       o reset: set back to default values
+!!       o something else: store a pattern
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine plot_setdash(parms,iwhich,patout,isize,ipatout)
-!-----------------------------------------------------------------------
+
 !     1992 John S. Urban
 use M_journal, only : journal
 use M_strings, only : listout
@@ -9694,14 +10488,6 @@ character(len=*),parameter::ident_85="&
 &@(#)M_xyplot::plot_setdash(3f):  allow user to display|alter|retrieve  dash codes by style number"
 
 character(len=*),intent(in) :: parms   ! action keyword
-!     parms can be:
-!         o null: display current patterns
-!         o fetch: retrieve a stored pattern
-!         o scale: resize and retrieve patterns for drawing grid lines
-!                  Make pattern a nice size so it repeats in intervals that
-!                  make nice intersections when used as a grid
-!         o reset: set back to default values
-!         o something else: store a pattern
 
 integer,intent(in)  :: iwhich         ! which pattern number to work on.  if iwhich is 0, a solid line pattern is returned
 integer,intent(in)  :: isize          ! size of patout
@@ -9731,7 +10517,7 @@ real             :: ymax0dum
 real             :: ymaxt
 real             :: ymin0dum
 real             :: ymint
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 character(len=255)          :: temp1
 integer,parameter           :: IDSHS=20 ! number of normal pen styles
 integer,parameter           :: IPATS=12 ! maximum number of codes in a pattern
@@ -9767,10 +10553,11 @@ data (patdef(17,jj),jj=0,IPATS)/2.0,1.7,1.0,10*0.0/
 data (patdef(18,jj),jj=0,IPATS)/2.0,1.8,1.0,10*0.0/
 data (patdef(19,jj),jj=0,IPATS)/2.0,1.9,1.0,10*0.0/
 data (patdef(20,jj),jj=0,IPATS)/2.0,2.0,1.0,10*0.0/
-!!======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
    if(parms.eq.'reset')then
       icalls=0
    endif
+!-----------------------------------------------------------------------------------------------------------------------------------
    if(icalls.eq.0)then ! initialize with default values
       do i33=-4,IDSHS
          do i44=0,IPATS
@@ -9780,9 +10567,10 @@ data (patdef(20,jj),jj=0,IPATS)/2.0,2.0,1.0,10*0.0/
       icalls=1
       return
    endif
-!!======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
    call priv_getpage(xmin0t,xmax0t,ymin0dum,ymax0dum)
    !list non-default legend labels
+!-----------------------------------------------------------------------------------------------------------------------------------
    if(parms.eq.' ')then ! if no parameters are present or filename present
       call journal('s','#-------------------------------------------------')
       do i10=1,IDSHS
@@ -9795,8 +10583,7 @@ data (patdef(20,jj),jj=0,IPATS)/2.0,2.0,1.0,10*0.0/
          call journal(temp1)
       enddo
       call journal('s','#-------------------------------------------------')
-      return
-!!======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
    elseif(parms.eq.'fetch')then      ! fetch a stored pattern
       iwhich2=iwhich
       if(iwhich2.gt.0)then           ! a normal line
@@ -9822,8 +10609,7 @@ data (patdef(20,jj),jj=0,IPATS)/2.0,2.0,1.0,10*0.0/
             patout(i20)=pat(iwhich2,i20)
          endif
       enddo
-      return
-!=======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
 !  make nice grid patterns that fit multiple times across a plot (must be redone for every plot)
    elseif(parms.eq.'scale')then      ! define pens -1,-2,-3,-4 for drawing grid with
       call plot_get_plot_area(xmint,xmaxt,ymint,ymaxt)
@@ -9837,6 +10623,14 @@ data (patdef(20,jj),jj=0,IPATS)/2.0,2.0,1.0,10*0.0/
 !     probably should put those values into an xy_array in common
       do i90=1,4
          sum=0.0  ! calculate length of pattern
+
+         if(ipens(i90).gt.IDSHS)then
+            ipens(i90)=mod(iwhich,IDSHS+1)
+         elseif(ipens(i90).lt.-4)then      ! user error
+            ipens(i90)=abs(ipens(i90))
+            ipens(i90)=mod(iwhich,IDSHS+1)
+         endif
+
          do i70=1, max(1,int(pat(ipens(i90),0)))
             sum=sum+max(0.0,pat(ipens(i90),i70)) ! make sure to ignore -int values, which denote a marker
          enddo
@@ -9876,50 +10670,60 @@ data (patdef(20,jj),jj=0,IPATS)/2.0,2.0,1.0,10*0.0/
             pat(-3,i97)=pat(-4,i97)
          enddo
       endif
-      return
-   endif
-!!======================================================================
-!  set a pattern
-   call xy_retrv2('setdash_oo',temp1,lennum,ier) ! get list of pattern numbers to change
-   if(lennum.eq.0)then
-      call journal('*setdash* changing all curve numbers')
-      iend=IDSHS
-      do i40=1,IDSHS
-         icurv(i40)=i40
-      enddo
+!-----------------------------------------------------------------------------------------------------------------------------------
    else
-     ierr=0
-     call strgar2(fetch('setdash_oo'),IDSHS,rcurv1,igot,' ',ierr)
-     if(ierr.ne.0.or.igot.le.0)then
-      call journal('*setdash* stopped: undecipherable id number(s)')
-      return
-     endif
-     call listout(int(rcurv1(:igot)),icurv(:IDSHS),igot,ierr2) ! get up to IDSHS curves
-     iend=igot
-   endif
-!!======================================================================
-   rpat(1)=0.0 ! in case no numbers in pattern
-   call strgar2(fetch('setdash_p'),IPATS,rpat,igot,' ',ierr)
-!!======================================================================
-   do i30=1,iend
-      ! get pattern number
-      lnum=min(max(1,icurv(i30)),IDSHS) ! get a pattern number to replace, should probably yell about out-of-range numbers
-      if(igot.eq.0)then
-         !call journal('sc',"*setdash* restore pen ",lnum)
-         do i444=0,IPATS                       ! restore default dashcode
-            pat(lnum,i444)=patdef(lnum,i444)
+! set a pattern
+      call xy_retrv2('setdash_oo',temp1,lennum,ier) ! get list of pattern numbers to change
+      if(lennum.eq.0)then
+         call journal('*setdash* changing all curve numbers')
+         iend=IDSHS
+         do i40=1,IDSHS
+            icurv(i40)=i40
          enddo
       else
-         pat(lnum,0)=min(igot,IPATS)           ! store number of numbers in this pattern
-         do i50=1,min(igot,IPATS)
-            pat(lnum,i50)=rpat(i50)            ! store pattern numbers
-         enddo
+        ierr=0
+        call strgar2(fetch('setdash_oo'),IDSHS,rcurv1,igot,' ',ierr)
+        if(ierr.ne.0.or.igot.le.0)then
+         call journal('*setdash* stopped: undecipherable id number(s)')
+         return
+        endif
+        call listout(int(rcurv1(:igot)),icurv(:IDSHS),igot,ierr2) ! get up to IDSHS curves
+        iend=igot
       endif
-   enddo
-!!======================================================================
+
+      rpat(1)=0.0 ! in case no numbers in pattern
+      call strgar2(fetch('setdash_p'),IPATS,rpat,igot,' ',ierr)
+
+      do i30=1,iend
+         ! get pattern number
+         lnum=min(max(1,icurv(i30)),IDSHS) ! get a pattern number to replace, should probably yell about out-of-range numbers
+         if(igot.eq.0)then
+            !call journal('sc',"*setdash* restore pen ",lnum)
+            do i444=0,IPATS                       ! restore default dashcode
+               pat(lnum,i444)=patdef(lnum,i444)
+            enddo
+         else
+            pat(lnum,0)=min(igot,IPATS)           ! store number of numbers in this pattern
+            do i50=1,min(igot,IPATS)
+               pat(lnum,i50)=rpat(i50)            ! store pattern numbers
+            enddo
+         endif
+      enddo
+!-----------------------------------------------------------------------------------------------------------------------------------
+   endif
+!-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine plot_setdash
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!##SYNOPSIS
+
+!!##DESCRIPTI
+!!##OPTIONS
+!!##EXAMPLE
+!
 !===================================================================================================================================
 subroutine xy_resetpens()
 implicit none
@@ -9973,6 +10777,19 @@ end subroutine xy_resetpens
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    xy_jurang(3f) - [M_xyplot] return nice max and min values for the axis, and nice axis grid spacing
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!    adjust the scaling according to user limits if specified
+!!
+!!    caution: changes xlow,ylow,xhigh,yhigh
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine xy_jurang(iside,xlow,ylow,xhigh,yhigh,      &
 & xtreme,ytreme,ideltax,ideltay,RANGE,ilogx,ilogy,     &
 & lllogx,lllogy,lllxact,                               &
@@ -9984,10 +10801,8 @@ use M_math, only : scale1
 implicit none
 
 character(len=*),parameter::ident_86="&
-&@(#)M_xyplot::xy_jurang(3fp): return nice max and min values for the axis, and nice axis grid spacings"
+&@(#)M_xyplot::xy_jurang(3f): return nice max and min values for the axis, and nice axis grid spacings"
 
-! adjust the scaling according to user limits if specified
-! caution: changes xlow,ylow,xhigh,yhigh
 
 integer,intent(in)           :: iside
 real,intent(inout)           :: xlow, ylow, xhigh, yhigh
@@ -10008,7 +10823,7 @@ real                         :: xdist
 real                         :: xminor
 real                         :: ydist
 real                         :: yminor
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       call priv_setrng(RANGE(1),xlow,ichange(1)) ! adjust the scaling according to user limits if specified
       call priv_setrng(RANGE(2),xhigh,ichange(3))
       if(iside.eq.1)then
@@ -10018,13 +10833,13 @@ real                         :: yminor
          call priv_setrng(RANGE(8),yhigh,ichange(4))
          call priv_setrng(RANGE(7),ylow,ichange(2))
       endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     avoid bug where plot fails if zero range in abscissa or ordinate
       call priv_hilow(xlow,xhigh)
       call priv_hilow(ylow,yhigh)
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     decide on nice values for axis ranges
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     get nice values for x values
       if (lllogx.and.xlow.gt.0)then     ! if desire logarithmic x and no values .le. 0
        call priv_logrng(xlog_type,ixtic,ilog,xlow,xhigh,ixdiv,xtreme,ideltax)
@@ -10040,7 +10855,7 @@ real                         :: yminor
          call scale1(0.0,abs(xdist),ixtic,dum1,dum2,xminor)
          ideltax(2)=xdist/xminor+0.5
       endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     get nice values for y values
 !     CHECK IF RETURNED VALUES CAN HAVE LOG TAKEN OF THEM
       if (lllogy.and.ylow.gt.0)then
@@ -10057,7 +10872,7 @@ real                         :: yminor
          call scale1(0.0,abs(ydist),iytic,dum1,dum2,yminor)           ! find a nice number of minor tics
          ideltay(2)=ydist/yminor+0.5                               ! a nice number of minor tics
       endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       if(lllxact)then ! exact mode is on, so ignore most of these calculations if user specified some specific values
 
          if(ichange(1).eq.1)then
@@ -10087,16 +10902,26 @@ real                         :: yminor
             if(ilogy.eq.-1)ideltay(2)=iytic           ! if linear scales, use number of minor tics from grid command
          endif
       endif
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine xy_jurang
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!    xy_con_x(3f) - [M_xyplot] scale an axis value to the overall window/viewpor
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
 !===================================================================================================================================
 function xy_con_x(xvalue0) result(xvalue)
 use M_journal, only : journal
 implicit none
 
-character(len=*),parameter::ident_87="@(#)M_xyplot::xy_con_x(3fp): scale an axis value to the overall window/viewport"
+character(len=*),parameter::ident_87="@(#)M_xyplot::xy_con_x(3f): scale an axis value to the overall window/viewport"
 
 real     :: xvalue0
 real     :: xvalue
@@ -10114,11 +10939,21 @@ end function xy_con_x
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    xy_con_y(3f) - [M_xyplot] scale an axis value to the overall window/viewpor
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 function xy_con_y(yvalue0) result(yvalue)
 use M_journal, only : journal
 implicit none
 
-character(len=*),parameter::ident_88="@(#)M_xyplot::xy_con_y(3fp): scale an axis value to the overall window/viewport"
+character(len=*),parameter::ident_88="@(#)M_xyplot::xy_con_y(3f): scale an axis value to the overall window/viewport"
 
 real     :: yvalue0
 real     :: yvalue
@@ -10136,11 +10971,21 @@ end function xy_con_y
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    xy_setcnv(3f) - [M_xyplot] set up conversion table for xy_con_x and xy_con_y function
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine xy_setcnv(ilogx,ilogy)
 use M_drawplus, only : pop, push
 implicit none
 
-character(len=*),parameter::ident_89="@(#)M_xyplot::xy_setcnv(3fp): set up conversion table for xy_con_x and xy_con_y functions"
+character(len=*),parameter::ident_89="@(#)M_xyplot::xy_setcnv(3f): set up conversion table for xy_con_x and xy_con_y functions"
 
 integer,intent(in) :: ilogx
 integer,intent(in) :: ilogy
@@ -10156,12 +11001,22 @@ end subroutine xy_setcnv
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    xy_jugetwn(3f) - [M_xyplot] query current window ( appropriate for 2-d only
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine xy_jugetwn(xsmall,xlarge,ysmall,ylarge)
-!-------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 use M_draw
 implicit none
 
-character(len=*),parameter::ident_90="@(#)M_xyplot::xy_jugetwn(3fp): query current window ( appropriate for 2-d only)"
+character(len=*),parameter::ident_90="@(#)M_xyplot::xy_jugetwn(3f): query current window ( appropriate for 2-d only)"
 
 real,intent(out) :: xsmall
 real,intent(out) :: xlarge
@@ -10169,7 +11024,7 @@ real,intent(out) :: ysmall
 real,intent(out) :: ylarge
 real             :: xhold, yhold, zhold
 real             :: rleft, right, bottom, top
-!-------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     anything you can set you should be able to query.
 !     BUG: current position not updated by a smove2 unless draw something
 
@@ -10199,6 +11054,16 @@ end subroutine xy_jugetwn
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    xy_zoom(3f) - [M_xyplot] given current four numbers defining a box; alter them by indicated selections of an old and new bo
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine xy_zoom(xmin,ymin,xmax,ymax,iend)
 use M_journal,  only : journal
 use M_draw
@@ -10206,7 +11071,7 @@ use M_drawplus, only : rdbox
 use M_drawplus, only : plain_rect
 implicit none
 
-character(len=*),parameter::ident_91="@(#)M_xyplot::xy_zoom(3fp):  given current four numbers defining a box"
+character(len=*),parameter::ident_91="@(#)M_xyplot::xy_zoom(3f):  given current four numbers defining a box"
 
 real             :: high1
 real             :: high2
@@ -10281,7 +11146,7 @@ real             :: yratio
       call vflush()
       xecho=x4
       yecho=y4
-!#-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     simplistic approach to deciding when to quit. better method should be developed
       width1=abs(x2-x1)
       high1=abs(y2-y1)
@@ -10293,29 +11158,29 @@ real             :: yratio
       endif
       xratio=width2/width1
       yratio=high2/high1
-!#-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     find coordinates of middle point of box 1 and box 2
       xm1=(x1+x2)/2.0
       ym1=(y1+y2)/2.0
       xm2=(x3+x4)/2.0
       ym2=(y3+y4)/2.0
-!#-----------------------------------------------------------------------
-!     move box1 so it's center is in center of box2
+!-----------------------------------------------------------------------------------------------------------------------------------
+!     move box1 so its center is in center of box2
       xdel=xm2-xm1
       xmin2=xmin-xdel
       xmax2=xmax-xdel
       ydel=ym2-ym1
       ymin2=ymin-ydel
       ymax2=ymax-ydel
-!#-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     the new xmin,xmax,ymin,ymax represent a new translated window where
 !     the middle of the old box is now where the middle of the new box was.
 !     since no scaling has occurred yet, the x-range and y-range are still
 !     the same.
-!#-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     Now, to keep the center point where it is but stretch the old box
 !     to the size of the new box.
-!#-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     The coordinates of point <xm1,ym1> stay the same,
 !     The overall distance of the stretched xscale should be
       rangenew=(xmax2-xmin2)/xratio
@@ -10324,48 +11189,70 @@ real             :: yratio
       xback=rangenew*(xm2-xmin)/(xmax-xmin)
       xmin3=xm1-xback
       xmax3=xmin3+rangenew
-!#-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       yrangenew=(ymax2-ymin2)/yratio    ! same thing for the y scaling
       yback=yrangenew*(ym2-ymin)/(ymax-ymin)
       ymin3=ym1-yback
       ymax3=ymin3+yrangenew
-!#-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       xmax=xmax3   ! store the new plot range to use and flag they are usable
       xmin=xmin3
       ymax=ymax3
       ymin=ymin3
       iend=0
-!#-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 999   continue
       call vflush()
 end subroutine xy_zoom
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
-subroutine xy_convert(a,b,x,n)
-!     1993 John S. Urban
-!
-!     used to do a fast conversion of an entire set of data
-!     instead of reparsing the text over and over with the
-!     math command. A linear conversion is very common for
-!     such operations as unit conversion.
-!
-!! xy_convert(slope,intercept) # A linear conversion
+!>
+!!##NAME
+!!    xy_convert(3f) - [M_xyplot] do linear conversion for XY plot routine
 !!
-!!        Allows +-*/  operations on a dataset after
-!!        operations have been performed.  Does a conversion of the form
+!!##SYNOPSIS
+!!
+!!   xy_convert(slope,intercept,x,n) # A linear conversion
+!!
+!!    real       :: slope
+!!    real       :: intercept
+!!    real       :: x(*)
+!!    integer    :: n
+!!
+!!##DESCRIPTION
+!!    used to do a fast conversion of an entire set of data
+!!    instead of reparsing the text over and over with the
+!!    math command. A linear conversion is very common for
+!!    such operations as unit conversion.
+!!
+!!    Allows +-*/  operations on a dataset after
+!!    operations have been performed.  Does a conversion of the form
+!!
 !!           y=mx+b
+!!
 !!        where
+!!
 !!           the slope is m
 !!           the y-intercept is b
+!!
 !!        if the intercept is left off, it defaults to a value of 0.
-!!           math c[4] -o xy_convert(1,40) xy_convert(9/5,-40)
-!!           # equivalent to but faster than
-!!           # math  (c[4]+40)*9/5-40 # xy_convert Centigrade to Fahrenheit
+!!
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!!  Showing usage from ush(1):
+!!
+!!    math c[4] -o xy_convert(1,40) xy_convert(9/5,-40)
+!!    # equivalent to but faster than
+!!    # math  (c[4]+40)*9/5-40 # xy_convert Centigrade to Fahrenheit
+!===================================================================================================================================
+subroutine xy_convert(a,b,x,n)
+!     1993 John S. Urban
 use M_journal, only : journal
 implicit none
 
-character(len=*),parameter::ident_92="@(#)M_xyplot::xy_convert(3fp): do a linear conversion on an xy_array of the form y=ax+b"
+character(len=*),parameter::ident_92="@(#)M_xyplot::xy_convert(3f): do a linear conversion on an xy_array of the form y=ax+b"
 
 real       :: x(*)
 real       :: a
@@ -10389,6 +11276,16 @@ integer    :: i10, i20
 end subroutine xy_convert
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!    priv_hilow(3fp) - [M_xyplot] avoid bug where plot fails if zero range in abscissa or ordinat
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
 !===================================================================================================================================
 subroutine priv_hilow(rmin,rmax)
 implicit none
@@ -10417,6 +11314,16 @@ end subroutine priv_hilow
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    priv_jubox(3fp) - [M_xyplot] draw a filled box around current scaled plot are
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine priv_jubox(imidl,XMIN,YMIN,XMAX,YMAX)
 use M_draw
 use M_drawplus, only : plain_rect
@@ -10437,6 +11344,16 @@ end subroutine priv_jubox
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    priv_jugrid(3fp) - [M_xyplot] draw linear and logarithmic grids after actual axis have been draw
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine priv_jugrid(ixdiv,iydiv,igrid,vals,XMIN,XMAX,YMIN,YMAX,     &
      &idcol,idwid,ilogx,ilogy,TICLNY,TICLNX,TICLNY2,TICLNX2,            &
      &aymul,aycon,icrvs2,icrvs)
@@ -10455,7 +11372,7 @@ character(len=*),parameter::ident_95="&
 
 !     since tic length can now be controlled have to redraw major tics that might be inside
 !     maybe need to lengths for each tic, in and out !!!!!!!!!!
-      integer ixdiv(4), iydiv(4)
+integer ixdiv(4), iydiv(4)
 !
 !     igrid is an integer xy_array of flags designating styles:
 !     0 - grid, 1 - tic, 2 - plain
@@ -10576,7 +11493,7 @@ real            :: yystep2
       ! rmax   <- value of far edge line must end at before going out of plot
       ! ticlen <- length of tic mark for axis
       ! istyle -> set to zero for solid lines for drawing tics
-!-------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       cony= (YMAX - YMIN) / y * ystep
       if(XMIN.ne.xmaxend1)then          ! draw major grid lines
          call color(idcol(-1))          ! set color
@@ -10586,7 +11503,7 @@ real            :: yystep2
             call priv_drawseg_using_pen(ix1,XMIN,sy,xmaxend1,sy) ! major grid y-axis grid lines
          enddo
       endif
-!-------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
        if(XMIN.ne.xmaxend2)then                             ! draw minor grid lines
           call color(idcol(-2))
           call xy_rasters(idwid(-2))
@@ -10611,7 +11528,7 @@ real            :: yystep2
              endif
           enddo
       endif
-!-------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       conx = (XMAX-XMIN)/x * xstep
       if(YMIN.ne.ymaxend1)then                   ! draw major grid lines
          call color(idcol(-1))                   ! set color
@@ -10621,7 +11538,7 @@ real            :: yystep2
             call priv_drawseg_using_pen(iy1,sx,YMIN,sx,ymaxend1)  ! major x-axis grid lines
          enddo
       endif
-!-------------------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       if(YMIN.ne.ymaxend2)then                 ! draw minor grid lines
          call color(idcol(-2))                 ! set color
          call xy_rasters(idwid(-2))               ! set curve width
@@ -10646,9 +11563,9 @@ real            :: yystep2
              endif
           enddo
       endif
-      !-----------------------------------------------------------------------
+      !-----------------------------------------------------------------------------------------------------------------------------------
       !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      !-----------------------------------------------------------------------
+      !-----------------------------------------------------------------------------------------------------------------------------------
       if(icrvs2.ne.icrvs.or.aymul.ne.0.0)then  ! put tics pointing out on right axis
          if(aymul.ne.0)then
             ! force right step to be correct size
@@ -10677,9 +11594,9 @@ real            :: yystep2
                call priv_drawseg_using_pen(-1,XMAX,sy,XMAX+TICLNY,sy)   ! right-axis major tic lines
             endif
          enddo
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
          if(XMIN.ne.xmaxend2)then !        draw minor grid lines
             call color(idcol(-2))
             call xy_rasters(idwid(-2))
@@ -10710,9 +11627,9 @@ real            :: yystep2
             enddo
          endif
       endif
-!-----------------------------------------------------------------------
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
+! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
+!-----------------------------------------------------------------------------------------------------------------------------------
 !     draw thickened border
       call color(idcol(0))
       call xy_rasters(idwid(0))
@@ -10720,16 +11637,26 @@ real            :: yystep2
          call plain_rect(XMIN,YMIN,XMAX,YMAX)  ! thickened axis border
       endif
       call xy_rasters(idwid(-1))
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       call stuff('GRID_XMIN',XMIN,'')  ! store corners of gridded area in page coordinates for Ted Rodack
       call stuff('GRID_YMIN',YMIN,'')  ! who wants to put on his own ylabels (multiple line)
       call stuff('GRID_XMAX',XMAX,'')
       call stuff('GRID_YMAX',YMAX,'')
-!-----------------------------------------------------------------------
+!-----------------------------------------------------------------------------------------------------------------------------------
       !call clipping(.true.)        ! turn clipping on
 end subroutine priv_jugrid
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!    priv_logrng(3fp) - [M_xyplot] return nice ranges for logarithmic scale
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
 !===================================================================================================================================
 subroutine priv_logrng(logtype,itic,ilog,rmin,rmax,idiv,treme,idel)
 use M_math, only : scale1
@@ -10770,8 +11697,18 @@ end subroutine priv_logrng
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    xy_obj12345(3f) - [M_xyplot] create or close M_plot object 1234
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine xy_obj12345(string)
-! create or close VOGLE object 12345
+! create or close M_plot object 12345
 ! for use in defining displayed pages as an object so they can be easily copied
 ! using the hcopy command
 !
@@ -10779,7 +11716,7 @@ use M_draw
 use M_drawplus, only : pop, push
 implicit none
 
-character(len=*),parameter::ident_97="@(#)M_xyplot::xy_obj12345(3fp): create or close VOGLE object 12345"
+character(len=*),parameter::ident_97="@(#)M_xyplot::xy_obj12345(3f): create or close M_plot object 12345"
 
 logical                     :: ldummy
 character(len=*),intent(in) :: string
@@ -10787,7 +11724,7 @@ integer                     :: idum
    if(string.eq.'before')then
       call plot_clear('all')! clear display
       call plot_storage     ! if on a tektronix 4014 that is not an xterm
-      call push()      ! save VOGLE environment so can restore it
+      call push()      ! save M_plot environment so can restore it
       idum=backbuffer()!
       ldummy=xy_ifdrawn() ! let other routines know something has been drawn
       if(isobj(12345))then ! get rid of any previous object 12345
@@ -10805,6 +11742,16 @@ integer                     :: idum
 end subroutine xy_obj12345
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!    priv_setrng(3fp) - [M_xyplot] adjust the scaling according to user limits if specifie
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
 !===================================================================================================================================
 subroutine priv_setrng(rin,value,ichange)
 implicit none
@@ -10825,6 +11772,16 @@ end subroutine priv_setrng
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    priv_solidline(3fp) - [M_xyplot] override dash code and symbol drawing and draw solid line for error bar
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine priv_solidline(mode)  ! override dash code and symbol drawing and draw solid line for error bars
 implicit none
 
@@ -10837,12 +11794,26 @@ end subroutine priv_solidline
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
-subroutine priv_toscale(x, y, n,con,keyword)
-!! priv_toscale
+!>
+!!##NAME
+!!    priv_toscale(3f) - [M_xyplot] draw line using current pen style either to axis or current window
+!!##SYNOPSIS
 !!
-!!      Draw a line using the current pen style (line width, color, dash code,
-!!      symbols, under/over fill style) either to an axis or the current plot
-!!      window.
+!!   subroutine priv_toscale(x, y, n,con,keyword)
+!!
+!!    real                        :: x(*), y(*)    ! warning: changes curve values x,y if log plots made -consider data destroyed !
+!!    integer,intent(in)          :: n             ! number of points in X() and Y() to consider for plotting
+!!    real,intent(in)             :: con(7)        ! xslope,xinter,yslope,yinter,xlogflag,ylogflag
+!!    character(len=*),intent(in) :: keyword       ! flag whether to draw to axis or current plot window
+!!##DESCRIPTION
+!!    Draw a line using the current pen style (line width, color, dash code,
+!!    symbols, under/over fill style) either to an axis or the current plot
+!!    window.
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
+subroutine priv_toscale(x, y, n,con,keyword)
 use M_journal, only : journal
 use M_draw
 implicit none
@@ -10995,6 +11966,16 @@ end subroutine priv_toscale
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    priv_endgrid(3fp) - [M_xyplot] determine length of major and minor grid line
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine priv_endgrid(iflag,endnew,rmax,rmin,ticlen,istyle)
 !
 use M_journal, only : journal
@@ -11025,6 +12006,17 @@ integer,intent(inout) :: istyle !-> set to zero for solid lines for drawing tics
 end subroutine priv_endgrid
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!
+!!    priv_judash(3fp) - [M_xyplot] draw dashed lin
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
 !===================================================================================================================================
 subroutine priv_judash(x,y,n,pat,ipat,offset)
 use M_draw
@@ -11082,7 +12074,7 @@ real             :: sumlen
 !         consider always putting a point at the data points themselves
 !         put out a point for a 0-length dash
 !***********************************************************************
-!======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
       sumlen=0
       if(ipat.gt.1)then                         ! avoid patterns with a combined length of zero
          do i30=1,ipat
@@ -11095,74 +12087,84 @@ real             :: sumlen
          enddo
          return
       endif
-!======================================================================
+!-----------------------------------------------------------------------------------------------------------------------------------
       call getgp2(fromx,fromy)                  ! get coordinates of point to start from
       if(lastx.eq.fromx.and.lasty.eq.fromy)then
       else                                      ! we are starting a new line, not continuing a continuous line
          index = 0                              ! point to beginning of length patterns
          seglen=0
       endif
-!======================================================================
-      do 10 i10=1,n
-      curx = fromx                              ! point to start from
-      cury = fromy                              !
-      dx = x(i10) - fromx
-      dy = y(i10) - fromy
-      diag = sqrt(dx*dx + dy*dy)                ! length of total section from fromx,fromy to tox,toy to cover with the pattern
-      dist = diag                               ! remaining length of section not covered with the pattern yet
-      offtemp=0.0
-      if(seglen.gt.0)goto 47
-!======================================================================
-      offtemp=offset
-45    continue                                  ! this is the tight drawing loop- cycle thru the line lengths in pat
-      index = mod(index, ipat) + 1
-      if(offtemp.le.0)then
-         seglen = pat(index)
-      else
-         seglen=offtemp
+!-----------------------------------------------------------------------------------------------------------------------------------
+      do i10=1,n
+         curx = fromx                              ! point to start from
+         cury = fromy                              !
+         dx = x(i10) - fromx
+         dy = y(i10) - fromy
+         diag = sqrt(dx*dx + dy*dy)                ! length of total section from fromx,fromy to tox,toy to cover with the pattern
+         dist = diag                               ! remaining length of section not covered with the pattern yet
          offtemp=0.0
-      endif
-      if(seglen.lt.0.0)then
-        imark=abs(seglen)
-        seglen=0
-      else
-        imark=0
-      endif
-47    continue
-      if (seglen .le. dist.and.dist.ne.0) then
-         f = seglen/diag
-         curx = curx + dx*f
-         cury = cury + dy*f
-         if(imark.ne.0)then                  ! a zero-length segment with a flag to draw a marker
-            call priv_jusym([curx],[cury],1,1,imark,-1)  ! draw specified symbol HOW TO SPECIFY SIZE?
-            call move2(curx,cury)
-         elseif(mod(index,2).eq.0)then       ! even so make a gap
-            call move2(curx,cury)
-         else                                ! odd so make a dash
-            call draw2(curx,cury)
-         endif
-         dist=dist-seglen
-         goto 45
-      endif
-!======================================================================
-      if (dist .ne. 0.) then            ! the distance to end is shorter than next segment.  if dash mode, draw short segment
-         if(mod(index,2).eq.0)then
-             call move2(x(i10),y(i10))
+         if(seglen.gt.0)goto 47
+!-----------------------------------------------------------------------------------------------------------------------------------
+         offtemp=offset
+45       continue                                  ! this is the tight drawing loop- cycle thru the line lengths in pat
+         index = mod(index, ipat) + 1
+         if(offtemp.le.0)then
+            seglen = pat(index)
          else
-             call draw2(x(i10),y(i10))
+            seglen=offtemp
+            offtemp=0.0
          endif
-      endif
-!======================================================================
-      seglen = seglen - dist            ! save our last values so we can pick up next call if necessary
-      fromx=x(i10)
-      fromy=y(i10)
-10    continue
-!======================================================================
+         if(seglen.lt.0.0)then
+           imark=abs(seglen)
+           seglen=0
+         else
+           imark=0
+         endif
+47       continue
+         if (seglen .le. dist.and.dist.ne.0) then
+            f = seglen/diag
+            curx = curx + dx*f
+            cury = cury + dy*f
+            if(imark.ne.0)then                  ! a zero-length segment with a flag to draw a marker
+               call priv_jusym([curx],[cury],1,1,imark,-1)  ! draw specified symbol HOW TO SPECIFY SIZE?
+               call move2(curx,cury)
+            elseif(mod(index,2).eq.0)then       ! even so make a gap
+               call move2(curx,cury)
+            else                                ! odd so make a dash
+               call draw2(curx,cury)
+            endif
+            dist=dist-seglen
+            goto 45
+         endif
+!-----------------------------------------------------------------------------------------------------------------------------------
+         if (dist .ne. 0.) then            ! the distance to end is shorter than next segment.  if dash mode, draw short segment
+            if(mod(index,2).eq.0)then
+                call move2(x(i10),y(i10))
+            else
+                call draw2(x(i10),y(i10))
+            endif
+         endif
+!-----------------------------------------------------------------------------------------------------------------------------------
+         seglen = seglen - dist            ! save our last values so we can pick up next call if necessary
+         fromx=x(i10)
+         fromy=y(i10)
+      enddo
+!-----------------------------------------------------------------------------------------------------------------------------------
       lastx=x(n)
       lasty=y(n)
 end subroutine priv_judash
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!    priv_jufill(3fp) - [M_xyplot] fill or draw impulse line under curv
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
 !===================================================================================================================================
 subroutine priv_jufill(x,y,n,istep,ifill)
 use M_draw
@@ -11206,7 +12208,7 @@ real            :: top
          call polyfill(.true.)
          ! BUG: On IRIX M_DRAW does not fill or even draw the polygons if
          !      I use the same order of vertices that I use in ifill=3
-         do 10 i10=2,n
+         do i10=2,n
             call makepoly()
             call move2(x(i10-1),y(i10-1))
             call draw2(x(i10-1),BOTTOM )
@@ -11214,7 +12216,7 @@ real            :: top
             call draw2(x(i10  ),y(i10  ))
             call draw2(x(i10-1),y(i10-1))
             call closepoly()
-10       continue
+         enddo
          call polyfill(.false.)
          call popattributes()
 
@@ -11222,7 +12224,7 @@ real            :: top
          call pushattributes()
 
          call polyfill(.true.)
-         do 20 i20=2,n
+         do i20=2,n
             call makepoly()
             call move2(x(i20-1),y(i20-1))
             call draw2(x(i20  ),y(i20  ))
@@ -11230,37 +12232,37 @@ real            :: top
             call draw2(x(i20-1),TOP )
             call draw2(x(i20-1),y(i20-1))
             call closepoly()
-20       continue
+         enddo
          call polyfill(.false.)
          call popattributes()
 
       elseif((ifill.eq.1).or.(ifill.eq.3))then  ! line from point down
-         do 30 i30=1,n
+         do i30=1,n
             call move2(x(i30),y(i30))
             call draw2(x(i30),BOTTOM)
-30       continue
+         enddo
 
       elseif(ifill.eq.4)then  ! line from point up
-         do 40 i40=1,n
+         do i40=1,n
             call move2(x(i40),y(i40))
             call draw2(x(i40),TOP)
-40       continue
+         enddo
 
       elseif(ifill.eq.5)then  ! line from points down every istep points
          if(istep.ne.0)then
             ! Compaq Tru64 1 F77 cannot handle istep=0 with certain options Wed Jan  5 09:55:26 EST 2000
-            do 50 i50=1,n,istep
+            do i50=1,n,istep
                call move2(x(i50),y(i50))
                call draw2(x(i50),BOTTOM)
-50          continue
+            enddo
          endif
       elseif(ifill.eq.6)then  ! line from points up every istep points
          if(istep.ne.0)then
             ! Compaq Tru64 1 F77 cannot handle istep=0 with certain options Wed Jan  5 09:55:26 EST 2000
-            do 60 i60=1,n,istep
+            do i60=1,n,istep
                call move2(x(i60),y(i60))
                call draw2(x(i60),TOP)
-60          continue
+            enddo
          endif
 
       elseif(ifill.eq.7)then  ! playing around. Don't document
@@ -11271,23 +12273,33 @@ real            :: top
 
          ! home much does circle to before and circle to after
          ! change the plot?
-         do 70 i70=2,n
+         do i70=2,n
             radius=sqrt((x(i70)-x(i70-1))**2+(y(i70)-y(i70-1))**2)
             call circle(x(i70),y(i70),radius)
-70       continue
+         enddo
       else
 
          ! home much does circle to before and circle to after
          ! change the plot?
-         do 80 i80=1,n-1
+         do i80=1,n-1
             radius=sqrt((x(i80)-x(i80+1))**2+(y(i80)-y(i80+1))**2)
             call circle(x(i80),y(i80),radius)
-80       continue
+         enddo
 
       endif
 end subroutine priv_jufill
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!    priv_jusym(3fp) - [M_xyplot] put symbols at points on a polylin
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
 !===================================================================================================================================
 subroutine priv_jusym(x,y,n,istep,im,ipennum)
 use M_journal, only : journal
@@ -11443,6 +12455,16 @@ end subroutine priv_jusym
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
+!>
+!!##NAME
+!!    xy_getmark(3f) - [M_xyplot]get marker geometrie
+!!##SYNOPSIS
+!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
+!!
+!===================================================================================================================================
 subroutine xy_getmark(pat,imarker,ipennum)
 use M_draw
 implicit none
@@ -11489,7 +12511,7 @@ subroutine test_suite_M_xyplot()
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
 
-!! setup
+! setup
    call test_plot_axes()
    call test_plot_clear()
    call test_plot_drawplot()
@@ -11546,7 +12568,7 @@ use M_debug, only : unit_check_level
    call test_xy_setsize()
    call test_xy_toa()
    call test_xy_units()
-!! teardown
+! teardown
 contains
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_plot_axes()

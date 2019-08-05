@@ -83,27 +83,22 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <BLOCKQUOTE>
 <P>
 The following command line argument parser modules are available:
-<BLOCKQUOTE>
 <TABLE cellpadding=3><!-- tsb: The following command line argument parser modules are available:
  -->
 <TR></TR><TR></TR>
-<TR valign=top><TD width=3%>
-o
-</TD><TD>
-<I><A HREF=#3>M_kracken</A></I> - parse command line options of Fortranprograms using Unix-like syntax
+<TR valign=top><TD colspan=2>
+<B>o </B><I>M_kracken</I> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+parse command line options of Fortran programs using Unix-like syntax
 </TD></TR>
-<TR valign=top><TD width=3%>
-o
-</TD><TD>
-<I>M_getopt</I> - parse command line arguments. similar to those in standard C library.
+<TR valign=top><TD colspan=2>
+<B>o </B><I>M_getopt</I> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+parse command line arguments. Similar to those in standard C library.
 </TD></TR>
-<TR valign=top><TD width=3%>
-o
-</TD><TD>
-<I>M_getopt_long</I> - parse command line options like Sun getopt_long, including the Sun CLIP specific
+<TR valign=top><TD colspan=2>
+<B>o </B><I>M_getopt_long</I> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+parse command line options like Sun getopt_long, including the Sun CLIP specification
 </TD></TR>
 <TR></TR></TABLE></BLOCKQUOTE>
-</BLOCKQUOTE>
 <A name=3>
 
      <H3>M_KRACKEN</H3>
@@ -122,11 +117,11 @@ around them, and that the "unnamed" parameter is first on the command line. It c
 <BLOCKQUOTE>
 <TABLE cellpadding=3>
 <TR valign=top><TD colspan=2>
-<B>kracken</B> </TD></TR><TR valign=top><TD width=3%>&nbsp;</TD><TD>
+<B>kracken</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
 - crack command line options on Fortran programs, using "<B>-KEYWORD</B> VALUE" syntax
 </TD></TR>
-<TR valign=top><TD colspan=2>
-<B>retrev</B> </TD></TR><TR valign=top><TD width=3%>&nbsp;</TD><TD>
+<TR valign=top><TD width=6% nowrap>
+<B>retrev</B> </TD><TD valign=bottom>
 - get keyword value as a string from a command&#146;s argument list
 </TD></TR>
 <TR></TR></TABLE></BLOCKQUOTE>
@@ -136,44 +131,44 @@ around them, and that the "unnamed" parameter is first on the command line. It c
 </A>
 <BLOCKQUOTE>
 <TABLE cellpadding=3>
-<TR valign=top><TD colspan=2>
-<B>dget</B> </TD></TR><TR valign=top><TD width=3%>&nbsp;</TD><TD>
+<TR valign=top><TD width=6% nowrap>
+<B>dget</B> </TD><TD valign=bottom>
 - given keyword fetch doubleprecision value from command argument
 </TD></TR>
-<TR valign=top><TD colspan=2>
-<B>iget</B> </TD></TR><TR valign=top><TD width=3%>&nbsp;</TD><TD>
+<TR valign=top><TD width=6% nowrap>
+<B>iget</B> </TD><TD valign=bottom>
 - given keyword fetch integer value from command argument
 </TD></TR>
-<TR valign=top><TD colspan=2>
-<B>lget</B> </TD></TR><TR valign=top><TD width=3%>&nbsp;</TD><TD>
+<TR valign=top><TD width=6% nowrap>
+<B>lget</B> </TD><TD valign=bottom>
 - given keyword fetch logical value from command arguments
 </TD></TR>
-<TR valign=top><TD colspan=2>
-<B>rget</B> </TD></TR><TR valign=top><TD width=3%>&nbsp;</TD><TD>
+<TR valign=top><TD width=6% nowrap>
+<B>rget</B> </TD><TD valign=bottom>
 - given keyword fetch real value from command argument
 </TD></TR>
-<TR valign=top><TD colspan=2>
-<B>sget</B> </TD></TR><TR valign=top><TD width=3%>&nbsp;</TD><TD>
+<TR valign=top><TD width=6% nowrap>
+<B>sget</B> </TD><TD valign=bottom>
 - given keyword fetch string value and length from command arguments
 </TD></TR>
-<TR valign=top><TD colspan=2>
-<B>dgets</B> </TD></TR><TR valign=top><TD width=3%>&nbsp;</TD><TD>
+<TR valign=top><TD width=6% nowrap>
+<B>dgets</B> </TD><TD valign=bottom>
 - given keyword fetch doubleprecision array from command arguments
 </TD></TR>
-<TR valign=top><TD colspan=2>
-<B>igets</B> </TD></TR><TR valign=top><TD width=3%>&nbsp;</TD><TD>
+<TR valign=top><TD width=6% nowrap>
+<B>igets</B> </TD><TD valign=bottom>
 - given keyword fetch integer array from command arguments
 </TD></TR>
-<TR valign=top><TD colspan=2>
-<B>lgets</B> </TD></TR><TR valign=top><TD width=3%>&nbsp;</TD><TD>
+<TR valign=top><TD width=6% nowrap>
+<B>lgets</B> </TD><TD valign=bottom>
 - given keyword fetch logical array from command argument
 </TD></TR>
-<TR valign=top><TD colspan=2>
-<B>rgets</B> </TD></TR><TR valign=top><TD width=3%>&nbsp;</TD><TD>
+<TR valign=top><TD width=6% nowrap>
+<B>rgets</B> </TD><TD valign=bottom>
 - given keyword fetch real array from command arguments
 </TD></TR>
-<TR valign=top><TD colspan=2>
-<B>sgets</B> </TD></TR><TR valign=top><TD width=3%>&nbsp;</TD><TD>
+<TR valign=top><TD width=6% nowrap>
+<B>sgets</B> </TD><TD valign=bottom>
 - given keyword fetch string value parsed on whitespace into an array
 </TD></TR>
 <TR></TR></TABLE></BLOCKQUOTE>
@@ -184,7 +179,7 @@ around them, and that the "unnamed" parameter is first on the command line. It c
 <BLOCKQUOTE>
 <TABLE cellpadding=3>
 <TR valign=top><TD colspan=2>
-<B>setprompts</B> </TD></TR><TR valign=top><TD width=3%>&nbsp;</TD><TD>
+<B>setprompts</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
 - set explicit prompts for keywords in interactive mode
 </TD></TR>
 <TR></TR></TABLE></BLOCKQUOTE>
@@ -199,24 +194,24 @@ configuration files
  -->
 <TR></TR><TR></TR>
 <TR valign=top><TD colspan=2>
-<B>dissect</B> </TD></TR><TR valign=top><TD width=3%>&nbsp;</TD><TD>
+<B>dissect</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
 - convenient call to <B>parse</B>() - define defaults, then process
 </TD></TR>
-<TR valign=top><TD colspan=2>
-<B>parse</B> </TD></TR><TR valign=top><TD width=3%>&nbsp;</TD><TD>
+<TR valign=top><TD width=6% nowrap>
+<B>parse</B> </TD><TD valign=bottom>
 - parse user command and store tokens into Language Dictionary
 </TD></TR>
-<TR valign=top><TD colspan=2>
-<B>show</B> </TD></TR><TR valign=top><TD width=3%>&nbsp;</TD><TD>
+<TR valign=top><TD width=6% nowrap>
+<B>show</B> </TD><TD valign=bottom>
 - dump dictionary entries
 </TD></TR>
-<TR valign=top><TD colspan=2>
-<B>store</B> </TD></TR><TR valign=top><TD width=3%>&nbsp;</TD><TD>
+<TR valign=top><TD width=6% nowrap>
+<B>store</B> </TD><TD valign=bottom>
 - replace dictionary name&#146;s value (if allow=add add name if necessary)
 </TD></TR>
 <TR></TR></TABLE></BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>ARGUMENTS (3)</TD> <TD align=right width=33%><I>July 09, 2019</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 65bd1d59-445f-4425-b74a-4185f2569058 using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>ARGUMENTS (3)</TD> <TD align=right width=33%><I>August 04, 2019</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 844cafaf-a3ae-49c5-ac53-c81d65dc8c1c using man macros.</FONT>
 <br><br><center><img src="images/ARGUMENTS.3.gif"></center>
 </div>
 </div>

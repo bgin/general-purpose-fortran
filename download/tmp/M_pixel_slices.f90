@@ -369,6 +369,7 @@ module M_pixel_slices
 !!    !call execute_system_command('display dl_slices.3.gif')
 !!    END PROGRAM demo_dl_slices
 !===================================================================================================================================
+implicit none
 PRIVATE
 !-----------------------------------------------------------------------------------------------------------------------------------
 PUBLIC  :: DL_INIT           ! (XMAX0,YMAX0,VPX,VPY,ZOM)
@@ -415,7 +416,7 @@ real,save    :: XSCALEQ,YSCALEQ,ZSCALEQ,AMINQ,ALPHQ,BETQ
 !-----------------------------------------------------------------------------------------------------------------------------------
 contains
 ! ==================================================================================================================================
-      SUBROUTINE dl_slices(A,INX,INZ,NX,NZ,ALPHA,BETA,XH,YH,ZH,IFLAG,IAXIS,XT,NXT,XASTART,XAEND,NMX,NNX,MLX,TSX,NDX,SMX,&
+SUBROUTINE dl_slices(A,INX,INZ,NX,NZ,ALPHA,BETA,XH,YH,ZH,IFLAG,IAXIS,XT,NXT,XASTART,XAEND,NMX,NNX,MLX,TSX,NDX,SMX,&
      &      YT,NYT,NMY,NNY,MLY,TSY,NDY,SMY, ZT,NZT,ZASTART,ZAEND,NMZ,NNZ,MLZ,TSZ,NDZ,SMZ, AMININ,AMAXIN,ICOL,maxsize)
 !
 !     CREATED BY D. LONG     APR, 1984 AT JPL
@@ -469,17 +470,102 @@ contains
 !              ICOL(4) AXIS EXPONENT
 !              ICOL(5) PLOT
 !
-      DIMENSION A(INX,INZ),AS(2),ICOL(*),IC(4)
-      integer,intent(in),optional :: maxsize
-      integer                     :: maxsize_local
-      ! PARAMETER (maxsize=204800)
-      ! DIMENSION H(maxsize,2),P(maxsize_local,2)
-      real,allocatable :: h(:,:)
-      real,allocatable :: p(:,:)
-      CHARACTER*(*) XT,YT,ZT
-      LOGICAL FLAG,HHIGH
-      SAVE TPI
-      DATA TPI/3.141592654/
+implicit none
+real     :: a
+real     :: alpha
+real     :: amax
+real     :: amaxin
+real     :: amh
+real     :: aminin
+real     :: ang
+real     :: as
+real     :: beta
+real     :: bh
+real     :: daa
+real     :: dx
+real     :: dx1
+real     :: dx2
+real     :: dy
+real     :: dy1
+real     :: dy2
+real     :: dz
+real     :: hx1
+real     :: hx2
+real     :: hy1
+real     :: hy2
+integer  :: i
+integer  :: iaf
+integer  :: iaxis
+integer  :: ic
+integer  :: icol
+integer  :: idct
+integer  :: iflag
+integer  :: iflag1
+integer  :: iflag10
+integer  :: ihct
+integer  :: ihold
+integer  :: ip
+integer  :: ipct
+integer  :: ipen
+integer  :: ix
+integer  :: iz
+integer  :: mlx
+integer  :: mly
+integer  :: mlz
+integer  :: n1
+integer  :: n2
+integer  :: nadd
+integer  :: ndx
+integer  :: ndy
+integer  :: ndz
+integer  :: nmx
+integer  :: nmy
+integer  :: nmz
+integer  :: nnx
+integer  :: nny
+integer  :: nnz
+integer  :: nx
+integer  :: nxt
+integer  :: nyt
+integer  :: nz
+integer  :: nzt
+real     :: smx
+real     :: smy
+real     :: smz
+real     :: tsx
+real     :: tsy
+real     :: tsz
+real     :: x
+real     :: x0
+real     :: xaend
+real     :: xastart
+real     :: xh
+real     :: xlen
+real     :: xp
+real     :: xp1
+real     :: xp2
+real     :: y
+real     :: y0
+real     :: yh
+real     :: ylen
+real     :: yp
+real     :: yp1
+real     :: yp2
+real     :: zaend
+real     :: zastart
+real     :: zh
+real     :: zlen
+integer :: inx,inz
+DIMENSION A(INX,INZ),AS(2),ICOL(*),IC(4)
+integer,intent(in),optional :: maxsize
+integer                     :: maxsize_local
+! PARAMETER (maxsize=204800)
+! DIMENSION H(maxsize,2),P(maxsize_local,2)
+real,allocatable :: h(:,:)
+real,allocatable :: p(:,:)
+CHARACTER*(*) XT,YT,ZT
+LOGICAL FLAG,HHIGH
+real,parameter :: TPI= 3.141592654
       if(present(maxsize))then
          maxsize_local=maxsize
       else
@@ -832,9 +918,11 @@ contains
       WRITE(*,3002)
 3002  FORMAT(' *** dl_slices INTERNAL MEMORY OVERFLOW ERROR ***')
       GOTO 520
-      END SUBROUTINE dl_slices
-! ==================================================================================================================================
-      SUBROUTINE DL_VXPT3D(X,Y,AVAL,IX,IZ,NX)
+END SUBROUTINE dl_slices
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
+SUBROUTINE DL_VXPT3D(X,Y,AVAL,IX,IZ,NX)
 !
 !     CREATED BY DAVID LONG    AUG, 1982 AT JPL; revised 1993
 !     SUBPROGRAM OF DL_slices
@@ -842,11 +930,20 @@ contains
 !     ROUTINE TO DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
 !     FOR dl_slices
 !
-      X=XSCALEQ*FLOAT(IX-1)*COS(ALPHQ)+FLOAT(IZ-1)*COS(BETQ)*ZSCALEQ
-      Y=YSCALEQ*(AVAL-AMINQ)+FLOAT(NX-IX+1)*SIN(ALPHQ)*XSCALEQ+FLOAT(IZ-1)*SIN(BETQ)*ZSCALEQ
-      END SUBROUTINE DL_VXPT3D
-! ==================================================================================================================================
-      SUBROUTINE DL_INTERSECT(FLAG,X,Y,AX1,AY1,AX2,AY2,BX1,BY1,BX2,BY2,A)
+implicit none
+real :: x
+real :: y
+real :: aval
+integer :: ix
+integer :: iz
+integer :: nx
+   X=XSCALEQ*FLOAT(IX-1)*COS(ALPHQ)+FLOAT(IZ-1)*COS(BETQ)*ZSCALEQ
+   Y=YSCALEQ*(AVAL-AMINQ)+FLOAT(NX-IX+1)*SIN(ALPHQ)*XSCALEQ+FLOAT(IZ-1)*SIN(BETQ)*ZSCALEQ
+END SUBROUTINE DL_VXPT3D
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
+SUBROUTINE DL_INTERSECT(FLAG,X,Y,AX1,AY1,AX2,AY2,BX1,BY1,BX2,BY2,A)
 !
 !     CREATED BY D. LONG     AUG, 1983 AT JPL; revised 19931208
 !     SUBPROGRAM OF dl_slices
@@ -855,8 +952,28 @@ contains
 !     if starting points of segments are the same segments are not
 !     considered to be intersecting
 !
-      REAL MA,MB
-      LOGICAL FLAG,VERT,A
+implicit none
+real :: ax1
+real :: ax2
+real :: ay1
+real :: ay2
+real :: bx1
+real :: bx2
+real :: by1
+real :: by2
+real :: ca
+real :: cb
+real :: da
+real :: da1
+real :: da2
+real :: db
+real :: db1
+real :: db2
+real :: denom
+real :: x
+real :: y
+REAL MA,MB
+LOGICAL FLAG,VERT,A
 !
       VERT=.FALSE.
       FLAG=.FALSE.
@@ -917,8 +1034,10 @@ contains
                   ENDIF
                   FLAG=.TRUE.
                   RETURN
-      END SUBROUTINE DL_INTERSECT
-! ==================================================================================================================================
+END SUBROUTINE DL_INTERSECT
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
       SUBROUTINE DL_AXISB(X0,Y0,A0,N0,S0,T0,C0,D0,NM,NN,ML,TS,ND,SM,ICOL)
 !
 !     WRITTEN BY D.LONG   17-OCT-1983  AT JPL
@@ -963,10 +1082,62 @@ contains
 !         ICOL(4) EXPONENT COLOR
 !        PEN COLOR ON RETURN DEPENDS ON LAST ITEM PLOTTED
 !        IN THE SEQUENCE INDICATED
-!
-      CHARACTER*(*) A0
-      INTEGER ICOL(4)
-      LOGICAL VERT,TICKS,COLOR,SCALE
+implicit none
+real     :: b1
+real     :: b2
+real     :: b3
+real     :: b4
+real     :: b6
+real     :: b7
+real     :: b8
+real     :: c0
+real     :: c1
+real     :: c2
+real     :: cs
+real     :: d0
+real     :: d1
+real     :: e1
+real     :: hmt
+real     :: hor
+integer  :: i
+integer  :: ic
+integer  :: ic2
+integer  :: k
+integer  :: ml
+integer  :: n0
+integer  :: n1
+integer  :: n2
+integer  :: nc1
+integer  :: nd
+integer  :: ndd
+integer  :: nddd
+integer  :: nm
+integer  :: nm1
+integer  :: nn
+real     :: s0
+real     :: s1
+real     :: sm
+real     :: t0
+real     :: t1
+real     :: t2
+real     :: t3
+real     :: t4
+real     :: t5
+real     :: t6
+real     :: ts
+real     :: x0
+real     :: x1
+real     :: x2
+real     :: x3
+real     :: xl
+real     :: xm
+real     :: y0
+real     :: y1
+real     :: y2
+real     :: y3
+CHARACTER*(*) A0
+INTEGER ICOL(4)
+LOGICAL VERT,TICKS,COLOR,SCALE
 !
       CS=.15         ! CHARACTER SIZE
       IF (S0.EQ.0.0) GOTO 200 ! ZERO LENGTH AXIS
@@ -1144,9 +1315,11 @@ contains
       Y2=Y2+B2*CS*T4-CS*T3*0.4
       call dl_symbol(X2,Y2,CS,')',T2,1,-1)
 200   continue
-      END SUBROUTINE DL_AXISB
-! ==================================================================================================================================
-      SUBROUTINE DL_AXISA(X0,Y0,A0,N0,S0,T0,C0,D0,NM,ML,ICOL)
+END SUBROUTINE DL_AXISB
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
+SUBROUTINE DL_AXISA(X0,Y0,A0,N0,S0,T0,C0,D0,NM,ML,ICOL)
 !
 !     EXTENSIVELY MODIFIED BY D.LONG   7-OCT-83 AT JPL
 !     REVISED 13-AUG-1987 DGL + IMPROVED APPEARANCE OF EXPONENT, ADDED EXPONENT COLOR
@@ -1182,9 +1355,55 @@ contains
 !             PEN COLOR ON RETURN DEPENDS ON LAST ITEM PLOTTED
 !             IN THE SEQUENCE INDICATED
 ! *************************************************************************
-      CHARACTER A0*(*)
-      INTEGER ICOL(4)
-      LOGICAL VERT,TICKS,COLOR
+implicit none
+real     ::  b1
+real     ::  b2
+real     ::  b3
+real     ::  b4
+real     ::  b6
+real     ::  b7
+real     ::  b8
+real     ::  c0
+real     ::  c1
+real     ::  c2
+real     ::  cs
+real     ::  d0
+real     ::  d1
+real     ::  e1
+real     ::  hor
+integer  ::  i
+integer  ::  ic
+integer  ::  ic2
+integer  ::  k
+integer  ::  ml
+integer  ::  n0
+integer  ::  n1
+integer  ::  n2
+integer  ::  nc1
+integer  ::  nm
+integer  ::  nm1
+real     ::  s0
+real     ::  s1
+real     ::  t0
+real     ::  t1
+real     ::  t2
+real     ::  t3
+real     ::  t4
+real     ::  t5
+real     ::  t6
+real     ::  x0
+real     ::  x1
+real     ::  x2
+real     ::  x3
+real     ::  xl
+real     ::  xm
+real     ::  y0
+real     ::  y1
+real     ::  y2
+real     ::  y3
+CHARACTER A0*(*)
+INTEGER ICOL(4)
+LOGICAL VERT,TICKS,COLOR
 !
       CS=0.15        ! CHARACTER SIZE
       IF (S0.EQ.0.0) GOTO 200 ! ZERO LENGTH AXIS
@@ -1346,8 +1565,10 @@ contains
       Y2=Y2+B2*CS*T4-CS*T3*0.4
       call dl_symbol(X2,Y2,CS,')',T2,1,-1)
 200   CONTINUE
-      END SUBROUTINE DL_AXISA
-! ==================================================================================================================================
+END SUBROUTINE DL_AXISA
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
       SUBROUTINE DL_NUMBER(X,Y,HGHT,Z,T,F0,IPF)
 !
 !     WRITTEN BY D. LONG    AUG, 1983 AT JPL
@@ -1384,6 +1605,23 @@ contains
 !        =+1 X,Y ARE LOWER RIGHT CORNER
 !        =+2 NO PLOT OUTPUT
 !
+implicit none
+real     :: alg
+real     :: f
+real     :: f0
+real     :: fa
+real     :: hg
+real     :: hght
+integer  :: i
+integer  :: iff
+integer  :: ipf
+integer  :: nd
+integer  :: nn
+real     :: t
+real     :: t1
+real     :: x
+real     :: y
+real     :: z
       CHARACTER B*18, FB*8, FB1*8  ! WORKING BUFFERS
 !
       IFF=0
@@ -1465,9 +1703,11 @@ contains
          IF (I.EQ.NN-ND) B(I:I)='.'
       enddo
       GOTO 50
-      END SUBROUTINE DL_NUMBER
-! ==================================================================================================================================
-      SUBROUTINE DL_RANGE(X,S,N,K,IX,XMIN,DX)
+END SUBROUTINE DL_NUMBER
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
+SUBROUTINE DL_RANGE(X,S,N,K,IX,XMIN,DX)
 !
 !     CREATES SMOOTHED LINEAR SCALE FACTORS FROM INPUT DATA
 !
@@ -1481,97 +1721,153 @@ contains
 !     DX (R) SMOOTHED INCREMENT AFTER CALL
 !
 !     TO USE SMOOTHED VALUES: XPLOTTED=(XVALUE-XM)/DX
-!
-      REAL X(*),Q(6)
-      DATA Q/1.0,2.0,4.0,5.0,8.0,10.0/
-      NP=N*K
-      XMAX=X(1)
-      XMIN=XMAX
-      DO I=IX,NP,K
-         XI=X(I)
-         XMAX=AMAX1(XMAX,XI)
-         XMIN=AMIN1(XMIN,XI)
-      enddo
-      XMM=XMIN
-      IF (S.LE.0.0) GOTO 160
-      DX=(XMAX-XMIN)/S
-      IF (DX.LE.0.0) GOTO 160
-      SJ=0.0
-      IF (DX.LT.1.0) SJ=-1.0
-      IDX=ALOG10(DX)+SJ
-      DX=DX/(10.0**IDX)
-      DO I=1,6
-         XI=Q(I)
-         IF (XI.GE.DX) GOTO 120
-      enddo
-120   continue
-      DX=XI*(10.0**IDX)
-      SI=1.0
-      SJ=0.0
-      IF (XMIN) 130,170,140
-130   continue
-      SI=-1.0
-      SJ=-0.99999
-      XMIN=-XMIN
-140   continue
-      IDX=ALOG10(XMIN)+SJ
-      XMIN=XMIN/(10.0**IDX)
-      XMIN=XMIN-SJ
-      XMIN=IFIX(XMIN)*SI*(10.0**IDX)
-      GOTO 170
-160   continue
-      DX=1.0
-      XMIN=XMIN-0.5
-170   CONTINUE
+implicit none
+REAL X(*),Q(6)
+real     :: dx
+integer  :: i
+integer  :: idx
+integer  :: ix
+integer  :: k
+integer  :: n
+integer  :: np
+real     :: s
+real     :: si
+real     :: sj
+real     :: xi
+real     :: xmax
+real     :: xmin
+real     :: xmm
+DATA Q/1.0,2.0,4.0,5.0,8.0,10.0/
+   NP=N*K
+   XMAX=X(1)
+   XMIN=XMAX
+   DO I=IX,NP,K
+      XI=X(I)
+      XMAX=AMAX1(XMAX,XI)
+      XMIN=AMIN1(XMIN,XI)
+   enddo
+   XMM=XMIN
+   IF (S.LE.0.0) GOTO 160
+   DX=(XMAX-XMIN)/S
+   IF (DX.LE.0.0) GOTO 160
+   SJ=0.0
+   IF (DX.LT.1.0) SJ=-1.0
+   IDX=ALOG10(DX)+SJ
+   DX=DX/(10.0**IDX)
+   DO I=1,6
+      XI=Q(I)
+      IF (XI.GE.DX) GOTO 120
+   enddo
+120 continue
+   DX=XI*(10.0**IDX)
+   SI=1.0
+   SJ=0.0
+   IF(XMIN) 130,170,140
+130 continue
+   SI=-1.0
+   SJ=-0.99999
+   XMIN=-XMIN
+140 continue
+   IDX=ALOG10(XMIN)+SJ
+   XMIN=XMIN/(10.0**IDX)
+   XMIN=XMIN-SJ
+   XMIN=IFIX(XMIN)*SI*(10.0**IDX)
+   GOTO 170
+160 continue
+   DX=1.0
+   XMIN=XMIN-0.5
+170 CONTINUE
 !
 !     BEFORE EXIT, CHECK TO BE SURE THAT DATA IS CONTAINED WITHIN
 !     THE LIMITS XMIN AND XMIN+DX*S.  IF NOT, RESET DX
 !
-      IF (XMM.LT.XMIN) XMIN=XMM
-      IF (XMAX.GT.XMIN+DX*S) THEN
-         IF (S.GT.0.0) DX=(XMAX-XMIN)/S
-         IF (DX.LE.0.0) DX=1.0
-      ENDIF
-      END SUBROUTINE DL_RANGE
-! ==================================================================================================================================
-      subroutine dl_color(ic)
-      use M_pixel
-      IF (ic.GE.0) THEN
-         CALL COLOR(IC)           ! change color
-      ENDIF
-      end subroutine dl_color
-! ==================================================================================================================================
-      subroutine dl_draw(xa,ya)
-      call dl_plot(xa,ya,2)
-      end subroutine dl_draw
-! ==================================================================================================================================
-      subroutine dl_move(xa,ya)
-      call dl_plot(xa,ya,3)
-      end subroutine dl_move
-! ==================================================================================================================================
-      subroutine dl_translate(xa,ya)
-      call dl_plot(xa,ya,-3)
-      end subroutine dl_translate
-! ==================================================================================================================================
-      subroutine dl_viewport(xmin,xmax,ymin,ymax)
+   IF (XMM.LT.XMIN) XMIN=XMM
+   IF (XMAX.GT.XMIN+DX*S) THEN
+      IF(S.GT.0.0) DX=(XMAX-XMIN)/S
+      IF(DX.LE.0.0) DX=1.0
+   ENDIF
+END SUBROUTINE DL_RANGE
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
+subroutine dl_color(ic)
+use M_pixel
+implicit none
+integer :: ic
+   IF (ic.GE.0) THEN
+      CALL COLOR(IC)           ! change color
+   ENDIF
+end subroutine dl_color
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
+subroutine dl_draw(xa,ya)
+implicit none
+real :: xa
+real :: ya
+   call dl_plot(xa,ya,2)
+end subroutine dl_draw
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
+subroutine dl_move(xa,ya)
+implicit none
+real :: xa
+real :: ya
+   call dl_plot(xa,ya,3)
+end subroutine dl_move
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
+subroutine dl_translate(xa,ya)
+implicit none
+real :: xa
+real :: ya
+   call dl_plot(xa,ya,-3)
+end subroutine dl_translate
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
+subroutine dl_viewport(xmin,xmax,ymin,ymax)
+implicit none
+real,intent(in) :: xmax
+real,intent(in) :: xmin
+real,intent(in) :: ymax
+real,intent(in) :: ymin
+real :: xconmax
+real :: xconmin
+real :: yconmax
+real :: yconmin
 
-      ! note that new viewport is in terms of current coordinate system
-      ! SET upper right CORNER OF VIEW PORT
-      CALL dl_TRS(xmax,ymax,XCONmax,YCONmax) ! convert call numbers to current plot coordinate system
-      VIEWPORTQ(3)=XCONmax
-      VIEWPORTQ(4)=YCONmax
-      ! SET lower left CORNER OF VIEW PORT
-      CALL dl_TRS(xmin,ymin,XCONmin,YCONmin) ! convert call numbers to current plot coordinate system
-      VIEWPORTQ(1)=XCONmin
-      VIEWPORTQ(2)=YCONmin
-      end subroutine dl_viewport
-! ==================================================================================================================================
-      subroutine dl_width(ic)
-      use M_pixel
-      CALL LINEWIDTH(IC)
-      end subroutine dl_width
-! ==================================================================================================================================
-      SUBROUTINE dl_TRS(XIN,YIN,XCON,YCON)
+   ! note that new viewport is in terms of current coordinate system
+   ! SET upper right CORNER OF VIEW PORT
+   CALL dl_TRS(xmax,ymax,XCONmax,YCONmax) ! convert call numbers to current plot coordinate system
+   VIEWPORTQ(3)=XCONmax
+   VIEWPORTQ(4)=YCONmax
+   ! SET lower left CORNER OF VIEW PORT
+   CALL dl_TRS(xmin,ymin,XCONmin,YCONmin) ! convert call numbers to current plot coordinate system
+   VIEWPORTQ(1)=XCONmin
+   VIEWPORTQ(2)=YCONmin
+end subroutine dl_viewport
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
+subroutine dl_width(ic)
+use M_pixel
+implicit none
+integer :: ic
+   CALL LINEWIDTH(IC)
+end subroutine dl_width
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
+SUBROUTINE dl_TRS(XIN,YIN,XCON,YCON)
+implicit none
+real :: tang
+real :: xcon
+real :: xin
+real :: ycon
+real :: yin
 !     convert call numbers to current plot coordinate system
 
       TANG=ANGLEQ*.0174532              ! convert degrees to radians
@@ -1582,9 +1878,11 @@ contains
       XCON=SCALEQ*XCON+TRANSLATEXQ      ! scale and translate
       YCON=SCALEQ*YCON+TRANSLATEYQ      ! scale and translate
 
-      end SUBROUTINE dl_TRS
-! ==================================================================================================================================
-      SUBROUTINE DL_PLOT(XPLOT0,YPLOT0,ISELECT0)
+end SUBROUTINE dl_TRS
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
+SUBROUTINE DL_PLOT(XPLOT0,YPLOT0,ISELECT0)
 !
 !     PLOT is the central routine for controlling the plotting of lines.
 !     Any call to PLOT when graphics mode is not initialized is a dummy call.
@@ -1628,7 +1926,19 @@ contains
 !      -      -       5: pick pen up at last point and flush
 !                  ????: ANY OTHER VALUE OF ISELECT0 IS TREATED AS A NOP
 ! *************************************************************************
-      use M_pixel
+use M_pixel
+implicit none
+integer :: iselect0
+integer :: ivta
+integer :: ivtb
+real    :: xcon
+real    :: xplot0
+real    :: xtemp
+real    :: xtemp1
+real    :: ycon
+real    :: yplot0
+real    :: ytemp
+real    :: ytemp1
 !#######################################################################
 !     DECODE COMMAND
        select case (ISELECT0)
@@ -1686,9 +1996,11 @@ contains
       ENDIF
       XLASTSCALEQ=XCON
       YLASTSCALEQ=YCON
-      END SUBROUTINE DL_PLOT
-! ==================================================================================================================================
-      SUBROUTINE DL_INIT(xmax0,ymax0,VPX,VPY,ZOM)
+END SUBROUTINE DL_PLOT
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
+SUBROUTINE DL_INIT(xmax0,ymax0,VPX,VPY,ZOM)
 !
 !     ROUTINE TO INITIALIZE THE LONGLIB GRAPHICS PLOT PACKAGE
 !
@@ -1698,65 +2010,87 @@ contains
 !     VPX,VPY -------------- COORDINATES OF BOTTOM LEFT ORIGIN
 !     ZOM   ---------------- ZOOM FACTOR
 !
-      use M_pixel
+use M_pixel
+implicit none
+real :: vpx
+real :: vpy
+real :: xmax
+real :: xmax0
+real :: ymax
+real :: ymax0
+real :: z
+real :: zom
 
-      Z=ZOM
-      xmax=xmax0
-      ymax=ymax0
-      call page(0.0,xmax,0.0,ymax)
-      XMINQ=0.0
-      YMINQ=0.0
-      XMAXQ=xmax
-      YMAXQ=ymax
+   Z=ZOM
+   xmax=xmax0
+   ymax=ymax0
+   call page(0.0,xmax,0.0,ymax)
+   XMINQ=0.0
+   YMINQ=0.0
+   XMAXQ=xmax
+   YMAXQ=ymax
 
-      call color(0)
-      call clear()
-      call color(7)
+   call color(0)
+   call clear()
+   call color(7)
 
-      TRANSLATEXQ=VPX         ! ORIGIN X
-      TRANSLATEYQ=VPY         ! ORIGIN Y
+   TRANSLATEXQ=VPX         ! ORIGIN X
+   TRANSLATEYQ=VPY         ! ORIGIN Y
 
-      SCALEQ=ABS(Z)      ! SCALE FACTOR
-      IF (SCALEQ.LE.0.0) SCALEQ=1.0
+   SCALEQ=ABS(Z)      ! SCALE FACTOR
+   IF (SCALEQ.LE.0.0) SCALEQ=1.0
 
-      ANGLEQ=0.0       ! PLOTTING ANGLE ROTATION
+   ANGLEQ=0.0       ! PLOTTING ANGLE ROTATION
 
-      XLASTSCALEQ=0.0         ! LAST POINT PLOTTED
-      YLASTSCALEQ=0.0
+   XLASTSCALEQ=0.0         ! LAST POINT PLOTTED
+   YLASTSCALEQ=0.0
 
-      ! set the VIEWPORTQ() ARRAY
-      call dl_viewport(-999.0,999.0,-999.0,999.0)
-      CALL dl_color(7) ! INITIALIZE LINE COLOR
-      END SUBROUTINE DL_INIT
-! ==================================================================================================================================
-      SUBROUTINE dl_CLIPIT(IVTB,XV2,YV2,AV1,AV2,XM,YM,XX,YX)
+   ! set the VIEWPORTQ() ARRAY
+   call dl_viewport(-999.0,999.0,-999.0,999.0)
+   CALL dl_color(7) ! INITIALIZE LINE COLOR
+END SUBROUTINE DL_INIT
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
+SUBROUTINE dl_CLIPIT(IVTB,XV2,YV2,AV1,AV2,XM,YM,XX,YX)
+implicit none
+real     :: av1
+real     :: av2
+integer  :: ivtb
+real     :: xm
+real     :: xv2
+real     :: xx
+real     :: ym
+real     :: yv2
+real     :: yx
 !
 !     CLIPS A LINE SEGMENT PARTIALLY VISIBLE
 !
-      IF (IAND(IVTB,1).NE.0) THEN ! LEFT EDGE
-         if (av1.ne.xv2) YV2=YV2+(AV2-YV2)*(XM-XV2)/(AV1-XV2)
-         XV2=XM
-         IVTB=DL_INBOX(XV2,YV2,XM,YM,XX,YX)
-      ENDIF
-      IF (IAND(IVTB,2).NE.0) THEN ! RIGHT EDGE
-         if (av1.ne.xv2) YV2=YV2+(AV2-YV2)*(XX-XV2)/(AV1-XV2)
-         XV2=XX
-         IVTB=DL_INBOX(XV2,YV2,XM,YM,XX,YX)
-      ENDIF
-      IF (IAND(IVTB,4).NE.0) THEN ! BOTTOM EDGE
-         if (av2.ne.yv2) XV2=XV2+(AV1-XV2)*(YM-YV2)/(AV2-YV2)
-         YV2=YM
-         IVTB=DL_INBOX(XV2,YV2,XM,YM,XX,YX)
-      ENDIF
-      IF (IAND(IVTB,8).NE.0) THEN ! TOP EDGE
-         if (av2.ne.yv2) XV2=XV2+(AV1-XV2)*(YX-YV2)/(AV2-YV2)
-         YV2=YX
-         IVTB=DL_INBOX(XV2,YV2,XM,YM,XX,YX)
-      ENDIF
-      RETURN
-      END SUBROUTINE dl_CLIPIT
-! ==================================================================================================================================
-      SUBROUTINE DL_SYMBOL(X,Y,S,T,A,NN,IS)
+   IF (IAND(IVTB,1).NE.0) THEN ! LEFT EDGE
+      if (av1.ne.xv2) YV2=YV2+(AV2-YV2)*(XM-XV2)/(AV1-XV2)
+      XV2=XM
+      IVTB=DL_INBOX(XV2,YV2,XM,YM,XX,YX)
+   ENDIF
+   IF (IAND(IVTB,2).NE.0) THEN ! RIGHT EDGE
+      if (av1.ne.xv2) YV2=YV2+(AV2-YV2)*(XX-XV2)/(AV1-XV2)
+      XV2=XX
+      IVTB=DL_INBOX(XV2,YV2,XM,YM,XX,YX)
+   ENDIF
+   IF (IAND(IVTB,4).NE.0) THEN ! BOTTOM EDGE
+      if (av2.ne.yv2) XV2=XV2+(AV1-XV2)*(YM-YV2)/(AV2-YV2)
+      YV2=YM
+      IVTB=DL_INBOX(XV2,YV2,XM,YM,XX,YX)
+   ENDIF
+   IF (IAND(IVTB,8).NE.0) THEN ! TOP EDGE
+      if (av2.ne.yv2) XV2=XV2+(AV1-XV2)*(YX-YV2)/(AV2-YV2)
+      YV2=YX
+      IVTB=DL_INBOX(XV2,YV2,XM,YM,XX,YX)
+   ENDIF
+END SUBROUTINE dl_CLIPIT
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
+SUBROUTINE DL_SYMBOL(X,Y,S,T,A,NN,IS)
 !
 !     ROUTINE TO PLOT CHARACTERS AND SYMBOLS
 !
@@ -1812,6 +2146,40 @@ contains
 ! computed from the input (x,y) position.  The special plot symbols (ASCII
 ! 0-31) are always centered about the current position.
 ! **********************************************************************
+implicit none
+real      :: a
+real      :: aa
+real      :: al
+real      :: co
+integer   :: i
+integer   :: icc
+integer   :: il
+integer   :: ip
+integer   :: ipen
+integer   :: ipenlast
+integer   :: is
+integer   :: iss
+integer   :: iw
+integer   :: ix
+integer   :: ixoff
+integer   :: iy
+integer   :: iyoff
+integer   :: n
+integer   :: nn
+real      :: oldx
+real      :: oldy
+real      :: ox
+real      :: oy
+real      :: s
+real      :: si
+real      :: ss
+real      :: x
+real      :: x0
+real      :: x1
+real      :: xx
+real      :: y
+real      :: y0
+real      :: y1
       CHARACTER*(*) T
       LOGICAL LENGTH
       SAVE OLDX,OLDY
@@ -2070,9 +2438,11 @@ contains
             Y=OLDY
          ENDIF
       ENDIF
-      END SUBROUTINE DL_SYMBOL
-! ==================================================================================================================================
-      INTEGER FUNCTION DL_INBOX(X,Y,X_BOTTOM_LEFT,Y_BOTTOM_LEFT,X_top_right,Y_top_right)
+END SUBROUTINE DL_SYMBOL
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
+INTEGER FUNCTION DL_INBOX(X,Y,X_BOTTOM_LEFT,Y_BOTTOM_LEFT,X_top_right,Y_top_right)
 !
 !     FORTRAN-77 VERSION:   DGL JULY, 1987
 !     CHECKS TO SEE IF POINT X,Y IS IN RECTANGLE
@@ -2122,7 +2492,7 @@ contains
       ! now CD=0 only if <x,y> is in or on the box
       DL_INBOX=CD
 
-      END FUNCTION DL_INBOX
+END FUNCTION DL_INBOX
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================

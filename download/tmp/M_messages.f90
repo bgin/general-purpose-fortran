@@ -1,4 +1,5 @@
 module M_messages
+implicit none
 private
    ! LINEART
    public junbad        ! <a href="junbad.3.html">print eye-catching ASCII graphic (skull)</a>
@@ -821,13 +822,29 @@ end subroutine juntrolls
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 subroutine tabgraph(cc,array,ivalues0,rmin,rmax,fill,ilen0)
-      use M_journal, only : journal
-      character(len=*),parameter :: ident="@(#)M_messages::tabgraph(3f): write columns of numbers with a text scale to the right"
-      character*(*) cc ! assumed big enough
-      real array(*)
-      character yvalue*1000, format*80
-      character*1 fill
-      parameter(icmin=15)
+use M_journal, only : journal
+implicit none
+
+character(len=*),parameter :: ident="@(#)M_messages::tabgraph(3f): write columns of numbers with a text scale to the right"
+
+character*(*) cc ! assumed big enough
+real                :: array(*)
+character(len=1000) :: yvalue
+character(len=80)   :: format
+character(len=1)    :: fill
+integer,parameter   :: icmin=15
+real                :: delta
+real                :: rmin, rmax
+integer             :: ilet
+integer             :: ivalues0
+integer             :: ivalues
+integer             :: ilen0
+integer             :: ilen
+integer             :: i
+integer             :: i10
+integer             :: istart
+integer             :: ipos
+
       delta=rmax-rmin
       if(delta.eq.0)then
         rmin=-1000.0

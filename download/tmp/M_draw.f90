@@ -958,7 +958,7 @@
 !!
 !!    Reset the window/terminal and terminate graphics mode. Required to
 !!    properly close out most output devices. Must be called before any
-!!    second call to vinit(3f).  Must be the last M_draw routine called.
+!!    second call to vinit(3f). Must be the last M_draw routine called.
 !!
 !!##EXAMPLE
 !!
@@ -1081,7 +1081,7 @@
 !!##DESCRIPTION
 !!
 !!    Gets the name of the current M_draw device. The C version of the routin
-!!    also returns a pointer to it's argument.
+!!    also returns a pointer to its argument.
 !===================================================================================================================================
 !>
 !!##NAME
@@ -2042,7 +2042,7 @@
 !!
 !!##DESCRIPTION
 !!    Turns on culling of backfacing polygons. A polygon is backfacing if
-!!    it's orientation in *screen* coords is clockwise, unless a call
+!!    its orientation in *screen* coords is clockwise, unless a call
 !!    to backfacedir is made.
 !!
 !!##EXAMPLE
@@ -3984,7 +3984,7 @@
 !!        subroutine ycentertext()
 !!
 !!##DESCRIPTION
-!!    Centers text in the Y direction. The text string will so that it's
+!!    Centers text in the Y direction. The text string will so that its
 !!    center line is aligned with the current y position. Top justificatio
 !!    and Bottom justification are turned off.
 !!
@@ -5584,11 +5584,10 @@
 !!##SYNOPSIS
 !!
 !!         subroutine unexpandviewport()
-!!
 !!##DESCRIPTION
 !!
 !!    Does the reverse of expandviewport. Basically, it returns M_draw to
-!!    using the largest square of the device for it's viewport calculations
+!!    using the largest square of the device for its viewport calculations
 !!
 !!##EXAMPLE
 !!

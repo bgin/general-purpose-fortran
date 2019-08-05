@@ -91,14 +91,14 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 </td>
 <tr><td><a href="M_bessel.f90">M_bessel.f90</a></td>
 <td>
-	 M_bessel::bes(3f):calculate Bessel functions J(X), Y(X), I(X), K(X) for real arguments and integer orders<br/>
-	 M_bessel::besi(3f):compute the I Bessel function for a given argument and order <br/>
-	 M_bessel::besj(3f):compute the J Bessel function for a given argument and order<br/>
-	 M_bessel::besj0(3f):calculates the Bessel function J(X) of order zero.<br/>
-	 M_bessel::besj1(3f): calculates the Bessel function J(X) of order one. <br/>
-	 M_bessel::besk(3f):compute the K Bessel function for a given argument and order <br/>
-	 M_bessel::besy(3f):compute the Y Bessel function for a given argument and order<br/>
-	 M_bessel::besy0(3f): calculates the Bessel function Y(X) of order zero.<br/>
+	M_bessel::bes(3f):calculate Bessel functions J(X), Y(X), I(X), K(X) for doubleprecision arguments and integer orders<br/>
+	M_bessel::besi(3f):compute the I Bessel function for a given argument and order<br/>
+	M_bessel::besj(3f):compute the J Bessel function for a given argument and order<br/>
+	M_bessel::besj0(3f):calculates the Bessel function J(X) of order zero.<br/>
+	M_bessel::besj1(3f): calculates the Bessel function J(X) of order one.<br/>
+	M_bessel::besk(3f):compute the K Bessel function for a given argument and order<br/>
+	M_bessel::besy(3f):compute the Y Bessel function for a given argument and order<br/>
+	M_bessel::besy0(3f): calculates the Bessel function Y(X) of order zero.<br/>
 </td>
 <tr><td><a href="M_big_integer.f90">M_big_integer.f90</a></td>
 <td>
@@ -839,6 +839,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <td>
 	M_xyplot(3fm): XY plot procedures<br/>
 	M_xyplot::plot_setfill(3f): set background, middleground, and foreground colors for plot<br/>
+	M_xyplot::xy_init_default(3f): Initialize command dictionary and global values<br/>
 	M_xyplot::plot_hcopy(3f): process hcopy command<br/>
 	M_xyplot::plot_noclose(3f): flag whether to keep current device open while switching to alternate device<br/>
 	M_xyplot::plot_set_xmin(3f): set value for xmin/xmax/ymin/... command<br/>
@@ -852,23 +853,81 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_xyplot::plot_sz(3f): close and reopen window to new size if possible<br/>
 	M_xyplot::plot_drawplot(3f): draw an xy plot<br/>
 	M_xyplot::plot_juparea(3f): parse parea command<br/>
-	M_xyplot::plot_jupage(3f): a good try at allowing mixing of PLT commands and vogle commands<br/>
+	M_xyplot::plot_jupage(3f): a good try at allowing mixing of PLT commands and M_plot commands<br/>
 	M_xyplot::plot_id(3f): allow user to alter legend strings by number<br/>
 	M_xyplot::plot_clear(3f): clear graphics area and ensure in graphics mode<br/>
+	M_xyplot::xy_aspct(3f): Store plot window size in global variables and call BIGGEST_ORTHO2()<br/>
+	M_xyplot::xy_bans(3f): draw banner lines from PLT ban command<br/>
+	M_xyplot::xy_printban(3f): plot horizontal banner string at specified location<br/>
+	M_xyplot::xy_printbanv(3f): plot vertical banner string<br/>
+	M_xyplot::xy_fxed(3f): select whether a string is fixed-space or not<br/>
+	M_xyplot::xy_init_graphics(3f): Initialize PLT graphics environment<br/>
+	M_xyplot::xy_ifdrawn(3f): xy_ifdrawn() is used to see if first page drawn or not<br/>
+	M_xyplot::xy_iftext(3f): Add user-specified text strings to plot<br/>
+	M_xyplot::xy_jucurv(3f): find extrema for group of curves and set legend label defaults<br/>
 	M_xyplot::xy_jumapc(3f): map colors using HUE command<br/>
+	M_xyplot::xy_pause(3f): conditionally  pause until graphic or text-window response<br/>
+	M_xyplot::xy_jutitl(3f): add title lines to plot<br/>
+	M_xyplot::xy_jutitlX(3f): draw plot titling information (titles and legend block)<br/>
+	M_xyplot::xy_set_bigger(3f): change title line size<br/>
+	M_xyplot::xy_laxis(3f): draw linear axis and logarithmic axis for PLT<br/>
+	M_xyplot::xy_pickpnt(3f): interactively draw a line to current left scale and store the curve or return point<br/>
+	M_xyplot::xy_setlbl(3f): decide axis label strings<br/>
+	M_xyplot::xy_setsize(3f): use values to set size and border on output device<br/>
+	M_xyplot::xy_tidybox(3f): draw legend lines inside box specified on call<br/>
+	M_xyplot::xy_arrow(3f): Add xy_arrow from T text box to specified point<br/>
+	M_xyplot::xy_idbox(3f): Draw ID legend box specified with LEGEND command<br/>
+	M_xyplot::xy_idbox0(3f): draw legend lines<br/>
+	M_xyplot::xy_iflou(3f): set global flag for Leading Edge trimming (see LE command)<br/>
+	M_xyplot::xy_judraw(3f): draw curves to plot scales using plot_ values<br/>
+	M_xyplot::xy_loadtl(3f): load title xy_array<br/>
+	M_xyplot::xy_tidybox1(3f):draw legend lines in box with legend box autosized and positioned by edge number<br/>
+	M_xyplot::xy_tidybox2(3f): draw legend lines inside box specified on call<br/>
+	M_xyplot::xy_listout3(3f): copy rcurve_in to rcurve_out expanding negative curve numbers to ranges (1 -10 means 1 thru 10)<br/>
+	M_xyplot::xy_retrv2(3f): Call RETREV and then expand string variables with Calculator<br/>
 	M_xyplot::plot_toggle(3f): copy of TOGGLE that uses xy_retrv2 instead of RETREV<br/>
+	M_xyplot::xy_getdat(3f): place data from specified file and curve into xy_arrayQ xy_array<br/>
+	M_xyplot::xy_juput(3f): write current memory-resident curves in global variables(q) onto pseudo file<br/>
+	M_xyplot::xy_slide(3f): slide value<br/>
 	M_xyplot::plot_z(3f): Interactive ZOOM mode<br/>
 	M_xyplot::plot_zmode(3f): Interactive ZOOM mode<br/>
+	M_xyplot::xy_getrel(3f): return values to convert one set of units to another<br/>
+	M_xyplot::xy_units(3f): given unit code return string label optionally converted to uppercase<br/>
+	M_xyplot::xy_juprint(3f): print string LINE at position x,y with embedded directives<br/>
+	M_xyplot::xy_justrlen(3f): query string size with embedded directives<br/>
+	M_xyplot::xy_justr(3f): print string l0 at position x,y with embedded directives<br/>
+	M_xyplot::xy_jucp2(3f): plot string line at current position<br/>
+	M_xyplot::xy_juprints(3f): simple print of string l at position x,y<br/>
+	M_xyplot::xy_jucp(3f): plot string line at current position<br/>
 	M_xyplot::xy_jufont(3f): check and set font and store it so can query it<br/>
+	M_xyplot::xy_jufont(3f): check and set font and store it so can query it<br/>
+	M_xyplot::xy_rasters(3f): set line width<br/>
 	 FORTRAN interface point for M_DASH functions that return real values<br/>
+	M_xyplot::xy_ustrlen(3f): get software string length including trailing whitespace<br/>
+	M_xyplot::xy_ustrlen2(3f): get software string length up to specified character<br/>
+	M_xyplot::plot_get_plot_area(3f): initialize plot page and set up common page-related values<br/>
+	M_xyplot::plot_set_plot_area(3f): initialize plot page and set up common page-related values<br/>
 	M_xyplot::plot_axes(3f): generically draw linear axis and logarithmic axis<br/>
+	M_xyplot::xy_toa(3f): convert number to a nice string (1 to 20 characters) or explicit string for an axis label<br/>
 	M_xyplot::plot_page(3f): initialize plot page and set up common page-related values<br/>
+	M_xyplot::xy_setdatarange(3f): set plot window extremes, set plot window extremes for dual axis<br/>
 	M_xyplot::plot_getdatarange(3f):  get plot window extremes, set plot window extremes for dual axis<br/>
+	M_xyplot::plot_setticper(3f): set tic size<br/>
+	M_xyplot::xy_getscale(3f): set up scaling between graphing area and user-scaled axis<br/>
 	M_xyplot::plot_line(3f): buffer curve data and call xy_line<br/>
 	M_xyplot::plot_label(3f): set plot axis labels<br/>
 	M_xyplot::plot_resetplot(3f): reset plot-related common values<br/>
 	M_xyplot::plot_set_nice_range(3f): determine nice range for creating an axis<br/>
+	M_xyplot::xy_line(3f): draw polyline using data in xy_arrayx xy_arrayy, using pen style ipen<br/>
 	M_xyplot::plot_setdash(3f):  allow user to display|alter|retrieve  dash codes by style number<br/>
+	M_xyplot::xy_jurang(3f): return nice max and min values for the axis, and nice axis grid spacings<br/>
+	M_xyplot::xy_con_x(3f): scale an axis value to the overall window/viewport<br/>
+	M_xyplot::xy_con_y(3f): scale an axis value to the overall window/viewport<br/>
+	M_xyplot::xy_setcnv(3f): set up conversion table for xy_con_x and xy_con_y functions<br/>
+	M_xyplot::xy_jugetwn(3f): query current window ( appropriate for 2-d only)<br/>
+	M_xyplot::xy_zoom(3f):  given current four numbers defining a box<br/>
+	M_xyplot::xy_convert(3f): do a linear conversion on an xy_array of the form y=ax+b<br/>
+	M_xyplot::xy_obj12345(3f): create or close M_plot object 12345<br/>
 	 M_xyplot::xy_getmark(3f):get marker geometries<br/>
 </td>
 <tr><td><a href="nc_errmessage.f90">nc_errmessage.f90</a></td>
@@ -1187,7 +1246,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_DRAW:backfacedir - Set which direction backfacing polygons are defined to be.<br/>
 	M_DRAW:... * 1 = clockwise (in screen coords) 0 = anticlockwise.<br/>
 	M_DRAW:backface - Turns on culling of backfacing polygons. A polygon is<br/>
-	M_DRAW:... backfacing if it's orientation in *screen* coords is clockwise.<br/>
+	M_DRAW:... backfacing if its orientation in *screen* coords is clockwise.<br/>
 	M_DRAW:dopoly - do a transformed polygon with n edges using fill or hatch<br/>
 	M_DRAW:polyoutline - draws a polygon outline from already transformed points.<br/>
 	M_DRAW:polyobj - construct a polygon from a object token list<br/>
@@ -1211,9 +1270,10 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <td>
 	M_DRAW:driver/ppm.c - M_DRAW driver for ppm (Poskanzer pixmap) files<br/>
 	M_DRAW:author - John S. Urban<br/>
-	M_DRAW:version - 2.0, Nov 2005<br/>
+	M_DRAW:version - 3.0, Jul 2019<br/>
 	 Version 1.0, John S. Urban, Feb 1997<br/>
 	 Version 2.0, John S. Urban, Nov 2005<br/>
+	 Version 3.0, John S. Urban, Jul 2019<br/>
 </td>
 <tr><td><a href="C-pref.c">C-pref.c</a></td>
 <td>

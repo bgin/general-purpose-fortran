@@ -1,5 +1,6 @@
 !===================================================================================================================================
 MODULE M_io
+implicit none
 private
 public uniq
 public print_inquire
@@ -125,15 +126,15 @@ integer,intent(in),optional  :: istart
 logical,intent(in),optional  :: verbose
 logical,intent(in),optional  :: create
 !-----------------------------------------------------------------------------------------------------------------------------------
-   logical                     :: around
-   integer,save                :: icount=1           ! counter to generate suffix from
-   character(len=4096),save    :: lastname=' '       ! name called with last time the routine was called
-   integer                     :: ilen
-   integer                     :: itimes
-   integer                     :: iscr
-   integer                     :: ios
-   logical                     :: verbose_local
-   logical                     :: create_local
+logical                     :: around
+integer,save                :: icount=1           ! counter to generate suffix from
+character(len=4096),save    :: lastname=' '       ! name called with last time the routine was called
+integer                     :: ilen
+integer                     :: itimes
+integer                     :: iscr
+integer                     :: ios
+logical                     :: verbose_local
+logical                     :: create_local
 !-----------------------------------------------------------------------------------------------------------------------------------
    uniq=trim(name)                                   ! the input name will be returned if it passes all the tests
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -806,15 +807,15 @@ character(len=1),allocatable,intent(out) :: text(:)     ! array to hold file
 integer,intent(out),optional             :: length      ! length of longest line
 integer,intent(out),optional             :: lines       ! number of lines
 !-----------------------------------------------------------------------------------------------------------------------------------
-   integer :: nchars=0             ! holds size of file
-   integer :: igetunit             ! use newunit=igetunit in f08
-   integer :: ios=0                ! used for I/O error status
-   integer :: length_local
-   integer :: lines_local
-   integer :: i
-   integer :: icount
-   character(len=256)  :: message
-   character(len=4096) :: local_filename
+integer :: nchars=0             ! holds size of file
+integer :: igetunit             ! use newunit=igetunit in f08
+integer :: ios=0                ! used for I/O error status
+integer :: length_local
+integer :: lines_local
+integer :: i
+integer :: icount
+character(len=256)  :: message
+character(len=4096) :: local_filename
 !-----------------------------------------------------------------------------------------------------------------------------------
    length_local=0
    lines_local=0
@@ -1029,14 +1030,14 @@ character(len=*),parameter::ident_7="@(#)M_io::notopen(3f): find free FORTRAN un
 integer,optional,intent(in)    :: start                           ! unit number to start looking at
 integer,optional,intent(in)    :: end                             ! last unit number to look at
 integer,optional,intent(out)   :: err                             ! error flag returned
-   integer                     :: istart
-   integer                     :: iend
-   integer                     :: ierr
+integer                        :: istart
+integer                        :: iend
+integer                        :: ierr
 
-   integer      :: i10                                            ! counter from start to end
-   integer      :: ios                                            ! iostatus from INQUIRE
-   logical      :: lopen                                          ! returned from INQUIRE
-   logical      :: lexist                                         ! returned from INQUIRE
+integer         :: i10                                            ! counter from start to end
+integer         :: ios                                            ! iostatus from INQUIRE
+logical         :: lopen                                          ! returned from INQUIRE
+logical         :: lexist                                         ! returned from INQUIRE
 !-----------------------------------------------------------------------------------------------------------------------------------
    !! IEND=MERGE( END, 99, PRESENT(END)) do not use merge, as TSOURCE must be evaluated before the call
    if(present(start))then; istart=start; else; istart=10; endif
@@ -1529,11 +1530,11 @@ integer,intent(in),optional              :: lun
 integer                                  :: ier
 character(len=4096)                      :: message
 
-   integer,parameter                     :: buflen=1024
-   character(len=:),allocatable          :: line_local
-   character(len=buflen)                 :: buffer
-   integer                               :: isize
-   integer                               :: lun_local
+integer,parameter                        :: buflen=1024
+character(len=:),allocatable             :: line_local
+character(len=buflen)                    :: buffer
+integer                                  :: isize
+integer                                  :: lun_local
 
    line_local=''
    ier=0
@@ -1615,13 +1616,13 @@ character(len=:),allocatable,intent(out) :: line
 integer,intent(in),optional              :: lun
 integer                                  :: ier
 
-   integer,parameter                     :: buflen=1024
-   character(len=:),allocatable          :: line_local
-   integer                               :: biggest
-   character(len=buflen)                 :: buffer
-   integer                               :: last
-   integer                               :: isize
-   integer                               :: lun_local
+integer,parameter                        :: buflen=1024
+character(len=:),allocatable             :: line_local
+integer                                  :: biggest
+character(len=buflen)                    :: buffer
+integer                                  :: last
+integer                                  :: isize
+integer                                  :: lun_local
 
    line_local=''
    ier=0
@@ -1696,8 +1697,9 @@ function get_tmp() result(tname)
 character(len=*),parameter::ident_13="@(#)M_io::get_tmp(3f): Return the name of the scratch directory"
 
 character(len=:),allocatable :: tname
-   integer :: lngth
-   character(len=10),parameter :: names(4)=["TMPDIR    ","TEMP      ","TEMPDIR   ","TMP       "]
+integer                      :: lngth
+character(len=10),parameter  :: names(4)=["TMPDIR    ","TEMP      ","TEMPDIR   ","TMP       "]
+integer                      :: i
    tname=''
    do i=1,size(names)
       call get_environment_variable(name=names(i), length=lngth)

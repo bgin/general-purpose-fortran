@@ -130,8 +130,8 @@ static void rtfline(int ix1,int iy1,int ix2,int iy2){
 
            /* <dphead> */
               /* POSITION AND SIZE */
-              /* dpxN X-offset of the drawing primitive from it's anchor */
-              /* dpyN Y-offset of the drawing primitive from it's anchor */
+              /* dpxN X-offset of the drawing primitive from its anchor */
+              /* dpyN Y-offset of the drawing primitive from its anchor */
               fprintf (draw_fp, "\\dpx%d\\dpy%d ", inw_x, inw_y);
 
               /* dpxsizeN X-size of the drawing primitive */

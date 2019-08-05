@@ -87,7 +87,7 @@
 !!
 !!     The advent of efficient and affordable raster graphics and PostScript and
 !!     3-D graphics ultimately made this simple vector-based 2-D graphics librar
-!!     inadequate for many graphics applications and it's use faded.
+!!     inadequate for many graphics applications and its use faded.
 !!
 !!       + Created: 19920213
 !===================================================================================================================================
@@ -862,82 +862,85 @@
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 module M_calcomp
-   public axis
-   public circl
-   public cntour
-   public curvx
-   public curvy
-   public dashl
-   public dashp
-   public elips
-   public factor
-   public fit
-   public fit4
-   public fline
-   public grid
-   public lgaxs
-   public lglin
-   public line
-   public newpen
-   public width
-   public nframe
-   public number
-   public plot
-   public plots
-   public polar
-   public poly
-   public rect
-   public reflx
-   public scale
-   public scalg
-   public smoot
-   public solut
-   public symbol
-   public where
+public axis
+public circl
+public cntour
+public curvx
+public curvy
+public dashl
+public dashp
+public elips
+public factor
+public fit
+public fit4
+public fline
+public grid
+public lgaxs
+public lglin
+public line
+public newpen
+public width
+public nframe
+public number
+public plot
+public plots
+public polar
+public poly
+public rect
+public reflx
+public scale
+public scalg
+public smoot
+public solut
+public symbol
+public where
 
-   public mpset
-   public mset
-   public setpar
-   public MOVE, DRAW, END
-   integer,parameter,public :: black=0
-   integer,parameter,public :: red=1
-   integer,parameter,public :: green=2
-   integer,parameter,public :: yellow=3
-   integer,parameter,public :: purple=4
-   integer,parameter,public :: magenta=5
-   integer,parameter,public :: cyan=6
-   integer,parameter,public :: white=7
+public mpset
+public mset
+public setpar
+public MOVE, DRAW, END
+integer,parameter,public :: black=0
+integer,parameter,public :: red=1
+integer,parameter,public :: green=2
+integer,parameter,public :: yellow=3
+integer,parameter,public :: purple=4
+integer,parameter,public :: magenta=5
+integer,parameter,public :: cyan=6
+integer,parameter,public :: white=7
 
-   private primitive__addrec
-   private primitive__merger
-   private primitive__newone
-   private primitive__pass
-   private primitive__recorx
-   private primitive__scan
-   private primitive__tracer
-   private primitive__fgetvar
-   private primitive__frend
-   private primitive__clear
-   private primitive__draw_line
-   private primitive__draw_text
-   private primitive__end_plotting
-   private primitive__start_plotting
-   private primitive__wpen
-   private primitive__width
+private primitive__addrec
+private primitive__merger
+private primitive__newone
+private primitive__pass
+private primitive__recorx
+private primitive__scan
+private primitive__tracer
+private primitive__fgetvar
+private primitive__frend
+private primitive__clear
+private primitive__draw_line
+private primitive__draw_text
+private primitive__end_plotting
+private primitive__start_plotting
+private primitive__wpen
+private primitive__width
 !     FOR CONTOUR PLOTS
-INTEGER,save :: NX_Q,NY_Q,II_Q,NN_Q,IX_Q,IY_Q,IXD_Q(4),IYD_Q(4),NXM1_Q,NYM1_Q,DIREC_Q,NTRK_Q, REC_Q(2048),TRK_Q(255),TRKA_Q(255),C_Q
+INTEGER,save :: NX_Q,NY_Q,II_Q,NN_Q,IX_Q,IY_Q,NXM1_Q,NYM1_Q,DIREC_Q,NTRK_Q, REC_Q(2048),TRK_Q(255),TRKA_Q(255),C_Q
 REAL,save    :: RATIO_Q,CVV_Q,HX_Q(255),HY_Q(255)
 LOGICAL,save :: EDGE_Q,ALT_Q,ODDPAS_Q
-INTEGER,save :: HXSZ_Q,HYSZ_Q
-   DATA IXD_Q/0,-1,0,1/,IYD_Q/1,0,-1,0/,LIMIT_Q/2048/,HXSZ_Q/255/,HYSZ_Q/255/
+INTEGER,save :: HXSZ_Q = 255
+INTEGER,save :: HYSZ_Q = 255
+integer,save :: limit_q = 2048
+integer,save :: ixd_q(4)=[0,-1,0,1]
+integer,save :: iyd_q(4)=[1,0,-1,0]
 !
 !  INTITALIZE THE SYMBOL TABLE AND OTHER CONSTANTS TO BE USED BY
 !  THE SYMBOL ROUTINE
 !
 !  TABLE CHANGED FROM 596 TO 700 PER REQUEST OF R. LINCOLN, ORLANDO
-   INTEGER TABLE_Q(700)
-   CHARACTER(len=1) :: ALPHA_Q(63)
-   REAL,SAVE :: XSPC_Q=7.0,YSPC_Q=7.0
+INTEGER TABLE_Q(700)
+CHARACTER(len=1) :: ALPHA_Q(63)
+REAL,SAVE :: XSPC_Q=7.0,YSPC_Q=7.0
 
    DATA ALPHA_Q/'A','B','C','D','E','F','G','H','I','J','K','L',           &
    &           'M','N','O','P','Q','R','S','T','U','V','W','X',            &
@@ -1001,14 +1004,14 @@ INTEGER,save :: HXSZ_Q,HYSZ_Q
 ! ADDED 104 ZERO ENTRIES FOR R. LINCOLN
 !
 !===================================================================================================================================
-   real :: maxq ! zmax
+real :: maxq ! zmax
 !===================================================================================================================================
-   CHARACTER(len=4),save :: CTTYP_Q
-   INTEGER,SAVE          :: KTSIZE_Q
+CHARACTER(len=4),save :: CTTYP_Q
+INTEGER,SAVE          :: KTSIZE_Q
 
-   INTEGER,PARAMETER     :: END=999
-   INTEGER,PARAMETER     :: MOVE=3
-   INTEGER,PARAMETER     :: DRAW=2
+INTEGER,PARAMETER     :: END=999
+INTEGER,PARAMETER     :: MOVE=3
+INTEGER,PARAMETER     :: DRAW=2
 !===================================================================================================================================
 contains
 !===================================================================================================================================

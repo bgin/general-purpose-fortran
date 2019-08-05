@@ -238,7 +238,7 @@ contains
 !!##OPTIONS
 !!
 !!    VALUE         the value to locate in the list.
-!!    list          is the list array.
+!!    LIST          is the list array.
 !!
 !!##RETURNS
 !!    PLACE         is the subscript that the entry was found at if it is
@@ -333,23 +333,17 @@ subroutine locate_c(list,value,place,ier,errmsg)
 character(len=*),parameter::ident_5="&
 &@(#)M_list::locate_c(3f): find PLACE in sorted character array where VALUE can be found or should be placed"
 
-! Assuming an alphabetized array of character strings where it is
-! assumed all variable names are lexically greater than a blank string.
-!
-!  1. If it is not found report where it should be placed as a NEGATIVE index number.
-!
-
 character(len=*),intent(in)             :: value
 integer,intent(out)                     :: place
 character(len=:),allocatable            :: list(:)
 integer,intent(out),optional            :: ier
 character(len=*),intent(out),optional   :: errmsg
-   integer                              :: i
-   character(len=:),allocatable         :: message
-   integer                              :: arraysize
-   integer                              :: maxtry
-   integer                              :: imin, imax
-   integer                              :: error
+integer                                 :: i
+character(len=:),allocatable            :: message
+integer                                 :: arraysize
+integer                                 :: maxtry
+integer                                 :: imin, imax
+integer                                 :: error
    if(.not.allocated(list))then
       list=[character(len=max(len_trim(value),2)) :: ]
    endif

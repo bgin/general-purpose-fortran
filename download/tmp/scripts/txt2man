@@ -200,9 +200,9 @@ do
 	p) doprobe=1;;
 	I) itxt="$OPTARG§$itxt";;
 	B) btxt=$OPTARG;;
-	T) post="groff -m man  -Tlatin1 | ${PAGER:-more}";;
+	T) post="groff -m man  -Tlatin1 | ${PAGER:-more -f}";;
 	X) post="groff -m man  -X";;
-	T) post="groff -mandoc -Tlatin1 | ${PAGER:-more}";;
+	T) post="groff -mandoc -Tlatin1 | ${PAGER:-more -f}";;
 	X) post="groff -mandoc -X";;
 	x) example; exit;;
 	*) usage; exit;;

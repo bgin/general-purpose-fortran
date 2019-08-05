@@ -182,7 +182,7 @@ void draw_backfacedir(int cdir) {
 }
 /******************************************************************************/
 #ident "@(#)M_DRAW:backface - Turns on culling of backfacing polygons. A polygon is"
-#ident "@(#)M_DRAW:... backfacing if it's orientation in *screen* coords is clockwise."
+#ident "@(#)M_DRAW:... backfacing if its orientation in *screen* coords is clockwise."
 void draw_backface(int onoff) {
    vdevice.attr->a.backface = onoff;
 }

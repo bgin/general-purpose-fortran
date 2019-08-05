@@ -130,7 +130,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)AUTHOR:         John Burkardt>',&
 '@(#)VERSION:        1.07, 20190125>',&
 '@(#)MODIFIED:       John S. Urban>',&
-'@(#)COMPILED:       Wed, Jul 3rd, 2019 11:47:01 AM>',&
+'@(#)COMPILED:       Sat, Aug 3rd, 2019 3:55:06 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

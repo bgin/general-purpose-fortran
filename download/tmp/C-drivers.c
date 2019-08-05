@@ -847,7 +847,7 @@ char *draw_vgetdev(char *buf) {
 }
 /******************************************************************************/
 /* returns the next key pressed.  */
-#ifndef GRX /* Has it's own getkey */
+#ifndef GRX /* Has its own getkey */
 int draw_getkey(void) {
         if (!vdevice.initialised)
                 draw_verror("getkey: draw not initialised\n");
@@ -1036,7 +1036,7 @@ void draw_vflush(void){
         (*vdevice.dev.Vsync)();
 }
 /******************************************************************************/
-/* It's difficult to do this device independently, but trying by
+/* It is difficult to do this device independently, but trying by
  * saying 1 unit is 1/10000 of X size of display.
  */
 void draw_linewidth(int w) {

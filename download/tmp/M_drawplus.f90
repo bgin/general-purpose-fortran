@@ -929,7 +929,7 @@ real             :: ysplit
 !
 !   some explanation of physical viewport units is required:
 !   assuming maximizing the required aspect ratio in the available drawing area,
-!   and that the original viewport "origin" 0,0 stays in it's original position,
+!   and that the original viewport "origin" 0,0 stays in its original position,
 !   and that the original -1,1,-1,1 viewport is the largest square that can fit
 !   on the display, bottom left justified.
 !   the screen coordinate system is a right-handed Cartesian coordinate system

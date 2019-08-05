@@ -43,7 +43,7 @@ character(len=79)             :: columns
 character(len=255)            :: helpdat=' '
 
 integer,parameter             :: IIN=1     ! unit number to use for reading
-integer,parameter             :: IMAX=240  ! it's time. Even 4010 emulators seem to support at least 80; Tektronix 4010 was  74
+integer,parameter             :: IMAX=240  ! it is time. Even 4010 emulators seem to support at least 80; Tektronix 4010 was 74
 integer                       :: i300
 integer                       :: icol
 integer                       :: istart
@@ -494,7 +494,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        2.5, 20130818  Updated and made a seperate program instead of a subroutine>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Wed, Jul 3rd, 2019 11:46:37 AM>',&
+'@(#)COMPILED:       Sat, Aug 3rd, 2019 3:54:41 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

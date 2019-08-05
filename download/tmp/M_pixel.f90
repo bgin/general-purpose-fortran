@@ -3936,7 +3936,7 @@ real :: ysplit
 !
 !   some explanation of physical viewport units is required:
 !   assuming maximizing the required aspect ratio in the available drawing area,
-!   and that the original viewport "origin" 0,0 stays in it's original position,
+!   and that the original viewport "origin" 0,0 stays in its original position,
 !   and that the original -1,1,-1,1 viewport is the largest square that can fit
 !   on the display, bottom left justified.
 !   the screen coordinate system is a right-handed Cartesian coordinate system
@@ -4961,7 +4961,7 @@ end subroutine textsize
 !!
 !!##DESCRIPTION
 !!    Centers text in the Y direction. The text string will be draw so that
-!!    it's center line is aligned with the current y position. Top
+!!    its center line is aligned with the current y position. Top
 !!    justification and Bottom justification are turned off.
 !!
 !!##EXAMPLE

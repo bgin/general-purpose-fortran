@@ -14,7 +14,7 @@
 !!
 !!    The test program is basically just a read loop that prompts for
 !!    lines of input read with readline(3c). You can edit the line being
-!!    read with readline(3c) per it's documentation. At a minimum, you can
+!!    read with readline(3c) per its documentation. At a minimum, you can
 !!    probably move around the line with the left and right arrow keys, and
 !!    insert characters by typing them wherever you moved the cursor to,
 !!    and use the DEL/ RUBOUT key to delete characters and such. If you use
@@ -95,7 +95,7 @@ contains
 !!
 !!    The test program is basically just a read loop that prompts for
 !!    lines of input read with readline(3c). You can edit the line being
-!!    read with readline(3c) per it's documentation. At a minimum, you can
+!!    read with readline(3c) per its documentation. At a minimum, you can
 !!    probably move around the line with the left and right arrow keys, and
 !!    insert characters by typing them wherever you moved the cursor to,
 !!    and use the DEL/ RUBOUT key to delete characters and such. If you use

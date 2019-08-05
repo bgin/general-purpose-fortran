@@ -1007,7 +1007,7 @@ PROCEDURE void draw_boxtext(float x, float y, float l, float h, char *s) {
       SCSIZEX = l /(float) draw_istrlength(s);
 
       /*
-       * set character height so it's the same as "h"
+       * set character height so it is the same as "h"
        */
       SCSIZEY = h /(float) (ftab.as - ftab.dec);
       draw_move(x, y, vdevice.cpW[V_Z]);

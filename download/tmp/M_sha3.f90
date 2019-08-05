@@ -495,7 +495,7 @@ function sha3_sponge( M, d, r )
      i = mod( size(M) + 1, r/8 ) ! how many bytes to add
      if ( i > 0 ) i = r/8 - i
      if ( i == 0 ) then
-        ! it's ok to add just one byte
+        ! it is ok to add just one byte
         do j = 1, r/8-1
            padding(j) = sha3_reverse( M(size(M)-(r/8-1)+j) )
         enddo
