@@ -15,7 +15,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '      read the file and write it out an an HTML file for printing or            ',&
 '      for inclusion much like a IMG file into an HTML document.                 ',&
 'SYNOPSIS                                                                        ',&
-'          nc2html -i INPUT_FILE -o OUTPUT_FILE [-pg]''                          ',&
+'          nc2html -i INPUT_FILE -o OUTPUT_FILE [ -pg]''                         ',&
 'OPTIONS                                                                         ',&
 '         -i INPUT_FILE    Name of ncurses(3c) window dump file generated        ',&
 '                          by putwin(3c).                                        ',&
@@ -38,7 +38,7 @@ end subroutine help_usage
 !!       for inclusion much like a IMG file into an HTML document.
 !!##SYNOPSIS
 !!
-!!           nc2html -i INPUT_FILE -o OUTPUT_FILE [-pg]'
+!!           nc2html -i INPUT_FILE -o OUTPUT_FILE [ -pg]'
 !!##OPTIONS
 !!          -i INPUT_FILE    Name of ncurses(3c) window dump file generated
 !!                           by putwin(3c).
@@ -64,7 +64,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20150312>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 6:52:50 PM>',&
+'@(#)COMPILED:       Thu, Aug 29th, 2019 10:58:25 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

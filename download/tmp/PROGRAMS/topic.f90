@@ -278,9 +278,9 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'     topic(1) - Display specially formatted help text files.                    ',&
+'     topic(1) - [HELP]Display specially formatted help text files.              ',&
 'SYNOPSIS                                                                        ',&
-'     topic [TOPIC |-t|-e SEARCH_STRING] [-f INPUT_FILE]]|[-all|-topics|-summaries]',&
+'     topic [TOPIC | -t| -e SEARCH_STRING] [ -f INPUT_FILE]]|[ -all| -topics| -summaries]',&
 'DESCRIPTION                                                                     ',&
 '   This utility program is used to read topics from a specially formatted       ',&
 '   help text file. It is often called from a program as a subprocess.           ',&
@@ -379,10 +379,10 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!      topic(1) - Display specially formatted help text files.
+!!      topic(1) - [HELP]Display specially formatted help text files.
 !!##SYNOPSIS
 !!
-!!      topic [TOPIC |-t|-e SEARCH_STRING] [-f INPUT_FILE]]|[-all|-topics|-summaries
+!!      topic [TOPIC | -t| -e SEARCH_STRING] [ -f INPUT_FILE]]|[ -all| -topics| -summaries
 !!##DESCRIPTION
 !!    This utility program is used to read topics from a specially formatted
 !!    help text file. It is often called from a program as a subprocess.
@@ -494,7 +494,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        2.5, 20130818  Updated and made a seperate program instead of a subroutine>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 3:54:41 PM>',&
+'@(#)COMPILED:       Fri, Aug 30th, 2019 10:16:11 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

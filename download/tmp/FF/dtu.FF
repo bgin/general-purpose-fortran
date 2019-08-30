@@ -9,7 +9,7 @@ NAME
        dtu(1f) - [FILE FILTER] convert files between Unix and DOS line terminator conventions
 
 SYNOPSIS
-       dtu [[-make dos|unix] [-z] [-n] -i input -o output ]|--help|--version
+       dtu [[ -make dos|unix] [ -z] [ -n] -i input -o output ]|--help|--version
 
 DESCRIPTION
        Convert DOS end-of-line (CR-LF or <carriage-return><line-feed>)

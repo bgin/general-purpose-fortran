@@ -11,9 +11,9 @@
 !!    CALCOMP-compatible library and documentation around.
 !!
 !!    If you have a need similar to mine for this CALCOMP library note that
-!!    many so-called "CALCOMP-compatible" libraries varied slightly from
-!!    the "standard" (ie. the library supplied by CALCOMP). As graphics
-!!    capabilities expanded the vendors often added routines to fill
+!!    many so-called "CALCOMP-compatible" libraries differed to various
+!!    degrees from the "standard" (ie. the library supplied by CALCOMP). As
+!!    graphics capabilities expanded the vendors often added routines to fill
 !!    polygons with patterns; to provide clipping and viewporting options;
 !!    to add color and line thickness control; to select hardware fonts and
 !!    so on. Although the M_draw(3f) library being called by this CALCOMP
@@ -406,7 +406,6 @@
 !!    export M_DRAW_DEVICE='x11'
 !!    # run a program
 !!    demo_general
-!!
 !!
 !!    # There are many output formats available (Adobe PDF, PostScript, SVG, ...)
 !!
@@ -862,6 +861,7 @@
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 module M_calcomp
+implicit none
 public axis
 public circl
 public cntour
@@ -925,7 +925,10 @@ private primitive__start_plotting
 private primitive__wpen
 private primitive__width
 !     FOR CONTOUR PLOTS
-INTEGER,save :: NX_Q,NY_Q,II_Q,NN_Q,IX_Q,IY_Q,NXM1_Q,NYM1_Q,DIREC_Q,NTRK_Q, REC_Q(2048),TRK_Q(255),TRKA_Q(255),C_Q
+INTEGER,save :: NX_Q,NY_Q,II_Q,IX_Q,IY_Q,NXM1_Q,NYM1_Q
+integer,save,target :: NTRK_Q, NN_Q
+integer,save,target :: REC_Q(2048)
+integer,save :: DIREC_Q,TRK_Q(255),TRKA_Q(255),C_Q
 REAL,save    :: RATIO_Q,CVV_Q,HX_Q(255),HY_Q(255)
 LOGICAL,save :: EDGE_Q,ALT_Q,ODDPAS_Q
 INTEGER,save :: HXSZ_Q = 255
@@ -941,6 +944,7 @@ integer,save :: iyd_q(4)=[1,0,-1,0]
 INTEGER TABLE_Q(700)
 CHARACTER(len=1) :: ALPHA_Q(63)
 REAL,SAVE :: XSPC_Q=7.0,YSPC_Q=7.0
+integer   :: idata
 
    DATA ALPHA_Q/'A','B','C','D','E','F','G','H','I','J','K','L',           &
    &           'M','N','O','P','Q','R','S','T','U','V','W','X',            &
@@ -1314,63 +1318,86 @@ end subroutine circl
 !!    end program demo_dashl
 !===================================================================================================================================
 SUBROUTINE DASHL  (X,Y,N,K)
+implicit none
+
 character(len=*),parameter::ident_2="@(#)M_calcomp::dashl(3f): draws a polyline with dashed lines"
-      DIMENSION X(*), Y(*)
-!.....TEST LESS THAN TWO POINTS
+
+real    :: x(*)
+real    :: y(*)
+real    :: dds
+real    :: ds
+real    :: dx
+real    :: dy
+integer :: i
+integer :: id
+integer :: j
+integer :: k
+integer :: kk
+integer :: n
+integer :: nd
+integer :: nm
+integer :: no
+integer :: np
+real    :: xn
+real    :: xt
+real    :: xx
+real    :: yn
+real    :: yt
+!     TEST LESS THAN TWO POINTS
       if(N-1)  90,90,80
 80    continue
-!.....INITIALIZE POINT, MINIMUM AND DELTA INDEXES
+!     INITIALIZE POINT, MINIMUM AND DELTA INDEXES
       NP=(N-1)*K+1
       NM=NP+K
       ND = NM + K
       NO=1
       KK=K
-!.....DETERMINE CURRENT PEN POSITION
+!     DETERMINE CURRENT PEN POSITION
       CALL WHERE(XN,YN,XX)
-!.....FIND NEAREST END OF LINE
+!     FIND NEAREST END OF LINE
       DX = MAX(ABS((X( 1)-X(NM))/X(ND)-XN), ABS((Y( 1)-Y(NM))/Y(ND)-YN))
       DY = MAX(ABS((X(NP)-X(NM))/X(ND)-XN), ABS((Y(NP)-Y(NM))/Y(ND)-YN))
       if(DX-DY) 20,20,40
-!.....REVERSE INCREMENT AND END TEST VALUE
+!     REVERSE INCREMENT AND END TEST VALUE
 40    NO=NP
       NP=1
       KK=-KK
 20    I=NO
-!.....COMPUTE DELTAS OF INDEXED LINE SEGMENT
+!     COMPUTE DELTAS OF INDEXED LINE SEGMENT
 30    J=I+KK
       DY =(Y(J) - Y(I) )/Y(ND)
       DX =(X(J) - X(I))/X(ND)
       DS = SQRT(DX*DX+DY*DY+0.000001)
       ID = 5.0 *DS
       if(ID)10,10,11
-!.....ASSURE DIVISOR NON ZERO
+!     ASSURE DIVISOR NON ZERO
 10    ID = 1
-!.....DERIVE DASH LENGTH.
+!     DERIVE DASH LENGTH.
 11    DDS = DS / FLOAT(2*ID+1)
       DY = DDS * DY / DS * Y(ND)
       DX = DDS * DX / DS * X(ND)
-!.....SET XT/YT TO SEGMENT START POINT
+!     SET XT/YT TO SEGMENT START POINT
       XT = X(I)
       YT = Y(I)
-!.....PLOT WITH PEN UP TO XT/YT
+!     PLOT WITH PEN UP TO XT/YT
 1     CALL PLOT((XT-X(NM))/X(ND),(YT-Y(NM))/Y(ND),3)
-!.....ADJUST XT/YT AND END TEST BY DASH LENGTH
+!     ADJUST XT/YT AND END TEST BY DASH LENGTH
       XT = XT + DX
       YT = YT + DY
       DS = DS - DDS
-!.....TEST LINE SEGMENT END
+!     TEST LINE SEGMENT END
       if(DS) 3,3,2
-!.....PLOT TO XT/YT WITH PEN DOWN
+!     PLOT TO XT/YT WITH PEN DOWN
 2     CALL PLOT((XT-X(NM))/X(ND),(YT-Y(NM))/Y(ND),2)
-!.....ADJUST XT/YT AND END TEST BY DASH LENGTH
+!     ADJUST XT/YT AND END TEST BY DASH LENGTH
       XT = XT + DX
       YT = YT + DY
       DS = DS - DDS
-!.....TEST LINE SEGMENT END
+!     TEST LINE SEGMENT END
       if(DS) 3,4,1
-!.....PLOT SEGMENT FINISH POINT \PEN DOWN'
+!     PLOT SEGMENT FINISH POINT \PEN DOWN'
 3     CALL PLOT((X(J)-X(NM))/X(ND),(Y(J)-Y(NM))/Y(ND),2)
-!.....TEST LAST LINE SEGMENT
+!     TEST LAST LINE SEGMENT
 4     IF(J-NP) 5,90,5
 5     I=J
       GOTO 30
@@ -1406,58 +1433,70 @@ END SUBROUTINE DASHL
 !!  adjusted to half the line length.
 !===================================================================================================================================
 SUBROUTINE DASHP  (X,Y,DL)
+implicit none
 
 character(len=*),parameter::ident_3="@(#)M_calcomp::dashp(3f): draw from current position to new point with dashed line"
 
-!.....A DASHED LINE IS DRAWN IN INCHES FROM THE CURRENT PEN POSITION TO
-!.....THE SPECIFIED XPAGE, YPAGE. THE SIZE OF THE DASH WILL BE AS CALLED
-!.....FOR EXCEPT IF THE LINE LENGTH IS LESS THAN DOUBLE THE DASH SIZE
-!.....THE DASH IS ADJUSTED TO HALF THE LINE LENGTH.
+!     A DASHED LINE IS DRAWN IN INCHES FROM THE CURRENT PEN POSITION TO
+!     THE SPECIFIED XPAGE, YPAGE. THE SIZE OF THE DASH WILL BE AS CALLED
+!     FOR EXCEPT IF THE LINE LENGTH IS LESS THAN DOUBLE THE DASH SIZE
+!     THE DASH IS ADJUSTED TO HALF THE LINE LENGTH.
 
 ! EARLIER VERSION OF THIS SUBROUTINE WAS
 !     SUBROUTINE  DASHPT(X,Y,DL)
+real    :: dl
+real    :: ds
+real    :: dx
+real    :: dy
+integer :: ic
+real    :: s
+real    :: st
+real    :: x
+real    :: xt
+real    :: y
+real    :: yt
 
-!.....DETERMINE CURRENT PEN POSITION
-      CALL WHERE(XT,YT,ST)
-!.....COMPUTE DELTAX AND DELTAY
-      DX = X-XT
-      DY = Y-YT
-      DS = DL
-      IC = 2
-!.....DERIVE LINE LENGTH
-      S =   SQRT(DX*DX+DY*DY)
-      if(S-0.02*ST) 6,10,10
-10    continue
-      DS = DS/S
-!.....TEST IF LINE LESS THAN DOUBLE DASH LENGTH
-      if(DS-0.5) 2,2,7
-!.....HALVE DASH LENGTH
-7     continue
-      DS = 0.5
-!.....PROPORTION THE DELTAS BY THE LENGTH/DASH RATIO
-2     continue
-      DX = DX*DS
-      DY = DY*DS
-!.....SET UP ADJUSTMENT AND END OF LINE TEST FROM ABS GREATEST DELTA
-      S = DX
-      ST = ABS(DX)-ABS(DY)
-      if(ST) 3,4,4
-3     continue
-      S = DY
-4     continue
-      ST = ABS( S/DS)-ABS( S)
-      DS = ABS( S)
-!.....DASHED LINE LOOP
-5     continue
-      XT = XT+DX
-      YT = YT+DY
-      ST = ST-DS
-      CALL PLOT(XT,YT,IC)
-      IC = 5-IC
-      if(ST) 6,6,5
-!.....LAST SPECIFIC LINE SEGMENT CALL
-6     continue
-      CALL PLOT(X, Y, IC)
+!     DETERMINE CURRENT PEN POSITION
+   CALL WHERE(XT,YT,ST)
+!     COMPUTE DELTAX AND DELTAY
+   DX = X-XT
+   DY = Y-YT
+   DS = DL
+   IC = 2
+!     DERIVE LINE LENGTH
+   S =   SQRT(DX*DX+DY*DY)
+   if(S-0.02*ST) 6,10,10
+10 continue
+   DS = DS/S
+!     TEST IF LINE LESS THAN DOUBLE DASH LENGTH
+   if(DS-0.5) 2,2,7
+!     HALVE DASH LENGTH
+7  continue
+   DS = 0.5
+!     PROPORTION THE DELTAS BY THE LENGTH/DASH RATIO
+2  continue
+   DX = DX*DS
+   DY = DY*DS
+!     SET UP ADJUSTMENT AND END OF LINE TEST FROM ABS GREATEST DELTA
+   S = DX
+   ST = ABS(DX)-ABS(DY)
+   if(ST) 3,4,4
+3  continue
+   S = DY
+4  continue
+   ST = ABS( S/DS)-ABS( S)
+   DS = ABS( S)
+!     DASHED LINE LOOP
+5  continue
+   XT = XT+DX
+   YT = YT+DY
+   ST = ST-DS
+   CALL PLOT(XT,YT,IC)
+   IC = 5-IC
+   if(ST) 6,6,5
+!     LAST SPECIFIC LINE SEGMENT CALL
+6  continue
+   CALL PLOT(X, Y, IC)
 END SUBROUTINE DASHP
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
@@ -1555,15 +1594,35 @@ END SUBROUTINE DASHP
 !!    end program demo_elips
 !===================================================================================================================================
 subroutine elips(x0,y0,a,b,alpha,thet0, thetf, iv)
+implicit none
+
 character(len=*),parameter::ident_4="@(#)M_calcomp::elips(3f): draw an elliptical arc"
-real,intent(in)       :: x0, y0
-real,intent(in)       :: a
-real,intent(in)       :: b
-real,intent(in)       :: alpha
-real,intent(in)       :: thet0
-real,intent(in)       :: thetf
-integer,intent(in)    :: iv
-real                  :: dummyx, dummyy
+
+real,intent(in)     :: x0, y0
+real,intent(in)     :: a
+real,intent(in)     :: b
+real,intent(in)     :: alpha
+real,intent(in)     :: thet0
+real,intent(in)     :: thetf
+integer,intent(in)  :: iv
+real                :: dummyx,dummyy
+real                :: ab
+real                :: absq
+real                :: alp
+real                :: bsq
+real                :: d
+real                :: dthe
+real                :: fctr
+integer             :: i
+integer             :: n
+real                :: st
+real                :: the0
+real                :: thef
+real                :: then
+real                :: xc
+real                :: xf
+real                :: yc
+real                :: yf
 
    if(abs(a)+abs(b)) 4,20,4
 4  continue
@@ -1683,17 +1742,39 @@ end subroutine elips
 !!
 !===================================================================================================================================
 SUBROUTINE FIT (XA,YA,XB,YB,XC,YC)
+implicit none
+
 character(len=*),parameter::ident_5="@(#)M_calcomp::fit(3f): draws a semi-hyperbolic curve through three points"
 
-      DIMENSION SS(8,9),THETA(2)
-      SAVE A,B
-      DATA A/0.0/,B/0.0/
+real      :: XA
+real      :: YA
+real      :: XB
+real      :: YB
+real      :: XC
+real      :: YC
+real      :: SS(8,9),THETA(2)
+real,save :: A=0.0
+real,save :: B=0.0
+integer   :: M
+real      :: DY
+real      :: DX
+real      :: Z3
+integer   :: I
+real      :: c
+real      :: d
+real      :: dz
+real      :: fctr
+integer   :: ktra
+real      :: x
+real      :: y
+real      :: z
+real      :: z2
       M = 2
       DY = YC - YA
       DX = XC - XA
       Z3 = SQRT( DY**2 + DX**2 )
       if( Z3 ) 20,20,21
-21    DO 8 I = 1,2
+21    DO I = 1,2
          IF(ABS(DX)-ABS(DY)) 1,2,2
 1        THETA(I) = 1.5708  - ATAN(ABS(DX/DY))
          GOTO 3
@@ -1705,7 +1786,8 @@ character(len=*),parameter::ident_5="@(#)M_calcomp::fit(3f): draws a semi-hyperb
 5        if(DX) 6,7,7
 6        THETA(I) =  THETA(I) + 3.1416
 7        DX = XB - XA
-8     DY = YB - YA
+         DY = YB - YA
+      enddo
       Z2 = SQRT(DY**2 + DX**2)  * COS(THETA(2)-THETA(1))
       if( Z2 ) 20,20,22
 22    continue
@@ -1915,6 +1997,9 @@ end subroutine grid
 !===================================================================================================================================
 subroutine poly (x,y,side_length,rn,th)
 implicit none
+
+character(len=*),parameter::ident_7="@(#)M_calcomp::poly(3f): draw an equilateral polygon"
+
 real,intent(in) :: x,y
 real,intent(in) :: side_length
 real,intent(in) :: rn
@@ -1926,9 +2011,6 @@ real            :: th2
 real            :: tho
 real            :: xn
 real            :: yn
-
-character(len=*),parameter::ident_7="@(#)M_calcomp::poly(3f): draw an equilateral polygon"
-
    n = rn
    xn = x
    yn = y
@@ -2024,32 +2106,57 @@ end subroutine poly
 !!    end program demo_rect
 !===================================================================================================================================
 SUBROUTINE RECT (X,Y,H,W,TH,IV)
+implicit none
+
 character(len=*),parameter::ident_8="@(#)M_calcomp::rect(3f): draw a rectangle"
 
-      THETA = TH/57.2958
-      XS = SIN(THETA)
-      XC = COS(THETA)
-      CALL PLOT(X,Y,IV)
-      X1 = X - H * XS
-      Y1 = Y + H * XC
-      CALL PLOT(X1,Y1,2)
-      X1 = X1 + W * XC
-      Y1 = Y1 + W * XS
-      CALL PLOT(X1,Y1,2)
-      X1 =  X + W * XC
-      Y1 = Y  + W * XS
-      CALL PLOT(X1,Y1,2)
-      CALL PLOT(X,Y,2)
-      RETURN
+real    :: h
+integer :: iv
+real    :: th
+real    :: theta
+real    :: w
+real    :: x
+real    :: x1
+real    :: xc
+real    :: xs
+real    :: y
+real    :: y1
+   THETA = TH/57.2958
+   XS = SIN(THETA)
+   XC = COS(THETA)
+   CALL PLOT(X,Y,IV)
+   X1 = X - H * XS
+   Y1 = Y + H * XC
+   CALL PLOT(X1,Y1,2)
+   X1 = X1 + W * XC
+   Y1 = Y1 + W * XS
+   CALL PLOT(X1,Y1,2)
+   X1 =  X + W * XC
+   Y1 = Y  + W * XS
+   CALL PLOT(X1,Y1,2)
+   CALL PLOT(X,Y,2)
 END SUBROUTINE RECT
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 SUBROUTINE SOLUT  (X,N)
+implicit none
 
 ! EARLIER VERSION OF THIS SUBROUTINE WAS
 !     SUBROUTINE  SOLUTN (X,N)
-      DIMENSION X(8,9)
+real    ::  X(8,9)
+integer :: n
+integer :: i
+integer :: in
+integer :: it
+integer :: j
+integer :: k
+integer :: l
+integer :: nm1
+integer :: np1
+real    :: dx
+real    :: ratio
+real    :: xt
       NM1 = N - 1
       NP1 = N + 1
       DO 10 I = 1,NM1
@@ -2166,37 +2273,57 @@ END SUBROUTINE SOLUT
 !!    end program demo_curvx
 !===================================================================================================================================
 SUBROUTINE CURVX  (X0,XF,A,E,B,F,C,G,D,H)
+implicit none
+
 character(len=*),parameter::ident_9="@(#)M_calcomp::curvx(3f): plots a function of X over a given range"
 
-!.....CALL CURVX
-!..... (XO, XF, COEFF1, EXP1, COEFF2, EXP2, COEFF3, EXP3, COEFF4, EXP4)
-!.....
-!.....XO, XF                           ARE THE STARTING AND ENDING
-!.....                                 VALUES OF X IN INCHES.
-!.....                                 POLYNOMIAL.
+!     CALL CURVX
+!      (XO, XF, COEFF1, EXP1, COEFF2, EXP2, COEFF3, EXP3, COEFF4, EXP4)
+!
+!     XO, XF                           ARE THE STARTING AND ENDING
+!                                      VALUES OF X IN INCHES.
+!                                      POLYNOMIAL.
 ! EARLIER VERSION OF THIS SUBROUTINE WAS
 !     SUBROUTINE CURVEX (X0,XF,A,E,B,F,C,G,D,H)
-!.....INITIALIZATION -
-!.....GET LINE LENGTH
+real    :: a
+real    :: b
+real    :: c
+real    :: d
+real    :: dlt
+real    :: dx
+real    :: e
+real    :: f
+real    :: g
+real    :: h
+integer :: i3
+integer :: iv
+integer :: n
+real    :: x
+real    :: x0
+real    :: xf
+real    :: xfct
+real    :: y
+!     INITIALIZATION -
+!     GET LINE LENGTH
       DX  =  XF - X0
       I3 = 3
-!.....DEVELOP FACTORED DELTA
+!     DEVELOP FACTORED DELTA
       CALL WHERE(X,Y,XFCT)
       X = X0
       DLT = 0.01/XFCT
-!.....CHECK LINE LENGTH (IF ZERO RETURN)
+!     CHECK LINE LENGTH (IF ZERO RETURN)
       if(DX) 10,20,15
-!.....IF NEGATIVE MAKE DELTA LIKEWISE
+!     IF NEGATIVE MAKE DELTA LIKEWISE
 10    DLT = -DLT
-!.....COMPUTE NUMBER OF LINE POINTS
+!     COMPUTE NUMBER OF LINE POINTS
 15    N = INT(ABS(DX/DLT) + 1.0)
-!.....CURVE FITTING PLOT LOOP
+!     CURVE FITTING PLOT LOOP
       DO 17  IV= 1,N
          Y = A*X**E + B*X**F + C*X**G + D*X**H
          CALL PLOT(X,Y,I3)
          X = X + DLT
 17    I3 = 2
-!.....PLOT EXPLICIT FINAL POINT AND RETURN
+!     PLOT EXPLICIT FINAL POINT AND RETURN
       Y = A*XF**E + B*XF**F + C*XF**G +D*XF**H
       CALL PLOT(XF,Y,2)
 20    RETURN
@@ -2288,40 +2415,60 @@ END SUBROUTINE CURVX
 !!    end program demo_curvx
 !===================================================================================================================================
 SUBROUTINE CURVY  (Y0,YF,A,E,B,F,C,G,D,H)
+implicit none
+
 character(len=*),parameter::ident_10="@(#)M_calcomp::curvy(3f): plots a function of Y over a given range"
 
-!.....CALL CURVY
-!..... (YO, YF, COEFF1, EXP1, COEFF2, EXP2, COEFF3, EXP3, COEFF4, EXP4)
-!.....
-!.....YO, YF                           ARE THE STARTING AND ENDING
-!.....                                 VALUES OF Y IN INCHES.
-!.....COEFF1, COEFF2, COEFF3, COEFF4   ARE THE COEFFICIENTS OF THE
-!.....                                 POLYNOMIAL.
-!.....EXP1, EXP2, EXP3, EXP4           ARE THE EXPONENTS OF THE
-!.....                                 POLYNOMIAL.
+!     CALL CURVY
+!      (YO, YF, COEFF1, EXP1, COEFF2, EXP2, COEFF3, EXP3, COEFF4, EXP4)
+!
+!     YO, YF                           ARE THE STARTING AND ENDING
+!                                      VALUES OF Y IN INCHES.
+!     COEFF1, COEFF2, COEFF3, COEFF4   ARE THE COEFFICIENTS OF THE
+!                                      POLYNOMIAL.
+!     EXP1, EXP2, EXP3, EXP4           ARE THE EXPONENTS OF THE
+!                                      POLYNOMIAL.
 ! EARLIER VERSION OF THIS SUBROUTINE WAS
 !     SUBROUTINE CURVEY (Y0,YF,A,E,B,F,C,G,D,H)
-!.....INITIALIZATION -
-!.....GET LINE LENGTH
+real    :: a
+real    :: b
+real    :: c
+real    :: d
+real    :: dlt
+real    :: dy
+real    :: e
+real    :: f
+real    :: g
+real    :: h
+integer :: i3
+integer :: iv
+integer :: n
+real    :: x
+real    :: xfct
+real    :: y
+real    :: y0
+real    :: yf
+!     INITIALIZATION -
+!     GET LINE LENGTH
       DY  =  YF - Y0
       I3 = 3
-!.....DEVELOP FACTORED DELTA
+!     DEVELOP FACTORED DELTA
       CALL WHERE(X,Y,XFCT)
       Y = Y0
       DLT = 0.01/XFCT
-!.....CHECK LINE LENGTH (IF ZERO RETURN)
+!     CHECK LINE LENGTH (IF ZERO RETURN)
       if(DY) 10,20,15
-!.....IF NEGATIVE MAKE DELTA LIKEWISE
+!     IF NEGATIVE MAKE DELTA LIKEWISE
 10    DLT = -DLT
-!.....COMPUTE NUMBER OF LINE POINTS
+!     COMPUTE NUMBER OF LINE POINTS
 15    N = INT(ABS(DY/DLT) + 1.0)
-!.....CURVE FITTING PLOT LOOP
+!     CURVE FITTING PLOT LOOP
       DO 17  IV= 1,N
          X = A*Y**E + B*Y**F + C*Y**G + D*Y**H
          CALL PLOT(X,Y,I3)
          Y = Y + DLT
 17    I3 = 2
-!.....PLOT EXPLICIT FINAL POINT AND RETURN
+!     PLOT EXPLICIT FINAL POINT AND RETURN
       X = A*YF**E + B*YF**F + C*YF**G +D*YF**H
       CALL PLOT(X,YF,2)
 20    RETURN
@@ -2330,9 +2477,45 @@ END SUBROUTINE CURVY
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 SUBROUTINE FIT4(PX1,PY1,PX2,PY2,VECX1,VECY1,VECX3,VECY3)
+implicit none
 
-      SAVE VX2,VY2,VX3,VY3,D3,UX1,UY1,UX2,UY2
-      DATA VX2,VY2,VX3,VY3,D3,UX1,UY1,UX2,UY2  /9*0.0/
+real    :: ax
+real    :: ay
+real    :: bx
+real    :: by
+real    :: d
+real    :: d1
+real    :: d2
+real    :: dv
+integer :: i
+integer :: n
+real    :: px1
+real    :: px2
+real    :: py1
+real    :: py2
+real    :: t
+real    :: uux1
+real    :: uux2
+real    :: uuy1
+real    :: uuy2
+real    :: vecx1
+real    :: vecx3
+real    :: vecy1
+real    :: vecy3
+real    :: x
+real    :: x1
+real    :: y
+real    :: y1
+
+real,save    :: vx2 = 0.0
+real,save    :: vy2 = 0.0
+real,save    :: vx3 = 0.0
+real,save    :: vy3 = 0.0
+real,save    :: d3  = 0.0
+real,save    :: ux1 = 0.0
+real,save    :: uy1 = 0.0
+real,save    :: ux2 = 0.0
+real,save    :: uy2 = 0.0
       X1=PX1
       Y1=PY1
       CALL WHERE(X,Y,D)
@@ -2385,7 +2568,6 @@ SUBROUTINE FIT4(PX1,PY1,PX2,PY2,VECX1,VECY1,VECX3,VECY3)
          X=((AX*T+BX)*T+UUX1)*T+X1
          Y=((AY*T+BY)*T+UUY1)*T+Y1
 9     CALL PLOT(X,Y,2)
-      RETURN
 END SUBROUTINE FIT4
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
@@ -2396,49 +2578,49 @@ END SUBROUTINE FIT4
 !!
 !!##SYNOPSIS
 !!
-!!        subroutine fline(xarray,yarray,npts,inc,+-lintyp,inteq)
+!!    subroutine fline(xarray,yarray,npts,inc,+-lintyp,inteq)
 !!
 !!##DESCRIPTION
 !!
 !!##OPTIONS
 !!
-!!     XARRAY      is the name of the array containing the values to be
-!!                 plotted as the abscissa and the appropriate scaling
-!!                 parameters.
+!!     XARRAY   is the name of the array containing the values to be
+!!              plotted as the abscissa and the appropriate scaling
+!!              parameters.
 !!
-!!     YARRAY      is the name of the array containing the values to be
-!!                 plotted as the ordinates and the appropriate scaling
-!!                 parameters.
+!!     YARRAY   is the name of the array containing the values to be
+!!              plotted as the ordinates and the appropriate scaling
+!!              parameters.
 !!
-!!     NPTS        is the number of data points to be plotted:
+!!     NPTS     is the number of data points to be plotted:
 !!
-!!                 if NPTS >0 a straight line is drawn between the points.
+!!              if NPTS >0 a straight line is drawn between the points.
 !!
-!!                 if NPTS <0 a smooth curve, drawn using a modified
-!!                 spline-fitting technique, is drawn between the points.
+!!              if NPTS <0 a smooth curve, drawn using a modified
+!!              spline-fitting technique, is drawn between the points.
 !!
-!!     INC         is the increment between elements in the array to be
-!!                 plotted. INC >1 if the values to be plotted are in a
-!!                 mixed array. (Usually INC = 1.)
-!!     LINTYP      is used to control the type of graph produced:
+!!     INC      is the increment between elements in the array to be
+!!              plotted. INC >1 if the values to be plotted are in a
+!!              mixed array. (Usually INC = 1.)
+!!     LINTYP   is used to control the type of graph produced:
 !!
-!!                 if LINTYP = 0 a line is plotted between successive data
-!!                 points. (No symbols are plotted.)
+!!              if LINTYP = 0 a line is plotted between successive data
+!!              points. (No symbols are plotted.)
 !!
-!!                 if LINTYP = 1 a line plot is produced, with a symbol at
-!!                 each data point.
+!!              if LINTYP = 1 a line plot is produced, with a symbol at
+!!              each data point.
 !!
-!!                 if LINTYP = n a line plot is produced, with a symbol at
-!!                 every nth data point.
+!!              if LINTYP = n a line plot is produced, with a symbol at
+!!              every nth data point.
 !!
-!!                 if LINTYP = -n, connecting lines are not plotted between
-!!                 data points; a symbol appears at every nth data point.
+!!              if LINTYP = -n, connecting lines are not plotted between
+!!              data points; a symbol appears at every nth data point.
 !!
-!!     INTEQ       is the integer equivalent used to specify the symbol to
-!!                 be plotted at a data point. (Refer to the description of
-!!                 SYMBOL for possible values of INTEQ.)
+!!     INTEQ    is the integer equivalent used to specify the symbol to
+!!              be plotted at a data point. (Refer to the description of
+!!              SYMBOL for possible values of INTEQ.)
 !!
-!!   COMMENTS:
+!!  COMMENTS
 !!
 !!  The arrays must be dimensioned with at least NPTS + 2 elements. The
 !!  adjusted minimum value (FIRSTV) and the adjusted delta value (DELTAV),
@@ -2507,6 +2689,8 @@ END SUBROUTINE FIT4
 !!    end program demo_fline
 !===================================================================================================================================
 SUBROUTINE FLINE (X,Y,NN,K,J,L)
+implicit none
+
 character(len=*),parameter::ident_11="@(#)M_calcomp::fline(3f): plot a polyline with optional fit"
 
 !             X  IS THE NAME OF THE ARRAY OF UNSCALED ORDINATE VALUES.
@@ -2525,7 +2709,7 @@ character(len=*),parameter::ident_11="@(#)M_calcomp::fline(3f): plot a polyline 
       DIMENSION X(*), Y(*)
 !
 !  THE VARIABLE IBCD HAS BEEN DECLARED AS CHARACTER TYPE FOR USE IN
-!  THE CALL TO THE 'SYMBOL' ROUTINE.  SINCE 'IBCD' HAS NO MEANING IN
+!  THE CALL TO THE 'SYMBOL' ROUTINE. SINCE 'IBCD' HAS NO MEANING IN
 !  THE PARTICULAR CALL TO 'SYMBOL' FOUND IN THIS SUBROUTINE, 'IBCD'
 !  IS NOT INITIALIZED.
 !
@@ -2534,6 +2718,51 @@ character(len=*),parameter::ident_11="@(#)M_calcomp::fline(3f): plot a polyline 
 !  VARIABLE AS THE CRAY VERSION OF THE 'SYMBOL' ROUTINE EXPECTS A
 !  SIMPLE INTEGER VALUE FOR THIS ARGUMENT.
 !
+real    :: df
+real    :: dl
+real    :: dx
+real    :: dy
+integer :: i
+integer :: ic
+integer :: ica
+integer :: inteq
+integer :: is
+integer :: isa
+integer :: j
+integer :: k
+integer :: kk
+integer :: l
+integer :: ldx
+integer :: lmin
+integer :: lp
+integer :: lsw
+integer :: n
+integer :: na
+integer :: nf
+integer :: nfp
+integer :: nl
+integer :: nlp
+integer :: nn
+integer :: nt
+integer :: nw
+real    :: su
+real    :: sv
+real    :: u
+real    :: u1
+real    :: u2
+real    :: v
+real    :: v1
+real    :: v2
+real    :: x
+real    :: x0
+real    :: xmin
+real    :: xn
+real    :: xn1
+real    :: y
+real    :: y0
+real    :: ymin
+real    :: yn
+real    :: yn1
       CHARACTER(len=8) :: IBCD
       INTEQ = L
       N=ABS(NN)
@@ -2599,7 +2828,8 @@ character(len=*),parameter::ident_11="@(#)M_calcomp::fline(3f): plot a polyline 
       CALL REFLX(U,V,U1,V1)
 ! EARLIER VERSION USED
 !     CALL REFLEX(U,V,U1,V1)
-25    DO 23 I=1,N
+25    continue
+      DO I=1,N
          XN=XN1
          YN=YN1
          if(N-I) 11,11,14
@@ -2629,14 +2859,15 @@ character(len=*),parameter::ident_11="@(#)M_calcomp::fline(3f): plot a polyline 
          if(NW) 22,28,22
 !
 !  THE FOLLOWING CALL TO THE 'SYMBOL' ROUTINE HAS BEEN MODIFIED TO
-!  CONVERT THIS SUBROUTINE TO THE CRAY.  ON THE CRAY, 'SYMBOL' HAS
-!  7 ARGUMENTS; ON THE CDC, 'SYMBOL' HAS 6 ARGUMENTS.  THE ADDITIONAL
+!  CONVERT THIS SUBROUTINE TO THE CRAY. ON THE CRAY, 'SYMBOL' HAS
+!  7 ARGUMENTS; ON THE CDC, 'SYMBOL' HAS 6 ARGUMENTS. THE ADDITIONAL
 !  ARGUMENT IN THIS CALL IS 'IBCD'.
 !
 28       CALL SYMBOL(XN,YN,0.08,IBCD,INTEQ,0.0,-1)
          NA=1
 22       IC=ICA
-23    NF=NF+KK
+      NF=NF+KK
+      enddo
 24    RETURN
 END SUBROUTINE FLINE
 !===================================================================================================================================
@@ -2800,7 +3031,10 @@ END SUBROUTINE FLINE
 !!    end program demo_lgaxs
 !===================================================================================================================================
 SUBROUTINE LGAXS(XO,YO,IBCD,N,DIST,THETA,VORG,DELTA)
+implicit none
+
 character(len=*),parameter::ident_12="@(#)M_calcomp::lgaxs(3f): draw logarithmic axis"
+
 ! EARLIER VERSION OF THIS SUBROUTINE WAS
 
 !     SUBROUTINE LGAXIS(XO,YO,IBCD,N,DIST,THETA,VORG,DELTA)
@@ -2812,12 +3046,49 @@ character(len=*),parameter::ident_12="@(#)M_calcomp::lgaxs(3f): draw logarithmic
 !  ON THE CRAY.
 !
 !  THE VARIABLE 'INTEQ' IS ALSO USED IN THE CALL TO THE 'SYMBOL'
-!  ROUTINE.  'INTEQ' IS THE INTEGER EQUIVALENT OF THE SYMBOL TO BE
-!  DRAWN.  IF 'INTEQ' HAS A VALUE BETWEEN 0 AND 91 INCLUSIVE, A
-!  SYMBOL IS DRAWN EVEN IF A TITLE HAS BEEN SPECIFIED.  TO PREVENT
+!  ROUTINE. 'INTEQ' IS THE INTEGER EQUIVALENT OF THE SYMBOL TO BE
+!  DRAWN. IF 'INTEQ' HAS A VALUE BETWEEN 0 AND 91 INCLUSIVE, A
+!  SYMBOL IS DRAWN EVEN IF A TITLE HAS BEEN SPECIFIED. TO PREVENT
 !  THIS FROM HAPPENING IN THIS SUBROUTINE, 'INTEQ' IS INITIALIZED
 !  TO THE VALUE 999 (WHICH HAS NO SIGNIFICANCE FOR 'SYMBOL').
 !
+real    :: ai
+real    :: bcdx
+real    :: bcdy
+real    :: blen
+real    :: blmn
+real    :: blog
+real    :: cist
+real    :: cost
+real    :: d1
+real    :: d2
+real    :: d3
+real    :: d4
+real    :: d5
+real    :: d6
+real    :: delta
+real    :: dist
+real    :: eto10
+real    :: fj
+real    :: fxmn
+integer :: i
+integer :: inteq
+integer :: k
+integer :: n
+integer :: nc
+real    :: sint
+real    :: size
+real    :: size1
+real    :: sont
+real    :: th
+real    :: theta
+real    :: vorg
+real    :: x
+real    :: x0
+real    :: xo
+real    :: y
+real    :: y0
+real    :: yo
       CHARACTER(len=*) :: IBCD
       SAVE INTEQ,SONT,CIST,D1,D2,D3,D4,D5,D6
       DATA INTEQ/999/,SONT,CIST,D1,D2,D3,D4,D5,D6/8*0.0/
@@ -2929,13 +3200,12 @@ character(len=*),parameter::ident_12="@(#)M_calcomp::lgaxs(3f): draw logarithmic
 !  DRAW AXIS TITLE.
 !
 !  THE FOLLOWING CALL TO THE 'SYMBOL' ROUTINE HAS BEEN MODIFIED TO
-!  CONVERT THIS SUBROUTINE TO THE CRAY.  ON THE CRAY, 'SYMBOL' HAS
-!  7 ARGUMENTS; ON THE CDC, 'SYMBOL' HAS 6 ARGUMENTS.  THE ADDITIONAL
+!  CONVERT THIS SUBROUTINE TO THE CRAY. ON THE CRAY, 'SYMBOL' HAS
+!  7 ARGUMENTS; ON THE CDC, 'SYMBOL' HAS 6 ARGUMENTS. THE ADDITIONAL
 !  ARGUMENT IN THIS CALL IS 'INTEQ'.
 !
 125   CALL SYMBOL(BCDX,BCDY,0.14,IBCD,INTEQ,THETA,NC)
 130   CONTINUE
-      RETURN
 END SUBROUTINE LGAXS
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
@@ -2950,8 +3220,8 @@ END SUBROUTINE LGAXS
 !!
 !!##DESCRIPTION
 !!
-!!   LGLIN is a FORTRAN subroutine used to plot data either in log-log or semi-log
-!!   mode. LGLIN is similar in operation to LINE.
+!!   LGLIN(3f) is a FORTRAN subroutine used to plot data either in log-log or semi-log
+!!   mode. LGLIN(3f) is similar in operation to LINE(3f).
 !!
 !!##OPTIONS
 !!
@@ -3132,11 +3402,12 @@ END SUBROUTINE LGAXS
 !             LOGTYP=1 PRODUCES A SEMI-LOG PLOT LINEAR IN X.
 !             LOGTYP=-1 PRODUCES A SEMI-LOG PLOT LINEAR IN Y.
 SUBROUTINE LGLIN (XARRA,YARRA,NV,K,JTYPE,NSY,LGTYP)
+implicit none
+
 character(len=*),parameter::ident_13="@(#)M_calcomp::lglin(3f): draw polyline in log-log or semi-log mode"
-      DIMENSION XARRA(*), YARRA(*)
-!
+
 !  THE VARIABLE IBCD HAS BEEN DECLARED AS CHARACTER TYPE FOR USE IN
-!  THE CALL TO THE 'SYMBOL' ROUTINE.  SINCE 'IBCD' HAS NO MEANING IN
+!  THE CALL TO THE 'SYMBOL' ROUTINE. SINCE 'IBCD' HAS NO MEANING IN
 !  THE PARTICULAR CALL TO 'SYMBOL' FOUND IN THIS SUBROUTINE, 'IBCD'
 !  IS NOT INITIALIZED.
 !
@@ -3145,7 +3416,42 @@ character(len=*),parameter::ident_13="@(#)M_calcomp::lglin(3f): draw polyline in
 !  VARIABLE AS THE CRAY VERSION OF THE 'SYMBOL' ROUTINE EXPECTS A
 !  SIMPLE INTEGER VALUE FOR THIS ARGUMENT.
 !
-      CHARACTER(len=8) :: IBCD
+real    :: xarra(*)
+real    :: yarra(*)
+integer :: nv
+integer :: k
+integer :: jtype
+integer :: nsy
+integer :: lgtyp
+CHARACTER(len=8) :: IBCD
+real    :: df
+real    :: dl
+real    :: dx
+real    :: dy
+real    :: eto10
+integer :: i
+integer :: ic
+integer :: ica
+integer :: inteq
+integer :: is
+integer :: isa
+integer :: kk
+integer :: ldx
+integer :: lmn
+integer :: lsw
+integer :: na
+integer :: nf
+integer :: nl
+integer :: nt
+real    :: x1
+real    :: x2
+real    :: xmin
+real    :: xn
+real    :: y1
+real    :: y2
+real    :: ymin
+real    :: yn
+real    :: z
       INTEQ = NSY
       ETO10 = 0.4342945
       LMN = NV*K+1
@@ -3225,8 +3531,8 @@ character(len=*),parameter::ident_13="@(#)M_calcomp::lglin(3f): draw polyline in
 180      if(LSW) 210,200,210
 !
 !  THE FOLLOWING CALL TO THE 'SYMBOL' ROUTINE HAS BEEN MODIFIED TO
-!  CONVERT THIS SUBROUTINE TO THE CRAY.  ON THE CRAY, 'SYMBOL' HAS
-!  7 ARGUMENTS; ON THE CDC, 'SYMBOL' HAS 6 ARGUMENTS.  THE ADDITIONAL
+!  CONVERT THIS SUBROUTINE TO THE CRAY. ON THE CRAY, 'SYMBOL' HAS
+!  7 ARGUMENTS; ON THE CDC, 'SYMBOL' HAS 6 ARGUMENTS. THE ADDITIONAL
 !  ARGUMENT IN THIS CALL IS 'IBCD'.
 !
 190      CALL SYMBOL(XN,YN,0.08,IBCD,INTEQ,0.0,IS)
@@ -3238,7 +3544,6 @@ character(len=*),parameter::ident_13="@(#)M_calcomp::lglin(3f): draw polyline in
 220      NF = NF+KK
          IS = ISA
 230   IC = ICA
-      RETURN
 END SUBROUTINE LGLIN
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
@@ -3399,42 +3704,45 @@ END SUBROUTINE LGLIN
 !!    end program demo_polar
 !===================================================================================================================================
 SUBROUTINE POLAR(RADAR,ANGAR,NPTS,INC,LTYP,INTEQ,RMAX,DR)
+implicit none
+
 character(len=*),parameter::ident_14="@(#)M_calcomp::polar(3f): plot radial values versus angular variables (as polar coordinates)"
-!.....
-!.....  RARRAY IS THE ARRAY CONTAINING THE RADIAL VALUES OF THE POINTS
-!.....          TO BE PLOTTED, IN INCHES.
-!.....
-!.....  AARRAY  IS THE ARRAY CONTAINING THE ANGULAR VALUES OF THE POINTS
-!.....          TO BE PLOTTED, IN RADIANS.
-!.....
-!.....  NPTS    IS THE NUMBER OF DATA POINTS TO BE PLOTTED.
-!.....
-!.....  INC     IS THE INCREMENT BETWEEN ELEMENTS IN THE ARRAY. INC IS
-!.....          GREATER THAN 1 IF THE VALUES TO BE PLOTTED ARE IN A
-!.....          MIXED ARRAY. NORMALLY INC=1 .
-!.....
-!.....  LINTYP  IS THE TYPE OF GRAPH TO BE PLOTTED. IF LINTYP EQUALS
-!.....            0   A LINE IS PLOTTED BETWEEN SUCCESSIVE DATA POINTS.
-!.....            1   A LINE PLOT IS PRODUCED, WITH A SYMBOL AT EACH
-!.....                DATA POINT.
-!.....            2   A LINE PLOT IS PRODUCED, WITH A SYMBOL AT EVERY
-!.....                SECOND DATA POINT.
-!.....            N   A LINE PLOT IS PRODUCED, WITH A SYMBOL AT EVERY
-!.....                NTH DATA POINT.
-!.....            -N  CONNECTING LINES ARE NOT PLOTTED? A SYMBOL APPEARS
-!.....                AT EVERY NTH DATA POINT.
-!.....
-!.....  INTEQ   IS THE INTEGER EQUIVALENT OF THE SYMBOL TO BE PLOTTED
-!.....          AT EVERY NTH DATA POINT.
-!.....
-!.....  RMAX    IS THE MAXIMUM RADIUS FOR THE PLOTTING AREA. IF RMAX IS
-!.....            POSITIVE,  POLAR PERFORMS THE SCALING, AND RETURNS
-!.....                       THE SCALE FACTOR IN DR.
-!.....            NEGATIVE,  DR IS USED AS THE SCALE FACTOR.
-!.....
-!.....  DR      IS THE SCALE FACTOR WHEN RMAX IS NEGATIVE.
-!.....            DR RETURNS THE SCALE FACTOR WHEN RMAX IS POSITIVE.
-!.....
+
+!
+!       RARRAY IS THE ARRAY CONTAINING THE RADIAL VALUES OF THE POINTS
+!               TO BE PLOTTED, IN INCHES.
+!
+!       AARRAY  IS THE ARRAY CONTAINING THE ANGULAR VALUES OF THE POINTS
+!               TO BE PLOTTED, IN RADIANS.
+!
+!       NPTS    IS THE NUMBER OF DATA POINTS TO BE PLOTTED.
+!
+!       INC     IS THE INCREMENT BETWEEN ELEMENTS IN THE ARRAY. INC IS
+!               GREATER THAN 1 IF THE VALUES TO BE PLOTTED ARE IN A
+!               MIXED ARRAY. NORMALLY INC=1 .
+!
+!       LINTYP  IS THE TYPE OF GRAPH TO BE PLOTTED. IF LINTYP EQUALS
+!                 0   A LINE IS PLOTTED BETWEEN SUCCESSIVE DATA POINTS.
+!                 1   A LINE PLOT IS PRODUCED, WITH A SYMBOL AT EACH
+!                     DATA POINT.
+!                 2   A LINE PLOT IS PRODUCED, WITH A SYMBOL AT EVERY
+!                     SECOND DATA POINT.
+!                 N   A LINE PLOT IS PRODUCED, WITH A SYMBOL AT EVERY
+!                     NTH DATA POINT.
+!                 -N  CONNECTING LINES ARE NOT PLOTTED? A SYMBOL APPEARS
+!                     AT EVERY NTH DATA POINT.
+!
+!       INTEQ   IS THE INTEGER EQUIVALENT OF THE SYMBOL TO BE PLOTTED
+!               AT EVERY NTH DATA POINT.
+!
+!       RMAX    IS THE MAXIMUM RADIUS FOR THE PLOTTING AREA. IF RMAX IS
+!                 POSITIVE,  POLAR PERFORMS THE SCALING, AND RETURNS
+!                            THE SCALE FACTOR IN DR.
+!                 NEGATIVE,  DR IS USED AS THE SCALE FACTOR.
+!
+!       DR      IS THE SCALE FACTOR WHEN RMAX IS NEGATIVE.
+!                 DR RETURNS THE SCALE FACTOR WHEN RMAX IS POSITIVE.
+!
       DIMENSION RADAR(*), ANGAR(*), TEMP(4)
 !
 !  THE VARIABLE IBCD HAS BEEN DECLARED AS CHARACTER TYPE FOR USE IN
@@ -3447,7 +3755,40 @@ character(len=*),parameter::ident_14="@(#)M_calcomp::polar(3f): plot radial valu
 !  VARIABLE AS THE CRAY VERSION OF THE 'SYMBOL' ROUTINE EXPECTS A
 !  SIMPLE INTEGER VALUE FOR THIS ARGUMENT.
 !
-      character(len=8) :: IBCD
+character(len=8) :: IBCD
+real    :: angar
+real    :: df
+real    :: dl
+real    :: dr
+integer :: i
+integer :: ic
+integer :: ica
+integer :: inc
+integer :: ind1
+integer :: ind2
+integer :: inte
+integer :: inteq
+integer :: is
+integer :: isa
+integer :: k
+integer :: kk
+integer :: lsw
+integer :: ltyp
+integer :: na
+integer :: nf
+integer :: nl
+integer :: npts
+integer :: nt
+real    :: r1
+real    :: radar
+real    :: rmax
+real    :: rmaxm
+real    :: rminm
+real    :: rn
+real    :: t
+real    :: temp
+real    :: th1
+real    :: thn
       INTE = INTEQ
       K = INC
       IND1 = NPTS*K + 1
@@ -3532,24 +3873,31 @@ character(len=*),parameter::ident_14="@(#)M_calcomp::polar(3f): plot radial valu
          IC = ICA
 250      NA = NA + 1
 260   NF = NF + KK
-      RETURN
 END SUBROUTINE POLAR
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 SUBROUTINE REFLX  (VX1,VY1,VX2,VY2)
+implicit none
 
 ! EARLIER VERSION OF THIS SUBROUTINE WAS
 !     SUBROUTINE REFLEX (VX1,VY1,VX2,VY2)
-      PS=VY1*VY1
-      DS=VX1*VX1
-      SS = DS+PS+0.00001
-      DS=DS-PS
-      PS=2.0*VX1*VY1
-      TEMP=(PS*VY2+VX2*DS)/SS
-      VY2=(PS*VX2-VY2*DS)/SS
-      VX2=TEMP
-      RETURN
+real :: ds
+real :: ps
+real :: ss
+real :: temp
+real :: vx1
+real :: vx2
+real :: vy1
+real :: vy2
+   PS=VY1*VY1
+   DS=VX1*VX1
+   SS = DS+PS+0.00001
+   DS=DS-PS
+   PS=2.0*VX1*VY1
+   TEMP=(PS*VY2+VX2*DS)/SS
+   VY2=(PS*VX2-VY2*DS)/SS
+   VX2=TEMP
 END SUBROUTINE REFLX
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
@@ -3658,7 +4006,7 @@ END SUBROUTINE REFLX
 !!
 !!         the adjusted minimum (FIRSTV) and delta value (DELTAV) are determined
 !!         from the value of the asterisked items (1, 3, 5, 7, and 9) in the
-!!         above array.  The computed values are also stored two subscript
+!!         above array. The computed values are also stored two subscript
 !!         elements apart.
 !!
 !!         FIRSTV:  ARRAY(11)  =  0.1
@@ -3758,6 +4106,8 @@ END SUBROUTINE REFLX
 !!    end program demo_scalg
 !===================================================================================================================================
 subroutine scalg(array,axlen,npts,inc)
+implicit none
+
 character(len=*),parameter::ident_15="@(#)M_calcomp::scalg(3f): determine scale factors for a logarithmic scale"
 
 !  IN THE CALCOMP CORP. ORIGINAL, HAS A BUG: IF ARRAY CONTAINED
@@ -3926,19 +4276,73 @@ end subroutine scalg
 !!    end program demo_smoot
 !===================================================================================================================================
 subroutine smoot(xn,yn,ic)
+implicit none
+
 character(len=*),parameter::ident_16="@(#)M_calcomp::smoot(3f): draw a polyline using modified spline-fitting technique"
 
 !     THE SMOOTH ROUTINE SIMULATES THE 'PLOT' ROUTINE WITH A NEW 'PLOT'
-!     MODE (DRAWING A SMOOTH CURVE TO THE NEW POINT).  THE SMOOTH MODE
+!     MODE (DRAWING A SMOOTH CURVE TO THE NEW POINT). THE SMOOTH MODE
 !     IS INITIALIZED WITH THE UNITS DIGIT OF IC = 0 (FOR AN OPEN CURVE)
 !     OR = 1 (FOR A CLOSED CURVE).
 !                     THE VALUE OF IC FOR SMOOTHING IS THE NEGATIVE OF
-!     THE PEN VALUES FOR PLOTTING.  THERE IS, THEREFORE, NO RE-ORIGINING
-!     WHILE SMOOTHING.  USING POSITIVE VALUES FOR IC WHILE SMOOTHING
-!     WILL BE TREATED AS A CALL TO 'PLOT'.  TO END THE CURVE AND RETURN TO
+!     THE PEN VALUES FOR PLOTTING. THERE IS, THEREFORE, NO RE-ORIGINING
+!     WHILE SMOOTHING. USING POSITIVE VALUES FOR IC WHILE SMOOTHING
+!     WILL BE TREATED AS A CALL TO 'PLOT'. TO END THE CURVE AND RETURN TO
 !     THE PLOT MODE LET IC BE LESS THAN -23 .
 ! EARLIER VERSION OF THIS SUBROUTINE WAS
 !     SUBROUTINE SMOOTH (XN,YN,IC)
+real    :: ax
+real    :: ay
+real    :: bx
+real    :: by
+real    :: d
+real    :: d1
+real    :: d2
+real    :: d3
+real    :: dv
+integer :: i
+integer :: ic
+integer :: ipc
+integer :: irep
+integer :: isw
+integer :: jc
+integer :: jsw
+integer :: kc
+integer :: lc
+integer :: mc
+integer :: n
+integer :: nc
+real    :: pxn
+real    :: pyn
+real    :: sx1
+real    :: sx2
+real    :: sx3
+real    :: sy1
+real    :: sy2
+real    :: sy3
+real    :: t
+real    :: uux1
+real    :: uux2
+real    :: uuy1
+real    :: uuy2
+real    :: ux1
+real    :: ux2
+real    :: uy1
+real    :: uy2
+real    :: vx2
+real    :: vx3
+real    :: vy2
+real    :: vy3
+real    :: x
+real    :: x1
+real    :: x2
+real    :: x3
+real    :: xn
+real    :: y
+real    :: y1
+real    :: y2
+real    :: y3
+real    :: yn
       SAVE NC,ISW,JSW,IPC
       SAVE X2,Y2,D3,UX1,UY1,UX2,UY2,SX1,SY1,SX2,SY2,SX3,SY3
       DATA NC,ISW,JSW,IPC/4*0/
@@ -4207,17 +4611,43 @@ END SUBROUTINE SMOOT
 !!    end program demo_axis
 !===================================================================================================================================
 SUBROUTINE AXIS(XPAGE,YPAGE,IBCD,NCHAR,AXLEN,ANGLE,FIRSTV,DELTAV)
+implicit none
+
 character(len=*),parameter::ident_17="@(#)M_calcomp::axis(3f): Draw linear axis with numeric scale and axis label"
 
-!.....     XPAGE,YPAGE  COORDINATES OF STARTING POINT OF AXIS, IN INCHES
-!.....     IBCD         AXIS TITLE.
-!.....     NCHAR        NUMBER OF CHARACTERS IN TITLE. + FOR C.C-W SIDE.
-!.....     AXLEN        FLOATING POINT AXIS LENGTH IN INCHES.
-!.....     ANGLE        ANGLE OF AXIS FROM THE X-DIRECTION, IN DEGREES.
-!.....     FIRSTV       SCALE VALUE AT THE FIRST TIC MARK.
-!.....     DELTAV       CHANGE IN SCALE BETWEEN TIC MARKS ONE INCH APART
-      CHARACTER(len=*) :: IBCD
-      CHARACTER(len=3) :: NBCD
+!          XPAGE,YPAGE  COORDINATES OF STARTING POINT OF AXIS, IN INCHES
+!          IBCD         AXIS TITLE.
+!          NCHAR        NUMBER OF CHARACTERS IN TITLE. + FOR C.C-W SIDE.
+!          AXLEN        FLOATING POINT AXIS LENGTH IN INCHES.
+!          ANGLE        ANGLE OF AXIS FROM THE X-DIRECTION, IN DEGREES.
+!          FIRSTV       SCALE VALUE AT THE FIRST TIC MARK.
+!          DELTAV       CHANGE IN SCALE BETWEEN TIC MARKS ONE INCH APART
+CHARACTER(len=*)  ::  IBCD
+CHARACTER(len=3)  ::  NBCD
+real              ::  a
+real              ::  adx
+real              ::  angle
+real              ::  axlen
+real              ::  cth
+real              ::  deltav
+real              ::  dxb
+real              ::  dyb
+real              ::  ex
+real              ::  firstv
+integer           ::  i
+integer           ::  kn
+integer           ::  nchar
+integer           ::  nt
+integer           ::  ntic
+real              ::  sth
+real              ::  xn
+real              ::  xpage
+real              ::  xt
+real              ::  xval
+real              ::  yn
+real              ::  ypage
+real              ::  yt
+real              ::  z
       NBCD ='*10'
       KN=NCHAR
       A=1.0
@@ -4287,7 +4717,6 @@ character(len=*),parameter::ident_17="@(#)M_calcomp::axis(3f): Draw linear axis 
          XN=XN-CTH
          YN=YN-STH
 30    CONTINUE
-      RETURN
 END SUBROUTINE AXIS
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
@@ -4409,7 +4838,9 @@ END SUBROUTINE AXIS
 !===================================================================================================================================
 subroutine factor(fct)
 implicit none
+
 character(len=*),parameter::ident_18="@(#)M_calcomp::factor(3f): rescale entire plot"
+
 real,intent(in) :: fct
    call plot(fct,fct,1001)
 end subroutine factor
@@ -4417,9 +4848,10 @@ end subroutine factor
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 SUBROUTINE mset(MODE)
-!
+implicit none
+
 character(len=*),parameter::ident_19="@(#)M_calcomp::mset(3f): this is a general mode setting routine."
-!
+
 ! FUNCTION: SET THE MODE ACCORDING TO THE CHARACTER VALUE PASSED
 !           AS MODE. THE MODES ARE SET IN COMMON WMODE
 !
@@ -4442,21 +4874,22 @@ character(len=*),parameter::ident_19="@(#)M_calcomp::mset(3f): this is a general
 !
 ! ROOM FOR MORE MODES IF NECESSARY
 !
-   RETURN
 END SUBROUTINE mset
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 SUBROUTINE mpset(MODE,VALUE)
+implicit none
 !
 ! THIS ROUTINE SETS MODE SPECIFIC PARAMETER VALUES
 !
 ! FUNCTION: EXAMINE THE MODE CHARACTER STRING AND SET THE SPECIFIED
 !           VALUE IN COMMON WMODEP ACCORDINGLY.
 !
-   CHARACTER(LEN=*),INTENT(IN) :: MODE
-   character(len=8) :: L_MODE
-   REAL VALUE
+CHARACTER(LEN=*),INTENT(IN) :: MODE
+character(len=8)            :: L_MODE
+REAL                        :: VALUE
+real                        :: V
 !
 ! SET THE CHARACTER SIZE VALUE
 !
@@ -4601,15 +5034,43 @@ END SUBROUTINE mpset
 !!    end program demo_line
 !===================================================================================================================================
 SUBROUTINE LINE(XARRAY,YARRAY,NPTS,INC,LINTYP,INTEQ)
+implicit none
+
 character(len=*),parameter::ident_20="@(#)M_calcomp::line(3f): Plot a polyline with optional rescaling"
 
-!.....     XARRAY  NAME OF ARRAY CONTAINING ABSCISSA OR X VALUES.
-!.....     YARRAY  NAME OF ARRAY CONTAINING ORDINATE OR Y VALUES.
-!.....     NPTS    NUMBER OF POINTS TO BE PLOTTED.
-!.....     INC     INCREMENT OF LOCATION OF SUCCESSIVE POINTS.
-!.....     LINTYP  CONTROL TYPE OF LINE--SYMBOLS, LINE, OR COMBINATION.
-!.....     INTEQ   INTEGER EQUIVALENT OF SYMBOL TO BE USED, IF ANY.
-   DIMENSION XARRAY(*),YARRAY(*)
+!          XARRAY  NAME OF ARRAY CONTAINING ABSCISSA OR X VALUES.
+!          YARRAY  NAME OF ARRAY CONTAINING ORDINATE OR Y VALUES.
+!          NPTS    NUMBER OF POINTS TO BE PLOTTED.
+!          INC     INCREMENT OF LOCATION OF SUCCESSIVE POINTS.
+!          LINTYP  CONTROL TYPE OF LINE--SYMBOLS, LINE, OR COMBINATION.
+!          INTEQ   INTEGER EQUIVALENT OF SYMBOL TO BE USED, IF ANY.
+real    :: xarray(*)
+real    :: yarray(*)
+real    :: deltax
+real    :: deltay
+real    :: df
+real    :: dl
+real    :: firstx
+real    :: firsty
+integer :: i
+integer :: icode
+integer :: icodea
+integer :: inc
+integer :: inteq
+integer :: ipen
+integer :: ipena
+integer :: kk
+integer :: ldx
+integer :: lintyp
+integer :: lmin
+integer :: lsw
+integer :: na
+integer :: nf
+integer :: nl
+integer :: npts
+integer :: nt
+real    :: xn
+real    :: yn
    LMIN = NPTS*INC+1
    LDX  = LMIN+INC
    NL   = LMIN-INC
@@ -4655,7 +5116,6 @@ character(len=*),parameter::ident_20="@(#)M_calcomp::line(3f): Plot a polyline w
 25    NF = NF+KK
       ICODE = ICODEA
 30 IPEN = IPENA
-   RETURN
 END SUBROUTINE LINE
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
@@ -4672,7 +5132,7 @@ END SUBROUTINE LINE
 !!
 !!##DESCRIPTION
 !!
-!!    Select a new pen width.  Sets the current line width in units o
+!!    Select a new pen width. Sets the current line width in units o
 !!    1/10,000 of the X size of the display surface
 !!
 !!##EXAMPLE
@@ -4707,7 +5167,9 @@ END SUBROUTINE LINE
 !===================================================================================================================================
 subroutine width(iwidth)
 implicit none
+
 character(len=*),parameter::ident_21="@(#)M_calcomp::width(3f): select new pen width"
+
 integer,intent(in)    :: iwidth ! (positive integer) new pen width
 
    if(iwidth.ge.0)then
@@ -4789,7 +5251,9 @@ end subroutine width
 !===================================================================================================================================
 subroutine newpen(index)
 implicit none
+
 character(len=*),parameter::ident_22="@(#)M_calcomp::newpen(3f): select new pen color and move to origin"
+
 integer,intent(in)    :: index ! (positive integer) new pen color
 
    if(index.ge.0)then
@@ -4919,7 +5383,10 @@ end subroutine newpen
 !!  document GRPHDOC).
 !===================================================================================================================================
 subroutine nframe
+implicit none
+
 character(len=*),parameter::ident_23="@(#)M_calcomp::nframe(3f): start new frame"
+
    call plot(0.0,0.0,1008)
 end subroutine nframe
 !===================================================================================================================================
@@ -4997,18 +5464,38 @@ end subroutine nframe
 !!    end program demo_number
 !===================================================================================================================================
 SUBROUTINE NUMBER(XPAGE,YPAGE,HEIGHT,FPN,ANGLE,NDEC)
+implicit none
+
 character(len=*),parameter::ident_24="@(#)M_calcomp::number(3f): plots a floating-point number"
-!.....     XPAGE,YPAGE COORDINATES OF LOWER LEFT CORNER OF NUMBER.
-!.....     HEIGHT   HEIGHT OF PLOTTED NUMBER.
-!.....     FPN      FLOATING POINT NUMBER TO BE PLOTTED.
-!.....     ANGLE    ANGLE AT WHICH NUMBER IS PLOTTED, IN DEGREES.
-!.....     NDEC     NUMBER OF DECIMAL PLACES TO BE DRAWN.
-!.....     THIS VERSION OF NUMBER REQUIRES THE SYMBOL VERSION WITH
-!.....     999. X, Y FEATURE, AND  NC = 0 FEATURE.
-      CHARACTER(len=20) :: NUM
-      CHARACTER(len=1)  :: MINUS,IZERO,IPOINT
-      SAVE MINUS,IZERO,IPOINT
-      DATA MINUS /'-'/,IZERO/'0'/,IPOINT/'.'/
+
+!     XPAGE,YPAGE COORDINATES OF LOWER LEFT CORNER OF NUMBER.
+!     HEIGHT   HEIGHT OF PLOTTED NUMBER.
+!     FPN      FLOATING POINT NUMBER TO BE PLOTTED.
+!     ANGLE    ANGLE AT WHICH NUMBER IS PLOTTED, IN DEGREES.
+!     NDEC     NUMBER OF DECIMAL PLACES TO BE DRAWN.
+!     THIS VERSION OF NUMBER REQUIRES THE SYMBOL VERSION WITH
+!     999. X, Y FEATURE, AND  NC = 0 FEATURE.
+CHARACTER(len=20) :: NUM
+CHARACTER(len=1)  :: MINUS,IZERO,IPOINT
+SAVE MINUS,IZERO,IPOINT
+DATA MINUS /'-'/,IZERO/'0'/,IPOINT/'.'/
+real    :: angle
+real    :: fpn
+real    :: fpv
+real    :: height
+integer :: i
+integer :: ii
+integer :: ilp
+integer :: inteq
+integer :: j
+integer :: k
+integer :: kk
+integer :: maxn
+integer :: mn
+integer :: n
+integer :: ndec
+real    :: xpage
+real    :: ypage
 !     IZERO='0'
       II=0
       FPV = FPN
@@ -5063,7 +5550,7 @@ character(len=*),parameter::ident_24="@(#)M_calcomp::number(3f): plots a floatin
 90    FPV = FPV * 10. - FLOAT(K)
 !
 !  THE FOLLOWING CALL TO 'SYMBOL' WAS MODIFIED WHEN THIS SUBROUTINE WAS
-!  CONVERTED TO THE CRAY.  THE STATEMENT ORIGINALLY READ
+!  CONVERTED TO THE CRAY. THE STATEMENT ORIGINALLY READ
 !
 !  99    CALL SYMBOL(XPAGE,YPAGE,HEIGH,NUM,INTEQ,ANGLE,II+1000)
 !
@@ -5246,14 +5733,17 @@ END SUBROUTINE NUMBER
 !!    end program demo_plot
 !===================================================================================================================================
 SUBROUTINE PLOT(XPAG, YPAG, IPEN)
+implicit none
+
 character(len=*),parameter::ident_25="@(#)M_calcomp::plot(3f): move with pen up or down or start new origin or terminate plotting"
+
 !
 !  SUBROUTINE DESCRIPTION -
 !
-!       THIS SUBROUTINE PLOTS LINE SEGMENTS.  THE LINE SEGMENT
+!       THIS SUBROUTINE PLOTS LINE SEGMENTS. THE LINE SEGMENT
 !       BEGINS AT THE CURRENT PEN POSITION (DEFINED IN THE LAST
 !       CALL TO THIS SUBROUTINE) AND ENDS AT THE POSITION
-!       SPECIFIED BY THE CALLING ARGUMENTS.  THE PEN MAY BE
+!       SPECIFIED BY THE CALLING ARGUMENTS. THE PEN MAY BE
 !       EITHER "UP" OR "DOWN" DURING THE MOVE TO THE NEW
 !       COORDINATES.
 !
@@ -5357,21 +5847,36 @@ character(len=*),parameter::ident_25="@(#)M_calcomp::plot(3f): move with pen up 
 !
       DATA DX,DY,PENX,PENY,XLAST,XOFF,XORG,YLAST,YORG,YS/ 1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0/
 !
-!  DETERMINE IF THE VALUE OF 'IPEN' IS GREATER THAN 1000.  (A
+!  DETERMINE IF THE VALUE OF 'IPEN' IS GREATER THAN 1000. (A
 !  VALUE GREATER THAN 1000 INDICATES A SPECIAL CALL FROM ANOTHER
 !  CALCOMP SUBROUTINE.)  IF SO, TRANSFER PROGRAM CONTROL TO THE
-!  STATEMENT LABELLED 1000.  OTHERWISE, SAVE THE NEW X AND Y
+!  STATEMENT LABELLED 1000. OTHERWISE, SAVE THE NEW X AND Y
 !  COORDINATES SPECIFIED IN THE CALL TO 'PLOT'.
 !
+real    :: dx
+real    :: dy
+integer :: ipen
+real    :: penx
+real    :: peny
+real    :: x
+real    :: xlast
+real    :: xoff
+real    :: xorg
+real    :: xpag
+real    :: y
+real    :: ylast
+real    :: yorg
+real    :: ypag
+real    :: ys
       if(ABS(IPEN).GE.1000) GOTO 1000
       PENX=XPAG
       PENY=YPAG
 !
-!  CALCULATE THE COORDINATES TO WHICH THE PEN IS TO BE MOVED.  THE X
+!  CALCULATE THE COORDINATES TO WHICH THE PEN IS TO BE MOVED. THE X
 !  COORDINATE IS SPECIFIED WITH RELATION TO THE CURRENTLY DEFINED
 !  X ORIGIN (XORG) AND IS CONVERTED FROM ITS INPUT VALUE IN INCHES
-!  TO ITS SCALED VALUE.  SIMILARLY, THE Y COORDINATE IS SPECIFIED
-!  WITH RELATION TO THE CURRENTLY DEFINED Y ORIGIN (YORG).  HOWEVER,
+!  TO ITS SCALED VALUE. SIMILARLY, THE Y COORDINATE IS SPECIFIED
+!  WITH RELATION TO THE CURRENTLY DEFINED Y ORIGIN (YORG). HOWEVER,
 !  BEFORE THE NEW Y COORDINATE IS SCALED, ANY ADJUSTMENT IN THE Y
 !  DIRECTION REMAINING FROM A PREVIOUS CALL TO 'PLOT' MUST BE
 !  FACTORED IN.
@@ -5391,7 +5896,7 @@ character(len=*),parameter::ident_25="@(#)M_calcomp::plot(3f): move with pen up 
 !
 !  IF THE VALUE OF 'IPEN' IS LESS THAN 0 OR IS EQUAL TO 999, THE
 !  RELATIVE ORIGIN OF THE PLOT IS TO BE REDEFINED TO BE THE NEW
-!  X AND Y COORDINATES.  RESET THE RELATIVE ORIGIN (XORG,YORG)
+!  X AND Y COORDINATES. RESET THE RELATIVE ORIGIN (XORG,YORG)
 !  TO THE NEW X AND Y VALUES, THEN SET ANY RESIDUAL Y ADJUSTMENT
 !  TO 0.0 .
 !
@@ -5425,8 +5930,8 @@ character(len=*),parameter::ident_25="@(#)M_calcomp::plot(3f): move with pen up 
       RETURN
 !
 !  CHECK FOR SPECIAL USE OF THIS SUBROUTINE BY OTHER CALCOMP
-!  SUBROUTINES.  ALL SPECIAL ENTRIES TO THE 'PLOT' SUBROUTINE USE
-!  VALUES OF 'IPEN' GREATER THAN 1000.  THE COMPUTED GO TO STATEMENT
+!  SUBROUTINES. ALL SPECIAL ENTRIES TO THE 'PLOT' SUBROUTINE USE
+!  VALUES OF 'IPEN' GREATER THAN 1000. THE COMPUTED GO TO STATEMENT
 !  BELOW INSURES THAT THE PROPER SECTION OF CODE IS USED FOR EACH
 !  SPECIAL CALL.
 !
@@ -5441,33 +5946,33 @@ character(len=*),parameter::ident_25="@(#)M_calcomp::plot(3f): move with pen up 
       DX=XPAG
       DY=YPAG
 !-----------------------------------------------------------------------------------------------------------------------------------
-      case(1002) !  SPECIAL ENTRY FOR CALL FROM SUBROUTINE 'WHERE'.  'WHERE' RETURNS
+      case(1002) !  SPECIAL ENTRY FOR CALL FROM SUBROUTINE 'WHERE'. 'WHERE' RETURNS
                  !  THE CURRENT PEN COORDINATES AND SCALING FACTOR FOR USE IN USER WRITTEN SUBROUTINES.
       XPAG=PENX
       YPAG=PENY
 !-----------------------------------------------------------------------------------------------------------------------------------
-      case(1003) !  SPECIAL ENTRY FOR CALL FROM SUBROUTINE 'SYMBOL'.  THIS CALL RETURNS THE CURRENT SCALING FACTOR FOR THE PLOT.
+      case(1003) !  SPECIAL ENTRY FOR CALL FROM SUBROUTINE 'SYMBOL'. THIS CALL RETURNS THE CURRENT SCALING FACTOR FOR THE PLOT.
       XPAG=DX
       YPAG=DY
 !-----------------------------------------------------------------------------------------------------------------------------------
-      case(1004) !  SPECIAL ENTRY FOR CALL FROM SUBROUTINE 'NEWPEN'.  'NEWPEN' INSURES THAT THE PEN IS MOVED TO THE ORIGIN (0.0,0.0)
+      case(1004) !  SPECIAL ENTRY FOR CALL FROM SUBROUTINE 'NEWPEN'. 'NEWPEN' INSURES THAT THE PEN IS MOVED TO THE ORIGIN (0.0,0.0)
       CALL primitive__draw_line(0.0+XOFF,0.0,0.0+XOFF,0.0)
 !-----------------------------------------------------------------------------------------------------------------------------------
-      case(1005) !  SPECIAL ENTRY FOR CALL FROM SUBROUTINE 'SYMBOL'.  THIS CALL RETURNS THE CURRENT ORIGIN.
+      case(1005) !  SPECIAL ENTRY FOR CALL FROM SUBROUTINE 'SYMBOL'. THIS CALL RETURNS THE CURRENT ORIGIN.
       XPAG=XORG
       YPAG=YORG
 !-----------------------------------------------------------------------------------------------------------------------------------
-      case(1006) !  SPECIAL ENTRY FOR CALL FROM CALCOMP VERSION OF SUBROUTINE 'SYMBOL'.  THIS CALL ADVANCES THE PEN POSITION.
+      case(1006) !  SPECIAL ENTRY FOR CALL FROM CALCOMP VERSION OF SUBROUTINE 'SYMBOL'. THIS CALL ADVANCES THE PEN POSITION.
       XLAST=XLAST+XPAG
       YLAST=YLAST+YPAG
 !-----------------------------------------------------------------------------------------------------------------------------------
-      case(1007) !  SPECIAL ENTRY FOR CALL FROM SUBROUTINE 'PLOTS'.  THIS CALL INSURES THAT THE PEN IS POSITIONED AT THE
+      case(1007) !  SPECIAL ENTRY FOR CALL FROM SUBROUTINE 'PLOTS'. THIS CALL INSURES THAT THE PEN IS POSITIONED AT THE
                  ! ORIGIN (0.0,0.0) WHEN THE PLOT PACKAGE IS INITIALIZED.
       CALL primitive__draw_line(0.0+XOFF,0.0,0.0+XOFF,0.0)
 !-----------------------------------------------------------------------------------------------------------------------------------
-      case(1008) !  SPECIAL ENTRY FOR CALL FROM ESCC SUBROUTINE 'NFRAME'.  THE PLOTTING
+      case(1008) !  SPECIAL ENTRY FOR CALL FROM ESCC SUBROUTINE 'NFRAME'. THE PLOTTING
                  !  OF THE FINAL POINT OF THE GRAPH IS INSURED, THEN 'primitive__frend' IS CALLED
-                 !  TO PLACE THE END-OF-FRAME MARK IN THE METALANGUAGE FILE.  VARIABLES
+                 !  TO PLACE THE END-OF-FRAME MARK IN THE METALANGUAGE FILE. VARIABLES
                  !  USED BY THE 'PLOT' SUBROUTINE ARE RE-INITIALIZED, AND THE PEN IS
                  !  MOVED TO THE 0.0,0.0 POINT.
       CALL primitive__draw_line(XLAST+XOFF,YLAST,XLAST+XOFF,YLAST)
@@ -5533,7 +6038,6 @@ END SUBROUTINE PLOT
 !!    call plot( 5.0,-5.0, DRAW)
 !!    call plot( 0.0, 0.0, END)
 !!    end program demo_plots
-!!
 !===================================================================================================================================
 SUBROUTINE PLOTS(xmin,xmax,ymin,ymax)
 implicit none
@@ -5710,69 +6214,86 @@ END SUBROUTINE PLOTS
 !!    end program demo_scale
 !===================================================================================================================================
 SUBROUTINE SCALE(ARRAY,AXLEN,NPTS,INC)
+implicit none
+
 character(len=*),parameter::ident_27="&
 &@(#)M_calcomp::scale(3f): calculate scaling factors for producing XY plots with LINE(3f) and AXIS(3f) routines"
 
-!.....     ARRAY   NAME OF ARRAY CONTAINING VALUES TO BE SCALED.
-!.....     AXLEN   LENGTH IN IN./CM. OVER WHICH ARRAY IS TO BE SCALED.
-!.....     NPTS    NUMBER OF POINTS TO BE SCALED.
-!.....     INC     INCREMENT OF LOCATION OF SUCCESSIVE POINTS.
-      DIMENSION  ARRAY(*),SAVE(7)
-      SAVE(1)=1.0
-      SAVE(2)=2.0
-      SAVE(3)=4.0
-      SAVE(4)=5.0
-      SAVE(5)=8.0
-      SAVE(6)=10.0
-      SAVE(7)=20.0
-      FAD=0.01
-      K=ABS(INC)
-      N=NPTS*K
-      Y0=ARRAY(1)
-      YN=Y0
-      DO  25  I=1,N,K
-         YS=ARRAY(I)
-         IF  (Y0-YS)  22,22,21
-21       Y0=YS
-         GO  TO  25
-22       IF  (YS-YN)  25,25,24
-24       YN=YS
-25    CONTINUE
-      FIRSTV=Y0
-      IF  (Y0)  34,35,35
-34    FAD=FAD-1.0
-35    DELTAV=(YN-FIRSTV)/AXLEN
-      if(DELTAV) 70,70,40
-40    I=LOG10(DELTAV)+1000.0
-      P=10.0**(I-1000)
-      DELTAV=DELTAV/P-0.01
-      DO  45  I=1,6
-         IS=I
-         IF  (SAVE(I)-DELTAV)  45,50,50
-45    CONTINUE
-50    DELTAV=SAVE(IS)*P
-      FIRSTV=DELTAV*AINT(Y0/DELTAV+FAD)
-      T=FIRSTV+(AXLEN+0.01)*DELTAV
-      if(T-YN)  55,57,57
-55    FIRSTV=P*AINT(Y0/P+FAD)
-      T=FIRSTV+(AXLEN+.01)*DELTAV
-      if(T-YN) 56,57,57
-56    IS=IS+1
-      GO  TO  50
-57    FIRSTV=FIRSTV-AINT((AXLEN+(FIRSTV-YN)/DELTAV)/2.0)*DELTAV
-      if(Y0*FIRSTV) 58,58,59
-58    FIRSTV=0.0
-59    IF  (INC) 61,61,65
-61    FIRSTV=FIRSTV+AINT(AXLEN+.5)*DELTAV
-      DELTAV=-DELTAV
-65    N=N+1
-      ARRAY(N)=FIRSTV
-      N=N+K
-      ARRAY(N)=DELTAV
-      RETURN
-70    DELTAV=2.0*FIRSTV
-      DELTAV=ABS(DELTAV/AXLEN)+1.0
-      GOTO 40
+!     ARRAY   NAME OF ARRAY CONTAINING VALUES TO BE SCALED.
+!     AXLEN   LENGTH IN IN./CM. OVER WHICH ARRAY IS TO BE SCALED.
+!     NPTS    NUMBER OF POINTS TO BE SCALED.
+!     INC     INCREMENT OF LOCATION OF SUCCESSIVE POINTS.
+real    :: ARRAY(*),SAVE(7)
+real    :: axlen
+integer :: npts
+integer :: inc
+integer :: i
+integer :: is
+integer :: k
+integer :: n
+real    :: deltav
+real    :: fad
+real    :: firstv
+real    :: p
+real    :: t
+real    :: y0
+real    :: yn
+real    :: ys
+   SAVE(1)=1.0
+   SAVE(2)=2.0
+   SAVE(3)=4.0
+   SAVE(4)=5.0
+   SAVE(5)=8.0
+   SAVE(6)=10.0
+   SAVE(7)=20.0
+   FAD=0.01
+   K=ABS(INC)
+   N=NPTS*K
+   Y0=ARRAY(1)
+   YN=Y0
+   DO  25  I=1,N,K
+      YS=ARRAY(I)
+      IF  (Y0-YS)  22,22,21
+21    Y0=YS
+      GO  TO  25
+22    IF  (YS-YN)  25,25,24
+24    YN=YS
+25 CONTINUE
+   FIRSTV=Y0
+   IF  (Y0)  34,35,35
+34 FAD=FAD-1.0
+35 DELTAV=(YN-FIRSTV)/AXLEN
+   if(DELTAV) 70,70,40
+40 I=LOG10(DELTAV)+1000.0
+   P=10.0**(I-1000)
+   DELTAV=DELTAV/P-0.01
+   DO  45  I=1,6
+      IS=I
+      IF  (SAVE(I)-DELTAV)  45,50,50
+45 CONTINUE
+50 DELTAV=SAVE(IS)*P
+   FIRSTV=DELTAV*AINT(Y0/DELTAV+FAD)
+   T=FIRSTV+(AXLEN+0.01)*DELTAV
+   if(T-YN)  55,57,57
+55 FIRSTV=P*AINT(Y0/P+FAD)
+   T=FIRSTV+(AXLEN+.01)*DELTAV
+   if(T-YN) 56,57,57
+56 IS=IS+1
+   GO  TO  50
+57 FIRSTV=FIRSTV-AINT((AXLEN+(FIRSTV-YN)/DELTAV)/2.0)*DELTAV
+   if(Y0*FIRSTV) 58,58,59
+58 FIRSTV=0.0
+59 IF  (INC) 61,61,65
+61 FIRSTV=FIRSTV+AINT(AXLEN+.5)*DELTAV
+   DELTAV=-DELTAV
+65 N=N+1
+   ARRAY(N)=FIRSTV
+   N=N+K
+   ARRAY(N)=DELTAV
+   RETURN
+70 DELTAV=2.0*FIRSTV
+   DELTAV=ABS(DELTAV/AXLEN)+1.0
+   GOTO 40
 END SUBROUTINE SCALE
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
@@ -5970,7 +6491,10 @@ END SUBROUTINE SCALE
 !===================================================================================================================================
 SUBROUTINE SYMBOL(XPAGE,YPAGE,HEIGHT,STRING,INTEQ,ANGLE,NCHAR)
 use M_strings, only : upper
+implicit none
+
 character(len=*),parameter::ident_28="@(#)M_calcomp::symbol(3f): draw text string or marker"
+
 !
 !  PROCEDURE DESCRIPTION -
 !
@@ -5978,20 +6502,20 @@ character(len=*),parameter::ident_28="@(#)M_calcomp::symbol(3f): draw text strin
 !       PACKAGE.
 !
 !       EACH SYMBOL IS DEFINED AS A SERIES OF STRAIGHT LINE SEGMENTS
-!       ON A 7 X 7 GRID.  THE HEIGHT OF THE SYMBOL AS DEFINED BY THE
+!       ON A 7 X 7 GRID. THE HEIGHT OF THE SYMBOL AS DEFINED BY THE
 !       USER IS, IN REALITY, THE LENGTH OF A SIDE OF THIS DEFINING
-!       GRID.  THEREFORE, EACH LINE SEGMENT IN THE SYMBOL IS SCALED
+!       GRID. THEREFORE, EACH LINE SEGMENT IN THE SYMBOL IS SCALED
 !       TO CORRESPOND TO THE SYMBOL SIZE REQUESTED BY THE USER.
 !
 !       FOR EASE OF DEFINITION, THE SYMBOLS WERE ORIGINALLY
-!       CONSTRUCTED IN TERMS OF RECTANGULAR COORDINATES.  HOWEVER,
+!       CONSTRUCTED IN TERMS OF RECTANGULAR COORDINATES. HOWEVER,
 !       THE USER MAY ALSO SPECIFY AN ANGLE OF ORIENTATION FOR THE
-!       SYMBOL.  TO ACCOMPLISH THIS, EACH SEGMENT IS TRANSFORMED
+!       SYMBOL. TO ACCOMPLISH THIS, EACH SEGMENT IS TRANSFORMED
 !       FROM CARTESIAN TO POLAR COORDINATES AND IS THEN ROTATED
-!       THROUGH THE SPECIFIED ANGLE.  THE TRANSFORMATION FROM
+!       THROUGH THE SPECIFIED ANGLE. THE TRANSFORMATION FROM
 !       RECTANGULAR TO POLAR COORDINATES IS PERFORMED EACH TIME
 !       A SYMBOL IS DRAWN, EVEN IF THE DEFAULT ANGLE OF ORIENTATION
-!       (0 DEGREES) IS TO BE USED.  THIS WAS DONE TO PRESERVE
+!       (0 DEGREES) IS TO BE USED. THIS WAS DONE TO PRESERVE
 !       CONSISTENCY FOR THE CONSTRUCTION OF ALL SYMBOLS.
 !
 !       THE SYMBOL TABLE, CONTAINED IN THE ARRAY 'TABLE', CONTAINS
@@ -6001,7 +6525,7 @@ character(len=*),parameter::ident_28="@(#)M_calcomp::symbol(3f): draw text strin
 !            THE FIRST ENTRY FOR ANY SYMBOL IS THE INTEGER
 !            NUMBER TO WHICH THE SYMBOL IS EQUATED (THIS
 !            EQUIVALENCE IS DEFINED IN THE ORIGINAL CALCOMP
-!            PACKAGE).  THE NEXT ENTRY IS THE NUMBER OF
+!            PACKAGE). THE NEXT ENTRY IS THE NUMBER OF
 !            LINE SEGMENTS THAT ARE NEEDED TO DRAW THE SYMBOL.
 !            THIS IS FOLLOWED BY 'N' ENTRIES (WHERE 'N' IS
 !            THE NUMBER OF SEGMENTS), CONTAINING THE ACTUAL
@@ -6218,12 +6742,43 @@ character(len=*),parameter::ident_28="@(#)M_calcomp::symbol(3f): draw text strin
       DATA PI/3.14/,XRLORG/0.0/,YRLORG/0.0/
 !
 !  INITIALIZE THE POINTER INTO THE CHARACTER STRING (THE VARIABLE
-!  'ICNT') TO ZERO.  INITIALIZE THE VARIABLE 'ISYM', WHICH CONTAINS
+!  'ICNT') TO ZERO. INITIALIZE THE VARIABLE 'ISYM', WHICH CONTAINS
 !  THE INTEGER NUMBER ASSIGNED TO THE CURRENT SYMBOL, TO -1 (A
-!  NON-EXISTENT SYMBOL).  DETERMINE THE NUMBER OF CHARACTERS CONTAINED
+!  NON-EXISTENT SYMBOL). DETERMINE THE NUMBER OF CHARACTERS CONTAINED
 !  IN THE ARRAY 'IBCD'; IF THE NUMBER OF CHARACTERS IS ZERO, SET THE
 !  NUMBER OF CHARACTERS TO BE PRINTED ('NUMCHR') TO 1 .
 !
+real    :: angl1
+real    :: angl2
+real    :: angle
+real    :: centrx
+real    :: centry
+real    :: height
+integer :: i
+integer :: icnt
+integer :: ii
+integer :: inteq
+integer :: iseg
+integer :: isym
+integer :: j
+integer :: nchar
+integer :: numchr
+integer :: numseg
+real    :: pi
+real    :: rad
+real    :: theta
+real    :: x1
+real    :: x2
+real    :: xfac
+real    :: xorg
+real    :: xpage
+real    :: xrlorg
+real    :: y1
+real    :: y2
+real    :: yfac
+real    :: yorg
+real    :: ypage
+real    :: yrlorg
       IBCD=upper(STRING)
       ICNT=0
       ISYM=-1
@@ -6233,11 +6788,11 @@ character(len=*),parameter::ident_28="@(#)M_calcomp::symbol(3f): draw text strin
 !
 !  IF EITHER OF THE CALLING ARGUMENT 'XPAGE' OR 'YPAGE' HAS A
 !  VALUE OF 999, THE NEXT SYMBOL IS TO BE APPENDED IN THE SPECIFIED
-!  DIRECTION TO THE LAST SYMBOL DRAWN.  THE DIRECTION IS SPECIFIED
-!  BY WHICH ARGUMENT (EITHER 'XPAGE' OR 'YPAGE') IS SET TO 999.  IT
+!  DIRECTION TO THE LAST SYMBOL DRAWN. THE DIRECTION IS SPECIFIED
+!  BY WHICH ARGUMENT (EITHER 'XPAGE' OR 'YPAGE') IS SET TO 999. IT
 !  IS POSSIBLE TO APPEND IN BOTH DIRECTIONS SIMULTANEOUSLY.
 !
-!  DETERMINE IF EITHER 'XPAGE' OR 'YPAGE' HAS A VALUE OF 999.  IF
+!  DETERMINE IF EITHER 'XPAGE' OR 'YPAGE' HAS A VALUE OF 999. IF
 !  NOT, REDEFINE THE APPROPRIATE RELATIVE ORIGIN FOR THE SYMBOL
 !  TO THE VALUE SPECIFIED.
 !
@@ -6253,25 +6808,25 @@ character(len=*),parameter::ident_28="@(#)M_calcomp::symbol(3f): draw text strin
       ENDIF
 !
 !  CALCULATE THE SCALING FACTORS (IN THE X AND Y DIRECTIONS) FOR
-!  THE SYMBOL TO BE DRAWN.  THE SCALING FACTOR IS BASED ON THE
+!  THE SYMBOL TO BE DRAWN. THE SCALING FACTOR IS BASED ON THE
 !  SYMBOL HEIGHT SPECIFIED BY THE USER IN THE CALL TO THE 'SYMBOL'
 !  SUBROUTINE AND THE GENERAL SCALING FACTOR CURRENTLY SPECIFIED
-!  FOR THE PLOT.  THE HEIGHT ENTERED BY THE USER IS DIVIDED BY
+!  FOR THE PLOT. THE HEIGHT ENTERED BY THE USER IS DIVIDED BY
 !  7.0 TO ACCOUNT FOR THE FACT THAT THE SPECIFIED HEIGHT APPLIES
 !  TO THE ENTIRE 7 X 7 GRID FOR WHICH EACH SYMBOL IS DEFINED.
 !
       XFAC=HEIGHT/7.0*XFAC
       YFAC=HEIGHT/7.0*YFAC
 !
-!  MOVE THE PEN TO THE STARTING POINT FOR THE NEXT SYMBOL.  IF THE
+!  MOVE THE PEN TO THE STARTING POINT FOR THE NEXT SYMBOL. IF THE
 !  NUMBER OF CHARACTERS TO BE DRAWN IS LESS THAN OR EQUAL TO -2, A
 !  LINE IS TO BE DRAWN FROM THE FINAL POINT OF THE LAST SYMBOL TO THE
-!  INITIAL POINT OF THE NEW SYMBOL.  THEREFORE, IF NCHAR IS LESS
+!  INITIAL POINT OF THE NEW SYMBOL. THEREFORE, IF NCHAR IS LESS
 !  THAN OR EQUAL TO -2, CALL THE 'PLOT' SUBROUTINE WITH THE FINAL
 !  ARGUMENT SET TO 2 TO FORCE THE REQUESTED LINE TO BE DRAWN.
 !  OTHERWISE, CALL THE 'PLOT' SUBROUTINE WITH THE FINAL ARGUMENT SET
 !  TO 3 TO ELEVATE THE PEN AND MOVE TO THE STARTING POINT OF THE NEW
-!  SYMBOL.  (THE 'PLOT' SUBROUTINE APPLIES ANY REQUIRED
+!  SYMBOL. (THE 'PLOT' SUBROUTINE APPLIES ANY REQUIRED
 !  SCALING FACTORS.)
 !
       if(NCHAR.LE.-2) THEN
@@ -6280,12 +6835,12 @@ character(len=*),parameter::ident_28="@(#)M_calcomp::symbol(3f): draw text strin
          CALL PLOT(XPAGE,YPAGE,3)
       ENDIF
 !
-!  DETERMINE THE ANGLE AT WHICH THE SYMBOL IS TO BE DRAWN.  IF THE
+!  DETERMINE THE ANGLE AT WHICH THE SYMBOL IS TO BE DRAWN. IF THE
 !  ABSOLUTE VALUE OF THE ANGLE IS LESS THAN OR EQUAL TO 1800.0 DEGREES,
-!  THE ANGLE IS CONSIDERED TO BE LEGITIMATE.  OTHERWISE, THE ANGLE IS
-!  SET TO 0 DEGREES.  THIS RESTRICTION WAS IMPLEMENTED TO ACCOMMODATE TH
+!  THE ANGLE IS CONSIDERED TO BE LEGITIMATE. OTHERWISE, THE ANGLE IS
+!  SET TO 0 DEGREES. THIS RESTRICTION WAS IMPLEMENTED TO ACCOMMODATE TH
 !  FACT THAT THE 'ANGLE' ARGUMENT MAY BE UNINITIALIZED WHEN THE
-!  'SYMBOL' SUBROUTINE IS CALLED.  THE RESTRICTION WAS CONSTRUCTED
+!  'SYMBOL' SUBROUTINE IS CALLED. THE RESTRICTION WAS CONSTRUCTED
 !  TO EXCLUDE BOTH LARGE POSITIVE NUMBERS AND LARGE NEGATIVE
 !  NUMBERS SINCE DIFFERENT OPERATING SYSTEMS EMPLOY VARYING
 !  METHODS TO INITIALIZE CENTRAL MEMORY.
@@ -6313,14 +6868,14 @@ character(len=*),parameter::ident_28="@(#)M_calcomp::symbol(3f): draw text strin
       ENDIF
 !
 !  IF THIS PORTION OF THE SUBROUTINE IS REACHED, THE SYMBOL TO BE
-!  DRAWN HAS BEEN SPECIFIED AS A CHARACTER STRING.  INCREMENT THE
+!  DRAWN HAS BEEN SPECIFIED AS A CHARACTER STRING. INCREMENT THE
 !  CHARACTER COUNTER, AND DETERMINE IF THE NUMBER OF CHARACTERS DRAWN
 !  HAS EXCEEDED THE NUMBER OF CHARACTERS SPECIFIED WHEN 'SYMBOL' WAS
-!  CALLED.  IF SO, PREPARE TO EXIT THIS SUBROUTINE.  OTHERWISE, COMPARE
+!  CALLED. IF SO, PREPARE TO EXIT THIS SUBROUTINE. OTHERWISE, COMPARE
 !  THE NEXT ELEMENT IN THE CHARACTER STRING WITH THE 'ALPHA_Q' ARRAY TO
 !  DETERMINE THE INTEGER EQUIVALENT OF THE NEXT CHARACTER TO BE DRAWN.
 !  (NOTE - THE FIRST 27 SYMBOLS IN THE SYMBOL TABLE ARE SPECIAL
-!  SYMBOLS.  HENCE, THE INTEGER EQUIVALENT OF ANY CHARACTER IS
+!  SYMBOLS. HENCE, THE INTEGER EQUIVALENT OF ANY CHARACTER IS
 !  OFFSET FROM ITS POSITION IN 'ALPHA_Q' BY 27.)
 !
 5     ICNT=ICNT+1
@@ -6338,12 +6893,12 @@ character(len=*),parameter::ident_28="@(#)M_calcomp::symbol(3f): draw text strin
       GOTO 60
 !
 !  SEARCH THE 'TABLE' ARRAY FOR THE INTEGER EQUIVALENT OF THE SYMBOL
-!  TO BE DRAWN.  'TABLE' IS ARRANGED SUCH THAT THE ENTRY FOLLOWING
+!  TO BE DRAWN. 'TABLE' IS ARRANGED SUCH THAT THE ENTRY FOLLOWING
 !  THE INTEGER EQUIVALENT OF THE SYMBOL IS THE NUMBER OF STRAIGHT
-!  LINE SEGMENTS WHICH MAKE UP THE DRAWING.  THEREFORE, IF A MATCH
-!  LINE SEGMENTS WHICH COMPRISE THE DRAWING.  THIS IS FOLLOWED BY
+!  LINE SEGMENTS WHICH MAKE UP THE DRAWING. THEREFORE, IF A MATCH
+!  LINE SEGMENTS WHICH COMPRISE THE DRAWING. THIS IS FOLLOWED BY
 !  A SERIES OF ENTRIES (ONE FOR EACH STRAIGHT LINE SEGMENT) WHICH
-!  DESCRIBE THE SYMBOL.  HENCE, IF THE CURRENT 'TABLE' ENTRY DOES
+!  DESCRIBE THE SYMBOL. HENCE, IF THE CURRENT 'TABLE' ENTRY DOES
 !  NOT MATCH THE INTEGER EQUIVALENT OF THE DESIRED SYMBOL, THE
 !  POINTER MUST BE INCREMENTED BY THE NUMBER OF SEGMENTS (TABLE_Q(I+1))
 !  PLUS 2 (ONE ENTRY FOR THE SYMBOL INTEGER EQUIVALENT AND ONE ENTRY
@@ -6395,8 +6950,8 @@ character(len=*),parameter::ident_28="@(#)M_calcomp::symbol(3f): draw text strin
          X2=RAD*XFAC*COS(ANGL2+THETA)
          Y2=RAD*YFAC*SIN(ANGL2+THETA)
 !
-!  SET THE X AND Y FACTORS FOR SYMBOL CENTERING TO 0.0.  DETERMINE
-!  IF THE SYMBOL IS TO BE CENTERED.  (ONLY SYMBOLS WITH NUMERICAL
+!  SET THE X AND Y FACTORS FOR SYMBOL CENTERING TO 0.0. DETERMINE
+!  IF THE SYMBOL IS TO BE CENTERED. (ONLY SYMBOLS WITH NUMERICAL
 !  EQUIVALENTS BETWEEN 0 AND 14 INCLUSIVE ARE TO BE CENTERED.)  IF
 !  THE SYMBOL IS TO BE CENTERED, CALCULATE THE POSITION OF THE
 !  ORIGIN OF THE SYMBOL DEFINITION GRID WITH RESPECT TO THE DEFINED
@@ -6416,8 +6971,8 @@ character(len=*),parameter::ident_28="@(#)M_calcomp::symbol(3f): draw text strin
          ENDIF
 !
 !  CALL THE 'PLOT' SUBROUTINE TO FIND THE CURRENTLY DEFINED ORIGIN
-!  FOR THE ENTIRE FRAME.  THEN, CALL THE 'primitive__draw_line' GRAPHICS PRIMITIVE
-!  ROUTINE TO DRAW THE LINE SEGMENT.  THE ARGUMENTS TO 'primitive__draw_line'
+!  FOR THE ENTIRE FRAME. THEN, CALL THE 'primitive__draw_line' GRAPHICS PRIMITIVE
+!  ROUTINE TO DRAW THE LINE SEGMENT. THE ARGUMENTS TO 'primitive__draw_line'
 !  MUST INCORPORATE THE CURRENTLY DEFINED ORIGIN FOR THE FRAME  THE
 !  (XORG,YORG), THE ORIGIN POINT FOR THE SYMBOL DEFINITION GRID
 !  (XRLORG,YRLORG) AND THE SYMBOL CENTERING FACTOR (CENTRX,CENTRY).
@@ -6426,16 +6981,16 @@ character(len=*),parameter::ident_28="@(#)M_calcomp::symbol(3f): draw text strin
          CALL primitive__draw_line(X1+XORG+XRLORG+CENTRX,Y1+YORG+YRLORG+CENTRY, X2+XORG+XRLORG+CENTRX,Y2+YORG+YRLORG+CENTRY)
 50    CONTINUE
 !
-!  CALCULATE THE STARTING POINT FOR THE NEXT SYMBOL.  THE VALUE OF XSPC_Q
+!  CALCULATE THE STARTING POINT FOR THE NEXT SYMBOL. THE VALUE OF XSPC_Q
 !   AND YSPC_Q IN THESE EQUATIONS IS THE WIDTH OF THE GRID ON WHICH EACH
-!  SYMBOL IS DEFINED.  IT IS NECESSARY TO MOVE THE ENTIRE WIDTH
-!  OF THE GRID EACH TIME A NEW SYMBOL IS DRAWN.  THE 0.00 IN THESE
+!  SYMBOL IS DEFINED. IT IS NECESSARY TO MOVE THE ENTIRE WIDTH
+!  OF THE GRID EACH TIME A NEW SYMBOL IS DRAWN. THE 0.00 IN THESE
 !  EQUATIONS IS THE DEFAULT ANGLE OF ORIENTATION FOR DRAWING
-!  SYMBOLS.  BY DEFAULT, ALL SYMBOLS ARE DRAWN ORIENTED PARALLEL
-!  TO THE POSITIVE X AXIS.  WHILE THE VALUE OF 0.00 IS NOT REQUIRED
-!  MATHEMATICALLY, IT IS INCLUDED HERE FOR CONSISTENCY.  (THESE
+!  SYMBOLS. BY DEFAULT, ALL SYMBOLS ARE DRAWN ORIENTED PARALLEL
+!  TO THE POSITIVE X AXIS. WHILE THE VALUE OF 0.00 IS NOT REQUIRED
+!  MATHEMATICALLY, IT IS INCLUDED HERE FOR CONSISTENCY. (THESE
 !  EQUATIONS ARE BASED ON THE PRINCIPLE AS THE EQUATIONS USED ABOVE
-!  TO TRANSLATE FROM CARTESIAN TO POLAR COORDINATES.  THE INCLUSION
+!  TO TRANSLATE FROM CARTESIAN TO POLAR COORDINATES. THE INCLUSION
 !  OF THE 0.00 FOR THE ANGLE INSURES THAT THE SAME FORMAT IS USED
 !  FOR BOTH APPLICATIONS OF THIS TRANSLATION.)
 !
@@ -6455,13 +7010,12 @@ character(len=*),parameter::ident_28="@(#)M_calcomp::symbol(3f): draw text strin
 !
 !  RESET THE SYMBOL SIZE FACTORS TO UNITY PRIOR TO LEAVING THE
 !  SUBROUTINE, AND RETURNS THE PEN TO THE ORIGIN OF THE
-!  CHARACTER.  (THE 'PLOT' SUBROUTINE APPLIES ANY REQUIRED
+!  CHARACTER. (THE 'PLOT' SUBROUTINE APPLIES ANY REQUIRED
 !  SCALING FACTORS.)
 !
 100   XFAC=1.0
       YFAC=1.0
       CALL PLOT(XPAGE,YPAGE,3)
-      RETURN
 END SUBROUTINE SYMBOL
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
@@ -6507,7 +7061,9 @@ END SUBROUTINE SYMBOL
 !===================================================================================================================================
 subroutine where(xpag,ypag,fct)
 implicit none
+
 character(len=*),parameter::ident_29="@(#)M_calcomp::where(3f): return current position and current plot-scaling factor"
+
 real,intent(out) :: xpag
 real,intent(out) :: ypag
 real,intent(out) :: fct
@@ -6522,7 +7078,11 @@ end subroutine where
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 ! set of routines to make simple contour plots
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 LOGICAL FUNCTION primitive__NEWONE (VAL)
+implicit none
 INTEGER :: VAL
 ! CONCOM
 INTEGER L,M,U,D
@@ -6553,28 +7113,28 @@ END FUNCTION primitive__NEWONE
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 SUBROUTINE primitive__PASS (X,Z)
+implicit none !! jsujsu
 !           MERGE PAIRS OF STRINGS OF LENGTH C_Q FROM X INTO Z
-!           WHERE X HAS N ELEMENTS
+!           WHERE X HAS NTRK_Q ELEMENTS
 !           X AND Z ARE PARAMS FOR SWITCHING ARRAYS
    ! CONCOM
-   INTEGER X(*),Z(*)
-   INTEGER K,P,Q,R,S,T,N
+INTEGER X(*),Z(*)
+INTEGER K,P,Q,R,S,T
 !           K IS INDEX INTO Z
 !           S, T ARE INDICES INTO X@  P.LE.S.LT.Q.LE.T.LT.R
 !           WITH C_Q.EQ.Q-P AND C_Q.EQ.R-Q
-   EQUIVALENCE (N,NTRK_Q)
    K=0
    R=1
 ! STEP THRU X PICKING OFF PAIRS OF C_Q-LENGTH STRINGS
 10 P=R
-   if(P.GT.N) GOTO 70
+   if(P.GT.ntrk_q) GOTO 70
 !                            ALL DONE
    S=P
    Q=P+C_Q
-   if(Q.GT.N) GOTO 60
+   if(Q.GT.ntrk_q) GOTO 60
 !                            NO MERGE, JUST TRANSFER THE STRING
    R=Q+C_Q
-   if(R.GT.N) R=N+1
+   if(R.GT.ntrk_q) R=ntrk_q+1
 !                            SHORT STRING TO MERGE
    T=Q
 ! SELECT ELEMENT TO PASS TO Z
@@ -6600,7 +7160,7 @@ SUBROUTINE primitive__PASS (X,Z)
 60 K=K+1
    Z(K)=X(S)
    S=S+1
-   if(S-N) 60,60,70
+   if(S-ntrk_q) 60,60,70
 ! ALL DONE
 70 RETURN
 !
@@ -6609,6 +7169,7 @@ END SUBROUTINE primitive__PASS
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 SUBROUTINE primitive__RECORX
+implicit none
    ! CONCOM
    ODDPAS_Q=.FALSE.
    C_Q=1
@@ -6631,9 +7192,13 @@ END SUBROUTINE primitive__RECORX
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 SUBROUTINE primitive__SCAN (AM,TOTX,TOTY,NYDIM)
-   REAL AM(NYDIM,*),TOTX(*),TOTY(*)
-   ! CONCOM
-   REAL OP
+implicit none
+REAL    :: AM(NYDIM,*),TOTX(*),TOTY(*)
+! CONCOM
+REAL    :: OP
+integer :: jx
+integer :: jy
+integer :: nydim
    ALT_Q=.FALSE.
    EDGE_Q=.TRUE.
    NN_Q=0
@@ -6686,12 +7251,15 @@ END SUBROUTINE primitive__SCAN
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 SUBROUTINE primitive__TRACER (AM,TOTX,TOTY,NYDIM)
-   REAL AM(NYDIM,*),TOTX(*),TOTY(*)
-   ! CONCOM
-   INTEGER Z
-   REAL TEM,PLOTX,PLOTY,FPLOTX,FPLOTY,AMC,AMW,AMZ,AMQ,AMS,AMD,AMP
-   LOGICAL FIRST
-   INTEGER S,TIX,TIY,CIX,CIY,DIX,DIY,SUB,PIX,PIY,SWSD,SWMQ
+implicit none
+REAL    :: AM(NYDIM,*),TOTX(*),TOTY(*)
+integer :: nydim
+! CONCOM
+INTEGER :: Z
+REAL    :: TEM,PLOTX,PLOTY,FPLOTX,FPLOTY,AMC,AMW,AMZ,AMQ,AMS,AMD,AMP
+LOGICAL :: FIRST
+INTEGER :: S,TIX,TIY,CIX,CIY,DIX,DIY,SUB,PIX,PIY,SWSD,SWMQ
+real    :: amm
    FIRST=.TRUE.
    NTRK_Q=0
    TIX=IX_Q
@@ -6926,14 +7494,26 @@ END SUBROUTINE primitive__TRACER
 !!  program.
 !===================================================================================================================================
 SUBROUTINE CNTOUR (AM,XX,YY,TOTX,TOTY,HGT,CV,CVN,TAB,NDIMYY)
+implicit none
+
 character(len=*),parameter::ident_30="@(#)M_calcomp::cntour(3f): draw a contour plot"
-   INTEGER XX,YY,CVN
-   CHARACTER ENCXDE*9
-   REAL AM(NDIMYY,*),TOTX(*),TOTY(*),CV(*),HGT
-   LOGICAL TAB
-   ! CONCOM
-   INTEGER I,IT
-   REAL RT,TEM,DIS,SCALE
+
+INTEGER XX,YY,CVN
+CHARACTER ENCXDE*9
+REAL AM(NDIMYY,*),TOTX(*),TOTY(*),CV(*),HGT
+LOGICAL TAB
+! CONCOM
+INTEGER I,IT
+REAL RT,TEM,DIS,SCALE
+real :: bjklx
+real :: bjkly
+real :: dissav
+integer :: inteq
+integer :: ipjb
+integer :: ndimyy
+real :: rtx
+real :: rty
+real :: xdisp
 !  *        *NOTE* VARIABLE LIMIT_Q CONTAINS VALUE OF THE SIZE OF VECTOR
 !           REC_Q. VALUE IS USED IN SUBROUTINE primitive__NEWONE.
 !         HXSZ_Q IS THE VALUE OF THE SIZE OF VECTORS HX_Q, HY_Q, TRK_Q AND TRKA_Q.
@@ -7009,7 +7589,7 @@ character(len=*),parameter::ident_30="@(#)M_calcomp::cntour(3f): draw a contour 
    RETURN
 !
 !  THE FOLLOWING STATEMENT WAS MODIFIED WHEN THIS SUBROUTINE WAS
-!  CONVERTED TO THE CRAY.  THE STATEMENT ORIGINALLY READ
+!  CONVERTED TO THE CRAY. THE STATEMENT ORIGINALLY READ
 !
 !     150 DIS=HGT-0.1
 !
@@ -7031,13 +7611,13 @@ character(len=*),parameter::ident_30="@(#)M_calcomp::cntour(3f): draw a contour 
 180 if(IT.EQ.0) GOTO 190
 !
 !  THE FOLLOWING CALL TO THE 'SYMBOL' ROUTINE HAS BEEN MODIFIED TO
-!  CONVERT THIS SUBROUTINE TO THE CRAY.  ON THE CRAY, 'SYMBOL' HAS
-!  7 ARGUMENTS; ON THE CDC, 'SYMBOL' HAS SIX ARGUMENTS.  THE ADDITIONAL
+!  CONVERT THIS SUBROUTINE TO THE CRAY. ON THE CRAY, 'SYMBOL' HAS
+!  7 ARGUMENTS; ON THE CDC, 'SYMBOL' HAS SIX ARGUMENTS. THE ADDITIONAL
 !  ARGUMENT IN THIS CALL IS 'INTEQ'.
 !
 !  'INTEQ' IS THE INTEGER EQUIVALENT OF THE SYMBOL TO BE DRAWN.
 !  IF 'INTEQ' HAS A VALUE BETWEEN 0 AND 90 INCLUSIVE, A SYMBOL IS DRAWN
-!  EVEN IF A TITLE HAS BEEN SPECIFIED.  TO PREVENT THIS FROM HAPPENING
+!  EVEN IF A TITLE HAS BEEN SPECIFIED. TO PREVENT THIS FROM HAPPENING
 !  IN THIS SUBROUTINE, 'INTEQ' IS SET TO THE VALUE 999 (WHICH HAS NO
 !  SIGNIFICANCE FOR 'SYMBOL').
 !
@@ -7047,13 +7627,13 @@ character(len=*),parameter::ident_30="@(#)M_calcomp::cntour(3f): draw a contour 
    DIS=DIS-0.25
 !
 !  THE FOLLOWING CALL TO THE 'SYMBOL' ROUTINE HAS BEEN MODIFIED TO
-!  CONVERT THIS SUBROUTINE TO THE CRAY.  ON THE CRAY, 'SYMBOL' HAS
-!  7 ARGUMENTS; ON THE CDC, 'SYMBOL' HAS SIX ARGUMENTS.  THE ADDITIONAL
+!  CONVERT THIS SUBROUTINE TO THE CRAY. ON THE CRAY, 'SYMBOL' HAS
+!  7 ARGUMENTS; ON THE CDC, 'SYMBOL' HAS SIX ARGUMENTS. THE ADDITIONAL
 !  ARGUMENT IN THIS CALL IS 'INTEQ'.
 !
 !  'INTEQ' IS THE INTEGER EQUIVALENT OF THE SYMBOL TO BE DRAWN.
 !  IF 'INTEQ' HAS A VALUE BETWEEN 0 AND 90 INCLUSIVE, A SYMBOL IS DRAWN
-!  EVEN IF A TITLE HAS BEEN SPECIFIED.  TO PREVENT THIS FROM HAPPENING
+!  EVEN IF A TITLE HAS BEEN SPECIFIED. TO PREVENT THIS FROM HAPPENING
 !  IN THIS SUBROUTINE, 'INTEQ' IS SET TO THE VALUE 999 (WHICH HAS NO
 !  SIGNIFICANCE FOR 'SYMBOL').
 !
@@ -7076,7 +7656,7 @@ character(len=*),parameter::ident_30="@(#)M_calcomp::cntour(3f): draw a contour 
       if(I/10.NE.0) RT=2.0
 !
 !  SET THE DISPLACEMENT IN THE X DIRECTION FOR THE CONTOUR
-!  IDENTIFIERS.  BY DEFAULT, THE DISPLACEMNT IS SET FOR
+!  IDENTIFIERS. BY DEFAULT, THE DISPLACEMNT IS SET FOR
 !  THE LEFT COLUMN OF THE LEGEND.
 !
       XDISP=1.0
@@ -7086,13 +7666,13 @@ character(len=*),parameter::ident_30="@(#)M_calcomp::cntour(3f): draw a contour 
       ENDIF
 !
 !  THE SCALING OF THE FOLLOWING STATEMENT WAS MODIFIED WHEN THIS
-!  SUBROUTINE WAS CONVERTED TO THE CRAY.  THE STATEMENT ORIGINALLY
+!  SUBROUTINE WAS CONVERTED TO THE CRAY. THE STATEMENT ORIGINALLY
 !  READ
 !
 !     CALL NUMBER(0.42-RT,DIS,0.14,FLOAT(I),0.0,-1)
 !
 !  THE CHARACTER SIZE WAS ADJUSTED TO PERMIT 10 LINES OF INFORMATION
-!  TO APPEAR IN THE LEGEND.  THE INFLUENCE OF THE DISPLACEMENT
+!  TO APPEAR IN THE LEGEND. THE INFLUENCE OF THE DISPLACEMENT
 !  FACTOR HAS ALSO BEEN INCLUDED.
 !
       CALL NUMBER(0.42-RT+XDISP, DIS, 0.09, FLOAT(I), 0.0, -1)
@@ -7106,13 +7686,13 @@ character(len=*),parameter::ident_30="@(#)M_calcomp::cntour(3f): draw a contour 
 210   CONTINUE
 !
 !  THE FOLLOWING CALL TO THE 'SYMBOL' ROUTINE HAS BEEN MODIFIED TO
-!  CONVERT THIS SUBROUTINE TO THE CRAY.  ON THE CRAY, 'SYMBOL' HAS
-!  7 ARGUMENTS; ON THE CDC, 'SYMBOL' HAS SIX ARGUMENTS.  THE ADDITIONAL
+!  CONVERT THIS SUBROUTINE TO THE CRAY. ON THE CRAY, 'SYMBOL' HAS
+!  7 ARGUMENTS; ON THE CDC, 'SYMBOL' HAS SIX ARGUMENTS. THE ADDITIONAL
 !  ARGUMENT IN THIS CALL IS 'INTEQ'.
 !
 !  'INTEQ' IS THE INTEGER EQUIVALENT OF THE SYMBOL TO BE DRAWN.
 !  IF 'INTEQ' HAS A VALUE BETWEEN 0 AND 90 INCLUSIVE, A SYMBOL IS DRAWN
-!  EVEN IF A TITLE HAS BEEN SPECIFIED.  TO PREVENT THIS FROM HAPPENING
+!  EVEN IF A TITLE HAS BEEN SPECIFIED. TO PREVENT THIS FROM HAPPENING
 !  IN THIS SUBROUTINE, 'INTEQ' IS SET TO THE VALUE 999 (WHICH HAS NO
 !  SIGNIFICANCE FOR 'SYMBOL').
 !
@@ -7146,86 +7726,86 @@ END SUBROUTINE CNTOUR
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 SUBROUTINE primitive__ADDREC (VAL)
+implicit none
 INTEGER,INTENT(IN) ::  VAL
 ! CONCOM
-NTRK_Q=NTRK_Q+1
-      if(NTRK_Q.GT.HXSZ_Q) STOP 7117
-      TRK_Q(NTRK_Q)=VAL
+   NTRK_Q=NTRK_Q+1
+   if(NTRK_Q.GT.HXSZ_Q) STOP 7117
+   TRK_Q(NTRK_Q)=VAL
 !
 END SUBROUTINE primitive__ADDREC
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 SUBROUTINE primitive__MERGER (X)
-      INTEGER X(*)
-      ! CONCOM
-      INTEGER Y(2048)
-      INTEGER N,M,K,I,J
-      INTEGER DUP
-      EQUIVALENCE (N,NTRK_Q), (M,NN_Q), (Y,REC_Q)
-      if(N.EQ.0) GOTO 180
-      if(ALT_Q) GOTO 80
-      I=N
-      K=LIMIT_Q+1
-      if(M.EQ.0) GOTO 60
-      J=M
-10    if(X(I)-Y(J)) 20,15,30
-15    CONTINUE
-      I=I-1
-      if(I) 50,50,20
-20    K=K-1
-      Y(K)=Y(J)
-      J=J-1
-      if(J) 60,60,10
-30    K=K-1
-      if(K.LE.J) STOP 7227
-      DUP=X(I)
-      Y(K)=DUP
-40    I=I-1
-      if(I.LE.0) GOTO 50
-      if(X(I)-DUP) 10,40,10
-50    K=K-1
-      Y(K)=Y(J)
-      J=J-1
-      if(J) 170,170,50
-60    K=K-1
-      if(K.LT.1) STOP 7227
-      DUP=X(I)
-      Y(K)=DUP
-70    I=I-1
-      if(I.LE.0) GOTO 170
-      if(X(I)-DUP) 60,70,60
-80    I=1
-      K=0
-      J=M
-90    if(X(I)-Y(J)) 120,100,110
-100   I=I+1
-      if(I-N) 110,110,140
-110   K=K+1
-      Y(K)=Y(J)
-      J=J+1
-      if(J-LIMIT_Q) 90,90,150
-120   K=K+1
-      if(K.GE.J) STOP 7227
-      DUP=X(I)
-      Y(K)=DUP
-130   I=I+1
-      if(I.GT.N) GOTO 140
-      if(X(I)-DUP) 90,130,90
-140   K=K+1
-      Y(K)=Y(J)
-      J=J+1
-      if(J-LIMIT_Q) 140,140,170
-150   K=K+1
-      if(K.GT.LIMIT_Q) STOP 7227
-      DUP=X(I)
-      Y(K)=DUP
-160   I=I+1
-      if(I.GT.N) GOTO 170
-      if(X(I)-DUP) 150,160,150
-170   ALT_Q=.NOT.ALT_Q
-      NN_Q=K
-180   continue
+implicit none !! jsujsu
+INTEGER X(*)
+! CONCOM
+INTEGER :: K,I,J
+INTEGER DUP
+   if(ntrk_q.EQ.0) GOTO 180
+   if(ALT_Q) GOTO 80
+   I=ntrk_q
+   K=LIMIT_Q+1
+   if(NN_Q.EQ.0) GOTO 60
+   J=NN_Q
+10 if(X(I)-rec_q(J)) 20,15,30
+15 CONTINUE
+   I=I-1
+   if(I) 50,50,20
+20 K=K-1
+   rec_q(K)=rec_q(J)
+   J=J-1
+   if(J) 60,60,10
+30 K=K-1
+   if(K.LE.J) STOP 7227
+   DUP=X(I)
+   rec_q(K)=DUP
+40 I=I-1
+   if(I.LE.0) GOTO 50
+   if(X(I)-DUP) 10,40,10
+50 K=K-1
+   rec_q(K)=rec_q(J)
+   J=J-1
+   if(J) 170,170,50
+60 K=K-1
+   if(K.LT.1) STOP 7227
+   DUP=X(I)
+   rec_q(K)=DUP
+70 I=I-1
+   if(I.LE.0) GOTO 170
+   if(X(I)-DUP) 60,70,60
+80 I=1
+   K=0
+   J=NN_Q
+90 if(X(I)-rec_q(J)) 120,100,110
+100 I=I+1
+    if(I-ntrk_q) 110,110,140
+110 K=K+1
+    rec_q(K)=rec_q(J)
+    J=J+1
+    if(J-LIMIT_Q) 90,90,150
+120 K=K+1
+    if(K.GE.J) STOP 7227
+    DUP=X(I)
+    rec_q(K)=DUP
+130 I=I+1
+    if(I.GT.ntrk_q) GOTO 140
+    if(X(I)-DUP) 90,130,90
+140 K=K+1
+    rec_q(K)=rec_q(J)
+    J=J+1
+    if(J-LIMIT_Q) 140,140,170
+150 K=K+1
+    if(K.GT.LIMIT_Q) STOP 7227
+    DUP=X(I)
+    rec_q(K)=DUP
+160 I=I+1
+    if(I.GT.ntrk_q) GOTO 170
+    if(X(I)-DUP) 150,160,150
+170 ALT_Q=.NOT.ALT_Q
+    NN_Q=K
+180 continue
 !
 END SUBROUTINE primitive__MERGER
 !===================================================================================================================================
@@ -7356,9 +7936,11 @@ end subroutine primitive__wpen
 !===================================================================================================================================
 subroutine primitive__frend(next8) ! end graphics frame
 use M_draw
+implicit none
 integer          :: next8  ! INTEGER4/INTEGER8
 integer          :: next
 character(len=1) :: cjunk
+integer          :: ivalue
    next=next8
    call vflush()             ! flush graphics buffers
    ivalue=getkey()           ! wait till a keypress is read in graphics window

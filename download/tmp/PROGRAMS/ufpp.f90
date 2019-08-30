@@ -24,21 +24,21 @@
 !! <!-- =========================================================================================================================== -->
 !! <h1>SYNOPSIS</h1>
 !! <pre>
-!!    ufpp  [[-D] define_list]
-!!          [-I include_directories]
-!!          [-i input_file(s)]
-!!          [-o output_file]
-!!          [-html]
-!!          [-system]
-!!          [-verbose]
-!!          [-prefix character_ADE]
-!!          [-keeptabs]
-!!          [-noenv]
-!!          [-width n]
-!!          [-d ignore|remove|blank]
-!!          [-cstyle default|doxygen]
-!!          [-version]
-!!          [-help [-html]]
+!!    ufpp  [[ -D] define_list]
+!!          [ -I include_directories]
+!!          [ -i input_file(s)]
+!!          [ -o output_file]
+!!          [ -html]
+!!          [ -system]
+!!          [ -verbose]
+!!          [ -prefix character_ADE]
+!!          [ -keeptabs]
+!!          [ -noenv]
+!!          [ -width n]
+!!          [ -d ignore|remove|blank]
+!!          [ -cstyle default|doxygen]
+!!          [ -version]
+!!          [ -help [ -html]]
 !! </pre>
 !! <!-- =========================================================================================================================== -->
 !! <h2>DESCRIPTION</h2>
@@ -204,7 +204,7 @@
 !!       cf - Convert between Fahrenheit and Celsius temperature values
 !!
 !!    SYNOPSIS
-!!       cf [-C val1 val2 val3 ...] [-F val1 val2 val3 ...][--help][--version]
+!!       cf [ -C val1 val2 val3 ...] [ -F val1 val2 val3 ...]|[ --help| --version]
 !!
 !!    DESCRIPTION
 !!       -C [ val(1) val(2) val(3) ... ]
@@ -3637,7 +3637,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        4.0: 20170502>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 6:28:37 PM>',&
+'@(#)COMPILED:       Thu, Aug 29th, 2019 11:04:39 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

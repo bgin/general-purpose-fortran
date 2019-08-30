@@ -4,7 +4,7 @@ $DOCUMENT HELP -file _pwd.1.man
 NAME
        _pwd(1f) - [FUNIX:FILESYSTEM] list full pathname of current directory
 SYNOPSIS
-       _pwd [--version|--help]
+       _pwd [ --version|--help]
 DESCRIPTION
        list full pathname of current directory
 OPTIONS

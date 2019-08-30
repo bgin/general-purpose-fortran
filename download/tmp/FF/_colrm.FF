@@ -7,19 +7,19 @@ SYNOPSIS
        _colrm [first [last]]
 
 DESCRIPTION
-       _colrm removes selected columns from a file. Input is taken from
-       standard input. Output is sent to standard output.
+       _colrm removes selected character columns from a file. Input is
+       taken from standard input. Output is sent to standard output.
 
-       If called with one parameter the columns of each line will
-       be removed starting with the specified first column. If called
-       with two parameters the columns from the first column to the last
+       If called with one parameter the columns of each line will be
+       removed starting with the specified first column. If called with
+       two parameters the columns from the first column to the last
        column will be removed.
 
        Column numbering starts with column 1. Tabs are NOT expanded.
 
 OPTIONS
-       first
-       last
+       first      starting column number to remove
+       last       ending column number to remove
        --version  Display version information and exit.
        --help     Display help text and exit.
 

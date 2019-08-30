@@ -189,7 +189,7 @@ usage=[ character(len=80) :: &
 '     what(1f) - [DEVELOPER] extract SCCS-style metadata from a file             ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
-'     what [ filename(s) [-s] [-q] [-html|-table] ] | [ [-help] [-version] ]     ',&
+'     what [ filename(s) [ -s] [ -q] [ -html|-table] ] | [ [ -help] [ -version] ]',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
 '     The what(1) utility searches each filename for occurrences of the          ',&

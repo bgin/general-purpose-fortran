@@ -415,7 +415,9 @@ contains
 !===================================================================================================================================
 subroutine hue(modei,clr1i,clr2i,clr3i,modeo,clr1o,clr2o,clr3o,status)
 use M_strings, only : lower
-character(len=*),parameter :: ident="@(#)M_color::hue(3f): convert color components from one color model to another"
+
+character(len=*),parameter::ident_1="@(#)M_color::hue(3f): convert color components from one color model to another"
+
 !---- modei specifies the color model that applies to the input color components  clr1i, clr2i, & clr3i.
 !---- modeo specifies the color model desired for the output color components  clr1o, clr2o, & clr3o.
 !
@@ -683,7 +685,8 @@ end subroutine test_hue
 !! </dl>
 !===================================================================================================================================
 subroutine rgbhls(r0,g0,b0,h,l,s,status)
-character(len=*),parameter :: ident="@(#)M_color::rgbhls(3fp): given red,green,blue values calculate hue,lightness,saturation"
+
+character(len=*),parameter::ident_2="@(#)M_color::rgbhls(3fp): given red,green,blue values calculate hue,lightness,saturation"
 
 !     given  : r, g, b each as a value of 0 to 100
 !     desired: h as a value of 0 to 360 degrees.
@@ -794,8 +797,9 @@ end subroutine rgbhls
 !! </dl>
 !===================================================================================================================================
 subroutine rgbhvs(r0,g0,b0,h,v,s,status)
-character(len=*),parameter :: ident="@(#)M_color::rgbhvs(3fp): given red,green,blue calculate hue,saturation,value components"
-!
+
+character(len=*),parameter::ident_3="@(#)M_color::rgbhvs(3fp): given red,green,blue calculate hue,saturation,value components"
+
 !---- this procedure calculates a hue, saturation, value equivalent for a
 !     color given in red, green, & blue components.
 !     given  : r, g, b each as a value of 0 to 100.
@@ -883,7 +887,9 @@ end subroutine rgbhvs
 !! </dl>
 !===================================================================================================================================
 subroutine cmyrgb(c,m,y,r,g,b,status)
-character(len=*),parameter :: ident="@(#)M_color::cmyrgb(3fp): given cyan,magenta,yellow calculate red,green,blue components"
+
+character(len=*),parameter::ident_4="@(#)M_color::cmyrgb(3fp): given cyan,magenta,yellow calculate red,green,blue components"
+
 ! given  : r, g, b each as a value of 0 to 100
 ! desired: c, m, y each as a value of 0 to 100
 real,intent(in)   :: c,m,y
@@ -943,7 +949,9 @@ end subroutine cmyrgb
 !! </dl>
 !===================================================================================================================================
 subroutine rgbcmy(r,g,b,c,m,y,status)
-character(len=*),parameter :: ident="@(#)M_color::rgbcmy(3fp): given red,green,blue calculate cyan,magenta,yellow components"
+
+character(len=*),parameter::ident_5="@(#)M_color::rgbcmy(3fp): given red,green,blue calculate cyan,magenta,yellow components"
+
 !     given  : r, g, b each as a value of 0 to 100
 !     desired: c, m, y each as a value of 0 to 100
 real,intent(in)  :: r,g,b
@@ -1025,7 +1033,8 @@ end subroutine rgbcmy
 !!     Pink       65.0000000
 !===================================================================================================================================
 subroutine rgbmono(rr,rg,rb,ri,status)
-character(len=*),parameter :: ident="@(#)M_color::rgbmono(3f): convert RGB colors to a reasonable grayscale"
+
+character(len=*),parameter::ident_6="@(#)M_color::rgbmono(3f): convert RGB colors to a reasonable grayscale"
 
 ! monochrome devices that support intensity can have intensity calculated from the specified Red, Green, Blue
 ! intensities as 0.30*R + 0.59*G + 0.11*B, as in US color television systems, NTSC encoding.
@@ -1087,7 +1096,9 @@ end subroutine test_rgbmono
 !! <!-- ======================================================================= --
 !===================================================================================================================================
 real function rgbval(clr1,clr2,h)
-character(len=*),parameter :: ident="@(#)M_color::rgbval(3fp): ensure a value is in the appropriate range and quadrant"
+
+character(len=*),parameter::ident_7="@(#)M_color::rgbval(3fp): ensure a value is in the appropriate range and quadrant"
+
 real    :: clr1,clr2
 real    :: h
 real    :: h2
@@ -1153,8 +1164,9 @@ end function rgbval
 !! </dl>
 !===================================================================================================================================
 subroutine hlsrgb(H,L,S,R,G,B,status)
-character(len=*),parameter :: ident="@(#)M_color::hlsrgb(3fp): convert HLS(hue,lightness,saturation) values to RGB components"
-!
+
+character(len=*),parameter::ident_8="@(#)M_color::hlsrgb(3fp): convert HLS(hue,lightness,saturation) values to RGB components"
+
 !     given  : hue as a value of 0 to 360 degrees.
 !     .        lightness and saturation each as a value of 0 to 100.
 !     desired: r, g, and b each as a value of 0 to 100.
@@ -1219,8 +1231,9 @@ end subroutine hlsrgb
 !! </dl>
 !===================================================================================================================================
 subroutine hvsrgb(h,v,s,r,g,b,status)
-character(len=*),parameter :: ident="@(#)M_color::hvsrgb(3fp): given hue,saturation,value calculate red,green,blue components"
-!
+
+character(len=*),parameter::ident_9="@(#)M_color::hvsrgb(3fp): given hue,saturation,value calculate red,green,blue components"
+
 !     given  : hue as value of 0 to 360 degrees.
 !     .        saturation and value each as a value of 0 to 100.
 !     desired: r, g, and b as a value of 0 to 100.
@@ -1297,7 +1310,10 @@ end subroutine hvsrgb
 !! </dl>
 !===================================================================================================================================
 subroutine yiqrgb(y,i,q,r,g,b,status)
-character(len=*),parameter :: ident="@(#)M_color::yiqrgb(3fp): convert luma,orange-blue chrominance,purple-green chrominance to RGB"
+
+character(len=*),parameter::ident_10="&
+&@(#)M_color::yiqrgb(3fp): convert luma,orange-blue chrominance,purple-green chrominance to RGB"
+
 real,intent(in)  :: y,i,q
 real,intent(out) :: r,g,b
 integer          :: status
@@ -1354,7 +1370,10 @@ end subroutine yiqrgb
 !! </dl>
 !===================================================================================================================================
 subroutine rgbyiq(r,g,b,y,i,q,status)
-character(len=*),parameter :: ident="@(#)M_color::rgbyiq(3fp): convert RGB to luma,orange-blue chrominance,purple-green chrominance"
+
+character(len=*),parameter::ident_11="&
+&@(#)M_color::rgbyiq(3fp): convert RGB to luma,orange-blue chrominance,purple-green chrominance"
+
 real,intent(in)  :: r,g,b
 real,intent(out) :: y,i,q
 integer          :: status
@@ -1428,7 +1447,9 @@ end subroutine rgbyiq
 !===================================================================================================================================
 SUBROUTINE closest_color_name(r,g,b,closestname)
 use M_strings, only: v2s
-character(len=*),parameter :: ident="@(#)M_color::closest_color_name(3f): given RGB values, try to find closest named color"
+
+character(len=*),parameter::ident_12="@(#)M_color::closest_color_name(3f): given RGB values, try to find closest named color"
+
 real,intent(in)               :: r,g,b
 character(len=*),intent(out) :: closestname
 real                          :: rn,gn,bn
@@ -1563,7 +1584,10 @@ end subroutine test_closest_color_name
 !===================================================================================================================================
 subroutine color_name2rgb(name,r,g,b,echoname)
 use M_strings, only: lower
-character(len=*),parameter :: ident="@(#)M_color::color_name2rgb(3f): given a color name, return rgb color values in range 0 to 100"
+
+character(len=*),parameter::ident_13="&
+&@(#)M_color::color_name2rgb(3f): given a color name, return rgb color values in range 0 to 100"
+
 character(len=*),intent(in)            :: name
 real,intent(out)                       :: r,g,b
 character(len=*),intent(out),optional  :: echoname

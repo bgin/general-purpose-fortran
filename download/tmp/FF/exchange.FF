@@ -5,10 +5,10 @@ NAME
     exchange(1f) - [CONVERT] test of basic unit conversion functions
 
 SYNOPSIS
-    exchange [-feet VALUES] [-meters VALUES]
-             [-celsius VALUES] [-fahrenheit VALUES]
-             [-degrees VALUES] [-radians VALUES]
-             [--help] -[-version]
+    exchange [[ -feet VALUES] [ -meters VALUES]
+             [ -celsius VALUES] [ -fahrenheit VALUES]
+             [ -degrees VALUES] [ -radians VALUES]]
+             |[ --help]|[ -version]
 
 DESCRIPTION
     Makes common unit conversions such as between feet and meters,

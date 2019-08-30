@@ -11,7 +11,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '   _sleep(1f) - [FUNIX:TIME] pause for specified duration                       ',&
 'SYNOPSIS                                                                        ',&
-'   _sleep [dd-hh:mm:ss[.xxx]|xxx.yyy[s|m|h|d]] [-countdown|-countup -count]|--help|--version',&
+'   _sleep [dd-hh:mm:ss[.xxx]|xxx.yyy[s|m|h|d]] [ -countdown|-countup -count]|--help|--version',&
 'DESCRIPTION                                                                     ',&
 '   Given a duration in the form dd-hh:mm:ss.xxx where dd is days, hh            ',&
 '   hours, mm minutes and ss.xxx seconds pause for the specified amount          ',&
@@ -64,7 +64,7 @@ end subroutine help_usage
 !!    _sleep(1f) - [FUNIX:TIME] pause for specified duration
 !!##SYNOPSIS
 !!
-!!    _sleep [dd-hh:mm:ss[.xxx]|xxx.yyy[s|m|h|d]] [-countdown|-countup -count]|--help|--versio
+!!    _sleep [dd-hh:mm:ss[.xxx]|xxx.yyy[s|m|h|d]] [ -countdown|-countup -count]|--help|--versio
 !!##DESCRIPTION
 !!    Given a duration in the form dd-hh:mm:ss.xxx where dd is days, hh
 !!    hours, mm minutes and ss.xxx seconds pause for the specified amount
@@ -124,7 +124,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20170822>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 6:40:54 PM>',&
+'@(#)COMPILED:       Thu, Aug 29th, 2019 10:23:20 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

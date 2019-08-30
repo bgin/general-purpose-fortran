@@ -15,9 +15,9 @@ NAME
 SYNOPSIS
  numdiff
     -old FILENAME -new FILENAME
-    [-percent REAL_VALUE|-digits N|-margin XXX.XX]
-    [-verbose]|
-    [--help|--version]
+    [ -percent REAL_VALUE|-digits N|-margin XXX.XX]
+    [ -verbose]|
+    [ --help|--version]
 
 DESCRIPTION
  NUMDIFF assumes two files are basically identical except for numeric

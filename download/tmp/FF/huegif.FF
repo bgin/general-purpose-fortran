@@ -4,7 +4,7 @@ NAME
    huegif(1f) - [M_pixel] generate color wheels as GIF pixmap files
 
 SYNOPSIS
-   huegif [--help|--version]
+   huegif [ --help| --version]
 
 DESCRIPTION
 

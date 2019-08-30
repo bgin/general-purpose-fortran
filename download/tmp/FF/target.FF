@@ -196,7 +196,7 @@ $FILTER HELP -file target.1.man
 NAME
    target(1f) - [M_drawplus] draw targets on Adobe PDF files
 SYNOPSIS
-   target [--help|--version]
+   target [ --help| --version]
 DESCRIPTION
    Use the M_draw(3fm) and M_drawplus(3fm) modules to create various
    targets. Requires large paper (at least 12x10.5 inches) to be printed

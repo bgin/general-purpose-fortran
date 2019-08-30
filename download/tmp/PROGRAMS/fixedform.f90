@@ -290,7 +290,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    display a TUI definition and return values>',&
 '@(#)VERSION:        1.0, 20150508>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 6:18:30 PM>',&
+'@(#)COMPILED:       Thu, Aug 29th, 2019 10:58:05 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -311,7 +311,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '    fixedfrom(1f) - [FUNIX] read in a TUI definition and return values from screen panel',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
-'    fixedform [file|-demo]|[--help|--version]                                   ',&
+'    fixedform [file|-demo]|[ --help| --version]                                 ',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
 '    fixedform(1) reads in a TUI screen form definition and displays it and returns',&
@@ -346,7 +346,7 @@ end subroutine help_usage
 !!
 !!##SYNOPSIS
 !!
-!!     fixedform [file|-demo]|[--help|--version]
+!!     fixedform [file|-demo]|[ --help| --version]
 !!
 !!##DESCRIPTION
 !!     fixedform(1) reads in a TUI screen form definition and displays it and returns

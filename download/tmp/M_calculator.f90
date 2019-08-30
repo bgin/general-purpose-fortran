@@ -426,66 +426,88 @@ help_text=[ &
 &' ceiling(A)  : least integer greater than or equal to A                         ',&
 &'--------------------------------------------------------------------------------',&
 &'MISCELLANEOUS:                                                                  ',&
-&' abs(value)  : absolute value                                                   ',&
 &' max(v1,v2,v3,...v50)  : maximum value of list                                  ',&
 &' min(v1,v2,v3,...v50)  : minimum value of list                                  ',&
-&' log(v1)     : logarithm of value to base e                                     ',&
-&' log10(v1)   : logarithm of value to base 10                                    ',&
-&' exp(value)  : exponenent of value                                              ',&
-&' sqrt(value) : return square root of value                                      ',&
 &' dim(x,y)    : maximum of X-Y and zero                                          ',&
 &' frac(A)     : fractional part of A (A - INT(A))                                ',&
 &' mod(A,P)    : remainder function                                               ',&
+&' abs(value)  : absolute value                                                   ',&
+&' exp(value)  : exponenent of value                                              ',&
+&'NUMERIC FUNCTIONS:                                                              ',&
+&' bessel_j0   : Bessel function of the first kind of order 0                     ',&
+&' bessel_j1   : Bessel function of the first kind of order 1                     ',&
+&' bessel_jn   : Bessel function of the first kind                                ',&
+&' bessel_y0   : Bessel function of the second kind of order 0                    ',&
+&' bessel_y1   : Bessel function of the second kind of order 1                    ',&
+&' bessel_yn   : Bessel function of the second kind                               ',&
+&' sqrt(value) : return square root of value                                      ',&
+&' log(v1)     : logarithm of value to base e                                     ',&
+&' log10(v1)   : logarithm of value to base 10                                    ',&
 &'--------------------------------------------------------------------------------',&
 &'RANDOM NUMBERS:                                                                 ',&
 &' srand(seed_value) : set seed value for rand()                                  ',&
 &' rand()            : random number                                              ',&
 &'--------------------------------------------------------------------------------',&
+&'SYSTEM:                                                                         ',&
+&' $setenv(name,value),$se(name,value)   : set environment variable value         ',&
+&' $getenv(name),$ge(name)               : get environment variable value         ',&
+&' $sh(command)                          : return output of system command        ',&
+&'--------------------------------------------------------------------------------',&
 &'ARRAY STORAGE:                                                                  ',&
-&' $nstore(start_index,$value1,$value2,$value3,....)|$n(index)                    ',&
-&' $xstore(start_index,$value1,$value2,$value3,....)|$x(index)                    ',&
-&' $ystore(start_index,$value1,$value2,$value3,....)|$y(index)                    ',&
-&' xstore(start_index,value1,value2,value3,....)    |x(index)                     ',&
-&' ystore(start_index,value1,value2,value3,....)    |y(index)                     ',&
+&' $nstore(start_index,$value1,$value2,$value3,....) | $n(index)                  ',&
+&' $xstore(start_index,$value1,$value2,$value3,....) | $x(index)                  ',&
+&' $ystore(start_index,$value1,$value2,$value3,....) | $y(index)                  ',&
+&' xstore(start_index,value1,value2,value3,....)     | x(index)                   ',&
+&' ystore(start_index,value1,value2,value3,....)     | y(index)                   ',&
 &'--------------------------------------------------------------------------------',&
 &'STRING MODIFICATION:                                                            ',&
 &' $change($input_string,"c/old_substring/new_substring")                         ',&
 &' $modif($input_string,"modification_directive &=blank#=delete^=insert"          ',&
-&' $l($input_string) : convert string to lowercase                                ',&
-&' $u($input_string) : convert string to uppercase                                ',&
+&' $l($input_string)        : convert string to lowercase                         ',&
+&' $u($input_string)        : convert string to uppercase                         ',&
 &' $substr($input_string,start_column,end_column)                                 ',&
 &' $str($a|e,$a|e,$a|e,....):append string and value expressions into string      ',&
 &'--------------------------------------------------------------------------------',&
 &'CALENDAR:                                                                       ',&
-&'|ye() : current year   |ho() : current hour   |$dw([n]): day of week            ',&
-&'|mo() : current month  |mi() : current minute |$mo([n]): name of month          ',&
-&'|da() : current day    |se() : current second |dw()    : day of week            ',&
-&'|ju() : day of year    |$now(format)          |$fmtdate(dat(8),format)          ',&
+&' ye(),year()   : current year                                                   ',&
+&' mo(),month()  : current month                                                  ',&
+&' da(),day()    : current day                                                    ',&
+&' ho(),hour()   : current hour                                                   ',&
+&' mi(),minute() : current minute                                                 ',&
+&' se(),second() : current second                                                 ',&
+&' $dw([n])      : day of week                                                    ',&
+&' $mo([n])      : name of month                                                  ',&
+&' dw()          : day of week                                                    ',&
+&' ju()          : day of year                                                    ',&
+&' $now(format)                                                                   ',&
+&' $fmtdate(dat(8),format)                                                        ',&
+&' unix_to_date(value)   : converts Unix Epoch Time to DAT date-time array        ',&
+&' date_to_unix(vals(8)) : converts DAT date-time array to Unix Epoch Time        ',&
 &'--------------------------------------------------------------------------------',&
 &'TRIGONOMETRIC:                                                                  ',&
-&'|cos(radians):cosine   |acos(x/r)             |cosh()  | cosd(degrees)          ',&
-&'|sin(radians):sine     |asin(y/r)             |sinh()  | sind(degrees)          ',&
-&'|tan(radians):tangent  |atan(y/x)             |tanh()  | tand(degrees)          ',&
-&'|                      |atan2(x,y)            |                                 ',&
+&' cos(radians) : cosine  | acos(x/r)   | cosh()   | acosh()   | cosd(degrees)    ',&
+&' sin(radians) : sine    | asin(y/r)   | sinh()   | asinh()   | sind(degrees)    ',&
+&' tan(radians) : tangent | atan(y/x)   | tanh()   | atanh()   | tand(degrees)    ',&
+&'                        | atan2(x,y)  |                                         ',&
 &'--------------------------------------------------------------------------------',&
 &'UNIT CONVERSION:                                                                ',&
-&'|c2f(c) : centigrade to Fahrenheit |f2c(f) : Fahrenheit to centigrade           ',&
-&'|d2r(d) : degrees to radians       |r2d(r) : radians to degrees                 ',&
+&' c2f(c) : centigrade to Fahrenheit |f2c(f) : Fahrenheit to centigrade           ',&
+&' d2r(d) : degrees to radians       |r2d(r) : radians to degrees                 ',&
 &'--------------------------------------------------------------------------------',&
 &'LOGICAL:                                                                        ',&
-&'|ge(a,b) : greater than or equal to                                             ',&
-&'|le(a,b) : A less than or equal to B                                            ',&
-&'|gt(a,b) : A greater than B                                                     ',&
-&'|lt(a,b) : A less than B                                                        ',&
-&'|eq(a,b) : A equal to B                                                         ',&
-&'|ne(a,b) : A not equal to B                                                     ',&
-&'|lge($a,$b): lexically greater than or equal to                                 ',&
-&'|lle($a,$b): lexically A less than or equal to B                                ',&
-&'|lgt($a,$b): lexically A greater than B                                         ',&
-&'|llt($a,$b): lexically A less than B                                            ',&
-&'|leq($a,$b): lexically A equal to B                                             ',&
-&'|lne($a,$b): lexically A not equal to B                                         ',&
-&'|in(lower_bound,test_value,upper_bound) : test if value in given range          ',&
+&' ge(a,b) : greater than or equal to                                             ',&
+&' le(a,b) : A less than or equal to B                                            ',&
+&' gt(a,b) : A greater than B                                                     ',&
+&' lt(a,b) : A less than B                                                        ',&
+&' eq(a,b) : A equal to B                                                         ',&
+&' ne(a,b) : A not equal to B                                                     ',&
+&' lge($a,$b): lexically greater than or equal to                                 ',&
+&' lle($a,$b): lexically A less than or equal to B                                ',&
+&' lgt($a,$b): lexically A greater than B                                         ',&
+&' llt($a,$b): lexically A less than B                                            ',&
+&' leq($a,$b): lexically A equal to B                                             ',&
+&' lne($a,$b): lexically A not equal to B                                         ',&
+&' in(lower_bound,test_value,upper_bound) : test if value in given range          ',&
 &'--------------------------------------------------------------------------------',&
 &'                                                                                ']
    do i=1,size(help_text)
@@ -494,23 +516,58 @@ help_text=[ &
 end subroutine help_funcs_
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 !-----------------------------------------------------------------------------------------------------------------------------------
+! fraction : Fractional part of the model representation
+! exponent :
+! gamma    : Logarithm of the Gamma function
+! log_gamma  Logarithm of the Gamma function
+! erf Error function erfc (3fortran) -
+! Complementary error function erfc_scaled
+! erfc Complementary error function
+! erfc_scaled  Error function
+! modulo Modulo function
+! ncr Calculate the number of unique combinations of r objects out of n.
+! btest MANIPULATION] Bit test function
+! tiny Smallest positive number of a real kind
+! epsilon Epsilon function
+! huge Largest number of a kind
+! same pads strings to same length and then calls MERGE(3f)
+! flush flush I/O buffers of specified files
+! unusedf
+! delimx
+! c
+! ownmode
+! mod
+! scale
+! len
+! ifdef
+! open close rewind write
+!-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
+!!    parens_(3fp) - [M_calculator] crack out the parenthesis and solv
 !!##SYNOPSIS
-
-!!##DESCRIPTI
+!!
+!!    recursive subroutine parens_(string,nchar,ier)
+!!    character(len=*)             :: string
+!!    integer,intent(inout)        :: nchar
+!!    integer,intent(out)          :: ier
+!!##DESCRIPTION
+!!    crack out the parenthesis and solve
 !!##OPTIONS
+!!    string  input string to expand and return
+!!    nchar   length of string on input and output
+!!    ier     status code
+!!
+!!              0=good numeric return
+!!              2=good alphameric return
+!!             -1=error occurred, message is in mssge
 !!##RETURNS
 !!##EXAMPLE
-!
+!!
 !===================================================================================================================================
 recursive subroutine parens_(string,nchar,ier)
-!  sets and returns ier
-!   0=good numeric return
-!   2=good alphameric return
-!  -1=error occurred, message is in mssge
 
 character(len=*),parameter::ident_3="@(#)M_calculator::parens_(3fp): crack out the parenthesis and solve"
 
@@ -628,12 +685,14 @@ end subroutine parens_
 !!##EXAMPLE
 !
 !===================================================================================================================================
-subroutine funcs_(wstrng,nchars,ier)
+recursive subroutine funcs_(wstrng,nchars,ier)
 use M_time,    only : date_to_unix , unix_to_date, fmtdate, now, fmtdate_usage, realtime
 use M_strings, only : matchw, change, modif, delim
 use M_time,    only : date_to_julian,day_of_week=>dow, d2o, now
 use M_math,    only : round, dp_accdig, ncr
 use M_random,  only : init_random_seed
+use M_process, only : process_readall           ! read all lines from process into single string
+use M_system,  only : set_environment_variable  ! call setenv(3c) to set environment variable
 
 character(len=*),parameter::ident_4="@(#)M_calculator::funcs_(3fp):reduce name(p1,p2,...) (p(i) are non-parenthesized expressions)"
 
@@ -650,8 +709,6 @@ character(len=iclen_calc)           :: ctmp2
 character(len=iclen_calc)           :: junout
 character(len=iclen_calc)           :: cnum
 character(len=icname_calc)          :: wstrng2
-
-doubleprecision,external            :: ran_mod
 
 real(kind=dp),target                :: args(iargs)
 
@@ -723,6 +780,9 @@ integer                             :: nchars
 integer                             :: idat(8)
 integer                             :: ierr
 integer                             :: iweekday
+integer                             :: ii2
+integer                             :: ilen2
+integer                             :: istatus
 
 intrinsic                           :: abs,aint,anint,exp,nint,int,log,log10
 intrinsic                           :: acos,asin,atan,cos,cosh,sin,sinh,tan,tanh
@@ -730,23 +790,6 @@ intrinsic                           :: sqrt,atan2,dim,mod,sign,max,min
 !-----------------------------------------------------------------------------------------------------------------------------------
    data months/'January','February','March','April','May','June','July','August','September','October','November','December'/
    data days/'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'/
-!ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc------------------------------------------------------------
-!  non-ANSI:
-!     x(i) ---- the x-array values
-!     y(i) ---- the y-array values
-!     xstore(start,value1,value2,value3,....valuen)
-!     ystore(start,value1,value2,value3,....valuen)
-!     $x(i) ---- the $x-array values
-!     $y(i) ---- the $y-array values
-!     $xstore(start,value1,value2,value3,....valuen)
-!     $ystore(start,value1,value2,value3,....valuen)
-!     d2r    - degrees to radians
-!     r2d    - radians to degrees
-!     date_to_unix - date values to Unix Epoch Time
-!     unix_to_date - Unix Epoch Time to date values in X array
-!     ownmode
-!     $str(), str()
-!     ye(), mo(), da(), ho(), mi(), se(), dw(), $dw(), $mo(), $now(), $fmtdate()
 !ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc------------------------------------------------------------
    TRUE=0.0d0
    FALSE=1.0d0
@@ -1082,7 +1125,7 @@ case("ichar")
          fval=ichar(values(int(args(1)))(1:1))
       endif
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=------------------------------------------------------------
-case("unix_to_date")
+case("unix_to_date") ! Unix Epoch Time to date values in X array
       ifail=0
       select case(n)
       case(0)
@@ -1101,7 +1144,7 @@ case("unix_to_date")
          x(1:8)=dble(itime)
       endif
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=------------------------------------------------------------
-case("date_to_unix")
+case("date_to_unix") ! date values to Unix Epoch Time
       ifail=0
       select case(n)
       case(0)
@@ -1158,6 +1201,62 @@ case("$fmtdate")  ! $fmtdate (utime,format) ==> fmtdate(dat,format) result (time
          ier=-1
       end select
       iend=len_trim(ctmp)
+!=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=------------------------------------------------------------
+case("$ge","$getenv") ! $getenv or $ge get system environment variable
+   ii=int(args(1)+0.5d0)
+   ilen=values_len(ii)
+   if(ilen.ge.1)then
+      call get_environment_variable(values(ii)(:ilen),ctmp)
+      fval=len_trim(ctmp)
+      if(fval.eq.0)then ! if value comes back blank and a non-blank default string is present, use it
+         if(n.ge.2)then
+            ii2=int(args(2)+0.5d0)
+            ctmp=values(ii2)
+            fval=values_len(ii2)
+         endif
+      endif
+      fval=max(1.0d0,fval)
+   else
+      ctmp=' '
+      fval=1.0d0
+   endif
+   ier=2
+   iend=len_trim(ctmp)
+!=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=------------------------------------------------------------
+case("$setenv","$se") ! $setenv()
+   if(n.ne.2)then
+      call journal('sc','incorrect number of parameters for ',wstrng2(:iend))
+      ctmp=' '
+      ier=-1
+   else
+      ii=int(args(1)+0.5d0)
+      ii2=int(args(2)+0.5d0)
+      ilen=values_len(ii)
+      ilen2=values_len(ii2)
+      call set_environment_variable(values(ii)(:ilen),values(ii2)(:ilen2),istatus)
+      if(istatus.eq.0)then ! if value comes back blank and a non-blank default string is present, use it
+         ctmp=values(ii)
+         ier=2
+      else
+         call journal('sc','error setting environment variable ',values(ii))
+         ctmp=' '
+         ier=-1
+      endif
+   endif
+   iend=len_trim(ctmp)
+!=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=------------------------------------------------------------
+case("$sh") ! $sh gets one line of output from a shell command
+   ctmp=' '
+   if(n.gt.0)then
+      ii=int(args(1)+0.5d0)
+      ilen=values_len(ii)
+      ctmp=process_readall(values(ii)(:ilen),ierr=ier)
+   else
+      ilen=0
+   endif
+   ier=2
+   iend=len_trim(ctmp)
+   fval=max(1.0d0,dble(iend))
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=------------------------------------------------------------
 case("same")
       if(n.ne.3)then
@@ -1256,8 +1355,10 @@ case("rand")                                                            ! random
       case (-1)                                                         ! an error has already occurred
       case (2)                                                          ! standard Fortran function
          call random_number(harvest=fval)
-      case default                                                      ! "Numerical Recipes" routine
-         fval=ran_mod(ikeepran)
+      !!case default                                                      ! "Numerical Recipes" routine
+      !!fval=ran_mod(ikeepran)
+      case default
+         call random_number(harvest=fval)
       end select
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=------------------------------------------------------------
 case("srand")                                                           ! seed random number sequence
@@ -1275,9 +1376,9 @@ case("srand")                                                           ! seed r
          select case (itype)                                               ! select various methods
          case (2)                                                          ! standard Fortran method
             call init_random_seed(ivalue)
-         case (3)                                                          ! default is "Numerical Recipes" method
-            ikeepran=-abs(ivalue)
-            fval=ran_mod(ikeepran)                                         ! just setting seed; fval is a dummy here
+         !!case (3)                                                          ! default is "Numerical Recipes" method
+         !!   ikeepran=-abs(ivalue)
+         !!   fval=ran_mod(ikeepran)                                         ! just setting seed; fval is a dummy here
          case default
             mssge='unknown type for srand()'
             ier=-1

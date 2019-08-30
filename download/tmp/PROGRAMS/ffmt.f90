@@ -6,6 +6,7 @@ use M_kracken, only : kracken, lget, sget, iget                  ! add command-l
 use M_io,      only : read_line
 use M_strings, only : fmt, indent
 implicit none
+character(len=*),parameter::ident_1="@(#)ffmt(1f): simple text formatter for Fortran comments"
 character(len=:),allocatable :: line
 character(len=:),allocatable :: bigline
 integer                      :: iline
@@ -13,7 +14,6 @@ integer                      :: width
 integer                      :: step
 integer                      :: step_before
 character(len=20)            :: style
-character(len=:),allocatable :: paragraph(:)
 character(len=1)             :: first
 !-----------------------------------------------------------------------------------------------------------------------------------
    call kracken('ffmt','-help .f. -version .f. -w 75 ') ! define command arguments,default values and crack command line
@@ -96,7 +96,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 6:52:11 PM>',&
+'@(#)COMPILED:       Fri, Aug 30th, 2019 8:40:53 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -114,17 +114,18 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'       ffmt(1f) - simple text formatter for Fortran comments                    ',&
+'       ffmt(1f) - [FILE EDIT] simple text formatter for Fortran comments        ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '       ffmt [OPTION]...                                                         ',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
-'   Reformat each paragraph on standard input, writing to standard output. A     ',&
-'   paragraph ends when a blank line is encountered or the left margin           ',&
-'   changes.                                                                     ',&
+'   Ignoring lines not beginning with an exclamation, trim the leading           ',&
+'   exclamation and then reformat each paragraph on standard input,              ',&
+'   prefixing the output with an exclamation.                                    ',&
 '                                                                                ',&
-'   Only reformat blocks of lines beginning with an exclamation (''!'') character.',&
+'   A paragraph ends when a blank line is encountered or the left margin         ',&
+'   changes.                                                                     ',&
 '                                                                                ',&
 'OPTIONS                                                                         ',&
 '       -w, WIDTH               maximum line width (default of 75 columns)       ',&
@@ -138,21 +139,22 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!        ffmt(1f) - simple text formatter for Fortran comments
+!!        ffmt(1f) - [FILE EDIT] simple text formatter for Fortran comments
 !!
 !!##SYNOPSIS
 !!
 !!        ffmt [OPTION]...
 !!
 !!##DESCRIPTION
-!!    Reformat each paragraph on standard input, writing to standard output. A
-!!    paragraph ends when a blank line is encountered or the left margin
+!!    Ignoring lines not beginning with an exclamation, trim the leading
+!!    exclamation and then reformat each paragraph on standard input,
+!!    prefixing the output with an exclamation.
+!!
+!!    A paragraph ends when a blank line is encountered or the left margin
 !!    changes.
 !!
-!!    Only reformat blocks of lines beginning with an exclamation ('!') character
-!!
 !!##OPTIONS
-!!        -w, WIDTH               maximum line width (default of 75 columns)
+!!        -w, WIDTH               maximum line width (default of 75 columns
 !!        --help                  display this help and exit
 !!        --version               output version information and exit
 !===================================================================================================================================

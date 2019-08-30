@@ -1,23 +1,34 @@
           program demo_get_command_argument
           implicit none
-            integer :: count,i, longest, argument_length
-            integer,allocatable  :: istat(:), ilen(:)
-            character(len=:),allocatable :: arguments(:)
+          character(len=255)           :: progname
+          integer                      :: stat
+          integer                      :: count,i, longest, argument_length
+          integer,allocatable          :: istat(:), ilen(:)
+          character(len=:),allocatable :: arguments(:)
 
             ! get number of arguments
             count = command_argument_count()
 
+            write(*,*)'The number of arguments is ',count
+
+            ! simple usage
+            call get_command_argument (0, progname, status=stat)
+            if (stat == 0) then
+               print *, "The program's name is " // trim (progname)
+            endif
+
+            ! showing how to make an array to hold any argument list
             ! find longest argument
             longest=0
             do i=0,count
                call get_command_argument(number=i,length=argument_length)
                longest=max(longest,argument_length)
-             enddo
+            enddo
 
-            ! allocate string array big enough to hold command line
-           allocate(character(len=longest) :: arguments(0:count))
-           allocate(istat(0:count))
-           allocate(ilen(0:count))
+            ! allocate string array big enough to hold command line argument strings and related information
+            allocate(character(len=longest) :: arguments(0:count))
+            allocate(istat(0:count))
+            allocate(ilen(0:count))
 
             ! read the arguments into the array
             do i=0,count

@@ -15,19 +15,19 @@ help_text=[ CHARACTER(LEN=128) :: &
 '       _colrm [first [last]]                                                    ',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
-'       _colrm removes selected columns from a file. Input is taken from         ',&
-'       standard input. Output is sent to standard output.                       ',&
+'       _colrm removes selected character columns from a file. Input is          ',&
+'       taken from standard input. Output is sent to standard output.            ',&
 '                                                                                ',&
-'       If called with one parameter the columns of each line will               ',&
-'       be removed starting with the specified first column. If called           ',&
-'       with two parameters the columns from the first column to the last        ',&
+'       If called with one parameter the columns of each line will be            ',&
+'       removed starting with the specified first column. If called with         ',&
+'       two parameters the columns from the first column to the last             ',&
 '       column will be removed.                                                  ',&
 '                                                                                ',&
 '       Column numbering starts with column 1. Tabs are NOT expanded.            ',&
 '                                                                                ',&
 'OPTIONS                                                                         ',&
-'       first                                                                    ',&
-'       last                                                                     ',&
+'       first      starting column number to remove                              ',&
+'       last       ending column number to remove                                ',&
 '       --version  Display version information and exit.                         ',&
 '       --help     Display help text and exit.                                   ',&
 '                                                                                ',&
@@ -53,19 +53,19 @@ end subroutine help_usage
 !!        _colrm [first [last]]
 !!
 !!##DESCRIPTION
-!!        _colrm removes selected columns from a file. Input is taken from
-!!        standard input. Output is sent to standard output.
+!!        _colrm removes selected character columns from a file. Input is
+!!        taken from standard input. Output is sent to standard output.
 !!
-!!        If called with one parameter the columns of each line will
-!!        be removed starting with the specified first column. If called
-!!        with two parameters the columns from the first column to the las
+!!        If called with one parameter the columns of each line will be
+!!        removed starting with the specified first column. If called wit
+!!        two parameters the columns from the first column to the last
 !!        column will be removed.
 !!
 !!        Column numbering starts with column 1. Tabs are NOT expanded.
 !!
 !!##OPTIONS
-!!        first
-!!        last
+!!        first      starting column number to remove
+!!        last       ending column number to remove
 !!        --version  Display version information and exit.
 !!        --help     Display help text and exit.
 !!
@@ -94,7 +94,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20180324>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 6:41:41 PM>',&
+'@(#)COMPILED:       Fri, Aug 30th, 2019 8:47:47 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

@@ -4,7 +4,7 @@ NAME
     note(1f) - [M_messages] print large block letters
 
 SYNOPSIS
-    note STRING(S) [-font FontName] |-test|-help|-version
+    note STRING(S) [ -font FontName] | -test| -help| -version
 
 DESCRIPTION
     Print strings as large block letters using the blocks(3f) or

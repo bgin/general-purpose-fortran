@@ -225,7 +225,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 6:07:33 PM>',&
+'@(#)COMPILED:       Thu, Aug 29th, 2019 10:55:37 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

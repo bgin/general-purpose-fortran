@@ -22,9 +22,9 @@ help_text=[ CHARACTER(LEN=128) :: &
 'SYNOPSIS                                                                        ',&
 ' numdiff                                                                        ',&
 '    -old FILENAME -new FILENAME                                                 ',&
-'    [-percent REAL_VALUE|-digits N|-margin XXX.XX]                              ',&
-'    [-verbose]|                                                                 ',&
-'    [--help|--version]                                                          ',&
+'    [ -percent REAL_VALUE|-digits N|-margin XXX.XX]                             ',&
+'    [ -verbose]|                                                                ',&
+'    [ --help|--version]                                                         ',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
 ' NUMDIFF assumes two files are basically identical except for numeric           ',&
@@ -221,9 +221,9 @@ end subroutine help_usage
 !!
 !!  numdiff
 !!     -old FILENAME -new FILENAME
-!!     [-percent REAL_VALUE|-digits N|-margin XXX.XX]
-!!     [-verbose]|
-!!     [--help|--version]
+!!     [ -percent REAL_VALUE|-digits N|-margin XXX.XX]
+!!     [ -verbose]|
+!!     [ --help|--version]
 !!
 !!##DESCRIPTION
 !!  NUMDIFF assumes two files are basically identical except for numeric
@@ -427,7 +427,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)COPYRIGHT:      1985, 1986, 1989, 1990, 20090501, 20131129 John. S. Urban>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 6:22:00 PM>',&
+'@(#)COMPILED:       Thu, Aug 29th, 2019 10:59:52 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

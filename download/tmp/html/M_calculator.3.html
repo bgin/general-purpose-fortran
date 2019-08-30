@@ -628,12 +628,12 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
    <!-- ======================================================================= -->
    <h3>calendar(Time-related)</h3>
    <ul>
-   <li><b>ye()   </b> - return current year
-   <li><b>mo()   </b> - return current month
-   <li><b>da()   </b> - return current day of month
-   <li><b>ho()   </b> - return current hour (0 -23)
-   <li><b>mi()   </b> - return current minute
-   <li><b>se()   </b> - return current second
+   <li><b>ye(),year()   </b> - return current year
+   <li><b>mo(),month()   </b> - return current month
+   <li><b>da(),day()   </b> - return current day of month
+   <li><b>ho(),hour()   </b> - return current hour (0 -23)
+   <li><b>mi(),minute()   </b> - return current minute
+   <li><b>se(),second()   </b> - return current second
    <li><b>dw()   </b> - days since Sunday (0 - 6) for current date
    <li><b>ju()   </b> - days since January 1st (0 - 365) for current date
 
@@ -669,23 +669,6 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
    <ol>
    <li> The system C routine rand()</li>
    <li> The Fortran intrinsic RANDOM_NUMBER()</li>
-   <li> The algorithm purchased from Numerical Recipes
-       <blockquote>
-          This routine (RAN_MOD()), is a modified version of routine RAN1() from the book
-          "Numerical Recipes in FORTRAN" (Cambridge University Press),
-          Copyright (C) 1986, 1992 by Numerical Recipes Software. Used by
-          permission. Use of this routine other than as an integral part of
-          BELOCA-related programs requires an additional license from Numerical Recipes
-          Software. Further distribution in any form is prohibited.
-
-          <br>
-
-          RAN_MOD() is a "MINIMUM" random number generator of Park and Miller
-          with Bays-Durham shuffle and added safeguards. It returns uniform random
-          deviates between 0.0 and 1.0 (exclusive of the endpoint values).
-          Do not alter the seed between successive deviates in a sequence.
-       </blockquote>
-   </li>
    </ol>
    <!-- ======================================================================= -->
    <dt><b> MISCELLANEOUS COMMANDS</b></dt><dd>

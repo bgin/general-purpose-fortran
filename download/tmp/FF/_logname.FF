@@ -3,7 +3,7 @@ $DOCUMENT HELP -file _logname.1.man
 NAME
       _logname(1f) - [FUNIX] display login name
 SYNOPSIS
-      _logname [-help|-version]
+      _logname [ -help|-version]
 DESCRIPTION
       Demonstrate call to system_getlogin(3f) (which calls getlogin(3c)
 OPTIONS

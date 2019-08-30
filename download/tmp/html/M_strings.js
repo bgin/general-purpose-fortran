@@ -42,8 +42,10 @@ append("msg.3.html");
 append("noesc.3.html");
 append("nospace.3.html");
 append("notabs.3.html");
+append("quote.3.html");
 append("replace.3.html");
 append("reverse.3.html");
+append("rotate13.3.html");
 append("s2c.3.html");
 append("s2v.3.html");
 append("s2vs.3.html");
@@ -59,5 +61,6 @@ append("upper.3.html");
 append("v2s.3.html");
 append("value_to_string.3.html");
 append("visible.3.html");
+append("_tr.1.html");
 append("range.1.html");
 }

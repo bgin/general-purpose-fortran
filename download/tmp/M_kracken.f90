@@ -558,7 +558,7 @@ end function sget
 !!##DESCRIPTION
 !!     The dgets(3f) function returns a dynamically allocated array of
 !!     doubleprecision values from a string that is the value for a command
-!!     line option. It is part of the M_kracken(3fp) module.
+!!     line option. It is part of the M_kracken(3fm) module.
 !!
 !!     Values that cannot be read as a numeric value are returned as a NaN.
 !!##OPTIONS
@@ -637,7 +637,7 @@ end function dgets
 !!##DESCRIPTION
 !!     The igets(3f) function returns a dynamically allocated array of integers
 !!     from a string that is the value for a command line option. It is part of
-!!     the M_kracken(3fp) module.
+!!     the M_kracken(3fm) module.
 !!
 !!     Values that cannot be read as an integer value are returned as a NaN.
 !!
@@ -710,7 +710,7 @@ end function igets
 !!##DESCRIPTION
 !!     The rgets(3f) function returns a dynamically allocated array of real values
 !!     from a string that is the value for a command line option. It is part of
-!!     the M_kracken(3fp) module.
+!!     the M_kracken(3fm) module.
 !!
 !!     Values that cannot be read as a numeric value are returned as a NaN.
 !!
@@ -801,7 +801,7 @@ end function rgets
 !!##DESCRIPTION
 !!     The lgets(3f) function returns a dynamically allocated array of logical values
 !!     from a string that is the value for a command line option. It is part of
-!!     the M_kracken(3fp) module.
+!!     the M_kracken(3fm) module.
 !!
 !!     Values that cannot be read as a logical value are returned as a ".FALSE.".
 !!##OPTIONS
@@ -906,7 +906,7 @@ end function lgets
 !!##DESCRIPTION
 !!     The sgets(3f) function returns a dynamically allocated array of character values
 !!     from a string that is the value for a command line option. It is part of
-!!     the M_kracken(3fp) module.
+!!     the M_kracken(3fm) module.
 !!##OPTIONS
 !!     name     the dictionary keyword (in form VERB_KEYWORD) to retrieve.
 !!              The VERB name comes from the first argument of the
@@ -1619,7 +1619,7 @@ end subroutine parse
 !===================================================================================================================================
 !>
 !!##NAME
-!!          store(3fp) - [ARGUMENTS:M_kracken] add or replace value for specified name in dictionary(if allow='add' add name if needed
+!!          store(3f) - [ARGUMENTS:M_kracken] add or replace value for specified name in dictionary(if allow='add' add name if needed
 !!##SYNOPSIS
 !!
 !!   subroutine store(name1,value1,allow1,ier)
@@ -1749,7 +1749,7 @@ end subroutine parse
 subroutine store(name1,value1,allow1,ier)
 
 character(len=*),parameter::ident_17="&
-&@(#)M_kracken::store(3fp): replace or add dictionary entry name  and value (if allow='add' add name if necessary)"
+&@(#)M_kracken::store(3f): replace or add dictionary entry name  and value (if allow='add' add name if necessary)"
 
 !-----------------------------------------------------------------------------------------------------------------------------------
 character(len=*),intent(in)        :: name1       ! name in dictionary of form VERB_KEYWORD

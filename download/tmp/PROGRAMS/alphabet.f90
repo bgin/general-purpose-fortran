@@ -11,7 +11,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '   alphabet(1f) - [CONVERT] print numeric values or a string as decimal, hexadecimal, octal and binary values',&
 'SYNOPSIS                                                                        ',&
-'   alphabet [values] [-h values][-z values][-o values][ -t text]                ',&
+'   alphabet [values] [ -h values][ -z values][ -o values][ -t text]             ',&
 'DESCRIPTION                                                                     ',&
 '   Write positive whole number 32-bit values (0 to 2147483647) in base          ',&
 '   10(decimal), base 16(hexadecimal), base 2(binary) and base 8(octal)          ',&
@@ -79,7 +79,7 @@ end subroutine help_usage
 !!    alphabet(1f) - [CONVERT] print numeric values or a string as decimal, hexadecimal, octal and binary value
 !!##SYNOPSIS
 !!
-!!    alphabet [values] [-h values][-z values][-o values][ -t text]
+!!    alphabet [values] [ -h values][ -z values][ -o values][ -t text]
 !!##DESCRIPTION
 !!    Write positive whole number 32-bit values (0 to 2147483647) in base
 !!    10(decimal), base 16(hexadecimal), base 2(binary) and base 8(octal)
@@ -156,7 +156,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 6:10:01 PM>',&
+'@(#)COMPILED:       Thu, Aug 29th, 2019 10:06:58 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

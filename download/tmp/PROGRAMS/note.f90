@@ -12,7 +12,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '    note(1f) - [M_messages] print large block letters                           ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
-'    note STRING(S) [-font FontName] |-test|-help|-version                       ',&
+'    note STRING(S) [ -font FontName] | -test| -help| -version                   ',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
 '    Print strings as large block letters using the blocks(3f) or                ',&
@@ -66,7 +66,7 @@ end subroutine help_usage
 !!
 !!##SYNOPSIS
 !!
-!!     note STRING(S) [-font FontName] |-test|-help|-version
+!!     note STRING(S) [ -font FontName] | -test| -help| -version
 !!
 !!##DESCRIPTION
 !!     Print strings as large block letters using the blocks(3f) or
@@ -129,7 +129,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)COPYRIGHT:      Copyright (c) 1984, 1996 John S. Urban>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 6:20:58 PM>',&
+'@(#)COMPILED:       Thu, Aug 29th, 2019 10:59:18 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

@@ -6,7 +6,7 @@ $DOCUMENT HELP -file xauth_key.1.man
 NAME
    xauth_key(1f) - [M_random] generate magic cookies for xauth
 SYNOPSIS
-   xauth_key [characters] [-n number_of_characters]
+   xauth_key [characters] [ -n number_of_characters]
 DESCRIPTION
    xauth_key generates a random hexadecimal number 
 OPTIONS

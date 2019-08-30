@@ -3,8 +3,8 @@ $DOCUMENT HELP -file _printenv.1.man
 NAME
        _printenv(1f) - [FUNIX:ENVIRONMENT] print all or part of environment in formats readable by various shells
 SYNOPSIS
-       _printenv [variable...] [-C|-B] 
-       _printenv [--help|--version]
+       _printenv [variable...] [ -C|-B] 
+       _printenv [ --help|--version]
 DESCRIPTION
        If no arguments are given, _printenv(1f) prints the entire environment.
        If one or more variable names are given, it prints the value of

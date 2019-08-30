@@ -71,8 +71,8 @@ text=[ character(len=len(text(1))) ::                                           
 &'   now(1f)  - [TIME] print the date and time                                    ',&
 &'                                                                                ',&
 &'SYNOPSIS                                                                        ',&
-&'   now [Format [-date date_str|-ued Unix_time|-jed Julian_Date|-dat date_vector]',&
-&'       [-delta dd-hh:mm:ss]]|--help |--version|-test]                           ',&
+&'  now [Format [ -date date_str|-ued Unix_time|-jed Julian_Date|-dat date_vector]',&
+&'      [ -delta dd-hh:mm:ss]]|--help |--version|-test]                           ',&
 &'                                                                                ',&
 &'DESCRIPTION                                                                     ',&
 &'   Report the current time or a Fortran date vector in a variety of formats.    ',&
@@ -200,7 +200,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)COPYRIGHT:      Copyright (C) 2009 John S. Urban>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 6:21:28 PM>',&
+'@(#)COMPILED:       Thu, Aug 29th, 2019 10:59:35 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

@@ -57,8 +57,133 @@ interface csv_write
    module procedure csv_write_table
 end interface
 
+public csv
+
 public test_suite_M_csv
 contains
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+!>
+!!##NAME
+!!   csv(3f) - [M_csv] prints up to 20 standard scalar types to a CSV file
+!!##SYNOPSIS
+!!
+!!
+!!   function csv(g1,g2,g3,..g20)
+!!
+!!    class(*),intent(in),optional           :: g1, g2, g3, g4, g5, g6, g7, g8, g9, g10
+!!                                           &  g11,g12,g13,g14,g15,g16,g17,g18,g19,g20
+!!    character,len=(:),allocatable          :: csv
+!!
+!!##DESCRIPTION
+!!   csv(3f) builds a CSV string from up to twenty scalar values or an array.
+!!
+!!   Although it will often work, using csv(3f) in an I/O statement is
+!!   not recommended as the csv(3f) routine might generate error messages;
+!!   and Fortran does not (yet) support recursive I/O.
+!!
+!!##OPTIONS
+!!   g[1-20]  optional value to print the value of after the message. May
+!!            be of type INTEGER, LOGICAL, REAL, DOUBLEPRECISION, COMPLEX,
+!!            EPOCH or CHARACTER.
+!!##RETURNS
+!!   csv     description to print
+!!
+!!##EXAMPLES
+!!
+!!
+!!  Sample program:
+!!
+!!    program demo_csv
+!!    use M_csv, only : csv
+!!    implicit none
+!!    character(len=:),allocatable :: pr
+!!
+!!       pr=csv('HUGE(3f) integers',huge(0),'and real',huge(0.0),'and double',huge(0.0d0)
+!!       write(*,'(a)')pr
+!!       pr=csv('real            :',huge(0.0),0.0,12345.6789,tiny(0.0) )
+!!       write(*,'(a)')pr
+!!       pr=csv('doubleprecision :',huge(0.0d0),0.0d0,12345.6789d0,tiny(0.0d0) )
+!!       write(*,'(a)')pr
+!!       pr=csv('complex         :',cmplx(huge(0.0),tiny(0.0)) )
+!!       write(*,'(a)')pr
+!!
+!!       write(*,*)csv('program will now stop')
+!!
+!!    end program demo_csv
+!===================================================================================================================================
+!===================================================================================================================================
+function csv(g1, g2, g3, g4, g5, g6, g7, g8, g9, g10, g11, g12, g13, g14, g15, g16, g17, g18, g19, g20)
+use M_strings, only : quote
+implicit none
+
+character(len=*),parameter::ident_2="@(#)M_debug::csv(3f): writes up to twenty standard scalar types as a line in a CSV file"
+
+class(*),intent(in),optional  ::  g1  ,g2  ,g3  ,g4  ,g5,  g6  ,g7  ,g8  ,g9, g10
+class(*),intent(in),optional  :: g11 ,g12 ,g13 ,g14 ,g15, g16 ,g17 ,g18 ,g19, g20
+!!class(*),intent(in),optional  :: g6(..) ,g7(..) ,g8(..) ,g9(..)
+character(len=:), allocatable :: csv
+character(len=4096)           :: line
+integer                       :: istart
+integer,parameter             :: increment=2
+
+   istart=1
+   line=' '
+   if(present( g1))call print_g(g1)
+   if(present( g2))call print_g(g2)
+   if(present( g3))call print_g(g3)
+   if(present( g4))call print_g(g4)
+   if(present( g5))call print_g(g5)
+   if(present( g6))call print_g(g6)
+   if(present( g7))call print_g(g7)
+   if(present( g8))call print_g(g8)
+   if(present( g9))call print_g(g9)
+   if(present(g11))call print_g(g10)
+   if(present(g11))call print_g(g11)
+   if(present(g12))call print_g(g12)
+   if(present(g13))call print_g(g13)
+   if(present(g14))call print_g(g14)
+   if(present(g15))call print_g(g15)
+   if(present(g16))call print_g(g16)
+   if(present(g17))call print_g(g17)
+   if(present(g18))call print_g(g18)
+   if(present(g19))call print_g(g19)
+   if(present(g20))call print_g(g20)
+   csv=trim(line)
+contains
+!===================================================================================================================================
+subroutine print_generic(generic)
+!use, intrinsic :: iso_fortran_env, only : int8, int16, int32, biggest=>int64, real32, real64, dp=>real128
+use,intrinsic :: iso_fortran_env, only : int8, int16, int32, int64, real32, real64, real128
+class(*),intent(in),optional :: generic
+
+!select case(rank(generic))
+!case(0)
+   select type(generic)
+      type is (integer(kind=int8));     write(line(istart:),'(i0)') generic
+      type is (integer(kind=int16));    write(line(istart:),'(i0)') generic
+      type is (integer(kind=int32));    write(line(istart:),'(i0)') generic
+      type is (integer(kind=int64));    write(line(istart:),'(i0)') generic
+      type is (real(kind=real32));      write(line(istart:),'(1pg0)') generic
+      type is (real(kind=real64));      write(line(istart:),'(1pg0)') generic
+      type is (real(kind=real128));     write(line(istart:),'(1pg0)') generic
+      type is (logical);                write(line(istart:),'(1l)') generic
+      type is (character(len=*));       write(line(istart:),'(a)') quote(generic)
+      type is (complex);                write(line(istart:),'("(",1pg0,",",1pg0,")")') generic
+   end select
+   if(istart.ne.1)then
+      line(istart-1:istart-1)=','
+   endif
+   istart=len_trim(line)+increment
+!   case(1)
+!end select
+end subroutine print_generic
+!===================================================================================================================================
+end function csv
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
 !>
 !!##NAME
 !!      csv_write_scalar(3fp) - Write a single integer/real/double precision real to the CSV-fil

@@ -56,7 +56,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20180722>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 7:10:35 PM>',&
+'@(#)COMPILED:       Thu, Aug 29th, 2019 10:11:20 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -77,7 +77,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '    draw(1f) - [M_drawplus] basic interpreter for testing M_draw(3fm) routines  ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
-'    draw [delim DELIMITERS]|[--help|--version]                                  ',&
+'    draw [delim DELIMITERS]|[ --help| --version]                                ',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
 '    draw(1) is a basic interpreter for M_draw(3f) routines. It is useful for    ',&
@@ -122,7 +122,7 @@ end subroutine help_usage
 !!
 !!##SYNOPSIS
 !!
-!!     draw [delim DELIMITERS]|[--help|--version]
+!!     draw [delim DELIMITERS]|[ --help| --version]
 !!
 !!##DESCRIPTION
 !!     draw(1) is a basic interpreter for M_draw(3f) routines. It is useful for

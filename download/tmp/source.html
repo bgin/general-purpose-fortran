@@ -167,6 +167,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <tr><td><a href="M_csv.f90">M_csv.f90</a></td>
 <td>
 	M_csv::csv_write(3f): write scalar intrinsic type using current CSV style<br/>
+	M_debug::csv(3f): writes up to twenty standard scalar types as a line in a CSV file<br/>
 </td>
 <tr><td><a href="M_debug.f90">M_debug.f90</a></td>
 <td>
@@ -304,7 +305,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <tr><td><a href="M_journal.f90">M_journal.f90</a></td>
 <td>
 	M_journal::journal(3fg): provides public message routine, no paging or graphic mode change<br/>
-	M_debug::where_write_message_all(3f): writes a message to a string composed of any standard scalar types<br/>
+	M_journal::where_write_message_all(3f): writes a message to a string composed of any standard scalar types<br/>
 </td>
 <tr><td><a href="M_kracken.f90">M_kracken.f90</a></td>
 <td>
@@ -324,6 +325,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_kracken::setprompts(3f): set explicit prompts for keywords in interactive mode<br/>
 	M_kracken::dissect(3f): convenient call to parse() define defaults, then process<br/>
 	M_kracken::parse(3f): parse user command and store tokens into Language Dictionary<br/>
+	M_kracken::store(3f): replace or add dictionary entry name  and value (if allow='add' add name if necessary)<br/>
 	M_kracken::show(3f): dump dictionary entries<br/>
 </td>
 <tr><td><a href="M_list.f90">M_list.f90</a></td>
@@ -593,6 +595,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_strings::len_white(3f): return position of last non-blank/non-null character in string<br/>
 	M_strings::crop(3f): trim leading and trailings blanks from string<br/>
 	M_strings::transliterate(3f): replace characters from old set with new set<br/>
+	M_strings::rotate13(3f): converts a character to its ROT13 equivalent, which is a trivial encryption.<br/>
 	M_strings::join(3f): append an array of character variables with specified separator into a single CHARACTER variable<br/>
 	M_strings::reverse(3f): Return a string reversed<br/>
 	M_strings::upper(3f): Changes a string to uppercase<br/>
@@ -621,7 +624,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_strings::string_to_values(3f): reads an array of numbers from a numeric string<br/>
 	M_strings::s2vs(3f): function returns array of values from a string<br/>
 	M_strings::isprint(3f): indicates if input character is a printable ASCII character<br/>
-	M_debug::msg(3f): writes a message to a string composed of any standard scalar types<br/>
+	M_strings::msg(3f): writes a message to a string composed of any standard scalar types<br/>
 	M_strings::isgraph(3f) :indicates if character is printable ASCII character excluding space<br/>
 	M_strings::isalpha(3f): Return .true. if character is a letter and .false. otherwise<br/>
 	M_strings::isxdigit(3f): returns .true. if c is a hexadecimal digit (0-9,a-f, or A-F)<br/>
@@ -894,8 +897,8 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_xyplot::xy_getrel(3f): return values to convert one set of units to another<br/>
 	M_xyplot::xy_units(3f): given unit code return string label optionally converted to uppercase<br/>
 	M_xyplot::xy_juprint(3f): print string LINE at position x,y with embedded directives<br/>
-	M_xyplot::xy_justrlen(3f): query string size with embedded directives<br/>
-	M_xyplot::xy_justr(3f): print string l0 at position x,y with embedded directives<br/>
+	M_xyplot::priv_justrlen(3f): query string size with embedded directives<br/>
+	M_xyplot::priv_justr(3f): print string l0 at position x,y with embedded directives<br/>
 	M_xyplot::xy_jucp2(3f): plot string line at current position<br/>
 	M_xyplot::xy_juprints(3f): simple print of string l at position x,y<br/>
 	M_xyplot::xy_jucp(3f): plot string line at current position<br/>

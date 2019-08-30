@@ -3,7 +3,7 @@ $DOCUMENT HELP -file compute.1.man
 NAME
        compute(1f) - [MATH] evaluate a calculator expression
 SYNOPSIS
-       compute [STRING] [-verbose]| [-help| -version]
+       compute [STRING] [ -verbose]| [ -help| -version]
 DESCRIPTION
        Given any expression call the JUCALC(3f) calculator function and
        evaluate it. If no expression is present on the command line, read

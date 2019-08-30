@@ -204,7 +204,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '   target(1f) - [M_drawplus] draw targets on Adobe PDF files                    ',&
 'SYNOPSIS                                                                        ',&
-'   target [--help|--version]                                                    ',&
+'   target [ --help| --version]                                                  ',&
 'DESCRIPTION                                                                     ',&
 '   Use the M_draw(3fm) and M_drawplus(3fm) modules to create various            ',&
 '   targets. Requires large paper (at least 12x10.5 inches) to be printed        ',&
@@ -233,7 +233,7 @@ end subroutine help_usage
 !!    target(1f) - [M_drawplus] draw targets on Adobe PDF files
 !!##SYNOPSIS
 !!
-!!    target [--help|--version]
+!!    target [ --help| --version]
 !!##DESCRIPTION
 !!    Use the M_draw(3fm) and M_drawplus(3fm) modules to create various
 !!    targets. Requires large paper (at least 12x10.5 inches) to be printe
@@ -268,7 +268,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    create printable targets>',&
 '@(#)VERSION:        1.0, 20190108>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 7:11:00 PM>',&
+'@(#)COMPILED:       Thu, Aug 29th, 2019 10:11:38 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

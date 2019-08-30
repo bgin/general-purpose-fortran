@@ -22,7 +22,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '     area_of_simple_polygon(1f) - determine area of simple (non-intersecting) polygon given coordinates of points',&
 'SYNOPSIS                                                                        ',&
-'     area_of_simple_polygon [file(s)|[--help|--version]]                        ',&
+'     area_of_simple_polygon [file(s)|[ --help| --version]]                      ',&
 'DESCRIPTION                                                                     ',&
 '     read file(s) composed of lines of xy pairs and calculate                   ',&
 '     area of polygon, assuming points define a simple (non-intersecting)        ',&
@@ -81,7 +81,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20181231>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 6:47:57 PM>',&
+'@(#)COMPILED:       Thu, Aug 29th, 2019 10:28:42 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

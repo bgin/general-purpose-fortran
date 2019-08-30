@@ -3,7 +3,7 @@ $DOCUMENT HELP -file _ls.1.man
 NAME
        _ls(1f) - [FUNIX:FILESYSTEM] list files in a directory
 SYNOPSIS
-       _ls [directory|--version|--help] [-a] [-l|-csv]
+       _ls [directory|--version|--help] [ -a] [ -l|-csv]
 DESCRIPTION
        Given a directory name list files in the directory
 OPTIONS

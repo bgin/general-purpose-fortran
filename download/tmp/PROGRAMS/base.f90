@@ -13,7 +13,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   base(1f) - [CONVERT] convert numbers between bases                           ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
-'   base values [-ibase NN][-obase MM][-brief] |[[--help]|[--version]]           ',&
+'   base values [ -ibase NN][ -obase MM][ -brief] |[[ --help]|[ --version]]      ',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
 '                                                                                ',&
@@ -112,7 +112,7 @@ end subroutine help_usage
 !!
 !!##SYNOPSIS
 !!
-!!    base values [-ibase NN][-obase MM][-brief] |[[--help]|[--version]]
+!!    base values [ -ibase NN][ -obase MM][ -brief] |[[ --help]|[ --version]
 !!
 !!##DESCRIPTION
 !!
@@ -130,7 +130,7 @@ end subroutine help_usage
 !!     values     space-delimited strings representing input values
 !!     -ibase NN  default base for input values
 !!                If the input values are whole numbers that are of the
-!!                form NN:MMMM or NN#MMMM where NN is the base and MMMM th
+!!                form NN:MMMM or NN#MMMM where NN is the base and MMMM the
 !!                value the numbers are interpreted in the explicit base
 !!                the numbers represent. Otherwise, they are interpreted
 !!                as in base NN. NN defaults to 10
@@ -142,7 +142,7 @@ end subroutine help_usage
 !!     Having a pound character (#) in an input line is problematic,
 !!     as most shell programs and the M_kracken(3f) command line
 !!     parser independently treat the character as beginning an in-line
-!!     comment. Avoid using pound characters and use the colon instead whe
+!!     comment. Avoid using pound characters and use the colon instead when
 !!     using explicit base numbers in values.
 !!
 !!##EXAMPLE
@@ -160,7 +160,7 @@ end subroutine help_usage
 !!       2#101010101010=10#2730
 !!
 !!     # convert base2 values to base10 in brief mode
-!!     base 10 1010 101010 10101010 1010101010 101010101010 -ibase 2 -brie
+!!     base 10 1010 101010 10101010 1010101010 101010101010 -ibase 2 -brief
 !!       2 10 42 170 682 2730
 !!
 !!     # convert base10 values to base2
@@ -215,7 +215,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20170916>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 6:51:03 PM>',&
+'@(#)COMPILED:       Thu, Aug 29th, 2019 10:56:38 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

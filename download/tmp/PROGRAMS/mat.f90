@@ -15,7 +15,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   mat(1f) - interpret matrix expressions using a shell-like interface          ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
-'    mat [--help|--version]                                                      ',&
+'    mat [ --help| --version]                                                    ',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
 '   mat(1) is an interactive computer program that serves as a convenient        ',&
@@ -136,7 +136,7 @@ end subroutine help_usage
 !!
 !!##SYNOPSIS
 !!
-!!     mat [--help|--version]
+!!     mat [ --help| --version]
 !!
 !!##DESCRIPTION
 !!    mat(1) is an interactive computer program that serves as a convenient
@@ -262,7 +262,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 19910403>',&
 '@(#)AUTHOR:         John S. Urban; heavily based on the original by Cleve Moler>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 3:55:31 PM>',&
+'@(#)COMPILED:       Fri, Aug 30th, 2019 10:42:19 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

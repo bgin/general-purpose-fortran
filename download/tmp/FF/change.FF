@@ -6,7 +6,7 @@ NAME
    change(1f) - [FILE EDIT] replace old fixed string with new fixed string in names of files
 
 SYNOPSIS
-   change c/old/new/ FILENAMES [-dryrun][-cmd COMMAND]| --version| --help
+   change c/old/new/ FILENAMES [ -dryrun][ -cmd COMMAND]| --version| --help
 
 DESCRIPTION
    Given a change directive and a list of filenames replace all occurrences of

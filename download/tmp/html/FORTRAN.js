@@ -165,6 +165,7 @@ append("rank.3fortran.html");
 append("real.3fortran.html");
 append("repeat.3fortran.html");
 append("reshape.3fortran.html");
+append("return.3fortran.html");
 append("rrspacing.3fortran.html");
 append("same_type_as.3fortran.html");
 append("scale.3fortran.html");

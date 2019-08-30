@@ -188,25 +188,25 @@ character(len=*),intent(in)  :: msg
 !  the trail file messages are preceded by a pound character (#) by default so they can easily be interpreted as comments
 !  if the trace file is subsequently used as input data for a program
 !
-   logical,save                       :: trailopen=.false.
-   integer,save                       :: itrail
-   character,save                     :: comment='#'
-   integer                            :: i
-   integer                            :: ios
-   integer                            :: times             ! number of times written to stdout
-   character(len=3)                   :: adv               ! whether remaining writes from this call use advancing I/O
+logical,save                       :: trailopen=.false.
+integer,save                       :: itrail
+character,save                     :: comment='#'
+integer                            :: i
+integer                            :: ios
+integer                            :: times             ! number of times written to stdout
+character(len=3)                   :: adv               ! whether remaining writes from this call use advancing I/O
 
-   character(len=:),allocatable,save  :: prefix_template   ! string to run thru now_ex(3f) to make prefix
-   character(len=:),allocatable       :: prefix            ! the prefix string to add to output
-   logical,save                       :: prefix_it=.false. ! flag whether time prefix mode is on or not
-   character(len=4096)                :: mssge
+character(len=:),allocatable,save  :: prefix_template   ! string to run thru now_ex(3f) to make prefix
+character(len=:),allocatable       :: prefix            ! the prefix string to add to output
+logical,save                       :: prefix_it=.false. ! flag whether time prefix mode is on or not
+character(len=4096)                :: mssge
 !-----------------------------------------------------------------------------------------------------------------------------------
-   interface
-      function now_ex(format)
-         character(len=*),intent(in),optional :: format
-         character(len=:),allocatable         :: now_ex
-      end function now_ex
-   end interface
+interface
+   function now_ex(format)
+      character(len=*),intent(in),optional :: format
+      character(len=:),allocatable         :: now_ex
+   end function now_ex
+end interface
 !-----------------------------------------------------------------------------------------------------------------------------------
    adv='yes'
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -380,7 +380,7 @@ subroutine where_write_message_all(where,message, &
 implicit none
 
 character(len=*),parameter::ident_6="&
-&@(#)M_debug::where_write_message_all(3f): writes a message to a string composed of any standard scalar types"
+&@(#)M_journal::where_write_message_all(3f): writes a message to a string composed of any standard scalar types"
 
 character(len=*),intent(in)   :: where
 character(len=*),intent(in)   :: message
@@ -388,9 +388,9 @@ class(*),intent(in),optional  :: generic1, generic2, generic3
 class(*),intent(in),optional  :: generic4, generic5, generic6
 class(*),intent(in),optional  :: generic7, generic8 ,generic9
 logical,intent(in),optional   :: nospace
-   character(len=4096)        :: line
-   integer                    :: istart
-   integer                    :: increment
+character(len=4096)           :: line
+integer                       :: istart
+integer                       :: increment
    if(present(nospace))then
       if(nospace)then
          increment=1
@@ -420,22 +420,27 @@ subroutine print_generic(generic)
 !use, intrinsic :: iso_fortran_env, only : int8, int16, int32, biggest=>int64, real32, real64, dp=>real128
 use,intrinsic :: iso_fortran_env, only : int8, int16, int32, int64, real32, real64, real128
 class(*),intent(in),optional :: generic
+integer                      :: ios
+character(len=256)           :: msg
    select type(generic)
-      type is (integer(kind=int8));     write(line(istart:),'(i0)') generic
-      type is (integer(kind=int16));    write(line(istart:),'(i0)') generic
-      type is (integer(kind=int32));    write(line(istart:),'(i0)') generic
-      type is (integer(kind=int64));    write(line(istart:),'(i0)') generic
-      type is (real(kind=real32));      write(line(istart:),'(1pg0)') generic
-      type is (real(kind=real64));      write(line(istart:),'(1pg0)') generic
-      type is (real(kind=real128));     write(line(istart:),'(1pg0)') generic
-      !type is (real(kind=real256));     write(line(istart:),'(1pg0)') generic
-      !type is (real);                   write(line(istart:),'(1pg0)') generic
-      !type is (doubleprecision);        write(line(istart:),'(1pg0)') generic
-      type is (logical);                write(line(istart:),'(1l)') generic
-      type is (character(len=*));       write(line(istart:),'(a)') generic
-      type is (complex);                write(line(istart:),'("(",1pg0,",",1pg0,")")') generic
+      type is (integer(kind=int8));     write(line(istart:),'(i0)',iostat=ios,iomsg=msg) generic
+      type is (integer(kind=int16));    write(line(istart:),'(i0)',iostat=ios,iomsg=msg) generic
+      type is (integer(kind=int32));    write(line(istart:),'(i0)',iostat=ios,iomsg=msg) generic
+      type is (integer(kind=int64));    write(line(istart:),'(i0)',iostat=ios,iomsg=msg) generic
+      type is (real(kind=real32));      write(line(istart:),'(1pg0)',iostat=ios,iomsg=msg) generic
+      type is (real(kind=real64));      write(line(istart:),'(1pg0)',iostat=ios,iomsg=msg) generic
+      type is (real(kind=real128));     write(line(istart:),'(1pg0)',iostat=ios,iomsg=msg) generic
+      !type is (real(kind=real256));     write(line(istart:),'(1pg0)',iostat=ios,iomsg=msg) generic
+      !type is (real);                   write(line(istart:),'(1pg0)',iostat=ios,iomsg=msg) generic
+      !type is (doubleprecision);        write(line(istart:),'(1pg0)',iostat=ios,iomsg=msg) generic
+      type is (logical);                write(line(istart:),'(1l)',iostat=ios,iomsg=msg) generic
+      type is (character(len=*));       write(line(istart:),'(a)',iostat=ios,iomsg=msg) trim(generic)
+      type is (complex);                write(line(istart:),'("(",1pg0,",",1pg0,")")',iostat=ios,iomsg=msg) generic
    end select
    istart=len_trim(line)+increment
+   if(ios.ne.0)then
+      call journal('e' ,'*where_write_message_all*',msg)
+   endif
 end subroutine print_generic
 !===================================================================================================================================
 end subroutine where_write_message_all

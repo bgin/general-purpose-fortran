@@ -66,7 +66,7 @@ NAME
    sec2days(1f) - [TIME] Convert seconds to string of form dd-hh:mm:ss
 
 SYNOPSIS
-   sec2days nnnn[.xxx] [-crop]| --version| --help
+   sec2days nnnn[.xxx] [ -crop]| --version| --help
 
 DESCRIPTION
    Given a numeric string representing seconds convert it to a string

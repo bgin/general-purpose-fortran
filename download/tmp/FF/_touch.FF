@@ -8,7 +8,7 @@ NAME
    _touch(1f) - [FUNIX:FILESYSTEM] change file access and modify timestamps to current time, creating file is necessary
 
 SYNOPSIS
-   _touch [FILE... [-date DATE]]|[--help|--version|--verbose]
+   _touch [FILE... [ -date DATE]]|[ --help|--version|--verbose]
 
 DESCRIPTION
 

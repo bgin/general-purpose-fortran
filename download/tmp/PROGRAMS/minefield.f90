@@ -47,7 +47,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 'minefield(1f) - [M_draw] minefield game                                         ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
-'   minefield [[-r rows] [-c columns]] |[ --help --version ]                     ',&
+'   minefield [[ -r rows] [ -c columns]] |[ --help --version ]                   ',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
 '   minefield(1f) is a minesweeper game. The game tests many M_DRAW              ',&
@@ -88,7 +88,7 @@ end subroutine help_usage
 !!
 !!##SYNOPSIS
 !!
-!!    minefield [[-r rows] [-c columns]] |[ --help --version ]
+!!    minefield [[ -r rows] [ -c columns]] |[ --help --version ]
 !!
 !!##DESCRIPTION
 !!    minefield(1f) is a minesweeper game. The game tests many M_DRAW
@@ -132,7 +132,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    minefield game>',&
 '@(#)VERSION:        4.0, 20180616>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 7:09:50 PM>',&
+'@(#)COMPILED:       Thu, Aug 29th, 2019 10:11:57 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

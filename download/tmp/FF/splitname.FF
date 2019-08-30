@@ -69,7 +69,7 @@ NAME
    splitname(1f) - [FUNIX] strip pathname into components {dir,name,basename,extension}
 
 SYNOPSIS
-   splitname [NAME1 NAME2 ... |[-d -b -l -e]|-help|-version]
+   splitname [NAME1 NAME2 ... |[ -d -b -l -e]|-help|-version]
 
 DESCRIPTION
    Output each pathname broken into components directory, leaf name, basename, extension

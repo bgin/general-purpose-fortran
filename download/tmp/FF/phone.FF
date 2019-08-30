@@ -3,7 +3,7 @@ $DOCUMENT HELP
 NAME
      phone(1f) - [M_sqlite] create, change and query SQLite3 database containing phone numbers
 SYNOPSIS
- phone [-db file] ...
+ phone [ -db file] ...
   [ 
     -name proper_name
     -home phone_number 
@@ -13,8 +13,8 @@ SYNOPSIS
     -comment Comments
   ]
 
- phone -do SQLite3_command [-db database_filename]
- phone -schema [-db database_filename]
+ phone -do SQLite3_command [ -db database_filename]
+ phone -schema [ -db database_filename]
  phone -debug .... other_options
  phone -help|-version 
  phone match

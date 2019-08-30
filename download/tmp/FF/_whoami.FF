@@ -3,7 +3,7 @@ $DOCUMENT HELP -file _whoami.1.man
 NAME
       _whoami(1f) - [FUNIX] display login name
 SYNOPSIS
-      _whoami [-help|-version]
+      _whoami [ -help|-version]
 DESCRIPTION
       Demonstrate call to system_geteuid(3f) and system_getpwuid(3f) interfaces to the corresponding C routines
 OPTIONS

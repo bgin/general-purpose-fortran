@@ -3,7 +3,7 @@ $DOCUMENT HELP -file _kill.1.man
 NAME
     _kill(1f) - [FUNIX] send signals to processes
 SYNTAX
-    _kill PIDs [-s signal_number] [--help|--version]
+    _kill PIDs [ -s signal_number] [ --help|--version]
 DESCRIPTION
     Calls system_kill(3f), which calls kill(3c) to send signals
     to processes.

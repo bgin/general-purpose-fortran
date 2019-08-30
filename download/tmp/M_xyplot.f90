@@ -372,6 +372,11 @@ private priv_drawx              ! drawx
 private priv_labelx             ! labelx
 private priv_labely             ! labely
 private priv_findlongest        ! findlongest
+private priv_fontchng
+private priv_doescape
+private priv_zqjreset
+private priv_justrlen
+private priv_justr
 
 logical,public :: LLQ(0:23)
 integer,public,parameter     :: lsystemq=1   ! flag permitting passing unknown commands to system
@@ -490,12 +495,13 @@ contains
 !===================================================================================================================================
 !>
 !!##NAME
+!!    plot_init_globals(3f) - [M_xyplot] call xy_init_labels(3f) an xy_init_markers(3f
 !!##SYNOPSIS
-
-!!##DESCRIPTI
+!!
+!!##DESCRIPTION
 !!##OPTIONS
 !!##EXAMPLE
-!
+!!
 !===================================================================================================================================
 subroutine plot_init_globals()
 implicit none
@@ -507,12 +513,13 @@ end subroutine plot_init_globals
 !===================================================================================================================================
 !>
 !!##NAME
+!!    plot_init(3f) - [M_xyplot] initialize command language and graphics mode to set up starting interpretatio
 !!##SYNOPSIS
-
-!!##DESCRIPTI
+!!
+!!##DESCRIPTION
 !!##OPTIONS
 !!##EXAMPLE
-!
+!!
 !===================================================================================================================================
 subroutine plot_init()
 implicit none
@@ -531,16 +538,16 @@ end subroutine plot_init
 !===================================================================================================================================
 !>
 !!##NAME
+!!    xy_init_labels(3f) - [M_xyplot] data defining all unit code label
 !!##SYNOPSIS
-
-!!##DESCRIPTI
+!!
+!!##DESCRIPTION
 !!##OPTIONS
 !!##EXAMPLE
-!
+!!
 !===================================================================================================================================
 subroutine xy_init_labels()
 implicit none
-! data defining all unit code labels
 uq(  0)='                                        '
 uq(  1)='Acceleration  (ft/s2)                   '
 uq(  2)='Acceleration  (m/s2)                    '
@@ -1033,16 +1040,16 @@ end subroutine xy_init_labels
 !===================================================================================================================================
 !>
 !!##NAME
+!!    xy_init_markers(3f) - [M_xyplot] part of plot_axes(3f), used to define default geometric marker
 !!##SYNOPSIS
-
-!!##DESCRIPTI
+!!
+!!##DESCRIPTION
 !!##OPTIONS
 !!##EXAMPLE
-!
+!!
 !===================================================================================================================================
 subroutine xy_init_markers()
 implicit none
-! part of plot_axes, used to define default geometric markers
 !                              sun planet offset lines turns dia. fill
 ! filled
    shq2( 1,1:ipq2)=[96.0, 1.0, 96.0, 3.0, 0.250, 1.0, 1.0] ! triangle
@@ -4710,13 +4717,13 @@ real                 :: yup
          height=width*1.2                   ! calculate nice character height
          call textsize(width,height)        ! set to largest allowed size
          !---------------------------------------------
-         call xy_justrlen(l(:ichars),xlong,ytall,ydown,yup)
+         call priv_justrlen(l(:ichars),xlong,ytall,ydown,yup)
          !---------------------------------------------
          factor=(xmaxt-xmint)/xlong         ! make fit across entire width if used
          factor=0.95*factor
          call xy_set_bigger(tallest,width,height,factor)
          !---------------------------------------------
-         call xy_justrlen(l(:ichars),xlong,ytall,ydown,yup)
+         call priv_justrlen(l(:ichars),xlong,ytall,ydown,yup)
          !---------------------------------------------
       else
          width=(xmaxt-xmint)/max(itchars,ichars)   ! calculate maximum character width
@@ -4724,7 +4731,7 @@ real                 :: yup
          height=width*1.2                          ! calculate nice character height
          call textsize(width,height)
          !---------------------------------------------
-         call xy_justrlen(l(:ichars),xlong,ytall,ydown,yup)
+         call priv_justrlen(l(:ichars),xlong,ytall,ydown,yup)
          !---------------------------------------------
       endif
       r10=r10-yup
@@ -4740,14 +4747,14 @@ real                 :: yup
       ichars=len_trim(l)                    ! number of characters in string plus some border characters
       if(ichars.ge.1)then
          !---------------------------------------------
-         call xy_justrlen(l(:ichars),xlong,ytall,ydown,yup)
+         call priv_justrlen(l(:ichars),xlong,ytall,ydown,yup)
          !---------------------------------------------
          factor=(xmaxt-xmint)/xlong
          if(factor.lt.1.0)then           ! if longer than allowed will shorten it (and set character size smaller for all lines)
             factor=factor*0.95
             call xy_set_bigger(tallest,width,height,factor)
             !---------------------------------------------
-            call xy_justrlen(l(:ichars),xlong,ytall,ydown,yup)
+            call priv_justrlen(l(:ichars),xlong,ytall,ydown,yup)
             !---------------------------------------------
          endif
          r10=r10-yup
@@ -5736,7 +5743,7 @@ real                :: yup
                   else
                      line=axlq2(2)
                   endif
-                  call xy_justrlen(line,xlong,ytall,ydown,yup)
+                  call priv_justrlen(line,xlong,ytall,ydown,yup)
                   r10=min(r10-yup,r10-plot_setmark_size)
                   call xy_juprint(xy_arrayq(IMAXQ2/2),r10,line,2)
                   r10=r10-max(ydown,plot_setmark_size)
@@ -5756,7 +5763,7 @@ real                :: yup
                   else
                      line=axlq2(4)
                   endif
-                  call xy_justrlen(line,xlong,ytall,ydown,yup)
+                  call priv_justrlen(line,xlong,ytall,ydown,yup)
                   r10=min(r10-yup,r10-plot_setmark_size)
                   call xy_juprint(xy_arrayq(IMAXQ2/2),r10,line,2)
                   r10=r10-max(ydown,plot_setmark_size)
@@ -5768,7 +5775,7 @@ real                :: yup
             endif
          endif
          if(lgnduq(i10).ne.' ')lgndq(i10)=lgnduq(i10) !user legend supersedes
-         call xy_justrlen(trim(lgndq(i10)),xlong,ytall,ydown,yup)
+         call priv_justrlen(trim(lgndq(i10)),xlong,ytall,ydown,yup)
          r10=min(r10-yup,r10-plot_setmark_size)
          xy_arrayq(1)=r10+height/2.0
          xy_arrayq(2)=xy_arrayq(1)
@@ -6355,14 +6362,14 @@ data values/0.0,0.0,0.0,0.0/ ! initialize xy_array of numeric values
             if(i10.le.icrvs2q.and.icrvsq.ne.icrvs2q.and.idid1.eq.0)then    ! zero curve number was used to label left axis curves
                idid1=1                                                     ! only do this once
                if(axlq2(2) .ne. ' ')then                                   !     draw y-axis label if one is present
-                  call xy_justrlen(axlq2(2),xlong,ytall,ydown,yup)
+                  call priv_justrlen(axlq2(2),xlong,ytall,ydown,yup)
                   !YDOWN=max(plot_setmark_size/2.0,ydown)
                   YUP=max(plot_setmark_size/2.0,yup)
                   xwidest=max(xwidest,xlong)
                   r10=r10-YUP
                   if(i20.eq.2)call xy_juprint(xx(1),r10,axlq2(2),2)
                else
-                  call xy_justrlen('LEFT AXIS:',xlong,ytall,ydown,yup)
+                  call priv_justrlen('LEFT AXIS:',xlong,ytall,ydown,yup)
                   !YDOWN=max(plot_setmark_size/2.0,ydown)
                   YUP=max(plot_setmark_size/2.0,yup)
                   xwidest=max(xwidest,xlong)
@@ -6374,14 +6381,14 @@ data values/0.0,0.0,0.0,0.0/ ! initialize xy_array of numeric values
             elseif(i10.gt.icrvs2q.and.idid2.eq.0)then  ! a zero curve number was used to break between left and right axis
                idid2=1
                if(axlq2(4) .ne. ' ')then                           !     draw y-axis label if one is present
-                  call xy_justrlen(axlq2(4),xlong,ytall,ydown,yup)
+                  call priv_justrlen(axlq2(4),xlong,ytall,ydown,yup)
                   !YDOWN=max(plot_setmark_size/2.0,ydown)
                   YUP=max(plot_setmark_size/2.0,yup)
                   xwidest=max(xwidest,xlong)
                   r10=r10-YUP
                   if(i20.eq.2)call xy_juprint(xx(1),r10,axlq2(4),2)
                else
-                  call xy_justrlen('RIGHT AXIS:',xlong,ytall,ydown,yup)
+                  call priv_justrlen('RIGHT AXIS:',xlong,ytall,ydown,yup)
                   !YDOWN=max(plot_setmark_size/2.0,ydown)
                   YUP=max(plot_setmark_size/2.0,yup)
                   xwidest=max(xwidest,xlong)
@@ -6394,7 +6401,7 @@ data values/0.0,0.0,0.0,0.0/ ! initialize xy_array of numeric values
             !--------------------------------------------------------------
             ! put out individual lines
             if(lgnduq(i10).ne.' ')lgndq(i10)=lgnduq(i10) !user legend supersedes
-            call xy_justrlen(lgndq(i10),xlong,ytall,ydown,yup)
+            call priv_justrlen(lgndq(i10),xlong,ytall,ydown,yup)
             !YDOWN=max(plot_setmark_size/2.0,ydown)
             YUP=max(plot_setmark_size/2.0,yup)
             xwidest=max(xwidest,xlong)
@@ -6593,14 +6600,14 @@ real,save            :: values(4)=[0.0, 0.0, 0.0, 0.0] ! initialize xy_array of 
             if(i10.le.icrvs2q.and.icrvsq.ne.icrvs2q.and.idid1.eq.0)then    ! zero curve number was used to label left axis curves
                idid1=1                                                     ! only do this once
                if(axlq2(2) .ne. ' ')then                                   !     draw y-axis label if one is present
-                  call xy_justrlen(axlq2(2),xlong,ytall,ydown,yup)
+                  call priv_justrlen(axlq2(2),xlong,ytall,ydown,yup)
                   xwidest=max(xwidest,xlong)
                   YUP=max(plot_setmark_size/2.0,yup) ! check for big markers
                   !YDOWN=max(plot_setmark_size/2.0,ydown) ! check for big markers
                   r10=r10-YUP
                   if(i20.eq.2)call xy_juprint(xx(1),r10,axlq2(2),2)
                else
-                  call xy_justrlen('LEFT AXIS:',xlong,ytall,ydown,yup)
+                  call priv_justrlen('LEFT AXIS:',xlong,ytall,ydown,yup)
                   YUP=max(plot_setmark_size/2.0,yup) ! check for big markers
                   !YDOWN=max(plot_setmark_size/2.0,ydown) ! check for big markers
                   xwidest=max(xwidest,xlong)
@@ -6612,14 +6619,14 @@ real,save            :: values(4)=[0.0, 0.0, 0.0, 0.0] ! initialize xy_array of 
             elseif(i10.gt.icrvs2q.and.idid2.eq.0)then  ! a zero curve number was used to break between left and right axis
                idid2=1
                if(axlq2(4) .ne. ' ')then                           !     draw y-axis label if one is present
-                  call xy_justrlen(axlq2(4),xlong,ytall,ydown,yup)
+                  call priv_justrlen(axlq2(4),xlong,ytall,ydown,yup)
                   YUP=max(plot_setmark_size/2.0,yup) ! check for big markers
                   !YDOWN=max(plot_setmark_size/2.0,ydown) ! check for big markers
                   xwidest=max(xwidest,xlong)
                   r10=r10-YUP
                   if(i20.eq.2)call xy_juprint(xx(1),r10,axlq2(4),2)
                else
-                  call xy_justrlen('RIGHT AXIS:',xlong,ytall,ydown,yup)
+                  call priv_justrlen('RIGHT AXIS:',xlong,ytall,ydown,yup)
                   YUP=max(plot_setmark_size/2.0,yup) ! check for big markers
                   !YDOWN=max(plot_setmark_size/2.0,ydown) ! check for big markers
                   xwidest=max(xwidest,xlong)
@@ -6632,7 +6639,7 @@ real,save            :: values(4)=[0.0, 0.0, 0.0, 0.0] ! initialize xy_array of 
             !--------------------------------------------------------------
             ! put out individual lines
             if(lgnduq(i10).ne.' ')lgndq(i10)=lgnduq(i10) !user legend supersedes
-            call xy_justrlen(lgndq(i10),xlong,ytall,ydown,yup)
+            call priv_justrlen(lgndq(i10),xlong,ytall,ydown,yup)
             YUP=max(plot_setmark_size/2.0,yup) ! check for big markers
             !YDOWN=max(plot_setmark_size/2.0,ydown) ! check for big markers
             xwidest=max(xwidest,xlong)
@@ -7904,8 +7911,8 @@ real                        :: xl, yl
    call pushattributes()
    call centertext(.false.)
    call clipping(.false.)
-   call xy_justr(0.0,0.0,line(:len(line)),icenter,xs,xl,ys,yl) ! clear centering data or get centering data
-   call xy_justr(x,y,line(:len(line)),0,xs,xl,ys,yl)           ! actually print the string
+   call priv_justr(0.0,0.0,line(:len(line)),icenter,xs,xl,ys,yl) ! clear centering data or get centering data
+   call priv_justr(x,y,line(:len(line)),0,xs,xl,ys,yl)           ! actually print the string
    call popattributes()
 end subroutine xy_juprint
 !===================================================================================================================================
@@ -7913,7 +7920,7 @@ end subroutine xy_juprint
 !===================================================================================================================================
 !>
 !!##NAME
-!!    xy_justrlen(3f) - [M_xyplot] query string size with embedded directive
+!!    priv_justrlen(3f) - [M_xyplot] query string size with embedded directive
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -7921,10 +7928,10 @@ end subroutine xy_juprint
 !!##EXAMPLE
 !!
 !===================================================================================================================================
-subroutine xy_justrlen(line,xlen,ylen,ydown,yup)
+subroutine priv_justrlen(line,xlen,ylen,ydown,yup)
 implicit none
 
-character(len=*),parameter::ident_57="@(#)M_xyplot::xy_justrlen(3f): query string size with embedded directives"
+character(len=*),parameter::ident_57="@(#)M_xyplot::priv_justrlen(3f): query string size with embedded directives"
 
 character(len=*) :: line
 integer          :: ilen
@@ -7937,22 +7944,22 @@ real             :: ylen
 real             :: ys
 real             :: yup
    ilen=len_trim(line)
-   call xy_justr(0.0,0.0,line(:ilen),1,xs,xl,ys,yl)  ! set size and centering data
-   call xy_justr(0.0,0.0,line(:ilen),2,xs,xl,ys,yl)  ! clear centering data
+   call priv_justr(0.0,0.0,line(:ilen),1,xs,xl,ys,yl)  ! set size and centering data
+   call priv_justr(0.0,0.0,line(:ilen),2,xs,xl,ys,yl)  ! clear centering data
    xlen=xl-xs
    ylen=yl-ys
    ydown=-ys
    yup=yl
-end subroutine xy_justrlen
+end subroutine priv_justrlen
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
 !!##NAME
-!!    xy_justr(3f) - [M_xyplot] print string l0 at position x,y with embedded directives
+!!    priv_justr(3f) - [M_xyplot] print string l0 at position x,y with embedded directive
 !!##SYNOPSIS
 !!
-!!    subroutine xy_justr(x,y,l0,itype,xmin,xmax,ymin,ymax)
+!!    subroutine priv_justr(x,y,l0,itype,xmin,xmax,ymin,ymax)
 !!    real                :: x
 !!    real                :: y
 !!    character(len=*)    :: l0
@@ -7962,23 +7969,23 @@ end subroutine xy_justrlen
 !!    real                :: ymin
 !!    real                :: ynow
 !!##DESCRIPTION
-!! !     string is assumed to be [string]\directive\string\directive\string\directive\..
-!! !     does not allow for escaped backslash in string or null string between directive
+!! !     string is assumed to be [string]\directive\string\directive\string\directive\...
+!! !     does not allow for escaped backslash in string or null string between directives
 !! !     environment is RESET after each string (MAY CHANGE THIS)
 !!##OPTIONS
-!! !     itype=0    draw the string with centering or size data set (must be second call
+!! !     itype=0    draw the string with centering or size data set (must be second call)
 !! !     itype=1    getting string size and centering shift
 !! !     itype=2    blank out centering values
 !!##EXAMPLE
 !!
 !===================================================================================================================================
-subroutine xy_justr(x,y,l0,itype,xmin,xmax,ymin,ymax)
+subroutine priv_justr(x,y,l0,itype,xmin,xmax,ymin,ymax)
 use M_draw
 use M_drawplus,        only : pop, push
 use M_journal,         only : journal
 implicit none
 
-character(len=*),parameter::ident_58="@(#)M_xyplot::xy_justr(3f): print string l0 at position x,y with embedded directives"
+character(len=*),parameter::ident_58="@(#)M_xyplot::priv_justr(3f): print string l0 at position x,y with embedded directives"
 
 character(len=*)    :: l0
 character(len=4096) :: line
@@ -8044,8 +8051,8 @@ data xmaxs/40*0.0/
    instring=.true.
    call getfontsize(width,height)    !
    if(width.eq.0.0.or.height.eq.0.0)then
-      write(*,*)'*xy_justr* A) bad font size (W,H)=',width,height
-      call printattribs('xy_justr A')
+      write(*,*)'*priv_justr* A) bad font size (W,H)=',width,height
+      call printattribs('priv_justr A')
    endif
    call textsize(width,height)    !
    width1=width                      ! use to restore the values at end (M_DASH does not reset this properly with pop/push?)
@@ -8082,7 +8089,7 @@ data xmaxs/40*0.0/
                      call move2(xnow+xy_ustrlen2(char(ione),1),ynow)
                   endif
                else
-                  call journal('sc','*xy_justr* bad itype',itype)
+                  call journal('sc','*priv_justr* bad itype',itype)
                   goto 999
                endif
                call getgp2(xnow,ynow)
@@ -8116,7 +8123,7 @@ data xmaxs/40*0.0/
                endif
                if(ione.eq.0)directive=line(istart:iend)
                ione=0
-               call xy_fontchng(xnow,ynow,width,height,directive,x,y,k,itype,ione)
+               call priv_fontchng(xnow,ynow,width,height,directive,x,y,k,itype,ione)
                call move2(xnow,ynow)
                xmin=min(xnow,xmin)
                xmax=max(xnow,xmax)
@@ -8151,20 +8158,21 @@ data xmaxs/40*0.0/
       enddo
       shift=0.0
    endif
-end subroutine xy_justr
+end subroutine priv_justr
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
 !!##NAME
+!!    priv_fontchng(3f) - [M_xyplot] called by priv_justr to process embedded directives in a strin
 !!##SYNOPSIS
-
-!!##DESCRIPTI
+!!
+!!##DESCRIPTION
 !!##OPTIONS
 !!##EXAMPLE
-!
+!!
 !===================================================================================================================================
-subroutine xy_fontchng(xnow,ynow,width,height,string,x0,y0,ilines,ii,ione)
+subroutine priv_fontchng(xnow,ynow,width,height,string,x0,y0,ilines,ii,ione)
 !     does not check if STRING is longer than LINE
 !     if using this feature, the variables v,h,f,s,c,w,n,a are reserved names
 use M_journal,         only : journal
@@ -8268,7 +8276,7 @@ data fonts/                                                       &
          call delim(string,xy_array,NN,icount,ibegin,iterm,ilen,' ') ! parse string into xy_array
          cname(1:1)='$'
          do i30=1,icount
-            call xy_zqjreset()
+            call priv_zqjreset()
             if(index(xy_array(i30),'=').ne.0)then   ! if an = assume a default numeric expression
                rdum=rnum0(xy_array(i30))  ! evaluate numeric expression
             else  ! string names without a $ character
@@ -8287,7 +8295,7 @@ data fonts/                                                       &
                   goto 40
                endif
             endif
-            call xy_doescape(ii,fonts,width,height,xnow,ynow,ilines,x0,y0,ione)
+            call priv_doescape(ii,fonts,width,height,xnow,ynow,ilines,x0,y0,ione)
             if(ione.ne.0)then
                string(:iterm(i30))=' ' ! blank out already processed directives
                goto 40
@@ -8320,20 +8328,21 @@ data fonts/                                                       &
       call stuff('D',XD,'')
       call stuff('i',XI,'')
 !-----------------------------------------------------------------------------------------------------------------------------------
-end subroutine xy_fontchng
+end subroutine priv_fontchng
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
 !!##NAME
+!!    priv_zqjreset(3f) - [M_xyplot] called by priv_fontchng(3f) to process embedded directives in a strin
 !!##SYNOPSIS
-
-!!##DESCRIPTI
+!!
+!!##DESCRIPTION
 !!##OPTIONS
 !!##EXAMPLE
-!
+!!
 !===================================================================================================================================
-subroutine xy_zqjreset()
+subroutine priv_zqjreset()
 implicit none
 call  stuff('v',     -999.0d0,'')
 call  stuff('h',     -999.0d0,'')
@@ -8359,21 +8368,22 @@ call  stuff('Fcen',  -999.0d0,'')
 call  stuff('Ffix',  -999.0d0,'')
 call  stuff('D',     -999.0d0,'')
 call  stuff('i',     -999.0d0,'')
-end subroutine xy_zqjreset
+end subroutine priv_zqjreset
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
 !!##NAME
+!!    priv_doescape(3f) - [M_xyplot] called by priv_fontchng(3f) to process embedded directives in a strin
 !!##SYNOPSIS
-
-!!##DESCRIPTI
+!!
+!!##DESCRIPTION
 !!##OPTIONS
 !!##EXAMPLE
-!
+!!
 !===================================================================================================================================
 ! too many calls to calculator. Do one pass at end like earlier version?
-subroutine xy_doescape(ii,fonts,width,height,xnow,ynow,ilines,x0,y0,ione)
+subroutine priv_doescape(ii,fonts,width,height,xnow,ynow,ilines,x0,y0,ione)
 use M_journal,         only : journal
 use M_draw
 implicit none
@@ -8563,7 +8573,7 @@ real                    :: ynow
          call centertext(.true.)
       endif
 !-----------------------------------------------------------------------------------------------------------------------------------
-end subroutine xy_doescape
+end subroutine priv_doescape
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
@@ -9126,7 +9136,7 @@ real            :: yystep
          call xy_jufont(fontLq2)
          call textsize(TXTWDL,TXTHIL)
          !---------------------------------------------
-         call xy_justrlen(axlq2(1),xlongdum,yguess1,ydown1,yupdum)
+         call priv_justrlen(axlq2(1),xlongdum,yguess1,ydown1,yupdum)
          xlabely1=YMIN+ydown1 ! xlabel will appear at bottom of plot area raised by working room set above
       else
          yguess1=0.0
@@ -9152,7 +9162,7 @@ real            :: yystep
             call xy_jufont(fontLq2)
             call textsize(TXTWDL,TXTHIL)
             !---------------------------------------------
-            call xy_justrlen(axlq2(3),xlongdum,yguess3,ydowndum,yup3)
+            call priv_justrlen(axlq2(3),xlongdum,yguess3,ydowndum,yup3)
             xlabely3=YMAX-yup3          ! xlabel will appear at top of plot area lowered by working room set above
          else
             yguess3=0.0
@@ -9508,14 +9518,14 @@ real             :: yup
 !-----------------------------------------------------------------------------------------------------------------------------------
       else                                              ! string parallel to y axis
          !---------------------------------------------
-         call xy_justrlen(caxis,xlong,ytall,ydown,yup)
+         call priv_justrlen(caxis,xlong,ytall,ydown,yup)
          !---------------------------------------------
          ystring=xlong
          if(ystring.ge.(YMAX-YMIN))then                 ! if y-axis alphameric label does not fit, reduce character size
             TXTWW2=TXTWW2*(YMAX-YMIN)/ystring
             TXTHH2=TXTWW2/0.7
             call textsize(TXTWW2,TXTHH2)  ! not flipping yet, so act like printing horizontally
-            call xy_justrlen(caxis,xlong,ytall,ydown,yup)
+            call priv_justrlen(caxis,xlong,ytall,ydown,yup)
          endif
          !---------------------------------------------
          ytemp=(YMAX+YMIN)/2.0                          ! center string vertically
@@ -9726,7 +9736,7 @@ real           :: yup
          call xy_jufont(fontL)
          call textsize(TXTWW2,TXTHH2)
          !---------------------------------------------
-         call xy_justrlen(axisl(iaxis),xlong,ytall,ydown,yup)
+         call priv_justrlen(axisl(iaxis),xlong,ytall,ydown,yup)
          xstring=xlong
          !---------------------------------------------
          if(xstring.ge.(xlarge-xsmall))then          ! if x-axis alphameric label does not fit, reduce character size
@@ -9735,7 +9745,7 @@ real           :: yup
             call textsize(TXTWW2,TXTHH2)
          endif
          !---------------------------------------------
-         call xy_justrlen(axisl(iaxis),xlong,ytall,ydown,yup)
+         call priv_justrlen(axisl(iaxis),xlong,ytall,ydown,yup)
          !---------------------------------------------
          !xx = (xlarge+xsmall)/2.0-xlong/2.0 ! center string to x value
          xx = (xlarge+xsmall)/2.0                              ! center string to x value
@@ -10004,8 +10014,8 @@ real          :: yup
             ! CONSIDER:
             !  faster to just count characters and multiply by text width to get approximate answer;
             !  or multiply number of characters by size of a '0' character for good guess
-            !  instead of calling xy_justrlen.
-            call xy_justrlen(cvalue(:ilen),xlong,ytall,ydown,yup)
+            !  instead of calling priv_justrlen.
+            call priv_justrlen(cvalue(:ilen),xlong,ytall,ydown,yup)
             biggest=max(biggest,xlong)
             !---------------------------------------------
          enddo
@@ -10718,12 +10728,13 @@ end subroutine plot_setdash
 !===================================================================================================================================
 !>
 !!##NAME
+!!    xy_resetpens(3f) - [M_xyplot] reset pen
 !!##SYNOPSIS
-
-!!##DESCRIPTI
+!!
+!!##DESCRIPTION
 !!##OPTIONS
 !!##EXAMPLE
-!
+!!
 !===================================================================================================================================
 subroutine xy_resetpens()
 implicit none
@@ -12293,7 +12304,7 @@ end subroutine priv_jufill
 !===================================================================================================================================
 !>
 !!##NAME
-!!    priv_jusym(3fp) - [M_xyplot] put symbols at points on a polylin
+!!    priv_jusym(3f) - [M_xyplot] put symbols at points on a polylin
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION

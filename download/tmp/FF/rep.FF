@@ -4,7 +4,7 @@ $DOCUMENT HELP -file rep.1.man
 NAME
        rep(1f) - [FILE FILTER] replace fixed strings in files
 SYNOPSIS
-       rep filenames -c /from/to/ [-verbose][-dryrun]|[-help|-version]
+       rep filenames -c /from/to/ [ -verbose][ -dryrun]|[ -help| -version]
 
 DESCRIPTION
        This is an example program for the REPLACE(3f) function. It 

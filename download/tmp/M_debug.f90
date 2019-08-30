@@ -325,8 +325,8 @@ character(len=*),parameter::ident_2="@(#)M_debug::msg(3f): writes a message to a
 class(*),intent(in),optional  :: generic1 ,generic2 ,generic3 ,generic4 ,generic5
 class(*),intent(in),optional  :: generic6 ,generic7 ,generic8 ,generic9
 character(len=:), allocatable :: msg
-   character(len=4096)        :: line
-   integer                    :: istart
+character(len=4096)           :: line
+integer                       :: istart
 
    istart=1
    line=' '
@@ -459,7 +459,7 @@ character(len=*),parameter::ident_3="@(#)M_debug::stderr(3f): writes a message t
 class(*),intent(in),optional :: msg
 class(*),intent(in),optional :: generic1 ,generic2 ,generic3 ,generic4 ,generic5
 class(*),intent(in),optional :: generic6 ,generic7 ,generic8 ,generic9
-   integer                   :: ios
+integer                      :: ios
 
    if(present(msg))     call print_generic(msg)
    if(present(generic1))call print_generic(generic1)
@@ -556,7 +556,7 @@ character(len=*),parameter::ident_4="@(#)M_debug::fstop(3f): calls 'STOP VALUE' 
 integer,intent(in)                   :: ierr
 character(len=*),optional,intent(in) :: stdout
 character(len=*),optional,intent(in) :: stderr
-   character(len=132)                :: message
+character(len=132)                   :: message
 ! The standard states:
 !   If the stop-code is an integer, it is recommended that the value also be used as the process exit status, if the
 !   processor supports that concept. If the integer stop-code is used as the process exit status, the processor
@@ -943,10 +943,10 @@ character(len=*),parameter::ident_7="@(#)M_debug::unit_check_done(3f): call 'goo
 character(len=*),intent(in)          :: name
 character(len=*),intent(in),optional :: opts
 character(len=*),intent(in),optional :: msg
-   character(len=:),allocatable      :: msg_local
-   character(len=:),allocatable      :: opts_local
-   character(len=4096)               :: out
-   character(len=9)                  :: pf
+character(len=:),allocatable         :: msg_local
+character(len=:),allocatable         :: opts_local
+character(len=4096)                  :: out
+character(len=9)                     :: pf
    if(present(msg))then
       msg_local=msg
    else
@@ -1038,8 +1038,8 @@ character(len=*),parameter::ident_8="@(#)M_debug::unit_check_bad(3f): call 'good
 character(len=*),intent(in)          :: name
 character(len=*),intent(in),optional :: opts
 character(len=*),intent(in),optional :: msg
-   character(len=:),allocatable      :: msg_local
-   character(len=:),allocatable      :: opts_local
+character(len=:),allocatable         :: msg_local
+character(len=:),allocatable         :: opts_local
    if(present(msg))then
       msg_local=msg
    else
@@ -1103,8 +1103,8 @@ character(len=*),parameter::ident_9="@(#)M_debug::unit_check_good(3f): call 'goo
 character(len=*),intent(in)          :: name
 character(len=*),intent(in),optional :: opts
 character(len=*),intent(in),optional :: msg
-   character(len=:),allocatable      :: msg_local
-   character(len=:),allocatable      :: opts_local
+character(len=:),allocatable         :: msg_local
+character(len=:),allocatable         :: opts_local
    if(present(msg))then
       msg_local=msg
    else
@@ -1176,9 +1176,9 @@ subroutine pdec(string)
 
 character(len=*),parameter::ident_10="@(#)M_debug::pdec(3f): write ASCII Decimal Equivalent (ADE) numbers vertically beneath string"
 
-character(len=*),intent(in) :: string  ! the string to print
-   integer :: ilen  ! number of characters in string to print
-   integer :: i     ! counter used to step thru string
+character(len=*),intent(in) :: string   ! the string to print
+integer                     :: ilen     ! number of characters in string to print
+integer                     :: i        ! counter used to step thru string
 !-----------------------------------------------------------------------------------------------------------------------------------
    ilen=len_trim(string(:len(string)))  ! get trimmed length of input string
 

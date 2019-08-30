@@ -7,7 +7,7 @@ NAME
    _rename(1f) - [FUNIX:FILESYSTEM] rename files by replacing first occurrence of a string in a filename with new string
 
 SYNOPSIS
-   _rename old new file... [-verbose][-dryrun]|[-help|-version]
+   _rename old new file... [ -verbose][ -dryrun]|[ -help|-version]
 
 DESCRIPTION
    rename(1f) will rename the specified files by replacing the

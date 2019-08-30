@@ -15,7 +15,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   _rename(1f) - [FUNIX:FILESYSTEM] rename files by replacing first occurrence of a string in a filename with new string',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
-'   _rename old new file... [-verbose][-dryrun]|[-help|-version]                 ',&
+'   _rename old new file... [ -verbose][ -dryrun]|[ -help|-version]              ',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
 '   rename(1f) will rename the specified files by replacing the                  ',&
@@ -53,7 +53,7 @@ end subroutine help_usage
 !!
 !!##SYNOPSIS
 !!
-!!    _rename old new file... [-verbose][-dryrun]|[-help|-version]
+!!    _rename old new file... [ -verbose][ -dryrun]|[ -help|-version]
 !!
 !!##DESCRIPTION
 !!    rename(1f) will rename the specified files by replacing the
@@ -99,7 +99,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 6:39:34 PM>',&
+'@(#)COMPILED:       Thu, Aug 29th, 2019 10:22:13 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

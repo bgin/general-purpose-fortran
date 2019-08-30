@@ -11,7 +11,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '       compute(1f) - [MATH] evaluate a calculator expression                    ',&
 'SYNOPSIS                                                                        ',&
-'       compute [STRING] [-verbose]| [-help| -version]                           ',&
+'       compute [STRING] [ -verbose]| [ -help| -version]                         ',&
 'DESCRIPTION                                                                     ',&
 '       Given any expression call the JUCALC(3f) calculator function and         ',&
 '       evaluate it. If no expression is present on the command line, read       ',&
@@ -76,7 +76,7 @@ end subroutine help_usage
 !!        compute(1f) - [MATH] evaluate a calculator expression
 !!##SYNOPSIS
 !!
-!!        compute [STRING] [-verbose]| [-help| -version]
+!!        compute [STRING] [ -verbose]| [ -help| -version]
 !!##DESCRIPTION
 !!        Given any expression call the JUCALC(3f) calculator function and
 !!        evaluate it. If no expression is present on the command line, rea
@@ -148,7 +148,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        23.1 20160618>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 6:12:33 PM>',&
+'@(#)COMPILED:       Thu, Aug 29th, 2019 10:09:39 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

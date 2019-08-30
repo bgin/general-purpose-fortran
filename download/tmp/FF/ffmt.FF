@@ -6,6 +6,7 @@ use M_kracken, only : kracken, lget, sget, iget                  ! add command-l
 use M_io,      only : read_line
 use M_strings, only : fmt, indent
 implicit none
+$@(#) ffmt(1f): simple text formatter for Fortran comments
 character(len=:),allocatable :: line
 character(len=:),allocatable :: bigline
 integer                      :: iline
@@ -13,7 +14,6 @@ integer                      :: width
 integer                      :: step
 integer                      :: step_before
 character(len=20)            :: style
-character(len=:),allocatable :: paragraph(:)
 character(len=1)             :: first
 !-----------------------------------------------------------------------------------------------------------------------------------
    call kracken('ffmt','-help .f. -version .f. -w 75 ') ! define command arguments,default values and crack command line
@@ -92,17 +92,18 @@ $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file ffmt.1.man
 NAME
-       ffmt(1f) - simple text formatter for Fortran comments
+       ffmt(1f) - [FILE EDIT] simple text formatter for Fortran comments
 
 SYNOPSIS
        ffmt [OPTION]...
 
 DESCRIPTION
-   Reformat each paragraph on standard input, writing to standard output. A 
-   paragraph ends when a blank line is encountered or the left margin       
-   changes.                                                                 
+   Ignoring lines not beginning with an exclamation, trim the leading
+   exclamation and then reformat each paragraph on standard input,
+   prefixing the output with an exclamation.
 
-   Only reformat blocks of lines beginning with an exclamation ('!') character.
+   A paragraph ends when a blank line is encountered or the left margin
+   changes.
 
 OPTIONS
        -w, WIDTH               maximum line width (default of 75 columns)

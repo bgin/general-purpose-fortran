@@ -28,7 +28,7 @@ NAME
    degrees(1f) - [CONVERT] Convert between Fahrenheit and Celsius temperature values
 
 SYNOPSIS
-   degrees [value_unit ...] [-C values] [-F values] [--help] [--version]
+   degrees [value_unit ...] [ -C values] [ -F values] [ --help] [ --version]
 
 DESCRIPTION
 

@@ -11,8 +11,8 @@ NAME
    table2html(1f) - [FILE FILTER] filter to format simple columns into an HTML table form
 
 SYNOPSIS
-   table2html [[-classes classnames] [-caption caption line] [-delimiters delim] 
-              [-asis] [-header] [-tabletags tags] ] |-help|-version
+   table2html [[ -classes classnames] [ -caption caption line] [ -delimiters delim] 
+              [ -asis] [ -header] [ -tabletags tags] ] |-help|-version
 
 DESCRIPTION
    table2html is a filter that converts tabular text input to an HTML

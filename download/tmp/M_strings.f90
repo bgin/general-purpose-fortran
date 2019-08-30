@@ -3,11 +3,11 @@
 !!    M_strings(3f) - [M_strings:INTRO] Fortran string module
 !!##DESCRIPTION
 !!
-!!    The M_strings(3fm) module is a collection of Fortran procedures that
-!!    supplement the built-in routines. Routines for parsing, tokenizing,
-!!    changing case, substituting new strings for substrings, locating
-!!    strings with simple wildcard expressions, removing tabs and line
-!!    terminators and other string manipulations are included.
+!!    The M_strings(3fm) module is a collection of Fortran procedures
+!!    that supplement the built-in intrinsic string routines. Routines
+!!    for parsing, tokenizing, changing case, substituting new strings for
+!!    substrings, locating strings with simple wildcard expressions, removing
+!!    tabs and line terminators and other string manipulations are included.
 !!
 !!    M_strings_oop(3fm) is a companion module that provides an OOP interface
 !!    to the M_strings module.
@@ -23,7 +23,8 @@
 !!    use M_strings, only : split,delim,chomp
 !!    use M_strings, only : substitute,change,modif,transliterate,reverse,replace,join
 !!    use M_strings, only : upper,lower
-!!    use M_strings, only : adjustc,compact,nospace,indent,crop,unquote
+!!    use M_strings, only : rotate13
+!!    use M_strings, only : adjustc,compact,nospace,indent,crop,unquote,quote
 !!    use M_strings, only : len_white,atleast,stretch,lenset,merge_str
 !!    use M_strings, only : switch,s2c,c2s
 !!    use M_strings, only : noesc,notabs,expand,visible
@@ -56,6 +57,7 @@
 !!    transliterate  replace characters found in set one with characters from set two
 !!    reverse        reverse character order in a string
 !!    join           join an array of CHARACTER variables with specified separator
+!!    rotate13       apply trivial encryption algorithm ROT13 to a string
 !!
 !!    CASE
 !!
@@ -73,6 +75,7 @@
 !!    QUOTES
 !!
 !!    unquote  remove quotes from string as if read with list-directed input
+!!    quote    add quotes to string as if written with list-directed input
 !!
 !!    STRING LENGTH
 !!
@@ -450,6 +453,7 @@ PUBLIC modif           !  change string using a directive using rules similar to
 PUBLIC transliterate   !  when characters in set one are found replace them with characters from set two
 PUBLIC reverse         !  elemental function reverses character order in a string
 PUBLIC join            !  append an array of character variables with specified separator into a single CHARACTER variable
+PUBLIC rotate13        !  apply trivial encryption algorithm ROT13 to string
 !----------------------# CHARACTER ARRAY VERSUS STRING
 PUBLIC switch          !  generic switch between a string and an array of single characters (a2s,s2a)
 PRIVATE a2s            !  function to copy char array to string
@@ -467,6 +471,7 @@ PUBLIC indent          !  count number of leading spaces
 PUBLIC crop            !  function trims leading and trailing spaces
 !----------------------# QUOTES
 PUBLIC unquote         !  remove quotes from string as if read with list-directed input
+PUBLIC quote           !  add quotes to string as if written with list-directed input
 !----------------------# STRING LENGTH
 PUBLIC lenset          !  return a string as specified length
 PUBLIC atleast         !  return a string of at least specified length
@@ -706,11 +711,11 @@ character(len=*),parameter::ident_5="@(#)M_strings::matchw(3f): compare string t
 
 character(len=*),intent(in) :: pattern                            ! input: pattern may contain * and ?
 character(len=*),intent(in) :: string                             ! input: string to be compared
-   integer :: lenp
-   integer :: lens
-   integer :: n
-   integer :: p
-   integer :: s
+integer                     :: lenp
+integer                     :: lens
+integer                     :: n
+integer                     :: p
+integer                     :: s
 !-----------------------------------------------------------------------========----------------------------------------------------
    lenp = len_trim(pattern)                                       ! find last non-blank character in pattern string
    lens = len_trim(string)                                        ! find last non-blank character in input string
@@ -962,7 +967,7 @@ end subroutine test_matchw
 !!    > 20 ==>
 !!    >  SIZE:          20
 !===================================================================================================================================
-   subroutine split(input_line,array,delimiters,order,nulls)
+subroutine split(input_line,array,delimiters,order,nulls)
 !-----------------------------------------------------------------------------------------------------------------------------------
 
 character(len=*),parameter::ident_6="&
@@ -970,33 +975,33 @@ character(len=*),parameter::ident_6="&
 
 !  John S. Urban
 !-----------------------------------------------------------------------------------------------------------------------------------
-   intrinsic index, min, present, len
+intrinsic index, min, present, len
 !-----------------------------------------------------------------------------------------------------------------------------------
 !  given a line of structure " par1 par2 par3 ... parn " store each par(n) into a separate variable in array.
 !    o by default adjacent delimiters in the input string do not create an empty string in the output array
 !    o no quoting of delimiters is supported
-   character(len=*),intent(in)              :: input_line  ! input string to tokenize
-   character(len=*),optional,intent(in)     :: delimiters  ! list of delimiter characters
-   character(len=*),optional,intent(in)     :: order       ! order of output array sequential|[reverse|right]
-   character(len=*),optional,intent(in)     :: nulls       ! return strings composed of delimiters or not ignore|return|ignoreend
-   character(len=:),allocatable,intent(out) :: array(:)    ! output array of tokens
+character(len=*),intent(in)              :: input_line  ! input string to tokenize
+character(len=*),optional,intent(in)     :: delimiters  ! list of delimiter characters
+character(len=*),optional,intent(in)     :: order       ! order of output array sequential|[reverse|right]
+character(len=*),optional,intent(in)     :: nulls       ! return strings composed of delimiters or not ignore|return|ignoreend
+character(len=:),allocatable,intent(out) :: array(:)    ! output array of tokens
 !-----------------------------------------------------------------------------------------------------------------------------------
-   integer                       :: n                      ! max number of strings INPUT_LINE could split into if all delimiter
-   integer,allocatable           :: ibegin(:)              ! positions in input string where tokens start
-   integer,allocatable           :: iterm(:)               ! positions in input string where tokens end
-   character(len=:),allocatable  :: dlim                   ! string containing delimiter characters
-   character(len=:),allocatable  :: ordr                   ! string containing order keyword
-   character(len=:),allocatable  :: nlls                   ! string containing nulls keyword
-   integer                       :: ii,iiii                ! loop parameters used to control print order
-   integer                       :: icount                 ! number of tokens found
-   integer                       :: ilen                   ! length of input string with trailing spaces trimmed
-   integer                       :: i10,i20,i30            ! loop counters
-   integer                       :: icol                   ! pointer into input string as it is being parsed
-   integer                       :: idlim                  ! number of delimiter characters
-   integer                       :: ifound                 ! where next delimiter character is found in remaining input string data
-   integer                       :: inotnull               ! count strings not composed of delimiters
-   integer                       :: ireturn                ! number of tokens returned
-   integer                       :: imax                   ! length of longest token
+integer                       :: n                      ! max number of strings INPUT_LINE could split into if all delimiter
+integer,allocatable           :: ibegin(:)              ! positions in input string where tokens start
+integer,allocatable           :: iterm(:)               ! positions in input string where tokens end
+character(len=:),allocatable  :: dlim                   ! string containing delimiter characters
+character(len=:),allocatable  :: ordr                   ! string containing order keyword
+character(len=:),allocatable  :: nlls                   ! string containing nulls keyword
+integer                       :: ii,iiii                ! loop parameters used to control print order
+integer                       :: icount                 ! number of tokens found
+integer                       :: ilen                   ! length of input string with trailing spaces trimmed
+integer                       :: i10,i20,i30            ! loop counters
+integer                       :: icol                   ! pointer into input string as it is being parsed
+integer                       :: idlim                  ! number of delimiter characters
+integer                       :: ifound                 ! where next delimiter character is found in remaining input string data
+integer                       :: inotnull               ! count strings not composed of delimiters
+integer                       :: ireturn                ! number of tokens returned
+integer                       :: imax                   ! length of longest token
 !-----------------------------------------------------------------------------------------------------------------------------------
    ! decide on value for optional DELIMITERS parameter
    if (present(delimiters)) then                                     ! optional delimiter list was present
@@ -1089,14 +1094,14 @@ subroutine test_split
 !!  split: parse a string using specified delimiter characters and store tokens into an array
 !!$SYSTEM  goodbad split start -library libGPF -filename `pwd`/M_strings.FF --section 3
 !!   USE M_strings, ONLY: split
-   INTRINSIC SIZE
-   CHARACTER(LEN=:),ALLOCATABLE    :: line
-   CHARACTER(LEN=:),ALLOCATABLE    :: order
-   CHARACTER(LEN=:),ALLOCATABLE    :: dlm
-   CHARACTER(LEN=:),ALLOCATABLE    :: array(:)
-   character(len=10)               :: orders(3)=['sequential', '          ', 'reverse   ' ]
-   ! return strings composed of delimiters or not IGNORE|RETURN|IGNOREEND
-   character(len=10)               :: nulls(3)=['ignore    ', 'return    ', 'ignoreend ' ]
+INTRINSIC SIZE
+CHARACTER(LEN=:),ALLOCATABLE    :: line
+CHARACTER(LEN=:),ALLOCATABLE    :: order
+CHARACTER(LEN=:),ALLOCATABLE    :: dlm
+CHARACTER(LEN=:),ALLOCATABLE    :: array(:)
+character(len=10)               :: orders(3)=['sequential', '          ', 'reverse   ' ]
+! return strings composed of delimiters or not IGNORE|RETURN|IGNOREEND
+character(len=10)               :: nulls(3)=['ignore    ', 'return    ', 'ignoreend ' ]
 !-----------------------------------------------------------------------------------------------------------------------------------
    call unit_check_start('split',' &
       & -description ''subroutine parses string on delimiters and store tokens into an array'' &
@@ -1263,10 +1268,10 @@ character(len=*)                         :: source_string    ! string to tokeniz
 character(len=:),allocatable,intent(out) :: token            ! returned token
 character(len=*),intent(in),optional     :: delimiters       ! list of separator characters
 integer                                  :: chomp            ! returns copy of shifted source_string
-   character(len=:),allocatable          :: delimiters_local
-   integer                               :: token_start      ! beginning of token found if function result is .true.
-   integer                               :: token_end        ! end of token found if function result is .true.
-   integer                               :: isource_len
+character(len=:),allocatable             :: delimiters_local
+integer                                  :: token_start      ! beginning of token found if function result is .true.
+integer                                  :: token_end        ! end of token found if function result is .true.
+integer                                  :: isource_len
 !-----------------------------------------------------------------------------------------------------------------------------------
 !  calculate where token_start should start for this pass
    if(present(delimiters))then
@@ -1627,19 +1632,19 @@ end subroutine test_delim
 !===================================================================================================================================
 !>
 !!##NAME
-!!    replace(3f) - [M_strings:EDITING] Globally replace one substring for another in strin
+!!    replace(3f) - [M_strings:EDITING] function globally replaces one substring for another in strin
 !!
 !!##SYNOPSIS
 !!
-!!    function replace(targetline,old,new,ierr) result (newline)
+!!    function replace(targetline[,old,new|cmd],range,ierr) result (newline)
 !!
 !!     character(len=*)                       :: targetline
 !!     character(len=*),intent(in),optional   :: old
 !!     character(len=*),intent(in),optional   :: new
-!!     integer,intent(out),optional           :: ierr
 !!     character(len=*),intent(in),optional   :: cmd
-!!     character(len=:),allocatable           :: newline
 !!     integer,intent(in),optional            :: range(2)
+!!     integer,intent(out),optional           :: ierr
+!!     character(len=:),allocatable           :: newline
 !!##DESCRIPTION
 !!    Globally replace one substring for another in string.
 !!    Either CMD or OLD and NEW must be specified.
@@ -1653,7 +1658,7 @@ end subroutine test_delim
 !!                 not in "old" or "new"
 !!     ierr        error code. iF ier = -1 bad directive, >= 0 then
 !!                 count of changes made
-!!     range       if present, only change range(1) to range(2) of occurrences of old strin
+!!     range       if present, only change range(1) to range(2) of occurrences of old string
 !!##RETURNS
 !!     newline     allocatable string returned
 !!
@@ -1732,16 +1737,16 @@ end subroutine test_delim
 !===================================================================================================================================
 subroutine crack_cmd(cmd,old,new,ierr)
 !-----------------------------------------------------------------------------------------------------------------------------------
-   character(len=*),intent(in)              :: cmd
-   character(len=:),allocatable,intent(out) :: old,new                ! scratch string buffers
-   integer                                  :: ierr
+character(len=*),intent(in)              :: cmd
+character(len=:),allocatable,intent(out) :: old,new                ! scratch string buffers
+integer                                  :: ierr
 !-----------------------------------------------------------------------------------------------------------------------------------
-   character(len=1)                         :: delimiters
-   integer                                  :: itoken
-   integer,parameter                        :: id=2                   ! expected location of delimiter
-   logical                                  :: ifok
-   integer                                  :: lmax                   ! length of target string
-   integer                                  :: start_token,end_token
+character(len=1)                         :: delimiters
+integer                                  :: itoken
+integer,parameter                        :: id=2                   ! expected location of delimiter
+logical                                  :: ifok
+integer                                  :: lmax                   ! length of target string
+integer                                  :: start_token,end_token
 !-----------------------------------------------------------------------------------------------------------------------------------
    ierr=0
    old=''
@@ -1781,27 +1786,27 @@ character(len=*),parameter::ident_9="@(#)M_strings::replace(3f): Globally replac
 
 !-----------------------------------------------------------------------------------------------------------------------------------
 ! parameters
-   character(len=*),intent(in)            :: targetline   ! input line to be changed
-   character(len=*),intent(in),optional   :: old          ! old substring to replace
-   character(len=*),intent(in),optional   :: new          ! new substring
-   integer,intent(out),optional           :: ierr         ! error code. if ierr = -1 bad directive, >=0 then ierr changes made
-   character(len=*),intent(in),optional   :: cmd          ! contains the instructions changing the string
-   integer,intent(in),optional            :: range(2)     ! start and end of which changes to make
+character(len=*),intent(in)            :: targetline   ! input line to be changed
+character(len=*),intent(in),optional   :: old          ! old substring to replace
+character(len=*),intent(in),optional   :: new          ! new substring
+integer,intent(out),optional           :: ierr         ! error code. if ierr = -1 bad directive, >=0 then ierr changes made
+character(len=*),intent(in),optional   :: cmd          ! contains the instructions changing the string
+integer,intent(in),optional            :: range(2)     ! start and end of which changes to make
 !-----------------------------------------------------------------------------------------------------------------------------------
 ! returns
-   character(len=:),allocatable  :: newline               ! output string buffer
+character(len=:),allocatable  :: newline               ! output string buffer
 !-----------------------------------------------------------------------------------------------------------------------------------
 ! local
-   character(len=:),allocatable  :: new_local, old_local
-   integer                       :: icount,ichange,ier2
-   integer                       :: original_input_length
-   integer                       :: len_old, len_new
-   integer                       :: ladd
-   integer                       :: left_margin, right_margin
-   integer                       :: ind
-   integer                       :: ic
-   integer                       :: ichar
-   integer                       :: range_local(2)
+character(len=:),allocatable  :: new_local, old_local
+integer                       :: icount,ichange,ier2
+integer                       :: original_input_length
+integer                       :: len_old, len_new
+integer                       :: ladd
+integer                       :: left_margin, right_margin
+integer                       :: ind
+integer                       :: ic
+integer                       :: ichar
+integer                       :: range_local(2)
 !-----------------------------------------------------------------------------------------------------------------------------------
 !  get old_local and new_local from cmd or old and new
    if(present(cmd))then
@@ -1938,7 +1943,7 @@ end subroutine test_replace
 !===================================================================================================================================
 !>
 !!##NAME
-!!    substitute(3f) - [M_strings:EDITING] Globally substitute one substring for another in strin
+!!    substitute(3f) - [M_strings:EDITING] subroutine globally substitutes one substring for another in strin
 !!
 !!##SYNOPSIS
 !!
@@ -2006,25 +2011,25 @@ subroutine substitute(targetline,old,new,ierr,start,end)
 character(len=*),parameter::ident_10="@(#)M_strings::substitute(3f): Globally substitute one substring for another in string"
 
 !-----------------------------------------------------------------------------------------------------------------------------------
-   character(len=*)              :: targetline         ! input line to be changed
-   character(len=*),intent(in)   :: old                ! old substring to replace
-   character(len=*),intent(in)   :: new                ! new substring
-   integer,intent(out),optional  :: ierr               ! error code. if ierr = -1 bad directive, >=0 then ierr changes made
-   integer,intent(in),optional   :: start              ! start sets the left margin
-   integer,intent(in),optional   :: end                ! end sets the right margin
+character(len=*)               :: targetline         ! input line to be changed
+character(len=*),intent(in)    :: old                ! old substring to replace
+character(len=*),intent(in)    :: new                ! new substring
+integer,intent(out),optional   :: ierr               ! error code. if ierr = -1 bad directive, >=0 then ierr changes made
+integer,intent(in),optional    :: start              ! start sets the left margin
+integer,intent(in),optional    :: end                ! end sets the right margin
 !-----------------------------------------------------------------------------------------------------------------------------------
-   character(len=len(targetline)):: dum1               ! scratch string buffers
-   integer                       :: ml, mr, ier1
-   integer                       :: maxlengthout       ! MAXIMUM LENGTH ALLOWED FOR NEW STRING
-   integer                       :: original_input_length
-   integer                       :: len_old, len_new
-   integer                       :: ladd
-   integer                       :: ir
-   integer                       :: ind
-   integer                       :: il
-   integer                       :: id
-   integer                       :: ic
-   integer                       :: ichar
+character(len=len(targetline)) :: dum1               ! scratch string buffers
+integer                        :: ml, mr, ier1
+integer                        :: maxlengthout       ! MAXIMUM LENGTH ALLOWED FOR NEW STRING
+integer                        :: original_input_length
+integer                        :: len_old, len_new
+integer                        :: ladd
+integer                        :: ir
+integer                        :: ind
+integer                        :: il
+integer                        :: id
+integer                        :: ic
+integer                        :: ichar
 !-----------------------------------------------------------------------------------------------------------------------------------
    if (present(start)) then                            ! optional starting column
       ml=start
@@ -2451,7 +2456,7 @@ integer,intent(inout)        :: itoken           ! token count since started
 logical                      :: strtok_status    ! returned value
 integer,intent(out)          :: token_start      ! beginning of token found if function result is .true.
 integer,intent(out)          :: token_end        ! end of token found if function result is .true.
-   integer,save              :: isource_len
+integer,save                 :: isource_len
 !----------------------------------------------------------------------------------------------------------------------------
 !  calculate where token_start should start for this pass
    if(itoken.le.0)then                           ! this is assumed to be the first call
@@ -2495,16 +2500,16 @@ integer,intent(out)          :: token_end        ! end of token found if functio
 end function strtok
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_strtok()
-   integer,parameter             :: length=264
-   character(len=length)         :: inline
-   integer                       :: istart(length/2+1)
-   integer                       :: iend(length/2+1)
-   integer,allocatable           :: istart_expected(:)
-   integer,allocatable           :: iend_expected(:)
-   character(len=:),allocatable  :: words_expected(:)
-   character(len=*),parameter    :: delimiters=' ;,'
-   integer                       :: is,ie
-   integer                       :: itoken
+integer,parameter             :: length=264
+character(len=length)         :: inline
+integer                       :: istart(length/2+1)
+integer                       :: iend(length/2+1)
+integer,allocatable           :: istart_expected(:)
+integer,allocatable           :: iend_expected(:)
+character(len=:),allocatable  :: words_expected(:)
+character(len=*),parameter    :: delimiters=' ;,'
+integer                       :: is,ie
+integer                       :: itoken
    call unit_check_start('strtok',' &
    & -section 3  &
    & -library libGPF  &
@@ -2666,60 +2671,60 @@ character(len=len(cline))   :: dum2         !SCRATCH CHARACTER BUFFER
 logical                     :: linsrt       !FLAG FOR INSERTING DATA ON LINE
 integer :: i, j, ic, ichar, iend, lmax, lmx1
 maxscra=len(cline)
-      CMOD=TRIM(MOD)
-      LMAX=MIN0(LEN(CLINE),MAXSCRA)         !DETERMINE MAXIMUM LINE LENGTH
-      LMX1=LMAX-1                           !MAX LINE LENGTH -1
-      DUM2=' '                              !INITIALIZE NEW LINE
-      LINSRT=.FALSE.                        !INITIALIZE INSERT MODE
-      IEND=len_trim(CMOD)                   !DETERMINE END OF MODS
-      I=0                                   !CHAR COUNTER FOR MOD LINE CMOD
-      IC=0                                  !CHAR COUNTER FOR CURRENT LINE CLINE
-      ICHAR=0                               !CHAR COUNTER NEW LINE DUM2
-11    CONTINUE
-      I=I+1                                 !NEXT CHAR IN MOD LINE
-      IF(ICHAR.GT.LMX1)GOTO 999             !IF TOO MANY CHARS IN NEW LINE
-      IF(LINSRT) THEN                       !IF INSERTING NEW CHARS
-         IF(I.GT.IEND) CMOD(I:I)=C(1:1)     !FORCE END OF INSERT MODE
-         IF(CMOD(I:I).EQ.C(1:1))THEN        !IF END OF INSERT MODE
-            LINSRT=.FALSE.                  !RESET INSERT MODE FLAG
-            IF(IC+1.EQ.I)THEN               !NULL INSERT STRING
-               ICHAR=ICHAR+1                !INCREMENT COUNTER FOR NEW LINE
-               DUM2(ICHAR:ICHAR)=C(1:1)     !INSERT INSERT MODE TERMINATOR
-            ENDIF
-            DO J=IC,I                       !LOOP OF NUMBER OF CHARS INSERTED
-               ICHAR=ICHAR+1                !INCREMENT COUNTER FOR NEW LINE
-               IF(ICHAR.GT.LMAX)GOTO 999    !IF AT BUFFER LIMIT, QUIT
-               DUM2(ICHAR:ICHAR)=CLINE(J:J) !APPEND CHARS FROM ORIG LINE
-            ENDDO                           !...WHICH ALIGN WITH INSERTED CHARS
-            IC=I                            !RESET CHAR COUNT TO END OF INSERT
-            GOTO 1                          !CHECK NEW LINE LENGTH AND CYCLE
-         ENDIF                              !END OF TERMINATED INSERT LOGIC
-         ICHAR=ICHAR+1                      !INCREMENT NEW LINE COUNT
-         DUM2(ICHAR:ICHAR)=CMOD(I:I)        !SET NEWLINE CHAR TO INSERTED CHAR
-      ELSE                                  !IF NOT INSERTING CHARACTERS
-         IC=IC+1                            !INCREMENT ORIGINAL LINE COUNTER
-         IF(CMOD(I:I).EQ.C(1:1))GOTO 1      !IF DELETE CHAR. NO COPY AND CYCLE
-         IF(CMOD(I:I).EQ.C(3:3))THEN        !IF BEGIN INSERT MODE
-            LINSRT=.TRUE.                   !SET INSERT FLAG TRUE
-            GOTO 1                          !CHECK LINE LENGTH AND CONTINUE
-         ENDIF                              !IF NOT BEGINNING INSERT MODE
-         ICHAR=ICHAR+1                      !INCREMENT NEW LINE COUNTER
-         IF(CMOD(I:I).EQ.C(2:2))THEN        !IF REPLACE WITH BLANK
-            DUM2(ICHAR:ICHAR)=' '           !SET NEWLINE CHAR TO BLANK
-            GOTO 1                          !CHECK LINE LENGTH AND CYCLE
-         ENDIF                              !IF NOT REPLACE WITH BLANK
-         IF(CMOD(I:I).EQ.' ')THEN           !IF BLANK, KEEP ORIGINAL CHARACTER
-            DUM2(ICHAR:ICHAR)=CLINE(IC:IC)  !SET NEW CHAR TO ORIGINAL CHAR
-         ELSE                               !IF NOT KEEPING OLD CHAR
-            DUM2(ICHAR:ICHAR)=CMOD(I:I)     !REPLACE ORIGINAL CHAR WITH NEW
-         ENDIF                              !END CHAR KEEP OR REPLACE
-      ENDIF                                 !END INSERT OR NO-INSERT
-1     CONTINUE
-      IF(I.LT.LMAX)GOTO 11                  !CHECK FOR END OF LINE REACHED
-                                            !AND CYCLE IF OK
+   CMOD=TRIM(MOD)
+   LMAX=MIN0(LEN(CLINE),MAXSCRA)         !DETERMINE MAXIMUM LINE LENGTH
+   LMX1=LMAX-1                           !MAX LINE LENGTH -1
+   DUM2=' '                              !INITIALIZE NEW LINE
+   LINSRT=.FALSE.                        !INITIALIZE INSERT MODE
+   IEND=len_trim(CMOD)                   !DETERMINE END OF MODS
+   I=0                                   !CHAR COUNTER FOR MOD LINE CMOD
+   IC=0                                  !CHAR COUNTER FOR CURRENT LINE CLINE
+   ICHAR=0                               !CHAR COUNTER NEW LINE DUM2
+11 CONTINUE
+   I=I+1                                 !NEXT CHAR IN MOD LINE
+   IF(ICHAR.GT.LMX1)GOTO 999             !IF TOO MANY CHARS IN NEW LINE
+   IF(LINSRT) THEN                       !IF INSERTING NEW CHARS
+      IF(I.GT.IEND) CMOD(I:I)=C(1:1)     !FORCE END OF INSERT MODE
+      IF(CMOD(I:I).EQ.C(1:1))THEN        !IF END OF INSERT MODE
+         LINSRT=.FALSE.                  !RESET INSERT MODE FLAG
+         IF(IC+1.EQ.I)THEN               !NULL INSERT STRING
+            ICHAR=ICHAR+1                !INCREMENT COUNTER FOR NEW LINE
+            DUM2(ICHAR:ICHAR)=C(1:1)     !INSERT INSERT MODE TERMINATOR
+         ENDIF
+         DO J=IC,I                       !LOOP OF NUMBER OF CHARS INSERTED
+            ICHAR=ICHAR+1                !INCREMENT COUNTER FOR NEW LINE
+            IF(ICHAR.GT.LMAX)GOTO 999    !IF AT BUFFER LIMIT, QUIT
+            DUM2(ICHAR:ICHAR)=CLINE(J:J) !APPEND CHARS FROM ORIG LINE
+         ENDDO                           !...WHICH ALIGN WITH INSERTED CHARS
+         IC=I                            !RESET CHAR COUNT TO END OF INSERT
+         GOTO 1                          !CHECK NEW LINE LENGTH AND CYCLE
+      ENDIF                              !END OF TERMINATED INSERT LOGIC
+      ICHAR=ICHAR+1                      !INCREMENT NEW LINE COUNT
+      DUM2(ICHAR:ICHAR)=CMOD(I:I)        !SET NEWLINE CHAR TO INSERTED CHAR
+   ELSE                                  !IF NOT INSERTING CHARACTERS
+      IC=IC+1                            !INCREMENT ORIGINAL LINE COUNTER
+      IF(CMOD(I:I).EQ.C(1:1))GOTO 1      !IF DELETE CHAR. NO COPY AND CYCLE
+      IF(CMOD(I:I).EQ.C(3:3))THEN        !IF BEGIN INSERT MODE
+         LINSRT=.TRUE.                   !SET INSERT FLAG TRUE
+         GOTO 1                          !CHECK LINE LENGTH AND CONTINUE
+      ENDIF                              !IF NOT BEGINNING INSERT MODE
+      ICHAR=ICHAR+1                      !INCREMENT NEW LINE COUNTER
+      IF(CMOD(I:I).EQ.C(2:2))THEN        !IF REPLACE WITH BLANK
+         DUM2(ICHAR:ICHAR)=' '           !SET NEWLINE CHAR TO BLANK
+         GOTO 1                          !CHECK LINE LENGTH AND CYCLE
+      ENDIF                              !IF NOT REPLACE WITH BLANK
+      IF(CMOD(I:I).EQ.' ')THEN           !IF BLANK, KEEP ORIGINAL CHARACTER
+         DUM2(ICHAR:ICHAR)=CLINE(IC:IC)  !SET NEW CHAR TO ORIGINAL CHAR
+      ELSE                               !IF NOT KEEPING OLD CHAR
+         DUM2(ICHAR:ICHAR)=CMOD(I:I)     !REPLACE ORIGINAL CHAR WITH NEW
+      ENDIF                              !END CHAR KEEP OR REPLACE
+   ENDIF                                 !END INSERT OR NO-INSERT
+1  CONTINUE
+   IF(I.LT.LMAX)GOTO 11                  !CHECK FOR END OF LINE REACHED
+                                         !AND CYCLE IF OK
 999   CONTINUE
-      CLINE=DUM2                            !SET ORIGINAL CHARS TO NEW CHARS
-END SUBROUTINE MODIF                        !RETURN
+   CLINE=DUM2                            !SET ORIGINAL CHARS TO NEW CHARS
+END SUBROUTINE MODIF                     !RETURN
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_modif()
 character(len=256)           :: line
@@ -3035,9 +3040,140 @@ call unit_check('transliterate',transliterate('AbCDefgHiJklmnoPQRStUvwxyZ',lc,uc
 call unit_check('transliterate',transliterate('AbCDefgHiJklmnoPQRStUvwxyZ',uc,lc).eq.lc(1:26),msg='transliterate to lowercase')
 call unit_check_done('transliterate')
 end subroutine test_transliterate
-!===================================================================================================================================
+!==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
+!>
+!!##NAME
+!!    rotate13(3f) - [M_strings] apply trivial ROT13 encryption to a string
+!!##SYNOPSIS
+!!
+!!    rotate13(input) result(output)
+!!
+!!     character(len=*),intent(in) :: input
+!!     character(len=len(input))   :: output
+!!
+!!##DESCRIPTION
+!!    ROT13 ("rotate by 13 places", sometimes hyphenated ROT-13) is a simple
+!!    letter substitution cipher that replaces a letter with the 13th letter
+!!    after it in the alphabet; wrapping around if necessary.
+!!
+!!    The transformation can be done using a lookup table, such as the
+!!    following:
+!!
+!!       Input  ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz
+!!       Output NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm
+!!
+!!    ROT13 is used in online forums as a means of hiding spoilers, punchlines,
+!!    puzzle solutions, and offensive materials from the casual glance. ROT13
+!!    has inspired a variety of letter and word games on-line, and is frequentl
+!!    mentioned in newsgroup conversations.
+!!
+!!    The algorithm provides virtually no cryptographic security, and is
+!!    often cited as a canonical example of weak encryption.
+!!
+!!    ROT13 is a special case of the Caesar cipher which was developed in
+!!    ancient Rome.
+!!
+!!    ALGORITHM
+!!
+!!    Applying ROT13 to a piece of text merely requires examining its alphabeti
+!!    characters and replacing each one by the letter 13 places further along i
+!!    the alphabet, wrapping back to the beginning if necessary. A becomes
+!!    N, B becomes O, and so on up to M, which becomes Z, then the sequence
+!!    continues at the beginning of the alphabet: N becomes A, O becomes B,
+!!    and so on to Z, which becomes M. Only those letters which occur in the
+!!    English alphabet are affected; numbers, symbols, whitespace, and all othe
+!!    characters are left unchanged.
+!!
+!!    SAME ALGORITHM FOR ENCODING AND DECODING
+!!
+!!    Because there are 26 letters in the English alphabet and 26 = 2 x 13,
+!!    the ROT13 function is its own inverse: so the same action can be used
+!!    for encoding and decoding. In other words, two successive applications
+!!    of ROT13 restore the original text (in mathematics, this is sometimes
+!!    called an involution; in cryptography, a reciprocal cipher).
+!!
+!!    TRIVIAL SECURITY
+!!
+!!    the use of a constant shift means that the encryption effectively
+!!    has no key, and decryption requires no more knowledge than the fact
+!!    that ROT13 is in use. Even without this knowledge, the algorithm is
+!!    easily broken through frequency analysis.
+!!
+!!    In encrypted normal English-language text of any significant size,
+!!    ROT13 is recognizable from some letter/word patterns. The words "n",
+!!    "V" (capitalized only), and "gur" (ROT13 for "a", "I", and "the"),
+!!    and words ending in "yl" ("ly") are examples.
+!!
+!!##REFERENCES
+!!    Wikipedia, the free encyclopedia
+!!##EXAMPLE
+!!
+!!   Sample program
+!!
+!!    program demo_rotate13
+!!    use M_strings, only : rotate13
+!!    implicit none
+!!    character(len=256) :: line
+!!    integer            :: ios
+!!    do
+!!       read(*,'(a)',iostat=ios)line
+!!       if(ios.ne.0)exit
+!!       write(*,'(a)')rotate13(line)
+!!    enddo
+!!    end program demo_rotate13
+!!
+!!  Sample usage:
+!!    demo_rotate13
+!!    United we stand, divided we fall.
+!!    Havgrq jr fgnaq, qvivqrq jr snyy.
 !===================================================================================================================================
+function rotate13 (input)
+implicit none
+
+character(len=*),parameter::ident_16="&
+&@(#)M_strings::rotate13(3f): converts a character to its ROT13 equivalent, which is a trivial encryption."
+
+character(len=*),intent(in) :: input
+character(len=len(input))   :: rotate13
+integer                     :: itemp
+integer                     :: i
+   rotate13=' '
+   do i=1,len_trim(input)
+      itemp = ichar (input(i:i))
+      select case(itemp)
+       case(65:77,97:109)
+         itemp = itemp + 13
+       case(78:90,110:122)
+         itemp = itemp - 13
+      end select
+      rotate13(i:i) = char ( itemp )
+   enddo
+
+end function rotate13
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_rotate13()
+character(len=:),allocatable  :: s
+character(len=:),allocatable  :: e
+   call unit_check_start('rotate13',' &
+      & -description ''apply trivial encryption algorithm ROT13 to a string'' &
+      & -section 3  &
+      & -library libGPF  &
+      & -filename `pwd`/M_strings.FF &
+      & -documentation y &
+      & -ufpp         y &
+      & -ccall        n &
+      & -archive      GPF.a &
+      & ')
+   s='United we stand, divided we fall.'
+   e='Havgrq jr fgnaq, qvivqrq jr snyy.'
+   call unit_check('rotate13',rotate13(s).eq.e,msg=msg(s,'==>',rotate13(s)))
+   call unit_check_done('rotate13',msg='')
+end subroutine test_rotate13
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
 !>
 !!##NAME
 !!      join(3f) - [M_strings:EDITING] append CHARACTER variable array into a single CHARACTER variable with specified separato
@@ -3092,7 +3228,7 @@ end subroutine test_transliterate
 !===================================================================================================================================
 pure function join(str,sep,trm,left,right) result (string)
 
-character(len=*),parameter::ident_16="&
+character(len=*),parameter::ident_17="&
 &@(#)M_strings::join(3f): append an array of character variables with specified separator into a single CHARACTER variable"
 
 character(len=*),intent(in)          :: str(:)
@@ -3100,12 +3236,12 @@ character(len=*),intent(in),optional :: sep
 character(len=*),intent(in),optional :: right
 character(len=*),intent(in),optional :: left
 logical,intent(in),optional          :: trm
-   character(len=:),allocatable      :: string
-   integer                           :: i
-   logical                           :: trm_local
-   character(len=:),allocatable      :: sep_local
-   character(len=:),allocatable      :: left_local
-   character(len=:),allocatable      :: right_local
+character(len=:),allocatable         :: string
+integer                              :: i
+logical                              :: trm_local
+character(len=:),allocatable         :: sep_local
+character(len=:),allocatable         :: left_local
+character(len=:),allocatable         :: right_local
 
    if(present(sep))then    ;  sep_local=sep      ;  else  ;  sep_local=''      ;  endif
    if(present(trm))then    ;  trm_local=trm      ;  else  ;  trm_local=.true.  ;  endif
@@ -3195,12 +3331,12 @@ end subroutine test_join
 !===================================================================================================================================
 elemental function reverse(string ) result (rev)
 
-character(len=*),parameter::ident_17="@(#)M_strings::reverse(3f): Return a string reversed"
+character(len=*),parameter::ident_18="@(#)M_strings::reverse(3f): Return a string reversed"
 
 character(len=*),intent(in)    :: string   ! string to reverse
 character(len=len(string))     :: rev      ! return value (reversed string)
-   integer                     :: length
-   integer                     :: i
+integer                        :: length
+integer                        :: i
    length = len(string)
    do i = 1,length
       rev(i:i)=string(length-i+1:length-i+1)
@@ -3300,13 +3436,13 @@ end subroutine test_reverse
 ! upper3: 267.21user 11.69system 4:49.21elapsed 96%CPU
 elemental pure function upper(str,begin,end) result (string)
 
-character(len=*),parameter::ident_18="@(#)M_strings::upper(3f): Changes a string to uppercase"
+character(len=*),parameter::ident_19="@(#)M_strings::upper(3f): Changes a string to uppercase"
 
 character(*), intent(In)      :: str                 ! inpout string to convert to all uppercase
 integer, intent(in), optional :: begin,end
-   character(len(str))        :: string              ! output string that contains no miniscule letters
-   integer                    :: i                   ! loop counter
-   integer                    :: ibegin,iend
+character(len(str))           :: string              ! output string that contains no miniscule letters
+integer                       :: i                   ! loop counter
+integer                       :: ibegin,iend
    string = str                                      ! initialize output string to input string
 
    ibegin = 1
@@ -3398,13 +3534,13 @@ end subroutine test_upper
 !===================================================================================================================================
 elemental pure function lower(str,begin,end) result (string)
 
-character(len=*),parameter::ident_19="@(#)M_strings::lower(3f): Changes a string to lowercase over specified range"
+character(len=*),parameter::ident_20="@(#)M_strings::lower(3f): Changes a string to lowercase over specified range"
 
 character(*), intent(In)     :: str
 character(len(str))          :: string
 integer,intent(in),optional  :: begin, end
-   integer                   :: i
-   integer                   :: ibegin, iend
+integer                      :: i
+integer                      :: ibegin, iend
    string = str
 
    ibegin = 1
@@ -3540,7 +3676,7 @@ end subroutine test_lower
 !===================================================================================================================================
 pure function a2s(array)  result (string)
 
-character(len=*),parameter::ident_20="@(#)M_strings::a2s(3fp): function to copy char array to string"
+character(len=*),parameter::ident_21="@(#)M_strings::a2s(3fp): function to copy char array to string"
 
 character(len=1),intent(in) :: array(:)
 character(len=SIZE(array))  :: string
@@ -3554,11 +3690,11 @@ end function a2s
 !===================================================================================================================================
 pure function s2a(string)  RESULT (array)
 
-character(len=*),parameter::ident_21="@(#)M_strings::s2a(3fp): function to copy string(1:Clen(string)) to char array"
+character(len=*),parameter::ident_22="@(#)M_strings::s2a(3fp): function to copy string(1:Clen(string)) to char array"
 
-   character(len=*),intent(in) :: string
-   character(len=1)            :: array(len(string))
-   integer                     :: i
+character(len=*),intent(in) :: string
+character(len=1)            :: array(len(string))
+integer                     :: i
 ! ----------------------------------------------------------------------------------------------------------------------------------
    forall(i=1:len(string)) array(i) = string(i:i)
 ! ----------------------------------------------------------------------------------------------------------------------------------
@@ -3666,14 +3802,14 @@ end subroutine test_switch
 pure function s2c(string)  RESULT (array)
 use,intrinsic :: ISO_C_BINDING, only : C_CHAR
 
-character(len=*),parameter::ident_22="@(#)M_strings::s2c(3f): copy string(1:Clen(string)) to char array with null terminator"
+character(len=*),parameter::ident_23="@(#)M_strings::s2c(3f): copy string(1:Clen(string)) to char array with null terminator"
 
 character(len=*),intent(in)     :: string
 
 ! This is changing, but currently the most portable way to pass a CHARACTER variable to C is to convert it to an array of
 ! character variables with length one and add a null character to the end of the array. The s2c(3f) function helps do this.
-   character(kind=C_CHAR,len=1) :: array(len_trim(string)+1)
-   integer                      :: i
+character(kind=C_CHAR,len=1)    :: array(len_trim(string)+1)
+integer                         :: i
    do i = 1,size(array)-1
       array(i) = string(i:i)
    enddo
@@ -3720,7 +3856,7 @@ function c2s(c_string_pointer) result(f_string)
 ! If the C string is null, it returns "NULL", similar to C's "(null)" printed in similar cases:
 use, intrinsic :: iso_c_binding, only: c_ptr,c_f_pointer,c_char,c_null_char
 
-character(len=*),parameter::ident_23="&
+character(len=*),parameter::ident_24="&
 &@(#)M_strings::c2s(3f): copy pointer to C char array till a null is encountered to a Fortran string up to 4096 characters"
 
 integer,parameter                             :: max_length=4096
@@ -3799,11 +3935,11 @@ end subroutine test_c2s
 function indent(line)
 implicit none
 
-character(len=*),parameter::ident_24="@(#)M_strings::indent(3f): find number of leading spaces in a string"
+character(len=*),parameter::ident_25="@(#)M_strings::indent(3f): find number of leading spaces in a string"
 
 integer                        :: indent
 character(len=*),intent(in)    :: line
-   integer                     :: i
+integer                        :: i
    indent=0
    NOTSPACE: block
       SCAN: do i=1,len(line)
@@ -3877,7 +4013,7 @@ function visible(input) result(output)
 character(len=*),intent(in)  :: input
 character(len=:),allocatable :: output
 
-character(len=*),parameter::ident_25="&
+character(len=*),parameter::ident_26="&
 &@(#)M_strings::visible(3f) expand escape sequences in a string to control and meta-control representations"
 
 integer                      :: i
@@ -4020,7 +4156,7 @@ function expand(line,escape) result(lineout)
 USE ISO_C_BINDING ,ONLY: c_horizontal_tab
 implicit none
 
-character(len=*),parameter::ident_26="@(#)M_strings::expand(3f): return string with escape sequences expanded"
+character(len=*),parameter::ident_27="@(#)M_strings::expand(3f): return string with escape sequences expanded"
 
 character(len=*)                      :: line
 character(len=1),intent(in),optional  :: escape ! escape character. Default is backslash
@@ -4035,13 +4171,13 @@ character(len=1),intent(in),optional  :: escape ! escape character. Default is b
 !    %oNNN  byte with octal value NNN (3 digits)
 !    %dNNN  byte with decimal value NNN (3 digits)
 !    %xHH   byte with hexadecimal value HH (2 digits) -- h is an alias for x
-   character(len=1)             :: esc    ! escape character. Default is %
-   character(len=:),allocatable :: lineout
-   integer                      :: i
-   integer                      :: ilen
-   character(len=3)             :: thr
-   integer                      :: xxx
-   integer                      :: ios
+character(len=1)                      :: esc    ! escape character. Default is %
+character(len=:),allocatable          :: lineout
+integer                               :: i
+integer                               :: ilen
+character(len=3)                      :: thr
+integer                               :: xxx
+integer                               :: ios
    i=0 ! pointer into input
 
    ilen=len_trim(line)
@@ -4103,7 +4239,7 @@ end function expand
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_expand()
 
-character(len=*),parameter::ident_27="@(#)M_strings::test_expand(3f): test filter to expand escape sequences in input lines"
+character(len=*),parameter::ident_28="@(#)M_strings::test_expand(3f): test filter to expand escape sequences in input lines"
 
 integer :: i
 character(len=80) :: line
@@ -4199,7 +4335,7 @@ end subroutine test_expand
 !===================================================================================================================================
 subroutine notabs(INSTR,OUTSTR,ILEN)
 
-character(len=*),parameter::ident_28="&
+character(len=*),parameter::ident_29="&
 &@(#)M_strings::notabs(3f): convert tabs to spaces while maintaining columns, remove CRLF chars"
 
 CHARACTER(LEN=*),INTENT(IN)   :: instr        ! input line to scan for tab characters
@@ -4207,13 +4343,13 @@ CHARACTER(LEN=*),INTENT(OUT)  :: outstr       ! tab-expanded version of INSTR pr
 INTEGER,INTENT(OUT)           :: ilen         ! column position of last character put into output string
                                               ! that is, ILEN holds the position of the last non-blank character in OUTSTR
 !===================================================================================================================================
-   INTEGER,PARAMETER             :: tabsize=8 ! assume a tab stop is set every 8th column
-   INTEGER                       :: ipos      ! position in OUTSTR to put next character of INSTR
-   INTEGER                       :: lenin     ! length of input string trimmed of trailing spaces
-   INTEGER                       :: lenout    ! number of characters output string can hold
-   INTEGER                       :: istep     ! counter that advances thru input string INSTR one character at a time
-   CHARACTER(LEN=1)              :: c         ! character in input line being processed
-   INTEGER                       :: iade      ! ADE (ASCII Decimal Equivalent) of character being tested
+INTEGER,PARAMETER             :: tabsize=8    ! assume a tab stop is set every 8th column
+INTEGER                       :: ipos         ! position in OUTSTR to put next character of INSTR
+INTEGER                       :: lenin        ! length of input string trimmed of trailing spaces
+INTEGER                       :: lenout       ! number of characters output string can hold
+INTEGER                       :: istep        ! counter that advances thru input string INSTR one character at a time
+CHARACTER(LEN=1)              :: c            ! character in input line being processed
+INTEGER                       :: iade         ! ADE (ASCII Decimal Equivalent) of character being tested
 !===================================================================================================================================
    IPOS=1                                     ! where to put next character in output string OUTSTR
    lenin=LEN(instr)                           ! length of character variable INSTR
@@ -4324,7 +4460,7 @@ end subroutine test_notabs
 !===================================================================================================================================
 pure function adjustc(string,length)
 
-character(len=*),parameter::ident_29="@(#)M_strings::adjustc(3f): center text"
+character(len=*),parameter::ident_30="@(#)M_strings::adjustc(3f): center text"
 
 !>
 !! PROCEDURE   adjustc(3f)
@@ -4464,12 +4600,12 @@ end subroutine test_adjustc
 !===================================================================================================================================
 function nospace(line)
 
-character(len=*),parameter::ident_30="@(#)M_strings::nospace(3f): remove all whitespace from input string"
+character(len=*),parameter::ident_31="@(#)M_strings::nospace(3f): remove all whitespace from input string"
 
 character(len=*),intent(in)    ::  line             ! remove whitespace from this string and return it
 character(len=:),allocatable   ::  nospace          ! returned string
-   integer                     ::  ipos             ! position to place next output character at
-   integer                     ::  i                ! counter to increment from beginning to end of input string
+integer                        ::  ipos             ! position to place next output character at
+integer                        ::  i                ! counter to increment from beginning to end of input string
 !-----------------------------------------------------------------------------------------------------------------------------------
    allocate(nospace,mold=line)                      ! initially make output line length of input line
    nospace(:len_trim(nospace))=' '
@@ -4578,7 +4714,7 @@ end subroutine test_nospace
 !===================================================================================================================================
 function stretch(line,length,pattern,suffix) result(strout)
 
-character(len=*),parameter::ident_31="@(#)M_strings::stretch(3f): return string padded to at least specified length"
+character(len=*),parameter::ident_32="@(#)M_strings::stretch(3f): return string padded to at least specified length"
 
 character(len=*),intent(in)                  :: line
 integer,intent(in)                           :: length
@@ -4687,7 +4823,7 @@ end subroutine test_stretch
 !===================================================================================================================================
 function atleast(line,length,pattern) result(strout)
 
-character(len=*),parameter::ident_32="@(#)M_strings::atleast(3f): return string padded to at least specified length"
+character(len=*),parameter::ident_33="@(#)M_strings::atleast(3f): return string padded to at least specified length"
 
 character(len=*),intent(in)                :: line
 integer,intent(in)                         :: length
@@ -4762,7 +4898,7 @@ end subroutine test_atleast
 !===================================================================================================================================
 function lenset(line,length) result(strout)
 
-character(len=*),parameter::ident_33="@(#)M_strings::lenset(3f): return string trimmed or padded to specified length"
+character(len=*),parameter::ident_34="@(#)M_strings::lenset(3f): return string trimmed or padded to specified length"
 
 character(len=*),intent(in)  ::  line
 integer,intent(in)           ::  length
@@ -4834,13 +4970,13 @@ function merge_str(str1,str2,expr) result(strout)
 ! for some reason the MERGE(3f) intrinsic requires the strings it compares to be of equal length
 ! make an alias for MERGE(3f) that makes the lengths the same before doing the comparison by padding the shorter one with spaces
 
-character(len=*),parameter::ident_34="@(#)M_strings::merge_str(3f): pads first and second arguments to MERGE(3f) to same length"
+character(len=*),parameter::ident_35="@(#)M_strings::merge_str(3f): pads first and second arguments to MERGE(3f) to same length"
 
 character(len=*),intent(in)     :: str1
 character(len=*),intent(in)     :: str2
 logical,intent(in)              :: expr
 character(len=:),allocatable    :: strout
-   integer                      :: big
+integer                         :: big
    big=max(len(str1),len(str2))
    strout=trim(merge(lenset(str1,big),lenset(str2,big),expr))
 end function merge_str
@@ -4931,7 +5067,7 @@ end subroutine test_merge_str
 !elemental pure function compact(str,char) result (outstr)
 function compact(str,char) result (outstr)
 
-character(len=*),parameter::ident_35="@(#)M_strings::compact(3f): Converts white-space to single spaces"
+character(len=*),parameter::ident_36="@(#)M_strings::compact(3f): Converts white-space to single spaces"
 
 character(len=*),intent(in)          :: str
 character(len=*),intent(in),optional :: char
@@ -5106,11 +5242,11 @@ end subroutine test_compact
 !===================================================================================================================================
 elemental function noesc(INSTR)
 
-character(len=*),parameter::ident_36="@(#)M_strings::noesc(3f): convert non-printable characters to a space"
+character(len=*),parameter::ident_37="@(#)M_strings::noesc(3f): convert non-printable characters to a space"
 
-   character(len=*),intent(in) :: INSTR   ! string that might contain nonprintable characters
-   character(len=len(instr))   :: noesc
-   integer                     :: ic,i10
+character(len=*),intent(in) :: INSTR      ! string that might contain nonprintable characters
+character(len=len(instr))   :: noesc
+integer                     :: ic,i10
 !-----------------------------------------------------------------------------------------------------------------------------------
    noesc=''                               ! initialize output string
    do i10=1,len_trim(INSTR(1:len(INSTR)))
@@ -5125,8 +5261,8 @@ end function noesc
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_noesc  ! test noesc
 !!use M_strings, only : noesc
-   character(len=23) :: in,out,clr
-   integer :: i10
+character(len=23) :: in,out,clr
+integer           :: i10
   ! Use goodbad(1) to indicate the test sequence was begun
    call unit_check_start('noesc',' &
       & -section 3  &
@@ -5205,33 +5341,33 @@ end subroutine test_noesc
 !===================================================================================================================================
 subroutine a2r(chars,valu,ierr)
 
-character(len=*),parameter::ident_37="@(#)M_strings::a2r(3fp): subroutine returns real value from string"
+character(len=*),parameter::ident_38="@(#)M_strings::a2r(3fp): subroutine returns real value from string"
 
-   character(len=*),intent(in) :: chars                      ! input string
-   real,intent(out)            :: valu                       ! value read from input string
-   integer,intent(out)         :: ierr                       ! error flag (0 == no error)
-   doubleprecision             :: valu8
+character(len=*),intent(in) :: chars                      ! input string
+real,intent(out)            :: valu                       ! value read from input string
+integer,intent(out)         :: ierr                       ! error flag (0 == no error)
+doubleprecision             :: valu8
    valu8=0.0d0
-   call a2d(chars,valu8,ierr)
+   call a2d(chars,valu8,ierr,onerr=0.0d0)
    valu=real(valu8)
 end subroutine a2r
 !----------------------------------------------------------------------------------------------------------------------------------
 subroutine a2i(chars,valu,ierr)
 
-character(len=*),parameter::ident_38="@(#)M_strings::a2i(3fp): subroutine returns integer value from string"
+character(len=*),parameter::ident_39="@(#)M_strings::a2i(3fp): subroutine returns integer value from string"
 
-   character(len=*),intent(in) :: chars                      ! input string
-   integer,intent(out)         :: valu                       ! value read from input string
-   integer,intent(out)         :: ierr                       ! error flag (0 == no error)
-   doubleprecision             :: valu8
+character(len=*),intent(in) :: chars                      ! input string
+integer,intent(out)         :: valu                       ! value read from input string
+integer,intent(out)         :: ierr                       ! error flag (0 == no error)
+doubleprecision             :: valu8
    valu8=0.0d0
-   call a2d(chars,valu8,ierr)
+   call a2d(chars,valu8,ierr,onerr=0.0d0)
    valu=int(valu8)
 end subroutine a2i
 !----------------------------------------------------------------------------------------------------------------------------------
-subroutine a2d(chars,valu,ierr)
+subroutine a2d(chars,valu,ierr,onerr)
 
-character(len=*),parameter::ident_39="@(#)M_strings::a2d(3fp): subroutine returns double value from string"
+character(len=*),parameter::ident_40="@(#)M_strings::a2d(3fp): subroutine returns double value from string"
 
 !     1989,2016 John S. Urban.
 !
@@ -5240,18 +5376,19 @@ character(len=*),parameter::ident_39="@(#)M_strings::a2d(3fp): subroutine return
 !  o  if the string happens to be 'eod' no error message is produced so this string may be used to act as an end-of-data.
 !     IERR will still be non-zero in this case.
 !----------------------------------------------------------------------------------------------------------------------------------
-   character(len=*),intent(in)  :: chars                        ! input string
-   character(len=:),allocatable :: local_chars
-   doubleprecision,intent(out)  :: valu                         ! value read from input string
-   integer,intent(out)          :: ierr                         ! error flag (0 == no error)
+character(len=*),intent(in)  :: chars                        ! input string
+character(len=:),allocatable :: local_chars
+doubleprecision,intent(out)  :: valu                         ! value read from input string
+integer,intent(out)          :: ierr                         ! error flag (0 == no error)
+class(*),optional,intent(in) :: onerr
 !----------------------------------------------------------------------------------------------------------------------------------
-   character(len=*),parameter   :: fmt="('(bn,g',i5,'.0)')"     ! format used to build frmt
-   character(len=15)            :: frmt                         ! holds format built to read input string
-   character(len=256)           :: msg                          ! hold message from I/O errors
-   integer                      :: intg
-   integer                      :: pnd
-   integer                      :: basevalue, ivalu
-   character(len=3),save        :: nan_string='NaN'
+character(len=*),parameter   :: fmt="('(bn,g',i5,'.0)')"     ! format used to build frmt
+character(len=15)            :: frmt                         ! holds format built to read input string
+character(len=256)           :: msg                          ! hold message from I/O errors
+integer                      :: intg
+integer                      :: pnd
+integer                      :: basevalue, ivalu
+character(len=3),save        :: nan_string='NaN'
 !----------------------------------------------------------------------------------------------------------------------------------
    ierr=0                                                       ! initialize error flag to zero
    local_chars=chars
@@ -5288,15 +5425,25 @@ character(len=*),parameter::ident_39="@(#)M_strings::a2d(3fp): subroutine return
       end select
    endif
    if(ierr.ne.0)then                                            ! if an error occurred ierr will be non-zero.
-      valu=0.0d0                                                ! set returned value to zero on error
-      read(nan_string,'(g3.3)')valu
-         if(local_chars.ne.'eod')then                           ! print warning message
-            call journal('sc','*a2d* - cannot produce number from string ['//trim(chars)//']')
-            if(msg.ne.'')then
-               call journal('sc','*a2d* - ['//trim(msg)//']')
-            endif
+      if(present(onerr))then
+         select type(onerr)
+         type is (integer)
+            valu=onerr
+         type is (real)
+            valu=onerr
+         type is (doubleprecision)
+            valu=onerr
+         end select
+      else                                                      ! set return value to NaN
+         read(nan_string,'(g3.3)')valu
+      endif
+      if(local_chars.ne.'eod')then                           ! print warning message except for special value "eod"
+         call journal('sc','*a2d* - cannot produce number from string ['//trim(chars)//']')
+         if(msg.ne.'')then
+            call journal('sc','*a2d* - ['//trim(msg)//']')
          endif
       endif
+   endif
 end subroutine a2d
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_string_to_value
@@ -5401,20 +5548,27 @@ end subroutine test_string_to_value
 !!
 !!##SYNOPSIS
 !!
-!!    function s2v(string,[ierr])
+!!    function s2v(string[,ierr][,onerr])
 !!
 !!     character(len=*)             :: string
 !!     doubleprecision              :: s2v
 !!     integer,intent(out),optional :: ierr
+!!     class(*),intent(in),optional :: onerr
 !!##DESCRIPTION
 !!       This function converts a string to a DOUBLEPRECISION numeric value.
-!!       A value of zero (0) is returned on error.
-!!
-!!       If an error occurs the program is stopped if the optional parameter
-!!       IERR is not present. If IERR is non-zero an error occurred.
 !!
 !!       The intrinsics INT(3f), REAL(3f), and DBLE(3f) are also extended to take
 !!       CHARACTER variables. The KIND= keyword is not supported on the extensions.
+!!##OPTIONS
+!!
+!!     string   holds string assumed to represent a numeric value
+!!     ierr     If an error occurs the program is stopped if the optional
+!!              parameter IERR is not present. If IERR returns a non-zero
+!!              value an error occurred.
+!!     onerr    The value to return on error. A value of zero (NaN) is
+!!              returned on error by default.
+!!##RETURNS
+!!     s2v
 !!
 !!##EXAMPLE
 !!
@@ -5493,25 +5647,32 @@ end subroutine test_string_to_value
 !!##VERSION:     2.0, 20160704
 !! AUTHOR:      John S. Urban
 !===================================================================================================================================
-doubleprecision function s2v(chars,ierr)
+doubleprecision function s2v(chars,ierr,onerr)
 !  1989 John S. Urban
 
-character(len=*),parameter::ident_40="@(#)M_strings::s2v(3f): returns doubleprecision number from string"
+character(len=*),parameter::ident_41="@(#)M_strings::s2v(3f): returns doubleprecision number from string"
 
 
-character(len=*),intent(in) :: chars
-integer,optional            :: ierr
-doubleprecision             :: valu
-   integer                  :: ierr_local
+character(len=*),intent(in)  :: chars
+integer,optional             :: ierr
+doubleprecision              :: valu
+integer                      :: ierr_local
+class(*),intent(in),optional :: onerr
 
    ierr_local=0
-   call a2d(chars,valu,ierr_local)
-   s2v=valu
+   if(present(onerr))then
+      call a2d(chars,valu,ierr_local,onerr)
+   else
+      call a2d(chars,valu,ierr_local)
+   endif
    if(present(ierr))then ! if error is not returned stop program on error
       ierr=ierr_local
+      s2v=valu
    elseif(ierr_local.ne.0)then
       write(*,*)'*s2v* stopped while reading '//trim(chars)
       stop 1
+   else
+      s2v=valu
    endif
 end function s2v
 !===================================================================================================================================
@@ -5535,7 +5696,7 @@ end function int_s2v
 function ints_s2v(chars)
 integer,allocatable         :: ints_s2v(:)
 character(len=*),intent(in) :: chars(:)
-   integer                  :: i,isize
+integer                     :: i,isize
    isize=size(chars)
    allocate(ints_s2v(isize))
    do i=1,isize
@@ -5546,7 +5707,7 @@ end function ints_s2v
 function reals_s2v(chars)
 real,allocatable            :: reals_s2v(:)
 character(len=*),intent(in) :: chars(:)
-   integer                  :: i,isize
+integer                     :: i,isize
    isize=size(chars)
    allocate(reals_s2v(isize))
    do i=1,isize
@@ -5557,7 +5718,7 @@ end function reals_s2v
 function dbles_s2v(chars)
 doubleprecision,allocatable :: dbles_s2v(:)
 character(len=*),intent(in) :: chars(:)
-   integer                  :: i,isize
+integer                     :: i,isize
    isize=size(chars)
    allocate(dbles_s2v(isize))
    do i=1,isize
@@ -5587,11 +5748,11 @@ doubleprecision SUM, SUM2, DELTA
       WRITE(*,*) 's2v: SUM=', SUM
       WRITE(*,*) 's2v: DELTA=', DELTA
    endif
-   call unit_check('s2v',sum+delta.ge.sum2.and.sum-delta.le.sum2)
+   call unit_check('s2v',sum+delta.ge.sum2.and.sum-delta.le.sum2,msg=msg('SUM=',sum,'SUM2=',sum2,'DELTA=',delta))
    call unit_check_done('s2v')
 end subroutine test_s2v
 !===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()())()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
 !!##NAME
@@ -5886,21 +6047,12 @@ end subroutine test_value_to_string
 ! very odd compiler problems in many (but not all) programs using this routine; GNU Fortran (GCC) 5.4.0; 20161030
 function v2s_bug(gval) result(outstr)
 
-character(len=*),parameter::ident_41="@(#)M_strings::v2s_bug(3f): function returns string given numeric value"
+character(len=*),parameter::ident_42="@(#)M_strings::v2s_bug(3f): function returns string given numeric value"
 
 class(*),intent(in)          :: gval                         ! input value to convert to a string
 character(len=:),allocatable :: outstr                       ! output string to generate
 character(len=80)            :: string
-   select type(gval)
-   type is (integer)
-      call value_to_string(gval,string)
-   type is (real)
-      call value_to_string(gval,string)
-   type is (doubleprecision)
-      call value_to_string(gval,string)
-   type is (logical)
-      call value_to_string(gval,string)
-   end select
+   call value_to_string(gval,string)
    outstr=trim(string)
 end function v2s_bug
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -5932,7 +6084,7 @@ end subroutine test_v2s_bug
 !===================================================================================================================================
 function d2s(dvalue,fmt) result(outstr)
 
-character(len=*),parameter::ident_42="@(#)M_strings::d2s(3fp): private function returns string given doubleprecision value"
+character(len=*),parameter::ident_43="@(#)M_strings::d2s(3fp): private function returns string given doubleprecision value"
 
 doubleprecision,intent(in)   :: dvalue                         ! input value to convert to a string
 character(len=*),intent(in),optional :: fmt
@@ -5948,7 +6100,7 @@ end function d2s
 !===================================================================================================================================
 function r2s(rvalue,fmt) result(outstr)
 
-character(len=*),parameter::ident_43="@(#)M_strings::r2s(3fp): private function returns string given real value"
+character(len=*),parameter::ident_44="@(#)M_strings::r2s(3fp): private function returns string given real value"
 
 real,intent(in)              :: rvalue                         ! input value to convert to a string
 character(len=*),intent(in),optional :: fmt
@@ -5964,7 +6116,7 @@ end function r2s
 !===================================================================================================================================
 function i2s(ivalue,fmt) result(outstr)
 
-character(len=*),parameter::ident_44="@(#)M_strings::i2s(3fp): private function returns string given integer value"
+character(len=*),parameter::ident_45="@(#)M_strings::i2s(3fp): private function returns string given integer value"
 
 integer,intent(in)           :: ivalue                         ! input value to convert to a string
 character(len=*),intent(in),optional :: fmt
@@ -5980,7 +6132,7 @@ end function i2s
 !===================================================================================================================================
 function l2s(lvalue,fmt) result(outstr)
 
-character(len=*),parameter::ident_45="@(#)M_strings::l2s(3fp): private function returns string given logical value"
+character(len=*),parameter::ident_46="@(#)M_strings::l2s(3fp): private function returns string given logical value"
 
 logical,intent(in)           :: lvalue                         ! input value to convert to a string
 character(len=*),intent(in),optional :: fmt
@@ -6139,7 +6291,7 @@ end subroutine test_v2s
 function isNumber(string,msg,verbose)
 implicit none
 
-character(len=*),parameter::ident_46="@(#)M_strings::isnumber(3f): Determines if a string is a number of not."
+character(len=*),parameter::ident_47="@(#)M_strings::isnumber(3f): Determines if a string is a number of not."
 
 character(len=*),intent(in)    :: string
 character(len=:),intent(out),allocatable,optional :: msg
@@ -6316,7 +6468,7 @@ end subroutine test_isnumber
 !===================================================================================================================================
 subroutine trimzeros(string)
 
-character(len=*),parameter::ident_47="@(#)M_strings::trimzeros(3fp): Delete trailing zeros from numeric decimal string"
+character(len=*),parameter::ident_48="@(#)M_strings::trimzeros(3fp): Delete trailing zeros from numeric decimal string"
 
 ! if zero needs added at end assumes input string has room
 character(len=*)             :: string
@@ -6421,7 +6573,7 @@ subroutine listout(icurve_lists,icurve_expanded,inums_out,ierr)
 use M_journal, only : journal
 implicit none
 
-character(len=*),parameter::ident_48="&
+character(len=*),parameter::ident_49="&
 &@(#)M_strings::listout(3f): copy icurve_lists to icurve_expanded expanding negative numbers to ranges (1 -10 means 1 thru 10)"
 
 !   Created: 19971231
@@ -6487,11 +6639,11 @@ integer               :: inums_max
 end subroutine listout
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_listout()
-   integer,allocatable :: icurve_lists(:)        ! icurve_lists is input array
-   integer :: icurve_expanded(1000)  ! icurve_expanded is output array
-   integer :: inums                  ! number of icurve_lists values on input, number of icurve_expanded numbers on output
-   integer :: i
-   integer :: ierr
+integer,allocatable :: icurve_lists(:)        ! icurve_lists is input array
+integer :: icurve_expanded(1000)  ! icurve_expanded is output array
+integer :: inums                  ! number of icurve_lists values on input, number of icurve_expanded numbers on output
+integer :: i
+integer :: ierr
    call unit_check_start('listout',' &
       & -description ''copy ICURVE() to ICURVE_EXPANDED() expanding negative numbers to ranges (1-10 means 1 thru 10)'' &
       & -section 3  &
@@ -6509,6 +6661,134 @@ subroutine test_listout()
    call unit_check('listout',all(icurve_expanded(:inums).eq.[1,(i,i=20,30),101,100,99,(i,i=100,120),(i,i=222,200,-1)]),msg='expand')
    call unit_check_done('listout')
 end subroutine test_listout
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!     quote(3f) - [M_strings:QUOTES] add quotes to string as if written with list-directed inpu
+!!##SYNOPSIS
+!!
+!!   function quote(str,mode,clip) result (quoted_str)
+!!
+!!    character(len=*),intent(in)          :: str
+!!    character(len=*),optional,intent(in) :: mode
+!!    logical,optional,intent(in)          :: clip
+!!    character(len=:),allocatable         :: quoted_str
+!!##DESCRIPTION
+!!    Add quotes to a CHARACTER variable as if it was written using
+!!    list-directed input. This is particularly useful for processing
+!!    strings to add to CSV files.
+!!
+!!##OPTIONS
+!!    str         input string to add quotes to, using the rules of
+!!                list-directed input (single quotes are replaced by two adjacent quotes)
+!!    mode        alternate quoting methods are supported:
+!!
+!!                   DOUBLE   default. replace quote with double quotes
+!!                   ESCAPE   replace quotes with backslash-quote instead of double quotes
+!!
+!!    clip        default is to trim leading and trailing spaces from the string. If CLIP
+!!                is .FALSE. spaces are not trimmed
+!!
+!!##RESULT
+!!    quoted_str  The output string, which is based on adding quotes to STR.
+!!##EXAMPLE
+!!
+!!   Sample program:
+!!
+!!    program demo_quote
+!!    use M_strings, only : quote
+!!    implicit none
+!!    character(len=:),allocatable :: str
+!!    character(len=1024)          :: msg
+!!    integer                      :: ios
+!!    character(len=80)            :: inline
+!!       do
+!!          write(*,'(a)',advance='no')'Enter test string:'
+!!          read(*,'(a)',iostat=ios,iomsg=msg)inline
+!!          if(ios.ne.0)then
+!!             write(*,*)trim(inline)
+!!             exit
+!!          endif
+!!
+!!          ! the original string
+!!          write(*,'(a)')'ORIGINAL     ['//trim(inline)//']'
+!!
+!!          ! the string processed by quote(3f)
+!!          str=quote(inline)
+!!          write(*,'(a)')'QUOTED     ['//str//']'
+!!
+!!          ! write the string list-directed to compare the results
+!!          write(*,'(a)',iostat=ios,iomsg=msg) 'LIST DIRECTED:'
+!!          write(*,*,iostat=ios,iomsg=msg,delim='none') inline
+!!          write(*,*,iostat=ios,iomsg=msg,delim='quote') inline
+!!          write(*,*,iostat=ios,iomsg=msg,delim='apostrophe') inline
+!!       enddo
+!!    end program demo_quote
+!===================================================================================================================================
+function quote(str,mode,clip) result (quoted_str)
+character(len=*),intent(in)          :: str                ! the string to be quoted
+character(len=*),optional,intent(in) :: mode
+logical,optional,intent(in)          :: clip
+character(len=:),allocatable         :: quoted_str
+
+character(len=1),parameter           :: double_quote = '"'
+character(len=20)                    :: local_mode
+logical                              :: local_clip
+!-----------------------------------------------------------------------------------------------------------------------------------
+   local_mode=merge_str(mode,'DOUBLE',present(mode))
+   if(merge(clip,.false.,present(clip)))then
+      quoted_str=adjustl(str)
+   else
+      quoted_str=str
+   endif
+   select case(lower(local_mode))
+   case('double')
+      quoted_str=double_quote//trim(replace(quoted_str,'"','""'))//double_quote
+   case('escape')
+      quoted_str=double_quote//trim(replace(quoted_str,'"','\"'))//double_quote
+   case default
+      call journal('sc','*quote* ERROR: unknown quote mode ',local_mode)
+      quoted_str=str
+   end select
+!-----------------------------------------------------------------------------------------------------------------------------------
+end function quote
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_quote()
+character(len=:),allocatable :: quoted_str
+integer                      :: i
+integer,parameter            :: line_length=50
+character(len=:),allocatable :: test_in(:)
+character(len=:),allocatable :: test_out(:)
+
+   test_in=[ character(len=line_length) ::      &
+    'this is a test',                           &
+    'test a "quote" around a string'     ]
+
+   test_out=[ character(len=line_length) ::     &
+    '"this is a test"',                         &
+    '"test a ""quote"" around a string"' ]
+
+   call unit_check_start('quote',' &
+   & -section 3  &
+   & -library libGPF  &
+   & -filename `pwd`/M_strings.FF &
+   & -documentation y &
+   & -ufpp         y &
+   & -ccall        n &
+   & -archive      GPF.a &
+   & ')
+
+   do i=1,size(test_in)
+      if(unit_check_level.gt.0)then
+         write(*,'(a)')'ORIGINAL ['//test_in(i)//']'
+         write(*,'(a)')'QUOTED   ['//quote(test_in(i))//']'
+      endif
+      call unit_check('quote',quote(test_in(i)).eq.test_out(i),msg=msg(quote(test_in(i)),'==>',trim(test_out(i))))
+   enddo
+   call unit_check_done('quote')
+end subroutine test_quote
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
@@ -6583,16 +6863,16 @@ function unquote(quoted_str,esc) result (unquoted_str)
 character(len=*),intent(in)          :: quoted_str              ! the string to be unquoted
 character(len=1),optional,intent(in) :: esc                     ! escape character
 character(len=:),allocatable         :: unquoted_str
-   integer                           :: inlen
-   character(len=1),parameter        :: single_quote = "'"
-   character(len=1),parameter        :: double_quote = '"'
-   integer                           :: quote                   ! whichever quote is to be used
-   integer                           :: before
-   integer                           :: current
-   integer                           :: iesc
-   integer                           :: iput
-   integer                           :: i
-   logical                           :: inside
+integer                              :: inlen
+character(len=1),parameter           :: single_quote = "'"
+character(len=1),parameter           :: double_quote = '"'
+integer                              :: quote                   ! whichever quote is to be used
+integer                              :: before
+integer                              :: current
+integer                              :: iesc
+integer                              :: iput
+integer                              :: i
+logical                              :: inside
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(present(esc))then                           ! select escape character as specified character or special value meaning not set
       iesc=ichar(esc)                             ! allow for an escape character
@@ -6658,7 +6938,7 @@ character(len=:),allocatable :: tests(:)
 
    tests=[ character(len=line_length) :: &
       '"this is a test"',                         &
-      '"a test with a ""quote"" around a string"' ]
+      '"test a ""quote"" around a string"' ]
 
    call unit_check_start('unquote',' &
    & -section 3  &
@@ -6669,25 +6949,20 @@ character(len=:),allocatable :: tests(:)
    & -ccall        n &
    & -archive      GPF.a &
    & ')
-
    do i=1,size(tests)
       quoted_str=tests(i)
       unquoted_str=unquote(trim(quoted_str),esc)                    ! the string processed by unquote(3f)
       read(quoted_str,*,iostat=ios,iomsg=msg)dummy                  ! read the string list-directed to compare the results
-
       if(unit_check_level.gt.0)then
          write(*,'(a)')'QUOTED        ['//trim(quoted_str)//']'     ! the original string
          write(*,'(a)')'UNQUOTED      ['//unquoted_str//']'
-
          if(ios.ne.0)then
             write(*,*)trim(msg)
          else
             write(*,'(a)')'LIST DIRECTED ['//trim(dummy)//']'
          endif
       endif
-
-      call unit_check('unquote',unquoted_str.eq.dummy,msg='test string '//trim(quoted_str))
-
+      call unit_check('unquote',unquoted_str.eq.dummy,msg=trim(dummy)//'==>'//unquoted_str)
    enddo
    call unit_check_done('unquote')
 end subroutine test_unquote
@@ -6853,7 +7128,7 @@ end subroutine test_unquote
 !===================================================================================================================================
 function describe(ch) result (string)
 
-character(len=*),parameter::ident_49="@(#)M_strings::describe(3f): return string describing long name of a single character"
+character(len=*),parameter::ident_50="@(#)M_strings::describe(3f): return string describing long name of a single character"
 
 character(len=1),intent(in)   :: ch
 character(len=:),allocatable  :: string
@@ -7135,7 +7410,7 @@ end subroutine test_describe
 subroutine getvals(line,values,icount,ierr)
 implicit none
 
-character(len=*),parameter::ident_50="@(#)M_strings::getvals(3f): read arbitrary number of values from a character variable"
+character(len=*),parameter::ident_51="@(#)M_strings::getvals(3f): read arbitrary number of values from a character variable"
 
 ! JSU 20170831
 
@@ -7144,9 +7419,9 @@ class(*),intent(out)         :: values(:)
 integer,intent(out)          :: icount
 integer,intent(out),optional :: ierr
 
-   character(len=:),allocatable :: buffer
-   character(len=len(line))     :: words(size(values))
-   integer                      :: ios, i, ierr_local,isize
+character(len=:),allocatable :: buffer
+character(len=len(line))     :: words(size(values))
+integer                      :: ios, i, ierr_local,isize
 
    select type(values)
    type is (integer);          isize=size(values)
@@ -7305,7 +7580,7 @@ implicit none
 !   Quits if encounters any errors in read.
 !----------------------------------------------------------------------------------------------------------------------------------
 
-character(len=*),parameter::ident_51="@(#)M_strings::string_to_values(3f): reads an array of numbers from a numeric string"
+character(len=*),parameter::ident_52="@(#)M_strings::string_to_values(3f): reads an array of numbers from a numeric string"
 
 character(len=*),intent(in)  :: line          ! input string
 integer,intent(in)           :: iread         ! maximum number of values to try to read into values
@@ -7314,12 +7589,12 @@ integer,intent(out)          :: inums         ! number of values successfully re
 character(len=*),intent(in)  :: delims        ! allowed delimiters
 integer,intent(out)          :: ierr          ! 0 if no error, else column number undecipherable string starts at
 !----------------------------------------------------------------------------------------------------------------------------------
-   character(len=256)           :: delims_local        ! mutable copy of allowed delimiters
-   integer                      :: istart,iend,ilen,icol
-   integer                      :: i10,i20,i40
-   real                         :: rval
-   integer                      :: ier
-   integer                      :: delimiters_length
+character(len=256)           :: delims_local        ! mutable copy of allowed delimiters
+integer                      :: istart,iend,ilen,icol
+integer                      :: i10,i20,i40
+real                         :: rval
+integer                      :: ier
+integer                      :: delimiters_length
 !----------------------------------------------------------------------------------------------------------------------------------
       delims_local=delims                                 ! need a mutable copy of the delimiter list
       if(delims_local.eq.'')then                          ! if delimiter list is null or all spaces make it a space
@@ -7469,16 +7744,16 @@ end subroutine test_string_to_values
 !===================================================================================================================================
 function s2vs(string,delim) result(darray)
 
-character(len=*),parameter::ident_52="@(#)M_strings::s2vs(3f): function returns array of values from a string"
+character(len=*),parameter::ident_53="@(#)M_strings::s2vs(3f): function returns array of values from a string"
 
 character(len=*),intent(in)        :: string                       ! keyword to retrieve value for from dictionary
 character(len=*),optional          :: delim                        ! delimiter characters
 character(len=:),allocatable       :: delim_local
 doubleprecision,allocatable        :: darray(:)                    ! function type
 
-   character(len=:),allocatable    :: carray(:)          ! convert value to an array using split(3f)
-   integer                         :: i
-   integer                         :: ier
+character(len=:),allocatable       :: carray(:)                    ! convert value to an array using split(3f)
+integer                            :: i
+integer                            :: ier
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(present(delim))then
       delim_local=delim
@@ -7521,7 +7796,7 @@ end subroutine test_s2vs
 !===================================================================================================================================
 elemental function isprint(onechar)
 
-character(len=*),parameter::ident_53="@(#)M_strings::isprint(3f): indicates if input character is a printable ASCII character"
+character(len=*),parameter::ident_54="@(#)M_strings::isprint(3f): indicates if input character is a printable ASCII character"
 
 character,intent(in) :: onechar
 logical              :: isprint
@@ -7593,9 +7868,11 @@ end subroutine test_isprint
 !!   Sample program:
 !!
 !!    program demo_msg
-!!    use M_debug, only : msg
+!!    use M_strings, only : msg
 !!    implicit none
 !!    character(len=:),allocatable :: pr
+!!    character(len=:),allocatable :: frmt
+!!    integer                      :: biggest
 !!
 !!    pr=msg('HUGE(3f) integers',huge(0),'and real',huge(0.0),'and double',huge(0.0d0))
 !!    write(*,'(a)')pr
@@ -7606,23 +7883,37 @@ end subroutine test_isprint
 !!    pr=msg('complex         :',cmplx(huge(0.0),tiny(0.0)) )
 !!    write(*,'(a)')pr
 !!
-!!    ! although it will often work, using msg(3f) in an I/O statement is not recommende
+!!    ! create a format on the fly
+!!    biggest=huge(0)
+!!    frmt=msg('(*(i',int(log10(real(biggest))),':,1x))',nospace=.true.)
+!!    write(*,*)'format=',frmt
+!!
+!!    ! although it will often work, using msg(3f) in an I/O statement is not recommended
 !!    write(*,*)msg('program will now stop')
 !!
 !!    end program demo_msg
+!!
+!!  Output
+!!
+!!    HUGE(3f) integers 2147483647 and real 3.40282347E+38 and double 1.7976931348623157E+308
+!!    real            : 3.40282347E+38 0.00000000 12345.6787 1.17549435E-38
+!!    doubleprecision : 1.7976931348623157E+308 0.0000000000000000 12345.678900000001 2.2250738585072014E-30
+!!    complex         : (3.40282347E+38,1.17549435E-38)
+!!     format=(*(i9:,1x))
+!!     program will now stop
 !===================================================================================================================================
 function msg(generic1, generic2, generic3, generic4, generic5, generic6, generic7, generic8, generic9,nospace)
 implicit none
 
-character(len=*),parameter::ident_54="@(#)M_debug::msg(3f): writes a message to a string composed of any standard scalar types"
+character(len=*),parameter::ident_55="@(#)M_strings::msg(3f): writes a message to a string composed of any standard scalar types"
 
 class(*),intent(in),optional  :: generic1 ,generic2 ,generic3 ,generic4 ,generic5
 class(*),intent(in),optional  :: generic6 ,generic7 ,generic8 ,generic9
 logical,intent(in),optional   :: nospace
 character(len=:), allocatable :: msg
-   character(len=4096)        :: line
-   integer                    :: istart
-   integer                    :: increment
+character(len=4096)           :: line
+integer                       :: istart
+integer                       :: increment
    if(present(nospace))then
       if(nospace)then
          increment=1
@@ -7675,7 +7966,7 @@ end function msg
 !===================================================================================================================================
 elemental function isgraph(onechar)
 
-character(len=*),parameter::ident_55="&
+character(len=*),parameter::ident_56="&
 &@(#)M_strings::isgraph(3f) :indicates if character is printable ASCII character excluding space"
 
 character,intent(in) :: onechar
@@ -7725,7 +8016,7 @@ end subroutine test_isgraph
 !===================================================================================================================================
 elemental function isalpha(ch) result(res)
 
-character(len=*),parameter::ident_56="@(#)M_strings::isalpha(3f): Return .true. if character is a letter and .false. otherwise"
+character(len=*),parameter::ident_57="@(#)M_strings::isalpha(3f): Return .true. if character is a letter and .false. otherwise"
 
 character,intent(in) :: ch
 logical              :: res
@@ -7777,7 +8068,7 @@ end subroutine test_isalpha
 !===================================================================================================================================
 elemental function isxdigit(ch) result(res)
 
-character(len=*),parameter::ident_57="@(#)M_strings::isxdigit(3f): returns .true. if c is a hexadecimal digit (0-9,a-f, or A-F)"
+character(len=*),parameter::ident_58="@(#)M_strings::isxdigit(3f): returns .true. if c is a hexadecimal digit (0-9,a-f, or A-F)"
 
 character,intent(in) :: ch
 logical              :: res
@@ -7830,7 +8121,7 @@ end subroutine test_isxdigit
 !===================================================================================================================================
 elemental function isdigit(ch) result(res)
 
-character(len=*),parameter::ident_58="@(#)M_strings::isdigit(3f): Returns .true. if ch is a digit (0-9) and .false. otherwise"
+character(len=*),parameter::ident_59="@(#)M_strings::isdigit(3f): Returns .true. if ch is a digit (0-9) and .false. otherwise"
 
 character,intent(in) :: ch
 logical              :: res
@@ -7881,7 +8172,7 @@ end subroutine test_isdigit
 !===================================================================================================================================
 elemental function isblank(ch) result(res)
 
-character(len=*),parameter::ident_59="@(#)M_strings::isblank(3f): returns .true. if character is a blank (space or horizontal tab)"
+character(len=*),parameter::ident_60="@(#)M_strings::isblank(3f): returns .true. if character is a blank (space or horizontal tab)"
 
 character,intent(in) :: ch
 logical              :: res
@@ -7932,7 +8223,7 @@ end subroutine test_isblank
 !===================================================================================================================================
 elemental function isascii(ch) result(res)
 
-character(len=*),parameter::ident_60="@(#)M_strings::isascii(3f): returns .true. if character is in the range char(0) to char(127)"
+character(len=*),parameter::ident_61="@(#)M_strings::isascii(3f): returns .true. if character is in the range char(0) to char(127)"
 
 character,intent(in) :: ch
 logical              :: res
@@ -7983,7 +8274,7 @@ end subroutine test_isascii
 !===================================================================================================================================
 elemental function isspace(ch) result(res)
 
-character(len=*),parameter::ident_61="@(#)M_strings::isspace(3f): true if null,space,tab,return,new line,vertical tab, or formfeed"
+character(len=*),parameter::ident_62="@(#)M_strings::isspace(3f): true if null,space,tab,return,new line,vertical tab, or formfeed"
 
 character,intent(in) :: ch
 logical              :: res
@@ -8039,7 +8330,7 @@ end subroutine test_isspace
 !===================================================================================================================================
 elemental function iscntrl(ch) result(res)
 
-character(len=*),parameter::ident_62="@(#)M_strings::iscntrl(3f): true if a delete or ordinary control character(0x7F or 0x00-0x1F)"
+character(len=*),parameter::ident_63="@(#)M_strings::iscntrl(3f): true if a delete or ordinary control character(0x7F or 0x00-0x1F)"
 
 character,intent(in) :: ch
 logical              :: res
@@ -8091,7 +8382,7 @@ end subroutine test_iscntrl
 !===================================================================================================================================
 elemental function ispunct(ch) result(res)
 
-character(len=*),parameter::ident_63="@(#)M_strings::ispunct(3f): true if a printable punctuation character (isgraph(c)&&"
+character(len=*),parameter::ident_64="@(#)M_strings::ispunct(3f): true if a printable punctuation character (isgraph(c)&&"
 
 character,intent(in) :: ch
 logical              :: res
@@ -8147,7 +8438,7 @@ end subroutine test_ispunct
 !===================================================================================================================================
 pure elemental function isupper(ch) result(res)
 
-character(len=*),parameter::ident_64="@(#)M_strings::isupper(3f): returns true if character is an uppercase letter (A-Z)"
+character(len=*),parameter::ident_65="@(#)M_strings::isupper(3f): returns true if character is an uppercase letter (A-Z)"
 
 character,intent(in) :: ch
 logical              :: res
@@ -8200,7 +8491,7 @@ end subroutine test_isupper
 !===================================================================================================================================
 elemental function islower(ch) result(res)
 
-character(len=*),parameter::ident_65="@(#)M_strings::islower(3f): returns true if character is a miniscule letter (a-z)"
+character(len=*),parameter::ident_66="@(#)M_strings::islower(3f): returns true if character is a miniscule letter (a-z)"
 
 character,intent(in) :: ch
 logical              :: res
@@ -8314,7 +8605,7 @@ end subroutine test_islower
 !===================================================================================================================================
 elemental function isalnum(ch) result(res)
 
-character(len=*),parameter::ident_66="@(#)M_strings::isalnum(3f): returns true if character is a letter (a-z,A-Z) or digit(0-9)"
+character(len=*),parameter::ident_67="@(#)M_strings::isalnum(3f): returns true if character is a letter (a-z,A-Z) or digit(0-9)"
 
 character,intent(in)       :: ch
 logical                    :: res
@@ -8422,7 +8713,7 @@ character(len=*),intent(out) :: y
 integer,intent(in)           :: b,a
 integer                      :: temp
 
-character(len=*),parameter::ident_67="&
+character(len=*),parameter::ident_68="&
 &@(#)M_strings::base(3f): convert whole number string in base [2-36] to string in alternate base [2-36]"
 
 base=.true.
@@ -8569,7 +8860,7 @@ end subroutine test_base
 logical function decodebase(string,basein,out10)
 implicit none
 
-character(len=*),parameter::ident_68="@(#)M_strings::decodebase(3f): convert whole number string in base [2-36] to base 10 number"
+character(len=*),parameter::ident_69="@(#)M_strings::decodebase(3f): convert whole number string in base [2-36] to base 10 number"
 
 character(len=*),intent(in)  :: string
 integer,intent(in)           :: basein
@@ -8641,8 +8932,8 @@ integer           :: ierr
 end function decodebase
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_decodebase()
-   character(len=:),allocatable :: in(:)
-   integer,allocatable          :: expected(:)
+character(len=:),allocatable :: in(:)
+integer,allocatable          :: expected(:)
    call unit_check_start('decodebase',' &
       & -section 3  &
       & -library libGPF  &
@@ -8733,7 +9024,7 @@ end subroutine test_decodebase
 logical function codebase(inval10,outbase,answer)
 implicit none
 
-character(len=*),parameter::ident_69="@(#)M_strings::codebase(3f): convert whole number in base 10 to string in base [2-36]"
+character(len=*),parameter::ident_70="@(#)M_strings::codebase(3f): convert whole number in base 10 to string in base [2-36]"
 
 integer,intent(in)           :: inval10
 integer,intent(in)           :: outbase
@@ -8888,7 +9179,7 @@ end subroutine test_codebase
 !===================================================================================================================================
 function fmt(source_string,length)
 
-character(len=*),parameter::ident_70="@(#)M_strings::fmt(3f): wrap a long string into a paragraph"
+character(len=*),parameter::ident_71="@(#)M_strings::fmt(3f): wrap a long string into a paragraph"
 
 character(len=*),intent(in)       :: source_string
 integer,intent(in)                :: length
@@ -9087,6 +9378,8 @@ subroutine test_suite_m_strings()
    call test_substitute()
    call test_switch()
    call test_transliterate()
+   call test_rotate13()
+   call test_quote()
    call test_unquote()
    call test_upper()
    call test_v2s()
@@ -9218,7 +9511,7 @@ contains
 !
 function construct_from_fill(chars,len)
 
-character(len=*),parameter::ident_71="@(#)M_strings::construct_from_fill(3f): construct TYPE(STRING)"
+character(len=*),parameter::ident_72="@(#)M_strings::construct_from_fill(3f): construct TYPE(STRING)"
 
 character(len=*),intent(in),optional :: chars
 integer,intent(in),optional          :: len
@@ -9242,7 +9535,7 @@ end function construct_from_fill
 !===================================================================================================================================
 function oop_len(self) result (length)
 
-character(len=*),parameter::ident_72="@(#)M_strings::oop_len(3f): length of string"
+character(len=*),parameter::ident_73="@(#)M_strings::oop_len(3f): length of string"
 
 class(string),intent(in)    :: self
 integer                     :: length
@@ -9253,7 +9546,7 @@ end function oop_len
 !===================================================================================================================================
 function oop_len_trim(self) result (length)
 
-character(len=*),parameter::ident_73="@(#)M_strings::oop_len_trim(3f): trimmed length of string"
+character(len=*),parameter::ident_74="@(#)M_strings::oop_len_trim(3f): trimmed length of string"
 
 class(string),intent(in)    :: self
 integer                     :: length
@@ -9264,7 +9557,7 @@ end function oop_len_trim
 !===================================================================================================================================
 function oop_switch(self) result (array)
 
-character(len=*),parameter::ident_74="@(#)M_strings::oop_switch(3f): convert string to array of single characters"
+character(len=*),parameter::ident_75="@(#)M_strings::oop_switch(3f): convert string to array of single characters"
 
 class(string),intent(in)    :: self
 character(len=1)            :: array(len(self%str))
@@ -9275,7 +9568,7 @@ end function oop_switch
 !===================================================================================================================================
 function oop_index(self,substring,back) result (location)
 
-character(len=*),parameter::ident_75="@(#)M_strings::oop_index(3f): find starting position of a substring in a string"
+character(len=*),parameter::ident_76="@(#)M_strings::oop_index(3f): find starting position of a substring in a string"
 
 class(string),intent(in)    :: self
 character(len=*),intent(in) :: substring
@@ -9292,7 +9585,7 @@ end function oop_index
 !===================================================================================================================================
 function oop_upper(self) result (string_out)
 
-character(len=*),parameter::ident_76="@(#)M_strings::oop_upper(3f): convert string to uppercase"
+character(len=*),parameter::ident_77="@(#)M_strings::oop_upper(3f): convert string to uppercase"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -9303,7 +9596,7 @@ end function oop_upper
 !===================================================================================================================================
 function oop_lower(self) result (string_out)
 
-character(len=*),parameter::ident_77="@(#)M_strings::oop_lower(3f): convert string to miniscule"
+character(len=*),parameter::ident_78="@(#)M_strings::oop_lower(3f): convert string to miniscule"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -9314,7 +9607,7 @@ end function oop_lower
 !===================================================================================================================================
 function oop_expand(self,escape_char) result (string_out)
 
-character(len=*),parameter::ident_78="@(#)M_strings::oop_expand(3f): expand common escape sequences by calling expand(3f)"
+character(len=*),parameter::ident_79="@(#)M_strings::oop_expand(3f): expand common escape sequences by calling expand(3f)"
 
 class(string),intent(in)      :: self
 character,intent(in),optional :: escape_char
@@ -9330,7 +9623,7 @@ end function oop_expand
 !===================================================================================================================================
 function oop_trim(self) result (string_out)
 
-character(len=*),parameter::ident_79="@(#)M_strings::oop_trim(3f): trim trailing spaces"
+character(len=*),parameter::ident_80="@(#)M_strings::oop_trim(3f): trim trailing spaces"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -9341,7 +9634,7 @@ end function oop_trim
 !===================================================================================================================================
 function oop_crop(self) result (string_out)
 
-character(len=*),parameter::ident_80="@(#)M_strings::oop_crop(3f): crop leading and trailing spaces"
+character(len=*),parameter::ident_81="@(#)M_strings::oop_crop(3f): crop leading and trailing spaces"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -9352,7 +9645,7 @@ end function oop_crop
 !===================================================================================================================================
 function oop_reverse(self) result (string_out)
 
-character(len=*),parameter::ident_81="@(#)M_strings::oop_reverse(3f): reverse string"
+character(len=*),parameter::ident_82="@(#)M_strings::oop_reverse(3f): reverse string"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -9363,7 +9656,7 @@ end function oop_reverse
 !===================================================================================================================================
 function oop_adjustl(self) result (string_out)
 
-character(len=*),parameter::ident_82="@(#)M_strings::oop_adjustl(3f): adjust string to left"
+character(len=*),parameter::ident_83="@(#)M_strings::oop_adjustl(3f): adjust string to left"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -9374,7 +9667,7 @@ end function oop_adjustl
 !===================================================================================================================================
 function oop_adjustr(self) result (string_out)
 
-character(len=*),parameter::ident_83="@(#)M_strings::oop_adjustr(3f): adjust string to right"
+character(len=*),parameter::ident_84="@(#)M_strings::oop_adjustr(3f): adjust string to right"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -9385,7 +9678,7 @@ end function oop_adjustr
 !===================================================================================================================================
 function oop_adjustc(self,length) result (string_out)
 
-character(len=*),parameter::ident_84="@(#)M_strings::oop_adjustc(3f): adjust string to center"
+character(len=*),parameter::ident_85="@(#)M_strings::oop_adjustc(3f): adjust string to center"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -9401,7 +9694,7 @@ end function oop_adjustc
 !===================================================================================================================================
 function oop_int(self) result (value)
 
-character(len=*),parameter::ident_85="@(#)M_strings::oop_int(3f): string to integer"
+character(len=*),parameter::ident_86="@(#)M_strings::oop_int(3f): string to integer"
 
 class(string),intent(in)     :: self
 integer                      :: value
@@ -9413,7 +9706,7 @@ end function oop_int
 !===================================================================================================================================
 function oop_real(self) result (value)
 
-character(len=*),parameter::ident_86="@(#)M_strings::oop_real(3f): string to real"
+character(len=*),parameter::ident_87="@(#)M_strings::oop_real(3f): string to real"
 
 class(string),intent(in)     :: self
 real                         :: value
@@ -9425,7 +9718,7 @@ end function oop_real
 !===================================================================================================================================
 function oop_dble(self) result (value)
 
-character(len=*),parameter::ident_87="@(#)M_strings::oop_dble(3f): string to double"
+character(len=*),parameter::ident_88="@(#)M_strings::oop_dble(3f): string to double"
 
 class(string),intent(in)     :: self
 doubleprecision              :: value
@@ -9437,7 +9730,7 @@ end function oop_dble
 !===================================================================================================================================
 function oop_compact(self,char) result (string_out)
 
-character(len=*),parameter::ident_88="@(#)M_strings::oop_compact(3f): adjust string to center"
+character(len=*),parameter::ident_89="@(#)M_strings::oop_compact(3f): adjust string to center"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -9454,7 +9747,7 @@ end function oop_compact
 !===================================================================================================================================
 function oop_substitute(self,old,new) result (string_out)
 
-character(len=*),parameter::ident_89="&
+character(len=*),parameter::ident_90="&
 &@(#)M_strings::oop_substitute(3f): change all occurrences of oldstring to newstring non-recursively"
 
 class(string),intent(in)     :: self
@@ -9469,7 +9762,7 @@ end function oop_substitute
 !===================================================================================================================================
 function oop_transliterate(self,old,new) result (string_out)
 
-character(len=*),parameter::ident_90="&
+character(len=*),parameter::ident_91="&
 &@(#)M_strings::oop_transliterate(3f): change all occurrences of oldstring to newstring non-recursively"
 
 class(string),intent(in)     :: self
@@ -9483,7 +9776,7 @@ end function oop_transliterate
 !===================================================================================================================================
 function oop_atleast(self,length) result (string_out)
 
-character(len=*),parameter::ident_91="@(#)M_strings::oop_atleast(3f): set string to at least specified length"
+character(len=*),parameter::ident_92="@(#)M_strings::oop_atleast(3f): set string to at least specified length"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -9495,7 +9788,7 @@ end function oop_atleast
 !===================================================================================================================================
 function oop_lenset(self,length) result (string_out)
 
-character(len=*),parameter::ident_92="@(#)M_strings::oop_lenset(3f): set string to specific length"
+character(len=*),parameter::ident_93="@(#)M_strings::oop_lenset(3f): set string to specific length"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -9507,7 +9800,7 @@ end function oop_lenset
 !===================================================================================================================================
 function oop_matchw(self,pattern) result (answer)
 
-character(len=*),parameter::ident_93="@(#)M_strings::oop_matchw(3f): test if wildcard pattern matches string"
+character(len=*),parameter::ident_94="@(#)M_strings::oop_matchw(3f): test if wildcard pattern matches string"
 
 class(string),intent(in)     :: self
 character(len=*),intent(in)  :: pattern
@@ -9519,12 +9812,12 @@ end function oop_matchw
 !===================================================================================================================================
 function oop_notabs(self) result (string_out)
 
-character(len=*),parameter::ident_94="&
+character(len=*),parameter::ident_95="&
 &@(#)M_strings::oop_notabs(3f): expand tab characters assuming tab stops every eight(8) characters"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
-   integer                   :: length
+integer                      :: length
    string_out%str=lenset('',8*len(self%str)) ! make long enough assuming all tab characters
    call notabs(self%str,string_out%str,length)
    string_out%str=trim(string_out%str)
@@ -9534,7 +9827,7 @@ end function oop_notabs
 !===================================================================================================================================
 function oop_noesc(self) result (string_out)
 
-character(len=*),parameter::ident_95="@(#)M_strings::oop_noesc(3f): replace non-printable characters with spaces"
+character(len=*),parameter::ident_96="@(#)M_strings::oop_noesc(3f): replace non-printable characters with spaces"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -9545,7 +9838,7 @@ end function oop_noesc
 !===================================================================================================================================
 function p(self) result (string_out)
 
-character(len=*),parameter::ident_96="@(#)M_strings::oop_p(3f): return CHARACTER string from TYPE(STRING)"
+character(len=*),parameter::ident_97="@(#)M_strings::oop_p(3f): return CHARACTER string from TYPE(STRING)"
 
 class(string),intent(in)     :: self
 character(len=len(self%str)) :: string_out
@@ -9559,7 +9852,7 @@ subroutine init_string(self)
 ! allow for TYPE(STRING) object to be initialized.
 !
 
-character(len=*),parameter::ident_97="@(#)M_strings::init_dt(3f): initialize TYPE(STRING)"
+character(len=*),parameter::ident_98="@(#)M_strings::init_dt(3f): initialize TYPE(STRING)"
 
 class(string)                        :: self
    self%str=''
@@ -9571,7 +9864,7 @@ end subroutine init_string
 !===================================================================================================================================
 function string_plus_value(self,value) result (other)
 
-character(len=*),parameter::ident_98="@(#)M_strings::string_plus_value(3f): add value to TYPE(STRING)"
+character(len=*),parameter::ident_99="@(#)M_strings::string_plus_value(3f): add value to TYPE(STRING)"
 
 class(string),intent(in)      :: self
 type(string)                  :: other
@@ -9589,7 +9882,7 @@ end function string_plus_value
 !===================================================================================================================================
 function string_minus_value(self,value) result (other)
 
-character(len=*),parameter::ident_99="@(#)M_strings::string_minus_value(3f): subtract value from TYPE(STRING)"
+character(len=*),parameter::ident_100="@(#)M_strings::string_minus_value(3f): subtract value from TYPE(STRING)"
 
 class(string),intent(in)      :: self
 type(string)                  :: other
@@ -9611,7 +9904,7 @@ end function string_minus_value
 !===================================================================================================================================
 function string_append_value(self,value) result (other)
 
-character(len=*),parameter::ident_100="@(#)M_strings::string_append_value(3f): append value to TYPE(STRING)"
+character(len=*),parameter::ident_101="@(#)M_strings::string_append_value(3f): append value to TYPE(STRING)"
 
 class(string),intent(in)      :: self
 type(string)                  :: other
@@ -9629,7 +9922,7 @@ end function string_append_value
 !===================================================================================================================================
 function string_multiply_value(self,value) result (other)
 
-character(len=*),parameter::ident_101="@(#)M_strings::string_multiply_value(3f): multiply TYPE(STRING) value times"
+character(len=*),parameter::ident_102="@(#)M_strings::string_multiply_value(3f): multiply TYPE(STRING) value times"
 
 class(string),intent(in)      :: self
 type(string)                  :: other
@@ -9645,7 +9938,7 @@ end function string_multiply_value
 !===================================================================================================================================
 logical function eq(self,other)
 
-character(len=*),parameter::ident_102="@(#)M_strings::eq(3f): compare derived type string objects (eq,lt,gt,le,ge,ne)"
+character(len=*),parameter::ident_103="@(#)M_strings::eq(3f): compare derived type string objects (eq,lt,gt,le,ge,ne)"
 
    class(string),intent(in) :: self
    type(string),intent(in)  :: other

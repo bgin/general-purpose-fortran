@@ -11,7 +11,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '       makeout(1f) - [DEVELOPER] Generate a Makefile from the sources (C, Fortran) in the current directory',&
 'SYNOPSIS                                                                        ',&
-'       makeout program_files [-o [filename]] [-l LIBNAME] [-v][--version|--help]',&
+'       makeout program_files [ -o [filename]] [ -l LIBNAME] [ -v][ --version|--help]',&
 'DESCRIPTION                                                                     ',&
 '  If all the source for a set of programs exists in a single directory,         ',&
 '  with a subdirectory containing the files with main programs,                  ',&
@@ -87,7 +87,7 @@ end subroutine help_usage
 !!        makeout(1f) - [DEVELOPER] Generate a Makefile from the sources (C, Fortran) in the current director
 !!##SYNOPSIS
 !!
-!!        makeout program_files [-o [filename]] [-l LIBNAME] [-v][--version|--help]
+!!        makeout program_files [ -o [filename]] [ -l LIBNAME] [ -v][ --version|--help]
 !!##DESCRIPTION
 !!   If all the source for a set of programs exists in a single directory,
 !!   with a subdirectory containing the files with main programs,
@@ -168,7 +168,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    create Makefile for current directory>',&
 '@(#)VERSION:        1.0, 2017-12-09>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 6:29:25 PM>',&
+'@(#)COMPILED:       Thu, Aug 29th, 2019 10:31:29 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

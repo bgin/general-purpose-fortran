@@ -12,8 +12,8 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   paws(1f) - [TIME] pause until specified time or for specified duration       ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
-'   paws [dd-hh:mm:ss[.xxx]|xxx.yyy[s|m|h|d]][-msg message][-cmd command][-repeat TIMES[-fmt ]]|...',&
-'   [-uet|-jed|-dat|[-date|-until]]                                              ',&
+'   paws [dd-hh:mm:ss[.xxx]|xxx.yyy[s|m|h|d]][ -msg message][ -cmd command][ -repeat TIMES[ -fmt ]]|...',&
+'   [ -uet|-jed|-dat|[ -date|-until]]                                            ',&
 '   paws --version|--help                                                        ',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
@@ -74,8 +74,8 @@ end subroutine help_usage
 !!
 !!##SYNOPSIS
 !!
-!!    paws [dd-hh:mm:ss[.xxx]|xxx.yyy[s|m|h|d]][-msg message][-cmd command][-repeat TIMES[-fmt ]]|..
-!!    [-uet|-jed|-dat|[-date|-until]]
+!!    paws [dd-hh:mm:ss[.xxx]|xxx.yyy[s|m|h|d]][ -msg message][ -cmd command][ -repeat TIMES[ -fmt ]]|..
+!!    [ -uet|-jed|-dat|[ -date|-until]]
 !!    paws --version|--help
 !!
 !!##DESCRIPTION
@@ -145,7 +145,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 6:23:01 PM>',&
+'@(#)COMPILED:       Thu, Aug 29th, 2019 11:00:30 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

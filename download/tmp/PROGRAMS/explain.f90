@@ -9,7 +9,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'   explain(1) - reads and navigates a VMS-style help file.                      ',&
+'   explain(1) - [HELP]reads and navigates a VMS-style help file.                ',&
 'SYNOPSIS                                                                        ',&
 '  explain [HELP_FILENAME]                                                       ',&
 'DESCRIPTION                                                                     ',&
@@ -64,7 +64,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    explain(1) - reads and navigates a VMS-style help file.
+!!    explain(1) - [HELP]reads and navigates a VMS-style help file.
 !!##SYNOPSIS
 !!
 !!   explain [HELP_FILENAME]
@@ -130,7 +130,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)AUTHOR:         John Burkardt>',&
 '@(#)VERSION:        1.07, 20190125>',&
 '@(#)MODIFIED:       John S. Urban>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 3:55:06 PM>',&
+'@(#)COMPILED:       Fri, Aug 30th, 2019 10:15:54 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

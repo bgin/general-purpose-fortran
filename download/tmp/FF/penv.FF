@@ -28,8 +28,8 @@ $DOCUMENT HELP -file penv.1.man
 NAME
        penv(1f) - [M_system:ENVIRONMENT] print all or part of environment in formats readable by various shells
 SYNOPSIS
-       penv [variable...] [-C|-B|-v] [-p PREFIX]
-       penv [--help|--version]
+       penv [variable...] [ -C| -B| -v] [ -p PREFIX]
+       penv [ --help| --version]
 DESCRIPTION
        If no arguments are given, penv(1f) prints the entire environment.
        If one or more variable names are given, it prints the value of

@@ -240,7 +240,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   choose(1f) - [NCURSES] select one item from a menu using a screen interface  ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
-'   choose  [choices] [-i index] [-t timeout ] [-m text] [-d default]|[-help|--version]',&
+'   choose  [choices] [ -i index] [ -t timeout ] [ -m text] [ -d default]|[ -help|--version]',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
 '    choose(1f) allows users to select one item from a list of choices           ',&
@@ -347,7 +347,7 @@ end subroutine help_usage
 !!
 !!##SYNOPSIS
 !!
-!!    choose  [choices] [-i index] [-t timeout ] [-m text] [-d default]|[-help|--version
+!!    choose  [choices] [ -i index] [ -t timeout ] [ -m text] [ -d default]|[ -help|--version
 !!
 !!##DESCRIPTION
 !!     choose(1f) allows users to select one item from a list of choices
@@ -459,7 +459,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20180331>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 6:52:30 PM>',&
+'@(#)COMPILED:       Thu, Aug 29th, 2019 10:57:47 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

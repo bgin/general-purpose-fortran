@@ -73,7 +73,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 6:43:57 PM>',&
+'@(#)COMPILED:       Thu, Aug 29th, 2019 10:26:43 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -94,7 +94,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '    _yes(1f) - [FUNIX] output a string repeatedly until killed or limit is reached',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
-'    _yes [STRING[-repeat N]]|[--help|--version]                                 ',&
+'    _yes [STRING[ -repeat N]]|[ --help| --version]                              ',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
 '    _yes(1) prints the command line arguments, separated by spaces and followed ',&
@@ -130,7 +130,7 @@ end subroutine help_usage
 !!
 !!##SYNOPSIS
 !!
-!!     _yes [STRING[-repeat N]]|[--help|--version]
+!!     _yes [STRING[ -repeat N]]|[ --help| --version]
 !!
 !!##DESCRIPTION
 !!     _yes(1) prints the command line arguments, separated by spaces and followed

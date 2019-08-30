@@ -5,7 +5,7 @@ NAME
        _false(1f) - [FUNIX] do nothing, unsuccessfully
 
 SYNOPSIS
-       _false value [--help|--version--verbose]
+       _false value [ --help|--version--verbose]
 
 DESCRIPTION
        Exit with a status code indicating failure.

@@ -76,7 +76,7 @@
 !!      directive
 !!    o You will stay in edit mode until you enter a return on a
 !!      blank line to feed your line to your program; or enter "." or
-!!      "q" (which means cancel changes and return blank line).
+!!      "q" (which means cancel changes and return a blank line).
 !!
 !!    A detailed summary of the main edit-mode commands follows. In the
 !!    descriptions, N stands for a number ...
@@ -85,7 +85,8 @@
 !!     l|p N      list from line N. -N shows N last lines
 !!     L|P N      same as 'l' except no line numbers (for pasting)
 !!     /string    search for simple string in all history lines
-!!  Note that the buffer set to the last line displayed
+!!
+!!  Note that the buffer is set to the last line displayed
 !!
 !!  POSITIONING TO PREVIOUS COMMANDS
 !!     u N        up through buffer
@@ -194,7 +195,7 @@
 !!       >quit
 !!
 !!##AUTHOR
-!!    John S. Urban, 1988,2009,2011 (last change: Nov 2015)
+!!    John S. Urban, 1988,2009,2011,2015 (last change: Nov 2019)
 !===================================================================================================================================
 module M_history
 !
@@ -203,34 +204,38 @@ module M_history
 !  input. Built-in help and no dependence on terminal control sequences
 !  makes this a simple-to-master and portable input history editor.
 !
-   use M_journal, only : journal
-   use M_strings, only : change, modif, notabs, s2v, v2s, s2vs
-   implicit none
-   private
+use M_journal, only : journal
+use M_strings, only : change, modif, notabs, s2v, v2s, s2vs
+implicit none
+private
 
-   public  :: redo                  !  copy a line into history file or edit history if command is "r" and return line
-   public  :: test_suite_M_history
+public  :: redo                    !  copy a line into history file or edit history if command is "r" and return line
+public  :: test_suite_M_history
 
-   private :: open_history          !  open history file
-   private :: redol                 !  edit history
-   private :: help                  !  produce help text for redo(3f) usage
+private :: open_history_           !  open history file
+private :: redol_                  !  edit history
+private :: help_                   !  produce help text for redo(3f) usage
 
 !  should use unused file, not just unit 1071 for history
 !  add option to read in and replace history file
 
-   integer,parameter :: READLEN=1024  ! width of history file
+integer,parameter :: READLEN=1024  ! width of history file
 
 contains
-!===================================================================================================================================
-subroutine redo(inputline,r)
-!      if line starts with r word call redol()
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
+subroutine redo(inputline,r,lun)
+!      if line starts with r word call redol_()
 !      uses unit 1071
 !       r
 !       r string
-!
-character(len=*),parameter     :: ident="@(#)M_history::redo(3f): open binary direct access file for keeping history"
+
+character(len=*),parameter::ident_1="@(#)M_history::redo(3f): open binary direct access file for keeping history"
+
 character(len=*),intent(inout) :: inputline                ! user string
 character(len=1),intent(in),optional :: r                  ! character to use to trigger editing
+integer,intent(in),optional          :: lun
 character(len=1)                     :: r_local            ! character to use to trigger editing
 integer,save                         :: iobuf=1071         ! unit number to use for redo history buffer
 integer,save                         :: iredo              ! number of lines read from standard input into redo file
@@ -246,10 +251,10 @@ else
 endif
 !-----------------------------------------------------------------------------------------------------------------------------------
 !  open history file and initialize
-   if(.not.lcalled)then                                    ! open the redo buffer file
+   if(.not.lcalled)then                                     ! open the redo buffer file
       lcalled=.true.
       iredo=0   ! number of lines in redo buffer
-      call open_history(iobuf,' ','scratch',ioparc)        ! redo buffer
+      call open_history_(iobuf,' ','scratch',ioparc)        ! redo buffer
       if(ioparc.ne.0)then
          call journal('sc','error creating history file')
          return
@@ -259,10 +264,10 @@ endif
    ilast=len_trim(inputline)
 
    if(ilast.eq.1.and.inputline(1:1).eq.r_local)then                             ! redo command
-      call redol(inputline,iobuf,iredo,READLEN,' ')
+      call redol_(inputline,iobuf,iredo,READLEN,' ',lun)
       ilast=len_trim(inputline)
    elseif(inputline(1:min(2,len(inputline))).eq.r_local//' ')then               ! redo command with a string following
-      call redol(inputline,iobuf,iredo,READLEN,inputline(3:max(3,ilast)))
+      call redol_(inputline,iobuf,iredo,READLEN,inputline(3:max(3,ilast)),lun)
       ilast=len_trim(inputline)
    endif
 
@@ -272,49 +277,59 @@ endif
       write(iobuf,rec=iredo)onerecord
    endif
 end subroutine redo
-!===================================================================================================================================
-subroutine open_history(iunit,fname,sname,ierr)
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
+subroutine open_history_(iunit,fname,sname,ierr)
 implicit none
 !-----------------------------------------------------------------------------------------------------------------------------------
-character(len=*),parameter  :: ident="@(#)M_history::open_history(3fp): open history file for REDO(3f) procedure"
-  integer,intent(in)          :: iunit   ! Fortran unit to open
-  character(len=*),intent(in) :: fname   ! filename to open
-  character(len=*),intent(in) :: sname   ! flag. If "scratch" ignore FNAME and open a scratch file
-  integer,intent(out)         :: ierr    ! error code returned by opening file
+
+character(len=*),parameter::ident_2="@(#)M_history::open_history_(3fp): open history file for REDO(3f) procedure"
+
+integer,intent(in)          :: iunit   ! Fortran unit to open
+character(len=*),intent(in) :: fname   ! filename to open
+character(len=*),intent(in) :: sname   ! flag. If "scratch" ignore FNAME and open a scratch file
+integer,intent(out)         :: ierr    ! error code returned by opening file
+character(len=1024)         :: msg
 !-----------------------------------------------------------------------------------------------------------------------------------
   if(sname.eq.'scratch')then
-     open(unit=iunit,status='scratch',form='unformatted',access='direct',recl=READLEN,iostat=ierr)
+     open(unit=iunit,status='scratch',form='unformatted',access='direct',recl=READLEN,iostat=ierr,iomsg=msg)
   else
-     open(unit=iunit,file=trim(fname),status=trim(sname),form='unformatted',access='direct',recl=READLEN,iostat=ierr)
+     open(unit=iunit,file=trim(fname),status=trim(sname),form='unformatted',access='direct',recl=READLEN,iostat=ierr,iomsg=msg)
   endif
 !-----------------------------------------------------------------------------------------------------------------------------------
   if(ierr.ne.0)then
-     call journal('sc','*open_history* open error '//v2s(ierr))
+     call journal('sc','*open_history_* open error ',ierr,'=',msg)
   endif
 !-----------------------------------------------------------------------------------------------------------------------------------
-end subroutine open_history
-!===================================================================================================================================
-subroutine redol(redoline,iobuf,iredo,ibuf0,init)
+end subroutine open_history_
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
+subroutine redol_(redoline,iobuf,iredo,ibuf0,init,lun)
 !
 !  to do:
-!  might want to support a count on change to do the N to the Mth occurrence
+!  might want to support a count on change to do the Nth to the Mth occurrence
 !  support edit window in change
 !  prompt to verify each change made with change()
 !  maybe make .NAME stick into variable $NAME in the calculator
 !  allow changing the edit characters in a modify
 
-character(len=*),parameter     :: ident="@(#)M_history::redoline(3fp): redo a previous input line"
+character(len=*),parameter::ident_3="@(#)M_history::redoline(3fp): redo a previous input line"
 
 character(len=*),intent(out)   :: redoline    ! edited command line to be returned
 integer,intent(in)             :: iobuf       ! history file unit to read old commands from
 integer                        :: iredo       !iredo ......  (i) number of lines in history file
 character(len=*),intent(in)    :: init        ! initial command string
 integer,intent(in)             :: ibuf0       ! the width of the history file in characters; <= len(redoline)
+integer,intent(in),optional    :: lun         ! LUN to read history commands from
 
 doubleprecision                :: val8
 integer                        :: i10, i15, i20, i30
+integer                        :: iounit
 integer                        :: idump
 integer                        :: idown
+integer                        :: lun_local
 integer                        :: ipoint
 integer                        :: iread
 integer                        :: istart
@@ -327,27 +342,35 @@ integer                        :: ix
 integer                        :: ibuf
 integer                        :: ilast
 integer                        :: cstat
-character(len=256)             :: sstat
 character                      :: cmd
+character(:),allocatable       :: cmdline
 character(len=len(redoline)+1) :: cin, cinbuf ! 1 greater than length of redoline
 character(len=1024),save       :: numbers
+character(len=1024),save       :: msg
 integer,allocatable            :: ivals(:)
 integer                        :: iend
 integer                        :: i
 integer                        :: ierr
 integer                        :: ier
-   data numbers/'123456789012345678901234567890123456789012345678901234567890&
-  &12345678901234567890123456789012345678901234567890123456789012345678901234&
-  &56789012345678901234567890123456789012345678901234567890123456789012345678&
-  &90123456789012345678901234567890123456789012345678901234567890123456789012&
-  &34567890123456789012345678901234567890123456789012345678901234567890123456&
-  &78901234567890123456789012345678901234567890123456789012345678901234567890&
-  &12345678901234567890123456789012345678901234567890123456789012345678901234&
-  &56789012345678901234567890123456789012345678901234567890123456789012345678&
-  &90123456789012345678901234567890123456789012345678901234567890123456789012&
-  &34567890123456789012345678901234567890123456789012345678901234567890123456&
-  &78901234567890123456789012345678901234567890123456789012345678901234567890&
-  &'/
+logical,save                   :: ddd=.false.
+data numbers/'123456789012345678901234567890123456789012345678901234567890&
+   &12345678901234567890123456789012345678901234567890123456789012345678901234&
+   &56789012345678901234567890123456789012345678901234567890123456789012345678&
+   &90123456789012345678901234567890123456789012345678901234567890123456789012&
+   &34567890123456789012345678901234567890123456789012345678901234567890123456&
+   &78901234567890123456789012345678901234567890123456789012345678901234567890&
+   &12345678901234567890123456789012345678901234567890123456789012345678901234&
+   &56789012345678901234567890123456789012345678901234567890123456789012345678&
+   &90123456789012345678901234567890123456789012345678901234567890123456789012&
+   &34567890123456789012345678901234567890123456789012345678901234567890123456&
+   &78901234567890123456789012345678901234567890123456789012345678901234567890&
+   &'/
+!-----------------------------------------------------------------------------------------------------------------------------------
+   if(present(lun))then
+      lun_local=lun
+   else
+      lun_local=5
+   endif
 !-----------------------------------------------------------------------------------------------------------------------------------
    ipoint=iredo                                          ! initial line in history file to start with
    icall=0                                               ! flag if have been thru loop or just got here
@@ -355,7 +378,7 @@ integer                        :: ier
    ibuf=min(ibuf0,len(redoline))
    if(ibuf.le.0)return
 !-----------------------------------------------------------------------------------------------------------------------------------
-1     continue
+1  continue
    if(ipoint.le.0)then                                   ! if no lines in redo history file
       redoline=' '                                       ! make command to 'redo' a blank line since no commands entered
    else
@@ -366,227 +389,281 @@ integer                        :: ier
       ! doesn't show because of logic.
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
-   READLINE: do                                          ! display buffer and decide on command on first call or read command
-   ilen=max(1,len_trim(redoline(1:ibuf)))                ! find length of command to redo
-   write(*,'(a,a)')'!',redoline(:ilen)                   ! show old command
-   if(icall.ne.0)then                                    ! if not first call read the directive
-      read(5,'(a)',iostat=ios)cinbuf
-      if(ios.ne.0)then                                   ! if there was an I/O error reread line
-         cycle
+   READLINE: do                                             ! display buffer and decide on command on first call or read command
+      ilen=max(1,len_trim(redoline(1:ibuf)))                ! find length of command to redo
+      write(*,'(a,a)')'!',redoline(:ilen)                   ! show old command
+      if(icall.ne.0)then                                    ! if not first call read the directive
+         read(lun_local,'(a)',iostat=ios)cinbuf
+         if(ios.ne.0)then                                   ! if there was an I/O error reread line
+            exit READLINE
+         endif
+         call notabs(cinbuf,cin,ilast)
+      elseif(cin.eq.' ')then                                ! first call and no initial command passed in
+         cin='l -5'                                         ! on first call do this default command if init is blank
+         ilast=4
+      else                                                  ! if initial command was not blank do it instead of default
+         ilast=len_trim(cin)
       endif
-      call notabs(cinbuf,cin,ilast)
-   elseif(cin.eq.' ')then                                ! first call and no initial command passed in
-      cin='l -5'                                         ! on first call do this default command if init is blank
-      ilast=4
-   else                                                  ! if initial command was not blank do it instead of default
-      ilast=len_trim(cin)
-   endif
-   icall=icall+1
+      icall=icall+1
 !-----------------------------------------------------------------------------------------------------------------------------------
-   if(ilast.eq.0)then                                    ! blank command line; return and execute
-   return
-   endif
+      if(ilast.eq.0)then                                                 ! blank command line; return and execute
+         return
+      endif
 !-----------------------------------------------------------------------------------------------------------------------------------
-   cmd=cin(1:1)
-   select case(cmd)                                               ! first character defines edit action
+      cmd=cin(1:1)
+      if(ddd)call journal('d','*redol* cmd=',cmd,'options=',cin)
+      select case(cmd)                                                   ! first character defines edit action
 !-----------------------------------------------------------------------------------------------------------------------------------
-   case(' ')                                                      ! modify the string
-      call modif(redoline,cin(2:))
+       case(' ')                                                         ! modify the string
+         call modif(redoline,cin(2:))
 !-----------------------------------------------------------------------------------------------------------------------------------
-   case('m')                                                      ! modify the string with line number header
-      write(*,'(1x,a)',iostat=ios)numbers(:len_trim(redoline))
-      call modif(redoline,cin(2:))
+       case('m')                                                         ! modify the string with line number header
+         write(*,'(1x,a)',iostat=ios)numbers(:len_trim(redoline))
+         call modif(redoline,cin(2:))
 !-----------------------------------------------------------------------------------------------------------------------------------
-   case('c','s')                                                  ! change old string to new
-      call change(redoline,cin(1:255),ier)                        ! xedit-like change command
+       case('c','s')                                                     ! change old string to new
+         call change(redoline,cin(1:255),ier)                            ! xedit-like change command
 !     C/STRING1/STRING2/    OR CW/STRING1/STRING2/  (CHANGE IN WINDOW)
 !     WHERE / MAY BE ANY CHARACTER OTHER THAN W OR BLANK, WHICH IS NOT
 !     INCLUDED IN STRING1 OR STRING2
 !-----------------------------------------------------------------------------------------------------------------------------------
-   case('u','b')                                                  ! up or back through buffer
-      if(cin(2:).eq.' ')then
-         iup=1
-      else
-         iup=int( s2v( cin(2:),ierr ))
-      endif
-      ipoint=max(ipoint-iup,1)
-      goto 1
-!-----------------------------------------------------------------------------------------------------------------------------------
-   case('d','f')                                                  ! down or forward through buffer
-      if(cin(2:).eq.' ')then
-         idown=1
-      else
-         idown=int(s2v(cin(2:),ierr))
-      endif
-      ipoint=min(ipoint+idown,iredo)
-      goto 1
-!-----------------------------------------------------------------------------------------------------------------------------------
-   case(';')                                                       ! append lines
-   ivals=int(s2vs(cin(2:)))
-   if(allocated(ivals))then
-      do i=1,size(ivals)
-         ii=ivals(i)
-         if(ii.ge.1.and.ii.le.iredo)then
-            read(iobuf,rec=ii,err=999)cinbuf(1:ibuf)               ! get last line in history file as line to redo
-            iend=len_trim(redoline)
-            redoline=redoline(:iend)//';'//trim(cinbuf)            !! should warn of truncation
+       case('u','b')                                                     ! up or back through buffer
+         if(cin(2:).eq.' ')then
+            iup=1
          else
-            call journal('sc','*redol* line not found in history',ii)
+            iup=int(s2v(cin(2:),ierr,onerr=0))
          endif
-      enddo
-   endif
+         ipoint=max(ipoint-iup,1)
+         goto 1
 !-----------------------------------------------------------------------------------------------------------------------------------
-   case('?','h')                                                   ! display help
-      call help()
+       case('d','f')                                                     ! down or forward through buffer
+         if(cin(2:).eq.' ')then
+            idown=1
+         else
+            idown=int(s2v(cin(2:),ierr,onerr=0))
+         endif
+         ipoint=min(ipoint+idown,iredo)
+         goto 1
 !-----------------------------------------------------------------------------------------------------------------------------------
-   case('l','p')                                                   ! display history buffer file with line numbers
-      if(cin(2:).eq.' ')then
-         istart=iredo+1-20                                         ! default is to back up 20 lines
-      else
-         istart=int( s2v( cin(2:) ,ierr ))
-         if(istart.lt.0)then
-            istart=iredo+1+istart
+       case(';')                                                         ! append lines
+         ivals=int(s2vs(cin(2:)))
+         if(allocated(ivals))then
+            do i=1,size(ivals)
+               ii=ivals(i)
+               if(ii.ge.1.and.ii.le.iredo)then
+                  read(iobuf,rec=ii,err=999)cinbuf(1:ibuf)               ! get last line in history file as line to redo
+                  iend=len_trim(redoline)
+                  redoline=redoline(:iend)//';'//trim(cinbuf)            !! should warn of truncation
+               else
+                  call journal('sc','*redol_* line not found in history',ii)
+               endif
+            enddo
          endif
-      endif
-      istart=min(max(1,istart),iredo)                              ! make istart a safe value
-      do i10=istart,iredo
-         read(iobuf,rec=i10,iostat=ios)redoline(1:ibuf)
-         if(ios.ne.0)then
-            exit
-         endif
-         ix=max(1,len_trim(redoline))
-         write(*,'(i5.5,1x,a)',iostat=ios)i10,redoline(:ix)
-         if(ios.ne.0)then
-            exit
-         endif
-      enddo
 !-----------------------------------------------------------------------------------------------------------------------------------
-   case('w')                                                       ! dump to a file
-      idump=90
-      if(cin(2:).eq.' ')then
-         open(unit=idump,file='DUMP',iostat=ios,status='UNKNOWN')
-         if(ios.ne.0)then
-            call journal('sc','*redol* error opening dump file')
-            exit
-         endif
-      else
-         cin=adjustl(cin(2:)) ! eliminate leading spaces
-         if(cin.eq.' ')cin='DUMP'
-         open(unit=idump,file=trim(cin),iostat=ios,status='UNKNOWN')
-         if(ios.ne.0)then
-            call journal('sc','*redol* error opening dump file')
-            exit
-         endif
-      endif
-      do i15=1,iredo
-         read(iobuf,rec=i15,iostat=ios)redoline(1:ibuf)
-         if(ios.ne.0)then
-            call journal('sc','*redol* error reading history file')
-            exit
-         endif
-         ix=max(1,len_trim(redoline))
-         write(idump,'(a)',iostat=ios)redoline(:ix)
-         if(ios.ne.0)then
-            call journal('sc','*redol* error writing dump file')
-            close(idump,iostat=ios)
-            exit
-         endif
-      enddo
-      close(idump)
+       case('?','h')                                                     ! display help
+         call help_()
 !-----------------------------------------------------------------------------------------------------------------------------------
-   case('a','r')                                                   ! append/read file onto history file
-      idump=90
-      cin=adjustl(cin(2:)) ! eliminate leading spaces
-      if(cin.eq.' ')cin='DUMP'
-      open(unit=idump,file=trim(cin),iostat=ios,status='OLD')
-      if(ios.ne.0)then
-         call journal('sc','*redol* error opening read file')
-         exit
-      endif
-      if(cmd.eq.'r')iredo=0
-      do
-         read(idump,'(a)',iostat=ios)redoline(1:ibuf)
-         if(ios.ne.0)then
-            if(.not.is_iostat_end(ios))then
-               call journal('sc','*redol* error reading file '//trim(cin))
+       case('D')                                                         ! toggle debug mode
+         if(ddd .eqv. .false.)then
+            ddd=.true.
+            call journal(.true.,'debug')
+         else
+            ddd=.false.
+            call journal(.false.,'debug')
+         endif
+!-----------------------------------------------------------------------------------------------------------------------------------
+       case('l','p')                                                     ! display history buffer file with line numbers
+         if(cin(2:).eq.' ')then
+            istart=iredo+1-20                                            ! default is to back up 20 lines
+         else
+            istart=int(s2v(cin(2:),ierr,onerr=0))
+            if(ddd)call journal('d','*redol* istart=',istart,'ierr=',ierr)
+            if(ierr.ne.0)istart=iredo
+            if(istart.lt.0)then
+               istart=iredo+1+istart
             endif
-            exit
          endif
-         iredo=iredo+1
-         write(iobuf,rec=iredo,iostat=ios)redoline(1:ibuf)
-         if(ios.ne.0)then
-            call journal('sc','*redol* error writing history file')
-            exit
+         istart=min(max(1,istart),iredo)                                 ! make istart a safe value
+         if(ddd)call journal('d','*redol* istart=',istart,'iredo=',iredo)
+         do i10=istart,iredo
+            read(iobuf,rec=i10,iostat=ios)redoline(1:ibuf)
+            if(ios.ne.0)then
+               exit READLINE
+            endif
+            ix=max(1,len_trim(redoline))
+            write(*,'(i5.5,1x,a)',iostat=ios)i10,redoline(:ix)
+            if(ios.ne.0)then
+               exit READLINE
+            endif
+         enddo
+!-----------------------------------------------------------------------------------------------------------------------------------
+       case('w')                                                         ! dump to a file
+          cin=adjustl(cin(2:))                                           ! eliminate leading spaces and command name
+          if(cin.eq.' ')then
+             cin='DUMP'                                                  ! set as default and for message
+          endif
+          call do_w()
+!-----------------------------------------------------------------------------------------------------------------------------------
+       case('e','E')                                                     ! dump and edit history file and read it back in
+          cmdline=cin(2:)                                                ! assume rest of command is a system command
+          if(cmdline=='')cmdline='vim'                                   ! if no system command use "vim"
+          cin='scratch.tmp'                                              ! assume this is a writeable scratch file name
+          cmdline=trim(cmdline)//' '//cin                                ! append scratch filename to system command
+          call do_w()                                                    ! dump history file
+          call execute_command_line(cmdline,cmdstat=cstat,cmdmsg=msg)    ! Execute the command line specified by the string.
+          if(cstat.eq.0)then                                             ! rewrite or append to history file
+             if(cmd.eq.'e')iredo=0
+             call do_ar()
+          endif
+          open(newunit=iounit,file=cin,iostat=ios)                       ! remove scratch file
+          if(ios.ne.0)then
+            call journal('sc','*redol_* error opening scratch file file',cin,ios,'=',msg)
+          endif
+          close(unit=iounit,status='delete',iostat=ios,iomsg=msg)
+          if(ios.ne.0)then
+            call journal('sc','*redol_* error removing scratch file file',cin,ios,'=',msg)
+          endif
+!-----------------------------------------------------------------------------------------------------------------------------------
+       case('a')                                                         ! append to history from a file
+          cin=adjustl(cin(2:))                                           ! eliminate leading spaces and command name
+          if(cin.eq.' ')then
+             cin='DUMP'                                                  ! set as default and for message
+          endif
+          call do_ar()
+!-----------------------------------------------------------------------------------------------------------------------------------
+       case('r')                                                         ! replace history from a file
+          iredo=0
+          cin=adjustl(cin(2:))                                           ! eliminate leading spaces and command name
+          if(cin.eq.' ')then
+             cin='DUMP'                                                  ! set as default and for message
+          endif
+          call do_ar()
+!-----------------------------------------------------------------------------------------------------------------------------------
+       case('P','L')                                                     ! display history buffer file without line numbers
+         if(cin(2:).eq.' ')then                                          ! default is to go back up to 20
+            istart=iredo+1-20
+         else
+            istart=int(s2v(cin(2:),ierr,onerr=0))
+            if(istart.lt.0)then
+               istart=iredo+1+istart
+            endif
          endif
-      enddo
-      close(idump,iostat=ios)
+         istart=min(max(1,istart),iredo)                                 ! make istart a safe value
+         do i30=istart,iredo                                             ! easier to cut and paste if no numbers
+            read(iobuf,rec=i30,iostat=ios)redoline(1:ibuf)
+            if(ios.ne.0)then
+               goto 999
+            endif
+            ix=max(1,len_trim(redoline))
+            write(*,'(a)',err=999)redoline(:ix)
+         enddo
 !-----------------------------------------------------------------------------------------------------------------------------------
-   case('P','L')                                                   ! display history buffer file without line numbers
-      if(cin(2:).eq.' ')then                                       ! default is to go back up to 20
-         istart=iredo+1-20
-      else
-         istart=int( s2v(cin(2:),ierr ))
-         if(istart.lt.0)then
-            istart=iredo+1+istart
+       case('/')                                                         ! display matches in buffer
+         if(ilast.lt.2)then
+            cycle
          endif
-      endif
-      istart=min(max(1,istart),iredo)                              ! make istart a safe value
-      do i30=istart,iredo                                          ! easier to cut and paste if no numbers
-         read(iobuf,rec=i30,iostat=ios)redoline(1:ibuf)
-         if(ios.ne.0)then
-            goto 999
+         do i20=1,iredo
+            read(iobuf,rec=i20,err=999,iostat=ios)redoline(1:ibuf)
+            if(index(redoline(1:ibuf),cin(2:ilast)).ne.0)then
+               ix=max(1,len_trim(redoline))
+               write(*,'(i5.5,1x,a)',err=999)i20,redoline(:ix)
+               ipoint=i20
+            endif
+         enddo
+         goto 1
+!-----------------------------------------------------------------------------------------------------------------------------------
+       case('!')                                                              ! external command
+         if(ilast.lt.2)then
+            cycle
          endif
-         ix=max(1,len_trim(redoline))
-         write(*,'(a)',err=999)redoline(:ix)
-      enddo
+         call execute_command_line(trim(cin(2:)),cmdstat=cstat,cmdmsg=msg)    ! Execute the command line specified by the string.
+         !call system(trim(cin(2:)))                                          ! Execute the command line specified by the string.
 !-----------------------------------------------------------------------------------------------------------------------------------
-   case('/')                                                       ! display matches in buffer
-     if(ilast.lt.2)then
-        cycle
-     endif
-     do i20=1,iredo
-        read(iobuf,rec=i20,err=999,iostat=ios)redoline(1:ibuf)
-        if(index(redoline(1:ibuf),cin(2:ilast)).ne.0)then
-           ix=max(1,len_trim(redoline))
-           write(*,'(i5.5,1x,a)',err=999)i20,redoline(:ix)
-           ipoint=i20
-        endif
-    enddo
-    goto 1
+       case('.','q')                                                          ! blank out command and quit
+         exit READLINE
 !-----------------------------------------------------------------------------------------------------------------------------------
-   case('!')                                                              ! external command
-     if(ilast.lt.2)then
-        cycle
-     endif
-     call execute_command_line(trim(cin(2:)),cmdstat=cstat,cmdmsg=sstat)  ! Execute the command line specified by the string.
-     !call system(trim(cin(2:)))                                          ! Execute the command line specified by the string.
+       case default                                                           ! assume anything else is a number
+         val8=s2v(cin,ierr,onerr=0)
+         if(ierr.eq.0)then
+            iread=int(val8)
+         else
+            iread=0
+         endif
+         if(iread.gt.0.and.iread.le.iredo)then
+            read(iobuf,rec=iread,err=999,iostat=ios)redoline(1:ibuf)
+            ipoint=iread
+         endif
 !-----------------------------------------------------------------------------------------------------------------------------------
-   case('.','q')                                                          ! blank out command and quit
-      exit
-!-----------------------------------------------------------------------------------------------------------------------------------
-   case default                                                           ! assume anything else is a number
-      val8=s2v(cin,ierr)
-      if(ierr.eq.0)then
-         iread=int(val8)
-      else
-         iread=0
-      endif
-      if(iread.gt.0.and.iread.le.iredo)then
-         read(iobuf,rec=iread,err=999,iostat=ios)redoline(1:ibuf)
-         ipoint=iread
-      endif
-!-----------------------------------------------------------------------------------------------------------------------------------
-   end select
+      end select
 !-----------------------------------------------------------------------------------------------------------------------------------
    enddo READLINE
 !-----------------------------------------------------------------------------------------------------------------------------------
-999   continue
+999 continue
    redoline=' '
 !-----------------------------------------------------------------------------------------------------------------------------------
-end subroutine redol
+contains
+!-----------------------------------------------------------------------------------------------------------------------------------
+subroutine do_w()
+WRITE: block
+   open(newunit=idump,file=cin,iostat=ios,status='UNKNOWN',iomsg=msg)
+   if(ios.ne.0)then
+      call journal('sc','*redol_* error opening dump file',ios,'=',msg)
+      exit WRITE
+   endif
+   do i15=1,iredo
+      read(iobuf,rec=i15,iostat=ios,iomsg=msg)redoline(1:ibuf)
+      if(ios.ne.0)then
+         call journal('sc','*redol_* error reading history file',ios,'=',msg)
+         exit WRITE
+      endif
+      ix=max(1,len_trim(redoline))
+      write(idump,'(a)',iostat=ios,iomsg=msg)redoline(:ix)
+      if(ios.ne.0)then
+         call journal('sc','*redol_* error writing dump file',ios,'=',msg)
+         close(idump,iostat=ios)
+         exit WRITE
+      endif
+   enddo
+   call journal('sc','wrote file',cin)
+endblock WRITE
+close(idump,iostat=ios)
+end subroutine do_w
+!-----------------------------------------------------------------------------------------------------------------------------------
+subroutine do_ar()
+REPLACE: block
+   open(newunit=idump,file=cin,iostat=ios,status='OLD',iomsg=msg)
+   if(ios.ne.0)then
+      call journal('sc','*redol_* error opening file',ios,'=',msg)
+      exit REPLACE
+   endif
+   do
+      read(idump,'(a)',iostat=ios,iomsg=msg)redoline(1:ibuf)
+      if(ios.ne.0)then
+         if(.not.is_iostat_end(ios))then
+            call journal('sc','*redol_* error reading file ',cin,ios,'=',msg)
+         endif
+         exit REPLACE
+      endif
+      iredo=iredo+1
+      write(iobuf,rec=iredo,iostat=ios,iomsg=msg)redoline(1:ibuf)
+      if(ios.ne.0)then
+         call journal('sc','*redol_* error writing history file',ios,'=',msg)
+         exit REPLACE
+      endif
+   enddo
+endblock REPLACE
+call journal('sc','read file',cin)
+close(idump,iostat=ios)
+end subroutine do_ar
+!-----------------------------------------------------------------------------------------------------------------------------------
+end subroutine redol_
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-subroutine help()
-character(len=*),parameter    :: ident="@(#)M_history::help(3fp): prints help for REDO(3f)"
+subroutine help_()
+
+character(len=*),parameter::ident_4="@(#)M_history::help_(3fp): prints help for REDO(3f)"
+
 character(len=80),allocatable :: usage(:)
 integer                       :: i
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -620,48 +697,57 @@ usage=[ &
    do i=1,size(usage)
       call journal('sc',usage(i))
    enddo
-end subroutine help
-!===================================================================================================================================
+end subroutine help_
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 subroutine test_suite_M_history()
-
 !! setup
    call test_redo()
 !! teardown
 contains
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_redo()
-
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
-character(len=256)            :: line
-character(len=256),parameter  :: infile(*)= [ character(len=256) :: &
-    'echo This is test line 1.',&
-    'echo This is test line 2.',&
-    'echo This is test line 3.',&
-    'r c/test/TEST/           ',&
-    ' ##########              ',&
-    ' ^THIS #                 ',&
-    '      &&                 ',&
-    'c/TEST/IS STILL TEST/    ',&
-    'c/    / /                ',&
-    ' ^echo #                 ',&
-    'c/3./3. >__out__/        ',&
-    '                         ',&
-    'quit']
+character(len=256)           :: read_from_file
+character(len=256)           :: inl
+integer                      :: ios
+integer                      :: io
+   write(*,*)'UNIT_CHECK_LEVEL=',UNIT_CHECK_LEVEL
    call unit_check_start('redo',msg='')
-   open(unit=10,file='__scratch__')
-   write(10,'(a)')infile
-   close(10)
-   call execute_command_line('env PATH=`pwd`/PROGRAMS:$PATH redo <__scratch__>/dev/null')
-   open(unit=10,file='__scratch__')
-   close(unit=10,status='delete')
-   open(unit=11,file='__out__')
-   read(11,'(a)')line
-   close(unit=11,status='delete')
-   call unit_check('redo',line.eq.'THIS IS STILL TEST line 3.', msg=msg('checking ',trim(line)))
+   open(newunit=io,file='r_directives.tmp')
+   write(io,'(a)')'echo first line'
+   write(io,'(a)')'echo abcdefghijklmnopqrstuvwxyz'
+   write(io,'(a)')'r'
+   write(io,'(a)')'c/klmnopqrst/KLMNOPQRST/'
+   write(io,'(a)')'m     ABCDEFGHIJ          UVWXYZ'
+   write(io,'(a)')''
+   write(io,'(a)')'r'
+   write(io,'(a)')'m    ^ The alphabet is:#'
+   write(io,'(a)')''
+   write(io,'(a)')'r c/alpha/Alpha/'
+   write(io,'(a)')''
+   write(io,'(a)')'r /XYZ'
+   write(io,'(a)')'c@XYZ@XYZ > tmp/_outtest@'
+   write(io,'(a)')''
+   write(io,'(a)')'r l 1'
+   write(io,'(a)')'.'
+   write(io,'(a)')'r /ABCD'
+   write(io,'(a)')''
+   rewind(io)
+   do
+      read(io,'(a)',iostat=ios)read_from_file
+      if(unit_check_level.ne.0) write(*,'(2a," IOS=",i0)')'READ:',trim(read_from_file),ios
+      if(ios.ne.0)exit
+      inl=read_from_file
+      if(unit_check_level.ne.0) write(*,'(2a)')'IN:   ',trim(inl)
+      call redo(inl,'r',lun=io)
+      if(unit_check_level.ne.0) write(*,'(2a)')'SOFAR:',trim(inl)
+   enddo
+   close(unit=io,iostat=ios,status='delete')
+   if(unit_check_level.ne.0) write(*,*)'LAST: ',trim(inl)
+   call unit_check('redo',inl.eq.'echo The Alphabet is: ABCDEFGHIJKLMNOPQRSTUVWXYZ > tmp/_outtest',msg=msg('checking',trim(inl)))
    call unit_check_done('redo',msg='')
 end subroutine test_redo
 !===================================================================================================================================

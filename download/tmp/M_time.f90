@@ -55,10 +55,10 @@ private upper
    private call_sleep
    private call_usleep
 !-----------------------------------------------------------------------------------------------------------------------------------
-   integer,parameter,public       :: realtime=kind(0.0d0)     ! type for 1 epoch time and julian days
+integer,parameter,public   :: realtime=kind(0.0d0)            ! type for 1 epoch time and julian days
 !-----------------------------------------------------------------------------------------------------------------------------------
 ! INTERNAL
-   real(kind=realtime),parameter,private :: SECDAY=86400.0d0  ! 24:00:00 hours as seconds
+real(kind=realtime),parameter,private :: SECDAY=86400.0d0     ! 24:00:00 hours as seconds
 !-----------------------------------------------------------------------------------------------------------------------------------
 !  integer,parameter       :: igreg_1582=15+31*(10+12*1582)   ! ASSUMES: Gregorian Calendar was adopted 15 Oct. 1582 (588829)
 !  integer,parameter       :: igreg_1752=03+31*( 9+12*1752)   ! ASSUMES: Gregorian Calendar was adopted 3 Sep. 1752 (652026)
@@ -145,9 +145,9 @@ integer,intent(in)               :: dat(8)   ! array like returned by DATE_AND_T
 real(kind=realtime),intent(out)  :: julian   ! Julian Date (non-negative, but may be non-integer)
 integer,intent(out)              :: ierr     ! Error return: 0 =successful execution,-1=invalid year,-2=invalid month,-3=invalid day
                                              ! -4=invalid date (29th Feb, non leap-year)
-   integer                       :: year, month, day, utc, hour, minute
-   real(kind=realtime)           :: second
-   integer                       :: A, Y, M, JDN
+integer                          :: year, month, day, utc, hour, minute
+real(kind=realtime)              :: second
+integer                          :: A, Y, M, JDN
 !-----------------------------------------------------------------------------------------------------------------------------------
    year   = dat(1)                        ! Year
    month  = dat(2)                        ! Month
@@ -280,14 +280,14 @@ character(len=*),parameter::ident_2="@(#)M_time::julian_to_date(3f): Converts Ju
 real(kind=realtime),intent(in)   :: julian            ! Julian Date (non-negative)
 integer,intent(out)              :: dat(8)
 integer,intent(out)              :: ierr              ! 0 for successful execution, otherwise 1
-   integer                 :: tz
-   real(kind=realtime)     :: second
-   integer                 :: year
-   integer                 :: month
-   integer                 :: day
-   integer                 :: hour
-   integer                 :: minute
-   integer                 :: jalpha,ja,jb,jc,jd,je,ijul
+integer                          :: tz
+real(kind=realtime)              :: second
+integer                          :: year
+integer                          :: month
+integer                          :: day
+integer                          :: hour
+integer                          :: minute
+integer                          :: jalpha,ja,jb,jc,jd,je,ijul
 
    if(julian.lt.0.d0) then                      ! Negative Julian Date not allowed
       ierr=1
@@ -351,11 +351,11 @@ end subroutine julian_to_date
 subroutine test_julian_to_date()
 use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
 !!use M_time, only : julian_to_date, fmtdate, realtime
-   implicit none
-   real(kind=realtime)          :: juliandate
-   integer                      :: dat(8)
-   integer                      :: ierr
-   character(len=:),allocatable :: expected
+implicit none
+real(kind=realtime)          :: juliandate
+integer                      :: dat(8)
+integer                      :: ierr
+character(len=:),allocatable :: expected
 
    call unit_check_start('julian_to_date')
 
@@ -434,9 +434,9 @@ character(len=*),parameter::ident_3="@(#)M_time::date_to_unix(3f): Convert DAT d
 integer,intent(in)              :: dat(8)       ! date time array similar to that returned by DATE_AND_TIME
 real(kind=realtime),intent(out) :: unixtime     ! Unix time (seconds)
 integer,intent(out)             :: ierr         ! return 0 on success, otherwise 1
-   real(kind=realtime)          :: julian
-   real(kind=realtime),save     :: julian_at_epoch
-   logical,save                 :: first=.true.
+real(kind=realtime)             :: julian
+real(kind=realtime),save        :: julian_at_epoch
+logical,save                    :: first=.true.
 !-----------------------------------------------------------------------------------------------------------------------------------
 if(first) then                                        ! Convert zero of Unix Epoch Time to Julian Date and save
    call date_to_julian([1970,1,1,0,0,0,0,0],julian_at_epoch,ierr)
@@ -528,11 +528,11 @@ character(len=*),parameter::ident_4="@(#)M_time::unix_to_date(3f): Converts Unix
 class(*),intent(in)              :: unixtime                            ! Unix time (seconds)
 integer,intent(out)              :: dat(8)                              ! date and time array
 integer,intent(out)              :: ierr                                ! 0 for successful execution, otherwise 1
-   real(kind=realtime)           :: julian                              ! Unix time converted to a Julian Date
-   real(kind=realtime)           :: local_unixtime
-   real(kind=realtime),save      :: Unix_Origin_as_Julian               ! start of Unix Time as Julian Date
-   logical,save            :: first=.TRUE.
-   !  Notice that the value UNIXTIME can be any of several types ( INTEGER,REAL,REAL(KIND=REALTIME))
+real(kind=realtime)              :: julian                              ! Unix time converted to a Julian Date
+real(kind=realtime)              :: local_unixtime
+real(kind=realtime),save         :: Unix_Origin_as_Julian               ! start of Unix Time as Julian Date
+logical,save                     :: first=.TRUE.
+!  Notice that the value UNIXTIME can be any of several types ( INTEGER,REAL,REAL(KIND=REALTIME))
    select type(unixtime)
    type is (integer);             local_unixtime=dble(unixtime)
    type is (real);                local_unixtime=dble(unixtime)  ! typically not precise enough for UET values.
@@ -630,9 +630,9 @@ character(len=*),parameter::ident_5="@(#)M_time::d2o(3f): Converts DAT date-time
 ! JSU 2015-12-13
 integer,intent(in)         :: dat(8)                  ! date time array similar to that returned by DATE_AND_TIME
 integer                    :: ordinal                 ! the returned number of days
-   real(kind=realtime)           :: unixtime                ! Unix time (seconds)
-   real(kind=realtime)           :: unix_first_day
-   integer                 :: ierr                    ! return 0 on success, otherwise 1 from date_to_unix(3f)
+real(kind=realtime)        :: unixtime                ! Unix time (seconds)
+real(kind=realtime)        :: unix_first_day
+integer                    :: ierr                    ! return 0 on success, otherwise 1 from date_to_unix(3f)
    call date_to_unix(dat,unixtime,ierr)               ! convert date to Unix Epoch Time
    if(ierr.ne.0)then
       call stderr('*d2o* bad date array')
@@ -726,9 +726,9 @@ character(len=*),parameter::ident_6="&
 integer, intent(in)   :: yyyy
 integer, intent(in)   :: ddd
 integer,intent(out)   :: dat(8)
-   integer               :: mm
-   integer               :: dd
-   integer :: t
+integer               :: mm
+integer               :: dd
+integer               :: t
 
    t = 0
 
@@ -854,8 +854,8 @@ character(len=*),parameter::ident_7="@(#)M_time::o2d(3f): Converts ordinal day t
 integer                    :: dat(8)                  ! date time array similar to that returned by DATE_AND_TIME
 integer,intent(in)         :: ordinal                 ! the returned number of days
 integer,optional           :: year
-   real(kind=realtime)     :: unixtime                ! Unix time (seconds)
-   integer                 :: ierr                    ! return 0 on success, otherwise 1 from date_to_unix(3f)
+real(kind=realtime)        :: unixtime                ! Unix time (seconds)
+integer                    :: ierr                    ! return 0 on success, otherwise 1 from date_to_unix(3f)
    if(present(year))then
       dat=[year,1,ordinal,get_timezone(),0,0,0,0]     ! initialize DAT with parameters and set timezone, set HH:MM:SS.XX to zero
    else
@@ -957,7 +957,7 @@ character(len=*),parameter::ident_8="@(#)M_time::v2mo(3f): returns the month nam
 ! JSU 2015-12-13
 character(len=:),allocatable :: month_name                                        ! string containing month name or abbreviation.
 integer,intent(in)           :: imonth                                            ! the number of the month(1-12)
-   character(len=*),parameter   :: names(12)=[                                    &
+character(len=*),parameter   :: names(12)=[                                    &
    &'January  ', 'February ', 'March    ', 'April    ', 'May      ', 'June     ', &
    &'July     ', 'August   ', 'September', 'October  ', 'November ', 'December ']
 
@@ -1124,7 +1124,7 @@ character(len=*),parameter::ident_10="@(#)M_time::mo2v(3f): given month name ret
 ! JSU 2015-12-13
 character(len=*),intent(in):: month_name   ! string containing month name or abbreviation.
 integer                    :: imonth       ! the number of the month(1-12), or -1 if the name could not be recognized.
-  character(len=3)         :: string
+character(len=3)           :: string
   string = upper(month_name)     ! Case is ignored; test string now guaranteed to have three characters
   imonth = 0
   FIND: select case(string(1:1)) ! The month name has to match up to the unique beginning of a month name, and the rest is ignored.
@@ -1234,7 +1234,7 @@ character(len=*),parameter::ident_11="@(#)M_time::now(3f): return string represe
 ! JSU 2015-10-24
 character(len=*),intent(in),optional :: format
 character(len=:),allocatable         :: now
-   integer                           :: values(8)
+integer                              :: values(8)
 !-----------------------------------------------------------------------------------------------------------------------------------
    call date_and_time(values=values)
    if(present(format))then
@@ -1320,28 +1320,28 @@ integer,dimension(8),intent(in)      :: values    ! numeric time values as DATE_
 character(len=*),intent(in),optional :: format    ! input format string
 character(len=:),allocatable         :: timestr
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   integer,dimension(8)              :: valloc    ! numeric time values as DATE_AND_TIME(3f) intrinsic returns
-   integer,parameter                 :: longest=4096
-   character(len=1)                  :: chara     ! character being looked at in format string
-   character(len=10)                 :: iso_name
-   character(len=2)                  :: dayend
-   character(len=9)                  :: day       ! day of week
-   character(len=:),allocatable      :: local_format
-   character(len=longest)            :: text      ! character array
-   character(len=longest)            :: xxxx
-   integer                           :: i,ii,i10
-   integer                           :: ierr
-   integer                           :: iout
-   integer                           :: iso_year, iso_week, iso_weekday
-   integer                           :: systemclock, countrate
-   integer                           :: weekday
-   integer,save                      :: called=0
-   logical                           :: keyword   ! flag that previous character was a % character
-   logical,save                      :: since=.FALSE.
-   real(kind=realtime)               :: cputime
-   real(kind=realtime)               :: julian
-   real(kind=realtime)               :: unixtime
-   real(kind=realtime),save          :: unixtime_last
+integer,dimension(8)                 :: valloc    ! numeric time values as DATE_AND_TIME(3f) intrinsic returns
+integer,parameter                    :: longest=4096
+character(len=1)                     :: chara     ! character being looked at in format string
+character(len=10)                    :: iso_name
+character(len=2)                     :: dayend
+character(len=9)                     :: day       ! day of week
+character(len=:),allocatable         :: local_format
+character(len=longest)               :: text      ! character array
+character(len=longest)               :: xxxx
+integer                              :: i,ii,i10
+integer                              :: ierr
+integer                              :: iout
+integer                              :: iso_year, iso_week, iso_weekday
+integer                              :: systemclock, countrate
+integer                              :: weekday
+integer,save                         :: called=0
+logical                              :: keyword   ! flag that previous character was a % character
+logical,save                         :: since=.FALSE.
+real(kind=realtime)                  :: cputime
+real(kind=realtime)                  :: julian
+real(kind=realtime)                  :: unixtime
+real(kind=realtime),save             :: unixtime_last
 
    valloc=values
    if(present(format))then
@@ -1565,13 +1565,13 @@ subroutine test_fmtdate
 use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
 !!use M_time, only: guessdate, fmtdate
 implicit none
-character(len=80)  :: date1
-character(len=80)  :: date2
-character(len=80)  :: iso_week_date
-character(len=132) :: comment
+character(len=80)              :: date1
+character(len=80)              :: date2
+character(len=80)              :: iso_week_date
+character(len=132)             :: comment
 character(len=372),allocatable :: line(:)
-integer            :: dat(8)
-integer            :: i
+integer                        :: dat(8)
+integer                        :: i
 ! the data file with dates to read and expected answers and comments
 line=[ character(len=372) :: &
 & ' "Sat 1 Jan 2005",  "2005-01-01", "2004-W53-6", " " ', &
@@ -1750,10 +1750,10 @@ subroutine fmtdate_usage(indent)
 character(len=*),parameter::ident_13="@(#)M_time::fmtdate_usage(3f): display macros recognized by fmtdate(3f)"
 
 ! JSU 2015-10-24
-integer,intent(in),optional       :: indent
-   character(len=128),allocatable :: usage(:)
-   integer                        :: i,ii
-   character(len=:),allocatable   :: blanks
+integer,intent(in),optional    :: indent
+character(len=128),allocatable :: usage(:)
+integer                        :: i,ii
+character(len=:),allocatable   :: blanks
    if(present(indent))then ! set indent to passed value or, if value is not present, set indent to 3
       ii=indent
    else
@@ -1982,25 +1982,25 @@ character(len=:),allocatable      :: datestring_local ! Date in string format
 character(len=:),allocatable      :: temp
 integer,intent(out)               :: dat(8)
 integer,optional                  :: ier
-   integer                        :: ier_local
-   integer                        :: iye,mon,idy  ! Year, Month, Day
-   integer                        :: ihr,imi,ise  ! Hour, Minute, Second
-   integer                        :: itz, imill   ! Timezone, Milliseconds
-   character(len=len(datestring)*2) :: buff
-   integer                        :: i,idum,ind
-   logical                        :: alpha
-   integer                        :: ios
-   integer                        :: itries
-   character(len=3),parameter     :: amon(12)=['JAN','FEB','MAR','APR','MAY','JUN', 'JUL','AUG','SEP','OCT','NOV','DEC']
-   integer,parameter              :: idmon(12)=[31 , 28  , 31  , 30  , 31  , 30 , 31 , 31  , 30  , 31  , 30  , 31]
-   character(len=:),allocatable   :: scratch(:)
-   integer,parameter              :: isize=40
-   real                           :: rvalues(isize)
-   character(len=2)               :: ampm
-   integer                        :: iend, inums, ierr
-   logical                        :: number
-   logical                        :: verbose
-   integer                        :: loops
+integer                           :: ier_local
+integer                           :: iye,mon,idy  ! Year, Month, Day
+integer                           :: ihr,imi,ise  ! Hour, Minute, Second
+integer                           :: itz, imill   ! Timezone, Milliseconds
+character(len=len(datestring)*2)  :: buff
+integer                           :: i,idum,ind
+logical                           :: alpha
+integer                           :: ios
+integer                           :: itries
+character(len=3),parameter        :: amon(12)=['JAN','FEB','MAR','APR','MAY','JUN', 'JUL','AUG','SEP','OCT','NOV','DEC']
+integer,parameter                 :: idmon(12)=[31 , 28  , 31  , 30  , 31  , 30 , 31 , 31  , 30  , 31  , 30  , 31]
+character(len=:),allocatable      :: scratch(:)
+integer,parameter                 :: isize=40
+real                              :: rvalues(isize)
+character(len=2)                  :: ampm
+integer                           :: iend, inums, ierr
+logical                           :: number
+logical                           :: verbose
+integer                           :: loops
 
    call date_and_time(values=dat)                           ! get time zone of current process and set defaults
    iye=dat(1)
@@ -2235,13 +2235,13 @@ subroutine test_guessdate
 use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
 !!use M_time, only: guessdate, w2d, d2w, fmtdate
 implicit none
-character(len=80)  :: date1
-character(len=80)  :: date2
-character(len=80)  :: iso_week_date
-character(len=132) :: comment
+character(len=80)              :: date1
+character(len=80)              :: date2
+character(len=80)              :: iso_week_date
+character(len=132)             :: comment
 character(len=372),allocatable :: line(:)
-integer            :: dat(8)
-integer            :: i
+integer                        :: dat(8)
+integer                        :: i
 
 call unit_check_start('guessdate')
 
@@ -2351,9 +2351,9 @@ integer,intent(in)                    :: values(8) ! date and time array used to
 integer,intent(out),optional          :: weekday   ! The day of the week, 1 = Monday, 7 = Sunday
 character(len=*),intent(out),optional :: day       ! The name of the day of the week, e.g. 'Sunday'. Minimum length = 9
 integer,intent(out),optional          :: ierr      ! Error code,0=correct,-1=invalid input date,-2=neither day nor weekday specified
-   real(kind=realtime)                :: julian    ! the Julian Date for which the weekday is required,
-   integer                            :: iweekday
-   integer                            :: ierr_local
+real(kind=realtime)                   :: julian    ! the Julian Date for which the weekday is required,
+integer                               :: iweekday
+integer                               :: ierr_local
 
    call date_to_julian(values,julian,ierr_local)   ! need Julian Date to calculate day of week for first day of month
    ierr_local = 0
@@ -2553,7 +2553,7 @@ contains
    implicit none
    integer            :: uncorrected_week_of_year
    integer,intent(in) :: datin(8)
-      integer         :: ordinal
+   integer            :: ordinal
       call dow(datin,shared_weekday,day,ierr)                 ! formula needs day of week 1..7 where Monday=1
       ordinal=d2o(datin)                                      ! formula needs ordinal day of year where Jan 1st=1
       uncorrected_week_of_year=(ordinal-shared_weekday+10)/7
@@ -2790,10 +2790,10 @@ character(len=*),parameter::ident_17="&
 
 integer,intent(in)              :: iso_year, iso_week, iso_weekday
 integer,intent(out)             :: dat(8)     ! output date array
-   integer                      :: jan4weekday
-   integer                      :: correction
-   integer                      :: ordinal
-   integer                      :: ierr
+integer                         :: jan4weekday
+integer                         :: correction
+integer                         :: ordinal
+integer                         :: ierr
    call dow( [iso_year,1,4,0,12,0,0,0], jan4weekday, ierr=ierr) ! get day of week for January 4th where Sun=1
    correction=jan4weekday+3                      ! calculate correction
    ordinal=iso_week*7+iso_weekday-correction     ! calculate ordinal day
@@ -2901,17 +2901,17 @@ use M_strings, only : adjustc, v2s
 
 character(len=*),parameter::ident_18="@(#)M_time::box_month(3f): generate month specified by DAT date-time array in character array"
 
-integer,parameter                :: wklen=3*7
+integer,parameter             :: wklen=3*7
 !-----------------------------------------------------------------------------------------------------------------------------------
 ! uses year and month from date array DAT to populate a small character array with a calendar representing the month
-integer,intent(in)               :: dat(8)
-character(len=wklen)             :: calen(8)
+integer,intent(in)            :: dat(8)
+character(len=wklen)          :: calen(8)
 !-----------------------------------------------------------------------------------------------------------------------------------
-   real(kind=realtime)           :: julian
-   integer                       :: weekday
-   integer                       :: dat_1st(8)
-   integer                       :: dat_nextday(8)
-   integer                       :: location,ierr,i
+real(kind=realtime)           :: julian
+integer                       :: weekday
+integer                       :: dat_1st(8)
+integer                       :: dat_nextday(8)
+integer                       :: location,ierr,i
 !-----------------------------------------------------------------------------------------------------------------------------------
    calen(:)='                    '                                 ! initialize output array to spaces
    dat_1st=[dat(1),dat(2),1,dat(4),0,0,0,0]                        ! create date array for first day in month specified
@@ -3008,8 +3008,8 @@ character(len=*),parameter::ident_19="@(#)M_time::d2j(3f): Given DAT date-time a
 
 integer,intent(in),optional :: dat(8)
 real(kind=realtime)         :: julian
-   integer                  :: ierr
-   integer                  :: dat_local(8)
+integer                     :: ierr
+integer                     :: dat_local(8)
 
    if(present(dat))then                      ! if dat array is present use value contained in it
       call date_to_julian(dat,julian,ierr)
@@ -3107,7 +3107,7 @@ character(len=*),parameter::ident_20="@(#)M_time::j2d(3f): Given Julian Date ret
 
 real(kind=realtime),intent(in)   :: julian
 integer                          :: dat(8)
-   integer                       :: ierr
+integer                          :: ierr
    call julian_to_date(julian,dat,ierr)
 end function j2d
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -3279,10 +3279,10 @@ function u2d(unixtime) result (dat)
 
 character(len=*),parameter::ident_22="@(#)M_time::u2d(3f): Given Unix Epoch Time returns DAT date-time array"
 
-class(*),intent(in),optional      :: unixtime
-integer                           :: dat(8)
-   real(kind=realtime)            :: local_unixtime
-   integer                        :: ierr
+class(*),intent(in),optional   :: unixtime
+integer                        :: dat(8)
+real(kind=realtime)            :: local_unixtime
+integer                        :: ierr
 
    if(present(unixtime))then
       select type(unixtime)
@@ -3311,7 +3311,7 @@ end subroutine test_u2d
 function get_timezone() result(tz)
 implicit none
 integer :: tz
-  integer :: timezone(8)
+integer :: timezone(8)
    call date_and_time(values=timezone)
    tz=timezone(4)
 end function get_timezone
@@ -3398,19 +3398,19 @@ integer,parameter        :: k(38)=[(selected_int_kind(i),i=1,38)]
 class(*),intent(in)               :: seconds
 logical,intent(in),optional       :: crop
 character(len=:),allocatable      :: dhms
-   real(kind=realtime), parameter :: units_hl(4)=[ 86400.0d0, 3600.0d0, 60.0d0, 1.0d0 ]
-   character(len=40)              :: scratch
-   integer(kind=int64)            :: days, hours, minutes, secsleft
-   integer,parameter              :: one_day=86400
-   integer,parameter              :: one_hour=3600
-   integer,parameter              :: one_minute=60
-   logical                        :: crop_local
-   integer                        :: iprint
-   logical                        :: negative
-   integer                        :: ilast
-   character(len=:),allocatable   :: strlocal
-   character(len=:),allocatable   :: array(:)
-   doubleprecision                :: dtime
+real(kind=realtime), parameter    :: units_hl(4)=[ 86400.0d0, 3600.0d0, 60.0d0, 1.0d0 ]
+character(len=40)                 :: scratch
+integer(kind=int64)               :: days, hours, minutes, secsleft
+integer,parameter                 :: one_day=86400
+integer,parameter                 :: one_hour=3600
+integer,parameter                 :: one_minute=60
+logical                           :: crop_local
+integer                           :: iprint
+logical                           :: negative
+integer                           :: ilast
+character(len=:),allocatable      :: strlocal
+character(len=:),allocatable      :: array(:)
+doubleprecision                   :: dtime
 
    !  Convert input value to nearest integer
    !  Notice that the value SECONDS can be any of several types ( INTEGER,REAL,REAL(KIND=REALTIME))
@@ -3638,12 +3638,12 @@ real(kind=realtime)               :: time
 !          mm:ss
 !          ss
 !
-   character(len=:),allocatable   :: strlocal
-   character(len=:),allocatable   :: array(:)
-   real(kind=realtime), parameter :: units_lh(4)=[ 1.0d0, 60.0d0, 3600.0d0, 86400.0d0 ]
-   real(kind=realtime), parameter :: units_hl(4)=[ 86400.0d0, 3600.0d0, 60.0d0, 1.0d0 ]
-   integer                        :: i, icount, iwords, ilast
-   logical                        :: negative
+character(len=:),allocatable      :: strlocal
+character(len=:),allocatable      :: array(:)
+real(kind=realtime), parameter    :: units_lh(4)=[ 1.0d0, 60.0d0, 3600.0d0, 86400.0d0 ]
+real(kind=realtime), parameter    :: units_hl(4)=[ 86400.0d0, 3600.0d0, 60.0d0, 1.0d0 ]
+integer                           :: i, icount, iwords, ilast
+logical                           :: negative
 
    time=0.0d0
    strlocal=compact(str,'')                              ! remove whitespace
@@ -4026,8 +4026,8 @@ character(len=*),parameter::ident_27="@(#)M_time::easter(3f): calculate date for
 
 integer,intent(in)    :: year
 integer,intent(out)   :: dat(8) ! year,month,day,tz,hour,minute,second,millisecond
-   integer            :: day, month
-   integer            :: c, i, j, k, l, n
+integer               :: day, month
+integer               :: c, i, j, k, l, n
 
    c = year / 100
    n = year - 19 * ( year / 19 )
@@ -4318,9 +4318,9 @@ integer,parameter         :: dp=kind(0.0d0)
 integer,intent(in)        :: planet_number
 real(kind=dp),intent(in)  :: t
 real(kind=dp),intent(out) :: x,y,z
-   real(kind=dp),save     :: A(9,8)
-   real(kind=dp)          :: xl,xm,o,p,q,e,xi,xa,xj,r,u,v
-   integer                :: i
+real(kind=dp),save        :: A(9,8)
+real(kind=dp)             :: xl,xm,o,p,q,e,xi,xa,xj,r,u,v
+integer                   :: i
 !initialize planetary constants (fill table A by columns)
 data (a(i,1),i=1,9)/&
      4.01166d0, 0.071425454d0,  1.32493d0,  0.000000742289d0, 0.823045d0, 0.000000566185d0, 0.205615d0, 0.122225d0,   0.387099d0 /
@@ -4376,10 +4376,10 @@ subroutine test_ephemeris()
 use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
 !!use M_time, only : ephemeris, fmtdate
 implicit none
-     integer,parameter  :: itime(8)=[1982,3,10,0,6,0,0,0] ! For: Wednesday, March 10th, 1982 6:00:00 AM UTC+00:00
-     integer            :: planet
-     integer            :: D_d, D_m, A_h, A_m
-     character(len=1)   :: D_c
+integer,parameter  :: itime(8)=[1982,3,10,0,6,0,0,0] ! For: Wednesday, March 10th, 1982 6:00:00 AM UTC+00:00
+integer            :: planet
+integer            :: D_d, D_m, A_h, A_m
+character(len=1)   :: D_c
 
 block
 integer :: io=6
@@ -4509,9 +4509,9 @@ subroutine test_system_sleep()
 use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
 !!use M_time, only: system_sleep
 implicit none
-   integer :: systemcount1, countrate1
-   integer :: systemcount2, countrate2
-   real    :: slept_in_seconds
+integer :: systemcount1, countrate1
+integer :: systemcount2, countrate2
+real    :: slept_in_seconds
 
    call unit_check_start('system_sleep')
 
@@ -4653,10 +4653,10 @@ subroutine put_environment_variable(name,value,status)
 
 character(len=*),parameter::ident_32="@(#)M_system::put_environment_variable(3f): call setenv(3c) to set environment variable"
 
-   character(len=*)               :: NAME
-   character(len=*)               :: VALUE
-   integer, optional, intent(out) :: STATUS
-   integer                        :: loc_err
+character(len=*)               :: NAME
+character(len=*)               :: VALUE
+integer, optional, intent(out) :: STATUS
+integer                        :: loc_err
 
 interface
    integer(kind=c_int) function c_setenv(c_name,c_VALUE) bind(C,NAME="setenv")
@@ -4677,7 +4677,7 @@ character(len=*),parameter::ident_33="@(#)M_system::str2arr(3fp): function copie
 
 character(len=*),intent(in)     :: string
 character(len=1,kind=c_char)    :: array(len(string)+1)
-   integer                      :: i
+integer                         :: i
 
    do i = 1,len_trim(string)
       array(i) = string(i:i)
@@ -4893,12 +4893,12 @@ function format(self,fmt) result (string)
 character(len=*),parameter::ident_40="@(#)M_time::format(3f): convert derived type date_time to formatted string"
 class(date_time),intent(in)           :: self
 character(len=*),intent(in),optional  :: fmt
-   character(len=:),allocatable          :: fmtlocal
-   character(len=:),allocatable          :: string
-   character(len=*),parameter            :: iso_fmt='%Y-%M-%DT%h:%m:%s.%x%z'
-   character(len=*),parameter            :: usa_fmt='%W, %L %d, %Y %H:%m:%s %N'
-   character(len=*),parameter            :: ymd_fmt='%Y-%M-%D %h:%m:%s.%x%z'
-   character(len=*),parameter            :: mdy_fmt='%M/%D/%Y %h:%m:%s.%x%z'
+character(len=:),allocatable          :: fmtlocal
+character(len=:),allocatable          :: string
+character(len=*),parameter            :: iso_fmt='%Y-%M-%DT%h:%m:%s.%x%z'
+character(len=*),parameter            :: usa_fmt='%W, %L %d, %Y %H:%m:%s %N'
+character(len=*),parameter            :: ymd_fmt='%Y-%M-%D %h:%m:%s.%x%z'
+character(len=*),parameter            :: mdy_fmt='%M/%D/%Y %h:%m:%s.%x%z'
    if(present(fmt))then
       fmtlocal=fmt
    else
@@ -4940,7 +4940,7 @@ function weekday(self) result (iday)
 character(len=*),parameter::ident_43="@(#)M_time::weekday(3f): convert derived type date_time to weekday (1=Monday,7=Sunday)"
 class(date_time),intent(in)   :: self
 integer                       :: iday
-   integer                    :: ierr      ! Error return,0=correct,-1=invalid Julian Date,-2=neither day nor weekday specified
+integer                       :: ierr      ! Error return,0=correct,-1=invalid Julian Date,-2=neither day nor weekday specified
    call dow(dt2d(self),weekday=iday,ierr=ierr)
 end function weekday
 !===================================================================================================================================
@@ -4991,8 +4991,8 @@ type(date_time)                      :: holddt
 integer,intent(in),optional          :: year, month, day, tz, hour, minute, second, millisecond
 character(len=*),intent(in),optional :: type
 integer,intent(in),optional          :: dat(8)
-   character(len=10)                 :: typelocal
-   integer                           :: datlocal(8)
+character(len=10)                    :: typelocal
+integer                              :: datlocal(8)
 
    if(present(dat))then
 

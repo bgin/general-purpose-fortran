@@ -11,7 +11,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '       rep(1f) - [FILE FILTER] replace fixed strings in files                   ',&
 'SYNOPSIS                                                                        ',&
-'       rep filenames -c /from/to/ [-verbose][-dryrun]|[-help|-version]          ',&
+'       rep filenames -c /from/to/ [ -verbose][ -dryrun]|[ -help| -version]      ',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
 '       This is an example program for the REPLACE(3f) function. It              ',&
@@ -45,7 +45,7 @@ end subroutine help_usage
 !!        rep(1f) - [FILE FILTER] replace fixed strings in files
 !!##SYNOPSIS
 !!
-!!        rep filenames -c /from/to/ [-verbose][-dryrun]|[-help|-version]
+!!        rep filenames -c /from/to/ [ -verbose][ -dryrun]|[ -help| -version]
 !!
 !!##DESCRIPTION
 !!        This is an example program for the REPLACE(3f) function. It
@@ -88,7 +88,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 6:13:58 PM>',&
+'@(#)COMPILED:       Thu, Aug 29th, 2019 11:01:54 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

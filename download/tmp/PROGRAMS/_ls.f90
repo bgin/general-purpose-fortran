@@ -11,7 +11,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '       _ls(1f) - [FUNIX:FILESYSTEM] list files in a directory                   ',&
 'SYNOPSIS                                                                        ',&
-'       _ls [directory|--version|--help] [-a] [-l|-csv]                          ',&
+'       _ls [directory|--version|--help] [ -a] [ -l|-csv]                        ',&
 'DESCRIPTION                                                                     ',&
 '       Given a directory name list files in the directory                       ',&
 'OPTIONS                                                                         ',&
@@ -88,7 +88,7 @@ end subroutine help_usage
 !!        _ls(1f) - [FUNIX:FILESYSTEM] list files in a directory
 !!##SYNOPSIS
 !!
-!!        _ls [directory|--version|--help] [-a] [-l|-csv]
+!!        _ls [directory|--version|--help] [ -a] [ -l|-csv]
 !!##DESCRIPTION
 !!        Given a directory name list files in the directory
 !!##OPTIONS
@@ -171,7 +171,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    list files in a directory>',&
 '@(#)VERSION:        1.0, 2016-11-20>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 6:36:29 PM>',&
+'@(#)COMPILED:       Thu, Aug 29th, 2019 10:20:15 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

@@ -12,7 +12,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   pendulum(1f) - [PHYSICS] calculate pendulum period                           ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
-'   pendulum [-length Length_In_Feet ][-verbose]|[--help]|[--version]            ',&
+'   pendulum [ -length Length_In_Feet ][ -verbose]|[ --help]|[ --version]        ',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
 '   Given the length to the center of gravity from the fulcrum (pivot            ',&
@@ -83,7 +83,7 @@ end subroutine help_usage
 !!
 !!##SYNOPSIS
 !!
-!!    pendulum [-length Length_In_Feet ][-verbose]|[--help]|[--version]
+!!    pendulum [ -length Length_In_Feet ][ -verbose]|[ --help]|[ --version]
 !!
 !!##DESCRIPTION
 !!    Given the length to the center of gravity from the fulcrum (pivot
@@ -162,7 +162,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 6:23:31 PM>',&
+'@(#)COMPILED:       Thu, Aug 29th, 2019 11:00:47 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

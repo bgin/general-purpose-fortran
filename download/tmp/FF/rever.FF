@@ -4,7 +4,7 @@ NAME
        rever(1f) - [FILE FILTER] print file in reverse
 
 SYNOPSIS
-       rever INPUT_FILE [OUTPUT_FILE] [-help][-version]
+       rever INPUT_FILE [OUTPUT_FILE] [ --help][ --version]
 
 DESCRIPTION
        Read entire file into memory as a stream and write it in reverse

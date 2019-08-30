@@ -4,7 +4,7 @@ NAME
        quadratic(1f) - [MATH] Calculate and print the roots of a quadratic formula even if they are complex
 
 SYNOPSIS
-       quadratic A B C [--verbose]|[--help|--version]
+       quadratic A B C [ --verbose]|[ --help| --version]
 
 DESCRIPTION
    Given the equation

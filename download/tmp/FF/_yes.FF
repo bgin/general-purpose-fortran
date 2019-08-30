@@ -73,8 +73,8 @@ NAME
     _yes(1f) - [FUNIX] output a string repeatedly until killed or limit is reached
 
 SYNOPSIS
-$!    _yes [STRING[-repeat N][-fmt]]|[--help|--version]
-    _yes [STRING[-repeat N]]|[--help|--version]
+$!    _yes [STRING[ -repeat N][ -fmt]]|[ --help|--version]
+    _yes [STRING[ -repeat N]]|[ --help| --version]
 
 DESCRIPTION
     _yes(1) prints the command line arguments, separated by spaces and followed

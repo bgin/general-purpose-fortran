@@ -4,7 +4,7 @@ $DOCUMENT HELP -file findll.1.man
 NAME
        findll(1f) - [FILE FILTER] find long lines
 SYNOPSIS
-       findll [FILENAMES] [-l LENGTH] [-wrap] | [-help| -version]
+       findll [FILENAMES] [ -l LENGTH] [ -wrap] | [ -help| -version]
 DESCRIPTION
        find lines in files over a specified length and print
        them; or wrap each input line to fit in specified width.

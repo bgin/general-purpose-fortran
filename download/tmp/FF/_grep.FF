@@ -5,7 +5,7 @@ NAME
     _grep(1f) - [FUNIX] search a file for a pattern
 
 SYNOPSIS
-    _grep pattern [-i][-E|-G]|[--help|--version]
+    _grep pattern [ -i][ -E| -G]|[ --help| --version]
 
 DESCRIPTION
 
@@ -391,7 +391,7 @@ void compile(char *astr) {
                                 if (c=='\0')
                                         goto cerror;
                                 if (c=='-' && sp>cstart && *sp!=']') {
-                                        for (c = sp[-2]; c<*sp; c++)
+                                        for (c = sp[ -2]; c<*sp; c++)
                                                 ep[c>>3] |= bittab[c&07];
                                         sp++;
                                 }

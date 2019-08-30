@@ -488,7 +488,7 @@ NAME
        shell(1f) - shell for demonstrating major modules in libGPF.a
 
 SYNOPSIS
-       shell expression|-help|-version|[-replay][-read FILENAME]
+       shell expression| --help| --version|[ -replay][ -read FILENAME]
 
 DESCRIPTION
     Example command line interface with command line history, numeric

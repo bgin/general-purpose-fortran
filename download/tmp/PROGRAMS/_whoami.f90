@@ -11,7 +11,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '      _whoami(1f) - [FUNIX] display login name                                  ',&
 'SYNOPSIS                                                                        ',&
-'      _whoami [-help|-version]                                                  ',&
+'      _whoami [ -help|-version]                                                 ',&
 'DESCRIPTION                                                                     ',&
 '      Demonstrate call to system_geteuid(3f) and system_getpwuid(3f) interfaces to the corresponding C routines',&
 'OPTIONS                                                                         ',&
@@ -32,7 +32,7 @@ end subroutine help_usage
 !!       _whoami(1f) - [FUNIX] display login name
 !!##SYNOPSIS
 !!
-!!       _whoami [-help|-version]
+!!       _whoami [ -help|-version]
 !!##DESCRIPTION
 !!       Demonstrate call to system_geteuid(3f) and system_getpwuid(3f) interfaces to the corresponding C routine
 !!##OPTIONS
@@ -63,7 +63,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 6:36:10 PM>',&
+'@(#)COMPILED:       Thu, Aug 29th, 2019 10:26:26 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

@@ -11,7 +11,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '       findll(1f) - [FILE FILTER] find long lines                               ',&
 'SYNOPSIS                                                                        ',&
-'       findll [FILENAMES] [-l LENGTH] [-wrap] | [-help| -version]               ',&
+'       findll [FILENAMES] [ -l LENGTH] [ -wrap] | [ -help| -version]            ',&
 'DESCRIPTION                                                                     ',&
 '       find lines in files over a specified length and print                    ',&
 '       them; or wrap each input line to fit in specified width.                 ',&
@@ -49,7 +49,7 @@ end subroutine help_usage
 !!        findll(1f) - [FILE FILTER] find long lines
 !!##SYNOPSIS
 !!
-!!        findll [FILENAMES] [-l LENGTH] [-wrap] | [-help| -version
+!!        findll [FILENAMES] [ -l LENGTH] [ -wrap] | [ -help| -version
 !!##DESCRIPTION
 !!        find lines in files over a specified length and print
 !!        them; or wrap each input line to fit in specified width.
@@ -92,7 +92,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    find long lines>',&
 '@(#)VERSION:        23.1 20160618>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 6:47:35 PM>',&
+'@(#)COMPILED:       Thu, Aug 29th, 2019 10:15:39 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

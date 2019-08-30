@@ -18,7 +18,9 @@ NAME="$1"
    ;;
 ################################################################################
    *) # search path for command name
-   if [ -x "`which $NAME 2>/dev/null`" ]
+   #if [ -x "$(which $NAME 2>/dev/null)" ]
+
+   if hash "$NAME" 2>/dev/null
    then
       #echo "FOUND : $NAME" 1>&2
       EXIT=0

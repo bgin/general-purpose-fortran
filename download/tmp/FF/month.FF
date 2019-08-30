@@ -61,7 +61,7 @@ NAME
    month(1f) - [TIME] display a calendar
 
 SYNOPSIS
-   month [[-year] NNNN] [-month NN|month_name]
+   month [[ -year] NNNN] [ -month NN|month_name]
 
 DESCRIPTION
    month(1) displays a simple calendar. If no arguments are specified,

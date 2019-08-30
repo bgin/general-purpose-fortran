@@ -3,7 +3,7 @@ $!==============================================================================
 NAME
    alphabet(1f) - [CONVERT] print numeric values or a string as decimal, hexadecimal, octal and binary values
 SYNOPSIS
-   alphabet [values] [-h values][-z values][-o values][ -t text]
+   alphabet [values] [ -h values][ -z values][ -o values][ -t text]
 DESCRIPTION
    Write positive whole number 32-bit values (0 to 2147483647) in base
    10(decimal), base 16(hexadecimal), base 2(binary) and base 8(octal)

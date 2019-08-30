@@ -27,8 +27,8 @@ NAME
    paws(1f) - [TIME] pause until specified time or for specified duration
 
 SYNOPSIS
-   paws [dd-hh:mm:ss[.xxx]|xxx.yyy[s|m|h|d]][-msg message][-cmd command][-repeat TIMES[-fmt ]]|...
-   [-uet|-jed|-dat|[-date|-until]]
+   paws [dd-hh:mm:ss[.xxx]|xxx.yyy[s|m|h|d]][ -msg message][ -cmd command][ -repeat TIMES[ -fmt ]]|...
+   [ -uet|-jed|-dat|[ -date|-until]]
    paws --version|--help
 
 DESCRIPTION

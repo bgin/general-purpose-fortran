@@ -12,8 +12,8 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   table2html(1f) - [FILE FILTER] filter to format simple columns into an HTML table form',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
-'   table2html [[-classes classnames] [-caption caption line] [-delimiters delim]',&
-'              [-asis] [-header] [-tabletags tags] ] |-help|-version             ',&
+'   table2html [[ -classes classnames] [ -caption caption line] [ -delimiters delim]',&
+'              [ -asis] [ -header] [ -tabletags tags] ] |-help|-version          ',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
 '   table2html is a filter that converts tabular text input to an HTML           ',&
@@ -59,8 +59,8 @@ end subroutine help_usage
 !!
 !!##SYNOPSIS
 !!
-!!    table2html [[-classes classnames] [-caption caption line] [-delimiters delim]
-!!               [-asis] [-header] [-tabletags tags] ] |-help|-version
+!!    table2html [[ -classes classnames] [ -caption caption line] [ -delimiters delim]
+!!               [ -asis] [ -header] [ -tabletags tags] ] |-help|-version
 !!
 !!##DESCRIPTION
 !!    table2html is a filter that converts tabular text input to an HTML
@@ -115,7 +115,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 6:25:56 PM>',&
+'@(#)COMPILED:       Thu, Aug 29th, 2019 11:03:26 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

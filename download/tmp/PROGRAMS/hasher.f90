@@ -12,7 +12,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   hasher(1f) - [M_hashkeys] exercise the string hash methods in the M_hashkey(3fm) module',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
-'   hasher [ input_files [-hash hashname] ]|[-string string_value]|--help|--version',&
+'   hasher [ input_files [ -hash hashname] ]|[ -string string_value]|--help|--version',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
 '   hasher(1f) does a byte by byte hash of a file or a hash of a string          ',&
@@ -47,7 +47,7 @@ end subroutine help_usage
 !!
 !!##SYNOPSIS
 !!
-!!    hasher [ input_files [-hash hashname] ]|[-string string_value]|--help|--version
+!!    hasher [ input_files [ -hash hashname] ]|[ -string string_value]|--help|--version
 !!
 !!##DESCRIPTION
 !!    hasher(1f) does a byte by byte hash of a file or a hash of a string
@@ -90,7 +90,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)                change and redistribute it.  There is NO WARRANTY;>',&
 '@(#)                without even the implied warranty of MERCHANTABILITY or>',&
 '@(#)                FITNESS FOR A PARTICULAR PURPOSE.>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 6:30:13 PM>',&
+'@(#)COMPILED:       Thu, Aug 29th, 2019 10:29:50 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

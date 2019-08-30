@@ -3,7 +3,7 @@ $DOCUMENT HELP
 NAME
    ufpp_template(1f) - [UFPP] write a template of a ufpp source file
 SYNOPSIS
-   ufpp_template [--version|--help]
+   ufpp_template [ --version| --help]
 DESCRIPTION
    A simple program that writes an example input file for ufpp(1).
 OPTIONS

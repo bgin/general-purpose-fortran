@@ -4,7 +4,7 @@ $DOCUMENT HELP -file _sleep.1.man
 NAME
    _sleep(1f) - [FUNIX:TIME] pause for specified duration
 SYNOPSIS
-   _sleep [dd-hh:mm:ss[.xxx]|xxx.yyy[s|m|h|d]] [-countdown|-countup -count]|--help|--version
+   _sleep [dd-hh:mm:ss[.xxx]|xxx.yyy[s|m|h|d]] [ -countdown|-countup -count]|--help|--version
 DESCRIPTION
    Given a duration in the form dd-hh:mm:ss.xxx where dd is days, hh
    hours, mm minutes and ss.xxx seconds pause for the specified amount

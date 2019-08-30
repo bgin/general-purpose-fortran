@@ -4,7 +4,7 @@ NAME
    hasher(1f) - [M_hashkeys] exercise the string hash methods in the M_hashkey(3fm) module
 
 SYNOPSIS
-   hasher [ input_files [-hash hashname] ]|[-string string_value]|--help|--version
+   hasher [ input_files [ -hash hashname] ]|[ -string string_value]|--help|--version
 
 DESCRIPTION
    hasher(1f) does a byte by byte hash of a file or a hash of a string

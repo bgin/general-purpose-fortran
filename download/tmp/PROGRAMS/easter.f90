@@ -45,7 +45,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    output the month and day Easter falls on for a particular year>',&
 '@(#)VERSION:        1.0, 20170223>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 6:45:05 PM>',&
+'@(#)COMPILED:       Thu, Aug 29th, 2019 10:27:21 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -66,7 +66,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   easter(1f) - [FUNIX] print day and month Easter falls on for given year      ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
-'   easter [year]|[--help|--version]                                             ',&
+'   easter [year]|[ --help|--version]                                            ',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
 '   Prints day Easter falls on                                                   ',&
@@ -94,7 +94,7 @@ end subroutine help_usage
 !!
 !!##SYNOPSIS
 !!
-!!    easter [year]|[--help|--version]
+!!    easter [year]|[ --help|--version]
 !!
 !!##DESCRIPTION
 !!    Prints day Easter falls on

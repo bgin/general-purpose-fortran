@@ -8,7 +8,7 @@ DESCRIPTION
       read the file and write it out an an HTML file for printing or 
       for inclusion much like a IMG file into an HTML document.
 SYNOPSIS
-          nc2html -i INPUT_FILE -o OUTPUT_FILE [-pg]'
+          nc2html -i INPUT_FILE -o OUTPUT_FILE [ -pg]'
 OPTIONS
          -i INPUT_FILE    Name of ncurses(3c) window dump file generated 
 	                  by putwin(3c).

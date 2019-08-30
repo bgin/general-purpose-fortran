@@ -227,21 +227,20 @@ end function random_hex
 !!
 !!   Sample program
 !!
-!!     program demo_random_permutation
-!!     use M_random, only : random_permutation
-!!     implicit none
-!!     integer                    :: array(10)
-!!     character(len=*),parameter :: list(*)=[character(len=5) :: &
-!!             & 'one','two','three','four','five',&
-!!             & 'six','seven','eight','nine','ten']
-!!     integer                    :: i, j
-!!     do i = 1,8
-!!        call random_permutation(array)
-!!        write(*,'(*(i5,1x))') array
-!!        ! use random values as indices to randomize another array
-!!        write(*,'(*(a,1x))') (adjustr(list(array(j))),j=1,size(array))
-!!     enddo
-!!     end program demo_random_permutation
+!!    program demo_random_permutation
+!!    use M_random, only : random_permutation
+!!    implicit none
+!!    integer                    :: array(10)
+!!    character(len=*),parameter :: list(*)=[character(len=5) :: &
+!!    & 'one','two','three','four','five','six','seven','eight','nine','ten']
+!!    integer                    :: i, j
+!!    do i = 1,8
+!!       call random_permutation(array)
+!!       write(*,'(*(i5,1x))') array
+!!       ! use random values as indices to randomize another array
+!!       write(*,'(*(a,1x))') (adjustr(list(array(j))),j=1,size(array))
+!!    enddo
+!!    end program demo_random_permutation
 !!
 !!   Example output
 !!
@@ -297,7 +296,7 @@ end subroutine random_permutation
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    scramble(3f) - [M_random] return an integer array prepopulated with the values 1 to size(array
+!!    scramble(3f) - [M_random] return an integer array prepopulated with the values 1 to size(array) in random orde
 !!
 !!##SYNOPSIS
 !!
@@ -306,13 +305,27 @@ end subroutine random_permutation
 !!
 !!##DESCRIPTION
 !!    Return an integer array of the size specified populated with the
-!!    numbers 1 to number_of_values in random order.
+!!    numbers 1 to "number_of_values" in random order.
+!!
+!!    A simple way to randomly scramble a list of any type is to create
+!!    a random permutation of all the index values of the array and then
+!!    access the original list elements using that list of indices. The
+!!    list itself can be re-ordered very succintly using array syntax.
+!!    Given a list size ..
+!!
+!!    1. create an INTEGER array of the specified size N
+!!    2. populate it with the values from 1 to N
+!!    3. randomly switche values in the array to randomize it
+!!    4. return the newly created array for use as indices
+!!
+!!    The resulting random permutation of the indices can then be used to
+!!    access essentially any type of list in random order.
 !!
 !!##OPTIONS
 !!    number_of_values  size of integer array to create
 !!
 !!##RETURNS
-!!    scramble    Integer array filled with integers 1 to N in random order
+!!    scramble    Integer array filled with integers 1 to NUMBER_OF_VALUES in random order
 !!
 !!##EXAMPLE
 !!
@@ -322,12 +335,11 @@ end subroutine random_permutation
 !!     use M_random, only : scramble
 !!     implicit none
 !!     character(len=*),parameter :: list(*)=[character(len=5) :: &
-!!             & 'one','two','three','four','five',&
-!!             & 'six','seven','eight','nine','ten']
+!!     & 'one','two','three','four','five',&
+!!     & 'six','seven','eight','nine','ten']
 !!     integer                    :: i
-!!     integer                    :: n
-!!     character(len=len(list))   :: newlist(size(list))
-!!     n=size(list)
+!!     integer                    :: n=size(list)
+!!     character(len=len(list))   :: newlist(n)
 !!     do i = 1,8
 !!        ! use random values as indices to randomize array
 !!        newlist=list(scramble(n))
@@ -358,7 +370,6 @@ integer               :: n
 integer               :: temp
 real                  :: random
 
-   allocate(array(number_of_values))
    array=[(i,i=1,number_of_values)]
 
    n=number_of_values

@@ -12,7 +12,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '       _true(1f) - [FUNIX] do nothing, successfully                             ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
-'       _true [--verbose|--help|--version]                                       ',&
+'       _true [ --verbose|--help|--version]                                      ',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
 '       Exit with a status code indicating failure.                              ',&
@@ -37,7 +37,7 @@ end subroutine help_usage
 !!
 !!##SYNOPSIS
 !!
-!!        _true [--verbose|--help|--version]
+!!        _true [ --verbose|--help|--version]
 !!
 !!##DESCRIPTION
 !!        Exit with a status code indicating failure.
@@ -67,7 +67,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    do nothing, successfully>',&
 '@(#)VERSION:        1.0, 20170125>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 6:42:08 PM>',&
+'@(#)COMPILED:       Thu, Aug 29th, 2019 10:24:46 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

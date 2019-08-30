@@ -173,7 +173,7 @@ done
 ################################################################################
 test_suite_w=''
 LOG_FILE=/dev/null
-while getopts "chl:wt" arg; do
+while getopts "chl:wtv" arg; do
   case $arg in
     c) SAFE_EXIT=1 ;;
     h) HELP ; exit ;;

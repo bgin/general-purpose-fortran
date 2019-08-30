@@ -74,7 +74,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20180427>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 6:43:37 PM>',&
+'@(#)COMPILED:       Thu, Aug 29th, 2019 10:25:52 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -95,7 +95,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '    _uuidgen(1f) - [FUNIX] generate a UUID (Universally Unique ID) string per RFC 4122',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
-'    _uuidgen [[--method NAME][-urn][-repeat N]]|[--help|--version]              ',&
+'    _uuidgen [[ --method NAME][ -urn][ -repeat N]]|[ --help|--version]          ',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
 '   _uuidgen(3f) generates UUID strings according to the RFC 4122                ',&
@@ -159,7 +159,7 @@ end subroutine help_usage
 !!
 !!##SYNOPSIS
 !!
-!!     _uuidgen [[--method NAME][-urn][-repeat N]]|[--help|--version]
+!!     _uuidgen [[ --method NAME][ -urn][ -repeat N]]|[ --help|--version]
 !!
 !!##DESCRIPTION
 !!    _uuidgen(3f) generates UUID strings according to the RFC 4122

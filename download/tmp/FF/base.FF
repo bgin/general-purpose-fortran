@@ -6,7 +6,7 @@ NAME
    base(1f) - [CONVERT] convert numbers between bases
 
 SYNOPSIS
-   base values [-ibase NN][-obase MM][-brief] |[[--help]|[--version]]
+   base values [ -ibase NN][ -obase MM][ -brief] |[[ --help]|[ --version]]
 
 DESCRIPTION
 

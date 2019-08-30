@@ -45,89 +45,52 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <div id="Container">
 <div id="Content">
 <CENTER>
-<H1><HR><I>Manual Reference Pages &nbsp;-&nbsp;</I><NOBR>xy_justr (3)</NOBR><HR></H1>
+<H1><HR><I>Manual Reference Pages &nbsp;-&nbsp;</I><NOBR>csv (3)</NOBR><HR></H1>
 </CENTER>
-<P>
 <A name=0>
 
      <H3>NAME</H3>
 
 </A>
 <BLOCKQUOTE>
-<B>xy_justr(3f) </B>- [M_xyplot] print string l0 at position x,y with embedded directives
+<B>csv(3f) </B>- [M_csv] prints up to 20 standard scalar types to a CSV file
 </BLOCKQUOTE>
 <A name=contents></A><H3>CONTENTS</H3></A>
 <BLOCKQUOTE>
 <A HREF=#1>Synopsis</A><BR>
 <A HREF=#2>Description</A><BR>
 <A HREF=#3>Options</A><BR>
-<A HREF=#4>Example</A><BR>
+<A HREF=#4>Returns</A><BR>
+<A HREF=#5>Examples</A><BR>
 </BLOCKQUOTE>
-<A name=5>
+<A name=6>
 
      <H3>SYNOPSIS</H3>
 
 </A>
 <BLOCKQUOTE>
 <PRE>
-subroutine <B>xy_justr</B>(x,y,l0,itype,xmin,xmax,ymin,ymax)
+<P>
+<B>function</B> <B>csv</B>(g1,g2,g3,..g20)
+<P>
+   class(*),intent(in),optional           :: g1, g2, g3, g4, g5, g6, g7, g8, g9, g10
+                                          &  g11,g12,g13,g14,g15,g16,g17,g18,g19,g20
+   character,len=(:),allocatable          :: csv
+<P>
 </PRE>
-<TABLE cellpadding=3><!-- tsb: subroutine <B>xy_justr</B>(x,y,l0,itype,xmin,xmax,ymin,ymax)
- -->
-<TR></TR><TR></TR>
-<TR valign=top><TD width=6% nowrap>
-<B>real</B> </TD><TD valign=bottom>
-:: x
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B>real</B> </TD><TD valign=bottom>
-:: y
-</TD></TR>
-<TR valign=top><TD colspan=2>
-<B></B><B>character</B>(<I>len</I>=*) </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
-:: l0
-</TD></TR>
-<TR valign=top><TD colspan=2>
-<B>integer</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
-:: itype
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B>real</B> </TD><TD valign=bottom>
-:: xmax
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B>real</B> </TD><TD valign=bottom>
-:: xmin
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B>real</B> </TD><TD valign=bottom>
-:: ymin
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B>real</B> </TD><TD valign=bottom>
-:: ynow
-</TD></TR>
-<TR></TR></TABLE></BLOCKQUOTE>
+</BLOCKQUOTE>
 <A name=2>
 
      <H3>DESCRIPTION</H3>
 
 </A>
 <BLOCKQUOTE>
-<TABLE cellpadding=3>
-<TR valign=top><TD width=6% nowrap>
-<B>!</B> </TD><TD valign=bottom>
-string is assumed to be [string]\directive\string\directive\string\directive#46;&#46;&#46;
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B>!</B> </TD><TD valign=bottom>
-does not allow for escaped backslash in string or null string between directives
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B>!</B> </TD><TD valign=bottom>
-environment is RESET after each string (MAY CHANGE THIS)
-</TD></TR>
-<TR></TR></TABLE></BLOCKQUOTE>
+<B>csv</B>(3f) builds a CSV string from up to twenty scalar values or an array.
+<P>
+Although it will often work, using <B>csv</B>(3f) in an I/O statement is
+not recommended as the <B>csv</B>(3f) routine might generate error messages;
+and Fortran does not (yet) support recursive I/O.
+</BLOCKQUOTE>
 <A name=3>
 
      <H3>OPTIONS</H3>
@@ -135,29 +98,59 @@ environment is RESET after each string (MAY CHANGE THIS)
 </A>
 <BLOCKQUOTE>
 <TABLE cellpadding=3>
-<TR valign=top><TD width=6% nowrap>
-<B>!</B> </TD><TD valign=bottom>
-itype=0    draw the string with centering or size data set (must be second call)
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B>!</B> </TD><TD valign=bottom>
-itype=1    getting string size and centering shift
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B>!</B> </TD><TD valign=bottom>
-itype=2    blank out centering values
+<TR valign=top><TD colspan=2>
+<B>g[1-20]</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+optional value to print the value of after the message. May
+be of type INTEGER, LOGICAL, REAL, DOUBLEPRECISION, COMPLEX,
+EPOCH or CHARACTER.
 </TD></TR>
 <TR></TR></TABLE></BLOCKQUOTE>
 <A name=4>
 
-     <H3>EXAMPLE</H3>
+     <H3>RETURNS</H3>
 
 </A>
 <BLOCKQUOTE>
+<TABLE cellpadding=3>
+<TR valign=top><TD width=6% nowrap>
+<B>csv</B> </TD><TD valign=bottom>
+description to print
+</TD></TR>
+<TR></TR></TABLE></BLOCKQUOTE>
+<A name=5>
+
+     <H3>EXAMPLES</H3>
+
+</A>
+<BLOCKQUOTE>
+<P>
+Sample program:
+<P>
+<PRE>
+   program demo_csv
+   use M_csv, only : csv
+   implicit none
+   character(len=:),allocatable :: pr
+<P>
+      pr=csv(&#146;HUGE(3f) integers&#146;,huge(0),&#146;and real&#146;,huge(0.0),&#146;and double&#146;,huge(0.0d0))
+      write(*,&#146;(a)&#146;)pr
+      pr=csv(&#146;real            :&#146;,huge(0.0),0.0,12345.6789,tiny(0.0) )
+      write(*,&#146;(a)&#146;)pr
+      pr=csv(&#146;doubleprecision :&#146;,huge(0.0d0),0.0d0,12345.6789d0,tiny(0.0d0) )
+      write(*,&#146;(a)&#146;)pr
+      pr=csv(&#146;complex         :&#146;,cmplx(huge(0.0),tiny(0.0)) )
+      write(*,&#146;(a)&#146;)pr
+<P>
+      write(*,*)csv(&#146;program will now stop&#146;)
+<P>
+</PRE>
+<BLOCKQUOTE>
+end program demo_csv
+</BLOCKQUOTE>
 </BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>xy_justr (3)</TD> <TD align=right width=33%><I>August 04, 2019</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 6bb192ed-9fee-4d7c-809a-9fde697709bd using man macros.</FONT>
-<br><br><center><img src="images/xy_justr.3xy.gif"></center>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>csv (3)</TD> <TD align=right width=33%><I>August 30, 2019</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from f77eeb94-ea90-4c6e-a098-7f340e24bf83 using man macros.</FONT>
+<br><br><center><img src="images/csv.3.gif"></center>
 </div>
 </div>
 </body>

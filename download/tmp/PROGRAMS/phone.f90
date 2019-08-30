@@ -11,7 +11,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '     phone(1f) - [M_sqlite] create, change and query SQLite3 database containing phone numbers',&
 'SYNOPSIS                                                                        ',&
-' phone [-db file] ...                                                           ',&
+' phone [ -db file] ...                                                          ',&
 '  [                                                                             ',&
 '    -name proper_name                                                           ',&
 '    -home phone_number                                                          ',&
@@ -21,8 +21,8 @@ help_text=[ CHARACTER(LEN=128) :: &
 '    -comment Comments                                                           ',&
 '  ]                                                                             ',&
 '                                                                                ',&
-' phone -do SQLite3_command [-db database_filename]                              ',&
-' phone -schema [-db database_filename]                                          ',&
+' phone -do SQLite3_command [ -db database_filename]                             ',&
+' phone -schema [ -db database_filename]                                         ',&
 ' phone -debug .... other_options                                                ',&
 ' phone -help|-version                                                           ',&
 ' phone match                                                                    ',&
@@ -74,7 +74,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20180318>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 6:08:52 PM>',&
+'@(#)COMPILED:       Thu, Aug 29th, 2019 11:02:53 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

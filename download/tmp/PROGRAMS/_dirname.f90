@@ -39,7 +39,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   _dirname(1f) - [FUNIX:FILESYSTEM] strip last component from file name        ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
-'   _dirname NAME... [-zero]|-help|-version]                                     ',&
+'   _dirname NAME... [ -zero]|-help|-version]                                    ',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
 '   Output each NAME with its last non-slash component and trailing slashes removed.',&
@@ -71,7 +71,7 @@ end subroutine help_usage
 !!
 !!##SYNOPSIS
 !!
-!!    _dirname NAME... [-zero]|-help|-version]
+!!    _dirname NAME... [ -zero]|-help|-version]
 !!
 !!##DESCRIPTION
 !!    Output each NAME with its last non-slash component and trailing slashes removed
@@ -113,7 +113,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 6:33:06 PM>',&
+'@(#)COMPILED:       Thu, Aug 29th, 2019 10:17:33 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

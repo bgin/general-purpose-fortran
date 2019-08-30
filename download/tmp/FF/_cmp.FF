@@ -4,7 +4,7 @@ $DOCUMENT HELP -file _cmp.1.man
 NAME
      _cmp(1f) - [FUNIX] compare two files byte by byte
 SYNOPSIS
-     _cmp file1 file2 [-quiet] [-show]| [ [-help] [-version] ]
+     _cmp file1 file2 [ -quiet] [ -show]| [ [ -help] [ -version] ]
 DESCRIPTION
      The _cmp(1) utility compares two files byte by byte and returns
      true if no differences are found, or false otherwise

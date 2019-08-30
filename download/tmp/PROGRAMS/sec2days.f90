@@ -12,7 +12,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   sec2days(1f) - [TIME] Convert seconds to string of form dd-hh:mm:ss          ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
-'   sec2days nnnn[.xxx] [-crop]| --version| --help                               ',&
+'   sec2days nnnn[.xxx] [ -crop]| --version| --help                              ',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
 '   Given a numeric string representing seconds convert it to a string           ',&
@@ -61,7 +61,7 @@ end subroutine help_usage
 !!
 !!##SYNOPSIS
 !!
-!!    sec2days nnnn[.xxx] [-crop]| --version| --help
+!!    sec2days nnnn[.xxx] [ -crop]| --version| --help
 !!
 !!##DESCRIPTION
 !!    Given a numeric string representing seconds convert it to a string
@@ -118,7 +118,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 6:25:27 PM>',&
+'@(#)COMPILED:       Thu, Aug 29th, 2019 11:02:12 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

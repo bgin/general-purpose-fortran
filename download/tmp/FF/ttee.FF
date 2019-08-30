@@ -164,8 +164,8 @@ text= [&
 &'   ttee(1f) - [TIME] write input to stdout and a file with timing info.         ', &
 &'                                                                                ', &
 &'SYNOPSIS                                                                        ', &
-&'   ttee [[-o|--output] filename(s)] [-a|--append] [--timestamp FLAG]] ...       ', &
-&'        [-fmt FORMAT] [--help |--version]                                       ', &
+&'   ttee [[ -o|--output] filename(s)] [ -a|--append] [ --timestamp FLAG]] ...    ', &
+&'        [ -fmt FORMAT] [ --help | --version]                                    ', &
 &'                                                                                ', &
 &'DESCRIPTION                                                                     ', &
 &'   Read from standard input and write to standard output and files              ', &

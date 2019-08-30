@@ -291,7 +291,7 @@ NAME
     fixedfrom(1f) - [FUNIX] read in a TUI definition and return values from screen panel
 
 SYNOPSIS
-    fixedform [file|-demo]|[--help|--version]
+    fixedform [file|-demo]|[ --help| --version]
 
 DESCRIPTION
     fixedform(1) reads in a TUI screen form definition and displays it and returns

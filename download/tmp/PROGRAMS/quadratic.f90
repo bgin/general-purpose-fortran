@@ -12,7 +12,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '       quadratic(1f) - [MATH] Calculate and print the roots of a quadratic formula even if they are complex',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
-'       quadratic A B C [--verbose]|[--help|--version]                           ',&
+'       quadratic A B C [ --verbose]|[ --help| --version]                        ',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
 '   Given the equation                                                           ',&
@@ -65,7 +65,7 @@ end subroutine help_usage
 !!
 !!##SYNOPSIS
 !!
-!!        quadratic A B C [--verbose]|[--help|--version]
+!!        quadratic A B C [ --verbose]|[ --help| --version]
 !!
 !!##DESCRIPTION
 !!    Given the equation
@@ -122,7 +122,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    Calculate and print the roots of a quadratic formula even if they are complex>',&
 '@(#)VERSION:        2.0, 20180825>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 6:50:38 PM>',&
+'@(#)COMPILED:       Thu, Aug 29th, 2019 10:56:55 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

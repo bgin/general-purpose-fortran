@@ -11,8 +11,8 @@ help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '       _printenv(1f) - [FUNIX:ENVIRONMENT] print all or part of environment in formats readable by various shells',&
 'SYNOPSIS                                                                        ',&
-'       _printenv [variable...] [-C|-B]                                          ',&
-'       _printenv [--help|--version]                                             ',&
+'       _printenv [variable...] [ -C|-B]                                         ',&
+'       _printenv [ --help|--version]                                            ',&
 'DESCRIPTION                                                                     ',&
 '       If no arguments are given, _printenv(1f) prints the entire environment.  ',&
 '       If one or more variable names are given, it prints the value of          ',&
@@ -53,8 +53,8 @@ end subroutine help_usage
 !!        _printenv(1f) - [FUNIX:ENVIRONMENT] print all or part of environment in formats readable by various shell
 !!##SYNOPSIS
 !!
-!!        _printenv [variable...] [-C|-B]
-!!        _printenv [--help|--version]
+!!        _printenv [variable...] [ -C|-B]
+!!        _printenv [ --help|--version]
 !!##DESCRIPTION
 !!        If no arguments are given, _printenv(1f) prints the entire environment.
 !!        If one or more variable names are given, it prints the value of
@@ -101,7 +101,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0 2016-11-27>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 6:36:48 PM>',&
+'@(#)COMPILED:       Thu, Aug 29th, 2019 10:21:24 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

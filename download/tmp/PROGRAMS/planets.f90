@@ -14,7 +14,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '                                                                                ',&
-'   planets yyyy mm dd utc hh mm ss [-planet [N|name] ]                          ',&
+'   planets yyyy mm dd utc hh mm ss [ -planet [N|name] ]                         ',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
 '                                                                                ',&
@@ -78,7 +78,7 @@ end subroutine help_usage
 !!##SYNOPSIS
 !!
 !!
-!!    planets yyyy mm dd utc hh mm ss [-planet [N|name] ]
+!!    planets yyyy mm dd utc hh mm ss [ -planet [N|name] ]
 !!
 !!##DESCRIPTION
 !!
@@ -144,7 +144,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    ephemeris position of planets for adjusting an equitorial telescope>',&
 '@(#)VERSION:        1.0, 20170910>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 6:45:25 PM>',&
+'@(#)COMPILED:       Thu, Aug 29th, 2019 10:27:54 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

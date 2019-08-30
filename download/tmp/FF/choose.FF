@@ -232,7 +232,7 @@ NAME
    choose(1f) - [NCURSES] select one item from a menu using a screen interface
 
 SYNOPSIS
-   choose  [choices] [-i index] [-t timeout ] [-m text] [-d default]|[-help|--version]
+   choose  [choices] [ -i index] [ -t timeout ] [ -m text] [ -d default]|[ -help|--version]
 
 DESCRIPTION
     choose(1f) allows users to select one item from a list of choices

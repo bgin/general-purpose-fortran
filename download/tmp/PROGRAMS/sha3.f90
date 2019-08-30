@@ -28,7 +28,7 @@ character(len=4096)          :: fname, arg
        case( '-384' ) ; call sha3_file( 384, trim(fname) )
        case( '-512' ) ; call sha3_file( 512, trim(fname) )
        case default
-         write(ERROR_UNIT,*)'"usage: "sha3 -a" or "sha3 [-224|-256|-384|-512] fname"'
+         write(ERROR_UNIT,*)'"usage: "sha3 -a" or "sha3 [ -224| -256| -384| -512] fname"'
       end select
    enddo
 

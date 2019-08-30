@@ -76,7 +76,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   splitname(1f) - [FUNIX] strip pathname into components {dir,name,basename,extension}',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
-'   splitname [NAME1 NAME2 ... |[-d -b -l -e]|-help|-version]                    ',&
+'   splitname [NAME1 NAME2 ... |[ -d -b -l -e]|-help|-version]                   ',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
 '   Output each pathname broken into components directory, leaf name, basename, extension',&
@@ -116,7 +116,7 @@ end subroutine help_usage
 !!
 !!##SYNOPSIS
 !!
-!!    splitname [NAME1 NAME2 ... |[-d -b -l -e]|-help|-version]
+!!    splitname [NAME1 NAME2 ... |[ -d -b -l -e]|-help|-version]
 !!
 !!##DESCRIPTION
 !!    Output each pathname broken into components directory, leaf name, basename, extensio
@@ -163,7 +163,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DATE:           2017-04-18>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 6:45:47 PM>',&
+'@(#)COMPILED:       Thu, Aug 29th, 2019 10:28:10 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

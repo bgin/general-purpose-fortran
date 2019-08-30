@@ -11,7 +11,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '   ufpp_template(1f) - [UFPP] write a template of a ufpp source file            ',&
 'SYNOPSIS                                                                        ',&
-'   ufpp_template [--version|--help]                                             ',&
+'   ufpp_template [ --version| --help]                                           ',&
 'DESCRIPTION                                                                     ',&
 '   A simple program that writes an example input file for ufpp(1).              ',&
 'OPTIONS                                                                         ',&
@@ -42,7 +42,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20180223>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Sat, Aug 3rd, 2019 6:29:06 PM>',&
+'@(#)COMPILED:       Thu, Aug 29th, 2019 11:05:05 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
