@@ -118,7 +118,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Thu, Aug 29th, 2019 11:02:12 PM>',&
+'@(#)COMPILED:       Sat, Aug 31st, 2019 1:36:06 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -131,7 +131,6 @@ use M_time,    only : sec2days, realtime
 use M_strings, only : substitute
 implicit none
 character(len=*),parameter     :: ident="@(#)sec2days(1f): convert seconds to string of form dd-hh:mm:ss"
-real(kind=realtime), parameter :: units_hl(4)=[ 86400.0d0, 3600.0d0, 60.0d0, 1.0d0 ]
 character(len=:),allocatable   :: strlocal
 character(len=:),allocatable   :: radix
 character(len=IPvalue)         :: line

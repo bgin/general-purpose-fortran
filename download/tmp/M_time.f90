@@ -31,6 +31,7 @@ private upper
    public d2o            !(dat) result(ORDINAL)               ! given date array return ordinal day of year, Jan 1st=1
    public o2d            !(ordinal) result(DAT)               ! given ordinal day of year return date array, Jan 1st=1
    public ordinal_to_date!(year,ordinal_day,DAT)              ! given ordinal day of year return date array, Jan 1st=1
+   public ordinal_seconds!()                                  ! seconds since the beginning of current year
 ! PRINTING DATES
    public fmtdate        !(dat,format) result (TIMESTR)       ! Convert date array to string using format
    public fmtdate_usage  !(indent)                            ! display macros recognized by fmtdate(3f)
@@ -567,8 +568,8 @@ end subroutine test_unix_to_date
 !!
 !!    function d2o(dat) result (ordinal)
 !!
-!!     integer,intent(in) :: dat(8)   ! date time array
-!!     integer            :: ordinal  ! the returned day of the year
+!!     integer,intent(in),optional :: dat(8)   ! date time array
+!!     integer                     :: ordinal  ! the returned day of the yea
 !!
 !!##DESCRIPTION
 !!     Given a date in the form of a "DAT" array return the Ordinal Day,
@@ -578,7 +579,7 @@ end subroutine test_unix_to_date
 !!     dat  Integer array holding a "DAT" array, similar in structure
 !!          to the array returned by the intrinsic DATE_AND_TIME(3f).
 !!
-!!           dat=[year,month,day,timezone,hour,minutes,seconds,milliseconds
+!!           dat=[year,month,day,timezone,hour,minutes,seconds,milliseconds]
 !!##RETURNS
 !!     ordinal  The day of the year calculated for the given input date,
 !!              where Jan 1st=1.
@@ -628,17 +629,23 @@ function d2o(dat) result (ordinal)
 character(len=*),parameter::ident_5="@(#)M_time::d2o(3f): Converts DAT date-time array to Ordinal day"
 
 ! JSU 2015-12-13
-integer,intent(in)         :: dat(8)                  ! date time array similar to that returned by DATE_AND_TIME
-integer                    :: ordinal                 ! the returned number of days
-real(kind=realtime)        :: unixtime                ! Unix time (seconds)
-real(kind=realtime)        :: unix_first_day
-integer                    :: ierr                    ! return 0 on success, otherwise 1 from date_to_unix(3f)
-   call date_to_unix(dat,unixtime,ierr)               ! convert date to Unix Epoch Time
+integer,intent(in),optional :: dat(8)                 ! date time array similar to that returned by DATE_AND_TIME
+integer                     :: dat_local(8)
+integer                     :: ordinal                ! the returned number of days
+real(kind=realtime)         :: unixtime               ! Unix time (seconds)
+real(kind=realtime)         :: unix_first_day
+integer                     :: ierr                   ! return 0 on success, otherwise 1 from date_to_unix(3f)
+   if(present(dat))then
+     dat_local=dat
+   else
+     call date_and_time(values=dat_local)
+   endif
+   call date_to_unix(dat_local,unixtime,ierr)         ! convert date to Unix Epoch Time
    if(ierr.ne.0)then
       call stderr('*d2o* bad date array')
       ordinal=-1                                      ! initialize to bad value
    else
-      call date_to_unix([dat(1),1,1,dat(4),0,0,0,0],unix_first_day,ierr)
+      call date_to_unix([dat_local(1),1,1,dat_local(4),0,0,0,0],unix_first_day,ierr)
       ordinal=int((unixtime-unix_first_day)/secday)+1
    endif
 end function d2o
@@ -670,6 +677,75 @@ character(len=40),parameter  :: tests(*)=[ &
    call unit_check_done('d2o')
 
 end subroutine test_d2o
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
+!>
+!!##NAME
+!!    ordinal_seconds(3f) - [M_time]seconds since beginning of year
+!!##SYNOPSIS
+!!
+!!    function ordinal_seconds()
+!!
+!!     integer :: ordinal_seconds
+!!##DESCRIPTION
+!!    Return number of seconds since beginning of current year.
+!!
+!!    Before using this routine consider the consequences if the applicatio
+!!    is running at the moment a new year begins.
+!!
+!!        2 147 483 647 / 31 536 000 ==> 68.09625973490613901572 years
+!!##EXAMPLE
+!!
+!!   sample program
+!!
+!!    program demo_ordinal_seconds
+!!    use M_time, only : ordinal_seconds
+!!    implicit none
+!!    character(len=1) :: paws
+!!    integer          :: ios
+!!    integer          :: istart, iend
+!!    istart=ordinal_seconds()
+!!    write(*,'(a)',advance='no')'now pause. Enter return to continue ...'
+!!    read(*,'(a)',iostat=ios) paws
+!!    iend=ordinal_seconds()
+!!    write(*,*)'that took ',iend-istart,'seconds'
+!!    write(*,*)istart,iend
+!!    end program demo_ordinal_seconds
+!===================================================================================================================================
+integer function ordinal_seconds()
+
+character(len=*),parameter::ident_6="@(#)M_time::ordinal_seconds(3f): seconds since beginning of year"
+
+integer                     :: vtime(8)
+integer                     :: year, month, day, hour, minutes, seconds, timezone, milliseconds
+integer                     :: ordinal_day_of_year
+equivalence(vtime(1),year)
+equivalence(vtime(2),month)
+equivalence(vtime(3),day)
+equivalence(vtime(4),timezone)
+equivalence(vtime(5),hour)
+equivalence(vtime(6),minutes)
+equivalence(vtime(7),seconds)
+equivalence(vtime(8),milliseconds)
+   call date_and_time(values=vtime)
+   ordinal_day_of_year=d2o(vtime)
+   ordinal_seconds=ordinal_day_of_year*24*60*60 +hour*60*60 +minutes*60 +seconds
+end function ordinal_seconds
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_ordinal_seconds()
+use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
+!!use M_time, only : ordinal_seconds
+implicit none
+integer  :: iday,iyear,omonth,oday,rday
+integer  :: i,dat(8)
+
+   call unit_check_start('ordinal_seconds')
+   rday=ordinal_seconds()/(60*60*24)
+   call unit_check('ordinal_seconds',rday.eq.d2o(),msg=msg(rday,d2o()))
+   call unit_check_done('ordinal_seconds')
+
+end subroutine test_ordinal_seconds
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -720,7 +796,7 @@ end subroutine test_d2o
 subroutine ordinal_to_date(yyyy, ddd, dat)
 implicit none
 
-character(len=*),parameter::ident_6="&
+character(len=*),parameter::ident_7="&
 &@(#)M_time::ordinal_to_date(3f): when given a valid year and day of the year returns the DAT array for the date"
 
 integer, intent(in)   :: yyyy
@@ -849,7 +925,7 @@ end subroutine test_ordinal_to_date
 !===================================================================================================================================
 function o2d(ordinal,year) result (dat)
 
-character(len=*),parameter::ident_7="@(#)M_time::o2d(3f): Converts ordinal day to DAT date-time array"
+character(len=*),parameter::ident_8="@(#)M_time::o2d(3f): Converts ordinal day to DAT date-time array"
 
 integer                    :: dat(8)                  ! date time array similar to that returned by DATE_AND_TIME
 integer,intent(in)         :: ordinal                 ! the returned number of days
@@ -952,7 +1028,7 @@ end subroutine test_o2d
 !===================================================================================================================================
 function v2mo(imonth) result(month_name)
 
-character(len=*),parameter::ident_8="@(#)M_time::v2mo(3f): returns the month name of a Common month number"
+character(len=*),parameter::ident_9="@(#)M_time::v2mo(3f): returns the month name of a Common month number"
 
 ! JSU 2015-12-13
 character(len=:),allocatable :: month_name                                        ! string containing month name or abbreviation.
@@ -1027,7 +1103,7 @@ end subroutine test_v2mo
 !===================================================================================================================================
 function mo2d(month_name,year) result (dat)
 
-character(len=*),parameter::ident_9="&
+character(len=*),parameter::ident_10="&
 &@(#)M_time::mo2d(3f): month name to DAT date-time array for 1st of that month in specified year"
 
 character(len=*),intent(in) :: month_name
@@ -1119,7 +1195,7 @@ end subroutine test_mo2d
 !===================================================================================================================================
 function mo2v(month_name) result(imonth)
 
-character(len=*),parameter::ident_10="@(#)M_time::mo2v(3f): given month name return month number (1-12) of that month"
+character(len=*),parameter::ident_11="@(#)M_time::mo2v(3f): given month name return month number (1-12) of that month"
 
 ! JSU 2015-12-13
 character(len=*),intent(in):: month_name   ! string containing month name or abbreviation.
@@ -1229,7 +1305,7 @@ end subroutine test_mo2v
 !===================================================================================================================================
 function now(format)
 
-character(len=*),parameter::ident_11="@(#)M_time::now(3f): return string representing current time given format"
+character(len=*),parameter::ident_12="@(#)M_time::now(3f): return string representing current time given format"
 
 ! JSU 2015-10-24
 character(len=*),intent(in),optional :: format
@@ -1313,7 +1389,7 @@ end subroutine test_now
 !===================================================================================================================================
 function fmtdate(values,format) RESULT (timestr)
 
-character(len=*),parameter::ident_12="@(#)M_time::fmtdate(3f): given DAT date-time array return date as string using format"
+character(len=*),parameter::ident_13="@(#)M_time::fmtdate(3f): given DAT date-time array return date as string using format"
 
 ! JSU 2015-10-24
 integer,dimension(8),intent(in)      :: values    ! numeric time values as DATE_AND_TIME(3f) intrinsic returns
@@ -1747,7 +1823,7 @@ end subroutine test_fmtdate
 !===================================================================================================================================
 subroutine fmtdate_usage(indent)
 
-character(len=*),parameter::ident_13="@(#)M_time::fmtdate_usage(3f): display macros recognized by fmtdate(3f)"
+character(len=*),parameter::ident_14="@(#)M_time::fmtdate_usage(3f): display macros recognized by fmtdate(3f)"
 
 ! JSU 2015-10-24
 integer,intent(in),optional    :: indent
@@ -1964,7 +2040,7 @@ end subroutine test_fmtdate_usage
 subroutine guessdate(datestring,dat,ier)
 use M_strings, only: string_to_values, s2v, split, v2s
 
-character(len=*),parameter::ident_14="@(#)M_time::guessdate(3f): Guess format of a date string to create a DAT date-time array"
+character(len=*),parameter::ident_15="@(#)M_time::guessdate(3f): Guess format of a date string to create a DAT date-time array"
 
 ! based on - JRH 1991-03-19
 ! modified - JSU, 20160729
@@ -2345,7 +2421,7 @@ end subroutine test_guessdate
 !===================================================================================================================================
 subroutine dow(values, weekday, day, ierr)
 
-character(len=*),parameter::ident_15="@(#)M_time::dow(3f): Given DAT date-time array return the day of the week"
+character(len=*),parameter::ident_16="@(#)M_time::dow(3f): Given DAT date-time array return the day of the week"
 
 integer,intent(in)                    :: values(8) ! date and time array used to get time zone
 integer,intent(out),optional          :: weekday   ! The day of the week, 1 = Monday, 7 = Sunday
@@ -2519,7 +2595,7 @@ end subroutine test_dow
 !===================================================================================================================================
 subroutine d2w(dat,iso_year,iso_week,iso_weekday,iso_name)
 
-character(len=*),parameter::ident_16="@(#)M_time::d2w(3f): DAT date-time array to iso-8601 Week-numbering year date yyyy-Www-d"
+character(len=*),parameter::ident_17="@(#)M_time::d2w(3f): DAT date-time array to iso-8601 Week-numbering year date yyyy-Www-d"
 
 integer,intent(in)              :: dat(8)     ! input date array
 integer,intent(out)             :: iso_year, iso_week, iso_weekday
@@ -2785,7 +2861,7 @@ end subroutine test_d2w
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine w2d(iso_year,iso_week,iso_weekday,dat)
 
-character(len=*),parameter::ident_17="&
+character(len=*),parameter::ident_18="&
 &@(#)M_time::w2d(3f): convert iso-8601 Week-numbering year date yyyy-Www-d to DAT date-time array"
 
 integer,intent(in)              :: iso_year, iso_week, iso_weekday
@@ -2899,7 +2975,7 @@ end subroutine test_w2d
 subroutine box_month(dat,calen)
 use M_strings, only : adjustc, v2s
 
-character(len=*),parameter::ident_18="@(#)M_time::box_month(3f): generate month specified by DAT date-time array in character array"
+character(len=*),parameter::ident_19="@(#)M_time::box_month(3f): generate month specified by DAT date-time array in character array"
 
 integer,parameter             :: wklen=3*7
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -3004,7 +3080,7 @@ end subroutine test_box_month
 !===================================================================================================================================
 function d2j(dat) result (julian)
 
-character(len=*),parameter::ident_19="@(#)M_time::d2j(3f): Given DAT date-time array returns Julian Date"
+character(len=*),parameter::ident_20="@(#)M_time::d2j(3f): Given DAT date-time array returns Julian Date"
 
 integer,intent(in),optional :: dat(8)
 real(kind=realtime)         :: julian
@@ -3103,7 +3179,7 @@ end subroutine test_d2j
 !===================================================================================================================================
 function j2d(julian) result (dat)
 
-character(len=*),parameter::ident_20="@(#)M_time::j2d(3f): Given Julian Date returns DAT date-time array"
+character(len=*),parameter::ident_21="@(#)M_time::j2d(3f): Given Julian Date returns DAT date-time array"
 
 real(kind=realtime),intent(in)   :: julian
 integer                          :: dat(8)
@@ -3189,7 +3265,7 @@ end subroutine test_j2d
 !===================================================================================================================================
 function d2u(dat) result (unixtime)
 
-character(len=*),parameter::ident_21="@(#)M_time::d2u(3f): Given DAT date-time array returns Unix Epoch time"
+character(len=*),parameter::ident_22="@(#)M_time::d2u(3f): Given DAT date-time array returns Unix Epoch time"
 
 real(kind=realtime)           :: unixtime
 integer,intent(in),optional   :: dat(8)
@@ -3277,7 +3353,7 @@ end subroutine test_d2u
 !===================================================================================================================================
 function u2d(unixtime) result (dat)
 
-character(len=*),parameter::ident_22="@(#)M_time::u2d(3f): Given Unix Epoch Time returns DAT date-time array"
+character(len=*),parameter::ident_23="@(#)M_time::u2d(3f): Given Unix Epoch Time returns DAT date-time array"
 
 class(*),intent(in),optional   :: unixtime
 integer                        :: dat(8)
@@ -3388,7 +3464,7 @@ function sec2days(seconds,crop) result(dhms)
 use M_strings, only: split, compact, s2v, transliterate
 use iso_fortran_env, only : int64
 
-character(len=*),parameter::ident_23="&
+character(len=*),parameter::ident_24="&
 &@(#)M_time::sec2days(3f): converts seconds or string of form IId JJh KKm LLs to string showing days of form D-HH:MM:SS"
 
 ! on this platform, (select_int_kind(i),i=1,100) returns
@@ -3627,7 +3703,7 @@ function days2sec(str) result(time)
 use M_strings, only: split, compact, s2v, transliterate
 implicit none
 
-character(len=*),parameter::ident_24="&
+character(len=*),parameter::ident_25="&
 &@(#)M_time::days2sec(3f): convert string [[-]dd-]hh:mm:ss.nn to seconds or string IId JJh KKm LLs to seconds"
 
 character(len=*),intent(in)       :: str
@@ -3825,7 +3901,7 @@ end subroutine test_days2sec
 function phase_of_moon(datin)
 implicit none
 
-character(len=*),parameter::ident_25="@(#)M_time::phase_of_moon(3f): return name for phase of moon for given date"
+character(len=*),parameter::ident_26="@(#)M_time::phase_of_moon(3f): return name for phase of moon for given date"
 
 integer,intent(in)            :: datin(8)
 character(len=:),allocatable  :: phase_of_moon
@@ -3916,7 +3992,7 @@ end subroutine test_phase_of_moon
 function moon_fullness(datin)
 implicit none
 
-character(len=*),parameter::ident_26="@(#)M_time::moon_fullness(3f): return percentage of moon phase from new to full"
+character(len=*),parameter::ident_27="@(#)M_time::moon_fullness(3f): return percentage of moon phase from new to full"
 
 integer,intent(in)            :: datin(8)
 integer                       :: moon_fullness
@@ -4022,7 +4098,7 @@ end subroutine test_moon_fullness
 SUBROUTINE Easter(year, dat)
 implicit none
 
-character(len=*),parameter::ident_27="@(#)M_time::easter(3f): calculate date for Easter given a year"
+character(len=*),parameter::ident_28="@(#)M_time::easter(3f): calculate date for Easter given a year"
 
 integer,intent(in)    :: year
 integer,intent(out)   :: dat(8) ! year,month,day,tz,hour,minute,second,millisecond
@@ -4219,7 +4295,7 @@ end subroutine test_easter
 subroutine ephemeris(itime,planet,declination_d,declination_m,declination_compass,ascent_hours,ascent_minutes)
 implicit none
 
-character(len=*),parameter::ident_28="&
+character(len=*),parameter::ident_29="&
 &@(#)M_time::ephemeris(3f): ephemeris position of planets for adjusting an equatorial telescope"
 
 integer,parameter            :: dp=kind(0.0d0)
@@ -4494,7 +4570,7 @@ end subroutine test_ephemeris
 subroutine system_sleep(seconds)
 use,intrinsic                 :: iso_c_binding, only: c_int
 
-character(len=*),parameter::ident_29="@(#)M_time::system_sleep(3f): call sleep(3c) or usleep(3c)"
+character(len=*),parameter::ident_30="@(#)M_time::system_sleep(3f): call sleep(3c) or usleep(3c)"
 
 class(*),intent(in)           :: seconds
 integer(kind=c_int)           :: cint
@@ -4533,7 +4609,7 @@ end subroutine test_system_sleep
 subroutine call_sleep(wait_seconds)
 use,intrinsic                   :: iso_c_binding, only: c_int
 
-character(len=*),parameter::ident_30="@(#)M_time::call_sleep(3fp): call sleep(3c)"
+character(len=*),parameter::ident_31="@(#)M_time::call_sleep(3fp): call sleep(3c)"
 
 integer(kind=c_int),intent(in)  :: wait_seconds
 integer(kind=c_int)             :: how_long
@@ -4553,7 +4629,7 @@ end subroutine call_sleep
 !===================================================================================================================================
 subroutine call_usleep(wait_seconds)
 use,intrinsic                   :: iso_c_binding, only: c_int
-character(len=*),parameter::ident_31="@(#)M_time::call_usleep(3fp): call usleep(3c)"
+character(len=*),parameter::ident_32="@(#)M_time::call_usleep(3fp): call usleep(3c)"
 integer(kind=c_int),intent(in)  :: wait_seconds
 integer(kind=c_int)             :: how_long
 interface
@@ -4651,7 +4727,7 @@ subroutine put_environment_variable(name,value,status)
 !  This is an private copy of the set_environment_variable routine(3f) routine from
 !  M_system.FF that is duplicated in order to prevent a circular dependency.
 
-character(len=*),parameter::ident_32="@(#)M_system::put_environment_variable(3f): call setenv(3c) to set environment variable"
+character(len=*),parameter::ident_33="@(#)M_system::put_environment_variable(3f): call setenv(3c) to set environment variable"
 
 character(len=*)               :: NAME
 character(len=*)               :: VALUE
@@ -4673,7 +4749,7 @@ end subroutine put_environment_variable
 pure function str2arr(string) result (array)
 
 
-character(len=*),parameter::ident_33="@(#)M_system::str2arr(3fp): function copies string to null terminated char array"
+character(len=*),parameter::ident_34="@(#)M_system::str2arr(3fp): function copies string to null terminated char array"
 
 character(len=*),intent(in)     :: string
 character(len=1,kind=c_char)    :: array(len(string)+1)
@@ -4698,7 +4774,7 @@ end module m_time
 function now_ex(format)
 use M_time, only: now
 
-character(len=*),parameter::ident_34="@(#)M_time::now_ex(3f): use of now(3f) outside of a module"
+character(len=*),parameter::ident_35="@(#)M_time::now_ex(3f): use of now(3f) outside of a module"
 
 character(len=*),intent(in),optional :: format
 character(len=:),allocatable         :: now_ex
@@ -4833,7 +4909,7 @@ contains
 ! this function is used internally in the module, but is also declared to be a constructor for creating TYPE(DATE_TYPE) structures
 !
 function construct_from_dat(dat)
-character(len=*),parameter::ident_35="@(#)M_time::construct_from_dat(3f): construct TYPE(DATE_TIME) with DAT date-time array"
+character(len=*),parameter::ident_36="@(#)M_time::construct_from_dat(3f): construct TYPE(DATE_TIME) with DAT date-time array"
 integer,intent(in)          :: dat(:)                       ! (maybe partial) date time array
 integer                     :: datlocal(8)                  ! date time array similar to that returned by DATE_AND_TIME
 type(date_time)             :: construct_from_dat
@@ -4853,7 +4929,7 @@ type(date_time)             :: construct_from_dat
 end function construct_from_dat
 !===================================================================================================================================
 function construct_from_jed(jed)
-character(len=*),parameter::ident_36="&
+character(len=*),parameter::ident_37="&
 &@(#)M_time::construct_from_jed(3f): construct TYPE(DATE_TIME) with REAL Julian JED date-time value"
 real(kind=realtime),intent(in)   :: jed
 type(date_time)                 :: construct_from_jed
@@ -4861,7 +4937,7 @@ type(date_time)                 :: construct_from_jed
 end function construct_from_jed
 !===================================================================================================================================
 function construct_from_uet(uet)
-character(len=*),parameter::ident_37="&
+character(len=*),parameter::ident_38="&
 &@(#)M_time::construct_from_uet(3f): construct TYPE(DATE_TIME) with INTEGER Unix UET date-time value"
 integer,intent(in)   :: uet
 type(date_time)                 :: construct_from_uet
@@ -4874,7 +4950,7 @@ end function construct_from_uet
 ! These functions are privately used to define the methods that TYPE(DATE_TIME) will support
 !===================================================================================================================================
 function dt2d(self) result (dat)
-character(len=*),parameter::ident_38="@(#)M_time::dt2d(3f): convert derived type date_time to DAT date-time array"
+character(len=*),parameter::ident_39="@(#)M_time::dt2d(3f): convert derived type date_time to DAT date-time array"
 class(date_time),intent(in) :: self
 integer                     :: dat(8)                  ! date time array similar to that returned by DATE_AND_TIME
    dat=[self%year, self%month, self%day, self%tz, self%hour, self%minute, self%second, self%millisecond]
@@ -4883,14 +4959,14 @@ end function dt2d
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 function epoch(self) result (epoch_seconds)
-character(len=*),parameter::ident_39="@(#)M_time::epoch(3f): convert derived type date_time to unix epoch seconds"
+character(len=*),parameter::ident_40="@(#)M_time::epoch(3f): convert derived type date_time to unix epoch seconds"
 class(date_time),intent(in) :: self
 real(kind=realtime)         :: epoch_seconds
    epoch_seconds=d2u(dt2d(self))
 end function epoch
 !===================================================================================================================================
 function format(self,fmt) result (string)
-character(len=*),parameter::ident_40="@(#)M_time::format(3f): convert derived type date_time to formatted string"
+character(len=*),parameter::ident_41="@(#)M_time::format(3f): convert derived type date_time to formatted string"
 class(date_time),intent(in)           :: self
 character(len=*),intent(in),optional  :: fmt
 character(len=:),allocatable          :: fmtlocal
@@ -4923,21 +4999,21 @@ character(len=*),parameter            :: mdy_fmt='%M/%D/%Y %h:%m:%s.%x%z'
 end function format
 !===================================================================================================================================
 function julian(self) result (julian_days)
-character(len=*),parameter::ident_41="@(#)M_time::julian(3f): convert derived type date_time to julian date"
+character(len=*),parameter::ident_42="@(#)M_time::julian(3f): convert derived type date_time to julian date"
 class(date_time),intent(in) :: self
 real(kind=realtime)         :: julian_days
     julian_days=d2j(dt2d(self))
 end function julian
 !===================================================================================================================================
 function ordinal(self) result (ordinal_days)
-character(len=*),parameter::ident_42="@(#)M_time::ordinal(3f): convert derived type date_time to ordinal date"
+character(len=*),parameter::ident_43="@(#)M_time::ordinal(3f): convert derived type date_time to ordinal date"
 class(date_time),intent(in) :: self
 integer                     :: ordinal_days
     ordinal_days=d2o(dt2d(self))
 end function ordinal
 !===================================================================================================================================
 function weekday(self) result (iday)
-character(len=*),parameter::ident_43="@(#)M_time::weekday(3f): convert derived type date_time to weekday (1=Monday,7=Sunday)"
+character(len=*),parameter::ident_44="@(#)M_time::weekday(3f): convert derived type date_time to weekday (1=Monday,7=Sunday)"
 class(date_time),intent(in)   :: self
 integer                       :: iday
 integer                       :: ierr      ! Error return,0=correct,-1=invalid Julian Date,-2=neither day nor weekday specified
@@ -4953,7 +5029,7 @@ function delta(self,year,month,day,tz,hour,minute,second,millisecond,week,durati
 ! or "a month from now". Once the arbitrary values are used to change the original date_time value convert it to
 ! Epoch time and back to make sure you get a valid date.
 !
-character(len=*),parameter::ident_44="@(#)M_time::delta(3f): add times to a type(date_time)"
+character(len=*),parameter::ident_45="@(#)M_time::delta(3f): add times to a type(date_time)"
 class(date_time),intent(in)           :: self
 integer,intent(in),optional           :: year, month, day, tz, hour, minute, second, millisecond, week
 character(len=*),intent(in),optional  :: duration
@@ -4985,7 +5061,7 @@ subroutine init_dt(self,year,month,day,tz,hour,minute,second,millisecond,type,da
 ! If not, initialize to the current time or start of epoch depending on TYPE=["now"|"epoch"]
 ! Then, apply specific values, typically specified by keyword value
 !
-character(len=*),parameter::ident_45="@(#)M_time::init_dt(3f): initialize TYPE(DATE_TIME)"
+character(len=*),parameter::ident_46="@(#)M_time::init_dt(3f): initialize TYPE(DATE_TIME)"
 class(date_time)                     :: self
 type(date_time)                      :: holddt
 integer,intent(in),optional          :: year, month, day, tz, hour, minute, second, millisecond
@@ -5046,7 +5122,7 @@ end subroutine init_dt
 ! FUNCTIONS FOR DEFINING OVERLOADED OPERATORS
 !===================================================================================================================================
 function plus_seconds(self,seconds) result (dattim)
-character(len=*),parameter::ident_46="@(#)M_time::plus_seconds(3f): add derived type date_time object and seconds"
+character(len=*),parameter::ident_47="@(#)M_time::plus_seconds(3f): add derived type date_time object and seconds"
 class(date_time),intent(in)    :: self
 real(kind=realtime),intent(in) :: seconds
 type(date_time)                :: dattim
@@ -5057,7 +5133,7 @@ type(date_time)                :: dattim
 end function plus_seconds
 !===================================================================================================================================
 function minus_seconds(self,seconds) result (dattim)
-character(len=*),parameter::ident_47="@(#)M_time::minus_seconds(3f): subtract seconds from derived type date_time object"
+character(len=*),parameter::ident_48="@(#)M_time::minus_seconds(3f): subtract seconds from derived type date_time object"
 class(date_time),intent(in)    :: self
 real(kind=realtime),intent(in) :: seconds
 type(date_time)                :: dattim
@@ -5065,7 +5141,7 @@ type(date_time)                :: dattim
 end function minus_seconds
 !===================================================================================================================================
 function minus_date_time(self,other) result (seconds)
-character(len=*),parameter::ident_48="@(#)M_time::minus_date_time(3f): add derived type date_time object and seconds"
+character(len=*),parameter::ident_49="@(#)M_time::minus_date_time(3f): add derived type date_time object and seconds"
 class(date_time),intent(in)   :: self
 type(date_time),intent(in)    :: other
 real(kind=realtime)           :: seconds
@@ -5073,7 +5149,7 @@ real(kind=realtime)           :: seconds
 end function minus_date_time
 !===================================================================================================================================
 logical function eq(self,other)
-character(len=*),parameter::ident_49="@(#)M_time::eq(3f): compare derived type date_time objects (eq,lt,gt,le,ge,ne)"
+character(len=*),parameter::ident_50="@(#)M_time::eq(3f): compare derived type date_time objects (eq,lt,gt,le,ge,ne)"
 class(date_time),intent(in)   :: self
 type(date_time),intent(in)    :: other
    eq= int(d2u(dt2d(self))) .eq. int(d2u(dt2d(other)))

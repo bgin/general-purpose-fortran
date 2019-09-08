@@ -93,7 +93,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Thu, Aug 29th, 2019 10:13:43 PM>',&
+'@(#)COMPILED:       Sat, Aug 31st, 2019 1:01:59 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -220,7 +220,7 @@ end subroutine unix_to_dos
 ! read command line, process file and optionally print statistics
 program dtu_exe
 use GLOBAL
-use M_kracken, only: IPvalue,kracken,lget
+use M_kracken, only: kracken,lget
 implicit none
 
    call kracken('dtu','          &

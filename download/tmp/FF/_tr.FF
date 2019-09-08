@@ -4,7 +4,7 @@
 $ifdef TESTPRG90
 $DOCUMENT HELP -file _tr.1.man
 NAME
-   _tr(1) - [M_strings] translate or delete characters
+   _tr(1) - [FUNIX:M_strings] translate or delete characters
 
 SYNOPSIS
        _tr [ -o SET1 [ -n SET2 ]]|-l| -u |[ --version ]|[ --help ]

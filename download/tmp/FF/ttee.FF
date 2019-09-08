@@ -222,7 +222,7 @@ $DOCUMENT VERSION
 PRODUCT:        GPF (General Purpose Fortran) utilities and examples
 PROGRAM:        ttee(1f)
 DESCRIPTION:    split stdout to a file with optional timestamp labeling
-VERSION:        1.0, 20150913
+VERSION:        1.0, 2015-09-13
 AUTHOR:         John S. Urban
 REPORTING BUGS: http://www.urbanjost.altervista.org/
 HOME PAGE:      http://www.urbanjost.altervista.org/index.html

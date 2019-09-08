@@ -853,7 +853,7 @@ character(len=4096) :: local_filename
          call stderr_local( '*slurp* bad read of '//trim(local_filename) )
       endif
    else
-      call stderr_local('*slurp*'//message)
+      call stderr_local('*slurp* '//message)
       allocate ( text(0) )           ! make enough storage to hold file
    endif
 

@@ -168,7 +168,7 @@ end subroutine unix_to_dos
 ! read command line, process file and optionally print statistics
 program dtu_exe
 use GLOBAL
-use M_kracken, only: IPvalue,kracken,lget
+use M_kracken, only: kracken,lget
 implicit none
 
    call kracken('dtu','          &

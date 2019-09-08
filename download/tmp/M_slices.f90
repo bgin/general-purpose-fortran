@@ -17,25 +17,25 @@ PUBLIC  :: DL_SLICES         ! DL_SLICES(A,INX,INZ,NX,NZ,ALPHA,BETA,XH,YH,ZH,IFL
                              !           AMININ,AMAXIN,ICOL)
 public test_suite_M_slices
 !-----------------------------------------------------------------------------------------------------------------------------------
-PRIVATE :: DL_VXPT3D         ! (X,Y,AVAL,IX,IZ,NX)
-PRIVATE :: DL_INTERSECT      ! (FLAG,X,Y,AX1,AY1,AX2,AY2,BX1,BY1,BX2,BY2,A)
-PRIVATE :: DL_CLIPIT         ! (IVTB,XV2,YV2,AV1,AV2,XM,YM,XX,YX)
-PRIVATE :: DL_TRS            ! (XIN,YIN,XCON,YCON)
-PRIVATE :: DL_INBOX          ! (X,Y,X_BOTTOM_LEFT,Y_BOTTOM_LEFT,X_top_right,Y_top_right)
+PRIVATE :: vxpt3_          ! (X,Y,AVAL,IX,IZ,NX)
+PRIVATE :: intersect_      ! (FLAG,X,Y,AX1,AY1,AX2,AY2,BX1,BY1,BX2,BY2,A)
+PRIVATE :: clipit_         ! (IVTB,XV2,YV2,AV1,AV2,XM,YM,XX,YX)
+PRIVATE :: trs_            ! (XIN,YIN,XCON,YCON)
+PRIVATE :: inbox_          ! (X,Y,X_BOTTOM_LEFT,Y_BOTTOM_LEFT,X_top_right,Y_top_right)
 !------------------------
-PRIVATE :: DL_AXISB          ! (X0,Y0,A0,N0,S0,T0,C0,D0,NM,NN,ML,TS,ND,SM,ICOL)
-PRIVATE :: DL_AXISA          ! (X0,Y0,A0,N0,S0,T0,C0,D0,NM,ML,ICOL)
+PRIVATE :: axisb_          ! (X0,Y0,A0,N0,S0,T0,C0,D0,NM,NN,ML,TS,ND,SM,ICOL)
+PRIVATE :: axisa_          ! (X0,Y0,A0,N0,S0,T0,C0,D0,NM,ML,ICOL)
 !------------------------
-PRIVATE :: DL_NUMBER         ! (X,Y,HGHT,Z,T,F0,IPF)
-PRIVATE :: DL_RANGE          ! (X,S,N,K,IX,XMIN,DX)
+PRIVATE :: number_         ! (X,Y,HGHT,Z,T,F0,IPF)
+PRIVATE :: range_          ! (X,S,N,K,IX,XMIN,DX)
 !------------------------
-PRIVATE :: DL_TRANSLATE      ! (XA,YA)
-PRIVATE :: DL_VIEWPORT       ! (XMIN,XMAX,YMIN,YMAX)
-PRIVATE :: DL_COLOR          ! (IC)
-PRIVATE :: DL_WIDTH          ! (IC)
-PRIVATE :: DL_DRAW           ! (XA,YA)
-PRIVATE :: DL_MOVE           ! (XA,YA)
-PRIVATE :: DL_PLOT           ! (XPLOT0,YPLOT0,ISELECT0)
+PRIVATE :: translate_      ! (XA,YA)
+PRIVATE :: viewport_       ! (XMIN,XMAX,YMIN,YMAX)
+PRIVATE :: color_          ! (IC)
+PRIVATE :: width_          ! (IC)
+PRIVATE :: draw_           ! (XA,YA)
+PRIVATE :: move_           ! (XA,YA)
+PRIVATE :: plot_           ! (XPLOT0,YPLOT0,ISELECT0)
 !-----------------------------------------------------------------------------------------------------------------------------------
 ! plot coordinate system
 real,save    :: TRANSLATEXQ                ! TRANSLATEXQ  SCALED ROTATED ORIGIN X VALUE
@@ -97,7 +97,7 @@ contains
 !!                                    = 2 plot axis, auto scale y axis
 !!                                      --variables accessed
 !!                     (ten's digit)  = 0 default axis parameters
-!!                                    = 1 specialized dl_axisb parameters
+!!                                    = 1 specialized axisb_ parameters
 !!      XT,YT,ZT          char strings for axis titles
 !!      NXT,NYT,NZT       int  length of axis titles.
 !!                        if zero then that axis not plotted
@@ -275,7 +275,7 @@ real :: zlen
    IF (MOD(IABS(IAXIS),10).EQ.2) THEN ! SMOOTH SCALE FACTORS
       AS(1)=AMAX
       AS(2)=AMINQ
-      CALL DL_RANGE(AS,YLEN,2,1,1,AMINQ,DAA)
+      CALL range_(AS,YLEN,2,1,1,AMINQ,DAA)
       AMAX=YLEN*DAA+AMINQ
    ENDIF
    YSCALEQ=1.0
@@ -298,80 +298,80 @@ real :: zlen
          IC(4)=ICOL(5)
          NADD=100000 ! PEN COLOR
       ENDIF
-      CALL DL_VXPT3D(XP,YP,AMINQ,1,1,NX) ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
+      CALL vxpt3_(XP,YP,AMINQ,1,1,NX) ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
       DY=(AMAX-AMINQ)/YLEN
       IF (NYT.GT.0) THEN  ! PLOT Y AXIS
          IF (IAF.EQ.1) THEN
-            CALL DL_AXISB(XP,YP,YT,NYT+11000+NADD, YLEN,90.,AMINQ,DY,NMY,NNY,-IABS(MLY), TSY,NDY,SMY,IC)
+            CALL axisb_(XP,YP,YT,NYT+11000+NADD, YLEN,90.,AMINQ,DY,NMY,NNY,-IABS(MLY), TSY,NDY,SMY,IC)
          ELSE
-            CALL DL_AXISA(XP,YP,YT,NYT+1000+NADD, YLEN,90.,AMINQ,DY,N1,N2,IC)
+            CALL axisa_(XP,YP,YT,NYT+1000+NADD, YLEN,90.,AMINQ,DY,N1,N2,IC)
          ENDIF
       ENDIF
-      CALL DL_VXPT3D(XP1,YP1,AMINQ,NX,1,NX) ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
+      CALL vxpt3_(XP1,YP1,AMINQ,NX,1,NX) ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
       DX=(XAEND-XASTART)/XLEN
       ANG=ATAN2(YP1-YP,XP1-XP)*180./TPI
       IF (NXT.GT.0) THEN
          IF (IAF.EQ.1) THEN
-            CALL DL_AXISB(XP,YP,XT,-NXT-NADD-10000,XLEN,ANG,XASTART,DX,NMX,NNX,-IABS(MLX),TSX,NDX,SMX,IC)
+            CALL axisb_(XP,YP,XT,-NXT-NADD-10000,XLEN,ANG,XASTART,DX,NMX,NNX,-IABS(MLX),TSX,NDX,SMX,IC)
          ELSE
-            CALL DL_AXISA(XP,YP,XT,-NXT-NADD,XLEN,ANG,XASTART,DX,N1,N2,IC)
+            CALL axisa_(XP,YP,XT,-NXT-NADD,XLEN,ANG,XASTART,DX,N1,N2,IC)
          ENDIF
       ENDIF
       DZ=(ZAEND-ZASTART)/ZLEN
       IF (NZT.GT.0) THEN
          IF (IAF.EQ.1) THEN
-            CALL DL_AXISB(XP1,YP1,ZT,-NZT-NADD-10000 ,ZLEN,BETA,ZASTART,DZ,NMZ,NNZ, -IABS(MLZ),TSZ,NDZ,SMZ,IC)
+            CALL axisb_(XP1,YP1,ZT,-NZT-NADD-10000 ,ZLEN,BETA,ZASTART,DZ,NMZ,NNZ, -IABS(MLZ),TSZ,NDZ,SMZ,IC)
          ELSE
-            CALL DL_AXISA(XP1,YP1,ZT,-NZT-NADD, ZLEN,BETA,ZASTART,DZ,N1,N2,IC)
+            CALL axisa_(XP1,YP1,ZT,-NZT-NADD, ZLEN,BETA,ZASTART,DZ,N1,N2,IC)
          ENDIF
       ENDIF
    ENDIF
-   IF (iflag1.EQ.2) CALL dl_color(ICOL(5)) ! PEN COLOR
+   IF (iflag1.EQ.2) CALL color_(ICOL(5)) ! PEN COLOR
 !
 !     PLOT FRONT PLATE
 !
    IPEN=3
    DO I=1,NX
       IF (I.GT.MAXSIZE_local) GOTO 999
-      CALL DL_VXPT3D(H(I,1),H(I,2),A(I,1),I,1,NX) ! INITIALIZE HISTORY ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
-      CALL dl_plot(H(I,1),H(I,2),IPEN)   ! PLOT SIDE LINE
+      CALL vxpt3_(H(I,1),H(I,2),A(I,1),I,1,NX) ! INITIALIZE HISTORY ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
+      CALL plot_(H(I,1),H(I,2),IPEN)   ! PLOT SIDE LINE
       IPEN=2
    enddo
    IHOLD=NX
    IF (BETA.EQ.90.0) GOTO 5
 
    IF (iflag10.EQ.1) GOTO 71   ! DON'T PLOT SIDE PLATES
-   CALL DL_VXPT3D(XP,YP,AMINQ,NX,1,NX) ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
-   CALL dl_draw(XP,YP)
+   CALL vxpt3_(XP,YP,AMINQ,NX,1,NX) ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
+   CALL draw_(XP,YP)
    DO I=1,NX-1      ! ADD SIDE LINES
-      CALL dl_move(H(I,1),H(I,2))
-      CALL DL_VXPT3D(XP,YP,AMINQ,I,1,NX) ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
-      CALL dl_draw(XP,YP)
-      CALL DL_VXPT3D(XP,YP,AMINQ,I+1,1,NX) ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
-      CALL dl_draw(XP,YP)
+      CALL move_(H(I,1),H(I,2))
+      CALL vxpt3_(XP,YP,AMINQ,I,1,NX) ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
+      CALL draw_(XP,YP)
+      CALL vxpt3_(XP,YP,AMINQ,I+1,1,NX) ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
+      CALL draw_(XP,YP)
    enddo
 !
 !     PLOT SIDE PLATE
 !
 71 continue
-   CALL dl_move(H(NX,1),H(NX,2))
+   CALL move_(H(NX,1),H(NX,2))
    DO I=1,NZ        ! PLOT RIGHT SIDE CURVE
       IF (NX+I.GT.MAXSIZE_local) GOTO 999
-      CALL DL_VXPT3D(XP,YP,A(NX,I),NX,I,NX) ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
+      CALL vxpt3_(XP,YP,A(NX,I),NX,I,NX) ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
       H(NX+I,1)=XP
       H(NX+I,2)=YP
-      CALL dl_draw(XP,YP)
+      CALL draw_(XP,YP)
    enddo
-   CALL DL_VXPT3D(XP,YP,AMINQ,NX,1,NX) ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
-   CALL dl_move(XP,YP)
+   CALL vxpt3_(XP,YP,AMINQ,NX,1,NX) ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
+   CALL move_(XP,YP)
    IHOLD=NX+NZ        ! NUMBER OF H VALUES
    IF (iflag10.NE.1) then! DON'T PLOT SIDE PLATES
       DO I=2,NZ        ! ADD SIDE LINES
-         CALL DL_VXPT3D(XP2,YP2,AMINQ,NX,I,NX)  ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
-         CALL dl_draw(XP2,YP2)
-         CALL DL_VXPT3D(XP,YP,A(NX,I),NX,I,NX) ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
-         CALL dl_draw(XP,YP)
-         CALL dl_move(XP,YP2)
+         CALL vxpt3_(XP2,YP2,AMINQ,NX,I,NX)  ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
+         CALL draw_(XP2,YP2)
+         CALL vxpt3_(XP,YP,A(NX,I),NX,I,NX) ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
+         CALL draw_(XP,YP)
+         CALL move_(XP,YP2)
       enddo
    endif
 !
@@ -382,18 +382,18 @@ real :: zlen
       IDCT=1
       IHCT=1
 !        DETERMINE START POINT LOCATION
-      CALL DL_VXPT3D(XP1,YP1,A(IDCT,IZ),1,IZ,NX) ! LEFT-MOST DATA POINT ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
+      CALL vxpt3_(XP1,YP1,A(IDCT,IZ),1,IZ,NX) ! LEFT-MOST DATA POINT ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
       IF (XP1.LT.H(1,1)) THEN  ! DATA TO LEFT OF HISTORY ARRAY
 !           IF (IPCT.GT.MAXSIZE_local) GOTO 999
 !           P(IPCT,1)=XP1
 !           P(IPCT,2)=YP1
 !           IPCT=IPCT+1
-         CALL dl_move(XP1,YP1)
+         CALL move_(XP1,YP1)
          DO I=1,NX  ! (VERY RARE)
-            CALL DL_VXPT3D(XP1,YP1,A(I,IZ),I,IZ,NX) ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
+            CALL vxpt3_(XP1,YP1,A(I,IZ),I,IZ,NX) ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
             IF (XP1.GT.H(1,1)) THEN
                IDCT=I-1
-               CALL DL_VXPT3D(DX1,DY1,A(IDCT,IZ),IDCT,IZ,NX) ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
+               CALL vxpt3_(DX1,DY1,A(IDCT,IZ),IDCT,IZ,NX) ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
                HHIGH=.FALSE.
                HX1=H(1,1)
                HY1=H(1,2)
@@ -401,7 +401,7 @@ real :: zlen
                HY2=H(2,2)
                IDCT=IDCT+1
                IHCT=IHCT+2
-               CALL DL_VXPT3D(DX2,DY2,A(IDCT,IZ),IDCT,IZ,NX) ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
+               CALL vxpt3_(DX2,DY2,A(IDCT,IZ),IDCT,IZ,NX) ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
                IDCT=IDCT+1
                GOTO 100
             ENDIF
@@ -409,13 +409,13 @@ real :: zlen
             P(IPCT,1)=XP1
             P(IPCT,2)=YP1
             IPCT=IPCT+1
-            CALL dl_draw(XP1,YP1)
+            CALL draw_(XP1,YP1)
          enddo
       ENDIF
       IDCT=2
-      CALL DL_VXPT3D(DX1,DY1,A(1,IZ-1),1,IZ-1,NX) ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
-      CALL DL_VXPT3D(DX2,DY2,A(1,IZ),1,IZ,NX)     ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
-!C       CALL dl_move(H(1,1),H(1,2))
+      CALL vxpt3_(DX1,DY1,A(1,IZ-1),1,IZ-1,NX) ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
+      CALL vxpt3_(DX2,DY2,A(1,IZ),1,IZ,NX)     ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
+!C       CALL move_(H(1,1),H(1,2))
       X0=H(1,1)
       Y0=H(1,2)
       IP=3
@@ -429,7 +429,7 @@ real :: zlen
          P(IPCT,1)=H(I,1)
          P(IPCT,2)=H(I,2)
          IPCT=IPCT+1
-!C             CALL dl_draw(H(I,1),H(I),2)
+!C             CALL draw_(H(I,1),H(I),2)
          X0=H(I,1)
          Y0=H(I,2)
       enddo
@@ -459,7 +459,7 @@ real :: zlen
 !     TOP OF INNER LOOP
 !
 100   CONTINUE
-      CALL DL_INTERSECT(FLAG,X,Y,HX1,HY1,HX2,HY2,DX1,DY1,DX2,DY2,HHIGH)
+      CALL intersect_(FLAG,X,Y,HX1,HY1,HX2,HY2,DX1,DY1,DX2,DY2,HHIGH)
       IF (FLAG) THEN  ! SEGMENTS INTERSECT
          HX1=X    ! DRAW SEGMENT WITH
          HY1=Y    ! HIGHEST START POINT
@@ -469,7 +469,7 @@ real :: zlen
          P(IPCT,1)=X
          P(IPCT,2)=Y
          IPCT=IPCT+1
-         IF (IP.EQ.2) CALL dl_draw(X,Y)
+         IF (IP.EQ.2) CALL draw_(X,Y)
          X0=X
          Y0=Y
          GOTO 100
@@ -481,8 +481,8 @@ real :: zlen
             P(IPCT,1)=HX2
             P(IPCT,2)=HY2
             IPCT=IPCT+1
-            IF (IP.EQ.3) CALL dl_move(X0,Y0)
-            CALL dl_draw(HX2,HY2)
+            IF (IP.EQ.3) CALL move_(X0,Y0)
+            CALL draw_(HX2,HY2)
             X0=HX2
             Y0=HY2
             IP=2
@@ -495,14 +495,14 @@ real :: zlen
          IF (IHCT.GT.IHOLD+1) THEN
 34          CONTINUE
             IF (IDCT.LE.NX+1) THEN
-               CALL DL_VXPT3D(X,Y,A(IDCT-1,IZ),IDCT-1,IZ,NX) ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
+               CALL vxpt3_(X,Y,A(IDCT-1,IZ),IDCT-1,IZ,NX) ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
                IF(IPCT.GT.MAXSIZE_local)GOTO 999
                P(IPCT,1)=X
                P(IPCT,2)=Y
                IPCT=IPCT+1
-               IF (IP.EQ.3) CALL dl_move(X0,Y0)
+               IF (IP.EQ.3) CALL move_(X0,Y0)
                IP=2
-               CALL dl_draw(X,Y)
+               CALL draw_(X,Y)
                IDCT=IDCT+1
                GOTO 34
             ENDIF
@@ -513,13 +513,13 @@ real :: zlen
             DY1=DY2
             X0=DX1
             Y0=DY1
-!C                IF (.NOT.HHIGH)CALL dl_draw(DX1,DY1)
+!C                IF (.NOT.HHIGH)CALL draw_(DX1,DY1)
             !write(*,*)' I IDCT,IZ=',idct,iz,inx,inz,nx,nz
             if(idct.gt.nx)then
                DX2=DX1
                DY2=AMINQ
             else
-               CALL DL_VXPT3D(DX2,DY2,A(IDCT,IZ),IDCT,IZ,NX) ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
+               CALL vxpt3_(DX2,DY2,A(IDCT,IZ),IDCT,IZ,NX) ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
             endif
             IDCT=IDCT+1
             IF (IDCT.GT.NX+2) GOTO 235 ! DONE WITH DATA
@@ -533,8 +533,8 @@ real :: zlen
             P(IPCT,1)=DX2
             P(IPCT,2)=DY2
             IPCT=IPCT+1
-            IF (IP.EQ.3) CALL dl_move(X0,Y0)
-            CALL dl_draw(DX2,DY2)
+            IF (IP.EQ.3) CALL move_(X0,Y0)
+            CALL draw_(DX2,DY2)
             IP=2
             X0=DX2
             Y0=DY2
@@ -546,7 +546,7 @@ real :: zlen
             DX2=DX1
             DY2=AMINQ
          else
-            CALL DL_VXPT3D(DX2,DY2,A(IDCT,IZ),IDCT,IZ,NX) ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
+            CALL vxpt3_(DX2,DY2,A(IDCT,IZ),IDCT,IZ,NX) ! DETERMINE X,Y VALUE OF A POINT ON 3-D SURFACE
          endif
          IDCT=IDCT+1
          IF (IDCT.GT.NX+2) GOTO 235 ! DONE WITH DATA
@@ -566,7 +566,7 @@ real :: zlen
       P(IPCT,1)=X
       P(IPCT,2)=Y
       IPCT=IPCT+1
-!C       CALL dl_draw(X,Y)
+!C       CALL draw_(X,Y)
       IDCT=IDCT+1
       GOTO 236
 !
@@ -579,7 +579,7 @@ real :: zlen
 !
    enddo MAINLOOP
 !
-520 CALL dl_move(0.,0.)   ! PEN UP
+520 CALL move_(0.,0.)   ! PEN UP
    RETURN
 999 CONTINUE
    WRITE(*,3002)
@@ -589,14 +589,14 @@ END SUBROUTINE dl_slices
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-SUBROUTINE DL_VXPT3D(X,Y,AVAL,IX,IZ,NX)
+SUBROUTINE vxpt3_(X,Y,AVAL,IX,IZ,NX)
 implicit none
 !
 !  CREATED BY DAVID LONG    AUG, 1982 AT JPL; revised 1993
 !  SUBPROGRAM OF DL_slices
 
 character(len=*),parameter::ident_2="&
-&@(#)M_slices::dl_vxpt3d(3fp) :: routine to determine x,y value of a point on 3-d surface for dl_slices(3f)"
+&@(#)M_slices::vxpt3_(3fp) :: routine to determine x,y value of a point on 3-d surface for dl_slices(3f)"
 
 real,intent(out)    :: x
 real,intent(out)    :: y
@@ -606,11 +606,11 @@ integer,intent(in)  :: iz
 integer,intent(in)  :: nx
    X=XSCALEQ*FLOAT(IX-1)*COS(ALPHQ)+FLOAT(IZ-1)*COS(BETQ)*ZSCALEQ
    Y=YSCALEQ*(AVAL-AMINQ)+FLOAT(NX-IX+1)*SIN(ALPHQ)*XSCALEQ+FLOAT(IZ-1)*SIN(BETQ)*ZSCALEQ
-END SUBROUTINE DL_VXPT3D
+END SUBROUTINE vxpt3_
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-      SUBROUTINE DL_INTERSECT(FLAG,X,Y,AX1,AY1,AX2,AY2,BX1,BY1,BX2,BY2,A)
+      SUBROUTINE intersect_(FLAG,X,Y,AX1,AY1,AX2,AY2,BX1,BY1,BX2,BY2,A)
 !
 !     CREATED BY D. LONG     AUG, 1983 AT JPL; revised 19931208
 !     SUBPROGRAM OF dl_slices
@@ -704,11 +704,11 @@ LOGICAL :: A
                   ENDIF
                   FLAG=.TRUE.
                   RETURN
-      END SUBROUTINE DL_INTERSECT
+      END SUBROUTINE intersect_
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-      SUBROUTINE DL_AXISB(X0,Y0,A0,N0,S0,T0,C0,D0,NM,NN,ML,TS,ND,SM,ICOL)
+      SUBROUTINE axisb_(X0,Y0,A0,N0,S0,T0,C0,D0,NM,NN,ML,TS,ND,SM,ICOL)
 !
 !     WRITTEN BY D.LONG   17-OCT-1983  AT JPL
 !     revised 19870813 DGL + IMPROVED APPEARANCE OF EXPONENT, ADDED EXPONENT COLOR
@@ -878,7 +878,7 @@ LOGICAL VERT,TICKS,COLOR,SCALE
       T5=T5*T4
       X1=X0
       Y1=Y0
-      IF (COLOR) CALL dl_color(ICOL(1)) ! COLOR
+      IF (COLOR) CALL color_(ICOL(1)) ! COLOR
       DO I=1,N2       ! MAJOR TICKS
          IF (NM1.EQ.0) GOTO 106
          XM=XL/FLOAT(NM1) ! SPACING MINOR TICKS
@@ -892,22 +892,22 @@ LOGICAL VERT,TICKS,COLOR,SCALE
             ENDIF
             X3=X2-T5*HMT
             Y3=Y2+T6*HMT
-            CALL dl_move(X2,Y2)
+            CALL move_(X2,Y2)
          enddo
-         CALL dl_draw(X3,Y3)
+         CALL draw_(X3,Y3)
 106      continue
          X2=X1-T5
          Y2=Y1+T6
-         CALL dl_move(X2,Y2)
-         CALL dl_draw(X1,Y1)
+         CALL move_(X2,Y2)
+         CALL draw_(X1,Y1)
          X1=X1+T3*XL
          Y1=Y1+T4*XL
          IF (T0.EQ.90.0) X1=X0
       enddo
-      CALL dl_draw(X1,Y1)
+      CALL draw_(X1,Y1)
       X2=X1-T5
       Y2=Y1+T6
-      CALL dl_draw(X2,Y2)   ! FINISH LAST MAJOR TICK
+      CALL draw_(X2,Y2)   ! FINISH LAST MAJOR TICK
 !     CHECK FOR EXPONENT VALUE
       D1=D0             ! SCALING FACTOR
       C1=C0+D1*S1        ! STARTING VALUE
@@ -928,7 +928,7 @@ LOGICAL VERT,TICKS,COLOR,SCALE
       IF(ABS(D1).LT.0.5)GOTO 120
 140   CONTINUE       ! PEN AT END OF AXIS
       IF (.NOT.TICKS) THEN
-         IF (COLOR) CALL dl_color(ICOL(3)) ! COLOR
+         IF (COLOR) CALL color_(ICOL(3)) ! COLOR
          GOTO 200
       ENDIF
       IF (VERT) THEN
@@ -946,11 +946,11 @@ LOGICAL VERT,TICKS,COLOR,SCALE
       X2=X1-B4*T4-B7*T3  ! LOCATE CENTER NUMBER LABELS
       Y2=Y1+B4*T3-B6*T4
       N2=N2+1
-      IF (COLOR) CALL dl_color(ICOL(2)) ! COLOR
+      IF (COLOR) CALL color_(ICOL(2)) ! COLOR
       NDDD=NDD
       IF (NDD.EQ.0) NDDD=-1
       DO I=1,N2      ! LABEL MAJOR TICKS
-         CALL DL_NUMBER(X2,Y2,CS,C1,HOR,FLOAT(NDDD)/100.,-1)
+         CALL number_(X2,Y2,CS,C1,HOR,FLOAT(NDDD)/100.,-1)
          C1=C1-D1*S1/FLOAT(N2-1)
          X2=X2-T3*XL
          Y2=Y2-T4*XL
@@ -963,7 +963,7 @@ LOGICAL VERT,TICKS,COLOR,SCALE
          IF (E1.NE.0.0) B1=B1-CS*3. ! PUT ON EXPONENT SPACE
          X2=X0+B1*T3-B3*T4-B8*T4
          Y2=Y0+B1*T4+B3*T3
-         IF (COLOR) CALL dl_color(ICOL(3)) ! COLOR
+         IF (COLOR) CALL color_(ICOL(3)) ! COLOR
          call dl_symbol(X2,Y2,CS,A0,T2,N1,-1)
       ELSE
          C2=0.0
@@ -972,25 +972,25 @@ LOGICAL VERT,TICKS,COLOR,SCALE
          Y2=Y0+B1*T4+B3*T3
       ENDIF
       IF (E1.EQ.0.0) GOTO 200  ! NO EXPONENT
-      IF (COLOR) CALL dl_color(ICOL(4)) ! COLOR
+      IF (COLOR) CALL color_(ICOL(4)) ! COLOR
       C2=C2+CS
       X2=X2+C2*T3
       Y2=Y2+C2*T4
       call dl_symbol(X2,Y2,CS,'(X10',T2,4,-1)
       X2=X2+3.75*CS*T3-CS*T4*0.4
       Y2=Y2+3.75*CS*T4+CS*T3*0.4
-      CALL DL_NUMBER(X2,Y2,CS,E1,T2,0.0,-1)
+      CALL number_(X2,Y2,CS,E1,T2,0.0,-1)
       B2=0.8+AINT(ALOG10(ABS(E1)))
       IF (E1.LT.0.0) B2=B2+1
       X2=X2+B2*CS*T3+CS*T4*0.4
       Y2=Y2+B2*CS*T4-CS*T3*0.4
       call dl_symbol(X2,Y2,CS,')',T2,1,-1)
 200   continue
-      END SUBROUTINE DL_AXISB
+      END SUBROUTINE axisb_
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-      SUBROUTINE DL_AXISA(X0,Y0,A0,N0,S0,T0,C0,D0,NM,ML,ICOL)
+      SUBROUTINE axisa_(X0,Y0,A0,N0,S0,T0,C0,D0,NM,ML,ICOL)
 !
 !     EXTENSIVELY MODIFIED BY D.LONG   7-OCT-83 AT JPL
 !     REVISED 13-AUG-1987 DGL + IMPROVED APPEARANCE OF EXPONENT, ADDED EXPONENT COLOR
@@ -1136,7 +1136,7 @@ LOGICAL VERT,TICKS,COLOR
       T5=T5*T4
       X1=X0
       Y1=Y0
-      IF (COLOR) CALL dl_color(ICOL(1)) ! COLOR
+      IF (COLOR) CALL color_(ICOL(1)) ! COLOR
       DO I=1,N2       ! MAJOR TICKS
       IF (NM1.EQ.0) GOTO 106
          XM=XL/FLOAT(NM1) ! SPACING MINOR TICKS
@@ -1145,22 +1145,22 @@ LOGICAL VERT,TICKS,COLOR
             Y2=Y1+T4*FLOAT(K-1)*XM
             X3=X2-T5*.5
             Y3=Y2+T6*.5
-            CALL dl_move(X2,Y2)
+            CALL move_(X2,Y2)
          enddo
-         CALL dl_draw(X3,Y3)
+         CALL draw_(X3,Y3)
 106      CONTINUE
          X2=X1-T5
          Y2=Y1+T6
-         CALL dl_move(X2,Y2)
-         CALL dl_draw(X1,Y1)
+         CALL move_(X2,Y2)
+         CALL draw_(X1,Y1)
          X1=X1+T3*XL
          Y1=Y1+T4*XL
          IF (T0.EQ.90.) X1=X0
-         CALL dl_draw(X1,Y1)
+         CALL draw_(X1,Y1)
       enddo
       X2=X1-T5
       Y2=Y1+T6
-      CALL dl_draw(X2,Y2)   ! FINISH LAST MAJOR TICK
+      CALL draw_(X2,Y2)   ! FINISH LAST MAJOR TICK
 !     CHECK FOR EXPONENT VALUE
       D1=D0             ! SCALING FACTOR
       C1=C0+S1*D1        ! STARTING VALUE
@@ -1180,7 +1180,7 @@ LOGICAL VERT,TICKS,COLOR
       IF(ABS(D1).LT.0.5)GOTO 120
 140   CONTINUE       ! PEN AT END OF AXIS
       IF (.NOT.TICKS) THEN
-         IF (COLOR) CALL dl_color(ICOL(3)) ! COLOR
+         IF (COLOR) CALL color_(ICOL(3)) ! COLOR
          GOTO 200
       ENDIF
       IF (VERT) THEN
@@ -1198,14 +1198,14 @@ LOGICAL VERT,TICKS,COLOR
       X2=X1-B4*T4-B7*T3  ! LOCATE CENTER NUMBER LABELS
       Y2=Y1+B4*T3-B6*T4
       N2=N2+1
-      IF (COLOR) CALL dl_color(ICOL(2)) ! COLOR
+      IF (COLOR) CALL color_(ICOL(2)) ! COLOR
       DO I=1,N2      ! LABEL MAJOR TICKS
-         CALL DL_NUMBER(X2,Y2,CS,C1,HOR,0.01,-1)
+         CALL number_(X2,Y2,CS,C1,HOR,0.01,-1)
          C1=C1-D1*S1/FLOAT(N2-1)
          X2=X2-T3*XL
          Y2=Y2-T4*XL
       enddo
-      IF (COLOR) CALL dl_color(ICOL(3)) ! COLOR
+      IF (COLOR) CALL color_(ICOL(3)) ! COLOR
       IF (N1.GT.0) THEN  ! ADD TITLE
          C2=0.0
          Y2=0.0
@@ -1222,25 +1222,25 @@ LOGICAL VERT,TICKS,COLOR
          Y2=Y0+B1*T4+B3*T3
       ENDIF
       IF (E1.EQ.0.0) GOTO 200  ! NO EXPONENT
-      IF (COLOR) CALL dl_color(ICOL(4)) ! COLOR
+      IF (COLOR) CALL color_(ICOL(4)) ! COLOR
       C2=C2+CS
       X2=X2+C2*T3
       Y2=Y2+C2*T4
       call dl_symbol(X2,Y2,CS,'(X10',T2,4,-1)
       X2=X2+CS*3.75*T3-CS*T4*0.4
       Y2=Y2+CS*3.75*T4+CS*T3*0.4
-      CALL DL_NUMBER(X2,Y2,CS,E1,T2,0.0,-1)
+      CALL number_(X2,Y2,CS,E1,T2,0.0,-1)
       B2=0.8+AINT(ALOG10(ABS(E1)))
       IF (E1.LT.0.0) B2=B2+1
       X2=X2+B2*CS*T3+CS*T4*0.4
       Y2=Y2+B2*CS*T4-CS*T3*0.4
       call dl_symbol(X2,Y2,CS,')',T2,1,-1)
 200   CONTINUE
-      END SUBROUTINE DL_AXISA
+      END SUBROUTINE axisa_
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-SUBROUTINE DL_NUMBER(X,Y,HGHT,Z,T,F0,IPF)
+SUBROUTINE number_(X,Y,HGHT,Z,T,F0,IPF)
 !
 !     WRITTEN BY D. LONG    AUG, 1983 AT JPL
 !     REVISED: JUNE 1990
@@ -1376,11 +1376,11 @@ CHARACTER(len=8)  :: FB1 ! WORKING BUFFERS
       IF (I.EQ.NN-ND) B(I:I)='.'
    enddo
    GOTO 50
-END SUBROUTINE DL_NUMBER
+END SUBROUTINE number_
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-SUBROUTINE DL_RANGE(X,S,N,K,IX,XMIN,DX)
+SUBROUTINE range_(X,S,N,K,IX,XMIN,DX)
 !
 !     CREATES SMOOTHED LINEAR SCALE FACTORS FROM INPUT DATA
 !
@@ -1460,48 +1460,48 @@ DATA Q/1.0,2.0,4.0,5.0,8.0,10.0/
       IF (S.GT.0.0) DX=(XMAX-XMIN)/S
       IF (DX.LE.0.0) DX=1.0
    ENDIF
-END SUBROUTINE DL_RANGE
+END SUBROUTINE range_
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-subroutine dl_color(ic)
+subroutine color_(ic)
 use M_draw
 integer :: ic
    IF (ic.GE.0) THEN
       CALL COLOR(IC)           ! change color
    ENDIF
-end subroutine dl_color
+end subroutine color_
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-subroutine dl_draw(xa,ya)
+subroutine draw_(xa,ya)
 implicit none
 real :: xa
 real :: ya
-   call dl_plot(xa,ya,2)
-end subroutine dl_draw
+   call plot_(xa,ya,2)
+end subroutine draw_
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-subroutine dl_move(xa,ya)
+subroutine move_(xa,ya)
 implicit none
 real :: xa
 real :: ya
-   call dl_plot(xa,ya,3)
-end subroutine dl_move
+   call plot_(xa,ya,3)
+end subroutine move_
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-subroutine dl_translate(xa,ya)
+subroutine translate_(xa,ya)
 implicit none
 real :: xa
 real :: ya
-   call dl_plot(xa,ya,-3)
-end subroutine dl_translate
+   call plot_(xa,ya,-3)
+end subroutine translate_
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-subroutine dl_viewport(xmin,xmax,ymin,ymax)
+subroutine viewport_(xmin,xmax,ymin,ymax)
 implicit none
 real :: xmin
 real :: xmax
@@ -1513,27 +1513,27 @@ real :: xconmin
 real :: yconmin
 ! note that new viewport is in terms of current coordinate system
 ! SET upper right CORNER OF VIEW PORT
-   CALL dl_TRS(xmax,ymax,XCONmax,YCONmax) ! convert call numbers to current plot coordinate system
+   CALL trs_(xmax,ymax,XCONmax,YCONmax) ! convert call numbers to current plot coordinate system
    VIEWPORTQ(3)=XCONmax
    VIEWPORTQ(4)=YCONmax
 ! SET lower left CORNER OF VIEW PORT
-   CALL dl_TRS(xmin,ymin,XCONmin,YCONmin) ! convert call numbers to current plot coordinate system
+   CALL trs_(xmin,ymin,XCONmin,YCONmin) ! convert call numbers to current plot coordinate system
    VIEWPORTQ(1)=XCONmin
    VIEWPORTQ(2)=YCONmin
-end subroutine dl_viewport
+end subroutine viewport_
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-subroutine dl_width(ic)
+subroutine width_(ic)
 use M_draw
 implicit none
 integer :: ic
    CALL LINEWIDTH(IC)
-end subroutine dl_width
+end subroutine width_
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-SUBROUTINE dl_TRS(XIN,YIN,XCON,YCON)
+SUBROUTINE trs_(XIN,YIN,XCON,YCON)
 implicit none
 real :: xin
 real :: yin
@@ -1550,11 +1550,11 @@ real :: tang
    XCON=SCALEQ*XCON+TRANSLATEXQ      ! scale and translate
    YCON=SCALEQ*YCON+TRANSLATEYQ      ! scale and translate
 
-end SUBROUTINE dl_TRS
+end SUBROUTINE trs_
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-SUBROUTINE DL_PLOT(XPLOT0,YPLOT0,ISELECT0)
+SUBROUTINE plot_(XPLOT0,YPLOT0,ISELECT0)
 !
 !     PLOT is the central routine for controlling the plotting of lines.
 !     Any call to PLOT when graphics mode is not initialized is a dummy call.
@@ -1583,7 +1583,7 @@ SUBROUTINE DL_PLOT(XPLOT0,YPLOT0,ISELECT0)
 !         oxnew = z * (xin * cos( a ) - yin * sin( a )) + oxold
 !         oynew = z * (xin * sin( a ) + yin * cos( a )) + oyold
 !
-!     CALL DL_PLOT (XPLOT0,YPLOT0,ISELECT0)
+!     CALL plot_ (XPLOT0,YPLOT0,ISELECT0)
 !
 !     XPLOT0,YPLOT0   (R): coordinate values
 !     ISELECT0        (I): plot function selector
@@ -1621,12 +1621,12 @@ real    :: ytemp1
        case default
           WRITE(*,*)'# *PLOT* UNEXPECTED SELECTION ',ISELECT0
        end select
-       CALL dl_TRS(XPLOT0,YPLOT0,XCON,YCON) ! convert call numbers to current plot coordinate system
+       CALL trs_(XPLOT0,YPLOT0,XCON,YCON) ! convert call numbers to current plot coordinate system
 !     DRAW LINE SEGMENT  ISELECT0=2,3 (and -2,-3)
       ! check if point (xcon,ycon) is in viewport rectangle
-      IVTA=DL_INBOX(XCON,YCON, VIEWPORTQ(1),VIEWPORTQ(2),VIEWPORTQ(3),VIEWPORTQ(4))
+      IVTA=inbox_(XCON,YCON, VIEWPORTQ(1),VIEWPORTQ(2),VIEWPORTQ(3),VIEWPORTQ(4))
       ! check if point (xlastscaleq,ylastscaleq) is in viewport rectangle
-      IVTB=DL_INBOX(XLASTSCALEQ,YLASTSCALEQ, VIEWPORTQ(1),VIEWPORTQ(2),VIEWPORTQ(3),VIEWPORTQ(4))
+      IVTB=inbox_(XLASTSCALEQ,YLASTSCALEQ, VIEWPORTQ(1),VIEWPORTQ(2),VIEWPORTQ(3),VIEWPORTQ(4))
       IF (IOR(IVTA,IVTB).EQ.0) GOTO 333 ! LINE ENTIRELY VISIBLE
       IF (IAND(IVTA,IVTB).NE.0) THEN  ! LINE ENTIRELY INVISIBLE
          XLASTSCALEQ=XCON
@@ -1636,7 +1636,7 @@ real    :: ytemp1
       IF (IVTB.NE.0) THEN   ! OLD POINT IS OUTSIDE WINDOW
          XTEMP1=XLASTSCALEQ
          YTEMP1=YLASTSCALEQ
-         CALL dl_CLIPIT(IVTB,XTEMP1,YTEMP1,XCON,YCON, VIEWPORTQ(1),VIEWPORTQ(2),VIEWPORTQ(3),VIEWPORTQ(4))
+         CALL clipit_(IVTB,XTEMP1,YTEMP1,XCON,YCON, VIEWPORTQ(1),VIEWPORTQ(2),VIEWPORTQ(3),VIEWPORTQ(4))
          IF (IVTB.NE.0) THEN  ! VECTOR DOES NOT INTERSECT
             XLASTSCALEQ=XCON
             YLASTSCALEQ=YCON
@@ -1648,7 +1648,7 @@ real    :: ytemp1
       YTEMP=YCON
       ! clips a partially visible line segment
       IF (IVTA.NE.0)then
-         CALL dl_CLIPIT(IVTA,XTEMP,YTEMP,XLASTSCALEQ,YLASTSCALEQ,VIEWPORTQ(1),VIEWPORTQ(2),VIEWPORTQ(3),VIEWPORTQ(4))
+         CALL clipit_(IVTA,XTEMP,YTEMP,XLASTSCALEQ,YLASTSCALEQ,VIEWPORTQ(1),VIEWPORTQ(2),VIEWPORTQ(3),VIEWPORTQ(4))
        endif
       XLASTSCALEQ=XCON
       YLASTSCALEQ=YCON
@@ -1664,11 +1664,11 @@ real    :: ytemp1
       ELSEIF(ISELECT0.EQ.3)THEN
         CALL MOVE2(XCON,YCON)
       ELSE
-        write(*,*)'*dl_plot* 2,3 internal error',xcon,ycon,iselect0
+        write(*,*)'*plot_* 2,3 internal error',xcon,ycon,iselect0
       ENDIF
       XLASTSCALEQ=XCON
       YLASTSCALEQ=YCON
-      END SUBROUTINE DL_PLOT
+      END SUBROUTINE plot_
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
@@ -1737,13 +1737,13 @@ real              :: z
    YLASTSCALEQ=0.0
 
    ! set the VIEWPORTQ() ARRAY
-   call dl_viewport(-999.0,999.0,-999.0,999.0)
-   CALL dl_color(7) ! INITIALIZE LINE COLOR
+   call viewport_(-999.0,999.0,-999.0,999.0)
+   CALL color_(7) ! INITIALIZE LINE COLOR
 END SUBROUTINE DL_INIT
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-SUBROUTINE dl_CLIPIT(IVTB,XV2,YV2,AV1,AV2,XM,YM,XX,YX)
+SUBROUTINE clipit_(IVTB,XV2,YV2,AV1,AV2,XM,YM,XX,YX)
 implicit none
 !
 !     CLIPS A LINE SEGMENT PARTIALLY VISIBLE
@@ -1760,24 +1760,24 @@ real    :: yx
    IF (IAND(IVTB,1).NE.0) THEN ! LEFT EDGE
       if (av1.ne.xv2) YV2=YV2+(AV2-YV2)*(XM-XV2)/(AV1-XV2)
       XV2=XM
-      IVTB=DL_INBOX(XV2,YV2,XM,YM,XX,YX)
+      IVTB=inbox_(XV2,YV2,XM,YM,XX,YX)
    ENDIF
    IF (IAND(IVTB,2).NE.0) THEN ! RIGHT EDGE
       if (av1.ne.xv2) YV2=YV2+(AV2-YV2)*(XX-XV2)/(AV1-XV2)
       XV2=XX
-      IVTB=DL_INBOX(XV2,YV2,XM,YM,XX,YX)
+      IVTB=inbox_(XV2,YV2,XM,YM,XX,YX)
    ENDIF
    IF (IAND(IVTB,4).NE.0) THEN ! BOTTOM EDGE
       if (av2.ne.yv2) XV2=XV2+(AV1-XV2)*(YM-YV2)/(AV2-YV2)
       YV2=YM
-      IVTB=DL_INBOX(XV2,YV2,XM,YM,XX,YX)
+      IVTB=inbox_(XV2,YV2,XM,YM,XX,YX)
    ENDIF
    IF (IAND(IVTB,8).NE.0) THEN ! TOP EDGE
       if (av2.ne.yv2) XV2=XV2+(AV1-XV2)*(YX-YV2)/(AV2-YV2)
       YV2=YX
-      IVTB=DL_INBOX(XV2,YV2,XM,YM,XX,YX)
+      IVTB=inbox_(XV2,YV2,XM,YM,XX,YX)
    ENDIF
-END SUBROUTINE dl_CLIPIT
+END SUBROUTINE clipit_
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
@@ -2088,7 +2088,7 @@ DATA IPT002/   668,   676,   683,   689,   693,   695,   699,            &
       ENDIF
       X0=OLDX
       Y0=OLDY
-      IF (LENGTH.AND.N.LT.0) CALL dl_draw(OLDX,OLDY) ! PLOT TO START
+      IF (LENGTH.AND.N.LT.0) CALL draw_(OLDX,OLDY) ! PLOT TO START
       SS=S/21.    ! SCALE FACTOR
       I=0         ! CHARACTER COUNTER
 50    continue
@@ -2120,7 +2120,7 @@ DATA IPT002/   668,   676,   683,   689,   693,   695,   699,            &
          Y1=XX*SI+Y1*CO+OLDY
          IF (IP.EQ.0) IP=2
          IF (IP.EQ.1) IP=2
-         IF (LENGTH) CALL DL_PLOT(X1,Y1,IP)
+         IF (LENGTH) CALL plot_(X1,Y1,IP)
          IL=IL+1
          IF (IPEN.NE.0) GOTO 70
 90       continue
@@ -2140,7 +2140,7 @@ DATA IPT002/   668,   676,   683,   689,   693,   695,   699,            &
          OLDY=OY
          IF (ISS.EQ.0.OR.ISS.EQ.1) GOTO 1100
       ELSE
-         IF (N.LE.1) CALL dl_move(X0,Y0) ! LEAVE PEN AT START
+         IF (N.LE.1) CALL move_(X0,Y0) ! LEAVE PEN AT START
          IF (ISS.EQ.-2) THEN ! RETURN END POSITION
             X=OLDX
             Y=OLDY
@@ -2150,12 +2150,12 @@ END SUBROUTINE DL_SYMBOL
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-INTEGER FUNCTION DL_INBOX(X,Y,X_BOTTOM_LEFT,Y_BOTTOM_LEFT,X_top_right,Y_top_right)
+INTEGER FUNCTION inbox_(X,Y,X_BOTTOM_LEFT,Y_BOTTOM_LEFT,X_top_right,Y_top_right)
 !
 !     FORTRAN-77 VERSION:   DGL JULY, 1987
 !     CHECKS TO SEE IF POINT X,Y IS IN RECTANGLE
 !     RETURNS ZERO IF IT IS
-!     DL_INBOX tests a point to determine if it lies in a rectangle defined
+!     inbox_ tests a point to determine if it lies in a rectangle defined
 !     by <x1,y1>,<x2,y2> and returns an integer value indicating where the point
 !     is in relation to the rectangle.  The value can easily be decoded by
 !     ANDing the return value with the binary values of 1, 2, 4, 8.
@@ -2198,9 +2198,9 @@ INTEGER FUNCTION DL_INBOX(X,Y,X_BOTTOM_LEFT,Y_BOTTOM_LEFT,X_top_right,Y_top_righ
       ENDIF
 
       ! now CD=0 only if <x,y> is in or on the box
-      DL_INBOX=CD
+      inbox_=CD
 
-END FUNCTION DL_INBOX
+END FUNCTION inbox_
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================

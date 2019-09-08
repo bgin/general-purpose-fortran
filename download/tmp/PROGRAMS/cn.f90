@@ -166,10 +166,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)PRODUCT:        GPF library utilities and examples>',&
 '@(#)PROGRAM:        cn(1)>',&
 '@(#)DESCRIPTION:    create a basic contour plot>',&
-'@(#)VERSION:        1.0, 20180706>',&
+'@(#)VERSION:        1.0, 2018-07-06>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Thu, Aug 29th, 2019 10:11:01 PM>',&
+'@(#)COMPILED:       Sat, Aug 31st, 2019 1:32:21 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -186,7 +186,7 @@ use M_draw,        only : centertext, drawstr, move2, textsize,strlength, rect, 
 use M_xyplot,      only : plot_set_plot_area, plot_set_nice_range, plot_init_globals
 use M_xyplot,      only : plot_axes, plot_label, plot_line, plot_page, plot_resetplot
 use M_xyplot,      only : plot_ids, plot_axis
-use M_kracken,     only : sget, lget, iget, kracken, rgets, sgets, IPvalue, rget
+use M_kracken,     only : sget, lget, iget, kracken, rgets, sgets, rget
 use M_strings,     only : merge_str
 use M_math,        only : bds
 use M_io,          only : read_table
@@ -198,7 +198,6 @@ implicit none
 real,allocatable             :: cn_array(:,:)
 integer                      :: irows, icols
 real                         :: xlow, xhigh, ylow, yhigh
-integer                      :: i
 logical                      :: verbose
 
 integer                      :: ipen
@@ -305,9 +304,12 @@ real                         :: eps
    endif
    plot_ids(1:)%marker_frequency=marker_frequency  ! how often to put out marker on pen
    plot_ids(1:)%marker_size=marker_size
+   !!block
+   !!integer :: i
    !!write(*,*)'SIZE=',size(plot_ids)
    !!write(*,*)'color fill_style width dashcode marker marker_frequency marker_size marker_font legend'
    !!write(*,*)(plot_ids(i),new_line('A'),i=1,500)
+   !!endblock
 
    istart=2
    iend=icols
@@ -366,7 +368,7 @@ real                   :: delta
 real                   :: ystep
 real                   :: xl, xr
 real                   :: y
-real                   :: xsmall2, xlarge2, ysmall2, ylarge2
+real                   :: ylarge2
 external my_cntcrv
 !-----------------------------------------------------------------------------------------------------------------------------------
    ylow=minval(cn_array(:,istart:istart))

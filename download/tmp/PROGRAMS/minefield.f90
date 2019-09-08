@@ -1,10 +1,10 @@
 program sweepit
 use M_draw
-use M_time, only : system_sleep
+use M_time, only : system_sleep, ordinal_seconds
 use M_kracken, only: kracken, iget, sget, lget
 implicit none
 
-character(len=*),parameter::ident_1="@(#)minefield(1f) [M_draw] minesweeper game"
+character(len=*),parameter::ident_1="@(#)minefield(1f) [M_draw] minefield sweeper game"
 
 logical :: switch
 integer :: irows
@@ -50,7 +50,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   minefield [[ -r rows] [ -c columns]] |[ --help --version ]                   ',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
-'   minefield(1f) is a minesweeper game. The game tests many M_DRAW              ',&
+'   minefield(1f) is a minefield sweeper game. The game tests many M_DRAW        ',&
 '   functions.                                                                   ',&
 '                                                                                ',&
 '   The object of the game is to mark all the mines with mouse 2 and expose      ',&
@@ -91,7 +91,7 @@ end subroutine help_usage
 !!    minefield [[ -r rows] [ -c columns]] |[ --help --version ]
 !!
 !!##DESCRIPTION
-!!    minefield(1f) is a minesweeper game. The game tests many M_DRAW
+!!    minefield(1f) is a minefield sweeper game. The game tests many M_DRAW
 !!    functions.
 !!
 !!    The object of the game is to mark all the mines with mouse 2 and expos
@@ -132,7 +132,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    minefield game>',&
 '@(#)VERSION:        4.0, 20180616>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Thu, Aug 29th, 2019 10:11:57 PM>',&
+'@(#)COMPILED:       Mon, Sep 2nd, 2019 3:34:38 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -734,34 +734,6 @@ integer         :: i
       call polyfill(.false.)
    enddo
 end subroutine smiley
-!==================================================================================================================================!
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!==================================================================================================================================!
-integer function ordinal_seconds()    ! NOTE: delta of JULIAN date would give wrong time across YEAR change
-use M_draw
-use M_time, only: d2o
-! returns seconds since beginning of year
-integer :: vtime(8)
-integer  :: iye, imo, ida, ihh, imm, iss, idow, ijul
-equivalence(vtime(1),iye)
-equivalence(vtime(2),imo)
-equivalence(vtime(3),ida)
-equivalence(vtime(5),ihh)
-equivalence(vtime(6),imm)
-equivalence(vtime(7),iss)
-
-equivalence(vtime(4),idow)
-equivalence(vtime(8),ijul)
-
-   call date_and_time(values=vtime)               ! initialize seed value using clock
-   ijul=d2o(vtime)
-   ! NOTE: 31 536 000=365*24*3600
-
-   ordinal_seconds=ijul*24*60*60
-   ordinal_seconds=ordinal_seconds+ihh*60*60
-   ordinal_seconds=ordinal_seconds+imm*60
-   ordinal_seconds=ordinal_seconds+iss
-end function ordinal_seconds
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!

@@ -52,7 +52,6 @@ implicit none
 @@(#) module::name(3f) description
 
 integer,parameter                 :: dp=kind(0.0d0)
-character(len=1)                  :: char
    character(len=255)             :: filename
    character(len=20)              :: device
    character(len=256),allocatable :: words(:)

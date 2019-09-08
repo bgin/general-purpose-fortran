@@ -40,4 +40,4 @@
    SEE ALSO
        M_process(3fm)
 
-                                                         August 30, 2019                                      process_readall(3)
+                                                       September 08, 2019                                     process_readall(3)

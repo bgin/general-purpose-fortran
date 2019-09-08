@@ -4,7 +4,6 @@ use M_kracken, only : kracken, sgets, lget                  ! add command-line p
 use M_io,      only : dirname
 use M_system,  only : system_getcwd, system_stat_print, system_getcwd
 implicit none
-logical                          :: zero=.false.
 character(len=:),allocatable     :: array(:)
 integer                          :: i, ierr, isize
 character(len=:),allocatable     :: filename
@@ -12,7 +11,7 @@ character(len=:),allocatable     :: currentdir
 
 !-----------------------------------------------------------------------------------------------------------------------------------
 !  define command arguments, default values and crack command line
-   call kracken('lsof','-help .false. -version .false. -zero .false.')
+   call kracken('lsof','-help .false. -version .false.')
    call help_usage(lget('lsof_help'))        ! process -help switch
    call help_version(lget('lsof_version'))   ! process -version switch
    array=sgets('lsof_oo')                    ! get -oo STRING, split on space character into array

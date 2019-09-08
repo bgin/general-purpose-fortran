@@ -4,7 +4,6 @@ use M_kracken, only : kracken, sgets, lget                  ! add command-line p
 use M_io,      only : dirname
 use M_system,  only : system_getcwd, system_stat_print, system_getcwd
 implicit none
-logical                          :: zero=.false.
 character(len=:),allocatable     :: array(:)
 integer                          :: i, ierr, isize
 character(len=:),allocatable     :: filename
@@ -12,7 +11,7 @@ character(len=:),allocatable     :: currentdir
 
 !-----------------------------------------------------------------------------------------------------------------------------------
 !  define command arguments, default values and crack command line
-   call kracken('lsof','-help .false. -version .false. -zero .false.')
+   call kracken('lsof','-help .false. -version .false.')
    call help_usage(lget('lsof_help'))        ! process -help switch
    call help_version(lget('lsof_version'))   ! process -version switch
    array=sgets('lsof_oo')                    ! get -oo STRING, split on space character into array
@@ -152,7 +151,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0.0>',&
 '@(#)DATE:           2017-10-12>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Thu, Aug 29th, 2019 10:31:13 PM>',&
+'@(#)COMPILED:       Sat, Aug 31st, 2019 1:05:46 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

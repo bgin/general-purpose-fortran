@@ -6,7 +6,7 @@
            & 'six','seven','eight','nine','ten']
            integer                    :: i
            integer                    :: n=size(list)
-           character(len=len(list))   :: newlist(n)
+           character(len=len(list))   :: newlist(size(list))
            do i = 1,8
               ! use random values as indices to randomize array
               newlist=list(scramble(n))

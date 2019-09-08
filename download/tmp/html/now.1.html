@@ -72,8 +72,8 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 </A>
 <BLOCKQUOTE>
 <PRE>
-<B>now</B> [Format [-date date_str|<B>-ued</B> Unix_time|<B>-jed</B> Julian_Date|<B>-dat</B> <I>date_vector</I>]
-[-delta dd-hh:mm:ss]]|<B>--help</B> |<B>--version</B>|<B>-test</B>]
+<B>now</B> [Format [ <B>-date</B> date_str|<B>-ued</B> Unix_time|<B>-jed</B> Julian_Date|<B>-dat</B> <I>date_vector</I>]
+[ <B>-delta</B> dd-hh:mm:ss]]|<B>--help</B> |<B>--version</B>|<B>-test</B>]
 </PRE>
 </BLOCKQUOTE>
 <A name=2>
@@ -106,36 +106,36 @@ The FORMAT string is expanded using the following macros:
 <P>
       Base time array:
        (1) %Y -- year, yyyy                                2019
-       (2) %M -- month of year, 01 to 12                   01
-       (3) %D -- day of month, 01 to 31                    13
-           %d -- day of month, with suffix (1st, 2nd,&#46;&#46;&#46;)  13th
-       (4) %Z -- minutes from UTC                          -0300
-           %z -- -+hh:mm from UTC                          -05:00
-           %T -- -+hhmm  from UTC                          -0500
-       (5) %h -- hours, 00 to 23                           18
-           %H -- hour (1 to 12, or twelve-hour clock)      6
+       (2) %M -- month of year, 01 to 12                   08
+       (3) %D -- day of month, 01 to 31                    31
+           %d -- day of month, with suffix (1st, 2nd,&#46;&#46;&#46;)  31st
+       (4) %Z -- minutes from UTC                          -0240
+           %z -- -+hh:mm from UTC                          -04:00
+           %T -- -+hhmm  from UTC                          -0400
+       (5) %h -- hours, 00 to 23                           14
+           %H -- hour (1 to 12, or twelve-hour clock)      2
            %N -- midnight&lt; AM &lt;=noon; noon&lt;= PM &lt;midnight  PM
-       (6) %m -- minutes, 00 to 59                         39
-       (7) %s -- sec, 00 to 59                             40
-       (8) %x -- milliseconds 000 to 999                   420
+       (6) %m -- minutes, 00 to 59                         46
+       (7) %s -- sec, 00 to 59                             46
+       (8) %x -- milliseconds 000 to 999                   312
       Conversions:
-           %E -- Unix Epoch time                           1547422780.4199724
-           %e -- integer value of Unix Epoch time          1547422780
-           %J -- Julian  date                              2458497.4858845021
-           %j -- integer value of Julian Date(Julian Day)  2458497
-           %O -- Ordinal day (day of year)                 013
-           %o -- Whole days since Unix Epoch date          17909
-           %U -- day of week, 1..7 Sunday=1                1
-           %u -- day of week, 1..7 Monday=1                7
-           %i -- ISO week of year 1..53                    2
-           %I -- iso-8601 week-numbering date(yyyy-Www-d)  2019-W02-7
+           %E -- Unix Epoch time                           1567277206.3119962
+           %e -- integer value of Unix Epoch time          1567277206
+           %J -- Julian  date                              2458727.2824804746
+           %j -- integer value of Julian Date(Julian Day)  2458727
+           %O -- Ordinal day (day of year)                 243
+           %o -- Whole days since Unix Epoch date          18139
+           %U -- day of week, 1..7 Sunday=1                7
+           %u -- day of week, 1..7 Monday=1                6
+           %i -- ISO week of year 1..53                    35
+           %I -- iso-8601 week-numbering date(yyyy-Www-d)  2019-W35-6
        Names:
-           %l -- abbreviated month name                    Jan
-           %L -- full month name                           January
-           %w -- first three characters of weekday         Sun
-           %W -- weekday name                              Sunday
-           %p -- phase of moon                             First quarter
-           %P -- percent of way from new to full moon      51%
+           %l -- abbreviated month name                    Aug
+           %L -- full month name                           August
+           %w -- first three characters of weekday         Sat
+           %W -- weekday name                              Saturday
+           %p -- phase of moon                             New
+           %P -- percent of way from new to full moon      7%
        Literals:
            %% -- a literal %                               %
            %t -- tab character                                 
@@ -146,11 +146,11 @@ The FORMAT string is expanded using the following macros:
            %q -- single quote (apostrophe)                 &#146;
            %Q -- double quote                              "
        Program timing:
-           %c -- CPU_TIME(3f) output                       0.31000000000000000E-001
+           %c -- CPU_TIME(3f) output                       0.45999999999999999E-001
            %C -- number of times this routine is used      1
            %S -- seconds since last use of this format     0.0000000000000000
-           %k -- time in seconds from SYSTEM_CLOCK(3f)     348548.094
-           %K -- time in clicks from SYSTEM_CLOCK(3f)      348548107
+           %k -- time in seconds from SYSTEM_CLOCK(3f)     23750.9473
+           %K -- time in clicks from SYSTEM_CLOCK(3f)      23750948
 <P>
       If no percent (%) is found in the format one of several
       alternate substitutions occurs.
@@ -158,46 +158,46 @@ The FORMAT string is expanded using the following macros:
       If the format is composed entirely of one of the following
       keywords the following substitutions occur:
         "iso-8601",
-        "iso"        ==&gt; %Y-%M-%DT%h:%m:%s%z             2019-01-13T18:39:40-05:00
+        "iso"        ==&gt; %Y-%M-%DT%h:%m:%s%z             2019-08-31T14:46:46-04:00
         "iso-8601W",
-        "isoweek"    ==&gt; %I                              2019-W02-7
-        "sql"        ==&gt; "%Y-%M-%D %h:%m:%s.%x"          "2019-01-13 18:39:40.440"
-        "sqlday"     ==&gt; "%Y-%M-%D"                      "2019-01-13"
-        "sqltime"    ==&gt; "%h:%m:%s.%x"                   "18:39:40.441"
+        "isoweek"    ==&gt; %I                              2019-W35-6
+        "sql"        ==&gt; "%Y-%M-%D %h:%m:%s.%x"          "2019-08-31 14:46:46.324"
+        "sqlday"     ==&gt; "%Y-%M-%D"                      "2019-08-31"
+        "sqltime"    ==&gt; "%h:%m:%s.%x"                   "14:46:46.325"
         "rfc-2822"   ==&gt; %w, %D %l %Y %h:%m:%s %T
-                         Sun, 13 Jan 2019 18:39:40 -0500
-        "rfc-3339"   ==&gt; %Y-%M-%DT%h:%m:%s%z             2019-01-13T18:39:40-05:00
+                         Sat, 31 Aug 2019 14:46:46 -0400
+        "rfc-3339"   ==&gt; %Y-%M-%DT%h:%m:%s%z             2019-08-31T14:46:46-04:00
         "date"       ==&gt; %w %l %D %h:%m:%s UTC%z %Y
-                         Sun Jan 13 18:39:40 UTC-05:00 2019
+                         Sat Aug 31 14:46:46 UTC-04:00 2019
         "short"      ==&gt; %w, %l %d, %Y %H:%m:%s %N UTC%z
-                         Sun, Jan 13th, 2019 6:39:40 PM UTC-05:00
+                         Sat, Aug 31st, 2019 2:46:46 PM UTC-04:00
         "long"," "   ==&gt; %W, %L %d, %Y %H:%m:%s %N UTC%z
-                         Sunday, January 13th, 2019 6:39:40 PM UTC-05:00
-        "suffix"     ==&gt; %Y%D%M%h%m%s                    20191301183940
-        "formal"     ==&gt; The %d of %L %Y                 The 13th of January 2019
+                         Saturday, August 31st, 2019 2:46:46 PM UTC-04:00
+        "suffix"     ==&gt; %Y%D%M%h%m%s                    20193108144646
+        "formal"     ==&gt; The %d of %L %Y                 The 31st of August 2019
         "lord"       ==&gt; the %d day of %L in the year of our Lord %Y
-                         the 13th day of January in the year of our Lord 2019
+                         the 31st day of August in the year of our Lord 2019
         "easter"     ==&gt; FOR THE YEAR OF THE CURRENT DATE:
                            Easter day: the %d day of %L in the year of our Lord %Y
         "all"        ==&gt; A SAMPLE OF DATE FORMATS
       otherwise the following words are replaced with the most
       common macros:
          year          %Y  2019
-         month         %M  01
-         day           %D  13
-         timezone      %z  -05:00
-         hour          %h  18
-         minute        %m  39
-         second        %s  40
-         millisecond   %x  460
-         epoch         %e  1547422780
-         julian        %j  2458497
-         ordinal       %O  013
-         weekday       %u  7
+         month         %M  08
+         day           %D  31
+         timezone      %z  -04:00
+         hour          %h  14
+         minute        %m  46
+         second        %s  46
+         millisecond   %x  331
+         epoch         %e  1567277206
+         julian        %j  2458727
+         ordinal       %O  243
+         weekday       %u  6
       if none of these keywords are found then every letter that
       is a macro is assumed to have an implied percent in front
       of it. For example:
-         YMDhms ==&gt; %Y%M%D%h%m%s ==&gt; 20190113183940
+         YMDhms ==&gt; %Y%M%D%h%m%s ==&gt; 20190831144646
 <P>
 <P>
 </PRE>
@@ -308,7 +308,7 @@ assumed, and Leap Seconds are not specifically accounted for.
 <B>month</B>(1), <B>sec2days</B>(1), <B>days2sec</B>(1), <B>easter</B>(1), <B>paws</B>(1), <B>today</B>(1), <B>ttee</B>(1)
 </BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>now (1)</TD> <TD align=right width=33%><I>August 30, 2019</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from e96d479c-3c37-46bf-bd7e-af46db7cc856 using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>now (1)</TD> <TD align=right width=33%><I>September 08, 2019</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 398bf11b-fb7f-4d70-9ee3-d9168dc6a2c2 using man macros.</FONT>
 <br><br><center><img src="images/now.1.gif"></center>
 </div>
 </div>

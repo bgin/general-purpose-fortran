@@ -21,6 +21,7 @@ append("mo2v.3.html");
 append("moon_fullness.3.html");
 append("now.3.html");
 append("o2d.3.html");
+append("ordinal_seconds.3.html");
 append("ordinal_to_date.3.html");
 append("phase_of_moon.3.html");
 append("sec2days.3.html");

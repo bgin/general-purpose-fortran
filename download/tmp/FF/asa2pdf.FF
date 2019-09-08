@@ -4,7 +4,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file asa2pdf.1.man
 NAME
     asa2pdf(1f) - [FILE FILTER] Convert text files with/without
-                  ASA carriage control to an Adobe PDF file.
+                ASA carriage control to an Adobe PDF file.
 
 SYNOPSIS
    asa2pdf -o output_filename -i input_filename

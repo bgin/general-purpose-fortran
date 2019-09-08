@@ -6,6 +6,6 @@
           type(mtprng_state) :: state
             seed = nint(100*secnds(0.))
             call mtprng_init(seed, state)
-            ! returns a INT64 integer with a range in 0 .. 2^31-1
+            ! returns a INT32 integer with a range in 0 .. 2^31-1
             write(*,*) mtprng_rand(state)
           end program demo_mtprng_rand

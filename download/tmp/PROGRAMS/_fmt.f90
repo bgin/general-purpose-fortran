@@ -12,9 +12,7 @@ integer                      :: iline
 integer                      :: width
 integer                      :: step
 integer                      :: step_before
-character(len=:),allocatable :: start
 character(len=20)            :: style
-character(len=:),allocatable :: paragraph(:)
 !-----------------------------------------------------------------------------------------------------------------------------------
    call kracken('fmt','-help .f. -version .f. -w 75 ') ! define command arguments,default values and crack command line
    call help_usage(lget('fmt_help'))                                ! if -help option is present, display help text and exit
@@ -83,7 +81,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Thu, Aug 29th, 2019 10:18:25 PM>',&
+'@(#)COMPILED:       Fri, Sep 6th, 2019 7:56:28 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -101,7 +99,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'       _fmt(1f) - simple text formatter                                         ',&
+'       _fmt(1f) - [FUNIX:FILE EDIT]simple text formatter                        ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '       _fmt [OPTION]...                                                         ',&
@@ -123,7 +121,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!        _fmt(1f) - simple text formatter
+!!        _fmt(1f) - [FUNIX:FILE EDIT]simple text formatter
 !!
 !!##SYNOPSIS
 !!

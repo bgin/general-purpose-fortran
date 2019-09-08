@@ -56,7 +56,6 @@ integer                            :: lun
 logical                            :: verbose
 character(len=4096)                :: errmsg
 logical                            :: ex,od
-character(len=1)                   :: char
 logical                            :: lstat
 integer                            :: times(2)
 character(len=:),allocatable       :: date

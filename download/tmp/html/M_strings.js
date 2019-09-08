@@ -53,6 +53,7 @@ append("split.3.html");
 append("stretch.3.html");
 append("string_to_value.3.html");
 append("string_to_values.3.html");
+append("strtok.3.html");
 append("substitute.3.html");
 append("switch.3.html");
 append("transliterate.3.html");
@@ -61,6 +62,5 @@ append("upper.3.html");
 append("v2s.3.html");
 append("value_to_string.3.html");
 append("visible.3.html");
-append("_tr.1.html");
 append("range.1.html");
 }

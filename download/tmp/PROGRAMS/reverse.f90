@@ -9,16 +9,21 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'       rever(1f) - [FILE FILTER] print file in reverse                          ',&
+'       reverse(1f) - [FUNIX] print file in reverse                              ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
-'       rever INPUT_FILE [OUTPUT_FILE] [ --help][ --version]                     ',&
+'       reverse INPUT_FILE [OUTPUT_FILE] [ --help][ --version]                   ',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
 '       Read entire file into memory as a stream and write it in reverse         ',&
 '       byte order                                                               ',&
+'OPTIONS                                                                         ',&
+'       INPUT_FILE   input file                                                  ',&
+'       OUTPUT_FILE  output file                                                 ',&
+'       --help       display help text and exit                                  ',&
+'       --version    display version information and exit                        ',&
 'SEE ALSO                                                                        ',&
-'       tac(1), rev(1)                                                           ',&
+'       reverse(1), rev(1)                                                       ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -27,17 +32,22 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!        rever(1f) - [FILE FILTER] print file in reverse
+!!        reverse(1f) - [FUNIX] print file in reverse
 !!
 !!##SYNOPSIS
 !!
-!!        rever INPUT_FILE [OUTPUT_FILE] [ --help][ --version]
+!!        reverse INPUT_FILE [OUTPUT_FILE] [ --help][ --version]
 !!
 !!##DESCRIPTION
 !!        Read entire file into memory as a stream and write it in revers
 !!        byte order
+!!##OPTIONS
+!!        INPUT_FILE   input file
+!!        OUTPUT_FILE  output file
+!!        --help       display help text and exit
+!!        --version    display version information and exit
 !!##SEE ALSO
-!!        tac(1), rev(1)
+!!        reverse(1), rev(1)
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -50,7 +60,7 @@ stopit=.false.
 if(l_version)then
 help_text=[ CHARACTER(LEN=128) :: &
 '@(#)PRODUCT:        GPF (General Purpose Fortran) utilities and examples>',&
-'@(#)PROGRAM:        rever(1f)>',&
+'@(#)PROGRAM:        reverse(1f)>',&
 '@(#)DESCRIPTION:    read entire file into memory as a stream and write it in reverse byte order>',&
 '@(#)VERSION:        1.0, 2009-06-26>',&
 '@(#)AUTHOR:         John S. Urban>',&
@@ -59,7 +69,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)COPYRIGHT:      (C) 2009 John S. Urban>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Thu, Aug 29th, 2019 10:15:55 PM>',&
+'@(#)COMPILED:       Fri, Sep 6th, 2019 12:21:29 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -83,21 +93,21 @@ implicit none
    integer :: iputunit                                                           ! unit number for output file
    character(len=IPvalue),allocatable :: files(:)                                ! array to hold files from command line
 !- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-   call kracken('rever',' -help .false. -version .false.')                       ! crack command line
-   call help_usage(lget('rever_help'))                                           ! check if -help present
-   call help_version(lget('rever_version'))                                      ! check if -version present
+   call kracken('reverse',' -help .false. -version .false.')                         ! crack command line
+   call help_usage(lget('tac_help'))                                             ! check if -help present
+   call help_version(lget('tac_version'))                                        ! check if -version present
 !- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-   files=sgets('rever_oo')                                                       ! get filename(s) from command line
+   files=sgets('tac_oo')                                                         ! get filename(s) from command line
    select case(size(files))
    case(:0,3:)                                                                   ! unsupported input syntax.
-      call stderr('*rever* usage: rever inputfile [outputfile]')                 ! show acceptable usage and quit
+      call stderr('*reverse* usage: reverse inputfile [outputfile]')             ! show acceptable usage and quit
       stop
    case(1)                                                                       ! input but not output filename specified
       iputunit=OUTPUT_UNIT                                                       ! use stdout as the output file
    case(2)                                                                       ! input and output filenames specified
       iputunit=notopen(10,99)                                                    ! get unit number for output file
       if(iputunit.lt.0)then
-         call stderr('*rever* could not find unused file unit number for output')
+         call stderr('*reverse* could not find unused file unit number for output')
          stop
       endif
       open (unit=iputunit,      &                                                ! open named file as output in stream mode
@@ -108,7 +118,7 @@ implicit none
    call slurp(files(1),text)                                                     ! allocate character array and copy file into it
 !- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
    if(.not.allocated(text))then
-      call stderr('*rever* failed to load file '//trim(files(1)))
+      call stderr('*reverse* failed to load file '//trim(files(1)))
       close(iputunit, iostat=ios)
       stop
 !- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

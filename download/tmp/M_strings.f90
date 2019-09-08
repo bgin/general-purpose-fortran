@@ -600,11 +600,14 @@ CONTAINS
 !!
 !!    In this version to get a match entire string must be described by pattern.
 !!
-!!       o  "?" matching any one character
-!!       o  "*" matching zero or more characters. Do NOT use adjacent asterisks.
-!!       o  Both strings may have trailing spaces which are ignored.
-!!       o  There is no escape character, so matching strings with literal
-!!          question mark and asterisk is problematic.
+!!##OPTIONS
+!!    string   the input string to test to see if it contains the pattern.
+!!    pattern  the following simple globbing options are available
+!!             o  "?" matching any one character
+!!             o  "*" matching zero or more characters. Do NOT use adjacent asterisks.
+!!             o  Both strings may have trailing spaces which are ignored.
+!!             o  There is no escape character, so matching strings with literal
+!!                question mark and asterisk is problematic.
 !!
 !!##EXAMPLES
 !!
@@ -1644,6 +1647,7 @@ end subroutine test_delim
 !!     character(len=*),intent(in),optional   :: cmd
 !!     integer,intent(in),optional            :: range(2)
 !!     integer,intent(out),optional           :: ierr
+!!     logical,intent(in),optional            :: clip
 !!     character(len=:),allocatable           :: newline
 !!##DESCRIPTION
 !!    Globally replace one substring for another in string.
@@ -1656,9 +1660,10 @@ end subroutine test_delim
 !!     cmd         alternate way to specify old and new string, in
 !!                 the form c/old/new/; where "/" can be any character
 !!                 not in "old" or "new"
+!!     range       if present, only change range(1) to range(2) of occurrences of old string
 !!     ierr        error code. iF ier = -1 bad directive, >= 0 then
 !!                 count of changes made
-!!     range       if present, only change range(1) to range(2) of occurrences of old string
+!!     clip        whether to return trailing spaces or not. Defaults to .false.
 !!##RETURNS
 !!     newline     allocatable string returned
 !!
@@ -1751,7 +1756,7 @@ integer                                  :: start_token,end_token
    ierr=0
    old=''
    new=''
-   lmax=len_trim(cmd)                     ! significant length of change directive
+   lmax=len_trim(cmd)                       ! significant length of change directive
 
    if(lmax.ge.4)then                      ! strtok ignores blank tokens so look for special case where first token is really null
       delimiters=cmd(id:id)               ! find delimiter in expected location
@@ -2382,7 +2387,7 @@ integer             :: ier
 end subroutine test_change
 !>
 !!##NAME
-!!     strtok(3f) - Tokenize a string
+!!     strtok(3f) - [M_strings:TOKENS]Tokenize a string
 !!##SYNOPSIS
 !!
 !!       function strtok(source_string,itoken,token_start,token_end,delimiters)
@@ -2392,20 +2397,28 @@ end subroutine test_change
 !!        character(len=*),intent(in)  :: source_string    ! string to tokenize
 !!        integer,intent(inout)        :: itoken           ! token count since started
 !!        integer,intent(out)          :: token_start      ! beginning of token
-!!        integer,intent(out)          :: token_end        ! end of token
+!!        integer,intent(inout)        :: token_end        ! end of token
 !!        character(len=*),intent(in)  :: delimiters       ! list of separator character
-!!
 !!
 !!##DESCRIPTION
 !!     The STRTOK(3f) function is used to isolate sequential tokens in a string,
 !!     SOURCE_STRING. These tokens are delimited in the string by at least one of
 !!     the characters in DELIMITERS. The first time that STRTOK(3f) is called,
 !!     ITOKEN should be specified as zero. Subsequent calls, wishing to obtain
-!!     further tokens from the same string, should pass back in TOKEN_START and
+!!     further tokens from the same string, should pass back in TOKEN_END  and
 !!     ITOKEN until the function result returns .false.
 !!
 !!     This routine assumes no other calls are made to it using any other input
 !!     string while it is processing an input line.
+!!
+!!##OPTIONS
+!!     source_string   input string to parse
+!!     itoken          token count should be set to zero for a new string
+!!     delimiters      characters used to determine the end of tokens
+!!##RETURN
+!!     token_start     beginning position in SOURCE_STRING where token was found
+!!     token_end       ending position in SOURCE_STRING where token was found
+!!     strtok_status
 !!
 !!##EXAMPLES
 !!
@@ -2455,7 +2468,7 @@ character(len=*),intent(in)  :: delimiters       ! list of separator characters.
 integer,intent(inout)        :: itoken           ! token count since started
 logical                      :: strtok_status    ! returned value
 integer,intent(out)          :: token_start      ! beginning of token found if function result is .true.
-integer,intent(out)          :: token_end        ! end of token found if function result is .true.
+integer,intent(inout)        :: token_end        ! end of token found if function result is .true.
 integer,save                 :: isource_len
 !----------------------------------------------------------------------------------------------------------------------------
 !  calculate where token_start should start for this pass
@@ -2761,7 +2774,6 @@ end subroutine test_modif
 !!
 !!     character(len=*) :: string
 !!##DESCRIPTION
-!!
 !!      len_white(3f) returns the position of the last character in
 !!      string that is not a whitespace character. The Fortran90 intrinsic
 !!      LEN_TRIM() should be used when trailing whitespace can be assumed
@@ -2883,6 +2895,10 @@ end subroutine test_len_white
 !!##DESCRIPTION
 !!    trim leading blanks from a string and return position of last
 !!    non-blank character in the string.
+!!##OPTIONS
+!!    strin   input string to trim leading and trailing space from
+!!##RETURNS
+!!    strout  cropped version of input string
 !!##EXAMPLE
 !!
 !!   Sample program:
@@ -2945,11 +2961,20 @@ end subroutine test_crop
 !!##DESCRIPTION
 !!    Translate, squeeze, and/or delete characters from the input string.
 !!
-!!     o Each character in the input string that matches a character in
-!!       the old set is replaced.
-!!     o If the new_set is the empty set the matched characters are deleted.
-!!     o If the new_set is shorter than the old set the last character in the
-!!       new set is used to replace the remaining characters in the new set.
+!!##OPTIONS
+!!    instr    input string to change
+!!    old_set  list of letters to change in INSTR if found
+!!
+!!             Each character in the input string that matches a character in
+!!             the old set is replaced.
+!!    new_set  list of letters to replace letters in OLD_SET with.
+!!
+!!             If the new_set is the empty set the matched characters are deleted.
+!!
+!!             If the new_set is shorter than the old set the last character in the
+!!             new set is used to replace the remaining characters in the new set.
+!!##RETURNS
+!!    outstr   instr with substitutions applied
 !!
 !!##EXAMPLES
 !!
@@ -4652,13 +4677,13 @@ end subroutine test_nospace
 !!
 !!     character(len=*),intent(in)         :: str
 !!     integer,intent(in)                  :: length
-!!     character(len=*)intent(in),optional ::  pattern
-!!     character(len=*)intent(in),optional ::  suffix
-!!     character(len=:),allocatable        ::  strout
+!!     character(len=*)intent(in),optional :: pattern
+!!     character(len=*)intent(in),optional :: suffix
+!!     character(len=:),allocatable        :: strout
 !!##DESCRIPTION
 !!    stretch(3f) pads a string with spaces to at least the specified
 !!    length. If the trimmed input string is longer than the requested
-!!    length the trimmed string is returned.
+!!    length the original string is returned trimmed of trailing spaces.
 !!##OPTIONS
 !!    str      the input string to return trimmed, but then padded to
 !!             the specified length if shorter than length
@@ -4711,6 +4736,10 @@ end subroutine test_nospace
 !!     CHAPTER 1 : The beginning ....      1
 !!     CHAPTER 2 : The end ..........   1234
 !!     APPENDIX .....................   1235
+!!
+!!     CHAPTER 1 : The beginning     :            1
+!!     CHAPTER 2 : The end           :         1234
+!!     APPENDIX                      :         1235
 !===================================================================================================================================
 function stretch(line,length,pattern,suffix) result(strout)
 

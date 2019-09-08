@@ -262,6 +262,13 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <tr><td><a href="M_getopt_long.f90">M_getopt_long.f90</a></td>
 <td>
 </td>
+<tr><td><a href="M_graph.f90">M_graph.f90</a></td>
+<td>
+	M_graph::graph(3f): routine for plotting lines<br/>
+	M_graph::graph_init(3f): initialize the longlib graphics plot package<br/>
+	M_graph::symbol_(3f): routine to plot characters and symbols<br/>
+	M_graph::clipit(3f):clips a line segment partially visible<br/>
+</td>
 <tr><td><a href="M_hashkeys.f90">M_hashkeys.f90</a></td>
 <td>
 	M_hashkeys::sha256(3f): SHA-256 interface function<br/>
@@ -358,13 +365,8 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_math::splift(3f): fits a spline to the n data points given in x and y<br/>
 	M_math::splint(3f): interpolates and twice differentiates a cubic spline<br/>
 	M_math::linearint(3f):linear interpolation of curve X(i),Y(i) at given XI(j) values<br/>
-	 SOLVE A SYSTEM OF SIMULTANEOUS LINEAR EQUATIONS OF THE FORM<br/>
-	 least squares fit to a polynomial expression<br/>
-	 SOLVE A SYSTEM OF SIMULTANEOUS LINEAR EQUATIONS<br/>
 	 Fit discrete data in a least squares sense by polynomials in one variable.<br/>
-	       COMPUTE VECTOR OF INTEGRAL VALUES FOR GIVEN GENERAL TABLE<br/>
-	    COMPUTE VECTOR OF INTEGRAL VALUES FOR GIVEN GENERAL TABLE<br/>
-	       COMPUTE VECTOR OF INTEGRAL VALUES FOR GIVEN GENERAL TABLE<br/>
+	trapezoidal integration<br/>
 	M_math::citer(3f): determine various geometric properties of circle segment given radius and area of the segment.<br/>
 	M_math::envelope(3f):Find the vertices (in clockwise order) of a polygon enclosing the points (x(i), y(i), i=1, ..., n.<br/>
 	M_math::inpolygon(3f):Subroutine to determine whether or not an integer point is in a polygon of integer points<br/>
@@ -492,8 +494,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <td>
 	M_random::random_string(3f): create random string composed of provided characters of specified length<br/>
 	M_random::random_hex(3f): create random hexadecimal string of specified length<br/>
-	M_random::random_permutation(3f): populate an integer array with a random permutation of the integers 1 to size(array)<br/>
-	M_random::scramble(3f): return an integer array of random values 1 to N.<br/>
+	M_random::scramble(3f): return integer array of random values 1 to N. JSU 20190813<br/>
 	M_random::random_kiss64(3f): A 64-bit KISS random number generator by George Margaglia.<br/>
 	M_random::init_random_seed_by_system_clock(3f): initialize random_number(3f) to return a single value with system clock<br/>
 	M_random::init_random_seed_by_dat(3f): initialize random_number(3f) to return a single value using date_and_time(3f)<br/>
@@ -731,6 +732,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_time::date_to_unix(3f): Convert DAT date-time array to Unix Epoch Time<br/>
 	M_time::unix_to_date(3f): Converts Unix Time to DAT date-time array<br/>
 	M_time::d2o(3f): Converts DAT date-time array to Ordinal day<br/>
+	M_time::ordinal_seconds(3f): seconds since beginning of year<br/>
 	M_time::ordinal_to_date(3f): when given a valid year and day of the year returns the DAT array for the date<br/>
 	M_time::o2d(3f): Converts ordinal day to DAT date-time array<br/>
 	M_time::v2mo(3f): returns the month name of a Common month number<br/>

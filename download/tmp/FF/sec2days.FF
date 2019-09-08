@@ -125,7 +125,6 @@ use M_time,    only : sec2days, realtime
 use M_strings, only : substitute
 implicit none
 character(len=*),parameter     :: ident="@(#)sec2days(1f): convert seconds to string of form dd-hh:mm:ss"
-real(kind=realtime), parameter :: units_hl(4)=[ 86400.0d0, 3600.0d0, 60.0d0, 1.0d0 ]
 character(len=:),allocatable   :: strlocal
 character(len=:),allocatable   :: radix
 character(len=IPvalue)         :: line

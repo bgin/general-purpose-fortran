@@ -12,7 +12,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'   _tr(1) - [M_strings] translate or delete characters                          ',&
+'   _tr(1) - [FUNIX:M_strings] translate or delete characters                    ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '       _tr [ -o SET1 [ -n SET2 ]]|-l| -u |[ --version ]|[ --help ]              ',&
@@ -55,7 +55,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    _tr(1) - [M_strings] translate or delete characters
+!!    _tr(1) - [FUNIX:M_strings] translate or delete characters
 !!
 !!##SYNOPSIS
 !!
@@ -109,7 +109,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20190828>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Thu, Aug 29th, 2019 10:24:28 PM>',&
+'@(#)COMPILED:       Fri, Sep 6th, 2019 7:57:42 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

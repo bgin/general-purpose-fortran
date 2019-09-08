@@ -1,3 +1,9 @@
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 module M_messages
 implicit none
 private
@@ -1236,6 +1242,9 @@ end subroutine blocks
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
 !>
 !!##NAME
 !!     signs(3f) - [M_messages] write out string in large block letters
@@ -1244,13 +1253,13 @@ end subroutine blocks
 !!
 !!     subroutine signs(string,iounit)
 !!
-!!      character(len=*),intent(in)  :: string
-!!      integer,intent(in)             :: iounit
+!!      character(len=*),intent(in)          :: string
+!!      integer,intent(in)                   :: iounit
+!!      character(len=1),intent(in),optional :: letter
 !!
 !!##DESCRIPTION
-!!     SIGNS(2f) writes out the string
-!!     left-justified in large (13 lines x 8 columns) block letters starting in
-!!     column 2.
+!!     SIGNS(2f) writes out the string left-justified in large (13 lines
+!!     x 8 columns) block letters starting in column 2.
 !!
 !!     This can be used to make banners in program output files; it is also hand
 !!     for making attention-catching notices in interactive programs.
@@ -1261,9 +1270,7 @@ end subroutine blocks
 !!
 !!        program demo_signs
 !!        use M_messages, only : signs
-!!
 !!        call signs('NOTICE',6)
-!!
 !!        end program demo_signs
 !!
 !!     would produce:
@@ -1286,14 +1293,15 @@ end subroutine blocks
 !! AUTHORS           : John S. Urban
 !!##VERSION           : 1.0, 20110101
 !===================================================================================================================================
-subroutine signs(str,iout)
-!=======================================================================--------
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()
-!=======================================================================--------
+subroutine signs(str,iout,letter)
+use M_strings, only : replace, atleast
 implicit none
-character(len=*),parameter :: ident="@(#)M_messages::signs(3f):write large block letters"
-character(len=*),intent(in) :: str         ! string to write
-integer,intent(in)          :: iout        ! unit number to write to
+
+character(len=*),parameter::ident_1="@(#)M_messages::signs(3f):write large block letters"
+
+character(len=*),intent(in)          :: str         ! string to write
+integer,intent(in)                   :: iout        ! unit number to write to
+character(len=1),intent(in),optional :: letter
 !     ******************************************************************
 character(len=8),save       :: alf(13,95)  ! store block letters
 integer                     :: l(len(str)) ! alphabet
@@ -1618,10 +1626,15 @@ integer                     :: irow, ilet
      endif
    enddo
 !-----------------------------------------------------------------------------------------------------------------------------------
-   do k = 1, 13
-      write (iout, '(1x,*(a8:))') (alf(k,l(mm)), mm = 1, lstr)
-   enddo
-   contains
+   if(present(letter))then
+      do k = 1, 13
+         write(iout,'(1x,*(a8:))') (atleast(replace(alf(k,l(mm)),'X',letter),8), mm = 1, lstr)
+      enddo
+   else
+      do k = 1, 13
+         write(iout,'(1x,*(a8:))') (alf(k,l(mm)), mm = 1, lstr)
+      enddo
+   endif
 end subroutine signs
 !===================================================================================================================================
 
@@ -1675,7 +1688,7 @@ end subroutine signs
 subroutine percent_done(part,whole)
 use M_anything, only : anyscalar_to_real
 implicit none
-character(len=*),parameter::ident_1="@(#)place a non-advancing status counter on terminal display (not redirected)"
+character(len=*),parameter::ident_2="@(#)place a non-advancing status counter on terminal display (not redirected)"
 class(*),intent(in)  :: part
 class(*),intent(in)  :: whole
 real                 :: part_local
@@ -1687,12 +1700,10 @@ end subroutine percent_done
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
-
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 subroutine test_suite_M_messages()
-
 !! setup
    call test_blocks()
    call test_junbad()
@@ -1709,7 +1720,6 @@ subroutine test_suite_M_messages()
 contains
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_blocks()
-
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
    call unit_check_start('blocks',msg='')
@@ -1718,7 +1728,6 @@ use M_debug, only : unit_check_level
 end subroutine test_blocks
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_junbad()
-
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
    call unit_check_start('junbad',msg='')
@@ -1727,7 +1736,6 @@ use M_debug, only : unit_check_level
 end subroutine test_junbad
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_junbat()
-
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
    call unit_check_start('junbat',msg='')
@@ -1736,7 +1744,6 @@ use M_debug, only : unit_check_level
 end subroutine test_junbat
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_junbuster()
-
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
    call unit_check_start('junbuster',msg='')
@@ -1745,7 +1752,6 @@ use M_debug, only : unit_check_level
 end subroutine test_junbuster
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_jundragon()
-
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
    call unit_check_start('jundragon',msg='')
@@ -1754,7 +1760,6 @@ use M_debug, only : unit_check_level
 end subroutine test_jundragon
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_junroach()
-
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
    call unit_check_start('junroach',msg='')
@@ -1763,7 +1768,6 @@ use M_debug, only : unit_check_level
 end subroutine test_junroach
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_junsun()
-
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
    call unit_check_start('junsun',msg='')
@@ -1772,7 +1776,6 @@ use M_debug, only : unit_check_level
 end subroutine test_junsun
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_juntrolls()
-
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
    call unit_check_start('juntrolls',msg='')
@@ -1781,7 +1784,6 @@ use M_debug, only : unit_check_level
 end subroutine test_juntrolls
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_percent_done()
-
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
    call unit_check_start('percent_done',msg='')
@@ -1790,7 +1792,6 @@ use M_debug, only : unit_check_level
 end subroutine test_percent_done
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_signs()
-
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
    call unit_check_start('signs',msg='')
@@ -1799,7 +1800,6 @@ use M_debug, only : unit_check_level
 end subroutine test_signs
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_tabgraph()
-
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
    call unit_check_start('tabgraph',msg='')
@@ -1812,3 +1812,6 @@ end subroutine test_suite_M_messages
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 end module M_messages
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================

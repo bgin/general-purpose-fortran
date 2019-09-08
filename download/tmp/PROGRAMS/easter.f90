@@ -5,7 +5,7 @@ program demo_easter
 use m_time, only : easter, fmtdate
 use M_kracken, only : kracken, lget, iget  ! add command-line parser module
 implicit none
-integer          :: year, month, day
+integer          :: year
 integer          :: dat(8)
 !-----------------------------------------------------------------------------------------------------------------------------------
    call kracken('easter','0 -help .f. -version .f. ') ! define command arguments,default values and crack command line
@@ -45,7 +45,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    output the month and day Easter falls on for a particular year>',&
 '@(#)VERSION:        1.0, 20170223>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Thu, Aug 29th, 2019 10:27:21 PM>',&
+'@(#)COMPILED:       Sat, Aug 31st, 2019 1:03:59 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

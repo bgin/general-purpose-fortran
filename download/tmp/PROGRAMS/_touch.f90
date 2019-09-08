@@ -77,7 +77,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    change file access timestamp to current time, creating file is necessary>',&
 '@(#)VERSION:        1.0, 20180217>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Thu, Aug 29th, 2019 10:24:11 PM>',&
+'@(#)COMPILED:       Sat, Aug 31st, 2019 12:48:32 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -98,7 +98,6 @@ integer                            :: lun
 logical                            :: verbose
 character(len=4096)                :: errmsg
 logical                            :: ex,od
-character(len=1)                   :: char
 logical                            :: lstat
 integer                            :: times(2)
 character(len=:),allocatable       :: date
