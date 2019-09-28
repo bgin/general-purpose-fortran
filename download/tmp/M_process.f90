@@ -334,21 +334,23 @@ end interface
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()-
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
-!!    NAME
+!!##NAME
 !!    fgets(3fp) - get character string from a file or stream by calling fgets(3c
-!!    SYNOPSIS
-!! #include <stdio.h>
+!!##SYNOPSIS
+!!
+!!   #include <stdio.h>
+!!
 !!    char *fgets(char *BUF, int N, FILE *FP);
-!!    DESCRIPTION
+!!##DESCRIPTION
 !!    Reads at most N-1 characters from FP until a newline is found. The
 !!    characters including to the newline are stored in BUF. The buffer
 !!    is terminated with a 0.
-!!    RETURNS
+!!##RETURNS
 !!    fgets(3c) returns the buffer passed to it, with the data filled
 !!    in. If end of file occurs with some data already accumulated, the
 !!    data is returned with no other indication. If no data are read,
 !!    NULL is returned instead.
-!!    PORTABILITY
+!!##PORTABILITY
 !!    Note that fgets(3c) returns all of the data, including the newline.
 !===================================================================================================================================
 ! fgets
@@ -376,12 +378,15 @@ end interface
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()-
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
-!!    NAME
+!!##NAME
 !!    fputs(3fp) - write a character string in a file or stream
-!!    SYNOPSIS
-!! #include <stdio.h>
+!!##SYNOPSIS
+!!
+!!   #include <stdio.h>
+!!
 !!    int fputs(const char *S, FILE *FP);
-!!    DESCRIPTION
+!!
+!!##DESCRIPTION
 !!    `fputs'  writes  the string at S (but without the trailing null) to th
 !!    file or stream identified by FP.
 !!    RETURNS
@@ -448,10 +453,12 @@ contains
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()-
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
-!!    NAME
-!!    SYNOPSIS
-!!    DESCRIPTIO
-!!    EXAMPLE
+!!##NAME
+!!##SYNOPSIS
+
+!!##DESCRIPTI
+!!##EXAMPLE
+!
 !===================================================================================================================================
    subroutine process_open_read(cmd,fp,ierr)
 character(len=*),parameter::ident_2="@(#)M_process::process_open_read(3f): open process to read from"
@@ -470,10 +477,12 @@ character(len=*),parameter::ident_2="@(#)M_process::process_open_read(3f): open 
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()-
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
-!!    NAME
-!!    SYNOPSIS
-!!    DESCRIPTIO
-!!    EXAMPLE
+!!##NAME
+!!##SYNOPSIS
+
+!!##DESCRIPTI
+!!##EXAMPLE
+!
 !===================================================================================================================================
    subroutine process_open_write(cmd,fp,ierr)
 character(len=*),parameter::ident_3="@(#)M_process::process_open_write(3f): open process to write to"
@@ -491,10 +500,12 @@ character(len=*),parameter::ident_3="@(#)M_process::process_open_write(3f): open
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()-
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
-!!    NAME
-!!    SYNOPSIS
-!!    DESCRIPTIO
-!!    EXAMPLE
+!!##NAME
+!!##SYNOPSIS
+
+!!##DESCRIPTI
+!!##EXAMPLE
+!
 !===================================================================================================================================
    subroutine process_open(cmd,mode,fp,ierr)
 character(len=*),parameter::ident_4="@(#)M_process::process_open(3fp): open process"
@@ -521,10 +532,12 @@ character(len=*),parameter::ident_4="@(#)M_process::process_open(3fp): open proc
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()-
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
-!!    NAME
-!!    SYNOPSIS
-!!    DESCRIPTIO
-!!    EXAMPLE
+!!##NAME
+!!##SYNOPSIS
+
+!!##DESCRIPTI
+!!##EXAMPLE
+!
 !===================================================================================================================================
    subroutine process_close(fp,ierr)
 character(len=*),parameter::ident_5="@(#)M_process::process_close(3f): close process"
@@ -553,10 +566,12 @@ character(len=*),parameter::ident_5="@(#)M_process::process_close(3f): close pro
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()-
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
-!!    NAME
-!!    SYNOPSIS
-!!    DESCRIPTIO
-!!    EXAMPLE
+!!##NAME
+!!##SYNOPSIS
+
+!!##DESCRIPTI
+!!##EXAMPLE
+!
 !===================================================================================================================================
    subroutine process_readline(readfrom,fp,ierr)
 
@@ -601,48 +616,51 @@ character(len=*),parameter::ident_6="@(#)M_process::process_readline(3f): read l
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()-
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
-!!    NAME
+!!##NAME
 !!    process_readall(3f) - [M_process] read all lines from process into single string
-!!    SYNOPSIS
-!!    syntax:
+!!##SYNOPSIS
+!!
+!!   syntax:
 !!
 !!    function process_readall(cmd,delim,ierr)  result(string)
+!!
 !!       character(len=*),intent(in)              :: cmd
 !!       character(len=*),intent(in),optional     :: delim
 !!       integer,intent(out),optional             :: ierr
 !!       character(len=:),allocatable             :: string
-!!       OPTIONS
-!!       cmd               command to pass to system
-!!       delim             delimiter to place between output lines when they
-!!       are concatenated. Defaults to a space
-!!       ierr              check status of call.
-!!       RESULTS
+!!##OPTIONS
+!!       cmd        command to pass to system
+!!       delim      delimiter to place between output lines when they
+!!                  are concatenated. Defaults to a space
+!!       ierr       check status of call.
+!!##RESULTS
 !!       process_readall   Assuming sufficient memory is available all the output of th
 !!       system command are concatenated into a string with
 !!       spaces added between the output lines of the command.
-!!       EXAMPLE
+!!##EXAMPLE
 !!
-!!       Read all output of a command to a single string
+!!
+!!   Read all output of a command to a single string
 !!
 !!       program test_process_readall
-!!          use M_process ,only: process_readall
-!!          implicit none
-!!          integer :: ierr
-!!          character(len=:),allocatable :: string
+!!       use M_process ,only: process_readall
+!!       implicit none
+!!       integer :: ierr
+!!       character(len=:),allocatable :: string
 !!          string=process_readall('ls',ierr=ierr)
 !!          write(*,*)ierr,string
 !!       end program test_process_readall
 !!
-!!       Read all output of a command to an array using split(3f)
+!!   Read all output of a command to an array using split(3f)
 !!
 !!       program demo_process_readall
-!!          use M_process ,only: process_readall
-!!          use M_strings ,only: split
-!!          implicit none
-!!          integer                      :: ierr
-!!          integer                      :: i
-!!          character(len=:),allocatable :: string
-!!          character(len=:),allocatable :: array(:)
+!!       use M_process ,only: process_readall
+!!       use M_strings ,only: split
+!!       implicit none
+!!       integer                      :: ierr
+!!       integer                      :: i
+!!       character(len=:),allocatable :: string
+!!       character(len=:),allocatable :: array(:)
 !!          string=process_readall('ls',delim=NEW_LINE("A"),ierr=ierr)
 !!          call split(string,array,delimiters=NEW_LINE("A"))
 !!          do i=1,size(array)
@@ -650,85 +668,87 @@ character(len=*),parameter::ident_6="@(#)M_process::process_readline(3f): read l
 !!          enddo
 !!       end program demo_process_readall
 !!
-!!       Results:
+!!   Results:
 !!
-!! 1     [Articles]
-!! 2     [LIBRARY]
-!! 3     [PC]
-!! 4     [SHIP]
-!! 5     [SPEC]
-!! 6     [crib.dat]
-!! 7     [doc]
-!! 8     [html]
-!! 9     [index.html]
-!! 10    [plan.txt]
-!! 11    [questions]
-!! 12    [scripts]
-!! 13    [tmp]
+!!       1     [Articles]
+!!       2     [LIBRARY]
+!!       3     [PC]
+!!       4     [SHIP]
+!!       5     [SPEC]
+!!       6     [crib.dat]
+!!       7     [doc]
+!!       8     [html]
+!!       9     [index.html]
+!!       10    [plan.txt]
+!!       11    [questions]
+!!       12    [scripts]
+!!       13    [tmp]
 !!
-!!       SEE ALSO
-!!       M_process(3fm)
+!!##SEE ALSO
+!!    M_process(3fm)
 !===================================================================================================================================
-      function process_readall(cmd,delim,ierr)  result(string)      !! not hardened
+function process_readall(cmd,delim,ierr)  result(string)      !! not hardened
 
 character(len=*),parameter::ident_7="@(#)M_process::process_readall(3f): read all lines from process"
 
-         character(len=*),intent(in)           :: cmd
-         character(len=:),allocatable          :: string      !! assume will not run out of memory
-         character(len=*),intent(in),optional  :: delim
-         integer,intent(out),optional          :: ierr
+character(len=*),intent(in)           :: cmd
+character(len=:),allocatable          :: string      !! assume will not run out of memory
+character(len=*),intent(in),optional  :: delim
+integer,intent(out),optional          :: ierr
 
-         character(len=:),allocatable          :: delim_local
-         integer                               :: ierr_local(3), ierr_read
-         integer                               :: i
-         type(streampointer)                   :: fp
-         character(len=4096)                   :: line        !! assumed long enough
+character(len=:),allocatable          :: delim_local
+integer                               :: ierr_local(3), ierr_read
+integer                               :: i
+type(streampointer)                   :: fp
+character(len=4096)                   :: line        !! assumed long enough
 !-----------------------------------------------------------------------------------------------------------------------------------
-         if(present(delim))then
-            delim_local=delim
-         else
-            delim_local=' '
+   if(present(delim))then
+      delim_local=delim
+   else
+      delim_local=' '
+   endif
+
+   !! change to stream I/O so do not have to have arbitrary line length limit, or at least make length an option
+   string=''
+   ierr_local(:)=0
+   call process_open_read(cmd,fp,ierr_local(1))  ! start command
+
+   if(ierr_local(1).eq.0)then
+      do
+         call process_readline(line,fp,ierr_read)  ! read line from command output
+         if(ierr_read.ne.0)then
+            exit
          endif
+         string=string//trim(line)//delim_local
+      enddo
+      string=trim(string)
+   endif
 
-         !! change to stream I/O so do not have to have arbitrary line length limit, or at least make length an option
-         string=''
-         ierr_local(:)=0
-         call process_open_read(cmd,fp,ierr_local(1))  ! start command
+   call process_close(fp,ierr_local(3)) ! Wrap up
 
-         if(ierr_local(1).eq.0)then
-            do
-               call process_readline(line,fp,ierr_read)  ! read line from command output
-               if(ierr_read.ne.0)then
-                  exit
-               endif
-               string=string//trim(line)//delim_local
-            enddo
-            string=trim(string)
+   if(present(ierr))then
+      do i=1,size(ierr_local)
+         if(ierr_local(i).ne.0)then
+            ierr=ierr_local(i)
+            exit
          endif
+      enddo
+   elseif(any(ierr_local.ne.0))then
+      !!write(*,*)'*M_process::process_readall(3f)* error values=',ierr_local
+      stop "*M_process::process_readall(3f)* error"
+   endif
 
-         call process_close(fp,ierr_local(3)) ! Wrap up
-
-         if(present(ierr))then
-            do i=1,size(ierr_local)
-               if(ierr_local(i).ne.0)then
-                  ierr=ierr_local(i)
-                  exit
-               endif
-            enddo
-         elseif(any(ierr_local.ne.0))then
-            !!write(*,*)'*M_process::process_readall(3f)* error values=',ierr_local
-            stop "*M_process::process_readall(3f)* error"
-         endif
-
-      end function process_readall
+end function process_readall
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()-
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
-!!       NAME
-!!       SYNOPSIS
-!!       DESCRIPTIO
-!!       EXAMPLE
+!!##NAME
+!!##SYNOPSIS
+
+!!##DESCRIPTI
+!!##EXAMPLE
+!
 !===================================================================================================================================
 subroutine process_writeline_scalar(writefrom,fp,ierr,trm)
 character(len=*),parameter::ident_8="@(#)M_process::process_writeline_scalar(3fp): write line to process"

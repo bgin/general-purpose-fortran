@@ -31,7 +31,6 @@
        !                       ALL_GROUPS all of them (declared in module globals)
        type (watchgroup), public :: GROUPS_FOR_ONE, GROUPS_FOR_TWO
        contains
-
        subroutine setup_watches
 
           ! Measure only cpu and wall time

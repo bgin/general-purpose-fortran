@@ -70,7 +70,7 @@
 !!    routines and various math and statistical routines to quickly create
 !!    unit tests.
 !!
-!!    Comparisions of real values can be done with a tolerance with
+!!    Comparisons of real values can be done with a tolerance with
 !!    M_Compare_Float_Numbers(3fm), for example.
 !!
 !!    The intrinsics ANY(3f) and ALL(3f) are particularly useful in calls

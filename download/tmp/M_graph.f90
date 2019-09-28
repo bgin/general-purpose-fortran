@@ -99,7 +99,7 @@ contains
 !!                nc(2) : number of characters to use in C(2)
 !!                 ...       ...
 !!
-!!    The array elements of the option array f are interpretted according to the
+!!    The array elements of the option array f are interprtted according to the
 !!    following table. Some parameters have default values (shown in square
 !!    brackets). These are used when the input value is zero. A simple plot may be
 !!    produced by setting all the elements of f to zero. Note that user specified
@@ -174,12 +174,12 @@ contains
 !!       ...   ...      ... etc ...
 !!
 !!    The optional error bar specification, when non-zero, changes interpretation of
-!!    lines. The first line (and every third line) conidered a "center" line. The
+!!    lines. The first line (and every third line) is considered a "center" line. The
 !!    second line specifies the relative error (to be added to the first line) used
-!!    for plotting the tops of the error bars. The third line is used similarily to
+!!    for plotting the tops of the error bars. The third line is used similarly to
 !!    locate the bottoms of the error bars. When the error bar specification is
 !!    negative the center line points are marked with a special "x" (in addition to
-!!    any other option). The absolution value of the specifiation determines the type
+!!    any other option). The absolution value of the specification determines the type
 !!    of error bar according to the following table.
 !!
 !!     value   type of error bar
@@ -346,7 +346,7 @@ CHARACTER*(*) C(*)
 !            ...    ...
 !            ETC.  NOTE: IF NC(I) IS ZERO C(I) IS NOT PLOTTED
 !
-!     THE ELEMENTS OF F ARE INTERPRETTED ACCORDING TO THE FOLLOWING:
+!     THE ELEMENTS OF F ARE INTERPRETED ACCORDING TO THE FOLLOWING:
 !     DEFAULT VALUES ARE SHOWN IN SQUARE BRACKETS
 !
 !   INDEX OF F VALUE    ACTION

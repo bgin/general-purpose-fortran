@@ -153,7 +153,7 @@ integer,parameter             :: increment=2
    csv=trim(line)
 contains
 !===================================================================================================================================
-subroutine print_generic(generic)
+subroutine print_g(generic)
 !use, intrinsic :: iso_fortran_env, only : int8, int16, int32, biggest=>int64, real32, real64, dp=>real128
 use,intrinsic :: iso_fortran_env, only : int8, int16, int32, int64, real32, real64, real128
 class(*),intent(in),optional :: generic
@@ -178,7 +178,7 @@ class(*),intent(in),optional :: generic
    istart=len_trim(line)+increment
 !   case(1)
 !end select
-end subroutine print_generic
+end subroutine print_g
 !===================================================================================================================================
 end function csv
 !===================================================================================================================================

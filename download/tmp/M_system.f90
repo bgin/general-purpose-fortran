@@ -4823,11 +4823,11 @@ use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,
 use M_debug, only : unit_check_level
 use M_process ,only: process_readall
 !! setup
-call unit_check_msg('test_M_system','try to test OS interface routines, given difficulty of trying to test')
-call unit_check_msg('test_M_system','functions not intrinsically part of Fortran and system-dependent.')
-call unit_check_msg('test_M_system','Many assumptions are made, including assuming a GNU Linux/Unix system')
-call unit_check_msg('test_M_system','Examine the tests on other platforms, as it may well be the assumptions made')
-call unit_check_msg('test_M_system','about the system and not the routines that are generating an error.')
+call unit_check_msg('M_system','try to test OS interface routines, given difficulty of trying to test')
+call unit_check_msg('M_system','functions not intrinsically part of Fortran and system-dependent.')
+call unit_check_msg('M_system','Many assumptions are made, including assuming a GNU Linux/Unix system.')
+call unit_check_msg('M_system','Examine the tests on other platforms, as it may well be the assumptions made')
+call unit_check_msg('M_system','about the system and not the routines that are generating an error.')
 call test_set_environment_variable()
 call test_system_rename()
 call test_system_getlogin()
@@ -4850,6 +4850,8 @@ call test_system_unsetenv()
 call test_system_getenv()
 call test_system_initenv()
 call test_system_readenv()
+call test_system_remove()
+call test_system_getcwd()
 
    call test_system_clearenv()
    call test_system_access()
@@ -4857,7 +4859,6 @@ call test_system_readenv()
    call test_system_chown()
    call test_system_cpu_time()
    call test_system_errno()
-   call test_system_getcwd()
    call test_system_getgrgid()
    call test_system_gethostname()
    call test_fileglob()
@@ -4878,10 +4879,9 @@ call test_system_readenv()
    call test_system_perm()
    call test_system_perror()
    call test_system_rand()
-   call test_system_realpath()
-   call test_system_remove()
-   call test_system_setumask()
    call test_system_srand()
+   call test_system_realpath()
+   call test_system_setumask()
    call test_system_stat()
    call test_system_stat_print()
    call test_system_uname()
@@ -5201,7 +5201,6 @@ character(len=80),parameter :: names(*)=[ &
 end subroutine test_system_access
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_chdir()
-
 character(len=:),allocatable :: dirname
 character(len=:),allocatable :: hold
 integer             :: ierr
@@ -5370,17 +5369,26 @@ real    :: value
 end subroutine test_system_cpu_time
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_getcwd()
-
 character(len=:),allocatable :: dirname
+character(len=:),allocatable :: hold
 integer                      :: ierr
+   call unit_check_start('system_getcwd',msg='test system_getcwd(3f) assuming Unix-like file system')
+   ! cache current directory so can return
+   call system_getcwd(hold,ierr)
+   call unit_check('system_getcwd', ierr.eq.0 , msg=msg('checking ierr on getting current directory=',ierr))
+
+   call system_chdir('/tmp',ierr)
    call system_getcwd(dirname,ierr)
-   if(ierr.eq.0)then
-      write(*,*)'CURRENT DIRECTORY ',trim(dirname)
-   else
-      write(*,*)'ERROR OBTAINING CURRENT DIRECTORY NAME'
-   endif
-   call unit_check_start('system_getcwd',msg='')
-   !!call unit_check('system_getcwd', 0.eq.0, msg=msg('checking',100))
+   call unit_check('system_getcwd', dirname.eq.'/tmp', msg=msg('checking /tmp to',dirname))
+
+   call system_chdir('/',ierr)
+   call system_getcwd(dirname,ierr)
+   call unit_check('system_getcwd', dirname.eq.'/', msg=msg('checking / to',dirname))
+   ! back to original
+   call system_chdir(hold,ierr)
+   call system_getcwd(dirname,ierr)
+   call unit_check('system_getcwd', dirname.eq.hold, msg=msg('checking ',hold,' to',dirname))
+
    call unit_check_done('system_getcwd',msg='')
 end subroutine test_system_getcwd
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -5604,10 +5612,10 @@ integer :: ierr
    call unit_check_start('system_mkdir',msg='make and remove _scratch/')
    ierr=system_mkdir('_scratch',IANY([R_USR,W_USR,X_USR]))
    call unit_check('system_mkdir', ierr.eq.0, msg=msg('make _scratch/, ierr=',ierr))
-   call unit_check_msg('test_system_mkdir',isdir('_scratch'),'looks like the directory was made')
+   call unit_check_msg('system_mkdir',isdir('_scratch'),'looks like the directory was made')
    call system_chdir('_scratch',ierr)
    call system_chdir('..',ierr)
-   call unit_check_msg('test_system_mkdir',ierr.eq.0,'looks like it can be entered')
+   call unit_check_msg('system_mkdir',ierr.eq.0,'looks like it can be entered')
    ierr=system_rmdir('_scratch')
    call unit_check('system_mkdir', ierr.eq.0, msg=msg('remove _scratch/, ierr=',ierr))
    call unit_check_done('system_mkdir',msg='')
@@ -5789,33 +5797,24 @@ character(len=4096)          :: envname
 end subroutine test_system_readenv
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_remove()
-
-integer :: ierr
-character(len=*),parameter :: FILE='MyJunkFile.txt'
-   write(*,*)'BEFORE CREATED '//FILE
-   call execute_command_line('ls -l '//FILE)
-   write(*,*)
-
-! note intentionally causes error if file exists
-   open(unit=10,file=FILE,status='NEW')
-   write(*,*)'AFTER OPENED '//FILE
-   call execute_command_line('ls -l '//FILE)
-   write(*,*)
-
-   write(10,'(a)') 'This is a file I want to delete'
-   close(unit=10)
-   write(*,*)'AFTER CLOSED '
-   call execute_command_line('ls -l '//FILE)
-   write(*,*)
-
-   ierr=system_remove(FILE)
-   write(*,*)'AFTER REMOVED',IERR
-   call execute_command_line('ls -l '//FILE)
-   write(*,*)
-   close(unit=10)
-
+character(len=*),parameter :: FILE='__MyJunkFile.txt'
+integer                    :: ierr
+integer                    :: ios
+character(len=256)         :: message
    call unit_check_start('system_remove',msg='')
-   !!call unit_check('system_remove', 0.eq.0, msg=msg('checking',100))
+   ierr=system_remove(FILE) ! note intentionally causes error if file exists
+   open(unit=10,file=FILE,iostat=ios,status='NEW')
+   if(ios.eq.0)then
+      write(10,'(a)',iostat=ios)'This is a file to be deleted by the test of system_remove(3f)'
+      close(unit=10,iostat=ios)
+      call unit_check('system_remove',system_isreg(FILE),msg='checking if test file exists before remove')
+   else
+      call unit_check('system_remove', ios.eq.0, msg=msg('bad I/O IOSTAT=',ios,message))
+   endif
+   ierr=system_remove(FILE)
+   call unit_check('system_remove', ierr.eq.0, msg=msg('checking return code',ierr))
+   call unit_check('system_remove',.not.system_isreg(FILE),msg='checking if test file exists after remove')
+   call unit_check('system_remove',.not.system_access(FILE,F_OK),msg='checking if test file exists after remove')
    call unit_check_done('system_remove',msg='')
 end subroutine test_system_remove
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT

@@ -38,7 +38,7 @@
 !!
 !!    An additional set of routines sends escape sequences to stdout that
 !!    query the current state of the xterm(1). Then, with the terminal set
-!!    to raw mode, they read back the response. In this implimentation that
+!!    to raw mode, they read back the response. In this implementation that
 !!    means the command may not work in a basic pipe or have I/O redirected
 !!    on some systems.
 !!

@@ -88,6 +88,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <tr><td><a href="M_args.f90">M_args.f90</a></td>
 <td>
 	M_kracken::get_command_arguments_string(3f): return all command arguments as an allocated string<br/>
+	M_kracken::get_namelist(3f): return all command arguments as a NAMELIST(3f) string<br/>
 </td>
 <tr><td><a href="M_bessel.f90">M_bessel.f90</a></td>
 <td>
@@ -599,6 +600,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_strings::rotate13(3f): converts a character to its ROT13 equivalent, which is a trivial encryption.<br/>
 	M_strings::join(3f): append an array of character variables with specified separator into a single CHARACTER variable<br/>
 	M_strings::reverse(3f): Return a string reversed<br/>
+	M_strings::upper_quoted(3f): elemental function converts string to miniscule skipping strings quoted per Fortran syntax rules<br/>
 	M_strings::upper(3f): Changes a string to uppercase<br/>
 	M_strings::lower(3f): Changes a string to lowercase over specified range<br/>
 	M_strings::s2c(3f): copy string(1:Clen(string)) to char array with null terminator<br/>

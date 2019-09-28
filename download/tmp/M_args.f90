@@ -4,6 +4,7 @@ private
 
 public :: get_command_arguments_stack
 public :: get_command_arguments_string
+public :: get_namelist
 
 type option
    character(:),allocatable :: shortname
@@ -28,7 +29,7 @@ contains
 !!##DESCRIPTION
 !!    Return a character array containing all the command arguments.
 !!    For cases where it is difficult to process the command arguments
-!!    one at a time, this function returns an array of the ommand line
+!!    one at a time, this function returns an array of the command line
 !!    arguments
 !!
 !!##EXAMPLE
@@ -171,6 +172,105 @@ integer,intent(out)                      :: istatus           ! status (non-zero
       call journal('*get_command_arguments_string *'//trim(deallocate_error_message))
    endif
 end subroutine get_command_arguments_string
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+!>
+!!##NAME
+!!    get_namelist(3f) - [ARGUMENTS:M_args] NAMELIST-based command line argument parsin
+!!
+!!##SYNOPSIS
+!!
+!!   subroutine get_namelist(string)
+!!
+!!    character(len=:),allocatable,intent(out) :: string
+!!##DESCRIPTION
+!!
+!!    NAMELIST can be used to create a unprecedentedly simple method of
+!!    passing keyword-value pairs via the command line. the following example
+!!    program simply needs an initialized variable added to the NAMELIST
+!!    and it automatically is available as a command line argument. Hard
+!!    to imagine it getting much simpler.
+!!
+!!    You can call the example program with syntax like:
+!!
+!!       testit r=200e3 i=200
+!!       testit K=33333,J=22222,I=11111
+!!
+!!    Note that if you pass in strings you probably will have to use nested
+!!    quotes or escape your quote characters. How you do that can vary with
+!!    what shell and OS you are running in.
+!!
+!!       # just quote the entire argument list with single quotes ...
+!!       testit 'c="my character string" S=10,T=20.30,R=3e-2'
+!!
+!!       or nest the quotes ...
+!!       testit c='"string"' S=20.30
+!!
+!!       or escape the quotes ...
+!!       testit c=\"string\"
+!!
+!!    As you will see, there is no need to convert from strings to numeric
+!!    values in the source code. Even arrays and user-defined types can be
+!!    used, complex values can be input ... just define the variable and
+!!    add it to the NAMELIST definition.
+!!
+!!    And if you want to use a config file instead of command line arguments
+!!    just create a NAMELIST input file and read it.
+!!
+!!##RETURNS
+!!    STRING  composed of all command arguments concatenated into a string
+!!            prepared for reading as a NAMELIST.
+!!
+!!##EXAMPLE
+!!
+!!   Sample usage
+!!
+!!    program demo_get_namelist
+!!    implicit none
+!!    character(len=255)           :: message ! use for I/O error messages
+!!    character(len=:),allocatable :: string  ! stores command line argument
+!!    integer                      :: ios
+!!
+!!    ! declare and initialize a namelist
+!!    integer    :: i=1, j=2, k=3
+!!    real       :: s=111.1, t=222.2, r=333.3
+!!    real       :: arr(3)=[10.0,20.0,30.0]
+!!    character(len=255) :: c=' '
+!!    ! just add a variable here and it is a new parameter !!
+!!    namelist /cmd/ i,j,k,s,t,r,c,arr
+!!
+!!       ! return command line arguments as NAMELIST input
+!!       string=get_namelist()
+!!       ! internal read of namelist
+!!       read(string,nml=cmd,iostat=ios,iomsg=message)
+!!       if(ios.ne.0)then
+!!          write(*,'("ERROR:",i0,1x,a)')ios, trim(message)
+!!          write(*,*)'OPTIONS:'
+!!          write(*,nml=cmd)
+!!          stop 1
+!!       endif
+!!       ! all done cracking the command line
+!!
+!!       ! use the values in your program. For example ...
+!!       sum=i+j+k
+!!       write(*,*)'sum=',sum
+!!    end program demo_get_namelist
+!===================================================================================================================================
+function get_namelist() result (string)
+
+character(len=*),parameter::ident_2="@(#)M_kracken::get_namelist(3f): return all command arguments as a NAMELIST(3f) string"
+
+character(len=:),allocatable :: string                     ! stores command line argument
+integer :: command_line_length
+   call get_command(length=command_line_length)            ! get length needed to hold command
+   allocate(character(len=command_line_length) :: string)
+   call get_command(string)
+   ! trim off command name and get command line arguments
+   string=adjustl(string)//' '                             ! assuming command verb does not have spaces in it
+   string=string(index(string,' '):)
+   string="&cmd "//string//" /"                            ! add namelist prefix and terminator
+   end function get_namelist
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================

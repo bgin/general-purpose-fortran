@@ -57,7 +57,7 @@ contains
 !===================================================================================================================================
 !>
 !!##NAME
-!!    empty(3f) - [M_anything] set an alloctable array to zero
+!!    empty(3f) - [M_anything] set an allocatable array to zero
 !!##SYNOPSIS
 !!
 !!    use M_anything, only : empty, assignment(=)

@@ -33,13 +33,13 @@ $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 program cprint
 use M_kracken, only : kracken, igets,  sget, lget, sgets
-use M_kracken, only : IPvalue
 use M_strings, only : split
+use M_io, only : read_line
 implicit none
 
 $@(#) cprint(1f): filter to specified columns
 
-character(len=IPvalue)             :: line
+character(len=:),allocatable       :: line
 character(len=:),allocatable       :: delimiters ! characters used to delimit columns
 character(len=:),allocatable       :: array(:)
 integer,allocatable                :: icols(:)
@@ -65,9 +65,7 @@ if(verbose)then
    write(*,'("COLUMNS=",*("[",i0,"]":","))')icols
 endif
 !-----------------------------------------------------------------------------------------------------------------------------------
-INFINITE: do
-   read(*,'(a)',iostat=ios) line
-   if(ios.ne.0)exit INFINITE
+INFINITE: do while (read_line(line)==0)
    call split(line,array,delimiters)             ! split line into columns
    isize=size(array)
    do i=1,size(icols)

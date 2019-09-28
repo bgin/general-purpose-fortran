@@ -6488,7 +6488,7 @@
 !!    'polyfill .true.;color 1; rect 0 0 X Y                               ',&
 !!    'polyfill .false.;linewidth 200;color 2 ;rect 0 0 X Y                ',&
 !!    'closeobj                                                            ',&
-!!    '# draw opbject, rotating coordindate system between instantiations  ',&
+!!    '# draw opbject, rotating coordinate system between instantiations   ',&
 !!    'pushmatrix                                                          ',&
 !!    'scale 1.1 2.0                                                       ',&
 !!    'callobj 1                                                           ',&
@@ -6543,7 +6543,7 @@
 !!    'polyfill .true.;color 1; rect 0 0 X Y                               ',&
 !!    'polyfill .false.;linewidth 200;color 2 ;rect 0 0 X Y                ',&
 !!    'closeobj                                                            ',&
-!!    '# draw opbject, rotating coordindate system between instantiations  ',&
+!!    '# draw opbject, rotating coordinate system between instantiations   ',&
 !!    'callobj 1                                                           ',&
 !!    'rotate 45 z                                                         ',&
 !!    'callobj 1                                                           ',&

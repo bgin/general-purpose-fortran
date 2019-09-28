@@ -1,18 +1,18 @@
           program demo_random_number
-             implicit none
-             integer, allocatable :: seed(:)
-             integer              :: n
-             integer              :: first,last
-             integer              :: i
-             integer              :: rand_int
-             integer,allocatable  :: count(:)
-             real                 :: rand_val
-             call random_seed(size = n)
-             allocate(seed(n))
-             call random_seed(get=seed)
-             first=1
-             last=10
-             allocate(count(last-first+1))
+          implicit none
+          integer, allocatable :: seed(:)
+          integer              :: n
+          integer              :: first,last
+          integer              :: i
+          integer              :: rand_int
+          integer,allocatable  :: count(:)
+          real                 :: rand_val
+          call random_seed(size = n)
+          allocate(seed(n))
+          call random_seed(get=seed)
+          first=1
+          last=10
+          allocate(count(last-first+1))
           ! To have a discrete uniform distribution on the integers {first, first+1,
           ! ..., last-1, last} carve the continuous distribution up into last+1-first
           ! equal sized chunks, mapping each chunk to an integer.
@@ -33,19 +33,4 @@
                 endif
              enddo
              write(*,'(i0,1x,i0)')(i,count(i),i=1,size(count))
-             program demo_random_number
-
-       Sample output:
-
-              1 10003588 2 10000104 3 10000169 4 9997996 5 9995349 6 10001304 7 10001909 8 9999133 9 10000252 10 10000196
-
-STANDARD
-       [[Fortran 95]] and later
-
-CLASS
-       Subroutine
-
-SEE ALSO
-       [[random_seed]]
-
-                                                       September 08, 2019                                       random_number(3)
+          end program demo_random_number

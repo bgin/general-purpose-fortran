@@ -51,6 +51,8 @@ contains
 !!   Sample program
 !!
 !!       program demo_strgar3
+!!       use M_hybrid,     only : strgar3
+!!       use M_calculator, only : juown1
 !!       character(len=90) :: string
 !!       real              :: values(10,4)
 !!       rdum1=rnum0('ownmode(1)') ! allow user-define procedure calls from juown1
@@ -67,7 +69,8 @@ contains
 !!          write(*,*)'values(:,3)=',values(:inums,3)
 !!          write(*,*)'values(:,4)=',values(:inums,4)
 !!       enddo
-!!       end program demo_strgar3
+!!       end
+!!
 !!       subroutine juown1(func,iflen,args,iargstp,n,x,y,fval,ctmp,ier) ! extend functions available to the calculator routine
 !!       ! if the function owncode(1) is called this subroutine can be accessed to do user-written functions.
 !!       use M_journal, only : journal
@@ -97,6 +100,7 @@ contains
 !!          write(*,*)(args(i10),i10=1,n,1)
 !!       end select
 !!       end subroutine juown1
+!!       !end program demo_strgar3
 !===================================================================================================================================
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!

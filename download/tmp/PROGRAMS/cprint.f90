@@ -71,7 +71,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20170224>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Thu, Aug 29th, 2019 10:09:56 PM>',&
+'@(#)COMPILED:       Fri, Sep 20th, 2019 12:48:09 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -80,13 +80,13 @@ end subroutine help_version
 !-----------------------------------------------------------------------------------------------------------------------------------
 program cprint
 use M_kracken, only : kracken, igets,  sget, lget, sgets
-use M_kracken, only : IPvalue
 use M_strings, only : split
+use M_io, only : read_line
 implicit none
 
 character(len=*),parameter::ident_1="@(#)cprint(1f): filter to specified columns"
 
-character(len=IPvalue)             :: line
+character(len=:),allocatable       :: line
 character(len=:),allocatable       :: delimiters ! characters used to delimit columns
 character(len=:),allocatable       :: array(:)
 integer,allocatable                :: icols(:)
@@ -112,9 +112,7 @@ if(verbose)then
    write(*,'("COLUMNS=",*("[",i0,"]":","))')icols
 endif
 !-----------------------------------------------------------------------------------------------------------------------------------
-INFINITE: do
-   read(*,'(a)',iostat=ios) line
-   if(ios.ne.0)exit INFINITE
+INFINITE: do while (read_line(line)==0)
    call split(line,array,delimiters)             ! split line into columns
    isize=size(array)
    do i=1,size(icols)

@@ -1,4 +1,6 @@
              program demo_strgar3
+             use M_hybrid,     only : strgar3
+             use M_calculator, only : juown1
              character(len=90) :: string
              real              :: values(10,4)
              rdum1=rnum0('ownmode(1)') ! allow user-define procedure calls from juown1
@@ -15,4 +17,35 @@
                 write(*,*)'values(:,3)=',values(:inums,3)
                 write(*,*)'values(:,4)=',values(:inums,4)
              enddo
-             end program demo_strgar3
+             end
+
+             subroutine juown1(func,iflen,args,iargstp,n,x,y,fval,ctmp,ier) ! extend functions available to the calculator routine
+             ! if the function owncode(1) is called this subroutine can be accessed to do user-written functions.
+             use M_journal, only : journal
+             use m_calculator, only : x, y
+             integer,parameter :: dp=kind(0.0d0)
+             character(len=*)  :: func
+             integer           :: iflen
+             real(kind=dp)     :: args(100)
+             integer           :: iargstp(100)
+             integer           :: n
+             real(kind=dp)     :: fval
+             character(len=*)  :: ctmp
+             integer           :: ier
+             integer           :: i10
+             character(len=80) :: temp1
+             fval=0
+             select case (func)
+             case('e')
+                fval=errc(args(1),args(2),args(3))
+             case default
+                fval=errc(args(1),args(2),args(3))
+                call journal('sc', '*juown1* unknown function')
+                temp1='function name is ........'//func(1:iflen) ! some machines cannot concatenate a string being passed as an argument
+                call journal('sc',temp1)
+                call journal('sc','function name length is..',iflen)
+                call journal('sc','number of arguments .....',n)
+                write(*,*)(args(i10),i10=1,n,1)
+             end select
+             end subroutine juown1
+             !end program demo_strgar3

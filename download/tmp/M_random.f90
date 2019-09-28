@@ -1,3 +1,6 @@
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
 !>
 !!##NAME
 !!    M_random(3f) - [M_random::INTRO] Routines for generating random numbers and strings
@@ -1285,7 +1288,9 @@ intrinsic random_number
    do i=1,10
       ! assigned pseudo-random numbers from the uniform distribution in the interval 0 <= x < 1.
       call random_number(x)
-      write(*,'(g0,1x)',advance='no')x
+      if(unit_check_level.gt.0)then
+         write(*,'(g0,1x)',advance='no')x
+      endif
    enddo
    !!call unit_check('init_random_seed', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('init_random_seed',msg='')
@@ -1303,7 +1308,9 @@ intrinsic random_number
    do i=1,10
       ! assigned pseudo-random numbers from the uniform distribution in the interval 0 <= x < 1.
       call random_number(x)
-      write(*,'(g0,1x)',advance='no')x
+      if(unit_check_level.gt.0)then
+         write(*,'(g0,1x)',advance='no')x
+      endif
    enddo
    !!call unit_check('init_random_seed_by_dat', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('init_random_seed_by_dat',msg='')
@@ -1321,7 +1328,9 @@ intrinsic random_number
    do i=1,10
       ! assigned pseudo-random numbers from the uniform distribution in the interval 0 <= x < 1.
       call random_number(x)
-      write(*,'(g0,1x)',advance='no')x
+      if(unit_check_level.gt.0)then
+         write(*,'(g0,1x)',advance='no')x
+      endif
    enddo
    !!call unit_check('init_random_seed_by_system_clock', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('init_random_seed_by_system_clock',msg='')
@@ -1492,9 +1501,12 @@ integer(i8b)          :: i, t
    call unit_check_start('random_kiss64',msg='')
    do i = 1, 100000000
       t = random_kiss64()
-      if(mod(i,1000000+1)==1000000)write(*,*)i,' T=',T
+      if(unit_check_level.gt.0)then
+         if(mod(i,1000000+1)==1000000)write(*,*)i,' T=',T
+      endif
    enddo
-   call unit_check('random_kiss64', t .eq. 1666297717051644203_i8b, msg=msg('100 million calls to KILL',t,16662977170511644203_i8b))
+ !!call unit_check('random_kiss64', t .eq. 1666297717051644203_i8b, msg=msg('100 million calls to KILL',t,16662977170511644203_i8b))
+   call unit_check('random_kiss64', t .eq. 1666297717051644203_i8b, msg='100 million calls to KILL')
    call unit_check_done('random_kiss64',msg='')
 end subroutine test_random_kiss64
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -1512,14 +1524,23 @@ subroutine test_random_string()
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
 intrinsic random_number
-integer :: i
-real    :: x
+integer           :: i
+real              :: x
+integer,parameter :: tests=100
+character(len=8)  :: alpha(tests)
+integer           :: repeats
+   repeats=0
    call unit_check_start('random_string',msg='')
    call init_random_seed(218595421)
-   do i=1,24
-      write(*,*)random_string('ABCDEFGHIJKLMNOPQRSTUVWXYZ',8)
+   do i=1,tests
+      alpha(i)=random_string('ABCDEFGHIJKLMNOPQRSTUVWXYZ',8)
    enddo
-   !!call unit_check('random_string', 0.eq.0. msg=msg('checking',100))
+   do i=1,tests
+   if(.not.random_string('ABCDEFGHIJKLMNOPQRSTUVWXYZ',8).eq.alpha(i))then
+      repeats=repeats+1
+   endif
+   enddo
+   call unit_check('random_string', repeats.eq.tests,msg=msg('test if repeats with same seed',tests))
    call unit_check_done('random_string',msg='')
 end subroutine test_random_string
 !===================================================================================================================================
@@ -1528,3 +1549,6 @@ end subroutine test_suite_M_random
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 end module M_random
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
