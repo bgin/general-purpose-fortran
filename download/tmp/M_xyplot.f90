@@ -12468,7 +12468,7 @@ end subroutine priv_jusym
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    xy_getmark(3f) - [M_xyplot]get marker geometrie
+!!    xy_getmark(3f) - [M_xyplot] get marker geometrie
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION

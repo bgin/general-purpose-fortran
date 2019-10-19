@@ -20,11 +20,11 @@ help_text=[ CHARACTER(LEN=128) :: &
 'DESCRIPTION                                                                     ',&
 '   mat(1) is an interactive computer program that serves as a convenient        ',&
 '   "laboratory" for computations involving matrices. It provides easy access    ',&
-'   to matrix software developed by the LINPACK and EISPACK projects.  The       ',&
+'   to matrix software developed by the LINPACK and EISPACK projects. The        ',&
 '   capabilities range from standard tasks such as solving simultaneous linear   ',&
 '   equations and inverting matrices, through symmetric and nonsymmetric         ',&
 '   eigenvalue problems, to fairly sophisticated matrix tools such as the        ',&
-'   singular  value decomposition.                                               ',&
+'   singular value decomposition.                                                ',&
 '                                                                                ',&
 'OPTIONS                                                                         ',&
 '    --help     display this help and exit                                       ',&
@@ -141,11 +141,11 @@ end subroutine help_usage
 !!##DESCRIPTION
 !!    mat(1) is an interactive computer program that serves as a convenient
 !!    "laboratory" for computations involving matrices. It provides easy access
-!!    to matrix software developed by the LINPACK and EISPACK projects.  The
+!!    to matrix software developed by the LINPACK and EISPACK projects. The
 !!    capabilities range from standard tasks such as solving simultaneous linear
 !!    equations and inverting matrices, through symmetric and nonsymmetric
 !!    eigenvalue problems, to fairly sophisticated matrix tools such as the
-!!    singular  value decomposition.
+!!    singular value decomposition.
 !!
 !!##OPTIONS
 !!     --help     display this help and exit
@@ -262,7 +262,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 19910403>',&
 '@(#)AUTHOR:         John S. Urban; heavily based on the original by Cleve Moler>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Fri, Aug 30th, 2019 10:42:19 AM>',&
+'@(#)COMPILED:       Mon, Sep 30th, 2019 10:04:09 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

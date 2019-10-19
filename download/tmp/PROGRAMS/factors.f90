@@ -69,7 +69,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'       factors(1f) - [NUMBERS]display prime factors of numbers                  ',&
+'       factors(1f) - [NUMBERS] display prime factors of numbers                 ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '       factors [NUMBER]...                                                      ',&
@@ -124,7 +124,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!        factors(1f) - [NUMBERS]display prime factors of numbers
+!!        factors(1f) - [NUMBERS] display prime factors of numbers
 !!
 !!##SYNOPSIS
 !!
@@ -194,7 +194,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
 '@(#)UUID:           37a84d23-0b17-4cd5-bb09-54e23d2e66a6>',&
-'@(#)COMPILED:       Thu, Aug 29th, 2019 10:14:33 PM>',&
+'@(#)COMPILED:       Mon, Sep 30th, 2019 10:04:53 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

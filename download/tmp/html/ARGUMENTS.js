@@ -1,4 +1,8 @@
 function loadthem(){
+append("get_command_arguments_stack.3m_args.html");
+append("get_command_arguments_string.3m_args.html");
+append("get_namelist.3m_args.html");
+append("longest_command_argument.3m_args.html");
 append("ARGUMENTS.3.html");
 append("M_getopt.3.html");
 append("M_getopt_long.3.html");
@@ -6,8 +10,6 @@ append("M_kracken.3.html");
 append("dget.3.html");
 append("dgets.3.html");
 append("dissect.3.html");
-append("get_command_arguments_string.3.html");
-append("get_namelist.3.html");
 append("iget.3.html");
 append("igets.3.html");
 append("kracken.3.html");

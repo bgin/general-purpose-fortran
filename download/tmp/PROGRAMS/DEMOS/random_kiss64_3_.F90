@@ -8,7 +8,7 @@
 
               do i = 1, 100000000
                  t = random_kiss64()
-                 if(mod(i,1000000+1)==1000000)write(*,*)i,' T=',T
+                 if(mod(i,1000000_i8b+1_i8b)==1000000_i8b)write(*,*)i,' T=',T
               enddo
 
               if (t .eq. 1666297717051644203_i8b) then

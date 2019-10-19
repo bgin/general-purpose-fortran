@@ -6,7 +6,7 @@ use M_debug,   only: debug, io_debug
 use M_journal, only: journal
 use M_strings, only: upper, string_to_value, split, s2v, atleast
 use M_list,    only: locate, insert, replace
-use M_args,    only: get_command_arguments_string
+use M_args,    only: get_command_arguments_string, longest_command_argument
 use M_time,    only: now
 implicit none
 
@@ -48,8 +48,8 @@ character(len=*),parameter::ident_1="@(#)M_kracken(3fm): parse command line opti
 ! NOTE:   many parameters may be  reduced in size so as to just accommodate being used as a command line parser.
 !         In particular, some might want to change:
    logical,public            :: stop_command=.false.               ! indication to return stop_command as false in interactive mode
-   integer, parameter,public :: IPvalue=4096*16                    ! length of keyword value
-   integer, parameter,public :: IPverb=20                          ! length of verb
+   integer,parameter,public  :: IPvalue=4096*16                    ! length of keyword value
+   integer,parameter,public  :: IPverb=20                          ! length of verb
 !-----------------------------------------------------------------------------------------------------------------------------------
    integer, parameter        :: dp = kind(0.d0)
    integer, parameter        :: k_int = SELECTED_INT_KIND(9)       ! integer*4
@@ -62,8 +62,15 @@ character(len=*),parameter::ident_1="@(#)M_kracken(3fm): parse command line opti
    integer(kind=k_int),allocatable            :: dict_calls(:)     ! number of times this keyword stored on a call to parse
 !-----------------------------------------------------------------------------------------------------------------------------------
    character(len=1),save,public               :: kracken_comment='#'
-   character(len=:),public,allocatable        :: leftover          ! remaining command(s) on line
+   character(len=:),public,allocatable,save   :: leftover          ! remaining command(s) on line
    integer,public,save                        :: current_command_length=0 ! length of options for current command
+!-----------------------------------------------------------------------------------------------------------------------------------
+   public :: cmd_args_to_dictionary
+   public :: print_kracken_dictionary
+   public unnamed
+   public kracken_method
+   character(len=:),allocatable,save :: unnamed(:)
+   character(len=10),save            :: kracken_method='kracken'
 contains
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -1098,26 +1105,53 @@ character(len=*),intent(in)    :: string
 character(len=*),intent(in)    :: verb
 integer,intent(out),optional   :: error_return
 !-----------------------------------------------------------------------------------------------------------------------------------
-   character(len=:),allocatable   :: command
-   integer                        :: ier
+character(len=:),allocatable   :: command
+integer                        :: ier
+integer                      :: ibig
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(present(error_return))then
       error_return=0
    endif
+   ier=0
 !-----------------------------------------------------------------------------------------------------------------------------------
-   call get_command_arguments_string(command,ier)
-   if(debug) write(*,*)'KRACKEN ',trim(command)
-   if(ier.ne.0)then
-      call journal("*kracken* could not get command line arguments")
-      if(present(error_return))error_return=ier
-   else
-      call dissect(verb,string,command,ier)
+   ! no matter what method make sure this is allocated so user can query it
+   ! and so methods can use unnamed array without having to test it
+   if(allocated(unnamed))then
+      deallocate(unnamed)
+   endif
+   ibig=longest_command_argument() ! bug in gfortran. len=0 should be fine
+   allocate(character(len=ibig) ::unnamed(0))
+   unnamed=[character(len=ibig) ::]            ! kludge
+!-----------------------------------------------------------------------------------------------------------------------------------
+   !!call journal('sc','GOT HERE A KRACKEN_METHOD=',kracken_method,'VERB=',verb)
+   select case(upper(kracken_method))
+    case('ARGS')
+      call parse(trim(verb),string,'add')                ! initialize command
+      call cmd_args_to_dictionary(trim(verb))            ! process user command options
+      if(lget(trim(verb)//'_?'))then                     ! if -? option was present prompt for values
+         call menu(verb)
+      endif
       ! if calling procedure is not testing error flag stop program on error
       if(.not.present(error_return).and.ier.ne.0)then
-         call journal("*kracken* (V 20151212) STOPPING: error parsing arguments")
+         call journal("*kracken* (V 20191018) STOPPING: error parsing arguments using ARGS method")
          stop
       endif
-   endif
+    case default
+      call store(trim(verb)//'_?','.false.','add',ier)   ! all commands have the option -? to invoke prompt mode
+      call get_command_arguments_string(command,ier)
+      if(debug) call journal('sc','KRACKEN ',trim(command))
+      if(ier.ne.0)then
+         call journal("*kracken* could not get command line arguments")
+         if(present(error_return))error_return=ier
+      else
+         call dissect(verb,string,command,ier)
+         ! if calling procedure is not testing error flag stop program on error
+         if(.not.present(error_return).and.ier.ne.0)then
+            call journal("*kracken* (V 20191018) STOPPING: error parsing arguments using DEFAULT method")
+            stop
+         endif
+      endif
+   end select
 !-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine kracken
 !===================================================================================================================================
@@ -1249,7 +1283,7 @@ integer,intent(out),optional :: error_return
 !-----------------------------------------------------------------------------------------------------------------------------------
    integer                :: ier
 !-----------------------------------------------------------------------------------------------------------------------------------
-   if(debug) write(*,*)'START DISSECT ',trim(verb)//'::'//trim(init)//'::'//trim(pars)
+   if(debug) call journal('sc','START DISSECT ',trim(verb)//'::'//trim(init)//'::'//trim(pars))
 !-----------------------------------------------------------------------------------------------------------------------------------
    call store(trim(verb)//'_?','.false.','add',ier)   ! all commands have the option -? to invoke prompt mode
    call parse(trim(verb),init,'add')                  ! initialize command
@@ -1260,7 +1294,7 @@ integer,intent(out),optional :: error_return
    endif
    if(present(error_return))error_return=ier
 !-----------------------------------------------------------------------------------------------------------------------------------
-   if(debug) write(*,*)'END DISSECT ',trim(verb)//'::'//trim(init)//'::'//trim(pars)
+   if(debug) call journal('sc','END DISSECT ',trim(verb)//'::'//trim(init)//'::'//trim(pars))
 !-----------------------------------------------------------------------------------------------------------------------------------
 end subroutine dissect
 !===================================================================================================================================
@@ -1440,7 +1474,7 @@ integer                              ::  iend
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(.not.allocated(dict_verbs)) call initd()
 !-----------------------------------------------------------------------------------------------------------------------------------
-   if(debug) write(*,*)'PARSE ',trim(verb)//'::'//trim(string)//'::'//trim(allow)
+   if(debug) call journal('sc','PARSE ',trim(verb)//'::'//trim(string)//'::'//trim(allow))
 !-----------------------------------------------------------------------------------------------------------------------------------
    leftover=" "
    current_command_length=0
@@ -1789,7 +1823,7 @@ integer                            :: inew
    if(debug) write(*,*)'STORE ',trim(name1)//'::'//trim(l_value1)//'::'//trim(allow1)
 !-----------------------------------------------------------------------------------------------------------------------------------
    value=" "
-   name=" "
+   name=" "                                          ! compiler bug. KLUDGE
    allow=" "
    name=name1                                        ! store into a standard size variable for this type
 
@@ -1830,7 +1864,7 @@ integer                            :: inew
    else                                              ! did not find variable name but not allowed to add it
       ii=index(name,"_")
       call journal("########################################################")
-      call journal("error: UNKNOWN OPTION -"//name(ii+1:))
+      call journal("*store* error: UNKNOWN OPTION -"//name(ii+1:))
       if(ii > 0)then
          call journal(name(:ii-1)//" parameters are")
          do i10=1,size(dict_verbs)
@@ -1852,7 +1886,7 @@ integer                            :: inew
    ! note that this will prevent the keyword from being defined.
    indx=iabs(indx)  ! entry existed or was added
    if(indx.eq.0)then
-      write(*,*)'*store* error occurred. INDEX=0'
+      write(*,*)'*store* error: INDEX=0'
    elseif(value(1:4)  ==  "@LV@")then
       ! a leave-alone flag (for use by a 'defining' call)
       if(new  ==  0) then
@@ -2144,7 +2178,8 @@ character(len=*),intent(in)  :: verb
       case('v')                                            ! show version
         !call journal('Version 20140403')
         !call journal('Version 20151229')
-         call journal('Version 20160414')
+        !call journal('Version 20160414')
+         call journal('Version 20191018')
          cycle INFINITE
 !-----------------------------------------------------------------------------------------------------------------------------------
       case('n')                                            ! change next menu item
@@ -2499,7 +2534,6 @@ subroutine test_parse()
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
 character(len=:),allocatable  :: verb
-character(len=*),parameter    :: delimiters=' ;,'
 integer     :: i
 integer     :: ierr
 character(len=132) :: line
@@ -2615,8 +2649,6 @@ subroutine test_sgets()
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
 integer        :: ier
-character(len=:),allocatable :: c(:)
-integer        :: i
    call unit_check_start('sgets',msg=' direct tests of sgets(3f)')
    call store('MY_STRING1','100 0 -321','define',ier)
    call store('MY_STRING2',-1234,       'define',ier)
@@ -2666,11 +2698,175 @@ end subroutine test_suite_M_kracken
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
+subroutine cmd_args_to_dictionary(verb)
+
+character(len=*),parameter::ident_21="&
+&@(#)M_kracken::cmd_args_to_dictionary(3f): convert command line arguments to dictionary entries using alternate style"
+
+character(len=*),intent(in)  :: verb
+integer                      :: pointer
+character(len=:),allocatable :: lastkeyword
+integer                      :: i
+integer                      :: ilength, istatus, imax
+integer                      :: ibig
+character(len=:),allocatable :: current_argument
+character(len=:),allocatable :: current_argument_padded
+character(len=:),allocatable :: dummy
+character(len=:),allocatable :: oldvalue
+logical                      :: nomore
+logical                      :: keyword_single
+integer                      :: ierr
+! revisit this. Assuming .false. and .true. can only occur as values for a logical switch is not valid but is a low risk.
+! this could be particularly strange because .false. and .true. get converted to .true. to handle a duplicate logical switch
+   if(allocated(unnamed))then
+      deallocate(unnamed)
+   endif
+   ibig=longest_command_argument() ! bug in gfortran. len=0 should be fine
+   allocate(character(len=ibig) ::unnamed(0))
+   unnamed=[character(len=ibig) ::]            ! kludge
+
+   nomore=.false.
+   pointer=0
+   lastkeyword=' '
+   keyword_single=.true.
+   GET_ARGS: do i=1, command_argument_count()                                                        ! insert and replace entries
+      call get_command_argument(number=i,length=ilength,status=istatus)                              ! get next argument
+      if(istatus /= 0) then                                                                          ! stop program on error
+         call journal('sc','*prototype_and_cmd_args_to_nlist* error obtaining argument ',i,&
+            &'status=',istatus,&
+            &'length=',ilength)
+         exit GET_ARGS
+      else
+         if(allocated(current_argument))deallocate(current_argument)
+         ilength=max(ilength,1)
+         allocate(character(len=ilength) :: current_argument)
+         call get_command_argument(number=i,value=current_argument,length=ilength,status=istatus)    ! get next argument
+         if(istatus /= 0) then                                                                       ! stop program on error
+            call journal('sc','*prototype_and_cmd_args_to_nlist* error obtaining argument ',i,&
+               &'status=',istatus,&
+               &'length=',ilength,&
+               &'target length=',len(current_argument))
+            exit GET_ARGS
+          endif
+      endif
+
+      if(current_argument.eq.'--')then ! everything after this goes into the unnamed array
+         nomore=.true.
+         pointer=0
+         cycle
+      endif
+      dummy=current_argument//'   '
+      current_argument_padded=current_argument//'   '
+      if(.not.nomore.and.current_argument_padded(1:2).eq.'--'.and.index('0123456789.',dummy(3:3)).eq.0)then ! beginning of long word
+         keyword_single=.false.
+         if(lastkeyword.ne.'')then
+            call ifnull()
+         endif
+         call locate(dict_verbs,verb//'_'//current_argument_padded(3:),pointer)
+         if(pointer.le.0)then
+            call journal('sc','*cmd_args_to_dictionary* UNKNOWN LONG KEYWORD: ',current_argument)
+            call print_kracken_dictionary('OPTIONS:')
+            stop 1
+         endif
+         lastkeyword=verb//'_'//trim(current_argument_padded(3:))
+      elseif(.not.nomore .and. current_argument_padded(1:1).eq.'-' .and. index('0123456789.',dummy(2:2)).eq.0 .and. &
+         & current_argument_padded.ne.'-')then  ! short word
+         keyword_single=.true.
+         if(lastkeyword.ne.'')then
+            call ifnull()
+         endif
+         call locate(dict_verbs,verb//'_'//current_argument_padded(2:),pointer)
+         if(pointer.le.0)then
+            call journal('sc','*cmd_args_to_dictionary* UNKNOWN SHORT KEYWORD: ',current_argument)
+            call print_kracken_dictionary('OPTIONS:')
+            stop 2
+         endif
+         lastkeyword=verb//'_'//trim(current_argument_padded(2:))
+      elseif(pointer.eq.0)then                                                                           ! unnamed arguments
+         imax=max(len(unnamed),len(current_argument))
+         !!write(*,*)'GOT HERE 4 UNNAMED:',current_argument,size(unnamed)
+         unnamed=[character(len=imax) :: unnamed,current_argument]
+      else
+         if(debug)then
+            call journal('sc','POINTER=',pointer,' KEYWORD=',dict_verbs(pointer),' VALUE=',current_argument,' LENGTH=',ilength)
+         endif
+         oldvalue=sget(dict_verbs(pointer))//'  '
+         if(upper(oldvalue).eq.'.F'.or.upper(oldvalue).eq.'.T')then  ! assume boolean parameter
+            if(current_argument.ne.' ')then
+               imax=max(len(unnamed),len(current_argument))
+               !!write(*,*)'GOT HERE 5',current_argument,size(unnamed)
+               unnamed=[character(len=imax) :: unnamed,current_argument]
+            endif
+            current_argument='.true.'
+         endif
+         !!call journal('sc','GOT HERE D KEY=',dict_verbs(pointer),'VALUE=',current_argument,&
+         !!   &'OLDVALUE=',oldvalue,'LASTKEYWORD=',lastkeyword)
+         if(upper(oldvalue).eq.'.FALSE.'.or.upper(oldvalue).eq.'.TRUE.')then
+            imax=max(len(unnamed),len(current_argument))
+            unnamed=[character(len=imax) :: unnamed,current_argument]
+            call store(dict_verbs(pointer),'.true.','replace',ierr)
+         else
+            call store(dict_verbs(pointer),current_argument,'replace',ierr)
+         endif
+         pointer=0
+         lastkeyword=''
+      endif
+   enddo GET_ARGS
+   if(lastkeyword.ne.'')then
+      call ifnull()
+   endif
+
+contains
+subroutine ifnull()
+   oldvalue=sget(lastkeyword)//'  '
+   if(upper(oldvalue).eq.'.F'.or.upper(oldvalue).eq.'.T')then
+      !!call journal('sc','GOT HERE E','KEY=',dict_verbs(pointer),'VALUE ',oldvalue,'TO T',' LASTKEYWORD=',lastkeyword)
+      call store(lastkeyword,'.true.','replace',ierr)
+   else
+      !!call journal('sc','GOT HERE F','KEY=',dict_verbs(pointer),'VALUE ',oldvalue,'TO BLANK',' LASTKEYWORD=',lastkeyword)
+      if(upper(oldvalue).eq.'.FALSE.'.or.upper(oldvalue).eq.'.TRUE')then
+         call store(lastkeyword,'.true.','replace',ierr)
+      else
+         call store(lastkeyword,' ','replace',ierr)
+      endif
+   endif
+end subroutine ifnull
+
+end subroutine cmd_args_to_dictionary
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+subroutine print_kracken_dictionary(header)
+character(len=*),intent(in) :: header
+integer                     :: i
+   if(allocated(dict_verbs))then
+      if(size(dict_verbs).gt.0)then
+         write(*,'(a,t21,1x,a5,a5,1x,a)')'OPTION','COUNT','LEN','VALUE'
+         do i=1,size(dict_verbs)
+            write(*,'(a,t21,i5,1x,i5,1x,"[",a,"]")'), dict_verbs(i), dict_calls(i), dict_lens(i),trim(dict_vals(i))
+         enddo
+      endif
+   endif
+   if(allocated(unnamed))then
+      if(size(unnamed).gt.0)then
+         write(*,*)'UNNAMED:'
+         do i=1,size(unnamed)
+            write(*,'(i5.5,"[",a,"]")')i,unnamed(i)
+         enddo
+      endif
+   endif
+end subroutine print_kracken_dictionary
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
 end module M_kracken
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 ! HISTORY:
+!-----------------------------------------------------------------------------------------------------------------------------------
+! updated 20191018
+! added 'kracken_method' and the 'args' method for users that prefer a more 1-like feel requiring quoted arguments on input
 !-----------------------------------------------------------------------------------------------------------------------------------
 ! updated 20160414
 ! multiple uses of a keyword appends values together with a space in between rather than taking right-most definition

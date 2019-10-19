@@ -87,8 +87,12 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 </td>
 <tr><td><a href="M_args.f90">M_args.f90</a></td>
 <td>
-	M_kracken::get_command_arguments_string(3f): return all command arguments as an allocated string<br/>
-	M_kracken::get_namelist(3f): return all command arguments as a NAMELIST(3f) string<br/>
+	M_args::get_command_arguments_string(3f): return all command arguments as an allocated string<br/>
+	M_args::get_namelist(3f): return all command arguments as a NAMELIST(3f) string to read<br/>
+	M_args::get_command_arguments_as_raw_namelist(3f): return all command arguments as a NAMELIST(3f) string<br/>
+	M_args::prototype_to_dictionary(3f): parse user command and store tokens into dictionary<br/>
+	M_args::prototype_and_cmd_args_to_nlist: create dictionary from prototype (if not null) and update from command line arguments<br/>
+	M_args::namelist_to_dictionary(3f): parse user command and store tokens into dictionary<br/>
 </td>
 <tr><td><a href="M_bessel.f90">M_bessel.f90</a></td>
 <td>
@@ -335,6 +339,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_kracken::parse(3f): parse user command and store tokens into Language Dictionary<br/>
 	M_kracken::store(3f): replace or add dictionary entry name  and value (if allow='add' add name if necessary)<br/>
 	M_kracken::show(3f): dump dictionary entries<br/>
+	M_kracken::cmd_args_to_dictionary(3f): convert command line arguments to dictionary entries using alternate style<br/>
 </td>
 <tr><td><a href="M_list.f90">M_list.f90</a></td>
 <td>
@@ -540,6 +545,8 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_sort::unique(3f): assuming an array is sorted, return array with duplicate values removed<br/>
 	M_sort::swap(3f): swap two variables of like type (real,integer,complex,character,double)<br/>
 	M_sort::sort_quick_rx(3f): indexed hybrid quicksort of a real array<br/>
+	M_sort::tree_insert(3f): sort a number of integers by building a tree, sorted in infix order<br/>
+	M_sort::tree_print(3f):<br/>
 </td>
 <tr><td><a href="M_sqlite.f90">M_sqlite.f90</a></td>
 <td>

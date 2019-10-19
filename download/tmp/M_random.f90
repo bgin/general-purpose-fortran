@@ -400,7 +400,7 @@ end function scramble
 !!
 !!        do i = 1, 100000000
 !!           t = random_kiss64()
-!!           if(mod(i,1000000+1)==1000000)write(*,*)i,' T=',T
+!!           if(mod(i,1000000_i8b+1_i8b)==1000000_i8b)write(*,*)i,' T=',T
 !!        enddo
 !!
 !!        if (t .eq. 1666297717051644203_i8b) then
@@ -1502,7 +1502,7 @@ integer(i8b)          :: i, t
    do i = 1, 100000000
       t = random_kiss64()
       if(unit_check_level.gt.0)then
-         if(mod(i,1000000+1)==1000000)write(*,*)i,' T=',T
+         if(mod(i,1000000_i8b+1_i8b)==1000000_i8b)write(*,*)i,' T=',T
       endif
    enddo
  !!call unit_check('random_kiss64', t .eq. 1666297717051644203_i8b, msg=msg('100 million calls to KILL',t,16662977170511644203_i8b))

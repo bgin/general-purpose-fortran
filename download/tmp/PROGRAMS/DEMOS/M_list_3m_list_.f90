@@ -18,7 +18,7 @@
            call update('a','value of a again')
            ! show array
            write(*,'(*(a,"==>","[",a,"]",/))')(trim(keywords(i)),values(i)(:counts(i)),i=1,size(keywords))
-           ! remote some entries
+           ! remove some entries
            call update('a')
            call update('c')
            write(*,'(*(a,"==>","[",a,"]",/))')(trim(keywords(i)),values(i)(:counts(i)),i=1,size(keywords))

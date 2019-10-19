@@ -282,7 +282,7 @@ integer,intent(in),optional    :: lun
 end subroutine csv_write_row
 !>
 !!##NAME
-!!   csv_write_table(3f) - [M_csv]Write a two-dimensional array of items to the CSV-fil
+!!   csv_write_table(3f) - [M_csv] Write a two-dimensional array of items to the CSV-fil
 !!##SYNOPSIS
 !!
 !!##OPTIONS

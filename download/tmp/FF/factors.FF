@@ -61,7 +61,7 @@ end program find_prime_factors
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file factors.1.man
 NAME
-       factors(1f) - [NUMBERS]display prime factors of numbers
+       factors(1f) - [NUMBERS] display prime factors of numbers
 
 SYNOPSIS
        factors [NUMBER]...

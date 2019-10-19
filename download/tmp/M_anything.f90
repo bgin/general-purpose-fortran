@@ -20,11 +20,14 @@ integer,parameter        :: k(38)=[(selected_int_kind(i),i=1,38)]
 integer,parameter        :: r(34)=[(selected_int_kind(i),i=1,34)]
 integer,public,parameter :: real256=r(34)
 
+integer,parameter        :: dp=kind(0.0d0)
+
 public anyinteger_to_64bit  ! convert integer parameter of any kind to 64-bit integer
 public anyscalar_to_real    ! convert integer or real parameter of any kind to real
 public anyscalar_to_double  ! convert integer or real parameter of any kind to doubleprecision
 public test_suite_M_anything
 public anything_to_bytes
+public bytes_to_anything
 interface anything_to_bytes
    module procedure anything_to_bytes_arr
    module procedure anything_to_bytes_scalar
@@ -135,6 +138,28 @@ contains
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
+subroutine bytes_to_anything(chars,anything)
+   character(len=1),allocatable :: chars(:)
+   class(*) :: anything
+   select type(anything)
+    type is (character(len=*));     anything=transfer(chars,anything)
+    type is (complex);              anything=transfer(chars,anything)
+    type is (complex(kind=dp));     anything=transfer(chars,anything)
+    type is (integer(kind=int8));   anything=transfer(chars,anything)
+    type is (integer(kind=int16));  anything=transfer(chars,anything)
+    type is (integer(kind=int32));  anything=transfer(chars,anything)
+    type is (integer(kind=int64));  anything=transfer(chars,anything)
+    type is (real(kind=real32));    anything=transfer(chars,anything)
+    type is (real(kind=real64));    anything=transfer(chars,anything)
+    type is (real(kind=real128));   anything=transfer(chars,anything)
+    type is (logical);              anything=transfer(chars,anything)
+    class default
+      stop 'crud. bytes_to_anything(1) does not know about this type'
+   end select
+end subroutine bytes_to_anything
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
 !>
 !!##NAME
 !!    anything_to_bytes(3f) - [M_anything] convert standard types to bytes (character(len=1):: array(:)
@@ -217,6 +242,7 @@ character(len=1),allocatable :: chars(:)
 
     type is (character(len=*));     chars=transfer(anything,chars)
     type is (complex);              chars=transfer(anything,chars)
+    type is (complex(kind=dp));     chars=transfer(anything,chars)
     type is (integer(kind=int8));   chars=transfer(anything,chars)
     type is (integer(kind=int16));  chars=transfer(anything,chars)
     type is (integer(kind=int32));  chars=transfer(anything,chars)
@@ -224,6 +250,9 @@ character(len=1),allocatable :: chars(:)
     type is (real(kind=real32));    chars=transfer(anything,chars)
     type is (real(kind=real64));    chars=transfer(anything,chars)
     type is (real(kind=real128));   chars=transfer(anything,chars)
+    type is (logical);              chars=transfer(anything,chars)
+    class default
+      stop 'crud. anything_to_bytes_arr(1) does not know about this type'
 
    end select
 end function anything_to_bytes_arr
@@ -239,6 +268,7 @@ character(len=1),allocatable :: chars(:)
 
     type is (character(len=*));     chars=transfer(anything,chars)
     type is (complex);              chars=transfer(anything,chars)
+    type is (complex(kind=dp));     chars=transfer(anything,chars)
     type is (integer(kind=int8));   chars=transfer(anything,chars)
     type is (integer(kind=int16));  chars=transfer(anything,chars)
     type is (integer(kind=int32));  chars=transfer(anything,chars)
@@ -246,6 +276,9 @@ character(len=1),allocatable :: chars(:)
     type is (real(kind=real32));    chars=transfer(anything,chars)
     type is (real(kind=real64));    chars=transfer(anything,chars)
     type is (real(kind=real128));   chars=transfer(anything,chars)
+    type is (logical);              chars=transfer(anything,chars)
+    class default
+      stop 'crud. anything_to_bytes_scalar(1) does not know about this type'
 
    end select
 end function  anything_to_bytes_scalar

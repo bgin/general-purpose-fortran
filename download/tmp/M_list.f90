@@ -70,7 +70,7 @@
 !!     call update('a','value of a again')
 !!     ! show array
 !!     write(*,'(*(a,"==>","[",a,"]",/))')(trim(keywords(i)),values(i)(:counts(i)),i=1,size(keywords)
-!!     ! remote some entries
+!!     ! remove some entries
 !!     call update('a')
 !!     call update('c')
 !!     write(*,'(*(a,"==>","[",a,"]",/))')(trim(keywords(i)),values(i)(:counts(i)),i=1,size(keywords)
@@ -142,6 +142,7 @@
 !===================================================================================================================================
 module M_list
 use M_debug, only : debug
+use iso_fortran_env, only : stderr=>ERROR_UNIT,stdout=>OUTPUT_UNIT    ! access computing environment
 implicit none
 private
 
@@ -155,16 +156,19 @@ public insert        ! [M_list] insert entry into a sorted allocatable array at 
    private insert_d
    private insert_r
    private insert_i
+   private insert_l
 public replace       ! [M_list] replace entry by index from a sorted allocatable array if it is present
    private replace_c
    private replace_d
    private replace_r
    private replace_i
+   private replace_l
 public remove        ! [M_list] delete entry by index from a sorted allocatable array if it is present
    private remove_c
    private remove_d
    private remove_r
    private remove_i
+   private remove_l
 
 character(len=*),parameter::ident_1="&
 &@(#)M_list::locate(3f): Generic subroutine locates where element is or should be in sorted allocatable array"
@@ -175,19 +179,19 @@ end interface
 character(len=*),parameter::ident_2="&
 &@(#)M_list::insert(3f): Generic subroutine inserts element into allocatable array at specified position"
 interface insert
-   module procedure insert_c, insert_d, insert_r, insert_i
+   module procedure insert_c, insert_d, insert_r, insert_i, insert_l
 end interface
 
 character(len=*),parameter::ident_3="&
 &@(#)M_list::replace(3f): Generic subroutine replaces element from allocatable array at specified position"
 interface replace
-   module procedure replace_c, replace_d, replace_r, replace_i
+   module procedure replace_c, replace_d, replace_r, replace_i, replace_l
 end interface
 
 character(len=*),parameter::ident_4="&
 &@(#)M_list::remove(3f): Generic subroutine deletes element from allocatable array at specified position"
 interface remove
-   module procedure remove_c, remove_d, remove_r, remove_i
+   module procedure remove_c, remove_d, remove_r, remove_i, remove_l
 end interface
 
 public test_suite_m_list
@@ -348,7 +352,7 @@ integer                                 :: error
       list=[character(len=max(len_trim(value),2)) :: ]
    endif
    arraysize=size(list)
-   if(debug)write(*,*)'START LOCATE_C ARRAYSIZE=',size(list)
+   if(debug)write(stderr,*)'*locate_c* START ARRAYSIZE=',size(list)
 
    error=0
    if(arraysize.eq.0)then
@@ -395,13 +399,13 @@ integer                                 :: error
    if(present(ier))then
       ier=error
    else if(error.ne.0)then
-      write(*,*)message//' VALUE=',trim(value)//' PLACE=',place
+      write(stderr,*)message//' VALUE=',trim(value)//' PLACE=',place
       stop 1
    endif
    if(present(errmsg))then
       errmsg=message
    endif
-   if(debug)write(*,*)'END LOCATE_C PLACE=',place,' ARRAYSIZE=',size(list),' LENGTH=',len(list)
+   if(debug)write(stderr,*)'*locate_c* END PLACE=',place,' ARRAYSIZE=',size(list),' LENGTH=',len(list)
 end subroutine locate_c
 subroutine locate_d(list,value,place,ier,errmsg)
 
@@ -429,7 +433,7 @@ integer                                :: error
       list=[doubleprecision :: ]
    endif
    arraysize=size(list)
-   if(debug)write(*,*)'START LOCATE_D ARRAYSIZE=',size(list)
+   if(debug)write(stderr,*)'*locate_d* START ARRAYSIZE=',size(list)
 
    error=0
    if(arraysize.eq.0)then
@@ -476,13 +480,13 @@ integer                                :: error
    if(present(ier))then
       ier=error
    else if(error.ne.0)then
-      write(*,*)message//' VALUE=',value,' PLACE=',place
+      write(stderr,*)message//' VALUE=',value,' PLACE=',place
       stop 1
    endif
    if(present(errmsg))then
       errmsg=message
    endif
-   if(debug)write(*,*)'END LOCATE_D PLACE=',place,' ARRAYSIZE=',size(list)
+   if(debug)write(stderr,*)'*locate_d* END PLACE=',place,' ARRAYSIZE=',size(list)
 end subroutine locate_d
 subroutine locate_r(list,value,place,ier,errmsg)
 
@@ -510,7 +514,7 @@ integer                                :: error
       list=[real :: ]
    endif
    arraysize=size(list)
-   if(debug)write(*,*)'START LOCATE_R ARRAYSIZE=',size(list)
+   if(debug)write(stderr,*)'*locate_r* START ARRAYSIZE=',size(list)
 
    error=0
    if(arraysize.eq.0)then
@@ -557,13 +561,13 @@ integer                                :: error
    if(present(ier))then
       ier=error
    else if(error.ne.0)then
-      write(*,*)message//' VALUE=',value,' PLACE=',place
+      write(stderr,*)message//' VALUE=',value,' PLACE=',place
       stop 1
    endif
    if(present(errmsg))then
       errmsg=message
    endif
-   if(debug)write(*,*)'END LOCATE_R PLACE=',place,' ARRAYSIZE=',size(list)
+   if(debug)write(stderr,*)'*locate_r* END PLACE=',place,' ARRAYSIZE=',size(list)
 end subroutine locate_r
 subroutine locate_i(list,value,place,ier,errmsg)
 
@@ -591,7 +595,7 @@ integer                                :: error
       list=[integer :: ]
    endif
    arraysize=size(list)
-   if(debug)write(*,*)'START LOCATE_I ARRAYSIZE=',size(list)
+   if(debug)write(stderr,*)'*locate_i* START ARRAYSIZE=',size(list)
 
    error=0
    if(arraysize.eq.0)then
@@ -638,13 +642,13 @@ integer                                :: error
    if(present(ier))then
       ier=error
    else if(error.ne.0)then
-      write(*,*)message//' VALUE=',value,' PLACE=',place
+      write(stderr,*)message//' VALUE=',value,' PLACE=',place
       stop 1
    endif
    if(present(errmsg))then
       errmsg=message
    endif
-   if(debug)write(*,*)'END LOCATE_I PLACE=',place,' ARRAYSIZE=',size(list)
+   if(debug)write(stderr,*)'*locate_i* END PLACE=',place,' ARRAYSIZE=',size(list)
 end subroutine locate_i
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
@@ -717,7 +721,7 @@ character(len=*),parameter::ident_9="@(#)M_list::remove_c(3fp): remove string fr
 character(len=:),allocatable :: list(:)
 integer,intent(in)           :: place
 integer                      :: ii, end
-   if(debug) write(*,*)'START REMOVE_C PLACE=',place,' ORIGINALSIZE=',size(list)
+   if(debug) write(stderr,*)'*remove_c* START PLACE=',place,' ORIGINALSIZE=',size(list)
    if(.not.allocated(list))then
       list=[character(len=2) :: ]
    endif
@@ -729,7 +733,7 @@ integer                      :: ii, end
    else
       list=[character(len=ii) :: list(:place-1), list(place+1:) ]
    endif
-   if(debug)write(*,*)'END REMOVE_C PLACE=',place,' NEWSIZE=',size(list),' LENGTH=',len(list)
+   if(debug)write(stderr,*)'*remove_c* END PLACE=',place,' NEWSIZE=',size(list),' LENGTH=',len(list)
 end subroutine remove_c
 subroutine remove_d(list,place)
 
@@ -739,7 +743,7 @@ character(len=*),parameter::ident_10="&
 doubleprecision,allocatable  :: list(:)
 integer,intent(in)           :: place
 integer                      :: end
-   if(debug) write(*,*)'START REMOVE_D PLACE=',place,' ORIGINALSIZE=',size(list)
+   if(debug) write(stderr,*)'*remove_d* START PLACE=',place,' ORIGINALSIZE=',size(list)
    if(.not.allocated(list))then
            list=[doubleprecision :: ]
    endif
@@ -750,7 +754,7 @@ integer                      :: end
    else
       list=[ list(:place-1), list(place+1:) ]
    endif
-   if(debug)write(*,*)'END REMOVE_D PLACE=',place,' NEWSIZE=',size(list)
+   if(debug)write(stderr,*)'*remove_d* END PLACE=',place,' NEWSIZE=',size(list)
 
 end subroutine remove_d
 subroutine remove_r(list,place)
@@ -760,7 +764,7 @@ character(len=*),parameter::ident_11="@(#)M_list::remove_r(3fp): remove value fr
 real,allocatable    :: list(:)
 integer,intent(in)  :: place
 integer             :: end
-   if(debug) write(*,*)'START REMOVE_R PLACE=',place,' ORIGINALSIZE=',size(list)
+   if(debug) write(stderr,*)'*remove_r* START PLACE=',place,' ORIGINALSIZE=',size(list)
    if(.not.allocated(list))then
       list=[real :: ]
    endif
@@ -771,17 +775,39 @@ integer             :: end
    else
       list=[ list(:place-1), list(place+1:) ]
    endif
-   if(debug)write(*,*)'END REMOVE_R PLACE=',place,' NEWSIZE=',size(list)
+   if(debug)write(stderr,*)'*remove_r* END PLACE=',place,' NEWSIZE=',size(list)
 
 end subroutine remove_r
+subroutine remove_l(list,place)
+
+character(len=*),parameter::ident_12="@(#)M_list::remove_l(3fp): remove value from allocatable array at specified position"
+
+logical,allocatable    :: list(:)
+integer,intent(in)     :: place
+integer                :: end
+
+   if(debug) write(stderr,*)'*remove_l* START PLACE=',place,' ORIGINALSIZE=',size(list)
+   if(.not.allocated(list))then
+      list=[logical :: ]
+   endif
+   end=size(list)
+   if(place.le.0.or.place.gt.end)then                       ! index out of bounds of array
+   elseif(place.eq.end)then                                 ! remove from array
+      list=[ list(:place-1)]
+   else
+      list=[ list(:place-1), list(place+1:) ]
+   endif
+   if(debug)write(stderr,*)'*remove_l* END PLACE=',place,' NEWSIZE=',size(list)
+
+end subroutine remove_l
 subroutine remove_i(list,place)
 
-character(len=*),parameter::ident_12="@(#)M_list::remove_i(3fp): remove value from allocatable array at specified position"
+character(len=*),parameter::ident_13="@(#)M_list::remove_i(3fp): remove value from allocatable array at specified position"
 integer,allocatable    :: list(:)
 integer,intent(in)     :: place
 integer                :: end
 
-   if(debug) write(*,*)'START REMOVE_I PLACE=',place,' ORIGINALSIZE=',size(list)
+   if(debug) write(stderr,*)'*remove_i* START PLACE=',place,' ORIGINALSIZE=',size(list)
    if(.not.allocated(list))then
       list=[integer :: ]
    endif
@@ -792,7 +818,7 @@ integer                :: end
    else
       list=[ list(:place-1), list(place+1:) ]
    endif
-   if(debug)write(*,*)'END REMOVE_I PLACE=',place,' NEWSIZE=',size(list)
+   if(debug)write(stderr,*)'*remove_i* END PLACE=',place,' NEWSIZE=',size(list)
 
 end subroutine remove_i
 !===================================================================================================================================
@@ -892,7 +918,7 @@ end subroutine remove_i
 subroutine replace_c(list,value,place)
 use M_time, only : now
 
-character(len=*),parameter::ident_13="@(#)M_list::replace_c(3fp): replace string in allocatable string array at specified position"
+character(len=*),parameter::ident_14="@(#)M_list::replace_c(3fp): replace string in allocatable string array at specified position"
 
 character(len=*),intent(in)  :: value
 character(len=:),allocatable :: list(:)
@@ -901,14 +927,14 @@ integer,intent(in)           :: place
 integer                      :: ii
 integer                      :: tlen
 integer                      :: end
-   if(debug) write(*,*)'START REPLACE_C VALUE=',trim(value),' PLACE=',place,' ORIGINALSIZE=',size(list)
+   if(debug) write(stderr,*)'*replace_c* START VALUE=',trim(value),' PLACE=',place,' ORIGINALSIZE=',size(list)
    if(.not.allocated(list))then
       list=[character(len=max(len_trim(value),2)) :: ]
    endif
    tlen=len_trim(value)
    end=size(list)
    if(place.lt.0.or.place.gt.end)then
-           write(*,*)'*replace_c* error: index out of range. end=',end,' index=',place
+           write(stderr,*)'*replace_c* error: index out of range. end=',end,' index=',place
    elseif(len_trim(value).le.len(list))then
       list(place)=value
    else  ! increase length of variable
@@ -917,18 +943,18 @@ integer                      :: end
       list=kludge
       list(place)=value
    endif
-   if(debug)write(*,*)'END REPLACE_C VALUE=',trim(value),' PLACE=',place,' NEWSIZE=',size(list),' LENGTH=',len(list)
+   if(debug)write(stderr,*)'*replace_c* END VALUE=',trim(value),' PLACE=',place,' NEWSIZE=',size(list),' LENGTH=',len(list)
 end subroutine replace_c
 subroutine replace_d(list,value,place)
 
-character(len=*),parameter::ident_14="&
+character(len=*),parameter::ident_15="&
 &@(#)M_list::replace_d(3fp): place doubleprecision value into allocatable array at specified position"
 
 doubleprecision,intent(in)   :: value
 doubleprecision,allocatable  :: list(:)
 integer,intent(in)           :: place
 integer                      :: end
-   if(debug) write(*,*)'START REPLACE_D VALUE=',value,' PLACE=',place,' ORIGINALSIZE=',size(list)
+   if(debug) write(stderr,*)'*replace_d* START VALUE=',value,' PLACE=',place,' ORIGINALSIZE=',size(list)
    if(.not.allocated(list))then
            list=[doubleprecision :: ]
    endif
@@ -938,19 +964,19 @@ integer                      :: end
    elseif(place.gt.0.and.place.le.end)then
       list(place)=value
    else                                                      ! put in middle of array
-      write(*,*)'*replace_d* error: index out of range. end=',end,' index=',place
+      write(stderr,*)'*replace_d* error: index out of range. end=',end,' index=',place
    endif
-   if(debug)write(*,*)'END REPLACE_I VALUE=',value,' PLACE=',place,' NEWSIZE=',size(list)
+   if(debug)write(stderr,*)'*replace_d* END VALUE=',value,' PLACE=',place,' NEWSIZE=',size(list)
 end subroutine replace_d
 subroutine replace_r(list,value,place)
 
-character(len=*),parameter::ident_15="@(#)M_list::replace_r(3fp): place value into allocatable array at specified position"
+character(len=*),parameter::ident_16="@(#)M_list::replace_r(3fp): place value into allocatable array at specified position"
 
 real,intent(in)       :: value
 real,allocatable      :: list(:)
 integer,intent(in)    :: place
 integer               :: end
-   if(debug) write(*,*)'START REPLACE_R VALUE=',value,' PLACE=',place,' ORIGINALSIZE=',size(list)
+   if(debug) write(stderr,*)'*replace_r* START REPLACE_R VALUE=',value,' PLACE=',place,' ORIGINALSIZE=',size(list)
    if(.not.allocated(list))then
       list=[real :: ]
    endif
@@ -960,13 +986,35 @@ integer               :: end
    elseif(place.gt.0.and.place.le.end)then
       list(place)=value
    else                                                      ! put in middle of array
-      write(*,*)'*replace_r* error: index out of range. end=',end,' index=',place
+      write(stderr,*)'*replace_r* error: index out of range. end=',end,' index=',place
    endif
-   if(debug)write(*,*)'END REPLACE_I VALUE=',value,' PLACE=',place,' NEWSIZE=',size(list)
+   if(debug)write(stderr,*)'*replace_r* END REPLACE_R VALUE=',value,' PLACE=',place,' NEWSIZE=',size(list)
 end subroutine replace_r
+subroutine replace_l(list,value,place)
+
+character(len=*),parameter::ident_17="@(#)M_list::replace_l(3fp): place value into allocatable array at specified position"
+
+logical,allocatable   :: list(:)
+logical,intent(in)    :: value
+integer,intent(in)    :: place
+integer               :: end
+   if(.not.allocated(list))then
+      list=[logical :: ]
+   endif
+   end=size(list)
+   if(debug)write(stderr,*)'*replace_l* START REPLACE_L VALUE=',value,' PLACE=',place,' ORIGINALSIZE=',size(list)
+   if(end.eq.0)then                                          ! empty array
+      list=[value]
+   elseif(place.gt.0.and.place.le.end)then
+      list(place)=value
+   else                                                      ! put in middle of array
+      write(stderr,*)'*replace_l* error: index out of range. end=',end,' index=',place
+   endif
+   if(debug)write(stderr,*)'*replace_l* END REPLACE_L VALUE=',value,' PLACE=',place,' NEWSIZE=',size(list)
+end subroutine replace_l
 subroutine replace_i(list,value,place)
 
-character(len=*),parameter::ident_16="@(#)M_list::replace_i(3fp): place value into allocatable array at specified position"
+character(len=*),parameter::ident_18="@(#)M_list::replace_i(3fp): place value into allocatable array at specified position"
 
 integer,intent(in)    :: value
 integer,allocatable   :: list(:)
@@ -976,15 +1024,15 @@ integer               :: end
       list=[integer :: ]
    endif
    end=size(list)
-   if(debug)write(*,*)'START REPLACE_I VALUE=',value,' PLACE=',place,' ORIGINALSIZE=',size(list)
+   if(debug)write(stderr,*)'*replace_i* START VALUE=',value,' PLACE=',place,' ORIGINALSIZE=',size(list)
    if(end.eq.0)then                                          ! empty array
       list=[value]
    elseif(place.gt.0.and.place.le.end)then
       list(place)=value
    else                                                      ! put in middle of array
-      write(*,*)'*replace_i* error: index out of range. end=',end,' index=',place
+      write(stderr,*)'*replace_i* error: index out of range. end=',end,' index=',place
    endif
-   if(debug)write(*,*)'END REPLACE_I VALUE=',value,' PLACE=',place,' NEWSIZE=',size(list)
+   if(debug)write(stderr,*)'*replace_i* END VALUE=',value,' PLACE=',place,' NEWSIZE=',size(list)
 end subroutine replace_i
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
@@ -1074,7 +1122,7 @@ end subroutine replace_i
 subroutine insert_c(list,value,place)
 use M_time, only : now
 
-character(len=*),parameter::ident_17="@(#)M_list::insert_c(3fp): place string into allocatable string array at specified position"
+character(len=*),parameter::ident_19="@(#)M_list::insert_c(3fp): place string into allocatable string array at specified position"
 
 character(len=*),intent(in)  :: value
 character(len=:),allocatable :: list(:)
@@ -1082,7 +1130,7 @@ character(len=:),allocatable :: kludge(:)
 integer,intent(in)           :: place
 integer                      :: ii
 integer                      :: end
-   if(debug) write(*,*)'START INSERT_C VALUE=',trim(value),' PLACE=',place,' ORIGINALSIZE=',size(list)
+   if(debug) write(stderr,*)'*insert_c* START VALUE=',trim(value),' PLACE=',place,' ORIGINALSIZE=',size(list)
 
    if(.not.allocated(list))then
       list=[character(len=max(len_trim(value),2)) :: ]
@@ -1103,21 +1151,21 @@ integer                      :: end
       kludge=[character(len=ii) :: list(:place-1), value,list(place:) ]
       list=kludge
    else                                                      ! index out of range
-      write(*,*)'*insert_c* error: index out of range. end=',end,' index=',place,' value=',value
+      write(stderr,*)'*insert_c* error: index out of range. end=',end,' index=',place,' value=',value
    endif
 
-   if(debug)write(*,*)'END INSERT_C VALUE=',trim(value),' PLACE=',place,' NEWSIZE=',size(list)
+   if(debug)write(stderr,*)'*insert_c* END VALUE=',trim(value),' PLACE=',place,' NEWSIZE=',size(list)
 end subroutine insert_c
 subroutine insert_r(list,value,place)
 
-character(len=*),parameter::ident_18="@(#)M_list::insert_r(3fp): place real value into allocatable array at specified position"
+character(len=*),parameter::ident_20="@(#)M_list::insert_r(3fp): place real value into allocatable array at specified position"
 
 real,intent(in)       :: value
 real,allocatable      :: list(:)
 integer,intent(in)    :: place
 integer               :: end
 
-   if(debug) write(*,*)'START INSERT_R VALUE=',value,' PLACE=',place,' ORIGINALSIZE=',size(list)
+   if(debug) write(stderr,*)'*insert_r* START VALUE=',value,' PLACE=',place,' ORIGINALSIZE=',size(list)
    if(.not.allocated(list))then
       list=[real :: ]
    endif
@@ -1132,21 +1180,21 @@ integer               :: end
    elseif(place.ge.2.and.place.le.end)then                   ! put in middle of array
       list=[list(:place-1), value,list(place:) ]
    else                                                      ! index out of range
-      write(*,*)'*insert_r* error: index out of range. end=',end,' index=',place,' value=',value
+      write(stderr,*)'*insert_r* error: index out of range. end=',end,' index=',place,' value=',value
    endif
 
-   if(debug)write(*,*)'END INSERT_R VALUE=',value,' PLACE=',place,' NEWSIZE=',size(list)
+   if(debug)write(stderr,*)'*insert_r* END VALUE=',value,' PLACE=',place,' NEWSIZE=',size(list)
 end subroutine insert_r
 subroutine insert_d(list,value,place)
 
-character(len=*),parameter::ident_19="&
+character(len=*),parameter::ident_21="&
 &@(#)M_list::insert_d(3fp): place doubleprecision value into allocatable array at specified position"
 
 doubleprecision,intent(in)       :: value
 doubleprecision,allocatable      :: list(:)
 integer,intent(in)               :: place
 integer                          :: end
-   if(debug) write(*,*)'START INSERT_D VALUE=',value,' PLACE=',place,' ORIGINALSIZE=',size(list)
+   if(debug) write(stderr,*)'*insert_d* START VALUE=',value,' PLACE=',place,' ORIGINALSIZE=',size(list)
    if(.not.allocated(list))then
       list=[doubleprecision :: ]
    endif
@@ -1160,23 +1208,23 @@ integer                          :: end
    elseif(place.ge.2.and.place.le.end)then                 ! put in middle of array
       list=[list(:place-1), value,list(place:) ]
    else                                                      ! index out of range
-      write(*,*)'*insert_d* error: index out of range. end=',end,' index=',place,' value=',value
+      write(stderr,*)'*insert_d* error: index out of range. end=',end,' index=',place,' value=',value
    endif
-   if(debug)write(*,*)'END INSERT_D VALUE=',value,' PLACE=',place,' NEWSIZE=',size(list)
+   if(debug)write(stderr,*)'*insert_d* END VALUE=',value,' PLACE=',place,' NEWSIZE=',size(list)
 end subroutine insert_d
-subroutine insert_i(list,value,place)
+subroutine insert_l(list,value,place)
 
-character(len=*),parameter::ident_20="@(#)M_list::insert_i(3fp): place value into allocatable array at specified position"
+character(len=*),parameter::ident_22="@(#)M_list::insert_l(3fp): place value into allocatable array at specified position"
 
-integer,allocatable   :: list(:)
-integer,intent(in)    :: value
+logical,allocatable   :: list(:)
+logical,intent(in)    :: value
 integer,intent(in)    :: place
 integer               :: end
    if(.not.allocated(list))then
-      list=[integer :: ]
+      list=[logical :: ]
    endif
    end=size(list)
-   if(debug)write(*,*)'START INSERT_I VALUE=',value,' PLACE=',place,' ORIGINALSIZE=',size(list)
+   if(debug)write(stderr,*)'*insert_l* START VALUE=',value,' PLACE=',place,' ORIGINALSIZE=',size(list)
    if(end.eq.0)then                                          ! empty array
       list=[value]
    elseif(place.eq.1)then                                    ! put in front of array
@@ -1186,10 +1234,37 @@ integer               :: end
    elseif(place.ge.2.and.place.le.end)then                 ! put in middle of array
       list=[list(:place-1), value,list(place:) ]
    else                                                      ! index out of range
-      write(*,*)'*insert_i* error: index out of range. end=',end,' index=',place,' value=',value
+      write(stderr,*)'*insert_l* error: index out of range. end=',end,' index=',place,' value=',value
    endif
 
-   if(debug)write(*,*)'END INSERT_I VALUE=',value,' PLACE=',place,' NEWSIZE=',size(list)
+   if(debug)write(stderr,*)'*insert_l* END VALUE=',value,' PLACE=',place,' NEWSIZE=',size(list)
+end subroutine insert_l
+subroutine insert_i(list,value,place)
+
+character(len=*),parameter::ident_23="@(#)M_list::insert_i(3fp): place value into allocatable array at specified position"
+
+integer,allocatable   :: list(:)
+integer,intent(in)    :: value
+integer,intent(in)    :: place
+integer               :: end
+   if(.not.allocated(list))then
+      list=[integer :: ]
+   endif
+   end=size(list)
+   if(debug)write(stderr,*)'*insert_i* START VALUE=',value,' PLACE=',place,' ORIGINALSIZE=',size(list)
+   if(end.eq.0)then                                          ! empty array
+      list=[value]
+   elseif(place.eq.1)then                                    ! put in front of array
+      list=[value, list]
+   elseif(place.gt.end)then                                  ! put at end of array
+      list=[list, value ]
+   elseif(place.ge.2.and.place.le.end)then                 ! put in middle of array
+      list=[list(:place-1), value,list(place:) ]
+   else                                                      ! index out of range
+      write(stderr,*)'*insert_i* error: index out of range. end=',end,' index=',place,' value=',value
+   endif
+
+   if(debug)write(stderr,*)'*insert_i* END VALUE=',value,' PLACE=',place,' NEWSIZE=',size(list)
 end subroutine insert_i
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
@@ -1251,7 +1326,7 @@ end subroutine insert_i
 !===================================================================================================================================
 subroutine dict_delete(self,key)
 
-character(len=*),parameter::ident_21="@(#)M_list::dict_delete(3f): remove string from sorted allocatable string array if present"
+character(len=*),parameter::ident_24="@(#)M_list::dict_delete(3f): remove string from sorted allocatable string array if present"
 
 class(dictionary),intent(inout) :: self
 character(len=*),intent(in)     :: key
@@ -1323,7 +1398,7 @@ end subroutine dict_delete
 !===================================================================================================================================
 function dict_get(self,key) result(value)
 
-character(len=*),parameter::ident_22="@(#)M_list::dict_get(3f): get value of key-value pair in dictionary, given key"
+character(len=*),parameter::ident_25="@(#)M_list::dict_get(3f): get value of key-value pair in dictionary, given key"
 
 !!class(dictionary),intent(inout) :: self
 class(dictionary)               :: self
@@ -1385,7 +1460,7 @@ end function dict_get
 !===================================================================================================================================
 subroutine dict_add(self,key,value)
 
-character(len=*),parameter::ident_23="@(#)M_list::dict_add(3f): place key-value pair into dictionary, adding the key if required"
+character(len=*),parameter::ident_26="@(#)M_list::dict_add(3f): place key-value pair into dictionary, adding the key if required"
 
 class(dictionary),intent(inout) :: self
 character(len=*),intent(in)     :: key

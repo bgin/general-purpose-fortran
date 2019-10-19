@@ -5,7 +5,7 @@
           use M_system, only : DEFFILEMODE, ACCESSPERMS
           implicit none
              integer :: status
-             status = system_mkfifo("/home/cnd/mod_done", IANY([W_USR, R_USR, R_GRP, R_OTH]))
+             status = system_mkfifo("/tmp/buffer", IANY([W_USR, R_USR, R_GRP, R_OTH]))
              if(status.ne.0)then
                 call system_perror('*mkfifo* error:')
              endif

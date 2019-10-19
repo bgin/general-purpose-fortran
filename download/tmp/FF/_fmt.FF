@@ -77,7 +77,7 @@ $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file _fmt.1.man
 NAME
-       _fmt(1f) - [FUNIX:FILE EDIT]simple text formatter
+       _fmt(1f) - [FUNIX:FILE EDIT] simple text formatter
 
 SYNOPSIS
        _fmt [OPTION]...

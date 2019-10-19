@@ -693,6 +693,16 @@ DAT=2016,6,14,-240,22,22,31,253
 </p>
 
 <p>
+    Note the environment variable can be set using
+    put_environment_variable(3f) from the libGPF library:
+</p>
+
+<pre>
+     use M_system, only : put_environment_variable
+     call put_environment_variable('TZ','America/New_York',ierr)
+</pre>
+
+<p>
     There is no warranty on this code, and it is certain to change.
 </p>
 

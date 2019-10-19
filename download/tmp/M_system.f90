@@ -20,7 +20,8 @@
 !!    system_realpath,                                       &
 !!    system_access,                                         &
 !!    system_utime,                                          &
-!!    system_issock, system_perm, system_stat_print
+!!    system_issock, system_perm, system_stat_print,         &
+!!    system_memcpy
 !!
 !!    !!use M_system, only : system_getc, system_putc
 !!    ! ERROR PROCESSING
@@ -225,12 +226,14 @@ public :: fileglob
 public :: system_alarm
 public :: system_calloc
 public :: system_clock
-public :: system_free
-public :: system_malloc
 public :: system_time
-public :: system_realloc
 !public :: system_time
 !public :: system_qsort
+
+public :: system_realloc
+public :: system_malloc
+public :: system_free
+public :: system_memcpy
 
 public :: R_GRP,R_OTH,R_USR,R_WXG,R_WXO,R_WXU,W_GRP,W_OTH,W_USR,X_GRP,X_OTH,X_USR,DEFFILEMODE,ACCESSPERMS
 public :: R_OK,W_OK,X_OK,F_OK  ! for system_access
@@ -285,6 +288,19 @@ end type
       integer(C_LONG) system_clock
     end function system_clock
   end interface
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+! Copy N bytes of SRC to DEST, no aliasing or overlapping allowed.
+! extern void *memcpy (void *dest, const void *src, size_t n);
+interface
+  subroutine  system_memcpy(dest, src, n) bind(C,name='memcpy')
+     import C_INTPTR_T, C_SIZE_T
+     INTEGER(C_INTPTR_T), value  :: dest
+     INTEGER(C_INTPTR_T), value  :: src
+     integer(C_SIZE_T), value    :: n
+  end subroutine system_memcpy
+end interface
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -3027,6 +3043,14 @@ end function system_rmdir
 !!    integer :: ierr
 !!
 !!##DESCRIPTION
+!!    A regular pipe can only connect two related processes. It is created by
+!!    a process and will vanish when the last process closes it.
+!!
+!!    A named pipe, also called a FIFO for its behavior, can be used to connect
+!!    two unrelated processes and exists independently of the processes;
+!!    meaning it can exist even if no one is using it. A FIFO is created using
+!!    the mkfifo() library function.
+!!
 !!    The mkfifo() function creates a new FIFO special file named by the
 !!    pathname.
 !!
@@ -3108,11 +3132,14 @@ end function system_rmdir
 !!    use M_system, only : DEFFILEMODE, ACCESSPERMS
 !!    implicit none
 !!       integer :: status
-!!       status = system_mkfifo("/home/cnd/mod_done", IANY([W_USR, R_USR, R_GRP, R_OTH]))
+!!       status = system_mkfifo("/tmp/buffer", IANY([W_USR, R_USR, R_GRP, R_OTH]))
 !!       if(status.ne.0)then
 !!          call system_perror('*mkfifo* error:')
 !!       endif
 !!    end program demo_system_mkfifo
+!!
+!!   Now some other process (or this one) can read from /tmp/buffer while this program
+!!   is running or after, consuming the data as it is read.
 !===================================================================================================================================
 function system_mkfifo(pathname,mode) result(err)
 
@@ -4887,6 +4914,7 @@ call test_system_getcwd()
    call test_system_uname()
    call test_system_unlink()
    call test_system_utime()
+   call test_system_memcpy()
 !! teardown
 contains
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -6035,6 +6063,13 @@ character(len=4096) :: value
    call unit_check_done('system_unsetenv',msg='')
 
 end subroutine test_system_unsetenv
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_system_memcpy()
+   call unit_check_start('system_utime',msg='')
+   !!call unit_check('system_utime', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('system_utime',msg='')
+end subroutine test_system_memcpy
+!===================================================================================================================================
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_utime()
 

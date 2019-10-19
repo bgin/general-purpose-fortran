@@ -278,7 +278,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'     topic(1) - [HELP]Display specially formatted help text files.              ',&
+'     topic(1) - [HELP] Display specially formatted help text files.             ',&
 'SYNOPSIS                                                                        ',&
 '     topic [TOPIC | -t| -e SEARCH_STRING] [ -f INPUT_FILE]]|[ -all| -topics| -summaries]',&
 'DESCRIPTION                                                                     ',&
@@ -379,7 +379,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!      topic(1) - [HELP]Display specially formatted help text files.
+!!      topic(1) - [HELP] Display specially formatted help text files.
 !!##SYNOPSIS
 !!
 !!      topic [TOPIC | -t| -e SEARCH_STRING] [ -f INPUT_FILE]]|[ -all| -topics| -summaries
@@ -494,7 +494,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        2.5, 20130818  Updated and made a seperate program instead of a subroutine>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Fri, Aug 30th, 2019 10:16:11 AM>',&
+'@(#)COMPILED:       Mon, Sep 30th, 2019 10:03:00 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

@@ -7,9 +7,12 @@
             real(kind=real128) :: r128
             character(len=256) :: message
             integer            :: ios
+
                r32=nan(0.0_real32)
                r64=nan(0.0_real64)
                r128=nan(0.0_real128)
+
+               ! examples printing the NaN values
                ! list directed format
                write(*,*,iomsg=message,iostat=ios)r32,r64,r128
                if(ios.ne.0)write(*,*)trim(message)
@@ -33,4 +36,9 @@
                   stop
                endif
 
-            end program demo_nan
+              ALT1 block integer :: x = 2143289344
+
+                     print *, transfer(x, 1.0)
+                            ! prints "nan" on i686 blockend ALT1
+
+       end program demo_nan Results:

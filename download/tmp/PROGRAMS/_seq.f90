@@ -78,7 +78,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Fri, Sep 6th, 2019 7:57:07 PM>',&
+'@(#)COMPILED:       Mon, Sep 30th, 2019 10:02:22 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -96,7 +96,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'   _seq - [FUNIX]print a sequence of numbers                                    ',&
+'   _seq - [FUNIX] print a sequence of numbers                                   ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   _seq LAST [OPTION] ...                                                       ',&
@@ -151,7 +151,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    _seq - [FUNIX]print a sequence of numbers
+!!    _seq - [FUNIX] print a sequence of numbers
 !!
 !!##SYNOPSIS
 !!

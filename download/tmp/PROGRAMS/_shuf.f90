@@ -12,7 +12,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'   _shuf - [FUNIX]generate random permutations                                  ',&
+'   _shuf - [FUNIX] generate random permutations                                 ',&
 'SYNOPSIS                                                                        ',&
 '  syntax:                                                                       ',&
 '                                                                                ',&
@@ -44,7 +44,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    _shuf - [FUNIX]generate random permutations
+!!    _shuf - [FUNIX] generate random permutations
 !!##SYNOPSIS
 !!
 !!   syntax:
@@ -88,7 +88,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Fri, Sep 6th, 2019 7:57:24 PM>',&
+'@(#)COMPILED:       Mon, Sep 30th, 2019 10:01:41 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

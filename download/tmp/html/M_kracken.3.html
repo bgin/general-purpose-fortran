@@ -57,6 +57,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
    <li><a href="#DESCRIPTION">Routine Descriptions</a></li>
    <li><a href="#MENU">Using the interactive menu mode of prompting</a></li>
    <li><a href="#USAGE"> Usage notes </a></li>
+   <li><a href="#ARGS"> Alternate parsing of the command line arguments</a></li>
 </ul>
 
 <p>
@@ -75,9 +76,10 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <h2><a name="ABSTRACT">ABSTRACT</a></h2>
 
 <p>
-   KRACKEN(3f) is a Fortran command line argument parser designed to provide for
-   easy entry of negative numbers, strings, and exponential numbers without generally
-   requiring quotes on the command line. It provides:
+   KRACKEN(3f) is a Fortran command line argument parser designed to
+   provide for easy entry of lists of negative numbers, strings, and
+   exponential numbers without generally requiring quotes on the command
+   line. It provides:
 </p>
 
 <ul>
@@ -409,11 +411,111 @@ where
    </li>
 
 </ul>
+<!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@-->
+<h2><a name="ARGS">Alternate command line input syntax</a></h2>
+
+<p>
+     If you actually prefer quoting your arguments and having your unnamed
+     variables at the end of your command and support for the "--" option
+     supported by some GNU and Unix commands you can set the command
+     line parsing option "kracken_method". This will <em>not</em> change
+     how you specify the parameters to the kracken(3f) command except
+     possibly for Boolean switches, but allows for entering commands in
+     a manner more like the C routine getopts(3c). If you turn the mode
+     on the "-oo" parameter is ignored unless you specifically assign
+     it a value by name; the values need quoted if they contain spaces
+     and the option "--" specifies that the rest of the command line is
+     composed of unnamed strings.
+
+     The unnamed values will go into the CHARACTER array "unnamed". That
+     means instead of entering:
+</p>
+<xmp>
+     program demo_placement
+     use M_kracken, only : kracken, sgets, rget, sget, lget
+     implicit none
+     character(len=:),allocatable :: files(:)
+     character(len=:),allocatable :: title
+     real :: x,y
+     integer :: i
+     ! define and crack command line arguments
+     call kracken('cmd',' --title this is my title -x 123 -y 456 --help .false.')
+
+     title=sget('cmd_title')
+     x=rget('cmd_x')
+     y=rget('cmd_y')
+     write(*,*)'help=',lget('cmd_help')
+     write(*,*)' title is ',title
+     write(*,*)' x and y are ',x,y
+     ! get value of string before any switch
+     files=sgets('cmd_oo')
+     if(size(files).gt.0)then
+        do i=1,size(files)
+           write(*,*)i,files(i)
+        enddo
+     endif
+     end program demo_placement
+</xmp>
+<p>
+    Add "kracken_method" and "unnamed" from the M_kracken(3fm) module,
+    set "kracken_method='args'" and the unnamed values will be in the
+    string array "unnamed" instead of obtained from something like
+    "sgets('cmd_oo').
+</p>
+<xmp>
+     program demo_placement
+     use M_kracken, only : kracken, sget, rget, lget
+     USE M_KRACKEN, ONLY : KRACKEN_METHOD, UNNAMED
+     implicit none
+     character(len=:),allocatable :: title
+     real :: x,y
+     integer :: i
+     KRACKEN_METHOD='ARGS'
+     ! define and crack command line arguments
+     !
+     ! One difference in how you specify your command prototype:
+     !
+     !  You MUST use the string ".false." for any switch variable;
+     !  and basically the values ".true." and ".false." are
+     !  reserved, regardless of case.
+     !
+     call kracken('cmd',' --title this is my title -x 123 -y 456 --help .false.')
+     title=sget('cmd_title')
+     x=rget('cmd_x')
+     y=rget('cmd_y')
+     write(*,*)'help=',lget('cmd_help')
+     write(*,*)' title is ',title
+     write(*,*)' x and y are ',x,y
+
+     IF(SIZE(UNNAMED).GT.0)THEN
+        DO I=1,SIZE(UNNAMED)
+           WRITE(*,*)I,UNNAMED(I)
+        ENDDO
+     ENDIF
+     end program demo_placement
+</xmp>
+
+<pre>
+    # first program uses default M_kracken parsing
+
+    cmd *.f90 -x 100 --title A new title -y 200
+
+    # or
+
+    cmd -x 100 --title A new title -y 200 -oo *.f90
+
+    # second program uses alternate command-line parsing.
+    # the unnamed values go into the string array
+    # UNNAMED but can appear anywhere on the command.
+    # multi-word values require being quoted.
+
+    cmd -x 100 -y 200 --title 'A new title' *.f90
+</pre>
 
 <blockquote>
 Contributors:<br/>
    <author>
-      John S. Urban -- Author (last change: May. 2016)<br/>
+      John S. Urban -- Author (last change: Oct. 2019)<br/>
       Felix Becker  -- Enhancements to reduce limitations on parameter lengths (2013-05-28)<br/>
       Walid Keyrouz -- Upgrades to bring code into conformance with recommended practices (2013-12-06)
    </author>

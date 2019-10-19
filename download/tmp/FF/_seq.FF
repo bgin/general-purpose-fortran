@@ -75,7 +75,7 @@ $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file _seq.1.man
 NAME
-   _seq - [FUNIX]print a sequence of numbers
+   _seq - [FUNIX] print a sequence of numbers
 
 SYNOPSIS
    _seq LAST [OPTION] ...

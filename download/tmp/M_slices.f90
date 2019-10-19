@@ -55,7 +55,7 @@ contains
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    dl_slices(3f) - [M_slices]plot data in 3-D overlay form
+!!    dl_slices(3f) - [M_slices] plot data in 3-D overlay form
 !!##SYNOPSIS
 !!
 !!

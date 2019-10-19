@@ -81,7 +81,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Fri, Sep 6th, 2019 7:56:28 PM>',&
+'@(#)COMPILED:       Mon, Sep 30th, 2019 9:59:39 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -99,7 +99,7 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'       _fmt(1f) - [FUNIX:FILE EDIT]simple text formatter                        ',&
+'       _fmt(1f) - [FUNIX:FILE EDIT] simple text formatter                       ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '       _fmt [OPTION]...                                                         ',&
@@ -121,7 +121,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!        _fmt(1f) - [FUNIX:FILE EDIT]simple text formatter
+!!        _fmt(1f) - [FUNIX:FILE EDIT] simple text formatter
 !!
 !!##SYNOPSIS
 !!

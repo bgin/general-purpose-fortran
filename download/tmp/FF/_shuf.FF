@@ -4,7 +4,7 @@ $ifdef TESTPRG90
 !===================================================================================================================================
 $DOCUMENT HELP -file _shuf.1.man
 NAME
-   _shuf - [FUNIX]generate random permutations
+   _shuf - [FUNIX] generate random permutations
 SYNOPSIS
   syntax:
 

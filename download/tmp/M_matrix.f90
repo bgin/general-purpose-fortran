@@ -106,13 +106,13 @@ contains
 !==================================================================================================================================!
 !>
 !!##NAME
-!!     MAT88(3f) - [M_matrix] initialize and/or pass commands to matrix laboratory interprete
+!!     MAT88(3f) - [M_matrix] initialize and/or pass commands to matrix laboratory interpreter
 !!##SYNOPSIS
 !!
 !!   subroutine MAT88(init,cmd)
 !!
 !!    integer,intent(in)          :: init
-!!    character(len=*),intent(in) :: cmd)
+!!    character(len=*),intent(in) :: cmd
 !!##DESCRIPTION
 !!    MAT88(3f) is modeled on MATLAB(3f) (MATrix LABoratory), a FORTRAN
 !!    package developed by Argonne National Laboratories for in-house use.
@@ -198,6 +198,411 @@ contains
 !!    call mat88( 2,'save("file1")')
 !!    call mat88( 2,'help INTRO')
 !!    end
+!!
+!!  Example inputs
+!!
+!!      avg:for i = 2:2:n, for j = 2:2:n, t = (a(i-1,j-1)+a(i-1,j)+a(i,j-1)+a(i,j))/4; ...
+!!      avg:   a(i-1,j-1) = t; a(i,j-1) = t; a(i-1,j) = t; a(i,j) = t;
+!!
+!!      cdiv:// ======================================================
+!!      cdiv:// cdiv
+!!      cdiv:a=sqrt(random(8)
+!!      cdiv:   ar = real(a); ai = imag(a); br = real(b); bi = imag(b);
+!!      cdiv:   p = bi/br;
+!!      cdiv:   t = (ai - p*ar)/(br + p*bi);
+!!      cdiv:   cr = p*t + ar/br;
+!!      cdiv:   ci = t;
+!!      cdiv:   p2 = br/bi;
+!!      cdiv:   t2 = (ai + p2*ar)/(bi + p2*br);
+!!      cdiv:   ci2 = p2*t2 - ar/bi;
+!!      cdiv:   cr2 = t2;
+!!      cdiv:   s = abs(br) + abs(bi);
+!!      cdiv:   ars = ar/s;
+!!      cdiv:   ais = ai/s;
+!!      cdiv:   brs = br/s;
+!!      cdiv:   bis = bi/s;
+!!      cdiv:   s = brs**2 + bis**2;
+!!      cdiv:   cr3 = (ars*brs + ais*bis)/s;
+!!      cdiv:   ci3 = (ais*brs - ars*bis)/s;
+!!      cdiv:   <cr ci; cr2 ci2; cr3 ci3>
+!!      cdiv:// ======================================================
+!!
+!!      exp:t = 0*x + eye; s = 0*eye(x); n = 1;
+!!      exp:while abs(s+t-s) > 0, s = s+t, t = x*t/n, n = n + 1
+!!
+!!      four:n
+!!      four:pi = 4*atan(1);
+!!      four:i = sqrt(-1);
+!!      four:w = exp(2*pi*i/n);
+!!      four:F = <>;
+!!      four:for k = 1:n, for j = 1:n, F(k,j) = w**((j-1)*(k-1));
+!!      four:F = F/sqrt(n);
+!!      four:alfa = r*pi;
+!!      four:rho = exp(i*alfa);
+!!      four:S = log(rho*F)/i - alfa*EYE;
+!!      four:serr = norm(imag(S),1);
+!!      four:S = real(S);
+!!      four:serr = serr + norm(S-S',1)
+!!      four:S = (S + S')/2;
+!!      four:ferr = norm(F-exp(i*S),1)
+!!
+!!      gs:for k = 1:n, for j = 1:k-1, d = x(k,:)*x(j,:)'; x(k,:) = x(k,:) - d*x(j,:); ...
+!!      gs:   end, s = norm(x(k,:)), x(k,:) = x(k,:)/s;
+!!
+!!      jacobi:<n, n> = size(A);
+!!      jacobi:X = eye(n);
+!!      jacobi:anorm = norm(A,'fro');
+!!      jacobi:cnt = 1;
+!!      jacobi:while cnt > 0,...
+!!      jacobi:  cnt = 0;...
+!!      jacobi:  for p = 1:n-1,...
+!!      jacobi:    for q = p+1:n,...
+!!      jacobi:      if anorm + abs(a(p,q)) > anorm,...
+!!      jacobi:        cnt = cnt + 1;...
+!!      jacobi:        exec('jacstep');...
+!!      jacobi:      end,...
+!!      jacobi:    end,...
+!!      jacobi:  end,...
+!!      jacobi:  display(rat(A)),...
+!!      jacobi:end
+!!
+!!      jacstep:        d = (a(q,q)-a(p,p))*0.5/a(p,q);
+!!      jacstep:        t = 1/(abs(d)+sqrt(d*d+1));
+!!      jacstep:        if d < 0, t = -t; end;
+!!      jacstep:        c = 1/sqrt(1+t*t);  s = t*c;
+!!      jacstep:        R = eye(n); r(p,p)=c; r(q,q)=c; r(p,q)=s; r(q,p)=-s;
+!!      jacstep:        X = X*R;
+!!      jacstep:        A = R'*A*R;
+!!
+!!      kron://  C = Kronecker product of A and B
+!!      kron:<m, n> = size(A);
+!!      kron:for i = 1:m, ...
+!!      kron:   ci = a(i,1)*B; ...
+!!      kron:   for j = 2:n, ci = <ci a(i,j)*B>; end ...
+!!      kron:   if i = 1, C = ci; else, C = <C; ci>;
+!!
+!!      lanczos:<n,n> = size(A);
+!!      lanczos:q1 = rand(n,1);
+!!      lanczos:ort
+!!      lanczos:alfa = <>; beta = <>;
+!!      lanczos:q = q1/norm(q1); r = A*q(:,1);
+!!      lanczos:for j = 1:n, exec('lanstep',0);
+!!
+!!      lanstep:alfa(j) = q(:,j)'*r;
+!!      lanstep:r = r - alfa(j)*q(:,j);
+!!      lanstep:if ort <> 0, for k = 1:j-1, r = r - r'*q(:,k)*q(:,k);
+!!      lanstep:beta(j) = norm(r);
+!!      lanstep:q(:,j+1) = r/beta(j);
+!!      lanstep:r = A*q(:,j+1) - beta(j)*q(:,j);
+!!      lanstep:if j > 1, T = diag(beta(1:j-1),1); T = diag(alfa) + T + T'; eig(T)
+!!
+!!      mgs:for k = 1:n, s = norm(x(k,:)), x(k,:) = x(k,:)/s; ...
+!!      mgs:   for j = k+1:n, d = x(j,:)*x(k,:)'; x(j,:) = x(j,:) - d*x(k,:);
+!!
+!!      net:C = <
+!!      net:1 2 15 . . .
+!!      net:2 1 3 . . .
+!!      net:3 2 4 11 . .
+!!      net:4 3 5 . . .
+!!      net:5 4 6 7 . .
+!!      net:6 5 8 . . .
+!!      net:7 5 9 30 . .
+!!      net:8 6 9 10 11 .
+!!      net:9 7 8 30 . .
+!!      net:10 8 12 30 31 34
+!!      net:11 3 8 12 13 .
+!!      net:12 10 11 34 36 .
+!!      net:13 11 14 . . .
+!!      net:14 13 15 16 38 .
+!!      net:15 1 14 . . .
+!!      net:16 14 17 20 35 37
+!!      net:17 16 18 . . .
+!!      net:18 17 19 . . .
+!!      net:19 18 20 . . .
+!!      net:20 16 19 21 . .
+!!      net:21 20 22 . . .
+!!      net:22 21 23 . . .
+!!      net:23 22 24 35 . .
+!!      net:24 23 25 39 . .
+!!      net:25 24 . . . .
+!!      net:26 27 33 39 . .
+!!      net:27 26 32 . . .
+!!      net:28 29 32 . . .
+!!      net:29 28 30 . . .
+!!      net:30 7 9 10 29 .
+!!      net:31 10 32 . . .
+!!      net:32 27 28 31 34 .
+!!      net:33 26 34 . . .
+!!      net:34 10 12 32 33 35
+!!      net:35 16 23 34 36 .
+!!      net:36 12 35 38 . .
+!!      net:37 16 38 . . .
+!!      net:38 14 36 37 . .
+!!      net:39 24 26 . . .
+!!      net:>;
+!!      net:<n, m> = size(C);
+!!      net:A = 0*ones(n,n);
+!!      net:for i=1:n, for j=2:m, k=c(i,j); if k>0, a(i,k)=1;
+!!      net:check = norm(A-A',1), if check > 0, quit
+!!      net:<X,D> = eig(A+eye);
+!!      net:D = diag(D);  D = D(n:-1:1)
+!!      net:X = X(:,n:-1:1);
+!!      net:<x(:,1)/sum(x(:,1)) x(:,2) x(:,3) x(:,19)>
+!!
+!!      pascal://Generate next Pascal matrix
+!!      pascal:<k,k> = size(L);
+!!      pascal:k = k + 1;
+!!      pascal:L(k,1:k) = <L(k-1,:) 0> + <0 L(k-1,:)>;
+!!
+!!      pdq:alfa = <>; beta = 0; q = <>; p = p(:,1)/norm(p(:,1));
+!!      pdq:t = A'*p(:,1);
+!!      pdq:alfa(1) = norm(t);
+!!      pdq:q(:,1) = t/alfa(1);
+!!      pdq:X = p(:,1)*(alfa(1)*q(:,1))'
+!!      pdq:e(1) = norm(A-X,1)
+!!      pdq:for j = 2:r, exec('pdqstep',ip); ...
+!!      pdq:   X = X + p(:,j)*(alfa(j)*q(:,j)+beta(j)*q(:,j-1))', ...
+!!      pdq:   e(j) = norm(A-X,1)
+!!
+!!      pdqstep:t = A*q(:,j-1) - alfa(j-1)*p(:,j-1);
+!!      pdqstep:   if ort>0, for i = 1:j-1, t = t - t'*p(:,i)*p(:,i);
+!!      pdqstep:beta(j) = norm(t);
+!!      pdqstep:p(:,j) = t/beta(j);
+!!      pdqstep:t = A'*p(:,j) - beta(j)*q(:,j-1);
+!!      pdqstep:   if ort>0, for i = 1:j-1, t = t - t'*q(:,i)*q(:,i);
+!!      pdqstep:alfa(j) = norm(t);
+!!      pdqstep:q(:,j) = t/alfa(j);
+!!
+!!      pop:y = < 75.995   91.972  105.711  123.203   ...
+!!      pop:     131.669  150.697  179.323  203.212>'
+!!      pop:t = < 1900:10:1970 >'
+!!      pop:t = (t - 1940*ones(t))/40;   <t y>
+!!      pop:n = 8;  A(:,1) = ones(t);  for j = 2:n, A(:,j) = t .* A(:,j-1);
+!!      pop:A
+!!      pop:c = A\y
+!!
+!!      qr:scale = s(m);
+!!      qr:sm = s(m)/scale; smm1 = s(m-1)/scale; emm1 = e(m-1)/scale;
+!!      qr:sl = s(l)/scale; el = e(l)/scale;
+!!      qr:b = ((smm1 + sm)*(smm1 - sm) + emm1**2)/2;
+!!      qr:c = (sm*emm1)**2;
+!!      qr:shift = sqrt(b**2+c); if b < 0, shift = -shift;
+!!      qr:shift = c/(b + shift)
+!!      qr:f = (sl + sm)*(sl-sm) - shift
+!!      qr:g = sl*el
+!!      qr:for k = l: m-1, exec('qrstep',ip)
+!!      qr:e(m-1) = f
+!!
+!!      qrstep:exec('rot');
+!!      qrstep:if k <> l, e(k-1) = f
+!!      qrstep:f = cs*s(k) + sn*e(k)
+!!      qrstep:e(k) = cs*e(k) - sn*s(k)
+!!      qrstep:g = sn*s(k+1)
+!!      qrstep:s(k+1) = cs*s(k+1)
+!!      qrstep:exec('rot');
+!!      qrstep:s(k) = f
+!!      qrstep:f = cs*e(k) + sn*s(k+1)
+!!      qrstep:s(k+1) = -sn*e(k) + cs*s(k+1)
+!!      qrstep:g = sn*e(k+1)
+!!      qrstep:e(k+1) = cs*e(k+1)
+!!
+!!      rho://Conductivity example.
+!!      rho://Parameters ---
+!!      rho:   rho       //radius of cylindrical inclusion
+!!      rho:   n         //number of terms in solution
+!!      rho:   m         //number of boundary points
+!!      rho://initialize operation counter
+!!      rho:   flop = <0 0>;
+!!      rho://initialize variables
+!!      rho:   m1 = round(m/3);   //number of points on each straight edge
+!!      rho:   m2 = m - m1;       //number of points with Dirichlet conditions
+!!      rho:   pi = 4*atan(1);
+!!      rho://generate points in Cartesian coordinates
+!!      rho:   //right hand edge
+!!      rho:   for i = 1:m1, x(i) = 1; y(i) = (1-rho)*(i-1)/(m1-1);
+!!      rho:   //top edge
+!!      rho:   for i = m2+1:m, x(i) = (1-rho)*(m-i)/(m-m2-1); y(i) = 1;
+!!      rho:   //circular edge
+!!      rho:   for i = m1+1:m2, t = pi/2*(i-m1)/(m2-m1+1); ...
+!!      rho:      x(i) = 1-rho*sin(t);  y(i) = 1-rho*cos(t);
+!!      rho://convert to polar coordinates
+!!      rho:   for i = 1:m-1, th(i) = atan(y(i)/x(i));  ...
+!!      rho:      r(i) = sqrt(x(i)**2+y(i)**2);
+!!      rho:   th(m) = pi/2;  r(m) = 1;
+!!      rho://generate matrix
+!!      rho:   //Dirichlet conditions
+!!      rho:   for i = 1:m2, for j = 1:n, k = 2*j-1; ...
+!!      rho:      a(i,j) = r(i)**k*cos(k*th(i));
+!!      rho:   //Neumann conditions
+!!      rho:   for i = m2+1:m, for j = 1:n, k = 2*j-1; ...
+!!      rho:      a(i,j) = k*r(i)**(k-1)*sin((k-1)*th(i));
+!!      rho://generate right hand side
+!!      rho:   for i = 1:m2, b(i) = 1;
+!!      rho:   for i = m2+1:m, b(i) = 0;
+!!      rho://solve for coefficients
+!!      rho:   c = A$b
+!!      rho://compute effective conductivity
+!!      rho:   c(2:2:n) = -c(2:2:n)
+!!      rho:   sigma = sum(c)
+!!      rho://output total operation count
+!!      rho:   ops = flop(2)
+!!
+!!      rogers.exec:exec('d.boug');                        // reads data
+!!      rogers.exec:<g,k> = size(p);               // p is matrix of gene frequencies
+!!      rogers.exec:wv = ncen/sum(ncen);           // ncen contains population sizes
+!!      rogers.exec:pbar = wv*p;                   // weighted average of p
+!!      rogers.exec:p = p - ones(g,1)*pbar;        // deviations from mean
+!!      rogers.exec:p = sqrt(diag(wv)) * p;        // weight rows of p by sqrt of pop size
+!!      rogers.exec:h = diag(pbar); h = h*(eye-h); // diagonal contains binomial variance: p*(1-p
+!!      rogers.exec:r = p*inv(h)*p'/k;             // normalized covariance matrix
+!!      rogers.exec:eig(r)'
+!!
+!!      rosser:A  = <
+!!      rosser:  611.  196. -192.  407.   -8.  -52.  -49.   29.
+!!      rosser:  196.  899.  113. -192.  -71.  -43.   -8.  -44.
+!!      rosser: -192.  113.  899.  196.   61.   49.    8.   52.
+!!      rosser:  407. -192.  196.  611.    8.   44.   59.  -23.
+!!      rosser:   -8.  -71.   61.    8.  411. -599.  208.  208.
+!!      rosser:  -52.  -43.   49.   44. -599.  411.  208.  208.
+!!      rosser:  -49.   -8.    8.   59.  208.  208.   99. -911.
+!!      rosser:   29.  -44.   52.  -23.  208.  208. -911.   99.  >;
+!!
+!!      rot:// subexec rot(f,g,cs,sn)
+!!      rot:      rho = g; if abs(f) > abs(g), rho = f;
+!!      rot:      cs = 1.0; sn = 0.0; z = 1.0;
+!!      rot:      r = norm(<f g>); if rho < 0, r = -r; r
+!!      rot:      if r <> 0.0, cs = f/r
+!!      rot:      if r <> 0.0, sn = g/r
+!!      rot:      if abs(f) > abs(g), z = sn;
+!!      rot:      if abs(g) >= abs(f), if cs <> 0, z = 1/cs;
+!!      rot:      f = r;
+!!      rot:      g = z;
+!!
+!!      rqi:rho = (x'*A*x)
+!!      rqi:x = (A-rho*eye)\x;
+!!      rqi:x = x/norm(x)
+!!
+!!      setup:diary('xxx')
+!!      setup:!tail -f xxx > /dev/tty1 &
+!!      setup:!tail -f xxx > /dev/tty2 &
+!!
+!!      sigma:RHO = .5  M = 20  N = 10   SIGMA =  1.488934271883534
+!!      sigma:RHO = .5  M = 40  N = 20   SIGMA =  1.488920312974229
+!!      sigma:RHO = .5  M = 60  N = 30   SIGMA =  1.488920697912116
+!!
+!!      strut.mat:// Structure problem, Forsythe, Malcolm and Moler, p. 62
+!!      strut.mat:s =  sqrt(2)/2;
+!!      strut.mat:A = <
+!!      strut.mat:-s  .  .  1  s   .  .  .  .  .  .  .  .  .  .  .  .
+!!      strut.mat:-s  . -1  . -s   .  .  .  .  .  .  .  .  .  .  .  .
+!!      strut.mat: . -1  .  .  .   1  .  .  .  .  .  .  .  .  .  .  .
+!!      strut.mat: .  .  1  .  .   .  .  .  .  .  .  .  .  .  .  .  .
+!!      strut.mat: .  .  . -1  .   .  .  1  .  .  .  .  .  .  .  .  .
+!!      strut.mat: .  .  .  .  .   . -1  .  .  .  .  .  .  .  .  .  .
+!!      strut.mat: .  .  .  . -s -1  .  .  s  1  .  .  .   .  .  .  .
+!!      strut.mat: .  .  .  .  s   .  1  .  s  .  .  .  .  .  .  .  .
+!!      strut.mat: .  .  .  .  .   .  . -1 -s  .  .  1  s  .  .  .  .
+!!      strut.mat: .  .  .  .  .   .  .  . -s  . -1  . -s  .  .  .  .
+!!      strut.mat: .  .  .  .  .   .  .  .  . -1  .  .  .  1  .  .  .
+!!      strut.mat: .  .  .  .  .   .  .  .  .  .  1  .  .  .  .  .  .
+!!      strut.mat: .  .  .  .  .   .  .  .  .  .  . -1  .  .  .  s  .
+!!      strut.mat: .  .  .  .  .   .  .  .  .  .  .  .  .  . -1 -s  .
+!!      strut.mat: .  .  .  .  .   .  .  .  .  .  .  . -s -1  .  .  1
+!!      strut.mat: .  .  .  .  .   .  .  .  .  .  .  .  s  .  1  .  .
+!!      strut.mat: .  .  .  .  .   .  .  .  .  .  .  .  .  .  . -s -1>;
+!!      strut.mat:b = <
+!!      strut.mat: .  .  . 10  .   .  . 15  .  .  .  .  .  .  . 10  .>';
+!!
+!!      test1:// -----------------------------------------------------------------
+!!      test1:// start a new log file
+!!      test1:sh rm -fv log.txt
+!!      test1:diary('log.txt')
+!!      test1:// -----------------------------------------------------------------
+!!      test1:titles=<'GNP deflator'
+!!      test1: 'GNP         '
+!!      test1: 'Unemployment'
+!!      test1: 'Armed Force '
+!!      test1: 'Population  '
+!!      test1: 'Year        '
+!!      test1: 'Employment  '>;
+!!      test1:data = ...
+!!      test1:< 83.0  234.289  235.6  159.0  107.608  1947  60.323
+!!      test1:  88.5  259.426  232.5  145.6  108.632  1948  61.122
+!!      test1:  88.2  258.054  368.2  161.6  109.773  1949  60.171
+!!      test1:  89.5  284.599  335.1  165.0  110.929  1950  61.187
+!!      test1:  96.2  328.975  209.9  309.9  112.075  1951  63.221
+!!      test1:  98.1  346.999  193.2  359.4  113.270  1952  63.639
+!!      test1:  99.0  365.385  187.0  354.7  115.094  1953  64.989
+!!      test1: 100.0  363.112  357.8  335.0  116.219  1954  63.761
+!!      test1: 101.2  397.469  290.4  304.8  117.388  1955  66.019
+!!      test1: 104.6  419.180  282.2  285.7  118.734  1956  67.857
+!!      test1: 108.4  442.769  293.6  279.8  120.445  1957  68.169
+!!      test1: 110.8  444.546  468.1  263.7  121.950  1958  66.513
+!!      test1: 112.6  482.704  381.3  255.2  123.366  1959  68.655
+!!      test1: 114.2  502.601  393.1  251.4  125.368  1960  69.564
+!!      test1: 115.7  518.173  480.6  257.2  127.852  1961  69.331
+!!      test1: 116.9  554.894  400.7  282.7  130.081  1962  70.551>;
+!!      test1:short
+!!      test1:X = data;
+!!      test1:<n,p> = size(X)
+!!      test1:mu = ones(1,n)*X/n
+!!      test1:X = X - ones(n,1)*mu;  X = X/diag(sqrt(diag(X'*X)))
+!!      test1:corr = X'*X
+!!      test1:y = data(:,p); X = <ones(y) data(:,1:p-1)>;
+!!      test1:long e
+!!      test1:beta = X\y
+!!      test1:expected = < ...
+!!      test1:   -3.482258634594421D+03
+!!      test1:    1.506187227124484D-02
+!!      test1:   -3.581917929257409D-02
+!!      test1:   -2.020229803816908D-02
+!!      test1:   -1.033226867173703D-02
+!!      test1:   -5.110410565317738D-02
+!!      test1:    1.829151464612817D+00
+!!      test1:>
+!!      test1:disp('EXPE and BETA should be the same')
+!!
+!!      tryall:diary('log.txt')
+!!      tryall:a=magic(8)
+!!      tryall:n=3
+!!      tryall:exec('avg')
+!!      tryall:b=random(8,8)
+!!      tryall:exec('cdiv')
+!!      tryall:exec('exp')
+!!      tryall:exec('four')
+!!      tryall:exec('gs')
+!!      tryall:exec('jacobi')
+!!      tryall:// jacstep
+!!      tryall:exec('kron')
+!!      tryall:exec('lanczos')
+!!      tryall:// lanstep
+!!      tryall:exec('longley')
+!!      tryall:exec('mgs')
+!!      tryall:exec('net')
+!!      tryall:exec('pascal')
+!!      tryall:exec('pdq')
+!!      tryall:// pdqstep
+!!      tryall:exec('pop')
+!!      tryall:exec('qr')
+!!      tryall:// qrstep
+!!      tryall:exec('rho')
+!!      tryall:exec('rosser')
+!!      tryall:// rot
+!!      tryall:exec('rqi')
+!!      tryall:exec('setup')
+!!      tryall:exec('sigma')
+!!      tryall:exec('strut.mat')
+!!      tryall:exec('w5')
+!!      tryall:exec('rogers.exec
+!!      tryall:exec('rogers.load
+!!
+!!      w5:w5    = <
+!!      w5:          1.          1.          0.          0.          0.
+!!      w5:        -10.          1.          1.          0.          0.
+!!      w5:         40.          0.          1.          1.          0.
+!!      w5:       -205.          0.          0.          1.          1.
+!!      w5:       1024.          0.          0.          0.         -4.
+!!      w5:         >
 !===================================================================================================================================
 subroutine MAT88(init,string0)
 

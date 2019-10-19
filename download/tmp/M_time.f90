@@ -682,7 +682,7 @@ end subroutine test_d2o
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    ordinal_seconds(3f) - [M_time]seconds since beginning of year
+!!    ordinal_seconds(3f) - [M_time] seconds since beginning of year
 !!##SYNOPSIS
 !!
 !!    function ordinal_seconds()

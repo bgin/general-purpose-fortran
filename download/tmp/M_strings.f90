@@ -2389,7 +2389,7 @@ integer             :: ier
 end subroutine test_change
 !>
 !!##NAME
-!!     strtok(3f) - [M_strings:TOKENS]Tokenize a string
+!!     strtok(3f) - [M_strings:TOKENS] Tokenize a string
 !!##SYNOPSIS
 !!
 !!       function strtok(source_string,itoken,token_start,token_end,delimiters)

@@ -7,8 +7,17 @@ integer,parameter :: cd=kind(0.0d0)
 private                             ! the PRIVATE declaration requires use of a module, and changes the default from PUBLIC
 public sort_quick_rx
 public sort_shell
-public swap
+
+public :: swap
+public :: exchange
+public :: swap_any
+
 public unique
+
+public tree_insert
+public tree_print
+public tree_node
+
 public test_suite_m_sort
 !===================================================================================================================================
 
@@ -36,6 +45,20 @@ character(len=*),parameter::ident_3="@(#)M_sort::swap(3f): swap two variables of
 interface swap
    module procedure r_swap, i_swap, c_swap, s_swap, d_swap, l_swap, cd_swap
 end interface
+
+interface exchange
+   module procedure exchange_scalar, exchange_array
+end interface
+
+interface swap_any
+   module procedure swap_any_scalar, swap_any_array
+end interface
+!===================================================================================================================================
+! For TREE SORT
+type tree_node
+   integer :: value
+   type (tree_node), pointer :: left, right
+end type tree_node
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
@@ -1306,10 +1329,10 @@ end subroutine unique_complex_double
 !===================================================================================================================================
 !>
 !!##NAME
-!!      swap(3f) - [M_sort] elemental subroutine swaps two standard type variables of like type
+!!    swap(3f) - [M_sort] elemental subroutine swaps two standard type variables of like type
 !!##SYNOPSIS
 !!
-!!      subroutine swap(X,Y)
+!!    subroutine swap(X,Y)
 !!##DESCRIPTION
 !!    Generic subroutine SWAP(GEN1,GEN2) swaps two variables of like type
 !!    (real, integer, complex, character, double, logical).
@@ -1521,12 +1544,537 @@ end subroutine s_swap
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+!>
+!!##NAME
+!!    exchange(3f) - [M_sort] subroutine exchanges two variables of like type
+!!##SYNOPSIS
+!!
+!!    subroutine exchange(X,Y)
+!!##DESCRIPTION
+!!    Generic subroutine exchange(GEN1,GEN2) exchanges two variables of
+!!    like type.
+!!
+!!    On output, the values of X and Y have been interchanged. Swapping is
+!!    commonly required in procedures that sort data.
+!!
+!!    This routine uses the memcpy(3c) procedure, so data is assumed to be
+!!    contigious and to not overlap.
+!!
+!!    DO NOT CURRENTLY USE WITH CHARACTER VALUES WITH gfortran, and do not
+!!    use with anything but scalar values.
+!!
+!!##EXAMPLE
+!!
+!!   Example program:
+!!
+!!    program demo_exchange
+!!    use M_sort, only : exchange
+!!    integer             :: iarray(2)=[10,20]
+!!    real                :: rarray(2)=[11.11,22.22]
+!!    doubleprecision     :: darray(2)=[1234.56789d0,9876.54321d0]
+!!    complex             :: carray(2)=[(1234,56789),(9876,54321)]
+!!    logical             :: larray(2)=[.true.,.false.]
+!!    character(len=16)   :: string(2)=["First string    ","The other string"]
+!!
+!!    integer             :: one(13)=1
+!!    integer             :: two(13)=2
+!!
+!!    integer             :: one2(3,3)=1
+!!    integer             :: two2(3,3)=2
+!!
+!!       print *, "integers before exchange ", iarray
+!!       call exchange (iarray(1), iarray(2))
+!!       print *, "integers after exchange  ", iarray
+!!
+!!       print *, "reals before exchange ", rarray
+!!       call exchange (rarray(1), rarray(2))
+!!       print *, "reals after exchange  ", rarray
+!!
+!!       print *, "doubles before exchange ", darray
+!!       call exchange (darray(1), darray(2))
+!!       print *, "doubles after exchange  ", darray
+!!
+!!       print *, "complexes before exchange ", carray
+!!       call exchange (carray(1), carray(2))
+!!       print *, "complexes after exchange  ", carray
+!!
+!!       print *, "logicals before exchange ", larray
+!!       call exchange (larray(1), larray(2))
+!!       print *, "logicals after exchange  ", larray
+!!
+!!       write(*,*)'GETS THIS WRONG IN GFORTRAN'
+!!       print *, "strings before exchange ", string
+!!       call exchange (string(1), string(2))
+!!       print *, "strings after exchange ", string
+!!
+!!       write(*,*)'exchange two vectors'
+!!       write(*,'("one before: ",*(i0,:","))') one
+!!       write(*,'("two before: ",*(i0,:","))') two
+!!       call exchange(one,two)
+!!       write(*,'("one after: ",*(i0,:","))') one
+!!       write(*,'("two after: ",*(i0,:","))') two
+!!
+!!       write(*,*)'given these arrays initially each time '
+!!       one2=1
+!!       two2=2
+!!       call printarrays()
+!!
+!!       write(*,*)'GETS THIS WRONG'
+!!       write(*,*)'exchange two rows'
+!!       one2=1
+!!       two2=2
+!!       call exchange(one2(2,:),two2(3,:))
+!!       call printarrays()
+!!
+!!       write(*,*)'GETS THIS WRONG'
+!!       write(*,*)'exchange two columns'
+!!       one2=1
+!!       two2=2
+!!       call exchange(one2(:,2),two2(:,2))
+!!       call printarrays()
+!!
+!!       write(*,*)'CANNOT DO MULTI-DIMENSIONAL ARRAYS YET'
+!!       write(*,*)'exchange two arrays with same number of elements'
+!!       one2=1
+!!       two2=2
+!!       !call exchange(one2,two2)
+!!       !call printarrays()
+!!
+!!       contains
+!!       subroutine printarrays()
+!!       integer :: i
+!!       do i=1,size(one2(1,:))
+!!          write(*,'(*(i0,:","))') one2(i,:)
+!!       enddo
+!!       write(*,*)
+!!       do i=1,size(two2(1,:))
+!!          write(*,'(*(i0,:","))') two2(i,:)
+!!       enddo
+!!       end subroutine printarrays
+!!
+!!    end program demo_exchange
+!!
+!!   Expected Results:
+!!
+!!    > integers before exchange           10          20
+!!    > integers after exchange            20          10
+!!    > reals before exchange    11.1099997       22.2199993
+!!    > reals after exchange     22.2199993       11.1099997
+!!    > doubles before exchange    1234.5678900000000        9876.5432099999998
+!!    > doubles after exchange     9876.5432099999998        1234.5678900000000
+!!    > complexes before exchange  (  1234.00000    ,  56789.0000    ) (  9876.00000    ,  54321.0000
+!!    > complexes after exchange   (  9876.00000    ,  54321.0000    ) (  1234.00000    ,  56789.0000
+!!    > logicals before exchange  T F
+!!    > logicals after exchange   F T
+!!    > strings before exchange First string    The other string
+!!    > strings after exchange The other stringFirst string
+!!    > exchange two vectors
+!!    >one before: 1,1,1,1,1,1,1,1,1,1,1,1,1
+!!    >two before: 2,2,2,2,2,2,2,2,2,2,2,2,2
+!!    >one after: 2,2,2,2,2,2,2,2,2,2,2,2,2
+!!    >two after: 1,1,1,1,1,1,1,1,1,1,1,1,1
+!!    > given these arrays initially each time
+!!    >1,1,1
+!!    >1,1,1
+!!    >1,1,1
+!!    >
+!!    >2,2,2
+!!    >2,2,2
+!!    >2,2,2
+!!    > exchange two rows
+!!    >1,1,1
+!!    >2,2,2
+!!    >1,1,1
+!!    >
+!!    >2,2,2
+!!    >2,2,2
+!!    >1,1,1
+!!    > exchange two columns
+!!    >1,2,1
+!!    >1,2,1
+!!    >1,2,1
+!!    >
+!!    >2,1,2
+!!    >2,1,2
+!!    >2,1,2
+!!    > exchange two arrays with same number of elements
+!!    >2,2,2
+!!    >2,2,2
+!!    >2,2,2
+!!    >
+!!    >1,1,1
+!!    >1,1,1
+!!    >1,1,1
+!===================================================================================================================================
+subroutine exchange_scalar(lhs,rhs)
+use iso_c_binding, only : c_ptr, c_size_t
+use M_system,      only : system_memcpy
+implicit none
+class(*),intent(inout) :: lhs, rhs
+class(*), allocatable :: temp
+type(c_ptr) :: tmp
+   temp=lhs
+   if(same_type_as(lhs,rhs))then
+      call system_memcpy(loc(lhs),  loc(rhs), storage_size(lhs,kind=c_size_t)/8_c_size_t )
+      call system_memcpy(loc(rhs), loc(temp), storage_size(rhs,kind=c_size_t)/8_c_size_t )
+   else
+      write(*,*)'error: exchange(3f) called with values of different type'
+      stop 4
+   endif
+end subroutine exchange_scalar
+!===================================================================================================================================
+subroutine exchange_array(lhs,rhs)
+class(*) :: lhs(:),rhs(:)
+integer  :: i
+   if(size(lhs).eq.size(rhs))then
+      do i=1,size(lhs)
+         call exchange_scalar(lhs(i),rhs(i))
+      enddo
+   else
+      write(*,*)'error: exchange(3f) called with arrays of different sizes'
+      stop 5
+   endif
+end subroutine exchange_array
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!    swap_any(3f) - [M_sort] subroutine swap_anys two variables of like type
+!!##SYNOPSIS
+!!
+!!    subroutine swap_any(X,Y)
+!!##DESCRIPTION
+!!    Generic subroutine swap_any(GEN1,GEN2) swap_anys two variables of
+!!    like type.
+!!
+!!    On output, the values of X and Y have been interchanged. Swapping is
+!!    commonly required in procedures that sort data.
+!!
+!!    DO NOT CURRENTLY USE WITH WITH ANYTHING BUT SCALAR VALUES.
+!!
+!!##EXAMPLE
+!!
+!!   Example program:
+!!
+!!    program demo_swap_any
+!!    use M_sort, only : swap_any
+!!    integer             :: iarray(2)=[10,20]
+!!    real                :: rarray(2)=[11.11,22.22]
+!!    doubleprecision     :: darray(2)=[1234.56789d0,9876.54321d0]
+!!    complex             :: carray(2)=[(1234,56789),(9876,54321)]
+!!    logical             :: larray(2)=[.true.,.false.]
+!!    character(len=16)   :: string(2)=["First string    ","The other string"]
+!!
+!!    integer             :: one(13)=1
+!!    integer             :: two(13)=2
+!!
+!!    integer             :: one2(3,3)=1
+!!    integer             :: two2(3,3)=2
+!!
+!!       print *, "integers before swap_any ", iarray
+!!       call swap_any (iarray(1), iarray(2))
+!!       print *, "integers after swap_any  ", iarray
+!!
+!!       print *, "reals before swap_any ", rarray
+!!       call swap_any (rarray(1), rarray(2))
+!!       print *, "reals after swap_any  ", rarray
+!!
+!!       print *, "doubles before swap_any ", darray
+!!       call swap_any (darray(1), darray(2))
+!!       print *, "doubles after swap_any  ", darray
+!!
+!!       print *, "complexes before swap_any ", carray
+!!       call swap_any (carray(1), carray(2))
+!!       print *, "complexes after swap_any  ", carray
+!!
+!!       print *, "logicals before swap_any ", larray
+!!       call swap_any (larray(1), larray(2))
+!!       print *, "logicals after swap_any  ", larray
+!!
+!!       print *, "strings before swap_any ", string
+!!       call swap_any (string(1), string(2))
+!!       print *, "strings after swap_any ", string
+!!
+!!       write(*,*)'swap_any two vectors'
+!!       write(*,'("one before: ",*(i0,:","))') one
+!!       write(*,'("two before: ",*(i0,:","))') two
+!!       call swap_any(one,two)
+!!       write(*,'("one after: ",*(i0,:","))') one
+!!       write(*,'("two after: ",*(i0,:","))') two
+!!
+!!       write(*,*)'given these arrays initially each time '
+!!       one2=1
+!!       two2=2
+!!       call printarrays()
+!!
+!!       write(*,*)'GETS THIS WRONG'
+!!       write(*,*)'swap_any two rows'
+!!       one2=1
+!!       two2=2
+!!       call swap_any(one2(2,:),two2(3,:))
+!!       call printarrays()
+!!
+!!       write(*,*)'GETS THIS WRONG'
+!!       write(*,*)'swap_any two columns'
+!!       one2=1
+!!       two2=2
+!!       call swap_any(one2(:,2),two2(:,2))
+!!       call printarrays()
+!!
+!!       write(*,*)'CANNOT DO MULTI-DIMENSIONAL ARRAYS YET'
+!!       write(*,*)'swap_any two arrays with same number of elements'
+!!       one2=1
+!!       two2=2
+!!       !call swap_any(one2,two2)
+!!       !call printarrays()
+!!
+!!       contains
+!!       subroutine printarrays()
+!!       integer :: i
+!!       do i=1,size(one2(1,:))
+!!          write(*,'(*(i0,:","))') one2(i,:)
+!!       enddo
+!!       write(*,*)
+!!       do i=1,size(two2(1,:))
+!!          write(*,'(*(i0,:","))') two2(i,:)
+!!       enddo
+!!       end subroutine printarrays
+!!
+!!    end program demo_swap_any
+!!
+!!   Expected Results:
+!!
+!!    > integers before swap_any           10          20
+!!    > integers after swap_any            20          10
+!!    > reals before swap_any    11.1099997       22.2199993
+!!    > reals after swap_any     22.2199993       11.1099997
+!!    > doubles before swap_any    1234.5678900000000        9876.5432099999998
+!!    > doubles after swap_any     9876.5432099999998        1234.5678900000000
+!!    > complexes before swap_any  (  1234.00000    ,  56789.0000    ) (  9876.00000    ,  54321.0000
+!!    > complexes after swap_any   (  9876.00000    ,  54321.0000    ) (  1234.00000    ,  56789.0000
+!!    > logicals before swap_any  T F
+!!    > logicals after swap_any   F T
+!!    > strings before swap_any First string    The other string
+!!    > strings after swap_any The other stringFirst string
+!!    > swap_any two vectors
+!!    >one before: 1,1,1,1,1,1,1,1,1,1,1,1,1
+!!    >two before: 2,2,2,2,2,2,2,2,2,2,2,2,2
+!!    >one after: 2,2,2,2,2,2,2,2,2,2,2,2,2
+!!    >two after: 1,1,1,1,1,1,1,1,1,1,1,1,1
+!!    > given these arrays initially each time
+!!    >1,1,1
+!!    >1,1,1
+!!    >1,1,1
+!!    >
+!!    >2,2,2
+!!    >2,2,2
+!!    >2,2,2
+!!    > swap_any two rows
+!!    >1,1,1
+!!    >2,2,2
+!!    >1,1,1
+!!    >
+!!    >2,2,2
+!!    >2,2,2
+!!    >1,1,1
+!!    > swap_any two columns
+!!    >1,2,1
+!!    >1,2,1
+!!    >1,2,1
+!!    >
+!!    >2,1,2
+!!    >2,1,2
+!!    >2,1,2
+!!    > swap_any two arrays with same number of elements
+!!    >2,2,2
+!!    >2,2,2
+!!    >2,2,2
+!!    >
+!!    >1,1,1
+!!    >1,1,1
+!!    >1,1,1
+!===================================================================================================================================
+subroutine swap_any_scalar( lhs, rhs )
+use M_anything, only : anything_to_bytes, bytes_to_anything
+class(*) :: rhs
+class(*) :: lhs
+character(len=1),allocatable :: templ(:)
+character(len=1),allocatable :: tempr(:)
+   tempr=anything_to_bytes(rhs)
+   templ=anything_to_bytes(lhs)
+   call bytes_to_anything(templ,rhs)
+   call bytes_to_anything(tempr,lhs)
+end subroutine swap_any_scalar
+
+subroutine swap_any_array( lhs, rhs )
+class(*) :: rhs(:)
+class(*) :: lhs(:)
+integer  :: i
+   do i=1,size(lhs)
+      call swap_any_scalar(lhs(i),rhs(i))
+   enddo
+end subroutine swap_any_array
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!
+! XXXXXXX XXXXXX  XXXXXXX XXXXXXX
+! X  X  X  X    X  X    X  X    X
+!    X     X    X  X       X
+!    X     X    X  X  X    X  X
+!    X     XXXXX   XXXX    XXXX
+!    X     X  X    X  X    X  X
+!    X     X  X    X       X
+!    X     X   X   X    X  X    X
+!   XXX   XXX  XX XXXXXXX XXXXXXX
+!
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!    tree_insert(3f) - [M_sort] sort a number of integers by building a tree, sorted in infix orde
+!!##SYNOPSIS
+!!
+!!   subroutine tree_insert(t,number)
+!!
+!!    type(tree_node), pointer :: t
+!!    integer             :: number
+!!
+!!##DESCRIPTION
+!!   Sorts a number of integers by building a tree, sorted in infix order.
+!!   This sort has expected behavior n log n, but worst case (input is
+!!   sorted) n ** 2.
+!!
+!!##AUTHOR
+!!   Copyright (c) 1990 by Walter S. Brainerd, Charles H. Goldberg,
+!!   and Jeanne C. Adams. This code may be copied and used without
+!!   restriction as long as this notice is retained.
+!!
+!!##EXAMPLE
+!!
+!!  sample program
+!!
+!!    program tree_sort
+!!    use M_sort, only : tree_node, tree_insert, tree_print
+!!    implicit none
+!!    type(tree_node), pointer :: t     ! A tree
+!!    integer             :: number
+!!    integer             :: ios
+!!    nullify(t)                        ! Start with empty tree
+!!    infinite: do
+!!       read (*,*,iostat=ios) number
+!!       if(ios.ne.0)exit infinite
+!!       call tree_insert(t,number)     ! Put next number in tree
+!!    enddo infinite
+!!    call tree_print(t)                ! Print nodes of tree in infix order
+!!    end program tree_sort
+!===================================================================================================================================
+recursive subroutine tree_insert (t, number)
+implicit none
+
+character(len=*),parameter::ident_30="&
+&@(#)M_sort::tree_insert(3f): sort a number of integers by building a tree, sorted in infix order"
+
+type (tree_node), pointer :: t  ! a tree
+integer, intent (in) :: number
+   ! if (sub)tree is empty, put number at root
+   if (.not. associated (t)) then
+      allocate (t)
+      t % value = number
+      nullify (t % left)
+      nullify (t % right)
+      ! otherwise, insert into correct subtree
+   else if (number < t % value) then
+      call tree_insert (t % left, number)
+   else
+      call tree_insert (t % right, number)
+   endif
+end subroutine tree_insert
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!    tree_print(3f) - [M_sort] print a sorted integer tree generated by tree_insert(3f
+!!##SYNOPSIS
+!!
+!!   subroutine tree_print(t)
+!!
+!!    type(tree_node), pointer :: t
+!!
+!!##DESCRIPTION
+!!   Print a tree of sorted integers greated by insert_tree(3f).
+!!
+!!##AUTHOR
+!!   Copyright (c) 1990 by Walter S. Brainerd, Charles H. Goldberg,
+!!   and Jeanne C. Adams. This code may be copied and used without
+!!   restriction as long as this notice is retained.
+!!
+!!##EXAMPLE
+!!
+!!  sample program
+!!
+!!    program tree_sort
+!!    use M_sort, only : tree_node, tree_insert, tree_print
+!!    implicit none
+!!    type(tree_node), pointer :: t     ! A tree
+!!    integer             :: number
+!!    integer             :: ios
+!!    nullify(t)                        ! Start with empty tree
+!!    infinite: do
+!!       read (*,*,iostat=ios) number
+!!       if(ios.ne.0)exit infinite
+!!       call tree_insert(t,number)     ! Put next number in tree
+!!    enddo infinite
+!!    call tree_print(t)                ! Print nodes of tree in infix order
+!!    end program tree_sort
+!===================================================================================================================================
+recursive subroutine tree_print(t)
+implicit none
+
+character(len=*),parameter::ident_31="@(#)M_sort::tree_print(3f):"
+
+type (tree_node), pointer :: t  ! a tree
+
+   if (associated (t)) then
+      call tree_print (t % left)
+      print *, t % value
+      call tree_print (t % right)
+   endif
+end subroutine tree_print
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 subroutine test_suite_m_sort()
    call test_sort_shell()
    call test_sort_quick_rx()
    call test_unique()
    call test_swap()
+
+   call test_tree_insert()
+   call test_tree_print()
+
 end subroutine test_suite_m_sort
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_tree_insert()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('insert',msg='')
+   !!call unit_check('insert', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('insert',msg='')
+end subroutine test_tree_insert
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_tree_print()
+
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+   call unit_check_start('tree_print',msg='')
+   !!call unit_check('tree_print', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('tree_print',msg='')
+end subroutine test_tree_print
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================

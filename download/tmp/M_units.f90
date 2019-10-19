@@ -1651,7 +1651,7 @@ end function norm_angle_360_integer
 !===================================================================================================================================
 !>
 !!##NAME
-!!    inf(3f) - [M_units]return an inf (Infinity)
+!!    inf(3f) - [M_units] return an inf (Infinity)
 !!##SYNOPSIS
 !!
 !!    function inf(value)
@@ -1746,7 +1746,7 @@ end function inf128
 !===================================================================================================================================
 !>
 !!##NAME
-!!    nan(3f) - [M_units]return a NaN (Not a number)
+!!    nan(3f) - [M_units] return a NaN (Not a number)
 !!##SYNOPSIS
 !!
 !!    function nan(value)
@@ -1776,9 +1776,12 @@ end function inf128
 !!      real(kind=real128) :: r128
 !!      character(len=256) :: message
 !!      integer            :: ios
+!!
 !!         r32=nan(0.0_real32)
 !!         r64=nan(0.0_real64)
 !!         r128=nan(0.0_real128)
+!!
+!!         ! examples printing the NaN values
 !!         ! list directed format
 !!         write(*,*,iomsg=message,iostat=ios)r32,r64,r128
 !!         if(ios.ne.0)write(*,*)trim(message)
@@ -1802,8 +1805,15 @@ end function inf128
 !!            stop
 !!         endif
 !!
+!!        ALT1 block
+!!        integer :: x = 2143289344
+!!           print *, transfer(x, 1.0)    ! prints "nan" on i686
+!!        blockend ALT1
+!!
 !!      end program demo_nan
 !!   Results:
+!!##SEE ALSO
+!!      IS_NAN(3f)
 !===================================================================================================================================
 function nan32(value)
 use,intrinsic :: iso_fortran_env, only: real32
