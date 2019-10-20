@@ -134,7 +134,7 @@
 !!
 !!    > The field values are returned left to right, top to bottom
 !!    > as a tab-delimited string. The returned string is ...
-!!    > F  F       T       John S. Urban           2018-09-20              13.97                   F       T       F
+!!    > F  F       T       John S. Urban           2018-09-20              13.97                   F       T       F       F
 !!    >============================================================================
 !!    > The strings can be read from the string, reformatted as a
 !!    > NAMELIST string, or parsed.

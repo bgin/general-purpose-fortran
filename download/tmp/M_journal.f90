@@ -8,7 +8,7 @@ private
 
 !>
 !!##NAME
-!!      journal(3f) - [M_journal] provides public message routine, no paging or graphic mode chang
+!!      journal(3f) - [M_journal] provides public message routine, no paging or graphic mode change
 !!##SYNOPSIS
 !!
 !!
@@ -350,7 +350,7 @@ end subroutine change_model
 !!     logical,intent(in),optional   :: nospace
 !!
 !!##DESCRIPTION
-!!    where_write_message_all(3f) builds and writes a space-separated string from up to nine scalar values
+!!    where_write_message_all(3f) builds and writes a space-separated string from up to nine scalar values.
 !!
 !!##OPTIONS
 !!

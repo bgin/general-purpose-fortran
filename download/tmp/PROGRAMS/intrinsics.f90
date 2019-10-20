@@ -17,7 +17,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Mon, Oct 14th, 2019 11:34:33 PM>',&
+'@(#)COMPILED:       Sun, Oct 20th, 2019 3:07:56 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -67,7 +67,7 @@ end subroutine help_usage
 !!     intrinsics [ --help| --version]
 !!
 !!##DESCRIPTION
-!!     This program outputs all the source of the man(1) pages of the Fortran intrinsics procedures
+!!     This program outputs all the source of the man(1) pages of the Fortran intrinsics procedures.
 !!
 !!##OPTIONS
 !!     --help     display this help and exit
@@ -891,20 +891,21 @@ write(io,'(a)')'CLASS'
 write(io,'(a)')'   Transformational function.'
 write(io,'(a)')''
 write(io,'(a)')'NAME'
+write(io,'(a)')'   needs(3f) - rough notes on what is missing from standard Fortran'
 write(io,'(a)')'SYNOPSIS'
 write(io,'(a)')'DESCRIPTION'
 write(io,'(a)')'A list of what Fortran needs and where to find some of it'
 write(io,'(a)')''
 write(io,'(a)')'o unsigned integers              - see BITS'
-write(io,'(a)')'o POSIX PXF routines or some veresion of POSIX functions, especially for file system navigation'
+write(io,'(a)')'o POSIX PXF routines or some version of POSIX functions, especially for file system navigation'
 write(io,'(a)')'o Stacks, dictionaries and other well-known abstract data types and operations'
 write(io,'(a)')'o regular expressions'
+write(io,'(a)')'o a standard getopts routine'
 write(io,'(a)')'o A standard graphics interface'
 write(io,'(a)')'o cumulative round-off error for floating point operations'
 write(io,'(a)')'o physical units for variables'
 write(io,'(a)')'o arbitrary precision math       - see MPFUN90 and ARPREC'
 write(io,'(a)')'o GUI'
-write(io,'(a)')'o a standard getopts routine'
 write(io,'(a)')'o access to popular C libraries SQLITE3, UUID, HASH FUNCTIONS'
 write(io,'(a)')'o socket access'
 write(io,'(a)')'o block comments that can easily be exported as documentation, like with ufpp(1) processor'

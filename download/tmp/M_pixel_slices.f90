@@ -258,7 +258,7 @@ module M_pixel_slices
 !!          SMX=0.1                ! (R): major tick length on x axis
 !!    !-----------------------
 !!          XT='dl_slices X TITLE' ! xt    (C): title of x axis (width)
-!!          NXT=len_trim(xt)       ! nxt   (i): number of characters in xt ;nxt = 0 : no axis plotted ; nxt > 0 : norma
+!!          NXT=len_trim(xt)       ! nxt   (i): number of characters in xt ;nxt = 0 : no axis plotted ; nxt > 0 : normal
 !!
 !!    ! YAXIS:
 !!          YS=-10.0               ! ys,ye (R): starting and ending values displayed on y axis
@@ -274,7 +274,7 @@ module M_pixel_slices
 !!          SMY=0.10               ! smy   (R): major tick length on y axis
 !!    !-----------------------
 !!          YT='dl_slices Y TITLE' ! yt    (C): title of y axis (width)
-!!          NYT=len_trim(yt)       ! nyt   (i): number of characters in xt ;nyt = 0 : no axis plotted ; nyt > 0 : norma
+!!          NYT=len_trim(yt)       ! nyt   (i): number of characters in xt ;nyt = 0 : no axis plotted ; nyt > 0 : normal
 !!
 !!    ! ZAXIS:
 !!          ZS=1.0
@@ -290,7 +290,7 @@ module M_pixel_slices
 !!          SMZ=0.1                ! smz   (R): major tick length on z axis
 !!    !-----------------------
 !!          ZT='SLICE'             ! zt    (C): title of z axis (width)
-!!          NZT=len_trim(zt)       ! nzt   (i): number of characters in xt ;nzt = 0 : no axis plotted ; nzt > 0 : norma
+!!          NZT=len_trim(zt)       ! nzt   (i): number of characters in xt ;nzt = 0 : no axis plotted ; nzt > 0 : normal
 !!
 !!    !          (NOTE: the following optional parameters are accessed only if
 !!    !                 iax < 0 or mod(iflag,10)=1)

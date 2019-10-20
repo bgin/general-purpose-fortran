@@ -137,7 +137,7 @@
 !!     subroutine test_two
 !!     ! use of all(3f), any(3f), merge(3f) can be useful
 !!     ! if you know what these would produce
-!!     ! write(*,*)['A','X','X','X','X','B'].eq.'B'      ! this would return an array, the last element having the value T, else
+!!     ! write(*,*)['A','X','X','X','X','B'].eq.'B'      ! this would return an array, the last element having the value T, else F
 !!     ! write(*,*)all(['A','X','X','X','X','X'].eq.'X') ! this would return F
 !!     ! write(*,*)any(['A','X','X','X','X','X'].eq.'B') ! this would return F
 !!     ! write(*,*)any(['A','X','X','X','X','B'].eq.'B') ! this would return T
@@ -247,7 +247,7 @@ contains
 !!    character(len=:),allocatable :: pr
 !!
 !!    call unit_check_start('myroutine')
-!!    call unit_check_msg('myroutine','HUGE(3f) integers',huge(0),'and real',huge(0.0),'and double',huge(0.0d0)
+!!    call unit_check_msg('myroutine','HUGE(3f) integers',huge(0),'and real',huge(0.0),'and double',huge(0.0d0))
 !!    call unit_check_msg('myroutine','real            :',huge(0.0),0.0,12345.6789,tiny(0.0) )
 !!    call unit_check_msg('myroutine','doubleprecision :',huge(0.0d0),0.0d0,12345.6789d0,tiny(0.0d0) )
 !!    call unit_check_msg('myroutine','complex         :',cmplx(huge(0.0),tiny(0.0)) )
@@ -312,7 +312,7 @@ end subroutine unit_check_msg
 !!    pr=msg('complex         :',cmplx(huge(0.0),tiny(0.0)) )
 !!    write(*,'(a)')pr
 !!
-!!    ! although it will often work, using msg(3f) in an I/O statement is not recommende
+!!    ! although it will often work, using msg(3f) in an I/O statement is not recommended
 !!    write(*,*)msg('program will now stop')
 !!
 !!    end program demo_msg
@@ -420,7 +420,7 @@ end function msg
 !!
 !!    call stderr('real32  :',huge(0.0_real32),0.0_real32,12345.6789_real32,tiny(0.0_real32))
 !!    call stderr('real64  :',huge(0.0_real64),0.0_real64,12345.6789_real64,tiny(0.0_real64))
-!!    call stderr('real128 :',huge(0.0_real128),0.0_real128,12345.6789_real128,tiny(0.0_real128)
+!!    call stderr('real128 :',huge(0.0_real128),0.0_real128,12345.6789_real128,tiny(0.0_real128))
 !!    call stderr('complex :',cmplx(huge(0.0_real),tiny(0.0_real)))
 !!
 !!    call stderr('error: program will now stop')
@@ -538,7 +538,7 @@ end subroutine stderr
 !!    select case(int)
 !!    case(10) ; call fstop(int)
 !!    case(20) ; call fstop(int,stderr='error: program will now stop')
-!!    case(25) ; call fstop(int,stdout='stdout message',stderr='stderr message'
+!!    case(25) ; call fstop(int,stdout='stdout message',stderr='stderr message')
 !!    case(30) ; call fstop(int,stdout='error: program will now stop')
 !!    case default
 !!               call fstop(int)
@@ -663,7 +663,7 @@ end subroutine fstop
 !>
 !!
 !!##NAME
-!!    unit_check(3f) - [M_debug] if logical expression is false, call command "goodbad NAME bad" and stop program by defaul
+!!    unit_check(3f) - [M_debug] if logical expression is false, call command "goodbad NAME bad" and stop program by default
 !!
 !!##SYNOPSIS
 !!
@@ -776,7 +776,7 @@ end subroutine unit_check
 !===================================================================================================================================
 !>
 !!##NAME
-!!    unit_check_start(3f) - [M_debug] call command "goodbad NAME start" and optionally set option
+!!    unit_check_start(3f) - [M_debug] call command "goodbad NAME start" and optionally set options
 !!
 !!##SYNOPSIS
 !!
@@ -890,7 +890,7 @@ end subroutine unit_check_start
 !>
 !!
 !!##NAME
-!!    unit_check_done(3f) - [M_debug] call command "goodbad NAME good" or "goodbad NAME bad" depending on whether failures were foun
+!!    unit_check_done(3f) - [M_debug] call command "goodbad NAME good" or "goodbad NAME bad" depending on whether failures were found
 !!
 !!##SYNOPSIS
 !!
@@ -1026,7 +1026,7 @@ end subroutine unit_check_done
 !!     call unit_check('myroutine', x.lt.100 ,'test if small enough')
 !!
 !!     if(x.ne.0)then
-!!        call unit_check_bad ('myroutine',msg='checks on "myroutine" failed') ! program execution stoppe
+!!        call unit_check_bad ('myroutine',msg='checks on "myroutine" failed') ! program execution stopped
 !!     endif
 !!
 !!     end program demo_unit_check_bad
@@ -1059,7 +1059,7 @@ end subroutine unit_check_bad
 !>
 !!
 !!##NAME
-!!    unit_check_good(3f) - [M_debug] call command "goodbad NAME good
+!!    unit_check_good(3f) - [M_debug] call command "goodbad NAME good"
 !!
 !!##SYNOPSIS
 !!
@@ -1124,7 +1124,7 @@ end subroutine unit_check_good
 !===================================================================================================================================
 !>
 !!##NAME
-!!      pdec(3f) - [M_debug] write out string with ASCII decimal equivalent vertically under i
+!!      pdec(3f) - [M_debug] write out string with ASCII decimal equivalent vertically under it
 !!
 !!##SYNOPSIS
 !!

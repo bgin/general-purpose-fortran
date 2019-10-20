@@ -93,7 +93,7 @@ contains
 !!       case default
 !!          fval=errc(args(1),args(2),args(3))
 !!          call journal('sc', '*juown1* unknown function')
-!!          temp1='function name is ........'//func(1:iflen) ! some machines cannot concatenate a string being passed as an argumen
+!!          temp1='function name is ........'//func(1:iflen) ! some machines cannot concatenate a string being passed as an argument
 !!          call journal('sc',temp1)
 !!          call journal('sc','function name length is..',iflen)
 !!          call journal('sc','number of arguments .....',n)
@@ -315,7 +315,7 @@ end function errc
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    fetch(3f) - [M_hybrid] call sget(3f) (and calculator if fetched string starts with $ or double-quote
+!!    fetch(3f) - [M_hybrid] call sget(3f) (and calculator if fetched string starts with $ or double-quote)
 !!
 !!##SYNOPSIS
 !!

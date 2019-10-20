@@ -1,7 +1,7 @@
 module M_drawinc
 !>
 !!##NAME
-!!       M_drawinc(3f) - [M_drawinc] various routines based on the M_draw(3fm) module included into a modul
+!!       M_drawinc(3f) - [M_drawinc] various routines based on the M_draw(3fm) module included into a module
 !!
 !!##SYNOPSIS
 !!
@@ -31,7 +31,7 @@ contains
 !!    character(len=*),intent(in) :: right
 !!
 !!##DESCRIPTION
-!!    Draw a simple geometric illusion with short labels at the four compass points as a banner pag
+!!    Draw a simple geometric illusion with short labels at the four compass points as a banner page
 !!
 !!##OPTIONS
 !!    TOP      short top banner label

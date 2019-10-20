@@ -70,7 +70,7 @@
 !!        o A # under a character will delete a character.
 !!        o An "&" (ampersand) will cause the character above it to be replaced with a space.
 !!        o  To insert a string enter ^string#.
-!!        o Otherwise, enter a character under one in the currently displayed command and it will replace it
+!!        o Otherwise, enter a character under one in the currently displayed command and it will replace it.
 !!        o hit RETURN to start another edit of the line
 !!    o Once the change is executed you will be prompted for another edit
 !!      directive

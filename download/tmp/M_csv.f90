@@ -100,7 +100,7 @@ contains
 !!    implicit none
 !!    character(len=:),allocatable :: pr
 !!
-!!       pr=csv('HUGE(3f) integers',huge(0),'and real',huge(0.0),'and double',huge(0.0d0)
+!!       pr=csv('HUGE(3f) integers',huge(0),'and real',huge(0.0),'and double',huge(0.0d0))
 !!       write(*,'(a)')pr
 !!       pr=csv('real            :',huge(0.0),0.0,12345.6789,tiny(0.0) )
 !!       write(*,'(a)')pr
@@ -186,7 +186,7 @@ end function csv
 !===================================================================================================================================
 !>
 !!##NAME
-!!      csv_write_scalar(3fp) - Write a single integer/real/double precision real to the CSV-fil
+!!      csv_write_scalar(3fp) - Write a single integer/real/double precision real to the CSV-file
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -246,7 +246,7 @@ integer,intent(in),optional     :: lun
 end subroutine csv_write_scalar
 !>
 !!##NAME
-!!   csv_write_row(3f) - [M_csv] Write a one-dimensional array of items to the CSV-fil
+!!   csv_write_row(3f) - [M_csv] Write a one-dimensional array of items to the CSV-file
 !!##SYNOPSIS
 !!
 !!##OPTIONS
@@ -282,7 +282,7 @@ integer,intent(in),optional    :: lun
 end subroutine csv_write_row
 !>
 !!##NAME
-!!   csv_write_table(3f) - [M_csv] Write a two-dimensional array of items to the CSV-fil
+!!   csv_write_table(3f) - [M_csv] Write a two-dimensional array of items to the CSV-file
 !!##SYNOPSIS
 !!
 !!##OPTIONS

@@ -77,7 +77,7 @@ contains
 !===================================================================================================================================
 !>
 !!##NAME
-!!    RETREV(3f) - [ARGUMENTS:M_kracken] get keyword value as a string from a command's argument list processed by kracken(3f
+!!    RETREV(3f) - [ARGUMENTS:M_kracken] get keyword value as a string from a command's argument list processed by kracken(3f)
 !!
 !!##SYNOPSIS
 !!
@@ -162,7 +162,7 @@ end subroutine retrev
 !===================================================================================================================================
 !>
 !!##NAME
-!!      dget(3f) - [ARGUMENTS:M_kracken] given keyword fetch doubleprecision value from command argumen
+!!      dget(3f) - [ARGUMENTS:M_kracken] given keyword fetch doubleprecision value from command argument
 !!##SYNOPSIS
 !!
 !!    function dget(keyword) result(value)
@@ -228,7 +228,7 @@ end function dget
 !===================================================================================================================================
 !>
 !!##NAME
-!!          rget(3f) - [ARGUMENTS:M_kracken] given keyword fetch real value from command argumen
+!!          rget(3f) - [ARGUMENTS:M_kracken] given keyword fetch real value from command argument
 !!##SYNOPSIS
 !!
 !!    function rget(keyword) result(value)
@@ -293,7 +293,7 @@ end function rget
 !===================================================================================================================================
 !>
 !!##NAME
-!!          iget(3f) - [ARGUMENTS:M_kracken] given keyword fetch integer value from command argumen
+!!          iget(3f) - [ARGUMENTS:M_kracken] given keyword fetch integer value from command argument
 !!
 !!##SYNOPSIS
 !!
@@ -364,7 +364,7 @@ end function iget
 !===================================================================================================================================
 !>
 !!##NAME
-!!          lget(3f) - [ARGUMENTS:M_kracken] given keyword fetch logical value from command argument
+!!          lget(3f) - [ARGUMENTS:M_kracken] given keyword fetch logical value from command arguments
 !!##SYNOPSIS
 !!
 !!    function lget(keyword) result(lval)
@@ -461,7 +461,7 @@ end function lget
 !===================================================================================================================================
 !>
 !!##NAME
-!!          sget(3f) - [ARGUMENTS:M_kracken] given keyword fetch string value and length from command argument
+!!          sget(3f) - [ARGUMENTS:M_kracken] given keyword fetch string value and length from command arguments
 !!##SYNOPSIS
 !!
 !!   function sget(name,ilen) result(string)
@@ -554,7 +554,7 @@ end function sget
 !===================================================================================================================================
 !>
 !!##NAME
-!!          dgets(3f) - [ARGUMENTS:M_kracken] given keyword fetch doubleprecision array from command argument
+!!          dgets(3f) - [ARGUMENTS:M_kracken] given keyword fetch doubleprecision array from command arguments
 !!##SYNOPSIS
 !!
 !!    function dgets(keyword) result(darray)
@@ -634,7 +634,7 @@ end function dgets
 !===================================================================================================================================
 !>
 !!##NAME
-!!          igets(3f) - [ARGUMENTS:M_kracken] given keyword fetch integer array from command argument
+!!          igets(3f) - [ARGUMENTS:M_kracken] given keyword fetch integer array from command arguments
 !!##SYNOPSIS
 !!
 !!    function igets(keyword) result(iarray)
@@ -707,7 +707,7 @@ end function igets
 !===================================================================================================================================
 !>
 !!##NAME
-!!          rgets(3f) - [ARGUMENTS:M_kracken] given keyword fetch real array from command argument
+!!          rgets(3f) - [ARGUMENTS:M_kracken] given keyword fetch real array from command arguments
 !!##SYNOPSIS
 !!
 !!    function rgets(keyword) result(rarray)
@@ -798,7 +798,7 @@ end function rgets
 !===================================================================================================================================
 !>
 !!##NAME
-!!          lget(3f) - [ARGUMENTS:M_kracken] given keyword fetch logical array from command argumen
+!!          lget(3f) - [ARGUMENTS:M_kracken] given keyword fetch logical array from command argument
 !!##SYNOPSIS
 !!
 !!    function lgets(keyword) result(lvals)
@@ -901,7 +901,7 @@ end function lgets
 !===================================================================================================================================
 !>
 !!##NAME
-!!          sgets(3f) - [ARGUMENTS:M_kracken] given keyword fetch string value parsed on whitespace into an arra
+!!          sgets(3f) - [ARGUMENTS:M_kracken] given keyword fetch string value parsed on whitespace into an array
 !!##SYNOPSIS
 !!
 !!   function sgets(name,delim) result(strings)
@@ -990,7 +990,7 @@ end function sgets
 !===================================================================================================================================
 !>
 !!##NAME
-!!          kracken(3f) - [ARGUMENTS:M_kracken] crack command line options on Fortran programs, using "-KEYWORD VALUE" synta
+!!          kracken(3f) - [ARGUMENTS:M_kracken] crack command line options on Fortran programs, using "-KEYWORD VALUE" syntax
 !!##SYNOPSIS
 !!
 !!     subroutine kracken(verb, string[,ierror])
@@ -1159,7 +1159,7 @@ end subroutine kracken
 !===================================================================================================================================
 !>
 !!##NAME
-!!          setprompts(3f) - [ARGUMENTS:M_kracken] set explicit prompts for keywords in interactive mod
+!!          setprompts(3f) - [ARGUMENTS:M_kracken] set explicit prompts for keywords in interactive mode
 !!##SYNOPSIS
 !!
 !!   subroutine setprompts(verb,init)
@@ -1223,7 +1223,7 @@ end subroutine setprompts
 !===================================================================================================================================
 !>
 !!##NAME
-!!          dissect(3f) - [ARGUMENTS:M_kracken] convenient call to parse() -- define defaults, then proces
+!!          dissect(3f) - [ARGUMENTS:M_kracken] convenient call to parse() -- define defaults, then process
 !!
 !!##SYNOPSIS
 !!
@@ -1252,7 +1252,7 @@ end subroutine setprompts
 !!     implicit none
 !!     integer :: ierr
 !!
-!!     call dissect('demo',' -int 1000 -float 1234.567 -str CHARACTER value','-int 456 -float 50.00 ',ierr
+!!     call dissect('demo',' -int 1000 -float 1234.567 -str CHARACTER value','-int 456 -float 50.00 ',ierr)
 !!     write(*,'(a,i0)')'INTEGER IS ',iget('demo_int')
 !!     write(*,'(a,g0)')'REAL IS ',rget('demo_float')
 !!     write(*,'(a,a)')'STRING IS '//trim(sget('demo_str'))
@@ -1302,7 +1302,7 @@ end subroutine dissect
 !===================================================================================================================================
 !>
 !!##NAME
-!!          parse(3f) - [ARGUMENTS:M_kracken] parse user command and store tokens into Language Dictionar
+!!          parse(3f) - [ARGUMENTS:M_kracken] parse user command and store tokens into Language Dictionary
 !!
 !!##SYNOPSIS
 !!
@@ -1653,7 +1653,7 @@ end subroutine parse
 !===================================================================================================================================
 !>
 !!##NAME
-!!          store(3f) - [ARGUMENTS:M_kracken] add or replace value for specified name in dictionary(if allow='add' add name if needed
+!!          store(3f) - [ARGUMENTS:M_kracken] add or replace value for specified name in dictionary(if allow='add' add name if needed)
 !!##SYNOPSIS
 !!
 !!   subroutine store(name1,value1,allow1,ier)
@@ -1939,7 +1939,7 @@ end subroutine store
 !===================================================================================================================================
 !>
 !!##NAME
-!!          subscript_(3fp) - [ARGUMENTS:M_kracken] return the subscript value of a string when given its nam
+!!          subscript_(3fp) - [ARGUMENTS:M_kracken] return the subscript value of a string when given its name
 !!##SYNOPSIS
 !!
 !!   function subscript_(chars0)
@@ -1989,7 +1989,7 @@ end function subscript_
 !===================================================================================================================================
 !>
 !!##NAME
-!!          menu(3fp) - [ARGUMENTS:M_kracken] prompt for values using a menu interfac
+!!          menu(3fp) - [ARGUMENTS:M_kracken] prompt for values using a menu interface
 !!##SYNOPSIS
 !!
 !!   subroutine menu(verb)
@@ -2261,7 +2261,7 @@ end subroutine menu
 !!     use M_kracken, only : kracken, show
 !!     implicit none
 !!
-!!     call kracken('demo', ' default keyword -i 10 -j 20.20 -value my default string'
+!!     call kracken('demo', ' default keyword -i 10 -j 20.20 -value my default string')
 !!     call show('demo',.false.,0)
 !!
 !!     end program demo_show

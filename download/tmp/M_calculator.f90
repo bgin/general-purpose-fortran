@@ -1,6 +1,6 @@
 !>
 !!##NAME
-!!   jucalc - [M_calculator] parse calculator expression and return numeric or string valu
+!!   jucalc - [M_calculator] parse calculator expression and return numeric or string value
 !!##SYNOPSIS
 !!
 !!   subroutine jucalc(inline,outlin,mssg,slast,ierr)
@@ -94,7 +94,7 @@
 !===================================================================================================================================
 !>
 !! AUTHOR   John S. Urban
-!!##VERSION  1.0 19971123,201612
+!!##VERSION  1.0 19971123,20161218
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -373,12 +373,12 @@ end subroutine jucalc
 !>
 !!##NAME
 !!##SYNOPSIS
-
-!!##DESCRIPTI
+!!
+!!##DESCRIPTION
 !!##OPTIONS
 !!##RETURNS
 !!##EXAMPLE
-!
+!!
 !===================================================================================================================================
 subroutine help_funcs_()
 
@@ -546,7 +546,7 @@ end subroutine help_funcs_
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    parens_(3fp) - [M_calculator] crack out the parenthesis and solv
+!!    parens_(3fp) - [M_calculator] crack out the parenthesis and solve
 !!##SYNOPSIS
 !!
 !!    recursive subroutine parens_(string,nchar,ier)
@@ -678,12 +678,12 @@ end subroutine parens_
 !>
 !!##NAME
 !!##SYNOPSIS
-
-!!##DESCRIPTI
+!!
+!!##DESCRIPTION
 !!##OPTIONS
 !!##RETURNS
 !!##EXAMPLE
-!
+!!
 !===================================================================================================================================
 recursive subroutine funcs_(wstrng,nchars,ier)
 use M_time,    only : date_to_unix , unix_to_date, fmtdate, now, fmtdate_usage, realtime
@@ -1923,12 +1923,12 @@ end subroutine funcs_
 !>
 !!##NAME
 !!##SYNOPSIS
-
-!!##DESCRIPTI
+!!
+!!##DESCRIPTION
 !!##OPTIONS
 !!##RETURNS
 !!##EXAMPLE
-!
+!!
 !===================================================================================================================================
 subroutine stufftok_(fval,wstrng,nchars,string,iend,ier)
 
@@ -1959,12 +1959,12 @@ end subroutine stufftok_
 !>
 !!##NAME
 !!##SYNOPSIS
-
-!!##DESCRIPTI
+!!
+!!##DESCRIPTION
 !!##OPTIONS
 !!##RETURNS
 !!##EXAMPLE
-!
+!!
 !===================================================================================================================================
 subroutine args_(line,ilen,array,itype,iarray,ier,mx)
 
@@ -2040,12 +2040,12 @@ end subroutine args_
 !>
 !!##NAME
 !!##SYNOPSIS
-
-!!##DESCRIPTI
+!!
+!!##DESCRIPTION
 !!##OPTIONS
 !!##RETURNS
 !!##EXAMPLE
-!
+!!
 !===================================================================================================================================
 subroutine expressions_(string,nchar,value,ier)
 
@@ -2133,12 +2133,12 @@ end subroutine expressions_
 !>
 !!##NAME
 !!##SYNOPSIS
-
-!!##DESCRIPTI
+!!
+!!##DESCRIPTION
 !!##OPTIONS
 !!##RETURNS
 !!##EXAMPLE
-!
+!!
 !===================================================================================================================================
 subroutine pows_(wstrng,nchar,ier)
 
@@ -2276,12 +2276,12 @@ end subroutine pows_
 !>
 !!##NAME
 !!##SYNOPSIS
-
-!!##DESCRIPTI
+!!
+!!##DESCRIPTION
 !!##OPTIONS
 !!##RETURNS
 !!##EXAMPLE
-!
+!!
 !===================================================================================================================================
 subroutine factors_(wstrng,nchr,fval1,ier)
 
@@ -2392,7 +2392,7 @@ end subroutine factors_
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!     a_to_d_(3f) - [M_calculator] returns a double precision value from a numeric character string specifically for M_calculator(3fm
+!!     a_to_d_(3f) - [M_calculator] returns a double precision value from a numeric character string specifically for M_calculator(3fm)
 !!##SYNOPSIS
 !!
 !!   subroutine a_to_d_(chars,rval,ierr)
@@ -2505,7 +2505,7 @@ end subroutine a_to_d_
 !!    remove all blanks from input string and return position of last non-blank character in nchars using imax as the highest
 !!    column number to search in.  return a zero in nchars if the string is blank.
 !!
-!!    replace all + and - characters with the # and = characters which will be used to designate + and - operators, as opposed t
+!!    replace all + and - characters with the # and = characters which will be used to designate + and - operators, as opposed to
 !!    value signs.
 !!
 !!    replace [] with ()
@@ -2762,7 +2762,7 @@ end subroutine squeeze_
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!       [M_calculator] given_name_get_stringvalue_(3fp) - return associated value for variable name
+!!       [M_calculator] given_name_get_stringvalue_(3fp) - return associated value for variable name"
 !!##SYNOPSIS
 !!
 !!   subroutine given_name_get_stringvalue_(chars,ierr)
@@ -2813,7 +2813,7 @@ end subroutine given_name_get_stringvalue_
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    getvalue(3f) - [M_calculator] given numeric variable name return doubleprecision value directly from calculato
+!!    getvalue(3f) - [M_calculator] given numeric variable name return doubleprecision value directly from calculator
 !!                   dictionary for efficiency
 !!##SYNOPSIS
 !!
@@ -2867,7 +2867,7 @@ end function getvalue
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    igetvalue(3f) - [M_calculator] given numeric variable name return integer value directly from calculato
+!!    igetvalue(3f) - [M_calculator] given numeric variable name return integer value directly from calculator
 !!                    dictionary for efficiency
 !!##SYNOPSIS
 !!
@@ -2910,7 +2910,7 @@ end function igetvalue
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    rgetvalue(3f) - [M_calculator] given numeric variable name return real value directly from calculator dictionary for efficienc
+!!    rgetvalue(3f) - [M_calculator] given numeric variable name return real value directly from calculator dictionary for efficiency
 !!
 !!##SYNOPSIS
 !!
@@ -2953,7 +2953,7 @@ end function rgetvalue
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    stuff(3f) - [M_calculator] directly store value into calculator dictionary for efficienc
+!!    stuff(3f) - [M_calculator] directly store value into calculator dictionary for efficiency
 !!
 !!##SYNOPSIS
 !!
@@ -3055,7 +3055,7 @@ end subroutine stuff
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!     stuffa(3f) - [M_calculator] stuffa(3f): directly store a string into calculator variable name tabl
+!!     stuffa(3f) - [M_calculator] stuffa(3f): directly store a string into calculator variable name table
 !!##SYNOPSIS
 !!
 !!   subroutine stuffa(varnam,string,ioflag)
@@ -3133,7 +3133,7 @@ end subroutine stuffa
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!      inum0(3f) - [M_calculator] return integer value from calculator expressio
+!!      inum0(3f) - [M_calculator] return integer value from calculator expression
 !!##SYNOPSIS
 !!
 !!   integer function inum0(inline,ierr)
@@ -3198,7 +3198,7 @@ end subroutine stuffa
 !!##NONE.
 !===================================================================================================================================
 !>
-!! AUTHOR:  John S. Urba
+!! AUTHOR:  John S. Urban
 !!##VERSION: 19971123
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -3251,7 +3251,7 @@ end function inum0
 !===================================================================================================================================
 !>
 !!##NAME
-!!       rnum0(3f) - [M_calculator] returns real number from string expression using JUCALC(3f
+!!       rnum0(3f) - [M_calculator] returns real number from string expression using JUCALC(3f)
 !!##SYNOPSIS
 !!
 !!    real function rnum0(inline)
@@ -3297,8 +3297,8 @@ end function inum0
 !!       o NONE.
 !===================================================================================================================================
 !>
-!! AUTHOR    John S. Urba
-!!##VERSION   1.0,1997112
+!! AUTHOR    John S. Urban
+!!##VERSION   1.0,19971123
 !===================================================================================================================================
 real function rnum0(inline,ierr)
 
@@ -3378,15 +3378,15 @@ end function rnum0
 !!
 !!##SEE ALSO
 !!
-!!       o The syntax of an expression is as described in the main documentation of the Calculator Library
+!!       o The syntax of an expression is as described in the main documentation of the Calculator Library.
 !!       o See JUCALCX(), JUCALC(), STRGAR2(), RNUM0(), SNUM0().
 !!
 !!##REFERENCES
 !!       o NONE.
 !===================================================================================================================================
 !>
-!! AUTHOR + John S. Urba
-!!##VERSION 1.0, 1997112
+!! AUTHOR + John S. Urban
+!!##VERSION 1.0, 19971123
 !===================================================================================================================================
 doubleprecision function dnum0(inline,ierr)
 
@@ -3421,7 +3421,7 @@ end function dnum0
 !===================================================================================================================================
 !>
 !!##NAME
-!!     snum0(3f) - [M_calculator] resolve a calculator expression into a string(return blank on errors
+!!     snum0(3f) - [M_calculator] resolve a calculator expression into a string(return blank on errors)
 !!
 !!##SYNOPSIS
 !!
@@ -3484,8 +3484,8 @@ end function dnum0
 !!       o NONE.
 !===================================================================================================================================
 !>
-!! AUTHOR    John S. Urba
-!!##VERSION   1.0, 199711
+!! AUTHOR    John S. Urban
+!!##VERSION   1.0, 19971123
 !===================================================================================================================================
 !===================================================================================================================================
 function snum0(inline0,ierr)
@@ -3531,7 +3531,7 @@ end function snum0
 !===================================================================================================================================
 !>
 !!##NAME
-!!     jucalcx(3f) - [M_calculator] return value from a string expression processing messages to simplify call to JUCALC(3f
+!!     jucalcx(3f) - [M_calculator] return value from a string expression processing messages to simplify call to JUCALC(3f)
 !!##SYNOPSIS
 !!
 !!    subroutine jucalcx(inlin0,outval,outlin0,ierr,ilen)
@@ -3620,7 +3620,7 @@ end function snum0
 !===================================================================================================================================
 !>
 !! AUTHOR   John S. Urban
-!!##VERSION  V1.0, 199711
+!!##VERSION  V1.0, 19971123
 !===================================================================================================================================
 recursive subroutine jucalcx(inlin0,outval,outlin0,ierr,ilen)
 use M_journal, only : journal
@@ -3685,7 +3685,7 @@ end subroutine jucalcx
 !===================================================================================================================================
 !>
 !!##NAME
-!!       strgarr(3f) - [M_calculator] read a string into an array using jucalc(3f) calculato
+!!       strgarr(3f) - [M_calculator] read a string into an array using jucalc(3f) calculator
 !!##SYNOPSIS
 !!
 !!   subroutine strgarr(line,ivals,vals,ifound,delims,ierr)
@@ -3824,8 +3824,8 @@ end subroutine jucalcx
 !!    none.
 !===================================================================================================================================
 !>
-!! AUTHOR  John S. Urba
-!!##VERSION 1.0, 199711
+!! AUTHOR  John S. Urban
+!!##VERSION 1.0, 19971123
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 SUBROUTINE strgarr(line,ivals,vals,ifound,delims0,ierr)
@@ -3926,7 +3926,7 @@ END SUBROUTINE strgarr
 !===================================================================================================================================
 !>
 !!##NAME
-!!       strgar2(3f) - [M_calculator] read a string into a real array USING CALCULATOR, allowing quoted strings in arguments
+!!       strgar2(3f) - [M_calculator] read a string into a real array USING CALCULATOR, allowing quoted strings in arguments,
 !!
 !!##SYNOPSIS
 !!
@@ -4050,8 +4050,8 @@ END SUBROUTINE strgarr
 !!     NONE.
 !===================================================================================================================================
 !>
-!! AUTHOR   John S. Urba
-!!##VERSION  1.0 1997112
+!! AUTHOR   John S. Urban
+!!##VERSION  1.0 19971123
 !===================================================================================================================================
 subroutine strgar2(line,iread,numbrs,inums,delims0,ierr)
 use M_journal, only : journal

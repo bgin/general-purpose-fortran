@@ -2268,6 +2268,7 @@ end subroutine print_comment_block
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 subroutine format_g_man()
+   character(len=:),allocatable   :: array_bug(:) ! output array of tokens
    character(len=:),allocatable   :: array(:) ! output array of tokens
    integer                        :: ios
    integer                        :: i
@@ -2278,8 +2279,9 @@ subroutine format_g_man()
 !-----------------------------------------------------------------------------------------------------------------------------------
          case('doxygen')                 ! convert plain text to doxygen comment blocks with some automatic markdown highlights
             if(len(G_MAN).gt.1)then      ! the way the string is built it starts with a newline
-               CALL split(G_MAN,array,delimiters=new_line('N'),nulls='return') ! parse string into an array parsing on delimiters
-
+               CALL split(G_MAN,array_bug,delimiters=new_line('N'),nulls='return') ! parse string to an array parsing on delimiters
+               array=[character(len=(len(array_bug)+6)) :: array_bug] !! pad with trailing spaces
+               deallocate(array_bug)
                do i=1,size(array)        ! lines starting with a letter and all uppercase letters is prefixed with "##"
                   if( upper(array(i)).eq.array(i) .and. isalpha(array(i)(1:1)).and.lower(array(i)).ne.array(i))then
                      array(i)='##'//trim(array(i))
@@ -3637,7 +3639,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        4.0: 20170502>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
-'@(#)COMPILED:       Thu, Aug 29th, 2019 11:04:39 PM>',&
+'@(#)COMPILED:       Sun, Oct 20th, 2019 12:34:17 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

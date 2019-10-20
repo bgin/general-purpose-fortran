@@ -19,7 +19,7 @@
              if(ios.ne.0)then
                 if (nest_level.ne.0) then ! check to make sure all if blocks are closed
                    call journal('sc',&
-                   &'*logic* error - #IF BLOCK NOT CLOSED WHEN READiNG FILE FINISHED.')
+                   &'*logic* error - #IF BLOCK NOT CLOSED WHEN READING FILE FINISHED.')
                 endif
                 stop
              endif

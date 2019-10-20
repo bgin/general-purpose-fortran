@@ -355,7 +355,7 @@
 !!
 !!    These routines implement IEEE Std 1003.2 ("POSIX.2") regular expressions ("RE"s); see re_format(7).
 !!
-!!    IEEE Std 1003.2 (POSIX.2), sections 2.8 (Regular Expression Notation) and B.5 (C Binding for Regular Expression Matching)
+!!    IEEE Std 1003.2 (POSIX.2), sections 2.8 (Regular Expression Notation) and B.5 (C Binding for Regular Expression Matching).
 !!
 !!     regcomp (3p)  - regular expression matching
 !!     regex (3)     - regular-expression library
@@ -418,7 +418,7 @@ contains
 !!                 x=  extended regex (REG_EXTENDED). Default is obsolete ("basic") REs.
 !!                 m=  multi-line (REG_NEWLINE).
 !!                     Compile for newline-sensitive matching. By default, newline is a completely ordinary character with no
-!!                     special meaning in either REs or strings. With this flag, '[^' bracket expressions and . never match newline
+!!                     special meaning in either REs or strings. With this flag, '[^' bracket expressions and . never match newline,
 !!                     a '^' anchor matches the null string after any newline in the string in addition to its normal function, and
 !!                     the '$' anchor matches the null string before any newline in the string in addition to its normal function.
 !!                 i=  case-insensitive (REG_ICASE)
@@ -574,7 +574,7 @@ end subroutine regcomp
 !!          if(.not.match)cycle INFINITE    ! if no match found go for next line
 !!          write(*,'(a)') trim(input_line) ! show line with match
 !!       enddo INFINITE
-!!       call regfree(regex)                ! free memory used for compiled regular expressio
+!!       call regfree(regex)                ! free memory used for compiled regular expression
 !!    end program demo_regexec
 !!
 !!   Sample Output
@@ -665,7 +665,7 @@ end function regexec
 !!   Sample program:
 !!
 !!    program demo_regmatch
-!!    ! read regular expression from command line and look for it in lines read from stdin
+!!    ! read regular expression from command line and look for it in lines read from stdin.
 !!    use M_regex, only: regex_type, regcomp, regexec, regmatch, regfree
 !!    implicit none
 !!    integer                      :: command_argument_length
@@ -719,7 +719,7 @@ end function regmatch
 !===================================================================================================================================
 !>
 !!##NAME
-!!    regerror(3f) - [M_regex] maps a non-zero errcode from either regcomp(3f) or regexec(3f) to a human-readable, printable message
+!!    regerror(3f) - [M_regex] maps a non-zero errcode from either regcomp(3f) or regexec(3f) to a human-readable, printable message.
 !!##SYNOPSIS
 !!
 !!    function regerror(this,errcode) result(errmsg)
@@ -859,7 +859,7 @@ end function regerror
 !!      regfree(3f) frees any dynamically-allocated storage used by the internal form of an RE.
 !!
 !!      The regfree(3f) function frees any dynamically-allocated storage associated with the compiled RE pointed to by THIS. The
-!!      remaining regex_type is no longer a valid compiled RE and the effect of supplying it to regexec() or regerror() is undefined
+!!      remaining regex_type is no longer a valid compiled RE and the effect of supplying it to regexec() or regerror() is undefined.
 !!
 !!##OPTIONS
 !!      THIS  a compiled regular expression previously allocated using regcomp(3f).
@@ -994,7 +994,7 @@ end subroutine regfree
 !!       "" ]
 !!
 !!       do i=1,size(input_line)
-!!          input_line=replace(input_line(i),'::',': :')          ! the RE shown needs the field to have at least one characte
+!!          input_line=replace(input_line(i),'::',': :')          ! the RE shown needs the field to have at least one character
 !!          match=regexec(regex,input_line(i),matches)            ! generate the matches array using the compiled RE
 !!
 !!          write(*,'(a)')repeat('-',80)                          ! put out a number line

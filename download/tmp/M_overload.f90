@@ -30,8 +30,8 @@
 !!    use M_overload, only : operator(/=) ! use /= like .neqv.
 !!
 !!    if(int('1234')               .eq.1234)                      write(*,*)'int("STRING") works '
-!!    if(real('1234.56789')        .EqualTo.1234.56789)           write(*,*)'real("STRING") works
-!!    if(dble('1234.5678901234567').EqualTo.1234.5678901234567d0) write(*,*)'dble("STRING") works
+!!    if(real('1234.56789')        .EqualTo.1234.56789)           write(*,*)'real("STRING") works '
+!!    if(dble('1234.5678901234567').EqualTo.1234.5678901234567d0) write(*,*)'dble("STRING") works '
 !!    if (.true. == .true. )  write(*,*)'== works like .eqv. for LOGICAL values'
 !!    if (.true. /= .false. ) write(*,*)'/= works like .neqv. for LOGICAL values'
 !!

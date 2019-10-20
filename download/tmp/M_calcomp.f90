@@ -45,9 +45,9 @@
 !!
 !!    "CALCOMP" graphics libraries were a de-facto standard graphics interface
 !!    around the world when graphics was done mostly on pen-plotters; but there
-!!    were many variants. Because of these differences, you may very well have t
+!!    were many variants. Because of these differences, you may very well have to
 !!    make simple routines of your own that call these routines. So, to avoid
-!!    conflicts with your routines and other libraries all user-callable routine
+!!    conflicts with your routines and other libraries all user-callable routines
 !!    in this library have had the prefix C_ added to their name.
 !!
 !!    Other than that, this library is called in a way that is identical to the
@@ -71,8 +71,8 @@
 !!     metafiles such as PostScript or CGM or SVG or even pixmap files, but by
 !!     calling the CALCOMP-supplied library.
 !!
-!!     Because of CALCOMP's initial dominance in the plotter market other vendor
-!!     made plotters compatible with CALCOMP plotters, or supplied a library wit
+!!     Because of CALCOMP's initial dominance in the plotter market other vendors
+!!     made plotters compatible with CALCOMP plotters, or supplied a library with
 !!     similar routines that would drive their plotters.
 !!
 !!     The CALCOMP calls thus became a de-facto standard for quite some time.
@@ -86,7 +86,7 @@
 !!         library that would drive their specific device.
 !!
 !!     The advent of efficient and affordable raster graphics and PostScript and
-!!     3-D graphics ultimately made this simple vector-based 2-D graphics librar
+!!     3-D graphics ultimately made this simple vector-based 2-D graphics library
 !!     inadequate for many graphics applications and its use faded.
 !!
 !!       + Created: 19920213
@@ -786,19 +786,19 @@
 !!    write(io,'(a)')'  1                RECT'
 !!    write(io,'(a)')' 1.        1.        9.         7.       0.         3'
 !!    write(io,'(a)')'  7                SYMBOL'
-!!    write(io,'(a)')' 1.5       9.5       .14      SAMPLE OF GENERAL SUBROUTINES PACKAGE    999
+!!    write(io,'(a)')' 1.5       9.5       .14      SAMPLE OF GENERAL SUBROUTINES PACKAGE    999'
 !!    write(io,'(a)')' 0.        37'
-!!    write(io,'(a)')' 2.25      9.        .105     CIRCL                                    999
+!!    write(io,'(a)')' 2.25      9.        .105     CIRCL                                    999'
 !!    write(io,'(a)')' 0.         6'
-!!    write(io,'(a)')' 5.75      9.        .105     ELIPS                                    999
+!!    write(io,'(a)')' 5.75      9.        .105     ELIPS                                    999'
 !!    write(io,'(a)')' 0.         5'
-!!    write(io,'(a)')' 2.25      6.5       .105     FIT, DASHP                               999
+!!    write(io,'(a)')' 2.25      6.5       .105     FIT, DASHP                               999'
 !!    write(io,'(a)')' 0.        11'
-!!    write(io,'(a)')' 5.75      6.5       .105     POLY                                     999
+!!    write(io,'(a)')' 5.75      6.5       .105     POLY                                     999'
 !!    write(io,'(a)')' 0.         4'
-!!    write(io,'(a)')' 3.75      4.25      .105     GRID, DASHL                              999
+!!    write(io,'(a)')' 3.75      4.25      .105     GRID, DASHL                              999'
 !!    write(io,'(a)')' 0.        12'
-!!    write(io,'(a)')' 2.        1.1       .07      THE BORDER IS DRAWN WITH RECT            999
+!!    write(io,'(a)')' 2.        1.1       .07      THE BORDER IS DRAWN WITH RECT            999'
 !!    write(io,'(a)')' 0.        29'
 !!    write(io,'(a)')'  3                CIRCL'
 !!    write(io,'(a)')' 3.25      8.        0.        720.      .75       .25       0.'
@@ -1054,7 +1054,7 @@ contains
 !!
 !!   COMMENTS
 !!
-!!  THO and THF may be positive or negative. If THO is less than THF, the arc i
+!!  THO and THF may be positive or negative. If THO is less than THF, the arc is
 !!  drawn in a counterclockwise direction; and if THO is greater than THF, the
 !!  arc is drawn in a clockwise direction.
 !!
@@ -1223,7 +1223,7 @@ end subroutine circl
 !!
 !!##DESCRIPTION
 !!
-!!   DASHL is a FORTRAN subroutine which draws dashed lines connecting a series o
+!!   DASHL is a FORTRAN subroutine which draws dashed lines connecting a series of
 !!   data points. Its operation is similar to that of the LINE subroutine.
 !!
 !!##OPTIONS
@@ -1408,7 +1408,7 @@ END SUBROUTINE DASHL
 !===================================================================================================================================
 !>
 !!##NAME
-!!    dashp(3f) - [M_calcomp:general] draw from current position to new point with dashed lin
+!!    dashp(3f) - [M_calcomp:general] draw from current position to new point with dashed line
 !!
 !!##SYNOPSIS
 !!
@@ -1553,25 +1553,25 @@ END SUBROUTINE DASHP
 !!    integer                  :: ipen
 !!    integer,parameter        :: END=999, MOVE=3, DRAW=2
 !!    lines=[character(len=80) :: &
-!!    '#---------------------------------------------------------------------#-',
-!!    '#  move over in the x direction the same amount you change axis length  ',
-!!    '#---------#---------#---------#---------#---------#---------#---------#-',
-!!    '|6.5      !8.0      !0.5      !0.7      ! 0.0     ! 0.0     ! 360.0   !3',
-!!    '|6.6      !8.0      !0.6      !0.6      ! 0.0     ! 0.0     ! 360.0   !3',
-!!    '|6.7      !8.0      !0.7      !0.5      ! 0.0     ! 0.0     ! 360.0   !3',
-!!    '|6.8      !8.0      !0.8      !0.4      ! 0.0     ! 0.0     ! 360.0   !3',
-!!    '|6.9      !8.0      !0.9      !0.3      ! 0.0     ! 0.0     ! 360.0   !3',
-!!    '|7.0      !8.0      !1.0      !0.2      ! 0.0     ! 0.0     ! 360.0   !3',
-!!    '#---------#---------#---------#---------#---------#---------#---------#-',
-!!    '#  different end angles of different signs                              ',
-!!    '#---------#---------#---------#---------#---------#---------#---------#-',
-!!    '|5.0      !8.0      !1.0      !0.2      ! 0.0     ! 0.0     !  45.0   !3',
-!!    '|3.0      !8.0      !1.0      !0.2      ! 0.0     ! 0.0     ! -60.0   !3',
-!!    '#---------#---------#---------#---------#---------#---------#---------#-',
-!!    '# circles                                                               ',
-!!    '#---------#---------#---------#---------#---------#---------#---------#-',
-!!    '#---------#---------#---------#---------#---------#---------#---------#-',
-!!    '#  end of values to call ELIPS(3f) with                                 ',
+!!    '#---------------------------------------------------------------------#-',&
+!!    '#  move over in the x direction the same amount you change axis length  ',&
+!!    '#---------#---------#---------#---------#---------#---------#---------#-',&
+!!    '|6.5      !8.0      !0.5      !0.7      ! 0.0     ! 0.0     ! 360.0   !3',&
+!!    '|6.6      !8.0      !0.6      !0.6      ! 0.0     ! 0.0     ! 360.0   !3',&
+!!    '|6.7      !8.0      !0.7      !0.5      ! 0.0     ! 0.0     ! 360.0   !3',&
+!!    '|6.8      !8.0      !0.8      !0.4      ! 0.0     ! 0.0     ! 360.0   !3',&
+!!    '|6.9      !8.0      !0.9      !0.3      ! 0.0     ! 0.0     ! 360.0   !3',&
+!!    '|7.0      !8.0      !1.0      !0.2      ! 0.0     ! 0.0     ! 360.0   !3',&
+!!    '#---------#---------#---------#---------#---------#---------#---------#-',&
+!!    '#  different end angles of different signs                              ',&
+!!    '#---------#---------#---------#---------#---------#---------#---------#-',&
+!!    '|5.0      !8.0      !1.0      !0.2      ! 0.0     ! 0.0     !  45.0   !3',&
+!!    '|3.0      !8.0      !1.0      !0.2      ! 0.0     ! 0.0     ! -60.0   !3',&
+!!    '#---------#---------#---------#---------#---------#---------#---------#-',&
+!!    '# circles                                                               ',&
+!!    '#---------#---------#---------#---------#---------#---------#---------#-',&
+!!    '#---------#---------#---------#---------#---------#---------#---------#-',&
+!!    '#  end of values to call ELIPS(3f) with                                 ',&
 !!    '#---------------------------------------------------------------------#-']
 !!       call plots(0.0,10.0,0.0,10.0)
 !!       do i=1,size(lines)
@@ -1669,7 +1669,7 @@ end subroutine elips
 !===================================================================================================================================
 !>
 !!##NAME
-!!    fit(3f) - [M_calcomp:general] draws a semi-hyperbolic curve through three point
+!!    fit(3f) - [M_calcomp:general] draws a semi-hyperbolic curve through three points
 !!
 !!##SYNOPSIS
 !!
@@ -1870,7 +1870,7 @@ END SUBROUTINE FIT
 !!
 !!   COMMENTS
 !!
-!!  GRID generates a linear grid of any size. The number of lines drawn i
+!!  GRID generates a linear grid of any size. The number of lines drawn is
 !!  NXSP+1 in the X direction and NYSP+1 in the Y direction.
 !!
 !!##EXAMPLE
@@ -1982,7 +1982,7 @@ end subroutine grid
 !!    real              :: angle
 !!    integer           :: i
 !!       call plots(0.0,10.0,0.0,10.0)
-!!       call plot(0.001,0.001,-3) ! move origin a bit so lines on edge O
+!!       call plot(0.001,0.001,-3) ! move origin a bit so lines on edge OK
 !!       call poly(0.0,0.0,10.0,4.0,0.0) ! 10 inch square
 !!       side_length=2.35
 !!       xstart=(10.0-side_length)/2.0
@@ -2068,7 +2068,7 @@ end subroutine poly
 !!                 defines the base of the rectangle.)
 !!
 !!    ANGLE        is the angle, in degrees, at which the rectangle's base
-!!                 is to be drawn. (Rectangle is rotated about XPAGE,YPAGE.
+!!                 is to be drawn. (Rectangle is rotated about XPAGE,YPAGE.)
 !!
 !!    IPEN         is the code that moves the pen to the rectangle's
 !!                 starting point.
@@ -2201,7 +2201,7 @@ END SUBROUTINE SOLUT
 !!
 !!##DESCRIPTION
 !!
-!!   CURVX is a FORTRAN subroutine which plots a function of X over a given range
+!!   CURVX is a FORTRAN subroutine which plots a function of X over a given range.
 !!
 !!##OPTIONS
 !!
@@ -2333,15 +2333,15 @@ END SUBROUTINE CURVX
 !===================================================================================================================================
 !>
 !!##NAME
-!!    curvy(3f) - [M_calcomp:scientific] plots a function of Y over a given rang
+!!    curvy(3f) - [M_calcomp:scientific] plots a function of Y over a given range
 !!
 !!##SYNOPSIS
 !!
-!!        subroutine curvy(yo,yf,coeff1,exp1,coeff2,exp2,coeff3,exp3,coeff4,exp4
+!!        subroutine curvy(yo,yf,coeff1,exp1,coeff2,exp2,coeff3,exp3,coeff4,exp4)
 !!
 !!##DESCRIPTION
 !!
-!!  CURVY is a FORTRAN subroutine which plots a function of Y over a given range
+!!  CURVY is a FORTRAN subroutine which plots a function of Y over a given range.
 !!
 !!##OPTIONS
 !!
@@ -2628,7 +2628,7 @@ END SUBROUTINE FIT4
 !!  the data array.
 !!
 !!  For the X array, the adjusted minimum is stored in XARRAY (NPTS*INC +
-!!  1), and the adjusted delta is in XARRAY (NPTS*INC + INC + 1). Similarly
+!!  1), and the adjusted delta is in XARRAY (NPTS*INC + INC + 1). Similarly,
 !!  for the Y array, the minimum is in YARRAY (NPTS*INC + 1), and the delta
 !!  is in YARRAY (NPTS*INC + INC + 1). Therefore, XARRAY and YARRAY must
 !!  be dimensioned to be at least NPTS*INC+INC+1 .
@@ -2958,8 +2958,8 @@ END SUBROUTINE FLINE
 !!    real              :: x
 !!    real              :: xx
 !!    real              :: xa,ya, xb,yb, xc,yc, xd,yd
-!!    real              :: xar(8)= [ 1.00, 2.00, 3.00, 4.00, 5.00, 6.00       , 0.0, 0.0
-!!    real              :: yar(8)= [ 250.0, 110.0, 500.0, 900.0, 200.0, 140.0 , 0.0, 1.0
+!!    real              :: xar(8)= [ 1.00, 2.00, 3.00, 4.00, 5.00, 6.00       , 0.0, 0.0 ]
+!!    real              :: yar(8)= [ 250.0, 110.0, 500.0, 900.0, 200.0, 140.0 , 0.0, 1.0 ]
 !!       call plots(0.0,10.0,0.0,10.0)
 !!    ! DRAW FRAME
 !!       call plot(7.0,0.0,2)
@@ -3304,8 +3304,8 @@ END SUBROUTINE LGAXS
 !!    real              :: x
 !!    real              :: xx
 !!    real              :: xa,ya, xb,yb, xc,yc, xd,yd
-!!    real              :: xar(8)= [ 1.00, 2.00, 3.00, 4.00, 5.00, 6.00       , 0.0, 0.0
-!!    real              :: yar(8)= [ 250.0, 110.0, 500.0, 900.0, 200.0, 140.0 , 0.0, 1.0
+!!    real              :: xar(8)= [ 1.00, 2.00, 3.00, 4.00, 5.00, 6.00       , 0.0, 0.0 ]
+!!    real              :: yar(8)= [ 250.0, 110.0, 500.0, 900.0, 200.0, 140.0 , 0.0, 1.0 ]
 !!       call plots(0.0,10.0,0.0,10.0)
 !!    ! DRAW FRAME
 !!       call plot(7.0,0.0,2)
@@ -3550,7 +3550,7 @@ END SUBROUTINE LGLIN
 !===================================================================================================================================
 !>
 !!##NAME
-!!    polar(3f) - [M_calcomp:scientific] plot radial values versus angular variables (as polar coordinates
+!!    polar(3f) - [M_calcomp:scientific] plot radial values versus angular variables (as polar coordinates)
 !!
 !!##SYNOPSIS
 !!
@@ -4033,8 +4033,8 @@ END SUBROUTINE REFLX
 !!    real              :: x
 !!    real              :: xx
 !!    real              :: xa,ya, xb,yb, xc,yc, xd,yd
-!!    real              :: xar(8)= [ 1.00, 2.00, 3.00, 4.00, 5.00, 6.00       , 0.0, 0.0
-!!    real              :: yar(8)= [ 250.0, 110.0, 500.0, 900.0, 200.0, 140.0 , 0.0, 1.0
+!!    real              :: xar(8)= [ 1.00, 2.00, 3.00, 4.00, 5.00, 6.00       , 0.0, 0.0 ]
+!!    real              :: yar(8)= [ 250.0, 110.0, 500.0, 900.0, 200.0, 140.0 , 0.0, 1.0 ]
 !!       call plots(0.0,10.0,0.0,10.0)
 !!    ! DRAW FRAME
 !!       call plot(7.0,0.0,2)
@@ -4138,7 +4138,7 @@ end subroutine scalg
 !===================================================================================================================================
 !>
 !!##NAME
-!!    smoot(3f) - [M_calcomp:scientific] draw a polyline using modified spline-fitting techniqu
+!!    smoot(3f) - [M_calcomp:scientific] draw a polyline using modified spline-fitting technique
 !!
 !!##SYNOPSIS
 !!
@@ -4476,7 +4476,7 @@ END SUBROUTINE SMOOT
 !===================================================================================================================================
 !>
 !!##NAME
-!!    axis(3f) - [M_calcomp:basic] draw linear axis with numeric scale and axis labe
+!!    axis(3f) - [M_calcomp:basic] draw linear axis with numeric scale and axis label
 !!
 !!##SYNOPSIS
 !!
@@ -4738,7 +4738,7 @@ END SUBROUTINE AXIS
 !!  to rescale all plotting to a single specific scale.
 !!
 !!  Because CALCOMP inches are unit-less units in PDF files, this routine
-!!  is not necessary unless inch units greater than 100 are needed (100 i
+!!  is not necessary unless inch units greater than 100 are needed (100 is
 !!  maximum PDF frame size) or if the program needs to remain portable to
 !!  standard true-inch CALCOMP libraries and using the actual values used
 !!  in the PLOT calls would produce a very small or very large plot.
@@ -4929,7 +4929,7 @@ END SUBROUTINE mpset
 !!  The scaling parameters corresponding to FIRSTV and DELTAV (see SCALE) must
 !!  immediately follow each array. If these parameters have not been computed by
 !!  the SCALE subroutine they must be supplied by the user. If scaling is not
-!!  required, the user must place the appropriate minimum and delta values in th
+!!  required, the user must place the appropriate minimum and delta values in the
 !!  specified elements of the arrays. For a one-to-one correspondence between
 !!  array data and plotted data, these values should be 0.0 (minimum) and 1.0
 !!  (delta).
@@ -5132,7 +5132,7 @@ END SUBROUTINE LINE
 !!
 !!##DESCRIPTION
 !!
-!!    Select a new pen width. Sets the current line width in units o
+!!    Select a new pen width. Sets the current line width in units of
 !!    1/10,000 of the X size of the display surface
 !!
 !!##EXAMPLE
@@ -5193,7 +5193,7 @@ end subroutine width
 !!##DESCRIPTION
 !!
 !!
-!!  Select a new pen color and move to origin. The number of colors availabl
+!!  Select a new pen color and move to origin. The number of colors available
 !!  is output-device-dependent, but on almost all color devices the
 !!  following values will produce the associated colors:
 !!
@@ -5337,7 +5337,7 @@ end subroutine newpen
 !!        call plot( 0.0, 0.5, -3)
 !!        !
 !!        ! Draw a box inside of which all lines will appear
-!!        ! but notice plot frame size now includes the offset plus this box siz
+!!        ! but notice plot frame size now includes the offset plus this box size
 !!        ! Plot frame size = maximum coordinate value used + offset
 !!        ! Plot frame size in the X-direction is 8 inches
 !!        ! Plot frame size in the Y-direction is 9.5 inches (0.5 offset in PLOT
@@ -5443,7 +5443,7 @@ end subroutine nframe
 !!    use M_calcomp
 !!    implicit none
 !!    character(len=28),parameter :: ichr4='EXAMPLE OF NUMBER SUBROUTINE'
-!!    real,parameter              :: znum(4)=[10293.84756,193.75,-204.86,-12345.6789
+!!    real,parameter              :: znum(4)=[10293.84756,193.75,-204.86,-12345.6789]
 !!    real                        :: y
 !!    integer                     :: ia, ib
 !!    integer                     :: inteq
@@ -5567,7 +5567,7 @@ END SUBROUTINE NUMBER
 !===================================================================================================================================
 !>
 !!##NAME
-!!    plot(3f) - [M_calcomp:basic] move with pen up or down or start new origin or terminate plottin
+!!    plot(3f) - [M_calcomp:basic] move with pen up or down or start new origin or terminate plotting
 !!
 !!##SYNOPSIS
 !!
@@ -6013,7 +6013,7 @@ END SUBROUTINE PLOT
 !!    XMIN,XMAX,YMIN,YMAX  The bounds of the original inch units bounding
 !!                         box. Draws outside of this area are an error.
 !!                         If not specified, defaults are: 0.0,10.0,0.0,10.0)
-!!                         The environment variables CALCOMP_XMIN, CALCOMP_XMAX
+!!                         The environment variables CALCOMP_XMIN, CALCOMP_XMAX,
 !!                         CALCOMP_YMIN,CALCOMP_XMIN can be used to override
 !!                         the values.
 !!
@@ -6063,7 +6063,7 @@ END SUBROUTINE PLOTS
 !===================================================================================================================================
 !>
 !!##NAME
-!!    scale(3f) - [M_calcomp:basic] calculate scaling factors for producing XY plots with LINE(3f) and AXIS(3f) routine
+!!    scale(3f) - [M_calcomp:basic] calculate scaling factors for producing XY plots with LINE(3f) and AXIS(3f) routines
 !!
 !!##SYNOPSIS
 !!
@@ -6444,7 +6444,7 @@ END SUBROUTINE SCALE
 !!    !
 !!    character(len= 38),parameter :: ichr1='CHARACTERS AVAILABLE IN SYMBOL ROUTINE'
 !!    character(len= 38),parameter :: ichr2='  FOR CALCOMP ON THE CRAY COMPUTER    '
-!!    character(len= 60),parameter :: ichr3='INTEGER FOR USE IN SYMBOL CALL SHOWN TO LEFT OF EACH SYMBOL
+!!    character(len= 60),parameter :: ichr3='INTEGER FOR USE IN SYMBOL CALL SHOWN TO LEFT OF EACH SYMBOL'
 !!    character(len= 1 )           :: ibcd
 !!    integer                      :: ia,ib
 !!    integer                      :: m
@@ -7022,7 +7022,7 @@ END SUBROUTINE SYMBOL
 !===================================================================================================================================
 !>
 !!##NAME
-!!    where(3f) - [M_calcomp:basic] return current position and current plot-scaling facto
+!!    where(3f) - [M_calcomp:basic] return current position and current plot-scaling factor
 !!
 !!##SYNOPSIS
 !!
@@ -7440,18 +7440,18 @@ END SUBROUTINE primitive__TRACER
 !!
 !!##DESCRIPTION
 !!
-!!  A contour map is a graphical representation of a three-dimensional surface o
+!!  A contour map is a graphical representation of a three-dimensional surface or
 !!  a function of two variables. A contour is defined as the intersection of the
 !!  surface or function with a specified plane parallel to the reference plane.
 !!  If the surface is denoted by z = f(x,y) where x and y are the coordinate
-!!  values in the (x,y)-plane (reference plane), then z equals a constant define
+!!  values in the (x,y)-plane (reference plane), then z equals a constant defines
 !!  the plane of intersection.
 !!
 !!  A contour map consists of a set of contours, usually generated for equally
 !!  spaced values of z. In a region where the surface changes rapidly, the
 !!  individual contours are close together, and where the surface changes
 !!  gradually, they are far apart. Thus, a contour map provides a means of
-!!  observing topological behavior of a surface as well as locating regions wher
+!!  observing topological behavior of a surface as well as locating regions where
 !!  the function z has specific values.
 !!
 !!  The CNTOUR subroutine and its supporting routines provide the
@@ -7656,7 +7656,7 @@ real :: xdisp
       if(I/10.NE.0) RT=2.0
 !
 !  SET THE DISPLACEMENT IN THE X DIRECTION FOR THE CONTOUR
-!  IDENTIFIERS. BY DEFAULT, THE DISPLACEMNT IS SET FOR
+!  IDENTIFIERS. BY DEFAULT, THE DISPLACEMENT IS SET FOR
 !  THE LEFT COLUMN OF THE LEGEND.
 !
       XDISP=1.0
@@ -7849,7 +7849,7 @@ END SUBROUTINE primitive__MERGER
 !     on SunOS, Solaris, ULTRIX, HP-UX and other platforms and is free
 !     of external licensing issues).
 !
-!     Colaboration was obtained from Plimley(CA), Rowe(FL), and Butler
+!     Collaboration was obtained from Plimley(CA), Rowe(FL), and Butler
 !     at STC. Details will be provided under protest:>.
 !
 !     so that no call differences are needed between the old 7600 and
@@ -8030,7 +8030,7 @@ end subroutine setpar
 !===================================================================================================================================
 !>
 !!##NAME
-!!    primitive__fgetvar(3fp) - [M_calcomp] return value of an environment variable or a default valu
+!!    primitive__fgetvar(3fp) - [M_calcomp] return value of an environment variable or a default value
 !!
 !!##SYNOPSIS
 !!

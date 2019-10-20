@@ -117,7 +117,7 @@
 !!     !
 !!     ! Example of Fortran writing GNUPLOT command and data file.
 !!     !
-!!     character(len=4096) :: line                             !*! line of data to write (assumed long enough to hold any command line
+!!     character(len=4096) :: line                             !*! line of data to write (assumed long enough to hold any command line)
 !!     type(streampointer) :: fp                               !*! C file pointer returned by process_open()
 !!     integer :: ierr                                         !*! check status of calls to process module routines
 !!     integer :: i                                            !*! DO loop counter
@@ -285,7 +285,7 @@
 !!       o OTHER: fflush(3c)
 !===================================================================================================================================
 !>
-!! DESCRIPTION: record-oriented Fortran I/O interface to C procedures popen/pclose and fgets/fputs and process-related procedure
+!! DESCRIPTION: record-oriented Fortran I/O interface to C procedures popen/pclose and fgets/fputs and process-related procedures
 !!##VERSION:     2.0.0, 20161105
 !! AUTHOR:      John S. Urban
 !===================================================================================================================================
@@ -335,7 +335,7 @@ end interface
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    fgets(3fp) - get character string from a file or stream by calling fgets(3c
+!!    fgets(3fp) - get character string from a file or stream by calling fgets(3c)
 !!##SYNOPSIS
 !!
 !!   #include <stdio.h>
@@ -387,7 +387,7 @@ end interface
 !!    int fputs(const char *S, FILE *FP);
 !!
 !!##DESCRIPTION
-!!    `fputs'  writes  the string at S (but without the trailing null) to th
+!!    `fputs'  writes  the string at S (but without the trailing null) to the
 !!    file or stream identified by FP.
 !!    RETURNS
 !!    If successful, the result is `0'; otherwise, the result is `EOF'.
@@ -416,7 +416,7 @@ end interface
 !!     #include <stdio.h>
 !!     int fflush(FILE *FP);
 !!##DESCRIPTION
-!!    The `stdio' output functions can buffer output before delivering it t
+!!    The `stdio' output functions can buffer output before delivering it to
 !!    the host system, in order to minimize the overhead of system calls.
 !!
 !!    Use `fflush' to deliver any such pending output (for the file or
@@ -455,10 +455,10 @@ contains
 !>
 !!##NAME
 !!##SYNOPSIS
-
-!!##DESCRIPTI
+!!
+!!##DESCRIPTION
 !!##EXAMPLE
-!
+!!
 !===================================================================================================================================
    subroutine process_open_read(cmd,fp,ierr)
 character(len=*),parameter::ident_2="@(#)M_process::process_open_read(3f): open process to read from"
@@ -479,10 +479,10 @@ character(len=*),parameter::ident_2="@(#)M_process::process_open_read(3f): open 
 !>
 !!##NAME
 !!##SYNOPSIS
-
-!!##DESCRIPTI
+!!
+!!##DESCRIPTION
 !!##EXAMPLE
-!
+!!
 !===================================================================================================================================
    subroutine process_open_write(cmd,fp,ierr)
 character(len=*),parameter::ident_3="@(#)M_process::process_open_write(3f): open process to write to"
@@ -502,10 +502,10 @@ character(len=*),parameter::ident_3="@(#)M_process::process_open_write(3f): open
 !>
 !!##NAME
 !!##SYNOPSIS
-
-!!##DESCRIPTI
+!!
+!!##DESCRIPTION
 !!##EXAMPLE
-!
+!!
 !===================================================================================================================================
    subroutine process_open(cmd,mode,fp,ierr)
 character(len=*),parameter::ident_4="@(#)M_process::process_open(3fp): open process"
@@ -534,10 +534,10 @@ character(len=*),parameter::ident_4="@(#)M_process::process_open(3fp): open proc
 !>
 !!##NAME
 !!##SYNOPSIS
-
-!!##DESCRIPTI
+!!
+!!##DESCRIPTION
 !!##EXAMPLE
-!
+!!
 !===================================================================================================================================
    subroutine process_close(fp,ierr)
 character(len=*),parameter::ident_5="@(#)M_process::process_close(3f): close process"
@@ -568,10 +568,10 @@ character(len=*),parameter::ident_5="@(#)M_process::process_close(3f): close pro
 !>
 !!##NAME
 !!##SYNOPSIS
-
-!!##DESCRIPTI
+!!
+!!##DESCRIPTION
 !!##EXAMPLE
-!
+!!
 !===================================================================================================================================
    subroutine process_readline(readfrom,fp,ierr)
 
@@ -634,7 +634,7 @@ character(len=*),parameter::ident_6="@(#)M_process::process_readline(3f): read l
 !!                  are concatenated. Defaults to a space
 !!       ierr       check status of call.
 !!##RESULTS
-!!       process_readall   Assuming sufficient memory is available all the output of th
+!!       process_readall   Assuming sufficient memory is available all the output of the
 !!       system command are concatenated into a string with
 !!       spaces added between the output lines of the command.
 !!##EXAMPLE
@@ -745,10 +745,10 @@ end function process_readall
 !>
 !!##NAME
 !!##SYNOPSIS
-
-!!##DESCRIPTI
+!!
+!!##DESCRIPTION
 !!##EXAMPLE
-!
+!!
 !===================================================================================================================================
 subroutine process_writeline_scalar(writefrom,fp,ierr,trm)
 character(len=*),parameter::ident_8="@(#)M_process::process_writeline_scalar(3fp): write line to process"

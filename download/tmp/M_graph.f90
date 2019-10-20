@@ -243,7 +243,7 @@ contains
 !!          call prefsize(ixsize,iysize)
 !!       else
 !!          call prefsize(ixsize,iysize)
-!!          !!call voutput(msg(filename,'_',int(a),'x',int(b),'.',device,nospace=.true.)
+!!          !!call voutput(msg(filename,'_',int(a),'x',int(b),'.',device,nospace=.true.))
 !!       endif
 !!       call vinit(device)
 !!       call vsetflush(.false.)
@@ -1183,7 +1183,7 @@ end subroutine color_
 !==================================================================================================================================!
 !>
 !!##NAME
-!!      graph_init(3f) - [M_graph] initialize the longlib graphics plot routine graph(3f
+!!      graph_init(3f) - [M_graph] initialize the longlib graphics plot routine graph(3f)
 !!##SYNOPSIS
 !!
 !!   subroutine graph_init(xmax0,ymax0,vpx,vpy,zom)
@@ -1716,7 +1716,7 @@ END SUBROUTINE range_
 !!    (or string of characters) can be imagined as a square box with the
 !!    origin at the lower left corner. The routine determines the initial
 !!    position of the lower left of the first character than plots each
-!!    character relative to this position. As each character is plotted th
+!!    character relative to this position. As each character is plotted the
 !!    "current position" is moved to the right (along the string baseline)
 !!    a fixed amount S. When the string centering option is selected,
 !!    the length of the plotted string is determined and, based on the

@@ -6,7 +6,7 @@
 !!    o  Version number 2.00 31-Oct-2017, f2003 version; John S. Urban
 !!
 !!   Copyright (c) 2008, Kristjan Jonasson, Dept. of Computer Science, University of
-!!   Iceland (jonasson@hi.is). This software is free. For details see the file README
+!!   Iceland (jonasson@hi.is). This software is free. For details see the file README.
 !!
 !!##AUTHOR
 !!   Based on dispmodule(3f), "A Fortran 95 module for pretty-printing matrices".
@@ -99,12 +99,12 @@ END MODULE PUTSTRMODULE
 !!
 !! M_display is a standard Fortran 95 module for quick and easy displaying of numbers, vectors or
 !! matrices using default or specified format. It can be useful for debugging, purposes, for
-!! preliminary display of numerical results, and even for final display of such results in cases whe
+!! preliminary display of numerical results, and even for final display of such results in cases when
 !! carefully formatted tables are not needed. It is comparable to the automatic matrix printing of
 !! Matlab, S and R, but offers substantially more control over the format used.
 !!
-!! The module can handle the standard Fortran data types integer, single precision, double precision
-!! complex, logical and character. Integer, real, complex and logical data of other than default kin
+!! The module can handle the standard Fortran data types integer, single precision, double precision,
+!! complex, logical and character. Integer, real, complex and logical data of other than default kind
 !! are supported with add-on modules. The module contains the following public procedures:
 !!
 !!       Subroutine DISP                  The main procedure used for displaying items
@@ -115,16 +115,16 @@ END MODULE PUTSTRMODULE
 !!       Subroutine TOSTRING_SET          Used to change default settings for TOSTRING
 !!       Subroutine TOSTRING_SET_FACTORY  Restores TOSTRING-settings to original default
 !!
-!! In addition the module defines a public derived type, DISP_SETTINGS, used for saving and restorin
+!! In addition the module defines a public derived type, DISP_SETTINGS, used for saving and restoring
 !! settings for DISP. The procedures DISP and TOSTRING have a generic interface and optional
 !! arguments, so the same subroutine / function name, is used to display items of different data
-!! types and ranks, with or without labels, and using default or specified format. Similarly DISP_SE
+!! types and ranks, with or without labels, and using default or specified format. Similarly DISP_SET
 !! is generic and can be used both to change individual settings and to restore previously saved
 !! settings.
 !!
 !! The most basic calling syntax for displaying is CALL DISP(expression) which will display the
 !! expression with default format. The format may be specified with CALL DISP(expression, edit-
-!! descriptor), and CALL DISP(title, expression) will label the displayed item with a title. Example
+!! descriptor), and CALL DISP(title, expression) will label the displayed item with a title. Examples
 !! are CALL DISP(A), CALL DISP(A,'F9.3'), CALL DISP('A=',A) and CALL DISP('A=',A,'F9.3'), the last
 !! one specifying both title and format. If aij = exp(i + j - 1), i, j = 1,...,4, then
 !! CALL DISP('A = ', A) writes out:
@@ -151,7 +151,7 @@ END MODULE PUTSTRMODULE
 !!
 !! The selection between F and E editing depends on the size of the largest displayed element as
 !! discussed in section 3.2 below. Among the settings that may be controlled is the spacing between
-!! columns, the number of significant digits, the placement of the label, and the file unit where th
+!! columns, the number of significant digits, the placement of the label, and the file unit where the
 !! output goes. Items can in addition be displayed side by side, for example:
 !!
 !!      > CALL DISP('X = ', X, ADVANCE='NO')
@@ -1499,13 +1499,13 @@ MODULE M_display
 !!             -1      NULL_UNIT      Null device (all output to this is discarded)
 !!
 !!       These units are further described in sections 3.3 and 3.4. Other unit numbers correspond to
-!!       external files that should have been connected with open-statements. The default unit depend
+!!       external files that should have been connected with open-statements. The default unit depends
 !!       on the named constant DEFAULT_UNIT, defined in PUTSTRMODULE. The default PUTSTRMODULE sets
 !!       it to -3 (see sections 2 and 3.4).
 !!
-!! ZEROAS = zerostring  Supported for integer and real X (not complex) Any element that compares equa
+!! ZEROAS = zerostring  Supported for integer and real X (not complex) Any element that compares equal
 !!       to 0 will be displayed as zerostring. If, for example, A is a 4 by 4 upper triangular matrix
-!!       with aij = 1/max(0,j - i + 1) then CALL DISP('A = ', A, 'F0.3', ZEROAS = '0', ADVANCE = 'NO'
+!!       with aij = 1/max(0,j - i + 1) then CALL DISP('A = ', A, 'F0.3', ZEROAS = '0', ADVANCE = 'NO')
 !!       and CALL DISP('B = ', A, 'F0.3', ZEROAS = '.') will display:
 !!
 !!           A = 1.000  0.500  0.333  0.250   B = 1.000  0.500  0.333  0.250
@@ -1586,7 +1586,7 @@ MODULE M_display
 !!
 !!##NOT-A-NUMBER AND INFINITE VALUES
 !!
-!! If the compiler supports not-a-number and infinite values as defined by the IEEE exceptional value
+!! If the compiler supports not-a-number and infinite values as defined by the IEEE exceptional values
 !! of Fortran 2003, these are displayed as NaN, +Inf or Inf. A not-a-number value X is identified as
 !! being not equal to itself, and an infinite value is either greater than HUGE(X) or smaller than
 !! -HUGE(X). On all the compilers tried the sequence BIG=1E20; CALL DISP(EXP(BIG)) displays +Inf, and
@@ -1677,7 +1677,7 @@ CONTAINS
 !!         integer       :: zaslen    = 0
 !!       END TYPE DISP_SETTINGS
 !!
-!! Structures of type DISP_SETTINGS may be used to save and later restore format control settings o
+!! Structures of type DISP_SETTINGS may be used to save and later restore format control settings of
 !! DISP. As shown, new variables of this type will automatically have default values for all
 !! components.
 !!
@@ -1689,7 +1689,7 @@ CONTAINS
 !!       CALL DISP_SET(SETTINGS)
 !!       CALL DISP_SET(ADVANCE, DIGMAX, MATSEP, ORIENT, SEP, STYLE, UNIT, ZEROAS)
 !!
-!! Both calls change the default format control used in subsequent calls to DISP. In the first call
+!! Both calls change the default format control used in subsequent calls to DISP. In the first call,
 !! SETTINGS is of type DISP_SETTINGS and the default values for all arguments is changed. In the
 !! second call all the arguments are optional. If an argument is absent the corresponding default
 !! setting is not changed. An example call is
@@ -1748,7 +1748,7 @@ CONTAINS
 !!
 !!##AUTHOR
 !!   Based on dispmodule(3f), "A Fortran 95 module for pretty-printing matrices".
-!!   Version number 1.02 6-Sept-2008, Kristjan Jonasson, Dept. of Computer Science, University o
+!!   Version number 1.02 6-Sept-2008, Kristjan Jonasson, Dept. of Computer Science, University of
 !!   Iceland (jonasson@hi.is).
 !===================================================================================================================================
 
@@ -1795,7 +1795,7 @@ CONTAINS
 !!
 !! TRIMZ   Controls whether trailing zeros are trimmed from the fractional part of displayed items.
 !!         Possible values are 'NONE' (for no zero trimming), 'G' (to trim fractional trailing zeros
-!!         only when G editing is used), and 'ALL' (to trim zeros with all types of editing). Trailin
+!!         only when G editing is used), and 'ALL' (to trim zeros with all types of editing). Trailing
 !!         decimal points are also removed when zero-trimming is active. Default value is 'G'.
 !!
 !!##EXAMPLES
@@ -1891,7 +1891,7 @@ CONTAINS
 !!
 !!##DESCRIPTION
 !! The subroutine TOSTRING_SET_FACTORY (which has no arguments) may be called to restore all
-!! settings of TOSTRING(3f) to the original default values (the factory defaults): SEP=',', RFMT
+!! settings of TOSTRING(3f) to the original default values (the factory defaults): SEP=',', RFMT =
 !! '1PG12.5', IFMT= 'I0', TRIMB='YES' and TRIMZ='G'.
 !!
 !!##AUTHOR
@@ -1923,7 +1923,7 @@ CONTAINS
 !!##DESCRIPTION
 !!
 !! The argumentless function DISP_GET returns the current default settings in a structure of type
-!! DISP_SETTINGS. If a subroutine changes the default settings with DISP_SET it is possible to sav
+!! DISP_SETTINGS. If a subroutine changes the default settings with DISP_SET it is possible to save
 !! the settings that are in effect when the routine is entered, and restore these settings before
 !! returning from the routine.
 !!
@@ -2226,7 +2226,7 @@ end subroutine getwid_dint
 !!       TOSTRING(X, FMT)
 !!
 !! These invocations return a character string representing the value of the argument X. When X is a
-!! vector individual elements are separated by a string, with the original (or factory) default valu
+!! vector individual elements are separated by a string, with the original (or factory) default value
 !! ", ". By (original) default G editing is used to convert real numbers, I editing integers, and
 !! blanks are trimmed from (each element of) X, both from the left and the right. In addition
 !! trailing zeroes are trimmed from the fractional part of real X-elements, as well as a trailing
@@ -2241,10 +2241,10 @@ end subroutine getwid_dint
 !!         double precision real (i.e. real(1d0))
 !!         default logical
 !!
-!! FMT   Character string with an edit descriptor used to format each element of X. The possible edi
+!! FMT   Character string with an edit descriptor used to format each element of X. The possible edit
 !!       descriptors are given in section 3.1, except that A and Aw can of course not be used. When
 !!       FMT is absent, a default edit descriptor is used. The default may be set by calling
-!!       TOSTRING_SET but the original (or factory) defaults are I0 for integers, L1 for logicals an
+!!       TOSTRING_SET but the original (or factory) defaults are I0 for integers, L1 for logicals and
 !!       1PG12.5 for reals.
 !!
 !!##AUTHOR

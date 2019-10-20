@@ -60,7 +60,7 @@
 !!
 !!        subroutine ellipse(xpage,ypage,rmaj,rmin,angle,th0,thf,ipen)
 !!
-!!        subroutine spirograph(xcenter,ycenter,sunr0,planet0,offset0,radius,ilines,ang,angs,ifill
+!!        subroutine spirograph(xcenter,ycenter,sunr0,planet0,offset0,radius,ilines,ang,angs,ifill)
 !!
 !!        subroutine smoot, ismoo,ismoo1,ismoo2,ismoo3,perin
 !!
@@ -148,7 +148,7 @@ contains
 !===================================================================================================================================
 !>
 !!##NAME
-!!    arrowhead(3f) - [M_drawplus] Draw arrow head (for text boxes and line markers
+!!    arrowhead(3f) - [M_drawplus] Draw arrow head (for text boxes and line markers)
 !!
 !!##SYNOPSIS
 !!
@@ -303,7 +303,7 @@ end subroutine arrowhead
 !!    real,intent(in) :: x2
 !!    real,intent(in) :: y2
 !!##DESCRIPTION
-!!    The M_draw(3fm) routine rect(3f) is treated as a polygon. This simple routine ensures just th
+!!    The M_draw(3fm) routine rect(3f) is treated as a polygon. This simple routine ensures just the
 !!    outline of the box is draw regardless of whether polygon fill or hatchfill mode is on.
 !!##OPTIONS
 !!    X1,Y1   coordinates of a corner of the box
@@ -334,7 +334,7 @@ end subroutine plain_rect
 !===================================================================================================================================
 !>
 !!##NAME
-!!       page_rri(3fp) - [M_drawplus] - new world window with viewport set to largest area with same aspect rati
+!!       page_rri(3fp) - [M_drawplus] - new world window with viewport set to largest area with same aspect ratio
 !!
 !!##SYNOPSIS
 !!
@@ -394,7 +394,7 @@ end subroutine page_rri
 !===================================================================================================================================
 !>
 !!##NAME
-!!       polyline2(3f) - [M_drawplus] - draw an unclosed polyline in the XY plan
+!!       polyline2(3f) - [M_drawplus] - draw an unclosed polyline in the XY plane
 !!
 !!##SYNOPSIS
 !!
@@ -568,7 +568,7 @@ end subroutine polyline2_r
 !!          do i=1,int(360/STEP*10)
 !!             idum=backbuffer()
 !!             call clear()
-!!             call invokeobj( 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, ANGLE, ANGLE, ANGLE,12345
+!!             call invokeobj( 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, ANGLE, ANGLE, ANGLE,12345)
 !!             ANGLE=ANGLE+STEP
 !!             call swapbuffers()
 !!          enddo
@@ -605,7 +605,7 @@ end subroutine invokeobj
 !----------------------------------------------------------------------------------------------------------------------------------!
 !>
 !!##NAME
-!!    pop(3f) - [M_drawplus] call popviewport(), popmatrix(), popattributes(
+!!    pop(3f) - [M_drawplus] call popviewport(), popmatrix(), popattributes()
 !!##SYNOPSIS
 !!
 !!    subroutine pop()
@@ -627,7 +627,7 @@ end subroutine pop
 !----------------------------------------------------------------------------------------------------------------------------------!
 !>
 !!##NAME
-!!    push(3f) - [M_drawplus] call pushviewport(), pushmatrix(), pushattributes(
+!!    push(3f) - [M_drawplus] call pushviewport(), pushmatrix(), pushattributes()
 !!##SYNOPSIS
 !!
 !!     subroutine push()
@@ -649,7 +649,7 @@ end subroutine push
 !----------------------------------------------------------------------------------------------------------------------------------!
 !>
 !!##NAME
-!!     uarc(3f) - [M_drawplus] create circular arc, leaving CP at end of ar
+!!     uarc(3f) - [M_drawplus] create circular arc, leaving CP at end of arc
 !!
 !!##SYNOPSIS
 !!
@@ -762,7 +762,7 @@ real :: ynow
 !!
 !!##DESCRIPTION
 !!    M_DASH arc(3f) routine does a move so it cannot be included in a
-!!    polygon very easily. This routine is called by M_drawplus(3fm) version o
+!!    polygon very easily. This routine is called by M_drawplus(3fm) version of
 !!    uarc(3f)
 !===================================================================================================================================
 subroutine arc2(x, y, radius, startang, endang)
@@ -833,7 +833,7 @@ end subroutine arc2
 !!    Set the window to the rectangle defined by the corner points
 !!    <xsmall,ysmall> and <xlarge,ylarge>.
 !!
-!!    Also, given the window size, and assuming a one-to-one correspondenc
+!!    Also, given the window size, and assuming a one-to-one correspondence
 !!    of window units (ie. an "x-unit" is as long as a "y-unit"), find the
 !!    largest area on the display surface that has the same aspect ratio,
 !!    and set the viewport to it.
@@ -1011,8 +1011,8 @@ end subroutine biggest_ortho2
 !!
 !!    COMMENTS
 !!
-!!    THO and THF may be positive or negative.  If THO is less than THF, the arc i
-!!    drawn in a counterclockwise direction; if THO is greater than THF, the arc i
+!!    THO and THF may be positive or negative.  If THO is less than THF, the arc is
+!!    drawn in a counterclockwise direction; if THO is greater than THF, the arc is
 !!    drawn in a clockwise direction.
 !===================================================================================================================================
 subroutine ellipse(xpage,ypage,rmaj,rmin,angle,th0,thf,ipen)
@@ -1145,7 +1145,7 @@ end subroutine ellipse
 !!
 !!         p  Distance from the focus to the directrix.
 !!
-!!              o P.GT.0 Defines the position of the focus to be to the right of (o
+!!              o P.GT.0 Defines the position of the focus to be to the right of (or
 !!                below) the directrix.
 !!              o P.LT.0 Indicates that the focus is positioned to the left of (or
 !!                above) the directrix.
@@ -1645,7 +1645,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!     draw_interpret(3f) - [M_drawplus] call interpreter for testing M_draw(3fm) routine
+!!     draw_interpret(3f) - [M_drawplus] call interpreter for testing M_draw(3fm) routines
 !!
 !!##SYNOPSIS
 !!
@@ -1731,7 +1731,7 @@ end subroutine draw_interpret
 !----------------------------------------------------------------------------------------------------------------------------------!
 !>
 !!##NAME
-!!     call_draw(3f) - [M_drawplus] Given a string representing a M_draw procedure and parameters call the routin
+!!     call_draw(3f) - [M_drawplus] Given a string representing a M_draw procedure and parameters call the routine
 !!##SYNOPSIS
 !!
 !!   subroutine call_draw(verb,parameters,found)
@@ -2277,7 +2277,7 @@ end function iflogic
 !!
 !!##SYNOPSIS
 !!
-!!   subroutine spirograph(xcenter,ycenter,sunr0,planet0,offset0,radius,ilines,ang,angs,ifill
+!!   subroutine spirograph(xcenter,ycenter,sunr0,planet0,offset0,radius,ilines,ang,angs,ifill)
 !!
 !!    real,intent(in)    :: xcenter, ycenter
 !!    real,intent(in)    :: sunr0,planet0,offset0
@@ -2792,7 +2792,7 @@ end subroutine smoot
 !===================================================================================================================================
 !>
 !!##NAME
-!!    rdbox(3f) - [M_drawplus:locator] - reads two points and outline defined box and return point
+!!    rdbox(3f) - [M_drawplus:locator] - reads two points and outline defined box and return points
 !!
 !!##SYNOPSIS
 !!
@@ -2922,7 +2922,7 @@ end subroutine rdbox
 !===================================================================================================================================
 !>
 !!##NAME
-!!     rdpnt(3f) - [M_drawplus:locator] reads coordinates of point locator clicked a
+!!     rdpnt(3f) - [M_drawplus:locator] reads coordinates of point locator clicked at
 !!
 !!##SYNOPSIS
 !!
@@ -3053,7 +3053,7 @@ end subroutine rdpnt
 !!    o known font name: show chart on just that font
 !!    o unknown name: show sample of all fonts and quit
 !!    o pause between pages, in graphics area use q(uit) to quit,
-!!      n(ext) to display the next font, and p(revious) for previous font
+!!      n(ext) to display the next font, and p(revious) for previous font.
 !!      A numeric string shows font by number.
 !!##OPTIONS
 !!    fontin  name of font to display

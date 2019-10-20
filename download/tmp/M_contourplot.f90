@@ -786,7 +786,7 @@ CONTAINS
 !===================================================================================================================================
 !>
 !!##NAME
-!!   contourlines(3f) - [M_contourplot] calculate contour lines from ungridded data f(x,y
+!!   contourlines(3f) - [M_contourplot] calculate contour lines from ungridded data f(x,y)
 !!                      and call user-supplied routine with results
 !!
 !!##SYNOPSIS
@@ -1686,8 +1686,8 @@ SUBROUTINE Cntour (zcon, xi, eta, lambda, j, ibe, ite,cntcrv)
 !
 !     ARGUMENTS (ALL ARE INPUTS) -
 !        ZCON    = CONSTANT VALUE OF Z UNDER CONSIDERATION
-!        XI(J)   = ARRAY OF X COORDIANTES OF INTERPOLATED POINTS
-!        ETA(J)  = ARRAY OF Y COORDIANTES OF INTERPOLATED POINTS
+!        XI(J)   = ARRAY OF X COORDINATES OF INTERPOLATED POINTS
+!        ETA(J)  = ARRAY OF Y COORDINATES OF INTERPOLATED POINTS
 !        LAMBDA(J) = ARRAY OF EDGE NUMBERS FOR J-TH INTERPOLATED POINT
 !        J       = NUMBER OF POINTS IN THE LIST OF INTERPOLATED POINTS
 !        IBE     = THE LIST OF BOUNDARY EDGES TAKEN FROM THE TRIANGULATI

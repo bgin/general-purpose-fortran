@@ -91,7 +91,7 @@ module M_sha3
 !!            case('-384'); call sha3_file( 384, trim(fname) )
 !!            case('-512'); call sha3_file( 512, trim(fname) )
 !!            case default
-!!                print *,'usage: "sha3 -a" or "sha3 (-224|-256|-384|-512) fname"
+!!                print *,'usage: "sha3 -a" or "sha3 (-224|-256|-384|-512) fname"'
 !!            end select
 !!          endif
 !!       else

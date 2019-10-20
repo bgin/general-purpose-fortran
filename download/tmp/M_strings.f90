@@ -197,7 +197,7 @@
 !!  program demo_M_strings
 !!  !
 !!  ! This is an example using the object-oriented class/type model defined in M_strings_oop
-!!  ! This is essentially the same functionality as the procedures combined with several Fortran intrinsics and overloaded operator
+!!  ! This is essentially the same functionality as the procedures combined with several Fortran intrinsics and overloaded operators
 !!  !
 !!  use M_strings_oop,only : string, p
 !!  implicit none
@@ -587,7 +587,7 @@ CONTAINS
 !===================================================================================================================================
 !>
 !!##NAME
-!!    matchw(3f) - [M_strings:COMPARE] compare given string for match to pattern which may contain wildcard character
+!!    matchw(3f) - [M_strings:COMPARE] compare given string for match to pattern which may contain wildcard characters
 !!
 !!##SYNOPSIS
 !!
@@ -839,7 +839,7 @@ end subroutine test_matchw
 !===================================================================================================================================
 !>
 !!##NAME
-!!    split(3f) - [M_strings:TOKENS] parse string into an array using specified delimiter
+!!    split(3f) - [M_strings:TOKENS] parse string into an array using specified delimiters
 !!
 !!##SYNOPSIS
 !!
@@ -1194,7 +1194,7 @@ end subroutine test_split
 !===================================================================================================================================
 !>
 !!##NAME
-!!    chomp(3f) - [M_strings:TOKENS] Tokenize a string, consuming it one token per cal
+!!    chomp(3f) - [M_strings:TOKENS] Tokenize a string, consuming it one token per call
 !!
 !!##SYNOPSIS
 !!
@@ -1362,7 +1362,7 @@ end subroutine test_chomp
 !===================================================================================================================================
 !>
 !!##NAME
-!!      delim(3f) - [M_strings:TOKENS] parse a string and store tokens into an arra
+!!      delim(3f) - [M_strings:TOKENS] parse a string and store tokens into an array
 !!##SYNOPSIS
 !!
 !!    subroutine delim(line,array,n,icount,ibegin,iterm,ilen,dlim)
@@ -1637,7 +1637,7 @@ end subroutine test_delim
 !===================================================================================================================================
 !>
 !!##NAME
-!!    replace(3f) - [M_strings:EDITING] function globally replaces one substring for another in strin
+!!    replace(3f) - [M_strings:EDITING] function globally replaces one substring for another in string
 !!
 !!##SYNOPSIS
 !!
@@ -1950,7 +1950,7 @@ end subroutine test_replace
 !===================================================================================================================================
 !>
 !!##NAME
-!!    substitute(3f) - [M_strings:EDITING] subroutine globally substitutes one substring for another in strin
+!!    substitute(3f) - [M_strings:EDITING] subroutine globally substitutes one substring for another in string
 !!
 !!##SYNOPSIS
 !!
@@ -2218,7 +2218,7 @@ end subroutine test_substitute
 !===================================================================================================================================
 !>
 !!##NAME
-!!    change(3f) - [M_strings:EDITING] change old string to new string with a directive like a line edito
+!!    change(3f) - [M_strings:EDITING] change old string to new string with a directive like a line editor
 !!
 !!##SYNOPSIS
 !!
@@ -2400,7 +2400,7 @@ end subroutine test_change
 !!        integer,intent(inout)        :: itoken           ! token count since started
 !!        integer,intent(out)          :: token_start      ! beginning of token
 !!        integer,intent(inout)        :: token_end        ! end of token
-!!        character(len=*),intent(in)  :: delimiters       ! list of separator character
+!!        character(len=*),intent(in)  :: delimiters       ! list of separator characters
 !!
 !!##DESCRIPTION
 !!     The STRTOK(3f) function is used to isolate sequential tokens in a string,
@@ -2561,7 +2561,7 @@ end subroutine test_strtok
 !===================================================================================================================================
 !>
 !!##NAME
-!!    modif(3f) - [M_strings:EDITING] emulate the MODIFY command from the line editor XEDI
+!!    modif(3f) - [M_strings:EDITING] emulate the MODIFY command from the line editor XEDIT
 !!
 !!##SYNOPSIS
 !!
@@ -2768,7 +2768,7 @@ end subroutine test_modif
 !===================================================================================================================================
 !>
 !!##NAME
-!!      len_white(3f) - [M_strings:LENGTH] get length of string trimmed of whitespace
+!!      len_white(3f) - [M_strings:LENGTH] get length of string trimmed of whitespace.
 !!
 !!##SYNOPSIS
 !!
@@ -2886,7 +2886,7 @@ end subroutine test_len_white
 !===================================================================================================================================
 !>
 !!##NAME
-!!    crop(3f) - [M_strings:WHITESPACE] trim leading blanks and trailing blanks from a strin
+!!    crop(3f) - [M_strings:WHITESPACE] trim leading blanks and trailing blanks from a string
 !!
 !!##SYNOPSIS
 !!
@@ -2992,7 +2992,7 @@ end subroutine test_crop
 !!     write(*,'(a)') STRING
 !!
 !!     ! convert a string to uppercase:
-!!     write(*,*) TRANSLITERATE(STRING,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+!!     write(*,*) TRANSLITERATE(STRING,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')
 !!
 !!     ! change all miniscule letters to a colon (":"):
 !!     write(*,*) TRANSLITERATE(STRING,'abcdefghijklmnopqrstuvwxyz',':')
@@ -3093,7 +3093,7 @@ end subroutine test_transliterate
 !!
 !!    ROT13 is used in online forums as a means of hiding spoilers, punchlines,
 !!    puzzle solutions, and offensive materials from the casual glance. ROT13
-!!    has inspired a variety of letter and word games on-line, and is frequentl
+!!    has inspired a variety of letter and word games on-line, and is frequently
 !!    mentioned in newsgroup conversations.
 !!
 !!    The algorithm provides virtually no cryptographic security, and is
@@ -3104,13 +3104,13 @@ end subroutine test_transliterate
 !!
 !!    ALGORITHM
 !!
-!!    Applying ROT13 to a piece of text merely requires examining its alphabeti
-!!    characters and replacing each one by the letter 13 places further along i
+!!    Applying ROT13 to a piece of text merely requires examining its alphabetic
+!!    characters and replacing each one by the letter 13 places further along in
 !!    the alphabet, wrapping back to the beginning if necessary. A becomes
 !!    N, B becomes O, and so on up to M, which becomes Z, then the sequence
 !!    continues at the beginning of the alphabet: N becomes A, O becomes B,
 !!    and so on to Z, which becomes M. Only those letters which occur in the
-!!    English alphabet are affected; numbers, symbols, whitespace, and all othe
+!!    English alphabet are affected; numbers, symbols, whitespace, and all other
 !!    characters are left unchanged.
 !!
 !!    SAME ALGORITHM FOR ENCODING AND DECODING
@@ -3203,7 +3203,7 @@ end subroutine test_rotate13
 !==================================================================================================================================!
 !>
 !!##NAME
-!!      join(3f) - [M_strings:EDITING] append CHARACTER variable array into a single CHARACTER variable with specified separato
+!!      join(3f) - [M_strings:EDITING] append CHARACTER variable array into a single CHARACTER variable with specified separator
 !!
 !!##SYNOPSIS
 !!
@@ -3345,7 +3345,7 @@ end subroutine test_join
 !!       use M_strings, only: reverse
 !!       implicit none
 !!       character(len=:),allocatable  :: s
-!!          write(*,*)'REVERSE STRINGS:',reverse('Madam, I''m Adam'
+!!          write(*,*)'REVERSE STRINGS:',reverse('Madam, I''m Adam')
 !!          s='abcdefghijklmnopqrstuvwxyz'
 !!          write(*,*) 'original input string is ....',s
 !!          write(*,*) 'reversed output string is ...',reverse(s)
@@ -3403,7 +3403,7 @@ end subroutine test_reverse
 !===================================================================================================================================
 !>
 !!##NAME
-!! upper_quoted(3f) - [M_strings:CASE] !  elemental function converts string to miniscule skipping strings quoted per Fortran syntax rule
+!! upper_quoted(3f) - [M_strings:CASE] !  elemental function converts string to miniscule skipping strings quoted per Fortran syntax rules
 !!
 !!##SYNOPSIS
 !!
@@ -3534,7 +3534,7 @@ end function upper_quoted
 !!        write(*,*) 'mixed-case input string is ....',s
 !!        write(*,*) 'upper-case output string is ...',upper(s)
 !!        write(*,*) 'make first character uppercase  ... ',upper('this is a sentence.',1,1)
-!!        write(*,'(1x,a,*(a:,"+"))') 'UPPER(3f) is elemental ==>',upper(["abc","def","ghi"]
+!!        write(*,'(1x,a,*(a:,"+"))') 'UPPER(3f) is elemental ==>',upper(["abc","def","ghi"])
 !!     end program demo_upper
 !!
 !!    Expected output
@@ -3612,7 +3612,7 @@ end subroutine test_upper
 !===================================================================================================================================
 !>
 !!##NAME
-!!    lower(3f) - [M_strings:CASE] changes a string to lowercase over specified rang
+!!    lower(3f) - [M_strings:CASE] changes a string to lowercase over specified range
 !!
 !!##SYNOPSIS
 !!
@@ -3722,7 +3722,7 @@ end subroutine test_lower
 !>
 !!##NAME
 !!
-!!    switch(3f) - [M_strings:ARRAY] converts between CHARACTER scalar and array of single character
+!!    switch(3f) - [M_strings:ARRAY] converts between CHARACTER scalar and array of single characters
 !!
 !!##SYNOPSIS
 !!
@@ -3893,7 +3893,7 @@ end subroutine test_switch
 !===================================================================================================================================
 !>
 !!##NAME
-!!      s2c(3f) - [M_strings:ARRAY] convert character variable to array of characters with last element set to nul
+!!      s2c(3f) - [M_strings:ARRAY] convert character variable to array of characters with last element set to null
 !!
 !!##SYNOPSIS
 !!
@@ -3966,7 +3966,7 @@ end subroutine test_s2c
 !===================================================================================================================================
 !>
 !!##NAME
-!!      c2s(3f) - [M_strings:ARRAY] convert C string pointer to Fortran character strin
+!!      c2s(3f) - [M_strings:ARRAY] convert C string pointer to Fortran character string
 !!
 !!##SYNOPSIS
 !!
@@ -4035,7 +4035,7 @@ end subroutine test_c2s
 !===================================================================================================================================
 !>
 !!##NAME
-!!      indent(3f) - [M_strings:WHITESPACE] count number of leading spaces in a strin
+!!      indent(3f) - [M_strings:WHITESPACE] count number of leading spaces in a string
 !!
 !!##SYNOPSIS
 !!
@@ -4113,7 +4113,7 @@ end subroutine test_indent
 !===================================================================================================================================
 !>
 !!##NAME
-!!    visible(3f) - [M_strings:NONALPHA] expand a string to control and meta-control representation
+!!    visible(3f) - [M_strings:NONALPHA] expand a string to control and meta-control representations
 !!
 !!##SYNOPSIS
 !!
@@ -4256,7 +4256,7 @@ end subroutine test_visible
 !!       \dNNN  byte with decimal value NNN (3 digits)
 !!       \xHH   byte with hexadecimal value HH (2 digits) -- h is an alias for x
 !!
-!!     The default escape character is the backslash, but this may be changed usin
+!!     The default escape character is the backslash, but this may be changed using
 !!     the optional parameter ESCAPE.
 !!
 !!##EXAMPLES
@@ -4430,7 +4430,7 @@ end subroutine test_expand
 !!     Some Fortran compilers have problems with tabs, as tabs are not
 !!     part of the Fortran character set.  Some editors and printers will
 !!     have problems with tabs.  It is often useful to expand tabs in input
-!!     files to simplify further processing such as tokenizing an input line
+!!     files to simplify further processing such as tokenizing an input line.
 !!
 !!##OPTIONS
 !!     instr     Input line to remove tabs from
@@ -4554,8 +4554,8 @@ end subroutine test_notabs
 !!    integer,intent(in),optional  :: length
 !!    character(len=:),allocatable :: adjustc
 !!##DESCRIPTION
-!!     Centers input text in a string of the length specified. Returns
-!!     string of length LENGTH if LENGTH is present. Otherwise returns
+!!     Centers input text in a string of the length specified. Returns a
+!!     string of length LENGTH if LENGTH is present. Otherwise returns a
 !!     string of the length of the input string.
 !!##OPTIONS
 !!     string  input string to trim and center
@@ -4596,7 +4596,7 @@ character(len=*),parameter::ident_31="@(#)M_strings::adjustc(3f): center text"
 
 !>
 !! PROCEDURE   adjustc(3f)
-!! DESCRIPTION center text using implicit or explicit lengt
+!! DESCRIPTION center text using implicit or explicit length
 !!##VERSION     2.0, 20160711
 !! AUTHOR      John S. Urban
 !===================================================================================================================================
@@ -4692,7 +4692,7 @@ end subroutine test_adjustc
 !===================================================================================================================================
 !>
 !!##NAME
-!!    nospace(3f) - [M_strings:WHITESPACE] remove all whitespace from input strin
+!!    nospace(3f) - [M_strings:WHITESPACE] remove all whitespace from input string
 !!
 !!##SYNOPSIS
 !!
@@ -4776,7 +4776,7 @@ end subroutine test_nospace
 !===================================================================================================================================
 !>
 !!##NAME
-!!    stretch(3f) - [M_strings:LENGTH] return string padded to at least specified lengt
+!!    stretch(3f) - [M_strings:LENGTH] return string padded to at least specified length
 !!
 !!##SYNOPSIS
 !!
@@ -4892,7 +4892,7 @@ end subroutine test_stretch
 !===================================================================================================================================
 !>
 !!##NAME
-!!   atleast(3f) - [M_strings:LENGTH] return string padded to at least specified lengt
+!!   atleast(3f) - [M_strings:LENGTH] return string padded to at least specified length
 !! !!
 !!##SYNOPSIS
 !!
@@ -4995,7 +4995,7 @@ end subroutine test_atleast
 !===================================================================================================================================
 !>
 !!##NAME
-!!    lenset(3f) - [M_strings:LENGTH] return string trimmed or padded to specified lengt
+!!    lenset(3f) - [M_strings:LENGTH] return string trimmed or padded to specified length
 !!
 !!##SYNOPSIS
 !!
@@ -5066,7 +5066,7 @@ end subroutine test_lenset
 !===================================================================================================================================
 !>
 !!##NAME
-!!    merge_str(3f) - [M_strings:LENGTH] pads strings to same length and then calls MERGE(3f
+!!    merge_str(3f) - [M_strings:LENGTH] pads strings to same length and then calls MERGE(3f)
 !!
 !!##SYNOPSIS
 !!
@@ -5149,7 +5149,7 @@ end subroutine test_merge_str
 !===================================================================================================================================
 !>
 !!##NAME
-!!    compact(3f) - [M_strings:WHITESPACE] converts contiguous whitespace to a single character (or nothing
+!!    compact(3f) - [M_strings:WHITESPACE] converts contiguous whitespace to a single character (or nothing)
 !!
 !!##SYNOPSIS
 !!
@@ -5362,9 +5362,9 @@ end subroutine test_compact
 !!   characters and their ADE (ASCII Decimal Equivalent)
 !!
 !!    >                                 !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~
-!!    >0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000111111111111111111111111111
-!!    >0000000000111111111122222222223333333333444444444455555555556666666666777777777788888888889999999999000000000011111111112222222
-!!    >0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456
+!!    >00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001111111111111111111111111111
+!!    >00000000001111111111222222222233333333334444444444555555555566666666667777777777888888888899999999990000000000111111111122222222
+!!    >01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567
 !!
 !!   Cleared of non-printable characters
 !!
@@ -5374,7 +5374,7 @@ end subroutine test_compact
 !!    >2222222222222222222222222222222223456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456
 !!
 !!   Cleared string:
-!!    >                                  !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}
+!!    >                                  !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~
 !===================================================================================================================================
 elemental function noesc(INSTR)
 
@@ -5437,7 +5437,7 @@ end subroutine test_noesc
 !===================================================================================================================================
 !>
 !!##NAME
-!!      string_to_value(3f) - [M_strings:NUMERIC] subroutine returns real value from strin
+!!      string_to_value(3f) - [M_strings:NUMERIC] subroutine returns real value from string
 !!
 !!##SYNOPSIS
 !!
@@ -5680,7 +5680,7 @@ end subroutine test_string_to_value
 !===================================================================================================================================
 !>
 !!##NAME
-!!      s2v(3f) - [M_strings:NUMERIC] function returns doubleprecision numeric value from a strin
+!!      s2v(3f) - [M_strings:NUMERIC] function returns doubleprecision numeric value from a string
 !!
 !!##SYNOPSIS
 !!
@@ -5779,7 +5779,7 @@ end subroutine test_string_to_value
 !===================================================================================================================================
 !>
 !!##PROCEDURE:
-!! DESCRIPTION: s2v(3f): function returns doubleprecision number from string;zero if error occur
+!! DESCRIPTION: s2v(3f): function returns doubleprecision number from string;zero if error occurs
 !!##VERSION:     2.0, 20160704
 !! AUTHOR:      John S. Urban
 !===================================================================================================================================
@@ -5892,7 +5892,7 @@ end subroutine test_s2v
 !===================================================================================================================================
 !>
 !!##NAME
-!!      value_to_string(3f) - [M_strings:NUMERIC] return numeric string from a numeric valu
+!!      value_to_string(3f) - [M_strings:NUMERIC] return numeric string from a numeric value
 !!
 !!##SYNOPSIS
 !!
@@ -6125,7 +6125,7 @@ end subroutine test_value_to_string
 !===================================================================================================================================
 !>
 !!##NAME
-!!      v2s(3f) - [M_strings:NUMERIC] return numeric string from a numeric valu
+!!      v2s(3f) - [M_strings:NUMERIC] return numeric string from a numeric value
 !!
 !!##SYNOPSIS
 !!
@@ -6315,7 +6315,7 @@ end subroutine test_v2s
 !===================================================================================================================================
 !>
 !!##NAME
-!!    isnumber(3f) - [M_strings:NUMERIC] determine if a string represents a numbe
+!!    isnumber(3f) - [M_strings:NUMERIC] determine if a string represents a number
 !!##SYNOPSIS
 !!
 !!    function isnumber(str,msg)
@@ -6343,7 +6343,7 @@ end subroutine test_v2s
 !!
 !!##EXAMPLES
 !!
-!!   As the example shows, you can use an internal READ(3f) along with the IOSTAT
+!!   As the example shows, you can use an internal READ(3f) along with the IOSTAT=
 !!   parameter to check (and read) a string as well.
 !!
 !!     program demo_isnumber
@@ -6576,7 +6576,7 @@ end subroutine test_isnumber
 !===================================================================================================================================
 !>
 !!##NAME
-!!    trimzeros(3fp) - [M_strings:NUMERIC] Delete trailing zeros from numeric decimal strin
+!!    trimzeros(3fp) - [M_strings:NUMERIC] Delete trailing zeros from numeric decimal string
 !!##SYNOPSIS
 !!
 !!    subroutine trimzeros(str)
@@ -6662,7 +6662,7 @@ end subroutine test_trimzeros
 !===================================================================================================================================
 !>
 !!##NAME
-!! listout(3f) - [M_strings:NUMERIC] expand a list of numbers where negative numbers denote range ends (1 -10 means 1 thru 10
+!! listout(3f) - [M_strings:NUMERIC] expand a list of numbers where negative numbers denote range ends (1 -10 means 1 thru 10)
 !!
 !!##SYNOPSIS
 !!
@@ -6691,7 +6691,7 @@ end subroutine test_trimzeros
 !!     implicit none
 !!     integer,allocatable :: icurve_lists(:)        ! icurve_lists is input array
 !!     integer :: icurve_expanded(1000)  ! icurve_expanded is output array
-!!     integer :: inums                  ! number of icurve_lists values on input, number of icurve_expanded numbers on outpu
+!!     integer :: inums                  ! number of icurve_lists values on input, number of icurve_expanded numbers on output
 !!     integer :: i
 !!     integer :: ierr
 !!        icurve_lists=[1, 20, -30, 101, 100, 99, 100, -120, 222, -200]
@@ -6802,7 +6802,7 @@ end subroutine test_listout
 !===================================================================================================================================
 !>
 !!##NAME
-!!     quote(3f) - [M_strings:QUOTES] add quotes to string as if written with list-directed inpu
+!!     quote(3f) - [M_strings:QUOTES] add quotes to string as if written with list-directed input
 !!##SYNOPSIS
 !!
 !!   function quote(str,mode,clip) result (quoted_str)
@@ -6930,7 +6930,7 @@ end subroutine test_quote
 !===================================================================================================================================
 !>
 !!##NAME
-!!     unquote(3f) - [M_strings:QUOTES] remove quotes from string as if read with list-directed inpu
+!!     unquote(3f) - [M_strings:QUOTES] remove quotes from string as if read with list-directed input
 !!##SYNOPSIS
 !!
 !!   function unquote(quoted_str,esc) result (unquoted_str)
@@ -7107,7 +7107,7 @@ end subroutine test_unquote
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    describe(3f) - [M_strings] returns a string describing the name of a single characte
+!!    describe(3f) - [M_strings] returns a string describing the name of a single character
 !!
 !!##SYNOPSIS
 !!
@@ -7449,7 +7449,7 @@ end subroutine test_describe
 !===================================================================================================================================
 !>
 !!##NAME
-!!    getvals(3f) - [M_strings:NUMERIC] read arbitrary number of REAL values from a character variable up to size of VALUES() arra
+!!    getvals(3f) - [M_strings:NUMERIC] read arbitrary number of REAL values from a character variable up to size of VALUES() array
 !!
 !!##SYNOPSIS
 !!
@@ -7635,7 +7635,7 @@ end subroutine test_getvals
 !===================================================================================================================================
 !>
 !!##NAME
-!!      string_to_values(3f) - [M_strings:NUMERIC] read a string representing numbers into a numeric arra
+!!      string_to_values(3f) - [M_strings:NUMERIC] read a string representing numbers into a numeric array
 !!
 !!##SYNOPSIS
 !!
@@ -7697,7 +7697,7 @@ end subroutine test_getvals
 !!     string_to_values:
 !!     input string............. 10 20e3;3.45 -400.3e-2;1234; 5678
 !!     number of values found...           6
-!!     values...................   10.0000000  20000.0000  3.45000005  -4.00299978  1234.00000  5678.0000
+!!     values...................   10.0000000  20000.0000  3.45000005  -4.00299978  1234.00000  5678.00000
 !!     string_to_values:
 !!     input string............. 10 20e3;3.45 -400.3e-2;1234; 5678
 !!     number of values found...           3
@@ -7822,7 +7822,7 @@ end subroutine test_string_to_values
 !===================================================================================================================================
 !>
 !!##NAME
-!!      s2vs(3f) - [M_strings:NUMERIC] given a string representing numbers return a numeric arra
+!!      s2vs(3f) - [M_strings:NUMERIC] given a string representing numbers return a numeric array
 !!
 !!##SYNOPSIS
 !!
@@ -8033,7 +8033,7 @@ end subroutine test_isprint
 !!
 !!    HUGE(3f) integers 2147483647 and real 3.40282347E+38 and double 1.7976931348623157E+308
 !!    real            : 3.40282347E+38 0.00000000 12345.6787 1.17549435E-38
-!!    doubleprecision : 1.7976931348623157E+308 0.0000000000000000 12345.678900000001 2.2250738585072014E-30
+!!    doubleprecision : 1.7976931348623157E+308 0.0000000000000000 12345.678900000001 2.2250738585072014E-308
 !!    complex         : (3.40282347E+38,1.17549435E-38)
 !!     format=(*(i9:,1x))
 !!     program will now stop
@@ -8681,7 +8681,7 @@ end subroutine test_islower
 !>
 !!##NAME
 !!    isalnum,isalpha,iscntrl,isdigit,isgraph,islower,
-!!    isprint,ispunct,isspace,isupper,isascii,isblank,isxdigit(3f) - [M_strings:COMPARE] test membership in subsets of ASCII se
+!!    isprint,ispunct,isspace,isupper,isascii,isblank,isxdigit(3f) - [M_strings:COMPARE] test membership in subsets of ASCII set
 !!
 !!##SYNOPSIS
 !!
@@ -8794,7 +8794,7 @@ end subroutine test_isalnum
 !===================================================================================================================================
 !>
 !!##NAME
-!!    base(3f) - [M_strings:BASE] convert whole number string in base [2-36] to string in alternate base [2-36
+!!    base(3f) - [M_strings:BASE] convert whole number string in base [2-36] to string in alternate base [2-36]
 !!
 !!##SYNOPSIS
 !!
@@ -8942,7 +8942,7 @@ end subroutine test_base
 !!    integer,intent(out)          :: out10
 !!##DESCRIPTION
 !!
-!!    Convert a numeric string representing a whole number in base BASEIN to base 10. The function return
+!!    Convert a numeric string representing a whole number in base BASEIN to base 10. The function returns
 !!    FALSE if BASEIN is not in the range [2..36] or if string STRING contains invalid
 !!    characters in base BASEIN or if result OUT10 is too big
 !!
@@ -9116,7 +9116,7 @@ end subroutine test_decodebase
 !>
 !!##NAME
 !!
-!!    codebase(3f) - [M_strings:BASE] convert whole number in base 10 to string in base [2-36
+!!    codebase(3f) - [M_strings:BASE] convert whole number in base 10 to string in base [2-36]
 !!
 !!##SYNOPSIS
 !!
@@ -9260,7 +9260,7 @@ end subroutine test_codebase
 !!    longer than the specified length. Individual words longer than LENGTH will be
 !!    placed in variables by themselves.
 !!##OPTIONS
-!!     SOURCE_STRING  input string to break into an array of shorter strings on blank delimiter
+!!     SOURCE_STRING  input string to break into an array of shorter strings on blank delimiters
 !!     LENGTH         length of lines to break the string into.
 !!##RETURNS
 !!     FMT  character array filled with data from source_string broken at spaces into

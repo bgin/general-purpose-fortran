@@ -37,7 +37,7 @@ CONTAINS
 !===================================================================================================================================
 !>
 !!##NAME
-!!      uniq(3f) - [M_io] append a number to the end of filename to make a unique name if name exist
+!!      uniq(3f) - [M_io] append a number to the end of filename to make a unique name if name exists
 !!##SYNOPSIS
 !!
 !!      Usage
@@ -213,7 +213,7 @@ end function uniq
 !===================================================================================================================================
 !>
 !!##NAME
-!!    print_inquire(3f) - [M_io] Do INQUIRE on file by name/number and print result
+!!    print_inquire(3f) - [M_io] Do INQUIRE on file by name/number and print results
 !!
 !!##SYNOPSIS
 !!
@@ -451,16 +451,16 @@ end subroutine print_inquire
 !!     size=          30
 !!     size=          10
 !!     size=           3
-!!       1.0000000000000000        10.000000000000000        45.00000000000000
-!!       10.000000000000000        10.000000000000000        45.00000000000000
-!!       2.0000000000000000        20.000000000000000        15.00000000000000
-!!       20.344999999999999        20.000000000000000        15.00000000000000
-!!       3.0000000000000000        30.111000000000001        0.000000000000000
-!!       30.000000000000000        30000.000000000000        0.000000000000000
-!!       4.0000000000000000        30.044400000000000       -10.00000000000000
-!!       40.000000000000000        30.555499999999999       -10.00000000000000
-!!       4.0000000000000000        30.044400000000000       -10.00000000000000
-!!       40.000000000000000        30.555499999999999       -10.00000000000000
+!!       1.0000000000000000        10.000000000000000        45.000000000000000
+!!       10.000000000000000        10.000000000000000        45.000000000000000
+!!       2.0000000000000000        20.000000000000000        15.000000000000000
+!!       20.344999999999999        20.000000000000000        15.000000000000000
+!!       3.0000000000000000        30.111000000000001        0.0000000000000000
+!!       30.000000000000000        30000.000000000000        0.0000000000000000
+!!       4.0000000000000000        30.044400000000000       -10.000000000000000
+!!       40.000000000000000        30.555499999999999       -10.000000000000000
+!!       4.0000000000000000        30.044400000000000       -10.000000000000000
+!!       40.000000000000000        30.555499999999999       -10.000000000000000
 !===================================================================================================================================
 subroutine read_table_doubleprecision(filename,array,ierr)
 use M_strings, only : s2vs
@@ -596,7 +596,7 @@ end subroutine read_table_real
 !!    character(len=*),intent(in) :: filename
 !!    character(len=1),allocatable,intent(out) :: pageout(:)
 !!##DESCRIPTION
-!!    Read an entire file into memory as a character array, one character variable per line
+!!    Read an entire file into memory as a character array, one character variable per line.
 !!
 !!    NOTE:
 !!
@@ -756,7 +756,7 @@ end subroutine swallow
 !!    amounts of memory.
 !!
 !!##OPTIONS
-!!       filename   filename to read into memory or LUN (Fortran Logical Unit Number
+!!       filename   filename to read into memory or LUN (Fortran Logical Unit Number)
 !!       text       array of characters to hold file
 !!       length     length of longest line read(Optional).
 !!       lines      number of lines read(Optional).
@@ -893,7 +893,7 @@ end subroutine slurp
 !===================================================================================================================================
 !>
 !!##NAME
-!!    notopen(3f) - [M_io] Find a FUN/LUN (Fortran-unit-number) that is not in us
+!!    notopen(3f) - [M_io] Find a FUN/LUN (Fortran-unit-number) that is not in use
 !!##SYNOPSIS
 !!
 !!    Usage
@@ -1088,7 +1088,7 @@ end function notopen
 !!
 !!##DESCRIPTION
 !!    Output FILENAME with its last non-slash component and trailing slashes removed.
-!!    if FILENAME contains no '/' character, output '.' (meaning the current directory)
+!!    if FILENAME contains no '/' character, output '.' (meaning the current directory).
 !!
 !!    Assumes leaf separator is a slash ('/') and that filename does not contain
 !!    trailing spaces.
@@ -1137,7 +1137,7 @@ end function notopen
 !! AUTHOR:         John S. Urban
 !! REPORTING BUGS: http://www.urbanjost.altervista.org/
 !! HOME PAGE:      http://www.urbanjost.altervista.org/index.html
-!! LICENSE:        Public Domain. This is free software: you are free to change and redistribute it
+!! LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.
 !!                 There is NO WARRANTY, to the extent permitted by law.
 !===================================================================================================================================
 function dirname(filename) result (directory)
@@ -1223,7 +1223,7 @@ end function dirname
 !!    name      Name of file leaf or, if no file is specified in path,
 !!              name of the lowest directory.
 !!    basename  NAME with any extension removed
-!!    ext       File name extension, if any, including the leading period (.)
+!!    ext       File name extension, if any, including the leading period (.).
 !!
 !!    The path parameter can be a complete or partial file specification. The
 !!    special name "." is assumed to mean the current directory, and the
@@ -1414,7 +1414,7 @@ end subroutine splitpath
 !!
 !!##DESCRIPTION
 !!
-!!    isdir(3f) checks if path is a path to a directory on Unix-compatible file system
+!!    isdir(3f) checks if path is a path to a directory on Unix-compatible file systems
 !!
 !!##OPTIONS
 !!
@@ -1472,7 +1472,7 @@ end function isdir
 !===================================================================================================================================
 !>
 !!##NAME
-!!     read_all(3f) - [M_io] read a line from specified LUN into allocatable string up to line length limi
+!!     read_all(3f) - [M_io] read a line from specified LUN into allocatable string up to line length limit
 !!
 !!##SYNTAX
 !!   function read_all(line,lun) result(ier)
@@ -1563,7 +1563,7 @@ end function read_all
 !===================================================================================================================================
 !>
 !!##NAME
-!!     read_line(3f) - [M_io] read a line from specified LUN into allocatable string up to line length limit cleaning up input lin
+!!     read_line(3f) - [M_io] read a line from specified LUN into allocatable string up to line length limit cleaning up input line
 !!
 !!##SYNTAX
 !!   function read_line(line,lun) result(ier)
@@ -1669,7 +1669,7 @@ end function read_line
 !!##DESCRIPTION
 !!
 !!    Return the name of the scratch directory set by the most common environment variables used to designate a scratch directory.
-!!    $TMPDIR is the canonical environment variable in Unix and POSIX[1] to use to specify a temporary directory for scratch space
+!!    $TMPDIR is the canonical environment variable in Unix and POSIX[1] to use to specify a temporary directory for scratch space.
 !!    If $TMPDIR is not set, $TEMP, $TEMPDIR, and $TMP are examined in that order. If nothing is set "/tmp/" is returned. The
 !!    returned value always ends in "/". No test is made that the directory exists or is writable.
 !!
@@ -1772,7 +1772,7 @@ end function get_tmp
 !!     find good scratch file name candidates; one should test if writable
 !!     /cygdrive/c/Users/JSU/AppData/Local/Temp/JUNK:8462159a-2ca8-4961-7ff1-2ff4f9ebaca4
 !!     /cygdrive/c/Users/JSU/AppData/Local/Temp/f7585e37-8557-4f25-777d-29abb6ffb981
-!!     /cygdrive/c/Users/JSU/AppData/Local/Temp/demo_scratch-ec470965-42be-4ba6-4193-0f25cf2fa26
+!!     /cygdrive/c/Users/JSU/AppData/Local/Temp/demo_scratch-ec470965-42be-4ba6-4193-0f25cf2fa26c
 !===================================================================================================================================
 function scratch(prefix) result(tname)
 use M_uuid, only : generate_uuid
@@ -1831,7 +1831,7 @@ end function scratch
 !!              type of the output.
 !!##RETURNS
 !!    strout    returned string or value.
-!!              If an end-of-file or system error is encountered the string "EOF" is returned, o
+!!              If an end-of-file or system error is encountered the string "EOF" is returned, or
 !!              a "Nan" numeric value.
 !!##EXAMPLE
 !!

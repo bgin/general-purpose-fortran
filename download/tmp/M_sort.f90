@@ -79,7 +79,7 @@ contains
 !!    other procedures will provide a variety of sort methods, including ...
 !!
 !!
-!!    Exchange sorts      Bubble sort, Cocktail shaker sort, Odd-even sort, Comb sort, Gnome sort, Quicksort, Stooge sort, Bogosor
+!!    Exchange sorts      Bubble sort, Cocktail shaker sort, Odd-even sort, Comb sort, Gnome sort, Quicksort, Stooge sort, Bogosort
 !!    Selection sorts     Selection sort, Heapsort, Smoothsort, Cartesian tree sort, Tournament sort, Cycle sort
 !!    Insertion sorts     Insertion sort, Shellsort, Splaysort, Tree sort, Library sort, Patience sorting
 !!    Merge sorts         Merge sort, Cascade merge sort, Oscillating merge sort, Polyphase merge sort
@@ -182,7 +182,7 @@ contains
 !!
 !!     F90 NOTES:
 !!
-!!      o  procedure names are declared private in this module so they are not accessible except by their generic nam
+!!      o  procedure names are declared private in this module so they are not accessible except by their generic name
 !!      o  procedures must include a "use M_sort" to access the generic name SORT_SHELL
 !!      o  if these routines are recompiled, routines with the use statement should then be recompiled and reloaded.
 !!
@@ -914,7 +914,7 @@ end subroutine sort_shell_complex_double
 !!    write(*,*)'checking index of sort_quick_rx(3f)'
 !!    do i=1,isz-1
 !!       if(rr(ii(i)).gt.rr(ii(i+1)))then
-!!          write(*,*)'Error in sorting reals small to large ',i,rr(ii(i)),rr(ii(i+1)
+!!          write(*,*)'Error in sorting reals small to large ',i,rr(ii(i)),rr(ii(i+1))
 !!       endif
 !!    enddo
 !!    write(*,*)'test of sort_quick_rx(3f) complete'
@@ -1102,7 +1102,7 @@ end subroutine sort_quick_rx
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    unique(3f) - [M_sort] assuming an array is sorted, return array with duplicate values remove
+!!    unique(3f) - [M_sort] assuming an array is sorted, return array with duplicate values removed
 !!##SYNOPSIS
 !!
 !!    subroutine unique(array,ivals)
@@ -1322,7 +1322,7 @@ end subroutine unique_complex_double
 !!     SWAP is a Generic Interface in a module with PRIVATE specific procedures.
 !!     This means the individual subroutines cannot be called from outside of the M_sort(3fm) module.
 !!
-!!      o procedure names are declared private in this module so they are not accessible except by their generic nam
+!!      o procedure names are declared private in this module so they are not accessible except by their generic name
 !!      o procedures must include a "use M_sort" to access the generic name "swap"
 !!      o if these routines are recompiled, routines with the USE statement should then be recompiled and reloaded.
 !===================================================================================================================================
@@ -1438,8 +1438,8 @@ end subroutine unique_complex_double
 !!    > reals after swap     22.2199993       11.1099997
 !!    > doubles before swap    1234.5678900000000        9876.5432099999998
 !!    > doubles after swap     9876.5432099999998        1234.5678900000000
-!!    > complexes before swap  (  1234.00000    ,  56789.0000    ) (  9876.00000    ,  54321.0000
-!!    > complexes after swap   (  9876.00000    ,  54321.0000    ) (  1234.00000    ,  56789.0000
+!!    > complexes before swap  (  1234.00000    ,  56789.0000    ) (  9876.00000    ,  54321.0000    )
+!!    > complexes after swap   (  9876.00000    ,  54321.0000    ) (  1234.00000    ,  56789.0000    )
 !!    > logicals before swap  T F
 !!    > logicals after swap   F T
 !!    > strings before swap First string    The other string
@@ -1532,7 +1532,7 @@ elemental subroutine s_swap(string1,string2)
 !!    string_temp is an automatic character object whose size is not a constant expression.
 !!    Automatic objects cannot be saved or initialized.
 !!    Note that the len of a dummy argument can be used to calculate the automatic variable length.
-!!    Therefore, you can make sure len is at least max(len(string1),len(string2)) by adding the two lengths together
+!!    Therefore, you can make sure len is at least max(len(string1),len(string2)) by adding the two lengths together:
 !===================================================================================================================================
 
 character(len=*),parameter::ident_29="@(#)M_sort::s_swap(3fp): swap two double variables"
@@ -1662,8 +1662,8 @@ end subroutine s_swap
 !!    > reals after exchange     22.2199993       11.1099997
 !!    > doubles before exchange    1234.5678900000000        9876.5432099999998
 !!    > doubles after exchange     9876.5432099999998        1234.5678900000000
-!!    > complexes before exchange  (  1234.00000    ,  56789.0000    ) (  9876.00000    ,  54321.0000
-!!    > complexes after exchange   (  9876.00000    ,  54321.0000    ) (  1234.00000    ,  56789.0000
+!!    > complexes before exchange  (  1234.00000    ,  56789.0000    ) (  9876.00000    ,  54321.0000    )
+!!    > complexes after exchange   (  9876.00000    ,  54321.0000    ) (  1234.00000    ,  56789.0000    )
 !!    > logicals before exchange  T F
 !!    > logicals after exchange   F T
 !!    > strings before exchange First string    The other string
@@ -1851,8 +1851,8 @@ end subroutine exchange_array
 !!    > reals after swap_any     22.2199993       11.1099997
 !!    > doubles before swap_any    1234.5678900000000        9876.5432099999998
 !!    > doubles after swap_any     9876.5432099999998        1234.5678900000000
-!!    > complexes before swap_any  (  1234.00000    ,  56789.0000    ) (  9876.00000    ,  54321.0000
-!!    > complexes after swap_any   (  9876.00000    ,  54321.0000    ) (  1234.00000    ,  56789.0000
+!!    > complexes before swap_any  (  1234.00000    ,  56789.0000    ) (  9876.00000    ,  54321.0000    )
+!!    > complexes after swap_any   (  9876.00000    ,  54321.0000    ) (  1234.00000    ,  56789.0000    )
 !!    > logicals before swap_any  T F
 !!    > logicals after swap_any   F T
 !!    > strings before swap_any First string    The other string
@@ -1934,7 +1934,7 @@ end subroutine swap_any_array
 !===================================================================================================================================
 !>
 !!##NAME
-!!    tree_insert(3f) - [M_sort] sort a number of integers by building a tree, sorted in infix orde
+!!    tree_insert(3f) - [M_sort] sort a number of integers by building a tree, sorted in infix order
 !!##SYNOPSIS
 !!
 !!   subroutine tree_insert(t,number)
@@ -1997,7 +1997,7 @@ end subroutine tree_insert
 !===================================================================================================================================
 !>
 !!##NAME
-!!    tree_print(3f) - [M_sort] print a sorted integer tree generated by tree_insert(3f
+!!    tree_print(3f) - [M_sort] print a sorted integer tree generated by tree_insert(3f)
 !!##SYNOPSIS
 !!
 !!   subroutine tree_print(t)

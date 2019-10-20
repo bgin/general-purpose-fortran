@@ -343,7 +343,7 @@
 !!    patchbasis(tbasis, ubasis)  Define the t and u basis matrices of a patch.
 !!    patchprecision(tseg, useg)  Set minimum number of line segments making up curves in a patch.
 !!    patchcurves(nt, nu)         Set the number of curves making up a patch.
-!!    rpatch(gx, gy, gz, gw)      Draws a rational patch in the current basis, according to the geometry matrices gx, gy, gz, and gw
+!!    rpatch(gx, gy, gz, gw)      Draws a rational patch in the current basis, according to the geometry matrices gx, gy, gz, and gw.
 !!    patch(gx, gy, gz)           Draws a patch in the current basis, according to the geometry matrices gx, gy, and gz.
 !!
 !!    POINT ROUTINES
@@ -564,7 +564,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    prefposition(3f) - [M_draw:WINDOW_SETUP] Specify preferred position of windo
+!!    prefposition(3f) - [M_draw:WINDOW_SETUP] Specify preferred position of window
 !!
 !!##SYNOPSIS
 !!
@@ -611,7 +611,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    prefsize(3f) - [M_draw:WINDOW_SETUP] Specify preferred width and height of window in physical unit
+!!    prefsize(3f) - [M_draw:WINDOW_SETUP] Specify preferred width and height of window in physical units
 !!
 !!##SYNOPSIS
 !!
@@ -726,7 +726,7 @@
 !!
 !!        METAFILES WITH POST_PROCESSORS/CONVERTERS
 !!
-!!        cgmt      a clear-text CGM (Computer Graphics Metatfile)
+!!        cgmt      a clear-text CGM (Computer Graphics Metafile)
 !!        gnu       GNU plot(1) metafile
 !!        pdf       Adobe Public Document Format
 !!        unixplot  Unix plot(1) metafile
@@ -801,7 +801,7 @@
 !!
 !! pdf
 !!
-!!    Popular PDF readers are the Adobe PDF viewer, which is often callable fro
+!!    Popular PDF readers are the Adobe PDF viewer, which is often callable from
 !!    Web browsers; the GhostScript-based gv(1) utility; or the xpdf program.
 !!
 !!        The xpdf(1) software , related utilities ( pdftops(1), pdftotext(1),
@@ -948,7 +948,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    vexit(3f) - [M_draw:DEVICE] Reset window/terminal and exit graphics mode. Must be last routine called
+!!    vexit(3f) - [M_draw:DEVICE] Reset window/terminal and exit graphics mode. Must be last routine called.
 !!
 !!##SYNOPSIS
 !!
@@ -1032,7 +1032,7 @@
 !!
 !!       When vinit() is called if voutput() has not been called then the
 !!       environment variable M_draw_OUTPUT is checked and if it is defined and not a
-!!       null string then voutput() is called with the M_draw_OUTPUT variable's value
+!!       null string then voutput() is called with the M_draw_OUTPUT variable's value.
 !!
 !!       A common use of the |command option is to automatically call programs
 !!       that convert PPM files to other common pixmap formats or converts the GNU
@@ -1061,7 +1061,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    vnewdev(3f) - [M_draw:DEVICE] Reinitialize to use new device without changin
+!!    vnewdev(3f) - [M_draw:DEVICE] Reinitialize to use new device without changing
 !!##SYNOPSIS
 !!
 !!          subroutine vnewdev(device)
@@ -1080,12 +1080,12 @@
 !!          character *(*) device
 !!##DESCRIPTION
 !!
-!!    Gets the name of the current M_draw device. The C version of the routin
+!!    Gets the name of the current M_draw device. The C version of the routine
 !!    also returns a pointer to its argument.
 !===================================================================================================================================
 !>
 !!##NAME
-!!    getdepth(3f) - [M_draw:DEVICE] Return number of bit planes (color planes
+!!    getdepth(3f) - [M_draw:DEVICE] Return number of bit planes (color planes)
 !!
 !!##SYNOPSIS
 !!
@@ -1111,7 +1111,7 @@
 !!    but save the previously initialised device on a stack.
 !!
 !!    Note, this is intended to completely change the device, it will not work
-!!    if you pushdev() the same device that you are already running. (This wil
+!!    if you pushdev() the same device that you are already running. (This will
 !!    be fixed at a later date).
 !===================================================================================================================================
 !>
@@ -1124,12 +1124,12 @@
 !!
 !!##DESCRIPTION
 !!
-!!    Pops a device off the device stack and reinstates the previously pushe
+!!    Pops a device off the device stack and reinstates the previously pushed
 !!    device.
 !===================================================================================================================================
 !>
 !!##NAME
-!!    move(3f) - [M_draw:MOVE] Move current graphics position to (x, y, z
+!!    move(3f) - [M_draw:MOVE] Move current graphics position to (x, y, z)
 !!
 !!##SYNOPSIS
 !!
@@ -1137,7 +1137,7 @@
 !!          real x, y, z
 !!##DESCRIPTION
 !!
-!!    Move current graphics position to (x, y, z). (x, y, z) is a point i
+!!    Move current graphics position to (x, y, z). (x, y, z) is a point in
 !!    world coordinates.
 !===================================================================================================================================
 !>
@@ -1151,7 +1151,7 @@
 !!
 !!##DESCRIPTION
 !!
-!!    Relative move. deltax, deltay, and deltaz are offsets in world units
+!!    Relative move. deltax, deltay, and deltaz are offsets in world units.
 !===================================================================================================================================
 !>
 !!##NAME
@@ -1165,7 +1165,7 @@
 !!##DESCRIPTION
 !!
 !!    Update current position.
-!!    Move graphics position to point (x, y). (x, y) is a point in worl
+!!    Move graphics position to point (x, y). (x, y) is a point in world
 !!    coordinates.
 !!
 !!##OPTIONS
@@ -1223,7 +1223,7 @@
 !!      use M_draw, only: move2, rmove2, rdraw2, vexit
 !!      use M_draw, only: linewidth
 !!      call prefsize(500,500)
-!!      call vinit(' ') ! start graphics using device $M_draw_DEVIC
+!!      call vinit(' ') ! start graphics using device $M_draw_DEVICE
 !!      call ortho2(-110.0,110.0,-110.0,110.0)
 !!      call move2(-100.0,-100.0)
 !!      call linewidth(70)
@@ -1237,7 +1237,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    smove2(3f) - [M_draw:MOVE] Move current graphics position in screen coordinates (-1.0 to 1.0)
+!!    smove2(3f) - [M_draw:MOVE] Move current graphics position in screen coordinates (-1.0 to 1.0).
 !!
 !!##SYNOPSIS
 !!
@@ -1249,7 +1249,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    rsmove2(3f) - [M_draw:MOVE] Relative move in screen units (-1.0 to 1.0)
+!!    rsmove2(3f) - [M_draw:MOVE] Relative move in screen units (-1.0 to 1.0).
 !!
 !!##SYNOPSIS
 !!
@@ -1263,7 +1263,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    draw(3f) - [M_draw:DRAW] Draw from current graphics position to (x, y, z
+!!    draw(3f) - [M_draw:DRAW] Draw from current graphics position to (x, y, z)
 !!
 !!##SYNOPSIS
 !!
@@ -1284,11 +1284,11 @@
 !!     real deltax, deltay, deltaz
 !!
 !!##DESCRIPTION
-!!    Relative draw. deltax, deltay, and deltaz are offsets in world units
+!!    Relative draw. deltax, deltay, and deltaz are offsets in world units.
 !===================================================================================================================================
 !>
 !!##NAME
-!!    draw2(3f) - [M_draw:DRAW] Draw from current graphics position to given point (x, y
+!!    draw2(3f) - [M_draw:DRAW] Draw from current graphics position to given point (x, y)
 !!
 !!##SYNOPSIS
 !!
@@ -1354,7 +1354,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    rdraw2(3f) - [M_draw:DRAW] Relative draw from current position to given poin
+!!    rdraw2(3f) - [M_draw:DRAW] Relative draw from current position to given point
 !!
 !!##SYNOPSIS
 !!
@@ -1416,7 +1416,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    sdraw2(3f) - [M_draw:DRAW] Draw in screen coordinates (-1.0 to 1.0)
+!!    sdraw2(3f) - [M_draw:DRAW] Draw in screen coordinates (-1.0 to 1.0).
 !!
 !!##SYNOPSIS
 !!
@@ -1427,7 +1427,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    rsdraw2(3f) - [M_draw:DRAW] Relative draw in screen units (-1.0 to 1.0)
+!!    rsdraw2(3f) - [M_draw:DRAW] Relative draw in screen units (-1.0 to 1.0).
 !!
 !!##SYNOPSIS
 !!
@@ -1450,7 +1450,7 @@
 !!    Draw rectangle given two opposite corners.
 !!
 !!    Note: rectangles are regarded as polygons, so if
-!!    polyfill or polyhatch has been called with .TRUE., the rectangle wil
+!!    polyfill or polyhatch has been called with .TRUE., the rectangle will
 !!    be filled or hatched accordingly.
 !!
 !!##OPTIONS
@@ -1523,7 +1523,7 @@
 !!       logical onoff
 !!
 !!##DESCRIPTION
-!!    Set the polygon fill flag. This will always turn off hatching. A non-zer
+!!    Set the polygon fill flag. This will always turn off hatching. A non-zero
 !!    integer or LOGICAL .true. turns polyfill on.
 !!##EXAMPLE
 !!
@@ -1607,7 +1607,7 @@
 !!##DESCRIPTION
 !!
 !!    Set the polygon hatch flag. This will always turn off fill. A non-zero
-!!    integer or LOGICAL .true. turns polyhatch on. Note that hatched polygon
+!!    integer or LOGICAL .true. turns polyhatch on. Note that hatched polygons
 !!    must initially be defined parallel to the X-Y plane.
 !!##EXAMPLE
 !!
@@ -1649,7 +1649,7 @@
 !!
 !!##DESCRIPTION
 !!
-!!    Set the angle of the hatch lines. The angle is in degrees. Zero degree
+!!    Set the angle of the hatch lines. The angle is in degrees. Zero degrees
 !!    is on the negative X axis. Positive values are counterclockwise. The
 !!    value is 0 at program initialization. The last value set is retained
 !!    even if hatching is not active or is turned on and off.
@@ -1720,8 +1720,8 @@
 !!    'circleprecision 3                                                           ',&
 !!    '# draw circles with hatching                                                ',&
 !!    'linewidth 150; polyhatch .true.; hatchang 30                                ',&
-!!    'hatchpitch 1/3 ; color 7; circle X=-20 0 5; move2 X-4.9 -4.9;color 7;drawstr 1/3',
-!!    'hatchpitch 1/2 ; color 2; circle X=-10 0 5; move2 X-4.9 -4.9;color 7;drawstr 1/2',
+!!    'hatchpitch 1/3 ; color 7; circle X=-20 0 5; move2 X-4.9 -4.9;color 7;drawstr 1/3',&
+!!    'hatchpitch 1/2 ; color 2; circle X=-10 0 5; move2 X-4.9 -4.9;color 7;drawstr 1/2',&
 !!    'hatchpitch  1  ; color 6; circle X=-0  0 5; move2 X-4.9 -4.9;color 7;drawstr 1',&
 !!    'hatchpitch  2  ; color 5; circle X=10  0 5; move2 X-4.9 -4.9;color 7;drawstr 2',&
 !!    'hatchpitch  3  ; color 4; circle X=20  0 5; move2 X-4.9 -4.9;color 7;drawstr 3',&
@@ -1791,7 +1791,7 @@
 !!    call color_name2rgb(v2s(icolor),red,green,blue,echoname)
 !!    if(echoname.eq.'Unknown') return
 !!    ! set a color number to the new RGB values
-!!    write(*,*)icolor, nint(red*2.55), nint(green*2.55), nint(blue*2.55),trim(echoname
+!!    write(*,*)icolor, nint(red*2.55), nint(green*2.55), nint(blue*2.55),trim(echoname)
 !!    call mapcolor(icolor, nint(red*2.55), nint(green*2.55), nint(blue*2.55))
 !!    ! set to the new color
 !!    call color(icolor)
@@ -1803,7 +1803,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    poly(3f) - [M_draw:POLYGONS] Construct a polygon from an array of point
+!!    poly(3f) - [M_draw:POLYGONS] Construct a polygon from an array of points
 !!
 !!##SYNOPSIS
 !!
@@ -1869,7 +1869,7 @@
 !!       call vexit()
 !!    contains
 !!    subroutine drawpoly()
-!!       real parray(3,4)                   ! An array of points for a polygo
+!!       real parray(3,4)                   ! An array of points for a polygon
 !!       data parray/ -8.0, -8.0, 0.0,  &
 !!                  & -5.0, -8.0, 0.0,  &
 !!                  & -5.0, -5.0, 0.0,  &
@@ -1897,7 +1897,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    makepoly(3f) - [M_draw:POLYGONS] opens polygon constructed by a series of move-draws and closed by closepol
+!!    makepoly(3f) - [M_draw:POLYGONS] opens polygon constructed by a series of move-draws and closed by closepoly
 !!
 !!##SYNOPSIS
 !!
@@ -2021,7 +2021,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    closepoly(3f) - [M_draw:POLYGONS] Terminates a polygon opened by makepoly(3f
+!!    closepoly(3f) - [M_draw:POLYGONS] Terminates a polygon opened by makepoly(3f)
 !!
 !!##SYNOPSIS
 !!
@@ -2050,7 +2050,7 @@
 !!   Sample program:
 !!
 !!    program demo_backface
-!!    !      demonstrate double buffering and what happens when you hit clipping plan
+!!    !      demonstrate double buffering and what happens when you hit clipping plane
 !!    !
 !!    !      Specifying an extra argument turns on the filling.
 !!    !
@@ -2253,7 +2253,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    backfacedir(3f) - [M_draw:POLYGONS] Sets backfacing direction to clockwise or anti-clockwis
+!!    backfacedir(3f) - [M_draw:POLYGONS] Sets backfacing direction to clockwise or anti-clockwise
 !!
 !!##SYNOPSIS
 !!
@@ -2268,7 +2268,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!     circleprecision(3f) - [M_draw:ARCS] Set number of line segments used to approximate a circl
+!!     circleprecision(3f) - [M_draw:ARCS] Set number of line segments used to approximate a circle
 !!
 !!##SYNOPSIS
 !!
@@ -2346,8 +2346,8 @@
 !!    Draw an arc. x, y, and radius are values in world units
 !!    using  current line width and color
 !!
-!!    Angles are in degrees, positive measured counterclockwise from th
-!!    +X axis. The current position after the arc is drawn is at the en
+!!    Angles are in degrees, positive measured counterclockwise from the
+!!    +X axis. The current position after the arc is drawn is at the end
 !!    of the arc.
 !!
 !!##OPTIONS
@@ -2427,7 +2427,7 @@
 !!
 !!##DESCRIPTION
 !!
-!!    Draw a sector. x, y, and radius are values in world units. Note: sector
+!!    Draw a sector. x, y, and radius are values in world units. Note: sectors
 !!    are regarded as polygons, so if polyfill or polyhatch has been called
 !!    with 1, the sectors will be filled or hatched accordingly.
 !!
@@ -2528,7 +2528,7 @@
 !!
 !!    NOTE
 !!
-!!    circles are regarded as polygons, so if polyfill or polyhatch has bee
+!!    circles are regarded as polygons, so if polyfill or polyhatch has been
 !!    called with .true., the circle will be filled or hatched accordingly.
 !!
 !!##OPTIONS
@@ -2606,7 +2606,7 @@
 !!         real,intent(in) :: x, y, z
 !!##DESCRIPTION
 !!    Draw a point at x, y, z. The size of the point is not affected by
-!!    perspective. Draw a polygon if you want perspective to be applied
+!!    perspective. Draw a polygon if you want perspective to be applied.
 !!    The size of the point is controlled by the current linewidth.
 !!
 !!##EXAMPLE
@@ -2659,7 +2659,7 @@
 !!
 !!##DESCRIPTION
 !!    Draw a point at x, y. Points are device-dependent and may not appear
-!!    at all. Generally points are drawn with the current color as a circl
+!!    at all. Generally points are drawn with the current color as a circle
 !!    with a diameter equal to the current linewidth.
 !!
 !!##EXAMPLE
@@ -2685,7 +2685,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    curvebasis(3f) - [M_draw:CURVE] Define a basis matrix for a curve
+!!    curvebasis(3f) - [M_draw:CURVE] Define a basis matrix for a curve.
 !!##SYNOPSIS
 !!
 !!          subroutine curvebasis(basis)
@@ -2695,7 +2695,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    curveprecision(3f) - [M_draw:CURVE] Define number of line segments used to draw a curve
+!!    curveprecision(3f) - [M_draw:CURVE] Define number of line segments used to draw a curve.
 !!##SYNOPSIS
 !!
 !!          subroutine curveprecision(nsegs)
@@ -2705,7 +2705,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    rcurve(3f) - [M_draw:CURVE] Draw a rational curve
+!!    rcurve(3f) - [M_draw:CURVE] Draw a rational curve.
 !!
 !!##SYNOPSIS
 !!
@@ -2840,7 +2840,7 @@
 !!    call color(D_RED)
 !!
 !!    !
-!!    ! draw a curve using the current basis matrix (bezier in this case
+!!    ! draw a curve using the current basis matrix (bezier in this case)
 !!    ! and the control points in geom1
 !!    !
 !!    call curve(geom1)
@@ -2913,7 +2913,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    curven(3f) - [M_draw:CURVE] Draw n-3 overlapping curve segments. Note: n must be at least 4
+!!    curven(3f) - [M_draw:CURVE] Draw n-3 overlapping curve segments. Note: n must be at least 4.
 !!
 !!##SYNOPSIS
 !!
@@ -2963,7 +2963,7 @@
 !!    to have centertext mode on for this to give sensible results when placing
 !!    the markers.
 !!
-!!    If the environment variable "M_draw_FONTPATH" is set M_draw looks for the softwar
+!!    If the environment variable "M_draw_FONTPATH" is set M_draw looks for the software
 !!    fonts in the directory given by this value.
 !!
 !!    WHEN ASKED FOR NON-EXISTENT FONT NAMES, FONT(3f) STOPS THE PROGRAM.
@@ -3033,7 +3033,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    numchars(3f) - [M_draw:TEXT] Return number of characters in the current SOFTWARE font
+!!    numchars(3f) - [M_draw:TEXT] Return number of characters in the current SOFTWARE font.
 !!
 !!##SYNOPSIS
 !!
@@ -3045,7 +3045,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    textsize(3f) - [M_draw:TEXT] Set text size of a character in the current SOFTWARE font in world units
+!!    textsize(3f) - [M_draw:TEXT] Set text size of a character in the current SOFTWARE font in world units.
 !!##SYNOPSIS
 !!
 !!         subroutine textsize(width, height)
@@ -3111,7 +3111,7 @@
 !!
 !!##OPTIONS
 !!    ANG   The angle in degrees to draw text with when using drawstr(3f).
-!!          Angles are measured counterclockwise with zero degrees at the horizonta
+!!          Angles are measured counterclockwise with zero degrees at the horizontal
 !!          line to the right of the original.
 !!
 !!##EXAMPLE
@@ -3151,7 +3151,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    fixedwidth(3f) - [M_draw:TEXT] Turns fixedwidth mode on or off for SOFTWARE fonts
+!!    fixedwidth(3f) - [M_draw:TEXT] Turns fixedwidth mode on or off for SOFTWARE fonts.
 !!##SYNOPSIS
 !!
 !!         subroutine fixedwidth(onoff)
@@ -3201,7 +3201,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    centertext(3f) - [M_draw:TEXT] Turns centertext mode on or off for SOFTWARE fonts
+!!    centertext(3f) - [M_draw:TEXT] Turns centertext mode on or off for SOFTWARE fonts.
 !!
 !!##SYNOPSIS
 !!
@@ -3270,7 +3270,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    getcharsize(3f) - [M_draw:TEXT] Get the width and height of a character
+!!    getcharsize(3f) - [M_draw:TEXT] Get the width and height of a character.
 !!
 !!##SYNOPSIS
 !!
@@ -3285,7 +3285,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    getfontdec(3f) - [M_draw:TEXT] Return size of maximum font descende
+!!    getfontdec(3f) - [M_draw:TEXT] Return size of maximum font descender
 !!
 !!##SYNOPSIS
 !!
@@ -3295,7 +3295,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    getfontsize(3f) - [M_draw:TEXT] Get maximum width and height of a character in a font
+!!    getfontsize(3f) - [M_draw:TEXT] Get maximum width and height of a character in a font.
 !!
 !!##SYNOPSIS
 !!
@@ -3308,7 +3308,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    drawchar(3f) - [M_draw:TEXT] Draw the character c and update current position
+!!    drawchar(3f) - [M_draw:TEXT] Draw the character c and update current position.
 !!
 !!##SYNOPSIS
 !!
@@ -3489,14 +3489,14 @@
 !!
 !!       end program demo_drawstr
 !!   Results:
-!! ===============================================================================
+!! ================================================================================
 !! *ccall*: MAKING TEMPORARY DIRECTORY /tmp/CCALL_CYGWIN64_GFORTRAN_33416
 !! r - /tmp/_JSU.ff
 !! a - /tmp/CCALL_CYGWIN64_GFORTRAN_33416/_JSU.33416.f90
 !! /home/urbanjs/.twm/scripts_regression/goodbad: _JSU.1 0 _JSU start --section 1
 !! *ccall*: REMOVING /tmp/CCALL_CYGWIN64_GFORTRAN_33416
-!! ===============================================================================
-!! ===============================================================================
+!! ================================================================================
+!! ================================================================================
 !===================================================================================================================================
 !>
 !!##NAME
@@ -3572,7 +3572,7 @@
 !!          call polyfill(.true.)
 !!             call makepoly()
 !!                xx=strlength(string)
-!!                call rect(left,baseline-texth*0.3,left+xx,baseline+texth
+!!                call rect(left,baseline-texth*0.3,left+xx,baseline+texth)
 !!             call closepoly()
 !!          call polyfill(.false.)
 !!       call color(D_WHITE)
@@ -3585,7 +3585,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    boxtext(3f) - [M_draw:TEXT] stretch and draw the SOFTWARE string s so that it fits in the imaginary bo
+!!    boxtext(3f) - [M_draw:TEXT] stretch and draw the SOFTWARE string s so that it fits in the imaginary box
 !!
 !!##SYNOPSIS
 !!
@@ -3638,7 +3638,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    boxfit(3f) - [M_draw:TEXT] resize the SOFTWARE text size so it fits in a bo
+!!    boxfit(3f) - [M_draw:TEXT] resize the SOFTWARE text size so it fits in a box
 !!
 !!##SYNOPSIS
 !!
@@ -3699,15 +3699,15 @@
 !!       call textsize(0.9, 1.4)
 !!       call font("times.rb")
 !!       call linewidth(20)
-!!       call seejustify( "right|top",           iany([d_right,d_top]),           -10.0, -10.0
-!!       call seejustify( "right|ycentered",     iany([d_right,d_ycentered]),     -10.0,   0.0
-!!       call seejustify( "right|bottom",        iany([d_right,d_bottom]),        -10.0, +10.0
-!!       call seejustify( "xcentered|top",       iany([d_xcentered,d_top]),         0.0, -10.0
-!!       call seejustify( "xcentered|ycentered", iany([d_xcentered,d_ycentered]),   0.0,   0.0
-!!       call seejustify( "xcentered|bottom",    iany([d_xcentered,d_bottom]),      0.0, +10.0
-!!       call seejustify( "left|top",            iany([d_left,d_top]),            +10.0, -10.0
-!!       call seejustify( "left|ycentered",      iany([d_left,d_ycentered]),      +10.0,   0.0
-!!       call seejustify( "left|bottom",         iany([d_left,d_bottom]),         +10.0, +10.0
+!!       call seejustify( "right|top",           iany([d_right,d_top]),           -10.0, -10.0 )
+!!       call seejustify( "right|ycentered",     iany([d_right,d_ycentered]),     -10.0,   0.0 )
+!!       call seejustify( "right|bottom",        iany([d_right,d_bottom]),        -10.0, +10.0 )
+!!       call seejustify( "xcentered|top",       iany([d_xcentered,d_top]),         0.0, -10.0 )
+!!       call seejustify( "xcentered|ycentered", iany([d_xcentered,d_ycentered]),   0.0,   0.0 )
+!!       call seejustify( "xcentered|bottom",    iany([d_xcentered,d_bottom]),      0.0, +10.0 )
+!!       call seejustify( "left|top",            iany([d_left,d_top]),            +10.0, -10.0 )
+!!       call seejustify( "left|ycentered",      iany([d_left,d_ycentered]),      +10.0,   0.0 )
+!!       call seejustify( "left|bottom",         iany([d_left,d_bottom]),         +10.0, +10.0 )
 !!       call vexit()
 !!    contains
 !!       subroutine seejustify(string,justify,x,y)
@@ -3744,7 +3744,7 @@
 !!         subroutine leftjustify()
 !!
 !!##DESCRIPTION
-!!    Left justifies text. The text string will begin at the current positio
+!!    Left justifies text. The text string will begin at the current position
 !!    and extend to the notional right. Right justification and X centering
 !!    are turned off.
 !!
@@ -3794,7 +3794,7 @@
 !!
 !!##DESCRIPTION
 !!
-!!    Right justifies text. The text string will begin at a point to th
+!!    Right justifies text. The text string will begin at a point to the
 !!    notional left of the current position and finish at the current
 !!    position. Left justification and X centering are turned off.
 !!##EXAMPLE
@@ -3835,7 +3835,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    xcentertext(3f) - [M_draw:TEXT] set text centering mode on in X directio
+!!    xcentertext(3f) - [M_draw:TEXT] set text centering mode on in X direction
 !!
 !!##SYNOPSIS
 !!
@@ -3893,7 +3893,7 @@
 !!
 !!##DESCRIPTION
 !!    Top justifies text. The text string will be drawn with its upper edge
-!!    aligned with the current Y position. Bottom justification and Y centerin
+!!    aligned with the current Y position. Bottom justification and Y centering
 !!    are turned off.
 !!
 !!##EXAMPLE
@@ -3939,7 +3939,7 @@
 !!
 !!##DESCRIPTION
 !!
-!!    Bottom justifies text. The text string will be drawn with the lowe
+!!    Bottom justifies text. The text string will be drawn with the lower
 !!    edge aligned with the current Y position. Top justification and Y
 !!    centering are turned off.
 !!##EXAMPLE
@@ -3985,7 +3985,7 @@
 !!
 !!##DESCRIPTION
 !!    Centers text in the Y direction. The text string will so that its
-!!    center line is aligned with the current y position. Top justificatio
+!!    center line is aligned with the current y position. Top justification
 !!    and Bottom justification are turned off.
 !!
 !!##EXAMPLE
@@ -4067,11 +4067,11 @@
 !!       call textsize(0.8*scl,1.2*scl)
 !!       call move2( x1+.3,y1+.4)
 !!       call color(D_RED); call textslant(0.0);  call drawstr("textslant(0.0); ")
-!!       call color(D_GREEN); call textslant(-1.0); call drawstr(" textslant(-1.0);"
+!!       call color(D_GREEN); call textslant(-1.0); call drawstr(" textslant(-1.0);")
 !!       call color(D_BLUE); call textslant(1.0);  call drawstr(" textslant(1.0);")
 !!       call textsize(0.8*scl,1.2*3*scl)
 !!       call move2(x1+.3,y1+3+.4)
-!!       call color(D_MAGENTA); call textslant(1.0); call drawstr(" textslant(1.0);"
+!!       call color(D_MAGENTA); call textslant(1.0); call drawstr(" textslant(1.0);")
 !!       call textsize(0.8*scl,1.2*scl)
 !!       call color(D_CYAN); call textslant(0.3); call drawstr(" textslant(0.3);")
 !!       call color(D_WHITE); call textslant(0.5); call drawstr(" textslant(0.5);")
@@ -4092,7 +4092,7 @@
 !!
 !!    Defines the weight of the fonts. Currently, the predefined constants
 !!    in C and Fortran are D_NORMAL and D_BOLD; which correspond to 0 and
-!!    1. This is not the same as using linethickess to change the appearanc
+!!    1. This is not the same as using linethickess to change the appearance
 !!    of a software font. The font is redrawn multiple times with a slight
 !!    offset to create the bold appearance.
 !!
@@ -4143,7 +4143,7 @@
 !!         integer iwidth
 !!##DESCRIPTION
 !!
-!!    Set the current line width in units of 1/10,000 of the X size of th
+!!    Set the current line width in units of 1/10,000 of the X size of the
 !!    display surface
 !!
 !!##EXAMPLE
@@ -4169,7 +4169,7 @@
 !!    call textsize(2.4,3.0)
 !!    call font("futura.m")
 !!    call ycentertext()
-!!    ! draw circles with different precisions and label center of circle
+!!    ! draw circles with different precisions and label center of circles
 !!    call color(D_WHITE)
 !!    call linewidth(0)
 !!    call move2(-20.0, -3.5)
@@ -4246,7 +4246,7 @@
 !!##IMAGE
 !!
 !!    The sample graphic shows a line segment being drawn using the same
-!!    linestyle except the dashcode is being changed. Note that the dashcod
+!!    linestyle except the dashcode is being changed. Note that the dashcode
 !!    is in world units,
 !!
 !!##EXAMPLE
@@ -4314,7 +4314,7 @@
 !!
 !!##DESCRIPTION
 !!
-!!     Set the current linestyle to style. Linestyles are specified by givin
+!!     Set the current linestyle to style. Linestyles are specified by giving
 !!     a nominal length of a single dash and a character string consisting
 !!     of 1's and 0's (zeros) that specify when to draw a dash and when not
 !!     to draw a dash. "1" is for a dash , "0" is for a gap. Linestyles will
@@ -4509,7 +4509,7 @@
 !!      call clear()                ! clear background to current color
 !!      call color(D_RED)               ! set color to draw with
 !!      call circle(0.0,0.0,50.0)
-!!      ipaws=getkey()              ! pause for a keypress on interactive device
+!!      ipaws=getkey()              ! pause for a keypress on interactive devices
 !!
 !!      call color(D_GREEN)               ! make a second page
 !!      call clear()
@@ -4580,7 +4580,7 @@
 !!           call closepoly()
 !!           call color(mod(i+1,7)+1)
 !!           call move2((x1+x2)/2.0,ym)
-!!           call drawstr((v2s(i)))     ! convert number to string and draw i
+!!           call drawstr((v2s(i)))     ! convert number to string and draw it
 !!           call polyfill(.false.)
 !!           call circle((x1+x2)/2.0, ym, (x2-x1)/2.10)
 !!           x1=x1+width
@@ -4740,7 +4740,7 @@
 !!       ! draw a chunk in a slice
 !!       MAXCOLORS=(256)-buffer
 !!       do icount=RINGS+1,2,-1
-!!          CURRENT_COLOR=MOD(color_count,MAXCOLORS)+buffer  ! add buffer to leave base colors alon
+!!          CURRENT_COLOR=MOD(color_count,MAXCOLORS)+buffer  ! add buffer to leave base colors alone
 !!          color_count=color_count+1
 !!          ! fancy mapcolor
 !!          call hue("hls",hue_val,LIGHTNESS,saturation,"rgb",r,g,b,status)
@@ -4786,7 +4786,7 @@
 !!          logical onoff
 !!##DESCRIPTION
 !!
-!! Turn clipping on or off. Non-zero is considered on. Note: on some device
+!! Turn clipping on or off. Non-zero is considered on. Note: on some devices
 !! turning clipping off may not be a good idea.
 !===================================================================================================================================
 !>
@@ -4819,7 +4819,7 @@
 !!      call centertext(.true.)
 !!      call color(D_BLACK)
 !!      call clear()
-!!      write(*,*)'press any character to see it displayed in the default font
+!!      write(*,*)'press any character to see it displayed in the default font'
 !!      write(*,*)'Enter "q" to quit'
 !!      do
 !!        ichar=getkey()
@@ -4844,7 +4844,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    checkkey(3f) - [M_draw:INTERACTIVE] Returns zero if no key is pressed or ASCII ordina
+!!    checkkey(3f) - [M_draw:INTERACTIVE] Returns zero if no key is pressed or ASCII ordinal
 !!
 !!##SYNOPSIS
 !!
@@ -4898,7 +4898,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    getstring(3f) - [M_draw:INTERACTIVE] Read in a string, echoing it in current fon
+!!    getstring(3f) - [M_draw:INTERACTIVE] Read in a string, echoing it in current font
 !!
 !!##SYNOPSIS
 !!
@@ -5046,7 +5046,7 @@
 !!          scal = SC
 !!
 !!          !
-!!          ! Start with a very ordinary filled cube like in the original demo..
+!!          ! Start with a very ordinary filled cube like in the original demo...
 !!          !
 !!          call polyhatch(.false.)
 !!          call hatchang(45.0)
@@ -5189,7 +5189,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    slocator(3f) - [M_draw:INTERACTIVE] Find out where cursor is in screen coordinate
+!!    slocator(3f) - [M_draw:INTERACTIVE] Find out where cursor is in screen coordinates
 !!
 !!##SYNOPSIS
 !!
@@ -5296,13 +5296,13 @@
 !!          logical yesno
 !!
 !!##DESCRIPTION
-!!    Set global flushing status. If yesno = 0 (.false.) then don't do an
+!!    Set global flushing status. If yesno = 0 (.false.) then don't do any
 !!    flushing (except in swapbuffers(), or vflush()). If yesno = 1
 !!    (.true.) then do the flushing as described above.
 !===================================================================================================================================
 !>
 !!##NAME
-!!    vflush(3f) - [M_draw:FLUSHING] Call device flush or syncronisation routin
+!!    vflush(3f) - [M_draw:FLUSHING] Call device flush or syncronisation routine
 !!
 !!##SYNOPSIS
 !!
@@ -5373,7 +5373,7 @@
 !!    ! Tell them what it is.
 !!    !
 !!    call move2(-1.0, 0.9)
-!!    write(buf,'(''Distorted square (viewport(-1, '', F7.3, '', -1, '', F7.3, ''))'')') xfact, yfac
+!!    write(buf,'(''Distorted square (viewport(-1, '', F7.3, '', -1, '', F7.3, ''))'')') xfact, yfact
 !!    call drawstr(buf)
 !!
 !!    idum=getkey()
@@ -5392,7 +5392,7 @@
 !!    ! Tell them what it is.
 !!    !
 !!    call move2(-1.0, -0.9)
-!!    write(buf,'(''Fixed up square with ortho2(-1, '', F7.3, '', -1, '', F7.3, '')'')') xfact, yfac
+!!    write(buf,'(''Fixed up square with ortho2(-1, '', F7.3, '', -1, '', F7.3, '')'')') xfact, yfact
 !!    call drawstr(buf)
 !!
 !!    idum=getkey()
@@ -5447,7 +5447,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    pushviewport(3f) - [M_draw:VIEWPORT] Save current viewpor
+!!    pushviewport(3f) - [M_draw:VIEWPORT] Save current viewport
 !!
 !!##SYNOPSIS
 !!
@@ -5458,7 +5458,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    popviewport(3f) - [M_draw:VIEWPORT] Retrieve last viewpor
+!!    popviewport(3f) - [M_draw:VIEWPORT] Retrieve last viewport
 !!
 !!##SYNOPSIS
 !!
@@ -5470,7 +5470,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    getviewport(3f) - [M_draw:VIEWPORT] Returns limits of current viewport in screen coordinate
+!!    getviewport(3f) - [M_draw:VIEWPORT] Returns limits of current viewport in screen coordinates
 !!
 !!##SYNOPSIS
 !!
@@ -5512,7 +5512,7 @@
 !!
 !!##DESCRIPTION
 !!
-!!    When M_draw does viewport calculations, it will normally begin by usin
+!!    When M_draw does viewport calculations, it will normally begin by using
 !!    the largest square it can fit onto the actual display device. This
 !!    call says to use the whole device... however you must then take
 !!    into account any distortion that will occur due to the non-square
@@ -5587,7 +5587,7 @@
 !!##DESCRIPTION
 !!
 !!    Does the reverse of expandviewport. Basically, it returns M_draw to
-!!    using the largest square of the device for its viewport calculations
+!!    using the largest square of the device for its viewport calculations.
 !!
 !!##EXAMPLE
 !!
@@ -5648,7 +5648,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    getaspect(3f) - [M_draw:ASPECT] Returns the ratio height over width of the display device
+!!    getaspect(3f) - [M_draw:ASPECT] Returns the ratio height over width of the display device.
 !!
 !!##SYNOPSIS
 !!
@@ -5659,7 +5659,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    getfactors(3f) - [M_draw:ASPECT] Returns width over min(width of device, height of device) and height over min(width of device, height of device)
+!!    getfactors(3f) - [M_draw:ASPECT] Returns width over min(width of device, height of device) and height over min(width of device, height of device).
 !!
 !!##SYNOPSIS
 !!
@@ -5672,7 +5672,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    getdisplaysize(3f) - [M_draw:ASPECT] Returns width and height of device in device unit
+!!    getdisplaysize(3f) - [M_draw:ASPECT] Returns width and height of device in device units
 !!
 !!##SYNOPSIS
 !!
@@ -5685,7 +5685,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    pushattributes(3f) - [M_draw:ATTRIBUTE_STACK] Save the current attributes on the attribute stack
+!!    pushattributes(3f) - [M_draw:ATTRIBUTE_STACK] Save the current attributes on the attribute stack.
 !!
 !!
 !!##SYNOPSIS
@@ -5698,7 +5698,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    popattributes(3f) - [M_draw:ATTRIBUTE_STACK] Restore attributes to what they were at last pushattributes()
+!!    popattributes(3f) - [M_draw:ATTRIBUTE_STACK] Restore attributes to what they were at last pushattributes().
 !!
 !!##SYNOPSIS
 !!
@@ -5718,15 +5718,15 @@
 !!          real left, right, bottom, top, near_d, far_d
 !!##DESCRIPTION
 !!
-!!    Define x (left, right), y (bottom, top), and z (near, far) clippin
+!!    Define x (left, right), y (bottom, top), and z (near, far) clipping
 !!    planes. The near and far clipping planes are actually specified
 !!    as distances along the line of sight. These distances can also be
-!!    negative. The actual location of the clipping planes is z = -near_
+!!    negative. The actual location of the clipping planes is z = -near_d
 !!    and z = -far_d.
 !===================================================================================================================================
 !>
 !!##NAME
-!!    ortho2(3f) - [M_draw:PROJECTION] define the area of the virtual world coordinates to map to the viewpor
+!!    ortho2(3f) - [M_draw:PROJECTION] define the area of the virtual world coordinates to map to the viewport
 !!
 !!##SYNOPSIS
 !!
@@ -5761,7 +5761,7 @@
 !!
 !!    program demo_perspective
 !!    !
-!!    !     Shows various combinations of viewing and projection transformation
+!!    !     Shows various combinations of viewing and projection transformations
 !!    use M_draw
 !!    !
 !!    character(len=50) :: device
@@ -5937,7 +5937,7 @@
 !!    program demo_windows
 !!    use M_draw
 !!    integer CUBE, TOPLEFT, TOPRIGHT, BOTTOMLEFT, BOTTOMRIGHT
-!!    parameter(CUBE = 1, TOPLEFT = 2, TOPRIGHT = 3, BOTTOMLEFT = 4, BOTTOMRIGHT = 5
+!!    parameter(CUBE = 1, TOPLEFT = 2, TOPRIGHT = 3, BOTTOMLEFT = 4, BOTTOMRIGHT = 5)
 !!    character(len=20) :: device
 !!    print*,'Enter device name:'
 !!    read(*,'(A)',iostat=ios)device
@@ -6045,7 +6045,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    pushmatrix(3f) - [M_draw:MATRIX_STACK] Save the current transformation matrix on the matrix stack
+!!    pushmatrix(3f) - [M_draw:MATRIX_STACK] Save the current transformation matrix on the matrix stack.
 !!
 !!##SYNOPSIS
 !!
@@ -6065,11 +6065,11 @@
 !!
 !!##DESCRIPTION
 !!
-!!    Retrieve the last matrix pushed and make it the current transformation matrix
+!!    Retrieve the last matrix pushed and make it the current transformation matrix.
 !===================================================================================================================================
 !>
 !!##NAME
-!!    polarview(3f) - [M_draw:VIEWPORT] Specify the viewer's position in polar coordinate
+!!    polarview(3f) - [M_draw:VIEWPORT] Specify the viewer's position in polar coordinates
 !!
 !!##SYNOPSIS
 !!
@@ -6092,7 +6092,7 @@
 !!          real x, y, z
 !!
 !!##DESCRIPTION
-!! Specify the world up. This can be used to prevent lookat's sometime
+!! Specify the world up. This can be used to prevent lookat's sometimes
 !! annoying habit of turning everything upside down due to the line of
 !! sight crossing the appropriate axis.
 !===================================================================================================================================
@@ -6173,7 +6173,7 @@
 !!       stop
 !!    endif
 !!    !
-!!    ! here we loop back here ad-naseum until someone hits a non interpreted ke
+!!    ! here we loop back here ad-naseum until someone hits a non interpreted key
 !!    !
 !!    INFINITE: do
 !!    !
@@ -6352,7 +6352,7 @@
 !!    !
 !!    ! Now draw the sphere object scaled down. We use the pushmatrix
 !!    ! and the popmatrix to preserve the transformation matrix so
-!!    ! that only this sphere is drawn scaled. The callobj then enable
+!!    ! that only this sphere is drawn scaled. The callobj then enables
 !!    ! us to draw the sphere we generated with makeobj in makesphere.
 !!    !
 !!    call color(D_CYAN)
@@ -6455,7 +6455,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    scale(3f) - [M_draw:TRANSFORMATION] Set up scaling factors in x, y, and z axis
+!!    scale(3f) - [M_draw:TRANSFORMATION] Set up scaling factors in x, y, and z axis.
 !!
 !!##SYNOPSIS
 !!
@@ -6507,7 +6507,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    rotate(3f) - [M_draw:TRANSFORMATION] Set up a rotation in axis axis where axis is one of 'x','y', or 'z'
+!!    rotate(3f) - [M_draw:TRANSFORMATION] Set up a rotation in axis axis where axis is one of 'x','y', or 'z'.
 !!
 !!##SYNOPSIS
 !!
@@ -6560,7 +6560,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    patchbasis(3f) - [M_draw:PATCH] Define the t and u basis matrices of a patch
+!!    patchbasis(3f) - [M_draw:PATCH] Define the t and u basis matrices of a patch.
 !!
 !!##SYNOPSIS
 !!
@@ -6572,7 +6572,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    patchprecision(3f) - [M_draw:PATCH] Set minimum number of line segments making up curves in a patch
+!!    patchprecision(3f) - [M_draw:PATCH] Set minimum number of line segments making up curves in a patch.
 !!
 !!##SYNOPSIS
 !!
@@ -6584,7 +6584,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    patchcurves(3f) - [M_draw:PATCH] Set the number of curves making up a patch
+!!    patchcurves(3f) - [M_draw:PATCH] Set the number of curves making up a patch.
 !!
 !!##SYNOPSIS
 !!
@@ -6597,7 +6597,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    rpatch(3f) - [M_draw:PATCH] Draws a rational patch in the current basis, according to the geometry matrices gx, gy, gz, and gw
+!!    rpatch(3f) - [M_draw:PATCH] Draws a rational patch in the current basis, according to the geometry matrices gx, gy, gz, and gw.
 !!
 !!##SYNOPSIS
 !!
@@ -6610,7 +6610,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    patch(3f) - [M_draw:PATCH] Draws a patch in the current basis, according to the geometry matrices gx, gy, and gz
+!!    patch(3f) - [M_draw:PATCH] Draws a patch in the current basis, according to the geometry matrices gx, gy, and gz.
 !!
 !!##SYNOPSIS
 !!
@@ -6868,7 +6868,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    makeobj(3f) - [M_draw:OBJECT] Commence the object number n
+!!    makeobj(3f) - [M_draw:OBJECT] Commence the object number n.
 !!##SYNOPSIS
 !!
 !!         subroutine makeobj(n)
@@ -6879,7 +6879,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    closeobj(3f) - [M_draw:OBJECT] Close the current object
+!!    closeobj(3f) - [M_draw:OBJECT] Close the current object.
 !!
 !!##SYNOPSIS
 !!
@@ -6890,7 +6890,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    genobj(3f) - [M_draw:OBJECT] Returns a unique object identifier
+!!    genobj(3f) - [M_draw:OBJECT] Returns a unique object identifier.
 !!
 !!##SYNOPSIS
 !!
@@ -6900,7 +6900,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    getopenobj(3f) - [M_draw:OBJECT] Return the number of the current object
+!!    getopenobj(3f) - [M_draw:OBJECT] Return the number of the current object.
 !!
 !!##SYNOPSIS
 !!
@@ -7054,10 +7054,10 @@
 !!       & 387,1887,388,1887,391,1887,396,1888,403,1888,413,1889,427,1890,443,1892,463,1893,484,1895, &
 !!       & 508,1896,535,1898,562,1900,592,1902,622,1904,654,1906,687,1907,722,1909,759,1911,797,1912, &
 !!       & 838,1913,881,1915,927,1916,975,1916,1025,1917,1077,1917,1133,1917,1187,1916,1238,1915,1285,1914, &
-!!       & 1330,1913,1371,1911,1410,1910,1446,1908,1481,1906,1514,1904,1545,1902,1575,1900,1603,1898,1629,1896,
-!!       & 1653,1894,1674,1892,1692,1891,1707,1890,1719,1889,1727,1888,1733,1887,1736,1887,1737,1887,1738,1888,
-!!       & 1741,1891,1748,1898,1760,1910,1775,1925,1789,1939,1801,1951,1808,1958,1811,1961,1812,1962,1810,1962,
-!!       & 1807,1962,1800,1962,1789,1962,1773,1962,1752,1962,1725,1962,1692,1962,1653,1962,1607,1962,1555,1962,
+!!       & 1330,1913,1371,1911,1410,1910,1446,1908,1481,1906,1514,1904,1545,1902,1575,1900,1603,1898,1629,1896, &
+!!       & 1653,1894,1674,1892,1692,1891,1707,1890,1719,1889,1727,1888,1733,1887,1736,1887,1737,1887,1738,1888, &
+!!       & 1741,1891,1748,1898,1760,1910,1775,1925,1789,1939,1801,1951,1808,1958,1811,1961,1812,1962,1810,1962, &
+!!       & 1807,1962,1800,1962,1789,1962,1773,1962,1752,1962,1725,1962,1692,1962,1653,1962,1607,1962,1555,1962, &
 !!       & 1498,1962,1434,1962,1366,1962,1294,1962,1218,1962,1141,1962,1062,1962,983,1962,906,1962,830,1962, &
 !!       & 758,1962,690,1962,626,1962,569,1962,517,1962,471,1962,432,1962,399,1962,372,1962,351,1962, &
 !!       & 335,1962,324,1962,317,1962,314,1962,312,1962,313,1961,316,1958,323,1951,335,1939,350,1924, &
@@ -7268,7 +7268,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    isobj(3f) - [M_draw:OBJECT] Returns non-zero if there is an object of number n
+!!    isobj(3f) - [M_draw:OBJECT] Returns non-zero if there is an object of number n.
 !!
 !!##SYNOPSIS
 !!
@@ -7325,7 +7325,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    delobj(3f) - [M_draw:OBJECT] Delete the object number n
+!!    delobj(3f) - [M_draw:OBJECT] Delete the object number n.
 !!
 !!##SYNOPSIS
 !!
@@ -7336,7 +7336,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    loadobj(3f) - [M_draw:OBJECT] Load the object in the file filename as object number n
+!!    loadobj(3f) - [M_draw:OBJECT] Load the object in the file filename as object number n.
 !!
 !!##SYNOPSIS
 !!
@@ -7400,7 +7400,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    saveobj(3f) - [M_draw:OBJECT] Save object number n into file filename. Does NOT save objects called inside object n
+!!    saveobj(3f) - [M_draw:OBJECT] Save object number n into file filename. Does NOT save objects called inside object n.
 !!
 !!##SYNOPSIS
 !!
@@ -7469,7 +7469,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    backbuffer(3f) - [M_draw:DOUBLE_BUFFERING] Draw in the backbuffer. Returns -1 if the device is not up to it
+!!    backbuffer(3f) - [M_draw:DOUBLE_BUFFERING] Draw in the backbuffer. Returns -1 if the device is not up to it.
 !!
 !!##SYNOPSIS
 !!
@@ -7480,7 +7480,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    frontbuffer(3f) - [M_draw:DOUBLE_BUFFERING] Draw in the front buffer. This will always work
+!!    frontbuffer(3f) - [M_draw:DOUBLE_BUFFERING] Draw in the front buffer. This will always work.
 !!
 !!##SYNOPSIS
 !!
@@ -7492,7 +7492,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    swapbuffers(3f) - [M_draw:DOUBLE_BUFFERING] Swap the front and back buffers
+!!    swapbuffers(3f) - [M_draw:DOUBLE_BUFFERING] Swap the front and back buffers.
 !!
 !!##SYNOPSIS
 !!
@@ -7503,7 +7503,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    getgp(3f) - [M_draw:POSITION] Gets the current graphics positio
+!!    getgp(3f) - [M_draw:POSITION] Gets the current graphics position
 !!
 !!##SYNOPSIS
 !!
@@ -7515,7 +7515,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    getgpt(3f) - [M_draw:POSITION] Gets the current transformed graphics position in world coords
+!!    getgpt(3f) - [M_draw:POSITION] Gets the current transformed graphics position in world coords.
 !!
 !!##SYNOPSIS
 !!
@@ -7527,7 +7527,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    getgp2(3f) - [M_draw:POSITION] Gets the current graphics position in world coordinate
+!!    getgp2(3f) - [M_draw:POSITION] Gets the current graphics position in world coordinates
 !!##SYNOPSIS
 !!
 !!          subroutine getgp2(x, y)
@@ -7566,7 +7566,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    sgetgp2(3f) - [M_draw:POSITION] Gets the current screen graphics position in screen coords (-1 to 1
+!!    sgetgp2(3f) - [M_draw:POSITION] Gets the current screen graphics position in screen coords (-1 to 1)
 !!
 !!##SYNOPSIS
 !!
@@ -7578,7 +7578,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!    example_text_justification(7) - [M_draw:EXAMPLE] example program showing text justificatio
+!!    example_text_justification(7) - [M_draw:EXAMPLE] example program showing text justification
 !!
 !!##DESCRIPTION
 !!    Interactive example program to demonstrate text features such as

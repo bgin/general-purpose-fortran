@@ -49,7 +49,7 @@ contains
 !===================================================================================================================================
 !>
 !!##NAME
-!!    get_command_arguments_stack(3f) - [ARGUMENTS:M_args] return a character array containing all the command line argument
+!!    get_command_arguments_stack(3f) - [ARGUMENTS:M_args] return a character array containing all the command line arguments
 !!##SYNOPSIS
 !!
 !!    function get_command_arguments(stack) result (args)
@@ -107,7 +107,7 @@ end function get_command_arguments_stack
 !===================================================================================================================================
 !>
 !!##NAME
-!!          get_command_arguments_string(3f) - [ARGUMENTS:M_args] return all command arguments as an allocated strin
+!!          get_command_arguments_string(3f) - [ARGUMENTS:M_args] return all command arguments as an allocated string
 !!
 !!##SYNOPSIS
 !!
@@ -207,7 +207,7 @@ end subroutine get_command_arguments_string
 !===================================================================================================================================
 !>
 !!##NAME
-!!    get_namelist(3f) - [ARGUMENTS:M_args] NAMELIST-based command line argument parsin
+!!    get_namelist(3f) - [ARGUMENTS:M_args] NAMELIST-based command line argument parsing
 !!
 !!##SYNOPSIS
 !!
@@ -390,14 +390,14 @@ end subroutine get_command_arguments_string
 !!     ! make big enough for all of namelist
 !!     character(len=10000) :: hold_namelist
 !!     ! the routine needs a copy of the options to determine what values
-!!     1 are character and logical versus numeric
+!!     ! are character and logical versus numeric
 !!        write(hold_namelist,nml=args,iostat=ios,iomsg=message)
 !!        if(ios.eq.0)then
 !!           ! pass in the namelist and get an updated copy that includes
-!!           1values specified on the command line
+!!           ! values specified on the command line
 !!           readme=get_namelist(hold_namelist)
 !!           ! read the updated namelist to update the values
-!!           1 in the namelist group
+!!           ! in the namelist group
 !!           read(readme,nml=args,iostat=ios,iomsg=message)
 !!        endif
 !!        if(ios.ne.0)then
@@ -627,7 +627,7 @@ end function get_namelist
 !===================================================================================================================================
 !>
 !!##NAME
-!!    get_command_arguments_as_raw_namelist(3f) - [ARGUMENTS:M_args] NAMELIST-based command line argument parsin
+!!    get_command_arguments_as_raw_namelist(3f) - [ARGUMENTS:M_args] NAMELIST-based command line argument parsing
 !!
 !!##SYNOPSIS
 !!
@@ -728,7 +728,7 @@ integer :: command_line_length
 !===================================================================================================================================
 !>
 !!##NAME
-!!    prototype_to_dictionary(3f) - [ARGUMENTS:M_args] parse user command and store tokens into dictionar
+!!    prototype_to_dictionary(3f) - [ARGUMENTS:M_args] parse user command and store tokens into dictionary
 !!
 !!##SYNOPSIS
 !!
@@ -912,7 +912,7 @@ end subroutine prototype_to_dictionary
 !===================================================================================================================================
 !>
 !!##NAME
-!!    update(3f) - [ARGUMENTS:M_args] update internal dictionary given keyword and valu
+!!    update(3f) - [ARGUMENTS:M_args] update internal dictionary given keyword and value
 !!##SYNOPSIS
 !!
 !!   subroutine update(key,val)
@@ -980,7 +980,7 @@ end subroutine update
 !===================================================================================================================================
 !>
 !!##NAME
-!!    wipe_dictionary(3fp) - [ARGUMENTS:M_args] reset private M_args(3fm) dictionary to empt
+!!    wipe_dictionary(3fp) - [ARGUMENTS:M_args] reset private M_args(3fm) dictionary to empty
 !!##SYNOPSIS
 !!
 !!    subroutine wipe_dictionary()
@@ -1009,7 +1009,7 @@ end subroutine wipe_dictionary
 !>
 !!##SYNOPSIS
 !!
-!!    get(3f) - [ARGUMENTS:M_args] get dictionary value associated with key name in private M_args(3fm) dictionar
+!!    get(3f) - [ARGUMENTS:M_args] get dictionary value associated with key name in private M_args(3fm) dictionary
 !!##DESCRIPTION
 !!    Get dictionary value associated with key name in private M_args(3fm) dictionary.
 !!##OPTIONS
@@ -1080,7 +1080,7 @@ end function get
 !!       ! A string has to have at least one character as for -A
 !!       ! lists of numbers should be comma-delimited. No spaces are allowed in lists of numbers
 !!       ! the values follow the rules for NAMELIST input, so  -p 2*0 would define two values.
-!!       call prototype_and_cmd_args_to_nlist('-l -v -h -LVH -x 0 -y 0.0 -z 0.0d0 -p 0,0 -A " " -B "Value B" -C 10,20,30 -c (-123,-456)',readme
+!!       call prototype_and_cmd_args_to_nlist('-l -v -h -LVH -x 0 -y 0.0 -z 0.0d0 -p 0,0 -A " " -B "Value B" -C 10,20,30 -c (-123,-456)',readme)
 !!       read(readme,nml=args,iostat=ios,iomsg=message)
 !!       if(ios.ne.0)then
 !!          write(*,*)'ERROR:',trim(message)
@@ -1291,6 +1291,7 @@ end subroutine dictionary_to_namelist
 !===================================================================================================================================
 !>
 !!##NAME
+!!   print_dictionary(3f) - [M_args]print internal dictionary created by calls to get_namelist(3f)
 !!##SYNOPSIS
 !!
 !!   subroutine print_dictionary(header)
@@ -1311,7 +1312,7 @@ end subroutine dictionary_to_namelist
 !!     use M_args,  only : unnamed, get_namelist, print_dictionary
 !!     implicit none
 !!     integer                      :: i
-!!     character(len=255)           :: message ! use for I/O error message
+!!     character(len=255)           :: message ! use for I/O error messages
 !!     character(len=:),allocatable :: readme  ! stores updated namelist
 !!     integer                      :: ios
 !!     real               :: x, y, z
@@ -1377,7 +1378,7 @@ end subroutine print_dictionary
 !!     integer :: ilongest
 !!
 !!##DESCRIPTION
-!!    length of longest argument on command line. Useful when allocating storage for holding arguments
+!!    length of longest argument on command line. Useful when allocating storage for holding arguments.
 !!##RESULT
 !!    longest_command_argument  length of longest command argument
 !!##EXAMPLE
@@ -1411,7 +1412,7 @@ end function longest_command_argument
 !===================================================================================================================================
 !>
 !!##NAME
-!!    namelist_to_dictionary(3f) - [ARGUMENTS:M_args] parse namelist string and store tokens into dictionar
+!!    namelist_to_dictionary(3f) - [ARGUMENTS:M_args] parse namelist string and store tokens into dictionary
 !!
 !!##SYNOPSIS
 !!

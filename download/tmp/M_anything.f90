@@ -81,7 +81,7 @@ contains
 !!       write(*,*)'give them some size ...'
 !!       reals = [1.0,2.0,3.0]
 !!       ints = [1,2,3]
-!!       strs = [character(len=10) :: "one","two","three","four"
+!!       strs = [character(len=10) :: "one","two","three","four"]
 !!       write(*,*)size(ints)
 !!       write(*,*)size(reals)
 !!       write(*,*)size(strs)
@@ -162,7 +162,7 @@ end subroutine bytes_to_anything
 !===================================================================================================================================
 !>
 !!##NAME
-!!    anything_to_bytes(3f) - [M_anything] convert standard types to bytes (character(len=1):: array(:)
+!!    anything_to_bytes(3f) - [M_anything] convert standard types to bytes (character(len=1):: array(:))
 !!
 !!##SYNOPSIS
 !!
@@ -287,7 +287,7 @@ end function  anything_to_bytes_scalar
 !===================================================================================================================================
 !>
 !!##NAME
-!!    anyscalar_to_double(3f) - [M_anything] convert integer or real parameter of any kind to doubleprecisio
+!!    anyscalar_to_double(3f) - [M_anything] convert integer or real parameter of any kind to doubleprecision
 !!
 !!##SYNOPSIS
 !!
@@ -382,7 +382,7 @@ end function anyscalar_to_double
 !===================================================================================================================================
 !>
 !!##NAME
-!!    anyscalar_to_real(3f) - [M_anything] convert integer or real parameter of any kind to rea
+!!    anyscalar_to_real(3f) - [M_anything] convert integer or real parameter of any kind to real
 !!
 !!##SYNOPSIS
 !!
@@ -473,7 +473,7 @@ end function anyscalar_to_real
 !>
 !!##NAME
 !!
-!!    anyinteger_to_64bit(3f) - [M_anything] convert integer any kind to integer(kind=64
+!!    anyinteger_to_64bit(3f) - [M_anything] convert integer any kind to integer(kind=64)
 !!
 !!##SYNOPSIS
 !!

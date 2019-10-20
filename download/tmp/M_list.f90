@@ -69,11 +69,11 @@
 !!     call update('d','value of d')
 !!     call update('a','value of a again')
 !!     ! show array
-!!     write(*,'(*(a,"==>","[",a,"]",/))')(trim(keywords(i)),values(i)(:counts(i)),i=1,size(keywords)
+!!     write(*,'(*(a,"==>","[",a,"]",/))')(trim(keywords(i)),values(i)(:counts(i)),i=1,size(keywords))
 !!     ! remove some entries
 !!     call update('a')
 !!     call update('c')
-!!     write(*,'(*(a,"==>","[",a,"]",/))')(trim(keywords(i)),values(i)(:counts(i)),i=1,size(keywords)
+!!     write(*,'(*(a,"==>","[",a,"]",/))')(trim(keywords(i)),values(i)(:counts(i)),i=1,size(keywords))
 !!     ! get some values
 !!     write(*,*)'get b=>',get('b')
 !!     write(*,*)'get d=>',get('d')
@@ -216,7 +216,7 @@ contains
 !===================================================================================================================================
 !>
 !!##NAME
-!!    locate(3f) - [M_list] finds the index where a string is found or should be in a sorted arra
+!!    locate(3f) - [M_list] finds the index where a string is found or should be in a sorted array
 !!
 !!##SYNOPSIS
 !!
@@ -655,7 +655,7 @@ end subroutine locate_i
 !===================================================================================================================================
 !>
 !!##NAME
-!!    remove(3f) - [M_list] remove entry from an allocatable array at specified positio
+!!    remove(3f) - [M_list] remove entry from an allocatable array at specified position
 !!
 !!##SYNOPSIS
 !!
@@ -877,7 +877,7 @@ end subroutine remove_i
 !!     call update('d','value of d')
 !!     call update('a','value of a again')
 !!     ! show array
-!!     write(*,'(*(a,"==>",a,/))')(trim(keywords(i)),trim(values(i)),i=1,size(keywords)
+!!     write(*,'(*(a,"==>",a,/))')(trim(keywords(i)),trim(values(i)),i=1,size(keywords))
 !!
 !!     call locate(keywords,'a',place)
 !!     if(place.gt.0)then
@@ -1039,7 +1039,7 @@ end subroutine replace_i
 !===================================================================================================================================
 !>
 !!##NAME
-!!    insert(3f) - [M_list] insert entry into a string array at specified positio
+!!    insert(3f) - [M_list] insert entry into a string array at specified position
 !!
 !!##SYNOPSIS
 !!
@@ -1271,7 +1271,7 @@ end subroutine insert_i
 !===================================================================================================================================
 !>
 !!##NAME
-!!    dict_delete(3f) - [M_list] delete entry by name from an allocatable sorted string array if it is presen
+!!    dict_delete(3f) - [M_list] delete entry by name from an allocatable sorted string array if it is present
 !!
 !!##SYNOPSIS
 !!
@@ -1345,7 +1345,7 @@ end subroutine dict_delete
 !===================================================================================================================================
 !>
 !!##NAME
-!!    dict_get(3f) - [M_list] get value of key-value pair in a dictionary given ke
+!!    dict_get(3f) - [M_list] get value of key-value pair in a dictionary given key
 !!
 !!##SYNOPSIS
 !!
@@ -1453,7 +1453,7 @@ end function dict_get
 !!     call dict%set('F','ZZZZ')
 !!     call dict%set('G','z')
 !!     call dict%set('A','new value for A')
-!!     write(*,'(*(a,"==>","[",a,"]",/))')(trim(dict%key(i)),dict%value(i)(:dict%count(i)),i=1,size(dict%key)
+!!     write(*,'(*(a,"==>","[",a,"]",/))')(trim(dict%key(i)),dict%value(i)(:dict%count(i)),i=1,size(dict%key))
 !!     end program demo_add
 !!
 !!    Results:

@@ -91,11 +91,11 @@ private
 !!
 !!##DESCRIPTION
 !!
-!!    Directly invert 2x2 matrix for speed (versus using, e.g. LAPACK
+!!    Directly invert 2x2 matrix for speed (versus using, e.g. LAPACK)
 !!
 !!##OPTIONS
 !!
-!!    A  original 2x2 matrix, may be INTEGER, REAL, DOUBLE, or COMPLE
+!!    A  original 2x2 matrix, may be INTEGER, REAL, DOUBLE, or COMPLEX
 !!    B  inverted 2x2 matrix, of same type as input matrix A
 !!
 !!##EXAMPLE
@@ -123,10 +123,10 @@ end interface invert_2x2
 !!    NNNNNN may be INTEGER,REAL,DOUBLEPRECISION,COMPLEX
 !!
 !!##DESCRIPTION
-!!    Directly invert 3x3 matrix for speed (versus using, e.g. LAPACK
+!!    Directly invert 3x3 matrix for speed (versus using, e.g. LAPACK)
 !!
 !!##OPTIONS
-!!    A  original 3x3 matrix, may be INTEGER, REAL, DOUBLE, or COMPLE
+!!    A  original 3x3 matrix, may be INTEGER, REAL, DOUBLE, or COMPLEX
 !!    B  inverted 3x3 matrix, of same type as input matrix A
 !!
 !!##EXAMPLE
@@ -152,10 +152,10 @@ end interface invert_3x3
 !!    NNNNNN may be INTEGER,REAL,DOUBLEPRECISION,COMPLEX
 !!
 !!##DESCRIPTION
-!!    Directly invert 4x4 matrix for speed (versus using, e.g. LAPACK
+!!    Directly invert 4x4 matrix for speed (versus using, e.g. LAPACK)
 !!
 !!##OPTIONS
-!!    A  original 4x4 matrix, may be INTEGER, REAL, DOUBLE, or COMPLE
+!!    A  original 4x4 matrix, may be INTEGER, REAL, DOUBLE, or COMPLEX
 !!    B  inverted 4x4 matrix, of same type as input matrix A
 !!
 !!##EXAMPLE
@@ -169,7 +169,7 @@ contains
 
 !>
 !!##NAME
-!!     julfit(3f) - [M_math:fit] linear least squares curve fits, destroys input array
+!!     julfit(3f) - [M_math:fit] linear least squares curve fits, destroys input arrays
 !!
 !!##SYNOPSIS
 !!
@@ -225,7 +225,7 @@ contains
 !>
 !! PRODUCT:        CLI library utilities and examples
 !! PROGRAM:        julfit(3f)
-!! DESCRIPTION:    linear least squares curve fits, destroys input array
+!! DESCRIPTION:    linear least squares curve fits, destroys input arrays
 !! AUTHOR:         John S. Urban
 !! HOME PAGE:      http://www.urbanjost.altervista.org/index.html
 !===================================================================================================================================
@@ -326,7 +326,7 @@ end subroutine julfit
 !===================================================================================================================================
 !>
 !!##NAME
-!!      julfit1(3f) - [M_math:fit] internal routine for linear least square fit(y=a*x+b), changes the y arra
+!!      julfit1(3f) - [M_math:fit] internal routine for linear least square fit(y=a*x+b), changes the y array
 !!##SYNOPSIS
 !!
 !!
@@ -413,7 +413,7 @@ end subroutine julfit
 !! REPORTING BUGS: http://www.urbanjost.altervista.org/
 !! HOME PAGE:      http://www.urbanjost.altervista.org/index.html
 !! COPYRIGHT:      Copyright (C) 1980 John S. Urban
-!! LICENSE:        Public Domain. This is free software: you are free to change and redistribute it
+!! LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.
 !!                 There is NO WARRANTY, to the extent permitted by law.
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -583,7 +583,7 @@ end subroutine julfit1
 !!        The first locally weighted regression (LWR) computation is carried out at X(1) and the last is carried out at X(N).
 !!        Suppose the LWR computation is carried out at X(I).
 !!        If X(I+1) is greater than or equal to X(I)+DELTA, the next LWR computation is carried out at X(I+1).
-!!        If X(I+1) is less than X(I)+DELTA, the next LWR computation is carried out at the largest X(J) which is greater tha
+!!        If X(I+1) is less than X(I)+DELTA, the next LWR computation is carried out at the largest X(J) which is greater than
 !!        or equal to X(I) but is not greater than X(I)+DELTA.
 !!        Then the fitted values for X(K) between X(I) and X(J), if there are any, are computed by linear interpolation
 !!        of the fitted values at X(I) and X(J).
@@ -747,7 +747,7 @@ end subroutine julfit1
 !!     Murray Hill NJ 07974
 !===================================================================================================================================
 !>
-!! AUTHOR:     Bill Clevelan
+!! AUTHOR:     Bill Cleveland
 !===================================================================================================================================
 subroutine lowess(x, y, n, f, nsteps, delta, ys, rw, res)
 use M_sort, only : sort_shell
@@ -927,7 +927,7 @@ real h1, sqrt, h9, amax1, range
 end subroutine lowest
 !>
 !!##NAME
-!!    splift(3f) - [M_math:fit] fits a spline to the n data points given in x and
+!!    splift(3f) - [M_math:fit] fits a spline to the n data points given in x and y
 !!                 and also returns first and second derivatives
 !!##SYNOPSIS
 !!
@@ -1003,7 +1003,7 @@ end subroutine lowest
 !>
 !! PRODUCT:        CLI library utilities and examples
 !! PROGRAM:        splift(3f)
-!! DESCRIPTION:    fits a spline to the n data points given in x and
+!! DESCRIPTION:    fits a spline to the n data points given in x and y
 !!##VERSION:        5.0: 20170129
 !! AUTHOR:         John S. Urban
 !! REPORTING BUGS: http://www.urbanjost.altervista.org/
@@ -1111,7 +1111,7 @@ end subroutine splift
 !===================================================================================================================================
 !>
 !!##NAME
-!!    splint(3f) - [M_math:fit] interpolates and twice differentiates a cubic splin
+!!    splint(3f) - [M_math:fit] interpolates and twice differentiates a cubic spline
 !!##SYNOPSIS
 !!
 !!   subroutine splint (x,y,ypp,n,xi,yi,ypi,yppi,ni,kerr)
@@ -1167,7 +1167,7 @@ end subroutine splift
 !>
 !! PRODUCT:        CLI library utilities and examples
 !! PROGRAM:        splint(3f)
-!! DESCRIPTION:    interpolates and twice differentiates a cubic splin
+!! DESCRIPTION:    interpolates and twice differentiates a cubic spline
 !!##VERSION:        5.0: 20170129
 !! AUTHOR:         John S. Urban
 !! REPORTING BUGS: http://www.urbanjost.altervista.org/
@@ -1257,7 +1257,7 @@ real               :: xr, xr2, xr3, xl, xl2, xl3
 END SUBROUTINE SPLINT
 !>
 !!##NAME
-!!      linearint(3f) - [M_math:fit] interpolates a curve defined by X(i),Y(i) using linear interpolation at given XI(j) value
+!!      linearint(3f) - [M_math:fit] interpolates a curve defined by X(i),Y(i) using linear interpolation at given XI(j) values
 !!##SYNOPSIS
 !!
 !!      SUBROUTINE linearint(X,Y,N,XI,YI,NI,KERR)
@@ -1287,7 +1287,7 @@ END SUBROUTINE SPLINT
 !>
 !! PRODUCT:        CLI library utilities and examples
 !! PROGRAM:        linearint(1)
-!! DESCRIPTION:    interpolates a curve <X(i),Y(i)> using linear interpolation at given XI(j) value
+!! DESCRIPTION:    interpolates a curve <X(i),Y(i)> using linear interpolation at given XI(j) values
 !!##VERSION:        1.0, 20031123
 !! AUTHOR:         John S. Urban (hacked from splint)
 !! HOME PAGE:      http://www.urbanjost.altervista.org/index.html
@@ -1382,7 +1382,7 @@ END SUBROUTINE linearint
 !===================================================================================================================================
 !>
 !!##NAME
-!!    gcsgau1(3f) - [M_math] solve a system of simultaneous linear equation
+!!    gcsgau1(3f) - [M_math] solve a system of simultaneous linear equations
 !!##SYNOPSIS
 !!
 !!   subroutine gcsgau1(n,a,b)
@@ -1557,7 +1557,7 @@ end subroutine gcsgau1
 !!       written by       Fred  Tracy
 !!       modified by      John S. Urban
 !!##NOTES
-!!    needs rewritten to normalize data so large numbers causing overflo
+!!    needs rewritten to normalize data so large numbers causing overflow
 !!    are not generated.
 !===================================================================================================================================
 subroutine glstsq(ideg,x,y,n0,d)
@@ -1645,7 +1645,7 @@ end subroutine glstsq
 !===================================================================================================================================
 !>
 !!##NAME
-!!    gcsgau2(3f) - [M_math] solve a system of simultaneous linear equation
+!!    gcsgau2(3f) - [M_math] solve a system of simultaneous linear equations
 !!##SYNOPSIS
 !!
 !!   subroutine gcsgau2(n,a,b)
@@ -1682,7 +1682,7 @@ end subroutine glstsq
 !!##WRITTEN BY
 !!      Fred Taylor ; A.K.A
 !!
-!!       F. T. Tracy, Computer Analysis Branch USAEWES, Vicksburg, MS. 3918
+!!       F. T. Tracy, Computer Analysis Branch USAEWES, Vicksburg, MS. 39180
 !===================================================================================================================================
 SUBROUTINE GCSGAU2(N,A,B)
 use M_journal, only : journal
@@ -1796,7 +1796,7 @@ END SUBROUTINE GCSGAU2
 !===================================================================================================================================
 !>
 !!##NAME
-!!    ju_polfit(3f) - [M_math] Fit discrete data in a least squares sense by polynomials in one variable
+!!    ju_polfit(3f) - [M_math] Fit discrete data in a least squares sense by polynomials in one variable.
 !!##SYNOPSIS
 !!
 !!    SUBROUTINE JU_POLFIT (N, X, Y, W, MAXDEG, NDEG, EPS, R, IERR, A)
@@ -2602,7 +2602,7 @@ real         :: yp
 !===================================================================================================================================
 !>
 !!##NAME
-!!    qhfg(3f) - [M_math:integral] compute integral values for given general table of argument, function, and derivative values
+!!    qhfg(3f) - [M_math:integral] compute integral values for given general table of argument, function, and derivative values.
 !!##SYNOPSIS
 !!
 !!   subroutine qhfg(x,y,dery,z,ndim)
@@ -2673,7 +2673,7 @@ end subroutine qhfg
 !===================================================================================================================================
 !>
 !!##NAME
-!!    qhsg(3f) - [M_math] Compute integral values for given table of argument, function, 1st derivative, and 2nd derivative values
+!!    qhsg(3f) - [M_math] Compute integral values for given table of argument, function, 1st derivative, and 2nd derivative values.
 !!
 !!##SYNOPSIS
 !!
@@ -2742,7 +2742,7 @@ end subroutine qhsg
 !===================================================================================================================================
 !>
 !!##NAME
-!!    qtfg(3f) - [M_math] Compute integral values for given general table of argument and function values
+!!    qtfg(3f) - [M_math] Compute integral values for given general table of argument and function values.
 !!
 !!##PURPOSE
 !!    Compute vector of integral values for given general table
@@ -2813,7 +2813,7 @@ end subroutine qtfg
 !!     integer          :: ivals
 !!
 !!##DESCRIPTION
-!!     Given the arrays X() and Y(), use trapezoidal integratio
+!!     Given the arrays X() and Y(), use trapezoidal integration
 !!     to generate the integral of Y and return it as Y2().
 !!##OPTIONS
 !!     X      input X values
@@ -2845,7 +2845,7 @@ end subroutine trapezoidal_integral
 
 !>
 !!##NAME
-!!    citer(3f) - [M_math:geometry] determine various geometric properties of circle segmen
+!!    citer(3f) - [M_math:geometry] determine various geometric properties of circle segment
 !!            given radius and area of the segment.
 !!##SYNOPSIS
 !!
@@ -3035,7 +3035,7 @@ character(len=*),parameter::ident_8="&
 END SUBROUTINE CITER
 !>
 !!##NAME
-!!   envelope(3f) - [M_math:geometry] Find vertices (in clockwise order) of a polygon enclosing the points (x(i), y(i), i=1, ..., n
+!!   envelope(3f) - [M_math:geometry] Find vertices (in clockwise order) of a polygon enclosing the points (x(i), y(i), i=1, ..., n.
 !!##SYNOPSIS
 !!
 !!    subroutine envelope(x, y, n, vertex, nvert)
@@ -3139,7 +3139,7 @@ END SUBROUTINE CITER
 !===================================================================================================================================
 !>
 !! Programmer: Alan Miller
-!! VERSION:    Latest revision - 12 September 198
+!! VERSION:    Latest revision - 12 September 1987
 !! VERSION:    Fortran 90 version - 8 August 1996
 !===================================================================================================================================
 SUBROUTINE envelope(x, y, n, vertex, nvert) !-- saved from url=(0048)http://users.bigpond.net.au/amiller/envelope.f90
@@ -3388,7 +3388,7 @@ END SUBROUTINE envelope
 !!    program demo_inpolygon
 !!    use M_draw
 !!    use M_drawplus, only : page
-!!    use M_math,     only : envelope        ! Find vertices (in clockwise order) of a polygon enclosing the point
+!!    use M_math,     only : envelope        ! Find vertices (in clockwise order) of a polygon enclosing the points
 !!    use M_math,     only : inpolygon       ! find if a point is inside a polygonal path
 !!    use M_math,     only : polyarea        ! compute the area bounded by a closed polygonal curve
 !!    implicit none
@@ -3553,7 +3553,7 @@ integer             :: i, j, m
 !!    program demo_envelope
 !!    use M_draw
 !!    use M_drawplus, only : page
-!!    use M_math,     only : envelope        ! Find vertices (in clockwise order) of a polygon enclosing the point
+!!    use M_math,     only : envelope        ! Find vertices (in clockwise order) of a polygon enclosing the points
 !!    use M_math,     only : locpt           ! find if a point is inside a polygonal path
 !!    use M_math,     only : polyarea        ! compute the area bounded by a closed polygonal curve
 !!    implicit none
@@ -3709,7 +3709,7 @@ END SUBROUTINE locpt
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!      poly_intercept(3f) - [M_math:geometry] intersection of a straight line and polygonal pat
+!!      poly_intercept(3f) - [M_math:geometry] intersection of a straight line and polygonal path
 !!##SYNOPSIS
 !!
 !!
@@ -3760,7 +3760,7 @@ END SUBROUTINE locpt
 !===================================================================================================================================
 !>
 !! PROCEDURE:    poly_intercept(3f)
-!! DESCRIPTION:  intersections of a straight line and polygonal pat
+!! DESCRIPTION:  intersections of a straight line and polygonal path
 !! AUTHOR:       Code converted using TO_F90 by Alan Miller
 !! VERSION:      Date: 2000-07-04  Time: 12:24:01
 !===================================================================================================================================
@@ -3945,7 +3945,7 @@ END SUBROUTINE Poly_Intercept
 !===================================================================================================================================
 !>
 !!##NAME
-!!        polyarea(3f) - [M_math:geometry] compute the area bounded by a simple closed polygonal curv
+!!        polyarea(3f) - [M_math:geometry] compute the area bounded by a simple closed polygonal curve
 !!
 !!##SYNOPSIS
 !!
@@ -4024,7 +4024,7 @@ END SUBROUTINE Poly_Intercept
 !===================================================================================================================================
 !>
 !! PROCEDURE:    polyarea(3f)
-!! DESCRIPTION:  compute the area bounded by a closed polygonal curv
+!! DESCRIPTION:  compute the area bounded by a closed polygonal curve
 !! AUTHOR:       Code converted using TO_F90 by Alan Miller
 !! VERSION:      2000-07-04  Time: 12:24:06
 !===================================================================================================================================
@@ -4101,7 +4101,7 @@ END FUNCTION polyarea_mid_point         ! The units are those of the points.
 !===================================================================================================================================
 !>
 !!##NAME
-!!        polyarea_shoelace(3f) - [M_math:geometry] compute area bounded by a simple closed polygon using the shoelace algorith
+!!        polyarea_shoelace(3f) - [M_math:geometry] compute area bounded by a simple closed polygon using the shoelace algorithm
 !!
 !!##SYNOPSIS
 !!
@@ -4230,7 +4230,7 @@ END FUNCTION polyarea_shoelace       ! Negative for clockwise, positive for coun
 !!    integer                         :: location
 !!
 !!##DESCRIPTION
-!!    Given a set of X and Y values and a target point, find the index of the closest point to the targe
+!!    Given a set of X and Y values and a target point, find the index of the closest point to the target
 !!    from the points described by the <X,Y> values. The X and Y arrays are assumed to be the same size.
 !!##OPTIONS
 !!    XTARGET   X coordinate of target point
@@ -4305,7 +4305,7 @@ end subroutine test_closest
 !!    X   The type shall be REAL.
 !!    Y   The type and kind type parameter shall be the same as X.
 !!##RESULT
-!!    HYPOT  The return value has the same type and kind type parameter as X
+!!    HYPOT  The return value has the same type and kind type parameter as X.
 !!##STANDARD
 !!        [[Fortran 2008]] and later
 !!##EXAMPLE
@@ -4336,7 +4336,7 @@ end function hypot
 
 !>
 !!##NAME
-!!      extremum(3f) - [M_math:statistics] Finds the minimum and maximum value in a REAL array
+!!      extremum(3f) - [M_math:statistics] Finds the minimum and maximum value in a REAL array.
 !!##SYNOPSIS
 !!
 !!   subroutine extremum(array,small,big)
@@ -4437,7 +4437,7 @@ end subroutine extremum
 !!     real,intent(out)   :: STAT(13)
 !!##DESCRIPTION
 !!
-!!     Given a vector of real values calculate common basic statistical measures fo
+!!     Given a vector of real values calculate common basic statistical measures for
 !!     the array.
 !!
 !!##OPTIONS
@@ -4656,7 +4656,7 @@ END SUBROUTINE BDS
 !===================================================================================================================================
 !>
 !!##NAME
-!!    skekur1(3f) - [M_math:statistics] variant on calculating skewness and kurtosis of an arra
+!!    skekur1(3f) - [M_math:statistics] variant on calculating skewness and kurtosis of an array
 !!
 !!##SYNOPSIS
 !!
@@ -4724,7 +4724,7 @@ END SUBROUTINE SKEKUR1
 !===================================================================================================================================
 !>
 !!##NAME
-!!    skekurx(3f) - [M_math:statistics] Compute unbiased estimator of the population SKEWNESS and KURTOSI
+!!    skekurx(3f) - [M_math:statistics] Compute unbiased estimator of the population SKEWNESS and KURTOSIS
 !!##SYNOPSIS
 !!
 !!    SUBROUTINE SKEKURX(Y,N,YSKEW,YKURT)
@@ -4811,7 +4811,7 @@ END SUBROUTINE SKEKURX
 !===================================================================================================================================
 !>
 !!##NAME
-!!      ncr(3f) - [M_math] Calculate the number of unique combinations of r objects out of n
+!!      ncr(3f) - [M_math] Calculate the number of unique combinations of r objects out of n.
 !!
 !!##SYNOPSIS
 !!
@@ -4971,7 +4971,7 @@ END FUNCTION lngamma
 !===================================================================================================================================
 !>
 !!##NAME
-!!    stddev(3f) - [M_math:statistics] given a real vector and the vector average calculate the standard deviatio
+!!    stddev(3f) - [M_math:statistics] given a real vector and the vector average calculate the standard deviation
 !!
 !!##SYNTAX
 !!    function stddev(vector,n,avg)
@@ -5056,7 +5056,7 @@ end function stddev
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    almost(3f) - [M_math] return true or false if two numbers agree up to specified number of digit
+!!    almost(3f) - [M_math] return true or false if two numbers agree up to specified number of digits
 !!##SYNOPSIS
 !!
 !!    function almost(x,y,digits)
@@ -5146,7 +5146,7 @@ end function almost
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!      accdig(3f) - [M_math] compare two real numbers only up to a specified number of digit
+!!      accdig(3f) - [M_math] compare two real numbers only up to a specified number of digits
 !!
 !!##SYNOPSIS
 !!
@@ -5332,7 +5332,7 @@ END SUBROUTINE accdig
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!      dp_accdig(3f) - [M_math] compare two DOUBLEPRECISION numbers only up to a specified number of digit
+!!      dp_accdig(3f) - [M_math] compare two DOUBLEPRECISION numbers only up to a specified number of digits
 !!
 !!##SYNOPSIS
 !!
@@ -5564,7 +5564,7 @@ end subroutine dp_accdig
 !!    write(*,*) in_margin(4.00000,3.99999,0.0000001)
 !!    write(*,*) in_margin(4.00000,3.99999,0.000001)
 !!
-!!    write(*,*) in_margin([4.0,40.0,400.0,4000.0,40000.0], [3.9,39.9,399.9,3999.9,39999.9] ,0.000001
+!!    write(*,*) in_margin([4.0,40.0,400.0,4000.0,40000.0], [3.9,39.9,399.9,3999.9,39999.9] ,0.000001)
 !!    write(*,*) in_margin([4.0,40.0,400.0,4000.0,40000.0], [3.9,39.9,399.9,3999.9,39999.9] ,0.00001)
 !!
 !!    write(*,*) in_margin(4.00000,3.99999,0.00001)
@@ -5647,7 +5647,7 @@ integer,intent(in)         :: idigits0
 end function round
 !>
 !!##NAME
-!!     scale1(3f) - [M_math] find new range xMINP XMAXP divisible into approximately N linear intervals of size DIS
+!!     scale1(3f) - [M_math] find new range xMINP XMAXP divisible into approximately N linear intervals of size DIST
 !!
 !!##SYNOPSIS
 !!
@@ -5858,7 +5858,7 @@ end subroutine scale1
 !!       ! treme(2)=ceiling(treme(2))
 !!       ! if(treme(2).eq.treme(1))treme(2)=treme(2)+1
 !!       write(*,'(a,g0,a,g0,a,i0,a,g0)') &
-!!               & 'nice range is 10**',log10(xminp),' to 10**',log10(xmaxp),' by ',
+!!               & 'nice range is 10**',log10(xminp),' to 10**',log10(xmaxp),' by ', &
 !!               & nint((log10(xmaxp)-log10(xminp))/dist),' intervals of ',dist
 !!     enddo
 !!     end program demo_scale3
@@ -5985,7 +5985,7 @@ end subroutine scale3
 
 !>
 !!##NAME
-!!    quadratic(3f) - [M_math] calculate the roots of a quadratic formula even if they are comple
+!!    quadratic(3f) - [M_math] calculate the roots of a quadratic formula even if they are complex
 !!
 !!##SYNOPSIS
 !!
@@ -6124,7 +6124,7 @@ end subroutine quadratic
 !!          write(*,*)'K=',k
 !!          call magic_square(arr(:k,:k))
 !!          do i=1,k
-!!             write(*,'(i2,":",*(i5):)')i,(int(arr(i,j)),j=1,k),sum(arr(k,:k)
+!!             write(*,'(i2,":",*(i5):)')i,(int(arr(i,j)),j=1,k),sum(arr(k,:k))
 !!          enddo
 !!       enddo
 !!    end program demo_magic_square

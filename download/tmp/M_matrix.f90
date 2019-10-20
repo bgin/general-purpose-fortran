@@ -35,7 +35,7 @@ module M_matrix
 !!    (except the file handler and some minor error handling) on an Amiga
 !!    1000 using ABSoft Fortran v2.2.  It will run in 512K environment.
 !!    I have seen it on IBM mainframes and IBM PCs.
-!! ===============================================================================
+!! ================================================================================
 !!    Changes per John S. Urban:
 !!
 !!    Converted to do most I/O via journal() so can be used with my codes
@@ -453,7 +453,7 @@ contains
 !!      rogers.exec:pbar = wv*p;                   // weighted average of p
 !!      rogers.exec:p = p - ones(g,1)*pbar;        // deviations from mean
 !!      rogers.exec:p = sqrt(diag(wv)) * p;        // weight rows of p by sqrt of pop size
-!!      rogers.exec:h = diag(pbar); h = h*(eye-h); // diagonal contains binomial variance: p*(1-p
+!!      rogers.exec:h = diag(pbar); h = h*(eye-h); // diagonal contains binomial variance: p*(1-p)
 !!      rogers.exec:r = p*inv(h)*p'/k;             // normalized covariance matrix
 !!      rogers.exec:eig(r)'
 !!
@@ -2126,7 +2126,7 @@ subroutine mat_magic(a,lda,n)
 !
 character(len=*),parameter::ident_19="@(#)M_matrix::mat_magic(3fp): Algorithms for magic squares"
 
-!        Algorithims taken from
+!        Algorithms taken from
 !        Mathematical Recreations and Essays, 12th Ed.,
 !        by W. W. Rouse Ball and H. S. M. Coxeter
 !
@@ -6209,7 +6209,7 @@ character(len=*),parameter::ident_37="&
 !!    suggestions given in D.E. Knuth (1969), Vol 2. The integer IY should
 !!    be initialized to an arbitrary integer prior to the first call to
 !!    mat_urand(3f). The calling program should not alter the value of IY
-!!    between subsequent calls to mat_urand(3f). Values of mat_urand(3f) wil
+!!    between subsequent calls to mat_urand(3f). Values of mat_urand(3f) will
 !!    be returned in the interval (0,1).
 !!
 !!##OPTIONS
@@ -6434,7 +6434,7 @@ end function mat_iwamax
 !==================================================================================================================================!
 !>
 !!##NAME
-!!    mat_flop(3fp) - [M_matrix] count and possibly chop each floating point operatio
+!!    mat_flop(3fp) - [M_matrix] count and possibly chop each floating point operation
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -13072,7 +13072,7 @@ DOUBLEPRECISION XR(LDX,*),XI(LDX,*),QRAUXR(*),QRAUXI(*),YR(*),     &
 !
 !            XK = (X(JPVT(1)),X(JPVT(2)), ... ,X(JPVT(K)))
 !
-!     FORMED FROM COLUMNNS JPVT(1), ... ,JPVT(K) OF THE ORIGINAL
+!     FORMED FROM COLUMNS JPVT(1), ... ,JPVT(K) OF THE ORIGINAL
 !     N X P MATRIX X THAT WAS INPUT TO WQRDC (IF NO PIVOTING WAS
 !     DONE, XK CONSISTS OF THE FIRST K COLUMNS OF X IN THEIR
 !     ORIGINAL ORDER).  WQRDC PRODUCES A FACTORED UNITARY MATRIX Q
@@ -13127,7 +13127,7 @@ DOUBLEPRECISION XR(LDX,*),XI(LDX,*),QRAUXR(*),QRAUXI(*),YR(*),     &
 !     ON RETURN
 !
 !        QY     DOUBLE-COMPLEX(N).
-!               QY CONNTAINS Q*Y, IF ITS COMPUTATION HAS BEEN
+!               QY CONTAINS Q*Y, IF ITS COMPUTATION HAS BEEN
 !               REQUESTED.
 !
 !        QTY    DOUBLE-COMPLEX(N).
@@ -13179,7 +13179,7 @@ DOUBLEPRECISION XR(LDX,*),XI(LDX,*),QRAUXR(*),QRAUXI(*),YR(*),     &
 !     WILL RESULT IN THE COMPUTATION OF B AND RSD, WITH RSD
 !     OVERWRITING Y.  MORE GENERALLY, EACH ITEM IN THE FOLLOWING
 !     LIST CONTAINS GROUPS OF PERMISSIBLE IDENTIFICATIONS FOR
-!     A SINGLE CALLINNG SEQUENCE.
+!     A SINGLE CALLING SEQUENCE.
 !
 !          1. (Y,QTY,B) (RSD) (XB) (QY)
 !

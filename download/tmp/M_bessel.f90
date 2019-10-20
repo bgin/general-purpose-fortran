@@ -22,7 +22,7 @@ contains
 !===================================================================================================================================
 !>
 !!##NAME
-!! bes(3f) - [M_bessel] calculate Bessel functions J(X), Y(X), I(X), K(X) for doubleprecision arguments and integer order
+!! bes(3f) - [M_bessel] calculate Bessel functions J(X), Y(X), I(X), K(X) for doubleprecision arguments and integer orders
 !!
 !!##SYNOPSIS
 !!
@@ -625,7 +625,7 @@ END SUBROUTINE BES
 !===================================================================================================================================
 !>
 !!##NAME
-!!    besi(3f) - [M_bessel] compute the I Bessel function for a given argument and orde
+!!    besi(3f) - [M_bessel] compute the I Bessel function for a given argument and order
 !!
 !!##SYNOPSIS
 !!
@@ -758,7 +758,7 @@ END SUBROUTINE BESI
 !===================================================================================================================================
 !>
 !!##NAME
-!!    besj(3f) - [M_bessel] compute the J Bessel function for a given argument and orde
+!!    besj(3f) - [M_bessel] compute the J Bessel function for a given argument and order
 !!
 !!##SYNOPSIS
 !!
@@ -894,7 +894,7 @@ END SUBROUTINE BESJ
 !===================================================================================================================================
 !>
 !!##NAME
-!!    besj0(3f) - [M_bessel] calculates the Bessel function J(X) of order zero
+!!    besj0(3f) - [M_bessel] calculates the Bessel function J(X) of order zero.
 !!
 !!##SYNOPSIS
 !!
@@ -982,7 +982,7 @@ END FUNCTION BESJ0
 !===================================================================================================================================
 !>
 !!##NAME
-!!    besj1(3f) - [M_bessel] calculates the Bessel function J(X) of order one
+!!    besj1(3f) - [M_bessel] calculates the Bessel function J(X) of order one.
 !!
 !!##SYNOPSIS
 !!
@@ -1074,7 +1074,7 @@ END FUNCTION BESJ1
 !===================================================================================================================================
 !>
 !!##NAME
-!!    besk(3f) - [M_bessel] compute the K Bessel function for a given argument and orde
+!!    besk(3f) - [M_bessel] compute the K Bessel function for a given argument and order
 !!
 !!##SYNOPSIS
 !!
@@ -1228,7 +1228,7 @@ END SUBROUTINE BESK
 !===================================================================================================================================
 !>
 !!##NAME
-!!    besy(3f) - [M_bessel] compute the Y Bessel function for a given argument and orde
+!!    besy(3f) - [M_bessel] compute the Y Bessel function for a given argument and order
 !!
 !!##SYNOPSIS
 !!
@@ -1424,7 +1424,7 @@ END SUBROUTINE BESY
 !===================================================================================================================================
 !>
 !!##NAME
-!!    besy0(3f) - [M_bessel] calculates the Bessel function Y(X) of order zero
+!!    besy0(3f) - [M_bessel] calculates the Bessel function Y(X) of order zero.
 !!
 !!##SYNOPSIS
 !!

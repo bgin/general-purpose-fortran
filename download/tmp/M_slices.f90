@@ -113,7 +113,7 @@ contains
 !!                      if less than zero do not auto-scale by (x10^power)
 !!      NDX,NDY,NDZ     int number of digits to right of decimal point
 !!      SMX,SMY,SMZ     real major tick length
-!!      AMININ,AMAXIN   real yaxis scaling factors (only needed if iaxis < 0
+!!      AMININ,AMAXIN   real yaxis scaling factors (only needed if iaxis < 0)
 !!      ICOL            integer color control (accessed if mag(iflag)=2)
 !!
 !!                        icol(1) axis line
@@ -1674,7 +1674,7 @@ real    :: ytemp1
 !==================================================================================================================================!
 !>
 !!##NAME
-!!      dl_init(3f) - [M_slices] initialize the longlib graphics plot packag
+!!      dl_init(3f) - [M_slices] initialize the longlib graphics plot package
 !!##SYNOPSIS
 !!
 !!   subroutine dl_init(xmax0,ymax0,vpx,vpy,zom)
@@ -1835,7 +1835,7 @@ END SUBROUTINE clipit_
 !!    (or string of characters) can be imagined as a square box with the
 !!    origin at the lower left corner. The routine determines the initial
 !!    position of the lower left of the first character than plots each
-!!    character relative to this position. As each character is plotted th
+!!    character relative to this position. As each character is plotted the
 !!    "current position" is moved to the right (along the string baseline)
 !!    a fixed amount S. When the string centering option is selected,
 !!    the length of the plotted string is determined and, based on the
