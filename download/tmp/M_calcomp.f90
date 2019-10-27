@@ -937,7 +937,7 @@ integer,save :: limit_q = 2048
 integer,save :: ixd_q(4)=[0,-1,0,1]
 integer,save :: iyd_q(4)=[1,0,-1,0]
 !
-!  INTITALIZE THE SYMBOL TABLE AND OTHER CONSTANTS TO BE USED BY
+!  INITIALIZE THE SYMBOL TABLE AND OTHER CONSTANTS TO BE USED BY
 !  THE SYMBOL ROUTINE
 !
 !  TABLE CHANGED FROM 596 TO 700 PER REQUEST OF R. LINCOLN, ORLANDO
@@ -3142,7 +3142,7 @@ real    :: yo
 !     AND STORE IN X0, Y0 .
 40    X0=X -BLMN*COST
       Y0=Y -BLMN*SINT
-!  CALCULATE LENGTH OF AXIS PLUS LENGTH OF CYCLE PRECEEDING AXIS PLUS
+!  CALCULATE LENGTH OF AXIS PLUS LENGTH OF CYCLE PRECEDING AXIS PLUS
 !     ROUND-OFF ERROR FACTOR, AND STORE IN SIZE1 .
       SIZE1=SIZE+BLMN+0.0002
 !  INITIALIZE CYCLE COUNTER FJ.
@@ -5552,7 +5552,7 @@ real    :: ypage
 !  THE FOLLOWING CALL TO 'SYMBOL' WAS MODIFIED WHEN THIS SUBROUTINE WAS
 !  CONVERTED TO THE CRAY. THE STATEMENT ORIGINALLY READ
 !
-!  99    CALL SYMBOL(XPAGE,YPAGE,HEIGH,NUM,INTEQ,ANGLE,II+1000)
+!  99    CALL SYMBOL(XPAGE,YPAGE,HEIGHT,NUM,INTEQ,ANGLE,II+1000)
 !
 !  THE 'SYMBOL' SUBROUTINE DESIGNED FOR USE ON THE CRAY TREATS INPUT
 !  COMING FROM THE 'NUMBER' SUBROUTINE IN THE SAME FASHION AS OTHER SYMB
@@ -7836,7 +7836,7 @@ END SUBROUTINE primitive__MERGER
 !     lot of CALCOMP-based programs from Orlando. Running over the network
 !     from Orlando is not acceptable because of TEMPLATE license restrictions
 !     and because of network quality issues (speed, reliability, cost).
-!     No other library is as easily or cheapily available as the vogle
+!     No other library is as easily or cheaply available as the vogle
 !     library, which is being maintained for USH and other codes anyway.
 !     Development of this library makes it possible for us to quickly
 !     resurrect any legacy codes that used CALCOMP on the 6600,7600,COS
@@ -8041,15 +8041,15 @@ end subroutine setpar
 !!    character(len=*),intent(in) :: default
 !!
 !!##DESCRIPTION
-!!    The primitive__fgetvar(3fp) function returns the value of an enviroment variable
-!!    or a default value if the enviroment variable is not defined.
+!!    The primitive__fgetvar(3fp) function returns the value of an environment variable
+!!    or a default value if the environment variable is not defined.
 !!
 !!##OPTIONS
-!!     varname     enviromental variable name, blank or null terminated.
+!!     varname     environmental variable name, blank or null terminated.
 !!                 string must be left justified (no leading white space).
 !!
 !!     default     default value for returned value. If varname is not an
-!!                 enviromental variable name or is blank, this alternate
+!!                 environmental variable name or is blank, this alternate
 !!                 string is returned instead.
 !!
 !!##RESULT
@@ -8077,6 +8077,366 @@ implicit none
    call color(D_WHITE)
    call vflush()
 end subroutine primitive__clear
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine test_suite_M_calcomp()
+implicit none
+!! setup
+   call test_axis()
+   call test_circl()
+   call test_cntour()
+   call test_curvx()
+   call test_curvy()
+   call test_dashl()
+   call test_dashp()
+   call test_elips()
+   call test_factor()
+   call test_fit()
+   call test_fit4()
+   call test_fline()
+   call test_grid()
+   call test_lgaxs()
+   call test_lglin()
+   call test_line()
+   call test_mpset()
+   call test_mset()
+   call test_newpen()
+   call test_nframe()
+   call test_number()
+   call test_plot()
+   call test_plots()
+   call test_polar()
+   call test_poly()
+   call test_rect()
+   call test_reflx()
+   call test_scale()
+   call test_scalg()
+   call test_setpar()
+   call test_smoot()
+   call test_solut()
+   call test_symbol()
+   call test_where()
+   call test_width()
+!! teardown
+contains
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_axis()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('axis',msg='')
+   !!call unit_check('axis', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('axis',msg='')
+end subroutine test_axis
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_circl()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('circl',msg='')
+   !!call unit_check('circl', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('circl',msg='')
+end subroutine test_circl
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_cntour()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('cntour',msg='')
+   !!call unit_check('cntour', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('cntour',msg='')
+end subroutine test_cntour
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_curvx()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('curvx',msg='')
+   !!call unit_check('curvx', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('curvx',msg='')
+end subroutine test_curvx
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_curvy()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('curvy',msg='')
+   !!call unit_check('curvy', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('curvy',msg='')
+end subroutine test_curvy
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_dashl()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('dashl',msg='')
+   !!call unit_check('dashl', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('dashl',msg='')
+end subroutine test_dashl
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_dashp()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('dashp',msg='')
+   !!call unit_check('dashp', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('dashp',msg='')
+end subroutine test_dashp
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_elips()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('elips',msg='')
+   !!call unit_check('elips', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('elips',msg='')
+end subroutine test_elips
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_factor()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('factor',msg='')
+   !!call unit_check('factor', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('factor',msg='')
+end subroutine test_factor
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_fit()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('fit',msg='')
+   !!call unit_check('fit', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('fit',msg='')
+end subroutine test_fit
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_fit4()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('fit4',msg='')
+   !!call unit_check('fit4', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('fit4',msg='')
+end subroutine test_fit4
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_fline()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('fline',msg='')
+   !!call unit_check('fline', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('fline',msg='')
+end subroutine test_fline
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_grid()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('grid',msg='')
+   !!call unit_check('grid', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('grid',msg='')
+end subroutine test_grid
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_lgaxs()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('lgaxs',msg='')
+   !!call unit_check('lgaxs', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('lgaxs',msg='')
+end subroutine test_lgaxs
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_lglin()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('lglin',msg='')
+   !!call unit_check('lglin', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('lglin',msg='')
+end subroutine test_lglin
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_line()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('line',msg='')
+   !!call unit_check('line', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('line',msg='')
+end subroutine test_line
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mpset()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('mpset',msg='')
+   !!call unit_check('mpset', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('mpset',msg='')
+end subroutine test_mpset
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_mset()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('mset',msg='')
+   !!call unit_check('mset', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('mset',msg='')
+end subroutine test_mset
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_newpen()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('newpen',msg='')
+   !!call unit_check('newpen', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('newpen',msg='')
+end subroutine test_newpen
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_nframe()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('nframe',msg='')
+   !!call unit_check('nframe', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('nframe',msg='')
+end subroutine test_nframe
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_number()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('number',msg='')
+   !!call unit_check('number', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('number',msg='')
+end subroutine test_number
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_plot()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('plot',msg='')
+   !!call unit_check('plot', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('plot',msg='')
+end subroutine test_plot
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_plots()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('plots',msg='')
+   !!call unit_check('plots', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('plots',msg='')
+end subroutine test_plots
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_polar()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('polar',msg='')
+   !!call unit_check('polar', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('polar',msg='')
+end subroutine test_polar
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_poly()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('poly',msg='')
+   !!call unit_check('poly', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('poly',msg='')
+end subroutine test_poly
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_rect()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('rect',msg='')
+   !!call unit_check('rect', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('rect',msg='')
+end subroutine test_rect
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_reflx()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('reflx',msg='')
+   !!call unit_check('reflx', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('reflx',msg='')
+end subroutine test_reflx
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_scale()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('scale',msg='')
+   !!call unit_check('scale', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('scale',msg='')
+end subroutine test_scale
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_scalg()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('scalg',msg='')
+   !!call unit_check('scalg', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('scalg',msg='')
+end subroutine test_scalg
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_setpar()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('setpar',msg='')
+   !!call unit_check('setpar', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('setpar',msg='')
+end subroutine test_setpar
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_smoot()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('smoot',msg='')
+   !!call unit_check('smoot', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('smoot',msg='')
+end subroutine test_smoot
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_solut()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('solut',msg='')
+   !!call unit_check('solut', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('solut',msg='')
+end subroutine test_solut
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_symbol()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('symbol',msg='')
+   !!call unit_check('symbol', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('symbol',msg='')
+end subroutine test_symbol
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_where()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('where',msg='')
+   !!call unit_check('where', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('where',msg='')
+end subroutine test_where
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_width()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('width',msg='')
+   !!call unit_check('width', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('width',msg='')
+end subroutine test_width
+!===================================================================================================================================
+end subroutine test_suite_M_calcomp
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================

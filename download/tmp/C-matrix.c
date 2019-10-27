@@ -99,8 +99,8 @@ void draw_loadmatrix(Matrix mat){
    register float *cm, *mp;
    Token    *p;
 
-   if (!vdevice.initialised)
-      draw_verror("loadmatrix: draw not initialised");
+   if (!vdevice.initialized)
+      draw_verror("loadmatrix: draw not initialized");
 
    if (vdevice.inobject) {
       p = draw_newtokens(17);

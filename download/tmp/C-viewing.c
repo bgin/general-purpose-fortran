@@ -21,8 +21,8 @@
  *
  */
 void draw_polarview(float dist, float azim, float inc, float twist) {
-   if (!vdevice.initialised)
-      draw_verror("polarview: draw not initialised");
+   if (!vdevice.initialized)
+      draw_verror("polarview: draw not initialized");
 
    draw_translate(0.0, 0.0, -dist);
    draw_rotate(-twist, 'z');
@@ -154,8 +154,8 @@ static void draw_lookatwithup(float vx,float vy,float vz,float px,float py,float
  * A twist about the line of sight may also be given. 
  */
 void draw_lookat(float vx,float vy,float vz,float px,float py,float pz,float twist){
-   if (!vdevice.initialised)
-      draw_verror("lookat: draw not initialised");
+   if (!vdevice.initialized)
+      draw_verror("lookat: draw not initialized");
 
    draw_rotate(-twist, 'z');
 
@@ -175,8 +175,8 @@ void draw_lookat(float vx,float vy,float vz,float px,float py,float pz,float twi
 void draw_perspective(float fov,float  aspect,float  hither,float  yon) {
    Matrix    mat;
 
-   if (!vdevice.initialised)
-      draw_verror("perspective: draw not initialised");
+   if (!vdevice.initialized)
+      draw_verror("perspective: draw not initialized");
 
    if (aspect == 0.0)
       draw_verror("perspective: can't have zero aspect ratio!");
@@ -209,8 +209,8 @@ void draw_perspective(float fov,float  aspect,float  hither,float  yon) {
 void draw_window(float left,float right,float bottom,float top,float hither,float yon){
    Matrix    mat;
 
-   if (!vdevice.initialised)
-      draw_verror("window: draw not initialised");
+   if (!vdevice.initialized)
+      draw_verror("window: draw not initialized");
 
    if ((right - left) == 0.0)
       draw_verror("window: left clipping plane same as right one.");
@@ -245,8 +245,8 @@ void draw_window(float left,float right,float bottom,float top,float hither,floa
 void draw_ortho(float left,float right,float bottom,float top,float hither,float yon){
    Matrix    mat;
 
-   if (!vdevice.initialised)
-      draw_verror("ortho: draw not initialised");
+   if (!vdevice.initialized)
+      draw_verror("ortho: draw not initialized");
 
    if ((right - left) == 0.0)
       draw_verror("ortho: left clipping plane same as right one.");
@@ -273,8 +273,8 @@ void draw_ortho(float left,float right,float bottom,float top,float hither,float
 void draw_ortho2(float left,float  right,float  bottom,float  top){
    Matrix   mat;
 
-   if (!vdevice.initialised)
-      draw_verror("ortho2: draw not initialised");
+   if (!vdevice.initialized)
+      draw_verror("ortho2: draw not initialized");
 
    draw_identmatrix(mat);
 

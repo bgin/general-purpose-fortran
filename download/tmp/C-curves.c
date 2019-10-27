@@ -53,8 +53,8 @@ void draw_rcurve(Matrix geom) {
         Token   *tok;
         int     i;
 
-        if (!vdevice.initialised)
-                draw_verror("rcurve: draw not initialised");
+        if (!vdevice.initialized)
+                draw_verror("rcurve: draw not initialized");
 
         if (!make_prec_called)
                 draw_make_prec();
@@ -111,8 +111,8 @@ void draw_curve(float geom[4][3]) {
         Matrix  tmp;
         int     i, j;
 
-        if (!vdevice.initialised)
-                draw_verror("curve: draw not initialised");
+        if (!vdevice.initialized)
+                draw_verror("curve: draw not initialized");
 
         /*
          * Fill in the w column for rcurve
@@ -210,8 +210,8 @@ void draw_drcurve(int n, Matrix r) {
 void draw_curven(int n, float geom[][3]) {
         int     i;
 
-        if (!vdevice.initialised)
-                draw_verror("curven: draw not initialised");
+        if (!vdevice.initialized)
+                draw_verror("curven: draw not initialized");
 
         if (n < 4)
                 draw_verror("curven: not enough points in geometry matrix");

@@ -55,8 +55,8 @@ void draw_polyhatch(int onoff) {
 #ident "@(#)M_DRAW:hatchang - set the hatch angle"
 void draw_hatchang(float a){
    Token *tok;
-   if (!vdevice.initialised)
-      draw_verror("hatchang - draw not initialised");
+   if (!vdevice.initialized)
+      draw_verror("hatchang - draw not initialized");
    if (vdevice.inobject) {
       tok = draw_newtokens(3);
       tok[0].i = OBJ_HATCHANG;
@@ -71,8 +71,8 @@ void draw_hatchang(float a){
 #ident "@(#)M_DRAW:hatchpitch - set the hatch pitch"
 void draw_hatchpitch(float a) {
    Token *tok;
-   if (!vdevice.initialised)
-      draw_verror("hatchpitch - draw not initialised");
+   if (!vdevice.initialized)
+      draw_verror("hatchpitch - draw not initialized");
    if (vdevice.inobject) {
       tok = draw_newtokens(2);
       tok[0].i = OBJ_HATCHPITCH;
@@ -274,8 +274,8 @@ void draw_poly2(int n, float dp[][2]) {
    int   i;
    float np[MAXVERTS][3];
 
-   if (!vdevice.initialised)
-      draw_verror("poly2: draw not initialised");
+   if (!vdevice.initialized)
+      draw_verror("poly2: draw not initialized");
 
    for (i = 0; i < n; i++) {
       np[i][V_X] = dp[i][V_X];
@@ -291,8 +291,8 @@ void draw_poly(int n, float dp[][3]) {
    Vector   vect, result;
    Token *tok;
 
-   if (!vdevice.initialised){
-      draw_verror("poly: draw not initialised");
+   if (!vdevice.initialized){
+      draw_verror("poly: draw not initialized");
    }
 
    if (vdevice.inobject) {
@@ -386,8 +386,8 @@ void draw_closepoly(void) {
    int   sync, b, i, j;
    Token *tok;
 
-   if (!vdevice.initialised){
-      draw_verror("closepoly: draw not initialised");
+   if (!vdevice.initialized){
+      draw_verror("closepoly: draw not initialized");
    }
 
    vdevice.inpolygon = 0;

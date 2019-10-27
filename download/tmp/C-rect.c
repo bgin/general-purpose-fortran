@@ -7,8 +7,8 @@ void draw_rect(float x1, float y1, float x2, float y2) {
    Token *tok;
 
 
-   if (!vdevice.initialised)
-      draw_verror("rect: draw not initialised");
+   if (!vdevice.initialized)
+      draw_verror("rect: draw not initialized");
 
    if(vdevice.inobject){
       tok = draw_newtokens(5);
@@ -53,8 +53,8 @@ void draw_rect(float x1, float y1, float x2, float y2) {
 void draw_srect(float x1, float y1, float x2, float y2) {
 	int	sync;
 
-	if (!vdevice.initialised)
-		draw_verror("rect: draw not initialised");
+	if (!vdevice.initialized)
+		draw_verror("rect: draw not initialized");
 
 	if ((sync = vdevice.sync))
 		vdevice.sync = 0;

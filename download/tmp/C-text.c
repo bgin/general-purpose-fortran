@@ -95,8 +95,8 @@ float   draw_getfontheight(void);
 PROCEDURE void draw_font(char *name) {
         Token   *tok;
    /*--------------------------------------------------------------------*/
-        if (!vdevice.initialised)
-                draw_verror("font: draw not initialised");
+        if (!vdevice.initialized)
+                draw_verror("font: draw not initialized");
    /*--------------------------------------------------------------------*/
         if (vdevice.inobject) {
                 tok = draw_newtokens(2 + strlen(name) / sizeof(Token));
@@ -292,8 +292,8 @@ PROCEDURE void draw_getcharsize(char c, float *width, float *height){
       float a, b;
       float fudge=.0123;
    /*--------------------------------------------------------------------*/
-      if (!vdevice.initialised)
-         draw_verror("getcharsize: draw not initialised");
+      if (!vdevice.initialized)
+         draw_verror("getcharsize: draw not initialized");
    /*--------------------------------------------------------------------*/
       if (vdevice.attr->a.softtext== HERSHEY) {
          if (!Loaded){
@@ -506,8 +506,8 @@ PROCEDURE void draw_textsize(float width, float height) {
       float result1[4];
       float result2[4];
       /*--------------------------------------------------------------------*/
-        if (!vdevice.initialised)
-                draw_verror("textsize: draw not initialised");
+        if (!vdevice.initialized)
+                draw_verror("textsize: draw not initialized");
       /*--------------------------------------------------------------------*/
       if (!Loaded)
          draw_verror("textsize: no font loaded");
@@ -577,8 +577,8 @@ PROCEDURE void draw_textsize(float width, float height) {
 PROCEDURE float draw_getfontwidth(void){
       float a, b, c, d;
       float fudge=0.00123;
-      if (!vdevice.initialised)
-         draw_verror("getfontwidth: draw not initialised");
+      if (!vdevice.initialized)
+         draw_verror("getfontwidth: draw not initialized");
       /*--------------------------------------------------------------------*/
       if (vdevice.attr->a.softtext == HERSHEY ) {
          if (!Loaded)
@@ -605,7 +605,7 @@ PROCEDURE float draw_getfontheight(void) {
         float   a, b, c, d;
         float fudge=0.0123;
    /*--------------------------------------------------------------------*/
-        if (!vdevice.initialised){
+        if (!vdevice.initialized){
                 draw_verror("getfontheight: draw not initialized");
          }
    /*--------------------------------------------------------------------*/
@@ -638,7 +638,7 @@ PROCEDURE float draw_getfontheight(void) {
 PROCEDURE float draw_getfontdec() {
       float a, b, c, d;
       float fudge=0.0123;
-      if (!vdevice.initialised)
+      if (!vdevice.initialized)
          draw_verror("getfontdec: draw not initialized");
       if (vdevice.attr->a.softtext == HERSHEY ) {
          if (!Loaded){
@@ -657,7 +657,7 @@ PROCEDURE float draw_getfontdec() {
 PROCEDURE float draw_getfontasc() {
       float a, b, c, d;
       float fudge=0.0123;
-      if (!vdevice.initialised)
+      if (!vdevice.initialized)
          draw_verror("getfontasc: draw not initialized");
       if (vdevice.attr->a.softtext == HERSHEY ) {
          if (!Loaded){
@@ -691,7 +691,7 @@ PROCEDURE static void draw_drawhstr(char *string) {
         int     i, sync, oldClipoff, NeedClip, oldJustify;
         float   p[4], q[4];
 
-        if (!vdevice.initialised)
+        if (!vdevice.initialized)
                 draw_verror("drawhstr: not initialized");
 
         /*
@@ -762,7 +762,7 @@ PROCEDURE void draw_drawstr(char *string) {
         char    *str = string, c;
         Token   *tok;
    /*--------------------------------------------------------------------*/
-        if(!vdevice.initialised)
+        if(!vdevice.initialized)
                 draw_verror("drawstr: draw not initialized");
    /*--------------------------------------------------------------------*/
         if (vdevice.inobject) {
@@ -939,8 +939,8 @@ PROCEDURE float draw_strlength(char *s){ /* Hershey SoftHardware Hardware */
       int i;
       float len = 0.0;
    /*--------------------------------------------------------------------*/
-      if (!vdevice.initialised){
-         draw_verror("strlength: draw not initialised");
+      if (!vdevice.initialized){
+         draw_verror("strlength: draw not initialized");
       }
    /*--------------------------------------------------------------------*/
       if (vdevice.attr->a.softtext == HERSHEY){
@@ -979,8 +979,8 @@ PROCEDURE void draw_boxtext(float x, float y, float l, float h, char *s) {
    float oscsizex, oscsizey;
    Token *tok;
 
-   if(!vdevice.initialised)
-      draw_verror("boxtext: draw not initialised");
+   if(!vdevice.initialized)
+      draw_verror("boxtext: draw not initialized");
 
    if(vdevice.attr->a.softtext != HERSHEY)
       draw_verror("boxtext: need a hershey vector font loaded");
@@ -1025,8 +1025,8 @@ PROCEDURE void draw_boxtext(float x, float y, float l, float h, char *s) {
 /******************************************************************************/
 #ident "@(#)M_DRAW:boxfit - Set up the scales etc for text so that a string of 'nchars' characters of the maximum width in the font fits in a box."
 PROCEDURE void draw_boxfit(float l, float h, int nchars) {
-        if(!vdevice.initialised) {
-                draw_verror("boxfit: draw not initialised");
+        if(!vdevice.initialized) {
+                draw_verror("boxfit: draw not initialized");
         }
 
         if(vdevice.attr->a.softtext != HERSHEY) {
@@ -1200,8 +1200,8 @@ PROCEDURE void draw_fixedwidth(int onoff){
 PROCEDURE void draw_textang(float ang) {
         Token   *tok;
 
-        if (!vdevice.initialised)
-                draw_verror("textang: draw not initialised");
+        if (!vdevice.initialized)
+                draw_verror("textang: draw not initialized");
 
    /*--------------------------------------------------------------------*/
         if (vdevice.inobject) {

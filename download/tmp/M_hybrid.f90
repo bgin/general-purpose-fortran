@@ -403,6 +403,66 @@ integer                      :: ilen
       fetch=trim(fetch)
    endif
 end function fetch
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine test_suite_M_hybrid()
+implicit none
+!! setup
+   call test___copy_INTEGER_4()
+   call test___copy_character_1()
+   call test_errc()
+   call test_fetch()
+   call test_strgar3()
+!! teardown
+contains
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test___copy_INTEGER_4()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('__copy_INTEGER_4',msg='')
+   !!call unit_check('__copy_INTEGER_4', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('__copy_INTEGER_4',msg='')
+end subroutine test___copy_INTEGER_4
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test___copy_character_1()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('__copy_character_1',msg='')
+   !!call unit_check('__copy_character_1', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('__copy_character_1',msg='')
+end subroutine test___copy_character_1
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_errc()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('errc',msg='')
+   !!call unit_check('errc', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('errc',msg='')
+end subroutine test_errc
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_fetch()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('fetch',msg='')
+   !!call unit_check('fetch', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('fetch',msg='')
+end subroutine test_fetch
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_strgar3()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('strgar3',msg='')
+   !!call unit_check('strgar3', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('strgar3',msg='')
+end subroutine test_strgar3
+!===================================================================================================================================
+end subroutine test_suite_M_hybrid
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!

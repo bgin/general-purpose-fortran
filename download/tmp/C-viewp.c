@@ -8,8 +8,8 @@ void draw_pushviewport(void) {
    Vstack   *nvport;
    Token *tok;
 
-   if (!vdevice.initialised)
-      draw_verror("pushviewport: draw not initialised");
+   if (!vdevice.initialized)
+      draw_verror("pushviewport: draw not initialized");
 
    if (vdevice.inobject) {
       tok = draw_newtokens(1);
@@ -42,8 +42,8 @@ void draw_popviewport(void) {
    Token *tok;
    Vstack   *nvport;
 
-   if (!vdevice.initialised)
-      draw_verror("popviewport: draw not initialised");
+   if (!vdevice.initialized)
+      draw_verror("popviewport: draw not initialized");
 
    if (vdevice.inobject) {
       tok = draw_newtokens(1);
@@ -79,8 +79,8 @@ void draw_viewport(float xlow, float xhigh, float ylow, float yhigh){
    Token *tok;
    char  buf[45];
 
-   if (!vdevice.initialised)
-      draw_verror("viewport: draw not initialised");
+   if (!vdevice.initialized)
+      draw_verror("viewport: draw not initialized");
 
    /* A few preliminary checks .... */
 

@@ -659,7 +659,7 @@ static void draw_getdev(char *dev) {
 }
 
 /* -------------------------------------------------------------------------- */
-/* vinit initialise M_DRAW */
+/* vinit initialize M_DRAW */
 void draw_vinit(char *device){
         char    *M_DRAW_OUTPUT;
         if(draw_fp == (FILE *)NULL || fileno(draw_fp) == -1 ){
@@ -672,7 +672,7 @@ void draw_vinit(char *device){
 
         draw_getdev(device);
 
-        if (vdevice.initialised)
+        if (vdevice.initialized)
                 draw_vexit();
 
         if (!allocated) {
@@ -713,7 +713,7 @@ void draw_vinit(char *device){
         vdevice.attr->a.font[0] = '\0';
 
         if ((*vdevice.dev.Vinit)()) {
-                vdevice.initialised = 1;
+                vdevice.initialized = 1;
                 vdevice.writestoprocess = 1;
                 vdevice.inobject = 0;
                 vdevice.inpolygon = 0;
@@ -758,13 +758,13 @@ void draw_pushdev(char *device) {
         else
                 draw_verror("draw: pushdev: Device stack overflow");
 
-        vdevice.initialised = 0;
+        vdevice.initialized = 0;
 
         draw_getdev(device);
 
         (*vdevice.dev.Vinit)();
 
-        vdevice.initialised = 1;
+        vdevice.initialized = 1;
 
         draw_popviewport();
         draw_popattributes();
@@ -790,20 +790,20 @@ void draw_popdev(void) {
  * global attributes like the window and viewport settings.
  */
 void draw_vnewdev(char *device){
-        if (!vdevice.initialised)
-                draw_verror("vnewdev: draw not initialised\n");
+        if (!vdevice.initialized)
+                draw_verror("vnewdev: draw not initialized\n");
 
         draw_pushviewport();
 
         (*vdevice.dev.Vexit)();
 
-        vdevice.initialised = 0;
+        vdevice.initialized = 0;
 
         draw_getdev(device);
 
         (*vdevice.dev.Vinit)();
 
-        vdevice.initialised = 1;
+        vdevice.initialized = 1;
 
         /*
          * Need to update font for this device if hardware font is what was
@@ -849,8 +849,8 @@ char *draw_vgetdev(char *buf) {
 /* returns the next key pressed.  */
 #ifndef GRX /* Has its own getkey */
 int draw_getkey(void) {
-        if (!vdevice.initialised)
-                draw_verror("getkey: draw not initialised\n");
+        if (!vdevice.initialized)
+                draw_verror("getkey: draw not initialized\n");
 
         return((*vdevice.dev.Vgetkey)());
 }
@@ -861,8 +861,8 @@ int draw_getkey(void) {
  *      (doesn't wait around like getkey)
  */
 int draw_checkkey(void) {
-        if (!vdevice.initialised)
-                draw_verror("checkkey: draw not initialised\n");
+        if (!vdevice.initialized)
+                draw_verror("checkkey: draw not initialized\n");
 
         return((*vdevice.dev.Vcheckkey)());
 }
@@ -877,8 +877,8 @@ int draw_checkkey(void) {
 int draw_locator(float *wx, float *wy){
         int     a, b, c;
 
-        if (!vdevice.initialised){
-                draw_verror("locator: draw not initialised");
+        if (!vdevice.initialized){
+                draw_verror("locator: draw not initialized");
         }
 
         c = (*vdevice.dev.Vlocator)(&a, &b);
@@ -898,8 +898,8 @@ int draw_slocator(float *wx, float *wy) {
         int     a, b, c;
         float   sx, sy;
 
-        if (!vdevice.initialised)
-                draw_verror("slocator: draw not initialised");
+        if (!vdevice.initialized)
+                draw_verror("slocator: draw not initialized");
 
         c = (*vdevice.dev.Vlocator)(&a, &b);
         sx = vdevice.sizeX;
@@ -922,8 +922,8 @@ int draw_slocator(float *wx, float *wy) {
 void draw_clear(void) {
         Token   *tok;
 
-        if (!vdevice.initialised)
-                draw_verror("clear: draw not initialised");
+        if (!vdevice.initialized)
+                draw_verror("clear: draw not initialized");
 
         if (vdevice.inobject) {
                 tok = draw_newtokens(1);
@@ -938,12 +938,12 @@ void draw_clear(void) {
 /******************************************************************************/
 /* exit the draw system */
 void draw_vexit(void) {
-        if (!vdevice.initialised)
-                draw_verror("vexit: draw not initialised");
+        if (!vdevice.initialized)
+                draw_verror("vexit: draw not initialized");
 
         (*vdevice.dev.Vexit)();
 
-        vdevice.initialised = 0;
+        vdevice.initialized = 0;
         draw_fp = stdout;
         badcount=0;
 }
@@ -953,8 +953,8 @@ void draw_vexit(void) {
 void draw_color(int i){
         Token   *tok;
 
-        if (!vdevice.initialised)
-                draw_verror("color: draw not initialised");
+        if (!vdevice.initialized)
+                draw_verror("color: draw not initialized");
 
         if (vdevice.inobject) {
                 tok = draw_newtokens(2);
@@ -973,8 +973,8 @@ void draw_color(int i){
 void draw_mapcolor(int i, short r, short g, short b){
         Token   *tok;
 
-        if (!vdevice.initialised)
-                draw_verror("mapcolor: draw not initialised");
+        if (!vdevice.initialized)
+                draw_verror("mapcolor: draw not initialized");
 
         if (vdevice.inobject) {
                 tok = draw_newtokens(5);
@@ -994,8 +994,8 @@ void draw_mapcolor(int i, short r, short g, short b){
 /******************************************************************************/
 /* Returns the number of bit planes on a device.  */
 int draw_getdepth(void) {
-        if (!vdevice.initialised)
-                draw_verror("getdepth: draw not initialised\n");
+        if (!vdevice.initialized)
+                draw_verror("getdepth: draw not initialized\n");
 
         /*
         if (vdevice.inobject) {
@@ -1023,8 +1023,8 @@ void draw_vsetflush(int yn){
 void draw_vflush(void){
         Token   *tok;
 
-        if (!vdevice.initialised)
-                draw_verror("vflush: draw not initialised");
+        if (!vdevice.initialized)
+                draw_verror("vflush: draw not initialized");
 
         if (vdevice.inobject) {
                 tok = draw_newtokens(1);
@@ -1041,8 +1041,8 @@ void draw_vflush(void){
  */
 void draw_linewidth(int w) {
         Token   *tok;
-        if (!vdevice.initialised)
-                draw_verror("linewidth: draw not initialised");
+        if (!vdevice.initialized)
+                draw_verror("linewidth: draw not initialized");
 
         if (vdevice.inobject) {
                 tok = draw_newtokens(2);

@@ -668,7 +668,7 @@ integer                      :: answer
    ints = [1,2,3]
    answer=3
    call check_ints(answer,ints)
-   call unit_check('empty',all(ints.eq.[1,2,3]),msg='normal allocattion')
+   call unit_check('empty',all(ints.eq.[1,2,3]),msg='normal allocation')
 
    ints = empty
    answer=0

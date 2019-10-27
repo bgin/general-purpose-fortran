@@ -62,7 +62,7 @@
 !!        o  system_clearenv(3f):   emulate clearenv(3c) to clear environment
 !!##FILE SYSTEM
 !!        o  system_chdir(3f):      call chdir(3c) to change current directory of a process
-!!        o  system_getcwd(3f):     call getcwd(3c) to get pathname of current working director
+!!        o  system_getcwd(3f):     call getcwd(3c) to get pathname of current working directory
 !!
 !!        o  system_stat(3f):       determine system information of file by name
 !!        o  system_stat_print(3f): determine system information of file by name
@@ -95,7 +95,7 @@
 !!
 !!        o  fileglob(3f): Returns list of files using a file globbing pattern
 !!
-!!##STREAM I/O
+!!##STREAM IO
 !!        o  system_getc(3f): get a character from stdin
 !!        o  system_putc(3f): put a character on stdout
 !!##RANDOM NUMBERS
@@ -370,7 +370,7 @@ end interface
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_srand(3f) - [M_system] set seed for pseudo-random number generator system_rand(3f
+!!    system_srand(3f) - [M_system] set seed for pseudo-random number generator system_rand(3f)
 !!
 !!##SYNOPSIS
 !!
@@ -441,7 +441,7 @@ end interface
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_kill(3f) - [M_system] send a signal to a process or a group of processe
+!!    system_kill(3f) - [M_system] send a signal to a process or a group of processes
 !!
 !!##SYNOPSIS
 !!
@@ -571,7 +571,7 @@ end interface
 !!##DESCRIPTION
 !!    Many C routines return an error code which can be queried by errno.
 !!    The M_system(3fm) is primarily composed of Fortran routines that call
-!!    C routines. In the cases where an error code is returned vi system_errno(3f
+!!    C routines. In the cases where an error code is returned vi system_errno(3f)
 !!    these routines will indicate it.
 !!
 !!##EXAMPLE
@@ -613,7 +613,7 @@ end interface
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_geteuid(3f) - [M_system:QUERY] get effective UID of current process from Fortran by calling geteuid(3c
+!!    system_geteuid(3f) - [M_system:QUERY] get effective UID of current process from Fortran by calling geteuid(3c)
 !!##SYNOPSIS
 !!
 !!    integer(kind=c_int) function system_geteuid()
@@ -643,7 +643,7 @@ end interface
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_getuid(3f) - [M_system:QUERY] get real UID of current process from Fortran by calling getuid(3c
+!!    system_getuid(3f) - [M_system:QUERY] get real UID of current process from Fortran by calling getuid(3c)
 !!##SYNOPSIS
 !!
 !!    integer(kind=c_int) function system_getuid()
@@ -677,7 +677,7 @@ end interface
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_getegid(3f) - [M_system:QUERY] get the effective group ID (GID) of current process from Fortran by calling getegid(3c
+!!    system_getegid(3f) - [M_system:QUERY] get the effective group ID (GID) of current process from Fortran by calling getegid(3c)
 !!##SYNOPSIS
 !!
 !!    integer(kind=c_int) function system_getegid()
@@ -717,7 +717,7 @@ end interface
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_getgid(3f) - [M_system:QUERY] get the real group ID (GID) of current process from Fortran by calling getgid(3c
+!!    system_getgid(3f) - [M_system:QUERY] get the real group ID (GID) of current process from Fortran by calling getgid(3c)
 !!##SYNOPSIS
 !!
 !!    integer(kind=c_int) function system_getgid()
@@ -769,7 +769,7 @@ end interface
 !!        process in the new session.
 !!
 !!##RETURN VALUE
-!!        Upon  successful  completion,  setsid() shall return the value of the new process group ID of the calling process. Other�
+!!        Upon  successful  completion,  setsid() shall return the value of the new process group ID of the calling process. Other‐
 !!        wise, it shall return −1 and set errno to indicate the error.
 !!##ERRORS
 !!        The setsid() function shall fail if:
@@ -797,7 +797,7 @@ end interface
 !===================================================================================================================================
 !>
 !!##NAME
-!!        system_getsid(3f) - [M_system:QUERY] get the process group ID of a session leade
+!!        system_getsid(3f) - [M_system:QUERY] get the process group ID of a session leader
 !!##SYNOPSIS
 !!
 !!        integer(kind=c_int) function system_getsid(pid)
@@ -833,7 +833,7 @@ end interface
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_getpid(3f) - [M_system:QUERY] get PID (process ID) of current process from Fortran by calling getpid(3c
+!!    system_getpid(3f) - [M_system:QUERY] get PID (process ID) of current process from Fortran by calling getpid(3c)
 !!##SYNOPSIS
 !!
 !!    integer function system_getpid()
@@ -866,7 +866,7 @@ end interface
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_getppid(3f) - [M_system:QUERY] get parent process ID (PPID) of current process from Fortran by calling getppid(3c
+!!    system_getppid(3f) - [M_system:QUERY] get parent process ID (PPID) of current process from Fortran by calling getppid(3c)
 !!##SYNOPSIS
 !!
 !!    integer(kind=c_int) function system_getppid()
@@ -928,7 +928,7 @@ end interface
 !!         *  mq_open()
 !!         *  sem_open()
 !!
-!!        Bit positions that are set in cmask are cleared in the mode of the created file
+!!        Bit positions that are set in cmask are cleared in the mode of the created file.
 !!
 !!##RETURN VALUE
 !!        The file permission bits in the value returned by umask() shall be
@@ -973,7 +973,7 @@ end interface
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_rand(3f) - [M_system] call pseudo-random number generator rand(3c
+!!    system_rand(3f) - [M_system] call pseudo-random number generator rand(3c)
 !!##SYNOPSIS
 !!
 !!    integer(kind=c_int) :: function system_rand()
@@ -1038,7 +1038,7 @@ end interface
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_initenv(3f) - [M_system:ENVIRONMENT] initialize environment table pointer and size so table can be read by readenv(3f
+!!    system_initenv(3f) - [M_system:ENVIRONMENT] initialize environment table pointer and size so table can be read by readenv(3f)
 !!##SYNOPSIS
 !!
 !!       subroutine system_initenv()
@@ -1157,7 +1157,7 @@ contains
 !!    permissions to be checked (R_OK, W_OK, X_OK) or the existence test (F_OK).
 !!
 !!##OPTIONS
-!!        pathname   a character string representing a directory pathname. Trailing spaces are ignored
+!!        pathname   a character string representing a directory pathname. Trailing spaces are ignored.
 !!        amode      bitwise-inclusive OR of the values R_OK, W_OK, X_OK, or F_OK.
 !!
 !!##RETURN VALUE
@@ -1220,7 +1220,7 @@ end function system_access
 !===================================================================================================================================
 !>
 !!##NAME
-!!        system_utime(3f) - [M_system] set file access and modification time
+!!        system_utime(3f) - [M_system] set file access and modification times
 !!
 !!##SYNOPSIS
 !!
@@ -1366,7 +1366,7 @@ end function system_utime
 !!        character(len=:),allocatable,intent(out) :: output
 !!        integer,intent(out)                      :: ierr
 !!##DESCRIPTION
-!!        system_realpath(3f) calls the C routine realpath(3c) to obtain the absolute pathname of given pat
+!!        system_realpath(3f) calls the C routine realpath(3c) to obtain the absolute pathname of given path
 !!##OPTIONS
 !!
 !!        INPUT     pathname to resolve
@@ -1470,7 +1470,7 @@ end subroutine system_realpath
 !!        The issock(3f) function checks if path is a path to a socket
 !!
 !!##OPTIONS
-!!        path   a character string representing a socket pathname. Trailing spaces are ignored
+!!        path   a character string representing a socket pathname. Trailing spaces are ignored.
 !!
 !!##RETURN VALUE
 !!        The system_issock() function should always be successful and no
@@ -1543,7 +1543,7 @@ end function system_issock
 !!        The isfifo(3f) function checks if path is a path to a fifo - named pipe.
 !!
 !!##OPTIONS
-!!        path   a character string representing a fifo - named pipe pathname. Trailing spaces are ignored
+!!        path   a character string representing a fifo - named pipe pathname. Trailing spaces are ignored.
 !!
 !!##RETURN VALUE
 !!        The system_isfifo() function should always be successful and no
@@ -1616,7 +1616,7 @@ end function system_isfifo
 !!        The ischr(3f) function checks if path is a path to a character device.
 !!
 !!##OPTIONS
-!!        path   a character string representing a character device pathname. Trailing spaces are ignored
+!!        path   a character string representing a character device pathname. Trailing spaces are ignored.
 !!
 !!##RETURN VALUE
 !!        The system_ischr() function should always be successful and no
@@ -1691,7 +1691,7 @@ end function system_ischr
 !!        The isreg(3f) function checks if path is a regular file
 !!
 !!##OPTIONS
-!!        path   a character string representing a pathname. Trailing spaces are ignored
+!!        path   a character string representing a pathname. Trailing spaces are ignored.
 !!
 !!##RETURN VALUE
 !!        The system_isreg() function should always be successful and no
@@ -1761,7 +1761,7 @@ end function system_isreg
 !!        The islnk(3f) function checks if path is a path to a link.
 !!
 !!##OPTIONS
-!!        path   a character string representing a link pathname. Trailing spaces are ignored
+!!        path   a character string representing a link pathname. Trailing spaces are ignored.
 !!
 !!##RETURN VALUE
 !!        The system_islnk() function should always be successful and no
@@ -1837,7 +1837,7 @@ end function system_islnk
 !! The isblk(3f) function checks if path is a path to a block device.
 !!
 !!##OPTIONS
-!! path   a character string representing a block device pathname. Trailing spaces are ignored
+!! path   a character string representing a block device pathname. Trailing spaces are ignored.
 !!
 !!##RETURN VALUE
 !!        The system_isblk() function should always be successful and no
@@ -1944,7 +1944,7 @@ end function system_isblk
 !!    use M_system, only : system_perror
 !!    implicit none
 !!    integer                     :: i
-!!    character(len=80),parameter :: names(*)=[character(len=80) :: 'myfile1','/usr/local'
+!!    character(len=80),parameter :: names(*)=[character(len=80) :: 'myfile1','/usr/local']
 !!    do i=1,size(names)
 !!       if(.not.  system_chown(&
 !!       & trim(names(i)),  &
@@ -2004,7 +2004,7 @@ end function system_chown
 !!        The isdir(3f) function checks if path is a path to a directory.
 !!
 !!##OPTIONS
-!!        path   a character string representing a directory pathname. Trailing spaces are ignored
+!!        path   a character string representing a directory pathname. Trailing spaces are ignored.
 !!
 !!##RETURN VALUE
 !!        The system_isdir() function should always be successful and no
@@ -2071,7 +2071,7 @@ end function system_isdir
 !===================================================================================================================================
 !>
 !!##NAME
-!!        system_cpu_time(3f) - [M_system] get processor time by calling times(3c
+!!        system_cpu_time(3f) - [M_system] get processor time by calling times(3c)
 !!
 !!##SYNOPSIS
 !!
@@ -2188,12 +2188,12 @@ end subroutine system_cpu_time
 !!
 !!        The implementation may require that the calling process has permission to access the existing file.
 !!
-!!        The linkat() function shall be equivalent to the link() function except that symbolic links shall be handled as specifie
+!!        The linkat() function shall be equivalent to the link() function except that symbolic links shall be handled as specified
 !!        by the value of flag (see below) and except in the case where either path1 or path2 or both are relative paths. In this
 !!        case a relative path path1 is interpreted relative to the directory associated with the file descriptor fd1 instead of
 !!        the current working directory and similarly for path2 and the file descriptor fd2. If the file descriptor was opened
 !!        without O_SEARCH, the function shall check whether directory searches are permitted using the current permissions of the
-!!        directory underlying the file descriptor. If the file descriptor was opened with O_SEARCH, the function shall not perfor
+!!        directory underlying the file descriptor. If the file descriptor was opened with O_SEARCH, the function shall not perform
 !!        the check.
 !!
 !!        Values for flag are constructed by a bitwise-inclusive OR of flags from the following list, defined in <fcntl.h>:
@@ -2201,7 +2201,7 @@ end subroutine system_cpu_time
 !!        AT_SYMLINK_FOLLOW
 !!              If path1 names a symbolic link, a new link for the target of the symbolic link is created.
 !!
-!!        If linkat() is passed the special value AT_FDCWD in the fd1 or fd2 parameter, the current working directory shall be use
+!!        If linkat() is passed the special value AT_FDCWD in the fd1 or fd2 parameter, the current working directory shall be used
 !!        for the respective path argument. If both fd1 and fd2 have value AT_FDCWD, the behavior shall be identical to a call to
 !!        link(), except that symbolic links shall be handled as specified by the value of flag.
 !!
@@ -2257,7 +2257,7 @@ end function system_link
 !===================================================================================================================================
 !>
 !!##NAME
-!!        system_unlink(3f) - [M_system] remove a directory entry relative to directory file descripto
+!!        system_unlink(3f) - [M_system] remove a directory entry relative to directory file descriptor
 !!
 !!##SYNOPSIS
 !!
@@ -2355,7 +2355,7 @@ end function system_unlink
 !!        permission bits in the mode argument supplied during calls to
 !!        the following functions:
 !!
-!!         *  open(), openat(), creat(), mkdir(), mkdirat(), mkfifo(), and mkfifoat(
+!!         *  open(), openat(), creat(), mkdir(), mkdirat(), mkfifo(), and mkfifoat()
 !!         *  mknod(), mknodat()
 !!         *  mq_open()
 !!         *  sem_open()
@@ -2425,7 +2425,7 @@ end function system_setumask
 !!    use M_system, only : system_getumask, system_setumask
 !!    integer :: i
 !!    write(*,101)(system_getumask(),i=1,4)
-!!    101 format(1x,i0,1x,"O'",o4.4,"'",1x,'Z"',z0,"'",1x,"B'",b12.12,"'"
+!!    101 format(1x,i0,1x,"O'",o4.4,"'",1x,'Z"',z0,"'",1x,"B'",b12.12,"'")
 !!    end program demo_getumask
 !!
 !!   Expected output
@@ -2451,7 +2451,7 @@ end function system_getumask
 !===================================================================================================================================
 !>
 !!##NAME
-!!      perror(3f) - [M_system] print error message for last C error on stder
+!!      perror(3f) - [M_system] print error message for last C error on stderr
 !!##SYNOPSIS
 !!
 !!      subroutine system_perror(prefix)
@@ -2514,7 +2514,7 @@ end subroutine system_perror
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_chdir(3f) - [M_system] call chdir(3c) from Fortran to change working director
+!!    system_chdir(3f) - [M_system] call chdir(3c) from Fortran to change working directory
 !!##SYNOPSIS
 !!
 !!    subroutine system_chdir(path, err)
@@ -2611,7 +2611,7 @@ end subroutine system_chdir
 !!
 !!##DESCRIPTION
 !!    Fortran supports scratch files via the OPEN(3c) command; but does
-!!    not otherwise allow for removing files. The system_remove(3f) comman
+!!    not otherwise allow for removing files. The system_remove(3f) command
 !!    allows for removing files by name that the user has the authority to
 !!    remove by calling the C remove(3c) function.
 !!
@@ -2723,7 +2723,7 @@ end function system_remove
 !!
 !!      ! create scratch file to rename
 !!      open(unit=10,file='_scratch_file_',status='new')
-!!      write(10,'(a)') 'Test by renaming "_scratch_file_" to "_renamed_scratch_file_"
+!!      write(10,'(a)') 'Test by renaming "_scratch_file_" to "_renamed_scratch_file_"'
 !!      write(10,'(a)') 'IF YOU SEE THIS ON OUTPUT THE RENAME WORKED'
 !!      close(10)
 !!      ! rename scratch file
@@ -2848,7 +2848,7 @@ end function system_rename
 !!       ierr=system_chmod('_test1', IANY([R_USR,R_GRP,R_OTH]))
 !!
 !!       !Setting Read, Write, and Execute Permissions for the Owner Only
-!!       ! The following example sets read, write, and execute permissions for the owner, and no permissions for group and others
+!!       ! The following example sets read, write, and execute permissions for the owner, and no permissions for group and others.
 !!       open(file='_test2',unit=10)
 !!       write(10,*)'TEST FILE 2'
 !!       close(unit=10)
@@ -2907,7 +2907,7 @@ end function system_chmod
 !!        character(len=:),allocatable,intent(out) :: output
 !!        integer,intent(out)                      :: ierr
 !!##DESCRIPTION
-!!        system_getcwd(3f) calls the C routine getcwd(3c) to obtain the absolute pathname of the current working directory
+!!        system_getcwd(3f) calls the C routine getcwd(3c) to obtain the absolute pathname of the current working directory.
 !!
 !!##RETURN VALUE
 !!        OUTPUT   The absolute pathname of the current working directory
@@ -2965,7 +2965,7 @@ end subroutine system_getcwd
 !===================================================================================================================================
 !>
 !!##NAME
-!!       system_rmdir(3f) - [M_system] call rmdir(3c) to remove empty directorie
+!!       system_rmdir(3f) - [M_system] call rmdir(3c) to remove empty directories
 !!
 !!##SYNOPSIS
 !!
@@ -3033,7 +3033,7 @@ end function system_rmdir
 !===================================================================================================================================
 !>
 !!##NAME
-!!        system_mkfifo(3f)  - [M_system] make a FIFO special file relative to directory file descripto
+!!        system_mkfifo(3f)  - [M_system] make a FIFO special file relative to directory file descriptor
 !!##SYNOPSIS
 !!
 !!   function system_mkfifo(pathname,mode) result(ierr)
@@ -3180,7 +3180,7 @@ end function system_mkfifo
 !!     Group:   R_GRP  (read),  W_GRP  (write),  X_GRP(execute)
 !!     Others:  R_OTH  (read),  W_OTH  (write),  X_OTH(execute)
 !!
-!!    Additionally, some shortcuts are provided (basically a bitwise-OR combination of the above)
+!!    Additionally, some shortcuts are provided (basically a bitwise-OR combination of the above):
 !!
 !!      Read + Write + Execute: R_WXU (User), R_WXG (Group), R_WXO (Others)
 !!      DEFFILEMODE: Equivalent of 0666 =rw-rw-rw-
@@ -3289,7 +3289,7 @@ end function system_mkdir
 !!
 !!        ENOENT        A component of dirname does not name an existing directory or dirname is an empty string.
 !!
-!!        ENOTDIR       A component of dirname names an existing file that is neither a directory nor a symbolic link to a directory
+!!        ENOTDIR       A component of dirname names an existing file that is neither a directory nor a symbolic link to a directory.
 !!
 !!        ELOOP         More than {SYMLOOP_MAX} symbolic links were encountered during resolution of the dirname argument.
 !!
@@ -3376,7 +3376,7 @@ end subroutine system_opendir
 !!    a null name upon reaching the end of the directory stream.
 !!
 !!    The readdir() function does not return directory entries containing
-!!    empty names. If entries for dot or dot-dot exist, one entry is returne
+!!    empty names. If entries for dot or dot-dot exist, one entry is returned
 !!    for dot and one entry is returned for dot-dot.
 !!
 !!    The entry is marked for update of the last data access timestamp each
@@ -3456,7 +3456,7 @@ end subroutine system_readdir
 !!     type(c_ptr),value :: dir
 !!
 !!##DESCRIPTION
-!!     Return to pointer to the beginning of the list for a currently open directory list
+!!     Return to pointer to the beginning of the list for a currently open directory list.
 !!
 !!##OPTIONS
 !!     DIR  A C_pointer assumed to have been allocated by a call to SYSTEM_OPENDIR(3f).
@@ -3518,7 +3518,7 @@ end subroutine system_rewinddir
 !!         type(c_ptr)         :: dir
 !!         integer,intent(out) :: ierr
 !!##DESCRIPTION
-!!        The SYSTEM_CLOSEDIR(3f) function closes the directory stream referred to by the argument DIR
+!!        The SYSTEM_CLOSEDIR(3f) function closes the directory stream referred to by the argument DIR.
 !!        Upon return, the value of DIR may no longer point to an accessible object.
 !!##OPTIONS
 !!        dir     directory stream pointer opened by SYSTEM_OPENDIR(3f).
@@ -3584,7 +3584,7 @@ end subroutine system_closedir
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_putenv(3f) - [M_system:ENVIRONMENT] set environment variable from Fortran by calling putenv(3c
+!!    system_putenv(3f) - [M_system:ENVIRONMENT] set environment variable from Fortran by calling putenv(3c)
 !!
 !!##SYNOPSIS
 !!
@@ -3681,7 +3681,7 @@ end subroutine system_putenv
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_getenv(3f) - [M_system:ENVIRONMENT] get environment variable from Fortran by calling get_environment_variable(3f
+!!    system_getenv(3f) - [M_system:ENVIRONMENT] get environment variable from Fortran by calling get_environment_variable(3f)
 !!
 !!##SYNOPSIS
 !!
@@ -3749,7 +3749,7 @@ end function system_getenv
 !!    The set_environment_variable() procedure adds or changes the value of environment variables.
 !!
 !!##OPTIONS
-!!    NAME    If name does not already exist in the environment, then string is added to the environment
+!!    NAME    If name does not already exist in the environment, then string is added to the environment.
 !!            If name does exist, then the value of name in the environment is changed to value.
 !!    VALUE   Value to assign to environment variable NAME
 !!    STATUS  returns zero on success, or nonzero if an error occurs.
@@ -3813,7 +3813,7 @@ end subroutine set_environment_variable
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_clearenv(3f) - [M_system:ENVIRONMENT] clear environment by calling clearenv(3c
+!!    system_clearenv(3f) - [M_system:ENVIRONMENT] clear environment by calling clearenv(3c)
 !!
 !!
 !!##SYNOPSIS
@@ -3902,7 +3902,7 @@ end subroutine system_clearenv
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_unsetenv(3f) - [M_system:ENVIRONMENT] delete an environment variable by calling unsetenv(3c
+!!    system_unsetenv(3f) - [M_system:ENVIRONMENT] delete an environment variable by calling unsetenv(3c)
 !!##SYNOPSIS
 !!
 !!   subroutine system_unsetenv(name,ierr)
@@ -3978,7 +3978,7 @@ end subroutine system_unsetenv
 !!        character(len=:),allocatable  :: string
 !!##DESCRIPTION
 !!    A simple interface allows reading the environment variable table of the process. Call
-!!    system_initenv(3f) to initialize reading the environment table, then call system_readenv(3f) ca
+!!    system_initenv(3f) to initialize reading the environment table, then call system_readenv(3f) can
 !!    be called until a blank line is returned. If more than one thread
 !!    reads the environment or the environment is changed while being read the results are undefined.
 !!##OPTIONS
@@ -4053,7 +4053,7 @@ end function system_readenv
 !!    character(len=*),pointer      :: list(:)
 !!
 !!##DESCRIPTION
-!!    Non-portable procedure uses the shell and the ls(1) command to expand a filenam
+!!    Non-portable procedure uses the shell and the ls(1) command to expand a filename
 !!    and returns a pointer to a list of expanded filenames.
 !!
 !!##OPTIONS
@@ -4123,7 +4123,7 @@ end subroutine fileglob
 !===================================================================================================================================
 !>
 !!##NAME
-!!   system_uname(3f) - [M_system] call a C wrapper that calls uname(3c) to get current system information from Fortra
+!!   system_uname(3f) - [M_system] call a C wrapper that calls uname(3c) to get current system information from Fortran
 !!##SYNOPSIS
 !!
 !!    subroutine system_uname(WHICH,NAMEOUT)
@@ -4202,7 +4202,7 @@ end subroutine system_uname
 !!        name for the current machine.
 !!
 !!##OPTIONS
-!!        string  returns the hostname. Must be an allocatable CHARACTER variable
+!!        string  returns the hostname. Must be an allocatable CHARACTER variable.
 !!        ierr    Upon successful completion, 0 shall be returned; otherwise, -1
 !!                shall be returned.
 !!##EXAMPLE
@@ -4273,7 +4273,7 @@ end subroutine system_gethostname
 !!
 !!    Three names associated with the current process can be determined:
 !!       o system_getpwuid(system_getuid()) returns the name associated with the real user ID of the process.
-!!       o system_getpwuid(system_geteuid()) returns the name associated with the effective user ID of the proces
+!!       o system_getpwuid(system_geteuid()) returns the name associated with the effective user ID of the process
 !!       o system_getlogin() returns the name associated with the current login activity
 !!
 !!##RETURN VALUE
@@ -4365,7 +4365,7 @@ end function system_getlogin
 !!       call get_command_argument(1, string)  ! get pathname from command line
 !!       call system_stat(string,values,ierr)  ! get pathname information
 !!       if(ierr.eq.0)then
-!!          perms=system_perm(values(3))       ! convert permit mode to a strin
+!!          perms=system_perm(values(3))       ! convert permit mode to a string
 !!          ! print permits as a string, decimal value, and octal value
 !!          write(*,'("for ",a," permits[",a,"]",1x,i0,1x,o0)') &
 !!                  trim(string),perms,values(3),values(3)
@@ -4407,7 +4407,7 @@ end function system_perm
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_getgrgid(3f) - [M_system:QUERY] get groupd name associated with a GI
+!!    system_getgrgid(3f) - [M_system:QUERY] get groupd name associated with a GID
 !!##SYNOPSIS
 !!
 !!   function system_getgrgid(gid) result (gname)
@@ -4476,7 +4476,7 @@ end function system_getgrgid
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_getpwuid(3f) - [M_system:QUERY] get login name associated with a UI
+!!    system_getpwuid(3f) - [M_system:QUERY] get login name associated with a UID
 !!##SYNOPSIS
 !!
 !!   function system_getpwuid(uid) result (uname)
@@ -4675,8 +4675,8 @@ end function C2F_string
 !!    character(len=*),parameter :: fmt_date='year-month-day hour:minute:second'
 !!
 !!    integer(kind=8) :: &
-!!       Device_ID,           Inode_number,          File_mode,                  Number_of_links,  Owner_uid,
-!!       Owner_gid,           Directory_device,      File_size,                  Last_access,      Last_modification,
+!!       Device_ID,           Inode_number,          File_mode,                  Number_of_links,  Owner_uid,         &
+!!       Owner_gid,           Directory_device,      File_size,                  Last_access,      Last_modification, &
 !!       Last_status_change,  Preferred_block_size,  Number_of_blocks_allocated
 !!    equivalence                                    &
 !!       ( buff(1)  , Device_ID                  ) , &
@@ -4705,8 +4705,8 @@ end function C2F_string
 !!       write (*, FMT="('Device where located:',        T30, I0)") buff(7)
 !!       write (*, FMT="('File size(bytes):',            T30, I0)") buff(8)
 !!       write (*, FMT="('Last access time:',            T30, I0,1x, A)") buff(9), fmtdate(u2d(int(buff(9))),fmt_date)
-!!       write (*, FMT="('Last modification time:',      T30, I0,1x, A)") buff(10),fmtdate(u2d(int(buff(10))),fmt_date
-!!       write (*, FMT="('Last status change time:',     T30, I0,1x, A)") buff(11),fmtdate(u2d(int(buff(11))),fmt_date
+!!       write (*, FMT="('Last modification time:',      T30, I0,1x, A)") buff(10),fmtdate(u2d(int(buff(10))),fmt_date)
+!!       write (*, FMT="('Last status change time:',     T30, I0,1x, A)") buff(11),fmtdate(u2d(int(buff(11))),fmt_date)
 !!       write (*, FMT="('Preferred block size(bytes):', T30, I0)") buff(12)
 !!       write (*, FMT="('No. of blocks allocated:',     T30, I0)") buff(13)
 !!    endif
@@ -4763,7 +4763,7 @@ end subroutine system_stat
 !===================================================================================================================================
 !>
 !!##NAME
-!!    system_stat_print(3f) - [M_system] print the principal info obtained for a pathname from system_stat(3f
+!!    system_stat_print(3f) - [M_system] print the principal info obtained for a pathname from system_stat(3f)
 !!##SYNOPSIS
 !!
 !!   subroutine system_stat_print(filename)

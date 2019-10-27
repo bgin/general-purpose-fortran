@@ -150,7 +150,7 @@
 !!    Fortran lets you access the characters in a string using ranges
 !!    much like they are character arrays, assignment, comparisons with
 !!    standard operators, supports dynamically allocatable strings and
-!!    supports concatentation using the // operator, as well as a number
+!!    supports concatenation using the // operator, as well as a number
 !!    of intrinsic string routines:
 !!
 !!        adjustl   Left adjust a string
@@ -3520,7 +3520,7 @@ end function upper_quoted
 !!    metal casts were stored and organized in wooden cases. The more
 !!    often needed miniscule letters were placed closer to hand, in the
 !!    lower cases of the work bench. The less often needed, capitalized,
-!!    majiscule letters, ended up in the harder to reach upper cases.
+!!    majuscule letters, ended up in the harder to reach upper cases.
 !!
 !!##EXAMPLE
 !!
@@ -3644,7 +3644,7 @@ end subroutine test_upper
 !!    metal casts were stored and organized in wooden cases. The more
 !!    often needed miniscule letters were placed closer to hand, in the
 !!    lower cases of the work bench. The less often needed, capitalized,
-!!    majiscule letters, ended up in the harder to reach upper cases.
+!!    majuscule letters, ended up in the harder to reach upper cases.
 !!
 !!##EXAMPLE
 !!
@@ -4659,13 +4659,13 @@ integer                       :: i
    '                                                                                ']
    left=expected
    input=expected
-   ! make copy with all strings left-justifed
+   ! make copy with all strings left-justified
    do i=1,size(left)
       left(i)=adjustl(left(i))
    enddo
    if(unit_check_level.gt.0)write(*,'(a)')left
 
-   ! now center the left-justifed copy
+   ! now center the left-justified copy
    do i=1,size(left)
       input(i)=adjustc(left(i))
    enddo

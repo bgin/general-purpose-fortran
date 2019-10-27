@@ -5,8 +5,8 @@
 void draw_translate(float x, float y, float z) {
    Token *tok;
 
-   if (!vdevice.initialised)
-      draw_verror("translate: draw not initialised");
+   if (!vdevice.initialized)
+      draw_verror("translate: draw not initialized");
 
    if (vdevice.inobject) {
       tok = draw_newtokens(4);
@@ -45,8 +45,8 @@ void draw_rotate(float r,char axis){
    Token    *tok;
    register float costheta, sintheta, tmp;
 
-   if (!vdevice.initialised)
-      draw_verror("rotate: draw not initialised");
+   if (!vdevice.initialized)
+      draw_verror("rotate: draw not initialized");
 
    if (vdevice.inobject) {
       tok = draw_newtokens(3);

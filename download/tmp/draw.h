@@ -265,7 +265,7 @@ typedef struct dev {
 } DevEntry;
 
 typedef struct vdev {
-        char            initialised,
+        char            initialized,
                         writestoprocess,
                         clipoff,
                         inobject,

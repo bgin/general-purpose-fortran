@@ -99,7 +99,7 @@ contains
 !!                nc(2) : number of characters to use in C(2)
 !!                 ...       ...
 !!
-!!    The array elements of the option array f are interprtted according to the
+!!    The array elements of the option array f are interpreted according to the
 !!    following table. Some parameters have default values (shown in square
 !!    brackets). These are used when the input value is zero. A simple plot may be
 !!    produced by setting all the elements of f to zero. Note that user specified
@@ -1256,7 +1256,7 @@ SUBROUTINE plot_(XPLOT0,YPLOT0,ISELECT0) ! implicit none
 !
 !     PLOT is the central routine for controlling the plotting of lines.
 !     Any call to PLOT when graphics mode is not initialized is a dummy call.
-!     By default the viewport will be the "usuable size" of the display device
+!     By default the viewport will be the "usable size" of the display device
 !     as set by "graph_init".
 !     By default the lower left corner is (0,0)
 !     Only non-blank page strips are output to the device.
@@ -1327,7 +1327,7 @@ SUBROUTINE plot_(XPLOT0,YPLOT0,ISELECT0) ! implicit none
 ! *************************************************************************
 ! after page eject, should next commands set line type, width, color?
 ! or should start where last clear left off for easier animation for display
-! devices? CLEAR SHOULD BE SEPERATE FROM EJECT? EJECT RESETS, CLEAR JUST CLEARS?
+! devices? CLEAR SHOULD BE SEPARATE FROM EJECT? EJECT RESETS, CLEAR JUST CLEARS?
 ! *************************************************************************
       use M_draw
       implicit none
@@ -2205,7 +2205,7 @@ END SUBROUTINE gridll_
 !          < 0 : axis labeling on negative side (clockwise)
 ! (100's digit)    = 0 : coordinate line, ticks and labels drawn
 !                  = 1 : line and ticks only--no labeling
-! (1000's digit)   = 0 : numeric labels paralel to axis line
+! (1000's digit)   = 0 : numeric labels parallel to axis line
 !                  = 1 : numeric labels orthogonal to axis line
 ! (100000's digit) = 0 : color list ignored
 !                  = 1 : color list used
@@ -2432,7 +2432,7 @@ CHARACTER(len=*) :: T
    XS=0.0             ! EXPONENT
    IF (E1.LT.0.) GOTO 140   ! NO AUTO SCALING
 !
-!     COMPUTE AUTO EXPONENT SCALING SO THAT THE FORMATED LABEL
+!     COMPUTE AUTO EXPONENT SCALING SO THAT THE FORMATTED LABEL
 !     HAS THE INTEGER PORTION FILLED AS MUCH AS POSSIBLE
 !
    I=ND-NG-1
@@ -2709,7 +2709,7 @@ END SUBROUTINE newpen_
 !           < 0 :  label on negative side
 ! (100's digit)   = 0 : coordinate line, ticks and labels drawn
 !                 = 1 : line and ticks only--no labeling
-! (1000's digit)  = 0 : numeric labels paralel to axis line
+! (1000's digit)  = 0 : numeric labels parallel to axis line
 !                 = 1 : numeric labels orthogonal to axis line
 ! (10000's digit) = 0 : color list ignored
 !                 = 1 : color list used

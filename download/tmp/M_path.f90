@@ -382,6 +382,166 @@ end function eq
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
+subroutine test_suite_M_path()
+implicit none
+!! setup
+   call test___copy_m_path_Path()
+   call test___final_m_path_Path()
+   call test_branch()
+   call test_bud()
+   call test_construct_from_dat()
+   call test_init_path()
+   call test_leaf()
+   call test_path_executable()
+   call test_path_exists()
+   call test_path_isdir()
+   call test_path_readable()
+   call test_path_realpath()
+   call test_path_stat()
+   call test_path_writable()
+   call test_stem()
+!! teardown
+contains
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test___copy_m_path_Path()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('__copy_m_path_Path',msg='')
+   !!call unit_check('__copy_m_path_Path', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('__copy_m_path_Path',msg='')
+end subroutine test___copy_m_path_Path
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test___final_m_path_Path()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('__final_m_path_Path',msg='')
+   !!call unit_check('__final_m_path_Path', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('__final_m_path_Path',msg='')
+end subroutine test___final_m_path_Path
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_branch()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('branch',msg='')
+   !!call unit_check('branch', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('branch',msg='')
+end subroutine test_branch
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_bud()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('bud',msg='')
+   !!call unit_check('bud', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('bud',msg='')
+end subroutine test_bud
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_construct_from_dat()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('construct_from_dat',msg='')
+   !!call unit_check('construct_from_dat', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('construct_from_dat',msg='')
+end subroutine test_construct_from_dat
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_init_path()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('init_path',msg='')
+   !!call unit_check('init_path', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('init_path',msg='')
+end subroutine test_init_path
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_leaf()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('leaf',msg='')
+   !!call unit_check('leaf', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('leaf',msg='')
+end subroutine test_leaf
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_path_executable()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('path_executable',msg='')
+   !!call unit_check('path_executable', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('path_executable',msg='')
+end subroutine test_path_executable
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_path_exists()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('path_exists',msg='')
+   !!call unit_check('path_exists', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('path_exists',msg='')
+end subroutine test_path_exists
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_path_isdir()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('path_isdir',msg='')
+   !!call unit_check('path_isdir', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('path_isdir',msg='')
+end subroutine test_path_isdir
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_path_readable()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('path_readable',msg='')
+   !!call unit_check('path_readable', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('path_readable',msg='')
+end subroutine test_path_readable
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_path_realpath()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('path_realpath',msg='')
+   !!call unit_check('path_realpath', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('path_realpath',msg='')
+end subroutine test_path_realpath
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_path_stat()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('path_stat',msg='')
+   !!call unit_check('path_stat', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('path_stat',msg='')
+end subroutine test_path_stat
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_path_writable()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('path_writable',msg='')
+   !!call unit_check('path_writable', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('path_writable',msg='')
+end subroutine test_path_writable
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_stem()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('stem',msg='')
+   !!call unit_check('stem', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('stem',msg='')
+end subroutine test_stem
+!===================================================================================================================================
+end subroutine test_suite_M_path
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 end module M_path
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!

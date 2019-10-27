@@ -133,7 +133,7 @@ use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,
 use M_debug, only : unit_check_level
 implicit none
    call unit_check_start('$SUBNAME',msg='')
-   !!call unit_check('$SUBNAME', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('$SUBNAME', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('$SUBNAME',msg='')
 end subroutine test_$SUBNAME
 EOF
@@ -147,11 +147,12 @@ for NAME in $NAMES
 do
    export SHORTNAME=$(basename $NAME .o)
    WRITE_START
-   SUBNAMES=$(nm --extern-only --demangle --format=posix "$NAME" |
+  #SUBNAMES=$(nm --extern-only --demangle --format=posix "$NAME" |
+   SUBNAMES=$(nm               --demangle --format=posix "$NAME" |
      grep -w T|
      awk '{print $1}' |
      sed -e 's/.*_MOD_//'|
-     sed -e 's/_$//'|
+    #sed -e 's/_$//'|
      grep -v '^test_'
    )
    for SUBNAME in $SUBNAMES
@@ -206,7 +207,8 @@ do
    case "$NAME" in
    *.o)
         SHORTNAME=$(basename $NAME .o)
-        SUBNAMES=$(nm --extern-only --demangle --format=posix "$NAME" |
+       #SUBNAMES=$(nm --extern-only --demangle --format=posix "$NAME" |
+        SUBNAMES=$(nm               --demangle --format=posix "$NAME" |
            grep -w T|grep -i test_suite_ |
            awk '{print $1}' |
            sed -e 's/.*test_suite_/test_suite_/'|
@@ -214,7 +216,8 @@ do
    ;;
    *.a)
         SHORTNAME=$(basename $NAME .o)
-        SUBNAMES=$(nm --extern-only --demangle --format=posix "$NAME" |
+       #SUBNAMES=$(nm --extern-only --demangle --format=posix "$NAME" |
+        SUBNAMES=$(nm               --demangle --format=posix "$NAME" |
            grep -w T|grep -i test_suite_ |
            awk '{print $1}' |
            sed -e 's/.*test_suite_/test_suite_/'|

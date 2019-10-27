@@ -486,7 +486,7 @@ end subroutine char_gets_int
 !===================================================================================================================================
 pure function msd (x) result (msd_result)
 
-! Find most significan digit of x
+! Find most significant digit of x
 
    type (big_integer), intent (in) :: x
    integer :: msd_result

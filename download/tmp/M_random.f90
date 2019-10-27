@@ -284,12 +284,12 @@ end function random_int
 !!    A simple way to randomly scramble a list of any type is to create
 !!    a random permutation of all the index values of the array and then
 !!    access the original list elements using that list of indices. The
-!!    list itself can be re-ordered very succintly using array syntax.
+!!    list itself can be re-ordered very succinctly using array syntax.
 !!    Given a list size ..
 !!
 !!    1. create an INTEGER array of the specified size N
 !!    2. populate it with the values from 1 to N
-!!    3. randomly switche values in the array to randomize it
+!!    3. randomly switch values in the array to randomize it
 !!    4. return the newly created array for use as indices
 !!
 !!    The resulting random permutation of the indices can then be used to

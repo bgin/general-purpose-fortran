@@ -19,7 +19,7 @@ void draw_frontbuffer(void) {
 #ident "@(#)M_DRAW:swapbuffers - swap the back and front buffers - returns -1 if no backbuffer is available."
 int draw_swapbuffers(void) {
         if (vdevice.attr->a.inbackbuffer != 1){
-           fprintf(stderr,"swapbuffers: double buffering not initialised.\n");
+           fprintf(stderr,"swapbuffers: double buffering not initialized.\n");
            return(-1);
         }
         return((*vdevice.dev.Vswapb)());

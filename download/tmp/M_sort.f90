@@ -1558,7 +1558,7 @@ end subroutine s_swap
 !!    commonly required in procedures that sort data.
 !!
 !!    This routine uses the memcpy(3c) procedure, so data is assumed to be
-!!    contigious and to not overlap.
+!!    contiguous and to not overlap.
 !!
 !!    DO NOT CURRENTLY USE WITH CHARACTER VALUES WITH gfortran, and do not
 !!    use with anything but scalar values.
@@ -2005,7 +2005,7 @@ end subroutine tree_insert
 !!    type(tree_node), pointer :: t
 !!
 !!##DESCRIPTION
-!!   Print a tree of sorted integers greated by insert_tree(3f).
+!!   Print a tree of sorted integers created by insert_tree(3f).
 !!
 !!##AUTHOR
 !!   Copyright (c) 1990 by Walter S. Brainerd, Charles H. Goldberg,

@@ -3,8 +3,8 @@
 #ident "@(#)M_DRAW:point - plot a point in x, y, z."
 void draw_point(float x, float y, float z){
 
-	if(!vdevice.initialised)
-		draw_verror("point: draw not initialised");
+	if(!vdevice.initialized)
+		draw_verror("point: draw not initialized");
 
 	draw_move(x, y, z);  
 	draw_draw(x, y, z);	
@@ -18,8 +18,8 @@ void draw_point2(float x, float y){
 /******************************************************************************/
 #ident "@(#)M_DRAW:spoint - plot a point in screen coords."
 void draw_spoint2(float xs, float ys){
-	if (!vdevice.initialised)
-		draw_verror("spoint2: draw not initialised");
+	if (!vdevice.initialized)
+		draw_verror("spoint2: draw not initialized");
 
 	(*vdevice.dev.Vdraw)(vdevice.cpVx = 
 	   (xs + 0.5) * (vdevice.maxVx - vdevice.minVx),

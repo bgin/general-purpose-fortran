@@ -4,8 +4,8 @@
 void draw_scale(float x, float y, float z){
 	Token	*tok;
 
-	if (!vdevice.initialised)
-		draw_verror("scale: draw not initialised");
+	if (!vdevice.initialized)
+		draw_verror("scale: draw not initialized");
 
 	if (vdevice.inobject) {
 		tok = draw_newtokens(4);

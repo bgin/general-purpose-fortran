@@ -432,7 +432,7 @@ help_text=[ &
 &' frac(A)     : fractional part of A (A - INT(A))                                ',&
 &' mod(A,P)    : remainder function                                               ',&
 &' abs(value)  : absolute value                                                   ',&
-&' exp(value)  : exponenent of value                                              ',&
+&' exp(value)  : exponent of value                                                ',&
 &'NUMERIC FUNCTIONS:                                                              ',&
 &' bessel_j0   : Bessel function of the first kind of order 0                     ',&
 &' bessel_j1   : Bessel function of the first kind of order 1                     ',&

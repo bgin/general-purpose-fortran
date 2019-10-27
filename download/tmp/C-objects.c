@@ -41,8 +41,8 @@ static int              obno = -1, omax = 0;
 void draw_makeobj(int n){
         Object  *o;
 
-        if (!vdevice.initialised)
-                draw_verror("makeobj: draw not initialised");
+        if (!vdevice.initialized)
+                draw_verror("makeobj: draw not initialized");
 
         for (o = object_table[n % MAXENTS]; o != (Object *)NULL; o = o->next)
                 if (o->obno == n) {
@@ -204,8 +204,8 @@ void draw_callobj(int n){
    float    cx, cy, cz, *m;
    register Token *t, *et, *pt;
 
-   if (!vdevice.initialised)
-      draw_verror("callobj: draw not initialised");
+   if (!vdevice.initialized)
+      draw_verror("callobj: draw not initialized");
 
    if (vdevice.inobject) {
       t = draw_newtokens(2);

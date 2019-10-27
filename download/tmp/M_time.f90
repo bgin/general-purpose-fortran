@@ -77,7 +77,7 @@ real(kind=realtime),public,parameter :: dt_week=dt_day*7.0d0  ! one week in seco
 !===================================================================================================================================
 !>
 !!##NAME
-!!    date_to_julian(3f) - [M_time] converts DAT date-time array to Julian Dat
+!!    date_to_julian(3f) - [M_time] converts DAT date-time array to Julian Date
 !!
 !!##SYNOPSIS
 !!
@@ -132,7 +132,7 @@ subroutine date_to_julian(dat,julian,ierr)
 !>
 !! AUTHOR:    John S. Urban
 !!##VERSION:   1.0 2015-12-21
-!! REFERENCE: From Wikipedia, the free encyclopedia 2015-12-1
+!! REFERENCE: From Wikipedia, the free encyclopedia 2015-12-19
 !===================================================================================================================================
 ! * There is no year zero
 ! * Julian Date must be non-negative
@@ -219,7 +219,7 @@ end subroutine test_date_to_julian
 !===================================================================================================================================
 !>
 !!##NAME
-!!    julian_to_date(3f) - [M_time] converts a JED(Julian Ephemeris Date) to a DAT date-time array
+!!    julian_to_date(3f) - [M_time] converts a JED(Julian Ephemeris Date) to a DAT date-time array.
 !!
 !!##SYNOPSIS
 !!
@@ -381,7 +381,7 @@ end subroutine test_julian_to_date
 !===================================================================================================================================
 !>
 !!##NAME
-!!    date_to_unix(3f) - [M_time] converts DAT date-time array to Unix Epoch Tim
+!!    date_to_unix(3f) - [M_time] converts DAT date-time array to Unix Epoch Time
 !!
 !!##SYNOPSIS
 !!
@@ -401,7 +401,7 @@ end subroutine test_julian_to_date
 !!
 !!           dat=[year,month,day,timezone,hour,minutes,seconds,milliseconds]
 !!##RETURNS
-!!    unixtime  The "Unix Epoch" time, or the number of seconds since 00:00:00 o
+!!    unixtime  The "Unix Epoch" time, or the number of seconds since 00:00:00 on
 !!              January 1st, 1970, UTC.
 !!    ierr      Error code. If 0 no error occurred.
 !!
@@ -468,7 +468,7 @@ end subroutine test_date_to_unix
 !===================================================================================================================================
 !>
 !!##NAME
-!!    unix_to_date(3f) - [M_time] converts Unix Epoch Time to DAT date-time arra
+!!    unix_to_date(3f) - [M_time] converts Unix Epoch Time to DAT date-time array
 !!
 !!##SYNOPSIS
 !!
@@ -482,7 +482,7 @@ end subroutine test_date_to_unix
 !!     Converts a Unix Epoch Time (UET) to a DAT date-time array.
 !!
 !!##OPTIONS
-!!    unixtime  The "Unix Epoch" time, or the number of seconds since 00:00:00 o
+!!    unixtime  The "Unix Epoch" time, or the number of seconds since 00:00:00 on
 !!              January 1st, 1970, UTC; of type real(kind=realtime).
 !!
 !!##RETURNS
@@ -569,7 +569,7 @@ end subroutine test_unix_to_date
 !!    function d2o(dat) result (ordinal)
 !!
 !!     integer,intent(in),optional :: dat(8)   ! date time array
-!!     integer                     :: ordinal  ! the returned day of the yea
+!!     integer                     :: ordinal  ! the returned day of the year
 !!
 !!##DESCRIPTION
 !!     Given a date in the form of a "DAT" array return the Ordinal Day,
@@ -691,7 +691,7 @@ end subroutine test_d2o
 !!##DESCRIPTION
 !!    Return number of seconds since beginning of current year.
 !!
-!!    Before using this routine consider the consequences if the applicatio
+!!    Before using this routine consider the consequences if the application
 !!    is running at the moment a new year begins.
 !!
 !!        2 147 483 647 / 31 536 000 ==> 68.09625973490613901572 years
@@ -751,7 +751,7 @@ end subroutine test_ordinal_seconds
 !===================================================================================================================================
 !>
 !!##NAME
-!!     ordinal_to_date(3f) - [M_time] when given a valid year and day of the year returns the DAT array for the dat
+!!     ordinal_to_date(3f) - [M_time] when given a valid year and day of the year returns the DAT array for the date
 !!##SYNOPSIS
 !!
 !!      subroutine ordinal_to_date(yyyy, ddd, dat)
@@ -896,7 +896,7 @@ end subroutine test_ordinal_to_date
 !!##RETURNS
 !!     dat   Integer array holding a "DAT" array, similar in structure
 !!           to the array returned by the intrinsic DATE_AND_TIME(3f).
-!!           The timezone value is from the current time on the current platform
+!!           The timezone value is from the current time on the current platform.
 !!
 !!            dat=[year,month,day,timezone,hour,minutes,seconds,milliseconds]
 !!
@@ -992,7 +992,7 @@ end subroutine test_o2d
 !!    as a string.
 !!
 !!##OPTIONS
-!!    imonth      Common month number (1-12). If out of the allowable rang
+!!    imonth      Common month number (1-12). If out of the allowable range
 !!                the month name returned will be 'UNKNOWN'.
 !!##RETURNS
 !!    month_name  A string representing a month name or the word 'UNKNOWN'
@@ -1048,7 +1048,7 @@ subroutine test_v2mo
 use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,unit_check_start,unit_check_msg,unit_check_level, msg
 call unit_check_start('v2mo')
 call unit_check('v2mo',v2mo(1).eq.'January',    msg='January')
-call unit_check('v2mo',v2mo(2).eq.'February',   msg='Febuary')
+call unit_check('v2mo',v2mo(2).eq.'February',   msg='February')
 call unit_check('v2mo',v2mo(3).eq.'March',      msg='March')
 call unit_check('v2mo',v2mo(4).eq.'April',      msg='April')
 call unit_check('v2mo',v2mo(5).eq.'May',        msg='May')
@@ -1066,7 +1066,7 @@ end subroutine test_v2mo
 !===================================================================================================================================
 !>
 !!##NAME
-!!    mo2d(3f) - [M_time] given month name return DAT date-time array for beginning of that month in specified yea
+!!    mo2d(3f) - [M_time] given month name return DAT date-time array for beginning of that month in specified year
 !!
 !!##SYNOPSIS
 !!
@@ -1131,7 +1131,7 @@ integer :: dat(8)
 call unit_check_start('mo2d')
 call date_and_time(values=dat)
 call  unit_check('mo2d',all(mo2d('january',    2019).eq.[2019,01,01,dat(4),0,0,0,0]),msg='January    2019')
-call  unit_check('mo2d',all(mo2d('febuary',    2019).eq.[2019,02,01,dat(4),0,0,0,0]),msg='Febuary    2019')
+call  unit_check('mo2d',all(mo2d('february',   2019).eq.[2019,02,01,dat(4),0,0,0,0]),msg='February   2019')
 call  unit_check('mo2d',all(mo2d('march',      2019).eq.[2019,03,01,dat(4),0,0,0,0]),msg='March      2019')
 call  unit_check('mo2d',all(mo2d('april',      2019).eq.[2019,04,01,dat(4),0,0,0,0]),msg='April      2019')
 call  unit_check('mo2d',all(mo2d('may',        2019).eq.[2019,05,01,dat(4),0,0,0,0]),msg='May        2019')
@@ -1149,7 +1149,7 @@ end subroutine test_mo2d
 !===================================================================================================================================
 !>
 !!##NAME
-!!    mo2v(3f) - [M_time] given month name return month number (1-12) of that mont
+!!    mo2v(3f) - [M_time] given month name return month number (1-12) of that month
 !!
 !!##SYNOPSIS
 !!
@@ -1234,7 +1234,7 @@ use M_debug, only: unit_check,unit_check_good,unit_check_bad,unit_check_done,uni
 call unit_check_start('mo2v')
 
 call unit_check('mo2v', mo2v('jan')       .eq.  1   ,msg='Check January')
-call unit_check('mo2v', mo2v('Feb')       .eq.  2   ,msg='Check Febuary')
+call unit_check('mo2v', mo2v('Feb')       .eq.  2   ,msg='Check February')
 call unit_check('mo2v', mo2v('March')     .eq.  3   ,msg='Check March')
 call unit_check('mo2v', mo2v('APR')       .eq.  4   ,msg='Check April')
 call unit_check('mo2v', mo2v('may')       .eq.  5   ,msg='Check May')
@@ -1258,7 +1258,7 @@ end subroutine test_mo2v
 !===================================================================================================================================
 !>
 !!##NAME
-!!    now(3f) - [M_time] return string representing current time given forma
+!!    now(3f) - [M_time] return string representing current time given format
 !!
 !!##SYNOPSIS
 !!
@@ -1273,7 +1273,7 @@ end subroutine test_mo2v
 !!     current date and time.
 !!
 !!##OPTIONS
-!!     format      string describing how to format the current date and time
+!!     format      string describing how to format the current date and time.
 !!                 For a complete description of the formatting macros
 !!                 supported see fmtdate_usage(3f).
 !!##RETURNS
@@ -1330,7 +1330,7 @@ end subroutine test_now
 !===================================================================================================================================
 !>
 !!##NAME
-!!    fmtdate(3f) - [M_time] given DAT date-time array return date as string using specified forma
+!!    fmtdate(3f) - [M_time] given DAT date-time array return date as string using specified format
 !!
 !!##SYNOPSIS
 !!
@@ -1692,7 +1692,7 @@ end subroutine test_fmtdate
 !===================================================================================================================================
 !>
 !!##NAME
-!!    fmtdate_usage(3f) - [M_time] display macros recognized by fmtdate(3f) and now(3f
+!!    fmtdate_usage(3f) - [M_time] display macros recognized by fmtdate(3f) and now(3f)
 !!
 !!##SYNOPSIS
 !!
@@ -1981,7 +1981,7 @@ end subroutine test_fmtdate_usage
 !!    ISO_C_BINDING interface.
 !!
 !!##OPTIONS
-!!    anot  A string assumed to represent a date including a year, month and day
+!!    anot  A string assumed to represent a date including a year, month and day.
 !!
 !!    dat   Integer array holding a "DAT" array, similar in structure
 !!          to the array returned by the intrinsic DATE_AND_TIME(3f).
@@ -2358,7 +2358,7 @@ end subroutine test_guessdate
 !===================================================================================================================================
 !>
 !!##NAME
-!!    dow(3f) - [M_time] given a date-time array DAT return the day of the wee
+!!    dow(3f) - [M_time] given a date-time array DAT return the day of the week
 !!
 !!##SYNOPSIS
 !!
@@ -2553,7 +2553,7 @@ end subroutine test_dow
 !!    That is 364 or 371 days instead of the usual 365 or 366 days.
 !!    The extra week is referred to here as a leap week, although ISO-8601 does not use this term.
 !!    Weeks start with Monday.
-!!    The first week of a year is the week that contains the first Thursday of the year (and, hence, always contains 4 January)
+!!    The first week of a year is the week that contains the first Thursday of the year (and, hence, always contains 4 January).
 !!    ISO week year numbering therefore slightly deviates from the Gregorian for some days close to January 1st.
 !!
 !!##CALCULATION
@@ -2702,7 +2702,7 @@ end subroutine test_d2w
 !===================================================================================================================================
 !>
 !!##NAME
-!!    w2d(3f) - [M_time] calculate DAT date-time array from iso-8601 Week-numbering year date yyyy-Www-
+!!    w2d(3f) - [M_time] calculate DAT date-time array from iso-8601 Week-numbering year date yyyy-Www-d
 !!
 !!##SYNOPSIS
 !!
@@ -2943,7 +2943,7 @@ end subroutine test_w2d
 !!          describing the date to be used to specify what calendar
 !!          month to produce.
 !!
-!!           dat=[year,month,day,timezone,hour,minutes,seconds,milliseconds
+!!           dat=[year,month,day,timezone,hour,minutes,seconds,milliseconds]
 !!##RETURNS
 !!    calen  returned character array holding a display of the
 !!           specified month
@@ -3056,7 +3056,7 @@ end subroutine test_box_month
 !!              to the array returned by the intrinsic DATE_AND_TIME(3f).
 !!              If not present, use current time.
 !!
-!!              dat=[year,month,day,timezone,hour,minutes,seconds,milliseconds
+!!              dat=[year,month,day,timezone,hour,minutes,seconds,milliseconds]
 !!##RETURNS
 !!    julian    The Julian Date.
 !!
@@ -3130,7 +3130,7 @@ end subroutine test_d2j
 !===================================================================================================================================
 !>
 !!##NAME
-!!    j2d(3f) - [M_time] given a JED (Julian Ephemeris Date) returns a date-time array DAT
+!!    j2d(3f) - [M_time] given a JED (Julian Ephemeris Date) returns a date-time array DAT.
 !!
 !!##SYNOPSIS
 !!
@@ -3219,7 +3219,7 @@ end subroutine test_j2d
 !===================================================================================================================================
 !>
 !!##NAME
-!!    d2u(3f) - [M_time] given DAT date-time array returns Unix Epoch Time (UET starts at 0000 on 1 Jan. 1970, UTC
+!!    d2u(3f) - [M_time] given DAT date-time array returns Unix Epoch Time (UET starts at 0000 on 1 Jan. 1970, UTC)
 !!
 !!##SYNOPSIS
 !!
@@ -3320,7 +3320,7 @@ end subroutine test_d2u
 !!##DESCRIPTION
 !!
 !!##OPTIONS
-!!    unixtime  The "Unix Epoch" time, or the number of seconds since 00:00:00 o
+!!    unixtime  The "Unix Epoch" time, or the number of seconds since 00:00:00 on
 !!              January 1st, 1970, UTC. If not present, use current time.
 !!
 !!##RETURNS
@@ -3435,7 +3435,7 @@ end function get_timezone
 !!
 !!               The numeric values may represent floating point numbers.
 !!
-!!    crop       if .true., remove leading zero day values or day and hour values
+!!    crop       if .true., remove leading zero day values or day and hour values.
 !!               Optional, defaults to .false. .
 !!##RETURNS
 !!    dmhs       the returned string of form [d:h:]m:s
@@ -3608,7 +3608,7 @@ end subroutine test_sec2days
 !===================================================================================================================================
 !>
 !!##NAME
-!!    days2sec(3f) - [M_time] convert string of form [[-]dd-]hh:mm:ss.nn to second
+!!    days2sec(3f) - [M_time] convert string of form [[-]dd-]hh:mm:ss.nn to seconds
 !!
 !!##SYNOPSIS
 !!
@@ -3888,7 +3888,7 @@ end subroutine test_days2sec
 !!       write(*,'(" Today is:",*(i0:,":"))')dat
 !!       ! the %p and %P fields are supported by fmtdate(3f)
 !!       write(*,*)now('The phase of the moon is %p, with a fullness of %P')
-!!       write(*,'(1x,*(a))',advance='no')'The phase of the moon is ',trim( phase_of_moon(dat)),',
+!!       write(*,'(1x,*(a))',advance='no')'The phase of the moon is ',trim( phase_of_moon(dat)),','
 !!       write(*,'(1x,a,i0,a)')'with a fullness of ', moon_fullness(dat),'%'
 !!    end program demo_phase_of_moon
 !!
@@ -3979,7 +3979,7 @@ end subroutine test_phase_of_moon
 !!       write(*,'(" Today is:",*(i0:,":"))')dat
 !!       ! the %p and %P fields are supported by fmtdate(3f)
 !!       write(*,*)now('The phase of the moon is %p, with a fullness of %P')
-!!       write(*,'(1x,*(a))',advance='no')'The phase of the moon is ',trim( phase_of_moon(dat)),',
+!!       write(*,'(1x,*(a))',advance='no')'The phase of the moon is ',trim( phase_of_moon(dat)),','
 !!       write(*,'(1x,a,i0,a)')'with a fullness of ', moon_fullness(dat),'%'
 !!    end program demo_moon_fullness
 !!
@@ -4037,7 +4037,7 @@ end subroutine test_moon_fullness
 !!##DESCRIPTION
 !!     The Date of Easter (Sunday)
 !!
-!!     The algorithm is due to J.-M. Oudin (1940) and is reprinted in the Explanator
+!!     The algorithm is due to J.-M. Oudin (1940) and is reprinted in the Explanatory
 !!     Supplement to the Astronomical Almanac, ed. P. K. Seidelmann (1992).
 !!     See Chapter 12, "Calendars", by L. E. Doggett.
 !!
@@ -4088,7 +4088,8 @@ end subroutine test_moon_fullness
 !!    Easter day: the 16th day of April in the year of our Lord 2017
 !===================================================================================================================================
 !>
-!!   U.S. Naval Observatory Astronomical Applications Departmen
+!!
+!!   U.S. Naval Observatory Astronomical Applications Department
 !!
 !!   This code assembled by Alan Miller
 !!   Reference web site:
@@ -4204,7 +4205,7 @@ end subroutine test_easter
 !!##SYNOPSIS
 !!
 !!
-!!    subroutine ephemeris(itime,planet,declination_d,declination_m,declination_compass,ascent_hours,ascent_minutes
+!!    subroutine ephemeris(itime,planet,declination_d,declination_m,declination_compass,ascent_hours,ascent_minutes)
 !!
 !!     integer,parameter            :: dp=kind(0.0d0)
 !!     integer,intent(in)           :: itime(8)
@@ -4528,7 +4529,7 @@ end subroutine test_ephemeris
 !!    routine.
 !!
 !!##OPTIONS
-!!     wait_seconds  integer,real or doubleprecision number of seconds for process to sleep
+!!     wait_seconds  integer,real or doubleprecision number of seconds for process to sleep.
 !!
 !!##EXAMPLE
 !!
@@ -4980,7 +4981,7 @@ character(len=*),parameter            :: mdy_fmt='%M/%D/%Y %h:%m:%s.%x%z'
    else
       fmtlocal=iso_fmt
    endif
-   if(index(fmtlocal,'%').eq.0)then       ! if a percent(%) in string assume it is a string to be passed to fmtdat
+   if(index(fmtlocal,'%').eq.0)then       ! if a percent(%) in string assume it is a string to be passed to fmtdate
       select case(upper(fmtlocal))
       case("ISO","ISO-8601",""); fmtlocal=iso_fmt
       case("USA");               fmtlocal=usa_fmt

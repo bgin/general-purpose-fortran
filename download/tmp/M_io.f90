@@ -401,7 +401,7 @@ end subroutine print_inquire
 !!##DESCRIPTION
 !!     Read a table from a file that is assumed to be columns of
 !!     space-delimited numbers, with each row containing the same
-!!     numer of values
+!!     number of values
 !!
 !!##OPTIONS
 !!       filename   filename to read

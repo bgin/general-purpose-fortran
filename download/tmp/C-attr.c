@@ -129,7 +129,7 @@ void draw_getattribs( char   *s){
 #ident "@(#)M_DRAW:printlogicals - print logical device attributes"
 void draw_printlogicals( char   *s) {
    printf("%s\n", s);
-   printf("initialised     = %d\n", vdevice.initialised);
+   printf("initialized     = %d\n", vdevice.initialized);
    printf("writestoprocess = %d\n", vdevice.writestoprocess);
    printf("clipoff         = %d\n", vdevice.clipoff);
    printf("inobject        = %d\n", vdevice.inobject);
@@ -152,8 +152,8 @@ void draw_pushattributes(void) {
    Astack   *nattr;
    Token *p;
 
-   if (!vdevice.initialised)
-      draw_verror("pushattributes:  draw not initialised");
+   if (!vdevice.initialized)
+      draw_verror("pushattributes:  draw not initialized");
    
    if (vdevice.inobject) {
       p = draw_newtokens(1);
@@ -183,8 +183,8 @@ void draw_popattributes(void) {
    Astack   *nattr;
    Token *p;
 
-   if (!vdevice.initialised)
-      draw_verror("popattributes: draw not initialised");
+   if (!vdevice.initialized)
+      draw_verror("popattributes: draw not initialized");
 
    if (vdevice.inobject) {
       p = draw_newtokens(1);

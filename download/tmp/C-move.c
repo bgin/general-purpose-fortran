@@ -4,8 +4,8 @@
 void draw_move(float x, float y, float z) {
         Token   *p;
 
-        if (!vdevice.initialised)
-                draw_verror("move: draw not initialised");
+        if (!vdevice.initialized)
+                draw_verror("move: draw not initialized");
 
 
         vdevice.cpW[V_X] = x;
@@ -42,16 +42,16 @@ void draw_move(float x, float y, float z) {
  * (I.e. a 2D move is defined as a 3D move with the Z-coord set to zero)
  */
 void draw_move2(float x, float y) {
-        if (!vdevice.initialised)
-                draw_verror("move2: draw not initialised");
+        if (!vdevice.initialized)
+                draw_verror("move2: draw not initialized");
 
         draw_move(x, y, 0.0);
 }
 /******************************************************************************/
 #ident "@(#)M_DRAW:rmove - move the logical graphics position from the current world coordinates by dx, dy, dz"
 void draw_rmove(float dx, float dy, float dz) {
-   if (!vdevice.initialised)
-      draw_verror("rmove: draw not initialised");
+   if (!vdevice.initialized)
+      draw_verror("rmove: draw not initialized");
 
    draw_move((vdevice.cpW[V_X] + dx),
         (vdevice.cpW[V_Y] + dy),
@@ -60,16 +60,16 @@ void draw_rmove(float dx, float dy, float dz) {
 /******************************************************************************/
 #ident "@(#)M_DRAW:rmove2 - Move Relative in 2D."
 void draw_rmove2(float dx, float dy) {
-        if (!vdevice.initialised)
-                draw_verror("rmove2: draw not initialised");
+        if (!vdevice.initialized)
+                draw_verror("rmove2: draw not initialized");
 
         draw_move((vdevice.cpW[V_X] + dx), (vdevice.cpW[V_Y] + dy), 0.0);
 }
 /******************************************************************************/
 #ident "@(#)M_DRAW:smove2 - Move directly as a fraction of the screen size."
 void draw_smove2(float xs, float ys) {
-        if (!vdevice.initialised)
-                draw_verror("smove2: draw not initialised");
+        if (!vdevice.initialized)
+                draw_verror("smove2: draw not initialized");
 
         vdevice.cpVx = (xs / 2 + 0.5) * (vdevice.sizeX);
         vdevice.cpVy = (0.5 + ys / 2) * (vdevice.sizeY);
@@ -77,8 +77,8 @@ void draw_smove2(float xs, float ys) {
 /******************************************************************************/
 #ident "@(#)M_DRAW:rsmove2 - Relative move as a fraction of the screen size."
 void draw_rsmove2(float dxs, float dys) {
-        if (!vdevice.initialised)
-                draw_verror("rsmove2: draw not initialised");
+        if (!vdevice.initialized)
+                draw_verror("rsmove2: draw not initialized");
 
         vdevice.cpVx += dxs / 2 * (vdevice.sizeX);
         vdevice.cpVy += dys / 2 * (vdevice.sizeY);

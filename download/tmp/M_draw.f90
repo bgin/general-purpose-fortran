@@ -373,7 +373,7 @@
 !!    calculations involve the current transformation matrix. So if you need to
 !!    draw the same thing several times on the screen but in different places
 !!    it is faster to use objects than to call the appropriate drawing routines
-!!    each time. Objects also have the advantage of being saveable to a file,
+!!    each time. Objects also have the advantage of being savable to a file,
 !!    from where they can be reloaded for later reuse. Routines which draw
 !!    or move in screen coordinates, or change device, cannot be included
 !!    in objects.
@@ -3059,7 +3059,7 @@
 !! to hardware fonts depending upon the output device. This must
 !! be done after the font being scaled is loaded. To keep text of different
 !! sizes aligned along the same baseline not that you typically need to
-!! subtract the decender height from the Y position
+!! subtract the descender height from the Y position
 !!
 !!##EXAMPLE
 !!
@@ -9874,9 +9874,343 @@ character(len=*),intent(in)     :: string
    enddo
    array(size(array):)=achar(0)
 end function s2c
-!-------------------------------------------------------------------------------
+!----------------------------------------------------------------------------------------------------------------------------------!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!----------------------------------------------------------------------------------------------------------------------------------!
+subroutine test_suite_M_draw()
+implicit none
+!! setup
+   call test___copy_m_draw_Matrix()
+   call test_backface()
+   call test_backfacedir()
+   call test_boxtext()
+   call test_centertext()
+   call test_clipping()
+   call test_curvebasis()
+   call test_drawchar()
+   call test_drawstr()
+   call test_fixedwidth()
+   call test_font()
+   call test_getmatrix()
+   call test_isobj()
+   call test_linestyle()
+   call test_loadmatrix()
+   call test_loadobj()
+   call test_multmatrix()
+   call test_patch()
+   call test_patchbasis()
+   call test_polyfill()
+   call test_polyhatch()
+   call test_printattribs()
+   call test_printvdevice()
+   call test_pushdev()
+   call test_rcurve()
+   call test_saveobj()
+   call test_strlength()
+   call test_vgetdev()
+   call test_vinit()
+   call test_vnewdev()
+   call test_voutput()
+   call test_vsetflush()
+!! teardown
+contains
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test___copy_m_draw_Matrix()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('__copy_m_draw_Matrix',msg='')
+   !!call unit_check('__copy_m_draw_Matrix', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('__copy_m_draw_Matrix',msg='')
+end subroutine test___copy_m_draw_Matrix
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_backface()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('backface',msg='')
+   !!call unit_check('backface', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('backface',msg='')
+end subroutine test_backface
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_backfacedir()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('backfacedir',msg='')
+   !!call unit_check('backfacedir', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('backfacedir',msg='')
+end subroutine test_backfacedir
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_boxtext()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('boxtext',msg='')
+   !!call unit_check('boxtext', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('boxtext',msg='')
+end subroutine test_boxtext
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_centertext()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('centertext',msg='')
+   !!call unit_check('centertext', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('centertext',msg='')
+end subroutine test_centertext
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_clipping()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('clipping',msg='')
+   !!call unit_check('clipping', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('clipping',msg='')
+end subroutine test_clipping
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_curvebasis()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('curvebasis',msg='')
+   !!call unit_check('curvebasis', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('curvebasis',msg='')
+end subroutine test_curvebasis
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_drawchar()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('drawchar',msg='')
+   !!call unit_check('drawchar', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('drawchar',msg='')
+end subroutine test_drawchar
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_drawstr()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('drawstr',msg='')
+   !!call unit_check('drawstr', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('drawstr',msg='')
+end subroutine test_drawstr
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_fixedwidth()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('fixedwidth',msg='')
+   !!call unit_check('fixedwidth', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('fixedwidth',msg='')
+end subroutine test_fixedwidth
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_font()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('font',msg='')
+   !!call unit_check('font', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('font',msg='')
+end subroutine test_font
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_getmatrix()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('getmatrix',msg='')
+   !!call unit_check('getmatrix', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('getmatrix',msg='')
+end subroutine test_getmatrix
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_isobj()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('isobj',msg='')
+   !!call unit_check('isobj', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('isobj',msg='')
+end subroutine test_isobj
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_linestyle()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('linestyle',msg='')
+   !!call unit_check('linestyle', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('linestyle',msg='')
+end subroutine test_linestyle
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_loadmatrix()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('loadmatrix',msg='')
+   !!call unit_check('loadmatrix', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('loadmatrix',msg='')
+end subroutine test_loadmatrix
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_loadobj()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('loadobj',msg='')
+   !!call unit_check('loadobj', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('loadobj',msg='')
+end subroutine test_loadobj
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_multmatrix()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('multmatrix',msg='')
+   !!call unit_check('multmatrix', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('multmatrix',msg='')
+end subroutine test_multmatrix
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_patch()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('patch',msg='')
+   !!call unit_check('patch', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('patch',msg='')
+end subroutine test_patch
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_patchbasis()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('patchbasis',msg='')
+   !!call unit_check('patchbasis', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('patchbasis',msg='')
+end subroutine test_patchbasis
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_polyfill()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('polyfill',msg='')
+   !!call unit_check('polyfill', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('polyfill',msg='')
+end subroutine test_polyfill
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_polyhatch()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('polyhatch',msg='')
+   !!call unit_check('polyhatch', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('polyhatch',msg='')
+end subroutine test_polyhatch
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_printattribs()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('printattribs',msg='')
+   !!call unit_check('printattribs', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('printattribs',msg='')
+end subroutine test_printattribs
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_printvdevice()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('printvdevice',msg='')
+   !!call unit_check('printvdevice', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('printvdevice',msg='')
+end subroutine test_printvdevice
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_pushdev()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('pushdev',msg='')
+   !!call unit_check('pushdev', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('pushdev',msg='')
+end subroutine test_pushdev
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_rcurve()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('rcurve',msg='')
+   !!call unit_check('rcurve', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('rcurve',msg='')
+end subroutine test_rcurve
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_saveobj()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('saveobj',msg='')
+   !!call unit_check('saveobj', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('saveobj',msg='')
+end subroutine test_saveobj
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_strlength()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('strlength',msg='')
+   !!call unit_check('strlength', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('strlength',msg='')
+end subroutine test_strlength
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_vgetdev()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('vgetdev',msg='')
+   !!call unit_check('vgetdev', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('vgetdev',msg='')
+end subroutine test_vgetdev
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_vinit()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('vinit',msg='')
+   !!call unit_check('vinit', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('vinit',msg='')
+end subroutine test_vinit
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_vnewdev()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('vnewdev',msg='')
+   !!call unit_check('vnewdev', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('vnewdev',msg='')
+end subroutine test_vnewdev
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_voutput()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('voutput',msg='')
+   !!call unit_check('voutput', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('voutput',msg='')
+end subroutine test_voutput
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_vsetflush()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('vsetflush',msg='')
+   !!call unit_check('vsetflush', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('vsetflush',msg='')
+end subroutine test_vsetflush
+!===================================================================================================================================
+end subroutine test_suite_M_draw
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 end module M_draw
-!-------------------------------------------------------------------------------
+!----------------------------------------------------------------------------------------------------------------------------------!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!----------------------------------------------------------------------------------------------------------------------------------!
 ! drawchar -- int versus char
 ! textjustify -- UNSIGNED?
 ! pdraw and pmove in sunfort? spoint2? srect? getfontwidth? getfontheight?  getprefposandsize?

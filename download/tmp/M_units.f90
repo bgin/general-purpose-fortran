@@ -2048,7 +2048,7 @@ real                :: acurcy
 !     real,intent(in) :: digi0       ! Number of digits to be satisfied in relative tolerance.
 !     OUTPUT ...
 !     integer,intent(out) :: ind     ! = 0, If tolerance is     satisfied.
-!                                    ! = 1, If tolerance is not satisified.
+!                                    ! = 1, If tolerance is not satisfied.
 !     real,intent(out) :: acurcy     ! = - LOG10 (ABS((X-Y)/Y)))
       significant_digits=int(log10(2.0**digits(0.0)))     ! MAXIMUM NUMBER OF SIGNIFICANT DIGITS IN A REAL NUMBER.
       call accdig (v1,v2,significant_digits-2,ACURCY,IND)

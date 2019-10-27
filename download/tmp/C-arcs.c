@@ -22,8 +22,8 @@ void draw_arc(float x, float y, float radius, float startang, float endang){
         float   deltang, cosine, sine, angle;
         int     sync, i, numsegs;
 
-        if (!vdevice.initialised)
-                draw_verror("arc: draw not initialised");
+        if (!vdevice.initialized)
+                draw_verror("arc: draw not initialized");
 
         if ((sync = vdevice.sync))
                 vdevice.sync = V_FALSE;
@@ -75,8 +75,8 @@ void draw_sector(float x, float y, float radius, float startang, float endang){
         float   deltang, cosine, sine, angle;
         int     sync, i, numsegs, inpoly;
 
-        if (!vdevice.initialised)
-                draw_verror("segment: draw not initialised");
+        if (!vdevice.initialized)
+                draw_verror("segment: draw not initialized");
 
         angle = startang * D2R;
         numsegs = fabs(endang - startang) / 360.0 * nsegs + 0.5;
@@ -141,8 +141,8 @@ void draw_circle(float x, float y, float radius) {
         int   sync, i, inpoly;
         int   need_to_close=0;
 
-        if (!vdevice.initialised)
-                draw_verror("circle: draw not initialised");
+        if (!vdevice.initialized)
+                draw_verror("circle: draw not initialized");
 
         angle = 2.0 * PI / nsegs;
         cosine = cos((double)angle);

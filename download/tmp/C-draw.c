@@ -242,8 +242,8 @@ void draw_draw (float x, float y, float z) {
    Vector res;
 
 /*--------------------------------------------------------------------*/
-   if (!vdevice.initialised)
-      draw_verror ("draw: draw not initialised");
+   if (!vdevice.initialized)
+      draw_verror ("draw: draw not initialized");
 /*--------------------------------------------------------------------*/
    if (vdevice.inpolygon) {
       (*vdevice.pdraw) (x, y, z);
@@ -319,8 +319,8 @@ void draw_draw (float x, float y, float z) {
 #ident "@(#)M_DRAW:draw2 - draw a line from the logical graphics position  to the world coordinates x, y."
 
 void draw_draw2 (float x, float y) {
-   if (!vdevice.initialised) {
-      draw_verror ("draw2: draw not initialised");
+   if (!vdevice.initialized) {
+      draw_verror ("draw2: draw not initialized");
    }
    draw_draw (x, y, 0.0);
 }
@@ -328,8 +328,8 @@ void draw_draw2 (float x, float y) {
 #ident "@(#)M_DRAW:rdraw - 3D relative draw from the logical graphics position by dx, dy, dz."
 
 void draw_rdraw (float dx, float dy, float dz) {
-   if (!vdevice.initialised) {
-      draw_verror ("rdraw: draw not initialised");
+   if (!vdevice.initialized) {
+      draw_verror ("rdraw: draw not initialized");
    }
 
    draw_draw ((vdevice.cpW[V_X] + dx), (vdevice.cpW[V_Y] + dy),
@@ -339,8 +339,8 @@ void draw_rdraw (float dx, float dy, float dz) {
 #ident "@(#)M_DRAW:rdraw2 - 2D relative draw from the logical graphics position by dx, dy."
 void draw_rdraw2 (float dx, float dy) {
 
-   if (!vdevice.initialised) {
-      draw_verror ("rdraw2: draw not initialised");
+   if (!vdevice.initialized) {
+      draw_verror ("rdraw2: draw not initialized");
    }
 
    draw_draw ((vdevice.cpW[V_X] + dx), (vdevice.cpW[V_Y] + dy), 0.0);
@@ -350,8 +350,8 @@ void draw_rdraw2 (float dx, float dy) {
 void draw_sdraw2 (float xs, float ys) {
    int nx, ny;
 
-   if (!vdevice.initialised){
-      draw_verror ("sdraw2: draw not initialised");
+   if (!vdevice.initialized){
+      draw_verror ("sdraw2: draw not initialized");
    }
 
    nx = (xs / 2 + 0.5) * vdevice.sizeX;
@@ -368,8 +368,8 @@ void draw_sdraw2 (float xs, float ys) {
 void draw_rsdraw2 (float dxs, float dys) {
    int ndx, ndy;
 
-   if (!vdevice.initialised){
-      draw_verror ("rsdraw2: draw not initialised");
+   if (!vdevice.initialized){
+      draw_verror ("rsdraw2: draw not initialized");
    }
 
    ndx = dxs * vdevice.sizeSx / 2;

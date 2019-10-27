@@ -4,7 +4,7 @@
 module M_hashkeys
 use,intrinsic :: ISO_FORTRAN_ENV, only : int8,int16,int32,int64,real32,real64,real128
 use,intrinsic :: iso_c_binding
-!!use,intrinisc :: iso_c_binding,   only : c_int32_t
+!!use,intrinsic :: iso_c_binding,   only : c_int32_t
 use M_anything,                   only : anything_to_bytes
 use M_debug,                      only : debug
 implicit none
@@ -1428,7 +1428,7 @@ end subroutine test_luhn_checksum
 !!     value; as Fortran does not (currently) support a standard unsigned
 !!     integer. If the value is changed to be a 64-bit value on platforms
 !!     that do not support 128-bit INTEGER values the value may be negative,
-!!     but is otherwise usuable.
+!!     but is otherwise usable.
 !!
 !!     Such non-reversible hashes may be used for data or file fingerprints,
 !!     to confirm unchanging results during regression testing, ...
@@ -1743,7 +1743,7 @@ end function crc32_hash_scalar
 !!    allow the value to always be a positive value; as Fortran does not
 !!    (currently) support a standard unsigned integer. If the value is
 !!    changed to be a 64-bit value on platforms that do not support 128-bit
-!!    INTEGER values the value may be negative, but is otherwise usuable.
+!!    INTEGER values the value may be negative, but is otherwise usable.
 !!
 !!    Such non-reversible hashes may be used for data or file fingerprints,
 !!    to confirm unchanging results during regression testing, ...

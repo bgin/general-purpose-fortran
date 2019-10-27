@@ -3398,6 +3398,226 @@ end subroutine seefont
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
+subroutine test_suite_M_drawplus()
+implicit none
+!! setup
+   call test_arrowhead()
+   call test_barcode()
+   call test_biggest_ortho2()
+   call test_call_draw()
+   call test_draw_interpret()
+   call test_ellipse()
+   call test_invokeobj()
+   call test_page_rri()
+   call test_plain_rect()
+   call test_polyline2_i()
+   call test_polyline2_r()
+   call test_pop()
+   call test_push()
+   call test_rdbox()
+   call test_rdpnt()
+   call test_seefont()
+   call test_smoot()
+   call test_spirograph()
+   call test_uarc()
+   call test_uconic()
+   call test_illusion()
+!! teardown
+contains
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_arrowhead()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('arrowhead',msg='')
+   !!call unit_check('arrowhead', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('arrowhead',msg='')
+end subroutine test_arrowhead
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_barcode()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('barcode',msg='')
+   !!call unit_check('barcode', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('barcode',msg='')
+end subroutine test_barcode
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_biggest_ortho2()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('biggest_ortho2',msg='')
+   !!call unit_check('biggest_ortho2', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('biggest_ortho2',msg='')
+end subroutine test_biggest_ortho2
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_call_draw()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('call_draw',msg='')
+   !!call unit_check('call_draw', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('call_draw',msg='')
+end subroutine test_call_draw
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_draw_interpret()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('draw_interpret',msg='')
+   !!call unit_check('draw_interpret', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('draw_interpret',msg='')
+end subroutine test_draw_interpret
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_ellipse()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('ellipse',msg='')
+   !!call unit_check('ellipse', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('ellipse',msg='')
+end subroutine test_ellipse
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_invokeobj()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('invokeobj',msg='')
+   !!call unit_check('invokeobj', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('invokeobj',msg='')
+end subroutine test_invokeobj
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_page_rri()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('page_rri',msg='')
+   !!call unit_check('page_rri', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('page_rri',msg='')
+end subroutine test_page_rri
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_plain_rect()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('plain_rect',msg='')
+   !!call unit_check('plain_rect', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('plain_rect',msg='')
+end subroutine test_plain_rect
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_polyline2_i()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('polyline2_i',msg='')
+   !!call unit_check('polyline2_i', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('polyline2_i',msg='')
+end subroutine test_polyline2_i
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_polyline2_r()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('polyline2_r',msg='')
+   !!call unit_check('polyline2_r', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('polyline2_r',msg='')
+end subroutine test_polyline2_r
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_pop()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('pop',msg='')
+   !!call unit_check('pop', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('pop',msg='')
+end subroutine test_pop
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_push()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('push',msg='')
+   !!call unit_check('push', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('push',msg='')
+end subroutine test_push
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_rdbox()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('rdbox',msg='')
+   !!call unit_check('rdbox', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('rdbox',msg='')
+end subroutine test_rdbox
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_rdpnt()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('rdpnt',msg='')
+   !!call unit_check('rdpnt', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('rdpnt',msg='')
+end subroutine test_rdpnt
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_seefont()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('seefont',msg='')
+   !!call unit_check('seefont', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('seefont',msg='')
+end subroutine test_seefont
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_smoot()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('smoot',msg='')
+   !!call unit_check('smoot', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('smoot',msg='')
+end subroutine test_smoot
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_spirograph()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('spirograph',msg='')
+   !!call unit_check('spirograph', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('spirograph',msg='')
+end subroutine test_spirograph
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_uarc()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('uarc',msg='')
+   !!call unit_check('uarc', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('uarc',msg='')
+end subroutine test_uarc
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_uconic()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('uconic',msg='')
+   !!call unit_check('uconic', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('uconic',msg='')
+end subroutine test_uconic
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_illusion()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('illusion',msg='')
+   !!call unit_check('illusion', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('illusion',msg='')
+end subroutine test_illusion
+!===================================================================================================================================
+end subroutine test_suite_M_drawplus
+!==================================================================================================================================!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!==================================================================================================================================!
 end module M_drawplus
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!

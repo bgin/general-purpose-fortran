@@ -568,7 +568,7 @@ character(len=132)                   :: message
 !   concept.
 !   A STOP statement or ALL STOP statement shall not be executed during execution of an input/output statement.
 !
-! Conforming varients I have encountered include
+! Conforming variants I have encountered include
 !    o printing a message such as 'STOP nnn' when the integer value is called
 !    o having a limit on the length of the message string passed
 !    o prefixing the message with the string 'STOP '

@@ -551,7 +551,7 @@ end subroutine get_command_arguments_string
 !!         negative numbers to be used as values.
 !!
 !!       o specifying both names of an equivalenced keyword will have
-!!         undefined results (currrently, their alphabetical order
+!!         undefined results (currently, their alphabetical order
 !!         will define what the Fortran variable values become).
 !!
 !!       o there is currently no mapping of short names to long
@@ -1421,9 +1421,30 @@ end function longest_command_argument
 !!    character(len=*),intent(in)     ::  string
 !!
 !!##DESCRIPTION
+!!   must start with a keyword, any keyword that appears must have a value. A character array can have more than one delimited string
+!!   unallocated and null values are not allowed
+!!   set parameter name to blank
+!!   find undelimited =
+!!   find previous , or beginning of string. in-between is a keyword= to , that starts a keyword is a value
+!!   one keyword and value are known store them
 !!
 !!##OPTIONS
 !!    STRING   string is character input string to define command
+!!
+!!##EXAMPLE
+!!
+!!   Typical string:
+!!
+!!    >&ARGS
+!!    > L = F,
+!!    > A_="xxxxxxxxxxxxxxxxxxxxxxxxxx                                                      ",
+!!    > B_="Value B                                                                         ",
+!!    > P= 2*0.00000000      ,
+!!    > C_=         10,         20,         30, XYZ_=(-123.000000,-456.000000),
+!!    > X=  0.0000000000000000     ,
+!!    > Y=  0.0000000000000000     ,
+!!    > Z=  0.0000000000000000     ,
+!!    > /
 !===================================================================================================================================
 subroutine namelist_to_dictionary(string)
 implicit none
@@ -1474,23 +1495,6 @@ integer                           :: iback1,iback2
       write(stderr,*)'*namelist_to_dictionary* DUMMY=['//dummy//']'
    endif
 
-! must start with a keyword, any keyword that appears must have a value. A character array can have more than one delimited string
-! unallocated and null values are not allowed
-! set parameter name to blank
-! find undelimited =
-! find previous , or beginning of string. inbetween is a keyword
-! = to , that starts a keyword is a value
-! one keyword and value are known store them
-!&ARGS
-! L = F,
-! A_="xxxxxxxxxxxxxxxxxxxxxxxxxx                                                      ",
-! B_="Value B                                                                         ",
-! P= 2*0.00000000      ,
-! C_=         10,         20,         30, XYZ_=(-123.000000,-456.000000),
-! X=  0.0000000000000000     ,
-! Y=  0.0000000000000000     ,
-! Z=  0.0000000000000000     ,
-! /
 
    keyword=""          ! initial variable name
    value=""            ! initial value of a string
@@ -1571,6 +1575,96 @@ keyword_value=dummy(istart:iend)
 end subroutine splitit
 
 end subroutine namelist_to_dictionary
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+subroutine test_suite_M_args()
+implicit none
+!! setup
+   call test___copy_m_args_Option()
+   call test___final_m_args_Option()
+   call test_get_command_arguments_as_raw_namelist()
+   call test_get_command_arguments_stack()
+   call test_get_command_arguments_string()
+   call test_get_namelist()
+   call test_longest_command_argument()
+   call test_print_dictionary()
+!! teardown
+contains
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test___copy_m_args_Option()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('__copy_m_args_Option',msg='')
+   !!call unit_check('__copy_m_args_Option', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('__copy_m_args_Option',msg='')
+end subroutine test___copy_m_args_Option
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test___final_m_args_Option()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('__final_m_args_Option',msg='')
+   !!call unit_check('__final_m_args_Option', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('__final_m_args_Option',msg='')
+end subroutine test___final_m_args_Option
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_get_command_arguments_as_raw_namelist()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('get_command_arguments_as_raw_namelist',msg='')
+   !!call unit_check('get_command_arguments_as_raw_namelist', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('get_command_arguments_as_raw_namelist',msg='')
+end subroutine test_get_command_arguments_as_raw_namelist
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_get_command_arguments_stack()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('get_command_arguments_stack',msg='')
+   !!call unit_check('get_command_arguments_stack', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('get_command_arguments_stack',msg='')
+end subroutine test_get_command_arguments_stack
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_get_command_arguments_string()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('get_command_arguments_string',msg='')
+   !!call unit_check('get_command_arguments_string', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('get_command_arguments_string',msg='')
+end subroutine test_get_command_arguments_string
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_get_namelist()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('get_namelist',msg='')
+   !!call unit_check('get_namelist', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('get_namelist',msg='')
+end subroutine test_get_namelist
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_longest_command_argument()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('longest_command_argument',msg='')
+   !!call unit_check('longest_command_argument', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('longest_command_argument',msg='')
+end subroutine test_longest_command_argument
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_print_dictionary()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('print_dictionary',msg='')
+   !!call unit_check('print_dictionary', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('print_dictionary',msg='')
+end subroutine test_print_dictionary
+!===================================================================================================================================
+end subroutine test_suite_M_args
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================

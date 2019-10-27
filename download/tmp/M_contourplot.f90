@@ -791,7 +791,7 @@ CONTAINS
 !!
 !!##SYNOPSIS
 !!
-!!    SUBROUTINE ContourLines(x,y,z,ismopt,iexp,jexp,clist,epslon,ierr,cntcrv)
+!!    SUBROUTINE ContourLines(x,y,z,ismopt,iexp,jexp,clist,epsilon,ierr,cntcrv)
 !!
 !!       real,intent(in),dimension(:) :: x
 !!       real,intent(in),dimension(:) :: y
@@ -800,7 +800,7 @@ CONTAINS
 !!       integer,intent(in)           :: iexp
 !!       integer,intent(in)           :: jexp
 !!       real,intent(in),dimension(:) :: clist
-!!       real,intent(out)             :: epslon
+!!       real,intent(out)             :: epsilon
 !!       integer,intent(out)          :: ierr
 !!       external cntcrv
 !!
@@ -852,7 +852,7 @@ CONTAINS
 !!                  If smoothing is used, these values are used to define
 !!                  a polynomial used for a least-squares fit of the data.
 !!     clist        list of constant contour values
-!!     epslon       error function (normalized value) returned to caller
+!!     epsilon      error function (normalized value) returned to caller
 !!                  if ismopt is non-zero
 !!     ierr         return error flag
 !!                    0. for normal return
@@ -935,7 +935,7 @@ CONTAINS
 !!    quit
 !!    EOF
 !===================================================================================================================================
-SUBROUTINE ContourLines(x,y,z,ismopt,iexp,jexp,clist,epslon,ierr,cntcrv)
+SUBROUTINE ContourLines(x,y,z,ismopt,iexp,jexp,clist,epsilon,ierr,cntcrv)
 ! ---------------------------------------------------------------------------
 ! PURPOSE - Driver program for computing and drawing contour lines of
 !   constant z for the function z = f(x,y).
@@ -954,7 +954,7 @@ INTEGER,INTENT(IN):: iexp             ! i exponent value for smoothing
 INTEGER,INTENT(IN):: jexp             ! j exponent value for smoothing
 !INTEGER,INTENT(IN):: ncntrs          ! number of contour lines to be drawn (self computing if ncntrs.le.0)
 REAL,INTENT(IN),DIMENSION(:):: clist  ! list of constant contour values
-REAL,INTENT(OUT):: epslon             ! error function (normalized value) returned to caller if ismopt is non-zero
+REAL,INTENT(OUT):: epsilon            ! error function (normalized value) returned to caller if ismopt is non-zero
 INTEGER,INTENT(OUT):: ierr            ! return error flag
 !                  = 0 for normal return
 !                  = 1 for invalid value for n
@@ -984,7 +984,7 @@ REAL(SP),DIMENSION(500):: znew
 ! (A) initialize local variables and check inputs for errors!
 
          ierr=0
-         epslon=0.0
+         epsilon=0.0
          n=MIN(SIZE(x), SIZE(y), SIZE(z))
          IF (n<3 .or. n>maxpts) THEN
             ierr=1
@@ -1023,9 +1023,9 @@ REAL(SP),DIMENSION(500):: znew
                ncoef,coef, ipowr,jpowr)
             IF (ncoef.lt.0) GOTO 50
             DO k=1,n
-               epslon=epslon+(z(k)-znew(k))**2
+               epsilon=epsilon+(z(k)-znew(k))**2
             ENDDO
-            epslon=sqrt(epslon)/REAL(n)
+            epsilon=sqrt(epsilon)/REAL(n)
          ENDIF
 !
 
@@ -1070,9 +1070,9 @@ SUBROUTINE Triangulate(xd, yd, n, l, e, be, te)
 !
 !     SUBROUTINE OUTPUT
          INTEGER,INTENT(OUT):: l  ! = number of edges listed in e, be and te
-         INTEGER,INTENT(OUT),DIMENSION(:,:):: e  ! = list of indices of each traingle edge
+         INTEGER,INTENT(OUT),DIMENSION(:,:):: e  ! = list of indices of each triangle edge
          INTEGER,INTENT(OUT),DIMENSION(:):: be  ! = 1 if i of e is a boundary edge
-         INTEGER,INTENT(OUT),DIMENSION(:,:):: te  != indices of neighboring edges for each traingle
+         INTEGER,INTENT(OUT),DIMENSION(:,:):: te  != indices of neighboring edges for each triangle
 !
 !     LOCAL VARIABLES
 
@@ -1201,7 +1201,7 @@ SUBROUTINE Triangulate(xd, yd, n, l, e, be, te)
 !
 ! (F) consider the boundary edge from b1 to b2.  for all points not yet
 !     triangulated (the j points remaining in p), find the point that,
-!     when traingulated with b1,b2, minimizes the length of the two new
+!     when triangulated with b1,b2, minimizes the length of the two new
 !     edges to be drawn.
 
 
@@ -1690,13 +1690,13 @@ SUBROUTINE Cntour (zcon, xi, eta, lambda, j, ibe, ite,cntcrv)
 !        ETA(J)  = ARRAY OF Y COORDINATES OF INTERPOLATED POINTS
 !        LAMBDA(J) = ARRAY OF EDGE NUMBERS FOR J-TH INTERPOLATED POINT
 !        J       = NUMBER OF POINTS IN THE LIST OF INTERPOLATED POINTS
-!        IBE     = THE LIST OF BOUNDARY EDGES TAKEN FROM THE TRIANGULATI
+!        IBE     = THE LIST OF BOUNDARY EDGES TAKEN FROM THE TRIANGULATION
 !        ITE     = LINKED LIST OF INDICES OF ADJACENT EDGES PROVIDED
 !                  BY THE TRIANGULATION PROCEDURE.
 
 REAL,INTENT(IN)                     :: zcon    ! z-value of the contour line
-REAL,INTENT(IN OUT),DIMENSION(:)    :: xi      ! x coordiantes of interpolated points
-REAL,INTENT(IN OUT),DIMENSION(:)    :: eta     ! array of y coordiantes of interpolated points
+REAL,INTENT(IN OUT),DIMENSION(:)    :: xi      ! x coordinates of interpolated points
+REAL,INTENT(IN OUT),DIMENSION(:)    :: eta     ! array of y coordinates of interpolated points
 INTEGER,INTENT(IN OUT),DIMENSION(:) :: lambda  ! array of edge numbers for j-th interpolated point
 INTEGER,INTENT(IN OUT)              :: j       ! number of points in the list of interpolated points
 INTEGER,INTENT(IN),DIMENSION(:)     :: ibe     ! the list of boundary edges from the triangulation

@@ -31,8 +31,8 @@ static	float	draw_addemup(Matrix m);
 /******************************************************************************/
 #ident "@(#)M_DRAW:patchbasis - Specify the two basis matrices for a patch"
 void draw_patchbasis(Matrix tb, Matrix ub) {
-        if(!vdevice.initialised)
-                draw_verror("patchbasis: draw not initialised");
+        if(!vdevice.initialized)
+                draw_verror("patchbasis: draw not initialized");
 
         draw_copymatrix(tbasis, tb);
 	draw_copytranspose(ubasis, ub);
@@ -44,8 +44,8 @@ void draw_patchbasis(Matrix tb, Matrix ub) {
  * with the number of curve segments in the "other" direction.
  */
 void draw_patchprecision(int tseg, int useg){
-        if (!vdevice.initialised)
-                draw_verror("patchprecision: draw not initialised");
+        if (!vdevice.initialized)
+                draw_verror("patchprecision: draw not initialized");
 
         if(tseg > 0 && useg > 0) {
                 tsegs = tseg;
@@ -61,8 +61,8 @@ void draw_patchprecision(int tseg, int useg){
 #ident "@(#)M_DRAW:patchcurves - Specify the number of curves to be drawn in each direction on a patch."
 void draw_patchcurves(int nt, int nu){
 
-        if (!vdevice.initialised)
-                draw_verror("patchcurves: draw not initialised");
+        if (!vdevice.initialized)
+                draw_verror("patchcurves: draw not initialized");
 
         if(nt > 0 && nu > 0) {
                 ntcurves = nt;
@@ -151,8 +151,8 @@ void draw_rpatch(Matrix geomx, Matrix geomy, Matrix geomz, Matrix geomw){
         int	i, j, sync;
 	Token	*tok;
 
-        if (!vdevice.initialised)
-                draw_verror("patch: draw not initialised");
+        if (!vdevice.initialized)
+                draw_verror("patch: draw not initialized");
 
 	/* 
 	 *  Form S = et . tbasis . Gtensor . ubasisT . euT

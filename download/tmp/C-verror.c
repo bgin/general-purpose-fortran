@@ -16,7 +16,7 @@ void draw_verror(char *str){
 	fprintf(stderr, "%s\n", str);
 #endif
 #endif
-	if (vdevice.initialised){
+	if (vdevice.initialized){
 		draw_vexit();
 	}
         abort();

@@ -2843,7 +2843,7 @@ integer                     :: i
       if(size(dict_verbs).gt.0)then
          write(*,'(a,t21,1x,a5,a5,1x,a)')'OPTION','COUNT','LEN','VALUE'
          do i=1,size(dict_verbs)
-            write(*,'(a,t21,i5,1x,i5,1x,"[",a,"]")'), dict_verbs(i), dict_calls(i), dict_lens(i),trim(dict_vals(i))
+            write(*,'(a,t21,i5,1x,i5,1x,"[",a,"]")') dict_verbs(i), dict_calls(i), dict_lens(i),trim(dict_vals(i))
          enddo
       endif
    endif
