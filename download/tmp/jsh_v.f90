@@ -13,17 +13,17 @@ integer,intent(in) :: i
       call trimit('@(#)Compiler Version .... '//trim(compiler_version())//'>')
 !     call trimit('@(#)Compiler Options .... '//trim(compiler_options())//'>')
       call trimit('@(#)Compile Date ........ '//&
-     &'Sun, Oct 27, 2019  1:33:08 PM>')
+     &'Thu Oct 31 19:54:21 EDT 2019>')
      call trimit('@(#)Compiled on node:>')
       call trimit('@(#) Nodename ........... '// &
      &'buzz>')
       call trimit('@(#) System Type ........ '// &
      &'CYGWIN_NT-10.0>')
       call trimit('@(#) O.S. Release ....... '// &
-     &'3.0.7(0.338/5/3)>')
+     &'3.1.0(0.340/5/3)>')
       call trimit('@(#) O.S. Version ....... ' &
-     &//'2019-04-30 ' &
-     &//'18:08 ' &
+     &//'2019-10-10 ' &
+     &//'14:06 ' &
      &//'>')
       call trimit('@(#) Hardware Name ...... '//&
      &'x86_64>')

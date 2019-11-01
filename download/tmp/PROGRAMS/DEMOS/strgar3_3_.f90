@@ -1,6 +1,5 @@
              program demo_strgar3
              use M_hybrid,     only : strgar3
-             use M_calculator, only : juown1
              character(len=90) :: string
              real              :: values(10,4)
              rdum1=rnum0('ownmode(1)') ! allow user-define procedure calls from juown1

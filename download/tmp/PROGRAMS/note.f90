@@ -75,7 +75,7 @@ end subroutine help_usage
 !!##OPTIONS
 !!     STRING(S)  strings to print as large block letters
 !!     --font alpha|banner  select font style
-!!     --test     the selected character set is printed, one letter at a time
+!!     --test     the selected character set is printed, one letter at a time.
 !!     --help     display this help and exit
 !!     --version  output version information and exit
 !!
@@ -129,7 +129,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)COPYRIGHT:      Copyright (c) 1984, 1996 John S. Urban>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Thu, Aug 29th, 2019 10:59:18 PM>',&
+'@(#)COMPILED:       Wed, Oct 30th, 2019 9:37:25 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

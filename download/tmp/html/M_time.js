@@ -1,5 +1,4 @@
 function loadthem(){
-append("M_time.3.html");
 append("box_month.3.html");
 append("d2j.3.html");
 append("d2o.3.html");

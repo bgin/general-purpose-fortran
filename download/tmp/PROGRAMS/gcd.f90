@@ -97,7 +97,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!        gcd(1f) - [NUMBERS] display greatest common divisor of a list of whole number
+!!        gcd(1f) - [NUMBERS] display greatest common divisor of a list of whole numbers
 !!
 !!##SYNOPSIS
 !!
@@ -148,7 +148,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)UUID:           8f39b1e5-592f-4a22-946f-b8da2aa49633>',&
-'@(#)COMPILED:       Thu, Aug 29th, 2019 10:14:50 PM>',&
+'@(#)COMPILED:       Wed, Oct 30th, 2019 9:35:53 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

@@ -117,7 +117,7 @@ end subroutine help_usage
 !!
 !!##OPTIONS
 !!    -month      Display single month output. The month is numeric (1-12)
-!!                or a month name or blank. If blank the current month is assumed
+!!                or a month name or blank. If blank the current month is assumed.
 !!
 !!    -year NNNN  Display a calendar for the whole year NNNN.
 !!                A year starts on Jan 1st.
@@ -158,7 +158,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Thu, Aug 29th, 2019 10:57:30 PM>',&
+'@(#)COMPILED:       Wed, Oct 30th, 2019 9:36:59 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

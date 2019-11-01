@@ -45,7 +45,7 @@ end subroutine help_usage
 !!
 !!##OPTIONS
 !!     columns      numbers indicating which columns to print
-!!     -delimiters  input column delimiter character(s) (default: whitespace
+!!     -delimiters  input column delimiter character(s) (default: whitespace)
 !!     -help        display command help and exit
 !!     -version     display command metadata and exit
 !!##EXAMPLES
@@ -71,7 +71,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20170224>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Fri, Sep 20th, 2019 12:48:09 PM>',&
+'@(#)COMPILED:       Wed, Oct 30th, 2019 9:34:31 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -91,7 +91,6 @@ character(len=:),allocatable       :: delimiters ! characters used to delimit co
 character(len=:),allocatable       :: array(:)
 integer,allocatable                :: icols(:)
 character(len=4096),allocatable    :: acols(:)
-integer                            :: ios
 integer                            :: isize
 integer                            :: i
 logical                            :: verbose

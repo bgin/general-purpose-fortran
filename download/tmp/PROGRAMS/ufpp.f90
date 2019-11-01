@@ -356,7 +356,7 @@
 !!       stop ! if -help was specified, stop
 !!    endif
 !!    end subroutine help_usage
-!!    !----------------------------------------------------------------------------------------------------------------------------------
+!!    !-----------------------------------------------------------------------------------------------------------------------------------
 !!    subroutine help_version(l_version)
 !!    implicit none
 !!    character(len=*),parameter     :: ident="@(#)help_version(3f): prints version information"
@@ -383,7 +383,7 @@
 !!       stop ! if -version was specified, stop
 !!    endif
 !!    end subroutine help_version
-!!    !----------------------------------------------------------------------------------------------------------------------------------
+!!    !-----------------------------------------------------------------------------------------------------------------------------------
 !!    !! date ....... Mon, Dec 18, 2017  2:55:25 AM
 !!    !! userid ..... JSU
 !!    !! hostname ... buzz
@@ -391,7 +391,7 @@
 !!    !    placed in front of each line, but is otherwise left as-is.
 !!    !
 !!    !    The next section is just as-is Fortran
-!!    !==================================================================================================================================
+!!    !===================================================================================================================================
 !!    program cf
 !!    use M_kracken, only: kracken, rgets, lget
 !!    implicit none
@@ -456,7 +456,7 @@
 !!     &lt;html&gt;
 !!     &lt;head&gt;
 !!        &lt;title&gt; Simple HTML template for use with ufpp(1) &lt;/title&gt;
-!!        &lt;link rel=&quot;stylesheet&quot; href=&quot;http://www.w3.org/StyleSheets/Core/OldStyle&quot; type=&quot;text/css&quot; /&gt
+!!        &lt;link rel=&quot;stylesheet&quot; href=&quot;http://www.w3.org/StyleSheets/Core/OldStyle&quot; type=&quot;text/css&quot; /&gt;
 !!        &lt;!-- Chocolate Midnight Modernist Oldstyle Steely Swiss Traditional Ultramarine --&gt;
 !!     &lt;/head&gt;
 !!     &lt;body&gt;
@@ -2281,6 +2281,7 @@ subroutine format_g_man()
             if(len(G_MAN).gt.1)then      ! the way the string is built it starts with a newline
                CALL split(G_MAN,array_bug,delimiters=new_line('N'),nulls='return') ! parse string to an array parsing on delimiters
                array=[character(len=(len(array_bug)+6)) :: array_bug] !! pad with trailing spaces
+               array=' '
                deallocate(array_bug)
                do i=1,size(array)        ! lines starting with a letter and all uppercase letters is prefixed with "##"
                   if( upper(array(i)).eq.array(i) .and. isalpha(array(i)(1:1)).and.lower(array(i)).ne.array(i))then
@@ -3379,7 +3380,7 @@ end subroutine help_usage
 !!
 !!      write(io,'(a)')'/home/urbanjs/V600'
 !!
-!!    $FILTER [comment|write|help|version|shell[ -cmd COMMAND]] [-file NAME][! comment
+!!    $FILTER [comment|write|help|version|shell[ -cmd COMMAND]] [-file NAME][! comment]
 !!    $FILTER VARIABLE -varname NAME
 !!
 !!       COMMENT:  write text prefixed by an exclamation and a space
@@ -3639,7 +3640,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        4.0: 20170502>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
-'@(#)COMPILED:       Sun, Oct 20th, 2019 12:34:17 PM>',&
+'@(#)COMPILED:       Wed, Oct 30th, 2019 9:40:17 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

@@ -74,7 +74,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20180427>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Thu, Aug 29th, 2019 10:25:52 PM>',&
+'@(#)COMPILED:       Wed, Oct 30th, 2019 9:50:12 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -154,62 +154,60 @@ endif
 end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
-!!##NAME
-!!     _uuidgen(1f) - [FUNIX] generate a UUID (Universally Unique ID) string per RFC 412
 !!
-!!##SYNOPSIS
 !!
-!!     _uuidgen [[ --method NAME][ -urn][ -repeat N]]|[ --help|--version]
 !!
-!!##DESCRIPTION
-!!    _uuidgen(3f) generates UUID strings according to the RFC 4122
-!!    standard.
 !!
-!!    A universally unique identifier (UUID) is a 128-bit number used to
-!!    identify information in computer systems. When generated according
-!!    to standard methods UUIDs are for practical purposes unique.
 !!
-!!    Standard methods 0,1, and 4 are supported as described in RFC 4122.
 !!
-!!    UUID strings are particularly useful as keys for relational database
-!!    entries, and for building unique temporary file names (especially in
-!!    cross-mounted filesystems that more than one OS is utilizing).
 !!
-!!##OPTIONS
-!!     --method NAME  Select the UUID version type. Supported methods are
-!!                    nil|0, random|4, time|1.
 !!
-!!                    0. Nil UUID (ie. '00000000-0000-0000-0000-000000000000')
-!!                    1. time-based UUID
-!!                    2. Not implemented
-!!                    3. Not implemented
-!!                    4. pseudo-RNG(Random Number Generator) based
-!!                    5. Not implemented
 !!
-!!     --urn       RFC 4122 defines a Uniform Resource Name (URN)
-!!                 namespace for UUIDs. IE., the output is
-!!                 prefixed with "urn:uuid:".
 !!
-!!     --repeat N  Number of UUID strings to generate
 !!
-!!     --help      display this help and exit
 !!
-!!     --version   output version information and exit
 !!
-!!##EXAMPLES
 !!
-!!   Sample commands
 !!
-!!    _uuidgen
-!!    4bb8051e-4af3-11e8-6603-4254ffee9a14
 !!
-!!    _uuidgen -urn
-!!    urn:uuid:e9fd7cab-69f2-4cd6-4b5e-d54b9fbf617a
 !!
-!!    _uuidgen -method time -repeat 4
-!!    f2a2faf0-833a-11e9-7373-5eb4cfd7e237
-!!    f2a2faf0-833a-11e9-7373-afbb9f7b9100
-!!    f2a2faf0-833a-11e9-7373-cde3ffff3681
-!!    f2a2faf0-833a-11e9-7373-271cfbfd42bc
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !===================================================================================================================================
 end program uuidgen

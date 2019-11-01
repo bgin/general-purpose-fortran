@@ -140,7 +140,7 @@ end subroutine help_usage
 !!       2 <= NUMBER <= (2**31)-1 or 2147483647.
 !!
 !!##OPTIONS
-!!        -start N   if specified factor a range of numbers starting with thi
+!!        -start N   if specified factor a range of numbers starting with this
 !!                   value. If -end is specified defaults to 2.
 !!        -end M     if specified factor a range of numbers ending with this
 !!                   value. If -start is specified defaults to huge(0).
@@ -194,7 +194,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
 '@(#)UUID:           37a84d23-0b17-4cd5-bb09-54e23d2e66a6>',&
-'@(#)COMPILED:       Mon, Sep 30th, 2019 10:04:53 PM>',&
+'@(#)COMPILED:       Wed, Oct 30th, 2019 9:35:39 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

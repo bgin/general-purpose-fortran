@@ -37,30 +37,28 @@ endif
 end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
-!!##NAME
-!!    _touch(1f) - [FUNIX:FILESYSTEM] change file access and modify timestamps to current time, creating file is necessar
 !!
-!!##SYNOPSIS
 !!
-!!    _touch [FILE... [ -date DATE]]|[ --help|--version|--verbose]
 !!
-!!##DESCRIPTION
 !!
-!!    Make sure specified filenames exist (by creating them as empty
-!!    files) and change file access time to current time or specified
-!!    time.
-!!##OPTIONS
-!!    -date      Change the file timestamps to the specified date instead of
-!!               the current time. Uses guessdate(3f) to read the date.
-!!    --verbose  Display messages showing command progress
-!!    --help     Display help text and exit
-!!    --version  Display version information and exit
-!!##EXAMPLES
 !!
-!!   Sample commands
 !!
-!!    _touch *.f90
-!!    _touch * -date 2000-01-02 10:20:30
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -77,7 +75,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    change file access timestamp to current time, creating file is necessary>',&
 '@(#)VERSION:        1.0, 20180217>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sat, Aug 31st, 2019 12:48:32 PM>',&
+'@(#)COMPILED:       Wed, Oct 30th, 2019 9:48:50 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

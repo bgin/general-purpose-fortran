@@ -28,21 +28,19 @@ endif
 end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
-!!##NAME
-!!        _pwd(1f) - [FUNIX:FILESYSTEM] list full pathname of current director
-!!##SYNOPSIS
 !!
-!!        _pwd [ --version|--help]
-!!##DESCRIPTION
-!!        list full pathname of current directory
-!!##OPTIONS
-!!        --help      display command help and exit
-!!        --version   output version information and exit
-!!##EXAMPLES
 !!
-!!  Sample command lines ...
 !!
-!!         _pwd
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -63,7 +61,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Thu, Aug 29th, 2019 10:21:41 PM>',&
+'@(#)COMPILED:       Wed, Oct 30th, 2019 9:47:09 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

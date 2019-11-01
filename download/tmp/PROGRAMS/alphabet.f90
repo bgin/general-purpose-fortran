@@ -76,7 +76,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!    alphabet(1f) - [CONVERT] print numeric values or a string as decimal, hexadecimal, octal and binary value
+!!    alphabet(1f) - [CONVERT] print numeric values or a string as decimal, hexadecimal, octal and binary values
 !!##SYNOPSIS
 !!
 !!    alphabet [values] [ -h values][ -z values][ -o values][ -t text]
@@ -156,7 +156,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Thu, Aug 29th, 2019 10:06:58 PM>',&
+'@(#)COMPILED:       Wed, Oct 30th, 2019 9:33:14 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

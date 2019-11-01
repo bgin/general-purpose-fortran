@@ -54,44 +54,42 @@ endif
 end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
-!!##NAME
-!!    _tr(1) - [FUNIX:M_strings] translate or delete characters
 !!
-!!##SYNOPSIS
 !!
-!!        _tr [ -o SET1 [ -n SET2 ]]|-l| -u |[ --version ]|[ --help ]
 !!
-!!##DESCRIPTION
-!!    Translate, squeeze, and/or delete characters from standard input, writing to standard output.
 !!
-!!##OPTIONS
-!!    -o SET1,-n SET2  old set of characters and new set of characters to replace the old set.
 !!
-!!               o  Each character in the input string that matches a character
-!!                  in the old set is replaced.
 !!
-!!               o  If the new set is the empty set the matched characters
-!!                  are deleted.
 !!
-!!               o  If the new set is shorter than the old set the last character
-!!                  in the new set is used to replace the remaining
-!!                  characters in the new set.
-!!    -u         convert to uppercase
-!!    -l         convert to lowercase
-!!    --help     display this help and exit
-!!    --version  output version information and exit
 !!
-!!##EXAMPLES
 !!
-!!   Sample usage
 !!
-!!    #convert input to uppercase:
-!!    _tr -u
-!!    _tr -o 'abcdefghijklmnopqrstuvwxyz' -n 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 !!
-!!    # out of  !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}
-!!    # just leave letters
-!!    _ tr -o '!"#$%&'"'"'()*+,-./0123456789:;<=>?@[\]^_`{|}~'
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -109,7 +107,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20190828>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Fri, Sep 6th, 2019 7:57:42 PM>',&
+'@(#)COMPILED:       Wed, Oct 30th, 2019 9:51:21 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

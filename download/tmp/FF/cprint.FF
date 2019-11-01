@@ -44,7 +44,6 @@ character(len=:),allocatable       :: delimiters ! characters used to delimit co
 character(len=:),allocatable       :: array(:)
 integer,allocatable                :: icols(:)
 character(len=4096),allocatable    :: acols(:)
-integer                            :: ios
 integer                            :: isize
 integer                            :: i
 logical                            :: verbose

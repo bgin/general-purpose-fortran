@@ -48,34 +48,32 @@ contains
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
-!!##NAME
-!!    get_command_arguments_stack(3f) - [ARGUMENTS:M_args] return a character array containing all the command line arguments
-!!##SYNOPSIS
 !!
-!!    function get_command_arguments(stack) result (args)
 !!
-!!     character(len=:),allocatable :: args(:)
 !!
-!!##DESCRIPTION
-!!    Return a character array containing all the command arguments.
-!!    For cases where it is difficult to process the command arguments
-!!    one at a time, this function returns an array of the command line
-!!    arguments
 !!
-!!##EXAMPLE
 !!
-!!   Sample program:
 !!
-!!    program demo_get_command_arguments_stack
-!!    use M_args,    only : get_command_arguments_stack
-!!    implicit none
-!!    character(len=:),allocatable :: myargs(:)
-!!    integer                      :: i
-!!    myargs=get_command_arguments_stack()
-!!    write(*,'(i0,t10,a)')(i,myargs(i),i=1,size(myargs))
-!!    write(*,*)'longest argument is ',len(myargs)
-!!    write(*,*)'number of arguments is ',size(myargs)
-!!    end program demo_get_command_arguments_stack
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !===================================================================================================================================
 function get_command_arguments_stack() result(args)
 character(len=:),allocatable :: args(:)
@@ -106,43 +104,41 @@ end function get_command_arguments_stack
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
-!!##NAME
-!!          get_command_arguments_string(3f) - [ARGUMENTS:M_args] return all command arguments as an allocated string
 !!
-!!##SYNOPSIS
 !!
-!!   subroutine get_command_arguments_string(string,istatus)
 !!
-!!    character(len=:),allocatable,intent(out) :: string
-!!    integer,intent(out)                      :: istatus
-!!##DESCRIPTION
-!!    Returns the entire command line sans the command verb
 !!
-!!##RETURNS
-!!    STRING  composed of all command arguments concatenated into a string
-!!    ISTATUS status (non-zero means error)
 !!
-!!##EXAMPLE
 !!
-!!   Sample usage
 !!
-!!    program demo_get_command_arguments_string
-!!    use M_journal, only : journal
-!!    use M_args, only : get_command_arguments_string
-!!    implicit none
-!!    integer :: ier
-!!    character(len=:),allocatable :: cmd
-!!    call get_command_arguments_string(cmd,ier)
-!!    write(*,*)'CMD=',trim(cmd)
-!!    write(*,*)'LEN(CMD)=',len(cmd)
-!!    write(*,*)'IER=',ier
-!!    end program demo_get_command_arguments_string
-!!##SEE ALSO
-!!    M_kracken, kracken
 !!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
 !!
-!!    parse,dissect,store,setprompts,show
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !===================================================================================================================================
 subroutine get_command_arguments_string(string,istatus)
 
@@ -206,378 +202,377 @@ end subroutine get_command_arguments_string
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
-!!##NAME
-!!    get_namelist(3f) - [ARGUMENTS:M_args] NAMELIST-based command line argument parsing
 !!
-!!##SYNOPSIS
 !!
-!!   function get_namelist(definition,all) result(string)
 !!
-!!    character(len=*),intent(in),optional  :: definition
-!!    logical,intent(in),optional  :: all
-!!    character(len=:),allocatable :: string
-!!##DESCRIPTION
 !!
-!!    This routine leverages NAMELIST groups to do the conversion from strings
-!!    to numeric values required by other command line parsers.
 !!
-!!    Several of the following example programs simply need an initialized
-!!    variable added to the NAMELIST and it automatically is available as
-!!    a command line argument. Hard to imagine it getting much simpler.
 !!
-!!    To use the routine define a NAMELIST group called ARGS.
 !!
-!!    The routine provides three modes
 !!
-!!    o keyword=value(s) pairs on the command line.
 !!
-!!      Typical program usage:
 !!
-!!       cmd x=1 point=-1,-2,-3 help=T
 !!
-!!      This requires nothing but a call to the get_namelist(3f) procedure
-!!      with no arguments and is very suitable if you just need to pass in
-!!      a few numeric values. the syntax used on the command line is the
-!!      syntax required for a NAMELIST input string which is very good for
-!!      numeric values but does not follow the common syntax rules found
-!!      in routines like getopts(3c) or IEEE Std 1003.1-2001, for example.
 !!
-!!    o Unix-like command usage when provided a NAMELIST group string.
 !!
-!!      Typical program usage:
 !!
-!!       cmd -x 1 --point -1,-2,-3 --title 'my string' --help file1 file2
 !!
-!!      You can use an internal write to generate the input string (which
-!!      means to add a new parameter you need to do nothing but initialize
-!!      the variable and add the name to the ARGS NAMELIST group and it
-!!      automatically becomes a new command line argument).
 !!
-!!    o Unix-like command usage when provided a Unix-like prototype.
 !!
-!!      Typical program usage:
 !!
-!!       cmd -x 1 --point -1,-2,-3 --title 'my string' --help file1 file2
 !!
-!!      If you are not familiar with NAMELIST input and output you can
-!!      declare all the members of the namelist and their default values
-!!      much like you were calling the program with a command prototype
-!!      string.
 !!
-!!    For all three modes there is no need to convert from strings to numeric
-!!    values in the source code. Even arrays and user-defined types can be
-!!    used, complex values can be input ... just define the variable and
-!!    add it to the NAMELIST definition.
 !!
-!!    Note that since all the arguments are defined in a NAMELIST group
-!!    that config files can easily be used for the same options.
-!!    Just create a NAMELIST input file and read it.
 !!
-!!    NAMELIST syntax can vary between different programming environments.
-!!    Currently, this routine has only been tested using gfortran 7.0.4;
-!!    and requires at least Fortran 2003.
 !!
-!!    NO DEFINITION
 !!
-!!    If the routine is called with no definition string arguments are passed
-!!    in on the command line using NAMELIST syntax (ie. KEYWORD=VALUE). This
-!!    is particularly suited for passing a few numeric values.
-!!
-!!    For example:
-!!
-!!     program nooptions
-!!     use M_args, only : get_namelist
-!!     implicit none
-!!     character(len=255)           :: message ! use for I/O error messages
-!!     character(len=:),allocatable :: readme  ! stores command line
-!!     integer                      :: ios     ! I/O error number
-!!
-!!     ! declare and initialize a namelist that defines all
-!!     ! the command keywords
-!!     integer    :: i=1, j=2, k=3
-!!     real       :: s=111.1, t=222.2, r=333.3
-!!     real       :: point(3)=[10.0,20.0,30.0]
-!!     logical    :: help=.false.,version=.false.
-!!
-!!     ! just add a variable here and it is a new parameter
-!!     namelist /args/ i,j,k,s,t,r,point,help,version
-!!
-!!        ! return command line arguments as NAMELIST input
-!!        readme=get_namelist()
-!!        ! internal read of namelist
-!!        read(readme,nml=args,iostat=ios,iomsg=message)
-!!        if(ios.ne.0)then
-!!           write(*,'("ERROR:",i0,1x,a)')ios, trim(message)
-!!           write(*,*)'OPTIONS:'
-!!           write(*,nml=args)
-!!           stop 1
-!!        endif
-!!        ! all done cracking the command line
-!!
-!!        ! use the values in your program.
-!!        write(*,nml=args)
-!!     end program nooptions
-!!
-!!    You can call the example program with syntax like:
-!!
-!!       cmd  r=200e3 i=200
-!!       cmd  K=33333,J=22222,I=11111
-!!       cmd  point = 1, 2, 3 s= -3.0e4 t = 405.5
-!!
-!!    If you do pass in strings nested quotes or escaped double-quote
-!!    characters are typically required. How to do that can vary with what
-!!    shell and OS you are running in. Typically the following will work ...
-!!
-!!       # just quote the entire argument list with single quotes ...
-!!       cmd 'c="my character string" S=10,T=20.30,R=3e-2'
-!!
-!!       # or nest the quotes ...
-!!       cmd c='"string"' S=20.30
-!!
-!!       # or escape the quotes ...
-!!       cmd c=\"string\"
-!!
-!!    PASS IN A NAMELIST STRING
-!!
-!!    If you want to pass in options using syntax similar to that provided
-!!    by the C getopts(3c) procedure pass in a NAMELIST string. Typically,
-!!    you would generate the input string by writing the NAMELIST group to
-!!    an internal file.
-!!
-!!    The following program can be called using commands like
-!!
-!!      cmd -A 'string Value' -l -V --help -p 3.4,5.6 -- *
-!!
-!!    Typical program skeleton:
-!!
-!!     program short
-!!     use M_args,  only : unnamed
-!!     implicit none
-!!     integer :: i
-!!
-!!     ! declare and initialize a namelist
-!!     ! letter_ denotes an uppercase short command keyword
-!!     ! all values should be allocated before calling get_args(3f)
-!!     real              :: x=111.1, y=222.2, z=333.3
-!!     real              :: point(3)=[10.0,20.0,30.0]
-!!     character(len=80) :: title=" "
-!!     logical           :: help=.false., version=.false.
-!!     logical           :: l=.false., l_=.false., v=.false., h=.false.
-!!     ! you can equivalence short and long options
-!!     equivalence       (help,h),(version,v)
-!!     ! just add a variable here and it is a new parameter !!
-!!     namelist /args/ x,y,z,point,title,help,h,version,v,l,l_
-!!     !
-!!        call get_args()  ! crack command line options
-!!        ! do stuff with your variables
-!!        write(*,*)'VALUES ARE NOW'
-!!        write(*,nml=args)
-!!        if(size(unnamed).gt.0)then
-!!           write(*,'(a)')'UNNAMED:'
-!!           write(*,'(i6.6,3a)')(i,'[',unnamed(i),']',i=1,size(unnamed))
-!!        endif
-!!     contains
-!!     subroutine get_args()
-!!     ! The NAMELIST cannot be passed as an option to a routine so this
-!!     ! routine must be in a contained routine or directly in the body of
-!!     ! the routine that declares the NAMELIST. get_args(3f) should not
-!!     ! need changed except for possibly the length of HOLD_NAMELIST
-!!     use M_args,    only : get_namelist, print_dictionary
-!!     !
-!!     integer :: ios, i
-!!     character(len=255) :: message ! use for I/O error messages
-!!     character(len=:),allocatable :: readme  ! stores updated namelist
-!!     ! make big enough for all of namelist
-!!     character(len=10000) :: hold_namelist
-!!     ! the routine needs a copy of the options to determine what values
-!!     ! are character and logical versus numeric
-!!        write(hold_namelist,nml=args,iostat=ios,iomsg=message)
-!!        if(ios.eq.0)then
-!!           ! pass in the namelist and get an updated copy that includes
-!!           ! values specified on the command line
-!!           readme=get_namelist(hold_namelist)
-!!           ! read the updated namelist to update the values
-!!           ! in the namelist group
-!!           read(readme,nml=args,iostat=ios,iomsg=message)
-!!        endif
-!!        if(ios.ne.0)then
-!!           write(*,'("ERROR:",i0,1x,a)')ios, trim(message)
-!!           call print_dictionary()
-!!           stop 1
-!!        endif
-!!        ! all done cracking the command line
-!!     end subroutine get_args
-!!     end program short
-!!
-!!    Instead of writing the NAMELIST group into a string you can compose
-!!    the string yourself. only defined names will be able to be specified
-!!    on the command line. For example:
-!!
-!!     call get_namelist('&ARGS A_="A value",B_=" ",C_=11 22 33, help=F/')
-!!
-!!   Sample with manual definition of NAMELIST string
-!!
-!!     program demo_get_namelist
-!!     use M_args,  only : unnamed, get_namelist, print_dictionary
-!!     implicit none
-!!     integer            :: i, ios
-!!     character(len=255) :: message
-!!     ! define namelist
-!!     real               :: x, y, z
-!!     logical            :: help, h, version, v
-!!     namelist /args/ x,y,z,help,h,version,v
-!!     ! equivalence short and long version and help options
-!!     equivalence           (help,h),(version,v)
-!!     ! define NAMELIST string that defines all NAMELIST
-!!     ! group variables
-!!     character(len=:),allocatable :: cmd
-!!        cmd='&ARGS X=1 Y=2 Z=3 HELP=F H=F VERSION=F V=F/'
-!!        ! initialize all values in NAMELIST by reading string
-!!        read(cmd,nml=args,iostat=ios,iomsg=message)
-!!        if(ios.eq.0)then
-!!           ! reduce NAMELIST string to just values on command line
-!!           cmd=get_namelist(cmd)
-!!           ! update NAMELIST group with values from command line
-!!           read(cmd,nml=args,iostat=ios,iomsg=message)
-!!        endif
-!!        if(ios.ne.0)then
-!!           call print_dictionary('ERROR: '//message)
-!!           stop 1
-!!        endif
-!!        ! all done. use values in program
-!!        write(*,nml=args)
-!!        if(size(unnamed).gt.0)then
-!!           write(*,'(i6.6,3a)')(i,'[',unnamed(i),']',i=1,size(unnamed))
-!!        endif
-!!     end program demo_get_namelist
-!!
-!!    UNIX PROTOTYPE
-!!
-!!    Instead of passing in a NAMELIST string a Unix-like command prototype
-!!    string can be used. Something like:
-!!
-!!       call get_namelist('-A " " -l -x -30.34e2 --help -version ')
-!!
-!!    typical usage:
-!!
-!!       program demo_get_namelist
-!!          use M_args,  only : unnamed, get_namelist, print_dictionary
-!!          implicit none
-!!          integer                      :: i
-!!          character(len=255) :: message ! use for I/O error messages
-!!          character(len=:),allocatable :: readme ! stores updated namelist
-!!          integer                      :: ios
-!!
-!!       ! declare a namelist
-!!          real               :: x, y, z, point(3)
-!!          character(len=80)  :: title
-!!          logical            :: help, version, l, l_, v, h
-!!          equivalence       (help,h),(version,v)
-!!          namelist /args/ x,y,z,point,title,help,h,version,v,l,l_
-!!
-!!       ! Define the prototype
-!!       !  o All parameters must be listed with a default value
-!!       !  o string values  must be double-quoted
-!!       !  o numeric lists must be comma-delimited. No spaces are allowed
-!!          character(len=*),parameter  :: cmd=' -x 1 -y 2 -z 3 &
-!!          & --point -1,-2,-3  &
-!!          & --title "my title" -h --help -v --version -l -L'
-!!
-!!          ! reading in a NAMELIST definition defining the entire
-!!          ! NAMELIST group and then (optionally) do this again but
-!!          ! the second time only getting options that are present on
-!!          ! command line returned.  If not done twice equivalenced
-!!          ! variables are not correct.
-!!          do i=1,2
-!!             readme=get_namelist(cmd,all=i.eq.1)
-!!             read(readme,nml=args,iostat=ios,iomsg=message)
-!!             if(ios.ne.0)then
-!!                write(*,'("ERROR:",i0,1x,a)')ios, trim(message)
-!!                call print_dictionary('OPTIONS:')
-!!                stop 1
-!!             endif
-!!          enddo
-!!          ! all done cracking the command line
-!!
-!!          ! use the values in your program.
-!!          write(*,nml=args)
-!!          ! the optional unnamed values on the command line are
-!!          ! accumulated in the character array "UNNAMED"
-!!          if(size(unnamed).gt.0)then
-!!             write(*,'(a)')'files:'
-!!             write(*,'(i6.6,3a)')(i,'[',unnamed(i),']',i=1,size(unnamed))
-!!          endif
-!!
-!!       end program demo_get_namelist
-!!##OPTIONS
-!!
-!!    DESCRIPTION   null or composed of all command arguments concatenated
-!!                  into a string prepared for reading as a NAMELIST group
-!!                  or a Unix-line command prototype string.
-!!
-!!                  When creating a Unix-like prototype
-!!
-!!                  o all values except logicals get a value.
-!!                  o long names (--keyword) should be all lowercase
-!!                  o short names (-letter) that are uppercase map to a
-!!                    NAMELIST variable called "letter_", but lowercase
-!!                    short names map to NAMELIST name "letter".
-!!                  o strings MUST be delimited with double-quotes and
-!!                    must be at least one space and internal
-!!                    double-quotes are represented with two double-quotes
-!!                  o lists of numbers should be comma-delimited.
-!!                     No spaces are allowed in lists of numbers.
-!!                  o the values follow the rules for NAMELIST values, so
-!!                    "-p 2*0" for example would define two values.
-!!
-!!    ALL           By default the output NAMELIST string only contains
-!!                  keywords and values for names that were specified on
-!!                  the command line. If ALL is .TRUE. a full NAMELIST
-!!                  string is returned containing all the variables from
-!!                  the input string.
-!!##RETURNS
-!!
-!!    STRING   The output is a NAMELIST string than can be read to update
-!!             the NAMELIST "ARGS" with the keywords that were supplied on
-!!             the command line.
-!!
-!!    When using one of the Unix-like command line forms note that
-!!    (subject to change) the following variations from other common
-!!    commnd-line parsers:
-!!
-!!       o duplicate keywords are replaced by the rightmost entry
-!!
-!!       o numeric keywords are not allowed; but this allows
-!!         negative numbers to be used as values.
-!!
-!!       o specifying both names of an equivalenced keyword will have
-!!         undefined results (currently, their alphabetical order
-!!         will define what the Fortran variable values become).
-!!
-!!       o there is currently no mapping of short names to long
-!!         names except via an EQUIVALENCE.
-!!
-!!       o short keywords cannot be combined. -a -b -c is required,
-!!         not -abc even for Boolean keys.
-!!
-!!       o shuffling is not supported. Values must follow their
-!!         keywords.
-!!
-!!       o if a parameter value of just "-" is supplied it is
-!!         converted to the string "stdin".
-!!
-!!       o if the keyword "--" is encountered the rest of the
-!!         command arguments go into the character array "UNUSED".
-!!
-!!       o values not matching a keyword go into the character
-!!         array "UNUSED".
-!!
-!!       o long names do not take the --KEY=VALUE form, just
-!!         --KEY VALUE; and long names should be all lowercase and
-!!         always more than one character.
-!!
-!!       o short-name parameters of the form -LETTER VALUE
-!!         map to a NAMELIST name of LETTER_ if uppercase
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !===================================================================================================================================
 function get_namelist(definition,all) result (readme)
 
@@ -626,86 +621,84 @@ end function get_namelist
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
-!!##NAME
-!!    get_command_arguments_as_raw_namelist(3f) - [ARGUMENTS:M_args] NAMELIST-based command line argument parsing
 !!
-!!##SYNOPSIS
 !!
-!!   subroutine get_command_arguments_as_raw_namelist(string)
 !!
-!!    character(len=:),allocatable,intent(out) :: string
-!!##DESCRIPTION
 !!
-!!    NAMELIST can be used to pass keyword-value pairs via the command
-!!    line. the following example program simply needs an initialized
-!!    variable added to the NAMELIST and it automatically is available as
-!!    a command line argument. Hard to imagine it getting much simpler.
 !!
-!!    You can call the example program with syntax like:
 !!
-!!       testit r=200e3 i=200
-!!       testit K=33333,J=22222,I=11111
 !!
-!!    Note that if you pass in strings you probably will have to use nested
-!!    quotes or escape your quote characters. How you do that can vary with
-!!    what shell and OS you are running in.
 !!
-!!       # just quote the entire argument list with single quotes ...
-!!       testit 'c="my character string" S=10,T=20.30,R=3e-2'
 !!
-!!       or nest the quotes ...
-!!       testit c='"string"' S=20.30
 !!
-!!       or escape the quotes ...
-!!       testit c=\"string\"
 !!
-!!    As you will see, there is no need to convert from strings to numeric
-!!    values in the source code. Even arrays and user-defined types can be
-!!    used, complex values can be input ... just define the variable and
-!!    add it to the NAMELIST definition.
 !!
-!!    And if you want to use a config file instead of command line arguments
-!!    since your arguments are defined in a NAMELIST group just create a
-!!    NAMELIST input file and read it.
 !!
-!!##RETURNS
-!!    STRING  composed of all command arguments concatenated into a string
-!!            prepared for reading as a NAMELIST.
 !!
-!!##EXAMPLE
 !!
-!!   Sample usage
 !!
-!!    program demo_get_command_arguments_as_raw_namelist
-!!    implicit none
-!!    character(len=255)           :: message ! use for I/O error messages
-!!    character(len=:),allocatable :: string  ! stores command line argument
-!!    integer                      :: ios
 !!
-!!    ! declare and initialize a namelist
-!!    integer    :: i=1, j=2, k=3
-!!    real       :: s=111.1, t=222.2, r=333.3
-!!    real       :: arr(3)=[10.0,20.0,30.0]
-!!    character(len=255) :: c=' '
-!!    ! just add a variable here and it is a new parameter !!
-!!    namelist /args/ i,j,k,s,t,r,c,arr
 !!
-!!       ! return command line arguments as NAMELIST input
-!!       string=get_command_arguments_as_raw_namelist()
-!!       ! internal read of namelist
-!!       read(string,nml=args,iostat=ios,iomsg=message)
-!!       if(ios.ne.0)then
-!!          write(*,'("ERROR:",i0,1x,a)')ios, trim(message)
-!!          write(*,*)'OPTIONS:'
-!!          write(*,nml=args)
-!!          stop 1
-!!       endif
-!!       ! all done cracking the command line
 !!
-!!       ! use the values in your program. For example ...
-!!       sum=i+j+k
-!!       write(*,*)'sum=',sum
-!!    end program demo_get_command_arguments_as_raw_namelist
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !===================================================================================================================================
 function get_command_arguments_as_raw_namelist() result (string)
 
@@ -727,50 +720,48 @@ integer :: command_line_length
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
-!!##NAME
-!!    prototype_to_dictionary(3f) - [ARGUMENTS:M_args] parse user command and store tokens into dictionary
-!!
-!!##SYNOPSIS
-!!
-!!   subroutine prototype_to_dictionary(string)
-!!
-!!    character(len=*),intent(in)     ::  string
-!!
-!!##DESCRIPTION
-!!    given a string of form
-!!
-!!      -var value -var value
-!!
-!!    define dictionary of form
-!!
-!!      keyword(i), value(i)
-!!
-!!    o  string values
-!!
-!!        o must be delimited with double quotes.
-!!        o adjacent double quotes put one double quote into value
-!!        o must not be null. A blank is specified as " ", not "".
-!!
-!!    o  logical values
-!!
-!!        o logical values must not have a value
-!!
-!!    o  leading and trailing blanks are removed from unquoted values
 !!
 !!
-!!##OPTIONS
 !!
-!!    STRING   string is character input string to define command
 !!
-!!##RETURNS
 !!
-!!##EXAMPLE
 !!
-!!   sample program:
-!!      ! look at some of the values as strings or numbers
-!!    end program demo_parse
 !!
-!!   Results:
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !===================================================================================================================================
 subroutine prototype_to_dictionary(string)
 implicit none
@@ -911,22 +902,20 @@ end subroutine prototype_to_dictionary
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
-!!##NAME
-!!    update(3f) - [ARGUMENTS:M_args] update internal dictionary given keyword and value
-!!##SYNOPSIS
 !!
-!!   subroutine update(key,val)
 !!
-!!    character(len=*),intent(in)           :: key
-!!    character(len=*),intent(in),optional  :: val
-!!##DESCRIPTION
-!!    Update internal dictionary in M_args(3fm) module.
-!!##OPTIONS
-!!    key  name of keyword to add, replace, or delete from dictionary
-!!    val  if present add or replace value associated with keyword. If not
-!!         present remove keyword entry from dictionary.
-!!##RETURNS
-!!##EXAMPLE
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !!
 !===================================================================================================================================
 subroutine update(key,val)
@@ -979,19 +968,17 @@ end subroutine update
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
-!!##NAME
-!!    wipe_dictionary(3fp) - [ARGUMENTS:M_args] reset private M_args(3fm) dictionary to empty
-!!##SYNOPSIS
 !!
-!!    subroutine wipe_dictionary()
-!!##DESCRIPTION
-!!    reset private M_args(3fm) dictionary to empty
-!!##EXAMPLE
 !!
-!!    program demo_wipe_dictionary
-!!    use M_args, only : dictionary
-!!       call wipe_dictionary()
-!!    end program demo_wipe_dictionary
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !===================================================================================================================================
 subroutine wipe_dictionary()
    if(allocated(keywords))deallocate(keywords)
@@ -1007,14 +994,12 @@ end subroutine wipe_dictionary
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
-!!##SYNOPSIS
 !!
-!!    get(3f) - [ARGUMENTS:M_args] get dictionary value associated with key name in private M_args(3fm) dictionary
-!!##DESCRIPTION
-!!    Get dictionary value associated with key name in private M_args(3fm) dictionary.
-!!##OPTIONS
-!!##RETURNS
-!!##EXAMPLE
+!!
+!!
+!!
+!!
+!!
 !!
 !===================================================================================================================================
 function get(key) result(valout)
@@ -1033,69 +1018,67 @@ end function get
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
-!!##NAME
-!!    prototype_and_cmd_args_to_nlist(3f) - [ARGUMENTS:M_args] convert Unix-like command arguments to namelist
-!!##SYNOPSIS
 !!
-!!   subroutine prototype_and_cmd_args_to_nlist(prototype,nml)
 !!
-!!    character(len=*)             :: prototype
-!!    character(len=:),allocatable :: nml
-!!##DESCRIPTION
-!!    create dictionary with character keywords, values, and value lengths using the routines for maintaining a list from
-!!    command line arguments.
-!!##OPTIONS
-!!    prototype
-!!##RETURNS
-!!    nml
-!!##EXAMPLE
 !!
-!!   Sample program
-!!    program demo_M_list
-!!    use M_args,  only : prototype_and_cmd_args_to_nlist, unnamed, debug
-!!    implicit none
-!!    character(len=:),allocatable :: readme
-!!    character(len=256)           :: message
-!!    integer                      :: ios
-!!    integer                      :: i
-!!    doubleprecision              :: something
 !!
-!!    ! define namelist
-!!    ! lowercase keywords
-!!    logical            :: l,h,v
-!!    real               :: p(2)
-!!    complex            :: c
-!!    doubleprecision    :: x,y,z
 !!
-!!    ! uppercase keywords get an underscore
-!!    logical            :: l_,h_,v_
-!!    character(len=256) :: a_,b_                  ! character variables must be long enough to hold returned value
-!!    integer            :: c_(3)
-!!    namelist /args/ l,h,v,p,c,x,y,z,a_,b_,c_,l_,h_,v_
 !!
-!!       debug=.true.
-!!       ! give command template with default values
-!!       ! all values except logicals get a value.
-!!       ! strings must be delimited with double quotes
-!!       ! A string has to have at least one character as for -A
-!!       ! lists of numbers should be comma-delimited. No spaces are allowed in lists of numbers
-!!       ! the values follow the rules for NAMELIST input, so  -p 2*0 would define two values.
-!!       call prototype_and_cmd_args_to_nlist('-l -v -h -LVH -x 0 -y 0.0 -z 0.0d0 -p 0,0 -A " " -B "Value B" -C 10,20,30 -c (-123,-456)',readme)
-!!       read(readme,nml=args,iostat=ios,iomsg=message)
-!!       if(ios.ne.0)then
-!!          write(*,*)'ERROR:',trim(message)
-!!          write(*,'("INPUT WAS ",a)')readme
-!!          write(*,args)
-!!          stop 3
-!!       else
-!!          something=sqrt(x**2+y**2+z**2)
-!!          write(*,*)something,x,y,z
-!!          if(size(unnamed).gt.0)then
-!!             write(*,'(a)')'files:'
-!!             write(*,'(i6.6,3a)')(i,'[',unnamed(i),']',i=1,size(unnamed))
-!!          endif
-!!       endif
-!!    end program demo_M_list
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !===================================================================================================================================
 subroutine prototype_and_cmd_args_to_nlist(prototype,nml)
 implicit none
@@ -1290,59 +1273,57 @@ end subroutine dictionary_to_namelist
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
-!!##NAME
-!!   print_dictionary(3f) - [M_args]print internal dictionary created by calls to get_namelist(3f)
-!!##SYNOPSIS
 !!
-!!   subroutine print_dictionary(header)
 !!
-!!    character(len=*),intent(in),optional :: header
-!!##DESCRIPTION
-!!   Print the internal dictionary created by calls to get_namelist(3f).
-!!   This routine is intended to print the state of the argument list
-!!   if an error occurs in using the get_namelist(3f) procedure..
-!!##OPTIONS
-!!   HEADER  label to print before printing the state of the command
-!!           argument list.
-!!##EXAMPLE
 !!
-!!    Typical usage:
 !!
-!!     program demo_get_namelist
-!!     use M_args,  only : unnamed, get_namelist, print_dictionary
-!!     implicit none
-!!     integer                      :: i
-!!     character(len=255)           :: message ! use for I/O error messages
-!!     character(len=:),allocatable :: readme  ! stores updated namelist
-!!     integer                      :: ios
-!!     real               :: x, y, z
-!!     logical            :: help, h
-!!     equivalence       (help,h)
-!!     namelist /args/ x,y,z,help,h
-!!     character(len=*),parameter :: cmd='&ARGS X=1 Y=2 Z=3 HELP=F H=F /'
-!!     ! initialize namelist from string and then update from command line
-!!     readme=cmd
-!!     read(readme,nml=args,iostat=ios,iomsg=message)
-!!     if(ios.eq.0)then
-!!        ! update cmd with options from command line
-!!        readme=get_namelist(cmd)
-!!        read(readme,nml=args,iostat=ios,iomsg=message)
-!!     endif
-!!     if(ios.ne.0)then
-!!        write(*,'("ERROR:",i0,1x,a)')ios, trim(message)
-!!        call print_dictionary('OPTIONS:')
-!!        stop 1
-!!     endif
-!!     ! all done cracking the command line
-!!     ! use the values in your program.
-!!     write(*,nml=args)
-!!     ! the optional unnamed values on the command line are
-!!     ! accumulated in the character array "UNNAMED"
-!!     if(size(unnamed).gt.0)then
-!!        write(*,'(a)')'files:'
-!!        write(*,'(i6.6,3a)')(i,'[',unnamed(i),']',i=1,size(unnamed))
-!!     endif
-!!     end program demo_get_namelist
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !===================================================================================================================================
 subroutine print_dictionary(header)
 character(len=*),intent(in),optional :: header
@@ -1369,26 +1350,24 @@ end subroutine print_dictionary
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
-!!##NAME
-!!    longest_command_argument(3f) - [ARGUMENTS:M_args] length of longest argument on command line
-!!##SYNOPSIS
 !!
-!!    function longest_command_argument() result(ilongest)
 !!
-!!     integer :: ilongest
 !!
-!!##DESCRIPTION
-!!    length of longest argument on command line. Useful when allocating storage for holding arguments.
-!!##RESULT
-!!    longest_command_argument  length of longest command argument
-!!##EXAMPLE
 !!
-!!   Sample program
 !!
-!!    program demo_longest_command_argument
-!!    use M_args, only : longest_command_argument
-!!       write(*,*)'longest argument is ',longest_command_argument()
-!!    end program demo_longest_command_argument
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !===================================================================================================================================
 function longest_command_argument() result(ilongest)
 integer :: i
@@ -1411,40 +1390,38 @@ end function longest_command_argument
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
-!!##NAME
-!!    namelist_to_dictionary(3f) - [ARGUMENTS:M_args] parse namelist string and store tokens into dictionary
 !!
-!!##SYNOPSIS
 !!
-!!   subroutine namelist_to_dictionary(string)
 !!
-!!    character(len=*),intent(in)     ::  string
 !!
-!!##DESCRIPTION
-!!   must start with a keyword, any keyword that appears must have a value. A character array can have more than one delimited string
-!!   unallocated and null values are not allowed
-!!   set parameter name to blank
-!!   find undelimited =
-!!   find previous , or beginning of string. in-between is a keyword= to , that starts a keyword is a value
-!!   one keyword and value are known store them
 !!
-!!##OPTIONS
-!!    STRING   string is character input string to define command
 !!
-!!##EXAMPLE
 !!
-!!   Typical string:
 !!
-!!    >&ARGS
-!!    > L = F,
-!!    > A_="xxxxxxxxxxxxxxxxxxxxxxxxxx                                                      ",
-!!    > B_="Value B                                                                         ",
-!!    > P= 2*0.00000000      ,
-!!    > C_=         10,         20,         30, XYZ_=(-123.000000,-456.000000),
-!!    > X=  0.0000000000000000     ,
-!!    > Y=  0.0000000000000000     ,
-!!    > Z=  0.0000000000000000     ,
-!!    > /
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !===================================================================================================================================
 subroutine namelist_to_dictionary(string)
 implicit none

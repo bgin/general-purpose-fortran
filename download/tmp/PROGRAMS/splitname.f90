@@ -111,40 +111,38 @@ endif
 end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
-!!##NAME
-!!    splitname(1f) - [FUNIX] strip pathname into components {dir,name,basename,extension}
 !!
-!!##SYNOPSIS
 !!
-!!    splitname [NAME1 NAME2 ... |[ -d -b -l -e]|-help|-version]
 !!
-!!##DESCRIPTION
-!!    Output each pathname broken into components directory, leaf name, basename, extensio
 !!
-!!    Output is always in the form and order
 !!
-!!       "dir" "name" "basename" "ext"
 !!
-!!##OPTIONS
-!!    NAMES      pathnames to split
-!!    -d         print director name
-!!    -l         print leaf name
-!!    -b         print base name sans any suffix
-!!    -e         print suffix extension
-!!    --stdin    flag to read pathnames from stdin instead of command line
-!!    --help     display this help and exit
-!!    --version  output version information and exit
 !!
-!!##EXAMPLES
 !!
-!!    Sample program executions:
 !!
-!!      splitname /usr/bin/          -> "/usr/bin" "" "" ""
-!!      splitname /usr/bin           -> "/usr" "bin" "" ""
-!!      splitname stdio.h            -> "" "studio.h" "studio" ".h"
 !!
-!!##SEE ALSO
-!!    dirname(1), basename(1), readlink(1), realpath(1)
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -163,7 +161,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DATE:           2017-04-18>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Thu, Aug 29th, 2019 10:28:10 PM>',&
+'@(#)COMPILED:       Wed, Oct 30th, 2019 9:52:21 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

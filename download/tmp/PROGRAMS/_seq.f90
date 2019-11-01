@@ -78,7 +78,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Mon, Sep 30th, 2019 10:02:22 PM>',&
+'@(#)COMPILED:       Wed, Oct 30th, 2019 9:50:38 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -150,56 +150,54 @@ endif
 end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
-!!##NAME
-!!    _seq - [FUNIX] print a sequence of numbers
 !!
-!!##SYNOPSIS
 !!
-!!    _seq LAST [OPTION] ...
-!!    _seq FIRST LAST [OPTION] ...
-!!    _seq FIRST INCREMENT LAST [OPTION] ...
 !!
-!!##DESCRIPTION
-!!    Print numbers from FIRST to LAST, in steps of INCREMENT.
 !!
-!!##OPTIONS
-!!    FIRST,LAST,INCREMENT     The values have the following restrictions
-!!                             o If FIRST or INCREMENT is omitted, they
-!!                               will default to 1.
-!!                             o The sequence ends when the sum of the
-!!                               current number and INCREMENT would become
-!!                               greater than LAST.
-!!                             o FIRST, INCREMENT, and LAST are interpreted
-!!                               as floating point values.
-!!                             o INCREMENT must be positive if FIRST is
-!!                               smaller than LAST or no output is produced.
-!!                             o INCREMENT must be negative if FIRST is
-!!                               greater than LAST or no output is produced.
-!!                             o INCREMENT must not be 0.
-!!                             o none of FIRST, INCREMENT and LAST may be NaN.
-!!    -f  FORMAT               The Fortran FORMAT used to print the values.
-!!                             Use a floating-point Fortran FORMAT for printing
-!!                             values unless FIRST, LAST, and INCREMENT are all
-!!                             whole numbers. Then the format must be suitable fo
-!!                             printing one argument of type INTEGER.
-!!                             The format defaults to "(g0,/)"
-!!    --help                   display this help and exit
-!!    --version                output version information and exit
 !!
-!!##EXAMPLE
 !!
-!!   sample usage
 !!
-!!    _seq 1 1 10 -f '(i0)'
-!!    12345678910
 !!
-!!    _seq 1 1 3
-!!    1
-!!    2
-!!    3
 !!
-!!    _seq 1 -1 -10 -f '(i0.3,":")'
-!!    001:000:-001:-002:-003:-004:-005:-006:-007:-008:-009:-010:
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !===================================================================================================================================
 end program seq
 !===================================================================================================================================

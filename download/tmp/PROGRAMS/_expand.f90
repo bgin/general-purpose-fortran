@@ -13,7 +13,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '       _expand(1f) - [FUNIX] convert tabs to spaces                             ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
-'       _expand FILENAME(S) [-blanks N]| --help| --version                       ',&
+'       _expand FILENAME(S) [ -blanks N]| --help| --version                      ',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
 '       Convert tabs in each FILE to spaces, writing to standard output.         ',&
@@ -45,10 +45,10 @@ end subroutine help_usage
 !!
 !!##SYNOPSIS
 !!
-!!        _expand FILENAME(S) [-blanks N]| --help| --version
+!!        _expand FILENAME(S) [ -blanks N]| --help| --version
 !!
 !!##DESCRIPTION
-!!        Convert tabs in each FILE to spaces, writing to standard output
+!!        Convert tabs in each FILE to spaces, writing to standard output.
 !!        If no filename is specified standard input is read. Tab stops
 !!        are assumed to be every eight (8) columns. Trailing spaces,
 !!        carriage returns, and newlines are removed.
@@ -86,7 +86,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sat, Aug 31st, 2019 9:21:05 AM>',&
+'@(#)COMPILED:       Wed, Oct 30th, 2019 9:37:12 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

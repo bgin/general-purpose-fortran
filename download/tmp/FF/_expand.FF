@@ -6,7 +6,7 @@ NAME
        _expand(1f) - [FUNIX] convert tabs to spaces
 
 SYNOPSIS
-       _expand FILENAME(S) [-blanks N]| --help| --version
+       _expand FILENAME(S) [ -blanks N]| --help| --version
 
 DESCRIPTION
        Convert tabs in each FILE to spaces, writing to standard output.

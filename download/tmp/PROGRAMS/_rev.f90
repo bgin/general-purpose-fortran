@@ -27,19 +27,18 @@ endif
 end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
-!!##NAME
-!!        _rev(1f) - [FUNIX] reverse lines in a file
-!!##SYNOPSIS
 !!
-!!        _rev INPUT_FILE(S) [ --help][ --version]
-!!##DESCRIPTION
-!!        reverse lines in a file
-!!##OPTIONS
-!!        INPUT_FILE(s)  input file(s)
-!!        --help         display help text and exit
-!!        --version      display version information and exi
-!!##SEE ALSO
-!!        tac(1), rev(1)
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -57,7 +56,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 2019-08-31>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Sat, Aug 31st, 2019 12:28:09 AM>',&
+'@(#)COMPILED:       Wed, Oct 30th, 2019 9:54:09 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

@@ -54,7 +54,7 @@ use M_pixel
 use m_color,    only : hue
 use M_writegif, only : writegif
 use M_units,    only : cosd, sind
-use M_kracken,  only : kracken, sget, IPvalue, lget, rget
+use M_kracken,  only : kracken, sget, lget, rget
 implicit none
    character(len=4096)  :: filename
    real                 :: lightstep

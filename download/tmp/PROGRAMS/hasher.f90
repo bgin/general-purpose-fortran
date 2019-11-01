@@ -42,34 +42,33 @@ endif
 end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
-!!##NAME
-!!    hasher(1f) - [M_hashkeys] exercise the string hash methods in the M_hashkey(3fm) modul
 !!
-!!##SYNOPSIS
 !!
-!!    hasher [ input_files [ -hash hashname] ]|[ -string string_value]|--help|--version
 !!
-!!##DESCRIPTION
-!!    hasher(1f) does a byte by byte hash of a file or a hash of a string
-!!    using the procedures available in the M_hashkey(3fm) module. It is up
-!!    to the user to determine if the method is suitable for a specific use.
 !!
-!!    When the I/O was not tuned at all and a simple byte-by-byte read
-!!    was used the program was sixty times slower; in addition the
-!!    anything_to_bytes(3f) function was slower than expected processing
-!!    one character at a time, so if you are going to do anything similar
-!!    it is at least worth a look to look at the sample code.
 !!
-!!##OPTIONS
-!!    input_files  files to generate a hash for
-!!    hash         name of hash algorithm. Currently allowed
-!!                 values are:
-!!                   o djb2 (default) -- calls djb2_hash(3f)
-!!                   o sdbm           -- calls sdbm_hash(3f)
-!!                   o crc32          -- calls cfc32_hash(3f)
 !!
-!!    --help       display this help and exit
-!!    --version    output version information and exit
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -90,7 +89,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)                change and redistribute it.  There is NO WARRANTY;>',&
 '@(#)                without even the implied warranty of MERCHANTABILITY or>',&
 '@(#)                FITNESS FOR A PARTICULAR PURPOSE.>',&
-'@(#)COMPILED:       Thu, Aug 29th, 2019 10:29:50 PM>',&
+'@(#)COMPILED:       Wed, Oct 30th, 2019 9:41:19 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

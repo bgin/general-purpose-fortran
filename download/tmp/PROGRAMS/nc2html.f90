@@ -30,22 +30,20 @@ endif
 end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
-!!##NAME
-!!       nc2html(1) - [NCURSES] print an ncurses(3c) window dump as HTML
-!!##DESCRIPTION
-!!       Given a file generated with the ncurses(3c) putwin(3c) procedure
-!!       read the file and write it out an an HTML file for printing or
-!!       for inclusion much like a IMG file into an HTML document.
-!!##SYNOPSIS
 !!
-!!           nc2html -i INPUT_FILE -o OUTPUT_FILE [ -pg]'
-!!##OPTIONS
-!!          -i INPUT_FILE    Name of ncurses(3c) window dump file generated
-!!                           by putwin(3c).
-!!          -o OUTPUT_FILE   Name of HTML file to generate.
-!!          -pg              Optionally display the ncurses(3c) window dump fil
-!!                           and pause
-!!##EXAMPLE
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !!
 !===================================================================================================================================
 subroutine help_version(l_version)
@@ -64,7 +62,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20150312>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Thu, Aug 29th, 2019 10:58:25 PM>',&
+'@(#)COMPILED:       Wed, Oct 30th, 2019 9:57:55 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

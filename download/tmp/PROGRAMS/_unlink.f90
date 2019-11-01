@@ -30,21 +30,20 @@ endif
 end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
-!!##NAME
-!!    _unlink(1f) - [FUNIX:FILESYSTEM] call the unlink(3c) function to remove the specified fil
 !!
-!!##SYNOPSIS
 !!
-!!      _unlink file(s)
-!!      _unlink OPTION
 !!
-!!##DESCRIPTION
-!!        Call the unlink function to remove the specified FILE.
 !!
-!!##OPTIONS
-!!        FILES      list of files to remove
-!!        --help     display this help and exit
-!!        --version  output version information and exit
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -65,7 +64,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Thu, Aug 29th, 2019 10:25:36 PM>',&
+'@(#)COMPILED:       Wed, Oct 30th, 2019 9:49:58 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

@@ -68,7 +68,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!        penv(1f) - [M_system:ENVIRONMENT] print all or part of environment in formats readable by various shell
+!!        penv(1f) - [M_system:ENVIRONMENT] print all or part of environment in formats readable by various shells
 !!##SYNOPSIS
 !!
 !!        penv [variable...] [ -C| -B| -v] [ -p PREFIX]
@@ -139,7 +139,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)COPYRIGHT:      Copyright (C) 2016 John S. Urban>',&
-'@(#)COMPILED:       Thu, Aug 29th, 2019 11:01:04 PM>',&
+'@(#)COMPILED:       Wed, Oct 30th, 2019 9:38:32 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

@@ -285,7 +285,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <pre>
   Sample showing -oo parameter and retrieving data in subroutines
 
-     program demo_placement
+     program demo_M_kracken
      use M_kracken, only : kracken
      ! define and crack command line arguments
      call kracken('cmd',' DEFAULT STRING -x 123 -y 456 ')
@@ -309,7 +309,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
      write(*,*)' X and Y are ',x,y
      end subroutine showvalue
 
-     end program demo_placement
+     end program demo_M_kracken
 
       xxx
        string is DEFAULT STRING
@@ -431,7 +431,7 @@ where
      means instead of entering:
 </p>
 <xmp>
-     program demo_placement
+     program show_standard
      use M_kracken, only : kracken, sgets, rget, sget, lget
      implicit none
      character(len=:),allocatable :: files(:)
@@ -454,7 +454,7 @@ where
            write(*,*)i,files(i)
         enddo
      endif
-     end program demo_placement
+     end program show_standard
 </xmp>
 <p>
     Add "kracken_method" and "unnamed" from the M_kracken(3fm) module,
@@ -463,7 +463,7 @@ where
     "sgets('cmd_oo').
 </p>
 <xmp>
-     program demo_placement
+     program show_alternate
      use M_kracken, only : kracken, sget, rget, lget
      USE M_KRACKEN, ONLY : KRACKEN_METHOD, UNNAMED
      implicit none
@@ -492,7 +492,7 @@ where
            WRITE(*,*)I,UNNAMED(I)
         ENDDO
      ENDIF
-     end program demo_placement
+     end program show_alternate
 </xmp>
 
 <pre>

@@ -1,5 +1,4 @@
 function loadthem(){
-append("M_messages.3.html");
 append("blocks.3.html");
 append("junbad.3.html");
 append("junbat.3.html");
@@ -11,5 +10,6 @@ append("juntrolls.3.html");
 append("percent_done.3.html");
 append("signs.3.html");
 append("tabgraph.3.html");
+append("note.1.html");
 append("tabulate.1.html");
 }

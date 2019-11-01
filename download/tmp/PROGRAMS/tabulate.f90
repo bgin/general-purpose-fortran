@@ -146,7 +146,7 @@ end subroutine help_usage
 !!    tabulate(1f) makes it very easy to find values in particular ranges in printed output.
 !!    It works particularly well with the once ubiquitous fan-fold paper.
 !!
-!!    It can be used in scripts to make terminal-based monitors of resources such as memory, CPU load, and file space
+!!    It can be used in scripts to make terminal-based monitors of resources such as memory, CPU load, and file space.
 !!
 !!    Given a max and min value for setting up a range read columns of
 !!    numbers and write the numbers back out with a text-based graph scale appended.
@@ -274,7 +274,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        Thu Nov 23,  2000>',&
 '@(#)AUTHORS:        John S. Urban>',&
 '@(#)LANGUAGE:       Fortran>',&
-'@(#)COMPILED:       Thu, Aug 29th, 2019 11:03:45 PM>',&
+'@(#)COMPILED:       Wed, Oct 30th, 2019 9:39:25 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

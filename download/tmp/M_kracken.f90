@@ -76,61 +76,59 @@ contains
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
-!!##NAME
-!!    RETREV(3f) - [ARGUMENTS:M_kracken] get keyword value as a string from a command's argument list processed by kracken(3f)
 !!
-!!##SYNOPSIS
 !!
-!!   SUBROUTINE retrev(name, string, len, ier)
 !!
-!!    CHARACTER(len=*),intent(in)  :: name
-!!    CHARACTER(len=*),intent(out) :: string
-!!    INTEGER,intent(out)          :: len
-!!    INTEGER,intent(out)          :: ier
 !!
-!!##DESCRIPTION
-!!    When a command has had its command argument list parsed using the
-!!    kracken(3f) routine the value associated with any keyword can be retrieved
-!!    as a string.
 !!
-!!##OPTIONS
 !!
-!!     NAME    parameter name of form VERB_KEYWORD
-!!     STRING  returned parameter value
-!!     LEN     length of returned STRING
-!!     IER     error flag. Any non-zero value means an error occurred
 !!
-!!##EXAMPLE
 !!
-!!   Sample program:
 !!
-!!     program demo_retrev
-!!     use M_kracken, only : kracken, retrev
-!!     use M_kracken, only : IPvalue ! length of keyword value
-!!     implicit none
-!!     character(len=IPvalue) :: val
-!!     integer                :: len, ier
 !!
-!!     call kracken('demo', ' -value my default string')
-!!     call retrev('demo_value',val,len,ier)
-!!     write(*,'(a)')'VALUE IS '//trim(val)
 !!
-!!     end program demo_retrev
 !!
-!!   Example execution and output:
 !!
-!!     $ ./demo_retrev
-!!     VALUE IS my default string
 !!
-!!     $ ./demo_retrev -value use this value instead
-!!     VALUE IS use this value instead
 !!
-!!##SEE ALSO
-!!    M_kracken, kracken
 !!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
 !!
-!!    parse,dissect,store,setprompts,show
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !===================================================================================================================================
 subroutine retrev(name,val,len,ier)
 
@@ -161,54 +159,52 @@ end subroutine retrev
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
-!!##NAME
-!!      dget(3f) - [ARGUMENTS:M_kracken] given keyword fetch doubleprecision value from command argument
-!!##SYNOPSIS
 !!
-!!    function dget(keyword) result(value)
 !!
-!!     character(len=*),intent(in)  :: keyword
-!!     doubleprecision              :: value
-!!##DESCRIPTION
-!!     The dget(3f) function returns a scalar doubleprecision value from a command line
-!!     argument using the M_kracken(3fm) module.
-!!##OPTIONS
-!!     KEYWORD    the dictionary keyword (in form VERB_KEYWORD) to retrieve.
-!!                The VERB name comes from the first argument of the KRACKEN(3f)
-!!                call. The KEYWORD is a keyword from the KRACKEN(3f) call that
-!!                should be interpreted as a doubleprecision value.
-!!##RETURNS
-!!     VALUE      doubleprecision value returned by function
-!!##EXAMPLE
 !!
-!!   Sample program
 !!
-!!    program demo_dget
-!!    use M_kracken, only: kracken, dget
-!!    implicit none
-!!    doubleprecision :: val
-!!      ! define command arguments and parse user command
-!!      call kracken('demo','-val 3.1416' )
-!!      val=dget('demo_val') ! get any values specified on -val option
-!!      write(*,*)val         ! print the value
-!!    end program demo_dget
 !!
-!!   Example program runs:
 !!
-!!    $ demo_dget
-!!       3.14159989
 !!
-!!    $ demo_dget -val 10
-!!       10.0000000
 !!
-!!    $ demo_dget -val 3.000
-!!       3.00000000
-!!##SEE ALSO
-!!    M_kracken, kracken
 !!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
 !!
-!!    parse,dissect,store,setprompts,show
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !===================================================================================================================================
 function dget(keyword)
 
@@ -227,54 +223,52 @@ end function dget
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
-!!##NAME
-!!          rget(3f) - [ARGUMENTS:M_kracken] given keyword fetch real value from command argument
-!!##SYNOPSIS
 !!
-!!    function rget(keyword) result(value)
 !!
-!!     character(len=*),intent(in)  :: keyword
-!!     real                         :: value
-!!##DESCRIPTION
-!!     The rget(3f) function returns a scalar real value from a command line
-!!     argument using the M_kracken(3fm) module.
-!!##OPTIONS
-!!     KEYWORD    the dictionary keyword (in form VERB_KEYWORD) to retrieve.
-!!                The VERB name comes from the first argument of the KRACKEN(3f)
-!!                call. The KEYWORD is a keyword from the KRACKEN(3f) call that
-!!                should be interpreted as a REAL value.
-!!##RETURNS
-!!     VALUE      real value returned by function
-!!##EXAMPLE
 !!
-!!   Sample program
 !!
-!!    program demo_rget
-!!    use M_kracken, only: kracken, rget
-!!    implicit none
-!!    real :: val
-!!      ! define command arguments and parse user command
-!!      call kracken('demo','-val 3.1416' )
-!!      val=rget('demo_val') ! get any values specified on -val option
-!!      write(*,*)val        ! print the value
-!!    end program demo_rget
 !!
-!!   Example program runs:
 !!
-!!    $ demo_rget
-!!       3.14159989
 !!
-!!    $ demo_rget -val 10
-!!       10.0000000
 !!
-!!    $ demo_rget -val 3.000
-!!       3.00000000
-!!##SEE ALSO
-!!    M_kracken, kracken
 !!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
 !!
-!!    parse,dissect,store,setprompts,show
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !===================================================================================================================================
 function rget(keyword)
 
@@ -292,59 +286,57 @@ end function rget
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
-!!##NAME
-!!          iget(3f) - [ARGUMENTS:M_kracken] given keyword fetch integer value from command argument
 !!
-!!##SYNOPSIS
 !!
-!!    function iget(keyword) result(value)
 !!
-!!     character(len=*),intent(in)  :: keyword
-!!     integer              :: value
 !!
-!!##DESCRIPTION
-!!     The iget(3f) function returns a scalar integer value from a command line
-!!     argument using the M_kracken(3fm) module.
 !!
-!!##OPTIONS
-!!     KEYWORD    the dictionary keyword (in form VERB_KEYWORD) to retrieve.
-!!                The VERB name comes from the first argument of the KRACKEN(3f)
-!!                call. The KEYWORD is a keyword from the KRACKEN(3f) call that
-!!                should be interpreted as a integer value.
 !!
-!!##RETURNS
-!!     VALUE      integer value returned by function
 !!
-!!##EXAMPLE
 !!
-!!   Sample program
 !!
-!!    program demo_iget
-!!    use M_kracken, only: kracken, iget
-!!    implicit none
-!!    integer :: val
-!!      ! define command arguments and parse user command
-!!      call kracken('demo','-val 31416' )
-!!      val=iget('demo_val') ! get any values specified on -val option
-!!      write(*,*)val        ! print the value
-!!    end program demo_iget
 !!
-!!   Example program runs:
 !!
-!!    $ demo_iget
-!!       31416
 !!
-!!    $ demo_iget -val 10
-!!       10
 !!
-!!    $ demo_iget -val 3.000
-!!       3
-!!##SEE ALSO
-!!    M_kracken, kracken
 !!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
 !!
-!!    parse,dissect,store,setprompts,show
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !===================================================================================================================================
 function iget(keyword)
 
@@ -363,62 +355,60 @@ end function iget
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
-!!##NAME
-!!          lget(3f) - [ARGUMENTS:M_kracken] given keyword fetch logical value from command arguments
-!!##SYNOPSIS
 !!
-!!    function lget(keyword) result(lval)
 !!
-!!     character(len=*),intent(in)  :: keyword
-!!     logical                      :: lval
-!!##DESCRIPTION
-!!     The lget(3f) function returns a scalar logical value from a command line
-!!     argument using the M_kracken(3fm) module.
 !!
-!!##OPTIONS
-!!     keyword    the dictionary keyword (in form VERB_KEYWORD) to retrieve.
-!!                The VERB name comes from the first argument of the
-!!                KRACKEN(3f) call. The KEYWORD is a keyword from the second
-!!                argument to the KRACKEN(3f) call.
 !!
-!!##RETURNS
-!!     lval       logical value returned by function. The input value should be
-!!                from the case-insensitive list of the words "true, false,
-!!                t, f, yes, no, y, n, .false., .true., .f., .t.,''". .TRUE. is returned
-!!                if the corresponding string in the dictionary for KEYWORD is blank.
-!!                .FALSE. is returned if a string not in the list is found.
 !!
-!!##EXAMPLE
 !!
-!!   Sample program:
 !!
-!!    program demo_lget
-!!    use M_kracken, only: kracken, lget
-!!    implicit none
-!!    logical  :: val
-!!      ! define command arguments and parse user command
-!!      call kracken('demo','-truth .F.' )
-!!      ! get any values specified on command line for -truth
-!!      val=lget('demo_truth')
-!!      write(*,'("The truth is ",l1)')val
-!!    end program demo_lget
 !!
-!!   Example program runs:
 !!
-!!      $ demo_lget             # uses the default
-!!      The truth is F
-!!      $ demo_lget -truth      # A BLANK VALUE IS TRUE
-!!      The truth is T
-!!      $ demo_lget -truth yes  # Y, yes, T, true, .T., .true. are all true
-!!      The truth is T
-!!      $ demo_lget -truth F    # N, no, F, false, .F., .FALSE. are all false
-!!      The truth is F
-!!##SEE ALSO
-!!    M_kracken, kracken
 !!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
 !!
-!!    parse,dissect,store,setprompts,show
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !===================================================================================================================================
 function lget(keyword)
 
@@ -460,68 +450,66 @@ end function lget
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
-!!##NAME
-!!          sget(3f) - [ARGUMENTS:M_kracken] given keyword fetch string value and length from command arguments
-!!##SYNOPSIS
 !!
-!!   function sget(name,ilen) result(string)
 !!
-!!    character(len=*),intent(in)   :: name        ! name to look up in dictionary
-!!    integer,intent(out),optional  :: ilen        ! length of returned output string
-!!    character(len=:),allocatable  :: string      ! returned value
 !!
-!!##DESCRIPTION
-!!     The sget(3f) function returns a scalar character value from a command line
-!!     argument using the M_kracken(3fm) module.
 !!
-!!##OPTIONS
-!!     name    the dictionary keyword (in form VERB_KEYWORD) to retrieve.
-!!             The VERB name comes from the first argument of the
-!!             KRACKEN(3f) call. The KEYWORD is a keyword from the second
-!!             argument to the KRACKEN(3f) call.
-!!             This routine trusts that the desired name exists.
 !!
-!!##RETURNS
-!!     string  returned string. If LEN(STRING).EQ.0 an error occurred, such
-!!             as NAME not being in the dictionary.
-!!     ilen    optional length of returned output string
 !!
-!!##EXAMPLE
 !!
-!!   Sample program:
 !!
-!!    program demo_sget
-!!    use M_kracken, only: kracken, sget
-!!    implicit none
-!!    character(len=:),allocatable :: string, a, b
-!!      ! define command arguments and parse user command
-!!      call kracken('demo','-string This is the default -a A default -b B default' )
-!!      ! get any values specified on command line for -truth
-!!      string=sget('demo_string')
-!!      a=sget('demo_a')
-!!      b=sget('demo_b')
-!!      write(*,'("string is ",a)')trim(string)
-!!      write(*,'("a is ",a)')trim(a)
-!!      write(*,'("b is ",a)')trim(b)
-!!    end program demo_sget
 !!
-!!   Example program runs:
 !!
-!!    $demo_sget
-!!    string is This is the default
-!!    a is A default
-!!    b is B default
 !!
-!!    $ demo_sget -a A value for A -string new value for string -b BBBBBBB
-!!    string is new value for string
-!!    a is A value for A
-!!    b is BBBBBBB
-!!##SEE ALSO
-!!    M_kracken, kracken
 !!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
 !!
-!!    parse,dissect,store,setprompts,show
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !===================================================================================================================================
 function sget(name,ilen) result(string)
 
@@ -553,59 +541,57 @@ end function sget
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
-!!##NAME
-!!          dgets(3f) - [ARGUMENTS:M_kracken] given keyword fetch doubleprecision array from command arguments
-!!##SYNOPSIS
 !!
-!!    function dgets(keyword) result(darray)
 !!
-!!     character(len=*),intent(in)  :: keyword
-!!     doubleprecision,allocatable  :: DARRAY
 !!
-!!##DESCRIPTION
-!!     The dgets(3f) function returns a dynamically allocated array of
-!!     doubleprecision values from a string that is the value for a command
-!!     line option. It is part of the M_kracken(3fm) module.
 !!
-!!     Values that cannot be read as a numeric value are returned as a NaN.
-!!##OPTIONS
-!!     keyword  dictionary name to retrieve, of form VERB_NAME where VERB
-!!              is taken from the first parameter of the call to KRACKEN(3f)
-!!              or DISSECT(3f).
-!!##RETURNS
-!!     darray   double precision numeric array returned by function. The array
-!!              will have zero size if the parsed dictionary entry is blank.
-!!##EXAMPLE
 !!
-!!   Sample program
 !!
-!!    program demo_dgets
-!!    use M_kracken, only: kracken, dgets
-!!    implicit none
-!!    doubleprecision,allocatable  :: vals(:)
-!!    integer              :: i
-!!    ! define command arguments and parse user command
-!!    call kracken('demo','-nums 1 2 3 1000 100,000 11.11111 77.77777 -77.7777' )
-!!    vals=dgets('demo_nums') ! get any values specified for -nums
-!!    write(*,'(*(g0:,","))')( vals(i),i=1,size(vals)) ! print the values
-!!    end program demo_dgets
 !!
-!!   Example program runs:
 !!
-!!    $ demo_dgets
-!!     1.0000000000000000,2.0000000000000000,3.0000000000000000,
-!!     1000.0000000000000,100000.00000000000,11.111110000000000,
-!!     77.777770000000004,-77.777699999999996
 !!
-!!    $ demo_dgets -nums 89,123,456.789 10.9999999
-!!     89123456.789000005,10.999999900000001
 !!
-!!##SEE ALSO
-!!    M_kracken, kracken
 !!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
 !!
-!!    parse,dissect,store,setprompts,show
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !===================================================================================================================================
 function dgets(keyword) result(darray)
 
@@ -633,65 +619,63 @@ end function dgets
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
-!!##NAME
-!!          igets(3f) - [ARGUMENTS:M_kracken] given keyword fetch integer array from command arguments
-!!##SYNOPSIS
 !!
-!!    function igets(keyword) result(iarray)
 !!
-!!     character(len=*),intent(in)  :: keyword
-!!     integer,allocatable          :: iarray(:)
-!!##DESCRIPTION
-!!     The igets(3f) function returns a dynamically allocated array of integers
-!!     from a string that is the value for a command line option. It is part of
-!!     the M_kracken(3fm) module.
 !!
-!!     Values that cannot be read as an integer value are returned as a NaN.
 !!
-!!##OPTIONS
-!!     KEYWORD    the dictionary keyword (in form VERB_KEYWORD) to retrieve.
-!!                The VERB name comes from the first argument of the KRACKEN(3f)
-!!                call. The KEYWORD is a keyword from the KRACKEN(3f) call that
-!!                should be interpreted as a list of INTEGER values. Decimal values
-!!                are allowed but truncated. Note that comma characters are ignored.
 !!
-!!##RETURNS
-!!     IARRAY     INTEGER array returned by function
-!!                The array will have zero size if the parsed dictionary
-!!                entry is blank.
 !!
-!!##EXAMPLE
 !!
-!!   Sample program
 !!
-!!    program demo_igets
-!!    use M_kracken, only: kracken, igets
-!!    implicit none
-!!    integer,allocatable  :: vals(:)
-!!    integer              :: i
-!!      ! define command arguments and parse user command
-!!      call kracken('demo','-nums 1 2 3 100 1000 10000 100,000 11.11111 77.77777 -77.7777' )
-!!      ! get any values specified for -nums
-!!      vals=igets('demo_nums')
-!!      if(size(vals).gt.0)then
-!!         ! print the requested values
-!!         write(*,'(*(i0:,","))')( vals(i),i=1,size(vals))
-!!      endif
-!!    end program demo_igets
 !!
-!!   Example program runs:
 !!
-!!      $ demo_igets
-!!      1,2,3,100,1000,10000,100000,11,77,-77
-!!      $ demo_igets -val 89,123,456 10.9999999
-!!      89123456,10
 !!
-!!##SEE ALSO
-!!    M_kracken, kracken
 !!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
 !!
-!!    parse,dissect,store,setprompts,show
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !===================================================================================================================================
 function igets(keyword) result(iarray)
 
@@ -706,84 +690,82 @@ end function igets
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
-!!##NAME
-!!          rgets(3f) - [ARGUMENTS:M_kracken] given keyword fetch real array from command arguments
-!!##SYNOPSIS
 !!
-!!    function rgets(keyword) result(rarray)
 !!
-!!     character(len=*),intent(in)  :: keyword
-!!     real,allocatable             :: rarray(:)
-!!##DESCRIPTION
-!!     The rgets(3f) function returns a dynamically allocated array of real values
-!!     from a string that is the value for a command line option. It is part of
-!!     the M_kracken(3fm) module.
 !!
-!!     Values that cannot be read as a numeric value are returned as a NaN.
 !!
-!!##OPTIONS
-!!     KEYWORD    the dictionary keyword (in form VERB_KEYWORD) to retrieve.
-!!                The VERB name comes from the first argument of the KRACKEN(3f)
-!!                call. The KEYWORD is a keyword from the KRACKEN(3f) call that
-!!                should be interpreted as a list of REAL values.
 !!
-!!##RETURNS
-!!     RARRAY     real array returned by function.
-!!                The array will have zero size if the parsed dictionary
-!!                entry is blank.
 !!
-!!##EXAMPLE
 !!
-!!   Sample program converts between Celcius and Fahrenheit
 !!
-!!    program demo_rgets
-!!    use M_kracken, only: kracken, rgets
-!!    implicit none
-!!    real,allocatable  :: val(:)
-!!    integer           :: i
-!!      ! define command arguments and parse user command
-!!      call kracken('fc','-F -C' )
 !!
-!!      ! get any values specified on -C option
-!!      val=rgets('fc_C')
-!!      ! test if have something to print in C ==> F table
-!!      if(size(val).gt.0)then
-!!         ! print the requested values
-!!         write(*,'(a,t14,a)')'celsius','fahrenheit'
-!!         write(*,'(f5.1,t14,f5.1)')( val(i),(val(i)+40.0)*9.0/5.0 - 40.0,i=1,size(val))
-!!      endif
 !!
-!!      val=rgets('fc_F')
-!!      ! check for values on -F
-!!      if(size(val).gt.0)then
-!!         write(*,'(a,t14,a)') 'fahrenheit', 'celsius'
-!!         write(*,'(f5.1,t14,f5.1)')(val(i),(val(i)+40.0)*5.0/9.0 - 40.0,i=1,size(val))
-!!      endif
-!!    end program demo_rgets
 !!
-!!   Example program runs:
 !!
-!!    % demo_rgets -C -273.15 0 100 -40 37
-!!    celsius      fahrenheit
-!!     -273.15      -459.67
-!!        0.0         32.0
-!!      100.0        212.0
-!!      -40.0        -40.0
-!!       37.0         98.6
 !!
-!!    % demo_rgets -F -459.67 32 212 -40 98.6
-!!    fahrenheit   celsius
-!!     -459.67      -273.15
-!!       32.00         0.00
-!!      212.00       100.00
-!!      -40.00       -40.00
-!!       98.60        37.00
-!!##SEE ALSO
-!!    M_kracken, kracken
 !!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
 !!
-!!    parse,dissect,store,setprompts,show
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !===================================================================================================================================
 function rgets(keyword) result(rarray)
 
@@ -797,60 +779,58 @@ end function rgets
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
-!!##NAME
-!!          lget(3f) - [ARGUMENTS:M_kracken] given keyword fetch logical array from command argument
-!!##SYNOPSIS
 !!
-!!    function lgets(keyword) result(lvals)
 !!
-!!     character(len=*),intent(in)  :: keyword
-!!     logical,allocatable          :: lvals(:)
-!!##DESCRIPTION
-!!     The lgets(3f) function returns a dynamically allocated array of logical values
-!!     from a string that is the value for a command line option. It is part of
-!!     the M_kracken(3fm) module.
 !!
-!!     Values that cannot be read as a logical value are returned as a ".FALSE.".
-!!##OPTIONS
-!!     keyword    the dictionary keyword (in form VERB_KEYWORD) to retrieve.
-!!                The VERB name comes from the first argument of the
-!!                KRACKEN(3f) call. The KEYWORD is a keyword from the second
-!!                argument to the KRACKEN(3f) call.
 !!
-!!##RETURNS
-!!     lvals      logical array returned by function. The input value should be
-!!                from the case-insensitive list of the words "true, false,
-!!                t, f, yes, no, y, n, .false., .true., .f., .t".
 !!
-!!##EXAMPLE
 !!
-!!   Sample program:
 !!
-!!    program demo_lgets
-!!    use M_kracken, only: kracken, lgets
-!!    implicit none
-!!    logical,allocatable  :: vals(:)
-!!      ! define command arguments and parse user command
-!!      call kracken('demo','-truths .F. .T. .F. .F. .T. .T.' )
-!!      ! get any values specified on command line for -truth
-!!      vals=lgets('demo_truths')
-!!      write(*,*)vals
-!!    end program demo_lgets
 !!
-!!   Example program runs:
 !!
-!!    $ demo_lgets
-!!     F T F F T T
 !!
-!!    $ demo_lgets -truths false F .f. no true .true. t T Yes No
-!!     F F F F T T T T T T F
 !!
-!!##SEE ALSO
-!!    M_kracken, kracken
 !!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
 !!
-!!    parse,dissect,store,setprompts,show
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !===================================================================================================================================
 function lgets(keyword) result(larray)
 
@@ -900,65 +880,63 @@ end function lgets
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
-!!##NAME
-!!          sgets(3f) - [ARGUMENTS:M_kracken] given keyword fetch string value parsed on whitespace into an array
-!!##SYNOPSIS
 !!
-!!   function sgets(name,delim) result(strings)
 !!
-!!    character(len=*),intent(in) :: name
-!!    character(len=*),intent(in),optional :: delim
-!!    character(len=:),allocatable :: strings(:)
 !!
-!!##DESCRIPTION
-!!     The sgets(3f) function returns a dynamically allocated array of character values
-!!     from a string that is the value for a command line option. It is part of
-!!     the M_kracken(3fm) module.
-!!##OPTIONS
-!!     name     the dictionary keyword (in form VERB_KEYWORD) to retrieve.
-!!              The VERB name comes from the first argument of the
-!!              KRACKEN(3f) or DISSECT(3f) call. The KEYWORD is a keyword from the second
-!!              argument to the KRACKEN(3f) or DISSECT(3f) call.
-!!              This routine trusts that the desired name exists.
-!!              If the name does not exist the array [char(0)] is returned.
-!!              An array of zero size is returned if the string is blank.
-!!     delim    characters to split the string at into elements
 !!
-!!##RETURNS
-!!     strings  returned string array
 !!
-!!##EXAMPLE
 !!
-!!   Sample program:
 !!
-!!    program demo_sgets
-!!    use M_kracken, only : kracken, sgets
-!!    character(len=:),allocatable :: strings(:)
-!!       call kracken('cmd',' -string    This   is  a sentence ')
-!!       strings= sgets("cmd_string")            ! get -strings words
-!!       print *, "string=",('['//trim(strings(i))//']',i=1,size(strings))
-!!       print *, "len= ",len(strings)
-!!       print *, "size=",size(strings)
-!!    end program demo_sgets
 !!
-!!   Example program execution:
 !!
-!!    $ demo_sgets
-!!     string=[This][is][a][sentence]
-!!     len=            8
-!!     size=           4
 !!
-!!    $ demo_sgets -string a b c d e f g
-!!     string=[a][b][c][d][e][f][g]
-!!     len=            1
-!!     size=           7
 !!
-!!##SEE ALSO
-!!    M_kracken, kracken
 !!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,retrev
 !!
-!!    parse,dissect,store,setprompts,show
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !===================================================================================================================================
 function sgets(name,delim) result(strings)
 
@@ -989,111 +967,109 @@ end function sgets
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
-!!##NAME
-!!          kracken(3f) - [ARGUMENTS:M_kracken] crack command line options on Fortran programs, using "-KEYWORD VALUE" syntax
-!!##SYNOPSIS
-!!
-!!     subroutine kracken(verb, string[,ierror])
-!!
-!!        character(len=*), intent(in) ::  verb
-!!        character(len=*), intent(in) :: string
-!!        integer, intent(out), optional :: ierror
-!!
-!!##DESCRIPTION
-!!
-!!     This is the main public procedure in the M_kracken(3f) module.
-!!     It is used to define the command line options, their default
-!!     values, and to crack the command line options using a syntax
-!!     that looks very much like an execution of the program.
-!!
-!!##OPTIONS
-!!     VERB     arbitrary command name, usually 'cmd' or the name of the
-!!              program calling the routine. This defines the
-!!              variable prefix name used by the other functions to
-!!              retrieve command option values.
-!!
-!!     STRING   prototype command to define keywords and defaults.
-!!              This string is simply a list of all keywords and their
-!!              default values exactly as you would type them on the
-!!              command line, with default values explicitly set.
-!!
-!!     IERROR   If an error occurs such as an unknown keyword the
-!!              calling program will be stopped unless the optional
-!!              parameter IERROR is present. If present, it is up
-!!              to the calling program to decide what to do if
-!!              a non-zero value is returned.
-!!##EXAMPLE
 !!
 !!
-!!   Sample program:
 !!
-!!       program demo_kracken
 !!
-!!       use M_kracken
-!!       ! define command arguments, default values and crack command line
-!!       call kracken('cmd',              &
-!!          &   '-int 20                  &
-!!          &   -real 10e3                &
-!!          &   -file input               &
-!!          &   -dble 4.11223344556677d0  &
-!!          &   -help    .false.          &
-!!          &   -version .false.         '&
-!!          &   )
-!!       ! that's it. You defined your command arguments and their default
-!!       ! values and parsed the user-supplied command line arguments.
 !!
-!!       ! Now you can just retrieve the values as strings using
-!!       ! names of the form VERB_SWITCHNAME anywhere in your program.
-!!       ! Note that the special name "VERB_oo"  is for the string
-!!       ! before any switch.
-!!          if(lget('cmd_help'))then ! was -help specified?
-!!             write(*,*)'The help text'
-!!             stop
-!!          endif
-!!          if(lget('cmd_version'))then ! was -version specified?
-!!             write(*,*)'version 1.0 20161030'
-!!             stop
-!!          endif
-!!          ! convert all the remaining options to scalar values
-!!          ! and call a procedure with the values
-!!          call mymain(                  &
-!!          & sget('cmd_file'),           &
-!!          & rget('cmd_real'),           &
-!!          & dget('cmd_dble'),           &
-!!          & iget('cmd_int')             &
-!!          & )
-!!       contains
-!!       subroutine mymain(filename,value1,value2,ivalue3)
-!!       ! this routine is using conventional values and does
-!!       ! not use M_kracken(3fm) module at all
-!!       implicit none
-!!       character(len=*),intent(in) :: filename
-!!       real,intent(in)             :: value1
-!!       doubleprecision,intent(in)  :: value2
-!!       integer,intent(in)          :: ivalue3
-!!          ! just to show the command arguments have
-!!          ! been processed echo the values
-!!          print *, 'filename=',trim(filename)
-!!          print *, 'values=',value1,value2,ivalue3
-!!       end subroutine mymain
-!!       end program demo_kracken
 !!
-!!   expected output from : "./cmd"
 !!
-!!          filename=input
-!!          values= 10000.0000  4.1122334455667700  20
 !!
-!!   expected output from : "./cmd -file myfile -int 1234"
 !!
-!!          filename=myfile
-!!          values= 10000.0000  4.1122334455667700  1234
 !!
-!!##SEE ALSO
-!!    M_kracken, kracken
 !!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
 !!
-!!    parse,dissect,store,setprompts,show
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !===================================================================================================================================
 subroutine kracken(verb,string,error_return)
 
@@ -1158,57 +1134,55 @@ end subroutine kracken
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
-!!##NAME
-!!          setprompts(3f) - [ARGUMENTS:M_kracken] set explicit prompts for keywords in interactive mode
-!!##SYNOPSIS
 !!
-!!   subroutine setprompts(verb,init)
 !!
-!!    character(len=*),intent(in):: verb
-!!    character(len=*),intent(in):: init
 !!
-!!##DESCRIPTION
 !!
-!!    Optionally set prompts for interactive prompting mode.
-!!    The syntax of the call is the same as for KRACKEN(3f)/DISSECT(3f) except that prompt
-!!    strings are given instead of default values. It is called before a call to KRACKEN(3f)
-!!    or DISSECT(3f).
 !!
-!!##OPTIONS
-!!    verb    name to define prompts for
-!!    string  to define prompts instead of values
-!!##RETURNS
-!!##EXAMPLE
 !!
-!!   Sample program:
 !!
-!!     program demo_setprompts
-!!     use M_kracken, only : kracken,iget,rget,sget,setprompts
-!!     implicit none
 !!
-!!     call setprompts('demo', ' -int My INTEGER value  -float My REAL value  -str My CHARACTER value')
-!!     call kracken(   'demo', ' -int 100 -float 123.456 -str DEFAULT')
-!!     write(*,'(a,i0)')'INTEGER IS ',iget('demo_int')
-!!     write(*,'(a,g0)')'REAL IS ',rget('demo_float')
-!!     write(*,'(a,a)')'STRING IS '//trim(sget('demo_str'))
 !!
-!!     end program demo_setprompts
 !!
-!!   Example execution and output:
 !!
-!!        $ demo_setprompts -?
-!!        demo parameters are
-!!        >   1)My CHARACTER value:[DEFAULT]
-!!            3)My INTEGER value:[100]
-!!            4)My REAL value:[123.456]
-!!        Enter parameter number to change("RETURN" to finish):
 !!
-!!##SEE ALSO
-!!    M_kracken, kracken
 !!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
 !!
-!!    parse,dissect,store,setprompts,show
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !===================================================================================================================================
 subroutine setprompts(verb,init)
 
@@ -1222,55 +1196,53 @@ end subroutine setprompts
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
-!!##NAME
-!!          dissect(3f) - [ARGUMENTS:M_kracken] convenient call to parse() -- define defaults, then process
 !!
-!!##SYNOPSIS
 !!
-!!   subroutine dissect(verb,init,pars,error_return)
 !!
-!!    character(len=*),intent(in)  :: verb
-!!    character(len=*),intent(in)  :: init
-!!    character(len=*),intent(in)  :: pars
-!!    integer,intent(out),optional :: error_return
-!!##DESCRIPTION
 !!
-!!##OPTIONS
-!!    VERB          the name of the command to be reset/defined
-!!    INIT          used to define command options; usually hard-set in the program.
-!!    PARS          defines the command options to be set, usually from user input
 !!
-!!##RETURNS
-!!    ERROR_RETURN  error code. If zero no error occurred.
 !!
-!!##EXAMPLE
 !!
-!!   Sample program:
 !!
-!!     program demo_dissect
-!!     use M_kracken, only : kracken,iget,rget,sget,dissect
-!!     implicit none
-!!     integer :: ierr
 !!
-!!     call dissect('demo',' -int 1000 -float 1234.567 -str CHARACTER value','-int 456 -float 50.00 ',ierr)
-!!     write(*,'(a,i0)')'INTEGER IS ',iget('demo_int')
-!!     write(*,'(a,g0)')'REAL IS ',rget('demo_float')
-!!     write(*,'(a,a)')'STRING IS '//trim(sget('demo_str'))
 !!
-!!     end program demo_dissect
 !!
-!!   Results:
 !!
-!!    INTEGER IS 456
-!!    REAL IS 50.0000000
-!!    STRING IS CHARACTER value
 !!
-!!##SEE ALSO
-!!    M_kracken, kracken
 !!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
 !!
-!!    parse,dissect,store,setprompts,show
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !===================================================================================================================================
 subroutine dissect(verb,init,pars,error_return)
 
@@ -1301,133 +1273,131 @@ end subroutine dissect
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
-!!##NAME
-!!          parse(3f) - [ARGUMENTS:M_kracken] parse user command and store tokens into Language Dictionary
 !!
-!!##SYNOPSIS
 !!
-!! subroutine parse(verb,string,allow,error_return)
 !!
-!!    character(len=*),intent(in)     ::  verb
-!!    character(len=*),intent(in)     ::  string
-!!    character(len=*),intent(in)     ::  allow
-!!    integer,optional,intent(out)    ::  error_return
 !!
-!!##DESCRIPTION
-!!    given a string of form
 !!
-!!      value  -var value -var value
 !!
-!!    define variables of form
 !!
-!!      verb_var(i) = value
 !!
-!!    --var will become verb__var
 !!
-!!    o  values may be in double quotes if they contain alphameric characters
-!!    o  a # signifies the rest of the line is a comment
-!!    o  adjacent double quotes put one double quote into value
-!!    o  processing ends when an unquoted semi-colon or end of string is encountered
-!!    o  the variable name for the first value is verb_init (often verb_oo)
-!!    o  leading and trailing blanks are removed from values
-!!    o  call it once to give defaults
-!!    o  call it again and vars without values are set to null strings
 !!
-!!##OPTIONS
 !!
-!!    VERB     command name to process
-!!    STRING   string is character input string with first verb removed (options + other commands)
-!!    ALLOW    flag to allow or disallow new VERB_KEYWORD name being added. Should be
-!!              NEW VARIABLES ARE ALLOWED
-!!               o 'define'  -  add or replace a new VERB_KEYWORD entry and value
-!!               o 'add'     -  add or append to a new VERB_KEYWORD entry and value
-!!              NO NEW VARIABLES ARE ALLOWED
-!!               o 'append' or 'no_add' - append to an *EXISTING* entry value
-!!               o 'replace' - replace an *EXISTING* entry
 !!
-!!             That is, ff 'add' or 'append' and the value is not blank
-!!             it will be APPENDED to the current value. If 'define' or
-!!             'replace' it will replace the value instead of appending
-!!             to it.
-!!##RETURNS
-!!    ERROR_RETURN  error code. If zero, no error occurred
 !!
-!!##EXAMPLE
 !!
-!!   sample program:
 !!
-!!    program demo_parse
-!!    use M_kracken, only : parse, sget, iget, rget
-!!    use M_strings, only : chomp
-!!    implicit none
-!!    character(len=:),allocatable  :: verb
-!!    character(len=*),parameter    :: delimiters=' ;,'
-!!    integer     :: i
-!!    integer     :: ierr
-!!    character(len=132) :: line
-!!    character(len=132), parameter :: commands(5)= [character(len=132) :: &
-!!      'start -i 10 -message this is a message', &
-!!      'end -i 20 -j 30 -k 55.55 ', &
-!!      'list', &
-!!      'help -oo', &
-!!      'end -i 44.44 ']
-!!      do i=1,size(commands)
-!!         line=commands(i) ! need mutable line
-!!         if(chomp(line,verb,delimiters).ge. 0)then
-!!            call parse(verb,line,'add',ierr)
-!!            write(*,*)'do whatever a '//verb//' command does'
-!!            select case(verb)
-!!            case('start')
-!!               write(*,*)trim(sget('start_i'))
-!!               write(*,*)trim(sget('start_message'))
-!!            case('end')
-!!               write(*,*)iget('end_i')
-!!               write(*,*)iget('end_j')
-!!               write(*,*)rget('end_k')
-!!            case('list')
-!!               write(*,*)'list things'
-!!            case('help')
-!!               write(*,*)'show help text'
-!!            endselect
-!!         endif
-!!      enddo
-!!      ! look at some of the values as strings or numbers
-!!      write(*,*)trim(sget('start_i'))
-!!      write(*,*)trim(sget('start_message'))
-!!      write(*,*)iget('end_i')
-!!      write(*,*)iget('end_j')
-!!      write(*,*)rget('end_k')
-!!    end program demo_parse
 !!
-!!   Results:
 !!
-!!     do whatever a start command does
-!!     10
-!!     this is a message
-!!     do whatever a end command does
-!!              20
-!!              30
-!!       55.5499992
-!!     do whatever a list command does
-!!     list things
-!!     do whatever a help command does
-!!     show help text
-!!     do whatever a end command does
-!!              44
-!!              30
-!!       55.5499992
-!!     10
-!!     this is a message
-!!              44
-!!              30
-!!       55.5499992
 !!
-!!##SEE ALSO
-!!    M_kracken, kracken
 !!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
 !!
-!!    parse,dissect,store,setprompts,show
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !===================================================================================================================================
 subroutine parse(verb,string,allow,error_return)
 
@@ -1652,133 +1622,131 @@ end subroutine parse
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
-!!##NAME
-!!          store(3f) - [ARGUMENTS:M_kracken] add or replace value for specified name in dictionary(if allow='add' add name if needed)
-!!##SYNOPSIS
 !!
-!!   subroutine store(name1,value1,allow1,ier)
 !!
-!!    character(len=*),intent(in) :: name1
-!!    class(*),intent(in)         :: value1
-!!    character(len=*),intent(in) :: allow1
-!!    integer,intent(out)         :: ier
 !!
-!!##DESCRIPTION
-!!    Normally a command string and the associated values are placed in
-!!    the dictionary by a call to KRACKEN(3f) when parsing a command
-!!    line, or DISSECT(3f) and PARSE(3f) when creating input file
-!!    interpreters. Rarely there may be a need to place
-!!    <NAME,VALUE> pairs directly into the command dictionary, so this
-!!    routine is public in the M_kracken(3fm) module. However,
-!!    *this routine is primarily assumed to be an internal procedure*.
 !!
-!!##OPTIONS
-!!    NAME1    name in dictionary of form VERB_KEYWORD
-!!    VALUE1   value to be associated to NAME1. Value may be of type INTEGER,
-!!             REAL, DOUBLEPRECISION, LOGICAL or CHARACTER.
-!!    ALLOW1   flag to allow new VERB_KEYWORD name being added. Should be
-!!               o 'define'  -  add or replace a new VERB_KEYWORD entry and value
-!!               o 'add'     -  add or append to a new VERB_KEYWORD entry and value
-!!               o 'no_add' or 'append' - append to an *EXISTING* entry value
-!!               o 'replace' - replace an *EXISTING* entry
 !!
-!!             If 'add' or 'append' and the value is not blank it will
-!!             be APPENDED to the current value. If 'define' or 'replace'
-!!             it will replace the value instead of appending to it.
 !!
-!!##RETURNS
-!!    IER      flag if error occurs in adding or setting value
 !!
-!!##EXAMPLE
 !!
-!!   Sample program:
 !!
-!!    program demo_store
-!!    use M_kracken, only : store, show
-!!    implicit none
-!!    integer :: ier
-!!    ! The following should be equivalent to
-!!    ! call kracken('MY',' &
-!!    ! & -STRING My string value &
-!!    ! & -INTEGER 1234 &
-!!    ! & -INTEGER 0987654321 &
-!!    ! & -REAL 1234.5678 &
-!!    ! & -DOUBLE 123.4567d8 &
-!!    ! & -LOGICAL T &
-!!    ! & '
-!!    call store('MY_STRING','My string value','add',ier)
-!!    if(ier.ne.0)write(*,*)'ERROR: could not store MY_STRING ier=',ier
-!!    ! now the verb MY is defined with the option -STRING so the
-!!    ! dictionary has MY_STRING='My string value' defined
 !!
-!!    ! this will be an error because MY does not have the -INTEGER
-!!    ! keyword defined
-!!    call store('MY_INTEGER',12345678,'no_add',ier)
 !!
-!!    ! now define MY_INTEGER
-!!    call store('MY_INTEGER',1234,'add',ier)
-!!    ! if 'no_add' it will APPEND to current string
-!!    call store('MY_INTEGER',987654321,'add',ier)
 !!
-!!    call store('MY_REAL',1234.5678,'add',ier)
-!!    call store('MY_DOUBLE',123.4567d8,'add',ier)
-!!    call store('MY_LOGICAL',.true.,'add',ier)
 !!
-!!    call show('MY',.false.,0)
-!!    write(*,*)repeat('=',76)
 !!
-!!    ! if 'replace' is used REPLACE instead of APPEND to current value
-!!    call store('MY_INTEGER',987654321,'replace',ier)
-!!    call show('MY',.false.,0)
-!!    write(*,*)repeat('=',76)
 !!
-!!    ! 'replace' can only replace an existing entry, not add one
-!!    call store('MY_UNKNOWN',987654321,'replace',ier)
-!!    call show('MY',.false.,0)
-!!    write(*,*)repeat('=',76)
 !!
-!!    end program demo_store
 !!
-!!   Results:
-!!    >########################################################
-!!    >error: UNKNOWN OPTION -INTEGER
-!!    >MY parameters are
-!!    > -STRING My string value
-!!    >########################################################
-!!    > MY_STRING            = My string value
-!!    > MY_REAL              = 1234.5677
-!!    > MY_LOGICAL           = T
-!!    > MY_INTEGER           = 1234 987654321
-!!    > MY_DOUBLE            = 12345670000.000000
-!!    > =======================================================================
-!!    > MY_STRING            = My string value
-!!    > MY_REAL              = 1234.5677
-!!    > MY_LOGICAL           = T
-!!    > MY_INTEGER           = 987654321
-!!    > MY_DOUBLE            = 12345670000.000000
-!!    > =======================================================================
-!!    >########################################################
-!!    >error: UNKNOWN OPTION -UNKNOWN
-!!    >MY parameters are
-!!    > -STRING My string value
-!!    > -REAL 1234.5677
-!!    > -LOGICAL T
-!!    > -INTEGER 987654321
-!!    > -DOUBLE 12345670000.000000
-!!    >########################################################
-!!    > MY_STRING            = My string value
-!!    > MY_REAL              = 1234.5677
-!!    > MY_LOGICAL           = T
-!!    > MY_INTEGER           = 987654321
-!!    > MY_DOUBLE            = 12345670000.000000
-!!    > =======================================================================
 !!
-!!##SEE ALSO
-!!    M_kracken, kracken
 !!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
 !!
-!!    parse,dissect,store,setprompts,show
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !===================================================================================================================================
 subroutine store(name1,value1,allow1,ier)
 
@@ -1938,24 +1906,22 @@ end subroutine store
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
-!!##NAME
-!!          subscript_(3fp) - [ARGUMENTS:M_kracken] return the subscript value of a string when given its name
-!!##SYNOPSIS
 !!
-!!   function subscript_(chars0)
 !!
-!!    character(len=*),intent(in) :: chars0
-!!##DESCRIPTION
-!!##OPTIONS
-!!##RETURNS
-!!##EXAMPLE
 !!
-!!##SEE ALSO
-!!    M_kracken, kracken
 !!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
 !!
-!!    parse,dissect,store,setprompts,show
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !===================================================================================================================================
 function subscript_(chars0)
 
@@ -1988,24 +1954,22 @@ end function subscript_
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
-!!##NAME
-!!          menu(3fp) - [ARGUMENTS:M_kracken] prompt for values using a menu interface
-!!##SYNOPSIS
 !!
-!!   subroutine menu(verb)
 !!
-!!    character(len=*),intent(in)  :: verb
-!!##DESCRIPTION
-!!##OPTIONS
-!!##RETURNS
-!!##EXAMPLE
 !!
-!!##SEE ALSO
-!!    M_kracken, kracken
 !!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
 !!
-!!    parse,dissect,store,setprompts,show
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !===================================================================================================================================
 subroutine menu(verb)
 
@@ -2234,52 +2198,50 @@ end subroutine menu
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
-!!##NAME
-!!    show(3f) - [ARGUMENTS:M_kracken] dump dictionary entries
 !!
-!!##SYNOPSIS
 !!
-!!   subroutine show(VERB_NAME0,VERBS_ONLY,IWIDE)
 !!
-!!    character(len=*),intent(in)   :: VERB_NAME0
-!!    logical,intent(in)            :: VERBS_ONLY
-!!    integer,intent(in)            :: iwide
-!!##DESCRIPTION
-!!    Write information about a command from the command dictionary or list all the
-!!    command verbs in the dictionary
 !!
-!!##OPTIONS
-!!    VERB_NAME0   verb prefix to display. Default is all
-!!    VERBS_ONLY   flag to show verbs only
-!!    IWIDE        if .ge. zero, how many columns wide to show just verbs
 !!
-!!##EXAMPLE
 !!
-!!   Sample program:
 !!
-!!     program demo_show
-!!     use M_kracken, only : kracken, show
-!!     implicit none
 !!
-!!     call kracken('demo', ' default keyword -i 10 -j 20.20 -value my default string')
-!!     call show('demo',.false.,0)
 !!
-!!     end program demo_show
-!!   Results:
 !!
-!!     demo_value           = my default string
-!!     demo_oo              = default keyword
-!!     demo_j               = 20.20
-!!     demo_i               = 10
-!!     demo_?               = .false.
-!!     demo_>               = #N#
 !!
-!!##SEE ALSO
-!!    M_kracken, kracken
 !!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
 !!
-!!    parse,dissect,store,setprompts,show
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !===================================================================================================================================
 subroutine show(VERB_NAME0,VERBS_ONLY,IWIDE)
 

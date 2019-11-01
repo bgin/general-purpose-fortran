@@ -25,8 +25,9 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   --version   Display version information and exit.                            ',&
 '   --help      Display help text and exit.                                      ',&
 'EXAMPLE                                                                         ',&
-'   # generate a value for use with the X authority system.                      ',&
-'   xauth add :0 . `xauth_key`                                                   ',&
+'   generate a value for use with the X authority system:                        ',&
+'                                                                                ',&
+'    xauth add :0 . `xauth_key`                                                  ',&
 'SEE ALSO                                                                        ',&
 '   X(1), xauth(1)                                                               ',&
 '']
@@ -36,26 +37,25 @@ endif
 end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
-!!##NAME
-!!    xauth_key(1f) - [M_random] generate magic cookies for xaut
-!!##SYNOPSIS
 !!
-!!    xauth_key [characters] [ -n number_of_characters]
-!!##DESCRIPTION
-!!    xauth_key generates a random hexadecimal number
-!!##OPTIONS
-!!    characters  Set of letters to compose string from.
-!!                Defaults to '0123456789abcdef'.
-!!    -n N        Number of digits. Defaults to 128
-!!    -r N        Number of cookies to generate
-!!    --version   Display version information and exit.
-!!    --help      Display help text and exit.
-!!##EXAMPLE
 !!
-!!    # generate a value for use with the X authority system.
-!!    xauth add :0 . `xauth_key`
-!!##SEE ALSO
-!!    X(1), xauth(1)
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !===================================================================================================================================
 program xauth_key
 use M_kracken, only : kracken, lget, iget, sget
@@ -102,7 +102,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20171219>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Thu, Aug 29th, 2019 11:12:18 PM>',&
+'@(#)COMPILED:       Wed, Oct 30th, 2019 9:55:33 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

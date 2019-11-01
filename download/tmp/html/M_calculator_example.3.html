@@ -99,7 +99,8 @@ M_calculator_Example(5f) - [M_calculator] Example program for module M_calculato
 
 <!--FORTRAN90--><xmp>
 
-   program demo_M_calculator
+   !program demo_M_calculator
+   program show_M_calculator
 
       !     line mode calculator that calls jucalc
       !
@@ -149,8 +150,7 @@ M_calculator_Example(5f) - [M_calculator] Example program for module M_calculato
       rvalue=rnum0('A',ierr)
       write(*,*) rvalue
 
-      end program demo_M_calculator
-
+      end program show_M_calculator
       !#cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
       subroutine juown1(func,iflen,args,iargstp,n,fval,ctmp,ier)
       ! extend functions available to the calculator routine
@@ -211,6 +211,7 @@ M_calculator_Example(5f) - [M_calculator] Example program for module M_calculato
       integer,intent(in)          :: n
          c=0.0
       end function c
+      !end program demo_M_calculator
 </xmp>
 
 </div>

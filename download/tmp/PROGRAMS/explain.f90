@@ -86,7 +86,7 @@ end subroutine help_usage
 !!     >
 !!     >3 Sub_Sub_Topics
 !!     >
-!!     >The arrangement of topics is a little like the grouping of parentheses
+!!     >The arrangement of topics is a little like the grouping of parentheses.
 !!     >
 !!     >2 Suggestions
 !!     >
@@ -130,7 +130,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)AUTHOR:         John Burkardt>',&
 '@(#)VERSION:        1.07, 20190125>',&
 '@(#)MODIFIED:       John S. Urban>',&
-'@(#)COMPILED:       Mon, Sep 30th, 2019 10:03:34 PM>',&
+'@(#)COMPILED:       Wed, Oct 30th, 2019 9:07:28 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

@@ -49,41 +49,40 @@ endif
 end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
-!!##NAME
-!!        _printenv(1f) - [FUNIX:ENVIRONMENT] print all or part of environment in formats readable by various shell
-!!##SYNOPSIS
 !!
-!!        _printenv [variable...] [ -C|-B]
-!!        _printenv [ --help|--version]
-!!##DESCRIPTION
-!!        If no arguments are given, _printenv(1f) prints the entire environment.
-!!        If one or more variable names are given, it prints the value of
-!!        each one that is set.
 !!
-!!##OPTIONS
-!!        variable(s)  if variable names are given, print the value for
-!!                     each one that is set.
-!!        -C           print output in a form that can be sourced into a
-!!                     C shell (eg. as a setenv(1) command).
-!!        -B           print output in a form that can be sourced into a
-!!                     Bourne shell.
-!!        --help       display this help and exit
-!!        --version    output version information and exit
 !!
-!!##USAGE
-!!      Example commands:
 !!
-!!       _printenv                       # print entire environment
-!!       _printenv HOME TMP LOGNAME USER # print selected variables
-!!       _printenv USER -C               # print as a C-shell setenv(1) command
 !!
-!!##EXIT STATUS
-!!        The exit status is:
 !!
-!!         0  if all variables specified were found
-!!         1  otherwise
-!!##SEE ALSO
-!!        env(1), printenv(1)
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
+!!
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -101,7 +100,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0 2016-11-27>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Thu, Aug 29th, 2019 10:21:24 PM>',&
+'@(#)COMPILED:       Wed, Oct 30th, 2019 9:45:44 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

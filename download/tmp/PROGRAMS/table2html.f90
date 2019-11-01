@@ -94,7 +94,7 @@ end subroutine help_usage
 !!   Sample usage:
 !!
 !!    # list month as a table
-!!    cal|tail -n +2|table2html -caption $(cal|head -n 1) -document |w3m -dump -T text/html|mor
+!!    cal|tail -n +2|table2html -caption $(cal|head -n 1) -document |w3m -dump -T text/html|more
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -115,7 +115,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Thu, Aug 29th, 2019 11:03:26 PM>',&
+'@(#)COMPILED:       Wed, Oct 30th, 2019 9:39:11 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

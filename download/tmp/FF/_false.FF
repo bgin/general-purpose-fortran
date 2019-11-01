@@ -20,7 +20,7 @@ OPTIONS
 EXAMPLE
       Bash example:
 
-         _false || echo SHOULD PRINT THIS
+         _false || echo Should print this
 
          if _false
          then
@@ -30,8 +30,9 @@ EXAMPLE
          fi
 
       Expected output::
+
          ERROR STOP
-         SHOULD PRINT THIS
+         Should print this
          ERROR STOP
          command got non-zero exit 1
 

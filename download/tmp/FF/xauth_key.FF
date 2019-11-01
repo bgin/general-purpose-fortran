@@ -17,8 +17,9 @@ OPTIONS
    --version   Display version information and exit.
    --help      Display help text and exit.
 EXAMPLE
-   # generate a value for use with the X authority system.
-   xauth add :0 . `xauth_key`
+   generate a value for use with the X authority system:
+
+    xauth add :0 . `xauth_key`
 SEE ALSO
    X(1), xauth(1)
 $DOCUMENT END

@@ -88,11 +88,11 @@ end subroutine help_usage
 !!##DESCRIPTION
 !!    Given the length to the center of gravity from the fulcrum (pivot
 !!    point) of a pendulum in feet calculate the pendulum frequency in
-!!    swings/sec, and how long the swing takes (the period of the pendulum)
+!!    swings/sec, and how long the swing takes (the period of the pendulum).
 !!
 !!    If the pendulum weight or bob of a simple pendulum is pulled to a
 !!    relatively small angle and let go, it will swing back and forth at a
-!!    regular frequency. If damping effects from air resistance and frictio
+!!    regular frequency. If damping effects from air resistance and friction
 !!    are negligible, equations concerning the frequency and period of the
 !!    the pendulum, as well as the length of the string can be calculated.
 !!
@@ -162,7 +162,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Thu, Aug 29th, 2019 11:00:47 PM>',&
+'@(#)COMPILED:       Wed, Oct 30th, 2019 9:38:19 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

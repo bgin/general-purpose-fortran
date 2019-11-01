@@ -290,7 +290,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    display a TUI definition and return values>',&
 '@(#)VERSION:        1.0, 20150508>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Thu, Aug 29th, 2019 10:58:05 PM>',&
+'@(#)COMPILED:       Wed, Oct 30th, 2019 9:36:29 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -342,7 +342,7 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!     fixedfrom(1f) - [FUNIX] read in a TUI definition and return values from screen pane
+!!     fixedfrom(1f) - [FUNIX] read in a TUI definition and return values from screen panel
 !!
 !!##SYNOPSIS
 !!

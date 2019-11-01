@@ -3421,7 +3421,6 @@ implicit none
    call test_spirograph()
    call test_uarc()
    call test_uconic()
-   call test_illusion()
 !! teardown
 contains
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -3604,15 +3603,6 @@ implicit none
    !!call unit_check('uconic', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('uconic',msg='')
 end subroutine test_uconic
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_illusion()
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-implicit none
-   call unit_check_start('illusion',msg='')
-   !!call unit_check('illusion', 0.eq.0, msg=msg('checking',100))
-   call unit_check_done('illusion',msg='')
-end subroutine test_illusion
 !===================================================================================================================================
 end subroutine test_suite_M_drawplus
 !==================================================================================================================================!
