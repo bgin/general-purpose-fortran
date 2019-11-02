@@ -3253,6 +3253,12 @@ end function system_mkdir
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
 !>
 !!##NAME
 !!    system_opendir(3f) - [M_system] open directory stream by calling opendir(3c)
@@ -3324,12 +3330,14 @@ end function system_mkdir
 !!    integer                      :: ierr
 !!    !--- open directory stream to read from
 !!    call system_opendir('.',dir,ierr)
-!!    !--- read directory stream
-!!    do
-!!       call system_readdir(dir,filename,ierr)
-!!       if(filename.eq.' ')exit
-!!       write(*,*)filename
-!!    enddo
+!!    if(ierr.eq.0)then
+!!       !--- read directory stream
+!!       do
+!!          call system_readdir(dir,filename,ierr)
+!!          if(filename.eq.' ')exit
+!!          write(*,*)filename
+!!       enddo
+!!    endif
 !!    !--- close directory stream
 !!    call system_closedir(dir,ierr)
 !!    end program demo_system_opendir
@@ -3404,16 +3412,18 @@ end subroutine system_opendir
 !!    integer                      :: i, ierr
 !!    !--- open directory stream to read from
 !!    call system_opendir('.',dir,ierr)
-!!    !--- read directory stream twice
-!!    do i=1,2
-!!       write(*,'(a,i0)')'PASS ',i
-!!       do
-!!          call system_readdir(dir,filename,ierr)
-!!          if(filename.eq.' ')exit
-!!          write(*,*)filename
+!!    if(ierr.eq.0)then
+!!       !--- read directory stream twice
+!!       do i=1,2
+!!          write(*,'(a,i0)')'PASS ',i
+!!          do
+!!             call system_readdir(dir,filename,ierr)
+!!             if(filename.eq.' ')exit
+!!             write(*,*)filename
+!!          enddo
+!!          call system_rewinddir(dir)
 !!       enddo
-!!       call system_rewinddir(dir)
-!!    enddo
+!!    endif
 !!    !--- close directory stream
 !!    call system_closedir(dir,ierr)
 !!

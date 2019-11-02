@@ -496,11 +496,13 @@ contains
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    plot_init_globals(3f) - [M_xyplot] call xy_init_labels(3f) an xy_init_markers(3f)
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine plot_init_globals()
@@ -512,11 +514,13 @@ end subroutine plot_init_globals
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    plot_init(3f) - [M_xyplot] initialize command language and graphics mode to set up starting interpretation
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine plot_init()
@@ -535,11 +539,13 @@ end subroutine plot_init
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_init_labels(3f) - [M_xyplot] data defining all unit code labels
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_init_labels()
@@ -1018,16 +1024,16 @@ uq(470)='                                        '
 uq(471:NUNITSQ)='                            '
 
 !>
+!! Tue May  7 07:19:05 EDT 2002
 !!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
+!!  Boron Worth  (pcm/pcm)                 Boron Worth  (pcm/ppm)
+!!  Conductivity  (mu-mho/cm)              Conductivity  (mu-ohm/cm)
+!!  Current  (MA)                          Current  (mA)
+!!  Dnb Ratio                              DNB Ratio
+!!  Voltage  (MV)                          Voltage  (mV)
+!!  Zro2 Total Mass  (%)                   ZrO2 Total Mass  (%)
+!!  Reactivity Insertion  (pcm/s)          Reactivity Insertion Rate (pcm/s)
+!!  Internal Energy  (Btu/lbm-s)           Internal Energy  (Btu/lbm)
 !===================================================================================================================================
 
 end subroutine xy_init_labels
@@ -1035,11 +1041,13 @@ end subroutine xy_init_labels
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_init_markers(3f) - [M_xyplot] part of plot_axes(3f), used to define default geometric markers
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_init_markers()
@@ -1081,11 +1089,13 @@ end subroutine xy_init_markers
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()(
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
+!!##NAME
+!!    plot_setfill(3f) - [M_xyplot] set background, middleground, and foreground colors for plot
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine plot_setfill()
@@ -1113,36 +1123,37 @@ end subroutine plot_setfill
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_init_default(3f) - [M_xyplot] initialize XY plot routines
+!!##SYNOPSIS
 !!
 !!
+!!##DESCRIPTION
 !!
+!!    This subroutine initializes or resets global values and the command
+!!    dictionary.  It is used at program startup and when the reset(1)
+!!    command is used.
 !!
+!!    An xy_array of character strings containing the prototype for most commands is
+!!    used as input to the parse routine. On the first call to xy_init_default this defines
+!!    the command dictionary and sets the initial value for most of the dictionary.
+!!    Each command name must be defined in order for the main program to distinguish
+!!    between PLT commands and system commands. The main program tries to look
+!!    up the command name in the dictionary to decide if it is a legitimate command.
 !!
+!!    In addition, the global logical LLQ() xy_array values are set to their defaults.
+!!    This xy_array holds the switches used to control the many submodes of the program.
 !!
+!!    A large addition of global values (almost all of which end in the letter Q)
+!!    are also set as necessary to ensure the program is reset to the proper initial
+!!    modes.
 !!
+!!    A few environment UNIX variables are also read to establish the initial
+!!    page length and banner strings and so on.
 !!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
+!!   NOTE: Compaq/Digital Tru64 compiler warned about continued strings
+!!         on lines not padded to column 72 with blanks so added
+!!         line on end of continued lines; no longer required using free-format
 !===================================================================================================================================
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 subroutine xy_init_default()
@@ -1399,32 +1410,33 @@ end subroutine xy_init_default
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    plot_hcopy(3f) - [M_xyplot] generate copy of the current plot for XY plot routines
+!!##SYNOPSIS
 !!
+!!##DESCRIPTION
 !!
+!!    This is the routine that generates a copy of the current plot by closing the
+!!    current device and opening another, calling the same routine as the PLOT
+!!    command, and then closing the new device and opening up one like you started
+!!    from.
 !!
+!!    This works best when the current device is an interactive device such as X11 or
+!!    tek; as exiting and reinitializing usually does not effect an interactive
+!!    device much; but for file oriented devices the output file is restarted (as the
+!!    current version of M_plot is written).
 !!
+!!    So, one limitation here is that if you running a batch job that is making
+!!    PostScript output and you call the plot_hcopy command to generate a bitmap file, for
+!!    example, your current PostScript output file is going to be restarted.
 !!
+!!    Consider making M_plot support concurrent open devices, or a special exit that
+!!    is "temporary" and lets you resume output. Actually, I think Bernie's last
+!!    version does that?
 !!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
+!!    Note that if the -obj option is used, instead of calling the equivalent of PLOT
+!!    a special object is called. This could be used by a sophisticated user, but is
+!!    used to copy what shows on screen from ID, SHOWFONT, ... commands too.
 !===================================================================================================================================
 subroutine plot_hcopy()
 use M_journal,    only: journal
@@ -1581,11 +1593,13 @@ end subroutine plot_hcopy
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    plot_noclose(3f) - [M_xyplot] flag whether to keep current device open while switching to alternate device
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 logical function xy_noclose(dev_name)
@@ -1608,11 +1622,13 @@ end function xy_noclose
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    plot_set_xmin(3f) - [M_xyplot] set value for xmin/xmax/ymin/... command
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine plot_set_xmin(name,imaxv)
@@ -1722,11 +1738,13 @@ end subroutine plot_set_xmin
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    plot_storage(3f) - [M_xyplot] if on a storage tube, clear the screen to unclutter it
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine plot_storage()
@@ -1745,11 +1763,13 @@ end subroutine plot_storage
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    plot_setmark(3f) - [M_xyplot] set or display marker geometries
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine plot_setmark(parms,pat,ipen)
@@ -1873,11 +1893,13 @@ end subroutine plot_setmark
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    plot_page_aspect(3f) - [M_xyplot] Get aspect ratio from ASPECT command and call xy_aspct
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine plot_page_aspect()
@@ -1904,35 +1926,37 @@ end subroutine plot_page_aspect
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    plot_marks(3f) - [M_xyplot] draw examples of dash codes, pen styles and screen markers for XY plots
+!!##SYNOPSIS
 !!
+!!##DESCRIPTION
 !!
+!!    Draw examples of dash codes, pen styles, and screen markers for the
+!!    dashes(1), id(1), and markers(1) commands as reserved M_plot object 12345
+!!    so they can not only be displayed, but copied by the hcopy(1) command if
+!!    it is used before any other graphics-generating commands.
 !!
+!!##EXAMPLE
 !!
+!!   Sample program
 !!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
+!!    program testmarks
+!!          use M_draw
+!!          character(len=*),parameter :: ident="@(#)testmarks(1f): draw examples of dash codes, pen styles, and screen markers"
+!!       call vinit('')
+!!       call plot_marks('setmark')   ! draw screen of current line markers
+!!       idum=getkey()
+!!       call plot_marks('font')      ! draw screen of current font
+!!       idum=getkey()
+!!       call plot_marks('id')        ! draw screen of current pen styles
+!!       idum=getkey()
+!!       call plot_marks('dash')      ! draw screen of current dash codes
+!!       idum=getkey()
+!!       call plot_marks('hue')       ! draw colors
+!!       idum=getkey()
+!!       call vexit()
+!!    end program testmarks
 !===================================================================================================================================
 subroutine plot_marks(nameit)
 ! Copyright(C) 1995 John S. Urban. All rights reserved
@@ -2149,15 +2173,17 @@ end subroutine plot_marks
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    plot_title(3f) - [M_xyplot] allow user to add extra title lines by number
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!    allow user to add extra title lines by number
+!!    store them in unused part of language dictionary
+!!    NOTE: assume they are stored sequentially when printing
+!!    and stop printing when a blank title line is encountered
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine plot_title()
@@ -2208,11 +2234,13 @@ end subroutine plot_title
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    plot_jut(3f) - [M_xyplot] allow user to place text on screen
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine plot_jut(parms)
@@ -2468,23 +2496,25 @@ end subroutine plot_jut
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    plot_sz(3f) - [M_xyplot] change the size of the display surface
+!!##SYNOPSIS
 !!
+!!    subroutine plot_sz()
+!!##DESCRIPTION
+!!    This routine changes the device size on devices where this is
+!!    supported. It is typically used with the X11 windows driver. The size
+!!    and position are stored as local variables. They are changed by the
+!!    sz_oo and sz_p strings queried from the command language dictionary.
 !!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
+!!    Most devices are left open and just a new aspect area is selected based
+!!    on the ratio of the size parameters. The xy_noclose() function flags
+!!    whether to actually change the display device or not. For devices
+!!    like X11 and PC the device is actually closed and then restarted at
+!!    the new size because the M_plot graphics library does not in general
+!!    support changing the device size and position except when the device
+!!    is initialized.
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 !===================================================================================================================================
@@ -2577,11 +2607,13 @@ end subroutine plot_sz
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    plot_drawplot(3f) - [M_xyplot] draw an xy plot
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine plot_drawplot(lclear)
@@ -2901,11 +2933,13 @@ end subroutine plot_drawplot
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    plot_juparea(3f) - [M_xyplot] parse parea command
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine plot_juparea()
@@ -2962,11 +2996,13 @@ end subroutine plot_juparea
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    plot_jupage(3f) - [M_xyplot] a good try at allowing mixing of PLT commands and M_plot commands
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine plot_jupage()
@@ -3046,27 +3082,29 @@ end subroutine plot_jupage
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    plot_id(3f) - [M_xyplot] render the id(1) command for XY plots
 !!
+!!##SYNOPSIS
 !!
+!!   subroutine plot_id(icmdlen)
 !!
+!!    integer,intent(in)          :: icmdlen
+!!##DESCRIPTION
 !!
+!!    This routine implements the line style information set with the ID
+!!    command. It is used to change the attributes of the pens used to draw
+!!    the user data. Essentially everything that is used to identify a curve
+!!    can be changed by this command. Line thickness, color, marker number,
+!!    marker frequency, dash code ID, marker size, and curve fill style can
+!!    be set. Also, text can be set to override the default legend label,
+!!    and the legend entry can be turned off. A full description of the
+!!    command can be found in the user manual.
 !!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
+!!    If no parameters are given a chart showing curve styles is displayed
+!!    and the current pen settings are written out.
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine plot_id(icmdlen)
@@ -3283,11 +3321,13 @@ end subroutine plot_id
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    plot_clear(3f) - [M_xyplot] clear graphics area and ensure in graphics mode
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine plot_clear(ctype)
@@ -3324,14 +3364,16 @@ end subroutine plot_clear
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_aspct(3f) - [M_xyplot] Store plot window size in global variables and call plot_page()
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!    Store plot window size in global variables and call BIGGEST_ORTHO2()
+!!    bug occurs if a window edge (at least xsmall) is zero in determining
+!!    length of hardware characters.
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_aspct(xsmall,xlarge,ysmall,ylarge)
@@ -3354,11 +3396,13 @@ end subroutine xy_aspct
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_bans(3f) - [M_xyplot] draw banner lines from PLT ban command
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_bans()
@@ -3473,11 +3517,13 @@ end subroutine xy_bans
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_printban(3f) - [M_xyplot] plot horizontal banner string at specified location
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_printban(name,startx,starty,slenfac,iprinted)
@@ -3509,11 +3555,13 @@ end subroutine xy_printban
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_printbanv(3f) - [M_xyplot] plot vertical banner string
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_printbanv(name,startx,starty,slenfac,iprinted)
@@ -3546,11 +3594,13 @@ end subroutine xy_printbanv
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_fxed(3f) - [M_xyplot] select whether a string is fixed-space or not
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_fxed(string,llisub)
@@ -3574,11 +3624,13 @@ end subroutine xy_fxed
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_init_graphics(3f) - [M_xyplot] Initialize PLT graphics environment
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_init_graphics()
@@ -3684,11 +3736,13 @@ end subroutine xy_init_graphics
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_ifdrawn(3f) - [M_xyplot] xy_ifdrawn() is used to see if first page drawn or not
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 logical function xy_ifdrawn()
@@ -3710,11 +3764,13 @@ end function xy_ifdrawn
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_iftext(3f) - [M_xyplot] Add user-specified text strings to plot
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_iftext()
@@ -3880,14 +3936,16 @@ end subroutine xy_iftext
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_jucurv(3f) - [M_xyplot] find extrema for group of curves and set legend label defaults
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!    find extrema for group of curves to be plotted and set legend label defaults if labels are blank
+!!    set icrvsq and icrvs2q
+!!    note that you have to "skip over" a 0 curve when assigning line attributes and legend labels
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_jucurv(xlowa,xhigha,ylowa,yhigha,iunits,ierr)
@@ -4153,11 +4211,13 @@ end subroutine xy_jucurv
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_jumapc(3f) - [M_xyplot] map colors using HUE command
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_jumapc(mode)
@@ -4456,27 +4516,29 @@ end subroutine xy_jumapc
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_pause(3f) - [M_xyplot] conditionally  pause until graphic or text-window response
+!!##SYNOPSIS
 !!
+!!##DESCRIPTION
+!!    would prefer to use errin but not all FORTRAN implementations
+!!    support it; even in 1 environments.
 !!
+!!    if a null line is entered, set calculator value PAUSE to 1,
+!!    else set PAUSE to 0. This can be handy for creating break points
 !!
+!!    The calculator variable $PAUSE is set to the character entered, except
+!!    that characters less than ADE 32 are set to a blank.
+!!##OPTIONS
+!!  constants:
 !!
+!!    ipausq=1 beep and pause until carriage return entered from standard input.
+!!    ipausq=2          pause until carriage return entered from standard input.
+!!    ipausq=0 ignore pause request
+!!    ipausq=-1  pause until a character is entered from graphics input.
 !!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_pause()
@@ -4545,11 +4607,13 @@ end subroutine xy_pause
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_jutitl(3f) - [M_xyplot] add title lines to plot
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_jutitl(ifile,idonly)
@@ -4576,11 +4640,13 @@ end subroutine xy_jutitl
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_jutitlX(3f) - [M_xyplot] draw plot titling information (titles and legend block)
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_jutitlX(idonly,ftitle,isize)
@@ -4725,11 +4791,13 @@ end subroutine xy_jutitlX
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_set_bigger(3f) - [M_xyplot] change title line size
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_set_bigger(tallest,width,height,factor)
@@ -4753,11 +4821,13 @@ end subroutine xy_set_bigger
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_laxis(3f) - [M_xyplot] draw linear axis and logarithmic axis for PLT
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_laxis(ixdiv,iydiv) ! draw the axes
@@ -4935,11 +5005,13 @@ end subroutine xy_laxis
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_pickpnt(3f) - [M_xyplot] interactively draw a line to current left scale and store the curve or return point
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_pickpnt(itype,xecho,yecho,ibut)
@@ -5057,11 +5129,13 @@ end subroutine xy_pickpnt
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_setlbl(3f) - [M_xyplot] decide axis label strings
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_setlbl(ii)
@@ -5130,11 +5204,13 @@ end subroutine xy_setlbl
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_setsize(3f) - [M_xyplot] use values to set size and border on output device
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_setsize(string)
@@ -5168,11 +5244,13 @@ end subroutine xy_setsize
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_tidybox(3f) - [M_xyplot] draw legend lines inside box specified on call
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_tidybox()
@@ -5239,11 +5317,13 @@ end subroutine xy_tidybox
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_arrow(3f) - [M_xyplot] Add xy_arrow from T text box to specified point
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_arrow(xleft,ybot,xright,ytop,xto,yto,where,asz)
@@ -5320,11 +5400,13 @@ end subroutine xy_arrow
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_idbox(3f) - [M_xyplot] Draw ID legend box specified with LEGEND command
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_idbox(r10a,icolsa,idonly)
@@ -5521,11 +5603,13 @@ end subroutine xy_idbox
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_idbox0(3f) - [M_xyplot] draw legend lines
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_idbox0(r10,idonly)
@@ -5715,11 +5799,13 @@ end subroutine xy_idbox0
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_iflou(3f) - [M_xyplot] set global flag for Leading Edge trimming (see LE command)
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_iflou(iflag)
@@ -5751,11 +5837,13 @@ end subroutine xy_iflou
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_judraw(3f) - [M_xyplot] draw curves to plot scales using plot_ values
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_judraw(ifile0)
@@ -5941,11 +6029,13 @@ end subroutine xy_judraw
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_loadtl(3f) - [M_xyplot] load title xy_array
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_loadtl(ifile,ftitle,isize,ititles)
@@ -6094,11 +6184,13 @@ end subroutine xy_loadtl
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_tidybox1(3f) - [M_xyplot] draw legend lines in box with legend box autosized and positioned by edge number
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_tidybox1(itextc,ichars,iwchar,ibox,plot_setmark_size,cwhere,xmint0,xmaxt0,ymint0,ymaxt0,xmark)
@@ -6376,11 +6468,13 @@ end subroutine xy_tidybox1
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_tidybox2(3f) - [M_xyplot] draw legend lines inside box specified on call
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_tidybox2(itextc,ichars,iwchar,ibox,plot_setmark_size,cwhere,xmint,xmaxt,ymint,ymaxt,xmark)
@@ -6603,11 +6697,13 @@ end subroutine xy_tidybox2
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_listout3(3f) - [M_xyplot] copy rcurve_in to rcurve_out expanding negative curve numbers to ranges (1 -10 means 1 thru 10)
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_listout3(rcurve_in,iszin,rcurve_out,iszout,isize,inums)
@@ -6700,40 +6796,41 @@ end subroutine xy_listout3
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!   xy_retrv2(3f) - [M_xyplot] a special version of RETREV() that integrates the Calculator and Language library for XY plots
+!!##SYNOPSIS
 !!
+!!    subroutine xy_retrv2(name,val,ilen,ier)
+!!    character, intent=(in) :: name*(*)
+!!    character, intent=(out) :: val*(*)
+!!    integer, intent=(out) :: ilen
+!!    integer, intent=(out) :: ier
+!!##DESCRIPTION
+!!      + RETREV() is called to look up the value of the specified name in the
+!!        dictionary.
+!!      + If the returned value is a string expression(ie. it starts with a $ or
+!!        " character) then evaluate the expression using the Calculator libray
+!!        and return the expanded value.
+!!      + If the calculator expansion of a string expression fails, the
+!!        expression itself is returned as blank.
+!!      + If the name does not appear in the dictionary a blank string is
+!!        returned.
+!!##OPTIONS
+!!    NAME  is the entry name to look up. From 1 to 20 characters long.
+!!    VAL   is the returned value of the entry that was looked up. From 1 to 255 characters long.
+!!    ILEN  is the significant length of the string VAL.
+!!    IER   is zero(0) if no error occurred.
 !!
+!!##DEPENDENCIES
+!!      + jucalcx
+!!      + len_trim
+!!      + retrev
+!!##SEE ALSO
+!!    see parse(3f), retrev(3f), fetch(3f), store(3f), plot_toggle(3f).
 !!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
+!!##REFERENCES
+!!##AUTHOR
+!!      + John S. Urban
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine xy_retrv2(name,val,ilen,ier)
@@ -6774,66 +6871,68 @@ end subroutine xy_retrv2
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    plot_toggle(3f) - [M_xyplot] special version of toggle(3f) to integrate calculator and language libraries
+!!##SYNOPSIS
 !!
+!!   subroutine plot_toggle(verb,pars)
 !!
+!!     character, intent=(in) :: verb*(*)
+!!     character, intent=(in) :: pars*(*)
 !!
+!!##DESCRIPTION
 !!
+!!     For users of the Language library TOGGLE() is an example for the common
+!!     problem of commands that have no parameters but are merely 'ON' or 'OFF'.
+!!     This routine helps you to easily create a command of the form:
 !!
+!!          command     # toggle from current state to opposite state.
+!!          command on  # explicitly turn this command on
+!!          command off # explicitly turn this command off
 !!
+!!     plot_toggle() does the same thing as TOGGLE() except that now an additional
+!!     command syntax is permitted:
 !!
+!!          command $MODE
 !!
+!!     where $MODE is a valid Calculator string variable name or expression.
 !!
+!!       + If value is explicitly on or off, set appropriate string.
+!!       + if no value is specified, toggle on/off value.
 !!
+!!     plot_toggle() is a copy of the TOGGLE() routine that uses xy_retrv2() instead of
+!!     RETREV() so that the 'on' and 'off' keywords can be specified as Calculator
+!!     string expressions instead of fixed strings.
 !!
+!!     After this routine is called the RETREV or FETCH procedures can be used to
+!!     query the dictionary entry 'verb_oo'. It will either be the string "on" or
+!!     the string "off".
 !!
+!!##OPTIONS
+!!     VERB  is the command verb name, from 1 to 20 characters.
+!!     PARS  is the remaining parameter part of the command.
 !!
+!!##DEPENDENCIES
+!!       + xy_retrv2
+!!       + parse
+!!       + store
+!!       + len_trim
+!!       + jun
 !!
+!!##EXAMPLES
 !!
+!!     See the Programmer's example for a simple code with a call to TOGGLE() in
+!!     it. plot_toggle() is used in much the same way but with the Calculator library
+!!     loaded.
 !!
+!!##SEE ALSO
+!!     see PARSE().
 !!
+!!##REFERENCES
+!!       + NONE.
 !!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
+!!##AUTHOR
+!!       + John S. Urban
 !===================================================================================================================================
 subroutine plot_toggle(verb,pars)
 use M_journal, only : journal
@@ -6888,19 +6987,21 @@ end subroutine plot_toggle
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_getdat(3f) - [M_xyplot] place data from specified file and curve into xy_arrayQ xy_array
+!!##SYNOPSIS
 !!
+!!##DESCRIPTION
+!!   place data from specified file and curve into xy_arrayQ xy_array
 !!
+!!   given a file number (ifile)  and curve number (iff)  to extract, place data into
+!!   xy_arrayq xy_array in common, and return min and max values; number of values; and the
+!!   number of the time xy_array this data is calibrated to.
 !!
+!!    o header data is put into q variables in common
 !!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_getdat(ifile,iff,ymin,ymax,itime,iread,icurve)
@@ -7095,11 +7196,13 @@ end subroutine xy_getdat
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_juput(3f) - [M_xyplot] write current memory-resident curves in global variables(q) onto pseudo file
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_juput(ifile,irecord,rmin,rmax,ionend,iquiet)
@@ -7231,11 +7334,13 @@ end subroutine xy_juput
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_slide(3f) - [M_xyplot] slide value
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 real function xy_slide(xmin,xmax,value,bottom)
@@ -7253,11 +7358,13 @@ end function xy_slide
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    plot_z(3f) - [M_xyplot] Interactive ZOOM mode
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine plot_z()
@@ -7333,13 +7440,15 @@ end subroutine plot_z
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    plot_zmode(3f) - [M_xyplot] Interactive ZOOM mode
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!    The plot_zmode() procedure is used to allow you to use the keyboard to zoom in
+!!    and around a plot.
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine plot_zmode(percent0)
@@ -7708,18 +7817,20 @@ end subroutine plot_zmode
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_getrel(3f) - [M_xyplot] return values to convert one set of units to another
+!!##SYNOPSIS
 !!
+!!##DESCRIPTION
+!!    return values to convert one set of units to another
+!!    so that a table may be set up to automatically convert one set of
+!!    units to another, the relate command allows a linear translation
+!!    table to be set up.
 !!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
+!!    given an input unit, get the output unit, rmultiplier, and constant.
+!!    since unit 0 is blank, assume not to convert if a 0 iunito is found.
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_getrel(iuniti,iunito,rmult,const)
@@ -7747,11 +7858,13 @@ end subroutine xy_getrel
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_units(3f) - [M_xyplot] given unit code return string label optionally converted to uppercase
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_units(n0,eunit)
@@ -7774,11 +7887,13 @@ end subroutine xy_units
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_juprint(3f) - [M_xyplot] print string LINE at position x,y with embedded directives
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_juprint(x,y,line,icenter)
@@ -7806,11 +7921,13 @@ end subroutine xy_juprint
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    priv_justrlen(3f) - [M_xyplot] query string size with embedded directives
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine priv_justrlen(line,xlen,ylen,ydown,yup)
@@ -7840,26 +7957,28 @@ end subroutine priv_justrlen
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    priv_justr(3f) - [M_xyplot] print string l0 at position x,y with embedded directives
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
+!!    subroutine priv_justr(x,y,l0,itype,xmin,xmax,ymin,ymax)
+!!    real                :: x
+!!    real                :: y
+!!    character(len=*)    :: l0
+!!    integer             :: itype
+!!    real                :: xmax
+!!    real                :: xmin
+!!    real                :: ymin
+!!    real                :: ynow
+!!##DESCRIPTION
+!! !     string is assumed to be [string]\directive\string\directive\string\directive\...
+!! !     does not allow for escaped backslash in string or null string between directives
+!! !     environment is RESET after each string (MAY CHANGE THIS)
+!!##OPTIONS
+!! !     itype=0    draw the string with centering or size data set (must be second call)
+!! !     itype=1    getting string size and centering shift
+!! !     itype=2    blank out centering values
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine priv_justr(x,y,l0,itype,xmin,xmax,ymin,ymax)
@@ -8046,11 +8165,13 @@ end subroutine priv_justr
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    priv_fontchng(3f) - [M_xyplot] called by priv_justr to process embedded directives in a string
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine priv_fontchng(xnow,ynow,width,height,string,x0,y0,ilines,ii,ione)
@@ -8214,11 +8335,13 @@ end subroutine priv_fontchng
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    priv_zqjreset(3f) - [M_xyplot] called by priv_fontchng(3f) to process embedded directives in a string
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine priv_zqjreset()
@@ -8252,11 +8375,13 @@ end subroutine priv_zqjreset
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    priv_doescape(3f) - [M_xyplot] called by priv_fontchng(3f) to process embedded directives in a string
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 ! too many calls to calculator. Do one pass at end like earlier version?
@@ -8455,22 +8580,24 @@ end subroutine priv_doescape
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_jucp2(3f) - [M_xyplot] plot string line at current position
+!!##SYNOPSIS
 !!
+!!##DESCRIPTION
+!!    For some packages and machines it is best to put the string into
+!!    a scratch variable and put a null character at the end
 !!
+!!    ignores training blanks
 !!
+!!    uses current text justification modes
 !!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
+!!    M_DRAW fonts use the x value for the bottom of the descender for letters like g,
+!!    so move the character down about 22% to keep it level if change size so
+!!    THE CURRENT Y-VALUE IS THE HEIGHT OF THE BASE OF LETTERS WITHOUT DESCENDERS
+!!    need to make a lower level option in M_DASH for this
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_jucp2(line,ilen)
@@ -8542,11 +8669,13 @@ end subroutine xy_jucp2
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_juprints(3f) - [M_xyplot] simple print of string l at position x,y
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_juprints(x,y,l)
@@ -8576,22 +8705,24 @@ end subroutine xy_juprints
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_jucp(3f) - [M_xyplot] plot string line at current position
+!!##SYNOPSIS
 !!
+!!##DESCRIPTION
+!!    For some packages and machines it is best to put the string into
+!!    a scratch variable and put a null character at the end
 !!
+!!    ignores training blanks
 !!
+!!    uses current text justification modes
 !!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
+!!    M_DRAW fonts use the x value for the bottom of the descender for letters like g,
+!!    so move the character down about 22% to keep it level if change size so
+!!    THE CURRENT Y-VALUE IS THE HEIGHT OF THE BASE OF LETTERS WITHOUT DESCENDERS
+!!    need to make a lower level option in M_DASH for this
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_jucp(line)
@@ -8633,11 +8764,13 @@ end subroutine xy_jucp
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_jufont(3f) - [M_xyplot] check and set font and store it so can query it
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_jufont(name)
@@ -8684,11 +8817,13 @@ end subroutine xy_jufont
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_jufont(3f) - [M_xyplot] check and set font and store it so can query it
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_getxy_jufont(name)
@@ -8703,11 +8838,13 @@ end subroutine xy_getxy_jufont
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !----------------------------------------------------------------------------------------------------------------------------------!
 !>
+!!##NAME
+!!    xy_rasters(3f) - [M_xyplot] set line width
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_rasters(iwidth)
@@ -8744,11 +8881,13 @@ end subroutine xy_rasters
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !----------------------------------------------------------------------------------------------------------------------------------!
 !>
+!!##NAME
+!!    xy_ustrlen(3f) - [M_xyplot] get software string length including trailing whitespace
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 real function xy_ustrlen(string)
@@ -8767,11 +8906,13 @@ end function xy_ustrlen
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !----------------------------------------------------------------------------------------------------------------------------------!
 !>
+!!##NAME
+!!    xy_ustrlen2(3f) - [M_xyplot] get software string length up to specified character
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 real function xy_ustrlen2(string,ichars)
@@ -8788,11 +8929,13 @@ end function xy_ustrlen2
 ![][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]-
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
+!!##NAME
+!!    plot_get_plot_area(3f) - [M_xyplot] initialize plot page and set up common page-related values
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine plot_get_plot_area(xsmall,xlarge,ysmall,ylarge)
@@ -8815,11 +8958,13 @@ end subroutine plot_get_plot_area
 ![][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]-
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
+!!##NAME
+!!    plot_set_plot_area(3f) - [M_xyplot] initialize plot page and set up common page-related values
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine plot_set_plot_area(xsmall,xlarge,ysmall,ylarge)
@@ -8842,29 +8987,31 @@ end subroutine plot_set_plot_area
 ![][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]-
 !----------------------------------------------------------------------------------------------------------------------------------
 !>
+!!##NAME
+!!    plot_axis(3f) - [M_xyplot] draw XY axis for XY plot routines
+!!##SYNOPSIS
 !!
+!!    subroutine plot_axes()
+!!##DESCRIPTION
 !!
+!!    This is a group of routines extracted from the PLT program and being converted
+!!    to a generic XY axis routine. It currently has a ridiculous number of
+!!    parameters set thru the common block.
 !!
+!!    Using plot_page(3f), plot_set_nice_range(3f), plot_axis(3f) and xy_line(3f) you can draw simple graphs
+!!    quite easily. This will be expanded upon.
 !!
+!!    plot_set_plot_area(3f) can be used if you are laying out other graphics with the plot.
 !!
+!!    These routines will change.
 !!
+!!     1. xy_line destroys the data if a logarithmic plot is drawn
+!!     2. A generic "mode" routine will be made to set most of the values in common
+!!     3. detailed usage information will be written
 !!
+!!      V.5.0.2 Error Correction --> DUAL AXIS failure was caused by a missing line in loop 10.
 !!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -9944,11 +10091,13 @@ end subroutine xy_setdatarange
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    plot_getdatarange(3f) - [M_xyplot] get plot window extremes, set plot window extremes for dual axis
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine plot_getdatarange(X8)
@@ -10286,11 +10435,13 @@ end subroutine xy_line
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    priv_drawseg_using_pen(3fp) - [M_xyplot] draw a line using pen style ipen NOT to axis scale NOT setting color
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine priv_drawseg_using_pen(ipen,x1,y1,x2,y2)
@@ -10321,19 +10472,21 @@ end subroutine priv_drawseg_using_pen
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    plot_setdash(3f) - [M_xyplot] allow user to display|alter|retrieve  dash codes by style number
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!   parms can be:
+!!       o null: display current patterns
+!!       o fetch: retrieve a stored pattern
+!!       o scale: resize and retrieve patterns for drawing grid lines
+!!                Make pattern a nice size so it repeats in intervals that
+!!                make nice intersections when used as a grid
+!!       o reset: set back to default values
+!!       o something else: store a pattern
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine plot_setdash(parms,iwhich,patout,isize,ipatout)
@@ -10576,11 +10729,13 @@ end subroutine plot_setdash
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_resetpens(3f) - [M_xyplot] reset pens
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_resetpens()
@@ -10636,14 +10791,16 @@ end subroutine xy_resetpens
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_jurang(3f) - [M_xyplot] return nice max and min values for the axis, and nice axis grid spacings
+!!##SYNOPSIS
 !!
+!!##DESCRIPTION
+!!    adjust the scaling according to user limits if specified
 !!
-!!
-!!
-!!
-!!
-!!
-!!
+!!    caution: changes xlow,ylow,xhigh,yhigh
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_jurang(iside,xlow,ylow,xhigh,yhigh,      &
@@ -10764,11 +10921,13 @@ end subroutine xy_jurang
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_con_x(3f) - [M_xyplot] scale an axis value to the overall window/viewport
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 function xy_con_x(xvalue0) result(xvalue)
@@ -10794,11 +10953,13 @@ end function xy_con_x
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_con_y(3f) - [M_xyplot] scale an axis value to the overall window/viewport
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 function xy_con_y(yvalue0) result(yvalue)
@@ -10824,11 +10985,13 @@ end function xy_con_y
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_setcnv(3f) - [M_xyplot] set up conversion table for xy_con_x and xy_con_y functions
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_setcnv(ilogx,ilogy)
@@ -10852,11 +11015,13 @@ end subroutine xy_setcnv
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_jugetwn(3f) - [M_xyplot] query current window ( appropriate for 2-d only)
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_jugetwn(xsmall,xlarge,ysmall,ylarge)
@@ -10903,11 +11068,13 @@ end subroutine xy_jugetwn
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_zoom(3f) - [M_xyplot] given current four numbers defining a box; alter them by indicated selections of an old and new box
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_zoom(xmin,ymin,xmax,ymax,iend)
@@ -11054,42 +11221,44 @@ end subroutine xy_zoom
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_convert(3f) - [M_xyplot] do linear conversion for XY plot routines
 !!
+!!##SYNOPSIS
 !!
+!!   xy_convert(slope,intercept,x,n) # A linear conversion
 !!
+!!    real       :: slope
+!!    real       :: intercept
+!!    real       :: x(*)
+!!    integer    :: n
 !!
+!!##DESCRIPTION
+!!    used to do a fast conversion of an entire set of data
+!!    instead of reparsing the text over and over with the
+!!    math command. A linear conversion is very common for
+!!    such operations as unit conversion.
 !!
+!!    Allows +-*/  operations on a dataset after
+!!    operations have been performed.  Does a conversion of the form
 !!
+!!           y=mx+b
 !!
+!!        where
 !!
+!!           the slope is m
+!!           the y-intercept is b
 !!
+!!        if the intercept is left off, it defaults to a value of 0.
 !!
+!!##OPTIONS
+!!##EXAMPLE
 !!
+!!  Showing usage from ush(1):
 !!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
+!!    math c[4] -o xy_convert(1,40) xy_convert(9/5,-40)
+!!    # equivalent to but faster than
+!!    # math  (c[4]+40)*9/5-40 # xy_convert Centigrade to Fahrenheit
 !===================================================================================================================================
 subroutine xy_convert(a,b,x,n)
 !     1993 John S. Urban
@@ -11122,11 +11291,13 @@ end subroutine xy_convert
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    priv_hilow(3fp) - [M_xyplot] avoid bug where plot fails if zero range in abscissa or ordinate
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine priv_hilow(rmin,rmax)
@@ -11157,11 +11328,13 @@ end subroutine priv_hilow
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    priv_jubox(3fp) - [M_xyplot] draw a filled box around current scaled plot area
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine priv_jubox(imidl,XMIN,YMIN,XMAX,YMAX)
@@ -11185,11 +11358,13 @@ end subroutine priv_jubox
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    priv_jugrid(3fp) - [M_xyplot] draw linear and logarithmic grids after actual axis have been drawn
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine priv_jugrid(ixdiv,iydiv,igrid,vals,XMIN,XMAX,YMIN,YMAX,     &
@@ -11487,11 +11662,13 @@ end subroutine priv_jugrid
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    priv_logrng(3fp) - [M_xyplot] return nice ranges for logarithmic scales
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine priv_logrng(logtype,itic,ilog,rmin,rmax,idiv,treme,idel)
@@ -11534,11 +11711,13 @@ end subroutine priv_logrng
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    xy_obj12345(3f) - [M_xyplot] create or close M_plot object 12345
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_obj12345(string)
@@ -11578,11 +11757,13 @@ end subroutine xy_obj12345
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    priv_setrng(3fp) - [M_xyplot] adjust the scaling according to user limits if specified
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine priv_setrng(rin,value,ichange)
@@ -11605,11 +11786,13 @@ end subroutine priv_setrng
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    priv_solidline(3fp) - [M_xyplot] override dash code and symbol drawing and draw solid line for error bars
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine priv_solidline(mode)  ! override dash code and symbol drawing and draw solid line for error bars
@@ -11625,20 +11808,22 @@ end subroutine priv_solidline
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    priv_toscale(3f) - [M_xyplot] draw line using current pen style either to axis or current window
+!!##SYNOPSIS
 !!
+!!   subroutine priv_toscale(x, y, n,con,keyword)
 !!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
+!!    real                        :: x(*), y(*)    ! warning: changes curve values x,y if log plots made -consider data destroyed !!
+!!    integer,intent(in)          :: n             ! number of points in X() and Y() to consider for plotting
+!!    real,intent(in)             :: con(7)        ! xslope,xinter,yslope,yinter,xlogflag,ylogflag
+!!    character(len=*),intent(in) :: keyword       ! flag whether to draw to axis or current plot window
+!!##DESCRIPTION
+!!    Draw a line using the current pen style (line width, color, dash code,
+!!    symbols, under/over fill style) either to an axis or the current plot
+!!    window.
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine priv_toscale(x, y, n,con,keyword)
@@ -11795,11 +11980,13 @@ end subroutine priv_toscale
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    priv_endgrid(3fp) - [M_xyplot] determine length of major and minor grid lines
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine priv_endgrid(iflag,endnew,rmax,rmin,ticlen,istyle)
@@ -11834,12 +12021,14 @@ end subroutine priv_endgrid
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
 !!
+!!    priv_judash(3fp) - [M_xyplot] draw dashed line
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine priv_judash(x,y,n,pat,ipat,offset)
@@ -11981,11 +12170,13 @@ end subroutine priv_judash
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    priv_jufill(3fp) - [M_xyplot] fill or draw impulse line under curve
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine priv_jufill(x,y,n,istep,ifill)
@@ -12114,11 +12305,13 @@ end subroutine priv_jufill
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
+!!##NAME
+!!    priv_jusym(3f) - [M_xyplot] put symbols at points on a polyline
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine priv_jusym(x,y,n,istep,im,ipennum)
@@ -12276,11 +12469,13 @@ end subroutine priv_jusym
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
+!!##NAME
+!!    xy_getmark(3f) - [M_xyplot] get marker geometries
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
+!!##DESCRIPTION
+!!##OPTIONS
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 subroutine xy_getmark(pat,imarker,ipennum)
@@ -12326,43 +12521,45 @@ end subroutine xy_getmark
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
 !>
+!!##NAME
+!!   illusion(3f) - [M_drawinc:banner] draw a banner page with short labels at the compass points
 !!
+!!##SYNOPSIS
 !!
+!!   subroutine illusion(top,bottom,left,right)
 !!
+!!    character(len=*),intent(in) :: top
+!!    character(len=*),intent(in) :: bottom
+!!    character(len=*),intent(in) :: left
+!!    character(len=*),intent(in) :: right
 !!
+!!##DESCRIPTION
+!!    Draw a simple geometric illusion with short labels at the four compass points as a banner page
 !!
+!!##OPTIONS
+!!    TOP      short top banner label
+!!    BOTTOM   short bottom banner label
+!!    LEFT     short left banner label
+!!    RIGHT    short right banner label
 !!
+!!##EXAMPLE
 !!
+!!   Sample program
 !!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
+!!    program demo_illusion
+!!    use M_draw,      only : vinit, color, clear, backbuffer, getkey, vexit
+!!    use M_drawplus,  only : page
+!!    use M_xyplot,    only : illusion
+!!    call vinit(' ')
+!!    call page(0.0,4800.0,0.0,4800.0)
+!!    call color(6)
+!!    call clear()
+!!    call color(5)
+!!    idum=backbuffer()
+!!    call illusion('TOP','BOTTOM','LEFT','RIGHT')
+!!    idum=getkey()
+!!    call vexit()
+!!    end program demo_illusion
 !===================================================================================================================================
 subroutine illusion(top,bottom,left,right) !@(#) draw a simple geometric illusion
 use M_draw

@@ -32,23 +32,25 @@ endif
 end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
+!!##NAME
+!!        _true(1f) - [FUNIX] do nothing, successfully
 !!
+!!##SYNOPSIS
 !!
+!!        _true [ --verbose|--help|--version]
 !!
+!!##DESCRIPTION
+!!        Exit with a status code indicating failure.
 !!
+!!        --verbose  display an ASCII graphic of a shining sun
+!!        --help     display this help and exit
+!!        --version  output version information and exit
 !!
+!!##EXAMPLE
 !!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
+!!        _true && echo SUCCESSFUL || echo DID NOT WORK
+!!##SEE ALSO
+!!        _true(1f)
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -65,7 +67,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    do nothing, successfully>',&
 '@(#)VERSION:        1.0, 20170125>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Wed, Oct 30th, 2019 9:49:17 AM>',&
+'@(#)COMPILED:       Fri, Nov 1st, 2019 9:59:00 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

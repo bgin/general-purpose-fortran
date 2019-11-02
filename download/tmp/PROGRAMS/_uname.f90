@@ -53,43 +53,45 @@ endif
 end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
+!!##NAME
+!!        _uname(1f) - [FUNIX] print system information
+!!
+!!##SYNOPSIS
+!!
+!!        _uname [OPTION]...
+!!
+!!##DESCRIPTION
+!!        Print certain system information. With no OPTION, print all
+!!        information, one value per line.
+!!
+!!        -a, --all                print all information, in the
+!!                                 following order:
+!!
+!!        -s, --kernel-name        print the kernel name
+!!        -n, --nodename           print the network node hostname
+!!        -r, --kernel-release     print the kernel release
+!!        -v, --kernel-version     print the kernel version
+!!        -m, --machine            print the machine hardware name
+!!
+!!        --help                   display this help and exit
+!!        --version                output version information and exit
+!!##EXAMPLE
 !!
 !!
+!!   Sample usage:
 !!
+!!       >_uname
+!!       >kernel-name    : CYGWIN_NT-10.0
+!!       >nodename       : buzz
+!!       >kernel-release : 2.6.0(0.304/5/3)
+!!       >kernel-version : 2016-08-31 14:32
+!!       >machine        : x86_64
 !!
+!!       >_uname --all
+!!       >CYGWIN_NT-10.0 buzz 2.6.0(0.304/5/3) 2016-08-31 14:32 x86_64
 !!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
+!!       >_uname -machine
+!!       >x86_64
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -105,7 +107,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    print system information>',&
 '@(#)VERSION:        1.0, 20161107>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Wed, Oct 30th, 2019 9:49:45 AM>',&
+'@(#)COMPILED:       Fri, Nov 1st, 2019 9:59:19 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

@@ -26,16 +26,18 @@ endif
 end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
+!!##NAME
+!!      _mkfifo(1f) - [FUNIX:FILESYSTEM] make a FIFO pipe by calling mkfifo(3c)
+!!##SYNOPSIS
 !!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
+!!      _mkfifo file(s)
+!!##DESCRIPTION
+!!    Create named pipes (FIFOs) with the given NAMEs.
+!!##OPTIONS
+!!    files      pathnames of named pipes to create
+!!    --help     display this help and exit
+!!    --version  output version information and exit
+!!##EXAMPLE
 !!
 !===================================================================================================================================
 
@@ -56,7 +58,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Wed, Oct 30th, 2019 9:46:40 AM>',&
+'@(#)COMPILED:       Fri, Nov 1st, 2019 9:57:10 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

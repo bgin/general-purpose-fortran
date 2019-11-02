@@ -56,46 +56,48 @@ endif
 end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
+!!##NAME
+!!     _grep(1f) - [FUNIX] search a file for a pattern
 !!
+!!##SYNOPSIS
 !!
+!!     _grep pattern [ -i][ -E| -G]|[ --help| --version]
 !!
+!!##DESCRIPTION
 !!
+!!     Find lines on stdin that contain the specified regular expression pattern.
 !!
+!!##OPTIONS
+!!     pattern  regular expression
+!!     -i       Ignore case distinctions in both the PATTERN and the input files.
 !!
+!!    MATCHER SELECTION
 !!
+!!     -E       Interpret PATTERN as an ERE(extended regular expression).
+!!     -G       Interpret PATTERN as a BRE(basic regular expression). This is the default.
+!!              If present, it takes precedence over -E.
 !!
+!!    BASIC VS EXTENDED REGULAR EXPRESSIONS
 !!
+!!    In basic regular expressions the meta-characters ?, +, {, |,
+!!    (, and ) lose their special meaning; instead use the
+!!    backslashed versions \?, \+, \{, \|, \(, and \).
 !!
+!!    INFORMATIVE
 !!
+!!     --help     display this help and exit
+!!     --version  output version information and exit
 !!
+!!##EXAMPLES
 !!
+!!     Sample commands
 !!
+!!        _grep  '^T.*found it' <foundit
 !!
+!!##REPORTING BUGS
+!!     Report _grep bugs to <http://www.urbanjost.altervista.org/index.html>
 !!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
+!!##SEE ALSO
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -113,7 +115,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20180120>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Wed, Oct 30th, 2019 9:44:09 AM>',&
+'@(#)COMPILED:       Fri, Nov 1st, 2019 9:55:25 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

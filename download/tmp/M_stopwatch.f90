@@ -1,67 +1,67 @@
 !>
 !!
+!!                     M_StopWatch Version 1.1
 !!
+!!   M_StopWatch is a Fortran 90 module for portable, easy-to-use
+!!   measurement of execution time.  It supports four clocks
 !!
+!!      o wall clock
+!!      o CPU clock
+!!      o user CPU clock
+!!      o system CPU clock
 !!
+!!   and returns all times in seconds.
 !!
+!!   It provides a simple means of determining which clocks are available,
+!!   and the precision of those clocks.
 !!
+!!   M_StopWatch is used by instrumenting your code with subroutine calls
+!!   that mimic the operation of a stop watch.  M_StopWatch supports multiple
+!!   watches, and provides the concept of watch groups to allow functions
+!!   to operate on multiple watches simultaneously.
 !!
+!!   For further information on using M_StopWatch, see the User Guide or
+!!   man pages.
 !!
+!!   The M_StopWatch software and documentation have been produced as part
+!!   of work done by the U.S. Government, and are not subject to copyright
+!!   in the United States.
 !!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
+!!   William F. Mitchell
+!!   mitchell@cam.nist.gov
+!!   National Institute of Standards and Technology
+!!   December 2, 1996
 !===================================================================================================================================
 !>
 !!
+!! The research software provided on this web site (“software”) is provided by
+!! NIST as a public service. You may use, copy and distribute copies of the
+!! software in any medium, provided that you keep intact this entire notice. You
+!! may improve, modify and create derivative works of the software or any portion
+!! of the software, and you may copy and distribute such modifications or works.
+!! Modified works should carry a notice stating that you changed the software and
+!! should note the date and nature of any such change. Please explicitly
+!! acknowledge the National Institute of Standards and Technology as the source of
+!! the software.
 !!
+!! The software is expressly provided “AS IS.” NIST MAKES NO WARRANTY OF ANY KIND,
+!!##EXPRESS, IMPLIED, IN FACT OR ARISING BY OPERATION OF LAW, INCLUDING, WITHOUT
+!!##LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+!!##PURPOSE, NON-INFRINGEMENT AND DATA ACCURACY. NIST NEITHER REPRESENTS NOR
+!!##WARRANTS THAT THE OPERATION OF THE SOFTWARE WILL BE UNINTERRUPTED OR ERROR-FREE,
+!!##OR THAT ANY DEFECTS WILL BE CORRECTED. NIST DOES NOT WARRANT OR MAKE ANY
+!!##REPRESENTATIONS REGARDING THE USE OF THE SOFTWARE OR THE RESULTS THEREOF,
+!!##INCLUDING BUT NOT LIMITED TO THE CORRECTNESS, ACCURACY, RELIABILITY, OR
+!!##USEFULNESS OF THE SOFTWARE.
 !!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
+!! You are solely responsible for determining the appropriateness of using and
+!! distributing the software and you assume all risks associated with its use,
+!! including but not limited to the risks and costs of program errors, compliance
+!! with applicable laws, damage to or loss of data, programs or equipment, and the
+!! unavailability or interruption of operation. This software is not intended to be
+!! used in any situation where a failure could cause risk of injury or damage to
+!! property. The software was developed by NIST employees. NIST employee
+!! contributions are not subject to copyright protection within the United States.
 !===================================================================================================================================
 module M_stopwatch
 use M_system, only : system_cpu_time

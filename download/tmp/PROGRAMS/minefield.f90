@@ -83,38 +83,39 @@ endif
 end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
+!!##NAME
+!! minefield(1f) - [M_draw] minefield game
 !!
+!!##SYNOPSIS
 !!
+!!    minefield [[ -r rows] [ -c columns]] |[ --help --version ]
 !!
+!!##DESCRIPTION
+!!    minefield(1f) is a minefield sweeper game. The game tests many M_DRAW(3fm)
+!!    functions.
 !!
+!!    The object of the game is to mark all the mines with mouse 2 and expose
+!!    all the squares that are not mines with mouse 1 as quickly as possible.
+!!    The number in a square indicates how many mines are adjacent to it.
 !!
+!!    The game can go up to 99 rows or columns.
 !!
+!!    MOUSE 1   Use mouse 1 to expose a square
+!!    MOUSE 2   Use mouse 2 to mark a mine
+!!    MOUSE 3   Use mouse 3 to take a mine marker back off
 !!
+!!    To cheat use mouse 2 and 3 together to expose all squares that have
+!!    no mines adjacent to them. Use mouse 1, 2 and 3 to expose unexposed
+!!    squares with no risk of a bomb going off, use mouse 1 and 3 to solve
+!!    all unexposed squares.
 !!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
+!!##OPTIONS
+!!    -r          number of rows
+!!    -c          number of columns
+!!    -switch     switch mouse 2 and mouse 3 buttons; typically for
+!!                two-button mouses
+!!    --help      display help text and exit
+!!    --version   display version text and exit
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -131,7 +132,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    minefield game>',&
 '@(#)VERSION:        4.0, 20180616>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Wed, Oct 30th, 2019 10:12:56 AM>',&
+'@(#)COMPILED:       Fri, Nov 1st, 2019 10:27:55 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

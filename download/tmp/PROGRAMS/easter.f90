@@ -45,7 +45,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    output the month and day Easter falls on for a particular year>',&
 '@(#)VERSION:        1.0, 20170223>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Wed, Oct 30th, 2019 9:51:54 AM>',&
+'@(#)COMPILED:       Fri, Nov 1st, 2019 10:00:48 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -89,25 +89,27 @@ endif
 end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
+!!##NAME
+!!    easter(1f) - [FUNIX] print day and month Easter falls on for given year
 !!
+!!##SYNOPSIS
 !!
+!!    easter [year]|[ --help|--version]
 !!
+!!##DESCRIPTION
+!!    Prints day Easter falls on
 !!
+!!##OPTIONS
+!!    year       year for which to calculate Easter day. Defaults to current year
+!!    --help     display this help and exit
+!!    --version  output version information and exit
 !!
+!!##EXAMPLES
 !!
+!!   Sample commands
 !!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
+!!    easter 2017
+!!    Easter day: the 16th day of April in the year of our Lord 2017
 !===================================================================================================================================
    end program demo_easter
 !-----------------------------------------------------------------------------------------------------------------------------------

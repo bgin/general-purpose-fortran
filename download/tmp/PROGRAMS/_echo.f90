@@ -51,42 +51,44 @@ endif
 end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
+!!##NAME
+!!          _echo(1f) - [FUNIX] display a line of text
+!!##SYNOPSIS
+!!
+!!          _echo [OPTION]... [STRING]...
+!!##DESCRIPTION
+!!          Echo the STRING(s) to standard output.
+!!##OPTIONS
+!!          -n      do not output the trailing newline
+!!          -E      write message to stderr instead of stdout
+!!          -ne     disable interpretation of escape escapes
+!!          -r [n]  output a string repeatedly until killed if n is blank or
+!!                  n <= 0, else repeat output "n" times. Default value is "1".
+!!          -x      escape character. Default is %
+!!          --help  display this help and exit
+!!          --version
+!!                 output version information and exit
+!!
+!!          Escape sequences
+!!
+!!             %%     escape character           %a     alert (BEL)
+!!             %b     backspace                  %c     suppress further output
+!!             %e     escape                     %E     escape
+!!             %f     form feed                  %n     new line
+!!             %r     carriage return            %t     horizontal tab
+!!             %v     vertical tab
+!!             %oNNN  byte with octal value NNN (1 to 3 digits)
+!!             %dNNN  byte with decimal value NNN (1 to 3 digits)
+!!             %xHH   byte with hexadecimal value HH (1 to 2 digits)
+!!##EXAMPLES
 !!
 !!
+!!     Example invocations:
 !!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
+!!          _echo Echo this text to stderr -E
+!!          _echo y -r             # repeat "y" until interrupted
+!!          _echo ''"#"'' -r 80 -n # create 80-character break line
+!!          _echo %e[2J   # clear screen on vt102-compatible terminal or emulator
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -107,7 +109,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Wed, Oct 30th, 2019 9:43:27 AM>',&
+'@(#)COMPILED:       Fri, Nov 1st, 2019 9:54:58 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

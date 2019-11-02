@@ -290,7 +290,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    display a TUI definition and return values>',&
 '@(#)VERSION:        1.0, 20150508>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Wed, Oct 30th, 2019 9:36:29 AM>',&
+'@(#)COMPILED:       Fri, Nov 1st, 2019 9:49:38 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

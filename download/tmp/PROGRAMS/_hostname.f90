@@ -30,21 +30,22 @@ endif
 end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
+!!##NAME
+!!     _hostname(1f) - [FUNIX] display hostname
+!!##SYNTAX
+!!     _hostname [ -help|-version]
+!!##DESCRIPTION
+!!     Calls system_gethostname(3f), which calls get_hostname(3c) to determine
+!!     the current host name.
+!!##OPTIONS
+!!        --help     display this help and exit
+!!        --version  output version information and exit
+!!##EXAMPLE
 !!
+!!    Sample execution:
 !!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
+!!     >_hostname
+!!     >buzz
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -66,7 +67,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
 '@(#)COMPILED:       Sun, Nov 27th, 2016 10:47:13 PM>',&
-'@(#)COMPILED:       Wed, Oct 30th, 2019 9:44:22 AM>',&
+'@(#)COMPILED:       Fri, Nov 1st, 2019 9:55:34 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

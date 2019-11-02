@@ -24,15 +24,17 @@ endif
 end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
+!!##NAME
+!!      _mv(1f) - [FUNIX:FILESYSTEM] rename file
+!!##SYNOPSIS
 !!
+!!      _mv SOURCE DEST
+!!##DESCRIPTION
+!!        Rename file SOURCE to DEST
 !!
+!!##EXAMPLE
 !!
-!!
-!!
-!!
-!!
-!!
-!!
+!!      _mv file.text /tmp/file.txt
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -54,7 +56,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
 '@(#)COMPILED:       Sun, Nov 27th, 2016 10:47:13 PM>',&
-'@(#)COMPILED:       Wed, Oct 30th, 2019 9:46:56 AM>',&
+'@(#)COMPILED:       Fri, Nov 1st, 2019 9:57:20 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

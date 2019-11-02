@@ -42,33 +42,35 @@ endif
 end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
+!!##NAME
+!!        _stat(1f) - [FUNIX:FILESYSTEM] list file properties
+!!##SYNOPSIS
 !!
+!!        _stat pathnames|--version|--help
+!!##DESCRIPTION
+!!        Given pathnames list properties
+!!##OPTIONS
+!!    pathnames   pathnames to display properties of.
+!!    --help      display command help and exit
+!!    --version   output version information and exit
+!!##EXAMPLES
 !!
+!!   Sample command lines ...
 !!
+!!    _stat _stat.ff
 !!
+!!   Results
 !!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
+!!    Pathname:                    _stat.ff
+!!    Residence:                   Inode:18295873486224096  Device ID(hex/decimal):3E6BE045h/1047257157d  Device where located:0
+!!    Size:                        File size(bytes):4267  No. of blocks allocated:8  Preferred block size(bytes):65536
+!!    File mode octal/decimal/str: 100744o/33252d/-rwxr--r-- ---
+!!    Number of links:             1
+!!    Owner's uid/username:        197609/JSU
+!!    Owner's gid/group:           197121/None
+!!    Last access time:            1507483493 2017-10-08 13:24:53
+!!    Last modification time:      1507483493 2017-10-08 13:24:53
+!!    Last status change time:     1507483494 2017-10-08 13:24:54
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -85,7 +87,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    list pathname properties>',&
 '@(#)VERSION:        1.0, 2017-10-00>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Wed, Oct 30th, 2019 9:46:12 AM>',&
+'@(#)COMPILED:       Fri, Nov 1st, 2019 9:56:50 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

@@ -53,35 +53,37 @@ endif
 end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
+!!##NAME
+!!     _banner(1f) - [FUNIX] print large block letters
 !!
+!!##SYNOPSIS
 !!
+!!     _banner STRING(S) -c LETTER| --help| --version
 !!
+!!##DESCRIPTION
+!!     Print strings as large block letters.
 !!
+!!##OPTIONS
+!!     STRING(S)  strings to print as large block letters
+!!     -c         letter to use to create block letters
+!!     --help     display this help and exit
+!!     --version  output version information and exit
 !!
+!!##EXAMPLE
 !!
+!!     To generate a large banner enter
 !!
+!!        _banner HELLO
 !!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
+!!        >  XXX XXX XXXXXXX XXXXX   XXXXX     XXX
+!!        >   X   X   X    X   X       X      X   X
+!!        >   X   X   X        X       X     X     X
+!!        >   X   X   X  X     X       X     X     X
+!!        >   XXXXX   XXXX     X       X     X     X
+!!        >   X   X   X  X     X       X     X     X
+!!        >   X   X   X        X       X     X     X
+!!        >   X   X   X    X   X   X   X   X  X   X
+!!        >  XXX XXX XXXXXXX XXXXXXX XXXXXXX   XXX
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -103,7 +105,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)COPYRIGHT:      Copyright (c) 1984, 1996 John S. Urban>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Wed, Oct 30th, 2019 9:50:52 AM>',&
+'@(#)COMPILED:       Fri, Nov 1st, 2019 10:00:08 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

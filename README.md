@@ -77,8 +77,15 @@ arguments
 The M\_KRACKEN(3f) module makes cracking Unix-like arguments off the command
 line easy. This version is expanded to allow use in configuration files and
 interactive input as well, and incorporates additional modules. It requires
-many other components from the CLI collection, but is used to generate
+many other components from the GPF collection, and is used to generate
 programs that use shell-like input as well as crack command lines.
+
+[M\_ARGS(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/M_args.3m_args.html) 
+
+The M_args(3fm) module supports cracking Unix-like arguments off the
+command line as a string that can be read as a NAMELIST, eliminating
+the typical additional steps needed to convert the strings found on the
+command line to other types.
 
 [M\_GETOPT(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/M_getopt.3.html): command line arguments
 

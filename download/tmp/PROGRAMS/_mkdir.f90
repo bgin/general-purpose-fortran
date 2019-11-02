@@ -37,27 +37,29 @@ endif
 end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
+!!##NAME
+!!      _mkdir(1f) - [FUNIX:FILESYSTEM] call mkdir(3c) to make directories
+!!##SYNOPSIS
 !!
+!!      _mkdir DIRECTORY ... [OPTION]...
+!!##DESCRIPTION
+!!        Create the DIRECTORY(ies), if they do not already exist.
+!!        The file permission mode by default is "a=rxw-umask".
+!!##OPTIONS
+!!    DIRECTORY  directory pathnames. Limited to 4096 characters per pathname.
+!!    --parents  no error if existing, make parent directories as needed
+!!    --verbose  print a message for each created directory
+!!    --help     display this help and exit
+!!    --version  output version information and exit
+!!##EXAMPLE
 !!
+!!   Samples:
 !!
+!!    # silently make specified directory and any needed parent directories
+!!    _mkdir A/B/C -parents
 !!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
+!!    # show creation of three directories
+!!    _mkdir A B C
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -76,7 +78,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Wed, Oct 30th, 2019 9:46:26 AM>',&
+'@(#)COMPILED:       Fri, Nov 1st, 2019 9:57:00 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

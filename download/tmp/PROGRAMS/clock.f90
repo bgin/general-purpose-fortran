@@ -49,30 +49,31 @@ endif
 end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
+!!##NAME
+!!    clock(1f) - [M_draw] display a clock using the M_draw(3f) graphics module
 !!
+!!##SYNOPSIS
 !!
+!!    clock [SECONDS] [ -sz PIXELS ]
 !!
+!!##DESCRIPTION
 !!
+!!    clock(1) displays a simple clock for the specified number of seconds
+!!    or until the "q" character is entered in the graphic display area
+!!    using the M_draw(3f) graphics module.
 !!
+!!##OPTIONS
 !!
+!!  SECONDS  The clock runs the specified number of seconds before
+!!           stopping. A time of -1 means to run until terminated. Enter
+!!           the letter "q" in the graphics area to stop the clock before
+!!           the requested time has been exhausted.
 !!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
+!!  -sz         Size of display window in terms of device rasters
+!!  -d          Size of edge of clock. Default is "X11". The units are
+!!              somewhat device-dependent. For "X11" the units are rasters.
+!!  --help      display help text and exit
+!!  --version   display version text and exit
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -89,7 +90,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    draw a clock>',&
 '@(#)VERSION:        1.0, 20180616>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Wed, Oct 30th, 2019 10:12:15 AM>',&
+'@(#)COMPILED:       Fri, Nov 1st, 2019 10:27:31 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

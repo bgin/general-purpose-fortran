@@ -1435,7 +1435,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)AUTHOR:         Michel Olagnon, Phil Garnatz>',&
 '@(#)VERSION:        V-2.0 2019-09-10, minor modifications to integrate into GPF>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Wed, Oct 30th, 2019 9:56:59 AM>',&
+'@(#)COMPILED:       Fri, Nov 1st, 2019 10:04:31 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -1499,46 +1499,48 @@ endif
 end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
+!!##NAME
+!!    f90split(1f) - [DEVELOPER] split Fortran source file into individual files
+!!
+!!##SYNOPSIS
+!!
+!!    f90split < largefile [ > list_file ] |[ --help| --version]
+!!
+!!##DESCRIPTION
+!!    f90split(1) is a Fortran 90 utility to split free source form code
+!!    into as many files as there are procedures. Contained procedures are
+!!    stored within their container.
+!!
+!!    Split standard input stream, containing source of several fortran90
+!!    program units into individual files. each output file contains a single
+!!    program unit named after the unit, unless that filenme exists. If the
+!!    name exists a file will be created names main0001.f90-main9999.f90,
+!!    or bdta0001.f90-bdta9999.f90. If a file with that name already exists,
+!!    it is put in dupl0001.f90-dupl9999.f90.
+!!
+!!    Lists on stdout the use and include dependencies
 !!
 !!
+!!##OPTIONS
+!!     --help     display this help and exit
+!!     --version  output version information and exit
 !!
+!!##LICENSE
+!!    All rights to this code waived, so that it may be freely distributed
+!!    as public domain software subject to the condition that these 6 lines
+!!    are verbatim reproduced. Originally written by Michel Olagnon, from
+!!    Ifremer, France, who would be pleased to receive your comments and
+!!    corrections. M. Olagnon (Michel.Olagnon@ifremer.fr) Improved by
+!!    Phil Garnatz, Cray Research Inc. for makefile generation
 !!
+!!##EXAMPLES
 !!
+!!    Sample commands
 !!
+!!        f90split  < myprogram.f90
 !!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
+!!##SEE ALSO
+!!     f90split(1)
 !===================================================================================================================================
 end program f90split
 !==================================================================================================================================!

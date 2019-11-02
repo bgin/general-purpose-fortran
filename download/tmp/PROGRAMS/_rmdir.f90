@@ -31,20 +31,22 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!
+!!##NAME
+!!       _rmdir(1f) - [FUNIX:FILESYSTEM] remove empty directories
+!!##SYNOPSIS
 !!
+!!        _rmdir DIRECTORY... [OPTION]...
+!!##DESCRIPTION
+!!        given the names of empty directories remove them.
+!!##OPTIONS
+!!        DIRECTORY  Remove the DIRECTORY(ies) if they are empty.
+!!        --help     display this help and exit
+!!        --version  output version information and exit
+!!##EXAMPLES
 !!
+!!  Sample command lines ...
 !!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
+!!         _rmdir a/b/c /a/b /a
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -65,7 +67,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Wed, Oct 30th, 2019 9:48:05 AM>',&
+'@(#)COMPILED:       Fri, Nov 1st, 2019 9:58:09 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

@@ -45,36 +45,38 @@ endif
 end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
+!!##NAME
+!!        _colrm(1f) - [FUNIX] remove columns from a file
 !!
+!!##SYNOPSIS
 !!
+!!        _colrm [first [last]]
 !!
+!!##DESCRIPTION
+!!        _colrm removes selected character columns from a file. Input is
+!!        taken from standard input. Output is sent to standard output.
 !!
+!!        If called with one parameter the columns of each line will be
+!!        removed starting with the specified first column. If called with
+!!        two parameters the columns from the first column to the last
+!!        column will be removed.
 !!
+!!        Column numbering starts with column 1. Tabs are NOT expanded.
 !!
+!!##OPTIONS
+!!        first      starting column number to remove
+!!        last       ending column number to remove
+!!        --version  Display version information and exit.
+!!        --help     Display help text and exit.
 !!
+!!##HISTORY
+!!        The colrm(1) command appeared in 3.0BSD.
+!!##EXAMPLE
 !!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
-!!
+!!        # trim file so no line is longer than 72 characters
+!!        cat FILENAME|_colrm 73
+!!        # remove first three characters in each line
+!!        cat FILENAME|_colrm 1 3
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -92,7 +94,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20180324>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Wed, Oct 30th, 2019 9:49:03 AM>',&
+'@(#)COMPILED:       Fri, Nov 1st, 2019 9:58:50 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

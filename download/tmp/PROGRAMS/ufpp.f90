@@ -2281,7 +2281,6 @@ subroutine format_g_man()
             if(len(G_MAN).gt.1)then      ! the way the string is built it starts with a newline
                CALL split(G_MAN,array_bug,delimiters=new_line('N'),nulls='return') ! parse string to an array parsing on delimiters
                array=[character(len=(len(array_bug)+6)) :: array_bug] !! pad with trailing spaces
-               array=' '
                deallocate(array_bug)
                do i=1,size(array)        ! lines starting with a letter and all uppercase letters is prefixed with "##"
                   if( upper(array(i)).eq.array(i) .and. isalpha(array(i)(1:1)).and.lower(array(i)).ne.array(i))then
@@ -2678,7 +2677,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                    occurring.                                                  ',&
 '   -cstyle          try to style comments generated in $FILTER blocks           ',&
 '                    for other utilities such as doxygen. Default is to          ',&
-'                    prefix lines with ''!!''. Allowed keywords are              ',&
+'                    prefix lines with ''! ''. Allowed keywords are              ',&
 '                    currently "default", "doxygen".                             ',&
 '   -d ignore|remove|blank  Enable special treatment for lines beginning         ',&
 '                           with "d" or "D" The letter will be left as-is        ',&
@@ -3186,7 +3185,7 @@ end subroutine help_usage
 !!                     occurring.
 !!    -cstyle          try to style comments generated in $FILTER blocks
 !!                     for other utilities such as doxygen. Default is to
-!!                     prefix lines with '!!'. Allowed keywords are
+!!                     prefix lines with '! '. Allowed keywords are
 !!                     currently "default", "doxygen".
 !!    -d ignore|remove|blank  Enable special treatment for lines beginning
 !!                            with "d" or "D" The letter will be left as-is
@@ -3640,7 +3639,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        4.0: 20170502>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
-'@(#)COMPILED:       Wed, Oct 30th, 2019 9:40:17 AM>',&
+'@(#)COMPILED:       Fri, Nov 1st, 2019 9:52:21 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
