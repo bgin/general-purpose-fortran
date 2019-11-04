@@ -10,6 +10,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '    note(1f) - [M_messages] print large block letters                           ',&
+'    (LICENSE:PD)                                                                ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '    note STRING(S) [ -font FontName] | -test| -help| -version                   ',&
@@ -63,6 +64,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!     note(1f) - [M_messages] print large block letters
+!!     (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -129,7 +131,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)COPYRIGHT:      Copyright (c) 1984, 1996 John S. Urban>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Fri, Nov 1st, 2019 9:50:17 PM>',&
+'@(#)COMPILED:       Mon, Nov 4th, 2019 2:38:44 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

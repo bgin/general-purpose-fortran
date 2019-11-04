@@ -2,6 +2,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file _whoami.1.man
 NAME
       _whoami(1f) - [FUNIX] display login name
+      (LICENSE:PD)
 SYNOPSIS
       _whoami [ -help|-version]
 DESCRIPTION

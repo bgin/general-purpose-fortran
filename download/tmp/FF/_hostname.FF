@@ -2,6 +2,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file _hostname.1.man
 NAME
     _hostname(1f) - [FUNIX] display hostname
+    (LICENSE:PD)
 SYNTAX
     _hostname [ -help|-version]
 DESCRIPTION

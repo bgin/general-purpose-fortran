@@ -2,6 +2,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file _unlink.1.man
 NAME
    _unlink(1f) - [FUNIX:FILESYSTEM] call the unlink(3c) function to remove the specified file
+   (LICENSE:PD)
 
 SYNOPSIS
      _unlink file(s)

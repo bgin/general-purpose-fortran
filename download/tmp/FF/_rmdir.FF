@@ -3,6 +3,7 @@ $DOCUMENT HELP -file _rmdir.1.man
 
 NAME
       _rmdir(1f) - [FUNIX:FILESYSTEM] remove empty directories
+      (LICENSE:PD)
 SYNOPSIS
        _rmdir DIRECTORY... [OPTION]... 
 DESCRIPTION

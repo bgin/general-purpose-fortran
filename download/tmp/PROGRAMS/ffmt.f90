@@ -96,7 +96,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Fri, Nov 1st, 2019 10:04:54 PM>',&
+'@(#)COMPILED:       Mon, Nov 4th, 2019 2:01:02 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -115,6 +115,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '       ffmt(1f) - [FILE EDIT] simple text formatter for Fortran comments        ',&
+'       (LICENSE:PD)                                                             ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '       ffmt [OPTION]...                                                         ',&
@@ -140,6 +141,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!        ffmt(1f) - [FILE EDIT] simple text formatter for Fortran comments
+!!        (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!

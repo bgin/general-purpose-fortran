@@ -2,6 +2,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file _logname.1.man
 NAME
       _logname(1f) - [FUNIX] display login name
+      (LICENSE:PD)
 SYNOPSIS
       _logname [ -help|-version]
 DESCRIPTION

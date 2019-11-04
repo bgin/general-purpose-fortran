@@ -1,6 +1,7 @@
 !>
 !!##NAME
 !!    M_html(3fm) - [M_html] a module of routines to help write output as HTML documents
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -12,6 +13,25 @@
 !!     o h_open(lun)          open HTML file and create simple header
 !!     o h_close(lun)         close HTML file
 !!     o h_array(lun,array)   print a numeric array as an HTML table
+!!##EXAMPLE
+!!
+!!   Sample Usage
+!!
+!!    program demo_M_html
+!!       use M_html
+!!       implicit none
+!!       integer :: i,j
+!!       real    :: arr(10,20)=[(i-1*30.0+j,i=1,10,j=1,20)]
+!!       integer :: io=20
+!!       call h_open(io,'table.html')
+!!       call h_array(io,arr)
+!!       call h_close(io)
+!!
+!!    end program demo_M_html
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -29,6 +49,7 @@ CONTAINS
 !>
 !!##NAME
 !!    h_array(3f) - [M_html] print a numeric array as an HTML table
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -60,6 +81,10 @@ CONTAINS
 !!    call h_close(io)
 !!
 !!    end program demo_h_array
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine h_array(iounit,array)
 use M_journal, only : journal
@@ -87,6 +112,7 @@ end subroutine h_array
 !>
 !!##NAME
 !!    h_close(3f) - [M_html] close an HTML file
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!   subroutine h_close(iounit)
@@ -119,6 +145,10 @@ end subroutine h_array
 !!    call h_close(io)
 !!
 !!    end program demo_h_close
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine h_close(iounit)
 use M_journal, only : journal
@@ -137,6 +167,7 @@ end subroutine h_close
 !>
 !!##NAME
 !!    h_open(3f) - [M_html] close an HTML file
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!   subroutine h_open(iounit)
@@ -171,6 +202,10 @@ end subroutine h_close
 !!    call h_close(io)
 !!
 !!    end program demo_h_open
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine h_open(iounit,filename)
 use M_journal, only : journal

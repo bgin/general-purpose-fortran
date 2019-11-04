@@ -14,6 +14,7 @@
 !! <!-- ======================================================================= -->
 !! <dt> <a name="M_COLOR">NAME</a></dt> <dd>
 !! <em>M_COLOR(3f)</em>&nbsp;-&nbsp;[M_color]&nbsp;a&nbsp;Fortran&nbsp;module&nbsp;that&nbsp;lets&nbsp;you&nbsp;convert&nbsp;between&nbsp;common&nbsp;color&nbsp;models
+!! (LICENSE:MIT)
 !! </dd>
 !! <!-- ======================================================================= -->
 !! <dt> SYNOPSIS </dt><dd>
@@ -187,6 +188,7 @@ contains
 !! <dl>
 !! <dt> <a name="HUE">NAME</a> </dt><dd>
 !!    HUE(3f) - [M_color] converts a color's components from one color model to another.
+!!    (LICENSE:MIT)
 !! </dd>
 !!
 !! <dt> SYNOPSIS </dt><dd>
@@ -644,6 +646,7 @@ end subroutine test_hue
 !! <dt> <a name="RGBHLS">NAME</a> </dt><dd>
 !!     RGBHLS(3fp) - [M_color] Given red, green, and blue color components
 !!     calculates the hue, lightness, and saturation for a color
+!!     (LICENSE:MIT)
 !! </dd>
 !! <!-- ======================================================================= -->
 !! <dt> SYNOPSIS  </dt><dd>
@@ -749,6 +752,7 @@ end subroutine rgbhls
 !! <dt> <a name="RGBHVS">NAME</a> </dt><dd>
 !!     RGBHVS(3fp) - [M_color] calculates the hue, value, &amp; saturation
 !!     for a color given in red, green, &amp; blue components values.
+!!     (LICENSE:MIT)
 !! </dd>
 !! <!-- ======================================================================= -->
 !! <dt> SYNOPSIS  </dt><dd>
@@ -863,6 +867,7 @@ end subroutine rgbhvs
 !! <dt> <a name="CMYRGB">NAME</a> </dt><dd>
 !!     cmyrgb(3fp) - [M_color] calculates the cyan, magenta, and yellow components
 !!     given the  red, green, and blue component values.
+!!     (LICENSE:MIT)
 !! </dd>
 !! <!-- ======================================================================= -->
 !! <dt> SYNOPSIS  </dt><dd>
@@ -911,6 +916,7 @@ end subroutine cmyrgb
 !! <dt> <a name="RGBCMY">NAME</a> </dt><dd>
 !!     rgbcmy(3fp) - [M_color] calculates the cyan, magenta, and yellow components
 !!     given the  red, green, and blue component values.
+!!     (LICENSE:MIT)
 !! </dd>
 !! <!-- ======================================================================= -->
 !! <dt> SYNOPSIS  </dt><dd>
@@ -971,6 +977,7 @@ end subroutine rgbcmy
 !>
 !!##NAME
 !!    RGBMONO(3f) - [M_color] converts RGB colors to a reasonable grayscale intensity.
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -1075,6 +1082,7 @@ end subroutine test_rgbmono
 !! <!-- ======================================================================= -->
 !! <dt> <a name="RGBVAL">NAME</a> </dt><dd>
 !!    RGBVAL(3fp) - [M_color] is an internal private function used by hlsrgb(3fp).
+!!    (LICENSE:MIT)
 !! </dd>
 !! <!-- ======================================================================= -->
 !! <dt> SYNOPSIS</dt><dd>
@@ -1139,6 +1147,7 @@ end function rgbval
 !! <dt> <a name="HLSRGB">NAME</a> </dt><dd>
 !!     HLSRGB(3fp) - [M_color] calculates the red, green, &amp; blue components for a
 !!     color given in hue, lightness, &amp; saturation values.
+!!     (LICENSE:MIT)
 !! </dd>
 !! <!-- ======================================================================= -->
 !! <dt> SYNOPSIS</dt>  <dd>
@@ -1206,6 +1215,7 @@ end subroutine hlsrgb
 !! <dt> <a name="HVSRGB">NAME</a> </dt><dd>
 !!     HVSRGB(3fp) - [M_color] calculates the red, green, &amp; blue components for a
 !!      color given in hue, value, &amp; saturation values.
+!!      (LICENSE:MIT)
 !! </dd>
 !! <!-- ======================================================================= -->
 !! <dt> SYNOPSIS </dt><dd>
@@ -1288,6 +1298,7 @@ end subroutine hvsrgb
 !! <dt> <a name="YIQRGB">NAME</a> </dt><dd>
 !!    YIQRGB(3fp) - [M_color] Convert luma, orange-blue chrominance, and  purple-green chrominance
 !!    to RGB values.
+!!    (LICENSE:MIT)
 !! </dd>
 !! <!-- ======================================================================= -->
 !! <dt> SYNOPSIS  </dt><dd>
@@ -1351,6 +1362,7 @@ end subroutine yiqrgb
 !! <!-- ======================================================================= -->
 !! <dt> <a name="RGBYIQ">NAME</a> </dt><dd>
 !!    RGBYIQ(3fp) - [M_color] Convert RGB values to luma, orange-blue chrominance, and  purple-green chrominance.
+!!    (LICENSE:MIT)
 !! </dd>
 !! <!-- ======================================================================= -->
 !! <dt> SYNOPSIS  </dt><dd>
@@ -1397,6 +1409,7 @@ end subroutine rgbyiq
 !>
 !!##NAME
 !!     closest_color_name(3f) - [M_color] returns the closest name for the given RGB values.
+!!     (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    subroutine closest_color_name(r,g,b,closestname)
@@ -1539,6 +1552,7 @@ end subroutine test_closest_color_name
 !>
 !!##NAME
 !!     COLOR_NAME2RGB(3f) - [M_color] returns the RGB values in the range 0 to 100 for a given known color name.
+!!     (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!

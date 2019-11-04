@@ -10,6 +10,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file _banner.1.man
 NAME
     _banner(1f) - [FUNIX] print large block letters
+    (LICENSE:PD)
 
 SYNOPSIS
     _banner STRING(S) -c LETTER| --help| --version

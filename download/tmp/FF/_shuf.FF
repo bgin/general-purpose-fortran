@@ -5,6 +5,7 @@ $ifdef TESTPRG90
 $DOCUMENT HELP -file _shuf.1.man
 NAME
    _shuf - [FUNIX] generate random permutations
+   (LICENSE:PD)
 SYNOPSIS
   syntax:
 

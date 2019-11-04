@@ -64,6 +64,7 @@ $!
 $DOCUMENT HELP -file sec2days.1.man
 NAME
    sec2days(1f) - [TIME] Convert seconds to string of form dd-hh:mm:ss
+   (LICENSE:PD)
 
 SYNOPSIS
    sec2days nnnn[.xxx] [ -crop]| --version| --help

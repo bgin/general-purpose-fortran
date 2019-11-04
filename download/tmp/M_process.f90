@@ -1,6 +1,7 @@
 !>
 !!##NAME
 !!    M_process(3fm) - [M_process] Fortran Module for calling process-related C functions from Fortran
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -283,6 +284,10 @@
 !!       o NAMED PIPES: mkfifo(3c), mknod(3c)
 !!       o SUBPROCESSES: fork(3c)
 !!       o OTHER: fflush(3c)
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !>
 !! DESCRIPTION: record-oriented Fortran I/O interface to C procedures popen/pclose and fgets/fputs and process-related procedures
@@ -454,11 +459,16 @@ contains
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
+!! (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
 !!##EXAMPLE
 !!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
    subroutine process_open_read(cmd,fp,ierr)
 character(len=*),parameter::ident_2="@(#)M_process::process_open_read(3f): open process to read from"
@@ -478,11 +488,16 @@ character(len=*),parameter::ident_2="@(#)M_process::process_open_read(3f): open 
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
+!! (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
 !!##EXAMPLE
 !!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
    subroutine process_open_write(cmd,fp,ierr)
 character(len=*),parameter::ident_3="@(#)M_process::process_open_write(3f): open process to write to"
@@ -501,11 +516,16 @@ character(len=*),parameter::ident_3="@(#)M_process::process_open_write(3f): open
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
+!! (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
 !!##EXAMPLE
 !!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
    subroutine process_open(cmd,mode,fp,ierr)
 character(len=*),parameter::ident_4="@(#)M_process::process_open(3fp): open process"
@@ -533,11 +553,16 @@ character(len=*),parameter::ident_4="@(#)M_process::process_open(3fp): open proc
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
+!! (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
 !!##EXAMPLE
 !!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
    subroutine process_close(fp,ierr)
 character(len=*),parameter::ident_5="@(#)M_process::process_close(3f): close process"
@@ -572,6 +597,10 @@ character(len=*),parameter::ident_5="@(#)M_process::process_close(3f): close pro
 !!##DESCRIPTION
 !!##EXAMPLE
 !!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
    subroutine process_readline(readfrom,fp,ierr)
 
@@ -618,6 +647,7 @@ character(len=*),parameter::ident_6="@(#)M_process::process_readline(3f): read l
 !>
 !!##NAME
 !!    process_readall(3f) - [M_process] read all lines from process into single string
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!   syntax:
@@ -686,6 +716,10 @@ character(len=*),parameter::ident_6="@(#)M_process::process_readline(3f): read l
 !!
 !!##SEE ALSO
 !!    M_process(3fm)
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 function process_readall(cmd,delim,ierr)  result(string)      !! not hardened
 
@@ -744,11 +778,16 @@ end function process_readall
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
+!! (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
 !!##EXAMPLE
 !!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine process_writeline_scalar(writefrom,fp,ierr,trm)
 character(len=*),parameter::ident_8="@(#)M_process::process_writeline_scalar(3fp): write line to process"

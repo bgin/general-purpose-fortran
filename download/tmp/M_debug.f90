@@ -2,6 +2,7 @@
 !!##NAME
 !!    M_debug(3fm) - [M_debug] a collection of Fortran routines for supporting code development by
 !!                   providing error processing, debugging procedures and unit testing.
+!!                   (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    use M_debug, only : unit_check, unit_check_start, unit_check_good, unit_check_bad, unit_check_done
@@ -180,6 +181,11 @@
 !!
 !!    set-up       perform initialization operations common to all tests within a module
 !!    tear-down    perform finalization operations common to all tests within a module
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -222,6 +228,7 @@ contains
 !>
 !!##NAME
 !!    unit_check_msg(3f) - [M_debug] converts up to nine standard scalar values to a message for unit testing
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    function unit_check_msg(name,g1,g2g3,g4,g5,g6,g7,g8,g9)
@@ -254,6 +261,11 @@ contains
 !!    call unit_check_done('myroutine')
 !!
 !!    end program demo_unit_check_msg
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine unit_check_msg(name,g1, g2, g3, g4, g5, g6, g7, g8, g9)
 implicit none
@@ -275,6 +287,7 @@ end subroutine unit_check_msg
 !>
 !!##NAME
 !!    msg(3f) - [M_debug] converts any standard scalar type to a string
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    function msg(g1,g2g3,g4,g5,g6,g7,g8,g9)
@@ -316,6 +329,11 @@ end subroutine unit_check_msg
 !!    write(*,*)msg('program will now stop')
 !!
 !!    end program demo_msg
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 function msg(generic1, generic2, generic3, generic4, generic5, generic6, generic7, generic8, generic9)
 implicit none
@@ -381,6 +399,7 @@ end function msg
 !>
 !!##NAME
 !!    stderr(3f) - [M_debug] write message to stderr
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    subroutine stderr(msg,[generic])
@@ -450,6 +469,11 @@ end function msg
 !!     error: program will now stop
 !!     STOP 1
 !! ================================================================================
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine stderr(msg, generic1, generic2, generic3, generic4, generic5, generic6, generic7, generic8, generic9)
 implicit none
@@ -507,6 +531,7 @@ end subroutine stderr
 !>
 !!##NAME
 !!    fstop(3f) - [M_debug] call stop with both a number and a message
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    subroutine fstop(ierr,stdout,stderr)
@@ -548,6 +573,11 @@ end subroutine stderr
 !!
 !!   Results:
 !!
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine fstop(ierr,stdout,stderr)
 
@@ -664,6 +694,7 @@ end subroutine fstop
 !!
 !!##NAME
 !!    unit_check(3f) - [M_debug] if logical expression is false, call command "goodbad NAME bad" and stop program by default
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -739,6 +770,11 @@ end subroutine fstop
 !!    unit_check_good: myroutine        PASSED:checks on "myroutine" all passed
 !!
 !!
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine unit_check(name,logical_expression,msg)
 
@@ -777,6 +813,7 @@ end subroutine unit_check
 !>
 !!##NAME
 !!    unit_check_start(3f) - [M_debug] call command "goodbad NAME start" and optionally set options
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -842,6 +879,11 @@ end subroutine unit_check
 !!     call unit_check_done('myroutine',msg='completed checks of "myroutine"')
 !!
 !!     end program demo_unit_check_start
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine unit_check_start(name,options,msg)
 
@@ -891,6 +933,7 @@ end subroutine unit_check_start
 !!
 !!##NAME
 !!    unit_check_done(3f) - [M_debug] call command "goodbad NAME good" or "goodbad NAME bad" depending on whether failures were found
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -935,6 +978,10 @@ end subroutine unit_check_start
 !!     endif
 !!
 !!     end program demo_unit_check_done
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine unit_check_done(name,opts,msg)
 
@@ -989,6 +1036,7 @@ end subroutine unit_check_done
 !!
 !!##NAME
 !!    unit_check_bad(3f) - [M_debug] call command "goodbad NAME bad" and stop program
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -1030,6 +1078,10 @@ end subroutine unit_check_done
 !!     endif
 !!
 !!     end program demo_unit_check_bad
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine unit_check_bad(name,opts,msg)
 
@@ -1060,6 +1112,7 @@ end subroutine unit_check_bad
 !!
 !!##NAME
 !!    unit_check_good(3f) - [M_debug] call command "goodbad NAME good"
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -1095,6 +1148,11 @@ end subroutine unit_check_bad
 !!     call unit_check_good('myroutine',msg='checks on "myroutine" ')
 !!
 !!     end program demo_unit_check_good
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine unit_check_good(name,opts,msg)
 
@@ -1125,6 +1183,7 @@ end subroutine unit_check_good
 !>
 !!##NAME
 !!      pdec(3f) - [M_debug] write out string with ASCII decimal equivalent vertically under it
+!!      (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -1170,7 +1229,9 @@ end subroutine unit_check_good
 !!      >2567890127890123
 !!
 !!##AUTHOR
-!!      John S. Urban
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine pdec(string)
 

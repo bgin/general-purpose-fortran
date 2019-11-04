@@ -1,3 +1,4 @@
+/* this code is licensed as public domain */
 #include "draw.h"
 
 static	float	Vcx, Vcy, Vsx, Vsy;

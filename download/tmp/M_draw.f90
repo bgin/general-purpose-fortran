@@ -1,6 +1,7 @@
 !>
 !!##NAME
 !!    M_draw(3fm) - [M_draw::INTRO] The M_draw graphics library
+!!    (LICENSE:PD)
 !!
 !!##DESCRIPTION
 !!
@@ -565,6 +566,7 @@
 !>
 !!##NAME
 !!    prefposition(3f) - [M_draw:WINDOW_SETUP] Specify preferred position of window
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -612,6 +614,7 @@
 !>
 !!##NAME
 !!    prefsize(3f) - [M_draw:WINDOW_SETUP] Specify preferred width and height of window in physical units
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -668,6 +671,7 @@
 !>
 !!##NAME
 !!    vinit(3f) - [M_draw:DEVICE] Initialise device
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -949,6 +953,7 @@
 !>
 !!##NAME
 !!    vexit(3f) - [M_draw:DEVICE] Reset window/terminal and exit graphics mode. Must be last routine called.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1010,6 +1015,7 @@
 !>
 !!##NAME
 !!    voutput(3f) - [M_draw:DEVICE] Redirect output from *next* vinit to file
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1062,6 +1068,7 @@
 !>
 !!##NAME
 !!    vnewdev(3f) - [M_draw:DEVICE] Reinitialize to use new device without changing
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!          subroutine vnewdev(device)
@@ -1074,6 +1081,7 @@
 !>
 !!##NAME
 !!    vgetdev(3f) - [M_draw:DEVICE] Get name of current device
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!          subroutine vgetdev(device)
@@ -1086,6 +1094,7 @@
 !>
 !!##NAME
 !!    getdepth(3f) - [M_draw:DEVICE] Return number of bit planes (color planes)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1100,6 +1109,7 @@
 !>
 !!##NAME
 !!    pushdev(3f) - [M_draw:DEVICE] push current device onto a stack
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1117,6 +1127,7 @@
 !>
 !!##NAME
 !!    popdev(3f) - [M_draw:DEVICE] pop device from stack created by pushdev.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1130,6 +1141,7 @@
 !>
 !!##NAME
 !!    move(3f) - [M_draw:MOVE] Move current graphics position to (x, y, z)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1143,6 +1155,7 @@
 !>
 !!##NAME
 !!    rmove(3f) - [M_draw:MOVE] Relative move
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1156,6 +1169,7 @@
 !>
 !!##NAME
 !!    move2(3f) - [M_draw:MOVE] Move graphics position to point (x, y)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1201,6 +1215,7 @@
 !>
 !!##NAME
 !!    rmove2(3f) - [M_draw:MOVE] Relative move in world units.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1238,6 +1253,7 @@
 !>
 !!##NAME
 !!    smove2(3f) - [M_draw:MOVE] Move current graphics position in screen coordinates (-1.0 to 1.0).
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1250,6 +1266,7 @@
 !>
 !!##NAME
 !!    rsmove2(3f) - [M_draw:MOVE] Relative move in screen units (-1.0 to 1.0).
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1264,6 +1281,7 @@
 !>
 !!##NAME
 !!    draw(3f) - [M_draw:DRAW] Draw from current graphics position to (x, y, z)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1277,6 +1295,7 @@
 !>
 !!##NAME
 !!    rdraw(3f) - [M_draw:DRAW] Relative draw
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1289,6 +1308,7 @@
 !>
 !!##NAME
 !!    draw2(3f) - [M_draw:DRAW] Draw from current graphics position to given point (x, y)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1355,6 +1375,7 @@
 !>
 !!##NAME
 !!    rdraw2(3f) - [M_draw:DRAW] Relative draw from current position to given point
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1417,6 +1438,7 @@
 !>
 !!##NAME
 !!    sdraw2(3f) - [M_draw:DRAW] Draw in screen coordinates (-1.0 to 1.0).
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1428,6 +1450,7 @@
 !>
 !!##NAME
 !!    rsdraw2(3f) - [M_draw:DRAW] Relative draw in screen units (-1.0 to 1.0).
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1440,6 +1463,7 @@
 !>
 !!##NAME
 !!    rect(3f) - [M_draw:POLYGONS] Draw a rectangle given two corners
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1516,6 +1540,7 @@
 !>
 !!##NAME
 !!      polyfill(3f) - [M_draw:POLYGONS] Set the polygon fill flag
+!!      (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1600,6 +1625,7 @@
 !>
 !!##NAME
 !!    polyhatch(3f) - [M_draw:POLYGONS] Set the polygon hatch flag
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!     subroutine polyhatch(onoff)
@@ -1642,6 +1668,7 @@
 !>
 !!##NAME
 !!    hatchang(3f) - [M_draw:POLYGONS] Set the angle of the hatch lines.
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!       subroutine hatchang(angle)
@@ -1695,6 +1722,7 @@
 !>
 !!##NAME
 !!    hatchpitch(3f) - [M_draw:POLYGONS] Set the distance between hatch lines.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1735,6 +1763,7 @@
 !>
 !!##NAME
 !!    poly2(3f) - [M_draw:POLYGONS] Construct an (x, y) polygon from an array of points
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!       subroutine poly2(n, points)
@@ -1804,6 +1833,7 @@
 !>
 !!##NAME
 !!    poly(3f) - [M_draw:POLYGONS] Construct a polygon from an array of points
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1898,6 +1928,7 @@
 !>
 !!##NAME
 !!    makepoly(3f) - [M_draw:POLYGONS] opens polygon constructed by a series of move-draws and closed by closepoly
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -2022,6 +2053,7 @@
 !>
 !!##NAME
 !!    closepoly(3f) - [M_draw:POLYGONS] Terminates a polygon opened by makepoly(3f)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -2034,6 +2066,7 @@
 !>
 !!##NAME
 !!    backface(3f) - [M_draw:POLYGONS] Turns on culling of backfacing polygons.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -2254,6 +2287,7 @@
 !>
 !!##NAME
 !!    backfacedir(3f) - [M_draw:POLYGONS] Sets backfacing direction to clockwise or anti-clockwise
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -2269,6 +2303,7 @@
 !>
 !!##NAME
 !!     circleprecision(3f) - [M_draw:ARCS] Set number of line segments used to approximate a circle
+!!     (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -2333,6 +2368,7 @@
 !>
 !!##NAME
 !!     arc(3f) - [M_draw:ARCS] Draw an arc in world units.
+!!     (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!         subroutine arc(x, y, radius, startang, endang)
@@ -2419,6 +2455,7 @@
 !>
 !!##NAME
 !!    sector(3f) - [M_draw:ARCS] Draw a sector. Note: sectors are polygons.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -2512,6 +2549,7 @@
 !>
 !!##NAME
 !!    circle(3f) - [M_draw:ARCS] Draw a circle.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -2600,6 +2638,7 @@
 !>
 !!##NAME
 !!    point(3f) - [M_draw:POINT] Draw a point at x, y, z
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!         subroutine point(x, y, z)
@@ -2651,6 +2690,7 @@
 !>
 !!##NAME
 !!    point2(3f) - [M_draw:POINT] Draw a point at x, y.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -2686,6 +2726,7 @@
 !>
 !!##NAME
 !!    curvebasis(3f) - [M_draw:CURVE] Define a basis matrix for a curve.
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!          subroutine curvebasis(basis)
@@ -2696,6 +2737,7 @@
 !>
 !!##NAME
 !!    curveprecision(3f) - [M_draw:CURVE] Define number of line segments used to draw a curve.
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!          subroutine curveprecision(nsegs)
@@ -2706,6 +2748,7 @@
 !>
 !!##NAME
 !!    rcurve(3f) - [M_draw:CURVE] Draw a rational curve.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -2718,6 +2761,7 @@
 !>
 !!##NAME
 !!    curve(3f) - [M_draw:CURVE] Draw a curve.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -2914,6 +2958,7 @@
 !>
 !!##NAME
 !!    curven(3f) - [M_draw:CURVE] Draw n-3 overlapping curve segments. Note: n must be at least 4.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -2928,6 +2973,7 @@
 !!
 !!##NAME
 !!    font(3f) - [M_draw:TEXT] Set the current font by name
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -3034,6 +3080,7 @@
 !>
 !!##NAME
 !!    numchars(3f) - [M_draw:TEXT] Return number of characters in the current SOFTWARE font.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -3046,6 +3093,7 @@
 !>
 !!##NAME
 !!    textsize(3f) - [M_draw:TEXT] Set text size of a character in the current SOFTWARE font in world units.
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!         subroutine textsize(width, height)
@@ -3100,6 +3148,7 @@
 !>
 !!##NAME
 !!    textang(3f) - [M_draw:TEXT] Set the SOFTWARE text angle.
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!         subroutine textang(ang)
@@ -3152,6 +3201,7 @@
 !>
 !!##NAME
 !!    fixedwidth(3f) - [M_draw:TEXT] Turns fixedwidth mode on or off for SOFTWARE fonts.
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!         subroutine fixedwidth(onoff)
@@ -3202,6 +3252,7 @@
 !>
 !!##NAME
 !!    centertext(3f) - [M_draw:TEXT] Turns centertext mode on or off for SOFTWARE fonts.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -3271,6 +3322,7 @@
 !>
 !!##NAME
 !!    getcharsize(3f) - [M_draw:TEXT] Get the width and height of a character.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -3286,6 +3338,7 @@
 !>
 !!##NAME
 !!    getfontdec(3f) - [M_draw:TEXT] Return size of maximum font descender
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -3296,6 +3349,7 @@
 !>
 !!##NAME
 !!    getfontsize(3f) - [M_draw:TEXT] Get maximum width and height of a character in a font.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -3309,6 +3363,7 @@
 !>
 !!##NAME
 !!    drawchar(3f) - [M_draw:TEXT] Draw the character c and update current position.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -3443,6 +3498,7 @@
 !>
 !!##NAME
 !!    drawstr(3f) - [M_draw:TEXT] Draw the text in string at the current position.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -3501,6 +3557,7 @@
 !>
 !!##NAME
 !!    strlength(3f) - [M_draw:TEXT] return length of string
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -3586,6 +3643,7 @@
 !>
 !!##NAME
 !!    boxtext(3f) - [M_draw:TEXT] stretch and draw the SOFTWARE string s so that it fits in the imaginary box
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -3639,6 +3697,7 @@
 !>
 !!##NAME
 !!    boxfit(3f) - [M_draw:TEXT] resize the SOFTWARE text size so it fits in a box
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -3654,6 +3713,7 @@
 !>
 !!##NAME
 !!    textjustify(3f) - [M_draw:TEXT] general text justification (C only)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -3738,6 +3798,7 @@
 !>
 !!##NAME
 !!    leftjustify(3f) - [M_draw:TEXT] left justify text
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -3787,6 +3848,7 @@
 !>
 !!##NAME
 !!    rightjustify(3f) - [M_draw:TEXT] right justify text
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -3836,6 +3898,7 @@
 !>
 !!##NAME
 !!    xcentertext(3f) - [M_draw:TEXT] set text centering mode on in X direction
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -3886,6 +3949,7 @@
 !>
 !!##NAME
 !!    topjustify(3f) - [M_draw:TEXT] top justify text
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -3932,6 +3996,7 @@
 !>
 !!##NAME
 !!    bottomjustify(3f) - [M_draw:TEXT] bottom justify text
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -3978,6 +4043,7 @@
 !>
 !!##NAME
 !!    ycentertext(3f) - [M_draw:TEXT] center text in the Y direction
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -4027,6 +4093,7 @@
 !>
 !!##NAME
 !!    textslant(3f) - [M_draw:TEXT] Defines the obliqueness of the fonts.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -4083,6 +4150,7 @@
 !>
 !!##NAME
 !!    textweight(3f) - [M_draw:TEXT] Defines the weight of the fonts.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -4136,6 +4204,7 @@
 !>
 !!##NAME
 !!    linewidth(3f) - [M_draw:LINESTYLE] set line width in rasters
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -4233,6 +4302,7 @@
 !>
 !!##NAME
 !!    dashcode(3f) - [M_draw:LINESTYLE] set dash pattern length
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -4306,6 +4376,7 @@
 !>
 !!##NAME
 !!     linestyle(3f) - [M_draw:LINESTYLE] set the line dash pattern
+!!     (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -4476,6 +4547,7 @@
 !>
 !!##NAME
 !!    clear(3f) - [M_draw:COLOR] Clears screen to current color
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -4525,6 +4597,7 @@
 !>
 !!##NAME
 !!    color(3f) - [M_draw:COLOR] Set current color
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -4592,6 +4665,7 @@
 !>
 !!##NAME
 !!    mapcolor(3f) - [M_draw:COLOR] set a color index using RGB values
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -4778,6 +4852,7 @@
 !>
 !!##NAME
 !!    clipping(3f) - [M_draw:CLIPPING] Turn clipping on or off
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -4792,6 +4867,7 @@
 !>
 !!##NAME
 !!    getkey(3f) - [M_draw:INTERACTIVE] Return ASCII ordinal of next key typed
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -4845,6 +4921,7 @@
 !>
 !!##NAME
 !!    checkkey(3f) - [M_draw:INTERACTIVE] Returns zero if no key is pressed or ASCII ordinal
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -4899,6 +4976,7 @@
 !>
 !!##NAME
 !!    getstring(3f) - [M_draw:INTERACTIVE] Read in a string, echoing it in current font
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -4996,6 +5074,7 @@
 !>
 !!##NAME
 !!    locator(3f) - [M_draw:INTERACTIVE] Find out where cursor is
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -5190,6 +5269,7 @@
 !>
 !!##NAME
 !!    slocator(3f) - [M_draw:INTERACTIVE] Find out where cursor is in screen coordinates
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -5289,6 +5369,7 @@
 !>
 !!##NAME
 !!    vsetflush(3f) - [M_draw:FLUSHING] Set global flushing status
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -5303,6 +5384,7 @@
 !>
 !!##NAME
 !!    vflush(3f) - [M_draw:FLUSHING] Call device flush or syncronisation routine
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -5315,6 +5397,7 @@
 !>
 !!##NAME
 !!    viewport(3f) - [M_draw:VIEWPORT] Specify which part of screen to draw in
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -5448,6 +5531,7 @@
 !>
 !!##NAME
 !!    pushviewport(3f) - [M_draw:VIEWPORT] Save current viewport
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -5459,6 +5543,7 @@
 !>
 !!##NAME
 !!    popviewport(3f) - [M_draw:VIEWPORT] Retrieve last viewport
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -5471,6 +5556,7 @@
 !>
 !!##NAME
 !!    getviewport(3f) - [M_draw:VIEWPORT] Returns limits of current viewport in screen coordinates
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -5505,6 +5591,7 @@
 !>
 !!##NAME
 !!    expandviewport(3f) - [M_draw:VIEWPORT] use the entire device viewport
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -5580,6 +5667,7 @@
 !>
 !!##NAME
 !!    unexpandviewport(3f) - [M_draw:VIEWPORT] undo expandviewport(3f)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -5649,6 +5737,7 @@
 !>
 !!##NAME
 !!    getaspect(3f) - [M_draw:ASPECT] Returns the ratio height over width of the display device.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -5660,6 +5749,7 @@
 !>
 !!##NAME
 !!    getfactors(3f) - [M_draw:ASPECT] Returns width over min(width of device, height of device) and height over min(width of device, height of device).
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -5673,6 +5763,7 @@
 !>
 !!##NAME
 !!    getdisplaysize(3f) - [M_draw:ASPECT] Returns width and height of device in device units
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -5686,6 +5777,7 @@
 !>
 !!##NAME
 !!    pushattributes(3f) - [M_draw:ATTRIBUTE_STACK] Save the current attributes on the attribute stack.
+!!    (LICENSE:PD)
 !!
 !!
 !!##SYNOPSIS
@@ -5699,6 +5791,7 @@
 !>
 !!##NAME
 !!    popattributes(3f) - [M_draw:ATTRIBUTE_STACK] Restore attributes to what they were at last pushattributes().
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -5711,6 +5804,7 @@
 !>
 !!##NAME
 !!    ortho(3f) - [M_draw:PROJECTION] Define x,y,z clipping planes.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -5727,6 +5821,7 @@
 !>
 !!##NAME
 !!    ortho2(3f) - [M_draw:PROJECTION] define the area of the virtual world coordinates to map to the viewport
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -5745,6 +5840,7 @@
 !>
 !!##NAME
 !!    perspective(3f) - [M_draw:PROJECTION] Specify perspective viewing pyramid
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -5919,6 +6015,7 @@
 !>
 !!##NAME
 !!    window(3f) - [M_draw:PROJECTION] Specify a perspective viewing pyramid
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -6046,6 +6143,7 @@
 !>
 !!##NAME
 !!    pushmatrix(3f) - [M_draw:MATRIX_STACK] Save the current transformation matrix on the matrix stack.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -6058,6 +6156,7 @@
 !>
 !!##NAME
 !!    popmatrix(3f) - [M_draw:MATRIX_STACK] Reinstall the last matrix pushed
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -6070,6 +6169,7 @@
 !>
 !!##NAME
 !!    polarview(3f) - [M_draw:VIEWPORT] Specify the viewer's position in polar coordinates
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -6085,6 +6185,7 @@
 !>
 !!##NAME
 !!    up(3f) - [M_draw:VIEWPORT] Specify the world up.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -6099,6 +6200,7 @@
 !>
 !!##NAME
 !!    lookat(3f) - [M_draw:VIEWPORT] Specify the viewer's position
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -6302,6 +6404,7 @@
 !>
 !!##NAME
 !!    translate(3f) - [M_draw:TRANSFORMATION] Set up a translation.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -6456,6 +6559,7 @@
 !>
 !!##NAME
 !!    scale(3f) - [M_draw:TRANSFORMATION] Set up scaling factors in x, y, and z axis.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -6508,6 +6612,7 @@
 !>
 !!##NAME
 !!    rotate(3f) - [M_draw:TRANSFORMATION] Set up a rotation in axis axis where axis is one of 'x','y', or 'z'.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -6561,6 +6666,7 @@
 !>
 !!##NAME
 !!    patchbasis(3f) - [M_draw:PATCH] Define the t and u basis matrices of a patch.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -6573,6 +6679,7 @@
 !>
 !!##NAME
 !!    patchprecision(3f) - [M_draw:PATCH] Set minimum number of line segments making up curves in a patch.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -6585,6 +6692,7 @@
 !>
 !!##NAME
 !!    patchcurves(3f) - [M_draw:PATCH] Set the number of curves making up a patch.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -6598,6 +6706,7 @@
 !>
 !!##NAME
 !!    rpatch(3f) - [M_draw:PATCH] Draws a rational patch in the current basis, according to the geometry matrices gx, gy, gz, and gw.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -6611,6 +6720,7 @@
 !>
 !!##NAME
 !!    patch(3f) - [M_draw:PATCH] Draws a patch in the current basis, according to the geometry matrices gx, gy, and gz.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -6869,6 +6979,7 @@
 !>
 !!##NAME
 !!    makeobj(3f) - [M_draw:OBJECT] Commence the object number n.
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!         subroutine makeobj(n)
@@ -6880,6 +6991,7 @@
 !>
 !!##NAME
 !!    closeobj(3f) - [M_draw:OBJECT] Close the current object.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -6891,6 +7003,7 @@
 !>
 !!##NAME
 !!    genobj(3f) - [M_draw:OBJECT] Returns a unique object identifier.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -6901,6 +7014,7 @@
 !>
 !!##NAME
 !!    getopenobj(3f) - [M_draw:OBJECT] Return the number of the current object.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -6912,6 +7026,7 @@
 !>
 !!##NAME
 !!    callobj(3f) - [M_draw:OBJECT] Draw object number n.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -7269,6 +7384,7 @@
 !>
 !!##NAME
 !!    isobj(3f) - [M_draw:OBJECT] Returns non-zero if there is an object of number n.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -7326,6 +7442,7 @@
 !>
 !!##NAME
 !!    delobj(3f) - [M_draw:OBJECT] Delete the object number n.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -7337,6 +7454,7 @@
 !>
 !!##NAME
 !!    loadobj(3f) - [M_draw:OBJECT] Load the object in the file filename as object number n.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -7401,6 +7519,7 @@
 !>
 !!##NAME
 !!    saveobj(3f) - [M_draw:OBJECT] Save object number n into file filename. Does NOT save objects called inside object n.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -7470,6 +7589,7 @@
 !>
 !!##NAME
 !!    backbuffer(3f) - [M_draw:DOUBLE_BUFFERING] Draw in the backbuffer. Returns -1 if the device is not up to it.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -7481,6 +7601,7 @@
 !>
 !!##NAME
 !!    frontbuffer(3f) - [M_draw:DOUBLE_BUFFERING] Draw in the front buffer. This will always work.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -7493,6 +7614,7 @@
 !>
 !!##NAME
 !!    swapbuffers(3f) - [M_draw:DOUBLE_BUFFERING] Swap the front and back buffers.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -7504,6 +7626,7 @@
 !>
 !!##NAME
 !!    getgp(3f) - [M_draw:POSITION] Gets the current graphics position
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -7516,6 +7639,7 @@
 !>
 !!##NAME
 !!    getgpt(3f) - [M_draw:POSITION] Gets the current transformed graphics position in world coords.
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -7528,6 +7652,7 @@
 !>
 !!##NAME
 !!    getgp2(3f) - [M_draw:POSITION] Gets the current graphics position in world coordinates
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!          subroutine getgp2(x, y)
@@ -7567,6 +7692,7 @@
 !>
 !!##NAME
 !!    sgetgp2(3f) - [M_draw:POSITION] Gets the current screen graphics position in screen coords (-1 to 1)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -7579,6 +7705,7 @@
 !>
 !!##NAME
 !!    example_text_justification(7) - [M_draw:EXAMPLE] example program showing text justification
+!!    (LICENSE:PD)
 !!
 !!##DESCRIPTION
 !!    Interactive example program to demonstrate text features such as

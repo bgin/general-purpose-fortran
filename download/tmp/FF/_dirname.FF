@@ -29,6 +29,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file _dirname.1.man
 NAME
    _dirname(1f) - [FUNIX:FILESYSTEM] strip last component from file name
+   (LICENSE:PD)
 
 SYNOPSIS
    _dirname NAME... [ -zero]|-help|-version]

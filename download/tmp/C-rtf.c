@@ -1,3 +1,4 @@
+/* this code is licensed as public domain */
 #ident "@(#)M_DRAW:driver/rtf.c - M_DRAW driver for RTF (Microsoft Rich Text Format) files"
 #ident "@(#)M_DRAW:author - John S. Urban"
 #ident "@(#)M_DRAW:version - 1.0, Mar 2008"

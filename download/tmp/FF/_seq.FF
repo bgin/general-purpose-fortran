@@ -76,6 +76,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file _seq.1.man
 NAME
    _seq - [FUNIX] print a sequence of numbers
+   (LICENSE:PD)
 
 SYNOPSIS
    _seq LAST [OPTION] ...

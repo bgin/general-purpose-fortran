@@ -1,4 +1,5 @@
 /*******************************************************************************/
+/* this code is licensed as public domain */
 #ident "@(#)M_DRAW:driver/ppm.c - M_DRAW driver for ppm (Poskanzer pixmap) files"
 #ident "@(#)M_DRAW:author - John S. Urban"
 #ident "@(#)M_DRAW:version - 3.0, Jul 2019"

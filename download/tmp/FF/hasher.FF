@@ -2,6 +2,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file hasher.1.man
 NAME
    hasher(1f) - [M_hashkeys] exercise the string hash methods in the M_hashkey(3fm) module
+   (LICENSE:PD)
 
 SYNOPSIS
    hasher [ input_files [ -hash hashname] ]|[ -string string_value]|--help|--version

@@ -1,6 +1,7 @@
 !>
 !!##NAME
 !!    M_list(3f) - [M_list] maintain simple lists
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -217,6 +218,7 @@ contains
 !>
 !!##NAME
 !!    locate(3f) - [M_list] finds the index where a string is found or should be in a sorted array
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -331,6 +333,8 @@ contains
 !!
 !!##AUTHOR
 !!    1989,2017 John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine locate_c(list,value,place,ier,errmsg)
 
@@ -656,6 +660,7 @@ end subroutine locate_i
 !>
 !!##NAME
 !!    remove(3f) - [M_list] remove entry from an allocatable array at specified position
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -713,6 +718,8 @@ end subroutine locate_i
 !!
 !!##AUTHOR
 !!    1989,2017 John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine remove_c(list,place)
 
@@ -827,6 +834,7 @@ end subroutine remove_i
 !>
 !!##NAME
 !!    replace(3f) - [M_list] replace entry in a string array at specified position
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -914,6 +922,8 @@ end subroutine remove_i
 !!
 !!##AUTHOR
 !!    1989,2017 John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine replace_c(list,value,place)
 use M_time, only : now
@@ -1040,6 +1050,7 @@ end subroutine replace_i
 !>
 !!##NAME
 !!    insert(3f) - [M_list] insert entry into a string array at specified position
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -1118,6 +1129,8 @@ end subroutine replace_i
 !!
 !!##AUTHOR
 !!    1989,2017 John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine insert_c(list,value,place)
 use M_time, only : now
@@ -1272,6 +1285,7 @@ end subroutine insert_i
 !>
 !!##NAME
 !!    dict_delete(3f) - [M_list] delete entry by name from an allocatable sorted string array if it is present
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -1346,6 +1360,7 @@ end subroutine dict_delete
 !>
 !!##NAME
 !!    dict_get(3f) - [M_list] get value of key-value pair in a dictionary given key
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -1418,6 +1433,7 @@ end function dict_get
 !>
 !!##NAME
 !!    dict_add(3f) - [M_list] add or replace a key-value pair in a dictionary
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!

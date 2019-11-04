@@ -3,6 +3,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file _pwd.1.man
 NAME
        _pwd(1f) - [FUNIX:FILESYSTEM] list full pathname of current directory
+       (LICENSE:PD)
 SYNOPSIS
        _pwd [ --version|--help]
 DESCRIPTION

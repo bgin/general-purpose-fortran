@@ -1,6 +1,7 @@
 !>
 !!##NAME
 !!       M_Compare_Float_Numbers - [M_Compare_Float_Numbers] perform relational comparisons on real numbers
+!!       (LICENSE:GPL)
 !!
 !!##PURPOSE
 !!       Module containing routines to perform equality and relational

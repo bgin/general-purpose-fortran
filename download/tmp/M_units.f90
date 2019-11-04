@@ -1,6 +1,7 @@
 !>
 !!##NAME
 !!    M_units(3fm) - [M_units::INTRO] convert between various physical units
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -24,7 +25,7 @@
 !!       elemental real function atand(x)
 !!       elemental real function atan2d(x,y)
 !!
-!!       elemental real|double function norm_angle_rad(radians)
+!!       elemental double function norm_angle_rad(radians)
 !!       elemental real|double function norm_angle_360(radians)
 !!
 !!       subroutine cartesian_to_spherical(x,y,z,radius,inclination,azimuth)
@@ -84,7 +85,7 @@
 !!
 !!    Normalize angles into specific ranges
 !!
-!!     o elemental real|double function norm_angle_rad(angle_in_radians)
+!!     o elemental double function norm_angle_rad(angle_in_radians)
 !!     o elemental real|double function norm_angle_360(angle_in_degrees)
 !!
 !!    Coordinates
@@ -265,10 +266,6 @@ real(kind=DP), public, parameter ::              &
 !---------------------!------------------------------------------------------------
    end=99999    ! END OF CONSTANTS
 !===================================================================================================================================
-      interface norm_angle_rad                                  ! a Generic Interface in a module with PRIVATE specific procedures
-         module procedure norm_angle_rad_real, norm_angle_rad_double
-      end interface
-
       interface norm_angle_360                                  ! a Generic Interface in a module with PRIVATE specific procedures
          module procedure norm_angle_360_real, norm_angle_360_double
          module procedure norm_angle_360_integer
@@ -288,6 +285,7 @@ contains
 !>
 !!##NAME
 !!    c2f(3f) - [M_units:TEMPERATURE] convert Celsius to Fahrenheit
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    elemental real function c2f(celsius)
@@ -316,6 +314,10 @@ contains
 !!    With REAL array input      -40.0000000       32.0000000       212.000000
 !!    With INTEGER array input   -40.0000000       32.0000000       212.000000
 !!    With DOUBLEPRECISION       -40.0000000       32.0000000       212.000000
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 elemental real function c2f(celsius)
@@ -329,6 +331,7 @@ end function c2f
 !>
 !!##NAME
 !!    f2c(3f) - [M_units:TEMPERATURE] convert Fahrenheit to Celsius
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    elemental real function f2c(fahrenheit)
@@ -357,6 +360,11 @@ end function c2f
 !!    With REAL array input      -40.0000000       0.00000000       100.000000
 !!    With INTEGER array input   -40.0000000       0.00000000       100.000000
 !!    With DOUBLEPRECISION       -40.0000000       0.00000000       100.000000
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 elemental real function f2c(fahrenheit)
@@ -372,6 +380,7 @@ end function f2c
 !>
 !!##NAME
 !!    r2d(3f) - [M_units:TRIGONOMETRY] convert radians to degrees
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    elemental real function r2d(radians)
@@ -402,6 +411,10 @@ end function f2c
 !!     With REAL array input       0.00000000       45.0000000       90.0000000       270.000000       180.000000
 !!     With INTEGER array input    0.00000000       57.2957802       114.591560       171.887344       229.183121
 !!     With DOUBLEPRECISION        0.00000000       45.0000000       90.0000000       270.000000       180.000000
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 elemental doubleprecision function r2d_i(iradians)
@@ -434,6 +447,7 @@ end function r2d_r
 !>
 !!##NAME
 !!    d2r(3f) - [M_units:TRIGONOMETRY] convert degrees to radians
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    elemental real function d2r(degrees)
@@ -464,6 +478,11 @@ end function r2d_r
 !!    With REAL array input    0.00000 0.785398185 1.57079637 2.35619450 3.14159274
 !!    With INTEGER array input 0.00000 0.785398185 1.57079637 2.35619450 3.14159274
 !!    With DOUBLEPRECISION     0.00000 0.785398185 1.57079637 2.35619450 3.14159274
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 elemental real function d2r_r(degrees)
@@ -498,6 +517,7 @@ end function d2r_i
 !>
 !!##NAME
 !!    sind(3f) - [M_units:TRIGONOMETRY] calculate sine of value in degrees
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    elemental real function sind(degrees)
@@ -536,6 +556,11 @@ end function d2r_i
 !!    With DOUBLEPRECISION       0.00000000      0.258819044      0.500000000
 !!                               0.707106829     0.866025448      0.965925813
 !!                               1.00000000      -8.74227766E-08  -1.00000000
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 elemental real function sind(angle_in_degrees)
@@ -551,6 +576,7 @@ end function sind
 !>
 !!##NAME
 !!    cosd(3f) - [M_units:TRIGONOMETRY] calculate sine of value in degrees
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    elemental real function cosd(degrees)
@@ -589,6 +615,11 @@ end function sind
 !!     With DOUBLEPRECISION       1.00000000       0.965925813   0.866025448
 !!                                0.707106769      0.499999970   0.258819073
 !!                               -4.37113883E-08  -1.00000000    1.19248806E-08
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 elemental real function cosd(angle_in_degrees)
@@ -604,6 +635,7 @@ end function cosd
 !>
 !!##NAME
 !!    tand(3f) - [M_units:TRIGONOMETRY] calculate tangent of value in degrees
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    elemental real function tand(degrees)
@@ -632,6 +664,11 @@ end function cosd
 !!    end program demo_tand
 !!
 !!   Results
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 elemental real function tand(angle_in_degrees)
@@ -647,6 +684,7 @@ end function tand
 !>
 !!##NAME
 !!    asind(3f) - [M_units:TRIGONOMETRY] calculate arcsine of value in degrees
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    elemental real function asind(value)
@@ -673,6 +711,11 @@ end function tand
 !!   Results
 !!
 !!       0.0 15.0  30.0 45.0000038  60.00 75.0 90.0 -5.00895612E-06  -90.0
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 elemental real function asind(x)
@@ -688,6 +731,7 @@ end function asind
 !>
 !!##NAME
 !!    acosd(3f) - [M_units:TRIGONOMETRY] calculate arccosine of value in degrees
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    elemental real function acosd(value)
@@ -715,6 +759,11 @@ end function asind
 !!
 !!       1.00000000      0.707106769     -0.500000000      -1.00000000       1.00000000
 !!       0.00000000       45.0000000       120.000000       180.000000       0.00000000
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 elemental real function acosd(x)
@@ -730,6 +779,7 @@ end function acosd
 !>
 !!##NAME
 !!    atand(3f) - [M_units:TRIGONOMETRY] calculate arctangent of value in degrees
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    elemental real function atand(value)
@@ -758,6 +808,11 @@ end function acosd
 !!
 !!       0.00000000       1.00000000      -1.73205078      -1.22464685E-16  -4.89858741E-16
 !!       0.00000000       45.0000000      -60.0000000      -7.01670955E-15  -2.80668382E-14
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 elemental real function atand(x)
@@ -773,6 +828,7 @@ end function atand
 !>
 !!##NAME
 !!    atan2d(3f) - [M_units:TRIGONOMETRY] calculate arctangent of the complex number X + i Y
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    elemental real function atan2d(x,y)
@@ -802,6 +858,11 @@ end function atand
 !!   Results:
 !!
 !!       26.5650501
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 elemental real function atan2d(x,y)
@@ -822,6 +883,7 @@ end function atan2d
 !>
 !!##NAME
 !!    feet_to_meters(3f) - [M_units:LENGTH] converts a measurement in feet to meters
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    elemental doubleprecision function feet_to_meters(feet)
@@ -856,6 +918,11 @@ end function atan2d
 !!     With REAL array input     -0.304800004   0.00000000  0.304800004  2.54000016E-02
 !!     With INTEGER array input  -0.304800004   0.00000000  0.304800004
 !!     With DOUBLEPRECISION      -0.304800004   0.00000000  0.304800004
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 elemental function feet_to_meters(feet)
 character(len=*),parameter::ident_16="@(#)M_units::feet_to_meters(3f): converts a measurement in feet to meters"
@@ -873,6 +940,7 @@ end function feet_to_meters
 !>
 !!##NAME
 !!    meters_to_feet(3f) - [M_units:LENGTH] converts a measurement in meters to feet
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    elemental real function meters_to_feet(meters)
@@ -902,6 +970,11 @@ end function feet_to_meters
 !!     With REAL array input      -3.28083992       0.00000000       3.28083992
 !!     With INTEGER array input   -3.28083992       0.00000000       3.28083992
 !!     With DOUBLEPRECISION       -3.28083992       0.00000000       3.28083992
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 elemental function meters_to_feet(meters)
 character(len=*),parameter::ident_17="@(#)M_units::meters_to_feet(3f): converts a measurement in meters to feet"
@@ -917,6 +990,7 @@ end function meters_to_feet
 !>
 !!##NAME
 !!     cartesian_to_spherical(3f) - [M_units:TRIGONOMETRY] convert Cartesian coordinates to ISO polar coordinates
+!!     (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    subroutine cartesian_to_spherical(x,y,z,radius,inclination,azimuth)
@@ -964,6 +1038,10 @@ end function meters_to_feet
 !!       write(*,*)'x=',x,' y=',y,' z=',z,'radius=',r,'inclination=',i,'azimuth=',a
 !!    enddo INFINITE
 !!    end program demo_cartesian_to_spherical
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine cartesian_to_spherical(x,y,z,radius,inclination,azimuth)
 implicit none
@@ -986,6 +1064,7 @@ end subroutine cartesian_to_spherical
 !>
 !!##NAME
 !!     spherical_to_cartesian(3f) - [M_units:TRIGONOMETRY] convert ISO polar coordinates to Cartesian coordinates
+!!     (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    subroutine spherical_to_cartesian(radius,inclination,azimuth,x,y,z)
@@ -1034,6 +1113,10 @@ end subroutine cartesian_to_spherical
 !!       write(*,*)'x=',x,' y=',y,' z=',z,'radius=',r,'inclination=',i,'azimuth=',a
 !!    enddo INFINITE
 !!    end program demo_spherical_to_cartesian
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine spherical_to_cartesian(radius,inclination,azimuth,x,y,z)
 implicit none
@@ -1057,6 +1140,7 @@ end subroutine spherical_to_cartesian
 !>
 !!##NAME
 !!     cartesian_to_polar(3f) - [M_units:TRIGONOMETRY] convert Cartesian coordinates to polar coordinates
+!!     (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    subroutine cartesian_to_polar(x,y,radius,inclination)
@@ -1100,6 +1184,10 @@ end subroutine spherical_to_cartesian
 !!       write(*,*)'x=',x,' y=',y,'radius=',r,'inclination=',i
 !!    enddo INFINITE
 !!    end program demo_cartesian_to_polar
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine cartesian_to_polar(x,y,radius,inclination)
 implicit none
@@ -1119,6 +1207,7 @@ end subroutine cartesian_to_polar
 !>
 !!##NAME
 !!     polar_to_cartesian(3f) - [M_units:TRIGONOMETRY] convert polar coordinates to Cartesian coordinates
+!!     (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    subroutine polar_to_cartesian(radius,inclination,x,y)
@@ -1163,6 +1252,10 @@ end subroutine cartesian_to_polar
 !!       write(*,*)'x=',x,' y=',y,'radius=',r,'inclination=',i
 !!    enddo INFINITE
 !!    end program demo_polar_to_cartesian
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine polar_to_cartesian(radius,inclination,x,y)
 implicit none
@@ -1183,6 +1276,7 @@ end subroutine polar_to_cartesian
 !>
 !!##NAME
 !!    atomnum2symbol(3f) - [M_units:SYMBOLS] return element symbol given atomic number
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!   subroutine atomnum2symbol(atomnum,symbol)
@@ -1325,6 +1419,11 @@ end subroutine polar_to_cartesian
 !!        > 107 Bh
 !!        > 108 Hs
 !!        > 109 Mt
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine atomnum2symbol(atomnum,symbol)
@@ -1361,6 +1460,7 @@ end subroutine atomnum2symbol
 !>
 !!##NAME
 !!    symbol2atomnum(3f) - [M_units:SYMBOLS] return atomic number given element symbol name
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!   subroutine symbol2atomnum(symbol,atomnum)
@@ -1394,6 +1494,11 @@ end subroutine atomnum2symbol
 !!   Results:
 !!
 !!    10 Ne
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine symbol2atomnum(symbol,atomnum)
@@ -1435,6 +1540,7 @@ end subroutine symbol2atomnum
 !>
 !!##NAME
 !!    pounds_to_kilograms(3f) - [M_units:MASS] - converts a measurement in pounds-mass to kilograms.
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -1480,6 +1586,11 @@ end subroutine symbol2atomnum
 !!     INTEGER array     0.0000000000000000    0.45359237000000002
 !!                      45.359237000000000    90.718474000000001
 !!     DOUBLEPRECISION   0.45359237000000002
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 elemental function pounds_to_kilograms ( pounds )
 character(len=*),parameter::ident_24="@(#)M_units::pounds_to_kilograms(3f): converts a measurement in pounds to kilograms."
@@ -1495,20 +1606,18 @@ end function pounds_to_kilograms
 !>
 !!##NAME
 !!    norm_angle_rad(3f) - [M_units:TRIGONOMETRY] Return input angle given in radians as angle between 0 and 2pi
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    elemental function norm_angle_rad(ang) result(rev)
 !!
-!!    doubleprecision, intent(in) :: ang
-!!    doubleprecision             :: rev
-!!       or
-!!    real, intent(in) :: ang
-!!    real             :: rev
+!!    class(*), intent(in) :: ang
+!!    doubleprecision      :: rev
 !!##DESCRIPTION
-!!    Given an input angle in radians, normalize the value to fall in the
+!!    Given an input angle specified in radians, normalize the value to fall in the
 !!    range 0 to 2*pi radians.
 !!##OPTIONS
-!!    ang  Input angle (radians)
+!!    ang  Input angle (radians). May be INTEGER, REAL, or DOUBLEPRECISION
 !!##RESULTS
 !!    rev  Return input angle (radians) normalized to range 0>= REV <=2*pi radians
 !!##EXAMPLE
@@ -1528,33 +1637,31 @@ end function pounds_to_kilograms
 !!    enddo
 !!    write(*,*)norm_angle_rad([-PI/8.0,-PI/4.0,-PI/2.0,-PI,-0.0,PI/8.0,PI/4.0,PI/2.0,PI,0.0])
 !!    end program demo_norm_angle_rad
+!!
 !!   Results:
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
-elemental function norm_angle_rad_double(ang)
+elemental function norm_angle_rad(ang)
 
 character(len=*),parameter::ident_25="&
-&@(#)M_units::norm_angle_rad_double(3fp): Return input angle given in radians as doubleprecision angle between 0 and 2pi"
-
-doubleprecision, intent(in) :: ang
-doubleprecision             :: norm_angle_rad_double
-   norm_angle_rad_double = ang - dble(floor(ang/circle_rad_d)) * circle_rad_d
-end function norm_angle_rad_double
-!===================================================================================================================================
-elemental function norm_angle_rad_real(ang)
-
-character(len=*),parameter::ident_26="&
-&@(#)M_units::norm_angle_rad_real(3fp): Return input angle given in radians as real angle between 0 and 2pi"
-
-real, intent(in) :: ang
-real             :: norm_angle_rad_real
-    norm_angle_rad_real = ang - real(floor(ang/circle_rad_r)) * circle_rad_r
-end function norm_angle_rad_real
+&@(#)M_units::norm_angle_rad(3fp): Return input angle (given in radians) as doubleprecision angle between 0 and 2pi radians"
+class(*), intent(in) :: ang
+doubleprecision      :: ang_local
+doubleprecision      :: norm_angle_rad
+   ang_local=anyscalar_to_double(ang)
+   norm_angle_rad = ang_local - dble(floor(ang_local/circle_rad_d)) * circle_rad_d
+end function norm_angle_rad
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
 !!##NAME
 !!    norm_angle_360(3f) - [M_units:TRIGONOMETRY] Return input angle given in degrees as angle between 0 and 360
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -1618,7 +1725,20 @@ end function norm_angle_rad_real
 !!       1440.00000       0.00000000
 !!       720.000000       0.00000000
 !!       360.000000       0.00000000
-!! ================================================================================
+!!
+!!##LICENSE
+!!    MIT License
+!===================================================================================================================================
+elemental function norm_angle_360_class(ang)
+
+character(len=*),parameter::ident_26="@(#)M_units:: norm_angle_360_class(3fp): Returns angle in degrees between 0 and 360"
+
+class(*),intent(in) :: ang
+doubleprecision     :: ang_local
+doubleprecision     :: norm_angle_360_class
+ang_local=anyscalar_to_double(ang)
+   norm_angle_360_class = ang_local - dble(floor(ang_local/360.d0)) * 360.d0
+end function norm_angle_360_class
 !===================================================================================================================================
 elemental function norm_angle_360_double(ang)
 
@@ -1652,6 +1772,7 @@ end function norm_angle_360_integer
 !>
 !!##NAME
 !!    inf(3f) - [M_units] return an inf (Infinity)
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    function inf(value)
@@ -1710,6 +1831,11 @@ end function norm_angle_360_integer
 !!    **
 !!    **
 !!    **
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 function inf32(value)
 use,intrinsic :: iso_fortran_env, only: real32
@@ -1744,9 +1870,13 @@ real(kind=real128) :: inf128,value
    read(STRING,*)inf128
 end function inf128
 !===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!===================================================================================================================================
 !>
 !!##NAME
 !!    nan(3f) - [M_units] return a NaN (Not a number)
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    function nan(value)
@@ -1816,6 +1946,10 @@ end function inf128
 !!
 !!##SEE ALSO
 !!      IS_NAN(3f)
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 function nan32(value)
 use,intrinsic :: iso_fortran_env, only: real32
@@ -1870,6 +2004,7 @@ end function nan128
 !>
 !!##NAME
 !!    is_even(3f) - [M_units] determine if integer is even
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    elemental pure logical is_even(int)
@@ -1901,6 +2036,8 @@ end function nan128
 !!     T
 !!     T F F F T
 !!     T F T F T F T F T F T F T F T F T F T F T
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 elemental pure function is_even(ival)
 use,intrinsic :: iso_fortran_env, only : int8, int16, int32, int64
@@ -1910,12 +2047,9 @@ character(len=*),parameter::ident_35="@(#)M_units::is_even(3f): determine if int
 class(*),intent(in) :: ival
 logical             :: is_even
 select type(ival)
-   type is (integer(kind=int8))
-     is_even = mod(ival, 2_int8) == 0_int8 ! This can be reduced to one line:
-   type is (integer(kind=int16))
-     is_even = iand(ival, 1_int16) == 0_int16 ! Quicker will be:
-   type is (integer(kind=int32))
-     is_even = iand(ival, 1_int32) == 0_int32  ! Quicker will be:
+   type is (integer(kind=int8)) ; is_even = mod(ival, 2_int8) == 0_int8
+   type is (integer(kind=int16)) ; is_even = iand(ival, 1_int16) == 0_int16
+   type is (integer(kind=int32)) ; is_even = iand(ival, 1_int32) == 0_int32
    type is (integer(kind=int64))
      if (mod(ival, 2_int64) == 0_int64) then
         is_even = .true.
@@ -1930,6 +2064,7 @@ end function is_even
 !>
 !!##NAME
 !!    is_nan(3f) - [M_units] determine if integer is a Nan (Not a Number) value
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    elemental pure logical is_nan(value)
@@ -1963,6 +2098,10 @@ end function is_even
 !!     T              NaN
 !!     F              NaN
 !!     F F F  -100.000000       100.000000       3.40282347E+38
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 elemental pure function is_nan(x)
 !!use IEEE_EXCEPTIONS, only : ieee_support_nan ! is IEEE NaNs supported?
@@ -2009,8 +2148,7 @@ subroutine test_suite_M_units()
    call test_norm_angle_360_double()
    call test_norm_angle_360_integer()
    call test_norm_angle_360_real()
-   call test_norm_angle_rad_double()
-   call test_norm_angle_rad_real()
+   call test_norm_angle_rad()
    call test_polar_to_cartesian()
    call test_pounds_to_kilograms()
    call test_r2d()
@@ -2110,7 +2248,7 @@ subroutine test_inf()
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
    call unit_check_start('inf',msg='')
-   !!call unit_check('inf', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('inf', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('inf',msg='')
 end subroutine test_inf
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -2119,7 +2257,7 @@ subroutine test_acosd()
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
    call unit_check_start('acosd',msg='')
-   !!call unit_check('acosd', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('acosd', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('acosd',msg='')
 end subroutine test_acosd
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -2128,7 +2266,7 @@ subroutine test_asind()
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
    call unit_check_start('asind',msg='')
-   !!call unit_check('asind', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('asind', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('asind',msg='')
 end subroutine test_asind
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -2137,7 +2275,7 @@ subroutine test_atan2d()
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
    call unit_check_start('atan2d',msg='')
-   !!call unit_check('atan2d', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('atan2d', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('atan2d',msg='')
 end subroutine test_atan2d
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -2146,7 +2284,7 @@ subroutine test_atand()
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
    call unit_check_start('atand',msg='')
-   !!call unit_check('atand', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('atand', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('atand',msg='')
 end subroutine test_atand
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -2155,7 +2293,7 @@ subroutine test_atomnum2symbol()
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
    call unit_check_start('atomnum2symbol',msg='')
-   !!call unit_check('atomnum2symbol', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('atomnum2symbol', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('atomnum2symbol',msg='')
 end subroutine test_atomnum2symbol
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -2175,7 +2313,7 @@ subroutine test_cartesian_to_polar()
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
    call unit_check_start('cartesian_to_polar',msg='')
-   !!call unit_check('cartesian_to_polar', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('cartesian_to_polar', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('cartesian_to_polar',msg='')
 end subroutine test_cartesian_to_polar
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -2296,7 +2434,7 @@ subroutine test_norm_angle_360_double()
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
    call unit_check_start('norm_angle_360_double',msg='')
-   !!call unit_check('norm_angle_360_double', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('norm_angle_360_double', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('norm_angle_360_double',msg='')
 end subroutine test_norm_angle_360_double
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -2305,7 +2443,7 @@ subroutine test_norm_angle_360_integer()
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
    call unit_check_start('norm_angle_360_integer',msg='')
-   !!call unit_check('norm_angle_360_integer', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('norm_angle_360_integer', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('norm_angle_360_integer',msg='')
 end subroutine test_norm_angle_360_integer
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -2314,34 +2452,25 @@ subroutine test_norm_angle_360_real()
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
    call unit_check_start('norm_angle_360_real',msg='')
-   !!call unit_check('norm_angle_360_real', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('norm_angle_360_real', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('norm_angle_360_real',msg='')
 end subroutine test_norm_angle_360_real
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_norm_angle_rad_double()
+subroutine test_norm_angle_rad()
 
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
-   call unit_check_start('norm_angle_rad_double',msg='')
-   !!call unit_check('norm_angle_rad_double', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('norm_angle_rad_double',msg='')
-end subroutine test_norm_angle_rad_double
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_norm_angle_rad_real()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('norm_angle_rad_real',msg='')
-   !!call unit_check('norm_angle_rad_real', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('norm_angle_rad_real',msg='')
-end subroutine test_norm_angle_rad_real
+   call unit_check_start('norm_angle_rad',msg='')
+   !!call unit_check('norm_angle_rad', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('norm_angle_rad',msg='')
+end subroutine test_norm_angle_rad
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_polar_to_cartesian()
 
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
    call unit_check_start('polar_to_cartesian',msg='')
-   !!call unit_check('polar_to_cartesian', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('polar_to_cartesian', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('polar_to_cartesian',msg='')
 end subroutine test_polar_to_cartesian
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -2428,7 +2557,7 @@ subroutine test_symbol2atomnum()
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
    call unit_check_start('symbol2atomnum',msg='')
-   !!call unit_check('symbol2atomnum', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('symbol2atomnum', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('symbol2atomnum',msg='')
 end subroutine test_symbol2atomnum
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT

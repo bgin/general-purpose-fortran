@@ -10,6 +10,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '   pendulum(1f) - [PHYSICS] calculate pendulum period                           ',&
+'   (LICENSE:PD)                                                                 ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   pendulum [ -length Length_In_Feet ][ -verbose]|[ --help]|[ --version]        ',&
@@ -80,6 +81,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!    pendulum(1f) - [PHYSICS] calculate pendulum period
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -162,7 +164,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Fri, Nov 1st, 2019 9:50:57 PM>',&
+'@(#)COMPILED:       Mon, Nov 4th, 2019 2:39:44 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

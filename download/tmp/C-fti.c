@@ -1,4 +1,4 @@
-
+/* this code is licensed as public domain */
 #ident "@(#)M_DRAW:driver/fti.c - M_DRAW driver for Silicon Graphics icon geometries ((.fti files)"
 #ident "@(#)M_DRAW:author - John S. Urban"
 #ident "@(#)M_DRAW:version - 1.0, Aug 1997"

@@ -59,6 +59,7 @@ contains
 $DOCUMENT HELP -file month.1.man
 NAME
    month(1f) - [TIME] display a calendar
+   (LICENSE:PD)
 
 SYNOPSIS
    month [[ -year] NNNN] [ -month NN|month_name]

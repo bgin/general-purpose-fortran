@@ -10,6 +10,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '    paranoid(1f) - [DEVELOPER] call doubleprecision and real versions of paranoia(3f)',&
+'    (LICENSE:PD)                                                                ',&
 'SYNOPSIS                                                                        ',&
 '    paranoid                                                                    ',&
 'DESCRIPTION                                                                     ',&
@@ -78,6 +79,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!     paranoid(1f) - [DEVELOPER] call doubleprecision and real versions of paranoia(3f)
+!!     (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!     paranoid
@@ -152,7 +154,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)PROGRAM:        paranoid(1)>',&
 '@(#)DESCRIPTION:    call doubleprecision and real versions of paranoia(3f)>',&
 '@(#)VERSION:        1.0, 20150508>',&
-'@(#)COMPILED:       Fri, Nov 1st, 2019 10:03:50 PM>',&
+'@(#)COMPILED:       Mon, Nov 4th, 2019 2:39:16 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

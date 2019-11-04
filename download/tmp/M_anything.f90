@@ -47,11 +47,11 @@ public empty, assignment(=)
    type(Empty_t) empty   !! singleton
 
    interface assignment(=)
-       module procedure      &
-       & ints_from_empty,    &
-       & reals_from_empty,   &
-       & doubles_from_empty,   &
-       & strings_from_empty
+       module procedure  &
+       & ints_empty_,    &
+       & reals_empty_,   &
+       & doubles_empty_, &
+       & strings_empty_
    endinterface
 
 contains
@@ -61,6 +61,7 @@ contains
 !>
 !!##NAME
 !!    empty(3f) - [M_anything] set an allocatable array to zero
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    use M_anything, only : empty, assignment(=)
@@ -70,7 +71,7 @@ contains
 !!
 !!   Sample program:
 !!
-!!    program demo_empty
+!!    program demo_empty_
 !!    use M_anything, only : empty, assignment(=)
 !!    integer, allocatable      :: ints(:)
 !!    character(:), allocatable :: strs(:)
@@ -94,7 +95,7 @@ contains
 !!       write(*,*)size(reals)
 !!       write(*,*)size(strs)
 !!
-!!    end program demo_empty
+!!    end program demo_empty_
 !!
 !!   Expected output:
 !!
@@ -108,33 +109,33 @@ contains
 !!               0
 !!               0
 !===================================================================================================================================
-   subroutine ints_from_empty( x, emp )
+   subroutine ints_empty_( x, emp )
        integer, allocatable, intent(inout) :: x(:)
        type(Empty_t), intent(in) :: emp
        if ( allocated( x ) ) deallocate( x )
        allocate( x( 0 ) )
-   end subroutine ints_from_empty
+   end subroutine ints_empty_
 
-   subroutine doubles_from_empty( x, emp )
+   subroutine doubles_empty_( x, emp )
        doubleprecision, allocatable, intent(inout) :: x(:)
        type(Empty_t), intent(in) :: emp
        if ( allocated( x ) ) deallocate( x )
        allocate( x( 0 ) )
-   end subroutine doubles_from_empty
+   end subroutine doubles_empty_
 
-   subroutine reals_from_empty( x, emp )
+   subroutine reals_empty_( x, emp )
        real, allocatable, intent(inout) :: x(:)
        type(Empty_t), intent(in) :: emp
        if ( allocated( x ) ) deallocate( x )
        allocate( x( 0 ) )
-   end subroutine reals_from_empty
+   end subroutine reals_empty_
 
-   subroutine strings_from_empty( x, emp )
+   subroutine strings_empty_( x, emp )
        character(:), allocatable, intent(inout) :: x(:)
        type(Empty_t), intent(in) :: emp
        if ( allocated( x ) ) deallocate( x )
        allocate( character(0) :: x( 0 ) )
-   end subroutine strings_from_empty
+   end subroutine strings_empty_
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -163,6 +164,7 @@ end subroutine bytes_to_anything
 !>
 !!##NAME
 !!    anything_to_bytes(3f) - [M_anything] convert standard types to bytes (character(len=1):: array(:))
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -288,6 +290,7 @@ end function  anything_to_bytes_scalar
 !>
 !!##NAME
 !!    anyscalar_to_double(3f) - [M_anything] convert integer or real parameter of any kind to doubleprecision
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -383,6 +386,7 @@ end function anyscalar_to_double
 !>
 !!##NAME
 !!    anyscalar_to_real(3f) - [M_anything] convert integer or real parameter of any kind to real
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -474,6 +478,7 @@ end function anyscalar_to_real
 !!##NAME
 !!
 !!    anyinteger_to_64bit(3f) - [M_anything] convert integer any kind to integer(kind=64)
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!

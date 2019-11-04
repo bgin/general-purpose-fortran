@@ -1,3 +1,4 @@
+/* this code is licensed as public domain */
 #ident "@(#)M_DRAW:source - driver/pdf.c - M_DRAW driver for Adobe Illustrator PDF "
 #ident "@(#)M_DRAW:author - John S. Urban"
 #ident "@(#)M_DRAW:version - 1.5, Mar 2005"

@@ -1,6 +1,7 @@
 !>
 !!##NAME
 !!    writegif(3f) - [M_writegif] Codes pixel-map with palette into GIF format. Optional transparent color
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!   subroutine writegif (FileName, Pixel, ColorMap, Transparent)

@@ -1,3 +1,4 @@
+/* this code is licensed as public domain */
 #ident "@(#)M_DRAW:driver/ps.c - M_DRAW driver for PostScript files"
 /*
    depth=1 monochrome

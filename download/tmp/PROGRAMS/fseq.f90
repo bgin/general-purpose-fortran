@@ -10,6 +10,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '   fseq(1f) - [M_kracken] print a sequence of numbers, optionally appending file lines.',&
+'   (LICENSE:PD)                                                                 ',&
 'SYNOPSIS                                                                        ',&
 '   fseq [OPTION]...                                                             ',&
 'DESCRIPTION                                                                     ',&
@@ -54,6 +55,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!    fseq(1f) - [M_kracken] print a sequence of numbers, optionally appending file lines.
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    fseq [OPTION]...
@@ -111,7 +113,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Fri, Nov 1st, 2019 9:49:50 PM>',&
+'@(#)COMPILED:       Mon, Nov 4th, 2019 2:01:19 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

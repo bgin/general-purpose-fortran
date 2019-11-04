@@ -1,4 +1,4 @@
-
+/* this code is licensed as public domain */
 #ident "@(#)M_DRAW:driver/mif.c - M_DRAW driver for FrameMaker Maker Interchange files"
 #ident "@(#)M_DRAW:author - John S. Urban"
 #ident "@(#)M_DRAW:version - 1.0, Sep 1993"

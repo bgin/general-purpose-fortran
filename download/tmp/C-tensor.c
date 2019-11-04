@@ -1,3 +1,4 @@
+/* this code is licensed as public domain */
 #include "draw.h"
 /******************************************************************************/
 #ident "@(#)M_DRAW:premulttensor - Premultiply the tensor b by the matrix a and place the result into the tensor c."

@@ -4,6 +4,7 @@
 !>
 !!##NAME
 !!    M_args(3fm) - [ARGUMENTS::M_args] - define a NAMELIST in a module template to provide command line argument parsing
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!
@@ -29,6 +30,7 @@
 !!
 !!##EXAMPLE
 !!
+!!   Sample program
 !!
 !!    !program demo_M_args
 !!    module M_arguments
@@ -88,6 +90,10 @@
 !!       !<< END OF EXAMPLE USAGE OF VARIABLES
 !!    end program short
 !!    !end program demo_M_args
+!!##AUTHOR
+!!    John S. Urban, 2019
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 module M_args
 use M_journal, only : journal
@@ -139,8 +145,8 @@ contains
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
-!!##NAME
-!!    get_command_arguments_stack(3f) - [ARGUMENTS:M_args] return a character array containing all the command line arguments
+!!    NAME get_command_arguments_stack(3f) - [ARGUMENTS:M_args] return a character array containing all the command line arguments
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    function get_command_arguments(stack) result (args)
@@ -198,7 +204,8 @@ end function get_command_arguments_stack
 !===================================================================================================================================
 !>
 !!##NAME
-!!          get_command_arguments_string(3f) - [ARGUMENTS:M_args] return all command arguments as an allocated string
+!!    get_command_arguments_string(3f) - [ARGUMENTS:M_args] return all command arguments as an allocated string
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -234,6 +241,10 @@ end function get_command_arguments_stack
 !!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
 !!
 !!    parse,dissect,store,setprompts,show
+!!##AUTHOR
+!!    John S. Urban, 2019
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine get_command_arguments_string(string,istatus)
 
@@ -299,6 +310,7 @@ end subroutine get_command_arguments_string
 !>
 !!##NAME
 !!    get_namelist(3f) - [ARGUMENTS:M_args] NAMELIST-based command line argument parsing
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -666,6 +678,11 @@ end subroutine get_command_arguments_string
 !!
 !!       o short-name parameters of the form -LETTER VALUE
 !!         map to a NAMELIST name of LETTER_ if uppercase
+!!
+!!##AUTHOR
+!!    John S. Urban, 2019
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 function get_namelist(definition,all) result (readme)
 
@@ -716,6 +733,7 @@ end function get_namelist
 !>
 !!##NAME
 !!    get_command_arguments_as_raw_namelist(3f) - [ARGUMENTS:M_args] NAMELIST-based command line argument parsing
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -794,6 +812,11 @@ end function get_namelist
 !!       sum=i+j+k
 !!       write(*,*)'sum=',sum
 !!    end program demo_get_command_arguments_as_raw_namelist
+!!
+!!##AUTHOR
+!!    John S. Urban, 2019
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 function get_command_arguments_as_raw_namelist() result (string)
 
@@ -817,6 +840,7 @@ integer :: command_line_length
 !>
 !!##NAME
 !!    prototype_to_dictionary(3f) - [ARGUMENTS:M_args] parse user command and store tokens into dictionary
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -859,6 +883,11 @@ integer :: command_line_length
 !!    end program demo_parse
 !!
 !!   Results:
+!!
+!!##AUTHOR
+!!    John S. Urban, 2019
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine prototype_to_dictionary(string)
 implicit none
@@ -1001,6 +1030,7 @@ end subroutine prototype_to_dictionary
 !>
 !!##NAME
 !!    update(3f) - [ARGUMENTS:M_args] update internal dictionary given keyword and value
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!   subroutine update(key,val)
@@ -1016,6 +1046,10 @@ end subroutine prototype_to_dictionary
 !!##RETURNS
 !!##EXAMPLE
 !!
+!!##AUTHOR
+!!    John S. Urban, 2019
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine update(key,val)
 character(len=*),intent(in)           :: key
@@ -1069,6 +1103,7 @@ end subroutine update
 !>
 !!##NAME
 !!    wipe_dictionary(3fp) - [ARGUMENTS:M_args] reset private M_args(3fm) dictionary to empty
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    subroutine wipe_dictionary()
@@ -1080,6 +1115,10 @@ end subroutine update
 !!    use M_args, only : dictionary
 !!       call wipe_dictionary()
 !!    end program demo_wipe_dictionary
+!!##AUTHOR
+!!    John S. Urban, 2019
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine wipe_dictionary()
    if(allocated(keywords))deallocate(keywords)
@@ -1123,6 +1162,7 @@ end function get
 !>
 !!##NAME
 !!    prototype_and_cmd_args_to_nlist(3f) - [ARGUMENTS:M_args] convert Unix-like command arguments to namelist
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!   subroutine prototype_and_cmd_args_to_nlist(prototype,nml)
@@ -1184,6 +1224,10 @@ end function get
 !!          endif
 !!       endif
 !!    end program demo_M_list
+!!##AUTHOR
+!!    John S. Urban, 2019
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine prototype_and_cmd_args_to_nlist(prototype,nml)
 implicit none
@@ -1394,6 +1438,7 @@ end subroutine dictionary_to_namelist
 !>
 !!##NAME
 !!   print_dictionary(3f) - [M_args]print internal dictionary created by calls to get_namelist(3f)
+!!   (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!   subroutine print_dictionary(header)
@@ -1445,6 +1490,10 @@ end subroutine dictionary_to_namelist
 !!        write(*,'(i6.6,3a)')(i,'[',unnamed(i),']',i=1,size(unnamed))
 !!     endif
 !!     end program demo_get_namelist
+!!##AUTHOR
+!!    John S. Urban, 2019
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine print_dictionary(header)
 character(len=*),intent(in),optional :: header
@@ -1473,6 +1522,7 @@ end subroutine print_dictionary
 !>
 !!##NAME
 !!    longest_command_argument(3f) - [ARGUMENTS:M_args] length of longest argument on command line
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    function longest_command_argument() result(ilongest)
@@ -1491,6 +1541,10 @@ end subroutine print_dictionary
 !!    use M_args, only : longest_command_argument
 !!       write(*,*)'longest argument is ',longest_command_argument()
 !!    end program demo_longest_command_argument
+!!##AUTHOR
+!!    John S. Urban, 2019
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 function longest_command_argument() result(ilongest)
 integer :: i
@@ -1515,6 +1569,7 @@ end function longest_command_argument
 !>
 !!##NAME
 !!    namelist_to_dictionary(3f) - [ARGUMENTS:M_args] parse namelist string and store tokens into dictionary
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -1547,6 +1602,10 @@ end function longest_command_argument
 !!    > Y=  0.0000000000000000     ,
 !!    > Z=  0.0000000000000000     ,
 !!    > /
+!!##AUTHOR
+!!    John S. Urban, 2019
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine namelist_to_dictionary(string)
 implicit none

@@ -69,6 +69,7 @@ integer                       :: i
 text=[ character(len=len(text(1))) ::                                               &
 &'NAME                                                                            ',&
 &'   now(1f)  - [TIME] print the date and time                                    ',&
+&'   (LICENSE:PD)                                                                 ',&
 &'                                                                                ',&
 &'SYNOPSIS                                                                        ',&
 &'  now [Format [ -date date_str|-ued Unix_time|-jed Julian_Date|-dat date_vector]',&
@@ -200,7 +201,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)COPYRIGHT:      Copyright (C) 2009 John S. Urban>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Fri, Nov 1st, 2019 9:50:26 PM>',&
+'@(#)COMPILED:       Mon, Nov 4th, 2019 2:38:54 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

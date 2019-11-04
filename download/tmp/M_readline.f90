@@ -1,6 +1,7 @@
 !>
 !!##NAME
 !!      M_readline(3fm) - [M_readline] Calling readline(3c) from Fortran
+!!      (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!      Use M_readline, only : system_readline
@@ -50,9 +51,15 @@
 !!          call execute_command_line(trim(line),cmdstat=cstat,cmdmsg=sstat) ! f08 equivalent
 !!       enddo
 !!    end program demo_M_readline
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 MODULE M_readline
+
 ! @(#) Call readline(3c) from Fortran using ISO_C_BINDING
+
 ! assumes you have the GNU readline library libreadline.a available
    USE ISO_C_BINDING
    IMPLICIT NONE
@@ -80,6 +87,7 @@ contains
 !>
 !!##NAME
 !!      system_readline(3f) - [M_readline] Call readline(3c) from Fortran
+!!      (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!     character(kind=c_char,len=*),intent(in) :: prompt
@@ -133,6 +141,10 @@ contains
 !!          call execute_command_line(trim(line),cmdstat=cstat,cmdmsg=sstat)
 !!       enddo
 !!    end program demo_system_readline
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 SUBROUTINE system_readline(line,prompt)
 USE ISO_C_BINDING

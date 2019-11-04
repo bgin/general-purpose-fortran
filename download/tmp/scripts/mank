@@ -22,7 +22,7 @@ then
      the corresponding man(1) page
 ================================================================================
 EOF
-      man -k .|
+      env MANWIDTH=512 man -k .|
          expand |
          env LC_ALL=C sort --ignore-leading-blanks --dictionary-order --ignore-case --ignore-nonprinting -k 2,2 -k 4,4 -k 5,5|
          uniq|
@@ -31,7 +31,7 @@ EOF
       $EDIT $TFILE
       rm $TFILE
    else
-      man -k . |
+      env MANWIDTH=512 man -k . |
          expand |
          env LC_ALL=C sort --ignore-leading-blanks --dictionary-order --ignore-case --ignore-nonprinting -k 2,2 -k 4,4 |
          uniq |
@@ -41,7 +41,7 @@ EOF
 else
    if [ "$*" = ALL ]
    then
-      set . $( man -k .|cprint 1|xargs)
+      set . $( env MANWIDTH=512 man -k .|cprint 1|xargs)
    fi
    if [ -t 1 ]
    then

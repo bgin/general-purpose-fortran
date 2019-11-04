@@ -1,6 +1,7 @@
 !>
 !!##NAME
 !!    M_getopt_long(3fm) - [ARGUMENTS:M_getopt_long] parse command line options like Sun getopt_long, including the Sun CLIP specification
+!!    (LICENSE:PD)
 !!##SYNTAX
 !!    use M_getopt_long, only : getopt_new, getopt
 !!    use M_getopt_long, only : getopt_type, getopt_option_type
@@ -88,6 +89,15 @@
 !!##AUTHOR
 !!     * [[getopt_long_module]] by [[Joe Krahn]].
 !!     * slightly modified from original - JSU
+!!##LICENSE
+!!     Public Domain
+!!
+!!     Obtained from http://fortran.wiki:
+!!
+!!     When contributing code, please specify a license so that others
+!!     know the extent to which they may use and modify your code. All code
+!!     on the Fortran Wiki shall be in the public domain unless otherwise
+!!     noted.
 !===================================================================================================================================
 module M_getopt_long
 public

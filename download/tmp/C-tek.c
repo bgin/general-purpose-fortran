@@ -1,3 +1,4 @@
+/* this code is licensed as public domain */
 #ident "@(#)M_DRAW:driver/tek.c - M_DRAW driver for Tektronix 401x or equivalent (like X11 xterm)"
 #include <stdlib.h>
 #include <unistd.h>

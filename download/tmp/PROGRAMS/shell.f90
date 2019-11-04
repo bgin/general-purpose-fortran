@@ -494,10 +494,11 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'       shell(1f) - shell for demonstrating major modules in libGPF.a            ',&
+'   shell(1f) - shell for demonstrating major modules in libGPF.a                ',&
+'   (LICENSE:PD)                                                                 ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
-'       shell expression| --help| --version|[ -replay][ -read FILENAME]          ',&
+'   shell expression| --help| --version|[ -replay][ -read FILENAME]              ',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
 '    Example command line interface with command line history, numeric           ',&
@@ -694,11 +695,12 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!        shell(1f) - shell for demonstrating major modules in libGPF.a
+!!    shell(1f) - shell for demonstrating major modules in libGPF.a
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
-!!        shell expression| --help| --version|[ -replay][ -read FILENAME]
+!!    shell expression| --help| --version|[ -replay][ -read FILENAME]
 !!
 !!##DESCRIPTION
 !!     Example command line interface with command line history, numeric
@@ -907,7 +909,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Fri, Nov 1st, 2019 10:03:37 PM>',&
+'@(#)COMPILED:       Mon, Nov 4th, 2019 2:40:49 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

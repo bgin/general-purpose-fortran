@@ -9,7 +9,6 @@ append("date_to_unix.3.html");
 append("days2sec.3.html");
 append("dow.3.html");
 append("easter.3.html");
-append("ephemeris.3.html");
 append("fmtdate.3.html");
 append("fmtdate_usage.3.html");
 append("guessdate.3.html");

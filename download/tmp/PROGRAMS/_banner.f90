@@ -18,6 +18,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '    _banner(1f) - [FUNIX] print large block letters                             ',&
+'    (LICENSE:PD)                                                                ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '    _banner STRING(S) -c LETTER| --help| --version                              ',&
@@ -55,6 +56,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!     _banner(1f) - [FUNIX] print large block letters
+!!     (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -105,7 +107,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)COPYRIGHT:      Copyright (c) 1984, 1996 John S. Urban>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Fri, Nov 1st, 2019 10:00:08 PM>',&
+'@(#)COMPILED:       Mon, Nov 4th, 2019 2:01:49 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

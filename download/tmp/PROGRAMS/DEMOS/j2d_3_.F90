@@ -1,4 +1,4 @@
-           program demo_jd
+           program demo_j2d
            use M_time, only : j2d, d2j, fmtdate, realtime
            implicit none
            real(kind=realtime) :: today
@@ -9,4 +9,4 @@
               ! math is easy with Julian Days and Julian Dates
               write(*,*)'Yesterday=',fmtdate(j2d(today-1.0d0))
               write(*,*)'Tomorrow=',fmtdate(j2d(today+1.0d0))
-           end program demo_jd
+           end program demo_j2d

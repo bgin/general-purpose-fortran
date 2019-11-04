@@ -1,3 +1,4 @@
+/* this code is licensed as public domain */
 #ident "@(#)M_DRAW:driver/xfig.c - M_DRAW driver for xfig(1) files"
 #ident "@(#)M_DRAW:author - John S. Urban"
 #ident "@(#)M_DRAW:version - 1.0"

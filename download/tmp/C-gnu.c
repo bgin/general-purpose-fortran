@@ -1,3 +1,4 @@
+/* this code is licensed as public domain */
 #ident "@(#)M_DRAW:driver/gnu.c - M_DRAW driver for GNU plotutil 'plot' format"
 #ident "@(#)M_DRAW:author : John S. Urban"
 #ident "@(#)M_DRAW:version : 1.0"

@@ -71,6 +71,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file _yes.1.man
 NAME
     _yes(1f) - [FUNIX] output a string repeatedly until killed or limit is reached
+    (LICENSE:PD)
 
 SYNOPSIS
 $!    _yes [STRING[ -repeat N][ -fmt]]|[ --help|--version]

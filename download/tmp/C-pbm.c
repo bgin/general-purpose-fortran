@@ -1,3 +1,4 @@
+/* this code is licensed as public domain */
 #ident "@(#)M_DRAW:driver/pbm.c - M_DRAW driver for PBM/X11 bitmaps"
 #ident "@(#)M_DRAW:author - John S. Urban"
 #ident "@(#)M_DRAW:version - 3.0, Mar 1995,2004"

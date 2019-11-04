@@ -1,3 +1,4 @@
+/* this code is licensed as public domain */
 #ident "@(#)M_DRAW:driver/cgmt.c - M_DRAW driver for CGM (Computer Graphics Metafile) clear text"
 #ident "@(#)M_DRAW:author : John S. Urban"
 #ident "@(#)M_DRAW:version : 1.3, Jan 1997"

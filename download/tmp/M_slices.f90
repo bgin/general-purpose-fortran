@@ -56,6 +56,7 @@ contains
 !>
 !!##NAME
 !!    dl_slices(3f) - [M_slices] plot data in 3-D overlay form
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!
@@ -1675,6 +1676,7 @@ real    :: ytemp1
 !>
 !!##NAME
 !!      dl_init(3f) - [M_slices] initialize the longlib graphics plot package
+!!      (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!   subroutine dl_init(xmax0,ymax0,vpx,vpy,zom)
@@ -1784,6 +1786,7 @@ END SUBROUTINE clipit_
 !>
 !!##NAME
 !!      dl_symbol(3f) - [M_slices] routine to plot characters and symbols
+!!      (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!       SUBROUTINE DL_SYMBOL(X,Y,S,T,A,NN,IS)

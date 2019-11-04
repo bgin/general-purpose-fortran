@@ -4,6 +4,7 @@ $MESSAGE generating help_usage(3f)
 $DOCUMENT HELP -file _expand.1.man
 NAME
        _expand(1f) - [FUNIX] convert tabs to spaces
+       (LICENSE:PD)
 
 SYNOPSIS
        _expand FILENAME(S) [ -blanks N]| --help| --version

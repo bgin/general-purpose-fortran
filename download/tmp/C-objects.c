@@ -1,3 +1,4 @@
+/* this code is licensed as public domain */
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>

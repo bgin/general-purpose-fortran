@@ -9,6 +9,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file pendulum.1.man
 NAME
    pendulum(1f) - [PHYSICS] calculate pendulum period
+   (LICENSE:PD)
 
 SYNOPSIS
    pendulum [ -length Length_In_Feet ][ -verbose]|[ --help]|[ --version]

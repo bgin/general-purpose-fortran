@@ -1,3 +1,4 @@
+/* this code is licensed as public domain */
 /*
 Determining whether to clip or not is estimated in drawstr assuming
 hardware text is fixed-space unless clipping is off

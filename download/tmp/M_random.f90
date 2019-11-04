@@ -90,6 +90,7 @@ contains
 !>
 !!##NAME
 !!    random_string(3f) - [M_random] create random string composed of provided characters of specified length
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -128,6 +129,11 @@ contains
 !!    Results
 !!
 !!     2363a3589736e23be0137ec7ebc9d74297a963f27958a176daea3dd850ed8487
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 function random_string(chars,length) result(out)
 
@@ -157,6 +163,7 @@ end function random_string
 !>
 !!##NAME
 !!    random_hex(3f) - [M_random] create random string composed of provided characters of specified length
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -196,6 +203,10 @@ end function random_string
 !!    Results
 !!
 !!     2363a3589736e23be0137ec7ebc9d74297a963f27958a176daea3dd850ed8487
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 function random_hex(length) result(out)
 
@@ -211,6 +222,7 @@ end function random_hex
 !>
 !!##NAME
 !!    random_int(3f) - [M_random] return an integer between low and high value inclusive
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!   function random_int(first,last) result(rand_int)
@@ -239,6 +251,11 @@ end function random_hex
 !!
 !!    1 3  8 1 2  6  8 7  4  10  7  3  8  3  10 1  5  2 9  8
 !!    4 5 -3 5 2 -5 -4 4 -5  -3 -2 -2 -2 -1  -2 4 -2 -2 4 -4
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 function random_int(first,last) result(rand_int)
 implicit none
@@ -271,6 +288,7 @@ end function random_int
 !>
 !!##NAME
 !!    scramble(3f) - [M_random] generate an integer array of specified size populated with a random permutation of 1 to size(array)
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -331,6 +349,10 @@ end function random_int
 !!    three one   nine  six   ten   five  eight two   four  seven
 !!    four  five  six   eight one   ten   three nine  seven two
 !!    three nine  four  two   one   seven ten   five  six   eight
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 function scramble( number_of_values ) result(array)
 
@@ -451,6 +473,7 @@ end function random_kiss64
 !>
 !!##NAME
 !!    init_random_seed_by_system_clock(3f) - [M_random] seed random_number(3f) with system clock value
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -488,6 +511,10 @@ end function random_kiss64
 !!     >   8  0.542535722
 !!     >   9  0.983459771
 !!     >  10  0.527638793
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine init_random_seed_by_system_clock()
 
@@ -512,6 +539,7 @@ end subroutine init_random_seed_by_system_clock
 !>
 !!##NAME
 !!    init_random_seed_by_dat(3f) - [M_random] seed random_number(3f) with values from date_and_time(3f)
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -550,6 +578,11 @@ end subroutine init_random_seed_by_system_clock
 !!      >     8  0.466257989
 !!      >     9  0.912388682
 !!      >    10  0.597788215
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine init_random_seed_by_dat()
 
@@ -580,6 +613,7 @@ end subroutine init_random_seed_by_dat
 !>
 !!##NAME
 !!    init_random_seed(3f) - [M_random] seed random_number(3f) with single value like srand(3c) usage
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -623,6 +657,11 @@ end subroutine init_random_seed_by_dat
 !!      >     8  0.789443851
 !!      >     9  0.327288270
 !!      >    10  0.710926533
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine init_random_seed(mine)
 
@@ -643,10 +682,10 @@ integer,intent(in) :: mine
    call random_seed(put = seed)
    deallocate(seed)
 end subroutine init_random_seed
-!  An implementation of the Mersenne Twister algorithm for generating pseudo-random sequences.
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
+!  An implementation of the Mersenne Twister algorithm for generating pseudo-random sequences.
 ! This notice applies specifically to the MTPRNG_* routines ....
 
 ! From the Algorithmic Conjurings of Scott Robert Ladd comes...
@@ -743,6 +782,7 @@ end subroutine init_random_seed
 !>
 !!##NAME
 !!    mtprng_init(3f) - [M_random:MERSENNE TWISTER] Initialize the Mersenne Twister random number generator with "seed"
+!!    (LICENSE:CUSTOM OPEN)
 !!
 !!##SYNOPSIS
 !!
@@ -805,6 +845,7 @@ end subroutine mtprng_init
 !>
 !!##NAME
 !!    mtprng_init_by_array(3f) - [M_random:MERSENNE TWISTER] Initialize the Mersenne Twister random number generator with "seed" array
+!!    (LICENSE:CUSTOM OPEN)
 !!
 !!##SYNOPSIS
 !!
@@ -893,6 +934,7 @@ end subroutine mtprng_init_by_array
 !>
 !!##NAME
 !!    mtprng_rand64(3f) - [M_random:MERSENNE TWISTER] Obtain the next 64-bit integer in the pseudo-random sequence
+!!    (LICENSE:CUSTOM OPEN)
 !!
 !!##SYNOPSIS
 !!
@@ -992,6 +1034,7 @@ end function mtprng_rand64
 !>
 !!##NAME
 !!    mtprng_rand(3f) - [M_random:MERSENNE TWISTER] Obtain the next 32-bit integer in the pseudo-random sequence
+!!    (LICENSE:CUSTOM OPEN)
 !!
 !!##SYNOPSIS
 !!
@@ -1052,6 +1095,7 @@ end function mtprng_rand
 !>
 !!##NAME
 !!    mtprng_rand_range(3f) - [M_random:MERSENNE TWISTER] Obtain a pseudo-random integer in the range [lo,hi]
+!!    (LICENSE:CUSTOM OPEN)
 !!##SYNOPSIS
 !!
 !!    function mtprng_rand_range(state, lo, hi) result(r)
@@ -1107,6 +1151,7 @@ end function mtprng_rand_range
 !>
 !!##NAME
 !!    mtprng_rand_real1(3f) - [M_random:MERSENNE TWISTER] Obtain a pseudo-random real number in the range [0.0,1.0]
+!!    (LICENSE:CUSTOM OPEN)
 !!
 !!##SYNOPSIS
 !!
@@ -1159,6 +1204,7 @@ end function mtprng_rand_real1
 !>
 !!##NAME
 !!    mtprng_rand_real2(3f) - [M_random:MERSENNE TWISTER] Obtain a pseudo-random real number in the range [0,<1)
+!!    (LICENSE:CUSTOM OPEN)
 !!
 !!##SYNOPSIS
 !!
@@ -1200,6 +1246,7 @@ end function mtprng_rand_real2
 !>
 !!##NAME
 !!    mtprng_rand_real3(3f) - [M_random:MERSENNE TWISTER] Obtain a pseudo-random real number in the range (0< XXX <1)
+!!    (LICENSE:CUSTOM OPEN)
 !!
 !!##SYNOPSIS
 !!

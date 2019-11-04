@@ -1,4 +1,4 @@
-           program demo_ud
+           program demo_u2d
            use M_time, only : u2d, d2u, fmtdate, realtime
            implicit none
            real(kind=realtime) :: today
@@ -8,4 +8,4 @@
               write(*,*)'Today=',fmtdate(u2d(today))
               write(*,*)'Yesterday=',fmtdate(u2d(today-86400.0d0)) ! subtract day
               write(*,*)'Tomorrow=',fmtdate(u2d(today+86400.0d0))  ! add day
-           end program demo_ud
+           end program demo_u2d

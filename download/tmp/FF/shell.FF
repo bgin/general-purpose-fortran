@@ -485,10 +485,11 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 !2345678901234567890123456789012345678901234567890123456789012345678901234567890
 $DOCUMENT HELP -file shell.1.man
 NAME
-       shell(1f) - shell for demonstrating major modules in libGPF.a
+   shell(1f) - shell for demonstrating major modules in libGPF.a
+   (LICENSE:PD)
 
 SYNOPSIS
-       shell expression| --help| --version|[ -replay][ -read FILENAME]
+   shell expression| --help| --version|[ -replay][ -read FILENAME]
 
 DESCRIPTION
     Example command line interface with command line history, numeric

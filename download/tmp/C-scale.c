@@ -1,3 +1,4 @@
+/* this code is licensed as public domain */
 #include "draw.h"
 
 #ident "@(#)M_DRAW:scale - Set up a scale matrix and premultiply it and the top matrix on the stack."

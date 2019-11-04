@@ -38,6 +38,7 @@ CONTAINS
 !>
 !!##NAME
 !!      uniq(3f) - [M_io] append a number to the end of filename to make a unique name if name exists
+!!      (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!      Usage
@@ -110,6 +111,8 @@ CONTAINS
 !!
 !!##AUTHOR
 !!    John S. Urban, 1993
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 function uniq(name,istart,verbose,create)
@@ -214,6 +217,7 @@ end function uniq
 !>
 !!##NAME
 !!    print_inquire(3f) - [M_io] Do INQUIRE on file by name/number and print results
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -278,6 +282,11 @@ end function uniq
 !!    *print_inquire* checking file: junko
 !!    *print_inquire* file exists
 !!    *print_inquire* file is not open
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine print_inquire(iunit,name) ! Version: JSU-1997-12-31
 use M_journal, only : journal
@@ -385,6 +394,7 @@ end subroutine print_inquire
 !>
 !!##NAME
 !!    read_table(3f) - [M_io] read file containing a table of numeric values
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -461,6 +471,11 @@ end subroutine print_inquire
 !!       40.000000000000000        30.555499999999999       -10.000000000000000
 !!       4.0000000000000000        30.044400000000000       -10.000000000000000
 !!       40.000000000000000        30.555499999999999       -10.000000000000000
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine read_table_doubleprecision(filename,array,ierr)
 use M_strings, only : s2vs
@@ -589,6 +604,7 @@ end subroutine read_table_real
 !>
 !!##NAME
 !!    swallow(3f) - [M_io] read a file into a character array line by line
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!   subroutine swallow(filename,pageout)
@@ -658,6 +674,11 @@ end subroutine read_table_real
 !!    %second line%
 !!    %first line %
 !!    %%%%%%%%%%%%%
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine swallow(FILENAME,pageout)
 implicit none
@@ -734,6 +755,7 @@ end subroutine swallow
 !>
 !!##NAME
 !!    SLURP(3f) - [M_io] read a file into a character array
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!   subroutine slurp(filename,text)
@@ -795,6 +817,10 @@ end subroutine swallow
 !!     >This is a sample file
 !!     >that the sample program
 !!     >will reverse
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine slurp(filename,text,length,lines)
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -894,6 +920,7 @@ end subroutine slurp
 !>
 !!##NAME
 !!    notopen(3f) - [M_io] Find a FUN/LUN (Fortran-unit-number) that is not in use
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    Usage
@@ -1014,15 +1041,13 @@ end subroutine slurp
 !!       For  unit  31  I  got  31  with  ERR=   0
 !!       For  unit  32  I  got  32  with  ERR=   0
 !!
-!!##AUTHORS
-!!       John S. Urban
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 integer function notopen(start,end,err)
-!-----------------------------------------------------------------------------------------------------------------------------------
-! AUTHOR: John S. Urban
-!-----------------------------------------------------------------------------------------------------------------------------------
-! access computing environment
-use iso_fortran_env, only : error_unit,input_unit,output_unit
+use iso_fortran_env, only : error_unit,input_unit,output_unit     ! access computing environment
 implicit none
 
 character(len=*),parameter::ident_7="@(#)M_io::notopen(3f): find free FORTRAN unit number to OPEN() a file"
@@ -1078,6 +1103,7 @@ end function notopen
 !>
 !!##NAME
 !!    dirname(3f) - [M_io] strip last component from filename
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -1127,6 +1153,10 @@ end function notopen
 !!
 !!##SEE ALSO
 !!    dirname(3c), basename(3c), readlink(3c), realpath(3c)
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !>
 !! PRODUCT:        CLI library utilities and examples
@@ -1137,8 +1167,6 @@ end function notopen
 !! AUTHOR:         John S. Urban
 !! REPORTING BUGS: http://www.urbanjost.altervista.org/
 !! HOME PAGE:      http://www.urbanjost.altervista.org/index.html
-!! LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.
-!!                 There is NO WARRANTY, to the extent permitted by law.
 !===================================================================================================================================
 function dirname(filename) result (directory)
 implicit none
@@ -1178,6 +1206,7 @@ end function dirname
 !>
 !!##NAME
 !!     splitpath(3f) - [M_io] split a Unix pathname into components
+!!     (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -1296,6 +1325,11 @@ end function dirname
 !!    | .             | .             |               |               |
 !!    | ..            |               |               |               |
 !!    | ...           |               | ...           | ..            | .
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine splitpath(path,dir,name,basename,ext)
 use M_strings, only : split
@@ -1405,6 +1439,7 @@ end subroutine splitpath
 !>
 !!##NAME
 !!    isdir(3f) - [M_io] checks if argument is a directory path
+!!    (LICENSE:MIT)
 !!##SYNTAX
 !!
 !!   logical function isdir(path)
@@ -1450,6 +1485,11 @@ end subroutine splitpath
 !!    is /usr/local a directory?  T
 !!    is . a directory?  T
 !!    is PROBABLY_NOT a directory?  F
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 function isdir(dirname)
 implicit none
@@ -1473,6 +1513,7 @@ end function isdir
 !>
 !!##NAME
 !!     read_all(3f) - [M_io] read a line from specified LUN into allocatable string up to line length limit
+!!     (LICENSE:MIT)
 !!
 !!##SYNTAX
 !!   function read_all(line,lun) result(ier)
@@ -1517,6 +1558,10 @@ end function isdir
 !!          write(*,'(a)')'['//line//']'
 !!       enddo INFINITE
 !!    end program demo_read_all
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 function read_all(line,lun) result(ier)
 use iso_fortran_env, only : INPUT_UNIT
@@ -1564,6 +1609,7 @@ end function read_all
 !>
 !!##NAME
 !!     read_line(3f) - [M_io] read a line from specified LUN into allocatable string up to line length limit cleaning up input line
+!!     (LICENSE:MIT)
 !!
 !!##SYNTAX
 !!   function read_line(line,lun) result(ier)
@@ -1603,6 +1649,10 @@ end function read_all
 !!          write(*,'(a)')'['//line//']'
 !!       enddo INFINITE
 !!    end program demo_read_line
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 function read_line(line,lun) result(ier)
 use iso_fortran_env, only : INPUT_UNIT
@@ -1661,6 +1711,7 @@ end function read_line
 !>
 !!##NAME
 !!      get_tmp(3f) - [M_io] Return the name of the scratch directory
+!!      (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!     function get_tmp() result(tname)
@@ -1691,6 +1742,10 @@ end function read_line
 !!   Sample Results:
 !!
 !!     result is /cygdrive/c/Users/JSU/AppData/Local/Temp/
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 function get_tmp() result(tname)
 
@@ -1724,6 +1779,7 @@ end function get_tmp
 !>
 !!##NAME
 !!      scratch(3f) - [M_io] Return the name of a scratch file
+!!      (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!     function scratch(prefix) result(tname)
@@ -1773,6 +1829,11 @@ end function get_tmp
 !!     /cygdrive/c/Users/JSU/AppData/Local/Temp/JUNK:8462159a-2ca8-4961-7ff1-2ff4f9ebaca4
 !!     /cygdrive/c/Users/JSU/AppData/Local/Temp/f7585e37-8557-4f25-777d-29abb6ffb981
 !!     /cygdrive/c/Users/JSU/AppData/Local/Temp/demo_scratch-ec470965-42be-4ba6-4193-0f25cf2fa26c
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 function scratch(prefix) result(tname)
 use M_uuid, only : generate_uuid
@@ -1800,7 +1861,7 @@ end function scratch
 !>
 !!##NAME
 !! rd(3f) - [M_io] ask for string from standard input with user-definable prompt
-!!##SYNOPSIS
+!! (LICENSE:MIT)
 !!
 !!   function rd(prompt,default) result(strout)
 !!
@@ -1855,6 +1916,11 @@ end function scratch
 !!    enddo INFINITE
 !!
 !!    end program demo_rd
+!!
+!!##AUTHOR
+!!    John S. Urban, 1993
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 function rd_character(prompt,default) result(strout)
 ! 1995 John S. Urban

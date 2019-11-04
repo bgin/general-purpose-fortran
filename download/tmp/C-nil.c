@@ -1,3 +1,5 @@
+
+/* this code is licensed as public domain */
 #ident "@(#)M_DRAW:driver/nil.c - M_DRAW driver for null output device"
 #ident "@(#)M_DRAW:author - John S. Urban"
 #ident "@(#)M_DRAW:version - 1.0, May 2011"

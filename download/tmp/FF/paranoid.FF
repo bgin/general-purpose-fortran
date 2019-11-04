@@ -3,6 +3,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file paranoid.1.man
 NAME
     paranoid(1f) - [DEVELOPER] call doubleprecision and real versions of paranoia(3f)
+    (LICENSE:PD)
 SYNOPSIS
     paranoid
 DESCRIPTION

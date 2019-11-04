@@ -93,6 +93,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file ffmt.1.man
 NAME
        ffmt(1f) - [FILE EDIT] simple text formatter for Fortran comments
+       (LICENSE:PD)
 
 SYNOPSIS
        ffmt [OPTION]...

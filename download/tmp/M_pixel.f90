@@ -1,6 +1,7 @@
 !>
 !!##NAME
 !!    M_pixel(3f) - [M_pixel] module for drawing into a pixel array with 2D vector operations
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -1392,6 +1393,7 @@ contains
 !>
 !!##NAME
 !!      rect(3f) - [M_pixel] draw rectangle given two corners
+!!      (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -1473,6 +1475,7 @@ end subroutine rect
 !>
 !!##NAME
 !!      line(3f) - [M_pixel] draw line between two points
+!!      (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -1568,6 +1571,7 @@ end subroutine swapcoord
 !>
 !!##NAME
 !!      draw_line_single(3fp) - [M_pixel] Bresenham's line algorithm
+!!      (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -2123,6 +2127,7 @@ end subroutine draw_line_single
 !>
 !!##NAME
 !!    hershey(3f) - [M_pixel] draw text string as Hershey software vector fonts
+!!    (LICENSE:PD
 !!
 !!##SYNOPSIS
 !!
@@ -2745,6 +2750,7 @@ END SUBROUTINE CHRCOD
 !>
 !!##NAME
 !!    strlength(3f) - [M_pixel] return length of string
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -2851,6 +2857,7 @@ end function strlength
 !>
 !!##NAME
 !!    justfy(3f) - [M_pixel] return lengths used to justify a string when calling hershey
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -2946,6 +2953,7 @@ end subroutine justfy
 !>
 !!##NAME
 !!    polyline2(3f) - [M_pixel] - draw an unclosed polyline in the XY plane
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!        subroutine polyline2(arrx,arry)
@@ -3029,6 +3037,7 @@ end subroutine polyline2
 !>
 !!##NAME
 !!    clear(3f) - [M_pixel] clear background to current color or specified color index
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -3076,6 +3085,7 @@ end subroutine if_init
 !>
 !!##NAME
 !!    arc(3f) - [M_pixel] draw an arc using current line width and color
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -3162,6 +3172,7 @@ end subroutine arc
 !>
 !!##NAME
 !!    circle(3f) - [M_pixel] draw a circle using current line width and color
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -3247,6 +3258,7 @@ end subroutine circle
 !>
 !!##NAME
 !!    linewidth(3f) - [M_pixel] set linewidth
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -3310,6 +3322,7 @@ end subroutine linewidth
 !>
 !!##NAME
 !!    color(3f) - [M_pixel] set current color index
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -3387,6 +3400,7 @@ end subroutine color
 !>
 !!##NAME
 !!     mapcolor(3f) - [M_pixel] set a color index using RGB values
+!!     (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -3583,6 +3597,7 @@ end subroutine mapcolor
 !>
 !!##NAME
 !!     circleprecision(3f) - [M_pixel] set number of line segments used to approximate a circle
+!!     (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -3655,6 +3670,7 @@ end subroutine circleprecision
 !>
 !!##NAME
 !!    getviewport(3f) - [M_pixel] return viewport in screen pixel coordinates
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -3712,6 +3728,7 @@ end subroutine getviewport
 !>
 !!##NAME
 !!    viewport(3f) - [M_pixel] Specify which part of the screen to draw in.
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -3754,6 +3771,7 @@ end subroutine viewport
 !>
 !!##NAME
 !!    mapping(3fp) - [M_pixel] calculate conversion factors between viewport and world window
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -3821,6 +3839,7 @@ end subroutine viewport2world
 !>
 !!##NAME
 !!    ortho2(3f) - [M_pixel] define the area of the virtual world coordinates to map to the viewport
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -3858,6 +3877,7 @@ end subroutine ortho2
 !>
 !!##NAME
 !!    page(3f) - [M_pixel] define the area of the virtual world coordinates to map to the viewport
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -3982,6 +4002,7 @@ end subroutine page
 !>
 !!##NAME
 !!    rmove2(3f) - [M_pixel] relative move
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -4037,6 +4058,7 @@ end subroutine rmove2
 !>
 !!##NAME
 !!    move2(3f) - [M_pixel] change current position
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -4089,6 +4111,7 @@ end subroutine move2
 !>
 !!##NAME
 !!    rdraw2(3f) - [M_pixel] draw from current position to given point
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -4167,6 +4190,7 @@ end subroutine rdraw2
 !>
 !!##NAME
 !!    draw2(3f) - [M_pixel] draw from current position to given point
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -4250,6 +4274,7 @@ end subroutine draw2
 !>
 !!##NAME
 !!    prefsize(3f) - [M_pixel] specify size of pixel array
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!  definition:
@@ -4318,6 +4343,7 @@ end subroutine prefsize
 !>
 !!##NAME
 !!    vexit(3f) - [M_pixel] exit pixel graphics mode
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -4372,6 +4398,7 @@ end subroutine vexit
 !>
 !!##NAME
 !!    vinit(3f) - [M_pixel] initialize pixel graphics module
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -4467,6 +4494,7 @@ end subroutine vinit
 !>
 !!##NAME
 !!    makepoly(3f) - [M_pixel] opens polygon constructed by a series of move-draws and closed by closepoly                  |
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -4610,6 +4638,7 @@ end subroutine makepoly
 !>
 !!##NAME
 !!    closepoly(3f) - [M_pixel] Terminates a polygon opened by makepoly(3f)
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -4633,6 +4662,7 @@ end subroutine closepoly
 !>
 !!##NAME
 !!    print_ppm(3f) - [M_pixel] print pixel array as a ppm p3 file
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -4696,6 +4726,7 @@ end subroutine print_ppm
 !>
 !!##NAME
 !!   print_ascii(3f) - [M_pixel] print small pixel array as ASCII text
+!!   (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -4884,6 +4915,7 @@ end subroutine print_ascii
 !>
 !!##NAME
 !!    textsize(3f) - [M_pixel] set text size in world units
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -4952,6 +4984,7 @@ end subroutine textsize
 !>
 !!##NAME
 !!    ycentertext(3f) - [M_pixel] set text centering mode on for drawstr(3f) and drawc(3f) in Y direction
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -4982,6 +5015,7 @@ end subroutine ycentertext
 !>
 !!##NAME
 !!    xcentertext(3f) - [M_pixel] set text centering mode on for drawstr(3f) and drawc(3f) in X direction
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -5016,6 +5050,7 @@ end subroutine xcentertext
 !>
 !!##NAME
 !!    centertext(3f) - [M_pixel] set text centering mode for drawstr(3f) and drawc(3f)
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -5097,6 +5132,7 @@ end subroutine centertext
 !>
 !!##NAME
 !!    textang(3f) - [M_pixel] set text angle
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -5164,6 +5200,7 @@ end subroutine textang
 !>
 !!##NAME
 !!    font(3f) - [M_pixel] select font style by name
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS:
 !!  definition:
@@ -5263,6 +5300,7 @@ end subroutine font
 !>
 !!##NAME
 !!    drawchar(3f) - [M_pixel]  Draw a character at the current position
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -5329,6 +5367,7 @@ end subroutine drawchar
 !>
 !!##NAME
 !!    drawstr(3f) - [M_pixel]  Draw the text string at the current position
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -5513,6 +5552,7 @@ end subroutine drawstr
 !>
 !!##NAME
 !!    getgp2(3f) - [M_pixel] Gets the current graphics position in world coords.
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -5568,6 +5608,7 @@ end subroutine getgp2
 !>
 !!##NAME
 !!    getdisplaysize(3f) - [M_pixel] Returns the width and height of the device in pixels
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -5595,6 +5636,7 @@ end subroutine getdisplaysize
 !>
 !!##NAME
 !!    point2(3f) - [M_pixel] Draw a point at x, y
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -5641,6 +5683,7 @@ end subroutine point2
 !>
 !!##NAME
 !!    state(3f) - [M_pixel] print graphics state of M_pixel graphics module
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -5730,6 +5773,7 @@ end subroutine state
 !>
 !!##NAME
 !!    poly2(3f) - [M_pixel] construct a polygon from an array of points
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!

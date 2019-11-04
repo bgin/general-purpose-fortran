@@ -6,6 +6,7 @@ contains
 !>
 !!##NAME
 !!    geographical_distance - [M_geography] Compute the distance between two points over the Earth's surface.
+!!    (LICENSE:GPL3)
 !!
 !!##SYNOPSIS
 !!

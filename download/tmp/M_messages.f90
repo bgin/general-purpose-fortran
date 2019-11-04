@@ -31,6 +31,7 @@ contains
 !>
 !!##NAME
 !!      junbad(3f) - [M_messages] print an eye-catching image of a skull.
+!!      (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -79,6 +80,10 @@ contains
 !!       >         \               /
 !!       >          \.           ,/
 !!       >            "^-.___,-^"
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -124,6 +129,7 @@ end subroutine junbad
 !>
 !!##NAME
 !!      junbat(3f) - [M_messages] print an eye-catching image of a bat.
+!!      (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -156,6 +162,11 @@ end subroutine junbad
 !!    use M_messages, only : junbat
 !!       call junbat('s')
 !!    end program demo_junbad
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !>
 !! PROCEDURE:   junbat(3f)
@@ -189,6 +200,7 @@ end subroutine junbat
 !>
 !!##NAME
 !!      junbuster(3f) - [M_messages] call journal(3f) to print eye-catching ASCII graphic (ghostbuster)
+!!      (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -229,6 +241,11 @@ end subroutine junbat
 !!    use M_messages, only : junbuster
 !!       call junbuster('s')
 !!    end program demo_junbuster
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !>
 !! AUTHORS:     John S. Urban
@@ -277,6 +294,7 @@ end subroutine junbuster
 !>
 !!##NAME
 !!      jundragon(3f) - [M_messages] fill in a character array with a message
+!!      (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -317,6 +335,10 @@ end subroutine junbuster
 !!     > ||      /    \)___)\             ( --------------------------------__)
 !!     > | \____(      )___) )___           -==-_____-=====-_____-=====-___==
 !!     >  \______(_______;;; __;;;
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !>
 !! AUTHOR:      John S. Urban
@@ -355,6 +377,7 @@ end subroutine jundragon
 !>
 !!##NAME
 !!      junroach(3f) - [M_messages] print an eye-catching image of a roach.
+!!      (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -400,6 +423,11 @@ end subroutine jundragon
 !!     >  \   \  \  |  /  /    /
 !!     >   \  /   ~~~~~   \   /
 !!     >   explanation of error.
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !>
 !! DESCRIPTION:  junroach(3f):print eye-catching ASCII graphic (roach)"
@@ -438,6 +466,7 @@ end subroutine junroach
 !>
 !!##NAME
 !!      junsun(3f) - [M_messages] print an eye-catching image of a smiling sun.
+!!      (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -484,6 +513,11 @@ end subroutine junroach
 !!    use M_messages, only : junsun
 !!       call junsun('s')
 !!    end program demo_junsun
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !>
 !! AUTHOR:     John S. Urban
@@ -526,6 +560,7 @@ end subroutine junsun
 !>
 !!##NAME
 !!      juntrolls(3f) - [M_messages] print an eye-catching bulletin
+!!      (LICENSE:MIT)
 !!
 !!##SYNOPSIS/USAGE
 !!
@@ -566,6 +601,11 @@ end subroutine junsun
 !!          '   TROLLS!           '   &
 !!          ])
 !!    end program demo_juntrolls
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !>
 !! DESCRIPTION: print eye-catching ASCII graphic (trolls) with message
@@ -619,6 +659,7 @@ end subroutine juntrolls
 !>
 !!##NAME
 !!      tabgraph(3f) - [M_messages] write out a row of numbers and a text-based scaled graph
+!!      (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -808,6 +849,11 @@ end subroutine juntrolls
 !!
 !! TABGRAPH makes it very easy to find values in particular ranges in printed output.
 !! Works particularly well with the once-ubiquitous fan-fold paper.
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !>
 !! PRODUCT:            CLI library utilities and examples
@@ -817,8 +863,6 @@ end subroutine juntrolls
 !! AUTHOR:             John S. Urban
 !! REPORTING BUGS:     http://www.urbanjost.altervista.org/
 !! HOME PAGE:          http://www.urbanjost.altervista.org/index.html
-!! LICENSE:            Public Domain. This is free software: you are free to change and redistribute it.
-!!                     There is NO WARRANTY, to the extent permitted by law.
 !! LANGUAGE:           Fortran
 !! REFERENCES:         none
 !! DEPENDENCIES:       journal(3f)
@@ -916,6 +960,7 @@ end subroutine tabgraph
 !>
 !!##NAME
 !!    blocks(1f) - [M_messages] write large block letters
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -961,6 +1006,11 @@ end subroutine tabgraph
 !!     >nn    nnnn   ooo     oo       tt           ii       cc       c   ee
 !!     >nn     nnn   oooooooooo       tt       iiiiiiiiii   cccccccccc   eeeeeeeeee
 !!     >nn      nn    oooooooo        tt       iiiiiiiiii    cccccccc    eeeeeeeeee
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !>
 !! PROGRAM:     blocks(1F)
@@ -1249,6 +1299,7 @@ end subroutine blocks
 !>
 !!##NAME
 !!     signs(3f) - [M_messages] write out string in large block letters
+!!     (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -1285,6 +1336,11 @@ end subroutine blocks
 !!      >  X  XX  X     X    X       X    X        X
 !!      >  X   X   X   X     X       X     X    X  X    X
 !!      > XXX  X    XXX     XXX    XXXXX    XXXX  XXXXXXX
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !>
 !! REFERENCES        : none
@@ -1645,6 +1701,7 @@ end subroutine signs
 !>
 !!##NAME
 !!    percent_done(3f) - [M_messages] non-advancing status counter displays percentage done on terminal displays
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -1685,6 +1742,11 @@ end subroutine signs
 !!   Results:
 !!
 !!    Percent Complete: 100.00%
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine percent_done(part,whole)
 use M_anything, only : anyscalar_to_real

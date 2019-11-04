@@ -25,6 +25,7 @@ $! this is converted into the help_usage subroutine by ufpp ...
 $DOCUMENT HELP -file paws.1.man
 NAME
    paws(1f) - [TIME] pause until specified time or for specified duration
+   (LICENSE:PD)
 
 SYNOPSIS
    paws [dd-hh:mm:ss[.xxx]|xxx.yyy[s|m|h|d]][ -msg message][ -cmd command][ -repeat TIMES[ -fmt ]]|...

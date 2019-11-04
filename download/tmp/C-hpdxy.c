@@ -1,3 +1,4 @@
+/* this code is licensed as public domain */
 #ident "@(#)M_DRAW:driver/hpdxy.c - M_DRAW driver for DXY and HPGL"
 
 #include <stdlib.h>

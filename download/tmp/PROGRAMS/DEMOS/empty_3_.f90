@@ -1,4 +1,4 @@
-          program demo_empty
+          program demo_empty_
           use M_anything, only : empty, assignment(=)
           integer, allocatable      :: ints(:)
           character(:), allocatable :: strs(:)
@@ -22,4 +22,4 @@
              write(*,*)size(reals)
              write(*,*)size(strs)
 
-          end program demo_empty
+          end program demo_empty_

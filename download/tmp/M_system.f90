@@ -1,6 +1,7 @@
 !>
 !!##NAME
 !!    M_system(3fm) - [M_system::INTRO] Fortran interface to C system interface
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!   Public objects:
@@ -371,6 +372,7 @@ end interface
 !>
 !!##NAME
 !!    system_srand(3f) - [M_system] set seed for pseudo-random number generator system_rand(3f)
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -442,6 +444,7 @@ end interface
 !>
 !!##NAME
 !!    system_kill(3f) - [M_system] send a signal to a process or a group of processes
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -564,6 +567,7 @@ end interface
 !>
 !!##NAME
 !!    system_errno(3f) - [M_system] C error return value
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    integer(kind=c_int) function system_errno()
@@ -614,6 +618,7 @@ end interface
 !>
 !!##NAME
 !!    system_geteuid(3f) - [M_system:QUERY] get effective UID of current process from Fortran by calling geteuid(3c)
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    integer(kind=c_int) function system_geteuid()
@@ -644,6 +649,7 @@ end interface
 !>
 !!##NAME
 !!    system_getuid(3f) - [M_system:QUERY] get real UID of current process from Fortran by calling getuid(3c)
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    integer(kind=c_int) function system_getuid()
@@ -678,6 +684,7 @@ end interface
 !>
 !!##NAME
 !!    system_getegid(3f) - [M_system:QUERY] get the effective group ID (GID) of current process from Fortran by calling getegid(3c)
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    integer(kind=c_int) function system_getegid()
@@ -718,6 +725,7 @@ end interface
 !>
 !!##NAME
 !!    system_getgid(3f) - [M_system:QUERY] get the real group ID (GID) of current process from Fortran by calling getgid(3c)
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    integer(kind=c_int) function system_getgid()
@@ -757,6 +765,7 @@ end interface
 !>
 !!##NAME
 !!        system_setsid(3f) - [M_system:QUERY] create session and set the process group ID of a session leader
+!!        (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!        integer(kind=c_int) function system_setsid(pid)
@@ -798,6 +807,7 @@ end interface
 !>
 !!##NAME
 !!        system_getsid(3f) - [M_system:QUERY] get the process group ID of a session leader
+!!        (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!        integer(kind=c_int) function system_getsid(pid)
@@ -834,6 +844,7 @@ end interface
 !>
 !!##NAME
 !!    system_getpid(3f) - [M_system:QUERY] get PID (process ID) of current process from Fortran by calling getpid(3c)
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    integer function system_getpid()
@@ -867,6 +878,7 @@ end interface
 !>
 !!##NAME
 !!    system_getppid(3f) - [M_system:QUERY] get parent process ID (PPID) of current process from Fortran by calling getppid(3c)
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    integer(kind=c_int) function system_getppid()
@@ -909,6 +921,7 @@ end interface
 !>
 !!##NAME
 !!    system_umask(3fp) - [M_system] set and get the file mode creation mask
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    integer(kind=c_int) function system_umask(umask_value)
@@ -974,6 +987,7 @@ end interface
 !>
 !!##NAME
 !!    system_rand(3f) - [M_system] call pseudo-random number generator rand(3c)
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    integer(kind=c_int) :: function system_rand()
@@ -1039,6 +1053,7 @@ end interface
 !>
 !!##NAME
 !!    system_initenv(3f) - [M_system:ENVIRONMENT] initialize environment table pointer and size so table can be read by readenv(3f)
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!       subroutine system_initenv()
@@ -1137,6 +1152,7 @@ contains
 !>
 !!##NAME
 !!    system_access(3f) - [M_system] checks accessibility or existence of a pathname
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -1221,6 +1237,7 @@ end function system_access
 !>
 !!##NAME
 !!        system_utime(3f) - [M_system] set file access and modification times
+!!        (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -1358,6 +1375,7 @@ end function system_utime
 !>
 !!##NAME
 !!       system_realpath(3f) - [M_system] call realpath(3c) to resolve a pathname
+!!       (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!       subroutine system_realpath(input,output,ierr)
@@ -1458,6 +1476,7 @@ end subroutine system_realpath
 !>
 !!##NAME
 !!    system_issock(3f) - [M_system] checks if argument is a socket
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -1531,6 +1550,7 @@ end function system_issock
 !>
 !!##NAME
 !!    system_isfifo(3f) - [M_system] checks if argument is a fifo - named pipe
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -1604,6 +1624,7 @@ end function system_isfifo
 !>
 !!##NAME
 !!    system_ischr(3f) - [M_system] checks if argument is a character device
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -1679,6 +1700,7 @@ end function system_ischr
 !>
 !!##NAME
 !!    system_isreg(3f) - [M_system] checks if argument is a regular file
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -1749,6 +1771,7 @@ end function system_isreg
 !>
 !!##NAME
 !!    system_islnk(3f) - [M_system] checks if argument is a link
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -1825,6 +1848,7 @@ end function system_islnk
 !>
 !!##NAME
 !! system_isblk(3f) - [M_system] checks if argument is a block device
+!! (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -1900,6 +1924,7 @@ end function system_isblk
 !>
 !!##NAME
 !!    system_chown(3f) - [M_system] change file owner and group
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -1992,6 +2017,7 @@ end function system_chown
 !>
 !!##NAME
 !!    system_isdir(3f) - [M_system] checks if argument is a directory path
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -2072,6 +2098,7 @@ end function system_isdir
 !>
 !!##NAME
 !!        system_cpu_time(3f) - [M_system] get processor time by calling times(3c)
+!!        (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -2158,6 +2185,7 @@ end subroutine system_cpu_time
 !>
 !!##NAME
 !!        system_link(3f) - [M_system] link one file to another file relative to two directory file descriptors
+!!        (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -2258,6 +2286,7 @@ end function system_link
 !>
 !!##NAME
 !!        system_unlink(3f) - [M_system] remove a directory entry relative to directory file descriptor
+!!        (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -2338,6 +2367,7 @@ end function system_unlink
 !>
 !!##NAME
 !!    system_setumask(3f) - [M_system] set the file mode creation umask
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    integer function system_setumask(new_umask) result (old_umask)
@@ -2411,6 +2441,7 @@ end function system_setumask
 !>
 !!##NAME
 !!    system_getumask(3f) - [M_system] get current umask
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!   integer function system_getumask() result (umask_value)
@@ -2452,6 +2483,7 @@ end function system_getumask
 !>
 !!##NAME
 !!      perror(3f) - [M_system] print error message for last C error on stderr
+!!      (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!      subroutine system_perror(prefix)
@@ -2515,6 +2547,7 @@ end subroutine system_perror
 !>
 !!##NAME
 !!    system_chdir(3f) - [M_system] call chdir(3c) from Fortran to change working directory
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    subroutine system_chdir(path, err)
@@ -2602,6 +2635,7 @@ end subroutine system_chdir
 !>
 !!##NAME
 !!      system_remove(3f) - [M_system] call remove(3c) to remove file
+!!      (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!   function system_remove(path) result(err)
@@ -2660,6 +2694,10 @@ end subroutine system_chdir
 !!    >  AFTER REMOVED           0
 !!    > ls: cannot access 'MyJunkFile.txt': No such file or directory
 !!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 function system_remove(path) result(err)
 
@@ -2684,6 +2722,7 @@ end function system_remove
 !>
 !!##NAME
 !!      system_rename(3f) - [M_system] call rename(3c) to rename a system file
+!!      (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!   function system_rename(input,output) result(ierr)
@@ -2758,6 +2797,11 @@ end function system_remove
 !!    > IF YOU SEE THIS ON OUTPUT THE RENAME WORKED
 !!    > should not be zero -1
 !!    > should be zero 0
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 function system_rename(input,output) result(ierr)
 
@@ -2782,6 +2826,7 @@ end function system_rename
 !>
 !!##NAME
 !!       system_chmod(3f) - [M_system] call chmod(3c) to change permission mode of a file relative to directory file descriptor
+!!       (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    function system_chmod(filename,mode) result(ierr)
@@ -2878,6 +2923,11 @@ end function system_rename
 !!
 !!    end program demo_system_chmod
 !!
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 function system_chmod(filename,mode) result(ierr)
    character(len=*),intent(in)  :: filename
@@ -2900,6 +2950,7 @@ end function system_chmod
 !>
 !!##NAME
 !!       system_getcwd(3f) - [M_system] call getcwd(3c) to get the pathname of the current working directory
+!!       (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!       subroutine system_getcwd(output,ierr)
@@ -2931,6 +2982,11 @@ end function system_chmod
 !!         write(*,*)'ERROR OBTAINING CURRENT DIRECTORY NAME'
 !!      endif
 !!      end program demo_system_getcwd
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine system_getcwd(output,ierr)
 
@@ -2966,6 +3022,7 @@ end subroutine system_getcwd
 !>
 !!##NAME
 !!       system_rmdir(3f) - [M_system] call rmdir(3c) to remove empty directories
+!!       (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -3009,6 +3066,11 @@ end subroutine system_getcwd
 !!    end program demo_system_rmdir
 !!
 !!   Expected output:
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 function system_rmdir(dirname) result(err)
 
@@ -3034,6 +3096,7 @@ end function system_rmdir
 !>
 !!##NAME
 !!        system_mkfifo(3f)  - [M_system] make a FIFO special file relative to directory file descriptor
+!!        (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!   function system_mkfifo(pathname,mode) result(ierr)
@@ -3140,6 +3203,11 @@ end function system_rmdir
 !!
 !!   Now some other process (or this one) can read from /tmp/buffer while this program
 !!   is running or after, consuming the data as it is read.
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 function system_mkfifo(pathname,mode) result(err)
 
@@ -3168,6 +3236,7 @@ end function system_mkfifo
 !>
 !!##NAME
 !!        system_mkdir(3f) - [M_system] call mkdir(3c) to create a new directory
+!!        (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -3214,6 +3283,11 @@ end function system_mkfifo
 !!    integer :: ierr
 !!    ierr=system_mkdir('_scratch',IANY([R_USR,W_USR,X_USR]))
 !!    end program demo_system_mkdir
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 function system_mkdir(dirname,mode) result(ierr)
 
@@ -3262,6 +3336,7 @@ end function system_mkdir
 !>
 !!##NAME
 !!    system_opendir(3f) - [M_system] open directory stream by calling opendir(3c)
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!   subroutine system_opendir(dirname,dir,ierr)
@@ -3341,6 +3416,10 @@ end function system_mkdir
 !!    !--- close directory stream
 !!    call system_closedir(dir,ierr)
 !!    end program demo_system_opendir
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine system_opendir(dirname,dir,ierr)
 character(len=*), intent(in) :: dirname
@@ -3369,6 +3448,7 @@ end subroutine system_opendir
 !>
 !!##NAME
 !!    system_readdir(3f) - [M_system] read a directory using readdir(3c)
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !! subroutine system_readdir(dir,filename,ierr)
@@ -3428,6 +3508,11 @@ end subroutine system_opendir
 !!    call system_closedir(dir,ierr)
 !!
 !!    end program demo_system_readdir
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine system_readdir(dir,filename,ierr)
 type(c_ptr),value                         :: dir
@@ -3459,6 +3544,7 @@ end subroutine system_readdir
 !>
 !!##NAME
 !!       system_rewinddir(3f) - [M_system] call rewinddir(3c) to rewind directory stream
+!!       (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    subroutine system_rewinddir(dir)
@@ -3501,6 +3587,10 @@ end subroutine system_readdir
 !!    call system_closedir(dir,ierr)
 !!
 !!    end program demo_system_rewinddir
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine system_rewinddir(dir)
 type(c_ptr),value            :: dir
@@ -3521,6 +3611,7 @@ end subroutine system_rewinddir
 !>
 !!##NAME
 !!        system_closedir(3f) - [M_system] close a directory stream by calling closedir(3c)
+!!        (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!        subroutine system_closedir(dir,ierr)
@@ -3563,6 +3654,10 @@ end subroutine system_rewinddir
 !!    !--- close directory stream
 !!    call system_closedir(dir,ierr)
 !!    end program demo_system_closedir
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine system_closedir(dir,ierr)
 use iso_c_binding
@@ -3595,6 +3690,7 @@ end subroutine system_closedir
 !>
 !!##NAME
 !!    system_putenv(3f) - [M_system:ENVIRONMENT] set environment variable from Fortran by calling putenv(3c)
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -3656,6 +3752,11 @@ end subroutine system_closedir
 !!    GRU=this is the value
 !!    should be gone, varies with different putenv(3c): 0
 !!    system_unsetenv(3f) is a better way to remove variables
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine system_putenv(string, err)
 
@@ -3692,6 +3793,7 @@ end subroutine system_putenv
 !>
 !!##NAME
 !!    system_getenv(3f) - [M_system:ENVIRONMENT] get environment variable from Fortran by calling get_environment_variable(3f)
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -3721,6 +3823,11 @@ end subroutine system_putenv
 !!       write(*,'("USERNAME : ",a)')system_getenv('USERNAME')
 !!
 !!    end program demo_system_getenv
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 function system_getenv(name) result(var)
 
@@ -3746,6 +3853,7 @@ end function system_getenv
 !>
 !!##NAME
 !!    set_environment_variable(3f) - [M_system:ENVIRONMENT] call setenv(3c) to set environment variable
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -3797,6 +3905,10 @@ end function system_getenv
 !!    now "GRU" and "GRU2" should be defined, status =0
 !!    GRU2=this is the second value
 !!    GRU=this is the value
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine set_environment_variable(NAME, VALUE, STATUS)
 
@@ -3824,6 +3936,7 @@ end subroutine set_environment_variable
 !>
 !!##NAME
 !!    system_clearenv(3f) - [M_system:ENVIRONMENT] clear environment by calling clearenv(3c)
+!!    (LICENSE:MIT)
 !!
 !!
 !!##SYNOPSIS
@@ -3861,6 +3974,11 @@ end subroutine set_environment_variable
 !!      89     153    7427
 !!      PWD=/home/urbanjs/V600
 !!      SHLVL=1
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine system_clearenv(ierr)
 !  emulating because not available on some platforms
@@ -3913,6 +4031,7 @@ end subroutine system_clearenv
 !>
 !!##NAME
 !!    system_unsetenv(3f) - [M_system:ENVIRONMENT] delete an environment variable by calling unsetenv(3c)
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!   subroutine system_unsetenv(name,ierr)
@@ -3948,6 +4067,11 @@ end subroutine system_clearenv
 !!      write(*,'(a)')'The variable GRU should not be set'
 !!      call execute_command_line('env|grep GRU')
 !!      end program demo_system_unsetenv
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine system_unsetenv(name,ierr)
 
@@ -3981,6 +4105,7 @@ end subroutine system_unsetenv
 !>
 !!##NAME
 !!    system_readenv(3f) - [M_system:ENVIRONMENT] step thru and read environment table
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!       function system_readenv() result(string)
@@ -4027,6 +4152,10 @@ end subroutine system_unsetenv
 !!         :
 !!         :
 !!         :
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 function system_readenv() result(string)
 
@@ -4054,6 +4183,7 @@ end function system_readenv
 !>
 !!##NAME
 !!   fileglob(3f) - [M_system] Read output of an ls(1) command from Fortran
+!!   (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -4090,6 +4220,11 @@ end function system_readenv
 !!    end subroutine tryit
 !!
 !!    end program demo_fileglob  ! simple unit test
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine fileglob(glob, list) ! NON-PORTABLE AT THIS POINT. REQUIRES ls(1) command, assumes 1 line per file
 !  The length of the character strings in list() must be long enough for the filenames.
@@ -4134,6 +4269,7 @@ end subroutine fileglob
 !>
 !!##NAME
 !!   system_uname(3f) - [M_system] call a C wrapper that calls uname(3c) to get current system information from Fortran
+!!   (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    subroutine system_uname(WHICH,NAMEOUT)
@@ -4170,6 +4306,10 @@ end subroutine fileglob
 !!       enddo
 !!
 !!    end program demo_system_uname
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine system_uname(WHICH,NAMEOUT)
 implicit none
@@ -4201,6 +4341,7 @@ end subroutine system_uname
 !>
 !!##NAME
 !!        system_gethostname(3f) - [M_system:QUERY] get name of current host
+!!        (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!       subroutine system_gethostname(string,ierr)
@@ -4234,6 +4375,11 @@ end subroutine system_uname
 !!       endif
 !!
 !!    end program demo_system_gethostname
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine system_gethostname(NAME,IERR)
 implicit none
@@ -4267,6 +4413,7 @@ end subroutine system_gethostname
 !>
 !!##NAME
 !!    system_getlogin(3f) - [M_system:QUERY] get login name
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -4304,6 +4451,11 @@ end subroutine system_gethostname
 !!   Results:
 !!
 !!    login[JSU]
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !--       The following example calls the getlogin() function to obtain the name of the user associated with the calling process,
 !--       and passes this information to the getpwnam() function to get the associated user database information.
@@ -4343,6 +4495,7 @@ end function system_getlogin
 !>
 !!##NAME
 !!    system_perm(3f) - [M_system] get file type and permission as a string
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -4387,6 +4540,11 @@ end function system_getlogin
 !!    demo_system_perm /tmp
 !!
 !!    for /tmp permits[drwxrwxrwx --S] 17407 41777
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 function system_perm(mode) result (perms)
 use M_anything, only : anyinteger_to_64bit
@@ -4418,6 +4576,7 @@ end function system_perm
 !>
 !!##NAME
 !!    system_getgrgid(3f) - [M_system:QUERY] get groupd name associated with a GID
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!   function system_getgrgid(gid) result (gname)
@@ -4454,6 +4613,11 @@ end function system_perm
 !!   Results:
 !!
 !!    group[default] for 197121
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 function system_getgrgid(gid) result (gname)
 use M_anything, only : anyinteger_to_64bit
@@ -4487,6 +4651,7 @@ end function system_getgrgid
 !>
 !!##NAME
 !!    system_getpwuid(3f) - [M_system:QUERY] get login name associated with a UID
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!   function system_getpwuid(uid) result (uname)
@@ -4521,6 +4686,11 @@ end function system_getgrgid
 !!       name=system_getpwuid(uid)
 !!       write(*,'("login[",a,"] has UID ",i0)')name,uid
 !!    end program demo_system_getpwuid
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 function system_getpwuid(uid) result (uname)
 use M_anything, only : anyinteger_to_64bit
@@ -4629,6 +4799,7 @@ end function C2F_string
 !>
 !!##NAME
 !!    SYSTEM_STAT - [M_system] Get file status information
+!!    (LICENSE:MIT)
 !!
 !!##SYNTAX
 !!   CALL SYSTEM_STAT(NAME, VALUES [, STATUS],[DEBUG])
@@ -4738,6 +4909,11 @@ end function C2F_string
 !!    Last status change time:     1557983532 2019-05-16 01:12:12
 !!    Preferred block size(bytes): 65536
 !!    No. of blocks allocated:     4
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine system_stat(pathname,values,ierr)
 implicit none
@@ -4774,6 +4950,7 @@ end subroutine system_stat
 !>
 !!##NAME
 !!    system_stat_print(3f) - [M_system] print the principal info obtained for a pathname from system_stat(3f)
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!   subroutine system_stat_print(filename)
@@ -4800,6 +4977,11 @@ end subroutine system_stat
 !!
 !!     41777 drwxrwxrwx --S 1  JSU      None     0    2018-10-19T21:10:39 /tmp
 !!    100750 -rwxr-x--- --- 1  SYSTEM   SYSTEM   824  2018-08-17T01:21:55 /etc/hosts
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine system_stat_print(filename,lun)
 !!use M_system, only      : system_getpwuid, system_getgrgid, system_perm, system_stat

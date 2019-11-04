@@ -1,3 +1,4 @@
+/* this code is licensed as public domain */
 #include "draw.h"
 /******************************************************************************/
 #ident "@(#)M_DRAW:move - Move the logical graphics position to the world coordinates x, y, z."

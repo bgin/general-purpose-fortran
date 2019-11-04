@@ -11,6 +11,7 @@ $! first, generate help_usage() and help_version() using ufpp() preprocessor
 $DOCUMENT HELP -file numdiff.1.man
 NAME
  numdiff(1f) - [DEVELOPER] Compare numeric differences in a file
+ (LICENSE:PD)
 
 SYNOPSIS
  numdiff

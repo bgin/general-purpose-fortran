@@ -3,6 +3,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file _grep.1.man
 NAME
     _grep(1f) - [FUNIX] search a file for a pattern
+    (LICENSE:PD)
 
 SYNOPSIS
     _grep pattern [ -i][ -E| -G]|[ --help| --version]

@@ -588,6 +588,7 @@ CONTAINS
 !>
 !!##NAME
 !!    matchw(3f) - [M_strings:COMPARE] compare given string for match to pattern which may contain wildcard characters
+!!    (LICENSE:???)
 !!
 !!##SYNOPSIS
 !!
@@ -701,8 +702,9 @@ CONTAINS
 !!    abdc        T F    T    T   F  F   T    T    F    F  F F  T F F    T    F  F    F
 !!    abra        T F    F    T   T  T   F    F    F    F  F F  T F T    T    F  F    F
 !!##AUTHOR
-!!
-!!   Heavily based on a version from Clive Page, cgp@le.ac.uk,  2003 June 24.
+!!      Heavily based on a version from Clive Page, cgp@le.ac.uk,  2003 June 24.
+!!   LICENSE
+!!    ???
 !===================================================================================================================================
 logical function matchw(string,pattern)
 ! Author: Clive Page, cgp@le.ac.uk,  2003 June 24.
@@ -840,6 +842,7 @@ end subroutine test_matchw
 !>
 !!##NAME
 !!    split(3f) - [M_strings:TOKENS] parse string into an array using specified delimiters
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -971,6 +974,10 @@ end subroutine test_matchw
 !!    > 19 ==>
 !!    > 20 ==>
 !!    >  SIZE:          20
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 subroutine split(input_line,array,delimiters,order,nulls)
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -1195,6 +1202,7 @@ end subroutine test_split
 !>
 !!##NAME
 !!    chomp(3f) - [M_strings:TOKENS] Tokenize a string, consuming it one token per call
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -1264,6 +1272,11 @@ end subroutine test_split
 !!               7 TOKEN=[A:B]
 !!               8 TOKEN=[:]
 !!               9 TOKEN=[C]
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 FUNCTION chomp(source_string,token,delimiters)
 
@@ -1363,6 +1376,7 @@ end subroutine test_chomp
 !>
 !!##NAME
 !!      delim(3f) - [M_strings:TOKENS] parse a string and store tokens into an array
+!!      (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    subroutine delim(line,array,n,icount,ibegin,iterm,ilen,dlim)
@@ -1457,6 +1471,10 @@ end subroutine test_chomp
 !!     end program demo_delim
 !!
 !!  Expected output
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 subroutine delim(line,array,n,icount,ibegin,iterm,ilen,dlim)
 
@@ -1638,6 +1656,7 @@ end subroutine test_delim
 !>
 !!##NAME
 !!    replace(3f) - [M_strings:EDITING] function globally replaces one substring for another in string
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -1741,6 +1760,11 @@ end subroutine test_delim
 !!     replace a with A instances 3 to 5 [a b ab bAAA aaaa]
 !!     replace a with null instances 3 to 5 [a b ab b aaaa]
 !!     replace aa with CCCC instances 3 to 5 [a b ab baaa aaCCCC CCCC CCCC a a a aa aaaaaa]
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 subroutine crack_cmd(cmd,old,new,ierr)
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -1951,6 +1975,7 @@ end subroutine test_replace
 !>
 !!##NAME
 !!    substitute(3f) - [M_strings:EDITING] subroutine globally substitutes one substring for another in string
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -2012,6 +2037,10 @@ end subroutine test_replace
 !!     th => TH    : THis is THe input string
 !!     "" => BEFORE: BEFORE:THis is THe input string
 !!     i => ""     : BEFORE:THs s THe nput strng
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 subroutine substitute(targetline,old,new,ierr,start,end)
 
@@ -2219,6 +2248,7 @@ end subroutine test_substitute
 !>
 !!##NAME
 !!    change(3f) - [M_strings:EDITING] change old string to new string with a directive like a line editor
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -2282,6 +2312,10 @@ end subroutine test_substitute
 !!     This is A test string to chAnge
 !!     prefix: This is A test string to chAnge
 !!     prefix:ThisisAteststringtochAnge
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 subroutine change(target_string,cmd,ierr)
 ! Change a string assumed long enough to accommodate the change, with a directive that resembles a line editor directive of the form
@@ -2390,6 +2424,7 @@ end subroutine test_change
 !>
 !!##NAME
 !!     strtok(3f) - [M_strings:TOKENS] Tokenize a string
+!!     (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!       function strtok(source_string,itoken,token_start,token_end,delimiters)
@@ -2459,6 +2494,11 @@ end subroutine test_change
 !!     7  TOKEN=[A:B]     28  30
 !!     8  TOKEN=[:]       32  32
 !!     9  TOKEN=[C]       35  35
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 FUNCTION strtok(source_string,itoken,token_start,token_end,delimiters) result(strtok_status)
 ! JSU- 20151030
@@ -2562,6 +2602,7 @@ end subroutine test_strtok
 !>
 !!##NAME
 !!    modif(3f) - [M_strings:EDITING] emulate the MODIFY command from the line editor XEDIT
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -2638,6 +2679,11 @@ end subroutine test_strtok
 !!          write(*,'(a)')trim(line)
 !!       enddo INFINITE
 !!    end program demo_modif
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 SUBROUTINE MODIF(CLINE,MOD)
 
@@ -2769,6 +2815,7 @@ end subroutine test_modif
 !>
 !!##NAME
 !!      len_white(3f) - [M_strings:LENGTH] get length of string trimmed of whitespace.
+!!      (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -2835,6 +2882,11 @@ end subroutine test_modif
 !!           lastnb = len_white(s(:ilen))
 !!           write(*,*)'error:[',s(:lastnb),']'
 !!       end subroutine messages
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 elemental integer function len_white(string)
 !  DEPRECATED. Use len_trim(3f),trim(3f) unless you might have trailing nulls (common when interacting with C procedures)"
@@ -2887,6 +2939,7 @@ end subroutine test_len_white
 !>
 !!##NAME
 !!    crop(3f) - [M_strings:WHITESPACE] trim leading blanks and trailing blanks from a string
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -2917,6 +2970,10 @@ end subroutine test_len_white
 !!
 !!      untrimmed string=[   ABCDEFG abcdefg                      ]
 !!      cropped string=[ABCDEFG abcdefg]
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 function crop(strin) result (strout)
 use M_journal, only : journal
@@ -2951,6 +3008,7 @@ end subroutine test_crop
 !>
 !!##NAME
 !!    transliterate(3f) - [M_strings:EDITING] replace characters from old set with new set
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -3008,6 +3066,11 @@ end subroutine test_crop
 !!     > AABBCCDDEEFFGGHHIIJJKKLLMMNNOOPPQQRRSSTTUUVVWWXXYYZZ
 !!     > :A:B:C:D:E:F:G:H:I:J:K:L:M:N:O:P:Q:R:S:T:U:V:W:X:Y:Z
 !!     > ABCDEFGHIJKLMNOPQRSTUVWXYZ
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 PURE FUNCTION transliterate(instr,old_set,new_set) RESULT(outstr)
 
@@ -3073,6 +3136,7 @@ end subroutine test_transliterate
 !>
 !!##NAME
 !!    rotate13(3f) - [M_strings] apply trivial ROT13 encryption to a string
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    rotate13(input) result(output)
@@ -3155,6 +3219,11 @@ end subroutine test_transliterate
 !!    demo_rotate13
 !!    United we stand, divided we fall.
 !!    Havgrq jr fgnaq, qvivqrq jr snyy.
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 function rotate13 (input)
 implicit none
@@ -3203,7 +3272,8 @@ end subroutine test_rotate13
 !==================================================================================================================================!
 !>
 !!##NAME
-!!      join(3f) - [M_strings:EDITING] append CHARACTER variable array into a single CHARACTER variable with specified separator
+!!    join(3f) - [M_strings:EDITING] append CHARACTER variable array into a single CHARACTER variable with specified separator
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -3252,6 +3322,11 @@ end subroutine test_rotate13
 !!          write(*,'(a)') join(s,left='[',right=']')
 !!          write(*,'(a)') join(s,left='>>')
 !!       end program demo_join
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 pure function join(str,sep,trm,left,right) result (string)
 
@@ -3326,6 +3401,7 @@ end subroutine test_join
 !>
 !!##NAME
 !!      reverse(3f) - [M_strings:EDITING] Return a string reversed
+!!      (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -3355,6 +3431,10 @@ end subroutine test_join
 !!
 !!      original input string is ....abcdefghijklmnopqrstuvwxyz
 !!      reversed output string is ...zyxwvutsrqponmlkjihgfedcba
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 elemental function reverse(string ) result (rev)
 
@@ -3403,7 +3483,8 @@ end subroutine test_reverse
 !===================================================================================================================================
 !>
 !!##NAME
-!! upper_quoted(3f) - [M_strings:CASE] !  elemental function converts string to miniscule skipping strings quoted per Fortran syntax rules
+!! upper_quoted(3f) - [M_strings:CASE] elemental function converts string to miniscule skipping strings quoted per Fortran syntax rules
+!! (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -3449,6 +3530,10 @@ end subroutine test_reverse
 !!     upper-case output string is ... ABCDEFG ABCDEFG "Double-Quoted" 'Single-Quoted' "with "" Quote" EVERYTHING ELSE
 !!     make first character uppercase  ... THIS IS A SENTENCE.
 !!     upper_quoted(3f) is elemental ==>ABC+DEF+GHI
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 elemental pure function upper_quoted(str) result (string)
 
@@ -3489,6 +3574,7 @@ end function upper_quoted
 !>
 !!##NAME
 !! upper(3f) - [M_strings:CASE] changes a string to uppercase
+!! (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -3543,6 +3629,10 @@ end function upper_quoted
 !!     upper-case output string is ... ABCDEFG ABCDEFG
 !!     make first character uppercase  ... This is a sentence.
 !!     UPPER(3f) is elemental ==>ABC+DEF+GHI
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 !===================================================================================================================================
 ! Timing
@@ -3613,6 +3703,7 @@ end subroutine test_upper
 !>
 !!##NAME
 !!    lower(3f) - [M_strings:CASE] changes a string to lowercase over specified range
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -3663,6 +3754,10 @@ end subroutine test_upper
 !!
 !!       mixed-case input string is .... ABCDEFG abcdefg
 !!       lower-case output string is ... abcdefg abcdefg
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 elemental pure function lower(str,begin,end) result (string)
 
@@ -3723,6 +3818,7 @@ end subroutine test_lower
 !!##NAME
 !!
 !!    switch(3f) - [M_strings:ARRAY] converts between CHARACTER scalar and array of single characters
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -3802,6 +3898,10 @@ end subroutine test_lower
 !!    >  F T T T T T T T T T T T T T T T T T T T T T
 !!    >  F
 !!    >  T
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -3894,6 +3994,7 @@ end subroutine test_switch
 !>
 !!##NAME
 !!      s2c(3f) - [M_strings:ARRAY] convert character variable to array of characters with last element set to null
+!!      (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -3930,6 +4031,11 @@ end subroutine test_switch
 !!    INPUT STRING single string
 !!    [s  ][i  ][n  ][g  ][l  ][e  ][   ][s  ][t  ][r  ][i  ][n  ][g  ][XXX]
 !!    [115][105][110][103][108][101][ 32][115][116][114][105][110][103][  0]
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 pure function s2c(string)  RESULT (array)
 use,intrinsic :: ISO_C_BINDING, only : C_CHAR
@@ -3967,6 +4073,7 @@ end subroutine test_s2c
 !>
 !!##NAME
 !!      c2s(3f) - [M_strings:ARRAY] convert C string pointer to Fortran character string
+!!      (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -3982,6 +4089,11 @@ end subroutine test_s2c
 !!    f_string          Fortran character variable to return
 !!##EXAMPLE
 !!
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 function c2s(c_string_pointer) result(f_string)
 ! gets a C string (pointer), and returns the corresponding Fortran string;
@@ -4036,6 +4148,7 @@ end subroutine test_c2s
 !>
 !!##NAME
 !!      indent(3f) - [M_strings:WHITESPACE] count number of leading spaces in a string
+!!      (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -4063,6 +4176,11 @@ end subroutine test_c2s
 !!           write(*,'(i3,"",a)')indent(in),trim(in)
 !!        enddo READFILE
 !!     end program demo_indent
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 function indent(line)
 implicit none
@@ -4114,6 +4232,7 @@ end subroutine test_indent
 !>
 !!##NAME
 !!    visible(3f) - [M_strings:NONALPHA] expand a string to control and meta-control representations
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -4140,6 +4259,11 @@ end subroutine test_indent
 !!##BUGS
 !!     The expansion is not reversible, as input sequences such as "M-" or "^a"
 !!     will look like expanded sequences.
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 function visible(input) result(output)
 character(len=*),intent(in)  :: input
@@ -4228,6 +4352,7 @@ end subroutine test_visible
 !>
 !!##NAME
 !!    expand(3f) - [M_strings:NONALPHA] expand C-like escape sequences
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -4283,6 +4408,11 @@ end subroutine test_visible
 !!      \tABC\tabc
 !!      \tA\a
 !!      \nONE\nTWO\nTHREE
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 function expand(line,escape) result(lineout)
 USE ISO_C_BINDING ,ONLY: c_horizontal_tab
@@ -4411,6 +4541,7 @@ end subroutine test_expand
 !>
 !!##NAME
 !!    notabs(3f) - [M_strings:NONALPHA] expand tab characters
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    subroutine notabs(INSTR,OUTSTR,ILEN)
@@ -4460,10 +4591,12 @@ end subroutine test_expand
 !!       endblock READFILE
 !!
 !!    end program demo_notabs
-!!##AUTHOR:
-!!     John S. Urban
 !!##SEE ALSO:
 !!     GNU/Unix commands expand(1) and unexpand(1)
+!!##AUTHOR:
+!!     John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 subroutine notabs(INSTR,OUTSTR,ILEN)
 
@@ -4545,6 +4678,7 @@ end subroutine test_notabs
 !>
 !!##NAME
 !!       adjustc(3f) - [M_strings:WHITESPACE] center text
+!!       (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -4589,6 +4723,10 @@ end subroutine test_notabs
 !!    ==================================================
 !!                this is a centered string
 !!    ==================================================
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 pure function adjustc(string,length)
 
@@ -4693,6 +4831,7 @@ end subroutine test_adjustc
 !>
 !!##NAME
 !!    nospace(3f) - [M_strings:WHITESPACE] remove all whitespace from input string
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -4729,6 +4868,10 @@ end subroutine test_adjustc
 !!     original input string is ....  This     is      a     test
 !!     processed output string is ...Thisisatest
 !!     nospace test passed
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 function nospace(line)
 
@@ -4777,6 +4920,7 @@ end subroutine test_nospace
 !>
 !!##NAME
 !!    stretch(3f) - [M_strings:LENGTH] return string padded to at least specified length
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -4847,6 +4991,11 @@ end subroutine test_nospace
 !!     CHAPTER 1 : The beginning     :            1
 !!     CHAPTER 2 : The end           :         1234
 !!     APPENDIX                      :         1235
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 function stretch(line,length,pattern,suffix) result(strout)
 
@@ -4893,6 +5042,7 @@ end subroutine test_stretch
 !>
 !!##NAME
 !!   atleast(3f) - [M_strings:LENGTH] return string padded to at least specified length
+!!   (LICENSE:MIT)
 !! !!
 !!##SYNOPSIS
 !!
@@ -4955,6 +5105,10 @@ end subroutine test_stretch
 !!    CHAPTER 1 : The beginning ....      1
 !!    CHAPTER 2 : The end ..........   1234
 !!    APPENDIX .....................   1235
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 !===================================================================================================================================
 function atleast(line,length,pattern) result(strout)
@@ -4996,6 +5150,7 @@ end subroutine test_atleast
 !>
 !!##NAME
 !!    lenset(3f) - [M_strings:LENGTH] return string trimmed or padded to specified length
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -5031,6 +5186,11 @@ end subroutine test_atleast
 !!
 !!     [abcde]
 !!     [abcdefghij          ]
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 function lenset(line,length) result(strout)
 
@@ -5067,6 +5227,7 @@ end subroutine test_lenset
 !>
 !!##NAME
 !!    merge_str(3f) - [M_strings:LENGTH] pads strings to same length and then calls MERGE(3f)
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -5101,6 +5262,10 @@ end subroutine test_lenset
 !!
 !!     [first string]
 !!     [second string is longer]
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 function merge_str(str1,str2,expr) result(strout)
 ! for some reason the MERGE(3f) intrinsic requires the strings it compares to be of equal length
@@ -5150,6 +5315,7 @@ end subroutine test_merge_str
 !>
 !!##NAME
 !!    compact(3f) - [M_strings:WHITESPACE] converts contiguous whitespace to a single character (or nothing)
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -5199,6 +5365,10 @@ end subroutine test_merge_str
 !!     >Thisisatest
 !!     >This:is:a:test
 !!     >AAAAAAAAAAAA
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 !elemental pure function compact(str,char) result (outstr)
 function compact(str,char) result (outstr)
@@ -5292,6 +5462,7 @@ end subroutine test_compact
 !>
 !!##NAME
 !!     noesc(3f) - [M_strings:NONALPHA] convert non-printable characters to a space.
+!!     (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -5375,6 +5546,10 @@ end subroutine test_compact
 !!
 !!   Cleared string:
 !!    >                                  !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 elemental function noesc(INSTR)
 
@@ -5438,6 +5613,7 @@ end subroutine test_noesc
 !>
 !!##NAME
 !!      string_to_value(3f) - [M_strings:NUMERIC] subroutine returns real value from string
+!!      (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -5474,6 +5650,10 @@ end subroutine test_noesc
 !!        call string_to_value(string,value,ierr)
 !!        write(*,*) 'value of string ['//trim(string)//'] is ',value
 !!    end program demo_string_to_value
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 subroutine a2r(chars,valu,ierr)
 
@@ -5681,6 +5861,7 @@ end subroutine test_string_to_value
 !>
 !!##NAME
 !!      s2v(3f) - [M_strings:NUMERIC] function returns doubleprecision numeric value from a string
+!!      (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -5776,6 +5957,10 @@ end subroutine test_string_to_value
 !!     >          -3.0000000000000000 -4.9399999999999999E-002 0.10000000000000001
 !!     >          12345.678910000001 0.0000000000000000 12121.000000000000
 !!     >That's all folks!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 !>
 !!##PROCEDURE:
@@ -5893,6 +6078,7 @@ end subroutine test_s2v
 !>
 !!##NAME
 !!      value_to_string(3f) - [M_strings:NUMERIC] return numeric string from a numeric value
+!!      (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -5965,6 +6151,11 @@ end subroutine test_s2v
 !!     The value is [THE VALUE IS .750000000]
 !!     The value is [1234]
 !!     The value is [0.33333333333333331]
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 !===================================================================================================================================
 subroutine value_to_string(gval,chars,length,err,fmt,trimz)
@@ -6126,6 +6317,7 @@ end subroutine test_value_to_string
 !>
 !!##NAME
 !!      v2s(3f) - [M_strings:NUMERIC] return numeric string from a numeric value
+!!      (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -6172,13 +6364,10 @@ end subroutine test_value_to_string
 !!     The value of .false. is [F]
 !!     The value of .true. is  [T]
 !!
-!!##FILES AND METADATA
-!!
-!!       o  References: none
-!!       o  Dependencies: value_to_string
-!!       o  Legal Restrictions: none
-!!       o  QA:ufpp(1) goodbad(1) test in source file
-!!       o  Authors: John S. Urban
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 ! very odd compiler problems in many (but not all) programs using this routine; GNU Fortran (GCC) 5.4.0; 20161030
 function v2s_bug(gval) result(outstr)
@@ -6316,6 +6505,7 @@ end subroutine test_v2s
 !>
 !!##NAME
 !!    isnumber(3f) - [M_strings:NUMERIC] determine if a string represents a number
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    function isnumber(str,msg)
@@ -6423,6 +6613,10 @@ end subroutine test_v2s
 !!    1e+2.0
 !!     ERROR:        5010 Bad real number in item 1 of list input
 !!      ERROR for 1e+2.0           -5 :bad number
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 function isNumber(string,msg,verbose)
 implicit none
@@ -6577,6 +6771,7 @@ end subroutine test_isnumber
 !>
 !!##NAME
 !!    trimzeros(3fp) - [M_strings:NUMERIC] Delete trailing zeros from numeric decimal string
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    subroutine trimzeros(str)
@@ -6601,6 +6796,11 @@ end subroutine test_isnumber
 !!          write(*,*)trimzeros('12345.')
 !!          write(*,*)trimzeros('12345.00e3')
 !!       end program demo_trimzeros
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 subroutine trimzeros(string)
 
@@ -6663,6 +6863,7 @@ end subroutine test_trimzeros
 !>
 !!##NAME
 !! listout(3f) - [M_strings:NUMERIC] expand a list of numbers where negative numbers denote range ends (1 -10 means 1 thru 10)
+!! (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -6704,6 +6905,11 @@ end subroutine test_trimzeros
 !!           write(*,'(i0)')(icurve_expanded(i),i=1,inums)
 !!        endif
 !!     end program demo_listout
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 subroutine listout(icurve_lists,icurve_expanded,inums_out,ierr)
 use M_journal, only : journal
@@ -6803,6 +7009,7 @@ end subroutine test_listout
 !>
 !!##NAME
 !!     quote(3f) - [M_strings:QUOTES] add quotes to string as if written with list-directed input
+!!     (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!   function quote(str,mode,clip) result (quoted_str)
@@ -6862,6 +7069,11 @@ end subroutine test_listout
 !!          write(*,*,iostat=ios,iomsg=msg,delim='apostrophe') inline
 !!       enddo
 !!    end program demo_quote
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 function quote(str,mode,clip) result (quoted_str)
 character(len=*),intent(in)          :: str                ! the string to be quoted
@@ -6931,6 +7143,7 @@ end subroutine test_quote
 !>
 !!##NAME
 !!     unquote(3f) - [M_strings:QUOTES] remove quotes from string as if read with list-directed input
+!!     (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!   function unquote(quoted_str,esc) result (unquoted_str)
@@ -6994,6 +7207,11 @@ end subroutine test_quote
 !!          endif
 !!       enddo
 !!    end program demo_unquote
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 function unquote(quoted_str,esc) result (unquoted_str)
 character(len=*),intent(in)          :: quoted_str              ! the string to be unquoted
@@ -7108,6 +7326,7 @@ end subroutine test_unquote
 !>
 !!##NAME
 !!    describe(3f) - [M_strings] returns a string describing the name of a single character
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -7261,6 +7480,10 @@ end subroutine test_unquote
 !!     } right brace
 !!     ~ tilde
 !!     ctrl-? (DEL) delete
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 function describe(ch) result (string)
 
@@ -7450,6 +7673,7 @@ end subroutine test_describe
 !>
 !!##NAME
 !!    getvals(3f) - [M_strings:NUMERIC] read arbitrary number of REAL values from a character variable up to size of VALUES() array
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -7542,6 +7766,11 @@ end subroutine test_describe
 !!       *getvals* WARNING:[this!] is not a number
 !!       VALUES=   1.00000000       10.0000000
 !!       VALUES=   11.0000000       22.0000000       33.0000000
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 subroutine getvals(line,values,icount,ierr)
 implicit none
@@ -7636,6 +7865,7 @@ end subroutine test_getvals
 !>
 !!##NAME
 !!      string_to_values(3f) - [M_strings:NUMERIC] read a string representing numbers into a numeric array
+!!      (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -7702,6 +7932,10 @@ end subroutine test_getvals
 !!     input string............. 10 20e3;3.45 -400.3e-2;1234; 5678
 !!     number of values found...           3
 !!     values...................   10.0000000  2.29999995  3.14159989
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 subroutine string_to_values(line,iread,values,inums,delims,ierr)
 use M_journal, only : journal
@@ -7742,6 +7976,7 @@ integer                      :: delimiters_length
 !----------------------------------------------------------------------------------------------------------------------------------
       ierr=0                                        ! initialize error code returned
       inums=0                                       ! initialize count of values successfully returned
+      istart=0
 !----------------------------------------------------------------------------------------------------------------------------------
       ilen=0                                        ! ilen will be the position of the right-most non-delimiter in the input line
       do i20=len(line),1,-1                         ! loop from end of string to beginning to find right-most non-delimiter
@@ -7823,6 +8058,7 @@ end subroutine test_string_to_values
 !>
 !!##NAME
 !!      s2vs(3f) - [M_strings:NUMERIC] given a string representing numbers return a numeric array
+!!      (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -7877,6 +8113,10 @@ end subroutine test_string_to_values
 !!     values................... 10.000000000000000  20000.000000000000 3.4500000000000002
 !!     -4.0030000000000001       1234.0000000000000  5678.0000000000000
 !!     ivalues.................. 10  20000  3  -4 1234 5678
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 function s2vs(string,delim) result(darray)
 
@@ -7980,6 +8220,7 @@ end subroutine test_isprint
 !>
 !!##NAME
 !!    msg(3f) - [M_strings] converts any standard scalar type to a string
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    function msg(g1,g2g3,g4,g5,g6,g7,g8,g9,nospace)
@@ -8037,6 +8278,11 @@ end subroutine test_isprint
 !!    complex         : (3.40282347E+38,1.17549435E-38)
 !!     format=(*(i9:,1x))
 !!     program will now stop
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 function msg(generic1, generic2, generic3, generic4, generic5, generic6, generic7, generic8, generic9,nospace)
 implicit none
@@ -8682,6 +8928,7 @@ end subroutine test_islower
 !!##NAME
 !!    isalnum,isalpha,iscntrl,isdigit,isgraph,islower,
 !!    isprint,ispunct,isspace,isupper,isascii,isblank,isxdigit(3f) - [M_strings:COMPARE] test membership in subsets of ASCII set
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -8738,6 +8985,11 @@ end subroutine test_islower
 !!    For string[letters   ] F
 !!    For string[1234567890] T
 !!    For string[both 8787 ] F
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 elemental function isalnum(ch) result(res)
 
@@ -8795,6 +9047,7 @@ end subroutine test_isalnum
 !>
 !!##NAME
 !!    base(3f) - [M_strings:BASE] convert whole number string in base [2-36] to string in alternate base [2-36]
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -8841,6 +9094,11 @@ end subroutine test_isalnum
 !!     enddo INFINITE
 !!
 !!     end program demo_base
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 logical function base(x,b,y,a)
 implicit none
@@ -8932,6 +9190,7 @@ end subroutine test_base
 !!##NAME
 !!
 !!    decodebase(3f) - [M_strings:BASE] convert whole number string in base [2-36] to base 10 number
+!!    (LICENSE:???)
 !!
 !!##SYNOPSIS
 !!
@@ -8942,9 +9201,10 @@ end subroutine test_base
 !!    integer,intent(out)          :: out10
 !!##DESCRIPTION
 !!
-!!    Convert a numeric string representing a whole number in base BASEIN to base 10. The function returns
-!!    FALSE if BASEIN is not in the range [2..36] or if string STRING contains invalid
-!!    characters in base BASEIN or if result OUT10 is too big
+!!    Convert a numeric string representing a whole number in base BASEIN
+!!    to base 10. The function returns FALSE if BASEIN is not in the range
+!!    [2..36] or if string STRING contains invalid characters in base BASEIN
+!!    or if result OUT10 is too big
 !!
 !!    The letters A,B,...,Z represent 10,11,...,36 in the base > 10.
 !!
@@ -8992,6 +9252,11 @@ end subroutine test_base
 !!    enddo INFINITE
 !!
 !!    end program demo_decodebase
+!!
+!!##AUTHOR
+!!    J-P Moreau (www.jpmoreau.fr) ,John S. Urban
+!!##LICENSE
+!!    ???
 !===================================================================================================================================
 logical function decodebase(string,basein,out10)
 implicit none
@@ -9117,6 +9382,7 @@ end subroutine test_decodebase
 !!##NAME
 !!
 !!    codebase(3f) - [M_strings:BASE] convert whole number in base 10 to string in base [2-36]
+!!    (LICENSE:???)
 !!
 !!##SYNOPSIS
 !!
@@ -9133,11 +9399,6 @@ end subroutine test_decodebase
 !!
 !!    The letters A,B,...,Z represent 10,11,...,36 in the base > 10.
 !!
-!!       Ref.: "Math matiques en Turbo-Pascal by
-!!              M. Ducamp and A. Reverchon (2),
-!!              Eyrolles, Paris, 1988".
-!!
-!!    based on a F90 Version By J-P Moreau (www.jpmoreau.fr)
 !!
 !!##EXAMPLE
 !!
@@ -9156,6 +9417,18 @@ end subroutine test_decodebase
 !!       enddo
 !!    enddo
 !!    end program demo_codebase
+!!
+!!##AUTHOR
+!!    J-P Moreau (www.jpmoreau.fr), John S. Urban
+!!
+!!    based on a F90 Version By J-P Moreau (www.jpmoreau.fr)
+!!
+!!     Ref.: "Math matiques en Turbo-Pascal by
+!!             M. Ducamp and A. Reverchon (2),
+!!             Eyrolles, Paris, 1988".
+!!
+!!##LICENSE
+!!    ???
 !===================================================================================================================================
 logical function codebase(inval10,outbase,answer)
 implicit none
@@ -9245,6 +9518,7 @@ end subroutine test_codebase
 !>
 !!##NAME
 !!    fmt(3f) - [M_strings:TOKENS] Tokenize a string, consuming it one token per call
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -9312,6 +9586,11 @@ end subroutine test_codebase
 !!       one two three four five six seven eight nine ten eleven twelve thirteen
 !!       fourteen fifteen sixteen seventeen
 !! ================================================================================
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT
 !===================================================================================================================================
 function fmt(source_string,length)
 

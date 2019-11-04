@@ -9,6 +9,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file table2html.1.man
 NAME
    table2html(1f) - [FILE FILTER] filter to format simple columns into an HTML table form
+   (LICENSE:PD)
 
 SYNOPSIS
    table2html [[ -classes classnames] [ -caption caption line] [ -delimiters delim] 

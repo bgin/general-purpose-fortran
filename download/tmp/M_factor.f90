@@ -102,6 +102,7 @@ contains
 !!##NAME
 !!    least_common_multiple(3f) - [M_factor] Least common multiple of two integers
 !!                                or vector m(:), matrix m(:,:) or cuboid m(:,:,:)
+!!                                (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    use, intrinsic :: iso_fortran_env, only : int64
@@ -219,6 +220,10 @@ contains
 !!    This formula is also valid when exactly one of a and b is 0, since
 !!    gcd(a, 0) = |a|. (However, if both a and b are 0, this formula would
 !!    cause division by zero; lcm(0, 0) = 0 is a special case.
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 integer function lcm(i,j)
@@ -394,6 +399,7 @@ end subroutine test_least_common_multiple
 !!    greatest_common_divisor(3f) - [M_factor] calculate greatest common divisor of
 !!                                  two integers or vector m(:),
 !!                                  matrix m(:,:) or cuboid m(:,:,:)
+!!                                  (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -517,6 +523,10 @@ end subroutine test_least_common_multiple
 !!    > gcd([5,7,11,13,17,19,23,29,31,37,41,43,47]) produces 1 which is T
 !!    >  MATRIX SHAPE:           2           2
 !!    > gcd([40,80,120,160]) produces 40 which is T
+!!##AUTHOR
+!!    John S. Urban, 2015
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !>
 !! FUNCTION:    gcd(M,N)
@@ -703,6 +713,7 @@ end subroutine test_greatest_common_divisor
 !>
 !!##NAME
 !!    i_is_prime(3f) - [M_factor] Determine if a number is prime using Sieve of Erasthosthenes
+!!    (LICENSE:???)
 !!##SYNOPSIS
 !!
 !!    function i_is_prime ( n )

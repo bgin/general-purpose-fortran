@@ -78,6 +78,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file _fmt.1.man
 NAME
        _fmt(1f) - [FUNIX:FILE EDIT] simple text formatter
+       (LICENSE:PD)
 
 SYNOPSIS
        _fmt [OPTION]...

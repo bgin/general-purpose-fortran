@@ -2,6 +2,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file _echo.1.man
 NAME
          _echo(1f) - [FUNIX] display a line of text
+         (LICENSE:PD)
 SYNOPSIS
          _echo [OPTION]... [STRING]...
 DESCRIPTION

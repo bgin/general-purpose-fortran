@@ -2,6 +2,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file fseq.1.man
 NAME                                                                        
    fseq(1f) - [M_kracken] print a sequence of numbers, optionally appending file lines.     
+   (LICENSE:PD)
 SYNOPSIS                                                                    
    fseq [OPTION]...                                                         
 DESCRIPTION                                                                 

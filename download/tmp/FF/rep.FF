@@ -5,6 +5,7 @@ NAME
        rep(1f) - [FILE FILTER] replace fixed strings in files
 SYNOPSIS
        rep filenames -c /from/to/ [ -verbose][ -dryrun]|[ -help| -version]
+       (LICENSE:PD)
 
 DESCRIPTION
        This is an example program for the REPLACE(3f) function. It 

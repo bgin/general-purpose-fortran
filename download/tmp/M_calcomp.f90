@@ -90,10 +90,13 @@
 !!     inadequate for many graphics applications and its use faded.
 !!
 !!       + Created: 19920213
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 !>
 !!##NAME
 !!    M_calcomp(3fm) - [M_calcomp::INTRO] emulate old Calcomp graphics library
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -856,6 +859,8 @@
 !!    end subroutine make_c_qa4
 !!
 !!    end program demo_M_calcomp
+!!##LICENSE
+!!   Public Domain
 !===================================================================================================================================
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
@@ -1024,6 +1029,7 @@ contains
 !>
 !!##NAME
 !!    circl(3f) - [M_calcomp:general] draws an arc or spiral
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1136,6 +1142,8 @@ contains
 !!       call circl(x+r,y,0.0,360.0,r,r,0.0)
 !!    end subroutine circle
 !!    end program demo_circl
+!!##LICENSE
+!!   Public Domain
 !===================================================================================================================================
 subroutine circl(startx,starty,start_angle,end_angle,start_radius,end_radius,dash_code)
 implicit none
@@ -1216,6 +1224,7 @@ end subroutine circl
 !>
 !!##NAME
 !!    dashl(3f) - [M_calcomp:general] draws a polyline with dashed lines
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1316,6 +1325,8 @@ end subroutine circl
 !!    call number(4.94,9.8,.1,4.0,0.,-1)
 !!    call plot(0.0,0.0,END)
 !!    end program demo_dashl
+!!##LICENSE
+!!   Public Domain
 !===================================================================================================================================
 SUBROUTINE DASHL  (X,Y,N,K)
 implicit none
@@ -1409,6 +1420,7 @@ END SUBROUTINE DASHL
 !>
 !!##NAME
 !!    dashp(3f) - [M_calcomp:general] draw from current position to new point with dashed line
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1416,8 +1428,8 @@ END SUBROUTINE DASHL
 !!
 !!##DESCRIPTION
 !!
-!!  DASHP is a FORTRAN subroutine which draws a dashed line from the pen's
-!!  present position to a specified point.
+!!  DASHP is a FORTRAN subroutine which draws a dashed line from the current pen
+!!  position to a specified point.
 !!
 !!##OPTIONS
 !!
@@ -1431,6 +1443,8 @@ END SUBROUTINE DASHL
 !!
 !!  If the line length is less than double the dash length, the dash length is
 !!  adjusted to half the line length.
+!!##LICENSE
+!!   Public Domain
 !===================================================================================================================================
 SUBROUTINE DASHP  (X,Y,DL)
 implicit none
@@ -1504,6 +1518,7 @@ END SUBROUTINE DASHP
 !>
 !!##NAME
 !!    elips(3f) - [M_calcomp:general] draw an elliptical arc
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1592,6 +1607,8 @@ END SUBROUTINE DASHP
 !!       call nframe()
 !!       call plot(0.0,0.0,END)
 !!    end program demo_elips
+!!##LICENSE
+!!   Public Domain
 !===================================================================================================================================
 subroutine elips(x0,y0,a,b,alpha,thet0, thetf, iv)
 implicit none
@@ -1670,6 +1687,7 @@ end subroutine elips
 !>
 !!##NAME
 !!    fit(3f) - [M_calcomp:general] draws a semi-hyperbolic curve through three points
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1740,6 +1758,8 @@ end subroutine elips
 !!    end subroutine crosshair
 !!    end program demo_fit
 !!
+!!##LICENSE
+!!   Public Domain
 !===================================================================================================================================
 SUBROUTINE FIT (XA,YA,XB,YB,XC,YC)
 implicit none
@@ -1840,6 +1860,7 @@ END SUBROUTINE FIT
 !>
 !!##NAME
 !!    grid(3f) - [M_calcomp:general] draws a linear grid
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1892,6 +1913,8 @@ END SUBROUTINE FIT
 !!       call grid(0.0,0.0,step,step,int(xmax/step)+1,int(ymax/step)+1)
 !!       call plot(0.0,0.0,END)         ! end graphics
 !!    end program demo_grid
+!!##LICENSE
+!!   Public Domain
 !===================================================================================================================================
 subroutine grid (x,y,xs,ys,m,n)
 implicit none
@@ -1944,6 +1967,7 @@ end subroutine grid
 !>
 !!##NAME
 !!    poly(3f) - [M_calcomp:general] draw an equilateral polygon
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1994,6 +2018,8 @@ end subroutine grid
 !!       enddo
 !!       call plot(0.0,0.0,999)
 !!    end program demo_poly
+!!##LICENSE
+!!   Public Domain
 !===================================================================================================================================
 subroutine poly (x,y,side_length,rn,th)
 implicit none
@@ -2048,6 +2074,7 @@ end subroutine poly
 !>
 !!##NAME
 !!    rect(3f) - [M_calcomp:general] draw a rectangle
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -2104,6 +2131,8 @@ end subroutine poly
 !!       ! end graphics
 !!       call plot(0.0,0.0,END)
 !!    end program demo_rect
+!!##LICENSE
+!!   Public Domain
 !===================================================================================================================================
 SUBROUTINE RECT (X,Y,H,W,TH,IV)
 implicit none
@@ -2194,6 +2223,7 @@ END SUBROUTINE SOLUT
 !>
 !!##NAME
 !!    curvx(3f) - [M_calcomp:scientific] plots a function of X over a given range
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -2271,6 +2301,8 @@ END SUBROUTINE SOLUT
 !!    !  CLOSE GRAPHICS
 !!       call plot(11.0,0.0,999)
 !!    end program demo_curvx
+!!##LICENSE
+!!   Public Domain
 !===================================================================================================================================
 SUBROUTINE CURVX  (X0,XF,A,E,B,F,C,G,D,H)
 implicit none
@@ -2334,6 +2366,7 @@ END SUBROUTINE CURVX
 !>
 !!##NAME
 !!    curvy(3f) - [M_calcomp:scientific] plots a function of Y over a given range
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -2413,6 +2446,8 @@ END SUBROUTINE CURVX
 !!    !  CLOSE GRAPHICS
 !!       call plot(11.0,0.0,999)
 !!    end program demo_curvx
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 SUBROUTINE CURVY  (Y0,YF,A,E,B,F,C,G,D,H)
 implicit none
@@ -2575,6 +2610,7 @@ END SUBROUTINE FIT4
 !>
 !!##NAME
 !!    fline(3f) - [M_calcomp:scientific] plot a polyline with optional fit
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -2687,6 +2723,8 @@ END SUBROUTINE FIT4
 !!       call fline(xar, yar, -8,1,1,1)
 !!       call nframe()
 !!    end program demo_fline
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 SUBROUTINE FLINE (X,Y,NN,K,J,L)
 implicit none
@@ -2876,6 +2914,7 @@ END SUBROUTINE FLINE
 !>
 !!##NAME
 !!    lgaxs(3f) - [M_calcomp:scientific] draw logarithmic axis
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -3029,6 +3068,8 @@ END SUBROUTINE FLINE
 !!       call symbol(3.75,3.5,0.09,ibcd,inteq,0.0,23)
 !!       call plot(11.0,0.0,999)
 !!    end program demo_lgaxs
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 SUBROUTINE LGAXS(XO,YO,IBCD,N,DIST,THETA,VORG,DELTA)
 implicit none
@@ -3213,6 +3254,7 @@ END SUBROUTINE LGAXS
 !>
 !!##NAME
 !!    lglin(3f) - [M_calcomp:scientific] draw polyline in log-log or semi-log mode
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -3375,6 +3417,9 @@ END SUBROUTINE LGAXS
 !!       call symbol(3.75,3.5,0.09,ibcd,inteq,0.0,23)
 !!       call plot(11.0,0.0,999)
 !!    end program demo_lglin
+!!
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 !     SUBROUTINE LGLINE(XARRA,YARRA,NV,K,JTYPE,NSY,LGTYP)
 
@@ -3551,6 +3596,7 @@ END SUBROUTINE LGLIN
 !>
 !!##NAME
 !!    polar(3f) - [M_calcomp:scientific] plot radial values versus angular variables (as polar coordinates)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -3702,6 +3748,9 @@ END SUBROUTINE LGLIN
 !!       call symbol(3.75,3.5,0.09,ibcd,inteq,0.0,23)
 !!       call plot(11.0,0.0,999)
 !!    end program demo_polar
+!!
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 SUBROUTINE POLAR(RADAR,ANGAR,NPTS,INC,LTYP,INTEQ,RMAX,DR)
 implicit none
@@ -3905,6 +3954,7 @@ END SUBROUTINE REFLX
 !>
 !!##NAME
 !!    scalg(3f) - [M_calcomp:scientific] determine scale factors for a logarithmic scale
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!        subroutine scalg(array,axlen,npts,inc)
@@ -4104,6 +4154,8 @@ END SUBROUTINE REFLX
 !!       call symbol(3.75,3.5,0.09,ibcd,inteq,0.0,23)
 !!       call plot(11.0,0.0,999)
 !!    end program demo_scalg
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine scalg(array,axlen,npts,inc)
 implicit none
@@ -4139,6 +4191,7 @@ end subroutine scalg
 !>
 !!##NAME
 !!    smoot(3f) - [M_calcomp:scientific] draw a polyline using modified spline-fitting technique
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -4274,6 +4327,9 @@ end subroutine scalg
 !!       call fline(xar, yar, -8,1,1,1)
 !!       call nframe()
 !!    end program demo_smoot
+!!
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine smoot(xn,yn,ic)
 implicit none
@@ -4477,6 +4533,7 @@ END SUBROUTINE SMOOT
 !>
 !!##NAME
 !!    axis(3f) - [M_calcomp:basic] draw linear axis with numeric scale and axis label
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -4609,6 +4666,9 @@ END SUBROUTINE SMOOT
 !!    call nframe()
 !!    call plot(0.0,0.0,999)
 !!    end program demo_axis
+!!
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 SUBROUTINE AXIS(XPAGE,YPAGE,IBCD,NCHAR,AXLEN,ANGLE,FIRSTV,DELTAV)
 implicit none
@@ -4724,6 +4784,7 @@ END SUBROUTINE AXIS
 !>
 !!##NAME
 !!    factor(3f) - [M_calcomp:basic] rescale entire plot
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -4835,6 +4896,9 @@ END SUBROUTINE AXIS
 !!       call symbol(3.0,6.0,0.21,ichr8,inteq,0.0,17)
 !!       end subroutine draw_car_prices
 !!       end program demo_factor
+!!
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine factor(fct)
 implicit none
@@ -4911,6 +4975,7 @@ END SUBROUTINE mpset
 !>
 !!##NAME
 !!    line(3f) - [M_calcomp:basic] plot a polyline with optional rescaling
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -5032,6 +5097,9 @@ END SUBROUTINE mpset
 !!    call plot(-0.4,-0.4,-3)
 !!    end subroutine drawplot
 !!    end program demo_line
+!!
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 SUBROUTINE LINE(XARRAY,YARRAY,NPTS,INC,LINTYP,INTEQ)
 implicit none
@@ -5123,6 +5191,7 @@ END SUBROUTINE LINE
 !>
 !!##NAME
 !!    width(3f) - [M_calcomp:basic] select pen width
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -5164,6 +5233,9 @@ END SUBROUTINE LINE
 !!  COMMENTS
 !!
 !!  This routine was not part of the original Calcomp library.
+!!
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine width(iwidth)
 implicit none
@@ -5183,6 +5255,7 @@ end subroutine width
 !>
 !!##NAME
 !!    newpen(3f) - [M_calcomp:basic] select new pen color and move to origin
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -5248,6 +5321,9 @@ end subroutine width
 !!    !call plot( 6.5,-5.5,-3)
 !!    call plot(0.0,0.0,999)
 !!    end program demo_newpen
+!!
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine newpen(index)
 implicit none
@@ -5270,6 +5346,7 @@ end subroutine newpen
 !>
 !!##NAME
 !!    nframe(3f) - [M_calcomp:basic] start new frame
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -5381,6 +5458,9 @@ end subroutine newpen
 !!  it can obtain in the plotting area specified on post-processor calls
 !!  (Usually the SIZE, and XI and YI parameters as described in the DOCLIB
 !!  document GRPHDOC).
+!!
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine nframe
 implicit none
@@ -5395,6 +5475,7 @@ end subroutine nframe
 !>
 !!##NAME
 !!    number(3f) - [M_calcomp:basic] plots a floating-point number
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -5462,6 +5543,9 @@ end subroutine nframe
 !!       call nframe()
 !!       call plot(0.0,0.0,999)
 !!    end program demo_number
+!!
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 SUBROUTINE NUMBER(XPAGE,YPAGE,HEIGHT,FPN,ANGLE,NDEC)
 implicit none
@@ -5568,6 +5652,7 @@ END SUBROUTINE NUMBER
 !>
 !!##NAME
 !!    plot(3f) - [M_calcomp:basic] move with pen up or down or start new origin or terminate plotting
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -5731,6 +5816,8 @@ END SUBROUTINE NUMBER
 !!       call symbol(3.3,7.0,.14,ichr12,inteq,0.0,29)
 !!       call plot(0.0,0.0,999)
 !!    end program demo_plot
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 SUBROUTINE PLOT(XPAG, YPAG, IPEN)
 implicit none
@@ -5998,6 +6085,7 @@ END SUBROUTINE PLOT
 !>
 !!##NAME
 !!    plots(3f) - [M_calcomp:basic] initialize the CALCOMP package
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -6038,6 +6126,9 @@ END SUBROUTINE PLOT
 !!    call plot( 5.0,-5.0, DRAW)
 !!    call plot( 0.0, 0.0, END)
 !!    end program demo_plots
+!!
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 SUBROUTINE PLOTS(xmin,xmax,ymin,ymax)
 implicit none
@@ -6064,6 +6155,7 @@ END SUBROUTINE PLOTS
 !>
 !!##NAME
 !!    scale(3f) - [M_calcomp:basic] calculate scaling factors for producing XY plots with LINE(3f) and AXIS(3f) routines
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -6212,6 +6304,9 @@ END SUBROUTINE PLOTS
 !!    !call plot(10.0,0.0,-3)
 !!    call plot(0.0,0.0,999)
 !!    end program demo_scale
+!!
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 SUBROUTINE SCALE(ARRAY,AXLEN,NPTS,INC)
 implicit none
@@ -6301,6 +6396,7 @@ END SUBROUTINE SCALE
 !>
 !!##NAME
 !!    symbol(3f) - [M_calcomp:basic] draw text string or marker
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -6488,6 +6584,9 @@ END SUBROUTINE SCALE
 !!       call nframe()
 !!       call plot(0.0,0.0,999)
 !!    end program demo_symbol
+!!
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 SUBROUTINE SYMBOL(XPAGE,YPAGE,HEIGHT,STRING,INTEQ,ANGLE,NCHAR)
 use M_strings, only : upper
@@ -7023,6 +7122,7 @@ END SUBROUTINE SYMBOL
 !>
 !!##NAME
 !!    where(3f) - [M_calcomp:basic] return current position and current plot-scaling factor
+!!            (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -7058,6 +7158,9 @@ END SUBROUTINE SYMBOL
 !!         c) The position where the next character will be drawn if SYMBOL
 !!            is called with the 999 value flags (as described in the SYMBOL
 !!            routine description).
+!!
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine where(xpag,ypag,fct)
 implicit none
@@ -7433,6 +7536,7 @@ END SUBROUTINE primitive__TRACER
 !>
 !!##NAME
 !!    cntour(3f) - [M_calcomp:scientific] draw a contour plot
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -7492,6 +7596,9 @@ END SUBROUTINE primitive__TRACER
 !!  calls must be supplied by the user, external to CNTOUR. These calls were
 !!  left out of CNTOUR to allow the user to create multiple plots in a single
 !!  program.
+!!
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 SUBROUTINE CNTOUR (AM,XX,YY,TOTX,TOTY,HGT,CV,CVN,TAB,NDIMYY)
 implicit none
@@ -8031,6 +8138,7 @@ end subroutine setpar
 !>
 !!##NAME
 !!    primitive__fgetvar(3fp) - [M_calcomp] return value of an environment variable or a default value
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -8058,6 +8166,8 @@ end subroutine setpar
 !!
 !!##EXAMPLE
 !!
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 character(len=80) function primitive__fgetvar(varname,default)
 implicit none

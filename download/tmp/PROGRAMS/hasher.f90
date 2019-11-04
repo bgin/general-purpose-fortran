@@ -10,6 +10,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '   hasher(1f) - [M_hashkeys] exercise the string hash methods in the M_hashkey(3fm) module',&
+'   (LICENSE:PD)                                                                 ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   hasher [ input_files [ -hash hashname] ]|[ -string string_value]|--help|--version',&
@@ -44,6 +45,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!    hasher(1f) - [M_hashkeys] exercise the string hash methods in the M_hashkey(3fm) module
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -90,7 +92,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)                change and redistribute it.  There is NO WARRANTY;>',&
 '@(#)                without even the implied warranty of MERCHANTABILITY or>',&
 '@(#)                FITNESS FOR A PARTICULAR PURPOSE.>',&
-'@(#)COMPILED:       Fri, Nov 1st, 2019 9:53:13 PM>',&
+'@(#)COMPILED:       Mon, Nov 4th, 2019 2:09:44 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

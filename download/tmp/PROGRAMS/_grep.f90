@@ -10,6 +10,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '    _grep(1f) - [FUNIX] search a file for a pattern                             ',&
+'    (LICENSE:PD)                                                                ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '    _grep pattern [ -i][ -E| -G]|[ --help| --version]                           ',&
@@ -58,6 +59,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!     _grep(1f) - [FUNIX] search a file for a pattern
+!!     (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -115,7 +117,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20180120>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Fri, Nov 1st, 2019 9:55:25 PM>',&
+'@(#)COMPILED:       Mon, Nov 4th, 2019 2:03:00 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

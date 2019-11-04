@@ -2,6 +2,7 @@ module M_uuid
 !>
 !!##NAME
 !!    M_uuid(3f) - [M_uuid] a module of UUID (Universally Unique IDentifier) procedures
+!!    (LICENSE:CUSTOM OPEN)
 !!
 !!##SYNOPSIS
 !!
@@ -111,6 +112,7 @@ contains
 !>
 !!##NAME
 !!    generate_uuid(3f) - [M_uuid] generate(approximately) a UUID (Universally Unique IDentifier) string per RFC 4122
+!!    (LICENSE:CUSTOM OPEN)
 !!
 !!##SYNOPSIS
 !!

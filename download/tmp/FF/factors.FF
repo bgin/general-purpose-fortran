@@ -62,6 +62,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file factors.1.man
 NAME
        factors(1f) - [NUMBERS] display prime factors of numbers
+       (LICENSE:PD)
 
 SYNOPSIS
        factors [NUMBER]...

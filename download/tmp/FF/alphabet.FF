@@ -2,6 +2,7 @@ $DOCUMENT HELP -file alphabet.1.man
 $!==============================================================================
 NAME
    alphabet(1f) - [CONVERT] print numeric values or a string as decimal, hexadecimal, octal and binary values
+   (LICENSE:PD)
 SYNOPSIS
    alphabet [values] [ -h values][ -z values][ -o values][ -t text]
 DESCRIPTION

@@ -1,3 +1,4 @@
+/* this code is licensed as public domain */
 #include "draw.h"
 #include <stdio.h>
 

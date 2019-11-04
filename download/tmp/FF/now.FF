@@ -70,6 +70,7 @@ integer                       :: i
 text=[ character(len=len(text(1))) ::                                               &
 &'NAME                                                                            ',&
 &'   now(1f)  - [TIME] print the date and time                                    ',&
+&'   (LICENSE:PD)                                                                 ',&
 &'                                                                                ',&
 &'SYNOPSIS                                                                        ',&
 &'  now [Format [ -date date_str|-ued Unix_time|-jed Julian_Date|-dat date_vector]',&

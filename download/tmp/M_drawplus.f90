@@ -1,11 +1,16 @@
 !>
 !!##NAME
 !!    M_drawplus(3f) - [M_drawplus] Additional routines using the M_DRAW graphics library
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
+!!    use M_drawplus, only : page ,invokeobj ,spirograph ,call_draw ,draw_interpret
+!!    use M_drawplus, only : arrowhead ,plain_rect ,rdpnt ,rdbox ,barcode ,pop ,push
+!!    use M_drawplus, only : uconic ,ellipse ,uarc ,polyline2, seefont
+!!    use M_drawplus, only : smoot, ismoo,ismoo1,ismoo2,ismoo3,perin
+!!    use M_drawplus, only : ismoo,ismoo1,ismoo2,ismoo3, perin
 !!
 !!##DESCRIPTION
-!!
 !!    M_drawplus(3f) is a collection of higher level graphic routines that call the
 !!    base M_draw(3f) graphics routines.
 !!
@@ -93,6 +98,11 @@
 !!        subroutine call_draw
 !!
 !!        subroutine draw_interpret
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !----------------------------------------------------------------------------------------------------------------------------------!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -149,6 +159,7 @@ contains
 !>
 !!##NAME
 !!    arrowhead(3f) - [M_drawplus] Draw arrow head (for text boxes and line markers)
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -234,6 +245,10 @@ contains
 !!    idum=getkey()
 !!    call vexit()
 !!    end program demo_arrowhead
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine arrowhead(xpoint,ypoint,xstart,ystart,size,idraw)
 use M_draw
@@ -294,6 +309,7 @@ end subroutine arrowhead
 !>
 !!##NAME
 !!    plain_rect(3f) - [M_drawplus] - draw a simple rectangle that does not act as a polygon
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!   subroutine plain_rect(x1,y1,x2,y2)
@@ -310,6 +326,10 @@ end subroutine arrowhead
 !!    X2,Y2   coordinates of opposite corner of the box
 !!##EXAMPLE
 !!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine plain_rect(x1,y1,x2,y2)
 use M_draw
@@ -335,6 +355,7 @@ end subroutine plain_rect
 !>
 !!##NAME
 !!       page_rri(3fp) - [M_drawplus] - new world window with viewport set to largest area with same aspect ratio
+!!       (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -378,6 +399,10 @@ end subroutine plain_rect
 !!      call vexit()
 !!      end
 !!      program demo_page_rri
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine page_rri(xsize,ysize,icolor)
 real,intent(in)             :: xsize
@@ -395,6 +420,7 @@ end subroutine page_rri
 !>
 !!##NAME
 !!       polyline2(3f) - [M_drawplus] - draw an unclosed polyline in the XY plane
+!!       (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -433,6 +459,11 @@ end subroutine page_rri
 !!      ipaws=getkey()
 !!      call vexit()
 !!      end program demo_polyline2
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine polyline2_i(arrx,arry)
 integer,intent(in)          :: arrx(:)
@@ -503,6 +534,7 @@ end subroutine polyline2_r
 !>
 !!##NAME
 !!    invokeobj(3f) - [M_drawplus] invoke object with specified transformations
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -579,6 +611,10 @@ end subroutine polyline2_r
 !!       endif
 !!       call vexit()
 !!    end program demo_invokeobj
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine invokeobj(xt,yt,zt,xs,ys,zs,xr,yr,zr,iobject)
 
@@ -606,6 +642,7 @@ end subroutine invokeobj
 !>
 !!##NAME
 !!    pop(3f) - [M_drawplus] call popviewport(), popmatrix(), popattributes()
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    subroutine pop()
@@ -613,6 +650,10 @@ end subroutine invokeobj
 !!    call popviewport(), popmatrix(), popattributes()
 !!##EXAMPLE
 !!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine pop()
 
@@ -628,6 +669,7 @@ end subroutine pop
 !>
 !!##NAME
 !!    push(3f) - [M_drawplus] call pushviewport(), pushmatrix(), pushattributes()
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!     subroutine push()
@@ -635,6 +677,10 @@ end subroutine pop
 !!    call pushattributes(), pushmatrix(), pushviewport()
 !!##EXAMPLE
 !!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine push()
 
@@ -650,6 +696,7 @@ end subroutine push
 !>
 !!##NAME
 !!     uarc(3f) - [M_drawplus] create circular arc, leaving CP at end of arc
+!!     (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -698,6 +745,10 @@ end subroutine push
 !!    idum=getkey()
 !!    call vexit()
 !!    end program demo_uarc
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine uarc(x,y,angle)
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -749,6 +800,7 @@ real :: ynow
 !>
 !!##NAME
 !!    arc2(3fp) - [M_drawplus] draw an arc
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -764,6 +816,11 @@ real :: ynow
 !!    M_DASH arc(3f) routine does a move so it cannot be included in a
 !!    polygon very easily. This routine is called by M_drawplus(3fm) version of
 !!    uarc(3f)
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine arc2(x, y, radius, startang, endang)
 use M_draw
@@ -813,6 +870,7 @@ end subroutine arc2
 !>
 !!##NAME
 !!    page(3f) - [M_drawplus] set window into largest viewport available
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -875,6 +933,10 @@ end subroutine arc2
 !!       ipaws=getkey()
 !!       call vexit()
 !!    end program demo_page
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine biggest_ortho2(xsmall,xlarge,ysmall,ylarge)
 
@@ -983,6 +1045,7 @@ end subroutine biggest_ortho2
 !>
 !!##NAME
 !!    ellipse(3f) - [M_drawplus] draws an ellipse or elliptical arc.
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -1014,6 +1077,11 @@ end subroutine biggest_ortho2
 !!    THO and THF may be positive or negative.  If THO is less than THF, the arc is
 !!    drawn in a counterclockwise direction; if THO is greater than THF, the arc is
 !!    drawn in a clockwise direction.
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine ellipse(xpage,ypage,rmaj,rmin,angle,th0,thf,ipen)
 use M_draw
@@ -1113,6 +1181,7 @@ end subroutine ellipse
 !>
 !!##NAME
 !!    uconic(3f) - [M_drawplus] general conic sections
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    uconic(x,y,p,e,theta1,theta2,orientation)
@@ -1214,7 +1283,10 @@ end subroutine ellipse
 !!         will lie in the current xy plane.
 !!
 !!##AUTHOR
-!!    Heavily based on a GCS routine written by Major Gabriel:
+!!    o Heavily based on a GCS routine written by Major Gabriel.
+!!    o John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine uconic(x,y,p,e,th1,th2,rangle)
 !    procedure draws all or part of a generalized conic section having a
@@ -1591,6 +1663,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '    draw_interpret(3f) - [M_drawplus] call interpreter for testing M_draw(3fm) routines',&
+'    (LICENSE:MIT)                                                               ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '    subroutine draw_interpret(array,delimiters)                                 ',&
@@ -1637,6 +1710,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                                                                                ',&
 'SEE ALSO                                                                        ',&
 '    call_draw(3f), M_draw(3fm), M_drawplus(3fm)                                 ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   MIT License                                                                  ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -1646,6 +1723,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!     draw_interpret(3f) - [M_drawplus] call interpreter for testing M_draw(3fm) routines
+!!     (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -1694,6 +1772,10 @@ end subroutine help_usage
 !!
 !!##SEE ALSO
 !!     call_draw(3f), M_draw(3fm), M_drawplus(3fm)
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine draw_interpret(array,delimiters)
 use M_strings, only: split
@@ -1732,6 +1814,7 @@ end subroutine draw_interpret
 !>
 !!##NAME
 !!     call_draw(3f) - [M_drawplus] Given a string representing a M_draw procedure and parameters call the routine
+!!     (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!   subroutine call_draw(verb,parameters,found)
@@ -1801,6 +1884,11 @@ end subroutine draw_interpret
 !!        getkey LET
 !!        vexit
 !!        eof
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine call_draw(verb,parameters,found)
 use iso_fortran_env
@@ -2274,6 +2362,7 @@ end function iflogic
 !>
 !!##NAME
 !! spirograph(3f) - [M_drawplus] draw a hypotrochoid
+!! (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -2311,6 +2400,11 @@ end function iflogic
 !!
 !!##EXAMPLE
 !!
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !===================================================================================================================================
 subroutine spirograph(xcenter,ycenter,sunr0,planet0,offset0,radius,ilines,ang,angs,ifill)
@@ -2793,6 +2887,7 @@ end subroutine smoot
 !>
 !!##NAME
 !!    rdbox(3f) - [M_drawplus:locator] - reads two points and outline defined box and return points
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -2863,6 +2958,11 @@ end subroutine smoot
 !!      enddo
 !!      call vexit()
 !!      end program demo_rdbox
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine rdbox(returnx1,returny1,returnx2,returny2,ikey)
 use M_journal, only : journal
@@ -2923,6 +3023,7 @@ end subroutine rdbox
 !>
 !!##NAME
 !!     rdpnt(3f) - [M_drawplus:locator] reads coordinates of point locator clicked at
+!!     (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -2974,6 +3075,11 @@ end subroutine rdbox
 !!    enddo
 !!    call vexit()
 !!    end program demo_rdpnt
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine rdpnt(oldx,oldy,selected_x,selected_y,ibut)
 use M_journal,  only : journal
@@ -3041,6 +3147,7 @@ end subroutine rdpnt
 !>
 !!##NAME
 !!    seefont(3f) - [M_drawplus] display font sample pages
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    seefont(fontin)
@@ -3073,6 +3180,10 @@ end subroutine rdpnt
 !!       call seefont(' ')
 !!       call vexit()
 !!    end program demo_seefont
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine seefont(fontin)
 use M_journal, only : journal

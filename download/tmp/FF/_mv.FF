@@ -1,6 +1,7 @@
 $DOCUMENT HELP -file _mv.1.man
 NAME
      _mv(1f) - [FUNIX:FILESYSTEM] rename file
+     (LICENSE:PD)
 SYNOPSIS
      _mv SOURCE DEST
 DESCRIPTION 

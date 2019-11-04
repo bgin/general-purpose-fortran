@@ -1,3 +1,4 @@
+/* this code is licensed as public domain */
 
 #ident "@(#)M_DRAW:driver/unixplot.c - M_DRAW driver for UNIX 'plot' format files"
 

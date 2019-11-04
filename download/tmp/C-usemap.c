@@ -1,3 +1,4 @@
+/* this code is licensed as public domain */
 
 #ident "@(#)M_DRAW:source - driver/usemap.c - M_DRAW driver for helping to create HTML image maps"
 #ident "@(#)M_DRAW:author - John S. Urban"

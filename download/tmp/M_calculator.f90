@@ -1,6 +1,7 @@
 !>
 !!##NAME
 !!   jucalc - [M_calculator] parse calculator expression and return numeric or string value
+!!   (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!   subroutine jucalc(inline,outlin,mssg,slast,ierr)
@@ -91,6 +92,10 @@
 !!     see INUM0(),RNUM0(),SNUM0(),STRGAR2(),JUCALCX().
 !!##REFERENCES
 !!    NONE.
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !>
 !! AUTHOR   John S. Urban
@@ -372,6 +377,7 @@ end subroutine jucalc
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -379,6 +385,10 @@ end subroutine jucalc
 !!##RETURNS
 !!##EXAMPLE
 !!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine help_funcs_()
 
@@ -547,6 +557,7 @@ end subroutine help_funcs_
 !>
 !!##NAME
 !!    parens_(3fp) - [M_calculator] crack out the parenthesis and solve
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    recursive subroutine parens_(string,nchar,ier)
@@ -566,6 +577,10 @@ end subroutine help_funcs_
 !!##RETURNS
 !!##EXAMPLE
 !!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 recursive subroutine parens_(string,nchar,ier)
 
@@ -677,13 +692,23 @@ end subroutine parens_
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
+!!    funcs_(3fp) - [M_calculator]given string of form name(p1,p2,...) (p(i) are non-parenthesized expressions)
+!!    call procedure "name" with those values as parameters.
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
+!!    recursive subroutine funcs_(wstrng,nchars,ier)
+!!
+!!     character(len=*)                    :: wstrng
 !!##DESCRIPTION
 !!##OPTIONS
 !!##RETURNS
 !!##EXAMPLE
 !!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 recursive subroutine funcs_(wstrng,nchars,ier)
 use M_time,    only : date_to_unix , unix_to_date, fmtdate, now, fmtdate_usage, realtime
@@ -694,13 +719,15 @@ use M_random,  only : init_random_seed
 use M_process, only : process_readall           ! read all lines from process into single string
 use M_system,  only : set_environment_variable  ! call setenv(3c) to set environment variable
 
-character(len=*),parameter::ident_4="@(#)M_calculator::funcs_(3fp):reduce name(p1,p2,...) (p(i) are non-parenthesized expressions)"
+character(len=*),parameter::ident_4="&
+&@(#)M_calculator::funcs_(3fp):given string of form name(p1,p2,...) (p(i) are non-parenthesized expressions) call procedure name"
 
-!  and call the procedure "name" with those values passed as the parameters.
 external juown1
-integer,parameter                   :: iargs=100
-
 character(len=*)                    :: wstrng
+integer                             :: nchars
+integer                             :: ier
+
+integer,parameter                   :: iargs=100
 character(len=10),save              :: days(7)
 character(len=10),save              :: months(12)
 character(len=9) :: day
@@ -749,7 +776,6 @@ integer                             :: idum
 integer                             :: iend
 integer                             :: iend1
 integer                             :: iend2
-integer                             :: ier
 integer                             :: ifail
 integer                             :: iflen
 integer                             :: ii
@@ -776,7 +802,6 @@ integer                             :: ivalue
 integer                             :: jend
 integer                             :: jj
 integer                             :: n
-integer                             :: nchars
 integer                             :: idat(8)
 integer                             :: ierr
 integer                             :: iweekday
@@ -1922,6 +1947,8 @@ end subroutine funcs_
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
+!!    stufftok_(3fp)- [M_calculator] add a new token variable and assign string to it
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -1929,6 +1956,10 @@ end subroutine funcs_
 !!##RETURNS
 !!##EXAMPLE
 !!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine stufftok_(fval,wstrng,nchars,string,iend,ier)
 
@@ -1958,6 +1989,8 @@ end subroutine stufftok_
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
+!!    args_(3fp)- [M_calculator] given 'par1,par2,...' store non-parenthesized expression par(n) into a real or string array
+!! (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -1965,6 +1998,10 @@ end subroutine stufftok_
 !!##RETURNS
 !!##EXAMPLE
 !!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine args_(line,ilen,array,itype,iarray,ier,mx)
 
@@ -2039,6 +2076,8 @@ end subroutine args_
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
+!! expressions_(3fp) - [M_calculator] resolve a series of terms into a single value and restring
+!! (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -2046,6 +2085,10 @@ end subroutine args_
 !!##RETURNS
 !!##EXAMPLE
 !!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine expressions_(string,nchar,value,ier)
 
@@ -2132,38 +2175,48 @@ end subroutine expressions_
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
+!! (LICENSE:MIT)
 !!##SYNOPSIS
 !!
+!!   subroutine pows_(wstrng,nchar,ier)
+!!
+!!    character(len=*),intent(inout) :: wstrng
+!!    integer,intent(inout)          :: nchar
+!!    integer                        :: ier
 !!##DESCRIPTION
+!!    given an unparenthesized string of form:
+!!
+!!       stringo opo fval1 ** fval2 opo2 stringo2
+!!
+!!    where opo is a preceding optional operator from set /,* and
+!!    stringo is the string that would precede opo when it exists,
+!!    and opo2 is an optional trailing operator from set /,*,**
+!!    and stringo2 the string that would follow op2 when it exists,
+!!    evaluate the expression fval1**fval2 and restring it; repeating
+!!    from left to right until no power operators remain in the string
+!!    or an error occurs
+!!
 !!##OPTIONS
+!!    wstrng  input string returned with power operators evaluated
+!!    nchar   input length of wstrng, returned corrected for new wstrng returned.
+!!    ier     error status
+!!
+!!
 !!##RETURNS
 !!##EXAMPLE
 !!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine pows_(wstrng,nchar,ier)
 
 character(len=*),parameter::ident_8="@(#)M_calculator::pows_(3fp): expand power functions in a string, working from left to right"
 
-!     given an unparenthesized string of form:
-!        stringo opo fval1 ** fval2 opo2 stringo2
-!     where opo is a preceding optional operator from set /,* and
-!     stringo is the string that would precede opo when it exists,
-!     and opo2 is an optional trailing operator from set /,*,**
-!     and stringo2 the string that would follow op2 when it exists,
-!     evaluate the expression fval1**fval2 and restring it; repeating
-!     from left to right until no power operators remain in the string
-!     or an error occurs
-!
-!     ip     =position of beginning of first ** operator
-!     iz     =beginning of fval1 string
-!     iright =end of fval2 string
-!     wstrng=input string returned with power operators evaluated
-!     nchar  =input length of wstrng, returned corrected for new
-!             wstrng returned.
-!
-character(len=*),intent(inout) :: wstrng
-integer,intent(inout)          :: nchar
-integer                        :: ier
+character(len=*),intent(inout) :: wstrng    ! input string returned with power operators evaluated
+integer,intent(inout)          :: nchar     ! input length of wstrng, returned corrected for new wstrng returned.
+integer                        :: ier       ! error status
 character(len=iclen_calc)     :: tempch
 character(len=icbuf_calc)      :: dummy
 character(len=1)               :: z
@@ -2173,10 +2226,10 @@ integer                        :: i
 integer                        :: id2
 integer                        :: idum
 integer                        :: im2
-integer                        :: ip
+integer                        :: ip        ! position of beginning of first ** operator
 integer                        :: ip2
-integer                        :: iright
-integer                        :: iz
+integer                        :: iright    ! end of fval2 string
+integer                        :: iz        ! beginning of fval1 string
 integer                        :: nchart
 !-----------------------------------------------------------------------------------------------------------------------------------
       INFINITE: do
@@ -2275,6 +2328,7 @@ end subroutine pows_
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
+!! (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -2282,6 +2336,10 @@ end subroutine pows_
 !!##RETURNS
 !!##EXAMPLE
 !!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine factors_(wstrng,nchr,fval1,ier)
 
@@ -2393,6 +2451,7 @@ end subroutine factors_
 !>
 !!##NAME
 !!     a_to_d_(3f) - [M_calculator] returns a double precision value from a numeric character string specifically for M_calculator(3fm)
+!!     (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!   subroutine a_to_d_(chars,rval,ierr)
@@ -2429,6 +2488,10 @@ end subroutine factors_
 !!       o 12/28/1987  modified to specify bn in formats for reads. vax
 !!                    defaults to zero-fill on internal files.
 !!       o 12/22/2016  Changed to generate man(1) pages via ufpp(1).
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine a_to_d_(chars,rval8,ierr)
 
@@ -2500,6 +2563,7 @@ end subroutine a_to_d_
 !>
 !!##NAME
 !!    squeeze_ - [M_calculator] change +-[] to #=(),replace strings with placeholders,delete comments
+!!    (LICENSE:MIT)
 !!
 !!##DESCRIPTION
 !!    remove all blanks from input string and return position of last non-blank character in nchars using imax as the highest
@@ -2544,6 +2608,11 @@ end subroutine a_to_d_
 !!  !!!!and won't allow variable names of digit-e format).
 !!
 !!  !!!!make sure variable called e and numbers like e+3 or .e+3 are handled satisfactorily
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine squeeze_(string,imax,nchars,varnam,nchar2,ier)
 
@@ -2763,6 +2832,7 @@ end subroutine squeeze_
 !>
 !!##NAME
 !!       [M_calculator] given_name_get_stringvalue_(3fp) - return associated value for variable name"
+!!       (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!   subroutine given_name_get_stringvalue_(chars,ierr)
@@ -2783,6 +2853,10 @@ end subroutine squeeze_
 !!
 !!##EXAMPLE
 !!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine given_name_get_stringvalue_(chars,ierr)
 
@@ -2815,6 +2889,7 @@ end subroutine given_name_get_stringvalue_
 !!##NAME
 !!    getvalue(3f) - [M_calculator] given numeric variable name return doubleprecision value directly from calculator
 !!                   dictionary for efficiency
+!!                   (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    doubleprecision function getvalue(varnam)
@@ -2842,6 +2917,10 @@ end subroutine given_name_get_stringvalue_
 !!   Results:
 !!
 !!    50.0000000       50.000000000000000
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 real(kind=dp) function getvalue(varnam)
 
@@ -2869,6 +2948,7 @@ end function getvalue
 !!##NAME
 !!    igetvalue(3f) - [M_calculator] given numeric variable name return integer value directly from calculator
 !!                    dictionary for efficiency
+!!                    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    integer function igetvalue(varnam)
@@ -2899,6 +2979,10 @@ end function getvalue
 !!   Results:
 !!
 !!    50.0000000       50
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 integer function igetvalue(varnam)
 character(len=*),intent(in) :: varnam
@@ -2911,6 +2995,7 @@ end function igetvalue
 !>
 !!##NAME
 !!    rgetvalue(3f) - [M_calculator] given numeric variable name return real value directly from calculator dictionary for efficiency
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -2942,6 +3027,10 @@ end function igetvalue
 !!   Results:
 !!
 !!    50.0000000       50.0000000
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 real function rgetvalue(varnam)
 character(len=*),intent(in) :: varnam
@@ -2954,6 +3043,7 @@ end function rgetvalue
 !>
 !!##NAME
 !!    stuff(3f) - [M_calculator] directly store value into calculator dictionary for efficiency
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -3006,6 +3096,11 @@ end function rgetvalue
 !!    call stuff('A',10.0)
 !!    call stuff('PI',3.141592653589793238462643383279502884197169399375105820974944592307d0)
 !!    end program demo_stuff
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine stuff(varnam,value,ioflag)
 
@@ -3056,6 +3151,7 @@ end subroutine stuff
 !>
 !!##NAME
 !!     stuffa(3f) - [M_calculator] stuffa(3f): directly store a string into calculator variable name table
+!!     (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!   subroutine stuffa(varnam,string,ioflag)
@@ -3092,6 +3188,10 @@ end subroutine stuff
 !!       call stuffa('$mystring','this is the new value of the string')
 !!       write(*,*)snum0('$mystring')
 !!    end program demo_stuffa
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine stuffa(varnam,string,ioflag)
 
@@ -3134,6 +3234,7 @@ end subroutine stuffa
 !>
 !!##NAME
 !!      inum0(3f) - [M_calculator] return integer value from calculator expression
+!!      (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!   integer function inum0(inline,ierr)
@@ -3196,6 +3297,10 @@ end subroutine stuffa
 !!       JUCALCX()
 !!##REFERENCES
 !!##NONE.
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !>
 !! AUTHOR:  John S. Urban
@@ -3252,6 +3357,7 @@ end function inum0
 !>
 !!##NAME
 !!       rnum0(3f) - [M_calculator] returns real number from string expression using JUCALC(3f)
+!!       (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    real function rnum0(inline)
@@ -3295,6 +3401,10 @@ end function inum0
 !!
 !!##REFERENCES
 !!       o NONE.
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !>
 !! AUTHOR    John S. Urban
@@ -3338,6 +3448,7 @@ end function rnum0
 !>
 !!##NAME
 !!      dnum0(3f) - [M_calculator] return double precision value from string expression using JUCALC
+!!      (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!   doubleprecision function dnum0(inline,ierr)
@@ -3383,6 +3494,10 @@ end function rnum0
 !!
 !!##REFERENCES
 !!       o NONE.
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !>
 !! AUTHOR + John S. Urban
@@ -3422,6 +3537,7 @@ end function dnum0
 !>
 !!##NAME
 !!     snum0(3f) - [M_calculator] resolve a calculator expression into a string(return blank on errors)
+!!     (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -3482,6 +3598,11 @@ end function dnum0
 !!
 !!##REFERENCES
 !!       o NONE.
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !>
 !! AUTHOR    John S. Urban
@@ -3532,6 +3653,7 @@ end function snum0
 !>
 !!##NAME
 !!     jucalcx(3f) - [M_calculator] return value from a string expression processing messages to simplify call to JUCALC(3f)
+!!     (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    subroutine jucalcx(inlin0,outval,outlin0,ierr,ilen)
@@ -3617,6 +3739,10 @@ end function snum0
 !!     See also: STRGAR(),RNUM0(),JUCALC(),INUM0(),SNUM0()
 !!##REFERENCES
 !!     NONE.
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !>
 !! AUTHOR   John S. Urban
@@ -3686,6 +3812,7 @@ end subroutine jucalcx
 !>
 !!##NAME
 !!       strgarr(3f) - [M_calculator] read a string into an array using jucalc(3f) calculator
+!!       (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!   subroutine strgarr(line,ivals,vals,ifound,delims,ierr)
@@ -3822,6 +3949,10 @@ end subroutine jucalcx
 !!
 !!##REFERENCES
 !!    none.
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !>
 !! AUTHOR  John S. Urban
@@ -3927,6 +4058,7 @@ END SUBROUTINE strgarr
 !>
 !!##NAME
 !!       strgar2(3f) - [M_calculator] read a string into a real array USING CALCULATOR, allowing quoted strings in arguments,
+!!       (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -4048,6 +4180,10 @@ END SUBROUTINE strgarr
 !!
 !!##REFERENCES
 !!     NONE.
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 !>
 !! AUTHOR   John S. Urban

@@ -1,3 +1,4 @@
+/* this code is licensed as public domain */
 #ident "@(#)M_DRAW:driver/X11.c - M_DRAW driver for X11 Windows"
 
 #include <stdlib.h>

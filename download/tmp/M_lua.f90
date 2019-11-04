@@ -2,6 +2,7 @@
 !>
 !!##NAME
 !!    M_lua(3fm) - [M_lua] Fortran interface to the LUA language
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION

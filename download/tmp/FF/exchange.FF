@@ -3,6 +3,7 @@ $ifdef TESTPRG90
 $DOCUMENT HELP -file exchange.1.man
 NAME
     exchange(1f) - [CONVERT] test of basic unit conversion functions
+    (LICENSE:PD)
 
 SYNOPSIS
     exchange [[ -feet VALUES] [ -meters VALUES]

@@ -1,3 +1,5 @@
+/* this code is licensed as public domain */
+
 #ident "@(#)M_DRAW:driver/vog.c - M_DRAW driver for writing M_DRAW calls as text commands for the ush(1) shell"
 #ident "@(#)M_DRAW:author - John S. Urban"
 #ident "@(#)M_DRAW:version - 1.0, Mar 2004"

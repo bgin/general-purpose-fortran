@@ -1,3 +1,4 @@
+/* this code is licensed as public domain */
 struct	YOBBA	{
 		union {
 			struct {

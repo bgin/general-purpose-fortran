@@ -1,3 +1,5 @@
+/* this code is licensed as public domain */
+
 #ident "@(#)M_DRAW:driver/vml.c - M_DRAW driver for VML (Microsoft Vector Markup Language)"
 #ident "@(#)M_DRAW:author - John S. Urban"
 #ident "@(#)M_DRAW:version - 1.0, Mar 1999"

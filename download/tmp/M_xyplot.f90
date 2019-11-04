@@ -498,6 +498,7 @@ contains
 !>
 !!##NAME
 !!    plot_init_globals(3f) - [M_xyplot] call xy_init_labels(3f) an xy_init_markers(3f)
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -516,6 +517,7 @@ end subroutine plot_init_globals
 !>
 !!##NAME
 !!    plot_init(3f) - [M_xyplot] initialize command language and graphics mode to set up starting interpretation
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -541,6 +543,7 @@ end subroutine plot_init
 !>
 !!##NAME
 !!    xy_init_labels(3f) - [M_xyplot] data defining all unit code labels
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -1043,6 +1046,7 @@ end subroutine xy_init_labels
 !>
 !!##NAME
 !!    xy_init_markers(3f) - [M_xyplot] part of plot_axes(3f), used to define default geometric markers
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -1091,6 +1095,7 @@ end subroutine xy_init_markers
 !>
 !!##NAME
 !!    plot_setfill(3f) - [M_xyplot] set background, middleground, and foreground colors for plot
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -1125,6 +1130,7 @@ end subroutine plot_setfill
 !>
 !!##NAME
 !!    xy_init_default(3f) - [M_xyplot] initialize XY plot routines
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!
@@ -1412,6 +1418,7 @@ end subroutine xy_init_default
 !>
 !!##NAME
 !!    plot_hcopy(3f) - [M_xyplot] generate copy of the current plot for XY plot routines
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -1595,6 +1602,7 @@ end subroutine plot_hcopy
 !>
 !!##NAME
 !!    plot_noclose(3f) - [M_xyplot] flag whether to keep current device open while switching to alternate device
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -1624,6 +1632,7 @@ end function xy_noclose
 !>
 !!##NAME
 !!    plot_set_xmin(3f) - [M_xyplot] set value for xmin/xmax/ymin/... command
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -1740,6 +1749,7 @@ end subroutine plot_set_xmin
 !>
 !!##NAME
 !!    plot_storage(3f) - [M_xyplot] if on a storage tube, clear the screen to unclutter it
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -1765,6 +1775,7 @@ end subroutine plot_storage
 !>
 !!##NAME
 !!    plot_setmark(3f) - [M_xyplot] set or display marker geometries
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -1895,6 +1906,7 @@ end subroutine plot_setmark
 !>
 !!##NAME
 !!    plot_page_aspect(3f) - [M_xyplot] Get aspect ratio from ASPECT command and call xy_aspct
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -1928,6 +1940,7 @@ end subroutine plot_page_aspect
 !>
 !!##NAME
 !!    plot_marks(3f) - [M_xyplot] draw examples of dash codes, pen styles and screen markers for XY plots
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -2175,6 +2188,7 @@ end subroutine plot_marks
 !>
 !!##NAME
 !!    plot_title(3f) - [M_xyplot] allow user to add extra title lines by number
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -2236,6 +2250,7 @@ end subroutine plot_title
 !>
 !!##NAME
 !!    plot_jut(3f) - [M_xyplot] allow user to place text on screen
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -2498,6 +2513,7 @@ end subroutine plot_jut
 !>
 !!##NAME
 !!    plot_sz(3f) - [M_xyplot] change the size of the display surface
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    subroutine plot_sz()
@@ -2609,6 +2625,7 @@ end subroutine plot_sz
 !>
 !!##NAME
 !!    plot_drawplot(3f) - [M_xyplot] draw an xy plot
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -2935,6 +2952,7 @@ end subroutine plot_drawplot
 !>
 !!##NAME
 !!    plot_juparea(3f) - [M_xyplot] parse parea command
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -2998,6 +3016,7 @@ end subroutine plot_juparea
 !>
 !!##NAME
 !!    plot_jupage(3f) - [M_xyplot] a good try at allowing mixing of PLT commands and M_plot commands
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -3084,6 +3103,7 @@ end subroutine plot_jupage
 !>
 !!##NAME
 !!    plot_id(3f) - [M_xyplot] render the id(1) command for XY plots
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -3323,6 +3343,7 @@ end subroutine plot_id
 !>
 !!##NAME
 !!    plot_clear(3f) - [M_xyplot] clear graphics area and ensure in graphics mode
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -3366,6 +3387,7 @@ end subroutine plot_clear
 !>
 !!##NAME
 !!    xy_aspct(3f) - [M_xyplot] Store plot window size in global variables and call plot_page()
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -3398,6 +3420,7 @@ end subroutine xy_aspct
 !>
 !!##NAME
 !!    xy_bans(3f) - [M_xyplot] draw banner lines from PLT ban command
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -3519,6 +3542,7 @@ end subroutine xy_bans
 !>
 !!##NAME
 !!    xy_printban(3f) - [M_xyplot] plot horizontal banner string at specified location
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -3557,6 +3581,7 @@ end subroutine xy_printban
 !>
 !!##NAME
 !!    xy_printbanv(3f) - [M_xyplot] plot vertical banner string
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -3596,6 +3621,7 @@ end subroutine xy_printbanv
 !>
 !!##NAME
 !!    xy_fxed(3f) - [M_xyplot] select whether a string is fixed-space or not
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -3626,6 +3652,7 @@ end subroutine xy_fxed
 !>
 !!##NAME
 !!    xy_init_graphics(3f) - [M_xyplot] Initialize PLT graphics environment
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -3738,6 +3765,7 @@ end subroutine xy_init_graphics
 !>
 !!##NAME
 !!    xy_ifdrawn(3f) - [M_xyplot] xy_ifdrawn() is used to see if first page drawn or not
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -3766,6 +3794,7 @@ end function xy_ifdrawn
 !>
 !!##NAME
 !!    xy_iftext(3f) - [M_xyplot] Add user-specified text strings to plot
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -3938,6 +3967,7 @@ end subroutine xy_iftext
 !>
 !!##NAME
 !!    xy_jucurv(3f) - [M_xyplot] find extrema for group of curves and set legend label defaults
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -4213,6 +4243,7 @@ end subroutine xy_jucurv
 !>
 !!##NAME
 !!    xy_jumapc(3f) - [M_xyplot] map colors using HUE command
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -4518,6 +4549,7 @@ end subroutine xy_jumapc
 !>
 !!##NAME
 !!    xy_pause(3f) - [M_xyplot] conditionally  pause until graphic or text-window response
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -4609,6 +4641,7 @@ end subroutine xy_pause
 !>
 !!##NAME
 !!    xy_jutitl(3f) - [M_xyplot] add title lines to plot
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -4642,6 +4675,7 @@ end subroutine xy_jutitl
 !>
 !!##NAME
 !!    xy_jutitlX(3f) - [M_xyplot] draw plot titling information (titles and legend block)
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -4793,6 +4827,7 @@ end subroutine xy_jutitlX
 !>
 !!##NAME
 !!    xy_set_bigger(3f) - [M_xyplot] change title line size
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -4823,6 +4858,7 @@ end subroutine xy_set_bigger
 !>
 !!##NAME
 !!    xy_laxis(3f) - [M_xyplot] draw linear axis and logarithmic axis for PLT
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -5007,6 +5043,7 @@ end subroutine xy_laxis
 !>
 !!##NAME
 !!    xy_pickpnt(3f) - [M_xyplot] interactively draw a line to current left scale and store the curve or return point
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -5131,6 +5168,7 @@ end subroutine xy_pickpnt
 !>
 !!##NAME
 !!    xy_setlbl(3f) - [M_xyplot] decide axis label strings
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -5206,6 +5244,7 @@ end subroutine xy_setlbl
 !>
 !!##NAME
 !!    xy_setsize(3f) - [M_xyplot] use values to set size and border on output device
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -5246,6 +5285,7 @@ end subroutine xy_setsize
 !>
 !!##NAME
 !!    xy_tidybox(3f) - [M_xyplot] draw legend lines inside box specified on call
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -5319,6 +5359,7 @@ end subroutine xy_tidybox
 !>
 !!##NAME
 !!    xy_arrow(3f) - [M_xyplot] Add xy_arrow from T text box to specified point
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -5402,6 +5443,7 @@ end subroutine xy_arrow
 !>
 !!##NAME
 !!    xy_idbox(3f) - [M_xyplot] Draw ID legend box specified with LEGEND command
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -5605,6 +5647,7 @@ end subroutine xy_idbox
 !>
 !!##NAME
 !!    xy_idbox0(3f) - [M_xyplot] draw legend lines
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -5801,6 +5844,7 @@ end subroutine xy_idbox0
 !>
 !!##NAME
 !!    xy_iflou(3f) - [M_xyplot] set global flag for Leading Edge trimming (see LE command)
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -5839,6 +5883,7 @@ end subroutine xy_iflou
 !>
 !!##NAME
 !!    xy_judraw(3f) - [M_xyplot] draw curves to plot scales using plot_ values
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -6031,6 +6076,7 @@ end subroutine xy_judraw
 !>
 !!##NAME
 !!    xy_loadtl(3f) - [M_xyplot] load title xy_array
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -6186,6 +6232,7 @@ end subroutine xy_loadtl
 !>
 !!##NAME
 !!    xy_tidybox1(3f) - [M_xyplot] draw legend lines in box with legend box autosized and positioned by edge number
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -6470,6 +6517,7 @@ end subroutine xy_tidybox1
 !>
 !!##NAME
 !!    xy_tidybox2(3f) - [M_xyplot] draw legend lines inside box specified on call
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -6699,6 +6747,7 @@ end subroutine xy_tidybox2
 !>
 !!##NAME
 !!    xy_listout3(3f) - [M_xyplot] copy rcurve_in to rcurve_out expanding negative curve numbers to ranges (1 -10 means 1 thru 10)
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -6798,6 +6847,7 @@ end subroutine xy_listout3
 !>
 !!##NAME
 !!   xy_retrv2(3f) - [M_xyplot] a special version of RETREV() that integrates the Calculator and Language library for XY plots
+!!   (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    subroutine xy_retrv2(name,val,ilen,ier)
@@ -6873,6 +6923,7 @@ end subroutine xy_retrv2
 !>
 !!##NAME
 !!    plot_toggle(3f) - [M_xyplot] special version of toggle(3f) to integrate calculator and language libraries
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!   subroutine plot_toggle(verb,pars)
@@ -6989,6 +7040,7 @@ end subroutine plot_toggle
 !>
 !!##NAME
 !!    xy_getdat(3f) - [M_xyplot] place data from specified file and curve into xy_arrayQ xy_array
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -7198,6 +7250,7 @@ end subroutine xy_getdat
 !>
 !!##NAME
 !!    xy_juput(3f) - [M_xyplot] write current memory-resident curves in global variables(q) onto pseudo file
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -7336,6 +7389,7 @@ end subroutine xy_juput
 !>
 !!##NAME
 !!    xy_slide(3f) - [M_xyplot] slide value
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -7360,6 +7414,7 @@ end function xy_slide
 !>
 !!##NAME
 !!    plot_z(3f) - [M_xyplot] Interactive ZOOM mode
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -7442,6 +7497,7 @@ end subroutine plot_z
 !>
 !!##NAME
 !!    plot_zmode(3f) - [M_xyplot] Interactive ZOOM mode
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -7819,6 +7875,7 @@ end subroutine plot_zmode
 !>
 !!##NAME
 !!    xy_getrel(3f) - [M_xyplot] return values to convert one set of units to another
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -7860,6 +7917,7 @@ end subroutine xy_getrel
 !>
 !!##NAME
 !!    xy_units(3f) - [M_xyplot] given unit code return string label optionally converted to uppercase
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -7889,6 +7947,7 @@ end subroutine xy_units
 !>
 !!##NAME
 !!    xy_juprint(3f) - [M_xyplot] print string LINE at position x,y with embedded directives
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -7923,6 +7982,7 @@ end subroutine xy_juprint
 !>
 !!##NAME
 !!    priv_justrlen(3f) - [M_xyplot] query string size with embedded directives
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -7959,6 +8019,7 @@ end subroutine priv_justrlen
 !>
 !!##NAME
 !!    priv_justr(3f) - [M_xyplot] print string l0 at position x,y with embedded directives
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    subroutine priv_justr(x,y,l0,itype,xmin,xmax,ymin,ymax)
@@ -8167,6 +8228,7 @@ end subroutine priv_justr
 !>
 !!##NAME
 !!    priv_fontchng(3f) - [M_xyplot] called by priv_justr to process embedded directives in a string
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -8337,6 +8399,7 @@ end subroutine priv_fontchng
 !>
 !!##NAME
 !!    priv_zqjreset(3f) - [M_xyplot] called by priv_fontchng(3f) to process embedded directives in a string
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -8377,6 +8440,7 @@ end subroutine priv_zqjreset
 !>
 !!##NAME
 !!    priv_doescape(3f) - [M_xyplot] called by priv_fontchng(3f) to process embedded directives in a string
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -8582,6 +8646,7 @@ end subroutine priv_doescape
 !>
 !!##NAME
 !!    xy_jucp2(3f) - [M_xyplot] plot string line at current position
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -8671,6 +8736,7 @@ end subroutine xy_jucp2
 !>
 !!##NAME
 !!    xy_juprints(3f) - [M_xyplot] simple print of string l at position x,y
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -8707,6 +8773,7 @@ end subroutine xy_juprints
 !>
 !!##NAME
 !!    xy_jucp(3f) - [M_xyplot] plot string line at current position
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -8766,6 +8833,7 @@ end subroutine xy_jucp
 !>
 !!##NAME
 !!    xy_jufont(3f) - [M_xyplot] check and set font and store it so can query it
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -8819,6 +8887,7 @@ end subroutine xy_jufont
 !>
 !!##NAME
 !!    xy_jufont(3f) - [M_xyplot] check and set font and store it so can query it
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -8840,6 +8909,7 @@ end subroutine xy_getxy_jufont
 !>
 !!##NAME
 !!    xy_rasters(3f) - [M_xyplot] set line width
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -8883,6 +8953,7 @@ end subroutine xy_rasters
 !>
 !!##NAME
 !!    xy_ustrlen(3f) - [M_xyplot] get software string length including trailing whitespace
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -8908,6 +8979,7 @@ end function xy_ustrlen
 !>
 !!##NAME
 !!    xy_ustrlen2(3f) - [M_xyplot] get software string length up to specified character
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -8931,6 +9003,7 @@ end function xy_ustrlen2
 !>
 !!##NAME
 !!    plot_get_plot_area(3f) - [M_xyplot] initialize plot page and set up common page-related values
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -8960,6 +9033,7 @@ end subroutine plot_get_plot_area
 !>
 !!##NAME
 !!    plot_set_plot_area(3f) - [M_xyplot] initialize plot page and set up common page-related values
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -8989,6 +9063,7 @@ end subroutine plot_set_plot_area
 !>
 !!##NAME
 !!    plot_axis(3f) - [M_xyplot] draw XY axis for XY plot routines
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    subroutine plot_axes()
@@ -10093,6 +10168,7 @@ end subroutine xy_setdatarange
 !>
 !!##NAME
 !!    plot_getdatarange(3f) - [M_xyplot] get plot window extremes, set plot window extremes for dual axis
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -10437,6 +10513,7 @@ end subroutine xy_line
 !>
 !!##NAME
 !!    priv_drawseg_using_pen(3fp) - [M_xyplot] draw a line using pen style ipen NOT to axis scale NOT setting color
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -10474,6 +10551,7 @@ end subroutine priv_drawseg_using_pen
 !>
 !!##NAME
 !!    plot_setdash(3f) - [M_xyplot] allow user to display|alter|retrieve  dash codes by style number
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -10731,6 +10809,7 @@ end subroutine plot_setdash
 !>
 !!##NAME
 !!    xy_resetpens(3f) - [M_xyplot] reset pens
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -10793,6 +10872,7 @@ end subroutine xy_resetpens
 !>
 !!##NAME
 !!    xy_jurang(3f) - [M_xyplot] return nice max and min values for the axis, and nice axis grid spacings
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -10923,6 +11003,7 @@ end subroutine xy_jurang
 !>
 !!##NAME
 !!    xy_con_x(3f) - [M_xyplot] scale an axis value to the overall window/viewport
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -10955,6 +11036,7 @@ end function xy_con_x
 !>
 !!##NAME
 !!    xy_con_y(3f) - [M_xyplot] scale an axis value to the overall window/viewport
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -10987,6 +11069,7 @@ end function xy_con_y
 !>
 !!##NAME
 !!    xy_setcnv(3f) - [M_xyplot] set up conversion table for xy_con_x and xy_con_y functions
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -11017,6 +11100,7 @@ end subroutine xy_setcnv
 !>
 !!##NAME
 !!    xy_jugetwn(3f) - [M_xyplot] query current window ( appropriate for 2-d only)
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -11070,6 +11154,7 @@ end subroutine xy_jugetwn
 !>
 !!##NAME
 !!    xy_zoom(3f) - [M_xyplot] given current four numbers defining a box; alter them by indicated selections of an old and new box
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -11223,6 +11308,7 @@ end subroutine xy_zoom
 !>
 !!##NAME
 !!    xy_convert(3f) - [M_xyplot] do linear conversion for XY plot routines
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -11293,6 +11379,7 @@ end subroutine xy_convert
 !>
 !!##NAME
 !!    priv_hilow(3fp) - [M_xyplot] avoid bug where plot fails if zero range in abscissa or ordinate
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -11330,6 +11417,7 @@ end subroutine priv_hilow
 !>
 !!##NAME
 !!    priv_jubox(3fp) - [M_xyplot] draw a filled box around current scaled plot area
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -11360,6 +11448,7 @@ end subroutine priv_jubox
 !>
 !!##NAME
 !!    priv_jugrid(3fp) - [M_xyplot] draw linear and logarithmic grids after actual axis have been drawn
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -11664,6 +11753,7 @@ end subroutine priv_jugrid
 !>
 !!##NAME
 !!    priv_logrng(3fp) - [M_xyplot] return nice ranges for logarithmic scales
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -11713,6 +11803,7 @@ end subroutine priv_logrng
 !>
 !!##NAME
 !!    xy_obj12345(3f) - [M_xyplot] create or close M_plot object 12345
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -11759,6 +11850,7 @@ end subroutine xy_obj12345
 !>
 !!##NAME
 !!    priv_setrng(3fp) - [M_xyplot] adjust the scaling according to user limits if specified
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -11788,6 +11880,7 @@ end subroutine priv_setrng
 !>
 !!##NAME
 !!    priv_solidline(3fp) - [M_xyplot] override dash code and symbol drawing and draw solid line for error bars
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -11810,6 +11903,7 @@ end subroutine priv_solidline
 !>
 !!##NAME
 !!    priv_toscale(3f) - [M_xyplot] draw line using current pen style either to axis or current window
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!   subroutine priv_toscale(x, y, n,con,keyword)
@@ -11982,6 +12076,7 @@ end subroutine priv_toscale
 !>
 !!##NAME
 !!    priv_endgrid(3fp) - [M_xyplot] determine length of major and minor grid lines
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -12024,6 +12119,7 @@ end subroutine priv_endgrid
 !!##NAME
 !!
 !!    priv_judash(3fp) - [M_xyplot] draw dashed line
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -12172,6 +12268,7 @@ end subroutine priv_judash
 !>
 !!##NAME
 !!    priv_jufill(3fp) - [M_xyplot] fill or draw impulse line under curve
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -12307,6 +12404,7 @@ end subroutine priv_jufill
 !>
 !!##NAME
 !!    priv_jusym(3f) - [M_xyplot] put symbols at points on a polyline
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -12471,6 +12569,7 @@ end subroutine priv_jusym
 !>
 !!##NAME
 !!    xy_getmark(3f) - [M_xyplot] get marker geometries
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!##DESCRIPTION
@@ -12523,6 +12622,7 @@ end subroutine xy_getmark
 !>
 !!##NAME
 !!   illusion(3f) - [M_drawinc:banner] draw a banner page with short labels at the compass points
+!!   (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!

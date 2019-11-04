@@ -78,6 +78,7 @@ contains
 !>
 !!##NAME
 !!    RETREV(3f) - [ARGUMENTS:M_kracken] get keyword value as a string from a command's argument list processed by kracken(3f)
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -126,11 +127,16 @@ contains
 !!     VALUE IS use this value instead
 !!
 !!##SEE ALSO
-!!    M_kracken, kracken
+!!    M_kracken(3f),  kracken(3f)
 !!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+!!    dget(3f), dgets(3f), iget(3f), igets(3f), lget(3f), lgets(3f),
+!!    rget(3f), rgets(3f), sget(3f), sgets(3f), retrev(3f)
 !!
-!!    parse,dissect,store,setprompts,show
+!!    parse(3f), dissect(3f), store(3f), setprompts(3f), show(3f)
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine retrev(name,val,len,ier)
 
@@ -162,7 +168,8 @@ end subroutine retrev
 !===================================================================================================================================
 !>
 !!##NAME
-!!      dget(3f) - [ARGUMENTS:M_kracken] given keyword fetch doubleprecision value from command argument
+!!    dget(3f) - [ARGUMENTS:M_kracken] given keyword fetch doubleprecision value from command argument
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    function dget(keyword) result(value)
@@ -204,11 +211,16 @@ end subroutine retrev
 !!    $ demo_dget -val 3.000
 !!       3.00000000
 !!##SEE ALSO
-!!    M_kracken, kracken
+!!    M_kracken(3f),  kracken(3f)
 !!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+!!    dget(3f), dgets(3f), iget(3f), igets(3f), lget(3f), lgets(3f),
+!!    rget(3f), rgets(3f), sget(3f), sgets(3f), retrev(3f)
 !!
-!!    parse,dissect,store,setprompts,show
+!!    parse(3f), dissect(3f), store(3f), setprompts(3f), show(3f)
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 function dget(keyword)
 
@@ -228,7 +240,8 @@ end function dget
 !===================================================================================================================================
 !>
 !!##NAME
-!!          rget(3f) - [ARGUMENTS:M_kracken] given keyword fetch real value from command argument
+!!    rget(3f) - [ARGUMENTS:M_kracken] given keyword fetch real value from command argument
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    function rget(keyword) result(value)
@@ -270,11 +283,16 @@ end function dget
 !!    $ demo_rget -val 3.000
 !!       3.00000000
 !!##SEE ALSO
-!!    M_kracken, kracken
+!!    M_kracken(3fm), kracken(3f)
 !!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+!!    dget(3f), dgets(3f), iget(3f), igets(3f), lget(3f), lgets(3f),
+!!    rget(3f), rgets(3f), sget(3f), sgets(3f), retrev(3f)
 !!
 !!    parse,dissect,store,setprompts,show
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 function rget(keyword)
 
@@ -293,7 +311,8 @@ end function rget
 !===================================================================================================================================
 !>
 !!##NAME
-!!          iget(3f) - [ARGUMENTS:M_kracken] given keyword fetch integer value from command argument
+!!    iget(3f) - [ARGUMENTS:M_kracken] given keyword fetch integer value from command argument
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -340,11 +359,16 @@ end function rget
 !!    $ demo_iget -val 3.000
 !!       3
 !!##SEE ALSO
-!!    M_kracken, kracken
+!!    M_kracken(3fm), kracken(3f)
 !!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+!!    dget(3f), dgets(3f), iget(3f), igets(3f), lget(3f), lgets(3f),
+!!    rget(3f), rgets(3f), sget(3f), sgets(3f), retrev(3f)
 !!
-!!    parse,dissect,store,setprompts,show
+!!    parse(3f), dissect(3f), store(3f), setprompts(3f), show(3f)
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 function iget(keyword)
 
@@ -364,7 +388,8 @@ end function iget
 !===================================================================================================================================
 !>
 !!##NAME
-!!          lget(3f) - [ARGUMENTS:M_kracken] given keyword fetch logical value from command arguments
+!!    lget(3f) - [ARGUMENTS:M_kracken] given keyword fetch logical value from command arguments
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    function lget(keyword) result(lval)
@@ -414,11 +439,16 @@ end function iget
 !!      $ demo_lget -truth F    # N, no, F, false, .F., .FALSE. are all false
 !!      The truth is F
 !!##SEE ALSO
-!!    M_kracken, kracken
+!!    M_kracken(3f),  kracken(3f)
 !!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+!!    dget(3f), dgets(3f), iget(3f), igets(3f), lget(3f), lgets(3f),
+!!    rget(3f), rgets(3f), sget(3f), sgets(3f), retrev(3f)
 !!
-!!    parse,dissect,store,setprompts,show
+!!    parse(3f), dissect(3f), store(3f), setprompts(3f), show(3f)
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 function lget(keyword)
 
@@ -461,7 +491,8 @@ end function lget
 !===================================================================================================================================
 !>
 !!##NAME
-!!          sget(3f) - [ARGUMENTS:M_kracken] given keyword fetch string value and length from command arguments
+!!    sget(3f) - [ARGUMENTS:M_kracken] given keyword fetch string value and length from command arguments
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!   function sget(name,ilen) result(string)
@@ -517,11 +548,16 @@ end function lget
 !!    a is A value for A
 !!    b is BBBBBBB
 !!##SEE ALSO
-!!    M_kracken, kracken
+!!    M_kracken(3f),  kracken(3f)
 !!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+!!    dget(3f), dgets(3f), iget(3f), igets(3f), lget(3f), lgets(3f),
+!!    rget(3f), rgets(3f), sget(3f), sgets(3f), retrev(3f)
 !!
-!!    parse,dissect,store,setprompts,show
+!!    parse(3f), dissect(3f), store(3f), setprompts(3f), show(3f)
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 function sget(name,ilen) result(string)
 
@@ -554,13 +590,15 @@ end function sget
 !===================================================================================================================================
 !>
 !!##NAME
-!!          dgets(3f) - [ARGUMENTS:M_kracken] given keyword fetch doubleprecision array from command arguments
+!!    dgets(3f) - [ARGUMENTS:M_kracken] given keyword fetch doubleprecision array from command arguments
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
-!!    function dgets(keyword) result(darray)
+!!    function dgets(keyword,ier) result(darray)
 !!
-!!     character(len=*),intent(in)  :: keyword
-!!     doubleprecision,allocatable  :: DARRAY
+!!     character(len=*),intent(in)   :: keyword
+!!     doubleprecision,allocatable   :: DARRAY
+!!     integer,optional,intent(iout) :: ier
 !!
 !!##DESCRIPTION
 !!     The dgets(3f) function returns a dynamically allocated array of
@@ -575,6 +613,7 @@ end function sget
 !!##RETURNS
 !!     darray   double precision numeric array returned by function. The array
 !!              will have zero size if the parsed dictionary entry is blank.
+!!     IER      If present and non-zero an error occurred in converting strings to a value
 !!##EXAMPLE
 !!
 !!   Sample program
@@ -601,13 +640,18 @@ end function sget
 !!     89123456.789000005,10.999999900000001
 !!
 !!##SEE ALSO
-!!    M_kracken, kracken
+!!    M_kracken(3f),  kracken(3f)
 !!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+!!    dget(3f), dgets(3f), iget(3f), igets(3f), lget(3f), lgets(3f),
+!!    rget(3f), rgets(3f), sget(3f), sgets(3f), retrev(3f)
 !!
-!!    parse,dissect,store,setprompts,show
+!!    parse(3f), dissect(3f), store(3f), setprompts(3f), show(3f)
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
-function dgets(keyword) result(darray)
+function dgets(keyword,ier) result(darray)
 
 character(len=*),parameter::ident_8="@(#)M_kracken::dgets(3f): given keyword fetch dble value from Language Dictionary (0 on err)"
 
@@ -616,7 +660,8 @@ real(kind=dp),allocatable   :: darray(:)                    ! function type
 
    character(len=:),allocatable  :: carray(:)          ! convert value to an array using split(3f)
    integer                       :: i
-   integer                       :: ier
+   integer,optional              :: ier
+   integer                       :: ier_local
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(sget(keyword).ne.' ')then
       call split(sget(keyword),carray)                      ! find value associated with keyword and split it into an array
@@ -624,8 +669,21 @@ real(kind=dp),allocatable   :: darray(:)                    ! function type
       allocate(character(len=0) :: carray(0))
    endif
    allocate(darray(size(carray)))                           ! create the output array
+   ier_local=0
+   if(present(ier))then
+         ier=0
+   endif
    do i=1,size(carray)
-      call string_to_value(carray(i), darray(i), ier)       ! convert the string to a numeric value
+      call string_to_value(carray(i), darray(i), ier_local)       ! convert the string to a numeric value
+      if(present(ier).and.ier_local.ne.0)then
+         ier=ier_local
+      endif
+      !if(ier_local.ne.0)then
+      !   !darray(i)=0.0d0
+      !   deallocate(darray)
+      !   allocate(darray(i-1))                              ! create the output array
+      !   exit
+      !endif
    enddo
 !-----------------------------------------------------------------------------------------------------------------------------------
 end function dgets
@@ -634,13 +692,15 @@ end function dgets
 !===================================================================================================================================
 !>
 !!##NAME
-!!          igets(3f) - [ARGUMENTS:M_kracken] given keyword fetch integer array from command arguments
+!!    igets(3f) - [ARGUMENTS:M_kracken] given keyword fetch integer array from command arguments
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
-!!    function igets(keyword) result(iarray)
+!!    function igets(keyword,ier) result(iarray)
 !!
-!!     character(len=*),intent(in)  :: keyword
-!!     integer,allocatable          :: iarray(:)
+!!     character(len=*),intent(in)   :: keyword
+!!     integer,allocatable           :: iarray(:)
+!!     integer,optional,intent(iout) :: ier
 !!##DESCRIPTION
 !!     The igets(3f) function returns a dynamically allocated array of integers
 !!     from a string that is the value for a command line option. It is part of
@@ -658,8 +718,7 @@ end function dgets
 !!##RETURNS
 !!     IARRAY     INTEGER array returned by function
 !!                The array will have zero size if the parsed dictionary
-!!                entry is blank.
-!!
+!!     IER        If present and non-zero an error occurred in converting strings to a value
 !!##EXAMPLE
 !!
 !!   Sample program
@@ -667,53 +726,68 @@ end function dgets
 !!    program demo_igets
 !!    use M_kracken, only: kracken, igets
 !!    implicit none
-!!    integer,allocatable  :: vals(:)
+!!    doubleprecision,allocatable  :: vals(:)
 !!    integer              :: i
-!!      ! define command arguments and parse user command
-!!      call kracken('demo','-nums 1 2 3 100 1000 10000 100,000 11.11111 77.77777 -77.7777' )
-!!      ! get any values specified for -nums
-!!      vals=igets('demo_nums')
-!!      if(size(vals).gt.0)then
-!!         ! print the requested values
-!!         write(*,'(*(i0:,","))')( vals(i),i=1,size(vals))
-!!      endif
+!!    ! define command arguments and parse user command
+!!    call kracken('demo','-nums 1 2 3 100 1000 10000 100,000 11.11111 77.77777 -77.7777' )
+!!    vals=igets('demo_nums') ! get any values specified for -nums
+!!    write(*,'(*(g0:,","))')( vals(i),i=1,size(vals)) ! print the values
 !!    end program demo_igets
 !!
 !!   Example program runs:
 !!
-!!      $ demo_igets
-!!      1,2,3,100,1000,10000,100000,11,77,-77
-!!      $ demo_igets -val 89,123,456 10.9999999
-!!      89123456,10
+!!    $ demo_igets
+!!    1,2,3,100,1000,10000,100000,11,77,-77
+!!    $ demo_igets -val 89,123,456 10.9999999
+!!    89123456,10
+!!
 !!
 !!##SEE ALSO
-!!    M_kracken, kracken
+!!    M_kracken(3f),  kracken(3f)
 !!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+!!    dget(3f), dgets(3f), iget(3f), igets(3f), lget(3f), lgets(3f),
+!!    rget(3f), rgets(3f), sget(3f), sgets(3f), retrev(3f)
 !!
-!!    parse,dissect,store,setprompts,show
+!!    parse(3f), dissect(3f), store(3f), setprompts(3f), show(3f)
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
-function igets(keyword) result(iarray)
+function igets(keyword,ier) result(iarray)
 
 character(len=*),parameter::ident_9="&
 &@(#)M_kracken::igets(3f): given keyword fetch integer array from string in dictionary(0 on err)"
 
 character(len=*),intent(in) :: keyword             ! keyword to retrieve value for from dictionary
 integer,allocatable         :: iarray(:)           ! convert value to an array
-   iarray=int(dgets(keyword))                      ! just call DGETS(3f) but change returned value to type INTEGER
+doubleprecision,allocatable :: darray(:)           ! convert value to an array
+integer,optional            :: ier
+   if(present(ier))then
+      darray=dgets(keyword,ier)
+      if(ier.eq.0)then
+         iarray=int(darray)                           ! just call DGETS(3f) but change returned value to type INTEGER
+      else
+         iarray=[integer ::]
+      endif
+   else
+      iarray=int(dgets(keyword))                   ! just call DGETS(3f) but change returned value to type INTEGER
+   endif
 end function igets
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
 !!##NAME
-!!          rgets(3f) - [ARGUMENTS:M_kracken] given keyword fetch real array from command arguments
+!!    rgets(3f) - [ARGUMENTS:M_kracken] given keyword fetch real array from command arguments
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
-!!    function rgets(keyword) result(rarray)
+!!    function rgets(keyword,ier) result(rarray)
 !!
-!!     character(len=*),intent(in)  :: keyword
-!!     real,allocatable             :: rarray(:)
+!!     character(len=*),intent(in)   :: keyword
+!!     real,allocatable              :: rarray(:)
+!!     integer,optional,intent(iout) :: ier
 !!##DESCRIPTION
 !!     The rgets(3f) function returns a dynamically allocated array of real values
 !!     from a string that is the value for a command line option. It is part of
@@ -731,6 +805,7 @@ end function igets
 !!     RARRAY     real array returned by function.
 !!                The array will have zero size if the parsed dictionary
 !!                entry is blank.
+!!     IER        If present and non-zero an error occurred in converting strings to a value
 !!
 !!##EXAMPLE
 !!
@@ -779,26 +854,43 @@ end function igets
 !!      -40.00       -40.00
 !!       98.60        37.00
 !!##SEE ALSO
-!!    M_kracken, kracken
+!!    M_kracken(3f),  kracken(3f)
 !!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+!!    dget(3f), dgets(3f), iget(3f), igets(3f), lget(3f), lgets(3f),
+!!    rget(3f), rgets(3f), sget(3f), sgets(3f), retrev(3f)
 !!
-!!    parse,dissect,store,setprompts,show
+!!    parse(3f), dissect(3f), store(3f), setprompts(3f), show(3f)
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
-function rgets(keyword) result(rarray)
+function rgets(keyword,ier) result(rarray)
 
 character(len=*),parameter::ident_10="@(#)M_kracken::rgets(3f): given keyword fetch real array from string in dictionary (0 on err)"
 
 character(len=*),intent(in) :: keyword             ! keyword to retrieve value for from dictionary
 real,allocatable            :: rarray(:)           ! convert value to an array
-   rarray=real(dgets(keyword))                     ! just call DGETS(3f) but change returned value to type REAL
+doubleprecision,allocatable :: darray(:)           ! convert value to an array
+integer,optional            :: ier
+   if(present(ier))then
+      darray=dgets(keyword,ier)
+      if(ier.eq.0)then
+         rarray=real(darray)              ! just call DGETS(3f) but change returned value to type REAL
+      else
+         rarray=[real ::]
+      endif
+   else
+      rarray=real(dgets(keyword))                  ! just call DGETS(3f) but change returned value to type REAL
+   endif
 end function rgets
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
 !!##NAME
-!!          lget(3f) - [ARGUMENTS:M_kracken] given keyword fetch logical array from command argument
+!!    lget(3f) - [ARGUMENTS:M_kracken] given keyword fetch logical array from command argument
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    function lgets(keyword) result(lvals)
@@ -846,11 +938,16 @@ end function rgets
 !!     F F F F T T T T T T F
 !!
 !!##SEE ALSO
-!!    M_kracken, kracken
+!!    M_kracken(3f),  kracken(3f)
 !!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+!!    dget(3f), dgets(3f), iget(3f), igets(3f), lget(3f), lgets(3f),
+!!    rget(3f), rgets(3f), sget(3f), sgets(3f), retrev(3f)
 !!
-!!    parse,dissect,store,setprompts,show
+!!    parse(3f), dissect(3f), store(3f), setprompts(3f), show(3f)
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 function lgets(keyword) result(larray)
 
@@ -901,7 +998,8 @@ end function lgets
 !===================================================================================================================================
 !>
 !!##NAME
-!!          sgets(3f) - [ARGUMENTS:M_kracken] given keyword fetch string value parsed on whitespace into an array
+!!    sgets(3f) - [ARGUMENTS:M_kracken] given keyword fetch string value parsed on whitespace into an array
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!   function sgets(name,delim) result(strings)
@@ -954,11 +1052,16 @@ end function lgets
 !!     size=           7
 !!
 !!##SEE ALSO
-!!    M_kracken, kracken
+!!    M_kracken(3f),  kracken(3f)
 !!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,retrev
+!!    dget(3f), dgets(3f), iget(3f), igets(3f), lget(3f), lgets(3f),
+!!    rget(3f), rgets(3f), sget(3f), retrev(3f)
 !!
-!!    parse,dissect,store,setprompts,show
+!!    parse(3f), dissect(3f), store(3f), setprompts(3f), show(3f)
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 function sgets(name,delim) result(strings)
 
@@ -990,7 +1093,8 @@ end function sgets
 !===================================================================================================================================
 !>
 !!##NAME
-!!          kracken(3f) - [ARGUMENTS:M_kracken] crack command line options on Fortran programs, using "-KEYWORD VALUE" syntax
+!!    kracken(3f) - [ARGUMENTS:M_kracken] crack command line options on Fortran programs, using "-KEYWORD VALUE" syntax
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!     subroutine kracken(verb, string[,ierror])
@@ -1089,11 +1193,16 @@ end function sgets
 !!          values= 10000.0000  4.1122334455667700  1234
 !!
 !!##SEE ALSO
-!!    M_kracken, kracken
+!!    M_kracken(3f),  kracken(3f)
 !!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+!!    dget(3f), dgets(3f), iget(3f), igets(3f), lget(3f), lgets(3f),
+!!    rget(3f), rgets(3f), sget(3f), sgets(3f), retrev(3f)
 !!
-!!    parse,dissect,store,setprompts,show
+!!    parse(3f), dissect(3f), store(3f), setprompts(3f), show(3f)
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine kracken(verb,string,error_return)
 
@@ -1159,7 +1268,8 @@ end subroutine kracken
 !===================================================================================================================================
 !>
 !!##NAME
-!!          setprompts(3f) - [ARGUMENTS:M_kracken] set explicit prompts for keywords in interactive mode
+!!    setprompts(3f) - [ARGUMENTS:M_kracken] set explicit prompts for keywords in interactive mode
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!   subroutine setprompts(verb,init)
@@ -1204,11 +1314,16 @@ end subroutine kracken
 !!        Enter parameter number to change("RETURN" to finish):
 !!
 !!##SEE ALSO
-!!    M_kracken, kracken
+!!    M_kracken(3f),  kracken(3f)
 !!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+!!    dget(3f), dgets(3f), iget(3f), igets(3f), lget(3f), lgets(3f),
+!!    rget(3f), rgets(3f), sget(3f), sgets(3f), retrev(3f)
 !!
-!!    parse,dissect,store,setprompts,show
+!!    parse(3f), dissect(3f), store(3f), setprompts(3f), show(3f)
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine setprompts(verb,init)
 
@@ -1223,7 +1338,8 @@ end subroutine setprompts
 !===================================================================================================================================
 !>
 !!##NAME
-!!          dissect(3f) - [ARGUMENTS:M_kracken] convenient call to parse() -- define defaults, then process
+!!    dissect(3f) - [ARGUMENTS:M_kracken] convenient call to parse() -- define defaults, then process
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -1266,11 +1382,16 @@ end subroutine setprompts
 !!    STRING IS CHARACTER value
 !!
 !!##SEE ALSO
-!!    M_kracken, kracken
+!!    M_kracken(3f),  kracken(3f)
 !!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+!!    dget(3f), dgets(3f), iget(3f), igets(3f), lget(3f), lgets(3f),
+!!    rget(3f), rgets(3f), sget(3f), sgets(3f), retrev(3f)
 !!
-!!    parse,dissect,store,setprompts,show
+!!    parse(3f), dissect(3f), store(3f), setprompts(3f), show(3f)
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine dissect(verb,init,pars,error_return)
 
@@ -1302,7 +1423,8 @@ end subroutine dissect
 !===================================================================================================================================
 !>
 !!##NAME
-!!          parse(3f) - [ARGUMENTS:M_kracken] parse user command and store tokens into Language Dictionary
+!!    parse(3f) - [ARGUMENTS:M_kracken] parse user command and store tokens into Language Dictionary
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -1423,11 +1545,17 @@ end subroutine dissect
 !!       55.5499992
 !!
 !!##SEE ALSO
-!!    M_kracken, kracken
+!!    M_kracken(3f),  kracken(3f)
 !!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+!!    dget(3f), dgets(3f), iget(3f), igets(3f), lget(3f), lgets(3f),
+!!    rget(3f), rgets(3f), sget(3f), sgets(3f), retrev(3f)
 !!
-!!    parse,dissect,store,setprompts,show
+!!    parse(3f), dissect(3f), store(3f), setprompts(3f), show(3f)
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine parse(verb,string,allow,error_return)
 
@@ -1653,7 +1781,8 @@ end subroutine parse
 !===================================================================================================================================
 !>
 !!##NAME
-!!          store(3f) - [ARGUMENTS:M_kracken] add or replace value for specified name in dictionary(if allow='add' add name if needed)
+!!    store(3f) - [ARGUMENTS:M_kracken] add or replace value for specified name in dictionary(if allow='add' add name if needed)
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!   subroutine store(name1,value1,allow1,ier)
@@ -1774,11 +1903,17 @@ end subroutine parse
 !!    > =======================================================================
 !!
 !!##SEE ALSO
-!!    M_kracken, kracken
+!!    M_kracken(3f),  kracken(3f)
 !!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+!!    dget(3f), dgets(3f), iget(3f), igets(3f), lget(3f), lgets(3f),
+!!    rget(3f), rgets(3f), sget(3f), sgets(3f), retrev(3f)
 !!
-!!    parse,dissect,store,setprompts,show
+!!    parse(3f), dissect(3f), store(3f), setprompts(3f), show(3f)
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine store(name1,value1,allow1,ier)
 
@@ -1939,7 +2074,8 @@ end subroutine store
 !===================================================================================================================================
 !>
 !!##NAME
-!!          subscript_(3fp) - [ARGUMENTS:M_kracken] return the subscript value of a string when given its name
+!!    subscript_(3fp) - [ARGUMENTS:M_kracken] return the subscript value of a string when given its name
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!   function subscript_(chars0)
@@ -1951,11 +2087,16 @@ end subroutine store
 !!##EXAMPLE
 !!
 !!##SEE ALSO
-!!    M_kracken, kracken
+!!    M_kracken(3f),  kracken(3f)
 !!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+!!    dget(3f), dgets(3f), iget(3f), igets(3f), lget(3f), lgets(3f),
+!!    rget(3f), rgets(3f), sget(3f), sgets(3f), retrev(3f)
 !!
-!!    parse,dissect,store,setprompts,show
+!!    parse(3f), dissect(3f), store(3f), setprompts(3f), show(3f)
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 function subscript_(chars0)
 
@@ -1989,7 +2130,8 @@ end function subscript_
 !===================================================================================================================================
 !>
 !!##NAME
-!!          menu(3fp) - [ARGUMENTS:M_kracken] prompt for values using a menu interface
+!!    menu(3fp) - [ARGUMENTS:M_kracken] prompt for values using a menu interface
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!   subroutine menu(verb)
@@ -2001,11 +2143,16 @@ end function subscript_
 !!##EXAMPLE
 !!
 !!##SEE ALSO
-!!    M_kracken, kracken
+!!    M_kracken(3f),  kracken(3f)
 !!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+!!    dget(3f), dgets(3f), iget(3f), igets(3f), lget(3f), lgets(3f),
+!!    rget(3f), rgets(3f), sget(3f), sgets(3f), retrev(3f)
 !!
-!!    parse,dissect,store,setprompts,show
+!!    parse(3f), dissect(3f), store(3f), setprompts(3f), show(3f)
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine menu(verb)
 
@@ -2236,6 +2383,7 @@ end subroutine menu
 !>
 !!##NAME
 !!    show(3f) - [ARGUMENTS:M_kracken] dump dictionary entries
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -2275,11 +2423,16 @@ end subroutine menu
 !!     demo_>               = #N#
 !!
 !!##SEE ALSO
-!!    M_kracken, kracken
+!!    M_kracken(3f),  kracken(3f)
 !!
-!!    dget,dgets,iget,igets,lget,lgets,rget,rgets,sget,sgets,retrev
+!!    dget(3f), dgets(3f), iget(3f), igets(3f), lget(3f), lgets(3f),
+!!    rget(3f), rgets(3f), sget(3f), sgets(3f), retrev(3f)
 !!
-!!    parse,dissect,store,setprompts,show
+!!    parse(3f), dissect(3f), store(3f), setprompts(3f), show(3f)
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine show(VERB_NAME0,VERBS_ONLY,IWIDE)
 
@@ -2429,9 +2582,9 @@ doubleprecision,allocatable :: d(:)
    call unit_check('dgets', size(dgets('NOTTHERE')).eq.0,                           msg=msg('NOTTHERE'))
    d=dgets('BAD')
    if(size(d).gt.0)then
-      call unit_check('dgets', size(d).eq.1.and.ieee_is_nan(d(1)),                  msg=msg('BAD'))
+      call unit_check('dgets', size(d).eq.1.and.ieee_is_nan(d(1)),                  msg=msg('BAD IS NAN',size(d)))
    else
-      call unit_check('dgets', size(d).eq.1,                                        msg=msg('BAD'))
+      call unit_check('dgets', size(d).eq.1,                                        msg=msg('BAD HAS SIZE 1',size(d)))
    endif
    call unit_check('dgets', size(dgets('BLANK')).eq.0,                              msg=msg('BLANK'))
    call unit_check_done('dgets',msg='')

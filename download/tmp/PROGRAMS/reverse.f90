@@ -10,6 +10,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '       reverse(1f) - [FUNIX] print file in reverse                              ',&
+'       (LICENSE:PD)                                                             ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '       reverse INPUT_FILE [OUTPUT_FILE] [ --help][ --version]                   ',&
@@ -33,6 +34,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!        reverse(1f) - [FUNIX] print file in reverse
+!!        (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -69,7 +71,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)COPYRIGHT:      (C) 2009 John S. Urban>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Fri, Nov 1st, 2019 10:01:56 PM>',&
+'@(#)COMPILED:       Mon, Nov 4th, 2019 2:08:38 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
