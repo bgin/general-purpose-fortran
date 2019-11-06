@@ -6,7 +6,6 @@
            integer             :: ierr
            real                :: vals(1000)
            character(len=4096) :: line
-           ! NOTE: user must supply the JUOWN1 and C procedures.
 
            write(*,'(80("-"))')
            call strgar2('10;2/3;sin(4.314)',4,vals,ifound,' ;',ierr)

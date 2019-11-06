@@ -1,7 +1,5 @@
              program demo_jucalc
              !compute(1f): line mode calculator program (that calls jucalc(3f))
-             !     requires:
-             !     c(), juown1()
              use M_calculator, only: jucalc,iclen_calc
              ! iclen_calc : max length of expression or variable value as a string
              implicit none

@@ -610,6 +610,9 @@ end subroutine read_table_real
 !!   subroutine swallow(filename,pageout)
 !!
 !!    character(len=*),intent(in) :: filename
+!!      or
+!!    integer,intent(in)          :: io
+!!
 !!    character(len=1),allocatable,intent(out) :: pageout(:)
 !!##DESCRIPTION
 !!    Read an entire file into memory as a character array, one character variable per line.
@@ -621,7 +624,18 @@ end subroutine read_table_real
 !!    amounts of memory.
 !!
 !!##OPTIONS
-!!       filename   filename to read into memory, or LUN (Fortran Logical Unit Number)
+!!       filename   filename to read into memory, or LUN (Fortran Logical Unit Number).
+!!                  If filename is a LUN, file must be opened with
+!!
+!!                     form='unformatted',access='stream'
+!!
+!!                  as in
+!!
+!!                    open(unit=igetunit, file=filename,     &
+!!                    & action="read", iomsg=message,        &
+!!                    & form="unformatted", access="stream", &
+!!                    & status='old',iostat=ios)
+!!
 !!       pageout    array of characters to hold file
 !!
 !!##EXAMPLES
@@ -742,7 +756,7 @@ character(len=1),parameter   :: nl=char(10)
       if(array(i).eq.nl)then
          linecount=linecount+1
          position=1
-      else
+      elseif(linelength.ne.0)then
          table(linecount)(position:position)=array(i)
          position=position+1
       endif
@@ -768,8 +782,8 @@ end subroutine swallow
 !!    integer,intent(out),optional :: length
 !!    integer,intent(out),optional :: lines
 !!##DESCRIPTION
-!!    Read an entire file into memory as a stream, retaining line end
-!!    terminators.
+!!    Read an entire file as a stream into memory as an array of single
+!!    characters, retaining line end terminators.
 !!
 !!    NOTE:
 !!
@@ -779,6 +793,17 @@ end subroutine swallow
 !!
 !!##OPTIONS
 !!       filename   filename to read into memory or LUN (Fortran Logical Unit Number)
+!!                  If a LUN, file must be opened with
+!!
+!!                     form='unformatted',access='stream'
+!!
+!!                  as in
+!!
+!!                    open(unit=igetunit, file=filename,     &
+!!                    & action="read", iomsg=message,        &
+!!                    & form="unformatted", access="stream", &
+!!                    & status='old',iostat=ios)
+!!
 !!       text       array of characters to hold file
 !!       length     length of longest line read(Optional).
 !!       lines      number of lines read(Optional).
@@ -855,11 +880,12 @@ character(len=4096) :: local_filename
       select type(FILENAME)
        type is (character(len=*))
           open(unit=igetunit, file=trim(filename), action="read", iomsg=message,&
-           form="unformatted", access="stream",status='old',iostat=ios)
+           &form="unformatted", access="stream",status='old',iostat=ios)
           local_filename=filename
        type is (integer)
           rewind(unit=filename,iostat=ios,iomsg=message)
           write(local_filename,'("unit ",i0)')filename
+          igetunit=filename
       end select
 !-------------------------------------------
    if(ios.eq.0)then  ! if file was successfully opened
@@ -874,9 +900,9 @@ character(len=4096) :: local_filename
       !
       if(allocated(text))deallocate(text) ! make sure text array not allocated
       allocate ( text(nchars) )           ! make enough storage to hold file
-      read(igetunit,iostat=ios) text      ! load input file -> text array
+      read(igetunit,iostat=ios,iomsg=message) text      ! load input file -> text array
       if(ios.ne.0)then
-         call stderr_local( '*slurp* bad read of '//trim(local_filename) )
+         call stderr_local( '*slurp* bad read of '//trim(local_filename)//':'//trim(message) )
       endif
    else
       call stderr_local('*slurp* '//message)

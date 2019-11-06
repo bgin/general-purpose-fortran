@@ -4459,7 +4459,7 @@ character(len=*),parameter :: SAME='-library libGPF -section 3 -description'
 
 !! no not use M_system version or will create a circular dependency
 call put_environment_variable('TZ','America/New_York',ierr) ! some of the test values assume EST
-call put_environment_variable('TZ','AEST',ierr) ! some of the test values assume EST
+call put_environment_variable('TZ','UTC+04:00',ierr) ! some of the test values assume EST
 
 call unit_check_msg('M_time','This section contains unit tests for procedures in the M_time(3f) module.')
 

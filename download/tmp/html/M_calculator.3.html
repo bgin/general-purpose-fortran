@@ -73,8 +73,8 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
     The primary routine JUCALC acts like a powerful desk-top
     calculator. It supports named variables and has several arrays (of
     55555 elements each). Many standard FORTRAN functions are available,
-    plus access to user-written functions is permitted via the
-    user-supplied routine JUOWN1().
+    plus access to user-written functions is permitted via
+    user-supplied routines via set_mysub(3f) and set_myfunc(3f).
 </p>
 
 <p>
@@ -138,7 +138,6 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <!-- =========================================================================================================================== -->
 <dt><b> SEE ALSO</b></dt> <dd>
    <ul>
-   <li> module M_noown
    <li> module M_calculator
    </ul>
 </dd>
@@ -597,7 +596,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
    <!-- ======================================================================= -->
    <h3>miscellaneous functions </h3>
    <ul>
-   <li><b>ownmode()            </b> - ownmode(3f) enables calls to user-supplied functions via JUOWN1() and C() routines.
+   <li><b>ownmode()            </b> - ownmode(3f) enables calls to user-supplied functions via set_mysub(3f) and set_myfunc(3f).
    <li><b>c(val1)              </b> - user-supplied function
    <li><b>ceiling(val1)        </b> - ceiling(3f)or ceil(3f) returns the least integral value greater than or equal to VAL1.
    <li><b>floor(val1)          </b> - floor(3f) returns the greatest integral value less than or equal to VAL1.

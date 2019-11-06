@@ -41,15 +41,13 @@
 !!        o modif
 !!        o rand
 !!        o len_trim
-!!        o User-supplied routines: juown1, c
+!!        o Possible User-supplied routines: substitute_subroutine, substitute_c
 !!##EXAMPLES
 !!
 !!   Example calculator program
 !!
 !!       program demo_jucalc
 !!       !compute(1f): line mode calculator program (that calls jucalc(3f))
-!!       !     requires:
-!!       !     c(), juown1()
 !!       use M_calculator, only: jucalc,iclen_calc
 !!       ! iclen_calc : max length of expression or variable value as a string
 !!       implicit none
@@ -112,9 +110,10 @@ use M_strings, only : upper, lower, atleast, value_to_string
 use M_list,    only : locate, insert, replace
 !!implicit doubleprecision (a-h,o-z)
 implicit none
-
-integer,parameter                      :: dp=kind(0.0d0)
 private
+
+integer,parameter                      :: k_dbl=kind(0.0d0)
+integer,parameter                      :: dp=kind(0.0d0)
 
 integer,parameter,public               :: iclen_calc=512           ! max length of expression or variable value as a string
 integer,parameter,public               :: ixy_calc=55555           ! number of variables in X() and Y() array
@@ -145,6 +144,9 @@ public :: jucalcx ! call jucalc() calculator and display messages
 public :: strgarr ! read a string into an array USING CALCULATOR
 public :: strgar2 ! read a string into an array USING CALCULATOR
 
+public :: set_mysub
+public :: set_myfunc
+
 public :: test_suite_M_calculator
 
 integer,parameter                      :: ixyc_calc=50                   ! number of variables in $X() and $(Y) array
@@ -164,7 +166,7 @@ character(len=iclen_calc),save  :: nc(ixyc_calc)=' '        ! $n array for proce
 
 
 character(len=iclen_calc),save  :: last='0.0'               ! string containing last answer (i.e. current value)
-logical,save                    :: ownon=.false.            ! flag for whether to look for juown1
+logical,save                    :: ownon=.false.            ! flag for whether to look for substitute_subroutine(3f)
 
 integer,save                    :: ktoken                   ! count of number of token strings assembled
 !
@@ -182,7 +184,51 @@ private :: args_
 private :: factors_
 private :: expressions_
 private :: help_funcs_
+
+private :: juown1_placeholder
+private :: c_placeholder
+
+abstract interface
+   subroutine juown1_interface(func,iflen,args,iargstp,n,fval,ctmp,ier)
+      import k_dbl
+      character(len=*),intent(in)          :: func
+      integer,intent(in)                   :: iflen
+      real(kind=k_dbl),intent(in)          :: args(100)
+      integer,intent(in)                   :: iargstp(100)
+      integer,intent(in)                   :: n
+      real(kind=k_dbl)          :: fval
+      character(len=*)          :: ctmp
+      integer                   :: ier
+   end subroutine juown1_interface
+end interface
+
+abstract interface
+   real function c_interface(args,n)
+      import k_dbl
+      integer,intent(in) :: n
+      real(kind=k_dbl)   :: args(n)
+   end function c_interface
+end interface
+public c_interface
+public juown1_interface
+
+procedure(juown1_interface),pointer :: mysub => juown1_placeholder
+procedure(c_interface),pointer      :: myfunc => c_placeholder
 contains
+!-----------------------------------------------------------------------------------------------------------------------------------
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!-----------------------------------------------------------------------------------------------------------------------------------
+subroutine set_myfunc(proc)
+procedure(c_interface) :: proc
+   myfunc => proc
+end subroutine set_myfunc
+!-----------------------------------------------------------------------------------------------------------------------------------
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!-----------------------------------------------------------------------------------------------------------------------------------
+subroutine set_mysub(proc)
+procedure(juown1_interface) :: proc
+   mysub => proc
+end subroutine set_mysub
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -722,7 +768,6 @@ use M_system,  only : set_environment_variable  ! call setenv(3c) to set environ
 character(len=*),parameter::ident_4="&
 &@(#)M_calculator::funcs_(3fp):given string of form name(p1,p2,...) (p(i) are non-parenthesized expressions) call procedure name"
 
-external juown1
 character(len=*)                    :: wstrng
 integer                             :: nchars
 integer                             :: ier
@@ -737,7 +782,7 @@ character(len=iclen_calc)           :: junout
 character(len=iclen_calc)           :: cnum
 character(len=icname_calc)          :: wstrng2
 
-real(kind=dp),target                :: args(iargs)
+real(kind=dp)                       :: args(iargs)
 
 real(kind=dp)                       :: acurcy
 real(kind=dp)                       :: arg1
@@ -1646,14 +1691,13 @@ case("$u")! $u upper(string)
          iend=len_trim(ctmp) ! very inefficient
       endif
 !=======================================================================------------------------------------------------------------
-!=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=------------------------------------------------------------
 case("$modif")
-      ier=2                                      ! returning string
+      ier=2                                                   ! returning string
       if(n.ne.2)then
          ctmp=' '
          ier=-1
          mssge='*modif* must have two parameters'
-      elseif(iargs_type(1).ne.2.or.iargs_type(2).ne.2)then ! parameter not a string
+      elseif(iargs_type(1).ne.2.or.iargs_type(2).ne.2)then    ! parameter not a string
          ctmp=' '
          ier=-1
          mssge='*modif* parameter(s) not a string'
@@ -1666,30 +1710,30 @@ case("$modif")
 case("matchw")
       ! make one that ignores case?
       ! make one that returns matched string or blank string?
-      if(n.ne.2)then                                   ! if not two parameters
+      if(n.ne.2)then                                          ! if not two parameters
          ier=-1
          mssge='*matchw* takes two parameters'
          ier=-1
          fval=(-1)
-       elseif(iargs_type(1).eq.2.and.iargs_type(2).eq.2)then ! parameters are strings
-          ii=int(args(1))                              ! index of first string
-          iii=int(args(2))                             ! index of second string
-          iie=values_len(ii)                               ! last non-blank character
-          iiie=values_len(iii)                             ! last non-blank character
+       elseif(iargs_type(1).eq.2.and.iargs_type(2).eq.2)then  ! parameters are strings
+          ii=int(args(1))                                     ! index of first string
+          iii=int(args(2))                                    ! index of second string
+          iie=values_len(ii)                                  ! last non-blank character
+          iiie=values_len(iii)                                ! last non-blank character
           if(matchw(values(iii)(:iiie),values(ii)(:iie)))then ! see if match
-             fval=TRUE                                 ! string matched wild-card expression
+             fval=TRUE                                        ! string matched wild-card expression
           else
-             fval=FALSE                                ! string did not match wild-card expression
+             fval=FALSE                                       ! string did not match wild-card expression
           endif
-       else                                            ! parameters were not strings
+       else                                                   ! parameters were not strings
           fval=(-1)
           mssge='*matchw* parameters must be strings'
           ier=-1
        endif
 !=======================================================================------------------------------------------------------------
-case("c");      fval= c(args,n)                            !c(curve_number) or c(curve_number,index)
+case("c");      fval= myfunc(args,n)                          ! c(curve_number) or c(curve_number,index)
 !=======================================================================------------------------------------------------------------
-case("ownmode")                                              ! specify whether to look for juown1 routine
+case("ownmode")                                               ! specify whether to look for substitute_subroutine(3f) routine
       if(n.eq.1.and.iargs_type(1).eq.0)then
          if(args(1).gt.0)then
             ownon=.true.
@@ -1909,7 +1953,7 @@ case default
 !        ==>y=array of ixy_calc y values
 !        ==>ctmp is returned string if string function is called ( in which case fval is returned number of characters in ctmp)
          ier=0
-         call juown1(wstrng(:iend),iend,args,iargs_type,n,fval,ctmp,ier)
+         call mysub(wstrng(:iend),iend,args,iargs_type,n,fval,ctmp,ier)
 !        <==fval=returned value to replace function call with
 !        <=>ier=returned error flag.  Set to -1 if an error occurs.  Otherwise, user should leave it alone
          if(ier.eq.-1)then
@@ -2899,7 +2943,7 @@ end subroutine given_name_get_stringvalue_
 !!##DEFINITION
 !!       Given numeric variable name return double precision value.
 !!       Note this is breaking the rule of only accessing the calculator thru jucalc(3f).
-!!       It should only be used from user JUOWN1(3f) routines to avoid recursion
+!!       It should only be used from user substitute_subroutine(3f) routines to avoid recursion
 !!##OPTIONS
 !!    varnam   name of calculator variable to look up that is assumed to be a valid defined
 !!             name of a numeric variable. If it does not exist zero is returned.
@@ -2958,7 +3002,7 @@ end function getvalue
 !!##DEFINITION
 !!       Given numeric variable name return integer value.
 !!       Note this is breaking the rule of only accessing the calculator thru jucalc(3f).
-!!       It should only be used from user JUOWN1(3f) routines to avoid recursion
+!!       It should only be used from optional user-defined substitute_subroutine(3f) routines to avoid recursion
 !!
 !!##OPTIONS
 !!    varnam   name of calculator variable to look up that is assumed to
@@ -3006,7 +3050,7 @@ end function igetvalue
 !!##DEFINITION
 !!       Given numeric variable name return real value.
 !!       Note this is breaking the rule of only accessing the calculator thru jucalc(3f).
-!!       It should only be used from user JUOWN1(3f) routines to avoid recursion
+!!       It should only be used from optional user-defined substitute_subroutine(3f) routines to avoid recursion
 !!
 !!##OPTIONS
 !!    varnam   name of calculator variable to look up that is assumed to
@@ -3059,7 +3103,7 @@ end function rgetvalue
 !!    a direct deposit of a value into the calculator assumed to
 !!    be used only by friendly calls, for efficiency and to avoid
 !!    problems with recursion if a routine called by the calculator
-!!    in JUOWN1(3f) wants to store something back into the calculator
+!!    in substitute_subroutine(3f) wants to store something back into the calculator
 !!    variable table
 !!
 !!    Normally values are stored or defined in the calculator module
@@ -3073,15 +3117,15 @@ end function rgetvalue
 !!
 !!    stuff(3f) is assumed to only be used when needed for efficiency and to
 !!    avoid problems with recursion if a routine called by the calculator
-!!    in JUOWN1(3f) wants to store something back into the calculator
-!!    variable table.
+!!    in substitute_subroutine(3f) wants to store something back into the
+!!    calculator variable table.
 !!
 !!##OPTIONS
-!!    varnam  name of calculator variable to define or replace
-!!    val     numeric value to associate with the name VARNAME. May be
+!!    varnam  name of calculator variable to define or replace val
+!!    numeric value to associate with the name VARNAME. May be
 !!            integer, real, or doubleprecision.
 !!    ioflag  optional flag to use with journal logging. This string is
-!!    passed directly to M_journal::journal(3f)
+!!            passed directly to M_journal::journal(3f)
 !!            as the first parameter. The default is to not log the
 !!            definitions to the journal(3f) command if this parameter is
 !!            blank or not present.
@@ -3091,11 +3135,18 @@ end function rgetvalue
 !!   Sample program:
 !!
 !!    program demo_stuff
-!!    use M_calculator, only : stuff
+!!    use M_calculator, only : stuff, dnum0
 !!    implicit none
+!!    doubleprecision :: value
 !!    call stuff('A',10.0)
 !!    call stuff('PI',3.141592653589793238462643383279502884197169399375105820974944592307d0)
+!!    value=dnum0('A*PI')
+!!    write(*,*)value
 !!    end program demo_stuff
+!!
+!!   Expected result:
+!!
+!!    31.415926535897931
 !!
 !!##AUTHOR
 !!    John S. Urban
@@ -3163,10 +3214,10 @@ end subroutine stuff
 !!##DEFINITION
 !!    Breaking the rule of only accessing the calculator thru jucalc:
 !!
-!!    a direct deposit of a value into the calculator assumed to
-!!    be used only by friendly calls, for efficiency and to avoid
-!!    problems with recursion if a routine called by the calculator
-!!    in JUOWN1(3f) wants to store something back into the calculator
+!!    a direct deposit of a value into the calculator assumed to be used
+!!    only by friendly calls, for efficiency and to avoid problems with
+!!    recursion if a routine called by the calculator in JUOWN1(3f) wants
+!!    to store something back into the calculator
 !!    variable table.
 !!
 !!##OPTIONS
@@ -3266,9 +3317,9 @@ end subroutine stuffa
 !!       o jucalcx
 !!       o User-supplied routines:
 !!
-!!         All programs that call the calculator routine must supply
-!!         their own JUOWN1 and C procedures. See the
-!!         ../html/Example.html">example program for samples.
+!!         All programs that call the calculator routine can supply their
+!!         own substitute_subroutine(3f) and substitute_C(3f) procedures. See
+!!         the ../html/Example.html">example program for samples.
 !!           o juown1
 !!           o c
 !!##EXAMPLES
@@ -3277,7 +3328,6 @@ end subroutine stuffa
 !!
 !!       program demo_inum0
 !!       use M_calculator, only : inum0
-!!       ! NOTE: user must supply the JUOWN1 and C procedures.
 !!       i=inum0('20/3.4')
 !!       j=inum0('CI = 13 * 3.1')
 !!       k=inum0('CI')
@@ -3286,7 +3336,7 @@ end subroutine stuffa
 !!
 !!##SEE ALSO
 !!       The syntax of an expression is as described in
-!!       the main document of  the  Calculator  Library.
+!!       the main document of the Calculator Library.
 !!   See
 !!       JUCALC(),
 !!       RNUM0(),
@@ -3376,17 +3426,15 @@ end function inum0
 !!##DEPENDENCIES
 !!       o jucalcx
 !!       o User-supplied routines:
-!!         All programs that call the calculator routine must supply their own
-!!         JUOWN1 and C procedures. See the example program for samples.
-!!           o juown1
-!!           o c
+!!         All programs that call the calculator routine can supply their
+!!         own substitute_subroutine(3f) and substitute_C(3f) procedures. See
+!!         the example program for samples.
 !!##EXAMPLES
 !!
 !!   Sample program
 !!
 !!     program demo_rnum0
 !!     use M_calculator, only : rnum0
-!!     ! NOTE: user must supply the JUOWN1 and C procedures.
 !!     x=rnum0('20/3.4')
 !!     y=rnum0('CI = 10 * sin(3.1416/4)')
 !!     z=rnum0('CI')
@@ -3469,10 +3517,10 @@ end function rnum0
 !!##DEPENDENCIES
 !!       o jucalcx
 !!       o User-supplied routines:
-!!         All programs that call the calculator routine must supply their own
-!!         JUOWN1 and C procedures. See the example program for samples.
-!!           o juown1
-!!           o c
+!!         All programs that call the calculator routine can supply their
+!!         own substitute_subroutine(3f) and substitute_C(3f) procedures. See
+!!         the example program for samples.
+!!
 !!##EXAMPLES
 !!
 !!   Sample Program
@@ -3480,7 +3528,6 @@ end function rnum0
 !!     program demo_dnum0
 !!     use M_calculator, only : dnum0
 !!     doubleprecision x,y,z
-!!     ! NOTE: user must supply the JUOWN1 and C procedures.
 !!     X=DNUM0('20/3.4')
 !!     Y=DNUM0('CI = 10 * sin(3.1416/4)')
 !!     Z=DNUM0('CI')
@@ -3560,7 +3607,6 @@ end function dnum0
 !!
 !!   Sample program:
 !!
-!!     !     NOTE: user must supply the JUOWN1 and C procedures.
 !!     program demo_snum0
 !!     use m_calculator, only: rnum0, snum0
 !!     character(len=80)  :: ic,jc,kc
@@ -3586,10 +3632,9 @@ end function dnum0
 !!##DEPENDENCIES
 !!       o jucalcx
 !!       o User-supplied routines:
-!!         All programs that call the calculator routine must supply their own
-!!         JUOWN1 and C procedures. See the example program for samples.
-!!           o juown1
-!!           o c
+!!         All programs that call the calculator routine can supply their
+!!         own substitute_subroutine(3f) and substitute_C(3f) procedures. See
+!!         the example program for samples.
 !!
 !!##SEE ALSO
 !!       o The syntax of an expression is described in the main document of the
@@ -3706,17 +3751,14 @@ end function snum0
 !!       o jucalc
 !!       o pdec
 !!       o User-supplied routines:
-!!
-!!         All programs that call the calculator routine must supply their own
-!!         JUOWN1 and C procedures. See the example program for samples.
-!!           o juown1
-!!           o c
+!!         All programs that call the calculator routine can supply their
+!!         own substitute_subroutine(3f) and substitute_C(3f) procedures. See
+!!         the example program for samples.
 !!##EXAMPLES
 !!
 !!    Sample program:
 !!
 !!     program demo_jucalcx
-!!     !     NOTE: user must supply the JUOWN1 and C procedures.
 !!     use M_calculator,      only : iclen_calc
 !!     use M_calculator, only : jucalcx
 !!     character(len=iclen_calc) ::  outlin0
@@ -3859,11 +3901,9 @@ end subroutine jucalcx
 !!##DEPENDENCIES
 !!       o jucalcx
 !!       o User-supplied routines:
-!!
-!!         All programs that call the calculator routine must supply their own
-!!         JUOWN1 and C procedures. See the example program for samples.
-!!           o juown1
-!!           o c
+!!         All programs that call the calculator routine can supply their
+!!         own substitute_subroutine(3f) and substitute_C(3f) procedures. See
+!!         the example program for samples.
 !!##EXAMPLES
 !!
 !!   Sample program:
@@ -3940,8 +3980,6 @@ end subroutine jucalcx
 !!    endif
 !!    !----------------------------------------------------------
 !!    end program demo_strgarr
-!!
-!!    ! NOTE: user must supply the JUOWN1 and C procedures.
 !!
 !!##SEE ALSO
 !!    To parse a list of numbers instead of expressions see STRGAR().
@@ -4104,10 +4142,9 @@ END SUBROUTINE strgarr
 !!##DEPENDENCIES
 !!       o jucalcx
 !!       o User-supplied routines:
-!!         All programs that call the calculator routine must supply their own
-!!         JUOWN1 and C procedures. See the example program for samples.
-!!           o juown1
-!!           o c
+!!         All programs that call the calculator routine can supply their
+!!         own substitute_subroutine(3f) and substitute_C(3f) procedures. See
+!!         the example program for samples.
 !!##EXAMPLES
 !!
 !!
@@ -4121,7 +4158,6 @@ END SUBROUTINE strgarr
 !!     integer             :: ierr
 !!     real                :: vals(1000)
 !!     character(len=4096) :: line
-!!     ! NOTE: user must supply the JUOWN1 and C procedures.
 !!
 !!     write(*,'(80("-"))')
 !!     call strgar2('10;2/3;sin(4.314)',4,vals,ifound,' ;',ierr)
@@ -4347,6 +4383,71 @@ end subroutine strgar2
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
+subroutine juown1_placeholder(func,iflen,args,iargstp,n,fval,ctmp,ier)
+      ! extend functions available to the calculator routine
+!
+!     if the function ownmode(1) is called this subroutine
+!     will be accessed to do user-written functions.
+!
+!     func(iend-1)=procedure name.  func should not be changed.
+!     iflen=length of procedure name.
+!     args=array of 100 elements containing procedure arguments.
+!     iargstp=type of argument(1=value,2=position of string value)
+!     n=integer number of parameters
+!     x=array of 55555 x values
+!     y=array of 55555 y values
+!     fval=value to replace function call
+!     ctmp=string to return when returning a string value
+!     ier=returned error flag value.
+!         set to -1 if an error occurs.
+!         set to  0 if a number is returned
+!         set to  2 if a string is returned
+!
+!!use M_calculator, only : x, y, values, values_len
+integer, parameter        :: k_dbl = SELECTED_REAL_KIND(15,300) ! real*8
+character(len=*),intent(in)          :: func
+integer,intent(in)                   :: iflen
+real(kind=k_dbl),intent(in)          :: args(100)
+integer,intent(in)                   :: iargstp(100)
+integer,intent(in)                   :: n
+real(kind=k_dbl)          :: fval
+character(len=*)          :: ctmp
+integer                   :: ier
+
+integer                   :: i10
+integer                   :: iwhich
+integer                   :: ilen
+!-----------------------------------------------------------------------
+   fval=0.0d0
+!-----------------------------------------------------------------------
+   write(*,*)'*juown1_placeholder* unknown function ', func(1:iflen)
+   write(*,*)'function name length is..',iflen
+   write(*,*)'number of arguments .....',n
+   do i10=1,n
+      if(iargstp(i10).eq.0)then
+         write(*,*)i10,' VALUE=',args(i10)
+      elseif(iargstp(i10).eq.2)then
+         iwhich=int(args(i10)+0.5d0)
+         ilen=values_len(iwhich)
+         write(*,*)i10,' STRING='//values(iwhich)(:ilen)
+      else
+         write(*,*)'unknown parameter type is ',iargstp(i10)
+      endif
+   enddo
+end subroutine juown1_placeholder
+!----------------------------------------------------------------------------------------------------------------------------------!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!----------------------------------------------------------------------------------------------------------------------------------!
+real function c_placeholder(args,n)
+! a built-in calculator function called c must be satisfied.
+! write whatever you want here as a function
+integer,intent(in)       :: n
+real(kind=k_dbl)         :: args(n)
+      c_placeholder=0.0
+end function c_placeholder
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 subroutine test_suite_M_calculator
 call test_jucalc()
 !!call test_jucals()
@@ -4369,8 +4470,8 @@ call test_snum0()
 call test_strgar2()
 call test_strgarr()
 
-!!call test_c()
-!!call test_juown1()
+call test_c()
+call test_juown1()
 
 contains
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -4522,82 +4623,3 @@ end module M_calculator
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
-module M_noown
-! this module contains routines that are used to customize the
-! M_calculator module. Since M_calculator requires them if you do
-! not wish to create your own; use these dummy routines
-implicit none
-private
-integer, parameter          :: k_dbl = SELECTED_REAL_KIND(15,300) ! real*8
-public juown1
-public c
-contains
-!#cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
-subroutine juown1(func,iflen,args,iargstp,n,fval,ctmp,ier)
-      ! extend functions available to the calculator routine
-!
-!     if the function ownmode(1) is called this subroutine
-!     will be accessed to do user-written functions.
-!
-!     func(iend-1)=procedure name.  func should not be changed.
-!     iflen=length of procedure name.
-!     args=array of 100 elements containing procedure arguments.
-!     iargstp=type of argument(1=value,2=position of string value)
-!     n=integer number of parameters
-!     x=array of 55555 x values
-!     y=array of 55555 y values
-!     fval=value to replace function call
-!     ctmp=string to return when returning a string value
-!     ier=returned error flag value.
-!         set to -1 if an error occurs.
-!         set to  0 if a number is returned
-!         set to  2 if a string is returned
-!
-use M_calculator, only : x, y, values, values_len
-character(len=*)          :: func
-integer                   :: iflen
-real(kind=k_dbl)          :: args(100)
-integer                   :: iargstp(100)
-integer                   :: n
-real(kind=k_dbl)          :: fval
-character(len=*)          :: ctmp
-integer                   :: ier
-integer                   :: i10
-
-integer                   :: iwhich
-integer                   :: ilen
-!-----------------------------------------------------------------------
-   fval=0.0d0
-!-----------------------------------------------------------------------
-   write(*,*)'*juown1* unknown function ', func(1:iflen)
-   write(*,*)'function name length is..',iflen
-   write(*,*)'number of arguments .....',n
-   do i10=1,n
-      if(iargstp(i10).eq.0)then
-         write(*,*)i10,' VALUE=',args(i10)
-      elseif(iargstp(i10).eq.2)then
-         iwhich=int(args(i10)+0.5d0)
-         ilen=values_len(iwhich)
-         write(*,*)i10,' STRING='//values(iwhich)(:ilen)
-      else
-         write(*,*)'unknown parameter type is ',iargstp(i10)
-      endif
-   enddo
-end subroutine juown1
-!----------------------------------------------------------------------------------------------------------------------------------!
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!----------------------------k-----------------------------------------------------------------------------------------------------!
-real function c(fval,n)
-! a built-in calculator function called c must be satisfied.
-! write whatever you want here as a function
-  real(kind=k_dbl) :: fval
-integer          :: n
-      c=0.0
-end function c
-!----------------------------------------------------------------------------------------------------------------------------------!
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!----------------------------k-----------------------------------------------------------------------------------------------------!
-end module M_noown
-!----------------------------------------------------------------------------------------------------------------------------------!
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!----------------------------k-----------------------------------------------------------------------------------------------------!

@@ -1,5 +1,4 @@
-          !program demo_M_calculator
-          program show_M_calculator
+          program demo_M_calculator
 
              !     line mode calculator that calls jucalc
              !
@@ -49,9 +48,13 @@
              rvalue=rnum0('A',ierr)
              write(*,*) rvalue
 
-             end program show_M_calculator
-             !#cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
-             subroutine juown1(func,iflen,args,iargstp,n,fval,ctmp,ier)
+             ! OPTIONAL: contains example routines for adding user-defined
+             !           functions.
+             !
+             call set_mysub(my_functions)
+             call set_myfunc(c)
+             contains
+             subroutine my_functions(func,iflen,args,iargstp,n,fval,ctmp,ier)
              ! extend functions available to the calculator routine
              !
              !  if the function ownmode(1) is called this subroutine
@@ -60,7 +63,7 @@
              !  func(iend-1)=procedure name.  func should not be changed.
              !  iflen=length of procedure name.
              !  args=array of 100 elements containing procedure arguments.
-             !  iargstp=type of argument(1=value,2=position of string value)
+             !  iargstp=type of argument(1=numeric value,2=position of string value)
              !  n=integer number of parameters
              !  x=array of 55555 x values
              !  y=array of 55555 y values
@@ -72,20 +75,23 @@
              !      set to  2 if a string is returned
              !
              use M_calculator, only: x,y,values,values_len,iclen_calc
+             integer, parameter           :: k_dbl = SELECTED_REAL_KIND(15,300) ! real*8
              ! values: the values of string variables
              ! values_len: the lengths of the string variable values
-             character(len=*)          :: func
+             character(len=*),intent(in)  :: func
+             integer,intent(in)           :: iflen
+             real(kind=k_dbl),intent(in)  :: args(100)
+             integer,intent(in)           :: iargstp(100)
+             integer,intent(in)           :: n
+             real(kind=k_dbl)             :: fval
+             character(len=*)             :: ctmp
+             integer                      :: ier
 
-             character(len=*)          :: ctmp
-             character(len=iclen_calc) :: temp1
-             integer iflen ,n, ier, iargstp(100)
-             integer, parameter        :: k_dbl = SELECTED_REAL_KIND(15,300) ! real*8
-             real(kind=k_dbl)  :: args(100)
-             real(kind=k_dbl)  :: fval
-             integer           :: iwhich
+             integer                      :: iwhich
+             character(len=iclen_calc)    :: temp1
                 fval=0.0d0
              !-----------------------------------------------------------------------
-                write(*,*)'*juown1* unknown function ', func(1:iflen)
+                write(*,*)'*my_functions* unknown function ', func(1:iflen)
                 write(*,*)'function name length is..',iflen
                 write(*,*)'number of arguments .....',n
                 do i10=1,n
@@ -99,15 +105,15 @@
                       write(*,*)'unknown parameter type is ',iargstp(i10)
                    endif
                 enddo
-             end subroutine juown1
+             end subroutine my_functions
              !ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
              real function c(fval,n)
              implicit none
              !  a built-in calculator function called c must be satisfied.
              !  write whatever you want here as a function
              integer, parameter          :: k_dbl = SELECTED_REAL_KIND(15,300) ! real*8
-             real(kind=k_dbl),intent(in) :: fval
              integer,intent(in)          :: n
+             real(kind=k_dbl),intent(in) :: fval(n)
                 c=0.0
              end function c
-             !end program demo_M_calculator
+             end program demo_M_calculator

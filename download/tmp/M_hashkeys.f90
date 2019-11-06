@@ -1408,6 +1408,7 @@ end subroutine test_luhn_checksum
 !>
 !!##NAME
 !!    djb2_hash(3f) - [M_hashkeys:bucket_hash] djb2 string hash (algorithm by Daniel J. Bernstein)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1546,6 +1547,7 @@ end function djb2_hash_scalar
 !>
 !!##NAME
 !!    crc32_hash(3f) - [M_hashkeys] CRC (Cyclic Redundancy Check)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1709,6 +1711,7 @@ end function crc32_hash_scalar
 !>
 !!##NAME
 !!    sdbm_hash(3f) - [M_hashkeys:bucket_hash] sdbm string hash
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1910,6 +1913,7 @@ end function djb2
 !>
 !!##NAME
 !!   b3hs_hash_key_jenkins(3f) - [M_hashkeys] hash key algorithm by Bob Jenkins
+!!   (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!

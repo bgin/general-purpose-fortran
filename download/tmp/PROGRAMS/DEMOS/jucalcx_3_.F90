@@ -1,5 +1,4 @@
            program demo_jucalcx
-           !     NOTE: user must supply the JUOWN1 and C procedures.
            use M_calculator,      only : iclen_calc
            use M_calculator, only : jucalcx
            character(len=iclen_calc) ::  outlin0

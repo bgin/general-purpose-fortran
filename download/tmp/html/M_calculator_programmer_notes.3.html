@@ -95,13 +95,13 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
      <a href="#new_function">new function</a>
      directly to the calculator code.
 <li> Adding a
-     <a href="#juown1">new function</a>
-     for a particular application
+     <a href="#substitute_subroutine(3f)"> procedure</a>
+     to customize an application by allowing for user-defined functions
 <li> Points to ponder
    <ul>
-   <li> added juown1 and c to libstub.a to make it easier
+   <li> added substitute_subroutine(3f) and substitute_c(3f) to make it easier
         for people to use the calculator library. Programmers could
-        override with their own at load time.
+        override with their own version at load time.
    <li> Using C or Fortran 90 it would be easier to make a version that
         uses recursion and allocatable arrays to handle array syntax and
         to run more efficiently by avoiding almost all string manipulations
@@ -149,10 +149,10 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <p>
    <font color="red"> <em> <strong> Warning: </strong>
    If these parameter values are changed in size, any user-written
-   JUOWN1() routines must change to reflect the changes. Make a new
-   library version and document the new size if your copy is being used
-   by others or people reloading from your library could encounter
-   problems.
+   substitute_subroutine(3f) routines must change to reflect the
+   changes. Make a new library version and document the new size if your
+   copy is being used by others or people reloading from your library
+   could encounter problems.
    </em>
 </p>
 </font>
@@ -198,16 +198,16 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 
 <hr><!-- =================================================================== -->
 
-<h2> <a name="juown1"> Adding a new function for a particular application </a> </h2>
+<h2> <a name="substitute_subroutine(3f)"> Adding a new function for a particular application </a> </h2>
 
 <p>
-   A special routine called JUOWN1() is used for you to add your own
+   A special routine can be added to allow add your own
    functions for a particular program that you don't want in the main
-   JUCALC() utility code. JUOWN1() will be called when any function
+   JUCALC() utility code. It will be called when any function
    name is not recognized and the expression 'ownmode(1)' has previously
    been entered into the calculator. The
    <a href="Example.html">example program</a> shows a fully functional
-   JUOWN1() routine that should make it clear how to add your own
+   substitute_subroutine(3f) routine that should make it clear how to add your own
    functions. Here is a session using the example program:
 </p>
 
@@ -224,7 +224,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <p>
    But if the special function OWNMODE() is called with its first
    parameter set to 1 unknown function calls are now passed to
-   the JUOWN1() routine.
+   the substitute_subroutine() routine if it has been defined.
 </p>
 
 <pre>
@@ -240,7 +240,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 </pre>
 
 <p>
-   JUOWN1() echos the name of the unknown function, how many characters long
+   By default substitute_subroutine(3f) echoes the name of the unknown function, how many characters long
    the function name is, how many parameters were on the function call, and
    an array of argument values. Note that a second array and a common block
    can be used to pass string variables too.
@@ -262,11 +262,11 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 </pre>
 
 <p>
-   Hopefully, the JUOWN1() example code makes this clear.
+   Hopefully, the example code makes this clear.
 </p>
 
 <p>
-   So to add your own custom functions just construct branches in JUOWN1
+   So to add your own custom functions just construct branches in substitute_subroutine(3f)
    based on your new function names!
 </p>
 

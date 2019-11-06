@@ -81,6 +81,7 @@ append("xy_units.3xy.html");
 append("xy_ustrlen.3xy.html");
 append("xy_ustrlen2.3xy.html");
 append("xy_zoom.3xy.html");
+append("illusion.3.html");
 append("cn.1.html");
 append("xy.1.html");
 }

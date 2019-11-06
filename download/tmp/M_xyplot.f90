@@ -12621,7 +12621,7 @@ end subroutine xy_getmark
 !==================================================================================================================================!
 !>
 !!##NAME
-!!   illusion(3f) - [M_drawinc:banner] draw a banner page with short labels at the compass points
+!!   illusion(3f) - [M_xyplot:banner] draw a banner page with short labels at the compass points
 !!   (LICENSE:MIT)
 !!
 !!##SYNOPSIS
